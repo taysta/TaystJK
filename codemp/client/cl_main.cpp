@@ -2200,7 +2200,7 @@ void CL_CheckTimeout( void ) {
 	//
 	// check timeout
 	//
-	if ( ( !CL_CheckPaused() || !sv_paused->integer )
+	if ( !clc.demoplaying && ( !CL_CheckPaused() || !sv_paused->integer )
 		&& cls.state >= CA_CONNECTED && cls.state != CA_CINEMATIC
 	    && cls.realtime - clc.lastPacketTime > cl_timeout->integer*1000) {
 		if (++cl.timeoutcount > 5) {	// timeoutcount saves debugger
