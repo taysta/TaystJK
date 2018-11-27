@@ -1550,164 +1550,167 @@ Ghoul2 Insert End
 		//trap->R_AddRefEntityToScene( &ent );
 	}
 
-	if ((cent->currentState.eFlags & EF_DISINTEGRATION) && cent->currentState.eType == ET_BODY)
-	{
-		if (!cent->dustTrailTime)
+	if (cent->currentState.eType == ET_BODY) {
+		if ((cg.predictedPlayerState.duelInProgress && ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
+			|| (cgs.isJAPro && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
 		{
-			cent->dustTrailTime = cg.time;
+			return; //don't show bodies in duels or in racemode
 		}
-
-		if (!(cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
-			// don't bother with disentegrating bodies that we've already told to fade
-			CG_Disintegration(cent, &ent);
-		}
-		return;
-	}
-	else if (cent->currentState.eType == ET_BODY)
-	{
-		if (cent->bodyFadeTime > cg.time)
+		else if (cent->currentState.eFlags & EF_DISINTEGRATION)
 		{
-			qboolean lightSide = (cent->teamPowerType != 0) ? qtrue : qfalse;
-			vec3_t hitLoc, tempAng;
-			float tempLength;
-			int curTimeDif = ((cg.time + ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) ? 5000 : BODY_FADE_TIME)) - cent->bodyFadeTime);
-			int tMult = curTimeDif*0.08;
-
-			ent.renderfx |= RF_FORCE_ENT_ALPHA;
-
-			/*
-			if (!cent->bodyHeight)
+			if (!cent->dustTrailTime)
 			{
-				cent->bodyHeight = ent.origin[2];
-			}
-			*/
-
-			if (curTimeDif*0.1 > 254)
-			{
-				ent.shaderRGBA[3] = 0;
-			}
-			else
-			{
-				ent.shaderRGBA[3] = (254 - tMult);
+				cent->dustTrailTime = cg.time;
 			}
 
-			if (ent.shaderRGBA[3] >= 1)
-			{ //add the transparent body section
-				trap->R_AddRefEntityToScene (&ent);
+			if (!(cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
+				// don't bother with disentegrating bodies that we've already told to fade
+				CG_Disintegration(cent, &ent);
 			}
-
-			ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
-			ent.renderfx |= RF_RGB_TINT;
-
-			if (tMult > 200)
-			{ //begin the disintegration effect
-				ent.shaderRGBA[3] = 200;
-				if (!cent->dustTrailTime)
-				{
-					cent->dustTrailTime = cg.time;
-					if (lightSide)
-					{
-						//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-						trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/force/see.wav") );
-					}
-					else
-					{
-						//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-						trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/force/lightning") );
-					}
-				}
-				ent.endTime = cent->dustTrailTime;
-				ent.renderfx |= RF_DISINTEGRATE2;
-			}
-			else
-			{ //set the alpha on the to-be-disintegrated layer
-				ent.shaderRGBA[3] = tMult;
-				if (ent.shaderRGBA[3] < 1)
-				{
-					ent.shaderRGBA[3] = 1;
-				}
-			}
-			//Set everything up on the disint ref
-			ent.shaderRGBA[0] = ent.shaderRGBA[1] = ent.shaderRGBA[2] = ent.shaderRGBA[3];
-			VectorCopy(cent->lerpOrigin, hitLoc);
-
-			VectorSubtract( hitLoc, ent.origin, ent.oldorigin );
-
-			tempLength = VectorNormalize( ent.oldorigin );
-			vectoangles( ent.oldorigin, tempAng );
-			tempAng[YAW] -= cent->lerpAngles[YAW];
-			AngleVectors( tempAng, ent.oldorigin, NULL, NULL );
-			VectorScale( ent.oldorigin, tempLength, ent.oldorigin );
-
-			if (lightSide)
-			{ //might be temporary, dunno.
-				//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-				ent.customShader = cgs.media.playerShieldDamage;
-			}
-			else
-			{
-				//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-				ent.customShader = cgs.media.redSaberGlowShader;
-			}
-
-			//slowly move the glowing part upward, out of the fading body
-			/*
-			cent->bodyHeight += 0.4f;
-			ent.origin[2] = cent->bodyHeight;
-			*/
-
-			trap->R_AddRefEntityToScene( &ent );
-			//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-			ent.renderfx &= ~RF_DISINTEGRATE2;
-			ent.customShader = 0;
-
-			if (curTimeDif < 3400)
-			{
-				if (!(cg_stylePlayer.integer & JAPRO_STYLE_NOFADESFX)) {//JAPRO - Clientside - Give option to remove laggy corpse removal effects
-					if (lightSide)
-					{
-						if (curTimeDif < 2200
-							&& cg.frametime > 0  //JAPRO - Clientside - Fix loud body disentegration sound.
-							&& ((cg.frametime < 100 && cg.time % 100 <= cg.frametime)
-								|| cg.frametime >= 100))
-						{ //probably temporary
-							trap->S_StartSound(NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/saber/saberhum1.wav"));
-						}
-					}
-					else
-					{ //probably temporary as well
-						ent.renderfx |= RF_RGB_TINT;
-						ent.shaderRGBA[0] = 255;
-						ent.shaderRGBA[1] = ent.shaderRGBA[2] = 0;
-						ent.shaderRGBA[3] = 255;
-						if ( rand() & 1 )
-						{
-								ent.customShader = cgs.media.electricBodyShader;
-						}
-						else
-						{
-								ent.customShader = cgs.media.electricBody2Shader;
-						}
-						if ((Q_flrand(0.0f, 1.0f) > 0.9f)
-							&& cg.frametime > 0 //JAPRO - Clientside - Fix loud body disentegration sound.
-							&& ((cg.frametime < 100 && cg.time % 100 <= cg.frametime)
-								|| cg.frametime >= 100))
-						{
-							trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, cgs.media.crackleSound );
-						}
-						trap->R_AddRefEntityToScene( &ent );
-					}
-				}
-			}
-
 			return;
 		}
 		else
 		{
-			cent->dustTrailTime = 0;
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
-				// this body has faded already, bail
+			if (cent->bodyFadeTime > cg.time)
+			{
+				qboolean lightSide = (cent->teamPowerType != 0) ? qtrue : qfalse;
+				vec3_t hitLoc, tempAng;
+				float tempLength;
+				int curTimeDif = ((cg.time + ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) ? 5000 : BODY_FADE_TIME)) - cent->bodyFadeTime);
+				int tMult = curTimeDif*0.08;
+
+				ent.renderfx |= RF_FORCE_ENT_ALPHA;
+
+				/*
+				if (!cent->bodyHeight)
+				{
+					cent->bodyHeight = ent.origin[2];
+				}
+				*/
+
+				if (curTimeDif*0.1 > 254)
+				{
+					ent.shaderRGBA[3] = 0;
+				}
+				else
+				{
+					ent.shaderRGBA[3] = (254 - tMult);
+				}
+
+				if (ent.shaderRGBA[3] >= 1)
+				{ //add the transparent body section
+					trap->R_AddRefEntityToScene (&ent);
+				}
+
+				ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
+				ent.renderfx |= RF_RGB_TINT;
+
+				if (tMult > 200)
+				{ //begin the disintegration effect
+					ent.shaderRGBA[3] = 200;
+					if (!cent->dustTrailTime)
+					{
+						cent->dustTrailTime = cg.time;
+						if (lightSide)
+						{
+							trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/force/see.wav") );
+						}
+						else
+						{
+							//if (cg_corpseEffects.integer)//JAPRO - Clientside - Give option to remove laggy corpse removal effects
+							trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/force/lightning") );
+						}
+					}
+					ent.endTime = cent->dustTrailTime;
+					ent.renderfx |= RF_DISINTEGRATE2;
+				}
+				else
+				{ //set the alpha on the to-be-disintegrated layer
+					ent.shaderRGBA[3] = tMult;
+					if (ent.shaderRGBA[3] < 1)
+					{
+						ent.shaderRGBA[3] = 1;
+					}
+				}
+				//Set everything up on the disint ref
+				ent.shaderRGBA[0] = ent.shaderRGBA[1] = ent.shaderRGBA[2] = ent.shaderRGBA[3];
+				VectorCopy(cent->lerpOrigin, hitLoc);
+
+				VectorSubtract( hitLoc, ent.origin, ent.oldorigin );
+
+				tempLength = VectorNormalize( ent.oldorigin );
+				vectoangles( ent.oldorigin, tempAng );
+				tempAng[YAW] -= cent->lerpAngles[YAW];
+				AngleVectors( tempAng, ent.oldorigin, NULL, NULL );
+				VectorScale( ent.oldorigin, tempLength, ent.oldorigin );
+
+				if (lightSide)
+				{ //might be temporary, dunno.
+					ent.customShader = cgs.media.playerShieldDamage;
+				}
+				else
+				{
+					ent.customShader = cgs.media.redSaberGlowShader;
+				}
+
+				//slowly move the glowing part upward, out of the fading body
+				/*
+				cent->bodyHeight += 0.4f;
+				ent.origin[2] = cent->bodyHeight;
+				*/
+
+				trap->R_AddRefEntityToScene( &ent );
+				ent.renderfx &= ~RF_DISINTEGRATE2;
+				ent.customShader = 0;
+
+				if (curTimeDif < 3400)
+				{
+					if (!(cg_stylePlayer.integer & JAPRO_STYLE_NOFADESFX)) {
+						if (lightSide)
+						{
+							if (curTimeDif < 2200
+								&& cg.frametime > 0  //JAPRO - Clientside - Fix loud body disentegration sound.
+								&& ((cg.frametime < 100 && cg.time % 100 <= cg.frametime)
+									|| cg.frametime >= 100))
+							{ //probably temporary
+								trap->S_StartSound(NULL, cent->currentState.number, CHAN_AUTO, trap->S_RegisterSound("sound/weapons/saber/saberhum1.wav"));
+							}
+						}
+						else
+						{ //probably temporary as well
+							ent.renderfx |= RF_RGB_TINT;
+							ent.shaderRGBA[0] = 255;
+							ent.shaderRGBA[1] = ent.shaderRGBA[2] = 0;
+							ent.shaderRGBA[3] = 255;
+							if ( rand() & 1 )
+							{
+									ent.customShader = cgs.media.electricBodyShader;
+							}
+							else
+							{
+									ent.customShader = cgs.media.electricBody2Shader;
+							}
+							if ((Q_flrand(0.0f, 1.0f) > 0.9f)
+								&& cg.frametime > 0 //JAPRO - Clientside - Fix loud body disentegration sound.
+								&& ((cg.frametime < 100 && cg.time % 100 <= cg.frametime)
+									|| cg.frametime >= 100))
+							{
+								trap->S_StartSound ( NULL, cent->currentState.number, CHAN_AUTO, cgs.media.crackleSound );
+							}
+							trap->R_AddRefEntityToScene( &ent );
+						}
+					}
+				}
+
 				return;
+			}
+			else
+			{
+				cent->dustTrailTime = 0;
+				if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
+					// this body has faded already, bail
+					return;
+				}
 			}
 		}
 	}

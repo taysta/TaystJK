@@ -10045,7 +10045,7 @@ void CG_Player( centity_t *cent ) {
 		if (cg.snap->ps.duelInProgress) { // we are dueling
 			if (cent->currentState.number != cg.snap->ps.duelIndex) { // don't draw this entity because we aren't dueling them
 				if ((cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR) || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)
-					if (((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.isJAPro) || (cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
+					if ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
 						return;
 			}
 		}
