@@ -4550,7 +4550,8 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 		vec3_t lookAngles;
 		entityState_t *emplaced = NULL;
 
-		if (cent->currentState.hasLookTarget && cg_headTurn.integer && !(cent->pe.torso.animationNumber == BOTH_STAND1IDLE1)) //|| cent->pe.torso.animationNumber == BOTH_STAND2IDLE1 || cent->pe.torso.animationNumber ==BOTH_STAND2IDLE2
+		if (cent->currentState.hasLookTarget && cg_headTurn.integer && !(cent->pe.torso.animationNumber == BOTH_STAND1IDLE1) &&
+			!(cg.snap->ps.duelInProgress && cent->currentState.clientNum == cg.snap->ps.clientNum && cent->currentState.lookTarget != cg.snap->ps.duelIndex))
 		{
 			VectorSubtract(cg_entities[cent->currentState.lookTarget].lerpOrigin, cent->lerpOrigin, lookAngles);
 			vectoangles(lookAngles, lookAngles);
