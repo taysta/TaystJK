@@ -236,6 +236,75 @@ void Sys_SetProcessorAffinity( void ) {
 		Com_DPrintf( "Setting affinity mask failed (%s)\n", GetErrorString( GetLastError() ) );
 }
 
+void Sys_SetProcessPriority(void) {
+	extern cvar_t *com_priority;
+	DWORD_PTR desiredPriorityClass, currentProcessPriorityClass;
+	HANDLE handle = GetCurrentProcess();
+
+	if (!com_priority)
+		return;
+
+	currentProcessPriorityClass = GetPriorityClass(handle);
+
+	if (!Q_stricmp(com_priority->string, "normal")) {
+		desiredPriorityClass = NORMAL_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "high")) {
+		desiredPriorityClass = HIGH_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "realtime")) {
+		desiredPriorityClass = REALTIME_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "low")) {
+		desiredPriorityClass = BELOW_NORMAL_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "idle")) {
+		desiredPriorityClass = IDLE_PRIORITY_CLASS;
+	}
+	else {
+		switch (com_priority->integer)
+		{
+			case 24: //realtime
+				desiredPriorityClass = REALTIME_PRIORITY_CLASS;
+				break;
+			case 13: //high
+				desiredPriorityClass = HIGH_PRIORITY_CLASS;
+				break;
+			case 10: //above normal
+				desiredPriorityClass = ABOVE_NORMAL_PRIORITY_CLASS;
+				break;
+			case 8: //normal/default
+			default:
+				desiredPriorityClass = NORMAL_PRIORITY_CLASS;
+				break;
+			case 6: //below normal
+				desiredPriorityClass = BELOW_NORMAL_PRIORITY_CLASS;
+				break;
+			case 4: //background (Low I/O & memory priority)
+			case 2: //idle
+				desiredPriorityClass = IDLE_PRIORITY_CLASS;
+				break;
+		}
+	}
+
+	if (!desiredPriorityClass)
+		return;
+
+	if (desiredPriorityClass != NORMAL_PRIORITY_CLASS && desiredPriorityClass == currentProcessPriorityClass) {
+		Com_Printf("Desired priority class already set\n");
+		return;
+	}
+
+	if (!SetPriorityClass(handle, desiredPriorityClass)) {
+		Com_Printf("^3failed to set process priority?\n");
+		return;
+	}
+	
+	if (GetPriorityClass(handle) == desiredPriorityClass)
+		Com_DPrintf("Set process priority successfully.\n");
+		//why does it get here if windows sometimes forces it to background priority????
+}
+
 /*
 ==================
 Sys_LowPhysicalMemory()

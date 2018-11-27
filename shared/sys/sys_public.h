@@ -154,6 +154,9 @@ time_t Sys_FileTime( const char *path );
 qboolean Sys_LowPhysicalMemory();
 
 void Sys_SetProcessorAffinity( void );
+#ifdef _WIN32
+void Sys_SetProcessPriority(void);
+#endif
 
 typedef enum graphicsApi_e
 {

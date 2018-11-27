@@ -74,6 +74,9 @@ cvar_t	*com_ansiColor = NULL;
 cvar_t	*com_busyWait;
 
 cvar_t *com_affinity;
+#ifdef _WIN32
+cvar_t *com_priority;
+#endif
 
 // com_speeds times
 int		time_game;
@@ -1197,6 +1200,9 @@ void Com_Init( char *commandLine ) {
 			Cmd_AddCommand ("freeze", Com_Freeze_f);
 		}
 		Cmd_AddCommand ("quit", Com_Quit_f, "Quits the game" );
+
+		Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
+
 #ifndef FINAL_BUILD
 		Cmd_AddCommand ("changeVectors", MSG_ReportChangeVectors_f );
 #endif
@@ -1261,6 +1267,9 @@ void Com_Init( char *commandLine ) {
 #endif
 
 		com_affinity = Cvar_Get( "com_affinity", "0", CVAR_ARCHIVE_ND );
+#ifdef _WIN32
+		com_priority = Cvar_Get("com_priority", "normal", CVAR_ARCHIVE_ND|CVAR_NORESTART); //duno, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??
+#endif
 		com_busyWait = Cvar_Get( "com_busyWait", "0", CVAR_ARCHIVE_ND );
 
 		com_bootlogo = Cvar_Get( "com_bootlogo", "0", CVAR_ARCHIVE_ND, "Show intro movies" );
@@ -1658,6 +1667,14 @@ void Com_Frame( void ) {
 			com_affinity->modified = qfalse;
 			Sys_SetProcessorAffinity();
 		}
+
+#ifdef _WIN32
+		if (com_priority->modified)
+		{
+			com_priority->modified = qfalse;
+			Sys_SetProcessPriority();
+		}
+#endif
 
 		com_frameNumber++;
 	}
