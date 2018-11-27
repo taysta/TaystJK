@@ -6630,6 +6630,7 @@ void Cmd_DFRefresh_f(gentity_t *ent) {
 #endif
 
 int G_AdminAllowed(gentity_t *ent, unsigned int adminCmd, qboolean cheatAllowed, qboolean raceAllowed, char *cmdName);
+int JP_ClientNumberFromString(gentity_t *to, const char *s);
 void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? conditional open/close issue??
 	int			i;
 	char		msg[1024-128] = {0};
@@ -6651,7 +6652,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 			}
 		}
 		else {
-			clientnum = atoi(arg1);
+			clientnum = JP_ClientNumberFromString( ent, arg1 );
 		}
 	}
 	else if (trap->Argc() != 1) {

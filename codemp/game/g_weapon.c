@@ -2669,12 +2669,14 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 	VectorSet( missile->r.mins, -3.0f, -3.0f, -3.0f );
 	VectorSet( missile->r.maxs, 3.0f, 3.0f, 3.0f );
 
+	/*/
 	//===testing being able to shoot rockets out of the air==================================
 	missile->health = 10;
 	missile->takedamage = qtrue;
-	missile->r.contents = MASK_SHOT;
+	missile->r.contents = MASK_SHOT; //solid?
 	missile->die = RocketDie;
 //===testing being able to shoot rockets out of the air==================================
+	*/
 
 	missile->clipmask = MASK_SHOT;
 
