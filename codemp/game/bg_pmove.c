@@ -12264,9 +12264,15 @@ void PmoveSingle (pmove_t *pmove) {
 
 #ifdef _CGAME
 	if (cgs.isJAPlus) { //some JA+ animation support...
-		if (pm->ps->legsAnim == BOTH_HUGGER1 || pm->ps->legsAnim == BOTH_HUGGEE1)
+		if (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE
+			|| pm->ps->torsoAnim == BOTH_GETUP1
+			|| (pm->ps->legsAnim >= BOTH_KISSEE && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
+		{
+			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 			stiffenedUp = qtrue;
-		else if ((pm->ps->legsAnim) >= BOTH_KISSEE && (pm->ps->legsAnim) <= BOTH_MELEE_SPINKICK)
+		}
+		else if ((pm->ps->legsAnim >= BOTH_MELEE_BACKKICK && pm->ps->legsAnim <= BOTH_MELEE_SPINKICK)
+			|| pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK)
 			stiffenedUp = qtrue;
 	}
 #endif
