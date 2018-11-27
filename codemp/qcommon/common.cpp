@@ -1268,7 +1268,7 @@ void Com_Init( char *commandLine ) {
 
 		com_affinity = Cvar_Get( "com_affinity", "0", CVAR_ARCHIVE_ND );
 #ifdef _WIN32
-		com_priority = Cvar_Get("com_priority", "normal", CVAR_ARCHIVE_ND|CVAR_NORESTART); //duno, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??
+		com_priority = Cvar_Get("com_priority", /*"normal"*/"0", CVAR_ARCHIVE_ND|CVAR_NORESTART); //duno, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??
 #endif
 		com_busyWait = Cvar_Get( "com_busyWait", "0", CVAR_ARCHIVE_ND );
 

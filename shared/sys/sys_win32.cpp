@@ -244,6 +244,9 @@ void Sys_SetProcessPriority(void) {
 	if (!com_priority)
 		return;
 
+	if (!com_priority->integer)
+		return;
+
 	currentProcessPriorityClass = GetPriorityClass(handle);
 
 	if (!Q_stricmp(com_priority->string, "normal")) {
