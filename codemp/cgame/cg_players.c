@@ -12030,7 +12030,7 @@ stillDoSaber:
 	}
 //JAPRO - Clientside - Brightskins - End
 
-	if (cg.snap->ps.duelInProgress) //&& cent->currentState.number != cg.snap->ps.clientNum
+	if (cg.snap->ps.duelInProgress)
 	{ //I guess go ahead and glow your own client too in a duel
 		if (cent->currentState.number != cg.snap->ps.duelIndex &&
 			cent->currentState.number != cg.snap->ps.clientNum)
@@ -12111,7 +12111,10 @@ stillDoSaber:
 	}
 	else
 	{
-		if (cent->currentState.bolt1 == 1 && !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum && (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number))
+		if (cent->currentState.bolt1 == 1
+			&& !(cent->currentState.eFlags & EF_DEAD) && cent->currentState.number != cg.snap->ps.clientNum
+			&& (!cg.snap->ps.duelInProgress || cg.snap->ps.duelIndex != cent->currentState.number)
+			&& !(cg_stylePlayer.integer & JAPRO_STYLE_VFXDUELERS))
 		{
 			legs.shaderRGBA[0] = 50;
 			legs.shaderRGBA[1] = 50;
@@ -12264,6 +12267,7 @@ stillDoSaber:
 
 	{
 		qboolean stylePlayer1 = qfalse;
+		qboolean stylePlayer2 = qfalse;
 		qboolean drawPlayer = qtrue;
 		if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE))) { //Never change our own appeareance
 			if (cg.snap->ps.duelInProgress) { //We are dueling
@@ -12273,31 +12277,35 @@ stillDoSaber:
 				if ((!cent->currentState.bolt1 && !(cg_stylePlayer.integer & JAPRO_STYLE_NONRACERVFXDISABLE)) || //they're in FFA or they're another racer
 					(!cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE)) {
 					stylePlayer1 = qtrue;
+					stylePlayer2 = qfalse;
 					drawPlayer = qfalse;
 				}
 			}
 			else { //We are in ffa
 				if (cent->currentState.bolt1 == 1 && (cg_stylePlayer.integer & JAPRO_STYLE_VFXDUELERS)) { //They are dueling
-					stylePlayer1 = qtrue;
-					drawPlayer = qtrue;
+					stylePlayer1 = qfalse;
+					stylePlayer2 = qtrue;
+					drawPlayer = qfalse;
 				}
 				else if (cgs.isJAPro && cent->currentState.bolt1 == 2 && !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE)) { //They are racing
 					stylePlayer1 = qtrue;
+					stylePlayer2 = qfalse;
 					drawPlayer = qfalse;
 				}
 			}
 		}
 
-		if (!(cent->currentState.powerups & (1 << PW_CLOAKED)) && (stylePlayer1 || drawPlayer)) {
+		if (!(cent->currentState.powerups & (1 << PW_CLOAKED)) && (stylePlayer1 || stylePlayer2 || drawPlayer)) {
 			if (stylePlayer1) {
-				/*legs.renderfx = 0;//&= ~(RF_RGB_TINT|RF_ALPHA_FADE);
-				legs.shaderRGBA[0] = 255;
-				legs.shaderRGBA[1] = 255;
-				legs.shaderRGBA[2] = 255;
-				legs.shaderRGBA[3] = 255;*/
 				legs.renderfx &= ~RF_RGB_TINT;
 				legs.shaderRGBA[3] = 50;
 				legs.customShader = cgs.media.raceShader;
+			}
+
+			if (stylePlayer2) {
+				legs.renderfx &= ~RF_RGB_TINT;
+				legs.shaderRGBA[3] = 100;
+				legs.customShader = cgs.media.duelShader;
 			}
 
 			if (drawPlayer)
