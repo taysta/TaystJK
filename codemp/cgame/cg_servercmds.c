@@ -242,8 +242,10 @@ void CG_ParseServerinfo( void ) {
 	}
 
 	//multiversion "support"
-	if (atoi(Info_ValueForKey(info, "protocol")) < 26)
+	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
 		cgs.legacyProtocol = qtrue; //v1.00
+		cgs.isBase = qtrue;
+	}
 		
 
 	restrictString[0] = 'r';
@@ -284,9 +286,12 @@ void CG_ParseServerinfo( void ) {
 	Q_strncpyz( cgs.voteString, CG_ConfigString( CS_VOTE_STRING ), sizeof( cgs.voteString ) );
 
 	// synchronise our expected snaps/sec with the server's framerate
+	// actually how about we don't do this
+#if 0
 	i = atoi( Info_ValueForKey( info, "sv_fps" ) );
 	if ( i )
 		trap->Cvar_Set( "snaps", va( "%i", i ) );
+#endif
 }
 
 /*

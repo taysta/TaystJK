@@ -2141,6 +2141,7 @@ typedef struct cgs_s {
 
 	qboolean  newHud;
 	float widthRatioCoef;
+	qboolean  jaPROEngine; //egh
 
 	//
 	// locally derived information from gamestate

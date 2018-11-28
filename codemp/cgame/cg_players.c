@@ -12018,14 +12018,18 @@ stillDoSaber:
 //JAPRO - Clientside - Brightskins - Start
 	if (cg_stylePlayer.integer & JAPRO_STYLE_FULLBRIGHT)
 	{
-		legs.renderfx |= RF_FULLBRIGHT; //engine check for this
-		/*legs.shaderRGBA[0] = 255;
-		legs.shaderRGBA[1] = 255;
-		legs.shaderRGBA[2] = 255;
-		legs.renderfx |= RF_RGB_TINT;*/
+		if (cgs.jaPROEngine) {
+			legs.renderfx |= RF_FULLBRIGHT;
+		}
+		else {
+			legs.shaderRGBA[0] = 255;
+			legs.shaderRGBA[1] = 255;
+			legs.shaderRGBA[2] = 255;
+			legs.renderfx |= RF_RGB_TINT;
+		}
 	}
 	
-	if (!(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD) && (cg.snap->ps.clientNum == cent->currentState.number)) {
+	if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD) && (cg.snap->ps.clientNum == cent->currentState.number)) {
 		legs.renderfx |= RF_NOLOD;
 	}
 //JAPRO - Clientside - Brightskins - End
@@ -12041,7 +12045,7 @@ stillDoSaber:
 			legs.renderfx |= RF_RGB_TINT;
 		}
 		else {
-			if (!(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD))
+			if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD))
 				legs.renderfx |= RF_NOLOD;
 
 			if (cg_stylePlayer.integer & JAPRO_STYLE_SHELL)
@@ -12081,7 +12085,7 @@ stillDoSaber:
 						legs.renderfx &= ~RF_FORCE_ENT_ALPHA;
 						legs.customShader = cgs.media.forceShell;
 
-						if (!(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD)) //high shell lod?
+						if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD)) //high shell lod?
 							legs.renderfx |= RF_NOLOD;
 
 						trap->R_AddRefEntityToScene(&legs);	//draw the shell
@@ -12100,9 +12104,7 @@ stillDoSaber:
 
 						if (subLen <= 1024) {
 							if (cg_stylePlayer.integer & JAPRO_STYLE_SHELL)
-								legs.renderfx |= RF_FULLBRIGHT;
-							//else if (cg_drawDuelShell.integer == 2) // base behavior, add engine check for this!!!11
-								//legs.renderfx |= RF_RGB_TINT;
+								legs.renderfx |= (cgs.jaPROEngine ? RF_FULLBRIGHT : RF_RGB_TINT);
 						}
 					}
 				}

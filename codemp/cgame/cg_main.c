@@ -2874,6 +2874,22 @@ Ghoul2 Insert End
 		Com_Printf("Client/Server game mismatch: %s/%s\n", GAME_VERSION, s); //LOL?
 	}
 
+	{//cheap engine detection
+		char verstring[42], psbuf[4];
+		cgs.jaPROEngine = qfalse;
+		trap->Cvar_VariableStringBuffer("version", verstring, sizeof(verstring));
+		//ppl could fake this in their cfgs, but i think thats their problem...
+		trap->Cvar_VariableStringBuffer("protocolswitch", psbuf, sizeof(psbuf));
+		//this is only really to handle custom RF flags I added for player effects
+		if (Q_stricmpn(verstring, "JAmp: v1.0.1.0 win-x86 Oct24 2003", 34) && (atoi(psbuf) == 1 || atoi(psbuf) == 2)) {
+			cgs.jaPROEngine = qtrue;
+		}
+
+		//if (!cgs.jaPROEngine) {
+		//	trap->Cvar_Set("name", "jamp jumper");
+		//}
+	}
+
 	s = CG_ConfigString( CS_LEVEL_START_TIME );
 	cgs.levelStartTime = atoi( s );
 

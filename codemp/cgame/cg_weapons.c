@@ -921,10 +921,19 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		hand.shaderRGBA[3] = cg_gunAlpha.value * 255;
 	}
 
-	if (cg_stylePlayer.integer & JAPRO_STYLE_FULLBRIGHT)
-		hand.renderfx |= RF_FULLBRIGHT;
+	if (cg_stylePlayer.integer & JAPRO_STYLE_FULLBRIGHT) {
+		if (cgs.jaPROEngine) {
+			hand.renderfx |= RF_FULLBRIGHT;
+		}
+		else {
+			hand.shaderRGBA[0] = 255;
+			hand.shaderRGBA[1] = 255;
+			hand.shaderRGBA[2] = 255;
+			hand.renderfx |= RF_RGB_TINT;
+		}
+	}
 
-	if (!(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD))
+	if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD))
 		hand.renderfx |= RF_NOLOD; //isnt working??
 
 	// add everything onto the hand
