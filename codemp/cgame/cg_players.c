@@ -10459,32 +10459,6 @@ void CG_Player( centity_t *cent ) {
 		trap->R_AddRefEntityToScene( &seeker );
 	}
 
-	//[Kameleon] - Nerevar's Santa Hat.
-	if (cgs.isJAPro && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
-		if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/santahat.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/pumpkin.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/cap.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/fedora.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/cringe.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/sombrero.md3"));
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, trap->R_RegisterModel("models/players/hats/tophat.md3"));
-		}
-	}
-	//[/Kameleon]
-
 	// add a water splash if partially in and out of water
 	CG_PlayerSplash( cent );
 
@@ -12332,6 +12306,32 @@ stillDoSaber:
 			trap->R_AddRefEntityToScene(&legs);
 		}
 	}
+
+	//[Kameleon] - Nerevar's Santa Hat.
+	if (!cgs.isJAPlus && !cgs.isBase && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
+		if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero);
+		}
+		else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat);
+		}
+	}
+	//[/Kameleon]
 
 	//cent->frame_minus2 = cent->frame_minus1;
 	VectorCopy(cent->frame_minus1, cent->frame_minus2);

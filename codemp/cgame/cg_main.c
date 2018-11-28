@@ -729,7 +729,7 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.rivetMarkShader			= trap->R_RegisterShader( "gfx/damage/rivetmark" );
 
-	trap->R_RegisterShader( "gfx/effects/saberFlare" );
+	cgs.media.saberClashFlare			= trap->R_RegisterShader( "gfx/effects/saberFlare" );
 
 	trap->R_RegisterShader( "powerups/ysalimarishell" );
 
@@ -1503,37 +1503,6 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.glassChunkSound		= trap->S_RegisterSound("sound/weapons/explosions/glassbreak1");
 	cgs.media.crateBreakSound[0]	= trap->S_RegisterSound("sound/weapons/explosions/crateBust1" );
 	cgs.media.crateBreakSound[1]	= trap->S_RegisterSound("sound/weapons/explosions/crateBust2" );
-
-//JAPRO - Clientside - Movement Keys - Start
-	cgs.media.keyCrouchOffShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_off" );
-	cgs.media.keyCrouchOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_on" );
-	cgs.media.keyJumpOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_off" );
-	cgs.media.keyJumpOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_on" );
-	cgs.media.keyBackOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_off" );
-	cgs.media.keyBackOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_on" );
-	cgs.media.keyForwardOffShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_off" );
-	cgs.media.keyForwardOnShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_on" );
-	cgs.media.keyLeftOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_off" );
-	cgs.media.keyLeftOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on" );
-	cgs.media.keyRightOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off" );
-	cgs.media.keyRightOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on" );
-//JAPRO - Clientside - Movement Keys - End
-	cgs.media.bloodExplosionShader = trap->R_RegisterShader( "bloodExplosion" );//JAPRO - Clientside - re add cg_blood
-	cgs.media.leadIndicator		= trap->R_RegisterShader( "gfx/menus/radar/lead" );//JAPRO - Clientside - re add cg_blood
-
-	//japro gibs
-	cgs.media.gibAbdomen = trap->R_RegisterModel( "models/gibs/abdomen.md3" );
-	cgs.media.gibArm = trap->R_RegisterModel( "models/gibs/arm.md3" );
-	cgs.media.gibChest = trap->R_RegisterModel( "models/gibs/chest.md3" );
-	cgs.media.gibFist = trap->R_RegisterModel( "models/gibs/fist.md3" );
-	cgs.media.gibFoot = trap->R_RegisterModel( "models/gibs/foot.md3" );
-	cgs.media.gibForearm = trap->R_RegisterModel( "models/gibs/forearm.md3" );
-	cgs.media.gibIntestine = trap->R_RegisterModel( "models/gibs/intestine.md3" );
-	cgs.media.gibLeg = trap->R_RegisterModel( "models/gibs/leg.md3" );
-	cgs.media.gibSkull = trap->R_RegisterModel( "models/gibs/skull.md3" );
-	cgs.media.gibBrain = trap->R_RegisterModel( "models/gibs/brain.md3" );
-
-	cgs.media.bloodTrailShader = trap->R_RegisterShader( "bloodTrail" );
 	//
 
 /*
@@ -1572,17 +1541,62 @@ Ghoul2 Insert End
 
 	cgs.media.cloakedShader					= trap->R_RegisterShader( "gfx/effects/cloakedShader" );
 
-	cgs.media.raceShader = trap->R_RegisterShader("gfx/effects/raceShader");//japro
-	cgs.media.duelShader = trap->R_RegisterShader("gfx/effects/duelShader");//japro
-
 	// wall marks
 	cgs.media.shadowMarkShader	= trap->R_RegisterShader( "markShadow" );
 	cgs.media.wakeMarkShader	= trap->R_RegisterShader( "wake" );
-	cgs.media.bloodMarkShader = trap->R_RegisterShader( "bloodMark" );
 
 	cgs.media.viewPainShader					= trap->R_RegisterShader( "gfx/misc/borgeyeflare" );
 	cgs.media.viewPainShader_Shields			= trap->R_RegisterShader( "gfx/mp/dmgshader_shields" );
 	cgs.media.viewPainShader_ShieldsAndHealth	= trap->R_RegisterShader( "gfx/mp/dmgshader_shieldsandhealth" );
+
+	//jaPRO mod assets - start
+	//Movement Keys - Start
+	cgs.media.keyCrouchOffShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_off" );
+	cgs.media.keyCrouchOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_on" );
+	cgs.media.keyJumpOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_off" );
+	cgs.media.keyJumpOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_on" );
+	cgs.media.keyBackOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_off" );
+	cgs.media.keyBackOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_on" );
+	cgs.media.keyForwardOffShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_off" );
+	cgs.media.keyForwardOnShader	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_on" );
+	cgs.media.keyLeftOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_off" );
+	cgs.media.keyLeftOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on" );
+	cgs.media.keyRightOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off" );
+	cgs.media.keyRightOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on" );
+	//Movement Keys - End
+
+	//japro gibs
+	cgs.media.bloodExplosionShader	= trap->R_RegisterShader( "bloodExplosion" );//JAPRO - Clientside - re add cg_blood
+	cgs.media.leadIndicator			= trap->R_RegisterShader( "gfx/menus/radar/lead" );//JAPRO - Clientside - re add cg_blood
+	cgs.media.gibAbdomen			= trap->R_RegisterModel( "models/gibs/abdomen.md3" );
+	cgs.media.gibArm				= trap->R_RegisterModel( "models/gibs/arm.md3" );
+	cgs.media.gibChest				= trap->R_RegisterModel( "models/gibs/chest.md3" );
+	cgs.media.gibFist				= trap->R_RegisterModel( "models/gibs/fist.md3" );
+	cgs.media.gibFoot				= trap->R_RegisterModel( "models/gibs/foot.md3" );
+	cgs.media.gibForearm			= trap->R_RegisterModel( "models/gibs/forearm.md3" );
+	cgs.media.gibIntestine			= trap->R_RegisterModel( "models/gibs/intestine.md3" );
+	cgs.media.gibLeg				= trap->R_RegisterModel( "models/gibs/leg.md3" );
+	cgs.media.gibSkull				= trap->R_RegisterModel( "models/gibs/skull.md3" );
+	cgs.media.gibBrain				= trap->R_RegisterModel( "models/gibs/brain.md3" );
+	cgs.media.bloodTrailShader		= trap->R_RegisterShader( "bloodTrail" );
+	cgs.media.bloodMarkShader		= trap->R_RegisterShader( "bloodMark" );
+
+
+	//duel/race shaders
+	cgs.media.raceShader			= trap->R_RegisterShader("gfx/effects/raceShader");//japro
+	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
+
+	//cosmetics
+	if (!cgs.isJAPlus && !cgs.isBase) {
+		cgs.media.cosmetics.santaHat	= trap->R_RegisterModel("models/players/hats/santahat.md3");
+		cgs.media.cosmetics.pumpkin		= trap->R_RegisterModel("models/players/hats/pumpkin.md3");
+		cgs.media.cosmetics.cap			= trap->R_RegisterModel("models/players/hats/cap.md3");
+		cgs.media.cosmetics.fedora		= trap->R_RegisterModel("models/players/hats/fedora.md3");
+		cgs.media.cosmetics.kringekap	= trap->R_RegisterModel("models/players/hats/cringe.md3");
+		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
+		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
+	}
+	//jaPRO mod assets - end
 
 	// register the inline models
 	breakPoint = cgs.numInlineModels = trap->CM_NumInlineModels();

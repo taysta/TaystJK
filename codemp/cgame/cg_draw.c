@@ -3873,12 +3873,12 @@ static float CG_DrawFPS( float y ) {
 	if (cg_drawFPS.integer == 1)
 	{	
 		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0F);
+		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
 	}
 	else if (cg_drawFPS.integer > 1)
 	{
 		w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0F);
+		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
 	}
 //JAPRO - Clientside - Add cg_drawfps 2 - End
 
@@ -7073,8 +7073,7 @@ void CG_SaberClashFlare( void )
 	trap->R_SetColor( color );
 
 	CG_DrawPic( x - ( v * 300 ) * cgs.widthRatioCoef, y - ( v * 300 ),
-				v * 600 * cgs.widthRatioCoef, v * 600,
-				trap->R_RegisterShader( "gfx/effects/saberFlare" ));
+				v * 600 * cgs.widthRatioCoef, v * 600, cgs.media.saberClashFlare );
 }
 
 void CG_DottedLine( float x1, float y1, float x2, float y2, float dotSize, int numDots, vec4_t color, float alpha )

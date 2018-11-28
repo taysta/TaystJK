@@ -1581,6 +1581,8 @@ typedef struct cgMedia_s {
 
 	qhandle_t	rivetMarkShader;
 
+	qhandle_t	saberClashFlare;
+
 	qhandle_t	teamRedShader;
 	qhandle_t	teamBlueShader;
 
@@ -1893,8 +1895,20 @@ typedef struct cgMedia_s {
 	qhandle_t	raceShader;
 	qhandle_t	duelShader;
 
-	sfxHandle_t		maleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];//vgs
-	sfxHandle_t		femaleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];//vgs
+	//japro cosmetics
+	struct {
+		qhandle_t	santaHat;
+		qhandle_t	pumpkin;
+		qhandle_t	cap;
+		qhandle_t	fedora;
+		qhandle_t	kringekap;
+		qhandle_t	sombrero;
+		qhandle_t	tophat;
+	} cosmetics;
+
+	//japro vgs
+	sfxHandle_t		maleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];
+	sfxHandle_t		femaleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];
 
 } cgMedia_t;
 

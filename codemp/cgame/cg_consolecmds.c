@@ -1409,17 +1409,17 @@ void CG_SpeedometerSettings_f(void)
 static bitInfo_T cosmetics[] = {
 	{ "santa" },
 	{ "jack-o-lantern" },
-	{ "bass pro baseball cap?" },
+	{ "bass pro baseball cap" }, //?
 	{ "indiana jones" },
 	{ "Kane's Kringe Kap" },
 	{ "sombrero" },
-	{ "top hat? //dr seuss?" }
+	{ "top hat" } //? dr seuss?
 };
 static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
 static void CG_Cosmetics_f(void)
 {
-	if (!cgs.isJAPro)
+	if (cgs.isJAPlus || cgs.isBase)
 		return;
 
 	if (trap->Cmd_Argc() == 1) {
