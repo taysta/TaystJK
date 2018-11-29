@@ -244,7 +244,7 @@ void Sys_SetProcessPriority(void) {
 	if (!com_priority)
 		return;
 
-	if (!com_priority->integer)
+	if (com_priority->integer == -1)
 		return;
 
 	currentProcessPriorityClass = GetPriorityClass(handle);
@@ -294,7 +294,7 @@ void Sys_SetProcessPriority(void) {
 		return;
 
 	if (desiredPriorityClass != NORMAL_PRIORITY_CLASS && desiredPriorityClass == currentProcessPriorityClass) {
-		Com_Printf("Desired priority class already set\n");
+		Com_DPrintf("Desired priority class already set\n");
 		return;
 	}
 
