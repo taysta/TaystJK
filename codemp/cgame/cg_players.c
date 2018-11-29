@@ -1955,6 +1955,12 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			Q_strncpyz( newInfo.skinName, slash + 1, sizeof( newInfo.skinName ) );
 			// truncate modelName
 			*slash = 0;
+
+			//check skin name for a trailing slash or something
+			slash = strrchr(newInfo.skinName, '/');
+			if (slash) {
+				*slash = 0;
+			}
 		}
 	}
 
