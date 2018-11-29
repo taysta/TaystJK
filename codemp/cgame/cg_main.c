@@ -1331,6 +1331,11 @@ static void CG_RegisterGraphics( void ) {
 		cgs.media.crosshairShader[i] = trap->R_RegisterShaderNoMip( va("gfx/2d/crosshair%c", 'a'+i) );
 	}
 
+	//problem concerned by me? no?
+	trap->R_RemapShader("gfx/2d/crosshaira", "gfx/2d/crosshairj", NULL);
+	trap->R_RemapShader("gfx/2d/crosshairj", "gfx/2d/crosshaira", NULL);
+	//not my problem then
+
 	cg.loadLCARSStage = 4;
 
 	cgs.media.backTileShader = trap->R_RegisterShader( "gfx/2d/backtile" );
