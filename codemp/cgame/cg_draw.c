@@ -184,11 +184,11 @@ int MenuFontToHandle(int iMenuFont)
 }
 
 
-int CG_Text_Width(const char *text, float scale, int iMenuFont)
+float CG_Text_Width(const char *text, float scale, int iMenuFont)
 {
 	int iFontIndex = MenuFontToHandle(iMenuFont);
 
-	return trap->R_Font_StrLenPixels(text, iFontIndex, scale);
+	return trap->ext.R_Font_StrLenPixels(text, iFontIndex, scale);
 }
 
 int CG_Text_Height(const char *text, float scale, int iMenuFont)
@@ -9139,7 +9139,6 @@ static void CG_DrawSiegeHUDItem(void)
 /*====================================
 chatbox functionality -rww
 ====================================*/
-#define	CHATBOX_CUTOFF_LEN	(cg_chatBoxCutOffLength.integer)
 #define	CHATBOX_FONT_HEIGHT	20
 
 //utility func, insert a string into a string at the specified
@@ -9212,7 +9211,7 @@ void CG_ChatBox_AddString(char *chatStr)
 		return;
 	}
 
-	memset(chat, 0, sizeof(chatBoxItem_t));
+	Com_Memset(chat, 0, sizeof(chatBoxItem_t));
 
 	if (strlen(chatStr) > sizeof(chat->string))
 	{ //too long, terminate at proper len.
@@ -9276,7 +9275,7 @@ void CG_ChatBox_AddString(char *chatStr)
 	chat->lines = 1;
 
 	chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
-	if (chatLen > CHATBOX_CUTOFF_LEN)
+	if (chatLen >= cg_chatBoxCutOffLength.value)
 	{ //we have to break it into segments...
         int i = 0;
 		int lastLinePt = 0;
@@ -9289,7 +9288,7 @@ void CG_ChatBox_AddString(char *chatStr)
 			s[1] = 0;
 			chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
 
-			if (chatLen >= CHATBOX_CUTOFF_LEN)
+			if (chatLen >= cg_chatBoxCutOffLength.value)
 			{
 				int j = i;
 				while (j > 0 && j > lastLinePt)
@@ -9345,7 +9344,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 	int numToDraw = 0;
 	int linesToDraw = 0;
 	int i = 0;
-	float x = cg_chatBoxX.integer * cgs.widthRatioCoef;
+	float x = (cg.scoreBoardShowing ? 8 : cg_chatBoxX.value) * cgs.widthRatioCoef;
 	float y = cg.scoreBoardShowing ? 475 : cg_chatBoxHeight.integer;
 	float fontScale = 0.65 * cg_chatBoxFontSize.value;//JAPRO - Clientside - Chatbox Font Size Scaler
 
