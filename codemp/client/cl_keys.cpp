@@ -611,6 +611,7 @@ Field_CharEvent
 */
 void Field_CharEvent( field_t *edit, int ch ) {
 	int		len;
+	int max = (edit == &chatField ? 151 : MAX_EDIT_LINE);
 
 	if ( ch == 'v' - 'a' + 1 ) {	// ctrl-v is paste
 		Field_Paste( edit );
@@ -635,34 +636,20 @@ void Field_CharEvent( field_t *edit, int ch ) {
 
 	if ( ch == 'h' - 'a' + 1 )	{	// ctrl-h is backspace
 		if ( edit->cursor > 0 ) {
-			if (edit == &chatField && edit->cursor > 2 &&
-				*(edit->buffer + edit->cursor - 1) == '.' && *(edit->buffer + edit->cursor - 2) == '/' && *(edit->buffer + edit->cursor - 3) == -80) {
-				memmove(edit->buffer + edit->cursor - 3,
-					edit->buffer + edit->cursor, len + 3 - edit->cursor);
-				edit->cursor -= 3;
-				if (edit->cursor < edit->scroll)
-				{
-					edit->scroll -= 3;
-				}
+			if (edit == &chatField)
+			{//since we replace these in sent messages
+				if (edit->cursor - 1 == '%')
+					max += 3;
+				if (edit->cursor - 1 == '\"')
+					max += 2;
 			}
-			else if (edit == &chatField && edit->cursor > 1 &&
-				*(edit->buffer + edit->cursor - 1) == '\'' && *(edit->buffer + edit->cursor - 2) == '\'') {
-				memmove(edit->buffer + edit->cursor - 2,
-					edit->buffer + edit->cursor, len + 2 - edit->cursor);
-				edit->cursor -= 2;
-				if (edit->cursor < edit->scroll)
-				{
-					edit->scroll -= 2;
-				}
-			}
-			else {
-				memmove(edit->buffer + edit->cursor - 1,
-					edit->buffer + edit->cursor, len + 1 - edit->cursor);
-				edit->cursor--;
-				if (edit->cursor < edit->scroll)
-				{
-					edit->scroll--;
-				}
+
+			memmove(edit->buffer + edit->cursor - 1,
+				edit->buffer + edit->cursor, len + 1 - edit->cursor);
+			edit->cursor--;
+			if (edit->cursor < edit->scroll)
+			{
+				edit->scroll--;
 			}
 		}
 		return;
@@ -687,20 +674,15 @@ void Field_CharEvent( field_t *edit, int ch ) {
 		return;
 	}
 
-	if (ch == '%' && edit == &chatField) {
-		Field_CharEvent(edit, 176);
-		Field_CharEvent(edit, '/');
-		Field_CharEvent(edit, '.');
-		return;
+	if (edit == &chatField) {
+		if (ch == '%')
+			max -= 3;
+
+		if (ch == '"')
+			max -= 2;
+
 	}
 
-	if (ch == '"' && edit == &chatField) {
-		Field_CharEvent(edit, '\'');
-		Field_CharEvent(edit, '\'');
-		return;
-	}
-
-	int max = edit == &chatField ? 151 : MAX_EDIT_LINE;
 	if ( kg.key_overstrikeMode ) {
 		// - 2 to leave room for the leading slash and trailing \0
 		if ( edit->cursor == max - 2 )
@@ -888,9 +870,37 @@ void Message_Key( int key ) {
 
 	if ( key == A_ENTER || key == A_KP_ENTER ) {
 		if ( chatField.buffer[0] && cls.state == CA_ACTIVE ) {
-			Q_strstrip(chatField.buffer, "\"%", "'/");//Replace % with / and " with '
+			if (Q_strchrs(chatField.buffer, "%") || Q_strchrs(chatField.buffer, "\""))
+			{ //replace " with '' and % with something github hates
+				char buffer[MAX_EDIT_LINE];
+				char *src = buffer, *dst = chatField.buffer;
+
+				Q_strncpyz(buffer, chatField.buffer, sizeof(buffer));
+
+				while (*src) {
+					if (*src == '%') {
+						*dst = (char)176;
+						dst++;
+						*dst = '/';
+						dst++;
+						*dst = '.';
+					}
+					else if (*src == '"') {
+						*dst = '\'';
+						dst++;
+						*dst = '\'';
+					}
+					else {
+						*dst = *src;
+					}
+					src++;
+					dst++;
+				}
+				*dst = 0;
+			}
+
 			CL_RandomizeColors(chatField.buffer, coloredString);
-				 if ( chat_playerNum != -1 )	Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
+			if ( chat_playerNum != -1 )	Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
 			else if ( chat_team )				Com_sprintf( buffer, sizeof( buffer ), "say_team \"%s\"\n", chatField.buffer);
 			else								Com_sprintf( buffer, sizeof( buffer ), "say \"%s\"\n", coloredString );
 			CL_AddReliableCommand( buffer, qfalse );
