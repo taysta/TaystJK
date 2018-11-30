@@ -1541,6 +1541,7 @@ static consoleCommand_t	commands[] = {
 	{ "imagecacheinfo",		RE_RegisterImages_Info_f },
 	{ "modellist",			R_Modellist_f },
 	{ "modelcacheinfo",		RE_RegisterModels_Info_f },
+	{ "r_cleardecals",		RE_ClearDecals },
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );
