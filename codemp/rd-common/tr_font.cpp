@@ -1469,6 +1469,7 @@ int RE_Font_HeightPixels(const int iFontHandle, const float fScale)
 
 // iMaxPixelWidth is -1 for "all of string", else pixel display count...
 //
+cvar_t *cl_coloredTextShadows;
 void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
 {
 	static qboolean gbInShadow = qfalse;	// MUST default to this
@@ -1549,7 +1550,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 	// Draw a dropshadow if required
 	if (iFontHandle & STYLE_DROPSHADOW)
 	{
-		if (cl_coloredTextShadows->integer) {
+		if (cl_coloredTextShadows && cl_coloredTextShadows->integer) {
 			int i = 0, r = 0;
 			char dropShadowText[1024];
 			const vec4_t v4DKGREY2 = { 0.15f, 0.15f, 0.15f, rgba ? rgba[3] : 1.0f };
@@ -1735,6 +1736,8 @@ void R_InitFonts(void)
 {
 	g_iCurrentFontIndex = 1;			// entry 0 is reserved for "missing/invalid"
 	g_iNonScaledCharRange = INT_MAX;	// default all chars to have no special scaling (other than user supplied)
+
+	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
 }
 
 /*
