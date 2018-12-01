@@ -3617,7 +3617,7 @@ void FS_Startup( const char *gameName ) {
 	fs_globalcfg = Cvar_Get("fs_globalcfg", "1", CVAR_ARCHIVE/* | CVAR_LATCH*/ | CVAR_NORESTART | CVAR_PROTECTED, "Only read/write files from base and EternalJK folders (requires filesystem restart)");
 
 	if (fs_globalcfg->integer)
-		fs_gamedirvar = Cvar_Get ("fs_basegame", "eternaljk", CVAR_INIT );//?
+		fs_gamedirvar = fs_basegame;
 	else
 #endif
 		fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
@@ -3657,6 +3657,11 @@ void FS_Startup( const char *gameName ) {
 		if (fs_basepath->string[0]) {
 			FS_AddGameDirectory(fs_basepath->string, fs_basegame->string);
 		}
+#ifdef MACOS_X
+		if (fs_apppath->string[0]) {
+			FS_AddGameDirectory(fs_apppath->string, fs_basegame->string);
+		}
+#endif
 		if (fs_homepath->string[0] && !Sys_PathCmp(fs_homepath->string, fs_basepath->string)) {
 			FS_AddGameDirectory(fs_homepath->string, fs_basegame->string);
 		}
