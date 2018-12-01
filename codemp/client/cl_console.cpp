@@ -525,6 +525,7 @@ void Cmd_CompleteTxtName( char *args, int argNum ) {
 Con_Init
 ================
 */
+static char version[MAX_STRING_CHARS] = { 0 };
 void Con_Init (void) {
 	int		i;
 
@@ -559,6 +560,46 @@ void Con_Init (void) {
 	Cmd_AddCommand( "clear", Con_Clear_f, "Clear console text" );
 	Cmd_AddCommand( "condump", Con_Dump_f, "Dump console text to file" );
 	Cmd_SetCommandCompletionFunc( "condump", Cmd_CompleteTxtName );
+
+	{//build version string for console
+		int day, year;
+		char month[4];
+
+		if (sscanf(SOURCE_DATE, "%s %i %i", &month, &day, &year) == 3) {
+			int mm = 0;
+
+			//sry..
+			if (month[0] == 'J' && month[1] == 'a' && month[2] == 'n')
+				mm = 1;
+			else if (month[0] == 'F')
+				mm = 2;
+			else if (month[0] == 'M' && month[1] == 'a' && month[2] == 'r')
+				mm = 3;
+			else if (month[0] == 'A' && month[1] == 'p')
+				mm = 4;
+			else if (month[0] == 'M' && month[1] == 'a' && month[2] == 'y')
+				mm = 5;
+			else if (month[0] == 'J' && month[1] == 'u' && month[2] == 'n')
+				mm = 6;
+			else if (month[0] == 'J' && month[1] == 'u' && month[2] == 'l')
+				mm = 7;
+			else if (month[0] == 'A' && month[1] == 'u')
+				mm = 8;
+			else if (month[0] == 'S')
+				mm = 9;
+			else if (month[0] == 'O')
+				mm = 10;
+			else if (month[0] == 'N')
+				mm = 11;
+			else if (month[0] == 'D')
+				mm = 12;
+
+			Com_sprintf(version, sizeof(version), "EternalJK: [%02i/%02i/%04i]", mm, day, year);
+		}
+	}
+
+	if (!version[0])
+		Q_strncpyz(version, "EternalJK", sizeof(version));
 }
 
 /*
@@ -905,10 +946,10 @@ void Con_DrawSolidConsole( float frac ) {
 //	qhandle_t		conShader;
 	int				currentColor;
 	struct tm		*newtime;
-	char			am_pm[] = "AM";
 	time_t			rawtime;
+	qboolean		AM = qtrue;
 	char			ts[24];
-	const int padding = (int) (0.5f + (con_scale && con_scale->value > 0.0f) ? 2*con_scale->value : 2.0f);
+	const int		padding = (int) (0.5f + (con_scale && con_scale->value > 0.0f) ? 2*con_scale->value : 2.0f);
 
 	lines = (int) (cls.glconfig.vidHeight * frac);
 	if (lines <= 0)
@@ -947,20 +988,29 @@ void Con_DrawSolidConsole( float frac ) {
 	re->SetColor( console_color );
 	re->DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader );
 
+#if 0
 	i = strlen( JK_VERSION );
 
 	for (x=0 ; x<i ; x++) {
 		SCR_DrawSmallChar( cls.glconfig.vidWidth - ( i - x + 1 ) * con.charWidth,
 			(lines-(con.charHeight*2+con.charHeight/2)) + padding, JK_VERSION[x] );
 	}
+#else
+	i = strlen(version);
+
+	for (x = 0; x < i; x++) {
+		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x + 1) * con.charWidth,
+			(lines - (con.charHeight * 2 + con.charHeight / 2)) + padding, version[x]);
+	}
+#endif
 
 	// Draw time and date
 	time(&rawtime);
 	newtime = localtime(&rawtime);
-	if (newtime->tm_hour >= 12) strcpy(am_pm, "PM");
+	if (newtime->tm_hour >= 12) AM = qfalse;
 	if (newtime->tm_hour > 12) newtime->tm_hour -= 12;
 	if (newtime->tm_hour == 0) newtime->tm_hour = 12;
-	Com_sprintf(ts, sizeof(ts), "%.19s %s ", asctime(newtime), am_pm);
+	Com_sprintf(ts, sizeof(ts), "%.19s %s ", asctime(newtime), AM ? "AM" : "PM" );
 	i = strlen(ts);
 
 	for (x = 0; x<i; x++) {
