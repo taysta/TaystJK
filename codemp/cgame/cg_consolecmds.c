@@ -2134,6 +2134,7 @@ static const char *gcmds[] = {
 	"amTeleMark",
 	"amSleep",
 	"amWake",
+	"amWait",
 	"amSlap",
 	"amSilence",
 	"amKillVote",

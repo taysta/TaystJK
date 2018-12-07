@@ -9549,7 +9549,7 @@ void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 }
 
 //[Kameleon] - Nerevar's Santa Hat feature. call somewhere in cg_players@void CG_Player
-void CG_DrawHatOnPlayer( centity_t *cent, int time, qhandle_t *gameModels, qhandle_t hatModel )
+void CG_DrawHatOnPlayer( centity_t *cent, int time, qhandle_t *gameModels, qhandle_t hatModel, refEntity_t parent )
 {
     int newBolt;
     mdxaBone_t matrix;
@@ -9618,6 +9618,9 @@ void CG_DrawHatOnPlayer( centity_t *cent, int time, qhandle_t *gameModels, qhand
         re.hModel = hatModel;
         VectorCopy( boltOrg, re.lightingOrigin );
         VectorCopy( boltOrg, re.origin );
+
+		re.renderfx = parent.renderfx;
+		re.customShader = parent.customShader;
  
         trap->R_AddRefEntityToScene( &re );
     }
@@ -10088,7 +10091,7 @@ void CG_Player( centity_t *cent ) {
 				cent->currentState.torsoAnim = BOTH_RUNBACK1;
 
 			if (cent->currentState.legsAnim == BOTH_RUNBACK_STAFF)
-				cent->currentState.legsAnim == BOTH_RUNBACK1;
+				cent->currentState.legsAnim = BOTH_RUNBACK1;
 
 			if (cent->currentState.torsoAnim == BOTH_WALK_STAFF)
 				cent->currentState.torsoAnim = BOTH_WALK1;
@@ -12339,8 +12342,9 @@ stillDoSaber:
 											  //Uhh.. dont draw anyone differently since they are invis i guess and us/opponent look normal
 			}
 			else if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) {// We are racing
-				if ((!cent->currentState.bolt1 && !(cg_stylePlayer.integer & JAPRO_STYLE_NONRACERVFXDISABLE)) || //they're in FFA or they're another racer
-					(!cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE)) {
+				if ((!cent->currentState.bolt1 && !(cg_stylePlayer.integer & JAPRO_STYLE_NONRACERVFXDISABLE)) //they're in FFA or they're another racer
+				|| !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE))
+				{
 					stylePlayer1 = qtrue;
 					stylePlayer2 = qfalse;
 					drawPlayer = qfalse;
@@ -12383,25 +12387,25 @@ stillDoSaber:
 	//[Kameleon] - Nerevar's Santa Hat.
 	if (!cgs.isJAPlus && !cgs.isBase && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
 		if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs);
 		}
 		else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat);
+			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
 		}
 	}
 	//[/Kameleon]
