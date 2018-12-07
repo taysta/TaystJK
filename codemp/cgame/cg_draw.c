@@ -6988,8 +6988,8 @@ qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y)
 
     VectorSubtract(worldCoord, cg.refdef.vieworg, trans);
 
-    xc = 640 / 2.0;
-    yc = 480 / 2.0;
+    xc = SCREEN_WIDTH / 2.0;
+    yc = SCREEN_HEIGHT / 2.0;
 
 	// z = how far is the object in our forward direction
     z = DotProduct(trans, cg.refdef.viewaxis[0]);
@@ -9275,7 +9275,7 @@ void CG_ChatBox_AddString(char *chatStr)
 	chat->lines = 1;
 
 	chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
-	if (chatLen >= cg_chatBoxCutOffLength.value)
+	if (chatLen > cg_chatBoxCutOffLength.value)
 	{ //we have to break it into segments...
         int i = 0;
 		int lastLinePt = 0;
@@ -9284,6 +9284,11 @@ void CG_ChatBox_AddString(char *chatStr)
 		chatLen = 0;
 		while (chat->string[i])
 		{
+			const char *checkColor = (const char *)(chat->string + i);
+			if (Q_IsColorString(checkColor)) {
+				i += 2;
+				continue; // duo: fix for messages with lots of colors being broken up too early
+			}
 			s[0] = chat->string[i];
 			s[1] = 0;
 			chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
@@ -9345,7 +9350,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 	int linesToDraw = 0;
 	int i = 0;
 	float x = (cg.scoreBoardShowing ? 8 : cg_chatBoxX.value) * cgs.widthRatioCoef;
-	float y = cg.scoreBoardShowing ? 475 : cg_chatBoxHeight.integer;
+	float y = cg.scoreBoardShowing ? 475 : cg_chatBoxHeight.value;
 	float fontScale = 0.65 * cg_chatBoxFontSize.value;//JAPRO - Clientside - Chatbox Font Size Scaler
 
 	if (!cg_chatBox.integer)
