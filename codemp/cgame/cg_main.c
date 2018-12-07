@@ -2471,7 +2471,7 @@ void CG_LoadHudMenu()
 	cgDC.drawHandlePic					= &CG_DrawPic;
 	cgDC.drawStretchPic					= trap->R_DrawStretchPic;
 	cgDC.drawText						= &CG_Text_Paint;
-	cgDC.textWidth						= &CG_Text_Width;
+	cgDC.textWidth						= &CG_Text_WidthInt;
 	cgDC.textHeight						= &CG_Text_Height;
 	cgDC.registerModel					= trap->R_RegisterModel;
 	cgDC.modelBounds					= trap->R_ModelBounds;

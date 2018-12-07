@@ -191,6 +191,13 @@ float CG_Text_Width(const char *text, float scale, int iMenuFont)
 	return trap->ext.R_Font_StrLenPixels(text, iFontIndex, scale);
 }
 
+int CG_Text_WidthInt(const char *text, float scale, int iMenuFont)
+{
+	int iFontIndex = MenuFontToHandle(iMenuFont);
+
+	return (int)trap->ext.R_Font_StrLenPixels(text, iFontIndex, scale);
+}
+
 int CG_Text_Height(const char *text, float scale, int iMenuFont)
 {
 	int iFontIndex = MenuFontToHandle(iMenuFont);
