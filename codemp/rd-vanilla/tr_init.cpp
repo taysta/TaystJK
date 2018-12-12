@@ -51,9 +51,6 @@ cvar_t	*r_measureOverdraw;
 
 cvar_t	*r_inGameVideo;
 cvar_t	*r_fastsky;
-cvar_t	*r_fastSkyR;
-cvar_t	*r_fastSkyG;
-cvar_t	*r_fastSkyB;
 cvar_t	*r_drawSun;
 cvar_t	*r_dynamiclight;
 // rjr - removed for hacking
@@ -1610,13 +1607,6 @@ void R_Register( void )
 	ri.Cvar_CheckRange( r_znear, 0.001f, 10, qfalse );
 	r_ignoreGLErrors					= ri.Cvar_Get( "r_ignoreGLErrors",					"1",						CVAR_ARCHIVE_ND, "" );
 	r_fastsky							= ri.Cvar_Get( "r_fastsky",							"0",						CVAR_ARCHIVE_ND, "" );
-	r_fastSkyR							= ri.Cvar_Get( "r_fastSkyR",						"0.25",						CVAR_ARCHIVE_ND, "" );
-	ri.Cvar_CheckRange(r_fastSkyR, 0.0f, 1.0f, qfalse);
-	r_fastSkyG							= ri.Cvar_Get( "r_fastSkyG",						"0.25",						CVAR_ARCHIVE_ND, "" );
-	ri.Cvar_CheckRange(r_fastSkyG, 0.0f, 1.0f, qfalse);
-	r_fastSkyB							= ri.Cvar_Get( "r_fastSkyB",						"0.25",						CVAR_ARCHIVE_ND, "" );
-	ri.Cvar_CheckRange(r_fastSkyB, 0.0f, 1.0f, qfalse);
-
 	r_inGameVideo						= ri.Cvar_Get( "r_inGameVideo",						"1",						CVAR_ARCHIVE_ND, "" );
 	r_drawSun							= ri.Cvar_Get( "r_drawSun",							"0",						CVAR_ARCHIVE_ND, "" );
 	r_dynamiclight						= ri.Cvar_Get( "r_dynamiclight",					"1",						CVAR_ARCHIVE, "" );

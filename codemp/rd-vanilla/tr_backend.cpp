@@ -484,7 +484,15 @@ void RB_BeginDrawingView (void) {
 #ifdef _DEBUG
 				qglClearColor ( 0.5, 0.5, 0.5, 1.0 );
 #else
-				qglClearColor(r_fastSkyR->value, r_fastSkyG->value, r_fastSkyB->value, 1.0f);
+				if (r_fastsky->integer >= 2 && r_fastsky->integer <= 9) {
+					qglClearColor(g_color_table[r_fastsky->integer][0], g_color_table[r_fastsky->integer][1], g_color_table[r_fastsky->integer][2], 1.0f);
+				}
+				else if (r_fastsky->integer == 10) { //10=red special case
+					qglClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+				}
+				else {
+					qglClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// FIXME: get color of sky
+				}
 #endif
 			}
 		}
@@ -497,7 +505,15 @@ void RB_BeginDrawingView (void) {
 #ifdef _DEBUG
 			qglClearColor( 0.8f, 0.7f, 0.4f, 1.0f );	// FIXME: get color of sky
 #else
-			qglClearColor(r_fastSkyR->value, r_fastSkyG->value, r_fastSkyB->value, 1.0f);	// FIXME: get color of sky
+			if (r_fastsky->integer >= 2 && r_fastsky->integer <= 9) {
+				qglClearColor(g_color_table[r_fastsky->integer][0], g_color_table[r_fastsky->integer][1], g_color_table[r_fastsky->integer][2], 1.0f);
+			}
+			else if (r_fastsky->integer == 10) { //10=red special case
+				qglClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			}
+			else {
+				qglClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// FIXME: get color of sky
+			}
 #endif
 		}
 	}
