@@ -8497,7 +8497,7 @@ static qboolean CG_DrawFollow( void )
 	CG_Text_Paint (4, 27, 0.85f, colorWhite, s, 0, 0, 0, FONT_MEDIUM );//JAPRO - Clientside - Move spectated clients name to top left corner of screen
 	
 	//Loda - add their movemnt style here..?f
-	if (cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		char styleString[16] = {0};
 		IntegerToRaceName(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE], styleString, sizeof(styleString));

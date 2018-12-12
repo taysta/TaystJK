@@ -3271,7 +3271,8 @@ static void CG_AutomapInput( void ) {
 
 static void CG_FX_CameraShake( void ) {
 	TCGCameraShake *data = &cg.sharedBuffer.cameraShake;
-	CG_DoCameraShake( data->mOrigin, data->mIntensity, data->mRadius, data->mTime );
+	if (cg_screenShake.integer)
+		CG_DoCameraShake( data->mOrigin, data->mIntensity, data->mRadius, data->mTime );
 }
 
 /*

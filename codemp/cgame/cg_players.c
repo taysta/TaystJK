@@ -1843,7 +1843,8 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	if ( clientNum == cg.clientNum)	//this is me
 	{
 		trap->Cvar_Set("ui_team", v);
-		trap->Cvar_Set("ui_myteam", v); //?
+		trap->Cvar_Set("ui_myteam", v);
+		trap->Cvar_Update(&ui_myteam);
 	}
 
 	// rgb
@@ -4928,7 +4929,7 @@ Returns the Z component of the surface being shadowed
   should it return a full plane instead of a Z?
 ===============
 */
-#define	SHADOW_DISTANCE		128
+#define	SHADOW_DISTANCE		512
 static qboolean CG_PlayerShadow( centity_t *cent, float *shadowPlane ) {
 	vec3_t		end, mins = {-15, -15, 0}, maxs = {15, 15, 2};
 	trace_t		trace;
@@ -10050,63 +10051,6 @@ void CG_Player( centity_t *cent ) {
 		return;
 	}
 
-	//hacks for some bugged saber animations
-	if (cent->currentState.eType != ET_NPC && (cent->currentState.weapon != WP_SABER || cent->currentState.saberInFlight))
-	{
-		if (cent->currentState.torsoAnim == BOTH_RUN2 || cent->currentState.torsoAnim == BOTH_RUN_DUAL)
-			cent->currentState.torsoAnim = BOTH_RUN1;
-
-		if (cent->currentState.legsAnim == BOTH_RUN2 || cent->currentState.legsAnim == BOTH_RUN_DUAL)
-			cent->currentState.legsAnim = BOTH_RUN1;
-
-		if (cent->currentState.torsoAnim == BOTH_RUNBACK2 || cent->currentState.torsoAnim == BOTH_RUNBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_RUNBACK1;
-
-		if (cent->currentState.legsAnim == BOTH_RUNBACK2 || cent->currentState.legsAnim == BOTH_RUNBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_RUNBACK1;
-
-		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_WALK1;
-
-		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_WALK1;
-
-		if (cent->currentState.torsoAnim == BOTH_WALKBACK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_WALKBACK1;
-
-		if (cent->currentState.legsAnim == BOTH_WALKBACK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_WALKBACK1;
-
-		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
-			cent->currentState.torsoAnim = cent->currentState.legsAnim;
-
-		if (!cgs.isJAPro) {
-			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF || cent->currentState.legsAnim == BOTH_RUN_STAFF)
-				cent->currentState.torsoAnim = BOTH_RUN1;
-
-			if (cent->currentState.legsAnim == BOTH_RUN_STAFF)
-				cent->currentState.legsAnim = BOTH_RUN1;
-
-			if (cent->currentState.torsoAnim == BOTH_RUNBACK_STAFF)
-				cent->currentState.torsoAnim = BOTH_RUNBACK1;
-
-			if (cent->currentState.legsAnim == BOTH_RUNBACK_STAFF)
-				cent->currentState.legsAnim = BOTH_RUNBACK1;
-
-			if (cent->currentState.torsoAnim == BOTH_WALK_STAFF)
-				cent->currentState.torsoAnim = BOTH_WALK1;
-
-			if (cent->currentState.legsAnim == BOTH_WALK_STAFF)
-				cent->currentState.legsAnim = BOTH_WALK1;
-
-			if (cent->currentState.torsoAnim == BOTH_WALKBACK_STAFF)
-				cent->currentState.torsoAnim = BOTH_WALKBACK1;
-
-			if (cent->currentState.legsAnim == BOTH_WALKBACK_STAFF)
-				cent->currentState.legsAnim = BOTH_WALKBACK1;
-		}
-	}
-
 //JAPRO - Clientside - Draw Duelers - Start
 	if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE))) { // we only care about other players
 		if (cg.snap->ps.duelInProgress) { // we are dueling
@@ -10898,6 +10842,63 @@ skipTrail:
 	VectorCopy( cent->lerpOrigin, cent->lastOrigin );
 #endif
 	//END strafe trails
+
+		//hacks for some bugged saber animations
+	if (cent->currentState.eType != ET_NPC && (cent->currentState.weapon != WP_SABER || cent->currentState.saberInFlight))
+	{
+		if (cent->currentState.torsoAnim == BOTH_RUN2 || cent->currentState.torsoAnim == BOTH_RUN_DUAL)
+			cent->currentState.torsoAnim = BOTH_RUN1;
+
+		if (cent->currentState.legsAnim == BOTH_RUN2 || cent->currentState.legsAnim == BOTH_RUN_DUAL)
+			cent->currentState.legsAnim = BOTH_RUN1;
+
+		if (cent->currentState.torsoAnim == BOTH_RUNBACK2 || cent->currentState.torsoAnim == BOTH_RUNBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_RUNBACK1;
+
+		if (cent->currentState.legsAnim == BOTH_RUNBACK2 || cent->currentState.legsAnim == BOTH_RUNBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_RUNBACK1;
+
+		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_WALK1;
+
+		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_WALK1;
+
+		if (cent->currentState.torsoAnim == BOTH_WALKBACK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_WALKBACK1;
+
+		if (cent->currentState.legsAnim == BOTH_WALKBACK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_WALKBACK1;
+
+		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
+			cent->currentState.torsoAnim = cent->currentState.legsAnim;
+
+		if (!cgs.isJAPro) {
+			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF || cent->currentState.legsAnim == BOTH_RUN_STAFF)
+				cent->currentState.torsoAnim = BOTH_RUN1;
+
+			if (cent->currentState.legsAnim == BOTH_RUN_STAFF)
+				cent->currentState.legsAnim = BOTH_RUN1;
+
+			if (cent->currentState.torsoAnim == BOTH_RUNBACK_STAFF)
+				cent->currentState.torsoAnim = BOTH_RUNBACK1;
+
+			if (cent->currentState.legsAnim == BOTH_RUNBACK_STAFF)
+				cent->currentState.legsAnim = BOTH_RUNBACK1;
+
+			if (cent->currentState.torsoAnim == BOTH_WALK_STAFF)
+				cent->currentState.torsoAnim = BOTH_WALK1;
+
+			if (cent->currentState.legsAnim == BOTH_WALK_STAFF)
+				cent->currentState.legsAnim = BOTH_WALK1;
+
+			if (cent->currentState.torsoAnim == BOTH_WALKBACK_STAFF)
+				cent->currentState.torsoAnim = BOTH_WALKBACK1;
+
+			if (cent->currentState.legsAnim == BOTH_WALKBACK_STAFF)
+				cent->currentState.legsAnim = BOTH_WALKBACK1;
+		}
+	}
 
 
 	//trigger animation-based sounds, done before next lerp frame.

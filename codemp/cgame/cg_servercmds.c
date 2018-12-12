@@ -1636,9 +1636,16 @@ static void CG_Chat_f( void ) {
 				strcpy(cleanMsg, text);//Find Media - Currently Playing
 				Q_CleanString(cleanMsg);
 
-				if(cg_cleanChatbox.integer && strstr(cleanMsg, "Media - Currently playing: ") != NULL) {
-					return;
+				if (cg_cleanChatbox.integer) {
+					if (strstr(cleanMsg, "Media - Currently playing: ") != NULL) {
+						return;
+					}
+
+					if (strstr(cleanMsg, "^5Hi everybody!") != NULL) {
+						return;
+					}
 				}
+				
 				if (cg_cleanChatbox.integer && !strcmp(text, cg.lastChatMsg)) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
 					return;
 				}

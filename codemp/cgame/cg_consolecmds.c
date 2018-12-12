@@ -1373,15 +1373,14 @@ void CG_SpeedometerSettings_f(void)
 	}
 	else {
 		char arg[8] = { 0 };
-		int index, index2;
+		int index;
 		const uint32_t mask = (1 << MAX_SPEEDOMETER_SETTINGS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);
-		index2 = index;
 
-		if (index2 < 0 || index2 >= MAX_SPEEDOMETER_SETTINGS) {
-			Com_Printf("style: Invalid range: %i [0, %i]\n", index2, MAX_SPEEDOMETER_SETTINGS - 1);
+		if (index < 0 || index >= MAX_SPEEDOMETER_SETTINGS) {
+			Com_Printf("style: Invalid range: %i [0, %i]\n", index, MAX_SPEEDOMETER_SETTINGS - 1);
 			return;
 		}
 
@@ -1401,7 +1400,7 @@ void CG_SpeedometerSettings_f(void)
 		}
 		trap->Cvar_Update(&cg_speedometer);
 
-		Com_Printf("%s %s^7\n", speedometerSettings[index2].string, ((cg_speedometer.integer & (1 << index2))
+		Com_Printf("%s %s^7\n", speedometerSettings[index].string, ((cg_speedometer.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled"));
 	}
 }
@@ -1438,23 +1437,14 @@ static void CG_Cosmetics_f(void)
 	}
 	else {
 		char arg[8] = { 0 };
-		int index, index2, i, n = 0;
+		int index;
 		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);
-		index2 = index;
 
-		for (i = 0; i < MAX_COSMETICS; i++) {
-			if (n == index) {
-				index2 = i;
-				break;
-			}
-			n++;
-		}
-
-		if (index2 < 0 || index2 >= MAX_COSMETICS) {
-			Com_Printf("style: Invalid range: %i [0, %i]\n", index2, MAX_PLAYERSTYLES - 1);
+		if (index < 0 || index >= MAX_COSMETICS) {
+			Com_Printf("style: Invalid range: %i [0, %i]\n", index, MAX_PLAYERSTYLES - 1);
 			return;
 		}
 
@@ -1466,7 +1456,7 @@ static void CG_Cosmetics_f(void)
 
 		trap->Cvar_Update(&cp_cosmetics);
 
-		Com_Printf("%s %s^7\n", cosmetics[index2].string, ((cp_cosmetics.integer & (1 << index2))
+		Com_Printf("%s %s^7\n", cosmetics[index].string, ((cp_cosmetics.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled"));
 	}
 }
@@ -1836,26 +1826,22 @@ void CG_Say_f( void ) {
 			//command = qtrue;
 
 		if (!Q_stricmp(word, "%H%")) {
-			if (pm)
-				number = pm->ps->stats[STAT_HEALTH];
+			number = cg.predictedPlayerState.stats[STAT_HEALTH];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%S%")) {
-			if (pm)
-				number = pm->ps->stats[STAT_ARMOR];
+			number = cg.predictedPlayerState.stats[STAT_ARMOR];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%F%")) {
-			if (pm)
-				number = pm->ps->fd.forcePower;
+			number = cg.predictedPlayerState.fd.forcePower;
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%W%")) {
-			if (pm)
-				number = pm->ps->weapon;
+			number = cg.predictedPlayerState.weapon;
 			switch (number) {
 				case 1:	Com_sprintf(numberStr, sizeof(numberStr), "Stun baton"); break;
 				case 2: Com_sprintf(numberStr, sizeof(numberStr), "Melee"); break;
@@ -1873,14 +1859,13 @@ void CG_Say_f( void ) {
 				case 15: Com_sprintf(numberStr, sizeof(numberStr), "Concussion rifle"); break;
 				case 16: Com_sprintf(numberStr, sizeof(numberStr), "Bryar"); break;
 				default: Com_sprintf(numberStr, sizeof(numberStr), "Saber"); break;
-				}
-			Q_strncpyz( word, numberStr, sizeof(word));
+			}
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%A%")) {
-			if (pm)
-				number = pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex];
+			number = cg.predictedPlayerState.ammo[weaponData[cg.predictedPlayerState.weapon].ammoIndex];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 
 		Q_strcat(word, MAX_SAY_TEXT, " ");
@@ -1900,26 +1885,22 @@ void CG_TeamSay_f( void ) {
 		trap->Cmd_Argv( i, word, sizeof(word));
 
 		if (!Q_stricmp(word, "%H%")) {
-			if (pm)
-				number = pm->ps->stats[STAT_HEALTH];
+			number = cg.predictedPlayerState.stats[STAT_HEALTH];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz( word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%S%")) {
-			if (pm)
-				number = pm->ps->stats[STAT_ARMOR];
+			number = cg.predictedPlayerState.stats[STAT_ARMOR];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz( word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%F%")) {
-			if (pm)
-				number = pm->ps->fd.forcePower;
+			number = cg.predictedPlayerState.fd.forcePower;
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz( word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%W%")) {
-			if (pm)
-				number = pm->ps->weapon;
+			number = cg.predictedPlayerState.weapon;
 			switch (number) {
 				case 1:	Com_sprintf(numberStr, sizeof(numberStr), "Stun baton"); break;
 				case 2: Com_sprintf(numberStr, sizeof(numberStr), "Melee"); break;
@@ -1941,8 +1922,7 @@ void CG_TeamSay_f( void ) {
 			Q_strncpyz( word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%A%")) {
-			if (pm)
-				number = pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex];
+			number = cg.predictedPlayerState.ammo[weaponData[cg.predictedPlayerState.weapon].ammoIndex];
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz( word, numberStr, sizeof(word));
 		}

@@ -131,7 +131,7 @@ void CG_DrawInformation( void ) {
 	const char	*s;
 	const char	*info;
 	const char	*sysInfo;
-	int			y;
+	float		y;
 	int			value, valueNOFP;
 	qhandle_t	levelshot;
 	char		buf[1024];
