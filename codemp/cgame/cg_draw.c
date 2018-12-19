@@ -1726,7 +1726,7 @@ static void CG_DrawSimpleForcePower( const centity_t *cent )
 		if ( cg.forceHUDNextFlashTime < cg.time )
 		{
 			cg.forceHUDNextFlashTime = cg.time + 400;
-			trap->S_StartSound( NULL, 0, CHAN_LOCAL, cgs.media.noforceSound );
+			trap->S_StartLocalSound( cgs.media.noforceSound, CHAN_LOCAL );
 			if ( cg.forceHUDActive )
 			{
 				cg.forceHUDActive = qfalse;
