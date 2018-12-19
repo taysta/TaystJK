@@ -3862,7 +3862,7 @@
 				English  			english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch				deutsch
-				"Español" 			espanol
+				"Espaï¿½ol" 			espanol
 			}
 			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -3971,7 +3971,7 @@
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_IDENTIFY_TARGET
-			cvar				"cg_drawCrosshairNames"	
+			cvar				"cg_crosshairIdentifyTarget"	
 			cvarFloatList		
 			{ 
 				@MENUS_OFF 0  

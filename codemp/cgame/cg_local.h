@@ -1382,7 +1382,8 @@ Ghoul2 Insert End
 	float			lastXpos;
 	float			lastYpos;
 
-	vec4_t			strafeHelperActiveColor;	
+	vec4_t			strafeHelperActiveColor;
+	vec4_t			crosshairColor;
 	int				drawingStrafeTrails;//optimization i guess
 	int				doVstrTime;
 	char			doVstr[MAX_QPATH];

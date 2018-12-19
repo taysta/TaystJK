@@ -62,10 +62,9 @@ XCVAR_DEF( cg_chatBoxFontSize,		"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxHeight,		"350",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxX,				"30",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxCutOffLength,	"350",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairRed,			"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairGreen,		"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairBlue,		"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairAlpha,		"255",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairSaberStyleColor,"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairIdentifyTarget, "1", NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairColor, "0 0 0 255",	CG_CrosshairColorChange,CVAR_ARCHIVE )
 XCVAR_DEF( cg_hudColors,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_tintHud,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
@@ -151,8 +150,8 @@ XCVAR_DEF( cg_strafeHelperCutoff,				"0",	NULL,					CVAR_ARCHIVE )
 
 XCVAR_DEF( cg_predictKnockback,					"0",	NULL,					0 )
 
-XCVAR_DEF( cg_strafeHelperActiveColor,	"0 255 0 200", CG_StrafeHelperActiveColorChange,	CVAR_ARCHIVE )
-XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeHelperActiveColor,	"0 255 0 200",	CG_StrafeHelperActiveColorChange,	CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,								CVAR_ARCHIVE )
 
 XCVAR_DEF( cp_pluginDisable,					"1536",	NULL,					CVAR_ARCHIVE|CVAR_USERINFO ) //'enable' holstered saber (512) and ledge grab (1536) by default, to avoid missing JA+ animations
 XCVAR_DEF( com_maxFPS,							"125",	NULL,					CVAR_ARCHIVE )

@@ -1815,10 +1815,19 @@ void CG_DrawHUD(centity_t	*cent)
 	if (cg_strafeHelper.integer & SHELPER_CROSSHAIR) {
 		vec4_t		hcolor;
 		float		lineWidth;
-		hcolor[0] = cg_crosshairRed.value / 255.0f;
-		hcolor[1] = cg_crosshairGreen.value / 255.0f;
-		hcolor[2] = cg_crosshairBlue.value / 255.0f;
-		hcolor[3] = cg_crosshairAlpha.value / 255.0f;//alpha? pff
+		
+		if (!cg.crosshairColor[0] && !cg.crosshairColor[1] && !cg.crosshairColor[2]) { //default to white
+			hcolor[0] = 1.0f;
+			hcolor[1] = 1.0f;
+			hcolor[2] = 1.0f;
+			hcolor[3] = 1.0f;
+		}
+		else {
+			hcolor[0] = cg.crosshairColor[0];
+			hcolor[1] = cg.crosshairColor[1];
+			hcolor[2] = cg.crosshairColor[2];
+			hcolor[3] = cg.crosshairColor[3];
+		}
 
 		lineWidth = cg_strafeHelperLineWidth.value;
 		if (lineWidth < 0.25f)
@@ -6569,6 +6578,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	float		x, y;
 	qboolean	corona = qfalse;
 	vec4_t		ecolor = {0,0,0,0};
+	vec4_t		hcolor;
 	centity_t	*crossEnt = NULL;
 	float		chX, chY;
 
@@ -6599,26 +6609,55 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 
 	if ( cg_crosshairHealth.integer )
 	{
-		vec4_t		hcolor;
-
 		CG_ColorForHealth( hcolor );
 		trap->R_SetColor( hcolor );
 	}
+	else if (cg_crosshairSaberStyleColor.integer && cg.predictedPlayerState.weapon == WP_SABER) {
+		switch (cg.predictedPlayerState.fd.saberDrawAnimLevel)
+			{
+			case 1://blue
+			case 5://Tavion
+				hcolor[0] = 0.0f;
+				hcolor[1] = 0.0f;
+				hcolor[2] = 1.0f;
+				break;
+			case 2://yellow
+			case 6://SS_DUAL
+			case 7://SS_STAFF
+				hcolor[0] = 1.0f;
+				hcolor[1] = 1.0f;
+				hcolor[2] = 0.0f;
+				break;
+			case 3://red
+			case 4://Desann
+				hcolor[0] = 1.0f;
+				hcolor[1] = 0.0f;
+				hcolor[2] = 0.0f;
+				break;
+			default:
+				hcolor[0] = 1.0f;
+				hcolor[1] = 1.0f;
+				hcolor[2] = 1.0f;
+				break;
+		}
+
+		hcolor[3] = cg.crosshairColor[3];
+
+		trap->R_SetColor(hcolor);
+	}
 	else if (cg_drawCrosshair.integer == 10) {
-		vec4_t hcolor;
 		hcolor[0] = 1.0f;
 		hcolor[1] = 1.0f;
 		hcolor[2] = 1.0f;
 		hcolor[3] = 3.0f;
 		trap->R_SetColor(hcolor);
 	}
-	else if (cg_crosshairRed.value || cg_crosshairGreen.value || cg_crosshairBlue.value)
+	else if ((cg.crosshairColor[0] || cg.crosshairColor[1] || cg.crosshairColor[2]) && !cg_crosshairIdentifyTarget.integer)
 	{
-		vec4_t		hcolor;
-		hcolor[0] = cg_crosshairRed.value / 255.0f;
-		hcolor[1] = cg_crosshairGreen.value / 255.0f;
-		hcolor[2] = cg_crosshairBlue.value / 255.0f;
-		hcolor[3] = cg_crosshairAlpha.value / 255.0f;
+		hcolor[0] = cg.crosshairColor[0];
+		hcolor[1] = cg.crosshairColor[1];
+		hcolor[2] = cg.crosshairColor[2];
+		hcolor[3] = cg.crosshairColor[3];
 		trap->R_SetColor( hcolor );
 	}
 	else
