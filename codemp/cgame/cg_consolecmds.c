@@ -1461,6 +1461,52 @@ static void CG_Cosmetics_f(void)
 	}
 }
 
+static bitInfo_T chatLog[] = { // MAX_WEAPON_TWEAKS tweaks (24)
+	{ "Enable" },//0
+	{ "Log Sync" },//1
+	{ "Legacy Timestamps" },//2
+	{ "Log Console Prints" },//3
+	{ "Log Center Prints" }//3
+};
+static const int MAX_CHATLOG_SETTINGS = ARRAY_LEN(chatLog);
+
+void CG_ChatLogSettings_f(void)
+{
+	if (trap->Cmd_Argc() == 1) {
+		int i = 0, display = 0;
+
+		for (i = 0; i < MAX_CHATLOG_SETTINGS; i++) {
+			if (cg_logChat.integer & (1 << i)) {
+				Com_Printf("%2d [X] %s\n", display, chatLog[i].string);
+			}
+			else {
+				Com_Printf("%2d [ ] %s\n", display, chatLog[i].string);
+			}
+			display++;
+		}
+		return;
+	}
+	else {
+		char arg[8] = { 0 };
+		int index;
+		const uint32_t mask = (1 << MAX_CHATLOG_SETTINGS) - 1;
+
+		trap->Cmd_Argv(1, arg, sizeof(arg));
+		index = atoi(arg);
+
+		if (index < 0 || index >= MAX_CHATLOG_SETTINGS) {
+			Com_Printf("style: Invalid range: %i [0, %i]\n", index, MAX_CHATLOG_SETTINGS - 1);
+			return;
+		}
+
+		trap->Cvar_Set("cg_logChat", va("%i", (1 << index) ^ (cg_logChat.integer & mask)));
+		trap->Cvar_Update(&cg_logChat);
+
+		Com_Printf("%s %s^7\n", chatLog[index].string, ((cg_logChat.integer & (1 << index))
+			? "^2Enabled" : "^1Disabled"));
+	}
+}
+
 static void CG_AmRun_f(void)
 {
 	const uint32_t mask = (1 << MAX_PLUGINDISABLES) - 1;
@@ -2004,6 +2050,7 @@ static consoleCommand_t	commands[] = {
 	{ "stylePlayer",				CG_StylePlayer_f },
 	{ "speedometer",				CG_SpeedometerSettings_f },
 	{ "cosmetics",					CG_Cosmetics_f },
+	{ "chatlog",					CG_ChatLogSettings_f },
 
 	{ "addSpeedsound",				CG_AddSpeedpoint_f },
 	{ "listSpeedsounds",			CG_ListSpeedpoints_f },

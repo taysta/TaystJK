@@ -245,10 +245,16 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //#define JAPRO_CINFO_UNLAGGEDPUSHPULL (1<<19)	//push pull unlagged
 
 //JAPRO - Serverside + clientside , restrictions 
-#define JAPRO_RESTRICT_BHOP (1<<0)
-#define JAPRO_RESTRICT_CROUCHJUMP (1<<1)
-#define JAPRO_RESTRICT_DOUBLEJUMP (1<<2)
+#define JAPRO_RESTRICT_BHOP			(1<<0)
+#define JAPRO_RESTRICT_CROUCHJUMP	(1<<1)
+#define JAPRO_RESTRICT_DOUBLEJUMP	(1<<2)
 //[JAPRO - Clientside - All - Define cinfo bits - End]
+
+#define JAPRO_CHATLOG_ENABLE		(1<<0)
+#define JAPRO_CHATLOG_SYNC			(1<<1)
+#define JAPRO_CHATLOG_OLDTIMESTAMP	(1<<2)
+#define JAPRO_CHATLOG_PRINT			(1<<3)
+#define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
 
 #define _SPPHYSICS 1
 typedef enum //movementstyle enum

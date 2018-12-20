@@ -137,7 +137,6 @@ XCVAR_DEF( cg_autoLoginPass3,					"0",	NULL,					CVAR_ARCHIVE )
 
 //Logging
 XCVAR_DEF( cg_logChat,							"1",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_logFormat,						"1",	NULL,					CVAR_ARCHIVE )
 
 //BETA
 XCVAR_DEF( cg_specHud,							"0",	NULL,					CVAR_ARCHIVE )
@@ -184,7 +183,7 @@ XCVAR_DEF( cg_strafeTrailLife,					"5",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailRacersOnly,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailRadius,				"2",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailFPS,					"40",	NULL,					0 )
-XCVAR_DEF( cg_strafeTrailGhost,					"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeTrailGhost,					"1",	NULL,					CVAR_ARCHIVE )
 
 XCVAR_DEF( cg_drainFX,							"1",	NULL,					CVAR_NONE )
 //Make maxpackets userinfo maybe idk
@@ -296,7 +295,7 @@ XCVAR_DEF( cg_saberDynamicMarkTime,				"60000",				NULL,					CVAR_NONE )
 XCVAR_DEF( cg_saberModelTraceEffect,			"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_saberTrail,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_saberClash,						"1",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_shaderSaberCore,					"0.8",					NULL,					CVAR_NONE )
+XCVAR_DEF( cg_shaderSaberCore,					"0.625",				NULL,					CVAR_NONE )
 XCVAR_DEF( cg_shaderSaberGlow,					"0.625",				NULL,					CVAR_NONE )//1.25?
 XCVAR_DEF( cg_saberTeamColors,					"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_noRGBSabers,						"0",					NULL,					CVAR_ARCHIVE )

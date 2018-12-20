@@ -103,7 +103,7 @@ void QDECL CG_LogPrintf( fileHandle_t fileHandle, const char *fmt, ... ) {
 	if (cg.demoPlayback)
 		return;
 
-	if (cg_logFormat.integer == 0) {
+	if (cg_logChat.integer & JAPRO_CHATLOG_OLDTIMESTAMP) {
 		int msec = cg.time - cgs.levelStartTime;
 		int secs = msec / 1000;
 		int mins = secs / 60;
@@ -2848,10 +2848,11 @@ Ghoul2 Insert End
 		newtime = localtime(&rawtime);
 		strftime(logname, sizeof(logname), "chatlogs/cg_%y-%b.log", newtime);
 
-		CG_OpenLog(logname, &cg.log.chat, (cg_logChat.integer == 2 ? qtrue : qfalse));
+		CG_OpenLog(logname, &cg.log.chat, ((cg_logChat.integer & JAPRO_CHATLOG_SYNC) ? qtrue : qfalse));
 	}
-	else
+	else {
 		trap->Print("Not logging chat to disk.\n");
+	}
 
 	cg.renderingThirdPerson = cg_thirdPerson.integer;
 
