@@ -335,7 +335,7 @@ static rserr_t GLimp_SetMode(glconfig_t *glConfig, const windowDesc_t *windowDes
 	Uint32 flags = SDL_WINDOW_SHOWN;
 	SDL_DisplayMode desktopMode;
 	int display = 0;
-	int x = SDL_WINDOWPOS_UNDEFINED, y = SDL_WINDOWPOS_UNDEFINED;
+	int x = SDL_WINDOWPOS_CENTERED, y = SDL_WINDOWPOS_CENTERED;
 
 	if ( windowDesc->api == GRAPHICS_API_OPENGL )
 	{

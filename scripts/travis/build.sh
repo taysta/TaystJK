@@ -63,6 +63,7 @@ fi
 case "${host}" in
 	(macosx-universal-clang)
 		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
+			mv eternaljk base && \
 			tar czvf eternaljk-macos-"${arch}".tar.gz * && \
 			mv eternaljk-macos-"${arch}".tar.gz $(pwd)/../../../../ && \
 			cd ../../ && \
