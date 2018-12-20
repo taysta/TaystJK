@@ -904,10 +904,8 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 			isFemale = qfalse;
 	}
 
-	if (isFemale)
-		ci->gender = GENDER_FEMALE;
-	else
-		ci->gender = GENDER_MALE;
+	if (!ci->deferred)
+		ci->gender = isFemale ? GENDER_FEMALE : GENDER_FEMALE;
 
 	trap->S_Shutup(qtrue);
 
