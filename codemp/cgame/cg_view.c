@@ -476,10 +476,10 @@ static void CG_ResetThirdPersonViewDamp(void)
 		VectorCopy(trace.endpos, cameraCurLoc);
 	}
 
-	if (cg_smoothCamera.integer != 1)
-		cameraLastFrame = cg.predictedPlayerState.commandTime;
-	else
+	if (cg_smoothCamera.integer != 2)
 		cameraLastFrame = cg.time;
+	else
+		cameraLastFrame = cg.predictedPlayerState.commandTime;
 
 	cameraLastYaw = cameraFocusAngles[YAW];
 	cameraStiffFactor = 0.0f;
@@ -872,10 +872,10 @@ static void CG_OffsetThirdPersonView( void )
 	// ...and of course we should copy the new view location to the proper spot too.
 	VectorCopy(cameraCurLoc, cg.refdef.vieworg);
 
-	if (cg_smoothCamera.integer != 1)
-		cameraLastFrame = cg.predictedPlayerState.commandTime;
-	else
+	if (cg_smoothCamera.integer != 2)
 		cameraLastFrame = cg.time;
+	else
+		cameraLastFrame = cg.predictedPlayerState.commandTime;
 }
 
 void CG_GetVehicleCamPos( vec3_t camPos )

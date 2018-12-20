@@ -4352,21 +4352,19 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 		case A_CURSOR_UP:
 			Menu_SetPrevCursorItem(menu);
 			break;
-
 		case A_ESCAPE:
 			if (!g_waitingForKey && menu->onESC) {
 				itemDef_t it;
-		    it.parent = menu;
-		    Item_RunScript(&it, menu->onESC);
+				it.parent = menu;
+				Item_RunScript(&it, menu->onESC);
 			}
-		    g_waitingForKey = qfalse;
+			g_waitingForKey = qfalse;
 			break;
 		case A_TAB:
 		case A_KP_2:
 		case A_CURSOR_DOWN:
 			Menu_SetNextCursorItem(menu);
 			break;
-
 		case A_MOUSE1:
 		case A_MOUSE2:
 			if (item) {
@@ -4375,7 +4373,9 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 					{
 						Item_Action(item);
 					}
-				} else if (item->type == ITEM_TYPE_EDITFIELD || item->type == ITEM_TYPE_NUMERICFIELD) {
+					break;
+				} 
+				if (item->type == ITEM_TYPE_EDITFIELD || item->type == ITEM_TYPE_NUMERICFIELD) {
 					if (Rect_ContainsPoint(&item->window.rect, DC->cursorx, DC->cursory))
 					{
 						Item_Action(item);
@@ -4384,6 +4384,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 						g_editItem = item;
 						//DC->setOverstrikeMode(qtrue);
 					}
+					break;
 				}
 
 	//JLFACCEPT
@@ -4396,7 +4397,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 */
 
 //JLFACCEPT MPMOVED
-				else if ( item->type == ITEM_TYPE_MULTI || item->type == ITEM_TYPE_YESNO || item->type == ITEM_TYPE_SLIDER || item->type == ITEM_TYPE_INTSLIDER)
+				if ( item->type == ITEM_TYPE_MULTI || item->type == ITEM_TYPE_YESNO || item->type == ITEM_TYPE_SLIDER || item->type == ITEM_TYPE_INTSLIDER)
 				{
 					if (Item_HandleAccept(item))
 					{
@@ -4409,14 +4410,22 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 						it.parent = menu;
 						Item_RunScript(&it, menu->onAccept);
 					}
+					break;
 				}
 //END JLFACCEPT
+				if (key == A_MOUSE2 && !g_waitingForKey && !item->action && menu->onESC) {
+					itemDef_t it;
+					it.parent = menu;
+					Item_RunScript(&it, menu->onESC);
+					g_waitingForKey = qfalse;
+					break;
+				}
 				else {
 					if (Rect_ContainsPoint(&item->window.rect, DC->cursorx, DC->cursory))
 					{
-
 						Item_Action(item);
 					}
+					break;
 				}
 			}
 			break;

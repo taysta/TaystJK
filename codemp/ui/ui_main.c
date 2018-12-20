@@ -11400,6 +11400,11 @@ void UI_Init( qboolean inGameLoad ) {
 	trap->ext.AddCommand("strafehelper");
 	trap->ext.AddCommand("stylePlayer");
 	trap->ext.AddCommand("speedometer");
+
+	//Center cursor
+	uiInfo.uiDC.cursorx = SCREEN_WIDTH / 2;
+	uiInfo.uiDC.cursory = (SCREEN_HEIGHT / 2);
+
 }
 
 #define	UI_FPS_FRAMES	4
