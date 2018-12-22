@@ -4414,8 +4414,7 @@ void ClientThink_real( gentity_t *ent ) {
 					if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
 						G_AddDuel(ent->client->pers.lastUserName, duelAgainst->client->pers.lastUserName, ent->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]);
 				}
-				if (ent->health < ent->client->ps.stats[STAT_MAX_HEALTH])
-					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+				ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 				ent->client->ps.stats[STAT_ARMOR] = 25;//JAPRO
 				if (g_spawnInvulnerability.integer) {
 					ent->client->ps.eFlags |= EF_INVULNERABLE;

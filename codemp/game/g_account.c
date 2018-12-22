@@ -1312,7 +1312,7 @@ static int G_GetSeason(void) {
 
 	//We want 4 month seasons?
 
-	return 2;
+	return 3;
 }
 
 static void G_UpdateOurLocalRun(sqlite3 * db, int seasonOldRank_self, int seasonNewRank_self, int globalOldRank_self, int globalNewRank_self, int style_self, char *username_self, char *coursename_self, 
@@ -6673,13 +6673,13 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 
 	if (whois && seeip) {
 		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Nickame\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
 		else
 			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Nickname\n\"");
 	}
 	else if (whois) {
 		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Nickame\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
 		else
 			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Nickname\n\"");
 	}

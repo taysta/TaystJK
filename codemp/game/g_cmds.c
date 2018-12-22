@@ -4874,52 +4874,55 @@ void Cmd_Amlogin_f(gentity_t *ent)
 	}
 	if (trap->Argc() == 2)
 	{
-		if (ent->client->sess.accountFlags == g_juniorAdminLevel.integer || ent->client->sess.accountFlags == g_fullAdminLevel.integer) {
-			trap->SendServerCommand(ent - g_entities, "print \"You are already logged in. Type in /amLogout to remove admin status.\n\"");
-			return;
-		}
+		qboolean added = qfalse; //Check if they would gain anything from logging in, return if not.
+		int i;
+
 		if (!Q_stricmp(pass, "")) {
 			trap->SendServerCommand(ent - g_entities, "print \"Usage: amLogin <password>\n\"");
-			return;
 		}
-		if (!Q_stricmp(pass, g_juniorAdminPass.string)) {
-			int i;
-
-			if (!Q_stricmp("", g_juniorAdminPass.string))
-				return;
-
-			for (i=0; i<=JAPRO_MAX_ADMIN_BITS; i++) {//Loop this 0-22 is admin flags.
-				if (g_juniorAdminLevel.integer & (1 << i)) {
-					ent->client->sess.accountFlags |= (1 << i);
-				}
-			}
-
-			if (Q_stricmp(g_juniorAdminMsg.string, ""))
-				trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_juniorAdminMsg.string));
-			else
-				trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with junior admin privileges.\n\"");
-			return;
-		}
-		if (!Q_stricmp(pass, g_fullAdminPass.string)) {
-			int i;
-
-			if (!Q_stricmp("", g_fullAdminPass.string))//dunno
-				return;
-
+		else if (!Q_stricmp(pass, g_fullAdminPass.string)) {
 			for (i=0; i<=JAPRO_MAX_ADMIN_BITS; i++) {//Loop this 0-22 is admin flags.
 				if (g_fullAdminLevel.integer & (1 << i)) {
-					ent->client->sess.accountFlags |= (1 << i);
+					if (!(ent->client->sess.accountFlags & (1 << i))) { //They don't already have it
+						added = qtrue;
+						ent->client->sess.accountFlags |= (1 << i);
+					}
 				}
 			}
 
-			if (Q_stricmp(g_fullAdminMsg.string, "")) //Ok, so just set this to " " if you want it to print the normal login msg, or set it to "" to skip.  or "with junior admin" for more info.. etc
-				trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_fullAdminMsg.string));
-			else
-				trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with full admin privileges.\n\"");
-			return;
+			if (added) {
+				if (Q_stricmp(g_fullAdminMsg.string, "")) //Ok, so just set this to " " if you want it to print the normal login msg, or set it to "" to skip.  or "with junior admin" for more info.. etc
+					trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_fullAdminMsg.string));
+				else
+					trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with full admin privileges.\n\"");
+				}
+			else {
+				trap->SendServerCommand(ent - g_entities, "print \"You are already logged in. Type in /amLogout to remove admin status.\n\"");
+			}
 		}
+		else if (!Q_stricmp(pass, g_juniorAdminPass.string)) {
+			for (i=0; i<=JAPRO_MAX_ADMIN_BITS; i++) {//Loop this 0-22 is admin flags.
+				if (g_juniorAdminLevel.integer & (1 << i)) {
+					if (!(ent->client->sess.accountFlags & (1 << i))) { //They don't already have it
+						added = qtrue;
+						ent->client->sess.accountFlags |= (1 << i);
+					}
+				}
+			}
 
-		trap->SendServerCommand(ent - g_entities, "print \"^3Failed to log in: Incorrect password!\n\"");
+			if (added) {
+				if (Q_stricmp(g_juniorAdminMsg.string, ""))
+					trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_juniorAdminMsg.string));
+				else
+					trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with junior admin privileges.\n\"");
+				}
+			else {
+				trap->SendServerCommand(ent - g_entities, "print \"You are already logged in. Type in /amLogout to remove admin status.\n\"");
+			}
+		}
+		else {
+			trap->SendServerCommand(ent - g_entities, "print \"^3Failed to log in: Incorrect password!\n\"");
+		}
 	}
 }
 //[JAPRO - Serverside - All - Amlogin Function - End]
