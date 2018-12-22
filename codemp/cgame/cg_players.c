@@ -10896,6 +10896,16 @@ skipTrail:
 			if (cent->currentState.legsAnim == BOTH_WALKBACK_STAFF)
 				cent->currentState.legsAnim = BOTH_WALKBACK1;
 		}
+
+		if (cent->currentState.weapon == WP_BRYAR_OLD && cent->currentState.torsoAnim == BOTH_STAND1) {
+			cent->currentState.torsoAnim = BOTH_ATTACK2;
+		}
+		else if (cent->currentState.weapon == WP_CONCUSSION) {
+			if (cent->currentState.legsAnim == BOTH_ATTACK2)
+				cent->currentState.legsAnim = BOTH_ATTACK3;
+			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
+				cent->currentState.torsoAnim = BOTH_ATTACK3;
+		}
 	}
 
 
