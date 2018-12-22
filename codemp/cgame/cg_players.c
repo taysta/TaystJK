@@ -4555,12 +4555,14 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 		vec3_t lookAngles;
 		entityState_t *emplaced = NULL;
 
-		if (cent->currentState.hasLookTarget && cg_headTurn.integer && !(cent->pe.torso.animationNumber == BOTH_STAND1IDLE1) &&
-			!(cg.snap->ps.duelInProgress && cent->currentState.clientNum == cg.snap->ps.clientNum && cent->currentState.lookTarget != cg.snap->ps.duelIndex))
+		if (cent->currentState.hasLookTarget && cg_headTurn.integer &&
+			cent->currentState.torsoAnim != BOTH_STAND1IDLE1 && cent->currentState.torsoAnim != BOTH_STAND2IDLE1 && cent->currentState.torsoAnim != BOTH_STAND2IDLE2 &&
+			cent->currentState.torsoAnim != BOTH_STAND3IDLE1 && cent->currentState.torsoAnim != BOTH_STAND5IDLE1 && cent->currentState.torsoAnim != BOTH_STAND9IDLE1 && //don't turn head while in idle animation
+			!(cg.snap->ps.duelInProgress && cent->currentState.clientNum == cg.snap->ps.clientNum && cent->currentState.lookTarget != cg.snap->ps.duelIndex)) //don't turn our head towards other people while we're dueling
 		{
 			VectorSubtract(cg_entities[cent->currentState.lookTarget].lerpOrigin, cent->lerpOrigin, lookAngles);
 			vectoangles(lookAngles, lookAngles);
-			ci->lookTime = cg.time + 1000;
+			ci->lookTime = cg.time + (cg_headTurn.integer * 1000);
 		}
 		else
 		{
@@ -10489,6 +10491,73 @@ void CG_Player( centity_t *cent ) {
 	}
 	VectorCopy (legs.origin, legs.oldorigin);	// don't positionally lerp at all
 
+	//hack to fix bugged player animations
+	if (cent->currentState.eType != ET_NPC && (cent->currentState.weapon != WP_SABER || cent->currentState.saberInFlight))
+	{
+		if (cent->currentState.torsoAnim == BOTH_RUN2 || cent->currentState.torsoAnim == BOTH_RUN_DUAL)
+			cent->currentState.torsoAnim = BOTH_RUN1;
+
+		if (cent->currentState.legsAnim == BOTH_RUN2 || cent->currentState.legsAnim == BOTH_RUN_DUAL)
+			cent->currentState.legsAnim = BOTH_RUN1;
+
+		if (cent->currentState.torsoAnim == BOTH_RUNBACK2 || cent->currentState.torsoAnim == BOTH_RUNBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_RUNBACK1;
+
+		if (cent->currentState.legsAnim == BOTH_RUNBACK2 || cent->currentState.legsAnim == BOTH_RUNBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_RUNBACK1;
+
+		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_WALK1;
+
+		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_WALK1;
+
+		if (cent->currentState.torsoAnim == BOTH_WALKBACK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.torsoAnim = BOTH_WALKBACK1;
+
+		if (cent->currentState.legsAnim == BOTH_WALKBACK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
+			cent->currentState.legsAnim = BOTH_WALKBACK1;
+
+		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
+			cent->currentState.torsoAnim = cent->currentState.legsAnim;
+
+		if (!cgs.isJAPro) {
+			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF || cent->currentState.legsAnim == BOTH_RUN_STAFF)
+				cent->currentState.torsoAnim = BOTH_RUN1;
+
+			if (cent->currentState.legsAnim == BOTH_RUN_STAFF)
+				cent->currentState.legsAnim = BOTH_RUN1;
+
+			if (cent->currentState.torsoAnim == BOTH_RUNBACK_STAFF)
+				cent->currentState.torsoAnim = BOTH_RUNBACK1;
+
+			if (cent->currentState.legsAnim == BOTH_RUNBACK_STAFF)
+				cent->currentState.legsAnim = BOTH_RUNBACK1;
+
+			if (cent->currentState.torsoAnim == BOTH_WALK_STAFF)
+				cent->currentState.torsoAnim = BOTH_WALK1;
+
+			if (cent->currentState.legsAnim == BOTH_WALK_STAFF)
+				cent->currentState.legsAnim = BOTH_WALK1;
+
+			if (cent->currentState.torsoAnim == BOTH_WALKBACK_STAFF)
+				cent->currentState.torsoAnim = BOTH_WALKBACK1;
+
+			if (cent->currentState.legsAnim == BOTH_WALKBACK_STAFF)
+				cent->currentState.legsAnim = BOTH_WALKBACK1;
+		}
+
+		if (cent->currentState.weapon == WP_BRYAR_OLD && cent->currentState.torsoAnim == BOTH_STAND1) {
+			cent->currentState.torsoAnim = BOTH_ATTACK2;
+		}
+		else if (cent->currentState.weapon == WP_CONCUSSION) {
+			if (cent->currentState.legsAnim == BOTH_ATTACK2)
+				cent->currentState.legsAnim = BOTH_ATTACK3;
+			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
+				cent->currentState.torsoAnim = BOTH_ATTACK3;
+		}
+	}
+
 	CG_G2PlayerAngles( cent, legs.axis, rootAngles );
 	CG_G2PlayerHeadAnims( cent );
 
@@ -10840,74 +10909,6 @@ skipTrail:
 	VectorCopy( cent->lerpOrigin, cent->lastOrigin );
 #endif
 	//END strafe trails
-
-		//hacks for some bugged saber animations
-	if (cent->currentState.eType != ET_NPC && (cent->currentState.weapon != WP_SABER || cent->currentState.saberInFlight))
-	{
-		if (cent->currentState.torsoAnim == BOTH_RUN2 || cent->currentState.torsoAnim == BOTH_RUN_DUAL)
-			cent->currentState.torsoAnim = BOTH_RUN1;
-
-		if (cent->currentState.legsAnim == BOTH_RUN2 || cent->currentState.legsAnim == BOTH_RUN_DUAL)
-			cent->currentState.legsAnim = BOTH_RUN1;
-
-		if (cent->currentState.torsoAnim == BOTH_RUNBACK2 || cent->currentState.torsoAnim == BOTH_RUNBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_RUNBACK1;
-
-		if (cent->currentState.legsAnim == BOTH_RUNBACK2 || cent->currentState.legsAnim == BOTH_RUNBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_RUNBACK1;
-
-		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_WALK1;
-
-		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_WALK1;
-
-		if (cent->currentState.torsoAnim == BOTH_WALKBACK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.torsoAnim = BOTH_WALKBACK1;
-
-		if (cent->currentState.legsAnim == BOTH_WALKBACK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
-			cent->currentState.legsAnim = BOTH_WALKBACK1;
-
-		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
-			cent->currentState.torsoAnim = cent->currentState.legsAnim;
-
-		if (!cgs.isJAPro) {
-			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF || cent->currentState.legsAnim == BOTH_RUN_STAFF)
-				cent->currentState.torsoAnim = BOTH_RUN1;
-
-			if (cent->currentState.legsAnim == BOTH_RUN_STAFF)
-				cent->currentState.legsAnim = BOTH_RUN1;
-
-			if (cent->currentState.torsoAnim == BOTH_RUNBACK_STAFF)
-				cent->currentState.torsoAnim = BOTH_RUNBACK1;
-
-			if (cent->currentState.legsAnim == BOTH_RUNBACK_STAFF)
-				cent->currentState.legsAnim = BOTH_RUNBACK1;
-
-			if (cent->currentState.torsoAnim == BOTH_WALK_STAFF)
-				cent->currentState.torsoAnim = BOTH_WALK1;
-
-			if (cent->currentState.legsAnim == BOTH_WALK_STAFF)
-				cent->currentState.legsAnim = BOTH_WALK1;
-
-			if (cent->currentState.torsoAnim == BOTH_WALKBACK_STAFF)
-				cent->currentState.torsoAnim = BOTH_WALKBACK1;
-
-			if (cent->currentState.legsAnim == BOTH_WALKBACK_STAFF)
-				cent->currentState.legsAnim = BOTH_WALKBACK1;
-		}
-
-		if (cent->currentState.weapon == WP_BRYAR_OLD && cent->currentState.torsoAnim == BOTH_STAND1) {
-			cent->currentState.torsoAnim = BOTH_ATTACK2;
-		}
-		else if (cent->currentState.weapon == WP_CONCUSSION) {
-			if (cent->currentState.legsAnim == BOTH_ATTACK2)
-				cent->currentState.legsAnim = BOTH_ATTACK3;
-			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
-				cent->currentState.torsoAnim = BOTH_ATTACK3;
-		}
-	}
-
 
 	//trigger animation-based sounds, done before next lerp frame.
 	CG_TriggerAnimSounds(cent);
