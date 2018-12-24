@@ -11356,6 +11356,8 @@ static void CG_Speedometer(void)
 static void CG_DrawShowPos(void)
 {
 	static char showPosString[128];
+	playerState_t *ps = &cg.predictedPlayerState;
+	float vel;
 
 	if (!cg_showpos.integer)
 		return;
@@ -11363,10 +11365,15 @@ static void CG_DrawShowPos(void)
 	if (!cg.snap)
 		return;
 
-	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f", (float)cg.predictedPlayerState.origin[0], (float)cg.predictedPlayerState.origin[1], (float)cg.predictedPlayerState.origin[2], (float)cg.predictedPlayerState.viewangles[PITCH], (float)cg.predictedPlayerState.viewangles[YAW], cg.currentSpeed);
+	if (!ps)
+		return;
+
+	vel = sqrtf(cg.currentSpeed * cg.currentSpeed + ps->velocity[2] * ps->velocity[2]);
+
+	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f", (float)ps->origin[0], (float)ps->origin[1], (float)ps->origin[2], (float)ps->viewangles[PITCH] + ps->delta_angles[PITCH], (float)ps->viewangles[YAW] + ps->delta_angles[YAW], vel);
 
 	CG_Text_Paint(SCREEN_WIDTH - (SCREEN_WIDTH - 340) * cgs.widthRatioCoef, 0, 0.6f, colorWhite,
-		showPosString, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL2);
+		showPosString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
 }
 
 static void CG_MovementKeys(centity_t *cent)
