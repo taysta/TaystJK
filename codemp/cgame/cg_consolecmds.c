@@ -771,15 +771,16 @@ static void CG_Saber_f(void) // this should be serverside for JAPRO.  Clientside
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
 		if (cgs.isJAPlus || cgs.isJAPro)
 			trap->SendClientCommand(va("saber %s", saber1));
-		trap->SendConsoleCommand(va("set saber1 %s\n", saber1));
+		trap->Cvar_Set("saber1", va("%s", saber1));
+		trap->Cvar_Set("saber2", "none");
 	}
 	else if (trap->Cmd_Argc() == 3) {
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
 		trap->Cmd_Argv( 2, saber2, sizeof( saber2 ) );
 		if (cgs.isJAPlus || cgs.isJAPro)
 			trap->SendClientCommand(va("saber %s %s", saber1, saber2));
-		trap->SendConsoleCommand(va("set saber1 %s\n", saber1));
-		trap->SendConsoleCommand(va("set saber2 %s\n", saber2));
+		trap->Cvar_Set("saber1", va("%s", saber1));
+		trap->Cvar_Set("saber2", va("%s", saber2));
 	}
 }
 
