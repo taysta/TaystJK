@@ -825,7 +825,7 @@ static void IN_ProcessEvents( int eventTime )
 
 				if ( key == A_BACKSPACE )
 					Sys_QueEvent( eventTime, SE_CHAR, CTRL('h'), qfalse, 0, NULL);
-				else if ( kg.keys[A_CTRL].down && key >= A_CAP_A && key <= A_CAP_Z )
+				else if ( kg.keys[A_CTRL].down && !kg.keys[A_ALT].down && key >= A_CAP_A && key <= A_CAP_Z )
 					Sys_QueEvent( eventTime, SE_CHAR, CTRL(tolower(key)), qfalse, 0, NULL );
 
 				lastKeyDown = key;
