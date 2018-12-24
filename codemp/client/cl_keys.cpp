@@ -738,6 +738,8 @@ void Console_Key( int key ) {
 		if (cl_allowEnterCompletion->integer)
 			Field_AutoComplete(&g_consoleField, qtrue);
 
+		cls.afkTime = cls.realtime;
+
 		// print executed command
 		Com_Printf( "%c%s\n", CONSOLE_PROMPT_CHAR, g_consoleField.buffer );
 
@@ -907,6 +909,7 @@ void Message_Key( int key ) {
 		}
 		Key_SetCatcher( Key_GetCatcher() & ~KEYCATCH_MESSAGE );
 		Field_Clear( &chatField );
+		cls.afkTime = cls.realtime;
 		return;
 	}
 
