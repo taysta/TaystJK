@@ -25,20 +25,20 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "client/client.h"
 #include "sys/sys_local.h"
 
-static cvar_t *in_keyboardDebug     = NULL;
+static cvar_t *in_keyboardDebug = NULL;
 
 static SDL_Joystick *stick = NULL;
 
 static qboolean mouseAvailable = qfalse;
 static qboolean mouseActive = qfalse;
 
-static cvar_t *in_mouse             = NULL;
+static cvar_t *in_mouse				= NULL;
 static cvar_t *in_nograb;
 static cvar_t *in_mouserepeat		= NULL;
 
-cvar_t *in_joystick          		= NULL;
+cvar_t *in_joystick					= NULL;
 static cvar_t *in_joystickThreshold = NULL;
-static cvar_t *in_joystickNo        = NULL;
+static cvar_t *in_joystickNo		= NULL;
 static cvar_t *in_joystickUseAnalog = NULL;
 
 static SDL_Window *SDL_window = NULL;
@@ -61,18 +61,18 @@ static void IN_PrintKey( const SDL_Keysym *keysym, fakeAscii_t key, qboolean dow
 			keysym->scancode, SDL_GetScancodeName( keysym->scancode ),
 			keysym->sym, SDL_GetKeyName( keysym->sym ) );
 
-	if( keysym->mod & KMOD_LSHIFT )   Com_Printf( " KMOD_LSHIFT" );
-	if( keysym->mod & KMOD_RSHIFT )   Com_Printf( " KMOD_RSHIFT" );
-	if( keysym->mod & KMOD_LCTRL )    Com_Printf( " KMOD_LCTRL" );
-	if( keysym->mod & KMOD_RCTRL )    Com_Printf( " KMOD_RCTRL" );
-	if( keysym->mod & KMOD_LALT )     Com_Printf( " KMOD_LALT" );
-	if( keysym->mod & KMOD_RALT )     Com_Printf( " KMOD_RALT" );
-	if( keysym->mod & KMOD_LGUI )     Com_Printf( " KMOD_LGUI" );
-	if( keysym->mod & KMOD_RGUI )     Com_Printf( " KMOD_RGUI" );
-	if( keysym->mod & KMOD_NUM )      Com_Printf( " KMOD_NUM" );
-	if( keysym->mod & KMOD_CAPS )     Com_Printf( " KMOD_CAPS" );
-	if( keysym->mod & KMOD_MODE )     Com_Printf( " KMOD_MODE" );
-	if( keysym->mod & KMOD_RESERVED ) Com_Printf( " KMOD_RESERVED" );
+	if( keysym->mod & KMOD_LSHIFT )		Com_Printf( " KMOD_LSHIFT" );
+	if( keysym->mod & KMOD_RSHIFT )		Com_Printf( " KMOD_RSHIFT" );
+	if( keysym->mod & KMOD_LCTRL )		Com_Printf( " KMOD_LCTRL" );
+	if( keysym->mod & KMOD_RCTRL )		Com_Printf( " KMOD_RCTRL" );
+	if( keysym->mod & KMOD_LALT )		Com_Printf( " KMOD_LALT" );
+	if( keysym->mod & KMOD_RALT )		Com_Printf( " KMOD_RALT" );
+	if( keysym->mod & KMOD_LGUI )		Com_Printf( " KMOD_LGUI" );
+	if( keysym->mod & KMOD_RGUI )		Com_Printf( " KMOD_RGUI" );
+	if( keysym->mod & KMOD_NUM )		Com_Printf( " KMOD_NUM" );
+	if( keysym->mod & KMOD_CAPS )		Com_Printf( " KMOD_CAPS" );
+	if( keysym->mod & KMOD_MODE )		Com_Printf( " KMOD_MODE" );
+	if( keysym->mod & KMOD_RESERVED )	Com_Printf( " KMOD_RESERVED" );
 
 	Com_Printf( " Q:0x%02x(%s)\n", key, Key_KeynumToString( key ) );
 }
@@ -112,7 +112,7 @@ static qboolean IN_IsConsoleKey( fakeAscii_t key, int character )
 	if( cl_consoleKeys->modified )
 	{
 		const char *text_p;
-        char *token;
+		char *token;
 
 		cl_consoleKeys->modified = qfalse;
 		text_p = cl_consoleKeys->string;
@@ -272,64 +272,64 @@ static fakeAscii_t IN_TranslateSDLToJKKey( SDL_Keysym *keysym, qboolean down ) {
 
 		switch( keysym->sym )
 		{
-			case SDLK_PAGEUP:       key = A_PAGE_UP;       break;
-			case SDLK_KP_9:         key = A_KP_9;          break;
-			case SDLK_PAGEDOWN:     key = A_PAGE_DOWN;     break;
-			case SDLK_KP_3:         key = A_KP_3;          break;
-			case SDLK_KP_7:         key = A_KP_7;          break;
-			case SDLK_HOME:         key = A_HOME;          break;
-			case SDLK_KP_1:         key = A_KP_1;          break;
-			case SDLK_END:          key = A_END;           break;
-			case SDLK_KP_4:         key = A_KP_4;          break;
-			case SDLK_LEFT:         key = A_CURSOR_LEFT;   break;
-			case SDLK_KP_6:         key = A_KP_6;          break;
-			case SDLK_RIGHT:        key = A_CURSOR_RIGHT;  break;
-			case SDLK_KP_2:         key = A_KP_2;          break;
-			case SDLK_DOWN:         key = A_CURSOR_DOWN;   break;
-			case SDLK_KP_8:         key = A_KP_8;          break;
-			case SDLK_UP:           key = A_CURSOR_UP;     break;
-			case SDLK_ESCAPE:       key = A_ESCAPE;        break;
-			case SDLK_KP_ENTER:     key = A_KP_ENTER;      break;
-			case SDLK_RETURN:       key = A_ENTER;         break;
-			case SDLK_TAB:          key = A_TAB;           break;
-			case SDLK_F1:           key = A_F1;            break;
-			case SDLK_F2:           key = A_F2;            break;
-			case SDLK_F3:           key = A_F3;            break;
-			case SDLK_F4:           key = A_F4;            break;
-			case SDLK_F5:           key = A_F5;            break;
-			case SDLK_F6:           key = A_F6;            break;
-			case SDLK_F7:           key = A_F7;            break;
-			case SDLK_F8:           key = A_F8;            break;
-			case SDLK_F9:           key = A_F9;            break;
-			case SDLK_F10:          key = A_F10;           break;
-			case SDLK_F11:          key = A_F11;           break;
-			case SDLK_F12:          key = A_F12;           break;
+			case SDLK_PAGEUP:		key = A_PAGE_UP;		break;
+			case SDLK_KP_9:			key = A_KP_9;			break;
+			case SDLK_PAGEDOWN:		key = A_PAGE_DOWN;		break;
+			case SDLK_KP_3:			key = A_KP_3;			break;
+			case SDLK_KP_7:			key = A_KP_7;			break;
+			case SDLK_HOME:			key = A_HOME;			break;
+			case SDLK_KP_1:			key = A_KP_1;			break;
+			case SDLK_END:			key = A_END;			break;
+			case SDLK_KP_4:			key = A_KP_4;			break;
+			case SDLK_LEFT:			key = A_CURSOR_LEFT;	break;
+			case SDLK_KP_6:			key = A_KP_6;			break;
+			case SDLK_RIGHT:		key = A_CURSOR_RIGHT;	break;
+			case SDLK_KP_2:			key = A_KP_2;			break;
+			case SDLK_DOWN:			key = A_CURSOR_DOWN;	break;
+			case SDLK_KP_8:			key = A_KP_8;			break;
+			case SDLK_UP:			key = A_CURSOR_UP;		break;
+			case SDLK_ESCAPE:		key = A_ESCAPE;			break;
+			case SDLK_KP_ENTER:		key = A_KP_ENTER;		break;
+			case SDLK_RETURN:		key = A_ENTER;			break;
+			case SDLK_TAB:			key = A_TAB;			break;
+			case SDLK_F1:			key = A_F1;				break;
+			case SDLK_F2:			key = A_F2;				break;
+			case SDLK_F3:			key = A_F3;				break;
+			case SDLK_F4:			key = A_F4;				break;
+			case SDLK_F5:			key = A_F5;				break;
+			case SDLK_F6:			key = A_F6;				break;
+			case SDLK_F7:			key = A_F7;				break;
+			case SDLK_F8:			key = A_F8;				break;
+			case SDLK_F9:			key = A_F9;				break;
+			case SDLK_F10:			key = A_F10;			break;
+			case SDLK_F11:			key = A_F11;			break;
+			case SDLK_F12:			key = A_F12;			break;
 
-			case SDLK_BACKSPACE:    key = A_BACKSPACE;     break;
-			case SDLK_KP_PERIOD:    key = A_KP_PERIOD;     break;
-			case SDLK_DELETE:       key = A_DELETE;        break;
-			case SDLK_PAUSE:        key = A_PAUSE;         break;
+			case SDLK_BACKSPACE:	key = A_BACKSPACE;		break;
+			case SDLK_KP_PERIOD:	key = A_KP_PERIOD;		break;
+			case SDLK_DELETE:		key = A_DELETE;			break;
+			case SDLK_PAUSE:		key = A_PAUSE;			break;
 
-			case SDLK_LSHIFT:
-			case SDLK_RSHIFT:       key = A_SHIFT;         break;
+			case SDLK_LSHIFT:		key = A_SHIFT;			break;
+			case SDLK_RSHIFT:		key = A_SHIFT2;			break;
 
-			case SDLK_LCTRL:
-			case SDLK_RCTRL:        key = A_CTRL;          break;
+			case SDLK_LCTRL:		key = A_CTRL;			break;
+			case SDLK_RCTRL:		key = A_CTRL2;			break;
 
-			case SDLK_RALT:
-			case SDLK_LALT:         key = A_ALT;           break;
+			case SDLK_LALT:			key = A_ALT;			break;
+			case SDLK_RALT:			key = A_ALT2;			break;
 
-			case SDLK_KP_5:         key = A_KP_5;          break;
-			case SDLK_INSERT:       key = A_INSERT;        break;
-			case SDLK_KP_0:         key = A_KP_0;          break;
+			case SDLK_KP_5:			key = A_KP_5;			break;
+			case SDLK_INSERT:		key = A_INSERT;			break;
+			case SDLK_KP_0:			key = A_KP_0;			break;
 			case SDLK_KP_MULTIPLY:	key = A_MULTIPLY;		break;
-			case SDLK_KP_PLUS:      key = A_KP_PLUS;       break;
-			case SDLK_KP_MINUS:     key = A_KP_MINUS;      break;
+			case SDLK_KP_PLUS:		key = A_KP_PLUS;		break;
+			case SDLK_KP_MINUS:		key = A_KP_MINUS;		break;
 			case SDLK_KP_DIVIDE:	key = A_DIVIDE;			break;
 
-			case SDLK_SCROLLLOCK:   key = A_SCROLLLOCK;    break;
-			case SDLK_NUMLOCKCLEAR: key = A_NUMLOCK;       break;
-			case SDLK_CAPSLOCK:     key = A_CAPSLOCK;      break;
+			case SDLK_SCROLLLOCK:	key = A_SCROLLLOCK;		break;
+			case SDLK_NUMLOCKCLEAR:	key = A_NUMLOCK;		break;
+			case SDLK_CAPSLOCK:		key = A_CAPSLOCK;		break;
 
 			case L'\u00D7':			key = A_MULTIPLY;		break;
 			case L'\u00E0':			key = A_LOW_AGRAVE;		break;
@@ -880,11 +880,11 @@ static void IN_ProcessEvents( int eventTime )
 					unsigned short b;
 					switch( e.button.button )
 					{
-						case SDL_BUTTON_LEFT:	b = A_MOUSE1;     break;
-						case SDL_BUTTON_MIDDLE:	b = A_MOUSE3;     break;
-						case SDL_BUTTON_RIGHT:	b = A_MOUSE2;     break;
-						case SDL_BUTTON_X1:		b = A_MOUSE4;     break;
-						case SDL_BUTTON_X2:		b = A_MOUSE5;     break;
+						case SDL_BUTTON_LEFT:	b = A_MOUSE1;	break;
+						case SDL_BUTTON_MIDDLE:	b = A_MOUSE3;	break;
+						case SDL_BUTTON_RIGHT:	b = A_MOUSE2;	break;
+						case SDL_BUTTON_X1:		b = A_MOUSE4;	break;
+						case SDL_BUTTON_X2:		b = A_MOUSE5;	break;
 						default: b = A_AUX0 + ( e.button.button - 6 ) % 32; break;
 					}
 					Sys_QueEvent( 0, SE_KEY, b,
@@ -912,9 +912,9 @@ static void IN_ProcessEvents( int eventTime )
 			case SDL_WINDOWEVENT:
 				switch( e.window.event )
 				{
-					case SDL_WINDOWEVENT_MINIMIZED:    Cvar_SetValue( "com_minimized", 1 ); break;
+					case SDL_WINDOWEVENT_MINIMIZED: Cvar_SetValue( "com_minimized", 1 ); break;
 					case SDL_WINDOWEVENT_RESTORED:
-					case SDL_WINDOWEVENT_MAXIMIZED:    Cvar_SetValue( "com_minimized", 0 ); break;
+					case SDL_WINDOWEVENT_MAXIMIZED: Cvar_SetValue( "com_minimized", 0 ); break;
 					case SDL_WINDOWEVENT_FOCUS_LOST:
 					{
 						Cvar_SetValue( "com_unfocused", 1 );
