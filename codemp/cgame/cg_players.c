@@ -5801,7 +5801,7 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 		trap->R_AddLightToScene( mid, light, rgb[0], rgb[1], rgb[2] ); //rgb
 	}
 
-	memset( &saber, 0, sizeof( refEntity_t ));
+	Com_Memset( &saber, 0, sizeof( refEntity_t ));
 
 	// Saber glow is it's own ref type because it uses a ton of sprites, otherwise it would eat up too many
 	//	refEnts to do each glow blob individually
@@ -5873,27 +5873,27 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 
 	if ( color >= SABER_RGB ) {
 		switch ( color ) {
-		default:
-		case SABER_RGB:
-			sbak.customShader = cgs.media.rgbSaberCoreShader;
-			break;
+			default:
+			case SABER_RGB:
+				sbak.customShader = cgs.media.rgbSaberCoreShader;
+				break;
 #if _SHITTYLINEFX
-		case SABER_FLAME1:
-			sbak.customShader = cgs.media.rgbSaberCore2Shader;
-			break;
-		case SABER_ELEC1:
-			sbak.customShader = cgs.media.rgbSaberCore3Shader;
-			break;
-		case SABER_FLAME2:
-			sbak.customShader = cgs.media.rgbSaberCore4Shader;
-			break;
-		case SABER_ELEC2:
-			sbak.customShader = cgs.media.rgbSaberCore5Shader;
-			break;
+			case SABER_FLAME1:
+				sbak.customShader = cgs.media.rgbSaberCore2Shader;
+				break;
+			case SABER_ELEC1:
+				sbak.customShader = cgs.media.rgbSaberCore3Shader;
+				break;
+			case SABER_FLAME2:
+				sbak.customShader = cgs.media.rgbSaberCore4Shader;
+				break;
+			case SABER_ELEC2:
+				sbak.customShader = cgs.media.rgbSaberCore5Shader;
+				break;
 #endif
-		case SABER_BLACK:
-			sbak.customShader = cgs.media.blackSaberCoreShader;
-			break;
+			case SABER_BLACK:
+				sbak.customShader = cgs.media.blackSaberCoreShader;
+				break;
 		}
 	}
 
@@ -5935,61 +5935,49 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		color = ClampSaberColor(color);
 
 	switch ( color ) {
-	case SABER_RED:
-		glow = cgs.media.redSaberGlowShader;
-		break;
-
-	case SABER_ORANGE:
-		glow = cgs.media.orangeSaberGlowShader;
-		break;
-
-	case SABER_YELLOW:
-		glow = cgs.media.yellowSaberGlowShader;
-		break;
-
-	case SABER_GREEN:
-		glow = cgs.media.greenSaberGlowShader;
-		break;
-
-	case SABER_PURPLE:
-		glow = cgs.media.purpleSaberGlowShader;
-		break;
-
+		case SABER_RED:
+			glow = cgs.media.redSaberGlowShader;
+			break;
+		case SABER_ORANGE:
+			glow = cgs.media.orangeSaberGlowShader;
+			break;
+		case SABER_YELLOW:
+			glow = cgs.media.yellowSaberGlowShader;
+			break;
+		case SABER_GREEN:
+			glow = cgs.media.greenSaberGlowShader;
+			break;
+		case SABER_PURPLE:
+			glow = cgs.media.purpleSaberGlowShader;
+			break;
 		//	case SABER_WHITE:
-	case SABER_RGB:
-		glow = cgs.media.rgbSaberGlowShader;
-		break;
-
-	case SABER_FLAME1:
-		glow = cgs.media.rgbSaberGlow2Shader;
-		break;
-
-	case SABER_ELEC1:
-		glow = cgs.media.rgbSaberGlow3Shader;
-		break;
-
-	case SABER_FLAME2:
-		glow = cgs.media.rgbSaberGlow4Shader;
-		break;
-
-	case SABER_ELEC2:
-		glow = cgs.media.rgbSaberGlow5Shader;
-		break;
-
-	case SABER_BLACK:
-		glow = cgs.media.blackSaberGlowShader;
-		doLight = qfalse;
-		break;
-
-	default:
-		glow = cgs.media.blueSaberGlowShader;
-		break;
+		case SABER_RGB:
+			glow = cgs.media.rgbSaberGlowShader;
+			break;
+		case SABER_FLAME1:
+			glow = cgs.media.rgbSaberGlow2Shader;
+			break;
+		case SABER_ELEC1:
+			glow = cgs.media.rgbSaberGlow3Shader;
+			break;
+		case SABER_FLAME2:
+			glow = cgs.media.rgbSaberGlow4Shader;
+			break;
+		case SABER_ELEC2:
+			glow = cgs.media.rgbSaberGlow5Shader;
+			break;
+		case SABER_BLACK:
+			glow = cgs.media.blackSaberGlowShader;
+			doLight = qfalse;
+			break;
+		default:
+			glow = cgs.media.blueSaberGlowShader;
+			break;
 	}
 
 	VectorMA( blade_muz, blade_len * 0.5f, blade_dir, mid );
 
 	if ( doLight ) {
-		//CG_RGBForSaberColor(saber->blade[i], rgbs[i], cnum, bnum);
 		CG_RGBForSaberColor(color, rgb, cnum, bnum);
 		VectorScale(rgb, 0.66f, rgb);
 		trap->R_AddLightToScene(mid, (blade_len*2.0f) + (Q_flrand(0.0f, 1.0f)*10.0f), rgb[0], rgb[1], rgb[2]);
@@ -6047,24 +6035,21 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 	if ( AngleScale < 0.4f )
 		AngleScale = 0.4f;
 
-	memset( &saber, 0, sizeof(refEntity_t) );
+	Com_Memset( &saber, 0, sizeof(refEntity_t) );
 
 	if ( blade_len < lengthMax )
 		radiusmult = 0.5f + ((blade_len / lengthMax) / 2);
 	else
 		radiusmult = 1.0f;
-	//RAZTODO: cvar for radiusmult
 	
 	pulse = Q_fabs(sinf((float)cg.time / 25.0f)) * 0.25f;
 
 	effectradius = ((radius * 1.6f * v1) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
 	coreradius = ((radius * 0.4f * v2) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
-	if (cg_saberTrail.integer == 3) {
-		effectradius *= cg_shaderSaberGlow.value;
-		coreradius *= pulse + cg_shaderSaberCore.value;
-	}
+	effectradius *= cg_shaderSaberGlow.value;
+	coreradius *= pulse + cg_shaderSaberCore.value;
 
-	if ( cg_saberTrail.integer == 2 && cg_shadows.integer != 2 && cgs.glconfig.stencilBits >= 4 )
+	if ( cg_shadows.integer != 2 && cgs.glconfig.stencilBits >= 4 )
 		rfx |= RF_FORCEPOST;
 
 	VectorScale( rgb, 255.0f, rgb );
@@ -6221,8 +6206,8 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		}
 	}
 
-	//	if ( end_len <= 1 )
-	//		return;
+	if (end_len < 0.5f)
+		return;
 
 	VectorSubtract( blade_tip, cg.refdef.vieworg, dif );
 	DisTip = VectorLength( dif );
@@ -6885,7 +6870,7 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	effectTrailArgStruct_t fx;
 	int scolor = 0;
 	int	useModelIndex = 0;
-	qboolean sfxSabers = (cg_saberTrail.integer == 3);
+	qboolean sfxSabers = (cg_saberTrail.integer == 3 || cg_saberTrail.integer == -3);
 
 	if (cent->currentState.eType == ET_NPC)
 	{
@@ -7227,79 +7212,79 @@ CheckTrail:
 
 						switch( scolor )
 						{
-						case SABER_RED:
-							VectorSet( rgb1, 255.0f, 0.0f, 0.0f );
-							break;
-						case SABER_ORANGE:
-							VectorSet( rgb1, 255.0f, 64.0f, 0.0f );
-							break;
-						case SABER_YELLOW:
-							VectorSet( rgb1, 255.0f, 255.0f, 0.0f );
-							break;
-						case SABER_GREEN:
-							VectorSet( rgb1, 0.0f, 255.0f, 0.0f );
-							break;
-						case SABER_BLUE:
-						default:
-							VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
-							break;
-						case SABER_PURPLE:
-							VectorSet( rgb1, 220.0f, 0.0f, 255.0f );
-							break;
+							case SABER_RED:
+								VectorSet( rgb1, 255.0f, 0.0f, 0.0f );
+								break;
+							case SABER_ORANGE:
+								VectorSet( rgb1, 255.0f, 64.0f, 0.0f );
+								break;
+							case SABER_YELLOW:
+								VectorSet( rgb1, 255.0f, 255.0f, 0.0f );
+								break;
+							case SABER_GREEN:
+								VectorSet( rgb1, 0.0f, 255.0f, 0.0f );
+								break;
+							case SABER_BLUE:
+							default:
+								VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
+								break;
+							case SABER_PURPLE:
+								VectorSet( rgb1, 220.0f, 0.0f, 255.0f );
+								break;
 #if _SHITTYLINEFX
-						case SABER_FLAME1:
-						case SABER_ELEC1:
-						case SABER_FLAME2:
-						case SABER_ELEC2:
+							case SABER_FLAME1:
+							case SABER_ELEC1:
+							case SABER_FLAME2:
+							case SABER_ELEC2:
 #endif
 							//rgb
-						case SABER_RGB:
-						{
-							int cnum = cent->currentState.clientNum;
-							if (cnum < MAX_CLIENTS) {
-								clientInfo_t *ci = &cgs.clientinfo[cnum];
+							case SABER_RGB:
+							{
+								int cnum = cent->currentState.clientNum;
+								if (cnum < MAX_CLIENTS) {
+									clientInfo_t *ci = &cgs.clientinfo[cnum];
 
-								if (saberNum == 0)
-									VectorCopy(ci->rgb1, rgb1);
+									if (saberNum == 0)
+										VectorCopy(ci->rgb1, rgb1);
+									else
+										VectorCopy(ci->rgb2, rgb1);
+								}
 								else
-									VectorCopy(ci->rgb2, rgb1);
+									VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
 							}
-							else
-								VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
-						}
-						break;
-						//rgb
+							break;
+							//rgb
 						}
 
 						//rgb
 						switch (scolor) {
-						case SABER_RED:
-						case SABER_ORANGE:
-						case SABER_YELLOW:
-						case SABER_GREEN:
-						case SABER_BLUE:
-						case SABER_PURPLE:
-						case SABER_RGB:
-						default:
-							trailShader = cgs.media.saberBlurShader;
-							break;
+							case SABER_RED:
+							case SABER_ORANGE:
+							case SABER_YELLOW:
+							case SABER_GREEN:
+							case SABER_BLUE:
+							case SABER_PURPLE:
+							case SABER_RGB:
+							default:
+								trailShader = cgs.media.saberBlurShader;
+								break;
 #if _SHITTYLINEFX
-						case SABER_FLAME1:
-							trailShader = cgs.media.rgbSaberTrail2Shader;
-							break;
-						case SABER_ELEC1:
-							trailShader = cgs.media.rgbSaberTrail3Shader;
-							break;
-						case SABER_FLAME2:
-							trailShader = cgs.media.rgbSaberTrail4Shader;
-							break;
-						case SABER_ELEC2:
-							trailShader = cgs.media.rgbSaberTrail5Shader;
-							break;
+							case SABER_FLAME1:
+								trailShader = cgs.media.rgbSaberTrail2Shader;
+								break;
+							case SABER_ELEC1:
+								trailShader = cgs.media.rgbSaberTrail3Shader;
+								break;
+							case SABER_FLAME2:
+								trailShader = cgs.media.rgbSaberTrail4Shader;
+								break;
+							case SABER_ELEC2:
+								trailShader = cgs.media.rgbSaberTrail5Shader;
+								break;
 #endif
-						case SABER_BLACK:
-							trailShader = cgs.media.blackBlurShader;
-							break;
+							case SABER_BLACK:
+								trailShader = cgs.media.blackBlurShader;
+								break;
 						}
 						//rgb
 
@@ -7418,10 +7403,10 @@ CheckTrail:
 		}
 	}
 	else {
-		// Use the supremely hacky SFX Sabers.
-		//saberTrail->duration = 1.0;//cg_saberTrailLength.value;
+		// SFX Saber trail
+		saberTrail->duration = 0;
 
-		if (!saberTrail->lastTime || !saberTrail->inAction) {
+		if (!saberTrail->base || !saberTrail->tip || !saberTrail->dualbase || !saberTrail->dualtip || !saberTrail->lastTime || !saberTrail->inAction) {
 			VectorCopy(org_, saberTrail->base);
 			VectorMA(end, -1.5f, axis_[0], saberTrail->tip);
 			VectorCopy(saberTrail->base, saberTrail->dualbase);
@@ -7458,7 +7443,7 @@ CheckTrail:
 			}
 
 			lagscale = (cg.time - saberTrail->lastTime);
-			lagscale = 1.0f - (lagscale * 3 / 200);
+			lagscale = 1.0f - (lagscale * 3.0f / 200.0f);
 
 			if (lagscale < 0.1f)
 				lagscale = 0.1f;
@@ -7478,49 +7463,43 @@ CheckTrail:
 
 		if (!dontDraw) {
 			switch (scolor) {
-			case SABER_RED:
-				VectorSet(rgb1, 255.0f, 0.0f, 0.0f);
-				break;
-
-			case SABER_ORANGE:
-				VectorSet(rgb1, 255.0f, 64.0f, 0.0f);
-				break;
-
-			case SABER_YELLOW:
-				VectorSet(rgb1, 255.0f, 255.0f, 0.0f);
-				break;
-
-			case SABER_GREEN:
-				VectorSet(rgb1, 0.0f, 255.0f, 0.0f);
-				break;
-
-			case SABER_BLUE:
-				VectorSet(rgb1, 0.0f, 64.0f, 255.0f);
-				break;
-
-			case SABER_PURPLE:
-				VectorSet(rgb1, 220.0f, 0.0f, 255.0f);
-				break;
-
-			case SABER_RGB:
-			{
-				int cnum = cent->currentState.clientNum;
-				if (cnum < MAX_CLIENTS) {
-					clientInfo_t *ci = &cgs.clientinfo[cnum];
-
-					if (saberNum == 0)
-						VectorCopy(ci->rgb1, rgb1);
-					else
-						VectorCopy(ci->rgb2, rgb1);
-				}
-				else
+				case SABER_RED:
+					VectorSet(rgb1, 255.0f, 0.0f, 0.0f);
+					break;
+				case SABER_ORANGE:
+					VectorSet(rgb1, 255.0f, 64.0f, 0.0f);
+					break;
+				case SABER_YELLOW:
+					VectorSet(rgb1, 255.0f, 255.0f, 0.0f);
+					break;
+				case SABER_GREEN:
+					VectorSet(rgb1, 0.0f, 255.0f, 0.0f);
+					break;
+				case SABER_BLUE:
 					VectorSet(rgb1, 0.0f, 64.0f, 255.0f);
-			}
-			break;
+					break;
+				case SABER_PURPLE:
+					VectorSet(rgb1, 220.0f, 0.0f, 255.0f);
+					break;
+				case SABER_RGB:
+				{
+					int cnum = cent->currentState.clientNum;
+					if (cnum < MAX_CLIENTS) {
+						clientInfo_t *ci = &cgs.clientinfo[cnum];
 
-			default:
-				VectorSet(rgb1, 0.0f, 64.0f, 255.0f);
+						if (saberNum == 0)
+							VectorCopy(ci->rgb1, rgb1);
+						else
+							VectorCopy(ci->rgb2, rgb1);
+					}
+					else {
+						VectorSet(rgb1, 0.0f, 64.0f, 255.0f);
+					}
+				}
 				break;
+				default:
+					VectorSet(rgb1, 0.0f, 64.0f, 255.0f);
+					break;
 			}
 
 			VectorCopy(saberTrail->base, fx.mVerts[0].origin);
@@ -7561,57 +7540,51 @@ JustDoIt:
 			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3 && !(client->saber[saberNum].saberFlags2&SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum );//rgb -- fix casting?
 	}
 
-	if (sfxSabers && (saberTrail && cg.time > saberTrail->inAction)) { // <- Gives warning
+	if (sfxSabers && cg.time > saberTrail->inAction)
+	{
 		saberTrail->inAction = cg.time;
 
-		//GR - Just tweaking this a little, cuz it looks funny when you turn around slowly
-		VectorSubtract(fx.mVerts[2].origin, fx.mVerts[1].origin, draw_dir);
-		/*draw_len = */VectorNormalize(draw_dir);
+		fx.mShader = cgs.media.ShaderSaberTrail;
+		fx.mKillTime = 2;
+		fx.mSetFlags = FX_USE_ALPHA;
 
-		//	if ( draw_len > 2 ) {
-		if (1) {
-			fx.mShader = cgs.media.ShaderSaberTrail;
-			fx.mKillTime = 0;
-			fx.mSetFlags = FX_USE_ALPHA;
+		// New muzzle
+		VectorCopy(rgb1, fx.mVerts[0].rgb);
+		fx.mVerts[0].alpha = 255.0f;
 
-			// New muzzle
-			VectorCopy(rgb1, fx.mVerts[0].rgb);
-			fx.mVerts[0].alpha = 255.0f;
+		fx.mVerts[0].ST[0] = 0.0f;
+		fx.mVerts[0].ST[1] = 4.0f;
+		fx.mVerts[0].destST[0] = 4.0f;
+		fx.mVerts[0].destST[1] = 4.0f;
 
-			fx.mVerts[0].ST[0] = 0.0f;
-			fx.mVerts[0].ST[1] = 4.0f;
-			fx.mVerts[0].destST[0] = 4.0f;
-			fx.mVerts[0].destST[1] = 4.0f;
+		// new tip
+		VectorCopy(rgb1, fx.mVerts[1].rgb);
+		fx.mVerts[1].alpha = 255.0f;
+		
+		fx.mVerts[1].ST[0] = 0.0f;
+		fx.mVerts[1].ST[1] = 0.0f;
+		fx.mVerts[1].destST[0] = 4.0f;
+		fx.mVerts[1].destST[1] = 0.0f;
 
-			// new tip
-			VectorCopy(rgb1, fx.mVerts[1].rgb);
-			fx.mVerts[1].alpha = 255.0f;
+		// old tip
+		VectorCopy(rgb1, fx.mVerts[2].rgb);
+		fx.mVerts[2].alpha = 255.0f;
 
-			fx.mVerts[1].ST[0] = 0.0f;
-			fx.mVerts[1].ST[1] = 0.0f;
-			fx.mVerts[1].destST[0] = 4.0f;
-			fx.mVerts[1].destST[1] = 0.0f;
+		fx.mVerts[2].ST[0] = 4.0f;
+		fx.mVerts[2].ST[1] = 0.0f;
+		fx.mVerts[2].destST[0] = 4.0f;
+		fx.mVerts[2].destST[1] = 0.0f;
 
-			// old tip
-			VectorCopy(rgb1, fx.mVerts[2].rgb);
-			fx.mVerts[2].alpha = 255.0f;
+		// old muzzle
+		VectorCopy(rgb1, fx.mVerts[3].rgb);
+		fx.mVerts[3].alpha = 255.0f;
 
-			fx.mVerts[2].ST[0] = 4.0f;
-			fx.mVerts[2].ST[1] = 0.0f;
-			fx.mVerts[2].destST[0] = 4.0f;
-			fx.mVerts[2].destST[1] = 0.0f;
+		fx.mVerts[3].ST[0] = 4.0f;
+		fx.mVerts[3].ST[1] = 4.0f;
+		fx.mVerts[3].destST[0] = 4.0f;
+		fx.mVerts[3].destST[1] = 4.0f;
 
-			// old muzzle
-			VectorCopy(rgb1, fx.mVerts[3].rgb);
-			fx.mVerts[3].alpha = 255.0f;
-
-			fx.mVerts[3].ST[0] = 4.0f;
-			fx.mVerts[3].ST[1] = 4.0f;
-			fx.mVerts[3].destST[0] = 4.0f;
-			fx.mVerts[3].destST[1] = 4.0f;
-
-			trap->FX_AddPrimitive(&fx);
-		}
+		trap->FX_AddPrimitive(&fx);
 	}
 }
 
