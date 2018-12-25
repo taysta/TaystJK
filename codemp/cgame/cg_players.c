@@ -57,6 +57,7 @@ char	*cg_customSoundNames[MAX_CUSTOM_SOUNDS] = {
 	"*gasp",
 	"*land1",
 	"*taunt",
+	"*roll",
 	NULL
 };
 
@@ -945,6 +946,9 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 				ci->sounds[i] = trap->S_RegisterSound( va("sound/%s/%s", DEFAULT_MALE_SOUNDPATH, soundName) );
 			}
 		}
+
+		if (!ci->sounds[i] && i == 15) //"*roll"
+			ci->sounds[i] = ci->sounds[3]; //fallback to jumpsound if model doesn't have a custom roll sound
 	}
 
 	if (cgs.gametype >= GT_TEAM || com_buildScript.integer)

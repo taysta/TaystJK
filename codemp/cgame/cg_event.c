@@ -1649,9 +1649,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FALL:
 		DEBUGNAME("EV_FALL");
 		if (es->number == cg.snap->ps.clientNum && cg.snap->ps.fallingToDeath)
-		{
 			break;
-		}
 		if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
 			break;
 		DoFall(cent, es, clientNum);
@@ -1777,28 +1775,18 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_ROLL:
 		DEBUGNAME("EV_ROLL");
 		if (es->number == cg.snap->ps.clientNum && cg.snap->ps.fallingToDeath)
-		{
 			break;
-		}
-		if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
+		if (cg.predictedPlayerState.duelInProgress && (es->clientNum != cg.predictedPlayerState.clientNum && es->clientNum != cg.predictedPlayerState.duelIndex))
 			break;
-		if (es->eventParm)
-		{ //fall-roll-in-one event
+		if (es->eventParm) //fall-roll-in-one event
 			DoFall(cent, es, clientNum);
-		}
 
 		if (cg_rollSounds.integer == 1)//JAPRO - Clientside - Add rollsounds options
-		{
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) );
-		}
+			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
 		else if (cg_rollSounds.integer == 2 && cg.snap->ps.clientNum != es->number)
-		{
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) );
-		}
+			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
 		else if (cg_rollSounds.integer > 2 && cg.snap->ps.clientNum == es->number)
-		{
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) );
-		}
+			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
 
 		trap->S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.rollSound  );
 
