@@ -1820,8 +1820,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				default:
 					if ( Q_irand( 0, 1 ) ) { //use razors taunt system so it also plays taunt.wav 
 						int num = Q_irand( 0, 3 );
-						if ( num )
+						if ( num ) {
 							soundIndex = CG_CustomSound( es->number, va( "*anger%d.wav", num ) );
+							if (!soundIndex)
+								soundIndex = CG_CustomSound(es->number, va("*taunt%d.wav", num));
+						}
 						if ( !num || !soundIndex )
 							soundIndex = CG_CustomSound( es->number, "*taunt.wav" );
 					}
