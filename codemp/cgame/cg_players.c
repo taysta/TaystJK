@@ -6861,7 +6861,7 @@ qboolean BG_SuperBreakWinAnim( int anim );
 
 void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, int renderfx, int modelIndex, int saberNum, int bladeNum, vec3_t origin, vec3_t angles, qboolean fromSaber, qboolean dontDraw)
 {
-	vec3_t	org_, end, v, rgb1, draw_dir,
+	vec3_t	org_, end, v, rgb1,
 			axis_[3] = {{0,0,0}, {0,0,0}, {0,0,0}};	// shut the compiler up
 	trace_t	trace;
 	int i = 0;
@@ -10485,10 +10485,10 @@ void CG_Player( centity_t *cent ) {
 		if (cent->currentState.legsAnim == BOTH_RUNBACK2 || cent->currentState.legsAnim == BOTH_RUNBACK_DUAL)
 			cent->currentState.legsAnim = BOTH_RUNBACK1;
 
-		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
+		if (cent->currentState.torsoAnim == BOTH_WALK2 || cent->currentState.torsoAnim == BOTH_WALK_DUAL)
 			cent->currentState.torsoAnim = BOTH_WALK1;
 
-		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALKBACK_DUAL)
+		if (cent->currentState.legsAnim == BOTH_WALK2 || cent->currentState.legsAnim == BOTH_WALK_DUAL)
 			cent->currentState.legsAnim = BOTH_WALK1;
 
 		if (cent->currentState.torsoAnim == BOTH_WALKBACK2 || cent->currentState.torsoAnim == BOTH_WALKBACK_DUAL)
@@ -10501,7 +10501,7 @@ void CG_Player( centity_t *cent ) {
 			cent->currentState.torsoAnim = cent->currentState.legsAnim;
 
 		if (!cgs.isJAPro) {
-			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF || cent->currentState.legsAnim == BOTH_RUN_STAFF)
+			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF)
 				cent->currentState.torsoAnim = BOTH_RUN1;
 
 			if (cent->currentState.legsAnim == BOTH_RUN_STAFF)
