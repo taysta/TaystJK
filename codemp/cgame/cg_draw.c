@@ -7932,7 +7932,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 
 	ignore = cg.predictedPlayerState.clientNum;
 
-	if ( cg_dynamicCrosshair.integer && !staticCrosshairOverride() || (cg_smoothCamera.integer && cg.renderingThirdPerson) )
+	if ( cg_dynamicCrosshair.integer && !staticCrosshairOverride() )
 	{
 		vec3_t d_f, d_rt, d_up;
 		/*

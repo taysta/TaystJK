@@ -3832,21 +3832,6 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 		return;
 	}
 
-	// set cg.frameInterpolation
-	if ( cg.nextSnap ) {
-		int		delta;
-
-		delta = (cg.nextSnap->serverTime - cg.snap->serverTime);
-		if ( delta == 0 ) {
-			cg.frameInterpolation = 0;
-		} else {
-			cg.frameInterpolation = (float)( cg.time - cg.snap->serverTime ) / delta;
-		}
-	} else {
-		cg.frameInterpolation = 0;	// actually, it should never be used, because
-									// no entities should be marked as interpolating
-	}
-
 	// the auto-rotating items will all have the same axis
 	cg.autoAngles[0] = 0;
 	cg.autoAngles[1] = ( cg.time & 2047 ) * 360 / 2048.0;

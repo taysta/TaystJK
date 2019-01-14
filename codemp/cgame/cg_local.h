@@ -1373,33 +1373,34 @@ Ghoul2 Insert End
 	qboolean			wasOnGround;
 	vec3_t				lastGroundPosition;
 
-	int				telemarkX;//japro
-	int				telemarkY;//japro
-	int				telemarkZ;//japro
-	int				telemarkYaw;//japro
-	int				lastAutoKillTime;
+	int					telemarkX;//japro
+	int					telemarkY;//japro
+	int					telemarkZ;//japro
+	int					telemarkYaw;//japro
+	int					lastAutoKillTime;
 
 	//int				predictedRocketJumpTime;
 	//int				predictedRocketJumpExpireTime;
 	//vec3_t			predictedRocketJumpOriginalVel;
-	vec3_t			predictedRocketJumpImpulse;
-	qboolean		predictKnockback;
+	vec3_t				predictedRocketJumpImpulse;
+	qboolean			predictKnockback;
 
-	float			lastXpos;
-	float			lastYpos;
+	float				lastXpos;
+	float				lastYpos;
 
-	vec4_t			strafeHelperActiveColor;
-	vec4_t			crosshairColor;
-	int				drawingStrafeTrails;//optimization i guess
-	int				doVstrTime;
-	char			doVstr[MAX_QPATH];
-	short			numFKFrames;
-	short			numJumps;
-	int				userinfoUpdateDebounce;
-	qboolean		loggingStrafeTrail;
-	char			logStrafeTrailFilename[MAX_QPATH];
-	fileHandle_t	strafeTrailFileHandle;
-	char			lastChatMsg[MAX_SAY_TEXT + MAX_NETNAME + 32];
+	vec4_t				strafeHelperActiveColor;
+	vec4_t				crosshairColor;
+	int					drawingStrafeTrails;//optimization i guess
+	int					doVstrTime;
+	char				doVstr[MAX_QPATH];
+	short				numFKFrames;
+	short				numJumps;
+	int					userinfoUpdateDebounce;
+	qboolean			loggingStrafeTrail;
+	char				logStrafeTrailFilename[MAX_QPATH];
+	fileHandle_t		strafeTrailFileHandle;
+	char				lastChatMsg[MAX_SAY_TEXT + MAX_NETNAME + 32];
+	float				predictedTimeFrac;	// frameInterpolation * (next->commandTime - prev->commandTime)
 #if 0
 	int					snapshotTimeoutTime;
 #endif
@@ -1409,6 +1410,8 @@ Ghoul2 Insert End
 	} log;
 
 } cg_t;
+
+#define CAMERA_MIN_FPS 15
 
 #define MAX_TICS	14
 

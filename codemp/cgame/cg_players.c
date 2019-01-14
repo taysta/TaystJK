@@ -9445,7 +9445,6 @@ float CG_RadiusForCent( centity_t *cent )
 
 static float cg_vehThirdPersonAlpha = 1.0f;
 extern vec3_t	cg_crosshairPos;
-extern vec3_t	cameraCurLoc;
 void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 {
 	float alpha = 1.0f;
@@ -9480,10 +9479,10 @@ void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 			{//vehicle has auto third-person alpha on
 				trace_t trace;
 				vec3_t	dir2Crosshair, end;
-				VectorSubtract( cg_crosshairPos, cameraCurLoc, dir2Crosshair );
+				VectorSubtract( cg_crosshairPos, cg.refdef.viewangles, dir2Crosshair );
 				VectorNormalize( dir2Crosshair );
-				VectorMA( cameraCurLoc, cent->m_pVehicle->m_pVehicleInfo->cameraRange*2.0f, dir2Crosshair, end );
-				CG_G2Trace( &trace, cameraCurLoc, vec3_origin, vec3_origin, end, ENTITYNUM_NONE, CONTENTS_BODY );
+				VectorMA( cg.refdef.viewangles, cent->m_pVehicle->m_pVehicleInfo->cameraRange*2.0f, dir2Crosshair, end );
+				CG_G2Trace( &trace, cg.refdef.viewangles, vec3_origin, vec3_origin, end, ENTITYNUM_NONE, CONTENTS_BODY );
 				if ( trace.entityNum == cent->currentState.clientNum
 					|| trace.entityNum == cg.predictedPlayerState.clientNum)
 				{//hit me or the vehicle I'm in

@@ -64,7 +64,7 @@ XCVAR_DEF( cg_chatBoxX,				"30",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxCutOffLength,	"350",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairSaberStyleColor,"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairIdentifyTarget, "1", NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairColor, "0 0 0 255",	CG_CrosshairColorChange,CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairColor, "0 0 0 255", CG_CrosshairColorChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_hudColors,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_tintHud,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
@@ -88,7 +88,7 @@ XCVAR_DEF( cg_raceSounds,						"1",	NULL,		CVAR_ARCHIVE ) //Bitvalue, but so far
 XCVAR_DEF( cg_remaps,							"1",	NULL,		CVAR_ARCHIVE|CVAR_LATCH )
 XCVAR_DEF( cg_screenShake,						"2",	NULL,		CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScreenTints,					"1",	NULL,		CVAR_ARCHIVE )
-XCVAR_DEF( cg_smoothCamera,						"0",	NULL,		CVAR_ARCHIVE )
+XCVAR_DEF( cg_cameraFPS,						"125",	NULL,		CVAR_ARCHIVE ) //90?
 XCVAR_DEF( cg_blood,							"0",	NULL,		CVAR_ARCHIVE ) //JAPRO - Clientside - re add cg_blood
 XCVAR_DEF( cg_thirdPersonFlagAlpha,				"1",	NULL,		CVAR_ARCHIVE )
 XCVAR_DEF( cg_stylePlayer,						"0",	NULL,		CVAR_ARCHIVE )
@@ -98,7 +98,7 @@ XCVAR_DEF( cg_zoomFov,							"30.0",	NULL,		CVAR_ARCHIVE )
 XCVAR_DEF( cg_fleshSparks,						"7",	NULL,		CVAR_ARCHIVE )
 XCVAR_DEF( cg_noFX,								"0",	NULL,		CVAR_ARCHIVE )
 XCVAR_DEF( cg_noTeleFX,							"0",	NULL,		CVAR_ARCHIVE )
-XCVAR_DEF( cl_ratioFix,							"1",	CG_Set2DRatio,	CVAR_ARCHIVE ) // Shared with UI module
+XCVAR_DEF( cl_ratioFix,							"1", CG_Set2DRatio,	CVAR_ARCHIVE ) // Shared with UI module
 
 //Features
 XCVAR_DEF( cg_simulatedProjectiles,				"0",	NULL,					CVAR_ARCHIVE )

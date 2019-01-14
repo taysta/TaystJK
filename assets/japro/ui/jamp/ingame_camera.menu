@@ -108,11 +108,12 @@
 			group				camera
 			type				ITEM_TYPE_MULTI
 			text				"Smooth Camera:"
-			cvar				cg_smoothCamera
+			cvar				cg_cameraFPS
 			cvarFloatList
 			{
-				@MENUS_OFF 0
-				@MENUS_ON 1
+				@MENUS_OFF 125
+				@MENUS_ON 30
+				"BaseJKA" 0
 			}
 			rect				10 24 116 20
 			textalign			ITEM_ALIGN_RIGHT

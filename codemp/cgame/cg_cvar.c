@@ -122,7 +122,6 @@ static void CG_StrafeHelperActiveColorChange(void) {
 	//Com_Printf("New color is %f, %f, %f, %f\n", cg.strafeHelperActiveColor[0], cg.strafeHelperActiveColor[1], cg.strafeHelperActiveColor[2], cg.strafeHelperActiveColor[3]);
 }
 
-//#ifndef __linux__
 #ifdef WIN32
 #include "windows.h"
 #define PATCH(addr, value, type) { type patch = value; MemoryPatch((void *)addr, (void *)&patch, sizeof(type)); }
