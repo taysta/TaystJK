@@ -11995,16 +11995,22 @@ void PmoveSingle (pmove_t *pmove) {
 
 	pm = pmove;
 
-	if (pm->cmd.buttons & BUTTON_ATTACK && pm->cmd.buttons & BUTTON_USE_HOLDABLE)
-	{
-		pm->cmd.buttons &= ~BUTTON_ATTACK;
-		pm->cmd.buttons &= ~BUTTON_USE_HOLDABLE;
+#ifdef _CGAME
+	if (!cgs.isJAPlus || pm->ps->weapon != WP_MELEE) {
+#endif
+		if (pm->cmd.buttons & BUTTON_ATTACK && pm->cmd.buttons & BUTTON_USE_HOLDABLE)
+		{
+			pm->cmd.buttons &= ~BUTTON_ATTACK;
+			pm->cmd.buttons &= ~BUTTON_USE_HOLDABLE;
+		}
+		if (pm->cmd.buttons & BUTTON_ALT_ATTACK && pm->cmd.buttons & BUTTON_USE_HOLDABLE)
+		{
+			pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
+			pm->cmd.buttons &= ~BUTTON_USE_HOLDABLE;
+		}
+#ifdef _CGAME
 	}
-	if (pm->cmd.buttons & BUTTON_ALT_ATTACK && pm->cmd.buttons & BUTTON_USE_HOLDABLE)
-	{
-		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
-		pm->cmd.buttons &= ~BUTTON_USE_HOLDABLE;
-	}
+#endif
 
 	if (pm->ps->emplacedIndex)
 	{
@@ -12269,7 +12275,7 @@ void PmoveSingle (pmove_t *pmove) {
 #ifdef _CGAME
 	if (cgs.isJAPlus) { //some JA+ animation support...
 		if (pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCKEE || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCKEE
-			|| pm->ps->torsoAnim == BOTH_GETUP1
+			|| pm->ps->torsoAnim == BOTH_GETUP1 || pm->ps->torsoAnim == BOTH_NEW_STABEE
 			|| (pm->ps->legsAnim >= BOTH_KISSEE && pm->ps->legsAnim <= BOTH_LEDGE_MERCPULL))
 		{
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
@@ -13131,7 +13137,7 @@ void PmoveSingle (pmove_t *pmove) {
 		}
 		else if (!PM_WeaponOkOnVehicle(pm->cmd.weapon) || !PM_WeaponOkOnVehicle(pm->ps->weapon))
 		{ //this weapon is not legal for the vehicle, force to our current one
-            if (!PM_WeaponOkOnVehicle(pm->ps->weapon))
+	        if (!PM_WeaponOkOnVehicle(pm->ps->weapon))
 			{ //uh-oh!
 				int weap = PM_GetOkWeaponForVehicle();
 
