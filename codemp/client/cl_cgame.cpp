@@ -490,7 +490,8 @@ rescan:
 		return qtrue;
 	}
 
-	if (!strcmp(cmd, "chat") || !strcmp(cmd, "tchat")) {
+	if (!Q_stricmp(cmd, "chat") || !Q_stricmp(cmd, "tchat") || !Q_stricmp(cmd, "lchat") || !Q_stricmp(cmd, "ltchat"))
+	{
 		if (cl_logChat->integer) {
 			char chat[MAX_NETNAME + MAX_SAY_TEXT + 12];
 			int i, l;
@@ -519,7 +520,7 @@ rescan:
 		}
 		else
 #endif
-		if (strcmp(con_notifywords->string, "0")) {
+		if (Q_stricmp(con_notifywords->string, "0")) {
 			char *text = Q_strrchr(s, ':');
 			if (text) {
 				int i;
@@ -538,7 +539,7 @@ rescan:
 		return qtrue;
 	}
 
-	if (!strcmp(cmd, "print")) {
+	if (!Q_stricmp(cmd, "print")) {
 		s = Cmd_Argv(1);
 		if (Q_stristr(s, "@@@PLCONNECT") || Q_stristr(s, "@@@DISCONNECT") || Q_stristr(s, "@@@WAS_KICKED") || Q_stristr(s, "timed out")) {
 			stampColor = COLOR_YELLOW;
