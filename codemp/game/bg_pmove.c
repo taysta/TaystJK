@@ -1888,6 +1888,10 @@ qboolean PM_AdjustAngleForWallJump( playerState_t *ps, usercmd_t *ucmd, qboolean
 							ps->legsTimer = ps->torsoTimer = 150;
 						}
 					}
+#ifdef _CGAME
+					if (cgs.isJAPlus)
+						PM_UpdateViewAngles(ps, ucmd); //update here for vertical freelook prediction
+#endif
 				}
 			}
 		}
