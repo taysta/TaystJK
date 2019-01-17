@@ -748,12 +748,13 @@ Ghoul2 Insert End
 				{
 					if (!thirdPerson)
 					{
-						trap->FX_PlayEntityEffectID(weapon->altMuzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1  );
+						trap->FX_PlayEntityEffectID(weapon->altMuzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1);
 					}
 					else
 					{
 						trap->FX_PlayEffectID(weapon->altMuzzleEffect, flashorigin, flashdir, -1, -1, qfalse);
 					}
+					cent->muzzleFlashTime = 0; //japro - fix loud gunshots with high fps
 				}
 			}
 			else
@@ -762,12 +763,13 @@ Ghoul2 Insert End
 				{
 					if (!thirdPerson)
 					{
-						trap->FX_PlayEntityEffectID(weapon->muzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1  );
+						trap->FX_PlayEntityEffectID(weapon->muzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1);
 					}
 					else
 					{
 						trap->FX_PlayEffectID(weapon->muzzleEffect, flashorigin, flashdir, -1, -1, qfalse);
 					}
+					cent->muzzleFlashTime = 0; //japro - fix loud gunshots with high fps
 				}
 			}
 		}
