@@ -308,7 +308,8 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 		trace_t tr;
 		vec3_t down, mins, maxs;
 		VectorSet(mins, -15, -15, DEFAULT_MINS_2);
-		VectorSet(maxs, 15, 15, DEFAULT_MAXS_2);
+		VectorSet(maxs, 15, 15, CROUCH_MAXS_2);
+		player->client->ps.pm_flags |= PMF_DUCKED;
 
 		VectorCopy(origin, down);//Drop them to floor so they cant abuse?
 		down[2] -= 32768;
