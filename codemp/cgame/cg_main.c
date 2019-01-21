@@ -3057,8 +3057,15 @@ void CG_NextForcePower_f( void )
 		return;
 	}
 
-	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
 	{
+		return;
+	}
+
+	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+	{
+		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
+		trap->SendClientCommand("amTeleMark");
 		return;
 	}
 
@@ -3067,11 +3074,6 @@ void CG_NextForcePower_f( void )
 	if ((cmd.buttons & BUTTON_USE) || CG_NoUseableForce())
 	{
 		CG_NextInventory_f();
-		return;
-	}
-
-	if (cg.snap->ps.pm_flags & PMF_FOLLOW)
-	{
 		return;
 	}
 
@@ -3105,8 +3107,15 @@ void CG_PrevForcePower_f( void )
 		return;
 	}
 
-	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
 	{
+		return;
+	}
+
+	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+	{
+		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
+		trap->SendClientCommand("amTele");
 		return;
 	}
 
@@ -3115,11 +3124,6 @@ void CG_PrevForcePower_f( void )
 	if ((cmd.buttons & BUTTON_USE) || CG_NoUseableForce())
 	{
 		CG_PrevInventory_f();
-		return;
-	}
-
-	if (cg.snap->ps.pm_flags & PMF_FOLLOW)
-	{
 		return;
 	}
 
