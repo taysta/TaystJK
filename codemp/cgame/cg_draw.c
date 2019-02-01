@@ -5622,7 +5622,9 @@ static void CG_DrawUpperRight( void ) {
 
 		y = CG_DrawMiniScoreboard ( y );
 
-		y = CG_DrawPowerupIcons(y);
+		if (cg_drawPowerUpIcons.integer) {
+			y = CG_DrawPowerupIcons(y);
+		}
 
 		CG_DrawInventory(y);
 	}
