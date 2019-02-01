@@ -120,3 +120,15 @@ If spectator is set, only spectators can use this teleport
 Spectator teleporters are not normally placed in the editor, but are created
 automatically near doors to allow spectators to move through them
 */
+
+/*QUAKED fx_wind (0 .5 .8) (-16 -16 -16) (16 16 16) NORMAL CONSTANT GUSTING SWIRLING x  FOG LIGHT_FOG
+Generates global wind forces
+NORMAL    creates a random light global wind
+CONSTANT  forces all wind to go in a specified direction
+GUSTING   causes random gusts of wind
+SWIRLING  causes random swirls of wind
+FOG       adds a layer of fog to the weather zone
+LIGHT_FOG adds a layer of blue fog to the weather zone
+"angles" the direction for constant wind
+"speed"  the speed for constant wind
+*/
