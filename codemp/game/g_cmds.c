@@ -711,15 +711,14 @@ QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
 	if (ent->client->sess.raceMode) {
 		VectorClear(ent->client->ps.velocity); //lel
 		ent->client->ps.duelTime = 0;
-		ent->client->ps.stats[STAT_RESTRICTIONS] = 0; //meh
-		//if (ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] == 3) { //this is a sad hack..
 		if (!ent->client->pers.practice) {
 			ent->client->ps.powerups[PW_YSALAMIRI] = 0; //beh, only in racemode so wont fuck with ppl using amtele as checkpoints midcourse
-		}
-		if (ent->client->savedJumpLevel && ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] != ent->client->savedJumpLevel) {
-			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->savedJumpLevel;
-			//trap->SendServerCommand(ent-g_entities, va("print \"Restored saved jumplevel (%i).\n\"", ent->client->savedJumpLevel));
-			ent->client->savedJumpLevel = 0;
+			ent->client->ps.stats[STAT_RESTRICTIONS] = 0; //meh
+			if (ent->client->savedJumpLevel && ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] != ent->client->savedJumpLevel) {
+				ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->savedJumpLevel;
+				//trap->SendServerCommand(ent-g_entities, va("print \"Restored saved jumplevel (%i).\n\"", ent->client->savedJumpLevel));
+				ent->client->savedJumpLevel = 0;
+			}
 		}
 		ent->client->ps.powerups[PW_FORCE_BOON] = 0;
 		ent->client->pers.haste = qfalse;
@@ -812,10 +811,10 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 			if (!target->client || target->client->ps.m_iVehicleNum)
 				return;
 			trap->SendServerCommand(target-g_entities, va("print \"%s\n\"", target->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (target->client->sess.raceMode && target->client->noclip)
+			if (target->client->sess.raceMode && target->client->noclip && !target->client->pers.practice)
 				AmTeleportPlayer( target, target->client->ps.origin, target->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
 			target->client->noclip = !target->client->noclip;
-			if (!sv_cheats.integer)
+			if (!sv_cheats.integer && !target->client->pers.practice)
 				ResetPlayerTimers(target, qtrue);
 			return;
 		}
@@ -823,10 +822,10 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 			if (ent->client->ps.m_iVehicleNum)
 				return;
 			trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-			if (ent->client->sess.raceMode && ent->client->noclip)
+			if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
 				AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
 			ent->client->noclip = !ent->client->noclip;
-			if (!sv_cheats.integer)
+			if (!sv_cheats.integer && !ent->client->pers.practice)
 				ResetPlayerTimers(ent, qtrue);
 			return;
 		}
@@ -835,10 +834,10 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 		if (ent->client->ps.m_iVehicleNum)
 			return;
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", ent->client->noclip ? "noclip OFF" : "noclip ON"));
-		if (ent->client->sess.raceMode && ent->client->noclip)
+		if (ent->client->sess.raceMode && ent->client->noclip && !ent->client->pers.practice)
 			AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
 		ent->client->noclip = !ent->client->noclip;
-		if (!sv_cheats.integer)
+		if (!sv_cheats.integer && !ent->client->pers.practice)
 			ResetPlayerTimers(ent, qtrue);
 	}
 	else if (allowed) { //Cheats enabled only
