@@ -6772,7 +6772,7 @@ static void Cmd_Ysal_f(gentity_t *ent)
 		ent->client->ps.powerups[PW_YSALAMIRI] = 0;
 	}
 	else {
-		ent->client->ps.powerups[PW_YSALAMIRI] = 9999999;
+		ent->client->ps.powerups[PW_YSALAMIRI] = level.time + 9999999;
 	}
 }
 
