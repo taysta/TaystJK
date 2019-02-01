@@ -984,7 +984,10 @@ void target_level_change_use(gentity_t *self, gentity_t *other, gentity_t *activ
 {
 	G_ActivateBehavior(self,BSET_USE);
 
-	trap->SendConsoleCommand(EXEC_APPEND, va("map %s\n", self->message));
+	if (sv_cheats.integer)
+		trap->SendConsoleCommand(EXEC_APPEND, va("devmap %s\n", self->message));
+	else
+		trap->SendConsoleCommand(EXEC_APPEND, va("map %s\n", self->message));
 }
 
 /*QUAKED target_level_change (1 0 0) (-4 -4 -4) (4 4 4)
