@@ -2393,6 +2393,18 @@ static qboolean PM_CheckJump( void )
 							pm->ps->velocity[2] = JUMP_VELOCITY;
 					}
 				}
+#ifdef _GAME
+				if ((pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP) && ((pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) ||
+					(g_onlyBhop.integer == 1) || ((g_onlyBhop.integer > 1) && client->pers.onlyBhop)))
+#else
+				if (cgs.isJAPro && (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP) &&
+					((pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) || (cgs.jcinfo & JAPRO_CINFO_BHOP1) || ((cgs.jcinfo & JAPRO_CINFO_BHOP2) && (cp_pluginDisable.integer & JAPRO_PLUGIN_BHOP))))
+#endif
+				{ // so we can force different jump heights with ONLYBHOP restrict
+					pm->cmd.upmove = 0;
+					pm->ps->pm_flags &= ~PMF_JUMP_HELD;
+				}
+
 				if (moveStyle != MV_QW && moveStyle != MV_CPM && moveStyle != MV_Q3 && moveStyle != MV_PJK && moveStyle != MV_WSW && moveStyle != MV_RJQ3 && moveStyle != MV_RJCPM && moveStyle != MV_JETPACK && moveStyle != MV_SLICK && moveStyle != MV_BOTCPM) {
 					{
 						pm->cmd.upmove = 0; // change this to allow hold to jump?
