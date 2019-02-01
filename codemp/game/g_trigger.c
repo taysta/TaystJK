@@ -1786,7 +1786,7 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 	if (trigger->spawnflags & RESTRICT_FLAG_ALLOWTELES) {
 		player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_ALLOWTELES;
 	}
-	if (!trigger->spawnflags) {
+	if (trigger->spawnflags == RESTRICT_FLAG_DISABLE) {
 		player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_BHOP;
 		if (player->client->savedJumpLevel && player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != player->client->savedJumpLevel) {
 			player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = player->client->savedJumpLevel;
