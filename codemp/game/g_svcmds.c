@@ -1674,7 +1674,7 @@ svcmd_t svcmds[] = {
 	{ "startingItems",				Svcmd_ToggleStartingItems_f,		qfalse },
 	{ "startingWeapons",			Svcmd_ToggleStartingWeapons_f,		qfalse },
 	{ "toggleAdmin",				Svcmd_ToggleAdmin_f,				qfalse },
-  { "toggleallowvote",			Svcmd_ToggleAllowVote_f,			qfalse },
+	{ "toggleallowvote",			Svcmd_ToggleAllowVote_f,			qfalse },
 	{ "toggleEmotes",				Svcmd_ToggleEmotes_f,				qfalse },
 
 	{ "toggleuserinfovalidation",	Svcmd_ToggleUserinfoValidation_f,	qfalse },

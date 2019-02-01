@@ -1701,6 +1701,8 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 			const int jumplevel = trigger->count;
 			if (jumplevel >= 1 && jumplevel <= 3) {
 				if (player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != jumplevel) {
+					if (!player->client->savedJumpLevel) //save their original jumplevel
+						player->client->savedJumpLevel = player->client->ps.fd.forcePowerLevel[FP_LEVITATION];
 					player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = jumplevel;
 					trap->SendServerCommand(player - g_entities, va("print \"Jumplevel updated (%i).\n\"", jumplevel));
 				}
@@ -1745,6 +1747,13 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_ALLOWTELES;
 	}
 	if (!trigger->spawnflags) {
+		const int jumplevel = (trigger->count && trigger->count >= 1 && trigger->count <= 3) ? trigger->count : 3; //allow count to set jump level for different jump heights
+		if (player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != jumplevel) {
+			if (!player->client->savedJumpLevel) //so we only keep their original jumplevel
+				player->client->savedJumpLevel = player->client->ps.fd.forcePowerLevel[FP_LEVITATION];
+			player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = jumplevel;
+			//trap->SendServerCommand(player - g_entities, va("print \"Jumplevel updated with onlybhop restrict (%i).\n\"", jumplevel));
+		}
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_BHOP;
 	}
 }
@@ -1755,6 +1764,13 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE)
 		return;
 
+	if (trigger->spawnflags & RESTRICT_FLAG_JUMP) { //Restore their original jump level.
+		if (player->client->savedJumpLevel && player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != player->client->savedJumpLevel) {
+			player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = player->client->savedJumpLevel;
+			//trap->SendServerCommand(player - g_entities, va("print \"Restored saved jumplevel (%i).\n\"", player->client->savedJumpLevel));
+			player->client->savedJumpLevel = 0;
+		}
+	}
 	if (trigger->spawnflags & RESTRICT_FLAG_YSAL) {//Give Ysal
 		player->client->ps.powerups[PW_YSALAMIRI] = 0;
 	}
@@ -1772,6 +1788,11 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 	}
 	if (!trigger->spawnflags) {
 		player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_BHOP;
+		if (player->client->savedJumpLevel && player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != player->client->savedJumpLevel) {
+			player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = player->client->savedJumpLevel;
+			//trap->SendServerCommand(player - g_entities, va("print \"Restored saved jumplevel (%i).\n\"", player->client->savedJumpLevel));
+			player->client->savedJumpLevel = 0;
+		}
 	}
 }
 
@@ -1794,7 +1815,7 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			return;
 	}
 
-	(trigger->speed) ? (scale = trigger->speed) : (scale = 2.0f); //Check for bounds? scale can be negative, that means "bounce".
+	scale = trigger->speed ? trigger->speed : 2.0f; //Check for bounds? scale can be negative, that means "bounce".
 	player->client->lastBounceTime = level.time;
 
 	if (trigger->noise_index) 

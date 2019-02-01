@@ -300,7 +300,7 @@ int JP_ClientNumberFromString(gentity_t *to, const char *s)
 
 	// numeric values are just slot numbers
 	if (s[0] >= '0' && s[0] <= '9' && strlen(s) == 1) //changed this to only recognize numbers 0-31 as client numbers, otherwise interpret as a name, in which case sanitize2 it and accept partial matches (return error if multiple matches)
-		{
+	{
 		idnum = atoi( s );
 		cl = &level.clients[idnum];
 		if ( cl->pers.connected != CON_CONNECTED ) {
@@ -715,6 +715,11 @@ QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
 		//if (ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] == 3) { //this is a sad hack..
 		if (!ent->client->pers.practice) {
 			ent->client->ps.powerups[PW_YSALAMIRI] = 0; //beh, only in racemode so wont fuck with ppl using amtele as checkpoints midcourse
+		}
+		if (ent->client->savedJumpLevel && ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] != ent->client->savedJumpLevel) {
+			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = ent->client->savedJumpLevel;
+			//trap->SendServerCommand(ent-g_entities, va("print \"Restored saved jumplevel (%i).\n\"", ent->client->savedJumpLevel));
+			ent->client->savedJumpLevel = 0;
 		}
 		ent->client->ps.powerups[PW_FORCE_BOON] = 0;
 		ent->client->pers.haste = qfalse;
