@@ -138,6 +138,7 @@ typedef struct {
 typedef struct client_s {
 	clientState_t	state;
 	char			userinfo[MAX_INFO_STRING];		// name, etc
+	char			userinfoPostponed[MAX_INFO_STRING];
 
 	qboolean		sentGamedir; //see if he has been sent an svc_setgame
 

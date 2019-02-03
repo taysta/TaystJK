@@ -1188,7 +1188,7 @@ void SV_UserinfoChanged( client_t *cl ) {
 	cl->wishSnaps = atoi(val);
 	if (!cl->wishSnaps)
 		cl->wishSnaps = maxSnaps;
-	if (sv_snapsPolicy->integer == 1)
+	if (sv_fps && sv_fps->integer && sv_snapsPolicy->integer == 1)
 	{
 		cl->wishSnaps = sv_fps->integer;
 		i = 1000 / sv_fps->integer;
@@ -1243,8 +1243,6 @@ static void SV_UpdateUserinfo_f( client_t *cl ) {
 	if( !arg || !*arg )
 		return;
 
-	Q_strncpyz( cl->userinfo, arg, sizeof(cl->userinfo) );
-
 #ifdef FINAL_BUILD
 	if (cl->lastUserInfoChange > svs.time)
 	{
@@ -1253,17 +1251,21 @@ static void SV_UpdateUserinfo_f( client_t *cl ) {
 		if (cl->lastUserInfoCount >= INFO_CHANGE_MAX_COUNT)
 		{
 		//	SV_SendServerCommand(cl, "print \"Warning: Too many info changes, last info ignored\n\"\n");
-			SV_SendServerCommand(cl, "print \"@@@TOO_MANY_INFO\n\"\n");
+		//	SV_SendServerCommand(cl, "print \"@@@TOO_MANY_INFO\n\"\n");
+			Q_strncpyz( cl->userinfoPostponed, arg, sizeof(cl->userinfoPostponed) );
+			SV_SendServerCommand(cl, "print \"Warning: Too many info changes, last info postponed\n\"\n");
 			return;
 		}
 	}
 	else
 #endif
 	{
+		cl->userinfoPostponed[0] = 0;
 		cl->lastUserInfoCount = 0;
 		cl->lastUserInfoChange = svs.time + INFO_CHANGE_MIN_INTERVAL;
 	}
 
+	Q_strncpyz(cl->userinfo, arg, sizeof(cl->userinfo));
 	SV_UserinfoChanged( cl );
 	// call prog code to allow overrides
 	GVM_ClientUserinfoChanged( cl - svs.clients );
@@ -1434,6 +1436,27 @@ void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
 
 	if ( cl->state != CS_ACTIVE ) {
 		return;		// may have been kicked during the last usercmd
+	}
+
+	if ( cl->lastUserInfoCount >= INFO_CHANGE_MAX_COUNT && cl->lastUserInfoChange < svs.time && cl->userinfoPostponed[0] )
+	{ // Update postponed userinfo changes now
+		char info[MAX_INFO_STRING];
+
+		Q_strncpyz( cl->userinfo, cl->userinfoPostponed, sizeof(cl->userinfo) );
+		SV_UserinfoChanged( cl );
+
+		// call prog code to allow overrides
+		GVM_ClientUserinfoChanged(cl - svs.clients);
+
+		// get the name out of the game and set it in the engine
+		SV_GetConfigstring(CS_PLAYERS + (cl - svs.clients), info, sizeof(info));
+		Info_SetValueForKey(cl->userinfo, "name", Info_ValueForKey(info, "n"));
+		Q_strncpyz(cl->name, Info_ValueForKey(info, "n"), sizeof(cl->name));
+
+		// clear it
+		cl->userinfoPostponed[0] = 0;
+		cl->lastUserInfoCount = 0;
+		cl->lastUserInfoChange = svs.time + INFO_CHANGE_MIN_INTERVAL;
 	}
 
 	GVM_ClientThink( cl - svs.clients, NULL );
