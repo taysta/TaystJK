@@ -961,10 +961,10 @@ void CG_LastWeapon_f(void) //loda fixme. japro
 
 	cg.weaponSelect = cg.lastWeaponSelect[1]; //Set selected to last
 
-	cg.weaponSelectTime = cg.time;
 	if (cg.weaponSelect != cg.lastWeaponSelect[1])
 		trap->S_MuteSound(cg.predictedPlayerState.clientNum, CHAN_WEAPON);
 
+	cg.weaponSelectTime = cg.time;
 }
 
 typedef struct bitInfo_S {
@@ -1049,8 +1049,8 @@ static qboolean japroPluginDisables[] = {
 	qfalse,//{"No alt dim effect"},//9
 	qfalse,//{"Holstered saber"},//10
 	qfalse,//{"Ledge grab"},//11
-	qfalse,//{"New DFA Primary"},//12
-	qfalse,//{"New DFA Alt"},//13
+	qfalse,//{"Disable New DFA Primary"},//12
+	qfalse,//{"Disable New DFA Alt"},//13
 	qfalse,//{"No SP Cartwheel"},//14
 	qfalse,//{"No Auto DL Redirect"},//15
 
@@ -1083,8 +1083,8 @@ static qboolean japlusPluginDisables[] = {
 	qtrue,//{"No alt dim effect"},//9
 	qtrue,//{"Holstered saber"},//10
 	qtrue,//{"Ledge grab"},//11
-	qtrue,//{"New DFA Primary"},//12
-	qtrue,//{"New DFA Alt"},//13
+	qtrue,//{"Disable New DFA Primary"},//12
+	qtrue,//{"Disable New DFA Alt"},//13
 	qtrue,//{"No SP Cartwheel"},//14
 	qtrue,//{"No Auto DL Redirect"},//15
 
@@ -1117,8 +1117,8 @@ static bitInfo_T pluginDisables[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{"No alt dim effect"},//9
 	{"Holstered saber"},//10
 	{"Ledge grab"},//11
-	{"New DFA Primary"},//12
-	{"New DFA Alt"},//13
+	{"Disable New DFA Primary"},//12
+	{"Disable New DFA Alt"},//13
 	{"No SP Cartwheel"},//14
 	{"No Auto DL Redirect"},//15
 
@@ -2162,7 +2162,6 @@ static const char *gcmds[] = {
 	"amTeleMark",
 	"amSleep",
 	"amWake",
-	"amWait",
 	"amSlap",
 	"amSilence",
 	"amKillVote",
@@ -2215,6 +2214,8 @@ static const char *gcmds[] = {
 	"amTaunt",
 	"amTaunt2",
 	"amVictory",
+	"amWait",
+
 	"amGrantAdmin",
 	"amListMaps",
 	"race",
