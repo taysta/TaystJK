@@ -9252,10 +9252,48 @@ char *Q_strtokm(char *str, const char *delim)
 void CG_ChatBox_AddString(char *chatStr)
 {
 	chatBoxItem_t *chat = &cg.chatItems[cg.chatItemActive];
+	char tempChatStr[MAX_SAY_TEXT+MAX_NETNAME] = { 0 }, *r = chatStr, *w = tempChatStr;
 	float chatLen;
 
-	if (cg_chatBox.integer<=0)
+	if (cg_chatBox.integer < 0)
 	{ //don't bother then.
+		return;
+	}
+
+	if (cg_logChat.integer & JAPRO_CHATLOG_ENABLE) {
+		CG_LogPrintf(cg.log.file, "%s\n", chatStr);
+	}
+
+	// from duo
+	// NOTE: this creates real percent symbols in the string, be careful using va(), etc below here!
+	//Q_strncpyz(tempChatStr, chatStr, sizeof(tempChatStr));
+	*r = *chatStr;
+	while (*r) {
+		if (*r == -80 && *(r + 1) == '/' && *(r + 2) == '.') {
+			*w = '%';
+			r += 3;
+		}
+		else if (*r == '\'' && *(r + 1) == '\'') {
+			*w = '"';
+			r += 2;
+		}
+		else {
+			*w = *r;
+			r++;
+		}
+		w++;
+	}
+
+	chatStr = tempChatStr;
+
+	if (cg_chatSounds.integer && cg_chatBox.integer >= 0)//JAPRO - Clientside - Chatsounds option
+		trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
+
+	if (cg_chatBox.integer) {
+		trap->Print("*%s\n", chatStr);
+	}
+	else {
+		trap->Print("%s\n", chatStr);
 		return;
 	}
 
@@ -9263,7 +9301,7 @@ void CG_ChatBox_AddString(char *chatStr)
 
 	if (strlen(chatStr) > sizeof(chat->string))
 	{ //too long, terminate at proper len.
-		chatStr[sizeof(chat->string)-1] = 0;
+		chatStr[sizeof(chat->string) - 1] = 0;
 	}
 
 	if (cg_cleanChatbox.integer)

@@ -1573,8 +1573,8 @@ static void CG_CenterPrint_f( void ) {
 	CG_CheckSVStringEdRef( strEd, CG_Argv( 1 ) );
 	CG_CenterPrint( strEd, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
 
-	if (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT)
-		CG_LogPrintf(cg.log.chat, "%s\n", strEd); //Log server center prints?
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server center prints?
 }
 
 static void CG_CenterPrintSE_f( void ) {
@@ -1587,8 +1587,8 @@ static void CG_CenterPrintSE_f( void ) {
 	trap->SE_GetStringTextString( x, strEd, MAX_STRINGED_SV_STRING );
 	CG_CenterPrint( strEd, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
 
-	if (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT)
-		CG_LogPrintf(cg.log.chat, "%s\n", strEd); //Log server center prints?
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server center prints?
 }
 
 static void CG_Print_f( void ) {
@@ -1597,172 +1597,60 @@ static void CG_Print_f( void ) {
 	CG_CheckSVStringEdRef( strEd, CG_Argv( 1 ) );
 	trap->Print( "%s", strEd );
 
-	if (cg_logChat.integer & JAPRO_CHATLOG_PRINT)
-		CG_LogPrintf(cg.log.chat, "%s\n", strEd); //Log server console prints?
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_PRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server console prints?
 }
 
 void CG_ChatBox_AddString(char *chatStr);
 static void CG_Chat_f( void ) {
-	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_SAY_TEXT] = {0}, logtext[MAX_SAY_TEXT] = {0};
+	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
 
 	trap->Cmd_Argv( 0, cmd, sizeof( cmd ) );
 
-	if ( !strcmp( cmd, "chat" ) ) {
-		if ( !cg_teamChatsOnly.integer ) {
-			if ( cg_chatSounds.integer )//JAPRO - Clientside - Chatsounds option
-				trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-			trap->Cmd_Argv( 1, text, sizeof( text ) );
+	if (cmd[0] != 'l') { // normal chat ?/}
+
+		trap->Cmd_Argv( 1, text, sizeof( text ) );
+
+		if ( !Q_stricmp( cmd, "chat" ) && !cg_teamChatsOnly.integer )
+		{
 			CG_RemoveChatEscapeChar( text );
 
-			// Copy text somewhere else and log that
-			Q_strncpyz(logtext, text, sizeof(logtext));
-			Q_CleanStr(logtext);
-			CG_LogPrintf(cg.log.chat, "%s\n", logtext);
+			if (cg_cleanChatbox.integer) {
+				char cleanMsg[MAX_NETNAME + MAX_SAY_TEXT];
 
-			// from duo
-			// NOTE: this creates real percent symbols in the string, be careful using va(), etc below here!
-			char tempChatStr[MAX_SAY_TEXT] = { 0 }, *r = text, *w = tempChatStr;
-			while (*r) {
-				if (*r == -80 && *(r + 1) == '/' && *(r + 2) == '.') {
-					*w = '%';
-					r += 3;
-				}
-				else if (*r == '\'' && *(r + 1) == '\'') {
-					*w = '"';
-					r += 2;
-				}
-				else {
-					*w = *r;
-					r++;
-				}
-				w++;
-			}
-			Q_strncpyz(text, tempChatStr, sizeof(text));
-
-			if (cg_chatBox.integer) {
-				char cleanMsg[MAX_SAY_TEXT+64];
-
-				strcpy(cleanMsg, text);//Find Media - Currently Playing
+				Q_strncpyz(cleanMsg, text, sizeof(cleanMsg));//Find Media - Currently Playing
 				Q_CleanString(cleanMsg);
 
-				if (cg_cleanChatbox.integer) {
-					if (strstr(cleanMsg, "Media - Currently playing: ") != NULL) {
-						return;
-					}
-
-					if (strstr(cleanMsg, "^5Hi everybody!") != NULL) {
-						return;
-					}
-				}
-				
-				if (cg_cleanChatbox.integer && !strcmp(text, cg.lastChatMsg)) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
+				if (Q_stristr(cleanMsg, "Media - Currently playing: ") != NULL) {
 					return;
 				}
-				//New msg
-				CG_ChatBox_AddString(text);
-				trap->Print("*%s\n", text);
-				Q_strncpyz(cg.lastChatMsg, text, sizeof(cg.lastChatMsg));
-			}
-			else {
-				trap->Print("%s\n", text);
-			}
-		}
-	}
-	else if ( !strcmp( cmd, "lchat" ) ) {
-		if ( !cg_teamChatsOnly.integer ) {
-			char	name[MAX_NETNAME]={0},	loc[MAX_STRING_CHARS]={0},
-					color[8]={0},			message[MAX_STRING_CHARS]={0};
 
-			if ( trap->Cmd_Argc() < 4 )
-				return;
-
-			trap->Cmd_Argv( 1, name, sizeof( name ) );
-			trap->Cmd_Argv( 2, loc, sizeof( loc ) );
-			trap->Cmd_Argv( 3, color, sizeof( color ) );
-			trap->Cmd_Argv( 4, message, sizeof( message ) );
-
-			//get localized text
-			if ( loc[0] == '@' )
-				trap->SE_GetStringTextString( loc+1, loc, sizeof( loc ) );
-
-			if ( cg_chatSounds.integer )//JAPRO - Clientside - Chatsounds option
-				trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
-			CG_RemoveChatEscapeChar( text );
-
-			// Copy text somewhere else and log that
-			Q_strncpyz(logtext, text, sizeof(logtext));
-			Q_CleanStr(logtext);
-			CG_LogPrintf(cg.log.chat, "%s\n", logtext);
-
-			//from duo
-			// NOTE: this creates real percent symbols in the string, be careful using va(), etc below here!
-			char tempChatStr[MAX_SAY_TEXT] = { 0 }, *r = text, *w = tempChatStr;
-			while (*r) {
-				if (*r == -80 && *(r + 1) == '/' && *(r + 2) == '.') {
-					*w = '%';
-					r += 3;
+				if (Q_stristr(cleanMsg, "^5Hi everybody!") != NULL) {
+					return;
 				}
-				else if (*r == '\'' && *(r + 1) == '\'') {
-					*w = '"';
-					r += 2;
-				}
-				else {
-					*w = *r;
-					r++;
-				}
-				w++;
 			}
-			Q_strncpyz(text, tempChatStr, sizeof(text));
-
-			CG_ChatBox_AddString( text );
-			trap->Print( "*%s\n", text );
-		}
-	}
-	else if ( !strcmp( cmd, "tchat" ) ) {
-		if( cg_chatSounds.integer )//JAPRO - Clientside - Chatsounds option
-			trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-		trap->Cmd_Argv( 1, text, sizeof( text ) );
-		CG_RemoveChatEscapeChar( text );
-
-		// Copy text somewhere else and log that
-		Q_strncpyz(logtext, text, sizeof(logtext));
-		Q_CleanStr(logtext);
-		CG_LogPrintf(cg.log.chat, "%s\n", logtext);
-
-		// from duo
-		// NOTE: this creates real percent symbols in the string, be careful using va(), etc below here!
-		char tempChatStr[MAX_SAY_TEXT] = { 0 }, *r = text, *w = tempChatStr;
-		while (*r) {
-			if (*r == -80 && *(r + 1) == '/' && *(r + 2) == '.') {
-				*w = '%';
-				r += 3;
-			}
-			else if (*r == '\'' && *(r + 1) == '\'') {
-				*w = '"';
-				r += 2;
-			}
-			else {
-				*w = *r;
-				r++;
-			}
-			w++;
-		}
-		Q_strncpyz(text, tempChatStr, sizeof(text));
-
-		if (cg_chatBox.integer) {
-			if (cg_cleanChatbox.integer && !strcmp(text, cg.lastChatMsg)) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
+				
+			if (cg_cleanChatbox.integer && !Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
 				return;
 			}
+			//New msg
 			CG_ChatBox_AddString(text);
-			trap->Print("*%s\n", text);
+
 			Q_strncpyz(cg.lastChatMsg, text, sizeof(cg.lastChatMsg));
 		}
-		else {
-			trap->Print( "%s\n", text );
+		else if ( !Q_stricmp( cmd, "tchat" ) )
+		{
+			CG_RemoveChatEscapeChar( text );
+
+			if (cg_cleanChatbox.integer && !Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
+				return;
+			}
+
+			CG_ChatBox_AddString(text);
 		}
 	}
-	else if ( !strcmp( cmd, "ltchat" ) ) {
+	else
+	{ //location chat ?
 		char	name[MAX_NETNAME]={0},	loc[MAX_STRING_CHARS]={0},
 				color[8]={0},			message[MAX_STRING_CHARS]={0};
 
@@ -1775,41 +1663,19 @@ static void CG_Chat_f( void ) {
 		trap->Cmd_Argv( 4, message, sizeof( message ) );
 
 		//get localized text
-		if ( loc[0] == '@' )
-			trap->SE_GetStringTextString( loc+1, loc, sizeof( loc ) );
+		if (loc[0] == '@')
+			trap->SE_GetStringTextString(loc + 1, loc, sizeof(loc));
 
-		if( cg_chatSounds.integer )//JAPRO - Clientside - Chatsounds option
-			trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-		Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
-		CG_RemoveChatEscapeChar( text );
-
-		// Copy text somewhere else and log that
-		Q_strncpyz(logtext, text, sizeof(logtext));
-		Q_CleanStr(logtext);
-		CG_LogPrintf(cg.log.chat, "%s\n", logtext);
-
-		// from duo
-		// NOTE: this creates real percent symbols in the string, be careful using va(), etc below here!
-		char tempChatStr[MAX_SAY_TEXT] = { 0 }, *r = text, *w = tempChatStr;
-		while (*r) {
-			if (*r == -80 && *(r + 1) == '/' && *(r + 2) == '.') {
-				*w = '%';
-				r += 3;
-			}
-			else if (*r == '\'' && *(r + 1) == '\'') {
-				*w = '"';
-				r += 2;
-			}
-			else {
-				*w = *r;
-				r++;
-			}
-			w++;
+		if ( !Q_stricmp( cmd, "lchat" ) && !cg_teamChatsOnly.integer ) {
+			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			CG_RemoveChatEscapeChar( text );
+			CG_ChatBox_AddString( text );
 		}
-		Q_strncpyz(text, tempChatStr, sizeof(text));
-
-		CG_ChatBox_AddString( text );
-		trap->Print( "*%s\n", text );
+		else if ( !Q_stricmp( cmd, "ltchat" ) ) {
+			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			CG_RemoveChatEscapeChar( text );
+			CG_ChatBox_AddString( text );
+		}
 	}
 }
 

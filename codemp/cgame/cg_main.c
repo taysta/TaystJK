@@ -103,6 +103,11 @@ void QDECL CG_LogPrintf( fileHandle_t fileHandle, const char *fmt, ... ) {
 	if (cg.demoPlayback)
 		return;
 
+	if (!cg.log.started) {
+		cg.log.started = qtrue;
+		CG_LogPrintf(fileHandle, "Start log\n--------------------------------------------------------------\n\n");
+	}
+
 	if (cg_logChat.integer & JAPRO_CHATLOG_OLDTIMESTAMP) {
 		int msec = cg.time - cgs.levelStartTime;
 		int secs = msec / 1000;
@@ -126,6 +131,8 @@ void QDECL CG_LogPrintf( fileHandle_t fileHandle, const char *fmt, ... ) {
 
 	if (!fileHandle)
 		return;
+
+	Q_StripColor(string);
 
 	trap->FS_Write(string, strlen(string), fileHandle);
 }
@@ -872,6 +879,20 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.fallSound = trap->S_RegisterSound( "sound/player/fallsplat.wav");
 
 	cgs.media.crackleSound = trap->S_RegisterSound( "sound/effects/energy_crackle.wav" );
+
+//JAPRO - Clientside - Hitsounds Start
+	cgs.media.hitSound			= trap->S_RegisterSound( "sound/effects/hitsound.wav" ); 
+	cgs.media.hitSound2			= trap->S_RegisterSound( "sound/effects/hitsound2.wav" );
+	cgs.media.hitSound3			= trap->S_RegisterSound( "sound/effects/hitsound3.wav" );
+	cgs.media.hitSound4			= trap->S_RegisterSound( "sound/effects/hitsound4.wav" );
+	cgs.media.hitTeamSound		= trap->S_RegisterSound( "sound/effects/hitsoundteam.wav" );
+
+	cgs.media.gibSound			= trap->S_RegisterSound( "sound/player/gibsplt1.wav" );
+	cgs.media.gibBounce1Sound	= trap->S_RegisterSound( "sound/player/gibimp1.wav" );
+	cgs.media.gibBounce2Sound	= trap->S_RegisterSound( "sound/player/gibimp2.wav" );
+	cgs.media.gibBounce3Sound	= trap->S_RegisterSound( "sound/player/gibimp3.wav" );
+//JAPRO - Clientside - Hitsounds End
+
 #ifdef JK2AWARDS
 	cgs.media.firstImpressiveSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM025" );
 	cgs.media.impressiveSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM025" );
@@ -929,19 +950,6 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.zoomStart = trap->S_RegisterSound( "sound/interface/zoomstart.wav" );
 	cgs.media.zoomLoop	= trap->S_RegisterSound( "sound/interface/zoomloop.wav" );
 	cgs.media.zoomEnd	= trap->S_RegisterSound( "sound/interface/zoomend.wav" );
-
-//JAPRO - Clientside - Hitsounds Start
-	cgs.media.hitSound	= trap->S_RegisterSound( "sound/effects/hitsound.wav" ); 
-	cgs.media.hitSound2	= trap->S_RegisterSound( "sound/effects/hitsound2.wav" );
-	cgs.media.hitSound3	= trap->S_RegisterSound( "sound/effects/hitsound3.wav" );
-	cgs.media.hitSound4	= trap->S_RegisterSound( "sound/effects/hitsound4.wav" );
-	cgs.media.hitTeamSound	= trap->S_RegisterSound( "sound/effects/hitsoundteam.wav" );
-
-	cgs.media.gibSound = trap->S_RegisterSound( "sound/player/gibsplt1.wav" );
-	cgs.media.gibBounce1Sound = trap->S_RegisterSound( "sound/player/gibimp1.wav" );
-	cgs.media.gibBounce2Sound = trap->S_RegisterSound( "sound/player/gibimp2.wav" );
-	cgs.media.gibBounce3Sound = trap->S_RegisterSound( "sound/player/gibimp3.wav" );
-//JAPRO - Clientside - Hitsounds End
 
 	for (i=0 ; i<4 ; i++) {
 		Com_sprintf (name, sizeof(name), "sound/player/footsteps/stone_step%i.wav", i+1);
@@ -1319,13 +1327,13 @@ static void CG_RegisterGraphics( void ) {
 
 	cgs.effects.mDisruptorDeathSmoke = trap->FX_RegisterEffect("disruptor/death_smoke");
 
-	if (cgs.isJAPro) {
 #if _GRAPPLE
+	if (cgs.isJAPro) {
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
 		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
-#endif
 	}
+#endif
 
 	for ( i = 0 ; i < NUM_CROSSHAIRS ; i++ ) {
 		cgs.media.crosshairShader[i] = trap->R_RegisterShaderNoMip( va("gfx/2d/crosshair%c", 'a'+i) );
@@ -2627,9 +2635,11 @@ void BG_VehicleLoadParms( void );
 static void CG_OpenLog(const char *filename, fileHandle_t *f, qboolean sync) {
 	trap->FS_Open(filename, f, sync ? FS_APPEND_SYNC : FS_APPEND);
 	if (*f)
-		trap->Print(va("Logging to %s\n", filename));
+		trap->Print("Logging to %s\n", filename);
 	else
-		trap->Print(va("WARNING: Couldn't open logfile: %s\n", filename));
+		trap->Print(S_COLOR_YELLOW "WARNING: Couldn't open logfile: %s\n", filename);
+
+	cg.log.started = qfalse;
 }
 
 static void CG_CloseLog(fileHandle_t *f) {
@@ -2638,6 +2648,8 @@ static void CG_CloseLog(fileHandle_t *f) {
 
 	trap->FS_Close(*f);
 	*f = ((fileHandle_t)0);
+
+	cg.log.started = qfalse;
 }
 
 //JK2 HUD
@@ -2839,7 +2851,7 @@ Ghoul2 Insert End
 	CG_InitConsoleCommands();
 
 	// chatlogs
-	if (cg_logChat.integer) {
+	if (cg_logChat.integer & JAPRO_CHATLOG_ENABLE) {
 		struct tm		*newtime;
 		time_t			rawtime;
 		char			logname[32];
@@ -2848,7 +2860,7 @@ Ghoul2 Insert End
 		newtime = localtime(&rawtime);
 		strftime(logname, sizeof(logname), "chatlogs/cg_%y-%b.log", newtime);
 
-		CG_OpenLog(logname, &cg.log.chat, ((cg_logChat.integer & JAPRO_CHATLOG_SYNC) ? qtrue : qfalse));
+		CG_OpenLog(logname, &cg.log.file, (qboolean)(cg_logChat.integer & JAPRO_CHATLOG_SYNC));
 	}
 	else {
 		trap->Print("Not logging chat to disk.\n");
@@ -3039,8 +3051,9 @@ void CG_Shutdown( void )
 	// like closing files or archiving session data
 
 	// close chat log file
-	CG_LogPrintf( cg.log.chat, "End logging\n------------------------------------------------------------\n\n" );
-	CG_CloseLog( &cg.log.chat );
+	if (cg.log.started)
+		CG_LogPrintf( cg.log.file, "End log\n----------------------------------------------------------------\n\n" );
+	CG_CloseLog( &cg.log.file);
 }
 
 /*

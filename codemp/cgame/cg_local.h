@@ -1405,8 +1405,9 @@ Ghoul2 Insert End
 	int					snapshotTimeoutTime;
 #endif
 
-	struct {
-		fileHandle_t	chat; //chatlog
+	struct {//chatlog
+		fileHandle_t	file;
+		qboolean		started;
 	} log;
 
 } cg_t;
