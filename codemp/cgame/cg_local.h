@@ -1044,7 +1044,7 @@ typedef struct skulltrail_s {
 #define MAX_PREDICTED_EVENTS	16
 
 
-#define	MAX_CHATBOX_ITEMS		5
+#define	MAX_CHATBOX_ITEMS		24
 typedef struct chatBoxItem_s
 {
 	char	string[MAX_NETNAME+MAX_SAY_TEXT];

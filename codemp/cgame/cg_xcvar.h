@@ -59,17 +59,21 @@ XCVAR_DEF( cg_killMessage,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_newFont,				"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBox,				"10000",NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxFontSize,		"1",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_chatBoxLines,			"5",	NULL,					CVAR_ARCHIVE ) //this would be called chatBoxHeight if baseJKA didn't use that
 XCVAR_DEF( cg_chatBoxHeight,		"350",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxX,				"30",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxCutOffLength,	"350",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairSaberStyleColor,"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairIdentifyTarget, "1", NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairColor, "0 0 0 255", CG_CrosshairColorChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_hudColors,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_tintHud,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
 XCVAR_DEF( cg_drawScores,			"1",	NULL,					CVAR_ARCHIVE ) //team score counter in top right
 XCVAR_DEF( cg_drawVote,				"1",	NULL,					CVAR_ARCHIVE )
+
+//Crosshair
+XCVAR_DEF( cg_crosshairSizeScale,				"1",	NULL,						CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairIdentifyTarget,			"1",	NULL,						CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairSaberStyleColor,			"0",	NULL,						CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairColor,			"0 0 0 255",	CG_CrosshairColorChange,	CVAR_ARCHIVE )
 
 //Strafehelper
 XCVAR_DEF( cg_strafeHelper,						"3008",	NULL,		CVAR_ARCHIVE )
@@ -222,7 +226,6 @@ XCVAR_DEF( cg_cameraOrbitDelay,					"50",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_centerTime,						"3",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairHealth,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairSize,					"24",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairSizeScale,				"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairX,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairY,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_currentSelectedPlayer,			"0",					NULL,					CVAR_ARCHIVE )

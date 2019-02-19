@@ -9406,7 +9406,7 @@ void CG_ChatBox_AddString(char *chatStr)
 	}
 
 	cg.chatItemActive++;
-	if (cg.chatItemActive >= MAX_CHATBOX_ITEMS)
+	if (cg.chatItemActive >= cg_chatBoxLines.integer)
 	{
 		cg.chatItemActive = 0;
 	}
@@ -9444,9 +9444,9 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 		return;
 	}
 
-	memset(drawThese, 0, sizeof(drawThese));
+	Com_Memset(drawThese, 0, sizeof(drawThese));
 
-	while (i < MAX_CHATBOX_ITEMS)
+	while (i < cg_chatBoxLines.integer)
 	{
 		if (cg.chatItems[i].time >= cg.time)
 		{
@@ -9462,7 +9462,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 				}
 				check--;
 			}
-			CG_ChatBox_ArrayInsert(drawThese, insertionPoint, MAX_CHATBOX_ITEMS, &cg.chatItems[i]);
+			CG_ChatBox_ArrayInsert(drawThese, insertionPoint, cg_chatBoxLines.integer, &cg.chatItems[i]);
 			numToDraw++;
 			linesToDraw += cg.chatItems[i].lines;
 		}
