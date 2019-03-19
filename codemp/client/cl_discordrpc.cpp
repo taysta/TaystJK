@@ -129,20 +129,18 @@ char *GetState()
 	usercmd_t cmd;
 	CL_GetUserCmd( cl.cmdNumber, &cmd );
 
-	if ( cls.state == CA_ACTIVE && cmd.buttons & BUTTON_TALK )
-	{
-		return "chatting";
+	if (cls.state == CA_ACTIVE) {
+		if (cl_discordRichPresence->integer > 1 && (cmd.buttons & BUTTON_TALK))
+			return "chatting";
+		else if (cl_afkName || (cls.realtime - cls.afkTime) >= (5*60000)) //5 minutes?
+			return "idle";
+		else
+			return "playing";
 	}
-	else if ( cls.state == CA_ACTIVE )
-	{
-		return "playing";
-	}
-	else if ( cls.state == CA_LOADING || cls.state == CA_CONNECTED || cls.state == CA_CHALLENGING )
-	{
+	else if (cls.state > CA_DISCONNECTED && cls.state < CA_PRIMED) {
 		return "connecting";
 	}
-	else if ( cls.state == CA_DISCONNECTED )
-	{
+	else if (cls.state <= CA_DISCONNECTED) {
 		return "menu";
 	}
 
