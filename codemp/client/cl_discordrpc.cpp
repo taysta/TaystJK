@@ -129,11 +129,13 @@ char *GetState()
 	usercmd_t cmd;
 	CL_GetUserCmd( cl.cmdNumber, &cmd );
 
-	if (cls.state == CA_ACTIVE) {
+	if (cls.state == CA_ACTIVE && cl.snap.valid) {
 		if (cl_discordRichPresence->integer > 1 && (cmd.buttons & BUTTON_TALK))
 			return "chatting";
 		else if (cl_afkName || (cls.realtime - cls.afkTime) >= (5*60000)) //5 minutes?
 			return "idle";
+		else if (cl.snap.valid && ((cl.snap.ps.pm_flags & PMF_FOLLOW) || cl.snap.ps.pm_type == PM_SPECTATOR))
+			return "spectating";
 		else
 			return "playing";
 	}
@@ -144,7 +146,7 @@ char *GetState()
 		return "menu";
 	}
 
-	return NULL;
+	return "...";
 }
 
 char *GetGameType(qboolean imageKey, int gametype) //workaround for discord image keys being forced to lowercase
@@ -153,8 +155,11 @@ char *GetGameType(qboolean imageKey, int gametype) //workaround for discord imag
 	usercmd_t cmd;
 	CL_GetUserCmd( cl.cmdNumber, &cmd );
 
-	if (cls.state < CA_ACTIVE) {
+	if (cls.state < CA_ACTIVE || !cl.snap.valid) {
 		return GetState();
+	}
+	else if ((cl.snap.ps.pm_flags & PMF_FOLLOW) || cl.snap.ps.pm_type == PM_SPECTATOR) {
+		return "spectating"; //GetState();
 	}
 
 	switch (gametype)
