@@ -641,9 +641,6 @@ void CL_InitCGame( void ) {
 	const char			*info;
 	const char			*mapname;
 	int					t1, t2;
-#if defined(DISCORD) && !defined(_DEBUG)
-	char				*servername = NULL;
-#endif
 
 	t1 = Sys_Milliseconds();
 
@@ -654,14 +651,6 @@ void CL_InitCGame( void ) {
 	info = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
 	mapname = Info_ValueForKey( info, "mapname" );
 	Com_sprintf( cl.mapname, sizeof( cl.mapname ), "maps/%s.bsp", mapname );
-#if defined(DISCORD) && !defined(_DEBUG)
-	servername = Info_ValueForKey(info, "sv_hostname");
-	if (strlen(servername)) { //filter this stuff out...
-		Q_strstrip(servername, "\xac\x82\xe2\xa2\x80", NULL);
-		while (*servername == '\x20' || *servername == '\x2e') *servername++;
-	}
-	strncpy(cl.serverName, servername, sizeof(cl.serverName));
-#endif
 
 	// load the dll
 	CL_BindCGame();

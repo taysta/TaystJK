@@ -114,9 +114,12 @@ char *ReturnMapName() {
 }
 
 char *ReturnServerName() {
-	char *servername = cl.serverName;
+	char *servername = Cvar_VariableString("ui_about_hostname");
 
-	Q_StripColor( servername );
+	Q_strstrip(servername, "\xac\x82\xe2\xa2\x80", NULL);
+	while (*servername == '\x20' || *servername == '\x2e') *servername++;
+
+	Q_StripColor( servername );	
 	return servername;
 }
 
