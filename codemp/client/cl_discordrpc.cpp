@@ -88,19 +88,6 @@ static mapIcon_t mapIcon[] = {
 	{ "racepack7",			"racepack7",		},
 }; static const size_t numMapIcon = ARRAY_LEN( mapIcon );
 
-void LowerChars( char *text ) {
-	char *ptr = text;
-
-	while ( *ptr )
-	{
-		if ( *ptr == '\0' )
-			break;
-
-		*ptr = tolower( *ptr );
-		*ptr++;
-	}
-}
-
 char *ReturnMapName() {
 	if ( cls.state == CA_DISCONNECTED || cls.state == CA_CONNECTING )
 	{
@@ -109,8 +96,7 @@ char *ReturnMapName() {
 	
 	char *mapname = Info_ValueForKey( cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "mapname" );
 	Q_StripColor( mapname );
-	LowerChars( mapname );
-	return mapname;
+	return Q_strlwr(mapname);
 }
 
 char *ReturnServerName() {
@@ -192,7 +178,7 @@ char *PartyID() {
 
 char *GetServerState() {
 	if ( cls.state == CA_ACTIVE )
-		return va("%d / %d players [%d BOTS]", cl.playerCount, cl.maxPlayers, cl.botCount);
+		return va("%d / %d players [%d BOTS]", cl.discord.playerCount, cl.discord.maxPlayers, cl.discord.botCount);
 
 	if ( cls.state == CA_CONNECTING )
 		return "Connecting";
@@ -219,7 +205,7 @@ char *GetServerDetails() {
 static void handleDiscordReady( const DiscordUser* connectedUser )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
-		Com_Printf( "^5Discord: ^6connected to user ^3%s^7#^3%s ^7- ^3%s^7\n",
+		Com_Printf( "^5Discord: connected to user %s#%s - %s\n",
 			connectedUser->username,
 			connectedUser->discriminator,
 			connectedUser->userId );
@@ -235,7 +221,7 @@ static void handleDiscordReady( const DiscordUser* connectedUser )
 static void handleDiscordDisconnected( int errcode, const char* message )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^3disconnected (^3%d^7: ^3%s^7)\n", errcode, message );
+		Com_Printf( "^5Discord: ^3disconnected ^3(%d: ^3%s)\n", errcode, message );
 	else
 		Com_Printf( "^1Discord: ^7getrennt (^3%d^7: ^3%s^7)\n", errcode, message );
 }
@@ -254,7 +240,7 @@ static void handleDiscordJoin( const char* secret )
 	char fsgame[60] = { 0 };
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^7joining (^3%s^7)\n", secret );
+		Com_Printf( "^5Discord: joining ^3(%s)^7\n", secret );
 	else
 		Com_Printf( "^1Discord: ^7join (^3%s^7)\n", secret );
 	sscanf( secret, "%s %s", ip, fsgame );
@@ -264,7 +250,7 @@ static void handleDiscordJoin( const char* secret )
 static void handleDiscordSpectate( const char* secret )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^7spectating (^3%s^7)\n", secret );
+		Com_Printf( "^5Discord: spectating ^3(%s)^7\n", secret );
 	else
 		Com_Printf( "^1Discord: ^7spectate (^3%s^7)\n", secret );
 }
@@ -274,7 +260,7 @@ static void handleDiscordJoinRequest( const DiscordUser* request )
 	int response = -1;
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
-		Com_Printf( "^5Discord: ^7join request from ^3%s^7#^3%s ^7- ^3%s^7\n",
+		Com_Printf( "^5Discord: ^7join request from ^7%s#%s - %s\n",
 			request->username,
 			request->discriminator,
 			request->userId );
@@ -293,9 +279,9 @@ static void handleDiscordJoinRequest( const DiscordUser* request )
 
 static DiscordRichPresence discordPresence;
 static DiscordEventHandlers handlers;
-void discordInit()
+void CL_DiscordInitialize(void)
 {
-	memset( &handlers, 0, sizeof( handlers ) );
+	Com_Memset( &handlers, 0, sizeof( handlers ) );
 	handlers.ready = handleDiscordReady;
 	handlers.disconnected = handleDiscordDisconnected;
 	handlers.errored = handleDiscordError;
@@ -309,17 +295,20 @@ void discordInit()
 	Discord_UpdateHandlers( &handlers );
 }
 
-void discordShutdown()
+void CL_DiscordShutdown(void)
 {
 	Discord_Shutdown();
 }
 
-void updateDiscordPresence()
+void CL_DiscordUpdatePresence(void)
 {
-	memset( &discordPresence, 0, sizeof( discordPresence ) );
-
 	char *partyID = PartyID();
 	char *joinID = joinSecret();
+
+	if (!cls.discordInitialized)
+		return;
+
+	Com_Memset( &discordPresence, 0, sizeof( discordPresence ) );
 	
 	discordPresence.state = GetServerState();
 	discordPresence.details = GetServerDetails();
@@ -329,7 +318,7 @@ void updateDiscordPresence()
 	discordPresence.smallImageText = GetState();
 	discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat
 	discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
-	discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.maxPlayers - cl.playerCount) + discordPresence.partySize) : NULL;
+	discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
 	discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren
 	Discord_UpdatePresence( &discordPresence );
 

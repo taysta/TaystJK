@@ -284,9 +284,9 @@ void CL_ConfigstringModified( void ) {
 				i++;
 			}
 
-			cl.playerCount = clientCount;
-			cl.botCount = botCount;
-			cl.maxPlayers = atoi(Info_ValueForKey(cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "sv_maxclients"));
+			cl.discord.playerCount = clientCount;
+			cl.discord.botCount = botCount;
+			cl.discord.maxPlayers = atoi(Info_ValueForKey(cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "sv_maxclients"));
 #else
 			int clientCount = 0;
 			i = CS_PLAYERS;

@@ -153,10 +153,11 @@ typedef struct clientActive_s {
 	char			*mSharedMemory;
 
 #if defined(DISCORD) && !defined(_DEBUG)
-	int				maxPlayers;
-	int				playerCount;
-	int				botCount;
-	char			serverName[MAX_STRING_CHARS];
+	struct {
+		int				maxPlayers;
+		int				playerCount;
+		int				botCount;
+	} discord;
 #endif
 } clientActive_t;
 
@@ -312,6 +313,7 @@ typedef struct clientStatic_s {
 	int			afkTime;
 
 #if defined(DISCORD) && !defined(_DEBUG)
+	qboolean	discordInitialized;
 	int			discordUpdatetime;
 #endif
 
@@ -500,9 +502,9 @@ void CL_Afk_f(void);
 void CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...);
 
 #if defined(DISCORD) && !defined(_DEBUG)
-void discordInit();
-void discordShutdown();
-void updateDiscordPresence();
+void CL_DiscordInitialize(void);
+void CL_DiscordShutdown(void);
+void CL_DiscordUpdatePresence(void);
 #endif
 
 qboolean CL_CheckPaused(void);

@@ -2332,7 +2332,6 @@ static void CL_UpdateWidescreen(void) {
 }
 
 
-
 int cl_nameModifiedTime = 0;
 static int lastModifiedColors = 0;
 static int lastModifiedName = 0;
@@ -2374,9 +2373,6 @@ CL_Frame
 static unsigned int frameCount;
 static float avgFrametime=0.0;
 extern void SE_CheckForLanguageUpdates(void);
-#ifdef DISCORD
-static int loaded = 0;
-#endif
 void CL_Frame ( int msec ) {
 	qboolean render = qfalse;
 	qboolean takeVideoFrame = qfalse;
@@ -2485,22 +2481,22 @@ void CL_Frame ( int msec ) {
 
 #if defined(DISCORD) && !defined(_DEBUG)
 	if (cl_discordRichPresence->integer) {
-		if ( cls.realtime >= 5000 && !loaded)
-		{
-			discordInit();
-			loaded = 1;
+		if ( cls.realtime >= 5000 && !cls.discordInitialized )
+		{ //we just turned it on
+			CL_DiscordInitialize();
+			cls.discordInitialized = qtrue;
 		}
 	
-		if ( cls.realtime >= cls.discordUpdatetime && loaded )
+		if ( cls.realtime >= cls.discordUpdatetime && cls.discordInitialized )
 		{
-			updateDiscordPresence();
+			CL_DiscordUpdatePresence();
 			cls.discordUpdatetime = cls.realtime + 500;
 		}
 	}
-	else if (loaded) {
-		discordShutdown();
+	else if (cls.discordInitialized) { //we just turned it off
+		CL_DiscordShutdown();
 		cls.discordUpdatetime = 0;
-		loaded = 0;
+		cls.discordInitialized = qfalse;
 	}
 #endif
 }
@@ -3399,6 +3395,13 @@ void CL_Init( void ) {
 	CL_GenerateQKey(); //loda fixme, malware warning!
 	CL_UpdateGUID( NULL, 0 );
 
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer) {
+		CL_DiscordInitialize();
+		cls.discordInitialized;
+	}
+#endif
+
 //	Com_Printf( "----- Client Initialization Complete -----\n" );
 }
 
@@ -3469,8 +3472,8 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand("colorname");
 
 #if defined(DISCORD) && !defined(_DEBUG)
-	if (cl_discordRichPresence->integer || loaded)
-		discordShutdown();
+	if (cl_discordRichPresence->integer || cls.discordInitialized)
+		CL_DiscordShutdown();
 #endif
 
 	CL_ShutdownInput();
