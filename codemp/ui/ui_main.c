@@ -9524,7 +9524,8 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 
 	for (i=0; i<uiInfo.q3HeadCount; i++)
 	{
-		if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
+		if (uiInfo.q3HeadNames[i][0] && (strstr(uiInfo.q3HeadNames[i], teamname) ||
+			(uiSkinColor == 3 && strstr(uiInfo.q3HeadNames[i], "/sp"))))
 		{
 			if (c==index)
 			{
