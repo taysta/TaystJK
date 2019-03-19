@@ -205,20 +205,34 @@ char *GetServerDetails() {
 
 static void handleDiscordReady( const DiscordUser* connectedUser )
 {
-	Com_Printf( "^1Discord: ^7verbunden zu Nutzer ^3%s^7#^3%s ^7- ^3%s^7\n",
-		connectedUser->username,
-		connectedUser->discriminator,
-		connectedUser->userId );
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
+		Com_Printf( "^5Discord: ^6connected to user ^3%s^7#^3%s ^7- ^3%s^7\n",
+			connectedUser->username,
+			connectedUser->discriminator,
+			connectedUser->userId );
+	}
+	else {
+		Com_Printf( "^1Discord: ^7verbunden zu Nutzer ^3%s^7#^3%s ^7- ^3%s^7\n",
+			connectedUser->username,
+			connectedUser->discriminator,
+			connectedUser->userId );
+	}
 }
 
 static void handleDiscordDisconnected( int errcode, const char* message )
-{	
-	Com_Printf( "^1Discord: ^7getrennt (^3%d^7: ^3%s^7)\n", errcode, message );
+{
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
+		Com_Printf( "^5Discord: ^3disconnected (^3%d^7: ^3%s^7)\n", errcode, message );
+	else
+		Com_Printf( "^1Discord: ^7getrennt (^3%d^7: ^3%s^7)\n", errcode, message );
 }
 
 static void handleDiscordError( int errcode, const char* message )
 {
-	Com_Printf( "^1Discord: ^7Fehler (^3%d^7: ^3%s^7)\n", errcode, message );
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
+		Com_Printf( "^5Discord: ^1Error - (^3%d^7: ^3%s^7)\n", errcode, message );
+	else
+		Com_Printf( "^1Discord: ^7Fehler (^3%d^7: ^3%s^7)\n", errcode, message );
 }
 
 static void handleDiscordJoin( const char* secret )
@@ -226,24 +240,38 @@ static void handleDiscordJoin( const char* secret )
 	char ip[60] = { 0 };
 	char fsgame[60] = { 0 };
 
-	Com_Printf( "^1Discord: ^7join (^3%s^7)\n", secret );
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
+		Com_Printf( "^5Discord: ^7joining (^3%s^7)\n", secret );
+	else
+		Com_Printf( "^1Discord: ^7join (^3%s^7)\n", secret );
 	sscanf( secret, "%s %s", ip, fsgame );
 	Cbuf_AddText( va( "connect %s\n", ip ) );
 }
 
 static void handleDiscordSpectate( const char* secret )
-{		
-	Com_Printf( "^1Discord: ^7spectate (^3%s^7)\n", secret );
+{
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
+		Com_Printf( "^5Discord: ^7spectating (^3%s^7)\n", secret );
+	else
+		Com_Printf( "^1Discord: ^7spectate (^3%s^7)\n", secret );
 }
 
 static void handleDiscordJoinRequest( const DiscordUser* request )
 {
 	int response = -1;
 
-	Com_Printf( "^1Discord: ^7join request from ^3%s^7#^3%s ^7- ^3%s^7\n",
-		request->username,
-		request->discriminator,
-		request->userId );
+	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
+		Com_Printf( "^5Discord: ^7join request from ^3%s^7#^3%s ^7- ^3%s^7\n",
+			request->username,
+			request->discriminator,
+			request->userId );
+	}
+	else {
+		Com_Printf( "^1Discord: ^7join request from ^3%s^7#^3%s ^7- ^3%s^7\n",
+				request->username,
+				request->discriminator,
+				request->userId );
+	}
 
 	if ( response != -1 ) {
 		Discord_Respond( request->userId, response );
