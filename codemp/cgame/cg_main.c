@@ -94,50 +94,6 @@ qboolean CG_NoUseableForce(void)
 	return qtrue;
 }
 
-//chatlogs
-void QDECL CG_LogPrintf( fileHandle_t fileHandle, const char *fmt, ... ) {
-	va_list argptr;
-	char string[1024] = { 0 };
-	size_t len;
-
-	if (cg.demoPlayback)
-		return;
-
-	if (!cg.log.started) {
-		cg.log.started = qtrue;
-		CG_LogPrintf(fileHandle, "Start log\n--------------------------------------------------------------\n\n");
-	}
-
-	if (cg_logChat.integer & JAPRO_CHATLOG_OLDTIMESTAMP) {
-		int msec = cg.time - cgs.levelStartTime;
-		int secs = msec / 1000;
-		int mins = secs / 60;
-		secs %= 60;
-		msec %= 1000;
-
-		Com_sprintf(string, sizeof(string), "%i:%02i ", mins, secs);
-	}
-	else {
-		time_t rawtime;
-		time(&rawtime);
-		strftime(string, sizeof(string), "[%Y-%m-%d] [%H:%M:%S] ", localtime(&rawtime));
-	}
-
-	len = strlen(string);
-
-	va_start(argptr, fmt);
-	Q_vsnprintf(string + len, sizeof(string) - len, fmt, argptr);
-	va_end(argptr);
-
-	if (!fileHandle)
-		return;
-
-	Q_StripColor(string);
-
-	trap->FS_Write(string, strlen(string), fileHandle);
-}
-//
-
 static int C_PointContents( void ) {
 	TCGPointContents *data = &cg.sharedBuffer.pointContents;
 	return CG_PointContents( data->mPoint, data->mPassEntityNum );
@@ -2632,6 +2588,48 @@ void WP_SaberLoadParms( void );
 void BG_VehicleLoadParms( void );
 
 //chatlog
+void QDECL CG_LogPrintf( fileHandle_t fileHandle, const char *fmt, ... ) {
+	va_list argptr;
+	char string[1024] = { 0 };
+	size_t len;
+
+	if (cg.demoPlayback)
+		return;
+
+	if (!cg.log.started) {
+		cg.log.started = qtrue;
+		CG_LogPrintf(fileHandle, "Start log\n--------------------------------------------------------------\n\n");
+	}
+
+	if (cg_logChat.integer & JAPRO_CHATLOG_OLDTIMESTAMP) {
+		int msec = cg.time - cgs.levelStartTime;
+		int secs = msec / 1000;
+		int mins = secs / 60;
+		secs %= 60;
+		msec %= 1000;
+
+		Com_sprintf(string, sizeof(string), "%i:%02i ", mins, secs);
+	}
+	else {
+		time_t rawtime;
+		time(&rawtime);
+		strftime(string, sizeof(string), "[%Y-%m-%d] [%H:%M:%S] ", localtime(&rawtime));
+	}
+
+	len = strlen(string);
+
+	va_start(argptr, fmt);
+	Q_vsnprintf(string + len, sizeof(string) - len, fmt, argptr);
+	va_end(argptr);
+
+	if (!fileHandle)
+		return;
+
+	Q_StripColor(string);
+
+	trap->FS_Write(string, strlen(string), fileHandle);
+}
+
 static void CG_OpenLog(const char *filename, fileHandle_t *f, qboolean sync) {
 	trap->FS_Open(filename, f, sync ? FS_APPEND_SYNC : FS_APPEND);
 	if (*f)

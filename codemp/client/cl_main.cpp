@@ -3008,7 +3008,7 @@ static void CL_ColorString_f(void) {
 	}
 }
 
-void CL_RandomizeColors(const char* in, char *out) {
+void CL_RandomizeColors(const char *in, char *out) {
 	int count = cl_colorStringCount->integer;
 	int i, random, j = 0, store = 0;
 	const char *p = in;
@@ -3309,7 +3309,7 @@ void CL_Init( void ) {
 	Cvar_Get ("color2", "4", CVAR_USERINFO | CVAR_ARCHIVE, "Player saber2 color" );
 	Cvar_Get ("handicap", "100", CVAR_USERINFO | CVAR_ARCHIVE, "Player handicap" );
 	Cvar_Get ("sex", "male", CVAR_USERINFO | CVAR_ARCHIVE, "Player sex" );
-	Cvar_Get ("password", "", CVAR_USERINFO, "Password to join server" );
+	Cvar_Get ("password", "", CVAR_USERINFO|CVAR_NORESTART, "Password to join server" );
 	Cvar_Get ("cg_predictItems", "1", CVAR_USERINFO | CVAR_ARCHIVE );
 
 	//default sabers
@@ -3488,30 +3488,6 @@ void CL_Shutdown( void ) {
 
 	//Com_Printf( "-----------------------\n" );
 
-}
-
-void QDECL CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...) {
-	va_list argptr;
-	char string[1024] = { 0 };
-	size_t len;
-	time_t rawtime;
-	time(&rawtime);
-
-	if (clc.demoplaying)
-		return;
-	
-	strftime(string, sizeof(string), "[%Y-%m-%d] [%H:%M:%S] ", localtime(&rawtime));
-
-	len = strlen(string);
-
-	va_start(argptr, fmt);
-	Q_vsnprintf(string + len, sizeof(string) - len, fmt, argptr);
-	va_end(argptr);
-
-	if (!fileHandle)
-		return;
-
-	FS_Write(string, strlen(string), fileHandle);
 }
 
 qboolean CL_ConnectedToRemoteServer( void ) {

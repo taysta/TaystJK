@@ -345,8 +345,9 @@ typedef struct clientStatic_s {
 	qhandle_t	consoleShader;
 	float		widthRatioCoef;
 
-	struct {
-		fileHandle_t	chat;
+	struct { //chatlogging
+		qboolean		started;
+		fileHandle_t	file;
 	} log;
 } clientStatic_t;
 
@@ -496,10 +497,8 @@ void CL_InitRef( void );
 
 int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int maxLen );
 
-void CL_RandomizeColors(const char*, char*);
+void CL_RandomizeColors(const char *in, char *out);
 void CL_Afk_f(void);
-
-void CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...);
 
 #if defined(DISCORD) && !defined(_DEBUG)
 void CL_DiscordInitialize(void);

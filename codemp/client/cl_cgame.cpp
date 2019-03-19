@@ -408,7 +408,7 @@ extern cvar_t	*con_notifyvote;
 extern char	notifyWords[MAX_NOTIFYWORDS][32];
 extern int stampColor;
 
-
+extern void QDECL CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...);
 qboolean CL_GetServerCommand( int serverCommandNumber ) {
 	const char *s;
 	const char *cmd;
@@ -536,7 +536,7 @@ rescan:
 			}
 			chat[l] = '\0';
 
-			CL_LogPrintf(cls.log.chat, chat);
+			CL_LogPrintf(cls.log.file, chat);
 		}
 
 		stampColor = COLOR_WHITE;
@@ -591,12 +591,43 @@ rescan:
 	return qtrue;
 }
 
+void QDECL CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...) {
+	va_list argptr;
+	char string[1024] = { 0 };
+	size_t len;
+	time_t rawtime;
+	time(&rawtime);
+
+	if (clc.demoplaying)
+		return;
+	
+	if (!cls.log.started) {
+		cls.log.started = qtrue;
+		CL_LogPrintf(fileHandle, "Start log\n--------------------------------------------------------------\n\n");
+	}
+
+	strftime(string, sizeof(string), "[%Y-%m-%d] [%H:%M:%S] ", localtime(&rawtime));
+
+	len = strlen(string);
+
+	va_start(argptr, fmt);
+	Q_vsnprintf(string + len, sizeof(string) - len, fmt, argptr);
+	va_end(argptr);
+
+	if (!fileHandle)
+		return;
+
+	FS_Write(string, strlen(string), fileHandle);
+}
+
 static void CL_OpenLog(const char *filename, fileHandle_t *f, qboolean sync) {
 	FS_FOpenFileByMode(filename, f, sync ? FS_APPEND_SYNC : FS_APPEND);
 	if (*f)
 		Com_Printf("Logging to %s\n", filename);
 	else
 		Com_Printf("^3WARNING: Couldn't open logfile: %s\n", filename);
+
+	cls.log.started = qfalse;
 }
 
 static void CL_CloseLog(fileHandle_t *f) {
@@ -605,6 +636,8 @@ static void CL_CloseLog(fileHandle_t *f) {
 
 	FS_FCloseFile(*f);
 	*f = NULL_FILE;
+
+	cls.log.started = qfalse;
 }
 
 /*
@@ -624,8 +657,8 @@ void CL_ShutdownCGame( void ) {
 	CL_UnbindCGame();
 
 	if (cl_logChat->integer) {
-		CL_LogPrintf(cls.log.chat, "End logging\n------------------------------------------------------------\n\n");
-		CL_CloseLog(&cls.log.chat);
+		if (cls.log.started) CL_LogPrintf(cls.log.file, "End log\n----------------------------------------------------------------\n\n");
+		CL_CloseLog(&cls.log.file);
 	}
 }
 
@@ -701,10 +734,11 @@ void CL_InitCGame( void ) {
 		newtime = localtime(&rawtime);
 		strftime(logname, sizeof(logname), "chatlogs/cl_%y-%b.log", newtime);
 
-		CL_OpenLog(logname, &cls.log.chat, (cl_logChat->integer == 2 ? qtrue : qfalse));
+		CL_OpenLog(logname, &cls.log.file, (cl_logChat->integer == 2 ? qtrue : qfalse));
 	}
-	else
+	else {
 		Com_DPrintf("Not logging chat to disk.\n");
+	}
 }
 
 

@@ -886,7 +886,7 @@ void Message_Key( int key ) {
 
 				while (*src) {
 					if (*src == '%') {
-						*dst = (char)176;
+						*dst = '\xb0'; //(char)176 (degree sign)
 						dst++;
 						*dst = '/';
 						dst++;
