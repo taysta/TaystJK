@@ -2334,6 +2334,9 @@ void UpdateForceStatus()
 		case TEAM_BLUE:
 			uiSkinColor = TEAM_BLUE;
 			break;
+		case 4:
+			uiSkinColor = 3;
+			break;
 		default:
 			trap->GetConfigString( CS_SERVERINFO, info, sizeof(info) );
 
@@ -5714,6 +5717,33 @@ static void UI_Update(const char *name) {
 		char buf[MAX_NETNAME] = {0};
 		Q_strncpyz( buf, UI_Cvar_VariableString( "name" ), sizeof( buf ) );
 		trap->Cvar_Set( "ui_Name", buf );
+
+		//Set the team to whatever our current skin is.
+		Q_strncpyz(buf, UI_Cvar_VariableString("model"), sizeof(buf));
+		if (ui_selectedModelIndex.integer > -1 && ui_gametype.integer < GT_TEAM)
+		{
+			const char *skin = Q_strchrs(buf, "/");
+
+			if (skin != NULL) {
+				if (!Q_stricmpn(skin, "/default", 8)) {
+					uiSkinColor = 0;
+					trap->Cvar_Set("ui_myteam", "3");
+				}
+				else if (!Q_stricmpn(skin, "/red", 4)) {
+					uiSkinColor = 1;
+					trap->Cvar_Set("ui_myteam", "1");
+				}
+				else if (!Q_stricmpn(skin, "/blue", 5)) {
+					uiSkinColor = 2;
+					trap->Cvar_Set("ui_myteam", "2");
+				}
+				else if (!Q_stricmpn(skin, "/rgb", 4) || !Q_stricmpn(skin, "/sp", 3))
+				{
+					uiSkinColor = 0;
+					trap->Cvar_Set("ui_myteam", "4");
+				}
+			}
+		}
 	}
 	else if ( !Q_stricmp( name, "ui_SetName" ) ) {
 		char buf[MAX_NETNAME] = {0};
@@ -6381,6 +6411,24 @@ static void UI_GetCharacterCvars ( void )
 	}
 	else
 	{
+		if (strlen(skin) && ui_gametype.integer < GT_TEAM)
+		{ //set our team to respect our current skin
+			if (!Q_stricmpn(skin, "/default", 8)) {
+				uiSkinColor = 0;
+			}
+			else if (!Q_stricmpn(skin, "/red", 4)) {
+				uiSkinColor = 1;
+				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
+			}
+			else if (!Q_stricmpn(skin, "/blue", 5)) {
+				uiSkinColor = 2;
+				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
+			}
+			else if (!Q_stricmpn(skin, "/rgb", 4) || !Q_stricmpn(skin, "/sp", 3)) {
+				uiSkinColor = 3;
+			}
+		}
+
 		model = UI_Cvar_VariableString ( "ui_char_model" );
 		for (i = 0; i < uiInfo.playerSpeciesCount; i++)
 		{
