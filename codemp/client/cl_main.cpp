@@ -2487,15 +2487,15 @@ void CL_Frame ( int msec ) {
 			cls.discordInitialized = qtrue;
 		}
 	
-		if ( cls.realtime >= cls.discordUpdatetime && cls.discordInitialized )
+		if ( cls.realtime >= cls.discordUpdateTime && cls.discordInitialized )
 		{
 			CL_DiscordUpdatePresence();
-			cls.discordUpdatetime = cls.realtime + 500;
+			cls.discordUpdateTime = cls.realtime + 500;
 		}
 	}
 	else if (cls.discordInitialized) { //we just turned it off
 		CL_DiscordShutdown();
-		cls.discordUpdatetime = 0;
+		cls.discordUpdateTime = 0;
 		cls.discordInitialized = qfalse;
 	}
 #endif
@@ -3398,7 +3398,7 @@ void CL_Init( void ) {
 #if defined(DISCORD) && !defined(_DEBUG)
 	if (cl_discordRichPresence->integer) {
 		CL_DiscordInitialize();
-		cls.discordInitialized;
+		cls.discordInitialized = qtrue;
 	}
 #endif
 

@@ -149,6 +149,53 @@ char *GetState()
 	return NULL;
 }
 
+char *GetGameType(qboolean imageKey, int gametype) //workaround for discord image keys being forced to lowercase
+{
+	char *gamemode = NULL;
+	usercmd_t cmd;
+	CL_GetUserCmd( cl.cmdNumber, &cmd );
+
+	if (cls.state < CA_ACTIVE) {
+		return GetState();
+	}
+
+	switch (gametype)
+	{
+		default:
+		case 0:
+			gamemode = GetState();
+			break;
+		case 1:
+			gamemode = imageKey ? "holocron" : "Holocron";
+			break;
+		case 2:
+			gamemode = imageKey ? "jedimaster" : "JediMaster";
+			break;
+		case 3:
+			gamemode = imageKey ? "duel" : "Duel";
+			break;
+		case 4:
+			gamemode = imageKey ? "powerduel" : "PowerDuel";
+			break;
+		case 5:
+			gamemode = imageKey ? GetState() : "FFA"; //"SP";
+		case 6:
+			gamemode = imageKey ? "tffa" : "TFFA";
+			break;
+		case 7:
+			gamemode = imageKey ? "siege" : "Siege";
+			break;
+		case 8:
+			gamemode = imageKey ? "ctf" : "CTF";
+			break;
+		case 9:
+			gamemode = imageKey ? "cty" : "CTY";
+			break;
+	}
+
+	return gamemode;
+}
+
 char *joinSecret() {
 	
 	if ( cls.state == CA_ACTIVE )
@@ -304,6 +351,7 @@ void CL_DiscordUpdatePresence(void)
 {
 	char *partyID = PartyID();
 	char *joinID = joinSecret();
+	int gametype = Cvar_VariableIntegerValue("ui_about_gametype");
 
 	if (!cls.discordInitialized)
 		return;
@@ -314,12 +362,12 @@ void CL_DiscordUpdatePresence(void)
 	discordPresence.details = GetServerDetails();
 	discordPresence.largeImageKey = ReturnMapIcon();
 	discordPresence.largeImageText = ReturnMapName();
-	discordPresence.smallImageKey = GetState();
-	discordPresence.smallImageText = GetState();
-	discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat
+	discordPresence.smallImageKey = GetGameType(qtrue, gametype);
+	discordPresence.smallImageText = GetGameType(qfalse, gametype);
+	discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
 	discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
 	discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
-	discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren
+	discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	Discord_UpdatePresence( &discordPresence );
 
 	Discord_RunCallbacks();

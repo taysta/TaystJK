@@ -314,7 +314,7 @@ typedef struct clientStatic_s {
 
 #if defined(DISCORD) && !defined(_DEBUG)
 	qboolean	discordInitialized;
-	int			discordUpdatetime;
+	int			discordUpdateTime;
 #endif
 
 	int			numlocalservers;
