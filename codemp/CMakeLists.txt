@@ -418,6 +418,31 @@ if(BuildMPEngine)
 		set(MPEngineFiles ${MPEngineFiles} ${MPEngineEAXFiles})
 	endif(MSVC)
 
+	# discord-rpc
+	if(BuildDiscordRichPresence)
+		if(WIN32)
+			set(MPEngineLibraries
+			${MPEngineLibraries}
+			${OpenJKLibDir}/discord-rpc/lib/discord-rpc.lib
+			)
+		elseif(APPLE)
+			set(MPEngineLibraries
+			${MPEngineLibraries}
+			$OpenJKLibDir/discord-rpc/lib/osx/libdiscord-rpc.a
+			)
+		else()
+			set(MPEngineLibraries
+			${MPEngineLibraries}
+			$OpenJKLibDir/discord-rpc/lib/libdiscord-rpc.a
+			)
+		endif()
+
+		set(MPEngineIncludeDirectories
+		${MPEngineIncludeDirectories}
+		${OpenJKLibDir}/discord-rpc/include
+		)
+	endif()
+
 	#    Source Files
 
 	set(MPEngineClientFiles
@@ -427,6 +452,7 @@ if(BuildMPEngine)
 		"${MPDir}/client/cl_cgameapi.h"
 		"${MPDir}/client/cl_cin.cpp"
 		"${MPDir}/client/cl_console.cpp"
+		"${MPDir}/client/cl_discordrpc.cpp"
 		"${MPDir}/client/cl_input.cpp"
 		"${MPDir}/client/cl_keys.cpp"
 		"${MPDir}/client/cl_lan.cpp"

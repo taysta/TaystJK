@@ -109,21 +109,24 @@ cvar_t	*cl_consoleUseScanCode;
 
 cvar_t  *cl_lanForcePackets;
 
-cvar_t	*cl_ratioFix;
-cvar_t	*cl_coloredTextShadows;
-
 cvar_t *cl_drawRecording;
+
+//EternalJK
+cvar_t	*cl_ratioFix;
 
 cvar_t *cl_colorString;
 cvar_t *cl_colorStringCount;
 cvar_t *cl_colorStringRandom;
 
+int		cl_unfocusedTime;
 cvar_t *cl_afkTime;
 cvar_t *cl_afkTimeUnfocused;
 
 cvar_t *cl_logChat;
 
-int		cl_unfocusedTime;
+#if defined(DISCORD) && !defined(_DEBUG)
+cvar_t	*cl_discordRichPresence;
+#endif
 
 vec3_t cl_windVec;
 
@@ -2371,6 +2374,9 @@ CL_Frame
 static unsigned int frameCount;
 static float avgFrametime=0.0;
 extern void SE_CheckForLanguageUpdates(void);
+#ifdef DISCORD
+static int loaded = 0;
+#endif
 void CL_Frame ( int msec ) {
 	qboolean render = qfalse;
 	qboolean takeVideoFrame = qfalse;
@@ -2476,6 +2482,27 @@ void CL_Frame ( int msec ) {
 		// save the current screen
 		CL_TakeVideoFrame( );
 	}
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer) {
+		if ( cls.realtime >= 5000 && !loaded)
+		{
+			discordInit();
+			loaded = 1;
+		}
+	
+		if ( cls.realtime >= cls.discordUpdatetime && loaded )
+		{
+			updateDiscordPresence();
+			cls.discordUpdatetime = cls.realtime + 500;
+		}
+	}
+	else if (loaded) {
+		discordShutdown();
+		cls.discordUpdatetime = 0;
+		loaded = 0;
+	}
+#endif
 }
 
 
@@ -3303,15 +3330,19 @@ void CL_Init( void ) {
 
 	cl_ratioFix = Cvar_Get("cl_ratioFix", "1", CVAR_ARCHIVE, "Widescreen aspect ratio correction");
 
+	cl_colorString = Cvar_Get("cl_colorString", "0", CVAR_ARCHIVE, "Bit value of selected colors in colorString, configure chat colors with /colorstring");
+	cl_colorStringCount = Cvar_Get("cl_colorStringCount", "0", CVAR_INTERNAL | CVAR_ROM | CVAR_ARCHIVE);
+	cl_colorStringRandom = Cvar_Get("cl_colorStringRandom", "2", CVAR_ARCHIVE, "Randomness of the colors changing, higher numbers are less random");
+
 	cl_afkTime = Cvar_Get("cl_afkTime", "10", CVAR_ARCHIVE, "Minutes to autorename to afk, 0 to disable");
 	cl_afkTimeUnfocused = Cvar_Get("cl_afkTimeUnfocused", "5", CVAR_ARCHIVE, "Minutes to autorename to afk while unfocused/minimized");
 	cl_unfocusedTime = 0;
 
-	cl_colorString = Cvar_Get("cl_colorString", "0", CVAR_ARCHIVE, "Bit value of selected colors in colorString");
-	cl_colorStringCount = Cvar_Get("cl_colorStringCount", "0", CVAR_INTERNAL | CVAR_ROM | CVAR_ARCHIVE);
-	cl_colorStringRandom = Cvar_Get("cl_colorStringRandom", "2", CVAR_ARCHIVE, "Randomness of the colors changing, higher numbers are less random");
-
 	cl_logChat = Cvar_Get("cl_logChat", "0", CVAR_ARCHIVE, "Toggle engine chat logs");
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	cl_discordRichPresence = Cvar_Get("cl_discordRichPresence", "1", CVAR_ARCHIVE, "Allow/disallow sharing current game information on Discord profile status");
+#endif
 
 	//
 	// register our commands
@@ -3437,6 +3468,11 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand("colorstring");
 	Cmd_RemoveCommand("colorname");
 
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer || loaded)
+		discordShutdown();
+#endif
+
 	CL_ShutdownInput();
 	Con_Shutdown();
 
@@ -3482,8 +3518,8 @@ qboolean CL_ConnectedToRemoteServer( void ) {
 static void CL_SetServerInfo(serverInfo_t *server, const char *info, int ping) {
 	if (server) {
 		if (info) {
-			char * filteredHostName = Info_ValueForKey(info, "hostname");
-			if (Q_stricmp(filteredHostName, "")) { 
+			char *filteredHostName = Info_ValueForKey(info, "hostname");
+			if (strlen(filteredHostName)) {
 				Q_strstrip(filteredHostName, "\xac\x82\xe2\xa2\x80", NULL);
 				while (*filteredHostName == '\x20' || *filteredHostName == '\x2e') *filteredHostName++;
 			}

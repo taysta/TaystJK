@@ -262,6 +262,32 @@ void CL_ConfigstringModified( void ) {
 		if (index >= CS_PLAYERS &&
 			index < CS_G2BONES)
 		{ //this means that a client was updated in some way. Go through and count the clients.
+#if defined(DISCORD) && !defined(_DEBUG)
+			int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
+			i = CS_PLAYERS;
+
+			while (i < CS_G2BONES)
+			{
+				s = cl.gameState.stringData + cl.gameState.stringOffsets[ i ];
+				char *bot = Info_ValueForKey(s, "skill");
+
+				if (bot && bot[0])
+				{
+					botCount++;
+				}
+
+				if (s && s[0])
+				{
+					clientCount++;
+				}
+
+				i++;
+			}
+
+			cl.playerCount = clientCount;
+			cl.botCount = botCount;
+			cl.maxPlayers = atoi(Info_ValueForKey(cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "sv_maxclients"));
+#else
 			int clientCount = 0;
 			i = CS_PLAYERS;
 
@@ -276,6 +302,7 @@ void CL_ConfigstringModified( void ) {
 
 				i++;
 			}
+#endif
 
 			gCLTotalClientNum = clientCount;
 
@@ -614,6 +641,9 @@ void CL_InitCGame( void ) {
 	const char			*info;
 	const char			*mapname;
 	int					t1, t2;
+#if defined(DISCORD) && !defined(_DEBUG)
+	char				*servername = NULL;
+#endif
 
 	t1 = Sys_Milliseconds();
 
@@ -624,6 +654,14 @@ void CL_InitCGame( void ) {
 	info = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
 	mapname = Info_ValueForKey( info, "mapname" );
 	Com_sprintf( cl.mapname, sizeof( cl.mapname ), "maps/%s.bsp", mapname );
+#if defined(DISCORD) && !defined(_DEBUG)
+	servername = Info_ValueForKey(info, "sv_hostname");
+	if (strlen(servername)) { //filter this stuff out...
+		Q_strstrip(servername, "\xac\x82\xe2\xa2\x80", NULL);
+		while (*servername == '\x20' || *servername == '\x2e') *servername++;
+	}
+	strncpy(cl.serverName, servername, sizeof(cl.serverName));
+#endif
 
 	// load the dll
 	CL_BindCGame();

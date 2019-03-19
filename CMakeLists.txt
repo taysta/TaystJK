@@ -42,6 +42,8 @@ option(BuildMPGame "Whether to create projects for the MP server-side gamecode (
 option(BuildMPCGame "Whether to create projects for the MP clientside gamecode (cgamex86.dll)" ON)
 option(BuildMPUI "Whether to create projects for the MP UI code (uix86.dll)" ON)
 
+option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
+
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
 
 Include(CMakeDependentOption)
@@ -294,7 +296,11 @@ if(CMAKE_BUILD_TYPE MATCHES "DEBUG" OR CMAKE_BUILD_TYPE MATCHES "Debug")
 		set(SharedDefines ${SharedDefines} "_DEBUG")
 	endif()
 else()
-	set(SharedDefines ${SharedDefines} "FINAL_BUILD")
+	if(BuildDiscordRichPresence) #dunno why but putting this under BuildPortableVersion removes the FINAL_BUILD from SharedDefines
+		set(SharedDefines ${SharedDeinfes} "FINAL_BUILD" "DISCORD")
+	else()
+		set(SharedDefines ${SharedDefines} "FINAL_BUILD")
+	endif()
 endif()
 
 

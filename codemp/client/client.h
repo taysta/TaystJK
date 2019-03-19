@@ -151,6 +151,13 @@ typedef struct clientActive_s {
 	entityState_t	parseEntities[MAX_PARSE_ENTITIES];
 
 	char			*mSharedMemory;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	int				maxPlayers;
+	int				playerCount;
+	int				botCount;
+	char			serverName[MAX_STRING_CHARS];
+#endif
 } clientActive_t;
 
 extern	clientActive_t		cl;
@@ -304,6 +311,10 @@ typedef struct clientStatic_s {
 
 	int			afkTime;
 
+#if defined(DISCORD) && !defined(_DEBUG)
+	int			discordUpdatetime;
+#endif
+
 	int			numlocalservers;
 	serverInfo_t	localServers[MAX_OTHER_SERVERS];
 
@@ -435,10 +446,14 @@ extern cvar_t	*cl_colorString;
 extern cvar_t	*cl_colorStringCount;
 extern cvar_t	*cl_colorStringRandom;
 
-extern cvar_t	*cl_logChat;
-
 extern cvar_t	*cl_afkTime;
 extern cvar_t	*cl_afkTimeUnfocused;
+
+extern cvar_t	*cl_logChat;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+extern cvar_t	*cl_discordRichPresence;
+#endif
 
 //=================================================
 
@@ -483,6 +498,12 @@ void CL_RandomizeColors(const char*, char*);
 void CL_Afk_f(void);
 
 void CL_LogPrintf(fileHandle_t fileHandle, const char *fmt, ...);
+
+#if defined(DISCORD) && !defined(_DEBUG)
+void discordInit();
+void discordShutdown();
+void updateDiscordPresence();
+#endif
 
 qboolean CL_CheckPaused(void);
 
