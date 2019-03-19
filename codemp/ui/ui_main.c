@@ -6317,12 +6317,19 @@ static void UI_GetCharacterCvars ( void )
 	char *skin;
 	int i;
 
+	model = UI_Cvar_VariableString("model");
+	skin = strrchr(model, '/');
+
+	trap->Cvar_Set ( "ui_char_model", model );
 	trap->Cvar_Set ( "ui_char_color_red", UI_Cvar_VariableString ( "char_color_red" ) );
 	trap->Cvar_Set ( "ui_char_color_green", UI_Cvar_VariableString ( "char_color_green" ) );
 	trap->Cvar_Set ( "ui_char_color_blue", UI_Cvar_VariableString ( "char_color_blue" ) );
 
-	model = UI_Cvar_VariableString ( "model" );
-	skin = strrchr(model,'/');
+	trap->Cvar_Update ( &ui_char_model );
+	trap->Cvar_Update ( &ui_char_color_red );
+	trap->Cvar_Update ( &ui_char_color_green );
+	trap->Cvar_Update ( &ui_char_color_blue );
+
 	if (skin && strchr(model,'|'))	//we have a multipart custom jedi
 	{
 		char skinhead[MAX_QPATH];
@@ -6365,6 +6372,11 @@ static void UI_GetCharacterCvars ( void )
 				uiInfo.playerSpeciesIndex = i;
 				break;
 			}
+		}
+
+		if (ui_selectedModelIndex.integer > -1) {
+			trap->Cvar_Set("ui_selectedModelIndex", "-1");
+			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL);
 		}
 	}
 	else
@@ -8669,6 +8681,20 @@ static int UI_HeadCountByColor(void) {
 		{
 			c++;
 		}
+	}
+
+	if (ui_headCount.integer < 0) {
+		trap->Cvar_Set("ui_headCount", va("%i", c));
+		trap->Cvar_Update(&ui_headCount);
+	}
+	else if (ui_headCount.integer != c && ui_selectedModelIndex.integer > -1)
+	{ //reset selected skin if we have more or less than we used to
+		trap->Cvar_Set("ui_selectedModelIndex", "-1");
+		trap->Cvar_Set("ui_headCount", "-1");
+		trap->Cvar_Update(&ui_selectedModelIndex);
+		trap->Cvar_Update(&ui_headCount);
+
+		Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL);
 	}
 	return c;
 }
@@ -11406,6 +11432,7 @@ void UI_Init( qboolean inGameLoad ) {
 	uiInfo.uiDC.cursorx = SCREEN_WIDTH / 2;
 	uiInfo.uiDC.cursory = (SCREEN_HEIGHT / 2);
 
+	UI_GetCharacterCvars();
 }
 
 #define	UI_FPS_FRAMES	4

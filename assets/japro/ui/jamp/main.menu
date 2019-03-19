@@ -319,6 +319,7 @@
 			{ 
 				play			"sound/interface/button1.wav" ; 
 				close			all ; 
+				uiScript				getcharcvars
 				open			playerMenu
 			}
 		}

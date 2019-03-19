@@ -41,6 +41,7 @@
 		{ 
 			uiScript				update "ui_GetName"
 			uiScript				updateForceStatus
+			uiScript				getcharcvars
 			hide					highlights
 		}
 		onClose 
