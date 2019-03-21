@@ -1208,6 +1208,8 @@ void Com_Init( char *commandLine ) {
 #endif
 		Cmd_AddCommand ("writeconfig", Com_WriteConfig_f, "Write the configuration to file" );
 		Cmd_SetCommandCompletionFunc( "writeconfig", Cmd_CompleteCfgName );
+		Cmd_AddCommand("write", Com_WriteConfig_f, "Write the configuration to file");
+		Cmd_SetCommandCompletionFunc("write", Cmd_CompleteCfgName);
 
 		Com_ExecuteCfg();
 
