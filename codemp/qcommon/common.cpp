@@ -1191,6 +1191,8 @@ void Com_Init( char *commandLine ) {
 
 		FS_InitFilesystem ();
 
+		Sys_SteamInit();
+
 		Com_InitJournaling();
 
 		// Add some commands here already so users can use them from config files
@@ -1716,6 +1718,8 @@ void Com_Shutdown (void)
 		FS_FCloseFile( com_journalFile );
 		com_journalFile = 0;
 	}
+
+	Sys_SteamShutdown();
 
 	MSG_shutdownHuffman();
 /*

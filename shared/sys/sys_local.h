@@ -41,6 +41,10 @@ extern void	GLimp_Alert(void);
 void		Sys_AnsiColorPrint( const char *msg );
 #endif
 
+// Steam integration
+void		Sys_SteamInit();
+void		Sys_SteamShutdown();
+
 struct UnpackDLLResult
 {
 	bool succeeded;
