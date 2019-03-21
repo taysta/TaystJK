@@ -435,7 +435,7 @@ static void CG_IgnoreVGS_f(void)
 		Com_Printf("VGS Ignored client(s):\n");
 		for (i = 0, cl = cgs.clientinfo; i < cgs.maxclients; ++i, ++cl) {
 			if (cl->infoValid && (cgs.ignoredVGS & (1 << i))) {
-				trap->Print("^5%2d^3: ^7%s\n", i, cl->name);
+				Com_Printf("^5%2d^3: ^7%s\n", i, cl->name);
 			}
 		}
 	}
@@ -929,6 +929,20 @@ static void CG_NorollUp_f(void)
 
 	Q_strncpyz(cg.doVstr, "-movedown;-speed\n", sizeof(cg.doVstr)); //?
 	cg.doVstrTime = cg.time;
+}
+
+static void CG_GrappleDown_f(void) {
+	trap->SendConsoleCommand("+button12\n");
+}
+
+static void CG_GrappleUp_f(void) {
+	if (cgs.isJAPlus) {
+		trap->SendConsoleCommand("-button12;+use\n");
+		Q_strncpyz(cg.doVstr, "-use\n", sizeof(cg.doVstr));
+		cg.doVstrTime = cg.time;
+	}
+	else
+		trap->SendConsoleCommand("-button12\n");
 }
 
 qboolean CG_WeaponSelectable(int i);
@@ -2046,6 +2060,8 @@ static consoleCommand_t	commands[] = {
 	{ "lowjump",					CG_Lowjump_f },
 	{ "+duck",						CG_NorollDown_f },
 	{ "-duck",						CG_NorollUp_f },
+	{ "+grapple",					CG_GrappleDown_f },
+	{ "-grapple",					CG_GrappleUp_f },
 	{ "plugin",						CG_PluginDisable_f },
 	{ "pluginDisable",				CG_PluginDisable_f },
 	{ "stylePlayer",				CG_StylePlayer_f },
