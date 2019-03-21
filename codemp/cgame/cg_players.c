@@ -5834,9 +5834,6 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	// Find the midpoint of the saber for lighting purposes
 	VectorMA( origin, length * 0.5f, dir, mid );
 
-	if (color > SABER_PURPLE)
-		color = ClampSaberColor(color);
-
 	switch( color )
 	{
 		case SABER_RED:
@@ -6008,7 +6005,7 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	//rgb
 }
 
-void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t trail_muz, float lengthMax, float radius, saber_colors_t color, int rfx, qboolean doLight, qboolean doTrail, int cnum, int bnum ) {
+void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t trail_muz, float lengthMax, float radius, saber_colors_t color, int rfx, qboolean doLight, int cnum, int bnum ) {
 	vec3_t	dif, mid, blade_dir, end_dir, trail_dir, base_dir, rgb;
 	float radiusmult, effectradius, coreradius, effectalpha, AngleScale, blade_len, end_len, trail_len, base_len, DisTip, DisMuz, DisDif, glowscale = 0.5f, v1, v2, len, pulse;
 	int i;
@@ -6032,9 +6029,6 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 	base_len = VectorLength( base_dir );
 	VectorNormalize( end_dir );
 	VectorNormalize( base_dir );
-
-	if (color > SABER_PURPLE)
-		color = ClampSaberColor(color);
 
 	switch ( color ) {
 		case SABER_RED:
@@ -7635,8 +7629,7 @@ JustDoIt:
 		CG_DoSFXSaber(fx.mVerts[0].origin, fx.mVerts[1].origin, fx.mVerts[2].origin, fx.mVerts[3].origin,
 			(client->saber[saberNum].blade[bladeNum].lengthMax), (client->saber[saberNum].blade[bladeNum].radius),
 			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3
-				&& !(client->saber[saberNum].saberFlags2 & SFL2_NO_DLIGHT)),
-				(qboolean)(cg_saberTrail.integer > 0), cent->currentState.clientNum, saberNum);
+				&& !(client->saber[saberNum].saberFlags2 & SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum);
 	} else {
 		CG_DoSaber( org_, axis_[0], saberLen, client->saber[saberNum].blade[bladeNum].lengthMax, client->saber[saberNum].blade[bladeNum].radius,
 			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3 && !(client->saber[saberNum].saberFlags2&SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum );//rgb -- fix casting?
