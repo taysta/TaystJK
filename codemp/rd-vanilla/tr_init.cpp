@@ -1518,6 +1518,14 @@ void R_AtiHackToggle_f(void)
 	g_bTextureRectangleHack = !g_bTextureRectangleHack;
 }
 
+void R_ClearRemaps_f(void) {
+	int num;
+
+	for (num = 0; num < tr.numShaders; num++) {
+		tr.shaders[num]->remappedShader = NULL;
+	}
+}
+
 typedef struct consoleCommand_s {
 	const char	*cmd;
 	xcommand_t	func;
@@ -1538,6 +1546,7 @@ static consoleCommand_t	commands[] = {
 	{ "modellist",			R_Modellist_f },
 	{ "modelcacheinfo",		RE_RegisterModels_Info_f },
 	{ "r_cleardecals",		RE_ClearDecals },
+	{ "clearRemaps",		R_ClearRemaps_f }
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );
