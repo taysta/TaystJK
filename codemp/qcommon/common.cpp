@@ -1191,8 +1191,6 @@ void Com_Init( char *commandLine ) {
 
 		FS_InitFilesystem ();
 
-		Sys_SteamInit();
-
 		Com_InitJournaling();
 
 		// Add some commands here already so users can use them from config files
@@ -1232,6 +1230,11 @@ void Com_Init( char *commandLine ) {
 	#endif
 		// allocate the stack based hunk allocator
 		Com_InitHunkMemory();
+
+#ifndef DEDICATED //initialize Steam API here so the cvar doesn't have to be set in the command line
+		Cvar_Get("com_steamIntegration", "1", CVAR_ARCHIVE|CVAR_LATCH, "Enables automatic Steam API integration (requires a steam_api.dll to be in GameData)");
+		Sys_SteamInit();
+#endif
 
 		// if any archived cvars are modified after this, we will trigger a writing
 		// of the config file
