@@ -1518,6 +1518,22 @@ void R_AtiHackToggle_f(void)
 	g_bTextureRectangleHack = !g_bTextureRectangleHack;
 }
 
+void R_RemapSkyShader_f (void) {
+	int num;
+
+	if (ri.Cmd_Argc() != 2 || !strlen(ri.Cmd_Argv(1))) {
+		ri.Printf(PRINT_ALL, "Usage: /remapSky <new>\n");
+		return;
+	}
+
+	for (num = 0; num < tr.numShaders; num++) {
+		if (tr.shaders[num]->sky)
+		{
+			R_RemapShader(tr.shaders[num]->name, ri.Cmd_Argv(1), NULL);
+		}
+	}
+}
+
 void R_ClearRemaps_f(void) {
 	int num;
 
@@ -1546,6 +1562,7 @@ static consoleCommand_t	commands[] = {
 	{ "modellist",			R_Modellist_f },
 	{ "modelcacheinfo",		RE_RegisterModels_Info_f },
 	{ "r_cleardecals",		RE_ClearDecals },
+	{ "remapSky",			R_RemapSkyShader_f },
 	{ "clearRemaps",		R_ClearRemaps_f }
 };
 
