@@ -217,6 +217,7 @@ gfx/effects/sabers/RGBtrail4 {
 gfx/effects/sabers/saber_trail {
 	nopicmip
 	notc
+	nomipmaps
 	cull twosided
 	{
 		map $whiteimage
