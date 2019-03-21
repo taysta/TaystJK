@@ -14,12 +14,12 @@ You need to link the static library also 'discord_rpc.lib'.
 //This is my Application ID of the Discord Developer section, feel free to use it.
 static const char* APPLICATION_ID = "459923453139746816";
 
-typedef struct mapIcon_s {
-	char *map;
-	char *imap;
-} mapIcon_t;
+typedef struct statusIcon_s {
+	char *string;
+	char *icon;
+} statusIcon_t;
 
-static mapIcon_t mapIcon[] = {
+static statusIcon_t mapIcons[] = {
 	{ "academy1",			"academy1"			},
 	{ "academy2",			"academy2"			},
 	{ "academy3",			"academy3"			},
@@ -94,21 +94,35 @@ static mapIcon_t mapIcon[] = {
 	{ "racepack5",			"racepack5",		},
 	{ "racepack6",			"racepack6",		},
 	{ "racepack7",			"racepack7",		},
-}; static const size_t numMapIcon = ARRAY_LEN( mapIcon );
+}; static const size_t numMapIcons = ARRAY_LEN( mapIcons );
+
+static statusIcon_t gameTypes[] = {
+	{ "FFA",			"ffa"			},
+	{ "Holocron",		"holocron"		},
+	{ "Jedi Master",	"jedimaster"	},
+	{ "Duel",			"duel"			},
+	{ "PowerDuel",		"powerduel"		},
+	{ "SP",				"ffa"			},
+	{ "Team FFA",		"tffa"			},
+	{ "Siege",			"siege"			},
+	{ "CTF",			"ctf"			},
+	{ "CTY",			"CTY"			},
+}; static const size_t numGameTypes = ARRAY_LEN(gameTypes);
 
 char *ReturnMapName() {
+	char *mapname = cl.discord.mapName;
+
 	if ( cls.state == CA_DISCONNECTED || cls.state == CA_CONNECTING )
 	{
 		return "menu";
 	}
-	
-	char *mapname = Info_ValueForKey( cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "mapname" );
+
 	Q_StripColor( mapname );
 	return Q_strlwr(mapname);
 }
 
 char *ReturnServerName() {
-	char *servername = Cvar_VariableString("ui_about_hostname");
+	char *servername = cl.discord.hostName;
 
 	//Q_strstrip(servername, "\xac\x82\xe2\xa2\x80", NULL);
 	//while (*servername == '\x20' || *servername == '\x2e') *servername++;
@@ -121,13 +135,12 @@ char *ReturnServerName() {
 char *ReturnMapIcon() {
 	char *mapname = ReturnMapName();
 
-	for ( int i = 0; i < numMapIcon; i++ )
+	for ( int i = 0; i < numMapIcons; i++ )
 	{
-		if ( !strcmp( mapname, mapIcon[i].map ) )
+		if ( !stricmp( mapname, mapIcons[i].string ) )
 		{
-			return mapIcon[i].imap;
+			return mapIcons[i].icon;
 		}
-
 	}
 
 	return "icon";
@@ -149,7 +162,7 @@ char *GetState()
 			return "playing";
 	}
 	else if (cls.state > CA_DISCONNECTED && cls.state < CA_PRIMED) {
-		return "connecting";
+		return "";
 	}
 	else if (cls.state <= CA_DISCONNECTED) {
 		return "menu";
@@ -158,72 +171,50 @@ char *GetState()
 	return "...";
 }
 
-char *GetGameType(qboolean imageKey, int gametype) //workaround for discord image keys being forced to lowercase
+static char *GetGameType(qboolean imageKey, int gametype)
 {
-	char *gamemode = NULL;
-	usercmd_t cmd;
-	CL_GetUserCmd( cl.cmdNumber, &cmd );
+	int gametypenum = gametype;
 
-	if (cls.state < CA_ACTIVE || !cl.snap.valid) {
+	if (cl_discordRichPresence->integer > 1 || cls.state < CA_ACTIVE || !cl.snap.valid) {
 		return GetState();
 	}
 
-	switch (gametype)
-	{
-		default:
-		case 0:
-			gamemode = GetState();
-			break;
-		case 1:
-			gamemode = imageKey ? (char*)"holocron" : (char*)"Holocron";
-			break;
-		case 2:
-			gamemode = imageKey ? (char*)"jedimaster" : (char*)"JediMaster";
-			break;
-		case 3:
-			gamemode = imageKey ? (char*)"duel" : (char*)"Duel";
-			break;
-		case 4:
-			gamemode = imageKey ? (char*)"powerduel" : (char*)"PowerDuel";
-			break;
-		case 5:
-			gamemode = imageKey ? GetState() : (char*)"FFA"; //"SP";
-		case 6:
-			gamemode = imageKey ? (char*)"tffa" : (char*)"TFFA";
-			break;
-		case 7:
-			gamemode = imageKey ? (char*)"siege" : (char*)"Siege";
-			break;
-		case 8:
-			gamemode = imageKey ? (char*)"ctf" : (char*)"CTF";
-			break;
-		case 9:
-			gamemode = imageKey ? (char*)"cty" : (char*)"CTY";
-			break;
-	}
+	if (gametypenum < GT_FFA || gametypenum >= numGameTypes)
+		gametypenum = GT_FFA;
 
-	return gamemode;
+	if (gametypenum > GT_FFA)
+		return imageKey ? gameTypes[gametypenum].icon : gameTypes[gametypenum].string;
+
+	return imageKey ? GetState() : gameTypes[gametypenum].string;
 }
 
 cvar_t *cl_discordRichPresenceSharePassword;
 char *joinSecret()
 {
-	
-	if ( cls.state == CA_ACTIVE )
+	if (clc.demoplaying)
+		return NULL;
+
+	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE )
 	{
 		char *x = (char *)malloc( sizeof( char ) * 128 );
+		char *password = Cvar_VariableString("password");
 
-		Q_strncpyz( x, va( "%s %s", cls.servername, Cvar_VariableString( "fs_game" ) ), 128 );
+		if (cl_discordRichPresenceSharePassword->integer && cl.discord.needPassword && strlen(password)) {
+			Com_sprintf(x, 128, "%s %s %s", cls.servername, cl.discord.fs_game, password);
+		}
+		else {
+			Com_sprintf(x, 128, "%s %s \"\"", cls.servername, cl.discord.fs_game);
+		}
 		return x;
 	}
-		
-	return (char*)"\0";
+
+	return NULL;
 }
 
 char *PartyID()
 {
 	if (clc.demoplaying)
-		return (char*)"\0";
+		return NULL;
 
 	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE ) 
 	{
@@ -234,20 +225,28 @@ char *PartyID()
 		return x;
 	}
 
-	return (char*)"\0";
+	return NULL;
 }
 
-char *GetServerState() {
-	if ( cls.state == CA_ACTIVE )
-		return va("%d / %d players [%d BOTS]", cl.discord.playerCount, cl.discord.maxPlayers, cl.discord.botCount);
+char *GetServerState(int gametype) {
+	if ( cls.state == CA_ACTIVE ) {
+		if (cl_discordRichPresence->integer > 1) {
+			return va("%d / %d players [%d BOTS]", cl.discord.playerCount, cl.discord.maxPlayers, cl.discord.botCount);
+		}
+		
+		if (clc.demoplaying)
+			return GetGameType(qfalse, gametype);
 
-	if ( cls.state == CA_CONNECTING )
-		return "Connecting";
+		if (gametype >= GT_TEAM)
+			return va("%s | %dv%d", GetGameType(qfalse, gametype), cl.discord.redTeam, cl.discord.blueTeam);
 
-	if ( cls.state == CA_DISCONNECTED || cls.state == CA_CINEMATIC )
+		return GetGameType(qfalse, gametype);
+	}
+
+	if ( cls.state <= CA_DISCONNECTED || cls.state == CA_CINEMATIC )
 		return "";
 
-	return NULL;
+	return GetState();
 }
 
 char *GetServerDetails() {
@@ -257,12 +256,12 @@ char *GetServerDetails() {
 		}
 		
 		if (clc.demoplaying) {
-			return va("Playing demo - %s", Cvar_VariableString("ui_about_hostname"));
+			return va("Playing demo - %s", Q_CleanStr(Cvar_VariableString("ui_about_hostname")));
 		}
 
 		if (com_sv_running->integer) {
 			if (Q_stricmp(Cvar_VariableString("sv_hostname"), "*Jedi*"))
-				return va("Playing offline - %s\n", Cvar_VariableString("sv_hostname"));
+				return va("Playing offline - %s\n", Q_CleanStr(Cvar_VariableString("sv_hostname")));
 			
 			return (char*)"Playing offline";
 		}
@@ -275,10 +274,10 @@ char *GetServerDetails() {
 		return ReturnServerName();
 	}
 
-	if ( cls.state == CA_CONNECTING )
-		return "...";
+	if (cls.state > CA_DISCONNECTED && cls.state < CA_ACTIVE)
+		return "";
 
-	if ( cls.state == CA_DISCONNECTED || cls.state == CA_CINEMATIC )
+	if ( cls.state <= CA_DISCONNECTED || cls.state == CA_CINEMATIC )
 		return "In Menu";
 
 	return NULL;
@@ -320,13 +319,29 @@ static void handleDiscordJoin( const char* secret )
 {
 	char ip[60] = { 0 };
 	char fsgame[60] = { 0 };
+	char password[MAX_CVAR_VALUE_STRING];
+	int parsed = 0;
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
 		Com_Printf( "^5Discord: joining ^3(%s)^7\n", secret );
 	else
 		Com_Printf( "^1Discord: ^7join (^3%s^7)\n", secret );
-	sscanf( secret, "%s %s", ip, fsgame );
-	Cbuf_AddText( va( "connect %s\n", ip ) );
+	
+	parsed = sscanf(secret, "%s %s %s", ip, fsgame, password);
+
+	switch (parsed)
+	{
+		case 3: //ip, password, and fsgame
+			Cbuf_AddText(va("connect %s ; set password %s\n", ip, password));
+			break;
+		case 2://ip and fsgame
+		case 1://ip only
+			Cbuf_AddText(va("connect %s\n", ip));
+			break;
+		default:
+			Com_Printf("^5Discord: %1Failed to parse server information from join secret\n");
+			break;
+	}
 }
 
 static void handleDiscordSpectate( const char* secret )
@@ -377,6 +392,10 @@ void CL_DiscordInitialize(void)
 	Discord_UpdateHandlers( &handlers );
 
 	cl_discordRichPresenceSharePassword = Cvar_Get("cl_discordRichPresenceSharePassword", "1", CVAR_ARCHIVE_ND, "If set, sends password to Discord friends who request to join your game");
+
+	Q_strncpyz(cl.discord.hostName, "*Jedi*", sizeof(cl.discord.hostName));
+	Q_strncpyz(cl.discord.mapName, "menu", sizeof(cl.discord.mapName));
+	Q_strncpyz(cl.discord.fs_game, BASEGAME, sizeof(cl.discord.fs_game));
 }
 
 void CL_DiscordShutdown(void)
@@ -388,24 +407,29 @@ void CL_DiscordUpdatePresence(void)
 {
 	char *partyID = PartyID();
 	char *joinID = joinSecret();
-	int gametype = Cvar_VariableIntegerValue("ui_about_gametype");
 
 	if (!cls.discordInitialized)
 		return;
 
 	Com_Memset( &discordPresence, 0, sizeof( discordPresence ) );
 	
-	discordPresence.state = GetServerState();
+	discordPresence.state = GetServerState(cl.discord.gametype);
 	discordPresence.details = GetServerDetails();
 	discordPresence.largeImageKey = ReturnMapIcon();
 	discordPresence.largeImageText = ReturnMapName();
-	discordPresence.smallImageKey = GetGameType(qtrue, gametype);
-	discordPresence.smallImageText = GetGameType(qfalse, gametype);
+	discordPresence.smallImageKey = GetGameType(qtrue, cl.discord.gametype);
+	discordPresence.smallImageText = GetGameType(qfalse, cl.discord.gametype);
 	if (!clc.demoplaying && !com_sv_running->integer)
 	{ //send join information blank since it won't do anything in this case
 		discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
-		discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
-		discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
+		if (cl_discordRichPresence->integer > 1) {
+			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
+			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
+		}
+		else {
+			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : NULL;
+			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : NULL;
+		}
 		discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	}
 	Discord_UpdatePresence( &discordPresence );

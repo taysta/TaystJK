@@ -154,9 +154,17 @@ typedef struct clientActive_s {
 
 #if defined(DISCORD) && !defined(_DEBUG)
 	struct {
-		int				maxPlayers;
+		qboolean		needPassword;
+		char			hostName[MAX_HOSTNAMELENGTH];
+		char			mapName[MAX_QPATH];
+		int				gametype;
+		int				timelimit;
 		int				playerCount;
+		int				redTeam;
+		int				blueTeam;
+		int				specCount;
 		int				botCount;
+		int				maxPlayers;
 		char			fs_game[MAX_QPATH];
 	} discord;
 #endif

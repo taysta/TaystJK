@@ -203,6 +203,29 @@ void CL_DoAutoLODScale(void)
 	Cvar_Set( "r_autolodscalevalue", va("%f", finalLODScaleFactor) );
 }
 
+#if defined(DISCORD) && !defined(_DEBUG)
+static void CL_UpdateDiscordServerInfo(const char *info)
+{
+	char *value = NULL;
+
+	cl.discord.needPassword = qfalse;
+
+	value = Info_ValueForKey(info, "sv_hostname");
+	Q_strncpyz(cl.discord.hostName, value, sizeof(cl.discord.hostName));
+
+	cl.discord.maxPlayers = atoi(Info_ValueForKey(info, "sv_maxclients"));
+	cl.discord.timelimit = atoi(Info_ValueForKey(info, "timelimit"));
+	cl.discord.gametype = atoi(Info_ValueForKey(info, "g_gametype"));
+
+	value = Info_ValueForKey(info, "g_needpass");
+	if (atoi(value))
+		cl.discord.needPassword = qtrue;
+
+	value = Info_ValueForKey(info, "mapname");
+	Q_strncpyz(cl.discord.mapName, value, sizeof(cl.discord.mapName));
+}
+#endif
+
 /*
 =====================
 CL_ConfigstringModified
@@ -269,7 +292,24 @@ void CL_ConfigstringModified( void ) {
 			while (i < CS_G2BONES)
 			{
 				s = cl.gameState.stringData + cl.gameState.stringOffsets[ i ];
+				int team = atoi(Info_ValueForKey(s, "t"));
 				char *bot = Info_ValueForKey(s, "skill");
+
+				switch (team)
+				{
+					default:
+					case 0:
+						break;
+					case 1:
+						redTeam++;
+						break;
+					case 2:
+						blueTeam++;
+						break;
+					case 3:
+						specTeam++;
+						break;
+				}
 
 				if (bot && bot[0])
 				{
@@ -285,8 +325,10 @@ void CL_ConfigstringModified( void ) {
 			}
 
 			cl.discord.playerCount = clientCount;
+			cl.discord.redTeam = redTeam;
+			cl.discord.blueTeam = blueTeam;
+			cl.discord.specCount = specTeam;
 			cl.discord.botCount = botCount;
-			cl.discord.maxPlayers = atoi(Info_ValueForKey(cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO], "sv_maxclients"));
 #else
 			int clientCount = 0;
 			i = CS_PLAYERS;
@@ -313,6 +355,17 @@ void CL_ConfigstringModified( void ) {
 			CL_DoAutoLODScale();
 		}
 	}
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (index == CS_SERVERINFO)
+	{
+		s = cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO];
+
+		if (s && s[0]) {
+			CL_UpdateDiscordServerInfo(s);
+		}
+	}
+#endif
 
 	if ( index == CS_SYSTEMINFO ) {
 		// parse serverId and other cvars
@@ -684,6 +737,10 @@ void CL_InitCGame( void ) {
 	info = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
 	mapname = Info_ValueForKey( info, "mapname" );
 	Com_sprintf( cl.mapname, sizeof( cl.mapname ), "maps/%s.bsp", mapname );
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	CL_UpdateDiscordServerInfo(info);
+#endif
 
 	// load the dll
 	CL_BindCGame();
