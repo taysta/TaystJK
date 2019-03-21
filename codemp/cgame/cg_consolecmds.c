@@ -1881,13 +1881,9 @@ void CG_Say_f( void ) {
 	char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
-//	qboolean command = qfalse;
 
 	for (i = 1; i < numWords; i++) {
 		trap->Cmd_Argv( i, word, sizeof(word));
-
-		//if (i==1 && !Q_stricmpn(word, "/", 1))
-			//command = qtrue;
 
 		if (!Q_stricmp(word, "%H%")) {
 			number = cg.predictedPlayerState.stats[STAT_HEALTH];
@@ -1931,71 +1927,37 @@ void CG_Say_f( void ) {
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
-
-		Q_strcat(word, MAX_SAY_TEXT, " ");
-		Q_strcat(msg, MAX_SAY_TEXT, word);
-	}
-	//if (command)
-		//trap->SendClientCommand(va( "%s", msg));
-	//else
-		trap->SendClientCommand(va( "say %s", msg));
-}
-
-void CG_TeamSay_f( void ) { 
-	char word[MAX_SAY_TEXT] = {0}, msg[MAX_SAY_TEXT] = {0}, numberStr[MAX_SAY_TEXT] = {0};//eh
-	int i, number = 0, numWords = trap->Cmd_Argc();
-
-	for (i = 1; i < numWords; i++) {
-		trap->Cmd_Argv( i, word, sizeof(word));
-
-		if (!Q_stricmp(word, "%H%")) {
-			number = cg.predictedPlayerState.stats[STAT_HEALTH];
-			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+		else if (!Q_stricmp(word, "%T%")) { //insert time in 12-hour format
+			struct tm *newtime;
+			qboolean AM = qtrue;
+			time_t rawtime;
+			time(&rawtime);
+			newtime = localtime(&rawtime);
+			if (newtime->tm_hour >= 12) AM = qfalse;
+			if (newtime->tm_hour > 12) newtime->tm_hour -= 12;
+			if (newtime->tm_hour == 0) newtime->tm_hour = 12;
+			Com_sprintf(numberStr, sizeof(numberStr), "%i:%02i %s", newtime->tm_hour, newtime->tm_min, AM ? "AM" : "PM");
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
-		else if (!Q_stricmp(word, "%S%")) {
-			number = cg.predictedPlayerState.stats[STAT_ARMOR];
-			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
-		}
-		else if (!Q_stricmp(word, "%F%")) {
-			number = cg.predictedPlayerState.fd.forcePower;
-			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
-		}
-		else if (!Q_stricmp(word, "%W%")) {
-			number = cg.predictedPlayerState.weapon;
-			switch (number) {
-				case 1:	Com_sprintf(numberStr, sizeof(numberStr), "Stun baton"); break;
-				case 2: Com_sprintf(numberStr, sizeof(numberStr), "Melee"); break;
-				case 4:	Com_sprintf(numberStr, sizeof(numberStr), "Pistol"); break;
-				case 5:	Com_sprintf(numberStr, sizeof(numberStr), "E11"); break;
-				case 6:	Com_sprintf(numberStr, sizeof(numberStr), "Sniper"); break;
-				case 7:	Com_sprintf(numberStr, sizeof(numberStr), "Bowcaster");	break;
-				case 8:	Com_sprintf(numberStr, sizeof(numberStr), "Repeater"); break;
-				case 9:	Com_sprintf(numberStr, sizeof(numberStr), "Demp2");	break;
-				case 10: Com_sprintf(numberStr, sizeof(numberStr), "Flechette"); break;
-				case 11: Com_sprintf(numberStr, sizeof(numberStr), "Rocket"); break;
-				case 12: Com_sprintf(numberStr, sizeof(numberStr), "Thermal"); break;
-				case 13: Com_sprintf(numberStr, sizeof(numberStr), "Tripmine"); break;
-				case 14: Com_sprintf(numberStr, sizeof(numberStr), "Detpack"); break;
-				case 15: Com_sprintf(numberStr, sizeof(numberStr), "Concussion rifle"); break;
-				case 16: Com_sprintf(numberStr, sizeof(numberStr), "Bryar"); break;
-				default: Com_sprintf(numberStr, sizeof(numberStr), "Saber"); break;
-				}
-			Q_strncpyz( word, numberStr, sizeof(word));
-		}
-		else if (!Q_stricmp(word, "%A%")) {
-			number = cg.predictedPlayerState.ammo[weaponData[cg.predictedPlayerState.weapon].ammoIndex];
-			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
-			Q_strncpyz( word, numberStr, sizeof(word));
+		else if (!Q_stricmp(word, "%T2%")) { //insert time in 24-hour format
+			struct tm *newtime;
+			time_t rawtime;
+			time(&rawtime);
+			newtime = localtime(&rawtime);
+			Com_sprintf(numberStr, sizeof(numberStr), "%02i:%02i", newtime->tm_hour, newtime->tm_min);
+			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 
 		Q_strcat(word, MAX_SAY_TEXT, " ");
 		Q_strcat(msg, MAX_SAY_TEXT, word);
 	}
 
-		trap->SendClientCommand(va( "say_team %s", msg));
+	if (!Q_stricmp(CG_Argv(0), "say_team"))
+		trap->SendClientCommand(va("say_team %s", msg));
+	else if (!Q_stricmp(CG_Argv(0), "say"))
+		trap->SendClientCommand(va("say %s", msg));
+	else
+		Com_Printf("%sUnrecognized command %s\n", S_COLOR_YELLOW, CG_Argv(0));
 }
 
 typedef struct consoleCommand_s {
@@ -2045,7 +2007,7 @@ static consoleCommand_t	commands[] = {
 	{ "+zoom",						CG_ZoomDown_f },
 	{ "-zoom",						CG_ZoomUp_f },
 	{ "say",						CG_Say_f },
-	{ "say_team",					CG_TeamSay_f },
+	{ "say_team",					CG_Say_f },
 	{ "saber",						CG_Saber_f },
 	{ "saberColor",					CG_Sabercolor_f },
 	{ "amColor",					CG_Amcolor_f },
