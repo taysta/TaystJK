@@ -4016,7 +4016,7 @@ static void ScanAndLoadShaderFiles( void )
 
 			if ( token[0] == '#' )
 			{
-				ri.Printf( PRINT_WARNING, "WARNING: Deprecated shader comment \"%s\" on line %d in file %s.  Ignoring line.\n",
+				ri.Printf( PRINT_DEVELOPER, "WARNING: Deprecated shader comment \"%s\" on line %d in file %s.  Ignoring line.\n",
 					shaderName, shaderLine, filename );
 				SkipRestOfLine( &p );
 				continue;
