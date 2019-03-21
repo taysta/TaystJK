@@ -167,9 +167,6 @@ char *GetGameType(qboolean imageKey, int gametype) //workaround for discord imag
 	if (cls.state < CA_ACTIVE || !cl.snap.valid) {
 		return GetState();
 	}
-	else if ((cl.snap.ps.pm_flags & PMF_FOLLOW) || cl.snap.ps.pm_type == PM_SPECTATOR) {
-		return "spectating"; //GetState();
-	}
 
 	switch (gametype)
 	{
@@ -220,12 +217,15 @@ char *joinSecret()
 		return x;
 	}
 		
-	return NULL;
+	return (char*)"\0";
 }
 
-char *PartyID() {
+char *PartyID()
+{
+	if (clc.demoplaying)
+		return (char*)"\0";
 
-	if ( cls.state == CA_ACTIVE ) 
+	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE ) 
 	{
 		char *x = (char *)malloc( sizeof( char ) * 128 );
 
@@ -251,8 +251,29 @@ char *GetServerState() {
 }
 
 char *GetServerDetails() {
-	if ( cls.state == CA_ACTIVE )
+	if ( cls.state == CA_ACTIVE ) {
+		if (cl_discordRichPresence->integer > 1) {
+			return ReturnServerName();
+		}
+		
+		if (clc.demoplaying) {
+			return va("Playing demo - %s", Cvar_VariableString("ui_about_hostname"));
+		}
+
+		if (com_sv_running->integer) {
+			if (Q_stricmp(Cvar_VariableString("sv_hostname"), "*Jedi*"))
+				return va("Playing offline - %s\n", Cvar_VariableString("sv_hostname"));
+			
+			return (char*)"Playing offline";
+		}
+
+		if (cl.snap.valid && ((cl.snap.ps.pm_flags & PMF_FOLLOW) || cl.snap.ps.pm_type == PM_SPECTATOR))
+			return va("Spectating on %s", ReturnServerName());
+		
+		return va("Playing on %s", ReturnServerName());
+
 		return ReturnServerName();
+	}
 
 	if ( cls.state == CA_CONNECTING )
 		return "...";
@@ -380,10 +401,13 @@ void CL_DiscordUpdatePresence(void)
 	discordPresence.largeImageText = ReturnMapName();
 	discordPresence.smallImageKey = GetGameType(qtrue, gametype);
 	discordPresence.smallImageText = GetGameType(qfalse, gametype);
-	discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
-	discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
-	discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
-	discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
+	if (!clc.demoplaying && !com_sv_running->integer)
+	{ //send join information blank since it won't do anything in this case
+		discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
+		discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
+		discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
+		discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
+	}
 	Discord_UpdatePresence( &discordPresence );
 
 	Discord_RunCallbacks();
