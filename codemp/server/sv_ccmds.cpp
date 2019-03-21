@@ -188,6 +188,10 @@ static void SV_Map_f( void ) {
 		return;
 	}
 
+#ifndef DEDICATED
+	Cvar_Set("sv_pure", "0");
+#endif
+
 	// force latched values to get set
 	Cvar_Get ("g_gametype", "0", CVAR_SERVERINFO | CVAR_LATCH );
 
