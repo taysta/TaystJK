@@ -534,6 +534,14 @@ void CG_ParseWeatherEffect(const char *str)
 {
 	char *sptr = (char *)str;
 	sptr++; //pass the '*'
+
+	if (Q_stricmpn(sptr, "die", 3) && Q_stricmpn(sptr, "clear", 5) && Q_stricmpn(sptr, "freeze", 6)
+	&& Q_stricmpn(sptr, "zone", 4) && Q_stricmpn(sptr, "acidrain", 8) && Q_stricmpn(sptr, "spacedust", 9)
+	&& Q_stricmpn(sptr, "sand", 4) && Q_stricmpn(sptr, "outsideshake", 12) && Q_stricmpn(sptr, "outsidepain", 11))
+	{ //should come with a better way to detect this...
+		cg.coldBreathEffects = qtrue;
+	}
+
 	trap->R_WorldEffectCommand(sptr);
 }
 
@@ -1290,6 +1298,10 @@ static void CG_RegisterGraphics( void ) {
 		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
 	}
 #endif
+
+	//breathing efx from SP
+	cgs.effects.breath = trap->FX_RegisterEffect("effects/misc/breath.efx");
+	cgs.effects.waterBreath = trap->FX_RegisterEffect("effects/misc/waterbreath.efx");
 
 	for ( i = 0 ; i < NUM_CROSSHAIRS ; i++ ) {
 		cgs.media.crosshairShader[i] = trap->R_RegisterShaderNoMip( va("gfx/2d/crosshair%c", 'a'+i) );
@@ -2923,6 +2935,7 @@ Ghoul2 Insert End
 	//make sure saber data is loaded before this! (so we can precache the appropriate hilts)
 	CG_InitSiegeMode();
 
+	cg.coldBreathEffects = qfalse;
 	CG_RegisterSounds();
 
 //	CG_LoadingString( "graphics" );

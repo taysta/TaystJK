@@ -4387,6 +4387,85 @@ static void CG_G2SetHeadAnim( centity_t *cent, int anim )
 	}
 }
 
+/*
+===============
+CG_BreathPuffs
+===============
+Description: Makes the player appear to have breath puffs (from the cold).
+Added 11/06/02 by Aurelio Reis.
+Ported to MP 01/14/2019
+*/
+//extern vmCvar_t	cg_drawBreath;
+static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
+{
+	clientInfo_t *ci = &cgs.clientinfo[cent->currentState.number];
+
+	/*	cg_drawBreath.integer	== 0 - Don't draw at all.
+								== 1 - Draw both (but bubbles only when under water).
+								== 2 - Draw only cold breath.
+								== 3 - Draw only under water bubbles (when under water)	*/
+
+	if ( !cg.snap || (cent->currentState.eFlags & EF_DEAD) )
+	{
+		return;
+	}
+	
+	if (ci->breathPuffTime > cg.time) {
+		return;
+	}
+
+	//Update these here incase we don't have a head_front bolt.
+	// TODO: It'd be nice if they breath faster when they're more damaged or when running...
+	if (trap->S_GetVoiceVolume(cent->currentState.number) > 0)
+	{//make breath when talking
+		ci->breathPuffTime = cg.time + 300; // every 200 ms
+		ci->breathTime = cg.time + 150;
+	}
+	else
+	{
+		ci->breathPuffTime = cg.time + 3000; // every 3 seconds.
+		ci->breathTime = cg.time + 1500;
+	}
+
+	if (cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING)
+		return;
+
+	if (cent->currentState.clientNum == cg.predictedPlayerState.clientNum && !cg.renderingThirdPerson) {
+		return;
+	}
+
+	// Get the head-front bolt/tag.
+	int bolt = trap->G2API_AddBolt( cent->ghoul2, 0, "*head_front" );
+	if ( bolt == -1 )
+	{
+		return;
+	}
+
+	vec3_t vEffectOrigin;
+	mdxaBone_t	boltMatrix;
+	trap->G2API_GetBoltMatrix( cent->ghoul2, 0, bolt, &boltMatrix, angles, origin, cg.time, cgs.gameModels, cent->modelScale );
+	BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, vEffectOrigin);
+
+	int contents = cg.refdef.viewContents;
+	if ( contents & ( CONTENTS_SLIME | CONTENTS_LAVA ) )	// If they're submerged in something bad, leave.
+	{
+		return;
+	}
+
+	// Show bubbles effect if we're under water.
+	//if ( (contents & CONTENTS_WATER) && ( cg_drawBreath.integer == 1 || cg_drawBreath.integer == 3 ) )
+	if (contents & CONTENTS_WATER)
+	{
+		trap->FX_PlayBoltedEffectID(cgs.effects.waterBreath, vEffectOrigin, cent->ghoul2, bolt, cent->currentState.clientNum, 0, -1, qfalse);
+	}
+	// Draw cold breath effect.
+	//else if ( (cg_drawBreath.integer == 1 || cg_drawBreath.integer == 2)) || cg_drawBreath.integer == -1 )
+	else if (cg.coldBreathEffects)
+	{
+		trap->FX_PlayBoltedEffectID(cgs.effects.breath, vEffectOrigin, cent->ghoul2, bolt, cent->currentState.clientNum, 0, -1, qtrue);
+	}
+}
+
 qboolean CG_G2PlayerHeadAnims( centity_t *cent )
 {
 	clientInfo_t *ci = NULL;
@@ -4519,7 +4598,7 @@ qboolean CG_G2PlayerHeadAnims( centity_t *cent )
 	return qfalse;
 }
 
-
+extern int cgFPLSState;
 static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngles)
 {
 	clientInfo_t *ci;
@@ -4574,6 +4653,23 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 		{
 			VectorCopy(cent->lerpAngles, lookAngles);
 		}
+
+		if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.eType == ET_PLAYER && !(cent->currentState.eFlags & EF_DEAD))
+		{
+			CG_BreathPuffs(cent, cent->lerpAngles, cent->currentState.origin);
+
+			if (cent->currentState.torsoAnim < BOTH_ATTACK1 || cent->currentState.torsoAnim > BOTH_ROLL_STAB)
+			{ //not attacking
+				if ((ci->breathTime - cg.time) < 0) {
+					cent->lerpAngles[PITCH] += (float)(ci->breathTime - cg.time) * 0.0025f;
+				}
+				else {
+					cent->lerpAngles[PITCH] -= (float)(ci->breathTime - cg.time) * 0.0025f;
+				}
+			}
+		}
+
+	if (!(cgFPLSState && cent->currentState.clientNum == cg.predictedPlayerState.clientNum))
 		lookAngles[PITCH] = 0;
 
 		if (cent->currentState.otherEntityNum2)

@@ -228,6 +228,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_NOFADESFX	(1<<14)
 #define JAPRO_STYLE_COLOREDSPAWNBUBBLE (1<<15)
 #define JAPRO_STYLE_HIDECOSMETICS (1<<16)
+#define JAPRO_STYLE_DISABLEBREATHING (1<<17)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -512,6 +513,8 @@ typedef struct clientInfo_s {
 #if _STRAFETRAILS
 	vec3_t		rgb1, rgb2; //rename this shit so it doesnt conflict with saber rgb
 #endif
+
+	int			breathTime; //can maybe just use breathPuffTime?
 } clientInfo_t;
 
 //rww - cheap looping sound struct
@@ -1151,21 +1154,23 @@ typedef struct cg_s {
 	// zoom key
 	qboolean	zoomed;
 	int			zoomTime;
+
+	qboolean	coldBreathEffects;
 	float		zoomSensitivity;
 
 	// information screen text during loading
 	char		infoScreenText[MAX_STRING_CHARS];
 
 	// scoreboard
-	int			scoresRequestTime;
-	int			numScores;
-	int			selectedScore;
-	int			teamScores[2];
-	score_t		scores[MAX_CLIENTS];
-	qboolean	showScores;
-	qboolean	scoreBoardShowing;
-	int			scoreFadeTime;
-	char		killerName[MAX_NETNAME];
+	int				scoresRequestTime;
+	int				numScores;
+	int				selectedScore;
+	int				teamScores[2];
+	score_t			scores[MAX_CLIENTS];
+	qboolean		showScores;
+	qboolean		scoreBoardShowing;
+	int				scoreFadeTime;
+	char			killerName[MAX_NETNAME];
 	char			spectatorList[MAX_STRING_CHARS];		// list of names
 	int				spectatorLen;												// length of list
 	float			spectatorWidth;											// width in device units
@@ -2055,6 +2060,10 @@ typedef struct cgEffects_s {
 	fxHandle_t grappleHitWall;
 	fxHandle_t grappleHitPlayer;
 #endif
+
+	//breath effects
+	fxHandle_t	breath;
+	fxHandle_t	waterBreath;
 } cgEffects_t;
 
 #define MAX_STATIC_MODELS 4000
