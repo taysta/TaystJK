@@ -208,7 +208,9 @@ char *GetGameType(qboolean imageKey, int gametype) //workaround for discord imag
 	return gamemode;
 }
 
-char *joinSecret() {
+cvar_t *cl_discordRichPresenceSharePassword;
+char *joinSecret()
+{
 	
 	if ( cls.state == CA_ACTIVE )
 	{
@@ -232,7 +234,7 @@ char *PartyID() {
 		return x;
 	}
 
-	return NULL;
+	return (char*)"\0";
 }
 
 char *GetServerState() {
@@ -288,7 +290,7 @@ static void handleDiscordDisconnected( int errcode, const char* message )
 static void handleDiscordError( int errcode, const char* message )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^1Error - (^3%d^7: ^3%s^7)\n", errcode, message );
+		Com_Printf( "^5Discord: ^1Error - (%d: %s)\n", errcode, message );
 	else
 		Com_Printf( "^1Discord: ^7Fehler (^3%d^7: ^3%s^7)\n", errcode, message );
 }
@@ -352,6 +354,8 @@ void CL_DiscordInitialize(void)
 	Discord_Register( APPLICATION_ID, NULL );
 
 	Discord_UpdateHandlers( &handlers );
+
+	cl_discordRichPresenceSharePassword = Cvar_Get("cl_discordRichPresenceSharePassword", "1", CVAR_ARCHIVE_ND, "If set, sends password to Discord friends who request to join your game");
 }
 
 void CL_DiscordShutdown(void)

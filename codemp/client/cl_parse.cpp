@@ -477,6 +477,13 @@ void CL_SystemInfoChanged( void ) {
 				continue;
 			}
 
+#if defined(DISCORD) && !defined(_DEBUG)
+			if (strlen(value))
+				Q_strncpyz(cl.discord.fs_game, value, sizeof(cl.discord.fs_game));
+			else
+				Q_strncpyz(cl.discord.fs_game, BASEGAME, sizeof(cl.discord.fs_game));
+#endif
+
 			if (!strlen(value) || !FS_FilenameCompare(value, "OpenJK"))
 				Q_strncpyz(value, BASEGAME, sizeof(BASEGAME));
 

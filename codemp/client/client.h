@@ -157,6 +157,7 @@ typedef struct clientActive_s {
 		int				maxPlayers;
 		int				playerCount;
 		int				botCount;
+		char			fs_game[MAX_QPATH];
 	} discord;
 #endif
 } clientActive_t;
