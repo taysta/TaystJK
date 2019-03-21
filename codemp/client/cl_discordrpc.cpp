@@ -137,7 +137,7 @@ char *ReturnMapIcon() {
 
 	for ( int i = 0; i < numMapIcons; i++ )
 	{
-		if ( !stricmp( mapname, mapIcons[i].string ) )
+		if ( !Q_stricmp( mapname, mapIcons[i].string ) )
 		{
 			return mapIcons[i].icon;
 		}
