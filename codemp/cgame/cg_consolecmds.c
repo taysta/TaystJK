@@ -1236,7 +1236,8 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Fade corpses immediately
 	qtrue,//Disable corpse fading SFX
 	qtrue,//Color respawn bubbles by team
-	qtrue//Hide player cosmetics
+	qtrue,//Hide player cosmetics
+	qtrue
 };
 
 //JA+ Specific = amaltdim ?
@@ -1258,7 +1259,8 @@ static qboolean japlusPlayerStyles[] = {
 	qtrue,//Fade corpses immediately
 	qtrue,//Disable corpse fading SFX
 	qtrue,//Color respawn bubbles by team
-	qfalse//Hide player cosmetics
+	qfalse,//Hide player cosmetics
+	qtrue
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1278,7 +1280,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Fade corpses immediately" },//13
 	{ "Disable corpse fading SFX" },//14
 	{ "Color respawn bubbles by team" },//15
-	{ "Hide player cosmetics" }//16
+	{ "Hide player cosmetics" },//16
+	{ "Disable breathing effects" }//17
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
