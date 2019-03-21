@@ -113,6 +113,10 @@ int	FX_Init( refdef_t* refdef )
 	fx_countScale = Cvar_Get("fx_countScale", "1", CVAR_ARCHIVE_ND);
 	fx_nearCull = Cvar_Get("fx_nearCull", "16", CVAR_ARCHIVE_ND);
 
+	//JAPRO ENGINE
+	fx_physics = Cvar_Get("fx_physics", "2", CVAR_ARCHIVE,
+		"Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles");
+
 	theFxHelper.ReInit(refdef);
 
 	return true;
