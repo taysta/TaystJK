@@ -3081,15 +3081,15 @@ void CG_NextForcePower_f( void )
 		return;
 	}
 
-	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
-	{
-		return;
-	}
-
 	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTeleMark");
+		return;
+	}
+
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
+	{
 		return;
 	}
 
@@ -3131,15 +3131,15 @@ void CG_PrevForcePower_f( void )
 		return;
 	}
 
-	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
-	{
-		return;
-	}
-
 	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTele");
+		return;
+	}
+
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW))
+	{
 		return;
 	}
 
