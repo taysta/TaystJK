@@ -147,8 +147,6 @@ void CG_ParseServerinfo( void ) {
 
 	cgs.noSpecMove = atoi( Info_ValueForKey( info, "g_noSpecMove" ) );
 
-	trap->Cvar_Set("bg_fighterAltControl", Info_ValueForKey( info, "bg_fighterAltControl" ));
-
 	cgs.siegeTeamSwitch = atoi( Info_ValueForKey( info, "g_siegeTeamSwitch" ) );
 
 	cgs.showDuelHealths = atoi( Info_ValueForKey( info, "g_showDuelHealths" ) );
