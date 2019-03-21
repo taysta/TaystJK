@@ -655,11 +655,12 @@ void Field_CharEvent( field_t *edit, int ch ) {
 		return;
 	}
 
-	if (ch == 'a' - 'a' + 1) {		// ctrl-a moves field contents to clipboard
+	if (ch == 'a' - 'a' + 1) {		// ctrl-a clears field and copies contents to clipboard
 		Sys_SetClipboardData(edit->buffer);
 		Field_Clear(edit);
 		return;
 	}
+
 	if ( ch == 'q' - 'a' + 1 ) {	// ctrl-q is home
 		edit->cursor = 0;
 		edit->scroll = 0;
@@ -685,7 +686,6 @@ void Field_CharEvent( field_t *edit, int ch ) {
 
 		if (ch == '"')
 			max -= 2;
-
 	}
 
 	if ( kg.key_overstrikeMode ) {
@@ -1320,9 +1320,29 @@ void CL_ParseBinding( int key, qboolean down, unsigned time )
 
 	if( cls.state == CA_DISCONNECTED && Key_GetCatcher( ) == 0 )
 		return;
-	if( !kg.keys[keynames[key].upper].binding || !kg.keys[keynames[key].upper].binding[0] )
+
+	// for rshift/ralt/rctrl, prefer the specific rshift/rctrl/ralt bind if
+	// it exists; otherwise, fallback to the generic shift/ctrl/alt bind
+	const char *binding;
+	int genericKey = 0;
+	switch (key) {
+		case A_SHIFT2:	genericKey = A_SHIFT;	break;
+		case A_CTRL2:	genericKey = A_CTRL;	break;
+		case A_ALT2:	genericKey = A_ALT;		break;
+	}
+	if (genericKey) {
+		if (VALIDSTRING(kg.keys[keynames[key].upper].binding))
+			binding = kg.keys[keynames[key].upper].binding;
+		else
+			binding = kg.keys[keynames[genericKey].upper].binding;
+	}
+	else {
+		binding = kg.keys[keynames[key].upper].binding;
+	}
+
+	if (!VALIDSTRING(binding))
 		return;
-	Q_strncpyz( buf, kg.keys[keynames[key].upper].binding, sizeof( buf ) );
+	Q_strncpyz(buf, binding, sizeof(buf));
 
 	// run all bind commands if console, ui, etc aren't reading keys
 	allCommands = (qboolean)( Key_GetCatcher( ) == 0 );
