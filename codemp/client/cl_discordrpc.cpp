@@ -77,6 +77,14 @@ static mapIcon_t mapIcon[] = {
 	{ "mp/siege_hoth",		"siege_hoth"		},
 	{ "mp/siege_korriban",	"siege_korriban"	},
 
+	{ "mp/ctf_bonus1",		"ctf_bonus1"		},
+	{ "mp/duel_bonus1",		"duel_bonus1"		},
+	{ "mp/ffa_bonus1",		"ffa_bonus1"		},
+	{ "mp/ffa_bonus2",		"ffa_bonus2"		},
+	{ "mp/ffa_bonus3",		"ffa_bonus3"		},
+	{ "mp/ffa_bonus4",		"ffa_bonus4"		},
+	{ "mp/siege_destroyer",	"siege_destroyer"	},
+
 	{ "racearena",			"racearena",		},
 	{ "racearena_pro",		"racearena",		},
 	{ "racepack1",			"racepack1",		},
