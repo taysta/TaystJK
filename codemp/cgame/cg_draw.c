@@ -6599,7 +6599,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	if (cg.snap->ps.fallingToDeath)
+	if (cg.predictedPlayerState.fallingToDeath)
 	{
 		return;
 	}
@@ -8125,7 +8125,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 		}
 	}
 
-	if ( trace.entityNum >= MAX_CLIENTS ) {
+	if ( cg_drawCrosshairNames.value > 0 && trace.entityNum >= MAX_CLIENTS ) {
 		return;
 	}
 
@@ -8151,6 +8151,7 @@ static void CG_DrawCrosshairNames( void ) {
 	char		*name;
 	int			baseColor;
 	qboolean	isVeh = qfalse;
+	int			fadeTime;
 
 	if ( !cg_drawCrosshair.integer ) {
 		return;
@@ -8159,9 +8160,6 @@ static void CG_DrawCrosshairNames( void ) {
 	// scan the known entities to see if the crosshair is sighted on one
 	CG_ScanForCrosshairEntity();
 
-	if ( !cg_drawCrosshairNames.integer ) {
-		return;
-	}
 	//rww - still do the trace, our dynamic crosshair depends on it
 
 	if (cg.crosshairClientNum < ENTITYNUM_WORLD)
@@ -8189,8 +8187,15 @@ static void CG_DrawCrosshairNames( void ) {
 		return;
 	}
 
+	if (cg_drawCrosshairNames.value < 0)
+		fadeTime = 1000;
+	else
+		fadeTime = (cg_drawCrosshairNames.value * 1000);
+	if (fadeTime == 0)
+		return;
+
 	// draw the name of the player being looked at
-	color = CG_FadeColor( cg.crosshairClientTime, 1000 );
+	color = CG_FadeColor(cg.crosshairClientTime, fadeTime);
 	if ( !color ) {
 		trap->R_SetColor( NULL );
 		return;
