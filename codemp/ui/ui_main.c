@@ -6411,7 +6411,7 @@ static void UI_GetCharacterCvars ( void )
 	}
 	else
 	{
-		if (strlen(skin) && ui_gametype.integer < GT_TEAM)
+		if (skin != NULL && ui_selectedModelIndex.integer > -1 && ui_gametype.integer < GT_TEAM)
 		{ //set our team to respect our current skin
 			if (!Q_stricmpn(skin, "/default", 8)) {
 				uiSkinColor = 0;
