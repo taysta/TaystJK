@@ -364,6 +364,18 @@ if(BuildMPEngine)
 		find_package(OpenGL REQUIRED)
 		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENGL_INCLUDE_DIR})
 		set(MPEngineLibraries ${MPEngineLibraries} ${OPENGL_LIBRARIES})
+		
+		if(BuildDiscordRichPresence)
+			if (APPLE)
+				set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
+				set(MPEngineDefines ${MPEngineDefines} "DISCORD")
+				set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a)
+			elseif(Architecture MATCHES "x86_64")
+				set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
+				set(MPEngineDefines ${MPEngineDefines} "DISCORD")
+				set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/libdiscord-rpc.a)
+			endif(APPLE)
+		endif(BuildDiscordRichPresence)
 	endif()
 
 	# OpenAL (is optionally included for Windows)
@@ -382,6 +394,12 @@ if(BuildMPEngine)
 			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
 		endif(UseInternalOpenAL)
 	endif()
+	
+	if(BuildDiscordRichPresence AND WIN32)
+		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
+		set(MPEngineDefines ${MPEngineDefines} "DISCORD")
+		set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/discord-rpc.lib)
+	endif(BuildDiscordRichPresence)
 
 	if(UseInternalSDL2)
 		if(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -417,31 +435,6 @@ if(BuildMPEngine)
 		source_group("eax" FILES ${MPEngineEAXFiles})
 		set(MPEngineFiles ${MPEngineFiles} ${MPEngineEAXFiles})
 	endif(MSVC)
-
-	# discord-rpc
-	if(BuildDiscordRichPresence)
-		if(WIN32)
-			set(MPEngineLibraries
-			${MPEngineLibraries}
-			${OpenJKLibDir}/discord-rpc/lib/discord-rpc.lib
-			)
-		elseif(APPLE)
-			set(MPEngineLibraries
-			${MPEngineLibraries}
-			$OpenJKLibDir/discord-rpc/lib/osx/libdiscord-rpc.a
-			)
-		else()
-			set(MPEngineLibraries
-			${MPEngineLibraries}
-			$OpenJKLibDir/discord-rpc/lib/libdiscord-rpc.a
-			)
-		endif()
-
-		set(MPEngineIncludeDirectories
-		${MPEngineIncludeDirectories}
-		${OpenJKLibDir}/discord-rpc/include
-		)
-	endif()
 
 	#    Source Files
 

@@ -169,30 +169,30 @@ char *GetGameType(qboolean imageKey, int gametype) //workaround for discord imag
 			gamemode = GetState();
 			break;
 		case 1:
-			gamemode = imageKey ? "holocron" : "Holocron";
+			gamemode = imageKey ? (char*)"holocron" : (char*)"Holocron";
 			break;
 		case 2:
-			gamemode = imageKey ? "jedimaster" : "JediMaster";
+			gamemode = imageKey ? (char*)"jedimaster" : (char*)"JediMaster";
 			break;
 		case 3:
-			gamemode = imageKey ? "duel" : "Duel";
+			gamemode = imageKey ? (char*)"duel" : (char*)"Duel";
 			break;
 		case 4:
-			gamemode = imageKey ? "powerduel" : "PowerDuel";
+			gamemode = imageKey ? (char*)"powerduel" : (char*)"PowerDuel";
 			break;
 		case 5:
-			gamemode = imageKey ? GetState() : "FFA"; //"SP";
+			gamemode = imageKey ? GetState() : (char*)"FFA"; //"SP";
 		case 6:
-			gamemode = imageKey ? "tffa" : "TFFA";
+			gamemode = imageKey ? (char*)"tffa" : (char*)"TFFA";
 			break;
 		case 7:
-			gamemode = imageKey ? "siege" : "Siege";
+			gamemode = imageKey ? (char*)"siege" : (char*)"Siege";
 			break;
 		case 8:
-			gamemode = imageKey ? "ctf" : "CTF";
+			gamemode = imageKey ? (char*)"ctf" : (char*)"CTF";
 			break;
 		case 9:
-			gamemode = imageKey ? "cty" : "CTY";
+			gamemode = imageKey ? (char*)"cty" : (char*)"CTY";
 			break;
 	}
 

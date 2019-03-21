@@ -2230,7 +2230,7 @@ static qboolean PM_CheckJump( void )
 						{
 //JAPRO - Serverside - OnlyBhop - Start
 #ifdef _GAME
-							if ((g_onlyBhop.integer == 1) || ((g_onlyBhop.integer > 1) && client->pers.onlyBhop) || (client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP))
+							if (g_onlyBhop.integer == 1 || (client != NULL && ((g_onlyBhop.integer > 1 && client->pers.onlyBhop) || (client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP))))
 #else
 							if (cgs.isJAPro && ((cgs.jcinfo & JAPRO_CINFO_BHOP1) || ((cgs.jcinfo & JAPRO_CINFO_BHOP2) && (cp_pluginDisable.integer & JAPRO_PLUGIN_BHOP)) || (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP)))
 #endif
@@ -6559,11 +6559,7 @@ static void PM_Footsteps( void ) {
 //[JAPRO - Serverside + Clientside - Physics - Add roll types - Start]
 		
 		{
-#ifndef _CGAME
 			if (((GetFixRoll(pm->ps) > 1 && (PM_RunningAnim(pm->ps->legsAnim) || PM_CanRollFromSoulCal(pm->ps))) ||
-#else	
-			if ((GetFixRoll(pm->ps) > 1 && (PM_RunningAnim(pm->ps->legsAnim) || PM_CanRollFromSoulCal(pm->ps)) ||
-#endif
 				((GetFixRoll(pm->ps) == 1) && (PM_RunningAnim(pm->ps->legsAnim) && VectorLengthSquared(pm->ps->velocity)>=30000)) ||
 				(PM_RunningAnim(pm->ps->legsAnim) && VectorLengthSquared(pm->ps->velocity)>=40000)))
 				rolled = PM_TryRoll();

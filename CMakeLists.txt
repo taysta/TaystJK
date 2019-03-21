@@ -296,11 +296,7 @@ if(CMAKE_BUILD_TYPE MATCHES "DEBUG" OR CMAKE_BUILD_TYPE MATCHES "Debug")
 		set(SharedDefines ${SharedDefines} "_DEBUG")
 	endif()
 else()
-	if(BuildDiscordRichPresence) #dunno why but putting this under BuildPortableVersion removes the FINAL_BUILD from SharedDefines
-		set(SharedDefines ${SharedDeinfes} "FINAL_BUILD" "DISCORD")
-	else()
 		set(SharedDefines ${SharedDefines} "FINAL_BUILD")
-	endif()
 endif()
 
 
