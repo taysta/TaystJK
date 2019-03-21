@@ -4658,7 +4658,8 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 		{
 			CG_BreathPuffs(cent, cent->lerpAngles, cent->currentState.origin);
 
-			if (cent->currentState.torsoAnim < BOTH_ATTACK1 || cent->currentState.torsoAnim > BOTH_ROLL_STAB)
+			if (cent->currentState.torsoAnim < BOTH_ATTACK1 || cent->currentState.torsoAnim > BOTH_ROLL_STAB ||
+				(cent->currentState.torsoAnim >= BOTH_SABERFAST_STANCE && cent->currentState.torsoAnim <= BOTH_SABERSTAFF_STANCE))
 			{ //not attacking
 				if ((ci->breathTime - cg.time) < 0) {
 					cent->lerpAngles[PITCH] += (float)(ci->breathTime - cg.time) * 0.0025f;
