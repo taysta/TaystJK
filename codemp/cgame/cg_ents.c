@@ -920,9 +920,10 @@ static void CG_General( centity_t *cent ) {
 	}
 
 	if (cent->currentState.eType == ET_BODY) {
-		if (cg.predictedPlayerState.duelInProgress && (cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
-			// never show corpses in duels
-			return;
+		if ((cg.predictedPlayerState.duelInProgress && ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
+			|| (cgs.isJAPro && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
+		{
+			return; //don't show bodies in duels or in racemode
 		}
 
 			// check if we want to fade bodies instantly
@@ -1551,12 +1552,7 @@ Ghoul2 Insert End
 	}
 
 	if (cent->currentState.eType == ET_BODY) {
-		if ((cg.predictedPlayerState.duelInProgress && ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
-			|| (cgs.isJAPro && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
-		{
-			return; //don't show bodies in duels or in racemode
-		}
-		else if (cent->currentState.eFlags & EF_DISINTEGRATION)
+		if (cent->currentState.eFlags & EF_DISINTEGRATION)
 		{
 			if (!cent->dustTrailTime)
 			{
@@ -1565,6 +1561,9 @@ Ghoul2 Insert End
 
 			if (!(cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)) {
 				// don't bother with disentegrating bodies that we've already told to fade
+				CG_Disintegration(cent, &ent);
+			}
+			else if ((cg.time - cent->bodyFadeTime) <= 5000) {
 				CG_Disintegration(cent, &ent);
 			}
 			return;
