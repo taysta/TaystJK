@@ -208,6 +208,8 @@ extern cvar_t	*s_separation;
 
 extern cvar_t	*s_doppler;
 
+extern cvar_t	*snd_mute_losefocus;
+
 wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength);
 
 qboolean S_LoadSound( sfx_t *sfx );

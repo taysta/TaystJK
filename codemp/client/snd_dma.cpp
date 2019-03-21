@@ -194,6 +194,8 @@ cvar_t		*s_debugdynamic;
 
 cvar_t		*s_doppler;
 
+cvar_t		*snd_mute_losefocus;
+
 typedef struct
 {
 	unsigned char	volume;
@@ -474,6 +476,8 @@ void S_Init( void ) {
 	s_language = Cvar_Get("s_language","english",CVAR_ARCHIVE | CVAR_NORESTART, "Sound language" );
 
 	s_doppler = Cvar_Get("s_doppler", "1", CVAR_ARCHIVE_ND);
+
+	snd_mute_losefocus = Cvar_Get("snd_mute_losefocus", "1", CVAR_ARCHIVE, "Mute sound when game window is unfocused/minimized");
 
 	MP3_InitCvars();
 
@@ -805,6 +809,7 @@ sfx_t *S_FindName( const char *name ) {
 
 	sfx_t	*sfx;
 
+#if 0
 	if (!name) {
 		Com_Error (ERR_FATAL, "S_FindName: NULL");
 	}
@@ -815,6 +820,21 @@ sfx_t *S_FindName( const char *name ) {
 	if (strlen(name) >= MAX_QPATH) {
 		Com_Error (ERR_FATAL, "Sound name too long: %s", name);
 	}
+#else
+	if (!name) {
+		Com_Printf("^1S_FindName: NULL\n");
+		name = "sound/null.wav";
+	}
+	if (!name[0]) {
+		Com_Printf("^1S_FindName: empty name\n");
+		name = "sound/null.wav";
+	}
+
+	if (strlen(name) >= MAX_QPATH) {
+		Com_Printf ("^1Sound name too long: %s\n", name);
+		name = "sound/null.wav";
+	}
+#endif
 
 	char sSoundNameNoExt[MAX_QPATH];
 	COM_StripExtension(name,sSoundNameNoExt, sizeof( sSoundNameNoExt ));
@@ -1558,7 +1578,7 @@ void S_StartSound(const vec3_t origin, int entityNum, int entchannel, sfxHandle_
 		return;
 	}
 
-	if ( com_minimized->integer || com_unfocused->integer ) { //entchannel != CHAN_MUSIC ?
+	if ( (com_minimized->integer || com_unfocused->integer) && snd_mute_losefocus->integer ) { //entchannel != CHAN_MUSIC ?
 		return;
 	}
 

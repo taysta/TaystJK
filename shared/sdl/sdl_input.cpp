@@ -41,6 +41,8 @@ static cvar_t *in_joystickThreshold = NULL;
 static cvar_t *in_joystickNo		= NULL;
 static cvar_t *in_joystickUseAnalog = NULL;
 
+extern cvar_t *snd_mute_losefocus;
+
 static SDL_Window *SDL_window = NULL;
 
 #define CTRL(a) ((a)-'a'+1)
@@ -918,23 +920,25 @@ static void IN_ProcessEvents( int eventTime )
 					case SDL_WINDOWEVENT_FOCUS_LOST:
 					{
 						Cvar_SetValue( "com_unfocused", 1 );
-						SNDDMA_Activate( qfalse );
 						cl_unfocusedTime = cls.realtime;
 #ifdef _WIN32
 						con_alert = qfalse;
 #endif
+						if (snd_mute_losefocus->integer)
+							SNDDMA_Activate(qfalse);
 						break;
 					}
 
 					case SDL_WINDOWEVENT_FOCUS_GAINED:
 					{
 						Cvar_SetValue( "com_unfocused", 0 );
-						SNDDMA_Activate( qtrue );
 						cl_unfocusedTime = 0;
 						if (cl_afkName && cls.realtime - cl_nameModifiedTime > 5000) {
 							CL_Afk_f();
 							cls.afkTime = cls.realtime;
 						}
+						if (snd_mute_losefocus->integer)
+							SNDDMA_Activate(qtrue);
 						break;
 					}
 				}
