@@ -124,9 +124,6 @@ char *ReturnMapName() {
 char *ReturnServerName() {
 	char *servername = cl.discord.hostName;
 
-	//Q_strstrip(servername, "\xac\x82\xe2\xa2\x80", NULL);
-	//while (*servername == '\x20' || *servername == '\x2e') *servername++;
-
 	//Q_StripColor( servername );
 	Q_CleanStr(servername);
 	return servername;
@@ -162,30 +159,21 @@ char *GetState()
 			return "playing";
 	}
 	else if (cls.state > CA_DISCONNECTED && cls.state < CA_PRIMED) {
-		return "";
+		return "connecting";
 	}
 	else if (cls.state <= CA_DISCONNECTED) {
 		return "menu";
 	}
 
-	return "...";
+	return "";
 }
 
-static char *GetGameType(qboolean imageKey, int gametype)
+static char *GetGameType(qboolean imageKey)
 {
-	int gametypenum = gametype;
+	if (cl.discord.gametype > GT_FFA)
+		return imageKey ? gameTypes[cl.discord.gametype].icon : gameTypes[cl.discord.gametype].string;
 
-	if (cl_discordRichPresence->integer > 1 || cls.state < CA_ACTIVE || !cl.snap.valid) {
-		return GetState();
-	}
-
-	if (gametypenum < GT_FFA || gametypenum >= numGameTypes)
-		gametypenum = GT_FFA;
-
-	if (gametypenum > GT_FFA)
-		return imageKey ? gameTypes[gametypenum].icon : gameTypes[gametypenum].string;
-
-	return imageKey ? GetState() : gameTypes[gametypenum].string;
+	return imageKey ? GetState() : gameTypes[cl.discord.gametype].string;
 }
 
 cvar_t *cl_discordRichPresenceSharePassword;
@@ -228,19 +216,19 @@ char *PartyID()
 	return NULL;
 }
 
-char *GetServerState(int gametype) {
+char *GetServerState() {
 	if ( cls.state == CA_ACTIVE ) {
 		if (cl_discordRichPresence->integer > 1) {
 			return va("%d / %d players [%d BOTS]", cl.discord.playerCount, cl.discord.maxPlayers, cl.discord.botCount);
 		}
 		
 		if (clc.demoplaying)
-			return GetGameType(qfalse, gametype);
+			return GetGameType(qfalse);
 
-		if (gametype >= GT_TEAM)
-			return va("%s | %dv%d", GetGameType(qfalse, gametype), cl.discord.redTeam, cl.discord.blueTeam);
+		if (cl.discord.gametype >= GT_TEAM)
+			return va("%s | %dv%d", GetGameType(qfalse), cl.discord.redTeam, cl.discord.blueTeam);
 
-		return GetGameType(qfalse, gametype);
+		return GetGameType(qfalse);
 	}
 
 	if ( cls.state <= CA_DISCONNECTED || cls.state == CA_CINEMATIC )
@@ -411,14 +399,23 @@ void CL_DiscordUpdatePresence(void)
 	if (!cls.discordInitialized)
 		return;
 
+	if (cl.discord.gametype < GT_FFA || cl.discord.gametype >= numGameTypes)
+		cl.discord.gametype = GT_FFA;
+
 	Com_Memset( &discordPresence, 0, sizeof( discordPresence ) );
 	
-	discordPresence.state = GetServerState(cl.discord.gametype);
+	discordPresence.state = GetServerState();
 	discordPresence.details = GetServerDetails();
 	discordPresence.largeImageKey = ReturnMapIcon();
 	discordPresence.largeImageText = ReturnMapName();
-	discordPresence.smallImageKey = GetGameType(qtrue, cl.discord.gametype);
-	discordPresence.smallImageText = GetGameType(qfalse, cl.discord.gametype);
+	if (cl_discordRichPresence->integer > 1 || cls.state < CA_ACTIVE || cl.discord.gametype == GT_FFA) {
+		discordPresence.smallImageKey = GetState();
+		discordPresence.smallImageText = GetState();
+	}
+	else {
+		discordPresence.smallImageKey = GetGameType(qtrue);
+		discordPresence.smallImageText = GetGameType(qfalse);
+	}
 	if (!clc.demoplaying && !com_sv_running->integer)
 	{ //send join information blank since it won't do anything in this case
 		discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
