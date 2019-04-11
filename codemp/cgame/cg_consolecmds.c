@@ -123,7 +123,7 @@ CG_ScoresDown_f
 static void CG_ScoresDown_f( void ) {
 
 	CG_BuildSpectatorString();
-	if ( cg.scoresRequestTime + 2000 < cg.time ) {
+	if ( !cg.demoPlayback && cg.scoresRequestTime + 2000 < cg.time ) { //don't clear the scoreboard when watching a demo
 		// the scores are more than two seconds out of data,
 		// so request new ones
 		cg.scoresRequestTime = cg.time;
