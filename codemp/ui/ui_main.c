@@ -6352,7 +6352,7 @@ static void UI_UpdateCharacterCvars ( void )
 	trap->Cvar_Set ( "char_color_green", UI_Cvar_VariableString ( "ui_char_color_green" ) );
 	trap->Cvar_Set ( "char_color_blue", UI_Cvar_VariableString ( "ui_char_color_blue" ) );
 	trap->Cvar_Set ( "ui_selectedModelIndex", "-1");
-
+	trap->Cvar_Update(&ui_selectedModelIndex);
 }
 
 static void UI_GetCharacterCvars ( void )
@@ -6420,7 +6420,7 @@ static void UI_GetCharacterCvars ( void )
 
 		if (ui_selectedModelIndex.integer > -1) {
 			trap->Cvar_Set("ui_selectedModelIndex", "-1");
-			Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL);
+			trap->Cvar_Update(&ui_selectedModelIndex);
 		}
 	}
 	else
@@ -8798,8 +8798,6 @@ static int UI_HeadCountByColor(void) {
 		trap->Cvar_Set("ui_headCount", "-1");
 		trap->Cvar_Update(&ui_selectedModelIndex);
 		trap->Cvar_Update(&ui_headCount);
-
-		Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL);
 	}
 	return c;
 }
@@ -10108,9 +10106,6 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 					Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, selModel, NULL);
 				}
 			}
-			else {
-				Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL); //don't highlight any if we didn't select one before
-			}
 
 			if (!uiInfo.q3HeadIcons[index])
 			{ //this isn't the best way of doing this I guess, but I didn't want a whole seperate string array
@@ -11152,13 +11147,6 @@ void UI_BuildQ3Model_List( void )
 				}
 
 				Com_sprintf( uiInfo.q3HeadNames[uiInfo.q3HeadCount], sizeof(uiInfo.q3HeadNames[uiInfo.q3HeadCount]), va("%s%s", dirptr, skinname));
-#if 0
-				if (!Q_stricmpn(uiInfo.q3HeadNames[uiInfo.q3HeadCount], UI_Cvar_VariableString("model"), strlen(uiInfo.q3HeadNames[uiInfo.q3HeadCount]))) {//check if this is the skin we have set..
-					trap->Cvar_SetValue("ui_selectedModelIndex", (float)uiInfo.q3HeadCount);
-					trap->Cvar_Update(&ui_selectedModelIndex);
-					Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, uiInfo.q3HeadCount, NULL);
-				}
-#endif
 				//uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
 				uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = 0;//uiInfo.uiDC.Assets.defaultIcon;
 
