@@ -182,9 +182,12 @@ XDOCS_CVAR_DEF("cg_chatSounds", "Play sound when chat messages appear",
 	SETTING("1", "Play chat sounds")
 )
 
-XDOCS_CVAR_DEF("cg_hitSounds", "Play sound when you hit someone",
+XDOCS_CVAR_DEF("cg_hitSounds", "Play a sound when you hit someone",
 	SETTING("0", "Don't play the hit sound (Base behavior)") NL
-	SETTING("1", "Play the hit sound")
+	SETTING("1", "Play the hit sound from Quake 3: Arena") NL
+	SETTING("2", "Play the hit sound from Legions: Overdrive") NL
+	SETTING("3", "Play the hit sound from Warsow") NL
+	SETTING("4", "Play the hit sound from Tribes: Ascend")
 )
 
 XDOCS_CVAR_DEF("cg_raceSounds", "Play sound when race is started",

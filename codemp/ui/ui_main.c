@@ -5726,20 +5726,28 @@ static void UI_Update(const char *name) {
 
 			if (skin != NULL) {
 				if (!Q_stricmpn(skin, "/default", 8)) {
-					uiSkinColor = 0;
+					uiSkinColor = TEAM_FREE;
 					trap->Cvar_Set("ui_myteam", "3");
 				}
 				else if (!Q_stricmpn(skin, "/red", 4)) {
-					uiSkinColor = 1;
+					uiSkinColor = TEAM_RED;
 					trap->Cvar_Set("ui_myteam", "1");
 				}
 				else if (!Q_stricmpn(skin, "/blue", 5)) {
-					uiSkinColor = 2;
+					uiSkinColor = TEAM_BLUE;
 					trap->Cvar_Set("ui_myteam", "2");
 				}
-				else if (!Q_stricmpn(skin, "/rgb", 4) || !Q_stricmpn(skin, "/sp", 3))
+				else if (!Q_stricmpn(skin, "/sp", 3))
 				{
-					uiSkinColor = 0;
+					uiSkinColor = TEAM_FREE;
+					if (!Q_stricmpn(buf, "trandoshan/sp", 13) || !Q_stricmpn(buf, "weequay/sp", 10))
+						trap->Cvar_Set("ui_myteam", "3");
+					else
+						trap->Cvar_Set("ui_myteam", "4");
+				}
+				else if (!Q_stricmpn(skin, "/rgb", 4))
+				{
+					uiSkinColor = TEAM_FREE;
 					trap->Cvar_Set("ui_myteam", "4");
 				}
 			}
@@ -6413,19 +6421,25 @@ static void UI_GetCharacterCvars ( void )
 	{
 		if (skin != NULL && ui_selectedModelIndex.integer > -1 && ui_gametype.integer < GT_TEAM)
 		{ //set our team to respect our current skin
-			if (!Q_stricmpn(skin, "/default", 8)) {
-				uiSkinColor = 0;
-			}
-			else if (!Q_stricmpn(skin, "/red", 4)) {
-				uiSkinColor = 1;
+			if (!Q_stricmp(skin, "/red")) {
+				uiSkinColor = TEAM_RED;
 				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
 			}
-			else if (!Q_stricmpn(skin, "/blue", 5)) {
-				uiSkinColor = 2;
+			else if (!Q_stricmp(skin, "/blue")) {
+				uiSkinColor = TEAM_BLUE;
 				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
 			}
-			else if (!Q_stricmpn(skin, "/rgb", 4) || !Q_stricmpn(skin, "/sp", 3)) {
+			else if (!Q_stricmpn(skin, "/rgb", 3)) {
 				uiSkinColor = 3;
+			}
+			else if (!Q_stricmp(skin, "/sp")) {
+				if (!Q_stricmpn(model, "trandoshan/", 11) || !Q_stricmpn(model, "weequay/", 8) /*||!Q_stricmp(model, "rodian")*/)
+					uiSkinColor = 3;
+				else
+					uiSkinColor = TEAM_FREE;
+			}
+			else {
+				uiSkinColor = TEAM_FREE;
 			}
 		}
 
@@ -8699,7 +8713,9 @@ UI_HeadCountByColor
 */
 static int UI_HeadCountByColor(void) {
 	int i, c;
+	int v = (int)trap->Cvar_VariableValue("cg_defaultModelRandom");
 	char *teamname;
+	char *skinName = NULL;
 
 	c = 0;
 
@@ -8725,13 +8741,39 @@ static int UI_HeadCountByColor(void) {
 	// Count each head with this color
 	for (i=0; i<uiInfo.q3HeadCount; i++)
 	{
-		if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
+		if (uiInfo.q3HeadNames[i][0] && Q_stristr(uiInfo.q3HeadNames[i], "/") != NULL)
 		{
-			c++;
+			skinName = uiInfo.q3HeadNames[i];
+			while (*skinName != '/') {
+				*skinName++;
+			}
+			if (*skinName == '\0' || !strlen(skinName))
+				skinName = uiInfo.q3HeadNames[i];
+
+			if (uiSkinColor == TEAM_FREE)
+			{
+				if (!Q_stricmp(skinName, teamname))
+					c++;
+				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+					c++;
+				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 6) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+					c++;
+			}
+			else if (uiSkinColor == 3)
+			{
+				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
+					c++;
+				else if (!Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp")))
+					c++;
+			}
+			else if (!Q_stricmp(skinName, teamname))
+			{
+				c++;
+			}
 		}
 	}
 
-	if (ui_headCount.integer < 0) {
+	if (ui_headCount.integer < 0) { //no count yet
 		trap->Cvar_Set("ui_headCount", va("%i", c));
 		trap->Cvar_Update(&ui_headCount);
 	}
@@ -9575,8 +9617,10 @@ UI_HeadCountByColor
 ==================
 */
 static const char *UI_SelectedTeamHead(int index, int *actual) {
-	char *teamname;
 	int i,c=0;
+	char *teamname;
+	char *skinName = NULL;
+	qboolean valid = qfalse;
 
 	switch(uiSkinColor)
 	{
@@ -9598,6 +9642,50 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 
 	for (i=0; i<uiInfo.q3HeadCount; i++)
 	{
+		if (uiInfo.q3HeadNames[i][0])
+		{ //ugly mess below
+			skinName = uiInfo.q3HeadNames[i];
+			while (*skinName != '/') {
+				*skinName++;
+			}
+			if (*skinName == '\0' || !strlen(skinName))
+				skinName = uiInfo.q3HeadNames[i];
+
+			valid = qfalse;
+			if (uiSkinColor == 3)
+			{
+				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
+					valid = qtrue;
+				else if (!Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp") /*||!Q_stricmp(model, "rodian/")*/))
+					valid = qtrue;
+			}
+			else if (uiSkinColor == TEAM_FREE)
+			{
+				if (!Q_stricmp(skinName, "/default"))
+					valid = qtrue;
+				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+					valid = qtrue;
+				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 6) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+					valid = qtrue;
+			}
+			else if (!Q_stricmp(skinName, teamname)) {
+				valid = qtrue;
+			}
+
+			if (valid)
+			{
+				if (c==index)
+				{
+					*actual = i;
+					return uiInfo.q3HeadNames[i];
+				}
+				else
+				{
+					c++;
+				}
+			}
+		}
+		/*if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
 		if (uiInfo.q3HeadNames[i][0] && (strstr(uiInfo.q3HeadNames[i], teamname) ||
 			(uiSkinColor == 3 && strstr(uiInfo.q3HeadNames[i], "/sp"))))
 		{
@@ -9610,7 +9698,7 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 			{
 				c++;
 			}
-		}
+		}*/
 	}
 	return "";
 }
@@ -10005,6 +10093,9 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 					Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, selModel, NULL);
 				}
 			}
+			else {
+				Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, -1, NULL); //don't highlight any if we didn't select one before
+			}
 
 			if (!uiInfo.q3HeadIcons[index])
 			{ //this isn't the best way of doing this I guess, but I didn't want a whole seperate string array
@@ -10250,7 +10341,8 @@ qboolean UI_FeederSelection(float feederFloat, int index, itemDef_t *item)
 		index = actual;
 		if (index >= 0 && index < uiInfo.q3HeadCount)
 		{
-			trap->Cvar_Set( "model", uiInfo.q3HeadNames[index]);	
+			trap->Cvar_Set( "model", uiInfo.q3HeadNames[index]);
+			trap->Cvar_Set("ui_char_model", uiInfo.q3HeadNames[index]);
 			if (uiSkinColor != 3) {	// standard model
 				trap->Cvar_Set("char_color_red", "255");	//standard colors
 				trap->Cvar_Set("char_color_green", "255");
@@ -11445,6 +11537,9 @@ void UI_Init( qboolean inGameLoad ) {
 		char buf[MAX_NETNAME] = {0};
 		Q_strncpyz( buf, UI_Cvar_VariableString( "name" ), sizeof( buf ) );
 		trap->Cvar_Register( NULL, "ui_Name", buf, CVAR_INTERNAL );
+
+		//set ui_char_model as well
+		trap->Cvar_Set("ui_char_model", UI_Cvar_VariableString("model"));
 	}
 
 	Menus_CloseAll();
