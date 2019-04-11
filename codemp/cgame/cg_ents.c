@@ -2748,14 +2748,8 @@ static void CG_Missile( centity_t *cent ) {
 	const weaponInfo_t		*weapon;
 //	int	col;
 
-	//
 	centity_t *owner = &cg_entities[cent->currentState.owner]; //this relies on server mod setting .owner in createmissile, along with r.ownerNum
 	//Com_Printf("Owner is %i, we are %i, his bolt1 is %i, ours is %i\n", cent->currentState.owner, cg.clientNum, owner->currentState.bolt1, cg_entities[cg.clientNum].currentState.bolt1);
-
-	if (cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight && cgs.isJAPro) {
-		CG_GrappleTrail(cent);
-		return;
-	}
 
 	if (cg.clientNum != owner->currentState.number) { //Never skip our own projectiles
 		if (cg_entities[cg.clientNum].currentState.bolt1 == 0) {// We are in FFA mode
@@ -2777,12 +2771,11 @@ static void CG_Missile( centity_t *cent ) {
 				return;
 		}
 	}
-	//
 
 	s1 = &cent->currentState;
-#if _GRAPPLE
-	//[Grapple]
-	if (cgs.isJAPlus && s1->weapon == WP_STUN_BATON) {
+
+	if (cgs.isJAPlus && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
+	{
 		int			clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.predictedPlayerState.clientNum : cent->currentState.otherEntityNum;
 		vec3_t		rHandPos;
 		mdxaBone_t	boltMatrix;
@@ -2805,8 +2798,13 @@ static void CG_Missile( centity_t *cent ) {
 		CG_TestLine(rHandPos, pos, 1, 6, 1);
 		return;
 	}
-	//[/Grapple]
-#endif
+	else if ((cgs.isJAPro && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
+		(cgs.isJAPlus && cent->currentState.weapon == WP_STUN_BATON))
+	{
+		CG_GrappleTrail(cent);
+		return;
+	}
+
 	if ( s1->weapon > WP_NUM_WEAPONS && s1->weapon != G2_MODEL_PART ) {
 		s1->weapon = 0;
 	}

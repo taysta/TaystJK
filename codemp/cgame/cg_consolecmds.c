@@ -633,7 +633,7 @@ static void CG_RemapShader_f(void) {
 	//validate this shit ?
 	//how to stop from using trans shaders..?
 
-	trap->R_RemapShader(oldShader, newShader, NULL);	 //the fuck is timeoffset for
+	trap->R_RemapShader(oldShader, newShader, NULL);
 
 }
 
@@ -1237,7 +1237,8 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Disable corpse fading SFX
 	qtrue,//Color respawn bubbles by team
 	qtrue,//Hide player cosmetics
-	qtrue
+	qtrue,//Disable breathing effects
+	qfalse//Old JA+ style grapple line
 };
 
 //JA+ Specific = amaltdim ?
@@ -1260,7 +1261,8 @@ static qboolean japlusPlayerStyles[] = {
 	qtrue,//Disable corpse fading SFX
 	qtrue,//Color respawn bubbles by team
 	qfalse,//Hide player cosmetics
-	qtrue
+	qtrue,//Disable breathing effects
+	qtrue//Old JA+ style grapple line
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1281,7 +1283,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Disable corpse fading SFX" },//14
 	{ "Color respawn bubbles by team" },//15
 	{ "Hide player cosmetics" },//16
-	{ "Disable breathing effects" }//17
+	{ "Disable breathing effects" },//17
+	{ "Old JA+ style grapple line" }//18
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 

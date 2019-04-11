@@ -211,24 +211,25 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_PLUGIN_CENTERMUZZLE	(1<<27)	//
 
 //Style playermodel stuff
-#define JAPRO_STYLE_FULLBRIGHT	(1<<0)
-#define JAPRO_STYLE_SHELL		(1<<1)
-#define JAPRO_STYLE_HIDEDUELERS1 (1<<2)
-#define JAPRO_STYLE_HIDERACERS1 (1<<3) //hide racer if we ffa
-#define JAPRO_STYLE_HIDERACERS2 (1<<4) //hide ffa if we racer
-#define JAPRO_STYLE_HIDERACERS3 (1<<5) //hide racers if we racer
-#define JAPRO_STYLE_RACERVFXDISABLE	(1<<6) //show fellow racers normally
-#define JAPRO_STYLE_NONRACERVFXDISABLE (1<<7) //show racers normally
-#define JAPRO_STYLE_VFXDUELERS	(1<<8)
-#define JAPRO_STYLE_VFXALTDIM	(1<<9) //ja+
-#define JAPRO_STYLE_HIDENONDUELERS	(1<<10) //base
-#define JAPRO_STYLE_HIDEYSALSHELL	(1<<11)
-#define	JAPRO_STYLE_PLAYERLOD	(1<<12)
-#define JAPRO_STYLE_NOBODIES	(1<<13)
-#define JAPRO_STYLE_NOFADESFX	(1<<14)
-#define JAPRO_STYLE_COLOREDSPAWNBUBBLE (1<<15)
-#define JAPRO_STYLE_HIDECOSMETICS (1<<16)
-#define JAPRO_STYLE_DISABLEBREATHING (1<<17)
+#define JAPRO_STYLE_FULLBRIGHT			(1<<0)
+#define JAPRO_STYLE_SHELL				(1<<1)
+#define JAPRO_STYLE_HIDEDUELERS1		(1<<2)
+#define JAPRO_STYLE_HIDERACERS1			(1<<3) //hide racer if we ffa
+#define JAPRO_STYLE_HIDERACERS2			(1<<4) //hide ffa if we racer
+#define JAPRO_STYLE_HIDERACERS3			(1<<5) //hide racers if we racer
+#define JAPRO_STYLE_RACERVFXDISABLE		(1<<6) //show fellow racers normally
+#define JAPRO_STYLE_NONRACERVFXDISABLE	(1<<7) //show racers normally
+#define JAPRO_STYLE_VFXDUELERS			(1<<8)
+#define JAPRO_STYLE_VFXALTDIM			(1<<9) //ja+
+#define JAPRO_STYLE_HIDENONDUELERS		(1<<10) //base
+#define JAPRO_STYLE_HIDEYSALSHELL		(1<<11)
+#define	JAPRO_STYLE_PLAYERLOD			(1<<12)
+#define JAPRO_STYLE_NOBODIES			(1<<13)
+#define JAPRO_STYLE_NOFADESFX			(1<<14)
+#define JAPRO_STYLE_COLOREDSPAWNBUBBLE	(1<<15)
+#define JAPRO_STYLE_HIDECOSMETICS		(1<<16)
+#define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
+#define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
