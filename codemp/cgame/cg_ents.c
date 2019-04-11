@@ -3908,22 +3908,28 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 				//if we were to add the vehicle after the pilot, the pilot's bolt would lag a frame behind.
 				continue;
 			}
-			else if ( cg.nextSnap && (cent->nextState.eType == ET_MISSILE || cent->nextState.eType == ET_GENERAL) ) { //loda
-				// transition it immediately and add it
-				CG_TransitionEntity( cent );
-				cent->interpolate = qtrue;
+			else if (cgs.isJAPro && ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE] && cg.nextSnap)
+			{//loda
+				if (cent->nextState.eType == ET_MISSILE || cent->nextState.eType == ET_GENERAL)
+				{ // transition it immediately and add it
+					CG_TransitionEntity( cent );
+					cent->interpolate = qtrue;
+				}
 			}
 			CG_AddCEntity( cent );
 		}
 	}
 
-	// add each entity sent over by the server - loda
-	for ( num = 0 ; num < cg.snap->numEntities ; num++ ) {
-		cent = &cg_entities[ cg.snap->entities[ num ].number ];
-//unlagged - early transitioning
-		if ( !cg.nextSnap || cent->nextState.eType != ET_MISSILE && cent->nextState.eType != ET_GENERAL ) {
-//unlagged - early transitioning
-			CG_AddCEntity( cent );
+	//im pretty sure this code is reudundant and slows everything down, but i'm keeping it just incase it's necessary for unlagged projectiles/hitscan
+	if (cgs.isJAPro && ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
+	{// add each entity sent over by the server - loda
+		for ( num = 0 ; num < cg.snap->numEntities ; num++ ) {
+			cent = &cg_entities[ cg.snap->entities[ num ].number ];
+			//unlagged - early transitioning
+			if ( !cg.nextSnap || cent->nextState.eType != ET_MISSILE && cent->nextState.eType != ET_GENERAL ) {
+			//unlagged - early transitioning
+				CG_AddCEntity( cent );
+			}
 		}
 	}
 

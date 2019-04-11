@@ -9766,7 +9766,7 @@ void CG_Player( centity_t *cent ) {
 		VectorClear(cent->modelScale);
 	}
 
-	/*if (((cg_smoothClients.integer && !cgs.isJAPro) || cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) &&
+	if ((/*(cg_smoothClients.integer && !cgs.isJAPro) ||*/ cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) &&
 		!(cent->currentState.eFlags2 & EF2_HYPERSPACE) && cg.predictedPlayerState.m_iVehicleNum != cent->currentState.number)
 	{ //always smooth when being thrown
 		vec3_t			posDif;
@@ -9810,7 +9810,7 @@ void CG_Player( centity_t *cent ) {
 	else
 	{
 		VectorCopy(cent->lerpOrigin, cent->beamEnd);
-	}*/
+	}
 
 	if (cent->currentState.m_iVehicleNum &&
 		cent->currentState.NPC_class != CLASS_VEHICLE)
