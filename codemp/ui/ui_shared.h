@@ -397,6 +397,11 @@ typedef struct cachedAssets_s {
 	qhandle_t saberOnly;
 	qhandle_t trueJedi;
 
+	qhandle_t defaultIcon;
+	qhandle_t defaultIconRed;
+	qhandle_t defaultIconBlue;
+	qhandle_t defaultIconRGB;
+
 	sfxHandle_t moveRollSound;
 	sfxHandle_t moveJumpSound;
 	sfxHandle_t datapadmoveSaberSound1;

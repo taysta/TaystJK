@@ -268,18 +268,18 @@ typedef struct {
 } playerColor_t;
 
 typedef struct playerSpeciesInfo_s {
-	char		Name[MAX_QPATH];
-	int			SkinHeadCount;
-	int			SkinHeadMax;
-	skinName_t	*SkinHead;
-	int			SkinTorsoCount;
-	int			SkinTorsoMax;
-	skinName_t	*SkinTorso;
-	int			SkinLegCount;
-	int			SkinLegMax;
-	skinName_t	*SkinLeg;
-	int			ColorMax;
-	int			ColorCount;
+	char			Name[MAX_QPATH];
+	int				SkinHeadCount;
+	int				SkinHeadMax;
+	skinName_t		*SkinHead;
+	int				SkinTorsoCount;
+	int				SkinTorsoMax;
+	skinName_t		*SkinTorso;
+	int				SkinLegCount;
+	int				SkinLegMax;
+	skinName_t		*SkinLeg;
+	int				ColorMax;
+	int				ColorCount;
 	playerColor_t	*Color;
 } playerSpeciesInfo_t;
 

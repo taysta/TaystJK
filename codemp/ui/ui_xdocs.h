@@ -249,7 +249,8 @@ XDOCS_CVAR_DEF("cg_noFX", "Determines if effects and map models are shown",
 	SETTING("1", "Removes effects") NL
 	SETTING("2", "Removes effects and speakers") NL
 	SETTING("3", "Removes above and replaces misc map models") NL
-	SETTING("4", "Removes effects, speakers, and misc map models")
+	SETTING("4", "Removes effects, speakers, and misc map models") NL
+	SETTING("5", "Completely disables all scheduled FX")
 )
 
 XDOCS_CVAR_DEF("cg_noTeleFX", "Disables the teleportation effect",

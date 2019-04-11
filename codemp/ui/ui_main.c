@@ -647,6 +647,12 @@ void AssetCache(void) {
 	uiInfo.uiDC.Assets.saberOnly		= trap->R_RegisterShaderNoMip( "gfx/menus/saberonly" );
 	uiInfo.uiDC.Assets.trueJedi			= trap->R_RegisterShaderNoMip( "gfx/menus/truejedi" );
 
+	//default icons for profile menu
+	uiInfo.uiDC.Assets.defaultIcon		= trap->R_RegisterShaderNoMip("icons/icon_default_unknown");
+	uiInfo.uiDC.Assets.defaultIconRed	= trap->R_RegisterShaderNoMip("icons/icon_red_unknown");
+	uiInfo.uiDC.Assets.defaultIconBlue	= trap->R_RegisterShaderNoMip("icons/icon_blue_unknown");
+	uiInfo.uiDC.Assets.defaultIconRGB	= trap->R_RegisterShaderNoMip("icons/icon_rgb_unknown");
+
 	for( n = 0; n < NUM_CROSSHAIRS; n++ ) {
 		uiInfo.uiDC.Assets.crosshairShader[n] = trap->R_RegisterShaderNoMip( va("gfx/2d/crosshair%c", 'a' + n ) );
 	}
@@ -8765,7 +8771,7 @@ static int UI_HeadCountByColor(void) {
 					c++;
 				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
 					c++;
-				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 6) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
 					c++;
 			}
 			else if (uiSkinColor == 3)
@@ -9674,7 +9680,7 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 					valid = qtrue;
 				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
 					valid = qtrue;
-				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 6) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
 					valid = qtrue;
 			}
 			else if (!Q_stricmp(skinName, teamname)) {
@@ -10997,6 +11003,45 @@ static qboolean bIsImageFile(const char* dirptr, const char* skinname)
 	return qfalse;
 }
 
+/*
+=================
+bIsSkinFile
+builds path and scans for valid skin files
+=================
+*/
+static qboolean bIsSkinFile(const char* dirptr, const char* skinname)
+{
+	char fpath[MAX_QPATH];
+	int f;
+
+	if (!Q_stricmpn(dirptr, "default", 7))
+		return qfalse;
+
+	//fpls and menu skins aren't valid player skins...
+	if (!Q_stricmpn(skinname, "menu", 4))
+		return qfalse;
+	if (!Q_stricmpn(skinname, "fpls", 4))
+		return qfalse;
+
+	//now check for an animation.cfg
+	Com_sprintf(fpath, MAX_QPATH, "models/players/%s/animation.cfg", dirptr);
+	trap->FS_Open(fpath, &f, FS_READ);
+	if (f) {
+		trap->FS_Close(f);
+		return qfalse;
+	}
+
+	Com_sprintf(fpath, MAX_QPATH, "models/players/%s/model_%s.skin", dirptr, skinname);
+	trap->FS_Open(fpath, &f, FS_READ);
+	if (f)
+	{
+		trap->FS_Close(f);
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 
 /*
 =================
@@ -11070,7 +11115,7 @@ static void UI_BuildQ3Model_List( void )
 			if (f)
 			*/
 			check = &skinname[1];
-			if (bIsImageFile(dirptr, check))
+			if (bIsImageFile(dirptr, check) || bIsSkinFile(dirptr, check))
 			{ //if it exists
 				qboolean iconExists = qfalse;
 
@@ -11099,7 +11144,29 @@ static void UI_BuildQ3Model_List( void )
 				}
 
 				Com_sprintf( uiInfo.q3HeadNames[uiInfo.q3HeadCount], sizeof(uiInfo.q3HeadNames[uiInfo.q3HeadCount]), va("%s%s", dirptr, skinname));
-				uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
+				//uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
+				uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = 0;//uiInfo.uiDC.Assets.defaultIcon;
+
+				{//dxdfe?
+					char iconPath[MAX_QPATH] = {0};
+
+					Com_sprintf(iconPath, sizeof(iconPath), "models/players/%s/icon_%s", dirptr, skinname+1);
+					
+					uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = trap->R_RegisterShaderNoMip(iconPath);
+					if (!uiInfo.q3HeadIcons[uiInfo.q3HeadCount] && ui_showAllSkins.integer)
+					{
+						if (!Q_stricmp(skinname+1, "red"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRed;
+						else if (!Q_stricmp(skinname+1, "blue"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconBlue;
+						else if (!Q_stricmp(skinname+1, "rgb"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRGB;
+						else
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIcon;
+					}
+				}
+
+				uiInfo.q3HeadCount++;
 				//rww - we are now registering them as they are drawn like the TA feeder, so as to decrease UI load time.
 			}
 
