@@ -1774,6 +1774,26 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 	case EV_ROLL:
 		DEBUGNAME("EV_ROLL");
+		//JAPRO - Clientside - Fix looping roll animation on other players - Start
+		if (cg_entities[es->number].currentState.eType != ET_NPC && !cg_entities[es->number].currentState.m_iVehicleNum) {
+			cg_entities[es->number].currentState.torsoFlip ^= qtrue;
+			cg_entities[es->number].currentState.legsFlip ^= qtrue;
+
+			if ((cg.predictedPlayerState.pm_flags & PMF_FOLLOW) && es->number == cg.predictedPlayerState.clientNum) {
+				cg.predictedPlayerState.torsoFlip ^= qtrue;
+				cg.predictedPlayerState.legsFlip ^= qtrue;
+
+				if (cg.snap) {//ugly hack
+					cg.snap->ps.torsoFlip ^= qtrue;
+					cg.snap->ps.legsFlip ^= qtrue;
+				}
+				if (cg.nextSnap) {//xd
+					cg.nextSnap->ps.torsoFlip ^= qtrue;
+					cg.nextSnap->ps.legsFlip ^= qtrue;
+				}
+			}
+		}
+		//JAPRO - Clientside - Fix looping roll animation on other players - End
 		if (es->number == cg.snap->ps.clientNum && cg.snap->ps.fallingToDeath)
 			break;
 		if (cg.predictedPlayerState.duelInProgress && (es->clientNum != cg.predictedPlayerState.clientNum && es->clientNum != cg.predictedPlayerState.duelIndex))
