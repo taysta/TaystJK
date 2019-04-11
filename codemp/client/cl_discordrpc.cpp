@@ -51,6 +51,7 @@ static statusIcon_t mapIcons[] = {
 	{ "vjun1",				"vjun1"				},
 	{ "vjun2",				"vjun2"				},
 	{ "vjun3",				"vjun3"				},
+	{ "yavin1",				"yavin1",			},
 	{ "yavin1b",			"yavin1b"			},
 	{ "yavin2",				"yavin2"			},
 	{ "mp/ctf1",			"ctf1"				},
