@@ -8723,11 +8723,17 @@ static int UI_HeadCountByColor(void) {
 	{
 		case TEAM_BLUE:
 			teamname = "/blue";
-			trap->Cvar_Set("ui_RGBSkin", "0");
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
 			break;
 		case TEAM_RED:
 			teamname = "/red";
-			trap->Cvar_Set("ui_RGBSkin", "0");
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
 			break;
 		case 3:
 			teamname = "/rgb";
@@ -8735,7 +8741,10 @@ static int UI_HeadCountByColor(void) {
 			break;
 		default:
 			teamname = "/default";
-			trap->Cvar_Set("ui_RGBSkin", "0");
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
 	}
 
 	// Count each head with this color

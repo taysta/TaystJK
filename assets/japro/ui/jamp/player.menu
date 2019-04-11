@@ -471,6 +471,37 @@
 			}
 		}
 
+//Name of currently selected model -Art		
+		itemDef 
+		{
+			name				modelname
+			style				0	
+			cvar				model
+			rect				50 50 160 20
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			-20
+			textaligny			366
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			font				2
+			textscale			.6
+			forecolor			.615 .615 .956 1
+			border				0
+			bordercolor			0 0 0 0
+			//descText			"Currently selected model"
+			cvarTest            "ui_selectedModelIndex"
+            hideCvar			
+			{
+			"-1"
+			}
+			visible				1 
+			decoration
+			action 
+			{ 
+				play			"sound/interface/button1"
+			}
+		}
+
 // Skin/Team Color Chooser
 		itemDef 
 		{
