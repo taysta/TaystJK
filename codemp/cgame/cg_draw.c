@@ -5641,6 +5641,7 @@ static void CG_DrawReward( void ) {
 	int		i, count;
 	float	x, y;
 	char	buf[32];
+	float	iconSize = ICON_SIZE, time = 0.0f;
 
 	if ( !cg_drawRewards.integer ) {
 		return;
@@ -5663,25 +5664,32 @@ static void CG_DrawReward( void ) {
 		}
 	}
 
+	time = cg.time - cg.rewardTime;
+	if (time <= ITEM_BLOB_TIME) { //fade in
+		iconSize *= time * (1.0/ITEM_BLOB_TIME);
+	}
+	else if (time > 0 && REWARD_TIME - time <= ITEM_BLOB_TIME) { //fade out
+		iconSize *= (REWARD_TIME - time) * (1.0/ITEM_BLOB_TIME);
+	}
+
 	trap->R_SetColor( color );
 
 	if ( cg.rewardCount[0] >= 10 ) {
-		y = 56;
-		x = (SCREEN_WIDTH / 2 ) - ICON_SIZE/2 * cgs.widthRatioCoef;
-		CG_DrawPic( x, y, (ICON_SIZE-4) * cgs.widthRatioCoef, ICON_SIZE-4, cg.rewardShader[0] );
+		y = 56+((ICON_SIZE-iconSize)/2);
+		x = (SCREEN_WIDTH / 2 ) - (iconSize/2) * cgs.widthRatioCoef;
+		CG_DrawPic( x, y, (iconSize-4) * cgs.widthRatioCoef, iconSize-4, cg.rewardShader[0] );
 		Com_sprintf(buf, sizeof(buf), "%d", cg.rewardCount[0]);
 		x = ( SCREEN_WIDTH - SMALLCHAR_WIDTH * CG_DrawStrlen( buf ) * cgs.widthRatioCoef ) / 2;
-		CG_DrawStringExt( x, y+ICON_SIZE, buf, color, qfalse, qtrue,
+		CG_DrawStringExt( x, 104/*y+ICON_SIZE*/, buf, color, qfalse, qtrue,
 								SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 0 );
 	}
 	else {
 		count = cg.rewardCount[0];
-
-		y = 56;
-		x = (SCREEN_WIDTH / 2) - count * (ICON_SIZE/2) * cgs.widthRatioCoef;
+		y = 56+((ICON_SIZE-iconSize)/2);
+		x = (SCREEN_WIDTH / 2) - count * (iconSize/2) * cgs.widthRatioCoef;
 		for ( i = 0 ; i < count ; i++ ) {
-			CG_DrawPic( x, y, (ICON_SIZE-4) * cgs.widthRatioCoef, ICON_SIZE-4, cg.rewardShader[0] );
-			x += ICON_SIZE * cgs.widthRatioCoef;
+			CG_DrawPic( x, y, (iconSize-4) * cgs.widthRatioCoef, iconSize-4, cg.rewardShader[0] );
+			x += iconSize * cgs.widthRatioCoef;
 		}
 	}
 	trap->R_SetColor( NULL );
@@ -11273,7 +11281,7 @@ static void CG_RaceTimer(void)
 	}
 }
 
-#define ACCEL_SAMPLES 16
+#define ACCEL_SAMPLES 32
 static void CG_Speedometer(void)
 {
 		const char *accelStr, *accelStr2, *accelStr3;
@@ -11415,7 +11423,8 @@ static void CG_DrawShowPos(void)
 
 	vel = sqrtf(cg.currentSpeed * cg.currentSpeed + ps->velocity[2] * ps->velocity[2]);
 
-	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f", (float)ps->origin[0], (float)ps->origin[1], (float)ps->origin[2], (float)ps->viewangles[PITCH] + ps->delta_angles[PITCH], (float)ps->viewangles[YAW] + ps->delta_angles[YAW], vel);
+	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f",
+		(float)ps->origin[0], (float)ps->origin[1], (float)ps->origin[2], (float)ps->viewangles[PITCH], (float)ps->viewangles[YAW], vel);
 
 	CG_Text_Paint(SCREEN_WIDTH - (SCREEN_WIDTH - 340) * cgs.widthRatioCoef, 0, 0.6f, colorWhite,
 		showPosString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
