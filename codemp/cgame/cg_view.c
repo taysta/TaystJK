@@ -2064,7 +2064,7 @@ void CG_DrawSkyBoxPortal(const char *cstr)
 
 	cg.refdef.time = cg.time;
 
-	if ( !cg.hyperspace)
+	if (!cg.hyperspace && cg_noFX.integer != 5)
 	{ //rww - also had to add this to add effects being rendered in portal sky areas properly.
 		trap->FX_AddScheduledEffects(qtrue);
 	}
@@ -2769,7 +2769,6 @@ extern qboolean PM_InKnockDown( playerState_t *ps );
 
 extern qboolean cgQueueLoad;
 extern void CG_ActualLoadDeferredPlayers( void );
-void CG_DrawPhysicsFPS();//japro
 
 static int cg_siegeClassIndex = -2;
 #if _NEWTRAILS
@@ -3062,15 +3061,10 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 			CG_AddAllStrafeTrails();
 		}
 #endif
-
-		//Add strafetrail seperate function here - loda fixme meme
+		if (cg_noFX.integer != 5)
+			trap->FX_AddScheduledEffects(qfalse);
 	}
 	CG_AddViewWeapon( &cg.predictedPlayerState );
-
-	if ( !cg.hyperspace)
-	{
-		trap->FX_AddScheduledEffects(qfalse);
-	}
 
 	// add buffered sounds
 	CG_PlayBufferedSounds();
