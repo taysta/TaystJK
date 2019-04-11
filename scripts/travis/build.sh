@@ -19,12 +19,14 @@ case "${host}" in
 		;;
 	(i?86-linux-gnu)
 		set -- \
+			-D BuildPortableVersion=ON \
 			-D CMAKE_TOOLCHAIN_FILE=$(pwd)/CMakeModules/Toolchains/linux-i686.cmake \
 			"$@"
 		;;
 	(macosx-universal-clang)
 		set -- \
 			-D BuildMPDed=OFF \
+			-D BuildPortableVersion=ON \
 			-D CMAKE_OSX_SYSROOT="" \
 			-D OPENGL_INCLUDE_DIR=/System/Library/Frameworks/OpenGL.framework \
 			-D OPENGL_gl_LIBRARY=/System/Library/Frameworks/OpenGL.framework \
