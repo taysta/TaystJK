@@ -11014,6 +11014,9 @@ static qboolean bIsSkinFile(const char* dirptr, const char* skinname)
 	char fpath[MAX_QPATH];
 	int f;
 
+	if (!ui_showAllSkins.integer)
+		return qfalse;
+
 	//don't list non-humanoid skins... - these aren't caught by the other checks below
 	if (!Q_stricmpn(dirptr, "default", 7))
 		return qfalse;
@@ -11053,7 +11056,7 @@ static qboolean bIsSkinFile(const char* dirptr, const char* skinname)
 PlayerModel_BuildList
 =================
 */
-static void UI_BuildQ3Model_List( void )
+void UI_BuildQ3Model_List( void )
 {
 	int		numdirs;
 	int		numfiles;

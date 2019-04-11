@@ -49,6 +49,7 @@ void UI_Load( void );
 void UI_LoadMenus( const char *menuFile, qboolean reset );
 void UI_LoadArenas( void );
 void UI_LoadForceConfig_List( void );
+void UI_BuildQ3Model_List( void );
 
 //
 // ui_players.c
