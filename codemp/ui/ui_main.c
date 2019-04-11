@@ -11014,7 +11014,12 @@ static qboolean bIsSkinFile(const char* dirptr, const char* skinname)
 	char fpath[MAX_QPATH];
 	int f;
 
+	//don't list non-humanoid skins... - these aren't caught by the other checks below
 	if (!Q_stricmpn(dirptr, "default", 7))
+		return qfalse;
+	if (!Q_stricmpn(dirptr, "mutant_rancor", 13))
+		return qfalse;
+	if (!Q_stricmpn(dirptr, "r5d2", 4))
 		return qfalse;
 
 	//fpls and menu skins aren't valid player skins...
@@ -11144,6 +11149,13 @@ static void UI_BuildQ3Model_List( void )
 				}
 
 				Com_sprintf( uiInfo.q3HeadNames[uiInfo.q3HeadCount], sizeof(uiInfo.q3HeadNames[uiInfo.q3HeadCount]), va("%s%s", dirptr, skinname));
+#if 0
+				if (!Q_stricmpn(uiInfo.q3HeadNames[uiInfo.q3HeadCount], UI_Cvar_VariableString("model"), strlen(uiInfo.q3HeadNames[uiInfo.q3HeadCount]))) {//check if this is the skin we have set..
+					trap->Cvar_SetValue("ui_selectedModelIndex", (float)uiInfo.q3HeadCount);
+					trap->Cvar_Update(&ui_selectedModelIndex);
+					Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, uiInfo.q3HeadCount, NULL);
+				}
+#endif
 				//uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
 				uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = 0;//uiInfo.uiDC.Assets.defaultIcon;
 
@@ -11159,7 +11171,7 @@ static void UI_BuildQ3Model_List( void )
 							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRed;
 						else if (!Q_stricmp(skinname+1, "blue"))
 							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconBlue;
-						else if (!Q_stricmp(skinname+1, "rgb"))
+						else if (!Q_stricmpn(skinname+1, "rgb", 3) || !Q_stricmp(skinname+1, "sp"))
 							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRGB;
 						else
 							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIcon;
