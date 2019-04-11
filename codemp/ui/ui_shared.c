@@ -5556,7 +5556,7 @@ void Item_Model_Paint(itemDef_t *item)
 
 	// Set up lighting
 	VectorCopy( origin, ent.lightingOrigin );
-	ent.renderfx = RF_LIGHTING_ORIGIN | RF_NOSHADOW;
+	ent.renderfx = RF_LIGHTING_ORIGIN | RF_NOSHADOW | RF_NOLOD;
 
 	DC->addRefEntityToScene( &ent );
 	DC->renderScene( &refdef );
