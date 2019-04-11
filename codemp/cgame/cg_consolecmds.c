@@ -359,6 +359,11 @@ static int CG_ClientNumberFromString(const char *s)
 	char		n2[MAX_STRING_CHARS];
 	idnum = atoi(s);
 
+	if (s[0] == '-') { //- returns id of target in our crosshair
+		idnum = CG_CrosshairPlayer();
+		return idnum;
+	}
+
 	// numeric values are just slot numbers
 	if (s[0] >= '0' && s[0] <= '9' && strlen(s) == 1) //changed this to only recognize numbers 0-31 as client numbers, otherwise interpret as a name, in which case sanitize2 it and accept partial matches (return error if multiple matches)
 	{
@@ -1884,9 +1889,28 @@ void CG_Say_f( void ) {
 	char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
+	int clientNum = -1, messagetype = 0;
+
+	if (!Q_stricmp(CG_Argv(0), "say")) {
+		messagetype = 1;
+	}
+	else if (!Q_stricmp(CG_Argv(0), "say_team")) {
+		messagetype = 2;
+	}
+	else if (!Q_stricmp(CG_Argv(0), "tell")) {
+		clientNum = CG_ClientNumberFromString(CG_Argv(1));
+		messagetype = 3;
+		if (clientNum < 0) //couldn't find target or multiple matches found
+			return;
+	}
+	else {//shouldn't happen...
+		return;
+	}
 
 	for (i = 1; i < numWords; i++) {
-		trap->Cmd_Argv( i, word, sizeof(word));
+		if (i == 1 && clientNum > -1) //skip 1st argument in PM since that's the name of the person we're trying to PM
+			continue;
+		trap->Cmd_Argv(i, word, sizeof(word));
 
 		if (!Q_stricmp(word, "%H%")) {
 			number = cg.predictedPlayerState.stats[STAT_HEALTH];
@@ -1955,12 +1979,21 @@ void CG_Say_f( void ) {
 		Q_strcat(msg, MAX_SAY_TEXT, word);
 	}
 
-	if (!Q_stricmp(CG_Argv(0), "say_team"))
-		trap->SendClientCommand(va("say_team %s", msg));
-	else if (!Q_stricmp(CG_Argv(0), "say"))
-		trap->SendClientCommand(va("say %s", msg));
-	else
-		Com_Printf("%sUnrecognized command %s\n", S_COLOR_YELLOW, CG_Argv(0));
+	switch (messagetype)
+	{
+		default:
+			Com_Printf("%sUnrecognized command %s\n", S_COLOR_YELLOW, CG_Argv(0));
+			break;
+		case 1:
+			trap->SendClientCommand(va("say %s", msg));
+			break;
+		case 2:
+			trap->SendClientCommand(va("say_team %s", msg));
+			break;
+		case 3:
+			if (clientNum > -1) trap->SendClientCommand(va("tell %i %s", clientNum, msg));
+			break;
+	}
 }
 
 typedef struct consoleCommand_s {
@@ -2011,6 +2044,8 @@ static consoleCommand_t	commands[] = {
 	{ "-zoom",						CG_ZoomUp_f },
 	{ "say",						CG_Say_f },
 	{ "say_team",					CG_Say_f },
+	{ "tell",						CG_Say_f },
+
 	{ "saber",						CG_Saber_f },
 	{ "saberColor",					CG_Sabercolor_f },
 	{ "amColor",					CG_Amcolor_f },
