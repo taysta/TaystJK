@@ -5721,7 +5721,7 @@ void Item_ListBox_Paint(itemDef_t *item) {
 				if (image)
 				{
 #ifndef _CGAME
-					if (item->window.flags & WINDOW_PLAYERCOLOR)
+					if (item->window.flags & WINDOW_PLAYERCOLOR || ((int)item->special == FEEDER_Q3HEADS && image == uiInfo.uiDC.Assets.defaultIconRGB))
 					{
 						vec4_t	color;
 
@@ -5733,6 +5733,10 @@ void Item_ListBox_Paint(itemDef_t *item) {
 					}
 #endif
 					DC->drawHandlePic(x+1, y+1, listPtr->elementWidth - 2, listPtr->elementHeight - 2, image);
+#ifndef _CGAME
+					if ((int)item->special == FEEDER_Q3HEADS && image == uiInfo.uiDC.Assets.defaultIconRGB)//hackhackhack
+						DC->setColor(NULL);
+#endif
 				}
 
 				if (i == item->cursorPos)
@@ -5822,8 +5826,8 @@ void Item_ListBox_Paint(itemDef_t *item) {
 						image = DC->feederItemImage(item->special, i);
 						if (image)
 						{
-		#ifndef _CGAME
-							if (item->window.flags & WINDOW_PLAYERCOLOR)
+#ifndef _CGAME
+							if (item->window.flags & WINDOW_PLAYERCOLOR || ((int)item->special == FEEDER_Q3HEADS && image == uiInfo.uiDC.Assets.defaultIconRGB))
 							{
 								vec4_t	color;
 
@@ -5833,8 +5837,12 @@ void Item_ListBox_Paint(itemDef_t *item) {
 								color[3] = 1.0f;
 								DC->setColor(color);
 							}
-		#endif
+#endif
 							DC->drawHandlePic(x+1, y+1, listPtr->elementWidth - 2, listPtr->elementHeight - 2, image);
+#ifndef _CGAME
+							if ((int)item->special == FEEDER_Q3HEADS && image == uiInfo.uiDC.Assets.defaultIconRGB)//hackhackhack
+								DC->setColor(NULL);
+#endif
 						}
 
 						if (i == item->cursorPos)
