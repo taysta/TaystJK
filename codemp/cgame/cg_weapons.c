@@ -1641,18 +1641,6 @@ void CG_Weapon_f( void ) {
 			return;
 		}
 
-		if (num == 2 && (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD)))
-		{ //hack to make pistol button equip bryar or cycle between bryar and dl-44
-			if (cg.snap->ps.weapon == WP_BRYAR_PISTOL || !(cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL)))
-			{
-				num = WP_BRYAR_OLD - 2;
-			}
-			else if (cg.snap->ps.weapon == WP_BRYAR_OLD)
-			{
-				num = WP_BRYAR_PISTOL - 2;
-			}
-		}
-
 		//rww - hack to make weapon numbers same as single player
 		if (num > WP_STUN_BATON)
 		{
@@ -1669,6 +1657,28 @@ void CG_Weapon_f( void ) {
 			{
 				num = WP_MELEE;
 			}
+		}
+
+		if (num == WP_BRYAR_PISTOL)
+		{
+			if (!(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_PISTOL)) && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_OLD)))
+			{ //can't use either pistol
+				if ((cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_MELEE)))//switch to melee
+					num = WP_MELEE;
+				else if (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)) //switch to stun baton if melee isnt available
+					num = WP_STUN_BATON;
+			}
+			else if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD))
+			{//hack to make pistol button equip bryar or cycle between bryar and dl-44
+				if (cg.snap->ps.weapon == WP_BRYAR_PISTOL || !(cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL)))
+					num = WP_BRYAR_OLD;
+				else if (cg.snap->ps.weapon == WP_BRYAR_OLD)
+					num = WP_BRYAR_PISTOL;
+			}
+		}
+		else if (num == WP_BLASTER && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BLASTER)) && (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)))
+		{ //switch to stun baton if E-11 is not available..
+			num = WP_STUN_BATON;
 		}
 
 		if (num > LAST_USEABLE_WEAPON+1)
