@@ -107,7 +107,7 @@ static statusIcon_t gameTypes[] = {
 	{ "Team FFA",		"tffa"			},
 	{ "Siege",			"siege"			},
 	{ "CTF",			"ctf"			},
-	{ "CTY",			"CTY"			},
+	{ "CTY",			"cty"			},
 }; static const size_t numGameTypes = ARRAY_LEN(gameTypes);
 
 char *ReturnMapName() {
