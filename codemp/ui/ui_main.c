@@ -11503,7 +11503,6 @@ void UI_Init( qboolean inGameLoad ) {
 	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
 	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
 
-	extern void UI_Set2DRatio(void);
 	UI_Set2DRatio();
 
 	if ( uiInfo.uiDC.glconfig.vidWidth * 480 > uiInfo.uiDC.glconfig.vidHeight * 640 ) {

@@ -185,6 +185,32 @@ qboolean UI_OutOfMemory( void ) {
 	return outOfMemory;
 }
 
+void UI_Set2DRatio(void)
+{
+	float ratio = 0.0f;
+	glconfig_t *glconfig;
+
+#ifdef _CGAME
+	glconfig = &cgs.glconfig;
+#elif defined(UI_BUILD)
+	glconfig = &uiInfo.uiDC.glconfig;
+#endif
+
+	if (!glconfig)
+		return;
+
+	if (cl_ratioFix.integer) // shared with UI module
+		ratio = (float)(SCREEN_WIDTH * glconfig->vidHeight) / (float)(SCREEN_HEIGHT * glconfig->vidWidth);
+	else
+		ratio = 1.0f;
+
+#ifdef _CGAME
+	cgs.widthRatioCoef = ratio;
+#elif defined(UI_BUILD)
+	uiInfo.uiDC.widthRatioCoef = ratio;
+#endif
+}
+
 #define HASH_TABLE_SIZE 2048
 /*
 ================

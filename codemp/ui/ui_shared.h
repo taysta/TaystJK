@@ -564,6 +564,8 @@ void *UI_Alloc( int size );
 void UI_InitMemory( void );
 qboolean UI_OutOfMemory();
 
+void UI_Set2DRatio(void);
+
 void Controls_GetConfig( void );
 void Controls_SetConfig( void );
 void Controls_SetDefaults( void );

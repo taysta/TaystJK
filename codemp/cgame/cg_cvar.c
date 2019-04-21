@@ -53,19 +53,16 @@ static void CG_TeamOverlayChange( void ) {
 		trap->Cvar_Set( "teamoverlay", "0" );
 }
 
-void CG_Set2DRatio(void) {
-	if (cl_ratioFix.integer) // shared with UI module
-		cgs.widthRatioCoef = (float)(SCREEN_WIDTH * cgs.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cgs.glconfig.vidWidth);
-	else
-		cgs.widthRatioCoef = 1.0f;
-}
-
+extern void UI_Set2DRatio(void);
 extern void CG_LoadHud_f(void);
 static void CG_UpdateHUD(void) {
-	if (cg.snap && cg_hudFiles.integer != 1 && cg_hudFiles.integer != 2)
-		CG_LoadHud_f();
-	else
+	if (!cg.snap)
 		return;
+
+	if (cg_hudFiles.integer == 1 || cg_hudFiles.integer == 2)
+		return;
+
+	CG_LoadHud_f();
 }
 
 //Strafehelper colors

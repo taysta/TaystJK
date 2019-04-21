@@ -2710,7 +2710,6 @@ Called after every level change or subsystem restart
 Will perform callbacks to make the loading info screen update.
 =================
 */
-extern void CG_Set2DRatio(void);
 void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum )
 {
 	static gitem_t *item;
@@ -2888,7 +2887,7 @@ Ghoul2 Insert End
 	trap->GetGlconfig( &cgs.glconfig );
 	cgs.screenXScale = cgs.glconfig.vidWidth / SCREEN_WIDTH;
 	cgs.screenYScale = cgs.glconfig.vidHeight / SCREEN_HEIGHT;
-	CG_Set2DRatio(); // set 2D Ratio Coefficient 
+	UI_Set2DRatio();
 
 	// get the gamestate from the client system
 	trap->GetGameState( &cgs.gameState );
