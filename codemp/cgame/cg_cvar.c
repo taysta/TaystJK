@@ -53,6 +53,7 @@ static void CG_TeamOverlayChange( void ) {
 		trap->Cvar_Set( "teamoverlay", "0" );
 }
 
+extern void CG_ClearThirdPersonDamp(void);
 extern void UI_Set2DRatio(void);
 extern void CG_LoadHud_f(void);
 static void CG_UpdateHUD(void) {

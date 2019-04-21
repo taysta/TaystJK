@@ -1007,8 +1007,9 @@ static bitInfo_T strafeTweaks[] = {
 	{"Weze style"},//13
 	{"Line Crosshair"}//13
 };
-
 static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN( strafeTweaks );
+
+extern void CG_ClearThirdPersonDamp(void);
 void CG_StrafeHelper_f( void ) {
 	if ( trap->Cmd_Argc() == 1 ) {
 		int i = 0;
@@ -1054,6 +1055,8 @@ void CG_StrafeHelper_f( void ) {
 		Com_Printf( "%s %s^7\n", strafeTweaks[index].string, ((cg_strafeHelper.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
+
+	CG_ClearThirdPersonDamp();
 }
 
 static qboolean japroPluginDisables[] = {

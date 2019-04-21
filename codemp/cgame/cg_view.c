@@ -438,8 +438,6 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 	VectorMA(cam.target.ideal, -(newThirdPersonRange), cam.fwd, cam.loc.ideal);
 }
 
-
-
 static void CG_ResetThirdPersonViewDamp(void)
 {
 	trace_t trace;
@@ -472,6 +470,29 @@ static void CG_ResetThirdPersonViewDamp(void)
 	{
 		VectorSubtract(trace.endpos, cam.loc.ideal, cam.loc.damp);
 	}
+}
+
+void CG_ClearThirdPersonDamp(void)
+{//workaround for camera jerk when clearing camera damp vectors, should probably be refactored into, if not fixed in the actual ThirdPersonDamp code
+	vec3_t oldLoc, oldTarget;
+	if (!cg.snap)
+		return;
+
+	if (cl_paused.integer)
+		return;
+
+	VectorCopy(cam.loc.ideal, oldLoc);
+	VectorCopy(cam.target.ideal, oldTarget);
+
+	CG_ResetThirdPersonViewDamp();
+
+	VectorCopy(oldLoc, cam.loc.ideal);
+	VectorCopy(oldTarget, cam.target.ideal);
+	VectorCopy(oldLoc, cam.loc.prevIdeal);
+	VectorCopy(oldTarget, cam.target.prevIdeal);
+
+	cam.lastTime = cg.predictedPlayerState.commandTime;
+	cam.lastTimeFrac = cg.predictedTimeFrac;
 }
 
 static void CG_DampPosition(dampPos_t *pos, float dampfactor, float dtime)
@@ -687,7 +708,6 @@ static void CG_UpdateThirdPersonCameraDamp(float dtime, float stiffFactor, float
 	// This has the benefit that the camera is a lot smoother now (before it lerped between tested points),
 	// however two full volume traces each frame is a bit scary to think about.
 }
-
 
 /*
 ===============`

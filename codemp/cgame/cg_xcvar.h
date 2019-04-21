@@ -77,7 +77,7 @@ XCVAR_DEF( cg_crosshairSaberStyleColor,	"0",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairColor,	"0 0 0 255",	CG_CrosshairColorChange,					CVAR_ARCHIVE )
 
 //Strafehelper
-XCVAR_DEF( cg_strafeHelper,						"3008", NULL,								CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeHelper,						"3008", CG_ClearThirdPersonDamp,			CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelper_FPS,					"0",	NULL,								CVAR_ARCHIVE ) //fats _ syntax to follow smod ;s
 XCVAR_DEF( cg_strafeHelperOffset,				"75",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperLineWidth,			"1",	NULL,								CVAR_ARCHIVE )
@@ -98,7 +98,7 @@ XCVAR_DEF( cg_remaps,							"1",	NULL,								CVAR_ARCHIVE|CVAR_LATCH )
 XCVAR_DEF( cg_instantDuck,						"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_screenShake,						"2",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScreenTints,					"1",	NULL,								CVAR_ARCHIVE )
-XCVAR_DEF( cg_cameraFPS,						"125",	NULL,								CVAR_ARCHIVE ) //90?
+XCVAR_DEF( cg_cameraFPS,						"125",	CG_ClearThirdPersonDamp,			CVAR_ARCHIVE ) //90?
 XCVAR_DEF( cg_blood,							"0",	NULL,								CVAR_ARCHIVE ) //JAPRO - Clientside - re add cg_blood
 XCVAR_DEF( cg_thirdPersonFlagAlpha,				"1",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_stylePlayer,						"0",	NULL,								CVAR_ARCHIVE )
@@ -134,7 +134,7 @@ XCVAR_DEF( cg_autoRecordDemo,					"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_autoRecordRaceDemo,				"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_autoKillWhenFalling,				"0",	NULL,					CVAR_ARCHIVE )
 #ifdef WIN32
-XCVAR_DEF( cg_engineModifications,				"1", CG_MemoryPatchChange,		CVAR_ARCHIVE ) //should remove
+XCVAR_DEF( cg_engineModifications,				"1",	CG_MemoryPatchChange,	CVAR_ARCHIVE ) //should remove
 #endif
 
 //Auto login
@@ -312,16 +312,16 @@ XCVAR_DEF( cg_snapshotTimeout,					"10",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedTrail,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_stats,							"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_teamChatsOnly,					"0",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_thirdPerson,						"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPerson,						"0",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonAlpha,					"1.0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonAngle,					"0",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_thirdPersonCameraDamp,			"0.3",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonHorzOffset,			"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonPitchOffset,			"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPersonVertOffset,			"16",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonRange,					"80",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonSpecialCam,			"0",					NULL,					CVAR_NONE )
-XCVAR_DEF( cg_thirdPersonTargetDamp,			"0.5",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_thirdPersonVertOffset,			"16",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPersonCameraDamp,			"0.3",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPersonTargetDamp,			"0.5",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonCrosshairCenter,		"0",					NULL,					CVAR_NONE ) //1 is old third person static crosshair behavior
 XCVAR_DEF( cg_timescaleFadeEnd,					"1",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_timescaleFadeSpeed,				"0",					NULL,					CVAR_NONE )
