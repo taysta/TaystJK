@@ -956,7 +956,7 @@ WEAPON SELECTION
 
 void CG_DrawIconBackground(void)
 {
-	int				height, xAdd, x2, y2, t;
+	float			height, xAdd, x2, y2, t;
 	float			inTime = cg.invenSelectTime+WEAPON_SELECT_TIME;
 	float			wpTime = cg.weaponSelectTime+WEAPON_SELECT_TIME;
 	float			fpTime = cg.forceSelectTime+WEAPON_SELECT_TIME;
@@ -964,10 +964,11 @@ void CG_DrawIconBackground(void)
 	int				drawType = cgs.media.weaponIconBackground;
 	int				yOffset = 0;
 	qhandle_t		background;
-	int				prongsOn = cgs.media.JK2weaponProngsOn;
+	qhandle_t		prongsOn = cgs.media.JK2weaponProngsOn;
+	qboolean		JK2HUD = (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.pm_type != PM_SPECTATOR);
 
 	// don't display if dead
-	if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
+	if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 )
 	{
 		return;
 	}
@@ -977,16 +978,16 @@ void CG_DrawIconBackground(void)
 		return;
 	}
 
-	x2 = 30;
-	y2 = SCREEN_HEIGHT-70;
+	x2 = 30.0f;
+	y2 = SCREEN_HEIGHT-70.0f;
 
 	//JK2HUD
-	prongLeftX = x2 + 37;
-	prongRightX = SCREEN_WIDTH - (36 + x2)*cgs.widthRatioCoef;
+	prongLeftX = x2 + 37.0f;
+	prongRightX = SCREEN_WIDTH - (36.0f + x2)*cgs.widthRatioCoef;
 
 	if (inTime > wpTime)
 	{
-		if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) {
+		if (JK2HUD) {
 			drawType = cgs.media.inventoryIconBackground;
 			prongsOn = cgs.media.JK2inventoryProngsOn;
 		}
@@ -994,7 +995,7 @@ void CG_DrawIconBackground(void)
 	}
 	else
 	{
-		if (cg_hudFiles.integer == 2) {
+		if (JK2HUD) {
 			drawType = cgs.media.weaponIconBackground;
 			prongsOn = cgs.media.JK2weaponProngsOn;
 		}
@@ -1003,7 +1004,7 @@ void CG_DrawIconBackground(void)
 
 	if (fpTime > inTime && fpTime > wpTime)
 	{
-		if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) {
+		if (JK2HUD) {
 			drawType = cgs.media.forceIconBackground;
 			prongsOn = cgs.media.JK2forceProngsOn;
 		}
@@ -1024,24 +1025,23 @@ void CG_DrawIconBackground(void)
 				cg.iconHUDPercent=0;
 			}
 
-			xAdd = (int) 8*cg.iconHUDPercent;
+			xAdd = 8.0f*cg.iconHUDPercent;
 
-			height = (int) (60.0f*cg.iconHUDPercent);
-			if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) { //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
-				CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-				CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+			height = (60.0f*cg.iconHUDPercent);
+			if (JK2HUD) { //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
+				CG_DrawPic( x2+60.0f, y2+30.0f+yOffset, 460.0f, -height, drawType);	// Top half
+				CG_DrawPic( x2+60.0f, y2+30.0f-2.0f+yOffset, 460.0f, height, drawType);	// Bottom half
 			}
-
 		}
 		else
 		{
 			xAdd = 0;
 		}
 
-		if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) {
+		if (JK2HUD) {
 			trap->R_SetColor(hudTintColor);
-			CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10, 40*cgs.widthRatioCoef, 80, cgs.media.JK2weaponProngsOff);
-			CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10, -40*cgs.widthRatioCoef, 80, cgs.media.JK2weaponProngsOff);
+			CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10.0f, 40.0f*cgs.widthRatioCoef, 80.0f, cgs.media.JK2weaponProngsOff);
+			CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10.0f, -40.0f*cgs.widthRatioCoef, 80.0f, cgs.media.JK2weaponProngsOff);
 		}
 
 		return;
@@ -1068,11 +1068,11 @@ void CG_DrawIconBackground(void)
 		cg.iconHUDPercent=1;
 	}
 
-	if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) {  //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
+	if (JK2HUD) {  //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
 		trap->R_SetColor(colorTable[CT_WHITE]);
-		height = (int)(60.0f*cg.iconHUDPercent);
-		CG_DrawPic(x2 + 60, y2 + 30 + yOffset, 460, -height, drawType);	// Top half
-		CG_DrawPic(x2 + 60, y2 + 30 - 2 + yOffset, 460, height, drawType);	// Bottom half
+		height = 60.0f*cg.iconHUDPercent;
+		CG_DrawPic(x2 + 60.0f, y2 + 30.0f + yOffset, 460.0f, -height, drawType);	// Top half
+		CG_DrawPic(x2 + 60.0f, y2 + 30.0f - 2 + yOffset, 460.0f, height, drawType);	// Bottom half
 	}
 
 	// And now for the prongs
@@ -1093,11 +1093,11 @@ void CG_DrawIconBackground(void)
 	}
 */
 	// Side Prongs
-	if (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum) {
+	if (JK2HUD) {
 		trap->R_SetColor(colorTable[CT_WHITE]);
-		xAdd = (int)8 * cg.iconHUDPercent;
-		CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10, 40*cgs.widthRatioCoef, 80, background);
-		CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10, -40*cgs.widthRatioCoef, 80, background);
+		xAdd = 8.0f*cg.iconHUDPercent;
+		CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10.0f, 40.0f*cgs.widthRatioCoef, 80.0f, background);
+		CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10.0f, -40.0f*cgs.widthRatioCoef, 80.0f, background);
 	}
 
 }
