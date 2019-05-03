@@ -2333,8 +2333,14 @@ static void _PlayerFootStep( const vec3_t origin,
 	VectorCopy( origin, end );
 	end[2] -= FOOTSTEP_DISTANCE;
 
+	trap->CM_Trace(&trace, origin, end, mins, maxs, 0, MASK_WATER, 0); //check if we're standing in water first
+	if (trace.fraction < 1.0f)
+		return;
+
 	trap->CM_Trace( &trace, origin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0);
 
+
+	//shouldn't it just check cent->currentState.groundEntityNum before doing those traces?
 	// no shadow if too high
 	if ( trace.fraction >= 1.0f )
 	{
