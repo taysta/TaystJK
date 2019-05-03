@@ -1226,6 +1226,53 @@ void SV_UserinfoChanged( client_t *cl ) {
 		SV_DropClient( cl, "userinfo string length exceeded" );
 	else
 		Info_SetValueForKey( cl->userinfo, "ip", ip );
+
+#ifdef DEDICATED
+	if (sv_legacyFixes->integer)
+	{
+		char forcePowers[30];
+		Q_strncpyz(forcePowers, Info_ValueForKey(cl->userinfo, "forcepowers"), sizeof(forcePowers));
+
+		int len = (int)strlen(forcePowers);
+		qboolean badForce = qfalse;
+		if (len >= 22 && len <= 24) {
+			byte seps = 0;
+
+			for (int i = 0; i < len; i++) {
+				if (forcePowers[i] != '-' && (forcePowers[i] < '0' || forcePowers[i] > '9')) {
+					badForce = qtrue;
+					break;
+				}
+
+				if (forcePowers[i] == '-' && (i < 1 || i > 5)) {
+					badForce = qtrue;
+					break;
+				}
+
+				if (i && forcePowers[i - 1] == '-' && forcePowers[i] == '-') {
+					badForce = qtrue;
+					break;
+				}
+
+				if (forcePowers[i] == '-') {
+					seps++;
+				}
+			}
+
+			if (seps != 2) {
+				badForce = qtrue;
+			}
+		} else {
+			badForce = qtrue;
+		}
+
+		if (badForce) {
+			Q_strncpyz(forcePowers, "7-1-030000000000003332", sizeof(forcePowers));
+		}
+
+		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
+	}
+#endif
 }
 
 #define INFO_CHANGE_MIN_INTERVAL	6000 //6 seconds is reasonable I suppose
