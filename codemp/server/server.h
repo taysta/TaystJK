@@ -30,7 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "rd-common/tr_public.h"
 #include "server/duel_cull.h"
 
-extern qboolean DuelCull(sharedEntity_t *a, sharedEntity_t *b);
+extern int DuelCull(sharedEntity_t *a, sharedEntity_t *b);
 
 //=============================================================================
 

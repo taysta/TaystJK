@@ -97,23 +97,23 @@ static qboolean isDuelOpponent(sharedEntity_t *A, sharedEntity_t *B) { //wtf voi
 	return qfalse;
 }
 
-qboolean DuelCull(sharedEntity_t *ent, sharedEntity_t *touch) { //figure something out for smooth collision?
+int DuelCull(sharedEntity_t *ent, sharedEntity_t *touch) { //figure something out for smooth collision?
 
 	if (!sv_snapShotDuelCull->integer)
-		return qfalse;
+		return 0;
 
 	if (isActor(ent) && isActor(touch)) {
 		if (!isDueling(ent) && !isDueling(touch)) { //2 players in ffa
-			return qfalse; //don't cull
+			return 0; //don't cull
 		}
 		else if (!isDueling(ent) && isDueling(touch)) { //they're dueling and we're not
-			return qfalse; //don't cull
+			return 2; //don't cull and don't clip
 		}
 		else if (isDuelOpponent(ent, touch)) { //we're in a duel and this is our opponent
-			return qfalse; //don't cull
+			return 0; //don't cull
 		}
-		return qtrue; //cull everything else
+		return 1; //cull everything else
 	}
 
-	return qfalse;
+	return 0;
 }
