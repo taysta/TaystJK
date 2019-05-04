@@ -1535,6 +1535,12 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		clientOK = qfalse;
 	}
 
+	// Fix: team crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "team", 4) && (!Q_stricmpn(arg1, "follow1", 7) || !Q_stricmpn(arg1, "follow2", 7)))
+	{
+		clientOK = qfalse;
+	}
+
 	if (clientOK) {
 		// pass unknown strings to the game
 		if (!u->name && sv.state == SS_GAME && (cl->state == CS_ACTIVE || cl->state == CS_PRIMED)) {
