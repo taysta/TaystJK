@@ -1519,7 +1519,10 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 	{
 		sayCmd = qtrue;
 
-		if (sv_legacyFixes->integer && strlen(Cmd_Args()) > MAX_CVAR_VALUE_STRING)
+		// 256 because we don't need more, the chat can handle 150 max char
+		// and allowing 256 prevent a message to not be sent instead of being truncated
+		// if this is a bit more than 150
+		if (sv_legacyFixes->integer && strlen(Cmd_Args()) > 256)
 		{
 			clientOK = qfalse;
 		}
