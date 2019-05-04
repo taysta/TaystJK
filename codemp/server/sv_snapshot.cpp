@@ -435,9 +435,9 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 		}
 
 #ifdef DEDICATED
-		if (sv_legacyFixes->integer && ent->s.eType >= ET_EVENTS) {
-			int eventNum = 0;
-			eventNum = (ent->s.eType - ET_EVENTS) & ~EV_EVENT_BITS;
+		if (sv_legacyFixes->integer && svs.servermod != SVMOD_MBII && ent->s.eType >= ET_EVENTS)
+		{
+			int eventNum = (ent->s.eType - ET_EVENTS) & ~EV_EVENT_BITS;
 
 			if (eventNum == EV_JUMP || eventNum == EV_FALL || eventNum == EV_FOOTSTEP) { //block all movement-triggered event entities, these should always be on a player
 				continue;

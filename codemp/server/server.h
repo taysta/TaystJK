@@ -198,6 +198,16 @@ typedef struct client_s {
 
 //=============================================================================
 
+#ifdef DEDICATED
+typedef enum {
+	SVMOD_UNKNOWN,
+	SVMOD_BASEJKA,
+	SVMOD_JAPLUS,
+	SVMOD_MBII,
+	SVMOD_JAPRO,
+	SVMOD_OPENJK
+} servermod_t;
+#endif
 
 // this structure will be cleared only when the game dll changes
 typedef struct serverStatic_s {
@@ -224,6 +234,9 @@ typedef struct serverStatic_s {
 		int lastTimeDisconnected;
 	} hibernation;
 
+#ifdef DEDICATED
+	servermod_t	servermod;
+#endif
 } serverStatic_t;
 
 #define SERVER_MAXBANS	1024

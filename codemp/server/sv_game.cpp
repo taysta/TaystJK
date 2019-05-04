@@ -62,10 +62,10 @@ playerState_t *SV_GameClientNum( int num ) {
 svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt ) {
 	if ( !gEnt || gEnt->s.number < 0 || gEnt->s.number >= MAX_GENTITIES ) {
 #ifdef DEDICATED
-		Com_Error( ERR_DROP, "SV_SvEntityForGentity: bad gEnt\n" );
-#else
-		Com_Printf( "%sSV_SvEntityForGentity: bad gEnt\n", S_COLOR_RED );
+		if ( svs.servermod != SVMOD_JAPRO )
+			Com_Error( ERR_DROP, "SV_SvEntityForGentity: bad gEnt\n" );
 #endif
+		Com_Printf( "%sSV_SvEntityForGentity: bad gEnt\n", S_COLOR_RED );
 	}
 	return (sv_legacyFixes->integer ? &sv.svEntities[SV_NumForGentity(gEnt)] : &sv.svEntities[gEnt->s.number]);
 }

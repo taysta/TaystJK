@@ -2799,6 +2799,48 @@ void SV_InitGame( qboolean restart ) {
 		cl->gentity = NULL;
 
 	GVM_InitGame( sv.time, Com_Milliseconds(), restart );
+
+#ifdef DEDICATED
+	svs.servermod = SVMOD_UNKNOWN;
+	if (sv_legacyFixes->integer)
+	{
+		char *version = Cvar_VariableString("version");
+		char *gamename = Cvar_VariableString("gamename");
+		int len = 0;
+
+		if (!gamename || !strlen(gamename)) {
+			svs.servermod = SVMOD_UNKNOWN;
+			Com_DPrintf("%sFailed to detect loaded mod!\n", S_COLOR_YELLOW);
+			return;
+		}
+		Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
+
+		if (!Q_stricmpn(gamename, "basejk", 6)) {
+			svs.servermod = SVMOD_BASEJKA;
+			return;
+		}
+		if (!Q_stricmpn(gamename, "JA+", 3)) {
+			svs.servermod = SVMOD_JAPLUS;
+			return;
+		}
+		if (!Q_stricmpn(gamename, "Movie Battles", 13))
+		{
+			svs.servermod = SVMOD_MBII;
+			return;
+		}
+		if (!Q_stricmpn(gamename, "japro", 5))
+		{
+			svs.servermod = SVMOD_JAPRO;
+			return;
+		}
+		if (!Q_stricmpn(gamename, "OpenJK", 6)) {
+			svs.servermod = SVMOD_OPENJK;
+			return;
+		}
+
+		Com_DPrintf("%sUnsupported mod detecetd %s\n", S_COLOR_YELLOW, gamename);
+	}
+#endif
 }
 
 void SV_BindGame( void ) {
