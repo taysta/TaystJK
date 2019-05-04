@@ -1523,6 +1523,12 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		}
 	}
 
+	// Fix: gc crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
+	{
+		clientOK = qfalse;
+	}
+
 	if (clientOK) {
 		// pass unknown strings to the game
 		if (!u->name && sv.state == SS_GAME && (cl->state == CS_ACTIVE || cl->state == CS_PRIMED)) {
