@@ -1483,6 +1483,7 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 	const char *arg1;
 	const char *arg2;
 	qboolean bProcessed = qfalse;
+	qboolean sayCmd = qfalse;
 
 	Cmd_TokenizeString(s);
 
@@ -1511,6 +1512,14 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			cl->lastPacketTime = svs.time;
 #endif
 
+	// Fix: buffer overflow
+	if (!Q_stricmpn(cmd, "say", 3) || !Q_stricmpn(cmd, "say_team", 8) || !Q_stricmpn(cmd, "tell", 4))
+	{
+		sayCmd = qtrue;
+
+		if (sv_legacyFixes->integer && strlen(Cmd_Args()) > MAX_CVAR_VALUE_STRING)
+		{
+			clientOK = qfalse;
 		}
 	}
 
@@ -1520,7 +1529,7 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			// strip \r \n and ;
 			if ( sv_filterCommands->integer ) {
 				Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, "\n\r", "  " );
-				if ( sv_filterCommands->integer == 2 ) {
+				if (sv_filterCommands->integer == 2 && !sayCmd) {
 					// also strip ';' for callvote
 					Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, ";", " " );
 				}
