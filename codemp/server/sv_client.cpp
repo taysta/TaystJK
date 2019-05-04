@@ -1478,30 +1478,41 @@ Also called by bot code
 ==================
 */
 void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
-	ucmd_t	*u;
+	const ucmd_t *u;
+	const char *cmd;
+	const char *arg1;
+	const char *arg2;
 	qboolean bProcessed = qfalse;
 
-	Cmd_TokenizeString( s );
+	Cmd_TokenizeString(s);
+
+	cmd = Cmd_Argv(0);
+	arg1 = Cmd_Argv(1);
+	arg2 = Cmd_Argv(2);
 
 	// see if it is a server level command
-	for (u=ucmds ; u->name ; u++) {
-		if (!strcmp (Cmd_Argv(0), u->name) ) {
-			u->func( cl );
+	for (u = ucmds; u->name; u++)
+	{
+		if (!strcmp(cmd, u->name))
+		{
+			u->func(cl);
 			bProcessed = qtrue;
+			
 			break;
 		}
 	}
 
 #ifdef DEDICATED
-	if (!Q_stricmpn(Cmd_Argv(0), "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
+	if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
 		Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
 		if (sv_antiDST->integer) {
 			//SV_DropClient(cl, "was dropped by TnG!");
 			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
 			cl->lastPacketTime = svs.time;
+#endif
+
 		}
 	}
-#endif
 
 	if (clientOK) {
 		// pass unknown strings to the game
@@ -1517,8 +1528,9 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			GVM_ClientCommand( cl - svs.clients );
 		}
 	}
-	else if (!bProcessed) {
-		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, Cmd_Argv(0) );
+	else if (!bProcessed)
+	{
+		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, cmd);
 	}
 }
 
