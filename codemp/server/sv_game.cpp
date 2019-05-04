@@ -61,7 +61,11 @@ playerState_t *SV_GameClientNum( int num ) {
 
 svEntity_t	*SV_SvEntityForGentity( sharedEntity_t *gEnt ) {
 	if ( !gEnt || gEnt->s.number < 0 || gEnt->s.number >= MAX_GENTITIES ) {
-		Com_Error( ERR_DROP, "SV_SvEntityForGentity: bad gEnt" );
+#ifdef DEDICATED
+		Com_Error( ERR_DROP, "SV_SvEntityForGentity: bad gEnt\n" );
+#else
+		Com_Printf( "%sSV_SvEntityForGentity: bad gEnt\n", S_COLOR_RED );
+#endif
 	}
 	return (sv_legacyFixes->integer ? &sv.svEntities[SV_NumForGentity(gEnt)] : &sv.svEntities[gEnt->s.number]);
 }
