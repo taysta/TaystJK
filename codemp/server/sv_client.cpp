@@ -1529,6 +1529,12 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		clientOK = qfalse;
 	}
 
+	// Fix: npc spawn crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && !Q_stricmpn(arg2, "ragnos", 6))
+	{
+		clientOK = qfalse;
+	}
+
 	if (clientOK) {
 		// pass unknown strings to the game
 		if (!u->name && sv.state == SS_GAME && (cl->state == CS_ACTIVE || cl->state == CS_PRIMED)) {
