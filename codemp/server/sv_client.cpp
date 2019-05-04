@@ -1319,8 +1319,9 @@ void SV_UserinfoChanged( client_t *cl ) {
 	else
 		Info_SetValueForKey( cl->userinfo, "ip", ip );
 
-#ifdef DEDICATED
 	val = Info_ValueForKey(cl->userinfo, "model");
+
+#ifdef DEDICATED
 	if (val && !Q_stricmpn(val, "darksidetools", 13) && cl->netchan.remoteAddress.type != NA_LOOPBACK) {
 		Com_Printf("%sDetected DST injection from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
 		if (sv_antiDST->integer) {
@@ -1387,6 +1388,25 @@ void SV_UserinfoChanged( client_t *cl ) {
 		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
 	}
 #endif
+
+	// Fix: Don't allow bugged models
+	if (sv_legacyFixes->integer)
+	{
+		len = (int)strlen(val);
+		
+		if (Q_stricmpn(val, "jedi_", len) == 0 || Q_stricmpn(val, "jedi_/red", len) == 0 || Q_stricmpn(val, "jedi_/blue", len) == 0)
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+		else if (!Q_stricmpn(val, "rancor", 6))
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+		else if (!Q_stricmpn(val, "wampa", 5))
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+	}
 }
 
 #define INFO_CHANGE_MIN_INTERVAL	6000 //6 seconds is reasonable I suppose
