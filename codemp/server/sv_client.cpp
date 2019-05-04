@@ -1541,6 +1541,12 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		clientOK = qfalse;
 	}
 
+	// Disable: callteamvote, useless in basejka and can lead to a bugged UI on custom client
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callteamvote", 12))
+	{
+		clientOK = qfalse;
+	}
+
 	if (clientOK) {
 		// pass unknown strings to the game
 		if (!u->name && sv.state == SS_GAME && (cl->state == CS_ACTIVE || cl->state == CS_PRIMED)) {
