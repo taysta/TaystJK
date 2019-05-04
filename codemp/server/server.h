@@ -194,6 +194,10 @@ typedef struct client_s {
 	qboolean		csUpdated[MAX_CONFIGSTRINGS];
 
 	demoInfo_t		demo;
+
+#ifdef DEDICATED
+	qboolean		disableDuelCull;
+#endif
 } client_t;
 
 //=============================================================================

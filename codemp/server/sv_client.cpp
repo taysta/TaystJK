@@ -1238,6 +1238,18 @@ void SV_UserinfoChanged( client_t *cl ) {
 		}
 	}
 
+	cl->disableDuelCull = qfalse;
+	if (svs.servermod == SVMOD_JAPLUS) { //allow JA+ clients to configure duel isolation on JA+ servers using /pluginDisable
+		val = Info_ValueForKey(cl->userinfo, "cjp_client");
+		if (val && strlen(val) >= 3)
+		{ //make sure they have some version of the plugin
+			val = Info_ValueForKey(cl->userinfo, "cp_pluginDisable");
+			if (atoi(val) & (1<<1)) { //JAPRO_PLUGIN_DUELSEEOTHERS
+				cl->disableDuelCull = qtrue;
+			}
+		}
+	}
+
 	if (sv_legacyFixes->integer)
 	{
 		char forcePowers[30];
