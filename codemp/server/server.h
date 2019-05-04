@@ -286,9 +286,13 @@ extern	cvar_t	*sv_banFile;
 
 extern	cvar_t	*sv_snapShotDuelCull;
 
+extern	cvar_t	*sv_pingFix;
 extern	cvar_t	*sv_hibernateTime;
 extern	cvar_t	*sv_hibernateFPS;
-extern	cvar_t	*sv_pingFix;
+
+#ifdef DEDICATED
+extern	cvar_t	*sv_antiDST;
+#endif
 
 extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;

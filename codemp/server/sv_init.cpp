@@ -1018,6 +1018,9 @@ void SV_Init (void) {
 	sv_hibernateFPS = Cvar_Get("sv_hibernateFPS", "2", CVAR_ARCHIVE_ND, "FPS during hibernation mode");
 	Cvar_CheckRange(sv_hibernateFPS, 1, 1000, qtrue);
 
+#ifdef DEDICATED
+	sv_antiDST = Cvar_Get("sv_antiDST", "1", CVAR_NONE, "Attempts to detect and kick players injecting or using DST");
+#endif
 	// initialize bot cvars so they are listed and can be set before loading the botlib
 	SV_BotInitCvars();
 
