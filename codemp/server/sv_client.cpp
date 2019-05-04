@@ -1504,12 +1504,14 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 	}
 
 #ifdef DEDICATED
-	if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
-		Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
-		if (sv_antiDST->integer) {
-			//SV_DropClient(cl, "was dropped by TnG!");
-			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
-			cl->lastPacketTime = svs.time;
+    if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
+        Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+        if (sv_antiDST->integer) {
+            //SV_DropClient(cl, "was dropped by TnG!");
+            SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+            cl->lastPacketTime = svs.time;
+        }
+    }
 #endif
 
 	// Fix: buffer overflow
