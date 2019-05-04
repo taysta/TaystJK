@@ -1139,6 +1139,85 @@ static void SV_ResetPureClient_f( client_t *cl ) {
 }
 
 /*
+===========
+ClientCleanName
+
+Gamecode to engine port (from OpenJK)
+============
+*/
+static void ClientCleanName(const char* in, char* out, int outSize)
+{
+    int outpos = 0, colorlessLen = 0, spaces = 0, ats = 0;
+
+    // discard leading spaces
+    for (; *in == ' '; in++);
+
+    // discard leading asterisk's (fail raven for using * as a skipnotify)
+    // apparently .* causes the issue too so... derp
+    for(; *in == '*'; in++);
+
+    for (; *in && outpos < outSize - 1; in++)
+    {
+        out[outpos] = *in;
+
+        if (*in == ' ')
+        {// don't allow too many consecutive spaces
+            if (spaces > 2)
+                continue;
+
+            spaces++;
+        }
+        else if (*in == '@')
+        {// don't allow too many consecutive at signs
+            if (++ats > 2) {
+                outpos -= 2;
+                ats = 0;
+                continue;
+            }
+        }
+        else if ((byte)* in < 0x20
+            || (byte)* in == 0x81 || (byte)* in == 0x8D || (byte)* in == 0x8F || (byte)* in == 0x90 || (byte)* in == 0x9D
+            || (byte)* in == 0xA0 || (byte)* in == 0xAD)
+        {
+            continue;
+        }
+        else if (outpos > 0 && out[outpos - 1] == Q_COLOR_ESCAPE)
+        {
+            if (Q_IsColorStringExt(&out[outpos - 1]))
+            {
+                colorlessLen--;
+
+#if 0
+                if (ColorIndex(*in) == 0)
+                {// Disallow color black in names to prevent players from getting advantage playing in front of black backgrounds
+                    outpos--;
+                    continue;
+                }
+#endif
+            }
+            else
+            {
+                spaces = ats = 0;
+                colorlessLen++;
+            }
+        }
+        else
+        {
+            spaces = ats = 0;
+            colorlessLen++;
+        }
+
+        outpos++;
+    }
+
+    out[outpos] = '\0';
+
+    // don't allow empty names
+    if (*out == '\0' || colorlessLen == 0)
+        Q_strncpyz(out, "Padawan", outSize);
+}
+
+/*
 =================
 SV_UserinfoChanged
 
@@ -1149,9 +1228,22 @@ into a more C friendly form.
 void SV_UserinfoChanged( client_t *cl ) {
 	char	*val=NULL, *ip=NULL;
 	int		i=0, len=0;
+	
+	if (sv_legacyFixes->integer)
+	{
+		char	cleanName[64];
+		
+		val = Info_ValueForKey(cl->userinfo, "name");
 
-	// name for C code
-	Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+		ClientCleanName(val, cleanName, sizeof(cleanName));
+		Info_SetValueForKey(cl->userinfo, "name", cleanName);
+		Q_strncpyz(cl->name, cleanName, sizeof(cl->name));
+	}
+	else
+	{
+		// name for C code
+		Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+	}
 
 	// rate command
 
