@@ -1547,6 +1547,12 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		clientOK = qfalse;
 	}
 
+	// Fix: callvote fraglimit/timelimit with negative value
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callvote", 8) && (!Q_stricmpn(arg1, "fraglimit", 9) || !Q_stricmpn(arg1, "timelimit", 9)) && atoi(arg2) < 0)
+	{
+		clientOK = qfalse;
+	}
+
 	if (clientOK) {
 		// pass unknown strings to the game
 		if (!u->name && sv.state == SS_GAME && (cl->state == CS_ACTIVE || cl->state == CS_PRIMED)) {
