@@ -301,7 +301,7 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 	{
 		float vertOffset = cg_thirdPersonVertOffset.value;
 
-		if (cgs.isJAPro && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 			vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
 			if (vertOffset < 0)
 				vertOffset = -vertOffset;
@@ -371,7 +371,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 	float newThirdPersonRange;// = cg_thirdPersonRange.value;
 	int f;
 
-	if (cgs.isJAPro && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 		thirdPersonRange = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
 		if (thirdPersonRange < 0)
 			thirdPersonRange = -thirdPersonRange;
@@ -565,7 +565,7 @@ static void CG_UpdateThirdPersonTargetDamp(float dtime)
 		VectorClear(cam.target.damp);
 		cam.lastTime = 0;
 	}
-	else if (cg_thirdPersonTargetDamp.value> 0.0f)
+	else if (cg_thirdPersonTargetDamp.value>0.0f)
 	{
 		dampfactor = 1.0 - cg_thirdPersonTargetDamp.value;	// We must exponent the amount LEFT rather than the amount bled off
 
@@ -1074,7 +1074,7 @@ static void CG_OffsetFirstPersonView( void ) {
 	// add angles based on damage kick
 
 //JAPRO - Clientside - Remove Screenshake if allowed - Start
-	if (cgs.isJAPro)
+	if (cgs.serverMod == SVMOD_JAPRO)
 	{
 		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
 		{
@@ -2595,7 +2595,7 @@ void CG_DrawAutoMap(void)
 }
 
 QINLINE void CG_DoAsync( void ) {
-	if ( cg.doVstrTime && cg.time > cg.doVstrTime) {
+	if ( cg.doVstrTime && cg.time > cg.doVstrTime ) {
 		trap->SendConsoleCommand(cg.doVstr);
 		cg.doVstrTime = 0;
 	}
@@ -2899,7 +2899,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	}
 
 	//japro restrictions in racemode
-	if (cgs.isJAPro) {
+	if (cgs.serverMod == SVMOD_JAPRO) {
 		if (cg.snap && cg.snap->ps.stats[STAT_RACEMODE] && !(cg.predictedPlayerState.pm_flags & PMF_FOLLOW) && (cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)) {
 			if (cgs.restricts & RESTRICT_YAW) {
 				char yawBuf[64];
@@ -2985,7 +2985,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	CG_PredictPlayerState();
 
 	// decide on third person view
-	if (cgs.isJAPro && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 		if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] > 0)
 			cg.renderingThirdPerson = qtrue;
 		else if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] < 0)
@@ -3158,7 +3158,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 	CG_DoAsync();
 
-	if (cgs.isJAPro)
+	if (cgs.serverMod == SVMOD_JAPRO)
 		CG_UpdateNetUserinfo();
 
 	if ( cg_stats.integer ) {

@@ -2204,7 +2204,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		return;
 	}
 
-	if ((cg.predictedPlayerState.clientNum == cent->currentState.number) && cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE] && (ent->weapon != WP_ROCKET_LAUNCHER))
+	if ((cg.predictedPlayerState.clientNum == cent->currentState.number) && cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && (ent->weapon != WP_ROCKET_LAUNCHER))
 		return;
 
 	weap = &cg_weapons[ ent->weapon ];
@@ -2322,7 +2322,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		}
 	}
 //unlagged - attack prediction #1
-	if (cgs.isJAPro && cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN && cent->currentState.number == cg.predictedPlayerState.clientNum)//why not eventparm, or ownernum .. memes
+	if (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN && cent->currentState.number == cg.predictedPlayerState.clientNum)//why not eventparm, or ownernum .. memes
 	{
 		VectorCopy( cg.predictedPlayerState.origin, muzzlePoint );
 		muzzlePoint[2] += cg.predictedPlayerState.viewheight;
@@ -2369,7 +2369,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		}
 		else if (ent->weapon == WP_STUN_BATON)
 		{
-			if (altFire && cgs.isJAPro && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
+			if (altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
 			{
 				VectorMA( muzzlePoint, 256, forward, endPoint );//loda
 
@@ -2385,7 +2385,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 				//Com_Printf( "Predicted shocklance fire\n" );
 				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
 			}
-			else if (!altFire && cgs.isJAPro && cgs.jcinfo & JAPRO_CINFO_LG)
+			else if (!altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_LG)
 			{
 				VectorMA( muzzlePoint, 640, forward, endPoint );
 
@@ -2406,7 +2406,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 	}//end hitscan prediction
 
 	//why not eventparm, memes
-	if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.isJAPro && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now..
+	if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now..
 			CG_LocalMissile(cent, ent->weapon, altFire);//at this point we know its a bullet? or a saber? or vehicle attack? 
 	}
 

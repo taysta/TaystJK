@@ -255,7 +255,7 @@ static void CG_DrawZoomMask( void )
 		int val, i;
 		float off;
 
-		if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 			return;
 
 		// zoom level
@@ -1850,7 +1850,7 @@ void CG_DrawHUD(centity_t	*cent)
 	if (!cg_drawHud.integer)
 		return;
 	
-	if (cg_drawScore.integer && !(cgs.gametype == GT_POWERDUEL || (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]))) {  // JAPRO - Clientside - Add cvar to show player score on HUD.
+	if (cg_drawScore.integer && !(cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))) {  // JAPRO - Clientside - Add cvar to show player score on HUD.
 		//scoreStr = va("Score: %i", cgs.clientinfo[cg.snap->ps.clientNum].score);
 		if (cgs.gametype == GT_DUEL && cgs.fraglimit > 0)
 		{//A duel that requires more than one kill to knock the current enemy back to the queue
@@ -3397,7 +3397,7 @@ qboolean CG_DrawVehicleHud( const centity_t *cent )
 	}
 
 	CG_DrawVehicleTurboRecharge( menuHUD, veh );
-	if (cgs.isJAPro && ps->stats[STAT_RACEMODE]) { //JAPRO server, we are in racemode (swoop ofc)
+	if (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE]) { //JAPRO server, we are in racemode (swoop ofc)
 		CG_DrawVehicleGravRecharge( menuHUD, veh );
 	}
 	else
@@ -3680,7 +3680,7 @@ static float CG_DrawEnemyInfo ( float y )
 		return y;
 	}
 
-	if (cgs.gametype == GT_POWERDUEL)
+	if (cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))
 	{ //just get out of here then
 		return y;
 	}
@@ -5323,7 +5323,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	w = (pwidth + lwidth + 4 + 7) * TINYCHAR_WIDTH*cgs.widthRatioCoef;
 
 	if ( right ) {
-		if (cgs.isJAPro)
+		if (cgs.serverMod == SVMOD_JAPRO)
 			x = cg_drawTeamOverlayX.integer - w - 32;//JAPRO - Clientside - Positionable drawteamoverlay
 		else
 			x = cg_drawTeamOverlayX.integer - w;//JAPRO - Clientside - Positionable drawteamoverlay
@@ -5354,7 +5354,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		hcolor[3] = 0.33f;
 	}
 	trap->R_SetColor( hcolor );
-	if (cgs.isJAPro)
+	if (cgs.serverMod == SVMOD_JAPRO)
 		CG_DrawPic( x + xOffset, y, w + 32, h, cgs.media.teamStatusBar );
 	else
 		CG_DrawPic( x + xOffset, y, w, h, cgs.media.teamStatusBar );
@@ -5399,7 +5399,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 
 			CG_GetColorForHealth( ci->health, ci->armor, hcolor );
 
-			if (cgs.isJAPro) {
+			if (cgs.serverMod == SVMOD_JAPRO) {
 				int forcepoints = ci->armor % 100, armor = ci->armor;
 				if (!forcepoints) { //sad hack, fix this sometime.. if we are at 0 fp it thinks we are at full or whatever.. cuz %100
 					forcepoints = 100;
@@ -5418,7 +5418,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 			xx = x + TINYCHAR_WIDTH * 3*cgs.widthRatioCoef + 
 				TINYCHAR_WIDTH * pwidth*cgs.widthRatioCoef + TINYCHAR_WIDTH * lwidth*cgs.widthRatioCoef;
 
-			if (cgs.isJAPro) {
+			if (cgs.serverMod == SVMOD_JAPRO) {
 				CG_DrawStringExt( xx + xOffset, y,
 					st, hcolor, qfalse, qfalse,
 					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
@@ -5554,7 +5554,7 @@ static void CG_DrawInventory(int y)
 	if (!cg.snap)
 		return;
 
-	if (cgs.isJAPro && cg.snap->ps.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE])
 		return;
 
 	if (cg.snap->ps.pm_type == PM_SPECTATOR)
@@ -6543,7 +6543,7 @@ void CG_LerpCrosshairPos( float *x, float *y )
 {
 	if ( cg_crosshairPrevPosX )
 	{//blend from old pos
-		float maxMove = 30.0f * ((float)cg.frametime/500.0f) * 640.0f/480.0f;
+		float maxMove = 30.0f * ((float)cg.frametime/500.0f) * (float)SCREEN_WIDTH/(float)SCREEN_HEIGHT;
 		float xDiff = (*x - cg_crosshairPrevPosX);
 		if ( fabs(xDiff) > CRAZY_CROSSHAIR_MAX_ERROR_X )
 		{
@@ -6624,7 +6624,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	}
 	else if (cg_crosshairSaberStyleColor.integer && cg.predictedPlayerState.weapon == WP_SABER) {
 		switch (cg.predictedPlayerState.fd.saberDrawAnimLevel)
-			{
+		{
 			case 1://blue
 			case 5://Tavion
 				hcolor[0] = 0.0f;
@@ -7919,7 +7919,7 @@ qboolean staticCrosshairOverride() {
 		cg.snap->ps.weapon == WP_STUN_BATON)
 		return qtrue; //no point with melee weapons
 
-	if ((cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]))
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 		return qtrue;
 
 	if (cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE ||
@@ -8551,7 +8551,7 @@ static qboolean CG_DrawFollow( void )
 	CG_Text_Paint (4, 27, 0.85f, colorWhite, s, 0, 0, 0, FONT_MEDIUM );//JAPRO - Clientside - Move spectated clients name to top left corner of screen
 	
 	//Loda - add their movemnt style here..?f
-	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		char styleString[16] = {0};
 		IntegerToRaceName(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE], styleString, sizeof(styleString));
@@ -11516,7 +11516,7 @@ static void CG_MovementKeys(centity_t *cent)
 			else if (cg_hudFiles.integer == 3)
 				xOffset -= 18; //447
 
-			if (cg_drawScore.integer == 0 || cgs.gametype == GT_POWERDUEL || (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]))
+			if (cg_drawScore.integer == 0 || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))
 				yOffset += 12; // 445
 			else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
 				yOffset -= 14; //420

@@ -1947,8 +1947,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		}
 	}
 	//loda
-	
-	
 	else {
 		Q_strncpyz( newInfo.modelName, v, sizeof( newInfo.modelName ) );
 
@@ -2339,8 +2337,6 @@ static void _PlayerFootStep( const vec3_t origin,
 
 	trap->CM_Trace( &trace, origin, end, mins, maxs, 0, MASK_PLAYERSOLID, 0);
 
-
-	//shouldn't it just check cent->currentState.groundEntityNum before doing those traces?
 	// no shadow if too high
 	if ( trace.fraction >= 1.0f )
 	{
@@ -5653,7 +5649,7 @@ void ParseRGBSaber( char *str, vec3_t c ) {
 //rgb
 
 qboolean pluginNoBlackSabers() {
-	if (cgs.isJAPlus || cgs.isJAPro) {
+	if (cgs.serverMod >= SVMOD_JAPLUS) {
 		if (!(cp_pluginDisable.integer & JAPRO_PLUGIN_BLACKSABERSDISABLE))
 			return qfalse;
 	}
@@ -5667,12 +5663,12 @@ static int ClampSaberColor(int color) {
 	if (color == SABER_BLACK)
 		return (pluginNoBlackSabers() || cg_noRGBSabers.integer) ? SABER_ORANGE : SABER_BLACK;
 
-	if (color > SABER_PURPLE && (cg_noRGBSabers.integer || (!cgs.isJAPlus && !cgs.isJAPro))) {
+	if (color > SABER_PURPLE && (cg_noRGBSabers.integer || cgs.serverMod < SVMOD_JAPLUS)) {
 		if (disco.integer)
 			color = Q_irand(0, 5);
-		else if (color >= SABER_RGB && cg_noRGBSabers.integer > 1 && (cgs.isJAPlus || cgs.isJAPro))
+		else if (color >= SABER_RGB && cg_noRGBSabers.integer > 1 && cgs.serverMod >= SVMOD_JAPLUS)
 			color = SABER_RGB;
-		else if (color > SABER_PURPLE && (cg_noRGBSabers.integer || (!cgs.isJAPlus && !cgs.isJAPro)))
+		else if (color > SABER_PURPLE && (cg_noRGBSabers.integer || cgs.serverMod < SVMOD_JAPLUS))
 			color -= SABER_RGB; //roll over to a normal base color?
 	}
 
@@ -9772,7 +9768,7 @@ void CG_Player( centity_t *cent ) {
 		VectorClear(cent->modelScale);
 	}
 
-	if ((/*(cg_smoothClients.integer && !cgs.isJAPro) ||*/ cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) &&
+	if ((/*(cg_smoothClients.integer && cgs.serverMod != SVMOD_JAPRO) ||*/ cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) &&
 		!(cent->currentState.eFlags2 & EF2_HYPERSPACE) && cg.predictedPlayerState.m_iVehicleNum != cent->currentState.number)
 	{ //always smooth when being thrown
 		vec3_t			posDif;
@@ -10130,12 +10126,12 @@ void CG_Player( centity_t *cent ) {
 	}
 
 //JAPRO - Clientside - Draw Duelers - Start
-	if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE))) { // we only care about other players
-		if (cg.snap->ps.duelInProgress) { // we are dueling
-			if (cent->currentState.number != cg.snap->ps.duelIndex) { // don't draw this entity because we aren't dueling them
-				if ((cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR) || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)
-					if ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
-						return;
+	if (cg.snap->ps.duelInProgress && cg.snap->ps.pm_type != PM_SPECTATOR) { // we are dueling
+		if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE)))
+		{ // we only care about other players
+			if ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS) && cent->currentState.number != cg.snap->ps.duelIndex)
+			{ // don't draw this entity because we aren't dueling them
+					return;
 			}
 		}
 		else if (cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
@@ -10599,7 +10595,7 @@ void CG_Player( centity_t *cent ) {
 		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
 			cent->currentState.torsoAnim = cent->currentState.legsAnim;
 
-		if (!cgs.isJAPro) {
+		if (cgs.serverMod != SVMOD_JAPRO) {
 			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF)
 				cent->currentState.torsoAnim = BOTH_RUN1;
 
@@ -11247,7 +11243,7 @@ skipTrail:
 
 	if (cent->currentState.weapon == WP_STUN_BATON && cent->currentState.number == cg.snap->ps.clientNum)
 	{
-		if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
 		}
 		else {
 			trap->S_AddLoopingSound(cent->currentState.number, cg.refdef.vieworg, vec3_origin, trap->S_RegisterSound("sound/weapons/baton/idle.wav"));
@@ -12245,7 +12241,7 @@ stillDoSaber:
 						trap->R_AddRefEntityToScene(&legs);	//draw the shell
 
 						legs.customShader = 0;	//reset to player model
-						if (cgs.isJAPlus || cgs.isJAPro) { // dim color further away
+						if (cgs.serverMod >= SVMOD_JAPLUS) { // dim color further away
 							legs.shaderRGBA[0] = Q_max(savRGBA[0] - subLen / 32, 1);
 							legs.shaderRGBA[1] = Q_max(savRGBA[1] - subLen / 32, 1);
 							legs.shaderRGBA[2] = Q_max(savRGBA[2] - subLen / 32, 1);
@@ -12429,7 +12425,7 @@ stillDoSaber:
 			if (cg.snap->ps.duelInProgress) { //We are dueling
 											  //Uhh.. dont draw anyone differently since they are invis i guess and us/opponent look normal
 			}
-			else if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) {// We are racing
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {// We are racing
 				if ((!cent->currentState.bolt1 && !(cg_stylePlayer.integer & JAPRO_STYLE_NONRACERVFXDISABLE)) //they're in FFA or they're another racer
 				|| !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE))
 				{
@@ -12444,7 +12440,7 @@ stillDoSaber:
 					stylePlayer2 = qtrue;
 					drawPlayer = qfalse;
 				}
-				else if (cgs.isJAPro && cent->currentState.bolt1 == 2 && !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE)) { //They are racing
+				else if (cgs.serverMod == SVMOD_JAPRO && cent->currentState.bolt1 == 2 && !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE)) { //They are racing
 					stylePlayer1 = qtrue;
 					stylePlayer2 = qfalse;
 					drawPlayer = qfalse;
@@ -12473,7 +12469,7 @@ stillDoSaber:
 	}
 
 	//[Kameleon] - Nerevar's Santa Hat.
-	if (!cgs.isJAPlus && !cgs.isBase && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
+	if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
 		if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
 			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
 		}
@@ -12684,7 +12680,7 @@ stillDoSaber:
 	//Showing only when the power has been active (absorbed something) recently now, instead of always.
 	//AND
 	//always show if it is you with the absorb on
-	if (((cg_alwaysShowAbsorb.integer && !cgs.isBaseEnhanced) && cent->currentState.forcePowersActive & (1<<FP_ABSORB)) ||
+	if (((cg_alwaysShowAbsorb.integer && cgs.serverMod != SVMOD_BASEENHANCED) && cent->currentState.forcePowersActive & (1<<FP_ABSORB)) ||
 		(cent->teamPowerEffectTime > cg.time && cent->teamPowerType == 3))
 	{ //aborb is represented by blue..
 		legs.shaderRGBA[0] = 0;

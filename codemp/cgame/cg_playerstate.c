@@ -448,7 +448,7 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 				Com_Printf("[skipnotify]Tactician!\n");
 		}
 		// if any of the player event bits changed
-		if (!cgs.isJAPlus) {
+		if (cgs.serverMod != SVMOD_JAPLUS) {
 			if (ps->persistant[PERS_PLAYEREVENTS] != ops->persistant[PERS_PLAYEREVENTS]) {
 				if ((ps->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_DENIEDREWARD) !=
 					(ops->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_DENIEDREWARD)) {
@@ -586,7 +586,7 @@ void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 		if ( cg_instantDuck.integer )
 			cg.duckTime = cg.time - DUCK_TIME;
 		else
-		cg.duckTime = cg.time;
+			cg.duckTime = cg.time;
 	}
 }
 

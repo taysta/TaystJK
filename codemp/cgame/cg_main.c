@@ -791,7 +791,7 @@ static void CG_RegisterSounds( void ) {
 	trap->S_RegisterSound("sound/weapons/force/jump.mp3"); //PDSOUND_FORCEJUMP
 	trap->S_RegisterSound("sound/weapons/force/grip.mp3"); //PDSOUND_FORCEGRIP
 
-	if ( cgs.isJAPro || cgs.gametype >= GT_TEAM || com_buildScript.integer ) {
+	if ( cgs.serverMod == SVMOD_JAPRO || cgs.gametype >= GT_TEAM || com_buildScript.integer ) {
 
 #ifdef JK2AWARDS
 		cgs.media.captureAwardSound = trap->S_RegisterSound("sound/chars/protocol/misc/capture.wav");
@@ -803,13 +803,13 @@ static void CG_RegisterSounds( void ) {
 		cgs.media.redScoredSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM044");
 		cgs.media.blueScoredSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM043" );
 
-		if ( cgs.isJAPro || cgs.gametype == GT_CTF || com_buildScript.integer ) {
+		if ( cgs.serverMod == SVMOD_JAPRO || cgs.gametype == GT_CTF || com_buildScript.integer ) {
 			cgs.media.redFlagReturnedSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM042" );
 			cgs.media.blueFlagReturnedSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM041" );
 			cgs.media.redTookFlagSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM040" );
 			cgs.media.blueTookFlagSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM039" );
 		}
-		if ( cgs.isJAPro || cgs.gametype == GT_CTY /*|| com_buildScript.integer*/ ) {
+		if ( cgs.serverMod == SVMOD_JAPRO || cgs.gametype == GT_CTY /*|| com_buildScript.integer*/ ) {
 			cgs.media.redYsalReturnedSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM050" );
 			cgs.media.blueYsalReturnedSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM049" );
 			cgs.media.redTookYsalSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM048" );
@@ -1070,7 +1070,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.winnerSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM006" );
 	cgs.media.loserSound = trap->S_RegisterSound( "sound/chars/protocol/misc/40MOM010" );
 
-	if (cgs.isJAPro || cgs.isBaseEnhanced) {
+	if (cgs.serverMod == SVMOD_JAPRO || cgs.serverMod == SVMOD_BASEENHANCED) {
 		const char	*s;
 		char		soundName[1024];
 		for (i = 0; i < MAX_CUSTOM_VGS_SOUNDS; i++) {
@@ -1292,7 +1292,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.effects.mDisruptorDeathSmoke = trap->FX_RegisterEffect("disruptor/death_smoke");
 
 #if _GRAPPLE
-	if (cgs.isJAPro) {
+	if (cgs.serverMod >= SVMOD_JAPLUS) {
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
 		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
 		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
@@ -1342,7 +1342,7 @@ static void CG_RegisterGraphics( void ) {
 		}
 	}
 
-	if ( cgs.isJAPro || cgs.gametype == GT_CTF || cgs.gametype == GT_CTY || com_buildScript.integer ) {
+	if ( cgs.serverMod == SVMOD_JAPRO || cgs.gametype == GT_CTF || cgs.gametype == GT_CTY || com_buildScript.integer ) {
 		if (com_buildScript.integer)
 		{
 			trap->R_RegisterModel( "models/flags/r_flag.md3" );
@@ -1351,7 +1351,7 @@ static void CG_RegisterGraphics( void ) {
 			trap->R_RegisterModel( "models/flags/b_flag_ysal.md3" );
 		}
 
-		if (cgs.gametype == GT_CTF || cgs.isJAPro) //for dynamic gametype switchin
+		if (cgs.gametype == GT_CTF || cgs.serverMod == SVMOD_JAPRO) //for dynamic gametype switchin
 		{
 			cgs.media.redFlagModel = trap->R_RegisterModel( "models/flags/r_flag.md3" );
 			cgs.media.blueFlagModel = trap->R_RegisterModel( "models/flags/b_flag.md3" );
@@ -1373,12 +1373,12 @@ static void CG_RegisterGraphics( void ) {
 
 		trap->R_RegisterShaderNoMip("gfx/2d/net.tga");
 	}
-	else if ( (cgs.isJAPro || cgs.gametype == GT_FFA || cgs.gametype == GT_TEAM ) && cgs.isJAPro )//loda
+	else if ( cgs.serverMod == SVMOD_JAPRO && ( cgs.gametype == GT_FFA || cgs.gametype == GT_TEAM ) )//loda
 	{
 		cgs.media.neutralFlagModel = trap->R_RegisterModel( "models/flags/n_flag.md3" );
 	}
 
-	if ( cgs.isJAPro || cgs.gametype >= GT_TEAM || com_buildScript.integer ) {
+	if ( cgs.serverMod == SVMOD_JAPRO || cgs.gametype >= GT_TEAM || com_buildScript.integer ) {
 		cgs.media.teamRedShader = trap->R_RegisterShader( "sprites/team_red" );
 		cgs.media.teamBlueShader = trap->R_RegisterShader( "sprites/team_blue" );
 		//cgs.media.redQuadShader = trap->R_RegisterShader("powerups/blueflag" );
@@ -1568,7 +1568,7 @@ Ghoul2 Insert End
 	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
 
 	//cosmetics
-	if (!cgs.isJAPlus && !cgs.isBase) {
+	if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA) {
 		cgs.media.cosmetics.santaHat	= trap->R_RegisterModel("models/players/hats/santahat.md3");
 		cgs.media.cosmetics.pumpkin		= trap->R_RegisterModel("models/players/hats/pumpkin.md3");
 		cgs.media.cosmetics.cap			= trap->R_RegisterModel("models/players/hats/cap.md3");
@@ -3080,7 +3080,7 @@ void CG_NextForcePower_f( void )
 		return;
 	}
 
-	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTeleMark");
@@ -3130,7 +3130,7 @@ void CG_PrevForcePower_f( void )
 		return;
 	}
 
-	if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTele");

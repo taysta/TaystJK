@@ -761,7 +761,7 @@ qboolean PM_SaberKataDone(int curmove, int newmove)
 #ifdef _GAME
 		if ((pm->ps->saberAttackChainCount >= 1) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN))
 #else
-		if (cgs.isJAPro && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
+		if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
 #endif
 		{
 			return qtrue;
@@ -1605,12 +1605,12 @@ qboolean PM_CanBackstab(void)
 		}
 	}
 #else
-	if (cgs.isJAPro && (cgs.jcinfo & JAPRO_CINFO_EASIERBACKSLASH))
+	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_EASIERBACKSLASH))
 	{
 		return qtrue;
 	}
 
-	if (cgs.isJAPro && (cgs.jcinfo & JAPRO_CINFO_EASYBACKSLASH))
+	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_EASYBACKSLASH))
 	{
 		int i;
 		centity_t *cent;
@@ -2074,7 +2074,7 @@ saberMoveName_t PM_SaberJumpAttackMove( void )
 	AngleVectors( fwdAngles, jumpFwd, NULL, NULL );
 
 #ifdef _CGAME
-	if (cgs.isJAPro) {
+	if (cgs.serverMod == SVMOD_JAPRO) {
 #endif
 		if (pm->ps->stats[STAT_RACEMODE] && (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JKA || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_QW || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_PJK)) {//Check for single saber?
 			trace_t tr;
@@ -2438,7 +2438,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			}
 		}
 #else
-		if (cgs.isJAPro && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOCART)) {
+		if (cgs.serverMod == SVMOD_JAPRO && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOCART)) {
 			allowCartwheels = qfalse;
 		}
 #endif
@@ -2619,7 +2619,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 #ifdef _GAME
 				(!(g_tweakSaber.integer & ST_JK2RDFA) || pm->ps->stats[STAT_RACEMODE])
 #else
-				((cgs.isJAPro && (!(cgs.jcinfo & JAPRO_CINFO_JK2DFA) || pm->ps->stats[STAT_RACEMODE])) || (cgs.isJAPlus && !(cgs.jcinfo & JAPLUS_CINFO_JK2DFA)) || (!cgs.isJAPlus && !cgs.isJAPro))
+				((cgs.serverMod == SVMOD_JAPRO && (!(cgs.jcinfo & JAPRO_CINFO_JK2DFA) || pm->ps->stats[STAT_RACEMODE])) || (cgs.serverMod == SVMOD_JAPLUS && !(cgs.jcinfo & JAPLUS_CINFO_JK2DFA)) || cgs.serverMod < SVMOD_JAPLUS)
 #endif
 				&& !noSpecials&&
 				pm->ps->fd.saberAnimLevel == SS_STRONG &&
@@ -2648,7 +2648,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 #ifdef _GAME
 				((g_tweakSaber.integer & ST_JK2RDFA) && !pm->ps->stats[STAT_RACEMODE])
 #else
-				((cgs.isJAPro && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_JK2DFA)) || (cgs.isJAPlus && (cgs.jcinfo & JAPLUS_CINFO_JK2DFA)))
+				((cgs.serverMod == SVMOD_JAPRO && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_JK2DFA)) || (cgs.serverMod == SVMOD_JAPLUS && (cgs.jcinfo & JAPLUS_CINFO_JK2DFA)))
 #endif
 				&& !noSpecials && //JAPRO, JK2 RED DFA
 				pm->ps->fd.saberAnimLevel == SS_STRONG &&
@@ -2790,7 +2790,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 #ifdef _GAME
 		if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN))
 #elif _CGAME
-		if (cgs.isJAPro && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
+		if (cgs.serverMod == SVMOD_JAPRO && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
 #endif
 				newmove = PM_irand_timesync(LS_A_TL2BR, LS_A_T2B);
 			else
@@ -2870,7 +2870,7 @@ int PM_KickMoveForConditions(void)
 #ifdef _GAME
 		if (g_flipKick.integer) //if we are not pressing any keys and we alt attack in staff it should default to forward kick like in ja+, not just sit there (link this to flipKick? :/)
 #else
-		if (cgs.isJAPlus || (cgs.isJAPro && cgs.jcinfo & JAPRO_CINFO_FLIPKICK))
+		if (cgs.serverMod == SVMOD_JAPLUS || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FLIPKICK))
 #endif
 		{
 			kickMove = LS_KICK_F;
@@ -4096,7 +4096,7 @@ void PM_SetSaberMove(short newMove)
 #ifdef _GAME
 	else if ( (pm->ps->stats[STAT_RACEMODE] || !(g_tweakSaber.integer & ST_NO_REDCHAIN)) &&
 #else
-	else if ( (!cgs.isJAPro || cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
+	else if ( (cgs.serverMod != SVMOD_JAPRO || cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
 #endif
 		pm->ps->fd.saberAnimLevel > FORCE_LEVEL_1 && !BG_SaberInIdle( newMove ) && !PM_SaberInParry( newMove ) && !PM_SaberInKnockaway( newMove ) && !PM_SaberInBrokenParry( newMove ) && !PM_SaberInReflect( newMove ) && !BG_SaberInSpecial(newMove))
  	{//readies, parries and reflections have only 1 level
@@ -4106,7 +4106,7 @@ void PM_SetSaberMove(short newMove)
 #ifdef _GAME
 	else if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN) && 
 #else
-	else if ((cgs.isJAPro && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
+	else if ((cgs.serverMod == SVMOD_JAPRO && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
 #endif
 		pm->ps->fd.saberAnimLevel > FORCE_LEVEL_1 && !BG_SaberInIdle(newMove) && !PM_SaberInParry(newMove) && !PM_SaberInReflect(newMove) && !BG_SaberInSpecial(newMove) && !PM_SaberInTransition(newMove))
 	{//FIXME: only have level 1 transitions for now

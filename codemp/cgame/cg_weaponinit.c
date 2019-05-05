@@ -143,7 +143,7 @@ void CG_RegisterWeapon( int weaponNum) {
 		//trap->R_RegisterShader( "gfx/effects/stunPass" );
 		trap->FX_RegisterEffect( "stunBaton/flesh_impact" );
 
-		if (weaponNum == WP_STUN_BATON && (cgs.isJAPro) && cgs.jcinfo & JAPRO_CINFO_LG)
+		if (weaponNum == WP_STUN_BATON && (cgs.serverMod == SVMOD_JAPRO) && cgs.jcinfo & JAPRO_CINFO_LG)
 		{
 			trap->S_RegisterSound( "sound/weapons/baton/idle.wav" );
 			weaponInfo->flashSound[0] = trap->S_RegisterSound( "sound/weapons/lightning/lg_hum.wav" );

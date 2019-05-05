@@ -3138,7 +3138,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_SCOREPLUM:
 		DEBUGNAME("EV_SCOREPLUM");
-		if (cgs.isJAPro && cent->currentState.eventParm == 1)
+		if (cgs.serverMod == SVMOD_JAPRO && cent->currentState.eventParm == 1)
 			CG_SpotIcon( cent->currentState.otherEntityNum, cent->lerpOrigin );
 		else
 			CG_ScorePlum( cent->currentState.otherEntityNum, cent->lerpOrigin, cent->currentState.time );
@@ -3625,7 +3625,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_GENERAL_SOUND:
 		DEBUGNAME("EV_GENERAL_SOUND");
-			/*if (cgs.isJAPro) { // If it is japro
+			/*if (cgs.serverMod == SVMOD_JAPRO) { // If it is japro
 				if (cg.snap->ps.duelInProgress) {// If we are dueling loda fixme
 					if (cent->currentState.owner != cg.snap->ps.clientNum && cent->currentState.owner != cg.snap->ps.duelIndex) // If sound did not come from me or dueler
 						break;
@@ -3635,7 +3635,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				//}
 			}*/
 
-			if (cgs.isJAPro) {
+			if (cgs.serverMod == SVMOD_JAPRO) {
 				if ((es->eFlags2 & RS_TIMER_START) && !(cg_raceSounds.integer & RS_TIMER_START)) //Its a timer_start race sound.
 					break;
 			}
