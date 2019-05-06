@@ -3184,6 +3184,9 @@ void SV_UnbindGame( void ) {
 	GVM_ShutdownGame( qfalse );
 	VM_Free( gvm );
 	gvm = NULL;
+
+	//reset gamename cvar here so that it stays up to date in-case we switch out mods or something.
+	Cvar_Unset(Cvar_Get("gamename", "", CVAR_SERVERINFO, ""));
 }
 
 void SV_RestartGame( void ) {
