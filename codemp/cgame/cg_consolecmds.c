@@ -624,6 +624,22 @@ static void CG_FollowFastest_f(void) {
 		trap->SendClientCommand(va("follow %i", fastestPlayer));
 }
 
+static void CG_Follow_f(void) {
+		int clientNum = -1;
+		
+		if (trap->Cmd_Argc() < 2) {
+			Com_Printf("usage /follow <name>\n");
+			return;
+		}
+		
+		 clientNum = CG_ClientNumberFromString(CG_Argv(1));
+		 
+		 if (clientNum < 0)
+			 return;
+		 
+		 trap->SendClientCommand(va("follow %i", clientNum));
+}
+
 static void CG_RemapShader_f(void) {
 	char oldShader[MAX_QPATH], newShader[MAX_QPATH];
 
@@ -2048,6 +2064,7 @@ static consoleCommand_t	commands[] = {
 	{ "say",						CG_Say_f },
 	{ "say_team",					CG_Say_f },
 	{ "tell",						CG_Say_f },
+	{ "follow",						CG_Follow_f },
 
 	{ "saber",						CG_Saber_f },
 	{ "saberColor",					CG_Sabercolor_f },
