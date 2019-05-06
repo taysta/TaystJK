@@ -10126,12 +10126,12 @@ void CG_Player( centity_t *cent ) {
 	}
 
 //JAPRO - Clientside - Draw Duelers - Start
-	if (cg.snap->ps.duelInProgress && cg.snap->ps.pm_type != PM_SPECTATOR) { // we are dueling
-		if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE)))
-		{ // we only care about other players
-			if ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS) && cent->currentState.number != cg.snap->ps.duelIndex)
-			{ // don't draw this entity because we aren't dueling them
-					return;
+	if (cent->currentState.number != cg.snap->ps.clientNum && ((cg.predictedPlayerState.clientNum != cent->currentState.owner) || (cent->currentState.eType != ET_NPC || cent->currentState.NPC_class != CLASS_VEHICLE))) { // we only care about other players
+		if (cg.snap->ps.duelInProgress) { // we are dueling
+			if (cent->currentState.number != cg.snap->ps.duelIndex) { // don't draw this entity because we aren't dueling them
+				if ((cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR) || cg.predictedPlayerState.pm_flags & PMF_FOLLOW)
+					if ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))
+						return;
 			}
 		}
 		else if (cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
