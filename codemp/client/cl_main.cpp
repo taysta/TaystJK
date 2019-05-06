@@ -1343,18 +1343,6 @@ void CL_Vid_Restart_f( void ) {
 
 /*
 =================
-CL_Fs_Restart_f
-
-Restart the filesystem
-=================
-*/
-
-void CL_Fs_Restart_f( void ) {
-	FS_Restart( clc.checksumFeed );
-}
-
-/*
-=================
 CL_Snd_Restart_f
 
 Restart the sound subsystem
@@ -3356,7 +3344,6 @@ void CL_Init( void ) {
 	Cmd_AddCommand ("stoprecord", CL_StopRecord_f, "Stop recording a demo" );
 	Cmd_AddCommand ("configstrings", CL_Configstrings_f, "Prints the configstrings list" );
 	Cmd_AddCommand ("clientinfo", CL_Clientinfo_f, "Prints the userinfo variables" );
-	Cmd_AddCommand ("fs_restart", CL_Fs_Restart_f, "Restart the filesystem" );
 	Cmd_AddCommand ("snd_restart", CL_Snd_Restart_f, "Restart sound" );
 	Cmd_AddCommand ("vid_restart", CL_Vid_Restart_f, "Restart the renderer - or change the resolution" );
 	Cmd_AddCommand ("loadmod", CL_Mod_Restart_f, "Restart the renderer (with specified mod folder) - or change the resolution");
@@ -3440,7 +3427,6 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand ("cmd");
 	Cmd_RemoveCommand ("configstrings");
 	Cmd_RemoveCommand ("clientinfo");
-	Cmd_RemoveCommand ("fs_restart");
 	Cmd_RemoveCommand ("snd_restart");
 	Cmd_RemoveCommand ("vid_restart");
 	Cmd_RemoveCommand ("disconnect");
