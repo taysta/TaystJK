@@ -10154,6 +10154,12 @@ void CG_Player( centity_t *cent ) {
 	if (cg_drawHitBox.integer) {
 		vec3_t bmins = {-15, -15, DEFAULT_MINS_2}, bmaxs = {15, 15, DEFAULT_MAXS_2}, absmin, absmax;
 
+		if (pm && cent->currentState.clientNum && pm->ps->clientNum)
+		{
+			VectorCopy(pm->mins, bmins);
+			VectorCopy(pm->maxs, bmaxs);
+		}
+
 		if (!CG_IsMindTricked(cent->currentState.trickedentindex,
 			cent->currentState.trickedentindex2,
 			cent->currentState.trickedentindex3,
