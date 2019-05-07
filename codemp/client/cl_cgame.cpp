@@ -280,7 +280,11 @@ void CL_ConfigstringModified( void ) {
 		cl.gameState.dataCount += len + 1;
 	}
 
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer || (cl_autolodscale && cl_autolodscale->integer))
+#else
 	if (cl_autolodscale && cl_autolodscale->integer)
+#endif
 	{
 		if (index >= CS_PLAYERS &&
 			index < CS_G2BONES)
@@ -352,7 +356,12 @@ void CL_ConfigstringModified( void ) {
 			Com_DPrintf("%i clients\n", gCLTotalClientNum);
 #endif
 
+#if defined(DISCORD) && !defined(_DEBUG)
 			CL_DoAutoLODScale();
+#else
+			if (cl_autolodscale && cl_autolodscale->integer)
+				CL_DoAutoLODScale();
+#endif
 		}
 	}
 
