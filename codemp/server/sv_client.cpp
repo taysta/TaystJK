@@ -1139,6 +1139,85 @@ static void SV_ResetPureClient_f( client_t *cl ) {
 }
 
 /*
+===========
+ClientCleanName
+
+Gamecode to engine port (from OpenJK)
+============
+*/
+static void ClientCleanName(const char* in, char* out, int outSize)
+{
+    int outpos = 0, colorlessLen = 0, spaces = 0, ats = 0;
+
+    // discard leading spaces
+    for (; *in == ' '; in++);
+
+    // discard leading asterisk's (fail raven for using * as a skipnotify)
+    // apparently .* causes the issue too so... derp
+    for(; *in == '*'; in++);
+
+    for (; *in && outpos < outSize - 1; in++)
+    {
+        out[outpos] = *in;
+
+        if (*in == ' ')
+        {// don't allow too many consecutive spaces
+            if (spaces > 2)
+                continue;
+
+            spaces++;
+        }
+        else if (*in == '@')
+        {// don't allow too many consecutive at signs
+            if (++ats > 2) {
+                outpos -= 2;
+                ats = 0;
+                continue;
+            }
+        }
+        else if ((byte)* in < 0x20
+            || (byte)* in == 0x81 || (byte)* in == 0x8D || (byte)* in == 0x8F || (byte)* in == 0x90 || (byte)* in == 0x9D
+            || (byte)* in == 0xA0 || (byte)* in == 0xAD)
+        {
+            continue;
+        }
+        else if (outpos > 0 && out[outpos - 1] == Q_COLOR_ESCAPE)
+        {
+            if (Q_IsColorStringExt(&out[outpos - 1]))
+            {
+                colorlessLen--;
+
+#if 0
+                if (ColorIndex(*in) == 0)
+                {// Disallow color black in names to prevent players from getting advantage playing in front of black backgrounds
+                    outpos--;
+                    continue;
+                }
+#endif
+            }
+            else
+            {
+                spaces = ats = 0;
+                colorlessLen++;
+            }
+        }
+        else
+        {
+            spaces = ats = 0;
+            colorlessLen++;
+        }
+
+        outpos++;
+    }
+
+    out[outpos] = '\0';
+
+    // don't allow empty names
+    if (*out == '\0' || colorlessLen == 0)
+        Q_strncpyz(out, "Padawan", outSize);
+}
+
+/*
 =================
 SV_UserinfoChanged
 
@@ -1149,9 +1228,22 @@ into a more C friendly form.
 void SV_UserinfoChanged( client_t *cl ) {
 	char	*val=NULL, *ip=NULL;
 	int		i=0, len=0;
+	
+	if (sv_legacyFixes->integer)
+	{
+		char	cleanName[64];
+		
+		val = Info_ValueForKey(cl->userinfo, "name");
 
-	// name for C code
-	Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+		ClientCleanName(val, cleanName, sizeof(cleanName));
+		Info_SetValueForKey(cl->userinfo, "name", cleanName);
+		Q_strncpyz(cl->name, cleanName, sizeof(cl->name));
+	}
+	else
+	{
+		// name for C code
+		Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+	}
 
 	// rate command
 
@@ -1227,8 +1319,9 @@ void SV_UserinfoChanged( client_t *cl ) {
 	else
 		Info_SetValueForKey( cl->userinfo, "ip", ip );
 
-#ifdef DEDICATED
 	val = Info_ValueForKey(cl->userinfo, "model");
+
+#ifdef DEDICATED
 	if (val && !Q_stricmpn(val, "darksidetools", 13) && cl->netchan.remoteAddress.type != NA_LOOPBACK) {
 		Com_Printf("%sDetected DST injection from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
 		if (sv_antiDST->integer) {
@@ -1295,6 +1388,26 @@ void SV_UserinfoChanged( client_t *cl ) {
 
 		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
 	}
+
+  // Fix: Don't allow bugged models
+	if (sv_legacyFixes->integer)
+	{
+		len = (int)strlen(val);
+		
+		if (Q_stricmpn(val, "jedi_", len) == 0 || Q_stricmpn(val, "jedi_/red", len) == 0 || Q_stricmpn(val, "jedi_/blue", len) == 0)
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+		else if (!Q_stricmpn(val, "rancor", 6))
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+		else if (!Q_stricmpn(val, "wampa", 5))
+		{
+			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+	}
+#endif
 }
 
 #define INFO_CHANGE_MIN_INTERVAL	6000 //6 seconds is reasonable I suppose
@@ -1366,30 +1479,85 @@ Also called by bot code
 ==================
 */
 void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
-	ucmd_t	*u;
+	const ucmd_t *u;
+	const char *cmd;
+	const char *arg1;
+	const char *arg2;
 	qboolean bProcessed = qfalse;
+	qboolean sayCmd = qfalse;
 
-	Cmd_TokenizeString( s );
+	Cmd_TokenizeString(s);
+
+	cmd = Cmd_Argv(0);
+	arg1 = Cmd_Argv(1);
+	arg2 = Cmd_Argv(2);
 
 	// see if it is a server level command
-	for (u=ucmds ; u->name ; u++) {
-		if (!strcmp (Cmd_Argv(0), u->name) ) {
-			u->func( cl );
+	for (u = ucmds; u->name; u++)
+	{
+		if (!strcmp(cmd, u->name))
+		{
+			u->func(cl);
 			bProcessed = qtrue;
+			
 			break;
 		}
 	}
 
 #ifdef DEDICATED
-	if (!Q_stricmpn(Cmd_Argv(0), "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
-		Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
-		if (sv_antiDST->integer) {
-			//SV_DropClient(cl, "was dropped by TnG!");
-			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
-			cl->lastPacketTime = svs.time;
+    if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
+        Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+        if (sv_antiDST->integer) {
+            //SV_DropClient(cl, "was dropped by TnG!");
+            SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+            cl->lastPacketTime = svs.time;
+        }
+    }
+#endif
+
+	// Fix: buffer overflow
+	if (!Q_stricmpn(cmd, "say", 3) || !Q_stricmpn(cmd, "say_team", 8) || !Q_stricmpn(cmd, "tell", 4))
+	{
+		sayCmd = qtrue;
+
+		// 256 because we don't need more, the chat can handle 150 max char
+		// and allowing 256 prevent a message to not be sent instead of being truncated
+		// if this is a bit more than 150
+		if (sv_legacyFixes->integer && strlen(Cmd_Args()) > 256)
+		{
+			clientOK = qfalse;
 		}
 	}
-#endif
+
+	// Fix: gc crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
+	{
+		clientOK = qfalse;
+	}
+
+	// Fix: npc spawn crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && !Q_stricmpn(arg2, "ragnos", 6))
+	{
+		clientOK = qfalse;
+	}
+
+	// Fix: team crash
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "team", 4) && (!Q_stricmpn(arg1, "follow1", 7) || !Q_stricmpn(arg1, "follow2", 7)))
+	{
+		clientOK = qfalse;
+	}
+
+	// Disable: callteamvote, useless in basejka and can lead to a bugged UI on custom client
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callteamvote", 12))
+	{
+		clientOK = qfalse;
+	}
+
+	// Fix: callvote fraglimit/timelimit with negative value
+	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callvote", 8) && (!Q_stricmpn(arg1, "fraglimit", 9) || !Q_stricmpn(arg1, "timelimit", 9)) && atoi(arg2) < 0)
+	{
+		clientOK = qfalse;
+	}
 
 	if (clientOK) {
 		// pass unknown strings to the game
@@ -1397,7 +1565,7 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			// strip \r \n and ;
 			if ( sv_filterCommands->integer ) {
 				Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, "\n\r", "  " );
-				if ( sv_filterCommands->integer == 2 ) {
+				if (sv_filterCommands->integer == 2 && !sayCmd) {
 					// also strip ';' for callvote
 					Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, ";", " " );
 				}
@@ -1405,8 +1573,9 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			GVM_ClientCommand( cl - svs.clients );
 		}
 	}
-	else if (!bProcessed) {
-		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, Cmd_Argv(0) );
+	else if (!bProcessed)
+	{
+		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, cmd);
 	}
 }
 
