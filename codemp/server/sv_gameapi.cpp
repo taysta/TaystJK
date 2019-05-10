@@ -3169,10 +3169,12 @@ void SV_BindGame( void ) {
 		}
 		ge = ret;
 
+		svs.gvmIsLegacy = qfalse;
 		return;
 	}
 
 	// fall back to legacy syscall/vm_call api
+	svs.gvmIsLegacy = qtrue;
 	gvm = VM_CreateLegacy( VM_GAME, SV_GameSystemCalls );
 	if ( !gvm ) {
 		svs.gameStarted = qfalse;
@@ -3180,13 +3182,20 @@ void SV_BindGame( void ) {
 	}
 }
 
-void SV_UnbindGame( void ) {
+void SV_UnbindGame( void )
+{
+	cvar_t *gamename = Cvar_Get("gamename", "", CVAR_SERVERINFO, "");
+
 	GVM_ShutdownGame( qfalse );
 	VM_Free( gvm );
 	gvm = NULL;
 
 	//reset gamename cvar here so that it stays up to date in-case we switch out mods or something.
-	Cvar_Unset(Cvar_Get("gamename", "", CVAR_SERVERINFO, ""));
+	if (gamename && gamename->string[0] && strlen(gamename->string)) {
+		Cvar_Unset(gamename);
+		gamename = NULL;
+	}
+	svs.gvmIsLegacy = qfalse;
 }
 
 void SV_RestartGame( void ) {

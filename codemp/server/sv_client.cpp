@@ -828,13 +828,13 @@ void SV_WriteDownloadToClient(client_t *cl, msg_t *msg)
 										"can connect to this pure server.\n", cl->downloadName);
 				} else {
 					Com_sprintf(errorMessage, sizeof(errorMessage), "Could not download \"%s\" because autodownloading is disabled on the server.\n\n"
-                    "The server you are connecting to is not a pure server, "
-                    "set autodownload to No in your settings and you might be "
-                    "able to join the game anyway.\n", cl->downloadName);
+					"The server you are connecting to is not a pure server, "
+					"set autodownload to No in your settings and you might be "
+					"able to join the game anyway.\n", cl->downloadName);
 				}
 			} else {
-        // NOTE TTimo this is NOT supposed to happen unless bug in our filesystem scheme?
-        //   if the pk3 is referenced, it must have been found somewhere in the filesystem
+				// NOTE TTimo this is NOT supposed to happen unless bug in our filesystem scheme?
+				//	if the pk3 is referenced, it must have been found somewhere in the filesystem
 				Com_Printf("clientDownload: %d : \"%s\" file not found on server\n", (int) (cl - svs.clients), cl->downloadName);
 				Com_sprintf(errorMessage, sizeof(errorMessage), "File \"%s\" not found on server for autodownloading.\n", cl->downloadName);
 			}
@@ -1140,81 +1140,79 @@ static void SV_ResetPureClient_f( client_t *cl ) {
 
 /*
 ===========
-ClientCleanName
+SV_ClientCleanName
 
 Gamecode to engine port (from OpenJK)
 ============
 */
-static void ClientCleanName(const char* in, char* out, int outSize)
+static void SV_ClientCleanName(const char* in, char* out, int outSize)
 {
-    int outpos = 0, colorlessLen = 0, spaces = 0, ats = 0;
+	int outpos = 0, colorlessLen = 0;
 
-    // discard leading spaces
-    for (; *in == ' '; in++);
+	// discard leading spaces
+	for (; *in == ' '; in++);
 
-    // discard leading asterisk's (fail raven for using * as a skipnotify)
-    // apparently .* causes the issue too so... derp
-    for(; *in == '*'; in++);
+	// discard leading asterisk's (fail raven for using * as a skipnotify)
+	// apparently .* causes the issue too so... derp
+	if (svs.servermod == SVMOD_BASEJKA)
+		for(; *in == '*'; in++);
 
-    for (; *in && outpos < outSize - 1; in++)
-    {
-        out[outpos] = *in;
+	for (; *in && outpos < outSize - 1; in++)
+	{
+		out[outpos] = *in;
 
-        if (*in == ' ')
-        {// don't allow too many consecutive spaces
-            if (spaces > 2)
-                continue;
+		if (*(in+1) && *(in+1) != '\0' && *(in+2) && *(in+2) != '\0')
+		{
+			if (*in == ' ' && *(in+1) == ' ' && *(in+2) == ' ') // don't allow more than 3 consecutive spaces
+				continue;
+		
+			if (*in == '@' && *(in+1) == '@' && *(in+2) == '@') // don't allow too many consecutive @ signs
+				continue;
+		}
+		
+		if ((byte)* in < 0x20)
+			continue;
 
-            spaces++;
-        }
-        else if (*in == '@')
-        {// don't allow too many consecutive at signs
-            if (++ats > 2) {
-                outpos -= 2;
-                ats = 0;
-                continue;
-            }
-        }
-        else if ((byte)* in < 0x20
-            || (byte)* in == 0x81 || (byte)* in == 0x8D || (byte)* in == 0x8F || (byte)* in == 0x90 || (byte)* in == 0x9D
-            || (byte)* in == 0xA0 || (byte)* in == 0xAD)
-        {
-            continue;
-        }
-        else if (outpos > 0 && out[outpos - 1] == Q_COLOR_ESCAPE)
-        {
-            if (Q_IsColorStringExt(&out[outpos - 1]))
-            {
-                colorlessLen--;
+		switch ((byte)* in)
+		{
+			default:
+				break;
+			case 0x81:
+			case 0x8D:
+			case 0x8F:
+			case 0x90:
+			case 0x9D:
+			case 0xA0:
+			case 0xAD:
+				continue;
+				break;
+		}
+		
+		if (outpos > 0 && out[outpos - 1] == Q_COLOR_ESCAPE)
+		{
+			if (Q_IsColorStringExt(&out[outpos - 1]))
+			{
+				colorlessLen--;
+			}
+			else
+			{
+				//spaces = ats = 0;
+				colorlessLen++;
+			}
+		}
+		else
+		{
+			//spaces = ats = 0;
+			colorlessLen++;
+		}
+		outpos++;
+	}
 
-#if 0
-                if (ColorIndex(*in) == 0)
-                {// Disallow color black in names to prevent players from getting advantage playing in front of black backgrounds
-                    outpos--;
-                    continue;
-                }
-#endif
-            }
-            else
-            {
-                spaces = ats = 0;
-                colorlessLen++;
-            }
-        }
-        else
-        {
-            spaces = ats = 0;
-            colorlessLen++;
-        }
+	out[outpos] = '\0';
 
-        outpos++;
-    }
-
-    out[outpos] = '\0';
-
-    // don't allow empty names
-    if (*out == '\0' || colorlessLen == 0)
-        Q_strncpyz(out, "Padawan", outSize);
+	// don't allow empty names
+	if (*out == '\0' || colorlessLen == 0)
+		Q_strncpyz(out, "Padawan", outSize);
 }
 
 /*
@@ -1229,13 +1227,14 @@ void SV_UserinfoChanged( client_t *cl ) {
 	char	*val=NULL, *ip=NULL;
 	int		i=0, len=0;
 	
-	if (sv_legacyFixes->integer)
+	if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_PLAYER_NAMES) &&
+		svs.servermod != SVMOD_JAPLUS && svs.servermod != SVMOD_MBII && svs.servermod != SVMOD_JAPRO)
 	{
 		char	cleanName[64];
 		
 		val = Info_ValueForKey(cl->userinfo, "name");
 
-		ClientCleanName(val, cleanName, sizeof(cleanName));
+		SV_ClientCleanName(val, cleanName, sizeof(cleanName));
 		Info_SetValueForKey(cl->userinfo, "name", cleanName);
 		Q_strncpyz(cl->name, cleanName, sizeof(cl->name));
 	}
@@ -1320,26 +1319,33 @@ void SV_UserinfoChanged( client_t *cl ) {
 		Info_SetValueForKey( cl->userinfo, "ip", ip );
 
 	val = Info_ValueForKey(cl->userinfo, "model");
-
 #ifdef DEDICATED
-	if (val && !Q_stricmpn(val, "darksidetools", 13) && cl->netchan.remoteAddress.type != NA_LOOPBACK) {
-		Com_Printf("%sDetected DST injection from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
-		if (sv_antiDST->integer) {
-			//SV_DropClient(cl, "was dropped by TnG!");
-			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
-			cl->lastPacketTime = svs.time;
-		}
-	}
-
-	cl->disableDuelCull = qfalse;
-	if (svs.servermod == SVMOD_JAPLUS) { //allow JA+ clients to configure duel isolation on JA+ servers using /pluginDisable
-		val = Info_ValueForKey(cl->userinfo, "cjp_client");
-		if (val && strlen(val) >= 3)
-		{ //make sure they have some version of the plugin
-			val = Info_ValueForKey(cl->userinfo, "cp_pluginDisable");
-			if (atoi(val) & (1<<1)) { //JAPRO_PLUGIN_DUELSEEOTHERS
-				cl->disableDuelCull = qtrue;
+	if (val)
+	{
+		if (!Q_stricmpn(val, "darksidetools", 13) && cl->netchan.remoteAddress.type != NA_LOOPBACK) {
+			Com_Printf("%sDetected DST injection from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+			if (sv_antiDST->integer) {
+				//SV_DropClient(cl, "was dropped by TnG!");
+				SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+				cl->lastPacketTime = svs.time;
 			}
+		}
+
+		// Fix: Don't allow bugged models
+		if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_BROKEN_MODELS) && svs.servermod != SVMOD_MBII)
+		{
+			len = (int)strlen(val);
+			qboolean badModel = qfalse;
+
+			if (!Q_stricmpn(val, "jedi_", len) && (!Q_stricmpn(val, "jedi_/red", len) || !Q_stricmpn(val, "jedi_/blue", len)))
+				badModel = qtrue;
+			else if (!Q_stricmpn(val, "rancor", 6))
+				badModel = qtrue;
+			else if (!Q_stricmpn(val, "wampa", 5))
+				badModel = qtrue;
+
+			if (badModel)
+				Info_SetValueForKey(cl->userinfo, "model", "kyle");
 		}
 	}
 #endif
@@ -1382,29 +1388,22 @@ void SV_UserinfoChanged( client_t *cl ) {
 			badForce = qtrue;
 		}
 
-		if (badForce) {
+		if (badForce)
 			Q_strncpyz(forcePowers, "7-1-030000000000003332", sizeof(forcePowers));
-		}
 
 		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
 	}
 
-  // Fix: Don't allow bugged models
-	if (sv_legacyFixes->integer)
-	{
-		len = (int)strlen(val);
-		
-		if (Q_stricmpn(val, "jedi_", len) == 0 || Q_stricmpn(val, "jedi_/red", len) == 0 || Q_stricmpn(val, "jedi_/blue", len) == 0)
-		{
-			Info_SetValueForKey(cl->userinfo, "model", "kyle");
-		}
-		else if (!Q_stricmpn(val, "rancor", 6))
-		{
-			Info_SetValueForKey(cl->userinfo, "model", "kyle");
-		}
-		else if (!Q_stricmpn(val, "wampa", 5))
-		{
-			Info_SetValueForKey(cl->userinfo, "model", "kyle");
+#ifdef DEDICATED
+	cl->disableDuelCull = qfalse;
+	if (svs.servermod == SVMOD_JAPLUS) { //allow JA+ clients to configure duel isolation on JA+ servers using /pluginDisable
+		val = Info_ValueForKey(cl->userinfo, "cjp_client");
+		if (val && strlen(val) >= 3)
+		{ //make sure they have some version of the plugin
+			val = Info_ValueForKey(cl->userinfo, "cp_pluginDisable");
+			if (atoi(val) & (1 << 1)) { //JAPRO_PLUGIN_DUELSEEOTHERS
+				cl->disableDuelCull = qtrue;
+			}
 		}
 	}
 #endif
@@ -1505,17 +1504,16 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 	}
 
 #ifdef DEDICATED
-    if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
-        Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
-        if (sv_antiDST->integer) {
-            //SV_DropClient(cl, "was dropped by TnG!");
-            SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
-            cl->lastPacketTime = svs.time;
-        }
-    }
+	if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
+		Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+		if (sv_antiDST->integer) {
+			//SV_DropClient(cl, "was dropped by TnG!");
+			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+			cl->lastPacketTime = svs.time;
+		}
+	}
 #endif
 
-	// Fix: buffer overflow
 	if (!Q_stricmpn(cmd, "say", 3) || !Q_stricmpn(cmd, "say_team", 8) || !Q_stricmpn(cmd, "tell", 4))
 	{
 		sayCmd = qtrue;
@@ -1523,40 +1521,33 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		// 256 because we don't need more, the chat can handle 150 max char
 		// and allowing 256 prevent a message to not be sent instead of being truncated
 		// if this is a bit more than 150
-		if (sv_legacyFixes->integer && strlen(Cmd_Args()) > 256)
+		if (svs.gvmIsLegacy && sv_legacyFixes->integer && strlen(Cmd_Args()) > 256)
 		{
 			clientOK = qfalse;
 		}
 	}
 
-	// Fix: gc crash
-	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
+	if (sv_legacyFixes->integer && svs.servermod != SVMOD_MBII)
 	{
-		clientOK = qfalse;
-	}
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_GC_CRASHFIX) && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
+			clientOK = qfalse;
 
-	// Fix: npc spawn crash
-	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && !Q_stricmpn(arg2, "ragnos", 6))
-	{
-		clientOK = qfalse;
-	}
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_NPC_CRASHFIX) && svs.servermod != SVMOD_JAPRO
+			&& !Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && !Q_stricmpn(arg2, "ragnos", 6))
+			clientOK = qfalse;
 
-	// Fix: team crash
-	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "team", 4) && (!Q_stricmpn(arg1, "follow1", 7) || !Q_stricmpn(arg1, "follow2", 7)))
-	{
-		clientOK = qfalse;
-	}
+		// Fix: team crash
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_TEAM_CRASHFIX)
+			&& !Q_stricmpn(cmd, "team", 4) && (!Q_stricmpn(arg1, "follow1", 7) || !Q_stricmpn(arg1, "follow2", 7)))
+			clientOK = qfalse;
 
-	// Disable: callteamvote, useless in basejka and can lead to a bugged UI on custom client
-	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callteamvote", 12))
-	{
-		clientOK = qfalse;
-	}
+		// Disable: callteamvote, useless in basejka and can lead to a bugged UI on custom client
+		if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_CALLTEAMVOTE) && svs.servermod == SVMOD_BASEJKA && !Q_stricmpn(cmd, "callteamvote", 12))
+			clientOK = qfalse;
 
-	// Fix: callvote fraglimit/timelimit with negative value
-	if (sv_legacyFixes->integer && !Q_stricmpn(cmd, "callvote", 8) && (!Q_stricmpn(arg1, "fraglimit", 9) || !Q_stricmpn(arg1, "timelimit", 9)) && atoi(arg2) < 0)
-	{
-		clientOK = qfalse;
+		// Fix: callvote fraglimit/timelimit with negative value
+		if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_NEGATIVE_CALLVOTES) && svs.servermod == SVMOD_BASEJKA && !Q_stricmpn(cmd, "callvote", 8) && (!Q_stricmpn(arg1, "fraglimit", 9) || !Q_stricmpn(arg1, "timelimit", 9)) && atoi(arg2) < 0)
+			clientOK = qfalse;
 	}
 
 	if (clientOK) {

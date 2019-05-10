@@ -237,6 +237,7 @@ typedef struct serverStatic_s {
 	} hibernation;
 
 	servermod_t	servermod;
+	qboolean	gvmIsLegacy;
 } serverStatic_t;
 
 #define SERVER_MAXBANS	1024
@@ -318,6 +319,13 @@ extern	int serverBansCount;
 #define SVFIXES_ALLOW_INVALID_FORCEPOWERS		(1<<3)
 #define SVFIXES_ALLOW_GHOSTED_PLAYERS			(1<<4) //skinglitch
 #define SVFIXES_DISABLE_MOVEMENT_EVENT_CHECKS	(1<<5) //backwards staff dfa exploit
+#define SVFIXES_ALLOW_INVALID_PLAYER_NAMES		(1<<6)
+#define SVFIXES_ALLOW_BROKEN_MODELS				(1<<7) //rancor/wampa skins
+#define SVFIXES_DISABLE_NPC_CRASHFIX			(1<<8) //npc spawn ragnos
+#define SVFIXES_DISABLE_TEAM_CRASHFIX			(1<<9)
+#define SVFIXES_DISABLE_GC_CRASHFIX				(1<<10)
+#define SVFIXES_ALLOW_CALLTEAMVOTE				(1<<11)
+#define SVFIXES_ALLOW_NEGATIVE_CALLVOTES		(1<<12) //negative fraglimit/timelimit callvotes
 
 //
 // sv_main.c
