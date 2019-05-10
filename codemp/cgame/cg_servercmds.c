@@ -58,7 +58,7 @@ static void CG_ParseScores( void ) {
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i=0; i<readScores; i++ ) {
 //JAPRO - Clientside - Scoreboard Deaths - Start
-		if ((cgs.isJAPlus && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.isJAPro) {
+		if ((cgs.serverMod == SVMOD_JAPLUS && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.serverMod == SVMOD_JAPRO) {
 			scoreOffset = 15;
 			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
 		}
@@ -136,6 +136,7 @@ and whenever the server updates any serverinfo flagged cvars
 */
 void CG_ParseServerinfo( void ) {
 	const char *info = NULL;
+	const char *gamename = NULL;
 	char *mapname;
 	int i, value;
 	char restrictString[16] = { 0 };
@@ -198,51 +199,50 @@ void CG_ParseServerinfo( void ) {
 	*/
 
 	cgs.maxclients = Com_Clampi( 0, MAX_CLIENTS, atoi( Info_ValueForKey( info, "sv_maxclients" ) ) );
-
-	trap->Cvar_Set("ui_version", Info_ValueForKey(info, "version"));
-
+	trap->Cvar_Set("ui_version", Info_ValueForKey(info, "version")); //used by UI in the in-game "about" menu
 	cgs.svfps = atoi( Info_ValueForKey( info, "sv_fps" ) );
-	cgs.isJAPlus = qfalse;
-	cgs.isJAPro = qfalse;
-	cgs.isOJKAlt = qfalse;
-	cgs.isBaseEnhanced = qfalse;
-	cgs.isBase = qfalse;
+	cgs.serverMod = SVMOD_BASEJKA;
 	cgs.legacyProtocol = qfalse;
 	cgs.cinfo = 0;
 	cgs.jcinfo = 0;
 	cgs.restricts = 0;
-	if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "JA+", 3)
-	|| !Q_stricmpn(Info_ValueForKey(info, "gamename"), "^4U^3A^5Galaxy", 14)
-	|| !Q_stricmpn(Info_ValueForKey(info, "gamename"), "AbyssMod", 8)) {	//uag :s - yes its fatz
-		cgs.isJAPlus = qtrue;
-		cgs.cinfo = atoi (Info_ValueForKey (info, "jp_cinfo" ));//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
-		cgs.hookpull = 800;
-	} 
-	else if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "japro", 5)) {
-		cgs.isJAPro = qtrue;
-		cgs.jcinfo = atoi (Info_ValueForKey (info, "jcinfo" ));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
-		cgs.hookpull = atoi (Info_ValueForKey (info, "g_hookStrength" ));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
-		trap->Cvar_Set("cjp_client", "1.4JAPRO");
-		//if (cgs.hookpull == 0)
-			//cgs.hookpull = 800;
-	}
-	else if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "smU", 3))
-	{
-		cgs.isOJKAlt = qtrue;
-	}
-	else if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "base_enhanced", 13)
-	|| (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "base_entranced", 14))) {
-		cgs.isBaseEnhanced = qtrue;
-	}
-	else if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "basejka", 7))
-	{
-		cgs.isBase = qtrue;
+
+	gamename = Info_ValueForKey(info, "gamename");
+	if (gamename) {
+		if (!Q_stricmpn(gamename, "JA+", 3)
+			|| !Q_stricmpn(gamename, "^4U^3A^5Galaxy", 14)
+			|| !Q_stricmpn(gamename, "AbyssMod", 8)) {	//uag :s - yes its fatz
+			cgs.serverMod = SVMOD_JAPLUS;
+			cgs.cinfo = atoi(Info_ValueForKey(info, "jp_cinfo"));//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
+			cgs.hookpull = 800;
+		}
+		else if (!Q_stricmpn(gamename, "japro", 5)) {
+			cgs.serverMod = SVMOD_JAPRO;
+			cgs.cinfo = atoi(Info_ValueForKey(info, "jcinfo"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+			cgs.jcinfo = cgs.cinfo;
+			cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+			trap->Cvar_Set("cjp_client", "1.4JAPRO");
+			//if (cgs.hookpull == 0)
+				//cgs.hookpull = 800;
+		}
+		else if (!Q_stricmpn(gamename, "smU", 3))
+		{
+			cgs.serverMod = SVMOD_OJKALT;
+		}
+		else if (!Q_stricmpn(gamename, "base_enhanced", 13)
+			|| (!Q_stricmpn(gamename, "base_entranced", 14))) {
+			cgs.serverMod = SVMOD_BASEENHANCED;
+		}
+		else if (!Q_stricmpn(gamename, "basejk", 6))
+		{
+			cgs.serverMod = SVMOD_BASEJKA;
+		}
 	}
 
 	//multiversion "support"
 	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
 		cgs.legacyProtocol = qtrue; //v1.00
-		cgs.isBase = qtrue;
+		cgs.serverMod = SVMOD_BASEJKA;
 	}
 		
 

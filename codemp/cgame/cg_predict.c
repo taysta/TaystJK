@@ -264,7 +264,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 
 		//JAPRO - Clientside - Duel Passthru Prediction - Start 
-		if (cgs.isJAPlus || cgs.isJAPro)
+		if (cgs.serverMod >= SVMOD_JAPLUS)
 		{
 			if (cg.predictedPlayerState.duelInProgress)
 			{ // we are in a private duel 
@@ -278,7 +278,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			{ // we are not in a private duel, and this player is dueling don't clip 
 				continue;
 			}
-			else if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
 				if (ent->eType == ET_MOVER) { //TR_SINCE since func_bobbings are still solid, sad hack 
 					if ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE) {//If its moving? //how to get classname clientside? 
 						continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside 
@@ -293,7 +293,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 
 		//JAPRO - Clientside - Nonsolid doors for racemode people 
 		/*
-		if (cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
 		if (ent->eType == ET_MOVER) {
 		if (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta) && ent->pos.trType != TR_SINE) //If its moving? //how to get classname clientside?
 		continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside

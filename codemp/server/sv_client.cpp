@@ -1342,8 +1342,9 @@ void SV_UserinfoChanged( client_t *cl ) {
 			}
 		}
 	}
+#endif
 
-	if (sv_legacyFixes->integer)
+	if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_FORCEPOWERS))
 	{
 		char forcePowers[30];
 		Q_strncpyz(forcePowers, Info_ValueForKey(cl->userinfo, "forcepowers"), sizeof(forcePowers));
@@ -1387,9 +1388,8 @@ void SV_UserinfoChanged( client_t *cl ) {
 
 		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
 	}
-#endif
 
-	// Fix: Don't allow bugged models
+  // Fix: Don't allow bugged models
 	if (sv_legacyFixes->integer)
 	{
 		len = (int)strlen(val);
@@ -1407,6 +1407,7 @@ void SV_UserinfoChanged( client_t *cl ) {
 			Info_SetValueForKey(cl->userinfo, "model", "kyle");
 		}
 	}
+#endif
 }
 
 #define INFO_CHANGE_MIN_INTERVAL	6000 //6 seconds is reasonable I suppose
@@ -1760,14 +1761,17 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 	for ( i = 0 ; i < cmdCount ; i++ ) {
 		cmd = &cmds[i];
 		MSG_ReadDeltaUsercmdKey( msg, key, oldcmd, cmd );
-		if ( sv_legacyFixes->integer ) {
-			// block "charge jump" and other nonsense
-			if ( cmd->forcesel == FP_LEVITATION || cmd->forcesel >= NUM_FORCE_POWERS ) {
+		if ( sv_legacyFixes->integer )
+		{
+			if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_FORCESEL) && (cmd->forcesel == FP_LEVITATION || cmd->forcesel >= NUM_FORCE_POWERS))
+			{ // block "charge jump" and other nonsense
 				cmd->forcesel = 0xFFu;
 			}
 
-			// affects speed calculation
-			cmd->angles[ROLL] = 0;
+			if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_VIEWANGLES))
+			{ // affects speed calculation
+				cmd->angles[ROLL] = 0;
+			}
 		}
 		oldcmd = cmd;
 	}

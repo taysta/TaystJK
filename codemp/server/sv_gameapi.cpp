@@ -2800,17 +2800,15 @@ void SV_InitGame( qboolean restart ) {
 
 	GVM_InitGame( sv.time, Com_Milliseconds(), restart );
 
-#ifdef DEDICATED
 	svs.servermod = SVMOD_UNKNOWN;
 	if (sv_legacyFixes->integer)
 	{
 		char *version = Cvar_VariableString("version");
 		char *gamename = Cvar_VariableString("gamename");
-		int len = 0;
 
 		if (!gamename || !strlen(gamename)) {
 			svs.servermod = SVMOD_UNKNOWN;
-			Com_DPrintf("%sFailed to detect loaded mod!\n", S_COLOR_YELLOW);
+			Com_DPrintf("%sFailed to detect loaded mod!\n", S_COLOR_RED);
 			return;
 		}
 		Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
@@ -2838,9 +2836,8 @@ void SV_InitGame( qboolean restart ) {
 			return;
 		}
 
-		Com_DPrintf("%sUnsupported mod detecetd %s\n", S_COLOR_YELLOW, gamename);
+		Com_DPrintf("%sUnsupported mod detected %s\n", S_COLOR_YELLOW, gamename);
 	}
-#endif
 }
 
 void SV_BindGame( void ) {
@@ -3187,6 +3184,9 @@ void SV_UnbindGame( void ) {
 	GVM_ShutdownGame( qfalse );
 	VM_Free( gvm );
 	gvm = NULL;
+
+	//reset gamename cvar here so that it stays up to date in-case we switch out mods or something.
+	Cvar_Unset(Cvar_Get("gamename", "", CVAR_SERVERINFO, ""));
 }
 
 void SV_RestartGame( void ) {

@@ -201,22 +201,19 @@ void CG_DrawInformation( void ) {
 			y += iPropHeight;
 		}
 
-		if (!cgs.isJAPro) {//server mod
-			CG_DrawProportionalString( (SCREEN_WIDTH / 2), y, Info_ValueForKey(info, "gamename"), UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite);
+		s = Info_ValueForKey(info, "gamename");
+		if (s && cgs.serverMod != SVMOD_JAPRO) {//server mod
+			CG_DrawProportionalString( (SCREEN_WIDTH / 2), y, s, UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite);
 			y += iPropHeight;
 		}
 
 		{	// display global MOTD at bottom (mirrors ui_main UI_DrawConnectScreen
 			char motdString[1024];
 			trap->Cvar_VariableStringBuffer( "cl_motdString", motdString, sizeof( motdString ) );
-
 			if (cgs.legacyProtocol)
 				Com_sprintf(motdString, sizeof(motdString), "1.01 update for Jedi Academy is now available online. Please update your game.");
-
-			if (motdString[0])
-			{
+			else if (motdString && motdString[0] && strlen(motdString))
 				CG_DrawProportionalString( (SCREEN_WIDTH / 2), (SCREEN_HEIGHT - 55), motdString, UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite);
-			}
 		}
 
 		// some extra space after hostname and motd

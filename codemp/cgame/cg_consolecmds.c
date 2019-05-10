@@ -501,12 +501,12 @@ static void CG_ShowSpecCamera_f(void)
 //JAPRO - Clientside - Serversettings? - Start
 static void CG_ServerConfig_f(void) // this should be serverside for JAPRO.  Clientside for JAPLUS etc?
 {
-	if (cgs.isJAPro) {
+	if (cgs.serverMod == SVMOD_JAPRO) {
 		trap->SendClientCommand( "serverconfig" );
 	}
 	else {
 		//(sv_fps.integer > 0) ? CG_Printf("^5sv_fps^3: ^7%i\n", sv_fps.integer) : CG_Printf("^5sv_fps^3: ^7?\n"); 
-		if (cgs.isJAPlus) {
+		if (cgs.serverMod == SVMOD_JAPLUS) {
 			trap->Print("^5Flipkick^3:^7 %s\n", (cgs.cinfo & JAPLUS_CINFO_FLIPKICK) ? "^2Yes" : "^1No");
 			trap->Print("^5JK2 roll^3:^7 %s\n", (cgs.cinfo & JAPLUS_CINFO_FIXROLL3) ? "^2Yes" : "^1No");
 			trap->Print("^5Improve yellow DFA^3:^7 %s\n", (cgs.cinfo & JAPLUS_CINFO_YELLOWDFA) ? "^2Yes" : "^1No");
@@ -534,9 +534,9 @@ static void CG_Login_f(void)
 {
 	char username[MAX_QPATH], password[MAX_QPATH];
 
-	if (cgs.isJAPlus || cgs.isBase) //Block this on mods that dont have /login to help avoid leaking
+	if (cgs.serverMod == SVMOD_JAPLUS || cgs.serverMod == SVMOD_BASEJKA) //Block this on mods that dont have /login to help avoid leaking
 		return;
-	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION && !(cgs.isJAPro || cgs.isBaseEnhanced || cgs.isOJKAlt))
+	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION && cgs.serverMod != SVMOD_JAPRO && cgs.serverMod != SVMOD_BASEENHANCED && cgs.serverMod != SVMOD_OJKALT)
 		return;
 
 	trap->Cmd_Argv(1, username, sizeof(username));
@@ -548,7 +548,7 @@ static void CG_ModVersion_f(void)
 {
 	trap->Print("^5Your client version of the mod was compiled on %s at %s\n", __DATE__, __TIME__);//ass
 	trap->SendConsoleCommand("ui_modversion\n");
-	if (cgs.isJAPro) {
+	if (cgs.serverMod == SVMOD_JAPRO) {
 		trap->SendClientCommand( "modversion" );
 		trap->Cvar_Set("cjp_client", "1.4JAPRO"); //Do this manually here i guess, just incase it does not do it when game is created due to ja+ or something
 	}
@@ -622,6 +622,22 @@ static void CG_FollowFastest_f(void) {
 	}
 	if (fastestPlayer >= 0)
 		trap->SendClientCommand(va("follow %i", fastestPlayer));
+}
+
+static void CG_Follow_f(void) {
+		int clientNum = -1;
+		
+		if (trap->Cmd_Argc() < 2) {
+			Com_Printf("usage /follow <name>\n");
+			return;
+		}
+		
+		 clientNum = CG_ClientNumberFromString(CG_Argv(1));
+		 
+		 if (clientNum < 0)
+			 return;
+		 
+		 trap->SendClientCommand(va("follow %i", clientNum));
 }
 
 static void CG_RemapShader_f(void) {
@@ -771,10 +787,10 @@ void CG_Do_f(void) //loda fixme
 
 static void CG_Saber_f(void) // this should be serverside for JAPRO.  Clientside for JAPLUS etc?
 {
-	char saber1[MAX_QPATH], saber2[MAX_QPATH];
+	char saber1[MAX_QPATH] = {0}, saber2[MAX_QPATH] = {0};
 	if (trap->Cmd_Argc() == 2) {
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
-		if (cgs.isJAPlus || cgs.isJAPro)
+		if (cgs.serverMod >= SVMOD_JAPLUS)
 			trap->SendClientCommand(va("saber %s", saber1));
 		trap->Cvar_Set("saber1", va("%s", saber1));
 		trap->Cvar_Set("saber2", "none");
@@ -782,7 +798,7 @@ static void CG_Saber_f(void) // this should be serverside for JAPRO.  Clientside
 	else if (trap->Cmd_Argc() == 3) {
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
 		trap->Cmd_Argv( 2, saber2, sizeof( saber2 ) );
-		if (cgs.isJAPlus || cgs.isJAPro)
+		if (cgs.serverMod >= SVMOD_JAPLUS)
 			trap->SendClientCommand(va("saber %s %s", saber1, saber2));
 		trap->Cvar_Set("saber1", va("%s", saber1));
 		trap->Cvar_Set("saber2", va("%s", saber2));
@@ -793,7 +809,7 @@ static void CG_Autologin_f(void)
 {
 	char currentAddress[MAX_ADDRESSLENGTH], autoLoginString[MAX_ADDRESSLENGTH];
 
-	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION && cgs.isJAPlus)
+	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION && cgs.serverMod == SVMOD_JAPLUS)
 		return;
 
 	Q_strncpyz( currentAddress, cl_currentServerAddress.string, sizeof(currentAddress));
@@ -903,7 +919,7 @@ static void CG_Flipkick_f(void)
 
 static void CG_Lowjump_f(void)
 {
-	if ((cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
+	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+moveup;wait 2;-moveup\n");
 		return;
 	}
@@ -915,7 +931,7 @@ static void CG_Lowjump_f(void)
 
 static void CG_NorollDown_f(void)
 {
-	if ((cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
+	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+speed;wait 2;-moveup;+movedown;-speed\n");
 		return;
 	}
@@ -927,7 +943,7 @@ static void CG_NorollDown_f(void)
 
 static void CG_NorollUp_f(void)
 {
-	if ((cgs.isJAPro && cg.predictedPlayerState.stats[STAT_RACEMODE]) || cgs.restricts & RESTRICT_DO) {
+	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || cgs.restricts & RESTRICT_DO) {
 		trap->SendConsoleCommand("-movedown\n");
 		return;
 	}
@@ -941,7 +957,7 @@ static void CG_GrappleDown_f(void) {
 }
 
 static void CG_GrappleUp_f(void) {
-	if (cgs.isJAPlus) {
+	if (cgs.serverMod == SVMOD_JAPLUS) {
 		trap->SendConsoleCommand("-button12;+use\n");
 		Q_strncpyz(cg.doVstr, "-use\n", sizeof(cg.doVstr));
 		cg.doVstrTime = cg.time;
@@ -1164,7 +1180,7 @@ static const int MAX_PLUGINDISABLES = ARRAY_LEN( pluginDisables );
 
 void CG_PluginDisable_f( void ) {
 
-	if (!cgs.isJAPro && !cgs.isJAPlus) {
+	if (cgs.serverMod < SVMOD_JAPLUS) {
 		return;
 	}
 
@@ -1173,9 +1189,9 @@ void CG_PluginDisable_f( void ) {
 
 		for ( i = 0; i < MAX_PLUGINDISABLES; i++ ) {
 
-			if (cgs.isJAPlus && !japlusPluginDisables[i])
+			if (cgs.serverMod == SVMOD_JAPLUS && !japlusPluginDisables[i])
 				continue;
-			if (cgs.isJAPro && !japroPluginDisables[i])
+			if (cgs.serverMod == SVMOD_JAPRO && !japroPluginDisables[i])
 				continue;
 
 			if ( (cp_pluginDisable.integer & (1 << i)) ) {
@@ -1203,7 +1219,7 @@ void CG_PluginDisable_f( void ) {
 			//for each qtrue, increment I
 			//once I = #, thats the actual index we want
 
-			if ((cgs.isJAPlus && japlusPluginDisables[i]) || (cgs.isJAPro && japroPluginDisables[i])) {
+			if ((cgs.serverMod == SVMOD_JAPLUS && japlusPluginDisables[i]) || (cgs.serverMod == SVMOD_JAPRO && japroPluginDisables[i])) {
 				//Com_Printf("Option found %i, %s, n is %i, index is %i\n", i, pluginDisables[i], n, index);
 				if (n == index) {
 					index2 = i;
@@ -1303,9 +1319,9 @@ void CG_StylePlayer_f(void)
 
 		for (i = 0; i < MAX_PLAYERSTYLES; i++) {
 
-			if (cgs.isJAPlus && !japlusPlayerStyles[i])
+			if (cgs.serverMod == SVMOD_JAPLUS && !japlusPlayerStyles[i])
 				continue;
-			if (cgs.isJAPro && !japroPlayerStyles[i])
+			if (cgs.serverMod == SVMOD_JAPRO && !japroPlayerStyles[i])
 				continue;
 
 			if ((cg_stylePlayer.integer & (1 << i))) {
@@ -1333,7 +1349,7 @@ void CG_StylePlayer_f(void)
 			//for each qtrue, increment I
 			//once I = #, thats the actual index we want
 
-			if ((cgs.isJAPlus && japlusPlayerStyles[i]) || (cgs.isJAPro && japroPlayerStyles[i])) {
+			if ((cgs.serverMod == SVMOD_JAPLUS && japlusPlayerStyles[i]) || (cgs.serverMod == SVMOD_JAPRO && japroPlayerStyles[i])) {
 				//Com_Printf("Option found %i, %s, n is %i, index is %i\n", i, pluginDisables[i], n, index);
 				if (n == index) {
 					index2 = i;
@@ -1447,7 +1463,7 @@ static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
 static void CG_Cosmetics_f(void)
 {
-	if (cgs.isJAPlus || cgs.isBase)
+	if (cgs.serverMod != SVMOD_JAPRO)
 		return;
 
 	if (trap->Cmd_Argc() == 1) {
@@ -1540,7 +1556,7 @@ static void CG_AmRun_f(void)
 {
 	const uint32_t mask = (1 << MAX_PLUGINDISABLES) - 1;
 
-	if (!cgs.isJAPro)
+	if (cgs.serverMod != SVMOD_JAPRO)
 		return;
 
 	trap->Cvar_Set( "cp_pluginDisable", va( "%i", (JAPRO_PLUGIN_JAWARUN) ^ (cp_pluginDisable.integer & mask ) ) );
@@ -2048,6 +2064,7 @@ static consoleCommand_t	commands[] = {
 	{ "say",						CG_Say_f },
 	{ "say_team",					CG_Say_f },
 	{ "tell",						CG_Say_f },
+	{ "follow",						CG_Follow_f },
 
 	{ "saber",						CG_Saber_f },
 	{ "saberColor",					CG_Sabercolor_f },

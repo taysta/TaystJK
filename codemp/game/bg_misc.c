@@ -2075,7 +2075,7 @@ qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTim
 #if defined(QAGAME)
 		&& g_fixFlagHitbox.integer
 #elif defined(CGAME)
-		&& cgs.isJAPro
+		&& cgs.serverMod == SVMOD_JAPRO
 #endif
 		) {//Flag hitbox
 			if (ps->origin[0] - origin[0] > 52

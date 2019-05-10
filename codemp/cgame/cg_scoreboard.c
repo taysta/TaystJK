@@ -185,7 +185,7 @@ static void CG_DrawClientScore( int y, score_t *score, float *color, float fade,
 			else
 			{
 //JAPRO - Clientside - Scoreboard Deaths - Start
-				if (cg_scoreDeaths.integer && ((cgs.isJAPlus && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.isJAPro) && (cgs.gametype != GT_CTF && cgs.gametype != GT_DUEL))
+				if (cg_scoreDeaths.integer && ((cgs.serverMod == SVMOD_JAPLUS && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.serverMod == SVMOD_JAPRO) && (cgs.gametype != GT_CTF && cgs.gametype != GT_DUEL))
 					CG_Text_Paint(SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i/%i", score->score, score->deaths), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
 				else
 					CG_Text_Paint(SB_SCORE_X, y, 1.0f * scale, colorWhite, va("%i", score->score), 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL);
@@ -628,7 +628,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 		}
 		maxClients = realMaxClients;
 
-		if (cgs.isJAPro && (cgs.gametype == GT_TEAM || cgs.gametype == GT_CTF)) { 	//how do we tell if server has racemode set. meme..
+		if (cgs.serverMod == SVMOD_JAPRO && (cgs.gametype == GT_TEAM || cgs.gametype == GT_CTF)) { 	//how do we tell if server has racemode set. meme..
 			//Check if someone is in team free?
 			//Loop through each player, if they are in team free, break and set a flag
 			//if flag is set, do this stuff VVV

@@ -281,6 +281,15 @@ typedef enum //movementstyle enum
 	MV_NUMSTYLES,
 } movementStyle_e;
 
+typedef enum //server mod enum
+{
+	SVMOD_BASEJKA,
+	SVMOD_BASEENHANCED,
+	SVMOD_OJKALT,
+	SVMOD_JAPLUS,
+	SVMOD_JAPRO,
+} serverMod_t;
+
 typedef enum {
 	FOOTSTEP_STONEWALK,
 	FOOTSTEP_STONERUN,
@@ -945,7 +954,7 @@ typedef struct score_s {
 	int				assistCount;
 	int				captures;
 	int				deaths; //JAPRO - Scoreboard Deaths
-	qboolean	perfect;
+	qboolean		perfect;
 	int				team;
 } score_t;
 
@@ -2145,15 +2154,11 @@ typedef struct cgs_s {
 	int				flagStatus;
 
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - Start]
+	serverMod_t	serverMod;
+	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	int			cinfo;
 	int			jcinfo;
 	int			restricts;//make this a short?
-	qboolean	isJAPro;
-	qboolean	isJAPlus;
-	qboolean	isOJKAlt;
-	qboolean	isBaseEnhanced;
-	qboolean	isBase;
-	qboolean	legacyProtocol;
 	int			svfps;
 	qboolean	takenscreenshot;
 	int			hookpull;

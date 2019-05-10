@@ -202,16 +202,14 @@ typedef struct client_s {
 
 //=============================================================================
 
-#ifdef DEDICATED
 typedef enum {
 	SVMOD_UNKNOWN,
 	SVMOD_BASEJKA,
 	SVMOD_JAPLUS,
 	SVMOD_MBII,
+	SVMOD_OPENJK,
 	SVMOD_JAPRO,
-	SVMOD_OPENJK
 } servermod_t;
-#endif
 
 // this structure will be cleared only when the game dll changes
 typedef struct serverStatic_s {
@@ -238,9 +236,7 @@ typedef struct serverStatic_s {
 		int lastTimeDisconnected;
 	} hibernation;
 
-#ifdef DEDICATED
 	servermod_t	servermod;
-#endif
 } serverStatic_t;
 
 #define SERVER_MAXBANS	1024
@@ -315,6 +311,13 @@ extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;
 
 //===========================================================
+
+//Bitvalues for sv_legacyFixes to disable engine-side exploit fixes
+#define SVFIXES_ALLOW_INVALID_FORCESEL			(1<<1)
+#define SVFIXES_ALLOW_INVALID_VIEWANGLES		(1<<2)
+#define SVFIXES_ALLOW_INVALID_FORCEPOWERS		(1<<3)
+#define SVFIXES_ALLOW_GHOSTED_PLAYERS			(1<<4) //skinglitch
+#define SVFIXES_DISABLE_MOVEMENT_EVENT_CHECKS	(1<<5) //backwards staff dfa exploit
 
 //
 // sv_main.c

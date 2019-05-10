@@ -920,8 +920,8 @@ static void CG_General( centity_t *cent ) {
 	}
 
 	if (cent->currentState.eType == ET_BODY) {
-		if ((cg.predictedPlayerState.duelInProgress && ((cgs.isJAPlus && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.isJAPro || (!cgs.isJAPlus && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
-			|| (cgs.isJAPro && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
+		if ((cg.predictedPlayerState.duelInProgress && ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
+			|| (cgs.serverMod == SVMOD_JAPRO && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
 		{
 			return; //don't show bodies in duels or in racemode
 		}
@@ -1109,8 +1109,8 @@ static void CG_General( centity_t *cent ) {
 			return;
 		}
 
-		if (cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) {
-			// no bodies, so no limbs :^)
+		if (cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES)
+		{ // no bodies, so no limbs :^)
 			return;
 		}
 
@@ -1159,7 +1159,6 @@ static void CG_General( centity_t *cent ) {
 			}
 			else if (cent->currentState.modelGhoul2 == G2_MODELPART_WAIST)
 			{
-
 				if (clEnt->localAnimIndex <= 1)
 				{ //humanoid/rtrooper
 					rotateBone = "thoracic";
@@ -2774,7 +2773,7 @@ static void CG_Missile( centity_t *cent ) {
 
 	s1 = &cent->currentState;
 
-	if (cgs.isJAPlus && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
+	if (cgs.serverMod == SVMOD_JAPLUS && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
 	{
 		int			clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.predictedPlayerState.clientNum : cent->currentState.otherEntityNum;
 		vec3_t		rHandPos;
@@ -2798,8 +2797,8 @@ static void CG_Missile( centity_t *cent ) {
 		CG_TestLine(rHandPos, pos, 1, 6, 1);
 		return;
 	}
-	else if ((cgs.isJAPro && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
-		(cgs.isJAPlus && cent->currentState.weapon == WP_STUN_BATON))
+	else if ((cgs.serverMod == SVMOD_JAPRO && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
+		(cgs.serverMod == SVMOD_JAPLUS && cent->currentState.weapon == WP_STUN_BATON))
 	{
 		CG_GrappleTrail(cent);
 		return;
@@ -3496,7 +3495,7 @@ void CG_CalcEntityLerpPositions( centity_t *cent ) {
 		goAway = qtrue;
 	}
 //JAPRO - Clientside - Unlagged - Start
-	else if (cgs.isJAPro && cgs.jcinfo & JAPRO_CINFO_UNLAGGED)
+	else if (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_UNLAGGED)
 	{
 		// just use the current frame and evaluate as best we can
 		BG_EvaluateTrajectory( &cent->currentState.pos, cg.time + cent->currentState.eventParm, cent->lerpOrigin );
@@ -3525,7 +3524,7 @@ void CG_CalcEntityLerpPositions( centity_t *cent ) {
 
 void CG_CalcEntityLerpPositions( centity_t *cent ) {
 	// if this player does not want to see extrapolated players
-	//if ( /*!cg_smoothClients.integer ||*/ cgs.isJAPro)
+	//if ( /*!cg_smoothClients.integer ||*/ cgs.serverMod == SVMOD_JAPRO)
 	//{
 		// make sure the clients use TR_INTERPOLATE
 		if ( (cent->currentState.number != cg.clientNum && cent->currentState.number < MAX_CLIENTS) || cent->currentState.eType == ET_NPC ) {
@@ -3908,7 +3907,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 				//if we were to add the vehicle after the pilot, the pilot's bolt would lag a frame behind.
 				continue;
 			}
-			else if (cgs.isJAPro && !cg.demoPlayback && !cgs.localServer && cg.nextSnap /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
+			else if (cgs.serverMod == SVMOD_JAPRO && !cg.demoPlayback && !cgs.localServer && cg.nextSnap /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
 			{//loda
 				if (cent->nextState.eType == ET_MISSILE || cent->nextState.eType == ET_GENERAL)
 				{ // transition it immediately and add it
@@ -3921,7 +3920,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 	}
 
 	//im pretty sure this code is reudundant and slows everything down, but i'm keeping it just incase it's necessary for unlagged projectiles/hitscan
-	if (cgs.isJAPro && !cg.demoPlayback && !cgs.localServer /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && !cg.demoPlayback && !cgs.localServer /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
 	{// add each entity sent over by the server - loda
 		for ( num = 0 ; num < cg.snap->numEntities ; num++ ) {
 			cent = &cg_entities[ cg.snap->entities[ num ].number ];

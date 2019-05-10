@@ -3261,6 +3261,17 @@ void laserTrapStick( gentity_t *ent, vec3_t endpos, vec3_t normal )
 
 
 	G_Sound( ent, CHAN_WEAPON, G_SoundIndex( "sound/weapons/laser_trap/stick.wav" ) );
+
+	//shove the box through the wall
+	if (!g_fixExplosiveHitboxes.integer) {
+		VectorSet( ent->r.mins, -LT_SIZE*2, -LT_SIZE*2, -LT_SIZE*2 );
+		VectorSet( ent->r.maxs, LT_SIZE*2, LT_SIZE*2, LT_SIZE*2 );
+	}
+	else { //make it larger so it's easier to shoot it from the side
+		VectorSet( ent->r.mins, -LT_SIZE*3.5f, -LT_SIZE*3.5f, -LT_SIZE*3.5f );
+		VectorSet( ent->r.maxs, LT_SIZE*3.5f, LT_SIZE*3.5f, LT_SIZE*3.5f );
+	}
+
 	if ( ent->count )
 	{//a tripwire
 		//add draw line flag
@@ -3272,10 +3283,6 @@ void laserTrapStick( gentity_t *ent, vec3_t endpos, vec3_t normal )
 		ent->takedamage = qtrue;
 		ent->health = 5;
 		ent->die = laserTrapDelayedExplode;
-
-		//shove the box through the wall
-		VectorSet( ent->r.mins, -LT_SIZE*2, -LT_SIZE*2, -LT_SIZE*2 );
-		VectorSet( ent->r.maxs, LT_SIZE*2, LT_SIZE*2, LT_SIZE*2 );
 
 		//so that the owner can blow it up with projectiles
 		ent->r.svFlags |= SVF_OWNERNOTSHARED;
@@ -3294,10 +3301,6 @@ void laserTrapStick( gentity_t *ent, vec3_t endpos, vec3_t normal )
 		ent->takedamage = qtrue;
 		ent->health = 5;
 		ent->die = laserTrapDelayedExplode;
-
-		//shove the box through the wall
-		VectorSet( ent->r.mins, -LT_SIZE*2, -LT_SIZE*2, -LT_SIZE*2 );
-		VectorSet( ent->r.maxs, LT_SIZE*2, LT_SIZE*2, LT_SIZE*2 );
 
 		//so that the owner can blow it up with projectiles
 		ent->r.svFlags |= SVF_OWNERNOTSHARED;
@@ -3338,8 +3341,16 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->parent = owner;
 	laserTrap->activator = owner;
 	laserTrap->r.ownerNum = owner->s.number;
-	VectorSet( laserTrap->r.mins, -LT_SIZE, -LT_SIZE, -LT_SIZE );
-	VectorSet( laserTrap->r.maxs, LT_SIZE, LT_SIZE, LT_SIZE );
+	if (!g_fixExplosiveHitboxes.integer)
+	{
+		VectorSet( laserTrap->r.mins, -LT_SIZE, -LT_SIZE, -LT_SIZE );
+		VectorSet( laserTrap->r.maxs, LT_SIZE, LT_SIZE, LT_SIZE );
+	}
+	else if (g_fixExplosiveHitboxes.integer != 2)
+	{ //setting to 2 will have 0 mins/maxs when latching onto surfaces
+		VectorSet(laserTrap->r.mins, -LT_SIZE, -LT_SIZE, 0);
+		VectorSet(laserTrap->r.maxs, LT_SIZE, LT_SIZE, LT_SIZE * 2);
+	}
 	laserTrap->clipmask = MASK_SHOT;
 	laserTrap->s.solid = 2;
 	laserTrap->s.modelindex = G_ModelIndex( "models/weapons2/laser_trap/laser_trap_w.glm" );
@@ -3669,9 +3680,15 @@ void drop_charge (gentity_t *self, vec3_t start, vec3_t dir)
 	bolt->s.genericenemyindex = self->s.number+MAX_GENTITIES;
 	//rww - so client prediction knows we own this and won't hit it
 
-	VectorSet( bolt->r.mins, -2, -2, -2 );
-	VectorSet( bolt->r.maxs, 2, 2, 2 );
-	
+	if (!g_fixExplosiveHitboxes.integer) {
+		VectorSet( bolt->r.mins, -2, -2, -2 );
+		VectorSet( bolt->r.maxs, 2, 2, 2 );
+	}
+	else {
+		VectorSet( bolt->r.mins, -2, -2, 0 );
+		VectorSet( bolt->r.maxs, 2, 2, 4 );
+	}
+
 	bolt->pain = DetPackPain;
 	bolt->die = DetPackDie;
 
