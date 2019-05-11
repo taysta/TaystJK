@@ -226,6 +226,64 @@ static void CL_UpdateDiscordServerInfo(const char *info)
 }
 #endif
 
+static void CL_ParsePlayerInfo(int start, int end)
+{
+	int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
+	int i = start;
+
+	while (i < end)
+	{
+		char *s = cl.gameState.stringData + cl.gameState.stringOffsets[i];
+		int team = atoi(Info_ValueForKey(s, "t"));
+		char *bot = Info_ValueForKey(s, "skill");
+
+		switch (team)
+		{
+		default:
+		case 0:
+			break;
+		case 1:
+			redTeam++;
+			break;
+		case 2:
+			blueTeam++;
+			break;
+		case 3:
+			specTeam++;
+			break;
+		}
+
+		if (bot && bot[0])
+		{
+			botCount++;
+		}
+
+		if (s && s[0])
+		{
+			clientCount++;
+		}
+
+		i++;
+	}
+
+	gCLTotalClientNum = clientCount;
+
+#ifdef _DEBUG
+	Com_DPrintf("%i clients\n", gCLTotalClientNum);
+#endif
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	cl.discord.playerCount = clientCount;
+	cl.discord.redTeam = redTeam;
+	cl.discord.blueTeam = blueTeam;
+	cl.discord.specCount = specTeam;
+	cl.discord.botCount = botCount;
+#endif
+
+	if (cl_autolodscale && cl_autolodscale->integer)
+		CL_DoAutoLODScale();
+}
+
 /*
 =====================
 CL_ConfigstringModified
@@ -280,89 +338,10 @@ void CL_ConfigstringModified( void ) {
 		cl.gameState.dataCount += len + 1;
 	}
 
-#if defined(DISCORD) && !defined(_DEBUG)
-	if (cl_discordRichPresence->integer || (cl_autolodscale && cl_autolodscale->integer))
-#else
-	if (cl_autolodscale && cl_autolodscale->integer)
-#endif
-	{
-		if (index >= CS_PLAYERS &&
-			index < CS_G2BONES)
-		{ //this means that a client was updated in some way. Go through and count the clients.
-#if defined(DISCORD) && !defined(_DEBUG)
-			int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
-			i = CS_PLAYERS;
-
-			while (i < CS_G2BONES)
-			{
-				s = cl.gameState.stringData + cl.gameState.stringOffsets[ i ];
-				int team = atoi(Info_ValueForKey(s, "t"));
-				char *bot = Info_ValueForKey(s, "skill");
-
-				switch (team)
-				{
-					default:
-					case 0:
-						break;
-					case 1:
-						redTeam++;
-						break;
-					case 2:
-						blueTeam++;
-						break;
-					case 3:
-						specTeam++;
-						break;
-				}
-
-				if (bot && bot[0])
-				{
-					botCount++;
-				}
-
-				if (s && s[0])
-				{
-					clientCount++;
-				}
-
-				i++;
-			}
-
-			cl.discord.playerCount = clientCount;
-			cl.discord.redTeam = redTeam;
-			cl.discord.blueTeam = blueTeam;
-			cl.discord.specCount = specTeam;
-			cl.discord.botCount = botCount;
-#else
-			int clientCount = 0;
-			i = CS_PLAYERS;
-
-			while (i < CS_G2BONES)
-			{
-				s = cl.gameState.stringData + cl.gameState.stringOffsets[ i ];
-
-				if (s && s[0])
-				{
-					clientCount++;
-				}
-
-				i++;
-			}
-#endif
-
-			gCLTotalClientNum = clientCount;
-
-#ifdef _DEBUG
-			Com_DPrintf("%i clients\n", gCLTotalClientNum);
-#endif
-
-#if defined(DISCORD) && !defined(_DEBUG)
-			CL_DoAutoLODScale();
-#else
-			if (cl_autolodscale && cl_autolodscale->integer)
-				CL_DoAutoLODScale();
-#endif
-		}
+	if (index >= CS_PLAYERS &&
+		index < CS_G2BONES)
+	{ //this means that a client was updated in some way. Go through and count the clients.
+		CL_ParsePlayerInfo(CS_PLAYERS, CS_G2BONES);
 	}
 
 #if defined(DISCORD) && !defined(_DEBUG)

@@ -8,7 +8,6 @@ You need to link the static library also 'discord_rpc.lib'.
 #include <discord_register.h>
 
 #include "client/client.h"
-#include "client/cl_cgameapi.h"
 
 //Author: Blackwolf
 //This is my Application ID of the Discord Developer section, feel free to use it.
