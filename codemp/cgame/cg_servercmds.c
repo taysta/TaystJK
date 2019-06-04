@@ -202,9 +202,10 @@ void CG_ParseServerinfo( void ) {
 	trap->Cvar_Set("ui_version", Info_ValueForKey(info, "version")); //used by UI in the in-game "about" menu
 	cgs.svfps = atoi( Info_ValueForKey( info, "sv_fps" ) );
 	cgs.serverMod = SVMOD_BASEJKA;
-	cgs.legacyProtocol = qfalse;
 	cgs.cinfo = 0;
 	cgs.jcinfo = 0;
+	cgs.pluginSet = qfalse;
+	cgs.legacyProtocol = qfalse;
 	cgs.restricts = 0;
 
 	gamename = Info_ValueForKey(info, "gamename");
@@ -215,6 +216,8 @@ void CG_ParseServerinfo( void ) {
 			cgs.serverMod = SVMOD_JAPLUS;
 			cgs.cinfo = atoi(Info_ValueForKey(info, "jp_cinfo"));//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
 			cgs.hookpull = 800;
+			if (!Q_stricmpn(cjp_client.string, "1.4", 3))
+				cgs.pluginSet = qtrue;
 		}
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
 			cgs.serverMod = SVMOD_JAPRO;
@@ -222,6 +225,7 @@ void CG_ParseServerinfo( void ) {
 			cgs.jcinfo = cgs.cinfo;
 			cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
 			trap->Cvar_Set("cjp_client", "1.4JAPRO");
+			cgs.pluginSet = qtrue;
 			//if (cgs.hookpull == 0)
 				//cgs.hookpull = 800;
 		}
@@ -1125,6 +1129,19 @@ require a reload of all the media
 ===============
 */
 static void CG_MapRestart( void ) {
+	int i;
+	clientInfo_t *ci;
+	for (i = 0 ; i < MAX_CLIENTS ; i++)
+	{ //reset our death count on everyone
+		ci = &cgs.clientinfo[i];
+		if (!ci)
+			continue;
+		if (!ci->infoValid)
+			continue;
+		
+		ci->deaths = 0;
+	}
+
 	if ( cg_showMiss.integer ) {
 		trap->Print( "CG_MapRestart\n" );
 	}

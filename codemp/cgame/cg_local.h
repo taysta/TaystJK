@@ -524,6 +524,7 @@ typedef struct clientInfo_s {
 	vec3_t		rgb1, rgb2; //rename this shit so it doesnt conflict with saber rgb
 #endif
 
+	int			deaths; //counted locally client-side, incase the server doesn't send this information already
 	int			breathTime; //can maybe just use breathPuffTime?
 } clientInfo_t;
 
@@ -2155,9 +2156,10 @@ typedef struct cgs_s {
 
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - Start]
 	serverMod_t	serverMod;
-	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	int			cinfo;
 	int			jcinfo;
+	qboolean	pluginSet;
+	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	int			restricts;//make this a short?
 	int			svfps;
 	qboolean	takenscreenshot;

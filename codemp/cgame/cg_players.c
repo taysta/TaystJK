@@ -1842,6 +1842,8 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// team
 	v = Info_ValueForKey( configstring, "t" );
 	newInfo.team = atoi( v );
+	if (ci && newInfo.team != ci->team)
+		ci->deaths = 0; //reset their death count if they switched teams
 
 	// copy team info out to menu
 	if ( clientNum == cg.clientNum)	//this is me
@@ -1938,7 +1940,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		if ((newInfo.team != cg.predictedPlayerState.persistant[PERS_TEAM] || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_FREE) && strlen(cg_forceEnemyModel.string) && Q_stricmp(cg_forceEnemyModel.string, "0") && Q_stricmp(cg_forceEnemyModel.string, "none"))
 		{
 			if (clientNum != cg.clientNum)	//this is me
-			Q_strncpyz( newInfo.modelName, cg_forceEnemyModel.string, sizeof(newInfo.modelName));
+				Q_strncpyz( newInfo.modelName, cg_forceEnemyModel.string, sizeof(newInfo.modelName));
 		}
 		else if (newInfo.team == cg.predictedPlayerState.persistant[PERS_TEAM] && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_FREE && strlen(cg_forceAllyModel.string) && Q_stricmp(cg_forceAllyModel.string, "0") && Q_stricmp(cg_forceAllyModel.string, "none"))
 		{

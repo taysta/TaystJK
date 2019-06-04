@@ -40,10 +40,10 @@ XDOCS_CVAR_DEF("cg_movementKeys", "Show the movement keys onscreen",
 	SETTING("1", "Movement keys are shown")
 )
 
-XDOCS_CVAR_DEF("cg_movementKeysX", "Horizontal location of the movement keys onscreen",""
+XDOCS_CVAR_DEF("cg_movementKeysX", "Horizontal location of the movement keys",""
 )
 
-XDOCS_CVAR_DEF("cg_movementKeysY", "Vertical location of the movement keys onscreen",""
+XDOCS_CVAR_DEF("cg_movementKeysY", "Vertical location of the movement keys",""
 )
 
 XDOCS_CVAR_DEF("cg_movementKeysSize", "Scale of the movement keys",""
@@ -52,10 +52,10 @@ XDOCS_CVAR_DEF("cg_movementKeysSize", "Scale of the movement keys",""
 XDOCS_CVAR_DEF("cg_speedometer", "Configure with the /speedometer command",""
 )
 
-XDOCS_CVAR_DEF("cg_speedometerX", "Horizontal location of the speedometer onscreen",""
+XDOCS_CVAR_DEF("cg_speedometerX", "Horizontal location of the speedometer",""
 )
 
-XDOCS_CVAR_DEF("cg_soeedometerY", "Vertical location of the speedometer onscreen",""
+XDOCS_CVAR_DEF("cg_speedometerY", "Vertical location of the speedometer",""
 )
 
 XDOCS_CVAR_DEF("cg_speedometerSize", "Scale of the speedometer",""
@@ -74,7 +74,9 @@ XDOCS_CVAR_DEF("cg_drawTeamOverlayY", "Vertical location of the team overlay",
 
 XDOCS_CVAR_DEF("cg_raceTimer", "Show the race timer onscreen",
 	SETTING("0", "Race timer is hidden") NL
-	SETTING("1", "Race timer is shown")
+	SETTING("1", "Race timer is shown") NL
+	SETTING("2", "Race timer is shown with average and max speed") NL
+	SETTING("3", "Race timer is shown with ms, average speed, and max speed")
 )
 
 XDOCS_CVAR_DEF("cg_raceTimerX", "Horizontal location of the race timer onscreen",""
@@ -93,8 +95,9 @@ XDOCS_CVAR_DEF("cg_smallScoreboard", "Always use the small version of the scoreb
 
 XDOCS_CVAR_DEF("cg_scoreDeaths", "Display score AND deaths on the scoreboard",
 	"This does not work on base." NL
-	SETTING("0", "Scoreboard only shows score (Base behavior)") NL
-	SETTING("1", "Scoreboard shows score and deaths")
+	SETTING("0", "Scoreboard only shows score (Base JAMP behavior)") NL
+	SETTING("1", "Scoreboard shows score and deaths on JA+ or jaPRO servers (default)") NL
+	SETTING("2", "Scoreboard shows score and locally counted deaths")
 )
 
 XDOCS_CVAR_DEF("cg_killMessage", "Print a kill message on the screen when you kill someone",
