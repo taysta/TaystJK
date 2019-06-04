@@ -814,7 +814,8 @@ static void IN_ProcessEvents( int eventTime )
 	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
 			return;
 #ifdef _WIN32
-	if (com_unfocused->integer == 1 && con_alert == qtrue) {
+	if (con_alert && (com_unfocused->integer || com_minimized->integer))
+	{
 		GLimp_Alert();
 		con_alert = qfalse;
 	}
@@ -876,7 +877,7 @@ static void IN_ProcessEvents( int eventTime )
 				{
 					if ( !e.motion.xrel && !e.motion.yrel )
 						break;
-					Sys_QueEvent( eventTime, SE_MOUSE, e.motion.xrel, e.motion.yrel, 0, NULL );
+					Sys_QueEvent((in_mouse && in_mouse->integer != 2) ? eventTime : 0, SE_MOUSE, e.motion.xrel, e.motion.yrel, 0, NULL);
 				}
 				break;
 
