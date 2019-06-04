@@ -619,14 +619,18 @@ void IN_Init( void *windowData )
 	SDL_StartTextInput( );
 
 	mouseAvailable = (qboolean)( in_mouse->value != 0 );
-	if (in_mouse->integer != 2) {
+
+	if (in_mouse->integer != 2 && SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "0")) {
 		Com_DPrintf("IN_Init: Using raw mouse input\n");
-		SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "0");
+		
+	}
+	else if (SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "1")) {
+		Com_DPrintf("IN_Init: Not using raw input\n");
 	}
 	else {
-		Com_DPrintf("IN_Init: Not using raw input\n");
-		SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "1");
+		Com_DPrintf("IN_Init: SDL_SetHint failed to set \"SDL_MOUSE_RELATIVE_MODE_WARP\" hint\n");
 	}
+
 	IN_DeactivateMouse( );
 
 	int appState = SDL_GetWindowFlags( SDL_window );
