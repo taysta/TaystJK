@@ -788,21 +788,38 @@ void CG_Do_f(void) //loda fixme
 static void CG_Saber_f(void) // this should be serverside for JAPRO.  Clientside for JAPLUS etc?
 {
 	char saber1[MAX_QPATH] = {0}, saber2[MAX_QPATH] = {0};
-	if (trap->Cmd_Argc() == 2) {
+	int argc = trap->Cmd_Argc();
+	if (argc == 2) {
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
 		if (cgs.serverMod >= SVMOD_JAPLUS)
 			trap->SendClientCommand(va("saber %s", saber1));
 		trap->Cvar_Set("saber1", va("%s", saber1));
 		trap->Cvar_Set("saber2", "none");
+		return;
 	}
-	else if (trap->Cmd_Argc() == 3) {
+
+	if (argc == 3) {
 		trap->Cmd_Argv( 1, saber1, sizeof( saber1 ) );
 		trap->Cmd_Argv( 2, saber2, sizeof( saber2 ) );
 		if (cgs.serverMod >= SVMOD_JAPLUS)
 			trap->SendClientCommand(va("saber %s %s", saber1, saber2));
 		trap->Cvar_Set("saber1", va("%s", saber1));
 		trap->Cvar_Set("saber2", va("%s", saber2));
+		return;
 	}
+
+	Com_Printf("Sabers: ");
+	trap->Cvar_VariableStringBuffer("saber1", saber1, sizeof(saber1));
+	trap->Cvar_VariableStringBuffer("saber2", saber2, sizeof(saber2));
+	if (saber1[0] && strlen(saber1))
+		Com_Printf("%s", saber1);
+
+	if (!saber2[0] || !strlen(saber2) || !Q_stricmp(saber2, "none")) {
+		Com_Printf("\n");
+		return;
+	}
+
+	Com_Printf(" - %s\n", saber2);
 }
 
 static void CG_Autologin_f(void)
