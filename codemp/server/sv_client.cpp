@@ -1532,8 +1532,8 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_GC_CRASHFIX) && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
 			clientOK = qfalse;
 
-		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_NPC_CRASHFIX) && svs.servermod != SVMOD_JAPRO
-			&& !Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && !Q_stricmpn(arg2, "ragnos", 6))
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_NPC_CRASHFIX) && svs.servermod != SVMOD_JAPRO &&
+			!Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && (!Q_stricmpn(arg2, "ragnos", 6) || !Q_stricmpn(arg2, "saber_droid", 6)))
 			clientOK = qfalse;
 
 		// Fix: team crash
