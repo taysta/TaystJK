@@ -2814,24 +2814,27 @@ void SV_InitGame( qboolean restart ) {
 		Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
 
 		if (!Q_stricmpn(gamename, "basejk", 6)) {
-			svs.servermod = SVMOD_BASEJKA;
+			if (gvm && !gvm->isLegacy)
+				svs.servermod = SVMOD_OPENJK; //some OpenJK forks rename themselves to basejka
+			else
+				svs.servermod = SVMOD_BASEJKA;
 			return;
 		}
-		if (!Q_stricmpn(gamename, "JA+", 3)) {
+		else if (!Q_stricmpn(gamename, "JA+", 3)) {
 			svs.servermod = SVMOD_JAPLUS;
 			return;
 		}
-		if (!Q_stricmpn(gamename, "Movie Battles", 13))
+		else if (!Q_stricmpn(gamename, "Movie Battles", 13))
 		{
 			svs.servermod = SVMOD_MBII;
 			return;
 		}
-		if (!Q_stricmpn(gamename, "japro", 5))
+		else if (!Q_stricmpn(gamename, "japro", 5))
 		{
 			svs.servermod = SVMOD_JAPRO;
 			return;
 		}
-		if (!Q_stricmpn(gamename, "OpenJK", 6)) {
+		else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
 			svs.servermod = SVMOD_OPENJK;
 			return;
 		}
