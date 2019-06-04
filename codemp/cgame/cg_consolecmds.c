@@ -602,42 +602,42 @@ static void CG_FollowFastest_f(void) {
 		return;
 
 	for (i=0;i<MAX_CLIENTS;i++) {
-			if (i == cg.snap->ps.clientNum)
-				continue;
+		if (i == cg.snap->ps.clientNum)
+			continue;
 
-			cent = &cg_entities[i];
+		cent = &cg_entities[i];
 
-			if (!cent)
-				continue;
-			if (cent->currentState.eType != ET_PLAYER)
-				continue;
+		if (!cent)
+			continue;
+		if (cent->currentState.eType != ET_PLAYER)
+			continue;
 
-			currentSpeed = VectorLengthSquared(cent->currentState.pos.trDelta);
+		currentSpeed = VectorLengthSquared(cent->currentState.pos.trDelta);
 
-			if (currentSpeed > fastestSpeed) {
-				fastestSpeed = currentSpeed;
-				fastestPlayer = i;
-			}
-
+		if (currentSpeed > fastestSpeed) {
+			fastestSpeed = currentSpeed;
+			fastestPlayer = i;
+		}
 	}
+
 	if (fastestPlayer >= 0)
 		trap->SendClientCommand(va("follow %i", fastestPlayer));
 }
 
 static void CG_Follow_f(void) {
-		int clientNum = -1;
+	int clientNum = -1;
 		
-		if (trap->Cmd_Argc() < 2) {
-			Com_Printf("usage /follow <name>\n");
+	if (trap->Cmd_Argc() < 2) {
+		Com_Printf("usage /follow <name>\n");
+		return;
+	}
+		
+		clientNum = CG_ClientNumberFromString(CG_Argv(1));
+		 
+		if (clientNum < 0)
 			return;
-		}
-		
-		 clientNum = CG_ClientNumberFromString(CG_Argv(1));
 		 
-		 if (clientNum < 0)
-			 return;
-		 
-		 trap->SendClientCommand(va("follow %i", clientNum));
+		trap->SendClientCommand(va("follow %i", clientNum));
 }
 
 static void CG_RemapShader_f(void) {
@@ -915,6 +915,22 @@ static void CG_Amcolor_f(void)
 	trap->Cvar_Set("char_color_blue", blue);
 }
 //JAPRO - Clientside - Amcolor - End
+
+static void CG_ZoomDown_f( void ) { 
+	if ( cg.zoomed ) {
+		return;
+	}
+	cg.zoomed = qtrue;
+	cg.zoomTime = cg.time;
+}
+
+static void CG_ZoomUp_f( void ) { 
+	if ( !cg.zoomed ) {
+		return;
+	}
+	cg.zoomed = qfalse;
+	cg.zoomTime = cg.time;
+}
 
 static void CG_Flipkick_f(void)
 {
@@ -1899,11 +1915,11 @@ static void CG_AddStrafeTrail_f(void)
 
 		if (clientNum == -1) {
 			if (cg_strafeTrailPlayers.integer) {
-				trap->Cvar_Set( "cg_strafeTrailPlayers",  "0" );
+				trap->Cvar_Set( "cg_strafeTrailPlayers", "0" );
 				Com_Printf("All strafetrails stopped\n");
 			}
 			else {
-				trap->Cvar_Set( "cg_strafeTrailPlayers",  "1073741823" );
+				trap->Cvar_Set( "cg_strafeTrailPlayers", "1073741823" );
 				Com_Printf("All strafetrails added\n");
 			}
 		}
@@ -2081,7 +2097,6 @@ static consoleCommand_t	commands[] = {
 	{ "say",						CG_Say_f },
 	{ "say_team",					CG_Say_f },
 	{ "tell",						CG_Say_f },
-	{ "follow",						CG_Follow_f },
 
 	{ "saber",						CG_Saber_f },
 	{ "saberColor",					CG_Sabercolor_f },
@@ -2089,6 +2104,7 @@ static consoleCommand_t	commands[] = {
 	{ "amrun",						CG_AmRun_f },
 	{ "modversion",					CG_ModVersion_f },
 
+	{ "follow",						CG_Follow_f },
 	{ "followRedFlag",				CG_FollowRedFlag_f },
 	{ "followBlueFlag",				CG_FollowBlueFlag_f },
 	{ "followFastest",				CG_FollowFastest_f },
