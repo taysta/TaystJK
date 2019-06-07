@@ -102,7 +102,9 @@ XDOCS_CVAR_DEF("cg_scoreDeaths", "Display score AND deaths on the scoreboard",
 
 XDOCS_CVAR_DEF("cg_killMessage", "Print a kill message on the screen when you kill someone",
 	SETTING("0", "Kill messages won't be printed") NL
-	SETTING("1", "Kill messages will be printed")
+	SETTING("1", "Kill messages will be printed, showing score and placement in FFA mode (Base behavior)") NL
+	SETTING("2", "Kill messages will be printed, without score or current place in FFA mode") NL
+	SETTING("3", "Kill messages will be placed higher on the screen than normal")
 )
 
 XDOCS_CVAR_DEF("cg_newFont", "Uses a different font for the chat",

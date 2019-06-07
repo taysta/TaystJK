@@ -268,7 +268,7 @@ clientkilled:
 	if ( attacker == cg.snap->ps.clientNum ) {
 		char s[MAX_STRING_CHARS] = {0};
 
-		if ( cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL && cgs.gametype != GT_POWERDUEL ) {
+		if ( cg_killMessage.integer != 2 && cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL && cgs.gametype != GT_POWERDUEL ) {
 			if (cgs.gametype == GT_JEDIMASTER &&
 				attacker < MAX_CLIENTS &&
 				!ent->isJediMaster &&
@@ -307,7 +307,7 @@ clientkilled:
 				trap->SE_GetStringTextString("MP_INGAME_PLACE_WITH",     sPlaceWith, sizeof(sPlaceWith));
 				trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
 
-				Com_sprintf(s, sizeof(s), "%s %s.\n%s %s %i.", sKilledStr, targetName,
+				Com_sprintf(s, sizeof(s), "%s %s\n%s %s %i.", sKilledStr, targetName,
 					CG_PlaceString( cg.snap->ps.persistant[PERS_RANK] + 1 ),
 					sPlaceWith,
 					cg.snap->ps.persistant[PERS_SCORE] );
@@ -318,14 +318,14 @@ clientkilled:
 			Com_sprintf(s, sizeof(s), "%s %s", sKilledStr, targetName );
 		}
 
-		if (cg_killMessage.integer == 1)//JAPRO - Clientside - Toggle Kill award message
+		if (cg_killMessage.integer == 1 || cg_killMessage.integer == 2)//JAPRO - Clientside - Toggle Kill award message
 			CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
-		else if (cg_killMessage.integer > 1)//JAPRO - Clientside - Toggle Kill award message
+		else if (cg_killMessage.integer > 2)//JAPRO - Clientside - Toggle Kill award message
 			CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.10, BIGCHAR_WIDTH );
 	}
 
 	// check for double client messages
-	if ( !attackerInfo ) {
+	if ( !attackerInfo || !attackerInfo->infoValid ) {
 		attacker = ENTITYNUM_WORLD;
 		Q_strncpyz( attackerName, "noname", sizeof(attackerName) );
 	} else {
