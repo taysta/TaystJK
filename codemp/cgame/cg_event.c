@@ -122,42 +122,35 @@ CG_Obituary
 =============
 */
 static void CG_Obituary( entityState_t *ent ) {
-	int			mod;
-	int			target, attacker;
-	char		*message;
-	const char	*targetInfo;
-	const char	*attackerInfo;
-	char		targetName[32];
-	char		attackerName[32];
-	gender_t	gender;
-	clientInfo_t	*ci;
-
-
-	target = ent->otherEntityNum;
-	attacker = ent->otherEntityNum2;
-	mod = ent->eventParm;
+	int				target = ent->otherEntityNum;
+	int				attacker = ent->otherEntityNum2;
+	int				mod = ent->eventParm;
+	char			*message = NULL;
+	clientInfo_t	*targetInfo = NULL;
+	clientInfo_t	*attackerInfo = NULL;
+	char			targetName[MAX_NETNAME+2] = {0};
+	char			attackerName[MAX_NETNAME+2] = {0};
+	gender_t		gender = GENDER_MALE;
 
 	if ( target < 0 || target >= MAX_CLIENTS ) {
 		trap->Error( ERR_DROP, "CG_Obituary: target out of range" );
 	}
-	ci = &cgs.clientinfo[target];
 
 	if ( attacker < 0 || attacker >= MAX_CLIENTS ) {
 		attacker = ENTITYNUM_WORLD;
 		attackerInfo = NULL;
 	} else {
-		attackerInfo = CG_ConfigString( CS_PLAYERS + attacker );
+		attackerInfo = &cgs.clientinfo[attacker];
 	}
 
-	targetInfo = CG_ConfigString( CS_PLAYERS + target );
-	if ( !targetInfo ) {
+	targetInfo = &cgs.clientinfo[target];
+	if ( !targetInfo || !targetInfo->infoValid ) {
 		return;
 	}
-	Q_strncpyz( targetName, Info_ValueForKey( targetInfo, "n" ), sizeof(targetName) - 2);
-	strcat( targetName, S_COLOR_WHITE );
+	Com_sprintf(targetName, sizeof(targetName), "%s%s", targetInfo->name, S_COLOR_WHITE);
+	targetInfo->deaths++;
 
 	// check for single client messages
-
 	switch( mod ) {
 	case MOD_SUICIDE:
 	case MOD_FALLING:
@@ -178,7 +171,7 @@ static void CG_Obituary( entityState_t *ent ) {
 
 	// Attacker killed themselves.  Ridicule them for it.
 	if (attacker == target) {
-		gender = ci->gender;
+		gender = targetInfo->gender;
 		switch (mod) {
 		case MOD_BRYAR_PISTOL:
 		case MOD_BRYAR_PISTOL_ALT:
@@ -252,7 +245,7 @@ static void CG_Obituary( entityState_t *ent ) {
 	}
 
 	if (message) {
-		gender = ci->gender;
+		gender = targetInfo->gender;
 
 		if (!message[0])
 		{
@@ -273,7 +266,7 @@ clientkilled:
 
 	// check for kill messages from the current clientNum
 	if ( attacker == cg.snap->ps.clientNum ) {
-		char	*s;
+		char s[MAX_STRING_CHARS] = {0};
 
 		if ( cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL && cgs.gametype != GT_POWERDUEL ) {
 			if (cgs.gametype == GT_JEDIMASTER &&
@@ -286,7 +279,7 @@ clientkilled:
 				char part2[512];
 				trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", part1, sizeof(part1));
 				trap->SE_GetStringTextString("MP_INGAME_JMKILLED_NOTJM", part2, sizeof(part2));
-				s = va("%s %s\n%s\n", part1, targetName, part2);
+				Com_sprintf(s, sizeof(s), "%s %s\n%s\n", part1, targetName, part2);
 			}
 			else if (cgs.gametype == GT_JEDIMASTER &&
 				attacker < MAX_CLIENTS &&
@@ -299,13 +292,13 @@ clientkilled:
 				kmsg1 = "for 0 points.\nGo for the saber!";
 				strcpy(part2, kmsg1);
 
-				s = va("%s %s %s\n", part1, targetName, part2);
+				Com_sprintf(s, sizeof(s), "%s %s %s\n", part1, targetName, part2);
 				*/
-				s = va("%s %s\n", part1, targetName);
+				Com_sprintf(s, sizeof(s), "%s %s\n", part1, targetName);
 			}
 			else if (cgs.gametype == GT_POWERDUEL)
 			{
-				s = "";
+				Q_strncpyz(s, "", sizeof(s));
 			}
 			else
 			{
@@ -314,7 +307,7 @@ clientkilled:
 				trap->SE_GetStringTextString("MP_INGAME_PLACE_WITH",     sPlaceWith, sizeof(sPlaceWith));
 				trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
 
-				s = va("%s %s.\n%s %s %i.", sKilledStr, targetName,
+				Com_sprintf(s, sizeof(s), "%s %s.\n%s %s %i.", sKilledStr, targetName,
 					CG_PlaceString( cg.snap->ps.persistant[PERS_RANK] + 1 ),
 					sPlaceWith,
 					cg.snap->ps.persistant[PERS_SCORE] );
@@ -322,29 +315,21 @@ clientkilled:
 		} else {
 			char sKilledStr[256];
 			trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
-			s = va("%s %s", sKilledStr, targetName );
+			Com_sprintf(s, sizeof(s), "%s %s", sKilledStr, targetName );
 		}
-		//if (!(cg_singlePlayerActive.integer && cg_cameraOrbit.integer)) {
-			if (cg_killMessage.integer == 1)//JAPRO - Clientside - Toggle Kill award message
-				CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
-			else if (cg_killMessage.integer > 1)//JAPRO - Clientside - Toggle Kill award message
-				CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.10, BIGCHAR_WIDTH );
-		//}
-		// print the text message as well
 
-			//if (cg_killBeep.integer == 1)
-				//trap->S_StartLocalSound( cgs.media.killSound, CHAN_LOCAL_SOUND );
-			//else if (cg_killBeep.integer == 2)
-				//trap->S_StartLocalSound( cgs.media.hitSound2, CHAN_LOCAL_SOUND ); 
+		if (cg_killMessage.integer == 1)//JAPRO - Clientside - Toggle Kill award message
+			CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+		else if (cg_killMessage.integer > 1)//JAPRO - Clientside - Toggle Kill award message
+			CG_CenterPrintMultiKill( s, SCREEN_HEIGHT * 0.10, BIGCHAR_WIDTH );
 	}
 
 	// check for double client messages
 	if ( !attackerInfo ) {
 		attacker = ENTITYNUM_WORLD;
-		strcpy( attackerName, "noname" );
+		Q_strncpyz( attackerName, "noname", sizeof(attackerName) );
 	} else {
-		Q_strncpyz( attackerName, Info_ValueForKey( attackerInfo, "n" ), sizeof(attackerName) - 2);
-		strcat( attackerName, S_COLOR_WHITE );
+		Com_sprintf(attackerName, sizeof(attackerName), "%s%s", attackerInfo->name, S_COLOR_WHITE);
 		// check for kill messages about the current clientNum
 		if ( target == cg.snap->ps.clientNum ) {
 			Q_strncpyz( cg.killerName, attackerName, sizeof( cg.killerName ) );
