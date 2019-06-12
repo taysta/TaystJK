@@ -1890,7 +1890,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	newInfo.cosmetics = atoi(yo);
 
 	// Gender hints
-	if ( (v = Info_ValueForKey( configstring, "ds" )) )
+	newInfo.gender = GENDER_MALE; //reset this so default/missing models don't inherit it from deferred userinfo
+	v = Info_ValueForKey(configstring, "ds");
+	if ( v )
 	{
 		if ( *v == 'f' )
 			newInfo.gender = GENDER_FEMALE;
