@@ -2050,6 +2050,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		newInfo.ghoul2Weapons[0] = ci->ghoul2Weapons[0];
 	}
 
+	if (newInfo.saber[0].soundLoop == trap->S_RegisterSound("sound/weapons/saber/saberhum4.wav")) {//probably a base hilt
+		newInfo.saber[0].soundLoop = cgs.media.saberHumSounds[clientNum % 5]; //JAPRO - Clientside - Use all saber hum sounds found in base assets
+	}
+
 	v = Info_ValueForKey( configstring, "st2" );
 
 	if (clientNum == cg.clientNum && parsed == 2)
@@ -2069,6 +2073,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		Q_strncpyz( newInfo.saber2Name, ci->saber2Name, 64 );
 		memcpy(&newInfo.saber[1], &ci->saber[1], sizeof(newInfo.saber[1]));
 		newInfo.ghoul2Weapons[1] = ci->ghoul2Weapons[1];
+	}
+
+	if (newInfo.saber[0].soundLoop == trap->S_RegisterSound("sound/weapons/saber/saberhum4.wav")) {//probably a base hilt
+		newInfo.saber[0].soundLoop = cgs.media.saberHumSounds[clientNum % 5]; //JAPRO - Clientside - Use all saber hum sounds found in base assets
 	}
 
 	if (saberUpdate[0] || saberUpdate[1])

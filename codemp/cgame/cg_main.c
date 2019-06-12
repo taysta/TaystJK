@@ -731,7 +731,14 @@ static void CG_RegisterSounds( void ) {
 	trap->S_RegisterSound( "sound/weapons/saber/enemy_saber_on.wav" );
 	trap->S_RegisterSound( "sound/weapons/saber/enemy_saber_off.wav" );
 
-	trap->S_RegisterSound( "sound/weapons/saber/saberhum1.wav" );
+	for (i = 0; i < 5; i++) {//JAPRO - Clientside - Use all saber hum sounds found in base assets
+		cgs.media.saberHumSounds[i] = trap->S_RegisterSound(va("sound/weapons/saber/saberhum%i.wav", i + 1));
+		if (!cgs.media.saberHumSounds[i]) {
+			Com_Printf(S_COLOR_RED "Failed to register sound \"sound/weapons/saber/saberhum%i.wav\"\n", i + 1);
+			cgs.media.saberHumSounds[i] = trap->S_RegisterSound("sound/weapons/saber/saberhum4.wav"); //fallback to default
+		}
+	}
+
 	trap->S_RegisterSound( "sound/weapons/saber/saberon.wav" );
 	trap->S_RegisterSound( "sound/weapons/saber/saberoffquick.wav" );
 	trap->S_RegisterSound( "sound/weapons/saber/saberhitwall1" );
