@@ -1042,7 +1042,7 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 	trap->S_Shutup(qfalse);
 }
 
-static char* defaultModelTable[] = {
+static char *defaultModelTable[] = {
 	{ "luke" },
 	{ "jedi_rm" },
 	{ "jedi_kdm" },
@@ -1056,7 +1056,7 @@ static char* defaultModelTable[] = {
 };
 static const int MAX_DEFAULT_MODELS = ARRAY_LEN(defaultModelTable);
 
-static char* defaultFemaleModelTable[] = {
+static char *defaultFemaleModelTable[] = {
 	{ "alora" },
 	{ "alora2" },
 	{ "jedi_hf" },
@@ -1068,14 +1068,14 @@ static char* defaultFemaleModelTable[] = {
 };
 static const int MAX_DEFAULT_FEMALE_MODELS = ARRAY_LEN(defaultFemaleModelTable);
 
-static char* defaultSkinTable[] = {
+static char *defaultSkinTable[] = {
 	{ "default" },
 	{ "red" },
 	{ "blue" },
 };
 static const int MAX_DEFAULT_SKINS = ARRAY_LEN(defaultSkinTable);
 
-static char* jadenFemaleTwilekHeadTable[] = {
+static char *jadenFemaleTwilekHeadTable[] = {
 	{ "head_a1" },
 	{ "head_a2" },
 	//{ "head_a3" }, //no
@@ -1087,14 +1087,14 @@ static char* jadenFemaleTwilekHeadTable[] = {
 };
 static const int MAX_JADENTF_HEADS = ARRAY_LEN(jadenFemaleTwilekHeadTable);
 
-static char* jadenFemaleHeadTable[] = {
+static char *jadenFemaleHeadTable[] = {
 	{ "head_a1" },
 	{ "head_b1" },
 	{ "head_c1" },
 };
 static const int MAX_JADENF_HEADS = ARRAY_LEN(jadenFemaleHeadTable);
 
-static char* jadenFemaleTorsoTable[] = {
+static char *jadenFemaleTorsoTable[] = {
 	{ "torso_a1" },
 	{ "torso_b1" },
 	{ "torso_c1" },
@@ -1105,7 +1105,7 @@ static char* jadenFemaleTorsoTable[] = {
 };
 static const int MAX_JADENF_TORSOS = ARRAY_LEN(jadenFemaleTorsoTable);
 
-static char* jadenFemaleLowerTable[] = {
+static char *jadenFemaleLowerTable[] = {
 	{ "lower_a1" },
 	{ "lower_b1" },
 	{ "lower_c1" },
@@ -1114,7 +1114,7 @@ static char* jadenFemaleLowerTable[] = {
 };
 static const int MAX_JADENF_LOWERS = ARRAY_LEN(jadenFemaleLowerTable);
 
-static char* jadenMaleHumanHeadTable[] = {
+static char *jadenMaleHumanHeadTable[] = {
 	{ "head_a1" },
 	{ "head_a2" },
 	{ "head_b1" },
@@ -1123,14 +1123,14 @@ static char* jadenMaleHumanHeadTable[] = {
 };
 static const int MAX_JADENHM_HEADS = ARRAY_LEN(jadenMaleHumanHeadTable);
 
-static char* jadenMaleHeadTable[] = {
+static char *jadenMaleHeadTable[] = {
 	{ "head_a1" },
 	{ "head_b1" },
 	{ "head_c1" },
 };
 static const int MAX_JADENM_HEADS = ARRAY_LEN(jadenMaleHeadTable);
 
-static char* jadenMaleHumanTorsoTable[] = {
+static char *jadenMaleHumanTorsoTable[] = {
 	{ "torso_a1" },
 	{ "torso_b1" },
 	{ "torso_c1" },
@@ -1141,7 +1141,7 @@ static char* jadenMaleHumanTorsoTable[] = {
 };
 static const int MAX_JADENHM_TORSOS = ARRAY_LEN(jadenMaleHumanTorsoTable);
 
-static char* jadenMaleTorsoTable[] = {
+static char *jadenMaleTorsoTable[] = {
 	{ "torso_a1" },
 	{ "torso_b1" },
 	{ "torso_c1" },
@@ -1151,7 +1151,7 @@ static char* jadenMaleTorsoTable[] = {
 };
 static const int MAX_JADENM_TORSOS = ARRAY_LEN(jadenMaleTorsoTable);
 
-static char* jadenMaleLowerTable[] = {
+static char *jadenMaleLowerTable[] = {
 	{ "lower_a1" },
 	{ "lower_b1" },
 	{ "lower_c1" },
@@ -1760,7 +1760,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	const char	*configstring;
 	const char	*v;
 	const char	*yo;//rgb
-	char		*slash;
+	char		*slash = NULL;
+	char		saber1[MAX_QPATH] = {0}, saber2[MAX_QPATH] = {0};
+	int			parsed = 0;
 	void *oldGhoul2;
 	void *oldG2Weapons[MAX_SABERS];
 	int i = 0;
@@ -1846,7 +1848,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		ci->deaths = 0; //reset their death count if they switched teams
 
 	// copy team info out to menu
-	if ( clientNum == cg.clientNum)	//this is me
+	if ( clientNum == cg.clientNum )	//this is me
 	{
 		trap->Cvar_Set("ui_team", v);
 		trap->Cvar_Set("ui_myteam", v);
@@ -2026,6 +2028,13 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	//saber being used
 	v = Info_ValueForKey( configstring, "st" );
 
+	if (clientNum == cg.clientNum && strlen(cg_forceOwnSaber.string) && Q_stricmp(cg_forceOwnSaber.string, "none"))
+	{
+		parsed = sscanf(cg_forceOwnSaber.string, "%s %s", saber1, saber2);
+		if (parsed > 0 && saber1 && saber1[0] && Q_stricmp(saber1, "none"))
+			v = saber1;
+	}
+
 	if (v && Q_stricmp(v, ci->saberName))
 	{
 		Q_strncpyz( newInfo.saberName, v, 64 );
@@ -2040,6 +2049,12 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 
 	v = Info_ValueForKey( configstring, "st2" );
+
+	if (clientNum == cg.clientNum && parsed == 2)
+	{
+		if (saber2 && saber2[0] && Q_stricmp(saber2, "none"))
+			v = saber2;
+	}
 
 	if (v && Q_stricmp(v, ci->saber2Name))
 	{

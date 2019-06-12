@@ -137,6 +137,9 @@ XCVAR_DEF( cg_autoKillWhenFalling,				"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_engineModifications,				"1",	CG_MemoryPatchChange,	CVAR_ARCHIVE ) //should remove
 #endif
 
+//rp features
+XCVAR_DEF( cg_forceOwnSaber,					"none", CVU_ForceOwnSaber,		CVAR_NONE ) //CVAR_TEMP )
+
 //Auto login
 XCVAR_DEF( cg_autoLoginServer1,					"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_autoLoginPass1,					"0",	NULL,					CVAR_ARCHIVE )

@@ -173,6 +173,21 @@ static void CG_MemoryPatchChange(void) {
 }
 #endif
 
+static void CVU_ForceOwnSaber(void)
+{ //maybe make this load and validate the specified hilt file? fallback if it doesn't?
+	int len = strlen(cg_forceOwnSaber.string);
+
+	if (len > MAX_QPATH || !Q_stricmp(cg_forceOwnSaber.string, "0")) {
+		trap->Cvar_Set("cg_forceOwnSaber", "none");
+		return;
+	}
+
+	if (!cg.snap)
+		return; //since we're already expecting to load our clientinfo
+
+	CG_NewClientInfo(cg.clientNum, qtrue); //dunno why the one in JA++ didn't have this
+}
+
 //
 // Cvar table
 //
