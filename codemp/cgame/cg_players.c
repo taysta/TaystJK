@@ -5694,9 +5694,11 @@ static int ClampSaberColor(int color) {
 
 static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int bnum ) //rgb
 {
-
-	if (color > SABER_PURPLE)
-		color = ClampSaberColor(color);
+	clientInfo_t *ci = &cgs.clientinfo[cnum];
+#if NEW_SABER_PARMS
+	if (ci->saber[bnum].useCustomRGBColor)
+		color = SABER_RGB;
+#endif
 		
 	switch( color )
 	{
@@ -5722,13 +5724,18 @@ static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int
 			VectorSet( rgb, 1.0f, 1.0f, 1.0f );
 			break;
 		case SABER_RGB:
+#if NEW_SABER_PARMS
+			if (ci->saber[bnum].useCustomRGBColor) {
+				VectorSet(rgb, ci->saber[bnum].customRGB[0], ci->saber[bnum].customRGB[1], ci->saber[bnum].customRGB[2]);
+				break;
+			}
+#endif
 		case SABER_FLAME1:
 		case SABER_ELEC1:
 		case SABER_FLAME2:
 		case SABER_ELEC2:
 			if ( cnum < MAX_CLIENTS ) {
 				int i;
-				clientInfo_t *ci = &cgs.clientinfo[cnum];
 
 				if ( bnum == 0 )
 					VectorCopy( ci->rgb1, rgb );
@@ -5913,6 +5920,13 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 			break;
 	}
 
+#if NEW_SABER_PARMS
+	if (cgs.clientinfo[cnum].saber[bnum].customBladeShader)
+		blade = cgs.clientinfo[cnum].saber[bnum].customBladeShader;
+	if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
+		glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+#endif
+
 	if (doLight)
 	{	// always add a light because sabers cast a nice glow before they slice you in half!!  or something...
 		float light = length*1.4f + Q_flrand(0.0f, 1.0f)*3.0f; //rgb
@@ -6069,6 +6083,10 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		//	case SABER_WHITE:
 		case SABER_RGB:
 			glow = cgs.media.rgbSaberGlowShader;
+#if NEW_SABER_PARMS
+			if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
+				glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+#endif
 			break;
 		case SABER_FLAME1:
 			glow = cgs.media.rgbSaberGlow2Shader;
@@ -7081,9 +7099,6 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 		}
 	}
 
-	if (scolor > SABER_PURPLE)
-		scolor = ClampSaberColor(scolor);
-
 	if (cgs.gametype >= GT_TEAM &&
 		cgs.gametype != GT_SIEGE &&
 		!cgs.jediVmerc &&
@@ -7098,6 +7113,14 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 			scolor = SABER_BLUE;
 		}
 	}
+
+	scolor = ClampSaberColor(scolor);
+
+#if NEW_SABER_PARMS
+	if (client->saber[saberNum].useCustomRGBColor) {
+		scolor = SABER_RGB;
+	}
+#endif
 
 	if (!cg_saberContact.integer)
 	{ //if we don't have saber contact enabled, just add the blade and don't care what it's touching
@@ -7330,6 +7353,10 @@ CheckTrail:
 						qhandle_t trailShader;//rgb
 #endif
 
+#if NEW_SABER_PARMS
+						if (client->saber[saberNum].useCustomRGBColor) //set if hilt definition has customRGB colors set
+							scolor = SABER_RGB;
+#endif
 						switch( scolor )
 						{
 							case SABER_RED:
@@ -7361,6 +7388,12 @@ CheckTrail:
 							case SABER_RGB:
 							{
 								int cnum = cent->currentState.clientNum;
+#if NEW_SABER_PARMS
+								if (client->saber[saberNum].useCustomRGBColor) {//set if hilt definition has customRGB colors set
+									VectorSet(rgb1, client->saber[saberNum].customRGB[0], client->saber[saberNum].customRGB[1], client->saber[saberNum].customRGB[2]);
+									break;
+								}
+#endif
 								if (cnum < MAX_CLIENTS) {
 									clientInfo_t *ci = &cgs.clientinfo[cnum];
 
@@ -7369,8 +7402,9 @@ CheckTrail:
 									else
 										VectorCopy(ci->rgb2, rgb1);
 								}
-								else
+								else {
 									VectorSet( rgb1, 0.0f, 64.0f, 255.0f );
+								}
 							}
 							break;
 							//rgb
@@ -7407,6 +7441,11 @@ CheckTrail:
 								break;
 						}
 						//rgb
+
+#if NEW_SABER_PARMS
+						if (client->saber[saberNum].customTrailShader)
+							trailShader = client->saber[saberNum].customTrailShader;
+#endif
 
 						//Here we will use the happy process of filling a struct in with arguments and passing it to a trap function
 						//so that we can take the struct and fill in an actual CTrail type using the data within it once we get it
@@ -7604,6 +7643,11 @@ CheckTrail:
 				case SABER_RGB:
 				{
 					int cnum = cent->currentState.clientNum;
+#if NEW_SABER_PARMS
+					if (client->saber[saberNum].useCustomRGBColor) //set if hilt definition has customRGB colors set
+						VectorSet(rgb1, client->saber[saberNum].customRGB[0], client->saber[saberNum].customRGB[1], client->saber[saberNum].customRGB[2]);
+					else
+#endif
 					if (cnum < MAX_CLIENTS) {
 						clientInfo_t *ci = &cgs.clientinfo[cnum];
 
@@ -8796,7 +8840,6 @@ void CG_G2Animated( centity_t *cent )
 //Disabled for now, I'm too lazy to keep it working with all the stuff changing around.
 #if 1
 int cgFPLSState = 0;
-
 void CG_ForceFPLSPlayerModel(centity_t *cent, clientInfo_t *ci)
 {
 	animation_t *anim;
