@@ -907,8 +907,10 @@ void Message_Key( int key ) {
 			}
 
 			CL_RandomizeColors(chatField.buffer, coloredString);
-			if ( chat_playerNum != -1 )	Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
+			if ( chat_playerNum != -1 )			Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
 			else if ( chat_team )				Com_sprintf( buffer, sizeof( buffer ), "say_team \"%s\"\n", chatField.buffer);
+			else if (strlen(cl_chatStylePrefix->string) || strlen(cl_chatStyleSuffix->string))
+												Com_sprintf( buffer, sizeof( buffer ), "say \"%s%s%s\"\n", cl_chatStylePrefix->string, coloredString, cl_chatStyleSuffix->string );
 			else								Com_sprintf( buffer, sizeof( buffer ), "say \"%s\"\n", coloredString );
 			CL_AddReliableCommand( buffer, qfalse );
 		}

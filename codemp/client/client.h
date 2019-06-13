@@ -458,6 +458,9 @@ extern cvar_t	*cl_colorString;
 extern cvar_t	*cl_colorStringCount;
 extern cvar_t	*cl_colorStringRandom;
 
+extern cvar_t	*cl_chatStylePrefix;
+extern cvar_t	*cl_chatStyleSuffix;
+
 extern cvar_t	*cl_afkTime;
 extern cvar_t	*cl_afkTimeUnfocused;
 
