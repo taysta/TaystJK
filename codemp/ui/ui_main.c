@@ -617,6 +617,59 @@ static const char *GetNetSourceString(int iSource)
 	return result;
 }
 
+void UI_UpdateCurrentServerInfo(void) { //parses server info to contextually hide items/menus depending on server settings/mod
+	uiClientState_t cstate = {0};
+	char info[MAX_INFO_VALUE] = {0};
+	char *value = NULL;
+
+	trap->Cvar_Set("ui_isJAPro", "0");
+	trap->Cvar_Set("ui_raceMode", "0");
+	trap->Cvar_Set("ui_allowRegistration", "0");
+	trap->Cvar_Set("ui_allowSaberSwitch", "0");
+
+	trap->GetClientState(&cstate);
+	if (cstate.connState < CA_LOADING) {
+		trap->Cvar_Update(&ui_isJAPro);
+		trap->Cvar_Update(&ui_allowSaberSwitch);
+		return;
+	}
+
+	//parse server info
+	info[0] = '\0';
+	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
+
+	value = Info_ValueForKey(info, "gamename");
+	if (!Q_stricmpn(value, "JA+ Mod", 7) || !Q_stricmpn(value, "^4U^3A^5Galaxy", 14) || !Q_stricmpn(value, "AbyssMod", 8))
+	{
+		trap->Cvar_Set("ui_allowSaberSwitch", "1");
+	}
+	else if (!Q_stricmpn(value, "japro", 5)) {
+		int jcinfo2;
+		trap->Cvar_Set("ui_isJAPro", "1");
+
+		jcinfo2 = atoi(Info_ValueForKey(info, "jcinfo2"));
+		if (jcinfo2 & (1 << 0)) //race mode
+			trap->Cvar_Set("ui_raceMode", "1");
+
+		if (jcinfo2 & (1 << 1)) //allow registration
+			trap->Cvar_Set("ui_allowRegistration", "1");
+
+		if (trap->Cvar_VariableValue("g_gametype") < GT_TEAM && jcinfo2 & (1 << 2)) //allow /saber switch cmd
+			trap->Cvar_Set("ui_allowSaberSwitch", "1");
+	}
+
+	//parse system info
+	//trap->Cvar_Set("ui_sv_pure", "0");
+	info[0] = '\0';
+	trap->GetConfigString(CS_SYSTEMINFO, info, sizeof(info));
+	if (atoi(Info_ValueForKey(info, "sv_pure"))) {
+		trap->Cvar_Set("ui_sv_pure", "1"); //triggers cvar update function next frame
+	}
+	else if (ui_sv_pure.integer) {
+		trap->Cvar_Set("ui_sv_pure", "0"); //only do this as needed
+	}
+}
+
 void AssetCache(void) {
 	int n;
 	//if (Assets.textFont == NULL) {
@@ -906,7 +959,6 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 	if (Menu_Count() > 0) {
 		vec3_t v;
 		v[0] = v[1] = v[2] = 0;
-		char info[MAX_INFO_VALUE];
 		switch ( menu ) {
 		case UIMENU_NONE:
 			trap->Key_SetCatcher( trap->Key_GetCatcher() & ~KEYCATCH_UI );
@@ -939,12 +991,17 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 						trap->Cvar_Set("com_errorMessage", "");
 					}
 				}
+
+				UI_UpdateCurrentServerInfo();
+				trap->Cvar_Set("ui_sv_pure", "0");
 				return;
 			}
 
 		case UIMENU_TEAM:
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			Menus_ActivateByName("team");
+			UI_UpdateCurrentServerInfo();
+			trap->Cvar_Set("ui_sv_pure", "0");
 			return;
 		case UIMENU_POSTGAME:
 			//trap->Cvar_Set( "sv_killserver", "1" );
@@ -955,35 +1012,7 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			Menus_ActivateByName("endofgame");
 			return;
 		case UIMENU_INGAME:
-			info[0] = '\0';
-			trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
-
-			trap->Cvar_Set("ui_raceMode", "0");
-			trap->Cvar_Set("ui_allowRegistration", "0");
-			trap->Cvar_Set("ui_allowSaberSwitch", "0");
-
-			if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "JA+ Mod", 7) || !Q_stricmpn(Info_ValueForKey(info, "gamename"), "^4U^3A^5Galaxy", 14) || !Q_stricmpn(Info_ValueForKey(info, "gamename"), "AbyssMod", 8)) {
-				trap->Cvar_Set("ui_isJAPro", "0");
-				trap->Cvar_Set("ui_allowSaberSwitch", "1");
-			}
-			else if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "japro", 5)) {
-				int jcinfo2;
-				trap->Cvar_Set("ui_isJAPro", "1");
-
-				jcinfo2 = atoi(Info_ValueForKey(info, "jcinfo2"));
-				if (jcinfo2 & (1<<0)) //race mode
-					trap->Cvar_Set("ui_raceMode", "1");
-
-				if (jcinfo2 & (1<<1)) //allow registration
-					trap->Cvar_Set("ui_allowRegistration", "1");
-
-				if (trap->Cvar_VariableValue("g_gametype") < GT_TEAM && jcinfo2 & (1<<2)) //allow /saber switch cmd
-					trap->Cvar_Set("ui_allowSaberSwitch", "1");
-			}
-			else {
-				trap->Cvar_Set("ui_isJAPro", "0");
-				trap->Cvar_Set("ui_allowSaberSwitch", "0");
-			}
+			UI_UpdateCurrentServerInfo();
 			trap->Cvar_Set( "cl_paused", "1" );
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			UI_BuildPlayerList();
@@ -991,6 +1020,7 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			Menus_ActivateByName("ingame");
 			return;
 		case UIMENU_PLAYERCONFIG:
+			UI_UpdateCurrentServerInfo();
 			// trap->Cvar_Set( "cl_paused", "1" );
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			UI_BuildPlayerList();
@@ -1021,10 +1051,7 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 		case UIMENU_VOICECHAT:
 			// trap->Cvar_Set( "cl_paused", "1" );
 			// No chatin non-siege games.
-
-			info[0] = '\0';
-			trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
-			if (!Q_stricmpn(Info_ValueForKey(info, "gamename"), "japro", 5) && trap->Cvar_VariableValue("ui_vgs")) {
+			if (ui_isJAPro.integer && ui_vgs.integer) {
 				trap->Key_SetCatcher(KEYCATCH_UI);
 				Menus_CloseAll();
 				Menus_ActivateByName("ingame_vgs");
@@ -1040,6 +1067,8 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			Menus_CloseAll();
 			return;
 		case UIMENU_CLASSSEL:
+			UI_UpdateCurrentServerInfo();
+
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();
 			Menus_ActivateByName("ingame_siegeclass");
@@ -5097,7 +5126,7 @@ static qboolean UI_Crosshair_HandleKey(int flags, float *special, int key) {
 		} else if (uiInfo.currentCrosshair < 0) {
 			uiInfo.currentCrosshair = NUM_CROSSHAIRS - 1;
 		}
-		trap->Cvar_Set("cg_drawCrosshair", va("%d", uiInfo.currentCrosshair));
+		trap->Cvar_SetValue("cg_drawCrosshair", (float)uiInfo.currentCrosshair);
 		return qtrue;
 	}
 	return qfalse;
@@ -6644,11 +6673,11 @@ static void UI_UpdateSaberCvars ( void )
 	trap->Cvar_Set ( "saber2", UI_Cvar_VariableString ( "ui_saber2" ) );
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber_color" ) );
-	trap->Cvar_Set ( "color1", va("%d",colorI));
+	trap->Cvar_SetValue( "color1", (float)colorI);
 	trap->Cvar_Set ( "g_saber_color", UI_Cvar_VariableString ( "ui_saber_color" ));
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber2_color" ) );
-	trap->Cvar_Set ( "color2", va("%d",colorI) );
+	trap->Cvar_SetValue( "color2", (float)colorI );
 	trap->Cvar_Set ( "g_saber2_color", UI_Cvar_VariableString ( "ui_saber2_color" ));
 
 	if (ui_allowSaberSwitch.integer) {
@@ -7305,6 +7334,10 @@ void UI_UpdateSiegeStatusIcons( void ) {
 	}
 }
 
+void UI_UpdateSaberHiltInfo( void ) {
+	WP_SaberGetHiltInfo(saberSingleHiltInfo, saberStaffHiltInfo);
+}
+
 static void UI_RunMenuScript(char **args)
 {
 	const char *name, *name2;
@@ -7551,7 +7584,7 @@ static void UI_RunMenuScript(char **args)
 		}
 		else if (Q_stricmp(name, "getsaberhiltinfo") == 0)
 		{
-			WP_SaberGetHiltInfo(saberSingleHiltInfo, saberStaffHiltInfo);
+			UI_UpdateSaberHiltInfo();
 		}
 		// On the solo game creation screen, we can't see siege maps
 		else if (Q_stricmp(name, "checkforsiege") == 0)
@@ -8769,16 +8802,16 @@ static int UI_HeadCountByColor(void) {
 			{
 				if (!Q_stricmp(skinName, teamname))
 					c++;
-				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
 					c++;
-				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+				else if (!ui_sv_pure.integer &&  ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
 					c++;
 			}
 			else if (uiSkinColor == 3)
 			{
 				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
 					c++;
-				else if (!Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp")))
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp")))
 					c++;
 			}
 			else if (!Q_stricmp(skinName, teamname))
@@ -8789,10 +8822,10 @@ static int UI_HeadCountByColor(void) {
 	}
 
 	if (ui_headCount.integer < 0) { //no count yet
-		trap->Cvar_Set("ui_headCount", va("%i", c));
+		trap->Cvar_SetValue("ui_headCount", (float)i);
 		trap->Cvar_Update(&ui_headCount);
 	}
-	else if (ui_headCount.integer != c && ui_selectedModelIndex.integer > -1)
+	else if (ui_selectedModelIndex.integer > -1 && ui_headCount.integer != i)
 	{ //reset selected skin if we have more or less than we used to
 		trap->Cvar_Set("ui_selectedModelIndex", "-1");
 		trap->Cvar_Set("ui_headCount", "-1");
@@ -9515,7 +9548,6 @@ static int UI_FeederCount(float feederID)
 			return uiInfo.demoCount;
 
 		case FEEDER_MOVES :
-
 			for (i=0;i<MAX_MOVES;i++)
 			{
 				if (datapadMoveData[uiInfo.movesTitleIndex][i].title)
@@ -9523,7 +9555,6 @@ static int UI_FeederCount(float feederID)
 					count++;
 				}
 			}
-
 			return count;
 
 		case FEEDER_MOVES_TITLES :
@@ -9570,7 +9601,6 @@ static int UI_FeederCount(float feederID)
 					count++;
 				}
 			}
-
 			return count;
 
 		// Get the count of inventory
@@ -9669,16 +9699,16 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 			{
 				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
 					valid = qtrue;
-				else if (!Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp") /*||!Q_stricmp(model, "rodian/")*/))
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp") /*||!Q_stricmp(model, "rodian/")*/))
 					valid = qtrue;
 			}
 			else if (uiSkinColor == TEAM_FREE)
 			{
 				if (!Q_stricmp(skinName, "/default"))
 					valid = qtrue;
-				else if (!Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
 					valid = qtrue;
-				else if (ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+				else if (ui_showAllSkins.integer && !ui_sv_pure.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
 					valid = qtrue;
 			}
 			else if (!Q_stricmp(skinName, teamname)) {
@@ -10095,7 +10125,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 		if (index >= 0 && index < uiInfo.q3HeadCount)
 		{ //we want it to load them as it draws them, like the TA feeder
 		      //return uiInfo.q3HeadIcons[index];
-			int selModel = trap->Cvar_VariableValue("ui_selectedModelIndex");
+			int selModel = (int)trap->Cvar_VariableValue("ui_selectedModelIndex");
 
 			if (selModel != -1)
 			{
@@ -10347,11 +10377,11 @@ qboolean UI_FeederSelection(float feederFloat, int index, itemDef_t *item)
 		int actual = 0;
 		UI_SelectedTeamHead(index, &actual);
 		uiInfo.q3SelectedHead = index;
-		trap->Cvar_Set("ui_selectedModelIndex", va("%i", index));
+		trap->Cvar_SetValue("ui_selectedModelIndex", (float)index);
 		index = actual;
 		if (index >= 0 && index < uiInfo.q3HeadCount)
 		{
-			trap->Cvar_Set( "model", uiInfo.q3HeadNames[index]);
+			trap->Cvar_Set("model", uiInfo.q3HeadNames[index]);
 			trap->Cvar_Set("ui_char_model", uiInfo.q3HeadNames[index]);
 			if (uiSkinColor != 3) {	// standard model
 				trap->Cvar_Set("char_color_red", "255");	//standard colors
@@ -11053,18 +11083,19 @@ PlayerModel_BuildList
 */
 void UI_BuildQ3Model_List( void )
 {
-	int		numdirs;
-	int		numfiles;
-	char	dirlist[2048];
-	char	filelist[2048];
-	char	skinname[64];
-	char*	dirptr;
-	char*	fileptr;
-	char*	check;
-	int		i;
-	int		j, k, p, s;
-	int		dirlen;
-	int		filelen;
+	int			numdirs;
+	int			numfiles;
+	char		dirlist[2048];
+	char		filelist[2048];
+	char		skinname[64];
+	char		*dirptr;
+	char		*fileptr;
+	char		*check;
+	int			i;
+	int			j, k, p, s;
+	int			dirlen;
+	int			filelen;
+	qboolean	baseSkin;
 
 	uiInfo.q3HeadCount = 0;
 
@@ -11077,11 +11108,22 @@ void UI_BuildQ3Model_List( void )
 
 		if (dirlen && dirptr[dirlen-1]=='/') dirptr[dirlen-1]='\0';
 
-		if (!strcmp(dirptr,".") || !strcmp(dirptr,".."))
+		if (!Q_stricmp(dirptr, ".") || !Q_stricmp(dirptr, ".."))
 			continue;
 
+		if (ui_sv_pure.integer) {
+			baseSkin = qfalse;
+			for (k = 0 ; k <= BASE_MODEL_COUNT ; k++) {
+				if (!Q_stricmp(dirptr, baseModelList[k])) {
+					baseSkin = qtrue;
+					break;
+				}
+			}
+			if (!baseSkin)
+				continue;
+		}
 
-		numfiles = trap->FS_GetFileList( va("models/players/%s",dirptr), "skin", filelist, 2048 );
+		numfiles = trap->FS_GetFileList( va("models/players/%s", dirptr), "skin", filelist, 2048 );
 		fileptr  = filelist;
 		for (j=0; j<numfiles && uiInfo.q3HeadCount < MAX_Q3PLAYERMODELS;j++,fileptr+=filelen+1)
 		{
@@ -11089,7 +11131,7 @@ void UI_BuildQ3Model_List( void )
 
 			filelen = strlen(fileptr);
 
-			COM_StripExtension(fileptr,skinname, sizeof( skinname ) );
+			COM_StripExtension(fileptr, skinname, sizeof( skinname ) );
 
 			skinLen = strlen(skinname);
 			k = 0;
@@ -11156,7 +11198,7 @@ void UI_BuildQ3Model_List( void )
 					Com_sprintf(iconPath, sizeof(iconPath), "models/players/%s/icon_%s", dirptr, skinname+1);
 					
 					uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = trap->R_RegisterShaderNoMip(iconPath);
-					if (!uiInfo.q3HeadIcons[uiInfo.q3HeadCount] && ui_showAllSkins.integer)
+					if (ui_showAllSkins.integer && !ui_sv_pure.integer && !uiInfo.q3HeadIcons[uiInfo.q3HeadCount])
 					{
 						if (!Q_stricmp(skinname+1, "red"))
 							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRed;
@@ -11179,7 +11221,6 @@ void UI_BuildQ3Model_List( void )
 			}
 		}
 	}
-
 }
 
 void UI_SiegeInit(void)
@@ -11282,18 +11323,19 @@ void UI_FreeAllSpecies( void )
 UI_BuildPlayerModel_List
 =================
 */
-static void UI_BuildPlayerModel_List( qboolean inGameLoad )
+void UI_BuildPlayerModel_List( qboolean inGameLoad )
 {
 	static const size_t DIR_LIST_SIZE = 16384;
 
-	int		numdirs;
-	size_t	dirListSize = DIR_LIST_SIZE;
-	char	stackDirList[8192];
-	char	*dirlist;
-	char*	dirptr;
-	int		dirlen;
-	int		i;
-	int		j;
+	int			numdirs;
+	size_t		dirListSize = DIR_LIST_SIZE;
+	char		stackDirList[8192];
+	char		*dirlist;
+	char		*dirptr;
+	int			dirlen;
+	int			i, j;
+	int			w = 0;
+	qboolean	baseSpecies = qfalse;
 
 	dirlist = malloc(DIR_LIST_SIZE);
 	if ( !dirlist )
@@ -11316,10 +11358,10 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 	dirptr  = dirlist;
 	for (i=0; i<numdirs; i++,dirptr+=dirlen+1)
 	{
-		char*	fileptr;
+		char	*fileptr;
 		int		filelen;
-		int f = 0;
-		char fpath[MAX_QPATH];
+		int		f = 0;
+		char	fpath[MAX_QPATH];
 
 		dirlen = strlen(dirptr);
 
@@ -11333,7 +11375,7 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 			continue;
 		}
 
-		if (!strcmp(dirptr,".") || !strcmp(dirptr,".."))
+		if (!Q_stricmp(dirptr, ".") || !Q_stricmp(dirptr, ".."))
 			continue;
 
 		Com_sprintf(fpath, sizeof(fpath), "models/players/%s/PlayerChoice.txt", dirptr);
@@ -11342,14 +11384,29 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 		if (f)
 		{
 			char	filelist[2048];
-			playerSpeciesInfo_t *species;
+			playerSpeciesInfo_t *species = NULL;
 			char                 skinname[64];
 			int                  numfiles;
 			int                  iSkinParts=0;
 			char                *buffer = NULL;
 
+			if (ui_sv_pure.integer)
+			{ //i guess wait to do this until here after we've read a PlayerChoice.txt file
+				baseSpecies = qfalse;
+				for (w = 0; w <= BASE_SPECIES_COUNT; w++) {
+					if (!Q_stricmp(dirptr, baseSpeciesList[w])) {
+						baseSpecies = qtrue;
+						break;
+					}
+				}
+				if (!baseSpecies) {
+					//UI_FreeSpecies(species); //this doesn't seem to update the options in the feeder
+					continue;
+				}
+			}
+
 			buffer = malloc(filelen + 1);
-			if(!buffer)
+			if (!buffer)
 			{
 				trap->FS_Close( f );
 				Com_Error(ERR_FATAL, "Could not allocate buffer to read %s", fpath);
@@ -11493,17 +11550,14 @@ void UI_Init( qboolean inGameLoad ) {
 
 	UI_UpdateForcePowers();
 
-	UI_RegisterCvars();
 	UI_InitMemory();
 
 	// cache redundant calulations
 	trap->GetGlconfig( &uiInfo.uiDC.glconfig );
 
 	// for 640x480 virtualized screen
-	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
-	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
-
-	UI_Set2DRatio();
+	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/SCREEN_HEIGHT);
+	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/SCREEN_WIDTH);
 
 	if ( uiInfo.uiDC.glconfig.vidWidth * 480 > uiInfo.uiDC.glconfig.vidHeight * 640 ) {
 		// wide screen
@@ -11577,9 +11631,13 @@ void UI_Init( qboolean inGameLoad ) {
 
 	Init_Display(&uiInfo.uiDC);
 
-	UI_BuildPlayerModel_List(inGameLoad);
+	UI_RegisterCvars();
+	UI_Set2DRatio();
 
 	String_Init();
+
+	UI_BuildPlayerModel_List(inGameLoad);
+	UI_BuildQ3Model_List();
 
 	uiInfo.uiDC.cursor	= trap->R_RegisterShaderNoMip( "menu/art/3_cursor2" );
 	uiInfo.uiDC.whiteShader = trap->R_RegisterShaderNoMip( "white" );
@@ -11624,7 +11682,6 @@ void UI_Init( qboolean inGameLoad ) {
 
 	trap->LAN_LoadCachedServers();
 
-	UI_BuildQ3Model_List();
 	UI_LoadBots();
 
 	UI_LoadForceConfig_List();
@@ -11641,10 +11698,11 @@ void UI_Init( qboolean inGameLoad ) {
 
 	trap->Cvar_Register(NULL, "debug_protocol", "", 0 );
 
-	trap->Cvar_Set("ui_actualNetGameType", va("%d", ui_netGametype.integer));
+	trap->Cvar_SetValue("ui_actualNetGameType", ui_netGametype.value);
 	trap->Cvar_Update(&ui_actualNetGametype);
 
 	//console cmd autocompletion
+	trap->ext.AddCommand("ui_load");
 	trap->ext.AddCommand("strafehelper");
 	trap->ext.AddCommand("stylePlayer");
 	trap->ext.AddCommand("speedometer");
@@ -12111,7 +12169,7 @@ static void UI_StopServerRefresh( void )
 	if (count - uiInfo.serverStatus.numDisplayServers > 0) {
 		Com_Printf("%d servers not listed due to filters, packet loss, invalid info, or pings higher than %d\n",
 						count - uiInfo.serverStatus.numDisplayServers,
-						(int) trap->Cvar_VariableValue("cl_maxPing"));
+						(int)trap->Cvar_VariableValue("cl_maxPing"));
 	}
 }
 

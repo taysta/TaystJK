@@ -5755,6 +5755,7 @@ void Item_ListBox_Paint(itemDef_t *item) {
 						color[1] = ui_char_color_green.integer/COLOR_MAX;
 						color[2] = ui_char_color_blue.integer/COLOR_MAX;
 						color[3] = 1.0f;
+
 						DC->setColor(color);
 					}
 #endif
@@ -8289,32 +8290,34 @@ qboolean ItemParse_cvarStrList( itemDef_t *item, int handle ) {
 		return qfalse;
 	}
 
-	if (!Q_stricmp(token.string,"feeder") && item->special == FEEDER_PLAYER_SPECIES)
-	{
+	if (!Q_stricmp(token.string, "feeder")) {
+		if (item->special == FEEDER_PLAYER_SPECIES)
+		{
 #ifndef _CGAME
-		for (; multiPtr->count < uiInfo.playerSpeciesCount; multiPtr->count++)
-		{
-			multiPtr->cvarList[multiPtr->count] = String_Alloc(Q_strupr(va("@MENUS_%s",uiInfo.playerSpecies[multiPtr->count].Name )));	//look up translation
-			multiPtr->cvarStr[multiPtr->count] = uiInfo.playerSpecies[multiPtr->count].Name;	//value
-		}
+			for (; multiPtr->count < uiInfo.playerSpeciesCount; multiPtr->count++)
+			{
+				multiPtr->cvarList[multiPtr->count] = String_Alloc(Q_strupr(va("@MENUS_%s",uiInfo.playerSpecies[multiPtr->count].Name )));	//look up translation
+				multiPtr->cvarStr[multiPtr->count] = uiInfo.playerSpecies[multiPtr->count].Name;	//value
+			}
 #endif
-		return qtrue;
-	}
-	// languages
-	if (!Q_stricmp(token.string,"feeder") && item->special == FEEDER_LANGUAGES)
-	{
+			return qtrue;
+		}
+		// languages
+		if (item->special == FEEDER_LANGUAGES)
+		{
 #ifdef UI_BUILD
-		for (; multiPtr->count < uiInfo.languageCount; multiPtr->count++)
-		{
-			// The displayed text
-			trap->SE_GetLanguageName( (const int) multiPtr->count,(char *) currLanguage[multiPtr->count]  );	// eg "English"
-			multiPtr->cvarList[multiPtr->count] = languageString;
-			// The cvar value that goes into se_language
-			trap->SE_GetLanguageName( (const int) multiPtr->count,(char *) currLanguage[multiPtr->count] );
-			multiPtr->cvarStr[multiPtr->count] = currLanguage[multiPtr->count];
-		}
+			for (; multiPtr->count < uiInfo.languageCount; multiPtr->count++)
+			{
+				// The displayed text
+				trap->SE_GetLanguageName( (const int) multiPtr->count,(char *) currLanguage[multiPtr->count]  );	// eg "English"
+				multiPtr->cvarList[multiPtr->count] = languageString;
+				// The cvar value that goes into se_language
+				trap->SE_GetLanguageName( (const int) multiPtr->count,(char *) currLanguage[multiPtr->count] );
+				multiPtr->cvarStr[multiPtr->count] = currLanguage[multiPtr->count];
+			}
 #endif
-		return qtrue;
+			return qtrue;
+		}
 	}
 
 	if (*token.string != '{') {
@@ -9611,7 +9614,6 @@ void *Display_CaptureItem(int x, int y) {
 	return NULL;
 }
 
-
 // FIXME:
 qboolean Display_MouseMove(void *p, int x, int y) {
 	int i;
@@ -9634,7 +9636,6 @@ qboolean Display_MouseMove(void *p, int x, int y) {
 		Menu_UpdatePosition(menu);
 	}
  	return qtrue;
-
 }
 
 int Display_CursorType(int x, int y) {

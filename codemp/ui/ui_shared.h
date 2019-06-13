@@ -575,3 +575,90 @@ Ghoul2 Insert End
 */
 
 extern const char *HolocronIcons[NUM_FORCE_POWERS];
+
+#ifdef UI_BUILD
+static char *baseModelList[] = {
+	"alora",
+	"alora2",
+	"bespin_cop",
+	"boba_fett",
+	"chewbacca",
+	"chiss",
+	"cultist",
+	"desann",
+	"galak",
+	"gran",
+	"human_merc",
+	"imperial",
+	"imperial_worker",
+	"jan",
+	"jawa",
+	"jedi",
+	//"jedi_hf",
+	//"jedi_hm",
+	//"jedi_kdm",
+	//"jedi_rm",
+	//"jedi_tf",
+	//"jedi_zf",
+	"jeditrainer"
+	"kyle",
+	"lando",
+	"luke",
+	"monmothma",
+	"morgan",
+	"noghri",
+	"prisoner",
+	"rax_joris",
+	"rebel",
+	"rebel_pilot",
+	"reborn",
+	"reborn_new",
+	"reborn_twin",
+	"reelo",
+	"rodian",
+	"rosh_penin",
+	"saboteur",
+	"shadowtrooper",
+	"snowtrooper",
+	"stormpilot",
+	"stormtrooper",
+	"swamptrooper",
+	"tavion",
+	"tavion_new",
+	"trandoshan",
+	"tusken",
+	"ugnaught",
+	"weequay",
+};
+static const int BASE_MODEL_COUNT = ARRAY_LEN(baseModelList);
+
+static char *baseSpeciesList[] = {
+	"jedi_hf",
+	"jedi_hm",
+	"jedi_kdm",
+	"jedi_rm",
+	"jedi_tf",
+	"jedi_zf"
+};
+static const int BASE_SPECIES_COUNT = ARRAY_LEN(baseSpeciesList);
+
+static char *baseHiltList[] = {
+	"kyle",
+	//"luke",
+	"single_1",
+	"single_2",
+	"single_3",
+	"single_4",
+	"single_5",
+	"single_6",
+	"single_7",
+	"single_8",
+	"single_9",
+	"dual_1",
+	"dual_2",
+	"dual_3",
+	"dual_4",
+	"dual_5"
+};
+static const int BASE_HILT_COUNT = ARRAY_LEN(baseHiltList);
+#endif

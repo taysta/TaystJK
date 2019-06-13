@@ -27,6 +27,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // Cvar callbacks
 //
 
+static qboolean startup = qfalse;
+
 static int UI_GetScreenshotFormatForString( const char *str ) {
 	if ( !Q_stricmp(str, "jpg") || !Q_stricmp(str, "jpeg") )
 		return SSF_JPEG;
@@ -89,10 +91,29 @@ static void CVU_StrafeHelper (void) {
 	trap->Cvar_Set( "cg_strafeHelperActiveColor", va("%i %i %i %i", ui_sha_r.integer, ui_sha_g.integer, ui_sha_b.integer, ui_sha_a.integer) );
 }
 
+static void CVU_UpdateModelList(void) {
+	uiClientState_t cstate = {0};
+
+	if (startup) {//we don't want to redundantly call these on startup
+		UI_UpdateCurrentServerInfo();
+		return;
+	}
+
+	trap->GetClientState(&cstate);
+	if (ui_sv_pure.integer && (cstate.connState < CA_LOADING || ui_singlePlayerActive.integer)) {
+		trap->Cvar_Set("ui_sv_pure", "0");
+		return;
+	}
+
+	UI_UpdateSaberHiltInfo();
+	UI_BuildQ3Model_List();
+	UI_BuildPlayerModel_List(qtrue);
+	UI_Load(); //refreshes the available species in the selection feeder
+}
+
 //
 // Cvar table
 //
-
 typedef struct cvarTable_s {
 	vmCvar_t	*vmCvar;
 	char		*cvarName;
@@ -116,11 +137,13 @@ void UI_RegisterCvars( void ) {
 	size_t i = 0;
 	const cvarTable_t *cv = NULL;
 
+	startup = qtrue;
 	for ( i=0, cv=uiCvarTable; i<uiCvarTableSize; i++, cv++ ) {
 		trap->Cvar_Register( cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags );
 		if ( cv->update )
 			cv->update();
 	}
+	startup = qfalse;
 }
 
 void UI_UpdateCvars( void ) {

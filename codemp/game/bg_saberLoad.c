@@ -2427,6 +2427,10 @@ void WP_SaberGetHiltInfo( const char *singleHilts[MAX_SABER_HILTS], const char *
 	const char	*saberName;
 	const char	*token;
 	const char	*p;
+#ifdef UI_BUILD
+	int			w = 0;
+	qboolean	baseHilt = qfalse;
+#endif
 
 	//go through all the loaded sabers and put the valid ones in the proper list
 	p = saberParms;
@@ -2455,6 +2459,20 @@ void WP_SaberGetHiltInfo( const char *singleHilts[MAX_SABER_HILTS], const char *
 			SkipBracedSection( &p, 0 );
 			continue;
 		}
+
+#ifdef UI_BUILD
+		baseHilt = qfalse;
+		if (ui_sv_pure.integer) {
+			for (w = 0; w <= BASE_HILT_COUNT; w++) {
+				if (!Q_stricmp(saberName, baseHiltList[w])) {
+					baseHilt = qtrue;
+					break;
+				}
+			}
+			if (!baseHilt)
+				continue;
+		}
+#endif
 
 		if ( WP_IsSaberTwoHanded( saberName ) )
 		{
