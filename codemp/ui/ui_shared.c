@@ -5766,10 +5766,17 @@ void Item_ListBox_Paint(itemDef_t *item) {
 #endif
 				}
 
+#ifndef _CGAME
+				if (i == item->cursorPos) {
+					if ((int)item->special != FEEDER_Q3HEADS || ui_selectedModelIndex.integer != -1)
+						DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, item->window.borderColor);
+				}
+#else
 				if (i == item->cursorPos)
 				{
 					DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, item->window.borderColor);
 				}
+#endif
 
 				sizeWidth -= listPtr->elementWidth;
 				if (sizeWidth < listPtr->elementWidth)
