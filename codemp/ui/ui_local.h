@@ -329,7 +329,7 @@ typedef struct uiInfo_s {
 	int						modCount;
 	int						modIndex;
 
-	char					demoList[MAX_DEMOS][MAX_QPATH];
+	char					demoList[MAX_DEMOS][MAX_STRING_CHARS];
 	int						demoCount;
 	int						demoIndex;
 	int						loadedDemos;

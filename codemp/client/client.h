@@ -241,7 +241,7 @@ typedef struct clientConnection_s {
 	qboolean	downloadRestart;	// if true, we need to do another FS_Restart because we downloaded a pak
 
 	// demo information
-	char		demoName[MAX_QPATH];
+	char		demoName[MAX_STRING_CHARS];
 	qboolean	spDemoRecording;
 	qboolean	demorecording;
 	qboolean	demoplaying;
