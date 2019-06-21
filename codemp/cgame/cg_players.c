@@ -1844,8 +1844,14 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// team
 	v = Info_ValueForKey( configstring, "t" );
 	newInfo.team = atoi( v );
-	if (ci && newInfo.team != ci->team)
-		ci->deaths = 0; //reset their death count if they switched teams
+
+	newInfo.deaths = 0;
+	if (ci) {
+		if (newInfo.team != ci->team)
+			newInfo.deaths = 0; //reset their death count if they switched teams
+		else
+			newInfo.deaths = ci->deaths;
+	}
 
 	// copy team info out to menu
 	if ( clientNum == cg.clientNum )	//this is me
