@@ -37,6 +37,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "snd_local.h"
 #include "sys/sys_loadlib.h"
 
+cvar_t *cl_name;
+
 cvar_t	*cl_renderer;
 
 cvar_t	*cl_nodelta;
@@ -54,7 +56,6 @@ cvar_t	*cl_maxpackets;
 cvar_t	*cl_packetdup;
 cvar_t	*cl_timeNudge;
 cvar_t	*cl_showTimeDelta;
-cvar_t	*cl_freezeDemo;
 
 cvar_t	*cl_shownet;
 cvar_t	*cl_showSend;
@@ -85,6 +86,7 @@ cvar_t	*cl_motdString;
 
 cvar_t	*cl_allowDownload;
 cvar_t	*cl_allowAltEnter;
+cvar_t	*cl_allowEnterCompletion;
 cvar_t	*cl_conXOffset;
 cvar_t	*cl_inGameVideo;
 
@@ -96,6 +98,10 @@ cvar_t	*cl_framerate;
 cvar_t	*cl_enableGuid;
 cvar_t	*cl_guidServerUniq;
 
+cvar_t	*cl_idrive; //JAPRO ENGINE
+
+cvar_t	*protocolswitch;
+
 cvar_t	*cl_autolodscale;
 
 cvar_t	*cl_consoleKeys;
@@ -104,6 +110,26 @@ cvar_t	*cl_consoleUseScanCode;
 cvar_t  *cl_lanForcePackets;
 
 cvar_t	*cl_drawRecording;
+
+//EternalJK
+cvar_t	*cl_ratioFix;
+
+cvar_t	*cl_colorString;
+cvar_t	*cl_colorStringCount;
+cvar_t	*cl_colorStringRandom;
+
+cvar_t	*cl_chatStylePrefix;
+cvar_t	*cl_chatStyleSuffix;
+
+int		cl_unfocusedTime;
+cvar_t	*cl_afkTime;
+cvar_t	*cl_afkTimeUnfocused;
+
+cvar_t	*cl_logChat;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+cvar_t	*cl_discordRichPresence;
+#endif
 
 vec3_t cl_windVec;
 
@@ -263,7 +289,7 @@ Begins recording a demo from the current position
 */
 static char		demoName[MAX_QPATH];	// compiler bug workaround
 void CL_Record_f( void ) {
-	char		name[MAX_OSPATH];
+	char		name[MAX_OSPATH], extension[32];
 	byte		bufData[MAX_MSGLEN];
 	msg_t	buf;
 	int			i;
@@ -290,19 +316,25 @@ void CL_Record_f( void ) {
 	}
 
 	// sync 0 doesn't prevent recording, so not forcing it off .. everyone does g_sync 1 ; record ; g_sync 0 ..
-	if ( NET_IsLocalAddress( clc.serverAddress ) && !Cvar_VariableValue( "g_synchronousClients" ) ) {
+	//^kill yourself
+	/*if ( NET_IsLocalAddress( clc.serverAddress ) && !Cvar_VariableValue( "g_synchronousClients" ) ) {
 		Com_Printf (S_COLOR_YELLOW "WARNING: You should set 'g_synchronousClients 1' for smoother demo recording\n");
-	}
+	}*/
+
+	if (protocolswitch->integer != 2)
+		Com_sprintf(extension, sizeof(extension), "dm_%d", PROTOCOL_VERSION);
+	else
+		Com_sprintf(extension, sizeof(extension), "dm_%d", PROTOCOL_LEGACY);
 
 	if ( Cmd_Argc() == 2 ) {
 		s = Cmd_Argv(1);
 		Q_strncpyz( demoName, s, sizeof( demoName ) );
-		Com_sprintf (name, sizeof(name), "demos/%s.dm_%d", demoName, PROTOCOL_VERSION );
+		Com_sprintf(name, sizeof(name), "demos/%s.%s", demoName, extension);
 	} else {
 		// timestamp the file
 		CL_DemoFilename( demoName, sizeof( demoName ) );
 
-		Com_sprintf (name, sizeof(name), "demos/%s.dm_%d", demoName, PROTOCOL_VERSION );
+		Com_sprintf(name, sizeof(name), "demos/%s.%s", demoName, extension);
 
 		if ( FS_FileExists( name ) ) {
 			Com_Printf( "Record: Couldn't create a file\n");
@@ -489,7 +521,13 @@ static void CL_CompleteDemoName( char *args, int argNum )
 	if( argNum == 2 )
 	{
 		char demoExt[16];
+		char demoExt2[16];
 
+		//this might be weird if someone has a bunch of 1.01 demos and one 1.00 demo, or vice versa
+		//need to check for both extensions @ the same time somehow
+		Com_sprintf(demoExt2, sizeof(demoExt2), ".dm_%d", PROTOCOL_LEGACY);
+		Field_CompleteFilename("demos", demoExt2, qfalse , qtrue);
+		
 		Com_sprintf(demoExt, sizeof(demoExt), ".dm_%d", PROTOCOL_VERSION);
 		Field_CompleteFilename( "demos", demoExt, qtrue, qtrue );
 	}
@@ -507,7 +545,7 @@ void CL_PlayDemo_f( void ) {
 	char		name[MAX_OSPATH], extension[32];
 	char		*arg;
 
-	if (Cmd_Argc() != 2) {
+	if (Cmd_Argc() < 2) {
 		Com_Printf ("demo <demoname>\n");
 		return;
 	}
@@ -517,15 +555,33 @@ void CL_PlayDemo_f( void ) {
 	Cvar_Set( "sv_killserver", "2" );
 
 	// open the demo file
-	arg = Cmd_Argv(1);
+	arg = Cmd_Args();
 
 	CL_Disconnect( qtrue );
 
-	Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_VERSION);
-	if ( !Q_stricmp( arg + strlen(arg) - strlen(extension), extension ) ) {
-		Com_sprintf (name, sizeof(name), "demos/%s", arg);
-	} else {
-		Com_sprintf (name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_VERSION);
+
+	//could probably be alot cleaner
+	//look for the old protocol first
+	Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_LEGACY);
+	if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
+		Com_sprintf(name, sizeof(name), "demos/%s", arg);
+	}
+	else {
+		Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_LEGACY);
+	}
+
+	if (!FS_FileExists(name)) {//start over w/ normal protocol idk
+		Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_VERSION);
+		if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
+			Com_sprintf(name, sizeof(name), "demos/%s", arg);
+		}
+		else {
+			Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_VERSION);
+		}
+	}
+
+	if (!FS_FileExists(name)) { //couldn't find a file with either extension?
+		Com_sprintf(name, sizeof(name), "demos/%s", arg); //strip the extension, if they see either extension in the error box then they probably did something dumb
 	}
 
 	FS_FOpenFileRead( name, &clc.demofile, qtrue );
@@ -555,6 +611,49 @@ void CL_PlayDemo_f( void ) {
 	// don't get the first snapshot this frame, to prevent the long
 	// time from the gamestate load from messing causing a time skip
 	clc.firstDemoFrameSkipped = qfalse;
+}
+
+void CL_DelDemo_f(void) {
+	char		name[MAX_OSPATH], extension[32];
+	char		*arg;
+
+	if (Cmd_Argc() < 2) {
+		Com_Printf("deletedemo <demoname>\n");
+		return;
+	}
+
+	arg = Cmd_Args();
+
+	//look for the old protocol first
+	Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_LEGACY);
+	if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
+		Com_sprintf(name, sizeof(name), "demos/%s", arg);
+	}
+	else {
+		Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_LEGACY);
+	}
+
+	if (!FS_FileExists(name)) {//start over w/ normal protocol idk
+		Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_VERSION);
+		if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
+			Com_sprintf(name, sizeof(name), "demos/%s", arg);
+		}
+		else {
+			Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_VERSION);
+		}
+	}
+
+	if (!FS_FileExists(name)) { //couldn't find a file with either extension?
+		Com_sprintf(name, sizeof(name), "demos/%s", arg); //strip the extension, if they see either extension in the error box then they probably did something dumb
+	}
+
+	if (!FS_FileExists(name)) {
+		Com_Printf("^1Can't find demofile %s\n", name);
+	}
+	else {
+		FS_HomeRemove(name);
+		Com_Printf("^3Deleted demofile %s\n", name);
+	}
 }
 
 
@@ -1161,6 +1260,16 @@ void CL_ResetPureClientAtServer( void ) {
 	CL_AddReliableCommand( "vdr", qfalse );
 }
 
+void CL_Mod_Restart_f(void) {
+
+	if (Cmd_Argc() != 2) {
+		Com_Printf("Usage: loadmod <folder name>\n");
+		return;
+	}
+	Cvar_Set("fs_game", Cmd_Argv(1));
+	CL_Vid_Restart_f();
+}
+
 /*
 =================
 CL_Vid_Restart_f
@@ -1527,10 +1636,16 @@ void CL_CheckForResend( void ) {
 	int		port;
 	char	info[MAX_INFO_STRING];
 	char	data[MAX_INFO_STRING+10];
+	qboolean localserver = qfalse;
 
 	// don't send anything if playing back a demo
 	if ( clc.demoplaying ) {
 		return;
+	}
+
+	if (Cvar_VariableIntegerValue("sv_running") != 0) {
+		Cvar_Set("protocolswitch", "1");
+		localserver = qtrue;
 	}
 
 	// resend if we haven't gotten a reply yet
@@ -1550,6 +1665,11 @@ void CL_CheckForResend( void ) {
 	case CA_CONNECTING:
 		// requesting a challenge
 
+		if (!localserver) {
+			Cvar_Set("protocolswitch", "0"); //reset this here, just to be safe?
+			NET_OutOfBandPrint(NS_CLIENT, clc.serverAddress, "getinfo"); //request serverinfo so we know what protocol to use
+		}
+
 		// The challenge request shall be followed by a client challenge so no malicious server can hijack this connection.
 		Com_sprintf(data, sizeof(data), "getchallenge %d", clc.challenge);
 
@@ -1557,11 +1677,24 @@ void CL_CheckForResend( void ) {
 		break;
 
 	case CA_CHALLENGING:
+		if (protocolswitch->integer == 0 && !localserver) {//stall if we somehow got here before the response to our "getinfo" request
+			//Com_Printf("^3no protocol set, stalling\n"); //this would make sense but the request isn't always sent in some cases with poor connection, some servers are also configured to refuse getinfo requests for some reason
+			//break; //just going to assume servers are 1.01 because it's not like there's enough 1.00 servers for this to really matter
+			Com_Printf("^3no response to server getinfo request, assuming protocol 26\n");
+			Cvar_Set("protocolswitch", "1");
+		}
+
 		// sending back the challenge
 		port = (int) Cvar_VariableValue ("net_qport");
 
 		Q_strncpyz( info, Cvar_InfoString( CVAR_USERINFO ), sizeof( info ) );
-		Info_SetValueForKey( info, "protocol", va("%i", PROTOCOL_VERSION ) );
+		if (protocolswitch->integer != 2 || localserver)
+			Info_SetValueForKey(info, "protocol", va("%i", PROTOCOL_VERSION));
+		else
+			Info_SetValueForKey(info, "protocol", va("%i", PROTOCOL_LEGACY));
+
+		Com_DPrintf("^3set protocol %s\n", Info_ValueForKey(info, "protocol"));
+			
 		Info_SetValueForKey( info, "qport", va("%i", port ) );
 		Info_SetValueForKey( info, "challenge", va("%i", clc.challenge ) );
 
@@ -1648,7 +1781,8 @@ CL_InitServerInfo
 */
 void CL_InitServerInfo( serverInfo_t *server, netadr_t *address ) {
 	server->adr = *address;
-	server->clients = 0;
+	//server->clients = 0;
+	//server->filterBots = 0;
 	server->hostName[0] = '\0';
 	server->mapName[0] = '\0';
 	server->maxClients = 0;
@@ -2068,7 +2202,7 @@ void CL_CheckTimeout( void ) {
 	//
 	if ( ( !CL_CheckPaused() || !sv_paused->integer )
 		&& cls.state >= CA_CONNECTED && cls.state != CA_CINEMATIC
-	    && cls.realtime - clc.lastPacketTime > cl_timeout->value*1000) {
+	    && cls.realtime - clc.lastPacketTime > cl_timeout->integer*1000) {
 		if (++cl.timeoutcount > 5) {	// timeoutcount saves debugger
 			const char *psTimedOut = SE_GetString("MP_SVGAME_SERVER_CONNECTION_TIMED_OUT");
 			Com_Printf ("\n%s\n",psTimedOut);
@@ -2123,6 +2257,104 @@ void CL_CheckUserinfo( void ) {
 
 }
 
+qboolean cl_afkName;
+static const char *afkPrefix = "[AFK]";
+static const size_t afkPrefixLen = strlen(afkPrefix);
+
+static void CL_GetAfk(void) {
+	if (!Q_strncmp(cl_name->string, afkPrefix, afkPrefixLen)) {
+		cl_afkName = qtrue;
+	}
+	else {
+		cl_afkName = qfalse;
+	}
+}
+
+extern cvar_t	*con_notifywords;
+#define			MAX_NOTIFYWORDS 8
+char			notifyWords[MAX_NOTIFYWORDS][32];
+
+static void CL_AddNotificationName(char *str) {
+	int i;
+
+	//Com_Printf("Adding %s\n", str);
+	for (i = 0; i<MAX_NOTIFYWORDS; i++) {
+		//Com_Printf("Slot is %s", notifyWords[i]);
+		if (!strcmp(notifyWords[i], "")) {
+			//Com_Printf("Copying to %i\n", i);
+			Q_strncpyz(notifyWords[i], str, sizeof(notifyWords[i]));
+			return;
+		}
+	}
+	//Error, max words
+}
+
+static void CL_UpdateNotificationWords(void) {
+	char * pch;
+	char words[MAX_CVAR_VALUE_STRING];
+
+	Q_strncpyz(words, con_notifywords->string, sizeof(words));
+	memset(notifyWords, 0, sizeof(notifyWords));
+	pch = strtok(words, " ");
+	while (pch != NULL) {
+		CL_AddNotificationName(pch);
+		pch = strtok(NULL, " ");
+	}
+}
+/*
+//debug
+static void CL_PrintNotificationWords() {
+	int i;
+
+	for (i = 0; i<MAX_NOTIFYWORDS; i++) {
+		if (strcmp(notifyWords[i], "")) {
+			Com_Printf("Notification word: %s\n", notifyWords[i]);
+		}
+		else break;
+	}
+}
+*/
+
+static void CL_UpdateWidescreen(void) {
+	if (cl_ratioFix->integer)
+		cls.widthRatioCoef = (float)(SCREEN_WIDTH * cls.glconfig.vidHeight) / (float)(SCREEN_HEIGHT * cls.glconfig.vidWidth);
+	else
+		cls.widthRatioCoef = 1.0f;
+}
+
+
+int cl_nameModifiedTime = 0;
+static int lastModifiedColors = 0;
+static int lastModifiedName = 0;
+static int lastModifiedNotifyName = 0;
+static int widescreenModificationCount = 0;
+static void CL_CheckCvarUpdate(void) {
+	if (lastModifiedColors != cl_colorString->modificationCount) {
+		// recalculate cl_colorStringCount
+		lastModifiedColors = cl_colorString->modificationCount;
+		int count = cl_colorString->integer;
+		count = count - ((count >> 1) & 0x55555555);
+		count = (count & 0x33333333) + ((count >> 2) & 0x33333333);
+		count = (((count + (count >> 4)) & 0x0f0f0f0f) * 0x01010101) >> 24;
+		Cvar_Set("cl_colorStringCount", va("%i", count));
+	}
+
+	if (lastModifiedName != cl_name->modificationCount) {
+		lastModifiedName = cl_name->modificationCount;
+		cl_nameModifiedTime = cls.realtime;
+		CL_GetAfk();
+	}
+	if (lastModifiedNotifyName != con_notifywords->modificationCount) {
+		lastModifiedNotifyName = con_notifywords->modificationCount;
+		CL_UpdateNotificationWords();
+		//CL_PrintNotificationWords();
+	}
+	if (widescreenModificationCount != cl_ratioFix->modificationCount) {
+		widescreenModificationCount = cl_ratioFix->modificationCount;
+		CL_UpdateWidescreen();
+	}
+}
+
 /*
 ==================
 CL_Frame
@@ -2133,10 +2365,18 @@ static unsigned int frameCount;
 static float avgFrametime=0.0;
 extern void SE_CheckForLanguageUpdates(void);
 void CL_Frame ( int msec ) {
+	qboolean render = qfalse;
 	qboolean takeVideoFrame = qfalse;
+
+	CL_CheckCvarUpdate();
 
 	if ( !com_cl_running->integer ) {
 		return;
+	}
+
+	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer)))) {
+		render = qtrue;
+		cls.lastDrawTime = cls.realtime;
 	}
 
 	SE_CheckForLanguageUpdates();	// will take zero time to execute unless language changes, then will reload strings.
@@ -2191,7 +2431,9 @@ void CL_Frame ( int msec ) {
 
 	// if we haven't gotten a packet in a long time,
 	// drop the connection
-	CL_CheckTimeout();
+	if (!clc.demoplaying) {
+		CL_CheckTimeout();
+	}
 
 	// send intentions now
 	CL_SendCmd();
@@ -2202,11 +2444,13 @@ void CL_Frame ( int msec ) {
 	// decide on the serverTime to render
 	CL_SetCGameTime();
 
-	// update the screen
-	SCR_UpdateScreen();
+	if (render) {
+		// update the screen
+		SCR_UpdateScreen();
 
-	// update audio
-	S_Update();
+		// update audio
+		S_Update();
+	}
 
 	// advance local effects for next frame
 	SCR_RunCinematic();
@@ -2225,6 +2469,27 @@ void CL_Frame ( int msec ) {
 		// save the current screen
 		CL_TakeVideoFrame( );
 	}
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer) {
+		if ( cls.realtime >= 5000 && !cls.discordInitialized )
+		{ //we just turned it on
+			CL_DiscordInitialize();
+			cls.discordInitialized = qtrue;
+		}
+	
+		if ( cls.realtime >= cls.discordUpdateTime && cls.discordInitialized )
+		{
+			CL_DiscordUpdatePresence();
+			cls.discordUpdateTime = cls.realtime + 500;
+		}
+	}
+	else if (cls.discordInitialized) { //we just turned it off
+		CL_DiscordShutdown();
+		cls.discordUpdateTime = 0;
+		cls.discordInitialized = qfalse;
+	}
+#endif
 }
 
 
@@ -2291,9 +2556,9 @@ void CL_InitRenderer( void ) {
 	cls.charSetShader = re->RegisterShaderNoMip("gfx/2d/charsgrid_med");
 
 	cls.whiteShader = re->RegisterShader( "white" );
-	cls.consoleShader = re->RegisterShader( "console" );
-	g_console_field_width = cls.glconfig.vidWidth / SMALLCHAR_WIDTH - 2;
-	g_consoleField.widthInChars = g_console_field_width;
+	cls.consoleShader = re->RegisterShader("console");
+
+	CL_UpdateWidescreen();
 }
 
 /*
@@ -2360,7 +2625,7 @@ static IHeapAllocator *GetG2VertSpaceServer( void ) {
 	return G2VertSpaceServer;
 }
 
-#define DEFAULT_RENDER_LIBRARY "rd-vanilla"
+#define DEFAULT_RENDER_LIBRARY "rd-eternaljk"
 
 void CL_InitRef( void ) {
 	static refimport_t ri;
@@ -2619,6 +2884,249 @@ static void CL_AddFavorite_f( void ) {
 	}
 }
 
+void CL_Afk_f(void) {
+	char name[MAX_TOKEN_CHARS];
+	Cvar_VariableStringBuffer("name", name, sizeof(name));
+	if (cls.realtime - cl_nameModifiedTime <= 5000)
+		Com_Printf("You must wait 5 seconds before changing your name again.\n");
+	else {
+		if (cl_afkName) {
+			Cvar_Set("name", name + afkPrefixLen);
+		}
+		else {
+			Cvar_Set("name", va("%s%s", afkPrefix, name));
+		}
+	}
+}
+
+typedef struct bitInfo_S {
+	const char	*string;
+} bitInfo_t;
+
+static bitInfo_t colors[] = {
+	{ "^0BLACK" },
+	{ "^1RED" },
+	{ "^2GREEN" },
+	{ "^3YELLOW" },
+	{ "^4BLUE" },
+	{ "^5CYAN" },
+	{ "^6MAGENTA" },
+	{ "^7WHITE" },
+	{ "^8ORANGE" },
+	{ "^9GRAY" }
+};
+
+static void CL_ColorString_f(void) {
+	if (Cmd_Argc() == 1) {
+		int i = 0;
+		for (i = 0; i < 10; i++) {
+			if ((cl_colorString->integer & (1 << i))) {
+				Com_Printf("%2d [X] %s\n", i, colors[i].string);
+			}
+			else {
+				Com_Printf("%2d [ ] %s\n", i, colors[i].string);
+			}
+		}
+		return;
+	}
+	else if (Cmd_Argc() == 2) {
+		char arg[8] = { 0 };
+		int index;
+		const uint32_t mask = (1 << 10) - 1;
+		
+		Cmd_ArgvBuffer(1, arg, sizeof(arg));
+		index = atoi(arg);
+
+		if (index == -1) {
+			Cvar_Set("cl_colorString", "0");
+			Com_Printf("colorString: All colors are now ^1disabled\n");
+			return;
+		}
+
+		if (index == 10) {
+			Cvar_Set("cl_colorString", "1023");
+			Com_Printf("colorString: All colors are now ^2enabled\n");
+			return;
+		}
+
+		if (index < 0 || index >= 10) {
+			Com_Printf("colorString: Invalid range: %i [0, %i]\n", index, 9);
+			return;
+		}
+
+		Cvar_Set("cl_colorString", va("%i", (1 << index) ^ (cl_colorString->integer & mask)));
+
+		Com_Printf("%s %s^7\n", colors[index].string, ((cl_colorString->integer & (1 << index))
+			? "^2Enabled" : "^1Disabled"));
+	}
+	else {
+		char arg[8] = { 0 };
+		int i, argc, index[10], bits = 0;
+		const uint32_t mask = (1 << 10) - 1;
+
+		if ((argc = Cmd_Argc() - 1) > 10) {
+			Com_Printf("colorString: More than 10 arguments were entered");
+			return;
+		}
+
+		for (i = 0; i < argc; i++) {
+			Cmd_ArgvBuffer(i+1, arg, sizeof(arg));
+			index[i] = atoi(arg);
+
+			if (index[i] < 0 || index[i] >= 10) {
+				Com_Printf("colorString: Invalid range: %i [0, %i]\n", index[i], 9);
+				return;
+			}
+
+			if ((bits & mask) & (1 << index[i])) {
+				Com_Printf("colorString: %s ^7was entered more than once\n", colors[index[i]].string);
+				return;
+			}
+
+			bits = (1 << index[i]) ^ (bits & mask);
+		}
+
+		Cvar_Set("cl_colorString", va("%i", bits));
+
+		for (i = 0; i < 10; i++) {
+			if ((cl_colorString->integer & (1 << i))) {
+				Com_Printf("%2d [X] %s\n", i, colors[i].string);
+			}
+			else {
+				Com_Printf("%2d [ ] %s\n", i, colors[i].string);
+			}
+		}
+	}
+}
+
+void CL_RandomizeColors(const char *in, char *out) {
+	int count = cl_colorStringCount->integer;
+	int i, random, j = 0, store = 0;
+	const char *p = in;
+	char *s = out, c;
+	
+	while ((c = *p++)) {
+		if (c == '^' && *p != '\0' && *p >= '0' && *p <= '9') {
+			*s++ = c;
+			*s++ = *p++;
+			c = *p++;
+			store = 0;
+		}
+		else if (count == 1) {
+			if (store == 0) {
+				for (i = 0; i < 10; i++) {
+					if ((cl_colorString->integer & (1 << i))) {
+						store = i;
+						*s++ = '^';
+						*s++ = i + '0';
+						break;
+					}
+				}
+			}
+		}
+		else if (store != (random = irand(1, count*(store == 0
+			? 1 : cl_colorStringRandom->integer))) && random <= count) {
+			for (i = 0; i < 10; i++) {
+				if ((cl_colorString->integer & (1 << i)) && (random - 1) == j++) {
+					store = random;
+					*s++ = '^';
+					*s++ = i + '0';
+				}
+			}
+			j = 0;
+		}
+		*s++ = c;
+	}
+	*s = '\0';
+}
+
+static void CL_ColorName_f(void) {
+	char name[MAX_TOKEN_CHARS];
+	char coloredName[MAX_TOKEN_CHARS];
+	int storebits = cl_colorString->integer;
+	int storebitcount = cl_colorStringCount->integer;
+
+	if (cls.realtime - cl_nameModifiedTime <= 5000) {
+		Com_Printf("You must wait 5 seconds before changing your name again.\n");
+		return;
+	}
+
+	Cvar_VariableStringBuffer("name", name, sizeof(name));
+	Q_StripColor(name);
+	if (Cmd_Argc() == 1) {
+		CL_RandomizeColors(name, coloredName);
+		Cvar_Set("name", va("%s", coloredName));
+		return;
+	}
+	else if (Cmd_Argc() == 2) {
+		char arg[8] = { 0 };
+		int index;
+		const uint32_t mask = (1 << 10) - 1;
+
+		Cmd_ArgvBuffer(1, arg, sizeof(arg));
+		index = atoi(arg);
+
+		if (index == -1) {
+			Cvar_Set("name", va("%s", name));
+			return;
+		}
+
+		if (index == 10) {
+			cl_colorString->integer = 1023;
+			cl_colorStringCount->integer = 10;
+			CL_RandomizeColors(name, coloredName);
+			Cvar_Set("name", va("%s", coloredName));
+			cl_colorString->integer = storebits;
+			cl_colorStringCount->integer = storebitcount;
+			return;
+		}
+
+		if (index < 0 || index >= 10) {
+			Com_Printf("colorName: Invalid range: %i [0, %i]\n", index, 9);
+			return;
+		}
+
+		cl_colorStringCount->integer = 1;
+		cl_colorString->integer = 0;
+		cl_colorString->integer = (1 << index) ^ (cl_colorString->integer & mask);
+	}
+	else {
+		char arg[8] = { 0 };
+		int i, argc, index[10], bits = 0;
+		const uint32_t mask = (1 << 10) - 1;
+
+		if ((argc = Cmd_Argc() - 1) > 10) {
+			Com_Printf("colorName: More than 10 arguments were entered");
+			return;
+		}
+
+		for (i = 0; i < argc; i++) {
+			Cmd_ArgvBuffer(i + 1, arg, sizeof(arg));
+			index[i] = atoi(arg);
+
+			if (index[i] < 0 || index[i] >= 10) {
+				Com_Printf("colorName: Invalid range: %i [0, %i]\n", index[i], 9);
+				return;
+			}
+
+			if ((bits & mask) & (1 << index[i])) {
+				Com_Printf("colorName: %s ^7was entered more than once\n", colors[index[i]].string);
+				return;
+			}
+
+			bits = (1 << index[i]) ^ (bits & mask);
+		}
+
+		cl_colorStringCount->integer = argc;
+		cl_colorString->integer = bits;
+	}
+
+	CL_RandomizeColors(name, coloredName);
+	Cvar_Set("name", va("%s", coloredName));
+	cl_colorString->integer = storebits;
+	cl_colorStringCount->integer = storebitcount;
+}
+
 #define G2_VERT_SPACE_CLIENT_SIZE 256
 
 /*
@@ -2699,7 +3207,6 @@ void CL_Init( void ) {
 	cl_shownet = Cvar_Get ("cl_shownet", "0", CVAR_TEMP );
 	cl_showSend = Cvar_Get ("cl_showSend", "0", CVAR_TEMP );
 	cl_showTimeDelta = Cvar_Get ("cl_showTimeDelta", "0", CVAR_TEMP );
-	cl_freezeDemo = Cvar_Get ("cl_freezeDemo", "0", CVAR_TEMP );
 	rcon_client_password = Cvar_Get ("rconPassword", "", CVAR_TEMP, "Password for remote console access" );
 	cl_activeAction = Cvar_Get( "activeAction", "", CVAR_TEMP );
 
@@ -2711,11 +3218,17 @@ void CL_Init( void ) {
 
 	rconAddress = Cvar_Get ("rconAddress", "", 0, "Alternate server address to remotely access via rcon protocol");
 
+	protocolswitch = Cvar_Get("protocolswitch", "0", CVAR_ROM|CVAR_INTERNAL|CVAR_PROTECTED|CVAR_NORESTART, "Sets protocol based on server info response");
+
+	//Static cvars for UI
+	Cvar_Get("com_protocol", va("%i", PROTOCOL_VERSION), CVAR_ROM, "1.01 protocol");
+	Cvar_Get("com_legacyprotocol", va("%i", PROTOCOL_LEGACY), CVAR_ROM, "1.00 protocol");
+
 	cl_yawspeed = Cvar_Get ("cl_yawspeed", "140", CVAR_ARCHIVE_ND );
 	cl_pitchspeed = Cvar_Get ("cl_pitchspeed", "140", CVAR_ARCHIVE_ND );
 	cl_anglespeedkey = Cvar_Get ("cl_anglespeedkey", "1.5", CVAR_ARCHIVE_ND );
 
-	cl_maxpackets = Cvar_Get ("cl_maxpackets", "63", CVAR_ARCHIVE );
+	cl_maxpackets = Cvar_Get ("cl_maxpackets", "125", CVAR_ARCHIVE );
 	cl_packetdup = Cvar_Get ("cl_packetdup", "1", CVAR_ARCHIVE_ND );
 
 	cl_run = Cvar_Get ("cl_run", "1", CVAR_ARCHIVE_ND, "Always run");
@@ -2734,6 +3247,7 @@ void CL_Init( void ) {
 	cl_framerate	= Cvar_Get ("cl_framerate", "0", CVAR_TEMP);
 	cl_allowDownload = Cvar_Get ("cl_allowDownload", "0", CVAR_ARCHIVE_ND, "Allow downloading custom paks from server");
 	cl_allowAltEnter = Cvar_Get ("cl_allowAltEnter", "1", CVAR_ARCHIVE_ND, "Enables use of ALT+ENTER keyboard combo to toggle fullscreen" );
+	cl_allowEnterCompletion = Cvar_Get("cl_allowEnterCompletion", "1", CVAR_ARCHIVE, "Enables autocomplete when pressing enter");
 
 	cl_autolodscale = Cvar_Get( "cl_autolodscale", "1", CVAR_ARCHIVE_ND );
 
@@ -2775,7 +3289,7 @@ void CL_Init( void ) {
 	cl_consoleUseScanCode = Cvar_Get( "cl_consoleUseScanCode", "1", CVAR_ARCHIVE, "Use native console key detection" );
 
 	// userinfo
-	Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
+	cl_name = Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
 	Cvar_Get ("rate", "25000", CVAR_USERINFO | CVAR_ARCHIVE, "Data rate" );
 	Cvar_Get ("snaps", "40", CVAR_USERINFO | CVAR_ARCHIVE, "Client snapshots per second" );
 	Cvar_Get ("model", DEFAULT_MODEL"/default", CVAR_USERINFO | CVAR_ARCHIVE, "Player model" );
@@ -2786,7 +3300,7 @@ void CL_Init( void ) {
 	Cvar_Get ("color2", "4", CVAR_USERINFO | CVAR_ARCHIVE, "Player saber2 color" );
 	Cvar_Get ("handicap", "100", CVAR_USERINFO | CVAR_ARCHIVE, "Player handicap" );
 	Cvar_Get ("sex", "male", CVAR_USERINFO | CVAR_ARCHIVE, "Player sex" );
-	Cvar_Get ("password", "", CVAR_USERINFO, "Password to join server" );
+	Cvar_Get ("password", "", CVAR_USERINFO|CVAR_NORESTART, "Password to join server" );
 	Cvar_Get ("cg_predictItems", "1", CVAR_USERINFO | CVAR_ARCHIVE );
 
 	//default sabers
@@ -2801,6 +3315,25 @@ void CL_Init( void ) {
 	// cgame might not be initialized before menu is used
 	Cvar_Get ("cg_viewsize", "100", CVAR_ARCHIVE_ND );
 
+	cl_ratioFix = Cvar_Get("cl_ratioFix", "1", CVAR_ARCHIVE, "Widescreen aspect ratio correction");
+
+	cl_colorString = Cvar_Get("cl_colorString", "0", CVAR_ARCHIVE, "Bit value of selected colors in colorString, configure chat colors with /colorstring");
+	cl_colorStringCount = Cvar_Get("cl_colorStringCount", "0", CVAR_INTERNAL | CVAR_ROM | CVAR_ARCHIVE);
+	cl_colorStringRandom = Cvar_Get("cl_colorStringRandom", "2", CVAR_ARCHIVE, "Randomness of the colors changing, higher numbers are less random");
+
+	cl_chatStylePrefix = Cvar_Get("cl_chatStylePrefix", "", CVAR_ARCHIVE, "String inserted before sent chat messages");
+	cl_chatStyleSuffix = Cvar_Get("cl_chatStyleSuffix", "", CVAR_ARCHIVE, "String appended to send chat messages");
+
+	cl_afkTime = Cvar_Get("cl_afkTime", "10", CVAR_ARCHIVE, "Minutes to autorename to afk, 0 to disable");
+	cl_afkTimeUnfocused = Cvar_Get("cl_afkTimeUnfocused", "5", CVAR_ARCHIVE, "Minutes to autorename to afk while unfocused/minimized");
+	cl_unfocusedTime = 0;
+
+	cl_logChat = Cvar_Get("cl_logChat", "0", CVAR_ARCHIVE, "Toggle engine chat logs");
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	cl_discordRichPresence = Cvar_Get("cl_discordRichPresence", "1", CVAR_ARCHIVE, "Allow/disallow sharing current game information on Discord profile status");
+#endif
+
 	//
 	// register our commands
 	//
@@ -2810,11 +3343,16 @@ void CL_Init( void ) {
 	Cmd_AddCommand ("record", CL_Record_f, "Record a demo" );
 	Cmd_AddCommand ("demo", CL_PlayDemo_f, "Playback a demo" );
 	Cmd_SetCommandCompletionFunc( "demo", CL_CompleteDemoName );
+	Cmd_AddCommand("playdemo", CL_PlayDemo_f, "Playback a demo"); //source engine inspired alias
+	Cmd_SetCommandCompletionFunc("playdemo", CL_CompleteDemoName);
+	Cmd_AddCommand("deletedemo", CL_DelDemo_f, "Delete a demo");
+	Cmd_SetCommandCompletionFunc("deletedemo", CL_CompleteDemoName);
 	Cmd_AddCommand ("stoprecord", CL_StopRecord_f, "Stop recording a demo" );
 	Cmd_AddCommand ("configstrings", CL_Configstrings_f, "Prints the configstrings list" );
 	Cmd_AddCommand ("clientinfo", CL_Clientinfo_f, "Prints the userinfo variables" );
 	Cmd_AddCommand ("snd_restart", CL_Snd_Restart_f, "Restart sound" );
 	Cmd_AddCommand ("vid_restart", CL_Vid_Restart_f, "Restart the renderer - or change the resolution" );
+	Cmd_AddCommand ("loadmod", CL_Mod_Restart_f, "Restart the renderer (with specified mod folder) - or change the resolution");
 	Cmd_AddCommand ("disconnect", CL_Disconnect_f, "Disconnect from current server" );
 	Cmd_AddCommand ("cinematic", CL_PlayCinematic_f, "Play a cinematic video" );
 	Cmd_AddCommand ("connect", CL_Connect_f, "Connect to a server" );
@@ -2829,8 +3367,13 @@ void CL_Init( void ) {
 	Cmd_AddCommand ("fs_referencedList", CL_ReferencedPK3List_f, "Lists referenced pak files" );
 	Cmd_AddCommand ("model", CL_SetModel_f, "Set the player model" );
 	Cmd_AddCommand ("forcepowers", CL_SetForcePowers_f );
+	Cmd_AddCommand ("userinfo", CL_Clientinfo_f);
 	Cmd_AddCommand ("video", CL_Video_f, "Record demo to avi" );
 	Cmd_AddCommand ("stopvideo", CL_StopVideo_f, "Stop avi recording" );
+
+	Cmd_AddCommand("afk", CL_Afk_f, "Rename to or from afk");
+	Cmd_AddCommand("colorstring", CL_ColorString_f, "Color say text");
+	Cmd_AddCommand("colorname", CL_ColorName_f, "Color name");
 
 	CL_InitRef();
 
@@ -2842,8 +3385,15 @@ void CL_Init( void ) {
 
 	G2VertSpaceClient = new CMiniHeap (G2_VERT_SPACE_CLIENT_SIZE * 1024);
 
-	CL_GenerateQKey();
+	CL_GenerateQKey(); //loda fixme, malware warning!
 	CL_UpdateGUID( NULL, 0 );
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer) {
+		CL_DiscordInitialize();
+		cls.discordInitialized = qtrue;
+	}
+#endif
 
 //	Com_Printf( "----- Client Initialization Complete -----\n" );
 }
@@ -2888,13 +3438,15 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand ("disconnect");
 	Cmd_RemoveCommand ("record");
 	Cmd_RemoveCommand ("demo");
+	Cmd_RemoveCommand ("playdemo");
+	Cmd_RemoveCommand ("deletedemo");
 	Cmd_RemoveCommand ("cinematic");
 	Cmd_RemoveCommand ("stoprecord");
 	Cmd_RemoveCommand ("connect");
 	Cmd_RemoveCommand ("reconnect");
 	Cmd_RemoveCommand ("localservers");
 	Cmd_RemoveCommand ("globalservers");
-	Cmd_RemoveCommand( "addFavorite" );
+	Cmd_RemoveCommand ( "addFavorite" );
 	Cmd_RemoveCommand ("rcon");
 	Cmd_RemoveCommand ("ping");
 	Cmd_RemoveCommand ("serverstatus");
@@ -2903,8 +3455,18 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand ("fs_referencedList");
 	Cmd_RemoveCommand ("model");
 	Cmd_RemoveCommand ("forcepowers");
+	Cmd_RemoveCommand ("userinfo");
 	Cmd_RemoveCommand ("video");
 	Cmd_RemoveCommand ("stopvideo");
+
+	Cmd_RemoveCommand("afk");
+	Cmd_RemoveCommand("colorstring");
+	Cmd_RemoveCommand("colorname");
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	if (cl_discordRichPresence->integer || cls.discordInitialized)
+		CL_DiscordShutdown();
+#endif
 
 	CL_ShutdownInput();
 	Con_Shutdown();
@@ -2927,8 +3489,13 @@ qboolean CL_ConnectedToRemoteServer( void ) {
 static void CL_SetServerInfo(serverInfo_t *server, const char *info, int ping) {
 	if (server) {
 		if (info) {
-			server->clients = atoi(Info_ValueForKey(info, "clients"));
-			Q_strncpyz(server->hostName,Info_ValueForKey(info, "hostname"), MAX_NAME_LENGTH);
+			char *filteredHostName = Info_ValueForKey(info, "hostname");
+			if (strlen(filteredHostName)) {
+				Q_strstrip(filteredHostName, "\xac\x82\xe2\xa2\x80", NULL);
+				while (*filteredHostName == '\x20' || *filteredHostName == '\x2e') *filteredHostName++;
+			}
+			//server->clients = atoi(Info_ValueForKey(info, "clients"));
+			Q_strncpyz(server->hostName, filteredHostName, MAX_NAME_LENGTH);
 			Q_strncpyz(server->mapName, Info_ValueForKey(info, "mapname"), MAX_NAME_LENGTH);
 			server->maxClients = atoi(Info_ValueForKey(info, "sv_maxclients"));
 			Q_strncpyz(server->game,Info_ValueForKey(info, "game"), MAX_NAME_LENGTH);
@@ -2971,6 +3538,37 @@ static void CL_SetServerInfoByAddress(netadr_t from, const char *info, int ping)
 	}
 }
 
+void CL_SetServerFakeInfoByAddress(netadr_t from, int clients, int bots) {
+	int i;
+
+	for (i = 0; i < MAX_OTHER_SERVERS; i++) {
+		if (NET_CompareAdr(from, cls.localServers[i].adr)) {
+			if (clients != -1) {
+				cls.localServers[i].clients = clients;
+				cls.localServers[i].filterBots = bots;
+			}
+		}
+	}
+
+	for (i = 0; i < MAX_GLOBAL_SERVERS; i++) {
+		if (NET_CompareAdr(from, cls.globalServers[i].adr)) {
+			if (clients != -1) {
+				cls.globalServers[i].clients = clients;
+				cls.globalServers[i].filterBots = bots;
+			}
+		}
+	}
+
+	for (i = 0; i < MAX_OTHER_SERVERS; i++) {
+		if (NET_CompareAdr(from, cls.favoriteServers[i].adr)) {
+			if (clients != -1) {
+				cls.favoriteServers[i].clients = clients;
+				cls.favoriteServers[i].filterBots = bots;
+			}
+		}
+	}
+}
+
 /*
 ===================
 CL_ServerInfoPacket
@@ -2986,8 +3584,24 @@ void CL_ServerInfoPacket( netadr_t from, msg_t *msg ) {
 
 	// if this isn't the correct protocol version, ignore it
 	prot = atoi( Info_ValueForKey( infoString, "protocol" ) );
-	if ( prot != PROTOCOL_VERSION ) {
-		Com_DPrintf( "Different protocol info packet: %s\n", infoString );
+		if ((prot != PROTOCOL_VERSION) && (prot != PROTOCOL_LEGACY)) { //so we don't just ignore 1.00 servers?
+			Com_Printf("Different protocol info packet: %s\n", infoString);
+			return;
+		}
+
+	//multiprotocol "support"
+	if ((cls.state == CA_CONNECTING || cls.state == CA_CHALLENGING) && NET_CompareAdr(from, clc.serverAddress) && !Cvar_VariableIntegerValue("sv_running"))
+	{
+		if (prot == PROTOCOL_VERSION) {
+			Cvar_Set("protocolswitch", "1");
+		}
+		else if (prot == PROTOCOL_LEGACY) {
+			Cvar_Set("protocolswitch", "2");
+		}
+	}
+
+	// if this is an MB2 server, ignore it
+	if (!Q_stricmp(Info_ValueForKey(infoString, "game"), "mbii") && Q_stricmp(Cvar_VariableString("fs_game"), "mbii")) {
 		return;
 	}
 
@@ -3138,6 +3752,7 @@ int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int ma
 			serverStatus->retrieved = qfalse;
 			serverStatus->time = 0;
 			serverStatus->startTime = Com_Milliseconds();
+			NET_OutOfBandPrint(NS_CLIENT, to, "getinfo");
 			NET_OutOfBandPrint( NS_CLIENT, to, "getstatus" );
 			return qfalse;
 		}
@@ -3150,6 +3765,7 @@ int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int ma
 		serverStatus->retrieved = qfalse;
 		serverStatus->startTime = Com_Milliseconds();
 		serverStatus->time = 0;
+		NET_OutOfBandPrint(NS_CLIENT, to, "getinfo");
 		NET_OutOfBandPrint( NS_CLIENT, to, "getstatus" );
 		return qfalse;
 	}
@@ -3166,7 +3782,10 @@ void CL_ServerStatusResponse( netadr_t from, msg_t *msg ) {
 	char	info[MAX_INFO_STRING];
 	int		i, l, score, ping;
 	int		len;
+	int		bots;
 	serverStatus_t *serverStatus;
+
+	CL_SetServerFakeInfoByAddress(from, -1, -1);
 
 	serverStatus = NULL;
 	for (i = 0; i < MAX_SERVERSTATUSREQUESTS; i++) {
@@ -3222,24 +3841,34 @@ void CL_ServerStatusResponse( netadr_t from, msg_t *msg ) {
 		Com_Printf("\nPlayers:\n");
 		Com_Printf("num: score: ping: name:\n");
 	}
+
+	bots = 0;
 	for (i = 0, s = MSG_ReadStringLine( msg ); *s; s = MSG_ReadStringLine( msg ), i++) {
 
 		len = strlen(serverStatus->string);
 		Com_sprintf(&serverStatus->string[len], sizeof(serverStatus->string)-len, "\\%s", s);
 
+		score = ping = 0;
+		sscanf(s, "%d %d", &score, &ping);
+		s = strchr(s, ' ');
+		if (s)
+			s = strchr(s+1, ' ');
+		if (s)
+			s++;
+		else
+			s = "unknown";
+
+		if (ping == 0) {
+			bots++;
+		}
+
 		if (serverStatus->print) {
-			score = ping = 0;
-			sscanf(s, "%d %d", &score, &ping);
-			s = strchr(s, ' ');
-			if (s)
-				s = strchr(s+1, ' ');
-			if (s)
-				s++;
-			else
-				s = "unknown";
 			Com_Printf("%-2d   %-3d    %-3d   %s\n", i, score, ping, s );
 		}
 	}
+
+	CL_SetServerFakeInfoByAddress(from, i, bots);
+
 	len = strlen(serverStatus->string);
 	Com_sprintf(&serverStatus->string[len], sizeof(serverStatus->string)-len, "\\");
 
@@ -3632,6 +4261,16 @@ qboolean CL_UpdateVisiblePings_f(int source) {
 						cl_pinglist[j].start = Sys_Milliseconds();
 						cl_pinglist[j].time = 0;
 						NET_OutOfBandPrint( NS_CLIENT, cl_pinglist[j].adr, "getinfo xxx" );
+
+						serverStatus_t *serverStatus = CL_GetServerStatus(cl_pinglist[j].adr);
+						serverStatus->address = cl_pinglist[j].adr;
+						serverStatus->print = qfalse;
+						serverStatus->pending = qtrue;
+						serverStatus->retrieved = qfalse;
+						serverStatus->startTime = Com_Milliseconds();
+						serverStatus->time = 0;
+						NET_OutOfBandPrint(NS_CLIENT, cl_pinglist[j].adr, "getstatus");
+
 						slots++;
 					}
 				}
@@ -3717,4 +4356,3 @@ CL_ShowIP_f
 void CL_ShowIP_f(void) {
 	Sys_ShowIP();
 }
-

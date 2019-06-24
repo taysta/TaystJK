@@ -118,6 +118,8 @@ void GVM_ClientThink( int clientNum, usercmd_t *ucmd ) {
 }
 
 void GVM_RunFrame( int levelTime ) {
+	if (!gvm)
+		return;
 	if ( gvm->isLegacy ) {
 		VM_Call( gvm, GAME_RUN_FRAME, levelTime );
 		return;
@@ -2797,6 +2799,48 @@ void SV_InitGame( qboolean restart ) {
 		cl->gentity = NULL;
 
 	GVM_InitGame( sv.time, Com_Milliseconds(), restart );
+
+	svs.servermod = SVMOD_UNKNOWN;
+	if (sv_legacyFixes->integer)
+	{
+		char *version = Cvar_VariableString("version");
+		char *gamename = Cvar_VariableString("gamename");
+
+		if (!gamename || !strlen(gamename)) {
+			svs.servermod = SVMOD_UNKNOWN;
+			Com_DPrintf("%sFailed to detect loaded mod!\n", S_COLOR_RED);
+			return;
+		}
+		Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
+
+		if (!Q_stricmpn(gamename, "basejk", 6)) {
+			if (gvm && !gvm->isLegacy)
+				svs.servermod = SVMOD_OPENJK; //some OpenJK forks rename themselves to basejka
+			else
+				svs.servermod = SVMOD_BASEJKA;
+			return;
+		}
+		else if (!Q_stricmpn(gamename, "JA+", 3)) {
+			svs.servermod = SVMOD_JAPLUS;
+			return;
+		}
+		else if (!Q_stricmpn(gamename, "Movie Battles", 13))
+		{
+			svs.servermod = SVMOD_MBII;
+			return;
+		}
+		else if (!Q_stricmpn(gamename, "japro", 5))
+		{
+			svs.servermod = SVMOD_JAPRO;
+			return;
+		}
+		else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
+			svs.servermod = SVMOD_OPENJK;
+			return;
+		}
+
+		Com_DPrintf("%sUnsupported mod detected %s\n", S_COLOR_YELLOW, gamename);
+	}
 }
 
 void SV_BindGame( void ) {
@@ -3128,10 +3172,12 @@ void SV_BindGame( void ) {
 		}
 		ge = ret;
 
+		svs.gvmIsLegacy = qfalse;
 		return;
 	}
 
 	// fall back to legacy syscall/vm_call api
+	svs.gvmIsLegacy = qtrue;
 	gvm = VM_CreateLegacy( VM_GAME, SV_GameSystemCalls );
 	if ( !gvm ) {
 		svs.gameStarted = qfalse;
@@ -3139,10 +3185,20 @@ void SV_BindGame( void ) {
 	}
 }
 
-void SV_UnbindGame( void ) {
+void SV_UnbindGame( void )
+{
+	cvar_t *gamename = Cvar_Get("gamename", "", CVAR_SERVERINFO, "");
+
 	GVM_ShutdownGame( qfalse );
 	VM_Free( gvm );
 	gvm = NULL;
+
+	//reset gamename cvar here so that it stays up to date in-case we switch out mods or something.
+	if (gamename && gamename->string[0] && strlen(gamename->string)) {
+		Cvar_Unset(gamename);
+		gamename = NULL;
+	}
+	svs.gvmIsLegacy = qfalse;
 }
 
 void SV_RestartGame( void ) {

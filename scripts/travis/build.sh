@@ -17,16 +17,28 @@ case "${host}" in
 			-D CMAKE_TOOLCHAIN_FILE=$(pwd)/CMakeModules/Toolchains/${host}.cmake \
 			"$@"
 		;;
-
 	(i?86-linux-gnu)
 		set -- \
+			-D BuildPortableVersion=ON \
 			-D CMAKE_TOOLCHAIN_FILE=$(pwd)/CMakeModules/Toolchains/linux-i686.cmake \
 			"$@"
 		;;
-
-	(native)
+	(macosx-universal-clang)
+		set -- \
+			-D BuildMPDed=OFF \
+			-D BuildPortableVersion=ON \
+			-D CMAKE_OSX_SYSROOT="" \
+			-D OPENGL_INCLUDE_DIR=/System/Library/Frameworks/OpenGL.framework \
+			-D OPENGL_gl_LIBRARY=/System/Library/Frameworks/OpenGL.framework \
+			-D OPENGL_glu_LIBRARY=/System/Library/Frameworks/OpenGL.framework \
+			"$@"
 		;;
-
+	(native)
+		if [ -n "${deploy}" ]; then
+			set -- \
+				"$@"
+		fi
+		;;
 	(*)
 		set +x
 		echo "Error: don't know how to cross-compile for ${host} host"
@@ -34,15 +46,49 @@ case "${host}" in
 		;;
 esac
 
-set -- -D CMAKE_BUILD_TYPE="$flavour" "$@"
+set -- \
+-D CMAKE_BUILD_TYPE="$flavour" \
+"$@"
 
-# Build JK2, so that the CI build is testing everything
 ( cd build && cmake \
-	-D BuildJK2SPEngine=ON \
-	-D BuildJK2SPGame=ON \
-	-D BuildJK2SPRdVanilla=ON \
 	-D CMAKE_INSTALL_PREFIX=/prefix \
 	"$@" .. )
 make -C build
 make -C build install DESTDIR=$(pwd)/build/DESTDIR
-( cd $(pwd)/build/DESTDIR && find . -ls )
+
+if [ x"${host}" = xi686-linux-gnu ]; then
+	arch="i686"
+else
+	arch="x86_64"
+fi
+
+case "${host}" in
+	(macosx-universal-clang)
+		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
+			mv eternaljk base && \
+			tar czvf eternaljk-macos-"${arch}".tar.gz * && \
+			mv eternaljk-macos-"${arch}".tar.gz $(pwd)/../../../../ && \
+			cd ../../ && \
+			find . -ls )
+		;;
+	(i?86-linux-gnu|native)
+		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
+			tar czvf eternaljk-linux-"${arch}".tar.gz * && \
+			mv eternaljk-linux-"${arch}".tar.gz $(pwd)/../../../../ && \
+			cd ../../ && \
+			find . -ls )
+		;;
+	(i686-w64-mingw32)
+		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
+			zip -r eternaljk-win32-portable.zip * && \
+			mv eternaljk-win32-portable.zip $(pwd)/../../../../ && \
+			cd eternaljk/ && \
+			zip -r ejk-japro-pk3only.zip * && \
+			mv ejk-japro-pk3only.zip $(pwd)/../../../../../ && \
+			cd ../../../ && \
+			find . -ls )
+		;;
+	(*)
+		( cd $(pwd)/build/DESTDIR && find . -ls )
+		;;
+esac

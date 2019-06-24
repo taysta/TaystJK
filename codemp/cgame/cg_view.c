@@ -234,20 +234,24 @@ static void CG_StepOffset( void ) {
 	}
 }
 
-#define CAMERA_DAMP_INTERVAL	50
+static const vec3_t	cameramins = { -CAMERA_SIZE, -CAMERA_SIZE, -CAMERA_SIZE };
+static const vec3_t	cameramaxs = { CAMERA_SIZE, CAMERA_SIZE, CAMERA_SIZE };
 
-static vec3_t	cameramins = { -CAMERA_SIZE, -CAMERA_SIZE, -CAMERA_SIZE };
-static vec3_t	cameramaxs = { CAMERA_SIZE, CAMERA_SIZE, CAMERA_SIZE };
-vec3_t	camerafwd, cameraup;
+typedef struct dampPos_s {
+	vec3_t	ideal;		// ideal location
+	vec3_t	prevIdeal;
+	vec3_t	damp;		// position = ideal + damp
+} dampPos_t;
 
-vec3_t	cameraFocusAngles,			cameraFocusLoc;
-vec3_t	cameraIdealTarget,			cameraIdealLoc;
-vec3_t	cameraCurTarget={0,0,0},	cameraCurLoc={0,0,0};
-vec3_t	cameraOldLoc={0,0,0},		cameraNewLoc={0,0,0};
-int		cameraLastFrame=0;
-
-float	cameraLastYaw=0;
-float	cameraStiffFactor=0.0f;
+static struct {
+	dampPos_t	target;
+	dampPos_t	loc;
+	vec3_t		fwd;
+	vec3_t		focus;
+	float		lastYaw;
+	int			lastTime;
+	float		lastTimeFrac;
+} cam;
 
 /*
 ===============
@@ -277,24 +281,35 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 	// Initialize IdealTarget
 	if (gCGHasFallVector)
 	{
-		VectorCopy(gCGFallVector, cameraFocusLoc);
+		VectorCopy(gCGFallVector, cam.focus);
 	}
 	else
 	{
-		VectorCopy(cg.refdef.vieworg, cameraFocusLoc);
+		VectorCopy(cg.refdef.vieworg, cam.focus);
 	}
 
 	// Add in the new viewheight
-	cameraFocusLoc[2] += cg.snap->ps.viewheight;
+	//cam.focus[2] += cg.snap->ps.viewheight; //36 = standing, 12 = crouching.
+	cam.focus[2] += cg.predictedPlayerState.viewheight;//Proper prediction
 
 	// Add in a vertical offset from the viewpoint, which puts the actual target above the head, regardless of angle.
-//	VectorMA(cameraFocusLoc, thirdPersonVertOffset, cameraup, cameraIdealTarget);
+//	VectorMA(cam.focus, thirdPersonVertOffset, cameraup, cam.target.ideal);
 
 	// Add in a vertical offset from the viewpoint, which puts the actual target above the head, regardless of angle.
-	VectorCopy( cameraFocusLoc, cameraIdealTarget );
+	VectorCopy( cam.focus, cam.target.ideal );
 
 	{
 		float vertOffset = cg_thirdPersonVertOffset.value;
+
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+			vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
+			if (vertOffset < 0)
+				vertOffset = -vertOffset;
+			//Leave only last 2 digits
+			vertOffset = (int)vertOffset % 100;
+			if (vertOffset < 1)
+				vertOffset = cg_thirdPersonVertOffset.value;
+		}
 
 		if (cg.snap && cg.snap->ps.m_iVehicleNum)
 		{
@@ -337,9 +352,9 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 				vertOffset = 0;
 			}
 		}
-		cameraIdealTarget[2] += vertOffset;
+		cam.target.ideal[2] += vertOffset;
 	}
-	//VectorMA(cameraFocusLoc, cg_thirdPersonVertOffset.value, cameraup, cameraIdealTarget);
+	//VectorMA(cam.focus, cg_thirdPersonVertOffset.value, cameraup, cam.target.ideal);
 }
 
 
@@ -353,6 +368,49 @@ CG_CalcTargetThirdPersonViewLocation
 static void CG_CalcIdealThirdPersonViewLocation(void)
 {
 	float thirdPersonRange = cg_thirdPersonRange.value;
+	float newThirdPersonRange;// = cg_thirdPersonRange.value;
+	int f;
+
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+		thirdPersonRange = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
+		if (thirdPersonRange < 0)
+			thirdPersonRange = -thirdPersonRange;
+		//Chop off end two digits
+		thirdPersonRange /= 100;
+		if (thirdPersonRange < 1)
+			thirdPersonRange = cg_thirdPersonRange.value;
+	}
+
+//JAPRO - Clientside - Allow for +zoom - Start
+		if ( cg.zoomed ) {
+			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_OUT_TIME;
+			if ( f > 1.0 )
+			{
+				if (cg_zoomFov.integer < 1)
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange;
+				else if (cg_zoomFov.integer > 176)
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange / 176;
+				else
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange / cg_zoomFov.integer;
+			} 
+			else
+			{
+				if (cg_zoomFov.integer < 1)
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange;
+				else if (cg_zoomFov.integer > 176)
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange / 176;
+				else
+					newThirdPersonRange = thirdPersonRange * thirdPersonRange / cg_zoomFov.integer;
+			}
+		} else {
+			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_OUT_TIME;
+			if ( f > 1.0 ) {
+				newThirdPersonRange = thirdPersonRange;
+			} else {
+				newThirdPersonRange = thirdPersonRange;
+			}
+		}		
+//JAPRO - Clientside - Allow for +zoom - End
 
 	if (cg.snap && cg.snap->ps.m_iVehicleNum)
 	{
@@ -360,10 +418,10 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		if (veh->m_pVehicle &&
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
-			thirdPersonRange = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+			newThirdPersonRange = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
 			if ( veh->playerState->hackingTime )
 			{
-				thirdPersonRange += fabs(((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * 100.0f;
+				newThirdPersonRange += fabs(((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * 100.0f;
 			}
 		}
 	}
@@ -374,108 +432,158 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		&& cg_entities[cg.snap->ps.lookTarget].currentState.NPC_class == CLASS_RANCOR )//only possibility for now, may add Wampa and sand creature later
 	{//stay back
 		//thirdPersonRange = 180.0f;
-		thirdPersonRange = 120.0f;
+		newThirdPersonRange = 120.0f;
 	}
 
-	VectorMA(cameraIdealTarget, -(thirdPersonRange), camerafwd, cameraIdealLoc);
+	VectorMA(cam.target.ideal, -(newThirdPersonRange), cam.fwd, cam.loc.ideal);
 }
-
-
 
 static void CG_ResetThirdPersonViewDamp(void)
 {
 	trace_t trace;
+	vec3_t target;
 
-	// Cap the pitch within reasonable limits
-	if (cameraFocusAngles[PITCH] > 89.0)
-	{
-		cameraFocusAngles[PITCH] = 89.0;
-	}
-	else if (cameraFocusAngles[PITCH] < -89.0)
-	{
-		cameraFocusAngles[PITCH] = -89.0;
-	}
-
-	AngleVectors(cameraFocusAngles, camerafwd, NULL, cameraup);
-
-	// Set the cameraIdealTarget
+	// Set the cam.target.ideal
 	CG_CalcIdealThirdPersonViewTarget();
 
-	// Set the cameraIdealLoc
+	// Set the cam.loc.ideal
 	CG_CalcIdealThirdPersonViewLocation();
 
 	// Now, we just set everything to the new positions.
-	VectorCopy(cameraIdealLoc, cameraCurLoc);
-	VectorCopy(cameraIdealTarget, cameraCurTarget);
+	VectorClear(cam.loc.damp);
+	VectorClear(cam.target.damp);
+	VectorCopy(cam.loc.ideal, cam.loc.prevIdeal);
+	VectorCopy(cam.target.ideal, cam.target.prevIdeal);
 
 	// First thing we do is trace from the first person viewpoint out to the new target location.
-	CG_Trace(&trace, cameraFocusLoc, cameramins, cameramaxs, cameraCurTarget, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	CG_Trace(&trace, cam.focus, cameramins, cameramaxs, cam.target.ideal, cg.snap->ps.clientNum, MASK_CAMERACLIP);
 	if (trace.fraction <= 1.0)
 	{
-		VectorCopy(trace.endpos, cameraCurTarget);
+		VectorSubtract(trace.endpos, cam.target.ideal, cam.target.damp);
 	}
+
+	VectorAdd(cam.target.ideal, cam.target.damp, target);
 
 	// Now we trace from the new target location to the new view location, to make sure there is nothing in the way.
-	CG_Trace(&trace, cameraCurTarget, cameramins, cameramaxs, cameraCurLoc, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	CG_Trace(&trace, target, cameramins, cameramaxs, cam.loc.ideal, cg.snap->ps.clientNum, MASK_CAMERACLIP);
 	if (trace.fraction <= 1.0)
 	{
-		VectorCopy(trace.endpos, cameraCurLoc);
+		VectorSubtract(trace.endpos, cam.loc.ideal, cam.loc.damp);
 	}
+}
 
-	cameraLastFrame = cg.time;
-	cameraLastYaw = cameraFocusAngles[YAW];
-	cameraStiffFactor = 0.0f;
+void CG_ClearThirdPersonDamp(void)
+{//workaround for camera jerk when clearing camera damp vectors, should probably be refactored into, if not fixed in the actual ThirdPersonDamp code
+	vec3_t oldLoc, oldTarget;
+	if (!cg.snap)
+		return;
+
+	if (cl_paused.integer)
+		return;
+
+	VectorCopy(cam.loc.ideal, oldLoc);
+	VectorCopy(cam.target.ideal, oldTarget);
+
+	CG_ResetThirdPersonViewDamp();
+
+	VectorCopy(oldLoc, cam.loc.ideal);
+	VectorCopy(oldTarget, cam.target.ideal);
+	VectorCopy(oldLoc, cam.loc.prevIdeal);
+	VectorCopy(oldTarget, cam.target.prevIdeal);
+
+	cam.lastTime = cg.predictedPlayerState.commandTime;
+	cam.lastTimeFrac = cg.predictedTimeFrac;
+}
+
+static void CG_DampPosition(dampPos_t *pos, float dampfactor, float dtime)
+{
+	vec3_t idealDelta;
+
+	if ( dtime <= 0.0f )
+		return;
+
+	VectorSubtract(pos->ideal, pos->prevIdeal, idealDelta);
+	// saving previous ideal position only when dtime > 0 makes camera
+	// freeze when player is lagging
+	VectorCopy(pos->ideal, pos->prevIdeal);
+
+	if ( cg_cameraFPS.integer >= CAMERA_MIN_FPS )
+	{
+		// FPS-independent solution thanks to semigroup property:
+		// If t1, t2 are positive time periods, dampfactor and
+		// velocity (idealDelta) don't change then:
+		// damp_(t1 + t2)(pos) = damp_t1(damp_t2(pos))
+
+		// if dtime == 1 (stable framerate equal to cg_camerafps)
+		// result is the same as in original code.
+		vec3_t	shift;
+		float	invdtime;
+		float	timeadjfactor;
+		float	codampfactor;
+
+		// dtime is relative: physics time / emulated time
+		dtime *= cg_cameraFPS.value / 1000.0f;
+		invdtime = 1.0f / dtime;
+		timeadjfactor = powf(dampfactor, dtime);
+		// shift = (idealDelta / dtime) * (dampfactor / (1 - dampfactor))
+		codampfactor = dampfactor / (1.0f - dampfactor);
+		VectorScale(idealDelta, invdtime, shift);
+		VectorScale(shift, codampfactor, shift);
+		// damp(dtime) = dampfactor^dtime * (damp(0) + shift) - shift
+		pos->damp[0] = timeadjfactor * (pos->damp[0] + shift[0]) - shift[0];
+		pos->damp[1] = timeadjfactor * (pos->damp[1] + shift[1]) - shift[1];
+		pos->damp[2] = timeadjfactor * (pos->damp[2] + shift[2]) - shift[2];
+	}
+	else
+	{
+		// Original JK2/JKA MP camera damping:
+		// idealDelta_n = ideal_n+1 - ideal_n
+		// damp_n+1 = dampfactor * (damp_n - idealDelta_n)
+		VectorSubtract(pos->damp, idealDelta, pos->damp);
+		VectorScale(pos->damp, dampfactor, pos->damp);
+	}
 }
 
 // This is called every frame.
-static void CG_UpdateThirdPersonTargetDamp(void)
+static void CG_UpdateThirdPersonTargetDamp(float dtime)
 {
 	trace_t trace;
-	vec3_t	targetdiff;
-	float	dampfactor, dtime, ratio;
+	vec3_t	target;
+	float	dampfactor;
 
-	// Set the cameraIdealTarget
+	// Set the cam.target.ideal
 	// Automatically get the ideal target, to avoid jittering.
 	CG_CalcIdealThirdPersonViewTarget();
 
 	if ( cg.predictedVehicleState.hyperSpaceTime
 		&& (cg.time-cg.predictedVehicleState.hyperSpaceTime) < HYPERSPACE_TIME )
 	{//hyperspacing, no damp
-		VectorCopy(cameraIdealTarget, cameraCurTarget);
+		VectorClear(cam.target.damp);
 	}
-	else if (cg_thirdPersonTargetDamp.value>=1.0||cg.thisFrameTeleport||cg.predictedPlayerState.m_iVehicleNum)
+	else if (cg_thirdPersonTargetDamp.value>=1.0f||cg.thisFrameTeleport||cg.predictedPlayerState.m_iVehicleNum||cg_strafeHelper.integer & (1<<0)||cg_strafeHelper.integer & (1<<1)||cg_strafeHelper.integer & (1<<2)||cg_strafeHelper.integer & (1<<3)||cg_strafeHelper.integer & (1<<13))
 	{	// No damping.
-		VectorCopy(cameraIdealTarget, cameraCurTarget);
+		VectorClear(cam.target.damp);
+		cam.lastTime = 0;
 	}
-	else if (cg_thirdPersonTargetDamp.value>=0.0)
+	else if (cg_thirdPersonTargetDamp.value>0.0f)
 	{
-		// Calculate the difference from the current position to the new one.
-		VectorSubtract(cameraIdealTarget, cameraCurTarget, targetdiff);
+		dampfactor = 1.0 - cg_thirdPersonTargetDamp.value;	// We must exponent the amount LEFT rather than the amount bled off
 
-		// Now we calculate how much of the difference we cover in the time allotted.
-		// The equation is (Damp)^(time)
-		dampfactor = 1.0-cg_thirdPersonTargetDamp.value;	// We must exponent the amount LEFT rather than the amount bled off
-		dtime = (float)(cg.time-cameraLastFrame) * (1.0/(float)CAMERA_DAMP_INTERVAL);	// Our dampfactor is geared towards a time interval equal to "1".
-
-		// Note that since there are a finite number of "practical" delta millisecond values possible,
-		// the ratio should be initialized into a chart ultimately.
-		if ( cg_smoothCamera.integer )
-			ratio = powf(dampfactor, dtime);
-		else
-			ratio = Q_powf( dampfactor, dtime );
-
-		// This value is how much distance is "left" from the ideal.
-		VectorMA(cameraIdealTarget, -ratio, targetdiff, cameraCurTarget);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		CG_DampPosition(&cam.target, dampfactor, dtime);
+	}
+	else
+	{
+		VectorSubtract(cam.target.prevIdeal, cam.target.ideal, cam.target.damp);
 	}
 
 	// Now we trace to see if the new location is cool or not.
+	VectorAdd(cam.target.ideal, cam.target.damp, target);
 
 	// First thing we do is trace from the first person viewpoint out to the new target location.
-	CG_Trace(&trace, cameraFocusLoc, cameramins, cameramaxs, cameraCurTarget, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	CG_Trace(&trace, cam.focus, cameramins, cameramaxs, target, cg.snap->ps.clientNum, MASK_CAMERACLIP);
 	if (trace.fraction < 1.0)
 	{
-		VectorCopy(trace.endpos, cameraCurTarget);
+		VectorSubtract(trace.endpos, cam.target.ideal, cam.target.damp);
 	}
 
 	// Note that previously there was an upper limit to the number of physics traces that are done through the world
@@ -486,40 +594,36 @@ static void CG_UpdateThirdPersonTargetDamp(void)
 
 // This can be called every interval, at the user's discretion.
 extern void CG_CalcEntityLerpPositions( centity_t *cent ); //cg_ents.c
-static void CG_UpdateThirdPersonCameraDamp(void)
+static void CG_UpdateThirdPersonCameraDamp(float dtime, float stiffFactor, float pitch)
 {
 	trace_t trace;
-	vec3_t	locdiff;
-	float dampfactor, dtime, ratio;
+	vec3_t	location, target;
+	float	dampfactor;
 
-	// Set the cameraIdealLoc
+	// Set the cam.loc.ideal
 	CG_CalcIdealThirdPersonViewLocation();
 
-
 	// First thing we do is calculate the appropriate damping factor for the camera.
-	dampfactor=0.0;
+	dampfactor=0.0f;
 	if ( cg.predictedVehicleState.hyperSpaceTime
 		&& (cg.time-cg.predictedVehicleState.hyperSpaceTime) < HYPERSPACE_TIME )
 	{//hyperspacing - don't damp camera
 		dampfactor = 1.0f;
 	}
-	else if (cg_thirdPersonCameraDamp.value != 0.0)
+	else if (cg_thirdPersonCameraDamp.value != 0.0f)
 	{
-		float pitch;
 		float dFactor;
 
-		if (!cg.predictedPlayerState.m_iVehicleNum)
-		{
-			dFactor = cg_thirdPersonCameraDamp.value;
-		}
-		else
+		if (cg.predictedPlayerState.m_iVehicleNum||cg_strafeHelper.integer & (1<<0)||cg_strafeHelper.integer & (1<<1)||cg_strafeHelper.integer & (1<<2)||cg_strafeHelper.integer & (1<<3)||cg_strafeHelper.integer & (1<<13))
 		{
 			dFactor = 1.0f;
 		}
+		else
+		{
+			dFactor = cg_thirdPersonCameraDamp.value;
+		}
 
 		// Note that the camera pitch has already been capped off to 89.
-		pitch = Q_fabs(cameraFocusAngles[PITCH]);
-
 		// The higher the pitch, the larger the factor, so as you look up, it damps a lot less.
 		pitch /= 115.0;
 		dampfactor = (1.0-dFactor)*(pitch*pitch);
@@ -527,40 +631,32 @@ static void CG_UpdateThirdPersonCameraDamp(void)
 		dampfactor += dFactor;
 
 		// Now we also multiply in the stiff factor, so that faster yaw changes are stiffer.
-		if (cameraStiffFactor > 0.0f)
-		{	// The cameraStiffFactor is how much of the remaining damp below 1 should be shaved off, i.e. approach 1 as stiffening increases.
-			dampfactor += (1.0-dampfactor)*cameraStiffFactor;
+		if (stiffFactor > 0.0f)
+		{	// The cam.stiffFactor is how much of the remaining damp below 1 should be shaved off, i.e. approach 1 as stiffening increases.
+			dampfactor += (1.0f-dampfactor)*stiffFactor;
 		}
 	}
 
 	if (dampfactor>=1.0||cg.thisFrameTeleport)
 	{	// No damping.
-		VectorCopy(cameraIdealLoc, cameraCurLoc);
+		VectorClear(cam.loc.damp);
+		cam.lastTime = 0;
 	}
-	else if (dampfactor>=0.0)
+	else if (dampfactor > 0.0f)
 	{
-		// Calculate the difference from the current position to the new one.
-		VectorSubtract(cameraIdealLoc, cameraCurLoc, locdiff);
-
-		// Now we calculate how much of the difference we cover in the time allotted.
-		// The equation is (Damp)^(time)
-		dampfactor = 1.0-dampfactor;	// We must exponent the amount LEFT rather than the amount bled off
-		dtime = (float)(cg.time-cameraLastFrame) * (1.0/(float)CAMERA_DAMP_INTERVAL);	// Our dampfactor is geared towards a time interval equal to "1".
-
-		// Note that since there are a finite number of "practical" delta millisecond values possible,
-		// the ratio should be initialized into a chart ultimately.
-		if ( cg_smoothCamera.integer )
-			ratio = powf(dampfactor, dtime);
-		else
-			ratio = Q_powf( dampfactor, dtime );
-
-		// This value is how much distance is "left" from the ideal.
-		VectorMA(cameraIdealLoc, -ratio, locdiff, cameraCurLoc);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		dampfactor = 1.0 - dampfactor;	// We must exponent the amount LEFT rather than the amount bled off
+		CG_DampPosition(&cam.loc, dampfactor, dtime);
 	}
+	else
+	{
+		VectorSubtract(cam.loc.prevIdeal, cam.loc.ideal, cam.loc.damp);
+	}
+
+	VectorAdd(cam.loc.ideal, cam.loc.damp, location);
+	VectorAdd(cam.target.ideal, cam.target.damp, target);
 
 	// Now we trace from the new target location to the new view location, to make sure there is nothing in the way.
-	CG_Trace(&trace, cameraCurTarget, cameramins, cameramaxs, cameraCurLoc, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+	CG_Trace(&trace, target, cameramins, cameramaxs, location, cg.snap->ps.clientNum, MASK_CAMERACLIP);
 
 	if (trace.fraction < 1.0)
 	{
@@ -590,7 +686,7 @@ static void CG_UpdateThirdPersonCameraDamp(void)
 				VectorCopy(mover->lerpOrigin, mover->currentState.pos.trBase);
 
 				//retrace
-				CG_Trace(&trace, cameraCurTarget, cameramins, cameramaxs, cameraCurLoc, cg.snap->ps.clientNum, MASK_CAMERACLIP);
+				CG_Trace(&trace, cam.target.ideal, cameramins, cameramaxs, location, cg.snap->ps.clientNum, MASK_CAMERACLIP);
 
 				//copy old data back in
 				mover->currentState.pos.trType = (trType_t) curTr;
@@ -598,12 +694,12 @@ static void CG_UpdateThirdPersonCameraDamp(void)
 			}
 			if (trace.fraction < 1.0f)
 			{ //still hit it, so take the proper trace endpos and use that.
-				VectorCopy(trace.endpos, cameraCurLoc);
+				VectorSubtract(trace.endpos, cam.loc.ideal, cam.loc.damp);
 			}
 		}
 		else
 		{
-			VectorCopy( trace.endpos, cameraCurLoc );
+			VectorSubtract(trace.endpos, cam.loc.ideal, cam.loc.damp);
 		}
 	}
 
@@ -613,22 +709,19 @@ static void CG_UpdateThirdPersonCameraDamp(void)
 	// however two full volume traces each frame is a bit scary to think about.
 }
 
-
-
-
 /*
 ===============`
 CG_OffsetThirdPersonView
 
 ===============
 */
-extern vmCvar_t cg_thirdPersonHorzOffset;
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
 static void CG_OffsetThirdPersonView( void )
 {
-	vec3_t diff;
+	vec3_t	target, location, diff;
+	vec3_t	focusAngles;
+	float	dtime;
 	float thirdPersonHorzOffset = cg_thirdPersonHorzOffset.value;
-	float deltayaw;
 
 	if (cg.snap && cg.snap->ps.m_iVehicleNum)
 	{
@@ -644,10 +737,8 @@ static void CG_OffsetThirdPersonView( void )
 		}
 	}
 
-	cameraStiffFactor = 0.0;
-
 	// Set camera viewing direction.
-	VectorCopy( cg.refdef.viewangles, cameraFocusAngles );
+	VectorCopy( cg.refdef.viewangles, focusAngles );
 
 	// if dead, look at killer
 	if ( cg.snap
@@ -657,22 +748,22 @@ static void CG_OffsetThirdPersonView( void )
 	{//being held
 		//vec3_t monsterPos, dir2Me;
 		centity_t	*monster = &cg_entities[cg.snap->ps.lookTarget];
-		VectorSet( cameraFocusAngles, 0, AngleNormalize180(monster->lerpAngles[YAW]+180), 0 );
+		VectorSet( focusAngles, 0, AngleNormalize180(monster->lerpAngles[YAW]+180), 0 );
 		//make the look angle the vector from his mouth to me
 		/*
 		VectorCopy( monster->lerpOrigin, monsterPos );
 		monsterPos[2] = cg.snap->ps.origin[2];
 		VectorSubtract( monsterPos, cg.snap->ps.origin, dir2Me );
-		vectoangles( dir2Me, cameraFocusAngles );
+		vectoangles( dir2Me, cam.focusAngles );
 		*/
 	}
 	else if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
 	{
-		cameraFocusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
 	}
 	else
 	{	// Add in the third Person Angle.
-		cameraFocusAngles[YAW] += cg_thirdPersonAngle.value;
+		focusAngles[YAW] += cg_thirdPersonAngle.value;
 		{
 			float pitchOffset = cg_thirdPersonPitchOffset.value;
 			if (cg.snap && cg.snap->ps.m_iVehicleNum)
@@ -705,93 +796,107 @@ static void CG_OffsetThirdPersonView( void )
 			/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
 				&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
 			{
-				float pitchPerc = ((90.0f-fabs(cameraFocusAngles[ROLL]))/90.0f);
-				cameraFocusAngles[PITCH] += pitchOffset*pitchPerc;
-				if ( cameraFocusAngles[ROLL] > 0 )
+				float pitchPerc = ((90.0f-fabs(cam.focusAngles[ROLL]))/90.0f);
+				cam.focusAngles[PITCH] += pitchOffset*pitchPerc;
+				if ( focusAngles[ROLL] > 0 )
 				{
-					cameraFocusAngles[YAW] -= pitchOffset-(pitchOffset*pitchPerc);
+					focusAngles[YAW] -= pitchOffset-(pitchOffset*pitchPerc);
 				}
 				else
 				{
-					cameraFocusAngles[YAW] += pitchOffset-(pitchOffset*pitchPerc);
+					focusAngles[YAW] += pitchOffset-(pitchOffset*pitchPerc);
 				}
 			}
 			else*/
 			{
-				cameraFocusAngles[PITCH] += pitchOffset;
+				focusAngles[PITCH] += pitchOffset;
 			}
 		}
 	}
 
+	// Cap the pitch within reasonable limits
+	if (cg.predictedPlayerState.m_iVehicleNum //in a vehicle
+		&& BG_UnrestrainedPitchRoll(&cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle))//can roll/pitch without restriction
+	{//no clamp on pitch
+		//FIXME: when pitch >= 90 or <= -90, camera rotates oddly... need to CrossProduct not just vectoangles
+	}
+	else
+	{
+		if (focusAngles[PITCH] > 80.0)
+		{
+			focusAngles[PITCH] = 80.0;
+		}
+		else if (focusAngles[PITCH] < -80.0)
+		{
+			focusAngles[PITCH] = -80.0;
+		}
+	}
+
+	AngleVectors(focusAngles, cam.fwd, NULL, NULL);
+
 	// The next thing to do is to see if we need to calculate a new camera target location.
 
+	dtime = cg.predictedPlayerState.commandTime - cam.lastTime;
+	dtime += cg.predictedTimeFrac - cam.lastTimeFrac;
+
 	// If we went back in time for some reason, or if we just started, reset the sample.
-	if (cameraLastFrame == 0 || cameraLastFrame > cg.time)
+	if (cam.lastTime == 0 || dtime < 0.0f || cg.thisFrameTeleport)
 	{
 		CG_ResetThirdPersonViewDamp();
 	}
 	else
 	{
-		// Cap the pitch within reasonable limits
-		if ( cg.predictedPlayerState.m_iVehicleNum //in a vehicle
-			&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
-		{//no clamp on pitch
-			//FIXME: when pitch >= 90 or <= -90, camera rotates oddly... need to CrossProduct not just vectoangles
-		}
-		else
-		{
-			if (cameraFocusAngles[PITCH] > 80.0)
-			{
-				cameraFocusAngles[PITCH] = 80.0;
-			}
-			else if (cameraFocusAngles[PITCH] < -80.0)
-			{
-				cameraFocusAngles[PITCH] = -80.0;
-			}
-		}
+		float	stiffFactor;
+		float	deltayaw;
+		float	pitch;
 
-		AngleVectors(cameraFocusAngles, camerafwd, NULL, cameraup);
-
-		deltayaw = fabs(cameraFocusAngles[YAW] - cameraLastYaw);
+		deltayaw = fabsf(focusAngles[YAW] - cam.lastYaw);
 		if (deltayaw > 180.0f)
 		{ // Normalize this angle so that it is between 0 and 180.
-			deltayaw = fabs(deltayaw - 360.0f);
+			deltayaw = fabsf(deltayaw - 360.0f);
 		}
-		cameraStiffFactor = deltayaw / (float)(cg.time-cameraLastFrame);
-		if (cameraStiffFactor < 1.0)
-		{
-			cameraStiffFactor = 0.0;
+		if (cg_cameraFPS.integer >= CAMERA_MIN_FPS) {
+			if (dtime > 0.0f) {
+				stiffFactor = deltayaw / dtime;
+			}
+			else {
+				stiffFactor = 0.0f;
+			}
 		}
-		else if (cameraStiffFactor > 2.5)
+		else {
+			stiffFactor = deltayaw / (cg.time - cg.oldTime);
+		}
+		if (stiffFactor < 1.0)
 		{
-			cameraStiffFactor = 0.75;
+			stiffFactor = 0.0;
+		}
+		else if (stiffFactor > 2.5)
+		{
+			stiffFactor = 0.75;
 		}
 		else
 		{	// 1 to 2 scales from 0.0 to 0.5
-			cameraStiffFactor = (cameraStiffFactor-1.0f)*0.5f;
+			stiffFactor = (stiffFactor-1.0f)*0.5f;
 		}
-		cameraLastYaw = cameraFocusAngles[YAW];
+
+		pitch = Q_fabs(focusAngles[PITCH]);
 
 		// Move the target to the new location.
-		CG_UpdateThirdPersonTargetDamp();
-		CG_UpdateThirdPersonCameraDamp();
+		CG_UpdateThirdPersonTargetDamp(dtime);
+		CG_UpdateThirdPersonCameraDamp(dtime, stiffFactor, pitch);
 	}
 
 	// Now interestingly, the Quake method is to calculate a target focus point above the player, and point the camera at it.
 	// We won't do that for now.
 
+	VectorAdd(cam.target.ideal, cam.target.damp, target);
+	VectorAdd(cam.loc.ideal, cam.loc.damp, location);
+
 	// We must now take the angle taken from the camera target and location.
-	/*VectorSubtract(cameraCurTarget, cameraCurLoc, diff);
-	VectorNormalize(diff);
-	vectoangles(diff, cg.refdef.viewangles);*/
-	VectorSubtract(cameraCurTarget, cameraCurLoc, diff);
-	{
-		float dist = VectorNormalize(diff);
-		//under normal circumstances, should never be 0.00000 and so on.
-		if ( !dist || (diff[0] == 0 || diff[1] == 0) )
-		{//must be hitting something, need some value to calc angles, so use cam forward
-			VectorCopy( camerafwd, diff );
-		}
+	VectorSubtract(target, location, diff);
+	if ( VectorLengthSquared( diff ) < 0.01f * 0.01f )
+	{//must be hitting something, need some value to calc angles, so use cam forward
+		VectorCopy( cam.fwd, diff );
 	}
 	/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
 		&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
@@ -809,13 +914,15 @@ static void CG_OffsetThirdPersonView( void )
 	if ( thirdPersonHorzOffset != 0.0f )
 	{
 		AnglesToAxis( cg.refdef.viewangles, cg.refdef.viewaxis );
-		VectorMA( cameraCurLoc, thirdPersonHorzOffset, cg.refdef.viewaxis[1], cameraCurLoc );
+		VectorMA( location, thirdPersonHorzOffset, cg.refdef.viewaxis[1], location );
 	}
 
 	// ...and of course we should copy the new view location to the proper spot too.
-	VectorCopy(cameraCurLoc, cg.refdef.vieworg);
+	VectorCopy(location, cg.refdef.vieworg);
 
-	cameraLastFrame=cg.time;
+	cam.lastTime = cg.predictedPlayerState.commandTime;
+	cam.lastTimeFrac = cg.predictedTimeFrac;
+	cam.lastYaw = focusAngles[YAW];
 }
 
 void CG_GetVehicleCamPos( vec3_t camPos )
@@ -965,7 +1072,35 @@ static void CG_OffsetFirstPersonView( void ) {
 		VectorMA( angles, kickPerc, cg.kick_angles, angles );
 	}
 	// add angles based on damage kick
-	if ( cg.damageTime ) {
+
+//JAPRO - Clientside - Remove Screenshake if allowed - Start
+	if (cgs.serverMod == SVMOD_JAPRO)
+	{
+		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
+		{
+		}	
+		else if ( cg.damageTime ) {
+			ratio = cg.time - cg.damageTime;
+			if ( ratio < DAMAGE_DEFLECT_TIME ) 
+			{
+				ratio /= DAMAGE_DEFLECT_TIME;
+				angles[PITCH] += ratio * cg.v_dmg_pitch;
+				angles[ROLL] += ratio * cg.v_dmg_roll;
+			} else 
+			{
+				ratio = 1.0 - ( ratio - DAMAGE_DEFLECT_TIME ) / DAMAGE_RETURN_TIME;
+				if ( ratio > 0 ) 
+				{
+					angles[PITCH] += ratio * cg.v_dmg_pitch;
+					angles[ROLL] += ratio * cg.v_dmg_roll;
+				}
+			}
+		}
+	}
+	else if (!cg_screenShake.integer)
+	{
+	}
+	else if ( cg.damageTime ) {
 		ratio = cg.time - cg.damageTime;
 		if ( ratio < DAMAGE_DEFLECT_TIME ) {
 			ratio /= DAMAGE_DEFLECT_TIME;
@@ -979,6 +1114,7 @@ static void CG_OffsetFirstPersonView( void ) {
 			}
 		}
 	}
+//JAPRO - Clientside - Remove Screenshake if allowed - End
 
 	// add pitch based on fall kick
 #if 0
@@ -1137,7 +1273,7 @@ Fixed fov at intermissions, otherwise account for fov variable and zooms.
 #define	WAVE_FREQUENCY	0.4
 float zoomFov; //this has to be global client-side
 
-static int CG_CalcFov( void ) {
+static qboolean CG_CalcFov( void ) {
 	float	x;
 	float	phase;
 	float	v;
@@ -1150,9 +1286,9 @@ static int CG_CalcFov( void ) {
 	{
 		cgFov = 1;
 	}
-	if (cgFov > 130)
+	if (cgFov > 140)//JAPRO - Clientside - Raise FOV Limit
 	{
-		cgFov = 130;
+		cgFov = 140;
 	}
 
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
@@ -1160,7 +1296,7 @@ static int CG_CalcFov( void ) {
 		fov_x = 80;//90;
 	} else {
 		// user selectable
-		if ( cgs.dmflags & DF_FIXED_FOV ) {
+		if ( 0 ) { //cgs.dmflags & DF_FIXED_FOV ) {
 			// dmflag to prevent wide fov for all clients
 			fov_x = 80;//90;
 		} else {
@@ -1226,16 +1362,43 @@ static int CG_CalcFov( void ) {
 			}
 			fov_x = zoomFov;
 		}
+		//JAPRO - Clientside - Allow for +zoom - Start
+		else if ( cg.zoomed ) {
+			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_OUT_TIME;
+			if ( f > 1.0 )
+			{
+				if (cg_zoomFov.integer < 1)
+					fov_x = 1;
+				else if (cg_zoomFov.integer > 176)
+					fov_x = 176;
+				else
+					fov_x = cg_zoomFov.integer;
+			} 
+			else
+			{
+				if (cg_zoomFov.integer < 1)
+					fov_x = fov_x + f * ( 1 - fov_x );
+				else if (cg_zoomFov.integer > 178)
+					fov_x = fov_x + f * ( 178 - fov_x );
+				else
+					fov_x = fov_x + f * ( cg_zoomFov.integer - fov_x );
+			}
+		}
 		else
 		{
 			zoomFov = 80;
-
-			f = ( cg.time - cg.predictedPlayerState.zoomTime ) / ZOOM_OUT_TIME;
+			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_OUT_TIME;
 			if ( f <= 1.0 )
 			{
-				fov_x = cg.predictedPlayerState.zoomFov + f * ( fov_x - cg.predictedPlayerState.zoomFov );
+				if (cg_zoomFov.integer < 1)
+					fov_x = cg_zoomFov.integer + f * ( fov_x - 1 );
+				else if (cg_zoomFov.integer > 176)
+					fov_x = cg_zoomFov.integer + f * ( fov_x - 176 );
+				else
+					fov_x = cg_zoomFov.integer + f * ( fov_x - cg_zoomFov.integer );
 			}
 		}
+		//JAPRO - Clientside - Allow for +zoom - End
 	}
 
 	if ( cg_fovAspectAdjust.integer ) {
@@ -1269,15 +1432,24 @@ static int CG_CalcFov( void ) {
 	cg.refdef.fov_x = fov_x;
 	cg.refdef.fov_y = fov_y;
 
-	if (cg.predictedPlayerState.zoomMode)
+//JAPRO - Clientside - Zoomfov Sensitivity changing - Start
+	if (cg_scopeSensitivity.value > 0 && cg.predictedPlayerState.zoomMode)
+	{
+		cg.zoomSensitivity = (zoomFov/cgFov) * cg_scopeSensitivity.value;
+	}
+	else if (cg.predictedPlayerState.zoomMode)
 	{
 		cg.zoomSensitivity = zoomFov/cgFov;
 	}
+
 	else if ( !cg.zoomed ) {
 		cg.zoomSensitivity = 1;
-	} else {
+	} else if (cg_zoomSensitivity.value <= 0){
 		cg.zoomSensitivity = cg.refdef.fov_y / 75.0;
+	} else {
+		cg.zoomSensitivity = cg_zoomSensitivity.value;
 	}
+//JAPRO - Clientside - Zoomfov Sensitivity changing - End
 
 	return inwater;
 }
@@ -1621,7 +1793,7 @@ static int CG_CalcViewValues( void ) {
 		{//use the vehicle's viewangles to render view!
 			CG_OffsetFighterView();
 		}
-		else if ( cg.renderingThirdPerson ) {
+		else if ( cg.renderingThirdPerson ) { // loda
 			// back away from character
 			if (cg_thirdPersonSpecialCam.integer &&
 				BG_SaberInSpecial(cg.snap->ps.saberMove))
@@ -1635,7 +1807,10 @@ static int CG_CalcViewValues( void ) {
 			{
 				CG_OffsetThirdPersonView();
 			}
-		} else {
+		}
+		else {
+			// reset third person camera damping
+			cam.lastTime = 0;
 			// offset for local bobbing and kicks
 			CG_OffsetFirstPersonView();
 		}
@@ -1742,7 +1917,7 @@ void CG_DrawSkyBoxPortal(const char *cstr)
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION )
 	{
 		// if in intermission, use a fixed value
-		fov_x = cg_fov.value;
+		fov_x = 80;//90
 	}
 	else
 	{
@@ -1778,6 +1953,38 @@ void CG_DrawSkyBoxPortal(const char *cstr)
 				fov_x = zoomFov + f * ( fov_x - zoomFov);
 			}
 		}
+		//JAPRO - Clientside - Allow for +zoom - Start
+		if (cg.zoomed) {
+			f = (cg.time - cg.zoomTime) / (float)ZOOM_OUT_TIME;
+			if (f > 1.0)
+			{
+				if (cg_zoomFov.integer < 1)
+					fov_x = 1;
+				else if (cg_zoomFov.integer > 176)
+					fov_x = 176;
+				else
+					fov_x = cg_zoomFov.integer;
+			}
+			else
+			{
+				if (cg_zoomFov.integer < 1)
+					fov_x = fov_x + f * (1 - fov_x);
+				else if (cg_zoomFov.integer > 178)
+					fov_x = fov_x + f * (178 - fov_x);
+				else
+					fov_x = fov_x + f * (cg_zoomFov.integer - fov_x);
+			}
+		}
+		//JAPRO - Clientside - Allow for +zoom - End
+	}
+
+
+	if ( cg_fovAspectAdjust.integer ) {
+		const float baseAspect = 0.75f; // 3/4
+		const float aspect = (float)cgs.glconfig.vidWidth / (float)cgs.glconfig.vidHeight;
+		const float desiredFov = fov_x;
+
+		fov_x = atan( tan( desiredFov*M_PI / 360.0f ) * baseAspect*aspect )*360.0f / M_PI;
 	}
 
 	x = cg.refdef.width / tan( fov_x / 360 * M_PI );
@@ -1792,7 +1999,7 @@ void CG_DrawSkyBoxPortal(const char *cstr)
 
 	cg.refdef.time = cg.time;
 
-	if ( !cg.hyperspace)
+	if (!cg.hyperspace && cg_noFX.integer != 5)
 	{ //rww - also had to add this to add effects being rendered in portal sky areas properly.
 		trap->FX_AddScheduledEffects(qtrue);
 	}
@@ -2302,6 +2509,102 @@ void CG_DrawAutoMap(void)
 	trap->R_RenderScene( &refdef );
 }
 
+QINLINE void CG_DoAsync( void ) {
+	if ( cg.doVstrTime && cg.time > cg.doVstrTime ) {
+		trap->SendConsoleCommand(cg.doVstr);
+		cg.doVstrTime = 0;
+	}
+	if (!(cgs.restricts & RESTRICT_FLIPKICKBIND)) {	//Now flipkick time
+
+		//Need to decouple frames from kick i guess.
+
+		//If we are on kick 1, check to see if our cvar for it is above frames.  If so , kick and increment kickcount.
+		
+		//Increment
+		if (cg.numFKFrames > cg_fkDuration.integer) {
+			trap->SendConsoleCommand("-moveup\n");
+			cg.numFKFrames = 0;
+			cg.numJumps = 0;
+		}
+		else if (cg.numFKFrames) {
+			if (cg.numJumps == 1) {
+				if (cg.numFKFrames > cg_fkFirstJumpDuration.integer) {
+					trap->SendConsoleCommand("-moveup\n");
+					cg.numJumps++;
+				}
+			}
+			else if (cg.numJumps == 2) {
+				if (cg.numFKFrames > cg_fkSecondJumpDelay.integer) {
+					trap->SendConsoleCommand("+moveup\n");
+					cg.numJumps++;
+				}
+			}
+			else if (cg.numFKFrames % 2) {//1,3,5
+				trap->SendConsoleCommand("+moveup\n");
+				cg.numJumps++;
+			}
+			else {//2,4,6
+				trap->SendConsoleCommand("-moveup\n");
+				cg.numJumps++;
+			}
+			cg.numFKFrames++;
+		}
+	}
+}
+
+int thirdPersonModificationCount = -1;
+int	thirdPersonRangeModificationCount = -1;
+int	thirdPersonVertOffsetModificationCount = -1;
+int	maxPacketsModificationCount = -1;
+int timeNudgeModificationCount = -1;
+int	maxFPSModificationCount = -1;
+
+static QINLINE void CG_UpdateNetUserinfo(void) {
+	//Have to find a new place to auto update cjp_client
+	if (cg.time > cg.userinfoUpdateDebounce) {
+		qboolean updateDisplay = qfalse, updateNet = qfalse;
+
+		if (thirdPersonModificationCount != cg_thirdPerson.modificationCount) {
+			updateDisplay = qtrue;
+		}
+		else if (thirdPersonRangeModificationCount != cg_thirdPersonRange.modificationCount) {
+			updateDisplay = qtrue;
+		}
+		else if (thirdPersonVertOffsetModificationCount != cg_thirdPersonVertOffset.modificationCount) {
+			updateDisplay = qtrue;
+		}
+
+		if (maxFPSModificationCount != com_maxFPS.modificationCount) {
+			updateNet = qtrue;
+		}
+		else if (timeNudgeModificationCount != cl_timeNudge.modificationCount) {
+			updateNet = qtrue;
+		}
+		else if (maxPacketsModificationCount != cl_maxPackets.modificationCount) {
+			updateNet = qtrue;
+		}
+
+		if (updateDisplay) {
+			thirdPersonModificationCount = cg_thirdPerson.modificationCount;
+			thirdPersonRangeModificationCount = cg_thirdPersonRange.modificationCount;
+			thirdPersonVertOffsetModificationCount = cg_thirdPersonVertOffset.modificationCount;
+			trap->Cvar_Set("cg_displayCameraPosition", va("%i %i %i", cg_thirdPerson.integer, cg_thirdPersonRange.integer, cg_thirdPersonVertOffset.integer));
+			//Com_Printf("^1Updating display\n");
+
+			cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+		}
+		if (updateNet) {
+			maxPacketsModificationCount = cl_maxPackets.modificationCount;
+			timeNudgeModificationCount = cl_timeNudge.modificationCount;
+			maxFPSModificationCount = com_maxFPS.modificationCount;
+			trap->Cvar_Set("cg_displayNetSettings", va("%i %i %i", cl_maxPackets.integer, cl_timeNudge.integer, com_maxFPS.integer));
+			//Com_Printf("^1Updating net\n");
+
+			cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+		}
+	}
+}
+
 //=========================================================================
 
 /*
@@ -2403,6 +2706,9 @@ extern qboolean cgQueueLoad;
 extern void CG_ActualLoadDeferredPlayers( void );
 
 static int cg_siegeClassIndex = -2;
+#if _NEWTRAILS
+void	CG_AddAllStrafeTrails( void );
+#endif
 
 void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demoPlayback ) {
 	int		inwater;
@@ -2426,22 +2732,27 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	cg.time = serverTime;
 	cg.demoPlayback = demoPlayback;
 
-	if (cg.snap && ui_myteam.integer != cg.snap->ps.persistant[PERS_TEAM])
-	{
-		trap->Cvar_Set ( "ui_myteam", va("%i", cg.snap->ps.persistant[PERS_TEAM]) );
-	}
-	if (cgs.gametype == GT_SIEGE &&
-		cg.snap &&
-		cg_siegeClassIndex != cgs.clientinfo[cg.snap->ps.clientNum].siegeIndex)
-	{
-		cg_siegeClassIndex = cgs.clientinfo[cg.snap->ps.clientNum].siegeIndex;
-		if (cg_siegeClassIndex == -1)
+	if (cg.snap) {
+		if (ui_myteam.integer != cg.snap->ps.persistant[PERS_TEAM])
 		{
-			trap->Cvar_Set("ui_mySiegeClass", "<none>");
+			if (!(cg.snap->ps.pm_flags & PMF_FOLLOW || cg.snap->ps.pm_type == PM_SPECTATOR))
+				trap->Cvar_Set ( "ui_myteam", va("%i", cg.snap->ps.persistant[PERS_TEAM]) );
+			else if (ui_myteam.integer != 3)
+				trap->Cvar_Set("ui_myteam", "3");
+
+			trap->Cvar_Update(&ui_myteam);
 		}
-		else
+		if (cgs.gametype == GT_SIEGE && cg_siegeClassIndex != cgs.clientinfo[cg.snap->ps.clientNum].siegeIndex)
 		{
-			trap->Cvar_Set("ui_mySiegeClass", bgSiegeClasses[cg_siegeClassIndex].name);
+			cg_siegeClassIndex = cgs.clientinfo[cg.snap->ps.clientNum].siegeIndex;
+			if (cg_siegeClassIndex == -1)
+			{
+				trap->Cvar_Set("ui_mySiegeClass", "<none>");
+			}
+			else
+			{
+				trap->Cvar_Set("ui_mySiegeClass", bgSiegeClasses[cg_siegeClassIndex].name);
+			}
 		}
 	}
 
@@ -2502,6 +2813,36 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		return;
 	}
 
+	//japro restrictions in racemode
+	if (cgs.serverMod == SVMOD_JAPRO) {
+		if (cg.snap && cg.snap->ps.stats[STAT_RACEMODE] && !(cg.predictedPlayerState.pm_flags & PMF_FOLLOW) && (cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)) {
+			if (cgs.restricts & RESTRICT_YAW) {
+				char yawBuf[64];
+				char yawString[16] = { 0 };
+
+				yawString[0] = 'c';
+				yawString[1] = 'l';
+				yawString[2] = '_';
+				yawString[3] = 'y';
+				yawString[4] = 'a';
+				yawString[5] = 'w';
+				yawString[6] = 's';
+				yawString[7] = 'p';
+				yawString[8] = 'e';
+				yawString[9] = 'e';
+				yawString[10] = 'd';
+				yawString[11] = '\0';
+
+				trap->Cvar_VariableStringBuffer(yawString, yawBuf, sizeof(yawBuf));
+
+				if (atoi(yawBuf) != 140)
+					trap->Cvar_Set(yawString, "140");
+			}
+		}
+	}
+	//end
+
+
 	// let the client system know what our weapon and zoom settings are
 	if (cg.snap && cg.snap->ps.saberLockTime > cg.time)
 	{
@@ -2559,7 +2900,20 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	CG_PredictPlayerState();
 
 	// decide on third person view
-	cg.renderingThirdPerson = cg_thirdPerson.integer || (cg.snap->ps.stats[STAT_HEALTH] <= 0);
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
+		if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] > 0)
+			cg.renderingThirdPerson = qtrue;
+		else if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] < 0)
+			cg.renderingThirdPerson = qfalse;
+		else
+			cg.renderingThirdPerson = cg_thirdPerson.integer;
+
+		if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
+			cg.renderingThirdPerson = qtrue;
+	}
+	else {
+		cg.renderingThirdPerson = cg_thirdPerson.integer || (cg.snap->ps.stats[STAT_HEALTH] <= 0);
+	}
 
 	if (cg.snap->ps.stats[STAT_HEALTH] > 0)
 	{
@@ -2573,13 +2927,11 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 			cg.predictedPlayerState.forceHandExtend == HANDEXTEND_KNOCKDOWN || cg.predictedPlayerState.fallingToDeath ||
 			cg.predictedPlayerState.m_iVehicleNum || PM_InKnockDown(&cg.predictedPlayerState))
 		{
-#if 0
-			if (cg_fpls.integer && cg.predictedPlayerState.weapon == WP_SABER)
+			if (!cg_thirdPerson.integer && cg_fpls.integer && (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE))
 			{ //force to first person for fpls
 				cg.renderingThirdPerson = 0;
 			}
 			else
-#endif
 			{
 				cg.renderingThirdPerson = 1;
 			}
@@ -2639,13 +2991,15 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		CG_AddPacketEntities(qfalse);			// adter calcViewValues, so predicted player state is correct
 		CG_AddMarks();
 		CG_AddLocalEntities();
+#if _NEWTRAILS
+		if (cg.drawingStrafeTrails) {
+			CG_AddAllStrafeTrails();
+		}
+#endif
+		if (cg_noFX.integer != 5)
+			trap->FX_AddScheduledEffects(qfalse);
 	}
 	CG_AddViewWeapon( &cg.predictedPlayerState );
-
-	if ( !cg.hyperspace)
-	{
-		trap->FX_AddScheduledEffects(qfalse);
-	}
 
 	// add buffered sounds
 	CG_PlayBufferedSounds();
@@ -2694,6 +3048,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		}
 		cg.oldTime = cg.time;
 		CG_AddLagometerFrameInfo();
+		CG_AddSpeedGraphFrameInfo();
 	}
 	if (timescale.value != cg_timescaleFadeEnd.value) {
 		if (timescale.value < cg_timescaleFadeEnd.value) {
@@ -2715,6 +3070,11 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	CG_DrawActive( stereoView );
 
 	CG_DrawAutoMap();
+
+	CG_DoAsync();
+
+	if (cgs.serverMod == SVMOD_JAPRO)
+		CG_UpdateNetUserinfo();
 
 	if ( cg_stats.integer ) {
 		trap->Print( "cg.clientFrame:%i\n", cg.clientFrame );

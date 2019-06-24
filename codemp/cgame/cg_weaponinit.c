@@ -117,7 +117,7 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponInfo->barrelModel = 0;
 	}
 
-	if (weaponNum != WP_SABER)
+	if (weaponNum != WP_SABER && weaponNum != WP_MELEE)
 	{
 		Q_strncpyz( path, item->view_model, sizeof(path) );
 		COM_StripExtension( path, path, sizeof( path ) );
@@ -143,7 +143,13 @@ void CG_RegisterWeapon( int weaponNum) {
 		//trap->R_RegisterShader( "gfx/effects/stunPass" );
 		trap->FX_RegisterEffect( "stunBaton/flesh_impact" );
 
-		if (weaponNum == WP_STUN_BATON)
+		if (weaponNum == WP_STUN_BATON && (cgs.serverMod == SVMOD_JAPRO) && cgs.jcinfo & JAPRO_CINFO_LG)
+		{
+			trap->S_RegisterSound( "sound/weapons/baton/idle.wav" );
+			weaponInfo->flashSound[0] = trap->S_RegisterSound( "sound/weapons/lightning/lg_hum.wav" );
+			weaponInfo->altFlashSound[0] = trap->S_RegisterSound( "sound/weapons/baton/fire.mp3" );
+		}
+		else if (weaponNum == WP_STUN_BATON)
 		{
 			trap->S_RegisterSound( "sound/weapons/baton/idle.wav" );
 			weaponInfo->flashSound[0] = trap->S_RegisterSound( "sound/weapons/baton/fire.mp3" );
@@ -173,7 +179,7 @@ void CG_RegisterWeapon( int weaponNum) {
 	case WP_CONCUSSION:
 		weaponInfo->selectSound			= trap->S_RegisterSound("sound/weapons/concussion/select.wav");
 
-		weaponInfo->flashSound[0]		= NULL_SOUND;
+		weaponInfo->flashSound[0]		= trap->S_RegisterSound("sound/weapons/concussion/fire");
 		weaponInfo->firingSound			= NULL_SOUND;
 		weaponInfo->chargeSound			= NULL_SOUND;
 		weaponInfo->muzzleEffect		= trap->FX_RegisterEffect( "concussion/muzzle_flash" );
@@ -184,7 +190,7 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponInfo->missileHitSound		= NULL_SOUND;
 		weaponInfo->missileTrailFunc	= FX_ConcussionProjectileThink;
 
-		weaponInfo->altFlashSound[0]	= NULL_SOUND;
+		weaponInfo->altFlashSound[0]	= trap->S_RegisterSound("sound/weapons/concussion/alt_fire");
 		weaponInfo->altFiringSound		= NULL_SOUND;
 		weaponInfo->altChargeSound		= trap->S_RegisterSound( "sound/weapons/bryar/altcharge.wav");
 		weaponInfo->altMuzzleEffect		= trap->FX_RegisterEffect( "concussion/altmuzzle_flash" );
@@ -263,7 +269,7 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponInfo->altFlashSound[0]	= trap->S_RegisterSound( "sound/weapons/blaster/alt_fire.wav");
 		weaponInfo->altFiringSound		= NULL_SOUND;
 		weaponInfo->altChargeSound		= NULL_SOUND;
-		weaponInfo->altMuzzleEffect		= trap->FX_RegisterEffect( "blaster/muzzle_flash" );
+		weaponInfo->altMuzzleEffect		= trap->FX_RegisterEffect( "blaster/altmuzzle_flash" );
 		weaponInfo->altMissileModel		= NULL_HANDLE;
 		weaponInfo->altMissileSound		= NULL_SOUND;
 		weaponInfo->altMissileDlight	= 0;

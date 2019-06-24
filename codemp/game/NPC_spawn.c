@@ -1399,7 +1399,7 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 		}
 	}
 
-	newent = G_Spawn();
+	newent = G_Spawn(qtrue);
 
 	if ( newent == NULL )
 	{
@@ -1420,9 +1420,9 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 	//newent->client = (gclient_s *)G_Alloc (sizeof(gclient_s));
 	G_CreateFakeClient(newent->s.number, &newent->client);
 
-	newent->NPC->tempGoal = G_Spawn();
-
-	if ( newent->NPC->tempGoal == NULL )
+	newent->NPC->tempGoal = G_Spawn(qtrue);
+	
+	if ( newent->NPC->tempGoal == NULL ) 
 	{
 		newent->NPC = NULL;
 		goto finish;
@@ -1536,7 +1536,11 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 		newent->client->NPC_class = CLASS_VEHICLE;
 		if ( g_vehicleInfo[iVehIndex].type == VH_FIGHTER )
 		{//FIXME: EXTERN!!!
-			newent->flags |= (FL_NO_KNOCKBACK|FL_SHIELDED|FL_DMG_BY_HEAVY_WEAP_ONLY);//don't get pushed around, blasters bounce off, only damage from heavy weaps
+			if (g_tweakWeapons.integer & WT_ANTI_VEHICLE) {
+				newent->flags |= (FL_NO_KNOCKBACK);
+			}
+			else
+				newent->flags |= (FL_NO_KNOCKBACK|FL_SHIELDED|FL_DMG_BY_HEAVY_WEAP_ONLY);//don't get pushed around, blasters bounce off, only damage from heavy weaps
 		}
 		//WTF?!!! Ships spawning in pointing straight down!
 		//set them up to start landed
@@ -1942,7 +1946,7 @@ extern void NPC_PrecacheAnimationCFG( const char *NPC_type );
 void NPC_Precache ( gentity_t *spawner );
 void NPC_PrecacheType( char *NPC_type )
 {
-	gentity_t *fakespawner = G_Spawn();
+	gentity_t *fakespawner = G_Spawn(qtrue);
 	if ( fakespawner )
 	{
 		fakespawner->NPC_type = NPC_type;
@@ -2968,7 +2972,6 @@ void SP_NPC_Rebel( gentity_t *self)
 //=============================================================================================
 //ENEMIES
 //=============================================================================================
-
 /*QUAKED NPC_Human_Merc(1 0 0) (-16 -16 -24) (16 16 40) BOWCASTER REPEATER FLECHETTE CONCUSSION DROPTOFLOOR CINEMATIC NOTSOLID STARTINSOLID SHY
 100 health, blaster rifle
 
@@ -3952,9 +3955,10 @@ NPC_Spawn_f
 
 gentity_t *NPC_SpawnType( gentity_t *ent, char *npc_type, char *targetname, qboolean isVehicle )
 {
-	gentity_t		*NPCspawner = G_Spawn();
+	gentity_t		*NPCspawner = G_SpawnLogical();
 	vec3_t			forward, end;
 	trace_t			trace;
+	gentity_t		*ourVehicle;
 
 	if(!NPCspawner)
 	{
@@ -3998,7 +4002,10 @@ gentity_t *NPC_SpawnType( gentity_t *ent, char *npc_type, char *targetname, qboo
 	//set the yaw so that they face away from player
 	NPCspawner->s.angles[1] = ent->client->ps.viewangles[1];
 
-	trap->LinkEntity((sharedEntity_t *)NPCspawner);
+	//LOOK AT THIS! JKG does not have this LinkEntity line.  Should it just be commented out, or conditional, or?
+	//If the spawner has script_targetname it wont be logical and we might want this?
+	if (!NPCspawner->isLogical)
+		trap->LinkEntity((sharedEntity_t *)NPCspawner);
 
 	NPCspawner->NPC_type = G_NewString( npc_type );
 
@@ -4095,7 +4102,9 @@ gentity_t *NPC_SpawnType( gentity_t *ent, char *npc_type, char *targetname, qboo
 		NPC_Wampa_Precache();
 	}
 
-	return (NPC_Spawn_Do( NPCspawner ));
+	ourVehicle = (NPC_Spawn_Do( NPCspawner ));
+
+	return ourVehicle;
 }
 
 void NPC_Spawn_f( gentity_t *ent )
@@ -4103,6 +4112,7 @@ void NPC_Spawn_f( gentity_t *ent )
 	char	npc_type[1024];
 	char	targetname[1024];
 	qboolean	isVehicle = qfalse;
+	int i = 0;
 
 	trap->Argv(2, npc_type, 1024);
 	if ( Q_stricmp( "vehicle", npc_type ) == 0 )
@@ -4115,6 +4125,18 @@ void NPC_Spawn_f( gentity_t *ent )
 	{
 		trap->Argv(3, targetname, 1024);
 	}
+
+	while (npc_type[i]) {
+		npc_type[i] = tolower(npc_type[i]);
+		i++;
+	}
+
+	if (Q_stricmp("ragnos", npc_type) == 0) //Sad hack, but even tho spawning ragnos is fixed, it will still crash people when it starts doing stuff
+		return;
+	if (Q_stricmp("saber_droid", npc_type) == 0)
+		return;
+	if (Q_stricmp("saber_droid_training", npc_type) == 0) 
+		return;
 
 	NPC_SpawnType( ent, npc_type, targetname, isVehicle );
 }
@@ -4261,9 +4283,16 @@ Svcmd_NPC_f
 parse and dispatch bot commands
 */
 qboolean	showBBoxes = qfalse;
-void Cmd_NPC_f( gentity_t *ent )
+int G_AdminAllowed(gentity_t *ent, unsigned int adminCmd, qboolean cheatAllowed, qboolean raceAllowed, char *cmdName);
+void Cmd_NPC_f( gentity_t *ent ) 
 {
 	char	cmd[1024];
+
+	if (!ent->client)
+		return;
+
+	if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_NPC, qtrue, qfalse, "npc"))
+		return;
 
 	trap->Argv( 1, cmd, 1024 );
 

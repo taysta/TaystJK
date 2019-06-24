@@ -49,6 +49,10 @@ void UI_Load( void );
 void UI_LoadMenus( const char *menuFile, qboolean reset );
 void UI_LoadArenas( void );
 void UI_LoadForceConfig_List( void );
+void UI_UpdateCurrentServerInfo( void );
+void UI_BuildQ3Model_List( void );
+void UI_BuildPlayerModel_List( qboolean inGameLoad );
+void UI_UpdateSaberHiltInfo( void );
 
 //
 // ui_players.c
@@ -268,18 +272,18 @@ typedef struct {
 } playerColor_t;
 
 typedef struct playerSpeciesInfo_s {
-	char		Name[MAX_QPATH];
-	int			SkinHeadCount;
-	int			SkinHeadMax;
-	skinName_t	*SkinHead;
-	int			SkinTorsoCount;
-	int			SkinTorsoMax;
-	skinName_t	*SkinTorso;
-	int			SkinLegCount;
-	int			SkinLegMax;
-	skinName_t	*SkinLeg;
-	int			ColorMax;
-	int			ColorCount;
+	char			Name[MAX_QPATH];
+	int				SkinHeadCount;
+	int				SkinHeadMax;
+	skinName_t		*SkinHead;
+	int				SkinTorsoCount;
+	int				SkinTorsoMax;
+	skinName_t		*SkinTorso;
+	int				SkinLegCount;
+	int				SkinLegMax;
+	skinName_t		*SkinLeg;
+	int				ColorMax;
+	int				ColorCount;
 	playerColor_t	*Color;
 } playerSpeciesInfo_t;
 
@@ -328,7 +332,7 @@ typedef struct uiInfo_s {
 	int						modCount;
 	int						modIndex;
 
-	char					demoList[MAX_DEMOS][MAX_QPATH];
+	char					demoList[MAX_DEMOS][MAX_STRING_CHARS];
 	int						demoCount;
 	int						demoIndex;
 	int						loadedDemos;

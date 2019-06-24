@@ -583,7 +583,7 @@ static void SV_ClipMoveToEntities( moveclip_t *clip ) {
 				}
 				else
 				{
-					continue;	// don't clip against own missiles
+					continue;	// don't clip against own missiles - here it is
 				}
 			}
 			if ( touch->r.ownerNum == passOwnerNum &&
@@ -608,6 +608,10 @@ static void SV_ClipMoveToEntities( moveclip_t *clip ) {
 
 		if ((clip->contentmask == (MASK_SHOT|CONTENTS_LIGHTSABER) || clip->contentmask == MASK_SHOT) && (touch->r.contents > 0 && (touch->r.contents & CONTENTS_NOSHOT)))
 		{
+			continue;
+		}
+
+		if (DuelCull(SV_GentityNum(clip->passEntityNum), touch)) {
 			continue;
 		}
 
@@ -734,7 +738,7 @@ Ghoul2 Insert Start
 
 			if (touch->s.number < MAX_CLIENTS)
 			{
-				VectorCopy(touch->s.apos.trBase, angles);
+				VectorCopy(touch->s.apos.trBase, angles); //Since ghoul2 hit detection is based off apos.trbase, we have to add that to list of things to be unlagged?
 			}
 			else
 			{

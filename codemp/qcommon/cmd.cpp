@@ -760,13 +760,39 @@ void Cmd_VM_RemoveCommand( const char *cmd_name, vmSlots_t vmslot ) {
 Cmd_DescriptionString
 ============
 */
+extern void UIVM_CommandHelp( const char *commandName, char *helpBuffer, size_t helpBufferSize );
+
+char *Cmd_DescriptionString( const cmd_function_t *cmd )
+{
+	static char description[2048];
+
+	// give UI a chance to fill description
+	description[0] = '\0';
+#ifndef DEDICATED
+	UIVM_CommandHelp( cmd->name, &description[0], sizeof( description ) );
+#endif
+
+	if ( !VALIDSTRING( description ) && VALIDSTRING( cmd->description ) ) {
+		// UI didn't write anything, but we have an engine description for this command instead
+		Q_strncpyz( description, cmd->description, sizeof( description ) );
+	}
+
+	if ( !VALIDSTRING( description ) ) {
+		return ""; // neither UI nor the cmd table contained a description
+	}
+
+	return &description[0];
+}
+
 char *Cmd_DescriptionString( const char *cmd_name )
 {
 	const cmd_function_t *cmd = Cmd_FindCommand( cmd_name );
 
-	if ( !cmd || !VALIDSTRING( cmd->description ) )
+	if ( !cmd ) {
 		return "";
-	return cmd->description;
+	}
+
+	return Cmd_DescriptionString( cmd );
 }
 
 /*
@@ -779,9 +805,11 @@ void Cmd_Print( const cmd_function_t *cmd )
 {
 	Com_Printf( S_COLOR_GREY "Cmd " S_COLOR_WHITE "%s", cmd->name );
 
-	if ( VALIDSTRING( cmd->description ) )
+	const char *description = Cmd_DescriptionString( cmd );
+
+	if ( VALIDSTRING( description ) )
 	{
-		Com_Printf( S_COLOR_GREEN " - %s" S_COLOR_WHITE, cmd->description );
+		Com_Printf( S_COLOR_GREEN " - %s" S_COLOR_WHITE, description );
 	}
 
 	Com_Printf( "\n" );
@@ -918,8 +946,10 @@ static void Cmd_List_f (void)
 		++itr )
 	{
 		cmd = (*itr);
-		if ( VALIDSTRING( cmd->description ) )
-			Com_Printf( " %s" S_COLOR_GREEN " - %s" S_COLOR_WHITE "\n", cmd->name, cmd->description );
+		const char *description = Cmd_DescriptionString( cmd );
+
+		if ( VALIDSTRING( description ) )
+			Com_Printf( " %s" S_COLOR_GREEN " - %s" S_COLOR_WHITE "\n", cmd->name, description );
 		else
 			Com_Printf( " %s\n", cmd->name );
 	}

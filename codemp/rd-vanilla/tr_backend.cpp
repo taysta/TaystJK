@@ -481,7 +481,19 @@ void RB_BeginDrawingView (void) {
 				// try clearing first with the portal sky fog color, then the world fog color, then finally a default
 				clearBits |= GL_COLOR_BUFFER_BIT;
 				//rwwFIXMEFIXME: Clear with fog color if there is one
+#ifdef _DEBUG
 				qglClearColor ( 0.5, 0.5, 0.5, 1.0 );
+#else
+				if (r_fastsky->integer >= 2 && r_fastsky->integer <= 9) {
+					qglClearColor(g_color_table[r_fastsky->integer][0], g_color_table[r_fastsky->integer][1], g_color_table[r_fastsky->integer][2], 1.0f);
+				}
+				else if (r_fastsky->integer == 10) { //10=red special case
+					qglClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+				}
+				else {
+					qglClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// FIXME: get color of sky
+				}
+#endif
 			}
 		}
 	}
@@ -493,7 +505,15 @@ void RB_BeginDrawingView (void) {
 #ifdef _DEBUG
 			qglClearColor( 0.8f, 0.7f, 0.4f, 1.0f );	// FIXME: get color of sky
 #else
-			qglClearColor( 0.0f, 0.0f, 0.0f, 1.0f );	// FIXME: get color of sky
+			if (r_fastsky->integer >= 2 && r_fastsky->integer <= 9) {
+				qglClearColor(g_color_table[r_fastsky->integer][0], g_color_table[r_fastsky->integer][1], g_color_table[r_fastsky->integer][2], 1.0f);
+			}
+			else if (r_fastsky->integer == 10) { //10=red special case
+				qglClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			}
+			else {
+				qglClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// FIXME: get color of sky
+			}
 #endif
 		}
 	}
@@ -1670,8 +1690,8 @@ const void	*RB_DrawSurfs( const void *data ) {
 		// Resize the viewport to the blur texture size.
 		const int oldViewWidth = backEnd.viewParms.viewportWidth;
 		const int oldViewHeight = backEnd.viewParms.viewportHeight;
-		backEnd.viewParms.viewportWidth = r_DynamicGlowWidth->integer;
-		backEnd.viewParms.viewportHeight = r_DynamicGlowHeight->integer;
+		backEnd.viewParms.viewportWidth = tr.dynamicGlowWidth;
+		backEnd.viewParms.viewportHeight = tr.dynamicGlowHeight;
 		SetViewportAndScissor();
 
 		// Blur the scene.
@@ -2289,16 +2309,16 @@ static inline void RB_DrawGlowOverlay()
 	qglBindTexture( GL_TEXTURE_RECTANGLE_ARB, tr.blurImage );
 	qglBegin(GL_QUADS);
 		qglColor4f( 1.0f, 1.0f, 1.0f, 1.0f );
-		qglTexCoord2f( 0, r_DynamicGlowHeight->integer );
+		qglTexCoord2f( 0, tr.dynamicGlowHeight );
 		qglVertex2f( 0, 0 );
 
 		qglTexCoord2f( 0, 0 );
 		qglVertex2f( 0, glConfig.vidHeight );
 
-		qglTexCoord2f( r_DynamicGlowWidth->integer, 0 );
+		qglTexCoord2f( tr.dynamicGlowWidth, 0 );
 		qglVertex2f( glConfig.vidWidth, glConfig.vidHeight );
 
-		qglTexCoord2f( r_DynamicGlowWidth->integer, r_DynamicGlowHeight->integer );
+		qglTexCoord2f( tr.dynamicGlowWidth, tr.dynamicGlowHeight );
 		qglVertex2f( glConfig.vidWidth, 0 );
 	qglEnd();
 
@@ -2314,8 +2334,8 @@ static inline void RB_DrawGlowOverlay()
 		int iTexWidth = glConfig.vidWidth, iTexHeight = glConfig.vidHeight;
 		if ( GL_TEXTURE_RECTANGLE_ARB == GL_TEXTURE_RECTANGLE_NV )
 		{
-			iTexWidth = r_DynamicGlowWidth->integer;
-			iTexHeight = r_DynamicGlowHeight->integer;
+			iTexWidth = tr.dynamicGlowWidth;
+			iTexHeight = tr.dynamicGlowHeight;
 		}
 
 		qglActiveTextureARB( GL_TEXTURE1_ARB );

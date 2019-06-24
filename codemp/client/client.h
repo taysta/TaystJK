@@ -88,7 +88,6 @@ typedef struct outPacket_s {
 // it can be un-deltad from the original
 #define	MAX_PARSE_ENTITIES	( PACKET_BACKUP * MAX_SNAPSHOT_ENTITIES )
 
-extern int g_console_field_width;
 
 typedef struct clientActive_s {
 	int			timeoutcount;		// it requres several frames in a timeout condition
@@ -152,6 +151,23 @@ typedef struct clientActive_s {
 	entityState_t	parseEntities[MAX_PARSE_ENTITIES];
 
 	char			*mSharedMemory;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	struct {
+		qboolean		needPassword;
+		char			hostName[MAX_HOSTNAMELENGTH];
+		char			mapName[MAX_QPATH];
+		int				gametype;
+		int				timelimit;
+		int				playerCount;
+		int				redTeam;
+		int				blueTeam;
+		int				specCount;
+		int				botCount;
+		int				maxPlayers;
+		char			fs_game[MAX_QPATH];
+	} discord;
+#endif
 } clientActive_t;
 
 extern	clientActive_t		cl;
@@ -225,7 +241,7 @@ typedef struct clientConnection_s {
 	qboolean	downloadRestart;	// if true, we need to do another FS_Restart because we downloaded a pak
 
 	// demo information
-	char		demoName[MAX_QPATH];
+	char		demoName[MAX_STRING_CHARS];
 	qboolean	spDemoRecording;
 	qboolean	demorecording;
 	qboolean	demoplaying;
@@ -270,6 +286,7 @@ typedef struct serverInfo_s {
 	int			netType;
 	int			gameType;
 	int		  	clients;
+	int			filterBots;
 	int		  	maxClients;
 	int			minPing;
 	int			maxPing;
@@ -300,6 +317,15 @@ typedef struct clientStatic_s {
 	int			realtime;			// ignores pause
 	int			realFrametime;		// ignoring pause, so console always works
 
+	int			lastDrawTime;//Loda - com_renderfps
+
+	int			afkTime;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+	qboolean	discordInitialized;
+	int			discordUpdateTime;
+#endif
+
 	int			numlocalservers;
 	serverInfo_t	localServers[MAX_OTHER_SERVERS];
 
@@ -326,10 +352,16 @@ typedef struct clientStatic_s {
 	qhandle_t	charSetShader;
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
+	float		widthRatioCoef;
+
+	struct { //chatlogging
+		qboolean		started;
+		fileHandle_t	file;
+	} log;
 } clientStatic_t;
 
 #define	CON_TEXTSIZE	0x30000 //was 32768
-#define	NUM_CON_TIMES	4
+#define	NUM_CON_TIMES	64
 
 typedef struct console_s {
 	qboolean	initialized;
@@ -342,11 +374,15 @@ typedef struct console_s {
 	int 	linewidth;		// characters across screen
 	int		totallines;		// total lines in console scrollback
 
+	int		charWidth;		// Scaled console character width
+	int		charHeight;		// Scaled console character height.
+
 	float	xadjust;		// for wide aspect screens
 	float	yadjust;		// for wide aspect screens
 
 	float	displayFrac;	// aproaches finalFrac at scr_conspeed
 	float	finalFrac;		// 0.0 to 1.0 lines of console to display
+	float	tempFrac;
 
 	int		vislines;		// in scanlines
 
@@ -372,7 +408,6 @@ extern	cvar_t	*cl_shownet;
 extern	cvar_t	*cl_showSend;
 extern	cvar_t	*cl_timeNudge;
 extern	cvar_t	*cl_showTimeDelta;
-extern	cvar_t	*cl_freezeDemo;
 
 extern	cvar_t	*cl_yawspeed;
 extern	cvar_t	*cl_pitchspeed;
@@ -394,6 +429,9 @@ extern	cvar_t	*m_forward;
 extern	cvar_t	*m_side;
 extern	cvar_t	*m_filter;
 
+extern	cvar_t	*cl_idrive;//JAPRO ENGINE
+extern	cvar_t	*cl_commandsize;//JAPRO ENGINE
+
 extern	cvar_t	*cl_timedemo;
 extern	cvar_t	*cl_aviFrameRate;
 extern	cvar_t	*cl_aviMotionJpeg;
@@ -405,6 +443,7 @@ extern	cvar_t	*cl_activeAction;
 
 extern	cvar_t	*cl_allowDownload;
 extern	cvar_t	*cl_allowAltEnter;
+extern	cvar_t	*cl_allowEnterCompletion;
 extern	cvar_t	*cl_conXOffset;
 extern	cvar_t	*cl_inGameVideo;
 
@@ -414,6 +453,22 @@ extern	cvar_t	*cl_consoleUseScanCode;
 extern  cvar_t  *cl_lanForcePackets;
 
 extern	cvar_t	*cl_drawRecording;
+
+extern cvar_t	*cl_colorString;
+extern cvar_t	*cl_colorStringCount;
+extern cvar_t	*cl_colorStringRandom;
+
+extern cvar_t	*cl_chatStylePrefix;
+extern cvar_t	*cl_chatStyleSuffix;
+
+extern cvar_t	*cl_afkTime;
+extern cvar_t	*cl_afkTimeUnfocused;
+
+extern cvar_t	*cl_logChat;
+
+#if defined(DISCORD) && !defined(_DEBUG)
+extern cvar_t	*cl_discordRichPresence;
+#endif
 
 //=================================================
 
@@ -454,7 +509,20 @@ void CL_InitRef( void );
 
 int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int maxLen );
 
+void CL_RandomizeColors(const char *in, char *out);
+void CL_Afk_f(void);
+
+#if defined(DISCORD) && !defined(_DEBUG)
+void CL_DiscordInitialize(void);
+void CL_DiscordShutdown(void);
+void CL_DiscordUpdatePresence(void);
+#endif
+
 qboolean CL_CheckPaused(void);
+
+extern int		cl_nameModifiedTime;
+extern int		cl_unfocusedTime;
+extern qboolean cl_afkName;
 
 //
 // cl_input
@@ -515,6 +583,13 @@ void Con_Top( void );
 void Con_Bottom( void );
 void Con_Close( void );
 
+void Con_SetFrac(const float conFrac);
+void Con_Copy(void);
+void Con_CopyLink(void);
+
+#ifdef _WIN32
+extern qboolean con_alert;
+#endif
 
 //
 // cl_scrn.c
@@ -532,6 +607,7 @@ void	SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader
 void	SCR_DrawNamedPic( float x, float y, float width, float height, const char *picname );
 
 void	SCR_DrawBigString( int x, int y, const char *s, float alpha, qboolean noColorEscape );			// draws a string with embedded color control characters with fade
+void	SCR_DrawStringExt2(float x, float y, float charWidth, float charHeight, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape); //from jaMME
 void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean noColorEscape );	// ignores embedded color control characters
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
 void	SCR_DrawSmallChar( int x, int y, int ch );

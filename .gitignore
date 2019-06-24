@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.pk3
 
 # Build results
 [Dd]ebug/
@@ -64,6 +65,7 @@ local.properties
 *.vspscc
 .builds
 *.dotCover
+.vs
 
 winquake.res
 
@@ -111,6 +113,7 @@ stylecop.*
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
+install
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
@@ -172,4 +175,4 @@ pip-log.txt
 ## Unix
 #############
 *.o
-*.so
+

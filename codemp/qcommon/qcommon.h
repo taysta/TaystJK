@@ -114,8 +114,13 @@ NET
 
 #define NET_ENABLEV4		0x01
 
-#define	PACKET_BACKUP	32	// number of old messages that must be kept on client and
+#ifndef DEDICATED
+#define PACKET_BACKUP 128
+#else
+#define	PACKET_BACKUP	32 // number of old messages that must be kept on client and
 							// server for delta comrpession and ping estimation
+#endif
+
 #define	PACKET_MASK		(PACKET_BACKUP-1)
 
 #define	MAX_PACKET_USERCMDS		32		// max number of usercmd_t in a packet
@@ -211,7 +216,8 @@ PROTOCOL
 ==============================================================
 */
 
-#define	PROTOCOL_VERSION	26
+#define	PROTOCOL_VERSION	26 //1.01
+#define	PROTOCOL_LEGACY		25 //1.00
 
 #define	UPDATE_SERVER_NAME			"updatejk3.ravensoft.com"
 #define MASTER_SERVER_NAME			"masterjk3.ravensoft.com"
@@ -566,7 +572,7 @@ issues.
 // number of id paks that will never be autodownloaded from base
 #define NUM_ID_PAKS		9
 
-#define	MAX_FILE_HANDLES	64
+#define	MAX_FILE_HANDLES	256
 
 #ifdef DEDICATED
 #	define Q3CONFIG_CFG PRODUCT_NAME "_server.cfg"
@@ -605,6 +611,7 @@ qboolean FS_CompareZipChecksum(const char *zipfile);
 int		FS_GetFileList(  const char *path, const char *extension, char *listbuf, int bufsize );
 int		FS_GetModList(  char *listbuf, int bufsize );
 
+fileHandle_t	FS_FOpenFileWriteAsync( const char *qpath, qboolean safe=qtrue );
 fileHandle_t	FS_FOpenFileWrite( const char *qpath, qboolean safe=qtrue );
 // will properly create any needed paths and deal with seperater character issues
 
@@ -622,6 +629,7 @@ long		FS_FOpenFileRead( const char *qpath, fileHandle_t *file, qboolean uniqueFI
 
 int		FS_FileIsInPAK(const char *filename, int *pChecksum );
 // returns 1 if a file is in the PAK file, otherwise -1
+long	FS_ReadDLLInPAK(const char *filename, void **buffer);
 
 qboolean FS_FindPureDLL(const char *name);
 
@@ -729,6 +737,7 @@ typedef struct field_s {
 
 void Field_Clear( field_t *edit );
 void Field_AutoComplete( field_t *edit );
+void Field_AutoComplete( field_t *edit, qboolean enterKey );
 void Field_CompleteKeyname( void );
 void Field_CompleteFilename( const char *dir, const char *ext, qboolean stripExt, qboolean allowNonPureFilesOnDisk );
 void Field_CompleteCommand( char *cmd, qboolean doCommands, qboolean doCvars );
@@ -794,6 +803,8 @@ extern	cvar_t	*com_G2Report;
 
 extern	cvar_t	*com_affinity;
 extern	cvar_t	*com_busyWait;
+
+extern	cvar_t	*com_renderfps;
 
 // both client and server must agree to pause
 extern	cvar_t	*cl_paused;

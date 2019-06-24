@@ -37,9 +37,8 @@ CG_ParseScores
 
 =================
 */
-#define SCORE_OFFSET (14)
 static void CG_ParseScores( void ) {
-	int i, powerups, readScores;
+	int		i, powerups, readScores, scoreOffset;//JAPRO - Clientside - Scoreboard Deaths
 
 	cg.numScores = atoi( CG_Argv( 1 ) );
 
@@ -58,20 +57,29 @@ static void CG_ParseScores( void ) {
 
 	memset( cg.scores, 0, sizeof( cg.scores ) );
 	for ( i=0; i<readScores; i++ ) {
-		cg.scores[i].client				= atoi( CG_Argv( i*SCORE_OFFSET +  4 ) );
-		cg.scores[i].score				= atoi( CG_Argv( i*SCORE_OFFSET +  5 ) );
-		cg.scores[i].ping				= atoi( CG_Argv( i*SCORE_OFFSET +  6 ) );
-		cg.scores[i].time				= atoi( CG_Argv( i*SCORE_OFFSET +  7 ) );
-		cg.scores[i].scoreFlags			= atoi( CG_Argv( i*SCORE_OFFSET +  8 ) );
-		powerups						= atoi( CG_Argv( i*SCORE_OFFSET +  9 ) );
-		cg.scores[i].accuracy			= atoi( CG_Argv( i*SCORE_OFFSET + 10 ) );
-		cg.scores[i].impressiveCount	= atoi( CG_Argv( i*SCORE_OFFSET + 11 ) );
-		cg.scores[i].excellentCount		= atoi( CG_Argv( i*SCORE_OFFSET + 12 ) );
-		cg.scores[i].gauntletCount		= atoi( CG_Argv( i*SCORE_OFFSET + 13 ) );
-		cg.scores[i].defendCount		= atoi( CG_Argv( i*SCORE_OFFSET + 14 ) );
-		cg.scores[i].assistCount		= atoi( CG_Argv( i*SCORE_OFFSET + 15 ) );
-		cg.scores[i].perfect			= atoi( CG_Argv( i*SCORE_OFFSET + 16 ) );
-		cg.scores[i].captures			= atoi( CG_Argv( i*SCORE_OFFSET + 17 ) );
+//JAPRO - Clientside - Scoreboard Deaths - Start
+		if ((cgs.serverMod == SVMOD_JAPLUS && (!Q_stricmp(cjp_client.string, "1.4JAPRO"))) || cgs.serverMod == SVMOD_JAPRO) {
+			scoreOffset = 15;
+			cg.scores[i].deaths = atoi(CG_Argv(i * scoreOffset + 18));
+		}
+		else
+			scoreOffset = 14;
+
+		cg.scores[i].client = atoi( CG_Argv( i * scoreOffset + 4 ) );
+		cg.scores[i].score = atoi( CG_Argv( i * scoreOffset + 5 ) );
+		cg.scores[i].ping = atoi( CG_Argv( i * scoreOffset + 6 ) );
+		cg.scores[i].time = atoi( CG_Argv( i * scoreOffset + 7 ) );
+		cg.scores[i].scoreFlags = atoi( CG_Argv( i * scoreOffset + 8 ) );
+		powerups = atoi( CG_Argv( i * scoreOffset + 9 ) );
+		cg.scores[i].accuracy = atoi(CG_Argv(i * scoreOffset + 10));
+		cg.scores[i].impressiveCount = atoi(CG_Argv(i * scoreOffset + 11));
+		cg.scores[i].excellentCount = atoi(CG_Argv(i * scoreOffset + 12));
+		cg.scores[i].gauntletCount = atoi(CG_Argv(i * scoreOffset + 13));
+		cg.scores[i].defendCount = atoi(CG_Argv(i * scoreOffset + 14));
+		cg.scores[i].assistCount = atoi(CG_Argv(i * scoreOffset + 15));
+		cg.scores[i].perfect = (qboolean)atoi(CG_Argv(i * scoreOffset + 16));
+		cg.scores[i].captures = atoi(CG_Argv(i * scoreOffset + 17));
+//JAPRO - Clientside - Scoreboard Deaths - End
 
 		if ( cg.scores[i].client < 0 || cg.scores[i].client >= MAX_CLIENTS )
 			cg.scores[i].client = 0;
@@ -128,8 +136,10 @@ and whenever the server updates any serverinfo flagged cvars
 */
 void CG_ParseServerinfo( void ) {
 	const char *info = NULL;
+	const char *gamename = NULL;
 	char *mapname;
 	int i, value;
+	char restrictString[16] = { 0 };
 
 	info = CG_ConfigString( CS_SERVERINFO );
 
@@ -181,18 +191,84 @@ void CG_ParseServerinfo( void ) {
 		cg.timelimitWarnings &= ~(1|2);
 	cgs.timelimit = i;
 
-	cgs.maxclients = Com_Clampi( 0, MAX_CLIENTS, atoi( Info_ValueForKey( info, "sv_maxclients" ) ) );
-	mapname = Info_ValueForKey( info, "mapname" );
+	/*
+	Q_strncpyz(cgs.gamename, Info_ValueForKey(info, "gamename"), sizeof(cgs.gamename));//[JAPRO - Clientside - All - Add gamename variable to get mod name from server]
 
+	cgs.cinfo= atoi ( Info_ValueForKey ( info, "jp_cinfo" ) );//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
+	cgs.jcinfo= atoi ( Info_ValueForKey ( info, "jcinfo" ) );//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+	*/
+
+	cgs.maxclients = Com_Clampi( 0, MAX_CLIENTS, atoi( Info_ValueForKey( info, "sv_maxclients" ) ) );
+	trap->Cvar_Set("ui_version", Info_ValueForKey(info, "version")); //used by UI in the in-game "about" menu
+	cgs.svfps = atoi( Info_ValueForKey( info, "sv_fps" ) );
+	cgs.serverMod = SVMOD_BASEJKA;
+	cgs.cinfo = 0;
+	cgs.jcinfo = 0;
+	cgs.pluginSet = qfalse;
+	cgs.legacyProtocol = qfalse;
+	cgs.restricts = 0;
+
+	gamename = Info_ValueForKey(info, "gamename");
+	if (gamename) {
+		if (!Q_stricmpn(gamename, "JA+", 3)
+			|| !Q_stricmpn(gamename, "^4U^3A^5Galaxy", 14)
+			|| !Q_stricmpn(gamename, "AbyssMod", 8)) {	//uag :s - yes its fatz
+			cgs.serverMod = SVMOD_JAPLUS;
+			cgs.cinfo = atoi(Info_ValueForKey(info, "jp_cinfo"));//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
+			cgs.hookpull = 800;
+			if (!Q_stricmpn(cjp_client.string, "1.4", 3))
+				cgs.pluginSet = qtrue;
+		}
+		else if (!Q_stricmpn(gamename, "japro", 5)) {
+			cgs.serverMod = SVMOD_JAPRO;
+			cgs.cinfo = atoi(Info_ValueForKey(info, "jcinfo"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+			cgs.jcinfo = cgs.cinfo;
+			cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+			trap->Cvar_Set("cjp_client", "1.4JAPRO");
+			cgs.pluginSet = qtrue;
+			//if (cgs.hookpull == 0)
+				//cgs.hookpull = 800;
+		}
+		else if (!Q_stricmpn(gamename, "smU", 3))
+		{
+			cgs.serverMod = SVMOD_OJKALT;
+		}
+		else if (!Q_stricmpn(gamename, "base_enhanced", 13)
+			|| (!Q_stricmpn(gamename, "base_entranced", 14))) {
+			cgs.serverMod = SVMOD_BASEENHANCED;
+		}
+		else if (!Q_stricmpn(gamename, "basejk", 6))
+		{
+			cgs.serverMod = SVMOD_BASEJKA;
+		}
+	}
+
+	//multiversion "support"
+	if (atoi(Info_ValueForKey(info, "protocol")) < 26) {
+		cgs.legacyProtocol = qtrue; //v1.00
+		cgs.serverMod = SVMOD_BASEJKA;
+	}
+		
+
+	restrictString[0] = 'r';
+	restrictString[1] = 'e';
+	restrictString[2] = 's';
+	restrictString[3] = 't';
+	restrictString[4] = 'r';
+	restrictString[5] = 'i';
+	restrictString[6] = 'c';
+	restrictString[7] = 't';
+	restrictString[8] = 's';
+	restrictString[9] = '\0';
+
+	cgs.restricts = atoi (Info_ValueForKey (info, restrictString ));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+
+	mapname = Info_ValueForKey( info, "mapname" );
 	//rww - You must do this one here, Info_ValueForKey always uses the same memory pointer.
 	trap->Cvar_Set ( "ui_about_mapname", mapname );
 
 	Com_sprintf( cgs.mapname, sizeof( cgs.mapname ), "maps/%s.bsp", mapname );
 	Com_sprintf( cgs.rawmapname, sizeof( cgs.rawmapname ), "maps/%s", mapname );
-//	Q_strncpyz( cgs.redTeam, Info_ValueForKey( info, "g_redTeam" ), sizeof(cgs.redTeam) );
-//	trap->Cvar_Set("g_redTeam", cgs.redTeam);
-//	Q_strncpyz( cgs.blueTeam, Info_ValueForKey( info, "g_blueTeam" ), sizeof(cgs.blueTeam) );
-//	trap->Cvar_Set("g_blueTeam", cgs.blueTeam);
 
 	trap->Cvar_Set ( "ui_about_gametype", va("%i", cgs.gametype ) );
 	trap->Cvar_Set ( "ui_about_fraglimit", va("%i", cgs.fraglimit ) );
@@ -212,9 +288,12 @@ void CG_ParseServerinfo( void ) {
 	Q_strncpyz( cgs.voteString, CG_ConfigString( CS_VOTE_STRING ), sizeof( cgs.voteString ) );
 
 	// synchronise our expected snaps/sec with the server's framerate
+	// actually how about we don't do this
+#if 0
 	i = atoi( Info_ValueForKey( info, "sv_fps" ) );
 	if ( i )
 		trap->Cvar_Set( "snaps", va( "%i", i ) );
+#endif
 }
 
 /*
@@ -344,7 +423,8 @@ void CG_ShaderStateChanged(void) {
 				strncpy(timeOffset, t, o-t);
 				timeOffset[o-t] = 0;
 				o++;
-				trap->R_RemapShader( originalShader, newShader, timeOffset );
+				if (cg_remaps.integer)//JAPRO - Clientside - Allow noremaps
+					trap->R_RemapShader( originalShader, newShader, timeOffset );
 			}
 		} else {
 			break;
@@ -1049,6 +1129,19 @@ require a reload of all the media
 ===============
 */
 static void CG_MapRestart( void ) {
+	int i;
+	clientInfo_t *ci;
+	for (i = 0 ; i < MAX_CLIENTS ; i++)
+	{ //reset our death count on everyone
+		ci = &cgs.clientinfo[i];
+		if (!ci)
+			continue;
+		if (!ci->infoValid)
+			continue;
+		
+		ci->deaths = 0;
+	}
+
 	if ( cg_showMiss.integer ) {
 		trap->Print( "CG_MapRestart\n" );
 	}
@@ -1057,6 +1150,9 @@ static void CG_MapRestart( void ) {
 	//FIXME: trap->FX_Reset?
 
 	CG_InitLocalEntities();
+#if _NEWTRAILS
+	CG_InitStrafeTrails();
+#endif
 	CG_InitMarkPolys();
 	CG_KillCEntityInstances();
 
@@ -1075,12 +1171,29 @@ static void CG_MapRestart( void ) {
 
 	trap->S_ClearLoopingSounds();
 
+	cgs.takenscreenshot = qfalse;//japro
+
 	// we really should clear more parts of cg here and stop sounds
 
 	// play the "fight" sound if this is a restart without warmup
 	if ( cg.warmup == 0 && cgs.gametype != GT_SIEGE && cgs.gametype != GT_POWERDUEL/* && cgs.gametype == GT_DUEL */) {
 		trap->S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
 		CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );
+	}
+
+	if (cg_autoRecordDemo.integer && cg.recording && (1 << cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback) {
+		time_t rawtime;
+		char timeBuf[256] = { 0 }, buf[256] = { 0 }, mapname[MAX_QPATH] = { 0 };
+			
+		time(&rawtime);
+		strftime(timeBuf, sizeof(timeBuf), "%Y-%m-%d_%H-%M-%S", gmtime(&rawtime));
+		Q_strncpyz(mapname, cgs.mapname + 5, sizeof(mapname));
+		COM_StripExtension(mapname, mapname, sizeof(mapname));
+		Com_sprintf(buf, sizeof(buf), "%s_%s_%s_%s", timeBuf, gametypeStringShort[cgs.gametype], mapname, cgs.clientinfo[cg.clientNum].name);
+		Q_strstrip(buf, "\n\r;:?*<>|\"\\/ ", NULL);
+		Q_CleanStr(buf);
+		cg.recording = qtrue;
+		trap->SendConsoleCommand(va("stoprecord; record %s\n", buf));
 	}
 	/*
 	if (cg_singlePlayerActive.integer) {
@@ -1474,6 +1587,9 @@ static void CG_CenterPrint_f( void ) {
 
 	CG_CheckSVStringEdRef( strEd, CG_Argv( 1 ) );
 	CG_CenterPrint( strEd, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server center prints?
 }
 
 static void CG_CenterPrintSE_f( void ) {
@@ -1485,6 +1601,9 @@ static void CG_CenterPrintSE_f( void ) {
 
 	trap->SE_GetStringTextString( x, strEd, MAX_STRINGED_SV_STRING );
 	CG_CenterPrint( strEd, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH );
+
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_CENTERPRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server center prints?
 }
 
 static void CG_Print_f( void ) {
@@ -1492,58 +1611,61 @@ static void CG_Print_f( void ) {
 
 	CG_CheckSVStringEdRef( strEd, CG_Argv( 1 ) );
 	trap->Print( "%s", strEd );
+
+	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_PRINT))
+		CG_LogPrintf(cg.log.file, "%s\n", strEd); //Log server console prints?
 }
 
 void CG_ChatBox_AddString(char *chatStr);
 static void CG_Chat_f( void ) {
-	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_SAY_TEXT] = {0};
+	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
 
 	trap->Cmd_Argv( 0, cmd, sizeof( cmd ) );
 
-	if ( !strcmp( cmd, "chat" ) ) {
-		if ( !cg_teamChatsOnly.integer ) {
-			if( cg_chatBeep.integer )
-				trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-			trap->Cmd_Argv( 1, text, sizeof( text ) );
-			CG_RemoveChatEscapeChar( text );
-			CG_ChatBox_AddString( text );
-			trap->Print( "*%s\n", text );
-		}
-	}
-	else if ( !strcmp( cmd, "lchat" ) ) {
-		if ( !cg_teamChatsOnly.integer ) {
-			char	name[MAX_NETNAME]={0},	loc[MAX_STRING_CHARS]={0},
-					color[8]={0},			message[MAX_STRING_CHARS]={0};
+	if (cmd[0] != 'l') { // normal chat ?/}
 
-			if ( trap->Cmd_Argc() < 4 )
-				return;
-
-			trap->Cmd_Argv( 1, name, sizeof( name ) );
-			trap->Cmd_Argv( 2, loc, sizeof( loc ) );
-			trap->Cmd_Argv( 3, color, sizeof( color ) );
-			trap->Cmd_Argv( 4, message, sizeof( message ) );
-
-			//get localized text
-			if ( loc[0] == '@' )
-				trap->SE_GetStringTextString( loc+1, loc, sizeof( loc ) );
-
-			if( cg_chatBeep.integer )
-				trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
-			CG_RemoveChatEscapeChar( text );
-			CG_ChatBox_AddString( text );
-			trap->Print( "*%s\n", text );
-		}
-	}
-	else if ( !strcmp( cmd, "tchat" ) ) {
-		if( cg_teamChatBeep.integer )
-			trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
 		trap->Cmd_Argv( 1, text, sizeof( text ) );
-		CG_RemoveChatEscapeChar( text );
-		CG_ChatBox_AddString( text );
-		trap->Print( "*%s\n", text );
+
+		if ( !Q_stricmp( cmd, "chat" ) && !cg_teamChatsOnly.integer )
+		{
+			CG_RemoveChatEscapeChar( text );
+
+			if (cg_cleanChatbox.integer) {
+				char cleanMsg[MAX_NETNAME + MAX_SAY_TEXT];
+
+				Q_strncpyz(cleanMsg, text, sizeof(cleanMsg));//Find Media - Currently Playing
+				Q_CleanString(cleanMsg);
+
+				if (Q_stristr(cleanMsg, "Media - Currently playing: ") != NULL) {
+					return;
+				}
+
+				if (Q_stristr(cleanMsg, "^5Hi everybody!") != NULL) {
+					return;
+				}
+			}
+				
+			if (cg_cleanChatbox.integer && !Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
+				return;
+			}
+			//New msg
+			CG_ChatBox_AddString(text);
+
+			Q_strncpyz(cg.lastChatMsg, text, sizeof(cg.lastChatMsg));
+		}
+		else if ( !Q_stricmp( cmd, "tchat" ) )
+		{
+			CG_RemoveChatEscapeChar( text );
+
+			if (cg_cleanChatbox.integer && !Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
+				return;
+			}
+
+			CG_ChatBox_AddString(text);
+		}
 	}
-	else if ( !strcmp( cmd, "ltchat" ) ) {
+	else
+	{ //location chat ?
 		char	name[MAX_NETNAME]={0},	loc[MAX_STRING_CHARS]={0},
 				color[8]={0},			message[MAX_STRING_CHARS]={0};
 
@@ -1556,15 +1678,19 @@ static void CG_Chat_f( void ) {
 		trap->Cmd_Argv( 4, message, sizeof( message ) );
 
 		//get localized text
-		if ( loc[0] == '@' )
-			trap->SE_GetStringTextString( loc+1, loc, sizeof( loc ) );
+		if (loc[0] == '@')
+			trap->SE_GetStringTextString(loc + 1, loc, sizeof(loc));
 
-		if( cg_teamChatBeep.integer )
-			trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND );
-		Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
-		CG_RemoveChatEscapeChar( text );
-		CG_ChatBox_AddString( text );
-		trap->Print( "*%s\n", text );
+		if ( !Q_stricmp( cmd, "lchat" ) && !cg_teamChatsOnly.integer ) {
+			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			CG_RemoveChatEscapeChar( text );
+			CG_ChatBox_AddString( text );
+		}
+		else if ( !Q_stricmp( cmd, "ltchat" ) ) {
+			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			CG_RemoveChatEscapeChar( text );
+			CG_ChatBox_AddString( text );
+		}
 	}
 }
 
@@ -1574,7 +1700,8 @@ static void CG_RemapShader_f( void ) {
 
 		trap->Cmd_Argv( 1, shader1, sizeof( shader1 ) );
 		trap->Cmd_Argv( 2, shader2, sizeof( shader2 ) );
-		trap->R_RemapShader( shader1, shader2, CG_Argv( 3 ) );
+		if ( cg_remaps.integer )//JAPRO - Clientside - Allow noremaps
+			trap->R_RemapShader( shader1, shader2, CG_Argv( 3 ) );
 	}
 }
 

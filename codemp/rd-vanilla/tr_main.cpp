@@ -499,7 +499,7 @@ void R_SetupProjection( void ) {
 	//
 	// set up projection matrix
 	//
-	zNear	= r_znear->value;
+	zNear	= r_znear->value * tr.widthRatioCoef;
 	zFar	= tr.viewParms.zFar;
 
 	ymax = zNear * tan( tr.refdef.fov_y * M_PI / 360.0f );

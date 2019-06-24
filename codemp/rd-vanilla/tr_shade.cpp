@@ -313,6 +313,8 @@ static void DrawTris (shaderCommands_t *input) {
 		GLimp_LogComment( "glUnlockArraysEXT\n" );
 	}
 	qglDepthRange( 0, 1 );
+
+	GL_State(GLS_DEFAULT); //Added
 }
 
 
@@ -330,7 +332,7 @@ static void DrawNormals (shaderCommands_t *input) {
 	GL_Bind( tr.whiteImage );
 	qglColor3f (1,1,1);
 	qglDepthRange( 0, 0 );	// never occluded
-	GL_State( GLS_POLYMODE_LINE | GLS_DEPTHMASK_TRUE );
+	//GL_State( GLS_POLYMODE_LINE | GLS_DEPTHMASK_TRUE );
 
 	qglBegin (GL_LINES);
 	for (i = 0 ; i < input->numVertexes ; i++) {
@@ -547,8 +549,9 @@ static void ProjectDlightTexture2( void ) {
 			VectorSubtract( posa, posb,e1);
 			VectorSubtract( posc, posb,e2);
 			CrossProduct(e1,e2,normal);
-// rjr - removed for hacking 			if ( (!r_dlightBacks->integer && DotProduct(normal,origin)-DotProduct(normal,posa) <= 0.0f) || // backface
-			if ( DotProduct(normal,origin)-DotProduct(normal,posa) <= 0.0f || // backface
+// rjr - removed for hacking 
+			if ( (!r_dlightBacks->integer && DotProduct(normal,origin)-DotProduct(normal,posa) <= 0.0f) || // backface
+			//if ( DotProduct(normal,origin)-DotProduct(normal,posa) <= 0.0f || // backface
 				DotProduct(normal,normal) < 1E-8f) // junk triangle
 			{
 				continue;

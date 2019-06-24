@@ -60,7 +60,7 @@ cvar_t	*sv_maxPing;
 cvar_t	*sv_gametype;
 cvar_t	*sv_pure;
 cvar_t	*sv_floodProtect;
-cvar_t	*sv_floodProtectSlow;
+cvar_t	*sv_newfloodProtect;
 cvar_t	*sv_lanForceRate; // dedicated 1 (LAN) server forces local client rates to 99999 (bug #491)
 cvar_t	*sv_needpass;
 cvar_t	*sv_filterCommands; // strict filtering on commands (1: strip ['\r', '\n'], 2: also strip ';')
@@ -72,6 +72,16 @@ cvar_t	*sv_banFile;
 cvar_t	*sv_maxOOBRate;
 cvar_t	*sv_maxOOBRateIP;
 cvar_t	*sv_autoWhitelist;
+
+cvar_t	*sv_snapShotDuelCull;
+
+cvar_t	*sv_pingFix;
+cvar_t	*sv_hibernateTime;
+cvar_t	*sv_hibernateFPS;
+
+#ifdef DEDICATED
+cvar_t	*sv_antiDST;
+#endif
 
 serverBan_t serverBans[SERVER_MAXBANS];
 int serverBansCount = 0;
@@ -249,7 +259,7 @@ void SV_MasterHeartbeat( void ) {
 
 	// send to group masters
 	for ( i = 0 ; i < MAX_MASTER_SERVERS ; i++ ) {
-		if ( !sv_master[i]->string[0] ) {
+		if ( !sv_master[i] || !sv_master[i]->string[0] ) {
 			continue;
 		}
 
@@ -278,7 +288,8 @@ void SV_MasterHeartbeat( void ) {
 			SVC_WhitelistAdr( adr[i] );
 		}
 
-		Com_Printf ("Sending heartbeat to %s\n", sv_master[i]->string );
+		if (com_developer->integer)
+			Com_Printf ("Sending heartbeat to %s\n", sv_master[i]->string );
 		// this command should be changed if the server info / status format
 		// ever incompatably changes
 		NET_OutOfBandPrint( NS_SERVER, adr[i], "heartbeat %s\n", HEARTBEAT_GAME );
@@ -885,6 +896,10 @@ void SV_CalcPings( void ) {
 			if ( cl->ping > 999 ) {
 				cl->ping = 999;
 			}
+			if ( sv_pingFix->integer && cl->ping < 1 )
+			{ // Botfilters assume that players with 0 ping are bots. So put the minimum ping for humans at 1. At least with the new ping calculation enabled.
+				cl->ping = 1;
+			}
 		}
 
 		// let the game dll know about the ping
@@ -1094,8 +1109,8 @@ void SV_CheckCvars( void ) {
 		{
 			client_t *cl = NULL;
 			int i = 0;
-			int minSnaps = Com_Clampi(1, sv_snapsMax->integer, sv_snapsMin->integer); // between 1 and sv_snapsMax ( 1 <-> 40 )
-			int maxSnaps = Q_min(sv_fps->integer, sv_snapsMax->integer); // can't produce more than sv_fps snapshots/sec, but can send less than sv_fps snapshots/sec
+			int minSnaps = sv_snapsMin->integer > 0 ? Com_Clampi(1, sv_snapsMax->integer, sv_snapsMin->integer) : 1; // between 1 and sv_snapsMax ( 1 <-> 40 )
+			int maxSnaps = sv_snapsMax->integer > 0 ? Q_min(sv_fps->integer, sv_snapsMax->integer) : sv_fps->integer; // can't produce more than sv_fps snapshots/sec, but can send less than sv_fps snapshots/sec
 
 			for (i = 0, cl = svs.clients; i < sv_maxclients->integer; i++, cl++) {
 				int val = 1000 / Com_Clampi(minSnaps, maxSnaps, cl->wishSnaps);
@@ -1117,11 +1132,14 @@ Return time in millseconds until processing of the next server frame.
 */
 int SV_FrameMsec()
 {
-	if(sv_fps)
+	if (sv_fps)
 	{
 		int frameMsec;
 
-		frameMsec = 1000.0f / sv_fps->value;
+		if (svs.hibernation.enabled)
+			frameMsec = 1000.0f / sv_hibernateFPS->value;
+		else 
+			frameMsec = 1000.0f / sv_fps->value;
 
 		if(frameMsec < sv.timeResidual)
 			return 0;
@@ -1151,6 +1169,26 @@ void SV_Frame( int msec ) {
 		return;
 	}
 
+	if (svs.initialized && svs.gameStarted) {
+		int i = 0;
+		qboolean humans = qfalse;
+		for (i = 0; i < sv_maxclients->integer; i++) {
+			if (svs.clients[i].state >= CS_CONNECTED && svs.clients[i].netchan.remoteAddress.type != NA_BOT) {
+				humans = qtrue;
+				break;
+			}
+		}
+
+		//Check for hibernation mode
+		if (sv_hibernateTime->integer && !svs.hibernation.enabled && !humans) {
+			int elapsed_time = Sys_Milliseconds() - svs.hibernation.lastTimeDisconnected;
+			if (elapsed_time >= sv_hibernateTime->integer) {
+				svs.hibernation.enabled = qtrue;
+				Com_Printf("Server entered hibernation mode\n");
+			}
+		}
+	}
+
 	if ( !com_sv_running->integer ) {
 		return;
 	}
@@ -1164,7 +1202,14 @@ void SV_Frame( int msec ) {
 	if ( sv_fps->integer < 1 ) {
 		Cvar_Set( "sv_fps", "10" );
 	}
-	frameMsec = 1000 / sv_fps->integer * com_timescale->value;
+
+	if (svs.hibernation.enabled) {
+		frameMsec = 1000 / sv_hibernateFPS->integer;
+	}
+	else {
+		frameMsec = 1000 / sv_fps->integer * com_timescale->value;
+	}
+
 	// don't let it scale below 1ms
 	if(frameMsec < 1)
 	{

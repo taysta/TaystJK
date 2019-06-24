@@ -27,16 +27,16 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // q_shared.h -- included first by ALL program modules.
 // A user mod should never modify this file
 
-#define PRODUCT_NAME			"openjk"
+#define PRODUCT_NAME			"eternaljk"
 
-#define CLIENT_WINDOW_TITLE "OpenJK (MP)"
-#define CLIENT_CONSOLE_TITLE "OpenJK Console (MP)"
-#define HOMEPATH_NAME_UNIX "openjk"
-#define HOMEPATH_NAME_WIN "OpenJK"
+#define CLIENT_WINDOW_TITLE "EternalJK"
+#define CLIENT_CONSOLE_TITLE "EternalJK Console"
+#define HOMEPATH_NAME_UNIX "eternaljk"
+#define HOMEPATH_NAME_WIN "EternalJK"
 #define HOMEPATH_NAME_MACOSX HOMEPATH_NAME_WIN
 
 #define	BASEGAME "base"
-#define OPENJKGAME "OpenJK"
+#define ETERNALJKGAME "EternalJK"
 
 //NOTENOTE: Only change this to re-point ICARUS to a new script directory
 #define Q3_SCRIPT_DIR	"scripts"
@@ -358,6 +358,12 @@ typedef enum
 	SABER_GREEN,
 	SABER_BLUE,
 	SABER_PURPLE,
+	SABER_RGB,
+	SABER_FLAME1,
+	SABER_ELEC1,
+	SABER_FLAME2,
+	SABER_ELEC2,
+	SABER_BLACK,
 	NUM_SABER_COLORS
 } saber_colors_t;
 
@@ -896,6 +902,10 @@ typedef enum {
 #define MAX_TERRAINS		1//32 //rwwRMG: inserted
 #define MAX_LOCATIONS		64
 
+//Logical entities
+#define	MAX_LOGICENTITIES	3072
+#define	MAX_ENTITIESTOTAL	(MAX_GENTITIES+MAX_LOGICENTITIES)
+
 #define	GENTITYNUM_BITS	10		// don't need to send any more
 #define	MAX_GENTITIES	(1<<GENTITYNUM_BITS)
 
@@ -1373,6 +1383,11 @@ typedef struct siegePers_s
 
 #define BUTTON_FORCE_DRAIN		2048
 
+#define BUTTON_GRAPPLE			4096
+#define BUTTON_DASH				8192
+#define BUTTON_STRAFEBOT		16384
+#define BUTTON_TARGET			32768
+
 // Here's an interesting bit.  The bots in TA used buttons to do additional gestures.
 // I ripped them out because I didn't want too many buttons given the fact that I was already adding some for JK2.
 // We can always add some back in if we want though.
@@ -1785,11 +1800,13 @@ typedef enum {
 #define	MAX_GLOBAL_SERVERS			2048
 #define	MAX_OTHER_SERVERS			128
 #define MAX_PINGREQUESTS			32
-#define MAX_SERVERSTATUSREQUESTS	16
+#define MAX_SERVERSTATUSREQUESTS	MAX_PINGREQUESTS
 
 #define SAY_ALL		0
 #define SAY_TEAM	1
 #define SAY_TELL	2
+#define SAY_CLAN	3
+#define SAY_ADMIN	4
 
 /*
 Ghoul2 Insert Start

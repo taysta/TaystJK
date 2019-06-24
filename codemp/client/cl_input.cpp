@@ -394,7 +394,7 @@ void IN_VoiceChatButton(void)
 
 void IN_KeyDown( kbutton_t *b ) {
 	int		k;
-	char	*c;
+	const char *c;
 
 	c = Cmd_Argv(1);
 	if ( c[0] ) {
@@ -430,7 +430,7 @@ void IN_KeyDown( kbutton_t *b ) {
 
 void IN_KeyUp( kbutton_t *b ) {
 	int		k;
-	char	*c;
+	const char *c;
 	unsigned	uptime;
 
 	c = Cmd_Argv(1);
@@ -491,7 +491,8 @@ float CL_KeyState( kbutton_t *key ) {
 		} else {
 			msec += com_frameTime - key->downtime;
 		}
-		key->downtime = com_frameTime;
+		if (!cl_idrive->integer)
+			key->downtime = com_frameTime;//Loda - Not sure what the fuck this is doing here, downtime is supposed to store time of when the key was initially pressed, not the most recent time its been held down..
 	}
 
 #if 0
@@ -811,7 +812,6 @@ cvar_t	*cl_run;
 
 cvar_t	*cl_anglespeedkey;
 
-
 /*
 ================
 CL_AdjustAngles
@@ -879,6 +879,7 @@ Sets the usercmd_t based on key states
 void CL_KeyMove( usercmd_t *cmd ) {
 	int		movespeed;
 	int		forward, side, up;
+	float	s1, s2;
 
 	//
 	// adjust for speed key / running
@@ -896,26 +897,65 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	forward = 0;
 	side = 0;
 	up = 0;
-	if ( in_strafe.active ) {
-		side += movespeed * CL_KeyState (&in_right);
-		side -= movespeed * CL_KeyState (&in_left);
+
+	if (in_strafe.active) {
+		s1 = CL_KeyState(&in_right);
+		s2 = CL_KeyState(&in_left);
+		if (cl_idrive->integer && cl_idrive->integer != 2) {
+			if (s1 && s2) {
+				if (in_right.downtime > in_left.downtime)
+					s2 = 0;
+				if (in_right.downtime < in_left.downtime)
+					s1 = 0;
+			}
+		}
+		side += movespeed * s1;
+		side -= movespeed * s2;
 	}
 
-	side += movespeed * CL_KeyState (&in_moveright);
-	side -= movespeed * CL_KeyState (&in_moveleft);
+	s1 = CL_KeyState(&in_moveright);
+	s2 = CL_KeyState(&in_moveleft);
+	if (cl_idrive->integer && cl_idrive->integer != 2) {
+		if (s1 && s2) {
+			if (in_moveright.downtime > in_moveleft.downtime)
+				s2 = 0;
+			if (in_moveright.downtime < in_moveleft.downtime)
+				s1 = 0;
+		}
+	}
+	side += movespeed * s1;
+	side -= movespeed * s2;
 
+	s1 = CL_KeyState (&in_up);
+	s2 = CL_KeyState (&in_down);
+	if (cl_idrive->integer || cl_idrive->integer == 2) {
+		if (s1 && s2) {
+			if (in_up.downtime > in_down.downtime)
+				s2 = 0;
+			if (in_up.downtime < in_down.downtime)
+				s1 = 0;
+		}
+	}
+	up += movespeed * s1;
+	up -= movespeed * s2;
 
-	up += movespeed * CL_KeyState (&in_up);
-	up -= movespeed * CL_KeyState (&in_down);
-
-	forward += movespeed * CL_KeyState (&in_forward);
-	forward -= movespeed * CL_KeyState (&in_back);
+	s1 = CL_KeyState (&in_forward);
+	s2 = CL_KeyState (&in_back);
+	if (cl_idrive->integer && cl_idrive->integer != 2) {
+		if (s1 && s2) {
+			if (in_forward.downtime > in_back.downtime)
+				s2 = 0;
+			if (in_forward.downtime < in_back.downtime)
+				s1 = 0;
+		}
+	}
+	forward += movespeed * s1;
+	forward -= movespeed * s2;		
 
 	cmd->forwardmove = ClampChar( forward );
 	cmd->rightmove = ClampChar( side );
 	cmd->upmove = ClampChar( up );
 }
-
 /*
 =================
 CL_MouseEvent
@@ -1219,7 +1259,7 @@ void CL_CmdButtons( usercmd_t *cmd ) {
 		}
 	}
 
-	if ( Key_GetCatcher( ) ) {
+	if ( Key_GetCatcher( ) || com_unfocused->integer || com_minimized->integer ) {
 		cmd->buttons |= BUTTON_TALK;
 	}
 
@@ -1331,7 +1371,7 @@ CL_CreateCmd
 usercmd_t CL_CreateCmd( void ) {
 	usercmd_t	cmd;
 	vec3_t		oldAngles;
-
+	
 	VectorCopy( cl.viewangles, oldAngles );
 
 	// keyboard angle adjustment
@@ -1340,6 +1380,23 @@ usercmd_t CL_CreateCmd( void ) {
 	Com_Memset( &cmd, 0, sizeof( cmd ) );
 
 	CL_CmdButtons( &cmd );
+
+	if (!cl.serverTime)
+		cls.afkTime = cls.realtime;
+	else if (cl_afkTime->integer > 0) {
+		if (cmd.buttons != 0 && !(cmd.buttons & BUTTON_TALK)) { //why cmd.buttons and why button_talk ??
+			cls.afkTime = cls.realtime;
+			if (cl_afkName && cls.realtime - cl_nameModifiedTime > 5000) {
+				CL_Afk_f(); //Make this set instead of toggle
+			}
+		}
+		else if ((cl_unfocusedTime && cls.realtime - cl_unfocusedTime >= cl_afkTimeUnfocused->value * 60000) ||
+			cls.realtime - cls.afkTime >= cl_afkTime->integer * 60000) {
+			if (!cl_afkName && cls.realtime - cl_nameModifiedTime > 5000) {
+				CL_Afk_f();
+			}
+		}
+	}
 
 	// get basic movement from keyboard
 	CL_KeyMove( &cmd );
@@ -1384,6 +1441,8 @@ Create a new usercmd_t structure for this frame
 void CL_CreateNewCommands( void ) {
 	int			cmdNum;
 
+	const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
+
 	// no need to create usercmds until we have a gamestate
 	if ( cls.state < CA_PRIMED )
 		return;
@@ -1404,8 +1463,8 @@ void CL_CreateNewCommands( void ) {
 
 	// generate a command for this frame
 	cl.cmdNumber++;
-	cmdNum = cl.cmdNumber & CMD_MASK;
-	cl.cmds[cmdNum] = CL_CreateCmd();
+	cmdNum = cl.cmdNumber & REAL_CMD_MASK;//Loda - FPS UNLOCK ENGINE
+	cl.cmds[cmdNum] = CL_CreateCmd ();
 }
 
 /*
@@ -1454,8 +1513,8 @@ qboolean CL_ReadyToSendPacket( void ) {
 	}
 
 	// check for exceeding cl_maxpackets
-	if ( cl_maxpackets->integer < 20 ) {
-		Cvar_Set( "cl_maxpackets", "20" );
+	if ( cl_maxpackets->integer < 15 ) {
+		Cvar_Set( "cl_maxpackets", "15" );
 	}
 	else if ( cl_maxpackets->integer > 1000 ) {
 		Cvar_Set( "cl_maxpackets", "1000" );
@@ -1546,6 +1605,8 @@ void CL_WritePacket( void ) {
 		Com_Printf("MAX_PACKET_USERCMDS\n");
 	}
 	if ( count >= 1 ) {
+		const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
+
 		if ( cl_showSend->integer ) {
 			Com_Printf( "(%i)", count );
 		}
@@ -1571,7 +1632,7 @@ void CL_WritePacket( void ) {
 
 		// write all the commands, including the predicted command
 		for ( i = 0 ; i < count ; i++ ) {
-			j = (cl.cmdNumber - count + i + 1) & CMD_MASK;
+			j = (cl.cmdNumber - count + i + 1) & REAL_CMD_MASK;//Loda - FPS UNLOCK ENGINE
 			cmd = &cl.cmds[j];
 			MSG_WriteDeltaUsercmdKey (&buf, key, oldcmd, cmd);
 			oldcmd = cmd;
@@ -1763,6 +1824,8 @@ void CL_InitInput( void ) {
 
 	cl_nodelta = Cvar_Get ("cl_nodelta", "0", 0);
 	cl_debugMove = Cvar_Get ("cl_debugMove", "0", 0);
+
+	cl_idrive = Cvar_Get ("cl_idrive", "0", CVAR_ARCHIVE);//JAPRO ENGINE
 }
 
 /*

@@ -223,7 +223,11 @@ typedef enum uiExportLegacy_e {
 	UI_CONSOLE_COMMAND,
 	UI_DRAW_CONNECT_SCREEN,
 	UI_HASUNIQUECDKEY,
-	UI_MENU_RESET
+	UI_MENU_RESET,
+	// newmod start
+	UI_POST_CONNECT = 1000,
+	UI_CVAR_HELP,
+	UI_CMD_HELP
 } uiExportLegacy_t;
 
 typedef struct uiImport_s {
@@ -389,6 +393,7 @@ typedef struct uiExport_s {
 	qboolean	(*ConsoleCommand)		( int realTime );
 	void		(*DrawConnectScreen)	( qboolean overlay );
 	void		(*MenuReset)			( void );
+	void		(*CvarHelp)				(const char *cvarName, qboolean enter, char *helpBuffer, size_t helpBufferSize);
 } uiExport_t;
 
 //linking of ui library

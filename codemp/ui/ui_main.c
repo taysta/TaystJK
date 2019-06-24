@@ -617,6 +617,59 @@ static const char *GetNetSourceString(int iSource)
 	return result;
 }
 
+void UI_UpdateCurrentServerInfo(void) { //parses server info to contextually hide items/menus depending on server settings/mod
+	uiClientState_t cstate = {0};
+	char info[MAX_INFO_VALUE] = {0};
+	char *value = NULL;
+
+	trap->Cvar_Set("ui_isJAPro", "0");
+	trap->Cvar_Set("ui_raceMode", "0");
+	trap->Cvar_Set("ui_allowRegistration", "0");
+	trap->Cvar_Set("ui_allowSaberSwitch", "0");
+
+	trap->GetClientState(&cstate);
+	if (cstate.connState < CA_LOADING) {
+		trap->Cvar_Update(&ui_isJAPro);
+		trap->Cvar_Update(&ui_allowSaberSwitch);
+		return;
+	}
+
+	//parse server info
+	info[0] = '\0';
+	trap->GetConfigString(CS_SERVERINFO, info, sizeof(info));
+
+	value = Info_ValueForKey(info, "gamename");
+	if (!Q_stricmpn(value, "JA+ Mod", 7) || !Q_stricmpn(value, "^4U^3A^5Galaxy", 14) || !Q_stricmpn(value, "AbyssMod", 8))
+	{
+		trap->Cvar_Set("ui_allowSaberSwitch", "1");
+	}
+	else if (!Q_stricmpn(value, "japro", 5)) {
+		int jcinfo2;
+		trap->Cvar_Set("ui_isJAPro", "1");
+
+		jcinfo2 = atoi(Info_ValueForKey(info, "jcinfo2"));
+		if (jcinfo2 & (1 << 0)) //race mode
+			trap->Cvar_Set("ui_raceMode", "1");
+
+		if (jcinfo2 & (1 << 1)) //allow registration
+			trap->Cvar_Set("ui_allowRegistration", "1");
+
+		if (trap->Cvar_VariableValue("g_gametype") < GT_TEAM && jcinfo2 & (1 << 2)) //allow /saber switch cmd
+			trap->Cvar_Set("ui_allowSaberSwitch", "1");
+	}
+
+	//parse system info
+	//trap->Cvar_Set("ui_sv_pure", "0");
+	info[0] = '\0';
+	trap->GetConfigString(CS_SYSTEMINFO, info, sizeof(info));
+	if (atoi(Info_ValueForKey(info, "sv_pure"))) {
+		trap->Cvar_Set("ui_sv_pure", "1"); //triggers cvar update function next frame
+	}
+	else if (ui_sv_pure.integer) {
+		trap->Cvar_Set("ui_sv_pure", "0"); //only do this as needed
+	}
+}
+
 void AssetCache(void) {
 	int n;
 	//if (Assets.textFont == NULL) {
@@ -647,19 +700,23 @@ void AssetCache(void) {
 	uiInfo.uiDC.Assets.saberOnly		= trap->R_RegisterShaderNoMip( "gfx/menus/saberonly" );
 	uiInfo.uiDC.Assets.trueJedi			= trap->R_RegisterShaderNoMip( "gfx/menus/truejedi" );
 
+	//default icons for profile menu
+	uiInfo.uiDC.Assets.defaultIcon		= trap->R_RegisterShaderNoMip("icons/icon_default_unknown");
+	uiInfo.uiDC.Assets.defaultIconRed	= trap->R_RegisterShaderNoMip("icons/icon_red_unknown");
+	uiInfo.uiDC.Assets.defaultIconBlue	= trap->R_RegisterShaderNoMip("icons/icon_blue_unknown");
+	uiInfo.uiDC.Assets.defaultIconRGB	= trap->R_RegisterShaderNoMip("icons/icon_rgb_unknown");
+
 	for( n = 0; n < NUM_CROSSHAIRS; n++ ) {
 		uiInfo.uiDC.Assets.crosshairShader[n] = trap->R_RegisterShaderNoMip( va("gfx/2d/crosshair%c", 'a' + n ) );
 	}
 }
 
 void _UI_DrawSides(float x, float y, float w, float h, float size) {
-	size *= uiInfo.uiDC.xscale;
 	trap->R_DrawStretchPic( x, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap->R_DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }
 
 void _UI_DrawTopBottom(float x, float y, float w, float h, float size) {
-	size *= uiInfo.uiDC.yscale;
 	trap->R_DrawStretchPic( x, y, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap->R_DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }
@@ -934,12 +991,17 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 						trap->Cvar_Set("com_errorMessage", "");
 					}
 				}
+
+				UI_UpdateCurrentServerInfo();
+				trap->Cvar_Set("ui_sv_pure", "0");
 				return;
 			}
 
 		case UIMENU_TEAM:
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			Menus_ActivateByName("team");
+			UI_UpdateCurrentServerInfo();
+			trap->Cvar_Set("ui_sv_pure", "0");
 			return;
 		case UIMENU_POSTGAME:
 			//trap->Cvar_Set( "sv_killserver", "1" );
@@ -950,6 +1012,7 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			Menus_ActivateByName("endofgame");
 			return;
 		case UIMENU_INGAME:
+			UI_UpdateCurrentServerInfo();
 			trap->Cvar_Set( "cl_paused", "1" );
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			UI_BuildPlayerList();
@@ -957,6 +1020,7 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 			Menus_ActivateByName("ingame");
 			return;
 		case UIMENU_PLAYERCONFIG:
+			UI_UpdateCurrentServerInfo();
 			// trap->Cvar_Set( "cl_paused", "1" );
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			UI_BuildPlayerList();
@@ -987,20 +1051,24 @@ void UI_SetActiveMenu( uiMenuCommand_t menu ) {
 		case UIMENU_VOICECHAT:
 			// trap->Cvar_Set( "cl_paused", "1" );
 			// No chatin non-siege games.
-
-			if (trap->Cvar_VariableValue( "g_gametype" ) < GT_TEAM)
-			{
-				return;
+			if (ui_isJAPro.integer && ui_vgs.integer) {
+				trap->Key_SetCatcher(KEYCATCH_UI);
+				Menus_CloseAll();
+				Menus_ActivateByName("ingame_vgs");
+			}
+			else if (trap->Cvar_VariableValue("g_gametype") >= GT_TEAM) {
+				trap->Key_SetCatcher(KEYCATCH_UI);
+				Menus_CloseAll();
+				Menus_ActivateByName("ingame_voicechat");
 			}
 
-			trap->Key_SetCatcher( KEYCATCH_UI );
-			Menus_CloseAll();
-			Menus_ActivateByName("ingame_voicechat");
 			return;
 		case UIMENU_CLOSEALL:
 			Menus_CloseAll();
 			return;
 		case UIMENU_CLASSSEL:
+			UI_UpdateCurrentServerInfo();
+
 			trap->Key_SetCatcher( KEYCATCH_UI );
 			Menus_CloseAll();
 			Menus_ActivateByName("ingame_siegeclass");
@@ -1762,6 +1830,9 @@ static void UI_DrawSkinColor(rectDef_t *rect, float scale, vec4_t color, int tex
 		trap->SE_GetStringTextString("MENUS_TEAM_BLUE", s, sizeof(s));
 //		Com_sprintf(s, sizeof(s), "Blue\0");
 		break;
+	case 3:
+		Com_sprintf(s, sizeof(s), "RGB\0");
+		break;
 	default:
 		trap->SE_GetStringTextString("MENUS_DEFAULT", s, sizeof(s));
 //		Com_sprintf(s, sizeof(s), "Default\0");
@@ -2036,6 +2107,7 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
 
 static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboolean net) {
 	int map = (net) ? ui_currentNetMap.integer : ui_currentMap.integer;
+	qhandle_t levelShot;
 	if (map < 0 || map > uiInfo.mapCount) {
 		if (net) {
 			trap->Cvar_Set("ui_currentNetMap", "0");
@@ -2052,10 +2124,16 @@ static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboole
 	}
 
 	if (uiInfo.mapList[map].levelShot > 0) {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiInfo.mapList[map].levelShot);
-	} else {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp"));
+		levelShot = uiInfo.mapList[map].levelShot;
 	}
+	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+		levelShot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
+	}
+
+	if (!levelShot)
+		levelShot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp");
+
+	UI_DrawHandlePic(rect->x, rect->y, rect->w, rect->h, levelShot);
 }
 
 static void UI_DrawMapCinematic(rectDef_t *rect, float scale, vec4_t color, qboolean net) {
@@ -2291,6 +2369,9 @@ void UpdateForceStatus()
 		case TEAM_BLUE:
 			uiSkinColor = TEAM_BLUE;
 			break;
+		case 4:
+			uiSkinColor = 3;
+			break;
 		default:
 			trap->GetConfigString( CS_SERVERINFO, info, sizeof(info) );
 
@@ -2320,11 +2401,18 @@ static void UI_DrawNetSource(rectDef_t *rect, float scale, vec4_t color, int tex
 }
 
 static void UI_DrawNetMapPreview(rectDef_t *rect, float scale, vec4_t color) {
+	qhandle_t previewImage;
 	if (uiInfo.serverStatus.currentServerPreview > 0) {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiInfo.serverStatus.currentServerPreview);
-	} else {
-		UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp"));
+		previewImage = uiInfo.serverStatus.currentServerPreview;
 	}
+	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
+	}
+	
+	if (!previewImage)
+		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp");
+
+	UI_DrawHandlePic(rect->x, rect->y, rect->w, rect->h, previewImage);
 }
 
 static void UI_DrawNetMapCinematic(rectDef_t *rect, float scale, vec4_t color) {
@@ -2593,6 +2681,9 @@ static int UI_OwnerDrawWidth(int ownerDraw, float scale) {
 		case TEAM_BLUE:
 //			s = "Blue";
 			s = (char *)UI_GetStringEdString("MENUS", "TEAM_BLUE");
+			break;
+		case 3:
+			s = "RGB";
 			break;
 		default:
 //			s = "Default";
@@ -3002,7 +3093,7 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
       UI_DrawHandicap(&rect, scale, color, textStyle, iMenuFont);
       break;
     case UI_SKIN_COLOR:
-      UI_DrawSkinColor(&rect, scale, color, textStyle, uiSkinColor, TEAM_FREE, TEAM_BLUE, iMenuFont);
+      UI_DrawSkinColor(&rect, scale, color, textStyle, uiSkinColor, TEAM_FREE, 3, iMenuFont);
       break;
 	case UI_FORCE_SIDE:
       UI_DrawForceSide(&rect, scale, color, textStyle, uiForceSide, 1, 2, iMenuFont);
@@ -3684,6 +3775,945 @@ static qboolean UI_Chat_Tactical_HandleKey(int key)
 	return (qtrue);
 }
 
+static qboolean UI_VGS_Main_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "global");
+	}
+	else if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "attack");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "defend");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "repair");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "base");
+	}
+	else if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "command");
+	}
+	else if ((key == A_LOW_E) || (key == A_CAP_E)) {
+		item = Menu_FindItemByName(menu, "enemy");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "flag");
+	}
+	else if ((key == A_LOW_N) || (key == A_CAP_N)) {
+		item = Menu_FindItemByName(menu, "need");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "self");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "target");
+	}
+	else if ((key == A_LOW_U) || (key == A_CAP_U)) {
+		item = Menu_FindItemByName(menu, "upgrade");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "warning");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "team");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Global_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "compliment");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "respond");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "taunt");
+	}
+	else if ((key == A_LOW_Y) || (key == A_CAP_Y)) {
+		item = Menu_FindItemByName(menu, "glb_01");
+	}
+	else if ((key == A_LOW_N) || (key == A_CAP_N)) {
+		item = Menu_FindItemByName(menu, "glb_02");
+	}
+	else if ((key == A_LOW_H) || (key == A_CAP_H)) {
+		item = Menu_FindItemByName(menu, "glb_03");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "glb_04");
+	}
+	else if ((key == A_LOW_O) || (key == A_CAP_O)) {
+		item = Menu_FindItemByName(menu, "glb_05");
+	}
+	else if ((key == A_LOW_Q) || (key == A_CAP_Q)) {
+		item = Menu_FindItemByName(menu, "glb_06");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "glb_07");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "glb_08");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Compliment_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "cmp_01");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "cmp_02");
+	}
+	else if ((key == A_LOW_N) || (key == A_CAP_N)) {
+		item = Menu_FindItemByName(menu, "cmp_03");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "cmp_04");
+	}
+	else if ((key == A_LOW_Y) || (key == A_CAP_Y)) {
+		item = Menu_FindItemByName(menu, "cmp_05");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Respond_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "rpd_01");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "rpd_02");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "rpd_03");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "rpd_04");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Taunt_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "tnt_01");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "tnt_02");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "tnt_03");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "tnt_04");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "tnt_05");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Attack_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "att_01");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "att_02");
+	}
+	else if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "att_03");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "att_04");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "att_05");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "att_06");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "att_07");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "att_08");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "att_09");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "att_10");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "att_11");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Defend_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "def_01");
+	}
+	else if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "def_02");
+	}
+	else if ((key == A_LOW_E) || (key == A_CAP_E)) {
+		item = Menu_FindItemByName(menu, "def_03");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "def_04");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "def_05");
+	}
+	else if ((key == A_LOW_M) || (key == A_CAP_M)) {
+		item = Menu_FindItemByName(menu, "def_06");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "def_07");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "def_08");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "def_09");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "def_10");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Repair_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "rep_01");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "rep_02");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "rep_03");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "rep_04");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Base_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "base_01");
+	}
+	else if ((key == A_LOW_E) || (key == A_CAP_E)) {
+		item = Menu_FindItemByName(menu, "base_02");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "base_03");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "base_04");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Command_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "cmd_01");
+	}
+	else if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "cmd_02");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "cmd_03");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "cmd_04");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Enemy_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "emy_01");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "emy_02");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "emy_03");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "emy_04");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "emy_05");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Flag_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "flg_01");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "flg_02");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "flg_03");
+	}
+	else if ((key == A_LOW_Q) || (key == A_CAP_Q)) {
+		item = Menu_FindItemByName(menu, "flg_04");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "flg_05");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "flg_06");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "flg_07");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Need_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "need_01");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "need_02");
+	}
+	else if ((key == A_LOW_E) || (key == A_CAP_E)) {
+		item = Menu_FindItemByName(menu, "need_03");
+	}
+	else if ((key == A_LOW_H) || (key == A_CAP_H)) {
+		item = Menu_FindItemByName(menu, "need_04");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "need_05");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "need_06");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "need_07");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "need_08");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Self_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "selfattack");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "selfdefend");
+	}
+	else if ((key == A_LOW_R) || (key == A_CAP_R)) {
+		item = Menu_FindItemByName(menu, "selfrepair");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "selftask");
+	}
+	else if ((key == A_LOW_U) || (key == A_CAP_U)) {
+		item = Menu_FindItemByName(menu, "selfupgrade");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_SelfAttack_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "slfa_01");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "slfa_02");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "slfa_03");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "slfa_04");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "slfa_05");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "slfa_06");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "slfa_07");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_SelfDefend_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "slfd_01");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "slfd_02");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "slfd_03");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "slfd_04");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "slfd_05");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "slfd_06");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "slfd_07");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_SelfRepair_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "slfr_01");
+	}
+	else if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "slfr_02");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "slfr_03");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "slfr_04");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "slfr_05");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_SelfTask_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "slft_01");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "slft_02");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "slft_03");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "slft_04");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "slft_05");
+	}
+	else if ((key == A_LOW_O) || (key == A_CAP_O)) {
+		item = Menu_FindItemByName(menu, "slft_06");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "slft_07");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_SelfUpgrade_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "slfu_01");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "slfu_02");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "slfu_03");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Target_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "tgt_01");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "tgt_02");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "tgt_03");
+	}
+	else if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "tgt_04");
+	}
+	else if ((key == A_LOW_M) || (key == A_CAP_M)) {
+		item = Menu_FindItemByName(menu, "tgt_05");
+	}
+	else if ((key == A_LOW_N) || (key == A_CAP_N)) {
+		item = Menu_FindItemByName(menu, "tgt_06");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "tgt_07");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "tgt_08");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "tgt_09");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "tgt_10");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Upgrade_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_G) || (key == A_CAP_G)) {
+		item = Menu_FindItemByName(menu, "upgd_01");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "upgd_02");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "upgd_03");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Warning_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_E) || (key == A_CAP_E)) {
+		item = Menu_FindItemByName(menu, "warn_01");
+	}
+	else if ((key == A_LOW_V) || (key == A_CAP_V)) {
+		item = Menu_FindItemByName(menu, "warn_02");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Team_HandleKey(int key) {
+	menuDef_t *menu;
+	itemDef_t *item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_Y) || (key == A_CAP_Y)) {
+		item = Menu_FindItemByName(menu, "team_01");
+	}
+	else if ((key == A_LOW_N) || (key == A_CAP_N)) {
+		item = Menu_FindItemByName(menu, "team_02");
+	}
+	else if ((key == A_LOW_A) || (key == A_CAP_A)) {
+		item = Menu_FindItemByName(menu, "team_03");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "team_04");
+	}
+	else if ((key == A_LOW_C) || (key == A_CAP_C)) {
+		item = Menu_FindItemByName(menu, "team_05");
+	}
+	else if ((key == A_LOW_D) || (key == A_CAP_D)) {
+		item = Menu_FindItemByName(menu, "team_06");
+	}
+	else if ((key == A_LOW_H) || (key == A_CAP_H)) {
+		item = Menu_FindItemByName(menu, "team_07");
+	}
+	else if ((key == A_LOW_M) || (key == A_CAP_M)) {
+		item = Menu_FindItemByName(menu, "team_08");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "team_09");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "team_10");
+	}
+	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
+		item = Menu_FindItemByName(menu, "team_11");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
 static qboolean UI_GameType_HandleKey(int flags, float *special, int key, qboolean resetMap) {
 	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER) {
 		int oldCount = UI_MapCountByGameType(qtrue);
@@ -4096,7 +5126,7 @@ static qboolean UI_Crosshair_HandleKey(int flags, float *special, int key) {
 		} else if (uiInfo.currentCrosshair < 0) {
 			uiInfo.currentCrosshair = NUM_CROSSHAIRS - 1;
 		}
-		trap->Cvar_Set("cg_drawCrosshair", va("%d", uiInfo.currentCrosshair));
+		trap->Cvar_SetValue("cg_drawCrosshair", (float)uiInfo.currentCrosshair);
 		return qtrue;
 	}
 	return qfalse;
@@ -4165,7 +5195,7 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
       return UI_Handicap_HandleKey(flags, special, key);
       break;
     case UI_SKIN_COLOR:
-      return UI_SkinColor_HandleKey(flags, special, key, uiSkinColor, TEAM_FREE, TEAM_BLUE, ownerDraw);
+      return UI_SkinColor_HandleKey(flags, special, key, uiSkinColor, TEAM_FREE, 3, ownerDraw);
       break;
     case UI_FORCE_SIDE:
       return UI_ForceSide_HandleKey(flags, special, key, uiForceSide, 1, 2, ownerDraw);
@@ -4199,6 +5229,52 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
 	case UI_CHAT_TACTICAL:
 		return UI_Chat_Tactical_HandleKey(key);
 		break;
+	case UI_VGS_MAIN:
+		return UI_VGS_Main_HandleKey(key);
+	case UI_VGS_GLOBAL:
+		return UI_VGS_Global_HandleKey(key);
+	case UI_VGS_COMPLIMENT:
+		return UI_VGS_Compliment_HandleKey(key);
+	case UI_VGS_RESPOND:
+		return UI_VGS_Respond_HandleKey(key);
+	case UI_VGS_TAUNT:
+		return UI_VGS_Taunt_HandleKey(key);
+	case UI_VGS_ATTACK:
+		return UI_VGS_Attack_HandleKey(key);
+	case UI_VGS_DEFEND:
+		return UI_VGS_Defend_HandleKey(key);
+	case UI_VGS_REPAIR:
+		return UI_VGS_Repair_HandleKey(key);
+	case UI_VGS_BASE:
+		return UI_VGS_Base_HandleKey(key);
+	case UI_VGS_COMMAND:
+		return UI_VGS_Command_HandleKey(key);
+	case UI_VGS_ENEMY:
+		return UI_VGS_Enemy_HandleKey(key);
+	case UI_VGS_FLAG:
+		return UI_VGS_Flag_HandleKey(key);
+	case UI_VGS_NEED:
+		return UI_VGS_Need_HandleKey(key);
+	case UI_VGS_SELF:
+		return UI_VGS_Self_HandleKey(key);
+	case UI_VGS_SELFATTACK:
+		return UI_VGS_SelfAttack_HandleKey(key);
+	case UI_VGS_SELFDEFEND:
+		return UI_VGS_SelfDefend_HandleKey(key);
+	case UI_VGS_SELFREPAIR:
+		return UI_VGS_SelfRepair_HandleKey(key);
+	case UI_VGS_SELFTASK:
+		return UI_VGS_SelfTask_HandleKey(key);
+	case UI_VGS_SELFUPGRADE:
+		return UI_VGS_SelfUpgrade_HandleKey(key);
+	case UI_VGS_TARGET:
+		return UI_VGS_Target_HandleKey(key);
+	case UI_VGS_UPGRADE:
+		return UI_VGS_Upgrade_HandleKey(key);
+	case UI_VGS_WARNING:
+		return UI_VGS_Warning_HandleKey(key);
+	case UI_VGS_TEAM:
+		return UI_VGS_Team_HandleKey(key);
 	case UI_FORCE_RANK_HEAL:
 	case UI_FORCE_RANK_LEVITATION:
 	case UI_FORCE_RANK_SPEED:
@@ -4672,7 +5748,47 @@ static void UI_Update(const char *name) {
 		return;
 	}
 
-	if ( !Q_stricmp( name, "ui_SetName" ) ) {
+	if ( !Q_stricmp( name, "ui_GetName" ) ) {
+		char buf[MAX_NETNAME] = {0};
+		Q_strncpyz( buf, UI_Cvar_VariableString( "name" ), sizeof( buf ) );
+		trap->Cvar_Set( "ui_Name", buf );
+
+		//Set the team to whatever our current skin is.
+		Q_strncpyz(buf, UI_Cvar_VariableString("model"), sizeof(buf));
+		if (ui_selectedModelIndex.integer > -1 && ui_gametype.integer < GT_TEAM)
+		{
+			const char *skin = Q_strchrs(buf, "/");
+
+			if (skin != NULL) {
+				if (!Q_stricmpn(skin, "/default", 8)) {
+					uiSkinColor = TEAM_FREE;
+					trap->Cvar_Set("ui_myteam", "3");
+				}
+				else if (!Q_stricmpn(skin, "/red", 4)) {
+					uiSkinColor = TEAM_RED;
+					trap->Cvar_Set("ui_myteam", "1");
+				}
+				else if (!Q_stricmpn(skin, "/blue", 5)) {
+					uiSkinColor = TEAM_BLUE;
+					trap->Cvar_Set("ui_myteam", "2");
+				}
+				else if (!Q_stricmpn(skin, "/sp", 3))
+				{
+					uiSkinColor = TEAM_FREE;
+					if (!Q_stricmpn(buf, "trandoshan/sp", 13) || !Q_stricmpn(buf, "weequay/sp", 10))
+						trap->Cvar_Set("ui_myteam", "3");
+					else
+						trap->Cvar_Set("ui_myteam", "4");
+				}
+				else if (!Q_stricmpn(skin, "/rgb", 4))
+				{
+					uiSkinColor = TEAM_FREE;
+					trap->Cvar_Set("ui_myteam", "4");
+				}
+			}
+		}
+	}
+	else if ( !Q_stricmp( name, "ui_SetName" ) ) {
 		char buf[MAX_NETNAME] = {0};
 		Q_strncpyz( buf, UI_Cvar_VariableString( "ui_Name" ), sizeof( buf ) );
 		trap->Cvar_Set( "name", buf );
@@ -4690,42 +5806,205 @@ static void UI_Update(const char *name) {
 			trap->Cvar_Set("cl_packetdup", "1");		// favor lower bandwidth
 		}
 	}
-	else if ( !Q_stricmp( name, "ui_GetName" ) ) {
-		char buf[MAX_NETNAME] = {0};
-		Q_strncpyz( buf, UI_Cvar_VariableString( "name" ), sizeof( buf ) );
-		trap->Cvar_Set( "ui_Name", buf );
-	}
 	else if (Q_stricmp(name, "ui_r_colorbits") == 0)
 	{
 		switch (val)
 		{
 			case 0:
 				trap->Cvar_SetValue( "ui_r_depthbits", 0 );
+				trap->Cvar_SetValue( "ui_r_texturebits", 0 );
 				break;
 
 			case 16:
 				trap->Cvar_SetValue( "ui_r_depthbits", 16 );
+				trap->Cvar_SetValue( "ui_r_texturebits", 16 );
 				break;
 
 			case 32:
 				trap->Cvar_SetValue( "ui_r_depthbits", 24 );
+				trap->Cvar_SetValue( "ui_r_texturebits", 32 );
 				break;
 		}
 	}
-	else if (Q_stricmp(name, "ui_r_lodbias") == 0)
+	else if (Q_stricmp(name, "ui_geometricdetail") == 0)
 	{
 		switch (val)
 		{
 			case 0:
+				trap->Cvar_SetValue( "ui_r_lodbias", 0 );
 				trap->Cvar_SetValue( "ui_r_subdivisions", 4 );
 				break;
 			case 1:
+				trap->Cvar_SetValue( "ui_r_lodbias", 1 );
 				trap->Cvar_SetValue( "ui_r_subdivisions", 12 );
 				break;
 
 			case 2:
+				trap->Cvar_SetValue( "ui_r_lodbias", 2 );
 				trap->Cvar_SetValue( "ui_r_subdivisions", 20 );
 				break;
+
+			case 3:
+				trap->Cvar_SetValue( "ui_r_lodbias", 3 );
+				trap->Cvar_SetValue( "ui_r_subdivisions", 80 );
+				break;
+		}
+	}
+	else if (Q_stricmp(name, "ui_resolution") == 0)
+	{
+		if ( trap->Cvar_VariableValue( "ui_aspectratio" ) == -1 ) {
+			switch (val) {
+				case 0:
+					trap->Cvar_SetValue( "ui_r_mode", -2 );
+					break;
+			}
+		} else if ( trap->Cvar_VariableValue( "ui_aspectratio" ) == 0 ) {
+			switch (val) {
+				case 0:
+					trap->Cvar_SetValue( "ui_r_mode", 0 ); //320x240
+					break;
+				case 1:
+					trap->Cvar_SetValue( "ui_r_mode", 1 ); //400x300
+					break;
+				case 2:
+					trap->Cvar_SetValue( "ui_r_mode", 2 ); //512x384
+					break;
+				case 3:
+					trap->Cvar_SetValue( "ui_r_mode", 3 ); //640x480
+					break;
+				case 4:
+					trap->Cvar_SetValue( "ui_r_mode", 4 ); //800x600
+					break;
+				case 5:
+					trap->Cvar_SetValue( "ui_r_mode", 5 ); //960x720
+					break;
+				case 6:
+					trap->Cvar_SetValue( "ui_r_mode", 6 ); //1024x768
+					break;
+				case 7:
+					trap->Cvar_SetValue( "ui_r_mode", 7 ); //1152x864
+					break;
+				case 8:
+					trap->Cvar_SetValue( "ui_r_mode", 8 ); //1280x1024
+					break;
+				case 9:
+					trap->Cvar_SetValue( "ui_r_mode", 9 ); //1600x1200
+					break;
+				case 10:
+					trap->Cvar_SetValue( "ui_r_mode", 10 ); //2048x1536
+					break;
+				case 11:
+					trap->Cvar_SetValue("ui_r_mode", -1); //1280x960
+					trap->Cvar_SetValue("ui_r_customwidth", 1280);
+					trap->Cvar_SetValue("ui_r_customheight", 960);
+					break;
+				case 12:
+					trap->Cvar_SetValue("ui_r_mode", -1);
+					trap->Cvar_SetValue("ui_r_customwidth", 1440);
+					trap->Cvar_SetValue("ui_r_customheight", 1080);
+					break;
+				case 13:
+					trap->Cvar_SetValue("ui_r_mode", -1); //1920x1440
+					trap->Cvar_SetValue("ui_r_customWidth", 1920);
+					trap->Cvar_SetValue("ui_r_customHeight", 1440);
+					break;
+			}
+		} else if ( trap->Cvar_VariableValue( "ui_aspectratio" ) == 1 ) {
+			switch (val) {
+				case 0:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 640 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 360 );
+					break;
+				case 1:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 800 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 450 );
+					break;
+				case 2:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1024 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 576 );
+					break;
+				case 3:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 852 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 480 );
+					break;
+				case 4:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1280 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 720 );
+					break;
+				case 5: //not sure how the engine will deal with these
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1360 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 768 );
+					break;
+				case 6:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1366 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 768 );
+					break;
+				case 7:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1600 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 900 );
+					break;
+				case 8:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 1920 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 1080 );
+					break;
+				case 9:
+					trap->Cvar_SetValue( "ui_r_mode", -1 );
+					trap->Cvar_SetValue( "ui_r_customWidth", 2560 );
+					trap->Cvar_SetValue( "ui_r_customHeight", 1440 );
+					break;
+			}
+		} else if ( trap->Cvar_VariableValue( "ui_aspectratio" ) == 2 ) {
+			switch (val) {
+			case 0:
+				trap->Cvar_SetValue("ui_r_mode", -1);
+				trap->Cvar_SetValue("ui_r_customWidth", 720);
+				trap->Cvar_SetValue("ui_r_customHeight", 480);
+				break;
+			case 1:
+				trap->Cvar_SetValue("ui_r_mode", -1);
+				trap->Cvar_SetValue("ui_r_customWidth", 1280);
+				trap->Cvar_SetValue("ui_r_customHeight", 768);
+				break;
+			case 2:
+				trap->Cvar_SetValue("ui_r_mode", -1);
+				trap->Cvar_SetValue("ui_r_customWidth", 1280);
+				trap->Cvar_SetValue("ui_r_customHeight", 800);
+				break;
+			case 3:
+				trap->Cvar_SetValue( "ui_r_mode", -1 );
+				trap->Cvar_SetValue( "ui_r_customWidth", 1440 );
+				trap->Cvar_SetValue( "ui_r_customHeight", 900 );
+				break;
+			case 4: //eh? isn't exact 16:10 but im copying the source engine so idk
+				trap->Cvar_SetValue( "ui_r_mode", -1 );
+				trap->Cvar_SetValue( "ui_r_customWidth", 1600 );
+				trap->Cvar_SetValue( "ui_r_customHeight", 1024 );
+				break;
+			case 5:
+				trap->Cvar_SetValue( "ui_r_mode", -1 );
+				trap->Cvar_SetValue( "ui_r_customWidth", 1680 );
+				trap->Cvar_SetValue( "ui_r_customHeight", 1050 );
+				break;
+			case 6:
+				trap->Cvar_SetValue( "ui_r_mode", -1 );
+				trap->Cvar_SetValue( "ui_r_customWidth", 1920 );
+				trap->Cvar_SetValue( "ui_r_customHeight", 1200 );
+				break;
+			case 7:
+				trap->Cvar_SetValue( "ui_r_mode", -1 );
+				trap->Cvar_SetValue( "ui_r_customWidth", 2560 );
+				trap->Cvar_SetValue( "ui_r_customHeight", 1600 );
+				break;
+			}
 		}
 	}
 	else if (Q_stricmp(name, "ui_r_glCustom") == 0)
@@ -4734,64 +6013,52 @@ static void UI_Update(const char *name) {
 		{
 		case 0:	// high quality
 
-			trap->Cvar_SetValue( "ui_r_fullScreen", 1 );
-			trap->Cvar_SetValue( "ui_r_subdivisions", 4 );
-			trap->Cvar_SetValue( "ui_r_lodbias", 0 );
+			trap->Cvar_SetValue( "ui_geometricdetail", 0 );
 			trap->Cvar_SetValue( "ui_r_colorbits", 32 );
 			trap->Cvar_SetValue( "ui_r_depthbits", 24 );
 			trap->Cvar_SetValue( "ui_r_picmip", 0 );
-			trap->Cvar_SetValue( "ui_r_mode", 4 );
 			trap->Cvar_SetValue( "ui_r_texturebits", 32 );
 			trap->Cvar_SetValue( "ui_r_fastSky", 0 );
 			trap->Cvar_SetValue( "ui_r_inGameVideo", 1 );
-		//	trap->Cvar_SetValue( "ui_cg_shadows", 2 );//stencil
+			trap->Cvar_SetValue( "ui_cg_shadows", 2 );//stencil
 			trap->Cvar_Set( "ui_r_texturemode", "GL_LINEAR_MIPMAP_LINEAR" );
 			break;
 
 		case 1: // normal
-			trap->Cvar_SetValue( "ui_r_fullScreen", 1 );
-			trap->Cvar_SetValue( "ui_r_subdivisions", 4 );
-			trap->Cvar_SetValue( "ui_r_lodbias", 0 );
+			trap->Cvar_SetValue( "ui_geometricdetail", 0 );
 			trap->Cvar_SetValue( "ui_r_colorbits", 0 );
 			trap->Cvar_SetValue( "ui_r_depthbits", 24 );
 			trap->Cvar_SetValue( "ui_r_picmip", 1 );
-			trap->Cvar_SetValue( "ui_r_mode", 3 );
 			trap->Cvar_SetValue( "ui_r_texturebits", 0 );
 			trap->Cvar_SetValue( "ui_r_fastSky", 0 );
 			trap->Cvar_SetValue( "ui_r_inGameVideo", 1 );
-		//	trap->Cvar_SetValue( "ui_cg_shadows", 2 );
+			trap->Cvar_SetValue( "ui_cg_shadows", 2 );
 			trap->Cvar_Set( "ui_r_texturemode", "GL_LINEAR_MIPMAP_LINEAR" );
 			break;
 
 		case 2: // fast
 
-			trap->Cvar_SetValue( "ui_r_fullScreen", 1 );
-			trap->Cvar_SetValue( "ui_r_subdivisions", 12 );
-			trap->Cvar_SetValue( "ui_r_lodbias", 1 );
+			trap->Cvar_SetValue( "ui_geometricdetail", 1 );
 			trap->Cvar_SetValue( "ui_r_colorbits", 0 );
 			trap->Cvar_SetValue( "ui_r_depthbits", 0 );
 			trap->Cvar_SetValue( "ui_r_picmip", 2 );
-			trap->Cvar_SetValue( "ui_r_mode", 3 );
 			trap->Cvar_SetValue( "ui_r_texturebits", 0 );
 			trap->Cvar_SetValue( "ui_r_fastSky", 1 );
 			trap->Cvar_SetValue( "ui_r_inGameVideo", 0 );
-		//	trap->Cvar_SetValue( "ui_cg_shadows", 1 );
+			trap->Cvar_SetValue( "ui_cg_shadows", 1 );
 			trap->Cvar_Set( "ui_r_texturemode", "GL_LINEAR_MIPMAP_NEAREST" );
 			break;
 
 		case 3: // fastest
 
-			trap->Cvar_SetValue( "ui_r_fullScreen", 1 );
-			trap->Cvar_SetValue( "ui_r_subdivisions", 20 );
-			trap->Cvar_SetValue( "ui_r_lodbias", 2 );
+			trap->Cvar_SetValue( "ui_geometricdetail", 2 );
 			trap->Cvar_SetValue( "ui_r_colorbits", 16 );
 			trap->Cvar_SetValue( "ui_r_depthbits", 16 );
-			trap->Cvar_SetValue( "ui_r_mode", 3 );
 			trap->Cvar_SetValue( "ui_r_picmip", 3 );
 			trap->Cvar_SetValue( "ui_r_texturebits", 16 );
 			trap->Cvar_SetValue( "ui_r_fastSky", 1 );
 			trap->Cvar_SetValue( "ui_r_inGameVideo", 0 );
-		//	trap->Cvar_SetValue( "ui_cg_shadows", 0 );
+			trap->Cvar_SetValue( "ui_cg_shadows", 0 );
 			trap->Cvar_Set( "ui_r_texturemode", "GL_LINEAR_MIPMAP_NEAREST" );
 			break;
 		}
@@ -4876,10 +6143,15 @@ you to discard your changes if you did something you didnt want
 void UI_UpdateVideoSetup ( void )
 {
 	trap->Cvar_Set ( "r_mode", UI_Cvar_VariableString ( "ui_r_mode" ) );
+	trap->Cvar_Set ( "r_customWidth", UI_Cvar_VariableString ( "ui_r_customWidth" ) );
+	trap->Cvar_Set ( "r_customHeight", UI_Cvar_VariableString ( "ui_r_customHeight" ) );
 	trap->Cvar_Set ( "r_fullscreen", UI_Cvar_VariableString ( "ui_r_fullscreen" ) );
 	trap->Cvar_Set ( "r_colorbits", UI_Cvar_VariableString ( "ui_r_colorbits" ) );
 	trap->Cvar_Set ( "r_lodbias", UI_Cvar_VariableString ( "ui_r_lodbias" ) );
-	trap->Cvar_Set ( "r_picmip", UI_Cvar_VariableString ( "ui_r_picmip" ) );
+	if ( trap->Cvar_VariableValue( "ui_r_picmip" ) < 4 )
+		trap->Cvar_Set ( "r_picmip", UI_Cvar_VariableString ( "ui_r_picmip" ) );
+	else
+		trap->Cvar_Set ( "r_picmip", UI_Cvar_VariableString ( "ui_r_picmip_custom" ) );
 	trap->Cvar_Set ( "r_texturebits", UI_Cvar_VariableString ( "ui_r_texturebits" ) );
 	trap->Cvar_Set ( "r_texturemode", UI_Cvar_VariableString ( "ui_r_texturemode" ) );
 	trap->Cvar_Set ( "r_detailtextures", UI_Cvar_VariableString ( "ui_r_detailtextures" ) );
@@ -4887,12 +6159,19 @@ void UI_UpdateVideoSetup ( void )
 	trap->Cvar_Set ( "r_depthbits", UI_Cvar_VariableString ( "ui_r_depthbits" ) );
 	trap->Cvar_Set ( "r_subdivisions", UI_Cvar_VariableString ( "ui_r_subdivisions" ) );
 	trap->Cvar_Set ( "r_fastSky", UI_Cvar_VariableString ( "ui_r_fastSky" ) );
+	trap->Cvar_Set ( "r_intensity", UI_Cvar_VariableString ( "ui_r_intensity" ) );
+	trap->Cvar_Set ( "r_vertexLight", UI_Cvar_VariableString ( "ui_r_vertexLight" ) );
+	trap->Cvar_Set ( "r_fullBright", UI_Cvar_VariableString ( "ui_r_fullBright" ) );
+	trap->Cvar_Set ( "r_lightMap", UI_Cvar_VariableString ( "ui_r_lightMap" ) );
 	trap->Cvar_Set ( "r_inGameVideo", UI_Cvar_VariableString ( "ui_r_inGameVideo" ) );
 	trap->Cvar_Set ( "r_allowExtensions", UI_Cvar_VariableString ( "ui_r_allowExtensions" ) );
 	trap->Cvar_Set ( "cg_shadows", UI_Cvar_VariableString ( "ui_cg_shadows" ) );
 	trap->Cvar_Set ( "ui_r_modified", "0" );
 
-	trap->Cmd_ExecuteText( EXEC_APPEND, "vid_restart;" );
+	if ( trap->Cvar_VariableValue ( "ui_vidrestart" ) ) {
+		trap->Cmd_ExecuteText( EXEC_APPEND, "vid_restart;" );
+		trap->Cvar_Set ( "ui_vidrestart", "0" );
+	}
 }
 
 /*
@@ -4903,45 +6182,146 @@ Retrieves the current actual video settings into the temporary user
 interface versions of the cvars.
 =================
 */
+typedef struct ui_vidmode_s {
+	int aspectRatio, resolution, width, height;
+} ui_vidmode_t;
+
+const ui_vidmode_t ui_r_vidModes[] = {
+	{ 0, 10, 1920, 1440},
+	{ 1, 0, 640, 360 },
+	{ 1, 1, 800, 450 },
+	{ 1, 2, 1024, 576 },
+	{ 1, 3, 1280, 720 },
+	{ 1, 4, 1280, 768 },
+	{ 1, 5, 1600, 900 },
+	{ 1, 6, 1920, 1080 },
+	{ 2, 0, 640, 400 },
+	{ 2, 1, 800, 500 },
+	{ 2, 2, 1024, 640 },
+	{ 2, 3, 1280, 800 },
+	{ 2, 4, 1440, 900 },
+	{ 2, 5, 1600, 1000 },
+	{ 2, 6, 1680, 1050 },
+	{ 2, 7, 1920, 1200 },
+	{ 2, 8, 2560, 1600 }
+};
+
+void UI_GetVidMode ( void ) {
+	float mode = trap->Cvar_VariableValue( "r_mode" );
+	float width = trap->Cvar_VariableValue( "r_customWidth" );
+	float height = trap->Cvar_VariableValue( "r_customHeight" );
+
+	if ( mode >= 0 ) {
+		trap->Cvar_Set ( "ui_aspectratio", "0" );
+		if ( mode >= 10 )
+			trap->Cvar_SetValue ( "ui_resolution", mode + 1 );
+		else
+			trap->Cvar_SetValue ( "ui_resolution", mode );
+	} else if ( mode == -2 ) {
+		trap->Cvar_SetValue ( "ui_aspectratio", -1 );
+		trap->Cvar_SetValue ( "ui_resolution", 0 );
+	} else {
+		int i;
+
+		trap->Cvar_SetValue ( "ui_aspectratio", 3 );
+		trap->Cvar_SetValue ( "ui_resolution", 0 );
+
+		for ( i = 0; i < ARRAY_LEN( ui_r_vidModes ); i++ ) {
+			if ( width == ui_r_vidModes[i].width && height == ui_r_vidModes[i].height ) {
+				trap->Cvar_SetValue ( "ui_aspectratio", ui_r_vidModes[i].aspectRatio );
+				trap->Cvar_SetValue ( "ui_resolution", ui_r_vidModes[i].resolution );
+				break;
+			}
+		}
+	}
+}
+
+void UI_GetGeometricDetail ( void ) {
+	if ( trap->Cvar_VariableValue( "r_lodbias" ) == 0 && trap->Cvar_VariableValue( "r_subdivisions" ) == 4 )
+		trap->Cvar_SetValue( "ui_geometricdetail", 0 );
+	else if ( trap->Cvar_VariableValue( "r_lodbias" ) == 1 && trap->Cvar_VariableValue( "r_subdivisions" ) == 12 )
+		trap->Cvar_SetValue( "ui_geometricdetail", 1 );
+	else if ( trap->Cvar_VariableValue( "r_lodbias" ) == 2 && trap->Cvar_VariableValue( "r_subdivisions" ) == 20 )
+		trap->Cvar_SetValue( "ui_geometricdetail", 2 );
+	else if ( trap->Cvar_VariableValue( "r_lodbias" ) == 3 && trap->Cvar_VariableValue( "r_subdivisions" ) == 80 )
+		trap->Cvar_SetValue( "ui_geometricdetail", 3 );
+	else
+		trap->Cvar_SetValue( "ui_geometricdetail", 4 );
+}
+
 void UI_GetVideoSetup ( void )
 {
 	trap->Cvar_Register ( NULL, "ui_r_glCustom",				"4", CVAR_INTERNAL|CVAR_ARCHIVE );
-
+	
 	// Make sure the cvars are registered as read only.
+	trap->Cvar_Register ( NULL, "ui_aspectratio",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_resolution",				"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_mode",					"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_fullscreen",			"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_customWidth",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_customHeight",			"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_fullscreen",				"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_colorbits",				"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_lodbias",				"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_picmip",				"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_texturebits",			"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_texturemode",			"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_detailtextures",		"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_geometricdetail",			"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_lodbias",					"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_picmip",					"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_picmip_custom",			"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_texturebits",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_texturemode",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_detailtextures",			"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_ext_compress_textures",	"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_depthbits",				"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_subdivisions",			"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_fastSky",				"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_inGameVideo",			"0", CVAR_ROM|CVAR_INTERNAL );
-	trap->Cvar_Register ( NULL, "ui_r_allowExtensions",		"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_fastSky",					"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_intensity",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_vertexLight",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_fullBright",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_lightMap",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_inGameVideo",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_r_allowExtensions",			"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_cg_shadows",				"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_r_modified",				"0", CVAR_ROM|CVAR_INTERNAL );
+	trap->Cvar_Register ( NULL, "ui_vidrestart",				"0", CVAR_ROM|CVAR_INTERNAL );
 
 	// Copy over the real video cvars into their temporary counterparts
 	trap->Cvar_Set ( "ui_r_mode",						UI_Cvar_VariableString ( "r_mode" ) );
-	trap->Cvar_Set ( "ui_r_colorbits",				UI_Cvar_VariableString ( "r_colorbits" ) );
-	trap->Cvar_Set ( "ui_r_fullscreen",				UI_Cvar_VariableString ( "r_fullscreen" ) );
+	trap->Cvar_Set ( "ui_r_customWidth",				UI_Cvar_VariableString ( "r_customWidth" ) );
+	trap->Cvar_Set ( "ui_r_customHeight",				UI_Cvar_VariableString ( "r_customHeight" ) );
+	UI_GetVidMode ( );
+	trap->Cvar_Set ( "ui_r_colorbits",					UI_Cvar_VariableString ( "r_colorbits" ) );
+	trap->Cvar_Set ( "ui_r_fullscreen",					UI_Cvar_VariableString ( "r_fullscreen" ) );
+	UI_GetGeometricDetail ( );
 	trap->Cvar_Set ( "ui_r_lodbias",					UI_Cvar_VariableString ( "r_lodbias" ) );
-	trap->Cvar_Set ( "ui_r_picmip",					UI_Cvar_VariableString ( "r_picmip" ) );
+	if ( trap->Cvar_VariableValue( "r_picmip" ) > 3 )
+		trap->Cvar_Set ( "ui_r_picmip",					"4" );
+	else
+		trap->Cvar_Set ( "ui_r_picmip",					UI_Cvar_VariableString ( "r_picmip" ) );
+	trap->Cvar_Set ( "ui_r_picmip_custom",				UI_Cvar_VariableString ( "r_picmip" ) );
 	trap->Cvar_Set ( "ui_r_texturebits",				UI_Cvar_VariableString ( "r_texturebits" ) );
 	trap->Cvar_Set ( "ui_r_texturemode",				UI_Cvar_VariableString ( "r_texturemode" ) );
-	trap->Cvar_Set ( "ui_r_detailtextures",			UI_Cvar_VariableString ( "r_detailtextures" ) );
-	trap->Cvar_Set ( "ui_r_ext_compress_textures",	UI_Cvar_VariableString ( "r_ext_compress_textures" ) );
-	trap->Cvar_Set ( "ui_r_depthbits",				UI_Cvar_VariableString ( "r_depthbits" ) );
+	trap->Cvar_Set ( "ui_r_detailtextures",				UI_Cvar_VariableString ( "r_detailtextures" ) );
+	trap->Cvar_Set ( "ui_r_ext_compress_textures",		UI_Cvar_VariableString ( "r_ext_compress_textures" ) );
+	trap->Cvar_Set ( "ui_r_depthbits",					UI_Cvar_VariableString ( "r_depthbits" ) );
 	trap->Cvar_Set ( "ui_r_subdivisions",				UI_Cvar_VariableString ( "r_subdivisions" ) );
 	trap->Cvar_Set ( "ui_r_fastSky",					UI_Cvar_VariableString ( "r_fastSky" ) );
+	trap->Cvar_Set ( "ui_r_intensity",					UI_Cvar_VariableString ( "r_intensity" ) );
+	trap->Cvar_Set ( "ui_r_vertexLight",				UI_Cvar_VariableString ( "r_vertexLight" ) );
+	trap->Cvar_Set ( "ui_r_fullBright",					UI_Cvar_VariableString ( "r_fullBright" ) );
+	trap->Cvar_Set ( "ui_r_lightMap",					UI_Cvar_VariableString ( "r_lightMap" ) );
 	trap->Cvar_Set ( "ui_r_inGameVideo",				UI_Cvar_VariableString ( "r_inGameVideo" ) );
 	trap->Cvar_Set ( "ui_r_allowExtensions",			UI_Cvar_VariableString ( "r_allowExtensions" ) );
 	trap->Cvar_Set ( "ui_cg_shadows",					UI_Cvar_VariableString ( "cg_shadows" ) );
 	trap->Cvar_Set ( "ui_r_modified",					"0" );
+	trap->Cvar_Set ( "ui_vidrestart",					"0" );
+}
+
+void UI_UpdateNetworkSetup ( void ) {
+	trap->Cvar_Set ( "cl_maxpackets", UI_Cvar_VariableString ( "ui_cl_maxpackets" ) );
+}
+
+void UI_GetNetworkSetup ( void ) {
+	trap->Cvar_Register ( NULL, "ui_cl_maxpackets",			"0", CVAR_ROM|CVAR_INTERNAL );
+
+	trap->Cvar_Set ( "ui_cl_maxpackets",			UI_Cvar_VariableString ( "cl_maxpackets" ) );
 }
 
 // If the game type is siege, hide the addbot button. I would have done a cvar text on that item,
@@ -5001,7 +6381,7 @@ static void UI_UpdateCharacterCvars ( void )
 	trap->Cvar_Set ( "char_color_green", UI_Cvar_VariableString ( "ui_char_color_green" ) );
 	trap->Cvar_Set ( "char_color_blue", UI_Cvar_VariableString ( "ui_char_color_blue" ) );
 	trap->Cvar_Set ( "ui_selectedModelIndex", "-1");
-
+	trap->Cvar_Update(&ui_selectedModelIndex);
 }
 
 static void UI_GetCharacterCvars ( void )
@@ -5010,12 +6390,19 @@ static void UI_GetCharacterCvars ( void )
 	char *skin;
 	int i;
 
+	model = UI_Cvar_VariableString("model");
+	skin = strrchr(model, '/');
+
+	trap->Cvar_Set ( "ui_char_model", model );
 	trap->Cvar_Set ( "ui_char_color_red", UI_Cvar_VariableString ( "char_color_red" ) );
 	trap->Cvar_Set ( "ui_char_color_green", UI_Cvar_VariableString ( "char_color_green" ) );
 	trap->Cvar_Set ( "ui_char_color_blue", UI_Cvar_VariableString ( "char_color_blue" ) );
 
-	model = UI_Cvar_VariableString ( "model" );
-	skin = strrchr(model,'/');
+	trap->Cvar_Update ( &ui_char_model );
+	trap->Cvar_Update ( &ui_char_color_red );
+	trap->Cvar_Update ( &ui_char_color_green );
+	trap->Cvar_Update ( &ui_char_color_blue );
+
 	if (skin && strchr(model,'|'))	//we have a multipart custom jedi
 	{
 		char skinhead[MAX_QPATH];
@@ -5059,9 +6446,38 @@ static void UI_GetCharacterCvars ( void )
 				break;
 			}
 		}
+
+		if (ui_selectedModelIndex.integer > -1) {
+			trap->Cvar_Set("ui_selectedModelIndex", "-1");
+			trap->Cvar_Update(&ui_selectedModelIndex);
+		}
 	}
 	else
 	{
+		if (skin != NULL && ui_selectedModelIndex.integer > -1 && ui_gametype.integer < GT_TEAM)
+		{ //set our team to respect our current skin
+			if (!Q_stricmp(skin, "/red")) {
+				uiSkinColor = TEAM_RED;
+				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
+			}
+			else if (!Q_stricmp(skin, "/blue")) {
+				uiSkinColor = TEAM_BLUE;
+				trap->Cvar_Set("ui_myteam", va("%i", uiSkinColor));
+			}
+			else if (!Q_stricmpn(skin, "/rgb", 3)) {
+				uiSkinColor = 3;
+			}
+			else if (!Q_stricmp(skin, "/sp")) {
+				if (!Q_stricmpn(model, "trandoshan/", 11) || !Q_stricmpn(model, "weequay/", 8) /*||!Q_stricmp(model, "rodian")*/)
+					uiSkinColor = 3;
+				else
+					uiSkinColor = TEAM_FREE;
+			}
+			else {
+				uiSkinColor = TEAM_FREE;
+			}
+		}
+
 		model = UI_Cvar_VariableString ( "ui_char_model" );
 		for (i = 0; i < uiInfo.playerSpeciesCount; i++)
 		{
@@ -5244,16 +6660,29 @@ static void UI_UpdateSaberCvars ( void )
 {
 	saber_colors_t colorI;
 
+	if ( !Q_stricmpn( UI_Cvar_VariableString( "ui_saber_color" ), "rgb", 3 ) )
+		trap->Cvar_Set( "cp_sbRGB1", va( "%i", ui_sab1_r.integer | ((ui_sab1_g.integer | (ui_sab1_b.integer << 8)) << 8) ) );
+	else
+		trap->Cvar_Set( "cp_sbRGB1", "0" );
+	if ( !Q_stricmpn( UI_Cvar_VariableString( "ui_saber2_color" ), "rgb", 3 ) )
+		trap->Cvar_Set( "cp_sbRGB2", va( "%i", ui_sab2_r.integer | ((ui_sab2_g.integer | (ui_sab2_b.integer << 8)) << 8) ) );
+	else
+		trap->Cvar_Set( "cp_sbRGB2", "0" );
+
 	trap->Cvar_Set ( "saber1", UI_Cvar_VariableString ( "ui_saber" ) );
 	trap->Cvar_Set ( "saber2", UI_Cvar_VariableString ( "ui_saber2" ) );
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber_color" ) );
-	trap->Cvar_Set ( "color1", va("%d",colorI));
+	trap->Cvar_SetValue( "color1", (float)colorI);
 	trap->Cvar_Set ( "g_saber_color", UI_Cvar_VariableString ( "ui_saber_color" ));
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber2_color" ) );
-	trap->Cvar_Set ( "color2", va("%d",colorI) );
+	trap->Cvar_SetValue( "color2", (float)colorI );
 	trap->Cvar_Set ( "g_saber2_color", UI_Cvar_VariableString ( "ui_saber2_color" ));
+
+	if (ui_allowSaberSwitch.integer) {
+		trap->Cmd_ExecuteText(EXEC_APPEND, va("cmd saber %s %s", ui_saber.string, ui_saber2.string));
+	}
 }
 
 // More hard coded goodness for the menus.
@@ -5406,8 +6835,16 @@ static void UI_UpdateSaberHilt( qboolean secondSaber )
 	}
 }
 
-static void UI_UpdateSaberColor( qboolean secondSaber )
-{
+static void UI_UpdateSaberColor( qboolean secondSaber ) {
+	//Raz: Reverse engineered JA+ code. Kill me.
+	if ( !Q_stricmpn( UI_Cvar_VariableString( "ui_saber_color" ), "rgb", 3 ) )
+		trap->Cvar_Set( "cp_sbRGB1", va( "%i", ui_sab1_r.integer | ((ui_sab1_g.integer | (ui_sab1_b.integer << 8)) << 8) ) );
+	else
+		trap->Cvar_Set( "cp_sbRGB1", "0" );
+	if ( !Q_stricmpn( UI_Cvar_VariableString( "ui_saber2_color" ), "rgb", 3 ) )
+		trap->Cvar_Set( "cp_sbRGB2", va( "%i", ui_sab2_r.integer | ((ui_sab2_g.integer | (ui_sab2_b.integer << 8)) << 8) ) );
+	else
+		trap->Cvar_Set( "cp_sbRGB2", "0" );
 }
 
 const char *SaberColorToString( saber_colors_t color );
@@ -5897,6 +7334,10 @@ void UI_UpdateSiegeStatusIcons( void ) {
 	}
 }
 
+void UI_UpdateSaberHiltInfo( void ) {
+	WP_SaberGetHiltInfo(saberSingleHiltInfo, saberStaffHiltInfo);
+}
+
 static void UI_RunMenuScript(char **args)
 {
 	const char *name, *name2;
@@ -6052,6 +7493,10 @@ static void UI_RunMenuScript(char **args)
 			trap->Cmd_ExecuteText( EXEC_APPEND, "vid_restart;" );
 		} else if (Q_stricmp(name, "RunDemo") == 0) {
 			trap->Cmd_ExecuteText( EXEC_APPEND, va("demo \"%s\"\n", uiInfo.demoList[uiInfo.demoIndex]));
+		} else if (Q_stricmp(name, "DeleteDemo") == 0) {
+			trap->Cmd_ExecuteText(EXEC_NOW, va("deletedemo \"%s\"\n", uiInfo.demoList[uiInfo.demoIndex]));
+			UI_LoadDemos();
+			//i kinda wanted to reset the listbox selection too =/
 		} else if (Q_stricmp(name, "Quake3") == 0) {
 			trap->Cvar_Set( "fs_game", "");
 			trap->Cmd_ExecuteText( EXEC_APPEND, "vid_restart;" );
@@ -6133,9 +7578,13 @@ static void UI_RunMenuScript(char **args)
 		{
 			UI_GetVideoSetup ( );
 		}
+		else if (Q_stricmp(name, "getnetworksetup") == 0)
+		{
+			UI_GetNetworkSetup ( );
+		}
 		else if (Q_stricmp(name, "getsaberhiltinfo") == 0)
 		{
-			WP_SaberGetHiltInfo(saberSingleHiltInfo, saberStaffHiltInfo);
+			UI_UpdateSaberHiltInfo();
 		}
 		// On the solo game creation screen, we can't see siege maps
 		else if (Q_stricmp(name, "checkforsiege") == 0)
@@ -6149,6 +7598,10 @@ static void UI_RunMenuScript(char **args)
 		else if (Q_stricmp(name, "updatevideosetup") == 0)
 		{
 			UI_UpdateVideoSetup ( );
+		}
+		else if (Q_stricmp(name, "updatenetworksetup") == 0)
+		{
+			UI_UpdateNetworkSetup ( );
 		}
 		else if (Q_stricmp(name, "ServerSort") == 0)
 		{
@@ -6168,6 +7621,11 @@ static void UI_RunMenuScript(char **args)
 		} else if (Q_stricmp(name, "closeingame") == 0) {
 			trap->Key_SetCatcher( trap->Key_GetCatcher() & ~KEYCATCH_UI );
 			trap->Key_ClearStates();
+			if (uiSkinColor == 3) { //is custom RGB skin
+				trap->Cvar_Set("char_color_red", UI_Cvar_VariableString("ui_char_color_red"));
+				trap->Cvar_Set("char_color_green", UI_Cvar_VariableString("ui_char_color_green"));
+				trap->Cvar_Set("char_color_blue", UI_Cvar_VariableString("ui_char_color_blue"));
+			}
 			trap->Cvar_Set( "cl_paused", "0" );
 			Menus_CloseAll();
 		} else if (Q_stricmp(name, "voteMap") == 0) {
@@ -6179,6 +7637,10 @@ static void UI_RunMenuScript(char **args)
 				//trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote kick \"%s\"\n",uiInfo.playerNames[uiInfo.playerIndex]) );
 				trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote clientkick \"%i\"\n",uiInfo.playerIndexes[uiInfo.playerIndex]) );
 			}
+		} else if (Q_stricmp(name, "voteForceSpec") == 0) {
+			if (uiInfo.playerIndex >= 0 && uiInfo.playerIndex < uiInfo.playerCount) {
+				trap->Cmd_ExecuteText(EXEC_APPEND, va("callvote forcespec \"%i\"\n", uiInfo.playerIndexes[uiInfo.playerIndex]));
+			}
 		} else if (Q_stricmp(name, "voteGame") == 0) {
 			if (ui_netGametype.integer >= 0 && ui_netGametype.integer < uiInfo.numGameTypes) {
 				trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote g_gametype %i\n",uiInfo.gameTypes[ui_netGametype.integer].gtEnum) );
@@ -6187,6 +7649,30 @@ static void UI_RunMenuScript(char **args)
 			if (uiInfo.teamIndex >= 0 && uiInfo.teamIndex < uiInfo.myTeamCount) {
 				trap->Cmd_ExecuteText( EXEC_APPEND, va("callteamvote leader \"%s\"\n",uiInfo.teamNames[uiInfo.teamIndex]) );
 			}
+		} else if (Q_stricmp(name, "voteFFATime") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote timelimit %i\n", ui_ffa_timelimit.integer) );
+		} else if (Q_stricmp(name, "voteFFAFrag") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote fraglimit %i\n", ui_ffa_fraglimit.integer) );
+		} else if (Q_stricmp(name, "voteCTFTime") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote timelimit %i\n", ui_ctf_timelimit.integer) );
+		} else if (Q_stricmp(name, "voteCTFCapture") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote capturelimit %i\n", ui_ctf_capturelimit.integer) );
+		} else if (Q_stricmp(name, "voteTeamTime") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote timelimit %i\n", ui_team_timelimit.integer) );
+		} else if (Q_stricmp(name, "voteTeamFrag") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote fraglimit %i\n", ui_team_fraglimit.integer) );
+		} else if (Q_stricmp(name, "voteDuelTime") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote timelimit %i\n", ui_duel_timelimit.integer) );
+		} else if (Q_stricmp(name, "voteDuelFrag") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote fraglimit %i\n", ui_duel_fraglimit.integer) );
+		} else if (Q_stricmp(name, "voteTeamSize") == 0) {
+			if (ui_teamSize.integer >= 1 && ui_teamSize.integer <= 16) {
+				trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote sv_maxteamsize %i\n", ui_teamSize.integer) );
+			}
+		} else if (Q_stricmp(name, "login") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("login %s %s\n", ui_username.string, ui_password.string) );
+		} else if (Q_stricmp(name, "register") == 0) {
+			trap->Cmd_ExecuteText( EXEC_APPEND, va("register %s %s\n", ui_username.string, ui_password.string) );
 		} else if (Q_stricmp(name, "addBot") == 0) {
 			if (trap->Cvar_VariableValue("g_gametype") >= GT_TEAM) {
 				trap->Cmd_ExecuteText( EXEC_APPEND, va("addbot \"%s\" %i %s\n", UI_GetBotNameByNumber(uiInfo.botIndex), uiInfo.skillIndex+1, (uiInfo.redBlue == 0) ? "Red" : "Blue") );
@@ -7266,7 +8752,9 @@ UI_HeadCountByColor
 */
 static int UI_HeadCountByColor(void) {
 	int i, c;
+	int v = (int)trap->Cvar_VariableValue("cg_defaultModelRandom");
 	char *teamname;
+	char *skinName = NULL;
 
 	c = 0;
 
@@ -7274,21 +8762,75 @@ static int UI_HeadCountByColor(void) {
 	{
 		case TEAM_BLUE:
 			teamname = "/blue";
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
 			break;
 		case TEAM_RED:
 			teamname = "/red";
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
+			break;
+		case 3:
+			teamname = "/rgb";
+			trap->Cvar_Set("ui_RGBSkin", "1");
 			break;
 		default:
 			teamname = "/default";
+			if (v)
+				trap->Cvar_Set("ui_RGBSkin", "2");
+			else
+				trap->Cvar_Set("ui_RGBSkin", "0");
 	}
 
 	// Count each head with this color
 	for (i=0; i<uiInfo.q3HeadCount; i++)
 	{
-		if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
+		if (uiInfo.q3HeadNames[i][0] && Q_stristr(uiInfo.q3HeadNames[i], "/") != NULL)
 		{
-			c++;
+			skinName = uiInfo.q3HeadNames[i];
+			while (*skinName != '/') {
+				*skinName++;
+			}
+			if (*skinName == '\0' || !strlen(skinName))
+				skinName = uiInfo.q3HeadNames[i];
+
+			if (uiSkinColor == TEAM_FREE)
+			{
+				if (!Q_stricmp(skinName, teamname))
+					c++;
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+					c++;
+				else if (!ui_sv_pure.integer &&  ui_showAllSkins.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+					c++;
+			}
+			else if (uiSkinColor == 3)
+			{
+				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
+					c++;
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp")))
+					c++;
+			}
+			else if (!Q_stricmp(skinName, teamname))
+			{
+				c++;
+			}
 		}
+	}
+
+	if (ui_headCount.integer < 0) { //no count yet
+		trap->Cvar_SetValue("ui_headCount", (float)i);
+		trap->Cvar_Update(&ui_headCount);
+	}
+	else if (ui_selectedModelIndex.integer > -1 && ui_headCount.integer != i)
+	{ //reset selected skin if we have more or less than we used to
+		trap->Cvar_Set("ui_selectedModelIndex", "-1");
+		trap->Cvar_Set("ui_headCount", "-1");
+		trap->Cvar_Update(&ui_selectedModelIndex);
+		trap->Cvar_Update(&ui_headCount);
 	}
 	return c;
 }
@@ -7408,7 +8950,7 @@ UI_BuildServerDisplayList
 ==================
 */
 static void UI_BuildServerDisplayList(int force) {
-	int i, count, clients, maxClients, ping, game, len, passw/*, visible*/;
+	int i, count, maxClients, ping, game, len, passw/*, visible*/;
 	char info[MAX_STRING_CHARS];
 //	qboolean startRefresh = qtrue; TTimo: unused
 	static int numinvisible;
@@ -7475,6 +9017,10 @@ static void UI_BuildServerDisplayList(int force) {
 		ping = trap->LAN_GetServerPing(lanSource, i);
 		if (ping > 0 || ui_netSource.integer == UIAS_FAVORITES) {
 
+			int realPlayers;
+			int clients;
+			int bots;
+
 			trap->LAN_GetServerInfo(lanSource, i, info, MAX_STRING_CHARS);
 
 			// don't list servers with invalid info
@@ -7484,10 +9030,12 @@ static void UI_BuildServerDisplayList(int force) {
 			}
 
 			clients = atoi(Info_ValueForKey(info, "clients"));
-			uiInfo.serverStatus.numPlayersOnServers += clients;
+			bots = atoi(Info_ValueForKey(info, "filterBots"));
+			realPlayers = clients - bots;
+			uiInfo.serverStatus.numPlayersOnServers += realPlayers;
 
 			if (ui_browserShowEmpty.integer == 0) {
-				if (clients == 0) {
+				if (realPlayers == 0) {
 					trap->LAN_MarkServerVisible(lanSource, i, qfalse);
 					continue;
 				}
@@ -8000,7 +9548,6 @@ static int UI_FeederCount(float feederID)
 			return uiInfo.demoCount;
 
 		case FEEDER_MOVES :
-
 			for (i=0;i<MAX_MOVES;i++)
 			{
 				if (datapadMoveData[uiInfo.movesTitleIndex][i].title)
@@ -8008,7 +9555,6 @@ static int UI_FeederCount(float feederID)
 					count++;
 				}
 			}
-
 			return count;
 
 		case FEEDER_MOVES_TITLES :
@@ -8055,7 +9601,6 @@ static int UI_FeederCount(float feederID)
 					count++;
 				}
 			}
-
 			return count;
 
 		// Get the count of inventory
@@ -8115,8 +9660,10 @@ UI_HeadCountByColor
 ==================
 */
 static const char *UI_SelectedTeamHead(int index, int *actual) {
-	char *teamname;
 	int i,c=0;
+	char *teamname;
+	char *skinName = NULL;
+	qboolean valid = qfalse;
 
 	switch(uiSkinColor)
 	{
@@ -8125,6 +9672,9 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 			break;
 		case TEAM_RED:
 			teamname = "/red";
+			break;
+		case 3:
+			teamname = "/rgb";
 			break;
 		default:
 			teamname = "/default";
@@ -8135,7 +9685,52 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 
 	for (i=0; i<uiInfo.q3HeadCount; i++)
 	{
-		if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
+		if (uiInfo.q3HeadNames[i][0])
+		{ //ugly mess below
+			skinName = uiInfo.q3HeadNames[i];
+			while (*skinName != '/') {
+				*skinName++;
+			}
+			if (*skinName == '\0' || !strlen(skinName))
+				skinName = uiInfo.q3HeadNames[i];
+
+			valid = qfalse;
+			if (uiSkinColor == 3)
+			{
+				if (!Q_stricmpn(skinName, teamname, strlen(teamname)))
+					valid = qtrue;
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && (!Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") || !Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp") /*||!Q_stricmp(model, "rodian/")*/))
+					valid = qtrue;
+			}
+			else if (uiSkinColor == TEAM_FREE)
+			{
+				if (!Q_stricmp(skinName, "/default"))
+					valid = qtrue;
+				else if (!ui_sv_pure.integer && !Q_stricmp(skinName, "/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "trandoshan/sp") && Q_stricmp(uiInfo.q3HeadNames[i], "weequay/sp"))
+					valid = qtrue;
+				else if (ui_showAllSkins.integer && !ui_sv_pure.integer && Q_stricmpn(uiInfo.q3HeadNames[i], "default", 7) && Q_stricmp(skinName, "/red") && Q_stricmp(skinName, "/blue") && Q_stricmp(skinName, "/sp") && Q_stricmpn(skinName, "/rgb", 4))
+					valid = qtrue;
+			}
+			else if (!Q_stricmp(skinName, teamname)) {
+				valid = qtrue;
+			}
+
+			if (valid)
+			{
+				if (c==index)
+				{
+					*actual = i;
+					return uiInfo.q3HeadNames[i];
+				}
+				else
+				{
+					c++;
+				}
+			}
+		}
+		/*if (uiInfo.q3HeadNames[i][0] && strstr(uiInfo.q3HeadNames[i], teamname))
+		if (uiInfo.q3HeadNames[i][0] && (strstr(uiInfo.q3HeadNames[i], teamname) ||
+			(uiSkinColor == 3 && strstr(uiInfo.q3HeadNames[i], "/sp"))))
 		{
 			if (c==index)
 			{
@@ -8146,7 +9741,7 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 			{
 				c++;
 			}
-		}
+		}*/
 	}
 	return "";
 }
@@ -8381,8 +9976,17 @@ static const char *UI_FeederItemText(float feederID, int index, int column,
 				case SORT_MAP :
 					return Info_ValueForKey(info, "mapname");
 				case SORT_CLIENTS :
-					Com_sprintf( clientBuff, sizeof(clientBuff), "%s (%s)", Info_ValueForKey(info, "clients"), Info_ValueForKey(info, "sv_maxclients"));
+				{
+					int clients = atoi(Info_ValueForKey(info, "clients"));
+					int bots = atoi(Info_ValueForKey(info, "filterBots"));
+					int maxclients = atoi(Info_ValueForKey(info, "sv_maxclients"));
+
+					int realPlayers;
+					realPlayers = clients - bots;
+
+					Com_sprintf(clientBuff, sizeof(clientBuff), "%i (%i)", realPlayers, maxclients);
 					return clientBuff;
+				}
 				case SORT_GAME :
 					game = atoi(Info_ValueForKey(info, "gametype"));
 					if (game >= 0 && game < numGameTypes) {
@@ -8521,7 +10125,7 @@ static qhandle_t UI_FeederItemImage(float feederID, int index) {
 		if (index >= 0 && index < uiInfo.q3HeadCount)
 		{ //we want it to load them as it draws them, like the TA feeder
 		      //return uiInfo.q3HeadIcons[index];
-			int selModel = trap->Cvar_VariableValue("ui_selectedModelIndex");
+			int selModel = (int)trap->Cvar_VariableValue("ui_selectedModelIndex");
 
 			if (selModel != -1)
 			{
@@ -8773,14 +10377,17 @@ qboolean UI_FeederSelection(float feederFloat, int index, itemDef_t *item)
 		int actual = 0;
 		UI_SelectedTeamHead(index, &actual);
 		uiInfo.q3SelectedHead = index;
-		trap->Cvar_Set("ui_selectedModelIndex", va("%i", index));
+		trap->Cvar_SetValue("ui_selectedModelIndex", (float)index);
 		index = actual;
 		if (index >= 0 && index < uiInfo.q3HeadCount)
 		{
-			trap->Cvar_Set( "model", uiInfo.q3HeadNames[index]);	//standard model
-			trap->Cvar_Set ( "char_color_red", "255" );			//standard colors
-			trap->Cvar_Set ( "char_color_green", "255" );
-			trap->Cvar_Set ( "char_color_blue", "255" );
+			trap->Cvar_Set("model", uiInfo.q3HeadNames[index]);
+			trap->Cvar_Set("ui_char_model", uiInfo.q3HeadNames[index]);
+			if (uiSkinColor != 3) {	// standard model
+				trap->Cvar_Set("char_color_red", "255");	//standard colors
+				trap->Cvar_Set("char_color_green", "255");
+				trap->Cvar_Set("char_color_blue", "255");
+			}
 		}
 	}
 	else if (feederID == FEEDER_MOVES)
@@ -9421,26 +11028,74 @@ static qboolean bIsImageFile(const char* dirptr, const char* skinname)
 	return qfalse;
 }
 
+/*
+=================
+bIsSkinFile
+builds path and scans for valid skin files
+=================
+*/
+static qboolean bIsSkinFile(const char* dirptr, const char* skinname)
+{
+	char fpath[MAX_QPATH];
+	int f;
+
+	if (!ui_showAllSkins.integer)
+		return qfalse;
+
+	//don't list non-humanoid skins... - these aren't caught by the other checks below
+	if (!Q_stricmpn(dirptr, "default", 7))
+		return qfalse;
+	if (!Q_stricmpn(dirptr, "mutant_rancor", 13))
+		return qfalse;
+	if (!Q_stricmpn(dirptr, "r5d2", 4))
+		return qfalse;
+
+	//fpls and menu skins aren't valid player skins...
+	if (!Q_stricmpn(skinname, "menu", 4))
+		return qfalse;
+	if (!Q_stricmpn(skinname, "fpls", 4))
+		return qfalse;
+
+	//now check for an animation.cfg
+	Com_sprintf(fpath, MAX_QPATH, "models/players/%s/animation.cfg", dirptr);
+	trap->FS_Open(fpath, &f, FS_READ);
+	if (f) {
+		trap->FS_Close(f);
+		return qfalse;
+	}
+
+	Com_sprintf(fpath, MAX_QPATH, "models/players/%s/model_%s.skin", dirptr, skinname);
+	trap->FS_Open(fpath, &f, FS_READ);
+	if (f)
+	{
+		trap->FS_Close(f);
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 
 /*
 =================
 PlayerModel_BuildList
 =================
 */
-static void UI_BuildQ3Model_List( void )
+void UI_BuildQ3Model_List( void )
 {
-	int		numdirs;
-	int		numfiles;
-	char	dirlist[2048];
-	char	filelist[2048];
-	char	skinname[64];
-	char*	dirptr;
-	char*	fileptr;
-	char*	check;
-	int		i;
-	int		j, k, p, s;
-	int		dirlen;
-	int		filelen;
+	int			numdirs;
+	int			numfiles;
+	char		dirlist[2048];
+	char		filelist[2048];
+	char		skinname[64];
+	char		*dirptr;
+	char		*fileptr;
+	char		*check;
+	int			i;
+	int			j, k, p, s;
+	int			dirlen;
+	int			filelen;
+	qboolean	baseSkin;
 
 	uiInfo.q3HeadCount = 0;
 
@@ -9453,11 +11108,22 @@ static void UI_BuildQ3Model_List( void )
 
 		if (dirlen && dirptr[dirlen-1]=='/') dirptr[dirlen-1]='\0';
 
-		if (!strcmp(dirptr,".") || !strcmp(dirptr,".."))
+		if (!Q_stricmp(dirptr, ".") || !Q_stricmp(dirptr, ".."))
 			continue;
 
+		if (ui_sv_pure.integer) {
+			baseSkin = qfalse;
+			for (k = 0 ; k <= BASE_MODEL_COUNT ; k++) {
+				if (!Q_stricmp(dirptr, baseModelList[k])) {
+					baseSkin = qtrue;
+					break;
+				}
+			}
+			if (!baseSkin)
+				continue;
+		}
 
-		numfiles = trap->FS_GetFileList( va("models/players/%s",dirptr), "skin", filelist, 2048 );
+		numfiles = trap->FS_GetFileList( va("models/players/%s", dirptr), "skin", filelist, 2048 );
 		fileptr  = filelist;
 		for (j=0; j<numfiles && uiInfo.q3HeadCount < MAX_Q3PLAYERMODELS;j++,fileptr+=filelen+1)
 		{
@@ -9465,7 +11131,7 @@ static void UI_BuildQ3Model_List( void )
 
 			filelen = strlen(fileptr);
 
-			COM_StripExtension(fileptr,skinname, sizeof( skinname ) );
+			COM_StripExtension(fileptr, skinname, sizeof( skinname ) );
 
 			skinLen = strlen(skinname);
 			k = 0;
@@ -9494,7 +11160,7 @@ static void UI_BuildQ3Model_List( void )
 			if (f)
 			*/
 			check = &skinname[1];
-			if (bIsImageFile(dirptr, check))
+			if (bIsImageFile(dirptr, check) || bIsSkinFile(dirptr, check))
 			{ //if it exists
 				qboolean iconExists = qfalse;
 
@@ -9523,7 +11189,29 @@ static void UI_BuildQ3Model_List( void )
 				}
 
 				Com_sprintf( uiInfo.q3HeadNames[uiInfo.q3HeadCount], sizeof(uiInfo.q3HeadNames[uiInfo.q3HeadCount]), va("%s%s", dirptr, skinname));
-				uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
+				//uiInfo.q3HeadIcons[uiInfo.q3HeadCount++] = 0;//trap->R_RegisterShaderNoMip(fpath);
+				uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = 0;//uiInfo.uiDC.Assets.defaultIcon;
+
+				{//dxdfe?
+					char iconPath[MAX_QPATH] = {0};
+
+					Com_sprintf(iconPath, sizeof(iconPath), "models/players/%s/icon_%s", dirptr, skinname+1);
+					
+					uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = trap->R_RegisterShaderNoMip(iconPath);
+					if (ui_showAllSkins.integer && !ui_sv_pure.integer && !uiInfo.q3HeadIcons[uiInfo.q3HeadCount])
+					{
+						if (!Q_stricmp(skinname+1, "red"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRed;
+						else if (!Q_stricmp(skinname+1, "blue"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconBlue;
+						else if (!Q_stricmpn(skinname+1, "rgb", 3) || !Q_stricmp(skinname+1, "sp"))
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIconRGB;
+						else
+							uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = uiInfo.uiDC.Assets.defaultIcon;
+					}
+				}
+
+				uiInfo.q3HeadCount++;
 				//rww - we are now registering them as they are drawn like the TA feeder, so as to decrease UI load time.
 			}
 
@@ -9533,7 +11221,6 @@ static void UI_BuildQ3Model_List( void )
 			}
 		}
 	}
-
 }
 
 void UI_SiegeInit(void)
@@ -9636,18 +11323,19 @@ void UI_FreeAllSpecies( void )
 UI_BuildPlayerModel_List
 =================
 */
-static void UI_BuildPlayerModel_List( qboolean inGameLoad )
+void UI_BuildPlayerModel_List( qboolean inGameLoad )
 {
 	static const size_t DIR_LIST_SIZE = 16384;
 
-	int		numdirs;
-	size_t	dirListSize = DIR_LIST_SIZE;
-	char	stackDirList[8192];
-	char	*dirlist;
-	char*	dirptr;
-	int		dirlen;
-	int		i;
-	int		j;
+	int			numdirs;
+	size_t		dirListSize = DIR_LIST_SIZE;
+	char		stackDirList[8192];
+	char		*dirlist;
+	char		*dirptr;
+	int			dirlen;
+	int			i, j;
+	int			w = 0;
+	qboolean	baseSpecies = qfalse;
 
 	dirlist = malloc(DIR_LIST_SIZE);
 	if ( !dirlist )
@@ -9670,10 +11358,10 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 	dirptr  = dirlist;
 	for (i=0; i<numdirs; i++,dirptr+=dirlen+1)
 	{
-		char*	fileptr;
+		char	*fileptr;
 		int		filelen;
-		int f = 0;
-		char fpath[MAX_QPATH];
+		int		f = 0;
+		char	fpath[MAX_QPATH];
 
 		dirlen = strlen(dirptr);
 
@@ -9687,7 +11375,7 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 			continue;
 		}
 
-		if (!strcmp(dirptr,".") || !strcmp(dirptr,".."))
+		if (!Q_stricmp(dirptr, ".") || !Q_stricmp(dirptr, ".."))
 			continue;
 
 		Com_sprintf(fpath, sizeof(fpath), "models/players/%s/PlayerChoice.txt", dirptr);
@@ -9696,14 +11384,29 @@ static void UI_BuildPlayerModel_List( qboolean inGameLoad )
 		if (f)
 		{
 			char	filelist[2048];
-			playerSpeciesInfo_t *species;
+			playerSpeciesInfo_t *species = NULL;
 			char                 skinname[64];
 			int                  numfiles;
 			int                  iSkinParts=0;
 			char                *buffer = NULL;
 
+			if (ui_sv_pure.integer)
+			{ //i guess wait to do this until here after we've read a PlayerChoice.txt file
+				baseSpecies = qfalse;
+				for (w = 0; w <= BASE_SPECIES_COUNT; w++) {
+					if (!Q_stricmp(dirptr, baseSpeciesList[w])) {
+						baseSpecies = qtrue;
+						break;
+					}
+				}
+				if (!baseSpecies) {
+					//UI_FreeSpecies(species); //this doesn't seem to update the options in the feeder
+					continue;
+				}
+			}
+
 			buffer = malloc(filelen + 1);
-			if(!buffer)
+			if (!buffer)
 			{
 				trap->FS_Close( f );
 				Com_Error(ERR_FATAL, "Could not allocate buffer to read %s", fpath);
@@ -9847,15 +11550,15 @@ void UI_Init( qboolean inGameLoad ) {
 
 	UI_UpdateForcePowers();
 
-	UI_RegisterCvars();
 	UI_InitMemory();
 
 	// cache redundant calulations
 	trap->GetGlconfig( &uiInfo.uiDC.glconfig );
 
 	// for 640x480 virtualized screen
-	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
-	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
+	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/SCREEN_HEIGHT);
+	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/SCREEN_WIDTH);
+
 	if ( uiInfo.uiDC.glconfig.vidWidth * 480 > uiInfo.uiDC.glconfig.vidHeight * 640 ) {
 		// wide screen
 		uiInfo.uiDC.bias = 0.5 * ( uiInfo.uiDC.glconfig.vidWidth - ( uiInfo.uiDC.glconfig.vidHeight * (640.0/480.0) ) );
@@ -9928,9 +11631,13 @@ void UI_Init( qboolean inGameLoad ) {
 
 	Init_Display(&uiInfo.uiDC);
 
-	UI_BuildPlayerModel_List(inGameLoad);
+	UI_RegisterCvars();
+	UI_Set2DRatio();
 
 	String_Init();
+
+	UI_BuildPlayerModel_List(inGameLoad);
+	UI_BuildQ3Model_List();
 
 	uiInfo.uiDC.cursor	= trap->R_RegisterShaderNoMip( "menu/art/3_cursor2" );
 	uiInfo.uiDC.whiteShader = trap->R_RegisterShaderNoMip( "white" );
@@ -9966,13 +11673,15 @@ void UI_Init( qboolean inGameLoad ) {
 		char buf[MAX_NETNAME] = {0};
 		Q_strncpyz( buf, UI_Cvar_VariableString( "name" ), sizeof( buf ) );
 		trap->Cvar_Register( NULL, "ui_Name", buf, CVAR_INTERNAL );
+
+		//set ui_char_model as well
+		trap->Cvar_Set("ui_char_model", UI_Cvar_VariableString("model"));
 	}
 
 	Menus_CloseAll();
 
 	trap->LAN_LoadCachedServers();
 
-	UI_BuildQ3Model_List();
 	UI_LoadBots();
 
 	UI_LoadForceConfig_List();
@@ -9989,8 +11698,20 @@ void UI_Init( qboolean inGameLoad ) {
 
 	trap->Cvar_Register(NULL, "debug_protocol", "", 0 );
 
-	trap->Cvar_Set("ui_actualNetGameType", va("%d", ui_netGametype.integer));
+	trap->Cvar_SetValue("ui_actualNetGameType", ui_netGametype.value);
 	trap->Cvar_Update(&ui_actualNetGametype);
+
+	//console cmd autocompletion
+	trap->ext.AddCommand("ui_load");
+	trap->ext.AddCommand("strafehelper");
+	trap->ext.AddCommand("stylePlayer");
+	trap->ext.AddCommand("speedometer");
+
+	//Center cursor
+	uiInfo.uiDC.cursorx = SCREEN_WIDTH / 2;
+	uiInfo.uiDC.cursory = (SCREEN_HEIGHT / 2);
+
+	UI_GetCharacterCvars();
 }
 
 #define	UI_FPS_FRAMES	4
@@ -10040,7 +11761,7 @@ void UI_Refresh( int realtime )
 	// draw cursor
 	UI_SetColor( NULL );
 	if (Menu_Count() > 0 && (trap->Key_GetCatcher() & KEYCATCH_UI)) {
-		UI_DrawHandlePic( (float)uiInfo.uiDC.cursorx, (float)uiInfo.uiDC.cursory, 40.0f, 40.0f, uiInfo.uiDC.Assets.cursor);
+		UI_DrawHandlePic(uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 40.0f * uiInfo.uiDC.widthRatioCoef, 40.0f, uiInfo.uiDC.Assets.cursor);
 		//UI_DrawHandlePic( uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
 	}
 
@@ -10181,13 +11902,13 @@ UI_MouseEvent
 void UI_MouseEvent( int dx, int dy )
 {
 	// update mouse screen position
-	uiInfo.uiDC.cursorx += dx;
+	uiInfo.uiDC.cursorx += dx / uiInfo.uiDC.xscale;
 	if (uiInfo.uiDC.cursorx < 0)
 		uiInfo.uiDC.cursorx = 0;
 	else if (uiInfo.uiDC.cursorx > SCREEN_WIDTH)
 		uiInfo.uiDC.cursorx = SCREEN_WIDTH;
 
-	uiInfo.uiDC.cursory += dy;
+	uiInfo.uiDC.cursory += dy / uiInfo.uiDC.yscale;
 	if (uiInfo.uiDC.cursory < 0)
 		uiInfo.uiDC.cursory = 0;
 	else if (uiInfo.uiDC.cursory > SCREEN_HEIGHT)
@@ -10342,19 +12063,21 @@ void UI_DrawConnectScreen( qboolean overlay ) {
 
 	char sStringEdTemp[256];
 
-	menuDef_t *menu = Menus_FindByName("Connect");
+	menuDef_t *menu = (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) ? Menus_FindByName("Connect_16_9") : Menus_FindByName("Connect");
 
+	if (!menu)
+		menu = Menus_FindByName("Connect");
 
 	if ( !overlay && menu ) {
 		Menu_Paint(menu, qtrue);
 	}
 
 	if (!overlay) {
-		centerPoint = 320;
+		centerPoint = SCREEN_WIDTH / 2;
 		yStart = 130;
 		scale = 1.0f;	// -ste
 	} else {
-		centerPoint = 320;
+		centerPoint = SCREEN_WIDTH / 2;
 		yStart = 32;
 		scale = 1.0f;	// -ste
 		return;
@@ -10446,7 +12169,7 @@ static void UI_StopServerRefresh( void )
 	if (count - uiInfo.serverStatus.numDisplayServers > 0) {
 		Com_Printf("%d servers not listed due to filters, packet loss, invalid info, or pings higher than %d\n",
 						count - uiInfo.serverStatus.numDisplayServers,
-						(int) trap->Cvar_VariableValue("cl_maxPing"));
+						(int)trap->Cvar_VariableValue("cl_maxPing"));
 	}
 }
 
@@ -10536,9 +12259,57 @@ static void UI_StartServerRefresh(qboolean full)
 			trap->Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %s full empty\n", ui_netSource.integer-1, ptr));
 		}
 		else {
-			trap->Cmd_ExecuteText( EXEC_NOW, va( "globalservers %d %d full empty\n", ui_netSource.integer-1, (int)trap->Cvar_VariableValue( "protocol" ) ) );
+			if (strlen(UI_Cvar_VariableString("com_protocol")) && strlen(UI_Cvar_VariableString("com_legacyprotocol"))) { //ETJK
+				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("com_protocol")));
+				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("com_legacyprotocol")));
+			}
+			else { 
+				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("protocol")));
+			}
 		}
 	}
+}
+
+/*
+=================
+UI_CvarHelp
+=================
+*/
+
+typedef struct helpDescription_s {
+	char	*cvarName;
+	char	*descriptionShort;
+	char	*descriptionLong;
+} helpDescription_t;
+
+static helpDescription_t cvarHelp[] = {
+	#define XDOCS_CVAR_HELP
+	#define DEFAULT_FORMAT_CALLBACK
+	#define SIMPLE_FORMAT_CALLBACK
+		#include "ui_xdocs.h"
+	#undef SIMPLE_FORMAT_CALLBACK
+	#undef DEFAULT_FORMAT_CALLBACK
+	#undef XDOCS_CVAR_HELP
+	{ NULL, NULL, NULL }
+};
+static const size_t cvarHelpSize = ARRAY_LEN(cvarHelp);
+
+static int xDocsCmp(const void *a, const void *b) {
+	return Q_stricmp((const char *)a, ((helpDescription_t*)b)->cvarName);
+}
+
+static void UI_CvarHelp(const char *cvarName, qboolean enter, char *helpBuffer, size_t helpBufferSize) {
+	helpDescription_t *xDocs;
+
+	xDocs = (helpDescription_t *)Q_LinearSearch(cvarName, cvarHelp, cvarHelpSize, sizeof(cvarHelp[0]), xDocsCmp);
+
+	if (!xDocs)
+		return;
+
+	if (enter)
+		Com_sprintf(helpBuffer, helpBufferSize, "%s\n%s", xDocs->descriptionShort, xDocs->descriptionLong);
+	else //what shows up in autocomplete/cvarlist, cmds only use this
+		Com_sprintf(helpBuffer, helpBufferSize, "%s", xDocs->descriptionShort);
 }
 
 /*
@@ -10575,6 +12346,7 @@ Q_EXPORT uiExport_t* QDECL GetModuleAPI( int apiVersion, uiImport_t *import )
 	uie.ConsoleCommand		= UI_ConsoleCommand;
 	uie.DrawConnectScreen	= UI_DrawConnectScreen;
 	uie.MenuReset			= Menu_Reset;
+	uie.CvarHelp			= UI_CvarHelp;
 
 	return &uie;
 }

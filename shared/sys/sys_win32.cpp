@@ -20,6 +20,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "sys_local.h"
+#include "sys_loadlib.h"
 #include <direct.h>
 #include <io.h>
 #include <shlobj.h>
@@ -160,6 +161,24 @@ char *Sys_DefaultHomePath( void )
 	Com_Printf( "Portable install requested, skipping homepath support\n" );
 	return NULL;
 #else
+	if ( Cvar_VariableIntegerValue( "fs_portable" ) )
+	{
+		Com_Printf("fs_portable enabled, skipping fs_homepath support\n");
+
+		if (Cvar_VariableIntegerValue("fs_portable") == 2)
+			return NULL;
+
+		FILE *ftest = fopen(va("%s/w", Sys_DefaultInstallPath()), "w");
+		
+		if (ftest) {
+			fclose(ftest);
+			remove(va("%s/w", Sys_DefaultInstallPath()));
+			return NULL;
+		}
+		else
+			Com_Printf("fs_portable write test failed, using fs_homepath\n");
+	}
+
 	if ( !homePath[0] )
 	{
 		TCHAR homeDirectory[MAX_PATH];
@@ -216,6 +235,78 @@ void Sys_SetProcessorAffinity( void ) {
 
 	if ( !SetProcessAffinityMask( handle, processMask ) )
 		Com_DPrintf( "Setting affinity mask failed (%s)\n", GetErrorString( GetLastError() ) );
+}
+
+void Sys_SetProcessPriority(void) {
+	extern cvar_t *com_priority;
+	DWORD_PTR desiredPriorityClass, currentProcessPriorityClass;
+	HANDLE handle = GetCurrentProcess();
+
+	if (!com_priority)
+		return;
+
+	if (com_priority->integer == -1)
+		return;
+
+	currentProcessPriorityClass = GetPriorityClass(handle);
+
+	if (!Q_stricmp(com_priority->string, "normal")) {
+		desiredPriorityClass = NORMAL_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "high")) {
+		desiredPriorityClass = HIGH_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "realtime")) {
+		desiredPriorityClass = REALTIME_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "low")) {
+		desiredPriorityClass = BELOW_NORMAL_PRIORITY_CLASS;
+	}
+	else if (!Q_stricmp(com_priority->string, "idle")) {
+		desiredPriorityClass = IDLE_PRIORITY_CLASS;
+	}
+	else {
+		switch (com_priority->integer)
+		{
+			case 24: //realtime
+				desiredPriorityClass = REALTIME_PRIORITY_CLASS;
+				break;
+			case 13: //high
+				desiredPriorityClass = HIGH_PRIORITY_CLASS;
+				break;
+			case 10: //above normal
+				desiredPriorityClass = ABOVE_NORMAL_PRIORITY_CLASS;
+				break;
+			case 8: //normal/default
+			default:
+				desiredPriorityClass = NORMAL_PRIORITY_CLASS;
+				break;
+			case 6: //below normal
+				desiredPriorityClass = BELOW_NORMAL_PRIORITY_CLASS;
+				break;
+			case 4: //background (Low I/O & memory priority)
+			case 2: //idle
+				desiredPriorityClass = IDLE_PRIORITY_CLASS;
+				break;
+		}
+	}
+
+	if (!desiredPriorityClass)
+		return;
+
+	if (desiredPriorityClass != NORMAL_PRIORITY_CLASS && desiredPriorityClass == currentProcessPriorityClass) {
+		Com_DPrintf("Desired priority class already set\n");
+		return;
+	}
+
+	if (!SetPriorityClass(handle, desiredPriorityClass)) {
+		Com_Printf("^3failed to set process priority?\n");
+		return;
+	}
+	
+	if (GetPriorityClass(handle) == desiredPriorityClass)
+		Com_DPrintf("Set process priority successfully.\n");
+		//why does it get here if windows sometimes forces it to background priority????
 }
 
 /*
@@ -505,18 +596,22 @@ UnpackDLLResult Sys_UnpackDLL(const char *name)
 {
 	UnpackDLLResult result = {};
 	void *data;
-	long len = FS_ReadFile(name, &data);
+	long len;
+	
+	if (Cvar_VariableIntegerValue("fs_loadpakdlls") == 1) {
+		len = FS_ReadDLLInPAK(name, &data);
+	}
+	else {
+		len = FS_ReadFile(name, &data);
+	}
 
 	if (len >= 1)
 	{
-		if (FS_FileIsInPAK(name, NULL) == 1)
+		char *tempFileName;
+		if ( FS_WriteToTemporaryFile(data, len, &tempFileName) )
 		{
-			char *tempFileName;
-			if ( FS_WriteToTemporaryFile(data, len, &tempFileName) )
-			{
-				result.tempDLLPath = tempFileName;
-				result.succeeded = true;
-			}
+			result.tempDLLPath = tempFileName;
+			result.succeeded = true;
 		}
 	}
 
@@ -589,4 +684,88 @@ void Sys_Sleep( int msec )
 
 	Sleep( msec );
 #endif
+}
+
+/*
+================
+Sys_SteamInit
+
+Steam initialization is done here.
+In order for Steam to work, two things are needed:
+- steam_api.dll (not included with retail Jedi Academy or Jedi Outcast!)
+- steam_appid.txt (likewise)
+steam_appid.txt is a text file containing either "6020" or "6030".
+These correspond to Jedi Academy and Jedi Outcast, respectively.
+
+Steamworks SDK is required to use the playtime tracking and overlay features
+without launching the app manually through Steam.
+Unfortunately, the SDK does not play nice with copyleft licenses.
+Fortunately! we can invoke the library directly and avoid this entirely,
+provided the end-user has the goods.
+Unfortunately! this is platform specific and so we have to do it here.
+================
+*/
+
+typedef bool(__stdcall* SteamAPIInit_Type)();
+typedef void(__stdcall* SteamAPIShutdown_Type)();
+static SteamAPIInit_Type SteamAPI_Init;
+static SteamAPIShutdown_Type SteamAPI_Shutdown;
+static void* gp_steamLibrary = nullptr;
+
+void Sys_SteamInit()
+{
+	if (!Cvar_VariableIntegerValue("com_steamIntegration"))
+	{
+		// Don't do anything if com_steamIntegration is disabled
+		return;
+	}
+
+	// Load the library
+	gp_steamLibrary = Sys_LoadLibrary("steam_api" DLL_EXT);
+	if (!gp_steamLibrary)
+	{
+		Com_Printf(S_COLOR_RED "Steam integration failed: Couldn't find steam_api" DLL_EXT "\n");
+		return;
+	}
+
+	// Load the functions
+	SteamAPI_Init = (SteamAPIInit_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_Init");
+	SteamAPI_Shutdown = (SteamAPIShutdown_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_Shutdown");
+
+	if (!SteamAPI_Shutdown || !SteamAPI_Init)
+	{
+		Com_Printf(S_COLOR_RED "Steam integration failed: Library invalid\n");
+		Sys_UnloadLibrary(gp_steamLibrary);
+		gp_steamLibrary = nullptr;
+		return;
+	}
+
+	// Finally, call the init function in Steam, which should pop up the overlay if everything went correctly
+	if (!SteamAPI_Init())
+	{
+		Com_Printf(S_COLOR_RED "Steam integration failed: Steam init failed. Ensure steam_appid.txt exists and is valid.\n");
+		Sys_UnloadLibrary(gp_steamLibrary);
+		gp_steamLibrary = nullptr;
+		return;
+	}
+}
+
+/*
+================
+Sys_SteamShutdown
+
+Platform-specific exit code
+================
+*/
+void Sys_SteamShutdown()
+{
+	if (!gp_steamLibrary)
+	{
+		Com_Printf("Skipping Steam integration shutdown...\n");
+		return;
+	}
+
+	SteamAPI_Shutdown();
+	Sys_UnloadLibrary(gp_steamLibrary);
+	gp_steamLibrary = nullptr;
 }

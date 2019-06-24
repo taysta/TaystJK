@@ -1044,6 +1044,10 @@ image_t *R_CreateImage( const char *name, const byte *pic, int width, int height
 		GL_Bind(image);
 	}
 
+	if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
+		allowPicmip = qfalse;
+	}
+
 	Upload32( (unsigned *)pic,	format,
 								(qboolean)image->mipmap,
 								allowPicmip,
@@ -1340,17 +1344,17 @@ void R_CreateBuiltinImages( void ) {
 	qglTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_T, GL_CLAMP );
 
 	// Create the minimized scene blur image.
-	if ( r_DynamicGlowWidth->integer > glConfig.vidWidth  )
+	if ( tr.dynamicGlowWidth > glConfig.vidWidth  )
 	{
-		r_DynamicGlowWidth->integer = glConfig.vidWidth;
+		tr.dynamicGlowWidth = glConfig.vidWidth;
 	}
-	if ( r_DynamicGlowHeight->integer > glConfig.vidHeight  )
+	if ( tr.dynamicGlowHeight > glConfig.vidHeight  )
 	{
-		r_DynamicGlowHeight->integer = glConfig.vidHeight;
+		tr.dynamicGlowHeight = glConfig.vidHeight;
 	}
 	tr.blurImage = 1024 + giTextureBindNum++;
 	qglBindTexture( GL_TEXTURE_RECTANGLE_ARB, tr.blurImage );
-	qglTexImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA16, r_DynamicGlowWidth->integer, r_DynamicGlowHeight->integer, 0, GL_RGB, GL_FLOAT, 0 );
+	qglTexImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA16, tr.dynamicGlowWidth, tr.dynamicGlowHeight, 0, GL_RGB, GL_FLOAT, 0 );
 	qglTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	qglTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	qglTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP );
@@ -1410,12 +1414,13 @@ void R_SetColorMappings( void ) {
 
 	// setup the overbright lighting
 	tr.overbrightBits = r_overBrightBits->integer;
-	if ( !glConfig.deviceSupportsGamma && !glConfigExt.doGammaCorrectionWithShaders ) {
+	if ( !glConfig.deviceSupportsGamma ) {
 		tr.overbrightBits = 0;		// need hardware gamma for overbright
 	}
 
+
 	// never overbright in windowed mode
-	if ( !glConfig.isFullscreen )
+	if ( !glConfig.isFullscreen && !glConfigExt.doGammaCorrectionWithShaders )
 	{
 		tr.overbrightBits = 0;
 	}
@@ -1536,6 +1541,21 @@ void	R_InitImages( void ) {
 	R_SetColorMappings();
 
 	// create default texture and white texture
+
+	// Set dynamic glow texture size.
+	if (!r_DynamicGlowWidth->integer || !r_DynamicGlowHeight->integer)
+	{ //these can still be used as overrides but they must both be set to something > 0
+		tr.dynamicGlowWidth = (glConfig.vidWidth * r_DynamicGlowScale->value);
+		tr.dynamicGlowHeight = (glConfig.vidHeight * r_DynamicGlowScale->value);
+	}
+	else {
+		tr.dynamicGlowWidth = r_DynamicGlowWidth->integer;
+		tr.dynamicGlowHeight = r_DynamicGlowHeight->integer;
+	}
+#ifdef TECH
+	Com_Printf("DynamicGlowWidth = %i\nDynamicGlowHeight = %i\n", tr.dynamicGlowWidth, tr.dynamicGlowHeight);
+#endif
+
 	R_CreateBuiltinImages();
 
 	R_SetGammaCorrectionLUT();

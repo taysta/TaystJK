@@ -117,6 +117,14 @@ char *Sys_GetClipboardData( void ) {
 #endif
 }
 
+void Sys_SetClipboardData(const char * cbText) {
+#ifdef DEDICATED
+	return;
+#else
+	SDL_SetClipboardText(cbText);
+#endif
+}
+
 /*
 =================
 Sys_ConsoleInput
@@ -374,7 +382,7 @@ enum SearchPathFlag
 {
 	SEARCH_PATH_MOD		= 1 << 0,
 	SEARCH_PATH_BASE	= 1 << 1,
-	SEARCH_PATH_OPENJK	= 1 << 2,
+	SEARCH_PATH_ETERNALJK	= 1 << 2,
 	SEARCH_PATH_ROOT	= 1 << 3
 };
 
@@ -401,6 +409,23 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 		}
 	}
 
+	if (searchFlags & SEARCH_PATH_ETERNALJK)
+	{
+		for (size_t i = 0; i < numPaths; i++)
+		{
+			const char *libDir = searchPaths[i];
+			if (!libDir[0])
+				continue;
+
+			fn = FS_BuildOSPath(libDir, ETERNALJKGAME, filename);
+			libHandle = Sys_LoadLibrary(fn);
+			if (libHandle)
+				return libHandle;
+
+			Com_Printf("%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError());
+		}
+	}
+
 	if ( searchFlags & SEARCH_PATH_BASE )
 	{
 		for ( size_t i = 0; i < numPaths; i++ )
@@ -417,24 +442,7 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
 		}
 	}
-
-	if ( searchFlags & SEARCH_PATH_OPENJK )
-	{
-		for ( size_t i = 0; i < numPaths; i++ )
-		{
-			const char *libDir = searchPaths[i];
-			if ( !libDir[0] )
-				continue;
-
-			fn = FS_BuildOSPath( libDir, OPENJKGAME, filename );
-			libHandle = Sys_LoadLibrary( fn );
-			if ( libHandle )
-				return libHandle;
-
-			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
-		}
-	}
-
+		
 	if ( searchFlags & SEARCH_PATH_ROOT )
 	{
 		for ( size_t i = 0; i < numPaths; i++ )
@@ -474,12 +482,12 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 #endif
 	{
 		UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
-		if ( !unpackResult.succeeded )
+		if (!unpackResult.succeeded)
 		{
-			if ( Sys_DLLNeedsUnpacking() )
+			if (Sys_DLLNeedsUnpacking())
 			{
 				FreeUnpackDLLResult(&unpackResult);
-				Com_DPrintf( "Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename );
+				Com_DPrintf("Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename);
 				return NULL;
 			}
 		}
@@ -517,7 +525,7 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 				};
 				size_t numPaths = ARRAY_LEN( searchPaths );
 
-				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_MOD, __FUNCTION__ );
+				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_ETERNALJK | SEARCH_PATH_MOD, __FUNCTION__ );
 				if ( !libHandle )
 					return NULL;
 			}
@@ -541,57 +549,6 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 	return libHandle;
 }
 
-void *Sys_LoadSPGameDll( const char *name, GetGameAPIProc **GetGameAPI )
-{
-	void	*libHandle = NULL;
-	char	filename[MAX_OSPATH];
-
-	assert( GetGameAPI );
-
-	Com_sprintf (filename, sizeof(filename), "%s" ARCH_STRING DLL_EXT, name);
-
-#if defined(MACOS_X) && !defined(_JK2EXE)
-    //First, look for the old-style mac .bundle that's inside a pk3
-    //It's actually zipped, and the zipfile has the same name as 'name'
-    libHandle = Sys_LoadMachOBundle( filename );
-#endif
-
-	if (!libHandle) {
-		char *basepath = Cvar_VariableString( "fs_basepath" );
-		char *homepath = Cvar_VariableString( "fs_homepath" );
-		char *cdpath = Cvar_VariableString( "fs_cdpath" );
-		char *gamedir = Cvar_VariableString( "fs_game" );
-#ifdef MACOS_X
-        char *apppath = Cvar_VariableString( "fs_apppath" );
-#endif
-
-		const char *searchPaths[] = {
-			homepath,
-#ifdef MACOS_X
-			apppath,
-#endif
-			basepath,
-			cdpath,
-		};
-		size_t numPaths = ARRAY_LEN( searchPaths );
-
-		libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths,
-											SEARCH_PATH_BASE | SEARCH_PATH_MOD | SEARCH_PATH_OPENJK | SEARCH_PATH_ROOT,
-											__FUNCTION__ );
-		if ( !libHandle )
-			return NULL;
-	}
-
-	*GetGameAPI = (GetGameAPIProc *)Sys_LoadFunction( libHandle, "GetGameAPI" );
-	if ( !*GetGameAPI ) {
-		Com_DPrintf ( "%s(%s) failed to find GetGameAPI function:\n...%s!\n", __FUNCTION__, name, Sys_LibraryError() );
-		Sys_UnloadLibrary( libHandle );
-		return NULL;
-	}
-
-	return libHandle;
-}
-
 void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 {
 	void	*libHandle = NULL;
@@ -605,12 +562,12 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 #endif
 	{
 		UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
-		if ( !unpackResult.succeeded )
+		if (!unpackResult.succeeded)
 		{
-			if ( Sys_DLLNeedsUnpacking() )
+			if (Sys_DLLNeedsUnpacking())
 			{
 				FreeUnpackDLLResult(&unpackResult);
-				Com_DPrintf( "Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename );
+				Com_DPrintf("Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename);
 				return NULL;
 			}
 		}
@@ -648,7 +605,7 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 				};
 				size_t numPaths = ARRAY_LEN( searchPaths );
 
-				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_MOD, __FUNCTION__ );
+				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_ETERNALJK | SEARCH_PATH_MOD, __FUNCTION__ );
 				if ( !libHandle )
 					return NULL;
 			}
@@ -739,6 +696,9 @@ int main ( int argc, char* argv[] )
 	char	commandLine[ MAX_STRING_CHARS ] = { 0 };
 
 	Sys_PlatformInit();
+#if defined(_DEBUG) && !defined(DEDICATED)
+	CON_CreateConsoleWindow();
+#endif
 	CON_Init();
 
 	// get the initial time base

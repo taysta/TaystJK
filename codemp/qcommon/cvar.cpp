@@ -178,14 +178,39 @@ void Cvar_VariableStringBuffer( const char *var_name, char *buffer, int bufsize 
 Cvar_DescriptionString
 ============
 */
-char *Cvar_DescriptionString( const char *var_name )
-{
-	cvar_t *var;
+void UIVM_CvarHelp( const char *cvarName, qboolean enter, char *helpBuffer, size_t helpBufferSize );
 
-	var = Cvar_FindVar( var_name );
-	if ( !var || !VALIDSTRING( var->description ) )
+char *Cvar_DescriptionString( const cvar_t *var, qboolean enter = qfalse )
+{
+	static char description[2048];
+
+	// give UI a chance to fill description
+	description[0] = '\0';
+#ifndef DEDICATED
+	UIVM_CvarHelp( var->name, enter, &description[0], sizeof( description ) );
+#endif
+
+	if ( !VALIDSTRING( description ) && VALIDSTRING( var->description ) ) {
+		// UI didn't write anything, but we have an engine description for this cvar instead
+		Q_strncpyz( description, var->description, sizeof( description ) );
+	}
+
+	if ( !VALIDSTRING( description ) ) {
+		return ""; // neither UI nor the cvar table contained a description
+	}
+
+	return &description[0];
+}
+
+char *Cvar_DescriptionString( const char *var_name, qboolean enter = qfalse )
+{
+	const cvar_t *var = Cvar_FindVar( var_name );
+
+	if ( !var ) {
 		return "";
-	return var->description;
+	}
+
+	return Cvar_DescriptionString( var, enter );
 }
 
 /*
@@ -250,7 +275,7 @@ static const char *Cvar_Validate( cvar_t *var, const char *value, qboolean warn 
 			if( !Q_isintegral( valuef ) )
 			{
 				if( warn )
-					Com_Printf( "WARNING: cvar '%s' must be integral", var->name );
+					Com_Printf( "'%s' must be integral\n", var->name );
 
 				valuef = (int)valuef;
 				changed = qtrue;
@@ -260,7 +285,7 @@ static const char *Cvar_Validate( cvar_t *var, const char *value, qboolean warn 
 	else
 	{
 		if( warn )
-			Com_Printf( "WARNING: cvar '%s' must be numeric", var->name );
+			Com_Printf( "'%s' must be numeric\n", var->name );
 
 		valuef = atof( var->resetString );
 		changed = qtrue;
@@ -273,12 +298,12 @@ static const char *Cvar_Validate( cvar_t *var, const char *value, qboolean warn 
 			if( changed )
 				Com_Printf( " and is" );
 			else
-				Com_Printf( "WARNING: cvar '%s'", var->name );
+				Com_Printf( "Attempted to set %s", var->name );
 
 			if( Q_isintegral( var->min ) )
-				Com_Printf( " out of range (min %d)", (int)var->min );
+				Com_Printf( " out of range (min %d)\n", (int)var->min );
 			else
-				Com_Printf( " out of range (min %f)", var->min );
+				Com_Printf( " out of range (min %f)\n", var->min );
 		}
 
 		valuef = var->min;
@@ -291,12 +316,12 @@ static const char *Cvar_Validate( cvar_t *var, const char *value, qboolean warn 
 			if( changed )
 				Com_Printf( " and is" );
 			else
-				Com_Printf( "WARNING: cvar '%s'", var->name );
+				Com_Printf("Attempted to set '%s'", var->name);
 
 			if( Q_isintegral( var->max ) )
-				Com_Printf( " out of range (max %d)", (int)var->max );
+				Com_Printf( " out of range (max %d)\n", (int)var->max );
 			else
-				Com_Printf( " out of range (max %f)", var->max );
+				Com_Printf( " out of range (max %f)\n", var->max );
 		}
 
 		valuef = var->max;
@@ -306,19 +331,9 @@ static const char *Cvar_Validate( cvar_t *var, const char *value, qboolean warn 
 	if( changed )
 	{
 		if( Q_isintegral( valuef ) )
-		{
 			Com_sprintf( s, sizeof( s ), "%d", (int)valuef );
-
-			if( warn )
-				Com_Printf( ", setting to %d\n", (int)valuef );
-		}
 		else
-		{
 			Com_sprintf( s, sizeof( s ), "%f", valuef );
-
-			if( warn )
-				Com_Printf( ", setting to %f\n", valuef );
-		}
 
 		return s;
 	}
@@ -588,8 +603,10 @@ void Cvar_Print( cvar_t *v ) {
 	if ( v->latchedString )
 		Com_Printf( "     latched = " S_COLOR_GREY "\"" S_COLOR_WHITE "%s" S_COLOR_GREY "\"\n", v->latchedString );
 
-	if ( v->description )
-		Com_Printf( "%s\n", v->description );
+	const char *description = Cvar_DescriptionString( v, qtrue );
+
+	if ( VALIDSTRING( description ) )
+		Com_Printf( S_COLOR_GREEN "%s " S_COLOR_WHITE " \n", description );
 }
 
 /*
@@ -649,7 +666,7 @@ cvar_t *Cvar_Set2( const char *var_name, const char *value, uint32_t defaultFlag
 	{
 		if ( (var->flags & (CVAR_SYSTEMINFO|CVAR_SERVER_CREATED)) && CL_ConnectedToRemoteServer() )
 		{
-			Com_Printf ("%s can only be set by server.\n", var_name);
+			Com_Printf ("[skipnotify]%s can only be set by server.\n", var_name);
 			return var;
 		}
 
@@ -685,12 +702,13 @@ cvar_t *Cvar_Set2( const char *var_name, const char *value, uint32_t defaultFlag
 			var->modificationCount++;
 			return var;
 		}
-
+#ifndef TECH
 		if ( (var->flags & CVAR_CHEAT) && !cvar_cheats->integer )
 		{
 			Com_Printf ("%s is cheat protected.\n", var_name);
 			return var;
 		}
+#endif
 	}
 	else
 	{
@@ -789,7 +807,8 @@ void Cvar_Server_Set( const char *var_name, const char *value )
 		if(!(flags & (CVAR_SYSTEMINFO | CVAR_SERVER_CREATED | CVAR_USER_CREATED)))
 		{
 			if ( !FindLegacyCvar( var_name ) ) {
-				Com_Printf(S_COLOR_YELLOW "WARNING: server is not allowed to set %s=%s\n", var_name, value);
+				if (Q_strncmp(var_name, "fs_game", 7))
+					Com_Printf("*" S_COLOR_YELLOW "WARNING: server is not allowed to set %s=%s\n", var_name, value);
 				return;
 			}
 		}
@@ -820,7 +839,7 @@ void Cvar_VM_Set( const char *var_name, const char *value, vmSlots_t vmslot )
 
 	if ( vmslot != VM_GAME && (flags & CVAR_SYSTEMINFO) && CL_ConnectedToRemoteServer() )
 	{
-		Com_Printf ("%s can only be set by server.\n", var_name);
+		Com_Printf ("[skipnotify]%s can only be set by server.\n", var_name);
 		return;
 	}
 
@@ -910,6 +929,7 @@ Any testing variables will be reset to the safe values
 ============
 */
 void Cvar_SetCheatState( void ) {
+#ifndef TECH
 	cvar_t	*var;
 
 	// set all default vars to the safe value
@@ -927,6 +947,7 @@ void Cvar_SetCheatState( void ) {
 			}
 		}
 	}
+#endif
 }
 
 /*
@@ -1230,6 +1251,11 @@ void Cvar_List_f( void ) {
 		if ( var->latchedString )
 			Com_Printf( ", latched = " S_COLOR_GREY "\"" S_COLOR_WHITE "%s" S_COLOR_GREY "\"" S_COLOR_WHITE, var->latchedString );
 		Com_Printf( "\n" );
+
+		const char *description = Cvar_DescriptionString( var );
+
+		if ( VALIDSTRING( description ) )
+			Com_Printf( "          " S_COLOR_GREEN "%s" S_COLOR_WHITE "\n", description );
 	}
 
 	Com_Printf( "\n%i total cvars\n", i );

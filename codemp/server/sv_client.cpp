@@ -323,6 +323,11 @@ gotnewcl:
 		return;
 	}
 
+	if (svs.hibernation.enabled) {
+		svs.hibernation.enabled = qfalse;
+		Com_Printf("Server restored from hibernation\n");
+	}
+
 	SV_UserinfoChanged( newcl );
 
 	// send the connect packet to the client
@@ -410,6 +415,15 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 	// to the master so it is known the server is empty
 	// send a heartbeat now so the master will get up to date info
 	// if there is already a slot for this ip, reuse it
+
+	qboolean humans = qfalse;
+	for (i = 0; i < sv_maxclients->integer; i++) {
+		if (svs.clients[i].state >= CS_CONNECTED && svs.clients[i].netchan.remoteAddress.type != NA_BOT) {
+			humans = qtrue;
+			break;
+		}
+	}
+
 	for (i=0 ; i < sv_maxclients->integer ; i++ ) {
 		if ( svs.clients[i].state >= CS_CONNECTED ) {
 			break;
@@ -418,6 +432,11 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 	if ( i == sv_maxclients->integer ) {
 		SV_Heartbeat_f();
 	}
+
+	if (!humans) {
+		svs.hibernation.lastTimeDisconnected = Sys_Milliseconds();
+	}
+
 }
 
 void SV_CreateClientGameStateMessage( client_t *client, msg_t *msg ) {
@@ -580,7 +599,9 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 	// call the game begin function
 	GVM_ClientBegin( client - svs.clients );
 
-	SV_BeginAutoRecordDemos();
+	if (sv_autoDemo->integer == 1) { //Bots dont trigger this so whatever
+		SV_BeginAutoRecordDemos();
+	}	
 }
 
 /*
@@ -797,13 +818,13 @@ void SV_WriteDownloadToClient(client_t *cl, msg_t *msg)
 										"can connect to this pure server.\n", cl->downloadName);
 				} else {
 					Com_sprintf(errorMessage, sizeof(errorMessage), "Could not download \"%s\" because autodownloading is disabled on the server.\n\n"
-                    "The server you are connecting to is not a pure server, "
-                    "set autodownload to No in your settings and you might be "
-                    "able to join the game anyway.\n", cl->downloadName);
+					"The server you are connecting to is not a pure server, "
+					"set autodownload to No in your settings and you might be "
+					"able to join the game anyway.\n", cl->downloadName);
 				}
 			} else {
-        // NOTE TTimo this is NOT supposed to happen unless bug in our filesystem scheme?
-        //   if the pk3 is referenced, it must have been found somewhere in the filesystem
+				// NOTE TTimo this is NOT supposed to happen unless bug in our filesystem scheme?
+				//	if the pk3 is referenced, it must have been found somewhere in the filesystem
 				Com_Printf("clientDownload: %d : \"%s\" file not found on server\n", (int) (cl - svs.clients), cl->downloadName);
 				Com_sprintf(errorMessage, sizeof(errorMessage), "File \"%s\" not found on server for autodownloading.\n", cl->downloadName);
 			}
@@ -944,6 +965,8 @@ const char *SV_GetStringEdString(char *refSection, char *refName);
 static void SV_Disconnect_f( client_t *cl ) {
 //	SV_DropClient( cl, "disconnected" );
 	SV_DropClient( cl, SV_GetStringEdString("MP_SVGAME","DISCONNECTED") );
+
+	//If there are no humans... stop the bot demo..? how to stop sum1 from abusing this by recon spamming.
 }
 
 /*
@@ -1106,6 +1129,83 @@ static void SV_ResetPureClient_f( client_t *cl ) {
 }
 
 /*
+===========
+SV_ClientCleanName
+
+Gamecode to engine port (from OpenJK)
+============
+*/
+static void SV_ClientCleanName(const char* in, char* out, int outSize)
+{
+	int outpos = 0, colorlessLen = 0;
+
+	// discard leading spaces
+	for (; *in == ' '; in++);
+
+	// discard leading asterisk's (fail raven for using * as a skipnotify)
+	// apparently .* causes the issue too so... derp
+	if (svs.servermod == SVMOD_BASEJKA)
+		for(; *in == '*'; in++);
+
+	for (; *in && outpos < outSize - 1; in++)
+	{
+		out[outpos] = *in;
+
+		if (*(in+1) && *(in+1) != '\0' && *(in+2) && *(in+2) != '\0')
+		{
+			if (*in == ' ' && *(in+1) == ' ' && *(in+2) == ' ') // don't allow more than 3 consecutive spaces
+				continue;
+		
+			if (*in == '@' && *(in+1) == '@' && *(in+2) == '@') // don't allow too many consecutive @ signs
+				continue;
+		}
+		
+		if ((byte)* in < 0x20)
+			continue;
+
+		switch ((byte)* in)
+		{
+			default:
+				break;
+			case 0x81:
+			case 0x8D:
+			case 0x8F:
+			case 0x90:
+			case 0x9D:
+			case 0xA0:
+			case 0xAD:
+				continue;
+				break;
+		}
+		
+		if (outpos > 0 && out[outpos - 1] == Q_COLOR_ESCAPE)
+		{
+			if (Q_IsColorStringExt(&out[outpos - 1]))
+			{
+				colorlessLen--;
+			}
+			else
+			{
+				//spaces = ats = 0;
+				colorlessLen++;
+			}
+		}
+		else
+		{
+			//spaces = ats = 0;
+			colorlessLen++;
+		}
+		outpos++;
+	}
+
+	out[outpos] = '\0';
+
+	// don't allow empty names
+	if (*out == '\0' || colorlessLen == 0)
+		Q_strncpyz(out, "Padawan", outSize);
+}
+
+/*
 =================
 SV_UserinfoChanged
 
@@ -1116,9 +1216,23 @@ into a more C friendly form.
 void SV_UserinfoChanged( client_t *cl ) {
 	char	*val=NULL, *ip=NULL;
 	int		i=0, len=0;
+	
+	if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_PLAYER_NAMES) &&
+		svs.servermod != SVMOD_JAPLUS && svs.servermod != SVMOD_MBII && svs.servermod != SVMOD_JAPRO)
+	{
+		char	cleanName[64];
+		
+		val = Info_ValueForKey(cl->userinfo, "name");
 
-	// name for C code
-	Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+		SV_ClientCleanName(val, cleanName, sizeof(cleanName));
+		Info_SetValueForKey(cl->userinfo, "name", cleanName);
+		Q_strncpyz(cl->name, cleanName, sizeof(cl->name));
+	}
+	else
+	{
+		// name for C code
+		Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
+	}
 
 	// rate command
 
@@ -1149,13 +1263,13 @@ void SV_UserinfoChanged( client_t *cl ) {
 
 	// snaps command
 	//Note: cl->snapshotMsec is also validated in sv_main.cpp -> SV_CheckCvars if sv_fps, sv_snapsMin or sv_snapsMax is changed
-	int minSnaps = Com_Clampi(1, sv_snapsMax->integer, sv_snapsMin->integer); // between 1 and sv_snapsMax ( 1 <-> 40 )
-	int maxSnaps = Q_min(sv_fps->integer, sv_snapsMax->integer); // can't produce more than sv_fps snapshots/sec, but can send less than sv_fps snapshots/sec
+	int minSnaps = sv_snapsMin->integer > 0 ? Com_Clampi(1, sv_snapsMax->integer, sv_snapsMin->integer) : 1; // between 1 and sv_snapsMax ( 1 <-> 40 )
+	int maxSnaps = sv_snapsMax->integer > 0 ? Q_min(sv_fps->integer, sv_snapsMax->integer) : sv_fps->integer; // can't produce more than sv_fps snapshots/sec, but can send less than sv_fps snapshots/sec
 	val = Info_ValueForKey(cl->userinfo, "snaps");
 	cl->wishSnaps = atoi(val);
 	if (!cl->wishSnaps)
 		cl->wishSnaps = maxSnaps;
-	if (sv_snapsPolicy->integer == 1)
+	if (sv_fps && sv_fps->integer && sv_snapsPolicy->integer == 1)
 	{
 		cl->wishSnaps = sv_fps->integer;
 		i = 1000 / sv_fps->integer;
@@ -1193,6 +1307,96 @@ void SV_UserinfoChanged( client_t *cl ) {
 		SV_DropClient( cl, "userinfo string length exceeded" );
 	else
 		Info_SetValueForKey( cl->userinfo, "ip", ip );
+
+	val = Info_ValueForKey(cl->userinfo, "model");
+#ifdef DEDICATED
+	if (val)
+	{
+		if (!Q_stricmpn(val, "darksidetools", 13) && cl->netchan.remoteAddress.type != NA_LOOPBACK) {
+			Com_Printf("%sDetected DST injection from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+			if (sv_antiDST->integer) {
+				//SV_DropClient(cl, "was dropped by TnG!");
+				SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+				cl->lastPacketTime = svs.time;
+			}
+		}
+
+		// Fix: Don't allow bugged models
+		if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_BROKEN_MODELS) && svs.servermod != SVMOD_MBII)
+		{
+			len = (int)strlen(val);
+			qboolean badModel = qfalse;
+
+			if (!Q_stricmpn(val, "jedi_", len) && (!Q_stricmpn(val, "jedi_/red", len) || !Q_stricmpn(val, "jedi_/blue", len)))
+				badModel = qtrue;
+			else if (!Q_stricmpn(val, "rancor", 6))
+				badModel = qtrue;
+			else if (!Q_stricmpn(val, "wampa", 5))
+				badModel = qtrue;
+
+			if (badModel)
+				Info_SetValueForKey(cl->userinfo, "model", "kyle");
+		}
+	}
+#endif
+
+	if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_FORCEPOWERS))
+	{
+		char forcePowers[30];
+		Q_strncpyz(forcePowers, Info_ValueForKey(cl->userinfo, "forcepowers"), sizeof(forcePowers));
+
+		int len = (int)strlen(forcePowers);
+		qboolean badForce = qfalse;
+		if (len >= 22 && len <= 24) {
+			byte seps = 0;
+
+			for (int i = 0; i < len; i++) {
+				if (forcePowers[i] != '-' && (forcePowers[i] < '0' || forcePowers[i] > '9')) {
+					badForce = qtrue;
+					break;
+				}
+
+				if (forcePowers[i] == '-' && (i < 1 || i > 5)) {
+					badForce = qtrue;
+					break;
+				}
+
+				if (i && forcePowers[i - 1] == '-' && forcePowers[i] == '-') {
+					badForce = qtrue;
+					break;
+				}
+
+				if (forcePowers[i] == '-') {
+					seps++;
+				}
+			}
+
+			if (seps != 2) {
+				badForce = qtrue;
+			}
+		} else {
+			badForce = qtrue;
+		}
+
+		if (badForce)
+			Q_strncpyz(forcePowers, "7-1-030000000000003332", sizeof(forcePowers));
+
+		Info_SetValueForKey(cl->userinfo, "forcepowers", forcePowers);
+	}
+
+#ifdef DEDICATED
+	cl->disableDuelCull = qfalse;
+	if (svs.servermod == SVMOD_JAPLUS) { //allow JA+ clients to configure duel isolation on JA+ servers using /pluginDisable
+		val = Info_ValueForKey(cl->userinfo, "cjp_client");
+		if (val && strlen(val) >= 3)
+		{ //make sure they have some version of the plugin
+			val = Info_ValueForKey(cl->userinfo, "cp_pluginDisable");
+			if (atoi(val) & (1 << 1)) { //JAPRO_PLUGIN_DUELSEEOTHERS
+				cl->disableDuelCull = qtrue;
+			}
+		}
+	}
+#endif
 }
 
 #define INFO_CHANGE_MIN_INTERVAL	6000 //6 seconds is reasonable I suppose
@@ -1210,8 +1414,6 @@ static void SV_UpdateUserinfo_f( client_t *cl ) {
 	if( !arg || !*arg )
 		return;
 
-	Q_strncpyz( cl->userinfo, arg, sizeof(cl->userinfo) );
-
 #ifdef FINAL_BUILD
 	if (cl->lastUserInfoChange > svs.time)
 	{
@@ -1220,17 +1422,21 @@ static void SV_UpdateUserinfo_f( client_t *cl ) {
 		if (cl->lastUserInfoCount >= INFO_CHANGE_MAX_COUNT)
 		{
 		//	SV_SendServerCommand(cl, "print \"Warning: Too many info changes, last info ignored\n\"\n");
-			SV_SendServerCommand(cl, "print \"@@@TOO_MANY_INFO\n\"\n");
+		//	SV_SendServerCommand(cl, "print \"@@@TOO_MANY_INFO\n\"\n");
+			Q_strncpyz( cl->userinfoPostponed, arg, sizeof(cl->userinfoPostponed) );
+			SV_SendServerCommand(cl, "print \"Warning: Too many info changes, last info postponed\n\"\n");
 			return;
 		}
 	}
 	else
 #endif
 	{
+		cl->userinfoPostponed[0] = 0;
 		cl->lastUserInfoCount = 0;
 		cl->lastUserInfoChange = svs.time + INFO_CHANGE_MIN_INTERVAL;
 	}
 
+	Q_strncpyz(cl->userinfo, arg, sizeof(cl->userinfo));
 	SV_UserinfoChanged( cl );
 	// call prog code to allow overrides
 	GVM_ClientUserinfoChanged( cl - svs.clients );
@@ -1262,18 +1468,76 @@ Also called by bot code
 ==================
 */
 void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
-	ucmd_t	*u;
+	const ucmd_t *u;
+	const char *cmd;
+	const char *arg1;
+	const char *arg2;
 	qboolean bProcessed = qfalse;
+	qboolean sayCmd = qfalse;
 
-	Cmd_TokenizeString( s );
+	Cmd_TokenizeString(s);
+
+	cmd = Cmd_Argv(0);
+	arg1 = Cmd_Argv(1);
+	arg2 = Cmd_Argv(2);
 
 	// see if it is a server level command
-	for (u=ucmds ; u->name ; u++) {
-		if (!strcmp (Cmd_Argv(0), u->name) ) {
-			u->func( cl );
+	for (u = ucmds; u->name; u++)
+	{
+		if (!strcmp(cmd, u->name))
+		{
+			u->func(cl);
 			bProcessed = qtrue;
+			
 			break;
 		}
+	}
+
+#ifdef DEDICATED
+	if (!Q_stricmpn(cmd, "jkaDST_", 7) && cl->netchan.remoteAddress.type != NA_LOOPBACK) { //typo'd a mistyped DST setting
+		Com_Printf("%sDetected DST command from client %s%s\n", S_COLOR_RED, S_COLOR_WHITE, cl->name);
+		if (sv_antiDST->integer) {
+			//SV_DropClient(cl, "was dropped by TnG!");
+			SV_DropClient(cl, SV_GetStringEdString("MP_SVGAME", "WAS_KICKED"));
+			cl->lastPacketTime = svs.time;
+		}
+	}
+#endif
+
+	if (!Q_stricmpn(cmd, "say", 3) || !Q_stricmpn(cmd, "say_team", 8) || !Q_stricmpn(cmd, "tell", 4))
+	{
+		sayCmd = qtrue;
+
+		// 256 because we don't need more, the chat can handle 150 max char
+		// and allowing 256 prevent a message to not be sent instead of being truncated
+		// if this is a bit more than 150
+		if (svs.gvmIsLegacy && sv_legacyFixes->integer && strlen(Cmd_Args()) > 256)
+		{
+			clientOK = qfalse;
+		}
+	}
+
+	if (sv_legacyFixes->integer && svs.servermod != SVMOD_MBII)
+	{
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_GC_CRASHFIX) && !Q_stricmpn(cmd, "gc", 2) && atoi(arg1) >= sv_maxclients->integer)
+			clientOK = qfalse;
+
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_NPC_CRASHFIX) && svs.servermod != SVMOD_JAPRO &&
+			!Q_stricmpn(cmd, "npc", 3) && !Q_stricmpn(arg1, "spawn", 5) && (!Q_stricmpn(arg2, "ragnos", 6) || !Q_stricmpn(arg2, "saber_droid", 6)))
+			clientOK = qfalse;
+
+		// Fix: team crash
+		if (!(sv_legacyFixes->integer & SVFIXES_DISABLE_TEAM_CRASHFIX)
+			&& !Q_stricmpn(cmd, "team", 4) && (!Q_stricmpn(arg1, "follow1", 7) || !Q_stricmpn(arg1, "follow2", 7)))
+			clientOK = qfalse;
+
+		// Disable: callteamvote, useless in basejka and can lead to a bugged UI on custom client
+		if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_CALLTEAMVOTE) && svs.servermod == SVMOD_BASEJKA && !Q_stricmpn(cmd, "callteamvote", 12))
+			clientOK = qfalse;
+
+		// Fix: callvote fraglimit/timelimit with negative value
+		if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_NEGATIVE_CALLVOTES) && svs.servermod == SVMOD_BASEJKA && !Q_stricmpn(cmd, "callvote", 8) && (!Q_stricmpn(arg1, "fraglimit", 9) || !Q_stricmpn(arg1, "timelimit", 9)) && atoi(arg2) < 0)
+			clientOK = qfalse;
 	}
 
 	if (clientOK) {
@@ -1282,7 +1546,7 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 			// strip \r \n and ;
 			if ( sv_filterCommands->integer ) {
 				Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, "\n\r", "  " );
-				if ( sv_filterCommands->integer == 2 ) {
+				if (sv_filterCommands->integer == 2 && !sayCmd) {
 					// also strip ';' for callvote
 					Cmd_Args_Sanitize( MAX_CVAR_VALUE_STRING, ";", " " );
 				}
@@ -1291,7 +1555,9 @@ void SV_ExecuteClientCommand( client_t *cl, const char *s, qboolean clientOK ) {
 		}
 	}
 	else if (!bProcessed)
-		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, Cmd_Argv(0) );
+	{
+		Com_DPrintf( "client text ignored for %s: %s\n", cl->name, cmd);
+	}
 }
 
 /*
@@ -1329,22 +1595,52 @@ static qboolean SV_ClientCommand( client_t *cl, msg_t *msg ) {
 	// but not other people
 	// We don't do this when the client hasn't been active yet since its
 	// normal to spam a lot of commands when downloading
-	if ( !com_cl_running->integer &&
-		cl->state >= CS_ACTIVE &&
-		sv_floodProtect->integer )
-	{
+	if (!com_cl_running->integer && cl->state >= CS_ACTIVE && sv_floodProtect->integer) {
 		const int floodTime = (sv_floodProtect->integer == 1) ? 1000 : sv_floodProtect->integer;
-		if ( svs.time < (cl->lastReliableTime + floodTime) ) {
-			// ignore any other text messages from this client but let them keep playing
-			// TTimo - moved the ignored verbose to the actual processing in SV_ExecuteClientCommand, only printing if the core doesn't intercept
-			clientOk = qfalse;
+
+		if (sv_newfloodProtect->integer > 1) {
+			if (!Q_stricmpn(s, "score", 6)) {
+				if (svs.time < (cl->lastReliableTime[1] + floodTime))
+					clientOk = qfalse;
+				else
+					cl->lastReliableTime[1] = svs.time;
+			}
+			else if (!Q_stricmpn(s, "say ", 4)) {
+				if (svs.time < (cl->lastReliableTime[2] + floodTime))
+					clientOk = qfalse;
+				else
+					cl->lastReliableTime[2] = svs.time;
+			}
+			else if (!Q_stricmpn(s, "kill", 5)) {
+				if (svs.time < (cl->lastReliableTime[3] + floodTime))
+					clientOk = qfalse;
+				else
+					cl->lastReliableTime[3] = svs.time;
+			}
+			else if (!Q_stricmpn(s, "amTele", 6) || !Q_stricmpn(s, "amTeleMark", 10)) {
+				clientOk = qtrue;
+			}
+			else {
+				if (svs.time < (cl->lastReliableTime[0] + floodTime))
+					clientOk = qfalse;
+				else
+					cl->lastReliableTime[0] = svs.time;
+			}
 		}
 		else {
-			cl->lastReliableTime = svs.time;
+			if (svs.time < (cl->lastReliableTime[0] + floodTime)) {
+				// ignore any other text messages from this client but let them keep playing
+				// TTimo - moved the ignored verbose to the actual processing in SV_ExecuteClientCommand, only printing if the core doesn't intercept
+				clientOk = qfalse;
+			}
+			else {
+				cl->lastReliableTime[0] = svs.time;
+			}
+			if (sv_newfloodProtect->integer) {
+				cl->lastReliableTime[0] = svs.time;
+			}
 		}
-		if ( sv_floodProtectSlow->integer ) {
-			cl->lastReliableTime = svs.time;
-		}
+
 	}
 
 	SV_ExecuteClientCommand( cl, s, clientOk );
@@ -1371,6 +1667,27 @@ void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
 
 	if ( cl->state != CS_ACTIVE ) {
 		return;		// may have been kicked during the last usercmd
+	}
+
+	if ( cl->lastUserInfoCount >= INFO_CHANGE_MAX_COUNT && cl->lastUserInfoChange < svs.time && cl->userinfoPostponed[0] )
+	{ // Update postponed userinfo changes now
+		char info[MAX_INFO_STRING];
+
+		Q_strncpyz( cl->userinfo, cl->userinfoPostponed, sizeof(cl->userinfo) );
+		SV_UserinfoChanged( cl );
+
+		// call prog code to allow overrides
+		GVM_ClientUserinfoChanged(cl - svs.clients);
+
+		// get the name out of the game and set it in the engine
+		SV_GetConfigstring(CS_PLAYERS + (cl - svs.clients), info, sizeof(info));
+		Info_SetValueForKey(cl->userinfo, "name", Info_ValueForKey(info, "n"));
+		Q_strncpyz(cl->name, Info_ValueForKey(info, "n"), sizeof(cl->name));
+
+		// clear it
+		cl->userinfoPostponed[0] = 0;
+		cl->lastUserInfoCount = 0;
+		cl->lastUserInfoChange = svs.time + INFO_CHANGE_MIN_INTERVAL;
 	}
 
 	GVM_ClientThink( cl - svs.clients, NULL );
@@ -1425,20 +1742,25 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 	for ( i = 0 ; i < cmdCount ; i++ ) {
 		cmd = &cmds[i];
 		MSG_ReadDeltaUsercmdKey( msg, key, oldcmd, cmd );
-		if ( sv_legacyFixes->integer ) {
-			// block "charge jump" and other nonsense
-			if ( cmd->forcesel == FP_LEVITATION || cmd->forcesel >= NUM_FORCE_POWERS ) {
+		if ( sv_legacyFixes->integer )
+		{
+			if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_FORCESEL) && (cmd->forcesel == FP_LEVITATION || cmd->forcesel >= NUM_FORCE_POWERS))
+			{ // block "charge jump" and other nonsense
 				cmd->forcesel = 0xFFu;
 			}
 
-			// affects speed calculation
-			cmd->angles[ROLL] = 0;
+			if (!(sv_legacyFixes->integer & SVFIXES_ALLOW_INVALID_VIEWANGLES))
+			{ // affects speed calculation
+				cmd->angles[ROLL] = 0;
+			}
 		}
 		oldcmd = cmd;
 	}
 
 	// save time for ping calculation
-	cl->frames[ cl->messageAcknowledge & PACKET_MASK ].messageAcked = svs.time;
+	// With sv_pingFix enabled we store the time of the first acknowledge, instead of the last. And we use a time value that is not limited by sv_fps.
+	if (!sv_pingFix->integer || cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked == -1)
+		cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked = (sv_pingFix->integer ? Sys_Milliseconds() : svs.time);
 
 	// TTimo
 	// catch the no-cp-yet situation before SV_ClientEnterWorld

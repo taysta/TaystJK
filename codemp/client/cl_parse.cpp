@@ -455,7 +455,7 @@ void CL_SystemInfoChanged( void ) {
 	// check pure server string
 	s = Info_ValueForKey( systemInfo, "sv_paks" );
 	t = Info_ValueForKey( systemInfo, "sv_pakNames" );
-	FS_PureServerSetLoadedPaks( s, t );
+	//FS_PureServerSetLoadedPaks( s, t );
 
 	s = Info_ValueForKey( systemInfo, "sv_referencedPaks" );
 	t = Info_ValueForKey( systemInfo, "sv_referencedPakNames" );
@@ -477,7 +477,21 @@ void CL_SystemInfoChanged( void ) {
 				continue;
 			}
 
-			if(!FS_FilenameCompare(value, BASEGAME))
+#if defined(DISCORD) && !defined(_DEBUG)
+			if (strlen(value))
+				Q_strncpyz(cl.discord.fs_game, value, sizeof(cl.discord.fs_game));
+			else
+				Q_strncpyz(cl.discord.fs_game, BASEGAME, sizeof(cl.discord.fs_game));
+#endif
+
+			if (!strlen(value) || !FS_FilenameCompare(value, "OpenJK"))
+				Q_strncpyz(value, BASEGAME, sizeof(BASEGAME));
+
+			if (cls.state < CA_ACTIVE && Cvar_VariableIntegerValue("fs_globalcfg")) {
+				Cbuf_ExecuteText(EXEC_APPEND, va("execq %s.cfg\n", value));
+			}
+
+			if (!FS_FilenameCompare(value, BASEGAME))
 			{
 				Q_strncpyz(value, "", sizeof(value));
 			}

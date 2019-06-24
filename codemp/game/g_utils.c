@@ -243,26 +243,42 @@ NULL will be returned if the end of the list is reached.
 gentity_t *G_Find (gentity_t *from, int fieldofs, const char *match)
 {
 	char	*s;
+	int idx;
 
 	if (!from)
 		from = g_entities;
 	else
 		from++;
 
-	for ( ; from < &g_entities[level.num_entities] ; from++)
+	idx = from - g_entities;
+	if (idx >= MAX_GENTITIES)
+		goto dological;
+
+	for (; from < &g_entities[level.num_entities]; from++)
 	{
 		if (!from->inuse)
 			continue;
-		s = *(char **) ((byte *)from + fieldofs);
+		s = *(char **)((byte *)from + fieldofs);
 		if (!s)
 			continue;
-		if (!Q_stricmp (s, match))
+		if (!Q_stricmp(s, match))
+			return from;
+	}
+	from = &g_logicalents[0]; // 1st logical entity
+dological:
+	for (; from < &g_logicalents[level.num_logicalents]; from++)
+	{
+		if (!from->inuse)
+			continue;
+		s = *(char **)((byte *)from + fieldofs);
+		if (!s)
+			continue;
+		if (!Q_stricmp(s, match))
 			return from;
 	}
 
 	return NULL;
 }
-
 
 
 /*
@@ -504,7 +520,7 @@ void G_SetAnim(gentity_t *ent, usercmd_t *ucmd, int setAnimParts, int anim, int 
 	{
 		pmv.cmd = *ucmd;
 	}
-	pmv.trace = trap->Trace;
+	pmv.trace = JP_Trace;
 	pmv.pointcontents = trap->PointContents;
 	pmv.gametype = level.gametype;
 
@@ -704,13 +720,21 @@ void G_InitGentity( gentity_t *e ) {
 	e->inuse = qtrue;
 	e->classname = "noclass";
 	e->s.number = e - g_entities;
+	if (e->s.number < 1023) {
+		e->isLogical = qfalse;
+	}
+	else {
+		e->isLogical = qtrue;
+	}
 	e->r.ownerNum = ENTITYNUM_NONE;
 	e->s.modelGhoul2 = 0; //assume not
 
-	trap->ICARUS_FreeEnt( (sharedEntity_t *)e );	//ICARUS information must be added after this point
+	if (!e->isLogical)
+		trap->ICARUS_FreeEnt( (sharedEntity_t *)e );	//ICARUS information must be added after this point
 }
 
 //give us some decent info on all the active ents -rww
+#if 0
 static void G_SpewEntList(void)
 {
 	int i = 0;
@@ -789,7 +813,7 @@ static void G_SpewEntList(void)
 	}
 #endif
 }
-
+#endif
 /*
 =================
 G_Spawn
@@ -805,7 +829,7 @@ instead of being removed and recreated, which can cause interpolated
 angles and bad trails.
 =================
 */
-gentity_t *G_Spawn( void ) {
+gentity_t *G_Spawn( qboolean essential ) {
 	int			i, force;
 	gentity_t	*e;
 
@@ -835,16 +859,17 @@ gentity_t *G_Spawn( void ) {
 			break;
 		}
 	}
-	if ( i == ENTITYNUM_MAX_NORMAL ) {
-		/*
-		for (i = 0; i < MAX_GENTITIES; i++) {
-			trap->Print("%4i: %s\n", i, g_entities[i].classname);
-		}
-		*/
-		G_SpewEntList();
-		trap->Error( ERR_DROP, "G_Spawn: no free entities" );
+	if (!essential && (i > ENTITYNUM_MAX_NORMAL - 8)) { //Just dont spawn the bullet... TODO: add logical entities distinction maybe :/
+		return e;
 	}
-
+	if ( i > ENTITYNUM_MAX_NORMAL ) {
+		trap->SendServerCommand(-1, "print \"Warning: Entity limit reached!\n\"");
+		trap->SendConsoleCommand( EXEC_APPEND, "map_restart 0\n" );
+		return e;
+		//G_SpewEntList();
+		//trap->Error( ERR_DROP, "G_Spawn: no free entities" );
+	}
+	
 	// open up a new slot
 	level.num_entities++;
 
@@ -853,6 +878,54 @@ gentity_t *G_Spawn( void ) {
 		&level.clients[0].ps, sizeof( level.clients[0] ) );
 
 	G_InitGentity( e );
+	return e;
+}
+
+// G_SpawnLogical: Creates a logical entity (ent nums 1024 to 4097)
+gentity_t *G_SpawnLogical(void) {
+	int			i, force;
+	gentity_t	*e;
+
+	e = NULL;	// shut up warning
+	i = 0;		// shut up warning
+	for (force = 0; force < 2; force++) {
+		// if we go through all entities and can't find one to free,
+		// override the normal minimum times before use
+		e = &g_entities[MAX_GENTITIES];
+		for (i = MAX_GENTITIES; i< (MAX_GENTITIES + level.num_logicalents); i++, e++) {
+			if (e->inuse) {
+				continue;
+			}
+
+			// the first couple seconds of server time can involve a lot of
+			// freeing and allocating, so relax the replacement policy
+			if (!force && e->freetime > level.startTime + 2000 && level.time - e->freetime < 1000)
+			{
+				continue;
+			}
+
+			// reuse this slot
+			G_InitGentity(e);
+			return e;
+		}
+		if (i != MAX_ENTITIESTOTAL) {
+			break;
+		}
+	}
+	if (i == MAX_ENTITIESTOTAL - 1) {
+		/*
+		for (i = 0; i < MAX_GENTITIES; i++) {
+		trap->Print("%4i: %s\n", i, g_entities[i].classname);
+		}
+		*/
+		//G_SpewEntList();
+		trap->Error(ERR_DROP, "G_SpawnLogical: no free entities");
+	}
+
+	// open up a new slot
+	level.num_logicalents++;
+
+	G_InitGentity(e);
 	return e;
 }
 
@@ -935,6 +1008,7 @@ Marks the entity as free
 */
 void G_FreeEntity( gentity_t *ed ) {
 	//gentity_t *te;
+	int i, entnum;
 
 	if (ed->isSaberEntity)
 	{
@@ -944,9 +1018,11 @@ void G_FreeEntity( gentity_t *ed ) {
 		return;
 	}
 
-	trap->UnlinkEntity ((sharedEntity_t *)ed);		// unlink from world
-
-	trap->ICARUS_FreeEnt( (sharedEntity_t *)ed );	//ICARUS information must be added after this point
+	if (!ed->isLogical)
+	{
+		trap->UnlinkEntity((sharedEntity_t *)ed);		// unlink from world
+		trap->ICARUS_FreeEnt((sharedEntity_t *)ed);	//ICARUS information must be added after this point
+	}
 
 	if ( ed->neverFree ) {
 		return;
@@ -1044,6 +1120,32 @@ void G_FreeEntity( gentity_t *ed ) {
 	ed->classname = "freed";
 	ed->freetime = level.time;
 	ed->inuse = qfalse;
+
+	//Logical Entities - (JKG)
+	// Ok, lets see if we can lower level.num_entities.
+	// If this entity was the last allocated slot, run back through g_entities and get the last used slots.
+	entnum = ed - g_entities;
+	if (!ed->isLogical) {
+		if (entnum == level.num_entities - 1) {
+			// Last slot, roll back
+			for (i = entnum; i >= MAX_CLIENTS; i--) {
+				if (g_entities[i].inuse)
+					break;
+			}
+			level.num_entities = i + 1;
+		}
+	}
+	else {
+		if (entnum == MAX_GENTITIES + level.num_logicalents - 1) {
+			// Last slot, roll back
+			for (i = entnum; i >= MAX_GENTITIES; i--) {
+				if (g_entities[i].inuse)
+					break;
+			}
+			level.num_logicalents = i + 1 - MAX_GENTITIES;
+		}
+
+	}
 }
 
 /*
@@ -1059,7 +1161,7 @@ gentity_t *G_TempEntity( vec3_t origin, int event ) {
 	gentity_t		*e;
 	vec3_t		snapped;
 
-	e = G_Spawn();
+	e = G_Spawn(qfalse);
 	e->s.eType = ET_EVENTS + event;
 
 	e->classname = "tempEntity";
@@ -1092,7 +1194,7 @@ gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel ) {
 	gentity_t		*e;
 	vec3_t		snapped;
 
-	e = G_Spawn();
+	e = G_Spawn(qfalse);
 
 	e->s.eType = ET_EVENTS + event;
 	e->inuse = qtrue;
@@ -1110,6 +1212,35 @@ gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel ) {
 
 	return e;
 }
+
+#if 0
+gentity_t *G_SoundTempEntityPrivate( vec3_t origin, int event, int channel, int clientnum ) {
+	gentity_t		*e;
+	vec3_t		snapped;
+
+	e = G_Spawn(qtrue);
+
+	e->s.eType = ET_EVENTS + event;
+	e->inuse = qtrue;
+
+	e->classname = "tempEntity";
+	e->eventTime = level.time;
+	e->freeAfterEvent = qtrue;
+
+		e->r.svFlags |= SVF_SINGLECLIENT;
+		e->r.singleClient = clientnum;
+
+
+	VectorCopy( origin, snapped );
+	SnapVector( snapped );		// save network bandwidth
+	G_SetOrigin( e, snapped );
+
+	// find cluster for PVS
+	//trap->LinkEntity( (sharedEntity_t *)e );
+
+	return e;
+}
+#endif
 
 
 //scale health down below 1024 to fit in health bits
@@ -1378,6 +1509,74 @@ void G_Sound( gentity_t *ent, int channel, int soundIndex ) {
 	}
 }
 
+void G_RaceSound( gentity_t *ent, int channel, int soundIndex, int racesound ) {
+	gentity_t	*te;
+
+	assert(soundIndex);
+
+	te = G_SoundTempEntity( ent->r.currentOrigin, EV_GENERAL_SOUND, channel );
+	te->s.eventParm = soundIndex;
+	te->s.saberEntityNum = channel;
+	te->s.eFlags2 = racesound;
+
+	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
+	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
+		if (g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]].inuse &&
+			ent->client->ps.fd.killSoundEntIndex[channel-50] > MAX_CLIENTS)
+		{
+			G_MuteSound(ent->client->ps.fd.killSoundEntIndex[channel-50], CHAN_VOICE);
+			if (ent->client->ps.fd.killSoundEntIndex[channel-50] > MAX_CLIENTS && g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]].inuse)
+			{
+				G_FreeEntity(&g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]]);
+			}
+			ent->client->ps.fd.killSoundEntIndex[channel-50] = 0;
+		}
+
+		ent->client->ps.fd.killSoundEntIndex[channel-50] = te->s.number;
+		te->s.trickedentindex = ent->s.number;
+		te->s.eFlags = EF_SOUNDTRACKER;
+		// fix: let other players know about this
+		// for case that they will meet this one
+		te->r.svFlags |= SVF_BROADCAST;
+		//te->freeAfterEvent = qfalse;
+	}
+}
+
+#if 0
+void G_SoundPrivate( gentity_t *ent, int channel, int soundIndex ) {
+	gentity_t	*te;
+
+	assert(soundIndex);
+
+	te = G_SoundTempEntityPrivate( ent->r.currentOrigin, EV_GENERAL_SOUND, channel, ent->s.number );
+	te->s.eventParm = soundIndex;
+	te->s.saberEntityNum = channel;
+
+	if (ent && ent->client && channel > TRACK_CHANNEL_NONE)
+	{ //let the client remember the index of the player entity so he can kill the most recent sound on request
+		if (g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]].inuse &&
+			ent->client->ps.fd.killSoundEntIndex[channel-50] > MAX_CLIENTS)
+		{
+			G_MuteSound(ent->client->ps.fd.killSoundEntIndex[channel-50], CHAN_VOICE);
+			if (ent->client->ps.fd.killSoundEntIndex[channel-50] > MAX_CLIENTS && g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]].inuse)
+			{
+				G_FreeEntity(&g_entities[ent->client->ps.fd.killSoundEntIndex[channel-50]]);
+			}
+			ent->client->ps.fd.killSoundEntIndex[channel-50] = 0;
+		}
+
+		ent->client->ps.fd.killSoundEntIndex[channel-50] = te->s.number;
+		te->s.trickedentindex = ent->s.number;
+		te->s.eFlags = EF_SOUNDTRACKER;
+		// fix: let other players know about this
+		// for case that they will meet this one
+		//te->r.svFlags |= SVF_SINGLECLIENT;
+		//te->r.singleClient = ent->s.number;
+		//te->freeAfterEvent = qfalse;
+	}
+}
+#endif
+
 /*
 =============
 G_SoundAtLoc
@@ -1587,6 +1786,7 @@ Try and use an entity in the world, directly ahead of us
 
 #define USE_DISTANCE	64.0f
 
+void ResetPlayerTimers(gentity_t *ent, qboolean print);
 extern void Touch_Button(gentity_t *ent, gentity_t *other, trace_t *trace );
 extern qboolean gSiegeRoundBegun;
 static vec3_t	playerMins = {-15, -15, DEFAULT_MINS_2};
@@ -1635,6 +1835,23 @@ void TryUse( gentity_t *ent )
 		goto tryJetPack;
 	}
 
+	if (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_SWOOP && !ent->client->noclip) { //Swoop movement style	
+		gentity_t *ourVeh;
+		
+		if (ent->client->ourSwoopNum) {
+			ourVeh = &g_entities[ent->client->ourSwoopNum];
+
+			if (!ent->client->ps.m_iVehicleNum) { //If we are not in a vehicle, board our swoop.
+				if (ourVeh && ourVeh->m_pVehicle && ourVeh->client && ourVeh->s.NPC_class == CLASS_VEHICLE && ourVeh->m_pVehicle->m_pVehicleInfo && ourVeh->client->ps.persistant[PERS_SPAWN_COUNT]) {//if ourVeh is a vehicle then perform appropriate checks
+					ourVeh->m_pVehicle->m_pVehicleInfo->Board( ourVeh->m_pVehicle, (bgEntity_t *)ent );
+					ResetPlayerTimers(ent, qtrue);
+					ent->client->ps.eFlags ^= EF_TELEPORT_BIT;
+				}			
+			}
+		}
+		return; //If we are in a swoop... do nothing..
+	}
+
 	if (ent->client->bodyGrabIndex != ENTITYNUM_NONE)
 	{ //then hitting the use key just means let go
 		if (ent->client->bodyGrabTime < level.time)
@@ -1667,8 +1884,8 @@ void TryUse( gentity_t *ent )
 	VectorMA( src, USE_DISTANCE, vf, dest );
 
 	//Trace ahead to find a valid target
-	trap->Trace( &trace, src, vec3_origin, vec3_origin, dest, ent->s.number, MASK_OPAQUE|CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_ITEM|CONTENTS_CORPSE, qfalse, 0, 0 );
-
+	JP_Trace( &trace, src, vec3_origin, vec3_origin, dest, ent->s.number, MASK_OPAQUE|CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_ITEM|CONTENTS_CORPSE, qfalse, 0, 0 );
+	
 	if ( trace.fraction == 1.0f || trace.entityNum == ENTITYNUM_NONE )
 	{
 		goto tryJetPack;
@@ -1751,14 +1968,16 @@ void TryUse( gentity_t *ent )
 	}
 #else
     if ( ((ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_HEALTHDISP)) || (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP))) &&
-		target && target->inuse && target->client && target->health > 0 && OnSameTeam(ent, target) &&
+		target && target->inuse && target->client && target->health > 0 /*&& OnSameTeam(ent, target)*/ && //make it so we can heal buddies in FFA even? lol
+		!ent->client->ps.stats[STAT_RACEMODE] && !target->client->ps.stats[STAT_RACEMODE] && !(ent->r.svFlags & SVF_BOT) &&
+		!ent->client->ps.duelInProgress && !target->client->ps.duelInProgress && 
 		(G_CanUseDispOn(target, HI_HEALTHDISP) || G_CanUseDispOn(target, HI_AMMODISP)) )
 	{ //a live target that's on my team, we can use him
-		if (G_CanUseDispOn(target, HI_HEALTHDISP))
+		if (G_CanUseDispOn(target, HI_HEALTHDISP) && (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_HEALTHDISP)))
 		{
 			G_UseDispenserOn(ent, HI_HEALTHDISP, target);
 		}
-		if (G_CanUseDispOn(target, HI_AMMODISP))
+		if (G_CanUseDispOn(target, HI_AMMODISP) && (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_AMMODISP)))
 		{
 			G_UseDispenserOn(ent, HI_AMMODISP, target);
 		}
@@ -1822,7 +2041,7 @@ tryJetPack:
 	//if we got here, we didn't actually use anything else, so try to toggle jetpack if we are in the air, or if it is already on
 	if (ent->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK))
 	{
-		if (ent->client->jetPackOn || ent->client->ps.groundEntityNum == ENTITYNUM_NONE)
+		if (!g_tweakJetpack.integer && !ent->client->sess.raceMode && (ent->client->jetPackOn || ent->client->ps.groundEntityNum == ENTITYNUM_NONE))
 		{
 			ItemUse_Jetpack(ent);
 			return;
@@ -1839,8 +2058,8 @@ tryJetPack:
 		VectorSet(fAng, 0.0f, ent->client->ps.viewangles[YAW], 0.0f);
 		AngleVectors(fAng, fwd, 0, 0);
 
-        VectorMA(ent->client->ps.origin, 64.0f, fwd, fwd);
-		trap->Trace(&trToss, ent->client->ps.origin, playerMins, playerMaxs, fwd, ent->s.number, ent->clipmask, qfalse, 0, 0);
+        VectorMA(ent->client->ps.origin, 64.0f, fwd, fwd);		
+		JP_Trace(&trToss, ent->client->ps.origin, playerMins, playerMaxs, fwd, ent->s.number, ent->clipmask, qfalse, 0, 0);
 		if (trToss.fraction == 1.0f && !trToss.allsolid && !trToss.startsolid)
 		{
 			ItemUse_UseDisp(ent, HI_AMMODISP);
@@ -1911,7 +2130,7 @@ qboolean G_ClearTrace( vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, int i
 {
 	static	trace_t	tr;
 
-	trap->Trace( &tr, start, mins, maxs, end, ignore, clipmask, qfalse, 0, 0 );
+	JP_Trace( &tr, start, mins, maxs, end, ignore, clipmask, qfalse, 0, 0 );
 
 	if ( tr.allsolid || tr.startsolid || tr.fraction < 1.0 )
 	{
@@ -1948,7 +2167,7 @@ qboolean G_CheckInSolid (gentity_t *self, qboolean fix)
 	VectorCopy(self->r.mins, mins);
 	mins[2] = 0;
 
-	trap->Trace(&trace, self->r.currentOrigin, mins, self->r.maxs, end, self->s.number, self->clipmask, qfalse, 0, 0);
+	JP_Trace(&trace, self->r.currentOrigin, mins, self->r.maxs, end, self->s.number, self->clipmask, qfalse, 0, 0);
 	if(trace.allsolid || trace.startsolid)
 	{
 		return qtrue;
@@ -1963,7 +2182,8 @@ qboolean G_CheckInSolid (gentity_t *self, qboolean fix)
 			VectorCopy(trace.endpos, neworg);
 			neworg[2] -= self->r.mins[2];
 			G_SetOrigin(self, neworg);
-			trap->LinkEntity((sharedEntity_t *)self);
+			if (!self->isLogical) //Waypoint can do this
+				trap->LinkEntity((sharedEntity_t *)self);
 
 			return G_CheckInSolid(self, qfalse);
 		}
@@ -2072,7 +2292,7 @@ qboolean G_ExpandPointToBBox( vec3_t point, const vec3_t mins, const vec3_t maxs
 	{
 		VectorCopy( start, end );
 		end[i] += mins[i];
-		trap->Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
+		JP_Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
 		if ( tr.allsolid || tr.startsolid )
 		{
 			return qfalse;
@@ -2081,7 +2301,7 @@ qboolean G_ExpandPointToBBox( vec3_t point, const vec3_t mins, const vec3_t maxs
 		{
 			VectorCopy( start, end );
 			end[i] += maxs[i]-(mins[i]*tr.fraction);
-			trap->Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
+			JP_Trace( &tr, start, vec3_origin, vec3_origin, end, ignore, clipmask, qfalse, 0, 0 );
 			if ( tr.allsolid || tr.startsolid )
 			{
 				return qfalse;
@@ -2094,7 +2314,7 @@ qboolean G_ExpandPointToBBox( vec3_t point, const vec3_t mins, const vec3_t maxs
 		}
 	}
 	//expanded it, now see if it's all clear
-	trap->Trace( &tr, start, mins, maxs, start, ignore, clipmask, qfalse, 0, 0 );
+	JP_Trace( &tr, start, mins, maxs, start, ignore, clipmask, qfalse, 0, 0 );
 	if ( tr.allsolid || tr.startsolid )
 	{
 		return qfalse;

@@ -46,6 +46,7 @@ set(MPGameGameFiles
 	"${MPDir}/game/bg_vehicleLoad.c"
 	"${MPDir}/game/bg_weapons.c"
 	"${MPDir}/game/FighterNPC.c"
+	"${MPDir}/game/g_account.c"
 	"${MPDir}/game/g_active.c"
 	"${MPDir}/game/g_bot.c"
 	"${MPDir}/game/g_client.c"
@@ -111,6 +112,8 @@ set(MPGameGameFiles
 	"${MPDir}/game/NPC_spawn.c"
 	"${MPDir}/game/NPC_stats.c"
 	"${MPDir}/game/NPC_utils.c"
+	"${MPDir}/game/sqlite3.c"
+	"${MPDir}/game/sqlite3.h"
 	"${MPDir}/game/SpeederNPC.c"
 	"${MPDir}/game/tri_coll_test.c"
 	"${MPDir}/game/w_force.c"
@@ -217,33 +220,13 @@ endif()
 if(MakeApplicationBundles AND BuildMPEngine)
 	install(TARGETS ${MPGame}
 		LIBRARY
-		DESTINATION "${JKAInstallDir}/${MPEngine}.app/Contents/MacOS/OpenJK"
-		COMPONENT ${JKAMPCoreComponent})
-	install(TARGETS ${MPGame}
-		LIBRARY
-		DESTINATION "${JKAInstallDir}/${MPEngine}.app/Contents/MacOS/base"
+		DESTINATION "${JKAInstallDir}/${MPEngine}.app/Contents/MacOS/eternaljk"
 		COMPONENT ${JKAMPCoreComponent})
 elseif(WIN32)
-	install(TARGETS ${MPGame}
-		RUNTIME
-		DESTINATION "${JKAInstallDir}/OpenJK"
-		COMPONENT ${JKAMPCoreComponent})
-	if (WIN64)
-		# Don't do this on 32-bit Windows to avoid overwriting
-		# vanilla JKA's DLLs
-		install(TARGETS ${MPGame}
-			RUNTIME
-			DESTINATION "${JKAInstallDir}/base"
-			COMPONENT ${JKAMPCoreComponent})
-	endif()
 else()
 	install(TARGETS ${MPGame}
 		LIBRARY
-		DESTINATION "${JKAInstallDir}/OpenJK"
-		COMPONENT ${JKAMPCoreComponent})
-	install(TARGETS ${MPGame}
-		LIBRARY
-		DESTINATION "${JKAInstallDir}/base"
+		DESTINATION "${JKAInstallDir}/eternaljk"
 		COMPONENT ${JKAMPCoreComponent})
 endif()
 

@@ -1056,6 +1056,11 @@ typedef struct trGlobals_s {
 
 	float					rangedFog;
 	float					distanceCull;
+
+	float					widthRatioCoef;
+
+	int						dynamicGlowWidth;
+	int						dynamicGlowHeight;
 } trGlobals_t;
 
 struct glconfigExt_t
@@ -1115,7 +1120,8 @@ extern cvar_t	*r_inGameVideo;				// controls whether in game video should be dra
 extern cvar_t	*r_fastsky;				// controls whether sky should be cleared or drawn
 extern cvar_t	*r_drawSun;				// controls drawing of sun quad
 extern cvar_t	*r_dynamiclight;		// dynamic lights enabled/disabled
-// rjr - removed for hacking extern cvar_t	*r_dlightBacks;			// dlight non-facing surfaces for continuity
+// rjr - removed for hacking
+extern cvar_t	*r_dlightBacks;			// dlight non-facing surfaces for continuity
 
 extern	cvar_t	*r_norefresh;			// bypasses the ref rendering
 extern	cvar_t	*r_drawentities;		// disable/enable entity rendering
@@ -1176,6 +1182,9 @@ extern cvar_t	*r_DynamicGlowIntensity;
 extern cvar_t	*r_DynamicGlowSoft;
 extern cvar_t	*r_DynamicGlowWidth;
 extern cvar_t	*r_DynamicGlowHeight;
+extern cvar_t	*r_DynamicGlowScale;
+
+extern cvar_t	*r_smartpicmip;
 
 extern	cvar_t	*r_nobind;						// turns off binding to appropriate textures
 extern	cvar_t	*r_singleShader;				// make most world faces use default shader
@@ -1190,6 +1199,7 @@ extern	cvar_t	*r_offsetUnits;
 
 extern	cvar_t	*r_fullbright;					// avoid lightmap pass
 extern	cvar_t	*r_lightmap;					// render lightmaps only
+extern	cvar_t	*r_distanceCull;					// render lightmaps only
 extern	cvar_t	*r_vertexLight;					// vertex lighting mode for better performance
 extern	cvar_t	*r_uiFullScreen;				// ui is running fullscreen
 
@@ -1226,6 +1236,7 @@ extern	cvar_t	*r_debugSort;
 extern	cvar_t	*r_marksOnTriangleMeshes;
 
 extern	cvar_t	*r_aspectCorrectFonts;
+extern	cvar_t	*cl_ratioFix;
 
 /*
 Ghoul2 Insert Start
@@ -1359,20 +1370,21 @@ qboolean	R_GetModeInfo( int *width, int *height, int mode );
 void		R_SetColorMappings( void );
 void		R_SetGammaCorrectionLUT();
 void		R_GammaCorrect( byte *buffer, int bufSize );
+void		R_Set2DRatio(void);
 
-void	R_ImageList_f( void );
-void	R_SkinList_f( void );
-void	R_FontList_f( void );
+void		R_ImageList_f( void );
+void		R_SkinList_f( void );
+void		R_FontList_f( void );
 
-void	R_InitFogTable( void );
-float	R_FogFactor( float s, float t );
-void	R_InitImages( void );
-void	R_DeleteTextures( void );
-float	R_SumOfUsedImages( qboolean bUseFormat );
-void	R_InitSkins( void );
-skin_t	*R_GetSkinByHandle( qhandle_t hSkin );
-const void *RB_TakeVideoFrameCmd( const void *data );
-void RE_HunkClearCrap(void);
+void		R_InitFogTable( void );
+float		R_FogFactor( float s, float t );
+void		R_InitImages( void );
+void		R_DeleteTextures( void );
+float		R_SumOfUsedImages( qboolean bUseFormat );
+void		R_InitSkins( void );
+skin_t		*R_GetSkinByHandle( qhandle_t hSkin );
+const void	*RB_TakeVideoFrameCmd( const void *data );
+void		RE_HunkClearCrap(void);
 
 
 //

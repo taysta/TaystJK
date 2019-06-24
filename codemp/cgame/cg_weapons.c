@@ -25,6 +25,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cg_local.h"
 #include "fx_local.h"
 
+extern vec4_t	bluehudtint;
+extern vec4_t	redhudtint;
+extern float	*hudTintColor;
+
 /*
 Ghoul2 Insert Start
 */
@@ -232,15 +236,15 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 		scale = cg.xyspeed;
 	}
 
-	if ( cg_weaponBob.value ) {
-		// gun angles from bobbing
+	// gun angles from bobbing
+	if ( cg_drawGun.integer < 2 ) {
 		angles[ROLL] += scale * cg.bobfracsin * 0.005;
 		angles[YAW] += scale * cg.bobfracsin * 0.01;
 		angles[PITCH] += cg.xyspeed * cg.bobfracsin * 0.005;
 	}
 
-	if ( cg_fallingBob.value ) {
-		// drop the weapon when landing
+	// drop the weapon when landing
+	if ( cg_drawGun.integer < 3 ) {
 		delta = cg.time - cg.landTime;
 		if ( delta < LAND_DEFLECT_TIME ) {
 			origin[2] += cg.landChange*0.25 * delta / LAND_DEFLECT_TIME;
@@ -260,8 +264,8 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 	}
 #endif
 
-	if ( cg_weaponBob.value ) {
-		// idle drift
+	// idle drift
+	if ( cg_drawGun.integer < 4 ) {
 		scale = cg.xyspeed + 40;
 		fracsin = sin( cg.time * 0.001 );
 		angles[ROLL] += scale * fracsin * 0.01;
@@ -388,6 +392,10 @@ CG_AddWeaponWithPowerups
 ========================
 */
 static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups ) {
+	if (cg_gunAlpha.value < 1.0f && cg_gunAlpha.value > 0.0f) {
+		gun->shaderRGBA[3] = cg_gunAlpha.value * 255;
+	}
+
 	// add powerup effects
 	trap->R_AddRefEntityToScene( gun );
 
@@ -645,14 +653,16 @@ Ghoul2 Insert End
 			val = 1.0f;
 			if (ps && cent->currentState.number == ps->clientNum)
 			{
-				CGCam_Shake( /*0.1f*/0.2f, 100 );
+				if (cg_screenShake.integer >= 2) // loda - this is camera shake during charge
+					CGCam_Shake( /*0.1f*/0.2f, 100 );
 			}
 		}
 		else
 		{
 			if (ps && cent->currentState.number == ps->clientNum)
 			{
-				CGCam_Shake( val * val * /*0.3f*/0.6f, 100 );
+				if (cg_screenShake.integer >= 2) // loda - this is camera shake during charge
+					CGCam_Shake( val * val * /*0.3f*/0.6f, 100 );
 			}
 		}
 
@@ -738,12 +748,13 @@ Ghoul2 Insert End
 				{
 					if (!thirdPerson)
 					{
-						trap->FX_PlayEntityEffectID(weapon->altMuzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1  );
+						trap->FX_PlayEntityEffectID(weapon->altMuzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1);
 					}
 					else
 					{
 						trap->FX_PlayEffectID(weapon->altMuzzleEffect, flashorigin, flashdir, -1, -1, qfalse);
 					}
+					cent->muzzleFlashTime = 0; //japro - fix loud gunshots with high fps
 				}
 			}
 			else
@@ -752,12 +763,13 @@ Ghoul2 Insert End
 				{
 					if (!thirdPerson)
 					{
-						trap->FX_PlayEntityEffectID(weapon->muzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1  );
+						trap->FX_PlayEntityEffectID(weapon->muzzleEffect, flashorigin, flash.axis, -1, -1, -1, -1);
 					}
 					else
 					{
 						trap->FX_PlayEffectID(weapon->muzzleEffect, flashorigin, flashdir, -1, -1, qfalse);
 					}
+					cent->muzzleFlashTime = 0; //japro - fix loud gunshots with high fps
 				}
 			}
 		}
@@ -787,11 +799,15 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	vec3_t		angles;
 	weaponInfo_t	*weapon;
 	float cgFov = cg_fovViewmodel.integer ? cg_fovViewmodel.value : cg_fov.value;
+	float fracDistFOV, fracWeapFOV;
+	const float baseAspect = 0.75f; // 3/4
+	const float aspect = (float)cgs.glconfig.vidWidth / (float)cgs.glconfig.vidHeight;
+	const float desiredFov = cgFov;
 
 	if (cgFov < 1)
 		cgFov = 1;
-	if (cgFov > 130)
-		cgFov = 130;
+	else if (cgFov > 140)//JAPRO - Clientside - Raise FOV Limit
+		cgFov = 140;
 
 	if ( ps->persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
 		return;
@@ -808,7 +824,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	}
 
 	// allow the gun to be completely removed
-	if ( !cg_drawGun.integer || cg.predictedPlayerState.zoomMode) {
+	if ( !cg_drawGun.integer || cg.predictedPlayerState.zoomMode || cg.predictedPlayerState.torsoAnim == BOTH_BUTTON_HOLD ) {
 		vec3_t		origin;
 
 		if ( cg.predictedPlayerState.eFlags & EF_FIRING ) {
@@ -846,11 +862,16 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 	AnglesToAxis( angles, hand.axis );
 
-	if ( cg_fovViewmodel.integer )
+	if (cg_fovViewmodel.integer)
 	{
-		float fracDistFOV = tanf( cg.refdef.fov_x * ( M_PI/180 ) * 0.5f );
-		float fracWeapFOV = ( 1.0f / fracDistFOV ) * tanf( cgFov * ( M_PI/180 ) * 0.5f );
-		VectorScale( hand.axis[0], fracWeapFOV, hand.axis[0] );
+		if (cg_fovAspectAdjust.integer) { //Aspect adjust us.
+			cgFov = atan(tan(desiredFov*M_PI / 360.0f) * baseAspect*aspect)*360.0f / M_PI;
+		}
+		if (!cg.zoomed) {
+			fracDistFOV = tanf(cg.refdef.fov_x * (M_PI / 180) * 0.5f);
+			fracWeapFOV = (1.0f / fracDistFOV) * tanf(cgFov * (M_PI / 180) * 0.5f);
+			VectorScale(hand.axis[0], fracWeapFOV, hand.axis[0]);
+		}
 	}
 
 	// map torso animations to weapon animations
@@ -897,6 +918,26 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	hand.hModel = weapon->handsModel;
 	hand.renderfx = RF_DEPTHHACK | RF_FIRST_PERSON;// | RF_MINLIGHT;
 
+	if (cg_gunAlpha.value < 1.0f && cg_gunAlpha.value > 0.0f) {
+		hand.renderfx |= RF_FORCE_ENT_ALPHA; //idk if it actually needs this
+		hand.shaderRGBA[3] = cg_gunAlpha.value * 255;
+	}
+
+	if (cg_stylePlayer.integer & JAPRO_STYLE_FULLBRIGHT) {
+		if (cgs.jaPROEngine) {
+			hand.renderfx |= RF_FULLBRIGHT;
+		}
+		else {
+			hand.shaderRGBA[0] = 255;
+			hand.shaderRGBA[1] = 255;
+			hand.shaderRGBA[2] = 255;
+			hand.renderfx |= RF_RGB_TINT;
+		}
+	}
+
+	if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD))
+		hand.renderfx |= RF_NOLOD; //isnt working??
+
 	// add everything onto the hand
 	CG_AddPlayerWeapon( &hand, ps, &cg_entities[cg.predictedPlayerState.clientNum], ps->persistant[PERS_TEAM], angles, qfalse );
 }
@@ -915,45 +956,58 @@ WEAPON SELECTION
 
 void CG_DrawIconBackground(void)
 {
-	int				/*height, xAdd, x2, y2,*/ t;
-//	int				prongLeftX,prongRightX;
+	float			height, xAdd, x2, y2, t;
 	float			inTime = cg.invenSelectTime+WEAPON_SELECT_TIME;
 	float			wpTime = cg.weaponSelectTime+WEAPON_SELECT_TIME;
 	float			fpTime = cg.forceSelectTime+WEAPON_SELECT_TIME;
-//	int				drawType = cgs.media.weaponIconBackground;
-//	int				yOffset = 0;
+	float			prongLeftX,prongRightX;
+	int				drawType = cgs.media.weaponIconBackground;
+	int				yOffset = 0;
+	qhandle_t		background;
+	qhandle_t		prongsOn = cgs.media.JK2weaponProngsOn;
+	qboolean		JK2HUD = (cg_hudFiles.integer == 2 && !cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.pm_type != PM_SPECTATOR);
 
 	// don't display if dead
-	if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
+	if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 )
 	{
 		return;
 	}
 
-	if (cg_hudFiles.integer)
+	if (cg_hudFiles.integer == 1 || !cg_drawHud.integer)
 	{ //simple hud
 		return;
 	}
 
-//	x2 = 30;
-//	y2 = SCREEN_HEIGHT-70;
+	x2 = 30.0f;
+	y2 = SCREEN_HEIGHT-70.0f;
 
-	//prongLeftX =x2+37;
-	//prongRightX =x2+544;
+	//JK2HUD
+	prongLeftX = x2 + 37.0f;
+	prongRightX = SCREEN_WIDTH - (36.0f + x2)*cgs.widthRatioCoef;
 
 	if (inTime > wpTime)
 	{
-//		drawType = cgs.media.inventoryIconBackground;
+		if (JK2HUD) {
+			drawType = cgs.media.inventoryIconBackground;
+			prongsOn = cgs.media.JK2inventoryProngsOn;
+		}
 		cg.iconSelectTime = cg.invenSelectTime;
 	}
 	else
 	{
-//		drawType = cgs.media.weaponIconBackground;
+		if (JK2HUD) {
+			drawType = cgs.media.weaponIconBackground;
+			prongsOn = cgs.media.JK2weaponProngsOn;
+		}
 		cg.iconSelectTime = cg.weaponSelectTime;
 	}
 
 	if (fpTime > inTime && fpTime > wpTime)
 	{
-//		drawType = cgs.media.forceIconBackground;
+		if (JK2HUD) {
+			drawType = cgs.media.forceIconBackground;
+			prongsOn = cgs.media.JK2forceProngsOn;
+		}
 		cg.iconSelectTime = cg.forceSelectTime;
 	}
 
@@ -971,22 +1025,27 @@ void CG_DrawIconBackground(void)
 				cg.iconHUDPercent=0;
 			}
 
-		//	xAdd = (int) 8*cg.iconHUDPercent;
+			xAdd = 8.0f*cg.iconHUDPercent;
 
-		//	height = (int) (60.0f*cg.iconHUDPercent);
-			//CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-			//CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
-
+			height = (60.0f*cg.iconHUDPercent);
+			if (JK2HUD) { //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
+				CG_DrawPic( x2+60.0f, y2+30.0f+yOffset, 460.0f, -height, drawType);	// Top half
+				CG_DrawPic( x2+60.0f, y2+30.0f-2.0f+yOffset, 460.0f, height, drawType);	// Bottom half
+			}
 		}
 		else
 		{
-		//	xAdd = 0;
+			xAdd = 0;
+		}
+
+		if (JK2HUD) {
+			trap->R_SetColor(hudTintColor);
+			CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10.0f, 40.0f*cgs.widthRatioCoef, 80.0f, cgs.media.JK2weaponProngsOff);
+			CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10.0f, -40.0f*cgs.widthRatioCoef, 80.0f, cgs.media.JK2weaponProngsOff);
 		}
 
 		return;
 	}
-	//prongLeftX =x2+37;
-	//prongRightX =x2+544;
 
 	if (!cg.iconHUDActive)
 	{
@@ -1009,10 +1068,12 @@ void CG_DrawIconBackground(void)
 		cg.iconHUDPercent=1;
 	}
 
-	//trap->R_SetColor( colorTable[CT_WHITE] );
-	//height = (int) (60.0f*cg.iconHUDPercent);
-	//CG_DrawPic( x2+60, y2+30+yOffset, 460, -height, drawType);	// Top half
-	//CG_DrawPic( x2+60, y2+30-2+yOffset, 460, height, drawType);	// Bottom half
+	if (JK2HUD) {  //background needs to be stretched by cgs.widthRatioCoef to line up with the prongs
+		trap->R_SetColor(colorTable[CT_WHITE]);
+		height = 60.0f*cg.iconHUDPercent;
+		CG_DrawPic(x2 + 60.0f, y2 + 30.0f + yOffset, 460.0f, -height, drawType);	// Top half
+		CG_DrawPic(x2 + 60.0f, y2 + 30.0f - 2 + yOffset, 460.0f, height, drawType);	// Bottom half
+	}
 
 	// And now for the prongs
 /*	if ((cg.inventorySelectTime+WEAPON_SELECT_TIME)>cg.time)
@@ -1021,9 +1082,10 @@ void CG_DrawIconBackground(void)
 		background = &cgs.media.inventoryProngsOn;
 	}
 	else if ((cg.weaponSelectTime+WEAPON_SELECT_TIME)>cg.time)
-	{
+	{*/
 		cgs.media.currentBackground = ICON_WEAPONS;
-	}
+		background = prongsOn;
+/*	}
 	else
 	{
 		cgs.media.currentBackground = ICON_FORCE;
@@ -1031,10 +1093,12 @@ void CG_DrawIconBackground(void)
 	}
 */
 	// Side Prongs
-//	trap->R_SetColor( colorTable[CT_WHITE]);
-//	xAdd = (int) 8*cg.iconHUDPercent;
-//	CG_DrawPic( prongLeftX+xAdd, y2-10, 40, 80, background);
-//	CG_DrawPic( prongRightX-xAdd, y2-10, -40, 80, background);
+	if (JK2HUD) {
+		trap->R_SetColor(colorTable[CT_WHITE]);
+		xAdd = 8.0f*cg.iconHUDPercent;
+		CG_DrawPic((prongLeftX + xAdd)*cgs.widthRatioCoef, y2 - 10.0f, 40.0f*cgs.widthRatioCoef, 80.0f, background);
+		CG_DrawPic(prongRightX - xAdd*cgs.widthRatioCoef, y2 - 10.0f, -40.0f*cgs.widthRatioCoef, 80.0f, background);
+	}
 
 }
 
@@ -1054,7 +1118,7 @@ qboolean CG_WeaponCheck(int weap)
 CG_WeaponSelectable
 ===============
 */
-static qboolean CG_WeaponSelectable( int i ) {
+qboolean CG_WeaponSelectable( int i ) {
 	/*if ( !cg.snap->ps.ammo[weaponData[i].ammoIndex] ) {
 		return qfalse;
 	}*/
@@ -1082,6 +1146,17 @@ static qboolean CG_WeaponSelectable( int i ) {
 	return qtrue;
 }
 
+int weaponIcon(int i) {
+	if (i == WP_SABER)
+	{
+		if (cg.predictedPlayerState.fd.saberDrawAnimLevel == SS_STAFF)
+			return cgs.media.weaponIconsStaff;
+		else if (cg.predictedPlayerState.fd.saberDrawAnimLevel == SS_DUAL)
+			return cgs.media.weaponIconsAkimbo;
+	}
+	return cgs.media.weaponIcons[i];
+}
+
 /*
 ===================
 CG_DrawWeaponSelect
@@ -1095,7 +1170,7 @@ void CG_DrawWeaponSelect( void ) {
 	int				holdX,x,y,pad;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				sideMax,holdCount,iconCnt;
-//	int				height;
+	int				height;
 	int		yOffset = 0;
 	qboolean drewConc = qfalse;
 
@@ -1147,7 +1222,22 @@ void CG_DrawWeaponSelect( void ) {
 		return;
 	}
 
-	sideMax = 3;	// Max number of icons on the side
+	// Max number of icons on the side 
+	if (cgs.widthRatioCoef >= 0.8f) { //4:3 nd 16:10
+		if (cg_hudFiles.integer != 1) //tested these numbers in 1280x1024
+			sideMax = 3;
+		else
+			sideMax = 4;
+	}
+	else if (cgs.widthRatioCoef >= 0.625f) { //tested these numbers in 1600x900
+		if (cg_hudFiles.integer != 1)
+			sideMax = 5;
+		else
+			sideMax = 6;
+	}
+	else { //assuming anything lower than 0.625 is ultra widescreen
+		sideMax = 7; //max that's properly centered
+	}
 
 	// Calculate how many icons will appear to either side of the center one
 	holdCount = count - 1;	// -1 for the center icon
@@ -1195,8 +1285,8 @@ void CG_DrawWeaponSelect( void ) {
 	// Left side ICONS
 	trap->R_SetColor(colorTable[CT_WHITE]);
 	// Work backwards from current icon
-	holdX = x - ((bigIconSize/2) + pad + smallIconSize);
-//	height = smallIconSize * 1;//cg.iconHUDPercent;
+	holdX = x - ((bigIconSize/2) + pad + smallIconSize) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
+	height = smallIconSize * 1;//cg.iconHUDPercent;
 	drewConc = qfalse;
 
 	for (iconCnt=1;iconCnt<(sideLeftIconCnt+1);i--)
@@ -1236,21 +1326,21 @@ void CG_DrawWeaponSelect( void ) {
 
 		if (cgs.media.weaponIcons[i])
 		{
-		//	weaponInfo_t	*weaponInfo;
+			weaponInfo_t	*weaponInfo;
 			CG_RegisterWeapon( i );
-		//	weaponInfo = &cg_weapons[i];
+			weaponInfo = &cg_weapons[i];
 
 			trap->R_SetColor(colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, /*weaponInfo->weaponIconNoAmmo*/cgs.media.weaponIcons_NA[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, /*weaponInfo->weaponIconNoAmmo*/cgs.media.weaponIcons_NA[i] ); //JAPRO - Clientside - Ratio fix
 			}
 			else
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, /*weaponInfo->weaponIcon*/cgs.media.weaponIcons[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, /*weaponInfo->weaponIcon*/weaponIcon(i) ); //JAPRO - Clientside - Ratio fix
 			}
 
-			holdX -= (smallIconSize+pad);
+			holdX -= (smallIconSize+pad) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
 		}
 		if ( i == WP_CONCUSSION )
 		{
@@ -1260,21 +1350,21 @@ void CG_DrawWeaponSelect( void ) {
 	}
 
 	// Current Center Icon
-//	height = bigIconSize * cg.iconHUDPercent;
+	height = bigIconSize * cg.iconHUDPercent;
 	if (cgs.media.weaponIcons[cg.weaponSelect])
 	{
-	//	weaponInfo_t	*weaponInfo;
+		weaponInfo_t	*weaponInfo;
 		CG_RegisterWeapon( cg.weaponSelect );
-	//	weaponInfo = &cg_weapons[cg.weaponSelect];
+		weaponInfo = &cg_weapons[cg.weaponSelect];
 
 		trap->R_SetColor( colorTable[CT_WHITE]);
 		if (!CG_WeaponCheck(cg.weaponSelect))
 		{
-			CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize, bigIconSize, cgs.media.weaponIcons_NA[cg.weaponSelect] );
+			CG_DrawPic( x-(bigIconSize/2 * cgs.widthRatioCoef), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize * cgs.widthRatioCoef, bigIconSize, cgs.media.weaponIcons_NA[cg.weaponSelect] ); //JAPRO - Clientside - Ratio fix
 		}
 		else
 		{
-			CG_DrawPic( x-(bigIconSize/2), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize, bigIconSize, cgs.media.weaponIcons[cg.weaponSelect] );
+			CG_DrawPic( x-(bigIconSize/2 * cgs.widthRatioCoef), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize * cgs.widthRatioCoef, bigIconSize, weaponIcon(cg.weaponSelect) ); //JAPRO - Clientside - Ratio fix
 		}
 	}
 
@@ -1293,8 +1383,8 @@ void CG_DrawWeaponSelect( void ) {
 
 	// Right side ICONS
 	// Work forwards from current icon
-	holdX = x + (bigIconSize/2) + pad;
-//	height = smallIconSize * cg.iconHUDPercent;
+	holdX = x + ((bigIconSize/2) + pad) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
+	height = smallIconSize * cg.iconHUDPercent;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);i++)
 	{
 		if ( i == WP_CONCUSSION )
@@ -1330,22 +1420,22 @@ void CG_DrawWeaponSelect( void ) {
 
 		if (/*weaponData[i].weaponIcon[0]*/cgs.media.weaponIcons[i])
 		{
-		//	weaponInfo_t	*weaponInfo;
+			weaponInfo_t	*weaponInfo;
 			CG_RegisterWeapon( i );
-		//	weaponInfo = &cg_weapons[i];
+			weaponInfo = &cg_weapons[i];
 			// No ammo for this weapon?
 			trap->R_SetColor( colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, cgs.media.weaponIcons_NA[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, cgs.media.weaponIcons_NA[i] ); //JAPRO - Clientside - Ratio fix
 			}
 			else
 			{
-				CG_DrawPic( holdX, y+10+yOffset, smallIconSize, smallIconSize, cgs.media.weaponIcons[i] );
+				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, weaponIcon(i) ); //JAPRO - Clientside - Ratio fix
 			}
 
 
-			holdX += (smallIconSize+pad);
+			holdX += (smallIconSize+pad) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
 		}
 		if ( i == WP_CONCUSSION )
 		{
@@ -1529,77 +1619,106 @@ void CG_Weapon_f( void ) {
 		return;
 	}
 
-	num = atoi( CG_Argv( 1 ) );
+	if (!Q_stricmp(CG_Argv(1), "stun"))
+		num = WP_STUN_BATON;
+	else {
+		num = atoi( CG_Argv( 1 ) );
 
-	if ( num < 1 || num > LAST_USEABLE_WEAPON ) {
-		return;
-	}
-
-	if (num == 1 && cg.snap->ps.weapon == WP_SABER)
-	{
-		if (cg.predictedPlayerState.weaponTime < 1)
-	//	if (cg.snap->ps.weaponTime < 1)
-		{
-			trap->SendConsoleCommand("sv_saberswitch\n");
-		}
-		return;
-	}
-
-	//rww - hack to make weapon numbers same as single player
-	if (num > WP_STUN_BATON)
-	{
-		//num++;
-		num += 2; //I suppose this is getting kind of crazy, what with the wp_melee in there too now.
-	}
-	else
-	{
-		if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
-		{
-			num = WP_SABER;
-		}
-		else
-		{
-			num = WP_MELEE;
-		}
-	}
-
-	if (num > LAST_USEABLE_WEAPON+1)
-	{ //other weapons are off limits due to not actually being weapon weapons
-		return;
-	}
-
-	if (num >= WP_THERMAL && num <= WP_DET_PACK)
-	{
-		int weap, i = 0;
-
-		if (cg.snap->ps.weapon >= WP_THERMAL &&
-			cg.snap->ps.weapon <= WP_DET_PACK)
-		{
-			// already in cycle range so start with next cycle item
-			weap = cg.snap->ps.weapon + 1;
-		}
-		else
-		{
-			// not in cycle range, so start with thermal detonator
-			weap = WP_THERMAL;
+		if ( num < 1 || num > LAST_USEABLE_WEAPON ) {
+			return;
 		}
 
-		// prevent an endless loop
-		while ( i <= 4 )
+		if (num == 1 && cg.snap->ps.weapon == WP_SABER)
 		{
-			if (weap > WP_DET_PACK)
+			//maybe only show inventory if there's more selectable weapons?
+			cg.weaponSelectTime = cg.time;
+
+			if (cg.predictedPlayerState.weaponTime < 1)
+		//	if (cg.snap->ps.weaponTime < 1)
 			{
+				trap->SendConsoleCommand("sv_saberswitch\n");
+			}
+			return;
+		}
+
+		//rww - hack to make weapon numbers same as single player
+		if (num > WP_STUN_BATON)
+		{
+			//num++;
+			num += 2; //I suppose this is getting kind of crazy, what with the wp_melee in there too now.
+		}
+		else
+		{
+			if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+			{
+				num = WP_SABER;
+			}
+			else
+			{
+				num = WP_MELEE;
+			}
+		}
+
+		if (num == WP_BRYAR_PISTOL)
+		{
+			if (!(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_PISTOL)) && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_OLD)))
+			{ //can't use either pistol
+				if ((cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_MELEE)))//switch to melee
+					num = WP_MELEE;
+				else if (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)) //switch to stun baton if melee isnt available
+					num = WP_STUN_BATON;
+			}
+			else if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD))
+			{//hack to make pistol button equip bryar or cycle between bryar and dl-44
+				if (cg.snap->ps.weapon == WP_BRYAR_PISTOL || !(cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL)))
+					num = WP_BRYAR_OLD;
+				else if (cg.snap->ps.weapon == WP_BRYAR_OLD)
+					num = WP_BRYAR_PISTOL;
+			}
+		}
+		else if (num == WP_BLASTER && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BLASTER)) && (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)))
+		{ //switch to stun baton if E-11 is not available..
+			num = WP_STUN_BATON;
+		}
+
+		if (num > LAST_USEABLE_WEAPON+1)
+		{ //other weapons are off limits due to not actually being weapon weapons
+			return;
+		}
+
+		if (num >= WP_THERMAL && num <= WP_DET_PACK)
+		{
+			int weap, i = 0;
+
+			if (cg.snap->ps.weapon >= WP_THERMAL &&
+				cg.snap->ps.weapon <= WP_DET_PACK)
+			{
+				// already in cycle range so start with next cycle item
+				weap = cg.snap->ps.weapon + 1;
+			}
+			else
+			{
+				// not in cycle range, so start with thermal detonator
 				weap = WP_THERMAL;
 			}
 
-			if (CG_WeaponSelectable(weap))
+			// prevent an endless loop
+			while ( i <= 4 )
 			{
-				num = weap;
-				break;
-			}
+				if (weap > WP_DET_PACK)
+				{
+					weap = WP_THERMAL;
+				}
 
-			weap++;
-			i++;
+				if (CG_WeaponSelectable(weap))
+				{
+					num = weap;
+					break;
+				}
+
+				weap++;
+				i++;
+			}
 		}
 	}
 
@@ -1661,11 +1780,25 @@ void CG_WeaponClean_f( void ) {
 
 	if (num == 1 && cg.snap->ps.weapon == WP_SABER)
 	{
+		cg.weaponSelectTime = cg.time;
+
 		if (cg.snap->ps.weaponTime < 1)
 		{
 			trap->SendConsoleCommand("sv_saberswitch\n");
 		}
 		return;
+	}
+
+	if (num == WP_BRYAR_PISTOL && (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD)))
+	{ //hack to make pistol button equip bryar or cycle between bryar and dl-44
+		if (cg.snap->ps.weapon == WP_BRYAR_PISTOL || !(cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL)))
+		{
+			num = WP_BRYAR_OLD;
+		}
+		else if (cg.snap->ps.weapon == WP_BRYAR_OLD)
+		{
+			num = WP_BRYAR_PISTOL;
+		}
 	}
 
 	if(num == WP_STUN_BATON) {
@@ -1821,6 +1954,233 @@ void CG_GetClientWeaponMuzzleBoltPoint(int clIndex, vec3_t to)
 	BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, to);
 }
 
+static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *spreadX, float *spreadY) {
+	switch (weapon)
+	{
+		case WP_BLASTER:
+			if (altFire) {
+				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+				float r = Q_random(&seed) * 1.6f;
+				*spreadY = r * sin(theta);
+				*spreadX = r * cos(theta);
+			}
+			return;
+		case WP_BOWCASTER:
+		case WP_BRYAR_PISTOL:
+		case WP_BRYAR_OLD:
+			return;
+		case WP_REPEATER:
+			if (!altFire) {
+				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+				float r = Q_random(&seed) * 1.4f;
+				*spreadY = r * sin(theta);
+				*spreadX = r * cos(theta);
+			}
+			return;
+		case WP_DEMP2:
+		case WP_FLECHETTE: // are bouncy things missiles?, how deal with spread here?
+		case WP_ROCKET_LAUNCHER:
+		case WP_CONCUSSION:
+		default:
+			return;
+	}
+}
+
+int CG_GetBulletSpeed(int weapon, qboolean altFire) {
+	int missileSpeed = 0;
+
+	switch (weapon)
+	{
+		case WP_BLASTER:
+			missileSpeed = 2300;
+			break;
+		case WP_DISRUPTOR:
+			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
+				missileSpeed = 10000;
+			break;
+		case WP_BOWCASTER:
+			missileSpeed = 1300;//ruh roh, multiple shots, charge count, etc?
+			break;
+		case WP_BRYAR_PISTOL:
+		case WP_BRYAR_OLD:
+			missileSpeed = 1600;
+			break;
+		case WP_REPEATER:
+			if (altFire)
+				missileSpeed = 1100;
+			else
+				missileSpeed = 1600;
+			break;
+		case WP_DEMP2:
+			if (!altFire)
+				missileSpeed = 1800;
+			break;
+		case WP_FLECHETTE: // are bouncy things missiles?
+			if (altFire)
+				missileSpeed = 1050;
+			else
+				missileSpeed = 3500;
+			break;
+		case WP_ROCKET_LAUNCHER:
+			if (altFire)
+				missileSpeed = 450;
+			else
+				missileSpeed = 900;
+			break;
+		case WP_THERMAL:
+			missileSpeed = 550;
+			break;
+		case WP_TRIP_MINE:
+			missileSpeed = 550;
+			break;
+		case WP_CONCUSSION:
+			if (!altFire)
+				missileSpeed = 3000;
+			break;
+		default:
+			break;
+	}
+	return missileSpeed;
+}
+
+qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
+	qboolean gravity = qfalse;
+
+	switch (weapon)
+	{
+		case WP_BLASTER:
+		case WP_DISRUPTOR:
+			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
+				gravity = qtrue;
+		case WP_BOWCASTER:
+		case WP_BRYAR_PISTOL:
+		case WP_BRYAR_OLD:
+			break;
+		case WP_REPEATER:
+			if (altFire)
+				gravity = qtrue;
+			break;
+		case WP_DEMP2:
+			break;
+		case WP_FLECHETTE: // are bouncy things missiles?
+			if (altFire)
+				gravity = qtrue;
+			break;
+		case WP_ROCKET_LAUNCHER:
+			break;
+		case WP_THERMAL:
+		case WP_TRIP_MINE:
+			gravity = qtrue;
+		case WP_CONCUSSION:
+			break;
+		default:
+			break;
+	}
+	return gravity;
+}
+
+void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
+	vec3_t forward, right, up;
+
+	AngleVectors( cg.predictedPlayerState.viewangles, forward, right, up );
+
+	VectorCopy( cg.predictedPlayerState.origin, muzzlePoint );
+	VectorMA(muzzlePoint, 12, forward, muzzlePoint);
+
+	muzzlePoint[2] += cg.predictedPlayerState.viewheight;
+
+	if (!(cp_pluginDisable.integer & JAPRO_PLUGIN_CENTERMUZZLE) && !cg.predictedPlayerState.stats[STAT_RACEMODE]) { //Not center muzzle
+			int y = 0, z = 0;
+			switch (weapon)
+			{
+			case WP_STUN_BATON:
+			case WP_DISRUPTOR:
+				break;
+			case WP_BRYAR_PISTOL:
+			case WP_BLASTER:
+			case WP_DEMP2:
+			case WP_FLECHETTE:
+			case WP_CONCUSSION:
+			case WP_BRYAR_OLD:
+				y = 6;
+				z = -6;
+				break;
+			case WP_BOWCASTER:
+				y = 2;
+				z = -6;
+				break;
+			case WP_REPEATER:
+				y = 4.5;
+				z = -6;
+				break;
+			case WP_ROCKET_LAUNCHER:
+				y = 8;
+				z = -4;
+				break;
+			case WP_THERMAL:
+				z = -4;
+				break;
+			case WP_TRIP_MINE:
+				z = -10;
+				break;
+			default:
+				break;
+			}
+
+		VectorMA( muzzlePoint, y, right, muzzlePoint ); //-5
+		VectorMA( muzzlePoint, z, up, muzzlePoint ); //-7
+	}
+}
+
+static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlaggedprojectiles, cg_SimulatedProjectiles
+{ // does this call cg_addmissile every frame? it should only call it once every snapshot frame? (for each bullet)?
+	localEntity_t	*le;
+	vec3_t	muzzlePoint, forward, angs;
+	int missileSpeed, offset, seed = cg.oldTime % 10000;//or nextsnap? or pm?
+	qboolean gravity = qfalse;// longTrail = qtrue;
+	float spreadX = 0, spreadY = 0;
+	int timenudge = cl_timeNudge.integer;
+
+	//weapon = &cg_weapons[weap];
+
+	gravity = CG_GetBulletGravity(weap, altFire);
+	missileSpeed = CG_GetBulletSpeed(weap, altFire);
+	CG_GetBulletSpread(weap, altFire, seed, &spreadX, &spreadY);
+
+	AngleVectors( cg.predictedPlayerState.viewangles, forward, NULL, NULL );
+	//(longTrail) ? VectorMA(muzzlePoint, 90, forward, muzzlePoint) : VectorMA(muzzlePoint, 32, forward, muzzlePoint); // sad hack
+	
+	CG_GetMuzzlePoint(weap, muzzlePoint);
+
+	if (spreadX || spreadY) { //ah, this should be before muzzlepoint? stuff,, or it should use the same ,. nvm idk
+		vectoangles( forward, angs );
+		angs[PITCH] += spreadY;
+		angs[YAW] += spreadX;
+		AngleVectors( angs, forward, NULL, NULL );
+	}
+
+	if (timenudge > 160)
+		timenudge = 160;
+	else if (timenudge < 0)
+		timenudge = 0;//wahts this
+	timenudge *= 0.5f;
+
+	le = CG_AllocLocalEntity();
+	le->leType = LE_MISSILE;
+	le->startTime = cg.time; // to stop bullet from being created inside or behind us?
+	le->pos.trTime = cg.time;//idk if this is needed
+	(altFire) ? (le->leFlags |= EF_ALT_FIRING) : (le->leFlags = 0); // idk if i need = 0 here
+	(cgs.svfps) ? (offset = 1000 / cgs.svfps) : (offset = 50);
+	(cg.snap) ? (le->endTime = cg.time + cg.snap->ping + offset + timenudge) : (le->endTime = cg.time + offset + timenudge);
+	(gravity) ? (le->pos.trType = TR_GRAVITY) : (le->pos.trType = TR_LINEAR);
+	VectorCopy( muzzlePoint, le->pos.trBase );
+	VectorScale( forward, missileSpeed, le->pos.trDelta ); // missile speed
+
+	//vectoangles( forward, le->angles.trBase ); //why doesnt this affect its angle ??
+	//VectorCopy(forward, le->angles.trBase);
+
+}
+
 /*
 ================
 CG_FireWeapon
@@ -1832,6 +2192,8 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 	entityState_t *ent;
 	int				c;
 	weaponInfo_t	*weap;
+	vec3_t			muzzlePoint, forward, right, up, endPoint; //unlagged
+	trace_t			trace; //unlagged
 
 	ent = &cent->currentState;
 	if ( ent->weapon == WP_NONE ) {
@@ -1841,13 +2203,17 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		trap->Error( ERR_DROP, "CG_FireWeapon: ent->weapon >= WP_NUM_WEAPONS" );
 		return;
 	}
+
+	if ((cg.predictedPlayerState.clientNum == cent->currentState.number) && cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && (ent->weapon != WP_ROCKET_LAUNCHER))
+		return;
+
 	weap = &cg_weapons[ ent->weapon ];
 
 	// mark the entity as muzzle flashing, so when it is added it will
 	// append the flash to the weapon model
 	cent->muzzleFlashTime = cg.time;
 
-	if (cg.predictedPlayerState.clientNum == cent->currentState.number)
+	if (cg.predictedPlayerState.clientNum == cent->currentState.number && cg_screenShake.integer >= 2) // This is the shake that happens AFTER firing - loda
 	{
 		if ((ent->weapon == WP_BRYAR_PISTOL && altFire) ||
 			(ent->weapon == WP_BRYAR_OLD && altFire) ||
@@ -1955,6 +2321,96 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 			}
 		}
 	}
+//unlagged - attack prediction #1
+	if (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN && cent->currentState.number == cg.predictedPlayerState.clientNum)//why not eventparm, or ownernum .. memes
+	{
+		VectorCopy( cg.predictedPlayerState.origin, muzzlePoint );
+		muzzlePoint[2] += cg.predictedPlayerState.viewheight;
+
+		AngleVectors( cg.predictedPlayerState.viewangles, forward, right, up );
+		VectorMA( muzzlePoint, 14, forward, muzzlePoint );
+
+		if (ent->weapon == WP_DISRUPTOR && cg_simulatedHitscan.integer && !(cgs.jcinfo & JAPRO_CINFO_PROJSNIPER))
+		{
+			VectorMA( muzzlePoint, 16384, forward, endPoint );
+			if (altFire)
+			{
+				// find the rail's end point
+				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
+
+				// do the magic-number adjustment
+				VectorMA( muzzlePoint, 4, right, muzzlePoint );
+				VectorMA( muzzlePoint, -1, up, muzzlePoint );
+
+				// draw a rail trail
+				//Com_Printf( "Predicted alt fire\n" );
+				FX_DisruptorAltShot( muzzlePoint, trace.endpos, qtrue );//loda - fix so not always full charge
+			}
+			else
+			{
+				// find the rail's end point
+				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
+
+				// do the magic-number adjustment 4,-1
+				VectorMA( muzzlePoint, 1.5, right, muzzlePoint );
+				VectorMA( muzzlePoint, -2.75, up, muzzlePoint );
+
+				// draw a rail trail
+				//Com_Printf( "Predicted prim fire\n" );
+				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
+
+				/*// explosion at end if not SURF_NOIMPACT
+				if ( !(trace.surfaceFlags & SURF_NOIMPACT) )
+				{
+					// predict an explosion
+					CG_MissileHitWall( ent->weapon, cg.predictedPlayerState.clientNum, trace.endpos, trace.plane.normal, IMPACTSOUND_DEFAULT );
+				}*/
+			}
+		}
+		else if (ent->weapon == WP_STUN_BATON)
+		{
+			if (altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
+			{
+				VectorMA( muzzlePoint, 256, forward, endPoint );//loda
+
+				// find the rail's end point
+				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
+
+				// do the magic-number adjustment
+				VectorMA( muzzlePoint, 2.25, right, muzzlePoint );
+				VectorMA( muzzlePoint, -2, up, muzzlePoint );
+				VectorMA( muzzlePoint, -3, forward, muzzlePoint ); //loda
+
+				// draw a rail trail
+				//Com_Printf( "Predicted shocklance fire\n" );
+				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
+			}
+			else if (!altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_LG)
+			{
+				VectorMA( muzzlePoint, 640, forward, endPoint );
+
+				// find the rail's end point
+				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
+
+				// do the magic-number adjustment
+				VectorMA( muzzlePoint, 2.25, right, muzzlePoint );  //loda
+				VectorMA( muzzlePoint, -2, up, muzzlePoint ); //loda
+				VectorMA( muzzlePoint, -3, forward, muzzlePoint ); //loda
+
+				// draw a rail trail
+				//Com_Printf( "Predicted LG fire\n" );
+				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
+			}
+		}
+
+	}//end hitscan prediction
+
+	//why not eventparm, memes
+	if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now..
+			CG_LocalMissile(cent, ent->weapon, altFire);//at this point we know its a bullet? or a saber? or vehicle attack? 
+	}
+
+//unlagged - attack prediction #1
 }
 
 qboolean CG_VehicleWeaponImpact( centity_t *cent )
@@ -2105,6 +2561,9 @@ void CG_MissileHitPlayer(int weapon, vec3_t origin, vec3_t dir, int entityNum, q
 	}
 	*/
 
+	// NOTENOTE No bleeding in this game
+	CG_Bleed( origin, entityNum );//JAPRO - Clientside - Add Blood
+
 	// some weapons will make an explosion with the blood, while
 	// others will just make the blood
 	switch ( weapon ) {
@@ -2196,6 +2655,13 @@ void CG_MissileHitPlayer(int weapon, vec3_t origin, vec3_t dir, int entityNum, q
 	case WP_EMPLACED_GUN:
 		//FIXME: Its own effect?
 		FX_BlasterWeaponHitPlayer( origin, dir, humanoid );
+		break;
+
+	case WP_STUN_BATON:
+		if (altFire && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
+			FX_BryarHitPlayer( origin, dir, humanoid );
+		else if (cgs.jcinfo & JAPRO_CINFO_LG)
+			FX_BryarHitPlayer( origin, dir, humanoid );
 		break;
 
 	default:

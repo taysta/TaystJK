@@ -45,6 +45,8 @@ int			chat_playerNum;
 
 keyGlobals_t	kg;
 
+extern	console_t con;
+
 // do NOT blithely change any of the key names (3rd field) here, since they have to match the key binds
 //	in the CFG files, they're also prepended with "KEYNAME_" when looking up StringEd references
 //
@@ -183,9 +185,9 @@ keyname_t keynames[MAX_KEYS] =
 	{ 0x7f, 0x7f, "DEL", A_DELETE, false								},
 
 	{ 0x80, 0x80, "EURO", A_EURO, false  								},
-	{ 0x81, 0x81, "SHIFT", A_SHIFT2, false								},
-	{ 0x82, 0x82, "CTRL", A_CTRL2, false								},
-	{ 0x83, 0x83, "ALT", A_ALT2, false									},
+	{ 0x81, 0x81, "RSHIFT", A_SHIFT2, false								},
+	{ 0x82, 0x82, "RCTRL", A_CTRL2, false								},
+	{ 0x83, 0x83, "RALT", A_ALT2, false									},
 	{ 0x84, 0x84, "F5", A_F5, true										},
 	{ 0x85, 0x85, "F6", A_F6, true										},
 	{ 0x86, 0x86, "F7", A_F7, true										},
@@ -217,19 +219,19 @@ keyname_t keynames[MAX_KEYS] =
 
 	{ 0xa0, 0,	  "SHIFT_SPACE", A_SPACE, false							},
 	{ 0xa1, 0xa1, NULL, A_EXCLAMDOWN, false								},	// upside down '!' - undisplayable
-	{ L'\u00A2', L'\u00A2', NULL, A_CENT, false	  			}, // cent sign
-	{ L'\u00A3', L'\u00A3', NULL, A_POUND, false	  		}, // pound (as in currency) symbol
+	{ L'\u00A2', L'\u00A2', NULL, A_CENT, false	  						}, // cent sign
+	{ L'\u00A3', L'\u00A3', NULL, A_POUND, false				 		}, // pound (as in currency) symbol
 	{ 0xa4, 0,    "SHIFT_KP_ENTER", A_KP_ENTER, false					},
-	{ L'\u00A5', L'\u00A5', NULL, A_YEN, false		  		}, // yen symbol
+	{ L'\u00A5', L'\u00A5', NULL, A_YEN, false		  					}, // yen symbol
 	{ 0xa6, 0xa6, "MOUSE3", A_MOUSE3, false								},
 	{ 0xa7, 0xa7, "MOUSE4", A_MOUSE4, false								},
 	{ 0xa8, 0xa8, "MOUSE5", A_MOUSE5, false								},
-	{ L'\u00A9', L'\u00A9', NULL, A_COPYRIGHT, false 		}, // copyright symbol
+	{ L'\u00A9', L'\u00A9', NULL, A_COPYRIGHT, false 					}, // copyright symbol
 	{ 0xaa, 0xaa, "UPARROW", A_CURSOR_UP, false							},
 	{ 0xab, 0xab, "DOWNARROW", A_CURSOR_DOWN, false						},
 	{ 0xac, 0xac, "LEFTARROW", A_CURSOR_LEFT, false						},
 	{ 0xad, 0xad, "RIGHTARROW", A_CURSOR_RIGHT, false					},
-	{ L'\u00AE', L'\u00AE', NULL, A_REGISTERED, false		}, // registered trademark symbol
+	{ L'\u00AE', L'\u00AE', NULL, A_REGISTERED, false					}, // registered trademark symbol
 	{ 0xaf, 0,	  NULL, A_UNDEFINED_7, false							},
 	{ 0xb0, 0,	  NULL, A_UNDEFINED_8, false							},
 	{ 0xb1, 0,	  NULL, A_UNDEFINED_9, false							},
@@ -246,72 +248,72 @@ keyname_t keynames[MAX_KEYS] =
 	{ 0xbc, 0,	  NULL, A_UNDEFINED_20, false							},
 	{ 0xbd, 0,	  NULL, A_UNDEFINED_21, false							},
 	{ 0xbe, 0,	  NULL, A_UNDEFINED_22, false							},
-	{ L'\u00BF', L'\u00BF', NULL, A_QUESTION_DOWN, false	}, // upside-down question mark
+	{ L'\u00BF', L'\u00BF', NULL, A_QUESTION_DOWN, false				}, // upside-down question mark
 
-	{ L'\u00C0', L'\u00E0', NULL, A_CAP_AGRAVE, false		},
-	{ L'\u00C1', L'\u00E1', NULL, A_CAP_AACUTE, false		},
-	{ L'\u00C2', L'\u00E2', NULL, A_CAP_ACIRCUMFLEX, false	},
-	{ L'\u00C3', L'\u00E3', NULL, A_CAP_ATILDE, false		},
-	{ L'\u00C4', L'\u00E4', NULL, A_CAP_ADIERESIS, false	},
-	{ L'\u00C5', L'\u00E5', NULL, A_CAP_ARING, false		},
-	{ L'\u00C6', L'\u00E6', NULL, A_CAP_AE, false			},
-	{ L'\u00C7', L'\u00E7', NULL, A_CAP_CCEDILLA, false		},
-	{ L'\u00C8', L'\u00E8', NULL, A_CAP_EGRAVE, false		},
-	{ L'\u00C9', L'\u00E9', NULL, A_CAP_EACUTE, false		},
-	{ L'\u00CA', L'\u00EA', NULL, A_CAP_ECIRCUMFLEX, false	},
-	{ L'\u00CB', L'\u00EB', NULL, A_CAP_EDIERESIS, false	},
-	{ L'\u00CC', L'\u00EC', NULL, A_CAP_IGRAVE, false		},
-	{ L'\u00CD', L'\u00ED', NULL, A_CAP_IACUTE, false		},
-	{ L'\u00CE', L'\u00EE', NULL, A_CAP_ICIRCUMFLEX, false	},
-	{ L'\u00CF', L'\u00EF', NULL, A_CAP_IDIERESIS, false	},
-	{ L'\u00D0', L'\u00F0', NULL, A_CAP_ETH, false			},
-	{ L'\u00D1', L'\u00F1', NULL, A_CAP_NTILDE, false		},
-	{ L'\u00D2', L'\u00F2', NULL, A_CAP_OGRAVE, false		},
-	{ L'\u00D3', L'\u00F3', NULL, A_CAP_OACUTE, false		},
-	{ L'\u00D4', L'\u00F4', NULL, A_CAP_OCIRCUMFLEX, false	},
-	{ L'\u00D5', L'\u00F5', NULL, A_CAP_OTILDE, false		},
-	{ L'\u00D6', L'\u00F6', NULL, A_CAP_ODIERESIS, false	},
-	{ L'\u00D7', L'\u00D7', "KP_STAR", A_MULTIPLY, false 	},
-	{ L'\u00D8', L'\u00F8', NULL, A_CAP_OSLASH, false		},
-	{ L'\u00D9', L'\u00F9', NULL, A_CAP_UGRAVE, false		},
-	{ L'\u00DA', L'\u00FA', NULL, A_CAP_UACUTE, false		},
-	{ L'\u00DB', L'\u00FB', NULL, A_CAP_UCIRCUMFLEX, false	},
-	{ L'\u00DC', L'\u00FC', NULL, A_CAP_UDIERESIS, false	},
-	{ L'\u00DD', L'\u00FD', NULL, A_CAP_YACUTE, false		},
-	{ L'\u00DE', L'\u00FE', NULL, A_CAP_THORN, false		},
-	{ L'\u00DF', L'\u00DF', NULL, A_GERMANDBLS, false 		},
+	{ L'\u00C0', L'\u00E0', NULL, A_CAP_AGRAVE, false					},
+	{ L'\u00C1', L'\u00E1', NULL, A_CAP_AACUTE, false					},
+	{ L'\u00C2', L'\u00E2', NULL, A_CAP_ACIRCUMFLEX, false				},
+	{ L'\u00C3', L'\u00E3', NULL, A_CAP_ATILDE, false					},
+	{ L'\u00C4', L'\u00E4', NULL, A_CAP_ADIERESIS, false				},
+	{ L'\u00C5', L'\u00E5', NULL, A_CAP_ARING, false					},
+	{ L'\u00C6', L'\u00E6', NULL, A_CAP_AE, false						},
+	{ L'\u00C7', L'\u00E7', NULL, A_CAP_CCEDILLA, false					},
+	{ L'\u00C8', L'\u00E8', NULL, A_CAP_EGRAVE, false					},
+	{ L'\u00C9', L'\u00E9', NULL, A_CAP_EACUTE, false					},
+	{ L'\u00CA', L'\u00EA', NULL, A_CAP_ECIRCUMFLEX, false				},
+	{ L'\u00CB', L'\u00EB', NULL, A_CAP_EDIERESIS, false				},
+	{ L'\u00CC', L'\u00EC', NULL, A_CAP_IGRAVE, false					},
+	{ L'\u00CD', L'\u00ED', NULL, A_CAP_IACUTE, false					},
+	{ L'\u00CE', L'\u00EE', NULL, A_CAP_ICIRCUMFLEX, false				},
+	{ L'\u00CF', L'\u00EF', NULL, A_CAP_IDIERESIS, false				},
+	{ L'\u00D0', L'\u00F0', NULL, A_CAP_ETH, false						},
+	{ L'\u00D1', L'\u00F1', NULL, A_CAP_NTILDE, false					},
+	{ L'\u00D2', L'\u00F2', NULL, A_CAP_OGRAVE, false					},
+	{ L'\u00D3', L'\u00F3', NULL, A_CAP_OACUTE, false					},
+	{ L'\u00D4', L'\u00F4', NULL, A_CAP_OCIRCUMFLEX, false				},
+	{ L'\u00D5', L'\u00F5', NULL, A_CAP_OTILDE, false					},
+	{ L'\u00D6', L'\u00F6', NULL, A_CAP_ODIERESIS, false				},
+	{ L'\u00D7', L'\u00D7', "KP_STAR", A_MULTIPLY, false 				},
+	{ L'\u00D8', L'\u00F8', NULL, A_CAP_OSLASH, false					},
+	{ L'\u00D9', L'\u00F9', NULL, A_CAP_UGRAVE, false					},
+	{ L'\u00DA', L'\u00FA', NULL, A_CAP_UACUTE, false					},
+	{ L'\u00DB', L'\u00FB', NULL, A_CAP_UCIRCUMFLEX, false				},
+	{ L'\u00DC', L'\u00FC', NULL, A_CAP_UDIERESIS, false				},
+	{ L'\u00DD', L'\u00FD', NULL, A_CAP_YACUTE, false					},
+	{ L'\u00DE', L'\u00FE', NULL, A_CAP_THORN, false					},
+	{ L'\u00DF', L'\u00DF', NULL, A_GERMANDBLS, false 					},
 
-	{ L'\u00C0', L'\u00E0', NULL, A_LOW_AGRAVE, false		},
-	{ L'\u00C1', L'\u00E1', NULL, A_LOW_AACUTE, false		},
-	{ L'\u00C2', L'\u00E2', NULL, A_LOW_ACIRCUMFLEX, false	},
-	{ L'\u00C3', L'\u00E3', NULL, A_LOW_ATILDE, false		},
-	{ L'\u00C4', L'\u00E4', NULL, A_LOW_ADIERESIS, false	},
-	{ L'\u00C5', L'\u00E5', NULL, A_LOW_ARING, false		},
-	{ L'\u00C6', L'\u00E6', NULL, A_LOW_AE, false			},
-	{ L'\u00C7', L'\u00E7', NULL, A_LOW_CCEDILLA, false		},
-	{ L'\u00C8', L'\u00E8', NULL, A_LOW_EGRAVE, false		},
-	{ L'\u00C9', L'\u00E9', NULL, A_LOW_EACUTE, false		},
-	{ L'\u00CA', L'\u00EA', NULL, A_LOW_ECIRCUMFLEX, false	},
-	{ L'\u00CB', L'\u00EB', NULL, A_LOW_EDIERESIS, false	},
-	{ L'\u00CC', L'\u00EC', NULL, A_LOW_IGRAVE, false		},
-	{ L'\u00CD', L'\u00ED', NULL, A_LOW_IACUTE, false		},
-	{ L'\u00CE', L'\u00EE', NULL, A_LOW_ICIRCUMFLEX, false	},
-	{ L'\u00CF', L'\u00EF', NULL, A_LOW_IDIERESIS, false	},
-	{ L'\u00D0', L'\u00F0', NULL, A_LOW_ETH, false			},
-	{ L'\u00D1', L'\u00F1', NULL, A_LOW_NTILDE, false		},
-	{ L'\u00D2', L'\u00F2', NULL, A_LOW_OGRAVE, false		},
-	{ L'\u00D3', L'\u00F3', NULL, A_LOW_OACUTE, false		},
-	{ L'\u00D4', L'\u00F4', NULL, A_LOW_OCIRCUMFLEX, false	},
-	{ L'\u00D5', L'\u00F5', NULL, A_LOW_OTILDE, false		},
-	{ L'\u00D6', L'\u00F6', NULL, A_LOW_ODIERESIS, false	},
-	{ L'\u00F7', L'\u00F7', "KP_SLASH", A_DIVIDE, false 	},
-	{ L'\u00D8', L'\u00F8', NULL, A_LOW_OSLASH, false		},
-	{ L'\u00D9', L'\u00F9', NULL, A_LOW_UGRAVE, false		},
-	{ L'\u00DA', L'\u00FA', NULL, A_LOW_UACUTE, false		},
-	{ L'\u00DB', L'\u00FB', NULL, A_LOW_UCIRCUMFLEX, false	},
-	{ L'\u00DC', L'\u00FC', NULL, A_LOW_UDIERESIS, false	},
-	{ L'\u00DD', L'\u00FD', NULL, A_LOW_YACUTE, false		},
-	{ L'\u00DE', L'\u00FE', NULL, A_LOW_THORN, false		},
+	{ L'\u00C0', L'\u00E0', NULL, A_LOW_AGRAVE, false					},
+	{ L'\u00C1', L'\u00E1', NULL, A_LOW_AACUTE, false					},
+	{ L'\u00C2', L'\u00E2', NULL, A_LOW_ACIRCUMFLEX, false				},
+	{ L'\u00C3', L'\u00E3', NULL, A_LOW_ATILDE, false					},
+	{ L'\u00C4', L'\u00E4', NULL, A_LOW_ADIERESIS, false				},
+	{ L'\u00C5', L'\u00E5', NULL, A_LOW_ARING, false					},
+	{ L'\u00C6', L'\u00E6', NULL, A_LOW_AE, false						},
+	{ L'\u00C7', L'\u00E7', NULL, A_LOW_CCEDILLA, false					},
+	{ L'\u00C8', L'\u00E8', NULL, A_LOW_EGRAVE, false					},
+	{ L'\u00C9', L'\u00E9', NULL, A_LOW_EACUTE, false					},
+	{ L'\u00CA', L'\u00EA', NULL, A_LOW_ECIRCUMFLEX, false				},
+	{ L'\u00CB', L'\u00EB', NULL, A_LOW_EDIERESIS, false				},
+	{ L'\u00CC', L'\u00EC', NULL, A_LOW_IGRAVE, false					},
+	{ L'\u00CD', L'\u00ED', NULL, A_LOW_IACUTE, false					},
+	{ L'\u00CE', L'\u00EE', NULL, A_LOW_ICIRCUMFLEX, false				},
+	{ L'\u00CF', L'\u00EF', NULL, A_LOW_IDIERESIS, false				},
+	{ L'\u00D0', L'\u00F0', NULL, A_LOW_ETH, false						},
+	{ L'\u00D1', L'\u00F1', NULL, A_LOW_NTILDE, false					},
+	{ L'\u00D2', L'\u00F2', NULL, A_LOW_OGRAVE, false					},
+	{ L'\u00D3', L'\u00F3', NULL, A_LOW_OACUTE, false					},
+	{ L'\u00D4', L'\u00F4', NULL, A_LOW_OCIRCUMFLEX, false				},
+	{ L'\u00D5', L'\u00F5', NULL, A_LOW_OTILDE, false					},
+	{ L'\u00D6', L'\u00F6', NULL, A_LOW_ODIERESIS, false				},
+	{ L'\u00F7', L'\u00F7', "KP_SLASH", A_DIVIDE, false					},
+	{ L'\u00D8', L'\u00F8', NULL, A_LOW_OSLASH, false					},
+	{ L'\u00D9', L'\u00F9', NULL, A_LOW_UGRAVE, false					},
+	{ L'\u00DA', L'\u00FA', NULL, A_LOW_UACUTE, false					},
+	{ L'\u00DB', L'\u00FB', NULL, A_LOW_UCIRCUMFLEX, false				},
+	{ L'\u00DC', L'\u00FC', NULL, A_LOW_UDIERESIS, false				},
+	{ L'\u00DD', L'\u00FD', NULL, A_LOW_YACUTE, false					},
+	{ L'\u00DE', L'\u00FE', NULL, A_LOW_THORN, false					},
 	{ 0x9f, 0xff, NULL, A_LOW_YDIERESIS, false							},	// *******
 
 	{ 0x100, 0x100, "JOY0", A_JOY0, false								},
@@ -392,7 +394,7 @@ EDIT FIELDS
 =============================================================================
 */
 
-
+extern vec4_t chatColour;
 /*
 ===================
 Field_Draw
@@ -401,7 +403,7 @@ Handles horizontal scrolling and cursor blinking
 x, y, amd width are in pixels
 ===================
 */
-void Field_VariableSizeDraw( field_t *edit, int x, int y, int width, int size, qboolean showCursor, qboolean noColorEscape ) {
+void Field_VariableSizeDraw( field_t *edit, int x, int y, int width, qboolean smallSize, qboolean showCursor, qboolean noColorEscape ) {
 	int		len;
 	int		drawLen;
 	int		prestep;
@@ -441,14 +443,14 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int width, int size, q
 	str[ drawLen ] = 0;
 
 	// draw it
-	if ( size == SMALLCHAR_WIDTH ) {
+	if ( smallSize ) {
 		float	color[4];
 
 		color[0] = color[1] = color[2] = color[3] = 1.0;
 		SCR_DrawSmallStringExt( x, y, str, color, qfalse, noColorEscape );
 	} else {
 		// draw big string with drop shadow
-		SCR_DrawBigString( x, y, str, 1.0, noColorEscape );
+		SCR_DrawStringExt2(x*cls.widthRatioCoef, y, BIGCHAR_WIDTH*cls.widthRatioCoef, BIGCHAR_HEIGHT, str, chatColour, qfalse, noColorEscape);
 	}
 
 	// draw the cursor
@@ -465,24 +467,24 @@ void Field_VariableSizeDraw( field_t *edit, int x, int y, int width, int size, q
 
 		i = drawLen - strlen( str );
 
-		if ( size == SMALLCHAR_WIDTH ) {
-			SCR_DrawSmallChar( x + ( edit->cursor - prestep - i ) * size, y, cursorChar );
+		if ( smallSize ) {
+			SCR_DrawSmallChar( x + ( edit->cursor - prestep - i ) * con.charWidth, y, cursorChar );
 		} else {
 			str[0] = cursorChar;
 			str[1] = 0;
-			SCR_DrawBigString( x + ( edit->cursor - prestep - i ) * size, y, str, 1.0, qfalse );
+			SCR_DrawStringExt2((x + (edit->cursor - prestep - i)*BIGCHAR_WIDTH)*cls.widthRatioCoef, y, BIGCHAR_WIDTH*cls.widthRatioCoef, BIGCHAR_HEIGHT, str, chatColour, qfalse, qfalse);
 		}
 	}
 }
 
 void Field_Draw( field_t *edit, int x, int y, int width, qboolean showCursor, qboolean noColorEscape )
 {
-	Field_VariableSizeDraw( edit, x, y, width, SMALLCHAR_WIDTH, showCursor, noColorEscape );
+	Field_VariableSizeDraw( edit, x, y, width, qtrue, showCursor, noColorEscape );
 }
 
 void Field_BigDraw( field_t *edit, int x, int y, int width, qboolean showCursor, qboolean noColorEscape )
 {
-	Field_VariableSizeDraw( edit, x, y, width, BIGCHAR_WIDTH, showCursor, noColorEscape );
+	Field_VariableSizeDraw( edit, x, y, width, qfalse, showCursor, noColorEscape );
 }
 
 /*
@@ -528,6 +530,33 @@ void Field_KeyDownEvent( field_t *edit, int key ) {
 		return;
 	}
 
+#if 1
+	// ctrl backspace is del
+	if ((key == A_BACKSPACE) && kg.keys[A_CTRL].down) {
+		while (edit->cursor > 0) {
+			len = strlen(edit->buffer);
+			//Com_Printf("Deleting %c\n", (char)edit->buffer[edit->cursor - 1]);
+
+			if (edit->buffer[edit->cursor-1] == ' ' && edit->buffer[edit->cursor-2] != ' ') //Idk, break if its a space (unless its a group of spaces?)
+				break;
+			if (edit->buffer[edit->cursor - 1] == '/' && edit->buffer[edit->cursor - 2] != '/') //Idk, break if its a space (unless its a group of spaces?)
+				break;
+			if (edit->buffer[edit->cursor - 1] == '_' && edit->buffer[edit->cursor - 2] != '_') //Idk, break if its a space (unless its a group of spaces?)
+				break;
+			if (edit->buffer[edit->cursor - 1] == '-' && edit->buffer[edit->cursor - 2] != '-') //Idk, break if its a space (unless its a group of spaces?)
+				break;
+
+			memmove(edit->buffer + edit->cursor - 1, edit->buffer + edit->cursor, len + 1 - edit->cursor);
+			edit->cursor--;
+			if (edit->cursor < edit->scroll)
+			{
+				edit->scroll--;
+			}
+		}
+		return;
+	}
+#endif
+	
 	key = tolower( key );
 	len = strlen( edit->buffer );
 
@@ -582,25 +611,43 @@ Field_CharEvent
 */
 void Field_CharEvent( field_t *edit, int ch ) {
 	int		len;
+	int max = (edit == &chatField ? 151 : MAX_EDIT_LINE);
 
 	if ( ch == 'v' - 'a' + 1 ) {	// ctrl-v is paste
 		Field_Paste( edit );
 		return;
 	}
 
-	if ( ch == 'c' - 'a' + 1 ) {	// ctrl-c clears the field
+	if ( ch == 'z' - 'a' + 1 ) {	// ctrl-z clears the field
 		Field_Clear( edit );
 		return;
+	}
+
+	if (ch == 'c' - 'a' + 1) {	// ctrl-c copies latest link or ip from console
+		Con_CopyLink();
+		return;
+	}
+
+	if (ch == 's' - 'a' + 1) {	// ctrl-s copies console to clipboard
+		Con_Copy();
 	}
 
 	len = strlen( edit->buffer );
 
 	if ( ch == 'h' - 'a' + 1 )	{	// ctrl-h is backspace
 		if ( edit->cursor > 0 ) {
-			memmove( edit->buffer + edit->cursor - 1,
-				edit->buffer + edit->cursor, len + 1 - edit->cursor );
+			if (edit == &chatField)
+			{//since we replace these in sent messages
+				if (edit->cursor - 1 == '%')
+					max += 3;
+				if (edit->cursor - 1 == '\"')
+					max += 2;
+			}
+
+			memmove(edit->buffer + edit->cursor - 1,
+				edit->buffer + edit->cursor, len + 1 - edit->cursor);
 			edit->cursor--;
-			if ( edit->cursor < edit->scroll )
+			if (edit->cursor < edit->scroll)
 			{
 				edit->scroll--;
 			}
@@ -608,7 +655,13 @@ void Field_CharEvent( field_t *edit, int ch ) {
 		return;
 	}
 
-	if ( ch == 'a' - 'a' + 1 ) {	// ctrl-a is home
+	if (ch == 'a' - 'a' + 1) {		// ctrl-a clears field and copies contents to clipboard
+		Sys_SetClipboardData(edit->buffer);
+		Field_Clear(edit);
+		return;
+	}
+
+	if ( ch == 'q' - 'a' + 1 ) {	// ctrl-q is home
 		edit->cursor = 0;
 		edit->scroll = 0;
 		return;
@@ -627,15 +680,23 @@ void Field_CharEvent( field_t *edit, int ch ) {
 		return;
 	}
 
+	if (edit == &chatField) {
+		if (ch == '%')
+			max -= 3;
+
+		if (ch == '"')
+			max -= 2;
+	}
+
 	if ( kg.key_overstrikeMode ) {
 		// - 2 to leave room for the leading slash and trailing \0
-		if ( edit->cursor == MAX_EDIT_LINE - 2 )
+		if ( edit->cursor == max - 2 )
 			return;
 		edit->buffer[edit->cursor] = ch;
 		edit->cursor++;
 	} else {	// insert mode
 		// - 2 to leave room for the leading slash and trailing \0
-		if ( len == MAX_EDIT_LINE - 2 ) {
+		if ( len == max - 2 ) {
 			return; // all full
 		}
 		memmove( edit->buffer + edit->cursor + 1,
@@ -678,8 +739,11 @@ void Console_Key( int key ) {
 			Com_sprintf( g_consoleField.buffer, sizeof( g_consoleField.buffer ), "%s", temp );
 			g_consoleField.cursor--;
 		}
-	//	else
-	//		Field_AutoComplete( &g_consoleField );
+
+		if (cl_allowEnterCompletion->integer)
+			Field_AutoComplete(&g_consoleField, qtrue);
+
+		cls.afkTime = cls.realtime;
 
 		// print executed command
 		Com_Printf( "%c%s\n", CONSOLE_PROMPT_CHAR, g_consoleField.buffer );
@@ -719,7 +783,6 @@ void Console_Key( int key ) {
 
 		Field_Clear( &g_consoleField );
 
-		g_consoleField.widthInChars = g_console_field_width;
 
 	//	CL_SaveConsoleHistory();
 
@@ -755,7 +818,6 @@ void Console_Key( int key ) {
 		if (historyLine >= nextHistoryLine) {
 			historyLine = nextHistoryLine;
 			Field_Clear( &g_consoleField );
-			g_consoleField.widthInChars = g_console_field_width;
 			return;
 		}
 		g_consoleField = historyEditLines[historyLine % COMMAND_HISTORY];
@@ -805,6 +867,7 @@ In game talk message
 */
 void Message_Key( int key ) {
 	char buffer[MAX_STRING_CHARS] = {0};
+	char coloredString[MAX_EDIT_LINE] = { 0 };
 
 	if ( key == A_ESCAPE ) {
 		Key_SetCatcher( Key_GetCatcher() & ~KEYCATCH_MESSAGE );
@@ -814,14 +877,46 @@ void Message_Key( int key ) {
 
 	if ( key == A_ENTER || key == A_KP_ENTER ) {
 		if ( chatField.buffer[0] && cls.state == CA_ACTIVE ) {
-				 if ( chat_playerNum != -1 )	Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer );
-			else if ( chat_team )				Com_sprintf( buffer, sizeof( buffer ), "say_team \"%s\"\n", chatField.buffer );
-			else								Com_sprintf( buffer, sizeof( buffer ), "say \"%s\"\n", chatField.buffer );
+			if (Q_strchrs(chatField.buffer, "%") || Q_strchrs(chatField.buffer, "\""))
+			{ //replace " with '' and % with something github hates
+				char buffer[MAX_EDIT_LINE];
+				char *src = buffer, *dst = chatField.buffer;
 
+				Q_strncpyz(buffer, chatField.buffer, sizeof(buffer));
+
+				while (*src) {
+					if (*src == '%') {
+						*dst = '\xb0'; //(char)176 (degree sign)
+						dst++;
+						*dst = '/';
+						dst++;
+						*dst = '.';
+					}
+					else if (*src == '"') {
+						*dst = '\'';
+						dst++;
+						*dst = '\'';
+					}
+					else {
+						*dst = *src;
+					}
+					src++;
+					dst++;
+				}
+				*dst = 0;
+			}
+
+			CL_RandomizeColors(chatField.buffer, coloredString);
+			if ( chat_playerNum != -1 )			Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
+			else if ( chat_team )				Com_sprintf( buffer, sizeof( buffer ), "say_team \"%s\"\n", chatField.buffer);
+			else if (strlen(cl_chatStylePrefix->string) || strlen(cl_chatStyleSuffix->string))
+												Com_sprintf( buffer, sizeof( buffer ), "say \"%s%s%s\"\n", cl_chatStylePrefix->string, coloredString, cl_chatStyleSuffix->string );
+			else								Com_sprintf( buffer, sizeof( buffer ), "say \"%s\"\n", coloredString );
 			CL_AddReliableCommand( buffer, qfalse );
 		}
 		Key_SetCatcher( Key_GetCatcher() & ~KEYCATCH_MESSAGE );
 		Field_Clear( &chatField );
+		cls.afkTime = cls.realtime;
 		return;
 	}
 
@@ -1227,9 +1322,29 @@ void CL_ParseBinding( int key, qboolean down, unsigned time )
 
 	if( cls.state == CA_DISCONNECTED && Key_GetCatcher( ) == 0 )
 		return;
-	if( !kg.keys[keynames[key].upper].binding || !kg.keys[keynames[key].upper].binding[0] )
+
+	// for rshift/ralt/rctrl, prefer the specific rshift/rctrl/ralt bind if
+	// it exists; otherwise, fallback to the generic shift/ctrl/alt bind
+	const char *binding;
+	int genericKey = 0;
+	switch (key) {
+		case A_SHIFT2:	genericKey = A_SHIFT;	break;
+		case A_CTRL2:	genericKey = A_CTRL;	break;
+		case A_ALT2:	genericKey = A_ALT;		break;
+	}
+	if (genericKey) {
+		if (VALIDSTRING(kg.keys[keynames[key].upper].binding))
+			binding = kg.keys[keynames[key].upper].binding;
+		else
+			binding = kg.keys[keynames[genericKey].upper].binding;
+	}
+	else {
+		binding = kg.keys[keynames[key].upper].binding;
+	}
+
+	if (!VALIDSTRING(binding))
 		return;
-	Q_strncpyz( buf, kg.keys[keynames[key].upper].binding, sizeof( buf ) );
+	Q_strncpyz(buf, binding, sizeof(buf));
 
 	// run all bind commands if console, ui, etc aren't reading keys
 	allCommands = (qboolean)( Key_GetCatcher( ) == 0 );
@@ -1315,10 +1430,31 @@ void CL_KeyDownEvent( int key, unsigned time )
 
 	// console key is hardcoded, so the user can never unbind it
 	if ( key == A_CONSOLE || (kg.keys[A_SHIFT].down && key == A_ESCAPE) ) {
+		Con_SetFrac(0.5f);
+		if (key == A_CONSOLE) {
+			if (kg.keys[A_CTRL].down)
+				Con_SetFrac(1.0f);
+			else if (kg.keys[A_SHIFT].down)
+				Con_SetFrac(0.25f);
+		}
 		Con_ToggleConsole_f();
 		Key_ClearStates ();
 		return;
 	}
+
+	/*if (kg.keys[A_CTRL].down && key == A_CONSOLE) {
+		Con_SetFrac(1.0f);
+		Con_ToggleConsole_f();
+		Key_ClearStates();
+		return;
+	}
+
+	if (kg.keys[A_SHIFT].down && key == A_CONSOLE) {
+		Con_SetFrac(0.25f);
+		Con_ToggleConsole_f();
+		Key_ClearStates();
+		return;
+	}*/
 
 	// keys can still be used for bound actions
 	if ( cls.state == CA_CINEMATIC && !Key_GetCatcher() ) {
@@ -1352,6 +1488,9 @@ void CL_KeyDownEvent( int key, unsigned time )
 		if ( !(Key_GetCatcher() & KEYCATCH_UI) ) {
 			if ( cls.state == CA_ACTIVE && !clc.demoplaying )
 				UIVM_SetActiveMenu( UIMENU_INGAME );
+			else if (clc.demoplaying) { //JAPRO ENGINE, stop escape in demo from fucking you to main menu
+				UIVM_SetActiveMenu(UIMENU_INGAME);
+			}
 			else {
 				CL_Disconnect_f();
 				S_StopAllSounds();

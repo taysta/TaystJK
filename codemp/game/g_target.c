@@ -218,7 +218,12 @@ void Use_Target_Print (gentity_t *ent, gentity_t *other, gentity_t *activator)
 			}
 			else
 			{
-				trap->SendServerCommand( activator-g_entities, va("cp \"%s\"", ent->message ));
+				if (ent->spawnflags & 8) //Spawnflags 8 is console print
+					trap->SendServerCommand( activator-g_entities, va("print \"%s\n\"", ent->message ));
+				else if (ent->spawnflags & 16) //Spawnflags 16 is chat print
+					trap->SendServerCommand( activator-g_entities, va("chat \"%s\"", ent->message));
+				else //Otherwise do normal centerprint
+					trap->SendServerCommand( activator-g_entities, va("cp \"%s\"", ent->message ));
 			}
 		}
 		//NOTE: change in functionality - if there *is* no valid client ent, it won't send it to anyone at all
@@ -255,7 +260,12 @@ void Use_Target_Print (gentity_t *ent, gentity_t *other, gentity_t *activator)
 	}
 	else
 	{
-		trap->SendServerCommand( -1, va("cp \"%s\"", ent->message ));
+		if (ent->spawnflags & 8) //Spawnflags 8 is console print
+			trap->SendServerCommand( -1, va("print \"%s\n\"", ent->message ));
+		else if (ent->spawnflags & 16) //Spawnflags 16 is chat print
+			trap->SendServerCommand( -1, va("chat \"%s\"", ent->message));
+		else //Otherwise do normal centerprint
+			trap->SendServerCommand( -1, va("cp \"%s\"", ent->message ));
 	}
 }
 
@@ -385,7 +395,7 @@ void target_laser_think (gentity_t *self) {
 	// fire forward and see what we hit
 	VectorMA (self->s.origin, 2048, self->movedir, end);
 
-	trap->Trace( &tr, self->s.origin, NULL, NULL, end, self->s.number, CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_CORPSE, qfalse, 0, 0);
+	JP_Trace( &tr, self->s.origin, NULL, NULL, end, self->s.number, CONTENTS_SOLID|CONTENTS_BODY|CONTENTS_CORPSE, qfalse, 0, 0);
 
 	if ( tr.entityNum ) {
 		// hurt it if we can
@@ -462,6 +472,7 @@ void SP_target_laser (gentity_t *self)
 
 void target_teleporter_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
 	gentity_t	*dest;
+	qboolean keepVel = qfalse;
 
 	if (!activator->client)
 		return;
@@ -474,7 +485,10 @@ void target_teleporter_use( gentity_t *self, gentity_t *other, gentity_t *activa
 		return;
 	}
 
-	TeleportPlayer( activator, dest->s.origin, dest->s.angles );
+	if (self->spawnflags & 1)
+		keepVel = qtrue;
+
+	TeleportPlayer( activator, dest->s.origin, dest->s.angles, keepVel );
 }
 
 /*QUAKED target_teleporter (1 0 0) (-8 -8 -8) (8 8 8)
@@ -728,8 +742,14 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 		return;
 	}
 
-	//FIXME: need a seed
-	pick = Q_irand(1, t_count);
+	//FIXME: need a seed - Okay?
+	if(self->spawnflags & 2) {
+		int seed = trap->Milliseconds() % 256;
+		pick = (int)((Q_random(&seed)*t_count)+1);
+	}
+	else
+		pick = Q_irand(1, t_count);
+
 	t_count = 0;
 	while ( (t = G_Find (t, FOFS(targetname), self->target)) != NULL )
 	{
@@ -964,7 +984,10 @@ void target_level_change_use(gentity_t *self, gentity_t *other, gentity_t *activ
 {
 	G_ActivateBehavior(self,BSET_USE);
 
-	trap->SendConsoleCommand(EXEC_NOW, va("map %s", self->message));
+	if (sv_cheats.integer)
+		trap->SendConsoleCommand(EXEC_APPEND, va("devmap %s\n", self->message));
+	else
+		trap->SendConsoleCommand(EXEC_APPEND, va("map %s\n", self->message));
 }
 
 /*QUAKED target_level_change (1 0 0) (-4 -4 -4) (4 4 4)

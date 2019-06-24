@@ -70,6 +70,7 @@ typedef enum {
 	SE_MOUSE,	// evValue and evValue2 are reletive signed x / y moves
 	SE_JOYSTICK_AXIS,	// evValue is an axis number and evValue2 is the current state (-127 to 127)
 	SE_CONSOLE,	// evPtr is a char*
+	SE_AIO_FCLOSE,  // evPtr is a pointer to fsh[h]
 	SE_MAX
 } sysEventType_t;
 
@@ -97,7 +98,6 @@ typedef intptr_t QDECL VMMainProc( int, intptr_t, intptr_t, intptr_t, intptr_t, 
 typedef intptr_t QDECL SystemCallProc( intptr_t, ... );
 typedef void * QDECL GetModuleAPIProc( int, ... );
 
-void	*Sys_LoadSPGameDll( const char *name, GetGameAPIProc **GetGameAPI );
 void	* QDECL Sys_LoadDll(const char *name, qboolean useSystemLib);
 void	* QDECL Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallProc *systemcalls );
 void	* QDECL Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI );
@@ -107,6 +107,7 @@ char	*Sys_GetCurrentUser( void );
 
 void	NORETURN QDECL Sys_Error( const char *error, ... );
 void	NORETURN Sys_Quit (void);
+void	Sys_SetClipboardData(const char *);
 char	*Sys_GetClipboardData( void );	// note that this isn't journaled...
 
 void	Sys_Print( const char *msg );
@@ -155,6 +156,9 @@ time_t Sys_FileTime( const char *path );
 qboolean Sys_LowPhysicalMemory();
 
 void Sys_SetProcessorAffinity( void );
+#ifdef _WIN32
+void Sys_SetProcessPriority(void);
+#endif
 
 typedef enum graphicsApi_e
 {

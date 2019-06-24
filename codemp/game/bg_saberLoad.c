@@ -178,6 +178,20 @@ saber_colors_t TranslateSaberColor( const char *name ) {
 		return SABER_BLUE;
 	if ( !Q_stricmp( name, "purple" ) )
 		return SABER_PURPLE;
+	//rgb
+	if ( !Q_stricmp( name, "rgb" ) )
+		return SABER_RGB;
+	if ( !Q_stricmp( name, "rgb2" ) )
+		return SABER_FLAME1;
+	if ( !Q_stricmp( name, "rgb3" ) )
+		return SABER_ELEC1;
+	if ( !Q_stricmp( name, "rgb4" ) )
+		return SABER_FLAME2;
+	if ( !Q_stricmp( name, "rgb5" ) )
+		return SABER_ELEC2;
+	if ( !Q_stricmp( name, "black" ) )
+		return SABER_BLACK;
+	//rgb
 	if ( !Q_stricmp( name, "random" ) )
 		return (saber_colors_t)Q_irand( SABER_ORANGE, SABER_PURPLE );
 
@@ -494,6 +508,14 @@ void WP_SaberSetDefaults( saberInfo_t *saber ) {
 	//===SECONDARY BLADES===================
 	//done in cgame (client-side code)
 	saber->trailStyle2			= 0;			// 0 - default (0) is normal, 1 is a motion blur and 2 is no trail at all (good for real-sword type mods)
+#if NEW_SABER_PARMS
+	saber->customBladeShader	= 0;
+	saber->customTrailShader	= 0;
+	saber->customGlowShader		= 0;
+	saber->customRGB[0]			= 0;
+	saber->customRGB[1]			= 0;
+	saber->customRGB[2]			= 0;
+#endif
 	saber->g2MarksShader2		= 0;			// none - if set, the game will use this shader for marks on enemies instead of the default "gfx/damage/saberglowmark"
 	saber->g2WeaponMarkShader2	= 0;			// none - if set, the game will use this shader for marks on enemies instead of the default "gfx/damage/saberglowmark"
 	saber->hit2Sound[0]			= 0;			// none - if set, plays one of these 3 sounds when saber hits a person - NOTE: must provide all 3!!!
@@ -1336,6 +1358,72 @@ static void Saber_ParseTrailStyle( saberInfo_t *saber, const char **p ) {
 	}
 	saber->trailStyle = n;
 }
+#if NEW_SABER_PARMS
+static void Saber_ParseCustomBladeShader(saberInfo_t *saber, const char **p) {
+	const char *s;
+	if (COM_ParseString(p, &s)) {
+		SkipRestOfLine(p);
+		return;
+	}
+#ifdef _CGAME
+	if (s)
+		saber->customBladeShader = trap->R_RegisterShader(s);
+	else
+#endif
+		saber->customBladeShader = 0;
+}
+static void Saber_ParseCustomTrailShader(saberInfo_t *saber, const char **p) {
+	const char *s;
+	if (COM_ParseString(p, &s)) {
+		SkipRestOfLine(p);
+		return;
+	}
+#ifdef _CGAME
+	if (s)
+		saber->customTrailShader = trap->R_RegisterShader(s);
+	else
+#endif
+		saber->customTrailShader = 0;
+}
+static void Saber_ParseCustomGlowShader(saberInfo_t *saber, const char **p) {
+	const char *s;
+	if (COM_ParseString(p, &s)) {
+		SkipRestOfLine(p);
+		return;
+	}
+#ifdef _CGAME
+	if (s)
+		saber->customGlowShader = trap->R_RegisterShader(s);
+	else
+#endif
+		saber->customGlowShader = 0;
+}
+static void Saber_ParseCustomRGBLight(saberInfo_t *saber, const char **p) {
+#ifdef _CGAME
+	int i;
+	float f;
+#endif
+	saber->useCustomRGBColor = qfalse;
+	saber->customRGB[0] = 0.0f;
+	saber->customRGB[1] = 0.0f;
+	saber->customRGB[2] = 0.0f;
+
+#ifdef _CGAME
+	for (i = 0; i < 3; i++)
+	{
+		if (COM_ParseFloat(p, &f)) {
+			Com_Printf("WARNING: Parsed incomplete customRGB key!\n");
+			SkipRestOfLine(p);
+			return;
+		}
+		saber->customRGB[i] = f / 255.0f;
+	}
+
+	if (saber->customRGB[0] != 0.0f || saber->customRGB[1] != 0.0f || saber->customRGB[2] != 0.0f)
+		saber->useCustomRGBColor = qtrue;
+#endif
+}
+#endif
 static void Saber_ParseG2MarksShader( saberInfo_t *saber, const char **p ) {
 	const char *value;
 	if ( COM_ParseString( p, &value ) ) {
@@ -1943,6 +2031,12 @@ static keywordHash_t saberParseKeywords[] = {
 	{ "noBlade2",				Saber_ParseNoBlade2,			NULL	},
 	{ "trailStyle",				Saber_ParseTrailStyle,			NULL	},
 	{ "trailStyle2",			Saber_ParseTrailStyle2,			NULL	},
+#ifdef NEW_SABER_PARMS
+	{ "customBladeShader",		Saber_ParseCustomBladeShader,	NULL	},
+	{ "customTrailShader",		Saber_ParseCustomTrailShader,	NULL	},
+	{ "customGlowShader",		Saber_ParseCustomGlowShader,	NULL	},
+	{ "customRGB",				Saber_ParseCustomRGBLight,		NULL	},
+#endif
 	{ "g2MarksShader",			Saber_ParseG2MarksShader,		NULL	},
 	{ "g2MarksShader2",			Saber_ParseG2MarksShader2,		NULL	},
 	{ "g2WeaponMarkShader",		Saber_ParseG2WeaponMarkShader,	NULL	},
@@ -2333,6 +2427,10 @@ void WP_SaberGetHiltInfo( const char *singleHilts[MAX_SABER_HILTS], const char *
 	const char	*saberName;
 	const char	*token;
 	const char	*p;
+#ifdef UI_BUILD
+	int			w = 0;
+	qboolean	baseHilt = qfalse;
+#endif
 
 	//go through all the loaded sabers and put the valid ones in the proper list
 	p = saberParms;
@@ -2361,6 +2459,20 @@ void WP_SaberGetHiltInfo( const char *singleHilts[MAX_SABER_HILTS], const char *
 			SkipBracedSection( &p, 0 );
 			continue;
 		}
+
+#ifdef UI_BUILD
+		baseHilt = qfalse;
+		if (ui_sv_pure.integer) {
+			for (w = 0; w <= BASE_HILT_COUNT; w++) {
+				if (!Q_stricmp(saberName, baseHiltList[w])) {
+					baseHilt = qtrue;
+					break;
+				}
+			}
+			if (!baseHilt)
+				continue;
+		}
+#endif
 
 		if ( WP_IsSaberTwoHanded( saberName ) )
 		{

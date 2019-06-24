@@ -1244,7 +1244,7 @@ const glyphInfo_t *CFontInfo::GetLetter(const unsigned int uiLetter, int *piShad
 		ASSIGN_WITH_ROUNDING( m_AsianGlyph.height,		pGlyph->height );
 		ASSIGN_WITH_ROUNDING( m_AsianGlyph.horizAdvance,pGlyph->horizAdvance );
 //		m_AsianGlyph.horizOffset	= /*Round*/( m_fAltSBCSFontScaleFactor * pGlyph->horizOffset );
-		ASSIGN_WITH_ROUNDING( m_AsianGlyph.width,		pGlyph->width );
+		ASSIGN_WITH_ROUNDING( m_AsianGlyph.width,		pGlyph->width*tr.widthRatioCoef );
 
 		pGlyph = &m_AsianGlyph;
 	}
@@ -1390,12 +1390,12 @@ float RE_Font_StrLenPixelsNew( const char *psText, const int iFontHandle, const 
 
 			float fValue = iPixelAdvance * ((uiLetter > (unsigned)g_iNonScaledCharRange) ? fScaleAsian : fScale);
 
-			if ( r_aspectCorrectFonts->integer == 1 ) {
-				fValue *= ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
+			if ( r_aspectCorrectFonts->integer == 1 || cl_ratioFix->integer == 1 ) {
+				fValue *= tr.widthRatioCoef;
 			}
-			else if ( r_aspectCorrectFonts->integer == 2 ) {
+			else if ( r_aspectCorrectFonts->integer == 2 || cl_ratioFix->integer == 2 ) { // ?? duno
 				fValue = ceilf(
-					fValue * ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth))
+					fValue * tr.widthRatioCoef
 				);
 			}
 			thisLineWidth += curfont->mbRoundCalcs
@@ -1469,6 +1469,7 @@ int RE_Font_HeightPixels(const int iFontHandle, const float fScale)
 
 // iMaxPixelWidth is -1 for "all of string", else pixel display count...
 //
+cvar_t *cl_coloredTextShadows;
 void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
 {
 	static qboolean gbInShadow = qfalse;	// MUST default to this
@@ -1490,26 +1491,26 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 //	// test code only
 //	if (GetLanguageEnum() == eTaiwanese)
 //	{
-//		psText = "Wp:¶}·F§a ¿p·G´µ¡A§Æ±æ§A¹³¥L­Ì»¡ªº¤@¼Ë¦æ¡C";
+//		psText = "Wp:ï¿½}ï¿½Fï¿½a ï¿½pï¿½Gï¿½ï¿½ï¿½Aï¿½Æ±ï¿½Aï¿½ï¿½ï¿½Lï¿½Ì»ï¿½ï¿½ï¿½ï¿½@ï¿½Ë¦ï¿½C";
 //	}
 //	else
 //	if (GetLanguageEnum() == eChinese)
 //	{
-//		//psText = "Ó¶±øÕ½³¡II  Ô¼º²?ÄªÁÖË¹  ÈÎÎñÊ§°Ü  ÄãÒªÌ×ÓÃ»­ÃæÉè¶¨µÄ±ä¸üÂð£¿  Ô¤Éè,S3 Ñ¹Ëõ,DXT1 Ñ¹Ëõ,DXT5 Ñ¹Ëõ,16 Bit,32 Bit";
-//		psText = "Ó¶±øÕ½³¡II";
+//		//psText = "Ó¶ï¿½ï¿½Õ½ï¿½ï¿½II  Ô¼ï¿½ï¿½?Äªï¿½ï¿½Ë¹  ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½  ï¿½ï¿½Òªï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½è¶¨ï¿½Ä±ï¿½ï¿½ï¿½ï¿½  Ô¤ï¿½ï¿½,S3 Ñ¹ï¿½ï¿½,DXT1 Ñ¹ï¿½ï¿½,DXT5 Ñ¹ï¿½ï¿½,16 Bit,32 Bit";
+//		psText = "Ó¶ï¿½ï¿½Õ½ï¿½ï¿½II";
 //	}
 //	else
 //	if (GetLanguageEnum() == eThai)
 //	{
-//		//psText = "ÁÒµÃ°Ò¹¼ÅÔµÀÑ³±ìÍØµÊÒË¡ÃÃÁÃËÑÊÊÓËÃÑºÍÑ¡¢ÃÐä·Â·Õèãªé¡Ñº¤ÍÁ¾ÔÇàµÍÃì";
-//		psText = "ÁÒµÃ°Ò¹¼ÅÔµ";
-//		psText = "ÃËÑÊÊÓËÃÑº";
-//		psText = "ÃËÑÊÊÓËÃÑº   ÍÒ_¡Ô¹_¤ÍÃì·_1415";
+//		//psText = "ï¿½ÒµÃ°Ò¹ï¿½ï¿½Ôµï¿½Ñ³ï¿½ï¿½ï¿½Øµï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñºï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Ñºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+//		psText = "ï¿½ÒµÃ°Ò¹ï¿½ï¿½Ôµ";
+//		psText = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñº";
+//		psText = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñº   ï¿½ï¿½_ï¿½Ô¹_ï¿½ï¿½ï¿½ï¿½_1415";
 //	}
 //	else
 //	if (GetLanguageEnum() == eKorean)
 //	{
-//		psText = "Wp:¼îÅ¸ÀÓÀÌ´Ù ¸Ö¸°. ±×µéÀÌ ¸»ÇÑ´ë·Î ³×°¡ ÀßÇÒÁö ±â´ëÇÏ°Ú´Ù.";
+//		psText = "Wp:ï¿½ï¿½Å¸ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½Ö¸ï¿½. ï¿½×µï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½ ï¿½×°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°Ú´ï¿½.";
 //	}
 //	else
 //	if (GetLanguageEnum() == eJapanese)
@@ -1521,14 +1522,14 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 //	else
 //	if (GetLanguageEnum() == eRussian)
 //	{
-////		//psText = "Íà âåðøèíå õîëìà ñòîèò ñòàðûé äîì ñ ïðèâèäåíèÿìè è áàøíÿ ñ âîëøåáíûìè ÷àñàìè."
-//		psText = "Íà âåðøèíå õîëìà ñòîèò";
+////		//psText = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½."
+//		psText = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½";
 //	}
 //	else
 //	if (GetLanguageEnum() == ePolish)
 //	{
-//		psText = "za³o¿ony w 1364 roku, jest najstarsz¹ polsk¹ uczelni¹ i nale¿y...";
-//		psText = "za³o¿ony nale¿y";
+//		psText = "zaï¿½oï¿½ony w 1364 roku, jest najstarszï¿½ polskï¿½ uczelniï¿½ i naleï¿½y...";
+//		psText = "zaï¿½oï¿½ony naleï¿½y";
 //	}
 
 
@@ -1547,15 +1548,42 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 	}
 
 	// Draw a dropshadow if required
-	if(iFontHandle & STYLE_DROPSHADOW)
+	if (iFontHandle & STYLE_DROPSHADOW)
 	{
-		offset = Round(curfont->GetPointSize() * fScale * 0.075f);
+		if (cl_coloredTextShadows && cl_coloredTextShadows->integer) {
+			int i = 0, r = 0;
+			char dropShadowText[1024];
+			const vec4_t v4DKGREY2 = { 0.15f, 0.15f, 0.15f, rgba ? rgba[3] : 1.0f };
 
-		const vec4_t v4DKGREY2 = {0.15f, 0.15f, 0.15f, rgba?rgba[3]:1.0f};
+			offset = Round(curfont->GetPointSize() * fScale * 0.075f);
 
-		gbInShadow = qtrue;
-		RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
-		gbInShadow = qfalse;
+			//^blah stuff confuses shadows, so parse it out first
+			while (psText[i] && r < 1024) {
+				if (psText[i] == '^') {
+					if ((i < 1 || psText[i - 1] != '^') &&
+						(!psText[i + 1] || psText[i + 1] != '^')) { //If char before or after ^ is ^ then it prints ^ instead of accepting a colorcode
+						i += 2;
+					}
+				}
+
+				dropShadowText[r] = psText[i];
+				r++;
+				i++;
+			}
+			dropShadowText[r] = 0;
+
+			RE_Font_DrawString(ox + offset, oy + offset, dropShadowText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+		}
+		else
+		{
+			const vec4_t v4DKGREY2 = { 0.15f, 0.15f, 0.15f, rgba ? rgba[3] : 1.0f };
+
+			offset = Round(curfont->GetPointSize() * fScale * 0.075f);
+
+			gbInShadow = qtrue;
+			RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+			gbInShadow = qfalse;
+		}
 	}
 
 	RE_SetColor( rgba );
@@ -1589,7 +1617,8 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 			break;
 		case 32:						// Space
 			pLetter = curfont->GetLetter(' ');
-			fx += curfont->mbRoundCalcs ? Round(pLetter->horizAdvance * fScale) : pLetter->horizAdvance * fScale;
+			fx += curfont->mbRoundCalcs ? Round(pLetter->horizAdvance * fScale) : pLetter->horizAdvance * fScale * tr.widthRatioCoef;
+
 			bNextTextWouldOverflow = ( iMaxPixelWidth != -1 && ((fx-fox) > (float)iMaxPixelWidth) ) ? qtrue : qfalse; // yeuch
 			break;
 		case '_':	// has a special word-break usage if in Thai (and followed by a thai char), and should not be displayed, else treat as normal
@@ -1646,7 +1675,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 
 				RE_StretchPic(curfont->mbRoundCalcs ? fx + Round(pLetter->horizOffset * fThisScale) : fx + pLetter->horizOffset * fThisScale, // float x
 								(uiLetter > (unsigned)g_iNonScaledCharRange) ? fy - fAsianYAdjust : fy,	// float y
-								curfont->mbRoundCalcs ? Round(pLetter->width * fThisScale) : pLetter->width * fThisScale,	// float w
+								curfont->mbRoundCalcs ? Round(pLetter->width * fThisScale) : pLetter->width * fThisScale * tr.widthRatioCoef,	// float w
 								curfont->mbRoundCalcs ? Round(pLetter->height * fThisScale) : pLetter->height * fThisScale, // float h
 								pLetter->s,						// float s1
 								pLetter->t,						// float t1
@@ -1655,13 +1684,14 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 								//lastcolour.c,
 								hShader							// qhandle_t hShader
 								);
-				if ( r_aspectCorrectFonts->integer == 1 ) {
+
+				if ( r_aspectCorrectFonts->integer == 1  || cl_ratioFix->integer == 1 ) {
 					fx += fAdvancePixels
-						* ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
+						* tr.widthRatioCoef;
 				}
-				else if ( r_aspectCorrectFonts->integer == 2 ) {
+				else if ( r_aspectCorrectFonts->integer == 2 || cl_ratioFix->integer == 2 ) { // xD
 					fx += ceilf( fAdvancePixels
-						* ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth)) );
+						* tr.widthRatioCoef );
 				}
 				else {
 					fx += fAdvancePixels;
@@ -1706,6 +1736,8 @@ void R_InitFonts(void)
 {
 	g_iCurrentFontIndex = 1;			// entry 0 is reserved for "missing/invalid"
 	g_iNonScaledCharRange = INT_MAX;	// default all chars to have no special scaling (other than user supplied)
+
+	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
 }
 
 /*

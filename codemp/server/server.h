@@ -28,6 +28,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "game/g_public.h"
 #include "game/bg_public.h"
 #include "rd-common/tr_public.h"
+#include "server/duel_cull.h"
+
+extern int DuelCull(sharedEntity_t *a, sharedEntity_t *b);
 
 //=============================================================================
 
@@ -135,6 +138,7 @@ typedef struct {
 typedef struct client_s {
 	clientState_t	state;
 	char			userinfo[MAX_INFO_STRING];		// name, etc
+	char			userinfoPostponed[MAX_INFO_STRING];
 
 	qboolean		sentGamedir; //see if he has been sent an svc_setgame
 
@@ -168,7 +172,7 @@ typedef struct client_s {
 	int				downloadSendTime;	// time we last got an ack from the client
 
 	int				deltaMessage;		// frame last client usercmd message
-	int				lastReliableTime;	// svs.time when reliable command was last received
+	int				lastReliableTime[4];	// svs.time when reliable command was last received
 	int				lastPacketTime;		// svs.time when packet was last received
 	int				lastConnectTime;	// svs.time when connection started
 	int				nextSnapshotTime;	// send another snapshot when svs.time >= nextSnapshotTime
@@ -190,10 +194,22 @@ typedef struct client_s {
 	qboolean		csUpdated[MAX_CONFIGSTRINGS];
 
 	demoInfo_t		demo;
+
+#ifdef DEDICATED
+	qboolean		disableDuelCull;
+#endif
 } client_t;
 
 //=============================================================================
 
+typedef enum {
+	SVMOD_UNKNOWN,
+	SVMOD_BASEJKA,
+	SVMOD_JAPLUS,
+	SVMOD_MBII,
+	SVMOD_OPENJK,
+	SVMOD_JAPRO,
+} servermod_t;
 
 // this structure will be cleared only when the game dll changes
 typedef struct serverStatic_s {
@@ -214,6 +230,14 @@ typedef struct serverStatic_s {
 	netadr_t	authorizeAddress;			// for rcon return messages
 
 	qboolean	gameStarted;				// gvm is loaded
+
+	struct {
+		qboolean enabled;
+		int lastTimeDisconnected;
+	} hibernation;
+
+	servermod_t	servermod;
+	qboolean	gvmIsLegacy;
 } serverStatic_t;
 
 #define SERVER_MAXBANS	1024
@@ -264,7 +288,7 @@ extern	cvar_t	*sv_maxPing;
 extern	cvar_t	*sv_gametype;
 extern	cvar_t	*sv_pure;
 extern	cvar_t	*sv_floodProtect;
-extern	cvar_t	*sv_floodProtectSlow;
+extern	cvar_t	*sv_newfloodProtect;
 extern	cvar_t	*sv_lanForceRate;
 extern	cvar_t	*sv_needpass;
 extern	cvar_t	*sv_filterCommands;
@@ -277,10 +301,34 @@ extern	cvar_t	*sv_maxOOBRate;
 extern	cvar_t	*sv_maxOOBRateIP;
 extern	cvar_t	*sv_autoWhitelist;
 
+extern	cvar_t	*sv_snapShotDuelCull;
+
+extern	cvar_t	*sv_pingFix;
+extern	cvar_t	*sv_hibernateTime;
+extern	cvar_t	*sv_hibernateFPS;
+
+#ifdef DEDICATED
+extern	cvar_t	*sv_antiDST;
+#endif
+
 extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;
 
 //===========================================================
+
+//Bitvalues for sv_legacyFixes to disable engine-side exploit fixes
+#define SVFIXES_ALLOW_INVALID_FORCESEL			(1<<1)
+#define SVFIXES_ALLOW_INVALID_VIEWANGLES		(1<<2)
+#define SVFIXES_ALLOW_INVALID_FORCEPOWERS		(1<<3)
+#define SVFIXES_ALLOW_GHOSTED_PLAYERS			(1<<4) //skinglitch
+#define SVFIXES_DISABLE_MOVEMENT_EVENT_CHECKS	(1<<5) //backwards staff dfa exploit
+#define SVFIXES_ALLOW_INVALID_PLAYER_NAMES		(1<<6)
+#define SVFIXES_ALLOW_BROKEN_MODELS				(1<<7) //rancor/wampa skins
+#define SVFIXES_DISABLE_NPC_CRASHFIX			(1<<8) //npc spawn ragnos
+#define SVFIXES_DISABLE_TEAM_CRASHFIX			(1<<9)
+#define SVFIXES_DISABLE_GC_CRASHFIX				(1<<10)
+#define SVFIXES_ALLOW_CALLTEAMVOTE				(1<<11)
+#define SVFIXES_ALLOW_NEGATIVE_CALLVOTES		(1<<12) //negative fraglimit/timelimit callvotes
 
 //
 // sv_main.c

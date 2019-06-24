@@ -34,6 +34,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include <windows.h>
 #endif
 
+#include <mutex>
+
 FILE *debuglogfile;
 fileHandle_t logfile;
 fileHandle_t	com_journalFile;			// events are written here
@@ -64,12 +66,17 @@ cvar_t	*cl_paused;
 cvar_t	*sv_paused;
 cvar_t	*com_cameraMode;
 cvar_t  *com_homepath;
+cvar_t	*com_renderfps;
+cvar_t	*cl_commandsize;//Loda - FPS UNLOCK ENGINE
 #ifndef _WIN32
 cvar_t	*com_ansiColor = NULL;
 #endif
 cvar_t	*com_busyWait;
 
 cvar_t *com_affinity;
+#ifdef _WIN32
+cvar_t *com_priority;
+#endif
 
 // com_speeds times
 int		time_game;
@@ -124,10 +131,13 @@ to the appropriate place.
 A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 =============
 */
+std::recursive_mutex printfLock;
 void QDECL Com_Printf( const char *fmt, ... ) {
+	std::lock_guard<std::recursive_mutex> l( printfLock );
+
+	static qboolean opening_qconsole = qfalse;
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-	static qboolean opening_qconsole = qfalse;
 
 	va_start (argptr,fmt);
 	Q_vsnprintf (msg, sizeof(msg), fmt, argptr);
@@ -195,7 +205,6 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 	}
 #endif
 }
-
 
 /*
 ================
@@ -696,8 +705,11 @@ journaled file
 */
 
 #define	MAX_PUSHED_EVENTS	            1024
-static int		com_pushedEventsHead = 0;
-static int             com_pushedEventsTail = 0;
+// bk001129 - init, also static
+#define THREADACCESS
+static THREADACCESS int		com_pushedEventsHead = 0;
+static THREADACCESS int             com_pushedEventsTail = 0;
+// bk001129 - static
 static sysEvent_t	com_pushedEvents[MAX_PUSHED_EVENTS];
 
 /*
@@ -793,7 +805,10 @@ void Com_InitPushEvent( void ) {
 Com_PushEvent
 =================
 */
+std::mutex pushLock;
 void Com_PushEvent( sysEvent_t *event ) {
+	std::lock_guard<std::mutex> l( pushLock );
+
 	sysEvent_t		*ev;
 	static int printedWarning = 0;
 
@@ -825,9 +840,12 @@ Com_GetEvent
 =================
 */
 sysEvent_t	Com_GetEvent( void ) {
-	if ( com_pushedEventsHead > com_pushedEventsTail ) {
-		com_pushedEventsTail++;
-		return com_pushedEvents[ (com_pushedEventsTail-1) & (MAX_PUSHED_EVENTS-1) ];
+	{
+		std::lock_guard<std::mutex> l( pushLock );
+		if ( com_pushedEventsHead > com_pushedEventsTail ) {
+			com_pushedEventsTail++;
+			return com_pushedEvents[ (com_pushedEventsTail-1) & (MAX_PUSHED_EVENTS-1) ];
+		}
 	}
 	return Com_GetRealEvent();
 }
@@ -922,6 +940,12 @@ int Com_EventLoop( void ) {
 			}
 			Cbuf_AddText( "\n" );
 			break;
+		case SE_AIO_FCLOSE:
+			{
+				extern void	FS_FCloseAio( int handle );
+				FS_FCloseAio( ev.evValue );
+				break;
+			}
 		}
 
 		// free any block data
@@ -1176,11 +1200,16 @@ void Com_Init( char *commandLine ) {
 			Cmd_AddCommand ("freeze", Com_Freeze_f);
 		}
 		Cmd_AddCommand ("quit", Com_Quit_f, "Quits the game" );
+
+		Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
+
 #ifndef FINAL_BUILD
 		Cmd_AddCommand ("changeVectors", MSG_ReportChangeVectors_f );
 #endif
 		Cmd_AddCommand ("writeconfig", Com_WriteConfig_f, "Write the configuration to file" );
 		Cmd_SetCommandCompletionFunc( "writeconfig", Cmd_CompleteCfgName );
+		Cmd_AddCommand("write", Com_WriteConfig_f, "Write the configuration to file");
+		Cmd_SetCommandCompletionFunc("write", Cmd_CompleteCfgName);
 
 		Com_ExecuteCfg();
 
@@ -1204,6 +1233,11 @@ void Com_Init( char *commandLine ) {
 		// allocate the stack based hunk allocator
 		Com_InitHunkMemory();
 
+#ifndef DEDICATED //initialize Steam API here so the cvar doesn't have to be set in the command line
+		Cvar_Get("com_steamIntegration", "1", CVAR_ARCHIVE|CVAR_LATCH, "Enables automatic Steam API integration (requires a steam_api.dll to be in GameData)");
+		Sys_SteamInit();
+#endif
+
 		// if any archived cvars are modified after this, we will trigger a writing
 		// of the config file
 		cvar_modifiedFlags &= ~CVAR_ARCHIVE;
@@ -1213,7 +1247,7 @@ void Com_Init( char *commandLine ) {
 		//
 		com_logfile = Cvar_Get ("logfile", "0", CVAR_TEMP );
 
-		com_timescale = Cvar_Get ("timescale", "1", CVAR_CHEAT | CVAR_SYSTEMINFO );
+		com_timescale = Cvar_Get ("timescale", "1", CVAR_SYSTEMINFO);
 		com_fixedtime = Cvar_Get ("fixedtime", "0", CVAR_CHEAT);
 		com_showtrace = Cvar_Get ("com_showtrace", "0", CVAR_CHEAT);
 
@@ -1228,8 +1262,11 @@ void Com_Init( char *commandLine ) {
 		com_sv_running = Cvar_Get ("sv_running", "0", CVAR_ROM, "Is a server running?" );
 		com_cl_running = Cvar_Get ("cl_running", "0", CVAR_ROM, "Is the client running?" );
 		com_buildScript = Cvar_Get( "com_buildScript", "0", 0 );
+
+		com_renderfps = Cvar_Get("com_renderfps", "0", CVAR_ARCHIVE_ND);
+		cl_commandsize = Cvar_Get("cl_commandsize", "64", CVAR_ARCHIVE_ND);//Loda - FPS UNLOCK ENGINE
 #ifndef _WIN32
-		com_ansiColor = Cvar_Get( "com_ansiColor", "0", CVAR_ARCHIVE_ND );
+		com_ansiColor = Cvar_Get( "com_ansiColor", "1", CVAR_ARCHIVE_ND );
 #endif
 
 #ifdef G2_PERFORMANCE_ANALYSIS
@@ -1237,9 +1274,12 @@ void Com_Init( char *commandLine ) {
 #endif
 
 		com_affinity = Cvar_Get( "com_affinity", "0", CVAR_ARCHIVE_ND );
+#ifdef _WIN32
+		com_priority = Cvar_Get("com_priority", "-1", CVAR_ARCHIVE_ND|CVAR_NORESTART); //duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority? i guess??
+#endif
 		com_busyWait = Cvar_Get( "com_busyWait", "0", CVAR_ARCHIVE_ND );
 
-		com_bootlogo = Cvar_Get( "com_bootlogo", "1", CVAR_ARCHIVE_ND, "Show intro movies" );
+		com_bootlogo = Cvar_Get( "com_bootlogo", "0", CVAR_ARCHIVE_ND, "Show intro movies" );
 
 		s = va("%s %s %s", JK_VERSION_OLD, PLATFORM_STRING, SOURCE_DATE );
 		com_version = Cvar_Get ("version", s, CVAR_ROM | CVAR_SERVERINFO );
@@ -1310,7 +1350,7 @@ void Com_WriteConfigToFile( const char *filename ) {
 		return;
 	}
 
-	FS_Printf (f, "// generated by OpenJK MP, do not modify\n");
+	FS_Printf (f, "// generated by EternalJK, do not modify\n");
 	Key_WriteBindings (f);
 	Cvar_WriteVariables (f);
 	FS_FCloseFile( f );
@@ -1402,7 +1442,7 @@ int Com_ModifyMsec( int msec ) {
 		// dedicated servers don't want to clamp for a much longer
 		// period, because it would mess up all the client's views
 		// of time.
-		if ( com_sv_running->integer && msec > 500 ) {
+		if ( !svs.hibernation.enabled && com_sv_running->integer && msec > 500 ) {
 			Com_Printf( "Hitch warning: %i msec frame time\n", msec );
 		}
 		clampTime = 5000;
@@ -1635,6 +1675,14 @@ void Com_Frame( void ) {
 			Sys_SetProcessorAffinity();
 		}
 
+#ifdef _WIN32
+		if (com_priority->modified)
+		{
+			com_priority->modified = qfalse;
+			Sys_SetProcessPriority();
+		}
+#endif
+
 		com_frameNumber++;
 	}
 	catch (int code) {
@@ -1676,6 +1724,8 @@ void Com_Shutdown (void)
 		com_journalFile = 0;
 	}
 
+	Sys_SteamShutdown();
+
 	MSG_shutdownHuffman();
 /*
 	// Only used for testing changes to huffman frequency table when tuning.
@@ -1709,9 +1759,11 @@ CONSOLE LINE EDITING
 
 static const char *completionString;
 static char shortestMatch[MAX_TOKEN_CHARS];
+static qboolean perfectMatch;
 static int	matchCount;
 // field we are working on, passed to Field_AutoComplete(&g_consoleCommand for instance)
 static field_t *completionField;
+static qboolean enterPressed;
 
 /*
 ===============
@@ -1728,8 +1780,12 @@ static void FindMatches( const char *s ) {
 	matchCount++;
 	if ( matchCount == 1 ) {
 		Q_strncpyz( shortestMatch, s, sizeof( shortestMatch ) );
+		perfectMatch = qtrue;
 		return;
 	}
+	
+	if (strlen(shortestMatch) > strlen(s))
+		perfectMatch = qfalse;
 
 	// cut shortestMatch to the amount common with s
 	for ( i = 0 ; s[i] ; i++ ) {
@@ -1741,6 +1797,7 @@ static void FindMatches( const char *s ) {
 	if (!s[i])
 	{
 		shortestMatch[i] = 0;
+		perfectMatch = qtrue;
 	}
 }
 
@@ -1807,7 +1864,7 @@ PrintCvarMatches
 
 ===============
 */
-char *Cvar_DescriptionString( const char *var_name );
+char *Cvar_DescriptionString( const char *var_name, qboolean enter = qfalse );
 static void PrintCvarMatches( const char *s ) {
 	if ( !Q_stricmpn( s, shortestMatch, (int)strlen( shortestMatch ) ) ) {
 		char value[TRUNCATE_LENGTH] = {0};
@@ -1841,7 +1898,7 @@ Field_Complete
 static qboolean Field_Complete( void ) {
 	int completionOffset;
 
-	if ( matchCount == 0 )
+	if (matchCount == 0)
 		return qtrue;
 
 	completionOffset = strlen( completionField->buffer ) - strlen( completionString );
@@ -1856,7 +1913,8 @@ static qboolean Field_Complete( void ) {
 		return qtrue;
 	}
 
-	Com_Printf( "%c%s\n", CONSOLE_PROMPT_CHAR, completionField->buffer );
+	if (!enterPressed)
+		Com_Printf( "%c%s\n", CONSOLE_PROMPT_CHAR, completionField->buffer );
 
 	return qfalse;
 }
@@ -1874,7 +1932,7 @@ void Field_CompleteKeyname( void )
 
 	Key_KeynameCompletion( FindMatches );
 
-	if( !Field_Complete( ) )
+	if (!Field_Complete())
 		Key_KeynameCompletion( PrintKeyMatches );
 }
 #endif
@@ -1929,7 +1987,7 @@ void Field_CompleteCommand( char *cmd, qboolean doCommands, qboolean doCvars )
 
 		if( ( p = Field_FindFirstSeparator( cmd ) ) )
 			Field_CompleteCommand( p + 1, qtrue, qtrue ); // Compound command
-		else
+		else if( !enterPressed )
 			Cmd_CompleteArgument( baseCmd, cmd, completionArgument );
 	}
 	else {
@@ -1948,7 +2006,7 @@ void Field_CompleteCommand( char *cmd, qboolean doCommands, qboolean doCvars )
 		if ( doCvars )
 			Cvar_CommandCompletion( FindMatches );
 
-		if ( !Field_Complete() ) {
+		if ( !Field_Complete() && !(enterPressed && perfectMatch) ) {
 			// run through again, printing matches
 			if ( doCommands )
 				Cmd_CommandCompletion( PrintMatches );
@@ -1971,8 +2029,19 @@ void Field_AutoComplete( field_t *field ) {
 		return;
 
 	completionField = field;
+	enterPressed = qfalse;
 
 	Field_CompleteCommand( completionField->buffer, qtrue, qtrue );
+}
+
+void Field_AutoComplete(field_t *field, qboolean enterKey) {
+	if (!field || !field->buffer[0])
+		return;
+
+	completionField = field;
+	enterPressed = enterKey;
+
+	Field_CompleteCommand(completionField->buffer, qtrue, qtrue);
 }
 
 /*

@@ -30,6 +30,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
  *****************************************************************************/
 
+#include <condition_variable>
+#include <deque>
+#include <mutex>
+#include <thread>
+#include <vector>
+
 #include "qcommon/qcommon.h"
 
 #ifndef DEDICATED
@@ -230,7 +236,9 @@ typedef struct searchpath_s {
 
 static char		fs_gamedir[MAX_OSPATH];	// this will be a single file name with no separators
 static cvar_t		*fs_debug;
+static cvar_t		*fs_portable;
 static cvar_t		*fs_homepath;
+static cvar_t		*sv_skipServersideDownloads;
 
 #ifdef MACOS_X
 // Also search the .app bundle for .pk3 files
@@ -243,6 +251,10 @@ static cvar_t		*fs_cdpath;
 static cvar_t		*fs_copyfiles;
 static cvar_t		*fs_gamedirvar;
 static cvar_t		*fs_dirbeforepak; //rww - when building search path, keep directories at top and insert pk3's under them
+static cvar_t		*fs_loadpakdlls;
+#ifndef DEDICATED
+static cvar_t		*fs_globalcfg;
+#endif
 static searchpath_t	*fs_searchpaths;
 static int			fs_readCount;			// total bytes read
 static int			fs_loadCount;			// total files read
@@ -262,8 +274,28 @@ typedef struct qfile_us {
 } qfile_ut;
 
 typedef struct fileHandleData_s {
+	fileHandleData_s() :
+			handleFiles({}),
+			handleSync(qfalse),
+			handleAsync(qfalse),
+			writerThread(nullptr),
+			closed(qfalse),
+			fileSize(0),
+			zipFilePos(0),
+			zipFileLen(0),
+			zipFile(qfalse) {
+		ospath[0] = '\0';
+		name[0] = '\0';
+	}
 	qfile_ut	handleFiles;
 	qboolean	handleSync;
+	qboolean	handleAsync;
+	std::thread	*writerThread;
+	std::mutex	writeLock;
+	std::condition_variable	cv;
+	std::deque<std::vector<byte> > writes;
+	qboolean	closed;
+	char		ospath[MAX_OSPATH];
 	int			fileSize;
 	int			zipFilePos;
 	int			zipFileLen;
@@ -311,6 +343,22 @@ FILE*		missingFiles = NULL;
 #    define __func__ "(unknown)"
 #  endif
 #endif
+
+static void FS_ResetFileHandleData( fileHandleData_t *f ) {
+	f->handleFiles = {};
+	f->handleSync = qfalse;
+	f->handleAsync = qfalse;
+	assert(f->writerThread == nullptr);
+	f->writerThread = nullptr;
+	f->writes.clear();
+	f->closed = qfalse;
+	f->ospath[0] = '\0';
+	f->fileSize = 0;
+	f->zipFilePos = 0;
+	f->zipFileLen = 0;
+	f->zipFile = qfalse;
+	f->name[0] = '\0';
+}
 
 /*
 ==============
@@ -381,7 +429,7 @@ static fileHandle_t FS_HandleForFile(void) {
 	int		i;
 
 	for ( i = 1 ; i < MAX_FILE_HANDLES ; i++ ) {
-		if ( fsh[i].handleFiles.file.o == NULL ) {
+		if ( fsh[i].handleAsync == qfalse && fsh[i].handleFiles.file.o == NULL ) {
 			return i;
 		}
 	}
@@ -810,6 +858,7 @@ fileHandle_t FS_SV_FOpenFileWrite( const char *filename ) {
 	Q_strncpyz( fsh[f].name, filename, sizeof( fsh[f].name ) );
 
 	fsh[f].handleSync = qfalse;
+	fsh[f].handleAsync = qfalse;
 	if (!fsh[f].handleFiles.file.o) {
 		f = 0;
 	}
@@ -888,6 +937,7 @@ int FS_SV_FOpenFileRead( const char *filename, fileHandle_t *fp ) {
 
 	fsh[f].handleFiles.file.o = fopen( ospath, "rb" );
 	fsh[f].handleSync = qfalse;
+	fsh[f].handleAsync = qfalse;
 	if (!fsh[f].handleFiles.file.o)
 	{
 		// NOTE TTimo on non *nix systems, fs_homepath == fs_basepath, might want to avoid
@@ -904,6 +954,7 @@ int FS_SV_FOpenFileRead( const char *filename, fileHandle_t *fp ) {
 
 			fsh[f].handleFiles.file.o = fopen( ospath, "rb" );
 			fsh[f].handleSync = qfalse;
+			fsh[f].handleAsync = qfalse;
 		}
 
 		if ( !fsh[f].handleFiles.file.o )
@@ -925,6 +976,7 @@ int FS_SV_FOpenFileRead( const char *filename, fileHandle_t *fp ) {
 
 		fsh[f].handleFiles.file.o = fopen( ospath, "rb" );
 		fsh[f].handleSync = qfalse;
+		fsh[f].handleAsync = qfalse;
 
 		if ( !fsh[f].handleFiles.file.o )
 		{
@@ -967,6 +1019,9 @@ void FS_SV_Rename( const char *from, const char *to, qboolean safe ) {
 	}
 
 	if (rename( from_ospath, to_ospath )) {
+		if ( fs_debug->integer ) {
+			Com_Printf( "FS_SV_Rename failed, attemping to copy: %s --> %s\n", from_ospath, to_ospath );
+		}
 		// Failed, try copying it and deleting the original
 		FS_CopyFile ( from_ospath, to_ospath );
 		FS_Remove ( from_ospath );
@@ -997,14 +1052,28 @@ void FS_Rename( const char *from, const char *to ) {
 	FS_CheckFilenameIsMutable( to_ospath, __func__ );
 
 	if (rename( from_ospath, to_ospath )) {
+		if ( fs_debug->integer ) {
+			Com_Printf( "FS_Rename failed, attemping to copy: %s --> %s\n", from_ospath, to_ospath );
+		}
 		// Failed, try copying it and deleting the original
 		FS_CopyFile ( from_ospath, to_ospath );
 		FS_Remove ( from_ospath );
 	}
 }
 
+void FS_FCloseAio( int handle ) {
+	fileHandle_t f = (fileHandle_t) handle;
+	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
+		Com_Error( ERR_FATAL, "FCloseAio called with invalid handle %d\n", f );
+	}
+	fsh[f].writerThread->join();
+	delete fsh[f].writerThread;
+	fsh[f].writerThread = nullptr;
+	FS_ResetFileHandleData( &fsh[f] );
+}
+
 /*
-===========
+==============
 FS_FCloseFile
 
 Close a file.
@@ -1030,15 +1099,73 @@ void FS_FCloseFile( fileHandle_t f ) {
 		if ( fsh[f].handleFiles.unique ) {
 			unzClose( fsh[f].handleFiles.file.z );
 		}
-		Com_Memset( &fsh[f], 0, sizeof( fsh[f] ) );
+		FS_ResetFileHandleData( &fsh[f] );
 		return;
 	}
 
 	// we didn't find it as a pak, so close it as a unique file
 	if (fsh[f].handleFiles.file.o) {
-		fclose (fsh[f].handleFiles.file.o);
+		if ( fsh[f].handleAsync ) {
+			// queue the file to be closed after all pending operations are completed.
+			{
+				std::lock_guard<std::mutex> l( fsh[f].writeLock );
+				fsh[f].closed = qtrue;
+			}
+			fsh[f].cv.notify_one();
+			return;
+		} else {
+			fclose (fsh[f].handleFiles.file.o);
+		}
 	}
-	Com_Memset( &fsh[f], 0, sizeof( fsh[f] ) );
+	FS_ResetFileHandleData( &fsh[f] );
+}
+
+extern void Com_PushEvent( sysEvent_t *event );
+void FS_AsyncWriterThread( fileHandle_t h ) {
+	fileHandleData_t *f = &fsh[h];
+	if ( !FS_CreatePath( f->ospath ) ) {
+		f->handleFiles.file.o = fopen( f->ospath, "wb" );
+	}
+	if ( f->handleFiles.file.o == nullptr ) {
+		Com_Printf( "Warning: failed to open file %s\n", f->name );
+		return;
+	}
+	while ( qtrue ) {
+		std::vector<byte> write;
+		{
+			std::unique_lock<std::mutex> l( f->writeLock );
+			while ( f->writes.empty() && !f->closed ) {
+				f->cv.wait( l );
+			}
+			if ( f->closed && f->writes.empty() ) {
+				break;
+			}
+			write = std::move(f->writes.front());
+			f->writes.pop_front();
+		}
+		fwrite( &write[0], 1, write.size(), f->handleFiles.file.o );
+	}
+	fclose( f->handleFiles.file.o );
+	sysEvent_t event;
+	Com_Memset( &event, 0, sizeof( event ) );
+	event.evType = SE_AIO_FCLOSE;
+	event.evValue = h;
+	Com_PushEvent( &event );
+}
+
+fileHandle_t FS_FOpenFileWriteAsync( const char *filename, qboolean safe ) {
+	fileHandle_t f = FS_HandleForFile();
+	Q_strncpyz(fsh[f].ospath, FS_BuildOSPath( fs_homepath->string, fs_gamedir, filename ), MAX_OSPATH );
+
+	if ( fs_debug->integer ) {
+		Com_Printf( "FS_FOpenFileWriteAsync: %s\n", fsh[f].ospath );
+	}
+
+	Q_strncpyz( fsh[f].name, filename, sizeof( fsh[f].name ) );
+	fsh[f].handleAsync = qtrue;
+	// spawn writer thread
+	fsh[f].writerThread = new std::thread( FS_AsyncWriterThread, f );
+	return f;
 }
 
 /*
@@ -1078,6 +1205,7 @@ fileHandle_t FS_FOpenFileWrite( const char *filename, qboolean safe ) {
 	Q_strncpyz( fsh[f].name, filename, sizeof( fsh[f].name ) );
 
 	fsh[f].handleSync = qfalse;
+	fsh[f].handleAsync = qfalse;
 	if (!fsh[f].handleFiles.file.o) {
 		f = 0;
 	}
@@ -1118,6 +1246,7 @@ fileHandle_t FS_FOpenFileAppend( const char *filename ) {
 
 	fsh[f].handleFiles.file.o = fopen( ospath, "ab" );
 	fsh[f].handleSync = qfalse;
+	fsh[f].handleAsync = qfalse;
 	if (!fsh[f].handleFiles.file.o) {
 		f = 0;
 	}
@@ -1200,7 +1329,7 @@ qboolean FS_IsDemoExt(const char *filename, int namelen)
 	{
 		int protocol = atoi(ext_test + ARRAY_LEN(DEMO_EXTENSION));
 
-		if(protocol == PROTOCOL_VERSION)
+		if(protocol == PROTOCOL_VERSION || protocol == PROTOCOL_LEGACY)
 			return qtrue;
 	}
 
@@ -1716,30 +1845,40 @@ int FS_Write( const void *buffer, int len, fileHandle_t h ) {
 		return 0;
 	}
 
-	f = FS_FileForHandle(h);
 	buf = (byte *)buffer;
 
-	remaining = len;
-	tries = 0;
-	while (remaining) {
-		block = remaining;
-		written = fwrite (buf, 1, block, f);
-		if (written == 0) {
-			if (!tries) {
-				tries = 1;
-			} else {
-				Com_Printf( "FS_Write: 0 bytes written\n" );
+	if ( fsh[h].handleAsync ) {
+		{
+			std::lock_guard<std::mutex> l( fsh[h].writeLock );
+			fsh[h].writes.emplace_back( buf, buf + len );
+		}
+		fsh[h].cv.notify_one();
+		return len;
+	} else {
+		f = FS_FileForHandle( h );
+
+		remaining = len;
+		tries = 0;
+		while (remaining) {
+			block = remaining;
+			written = fwrite (buf, 1, block, f);
+			if (written == 0) {
+				if (!tries) {
+					tries = 1;
+				} else {
+					Com_Printf( "FS_Write: 0 bytes written to file %d (%s)\n", h, fsh[h].name );
+					return 0;
+				}
+			}
+
+			if (written == -1) {
+				Com_Printf( "FS_Write: -1 bytes written to file %d (%s)\n", h, fsh[h].name );
 				return 0;
 			}
-		}
 
-		if (written == -1) {
-			Com_Printf( "FS_Write: -1 bytes written\n" );
-			return 0;
+			remaining -= written;
+			buf += written;
 		}
-
-		remaining -= written;
-		buf += written;
 	}
 	if ( fsh[h].handleSync ) {
 		fflush( f );
@@ -1916,6 +2055,112 @@ int	FS_FileIsInPAK(const char *filename, int *pChecksum ) {
 		}
 	}
 	return -1;
+}
+
+long FS_ReadDLLInPAK(const char *filename, void **buffer) {
+	searchpath_t	*search;
+	pack_t			*pak;
+	fileInPack_t	*pakFile;
+	long			hash = 0;
+	fileHandle_t	file;
+	byte*			buf = NULL;
+	long			len = 0;
+
+	FS_AssertInitialised();
+
+	if (!filename) {
+		Com_Error(ERR_FATAL, "FS_ReadDLLInPAK: NULL 'filename' parameter passed\n");
+	}
+
+	// qpaths are not supposed to have a leading slash
+	if (filename[0] == '/' || filename[0] == '\\') {
+		filename++;
+	}
+
+	// make absolutely sure that it can't back up the path.
+	// The searchpaths do guarantee that something will always
+	// be prepended, so we don't need to worry about "c:" or "//limbo"
+	if (strstr(filename, "..") || strstr(filename, "::")) {
+		return len;
+	}
+
+	//
+	// search through the path, one element at a time
+	//
+
+	file = FS_HandleForFile();
+	fsh[file].handleFiles.unique = qfalse;
+
+	for (search = fs_searchpaths; search; search = search->next) {
+		qboolean breakSearch = qfalse;
+		if (search->pack) {
+			hash = FS_HashFileName(filename, search->pack->hashSize);
+		}
+		// is the element a pak file?
+		if (search->pack && search->pack->hashTable[hash]) {
+			// disregard if it doesn't match one of the allowed pure pak files
+			if (!FS_PakIsPure(search->pack)) {
+				continue;
+			}
+
+			// look through all the pak file elements
+			pak = search->pack;
+			pakFile = pak->hashTable[hash];
+			do {
+				// case and separator insensitive comparisons
+				if (!FS_FilenameCompare(pakFile->name, filename)) {
+					fsh[file].handleFiles.file.z = pak->handle;
+					Q_strncpyz(fsh[file].name, filename, sizeof(fsh[file].name));
+					fsh[file].zipFile = qtrue;
+
+					// set the file position in the zip file (also sets the current file info)
+					unzSetOffset(fsh[file].handleFiles.file.z, pakFile->pos);
+
+					// open the file in the zip
+					unzOpenCurrentFile(fsh[file].handleFiles.file.z);
+
+					fsh[file].zipFilePos = pakFile->pos;
+					fsh[file].zipFileLen = pakFile->len;
+
+					if (fs_debug->integer) {
+						Com_Printf("FS_ReadDLLInPAK: %s (found in '%s')\n",
+							filename, pak->pakFilename);
+					}
+
+					len = pakFile->len;
+					breakSearch = qtrue;
+					break;
+				}
+				pakFile = pakFile->next;
+			} while (pakFile != NULL);
+		}
+		if (breakSearch) break;
+	}
+
+	if (file == 0) {
+		if (buffer) {
+			*buffer = NULL;
+		}
+	}
+
+	if (!buffer) {
+		FS_FCloseFile(file);
+		return len;
+	}
+
+	fs_loadCount++;
+
+	buf = (byte*)Z_Malloc(len + 1, TAG_FILESYS, qfalse);
+	buf[len] = '\0';	// because we're not calling Z_Malloc with optional trailing 'bZeroIt' bool
+	*buffer = buf;
+
+	FS_Read(buf, len, file);
+
+	// guarantee that it will have a trailing 0 for string operations
+	buf[len] = 0;
+	FS_FCloseFile(file);
+
+	return len;
 }
 
 /*
@@ -2914,6 +3159,7 @@ FS_Which_f
 void FS_Which_f( void ) {
 	searchpath_t	*search;
 	char		*filename;
+	qboolean	isDLL;
 
 	filename = Cmd_Argv(1);
 
@@ -2934,9 +3180,11 @@ void FS_Which_f( void ) {
 		return;
 	}
 
+	isDLL = FS_IsExt(filename, ".dll", strlen(filename));
+
 	// just wants to see if file is there
 	for ( search=fs_searchpaths; search; search=search->next ) {
-		if ( search->pack ) {
+		if (search->pack && (!isDLL || fs_loadpakdlls->integer)) {
 			long hash = FS_HashFileName( filename, search->pack->hashSize );
 
 			// is the element a pak file?
@@ -3303,6 +3551,9 @@ void FS_Shutdown( qboolean closemfp ) {
 		fclose(missingFiles);
 	}
 #endif
+
+	if (closemfp) //not restarting
+		Cmd_RemoveCommand("fs_restart");
 }
 
 //rww - add search paths in for received svc_setgame
@@ -3391,19 +3642,32 @@ void FS_Startup( const char *gameName ) {
 
 	fs_packFiles = 0;
 
+	sv_skipServersideDownloads = Cvar_Get( "sv_skipServersideDownloads", "0", 0 );
 	fs_debug = Cvar_Get( "fs_debug", "0", 0 );
 	fs_copyfiles = Cvar_Get( "fs_copyfiles", "0", CVAR_INIT );
 	fs_cdpath = Cvar_Get ("fs_cdpath", "", CVAR_INIT|CVAR_PROTECTED, "(Read Only) Location for development files" );
 	fs_basepath = Cvar_Get ("fs_basepath", Sys_DefaultInstallPath(), CVAR_INIT|CVAR_PROTECTED, "(Read Only) Location for game files" );
-	fs_basegame = Cvar_Get ("fs_basegame", "", CVAR_INIT );
+	fs_basegame = Cvar_Get ("fs_basegame", "eternaljk", CVAR_INIT );
+	fs_portable = Cvar_Get ("fs_portable", "1", CVAR_INIT|CVAR_PROTECTED, "Disable fs_homepath and use only one folder for all game files" );
 	homePath = Sys_DefaultHomePath();
 	if (!homePath || !homePath[0]) {
 		homePath = fs_basepath->string;
 	}
 	fs_homepath = Cvar_Get ("fs_homepath", homePath, CVAR_INIT|CVAR_PROTECTED, "(Read/Write) Location for user generated files" );
-	fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
+
+#ifndef DEDICATED
+	//cancer?
+	fs_globalcfg = Cvar_Get("fs_globalcfg", "1", CVAR_ARCHIVE/* | CVAR_LATCH*/ | CVAR_NORESTART | CVAR_PROTECTED, "Only read/write files from base and EternalJK folders (requires filesystem restart)");
+
+	if (fs_globalcfg->integer)
+		fs_gamedirvar = fs_basegame;
+	else
+#endif
+		fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
 
 	fs_dirbeforepak = Cvar_Get("fs_dirbeforepak", "0", CVAR_INIT|CVAR_PROTECTED, "Prioritize directories before paks if not pure" );
+
+	fs_loadpakdlls = Cvar_Get("fs_loadpakdlls", "1", CVAR_NORESTART|CVAR_PROTECTED, "Toggle loading DLLs from pk3 files");
 
 	// add search path elements in reverse priority order (lowest priority first)
 	if (fs_cdpath->string[0]) {
@@ -3436,6 +3700,11 @@ void FS_Startup( const char *gameName ) {
 		if (fs_basepath->string[0]) {
 			FS_AddGameDirectory(fs_basepath->string, fs_basegame->string);
 		}
+#ifdef MACOS_X
+		if (fs_apppath->string[0]) {
+			FS_AddGameDirectory(fs_apppath->string, fs_basegame->string);
+		}
+#endif
 		if (fs_homepath->string[0] && !Sys_PathCmp(fs_homepath->string, fs_basepath->string)) {
 			FS_AddGameDirectory(fs_homepath->string, fs_basegame->string);
 		}
@@ -3466,7 +3735,8 @@ void FS_Startup( const char *gameName ) {
 	FS_ReorderPurePaks();
 
 	// print the current search paths
-	FS_Path_f();
+	if (fs_debug->integer)
+		FS_Path_f();
 
 	fs_gamedirvar->modified = qfalse; // We just loaded, it's not modified
 
@@ -3602,12 +3872,29 @@ The string has a specific order, "cgame ui @ ref1 ref2 ref3 ..."
 const char *FS_ReferencedPakPureChecksums( void ) {
 	static char	info[BIG_INFO_STRING];
 	searchpath_t	*search;
-	int nFlags, numPaks, checksum;
+	int nFlags, numPaks, checksum, lastPack, refPacks;
 
 	info[0] = 0;
 
 	checksum = fs_checksumFeed;
 	numPaks = 0;
+
+	
+	if (Cvar_VariableIntegerValue("protocolswitch") != 2) {
+		lastPack = -1342311474; //assets3.pk3
+		refPacks = 7;
+	} else {
+		lastPack = -1239421272; //assets2.pk3
+		refPacks = 6;
+	}
+
+	for (search = fs_searchpaths; search; search = search->next) {
+		if (search->pack && search->pack->checksum == lastPack) {
+			search->pack->referenced = refPacks;
+			break;
+		}
+	}
+
 	for (nFlags = FS_CGAME_REF; nFlags; nFlags = nFlags >> 1) {
 		if (nFlags & FS_GENERAL_REF) {
 			// add a delimter between must haves and general refs
@@ -3617,16 +3904,28 @@ const char *FS_ReferencedPakPureChecksums( void ) {
 			info[strlen(info)] = '@';
 			info[strlen(info)] = ' ';
 		}
-		for ( search = fs_searchpaths ; search ; search = search->next ) {
+		while(search) {
 			// is the element a pak file and has it been referenced based on flag?
 			if ( search->pack && (search->pack->referenced & nFlags)) {
+
+				
+				//If its blacklisted, skip it
+				if (sv_skipServersideDownloads && sv_skipServersideDownloads->integer && !Q_stricmpn(search->pack->pakBasename, "noDL", 4)) {//Filename starts with noDL, skip it!
+					continue;
+				}
+				
+
 				Q_strcat( info, sizeof( info ), va("%i ", search->pack->pure_checksum ) );
 				if (nFlags & (FS_CGAME_REF | FS_UI_REF)) {
 					break;
 				}
 				checksum ^= search->pack->pure_checksum;
 				numPaks++;
+				if (search->pack && search->pack->checksum == 1767559464) {
+					break;
+				}
 			}
+			search = search->next;
 		}
 		if (fs_fakeChkSum != 0) {
 			// only added if a non-pure file is referenced
@@ -3660,6 +3959,14 @@ const char *FS_ReferencedPakNames( void ) {
 		// is the element a pak file?
 		if ( search->pack ) {
 			if (search->pack->referenced || Q_stricmpn(search->pack->pakGamename, BASEGAME, strlen(BASEGAME))) {
+
+				
+				//If its blacklisted, skip it
+				if (sv_skipServersideDownloads && sv_skipServersideDownloads->integer && !Q_stricmpn(search->pack->pakBasename, "noDL", 4)) {//Filename starts with noDL, skip it!
+					continue;
+				}
+				
+
 				if (*info) {
 					Q_strcat(info, sizeof( info ), " " );
 				}
@@ -3813,6 +4120,7 @@ Called only at inital startup, not when the filesystem
 is resetting due to a game change
 ================
 */
+static void FS_Restart_f(void);
 void FS_InitFilesystem( void ) {
 	// allow command line parms to override our defaults
 	// we have to specially handle this, because normal command
@@ -3830,6 +4138,8 @@ void FS_InitFilesystem( void ) {
 
 	if(!FS_FilenameCompare(Cvar_VariableString("fs_game"), BASEGAME))
 		Cvar_Set("fs_game", "");
+
+	Cmd_AddCommand("fs_restart", FS_Restart_f, "Restarts the filesystem loading any new paks to search paths");
 
 	// try to start up normally
 	FS_Startup( BASEGAME );
@@ -3937,6 +4247,16 @@ qboolean FS_ConditionalRestart( int checksumFeed ) {
 }
 
 /*
+=================
+FS_Restart_f
+Console command to restart filesystem.
+=================
+*/
+static void FS_Restart_f(void) {
+	FS_Restart(fs_checksumFeed);
+}
+
+/*
 ========================================================================================
 
 Handle based file calls for virtual machines
@@ -3983,6 +4303,7 @@ int		FS_FOpenFileByMode( const char *qpath, fileHandle_t *f, fsMode_t mode ) {
 		fsh[*f].fileSize = r;
 	}
 	fsh[*f].handleSync = sync;
+	fsh[*f].handleAsync = qfalse;
 
 	return r;
 }

@@ -260,6 +260,48 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			continue;
 		}
 
+		if (ent->eType == ET_SPECIAL && ent->modelindex == HI_SHIELD)//Japro - Fix bad prediction for HI_SHIELD item for codemonkey 
+			continue;
+
+		//JAPRO - Clientside - Duel Passthru Prediction - Start 
+		if (cgs.serverMod >= SVMOD_JAPLUS)
+		{
+			if (cg.predictedPlayerState.duelInProgress)
+			{ // we are in a private duel 
+				if (ent->number != cg.predictedPlayerState.duelIndex && ent->eType != ET_MOVER)
+				{ // we are not dueling them 
+				  // don't clip 
+					continue;
+				}
+			}
+			else if (ent->bolt1)
+			{ // we are not in a private duel, and this player is dueling don't clip 
+				continue;
+			}
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
+				if (ent->eType == ET_MOVER) { //TR_SINCE since func_bobbings are still solid, sad hack 
+					if ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE) {//If its moving? //how to get classname clientside? 
+						continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside 
+					}
+				}
+				else {
+					continue;
+				}
+			}
+		}
+		//JAPRO - Clientside - Duel Passthru Prediction - End 
+
+		//JAPRO - Clientside - Nonsolid doors for racemode people 
+		/*
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
+		if (ent->eType == ET_MOVER) {
+		if (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta) && ent->pos.trType != TR_SINE) //If its moving? //how to get classname clientside?
+		continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
+		}
+		}
+		*/
+		//JAPRO race doors END
+
 		if ( ent->solid == SOLID_BMODEL ) {
 			// special value for bmodel
 			cmodel = trap->CM_InlineModel( ent->modelindex );
@@ -478,7 +520,10 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 		return;
 	}
 
-	f = (float)( cg.time - prev->serverTime ) / ( next->serverTime - prev->serverTime );
+	// fau - for player it would more correct to interpolate between
+	// commandTimes (but requires one more snaphost ahead)
+	f = cg.frameInterpolation;
+
 
 	i = next->ps.bobCycle;
 	if ( i < prev->ps.bobCycle ) {
@@ -496,6 +541,7 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 			f * (next->ps.velocity[i] - prev->ps.velocity[i] );
 	}
 
+	cg.predictedTimeFrac = f * (next->ps.commandTime - prev->ps.commandTime);
 }
 
 static void CG_InterpolateVehiclePlayerState( qboolean grabAngles ) {
@@ -933,6 +979,7 @@ void CG_PredictPlayerState( void ) {
 	usercmd_t	latestCmd;
 	centity_t *pEnt;
 	clientInfo_t *ci;
+	const int REAL_CMD_BACKUP = (cl_commandsize.integer >= 4 && cl_commandsize.integer <= 512 ) ? (cl_commandsize.integer) : (CMD_BACKUP); //Loda - FPS UNLOCK client modcode
 
 	cg.hyperspace = qfalse;	// will be set if touching a trigger_teleport
 
@@ -1021,7 +1068,7 @@ void CG_PredictPlayerState( void ) {
 	// if we don't have the commands right after the snapshot, we
 	// can't accurately predict a current position, so just freeze at
 	// the last good position we had
-	cmdNum = current - CMD_BACKUP + 1;
+	cmdNum = current - REAL_CMD_BACKUP + 1;
 	trap->GetUserCmd( cmdNum, &oldestCmd );
 	if ( oldestCmd.serverTime > cg.snap->ps.commandTime
 		&& oldestCmd.serverTime < cg.time ) {	// special check for map_restart
@@ -1056,12 +1103,14 @@ void CG_PredictPlayerState( void ) {
 		cg.physicsTime = cg.snap->serverTime;
 	}
 
-	if ( pmove_msec.integer < 8 ) {
-		trap->Cvar_Set("pmove_msec", "8");
+	//JAPRO - Clientside - Unlock Pmove bounds - Start 
+	if ( pmove_msec.integer < 1 ) {
+		trap->Cvar_Set("pmove_msec", "1");
 	}
-	else if (pmove_msec.integer > 33) {
-		trap->Cvar_Set("pmove_msec", "33");
+	else if (pmove_msec.integer > 66) {
+		trap->Cvar_Set("pmove_msec", "66");
 	}
+	//JAPRO - Clientside - Unlock Pmove bounds - End 
 
 	cg_pmove.pmove_fixed = pmove_fixed.integer;// | cg_pmove_fixed.integer;
 	cg_pmove.pmove_float = pmove_float.integer;
@@ -1102,7 +1151,7 @@ void CG_PredictPlayerState( void ) {
 
 	// run cmds
 	moved = qfalse;
-	for ( cmdNum = current - CMD_BACKUP + 1 ; cmdNum <= current ; cmdNum++ ) {
+	for ( cmdNum = current - REAL_CMD_BACKUP + 1 ; cmdNum <= current ; cmdNum++ ) {
 		// get the command
 		trap->GetUserCmd( cmdNum, &cg_pmove.cmd );
 
@@ -1236,7 +1285,10 @@ void CG_PredictPlayerState( void ) {
 			}
 		}
 
-		if ( cg_pmove.pmove_fixed ) {
+		/*if (cg.predictedPlayerState.stats[STAT_RACEMODE] && cg_predictRacemode.integer) { //loda fixme
+		cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 7) / 8) * 8;
+		}
+		else*/ if ( cg_pmove.pmove_fixed ) { //loda fixme
 			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;
 		}
 
@@ -1424,6 +1476,8 @@ void CG_PredictPlayerState( void ) {
 			trap->Print("WARNING: dropped event\n");
 		}
 	}
+
+	cg.predictedTimeFrac = 0.0f;
 
 	// fire events and other transition triggered things
 	CG_TransitionPlayerState( &cg.predictedPlayerState, &oldPlayerState );
