@@ -696,7 +696,7 @@ int main ( int argc, char* argv[] )
 	char	commandLine[ MAX_STRING_CHARS ] = { 0 };
 
 	Sys_PlatformInit();
-#if defined(_DEBUG) && !defined(DEDICATED)
+#if defined(_DEBUG) && !defined(DEDICATED) && defined(WIN32)
 	CON_CreateConsoleWindow();
 #endif
 	CON_Init();
