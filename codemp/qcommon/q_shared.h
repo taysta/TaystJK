@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define CLIENT_WINDOW_TITLE "EternalJK"
 #define CLIENT_CONSOLE_TITLE "EternalJK Console"
-#define HOMEPATH_NAME_UNIX "eternaljk"
+#define HOMEPATH_NAME_UNIX "EternalJK"
 #define HOMEPATH_NAME_WIN "EternalJK"
 #define HOMEPATH_NAME_MACOSX HOMEPATH_NAME_WIN
 
@@ -188,7 +188,7 @@ typedef int32_t qhandle_t, thandle_t, fxHandle_t, sfxHandle_t, fileHandle_t, cli
 #define	MAX_INFO_VALUE		1024
 
 #define	BIG_INFO_STRING		8192  // used for system info key only
-#define	BIG_INFO_KEY		  8192
+#define	BIG_INFO_KEY		8192
 #define	BIG_INFO_VALUE		8192
 
 #define NET_ADDRSTRMAXLEN 48 // maximum length of an IPv6 address string including trailing '\0'

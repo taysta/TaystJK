@@ -765,7 +765,7 @@ set(GameLibFullPaths)
 		ALL
 		DEPENDS ${BinsPk3})
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BinsPk3}
-		DESTINATION "${JKAInstallDir}/eternaljk"
+		DESTINATION "${JKAInstallDir}/EternalJK"
 		COMPONENT ${JKAMPCoreComponent})
 endif()
 
@@ -776,5 +776,5 @@ add_custom_target(Assets
 	DEPENDS japro-assets.pk3)
 install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3
-	DESTINATION "${JKAInstallDir}/eternaljk"
+	DESTINATION "${JKAInstallDir}/EternalJK"
 	COMPONENT ${JKAMPCoreComponent})

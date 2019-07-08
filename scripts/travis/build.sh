@@ -65,7 +65,6 @@ fi
 case "${host}" in
 	(macosx-universal-clang)
 		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
-			mv eternaljk base && \
 			tar czvf eternaljk-macos-"${arch}".tar.gz * && \
 			mv eternaljk-macos-"${arch}".tar.gz $(pwd)/../../../../ && \
 			cd ../../ && \
@@ -82,7 +81,7 @@ case "${host}" in
 		( cd $(pwd)/build/DESTDIR/prefix/JediAcademy/ && \
 			zip -r eternaljk-win32-portable.zip * && \
 			mv eternaljk-win32-portable.zip $(pwd)/../../../../ && \
-			cd eternaljk/ && \
+			cd EternalJK/ && \
 			zip -r ejk-japro-pk3only.zip * && \
 			mv ejk-japro-pk3only.zip $(pwd)/../../../../../ && \
 			cd ../../../ && \
