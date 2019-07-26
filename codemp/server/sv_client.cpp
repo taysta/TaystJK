@@ -1673,11 +1673,25 @@ Also called by bot code
 ==================
 */
 void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
+#ifdef DEDICATED
+	if ( cl->state != CS_ACTIVE ) {
+		cl->lastUsercmd = *cmd;
+		return; // may have been kicked during the last usercmd
+	}
+
+	if ((svs.servermod == SVMOD_BASEJKA || svs.servermod == SVMOD_JAPLUS) && cl->gentity && cl->gentity->playerState && (cl->gentity->playerState->pm_flags & PMF_FOLLOW)
+		&& (cmd->buttons & BUTTON_ALT_ATTACK) && !(cmd->buttons & BUTTON_ATTACK) && !(cl->lastUsercmd.buttons & BUTTON_ALT_ATTACK))
+	{
+		SV_ExecuteClientCommand(cl, "followPrev", qtrue);
+	}
+	cl->lastUsercmd = *cmd;
+#else
 	cl->lastUsercmd = *cmd;
 
 	if ( cl->state != CS_ACTIVE ) {
 		return;		// may have been kicked during the last usercmd
 	}
+#endif
 
 	if ( cl->lastUserInfoCount >= INFO_CHANGE_MAX_COUNT && cl->lastUserInfoChange < svs.time && cl->userinfoPostponed[0] )
 	{ // Update postponed userinfo changes now
