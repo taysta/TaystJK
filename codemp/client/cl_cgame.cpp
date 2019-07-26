@@ -974,11 +974,12 @@ void CL_SetCGameTime( void ) {
 
 	// get our current view of time
 
-	demoFreezed = (qboolean)(clc.demoplaying && com_timescale->value == 0.0f);
-	if (demoFreezed) {
-		// \timescale 0 is used to lock a demo in place for single frame advances
+	if ( clc.demoplaying && (!com_timescale->value || cl_paused->integer) )
+	{
+		// timescale 0 is used to lock a demo in place for single frame advances
 		cl.serverTimeDelta -= cls.frametime;
-	} else
+	}
+	else
 	{
 		// cl_timeNudge is a user adjustable cvar that allows more
 		// or less latency to be added in the interest of better
