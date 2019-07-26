@@ -3358,7 +3358,7 @@ void CL_Init( void ) {
 	Cmd_SetCommandCompletionFunc("playdemo", CL_CompleteDemoName);
 	Cmd_AddCommand("deletedemo", CL_DelDemo_f, "Delete a demo");
 	Cmd_SetCommandCompletionFunc("deletedemo", CL_CompleteDemoName);
-	Cmd_AddCommand ("demo_restart", CL_DemoRestart_f, "Restart the current demo" );
+	Cmd_AddCommand ("demo_restart", CL_DemoRestart_f, "Restarts the current or last-played demo" );
 	Cmd_AddCommand ("stoprecord", CL_StopRecord_f, "Stop recording a demo" );
 	Cmd_AddCommand ("configstrings", CL_Configstrings_f, "Prints the configstrings list" );
 	Cmd_AddCommand ("clientinfo", CL_Clientinfo_f, "Prints the userinfo variables" );

@@ -930,7 +930,6 @@ CL_SetCGameTime
 ==================
 */
 void CL_SetCGameTime( void ) {
-	qboolean demoFreezed;
 
 	// getting a valid frame message ends the connection process
 	if ( cls.state != CA_ACTIVE ) {

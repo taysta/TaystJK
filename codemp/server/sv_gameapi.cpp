@@ -2803,7 +2803,6 @@ void SV_InitGame( qboolean restart ) {
 	svs.servermod = SVMOD_UNKNOWN;
 	if (sv_legacyFixes->integer)
 	{
-		char *version = Cvar_VariableString("version");
 		char *gamename = Cvar_VariableString("gamename");
 
 		if (!gamename || !strlen(gamename)) {
@@ -2820,26 +2819,30 @@ void SV_InitGame( qboolean restart ) {
 				svs.servermod = SVMOD_BASEJKA;
 			return;
 		}
-		else if (!Q_stricmpn(gamename, "JA+", 3)) {
+
+		if (!Q_stricmpn(gamename, "JA+", 3)) {
 			svs.servermod = SVMOD_JAPLUS;
 			return;
 		}
-		else if (!Q_stricmpn(gamename, "Movie Battles", 13))
+
+		if (!Q_stricmpn(gamename, "Movie Battles", 13))
 		{
 			svs.servermod = SVMOD_MBII;
 			return;
 		}
-		else if (!Q_stricmpn(gamename, "japro", 5))
+
+		if (!Q_stricmpn(gamename, "japro", 5))
 		{
 			svs.servermod = SVMOD_JAPRO;
 			return;
 		}
-		else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
+
+		if (!Q_stricmpn(gamename, "OpenJK", 6)) {
 			svs.servermod = SVMOD_OPENJK;
 			return;
 		}
 
-		Com_DPrintf("%sUnsupported mod detected %s\n", S_COLOR_YELLOW, gamename);
+		Com_DPrintf("%sUnsupported mod detected (%s) - some server engine features will be unavailable\n", S_COLOR_YELLOW, gamename);
 	}
 }
 
