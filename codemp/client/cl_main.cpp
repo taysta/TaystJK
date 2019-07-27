@@ -520,16 +520,15 @@ static void CL_CompleteDemoName( char *args, int argNum )
 {
 	if( argNum == 2 )
 	{
-		char demoExt[16];
-		char demoExt2[16];
+		char demoExtension[8] = {0}, demoExtensionLegacy[8] = {0};
 
 		//this might be weird if someone has a bunch of 1.01 demos and one 1.00 demo, or vice versa
 		//need to check for both extensions @ the same time somehow
-		Com_sprintf(demoExt2, sizeof(demoExt2), ".dm_%d", PROTOCOL_LEGACY);
-		Field_CompleteFilename("demos", demoExt2, qfalse , qtrue);
+		Com_sprintf(demoExtensionLegacy, sizeof(demoExtensionLegacy), ".dm_%d", PROTOCOL_LEGACY);
+		Field_CompleteFilename("demos", demoExtensionLegacy, qfalse , qtrue);
 		
-		Com_sprintf(demoExt, sizeof(demoExt), ".dm_%d", PROTOCOL_VERSION);
-		Field_CompleteFilename( "demos", demoExt, qtrue, qtrue );
+		Com_sprintf(demoExtension, sizeof(demoExtension), ".dm_%d", PROTOCOL_VERSION);
+		Field_CompleteFilename("demos", demoExtension, qfalse, qtrue);
 	}
 }
 
@@ -541,9 +540,10 @@ demo <demoname>
 
 ====================
 */
-void CL_PlayDemo_f( void ) {
-	char		name[MAX_OSPATH], extension[32];
-	char		*arg;
+static void CL_PlayDemo_f( void ) {
+	char		name[MAX_STRING_CHARS] = {0};
+	char		*arg = NULL, *s = NULL, *demoExtension = NULL, *demoExtensionLegacy = NULL;
+	const char	*foundExtension = NULL, *foundSlash = NULL;
 
 	if (Cmd_Argc() < 2) {
 		Com_Printf ("demo <demoname>\n");
@@ -559,29 +559,33 @@ void CL_PlayDemo_f( void ) {
 
 	CL_Disconnect( qtrue );
 
-
-	//could probably be alot cleaner
-	//look for the old protocol first
-	Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_LEGACY);
-	if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
-		Com_sprintf(name, sizeof(name), "demos/%s", arg);
-	}
-	else {
-		Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_LEGACY);
+	if (!VALIDSTRING(arg)) {
+		Com_Error(ERR_DROP, "couldn't open file");
+		return;
 	}
 
-	if (!FS_FileExists(name)) {//start over w/ normal protocol idk
-		Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_VERSION);
-		if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
-			Com_sprintf(name, sizeof(name), "demos/%s", arg);
-		}
-		else {
-			Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_VERSION);
-		}
-	}
+	foundSlash = strchr(arg, '/');
+	if (Q_stricmpn(arg, "demos/", 6) && (!foundSlash || !VALIDSTRING(foundSlash))) //check for an explicit path
+		s = va("demos/%s", arg);
 
-	if (!FS_FileExists(name)) { //couldn't find a file with either extension?
-		Com_sprintf(name, sizeof(name), "demos/%s", arg); //strip the extension, if they see either extension in the error box then they probably did something dumb
+	if (!s || !VALIDSTRING(s))
+		s = arg;
+
+	foundExtension = Q_stristr(s, ".dm_");
+	demoExtension = va(".dm_%i", PROTOCOL_VERSION);
+	demoExtensionLegacy = va(".dm_%i", PROTOCOL_LEGACY);
+
+	if (foundExtension && VALIDSTRING(foundExtension) && (!Q_stricmp(foundExtension, demoExtension) || !Q_stricmp(foundExtension, demoExtensionLegacy)))
+	{ //extension was included in the demo's name
+		Q_strncpyz(name, s, sizeof(name));
+	}
+	else
+	{ //have to figure it out ourselves
+		//look for the old protocol first
+		Com_sprintf(name, sizeof(name), "%s%s", s, demoExtensionLegacy);
+
+		if (!FS_FileExists(name)) //try again w/ normal protocol
+			Com_sprintf(name, sizeof(name), "%s%s", s, demoExtension);
 	}
 
 	FS_FOpenFileRead( name, &clc.demofile, qtrue );
@@ -596,7 +600,7 @@ void CL_PlayDemo_f( void ) {
 		}
 		return;
 	}
-	Q_strncpyz( clc.demoName, Cmd_Argv(1), sizeof( clc.demoName ) );
+	Q_strncpyz( clc.demoName, name, sizeof( clc.demoName ) );
 
 	Con_Close();
 
@@ -613,20 +617,21 @@ void CL_PlayDemo_f( void ) {
 	clc.firstDemoFrameSkipped = qfalse;
 }
 
-void CL_DemoRestart_f(void) {
-	char *demoname = Cvar_VariableString("demoname");
+static void CL_DemoRestart_f(void) {
+	char *demoname = clc.demoName;
 	if (!VALIDSTRING(demoname)) {
 		Com_Printf("No demo available to restart.\n");
 		return;
 	}
 
-	Com_Printf("Restarting demo \"%s\".", demoname);
+	Com_Printf("Restarting demo \"%s\"\n", demoname);
 	Cbuf_ExecuteText(EXEC_APPEND, va("demo \"%s\"\n", demoname));
 }
 
-void CL_DelDemo_f(void) {
-	char		name[MAX_OSPATH], extension[32];
-	char		*arg;
+static void CL_DelDemo_f(void) {
+	char		name[MAX_STRING_CHARS] = {0};
+	char		*arg = NULL, *s = NULL, *demoExtension = NULL, *demoExtensionLegacy = NULL;
+	const char	*foundExtension = NULL, *foundSlash = NULL;
 
 	if (Cmd_Argc() < 2) {
 		Com_Printf("deletedemo <demoname>\n");
@@ -635,36 +640,43 @@ void CL_DelDemo_f(void) {
 
 	arg = Cmd_Args();
 
-	//look for the old protocol first
-	Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_LEGACY);
-	if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
-		Com_sprintf(name, sizeof(name), "demos/%s", arg);
-	}
-	else {
-		Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_LEGACY);
+	if (!VALIDSTRING(arg)) {
+		Com_Error(ERR_DROP, "couldn't open file");
+		return;
 	}
 
-	if (!FS_FileExists(name)) {//start over w/ normal protocol idk
-		Com_sprintf(extension, sizeof(extension), ".dm_%d", PROTOCOL_VERSION);
-		if (!Q_stricmp(arg + strlen(arg) - strlen(extension), extension)) {
-			Com_sprintf(name, sizeof(name), "demos/%s", arg);
+	foundSlash = strchr(arg, '/');
+	if (foundSlash && VALIDSTRING(foundSlash) && Q_stricmpn(arg, "demos/", 6)) //only allow deletion of demos inside of demos folder
+		return;
+
+	if (!s || !VALIDSTRING(s))
+		s = arg;
+
+	foundExtension = Q_stristr(s, ".dm_");
+	demoExtension = va(".dm_%i", PROTOCOL_VERSION);
+	demoExtensionLegacy = va(".dm_%i", PROTOCOL_LEGACY);
+
+	if (foundExtension && VALIDSTRING(foundExtension) && (!Q_stricmp(foundExtension, demoExtension) || !Q_stricmp(foundExtension, demoExtensionLegacy)))
+	{ //extension was included in the demo's name
+		Q_strncpyz(name, s, sizeof(name));
+	}
+	else
+	{ //have to figure it out ourselves
+		//look for the old protocol first
+		Com_sprintf(name, sizeof(name), "%s%s", s, demoExtensionLegacy);
+
+		if (!FS_FileExists(name)) {//try again w/ normal protocol
+			Com_sprintf(name, sizeof(name), "%s%s", s, demoExtension);
 		}
-		else {
-			Com_sprintf(name, sizeof(name), "demos/%s.dm_%d", arg, PROTOCOL_VERSION);
+
+		if (!FS_FileExists(name)) {
+			Com_Printf(S_COLOR_RED "Can't find demofile %s\n", name);
+			return;
 		}
 	}
 
-	if (!FS_FileExists(name)) { //couldn't find a file with either extension?
-		Com_sprintf(name, sizeof(name), "demos/%s", arg); //strip the extension, if they see either extension in the error box then they probably did something dumb
-	}
-
-	if (!FS_FileExists(name)) {
-		Com_Printf("^1Can't find demofile %s\n", name);
-	}
-	else {
-		FS_HomeRemove(name);
-		Com_Printf("^3Deleted demofile %s\n", name);
-	}
+	FS_HomeRemove(name);
+	Com_Printf(S_COLOR_YELLOW "Deleted demofile %s\n", name);
 }
 
 
