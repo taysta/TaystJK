@@ -9268,13 +9268,13 @@ void CG_ChatBox_AddString(char *chatStr)
 	char tempChatStr[MAX_SAY_TEXT+MAX_NETNAME] = { 0 }, *r = chatStr, *w = tempChatStr;
 	float chatLen;
 
+	if (cg_logChat.integer & JAPRO_CHATLOG_ENABLE) {
+		CG_LogPrintf(cg.log.file, "%s\n", chatStr);
+	}
+
 	if (cg_chatBox.integer < 0)
 	{ //don't bother then.
 		return;
-	}
-
-	if (cg_logChat.integer & JAPRO_CHATLOG_ENABLE) {
-		CG_LogPrintf(cg.log.file, "%s\n", chatStr);
 	}
 
 	// from duo
@@ -9298,9 +9298,6 @@ void CG_ChatBox_AddString(char *chatStr)
 	}
 
 	chatStr = tempChatStr;
-
-	if (cg_chatSounds.integer && cg_chatBox.integer >= 0)//JAPRO - Clientside - Chatsounds option
-		trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 
 	if (cg_chatBox.integer) {
 		trap->Print("*%s\n", chatStr);
@@ -9337,6 +9334,8 @@ void CG_ChatBox_AddString(char *chatStr)
 		if (strstr(chatStr, "^7]: ^6")) {
 			personal = qtrue;
 			search = "^7]: ^6";
+			if (cg_chatBox.integer == 2)
+				trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 		}
 
 		if (regular || teamchat || personal) {
@@ -9364,7 +9363,6 @@ void CG_ChatBox_AddString(char *chatStr)
 			Q_strcat(name, sizeof(name), msg);
 
 			strcpy(chatStr, name);
-
 		}
 	}
 

@@ -1649,6 +1649,14 @@ static void CG_Chat_f( void ) {
 				return;
 			}
 			//New msg
+			if (cg_chatSounds.integer == 2 && !cg_cleanChatbox.integer) { //check to play sound for PMs here since the cleanChatBox code will handle this for us
+				if (Q_stristr(text, "^7]: ^6")) {
+					trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
+				}
+			}
+			else if (cg_chatSounds.integer && cg_chatSounds.integer != 2) {//JAPRO - Clientside - Chatsounds option
+				trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
+			}
 			CG_ChatBox_AddString(text);
 
 			Q_strncpyz(cg.lastChatMsg, text, sizeof(cg.lastChatMsg));
@@ -1661,6 +1669,8 @@ static void CG_Chat_f( void ) {
 				return;
 			}
 
+			if (cg_chatSounds.integer)//JAPRO - Clientside - Chatsounds option
+				trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 			CG_ChatBox_AddString(text);
 		}
 	}
@@ -1680,6 +1690,9 @@ static void CG_Chat_f( void ) {
 		//get localized text
 		if (loc[0] == '@')
 			trap->SE_GetStringTextString(loc + 1, loc, sizeof(loc));
+
+		if (cg_chatSounds.integer)//JAPRO - Clientside - Chatsounds option
+			trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 
 		if ( !Q_stricmp( cmd, "lchat" ) && !cg_teamChatsOnly.integer ) {
 			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );

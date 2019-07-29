@@ -182,9 +182,10 @@ XDOCS_CVAR_DEF("cg_jumpSounds", "Play sound when players jump",
 	SETTING("3", "Play only when local client jumps")
 )
 
-XDOCS_CVAR_DEF("cg_chatSounds", "Play sound when chat messages appear",
+XDOCS_CVAR_DEF("cg_chatSounds", "Play sound when chat messages are received",
 	SETTING("0", "Don't play chat sounds") NL
-	SETTING("1", "Play chat sounds")
+	SETTING("1", "Play chat sounds for all messages") NL
+	SETTING("2", "Play chat sounds for private and team messages only")
 )
 
 XDOCS_CVAR_DEF("cg_hitSounds", "Play a sound when you hit someone",
