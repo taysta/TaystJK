@@ -201,6 +201,18 @@ XDOCS_CVAR_DEF("cg_raceSounds", "Play sound when race is started",
 	SETTING("1", "Play race sounds")
 )
 
+XDOCS_CVAR_DEF("cg_duelSounds", "Enables/disables announcer/center print at the start of private duels",
+			   SETTING("0", "Do not announce the start of duel") NL
+			   SETTING("1", "Announce and center print \"BEGIN\" (baseJKA behavior)") NL
+			   SETTING("2", "Announce, but do not center print") NL
+			   SETTING("3", "Center print, but do not announce")
+)
+
+XDOCS_CVAR_DEF("cg_duelMusic", "Enables special in-game music for private duels",
+			SETTING("0", "Use map music while in private duels") NL
+			SETTING("1", "Play music track for private duels (baseJKA behavior)")
+)
+
 //Visuals
 
 XDOCS_CVAR_DEF("cg_remaps", "Show or hide serverside remaps",

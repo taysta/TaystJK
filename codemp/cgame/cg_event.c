@@ -1712,13 +1712,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 //JAPRO - Clientside - Fullforce Duels - Start
 		if (es->eventParm)
 		{ //starting the duel
-			//if (es->eventParm == 2)
-			//if (es->eventParm == 5) //RoAR mod NOTE: OH! Found it.
-			//{
-				//CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );				
-				//trap->S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
-			//}
-			//else
+			if (cg_duelSounds.integer && es->eventParm == 2 && !(cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))
+			{
+				if (cg_duelSounds.integer != 2) CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );				
+				if (cg_duelSounds.integer != 3) trap->S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
+			}
+			else
 			{ // signalling duel type with parameter number. Also, for clients in duel, start duel music
 				cg_dueltypes[es->number] = es->eventParm; // set dueltype for partner #1//Why - 1  you fucks gun duel
 				if (!(cg.snap->ps.duelInProgress))
