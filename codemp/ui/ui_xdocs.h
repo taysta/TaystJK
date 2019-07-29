@@ -112,6 +112,11 @@ XDOCS_CVAR_DEF("cg_newFont", "Uses a different font for the chat",
 	SETTING("1", "Use the new font")
 )
 
+XDOCS_CVAR_DEF("cg_chatBoxShowHistory", "Allows showing message history in chatbox when console is open",
+	SETTING("0", "Enabled") NL
+	SETTING("1", "Disabled (baseJKA behavior)")
+)
+
 XDOCS_CVAR_DEF("cg_chatBoxFontSize", "Scale of the chat box font",""
 )
 

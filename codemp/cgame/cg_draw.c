@@ -9449,6 +9449,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 	float x = (cg.scoreBoardShowing ? 8 : cg_chatBoxX.value) * cgs.widthRatioCoef;
 	float y = cg.scoreBoardShowing ? 475 : cg_chatBoxHeight.value;
 	float fontScale = 0.65 * cg_chatBoxFontSize.value;//JAPRO - Clientside - Chatbox Font Size Scaler
+	qboolean drawAnyway = (qboolean)(cg_chatBoxShowHistory.integer && (trap->Key_GetCatcher() & KEYCATCH_CONSOLE));
 
 	if (!cg_chatBox.integer)
 	{
@@ -9459,7 +9460,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 
 	while (i < cg_chatBoxLines.integer)
 	{
-		if (cg.chatItems[i].time >= cg.time)
+		if (cg.chatItems[i].time >= cg.time || drawAnyway)
 		{
 			int check = numToDraw;
 			int insertionPoint = numToDraw;
