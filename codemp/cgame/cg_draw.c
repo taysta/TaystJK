@@ -5705,7 +5705,7 @@ LAGOMETER
 ===============================================================================
 */
 
-#define	LAG_SAMPLES		128
+#define	LAG_SAMPLES		256
 
 
 struct lagometer_s {
@@ -5842,7 +5842,7 @@ static void CG_DrawLagometer( void ) {
 	int		color;
 	float	vscale;
 
-	if ( !cg_lagometer.integer || cgs.localServer || cg.demoPlayback) {
+	if (!cg_lagometer.integer || cgs.localServer || cg.demoPlayback) {
 		CG_DrawDisconnect();
 		return;
 	}
@@ -5939,14 +5939,18 @@ static void CG_DrawLagometer( void ) {
 		CG_DrawBigString( ax + 1, ay - 2, "snc", 1.0 );
 	}
 	//TnG NoVe
-	else if (cg.snap && cg_lagometer.integer == 2 || cg_lagometer.integer == 3)
+	else if (cg.snap && (cg_lagometer.integer == 2 || cg_lagometer.integer == 3))
 	{
-		int total = 0;
-		float avgInterp;
 		int i;
+		int total = 0;
+		char *s = va("%i", cg.snap->ping);
+		float avgInterp = 0.0f, strW = 0.0f;
+
+		if (!VALIDSTRING(s))
+			return;
 
 		//CG_Text_Paint(400, 400, 1.0, colorWhite, va("%i", cg.snap->ping), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_LARGE);
-		CG_Text_Paint(ax + 3 * cgs.widthRatioCoef, ay - 1, 0.5f, colorWhite, va("%i", cg.snap->ping), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
+		CG_Text_Paint(ax + (3.0f * cgs.widthRatioCoef), ay - 1.0f, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 
 		for (i = 0; i < LAG_SAMPLES; i++) {
 			total += lagometer.frameSamples[i];
@@ -5954,7 +5958,9 @@ static void CG_DrawLagometer( void ) {
 		avgInterp = total / (float)LAG_SAMPLES * -1;
 
 		//CG_Text_Paint(400, 300, 1.0, colorBlue, va("%04.1f", avgInterp), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_LARGE);
-		CG_Text_Paint(ax + 28 * cgs.widthRatioCoef, ay - 1, 0.5f, colorWhite, va("%04.1f", avgInterp), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
+		s = va("%04.1f", avgInterp);
+		strW = CG_Text_Width(s, 0.5f, FONT_SMALL);
+		CG_Text_Paint(ax + (aw*cgs.widthRatioCoef) - strW, ay - 1.0f, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 	}
 
 	CG_DrawDisconnect();
@@ -5981,7 +5987,7 @@ static void CG_DrawSpeedGraph( void ) {
 			CG_DrawPic(x, y, 48 * cgs.widthRatioCoef, 48, cgs.media.lagometerShader);
 
 	if (cg_lagometer.integer == 2 || (cg_lagometer.integer == 3 && cg.currentSpeed != 0))
-		CG_Text_Paint(x + 2 * cgs.widthRatioCoef, y, 0.75f, colorWhite, va("%.0f", cg.currentSpeed), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL2);
+		CG_Text_Paint(x + 2 * cgs.widthRatioCoef, y, 0.5f, colorWhite, va("%.0f", cg.currentSpeed), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 
 	if (cg_lagometer.integer != 1 && cg_lagometer.integer != 2)
 		y -= 96;
@@ -6091,8 +6097,9 @@ void CG_CenterPrint( const char *str, int y, int charWidth ) {
 			i = 0;
 			cg.centerPrintLines++;
 		}
-		else if (*s == '\n')
+		else if (*s == '\n') {
 			cg.centerPrintLines++;
+		}
 		s++;
 	}
 }
@@ -6135,8 +6142,9 @@ void CG_CenterPrintMultiKill(const char *str, int y, int charWidth) {
 			i = 0;
 			cg.centerPrintLines++;
 		}
-		else if (*s == '\n')
+		else if (*s == '\n') {
 			cg.centerPrintLines++;
+		}
 		s++;
 	}
 
@@ -6156,13 +6164,14 @@ qboolean BG_IsWhiteSpace( char c )
 
 	return qfalse;
 }
+
 static void CG_DrawCenterString( void ) {
 	char	*start;
 	int		l;
 	int		x, y, w;
-	int h;
+	int		h;
 	float	*color;
-	float scale = cg_centerSize.value;//1.0; //0.5
+	float	scale = cg_centerSize.value;//1.0; //0.5
 
 	if (scale < 0)
 		scale = 0;
