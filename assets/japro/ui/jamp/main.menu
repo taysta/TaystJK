@@ -217,7 +217,7 @@
 			style				WINDOW_STYLE_EMPTY
 			type				ITEM_TYPE_BUTTON
 			rect				36 194 130 24
-			text				@MENUS_NEW
+			text				@MENUS_PLAY
 			font				1
 			textscale			.7
 			textaligny			0
@@ -236,7 +236,7 @@
 			style				WINDOW_STYLE_EMPTY
 			type				ITEM_TYPE_BUTTON
 			rect				36 212 130 24
-			text				@MENUS_PLAY					
+			text				@MENUS_PLAY
 			descText			@MENUS_START_PLAYING_NOW
 			font				3
 			textscale			1.1
@@ -274,7 +274,7 @@
 			style				WINDOW_STYLE_EMPTY
 			type				ITEM_TYPE_BUTTON
 			rect				36 293 130 24
-			text				@MENUS_LOAD
+			text				@MENUS_PROFILE
 			font				1
 			textscale			.7
 			textaligny			0

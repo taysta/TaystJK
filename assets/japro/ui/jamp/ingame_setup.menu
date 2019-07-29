@@ -3212,10 +3212,10 @@
 			group				hud
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Speed Graph:"
-			cvar				"cg_speedometerSettings"	
-			bitMask				"6"
+			cvar				"cg_speedometer"	
+			bitMask				"7"
 			rect				220 83 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -3862,7 +3862,7 @@
 				English  			english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch				deutsch
-				"Espaï¿½ol" 			espanol
+				"Español" 			espanol
 			}
 			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
