@@ -117,10 +117,20 @@ XDOCS_CVAR_DEF("cg_chatBoxShowHistory", "Allows showing message history in chatb
 	SETTING("1", "Disabled (baseJKA behavior)")
 )
 
+XDOCS_CVAR_DEF("cg_teamChatsOnly", "Hide non-team chat messages",
+	"Ignored messages will only be printed in the console." NL
+	SETTING("0", "Show all chat") NL
+	SETTING("1", "Hide global chat from all players") NL
+	SETTING("2", "Hide global chat from spectators while you are in-game (requires compatible server mod)")
+)
+
 XDOCS_CVAR_DEF("cg_chatBoxFontSize", "Scale of the chat box font",""
 )
 
-XDOCS_CVAR_DEF("cg_chatBoxCutOffLength", "Length of chat box before starting a new line",""
+XDOCS_CVAR_DEF("cg_chatBoxCutOffLength", "Width of a line in the chatbox before breaking to a new one",
+	SETTING("350", "jaPRO cutoff length") NL
+	SETTING("550", "baseJKA default") NL
+	SETTING("640", "Maximum")
 )
 
 XDOCS_CVAR_DEF("cg_crossHairRed", "Custom red color of the crosshair",""
@@ -282,6 +292,20 @@ XDOCS_CVAR_DEF("cg_noTeleFX", "Disables the teleportation effect",
 	SETTING("1", "Teleport effect is off")
 )
 
+XDOCS_CVAR_DEF("g_gametype", "Gametype that the server is currently on",
+	SETTING("0", "FFA") NL
+	SETTING("1", "Holocron") NL
+	SETTING("2", "Jedi Master") NL
+	SETTING("3", "Duel") NL
+	SETTING("4", "Powerduel") NL
+	SETTING("5", "SP FFA") NL
+	SETTING("6", "TFFA") NL
+	SETTING("7", "Siege") NL
+	SETTING("8", "CTF") NL
+	SETTING("9", "CTY")
+)
+
+//Work from above this line
 
 // ...
 
