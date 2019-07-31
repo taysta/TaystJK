@@ -1674,14 +1674,18 @@ Also called by bot code
 */
 void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
 #ifdef DEDICATED
+	playerState_t *ps = NULL;
+
 	if ( cl->state != CS_ACTIVE ) {
 		cl->lastUsercmd = *cmd;
 		return; // may have been kicked during the last usercmd
 	}
 
-	if ((svs.servermod == SVMOD_BASEJKA || svs.servermod == SVMOD_JAPLUS) && cl->gentity && cl->gentity->playerState && (cl->gentity->playerState->pm_flags & PMF_FOLLOW)
+	ps = SV_GameClientNum(cl - svs.clients);
+	if (sv_legacyFixes->integer && !(sv_legacyFixes->integer & SVFIXES_DISABLE_SPEC_ALTFIRE_FOLLOWPREV)
+		&& (svs.servermod == SVMOD_BASEJKA || svs.servermod == SVMOD_JAPLUS) && ps && (ps->pm_flags & PMF_FOLLOW)
 		&& (cmd->buttons & BUTTON_ALT_ATTACK) && !(cmd->buttons & BUTTON_ATTACK) && !(cl->lastUsercmd.buttons & BUTTON_ALT_ATTACK))
-	{
+	{ //allow alt attack to go back one player in spectator
 		SV_ExecuteClientCommand(cl, "followPrev", qtrue);
 	}
 	cl->lastUsercmd = *cmd;
