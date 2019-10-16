@@ -429,6 +429,13 @@ static void IN_ActivateMouse( void )
 	if (!mouseAvailable || !SDL_WasInit( SDL_INIT_VIDEO ) )
 		return;
 
+	// fix mouse when unfocused/minimized
+	static connstate_t lastState = CA_UNINITIALIZED;
+	if (cls.state != lastState) {
+		lastState = cls.state;
+		return;
+	}
+
 	if( !mouseActive )
 	{
 		SDL_SetRelativeMouseMode( SDL_TRUE );

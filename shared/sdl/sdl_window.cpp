@@ -669,6 +669,10 @@ static rserr_t GLimp_SetMode(glconfig_t *glConfig, const windowDesc_t *windowDes
 		return RSERR_UNKNOWN;
 	}
 
+	// fix mouse when unfocused/minimized
+	SDL_MinimizeWindow(screen);
+	SDL_RestoreWindow(screen);
+
 	return RSERR_OK;
 }
 
