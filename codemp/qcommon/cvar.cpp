@@ -678,7 +678,7 @@ cvar_t *Cvar_Set2( const char *var_name, const char *value, uint32_t defaultFlag
 
 		if (var->flags & CVAR_INIT)
 		{
-			Com_Printf ("%s is write protected.\n", var_name);
+			Com_Printf ("%s can only be set at startup time by using a \"+set\" command line parameter.\n", var_name);
 			return var;
 		}
 
