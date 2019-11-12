@@ -629,7 +629,6 @@ void IN_Init( void *windowData )
 
 	if (in_mouse->integer != 2 && SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "0")) {
 		Com_DPrintf("IN_Init: Using raw mouse input\n");
-		
 	}
 	else if (SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "1")) {
 		Com_DPrintf("IN_Init: Not using raw input\n");
