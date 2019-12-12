@@ -3845,7 +3845,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			trap->S_StartSound(NULL, es->number, CHAN_BODY, cgs.media.gibSound);
 			CG_GibPlayer(cent->lerpOrigin);
 		}
-		else {
+		else if (!(es->eFlags & EF_DEAD)) {
 			trap->S_StartSound(NULL, es->number, CHAN_VOICE,
 				CG_CustomSound(cent->currentState.number, va("*death%i.wav", Q_irand(1, 3))));
 		}

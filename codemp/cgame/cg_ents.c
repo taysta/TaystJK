@@ -751,7 +751,9 @@ void CG_Disintegration(centity_t *cent, refEntity_t *ent)
 	ent->customShader = 0;
 	trap->R_AddRefEntityToScene( ent );
 
-	if ( cg.time - ent->endTime < 1000 && (timescale.value * timescale.value * Q_flrand(0.0f, 1.0f)) > 0.05f )
+	if ( cg.time - ent->endTime < 1000 &&
+		(cg.frametime > 0 && ((cg.frametime < 50 && cg.time % 50 <= cg.frametime) || cg.frametime >= 50)) &&
+		(timescale.value * timescale.value * Q_flrand(0.0f, 1.0f)) > 0.05f )
 	{
 		vec3_t fxOrg, fxDir;
 		mdxaBone_t	boltMatrix;
@@ -760,8 +762,8 @@ void CG_Disintegration(centity_t *cent, refEntity_t *ent)
 		VectorSet(fxDir, 0, 1, 0);
 
 		trap->G2API_GetBoltMatrix( cent->ghoul2, 0, torsoBolt, &boltMatrix, cent->lerpAngles, cent->lerpOrigin, cg.time,
-				cgs.gameModels, cent->modelScale);
-				BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, fxOrg );
+				cgs.gameModels, cent->modelScale );
+		BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, fxOrg );
 
 		VectorMA( fxOrg, -18, cg.refdef.viewaxis[0], fxOrg );
 		fxOrg[2] += Q_flrand(-1.0f, 1.0f) * 20;
@@ -926,12 +928,10 @@ static void CG_General( centity_t *cent ) {
 			return; //don't show bodies in duels or in racemode
 		}
 
-			// check if we want to fade bodies instantly
-			// note, the server delays the EV_BODYFADE by quite some time so we will handle it all ourselves
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) && cent->bodyFadeTime == 0) {
-			cent->bodyFadeTime = cg.time + 5000;
-			
-		}
+		// check if we want to fade bodies instantly
+		// note, the server delays the EV_BODYFADE by quite some time so we will handle it all ourselves
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) && cent->bodyFadeTime == 0)
+				cent->bodyFadeTime = cg.time + 5000;
 	}
 
 	if (cent->ghoul2 && !cent->currentState.modelGhoul2 && cent->currentState.eType != ET_BODY &&
