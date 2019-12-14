@@ -3827,80 +3827,6 @@ static float CG_DrawEnemyInfo ( float y )
 	return y + BIGCHAR_HEIGHT + 2;
 }
 
-/*
-==================
-CG_DrawSnapshot
-==================
-*/
-static float CG_DrawSnapshot( float y ) {
-	char		*s;
-	int			w;
-	float		xOffset = 0;
-
-	s = va( "time:%i snap:%i cmd:%i", cg.snap->serverTime, 
-		cg.latestSnapshotNum, cgs.serverCommandSequence );
-	w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-
-	CG_DrawBigString(SCREEN_WIDTH - (5 + w - xOffset)*cgs.widthRatioCoef, y + 2, s, 1.0F);
-
-	return y + BIGCHAR_HEIGHT + 4;
-}
-
-/*
-==================
-CG_DrawFPS
-==================
-*/
-#define	FPS_FRAMES	16
-static float CG_DrawFPS( float y ) {
-	char		*s;
-	int			w;
-	static unsigned short previousTimes[FPS_FRAMES];
-	static unsigned short index;
-	static int	previous, lastupdate;
-	int		t, i, fps, total;
-	unsigned short frameTime;
-	const int		xOffset = 0;
-
-
-	// don't use serverTime, because that will be drifting to
-	// correct for internet lag changes, timescales, timedemos, etc
-	t = trap->Milliseconds();
-	frameTime = t - previous;
-	previous = t;
-	if (t - lastupdate > 50)	//don't sample faster than this
-	{
-		lastupdate = t;
-		previousTimes[index % FPS_FRAMES] = frameTime;
-		index++;
-	}
-	// average multiple frames together to smooth changes out a bit
-	total = 0;
-	for ( i = 0 ; i < FPS_FRAMES ; i++ ) {
-		total += previousTimes[i];
-	}
-	if ( !total ) {
-		total = 1;
-	}
-	fps = 1000 * FPS_FRAMES / total;
-
-	s = va( "%ifps", fps );
-//JAPRO - Clientside - Add cg_drawfps 2 - Start
-	if (cg_drawFPS.integer == 1)
-	{	
-		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
-	}
-	else if (cg_drawFPS.integer > 1)
-	{
-		w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
-	}
-//JAPRO - Clientside - Add cg_drawfps 2 - End
-
-	return y + BIGCHAR_HEIGHT + 4;
-}
-
 // nmckenzie: DUEL_HEALTH
 #define MAX_HEALTH_FOR_IFACE	100
 void CG_DrawHealthBarRough (float x, float y, int width, int height, float ratio, const float *color1, const float *color2)
@@ -5209,6 +5135,80 @@ float CG_DrawMiniMap(float y)
 }
 
 /*
+==================
+CG_DrawSnapshot
+==================
+*/
+static float CG_DrawSnapshot( float y ) {
+	char		*s;
+	int			w;
+	float		xOffset = 0;
+
+	s = va( "time:%i snap:%i cmd:%i", cg.snap->serverTime, 
+		cg.latestSnapshotNum, cgs.serverCommandSequence );
+	w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
+
+	CG_DrawBigString(SCREEN_WIDTH - (5 + w - xOffset)*cgs.widthRatioCoef, y + 2, s, 1.0F);
+
+	return y + BIGCHAR_HEIGHT + 4;
+}
+
+/*
+==================
+CG_DrawFPS
+==================
+*/
+#define	FPS_FRAMES	16
+static float CG_DrawFPS( float y ) {
+	char		*s;
+	int			w;
+	static unsigned short previousTimes[FPS_FRAMES];
+	static unsigned short index;
+	static int	previous, lastupdate;
+	int		t, i, fps, total;
+	unsigned short frameTime;
+	const int		xOffset = 0;
+
+
+	// don't use serverTime, because that will be drifting to
+	// correct for internet lag changes, timescales, timedemos, etc
+	t = trap->Milliseconds();
+	frameTime = t - previous;
+	previous = t;
+	if (t - lastupdate > 50)	//don't sample faster than this
+	{
+		lastupdate = t;
+		previousTimes[index % FPS_FRAMES] = frameTime;
+		index++;
+	}
+	// average multiple frames together to smooth changes out a bit
+	total = 0;
+	for ( i = 0 ; i < FPS_FRAMES ; i++ ) {
+		total += previousTimes[i];
+	}
+	if ( !total ) {
+		total = 1;
+	}
+	fps = 1000 * FPS_FRAMES / total;
+
+	s = va( "%ifps", fps );
+	//JAPRO - Clientside - Add cg_drawfps 2 - Start
+	if (cg_drawFPS.integer == 1)
+	{	
+		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
+		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
+	}
+	else if (cg_drawFPS.integer > 1)
+	{
+		w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
+	}
+	//JAPRO - Clientside - Add cg_drawfps 2 - End
+
+	return y + BIGCHAR_HEIGHT + 4;
+}
+
+/*
 =================
 CG_DrawTimer
 =================
@@ -5250,7 +5250,6 @@ static float CG_DrawTimer( float y ) {
 
 	return y + BIGCHAR_HEIGHT + 4;
 }
-
 
 /*
 =================
