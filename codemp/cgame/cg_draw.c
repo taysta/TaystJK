@@ -5715,13 +5715,11 @@ struct lagometer_s {
 	int		snapshotCount;
 } lagometer;
 
-#define	SPEED_SAMPLES		128
+#define	SPEED_SAMPLES		256
 
 typedef struct {
 	int		frameSamples[SPEED_SAMPLES];
 	int		frameCount;
-	int		snapshotSamples[SPEED_SAMPLES];
-	int		snapshotCount;
 } speedgraph_t;
 
 speedgraph_t		speedgraph;
@@ -5742,9 +5740,7 @@ void CG_AddLagometerFrameInfo( void ) {
 }
 
 void CG_AddSpeedGraphFrameInfo( void ) {  //CG_DrawSpeedGraph
-	int xyspeed = cg.currentSpeed;//sqrt((cg.predictedPlayerState.velocity[0] * cg.predictedPlayerState.velocity[0]) + (cg.predictedPlayerState.velocity[1] * cg.predictedPlayerState.velocity[1]));
-
-	speedgraph.frameSamples[ speedgraph.frameCount & ( SPEED_SAMPLES - 1) ] = xyspeed;
+	speedgraph.frameSamples[ speedgraph.frameCount & ( SPEED_SAMPLES - 1) ] = cg.currentSpeed;
 	speedgraph.frameCount++;
 }
 
@@ -5767,6 +5763,12 @@ void CG_AddLagometerSnapshotInfo( snapshot_t *snap ) {
 	}
 
 	// add this snapshot's info
+	if (cg.demoPlayback) { //cgs.svfps is assumed to be 20 if it's not found in serverinfo
+		snap->ping = (snap->serverTime - snap->ps.commandTime) - (1000/cgs.svfps) + lagometer.frameSamples[lagometer.frameCount & (LAG_SAMPLES - 2)];
+		if (snap->ping <= 0)
+			snap->ping = 1;
+	}
+
 	lagometer.snapshotSamples[ lagometer.snapshotCount & ( LAG_SAMPLES - 1) ] = snap->ping;
 	lagometer.snapshotFlags[ lagometer.snapshotCount & ( LAG_SAMPLES - 1) ] = snap->snapFlags;
 	lagometer.snapshotCount++;
@@ -5787,7 +5789,8 @@ static void CG_DrawDisconnect( void ) {
 	int			w;  // bk010215 - FIXME char message[1024];
 	const int REAL_CMD_BACKUP = (cl_commandsize.integer >= 4 && cl_commandsize.integer <= 512 ) ? (cl_commandsize.integer) : (CMD_BACKUP);
 
-	if (cgs.localServer || cg.demoPlayback) return;
+	if (cgs.localServer || cg.demoPlayback)
+		return;
 
 	if (cg.mMapChange)
 	{
@@ -5828,7 +5831,6 @@ static void CG_DrawDisconnect( void ) {
 
 #define	MAX_LAGOMETER_PING	900
 #define	MAX_LAGOMETER_RANGE	300
-
 /*
 ==============
 CG_DrawLagometer
@@ -5838,10 +5840,12 @@ static void CG_DrawLagometer( void ) {
 	int		a, i;
 	float	x, y, v;
 	float	ax, ay, aw, ah, mid, range;
-	int		color;
 	float	vscale;
+	float	avgPing = 0.0f, avgInterp = 0.0f;
+	int		highestPing = 1;
+	int		color;
 
-	if (!cg_lagometer.integer || cgs.localServer || cg.demoPlayback) {
+	if (!cg_lagometer.integer || cgs.localServer) {
 		CG_DrawDisconnect();
 		return;
 	}
@@ -5876,6 +5880,7 @@ static void CG_DrawLagometer( void ) {
 	for ( a = 0 ; a < aw ; a++ ) {
 		i = ( lagometer.frameCount - 1 - a ) & (LAG_SAMPLES - 1);
 		v = lagometer.frameSamples[i];
+		avgInterp += v;
 		v *= vscale;
 		if ( v > 0 ) {
 			if ( color != 1 ) {
@@ -5898,6 +5903,7 @@ static void CG_DrawLagometer( void ) {
 			trap->R_DrawStretchPic( ax + (aw - a) * cgs.widthRatioCoef, mid, 1.0f * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader );
 		}
 	}
+	avgInterp = (avgInterp / aw) * -1.0f;
 
 	// draw the snapshot latency / drop graph
 	range = ah / 2;
@@ -5906,7 +5912,10 @@ static void CG_DrawLagometer( void ) {
 	for ( a = 0 ; a < aw ; a++ ) {
 		i = ( lagometer.snapshotCount - 1 - a ) & (LAG_SAMPLES - 1);
 		v = lagometer.snapshotSamples[i];
+		if (v > highestPing)
+			highestPing = v;
 		if ( v > 0 ) {
+			avgPing += v;
 			if ( lagometer.snapshotFlags[i] & SNAPFLAG_RATE_DELAYED ) {
 				if ( color != 5 ) {
 					color = 5;	// YELLOW for rate delay
@@ -5918,12 +5927,13 @@ static void CG_DrawLagometer( void ) {
 					trap->R_SetColor( g_color_table[ColorIndex(COLOR_GREEN)] );
 				}
 			}
-			v = v * vscale;
+			v *= vscale;
 			if ( v > range ) {
 				v = range;
 			}
 			trap->R_DrawStretchPic( ax + (aw - a) * cgs.widthRatioCoef, ay + ah - v, 1.0f * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader );
 		} else if ( v < 0 ) {
+			avgPing += highestPing;
 			if ( color != 4 ) {
 				color = 4;		// RED for dropped snapshots
 				trap->R_SetColor( g_color_table[ColorIndex(COLOR_RED)] );
@@ -5931,35 +5941,28 @@ static void CG_DrawLagometer( void ) {
 			trap->R_DrawStretchPic( ax + (aw - a) * cgs.widthRatioCoef, ay + ah - range, 1.0f * cgs.widthRatioCoef, range, 0, 0, 0, 0, cgs.media.whiteShader );
 		}
 	}
+	avgPing /= aw;
 
 	trap->R_SetColor( NULL );
+	ay -= 1.0f;
 
 	if ( cg_noPredict.integer || g_synchronousClients.integer ) {
 		CG_DrawBigString( ax + 1, ay - 2, "snc", 1.0 );
+		ay += BIGCHAR_HEIGHT - 1;
 	}
-	//TnG NoVe
-	else if (cg.snap && (cg_lagometer.integer == 2 || cg_lagometer.integer == 3))
-	{
-		int i;
-		int total = 0;
-		char *s = va("%i", cg.snap->ping);
-		float avgInterp = 0.0f, strW = 0.0f;
 
-		if (!VALIDSTRING(s))
-			return;
+	if (cg_lagometer.integer == 2 || cg_lagometer.integer == 3)
+	{//TnG NoVe
+		char *s = va("%.0f", avgPing);
+		float strW;
 
 		//CG_Text_Paint(400, 400, 1.0, colorWhite, va("%i", cg.snap->ping), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_LARGE);
-		CG_Text_Paint(ax + (3.0f * cgs.widthRatioCoef), ay - 1.0f, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
-
-		for (i = 0; i < LAG_SAMPLES; i++) {
-			total += lagometer.frameSamples[i];
-		}
-		avgInterp = total / (float)LAG_SAMPLES * -1;
+		CG_Text_Paint(ax + (3.0f * cgs.widthRatioCoef), ay, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 
 		//CG_Text_Paint(400, 300, 1.0, colorBlue, va("%04.1f", avgInterp), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_LARGE);
 		s = va("%04.1f", avgInterp);
 		strW = CG_Text_Width(s, 0.5f, FONT_SMALL);
-		CG_Text_Paint(ax + (aw*cgs.widthRatioCoef) - strW, ay - 1.0f, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
+		CG_Text_Paint(ax + (aw*cgs.widthRatioCoef) - strW, ay, 0.5f, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 	}
 
 	CG_DrawDisconnect();

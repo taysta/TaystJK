@@ -201,6 +201,8 @@ void CG_ParseServerinfo( void ) {
 	cgs.maxclients = Com_Clampi( 0, MAX_CLIENTS, atoi( Info_ValueForKey( info, "sv_maxclients" ) ) );
 	trap->Cvar_Set("ui_version", Info_ValueForKey(info, "version")); //used by UI in the in-game "about" menu
 	cgs.svfps = atoi( Info_ValueForKey( info, "sv_fps" ) );
+	if (!cgs.svfps)
+		cgs.svfps = 20;
 	cgs.serverMod = SVMOD_BASEJKA;
 	cgs.cinfo = 0;
 	cgs.jcinfo = 0;
