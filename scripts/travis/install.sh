@@ -13,7 +13,7 @@ if [[ "${host}" == macosx-universal-clang ]]; then
 	sudo cp -a /Volumes/SDL2/SDL2.framework /Library/Frameworks/
 	sudo hdiutil detach /Volumes/SDL2
 	rm -f SDL2-2.0.8.dmg
-	brew install p7zip
+	HOMEBREW_NO_AUTO_UPDATE=1 brew install p7zip
 else
 
 # travis-ci's Ubuntu 14.04 image provides an apt source for Chrome,

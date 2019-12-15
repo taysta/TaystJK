@@ -5141,14 +5141,45 @@ CG_DrawSnapshot
 */
 static float CG_DrawSnapshot( float y ) {
 	char		*s;
-	int			w;
-	float		xOffset = 0;
+	int			w, drawFont = cg_drawFPS.integer ? cg_drawFPS.integer : cg_drawSnapshot.integer;
 
 	s = va( "time:%i snap:%i cmd:%i", cg.snap->serverTime, 
 		cg.latestSnapshotNum, cgs.serverCommandSequence );
-	w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
 
-	CG_DrawBigString(SCREEN_WIDTH - (5 + w - xOffset)*cgs.widthRatioCoef, y + 2, s, 1.0F);
+	if (drawFont < 4 && trap->R_Language_IsAsian())
+		drawFont = 5;
+
+	switch (drawFont)
+	{
+		default:
+		case 1:
+			w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
+			CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 2:
+			w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+			CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 3: //smallchar font with dropshadow
+			w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+			CG_DrawStringExt(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, colorWhite, qfalse, qtrue, SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 8);
+			break;
+		case 4:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL);
+			break;
+		case 5:
+			w = CG_Text_Width(s, 1.0f, FONT_MEDIUM);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+			return y + CG_Text_Height(s, 1.0f, FONT_MEDIUM);
+			break;
+		case 6:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL2);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL2);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL2);
+			break;
+	}
 
 	return y + BIGCHAR_HEIGHT + 4;
 }
@@ -5158,29 +5189,23 @@ static float CG_DrawSnapshot( float y ) {
 CG_DrawFPS
 ==================
 */
-#define	FPS_FRAMES	16
+#define	FPS_FRAMES	60 //increased from 16 for accuracy
 static float CG_DrawFPS( float y ) {
 	char		*s;
-	int			w;
-	static unsigned short previousTimes[FPS_FRAMES];
-	static unsigned short index;
-	static int	previous, lastupdate;
-	int		t, i, fps, total;
+	static unsigned short previousTimes[FPS_FRAMES], index;
+	static int	previous;
+	int		t, i, fps, total, w;
 	unsigned short frameTime;
-	const int		xOffset = 0;
-
+	int	drawFont = cg_drawFPS.integer;
 
 	// don't use serverTime, because that will be drifting to
 	// correct for internet lag changes, timescales, timedemos, etc
 	t = trap->Milliseconds();
 	frameTime = t - previous;
 	previous = t;
-	if (t - lastupdate > 50)	//don't sample faster than this
-	{
-		lastupdate = t;
-		previousTimes[index % FPS_FRAMES] = frameTime;
-		index++;
-	}
+
+	previousTimes[index % FPS_FRAMES] = frameTime;
+	index++;
 	// average multiple frames together to smooth changes out a bit
 	total = 0;
 	for ( i = 0 ; i < FPS_FRAMES ; i++ ) {
@@ -5192,18 +5217,41 @@ static float CG_DrawFPS( float y ) {
 	fps = 1000 * FPS_FRAMES / total;
 
 	s = va( "%ifps", fps );
-	//JAPRO - Clientside - Add cg_drawfps 2 - Start
-	if (cg_drawFPS.integer == 1)
-	{	
-		w = CG_DrawStrlen( s ) * BIGCHAR_WIDTH;
-		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
-	}
-	else if (cg_drawFPS.integer > 1)
+
+	if (drawFont < 4 && trap->R_Language_IsAsian())
+		drawFont = 5;
+
+	switch (drawFont)
 	{
-		w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
-		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef + xOffset, y + 2, s, 1.0f);
+		default:
+		case 1:
+			w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
+			CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 2:
+			w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+			CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 3: //smallchar font with dropshadow
+			w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
+			CG_DrawStringExt(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, colorWhite, qfalse, qtrue, SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 8);
+			break;
+		case 4:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL);
+			break;
+		case 5:
+			w = CG_Text_Width(s, 1.0f, FONT_MEDIUM);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+			return y + CG_Text_Height(s, 1.0f, FONT_MEDIUM);
+			break;
+		case 6:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL2);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL2);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL2);
+			break;
 	}
-	//JAPRO - Clientside - Add cg_drawfps 2 - End
 
 	return y + BIGCHAR_HEIGHT + 4;
 }
@@ -5217,6 +5265,7 @@ static float CG_DrawTimer( float y ) {
 	char		*s;
 	int			w;
 	int			msec, secs, mins;
+	int			drawTimerStyle = cg_drawFPS.integer ? cg_drawFPS.integer : cg_drawTimer.integer; //style this the same as the fps counter if it's enabled.
 
 	if (cg_drawTimer.integer < 0)
 		msec = cg.time;
@@ -5229,24 +5278,45 @@ static float CG_DrawTimer( float y ) {
 	secs %= 60;
 	msec %= 1000;
 
-	//JAPRO - Clientside - Show MS in map timer. - Start
-
 	if (cg_drawTimerMsec.integer)
 		s = va("%i:%02i.%03i", mins, secs, msec);
 	else
 		s = va("%i:%02i", mins, secs);
 
-	if (cg_drawTimer.integer == 2)
+	if (drawTimerStyle < 4 && trap->R_Language_IsAsian())
+		drawTimerStyle = 5;
+
+	switch (drawTimerStyle)
 	{
-		w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
-		CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0F);
+		default:
+		case 1:
+			w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
+			CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 2:
+			w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+			CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+			break;
+		case 3:
+			w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+			CG_DrawStringExt(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, colorWhite, qfalse, qtrue, SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 0);
+			break;
+		case 4:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL);
+			break;
+		case 5:
+			w = CG_Text_Width(s, 1.0f, FONT_MEDIUM);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+			return y + CG_Text_Height(s, 1.0f, FONT_MEDIUM);
+			break;
+		case 6:
+			w = CG_Text_Width(s, 1.0f, FONT_SMALL2);
+			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL2);
+			return y + CG_Text_Height(s, 1.0f, FONT_SMALL2);
+			break;
 	}
-	else
-	{
-		w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
-		CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0F);
-	}
-	//JAPRO - Clientside - Show MS in map timer. - End
 
 	return y + BIGCHAR_HEIGHT + 4;
 }
