@@ -107,53 +107,15 @@
 			name				smooth
 			group				camera
 			type				ITEM_TYPE_MULTI
-			text				"Smooth Camera:"
+			text				"Camera Damp Style:"
 			cvar				cg_cameraFPS
 			cvarFloatList
 			{
-				@MENUS_OFF 125
-				@MENUS_ON 30
+				"Default" 125
+				"Smooth (SP)" 30
 				"BaseJKA" 0
 			}
 			rect				10 24 116 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			90
-			textaligny			0
-			font				4
-			textscale			1
-			forecolor			.615 .615 .956 1
-			visible				1
-			action
-			{
-				play			"sound/interface/button1.wav" ;
-			}
-		}
-		
-		itemDef
-		{
-			name				zoomText
-			group				camera
-			type				ITEM_TYPE_TEXT
-			text				"Zoom:"
-			cvar				cg_draw2d
-			rect				136 24 34 20
-			textalign			ITEM_ALIGN_LEFT
-			textalignx			0
-			textaligny			0
-			font				4
-			textscale			1
-			forecolor			1 1 1 1
-			visible				1
-		}
-		
-		itemDef
-		{
-			name				zoomEnable
-			group				camera
-			type				ITEM_TYPE_BUTTON
-			text				"Enable"
-			cvar				cg_draw2d
-			rect				180 24 36 20
 			textalign			ITEM_ALIGN_LEFT
 			textalignx			0
 			textaligny			0
@@ -164,29 +126,6 @@
 			action
 			{
 				play			"sound/interface/button1.wav" ;
-				exec			"+zoom"
-			}
-		}
-		
-		itemDef
-		{
-			name				zoomDisable
-			group				camera
-			type				ITEM_TYPE_BUTTON
-			text				"Disable"
-			cvar				cg_draw2d
-			rect				226 24 34 20
-			textalign			ITEM_ALIGN_LEFT
-			textalignx			0
-			textaligny			0
-			font				4
-			textscale			1
-			forecolor			.615 .615 .956 1
-			visible				1
-			action
-			{
-				play			"sound/interface/button1.wav" ;
-				exec			"-zoom"
 			}
 		}
 		

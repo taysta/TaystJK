@@ -550,7 +550,7 @@
 			visible				1
 			descText			@MENUS_DEFERS_LOADING_OF_NEW
 			cvarTest			ui_RGBSkin
-			hideCvar			{ 1 }
+			hideCvar			{ 1, 0 }
 			action
 			{
 				play			"sound/interface/button1.wav" ;

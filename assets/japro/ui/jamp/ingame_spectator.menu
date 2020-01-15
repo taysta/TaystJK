@@ -51,32 +51,29 @@
 				play			"sound/interface/button1.wav" ;
 			}
 		}
-		
+
 		itemDef
 		{
-			name				damp
+			name				fastest
 			group				spectator
-			type				ITEM_TYPE_MULTI
-			text				"CameraDamp:"
-			cvar				"cg_spectatorCameraDamp"
-			cvarFloatList
-			{
-				@MENUS_OFF 0
-				@MENUS_ON 1
-			}
+			type				1
+			text				"Follow Fastest Player"
 			rect				2 24 110 20
-			textalign			ITEM_ALIGN_RIGHT
-			textalignx			80
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			55
+			textaligny			0
 			font				4
 			textscale			1
-			forecolor			.615 .615 .956 1
+			forecolor			1 0.5 0 1
 			visible				1
 			action
 			{
 				play			"sound/interface/button1.wav" ;
+				exec			"followFastest" ; 
+				uiScript		closeingame
 			}
 		}
-		
+
 		itemDef
 		{
 			name				red
