@@ -3853,7 +3853,7 @@ static QINLINE int SaberKickTweak(gentity_t *self)
 	return d_saberKickTweak.integer;
 }
 
-qboolean WP_SaberCanBlockSwing(int ourStr, int attackStr);
+static QINLINE qboolean WP_SaberCanBlockSwing(int ourStr, int attackStr);
 static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBladeNum, vec3_t saberStart, vec3_t saberEnd, qboolean doInterpolate, int trMask, qboolean extrapolate )
 {
 	static trace_t tr;
@@ -4891,7 +4891,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 		else
 		{//hit an in-hand saber, do extra collision check against it
 
-			if (!SaberSPStyle(self) && WP_SaberCanBlockSwing(otherOwner->client->ps.fd.saberAnimLevel, attackStr)) //Skip block during swing maybe, only if MP dmgs are on ofc. JAPRO reduce saberblock
+			if (!SaberSPStyle(self) && !WP_SaberCanBlockSwing(otherOwner->client->ps.fd.saberAnimLevel, attackStr)) //Skip block during swing maybe, only if MP dmgs are on ofc. JAPRO reduce saberblock
 				return qfalse;
 
 			if ( SaberSPStyle(self) )
@@ -9528,7 +9528,7 @@ static int G_SaberPierceLevelForStance( int stance ) {
 	return 0;
 }
 
-qboolean WP_SaberCanBlockSwing(int ourStr, int attackStr) //If this returns false, we dont block the saber during our swing? (default true)
+static QINLINE qboolean WP_SaberCanBlockSwing(int ourStr, int attackStr) //If this returns false, we dont block the saber during our swing? (default true)
 {
 	//JAPRO reduce saber block
 	if (g_tweakSaber.integer & ST_REDUCE_SABERBLOCK) {
@@ -9591,13 +9591,8 @@ int WP_SaberCanBlock(gentity_t *self, vec3_t point, int dflags, int mod, qboolea
 	}
 
 	//JAPRO reduce saber block
-	if (!SaberSPStyle(self) && ((g_tweakSaber.integer & ST_REDUCE_SABERBLOCK) && !projectile && !thrownSaber)) {
-		const int ourLevel = G_SaberLevelForStance( self->client->ps.fd.saberAnimLevel );
-		const int theirLevel = G_SaberLevelForStance( attackStr );
-		const int diff = theirLevel - ourLevel; // range [0, 2]
-
-		if (diff >= 0) //Diff is positive if they are stronger than us.
-			return 0; //Dont block if attacker style is equal or greater than ours
+	if (!projectile && !thrownSaber && !SaberSPStyle(self) && !WP_SaberCanBlockSwing(self->client->ps.fd.saberAnimLevel, attackStr)) {
+		return qfalse;
 	}
 	//end
 	//Here if their attack is weaker than our style
