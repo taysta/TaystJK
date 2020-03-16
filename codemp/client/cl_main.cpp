@@ -158,8 +158,8 @@ typedef struct serverStatus_s
 	qboolean retrieved;
 } serverStatus_t;
 
-serverStatus_t cl_serverStatusList[MAX_SERVERSTATUSREQUESTS];
-int serverStatusCount;
+serverStatus_t cl_serverStatusList[MAX_SERVERSTATUSREQUESTS] = { 0 };
+int serverStatusCount = 0;
 
 IHeapAllocator *G2VertSpaceClient = 0;
 
@@ -1804,8 +1804,8 @@ CL_InitServerInfo
 */
 void CL_InitServerInfo( serverInfo_t *server, netadr_t *address ) {
 	server->adr = *address;
-	//server->clients = 0;
-	//server->filterBots = 0;
+	server->clients = 0;
+	server->filterBots = 0;
 	server->hostName[0] = '\0';
 	server->mapName[0] = '\0';
 	server->maxClients = 0;
