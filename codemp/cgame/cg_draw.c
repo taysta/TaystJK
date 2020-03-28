@@ -1751,14 +1751,15 @@ static void CG_DrawSimpleForcePower( const centity_t *cent )
 
 
 	if (cg_hudColors.integer && !flash) { //JAPRO - Clientside - Gradient simple hud coloring
-	vec4_t		colorForce = { 1,    1,     1,     1 };
-	colorForce[0] = 0.8 - (cg.snap->ps.fd.forcePower * 0.0045);
-	colorForce[1] = 0.8 - (cg.snap->ps.fd.forcePower * 0.0045);
+		vec4_t	colorForce = { 1,    1,     1,     1 };
+		colorForce[0] = 0.8 - (cg.snap->ps.fd.forcePower * 0.0045);
+		colorForce[1] = 0.8 - (cg.snap->ps.fd.forcePower * 0.0045);
 
 		CG_DrawProportionalString(SCREEN_WIDTH - (18 + 14 + 32)*cgs.widthRatioCoef, (SCREEN_HEIGHT - 80) + 40 + 14, num, UI_SMALLFONT | UI_DROPSHADOW, colorForce);
 	}
-	else
+	else {
 		CG_DrawProportionalString(SCREEN_WIDTH - (18 + 14 + 32)*cgs.widthRatioCoef, (SCREEN_HEIGHT - 80) + 40 + 14, num, UI_SMALLFONT | UI_DROPSHADOW, colorTable[calcColor]);
+	}
 }
 
 /*
@@ -1786,13 +1787,14 @@ void CG_DrawHUD(centity_t	*cent)
 	//JAPRO - Clientside - Speedometer Start
 	speedometerXPos = cg_speedometerX.integer;
 
-	if (Q_isanumber(cg_hudFiles.string)) {
-		if (cg_hudFiles.integer == 0)
-			speedometerXPos -= 8;
-		else if (cg_hudFiles.integer == 1)
-			speedometerXPos -= 56;
-		else if (cg_hudFiles.integer == 2)
-			speedometerXPos -= 42;
+	if (cgs.newHud) {
+		switch (cg_hudFiles.integer)
+		{
+			case 0: speedometerXPos -= 8; break;
+			case 1: speedometerXPos -= 56; break;
+			case 2: speedometerXPos -= 42; break;
+			default: break;
+		}
 	}
 
 	if (cg_speedometer.integer & SPEEDOMETER_ENABLE) {
@@ -1947,14 +1949,12 @@ void CG_DrawHUD(centity_t	*cent)
 				}
 
 				CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorHealth);
-
 				CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorArmor);
 
 			}
 			else
 			{
 				CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_RED]);
-
 				CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_GREEN]);
 			}
 			//JAPRO - Clientside - Gradient simple hud coloring - End
@@ -7051,9 +7051,9 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	if (cg_crosshairSizeScale.integer && cg_drawCrosshair.integer != 10)
 		w *= cgs.widthRatioCoef;
 
-		chX = x + cg.refdef.x + 0.5 * (SCREEN_WIDTH - w);
-		chY = y + cg.refdef.y + 0.5 * (SCREEN_HEIGHT - h);
-		trap->R_DrawStretchPic(chX, chY, w, h, 0, 0, 1, 1, hShader);
+	chX = x + cg.refdef.x + 0.5 * (SCREEN_WIDTH - w);
+	chY = y + cg.refdef.y + 0.5 * (SCREEN_HEIGHT - h);
+	trap->R_DrawStretchPic(chX, chY, w, h, 0, 0, 1, 1, hShader);
 
 	//draw a health bar directly under the crosshair if we're looking at something
 	//that takes damage
@@ -10962,10 +10962,10 @@ static void CG_DrawAccelMeter(void)
 			x -= 52;
 	}
 
-	CG_DrawRect((x - 0.75)*cgs.widthRatioCoef,
-		cg_speedometerY.value - 10.75,
-		37.75 * cgs.widthRatioCoef,
-		13.75,
+	CG_DrawRect((x - 0.75f)*cgs.widthRatioCoef,
+		cg_speedometerY.value - 11.0f,
+		38.0f * cgs.widthRatioCoef,
+		13.75f,
 		0.5f,
 		colorTable[CT_BLACK]);
 
@@ -11583,27 +11583,25 @@ static void CG_MovementKeys(centity_t *cent)
 		w = (16*cg_movementKeysSize.value)*cgs.widthRatioCoef;
 		h = 16*cg_movementKeysSize.value;
 
-		xOffset = 0;
-		yOffset = 0;
-
-		if (Q_isanumber(cg_hudFiles.string)) {
-			if (cg_hudFiles.integer == 1)
-				xOffset += 51; //516
-			else if (cg_hudFiles.integer == 2) {
-				xOffset += 26; //492
-				yOffset -= 3;
+		xOffset = yOffset = 0;
+		if (cgs.newHud) {
+			switch (cg_hudFiles.integer)
+			{
+				default:										break;
+				case 0: 										break;
+				case 1: xOffset += 51; /*516*/					break;
+				case 2: xOffset += 26; /*492*/ yOffset -= 3;	break;
+				case 3: xOffset -= 18; /*447*/					break; 
 			}
-			else if (cg_hudFiles.integer == 3)
-				xOffset -= 18; //447
 
-			if (cg_drawScore.integer == 0 || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))
-				yOffset += 12; // 445
-			else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
-				yOffset -= 14; //420
-				if (cg_hudFiles.integer != 1)
-					xOffset -= 12; //452
-				else
-					xOffset -= 23; //442
+			if (cgs.newHud) {
+				if (!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) {
+					yOffset += 12; //445
+				}
+				else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
+					xOffset -= cg_hudFiles.integer != 1 ? 12 : 23; //452 : //442
+					yOffset -= 14; //420
+				}
 			}
 		}
 

@@ -306,12 +306,15 @@ static void CG_SiegeCompleteCvarUpdate_f(void)
 void CG_LoadHud_f( void ) {
 	const char *hudSet;
 
-	if (cg_hudFiles.integer > 2) {
+	if ( cg.loading )
+		return;
+
+	if ( cgs.newHud && cg_hudFiles.integer == 3 ) {
 		hudSet = "ui/elegance_hud.txt";
 	}
 	else {
 		hudSet = cg_hudFiles.string;
-		if ( hudSet[0] == '\0' )
+		if ( !VALIDSTRING(hudSet) )
 		{
 			hudSet = "ui/jahud.txt";
 		}

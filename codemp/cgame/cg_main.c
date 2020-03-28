@@ -2384,7 +2384,7 @@ void CG_LoadMenus(const char *menuFile)
 
 	if ( !f )
 	{
-		if (!(Q_isanumber(menuFile) && (cg_hudFiles.integer >= 0 && cg_hudFiles.integer <= 3))) { //don't show any message when using cg_hudFiles
+		if ( !cgs.newHud ) { //don't show any message when using cg_hudFiles
 			if ( Q_isanumber( menuFile ) )
 				trap->Print( S_COLOR_GREEN "hud menu file skipped, using default\n" );
 			else
@@ -2392,7 +2392,7 @@ void CG_LoadMenus(const char *menuFile)
 		}
 
 		len = trap->FS_Open( "ui/jahud.txt", &f, FS_READ );
-		if (!f)
+		if ( !f )
 		{
 			trap->Error( ERR_DROP, S_COLOR_RED "default hud menu file not found: ui/jahud.txt, unable to continue!" );
 		}
@@ -2442,13 +2442,13 @@ void CG_LoadMenus(const char *menuFile)
 
 /*
 =================
-CG_LoadHudMenu();
+CG_InitDisplayContext
 
 =================
 */
-void CG_LoadHudMenu()
+static void CG_InitDisplayContext(void)
 {
-	const char *hudSet;
+	memset(&cgDC, 0, sizeof(cgDC));
 
 	cgDC.registerShaderNoMip			= trap->R_RegisterShaderNoMip;
 	cgDC.setColor						= trap->R_SetColor;
@@ -2508,49 +2508,57 @@ void CG_LoadHudMenu()
 	cgDC.drawCinematic					= &CG_DrawCinematic;
 	cgDC.runCinematicFrame				= &CG_RunCinematicFrame;
 	cgDC.ext.Font_StrLenPixels			= trap->ext.R_Font_StrLenPixels;
+}
 
+/*
+=================
+CG_LoadHudMenu
+
+=================
+*/
+void CG_LoadHudMenu(void)
+{
+	const char *hudSet;
 
 	Init_Display(&cgDC);
-
 	Menu_Reset();
 
-	if (cg_hudFiles.integer > 2) {
+	if ( cgs.newHud && cg_hudFiles.integer == 3 ) {
 		hudSet = "ui/elegance_hud.txt";
 	}
 	else {
 		hudSet = cg_hudFiles.string;
-		if (hudSet[0] == '\0')
+		if ( !VALIDSTRING(hudSet) )
 		{
 			hudSet = "ui/jahud.txt";
 		}
 	}
 
 	CG_LoadMenus(hudSet);
-
 }
 
-void CG_AssetCache() {
+void CG_AssetCache(void) {
 	//if (Assets.textFont == NULL) {
 	//  trap->R_RegisterFont("fonts/arial.ttf", 72, &Assets.textFont);
 	//}
 	//Com_Printf("Menu Size: %i bytes\n", sizeof(Menus));
-	cgDC.Assets.gradientBar = trap->R_RegisterShaderNoMip( ASSET_GRADIENTBAR );
-	cgDC.Assets.fxBasePic = trap->R_RegisterShaderNoMip( ART_FX_BASE );
-	cgDC.Assets.fxPic[0] = trap->R_RegisterShaderNoMip( ART_FX_RED );
-	cgDC.Assets.fxPic[1] = trap->R_RegisterShaderNoMip( ART_FX_YELLOW );
-	cgDC.Assets.fxPic[2] = trap->R_RegisterShaderNoMip( ART_FX_GREEN );
-	cgDC.Assets.fxPic[3] = trap->R_RegisterShaderNoMip( ART_FX_TEAL );
-	cgDC.Assets.fxPic[4] = trap->R_RegisterShaderNoMip( ART_FX_BLUE );
-	cgDC.Assets.fxPic[5] = trap->R_RegisterShaderNoMip( ART_FX_CYAN );
-	cgDC.Assets.fxPic[6] = trap->R_RegisterShaderNoMip( ART_FX_WHITE );
-	cgDC.Assets.scrollBar = trap->R_RegisterShaderNoMip( ASSET_SCROLLBAR );
-	cgDC.Assets.scrollBarArrowDown = trap->R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWDOWN );
-	cgDC.Assets.scrollBarArrowUp = trap->R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWUP );
-	cgDC.Assets.scrollBarArrowLeft = trap->R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWLEFT );
-	cgDC.Assets.scrollBarArrowRight = trap->R_RegisterShaderNoMip( ASSET_SCROLLBAR_ARROWRIGHT );
-	cgDC.Assets.scrollBarThumb = trap->R_RegisterShaderNoMip( ASSET_SCROLL_THUMB );
-	cgDC.Assets.sliderBar = trap->R_RegisterShaderNoMip( ASSET_SLIDER_BAR );
-	cgDC.Assets.sliderThumb = trap->R_RegisterShaderNoMip( ASSET_SLIDER_THUMB );
+	cgDC.Assets.gradientBar = cgDC.registerShaderNoMip( ASSET_GRADIENTBAR );
+	cgDC.Assets.fxBasePic = cgDC.registerShaderNoMip( ART_FX_BASE );
+	cgDC.Assets.fxPic[0] = cgDC.registerShaderNoMip( ART_FX_RED );
+	cgDC.Assets.fxPic[1] = cgDC.registerShaderNoMip( ART_FX_YELLOW );
+	cgDC.Assets.fxPic[2] = cgDC.registerShaderNoMip( ART_FX_GREEN );
+	cgDC.Assets.fxPic[3] = cgDC.registerShaderNoMip( ART_FX_TEAL );
+	cgDC.Assets.fxPic[4] = cgDC.registerShaderNoMip( ART_FX_BLUE );
+	cgDC.Assets.fxPic[5] = cgDC.registerShaderNoMip( ART_FX_CYAN );
+	cgDC.Assets.fxPic[6] = cgDC.registerShaderNoMip( ART_FX_WHITE );
+	cgDC.Assets.scrollBar = cgDC.registerShaderNoMip( ASSET_SCROLLBAR );
+	cgDC.Assets.scrollBarArrowDown = cgDC.registerShaderNoMip( ASSET_SCROLLBAR_ARROWDOWN );
+	cgDC.Assets.scrollBarArrowUp = cgDC.registerShaderNoMip( ASSET_SCROLLBAR_ARROWUP );
+	cgDC.Assets.scrollBarArrowLeft = cgDC.registerShaderNoMip( ASSET_SCROLLBAR_ARROWLEFT );
+	cgDC.Assets.scrollBarArrowRight = cgDC.registerShaderNoMip( ASSET_SCROLLBAR_ARROWRIGHT );
+	cgDC.Assets.scrollBarThumb = cgDC.registerShaderNoMip( ASSET_SCROLL_THUMB );
+	cgDC.Assets.sliderBar = cgDC.registerShaderNoMip( ASSET_SLIDER_BAR );
+	cgDC.Assets.sliderThumb = cgDC.registerShaderNoMip( ASSET_SLIDER_THUMB );
 }
 
 
@@ -2762,6 +2770,7 @@ Ghoul2 Insert End
 	//	if desired during parse.  Dunno how legal it is to store in these cgDC things, but it causes no harm
 	//	and even if/when they get overwritten they'll be legalised by the menu asset parser :-)
 //	CG_LoadFonts();
+	CG_InitDisplayContext();
 	cgDC.Assets.qhSmallFont  = trap->R_RegisterFont("ocr_a");
 	cgDC.Assets.qhMediumFont = trap->R_RegisterFont("ergoec");
 	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
@@ -2775,18 +2784,20 @@ Ghoul2 Insert End
 	cgs.processedSnapshotNum = serverMessageNum;
 	cgs.serverCommandSequence = serverCommandSequence;
 
-	cg.loadLCARSStage		= 0;
+	cg.loadLCARSStage = 0;
 
 	cg.itemSelect = -1;
 	cg.forceSelect = -1;
 
-	// load a few needed things before we do any screen updates
-	cgs.media.charsetShader		= trap->R_RegisterShaderNoMip( "gfx/2d/charsgrid_med" );
-	cgs.media.whiteShader		= trap->R_RegisterShader( "white" );
+	cg.loading = qtrue;	// force players to load instead of defer
 
-	cgs.media.loadBarLED		= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick" );
-	cgs.media.loadBarLEDCap		= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick_cap" );
-	cgs.media.loadBarLEDSurround= trap->R_RegisterShaderNoMip( "gfx/hud/mp_levelload" );
+	// load a few needed things before we do any screen updates
+	cgs.media.charsetShader			= trap->R_RegisterShaderNoMip( "gfx/2d/charsgrid_med" );
+	cgs.media.whiteShader			= trap->R_RegisterShader( "white" );
+
+	cgs.media.loadBarLED			= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick" );
+	cgs.media.loadBarLEDCap			= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick_cap" );
+	cgs.media.loadBarLEDSurround	= trap->R_RegisterShaderNoMip( "gfx/hud/mp_levelload" );
 
 	// Force HUD set up
 	cg.forceHUDActive = qtrue;
@@ -2820,12 +2831,14 @@ Ghoul2 Insert End
 
 	cgs.media.weaponIconsStaff = trap->R_RegisterShaderNoMip("gfx/hud/w_icon_saberstaff"); //no NA icon for these?
 	cgs.media.weaponIconsAkimbo = trap->R_RegisterShaderNoMip("gfx/hud/w_icon_duallightsaber");
+	if (!cgs.media.weaponIconsStaff) cgs.media.weaponIconsStaff = cgs.media.weaponIcons[WP_SABER];
+	if (!cgs.media.weaponIconsAkimbo) cgs.media.weaponIconsAkimbo = cgs.media.weaponIcons[WP_SABER];
 
 
 	// HUD artwork for cycling inventory,weapons and force powers
-	cgs.media.weaponIconBackground		= trap->R_RegisterShaderNoMip( "gfx/hud/background");
-	cgs.media.forceIconBackground		= trap->R_RegisterShaderNoMip( "gfx/hud/background_f");
-	cgs.media.inventoryIconBackground	= trap->R_RegisterShaderNoMip( "gfx/hud/background_i");
+	cgs.media.weaponIconBackground		= trap->R_RegisterShaderNoMip("gfx/hud/background");
+	cgs.media.forceIconBackground		= trap->R_RegisterShaderNoMip("gfx/hud/background_f");
+	cgs.media.inventoryIconBackground	= trap->R_RegisterShaderNoMip("gfx/hud/background_i");
 
 	//rww - precache holdable item icons here
 	while (i < bg_numItems)
@@ -2910,13 +2923,15 @@ Ghoul2 Insert End
 	}
 
 	{//cheap engine detection
+		int ps;
 		char verstring[42], psbuf[4];
 		cgs.jaPROEngine = qfalse;
 		trap->Cvar_VariableStringBuffer("version", verstring, sizeof(verstring));
 		//ppl could fake this in their cfgs, but i think thats their problem...
 		trap->Cvar_VariableStringBuffer("protocolswitch", psbuf, sizeof(psbuf));
+		ps = atoi(psbuf);
 		//this is only really to handle custom RF flags I added for player effects
-		if (Q_stricmpn(verstring, "JAmp: v1.0.1.0 win-x86 Oct24 2003", 34) && (atoi(psbuf) == 1 || atoi(psbuf) == 2)) {
+		if (Q_stricmpn(verstring, "JAmp: v1.0.1.0 win-x86 Oct24 2003", 34) && (ps == 1 || ps == 2)) {
 			cgs.jaPROEngine = qtrue;
 		}
 
@@ -2936,8 +2951,6 @@ Ghoul2 Insert End
 	trap->CM_LoadMap( cgs.mapname, qfalse );
 
 	String_Init();
-
-	cg.loading = qtrue;		// force players to load instead of defer
 
 	//make sure saber data is loaded before this! (so we can precache the appropriate hilts)
 	CG_InitSiegeMode();

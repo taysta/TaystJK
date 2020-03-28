@@ -57,11 +57,20 @@ extern void CG_ClearThirdPersonDamp(void);
 extern void UI_Set2DRatio(void);
 extern void CG_LoadHud_f(void);
 static void CG_UpdateHUD(void) {
-	if (!cg.snap)
-		return;
-
-	if (cg_hudFiles.integer == 1 || cg_hudFiles.integer == 2)
-		return;
+	cgs.newHud = qfalse;
+	if (VALIDSTRING(cg_hudFiles.string) && strlen(cg_hudFiles.string) > 0) {
+		switch (cg_hudFiles.string[0]) {
+			default: break;
+			case '1':
+			case '2':
+				cgs.newHud = qtrue;
+				return;
+			case '0':
+			case '3':
+				cgs.newHud = qtrue;
+				break;
+		}
+	}
 
 	CG_LoadHud_f();
 }
