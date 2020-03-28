@@ -2009,6 +2009,11 @@ void CG_Say_f( void ) {
 			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
+		else if (!Q_stricmp(word, "%P%")) {
+			if (cg.snap) number = cg.snap->ping;
+			Com_sprintf(numberStr, sizeof(numberStr), "%i", number);
+			Q_strncpyz(word, numberStr, sizeof(word));
+		}
 		else if (!Q_stricmp(word, "%T%")) { //insert time in 12-hour format
 			struct tm *newtime;
 			qboolean AM = qtrue;
