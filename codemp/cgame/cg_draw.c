@@ -11513,28 +11513,28 @@ static void CG_DrawShowPos(void)
 static void CG_MovementKeys(centity_t *cent)
 {
 		usercmd_t cmd = { 0 };
+		playerState_t *ps = NULL;
 		int moveDir;
 		float w, h, x, y, xOffset, yOffset;
 
 		if (!cg.snap)
 			return;
 
-		moveDir = cg.snap->ps.movementDir;
+		ps = &cg.predictedPlayerState; //&cg.snap->ps;
+		moveDir = ps->movementDir;
 
-		//if (!pm)
-			//return;//idk
-
-		if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback)
+		if (cg.clientNum == cg.predictedPlayerState.clientNum && !cg.demoPlayback) {
 			trap->GetUserCmd( trap->GetCurrentCmdNumber(), &cmd );
+		}
 		else
 		{
-			float xyspeed = sqrtf( cg.snap->ps.velocity[0]*cg.snap->ps.velocity[0] + cg.snap->ps.velocity[1]*cg.snap->ps.velocity[1] );
-			float zspeed = cg.snap->ps.velocity[2];
+			float xyspeed = sqrtf( ps->velocity[0] * ps->velocity[0] + ps->velocity[1] * ps->velocity[1] );
+			float zspeed = ps->velocity[2];
 			static float lastZSpeed = 0.0f;
 
 			if ((PM_GroundDistance2() > 1 && zspeed > 8 && zspeed > lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || (cg.snap->ps.pm_flags & PMF_JUMP_HELD))
 				cmd.upmove = 1;
-			else if ( (cg.snap->ps.pm_flags & PMF_DUCKED) || CG_InRollAnim(cent) )
+			else if ( (ps->pm_flags & PMF_DUCKED) || CG_InRollAnim(cent) )
 				cmd.upmove = -1;
 
 			if ( xyspeed < 9 )
