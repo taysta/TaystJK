@@ -2801,48 +2801,40 @@ void SV_InitGame( qboolean restart ) {
 	GVM_InitGame( sv.time, Com_Milliseconds(), restart );
 
 	svs.servermod = SVMOD_UNKNOWN;
-	if (sv_legacyFixes->integer)
-	{
+	if (sv_legacyFixes->integer) {
 		char *gamename = Cvar_VariableString("gamename");
 
-		if (!gamename || !strlen(gamename)) {
+		if (!gamename || !VALIDSTRING(gamename))
+		{
 			svs.servermod = SVMOD_UNKNOWN;
 			Com_DPrintf("%sFailed to detect loaded mod!\n", S_COLOR_RED);
-			return;
 		}
-		Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
-
-		if (!Q_stricmpn(gamename, "basejk", 6)) {
-			if (gvm && !gvm->isLegacy)
-				svs.servermod = SVMOD_OPENJK; //some OpenJK forks rename themselves to basejka
-			else
-				svs.servermod = SVMOD_BASEJKA;
-			return;
-		}
-
-		if (!Q_stricmpn(gamename, "JA+", 3)) {
-			svs.servermod = SVMOD_JAPLUS;
-			return;
-		}
-
-		if (!Q_stricmpn(gamename, "Movie Battles", 13))
+		else
 		{
-			svs.servermod = SVMOD_MBII;
-			return;
-		}
+			Com_DPrintf("%sDetected mod: %s\n", S_COLOR_CYAN, gamename);
 
-		if (!Q_stricmpn(gamename, "japro", 5))
-		{
-			svs.servermod = SVMOD_JAPRO;
-			return;
+			if (!Q_stricmpn(gamename, "basejk", 6)) {
+				if (gvm && !gvm->isLegacy)
+					svs.servermod = SVMOD_OPENJK; //some OpenJK forks rename themselves to basejka
+				else
+					svs.servermod = SVMOD_BASEJKA;
+			}
+			else if (!Q_stricmpn(gamename, "JA+", 3)) {
+				svs.servermod = SVMOD_JAPLUS;
+			}
+			else if (!Q_stricmpn(gamename, "Movie Battles", 13)) {
+				svs.servermod = SVMOD_MBII;
+			}
+			else if (!Q_stricmpn(gamename, "japro", 5)) {
+				svs.servermod = SVMOD_JAPRO;
+			}
+			else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
+				svs.servermod = SVMOD_OPENJK;
+			}
+			else {
+				Com_DPrintf(S_COLOR_YELLOW "Unsupported mod detected (%s) - some server engine features will be unavailable\n", gamename);
+			}
 		}
-
-		if (!Q_stricmpn(gamename, "OpenJK", 6)) {
-			svs.servermod = SVMOD_OPENJK;
-			return;
-		}
-
-		Com_DPrintf("%sUnsupported mod detected (%s) - some server engine features will be unavailable\n", S_COLOR_YELLOW, gamename);
 	}
 }
 

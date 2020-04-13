@@ -196,7 +196,8 @@ typedef struct client_s {
 	demoInfo_t		demo;
 
 #ifdef DEDICATED
-	qboolean		disableDuelCull;
+	qboolean		disableDuelCull;	//set for clients with "Duel see others" option set in cp_pluginDisable on JA+ servers
+	qboolean		jpPlugin;
 #endif
 } client_t;
 
