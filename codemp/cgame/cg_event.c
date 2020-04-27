@@ -3588,13 +3588,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				if (ci->team == ourTeam || isGlobalVGS(s)) //put it to console or.. just not at all?
 				{ //add to the chat box
 					//hear it in the world spot.
-					char vchatstr[1024] = {0};
-					Q_strncpyz(vchatstr, va("<%s^7: %s>\n", ci->name, descr), sizeof( vchatstr ) );
-					CG_ChatBox_AddString(vchatstr);
-					if (cg_chatBox.integer)
-						trap->Print("*%s", vchatstr); //supress in top left w/ the chatbox enabled
-					else
-						trap->Print(vchatstr);
+					char vchatstr[MAX_NETNAME+MAX_SAY_TEXT] = {0};
+					Com_sprintf( vchatstr, sizeof( vchatstr ), "<%s^7: %s>", ci->name, descr );
+					CG_ChatBox_AddString( vchatstr );
 				}
 
 				if (ci->team == ourTeam || isGlobalVGS(s))
