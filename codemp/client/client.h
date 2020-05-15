@@ -461,6 +461,7 @@ extern cvar_t	*cl_colorStringRandom;
 extern cvar_t	*cl_chatStylePrefix;
 extern cvar_t	*cl_chatStyleSuffix;
 
+extern cvar_t	*cl_afkPrefix;
 extern cvar_t	*cl_afkTime;
 extern cvar_t	*cl_afkTimeUnfocused;
 

@@ -122,6 +122,7 @@ cvar_t	*cl_chatStylePrefix;
 cvar_t	*cl_chatStyleSuffix;
 
 int		cl_unfocusedTime;
+cvar_t  *cl_afkPrefix;
 cvar_t	*cl_afkTime;
 cvar_t	*cl_afkTimeUnfocused;
 
@@ -2281,11 +2282,11 @@ void CL_CheckUserinfo( void ) {
 }
 
 qboolean cl_afkName;
-static const char *afkPrefix = "[AFK]";
-static const size_t afkPrefixLen = strlen(afkPrefix);
+static size_t afkPrefixLen = 0;
 
 static void CL_GetAfk(void) {
-	if (!Q_strncmp(cl_name->string, afkPrefix, afkPrefixLen)) {
+	afkPrefixLen = strlen(cl_afkPrefix->string);
+	if (!Q_strncmp(cl_name->string, cl_afkPrefix->string, afkPrefixLen)) {
 		cl_afkName = qtrue;
 	}
 	else {
@@ -2908,8 +2909,9 @@ static void CL_AddFavorite_f( void ) {
 }
 
 void CL_Afk_f(void) {
-	char name[MAX_TOKEN_CHARS];
+	char name[MAX_TOKEN_CHARS], afkPrefix[MAX_TOKEN_CHARS];;
 	Cvar_VariableStringBuffer("name", name, sizeof(name));
+	Cvar_VariableStringBuffer("cl_afkPrefix", afkPrefix, sizeof(afkPrefix));
 	if (cls.realtime - cl_nameModifiedTime <= 5000)
 		Com_Printf("You must wait 5 seconds before changing your name again.\n");
 	else {
@@ -3347,6 +3349,7 @@ void CL_Init( void ) {
 	cl_chatStylePrefix = Cvar_Get("cl_chatStylePrefix", "", CVAR_ARCHIVE, "String inserted before sent chat messages");
 	cl_chatStyleSuffix = Cvar_Get("cl_chatStyleSuffix", "", CVAR_ARCHIVE, "String appended to send chat messages");
 
+	cl_afkPrefix = Cvar_Get("cl_afkPrefix", "[AFK]", CVAR_ARCHIVE, "Prefix to add to player name when AFK");
 	cl_afkTime = Cvar_Get("cl_afkTime", "10", CVAR_ARCHIVE, "Minutes to autorename to afk, 0 to disable");
 	cl_afkTimeUnfocused = Cvar_Get("cl_afkTimeUnfocused", "5", CVAR_ARCHIVE, "Minutes to autorename to afk while unfocused/minimized");
 	cl_unfocusedTime = 0;
