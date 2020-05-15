@@ -9452,49 +9452,161 @@ void CG_ChatBox_AddString(char *chatStr)
 
 	chat->lines = 1;
 
-	chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
-	if (chatLen > cg_chatBoxCutOffLength.value)
-	{ //we have to break it into segments...
-        int i = 0;
-		int lastLinePt = 0;
-		char s[2];
+	if (!cg_chatBoxEmojis.integer) {
+		chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
+		if (chatLen > cg_chatBoxCutOffLength.value)
+		{ //we have to break it into segments...
+			int i = 0;
+			int lastLinePt = 0;
+			char s[2];
 
-		chatLen = 0;
-		while (chat->string[i])
-		{
-			const char *checkColor = (const char *)(chat->string + i);
-			if (Q_IsColorString(checkColor)) {
-				i += 2;
-				continue; // duo: fix for messages with lots of colors being broken up too early
-			}
-			s[0] = chat->string[i];
-			s[1] = 0;
-			chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
-
-			if (chatLen >= cg_chatBoxCutOffLength.value)
+			chatLen = 0;
+			while (chat->string[i])
 			{
-				int j = i;
-				while (j > 0 && j > lastLinePt)
+				const char* checkColor = (const char*)(chat->string + i);
+				if (Q_IsColorString(checkColor)) {
+					i += 2;
+					continue; // duo: fix for messages with lots of colors being broken up too early
+				}
+				s[0] = chat->string[i];
+				s[1] = 0;
+				chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
+
+				if (chatLen >= cg_chatBoxCutOffLength.value)
 				{
+					int j = i;
+					while (j > 0 && j > lastLinePt)
+					{
+						if (chat->string[j] == ' ')
+						{
+							break;
+						}
+						j--;
+					}
 					if (chat->string[j] == ' ')
 					{
-						break;
+						i = j;
 					}
-					j--;
-				}
-				if (chat->string[j] == ' ')
-				{
-					i = j;
-				}
 
-                chat->lines++;
-				CG_ChatBox_StrInsert(chat->string, i, "\n");
+					chat->lines++;
+					CG_ChatBox_StrInsert(chat->string, i, "\n");
+					i++;
+					chatLen = 0;
+					lastLinePt = i + 1;
+				}
 				i++;
-				chatLen = 0;
-				lastLinePt = i+1;
 			}
-			i++;
 		}
+	}
+
+	if (cg_chatBoxEmojis.integer) { //Sunny
+		//todo/bugs:
+		// * some small position tweaks on cg_newFont
+		// * not likely scenario, but: when set cut of length very low. you can see the emojis drifting further and further away on the y pos. CG_Text_Height maybe?
+		// * put together a list of usable emoji's and pick a style. Discord maybe?
+
+		char* str = chat->string;
+		char emojiStr[MAX_SAY_TEXT + MAX_NETNAME] = { 0 }, replaceChar[8] = "       ", s[2];
+		int bpoint = 0, emojiIndex = 0;
+		float fontScale = 0.65 * cg_chatBoxFontSize.value;
+
+		if (cg_newFont.integer == 0)
+			replaceChar[2] = '\0';
+		if (cg_newFont.integer == 1)
+			replaceChar[4] = '\0';
+
+		chat->lines = 0;
+		chatLen = 0;
+
+		int i = 0;
+		while (*str)
+		{
+			qboolean draw = qfalse;
+
+			const char* checkColor = (const char*)(str);
+			if (Q_IsColorString(checkColor)) {
+				emojiStr[i++] = *str++;
+				emojiStr[i++] = *str++;
+
+				continue; // duo: fix for messages with lots of colors being broken up too early
+			}
+
+			for (int k = 0; k < MAX_LOADABLE_EMOJIS; k++) {
+				if (strlen(emojis[k].name) == 0)
+					continue; //or break, since it is mosty likely to be the last available item.
+
+				if (strstr(str, emojis[k].name) == str && MAX_CHATBOX_ITEM_EMOJIS > emojiIndex)
+				{
+					strcpy(&emojiStr[i], replaceChar);
+
+					//set the pointer to the emoji graphic 
+					chat->emoji[emojiIndex].emoji = &emojis[k].emoji;
+
+					//calculate the offsets
+					char* b = emojiStr + bpoint;
+					chat->emoji[emojiIndex].xOffset += CG_Text_Width(b, fontScale, (cg_newFont.integer == 1 ? FONT_MEDIUM : (cg_newFont.integer == 2 ? FONT_SMALL2 : FONT_SMALL))) - (17 * fontScale);
+
+					if (cg_newFont.integer == 0) {
+						chat->emoji[emojiIndex].xOffset += (1.6f * fontScale);
+						chat->emoji[emojiIndex].yOffset += (3.7 * fontScale) + 2;
+					}
+					else if (cg_newFont.integer == 1) {
+						chat->emoji[emojiIndex].xOffset += (1.2f * fontScale);
+						chat->emoji[emojiIndex].yOffset += (3.7 * fontScale) + 1;
+					}
+					else if (cg_newFont.integer == 2) {
+						chat->emoji[emojiIndex].xOffset += (1.2f * fontScale);
+						chat->emoji[emojiIndex].yOffset += (3.7 * fontScale) - 1;
+					}
+
+					if (chat->lines > 0)
+						chat->emoji[emojiIndex].yOffset += ((CHATBOX_FONT_HEIGHT * fontScale) * chat->lines);
+
+					//adjust for various font types
+					if (cg_newFont.integer == 0)
+						chat->emoji[emojiIndex].yOffset -= chat->lines * fontScale;
+					if (cg_newFont.integer == 1)
+						chat->emoji[emojiIndex].yOffset += chat->lines;
+					if (cg_newFont.integer == 2)
+						chat->emoji[emojiIndex].yOffset -= chat->lines * (6 * fontScale);
+
+					//continue reading and writing after the emoji, whitespaces
+					i += strlen(replaceChar);
+					str += strlen(emojis[k].name);
+
+					emojiIndex++;
+					draw = qtrue;
+
+					break; //now get out of here
+				}
+			}
+
+			if (!draw)
+				//if we are just a character, copy the character to the new chat string
+				emojiStr[i++] = *str++;
+
+			s[0] = *str;
+			s[1] = 0;
+			chatLen += CG_Text_Width(s, 0.65f, (cg_newFont.integer == 1 ? FONT_MEDIUM : (cg_newFont.integer == 2 ? FONT_SMALL2 : FONT_SMALL)));
+
+			if (chatLen >= cg_chatBoxCutOffLength.value) {
+				if (emojiStr[i - 1] == ' ') {
+
+					//break up the line on the first whitespace occurrence
+					emojiStr[i++] = '\n';
+					chatLen = 0;
+					chat->lines++;
+					bpoint = i;
+				}
+			}
+		}
+
+		emojiStr[i] = '\0';
+
+		strcpy(chat->string, emojiStr);
+
+		//add one because we started at zero
+		chat->lines++;
 	}
 
 	cg.chatItemActive++;
@@ -9574,6 +9686,21 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 	i = 0;
 	while (i < numToDraw)
 	{
+		//draw available emoji's
+		if (cg_chatBoxEmojis.integer) {
+			for (int k = 0; k < MAX_CHATBOX_ITEM_EMOJIS; k++) {
+				if (!drawThese[i]->emoji[k].emoji)
+					continue;
+
+				trap->R_SetColor(colorTable[CT_WHITE]);
+				CG_DrawPic((x + drawThese[i]->emoji[k].xOffset),
+					(y + drawThese[i]->emoji[k].yOffset),
+					17 * fontScale,
+					17 * fontScale,
+					*drawThese[i]->emoji[k].emoji);
+			}
+		}
+
 		if (cg_newFont.integer == 0)
 			CG_Text_Paint(x, y, fontScale, colorWhite, drawThese[i]->string, 0, 0, ITEM_TEXTSTYLE_OUTLINED, FONT_SMALL); 
 		else if (cg_newFont.integer == 1)

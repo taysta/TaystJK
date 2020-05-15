@@ -1057,6 +1057,23 @@ typedef struct skulltrail_s {
 
 #define MAX_PREDICTED_EVENTS	16
 
+#define	MAX_EMOJI_LENGTH		16 //max length of the characters between the colons
+#define	MAX_LOADABLE_EMOJIS		64 //max png files it can load
+#define	MAX_CHATBOX_ITEM_EMOJIS		16 //max emojis per chat message
+typedef struct loadableEmoji_s
+{
+	char	name[MAX_EMOJI_LENGTH];
+	qhandle_t	emoji;
+} loadableEmoji_t;
+
+loadableEmoji_t emojis[MAX_LOADABLE_EMOJIS];
+
+typedef struct chatBoxEmoji_s
+{
+	qhandle_t* emoji;
+	int	yOffset;
+	int	xOffset;
+} chatBoxEmoji_t;
 
 #define	MAX_CHATBOX_ITEMS		24
 typedef struct chatBoxItem_s
@@ -1064,6 +1081,7 @@ typedef struct chatBoxItem_s
 	char	string[MAX_NETNAME+MAX_SAY_TEXT];
 	int		time;
 	int		lines;
+	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];
 } chatBoxItem_t;
 
 #define	MAX_CLIENT_SPEEDPOINTS		32

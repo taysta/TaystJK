@@ -2720,6 +2720,48 @@ forceTicPos_t ammoTicPos[] =
 
 /*
 =================
+CG_LoadEmojis
+
+Method that registers all the avaialable emojis
+=================
+*/
+void CG_LoadEmojis() {
+	int	emojiExtFNLen, fileCnt, i, inserted = 0;
+	char* holdChar;
+	char emojiExtensionListBuf[2048], emoji[MAX_EMOJI_LENGTH + 4] = { 0 };
+
+	//get a list of all the available png files in the emoji folder
+	fileCnt = trap->FS_GetFileList("gfx/emoji", ".png", emojiExtensionListBuf, sizeof(emojiExtensionListBuf));
+
+	holdChar = emojiExtensionListBuf;
+	for (i = 0; i < fileCnt; i++, holdChar += emojiExtFNLen + 1) {
+		emojiExtFNLen = strlen(holdChar);
+
+		//continue to the next emoji if the filename exceeded the maximum length
+		if (emojiExtFNLen + 2 > MAX_EMOJI_LENGTH + 4) {	// account for 6 more characters, file extension and colons.
+			Com_Printf(S_COLOR_YELLOW"WARNING: Emoji [%s] filename exceeded max length of %d \n", holdChar, MAX_EMOJI_LENGTH);
+			continue;
+		}
+
+		//reached max loadable
+		if (inserted >= MAX_LOADABLE_EMOJIS) {
+			break;
+		}
+
+		//remove file extension
+		strcpy(emoji, holdChar);
+		emoji[emojiExtFNLen - 4] = '\0';
+
+		//add emoji to the list
+		Com_sprintf(emojis[inserted].name, sizeof(emojis[inserted].name), ":%s:", emoji);
+		emojis[inserted].emoji = trap->R_RegisterShaderNoMip(va("gfx/emoji/%s.png", emoji));
+
+		inserted++;
+	}
+}
+
+/*
+=================
 CG_Init
 
 Called after every level change or subsystem restart
@@ -2760,6 +2802,9 @@ Ghoul2 Insert Start
 /*
 Ghoul2 Insert End
 */
+
+	//Load emojis
+	CG_LoadEmojis();
 
 	//Load sabers.cfg data
 	WP_SaberLoadParms();
