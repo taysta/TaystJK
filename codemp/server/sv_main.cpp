@@ -712,7 +712,7 @@ void SV_ConnectionlessPacket( netadr_t from, msg_t *msg ) {
 	char	*s;
 	char	*c;
 
-	if (sv_maxOOBRateIP->integer) {
+	if (sv_maxOOBRateIP->integer && com_dedicated->integer && from.type != NA_LOOPBACK) {
 		int rate = Com_Clampi(1, 1000, sv_maxOOBRateIP->integer);
 		int period = 1000 / rate;
 		int burst = 10 * rate;
