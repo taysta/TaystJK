@@ -9521,9 +9521,10 @@ void CG_ChatBox_AddString(char *chatStr)
 		int i = 0;
 		while (*str)
 		{
+			int k;
 			qboolean draw = qfalse;
-
 			const char* checkColor = (const char*)(str);
+
 			if (Q_IsColorString(checkColor)) {
 				emojiStr[i++] = *str++;
 				emojiStr[i++] = *str++;
@@ -9531,7 +9532,7 @@ void CG_ChatBox_AddString(char *chatStr)
 				continue; // duo: fix for messages with lots of colors being broken up too early
 			}
 
-			for (int k = 0; k < MAX_LOADABLE_EMOJIS; k++) {
+			for (k = 0; k < MAX_LOADABLE_EMOJIS; k++) {
 				if (strlen(emojis[k].name) == 0)
 					continue; //or break, since it is mosty likely to be the last available item.
 
@@ -9688,7 +9689,8 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 	{
 		//draw available emoji's
 		if (cg_chatBoxEmojis.integer) {
-			for (int k = 0; k < MAX_CHATBOX_ITEM_EMOJIS; k++) {
+			int k;
+			for (k = 0; k < MAX_CHATBOX_ITEM_EMOJIS; k++) {
 				if (!drawThese[i]->emoji[k].emoji)
 					continue;
 
