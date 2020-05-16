@@ -121,3 +121,9 @@ void PM_SetSaberMove(short newMove);
 void PM_SetForceJumpZStart(float value);
 
 void BG_CycleInven(playerState_t *ps, int direction);
+
+#ifdef _GAME
+#define JK2SWINGS(ps) (ps && (g_tweakSaber.integer & (1<<5)/*ST_NO_REDCHAIN*/) && !ps->stats[STAT_RACEMODE])
+#else
+#define JK2SWINGS(ps) (ps && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & (1<<28)/*CINFO_JAPRO_NOREDCHAIN*/) && !ps->stats[STAT_RACEMODE])
+#endif

@@ -1883,12 +1883,12 @@ qboolean PM_AdjustAngleForWallJump( playerState_t *ps, usercmd_t *ucmd, qboolean
 							ps->legsTimer = ps->torsoTimer = 150;
 						}
 					}
-#ifdef _CGAME
-					if (cgs.serverMod == SVMOD_JAPLUS)
-						PM_UpdateViewAngles(ps, ucmd); //update here for vertical freelook prediction
-#endif
 				}
 			}
+#ifdef _CGAME
+			if (cgs.serverMod == SVMOD_JAPLUS)
+				PM_UpdateViewAngles(ps, ucmd); //update here for vertical freelook prediction
+#endif
 		}
 		else if ( pm->debugMelee )
 		{//uber-skillz
@@ -9985,6 +9985,7 @@ qboolean PM_SaberInTransition( int move );
 void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 {
 	saberInfo_t	*saber;
+	int fixroll = GetFixRoll(ps);
 
 	if (ps->clientNum >= MAX_CLIENTS)
 	{
@@ -10014,7 +10015,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 	}
 
 
-	if ( cmd->forwardmove < 0 && !(cmd->buttons&BUTTON_WALKING) && pm->ps->groundEntityNum != ENTITYNUM_NONE )
+	if ( cmd->forwardmove < 0 && !(cmd->buttons&BUTTON_WALKING) && pm->ps->groundEntityNum != ENTITYNUM_NONE && !JK2SWINGS(ps) )
 	{//running backwards is slower than running forwards (like SP)
 		ps->speed *= 0.75f;
 	}
@@ -10092,7 +10093,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 	}
 	else if ( BG_SpinningSaberAnim( ps->legsAnim ) )
 	{
-		if (ps->fd.saberAnimLevel == FORCE_LEVEL_3)
+		if (ps->fd.saberAnimLevel == FORCE_LEVEL_3 && !JK2SWINGS(ps))
 		{
 			ps->speed *= 0.3f;
 		}
@@ -10111,20 +10112,13 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 			ps->speed *= 0.85f;
 			break;
 		case FORCE_LEVEL_3:
-#if _GAME
-			if (g_tweakSaber.integer & ST_NO_REDCHAIN && !ps->stats[STAT_RACEMODE])
-#else
-			if (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN && !cg.predictedPlayerState.stats[STAT_RACEMODE])
-#endif
-				ps->speed *= 0.70f;
-			else
-				ps->speed *= 0.55f;
+			ps->speed *= JK2SWINGS(ps) ? 0.70f : 0.55f;
 			break;
 		default:
 			break;
 		}
 	}
-	else if (ps->weapon == WP_SABER && ps->fd.saberAnimLevel == FORCE_LEVEL_3 &&
+	else if (ps->weapon == WP_SABER && ps->fd.saberAnimLevel == FORCE_LEVEL_3 && !JK2SWINGS(ps) &&
 		PM_SaberInTransition(ps->saberMove))
 	{ //Now, we want to even slow down in transitions for level 3 (since it has chains and stuff now)
 		if (cmd->forwardmove < 0)
@@ -10146,7 +10140,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 	*/
 
 
-	if (GetFixRoll(ps) > 2)
+	if (fixroll > 2)
 	{
 		if ( BG_InRoll( ps, ps->legsAnim ) && ps->speed > 50.0f )
 		{ //can't roll unless you're able to move normally
@@ -10192,7 +10186,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 #endif
 	*/
 
-	else if (GetFixRoll(ps) == 2)
+	else if (fixroll == 2)
 	{
 		if ( BG_InRoll( ps, ps->legsAnim ) && ps->speed > 50 )
 		{ //can't roll unless you're able to move normally
@@ -10234,7 +10228,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 #endif
 */
 
-	else if (GetFixRoll(ps) == 1)
+	else if (fixroll == 1)
 	{
 		if ( BG_InRoll( ps, ps->legsAnim ) && ps->speed > 50 )
 		{ //can't roll unless you're able to move normally
@@ -12836,10 +12830,6 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 		}
 		*/
-
-
-
-
 	}
 
 	if (pm->ps->clientNum >= MAX_CLIENTS &&
@@ -13193,7 +13183,7 @@ void PmoveSingle (pmove_t *pmove) {
 			//trap->SendServerCommand( -1, va("print \"333? msec: %i\n\"", pml.msec ));
 		}
 	#elif _CGAME
-		else if ((cgs.jcinfo & JAPRO_CINFO_HIGHFPSFIX) && ((pml.msec < 4) || (pml.msec > 25))) {
+		else if ((cgs.jcinfo & JAPRO_CINFO_HIGHFPSFIX) && (pml.msec < 4 || pml.msec > 25)) {
 		}
 	#endif
 		else if (!pm->pmove_float) {

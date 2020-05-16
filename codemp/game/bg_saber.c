@@ -758,11 +758,7 @@ qboolean PM_SaberKataDone(int curmove, int newmove)
 	}
 	else if ( pm->ps->fd.saberAnimLevel == FORCE_LEVEL_3 )
 	{
-#ifdef _GAME
-		if ((pm->ps->saberAttackChainCount >= 1) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN))
-#else
-		if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
-#endif
+		if (pm->ps->saberAttackChainCount >= 1 && JK2SWINGS(pm->ps))
 		{
 			return qtrue;
 		}
@@ -1517,11 +1513,10 @@ qboolean PM_SaberInBrokenParry( int move )
 {
 #ifdef _GAME
 	if (g_tweakSaber.integer & ST_NO_REDCHAIN)
-		return qfalse;
-#elif _CGAME
-	if (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)
-		return qfalse;
+#else
+	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
 #endif
+		return qfalse;
 
 	if ( move >= LS_V1_BR && move <= LS_V1_B_ )
 	{
@@ -1766,6 +1761,10 @@ saberMoveName_t PM_SaberFlipOverAttackMove(void)
 	else
 	*/
 	{
+
+		if (JK2SWINGS(pm->ps) && PM_irand_timesync( 0, 1 ))
+			return LS_A_FLIP_STAB;
+
 		return LS_A_FLIP_SLASH;
 	}
 }
@@ -2785,17 +2784,12 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			//prediction values. Under laggy conditions this will cause the appearance of rapid swing
 			//sequence changes.
 
+			newmove = LS_A_T2B; //decided we don't like random attacks when idle, use an overhead instead.
 
 #if 0
-#ifdef _GAME
-		if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN))
-#elif _CGAME
-		if (cgs.serverMod == SVMOD_JAPRO && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
-#endif
+			if (JK2SWINGS(pm->ps))
 				newmove = PM_irand_timesync(LS_A_TL2BR, LS_A_T2B);
-			else
 #endif
-			newmove = LS_A_T2B; //decided we don't like random attacks when idle, use an overhead instead.
 		}
 	}
 
@@ -4093,21 +4087,12 @@ void PM_SetSaberMove(short newMove)
 
 
 
-#ifdef _GAME
-	else if ( (pm->ps->stats[STAT_RACEMODE] || !(g_tweakSaber.integer & ST_NO_REDCHAIN)) &&
-#else
-	else if ( (cgs.serverMod != SVMOD_JAPRO || cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
-#endif
+	if (!JK2SWINGS(pm->ps) &&
 		pm->ps->fd.saberAnimLevel > FORCE_LEVEL_1 && !BG_SaberInIdle( newMove ) && !PM_SaberInParry( newMove ) && !PM_SaberInKnockaway( newMove ) && !PM_SaberInBrokenParry( newMove ) && !PM_SaberInReflect( newMove ) && !BG_SaberInSpecial(newMove))
  	{//readies, parries and reflections have only 1 level
  		anim += (pm->ps->fd.saberAnimLevel-FORCE_LEVEL_1) * SABER_ANIM_GROUP_SIZE;
  	}
-
-#ifdef _GAME
-	else if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakSaber.integer & ST_NO_REDCHAIN) && 
-#else
-	else if ((cgs.serverMod == SVMOD_JAPRO && !cg.predictedPlayerState.stats[STAT_RACEMODE] && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN)) &&
-#endif
+	else if (JK2SWINGS(pm->ps) &&
 		pm->ps->fd.saberAnimLevel > FORCE_LEVEL_1 && !BG_SaberInIdle(newMove) && !PM_SaberInParry(newMove) && !PM_SaberInReflect(newMove) && !BG_SaberInSpecial(newMove) && !PM_SaberInTransition(newMove))
 	{//FIXME: only have level 1 transitions for now
 		anim += (pm->ps->fd.saberAnimLevel - FORCE_LEVEL_1) * SABER_ANIM_GROUP_SIZE;

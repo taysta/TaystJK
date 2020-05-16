@@ -2598,7 +2598,7 @@ void PM_ContinueLegsAnim( int anim ) {
 	BG_StartLegsAnim( pm->ps, anim );
 }
 
-void PM_ForceLegsAnim( int anim) {
+void PM_ForceLegsAnim( int anim ) {
 	if (BG_InSpecialJump(pm->ps->legsAnim) &&
 		pm->ps->legsTimer > 0 &&
 		!BG_InSpecialJump(anim))
@@ -2694,6 +2694,18 @@ void PM_SetTorsoAnimTimer(int time )
 
 void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int anim, float *animSpeed, int broken )
 {
+	if (JK2SWINGS(pm->ps)) {
+		if (((anim) >= BOTH_T1_BR__R && (anim) <= BOTH_T1_BL_TL) ||
+			((anim) >= BOTH_T2_BR__R && (anim) <= BOTH_T2_BL_TL) ||
+			((anim) >= BOTH_T3_BR__R && (anim) <= BOTH_T3_BL_TL))
+		{
+			if (saberAnimLevel == SS_FAST || saberAnimLevel == SS_STRONG) {
+				animSpeed = 0;
+				return;
+			}
+		}
+	}
+
 	if ( anim >= BOTH_A1_T__B_ && anim <= BOTH_ROLL_STAB )
 	{
 		if ( weapon == WP_SABER )
@@ -2817,6 +2829,11 @@ void BG_SetAnimFinal(playerState_t *ps, animation_t *animations,
 			if (ps->fd.forcePowersActive & (1 << FP_RAGE))
 			{
 				ps->torsoTimer /= 1.7;
+			}
+
+			if (JK2SWINGS(pm->ps) && editAnimSpeed)
+			{
+				pm->ps->torsoTimer /= editAnimSpeed;
 			}
 		}
 	}
