@@ -7402,10 +7402,10 @@ void CG_BracketEntity( centity_t *cent, float radius )
 	{//draw the lead indicator
 		if ( isEnemy )
 		{//an enemy object
-			if ( cent->currentState.clientNum < MAX_CLIENTS )
-			{//is a dood
+			if ( cent->currentState.NPC_class == CLASS_VEHICLE )
+			{//enemy vehicle
 				if ( !VectorCompare( cent->currentState.pos.trDelta, vec3_origin ) )
-				{//they are moving
+				{//enemy vehicle is moving
 					if ( cg.predictedPlayerState.m_iVehicleNum )
 					{//I'm in a vehicle
 						centity_t		*veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
@@ -10807,7 +10807,6 @@ void Dzikie_CG_DrawSpeed(int moveDir) {
 	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sin(diff+optiangle),midy-length/2*cos(diff+optiangle),1,colorRed,0.75f,0);
 	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sin(diff-optiangle),midy-length/2*cos(diff-optiangle),1,colorRed,0.75f,0);
 
-
 }
 
 
@@ -11259,7 +11258,7 @@ static void CG_PlayerLabels(void)
 		centity_t	*cent = &cg_entities[i];
 		vec3_t		diff;
 
-		if (!cent)
+		if (!cent || !cent->currentValid)
 			continue;
 		if (i == cg.clientNum)
 			continue;
@@ -11268,6 +11267,8 @@ static void CG_PlayerLabels(void)
 		if (cent->currentState.eFlags & EF_DEAD)
 			continue;
 		if (cent->currentState.eType != ET_PLAYER)	
+			continue;
+		if (!cgs.clientinfo[i].infoValid)
 			continue;
 		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)	
 			continue;
@@ -11279,14 +11280,11 @@ static void CG_PlayerLabels(void)
 			continue;
 
 		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) > 3000)
+		if (VectorLength(diff) >= 3000) //Make sure distance is less than... 3000 ?
 			continue;
 
-		//Make sure distance is less than... 2048 ?
-
-		CG_Trace( &trace, cg.predictedPlayerState.origin, vec3_origin, vec3_origin, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID|CONTENTS_BODY );
-
-		if (trace.entityNum >= MAX_CLIENTS)
+		CG_Trace( &trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID|CONTENTS_BODY );
+		if (trace.entityNum == ENTITYNUM_WORLD)
 			continue;
 
 		VectorCopy(cent->lerpOrigin, pos);
