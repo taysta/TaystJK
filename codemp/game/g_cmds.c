@@ -2712,7 +2712,7 @@ void Cmd_MapList_f( gentity_t *ent ) {
 		Q_strncpyz( map, Info_ValueForKey( level.arenas.infos[i], "map" ), sizeof( map ) );
 		Q_StripColor( map );
 
-		if ( G_DoesMapSupportGametype( map, level.gametype ) ) {
+		if ( G_DoesMapSupportGametype( map, level.gametype ) || (g_tweakVote.integer & TV_IGNOREMAPARENAS) ) {  //ARGH?
 			char *tmpMsg = va( " ^%c%s", (++toggle&1) ? COLOR_GREEN : COLOR_YELLOW, map );
 			if ( strlen( buf ) + strlen( tmpMsg ) >= sizeof( buf ) ) {
 				trap->SendServerCommand( ent-g_entities, va( "print \"%s\"", buf ) );
@@ -2883,7 +2883,7 @@ qboolean G_VoteMap( gentity_t *ent, int numArgs, const char *arg1, const char *a
 	}
 	trap->FS_Close( fp );
 
-	if ( !G_DoesMapSupportGametype( arg2, level.gametype ) /*&& !(g_tweakVote.integer & TV_FIX_GAMETYPEMAP)*/ ) { //new TV for check arena file for matching gametype?
+	if ( !G_DoesMapSupportGametype( arg2, level.gametype ) && !(g_tweakVote.integer & TV_IGNOREMAPARENAS) ) { //new TV for check arena file for matching gametype?
 		//Logic, this is not needed because we have live update gametype?
 		trap->SendServerCommand( ent-g_entities, va( "print \"%s\n\"", G_GetStringEdString( "MP_SVGAME", "NOVOTE_MAPNOTSUPPORTEDBYGAME" ) ) );
 		return qfalse;
@@ -7080,6 +7080,8 @@ void Cmd_Amtele_f(gentity_t *ent)
 	int allowed;
 
 	if (!ent->client)
+		return;
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR && (ent->client->ps.pm_flags & PMF_FOLLOW)) //lazy
 		return;
 
 	allowed = G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINTELE, qtrue, g_allowRaceTele.integer, "amTele");

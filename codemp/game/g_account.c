@@ -2717,7 +2717,7 @@ void Svcmd_FlagAccount_f( void ) {
 	char username[16];
 
 	if (args != 2 && args != 3 && args != 4) {
-		trap->Print( "Usage: /accountFlag <username> <set (optional)> <flag>\n");
+		trap->Print( "Usage: /flagAccount <username> <set (optional)> <flag>\n");
 		return;
 	}
 
@@ -2776,7 +2776,7 @@ void Svcmd_FlagAccount_f( void ) {
 
 			//DM Start: New -1 toggle all options.
 			if (index < -1 || index >= MAX_ACCOUNT_FLAGS) {  //Whereas we need to allow -1 now, we must change the limit for this value.
-				trap->Print("toggleVote: Invalid range: %i [0-%i, or -1 for toggle all]\n", index, MAX_ACCOUNT_FLAGS - 1);
+				trap->Print("flagAccount: Invalid range: %i [0-%i, or -1 for toggle all]\n", index, MAX_ACCOUNT_FLAGS - 1);
 				CALL_SQLITE (close(db));
 				return;
 			}
@@ -2820,7 +2820,7 @@ void Svcmd_FlagAccount_f( void ) {
 			gclient_t	*cl;
 
 			if (Q_stricmp(arg, "set")) {
-				trap->Print( "Usage: /accountFlag <username> <set (optional)> <flag>\n");
+				trap->Print( "Usage: /flagAccount <username> <set (optional)> <flag>\n");
 				return;
 			}
 

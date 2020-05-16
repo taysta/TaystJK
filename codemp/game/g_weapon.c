@@ -2833,30 +2833,27 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 
 	W_TraceSetStart( ent, start, bolt->r.mins, bolt->r.maxs );//make sure our start point isn't on the other side of a wall
 
-	if ( ent->client )
-	{
-		chargeAmount = level.time - ent->client->ps.weaponChargeTime;
-	}
-
-	// get charge amount
-	chargeAmount = chargeAmount / (float)TD_VELOCITY;
-
-	if ( chargeAmount > 1.0f )
-	{
-		chargeAmount = 1.0f;
-	}
-	else if ( chargeAmount < TD_MIN_CHARGE )
-	{
-		chargeAmount = TD_MIN_CHARGE;
-	}
-
 	if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
-		chargeAmount = 0.9f;
+		chargeAmount = 1.0f;
 		altFire = qfalse;
+	}
+	else { // get charge amount
+		if ( ent->client ) {
+			chargeAmount = level.time - ent->client->ps.weaponChargeTime;
+		}
+		chargeAmount = chargeAmount / (float)TD_VELOCITY;
+		if ( chargeAmount > 1.0f )
+			chargeAmount = 1.0f;
+		else if ( chargeAmount < TD_MIN_CHARGE )
+			chargeAmount = TD_MIN_CHARGE;
 	}
 
 	// normal ones bounce, alt ones explode on impact
-	bolt->genericValue5 = level.time + TD_TIME; // How long 'til she blows
+	if (g_tweakWeapons.integer & WT_IMPACT_NITRON)
+		bolt->genericValue5 = level.time + 2000; // How long 'til she blows
+	else
+		bolt->genericValue5 = level.time + TD_TIME; // How long 'til she blows
+
 	bolt->s.pos.trType = TR_GRAVITY;
 	bolt->parent = ent;
 	bolt->r.ownerNum = ent->s.number;
@@ -2876,8 +2873,8 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	bolt->s.loopIsSoundset = qfalse;
 
 	if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
-		bolt->damage = 40 * g_weaponDamageScale.integer;
-		bolt->splashDamage = 10 * g_weaponDamageScale.integer;
+		bolt->damage = 60 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
 	else {

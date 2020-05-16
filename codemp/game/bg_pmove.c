@@ -9236,7 +9236,7 @@ if (pm->ps->duelInProgress)
 				else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && !pm->ps->stats[STAT_RACEMODE])
 					addTime = 3000;
 				else if (pm->ps->weapon == WP_THERMAL && (g_tweakWeapons.integer & WT_IMPACT_NITRON))
-					addTime = 2000;
+					addTime = 1500;
 				else
 #endif
 					addTime = weaponData[pm->ps->weapon].altFireTime;
@@ -9251,7 +9251,7 @@ if (pm->ps->duelInProgress)
 			else if (pm->ps->weapon == WP_STUN_BATON && g_tweakWeapons.integer & WT_STUN_LG)
 				addTime = 50;
 			else if (pm->ps->weapon == WP_THERMAL && (g_tweakWeapons.integer & WT_IMPACT_NITRON))
-				addTime = 2000;
+				addTime = 1500;
 			else
 #endif
 			addTime = weaponData[pm->ps->weapon].fireTime;

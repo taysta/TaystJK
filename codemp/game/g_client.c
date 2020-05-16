@@ -3147,6 +3147,27 @@ void ClientBegin( int clientNum, qboolean allowTeamReset ) {
 	}
 
 	G_ClearClientLog(clientNum);
+
+	if (client->pers.isJAPRO) { //Should this be in userinfochanged or..
+		char	msg[1024-128] = {0};
+		if (g_validateCosmetics.integer) {
+			int		i;
+
+			for (i=0; i<MAX_COSMETIC_UNLOCKS; i++) {
+				char *tmpMsg = NULL;
+				if (!cosmeticUnlocks[i].active)
+					continue;
+
+				tmpMsg = va("%i:%s:%i:%i\n", cosmeticUnlocks[i].bitvalue, cosmeticUnlocks[i].mapname, cosmeticUnlocks[i].style, cosmeticUnlocks[i].duration); //probably have to replace the \n with something so it doesnt flood console of old japro clients
+				if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {
+					trap->SendServerCommand( ent-g_entities, va("cosmetics \"%s\"", msg));
+					msg[0] = '\0';
+				}
+				Q_strcat(msg, sizeof(msg), tmpMsg);
+			}
+		}
+		trap->SendServerCommand(ent-g_entities, va("cosmetics \"%s\"", msg));
+	}
 }
 
 static qboolean AllForceDisabled(int force)

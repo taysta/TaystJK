@@ -409,6 +409,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define TV_SHOW_VOTES				(1<<8)
 #define TV_ONLY_COUNT_VOTERS		(1<<9)
 #define TV_FIX_GAMETYPEMAP			(1<<10)
+#define TV_IGNOREMAPARENAS			(1<<11)
 
 #define RS_TIMER_START				(1<<0)
 

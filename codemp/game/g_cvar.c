@@ -340,7 +340,7 @@ static void RemoveWeaponsFromPlayer(gentity_t *ent) {
 	ent->client->ps.stats[STAT_WEAPONS] &= ~disallowedWeaps; //Subtract disallowed weapons from current weapons.
 
 	if (ent->client->ps.stats[STAT_WEAPONS] <= 0)
-		ent->client->ps.stats[STAT_WEAPONS] = WP_MELEE;
+		ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_MELEE); //HMM? asdf
 
 	if (!(ent->client->ps.stats[STAT_WEAPONS] & (1 >> ent->client->ps.weapon))) { //If our weapon selected does not appear in our weapons list
 		ent->client->ps.weapon = WP_MELEE; //who knows why this does shit even if our current weapon is fine.
@@ -442,6 +442,27 @@ static void CVU_Registration(void) {
 	g_allowRegistration.integer ?
 		(jcinfo2.integer |= JAPRO_CINFO2_REGISTRATION) : (jcinfo2.integer &= ~JAPRO_CINFO2_REGISTRATION);
 	trap->Cvar_Set("jcinfo2", va("%i", jcinfo2.integer));
+}
+
+static void CVU_Cosmetics(void) {
+		char	msg[1024-128] = {0};
+		if (g_validateCosmetics.integer) {
+			int		i;
+
+			for (i=0; i<MAX_COSMETIC_UNLOCKS; i++) {
+				char *tmpMsg = NULL;
+				if (!cosmeticUnlocks[i].active)
+					continue;
+
+				tmpMsg = va("%i:%s:%i:%i\n", cosmeticUnlocks[i].bitvalue, cosmeticUnlocks[i].mapname, cosmeticUnlocks[i].style, cosmeticUnlocks[i].duration); //probably have to replace the \n with something so it doesnt flood console of old japro clients
+				if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {
+					trap->SendServerCommand( -1, va("cosmetics \"%s\"", msg));
+					msg[0] = '\0';
+				}
+				Q_strcat(msg, sizeof(msg), tmpMsg);
+			}
+		}
+		trap->SendServerCommand(-1, va("cosmetics \"%s\"", msg));
 }
 
 //

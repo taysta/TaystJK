@@ -1359,6 +1359,13 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 
 	if (!player->client)
 		return;
+
+	if (level.time - player->client->lastInStartTrigger <= 300) { //We were last in the trigger within 300ms ago.., //goal, make this negative edge ?
+		player->client->lastInStartTrigger = level.time;
+		return;
+	}
+	player->client->lastInStartTrigger = level.time;
+
 	if (player->client->sess.sessionTeam != TEAM_FREE)
 		return;
 	if (player->r.svFlags & SVF_BOT)
@@ -1369,21 +1376,20 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		return;
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK) //Allow racemode emotes?
 		return;
+	if (player->client->ps.legsAnim == BOTH_JUMPATTACK6) //heh
+		return;
 	if (player->client->sess.raceMode && player->client->sess.movementStyle == MV_SWOOP && !player->client->ps.m_iVehicleNum) //Dont start the timer for swoop racers if they dont have a swoop
 		return;
 	if (player->client->pers.stats.lastResetTime == level.time) //Dont allow a starttimer to start in the same frame as a resettimer (called from noclip or amtele)
 		return;
-	if (level.time - player->client->lastInStartTrigger <= 300) { //We were last in the trigger within 300ms ago.., //goal, make this negative edge ?
-		player->client->lastInStartTrigger = level.time;
+	if (player->client->sess.raceMode && g_fixTimerOOB.integer && !trap->InPVS(player->client->ps.origin, player->client->ps.origin)) { //Check if they are OOB (not in a PVS?)
 		return;
 	}
-	player->client->lastInStartTrigger = level.time;
 
 	//if (GetTimeMS() - player->client->pers.stats.startTime < 500)//Some built in floodprotect per player?
 		//return;
 	//if (player->client->pers.stats.startTime) //Instead of floodprotect, dont let player start a timer if they already have one.  Mapmakers should then put reset timers over the start area.
 		//return;
-
 
 	//trap->Print("Actual trigger touch! time: %i\n", GetTimeMS());
 
@@ -1511,10 +1517,21 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		return;
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK) 
 		return;
+	if (!player->client->pers.stats.startTime)
+		return;
+	if (player->client->sess.raceMode && g_fixTimerOOB.integer > 1 && !trap->InPVS(player->client->ps.origin, player->client->ps.origin)) { //Check if they are OOB (not in a PVS?)
+			player->client->pers.stats.startLevelTime = 0;
+			player->client->pers.stats.startTime = 0;
+			player->client->pers.stats.topSpeed = 0;
+			player->client->pers.stats.displacement = 0;
+			if (player->client->ps.stats[STAT_RACEMODE])
+				player->client->ps.duelTime = 0;
+			return;
+	}
 
 	multi_trigger(trigger, player);
 
-	if (player->client->pers.stats.startTime) {
+	if (1) {
 		char styleStr[32] = {0}, timeStr[32] = {0}, playerName[MAX_NETNAME] = {0};
 		char c[4] = S_COLOR_RED;
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
