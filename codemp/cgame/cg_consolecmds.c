@@ -1487,30 +1487,84 @@ void CG_SpeedometerSettings_f(void)
 }
 
 static bitInfo_T cosmetics[] = {
-	{ "santa" },
-	{ "jack-o-lantern" },
-	{ "bass pro baseball cap" }, //?
-	{ "indiana jones" },
+	{ "Santa hat" },
+	{ "Jack-o'-lantern" },
+	{ "Bass Pro Shops baseball cap" },
+	{ "Indiana Jones" },
 	{ "Kane's Kringe Kap" },
-	{ "sombrero" },
-	{ "top hat" } //? dr seuss?
+	{ "Sombrero" },
+	{ "Top hat" }
 };
 static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
+void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
 static void CG_Cosmetics_f(void)
 {
-	if (cgs.serverMod != SVMOD_JAPRO)
+	if (cgs.serverMod < SVMOD_JAPRO)
 		return;
 
+	//cosmeticUnlocks[i].bitvalue;
+	//trap->SendClientCommand( "cosmetics" );
+
 	if (trap->Cmd_Argc() == 1) {
-		int i = 0, display = 0;
+		int i = 0, j = 0, display = 0;
+		char styleString[16] = {0};
+		qboolean found;
 
 		for (i = 0; i < MAX_COSMETICS; i++) {
 			if ((cp_cosmetics.integer & (1 << i))) {
-				Com_Printf("%2d [X] %s\n", display, cosmetics[i].string);
+				found = qfalse;
+				if (cosmeticUnlocks[0].mapname && cosmeticUnlocks[0].mapname[0]) { //terrible
+					for (j = 0; j < MAX_COSMETIC_UNLOCKS; j++) {
+						if (display == cosmeticUnlocks[j].bitvalue) {
+							IntegerToRaceName(cosmeticUnlocks[j].style, styleString, sizeof(styleString));
+							if (cosmeticUnlocks[j].duration)
+								Com_Printf("%2d [X] %s ^3(requires %s %s in under %.3f seconds)\n", display, cosmetics[i].string, cosmeticUnlocks[j].mapname, styleString, ((float)cosmeticUnlocks[j].duration)*0.001f );
+							else
+								Com_Printf("%2d [X] %s ^3(requires %s %s)\n", display, cosmetics[i].string, cosmeticUnlocks[j].mapname, styleString );
+							found = qtrue;
+							break;
+						}
+					}
+				}
+				if (!found)
+					Com_Printf("%2d [X] %s\n", display, cosmetics[i].string);
+
+				/*
+				if (display == cosmeticUnlocks[i].bitvalue) {
+					IntegerToRaceName(cosmeticUnlocks[i].style, styleString, sizeof(styleString));
+					Com_Printf("^1%2d [X] %s (%s %s in %.3f seconds)\n", display, cosmetics[i].string, cosmeticUnlocks[i].mapname, styleString, ((float)cosmeticUnlocks[i].duration)*0.001f );
+				}
+				else
+					Com_Printf("%2d [X] %s\n", display, cosmetics[i].string);
+				*/
 			}
 			else {
-				Com_Printf("%2d [ ] %s\n", display, cosmetics[i].string);
+				found = qfalse;
+				if (cosmeticUnlocks[0].mapname && cosmeticUnlocks[0].mapname[0]) { //terrible
+					for (j = 0; j < MAX_COSMETIC_UNLOCKS; j++) {
+						if (display == cosmeticUnlocks[j].bitvalue) {
+							IntegerToRaceName(cosmeticUnlocks[j].style, styleString, sizeof(styleString));
+							if (cosmeticUnlocks[j].duration)
+								Com_Printf("%2d [ ] %s ^3(requires %s %s in under %.3f seconds)\n", display, cosmetics[i].string, cosmeticUnlocks[j].mapname, styleString, ((float)cosmeticUnlocks[j].duration)*0.001f );
+							else
+								Com_Printf("%2d [ ] %s ^3(requires %s %s)\n", display, cosmetics[i].string, cosmeticUnlocks[j].mapname, styleString );
+							found = qtrue;
+							break;
+						}
+					}
+				}
+				if (!found)
+					Com_Printf("%2d [ ] %s\n", display, cosmetics[i].string);
+
+				/*
+				if (display == cosmeticUnlocks[i].bitvalue) {
+					IntegerToRaceName(cosmeticUnlocks[i].style, styleString, sizeof(styleString));
+					Com_Printf("^1%2d [ ] %s (%s %s in %.3f seconds)\n", display, cosmetics[i].string, cosmeticUnlocks[i].mapname, styleString, ((float)cosmeticUnlocks[i].duration)*0.001f );
+				}
+				else
+					Com_Printf("%2d [ ] %s\n", display, cosmetics[i].string);
+				*/
 			}
 			display++;
 		}

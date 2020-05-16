@@ -125,6 +125,39 @@ static void CG_ParseTeamInfo( void ) {
 	}
 }
 
+static void CG_ParseCosmetics ( void ) { //Parse server cosmetics info for client use
+	//Go through the CG_Argv( 1 ) ?
+	//Build cosmetics array for use in CG_Cosmetics_f
+	char*	pch;
+	char buf[4096] = {0};//eh
+	int args = 1, row = 0;//, i;
+
+	Q_strncpyz(buf, CG_Argv(1), sizeof(buf));
+
+	//Clear cosmetics
+	memset(&cosmeticUnlocks, 0, sizeof(cosmeticUnlocks)); //is this bad
+
+	pch = strtok ( buf,":\n\t");  //loda fixme why is this broken
+	while (pch != NULL && row < MAX_COSMETIC_UNLOCKS)
+	{
+		if ((args % 4) == 1) {
+			cosmeticUnlocks[row].bitvalue = atoi(pch);
+			cosmeticUnlocks[row].active = qtrue;
+		}
+		else if ((args % 4) == 2)
+			Q_strncpyz(cosmeticUnlocks[row].mapname, pch, sizeof(cosmeticUnlocks[row].mapname));
+		else if ((args % 4) == 3)
+			cosmeticUnlocks[row].style = atoi(pch);
+		else if ((args % 4) == 0) {
+			cosmeticUnlocks[row].duration = atoi(pch);
+			//trap->Print("Cosmetic unlock added: %i, %s, %i, %i\n", cosmeticUnlocks[row].bitvalue, cosmeticUnlocks[row].mapname, cosmeticUnlocks[row].style, cosmeticUnlocks[row].duration);
+			row++;
+		}
+		pch = strtok (NULL, ":\n\t");
+		args++;
+	}
+}
+
 
 /*
 ================
@@ -425,7 +458,9 @@ void CG_ShaderStateChanged(void) {
 				strncpy(timeOffset, t, o-t);
 				timeOffset[o-t] = 0;
 				o++;
-				if (cg_remaps.integer)//JAPRO - Clientside - Allow noremaps
+				if (cg_remaps.integer == 1 && Q_stricmpn(originalShader, "models/players/", 15))//block player texture remaps
+					trap->R_RemapShader(originalShader, newShader, timeOffset);
+				else if (cg_remaps.integer && cg_remaps.integer != 1)//JAPRO - Clientside - Allow noremaps
 					trap->R_RemapShader( originalShader, newShader, timeOffset );
 			}
 		} else {
@@ -1760,6 +1795,7 @@ static serverCommand_t	commands[] = {
 	{ "sxd",				CG_ParseSiegeExtendedData },
 	{ "tchat",				CG_Chat_f },
 	{ "tinfo",				CG_ParseTeamInfo },
+	{ "cosmetics",			CG_ParseCosmetics },
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );

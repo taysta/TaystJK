@@ -2498,8 +2498,19 @@ localEntity_t	*CG_AllocLocalEntity( void );
 void	CG_AddLocalEntities( void );
 #if _NEWTRAILS
 	void CG_InitStrafeTrails( void );
-	strafeTrail_t	*CG_AllocStrafeTrail( void );
+strafeTrail_t	*CG_AllocStrafeTrail( void );
 #endif
+
+#define MAX_COSMETIC_UNLOCKS 32
+typedef struct CosmeticUnlocks_s {
+	unsigned short	bitvalue;
+	char			mapname[40];
+	short			style;
+	unsigned int	duration;
+	qboolean		active;
+} CosmeticUnlocks_t;
+CosmeticUnlocks_t cosmeticUnlocks[MAX_COSMETIC_UNLOCKS];
+//japro
 
 //
 // cg_effects.c
