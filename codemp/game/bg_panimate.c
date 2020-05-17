@@ -2694,7 +2694,7 @@ void PM_SetTorsoAnimTimer(int time )
 
 void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int anim, float *animSpeed, int broken )
 {
-	if (JK2SWINGS(pm->ps)) {
+	if (pm && JK2SWINGS(pm->ps)) {
 		if (((anim) >= BOTH_T1_BR__R && (anim) <= BOTH_T1_BL_TL) ||
 			((anim) >= BOTH_T2_BR__R && (anim) <= BOTH_T2_BL_TL) ||
 			((anim) >= BOTH_T3_BR__R && (anim) <= BOTH_T3_BL_TL))
@@ -2831,9 +2831,9 @@ void BG_SetAnimFinal(playerState_t *ps, animation_t *animations,
 				ps->torsoTimer /= 1.7;
 			}
 
-			if (JK2SWINGS(pm->ps) && editAnimSpeed)
+			if (JK2SWINGS(ps) && editAnimSpeed)
 			{
-				pm->ps->torsoTimer /= editAnimSpeed;
+				ps->torsoTimer /= editAnimSpeed;
 			}
 		}
 	}
