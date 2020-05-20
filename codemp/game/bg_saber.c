@@ -1511,11 +1511,7 @@ void PM_SaberLocked( void )
 
 qboolean PM_SaberInBrokenParry( int move )
 {
-#ifdef _GAME
-	if (g_tweakSaber.integer & ST_NO_REDCHAIN)
-#else
-	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_NOREDCHAIN))
-#endif
+	if (pm && JK2SWINGS(pm->ps))
 		return qfalse;
 
 	if ( move >= LS_V1_BR && move <= LS_V1_B_ )
@@ -4084,10 +4080,7 @@ void PM_SetSaberMove(short newMove)
 		anim = BOTH_SABERSTAFF_STANCE;
 	}
 	*/
-
-
-
-	if (!JK2SWINGS(pm->ps) &&
+	else if (!JK2SWINGS(pm->ps) &&
 		pm->ps->fd.saberAnimLevel > FORCE_LEVEL_1 && !BG_SaberInIdle( newMove ) && !PM_SaberInParry( newMove ) && !PM_SaberInKnockaway( newMove ) && !PM_SaberInBrokenParry( newMove ) && !PM_SaberInReflect( newMove ) && !BG_SaberInSpecial(newMove))
  	{//readies, parries and reflections have only 1 level
  		anim += (pm->ps->fd.saberAnimLevel-FORCE_LEVEL_1) * SABER_ANIM_GROUP_SIZE;
