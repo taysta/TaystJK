@@ -2725,13 +2725,19 @@ CG_LoadEmojis
 Method that registers all the avaialable emojis
 =================
 */
-void CG_LoadEmojis() {
+static void CG_LoadEmojis(void) {
 	int	emojiExtFNLen, fileCnt, i, inserted = 0;
 	char* holdChar;
 	char emojiExtensionListBuf[2048], emoji[MAX_EMOJI_LENGTH + 4] = { 0 };
 
 	//get a list of all the available png files in the emoji folder
 	fileCnt = trap->FS_GetFileList("gfx/emoji", ".png", emojiExtensionListBuf, sizeof(emojiExtensionListBuf));
+
+	if (!fileCnt < 1 && cg_chatBoxEmojis.integer) {
+		trap->Cvar_Set("cg_chatBoxEmojis", "0");
+		trap->Cvar_Update(&cg_chatBoxEmojis);
+		return;
+	}
 
 	holdChar = emojiExtensionListBuf;
 	for (i = 0; i < fileCnt; i++, holdChar += emojiExtFNLen + 1) {
@@ -2750,7 +2756,7 @@ void CG_LoadEmojis() {
 
 		//remove file extension
 		strcpy(emoji, holdChar);
-		emoji[emojiExtFNLen - 4] = '\0';
+		COM_StripExtension(emoji, emoji, sizeof(emoji));
 
 		//add emoji to the list
 		Com_sprintf(emojis[inserted].name, sizeof(emojis[inserted].name), ":%s:", emoji);

@@ -64,7 +64,7 @@ XCVAR_DEF( cg_chatBoxLines,			"5",	NULL,					CVAR_ARCHIVE ) //this would be call
 XCVAR_DEF( cg_chatBoxHeight,		"350",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxX,				"30",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatBoxCutOffLength,	"350",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_chatBoxEmojis,		"1",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_chatBoxEmojis,		"0",	NULL,					CVAR_ARCHIVE_ND )
 XCVAR_DEF( cg_hudColors,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_tintHud,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
