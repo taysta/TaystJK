@@ -1781,6 +1781,8 @@ typedef struct cgMedia_s {
 	sfxHandle_t	teleOutSound;
 	sfxHandle_t	respawnSound;
 	sfxHandle_t talkSound;
+	sfxHandle_t	teamChatSound;
+	sfxHandle_t	privateChatSound;
 	sfxHandle_t landSound;
 	sfxHandle_t fallSound;
 

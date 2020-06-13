@@ -846,6 +846,11 @@ static void CG_RegisterSounds( void ) {
 	trap->S_RegisterSound( "sound/movers/objects/objectHit.wav" );
 
 	cgs.media.talkSound = trap->S_RegisterSound( "sound/player/talk.wav" );
+	cgs.media.teamChatSound = trap->S_RegisterSound( "sound/movers/switches/button_11.mp3" );
+	cgs.media.privateChatSound = trap->S_RegisterSound( "sound/interface/commlink_off.mp3" );
+	if ( !cgs.media.privateChatSound ) //fall back to something in base assets
+		cgs.media.privateChatSound = trap->S_RegisterSound( "sound/movers/switches/button_15.mp3" );
+
 	cgs.media.landSound = trap->S_RegisterSound( "sound/player/land1.wav");
 	cgs.media.fallSound = trap->S_RegisterSound( "sound/player/fallsplat.wav");
 

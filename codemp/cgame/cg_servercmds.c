@@ -1690,25 +1690,27 @@ static void CG_Chat_f( void ) {
 					return;
 				}
 
-				if (Q_stristr(cleanMsg, "^5Hi everybody!") != NULL) {
+				if (Q_stristr(cleanMsg, "Hi everybody!") != NULL) {
 					return;
 				}
 			}
 				
-			if (cg_cleanChatbox.integer && !Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous //replace this with q_strcmp in entire function..?
-				return;
+			if (!Q_strncmp(text, cg.lastChatMsg, strlen(text))) {//Same exact msg/sender as previous
+				if (cg_cleanChatbox.integer) return;
 			}
 			//New msg
-			if (cg_chatSounds.integer == 2 && !cg_cleanChatbox.integer) { //check to play sound for PMs here since the cleanChatBox code will handle this for us
-				if (Q_stristr(text, "^7]: ^6")) {
+			//JAPRO - Clientside - Chatsounds options
+			if (cg_chatSounds.integer == 2) {
+				if (Q_stristr(text, "^7]: ^6")) //pm
+					trap->S_StartLocalSound(cgs.media.privateChatSound, CHAN_LOCAL_SOUND);
+				else //all chat
 					trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
-				}
 			}
-			else if (cg_chatSounds.integer && cg_chatSounds.integer != 2) {//JAPRO - Clientside - Chatsounds option
+			else if (cg_chatSounds.integer) {
 				trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 			}
-			CG_ChatBox_AddString(text);
 
+			CG_ChatBox_AddString(text);
 			Q_strncpyz(cg.lastChatMsg, text, sizeof(cg.lastChatMsg));
 		}
 		else if ( !Q_stricmp( cmd, "tchat" ) )
@@ -1719,7 +1721,9 @@ static void CG_Chat_f( void ) {
 				return;
 			}
 
-			if (cg_chatSounds.integer)//JAPRO - Clientside - Chatsounds option
+			if (cg_chatSounds.integer == 2)//JAPRO - Clientside - Chatsounds options
+				trap->S_StartLocalSound(cgs.media.teamChatSound, CHAN_LOCAL_SOUND);
+			else if (cg_chatSounds.integer)
 				trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 			CG_ChatBox_AddString(text);
 		}
@@ -1745,12 +1749,12 @@ static void CG_Chat_f( void ) {
 			trap->S_StartLocalSound(cgs.media.talkSound, CHAN_LOCAL_SOUND);
 
 		if ( !Q_stricmp( cmd, "lchat" ) && !cg_teamChatsOnly.integer ) {
-			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			Com_sprintf( text, sizeof( text ), "%s" S_COLOR_WHITE "<%s> ^%s%s", name, loc, color, message );
 			CG_RemoveChatEscapeChar( text );
 			CG_ChatBox_AddString( text );
 		}
 		else if ( !Q_stricmp( cmd, "ltchat" ) ) {
-			Com_sprintf( text, sizeof( text ), "%s^7<%s> ^%s%s", name, loc, color, message );
+			Com_sprintf( text, sizeof( text ), "%s" S_COLOR_WHITE "<%s> ^%s%s", name, loc, color, message );
 			CG_RemoveChatEscapeChar( text );
 			CG_ChatBox_AddString( text );
 		}
