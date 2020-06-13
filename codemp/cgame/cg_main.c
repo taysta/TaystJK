@@ -2732,7 +2732,7 @@ Method that registers all the avaialable emojis
 */
 static void CG_LoadEmojis(void) {
 	int	emojiExtFNLen, fileCnt, i, inserted = 0;
-	char* holdChar;
+	char *holdChar;
 	char emojiExtensionListBuf[2048], emoji[MAX_EMOJI_LENGTH + 4] = { 0 };
 
 	//get a list of all the available png files in the emoji folder
@@ -2746,6 +2746,7 @@ static void CG_LoadEmojis(void) {
 
 	holdChar = emojiExtensionListBuf;
 	for (i = 0; i < fileCnt; i++, holdChar += emojiExtFNLen + 1) {
+		char *s;
 		emojiExtFNLen = strlen(holdChar);
 
 		//continue to the next emoji if the filename exceeded the maximum length
@@ -2763,9 +2764,29 @@ static void CG_LoadEmojis(void) {
 		strcpy(emoji, holdChar);
 		COM_StripExtension(emoji, emoji, sizeof(emoji));
 
-		//add emoji to the list
-		Com_sprintf(emojis[inserted].name, sizeof(emojis[inserted].name), ":%s:", emoji);
-		emojis[inserted].emoji = trap->R_RegisterShaderNoMip(va("gfx/emoji/%s.png", emoji));
+		//If they are loaded from a folder the case matters, if they are loaded from a pk3 its all lowercase. oh no.
+		//So.. add another escape char in the filename to make the following letter uppercase. aghh
+		//If emoji has ! in it, make the next letter uppercase
+		s = emoji;
+		while (*s) {
+			if (*s != '!') {
+				s++;
+			}
+			else {
+				s++;
+				if (*s)
+					(*s) = toupper(*s);
+			}
+		}
+
+		//Replace ` with colon and > with ~ since we cant have those in filenames and since people dont use `~ in chat because its the console key
+		//Also remove ! as that is used to denote the next char should be uppercase only
+		//If you want the #>:D emoji that would be ~`D.png
+		Q_strstrip( emoji, "`~!", ":>" );
+
+		//Add emoji name to the list
+		Com_sprintf(emojis[inserted].name, sizeof(emojis[inserted].name), "%s", emoji); //get rid of the the escape chars here and just have it set by the filename for more flexibility
+		emojis[inserted].emoji = trap->R_RegisterShaderNoMip(va("gfx/emoji/%s", holdChar));
 
 		inserted++;
 	}
