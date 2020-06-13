@@ -1644,9 +1644,22 @@ static void CG_CenterPrintSE_f( void ) {
 }
 
 static void CG_Print_f( void ) {
+	const char *arg = CG_Argv(1);
 	char strEd[MAX_STRINGED_SV_STRING] = {0};
 
-	CG_CheckSVStringEdRef( strEd, CG_Argv( 1 ) );
+	if (arg[2] == '@' && !Q_stricmpn(arg, "@@@NONAMECHANGE", 15))
+	{ //server notified that a name change was blocked for 5 seconds, reset name cvar to what we had before
+		const char *lastName = cgs.clientinfo[cg.clientNum].name;
+		char name[MAX_CVAR_VALUE_STRING] = { 0 };
+		trap->Cvar_VariableStringBuffer("name", name, sizeof(name));
+
+		if (!VALIDSTRING(lastName) || strlen(lastName) < 1)
+			trap->Cvar_Set("name", "Padawan");
+		else if (Q_stricmp(name, lastName))
+			trap->Cvar_Set("name", lastName);
+	}
+
+	CG_CheckSVStringEdRef( strEd, arg );
 	trap->Print( "%s", strEd );
 
 	if ((cg_logChat.integer & JAPRO_CHATLOG_ENABLE) && (cg_logChat.integer & JAPRO_CHATLOG_PRINT))
