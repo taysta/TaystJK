@@ -670,7 +670,7 @@ void pas_adjust_enemy( gentity_t *ent )
 	trace_t	tr;
 	qboolean keep = qtrue;
 
-	if ( ent->enemy->health <= 0 )
+	if ( ent->enemy->health <= 0 || (ent->enemy->client && ent->enemy->client->ps.duelInProgress) ) //Or duel in progress
 	{
 		keep = qfalse;
 	}

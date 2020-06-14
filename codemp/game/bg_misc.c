@@ -1880,17 +1880,28 @@ qboolean BG_CanUseFPNow(int gametype, playerState_t *ps, int time, forcePowers_t
 	if (ps->duelInProgress) // consider duel types.
 		{
 			switch (dueltypes[ps->clientNum]) {
+			case 20:
+				if (ps->stats[STAT_RACEMODE])
+					break;
+				if (power != FP_SABER_OFFENSE && power != FP_SABER_DEFENSE && power != FP_LEVITATION)
+				{
+					if (!ps->saberLockFrame || power != FP_PUSH)
+					{
+						return qfalse;
+					}
+				}
+				break;
 			case 1: //force duel
 				break;
 			case 0: //normal duel
 			default:
-					if (power != FP_SABER_OFFENSE && power != FP_SABER_DEFENSE && power != FP_LEVITATION)
+				if (power != FP_SABER_OFFENSE && power != FP_SABER_DEFENSE && power != FP_LEVITATION)
+				{
+					if (!ps->saberLockFrame || power != FP_PUSH)
 					{
-						if (!ps->saberLockFrame || power != FP_PUSH)
-						{
-							return qfalse;
-						}
+						return qfalse;
 					}
+				}
 				break;
 			}
 		}
@@ -3028,7 +3039,7 @@ void BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean 
 	s->saberInFlight = ps->saberInFlight;
 	s->saberEntityNum = ps->saberEntityNum;
 	s->saberMove = ps->saberMove;
-	s->forcePowersActive = ps->fd.forcePowersActive;
+	s->forcePowersActive = ps->fd.forcePowersActive; //TODO: serverside anti absorb ESP. remove absorb from forcepowersactive here if it should not be visible to others. logic is if last absorbed something within 1 second ago?
 
 	if (ps->duelInProgress)
 		s->bolt1 = 1;
@@ -3182,7 +3193,7 @@ void BG_PlayerStateToEntityStateExtraPolate( playerState_t *ps, entityState_t *s
 	s->saberInFlight = ps->saberInFlight;
 	s->saberEntityNum = ps->saberEntityNum;
 	s->saberMove = ps->saberMove;
-	s->forcePowersActive = ps->fd.forcePowersActive;
+	s->forcePowersActive = ps->fd.forcePowersActive; //todo
 
 	if (ps->duelInProgress)
 	{

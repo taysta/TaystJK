@@ -1019,9 +1019,14 @@ void IntegerToRaceName(int style, char *styleString, size_t styleStringSize) {
 		case 9:	Q_strncpyz(styleString, "swoop", styleStringSize); break;
 		case 10: Q_strncpyz(styleString, "jetpack", styleStringSize); break;
 		case 11: Q_strncpyz(styleString, "speed", styleStringSize); break;
+#if _SPPHYSICS
 		case 12: Q_strncpyz(styleString, "sp", styleStringSize); break;
+#endif
 		case 13: Q_strncpyz(styleString, "slick", styleStringSize); break;
 		case 14: Q_strncpyz(styleString, "botcpm", styleStringSize); break;
+#if _COOP
+		case 15: Q_strncpyz(styleString, "coop", styleStringSize); break;
+#endif
 		default: Q_strncpyz(styleString, "ERROR", styleStringSize); break;
 	}
 }
@@ -1528,7 +1533,7 @@ void PrintRaceTime(char *username, char *playername, char *message, char *style,
 	else if (global_newRank > 0) {//PB
 		if (awesomenoise)
 			PlayActualGlobalSound(awesomenoise);
-		else
+		else if (awesomenoise != -1)
 			PlayActualGlobalSound(G_SoundIndex("sound/chars/rosh/misc/taunt1"));
 	}
 
@@ -1745,19 +1750,18 @@ void SV_RebuildUnlocks_f(void) {
 	CALL_SQLITE(finalize(stmt));
 
 	CALL_SQLITE(close(db));
-
 }
 
 void StripWhitespace(char *s);
 void G_AddRaceTime(char *username, char *message, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise) {//should be short.. but have to change elsewhere? is it worth it?
 	time_t	rawtime;
 	char	string[1024] = {0}, info[1024] = {0}, coursename[40], timeStr[32] = {0}, styleString[32] = {0};
-	qboolean seasonPB = qfalse, globalPB = qfalse, WR = qfalse;
+	qboolean seasonPB = qfalse, globalPB = qfalse;//, WR = qfalse;
 	sqlite3 * db;
 	char * sql;
 	sqlite3_stmt * stmt;
 	int s;
-	int season_oldBest, season_oldRank, season_newRank = -1, global_oldBest, global_oldRank, global_newRank = -1; //Changed newrank to be -1 ??
+	int season_oldBest, season_oldRank = 0, season_newRank = -1, global_oldBest, global_oldRank = 0, global_newRank = -1; //Changed newrank to be -1 ??
 	float addedScore;
 	gclient_t	*cl;
 	const int season = G_GetSeason();
@@ -1850,7 +1854,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 
 
 	if (seasonPB) {
-		int season_oldCount, season_newCount, global_oldCount, global_newCount;
+		int season_oldCount = 0, season_newCount, global_oldCount = 0, global_newCount;
 		int i = 1; //1st place is rank 1
 
 		sql = "SELECT COUNT(*) FROM LocalRun WHERE coursename = ? AND style = ? AND season = ? "
@@ -2120,7 +2124,7 @@ void Cmd_ACLogin_f( gentity_t *ent ) { //loda fixme show lastip ? or use lastip 
 		sqlite3_stmt * stmt;
 		int row = 0, s, count = 0, i;
 		gclient_t	*cl;
-		unsigned int lastip = 0, unlocks = 0, flags;
+		unsigned int lastip = 0, unlocks = 0, flags = 0;
 
 		CALL_SQLITE(open(LOCAL_DB_PATH, &db));
 
@@ -2639,7 +2643,7 @@ void Svcmd_AccountInfo_f(void)
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int row = 0, lastlogin, created, racetime;
+		int lastlogin, created, racetime;
 		unsigned int lastip;
 		int s;
 		char timeStr[64] = { 0 }, buf[MAX_STRING_CHARS - 64] = { 0 };
@@ -2658,6 +2662,9 @@ void Svcmd_AccountInfo_f(void)
 		}
 		else if (s != SQLITE_DONE) {
 			G_ErrorPrint("ERROR: SQL Select Failed (Svcmd_AccountInfo_f)", s);
+			CALL_SQLITE(finalize(stmt));
+			CALL_SQLITE(close(db));
+			return;
 		}
 
 		CALL_SQLITE(finalize(stmt));
@@ -2748,9 +2755,11 @@ void Svcmd_FlagAccount_f( void ) {
 		}
 		else if (s != SQLITE_DONE){
 			G_ErrorPrint("ERROR: SQL Select Failed (Svcmd_FlagAccount_f 1)", s);
+			CALL_SQLITE(finalize(stmt));
+			CALL_SQLITE(close(db));
+			return;
 		}
 		CALL_SQLITE (finalize(stmt));
-
 
 		if ( args == 2 ) {
 			int i = 0;
@@ -2768,7 +2777,7 @@ void Svcmd_FlagAccount_f( void ) {
 		else if (args == 3) {
 			char arg[8] = { 0 };
 			int index, i;
-			const uint32_t mask = (1 << MAX_ACCOUNT_FLAGS) - 1;
+			//const uint32_t mask = (1 << MAX_ACCOUNT_FLAGS) - 1;
 			gclient_t	*cl;
 
 			trap->Argv( 2, arg, sizeof(arg) );
@@ -2814,7 +2823,7 @@ void Svcmd_FlagAccount_f( void ) {
 		}
 		else if (args == 4) { //set
 			char arg[8] = { 0 };
-			unsigned int bitmask;
+			unsigned int bitmask = 0;
 			trap->Argv( 2, arg, sizeof(arg) );
 			int i;
 			gclient_t	*cl;
@@ -2825,7 +2834,12 @@ void Svcmd_FlagAccount_f( void ) {
 			}
 
 			trap->Argv( 3, arg, sizeof(arg) );
-			bitmask = atoi( arg );
+			if (atoi(arg))
+				bitmask = atoi(arg);
+			else if (!Q_stricmp(arg, "j") || !Q_stricmp(arg, "junior"))
+				bitmask = g_juniorAdminLevel.integer;
+			else if (!Q_stricmp(arg, "f") || !Q_stricmp(arg, "full"))
+				bitmask = g_fullAdminLevel.integer;
 
 			sql = "UPDATE LocalAccount SET flags = ? WHERE username = ?";
 			CALL_SQLITE (prepare_v2 (db, sql, strlen (sql) + 1, & stmt, NULL));
@@ -2890,7 +2904,7 @@ void Svcmd_ListAdmins_f(void)
 			}
 			else {
 				G_ErrorPrint("ERROR: SQL Select Failed (Svcmd_ListAdmins)", s);
-				return;
+				break;
 			}
 		}
 		CALL_SQLITE(finalize(stmt));
@@ -2957,7 +2971,7 @@ void Svcmd_ClanDelete_f(void) {
     sqlite3_stmt * stmt;
 	int s;
 	char teamname[16];
-	int flags = 0;
+	//int flags = 0;
 	int count = 0;
 
 	if (trap->Argc() != 2) {
@@ -3016,7 +3030,7 @@ void Svcmd_ClanCreate_f(void) {
     sqlite3_stmt * stmt;
 	int s;
 	char teamname[16];
-	int flags = 0;
+	//int flags = 0;
 	int count = 0;
 
 	if (trap->Argc() != 2) {
@@ -3075,7 +3089,7 @@ void Svcmd_ClanKick_f(void) {
     sqlite3_stmt * stmt;
 	int s;
 	char username[16], teamname[16];
-	int flags = 0;
+	//int flags = 0;
 	int count = 0;
 
 	if (trap->Argc() != 3) {
@@ -3168,7 +3182,7 @@ void Svcmd_ClanJoin_f(void) {
     sqlite3_stmt * stmt;
 	int s;
 	char username[16], teamname[16];
-	int flags = 0;
+	//int flags = 0;
 	int count = 0;
 
 	if (trap->Argc() != 3) {
@@ -3419,7 +3433,7 @@ void Cmd_JoinTeam_f( gentity_t *ent ) {
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int s, row = 0;
+		int s;//, row = 0;
 		qboolean inviteOnly = qfalse;
 		int count;
 
@@ -3548,8 +3562,7 @@ void Cmd_LeaveTeam_f( gentity_t *ent ) {
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int s, row = 0;
-		qboolean inviteOnly = qfalse;
+		int s;//, row = 0;
 		int count;
 
 		CALL_SQLITE (open (LOCAL_DB_PATH, & db));
@@ -3643,7 +3656,7 @@ void Cmd_CreateTeam_f( gentity_t *ent ) {
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int s, row = 0;
+		int s;//, row = 0;
 
 		CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
@@ -4080,8 +4093,8 @@ void Cmd_InviteTeam_f( gentity_t *ent ) {
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int s, row = 0;
-		qboolean inviteOnly = qfalse;
+		int s;//, row = 0;
+		//qboolean inviteOnly = qfalse;
 
 		CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
@@ -4948,19 +4961,19 @@ int RaceNameToInteger(char *style) {
 		return 2;
 	if (!Q_stricmp(style, "cpm") || !Q_stricmp(style, "cpma"))
 		return 3;
-	if (!Q_stricmp(style, "q3") || !Q_stricmp(style, "q3"))
+	if (!Q_stricmp(style, "q3"))
 		return 4;
 	if (!Q_stricmp(style, "pjk"))
 		return 5;
 	if (!Q_stricmp(style, "wsw") || !Q_stricmp(style, "warsow"))
 		return 6;
-	if (!Q_stricmp(style, "rjq3") || !Q_stricmp(style, "q3rj"))
+	if (!Q_stricmp(style, "rjq3"))
 		return 7;
-	if (!Q_stricmp(style, "rjcpm") || !Q_stricmp(style, "cpmrj"))
+	if (!Q_stricmp(style, "rjcpm"))
 		return 8;
 	if (!Q_stricmp(style, "swoop"))
 		return 9;
-	if (!Q_stricmp(style, "jetpack"))
+	if (!Q_stricmp(style, "jetpack") || !Q_stricmp(style, "jet") || !Q_stricmp(style, "detpack"))
 		return 10;
 	if (!Q_stricmp(style, "speed") || !Q_stricmp(style, "ctf"))
 		return 11;
@@ -4972,6 +4985,10 @@ int RaceNameToInteger(char *style) {
 		return 13;
 	if (!Q_stricmp(style, "botcpm"))
 		return 14;
+#if _COOP
+	if (!Q_stricmp(style, "coop"))
+		return 15;
+#endif
 	return -1;
 }
 

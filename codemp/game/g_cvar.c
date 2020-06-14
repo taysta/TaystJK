@@ -86,6 +86,12 @@ static void CVU_Headslide(void) {
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
 }
 
+static void CVU_PlayerCollision(void) {
+	g_fixPlayerCollision.integer ?
+		(jcinfo2.integer |= JAPRO_CINFO2_FIXPLAYERCOLLISION) : (jcinfo2.integer &= ~JAPRO_CINFO2_FIXPLAYERCOLLISION);
+	trap->Cvar_Set("jcinfo2", va("%i", jcinfo2.integer));
+}
+
 static void CVU_Unlagged(void) {
 	if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE)//if 1 or 3 or 7
 		jcinfo.integer |= JAPRO_CINFO_UNLAGGEDPROJ;

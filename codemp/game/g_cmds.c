@@ -699,8 +699,7 @@ QINLINE void DeletePlayerProjectiles(gentity_t *ent) {
 }
 
 void G_UpdatePlaytime(int null, char *username, int seconds );
-QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
-{
+void QINLINE ResetPlayerTimers(gentity_t* ent, qboolean print) {
 	qboolean wasReset = qfalse;;
 
 	if (!ent->client)
@@ -728,16 +727,16 @@ QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
 			ent->client->ps.stats[STAT_ARMOR] = 25;
 		}
 		//}
-		if (ent->client->sess.movementStyle == MV_RJQ3 || ent->client->sess.movementStyle == MV_RJCPM) { //Get rid of their rockets when they tele/noclip..? Do this for every style..
+		if (ent->client->sess.movementStyle == MV_RJQ3 || ent->client->sess.movementStyle == MV_RJCPM || ent->client->sess.movementStyle == MV_COOP_JKA) { //Get rid of their rockets when they tele/noclip..? Do this for every style..
 			DeletePlayerProjectiles(ent);
 		}
 
-/* //already done every frame ?
-#if _GRAPPLE
-		if (ent->client->sess.movementStyle == MV_SLICK && ent->client->hook)
-			Weapon_HookFree(ent->client->hook);
-#endif
-*/
+		/* //already done every frame ?
+		#if _GRAPPLE
+				if (ent->client->sess.movementStyle == MV_SLICK && ent->client->hook)
+					Weapon_HookFree(ent->client->hook);
+		#endif
+		*/
 		if (ent->client->sess.movementStyle == MV_SPEED) {
 			ent->client->ps.fd.forcePower = 50;
 		}
@@ -745,15 +744,16 @@ QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
 		if (ent->client->sess.movementStyle == MV_JETPACK) {
 			ent->client->ps.jetpackFuel = 100;
 			ent->client->ps.eFlags &= ~EF_JETPACK_ACTIVE;
+			ent->client->ps.ammo[AMMO_DETPACK] = 4;
 		}
 
 		if (ent->client->pers.userName && ent->client->pers.userName[0]) {
 			if (ent->client->sess.raceMode && !ent->client->pers.practice && ent->client->pers.stats.startTime) {
-				ent->client->pers.stats.racetime += (trap->Milliseconds() - ent->client->pers.stats.startTime)*0.001f - ent->client->afkDuration*0.001f;
+				ent->client->pers.stats.racetime += (trap->Milliseconds() - ent->client->pers.stats.startTime) * 0.001f - ent->client->afkDuration * 0.001f;
 				ent->client->afkDuration = 0;
 			}
 			if (ent->client->pers.stats.racetime > 120.0f) {
-				G_UpdatePlaytime(0, ent->client->pers.userName, (int)(ent->client->pers.stats.racetime+0.5f));
+				G_UpdatePlaytime(0, ent->client->pers.userName, (int)(ent->client->pers.stats.racetime + 0.5f));
 				ent->client->pers.stats.racetime = 0.0f;
 			}
 		}
@@ -774,8 +774,21 @@ QINLINE void ResetPlayerTimers(gentity_t *ent, qboolean print)
 
 	if (wasReset && print)
 		//trap->SendServerCommand( ent-g_entities, "print \"Timer reset!\n\""); //console spam is bad
-		trap->SendServerCommand( ent-g_entities, "cp \"Timer reset!\n\n\n\n\n\n\n\n\n\n\n\n\"");
+		trap->SendServerCommand(ent - g_entities, "cp \"Timer reset!\n\n\n\n\n\n\n\n\n\n\n\n\"");
 }
+
+/*
+void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
+{
+	ResetSpecificPlayerTimers(ent, print);
+
+	if (ent->client->ps.duelInProgress && ent->client->ps.duelIndex != ENTITYNUM_NONE) {
+		gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];
+		if (duelAgainst && duelAgainst->client)
+			ResetSpecificPlayerTimers(duelAgainst, print);
+	}
+}
+*/
 
 /*
 ==================
@@ -3171,7 +3184,7 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 				//trap->Print("Searching slot: %i (%s, %i)\n", j, voteFloodProtect[j].ip, voteFloodProtect[j].voteTimeoutUntil);
 				if (!Q_stricmp(voteFloodProtect[j].ip, ourIP)) {
 					//trap->Print("Found clients IP in array!\n");
-					const int voteTimeout = voteFloodProtect[j].failCount+1 * 1000*g_voteTimeout.integer;
+					//const int voteTimeout = voteFloodProtect[j].failCount+1 * 1000*g_voteTimeout.integer;
 
 					if (voteFloodProtect[j].voteTimeoutUntil && (voteFloodProtect[j].voteTimeoutUntil > time)) { //compare this to something other than level.time ?
 						//trap->Print("Client has just failed a vote, dont let them call this new one!\n");
@@ -3781,7 +3794,7 @@ void saberKnockDown(gentity_t *saberent, gentity_t *saberOwner, gentity_t *other
 void Cmd_ToggleSaber_f(gentity_t *ent)
 {
 //[JAPRO - Serverside - Force - Fix Saber in grip - Start]
-	if (!g_fixSaberInGrip.integer > 2 && ent->client->ps.fd.forceGripCripple)
+	if (g_fixSaberInGrip.integer < 3 && ent->client->ps.fd.forceGripCripple)
 	{ //if they are being gripped, don't let them unholster their saber
 		if (ent->client->ps.saberHolstered)
 		{
@@ -4312,7 +4325,7 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 			}
 						
 			G_SetAnim(ent, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_STAND1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
-			G_SetAnim(challenged, &ent->client->pers.cmd, BOTH_STAND1, BOTH_STAND1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
+			G_SetAnim(challenged, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_STAND1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 					
 			if ( ent->client->ps.saberHolstered < 2 )
 			{
@@ -5292,7 +5305,7 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 
 				if(targetplayer->client && targetplayer->client->pers.connected)
 				{
-					if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_FREEZE))
+					if (!G_AdminUsableOn(ent->client, targetplayer->client, JAPRO_ACCOUNTFLAG_A_FREEZE))
 						continue;
 					if (targetplayer->client->pers.amfreeze)
 					{
@@ -5640,6 +5653,8 @@ void Cmd_Showmotd_f(gentity_t *ent)
 	if (Q_stricmp(g_centerMOTD.string, "" ))
 		strcpy(ent->client->csMessage, G_NewString(va("^7%s\n", g_centerMOTD.string )));//Loda fixme, resize this so it does not allocate more than it needs (game_memory crash eventually?)
 	ent->client->csTimeLeft = g_centerMOTDTime.integer;
+	if (Q_stricmp(g_consoleMOTD.string, "" ))
+		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", g_consoleMOTD.string));
 }
 
 
@@ -5732,6 +5747,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "ysal ");
 		Q_strcat(buf, sizeof(buf), "warpList ");
 		Q_strcat(buf, sizeof(buf), "warp ");
+		Q_strcat(buf, sizeof(buf), "coop ");
 		if (g_allowRaceTele.integer) {
 			Q_strcat(buf, sizeof(buf), "amTele ");
 			Q_strcat(buf, sizeof(buf), "amTelemark ");
@@ -6064,6 +6080,128 @@ static void Cmd_Spot_f(gentity_t *ent) {
 	}
 
 }
+
+#if _COOP
+void Cmd_StopCoop_f(gentity_t* ent) { //Should this only show logged in people..?
+	//exit coop, or they can just /kill
+	//during starttimer, we need to apply the startime of the 1st cooper to the 2nd cooper that hits the trigger as well ? or base it on 2nd as well
+	//then when hitting endtimer, we don't print the timer until the 2nd cooper hits the end trigger
+
+	//no need for this, just do /move jka to exit coop
+}
+
+void Cmd_Coop_f(gentity_t* ent) { //Should this only show logged in people..?
+	//See if we are able to perform the cmd
+	//See who we are challanging / accepting
+	//See if we are challening or accepting
+	//Start the coop
+	//or do we want this to be /move coop <name>
+	int otherClientNum;
+	char input[MAX_NETNAME];
+	const int dueltype = 20;//ok - use the all gunduel one
+	//const int duelTimeout = 20000;
+	gentity_t* challenged;
+
+	if (trap->Argc() != 2) {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: coop <player name>\n\"");
+		return;
+	}
+
+	if (ent->client->ps.saberInFlight)
+		return;
+	if ((ent->health <= 0
+		|| ent->client->tempSpectate >= level.time
+		|| ent->client->sess.sessionTeam == TEAM_SPECTATOR)) {// Does this stop spectating someone and challenging them to a duel?
+		trap->SendServerCommand(ent - g_entities, va("print \"%s\n\"", G_GetStringEdString("MP_SVGAME", "MUSTBEALIVE")));
+		return;
+	}
+	if (ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN)
+		return;
+	if (ent->client->ps.powerups[PW_NEUTRALFLAG])
+		return;
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be in racemode to use this command!\n\"");
+		return;
+	}
+	if (ent->client->ps.duelInProgress) //already cooping
+		return;
+	if (ent->client->sess.movementStyle == MV_SWOOP)
+		return;
+#if _GRAPPLE
+	if (ent->client && ent->client->hook)
+		Weapon_HookFree(ent->client->hook);
+#endif
+
+	trap->Argv(1, input, sizeof(input));
+	otherClientNum = JP_ClientNumberFromString(ent, input);
+
+	if (otherClientNum == -1 || otherClientNum == -2) {//No clients or multiple clients are a match
+		return;
+	}
+	challenged = &g_entities[otherClientNum];
+	if (!challenged || !challenged->client || ent == challenged)
+		return;
+	if (challenged->client->sess.movementStyle == MV_SWOOP)
+		return;
+	/*
+	if (challenged->client->ps.duelIndex == ent->s.number && (challenged->client->ps.duelTime + 20000) >= level.time &&
+		(
+			((dueltypes[challenged->client->ps.clientNum] == dueltype) && (dueltype == 0 || dueltype == 1))
+			||
+			(dueltypes[challenged->client->ps.clientNum] != 0 && (dueltypes[challenged->client->ps.clientNum] != 1) && dueltype > 1)
+			))
+	{
+	*/
+
+	if (challenged->client->ps.duelIndex == ent->s.number /*&& (challenged->client->ps.duelTime + duelTimeout) >= level.time*/) {//We are accepting the duel - make this timeout TODO
+		int i;
+		trap->SendServerCommand(ent - g_entities, va("print \"$s^7 has accepted your co-op request\n\"", challenged->client->pers.netname));
+		trap->SendServerCommand(challenged - g_entities, va("print \"You accepted a co-op request with %s\n\"", ent->client->pers.netname));
+
+		ent->client->ps.duelInProgress = qtrue;
+		challenged->client->ps.duelInProgress = qtrue;
+
+		ent->client->ps.duelInProgress = qtrue;
+		challenged->client->ps.duelInProgress = qtrue;
+		ent->client->sess.movementStyle = MV_COOP_JKA;
+		challenged->client->sess.movementStyle = MV_COOP_JKA;
+		if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag)
+			ResetPlayerTimers(ent, qtrue);
+		if (challenged->client->pers.stats.startTime || challenged->client->pers.stats.startTimeFlag)
+			ResetPlayerTimers(challenged, qtrue);
+
+		//if (dueltype == 0 || dueltype == 1)
+			//dueltypes[ent->client->ps.clientNum] = dueltype;//y isnt this syncing the weapons they use? gun duels
+		//else {
+		dueltypes[ent->client->ps.clientNum] = dueltypes[challenged->client->ps.clientNum];//dueltype;//k this is y
+		//}
+
+		ent->client->ps.duelTime = 0;//level.time + duelTimeout; //loda fixme - this should be lower so they can re-coop? or just keep it same as duel timeout..
+		challenged->client->ps.duelTime = 0;//level.time + duelTimeout; //loda fixme
+
+		G_AddEvent(ent, EV_PRIVATE_DUEL, dueltypes[ent->client->ps.clientNum]);
+		G_AddEvent(challenged, EV_PRIVATE_DUEL, dueltypes[challenged->client->ps.clientNum]);
+
+		for (i = AMMO_BLASTER; i < AMMO_MAX; i++) {
+			ent->client->ps.ammo[i] = 999;
+			challenged->client->ps.ammo[i] = 999;
+		}
+
+		
+	}
+	else { //Print the message asking them to accept
+		trap->SendServerCommand(ent - g_entities, va("print \"You asked %s to co-op\n\"", challenged->client->pers.netname));
+		trap->SendServerCommand(challenged - g_entities, va("print \"%s has asked you to co-op\n\"", ent->client->pers.netname));
+	}
+
+	//challenged->client->ps.fd.privateDuelTime = 0; //reset the timer in case this player just got out of a duel. He should still be able to accept the challenge.
+	ent->client->ps.duelIndex = challenged->s.number;
+	if (!ent->client->ps.duelInProgress)
+		dueltypes[ent->client->ps.clientNum] = dueltype; //Coop
+
+	
+}
+#endif
 
 
 //[JAPRO - Serverside - All - Clanwhois Function - Start]
@@ -6509,17 +6647,18 @@ static void SpawnRaceSwoop(gentity_t *ent)
 	}
 }
 
+void RemoveLaserTraps(gentity_t* ent);
 int RaceNameToInteger(char *style);
 static void Cmd_MovementStyle_f(gentity_t *ent)
 {
 	char mStyle[32];
-	int style;
+	int newStyle;
 
 	if (!ent->client)
 		return;
 
 	if (trap->Argc() != 2) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, or botcpm>.\n\"" );
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, or coop>.\n\"" );
 		return;
 	}
 
@@ -6556,45 +6695,64 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 
 	trap->Argv(1, mStyle, sizeof(mStyle));
 
-	style = RaceNameToInteger(mStyle);
+	newStyle = RaceNameToInteger(mStyle);
+	//Just return if newstyle = old style?
 
-	if (style >= 0) {
+	if (newStyle >= 0) {
 		if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag) {
-			if (style == MV_WSW)
+			if (newStyle == MV_WSW)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +button13 for dash.\n\"");
-			else if (style == MV_JETPACK)
+			else if (newStyle == MV_JETPACK)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +button12 for grapple, double jump for jetpack.\n\"");
-			else if (style == MV_SWOOP)
+			else if (newStyle == MV_SWOOP)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +attack for gravboost, +altattack for speedboost.\n\"");
-			else if (style == MV_BOTCPM)
+			else if (newStyle == MV_BOTCPM)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +button14 for strafebot.\n\"");
 			else
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset.\n\"");
 			ResetPlayerTimers(ent, qtrue);
 		}
 		else {
-			if (ent->client->sess.movementStyle == MV_RJQ3 || ent->client->sess.movementStyle == MV_RJCPM) { //Get rid of their rockets when they tele/noclip..?
+			if (ent->client->sess.movementStyle == MV_RJQ3 || ent->client->sess.movementStyle == MV_RJCPM || ent->client->sess.movementStyle == MV_COOP_JKA) { //Get rid of their rockets when they tele/noclip..?
 				DeletePlayerProjectiles(ent);
 			}
-			if (style == MV_WSW)
+			if (newStyle == MV_WSW)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button13 for dash.\n\"");
-			else if (style == MV_JETPACK)
+			else if (newStyle == MV_JETPACK)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button12 for grapple, double jump for jetpack.\n\"");
-			else if (style == MV_SWOOP)
+			else if (newStyle == MV_SWOOP)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +attack for gravboost, +altattack for speedboost.\n\"");
-			else if (style == MV_BOTCPM)
+			else if (newStyle == MV_BOTCPM)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button14 for strafebot.\n\"");
 			else 
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated.\n\"");
 		}
 
-		ent->client->sess.movementStyle = style;
+		if (ent->client->sess.movementStyle == MV_COOP_JKA) { //clear the duel
+			if (ent->client->ps.duelIndex != ENTITYNUM_NONE) {
+				gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];
+				if (duelAgainst && duelAgainst->client) {
+					if (duelAgainst->client->sess.raceMode) {
+						duelAgainst->client->ps.duelInProgress = qfalse; //how to stop this from hitting clientnum 0 if they are an actual dueler?
+						duelAgainst->client->ps.duelIndex = ENTITYNUM_NONE; // ??
+					}
+				}
+				ent->client->ps.duelInProgress = qfalse;
+				ent->client->ps.duelIndex = ENTITYNUM_NONE; // ??
+			}
+			//RemoveDetpacks(ent);
+			RemoveLaserTraps(ent); //stakes
+
+		}
+		else if (ent->client->sess.movementStyle == MV_JETPACK) {
+			RemoveDetpacks(ent);
+		}
+
+		ent->client->sess.movementStyle = newStyle;
 		AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
 
 		if (ent->client->ourSwoopNum) {
-
 			gentity_t *ourSwoop = &g_entities[ent->client->ourSwoopNum];
-
 			/*
 			if (ent->client->ps.m_iVehicleNum) { //If we are in a vehicle, properly eject from it?
 				if (ourSwoop && ourSwoop->m_pVehicle && ourSwoop->client && ourSwoop->s.NPC_class == CLASS_VEHICLE && ourSwoop->m_pVehicle->m_pVehicleInfo) {//if ourVeh is a vehicle then perform appropriate checks
@@ -6607,29 +6765,36 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 			ent->client->ourSwoopNum = 0;
 		}
 
-		ent->client->ps.ammo[AMMO_POWERCELL] = 0;
-		ent->client->ps.ammo[AMMO_ROCKETS] = 0;
-		ent->client->ps.weapon = WP_MELEE; //dont really understand this
-
-		if (style == MV_SWOOP) {
+		if (newStyle == MV_SWOOP) {
 			SpawnRaceSwoop(ent);
 		}
+		else if (newStyle == MV_SPEED) {
+			ent->client->ps.fd.forcePower = 50;
+		}
+		else if (newStyle == MV_COOP_JKA) {
+			int i;
+			for (i = AMMO_BLASTER; i < AMMO_MAX; i++)
+				ent->client->ps.ammo[i] = 999;
+		}
 
-		if (style == MV_JETPACK) {
+		if (newStyle == MV_JETPACK) {
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_JETPACK);
+			ent->client->ps.ammo[AMMO_DETPACK] = 4;
 		}
 		else {
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_JETPACK); 
 		}
-
-		if (style == MV_SPEED) {
-			ent->client->ps.fd.forcePower = 50;
+		if (newStyle != MV_COOP_JKA) {
+			ent->client->ps.ammo[AMMO_POWERCELL] = 0;
+			ent->client->ps.ammo[AMMO_ROCKETS] = 0;
 		}
+		ent->client->ps.weapon = WP_MELEE; //dont really understand this
 	}
 	else
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, or botcpm>.\n\"" );
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, or coop>.\n\"" );
 }
 
+void IntegerToRaceName(int style, char* styleString, size_t styleStringSize);
 static void Cmd_JumpChange_f(gentity_t *ent) 
 {
 	char jLevel[32];
@@ -6650,6 +6815,14 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 
 	if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE || VectorLength(ent->client->ps.velocity)) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be standing still to use this command!\n\"");
+		return;
+	}
+
+	if (ent->client->sess.movementStyle == MV_COOP_JKA || ent->client->sess.movementStyle == MV_Q3 || ent->client->sess.movementStyle == MV_CPM || ent->client->sess.movementStyle == MV_JETPACK || 
+		ent->client->sess.movementStyle == MV_WSW || ent->client->sess.movementStyle == MV_BOTCPM || ent->client->sess.movementStyle == MV_SLICK) {
+		char styleString[16];
+		IntegerToRaceName(ent->client->sess.movementStyle, styleString, sizeof(styleString));
+		trap->SendServerCommand(ent - g_entities, va("print \"This command is not allowed with your movement style (%s)!\n\"", styleString));
 		return;
 	}
 
@@ -6772,7 +6945,7 @@ static void Cmd_Ysal_f(gentity_t *ent)
 		ent->client->ps.powerups[PW_YSALAMIRI] = 0;
 	}
 	else {
-		ent->client->ps.powerups[PW_YSALAMIRI] = level.time + 9999999;
+		ent->client->ps.powerups[PW_YSALAMIRI] = 2147483648;
 	}
 }
 
@@ -6952,12 +7125,9 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
 
-void Cmd_RaceTele_f(gentity_t *ent)
+void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 {
-	if (trap->Argc() > 2 && trap->Argc() != 4) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /amTele to teleport to your telemark or /amTele <client> or /amtele <X Y Z>\n\"" );
-	}		
-	if (trap->Argc() == 1) {//Amtele to telemark
+	if (useForce || trap->Argc() == 1) {//Amtele to telemark
 		if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0) {
 			vec3_t	angles = {0, 0, 0};
 			angles[YAW] = ent->client->pers.telemarkAngle;
@@ -6966,8 +7136,12 @@ void Cmd_RaceTele_f(gentity_t *ent)
 		}
 		else
 			trap->SendServerCommand( ent-g_entities, "print \"No telemark set!\n\"" );
+		return;
 	}
-
+	if (trap->Argc() > 2 && trap->Argc() != 4) {
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /amTele to teleport to your telemark or /amTele <client> or /amtele <X Y Z>\n\"" );
+		return;
+	}
 	if (trap->Argc() == 2)//Amtele to player
 	{ 
 		char client[MAX_NETNAME];
@@ -6990,6 +7164,7 @@ void Cmd_RaceTele_f(gentity_t *ent)
 		origin[2] = g_entities[clientid].client->ps.origin[2] + 96;
 
 		AmTeleportPlayer( ent, origin, angles, qtrue, qtrue, qfalse );
+		return;
 	}
 
 	if (trap->Argc() == 4)
@@ -7006,6 +7181,7 @@ void Cmd_RaceTele_f(gentity_t *ent)
 		origin[2] = atoi(z);
 			
 		AmTeleportPlayer( ent, origin, angles, qtrue, qtrue, qfalse );
+		return;
 	}
 }
 
@@ -7264,7 +7440,7 @@ void Cmd_Amtele_f(gentity_t *ent)
 
 	}
 	else if (allowed) { //Cheat or racemode
-		Cmd_RaceTele_f(ent);
+		Cmd_RaceTele_f(ent, qfalse);
 		return;
 	}
 }
@@ -7336,6 +7512,9 @@ void Cmd_Race_f(gentity_t *ent)
 	else {
 		ent->client->sess.raceMode = qtrue;
 		trap->SendServerCommand(ent-g_entities, "print \"^5Race mode toggled on.\n\"");
+		//Delete all their projectiles / saved stuff
+		RemoveLaserTraps(ent);
+		RemoveDetpacks(ent);
 	}
 
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
@@ -8312,6 +8491,10 @@ command_t commands[] = {
 	{ "clanpass",			Cmd_Clanpass_f,				CMD_NOINTERMISSION },
 	{ "clansay",			Cmd_Clansay_f,				0 },
 	{ "clanwhois",			Cmd_Clanwhois_f,			0 },
+
+#if _COOP
+	{ "coop",				Cmd_Coop_f,					CMD_NOINTERMISSION },
+#endif
 
 	{ "debugBMove_Back",	Cmd_BotMoveBack_f,			CMD_CHEAT|CMD_ALIVE },
 	{ "debugBMove_Forward",	Cmd_BotMoveForward_f,		CMD_CHEAT|CMD_ALIVE },

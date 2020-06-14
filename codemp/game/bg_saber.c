@@ -1596,11 +1596,6 @@ qboolean PM_CanBackstab(void)
 		}
 	}
 #else
-	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_EASIERBACKSLASH))
-	{
-		return qtrue;
-	}
-
 	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_EASYBACKSLASH))
 	{
 		int i;

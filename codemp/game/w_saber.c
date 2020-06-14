@@ -9492,6 +9492,7 @@ void WP_SaberBlock( gentity_t *playerent, vec3_t hitloc, qboolean missileBlock )
 	}
 }
 
+/*
 static int G_SaberLevelForStance( int stance ) {
 	switch ( stance ) {
 	case SS_FAST:
@@ -9509,6 +9510,7 @@ static int G_SaberLevelForStance( int stance ) {
 	}
 	return 0;
 }
+*/
 
 static int G_SaberPierceLevelForStance( int stance ) {
 	switch ( stance ) {

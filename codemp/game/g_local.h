@@ -219,12 +219,13 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define JAPRO_CINFO_ROLLCANCEL		(1<<27)	//option for only bhop mode
 #define JAPRO_CINFO_NOREDCHAIN		(1<<28)	//option for only bhop mode
 #define JAPRO_CINFO_PROJSNIPER		(1<<29)	//option for only bhop mode
-#define	JAPRO_CINFO_JAPLUSGRAPPLE	(1<<30)
+#define	JAPRO_CINFO_JAPLUSGRAPPLE	(1<<30) //Oh f only 30 cuz its signed?
 
 //jcinfo2 stuff
 #define JAPRO_CINFO2_RACEMODE		(1<<0)
 #define JAPRO_CINFO2_REGISTRATION	(1<<1)
 #define JAPRO_CINFO2_SABERSWITCH	(1<<2)
+#define	JAPRO_CINFO2_FIXPLAYERCOLLISION	(1<<3)
 
 //JAPRO - Serverside - Tweak Weapons bitvalues
 #define WT_DEMP2_RANDOM			(1<<0)
@@ -316,7 +317,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define ST_JK2LUNGE				(1<<12)
 #define ST_REDDFAFIX			(1<<13)
 #define ST_REDDFANOFORCE		(1<<14)
-#define ST_EASIERBACKSLASH		(1<<15)
+#define ST_EASIERBACKSLASH		(1<<15) //no prediction yet
 #define ST_SABERGUN				(1<<16)
 #define ST_FASTCYCLE			(1<<17)
 
@@ -834,6 +835,7 @@ typedef struct {//JAPRO - Serverside - Stats
 	int	displacementFlagSamples;
 
 	int	startTime;//For timers that are not flags
+	//int	coopFinished;//For coop tracking ugh
 	int	startLevelTime;//For timers that are not flags
 	float displacement;
 	int	displacementSamples;
@@ -1263,6 +1265,7 @@ struct gclient_s {
 	//int			lastStartTime; //for autodemo floodprotect
 	int			lastInStartTrigger;
 	int			kothDebounce;
+	int	        gravityGunTime;
 	//int			numStakes;
 
 #if _GRAPPLE
@@ -1327,6 +1330,7 @@ typedef enum
 } alertEventType_e;
 
 #define _SPPHYSICS 1
+#define _COOP 1
 typedef enum //movementstyle enum
 {
 	MV_SIEGE,
@@ -1346,6 +1350,9 @@ typedef enum //movementstyle enum
 #endif
 	MV_SLICK,
 	MV_BOTCPM,
+#if _COOP
+	MV_COOP_JKA,
+#endif
 	MV_NUMSTYLES
 } movementStyle_e;
 

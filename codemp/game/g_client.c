@@ -1973,9 +1973,11 @@ void SetupGameGhoul2Model(gentity_t *ent, char *modelname, char *skinName)
 }
 
 //JAPRO - Serverside - Same player names fix - Start
+/*
 static QINLINE qboolean IsColorCode(const char *s) {
 	return (qboolean) (*s == '^' && '0' <= *(s+1) && *(s+1) <= '9');
 }
+*/
 
 /*
 static void StripColors(const char *s, char *out) {

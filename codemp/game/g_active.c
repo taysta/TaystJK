@@ -3429,6 +3429,7 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 	return qtrue;
 }
 
+void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce);
 void ClientThink_real( gentity_t *ent ) {
 	gclient_t	*client;
 	pmove_t		pmove;
@@ -3839,9 +3840,16 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 		else if (movementStyle == MV_JETPACK) {
 			ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_MELEE) + (1 << WP_SABER) + (1 << WP_DET_PACK);
-			ent->client->ps.ammo[AMMO_DETPACK] = 1;
+			if (!ent->client->pers.stats.startTime)
+				ent->client->ps.ammo[AMMO_DETPACK] = 4; //Dont drop their ammo before the course starts? qol
 			if (ent->health > 0)
 				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 100;
+		}
+		else if (movementStyle == MV_COOP_JKA) {
+			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
+			ent->client->ps.stats[STAT_WEAPONS] = (1 << 16) - 1 - (1 << WP_DET_PACK) - (1 << WP_TRIP_MINE); //all weapons? w/o tripmine detpack.
+			if (ent->health > 0)
+				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 2000;
 		}
 		else {
 			client->ps.ammo[AMMO_POWERCELL] = 300;
@@ -4289,79 +4297,84 @@ void ClientThink_real( gentity_t *ent ) {
 				else
 				{
 					client->ps.gravity = g_gravity.value;
-					if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE])
-						client->ps.gravity = 750; //Match 125fps gravity here since we are using decimal precision for Zvel now
+					if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE]) {
+						if (client->gravityGunTime > level.time && client->sess.movementStyle == MV_COOP_JKA) {//grav gun
+							client->ps.gravity = 200;
+						}
+						else client->ps.gravity = 750; //Match 125fps gravity here since we are using decimal precision for Zvel now
+					}
 				}
 			}
 		}
 	}
 
-	if (ent->client->ps.duelInProgress)
+	if (ent->client->ps.duelInProgress) //_coop uses duelinprogress but we dont want it to do any of this stuff
 	{
 		gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
 
 		//Keep the time updated, so once this duel ends this player can't engage in a duel for another
 		//10 seconds. This will give other people a chance to engage in duels in case this player wants
 		//to engage again right after he's done fighting and someone else is waiting.
-		ent->client->ps.fd.privateDuelTime = level.time + 10000;   //oh?
+		if (!ent->client->sess.raceMode) {
+			ent->client->ps.fd.privateDuelTime = level.time + 10000;   //oh?
 
-		if (ent->client->ps.duelTime < level.time)
-		{
-			//Bring out the sabers
-			if (ent->client->ps.weapon == WP_SABER
-				&& ent->client->ps.saberHolstered
-				&& ent->client->ps.duelTime )
+			if (ent->client->ps.duelTime < level.time)
 			{
-				ent->client->ps.saberHolstered = 0;
-
-				if (ent->client->saber[0].soundOn)
+				//Bring out the sabers
+				if (ent->client->ps.weapon == WP_SABER
+					&& ent->client->ps.saberHolstered
+					&& ent->client->ps.duelTime)
 				{
-					G_Sound(ent, CHAN_AUTO, ent->client->saber[0].soundOn);
+					ent->client->ps.saberHolstered = 0;
+
+					if (ent->client->saber[0].soundOn)
+					{
+						G_Sound(ent, CHAN_AUTO, ent->client->saber[0].soundOn);
+					}
+					if (ent->client->saber[1].soundOn)
+					{
+						G_Sound(ent, CHAN_AUTO, ent->client->saber[1].soundOn);
+					}
+
+					//G_AddEvent(ent, EV_PRIVATE_DUEL, 2); //what the fuck why 2?
+
+					ent->client->ps.duelTime = 0;
 				}
-				if (ent->client->saber[1].soundOn)
+
+				if (duelAgainst
+					&& duelAgainst->client
+					&& duelAgainst->inuse
+					&& duelAgainst->client->ps.weapon == WP_SABER
+					&& duelAgainst->client->ps.saberHolstered
+					&& duelAgainst->client->ps.duelTime)
 				{
-					G_Sound(ent, CHAN_AUTO, ent->client->saber[1].soundOn);
+					duelAgainst->client->ps.saberHolstered = 0;
+
+					if (duelAgainst->client->saber[0].soundOn)
+					{
+						G_Sound(duelAgainst, CHAN_AUTO, duelAgainst->client->saber[0].soundOn);
+					}
+					if (duelAgainst->client->saber[1].soundOn)
+					{
+						G_Sound(duelAgainst, CHAN_AUTO, duelAgainst->client->saber[1].soundOn);
+					}
+
+					//G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 2); //what?
+
+					duelAgainst->client->ps.duelTime = 0;
 				}
-
-				//G_AddEvent(ent, EV_PRIVATE_DUEL, 2); //what the fuck why 2?
-
-				ent->client->ps.duelTime = 0;
 			}
-
-			if (duelAgainst
-				&& duelAgainst->client
-				&& duelAgainst->inuse
-				&& duelAgainst->client->ps.weapon == WP_SABER
-				&& duelAgainst->client->ps.saberHolstered
-				&& duelAgainst->client->ps.duelTime)
+			else //loda fixme, how to predict this
 			{
-				duelAgainst->client->ps.saberHolstered = 0;
-
-				if (duelAgainst->client->saber[0].soundOn)
-				{
-					G_Sound(duelAgainst, CHAN_AUTO, duelAgainst->client->saber[0].soundOn);
-				}
-				if (duelAgainst->client->saber[1].soundOn)
-				{
-					G_Sound(duelAgainst, CHAN_AUTO, duelAgainst->client->saber[1].soundOn);
-				}
-
-				//G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 2); //what?
-
-				duelAgainst->client->ps.duelTime = 0;
+				client->ps.speed = 0;
+				client->ps.basespeed = 0;
+				ucmd->forwardmove = 0;
+				ucmd->rightmove = 0;
+				ucmd->upmove = 0;
 			}
 		}
-		else //loda fixme, how to predict this
-		{
-			client->ps.speed = 0;
-			client->ps.basespeed = 0;
-			ucmd->forwardmove = 0;
-			ucmd->rightmove = 0;
-			ucmd->upmove = 0;
-		}
 
-		if (!duelAgainst || !duelAgainst->client || !duelAgainst->inuse ||
-			duelAgainst->client->ps.duelIndex != ent->s.number)
+		if (!duelAgainst || !duelAgainst->client || !duelAgainst->inuse || duelAgainst->client->ps.duelIndex != ent->s.number)
 		{
 			ent->client->ps.duelInProgress = qfalse;
 			G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
@@ -4380,69 +4393,71 @@ void ClientThink_real( gentity_t *ent ) {
 			*/
 //[JAPRO - Serverside - Duel - Improve/fix duel end print - Start]
 			//Show ranked, elo change? kms
-			if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
-			{
-				if (dueltypes[ent->client->ps.clientNum] == 0) {//Saber
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i^7) (Saber)\n\"", 
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]));
-				}
-				else if (dueltypes[ent->client->ps.clientNum] == 1) {//Force
-					int percent = 0;
-					if (ent->client->pers.stats.duelDamageGiven + duelAgainst->client->pers.stats.duelDamageGiven)
-						percent = (100 * ent->client->pers.stats.duelDamageGiven) / (ent->client->pers.stats.duelDamageGiven + duelAgainst->client->pers.stats.duelDamageGiven);
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i/^4%i^7/^3%i^7/^6%i^7) (Force)\n\"", 
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.fd.forcePower, percent, ent->client->pers.stats.lowestHP));
-				}
-				else {
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i^7) (Gun)\n\"", 
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]));			
-					if (dueltypes[ent->client->ps.clientNum] > 2) {
-						int weapon = dueltypes[ent->client->ps.clientNum] - 2;
-						if (weapon == LAST_USEABLE_WEAPON + 2) { //All weapons
-							GiveClientWeapons(ent->client);
-							GiveClientWeapons(duelAgainst->client);
+			if (!ent->client->sess.raceMode) {
+				if (ent->health > 0 && ent->client->ps.stats[STAT_HEALTH] > 0)
+				{
+					if (dueltypes[ent->client->ps.clientNum] == 0) {//Saber
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i^7) (Saber)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]));
+					}
+					else if (dueltypes[ent->client->ps.clientNum] == 1) {//Force
+						int percent = 0;
+						if (ent->client->pers.stats.duelDamageGiven + duelAgainst->client->pers.stats.duelDamageGiven)
+							percent = (100 * ent->client->pers.stats.duelDamageGiven) / (ent->client->pers.stats.duelDamageGiven + duelAgainst->client->pers.stats.duelDamageGiven);
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i/^4%i^7/^3%i^7/^6%i^7) (Force)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR], ent->client->ps.fd.forcePower, percent, ent->client->pers.stats.lowestHP));
+					}
+					else {
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^1%i^7/^2%i^7) (Gun)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELWINNER"), duelAgainst->client->pers.netname, ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]));
+						if (dueltypes[ent->client->ps.clientNum] > 2) {
+							int weapon = dueltypes[ent->client->ps.clientNum] - 2;
+							if (weapon == LAST_USEABLE_WEAPON + 2) { //All weapons
+								GiveClientWeapons(ent->client);
+								GiveClientWeapons(duelAgainst->client);
+							}
+							else if (weapon >= WP_BLASTER && weapon <= WP_BRYAR_OLD) { //loda fixme..
+								if (weapon == WP_ROCKET_LAUNCHER)
+									ent->client->ps.ammo[weaponData[weapon].ammoIndex] = 3;
+								else
+									ent->client->ps.ammo[weaponData[weapon].ammoIndex] = (int)(ammoData[weaponData[weapon].ammoIndex].max * 0.5); //gun duel ammo.. fix this
+							}
 						}
-						else if (weapon >= WP_BLASTER && weapon <= WP_BRYAR_OLD) { //loda fixme..
-							if (weapon == WP_ROCKET_LAUNCHER)
-								ent->client->ps.ammo[weaponData[weapon].ammoIndex] = 3;
-							else
-								ent->client->ps.ammo[weaponData[weapon].ammoIndex] = (int)(ammoData[weaponData[weapon].ammoIndex].max * 0.5); //gun duel ammo.. fix this
-						}
-					}			
+					}
+					if (ent->client->pers.lastUserName && ent->client->pers.lastUserName[0] && duelAgainst->client->pers.lastUserName && duelAgainst->client->pers.lastUserName[0]) {//loda
+						if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
+							G_AddDuel(ent->client->pers.lastUserName, duelAgainst->client->pers.lastUserName, ent->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]);
+					}
+					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+					ent->client->ps.stats[STAT_ARMOR] = 25;//JAPRO
+					if (g_spawnInvulnerability.integer) {
+						ent->client->ps.eFlags |= EF_INVULNERABLE;
+						ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
+					}
+					G_LogPrintf("Duel end: %s^7 defeated %s^7 in type %i\n", ent->client->pers.netname, duelAgainst->client->pers.netname, dueltypes[ent->client->ps.clientNum]);
 				}
-				if (ent->client->pers.lastUserName && ent->client->pers.lastUserName[0] && duelAgainst->client->pers.lastUserName && duelAgainst->client->pers.lastUserName[0]) {//loda
-					if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
-						G_AddDuel(ent->client->pers.lastUserName, duelAgainst->client->pers.lastUserName, ent->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]);
+				else
+				{ //it was a draw, because we both managed to die in the same frame
+					if (dueltypes[ent->client->ps.clientNum] == 0) {//Saber
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Saber)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname));
+					}
+					else if (dueltypes[ent->client->ps.clientNum] == 1) {//Force
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^4%i^7/^5%i^7/^3%i^7) (Force)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname, ent->client->ps.fd.forcePower, ent->client->pers.stats.duelDamageGiven, duelAgainst->client->pers.stats.duelDamageGiven));
+					}
+					else {
+						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Gun)\n\"",
+							ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname));
+					}
+					G_LogPrintf("Duel end: %s^7 tied %s^7 in type %i\n", ent->client->pers.netname, duelAgainst->client->pers.netname, dueltypes[ent->client->ps.clientNum]);
 				}
-				ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
-				ent->client->ps.stats[STAT_ARMOR] = 25;//JAPRO
-				if (g_spawnInvulnerability.integer) {
-					ent->client->ps.eFlags |= EF_INVULNERABLE;
-					ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
-				}
-				G_LogPrintf("Duel end: %s^7 defeated %s^7 in type %i\n", ent->client->pers.netname,  duelAgainst->client->pers.netname, dueltypes[ent->client->ps.clientNum]);
+				ent->client->pers.stats.duelDamageGiven = 0;
+				duelAgainst->client->pers.stats.duelDamageGiven = 0;
 			}
-			else
-			{ //it was a draw, because we both managed to die in the same frame
-				if (dueltypes[ent->client->ps.clientNum] == 0) {//Saber
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Saber)\n\"", 
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname));
-				}
-				else if (dueltypes[ent->client->ps.clientNum] == 1) {//Force
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (^4%i^7/^5%i^7/^3%i^7) (Force)\n\"", 
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname, ent->client->ps.fd.forcePower, ent->client->pers.stats.duelDamageGiven, duelAgainst->client->pers.stats.duelDamageGiven));
-				}
-				else {
-					trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Gun)\n\"",
-						ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELTIE"), duelAgainst->client->pers.netname));
-				}
-				G_LogPrintf("Duel end: %s^7 tied %s^7 in type %i\n", ent->client->pers.netname,  duelAgainst->client->pers.netname, dueltypes[ent->client->ps.clientNum]);
-			}
-			ent->client->pers.stats.duelDamageGiven = 0;
-			duelAgainst->client->pers.stats.duelDamageGiven = 0;
 //[JAPRO - Serverside - Duel - Improve/fix duel end print - End]
 		}
-		else
+		else if (!ent->client->sess.raceMode && g_duelDistanceLimit.integer)
 		{
 			vec3_t vSub;
 			float subLen = 0;
@@ -4450,10 +4465,10 @@ void ClientThink_real( gentity_t *ent ) {
 			VectorSubtract(ent->client->ps.origin, duelAgainst->client->ps.origin, vSub);
 			subLen = VectorLength(vSub);
 
-			if (subLen >= 1024 && g_duelDistanceLimit.integer)//[JAPRO - Serverside - Duel - Remove duel distance limit]
+			if (subLen >= 1024)//[JAPRO - Serverside - Duel - Remove duel distance limit]
 			{
-				ent->client->ps.duelInProgress = 0;
-				duelAgainst->client->ps.duelInProgress = 0;
+				ent->client->ps.duelInProgress = qfalse;
+				duelAgainst->client->ps.duelInProgress = qfalse;
 
 				G_AddEvent(ent, EV_PRIVATE_DUEL, 0);
 				G_AddEvent(duelAgainst, EV_PRIVATE_DUEL, 0);
@@ -5135,17 +5150,25 @@ void ClientThink_real( gentity_t *ent ) {
 			Cmd_ToggleSaber_f(ent);
 			break;
 		case GENCMD_ENGAGE_DUEL:
-			if (ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] > level.time - 100)
+			if (ent->client->sess.raceMode) {
+				if (ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] > level.time - 250)
+					break;
+				ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] = level.time;
+				Cmd_RaceTele_f(ent, qtrue);
+			}
+			else {
+				if (ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] > level.time - 100)
+					break;
+				ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] = level.time;
+				if ( level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL )
+				{//already in a duel, made it a taunt command
+				}
+				else
+				{
+					Cmd_EngageDuel_f(ent, 0);
+				}
 				break;
-			ent->client->genCmdDebounce[GENCMD_DELAY_DUEL] = level.time;
-			if ( level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL )
-			{//already in a duel, made it a taunt command
 			}
-			else
-			{
-				Cmd_EngageDuel_f(ent, 0);
-			}
-			break;
 		case GENCMD_FORCE_HEAL:
 			if (ent->client->genCmdDebounce[GENCMD_DELAY_HEAL] > level.time - 300)
 				break;

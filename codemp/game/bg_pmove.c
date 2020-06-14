@@ -1956,11 +1956,14 @@ qboolean PM_AdjustAngleForWallJump( playerState_t *ps, usercmd_t *ucmd, qboolean
 		}
 		else if ( doMove
 			&& (ps->pm_flags&PMF_STUCK_TO_WALL))
-		{//jump off
+		{//jump off - loda - MV_JETPACK spiderman
 			//push off of it!
 			ps->pm_flags &= ~PMF_STUCK_TO_WALL;
 			ps->velocity[0] = ps->velocity[1] = 0;
-			VectorScale( checkDir, -JUMP_OFF_WALL_SPEED, ps->velocity );
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK)
+				VectorScale(checkDir, -JUMP_OFF_WALL_SPEED*2.5f, ps->velocity);
+			else
+				VectorScale( checkDir, -JUMP_OFF_WALL_SPEED, ps->velocity );
 			ps->velocity[2] = BG_ForceWallJumpStrength();
 			ps->pm_flags |= PMF_JUMP_HELD;//PMF_JUMPING|PMF_JUMP_HELD;
 			//G_SoundOnEnt( ent, CHAN_BODY, "sound/weapons/force/jump.wav" );
@@ -4202,7 +4205,6 @@ static void PM_GrappleMoveTarzan( void ) {
 	pml.groundPlane = qfalse;
 
 	PM_GetGrappleAnim();
-	
 }
 #endif
 
@@ -8685,7 +8687,7 @@ if (pm->ps->duelInProgress)
 		PM_StartTorsoAnim( BOTH_GUNSIT1 );
 	}
 
-	if (pm->ps->isJediMaster || pm->ps->duelInProgress || pm->ps->trueJedi)
+	if (pm->ps->isJediMaster || (pm->ps->duelInProgress && !pm->ps->stats[STAT_RACEMODE]) || pm->ps->trueJedi) //_coop uses duelinprogress for semi isolation but we dont want it to actually do any of this stuff
 	{
 #ifdef _CGAME
 		if (cg_dueltypes[pm->ps->clientNum] > 2) {
@@ -9163,27 +9165,43 @@ if (pm->ps->duelInProgress)
 
 	if (pm->cmd.buttons & BUTTON_ALT_ATTACK)
 	{
-#ifdef _GAME
-		if (g_tweakWeapons.integer & WT_INFINITE_AMMO)
-			amount = 0;
-		else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && !pm->ps->stats[STAT_RACEMODE])
-			amount = 1;//JAPRO mortar meh
-		else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
-			amount = 0;//Detonating stakes shouldnt take ammo
-		else
-#endif
 		amount = weaponData[pm->ps->weapon].altEnergyPerShot;
+#ifdef _GAME
+		if (pm->ps->stats[STAT_RACEMODE]) {
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
+				amount = 0;
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER)
+				amount = 1;
+		}
+		else {
+			if (g_tweakWeapons.integer & WT_INFINITE_AMMO)
+				amount = 0;
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR))
+				amount = 1;//JAPRO mortar meh
+			else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
+				amount = 0;//Detonating stakes shouldnt take ammo
+		}
+#endif
 	}
 	else
 	{
-#ifdef _GAME
-		if (g_tweakWeapons.integer & WT_INFINITE_AMMO)
-			amount = 0;
-		else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
-			amount = 10;//5 ammo per stake? eh
-		else
-#endif
 		amount = weaponData[pm->ps->weapon].energyPerShot;
+#ifdef _GAME
+		if (pm->ps->stats[STAT_RACEMODE]) {
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
+				amount = 0;
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER)
+				amount = 1;
+			else if (pm->ps->weapon == WP_DET_PACK)
+				amount = 1;
+		}
+		else {
+			if (g_tweakWeapons.integer & WT_INFINITE_AMMO)
+				amount = 0;
+			else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
+				amount = 10;//5 ammo per stake? eh
+		}
+#endif
 	}
 
 	pm->ps->weaponstate = WEAPON_FIRING;
@@ -9218,7 +9236,7 @@ if (pm->ps->duelInProgress)
 		}
 	}
 
-	if (pm->ps->stats[STAT_RACEMODE] && ((pm->ps->weapon == WP_DISRUPTOR) || (pm->ps->weapon == WP_STUN_BATON))) {
+	if (pm->ps->stats[STAT_RACEMODE] && ((pm->ps->weapon == WP_DISRUPTOR) || (pm->ps->weapon == WP_STUN_BATON)) && !pm->ps->duelInProgress) {
 		addTime = 600;
 	}
 	else {
@@ -9237,6 +9255,8 @@ if (pm->ps->duelInProgress)
 					addTime = 3000;
 				else if (pm->ps->weapon == WP_THERMAL && (g_tweakWeapons.integer & WT_IMPACT_NITRON))
 					addTime = 1500;
+				else if (pm->ps->weapon == WP_BLASTER && pm->ps->stats[STAT_RACEMODE])
+					addTime = 100;
 				else
 #endif
 					addTime = weaponData[pm->ps->weapon].altFireTime;
@@ -11032,8 +11052,8 @@ void BG_G2PlayerAngles(void *ghoul2, int motionBolt, entityState_t *cent, int ti
 	velPos[2] = cent_lerpOrigin[2];// + velocity[2];
 
 	if ( cent->groundEntityNum == ENTITYNUM_NONE ||
-		 cent->forceFrame ||
-		 (cent->weapon == WP_EMPLACED_GUN && emplaced) )
+		cent->forceFrame ||
+		(cent->weapon == WP_EMPLACED_GUN && emplaced) )
 	{ //off the ground, no direction-based leg angles (same if in saberlock)
 		VectorCopy(cent_lerpOrigin, velPos);
 	}
@@ -11401,37 +11421,37 @@ static QINLINE void PM_CmdForSaberMoves(usercmd_t *ucmd)
 
 
 #ifdef _GAME
-			gclient_t *client = NULL;
-			{
-				int clientNum = pm->ps->clientNum;
-				if (0 <= clientNum && clientNum < MAX_CLIENTS) {
-						client = g_entities[clientNum].client;
+				gclient_t *client = NULL;
+				{
+					int clientNum = pm->ps->clientNum;
+					if (0 <= clientNum && clientNum < MAX_CLIENTS) {
+							client = g_entities[clientNum].client;
+					}
 				}
-			}
 	
-			if (client && client->lastKickTime + 50 < level.time) //japro serverside flood protect on staff dfa, use the same debouncer as flipkick i guess
+				if (client && client->lastKickTime + 50 < level.time) //japro serverside flood protect on staff dfa, use the same debouncer as flipkick i guess
 #endif
 				{
 
-				//push backwards some?
-				VectorSet( yawAngles, 0, pm->ps->viewangles[YAW]+180, 0 );
-				AngleVectors( yawAngles, backDir, 0, 0 );
-				VectorScale( backDir, 100, pm->ps->velocity );
+					//push backwards some?
+					VectorSet( yawAngles, 0, pm->ps->viewangles[YAW]+180, 0 );
+					AngleVectors( yawAngles, backDir, 0, 0 );
+					VectorScale( backDir, 100, pm->ps->velocity );
 
-				//jump!
-				pm->ps->velocity[2] = 300;
-				pm->ps->fd.forceJumpZStart = pm->ps->origin[2]; //so we don't take damage if we land at same height
-				//pm->ps->pm_flags |= PMF_JUMPING;//|PMF_SLOW_MO_FALL;
+					//jump!
+					pm->ps->velocity[2] = 300;
+					pm->ps->fd.forceJumpZStart = pm->ps->origin[2]; //so we don't take damage if we land at same height
+					//pm->ps->pm_flags |= PMF_JUMPING;//|PMF_SLOW_MO_FALL;
 
-				//FIXME: NPCs yell?
-				PM_AddEvent(EV_JUMP);
-				//G_SoundOnEnt( ent, CHAN_BODY, "sound/weapons/force/jump.wav" );
-				ucmd->upmove = 0; //clear any actual jump command
+					//FIXME: NPCs yell?
+					PM_AddEvent(EV_JUMP);
+					//G_SoundOnEnt( ent, CHAN_BODY, "sound/weapons/force/jump.wav" );
+					ucmd->upmove = 0; //clear any actual jump command
 
 #ifdef _GAME
-				if (client) {
-					client->lastKickTime = level.time;
-				}
+					if (client) {
+						client->lastKickTime = level.time;
+					}
 #endif
 
 				}
@@ -12336,7 +12356,7 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->cmd.upmove = 0;
 	}
 
-	if (pm->ps->fd.forceGripCripple)
+	if (pm->ps->fd.forceGripCripple && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA)
 	{ //don't let attack or alt attack if being gripped I guess
 		pm->cmd.buttons &= ~BUTTON_ATTACK;
 		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
@@ -12767,14 +12787,17 @@ void PmoveSingle (pmove_t *pmove) {
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}
 
+		/*
 		if (pm->ps->velocity[2] < MAX_FALL_SPEED) {
 			pm->ps->velocity[2] = MAX_FALL_SPEED;
 		}
 		else if (pm->ps->velocity[2] > MAX_JETPACK_VEL_UP) {
 			pm->ps->velocity[2] = MAX_JETPACK_VEL_UP;
 		}
+		*/
 
-		if (gDist2 <  16) {//** changed this so jetpack shuts off on ground
+		if (gDist2 <  16 && pm->cmd.upmove < 0) {//** changed this so jetpack shuts off on ground
+			//Sad hack, this stops sliding on ground with downjet
 			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
 
@@ -13299,9 +13322,9 @@ void Pmove (pmove_t *pmove) {
 				if (BG_InRollFixed(pmove->ps, pmove->ps->legsAnim)) {
 					msec = 8;
 				}
-				else if (msec > 16) {
+				/*else if (msec > 16) {
 					msec = 16;
-				}
+				}*/
 			}
 		}
 		else if ( pmove->pmove_fixed ) {

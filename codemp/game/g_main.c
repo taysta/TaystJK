@@ -3947,6 +3947,8 @@ void G_RunFrame( int levelTime ) {
 
 						if (currentVeh->client)
 							xyspeed = sqrt(currentVeh->client->ps.velocity[0] * currentVeh->client->ps.velocity[0] + currentVeh->client->ps.velocity[1] * currentVeh->client->ps.velocity[1]);
+						else
+							xyspeed = 0;//ok
 					}
 					else
 						xyspeed = sqrt(ent->client->ps.velocity[0] * ent->client->ps.velocity[0] + ent->client->ps.velocity[1] * ent->client->ps.velocity[1]);

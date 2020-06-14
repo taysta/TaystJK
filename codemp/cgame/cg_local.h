@@ -163,7 +163,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_CINFO_NOREDCHAIN		(1<<28) //no red chains 1.02
 #define JAPRO_CINFO_PROJSNIPER		(1<<29)
 #define	JAPRO_CINFO_JAPLUSGRAPPLE	(1<<30)
-#define	JAPRO_CINFO_EASIERBACKSLASH	(1<<31)
 
 #define RESTRICT_SB					(1<<0)	//remove hackbots
 #define RESTRICT_COSBY				(1<<1)	//remove hackbots
@@ -175,6 +174,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define RESTRICT_FLIPKICKBIND		(1<<7)	//
 #define RESTRICT_STRAFETRAIL		(1<<8)	//force plugin for racers
 #define RESTRICT_DO					(1<<9)	//force plugin for racers
+
+#define JAPRO_CINFO2_RACEMODE		(1<<0) //UI
+#define JAPRO_CINFO2_REGISTRATION	(1<<1) //UI
+#define JAPRO_CINFO2_SABERSWITCH	(1<<2) //UI
+#define	JAPRO_CINFO2_FIXPLAYERCOLLISION	(1<<3)
 
 //ja+ stuff
 #define JAPRO_PLUGIN_NEWDRAINEFX		(1<<0)
@@ -259,6 +263,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
 
 #define _SPPHYSICS 1
+#define _COOP 1
 typedef enum //movementstyle enum
 {
 	MV_SIEGE,
@@ -278,6 +283,9 @@ typedef enum //movementstyle enum
 #endif
 	MV_SLICK,
 	MV_BOTCPM,
+#if _COOP
+	MV_COOP_JKA,
+#endif
 	MV_NUMSTYLES,
 } movementStyle_e;
 
@@ -2181,6 +2189,7 @@ typedef struct cgs_s {
 	serverMod_t	serverMod;
 	int			cinfo;
 	int			jcinfo;
+	int			jcinfo2;
 	qboolean	pluginSet;
 	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	int			restricts;//make this a short?

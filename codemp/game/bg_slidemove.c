@@ -804,11 +804,41 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				pml.impactSpeed = -into;
 			}
 
+
+
 			// slide along the plane
 			PM_ClipVelocity (pm->ps->velocity, planes[i], clipVelocity, OVERCLIP );
 
 			// slide along the plane
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
+
+#if _GAME
+			//Ignore racemode? what if somehow there is no playerstate? crash?
+			if (trace.entityNum < MAX_CLIENTS && g_fixPlayerCollision.integer && g_entities[trace.entityNum].client && (g_entities[trace.entityNum].client->ps.velocity[0] || g_entities[trace.entityNum].client->ps.velocity[1])) {
+				if (clipVelocity[0] != pm->ps->velocity[0])
+					clipVelocity[0] = g_entities[trace.entityNum].client->ps.velocity[0] * 0.95f;
+				if (clipVelocity[1] != pm->ps->velocity[1])
+					clipVelocity[1] = g_entities[trace.entityNum].client->ps.velocity[1] * 0.95f;
+
+				if (endClipVelocity[0] != pm->ps->velocity[0])
+					endClipVelocity[0] = g_entities[trace.entityNum].client->ps.velocity[0] * 0.95f;
+				if (endClipVelocity[1] != pm->ps->velocity[1])
+					endClipVelocity[1] = g_entities[trace.entityNum].client->ps.velocity[1] * 0.95f;
+			}
+#else
+			if (trace.entityNum < MAX_CLIENTS && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo2 & JAPRO_CINFO2_FIXPLAYERCOLLISION) && cg_entities[trace.entityNum].playerState && (cg_entities[trace.entityNum].playerState->velocity[0] || cg_entities[trace.entityNum].playerState->velocity[1])) {
+				//Com_Printf("Predicting! %.2f %.2f\n", cg_entities[trace.entityNum].playerState->velocity[0], cg_entities[trace.entityNum].playerState->velocity[1]); //this executes but why does it not look like its predicting ingame
+				if (clipVelocity[0] != pm->ps->velocity[0])
+					clipVelocity[0] = cg_entities[trace.entityNum].playerState->velocity[0] * 0.95f;
+				if (clipVelocity[1] != pm->ps->velocity[1])
+					clipVelocity[1] = cg_entities[trace.entityNum].playerState->velocity[1] * 0.95f;
+
+				if (endClipVelocity[0] != pm->ps->velocity[0])
+					endClipVelocity[0] = cg_entities[trace.entityNum].playerState->velocity[0] * 0.95f;
+				if (endClipVelocity[1] != pm->ps->velocity[1])
+					endClipVelocity[1] = cg_entities[trace.entityNum].playerState->velocity[1] * 0.95f;
+			}
+#endif
 
 			// see if there is a second plane that the new move enters
 			for ( j = 0 ; j < numplanes ; j++ ) {

@@ -4665,7 +4665,10 @@ float BotWeaponCanLead(bot_state_t *bs)
 	case WP_FLECHETTE:
 		return 0.3f;
 	case WP_DISRUPTOR:
-		return 0.03f;
+		if (g_tweakWeapons.integer & WT_PROJ_SNIPER)
+			return 0.08f;
+		else
+			return 0.03f;
 	default:
 		return 0.0f;
 	}
@@ -4725,6 +4728,11 @@ void BotAimLeading(bot_state_t *bs, vec3_t headlevel, float leadAmount)
 	if (g_newBotAI.integer) {
 		if ((bs->cur_ps.weapon == WP_REPEATER) && bs->doAltAttack) { //Aim higher for the orbs
 			const float eta = (bs->frame_Enemy_Len/(1100 * g_projectileVelocityScale.value)); //REPEATER_ALT_VELOCITY = 1100
+			const float drop = (0.5)*(800)*(eta*eta);
+			predictedSpot[2] += drop;
+		}
+		else if ((bs->cur_ps.weapon == WP_DISRUPTOR) && (g_tweakWeapons.integer & WT_PROJ_SNIPER)) { //Aim higher for the orbs
+			const float eta = (bs->frame_Enemy_Len/(10000 * g_projectileVelocityScale.value)); //REPEATER_ALT_VELOCITY = 1100
 			const float drop = (0.5)*(800)*(eta*eta);
 			predictedSpot[2] += drop;
 		}
@@ -6443,6 +6451,7 @@ void NewBotAI_ReactToBeingGripped(bot_state_t *bs) //Test this more, does it pus
 
 void NewBotAI_Gripkick(bot_state_t *bs)
 {
+	//float heightDiff = bs->cur_ps.origin[2] - bs->currentEnemy->client->ps.origin[2]; //We are above them by this much
 	int gripTime = level.time - bs->currentEnemy->client->ps.fd.forceGripStarted; //Milliseconds we have been gripping them
 
 	if (gripTime < 1000) { //[0-1] second in the grip (Aim down until in range, kick)
@@ -6597,6 +6606,9 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
+			else if (distance < 768 && BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
+				bestWeapon = WP_STUN_BATON;
+			}
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
 			else if (BotWeaponSelectableAltFire(bs, WP_BLASTER)) {
@@ -6628,6 +6640,10 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 			}
 			else if (BotWeaponSelectable(bs, WP_CONCUSSION))
 				bestWeapon = WP_CONCUSSION;
+			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) {
+				bestWeapon = WP_STUN_BATON;
+				bs->doAltAttack = 1;
+			}
 			else if (BotWeaponSelectableAltFire(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
 				bs->doAltAttack = 1;
@@ -6664,6 +6680,9 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
+			else if (distance < 768 && BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
+				bestWeapon = WP_STUN_BATON;
+			}
 			else if (BotWeaponSelectableAltFire(bs, WP_BOWCASTER)) {
 				bestWeapon = WP_BOWCASTER;
 				bs->doAltAttack = 1;
@@ -6694,6 +6713,10 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_BOWCASTER;
 				bs->doAltAttack = 1;
 			}
+			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) {
+				bestWeapon = WP_STUN_BATON;
+				bs->doAltAttack = 1;
+			}
 			else bestWeapon = WP_SABER;
 		}
 	}
@@ -6717,6 +6740,9 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
+			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
+				bestWeapon = WP_STUN_BATON;
+			}
 			else bestWeapon = WP_SABER;
 		}
 		else if (distance < 200) {
@@ -6734,6 +6760,13 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
+			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
+				bestWeapon = WP_STUN_BATON;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) {
+				bestWeapon = WP_STUN_BATON;
+				bs->doAltAttack = 1;
+			}
 			else bestWeapon = WP_SABER;
 		}
 	}
@@ -6746,7 +6779,7 @@ int NewBotAI_GetAltCharge(bot_state_t *bs)
 
 	weap = bs->cur_ps.weapon;
 
-	if (bs->cur_ps.ammo[weaponData[weap].ammoIndex] < weaponData[weap].altEnergyPerShot)
+	if (bs->cur_ps.ammo[weaponData[weap].ammoIndex] < weaponData[weap].altEnergyPerShot && weap != WP_STUN_BATON)
 		return 0;
 
 	if ((bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (level.time - bs->cur_ps.weaponChargeTime) > bs->altChargeTime)
@@ -6798,6 +6831,8 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 		return;
 
 	if ((bs->cur_ps.weapon == weapon) && bs->doAltAttack && NewBotAI_GetAltCharge(bs)) {//Ehhh..
+		if (weapon == WP_STUN_BATON && bs->frame_Enemy_Len > 240 && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) //Weird case for stun baton since low range and low firerate, dont bother until they are in range
+			return;
 		trap->EA_Alt_Attack(bs->client);
 	}
 	else if (bs->cur_ps.weapon == weapon) //we are using desired weapon
@@ -7279,7 +7314,7 @@ void NewBotAI_GetDSForcepower(bot_state_t *bs)
 	}
 
 	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_RAGE)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_RAGE))) {
-		if ((bs->cur_ps.weapon > WP_BRYAR_PISTOL) && (bs->cur_ps.fd.forcePower > 50)) { //Need line of sight
+		if (((bs->cur_ps.weapon > WP_BRYAR_PISTOL) || (bs->cur_ps.weapon == WP_STUN_BATON)) && (bs->cur_ps.fd.forcePower > 50) && bs->frame_Enemy_Len < 768 && bs->frame_Enemy_Vis) { //Need line of sight
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE;
 			useTheForce = qtrue;
 		}
@@ -7410,7 +7445,7 @@ void NewBotAI_GetLSForcepower(bot_state_t *bs)
 		}
 	}
 
-	if (!(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && Q_flrand(0.0f, 1.0f) > 0.5)
+	if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && rand() > 0.5)
 		useTheForce = qfalse;
 
 	if (useTheForce) {
@@ -7901,10 +7936,15 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 	bs->enemySeenTime = level.time + ENEMY_FORGET_MS;
 
 	bs->frame_Enemy_Len = NewBotAI_GetDist(bs);
-	if (OrgVisible(bs->eye, bs->currentEnemy->client->ps.origin, bs->client))
-		bs->frame_Enemy_Vis = 1;
-	else
-		bs->frame_Enemy_Vis = 0;
+	{
+		vec3_t headlevel;
+		VectorCopy(bs->currentEnemy->client->ps.origin, headlevel);
+		headlevel[2] += bs->currentEnemy->client->ps.viewheight - 24;
+		if (OrgVisible(bs->eye, bs->currentEnemy->client->ps.origin, bs->client))
+			bs->frame_Enemy_Vis = 1;
+		else
+			bs->frame_Enemy_Vis = 0;
+	}
 
 	if (!bs->frame_Enemy_Vis && bs->frame_Enemy_Len > 8096) {
 #if _ADVANCEDBOTSHIT

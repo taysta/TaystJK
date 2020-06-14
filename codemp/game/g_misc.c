@@ -270,7 +270,7 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean k
 	if (player->client->sess.raceMode) {
 		//player->client->ps.powerups[PW_YSALAMIRI] = 0; //Fuck
 		player->client->ps.powerups[PW_FORCE_BOON] = 0;
-		if (player->client->sess.movementStyle == 7 || player->client->sess.movementStyle == 8) //Get rid of their rockets when they tele/noclip..?
+		if (player->client->sess.movementStyle == MV_RJQ3 || player->client->sess.movementStyle == MV_RJCPM) //Get rid of their rockets when they tele/noclip..?
 			DeletePlayerProjectiles(player);
 	}
 }
@@ -284,8 +284,10 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 
 	if (!player || !player->client)
 		return;
-	if (BG_InRoll(&player->client->ps, player->s.legsAnim))//is this crashing? if ps is null or something?
-		return;
+	if (BG_InRoll(&player->client->ps, player->s.legsAnim)) {//is this crashing? if ps is null or something?
+		G_SetAnim(player, &player->client->pers.cmd, SETANIM_BOTH, BOTH_UNCROUCH1, SETANIM_FLAG_RESTART|SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);		
+		//return;
+	}
 
 #if _GRAPPLE
 	if (player->client && player->client->hook)
@@ -308,7 +310,7 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 		trace_t tr;
 		vec3_t down, mins, maxs;
 		VectorSet(mins, -15, -15, DEFAULT_MINS_2);
-		VectorSet(maxs, 15, 15, CROUCH_MAXS_2);
+		VectorSet(maxs, 15, 15, DEFAULT_MAXS_2);
 		player->client->ps.pm_flags |= PMF_DUCKED;
 
 		VectorCopy(origin, down);//Drop them to floor so they cant abuse?

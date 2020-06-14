@@ -209,7 +209,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 #endif
 					}
 				}
-				//trap->Print("Prim fire boost\n");
+				//trap->Print("Prim fire boost\n"); //Debounce this
 				parentPS->gravity = 1;// = pVeh->m_pVehicleInfo->turboSpeed;	// Instantly Jump To Turbo Speed gravboost
 				parentPS->velocity[2] += 50; //RACESWOOP
 			}

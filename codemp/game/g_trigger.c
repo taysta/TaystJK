@@ -419,9 +419,9 @@ void Touch_Multi( gentity_t *self, gentity_t *other, trace_t *trace )
 //	}
 
 //JAPRO - Serverside - Allow/disallow use button/trigger for duelers - Start
-	if (other->client->ps.duelInProgress && (g_allowUseInDuel.integer >= 2))//Loda fixme, make this spawnflags 5 for button? or should it block all triggers?
+	if (other->client->ps.duelInProgress && !other->client->sess.raceMode && (g_allowUseInDuel.integer >= 2))//Loda fixme, make this spawnflags 5 for button? or should it block all triggers?
 		return;
-	if ((self->spawnflags & 4) && other->client->ps.duelInProgress && !g_allowUseInDuel.integer)
+	if ((self->spawnflags & 4) && other->client->ps.duelInProgress && !other->client->sess.raceMode && !g_allowUseInDuel.integer)
 		return;
 //JAPRO - Serverside - Allow/disallow use button/trigger for duelers - End
 
@@ -1226,14 +1226,14 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 
 	style = player->client->sess.movementStyle;
 
-	if (style == MV_JETPACK)
+	if (style == MV_COOP_JKA)
 		return qfalse;//temp
 
 	if (player->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NORACE)
 		return qfalse;
 	if (((style == MV_RJQ3) || (style == MV_RJCPM)) && g_knockback.value != 1000.0f)
 		return qfalse;
-	if (style != MV_CPM && style != MV_Q3 && style != MV_WSW && style != MV_RJQ3 && style != MV_RJCPM && style != MV_JETPACK && style != MV_SWOOP && style != MV_JETPACK && style != MV_SLICK && style != MV_BOTCPM) { //Ignore forcejump restrictions if in onlybhop movement modes
+	if (style != MV_CPM && style != MV_Q3 && style != MV_WSW && style != MV_RJQ3 && style != MV_RJCPM && style != MV_JETPACK && style != MV_SWOOP && style != MV_JETPACK && style != MV_SLICK && style != MV_BOTCPM &&& style != MV_COOP_JKA) { //Ignore forcejump restrictions if in onlybhop movement modes
 		if (restrictions & (1 << 0)) {//flags 1 = restrict to jump1
 			if (player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != 1 || player->client->ps.powerups[PW_YSALAMIRI] > 0) {
 				trap->SendServerCommand( player-g_entities, "cp \"^3Warning: this course requires force jump level 1!\n\n\n\n\n\n\n\n\n\n\"");
@@ -1372,7 +1372,7 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		return;
 	if (player->s.eType == ET_NPC)
 		return;
-	if (player->client->ps.duelInProgress)
+	if (player->client->ps.duelInProgress && !player->client->sess.raceMode)
 		return;
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK) //Allow racemode emotes?
 		return;
@@ -1384,6 +1384,11 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		return;
 	if (player->client->sess.raceMode && g_fixTimerOOB.integer && !trap->InPVS(player->client->ps.origin, player->client->ps.origin)) { //Check if they are OOB (not in a PVS?)
 		return;
+	}
+
+	if (player->client->sess.raceMode && player->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_JETPACK) {
+		player->client->ps.ammo[AMMO_DETPACK] = 4;
+		player->client->ps.jetpackFuel = 100;
 	}
 
 	//if (GetTimeMS() - player->client->pers.stats.startTime < 500)//Some built in floodprotect per player?
@@ -1468,7 +1473,7 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 
 	lessTime = InterpolateTouchTime(player, trigger);
 
-	if (player->client->ps.stats[STAT_RACEMODE]) {
+	if (player->client->sess.raceMode) {
 		player->client->ps.duelTime = level.time - lessTime;
 		player->client->ps.stats[STAT_HEALTH] = player->health = player->client->ps.stats[STAT_MAX_HEALTH];
 		player->client->ps.stats[STAT_ARMOR] = 25;
@@ -1489,12 +1494,51 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 	player->client->pers.stats.topSpeed = 0;
 	player->client->pers.stats.displacement = 0;
 	player->client->pers.stats.displacementSamples = 0;
+	//player->client->pers.stats.coopFinished = qfalse;
 
 	if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //Reset their telemark on map start if this is the case
 		player->client->pers.telemarkOrigin[0] = 0;
 		player->client->pers.telemarkOrigin[1] = 0;
 		player->client->pers.telemarkOrigin[2] = 0;
 		player->client->pers.telemarkAngle = 0;
+	}
+	
+	//If racemode and _coop, adjust timer for their partner if needed
+	//If partner already has a dueltime, set our dueltime and (starttime? to that)
+	if (player->client->sess.raceMode && player->client->ps.duelInProgress) {
+		if (player->client->ps.duelIndex != ENTITYNUM_NONE) {
+			gentity_t* duelAgainst = &g_entities[player->client->ps.duelIndex];
+
+			//If we have no timer and our partner does, take his timer
+			//If we have a timer and our partner does, reset both?
+
+			if (duelAgainst && duelAgainst->client && duelAgainst->client->sess.raceMode) {
+				if (duelAgainst->client->pers.stats.startTime) {  //Partner has a timer
+					duelAgainst->client->pers.stats.startTime = player->client->pers.stats.startTime;
+					duelAgainst->client->pers.keepDemo = qfalse;
+					/*
+					if (player->client->pers.stats.startTime) { //We do too, reset both
+						duelAgainst->client->pers.stats.startTime = player->client->pers.stats.startTime;
+						duelAgainst->client->pers.keepDemo = qfalse;
+						//player->client->pers.stats.startTime = duelAgainst->client->pers.stats.startTime = 0;
+					}
+					else //copy his
+						player->client->pers.stats.startTime = duelAgainst->client->pers.stats.startTime; // ??
+					*/
+				}  
+				if (duelAgainst->client->ps.duelTime) { //Partner has a timer
+					duelAgainst->client->ps.duelTime = player->client->ps.duelTime;
+					/*
+					if (player->client->ps.duelTime) {//we do too, reset both
+						duelAgainst->client->ps.duelTime = player->client->ps.duelTime;
+						//player->client->ps.duelTime = duelAgainst->client->ps.duelTime = 0;
+					}
+					else //copy his
+						player->client->ps.duelTime = duelAgainst->client->ps.duelTime; // ??
+					*/
+				}
+			}
+		}
 	}
 
 	//if (player->r.svFlags & SVF_JUNIORADMIN)
@@ -1532,14 +1576,17 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 	multi_trigger(trigger, player);
 
 	if (1) {
-		char styleStr[32] = {0}, timeStr[32] = {0}, playerName[MAX_NETNAME] = {0};
+		char styleStr[32] = { 0 }, timeStr[32] = { 0 }, playerName[MAX_NETNAME] = { 0 };
 		char c[4] = S_COLOR_RED;
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
-		int average, restrictions = 0, nameColor = 7;
+		int average, restrictions = 0;
 		qboolean valid = qfalse;
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
 		const int lessTime = InterpolateTouchTime(player, trigger);
+		qboolean coopFinished = qfalse;
+		gentity_t* duelAgainst;
+
 
 		if (diffLag > 0) {//Should this be more trusting..?.. -20? -30?
 			time += diffLag;
@@ -1549,11 +1596,31 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		//if (player->client->sess.fullAdmin) //think we can finally remove this debug print
 			//trap->SendServerCommand( player-g_entities, va("chat \"Msec diff due to warp (added if > 0): %i\"", diffLag));
-		
+
 		//trap->SendServerCommand( player-g_entities, va("chat \"diffLag: %i\"", diffLag));
 
 		if (lessTime < 16) //Don't really trust this yet, max possible is 250.
 			time -= lessTime;
+#if _COOP
+		if (player->client->sess.raceMode && player->client->ps.duelInProgress && player->client->ps.duelIndex != ENTITYNUM_NONE) {
+			//player->client->pers.stats.coopFinished = qtrue;
+			duelAgainst = &g_entities[player->client->ps.duelIndex];
+			if (duelAgainst && duelAgainst->client && duelAgainst->client->sess.raceMode) {
+				coopFinished = qtrue;
+				/*
+				if (!duelAgainst->client->pers.stats.startTime || !duelAgainst->client->pers.stats.coopFinished) { //we are 1st across?
+					//print partial coop.. msg.. idk.. dont add time to db
+					//Com_Printf("%s is first, %s hasn't completed or started %i\n", player->client->pers.netname, duelAgainst->client->pers.netname, player->client->pers.stats.startTime);
+					return;
+				}
+				else { //we are 2nd across, add both - this triggers when it SHOULD NOT. oh fuck, cuz starttime is the same for both always???????
+					coopFinished = qtrue;
+					//Com_Printf("%s is second, %s already completed %i\n", player->client->pers.netname, duelAgainst->client->pers.netname, player->client->pers.stats.startTime);
+				}
+				*/
+			}
+		}
+#endif
 
 		time /= 1000.0f;
 		if (time < 0.001f)
@@ -1561,7 +1628,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		//average = floorf(player->client->pers.stats.displacement / ((level.time - player->client->pers.stats.startLevelTime) * 0.001f)) + 0.5f;//Should use level time for this 
 		if (player->client->pers.stats.displacementSamples)
 			average = floorf(((player->client->pers.stats.displacement * sv_fps.value) / player->client->pers.stats.displacementSamples) + 0.5f);
-		else 
+		else
 			average = player->client->pers.stats.topSpeed;
 
 		if (trigger->spawnflags)//Get the restrictions for the specific course (only allow jump1, or jump2, etc..)
@@ -1570,9 +1637,9 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		if (ValidRaceSettings(restrictions, player)) {
 			valid = qtrue;
 			if (player->client->pers.userName && player->client->pers.userName[0])
-				Q_strncpyz( c, S_COLOR_CYAN, sizeof(c) );
+				Q_strncpyz(c, S_COLOR_CYAN, sizeof(c));
 			else
-				Q_strncpyz( c, S_COLOR_GREEN, sizeof(c) );
+				Q_strncpyz(c, S_COLOR_GREEN, sizeof(c));
 		}
 
 		/*
@@ -1583,36 +1650,75 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			G_Sound(player, CHAN_AUTO, trigger->noise_index);
 
 		//Pass awesomenoise_index through to play it if its a PB
-	
+
+		//If _coop, see which time we want (if this is the first person cross line, don't add the time or the message yet ?
+			//If this is the 2nd person, get the other person and add the time for them, also print the combined print
+			//If racemode and duel in progress, we are in coop.  If our duel partner has a timer (if its bigger than ours) use his starttime..? //starttimes should be same right
+			//Use whoevers start time is older?
+
+			//If our partner still has a starttime equal to ours.... at this point.. don't count our run yet AHHH?
+
+
 		IntegerToRaceName(player->client->ps.stats[STAT_MOVEMENTSTYLE], styleStr, sizeof(styleStr));
-		TimeToString((int)(time*1000), timeStr, sizeof(timeStr), qfalse);
+		TimeToString((int)(time * 1000), timeStr, sizeof(timeStr), qfalse);
 		Q_strncpyz(playerName, player->client->pers.netname, sizeof(playerName));
 		Q_StripColor(playerName);
-	
+
 		if (!valid) {
 			PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0);
+			//How do we tell if we are the 2nd one..unless end timer does not reset for duelers
+			//
+			if (coopFinished) {
+				Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
+				Q_StripColor(playerName);
+				PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0);
+			}
 		}
 		else {
-			char strIP[NET_ADDRSTRMAXLEN] = {0};
-			char *p = NULL;
+			char strIP[NET_ADDRSTRMAXLEN] = { 0 };
+			char* p = NULL;
 			Q_strncpyz(strIP, player->client->sess.IP, sizeof(strIP));
 			p = strchr(strIP, ':');
 			if (p)
 				*p = 0;
 			if (player->client->pers.userName[0]) { //omg
-				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time*1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index);
+				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time * 1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index);
+				if (coopFinished) {
+					G_AddRaceTime(duelAgainst->client->pers.userName, trigger->message, (int)(time * 1000), duelAgainst->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(duelAgainst->client->pers.stats.topSpeed + 0.5f), average, duelAgainst->client->ps.clientNum, -1);
+				}
 			}
 			else {
 				PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0);
+				if (coopFinished) {
+					Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
+					Q_StripColor(playerName);
+					PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0);
+				}
 			}
 		}
 
-		player->client->pers.stats.startLevelTime = 0;
-		player->client->pers.stats.startTime = 0;
-		player->client->pers.stats.topSpeed = 0;
-		player->client->pers.stats.displacement = 0;
-		if (player->client->ps.stats[STAT_RACEMODE])
+		if (player->client->sess.raceMode && player->client->ps.duelInProgress && !coopFinished) { //coop
+		}
+		else {
+			player->client->pers.stats.startLevelTime = 0;
+			player->client->pers.stats.startTime = 0;
+			player->client->pers.stats.topSpeed = 0;
+			player->client->pers.stats.displacement = 0;
+			if (coopFinished) {
+				duelAgainst->client->pers.stats.startLevelTime = 0;
+				duelAgainst->client->pers.stats.startTime = 0;
+				duelAgainst->client->pers.stats.topSpeed = 0;
+				duelAgainst->client->pers.stats.displacement = 0;
+				//player->client->pers.stats.coopFinished = qfalse;
+				//duelAgainst->client->pers.stats.coopFinished = qfalse;
+			}
+		}
+
+		if (player->client->sess.raceMode && (!player->client->ps.duelInProgress || coopFinished)) {
 			player->client->ps.duelTime = 0;
+			if (coopFinished)
+				duelAgainst->client->ps.duelTime = 0;
+		}
 	}
 }
 
@@ -1631,7 +1737,7 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		player->client->pers.stats.startTime = 0;
 		if (player->client->sess.raceMode)
 			player->client->ps.duelTime = 0;
-		trap->SendServerCommand( player-g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?
+		trap->SendServerCommand( player-g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?`
 		return;
 	}
 
@@ -1752,7 +1858,7 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	if (trigger->spawnflags & RESTRICT_FLAG_YSAL) {//Give Ysal
 		if (player->client->ps.powerups[PW_YSALAMIRI] <= 0)
 			G_Sound(player, CHAN_AUTO, G_SoundIndex("sound/player/boon.mp3"));
-		player->client->ps.powerups[PW_YSALAMIRI] = 99999999;
+		player->client->ps.powerups[PW_YSALAMIRI] = 2147483648;
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_CROUCHJUMP) {//hl style crouch jump
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_CROUCHJUMP;

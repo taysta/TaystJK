@@ -875,7 +875,7 @@ void Svcmd_ToggleTweakWeapons_f( void ) {
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = (1 << MAX_WEAPON_TWEAKS) - 1;
+		const uint32_t mask = ((1 << MAX_WEAPON_TWEAKS) - 1); //overflow?
 
 		trap->Argv( 1, arg, sizeof(arg) );
 		index = atoi( arg );
@@ -1160,7 +1160,7 @@ void Svcmd_ToggleStartingWeapons_f( void ) {
 	}
 }
 
-static bitInfo_T startingItems[] = { // MAX_WEAPON_TWEAKS tweaks (24)
+static bitInfo_T startingItems[] = { // MAX_STARTING_ITEMS tweaks (13)
 	{""},//0
 	{"Seeker"},//1
 	{"Shield"},//2
@@ -1453,7 +1453,8 @@ static bitInfo_T voteTweaks[] = {
 	{"Allow voting from spectate"},//8
 	{"Show votes in console"},//9
 	{"Only count voters in pass/fail calculation"},//10
-	{"Fix mapchange after gametype vote"}//11
+	{"Fix mapchange after gametype vote"},//11
+	{"Ignore gametype restrictions for map callvote"}//12
 };
 static const int MAX_VOTE_TWEAKS = ARRAY_LEN( voteTweaks );
 
