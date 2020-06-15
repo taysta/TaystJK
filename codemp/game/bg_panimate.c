@@ -2694,7 +2694,12 @@ void PM_SetTorsoAnimTimer(int time )
 
 void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int anim, float *animSpeed, int broken )
 {
-	if (pm && JK2SWINGS(pm->ps)) {
+#ifdef _GAME
+	if ((g_tweakSaber.integer & ST_NO_REDCHAIN) && !level.clients[clientNum].sess.raceMode)
+#elif _CGAME
+	if (pm && JK2SWINGS(pm->ps))
+#endif
+	{
 		if (((anim) >= BOTH_T1_BR__R && (anim) <= BOTH_T1_BL_TL) ||
 			((anim) >= BOTH_T2_BR__R && (anim) <= BOTH_T2_BL_TL) ||
 			((anim) >= BOTH_T3_BR__R && (anim) <= BOTH_T3_BL_TL))

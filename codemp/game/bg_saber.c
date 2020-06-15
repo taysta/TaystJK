@@ -1511,8 +1511,11 @@ void PM_SaberLocked( void )
 
 qboolean PM_SaberInBrokenParry( int move )
 {
-	if (pm && JK2SWINGS(pm->ps))
-		return qfalse;
+#ifdef _GAME
+	if (g_tweakSaber.integer & ST_NO_REDCHAIN) return qfalse;
+#elif _CGAME
+	if (pm && JK2SWINGS(pm->ps)) return qfalse;
+#endif
 
 	if ( move >= LS_V1_BR && move <= LS_V1_B_ )
 	{
