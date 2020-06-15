@@ -8593,24 +8593,49 @@ static void CG_DrawIntermission( void ) {
 	}
 }
 
-void IntegerToRaceName(int style, char *styleString, size_t styleStringSize) {
-	switch(style) {
-		case 0: Q_strncpyz(styleString, "siege",styleStringSize); break;
-		case 1: Q_strncpyz(styleString, "jka", styleStringSize); break;
-		case 2:	Q_strncpyz(styleString, "qw", styleStringSize);	break;
-		case 3:	Q_strncpyz(styleString, "cpm", styleStringSize); break;
-		case 4:	Q_strncpyz(styleString, "q3", styleStringSize); break;
-		case 5:	Q_strncpyz(styleString, "pjk", styleStringSize); break;
-		case 6:	Q_strncpyz(styleString, "wsw", styleStringSize); break;
-		case 7:	Q_strncpyz(styleString, "rjq3", styleStringSize); break;
-		case 8:	Q_strncpyz(styleString, "rjcpm", styleStringSize); break;
-		case 9:	Q_strncpyz(styleString, "swoop", styleStringSize); break;
-		case 10: Q_strncpyz(styleString, "jetpack", styleStringSize); break;
-		case 11: Q_strncpyz(styleString, "speed", styleStringSize); break;
-		case 12: Q_strncpyz(styleString, "sp", styleStringSize); break;
-		case 13: Q_strncpyz(styleString, "slick", styleStringSize); break;
-		case 14: Q_strncpyz(styleString, "botcpm", styleStringSize); break;
-		default: Q_strncpyz(styleString, "ERROR", styleStringSize); break;
+void IntegerToRaceName(int style, char *styleString, size_t styleStringSize)
+{ //should be changed to return const char *
+	qboolean coop = (qboolean)style >= MV_COOP_JKA;
+
+	if (coop && styleStringSize >= 64) {
+		style -= (MV_COOP_JKA - 1);
+	}
+
+	switch (style)
+	{
+		case MV_SIEGE:		Q_strncpyz(styleString, "siege",styleStringSize);		break;
+		case MV_JKA:		Q_strncpyz(styleString, "jka", styleStringSize);		break;
+		case MV_QW:			Q_strncpyz(styleString, "qw", styleStringSize);			break;
+		case MV_CPM:		Q_strncpyz(styleString, "cpm", styleStringSize);		break;
+		case MV_Q3:			Q_strncpyz(styleString, "q3", styleStringSize);			break;
+		case MV_PJK:		Q_strncpyz(styleString, "pjk", styleStringSize);		break;
+		case MV_WSW:		Q_strncpyz(styleString, "wsw", styleStringSize);		break;
+		case MV_RJQ3:		Q_strncpyz(styleString, "rjq3", styleStringSize);		break;
+		case MV_RJCPM:		Q_strncpyz(styleString, "rjcpm", styleStringSize);		break;
+		case MV_SWOOP:		Q_strncpyz(styleString, "swoop", styleStringSize);		break;
+		case MV_JETPACK:	Q_strncpyz(styleString, "jetpack", styleStringSize);	break;
+		case MV_SPEED:		Q_strncpyz(styleString, "speed", styleStringSize);		break;
+		case MV_SP:			Q_strncpyz(styleString, "sp", styleStringSize);			break;
+		case MV_SLICK:		Q_strncpyz(styleString, "slick", styleStringSize);		break;
+		case MV_BOTCPM:		Q_strncpyz(styleString, "botcpm", styleStringSize);		break;
+		default:			Q_strncpyz(styleString, "ERROR", styleStringSize);		return;
+	}
+
+	if (coop)
+	{ 
+		if (cg.predictedPlayerState.duelInProgress) {//lets draw our partner's name too
+			clientInfo_t *partner = &cgs.clientinfo[cg.predictedPlayerState.duelIndex];
+
+			if (!partner || !partner->infoValid || !VALIDSTRING(partner->name)) {
+				Q_strcat(styleString, styleStringSize, " (co-op)");
+				return;
+			}
+
+			Q_strcat(styleString, styleStringSize, va(" (co-op: %s" S_COLOR_WHITE ")", partner->name));
+		}
+		else {
+			Q_strcat(styleString, styleStringSize, " (co-op)");
+		}
 	}
 }
 
@@ -8634,7 +8659,7 @@ static qboolean CG_DrawFollow( void )
 	//Loda - add their movemnt style here..?f
 	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 	{
-		char styleString[16] = {0};
+		char styleString[256] = {0};
 		IntegerToRaceName(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE], styleString, sizeof(styleString));
 		CG_Text_Paint (4, 44, 0.7f, colorWhite, styleString, 0, 0, 0, FONT_MEDIUM );//JAPRO - Clientside - Move spectated clients name to top left corner of screen
 	}

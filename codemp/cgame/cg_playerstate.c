@@ -546,6 +546,7 @@ CG_TransitionPlayerState
 
 ===============
 */
+extern int cg_dueltypes[MAX_CLIENTS];//JAPRO - Clientside - Fullforce Duels
 void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 	// check for changing follow mode
 	if ( ps->clientNum != ops->clientNum ) {
@@ -574,11 +575,24 @@ void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 		CG_CheckLocalSounds( ps, ops );
 	}
 
+	if (ops->weapon != ps->weapon) { //shows weapon select when spectating
+		cg.weaponSelect = ps->weapon;
+		cg.weaponSelectTime = cg.time;
+	}
+
 	// check for going low on ammo
 	CG_CheckAmmo();
 
 	// run events
 	CG_CheckPlayerstateEvents( ps, ops );
+
+	if (cgs.serverMod == SVMOD_JAPRO && ps->duelInProgress) { 
+		if (ps->stats[STAT_RACEMODE] && ps->stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)
+		{//hack to update our dueltype in co-op incase we vid_restarted
+			cg_dueltypes[ps->clientNum] = 20;
+			cg_dueltypes[ps->duelIndex] = 20;
+		}
+	}
 
 	// smooth the ducking viewheight change
 	if ( ps->viewheight != ops->viewheight ) {

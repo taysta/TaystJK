@@ -1717,6 +1717,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				if (cg_duelSounds.integer != 2) CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );				
 				if (cg_duelSounds.integer != 3) trap->S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
 			}
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)
+			{ //co-op partner accepted our request
+				cg_dueltypes[es->number] = es->eventParm;
+			}
 			else
 			{ // signalling duel type with parameter number. Also, for clients in duel, start duel music
 				cg_dueltypes[es->number] = es->eventParm; // set dueltype for partner #1//Why - 1  you fucks gun duel
@@ -2745,10 +2749,17 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_MAIN_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_MAIN_SHOT");
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
 		}
-		if (!(cgs.jcinfo & JAPRO_CINFO_PROJSNIPER) && (!(cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cent->currentState.eventParm != cg.snap->ps.clientNum) || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_SPECTATOR || !cg_simulatedHitscan.integer))//loda
+		else if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
+			break; //FF or NF Duel, no weapons so ignore this..
+
+		if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {
+			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+				break;
+		}
+
 		{
 			if (cent->currentState.eventParm != cg.snap->ps.clientNum || cg.renderingThirdPerson)
 			{ //h4q3ry
@@ -2767,10 +2778,17 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_SNIPER_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_SNIPER_SHOT");
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
 		}
-		if (!(cgs.jcinfo & JAPRO_CINFO_PROJSNIPER) && (!(cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cent->currentState.eventParm != cg.snap->ps.clientNum) || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_SPECTATOR || !cg_simulatedHitscan.integer))//loda
+		else if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
+			break; //FF or NF Duel, no weapons so ignore this..
+
+		if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {
+			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+				break;
+		}
+
 		{
 			if (cent->currentState.eventParm != cg.snap->ps.clientNum ||
 				cg.renderingThirdPerson)
@@ -2822,14 +2840,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_ZOOMSOUND:
 		DEBUGNAME("EV_DISRUPTOR_ZOOMSOUND");
-
-		/*
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
-		}
-		*/
-
-		if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
+		if (cg.snap->ps.duelInProgress && (cg.snap->ps.clientNum != es->clientNum && cg.snap->ps.duelIndex != es->clientNum))
 			break;
 
 		if (es->number == cg.snap->ps.clientNum)
@@ -3223,7 +3234,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	//
 	case EV_CONC_ALT_IMPACT:
 		DEBUGNAME("EV_CONC_ALT_IMPACT");
-		if (cg.predictedPlayerState.duelInProgress &&
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		}
+		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
 			break; //FF or NF Duel, no weapons so ignore this..
 
@@ -3260,9 +3273,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_HIT:
 		DEBUGNAME("EV_MISSILE_HIT");
-
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		}
+		else if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2)) {
+			break; //FF or NF Duel, no weapons so ignore this..
 		}
 
 		ByteToDir( es->eventParm, dir );
@@ -3296,35 +3311,19 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS:
 		DEBUGNAME("EV_MISSILE_MISS");
-
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		}
+		else if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2)) {
+			break; //FF or NF Duel, no weapons so ignore this..
 		}
 
 		{ //yay scope, loda fixme, replace bolts here with predictedplayerstate duelinprogress/racemode
 			centity_t *owner = &cg_entities[es->owner]; //this relies on server mod setting .owner in createmissile, along with r.ownerNum
 			//Com_Printf("Owner is %i, we are %i, his bolt1 is %i, ours is %i\n", es->owner, cg.clientNum, owner->currentState.bolt1, cg_entities[cg.clientNum].currentState.bolt1);
 
-			if (cg.clientNum != owner->currentState.number) { //Never skip our own projectiles
-				if (cg_entities[cg.clientNum].currentState.bolt1 == 0) {// We are in FFA mode
-					if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && owner->currentState.bolt1 == 1) //It belongs to a dueler
-						break;
-					if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS1) && owner->currentState.bolt1 == 2) //It belongs to a racer
-						break;
-				}
-				else if (cg_entities[cg.clientNum].currentState.bolt1 == 1) {// We are dueling
-					if (owner->currentState.bolt1 != 1) //Only draw stuff from other duelers (should be only our duel partner but whatever for now..)
-						break;
-				}
-				else if (cg_entities[cg.clientNum].currentState.bolt1 == 2) {// We are in race mode
-					if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && owner->currentState.bolt1 == 1) //It belongs to a dueler
-						break;
-					if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3) && owner->currentState.bolt1 == 2) //It belongs to a racer
-						break;
-					if (cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS2)
-						break;
-				}
-			}
+			if (CG_DuelCull(owner))
+				break;
 		}
 		//
 

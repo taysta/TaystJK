@@ -399,7 +399,7 @@ QINLINE int PM_GetMovePhysics(void)
 		return MV_SIEGE;
 	}
 	else if (g_movementStyle.integer >= MV_NUMSTYLES) {
-		return MV_NUMSTYLES;
+		return MV_JKA;
 	}
 #else
 	if (cgs.serverMod == SVMOD_JAPRO) {

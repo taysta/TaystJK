@@ -2354,6 +2354,8 @@ void CG_PositionEntityOnTag( refEntity_t *entity, const refEntity_t *parent,
 void CG_PositionRotatedEntityOnTag( refEntity_t *entity, const refEntity_t *parent,
 							qhandle_t parentModel, char *tagName );
 
+qboolean CG_DuelCull( centity_t *cent );
+
 /*
 Ghoul2 Insert Start
 */
@@ -2410,7 +2412,7 @@ void	CG_InitLocalEntities( void );
 localEntity_t	*CG_AllocLocalEntity( void );
 void	CG_AddLocalEntities( void );
 #if _NEWTRAILS
-	void CG_InitStrafeTrails( void );
+void CG_InitStrafeTrails( void );
 strafeTrail_t	*CG_AllocStrafeTrail( void );
 #endif
 

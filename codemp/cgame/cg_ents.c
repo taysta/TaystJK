@@ -922,10 +922,17 @@ static void CG_General( centity_t *cent ) {
 	}
 
 	if (cent->currentState.eType == ET_BODY) {
-		if ((cg.predictedPlayerState.duelInProgress && ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
-			|| (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA))
+		if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod < SVMOD_JAPLUS && (cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS)) ||
+			(cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) ||
+			cgs.serverMod == SVMOD_JAPRO)
 		{
-			return; //don't show bodies in duels or in racemode
+			return; //don't show bodies in duels
+		}
+		
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
+		{
+			return; //or in racemode
 		}
 
 		// check if we want to fade bodies instantly
@@ -2011,11 +2018,14 @@ static void CG_Item( centity_t *cent ) {
 			return;
 	}
 	*/
-	
-	if (cg.predictedPlayerState.duelInProgress)
+
+	if (cgs.serverMod == SVMOD_JAPRO) {
+		if ((cg.predictedPlayerState.duelInProgress || cg.predictedPlayerState.stats[STAT_RACEMODE]) && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
+			return;
+	}
+	else if (cg.predictedPlayerState.duelInProgress) {
 		return;
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
-		return;
+	}
 
 //JAPRO - Clientside - Ignore items while dueling since we cant pick them up - End
 
@@ -2639,7 +2649,6 @@ void CG_GrappleTrail( centity_t *ent ) {
 		VectorCopy( ent->lerpOrigin, beam.oldorigin );
 	//}
 
-	//we need moar japro servers in the world
 	if (cg_entities[cg.clientNum].currentState.bolt1 == 1) {
 		return; //assuming we'll never grapple in a duel
 	}
@@ -2679,7 +2688,6 @@ void CG_GrappleTrail( centity_t *ent ) {
 
 	//beam.shaderTexCoord[0] = 0.1f;
 	//beam.shaderTexCoord[1] = 1.0f;
-
 
 	ci = &cgs.clientinfo[ es->clientNum ];
 
@@ -2750,25 +2758,9 @@ static void CG_Missile( centity_t *cent ) {
 	centity_t *owner = &cg_entities[cent->currentState.owner]; //this relies on server mod setting .owner in createmissile, along with r.ownerNum
 	//Com_Printf("Owner is %i, we are %i, his bolt1 is %i, ours is %i\n", cent->currentState.owner, cg.clientNum, owner->currentState.bolt1, cg_entities[cg.clientNum].currentState.bolt1);
 
-	if (cg.clientNum != owner->currentState.number) { //Never skip our own projectiles
-		if (cg_entities[cg.clientNum].currentState.bolt1 == 0) {// We are in FFA mode
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && owner->currentState.bolt1 == 1) //It belongs to a dueler
-				return;
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS1) && owner->currentState.bolt1 == 2) //It belongs to a racer
-				return;
-		}
-		else if (cg_entities[cg.clientNum].currentState.bolt1 == 1) {// We are dueling
-			if (owner->currentState.bolt1 != 1) //Only draw stuff from other duelers (should be only our duel partner but whatever for now..)
-				return;
-		}
-		else if (cg_entities[cg.clientNum].currentState.bolt1 == 2) {// We are in race mode
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && owner->currentState.bolt1 == 1) //It belongs to a dueler
-				return;
-			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3) && owner->currentState.bolt1 == 2) //It belongs to a racer
-				return;
-			if (cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS2)
-				return;
-		}
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.clientNum != owner->currentState.number) { //Never skip our own projectiles
+		if (CG_DuelCull(owner))
+			return;
 	}
 
 	s1 = &cent->currentState;
@@ -4242,4 +4234,38 @@ void CG_CubeOutline( vec3_t mins, vec3_t maxs, int time, unsigned int color, flo
 		CG_TestLine( point1, point4, time, color, 1 );
 		CG_TestLine( point4, point1, time, color, 1 );
 	}
+}
+
+qboolean CG_DuelCull( centity_t *cent )
+{ //returns if entity should be hidden in duels or race mode - needs cleanup & rest of code to be updated to use this
+	const playerState_t *ps = &cg.predictedPlayerState;
+
+	if (cg_entities[ps->clientNum].currentState.bolt1 == 0) {// We are in FFA mode
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && cent->currentState.bolt1 == 1) //It belongs to a dueler
+			return qtrue;
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS1) && cent->currentState.bolt1 == 2) //It belongs to a racer
+			return qtrue;
+	}
+	else if (ps->stats[STAT_RACEMODE]) { // We are in race mode// race mode
+		if (ps->stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA && ps->duelInProgress)
+		{ //co-op race mode
+			if (cent->currentState.number == ps->clientNum || cent->currentState.number == ps->duelIndex)
+			{// do Nothing
+				return qfalse;
+			}
+		}
+
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && cent->currentState.bolt1 == 1) //It belongs to a dueler
+			return qtrue;
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3) && cent->currentState.bolt1 == 2) //It belongs to a racer
+			return qtrue;
+		if (cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS2)
+			return qtrue;
+	}
+	else if (cg_entities[ps->clientNum].currentState.bolt1 == 1) {// We are dueling
+		if (cent->currentState.bolt1 != 1) //Only draw stuff from other duelers (should be only our duel partner but whatever for now..)
+			return qtrue;
+	}
+
+	return qfalse;
 }
