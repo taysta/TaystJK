@@ -4152,20 +4152,29 @@ static void PM_GrappleMove( void ) {
 #if _GAME
 	int pullSpeed = g_hookStrength.integer;
 #else
-	int pullSpeed = 800;
+	int pullSpeed = cgs.hookpull ? cgs.hookpull : 800;
+
+	if (cgs.serverMod == SVMOD_JAPLUS && (pm->cmd.buttons & BUTTON_USE)) {
+		return;
+	}
 #endif
 
 	VectorScale(pml.forward, -16, v);
 	VectorAdd(pm->ps->lastHitLoc, v, v);
 	VectorSubtract(v, pm->ps->origin, vel);
-	//if( pm->ps->pm_flags & PMF_GRAPPLE_PULL_QUAKE2 ) {
-		vel[2] = vel[2] - pm->ps->viewheight - 4;
-	//}
-	vlen = VectorLength(vel);
-	VectorNormalize( vel );
 
-	if (vlen <= 100)
-		VectorScale(vel, ( pullSpeed / 100.0 )  * vlen, vel);
+#if _GAME
+	//if ( pm->ps->pm_flags & PMF_GRAPPLE_PULL_QUAKE2 )
+#else
+	if (cgs.serverMod == SVMOD_JAPRO) 
+#endif
+		vel[2] = vel[2] - pm->ps->viewheight - 4;
+
+	vlen = VectorLength(vel);
+	VectorNormalize(vel);
+
+	if (vlen <= 100.0f)
+		VectorScale(vel, (pullSpeed / 80.0f) * vlen, vel);
 	else
 		VectorScale(vel, pullSpeed, vel);
 
