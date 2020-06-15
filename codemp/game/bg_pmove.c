@@ -199,7 +199,7 @@ float forceJumpStrength[NUM_FORCE_POWER_LEVELS] =
 static int GetFlipkick(playerState_t *ps) {
 	//if (!ps) //?
 		//return;
-	#if _GAME
+#if _GAME
 		if (ps->duelInProgress) {
 			if (dueltypes[ps->clientNum] == 0) { //NF.. man this sucks.. fucks up JA+ nf duels
 				return 0;
@@ -385,8 +385,6 @@ static QINLINE qboolean PM_IsRocketTrooper(void)
 int PM_GetMovePhysics(void);
 QINLINE int PM_GetMovePhysics(void)
 {
-	//if (!pm || !pm->ps)
-		//return 1;
 #if _GAME
 	if (pm->ps->stats[STAT_RACEMODE])
 		return (pm->ps->stats[STAT_MOVEMENTSTYLE]);
@@ -398,15 +396,19 @@ QINLINE int PM_GetMovePhysics(void)
 		return 1;
 #else
 	if (cgs.serverMod == SVMOD_JAPRO) {
-		if (cg.predictedPlayerState.m_iVehicleNum)
+		if (!pm)
+			return MV_JKA;
+
+		if (pm->ps->m_iVehicleNum)
 			return MV_SWOOP;
 		return cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE];
 	}
-	if (cgs.gametype == GT_SIEGE)
+	else if (cgs.gametype == GT_SIEGE) {
 		return MV_SIEGE;
-	return MV_JKA;
+	}
 #endif
-	return 1;
+
+	return MV_JKA;
 }
 
 int PM_GetSaberStance(void)
@@ -6008,22 +6010,20 @@ qboolean PM_AdjustStandAnimForSlope( void )
 	int		legsAnim;
 	#define SLOPERECALCVAR pm->ps->slopeRecalcTime //this is purely convenience
 
-
-
 #ifdef _GAME
-    gclient_t *client = NULL;
-    {
-		int clientNum = pm->ps->clientNum;
-		if (0 <= clientNum && clientNum < MAX_CLIENTS) {
-			client = g_entities[clientNum].client;
-		}
-	}
-	if (!g_LegDangle.integer && client && client->pers.isJAPRO)
-#else
-	if (cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_LEGDANGLE)) // Loda fixme, maybe give clients option to choose? idk why they would want to..
-#endif
-		return qfalse;
+	int clientNum = pm->ps->clientNum;
+	gclient_t *client = NULL;
 
+	if (0 <= clientNum && clientNum < MAX_CLIENTS) {
+		client = g_entities[clientNum].client;
+	}
+
+	if (client && client->pers.isJAPRO && (client->sess.raceMode || !g_LegDangle.integer))
+		return qfalse;
+#else
+	if (cgs.serverMod == SVMOD_JAPRO && (pm->ps->stats[STAT_RACEMODE] || (cgs.jcinfo & JAPRO_CINFO_NOLEGDANGLE))) // Loda fixme, maybe give clients option to choose? idk why they would want to..
+		return qfalse;
+#endif
 
 	if (!pm->ghoul2)
 	{ //probably just changed models and not quite in sync yet

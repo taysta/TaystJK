@@ -217,7 +217,7 @@ void CVU_TweakForce(void) {
 
 static void CVU_LegDangle(void) {
 	!g_LegDangle.integer ?
-		(jcinfo.integer |= JAPRO_CINFO_LEGDANGLE) : (jcinfo.integer &= ~JAPRO_CINFO_LEGDANGLE);
+		(jcinfo.integer |= JAPRO_CINFO_NOLEGDANGLE) : (jcinfo.integer &= ~JAPRO_CINFO_NOLEGDANGLE);
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
 }
 
