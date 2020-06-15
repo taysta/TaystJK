@@ -1744,19 +1744,31 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		if (!cg_jumpSounds.integer)
 			break;
 
-		if (cg.time - cent->pe.painTime < 500) //don't play immediately after pain/fall sound?
-			break;
-
 		if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
 			break;
 
+		if (trap->S_GetVoiceVolume(es->number) > 0) //don't play over other sounds
+			break;
+
+		if ((cg.time - cent->pe.painTime) < 500) //don't play immediately after pain/fall sound?
+			break;
+
 		//JAPRO - Clientside - Add jumpsounds options - Start
-		if (cg_jumpSounds.integer == 1)
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) ); //play all jump sounds
-		else if (cg_jumpSounds.integer == 2 && cg.snap->ps.clientNum != es->number)
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) ); //only play other players' jump sounds
-		else if (cg_jumpSounds.integer > 2 && cg.snap->ps.clientNum == es->number)
-			trap->S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) ); //only play my jump sounds
+		switch (cg_jumpSounds.integer)
+		{
+			default: break;
+			case 1:
+				  trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*jump1.wav")); //play all jump sounds
+				  break;
+			case 2:
+				if (cg.snap->ps.clientNum != es->number)
+					trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*jump1.wav")); //only play other players' jump sounds
+				break;
+			case 3:
+				if (cg.snap->ps.clientNum == es->number)
+					trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*jump1.wav")); //only play my jump sounds
+				break;
+		}
 		//JAPRO - Clientside - Add jumpsounds options - End
 
 		break;
@@ -1784,17 +1796,26 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		//JAPRO - Clientside - Fix looping roll animation on other players - End
 		if (es->number == cg.snap->ps.clientNum && cg.snap->ps.fallingToDeath)
 			break;
-		if (cg.predictedPlayerState.duelInProgress && (es->clientNum != cg.predictedPlayerState.clientNum && es->clientNum != cg.predictedPlayerState.duelIndex))
+		if (cg.snap->ps.duelInProgress && (es->clientNum != cg.snap->ps.clientNum && es->clientNum != cg.snap->ps.duelIndex))
 			break;
 		if (es->eventParm) //fall-roll-in-one event
 			DoFall(cent, es, clientNum);
 
-		if (cg_rollSounds.integer == 1)//JAPRO - Clientside - Add rollsounds options
-			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
-		else if (cg_rollSounds.integer == 2 && cg.snap->ps.clientNum != es->number)
-			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
-		else if (cg_rollSounds.integer > 2 && cg.snap->ps.clientNum == es->number)
-			trap->S_StartSound( NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*roll" ) );
+		switch (cg_rollSounds.integer)
+		{
+			default: break;
+			case 1://JAPRO - Clientside - Add rollsounds options
+				trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*roll"));
+				break;
+			case 2:
+				if (cg.snap->ps.clientNum != es->number)
+					trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*roll"));
+				break;
+			case 3:
+				if (cg.snap->ps.clientNum == es->number)
+					trap->S_StartSound(NULL, es->number, CHAN_VOICE, CG_CustomSound(es->number, "*roll"));
+				break;
+		}
 
 		trap->S_StartSound( NULL, es->number, CHAN_BODY, cgs.media.rollSound  );
 
@@ -1809,7 +1830,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			if ( cg_noTaunt.integer )
 				break;
 
-			if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
+			if (cg.snap->ps.duelInProgress && (cg.snap->ps.clientNum != es->clientNum && cg.snap->ps.duelIndex != es->clientNum))
 				break;
 
 			/*
@@ -2430,7 +2451,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			int hitPersonSmallFxID = cgs.effects.mSaberBloodSparksSmall;
 			int hitPersonMidFxID = cgs.effects.mSaberBloodSparksMid;
 			int hitOtherFxID = cgs.effects.mSaberCut;
-			int hitSound = trap->S_RegisterSound(va("sound/weapons/saber/saberhit%i.wav", Q_irand(1, 3)));
+			int hitSoundNum = (cg_hitsounds.integer == 5 ? 0: Q_irand(cg_hitsounds.integer == 6 ? 0 : 1, 3));
+			int hitSound = hitSoundNum ? trap->S_RegisterSound(va("sound/weapons/saber/saberhit%i.wav", hitSoundNum)) : trap->S_RegisterSound("sound/weapons/saber/saberhit.wav");
+			if (cg_hitsounds.integer == 5)
+				hitSound = trap->S_RegisterSound("sound/weapons/saber/saberhit.wav");
 
 			if ( es->otherEntityNum2 >= 0
 				&& es->otherEntityNum2 < ENTITYNUM_NONE )
@@ -3594,9 +3618,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				if (ci->team == ourTeam || isGlobalVGS(s)) //put it to console or.. just not at all?
 				{ //add to the chat box
 					//hear it in the world spot.
-					char vchatstr[MAX_NETNAME+MAX_SAY_TEXT] = {0};
-					Com_sprintf( vchatstr, sizeof( vchatstr ), "<%s^7: %s>", ci->name, descr );
-					CG_ChatBox_AddString( vchatstr );
+					char vchatstr[1024] = {0};
+					Q_strncpyz(vchatstr, va("<%s^7: %s>\n", ci->name, descr), sizeof( vchatstr ) );
+					CG_ChatBox_AddString(vchatstr);
+					if (cg_chatBox.integer)
+						trap->Print("*%s", vchatstr); //supress in top left w/ the chatbox enabled
+					else
+						trap->Print(vchatstr);
 				}
 
 				if (ci->team == ourTeam || isGlobalVGS(s))

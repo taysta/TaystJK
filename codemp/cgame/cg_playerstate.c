@@ -334,19 +334,20 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 		oldarmor  = ops->persistant[PERS_ATTACKEE_ARMOR] & 0xff;//JAPRO - Clientside - Hitsounds
 
 //JAPRO - Clientside - Hitsounds Start
-		if (cg_hitsounds.integer == 1)
-			trap->S_StartLocalSound( cgs.media.hitSound, CHAN_LOCAL_SOUND );
-		else if (cg_hitsounds.integer == 2)
-			trap->S_StartLocalSound( cgs.media.hitSound2, CHAN_LOCAL_SOUND ); 
-		else if (cg_hitsounds.integer == 3)
-			trap->S_StartLocalSound( cgs.media.hitSound3, CHAN_LOCAL_SOUND ); 
-		else if (cg_hitsounds.integer > 3)
-			trap->S_StartLocalSound( cgs.media.hitSound4, CHAN_LOCAL_SOUND ); 
+		switch (cg_hitsounds.integer)
+		{
+			case 0: default: break;
+			case 1: trap->S_StartLocalSound(cgs.media.hitSound, CHAN_LOCAL_SOUND);	break;
+			case 2: trap->S_StartLocalSound(cgs.media.hitSound2, CHAN_LOCAL_SOUND);	break;
+			case 3:	trap->S_StartLocalSound(cgs.media.hitSound3, CHAN_LOCAL_SOUND);	break;
+			case 4: trap->S_StartLocalSound(cgs.media.hitSound4, CHAN_LOCAL_SOUND);	break;
+			case 5: break;
+			case 6: break;
+		}
 		
 	}
 	else if ( ps->persistant[PERS_HITS] < ops->persistant[PERS_HITS] ) {
-		if (cg_hitsounds.integer)
-		trap->S_StartLocalSound( cgs.media.hitTeamSound, CHAN_LOCAL_SOUND );
+		if (cg_hitsounds.integer) trap->S_StartLocalSound( cgs.media.hitTeamSound, CHAN_LOCAL_SOUND );
 	}
 //JAPRO - Clientside - Hitsounds End
 
