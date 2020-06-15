@@ -386,14 +386,21 @@ int PM_GetMovePhysics(void);
 QINLINE int PM_GetMovePhysics(void)
 {
 #if _GAME
-	if (pm->ps->stats[STAT_RACEMODE])
-		return (pm->ps->stats[STAT_MOVEMENTSTYLE]);
-	else if ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || g_movementStyle.integer == MV_SP)
-		return (g_movementStyle.integer);
-	else if (g_movementStyle.integer < MV_SIEGE)
-		return 0;
-	else if (g_movementStyle.integer >= MV_NUMSTYLES)
-		return 1;
+	if (pm->ps->stats[STAT_RACEMODE]) {
+		if (pm->ps->stats[STAT_RACEMODE] >= MV_COOP_JKA)
+			return (pm->ps->stats[STAT_MOVEMENTSTYLE] - (MV_COOP_JKA - 1));
+
+		return pm->ps->stats[STAT_MOVEMENTSTYLE];
+	}
+	else if (g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer < MV_NUMSTYLES) {
+		return g_movementStyle.integer;
+	}
+	else if (g_movementStyle.integer < MV_SIEGE) {
+		return MV_SIEGE;
+	}
+	else if (g_movementStyle.integer >= MV_NUMSTYLES) {
+		return MV_NUMSTYLES;
+	}
 #else
 	if (cgs.serverMod == SVMOD_JAPRO) {
 		if (!pm)
@@ -401,7 +408,11 @@ QINLINE int PM_GetMovePhysics(void)
 
 		if (pm->ps->m_iVehicleNum)
 			return MV_SWOOP;
-		return cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE];
+
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)
+			return (pm->ps->stats[STAT_MOVEMENTSTYLE] - (MV_COOP_JKA - 1));
+
+		return pm->ps->stats[STAT_MOVEMENTSTYLE];
 	}
 	else if (cgs.gametype == GT_SIEGE) {
 		return MV_SIEGE;

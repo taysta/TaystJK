@@ -923,7 +923,7 @@ static void CG_General( centity_t *cent ) {
 
 	if (cent->currentState.eType == ET_BODY) {
 		if ((cg.predictedPlayerState.duelInProgress && ((cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS) || cgs.serverMod == SVMOD_JAPRO || (cgs.serverMod != SVMOD_JAPLUS && cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS))))
-			|| (cgs.serverMod == SVMOD_JAPRO && (cg.predictedPlayerState.stats[STAT_RACEMODE])))
+			|| (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA))
 		{
 			return; //don't show bodies in duels or in racemode
 		}
@@ -964,7 +964,7 @@ static void CG_General( centity_t *cent ) {
 			pl->currentState.trickedentindex4,
 			cg.predictedPlayerState.clientNum))
 		{ //don't show if this guy is mindtricking
-            return;
+			return;
 		}
 		if (!CG_RenderTimeEntBolt(cent))
 		{ //If this function returns qfalse we shouldn't render this ent at all.
@@ -1151,7 +1151,7 @@ static void CG_General( centity_t *cent ) {
 			if (cent->currentState.modelGhoul2 == G2_MODELPART_HEAD)
 			{
 				rotateBone = "cranium";
-				Q_strncpyz( limbName , "head", sizeof( limbName  ) );
+				Q_strncpyz( limbName , "head", sizeof( limbName ) );
 				Q_strncpyz( limbCapName, "head_cap_torso", sizeof( limbCapName ) );
 				Q_strncpyz( stubCapName, "torso_cap_head", sizeof( stubCapName ) );
 				limbTagName = "*head_cap_torso";
@@ -2014,7 +2014,7 @@ static void CG_Item( centity_t *cent ) {
 	
 	if (cg.predictedPlayerState.duelInProgress)
 		return;
-	if (cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
 		return;
 
 //JAPRO - Clientside - Ignore items while dueling since we cant pick them up - End
@@ -2147,7 +2147,7 @@ Ghoul2 Insert End
 	{
 		// items bob up and down continuously
 		scale = 0.005 + cent->currentState.number * 0.00001;
-		cent->lerpOrigin[2] += 4 + cos( ( cg.time + 1000 ) *  scale ) * 4;
+		cent->lerpOrigin[2] += 4 + cos( ( cg.time + 1000 ) * scale ) * 4;
 	}
 	else
 	{
@@ -3863,7 +3863,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 
 			veh->currentState.pos.trType = TR_INTERPOLATE;
 		}
-        CG_AddCEntity(veh);
+		CG_AddCEntity(veh);
 		veh->bodyHeight = cg.time; //indicate we have already been added
 	}
 

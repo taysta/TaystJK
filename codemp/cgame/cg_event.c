@@ -3223,10 +3223,15 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	//
 	case EV_CONC_ALT_IMPACT:
 		DEBUGNAME("EV_CONC_ALT_IMPACT");
-		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
-			break;
+		if (cg.predictedPlayerState.duelInProgress &&
+			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
+			break; //FF or NF Duel, no weapons so ignore this..
+
+		if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {
+			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+				break;
 		}
-		if (!(cgs.jcinfo & JAPRO_CINFO_PROJSNIPER) && (!(cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cent->currentState.eventParm != cg.snap->ps.clientNum) || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_SPECTATOR || !cg_simulatedHitscan.integer))//loda
+
 		{
 			float dist;
 			float shotDist = VectorNormalize(es->angles);
@@ -3274,7 +3279,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		else
 		{
-			if (es->weapon == WP_BRYAR_PISTOL && es->saberInFlight) { //Its a grappling hook.
+			if (cgs.serverMod == SVMOD_JAPRO && es->weapon == WP_BRYAR_PISTOL && es->saberInFlight)
+			{ //Its a grappling hook.
 				trap->FX_PlayEffectID(cgs.effects.grappleHitPlayer, position, dir, -1, -1, qfalse);
 				return;
 			}
@@ -3336,9 +3342,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		else
 		{
-			if (es->weapon == WP_BRYAR_PISTOL && es->saberInFlight) { //Its a grappling hook.
+			if (cgs.serverMod == SVMOD_JAPRO && es->weapon == WP_BRYAR_PISTOL && es->saberInFlight)
+			{ //Its a grappling hook.
 				trap->FX_PlayEffectID(cgs.effects.grappleHitWall, position, dir, -1, -1, qfalse);
-				return;
+				break;
 			}
 
 			CG_MissileHitWall(es->weapon, 0, position, dir, IMPACTSOUND_DEFAULT, qfalse, 0);
