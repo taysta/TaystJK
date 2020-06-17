@@ -1107,7 +1107,7 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 		}
 	}
 
-	G_LogPrintf( "ChangeTeam: %i [%s] (%s) \"%s^7\" %s -> %s\n", (int)(client - level.clients), client->sess.IP, client->pers.guid, client->pers.netname, TeamName( oldTeam ), TeamName( client->sess.sessionTeam ) );
+	G_LogPrintf( "ChangeTeam: %i [%s] (%s) \"%s" S_COLOR_WHITE "\" %s -> %s\n", (int)(client - level.clients), client->sess.IP, client->pers.guid, client->pers.netname, TeamName( oldTeam ), TeamName( client->sess.sessionTeam ) );
 }
 
 qboolean G_PowerDuelCheckFail(gentity_t *ent)
@@ -1190,7 +1190,7 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	if ( !Q_stricmp( s, "scoreboard" ) || !Q_stricmp( s, "score" )  ) {
 		if(level.isLockedspec && !forcedToJoin)
 		{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^3Spectator ^7Access has been locked!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_YELLOW "Spectator " S_COLOR_WHITE "Access has been locked!\n\""));
 				return;
 		}
 		team = TEAM_SPECTATOR;
@@ -1198,7 +1198,7 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	} else if ( !Q_stricmp( s, "follow1" ) ) {
 		if(level.isLockedspec && !forcedToJoin)
 		{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^3Spectator ^7Access has been locked!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_YELLOW "Spectator " S_COLOR_WHITE "Access has been locked!\n\""));
 				return;
 		}
 		team = TEAM_SPECTATOR;
@@ -1207,16 +1207,15 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	} else if ( !Q_stricmp( s, "follow2" ) ) {
 		if(level.isLockedspec && !forcedToJoin)
 		{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^3Spectator ^7Access has been locked!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_YELLOW "Spectator " S_COLOR_WHITE "Access has been locked!\n\""));
 				return;
 		}
 		team = TEAM_SPECTATOR;
 		specState = SPECTATOR_FOLLOW;
 		specClient = -2;
-	} else if ( !Q_stricmp( s, "spectator" ) || !Q_stricmp( s, "s" )  || !Q_stricmp( s, "spectate" ) ) {
-		if(level.isLockedspec && !forcedToJoin)
-		{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^3Spectator ^7Access has been locked!\n\""));
+	} else if ( !Q_stricmp( s, "s" ) || !Q_stricmpn( s, "spec", 4 ) ) {
+		if (level.isLockedspec && !forcedToJoin) {
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_YELLOW "Spectator " S_COLOR_WHITE "Access has been locked!\n\""));
 				return;
 		}
 		team = TEAM_SPECTATOR;
@@ -1228,15 +1227,15 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 		{
 			if(level.isLockedred && !forcedToJoin)
 			{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^1Red ^7team is locked!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_RED "Red " S_COLOR_WHITE "team is locked!\n\""));
 				return;
 			}
 			if (sv_maxTeamSize.integer && !forcedToJoin && GetTeamPlayers(TEAM_RED) >= sv_maxTeamSize.integer) {
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^1Red ^7team is full!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_RED "Red " S_COLOR_WHITE "team is full!\n\""));
 				return;
 			}
 			if (g_forceLogin.integer && !forcedToJoin && !(ent->r.svFlags & SVF_BOT) && !ent->client->pers.userName[0]) {
-				trap->SendServerCommand( ent-g_entities, "print \"^1You must login to join the game!\n\"");
+				trap->SendServerCommand( ent-g_entities, "print \"" S_COLOR_RED "You must login to join the game!\n\"");
 				return;
 			}
 			team = TEAM_RED;
@@ -1244,15 +1243,15 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 		{
 			if(level.isLockedblue && !forcedToJoin)
 			{
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^4Blue ^7team is locked!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_BLUE "Blue " S_COLOR_WHITE "team is locked!\n\""));
 				return;
 			}
 			if (sv_maxTeamSize.integer && !forcedToJoin && GetTeamPlayers(TEAM_BLUE) >= sv_maxTeamSize.integer) {
-				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^4Blue ^7team is full!\n\""));
+				trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_BLUE "Blue " S_COLOR_WHITE "team is full!\n\""));
 				return;
 			}
 			if (g_forceLogin.integer && !forcedToJoin && !(ent->r.svFlags & SVF_BOT) && !ent->client->pers.userName[0]) {
-				trap->SendServerCommand( ent-g_entities, "print \"^1You must login to join the game!\n\"");
+				trap->SendServerCommand( ent-g_entities, "print \"" S_COLOR_RED "You must login to join the game!\n\"");
 				return;
 			}
 			team = TEAM_BLUE;
@@ -1281,21 +1280,21 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 
 				if(team == TEAM_BLUE && !forcedToJoin) {
 					if (level.isLockedblue) {
-						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^4Blue ^7team is locked!\n\""));
+						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_BLUE "Blue " S_COLOR_WHITE "team is locked!\n\""));
 						return;
 					}
 					if (sv_maxTeamSize.integer && GetTeamPlayers(TEAM_BLUE) >= sv_maxTeamSize.integer) {
-						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^4Blue ^7team is full!\n\""));
+						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_BLUE "Blue " S_COLOR_WHITE "team is full!\n\""));
 						return;
 					}
 				}
 				else if(team == TEAM_RED && !forcedToJoin) {
 					if (level.isLockedred) {
-						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^1Red ^7team is locked!\n\""));
+						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_RED "Red " S_COLOR_WHITE "team is locked!\n\""));
 						return;
 					}
 					if (sv_maxTeamSize.integer && GetTeamPlayers(TEAM_RED) >= sv_maxTeamSize.integer) {
-						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^1Red ^7team is full!\n\""));
+						trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_RED "Red " S_COLOR_WHITE "team is full!\n\""));
 						return;
 					}
 				}
@@ -1368,11 +1367,11 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	} else {
 		if(level.isLockedfree && !forcedToJoin)
 		{
-			trap->SendServerCommand( ent->client->ps.clientNum, va("print \"^7The ^3Free ^7team is locked!\n\""));
+			trap->SendServerCommand( ent->client->ps.clientNum, va("print \"" S_COLOR_WHITE "The " S_COLOR_YELLOW "Free " S_COLOR_WHITE "team is locked!\n\""));
 			return;
 		}
 		if (g_forceLogin.integer && !(ent->r.svFlags & SVF_BOT) && !forcedToJoin && !ent->client->pers.userName[0]) {
-			trap->SendServerCommand( ent-g_entities, "print \"^1You must login to join the game!\n\"");
+			trap->SendServerCommand( ent-g_entities, "print \"" S_COLOR_RED "You must login to join the game!\n\"");
 			return;
 		}
 		team = TEAM_FREE; // force them to spectators if there aren't any spots free
@@ -7511,8 +7510,29 @@ void Cmd_Race_f(gentity_t *ent)
 	}
 
 	if (level.gametype != GT_FFA) {
-		trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed in this gametype!\n\"");
-		return;
+		if (level.gametype >= GT_TEAM && g_raceMode.integer == 2)
+		{//this is ok
+
+			ent->client->pers.noFollow = qfalse;
+			ent->client->pers.practice = qfalse;
+			ent->r.svFlags &= ~SVF_SINGLECLIENT; //ehh?
+			ent->s.weapon = WP_SABER; //Dont drop our weapon
+			Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
+
+			if (ent->client->sess.sessionTeam != TEAM_FREE) {
+				ent->client->sess.raceMode = qtrue;
+				SetTeam(ent, "race", qfalse);
+			}
+			else {
+				ent->client->sess.raceMode = qfalse;
+				SetTeam(ent, "spec", qfalse);
+			}
+			return;//duno..
+		}
+		else {
+			trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed in this gametype!\n\"");
+			return;
+		}
 	}
 
 	if (ent->client->sess.raceMode) {//Toggle it
