@@ -111,27 +111,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPLUS_CINFO_LEDGEGRAB			(1<<16)	//Ledgegrab allowed
 #define JAPLUS_CINFO_ALTDIM				(1<<17)	//Any jp_altdim is set
 
-/*
-#define JAPLUS_CINFO_FLIPKICK			(0x00000001u) // allow player flip-kicking
-#define JAPLUS_CINFO_FIXROLL1			(0x00000002u) // Grip whilst rolling
-#define JAPLUS_CINFO_FIXROLL2			(0x00000004u) // Grip whilst rolling + chainable rolls
-#define JAPLUS_CINFO_FIXROLL3			(0x00000008u) // Long roll + breakable
-#define JAPLUS_CINFO_YELLOWDFA			(0x00000010u) // 'improved' yellow DFA
-#define JAPLUS_CINFO_HEADSLIDE			(0x00000020u) // jp_slideOnPlayer/japp_slideOnPlayer set
-#define JAPLUS_CINFO_SPATTACKS		(0x00000040u) // don't allow sp attacks
-#define JAPLUS_CINFO_NEWDFA			(0x00000080u) // TODO: new close-range DFA
-#define JAPLUS_CINFO_MODELSCALE			(0x00000100u)
-#define JAPLUS_CINFO_DMGSPEEDSCALE			(0x00000200u)
-#define JAPLUS_CINFO_MACROSCAN1		(0x00000400u) // IGNORE: macro-scan 1
-#define JAPLUS_CINFO_MACROSCAN2		(0x00000800u) // IGNORE: macro-scan 2
-#define JAPLUS_CINFO_JK2DFA			(0x00001000u) // TODO: JK2 DFA ???
-#define JAPLUS_CINFO_NOKATA			(0x00002000u) // no kata
-#define JAPLUS_CINFO_NO_AUTO_REPLIER			(0x00004000u)
-#define JAPLUS_CINFO_GLA_ANIMS			(0x00008000u)
-#define JAPLUS_CINFO_LEDGEGRAB			(0x00010000u) // TODO: allow ledge-grab
-#define JAPLUS_CINFO_ALTDIM			(0x00020000u) // TODO: any jp_altDim is set
-*/
-
 #define RESTRICT_SB					(1<<0)	//remove hackbots
 #define RESTRICT_COSBY				(1<<1)	//remove hackbots
 #define RESTRICT_LEAD				(1<<2)	//remove lead indicator

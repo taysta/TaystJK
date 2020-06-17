@@ -699,7 +699,7 @@ QINLINE void DeletePlayerProjectiles(gentity_t *ent) {
 }
 
 void G_UpdatePlaytime(int null, char *username, int seconds );
-void QINLINE ResetPlayerTimers(gentity_t* ent, qboolean print) {
+void QINLINE ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 	qboolean wasReset = qfalse;;
 
 	if (!ent->client)
@@ -769,6 +769,8 @@ void QINLINE ResetPlayerTimers(gentity_t* ent, qboolean print) {
 	ent->client->pers.stats.displacementFlag = 0;
 	ent->client->pers.stats.displacementFlagSamples = 0;
 	ent->client->ps.stats[STAT_JUMPTIME] = 0;
+	ent->client->ps.fd.forceRageRecoveryTime = 0;
+	ent->client->ps.fd.forcePowersActive = 0;
 
 	ent->client->pers.stats.lastResetTime = level.time; //well im just not sure
 
@@ -776,6 +778,19 @@ void QINLINE ResetPlayerTimers(gentity_t* ent, qboolean print) {
 		//trap->SendServerCommand( ent-g_entities, "print \"Timer reset!\n\""); //console spam is bad
 		trap->SendServerCommand(ent - g_entities, "cp \"Timer reset!\n\n\n\n\n\n\n\n\n\n\n\n\"");
 }
+
+
+void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
+{
+	ResetSpecificPlayerTimers(ent, print);
+
+	if (ent->client->ps.duelInProgress && ent->client->ps.duelIndex != ENTITYNUM_NONE) {
+		gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];
+		if (duelAgainst && duelAgainst->client)
+			ResetSpecificPlayerTimers(duelAgainst, print);
+	}
+}
+
 
 /*
 void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
@@ -6155,7 +6170,7 @@ void Cmd_Coop_f(gentity_t* ent) { //Should this only show logged in people..?
 
 	if (challenged->client->ps.duelIndex == ent->s.number /*&& (challenged->client->ps.duelTime + duelTimeout) >= level.time*/) {//We are accepting the duel - make this timeout TODO
 		int i;
-		trap->SendServerCommand(ent - g_entities, va("print \"$s^7 has accepted your co-op request\n\"", challenged->client->pers.netname));
+		trap->SendServerCommand(ent - g_entities, va("print \"%s^7 has accepted your co-op request\n\"", challenged->client->pers.netname));
 		trap->SendServerCommand(challenged - g_entities, va("print \"You accepted a co-op request with %s\n\"", ent->client->pers.netname));
 
 		ent->client->ps.duelInProgress = qtrue;

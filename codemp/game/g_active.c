@@ -3847,9 +3847,13 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 		else if (movementStyle == MV_COOP_JKA) {
 			ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
+			ent->client->ps.fd.forcePowerLevel[FP_LIGHTNING] = 2;
+			ent->client->ps.fd.forcePowerLevel[FP_SPEED] = ent->client->ps.fd.forcePowerLevel[FP_GRIP] = ent->client->ps.fd.forcePowerLevel[FP_DRAIN] = ent->client->ps.fd.forcePowerLevel[FP_LIGHTNING] = 
+				ent->client->ps.fd.forcePowerLevel[FP_RAGE] = ent->client->ps.fd.forcePowerLevel[FP_PUSH] = ent->client->ps.fd.forcePowerLevel[FP_PULL] = 3;
+			ent->client->ps.fd.forcePowersKnown = (1 << FP_PULL) + (1 << FP_PUSH) + (1 << FP_SPEED) + (1 << FP_GRIP) + (1 << FP_DRAIN) + (1 << FP_LIGHTNING) + (1 << FP_RAGE);
 			ent->client->ps.stats[STAT_WEAPONS] = (1 << 16) - 1 - (1 << WP_DET_PACK) - (1 << WP_TRIP_MINE); //all weapons? w/o tripmine detpack.
 			if (ent->health > 0)
-				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 2000;
+				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 999;
 		}
 		else {
 			client->ps.ammo[AMMO_POWERCELL] = 300;
@@ -4254,6 +4258,10 @@ void ClientThink_real( gentity_t *ent ) {
 			if (client->ps.fd.forcePower > 50)
 				client->ps.fd.forcePower = 50;
 		}
+		else if (client->ps.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
+			if (client->ps.fd.forceHealTime > level.time)
+				client->ps.speed *= 1.28f;
+		}
 
 		//Check for a siege class speed multiplier
 		if (level.gametype == GT_SIEGE &&
@@ -4298,7 +4306,7 @@ void ClientThink_real( gentity_t *ent ) {
 				{
 					client->ps.gravity = g_gravity.value;
 					if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE]) {
-						if (client->gravityGunTime > level.time && client->sess.movementStyle == MV_COOP_JKA) {//grav gun
+						if (client->ps.electrifyTime > level.time && client->sess.movementStyle == MV_COOP_JKA) {//grav gun
 							client->ps.gravity = 200;
 						}
 						else client->ps.gravity = 750; //Match 125fps gravity here since we are using decimal precision for Zvel now

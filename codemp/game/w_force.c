@@ -1856,7 +1856,10 @@ void ForceLightningDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec
 						G_Sound( traceEnt, CHAN_BODY, G_SoundIndex( va("sound/weapons/force/lightninghit%i", Q_irand(1, 3) )) );
 					}
 
-					if (traceEnt->client->ps.electrifyTime < (level.time + 400))
+					if (traceEnt->client->sess.movementStyle == MV_COOP_JKA) {
+						traceEnt->client->ps.fd.forceHealTime = level.time + 200; //lightning speeds people up in coop and doesnt show them w/ electrify effect
+					}
+					else if (traceEnt->client->ps.electrifyTime < (level.time + 400))
 					{ //only update every 400ms to reduce bandwidth usage (as it is passing a 32-bit time value)
 						traceEnt->client->ps.electrifyTime = level.time + 800;
 					}

@@ -4672,7 +4672,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				|| (targ->m_pVehicle && targ->m_pVehicle->m_pVehicleInfo->type != VH_FIGHTER) )
 			{//don't do this to fighters
 //[JAPRO - Serverside - Weapons - Tweak weapons Remove Demp2 Randomness - Start]
-				if (g_tweakWeapons.integer & WT_DEMP2_RANDOM)
+				if (targ->client->sess.movementStyle == MV_COOP_JKA) {
+					targ->client->ps.electrifyTime = level.time + 800;//Prim fire is 500ms, alt is 900ms, let them stay lowgrav forever if prim fire but not alt fire..
+				}
+				else if (g_tweakWeapons.integer & WT_DEMP2_RANDOM)
 					targ->client->ps.electrifyTime = level.time + 550;
 				else
 					targ->client->ps.electrifyTime = level.time + Q_irand( 300, 800 );
@@ -4715,7 +4718,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 
 	if (attacker && attacker->client && attacker->client->sess.raceMode && !attacker->client->ps.duelInProgress) {
-		if (attacker->client->ps.stats[STAT_MOVEMENTSTYLE] != MV_RJQ3) {
+		if (attacker->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 			if (mod != MOD_BLASTER)
 				return;
 		}
