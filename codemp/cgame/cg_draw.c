@@ -7596,7 +7596,7 @@ static void CG_DrawActivePowers(void)
 	//additionally, draw an icon force force rage recovery
 	if (cg.snap->ps.fd.forceRageRecoveryTime > cg.time)
 	{
-		CG_DrawPic( startx, starty, endx*cgs.widthRatioCoef, endy, cgs.media.rageRecShader);
+		CG_DrawPic( startx, starty, endx, endy, cgs.media.rageRecShader);
 	}
 }
 
