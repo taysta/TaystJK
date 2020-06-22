@@ -12323,10 +12323,10 @@ stillDoSaber:
 						trap->R_AddRefEntityToScene(&legs);	//draw the shell
 
 						legs.customShader = 0;	//reset to player model
-						if (cgs.serverMod >= SVMOD_JAPLUS) { // dim color further away
-							legs.shaderRGBA[0] = Q_max(savRGBA[0] - subLen / 32, 1);
-							legs.shaderRGBA[1] = Q_max(savRGBA[1] - subLen / 32, 1);
-							legs.shaderRGBA[2] = Q_max(savRGBA[2] - subLen / 32, 1);
+						if (cgs.serverMod >= SVMOD_JAPLUS) { // don't dim color
+							legs.shaderRGBA[0] = savRGBA[0];
+							legs.shaderRGBA[1] = savRGBA[1];
+							legs.shaderRGBA[2] = savRGBA[2];
 						}
 						else {
 							legs.shaderRGBA[0] = Q_max(savRGBA[0] - subLen / 8, 1);
