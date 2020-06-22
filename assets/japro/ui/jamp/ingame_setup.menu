@@ -4,7 +4,7 @@
 //
 //--------------------------------------------------------------
 {
-	menuDef 
+	menuDef
 	{
 		name					"ingame_setup"
 		visible					0
@@ -18,9 +18,9 @@
 		descY					387
 		descScale				1
 		descColor				1 .682 0 .8					// Focus color for text and items
-		descAlignment				ITEM_ALIGN_CENTER		
+		descAlignment				ITEM_ALIGN_CENTER
 
-		onOpen 
+		onOpen
 		{
 			uiScript		getvideosetup				// Get video settings
 			uiScript		getnetworksetup				// Get network settings
@@ -45,9 +45,9 @@
 			setitemcolor	setup_submenu	 forecolor	1 .682 0 1
 			setitemcolor	videomenubutton forecolor	1 1 1 1
 		}
-			
-		onESC 
-		{ 
+
+		onESC
+		{
 			play				"sound/interface/button1"
 
 			defer				VideoSetup	videowarningMenu
@@ -57,7 +57,7 @@
 
 
 		// Overall window backdrop
-		itemDef 
+		itemDef
 		{
 			name				background_pic
 			group				none
@@ -68,14 +68,14 @@
 			visible				1
 			decoration
 		}
-		itemDef 
+		itemDef
 		{
 			name				playerconfigtitle
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
 			text				@MENUS_SETUP
 			rect				20 5 510 28
-			textalign			ITEM_ALIGN_CENTER		
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			255
 			textaligny			2
 			outlinecolor		1 .5 .5 .5
@@ -85,11 +85,11 @@
 			forecolor			.549 .854 1 1
 			border				0
 			bordercolor			0 0 0 0
-			visible				1 
+			visible				1
 		}
 
 		// video button
-		itemDef 
+		itemDef
 		{
 			name				videobutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -101,7 +101,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				videomenubutton
 			group				setup_submenu
@@ -119,16 +119,16 @@
 			visible				1
 			descText			@MENUS_CONFIGURE_VIDEO_SETTINGS
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			videobutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			videobutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -156,7 +156,7 @@
 		}
 
 		// lighting button
-		itemDef 
+		itemDef
 		{
 			name				lightingbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -168,7 +168,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				lightingmenubutton
 			group				setup_submenu
@@ -186,16 +186,16 @@
 			visible			1
 			descText			"Configure lighting settings."
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			lightingbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			lightingbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -219,9 +219,9 @@
 				setitemcolor	lightingmenubutton	forecolor	1 1 1 1
 			}
 		}
-		
+
 		// visuals button
-		itemDef 
+		itemDef
 		{
 			name				visualsbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -233,7 +233,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				visualsmenubutton
 			group				setup_submenu
@@ -251,16 +251,16 @@
 			visible			1
 			descText			"Configure visual settings."
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			visualsbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			visualsbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -284,9 +284,9 @@
 				setitemcolor	visualsmenubutton	forecolor	1 1 1 1
 			}
 		}
-		
+
 		// hud button
-		itemDef 
+		itemDef
 		{
 			name				hudbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -298,7 +298,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				hudmenubutton
 			group				setup_submenu
@@ -316,16 +316,16 @@
 			visible			1
 			descText			"Configure HUD settings."
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			hudbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			hudbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -351,7 +351,7 @@
 		}
 
 		// sound  button
-		itemDef 
+		itemDef
 		{
 			name				soundbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -363,7 +363,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				soundmenubutton
 			group				setup_submenu
@@ -381,16 +381,16 @@
 			visible			1
 			descText			@MENUS_CONFIGURE_SOUND_SETTINGS
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			soundbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			soundbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -417,7 +417,7 @@
 		}
 
 		// gameoptions  button
-		itemDef 
+		itemDef
 		{
 			name				gameoptionsbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -429,7 +429,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				gameoptionmenubutton
 			group				setup_submenu
@@ -447,16 +447,16 @@
 			visible			1
 			descText			@MENUS_CONFIGURE_GAME_OPTIONS
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			gameoptionsbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			gameoptionsbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -480,9 +480,9 @@
 				setitemcolor	gameoptionmenubutton	forecolor	1 1 1 1
 			}
 		}
-		
+
 		// network  button
-		itemDef 
+		itemDef
 		{
 			name				networkbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -494,7 +494,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				networkmenubutton
 			group				setup_submenu
@@ -512,16 +512,16 @@
 			visible			1
 			descText			"Configure network settings."
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			networkbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			networkbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -548,7 +548,7 @@
 		}
 
 		// mods  button
-		itemDef 
+		itemDef
 		{
 			name				modsbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -562,7 +562,7 @@
 
 
 		// gamedefaults button
-		itemDef 
+		itemDef
 		{
 			name				gamedefaultsbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -574,7 +574,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				gamedefaultsmenubutton
 			group				setup_submenu
@@ -592,16 +592,16 @@
 			visible			1
 			descText			@MENUS_RESTORE_DEFAULT_SETTINGS
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			gamedefaultsbutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			gamedefaultsbutton_glow
-			}	  	  
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 
 				defer			VideoSetup	videowarningMenu
@@ -625,8 +625,8 @@
 				setitemcolor	gamedefaultsmenubutton	forecolor	1 1 1 1
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				setup_background
 			group				none
@@ -639,7 +639,7 @@
 			visible				0
 			decoration
 		}
-		
+
 
 		//----------------------------------------------------------------------------------------------
 		//
@@ -657,7 +657,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight2
@@ -669,7 +669,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight3
@@ -681,7 +681,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight4
@@ -693,7 +693,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight5
@@ -705,7 +705,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight6
@@ -717,7 +717,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight7
@@ -729,7 +729,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight8
@@ -741,7 +741,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight9
@@ -753,7 +753,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight10
@@ -765,7 +765,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight11
@@ -789,7 +789,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight13
@@ -801,7 +801,7 @@
 			visible			0
 			decoration
 		}
-		
+
 		itemDef
 		{
 			name				highlight14
@@ -830,12 +830,12 @@
 		//	VIDEO 1 MENU BUTTONS
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
-				name 			graphics				
+				name 			graphics
 			group 			video
 			text			@MENUS_VIDEO_QUALITY
-				type 			ITEM_TYPE_MULTI	
+				type 			ITEM_TYPE_MULTI
 			rect			220 43 300 20
 				textalign		ITEM_ALIGN_RIGHT
 			textalignx		165
@@ -849,41 +849,41 @@
 				visible 		0
 
 			cvar 			"ui_r_glCustom"
-			cvarFloatList 
-			{ 
-				@MENUS_HIGH_QUALITY	0 
-				@MENUS_NORMAL		1 
-				@MENUS_FAST			2 
-				@MENUS_FASTEST		3 
-				@MENUS_CUSTOM		4 
+			cvarFloatList
+			{
+				@MENUS_HIGH_QUALITY	0
+				@MENUS_NORMAL		1
+				@MENUS_FAST			2
+				@MENUS_FASTEST		3
+				@MENUS_CUSTOM		4
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight1
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight1
-			} 
-			action 
-			{ 
+			}
+			action
+			{
 				play			"sound/interface/button1"
 				uiScript 		update "ui_r_glCustom"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				aspect_ratio
 			group				video
 	  		type				ITEM_TYPE_MULTI
 			text				"Aspect Ratio:"
-			cvarFloatList		
-			{ "Desktop Resolution" -1 
-			"4:3" 0 
+			cvarFloatList
+			{ "Desktop Resolution" -1
+			"4:3" 0
 			"16:9" 1
 			"16:10" 2 }
 			cvar				"ui_aspectratio"
@@ -910,14 +910,14 @@
 				uiScript update "ui_resolution"
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				aspect_ratio
 			group				video
 	  		type				ITEM_TYPE_MULTI
 			text				"Aspect Ratio:"
-			cvarFloatList		
+			cvarFloatList
 			{ "Desktop Resolution" -1
 			"4:3" 0
 			"16:9" 1
@@ -948,13 +948,13 @@
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				resolution
 			group				video
 	  		type				ITEM_TYPE_MULTI
 			text				"Resolution:"
-			cvarFloatList		
+			cvarFloatList
 			{
 			/*"320 X 240" 0
 			"400 X 300" 1
@@ -983,15 +983,15 @@
 			showCvar			{ 0 }
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight3
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight3
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript update "ui_resolution"
@@ -999,9 +999,9 @@
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				resolution
 			group				video
 	  		type				ITEM_TYPE_MULTI
@@ -1032,15 +1032,15 @@
 			showCvar			{ 1 }
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight3
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight3
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript update "ui_resolution"
@@ -1048,9 +1048,9 @@
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				resolution
 			group				video
 	  		type				ITEM_TYPE_MULTI
@@ -1083,15 +1083,15 @@
 			showCvar			{ 2 }
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight3
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight3
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript update "ui_resolution"
@@ -1099,9 +1099,9 @@
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				resolution
 			group				video
 	  		type				ITEM_TYPE_TEXT
@@ -1118,14 +1118,14 @@
 			showCvar			{ 3 }
 			visible				0
 
-			action 
+			action
 			{
 				play			"sound/interface/button1"
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				customResolutionWidth
 			group				video
 	  		type				ITEM_TYPE_NUMERICFIELD
@@ -1143,16 +1143,16 @@
 			showCvar			{ 3 }
 			visible				0
 
-			action 
+			action
 			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				customResolutionCross
 			group				video
 	  		type				ITEM_TYPE_TEXT
@@ -1168,9 +1168,9 @@
 			showCvar			{ 3 }
 			visible				0
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				customResolutionHeight
 			group				video
 	  		type				ITEM_TYPE_NUMERICFIELD
@@ -1189,16 +1189,16 @@
 			showCvar			{ 3 }
 			visible				0
 
-			action 
+			action
 			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				fullscreen
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1217,15 +1217,15 @@
 
 			visible			0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight4
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight4
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		glCustom
@@ -1233,9 +1233,9 @@
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				windowborder
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1255,18 +1255,18 @@
 			showCvar			{ 0 }
 			/*cvarTest			ui_r_mode
 			showCvar			{ -2 }*/
-			
+
 			visible			0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight5
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight5
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		glCustom
@@ -1275,8 +1275,8 @@
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				color_depth
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1295,15 +1295,15 @@
 
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight6
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight6
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		glCustom
@@ -1313,8 +1313,8 @@
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				geometric_detail
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1332,15 +1332,15 @@
 
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight7
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight7
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		glCustom
@@ -1350,8 +1350,8 @@
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				texture_detail
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1369,15 +1369,15 @@
 
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight8
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight8
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		glCustom
@@ -1386,8 +1386,8 @@
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				texture_filter
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1405,30 +1405,30 @@
 
 			visible				0
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight9
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight9
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1.wav"
 				uiScript		glCustom
 				setcvar			ui_r_modified	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				video_mode
 			group				video
 			type				ITEM_TYPE_MULTI
 			text				@MENUS_ANISOTROPIC_FILTERING
 			cvarTest			r_ext_texture_filter_anisotropic_avail
-			disableCvar			{ 0 }	 
+			disableCvar			{ 0 }
 			rect				220 223 300 20
 			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
@@ -1449,14 +1449,14 @@
 			descText			@MENUS_TOGGLE_ADVANCED_TEXTURE
 			mouseenter			{ show highlight10 }
 			mouseexit			{ hide highlight10 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				video_mode
 			group				video
 			type				ITEM_TYPE_MULTI
@@ -1481,25 +1481,25 @@
 			descText			"Multi-sampled anti-aliasing (MSAA)"
 			mouseenter			{ show highlight11 }
 			mouseexit			{ hide highlight11 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				VIDEO_SYNC
 			group				video
 	  			type				ITEM_TYPE_MULTI
 			text				@MENUS_VIDEO_SYNC
-			cvar				"r_swapInterval"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"r_swapInterval"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -1511,31 +1511,31 @@
 			visible			0
 			// appearance_slot		1
 			descText			@MENUS_VIDEO_SYNC_DESC
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight12
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight12
-			} 
+			}
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				MAX_FPS
 			group				video
 	  		type				ITEM_TYPE_MULTI
 			text				"Max FPS:"
-			cvar				"com_maxfps"	
-			cvarFloatList		
-			{ 
-				"Uncapped" 0  
+			cvar				"com_maxfps"
+			cvarFloatList
+			{
+				"Uncapped" 0
 				/*"30" 30
 				"60" 60
 				"70" 70
@@ -1563,22 +1563,22 @@
 			hideCvar			{ 1 }
 			// appearance_slot		1
 			descText			"Max FPS setting."
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight13
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight13
-			} 
+			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				advancedvideobutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -1588,9 +1588,9 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				advancedvideobutton
 			group				video
 	  		type				ITEM_TYPE_BUTTON
@@ -1614,9 +1614,9 @@
 			mouseenter			{ show advancedvideobutton_glow }
 			mouseexit			{ hide advancedvideobutton_glow }
 		}
-		
+
 		// APPLY CHANGES BUTTON
-		itemDef 
+		itemDef
 		{
 			name				applybutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -1628,7 +1628,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				applyChanges
 			group				video
@@ -1648,14 +1648,14 @@
 			showCvar			{ 1 }
 			visible				0
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			applybutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			applybutton_glow
-			}	  	  
+			}
 			action
 			{
 				play			"sound/interface/button1"
@@ -1666,18 +1666,18 @@
 				hide			applybutton_glow
 			}
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	ADVANCED VIDEO
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
-				name 				subdivisions				
+				name 				subdivisions
 			group 				advancedvideo
 			text				"Subdivisions:"
-				type 				ITEM_TYPE_SLIDER	
+				type 				ITEM_TYPE_SLIDER
 			rect				220 83 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
@@ -1691,8 +1691,8 @@
 			cvarFloat			"ui_r_subdivisions" 4 4 80
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				uiScript 		glCustom
 				setcvar			ui_r_modified	1
@@ -1700,13 +1700,13 @@
 				setcvar			ui_geometricdetail	4
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				lodbias				
+				name 				lodbias
 			group 				advancedvideo
 			text				"Lodbias:"
-				type 				ITEM_TYPE_MULTI	
+				type 				ITEM_TYPE_MULTI
 			rect				220 103 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
@@ -1721,18 +1721,18 @@
 			cvarFloatList		{ 0 0 1 1 2 2 3 3 }
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				uiScript 		glCustom
 				setcvar			ui_r_modified	1
 				setcvar			ui_geometricdetail	4
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				picmip			
+				name 				picmip
 			group 				advancedvideo
 			text				"Picmip:"
 				type 				ITEM_TYPE_NUMERICFIELD
@@ -1749,8 +1749,8 @@
 			cvar				"ui_r_picmip_custom"
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				uiScript 		glCustom
 				setcvar			ui_r_modified	1
@@ -1758,10 +1758,10 @@
 				setcvar			ui_r_picmip		4
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				texturefilter		
+				name 				texturefilter
 			group 				advancedvideo
 			text				"Texture Filter:"
 				type 				ITEM_TYPE_MULTI
@@ -1787,16 +1787,16 @@
 			}
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				uiScript 		glCustom
 				setcvar			ui_r_modified	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				simple_shaders
 			group				advancedvideo
 			type				ITEM_TYPE_MULTI
@@ -1814,16 +1814,16 @@
 			visible				0
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				compress_textures
 			group				advancedvideo
 			type				ITEM_TYPE_MULTI
@@ -1841,16 +1841,16 @@
 			visible				0
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-			
 
-		itemDef 
+
+		itemDef
 		{
 			name				donebutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -1860,9 +1860,9 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				done
 			group				advancedvideo
 	  		type				ITEM_TYPE_BUTTON
@@ -1886,14 +1886,14 @@
 			mouseenter			{ show donebutton_glow }
 			mouseexit			{ hide donebutton_glow }
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	VIDEO RESTART
 		//
 		//----------------------------------------------------------------------------------------------
 		// Faint red box
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_background
 			group				vidrestart
@@ -1905,7 +1905,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_text1
 			group				vidrestart
@@ -1916,13 +1916,13 @@
 			text2aligny			18
 			textalignx			176
 			font				2
-			textscale			1		
+			textscale			1
 			forecolor			1 1 0 1
 			visible			0
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_text2
 			group				vidrestart
@@ -1931,36 +1931,36 @@
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			176
 			font				2
-			textscale			1		
+			textscale			1
 			forecolor			1 1 0 1
 			visible			0
 		}
 
 
 
-		itemDef 
+		itemDef
 		{
 			name			vidrestart_yes_button
 			style			WINDOW_STYLE_SHADER
-			rect			392 256 120 32 
+			rect			392 256 120 32
 			background		"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor		1 1 1 1
 			decoration
-			visible		0 
+			visible		0
 			// appearance_slot	4
 		}
 
 		// YES button
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_yes
 			group				vidrestart
 			text				@MENUS_YES
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				392 256 120 32 
+			rect				392 256 120 32
 			font				2
-			textscale			1		
+			textscale			1
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			60
 			textaligny			0
@@ -1969,29 +1969,29 @@
 			visible				-1
 			// appearance_slot		5
 
-			action 
-			{ 
+			action
+			{
 				play		"sound/interface/button1.wav"
 				close		all
 				uiScript	updatevideosetup
 				hide		vidrestart_yes_button
 			}
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			vidrestart_yes_button
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			vidrestart_yes_button
-			}	  	  
+			}
 
 		}
-	
-		itemDef 
+
+		itemDef
 		{
 			name			vidrestart_no_button
 			style			WINDOW_STYLE_SHADER
-			rect			240 256 120 32 
+			rect			240 256 120 32
 			background		"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor		1 1 1 1
 			decoration
@@ -2000,16 +2000,16 @@
 		}
 
 		// CANCEL button
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_no
 			group				vidrestart
 			text				@MENUS_NO
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				240 256 120 32 
+			rect				240 256 120 32
 			font				2
-			textscale			1		
+			textscale			1
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			60
 			textaligny			0
@@ -2017,8 +2017,8 @@
 			forecolor			1 .682 0 1
 			visible			0
 			// appearance_slot		6
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				show			setup_background
 				hide 			vidrestart
@@ -2027,14 +2027,14 @@
 				hide			vidrestart_yes_button
 				hide			vidrestart_no_button
 			}
-			mouseEnter 
-			{ 
-				show			vidrestart_no_button 
+			mouseEnter
+			{
+				show			vidrestart_no_button
 			}
-			mouseExit 
-			{ 
-				hide			vidrestart_no_button 
-			}	  	  
+			mouseExit
+			{
+				hide			vidrestart_no_button
+			}
 
 		}
 
@@ -2043,7 +2043,7 @@
 		//	LIGHTING
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
 			name				gamma_text
 			group				lighting
@@ -2058,7 +2058,7 @@
 
 
 
-		itemDef 
+		itemDef
 		{
 			name				bright_text
 			group				lighting
@@ -2077,7 +2077,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				brightness
 			group				lighting
@@ -2094,33 +2094,33 @@
 			visible			0
 			// appearance_slot		3
 			descText			@MENUS_ADJUST_THE_BRIGHTNESS
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight5
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight5
-			} 
+			}
 		}
 
 
-		itemDef 
-		{			
+		itemDef
+		{
 			name				dynamic_light
 			group				lighting
 	  			type				ITEM_TYPE_MULTI
 			text				@MENUS_DYNAMIC_LIGHTS
-			cvar				"r_dynamiclight"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"r_dynamiclight"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 163 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -2132,32 +2132,32 @@
 			visible			0
 			// appearance_slot		1
 			descText			@MENUS_TOGGLE_TO_TURN_ON_MOVING
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight7
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight7
-			} 
+			}
 		}
 
-		itemDef 
-		{			
+		itemDef
+		{
 			name				dynamic_glow
 			group				lighting
 	  		type				ITEM_TYPE_MULTI
 			text				"Dynamic Glow:"
-			cvar				"r_DynamicGlow"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"r_DynamicGlow"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 183 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -2169,32 +2169,32 @@
 			visible			0
 			// appearance_slot		1
 			descText			"Toggle to turn on glowing light sources."
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight8
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight8
-			} 
+			}
 		}
 
-		itemDef 
-		{			
+		itemDef
+		{
 			name				light_flares
 			group				lighting
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_LIGHT_FLARES
-			cvar				"r_flares"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"r_flares"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 203 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -2206,35 +2206,35 @@
 			visible			0
 			// appearance_slot		1
 			descText			@MENUS_TOGGLE_TO_SHOW_HALOS
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight9
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight9
-			} 
+			}
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				fastsky
 			group				lighting
 	  		type				ITEM_TYPE_MULTI
 			text				"Fast Sky:"
-			cvar				"r_fastsky"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"r_fastsky"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 223 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2243,22 +2243,22 @@
 			visible			0
 			// appearance_slot		1
 			descText			"Toggle to turn on fast sky."
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight10
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight10
-			} 
+			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				advancedlightingbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -2268,15 +2268,15 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				advancedlightingbutton
 			group				lighting
 	  		type				ITEM_TYPE_BUTTON
 			text				"Advanced Lighting Options"
 			rect				260 243 200 20
-				textalign			ITEM_ALIGN_CENTER
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			100
 			textaligny			0
 			font 				4
@@ -2294,20 +2294,20 @@
 			mouseenter			{ show advancedlightingbutton_glow }
 			mouseexit			{ hide advancedlightingbutton_glow }
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	ADVANCED LIGHTING
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
-				name 				intensity				
+			name 				intensity
 			group 				advancedlighting
 			text				"Intensity:"
-				type 				ITEM_TYPE_SLIDER	
+			type 				ITEM_TYPE_SLIDER
 			rect				220 123 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2315,26 +2315,26 @@
 			style				WINDOW_STYLE_FILLED
 			forecolor			.615 .615 .956 1
 			descText			"Adjust intensity."
-				visible 			0
+			visible 			0
 			cvarFloat			"ui_r_intensity" 1 1 3
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				vertex				
+			name 				vertex
 			group 				advancedlighting
 			text				"Vertex Lighting:"
-				type 				ITEM_TYPE_MULTI	
+			type 				ITEM_TYPE_MULTI
 			rect				220 143 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2342,27 +2342,27 @@
 			style				WINDOW_STYLE_FILLED
 			forecolor			.615 .615 .956 1
 			descText			"Toggle Vertex Lighting."
-				visible 			0
+			visible 			0
 			cvar				"ui_r_vertexLight"
 			cvarFloatList		{ @MENUS_OFF 0 @MENUS_ON 1 }
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 				setcvar			ui_vidrestart	1
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				fullbright				
+			name 				fullbright
 			group 				advancedlighting
 			text				"Full Bright:"
-				type 				ITEM_TYPE_MULTI	
+			type 				ITEM_TYPE_MULTI
 			rect				220 163 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2370,26 +2370,26 @@
 			style				WINDOW_STYLE_FILLED
 			forecolor			.615 .615 .956 1
 			descText			"Toggle Full Bright."
-				visible 			0
+			visible 			0
 			cvar				"ui_r_fullBright"
 			cvarFloatList		{ @MENUS_OFF 0 @MENUS_ON 1 }
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
-				name 				lightmap				
+			name 				lightmap
 			group 				advancedlighting
 			text				"Light Map:"
-				type 				ITEM_TYPE_MULTI	
+			type 				ITEM_TYPE_MULTI
 			rect				220 183 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2402,14 +2402,14 @@
 			cvarFloatList		{ @MENUS_OFF 0 @MENUS_ON 1 }
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				setcvar			ui_r_modified	1
 			}
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				done3button_glow
 			style				WINDOW_STYLE_SHADER
@@ -2419,15 +2419,15 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				done3
 			group				advancedlighting
 	  		type				ITEM_TYPE_BUTTON
 			text				"Done"
 			rect				260 243 200 20
-				textalign			ITEM_ALIGN_CENTER
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			100
 			textaligny			0
 			font 				4
@@ -2446,28 +2446,28 @@
 			mouseenter			{ show done3button_glow }
 			mouseexit			{ hide done3button_glow }
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	VISUALS
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
-		{			
+		itemDef
+		{
 			name				shadows
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
 			text				"Shadows:"
-			cvar				"cg_shadows"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_shadows"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				"Spot" 1
 				"Dark Stencil" 2
 				"Light Stencil" 3
 			}
 			rect				220 43 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2479,22 +2479,22 @@
 			mouseenter			{ show highlight1 }
 			mouseexit			{ hide highlight1 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				blood
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
 			text				"Blood:"
-			cvar				"cg_blood"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_blood"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"On + Gibs" 2
 			}
 			rect				220 63 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2506,21 +2506,21 @@
 			mouseenter			{ show highlight2 }
 			mouseexit			{ hide highlight2 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				showabsorb
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
 			text				"Always Show Absorb:"
-			cvar				"cg_alwaysShowAbsorb"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_alwaysShowAbsorb"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 83 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2532,9 +2532,9 @@
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				ysalshell
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
@@ -2542,7 +2542,7 @@
 			cvar				"cg_stylePlayer"
 			bitMask				"10"
 			rect				220 103 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2554,9 +2554,9 @@
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				duelshell
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
@@ -2564,7 +2564,7 @@
 			cvar				"cg_stylePlayer"
 			bitMask				"1"
 			rect				220 123 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2576,16 +2576,16 @@
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				flagalpha
 			group				visuals
 	  		type				ITEM_TYPE_SLIDER
 			text				"Flag Opacity:"
 			cvarFloat			"cg_thirdPersonFlagAlpha" 1 0 1
 			rect				220 143 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2597,9 +2597,9 @@
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				screenshake
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
@@ -2612,7 +2612,7 @@
 				"While taking damage only." 1
 			}
 			rect				220 163 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2624,9 +2624,9 @@
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawgun
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
@@ -2641,7 +2641,7 @@
 				"Also remove idle drift animation." 4
 			}
 			rect				220 183 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2653,22 +2653,22 @@
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				playernames
 			group				visuals
 	  		type				ITEM_TYPE_MULTI
 			text				"Draw Player Names:"
-			cvar				"cg_drawPlayerNames"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawPlayerNames"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"On + Health Bar" 2
 			}
 			rect				220 203 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2680,9 +2680,9 @@
 			mouseenter			{ show highlight9 }
 			mouseexit			{ hide highlight9 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawduelers
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
@@ -2690,7 +2690,7 @@
 			cvar				"cg_stylePlayer"
 			bitMask				"2"
 			rect				220 223 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2702,9 +2702,9 @@
 			mouseenter			{ show highlight10 }
 			mouseexit			{ hide highlight10 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawracersinffa
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
@@ -2712,7 +2712,7 @@
 			cvar				"cg_stylePlayer"
 			bitMask				"3"
 			rect				220 243 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2724,17 +2724,17 @@
 			mouseenter			{ show highlight11 }
 			mouseexit			{ hide highlight11 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				hidenonracersifracer
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Hide non racers if racer:"
-			cvar				"cg_stylePlayer"	
+			cvar				"cg_stylePlayer"
 			bitMask				"4"
 			rect				220 263 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2746,17 +2746,17 @@
 			mouseenter			{ show highlight12 }
 			mouseexit			{ hide highlight12 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				hideracersifracer
 			group				visuals
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Hide racers if racer:"
-			cvar				"cg_stylePlayer"	
+			cvar				"cg_stylePlayer"
 			bitMask				"5"
 			rect				220 283 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2768,8 +2768,8 @@
 			mouseenter			{ show highlight13 }
 			mouseexit			{ hide highlight13 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				morevisualsbutton_glow
 			style				WINDOW_STYLE_SHADER
@@ -2779,15 +2779,15 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				morevisualsbutton
 			group				visuals
 	  		type				ITEM_TYPE_BUTTON
 			text				"More Visual Options"
 			rect				260 303 200 20
-				textalign			ITEM_ALIGN_CENTER
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			100
 			textaligny			0
 			font 				4
@@ -2811,15 +2811,15 @@
 		//	MORE VISUALS
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
-		{			
+		itemDef
+		{
 			name				consoleopacity
 			group				morevisuals
 	  		type				ITEM_TYPE_SLIDER
 			text				"Console Opacity:"
 			cvarFloat			"con_opacity" 1 0 1
 			rect				220 43 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2831,17 +2831,17 @@
 			mouseenter			{ show highlight1 }
 			mouseexit			{ hide highlight1 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				corpsefadeinstant
 			group				morevisuals
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Fade corpses immediately:"
-			cvar				"cg_stylePlayer"	
+			cvar				"cg_stylePlayer"
 			bitMask				"12"
 			rect				220 63 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2853,17 +2853,17 @@
 			mouseenter			{ show highlight2 }
 			mouseexit			{ hide highlight2 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				corpsefx
 			group				morevisuals
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Disable Corpse Fade Effects:"
-			cvar				"cg_stylePlayer"	
+			cvar				"cg_stylePlayer"
 			bitMask				"13"
 			rect				220 83 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2875,16 +2875,16 @@
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				fleshsparks
 			group				morevisuals
 	  		type				ITEM_TYPE_NUMERICFIELD
 			text				"Flesh Sparks:"
-			cvar				"cg_fleshSparks"	
+			cvar				"cg_fleshSparks"
 			rect				220 103 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2896,21 +2896,21 @@
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				simpleitems
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_SIMPLE_ITEMS
 			cvar				"cg_simpleItems"
-			cvarFloatList		
-			{ 
+			cvarFloatList
+			{
 				@MENUS_OFF		0
 				@MENUS_ON		1
 			}
 			rect				220 123 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2922,21 +2922,21 @@
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				wall_marks
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_WALL_MARKS
-			cvar				"cg_marks"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
-				@MENUS_ON 1 
+			cvar				"cg_marks"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
 			}
 			rect				220 143 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2948,9 +2948,9 @@
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				nofx
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
@@ -2965,7 +2965,7 @@
 				"Also remove misc_models" 4
 			}
 			rect				220 163 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -2977,21 +2977,21 @@
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				telefx
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
 			text				"No Teleport Effects:"
-			cvar				"cg_noTeleFX"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_noTeleFX"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 183 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -3003,9 +3003,9 @@
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				remaps
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
@@ -3017,7 +3017,7 @@
 				@MENUS_ON 1
 			}
 			rect				220 203 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -3029,23 +3029,23 @@
 			mouseenter			{ show highlight9 }
 			mouseexit			{ hide highlight9 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				sabertrail
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
 			text				"Saber Trail:"
-			cvar				"cg_saberTrail"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_saberTrail"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"Shader" 3
 				"Mirror" 2
 			}
 			rect				220 223 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -3057,9 +3057,9 @@
 			mouseenter			{ show highlight10 }
 			mouseexit			{ hide highlight10 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				speedtrail
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
@@ -3083,9 +3083,9 @@
 			mouseenter			{ show highlight11 }
 			mouseexit			{ hide highlight11 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawhitbox
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
@@ -3109,9 +3109,9 @@
 			mouseenter			{ show highlight12 }
 			mouseexit			{ hide highlight12 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawchatboxemojis
 			group				morevisuals
 	  		type				ITEM_TYPE_MULTI
@@ -3123,7 +3123,7 @@
 				@MENUS_ON 1
 			}
 			rect				220 283 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -3136,7 +3136,7 @@
 			mouseexit			{ hide highlight13 }
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				done2button_glow
 			style				WINDOW_STYLE_SHADER
@@ -3146,15 +3146,15 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				done2
 			group				morevisuals
 	  		type				ITEM_TYPE_BUTTON
 			text				"Done"
-			rect				260 283 200 20
-				textalign			ITEM_ALIGN_CENTER
+			rect				260 303 200 20
+			textalign			ITEM_ALIGN_CENTER
 			textalignx			100
 			textaligny			0
 			font 				4
@@ -3172,22 +3172,22 @@
 			mouseenter			{ show done2button_glow }
 			mouseexit			{ hide done2button_glow }
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	HUD
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
-		{			
+		itemDef
+		{
 			name				drawfps
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Draw FPS:"
-			cvar				"cg_drawFPS"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawFPS"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"On + Small Text" 2
 			}
@@ -3204,17 +3204,17 @@
 			mouseenter			{ show highlight1 }
 			mouseexit			{ hide highlight1 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawtimer
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Draw Timer:"
-			cvar				"cg_drawTimer"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawTimer"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"On + Small Text" 2
 			}
@@ -3231,14 +3231,14 @@
 			mouseenter			{ show highlight2 }
 			mouseexit			{ hide highlight2 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				speedgraph
 			group				hud
 	  		type				ITEM_TYPE_CHECKBOX
 			text				"Speed Graph:"
-			cvar				"cg_speedometer"	
+			cvar				"cg_speedometer"
 			bitMask				"7"
 			rect				220 83 300 20
 			textalign			ITEM_ALIGN_RIGHT
@@ -3253,17 +3253,17 @@
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				lagometer
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Lagometer:"
-			cvar				"cg_lagometer"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_lagometer"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 				"On + Ping" 2
 				"On - Background" 3
@@ -3281,17 +3281,17 @@
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				killmessage
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Kill Message:"
-			cvar				"cg_killMessage"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_killMessage"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 123 300 20
@@ -3307,17 +3307,17 @@
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				smallscoreboard
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Small Scoreboard:"
-			cvar				"cg_smallScoreboard"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_smallScoreboard"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 143 300 20
@@ -3333,17 +3333,17 @@
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				drawenemyinfo
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Draw Enemy Info:"
-			cvar				"cg_drawEnemyInfo"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawEnemyInfo"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 163 300 20
@@ -3359,17 +3359,17 @@
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				teamoverlay
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_TEAM_OVERLAY
-			cvar				"cg_drawTeamOverlay"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawTeamOverlay"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 183 300 20
@@ -3385,17 +3385,17 @@
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				radar
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Draw Radar:"
-			cvar				"cg_drawRadar"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawRadar"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 203 300 20
@@ -3411,17 +3411,17 @@
 			mouseenter			{ show highlight9 }
 			mouseexit			{ hide highlight9 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				simple
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"HUD:"
-			cvar				"cg_hudFiles"	
-			cvarFloatList		
-			{ 
-				"BaseJKA (Default)" 0  
+			cvar				"cg_hudFiles"
+			cvarFloatList
+			{
+				"BaseJKA (Default)" 0
 				"Simple HUD" 1
 				"Jedi Outcast" 2
 				"Elegance" 3
@@ -3439,21 +3439,21 @@
 			mouseenter			{ show highlight10 }
 			mouseexit			{ hide highlight10 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				gradient
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Simple HUD Gradient:"
-			cvar				"cg_hudColors"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_hudColors"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			cvarTest			cg_hudFiles
-			showCvar			{ 1 } 
+			showCvar			{ 1 }
 			rect				220 243 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
@@ -3467,17 +3467,17 @@
 			mouseenter			{ show highlight11 }
 			mouseexit			{ hide highlight11 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				score_line
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Player Score on HUD:"
-			cvar				"cg_drawScore"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawScore"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			cvarTest			cg_hudFiles
@@ -3495,17 +3495,17 @@
 			mouseenter			{ show highlight11 }
 			mouseexit			{ hide highlight11 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				tint
 			group				hud
 	  		type				ITEM_TYPE_MULTI
 			text				"Tint HUD:"
-			cvar				"cg_tintHud"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_tintHud"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			cvarTest			cg_hudFiles
@@ -3523,14 +3523,14 @@
 			mouseenter			{ show highlight12 }
 			mouseexit			{ hide highlight12 }
 		}
-		
-		
+
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	SOUND FIELDS
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
 			name				effects_volume
 			group				sound
@@ -3547,22 +3547,22 @@
 			visible			0
 			// appearance_slot		1
 			descText			@MENUS_ADJUST_VOLUME_FOR_SOUND
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight2
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight2
-			} 
+			}
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				music_volume
 			group				sound
@@ -3579,21 +3579,21 @@
 			visible			0
 			// appearance_slot		2
 			descText			@MENUS_ADJUST_VOLUME_FOR_MUSIC
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight3
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight3
-			} 
+			}
 		}
-		
+
 		itemDef
 		{
 			name				duel_music
@@ -3612,17 +3612,17 @@
 			visible				0
 			desctext			"Toggle the duel soundtrack played during a duel."
 			action				{ play "sound/interface/button1" }
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight3
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight3
-			} 
+			}
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				voice_volume
 			group				sound
@@ -3638,23 +3638,23 @@
 			forecolor		.615 .615 .956 1
 			visible				0
 			descText			@MENUS_VOICE_VOLUME_DESC
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight4
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight4
-			} 
+			}
 		}
 
-		itemDef 
-		{	
+		itemDef
+		{
 			name				sound_quality
 			group				sound
 	  		type				ITEM_TYPE_MULTI
@@ -3673,28 +3673,28 @@
 			cvarTest			"s_UseOpenAL"
 			hideCvar			{ 1 }
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight5
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight5
-			} 
-			action 
+			}
+			action
 			{
 				play			"sound/interface/button1"
 				uiScript		update 	"s_khz"
 			}
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				race
 			group				sound
 	  		type				ITEM_TYPE_MULTI
 			cvarTest			"ui_isJAPro"
-			showCvar 
+			showCvar
 			{ "1" }
 			text				"Race Sounds:"
 			cvar				"cg_raceSounds"
@@ -3709,12 +3709,12 @@
 			visible				0
 			descText			"Toggle race start/finish sounds on jaPRO courses."
 			mouseenter			{ show highlight6 }
-			mouseexit			{ hide highlight6 } 
+			mouseexit			{ hide highlight6 }
 			action				{ play "sound/interface/button1" }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				hit
 			group				sound
 	  		type				ITEM_TYPE_MULTI
@@ -3731,12 +3731,12 @@
 			visible				0
 			descText			"Set the type of hit sounds."
 			mouseenter			{ show highlight7 }
-			mouseexit			{ hide highlight7 } 
+			mouseexit			{ hide highlight7 }
 			action				{ play "sound/interface/button1" }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				jump
 			group				sound
 	  		type				ITEM_TYPE_MULTI
@@ -3753,12 +3753,12 @@
 			visible				0
 			descText			"Set when jump sounds should be played."
 			mouseenter			{ show highlight8 }
-			mouseexit			{ hide highlight8 } 
+			mouseexit			{ hide highlight8 }
 			action				{ play "sound/interface/button1" }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				roll
 			group				sound
 	  		type				ITEM_TYPE_MULTI
@@ -3775,12 +3775,12 @@
 			visible				0
 			descText			"Set when roll sounds should be played."
 			mouseenter			{ show highlight9 }
-			mouseexit			{ hide highlight9 } 
+			mouseexit			{ hide highlight9 }
 			action				{ play "sound/interface/button1" }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				chat
 			group				sound
 	  		type				ITEM_TYPE_MULTI
@@ -3797,11 +3797,11 @@
 			visible				0
 			descText			"Toggle the chat beep notification."
 			mouseenter			{ show highlight10 }
-			mouseexit			{ hide highlight10 } 
+			mouseexit			{ hide highlight10 }
 			action				{ play "sound/interface/button1" }
 		}
 
-		/*itemDef 
+		/*itemDef
 		{
 			name				eax
 			group				sound
@@ -3818,20 +3818,20 @@
 			forecolor		.615 .615 .956 1
 			visible			0
 			descText			@MENUS_EAX_DESC
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1.wav"
 				uiScript		update s_khz
 			}
 
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight10
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight10
-			} 
+			}
 		}
 
 		itemDef
@@ -3847,9 +3847,9 @@
 			cvarTest			"s_UseOpenAL"
 			hideCvar			{ 0 }
 		}*/
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				text
 			group				sound
 		  	type				ITEM_TYPE_MULTI
@@ -3866,25 +3866,25 @@
 			forecolor			.615 .615 .956 1
 			visible				0
 			descText			@MENUS_CHOOSE_THE_LANGUAGE_FOR
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1.wav"
 				show			langapply
 			}
 
 			mouseenter			{ show	highlight11 }
-			mouseexit			{ hide	highlight11 } 
+			mouseexit			{ hide	highlight11 }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				voice
 			group				sound
 		  	type				ITEM_TYPE_MULTI
 			text				@MENUS_VOICE
 			cvar				"s_language"
-			cvarStrList		
-			{ 
+			cvarStrList
+			{
 				English  			english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch				deutsch
@@ -3905,28 +3905,28 @@
 				play			"sound/interface/button1.wav"
 				show			langapply
 			}
-			mouseenter 
-			{ 
+			mouseenter
+			{
 				show			highlight12
 			}
-			mouseexit 
-			{ 
+			mouseexit
+			{
 				hide			highlight12
-			} 
+			}
 		}
-		
+
 
 		// APPLY CHANGES button
-		itemDef 
+		itemDef
 		{
 			name				langapply
 			group				sound
 			text				@MENUS_SET_LANGUAGE
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				365 293 120 32 
+			rect				365 293 120 32
 			font				2
-			textscale			1		
+			textscale			1
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			60
 			textaligny			0
@@ -3935,18 +3935,18 @@
 			visible				0
 			// appearance_slot		5
 
-			action 
-			{ 
+			action
+			{
 				play		"sound/interface/button1"
 				exec		"ui_load ; snd_restart"
 				hide			langapply
 			}
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			highlightApplyButton
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			highlightApplyButton
 			}
 		}
@@ -3957,16 +3957,16 @@
 		//
 		//----------------------------------------------------------------------------------------------
 
-		itemDef 
-		{			
+		itemDef
+		{
 			name				drawcrosshair
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"@MENUS_DRAW_CROSSHAIR"
-			cvar				"cg_drawcrosshair"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_drawcrosshair"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				"On (Default)" 1 //On (1)
 				"On (2)" 2
 				"On (3)" 3
@@ -3990,17 +3990,17 @@
 			mouseenter			{ show highlight1 }
 			mouseexit			{ hide highlight1 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				identifytarget
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_IDENTIFY_TARGET
-			cvar				"cg_crosshairIdentifyTarget"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_crosshairIdentifyTarget"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 63 300 20
@@ -4016,17 +4016,17 @@
 			mouseenter			{ show highlight2 }
 			mouseexit			{ hide highlight2 }
 		}
-		
-		/*itemDef 
-		{			
+
+		/*itemDef
+		{
 			name				dynamiccrosshair
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Dynamic Crosshair"
-			cvar				"cg_dynamicCrosshair"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_dynamicCrosshair"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 83 300 20
@@ -4042,17 +4042,17 @@
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				dynamiccrosshairprecision
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Dynamic Crosshair Precision:
-			cvar				"cg_dynamicCrosshairPrecision"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_dynamicCrosshairPrecision"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 103 300 20
@@ -4068,17 +4068,17 @@
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
 		}*/
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				leadindicator
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Lead Indicator:"
-			cvar				"cg_leadIndicator"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_leadIndicator"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				"Automatic" 1
 			}
 			rect				220 123 300 20
@@ -4094,9 +4094,9 @@
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				simulatedprojectiles
 			group				options
 	  		type				ITEM_TYPE_NUMERICFIELD
@@ -4115,17 +4115,17 @@
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				autokill
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Auto Kill When Falling:"
-			cvar				"cg_autoKillWhenFalling"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_autoKillWhenFalling"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 163 300 20
@@ -4141,17 +4141,17 @@
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				autodemo
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Auto Record Demo:"
-			cvar				"cg_autoRecordDemo"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_autoRecordDemo"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 183 300 20
@@ -4167,17 +4167,17 @@
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				autorace
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Auto Record Race:"
-			cvar				"cg_autoRecordRaceDemo"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_autoRecordRaceDemo"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 203 300 20
@@ -4193,17 +4193,17 @@
 			mouseenter			{ show highlight9 }
 			mouseexit			{ hide highlight9 }
 		}
-		
-		itemDef 
-		{			
+
+		itemDef
+		{
 			name				autoscreen
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Auto Screenshot:"
-			cvar				"cg_autoScreenshot"	
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 0  
+			cvar				"cg_autoScreenshot"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
 			rect				220 223 300 20
@@ -4219,18 +4219,18 @@
 			mouseenter			{ show highlight10 }
 			mouseexit			{ hide highlight10 }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				drawrecording
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				"Demo Recording Message:"
 			desctext			"Toggle to show RECORDING message when recording demos."
 			cvar				"cl_drawRecording"
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 								0  
+			cvarFloatList
+			{
+				@MENUS_OFF 								0
 				@MENUS_ON	 							4
 				"Show demo name only."					3
 				"Show demo name & size."				2
@@ -4240,7 +4240,7 @@
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
-			font 				4					
+			font 				4
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			visible				0
@@ -4249,19 +4249,19 @@
 				play			"sound/interface/button1.wav"
 			}
 			mouseenter			{ show	highlight11 }
-			mouseexit			{ hide	highlight11 } 
+			mouseexit			{ hide	highlight11 }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				weaponswayon
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_VIEW_SWAYING
 			descText			@MENUS_VIEW_SWAYING_DESC
 			cvar				"ui_disableWeaponSway"
-			cvarFloatList		
-			{ 
+			cvarFloatList
+			{
 				@MENUS_ON	 0
 				@MENUS_OFF 	1
 			}
@@ -4278,9 +4278,9 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			visible				0
-			action 
+			action
 			{
-				play			"sound/interface/button1"	
+				play			"sound/interface/button1"
 				exec			"exec noMotion.cfg"
 				show			weaponswayoff
 				setfocus		weaponswayoff
@@ -4289,7 +4289,7 @@
 			mouseexit			{ hide highlight12 }
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				weaponswayoff
 			group				options
@@ -4297,8 +4297,8 @@
 			text				@MENUS_VIEW_SWAYING
 			descText			@MENUS_VIEW_SWAYING_DESC
 			cvar				"ui_disableWeaponSway"
-			cvarFloatList		
-			{ 
+			cvarFloatList
+			{
 				@MENUS_ON	0
 				@MENUS_OFF 	1
 			}
@@ -4315,29 +4315,29 @@
 			textscale 			1
 			forecolor		.615 .615 .956 1
 			visible				0
-			action 
+			action
 			{
-				play			"sound/interface/button1"	
+				play			"sound/interface/button1"
 				exec			"exec restoreMotion.cfg"
 				show			weaponswayon
 				setfocus		weaponswayon
 			}
 			mouseenter			{ show highlight12 }
-			mouseexit			{ hide highlight12 } 
+			mouseexit			{ hide highlight12 }
 		}
-		
-		itemDef 
-		{	
+
+		itemDef
+		{
 			name				footsteps
 			group				options
 	  		type				ITEM_TYPE_MULTI
 			text				@MENUS_FOOTSTEPS
 			desctext			@MENUS_FOOTSTEPS_DESC
 			cvar				"cg_footsteps"
-			cvarFloatList		
-			{ 
-				@MENUS_OFF 			0  
-				@MENUS_SOUNDS	 		1 
+			cvarFloatList
+			{
+				@MENUS_OFF 			0
+				@MENUS_SOUNDS	 		1
 				@MENUS_SOUNDS_AND_EFFECTS	2
 				@MENUS_SOUNDS_EFFECTS_GRAPHICS	3
 			}
@@ -4345,7 +4345,7 @@
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
-			font 				4					
+			font 				4
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			visible				0
@@ -4354,15 +4354,15 @@
 				play			"sound/interface/button1.wav"
 			}
 			mouseenter			{ show	highlight13 }
-			mouseexit			{ hide	highlight13 } 
+			mouseexit			{ hide	highlight13 }
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	NETWORK
 		//
 		//----------------------------------------------------------------------------------------------
-		itemDef 
+		itemDef
 		{
 			name				allowdownload
 			group				network
@@ -4370,8 +4370,8 @@
 			text				@MENUS_ALLOW_DOWNLOADS
 			descText			@MENUS_ALLOW_DOWNLOADS_INFO
 			cvar				"cl_allowDownload"
-			cvarFloatList		
-			{ 
+			cvarFloatList
+			{
 				@MENUS_ON	 	1
 				@MENUS_OFF 		0
 			}
@@ -4387,8 +4387,8 @@
 			mouseenter			{ show highlight3 }
 			mouseexit			{ hide highlight3 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				maxpackets
 			group				network
@@ -4429,7 +4429,7 @@
 			}
 		}
 		*/
-		itemDef 
+		itemDef
 		{
 			name				packetdup
 			group				network
@@ -4449,8 +4449,8 @@
 			mouseenter			{ show highlight5 }
 			mouseexit			{ hide highlight5 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				snaps
 			group				network
@@ -4470,8 +4470,8 @@
 			mouseenter			{ show highlight6 }
 			mouseexit			{ hide highlight6 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				rate
 			group				network
@@ -4491,8 +4491,8 @@
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				timenudge
 			group				network
@@ -4512,8 +4512,8 @@
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				timenudgeduration
 			group				network
@@ -4533,9 +4533,9 @@
 			mouseenter			{ show highlight9 }
 			mouseexit			{ hide highlight9 }
 		}
-		
+
 		// APPLY CHANGES BUTTON
-		itemDef 
+		itemDef
 		{
 			name				applyChanges2
 			text				@MENUS_APPLY_CHANGES
@@ -4552,14 +4552,14 @@
 			backcolor			0 0 1 0
 			visible				0
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			applybutton_glow
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			applybutton_glow
-			}	  	  
+			}
 			action
 			{
 				play			"sound/interface/button1"
@@ -4568,33 +4568,33 @@
 				hide			applybutton_glow
 			}
 		}
-		
+
 		//----------------------------------------------------------------------------------------------
 		//
 		//	RESET DEFAULTS
 		//
 		//----------------------------------------------------------------------------------------------
 		// Faint red box
-		itemDef 
+		itemDef
 		{
 			name				vidrestart_background
 			group				defaults
 			style				WINDOW_STYLE_SHADER
-			rect				210 41 352 287		
+			rect				210 41 352 287
 			background			"gfx/menus/menu_boxred"					// Frame
 			forecolor			1 1 1 1
 			visible			0
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				options
 			group				defaults
 			text				@MENUS_WARNING
 			rect				210 61 352 20
 			font				2
-			textscale			1	
+			textscale			1
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			176
 			forecolor			1 .682 0 1
@@ -4602,7 +4602,7 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				options
 			group				defaults
@@ -4617,8 +4617,8 @@
 			visible				0
 			decoration
 		}
-		
-		itemDef 
+
+		itemDef
 		{
 			name				options
 			group				defaults
@@ -4634,14 +4634,14 @@
 			decoration
 		}
 
-		itemDef 
+		itemDef
 		{
 			name				options
 			group				defaults
 			text				@MENUS_VID_RESTART3
 			rect				220 191 352 20
 			font				2
-			textscale			1	
+			textscale			1
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			176
 			forecolor			1 .682 0 1
@@ -4650,28 +4650,28 @@
 		}
 
 
-		itemDef 
+		itemDef
 		{
 			name			default_yes_button
 			group			default_glow
 			style			WINDOW_STYLE_SHADER
-			rect			430 256 120 32 
+			rect			430 256 120 32
 			background		"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor		1 1 1 1
 			decoration
 			visible			0
 			// appearance_slot	4
 		}
-	
+
 		// YES button - lose reset defaults
-		itemDef 
+		itemDef
 		{
 			name				default_yes
 			group				defaults
 			text				@MENUS_YES
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				430 256 120 32 
+			rect				430 256 120 32
 			font				2
 			textscale			1
 			textalign			ITEM_ALIGN_CENTER
@@ -4683,29 +4683,29 @@
 			visible			0
 			// appearance_slot		5
 
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				close			all
 				uiscript		resetdefaults
 			}
-			mouseEnter 
-			{ 
-				show			default_yes_button 
+			mouseEnter
+			{
+				show			default_yes_button
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			default_yes_button
-			}	  	  
+			}
 
 		}
-	
-		itemDef 
+
+		itemDef
 		{
 			name			default_no_button
 			group			default_glow
 			style			WINDOW_STYLE_SHADER
-			rect			220 256 120 32 
+			rect			220 256 120 32
 			background		"gfx/menus/menu_buttonback"			// Frame around button
 			forecolor		1 1 1 1
 			decoration
@@ -4714,14 +4714,14 @@
 		}
 
 		// NO button - return to Main Menu
-		itemDef 
+		itemDef
 		{
 			name				default_no
 			group				defaults
 			text				@MENUS_NO
 			type				ITEM_TYPE_BUTTON
 			style				WINDOW_STYLE_EMPTY
-			rect				220 256 120 32 
+			rect				220 256 120 32
 			font				2
 			textscale			1
 			textalign			ITEM_ALIGN_CENTER
@@ -4732,8 +4732,8 @@
 			forecolor			1 .682 0 1
 			visible			0
 			// appearance_slot		6
-			action 
-			{ 
+			action
+			{
 				play			"sound/interface/button1"
 				uiscript 		clearmouseover	default_no
 				hide				defaults
@@ -4741,14 +4741,14 @@
 				close			all
 				open			ingame_setup
 			}
-			mouseEnter 
-			{ 
-				show			default_no_button 
+			mouseEnter
+			{
+				show			default_no_button
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			default_no_button
-			}	  	  
+			}
 		}
 	}
 }
