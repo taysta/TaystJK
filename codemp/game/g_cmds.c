@@ -699,7 +699,7 @@ QINLINE void DeletePlayerProjectiles(gentity_t *ent) {
 }
 
 void G_UpdatePlaytime(int null, char *username, int seconds );
-void QINLINE ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
+static QINLINE void ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 	qboolean wasReset = qfalse;;
 
 	if (!ent->client)
@@ -780,7 +780,7 @@ void QINLINE ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 }
 
 
-void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
+void ResetPlayerTimers(gentity_t *ent, qboolean print)
 {
 	ResetSpecificPlayerTimers(ent, print);
 
@@ -793,7 +793,7 @@ void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
 
 
 /*
-void QINLINE ResetPlayerTimers(gentity_t *ent, qboolean print)
+void ResetPlayerTimers(gentity_t *ent, qboolean print)
 {
 	ResetSpecificPlayerTimers(ent, print);
 
