@@ -1752,7 +1752,7 @@ CG_NewClientInfo
 ======================
 */
 void WP_SetSaber( int entNum, saberInfo_t *sabers, int saberNum, const char *saberName );
-void ParseRGBSaber(char *str, vec3_t c);//rgb
+static QINLINE void ParseRGBSaber(char *str, vec3_t c);//rgb
 
 void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	clientInfo_t *ci;
@@ -4440,7 +4440,7 @@ static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
 								== 2 - Draw only cold breath.
 								== 3 - Draw only under water bubbles (when under water)	*/
 
-	if ( !cg.snap || (cent->currentState.eFlags & EF_DEAD) )
+	if ( !cg.snap || !ci || (cent->currentState.eFlags & EF_DEAD) )
 	{
 		return;
 	}
@@ -5666,35 +5666,23 @@ int CG_LightVerts( vec3_t normal, int numVerts, polyVert_t *verts )
 }
 
 //rgb
-int getint( const char **buf ) {
-	return (int)strtod( *buf, (char **)buf );
-}
-
-void ParseRGBSaber( char *str, vec3_t c ) {
-	char *p = str;
+static QINLINE void ParseRGBSaber( char *str, vec3_t c ) {
 	int i;
+	char *p = str;
 
-	for(i=0;i<3;i++) {
-		c[i] = getint(&p);
+	for (i = 0; i < 3; i++) {
+		c[i] = (int)strtod( p, (char **)&p );
 		p++;
 	}
 }
-//rgb
 
-qboolean pluginNoBlackSabers() {
-	if (cgs.serverMod >= SVMOD_JAPLUS) {
-		if (!(cp_pluginDisable.integer & JAPRO_PLUGIN_BLACKSABERSDISABLE))
-			return qfalse;
-	}
-	return qtrue;
-}
-
-static int ClampSaberColor(int color) {
+#define PLUGIN_NO_BLACKSABERS ((cgs.serverMod < SVMOD_JAPLUS || !(cp_pluginDisable.integer & JAPRO_PLUGIN_BLACKSABERSDISABLE)))
+static QINLINE int ClampSaberColor(int color) {
 	if (color >= NUM_SABER_COLORS)
 		color = color % NUM_SABER_COLORS; //cap it to highest 'valid' color?
 
 	if (color == SABER_BLACK)
-		return (pluginNoBlackSabers() || cg_noRGBSabers.integer) ? SABER_ORANGE : SABER_BLACK;
+		return (PLUGIN_NO_BLACKSABERS || cg_noRGBSabers.integer) ? SABER_ORANGE : SABER_BLACK;
 
 	if (color > SABER_PURPLE && (cg_noRGBSabers.integer || cgs.serverMod < SVMOD_JAPLUS)) {
 		if (disco.integer)
@@ -5707,6 +5695,7 @@ static int ClampSaberColor(int color) {
 
 	return color;
 }
+//rgb
 
 static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int bnum ) //rgb
 {
@@ -5915,7 +5904,7 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 		case SABER_ELEC1:
 			glow = cgs.media.rgbSaberGlow3Shader;
 			blade = cgs.media.rgbSaberCore3Shader;
- 			break;
+			break;
 		case SABER_FLAME2:
 			glow = cgs.media.rgbSaberGlow4Shader;
 			blade = cgs.media.rgbSaberCore4Shader;
@@ -5937,10 +5926,12 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	}
 
 #if NEW_SABER_PARMS
-	if (cgs.clientinfo[cnum].saber[bnum].customBladeShader)
-		blade = cgs.clientinfo[cnum].saber[bnum].customBladeShader;
-	if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
-		glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+	if (cnum >= 0 && cnum < MAX_CLIENTS && cgs.clientinfo[cnum].infoValid) {
+		if (cgs.clientinfo[cnum].saber[bnum].customBladeShader)
+			blade = cgs.clientinfo[cnum].saber[bnum].customBladeShader;
+		if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
+			glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+	}
 #endif
 
 	if (doLight)
@@ -6100,8 +6091,10 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		case SABER_RGB:
 			glow = cgs.media.rgbSaberGlowShader;
 #if NEW_SABER_PARMS
-			if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
-				glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+			if (cnum >= 0 && cnum < MAX_CLIENTS && cgs.clientinfo[cnum].infoValid) {
+				if (cgs.clientinfo[cnum].saber[bnum].customGlowShader)
+					glow = cgs.clientinfo[cnum].saber[bnum].customGlowShader;
+			}
 #endif
 			break;
 		case SABER_FLAME1:
@@ -7055,17 +7048,19 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	}
 	//Assume bladeNum is equal to the bolt index because bolts should be added in order of the blades.
 	//if there is an effect on this blade, play it
-	if (  !WP_SaberBladeUseSecondBladeStyle( &client->saber[saberNum], bladeNum )
-			&& client->saber[saberNum].bladeEffect )
-	{
-		trap->FX_PlayBoltedEffectID(client->saber[saberNum].bladeEffect, scent->lerpOrigin,
-			scent->ghoul2, bladeNum, scent->currentState.number, useModelIndex, -1, qfalse);
-	}
-	else if ( WP_SaberBladeUseSecondBladeStyle( &client->saber[saberNum], bladeNum )
-			&& client->saber[saberNum].bladeEffect2 )
-	{
-		trap->FX_PlayBoltedEffectID(client->saber[saberNum].bladeEffect2, scent->lerpOrigin,
-			scent->ghoul2, bladeNum, scent->currentState.number, useModelIndex, -1, qfalse);
+	if ( !cl_paused.integer ) {
+		if ( !WP_SaberBladeUseSecondBladeStyle( &client->saber[saberNum], bladeNum )
+				&& client->saber[saberNum].bladeEffect )
+		{
+			trap->FX_PlayBoltedEffectID(client->saber[saberNum].bladeEffect, scent->lerpOrigin,
+				scent->ghoul2, bladeNum, scent->currentState.number, useModelIndex, -1, qfalse);
+		}
+		else if ( WP_SaberBladeUseSecondBladeStyle( &client->saber[saberNum], bladeNum )
+				&& client->saber[saberNum].bladeEffect2 )
+		{
+			trap->FX_PlayBoltedEffectID(client->saber[saberNum].bladeEffect2, scent->lerpOrigin,
+				scent->ghoul2, bladeNum, scent->currentState.number, useModelIndex, -1, qfalse);
+		}
 	}
 	//get the boltMatrix
 	trap->G2API_GetBoltMatrix(scent->ghoul2, useModelIndex, bladeNum, &boltMatrix, futureAngles, origin, cg.time, cgs.gameModels, scent->modelScale);
@@ -10227,26 +10222,39 @@ void CG_Player( centity_t *cent ) {
 	}
 //JAPRO - Clientside - Draw Duelers - End
 
+//JAPRO - Clientside - Draw Player Collision Hitbox - Start
 	if (cg_drawHitBox.integer) {
 		vec3_t bmins = {-15, -15, DEFAULT_MINS_2}, bmaxs = {15, 15, DEFAULT_MAXS_2}, absmin, absmax;
+		int x, zd, zu;
 
-		if (pm && cent->currentState.clientNum && pm->ps->clientNum)
+		if (pm && pm->ps && cent->currentState.clientNum == pm->ps->clientNum)
 		{
 			VectorCopy(pm->mins, bmins);
 			VectorCopy(pm->maxs, bmaxs);
+		}
+		else if (cent->currentState.solid) {
+			x = (cent->currentState.solid & 255);
+			zd = ((cent->currentState.solid >> 8) & 255);
+			zu = ((cent->currentState.solid >> 16) & 255) - 32;
+
+			bmins[0] = bmins[1] = -x;
+			bmaxs[0] = bmaxs[1] = x;
+			bmins[2] = -zd;
+			bmaxs[2] = zu;
 		}
 
 		if (!CG_IsMindTricked(cent->currentState.trickedentindex,
 			cent->currentState.trickedentindex2,
 			cent->currentState.trickedentindex3,
-			cent->currentState.trickedentindex4,
-			cg.snap->ps.clientNum)) {
+			cent->currentState.trickedentindex4, cg.snap->ps.clientNum))
+		{
 
 			VectorAdd( cent->lerpOrigin, bmins, absmin );
 			VectorAdd( cent->lerpOrigin, bmaxs, absmax );
 			CG_CubeOutline( absmin, absmax, 1, COLOR_RED, 0.25 );
 		}
 	}
+//JAPRO - Clientside - Draw Player Collision Hitbox - End
 
 /*
 	if (cg_strafeTrailPlayers.integer && cg_strafeTrailLife.value > 0.0f) {
@@ -10677,7 +10685,8 @@ void CG_Player( centity_t *cent ) {
 		if (cent->currentState.saberInFlight && cent->currentState.torsoAnim == BOTH_STAND1)
 			cent->currentState.torsoAnim = cent->currentState.legsAnim;
 
-		if (cgs.serverMod != SVMOD_JAPRO) {
+		if (cgs.serverMod != SVMOD_JAPRO || !cg.predictedPlayerState.stats[STAT_RACEMODE] || !(cgs.jcinfo2 & (1 << JAPRO_CINFO2_RACEMODE)))
+		{
 			if (cent->currentState.torsoAnim == BOTH_RUN_STAFF)
 				cent->currentState.torsoAnim = BOTH_RUN1;
 
