@@ -762,55 +762,68 @@ static void CG_OffsetThirdPersonView( void )
 		focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
 	}
 	else
-	{	// Add in the third Person Angle.
-		focusAngles[YAW] += cg_thirdPersonAngle.value;
+	{
+		float pitchOffset = cg_thirdPersonPitchOffset.value;
+
+		// Add in the third Person Angle.
+		if (cg_thirdPersonAngle.value == -1.0f)
 		{
-			float pitchOffset = cg_thirdPersonPitchOffset.value;
-			if (cg.snap && cg.snap->ps.m_iVehicleNum)
-			{
-				centity_t *veh = &cg_entities[cg.snap->ps.m_iVehicleNum];
-				if (veh->m_pVehicle &&
-					veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
-				{ //override the range with what the vehicle wants it to be
-					if ( veh->m_pVehicle->m_pVehicleInfo->cameraPitchDependantVertOffset )
+			vec3_t vel, velang;
+			vel[0] = cg.predictedPlayerState.velocity[0];
+			vel[1] = cg.predictedPlayerState.velocity[1];
+			if (vel[0] + vel[1]) {
+				vectoangles(vel, velang);
+				focusAngles[YAW] = velang[YAW];//Make angles the direction they are moving in
+			}
+		}
+		else {
+			focusAngles[YAW] += cg_thirdPersonAngle.value;
+		}
+
+		if (cg.snap && cg.snap->ps.m_iVehicleNum)
+		{
+			centity_t *veh = &cg_entities[cg.snap->ps.m_iVehicleNum];
+			if (veh->m_pVehicle &&
+				veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
+			{ //override the range with what the vehicle wants it to be
+				if ( veh->m_pVehicle->m_pVehicleInfo->cameraPitchDependantVertOffset )
+				{
+					if ( cg.snap->ps.viewangles[PITCH] > 0 )
 					{
-						if ( cg.snap->ps.viewangles[PITCH] > 0 )
-						{
-							pitchOffset = cg.predictedPlayerState.viewangles[PITCH]*-0.75;
-						}
-						else if ( cg.snap->ps.viewangles[PITCH] < 0 )
-						{
-							pitchOffset = cg.predictedPlayerState.viewangles[PITCH]*-0.75;
-						}
-						else
-						{
-							pitchOffset = 0;
-						}
+						pitchOffset = cg.predictedPlayerState.viewangles[PITCH]*-0.75;
+					}
+					else if ( cg.snap->ps.viewangles[PITCH] < 0 )
+					{
+						pitchOffset = cg.predictedPlayerState.viewangles[PITCH]*-0.75;
 					}
 					else
 					{
-						pitchOffset = veh->m_pVehicle->m_pVehicleInfo->cameraPitchOffset;
+						pitchOffset = 0;
 					}
-				}
-			}
-			/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
-				&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
-			{
-				float pitchPerc = ((90.0f-fabs(cam.focusAngles[ROLL]))/90.0f);
-				cam.focusAngles[PITCH] += pitchOffset*pitchPerc;
-				if ( focusAngles[ROLL] > 0 )
-				{
-					focusAngles[YAW] -= pitchOffset-(pitchOffset*pitchPerc);
 				}
 				else
 				{
-					focusAngles[YAW] += pitchOffset-(pitchOffset*pitchPerc);
+					pitchOffset = veh->m_pVehicle->m_pVehicleInfo->cameraPitchOffset;
 				}
 			}
-			else*/
+		}
+		/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
+			&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
+		{
+			float pitchPerc = ((90.0f-fabs(cam.focusAngles[ROLL]))/90.0f);
+			cam.focusAngles[PITCH] += pitchOffset*pitchPerc;
+			if ( focusAngles[ROLL] > 0 )
 			{
-				focusAngles[PITCH] += pitchOffset;
+				focusAngles[YAW] -= pitchOffset-(pitchOffset*pitchPerc);
 			}
+			else
+			{
+				focusAngles[YAW] += pitchOffset-(pitchOffset*pitchPerc);
+			}
+		}
+		else*/
+		{
+			focusAngles[PITCH] += pitchOffset;
 		}
 	}
 
@@ -888,7 +901,6 @@ static void CG_OffsetThirdPersonView( void )
 
 	// Now interestingly, the Quake method is to calculate a target focus point above the player, and point the camera at it.
 	// We won't do that for now.
-
 	VectorAdd(cam.target.ideal, cam.target.damp, target);
 	VectorAdd(cam.loc.ideal, cam.loc.damp, location);
 
