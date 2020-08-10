@@ -965,9 +965,10 @@ typedef struct chatBoxEmoji_s
 } chatBoxEmoji_t;
 
 #define	MAX_CHATBOX_ITEMS		24
+#define CHATBOX_MAX_STRING_LENGTH		MAX_NETNAME+MAX_SAY_TEXT+2
 typedef struct chatBoxItem_s
 {
-	char			string[MAX_NETNAME+MAX_SAY_TEXT];
+	char			string[CHATBOX_MAX_STRING_LENGTH];
 	int				time;
 	int				lines;
 	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];

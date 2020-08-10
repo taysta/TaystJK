@@ -9475,6 +9475,15 @@ void CG_ChatBox_AddString(char *chatStr)
 
 	chat->lines = 1;
 
+	if (cg_chatBoxCutOffLength.integer < 60) {
+		trap->Cvar_Set("cg_chatBoxCutOffLength", "350");
+		trap->Cvar_Update(&cg_chatBoxCutOffLength);
+	}
+	else if (cg_chatBoxCutOffLength.integer > (SCREEN_WIDTH/cgs.widthRatioCoef)) {
+		trap->Cvar_Set("cg_chatBoxCutoffLength", "550");
+		trap->Cvar_Update(&cg_chatBoxCutOffLength);
+	}
+
 	if (!cg_chatBoxEmojis.integer) {
 		chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
 		if (chatLen > cg_chatBoxCutOffLength.value)
@@ -9486,11 +9495,22 @@ void CG_ChatBox_AddString(char *chatStr)
 			chatLen = 0;
 			while (chat->string[i])
 			{
-				const char* checkColor = (const char*)(chat->string + i);
+				const char *checkColor = (const char *)(chat->string + i);
+
+				if (cg_chatBoxShowCutoff.integer) {
+					if (i == MAX_SAY_TEXT) { //at the max length of the original JAMP chatbox, insert white color code
+						CG_ChatBox_StrInsert(chat->string, i, S_COLOR_WHITE);
+					}
+					else if (i > MAX_SAY_TEXT && Q_IsColorString(checkColor)) { //already past max length but we have a color code, skip it so it stays white
+						chat->string[i+1] = COLOR_WHITE;
+					}
+				}
+
 				if (Q_IsColorString(checkColor)) {
 					i += 2;
 					continue; // duo: fix for messages with lots of colors being broken up too early
 				}
+
 				s[0] = chat->string[i];
 				s[1] = 0;
 				chatLen += CG_Text_Width(s, 0.65f, FONT_SMALL);
@@ -9527,12 +9547,11 @@ void CG_ChatBox_AddString(char *chatStr)
 		// * put together a list of usable emoji's and pick a style. Discord maybe?
 
 		char *str = chat->string;
-		char emojiStr[sizeof(chat->string)] = { 0 };
+		char emojiStr[CHATBOX_MAX_STRING_LENGTH] = { 0 };
 		char replaceChar[8] = "       ", s[2];
 		int  replaceLen, fonti = (cg_newFont.integer == 1 ? FONT_MEDIUM : (cg_newFont.integer == 2 ? FONT_SMALL2 : FONT_SMALL));
 		int bpoint = 0, emojiIndex = 0;
 		float fontScale = 0.65 * cg_chatBoxFontSize.value;
-		qboolean cutOffShown = qfalse;
 
 		if (cg_newFont.integer == 0)
 			replaceChar[2] = '\0';
@@ -9549,6 +9568,19 @@ void CG_ChatBox_AddString(char *chatStr)
 			int k;
 			qboolean draw = qfalse;
 			const char *checkColor = (const char *)(str);
+
+			if (cg_chatBoxShowCutoff.integer) {
+				if (i == MAX_SAY_TEXT) { //at the max length of the original JAMP chatbox, insert white color code
+					emojiStr[i++] = Q_COLOR_ESCAPE;
+					emojiStr[i++] = COLOR_WHITE;
+					continue;
+				}
+				else if (i > MAX_SAY_TEXT && Q_IsColorString(checkColor)) { //already past max length but we have a color code, skip it so it stays white
+					*str++;
+					*str++;
+					continue;
+				}
+			}
 
 			if (Q_IsColorString(checkColor)) {
 				emojiStr[i++] = *str++;
@@ -9608,8 +9640,7 @@ void CG_ChatBox_AddString(char *chatStr)
 				}
 			}
 
-			if (!draw)
-				//if we are just a character, copy the character to the new chat string
+			if (!draw) //if we are just a character, copy the character to the new chat string
 				emojiStr[i++] = *str++;
 
 			s[0] = *str;
@@ -9619,23 +9650,21 @@ void CG_ChatBox_AddString(char *chatStr)
 				if (emojiStr[i - 1] == ' ') {
 					//break up the line on the first whitespace occurrence
 					emojiStr[i++] = '\n';
+					emojiStr[i++] = ' ';
 					chatLen = 0;
 					chat->lines++;
 					bpoint = i;
 				}
 			}
 		}
-		emojiStr[i] = '\0';
-
-		strcpy(chat->string, emojiStr);
+		Q_strncpyz(chat->string, emojiStr, sizeof(chat->string));
 
 		//add one because we started at zero
 		chat->lines++;
 	}
 
 	cg.chatItemActive++;
-	if (cg.chatItemActive >= cg_chatBoxLines.integer)
-	{
+	if (cg.chatItemActive >= cg_chatBoxLines.integer) {
 		cg.chatItemActive = 0;
 	}
 }
@@ -10085,7 +10114,7 @@ static void CG_Draw2DScreenTints( void )
 			hcolor[1] = 0.7f;
 			hcolor[2] = 0;
 			
-			if (!cg.renderingThirdPerson && !cg.predictedPlayerState.stats[STAT_RACEMODE] && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL))
+			if (!cg.renderingThirdPerson && !(cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL))
 			{
 				CG_FillRect( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, hcolor );
 			}
@@ -10119,7 +10148,7 @@ static void CG_Draw2DScreenTints( void )
 			hcolor[1] = 0.7f;
 			hcolor[2] = 0;
 			
-			if (!cg.renderingThirdPerson && ysalTime && !cg.predictedPlayerState.stats[STAT_RACEMODE] && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL))
+			if (!cg.renderingThirdPerson && ysalTime && !(cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL))
 			{
 				CG_FillRect( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, hcolor );
 			}
