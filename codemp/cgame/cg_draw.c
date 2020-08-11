@@ -9470,11 +9470,6 @@ void CG_ChatBox_AddString(char *chatStr)
 		}
 	}
 
-	strcpy(chat->string, chatStr);
-	chat->time = cg.time + cg_chatBox.integer;
-
-	chat->lines = 1;
-
 	if (cg_chatBoxCutOffLength.integer < 60) {
 		trap->Cvar_Set("cg_chatBoxCutOffLength", "350");
 		trap->Cvar_Update(&cg_chatBoxCutOffLength);
@@ -9483,6 +9478,11 @@ void CG_ChatBox_AddString(char *chatStr)
 		trap->Cvar_Set("cg_chatBoxCutoffLength", "550");
 		trap->Cvar_Update(&cg_chatBoxCutOffLength);
 	}
+
+	strcpy(chat->string, chatStr);
+	chat->time = cg.time + cg_chatBox.integer;
+
+	chat->lines = 1;
 
 	if (!cg_chatBoxEmojis.integer) {
 		chatLen = CG_Text_Width(chat->string, 1.0f, FONT_SMALL);
@@ -9495,18 +9495,16 @@ void CG_ChatBox_AddString(char *chatStr)
 			chatLen = 0;
 			while (chat->string[i])
 			{
-				const char *checkColor = (const char *)(chat->string + i);
-
 				if (cg_chatBoxShowCutoff.integer) {
 					if (i == MAX_SAY_TEXT) { //at the max length of the original JAMP chatbox, insert white color code
 						CG_ChatBox_StrInsert(chat->string, i, S_COLOR_WHITE);
 					}
-					else if (i > MAX_SAY_TEXT && Q_IsColorString(checkColor)) { //already past max length but we have a color code, skip it so it stays white
+					else if (i > MAX_SAY_TEXT && Q_IsColorString(&chat->string[i])) { //already past max length but we have a color code, skip it so it stays white
 						chat->string[i+1] = COLOR_WHITE;
 					}
 				}
 
-				if (Q_IsColorString(checkColor)) {
+				if (Q_IsColorString(&chat->string[i])) {
 					i += 2;
 					continue; // duo: fix for messages with lots of colors being broken up too early
 				}
@@ -9532,10 +9530,9 @@ void CG_ChatBox_AddString(char *chatStr)
 					}
 
 					chat->lines++;
-					CG_ChatBox_StrInsert(chat->string, i, "\n");
-					i++;
+					CG_ChatBox_StrInsert(chat->string, i++, "\n");
 					chatLen = 0;
-					lastLinePt = i + 1;
+					lastLinePt = i;
 				}
 				i++;
 			}
@@ -9546,12 +9543,11 @@ void CG_ChatBox_AddString(char *chatStr)
 		// * not likely scenario, but: when set cut of length very low. you can see the emojis drifting further and further away on the y pos. CG_Text_Height maybe?
 		// * put together a list of usable emoji's and pick a style. Discord maybe?
 
-		char *str = chat->string;
-		char emojiStr[CHATBOX_MAX_STRING_LENGTH] = { 0 };
+		char emojiStr[MAX_STRING_CHARS] = { 0 };
 		char replaceChar[8] = "       ", s[2];
 		int  replaceLen, fonti = (cg_newFont.integer == 1 ? FONT_MEDIUM : (cg_newFont.integer == 2 ? FONT_SMALL2 : FONT_SMALL));
 		int bpoint = 0, emojiIndex = 0;
-		float fontScale = 0.65 * cg_chatBoxFontSize.value;
+		float fontScale = 0.65f * cg_chatBoxFontSize.value;
 
 		if (cg_newFont.integer == 0)
 			replaceChar[2] = '\0';
@@ -9562,29 +9558,28 @@ void CG_ChatBox_AddString(char *chatStr)
 		chat->lines = 0;
 		chatLen = 0;
 
-		int i = 0;
-		while (*str)
+		int r = 0, w = 0;
+		while (chat->string[r])
 		{
 			int k;
 			qboolean draw = qfalse;
-			const char *checkColor = (const char *)(str);
 
-			if (cg_chatBoxShowCutoff.integer) {
-				if (i == MAX_SAY_TEXT) { //at the max length of the original JAMP chatbox, insert white color code
-					emojiStr[i++] = Q_COLOR_ESCAPE;
-					emojiStr[i++] = COLOR_WHITE;
-					continue;
+			if (cg_chatBoxShowCutoff.integer) { //no idea why this needs to be offset by 2 here
+				if (r == (MAX_SAY_TEXT - 2)) { //at the max length of the original JAMP chatbox, insert white color code
+					emojiStr[w++] = Q_COLOR_ESCAPE;
+					emojiStr[w++] = COLOR_WHITE;
+					if (Q_IsColorString(&chat->string[r]))
+						r += 2;
 				}
-				else if (i > MAX_SAY_TEXT && Q_IsColorString(checkColor)) { //already past max length but we have a color code, skip it so it stays white
-					*str++;
-					*str++;
-					continue;
+
+				if (r >= (MAX_SAY_TEXT - 2) && Q_IsColorString(&chat->string[r])) { //already past max length but we have a color code, skip it so it stays white
+					r += 2;
 				}
 			}
 
-			if (Q_IsColorString(checkColor)) {
-				emojiStr[i++] = *str++;
-				emojiStr[i++] = *str++;
+			if (Q_IsColorString(&chat->string[r])) {
+				emojiStr[w++] = chat->string[r++];
+				emojiStr[w++] = chat->string[r++];
 				continue; // duo: fix for messages with lots of colors being broken up too early
 			}
 
@@ -9592,9 +9587,10 @@ void CG_ChatBox_AddString(char *chatStr)
 				int nameLen = strlen(emojis[k].name);
 				if (!nameLen)
 					break; //last available item.
-				if (MAX_CHATBOX_ITEM_EMOJIS > emojiIndex && strstr(str, emojis[k].name) == str)
+
+				if (MAX_CHATBOX_ITEM_EMOJIS > emojiIndex && strstr(chat->string+r, emojis[k].name) == chat->string+r)
 				{
-					strcpy(&emojiStr[i], replaceChar);
+					strcpy(&emojiStr[w], replaceChar);
 
 					//set the pointer to the emoji graphic 
 					chat->emoji[emojiIndex].emoji = emojis[k].emoji;
@@ -9630,8 +9626,8 @@ void CG_ChatBox_AddString(char *chatStr)
 					chat->emoji[emojiIndex].xOffset += CG_Text_Width(b, fontScale, fonti);
 
 					//continue reading and writing after the emoji, whitespaces
-					i += replaceLen;
-					str += nameLen;
+					w += replaceLen;
+					r += nameLen;
 
 					emojiIndex++;
 					draw = qtrue;
@@ -9640,21 +9636,28 @@ void CG_ChatBox_AddString(char *chatStr)
 				}
 			}
 
-			if (!draw) //if we are just a character, copy the character to the new chat string
-				emojiStr[i++] = *str++;
+			if (!draw) {//if we are just a character, copy the character to the new chat string
+				emojiStr[w++] = chat->string[r++];
+			}
 
-			s[0] = *str;
+			s[0] = chat->string[r];
 			s[1] = 0;
 			chatLen += CG_Text_Width(s, 0.65f, fonti);
 			if (chatLen >= cg_chatBoxCutOffLength.value) {
-				if (emojiStr[i - 1] == ' ') {
-					//break up the line on the first whitespace occurrence
-					emojiStr[i++] = '\n';
-					emojiStr[i++] = ' ';
-					chatLen = 0;
-					chat->lines++;
-					bpoint = i;
+				int q = w;
+				while (q > 0 && q > bpoint)
+				{
+					if (emojiStr[q] == ' ' || emojiStr[q] == Q_COLOR_ESCAPE)
+					{ //break up the line on the first whitespace occurrence
+						break;
+					}
+					q--;
 				}
+				CG_ChatBox_StrInsert(emojiStr, q, "\n");
+				chatLen = 0;
+				bpoint = q;
+				chat->lines++;
+				w++;
 			}
 		}
 		Q_strncpyz(chat->string, emojiStr, sizeof(chat->string));
