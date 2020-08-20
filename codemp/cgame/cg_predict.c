@@ -230,7 +230,7 @@ extern void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, v
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask)); // bg_pmove.c
 static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
-							int skipNumber, int mask, trace_t *tr, qboolean g2Check ) {
+							int skipNumber, int mask, trace_t *tr, qboolean g2Check, qboolean crosshairTrace ) {
 	int			i, x, zd, zu;
 	trace_t		trace, oldTrace;
 	entityState_t	*ent;
@@ -274,11 +274,12 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 					continue;
 				}
 			}
-			else if (ent->bolt1)
-			{ // we are not in a private duel, and this player is dueling don't clip 
+			else if (ent->bolt1 && (!crosshairTrace || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && (cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3))))
+			{ // we are not in a private duel, and this player is dueling don't clip - but let the crosshair know who it is
 				continue;
 			}
-			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
+			else if (!crosshairTrace && cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
+			{
 				if (ent->eType == ET_MOVER) { //TR_SINCE since func_bobbings are still solid, sad hack 
 					if ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE) {//If its moving? //how to get classname clientside? 
 						continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside 
@@ -294,10 +295,10 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 		//JAPRO - Clientside - Nonsolid doors for racemode people 
 		/*
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
-		if (ent->eType == ET_MOVER) {
-		if (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta) && ent->pos.trType != TR_SINE) //If its moving? //how to get classname clientside?
-		continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
-		}
+			if (ent->eType == ET_MOVER) {
+				if (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta) && ent->pos.trType != TR_SINE) //If its moving? //how to get classname clientside?
+				continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
+			}
 		}
 		*/
 		//JAPRO race doors END
@@ -419,7 +420,7 @@ void	CG_Trace( trace_t *result, const vec3_t start, const vec3_t mins, const vec
 	trap->CM_Trace ( &t, start, end, mins, maxs, 0, mask, 0);
 	t.entityNum = t.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
 	// check all other solid models
-	CG_ClipMoveToEntities (start, mins, maxs, end, skipNumber, mask, &t, qfalse);
+	CG_ClipMoveToEntities (start, mins, maxs, end, skipNumber, mask, &t, qfalse, qfalse);
 
 	*result = t;
 }
@@ -436,7 +437,19 @@ void	CG_G2Trace( trace_t *result, const vec3_t start, const vec3_t mins, const v
 	trap->CM_Trace ( &t, start, end, mins, maxs, 0, mask, 0);
 	t.entityNum = t.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
 	// check all other solid models
-	CG_ClipMoveToEntities (start, mins, maxs, end, skipNumber, mask, &t, qtrue);
+	CG_ClipMoveToEntities (start, mins, maxs, end, skipNumber, mask, &t, qtrue, qfalse);
+
+	*result = t;
+}
+
+void CG_CrosshairTrace( trace_t *result, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int skipNumber, qboolean g2Check ) //jaPRO
+{ //trace function for DrawCrosshairPlayer names
+	trace_t	t;
+
+	trap->CM_Trace ( &t, start, end, mins, maxs, 0, CONTENTS_SOLID|CONTENTS_BODY, 0);
+	t.entityNum = t.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+	// check all other solid models
+	CG_ClipMoveToEntities (start, mins, maxs, end, skipNumber, CONTENTS_SOLID|CONTENTS_BODY, &t, g2Check, qtrue);
 
 	*result = t;
 }
@@ -1286,7 +1299,7 @@ void CG_PredictPlayerState( void ) {
 		}
 
 		/*if (cg.predictedPlayerState.stats[STAT_RACEMODE] && cg_predictRacemode.integer) { //loda fixme
-		cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 7) / 8) * 8;
+			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + 7) / 8) * 8;
 		}
 		else*/ if ( cg_pmove.pmove_fixed ) { //loda fixme
 			cg_pmove.cmd.serverTime = ((cg_pmove.cmd.serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;

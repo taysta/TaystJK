@@ -8132,8 +8132,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 
 	if ( cg_dynamicCrosshair.integer && cg_dynamicCrosshairPrecision.integer )
 	{ //then do a trace with ghoul2 models in mind
-		CG_G2Trace( &trace, start, vec3_origin, vec3_origin, end,
-			ignore, CONTENTS_SOLID|CONTENTS_BODY );
+		CG_CrosshairTrace( &trace, start, vec3_origin, vec3_origin, end, ignore, qtrue );
 		if ( bVehCheckTraceFromCamPos )
 		{
 			//NOTE: this MUST stay up to date with the method used in WP_VehCheckTraceFromCamPos
@@ -8145,18 +8144,19 @@ static void CG_ScanForCrosshairEntity( void ) {
 			VectorSubtract( end, cg.refdef.vieworg, viewDir2End );
 			VectorNormalize( viewDir2End );
 			VectorMA( cg.refdef.vieworg, MAX_XHAIR_DIST_ACCURACY, viewDir2End, extraEnd );
-			CG_G2Trace( &extraTrace, cg.refdef.vieworg, vec3_origin, vec3_origin, extraEnd,
-				ignore, CONTENTS_SOLID|CONTENTS_BODY );
-			if ( !extraTrace.allsolid
-				&& !extraTrace.startsolid )
+
+			CG_CrosshairTrace(&extraTrace, cg.refdef.vieworg, vec3_origin, vec3_origin, extraEnd, ignore, qtrue);
+
+			if (!extraTrace.allsolid
+				&& !extraTrace.startsolid)
 			{
-				if ( extraTrace.fraction < 1.0f )
+				if (extraTrace.fraction < 1.0f)
 				{
-					if ( (extraTrace.fraction*MAX_XHAIR_DIST_ACCURACY) > minAutoAimDist )
+					if ((extraTrace.fraction * MAX_XHAIR_DIST_ACCURACY) > minAutoAimDist)
 					{
-						if ( ((extraTrace.fraction*MAX_XHAIR_DIST_ACCURACY)-Distance( veh->lerpOrigin, cg.refdef.vieworg )) < (trace.fraction*cg.distanceCull) )
+						if (((extraTrace.fraction * MAX_XHAIR_DIST_ACCURACY) - Distance(veh->lerpOrigin, cg.refdef.vieworg)) < (trace.fraction * cg.distanceCull))
 						{//this trace hit *something* that's closer than the thing the main trace hit, so use this result instead
-							memcpy( &trace, &extraTrace, sizeof( trace_t ) );
+							Com_Memcpy(&trace, &extraTrace, sizeof(trace_t));
 						}
 					}
 				}
@@ -8165,8 +8165,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 	}
 	else
 	{
-		CG_Trace( &trace, start, vec3_origin, vec3_origin, end,
-			ignore, CONTENTS_SOLID|CONTENTS_BODY );
+		CG_CrosshairTrace(&trace, start, vec3_origin, vec3_origin, end, ignore, qfalse);
 	}
 
 	if (trace.entityNum < MAX_CLIENTS)
