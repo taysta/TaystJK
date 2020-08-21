@@ -921,23 +921,26 @@ static void CG_General( centity_t *cent ) {
 		return;
 	}
 
-	if (cent->currentState.eType == ET_BODY) {
-		if (cg.predictedPlayerState.duelInProgress &&
-			(cgs.serverMod < SVMOD_JAPLUS && (cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS)) ||
-			(cgs.serverMod == SVMOD_JAPLUS && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) ||
-			cgs.serverMod == SVMOD_JAPRO)
+	if (cent->currentState.eType == ET_BODY)
+	{
+		if (cg.predictedPlayerState.duelInProgress)
 		{
-			return; //don't show bodies in duels
-		}
-		
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
-		{
-			return; //or in racemode
+			switch (cgs.serverMod) {
+				default:
+					if (cg.predictedPlayerState.duelInProgress && (cg_stylePlayer.integer & JAPRO_STYLE_HIDENONDUELERS)) return;
+					break;
+				case SVMOD_JAPLUS:
+					if (cg.predictedPlayerState.duelInProgress && !(cp_pluginDisable.integer & JAPRO_PLUGIN_DUELSEEOTHERS)) return; //don't show bodies in duels
+					break;
+				case SVMOD_JAPRO:
+					if (cg.predictedPlayerState.duelInProgress || cg.predictedPlayerState.stats[STAT_RACEMODE]) return; //or in racemode
+					break;
+			}
 		}
 
 		// check if we want to fade bodies instantly
 		// note, the server delays the EV_BODYFADE by quite some time so we will handle it all ourselves
-		if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) && cent->bodyFadeTime == 0)
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_NOBODIES) && !cent->bodyFadeTime)
 				cent->bodyFadeTime = cg.time + 5000;
 	}
 
