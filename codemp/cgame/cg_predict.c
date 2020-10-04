@@ -263,7 +263,7 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 		if (ent->eType == ET_SPECIAL && ent->modelindex == HI_SHIELD)//Japro - Fix bad prediction for HI_SHIELD item for codemonkey 
 			continue;
 
-		//JAPRO - Clientside - Duel Passthru Prediction - Start 
+		//JAPRO - Clientside - Duel Passthru Prediction - Start
 		if (cgs.serverMod >= SVMOD_JAPLUS)
 		{
 			if (cg.predictedPlayerState.duelInProgress)
@@ -274,30 +274,33 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 					continue;
 				}
 			}
-			else if (ent->bolt1 && (!crosshairTrace || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && (cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3))))
-			{ // we are not in a private duel, and this player is dueling don't clip - but let the crosshair know who it is
-				continue;
-			}
-			else if (!crosshairTrace && cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
+			else if (!crosshairTrace)
 			{
-				if (ent->eType == ET_MOVER) { //TR_SINCE since func_bobbings are still solid, sad hack 
-					if ((VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta)) && ent->pos.trType != TR_SINE) {//If its moving? //how to get classname clientside? 
-						continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside 
-					}
-				}
-				else {
+				if (ent->bolt1 && ent->eType == ET_PLAYER)
+				{ // we are not in a private duel, and this player is dueling don't clip
 					continue;
+				}
+				else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
+				{
+					if (ent->eType == ET_MOVER) { //TR_SINCE since func_bobbings are still solid, sad hack
+						if (ent->pos.trType != TR_SINE && (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta))) {//If its moving? //how to get classname clientside?
+							continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
+						}
+					}
+					else {
+						continue;
+					}
 				}
 			}
 		}
-		//JAPRO - Clientside - Duel Passthru Prediction - End 
+		//JAPRO - Clientside - Duel Passthru Prediction - End
 
 		//JAPRO - Clientside - Nonsolid doors for racemode people 
 		/*
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
 			if (ent->eType == ET_MOVER) {
-				if (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta) && ent->pos.trType != TR_SINE) //If its moving? //how to get classname clientside?
-				continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
+				if (ent->pos.trType != TR_SINE && (VectorLengthSquared(ent->pos.trDelta) || VectorLengthSquared(ent->apos.trDelta))) //If its moving? //how to get classname clientside?
+					continue; //Dont predict moving et_movers as solid..since that means they are likely func_door or func_plat.. which are nonsolid to racers serverside
 			}
 		}
 		*/
