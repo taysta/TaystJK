@@ -9531,7 +9531,7 @@ void CG_ChatBox_AddString(char *chatStr)
 					chat->lines++;
 					CG_ChatBox_StrInsert(chat->string, i++, "\n");
 					chatLen = 0;
-					lastLinePt = i;
+					lastLinePt = i + 1;
 				}
 				i++;
 			}
