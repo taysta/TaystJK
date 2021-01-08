@@ -10912,7 +10912,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
 	}
 
-	if (!(cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE))
+	if (!(cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) && !cg.renderingThirdPerson)
 		VectorCopy(cg.refdef.vieworg, start);
 	else
 		VectorCopy(cg.predictedPlayerState.origin, start); //This created problems for some peoplem, use refdef instead? (avygeil fix)
