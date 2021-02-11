@@ -681,6 +681,18 @@ static void CG_ListRemaps_f(void) {
 
 }
 
+static void CG_ListEmojis_f(void) {
+	int i, count = 0;
+	for (i = 0; i < MAX_LOADABLE_EMOJIS; i++) {
+		if (VALIDSTRING(emojis[i].name)) {
+			count++;
+			Com_Printf(S_COLOR_YELLOW "%s" S_COLOR_GREEN ", ", emojis[i].name);
+		}
+	}
+	if (count)
+		Com_Printf("(%i) emojis\n", count);
+}
+
 #if 1
 void CG_StrafeTrailLine( vec3_t start, vec3_t end, int time, int clientNum, int number);
 void CG_SpawnStrafeTrailFromCFG_f(void) //loda fixme
@@ -2203,6 +2215,7 @@ static consoleCommand_t	commands[] = {
 
 	{ "remapShader",				CG_RemapShader_f },
 	{ "listRemaps",					CG_ListRemaps_f },
+	{ "listEmojis",					CG_ListEmojis_f },
 	{ "loadTrail",					CG_SpawnStrafeTrailFromCFG_f },
 	{ "weaplast",					CG_LastWeapon_f },
 	{ "do",							CG_Do_f }
