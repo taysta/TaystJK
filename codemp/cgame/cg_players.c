@@ -1223,7 +1223,6 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 	*/
 
 	isDefaultModel = qfalse;
-
 	teamname[0] = 0;
 	if( cgs.gametype >= GT_TEAM) {
 		if( ci->team == TEAM_BLUE ) {
@@ -1254,36 +1253,49 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 			isDefaultModel = qtrue;
 			if (cg_defaultModelRandom.integer) //random model
 			{
-				char *newModelName;
-				char *newSkinName;
+				char *newModelName = NULL;
+				char *newSkinName = NULL;
 				int j, sum = 0;
+
 				for (j = 0; ci->modelName[j] != '\0'; j++) {
 					sum += (int)tolower(ci->modelName[j]); //Convert to lowercase
 				}
-				if (ci->gender != GENDER_FEMALE) { //is male
-					newModelName = defaultModelTable[sum % MAX_DEFAULT_MODELS];
+				if (sum < 0) { //sanity...
+					sum = -sum;
 				}
-				else { //is female
+
+				if (ci->gender == GENDER_FEMALE) {
 					newModelName = defaultFemaleModelTable[sum % MAX_DEFAULT_FEMALE_MODELS];
+				}
+				else { //assume male
+					newModelName = defaultModelTable[sum % MAX_DEFAULT_MODELS];
 				}
 
 				if (Q_stricmpn(newModelName, "jedi_", 5)) { //normal default skin
-					if ((!Q_stricmp(ci->skinName, "default")) || (!Q_stricmp(ci->skinName, "red")) || (!Q_stricmp(ci->skinName, "blue")))
+					if (!Q_stricmp(ci->skinName, "default") || !Q_stricmp(ci->skinName, "red") || !Q_stricmp(ci->skinName, "blue"))
 						newSkinName = ci->skinName; //use the original skin name if they already have a valid one set
 					else //randomly pick default/red/blue 
 						newSkinName = defaultSkinTable[sum % MAX_DEFAULT_SKINS]; 
 
-					if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {//always validate on our end?
-						BG_ValidateSkinForTeam(newModelName, ci->skinName, ci->team, ci->colorOverride);
-						newSkinName = ci->skinName;
-					}
+					ci->modelIcon = trap->R_RegisterShaderNoMip(va("icon_%s", newSkinName));
 				}
 				else {//we got a jaden
-					char *newHead;
-					char *newTorso;
-					char *newLower;
+					char *newHead = "head_a1";
+					char *newTorso = "torso_b1";
+					char *newLower = "lower_a1";
 
-					if (ci->gender != GENDER_FEMALE) { //male
+					if (ci->gender == GENDER_FEMALE) {
+						if (!Q_stricmp(newModelName, "jedi_tf")) {
+							newHead = jadenFemaleTwilekHeadTable[sum % MAX_JADENTF_HEADS];
+						}
+						else {
+							newHead = jadenFemaleHeadTable[sum % MAX_JADENF_HEADS];
+						}
+
+						newTorso = jadenFemaleTorsoTable[sum % MAX_JADENF_TORSOS];
+						newLower = jadenFemaleLowerTable[sum % MAX_JADENF_LOWERS];
+					}
+					else { //male
 						if (Q_stricmp(newModelName, "jedi_hm")) {
 							newHead = jadenMaleHumanHeadTable[sum % MAX_JADENHM_HEADS];
 							newTorso = jadenMaleHumanTorsoTable[sum % MAX_JADENHM_TORSOS];
@@ -1294,26 +1306,21 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 						}
 						//lowers are the same for every male species
 						newLower = jadenMaleLowerTable[sum % MAX_JADENM_LOWERS];
-
-						newSkinName = va("%s|%s|%s", newHead, newTorso, newLower);
 					}
-					else {//female
-						if (!Q_stricmp(newModelName, "jedi_tf")) {
-							newHead = jadenFemaleTwilekHeadTable[sum % MAX_JADENTF_HEADS];
-						}
-						else {
-							newHead = jadenFemaleHeadTable[sum % MAX_JADENF_HEADS];
-						}
 
-						newTorso = jadenFemaleTorsoTable[sum % MAX_JADENF_TORSOS];
-						newLower = jadenFemaleLowerTable[sum % MAX_JADENF_LOWERS];
+					newSkinName = va("%s|%s|%s", newHead, newTorso, newLower);
+					ci->modelIcon = trap->R_RegisterShaderNoMip(va("icon_%s", newHead));
+				}
 
-						newSkinName = va("%s|%s|%s", newHead, newTorso, newLower);
-					}
+				if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {//validate team color
+					BG_ValidateSkinForTeam(newModelName, newSkinName, ci->team, ci->colorOverride);
+					//BG_ValidateSkinForTeam(newModelName, ci->skinName, ci->team, ci->colorOverride);
+					//newSkinName = ci->skinName;
 				}
 
 				if (!CG_RegisterClientModelname(ci, newModelName, newSkinName, teamname, clientNum))
 					trap->Error(ERR_DROP, "DEFAULT_MODEL / skin (%s/%s) failed to register", newModelName, newSkinName);
+
 				modelloaded = qtrue;
 			}
 			// fall back to default team name
