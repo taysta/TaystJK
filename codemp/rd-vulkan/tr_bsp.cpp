@@ -22,7 +22,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 // tr_map.c
+
 #include "tr_local.h"
+
+
+static const imgFlags_t lightmapFlags = IMGFLAG_NOLIGHTSCALE | IMGFLAG_NO_COMPRESSION | IMGFLAG_LIGHTMAP | IMGFLAG_NOSCALE;
 
 /*
 
@@ -120,9 +124,24 @@ void R_ColorShiftLightingBytes( byte in[4], byte out[4] ) {
 		b = b * 255 / max;
 	}
 
-	out[0] = r;
-	out[1] = g;
-	out[2] = b;
+	if (r_mapGreyScale->integer) {
+		const byte luma = LUMA(r, g, b);
+		out[0] = luma;
+		out[1] = luma;
+		out[2] = luma;
+	}
+	else if (r_mapGreyScale->value) {
+		const float scale = fabs(r_mapGreyScale->value);
+		const float luma = LUMA(r, g, b);
+		out[0] = LERP(r, luma, scale);
+		out[1] = LERP(g, luma, scale);
+		out[2] = LERP(b, luma, scale);
+	}
+	else {
+		out[0] = r;
+		out[1] = g;
+		out[2] = b;
+	}
 	out[3] = in[3];
 }
 
@@ -132,11 +151,11 @@ R_ColorShiftLightingBytes
 
 ===============
 */
-void R_ColorShiftLightingBytes( byte in[3] ) {
+void R_ColorShiftLightingBytes(byte in[3]) {
 	int shift, r, g, b;
 
 	// shift the color data based on overbright range
-	shift = Q_max( 0, r_mapOverBrightBits->integer - tr.overbrightBits );
+	shift = Q_max(0, r_mapOverBrightBits->integer - tr.overbrightBits);
 
 	// shift the data based on overbright range
 	r = in[0] << shift;
@@ -144,7 +163,7 @@ void R_ColorShiftLightingBytes( byte in[3] ) {
 	b = in[2] << shift;
 
 	// normalize by color instead of saturating to white
-	if ( (r|g|b) > 255 ) {
+	if ((r | g | b) > 255) {
 		int		max;
 
 		max = r > g ? r : g;
@@ -184,9 +203,6 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 		return;
 	}
 	buf = fileBase + l->fileofs;
-
-	// we are about to upload textures
-	R_IssuePendingRenderCommands();
 
 	// create all the lightmaps
 	tr.numLightmaps = len / (LIGHTMAP_SIZE * LIGHTMAP_SIZE * 3);
@@ -243,12 +259,16 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 				image[j*4+3] = 255;
 			}
 		}
-		tr.lightmaps[i] = R_CreateImage( va("*%s/lightmap%d",sMapName,i), image,
-			LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );
+		/*tr.lightmaps[i] = R_CreateImage( va("*%s/lightmap%d",sMapName,i), image,
+			LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );*/
+
+		vk_debug("lightmap %s pass %d before create: \n", sMapName, i);
+		tr.lightmaps[i] = R_CreateImage(va("*%s/lightmap%d", sMapName, i), NULL, image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, lightmapFlags | IMGFLAG_CLAMPTOEDGE);
+		vk_debug("lightmap %s pass %d after create: \n", sMapName, i);
 	}
 
 	if ( r_lightmap->integer == 2 )	{
-		ri.Printf( PRINT_ALL, "Brightest lightmap value: %d\n", ( int ) ( maxIntensity * 255 ) );
+		vk_debug("Brightest lightmap value: %d\n", ( int ) ( maxIntensity * 255 ) );
 	}
 }
 
@@ -343,6 +363,43 @@ static shader_t *ShaderForShaderNum( int shaderNum, const int *lightmapNum, cons
 	return shader;
 }
 
+static void GenerateNormals(srfSurfaceFace_t* face)
+{
+	vec3_t ba, ca, cross;
+	float* v1, * v2, * v3, * n1, * n2, * n3;
+	int i, * indices, i0, i1, i2;
+
+	indices = ((int*)((byte*)face + face->ofsIndices));
+
+	// store as vec4_t so we can simply use memcpy() during tesselation
+	face->normals = (float*)ri.Hunk_Alloc(face->numPoints * sizeof(tess.normal[0]), h_low);
+
+	for (i = 0; i < face->numIndices; i += 3) {
+		i0 = indices[i + 0];
+		i1 = indices[i + 1];
+		i2 = indices[i + 2];
+		if (i0 >= face->numPoints || i1 >= face->numPoints || i2 >= face->numPoints)
+			continue;
+		v1 = face->points[i0];
+		v2 = face->points[i1];
+		v3 = face->points[i2];
+		VectorSubtract(v3, v1, ca);
+		VectorSubtract(v2, v1, ba);
+		CrossProduct(ca, ba, cross);
+		n1 = face->normals + indices[i + 0] * 4;
+		n2 = face->normals + indices[i + 1] * 4;
+		n3 = face->normals + indices[i + 2] * 4;
+		VectorAdd(n1, cross, n1);
+		VectorAdd(n2, cross, n2);
+		VectorAdd(n3, cross, n3);
+	}
+
+	for (i = 0; i < face->numPoints; i++) {
+		n1 = face->normals + i * 4;
+		VectorNormalize2(n1, n1);
+	}
+}
+
 /*
 ===============
 ParseFace
@@ -375,7 +432,7 @@ static void ParseFace( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int *
 
 	numPoints = LittleLong( ds->numVerts );
 	if (numPoints > MAX_FACE_POINTS) {
-		ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: MAX_FACE_POINTS exceeded: %i\n", numPoints);
+		vk_debug("WARNING: MAX_FACE_POINTS exceeded: %i\n", numPoints);
 		numPoints = MAX_FACE_POINTS;
 		surf->shader = tr.defaultShader;
 	}
@@ -393,23 +450,28 @@ static void ParseFace( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int *
 	cv->numIndices = numIndexes;
 	cv->ofsIndices = ofsIndexes;
 
+	
 	verts += LittleLong( ds->firstVert );
+
 	for ( i = 0 ; i < numPoints ; i++ ) {
 		for ( j = 0 ; j < 3 ; j++ ) {
 			cv->points[i][j] = LittleFloat( verts[i].xyz[j] );
 		}
+
 		for ( j = 0 ; j < 2 ; j++ ) {
 			cv->points[i][3+j] = LittleFloat( verts[i].st[j] );
+
 			for(k=0;k<MAXLIGHTMAPS;k++)
 			{
 				cv->points[i][VERTEX_LM+j+(k*2)] = LittleFloat( verts[i].lightmap[k][j] );
 			}
 		}
-		for(k=0;k<MAXLIGHTMAPS;k++)
-		{
+
+		for(k=0;k<MAXLIGHTMAPS;k++) {
 			R_ColorShiftLightingBytes( verts[i].color[k], (byte *)&cv->points[i][VERTEX_COLOR+k] );
 		}
 	}
+
 
 	indexes += LittleLong( ds->firstIndex );
 	for ( i = 0 ; i < numIndexes ; i++ ) {
@@ -420,6 +482,24 @@ static void ParseFace( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int *
 	for ( i = 0 ; i < 3 ; i++ ) {
 		cv->plane.normal[i] = LittleFloat( ds->lightmapVecs[2][i] );
 	}
+
+#ifdef USE_PMLIGHT
+	if (surf->shader->numUnfoggedPasses && surf->shader->lightingStage >= 0) {
+		if (fabs(cv->plane.normal[0]) < 0.01 && fabs(cv->plane.normal[1]) < 0.01 && fabs(cv->plane.normal[2]) < 0.01) {
+			// Zero-normals case:
+			// might happen if surface contains multiple non-coplanar faces for terrain simulation
+			// like in 'Pyramid of the Magician', 'tvy-bench' or 'terrast' maps
+			// which results in non-working new per-pixel dynamic lighting.
+			// So we will try to regenerate normals and apply smooth shading
+			// for normals that is shared between multiple faces.
+			// It is not a big problem for incorrectly (negative) generated normals
+			// because it is unlikely for shared ones and will result in the same non-working lighting.
+			// Also we will NOT update existing face->plane.normal to avoid potential surface culling issues
+			GenerateNormals(cv);
+		}
+	}
+#endif
+
 	cv->plane.dist = DotProduct( cv->points[0], cv->plane.normal );
 	SetPlaneSignbits( &cv->plane );
 	cv->plane.type = PlaneTypeForNormal( cv->plane.normal );
@@ -859,7 +939,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert column into grid2 right after after column l
 					if (m) row = grid2->height-1;
 					else row = 0;
@@ -905,7 +985,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert row into grid2 right after after row l
 					if (m) column = grid2->width-1;
 					else column = 0;
@@ -960,7 +1040,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert column into grid2 right after after column l
 					if (m) row = grid2->height-1;
 					else row = 0;
@@ -1006,7 +1086,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert row into grid2 right after after row l
 					if (m) column = grid2->width-1;
 					else column = 0;
@@ -1062,7 +1142,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert column into grid2 right after after column l
 					if (m) row = grid2->height-1;
 					else row = 0;
@@ -1108,7 +1188,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert row into grid2 right after after row l
 					if (m) column = grid2->width-1;
 					else column = 0;
@@ -1165,7 +1245,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert column into grid2 right after after column l
 					if (m) row = grid2->height-1;
 					else row = 0;
@@ -1211,7 +1291,7 @@ int R_StitchPatches( int grid1num, int grid2num, world_t &worldData ) {
 							fabs(v1[2] - v2[2]) < .01)
 						continue;
 					//
-					//ri.Printf( PRINT_ALL, "found highest LoD crack between two patches\n" );
+					//vk_debug("found highest LoD crack between two patches\n" );
 					// insert row into grid2 right after after row l
 					if (m) column = grid2->width-1;
 					else column = 0;
@@ -1296,7 +1376,7 @@ void R_StitchAllPatches( world_t &worldData ) {
 		}
 	}
 	while (stitched);
-//	ri.Printf( PRINT_ALL, "stitched %d LoD cracks\n", numstitches );
+//	vk_debug("stitched %d LoD cracks\n", numstitches );
 }
 
 /*
@@ -1401,7 +1481,7 @@ static	void R_LoadSurfaces( lump_t *surfs, lump_t *verts, lump_t *indexLump, wor
 	R_MovePatchSurfacesToHunk(worldData);
 #endif
 
-	ri.Printf( PRINT_ALL, "...loaded %d faces, %i meshes, %i trisurfs, %i flares\n", numFaces, numMeshes, numTriSurfs, numFlares );
+	vk_debug("...loaded %d faces, %i meshes, %i trisurfs, %i flares\n", numFaces, numMeshes, numTriSurfs, numFlares );
 }
 
 
@@ -1656,7 +1736,7 @@ R_LoadFogs
 =================
 */
 static	void R_LoadFogs( lump_t *l, lump_t *brushesLump, lump_t *sidesLump, world_t &worldData, int index ) {
-	int			i;
+	int			i, n;
 	fog_t		*out;
 	dfog_t		*fogs;
 	dbrush_t 	*brushes, *brush;
@@ -1761,22 +1841,36 @@ static	void R_LoadFogs( lump_t *l, lump_t *brushesLump, lump_t *sidesLump, world
 		// get information from the shader for fog parameters
 		shader = R_FindShader( fogs->shader, lightmaps, stylesDefault, qtrue );
 
+
 		if (!shader->fogParms)
 		{//bad shader!!
 			assert(shader->fogParms);
 			out->parms.color[0] = 1.0f;
 			out->parms.color[1] = 0.0f;
 			out->parms.color[2] = 0.0f;
+
 			out->parms.depthForOpaque = 250.0f;
 		}
 		else
 		{
+			if (r_mapGreyScale->value > 0) {
+				float luminance;
+				luminance = LUMA(out->parms.color[0], out->parms.color[1], out->parms.color[2]);
+				out->parms.color[0] = LERP(out->parms.color[0], luminance, r_mapGreyScale->value);
+				out->parms.color[1] = LERP(out->parms.color[1], luminance, r_mapGreyScale->value);
+				out->parms.color[2] = LERP(out->parms.color[2], luminance, r_mapGreyScale->value);
+			}
+
 			out->parms = *shader->fogParms;
 		}
 
 		out->colorInt = ColorBytes4 (	out->parms.color[0] * tr.identityLight,
 										out->parms.color[1] * tr.identityLight,
 										out->parms.color[2] * tr.identityLight, 1.0 );
+
+		for (n = 0; n < 4; n++)
+			out->color[n] = ((out->colorInt >> (n * 8)) & 255) / 255.0f;
+
 		d = out->parms.depthForOpaque < 1 ? 1 : out->parms.depthForOpaque;
 		out->tcScale = 1.0f / ( d * 8 );
 
@@ -1859,7 +1953,7 @@ void R_LoadLightGridArray( lump_t *l, world_t &worldData ) {
 	w->numGridArrayElements = w->lightGridBounds[0] * w->lightGridBounds[1] * w->lightGridBounds[2];
 
 	if ( (unsigned)l->filelen != w->numGridArrayElements * sizeof(*w->lightGridArray) ) {
-		ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: light grid array mismatch\n" );
+		vk_debug("WARNING: light grid array mismatch\n" );
 		w->lightGridData = NULL;
 		return;
 	}
@@ -1931,7 +2025,7 @@ void R_LoadEntities( lump_t *l, world_t &worldData ) {
 		if (!Q_strncmp(keyname, s, strlen(s)) ) {
 			s = strchr(value, ';');
 			if (!s) {
-				ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: no semi colon in vertexshaderremap '%s'\n", value );
+				vk_debug("WARNING: no semi colon in vertexshaderremap '%s'\n", value );
 				break;
 			}
 			*s++ = 0;
@@ -1945,7 +2039,7 @@ void R_LoadEntities( lump_t *l, world_t &worldData ) {
 		if (!Q_strncmp(keyname, s, strlen(s)) ) {
 			s = strchr(value, ';');
 			if (!s) {
-				ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: no semi colon in shaderremap '%s'\n", value );
+				vk_debug("WARNING: no semi colon in shaderremap '%s'\n", value );
 				break;
 			}
 			*s++ = 0;
@@ -2034,6 +2128,7 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 		// clear tr.world so if the level fails to load, the next
 		// try will not look at the partially loaded version
 		tr.world = NULL;
+		tr.mapLoading = qtrue;
 	}
 
 	// check for cached disk file from the server first...
@@ -2088,6 +2183,10 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 	R_LoadSubmodels (&header->lumps[LUMP_MODELS], worldData, index);
 	R_LoadVisibility( &header->lumps[LUMP_VISIBILITY], worldData );
 
+#ifdef USE_VBO
+	R_BuildWorldVBO(s_worldData.surfaces, s_worldData.numsurfaces);
+#endif
+
 	worldData.dataSize = (byte *)Hunk_Alloc(0, h_low) - startMarker;
 
 	if (!index)
@@ -2098,6 +2197,8 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 
 		// only set tr.world now that we know the entire level has loaded properly
 		tr.world = &worldData;
+
+		tr.mapLoading = qfalse;
 	}
 
 	if (ri.CM_GetCachedMapDiskImage())

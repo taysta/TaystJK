@@ -21,8 +21,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===========================================================================
 */
 
+
 #include "tr_local.h"
 
+static renderCommandList_t	BE_Commands;
 
 /*
 =====================
@@ -61,11 +63,11 @@ void R_PerformanceCounters( void ) {
 	}
 	else if (r_speeds->integer == 5 )
 	{
-		ri.Printf( PRINT_ALL, "zFar: %.0f\n", tr.viewParms.zFar );
+		vk_debug("zFar: %.0f\n", tr.viewParms.zFar );
 	}
 	else if (r_speeds->integer == 6 )
 	{
-		ri.Printf( PRINT_ALL, "flare adds:%i tests:%i renders:%i\n",
+		vk_debug("flare adds:%i tests:%i renders:%i\n",
 			backEnd.pc.c_flareAdds, backEnd.pc.c_flareTests, backEnd.pc.c_flareRenders );
 	}
 	else if (r_speeds->integer == 7) {
@@ -95,8 +97,22 @@ void R_IssueRenderCommands( qboolean runPerformanceCounters ) {
 	byteAlias_t *ba = (byteAlias_t *)&cmdList->cmds[cmdList->used];
 	ba->ui = RC_END_OF_LIST;
 
+
 	// clear it out, in case this is a sync and not a buffer flip
 	cmdList->used = 0;
+
+	if (backEnd.screenshotMask == 0) {
+		if (ri.VK_IsMinimized())
+			return; // skip backend when minimized
+		//if (backEnd.throttle)
+		//	return; // or throttled on demand
+	}
+	else {
+		if (ri.VK_IsMinimized() && !R_CanMinimize()) {
+			backEnd.screenshotMask = 0;
+			return;
+		}
+	}
 
 	// at this point, the back end thread is idle, so it is ok
 	// to look at it's performance counters
@@ -111,40 +127,23 @@ void R_IssueRenderCommands( qboolean runPerformanceCounters ) {
 	}
 }
 
-
-/*
-====================
-R_IssuePendingRenderCommands
-
-Issue any pending commands and wait for them to complete.
-====================
-*/
-void R_IssuePendingRenderCommands( void ) {
-	if ( !tr.registered ) {
-		return;
-	}
-	R_IssueRenderCommands( qfalse );
-}
-
 /*
 ============
-R_GetCommandBuffer
+R_GetCommandBufferReserved
 
 make sure there is enough command space
 ============
 */
-void *R_GetCommandBuffer( int bytes ) {
-	renderCommandList_t	*cmdList;
+static void* R_GetCommandBufferReserved(int bytes, int reservedBytes) {
+	renderCommandList_t* cmdList;
 
 	cmdList = &backEndData->commands;
-	bytes = PAD(bytes, sizeof (void *));
-
-	assert(cmdList);
+	bytes = PAD(bytes, sizeof(void*));
 
 	// always leave room for the end of list command
-	if ( cmdList->used + bytes + 4 > MAX_RENDER_COMMANDS ) {
-		if ( bytes > MAX_RENDER_COMMANDS - 4 ) {
-			Com_Error( ERR_FATAL, "R_GetCommandBuffer: bad size %i", bytes );
+	if (cmdList->used + bytes + sizeof(int) + reservedBytes > MAX_RENDER_COMMANDS) {
+		if (bytes > MAX_RENDER_COMMANDS - sizeof(int)) {
+			ri.Error(ERR_FATAL, "R_GetCommandBuffer: bad size %i", bytes);
 		}
 		// if we run out of room, just start dropping commands
 		return NULL;
@@ -153,6 +152,19 @@ void *R_GetCommandBuffer( int bytes ) {
 	cmdList->used += bytes;
 
 	return cmdList->cmds + cmdList->used - bytes;
+
+}
+/*
+============
+R_GetCommandBuffer
+
+make sure there is enough command space
+============
+*/
+void *R_GetCommandBuffer( int bytes ) {
+	tr.lastRenderCommand = RC_END_OF_LIST;
+
+	return R_GetCommandBufferReserved(bytes, PAD(sizeof(swapBuffersCommand_t), sizeof(void*)));
 }
 
 
@@ -176,6 +188,11 @@ void	R_AddDrawSurfCmd( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 
 	cmd->refdef = tr.refdef;
 	cmd->viewParms = tr.viewParms;
+
+	tr.numDrawSurfCmds++;
+	if (tr.drawSurfCmd == NULL) {
+		tr.drawSurfCmd = cmd;
+	}
 }
 
 
@@ -186,7 +203,7 @@ RE_SetColor
 Passing NULL will set the color to white
 =============
 */
-void	RE_SetColor( const float *rgba ) {
+void RE_SetColor( const float *rgba ) {
 	setColorCommand_t	*cmd;
 
 	if ( !tr.registered ) {
@@ -209,12 +226,40 @@ void	RE_SetColor( const float *rgba ) {
 	cmd->color[3] = rgba[3];
 }
 
+void VK_AdjustFrom640(float *x, float *y, float *w, float *h) {
+	//*x = *x * glConfig.screen_xscale + glConfig.screen_bias;
+	*x *= vk.xscale2D;
+	*y *= vk.yscale2D;
+	*w *= vk.xscale2D;
+	*h *= vk.yscale2D;
+
+	backEnd.refdef.time = ri.Milliseconds();
+	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
+}
 
 /*
 =============
 RE_StretchPic
 =============
 */
+
+/*static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
+	Matrix4f ortho = new Matrix4f();
+
+	float tx = -(right + left) / (right - left);
+	float ty = -(top + bottom) / (top - bottom);
+	float tz = -(far + near) / (far - near);
+
+	ortho.m00 = 2f / (right - left);
+	ortho.m11 = 2f / (top - bottom);
+	ortho.m22 = -2f / (far - near);
+	ortho.m03 = tx;
+	ortho.m13 = ty;
+	ortho.m23 = tz;
+
+	return ortho;
+}*/
+
 void RE_StretchPic ( float x, float y, float w, float h,
 					  float s1, float t1, float s2, float t2, qhandle_t hShader ) {
 	stretchPicCommand_t	*cmd;
@@ -223,6 +268,16 @@ void RE_StretchPic ( float x, float y, float w, float h,
 	if ( !cmd ) {
 		return;
 	}
+
+	VK_AdjustFrom640(&x, &y, &w, &h);
+
+	// set 2D virtual screen size
+	//qglOrtho(0, glConfig.vidWidth, glConfig.vidHeight, 0, 0, 1);
+
+	// set time for 2D shaders
+	backEnd.refdef.time = ri.Milliseconds();
+	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
+
 	cmd->commandId = RC_STRETCH_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
 	cmd->x = x;
@@ -248,6 +303,9 @@ void RE_RotatePic ( float x, float y, float w, float h,
 	if ( !cmd ) {
 		return;
 	}
+
+	VK_AdjustFrom640(&x, &y, &w, &h);
+
 	cmd->commandId = RC_ROTATE_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
 	cmd->x = x;
@@ -274,6 +332,9 @@ void RE_RotatePic2 ( float x, float y, float w, float h,
 	if ( !cmd ) {
 		return;
 	}
+
+	VK_AdjustFrom640(&x, &y, &w, &h);
+
 	cmd->commandId = RC_ROTATE_PIC2;
 	cmd->shader = R_GetShaderByHandle( hShader );
 	cmd->x = x;
@@ -324,55 +385,17 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	if ( !tr.registered ) {
 		return;
 	}
-	glState.finishCalled = qfalse;
+	
+	backEnd.doneBloom = qfalse;
 
 	tr.frameCount++;
 	tr.frameSceneNum = 0;
 
 	//
-	// do overdraw measurement
-	//
-	if ( r_measureOverdraw->integer )
-	{
-		if ( glConfig.stencilBits < 4 )
-		{
-			ri.Printf( PRINT_ALL, "Warning: not enough stencil bits to measure overdraw: %d\n", glConfig.stencilBits );
-			ri.Cvar_Set( "r_measureOverdraw", "0" );
-			r_measureOverdraw->modified = qfalse;
-		}
-		else if ( r_shadows->integer == 2 )
-		{
-			ri.Printf( PRINT_ALL, "Warning: stencil shadows and overdraw measurement are mutually exclusive\n" );
-			ri.Cvar_Set( "r_measureOverdraw", "0" );
-			r_measureOverdraw->modified = qfalse;
-		}
-		else
-		{
-			R_IssuePendingRenderCommands();
-			qglEnable( GL_STENCIL_TEST );
-			qglStencilMask( ~0U );
-			qglClearStencil( 0U );
-			qglStencilFunc( GL_ALWAYS, 0U, ~0U );
-			qglStencilOp( GL_KEEP, GL_INCR, GL_INCR );
-		}
-		r_measureOverdraw->modified = qfalse;
-	}
-	else
-	{
-		// this is only reached if it was on and is now off
-		if ( r_measureOverdraw->modified ) {
-			R_IssuePendingRenderCommands();
-			qglDisable( GL_STENCIL_TEST );
-		}
-		r_measureOverdraw->modified = qfalse;
-	}
-
-	//
 	// texturemode stuff
 	//
 	if ( r_textureMode->modified || r_ext_texture_filter_anisotropic->modified) {
-		R_IssuePendingRenderCommands();
-		GL_TextureMode( r_textureMode->string );
+		//GL_TextureMode( r_textureMode->string );
 		r_textureMode->modified = qfalse;
 		r_ext_texture_filter_anisotropic->modified = qfalse;
 	}
@@ -380,27 +403,17 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	//
 	// gamma stuff
 	//
-	if ( r_gamma->modified ) {
+	if (r_gamma->modified || r_greyscale->modified || r_dither->modified) {
 		r_gamma->modified = qfalse;
+		r_greyscale->modified = qfalse;
+		r_dither->modified = qfalse;
 
-		R_IssuePendingRenderCommands();
 		R_SetColorMappings();
-		R_SetGammaCorrectionLUT();
 	}
 
 	if (cl_ratioFix->modified) {
 		R_Set2DRatio();
 		cl_ratioFix->modified = qfalse;
-	}
-
-	// check for errors
-	if ( !r_ignoreGLErrors->integer ) {
-		R_IssuePendingRenderCommands();
-
-		GLenum err = qglGetError();
-		if ( err != GL_NO_ERROR ) {
-			Com_Error( ERR_FATAL, "RE_BeginFrame() - glGetError() failed (0x%x)!\n", err );
-		}
 	}
 
 	//
@@ -411,25 +424,15 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		return;
 	}
 	cmd->commandId = RC_DRAW_BUFFER;
+	tr.lastRenderCommand = RC_DRAW_BUFFER;
 
-	if ( glConfig.stereoEnabled ) {
-		if ( stereoFrame == STEREO_LEFT ) {
-			cmd->buffer = (int)GL_BACK_LEFT;
-		} else if ( stereoFrame == STEREO_RIGHT ) {
-			cmd->buffer = (int)GL_BACK_RIGHT;
-		} else {
-			Com_Error( ERR_FATAL, "RE_BeginFrame: Stereo is enabled, but stereoFrame was %i", stereoFrame );
-		}
-	} else {
-		if ( stereoFrame != STEREO_CENTER ) {
-			Com_Error( ERR_FATAL, "RE_BeginFrame: Stereo is disabled, but stereoFrame was %i", stereoFrame );
-		}
-//		if ( !Q_stricmp( r_drawBuffer->string, "GL_FRONT" ) ) {
-//			cmd->buffer = (int)GL_FRONT;
-//		} else
-		{
-			cmd->buffer = (int)GL_BACK;
-		}
+	cmd->buffer = 0;
+
+	if (r_fastsky->integer && vk.fastSky) {
+		clearColorCommand_t *clrcmd;
+		if ((clrcmd = (clearColorCommand_t*)R_GetCommandBuffer(sizeof(*clrcmd))) == NULL)
+			return;
+		clrcmd->commandId = RC_CLEARCOLOR;
 	}
 }
 
@@ -480,16 +483,122 @@ void RE_TakeVideoFrame( int width, int height, byte *captureBuffer, byte *encode
 
 	if ( !tr.registered )
 		return;
-
+#if 0
 	cmd = (videoFrameCommand_t *)R_GetCommandBuffer( sizeof( *cmd ) );
 	if ( !cmd )
 		return;
 
 	cmd->commandId = RC_VIDEOFRAME;
+#endif
+
+	backEnd.screenshotMask |= SCREENSHOT_AVI;
+	cmd = &backEnd.vcmd;
 
 	cmd->width = width;
 	cmd->height = height;
 	cmd->captureBuffer = captureBuffer;
 	cmd->encodeBuffer = encodeBuffer;
 	cmd->motionJpeg = motionJpeg;
+}
+
+/*
+=============
+
+FixRenderCommandList
+https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=493
+Arnout: this is a nasty issue. Shaders can be registered after drawsurfaces are generated
+but before the frame is rendered. This will, for the duration of one frame, cause drawsurfaces
+to be rendered with bad shaders. To fix this, need to go through all render commands and fix
+sortedIndex.
+==============
+*/
+void FixRenderCommandList(int newShader)
+{
+	renderCommandList_t* cmdList = &BE_Commands;
+
+	if (cmdList) {
+		const void* curCmd = cmdList->cmds;
+
+		while (1) {
+			switch (*(const int*)curCmd) {
+			case RC_SET_COLOR:
+			{
+				const setColorCommand_t* sc_cmd = (const setColorCommand_t*)curCmd;
+				curCmd = (const void*)(sc_cmd + 1);
+				break;
+			}
+			case RC_STRETCH_PIC:
+			{
+				const stretchPicCommand_t* sp_cmd = (const stretchPicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_ROTATE_PIC:
+			{
+				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_ROTATE_PIC2:
+			{
+				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_DRAW_SURFS:
+			{
+				int i;
+				drawSurf_t	*drawSurf;
+				shader_t	*shader;
+				int			fogNum;
+				int			entityNum;
+				int			dlightMap;
+				int			sortedIndex;
+				const drawSurfsCommand_t* ds_cmd = (const drawSurfsCommand_t*)curCmd;
+
+				for (i = 0, drawSurf = ds_cmd->drawSurfs; i < ds_cmd->numDrawSurfs; i++, drawSurf++) {
+					R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &fogNum, &dlightMap);
+					sortedIndex = ((drawSurf->sort >> QSORT_SHADERNUM_SHIFT)& (MAX_SHADERS - 1));
+					if (sortedIndex >= newShader) {
+						sortedIndex = shader->sortedIndex;
+						drawSurf->sort = (sortedIndex << QSORT_SHADERNUM_SHIFT) | entityNum | (fogNum << QSORT_FOGNUM_SHIFT) | (int)dlightMap;
+					}
+				}
+				curCmd = (const void*)(ds_cmd + 1);
+				break;
+			}
+			case RC_DRAW_BUFFER:
+			case RC_WORLD_EFFECTS:
+			case RC_AUTO_MAP:
+			{
+				const drawBufferCommand_t* db_cmd = (const drawBufferCommand_t*)curCmd;
+				curCmd = (const void*)(db_cmd + 1);
+				break;
+			}
+			case RC_SWAP_BUFFERS:
+			{
+				const swapBuffersCommand_t* sb_cmd = (const swapBuffersCommand_t*)curCmd;
+				curCmd = (const void*)(sb_cmd + 1);
+				break;
+			}
+			case RC_CLEARCOLOR:
+			{
+				const clearColorCommand_t* cc_cmd = (const clearColorCommand_t*)curCmd;
+				curCmd = (const void*)(cc_cmd + 1);
+				break;
+			}
+			case RC_END_OF_LIST:
+			default:
+				return;
+			}
+		}
+	}
+}
+
+qboolean R_CanMinimize(void)
+{
+	if (vk.fboActive || vk.offscreenRender)
+		return qtrue;
+
+	return qfalse;
 }

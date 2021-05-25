@@ -23,6 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 // tr_models.c -- model loading and caching
 
+
 #include "tr_local.h"
 #include "qcommon/disablewarnings.h"
 #include "qcommon/sstring.h"	// #include <string>
@@ -1064,9 +1065,6 @@ Ghoul2 Insert End
 	// only set the name after the model has been successfully loaded
 	Q_strncpyz( mod->name, name, sizeof( mod->name ) );
 
-	// make sure the render thread is stopped
-	R_IssuePendingRenderCommands();
-
 	int iLODStart = 0;
 	if (strstr (name, ".md3")) {
 		iLODStart = MD3_MAX_LODS-1;	// this loads the md3s in reverse so they can be biased
@@ -1278,9 +1276,6 @@ Ghoul2 Insert End
 
 	// only set the name after the model has been successfully loaded
 	Q_strncpyz( mod->name, name, sizeof( mod->name ) );
-
-	// make sure the render thread is stopped
-	R_IssuePendingRenderCommands();
 
 	int iLODStart = 0;
 	if (strstr (name, ".md3")) {
@@ -1631,12 +1626,10 @@ void RE_BeginRegistration( glconfig_t *glconfigOut ) {
 
 	*glconfigOut = glConfig;
 
-	R_IssuePendingRenderCommands();
-
 	tr.viewCluster = -1;		// force markleafs to regenerate
 
 	// rww - 9-13-01 [1-26-01-sof2]
-	//R_ClearFlares();
+	R_ClearFlares();
 
 	RE_ClearScene();
 
@@ -1666,6 +1659,7 @@ void R_ModelInit( void )
 
 	if(!CachedModels)
 	{
+		vk_debug("Init models \n");
 		CachedModels = new CachedModels_t;
 	}
 

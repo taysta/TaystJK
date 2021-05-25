@@ -23,6 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 // tr_shade_calc.c
 
+
 #include "tr_local.h"
 #include "../rd-common/tr_common.h"
 
@@ -95,7 +96,7 @@ static float EvalWaveFormClamped( const waveForm_t *wf )
 /*
 ** RB_CalcStretchTexCoords
 */
-void RB_CalcStretchTexCoords( const waveForm_t *wf, float *st )
+void RB_CalcStretchTexCoords( const waveForm_t *wf, float *src, float *dst )
 {
 	float p;
 	texModInfo_t tmi;
@@ -110,7 +111,7 @@ void RB_CalcStretchTexCoords( const waveForm_t *wf, float *st )
 	tmi.matrix[1][1] = p;
 	tmi.translate[1] = 0.5f - 0.5f * p;
 
-	RB_CalcTransformTexCoords( &tmi, st );
+	RB_CalcTransformTexCoords( &tmi, src, dst );
 }
 
 /*
@@ -255,13 +256,13 @@ void RB_CalcBulgeVertexes( deformStage_t *ds )
 	{
 		// I guess do some extra dumb stuff..the fact that it uses ST seems bad though because skin pages may be set up in certain ways that can cause
 		//	very noticeable seams on sufaces ( like on the huge ion_cannon ).
-		const float *st = ( const float * ) tess.texCoords[0];
+		const float *st = ( const float * ) tess.texCoords[0][0];
 		float		now;
 		int			off;
 
 		now = backEnd.refdef.time * ds->bulgeSpeed * 0.001f;
 
-		for ( i = 0; i < tess.numVertexes; i++, xyz += 4, st += 2 * NUM_TEX_COORDS, normal += 4 )
+		for ( i = 0; i < tess.numVertexes; i++, xyz += 4, st += 2, normal += 4 )
 		{
 			off = (float)( FUNCTABLE_SIZE / (M_PI*2) ) * ( st[0] * ds->bulgeWidth + now );
 
@@ -441,7 +442,7 @@ static void AutospriteDeform( void ) {
 		VectorScale( leftDir, radius, left );
 		VectorScale( upDir, radius, up );
 
-		if ( backEnd.viewParms.isMirror ) {
+		if ( backEnd.viewParms.portalView == PV_MIRROR ) {
 			VectorSubtract( vec3_origin, left, left );
 		}
 
@@ -938,26 +939,26 @@ void RB_CalcFogTexCoords( float *st ) {
 /*
 ** RB_CalcEnvironmentTexCoords
 */
-void RB_CalcEnvironmentTexCoords( float *st )
+void RB_CalcEnvironmentTexCoords(float* st)
 {
 	int			i;
-	float		*v, *normal;
+	const float* v, * normal;
 	vec3_t		viewer, reflected;
 	float		d;
 
 	v = tess.xyz[0];
 	normal = tess.normal[0];
 
-	for (i = 0 ; i < tess.numVertexes ; i++, v += 4, normal += 4, st += 2 )
+	for (i = 0; i < tess.numVertexes; i++, v += 4, normal += 4, st += 2)
 	{
-		VectorSubtract (backEnd.ori.viewOrigin, v, viewer);
-		VectorNormalizeFast (viewer);
+		VectorSubtract(backEnd.ori.viewOrigin, v, viewer);
+		VectorNormalizeFast(viewer);
 
-		d = DotProduct (normal, viewer);
+		d = DotProduct(normal, viewer);
 
-		reflected[0] = normal[0]*2*d - viewer[0];
-		reflected[1] = normal[1]*2*d - viewer[1];
-		reflected[2] = normal[2]*2*d - viewer[2];
+		//reflected[0] = normal[0]*2*d - viewer[0];
+		reflected[1] = normal[1] * 2 * d - viewer[1];
+		reflected[2] = normal[2] * 2 * d - viewer[2];
 
 		st[0] = 0.5 + reflected[1] * 0.5;
 		st[1] = 0.5 - reflected[2] * 0.5;
@@ -967,94 +968,94 @@ void RB_CalcEnvironmentTexCoords( float *st )
 /*
 ** RB_CalcTurbulentTexCoords
 */
-void RB_CalcTurbulentTexCoords( const waveForm_t *wf, float *st )
+void RB_CalcTurbulentTexCoords(const waveForm_t* wf, float* src, float* dst)
 {
 	int i;
-	float now;
+	double now; // -EC- set to double
 
-	now = ( wf->phase + tess.shaderTime * wf->frequency );
+	now = (wf->phase + tess.shaderTime * wf->frequency);
 
-	for ( i = 0; i < tess.numVertexes; i++, st += 2 )
+	for (i = 0; i < tess.numVertexes; i++, dst += 2, src += 2)
 	{
-		float s = st[0];
-		float t = st[1];
-
-		st[0] = s + tr.sinTable[ ( ( int ) ( ( ( tess.xyz[i][0] + tess.xyz[i][2] )* 1.0/128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
-		st[1] = t + tr.sinTable[ ( ( int ) ( ( tess.xyz[i][1] * 1.0/128 * 0.125 + now ) * FUNCTABLE_SIZE ) ) & ( FUNCTABLE_MASK ) ] * wf->amplitude;
+		dst[0] = src[0] + tr.sinTable[((int64_t)(((tess.xyz[i][0] + tess.xyz[i][2]) * 1.0 / 128 * 0.125 + now) * FUNCTABLE_SIZE)) & (FUNCTABLE_MASK)] * wf->amplitude;
+		dst[1] = src[1] + tr.sinTable[((int64_t)((tess.xyz[i][1] * 1.0 / 128 * 0.125 + now) * FUNCTABLE_SIZE)) & (FUNCTABLE_MASK)] * wf->amplitude;
 	}
 }
 
 /*
 ** RB_CalcScaleTexCoords
 */
-void RB_CalcScaleTexCoords( const float scale[2], float *st )
+void RB_CalcScaleTexCoords(const float scale[2], float* src, float* dst)
 {
 	int i;
 
-	for ( i = 0; i < tess.numVertexes; i++, st += 2 )
+	for (i = 0; i < tess.numVertexes; i++, dst += 2, src += 2)
 	{
-		st[0] *= scale[0];
-		st[1] *= scale[1];
+		dst[0] = src[0] * scale[0];
+		dst[1] = src[1] * scale[1];
 	}
 }
 
 /*
 ** RB_CalcScrollTexCoords
 */
-void RB_CalcScrollTexCoords( const float scrollSpeed[2], float *st )
+void RB_CalcScrollTexCoords(const float scrollSpeed[2], float* src, float* dst)
 {
 	int i;
-	float timeScale = tess.shaderTime;
-	float adjustedScrollS, adjustedScrollT;
+	double	timeScale; // -EC-: set to double
+	double	adjustedScrollS, adjustedScrollT; // -EC-: set to double
 
-	adjustedScrollS = scrollSpeed[0] * timeScale;
-	adjustedScrollT = scrollSpeed[1] * timeScale;
+	timeScale = tess.shaderTime;
+
+	adjustedScrollS = (double)scrollSpeed[0] * timeScale;
+	adjustedScrollT = (double)scrollSpeed[1] * timeScale;
 
 	// clamp so coordinates don't continuously get larger, causing problems
 	// with hardware limits
-	adjustedScrollS = adjustedScrollS - floor( adjustedScrollS );
-	adjustedScrollT = adjustedScrollT - floor( adjustedScrollT );
+	adjustedScrollS = adjustedScrollS - floor(adjustedScrollS);
+	adjustedScrollT = adjustedScrollT - floor(adjustedScrollT);
 
-	for ( i = 0; i < tess.numVertexes; i++, st += 2 )
+	for (i = 0; i < tess.numVertexes; i++, dst += 2, src += 2)
 	{
-		st[0] += adjustedScrollS;
-		st[1] += adjustedScrollT;
+		dst[0] = src[0] + adjustedScrollS;
+		dst[1] = src[1] + adjustedScrollT;
 	}
 }
+
 
 /*
 ** RB_CalcTransformTexCoords
 */
-void RB_CalcTransformTexCoords( const texModInfo_t *tmi, float *st  )
+void RB_CalcTransformTexCoords(const texModInfo_t* tmi, float* src, float* dst)
 {
 	int i;
 
-	for ( i = 0; i < tess.numVertexes; i++, st += 2 )
+	for (i = 0; i < tess.numVertexes; i++, dst += 2, src += 2)
 	{
-		float s = st[0];
-		float t = st[1];
+		const float s = src[0];
+		const float t = src[1];
 
-		st[0] = s * tmi->matrix[0][0] + t * tmi->matrix[1][0] + tmi->translate[0];
-		st[1] = s * tmi->matrix[0][1] + t * tmi->matrix[1][1] + tmi->translate[1];
+		dst[0] = s * tmi->matrix[0][0] + t * tmi->matrix[1][0] + tmi->translate[0];
+		dst[1] = s * tmi->matrix[0][1] + t * tmi->matrix[1][1] + tmi->translate[1];
 	}
 }
 
 /*
 ** RB_CalcRotateTexCoords
 */
-void RB_CalcRotateTexCoords( float degsPerSecond, float *st )
+void RB_CalcRotateTexCoords(float degsPerSecond, float* src, float* dst)
 {
-	float timeScale = tess.shaderTime;
-	float degs;
-	int index;
+	double timeScale = tess.shaderTime; // -EC- set to double
+	double degs; // -EC- set to double
+	int64_t index;
 	float sinValue, cosValue;
 	texModInfo_t tmi;
 
 	degs = -degsPerSecond * timeScale;
-	index = degs * ( FUNCTABLE_SIZE / 360.0f );
+	index = degs * (FUNCTABLE_SIZE / 360.0f);
 
-	sinValue = tr.sinTable[ index & FUNCTABLE_MASK ];
-	cosValue = tr.sinTable[ ( index + FUNCTABLE_SIZE / 4 ) & FUNCTABLE_MASK ];
+	sinValue = tr.sinTable[index & FUNCTABLE_MASK];
+	cosValue = tr.sinTable[(index + FUNCTABLE_SIZE / 4) & FUNCTABLE_MASK];
 
 	tmi.matrix[0][0] = cosValue;
 	tmi.matrix[1][0] = -sinValue;
@@ -1064,8 +1065,9 @@ void RB_CalcRotateTexCoords( float degsPerSecond, float *st )
 	tmi.matrix[1][1] = cosValue;
 	tmi.translate[1] = 0.5 - 0.5 * sinValue - 0.5 * cosValue;
 
-	RB_CalcTransformTexCoords( &tmi, st );
+	RB_CalcTransformTexCoords(&tmi, src, dst);
 }
+
 
 
 

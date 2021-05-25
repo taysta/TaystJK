@@ -58,7 +58,7 @@ typedef void (*ImageLoaderFn)( const char *filename, byte **pic, int *width, int
 qboolean R_ImageLoader_Add( const char *extension, ImageLoaderFn imageLoader );
 
 // Load an image from file.
-void R_LoadImage( const char *shortname, byte **pic, int *width, int *height );
+const char *R_LoadImage( const char *shortname, byte **pic, int *width, int *height );
 
 // Load raw image data from TGA image.
 void LoadTGA( const char *name, byte **pic, int *width, int *height );

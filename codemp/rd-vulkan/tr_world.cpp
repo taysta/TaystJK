@@ -250,121 +250,86 @@ static qboolean	R_CullSurface( surfaceType_t *surface, shader_t *shader ) {
 	return qfalse;
 }
 
-static int R_DlightFace( srfSurfaceFace_t *face, int dlightBits ) {
-	float		d;
-	int			i;
-	dlight_t	*dl;
+#ifdef USE_PMLIGHT
+qboolean R_LightCullBounds(const dlight_t *dl, const vec3_t mins, const vec3_t maxs)
+{
+	if (dl->linear) {
+		if (dl->transformed[0] - dl->radius > maxs[0] && dl->transformed2[0] - dl->radius > maxs[0])
+			return qtrue;
+		if (dl->transformed[0] + dl->radius < mins[0] && dl->transformed2[0] + dl->radius < mins[0])
+			return qtrue;
 
-	for ( i = 0 ; i < tr.refdef.num_dlights ; i++ ) {
-		if ( ! ( dlightBits & ( 1 << i ) ) ) {
-			continue;
-		}
-		dl = &tr.refdef.dlights[i];
-		d = DotProduct( dl->origin, face->plane.normal ) - face->plane.dist;
-		if ( !VectorCompare(face->plane.normal, vec3_origin) && (d < -dl->radius || d > dl->radius) ) {
-			// dlight doesn't reach the plane
-			dlightBits &= ~( 1 << i );
-		}
+		if (dl->transformed[1] - dl->radius > maxs[1] && dl->transformed2[1] - dl->radius > maxs[1])
+			return qtrue;
+		if (dl->transformed[1] + dl->radius < mins[1] && dl->transformed2[1] + dl->radius < mins[1])
+			return qtrue;
+
+		if (dl->transformed[2] - dl->radius > maxs[2] && dl->transformed2[2] - dl->radius > maxs[2])
+			return qtrue;
+		if (dl->transformed[2] + dl->radius < mins[2] && dl->transformed2[2] + dl->radius < mins[2])
+			return qtrue;
+
+		return qfalse;
 	}
 
-	if ( !dlightBits ) {
-		tr.pc.c_dlightSurfacesCulled++;
-	}
+	if (dl->transformed[0] - dl->radius > maxs[0])
+		return qtrue;
+	if (dl->transformed[0] + dl->radius < mins[0])
+		return qtrue;
 
-	face->dlightBits = dlightBits;
-	return dlightBits;
-}
+	if (dl->transformed[1] - dl->radius > maxs[1])
+		return qtrue;
+	if (dl->transformed[1] + dl->radius < mins[1])
+		return qtrue;
 
-static int R_DlightGrid( srfGridMesh_t *grid, int dlightBits ) {
-	int			i;
-	dlight_t	*dl;
+	if (dl->transformed[2] - dl->radius > maxs[2])
+		return qtrue;
+	if (dl->transformed[2] + dl->radius < mins[2])
+		return qtrue;
 
-	for ( i = 0 ; i < tr.refdef.num_dlights ; i++ ) {
-		if ( ! ( dlightBits & ( 1 << i ) ) ) {
-			continue;
-		}
-		dl = &tr.refdef.dlights[i];
-		if ( dl->origin[0] - dl->radius > grid->meshBounds[1][0]
-			|| dl->origin[0] + dl->radius < grid->meshBounds[0][0]
-			|| dl->origin[1] - dl->radius > grid->meshBounds[1][1]
-			|| dl->origin[1] + dl->radius < grid->meshBounds[0][1]
-			|| dl->origin[2] - dl->radius > grid->meshBounds[1][2]
-			|| dl->origin[2] + dl->radius < grid->meshBounds[0][2] ) {
-			// dlight doesn't reach the bounds
-			dlightBits &= ~( 1 << i );
-		}
-	}
-
-	if ( !dlightBits ) {
-		tr.pc.c_dlightSurfacesCulled++;
-	}
-
-	grid->dlightBits = dlightBits;
-	return dlightBits;
+	return qfalse;
 }
 
 
-static int R_DlightTrisurf( srfTriangles_t *surf, int dlightBits ) {
-	// FIXME: more dlight culling to trisurfs...
-	surf->dlightBits = dlightBits;
-	return dlightBits;
-#if 0
-	int			i;
-	dlight_t	*dl;
-
-	for ( i = 0 ; i < tr.refdef.num_dlights ; i++ ) {
-		if ( ! ( dlightBits & ( 1 << i ) ) ) {
-			continue;
-		}
-		dl = &tr.refdef.dlights[i];
-		if ( dl->origin[0] - dl->radius > grid->meshBounds[1][0]
-			|| dl->origin[0] + dl->radius < grid->meshBounds[0][0]
-			|| dl->origin[1] - dl->radius > grid->meshBounds[1][1]
-			|| dl->origin[1] + dl->radius < grid->meshBounds[0][1]
-			|| dl->origin[2] - dl->radius > grid->meshBounds[1][2]
-			|| dl->origin[2] + dl->radius < grid->meshBounds[0][2] ) {
-			// dlight doesn't reach the bounds
-			dlightBits &= ~( 1 << i );
-		}
+static qboolean R_LightCullFace(const srfSurfaceFace_t* face, const dlight_t* dl)
+{
+	float d = DotProduct(dl->transformed, face->plane.normal) - face->plane.dist;
+	if (dl->linear)
+	{
+		float d2 = DotProduct(dl->transformed2, face->plane.normal) - face->plane.dist;
+		if ((d < -dl->radius) && (d2 < -dl->radius))
+			return qtrue;
+		if ((d > dl->radius) && (d2 > dl->radius))
+			return qtrue;
+	}
+	else
+	{
+		if ((d < -dl->radius) || (d > dl->radius))
+			return qtrue;
 	}
 
-	if ( !dlightBits ) {
-		tr.pc.c_dlightSurfacesCulled++;
-	}
-
-	grid->dlightBits = dlightBits;
-	return dlightBits;
-#endif
-}
-
-/*
-====================
-R_DlightSurface
-
-The given surface is going to be drawn, and it touches a leaf
-that is touched by one or more dlights, so try to throw out
-more dlights if possible.
-====================
-*/
-static int R_DlightSurface( msurface_t *surf, int dlightBits ) {
-	if ( *surf->data == SF_FACE ) {
-		dlightBits = R_DlightFace( (srfSurfaceFace_t *)surf->data, dlightBits );
-	} else if ( *surf->data == SF_GRID ) {
-		dlightBits = R_DlightGrid( (srfGridMesh_t *)surf->data, dlightBits );
-	} else if ( *surf->data == SF_TRIANGLES ) {
-		dlightBits = R_DlightTrisurf( (srfTriangles_t *)surf->data, dlightBits );
-	} else {
-		dlightBits = 0;
-	}
-
-	if ( dlightBits ) {
-		tr.pc.c_dlightSurfaces++;
-	}
-
-	return dlightBits;
+	return qfalse;
 }
 
 
+static qboolean R_LightCullSurface(const surfaceType_t* surface, const dlight_t* dl)
+{
+	switch (*surface) {
+	case SF_FACE:
+		return R_LightCullFace((const srfSurfaceFace_t*)surface, dl);
+	case SF_GRID: {
+		const srfGridMesh_t* grid = (const srfGridMesh_t*)surface;
+		return R_LightCullBounds(dl, grid->meshBounds[0], grid->meshBounds[1]);
+	}
+	case SF_TRIANGLES: {
+		const srfTriangles_t* tris = (const srfTriangles_t*)surface;
+		return R_LightCullBounds(dl, tris->bounds[0], tris->bounds[1]);
+	}
+	default:
+		return qfalse;
+	};
+}
+#endif // USE_PMLIGHT
 
 #ifdef _ALT_AUTOMAP_METHOD
 static bool tr_drawingAutoMap = false;
@@ -378,28 +343,18 @@ R_AddWorldSurface
 */
 static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noViewCount = qfalse )
 {
+
 	if (!noViewCount)
 	{
 		if ( surf->viewCount == tr.viewCount )
 		{
-			// already in this view, but lets make sure all the dlight bits are set
-			if ( *surf->data == SF_FACE )
-			{
-				((srfSurfaceFace_t *)surf->data)->dlightBits |= dlightBits;
-			}
-			else if ( *surf->data == SF_GRID )
-			{
-				((srfGridMesh_t *)surf->data)->dlightBits |= dlightBits;
-			}
-			else if ( *surf->data == SF_TRIANGLES )
-			{
-				((srfTriangles_t *)surf->data)->dlightBits |= dlightBits;
-			}
 			return;
 		}
+
 		surf->viewCount = tr.viewCount;
 		// FIXME: bmodel fog?
 	}
+
 
 	/*
 	if (r_shadows->integer == 2)
@@ -421,11 +376,14 @@ static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noView
 		return;
 	}
 
-	// check for dlighting
-	if ( dlightBits ) {
-		dlightBits = R_DlightSurface( surf, dlightBits );
-		dlightBits = ( dlightBits != 0 );
+#ifdef USE_PMLIGHT
+	{
+		surf->vcVisible = tr.viewCount;
+		R_AddDrawSurf(surf->data, surf->shader, surf->fogIndex, 0);
+		return;
 	}
+#endif // USE_PMLIGHT
+
 
 #ifdef _ALT_AUTOMAP_METHOD
 	if (tr_drawingAutoMap)
@@ -522,6 +480,111 @@ static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noView
 
 /*
 =============================================================
+	PM LIGHTING
+=============================================================
+*/
+#ifdef USE_PMLIGHT
+static void R_AddLitSurface(msurface_t *surf, const dlight_t *light)
+{
+	// since we're not worried about offscreen lights casting into the frustum (ATM !!!)
+	// only add the "lit" version of this surface if it was already added to the view
+	//if ( surf->viewCount != tr.viewCount )
+	//	return;
+
+	// surfaces that were faceculled will still have the current viewCount in vcBSP
+	// because that's set to indicate that it's BEEN vis tested at all, to avoid
+	// repeated vis tests, not whether it actually PASSED the vis test or not
+	// only light surfaces that are GENUINELY visible, as opposed to merely in a visible LEAF
+	if (surf->vcVisible != tr.viewCount) {
+		return;
+	}
+
+	if (surf->shader->lightingStage < 0) {
+		return;
+	}
+
+	if (surf->lightCount == tr.lightCount)
+		return;
+
+	surf->lightCount = tr.lightCount;
+
+	if (R_LightCullSurface(surf->data, light)) {
+		tr.pc.c_lit_culls++;
+		return;
+	}
+
+	R_AddLitSurf(surf->data, surf->shader, surf->fogIndex);
+}
+
+
+static void R_RecursiveLightNode(const mnode_t *node)
+{
+	qboolean	children[2];
+	msurface_t	**mark;
+	msurface_t	*surf;
+	float d;
+	int c;
+
+	do {
+		// if the node wasn't marked as potentially visible, exit
+		if (node->visframe != tr.visCount)
+			return;
+
+		if (node->contents != CONTENTS_NODE)
+			break;
+
+		children[0] = children[1] = qfalse;
+
+		d = DotProduct(tr.light->origin, node->plane->normal) - node->plane->dist;
+		if (d > -tr.light->radius) {
+			children[0] = qtrue;
+		}
+		if (d < tr.light->radius) {
+			children[1] = qtrue;
+		}
+
+		if (tr.light->linear) {
+			d = DotProduct(tr.light->origin2, node->plane->normal) - node->plane->dist;
+			if (d > -tr.light->radius) {
+				children[0] = qtrue;
+			}
+			if (d < tr.light->radius) {
+				children[1] = qtrue;
+			}
+		}
+
+		if (children[0] && children[1]) {
+			R_RecursiveLightNode(node->children[0]);
+			node = node->children[1];
+		}
+		else if (children[0]) {
+			node = node->children[0];
+		}
+		else if (children[1]) {
+			node = node->children[1];
+		}
+		else {
+			return;
+		}
+
+	} while (1);
+
+	tr.pc.c_lit_leafs++;
+
+	// add the individual surfaces
+	c = node->nummarksurfaces;
+	mark = node->firstmarksurface;
+	while (c--) {
+		// the surface may have already been added if it spans multiple leafs
+		surf = *mark;
+		R_AddLitSurface(surf, tr.light);
+		mark++;
+	}
+}
+#endif // USE_PMLIGHT
+
+/*
+=============================================================
 
 	BRUSH MODELS
 
@@ -548,24 +611,32 @@ void R_AddBrushModelSurfaces ( trRefEntity_t *ent ) {
 		return;
 	}
 
-	if(pModel->bspInstance)
-	{ //rwwRMG - added
+#ifdef USE_PMLIGHT
+	{
+		dlight_t	*dl;
+		int			s;
+
+		for (s = 0; s < bmodel->numSurfaces; s++) {
+			R_AddWorldSurface(bmodel->firstSurface + s, 0);
+		}
+
 		R_SetupEntityLighting(&tr.refdef, ent);
-	}
 
-	//rww - Take this into account later?
-//	if ( !ri.Cvar_VariableIntegerValue( "com_RMG" ) )
-//	{	// don't dlight bmodels on rmg, as multiple copies of the same instance will light up
-		R_DlightBmodel( bmodel, false );
-//	}
-//	else
-//	{
-//		R_DlightBmodel( bmodel, true );
-//	}
+		R_TransformDlights(tr.viewParms.num_dlights, tr.viewParms.dlights, &tr.ori );
 
-	for ( i = 0 ; i < bmodel->numSurfaces ; i++ ) {
-		R_AddWorldSurface( bmodel->firstSurface + i, tr.currentEntity->dlightBits, qtrue );
-	}
+		for (i = 0; i < tr.viewParms.num_dlights; i++) {
+			dl = &tr.viewParms.dlights[i];
+			if (!R_LightCullBounds(dl, bmodel->bounds[0], bmodel->bounds[1])) {
+				tr.lightCount++;
+				tr.light = dl;
+				for (s = 0; s < bmodel->numSurfaces; s++) {
+					R_AddLitSurface(bmodel->firstSurface + s, dl);
+				}
+			}
+		}
+		return;
+}
+#endif // USE_PMLIGHT
 }
 
 float GetQuadArea( vec3_t v1, vec3_t v2, vec3_t v3, vec3_t v4 )
@@ -1109,16 +1180,17 @@ qboolean R_InitializeWireframeAutomap(void)
 static float g_lastHeight = 0.0f;
 static bool g_lastHeightValid = false;
 static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits );
+
 const void *R_DrawWireframeAutomap(const void *data)
 {
 	const drawBufferCommand_t *cmd = (const drawBufferCommand_t *)data;
 	float e = 0.0f;
-	float alpha;
 	wireframeMapSurf_t *s = g_autoMapFrame.surfs;
-#ifndef _ALT_AUTOMAP_METHOD
-	int i;
-#endif
 
+	// TEMP
+	return (const void*)(cmd + 1);
+	
+	
 	if (!r_autoMap || !r_autoMap->integer)
 	{
 		return (const void *)(cmd + 1);
@@ -1130,220 +1202,6 @@ const void *R_DrawWireframeAutomap(const void *data)
 		return (const void *)(cmd + 1);
 	}
 #endif
-
-#if 0 //instead of this method, just do the automap as a new "scene"
-	//projection matrix mode
-	qglMatrixMode(GL_PROJECTION);
-
-	//store the current matrix
-	qglPushMatrix();
-	//translate to our proper pos/angles from identity
-	qglLoadIdentity();
-	qglTranslatef(pos[0], pos[1], pos[2]);
-	//presumeably this is correct for compensating for quake's
-	//crazy angle system.
-	qglRotatef(angles[1], 0.0f, 0.0f, 1.0f);
-	qglRotatef(-angles[0], 0.0f, 1.0f, 0.0f);
-	qglRotatef(angles[2], 1.0f, 0.0f, 0.0f);
-#endif
-
-	//disable 2d texturing
-	qglDisable( GL_TEXTURE_2D );
-
-	//now draw the backdrop
-#if 0 //this does no good sadly, because of the issue of having to clear with a second scene
-	//in order for global fog clearing to work.
-	if (r_autoMapBackAlpha && r_autoMapBackAlpha->value)
-	{ //specify the automap background alpha
-		alpha = r_autoMapBackAlpha->value;
-
-		//cap it reasonably
-		if (alpha < 0.0f)
-		{
-			alpha = 0.0f;
-		}
-		else if (alpha > 1.0f)
-		{
-			alpha = 1.0f;
-		}
-		GL_State(GLS_SRCBLEND_SRC_ALPHA|GLS_DSTBLEND_SRC_ALPHA);
-	}
-	else
-#endif
-	{
-		alpha = 1.0f;
-		GL_State(0);
-	}
-	//black
-	qglColor4f(0.0f, 0.0f, 0.0f, alpha);
-
-	//draw a black backdrop
-	qglPushMatrix();
-	qglLoadIdentity(); //get the ident matrix
-
-	qglBegin( GL_QUADS );
-	qglVertex3f( -QUADINFINITY, QUADINFINITY, -(backEnd.viewParms.zFar-1) );
-	qglVertex3f( QUADINFINITY, QUADINFINITY, -(backEnd.viewParms.zFar-1) );
-	qglVertex3f( QUADINFINITY, -QUADINFINITY, -(backEnd.viewParms.zFar-1) );
-	qglVertex3f( -QUADINFINITY, -QUADINFINITY, -(backEnd.viewParms.zFar-1) );
-	qglEnd ();
-
-	//pop back the viewmatrix
-	qglPopMatrix();
-
-
-	//set the mode to line draw
-	if (r_autoMap->integer == 2)
-	{ //line mode
-		GL_State(GLS_POLYMODE_LINE|GLS_SRCBLEND_SRC_ALPHA|GLS_DSTBLEND_SRC_COLOR|GLS_DEPTHMASK_TRUE);
-	}
-	else
-	{ //fill mode
-		//GL_State(GLS_SRCBLEND_SRC_ALPHA|GLS_DSTBLEND_SRC_COLOR|GLS_DEPTHMASK_TRUE);
-		GL_State(GLS_DEPTHMASK_TRUE);
-	}
-
-	//set culling
-	GL_Cull(CT_TWO_SIDED);
-
-#ifndef _ALT_AUTOMAP_METHOD
-	//Draw the triangles
-	while (s)
-	{
-		//first, loop through and set the alpha on every point for this surf.
-		//if the alpha ends up being completely transparent for every point, we don't even
-		//need to draw it
-		if (g_playerHeight != g_lastHeight ||
-			!g_lastHeightValid)
-		{ //only do this if we need to
-			i = 0;
-			s->completelyTransparent = true;
-			while (i < s->numPoints)
-			{
-				//base the color on the elevation... for now, just check the first point height
-				if (s->points[i].xyz[2] < g_playerHeight)
-				{
-					e = s->points[i].xyz[2]-g_playerHeight;
-				}
-				else
-				{
-					e = g_playerHeight-s->points[i].xyz[2];
-				}
-				if (e < 0.0f)
-				{
-					e = -e;
-				}
-
-				if (r_autoMap->integer != 2)
-				{ //fill mode
-					if (s->points[i].xyz[2] > (g_playerHeight+64.0f))
-					{
-						s->points[i].alpha = 1.0f;
-					}
-					else
-					{
-						s->points[i].alpha = e/256.0f;
-					}
-				}
-				else
-				{
-					//set alpha and color based on relative height of point
-					s->points[i].alpha = e/256.0f;
-				}
-				e /= 512.0f;
-
-				//cap color
-				if (e > 1.0f)
-				{
-					e = 1.0f;
-				}
-				else if (e < 0.0f)
-				{
-					e = 0.0f;
-				}
-				VectorSet(s->points[i].color, e, 1.0f-e, 0.0f);
-
-				//cap alpha
-				if (s->points[i].alpha > 1.0f)
-				{
-					s->points[i].alpha = 1.0f;
-				}
-				else if (s->points[i].alpha < 0.0f)
-				{
-					s->points[i].alpha = 0.0f;
-				}
-
-				if (s->points[i].alpha != 1.0f)
-				{ //this point is not entirely alpha'd out, so still draw the surface
-					s->completelyTransparent = false;
-				}
-
-				i++;
-			}
-		}
-
-		if (s->completelyTransparent)
-		{
-			s = s->next;
-			continue;
-		}
-
-		i = 0;
-		qglBegin(GL_TRIANGLES);
-		while (i < s->numPoints)
-		{
-			if (r_autoMap->integer == 2 || s->numPoints < 3)
-			{ //line mode or not enough verts on surface
-				qglColor4f(s->points[i].color[0], s->points[i].color[1], s->points[i].color[2], s->points[i].alpha);
-			}
-			else
-			{ //fill mode
-				vec3_t planeNormal;
-				float fAlpha = s->points[i].alpha;
-				planeNormal[0] = s->points[0].xyz[1]*(s->points[1].xyz[2]-s->points[2].xyz[2]) + s->points[1].xyz[1]*(s->points[2].xyz[2]-s->points[0].xyz[2]) + s->points[2].xyz[1]*(s->points[0].xyz[2]-s->points[1].xyz[2]);
-				planeNormal[1] = s->points[0].xyz[2]*(s->points[1].xyz[0]-s->points[2].xyz[0]) + s->points[1].xyz[2]*(s->points[2].xyz[0]-s->points[0].xyz[0]) + s->points[2].xyz[2]*(s->points[0].xyz[0]-s->points[1].xyz[0]);
-				planeNormal[2] = s->points[0].xyz[0]*(s->points[1].xyz[1]-s->points[2].xyz[1]) + s->points[1].xyz[0]*(s->points[2].xyz[1]-s->points[0].xyz[1]) + s->points[2].xyz[0]*(s->points[0].xyz[1]-s->points[1].xyz[1]);
-
-				if (planeNormal[0] < 0.0f) planeNormal[0] = -planeNormal[0];
-				if (planeNormal[1] < 0.0f) planeNormal[1] = -planeNormal[1];
-				if (planeNormal[2] < 0.0f) planeNormal[2] = -planeNormal[2];
-
-				/*
-				if (s->points[i].xyz[2] > g_playerHeight+64.0f &&
-					planeNormal[2] > 0.7f)
-				{ //surface above player facing up/down directly
-					fAlpha = 1.0f-planeNormal[2];
-				}
-				*/
-
-				//qglColor4f(planeNormal[0], planeNormal[1], planeNormal[2], fAlpha);
-				qglColor4f(s->points[i].color[0], s->points[i].color[1], 1.0f-planeNormal[2], fAlpha);
-			}
-			qglVertex3f(s->points[i].xyz[0], s->points[i].xyz[1], s->points[i].xyz[2]);
-			i++;
-		}
-		qglEnd();
-		s = s->next;
-	}
-#else
-	tr_drawingAutoMap = true;
-	R_RecursiveWorldNode( tr.world->nodes, 15, 0 );
-	tr_drawingAutoMap = false;
-#endif
-
-	g_lastHeight = g_playerHeight;
-	g_lastHeightValid = true;
-
-#if 0 //instead of this method, just do the automap as a new "scene"
-	//pop back the view matrix
-	qglPopMatrix();
-#endif
-
-	//reenable 2d texturing
-	qglEnable( GL_TEXTURE_2D );
-
-	//white color/full alpha
-	qglColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	return (const void *)(cmd + 1);
 }
@@ -1432,46 +1290,15 @@ static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits )
 
 		// node is just a decision point, so go down both sides
 		// since we don't care about sort orders, just go positive to negative
-
-		// determine which dlights are needed
-		if ( r_nocull->integer!=2 )
-		{
-			newDlights[0] = 0;
-			newDlights[1] = 0;
-			if ( dlightBits )
-			{
-				int	i;
-				for ( i = 0 ; i < tr.refdef.num_dlights ; i++ )
-				{
-					dlight_t	*dl;
-					float		dist;
-
-					if ( dlightBits & ( 1 << i ) ) {
-						dl = &tr.refdef.dlights[i];
-						dist = DotProduct( dl->origin, node->plane->normal ) - node->plane->dist;
-
-						if ( dist > -dl->radius ) {
-							newDlights[0] |= ( 1 << i );
-						}
-						if ( dist < dl->radius ) {
-							newDlights[1] |= ( 1 << i );
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			newDlights[0] = dlightBits;
-			newDlights[1] = dlightBits;
-		}
+		newDlights[0] = 0;
+		newDlights[1] = 0;
 
 		// recurse down the children, front side first
 		R_RecursiveWorldNode (node->children[0], planeBits, newDlights[0] );
 
 		// tail recurse
 		node = node->children[1];
-		dlightBits = newDlights[1];
+
 	} while ( 1 );
 
 	{
@@ -1669,6 +1496,11 @@ R_AddWorldSurfaces
 =============
 */
 void R_AddWorldSurfaces (void) {
+#ifdef USE_PMLIGHT
+	dlight_t* dl;
+	int i;
+#endif
+
 	if ( !r_drawworld->integer ) {
 		return;
 	}
@@ -1692,4 +1524,25 @@ void R_AddWorldSurfaces (void) {
 	}
 
 	R_RecursiveWorldNode( tr.world->nodes, 15, ( 1 << tr.refdef.num_dlights ) - 1 );
+
+#ifdef USE_PMLIGHT
+	// "transform" all the dlights so that dl->transformed is actually populated
+	// (even though HERE it's == dl->origin) so we can always use R_LightCullBounds
+	// instead of having copypasted versions for both world and local cases
+
+	R_TransformDlights(tr.viewParms.num_dlights, tr.viewParms.dlights, &tr.viewParms.world);
+	for (i = 0; i < tr.viewParms.num_dlights; i++)
+	{
+		dl = &tr.viewParms.dlights[i];
+		dl->head = dl->tail = NULL;
+		if (R_CullDlight(dl) == CULL_OUT) {
+			tr.pc.c_light_cull_out++;
+			continue;
+		}
+		tr.pc.c_light_cull_in++;
+		tr.lightCount++;
+		tr.light = dl;
+		R_RecursiveLightNode(tr.world->nodes);
+	}
+#endif // USE_PMLIGHT
 }

@@ -43,73 +43,22 @@ the back end (before doing the lighting calculation)
 */
 void R_TransformDlights( int count, dlight_t *dl, orientationr_t *ori) {
 	int		i;
-	vec3_t	temp;
+	vec3_t	temp, temp2;
 
 	for ( i = 0 ; i < count ; i++, dl++ ) {
 		VectorSubtract( dl->origin, ori->origin, temp );
 		dl->transformed[0] = DotProduct( temp, ori->axis[0] );
 		dl->transformed[1] = DotProduct( temp, ori->axis[1] );
 		dl->transformed[2] = DotProduct( temp, ori->axis[2] );
+		if (dl->linear) {
+			VectorSubtract(dl->origin2, ori->origin, temp2);
+			dl->transformed2[0] = DotProduct(temp2, ori->axis[0]);
+			dl->transformed2[1] = DotProduct(temp2, ori->axis[1]);
+			dl->transformed2[2] = DotProduct(temp2, ori->axis[2]);
+		}
+
 	}
 }
-
-/*
-=============
-R_DlightBmodel
-
-Determine which dynamic lights may effect this bmodel
-=============
-*/
-void R_DlightBmodel( bmodel_t *bmodel, bool NoLight )
-{ //rwwRMG - modified args
-	int			i, j;
-	dlight_t	*dl;
-	int			mask;
-	msurface_t	*surf;
-
-	// transform all the lights
-	R_TransformDlights( tr.refdef.num_dlights, tr.refdef.dlights, &tr.ori );
-
-	mask = 0;
-	if (!NoLight)
-	{
-		for ( i=0 ; i<tr.refdef.num_dlights ; i++ ) {
-			dl = &tr.refdef.dlights[i];
-
-			// see if the point is close enough to the bounds to matter
-			for ( j = 0 ; j < 3 ; j++ ) {
-				if ( dl->transformed[j] - bmodel->bounds[1][j] > dl->radius ) {
-					break;
-				}
-				if ( bmodel->bounds[0][j] - dl->transformed[j] > dl->radius ) {
-					break;
-				}
-			}
-			if ( j < 3 ) {
-				continue;
-			}
-
-			// we need to check this light
-			mask |= 1 << i;
-		}
-	}
-
-	tr.currentEntity->needDlights = (qboolean)(mask != 0);
-	tr.currentEntity->dlightBits = mask;
-
-	// set the dlight bits in all the surfaces
-	for ( i = 0 ; i < bmodel->numSurfaces ; i++ ) {
-		surf = bmodel->firstSurface + i;
-		if ( *surf->data == SF_FACE ) {
-			((srfSurfaceFace_t *)surf->data)->dlightBits = mask;
-		} else if ( *surf->data == SF_GRID ) {
-			((srfGridMesh_t *)surf->data)->dlightBits = mask;
-		} else if ( *surf->data == SF_TRIANGLES ) {
-			((srfTriangles_t *)surf->data)->dlightBits = mask;
-		}
-	}
-}
-
 
 /*
 =============================================================================
@@ -301,17 +250,20 @@ Calculates all the lighting values that will be used
 by the Calc_* functions
 =================
 */
-void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
+void R_SetupEntityLighting(const trRefdef_t* refdef, trRefEntity_t* ent) {
 	int				i;
-	dlight_t		*dl;
+	dlight_t* dl;
 	float			power;
 	vec3_t			dir;
 	float			d;
 	vec3_t			lightDir;
 	vec3_t			lightOrigin;
+#ifdef USE_PMLIGHT
+	vec3_t			shadowLightDir;
+#endif
 
 	// lighting calculations
-	if ( ent->lightingCalculated ) {
+	if (ent->lightingCalculated) {
 		return;
 	}
 	ent->lightingCalculated = qtrue;
@@ -319,29 +271,31 @@ void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
 	//
 	// trace a sample point down to find ambient light
 	//
-	if ( ent->e.renderfx & RF_LIGHTING_ORIGIN ) {
+	if (ent->e.renderfx & RF_LIGHTING_ORIGIN) {
 		// seperate lightOrigins are needed so an object that is
 		// sinking into the ground can still be lit, and so
 		// multi-part models can be lit identically
-		VectorCopy( ent->e.lightingOrigin, lightOrigin );
-	} else {
-		VectorCopy( ent->e.origin, lightOrigin );
+		VectorCopy(ent->e.lightingOrigin, lightOrigin);
+	}
+	else {
+		VectorCopy(ent->e.origin, lightOrigin);
 	}
 
 	// if NOWORLDMODEL, only use dynamic lights (menu system, etc)
-	if ( !(refdef->rdflags & RDF_NOWORLDMODEL )
-		&& tr.world->lightGridData ) {
-		R_SetupEntityLightingGrid( ent );
-	} else {
+	if (!(refdef->rdflags & RDF_NOWORLDMODEL)
+		&& tr.world->lightGridData) {
+		R_SetupEntityLightingGrid(ent);
+	}
+	else {
 		ent->ambientLight[0] = ent->ambientLight[1] =
 			ent->ambientLight[2] = tr.identityLight * 150;
 		ent->directedLight[0] = ent->directedLight[1] =
 			ent->directedLight[2] = tr.identityLight * 150;
-		VectorCopy( tr.sunDirection, ent->lightDir );
+		VectorCopy(tr.sunDirection, ent->lightDir);
 	}
 
 	// bonus items and view weapons have a fixed minimum add
-	if ( 1 /* ent->e.renderfx & RF_MINLIGHT */ ) {
+	if (1 /* ent->e.renderfx & RF_MINLIGHT */) {
 		// give everything a minimum light add
 		ent->ambientLight[0] += tr.identityLight * 32;
 		ent->ambientLight[1] += tr.identityLight * 32;
@@ -369,22 +323,47 @@ void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
 	//
 	// modify the light by dynamic lights
 	//
-	d = VectorLength( ent->directedLight );
-	VectorScale( ent->lightDir, d, lightDir );
+	d = VectorLength(ent->directedLight);
+	VectorScale(ent->lightDir, d, lightDir);
 
-	for ( i = 0 ; i < refdef->num_dlights ; i++ ) {
-		dl = &refdef->dlights[i];
-		VectorSubtract( dl->origin, lightOrigin, dir );
-		d = VectorNormalize( dir );
+#ifdef USE_PMLIGHT
+	if (r_dlightMode->integer == 2) {
+		// only direct lights
+		// but we need to deal with shadow light direction
+		VectorCopy(lightDir, shadowLightDir);
+		if (r_shadows->integer == 2) {
+			for (i = 0; i < refdef->num_dlights; i++) {
+				dl = &refdef->dlights[i];
+				if (dl->linear) // no support for linear lights atm
+					continue;
+				VectorSubtract(dl->origin, lightOrigin, dir);
+				d = VectorNormalize(dir);
+				power = DLIGHT_AT_RADIUS * (dl->radius * dl->radius);
+				if (d < DLIGHT_MINIMUM_RADIUS) {
+					d = DLIGHT_MINIMUM_RADIUS;
+				}
+				d = power / (d * d);
+				VectorMA(shadowLightDir, d, dir, shadowLightDir);
+			}
+		} // if ( r_shadows->integer == 2 )
+	}  // if ( r_dlightMode->integer == 2 )
+	else
+#endif
+	{
+		for (i = 0; i < refdef->num_dlights; i++) {
+			dl = &refdef->dlights[i];
+			VectorSubtract(dl->origin, lightOrigin, dir);
+			d = VectorNormalize(dir);
 
-		power = DLIGHT_AT_RADIUS * ( dl->radius * dl->radius );
-		if ( d < DLIGHT_MINIMUM_RADIUS ) {
-			d = DLIGHT_MINIMUM_RADIUS;
+			power = DLIGHT_AT_RADIUS * (dl->radius * dl->radius);
+			if (d < DLIGHT_MINIMUM_RADIUS) {
+				d = DLIGHT_MINIMUM_RADIUS;
+			}
+			d = power / (d * d);
+
+			VectorMA(ent->directedLight, d, dl->color, ent->directedLight);
+			VectorMA(lightDir, d, dir, lightDir);
 		}
-		d = power / ( d * d );
-
-		VectorMA( ent->directedLight, d, dl->color, ent->directedLight );
-		VectorMA( lightDir, d, dir, lightDir );
 	}
 
 	// clamp ambient
@@ -409,6 +388,15 @@ void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
 	ent->lightDir[0] = DotProduct( lightDir, ent->e.axis[0] );
 	ent->lightDir[1] = DotProduct( lightDir, ent->e.axis[1] );
 	ent->lightDir[2] = DotProduct( lightDir, ent->e.axis[2] );
+
+#ifdef USE_PMLIGHT
+	if (r_shadows->integer == 2 && r_dlightMode->integer == 2) {
+		VectorNormalize(shadowLightDir);
+		ent->shadowLightDir[0] = DotProduct(shadowLightDir, ent->e.axis[0]);
+		ent->shadowLightDir[1] = DotProduct(shadowLightDir, ent->e.axis[1]);
+		ent->shadowLightDir[2] = DotProduct(shadowLightDir, ent->e.axis[2]);
+	}
+#endif
 }
 
 /*

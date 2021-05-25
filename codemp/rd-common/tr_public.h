@@ -90,7 +90,7 @@ typedef struct refexport_s {
 
 	// Draw images for cinematic rendering, pass as 32 bit rgba
 	void				(*DrawStretchRaw)						( int x, int y, int w, int h, int cols, int rows, const byte *data, int client, qboolean dirty );
-	void				(*UploadCinematic)						( int cols, int rows, const byte *data, int client, qboolean dirty );
+	void				(*UploadCinematic)						( int cols, int rows, byte *data, int client, qboolean dirty );
 
 	void				(*BeginFrame)							( stereoFrame_t stereoFrame );
 
@@ -346,6 +346,12 @@ typedef struct refimport_s {
 	// Persistent data store
 	bool			(*PD_Store)							( const char *name, const void *data, size_t size );
 	const void *	(*PD_Load)							( const char *name, size_t *size );
+
+	// Vulkan
+	qboolean		(*VK_IsMinimized)					(void);
+	void			*(*VK_GetInstanceProcAddress)		(void);
+	qboolean		(*VK_createSurfaceImpl)				(VkInstance instance, VkSurfaceKHR *surface);
+	void			(*VK_destroyWindow)					(void);
 } refimport_t;
 
 // this is the only function actually exported at the linker level

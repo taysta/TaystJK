@@ -21,6 +21,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include <SDL.h>
 #include <SDL_syswm.h>
+#include <SDL_vulkan.h>					// Vulkan
 #include "qcommon/qcommon.h"
 #include "rd-common/tr_types.h"
 #include "sys/sys_local.h"
@@ -139,9 +140,11 @@ GLimp_Minimize
 Minimize the game so that user is back at the desktop
 ===============
 */
+void WIN_VK_MinimizeFix(void); // Vulkan
 void GLimp_Minimize(void)
 {
 	SDL_MinimizeWindow( screen );
+	WIN_VK_MinimizeFix(); // Vulkan, fix for swapchain recreation.
 }
 
 #ifdef _WIN32
@@ -340,6 +343,12 @@ static rserr_t GLimp_SetMode(glconfig_t *glConfig, const windowDesc_t *windowDes
 	if ( windowDesc->api == GRAPHICS_API_OPENGL )
 	{
 		flags |= SDL_WINDOW_OPENGL;
+	}
+
+	// Vulkan
+	if (windowDesc->api == GRAPHICS_API_VULKAN)
+	{
+		flags |= SDL_WINDOW_VULKAN;
 	}
 
 	Com_Printf( "Initializing display\n");
@@ -639,6 +648,20 @@ static rserr_t GLimp_SetMode(glconfig_t *glConfig, const windowDesc_t *windowDes
 			return RSERR_UNKNOWN;
 		}
 	}
+
+	// Vulkan
+	else if (windowDesc->api == GRAPHICS_API_VULKAN) {
+
+		if ((screen = SDL_CreateWindow(windowTitle, x, y,
+			glConfig->vidWidth, glConfig->vidHeight, flags)) == NULL)
+		{
+			Com_DPrintf("SDL_CreateWindow failed: %s\n", SDL_GetError());
+		}
+
+#ifndef MACOS_X
+		SDL_SetWindowIcon(screen, icon);
+#endif
+	}
 	else
 	{
 		// Just create a regular window
@@ -736,6 +759,8 @@ static qboolean GLimp_StartDriverAndSetMode(glconfig_t *glConfig, const windowDe
 		default:
 			break;
 	}
+
+	Com_Printf("\n\nGPU Driver: %s\n", SDL_GetCurrentVideoDriver()); // Vulkan, debug
 
 	return qtrue;
 }
@@ -911,4 +936,49 @@ void *WIN_GL_GetProcAddress( const char *proc )
 qboolean WIN_GL_ExtensionSupported( const char *extension )
 {
 	return SDL_GL_ExtensionSupported( extension ) == SDL_TRUE ? qtrue : qfalse;
+}
+
+// VULKAN
+void WIN_VK_MinimizeFix(void) {
+	Cvar_SetValue("com_minimized", 1);
+}
+
+qboolean WIN_VK_IsMinimized(void) {
+	return (qboolean)com_minimized->integer;
+}
+
+void *WIN_VK_GetInstanceProcAddress(void)
+{
+
+	int code = SDL_Vulkan_LoadLibrary(NULL);
+
+	if (code) {
+		Com_Error(ERR_FATAL, "Failed to load Vulkan library (code %d): %s", code, SDL_GetError());
+	}
+
+	return SDL_Vulkan_GetVkGetInstanceProcAddr();
+}
+
+qboolean WIN_VK_createSurfaceImpl(VkInstance instance, VkSurfaceKHR *surface)
+{
+	if (!SDL_Vulkan_CreateSurface(screen, instance, surface))
+	{
+		surface = VK_NULL_HANDLE;
+		Com_Error(ERR_FATAL, "SDL_Vulkan_CreateSurface(): %s", SDL_GetError());
+	}
+
+	return qtrue;
+}
+
+void WIN_VK_destroyWindow(void)
+{
+#if 0
+	IN_Shutdown();
+
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+
+	SDL_DestroyWindow(screen);
+	screen = NULL;
+#endif
+	return;
 }

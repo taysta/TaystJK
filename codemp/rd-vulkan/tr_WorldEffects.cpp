@@ -32,14 +32,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////////////////////
 // Includes
 ////////////////////////////////////////////////////////////////////////////////////////
+
 #include "tr_local.h"
 #include "tr_WorldEffects.h"
 
 #include "Ravl/CVec.h"
 #include "Ratl/vector_vs.h"
 #include "Ratl/bits_vs.h"
-
-#include "glext.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Defines
@@ -78,8 +77,6 @@ inline float WE_flrand(float min, float max) {
 ////////////////////////////////////////////////////////////////////////////////////////
 // Externs & Fwd Decl.
 ////////////////////////////////////////////////////////////////////////////////////////
-extern void			SetViewportAndScissor( void );
-
 inline void VectorFloor(vec3_t in)
 {
 	in[0] = floorf(in[0]);
@@ -813,13 +810,17 @@ public:
 
 		// Create The Image
 		//------------------
-		mImage = R_FindImageFile(texturePath, qfalse, qfalse, qfalse, GL_CLAMP);
+		imgFlags_t flags;
+
+		flags = IMGFLAG_NONE;
+
+		mImage = R_FindImageFile(texturePath, flags);
 		if (!mImage)
 		{
-			Com_Error(ERR_DROP, "CWeatherParticleCloud: Could not texture %s", texturePath);
+			vk_debug("CWeatherParticleCloud: Could not texture %s", texturePath);
 		}
 
-		GL_Bind(mImage);
+		//GL_Bind(mImage);
 
 
 
@@ -1211,112 +1212,101 @@ public:
 	////////////////////////////////////////////////////////////////////////////////////
 	void		Render()
 	{
-		CWeatherParticle*	part=0;
-		int			particleNum;
+		int					i, particleNum;
+		CWeatherParticle	*part = 0;
 
-
-		// Set The GL State And Image Binding
-		//------------------------------------
-		GL_State((mBlendMode==0)?(GLS_ALPHA):(GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE));
-		GL_Bind(mImage);
-
-
-		// Enable And Disable Things
-		//---------------------------
-		qglEnable(GL_TEXTURE_2D);
-		//qglDisable(GL_CULL_FACE);
-		//naughty, you are making the assumption that culling is on when you get here. -rww
-		GL_Cull(CT_TWO_SIDED);
-
-		qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (mFilterMode==0)?(GL_LINEAR):(GL_NEAREST));
-		qglTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (mFilterMode==0)?(GL_LINEAR):(GL_NEAREST));
-
-
-		// Setup Matrix Mode And Translation
-		//-----------------------------------
-		qglMatrixMode(GL_MODELVIEW);
-		qglPushMatrix();
-
-
-		// Begin
-		//-------
-		qglBegin(mGLModeEnum);
-		for (particleNum=0; particleNum<mParticleCount; particleNum++)
-		{
+		// quick start to continue on later. some time.
+		for (particleNum = 0; particleNum < mParticleCount; particleNum++) {
 			part = &(mParticles[particleNum]);
+
 			if (!part->mFlags.get_bit(CWeatherParticle::FLAG_RENDER))
-			{
 				continue;
+
+			if (tess.numVertexes > SHADER_MAX_VERTEXES - 4)
+				break;
+
+			// blend Mode Zero -> Apply Alpha Just To Alpha Channel
+			if (mBlendMode == 0) {
+				for (i = 0; i < 4; i++) {
+					tess.svars.colors[0][tess.numVertexes + i][0] = mColor[0] * 255;
+					tess.svars.colors[0][tess.numVertexes + i][1] = mColor[1] * 255;
+					tess.svars.colors[0][tess.numVertexes + i][2] = mColor[2] * 255;
+					tess.svars.colors[0][tess.numVertexes + i][3] = part->mAlpha * 255;
+				}
 			}
 
-			// Blend Mode Zero -> Apply Alpha Just To Alpha Channel
-			//------------------------------------------------------
-			if (mBlendMode==0)
+			// otherwise Apply Alpha To All Channels
+			else {
+				for (i = 0; i < 4; i++) {
+					tess.svars.colors[0][tess.numVertexes + i][0] = (mColor[0] * part->mAlpha) * 255;
+					tess.svars.colors[0][tess.numVertexes + i][1] = (mColor[1] * part->mAlpha) * 255;
+					tess.svars.colors[0][tess.numVertexes + i][2] = (mColor[2] * part->mAlpha) * 255;
+					tess.svars.colors[0][tess.numVertexes + i][3] = (mColor[3] * part->mAlpha) * 255;
+				}
+			}
+
+			// render A Triangle
+			if (mVertexCount == 3)
 			{
-				qglColor4f(mColor[0], mColor[1], mColor[2], part->mAlpha);
+				for (i = 0; i < 3; i++) {
+					tess.xyz[tess.numVertexes + 0][i] = part->mPosition[i] ;
+					tess.xyz[tess.numVertexes + 1][i] = part->mPosition[i] + mCameraLeft[i];
+					tess.xyz[tess.numVertexes + 2][i] = part->mPosition[i] + mCameraLeftPlusUp[i];
+				}
+
+				tess.texCoords[0][tess.numVertexes][0] = 1;
+				tess.texCoords[0][tess.numVertexes][1] = 0;
+				tess.texCoords[0][tess.numVertexes + 1][0] = 0;
+				tess.texCoords[0][tess.numVertexes + 1][1] = 1;
+				tess.texCoords[0][tess.numVertexes + 2][0] = 0;
+				tess.texCoords[0][tess.numVertexes + 2][1] = 0;
+
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 0;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 1;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 2;
+
+				tess.numVertexes += 3;
 			}
 
-			// Otherwise Apply Alpha To All Channels
-			//---------------------------------------
+			// render A Quad
 			else
 			{
-				qglColor4f(mColor[0]*part->mAlpha, mColor[1]*part->mAlpha, mColor[2]*part->mAlpha, mColor[3]*part->mAlpha);
-			}
+				for (i = 0; i < 3; i++) {
+					tess.xyz[tess.numVertexes + 0][i] = part->mPosition[i] - mCameraLeftMinusUp[i];
+					tess.xyz[tess.numVertexes + 1][i] = part->mPosition[i] - mCameraLeftPlusUp[i];
+					tess.xyz[tess.numVertexes + 2][i] = part->mPosition[i] + mCameraLeftMinusUp[i];
+					tess.xyz[tess.numVertexes + 3][i] = part->mPosition[i] + mCameraLeftPlusUp[i];
+				}
 
-			// Render A Triangle
-			//-------------------
-			if (mVertexCount==3)
-			{
- 				qglTexCoord2f(1.0, 0.0);
-				qglVertex3f(part->mPosition[0],
-							part->mPosition[1],
-							part->mPosition[2]);
+				tess.texCoords[0][tess.numVertexes][0] = 0;
+				tess.texCoords[0][tess.numVertexes][1] = 0;
+				tess.texCoords[0][tess.numVertexes + 1][0] = 0;
+				tess.texCoords[0][tess.numVertexes + 1][1] = 1;
+				tess.texCoords[0][tess.numVertexes + 2][0] = 1;
+				tess.texCoords[0][tess.numVertexes + 2][1] = 1;
+				tess.texCoords[0][tess.numVertexes + 3][0] = 1;
+				tess.texCoords[0][tess.numVertexes + 3][1] = 0;
 
-				qglTexCoord2f(0.0, 1.0);
-				qglVertex3f(part->mPosition[0] + mCameraLeft[0],
-							part->mPosition[1] + mCameraLeft[1],
-							part->mPosition[2] + mCameraLeft[2]);
+				tess.indexes[tess.numIndexes++] = tess.numVertexes;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 1;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 2;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 0;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 2;
+				tess.indexes[tess.numIndexes++] = tess.numVertexes + 3;
 
-				qglTexCoord2f(0.0, 0.0);
-				qglVertex3f(part->mPosition[0] + mCameraLeftPlusUp[0],
-							part->mPosition[1] + mCameraLeftPlusUp[1],
-							part->mPosition[2] + mCameraLeftPlusUp[2]);
-			}
-
-			// Render A Quad
-			//---------------
-			else
-			{
-				// Left bottom.
-				qglTexCoord2f( 0.0, 0.0 );
-				qglVertex3f(part->mPosition[0] - mCameraLeftMinusUp[0],
-							part->mPosition[1] - mCameraLeftMinusUp[1],
-							part->mPosition[2] - mCameraLeftMinusUp[2] );
-
-				// Right bottom.
-				qglTexCoord2f( 1.0, 0.0 );
-				qglVertex3f(part->mPosition[0] - mCameraLeftPlusUp[0],
-							part->mPosition[1] - mCameraLeftPlusUp[1],
-							part->mPosition[2] - mCameraLeftPlusUp[2] );
-
-				// Right top.
-				qglTexCoord2f( 1.0, 1.0 );
-				qglVertex3f(part->mPosition[0] + mCameraLeftMinusUp[0],
-							part->mPosition[1] + mCameraLeftMinusUp[1],
-							part->mPosition[2] + mCameraLeftMinusUp[2] );
-
-				// Left top.
-				qglTexCoord2f( 0.0, 1.0 );
-				qglVertex3f(part->mPosition[0] + mCameraLeftPlusUp[0],
-							part->mPosition[1] + mCameraLeftPlusUp[1],
-							part->mPosition[2] + mCameraLeftPlusUp[2] );
+				tess.numVertexes += 4;
 			}
 		}
-		qglEnd();
 
-		//qglEnable(GL_CULL_FACE);
-		//you don't need to do this when you are properly setting cull state.
-		qglPopMatrix();
+		vk_select_texture(0);
+		vk_bind(mImage);
+
+		tess.svars.texcoordPtr[0] = tess.texCoords[0];
+
+		vk_bind_pipeline(vk.std_pipeline.worldeffect_pipeline[mBlendMode]);
+		vk_bind_index();
+		vk_bind_geometry(TESS_XYZ | TESS_RGBA0 | TESS_ST0);
+		vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
 
 		mParticlesRendered += mParticleCountRender;
 	}
@@ -1362,10 +1352,11 @@ void RB_RenderWorldEffects(void)
 		return;
 	}
 
-	SetViewportAndScissor();
-	qglMatrixMode(GL_MODELVIEW);
-	qglLoadMatrixf(backEnd.viewParms.world.modelMatrix);
+	float				tmp[16];
 
+	Com_Memcpy(tmp, vk_world.modelview_transform, 64);
+	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelMatrix, 64);
+	vk_update_mvp(NULL);
 
 	// Calculate Elapsed Time For Scale Purposes
 	//-------------------------------------------
@@ -1409,11 +1400,22 @@ void RB_RenderWorldEffects(void)
 		// Update All Particle Clouds
 		//----------------------------
 		mParticlesRendered = 0;
+		
 		for (int i=0; i<mParticleClouds.size(); i++)
 		{
+			tess.numVertexes = 0;
+			tess.numIndexes = 0;
+
 			mParticleClouds[i].Update();
 			mParticleClouds[i].Render();
 		}
+
+		tess.numVertexes = 0;
+		tess.numIndexes = 0;
+
+		Com_Memcpy(vk_world.modelview_transform, tmp, 64);
+		vk_update_mvp(NULL);
+
 		if (false)
 		{
 			ri.Printf( PRINT_ALL, "Weather: %d Particles Rendered\n", mParticlesRendered);

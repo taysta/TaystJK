@@ -386,6 +386,7 @@ typedef struct glconfig_s {
 	const char				*extensions_string;
 
 	int						maxTextureSize;			// queried from GL
+	int						numTextureUnits;		// multitexture ability, Vulkan
 	int						maxActiveTextures;		// multitexture ability
 	float					maxTextureFilterAnisotropy;
 

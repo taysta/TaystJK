@@ -23,65 +23,79 @@ endif(NOT InOpenJK)
 
 # Check for dependencies first
 
-set(MPVanillaRendererIncludeDirectories ${MPDir})
-set(MPVanillaRendererIncludeDirectories
-	${MPVanillaRendererIncludeDirectories}
+set(MPVulkanRendererIncludeDirectories ${MPDir})
+set(MPVulkanRendererIncludeDirectories
+	${MPVulkanRendererIncludeDirectories}
 	${SharedDir}
 	${MPDir}
-	"${MPDir}/rd-vanilla"
+	"${MPDir}/rd-vulkan"
 	"${GSLIncludeDirectory}"
 	)
 
-set(MPVanillaRendererFiles
-	"${MPDir}/rd-vanilla/glext.h"
-	"${MPDir}/rd-vanilla/qgl.h"
-	"${MPDir}/rd-vanilla/G2_API.cpp"
-	"${MPDir}/rd-vanilla/G2_bolts.cpp"
-	"${MPDir}/rd-vanilla/G2_bones.cpp"
-	"${MPDir}/rd-vanilla/G2_misc.cpp"
-	"${MPDir}/rd-vanilla/G2_surfaces.cpp"
-	"${MPDir}/rd-vanilla/tr_arb.cpp"
-	"${MPDir}/rd-vanilla/tr_backend.cpp"
-	"${MPDir}/rd-vanilla/tr_bsp.cpp"
-	"${MPDir}/rd-vanilla/tr_cmds.cpp"
-	"${MPDir}/rd-vanilla/tr_curve.cpp"
-	"${MPDir}/rd-vanilla/tr_decals.cpp"
-	"${MPDir}/rd-vanilla/tr_ghoul2.cpp"
-	"${MPDir}/rd-vanilla/tr_image.cpp"
-	"${MPDir}/rd-vanilla/tr_init.cpp"
-	"${MPDir}/rd-vanilla/tr_light.cpp"
-	"${MPDir}/rd-vanilla/tr_local.h"
-	"${MPDir}/rd-vanilla/tr_main.cpp"
-	"${MPDir}/rd-vanilla/tr_marks.cpp"
-	"${MPDir}/rd-vanilla/tr_mesh.cpp"
-	"${MPDir}/rd-vanilla/tr_model.cpp"
-	"${MPDir}/rd-vanilla/tr_quicksprite.cpp"
-	"${MPDir}/rd-vanilla/tr_quicksprite.h"
-	"${MPDir}/rd-vanilla/tr_scene.cpp"
-	"${MPDir}/rd-vanilla/tr_shade.cpp"
-	"${MPDir}/rd-vanilla/tr_shade_calc.cpp"
-	"${MPDir}/rd-vanilla/tr_shader.cpp"
-	"${MPDir}/rd-vanilla/tr_shadows.cpp"
-	"${MPDir}/rd-vanilla/tr_skin.cpp"
-	"${MPDir}/rd-vanilla/tr_sky.cpp"
-	"${MPDir}/rd-vanilla/tr_subs.cpp"
-	"${MPDir}/rd-vanilla/tr_surface.cpp"
-	"${MPDir}/rd-vanilla/tr_surfacesprites.cpp"
-	"${MPDir}/rd-vanilla/tr_world.cpp"
-	"${MPDir}/rd-vanilla/tr_WorldEffects.cpp"
-	"${MPDir}/rd-vanilla/tr_WorldEffects.h"
+set(MPVulkanRendererFiles
+	"${MPDir}/rd-vulkan/G2_API.cpp"
+	"${MPDir}/rd-vulkan/G2_bolts.cpp"
+	"${MPDir}/rd-vulkan/G2_bones.cpp"
+	"${MPDir}/rd-vulkan/G2_misc.cpp"
+	"${MPDir}/rd-vulkan/G2_surfaces.cpp"
+	"${MPDir}/rd-vulkan/tr_backend.cpp"
+	"${MPDir}/rd-vulkan/tr_bsp.cpp"
+	"${MPDir}/rd-vulkan/tr_cmds.cpp"
+	"${MPDir}/rd-vulkan/tr_curve.cpp"
+	"${MPDir}/rd-vulkan/tr_decals.cpp"
+	"${MPDir}/rd-vulkan/tr_ghoul2.cpp"
+	"${MPDir}/rd-vulkan/tr_image.cpp"
+	"${MPDir}/rd-vulkan/tr_init.cpp"
+	"${MPDir}/rd-vulkan/tr_light.cpp"
+	"${MPDir}/rd-vulkan/tr_local.h"
+	"${MPDir}/rd-vulkan/tr_main.cpp"
+	"${MPDir}/rd-vulkan/tr_marks.cpp"
+	"${MPDir}/rd-vulkan/tr_mesh.cpp"
+	"${MPDir}/rd-vulkan/tr_model.cpp"
+	"${MPDir}/rd-vulkan/tr_quicksprite.cpp"
+	"${MPDir}/rd-vulkan/tr_quicksprite.h"
+	"${MPDir}/rd-vulkan/tr_scene.cpp"
+	"${MPDir}/rd-vulkan/tr_shade.cpp"
+	"${MPDir}/rd-vulkan/tr_shader.cpp"
+	"${MPDir}/rd-vulkan/tr_shade_calc.cpp"
+	"${MPDir}/rd-vulkan/tr_shadows.cpp"
+	"${MPDir}/rd-vulkan/tr_skin.cpp"
+	"${MPDir}/rd-vulkan/tr_sky.cpp"
+	"${MPDir}/rd-vulkan/tr_subs.cpp"
+	"${MPDir}/rd-vulkan/tr_surface.cpp"
+	"${MPDir}/rd-vulkan/tr_surfacesprites.cpp"
+	"${MPDir}/rd-vulkan/tr_world.cpp"
+	"${MPDir}/rd-vulkan/tr_WorldEffects.cpp"
+	"${MPDir}/rd-vulkan/tr_WorldEffects.h"
+	"${MPDir}/rd-vulkan/vk_attachments.cpp"
+	"${MPDir}/rd-vulkan/vk_bloom.cpp"
+	"${MPDir}/rd-vulkan/vk_cmd.cpp"
+	"${MPDir}/rd-vulkan/vk_debug.cpp"
+	"${MPDir}/rd-vulkan/vk_flares.cpp"
+	"${MPDir}/rd-vulkan/vk_frame.cpp"
+	"${MPDir}/rd-vulkan/vk_image.cpp"
+	"${MPDir}/rd-vulkan/vk_image_process.cpp"
+	"${MPDir}/rd-vulkan/vk_info.cpp"
+	"${MPDir}/rd-vulkan/vk_init.cpp"
+	"${MPDir}/rd-vulkan/vk_instance.cpp"
+	"${MPDir}/rd-vulkan/vk_local.h"
+	"${MPDir}/rd-vulkan/vk_pipelines.cpp"
+	"${MPDir}/rd-vulkan/vk_shaders.cpp"
+	"${MPDir}/rd-vulkan/vk_shade_geometry.cpp"
+	"${MPDir}/rd-vulkan/vk_swapchain.cpp"
+	"${MPDir}/rd-vulkan/vk_vbo.cpp"
 	)
-source_group("renderer" FILES ${MPVanillaRendererFiles})
+source_group("renderer" FILES ${MPVulkanRendererFiles})
 
-set(MPVanillaRendererGhoul2Files
+set(MPVulkanRendererGhoul2Files
 	"${MPDir}/ghoul2/g2_local.h"
 	"${MPDir}/ghoul2/ghoul2_shared.h"
 	"${MPDir}/ghoul2/G2_gore.cpp"
 	"${MPDir}/ghoul2/G2_gore.h")
-source_group("ghoul2" FILES ${MPVanillaRendererGhoul2Files})
-set(MPVanillaRendererFiles ${MPVanillaRendererFiles} ${MPVanillaRendererGhoul2Files})
+source_group("ghoul2" FILES ${MPVulkanRendererGhoul2Files})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererGhoul2Files})
 
-set(MPVanillaRendererRdCommonFiles
+set(MPVulkanRendererRdCommonFiles
 	"${MPDir}/rd-common/mdx_format.h"
 	"${MPDir}/rd-common/tr_common.h"
 	"${MPDir}/rd-common/tr_font.cpp"
@@ -93,76 +107,108 @@ set(MPVanillaRendererRdCommonFiles
 	"${MPDir}/rd-common/tr_noise.cpp"
 	"${MPDir}/rd-common/tr_public.h"
 	"${MPDir}/rd-common/tr_types.h")
-source_group("rd-common" FILES ${MPVanillaRendererRdCommonFiles})
-set(MPVanillaRendererFiles ${MPVanillaRendererFiles} ${MPVanillaRendererRdCommonFiles})
+source_group("rd-common" FILES ${MPVulkanRendererRdCommonFiles})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererRdCommonFiles})
 
-set(MPVanillaRendererCommonFiles
+set(MPVulkanRendererVulkanAssets
+	"${MPDir}/rd-vulkan/vulkan/GLSL.std.450.h"
+	"${MPDir}/rd-vulkan/vulkan/libspirv.h"
+	"${MPDir}/rd-vulkan/vulkan/spirv.h"
+	"${MPDir}/rd-vulkan/vulkan/spirv.hpp"
+	"${MPDir}/rd-vulkan/vulkan/spirv.hpp11"
+	"${MPDir}/rd-vulkan/vulkan/spirv.json"
+	"${MPDir}/rd-vulkan/vulkan/spirv.lua"
+	"${MPDir}/rd-vulkan/vulkan/spirv.py"
+	"${MPDir}/rd-vulkan/vulkan/vk_dispatch_table_helper.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_enum_string_helper.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_icd.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_layer.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_layer_dispatch_table.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_platform.h"
+	"${MPDir}/rd-vulkan/vulkan/vk_sdk_platform.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan.hpp"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_android.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_core.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_ios.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_macos.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_mir.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_vi.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_wayland.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_win32.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_xcb.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_xlib.h"
+	"${MPDir}/rd-vulkan/vulkan/vulkan_xlib_xrandr.h")
+source_group("renderer\\vulkan" FILES ${MPVulkanRendererVulkanAssets})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererVulkanAssets})
+
+set(MPVulkanRendererCommonFiles
 	"${MPDir}/qcommon/matcomp.cpp"
 	"${MPDir}/qcommon/q_shared.cpp"
 	
 	${SharedCommonFiles})
-source_group("common" FILES ${MPVanillaRendererCommonFiles})
-set(MPVanillaRendererFiles ${MPVanillaRendererFiles} ${MPVanillaRendererCommonFiles})
+source_group("common" FILES ${MPVulkanRendererCommonFiles})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererCommonFiles})
 
-set(MPVanillaRendererCommonSafeFiles
+set(MPVulkanRendererCommonSafeFiles
 	${SharedCommonSafeFiles}
 	)
-source_group("common/safe" FILES ${MPVanillaRendererCommonSafeFiles})
-set(MPVanillaRendererFiles ${MPVanillaRendererFiles} ${MPVanillaRendererCommonSafeFiles})
+source_group("common/safe" FILES ${MPVulkanRendererCommonSafeFiles})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererCommonSafeFiles})
 
 # Transparently use either bundled or system libjpeg.
-list(APPEND MPVanillaRendererIncludeDirectories ${JPEG_INCLUDE_DIR})
-list(APPEND MPVanillaRendererLibraries          ${JPEG_LIBRARIES})
+list(APPEND MPVulkanRendererIncludeDirectories ${JPEG_INCLUDE_DIR})
+list(APPEND MPVulkanRendererLibraries          ${JPEG_LIBRARIES})
 
 # Transparently use either bundled or system libpng.  Order is important --
 # libpng used zlib, so it must come before it on the linker command line.
-list(APPEND MPVanillaRendererIncludeDirectories ${PNG_INCLUDE_DIRS})
-list(APPEND MPVanillaRendererLibraries          ${PNG_LIBRARIES})
+list(APPEND MPVulkanRendererIncludeDirectories ${PNG_INCLUDE_DIRS})
+list(APPEND MPVulkanRendererLibraries          ${PNG_LIBRARIES})
 
 # Transparently use either bundled or system zlib.
-list(APPEND MPVanillaRendererIncludeDirectories ${ZLIB_INCLUDE_DIR})
-list(APPEND MPVanillaRendererLibraries          ${ZLIB_LIBRARIES})
+list(APPEND MPVulkanRendererIncludeDirectories ${ZLIB_INCLUDE_DIR})
+list(APPEND MPVulkanRendererLibraries          ${ZLIB_LIBRARIES})
 
 # Transparently use our bundled minizip.
-list(APPEND MPVanillaRendererIncludeDirectories ${MINIZIP_INCLUDE_DIRS})
-list(APPEND MPVanillaRendererLibraries          ${MINIZIP_LIBRARIES})
+list(APPEND MPVulkanRendererIncludeDirectories ${MINIZIP_INCLUDE_DIRS})
+list(APPEND MPVulkanRendererLibraries          ${MINIZIP_LIBRARIES})
 
 find_package(OpenGL REQUIRED)
-set(MPVanillaRendererIncludeDirectories ${MPVanillaRendererIncludeDirectories} ${OPENGL_INCLUDE_DIR})
-set(MPVanillaRendererLibraries ${MPVanillaRendererLibraries} ${OPENGL_LIBRARIES})
+set(MPVulkanRendererIncludeDirectories ${MPVulkanRendererIncludeDirectories} ${OPENGL_INCLUDE_DIR})
+set(MPVulkanRendererLibraries ${MPVulkanRendererLibraries} ${OPENGL_LIBRARIES})
 
-set(MPVanillaRendererIncludeDirectories ${MPVanillaRendererIncludeDirectories} ${OpenJKLibDir})
-add_library(${MPVanillaRenderer} SHARED ${MPVanillaRendererFiles})
+set(MPVulkanRendererIncludeDirectories ${MPVulkanRendererIncludeDirectories} ${OpenJKLibDir})
+add_library(${MPVulkanRenderer} SHARED ${MPVulkanRendererFiles})
 
 if(NOT MSVC)
 	# remove "lib" prefix for .so/.dylib files
-	set_target_properties(${MPVanillaRenderer} PROPERTIES PREFIX "")
+	set_target_properties(${MPVulkanRenderer} PROPERTIES PREFIX "")
 endif()
 
 if(WIN32)
-	install(TARGETS ${MPVanillaRenderer}
+	install(TARGETS ${MPVulkanRenderer}
 		RUNTIME
 		DESTINATION ${JKAInstallDir}
 		COMPONENT ${JKAMPClientComponent})
 else(WIN32)
 	if(MakeApplicationBundles AND BuildMPEngine)
-		install(TARGETS ${MPVanillaRenderer}
+		install(TARGETS ${MPVulkanRenderer}
 			LIBRARY
 			DESTINATION "${JKAInstallDir}/${MPEngine}.app/Contents/MacOS/"
 			COMPONENT ${JKAMPClientComponent})
 	else()
-		install(TARGETS ${MPVanillaRenderer}
+		install(TARGETS ${MPVulkanRenderer}
 			LIBRARY
 			DESTINATION ${JKAInstallDir}
 			COMPONENT ${JKAMPClientComponent})
 	endif()
 endif()
 
-set_target_properties(${MPVanillaRenderer} PROPERTIES COMPILE_DEFINITIONS "${SharedDefines}")
+set_target_properties(${MPVulkanRenderer} PROPERTIES COMPILE_DEFINITIONS "${SharedDefines}")
 
 # Hide symbols not explicitly marked public.
-set_property(TARGET ${MPVanillaRenderer} APPEND PROPERTY COMPILE_OPTIONS ${OPENJK_VISIBILITY_FLAGS})
+set_property(TARGET ${MPVulkanRenderer} APPEND PROPERTY COMPILE_OPTIONS ${OPENJK_VISIBILITY_FLAGS})
 
-set_target_properties(${MPVanillaRenderer} PROPERTIES INCLUDE_DIRECTORIES "${MPVanillaRendererIncludeDirectories}")
-set_target_properties(${MPVanillaRenderer} PROPERTIES PROJECT_LABEL "MP Vanilla Renderer")
-target_link_libraries(${MPVanillaRenderer} ${MPVanillaRendererLibraries})
+set_target_properties(${MPVulkanRenderer} PROPERTIES INCLUDE_DIRECTORIES "${MPVulkanRendererIncludeDirectories}")
+set_target_properties(${MPVulkanRenderer} PROPERTIES PROJECT_LABEL "MP Vulkan Renderer")
+target_link_libraries(${MPVulkanRenderer} ${MPVulkanRendererLibraries})
