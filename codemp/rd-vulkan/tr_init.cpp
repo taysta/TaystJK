@@ -1146,19 +1146,26 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 
 	// contains vulkan resources/state, reinitialized on a map change.
 	if (tr.registered) {
-		vk_delete_textures();
+
+		if (destroyWindow){
+			vk_delete_textures();
+
+			if (restarting)
+				SaveGhoul2InfoArray();
+		}
+
 		vk_release_resources();
-		
-		if (restarting && destroyWindow)
-			SaveGhoul2InfoArray();
 	}
 
-	if (!restarting && destroyWindow) {
+	if (destroyWindow) {
 		vk_shutdown();
-		ri.VK_destroyWindow();
 		Com_Memset(&vk_world, 0, sizeof(vk_world));
 		Com_Memset(&glState, 0, sizeof(glState));
-		Com_Memset(&glConfig, 0, sizeof(glConfig));
+
+		if (destroyWindow && !restarting) {
+			ri.VK_destroyWindow();
+			Com_Memset(&glConfig, 0, sizeof(glConfig));
+		}
 	}
 
 	tr.registered = qfalse;
