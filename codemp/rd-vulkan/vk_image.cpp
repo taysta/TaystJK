@@ -309,7 +309,7 @@ void vk_generate_image_upload_data(image_t *image, byte *data, Image_Upload_Data
 
 	qboolean mipmap = (image->flags & IMGFLAG_MIPMAP) ? qtrue : qfalse;
 	qboolean picmip = (image->flags & IMGFLAG_PICMIP) ? qtrue : qfalse;
-	byte* resampled_buffer = NULL;
+	byte *resampled_buffer = NULL;
 	int scaled_width, scaled_height;
 	int width = image->width;
 	int height = image->height;
@@ -908,6 +908,10 @@ image_t *R_CreateImage(const char *name, const char *name2, byte *pic,
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     else
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+
+	if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
+		image->flags &= ~(IMGFLAG_PICMIP);
+	}
 
     vk_generate_image_upload_data(image, pic, &upload_data);
 
