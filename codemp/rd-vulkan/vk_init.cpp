@@ -271,7 +271,7 @@ static void vk_render_splash(void)
 }
 
 void vk_create_window(void) {
-	R_Set2DRatio();
+	//R_Set2DRatio();
 
 	if (glConfig.vidWidth == 0)
 	{

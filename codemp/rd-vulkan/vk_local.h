@@ -24,7 +24,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // Sunny: known issues/notes that I havent really looked into yet 
 /*
 	known issues:
--	missing fonts after vid_restart
 -	broken capturebuffer on stopvideo avi recording
 -	no surfacesprites with vbo enabled
 

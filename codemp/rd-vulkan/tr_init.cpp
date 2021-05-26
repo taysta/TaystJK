@@ -1113,6 +1113,7 @@ void R_Init( void ) {
 
 	vk_create_window();		// Vulkan
 
+	R_Set2DRatio();
 	R_InitImages();	
 
 	vk_create_pipelines();	// Vulkan
