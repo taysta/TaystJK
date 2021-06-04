@@ -263,7 +263,7 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 			LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );*/
 
 		vk_debug("lightmap %s pass %d before create: \n", sMapName, i);
-		tr.lightmaps[i] = R_CreateImage(va("*%s/lightmap%d", sMapName, i), NULL, image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, lightmapFlags | IMGFLAG_CLAMPTOEDGE);
+		tr.lightmaps[i] = R_CreateImage(va("*%s/lightmap%d", sMapName, i), image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, lightmapFlags | IMGFLAG_CLAMPTOEDGE);
 		vk_debug("lightmap %s pass %d after create: \n", sMapName, i);
 	}
 

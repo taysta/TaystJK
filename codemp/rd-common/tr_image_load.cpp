@@ -101,13 +101,10 @@ Loads any of the supported image types into a cannonical
 32 bit format.
 =================
 */
-const char *R_LoadImage(const char *shortname, byte **pic, int *width, int *height) {
-	static char localName[MAX_QPATH];
+void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 	*pic = NULL;
 	*width = 0;
 	*height = 0;
-
-	Q_strncpyz(localName, shortname, sizeof(localName));
 
 	// Try loading the image with the original extension (if possible).
 	const char *extension = COM_GetExtension(shortname);
@@ -117,7 +114,7 @@ const char *R_LoadImage(const char *shortname, byte **pic, int *width, int *heig
 		imageLoader->loader(shortname, pic, width, height);
 		if (*pic)
 		{
-			return localName;
+			return;
 		}
 	}
 
@@ -138,9 +135,9 @@ const char *R_LoadImage(const char *shortname, byte **pic, int *width, int *heig
 		tryLoader->loader(name, pic, width, height);
 		if (*pic)
 		{
-			return localName;
+			return;
 		}
 	}
 
-	return localName;
+	return;
 }

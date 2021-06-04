@@ -838,11 +838,11 @@ void vk_delete_textures(void) {
 	Com_Memset(glState.currenttextures, 0, sizeof(glState.currenttextures));
 }
 
-image_t *R_CreateImage(const char *name, const char *name2, byte *pic, 
+image_t *R_CreateImage(const char *name, byte *pic, 
 	int width, int height, imgFlags_t flags){
     image_t				*image;
     Image_Upload_Data	upload_data;
-    int					namelen, namelen2;
+    int					namelen;
     const char			*slash;
     long				hash;
 
@@ -858,30 +858,16 @@ image_t *R_CreateImage(const char *name, const char *name2, byte *pic,
 	}
 #endif
 
-    if (name2 && Q_stricmp(name, name2) != 0) {
-        // leave only file name
-        name2 = (slash = strrchr(name2, '/')) != NULL ? slash + 1 : name2;
-        namelen2 = (int)strlen(name2) + 1;
-    }
-    else {
-        namelen2 = 0;
-    }
+    
 
     if (tr.numImages == MAX_DRAWIMAGES) {
         ri.Error(ERR_DROP, "R_CreateImage: MAX_DRAWIMAGES hit");
     }
 
     //image = (image_t*)Z_Malloc(sizeof(*image) + namelen + namelen2, TAG_IMAGE_T, qtrue);
-    image = (image_t*)ri.Hunk_Alloc(sizeof(*image) + namelen + namelen2, h_low);
+    image = (image_t*)ri.Hunk_Alloc(sizeof(*image) + namelen, h_low);
     image->imgName = (char*)(image + 1);
     strcpy(image->imgName, name);
-    if (namelen2) {
-        image->imgName2 = image->imgName + namelen;
-        strcpy(image->imgName2, name2);
-    }
-    else {
-        image->imgName2 = image->imgName;
-    }
 
     hash = generateHashValue(name);
     image->next = hashTable[hash];
@@ -930,15 +916,15 @@ image_t *R_CreateImage(const char *name, const char *name2, byte *pic,
 
 image_t *R_FindImageFile(const char *name, imgFlags_t flags){
         image_t		*image;
-        const char	*localName;
 		char		strippedName[MAX_QPATH];
         int			width, height;
         byte		*pic;
         int			hash;
 
-        if (!name) {
-            return NULL;
-        }
+		if (!name || ri.Cvar_VariableIntegerValue("dedicated"))	// stop ghoul2 horribleness as regards image loading from server
+		{
+			return NULL;
+		}
 
         hash = generateHashValue(name);
 
@@ -980,13 +966,21 @@ image_t *R_FindImageFile(const char *name, imgFlags_t flags){
         //
         // load the pic from disk
         //
-        localName = R_LoadImage(name, &pic, &width, &height);
+        R_LoadImage(name, &pic, &width, &height);
         if (pic == NULL) {
             return NULL;
         }
 
+		// refuse to find any files not power of 2 dims...
+		//
+		if ((width & (width - 1)) || (height & (height - 1)))
+		{
+			ri.Printf(PRINT_ALL, "Refusing to load non-power-2-dims(%d,%d) pic \"%s\"...\n", width, height, name);
+			return NULL;
+		}
+
         if (tr.mapLoading && r_mapGreyScale->value > 0) {
-            byte* img;
+            byte *img;
             int i;
             for (i = 0, img = pic; i < width * height; i++, img += 4) {
                 if (r_mapGreyScale->integer) {
@@ -1003,13 +997,8 @@ image_t *R_FindImageFile(const char *name, imgFlags_t flags){
                 }
             }
 		}
-		else {
-			if (vk.fboActive) {
 
-			}
-		}
-
-        image = R_CreateImage(name, localName, pic, width, height, flags);
+        image = R_CreateImage(name, pic, width, height, flags);
         ri.Z_Free(pic);
         return image;
 }
@@ -1018,7 +1007,7 @@ void RE_UploadCinematic(int cols, int rows, byte *data, int client, qboolean dir
 {
 
     if (!tr.scratchImage[client]) {
-		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), NULL, data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
+		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
     }
 
     image_t* prtImage = tr.scratchImage[client];
@@ -1130,7 +1119,7 @@ static qboolean R_BuildDefaultImage(const char *format) {
 		}
 	}
 
-	tr.defaultImage = R_CreateImage("*default", NULL, (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, IMGFLAG_MIPMAP);
+	tr.defaultImage = R_CreateImage("*default", (byte *)data, DEFAULT_SIZE, DEFAULT_SIZE, IMGFLAG_MIPMAP);
 
 	return qtrue;
 }
@@ -1180,7 +1169,7 @@ static void R_CreateDefaultImage(void)
 		data[x][DEFAULT_SIZE - 1][3] = 255;
 	}
 
-	tr.defaultImage = R_CreateImage("*default", NULL, (byte*)data, DEFAULT_SIZE, DEFAULT_SIZE, IMGFLAG_MIPMAP);
+	tr.defaultImage = R_CreateImage("*default", (byte*)data, DEFAULT_SIZE, DEFAULT_SIZE, IMGFLAG_MIPMAP);
 }
 
 static void R_CreateDlightImage(void)
@@ -1193,7 +1182,7 @@ static void R_CreateDlightImage(void)
     R_LoadImage("gfx/2d/dlight", &pic, &width, &height);
     if (pic)
     {
-        tr.dlightImage = R_CreateImage("*dlight", NULL, pic, width, height, IMGFLAG_CLAMPTOEDGE);
+        tr.dlightImage = R_CreateImage("*dlight", pic, width, height, IMGFLAG_CLAMPTOEDGE);
         Z_Free(pic);
     }
     else
@@ -1222,7 +1211,7 @@ static void R_CreateDlightImage(void)
                 data[y][x][3] = 255;
             }
         }
-        tr.dlightImage = R_CreateImage("*dlight", NULL, (byte*)data, DLIGHT_SIZE, DLIGHT_SIZE, IMGFLAG_CLAMPTOEDGE);
+        tr.dlightImage = R_CreateImage("*dlight", (byte*)data, DLIGHT_SIZE, DLIGHT_SIZE, IMGFLAG_CLAMPTOEDGE);
     }
 }
 
@@ -1248,7 +1237,7 @@ static void R_CreateFogImage(void)
         }
     }
 
-    tr.fogImage = R_CreateImage("*fog", NULL, data, FOG_S, FOG_T, IMGFLAG_CLAMPTOEDGE);
+    tr.fogImage = R_CreateImage("*fog", data, FOG_S, FOG_T, IMGFLAG_CLAMPTOEDGE);
     Hunk_FreeTempMemory(data);
 }
 
@@ -1267,10 +1256,10 @@ static void R_CreateBuiltinImages(void) {
 
 	// we use a solid white image instead of disabling texturing
 	Com_Memset(data, 255, sizeof(data));
-	tr.whiteImage = R_CreateImage("*white", NULL, (byte*)data, 8, 8, IMGFLAG_NONE);
+	tr.whiteImage = R_CreateImage("*white", (byte*)data, 8, 8, IMGFLAG_NONE);
 
 	Com_Memset(data, 0, sizeof(data));
-	tr.blackImage = R_CreateImage("*black", NULL, (byte*)data, 8, 8, IMGFLAG_NONE);
+	tr.blackImage = R_CreateImage("*black", (byte*)data, 8, 8, IMGFLAG_NONE);
 
 	// with overbright bits active, we need an image which is some fraction of full color,
 	// for default lightmaps, etc
@@ -1282,7 +1271,7 @@ static void R_CreateBuiltinImages(void) {
 			data[y][x][3] = 255;
 		}
 	}
-	tr.identityLightImage = R_CreateImage("*identityLight", NULL, (byte*)data, 8, 8, IMGFLAG_NONE);
+	tr.identityLightImage = R_CreateImage("*identityLight", (byte*)data, 8, 8, IMGFLAG_NONE);
 
 	//for ( x = 0; x < ARRAY_LEN( tr.scratchImage ); x++ ) {
 		// scratchimage is usually used for cinematic drawing

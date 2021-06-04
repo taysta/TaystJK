@@ -216,7 +216,6 @@ DEFINE_ENUM_FLAG_OPERATORS( imgFlags_t );
 
 typedef struct image_s {
 	char					*imgName;					// game path, including extension
-	char					*imgName2;					// image path with real file extension
 	struct image_s			*next;
 	word					width, height;				// after power of two and picmip but not including clamp to MAX_TEXTURE_SIZE
 	uint32_t				uploadWidth, uploadHeight;	// after power of two and picmip but not including clamp to MAX_TEXTURE_SIZE
@@ -1627,7 +1626,7 @@ model_t		*R_AllocModel( void );
 void    	R_Init( void );
 
 image_t		*R_FindImageFile( const char *name, imgFlags_t flags );
-image_t		*R_CreateImage( const char *name, const char *name2, byte *pic, int width, int height, imgFlags_t flags );
+image_t		*R_CreateImage( const char *name, byte *pic, int width, int height, imgFlags_t flags );
 
 qboolean	R_GetModeInfo( int *width, int *height, int mode );
 
