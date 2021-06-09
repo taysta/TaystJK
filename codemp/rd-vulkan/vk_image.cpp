@@ -838,12 +838,10 @@ void vk_delete_textures(void) {
 	Com_Memset(glState.currenttextures, 0, sizeof(glState.currenttextures));
 }
 
-image_t *R_CreateImage(const char *name, byte *pic, 
-	int width, int height, imgFlags_t flags){
+image_t *R_CreateImage(const char *name, byte *pic, int width, int height, imgFlags_t flags){
     image_t				*image;
     Image_Upload_Data	upload_data;
     int					namelen;
-    const char			*slash;
     long				hash;
 
     namelen = (int)strlen(name) + 1;
@@ -857,8 +855,6 @@ image_t *R_CreateImage(const char *name, byte *pic,
 		return image;
 	}
 #endif
-
-    
 
     if (tr.numImages == MAX_DRAWIMAGES) {
         ri.Error(ERR_DROP, "R_CreateImage: MAX_DRAWIMAGES hit");
@@ -1003,44 +999,45 @@ image_t *R_FindImageFile(const char *name, imgFlags_t flags){
         return image;
 }
 
-void RE_UploadCinematic(int cols, int rows, byte *data, int client, qboolean dirty)
+void RE_UploadCinematic(int cols, int rows, const byte *data, int client, qboolean dirty)
 {
+	image_t *image;
 
     if (!tr.scratchImage[client]) {
-		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
+		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), (byte*)data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
     }
 
-    image_t* prtImage = tr.scratchImage[client];
+    image = tr.scratchImage[client];
 
-    vk_bind(prtImage);
+    vk_bind(image);
 
     // if the scratchImage isn't in the format we want, specify it as a new texture
-    if ((cols != prtImage->uploadWidth) || (rows != prtImage->uploadHeight))
+    if ((cols != image->width) || (rows != image->height))
     {
-        byte* buffer;
+        byte *buffer;
         int bytes_per_pixel;
 
-        prtImage->uploadWidth = cols;
-        prtImage->uploadHeight = rows;
+		image->width = image->uploadWidth = cols;
+		image->height = image->uploadHeight = rows;
 
-        qvkDestroyImage(vk.device, prtImage->handle, NULL);
-        qvkDestroyImageView(vk.device, prtImage->view, NULL);
-        //qvkFreeDescriptorSets(vk.device, vk.descriptor_pool, 1, &prtImage->descriptor_set);
+        qvkDestroyImage(vk.device, image->handle, NULL);
+        qvkDestroyImageView(vk.device, image->view, NULL);
+        //qvkFreeDescriptorSets(vk.device, vk.descriptor_pool, 1, &image->descriptor_set);
 
-        vk_create_image(cols, rows, VK_FORMAT_R8G8B8A8_UNORM, 1, prtImage);
-        buffer = vk_resample_image_data(prtImage, data, cols * rows * 4, &bytes_per_pixel);
-        vk_upload_image_data(prtImage->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
+        vk_create_image(cols, rows, (VkFormat)image->internalFormat, 1, image);
+        buffer = vk_resample_image_data(image, (byte*)data, cols * rows * 4, &bytes_per_pixel);
+        vk_upload_image_data(image->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
         if (buffer != data) {
             ri.Hunk_FreeTempMemory(buffer);
         }
     }
     else if (dirty)
     {
-        byte* buffer;
+        byte *buffer;
         int bytes_per_pixel;
 
-        buffer = vk_resample_image_data(prtImage, data, cols * rows * 4, &bytes_per_pixel);
-        vk_upload_image_data(prtImage->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
+        buffer = vk_resample_image_data(image, (byte*)data, cols * rows * 4, &bytes_per_pixel);
+        vk_upload_image_data(image->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
         if (buffer != data) {
             ri.Hunk_FreeTempMemory(buffer);
         }

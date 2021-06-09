@@ -1331,7 +1331,7 @@ void	GL_Cull( int cullType );
 #define GLS_ALPHA			(GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA)
 
 void	RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *data, int client, qboolean dirty);
-void	RE_UploadCinematic (int cols, int rows, byte *data, int client, qboolean dirty);
+void	RE_UploadCinematic (int cols, int rows, const byte *data, int client, qboolean dirty);
 
 void		RE_BeginFrame( stereoFrame_t stereoFrame );
 void		RE_BeginRegistration( glconfig_t *glconfig );

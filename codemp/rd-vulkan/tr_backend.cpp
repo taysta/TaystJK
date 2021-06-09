@@ -458,9 +458,15 @@ Used for cinematics.
 void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *data, int client, qboolean dirty)
 {
 	int			i, j;
+	int			start, end;
 
 	if (!tr.registered) {
 		return;
+	}
+
+	start = 0;
+	if (r_speeds->integer) {
+		start = ri.Milliseconds() * ri.Cvar_VariableValue("timescale");
 	}
 
 	// make sure rows and cols are powers of 2
@@ -474,10 +480,15 @@ void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *
 	}
 
 	if ((1 << i) != cols || (1 << j) != rows) {
-		vk_debug("Draw_StretchRaw: size not a power of 2: %i by %i", cols, rows);
+		Com_Error(ERR_DROP, "Draw_StretchRaw: size not a power of 2: %i by %i", cols, rows);
 	}
 
 	RE_UploadCinematic( cols, rows, (byte*)data, client, dirty ); 
+
+	if (r_speeds->integer) {
+		end = ri.Milliseconds() * ri.Cvar_VariableValue("timescale");
+		ri.Printf(PRINT_ALL, "RE_UploadCinematic( %i, %i ): %i msec\n", cols, rows, end - start);
+	}
 
 	tr.cinematicShader->stages[0]->bundle[0].image[0] = tr.scratchImage[client];
 	RE_StretchPic(x, y, w, h, 0.5f / cols, 0.5f / rows, 1.0f - 0.5f / cols, 1.0f - 0.5 / rows, tr.cinematicShader->index);
