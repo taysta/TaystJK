@@ -28,7 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Logs comments to specific vulkan log
 ================
 */
-void QDECL vk_debug(const char *msg, ...) {
+void QDECL vk_debug( const char *msg, ... ) {
 //#ifndef NDEBUG
 	FILE* fp;
 	va_list         argptr;
@@ -78,7 +78,7 @@ void vk_create_debug_callback(void)
 }
 #endif
 
-void R_ShaderList_f(void) {
+void R_ShaderList_f( void ) {
 	int				i;
 	int				count;
 	const shader_t	*sh;
@@ -112,7 +112,7 @@ void R_ShaderList_f(void) {
 Draws triangle outlines for debugging
 ================
 */
-void DrawTris(shaderCommands_t *pInput){
+void DrawTris( shaderCommands_t *pInput){
     uint32_t pipeline;
 
 	if (tess.numIndexes == 0)
@@ -153,7 +153,7 @@ void DrawTris(shaderCommands_t *pInput){
 Draws vertex normals for debugging
 ================
 */
-void DrawNormals(shaderCommands_t *input)
+void DrawNormals( shaderCommands_t *input)
 {
 	int		i;
 
@@ -186,10 +186,10 @@ Draw all the images to the screen, on top of whatever was there.
 This is used to test for texture thrashing.
 ===============
 */
-void RB_ShowImages(image_t** const pImg, uint32_t numImages)
+void RB_ShowImages ( image_t** const pImg, uint32_t numImages )
 {
-	uint32_t i;
-	float w, h, x, y;
+	uint32_t	i;
+	float		w, h, x, y;
 
 	if (!backEnd.projection2D)
 		vk_set_2d();
@@ -306,15 +306,15 @@ void RB_ShowImages(image_t** const pImg, uint32_t numImages)
 R_DebugPolygon
 ================
 */
-static void transform_to_eye_space(const vec3_t v, vec3_t v_eye)
+static void transform_to_eye_space( const vec3_t v, vec3_t v_eye )
 {
-	const float* m = backEnd.viewParms.world.modelMatrix;
+	const float *m = backEnd.viewParms.world.modelMatrix;
 	v_eye[0] = m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12];
 	v_eye[1] = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
 	v_eye[2] = m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14];
 };
 
-static void R_DebugPolygon(int color, int numPoints, float *points)
+static void R_DebugPolygon( int color, int numPoints, float *points )
 {
 	vec3_t pa;
 	vec3_t pb;
@@ -392,7 +392,7 @@ R_DebugGraphics
 Visualization aid for movement clipping debugging
 ====================
 */
-void R_DebugGraphics(void) {
+void R_DebugGraphics( void ) {
 	if (!r_debugSurface->integer) {
 		return;
 	}

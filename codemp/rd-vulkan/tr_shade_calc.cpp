@@ -835,7 +835,6 @@ void RB_CalcModulateRGBAsByFog( unsigned char *colors ) {
 	}
 }
 
-
 /*
 ====================================================================
 
@@ -934,15 +933,13 @@ void RB_CalcFogTexCoords( float *st ) {
 	}
 }
 
-
-
 /*
 ** RB_CalcEnvironmentTexCoords
 */
-void RB_CalcEnvironmentTexCoords(float* st)
+void RB_CalcEnvironmentTexCoords( float *st )
 {
 	int			i;
-	const float* v, * normal;
+	const float	*v, *normal;
 	vec3_t		viewer, reflected;
 	float		d;
 
@@ -968,7 +965,7 @@ void RB_CalcEnvironmentTexCoords(float* st)
 /*
 ** RB_CalcTurbulentTexCoords
 */
-void RB_CalcTurbulentTexCoords(const waveForm_t* wf, float* src, float* dst)
+void RB_CalcTurbulentTexCoords( const waveForm_t *wf, float *src, float *dst )
 {
 	int i;
 	double now; // -EC- set to double
@@ -985,7 +982,7 @@ void RB_CalcTurbulentTexCoords(const waveForm_t* wf, float* src, float* dst)
 /*
 ** RB_CalcScaleTexCoords
 */
-void RB_CalcScaleTexCoords(const float scale[2], float* src, float* dst)
+void RB_CalcScaleTexCoords( const float scale[2], float *src, float *dst )
 {
 	int i;
 
@@ -999,7 +996,7 @@ void RB_CalcScaleTexCoords(const float scale[2], float* src, float* dst)
 /*
 ** RB_CalcScrollTexCoords
 */
-void RB_CalcScrollTexCoords(const float scrollSpeed[2], float* src, float* dst)
+void RB_CalcScrollTexCoords( const float scrollSpeed[2], float *src, float *dst )
 {
 	int i;
 	double	timeScale; // -EC-: set to double
@@ -1022,11 +1019,10 @@ void RB_CalcScrollTexCoords(const float scrollSpeed[2], float* src, float* dst)
 	}
 }
 
-
 /*
 ** RB_CalcTransformTexCoords
 */
-void RB_CalcTransformTexCoords(const texModInfo_t* tmi, float* src, float* dst)
+void RB_CalcTransformTexCoords( const texModInfo_t *tmi, float *src, float *dst )
 {
 	int i;
 
@@ -1043,7 +1039,7 @@ void RB_CalcTransformTexCoords(const texModInfo_t* tmi, float* src, float* dst)
 /*
 ** RB_CalcRotateTexCoords
 */
-void RB_CalcRotateTexCoords(float degsPerSecond, float* src, float* dst)
+void RB_CalcRotateTexCoords( float degsPerSecond, float *src, float *dst )
 {
 	double timeScale = tess.shaderTime; // -EC- set to double
 	double degs; // -EC- set to double
@@ -1067,12 +1063,6 @@ void RB_CalcRotateTexCoords(float degsPerSecond, float* src, float* dst)
 
 	RB_CalcTransformTexCoords(&tmi, src, dst);
 }
-
-
-
-
-
-
 
 /*
 ** RB_CalcSpecularAlpha

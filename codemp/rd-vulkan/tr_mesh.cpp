@@ -157,7 +157,7 @@ RE_GetModelBounds
 =================
 */
 //rwwRMG - added
-void RE_GetModelBounds(refEntity_t *refEnt, vec3_t bounds1, vec3_t bounds2)
+void RE_GetModelBounds( refEntity_t *refEnt, vec3_t bounds1, vec3_t bounds2 )
 {
 	md3Frame_t		*frame;
 	md3Header_t		*header;
@@ -303,9 +303,9 @@ void R_AddMD3Surfaces( trRefEntity_t *ent ) {
 	int				fogNum;
 	qboolean		personalModel;
 #ifdef USE_PMLIGHT
-	dlight_t* dl;
+	dlight_t		*dl;
 	int				n;
-	dlight_t* dlights[ARRAY_LEN(backEndData->dlights)];
+	dlight_t		*dlights[ARRAY_LEN(backEndData->dlights)];
 	int				numDlights;
 #endif
 

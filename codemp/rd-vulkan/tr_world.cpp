@@ -23,11 +23,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-inline void Q_CastShort2Float(float *f, const short *s)
+inline void Q_CastShort2Float( float *f, const short *s )
 {
 	*f = ((float)*s);
 }
-
 
 /*
 =================
@@ -105,7 +104,6 @@ static qboolean	R_CullGrid( srfGridMesh_t *cv ) {
 
 	return qfalse;
 }
-
 
 /*
 ================
@@ -251,7 +249,7 @@ static qboolean	R_CullSurface( surfaceType_t *surface, shader_t *shader ) {
 }
 
 #ifdef USE_PMLIGHT
-qboolean R_LightCullBounds(const dlight_t *dl, const vec3_t mins, const vec3_t maxs)
+qboolean R_LightCullBounds( const dlight_t *dl, const vec3_t mins, const vec3_t maxs )
 {
 	if (dl->linear) {
 		if (dl->transformed[0] - dl->radius > maxs[0] && dl->transformed2[0] - dl->radius > maxs[0])
@@ -290,8 +288,7 @@ qboolean R_LightCullBounds(const dlight_t *dl, const vec3_t mins, const vec3_t m
 	return qfalse;
 }
 
-
-static qboolean R_LightCullFace(const srfSurfaceFace_t* face, const dlight_t* dl)
+static qboolean R_LightCullFace( const srfSurfaceFace_t *face, const dlight_t *dl )
 {
 	float d = DotProduct(dl->transformed, face->plane.normal) - face->plane.dist;
 	if (dl->linear)
@@ -311,8 +308,7 @@ static qboolean R_LightCullFace(const srfSurfaceFace_t* face, const dlight_t* dl
 	return qfalse;
 }
 
-
-static qboolean R_LightCullSurface(const surfaceType_t* surface, const dlight_t* dl)
+static qboolean R_LightCullSurface( const surfaceType_t *surface, const dlight_t *dl )
 {
 	switch (*surface) {
 	case SF_FACE:
@@ -484,7 +480,7 @@ static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noView
 =============================================================
 */
 #ifdef USE_PMLIGHT
-static void R_AddLitSurface(msurface_t *surf, const dlight_t *light)
+static void R_AddLitSurface( msurface_t *surf, const dlight_t *light )
 {
 	// since we're not worried about offscreen lights casting into the frustum (ATM !!!)
 	// only add the "lit" version of this surface if it was already added to the view
@@ -517,7 +513,7 @@ static void R_AddLitSurface(msurface_t *surf, const dlight_t *light)
 }
 
 
-static void R_RecursiveLightNode(const mnode_t *node)
+static void R_RecursiveLightNode( const mnode_t *node )
 {
 	qboolean	children[2];
 	msurface_t	**mark;
@@ -777,7 +773,7 @@ static wireframeMapSurf_t **g_autoMapNextFree = NULL;
 static bool g_autoMapValid = false; //set to true of g_autoMapFrame is valid.
 
 //get the next available wireframe automap surface. -rww
-static inline wireframeMapSurf_t *R_GetNewWireframeMapSurf(void)
+static inline wireframeMapSurf_t *R_GetNewWireframeMapSurf( void )
 {
 	wireframeMapSurf_t **next = &g_autoMapFrame.surfs;
 
@@ -799,7 +795,7 @@ static inline wireframeMapSurf_t *R_GetNewWireframeMapSurf(void)
 
 //evaluate a surface, see if it is valid for being part of the
 //wireframe map render. -rww
-static inline void R_EvaluateWireframeSurf(msurface_t *surf)
+static inline void R_EvaluateWireframeSurf( msurface_t *surf )
 {
 	if (*surf->data == SF_FACE)
 	{
@@ -920,7 +916,7 @@ static inline bool R_NodeHasOppositeFaces(mnode_t *node)
 
 //recursively called for each node to go through the surfaces on that
 //node and generate the wireframe map. -rww
-static inline void R_RecursiveWireframeSurf(mnode_t *node)
+static inline void R_RecursiveWireframeSurf( mnode_t *node )
 {
 	int c;
 	msurface_t *surf, **mark;
@@ -962,7 +958,7 @@ static inline void R_RecursiveWireframeSurf(mnode_t *node)
 }
 
 //generates a wireframe model of the map for the automap view -rww
-static void R_GenerateWireframeMap(mnode_t *baseNode)
+static void R_GenerateWireframeMap( mnode_t *baseNode )
 {
 	int i;
 
@@ -990,7 +986,7 @@ static void R_GenerateWireframeMap(mnode_t *baseNode)
 }
 
 //clear out the wireframe map data -rww
-void R_DestroyWireframeMap(void)
+void R_DestroyWireframeMap( void )
 {
 	wireframeMapSurf_t *next;
 	wireframeMapSurf_t *last;
@@ -1021,7 +1017,7 @@ void R_DestroyWireframeMap(void)
 }
 
 //save 3d automap data to file -rww
-qboolean R_WriteWireframeMapToFile(void)
+qboolean R_WriteWireframeMapToFile( void )
 {
 	fileHandle_t f;
 	int requiredSize = 0;
@@ -1081,7 +1077,7 @@ qboolean R_WriteWireframeMapToFile(void)
 }
 
 //load 3d automap data from file -rww
-qboolean R_GetWireframeMapFromFile(void)
+qboolean R_GetWireframeMapFromFile( void )
 {
 	wireframeMapSurf_t *surfs, *rSurfs;
 	wireframeMapSurf_t *newSurf;
@@ -1128,7 +1124,7 @@ qboolean R_GetWireframeMapFromFile(void)
 }
 
 //create everything, after destroying any existing data -rww
-qboolean R_InitializeWireframeAutomap(void)
+qboolean R_InitializeWireframeAutomap( void )
 {
 	if (r_autoMapDisable && r_autoMapDisable->integer)
 	{
@@ -1162,7 +1158,7 @@ WIREFRAME AUTOMAP GENERATION SYSTEM - END
 =============================================================
 */
 
-void R_AutomapElevationAdjustment(float newHeight)
+void R_AutomapElevationAdjustment( float newHeight )
 {
 	g_playerHeight = newHeight;
 }
@@ -1181,7 +1177,7 @@ static float g_lastHeight = 0.0f;
 static bool g_lastHeightValid = false;
 static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits );
 
-const void *R_DrawWireframeAutomap(const void *data)
+const void *R_DrawWireframeAutomap( const void *data )
 {
 	const drawBufferCommand_t *cmd = (const drawBufferCommand_t *)data;
 	float e = 0.0f;
@@ -1205,7 +1201,6 @@ const void *R_DrawWireframeAutomap(const void *data)
 
 	return (const void *)(cmd + 1);
 }
-
 
 /*
 ================
@@ -1379,7 +1374,7 @@ static mnode_t *R_PointInLeaf( const vec3_t p ) {
 R_ClusterPVS
 ==============
 */
-static const byte *R_ClusterPVS (int cluster) {
+static const byte *R_ClusterPVS ( int cluster ) {
 	if (!tr.world || !tr.world->vis || cluster < 0 || cluster >= tr.world->numClusters ) {
 		return tr.world->novis;
 	}
@@ -1418,7 +1413,7 @@ Mark the leaves and nodes that are in the PVS for the current
 cluster
 ===============
 */
-static void R_MarkLeaves (void) {
+static void R_MarkLeaves ( void ) {
 	const byte	*vis;
 	mnode_t	*leaf, *parent;
 	int		i;
@@ -1495,7 +1490,7 @@ static void R_MarkLeaves (void) {
 R_AddWorldSurfaces
 =============
 */
-void R_AddWorldSurfaces (void) {
+void R_AddWorldSurfaces ( void ) {
 #ifdef USE_PMLIGHT
 	dlight_t* dl;
 	int i;

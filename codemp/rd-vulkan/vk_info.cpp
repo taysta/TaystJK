@@ -23,9 +23,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-#define CASE_STR(x) case (x): return #x
+#define CASE_STR( x ) case ( x ): return #x
 
-const char *vk_format_string(VkFormat format)
+const char *vk_format_string( VkFormat format )
 {
     static char buf[16];
 
@@ -54,7 +54,7 @@ const char *vk_format_string(VkFormat format)
     }
 }
 
-const char *vk_result_string(VkResult code) {
+const char *vk_result_string( VkResult code ) {
     static char buffer[32];
 
     switch (code) {
@@ -92,7 +92,7 @@ const char *vk_result_string(VkResult code) {
     }
 }
 
-const char *vk_shadertype_string(Vk_Shader_Type code) {
+const char *vk_shadertype_string( Vk_Shader_Type code ) {
     static char buffer[32];
 
     switch (code) {
@@ -163,14 +163,14 @@ const char *vk_shadertype_string(Vk_Shader_Type code) {
 }
 #undef CASE_STR
 
-static const char *TruncateVKExtensionsString(const char *extensionsString, int maxExtensions)
+static const char *TruncateVKExtensionsString( const char *extensionsString, int maxExtensions )
 {
-    const char* p = extensionsString;
-    const char* q;
+    const char  *p = extensionsString;
+    const char  *q;
     int numExtensions = 0;
     size_t extensionsLen = strlen(extensionsString);
 
-    char* truncatedExtensions;
+    char *truncatedExtensions;
 
     while ((q = strchr(p, ' ')) != NULL && numExtensions <= maxExtensions)
     {
@@ -191,11 +191,11 @@ static const char *TruncateVKExtensionsString(const char *extensionsString, int 
     return truncatedExtensions;
 }
 
-static void vk_print_instance_extensions(int setting)
+static void vk_print_instance_extensions( int setting )
 {
     uint32_t i = 0;
     uint32_t nInsExt = 0;
-    VkExtensionProperties* pInsExt;
+    VkExtensionProperties *pInsExt;
 
     // To retrieve a list of supported extensions before creating an instance
     VK_CHECK(qvkEnumerateInstanceExtensionProperties(NULL, &nInsExt, NULL));
@@ -231,10 +231,10 @@ static void vk_print_instance_extensions(int setting)
     }
 }
 
-static void vk_print_device_extensions(void)
+static void vk_print_device_extensions( void )
 {
     uint32_t i, nDevExts = 0;
-    VkExtensionProperties* pDevExt;
+    VkExtensionProperties *pDevExt;
 
     // To query the extensions available to a given physical device
     VK_CHECK(qvkEnumerateDeviceExtensionProperties(vk.physical_device, NULL, &nDevExts, NULL));
@@ -255,10 +255,10 @@ static void vk_print_device_extensions(void)
     free(pDevExt);
 }
 
-void vk_get_vulkan_properties(VkPhysicalDeviceProperties *props)
+void vk_get_vulkan_properties( VkPhysicalDeviceProperties *props )
 {
-    const char *device_type, *vendor_name;
-    uint32_t major, minor, patch;
+    const char  *device_type, *vendor_name;
+    uint32_t    major, minor, patch;
 
     vk_debug("\nActive 3D API: Vulkan\n");
 

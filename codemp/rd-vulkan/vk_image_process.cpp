@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-void R_SetColorMappings(void)
+void R_SetColorMappings( void)
 {
     int		i, j;
     int		inf;
@@ -119,7 +119,7 @@ Scale up the pixel values in a texture to increase the
 lighting range
 ================
 */
-void R_LightScaleTexture(byte *in, int inwidth, int inheight, qboolean only_gamma)
+void R_LightScaleTexture( byte *in, int inwidth, int inheight, qboolean only_gamma )
 {
     if (in == NULL)
         return;
@@ -172,7 +172,6 @@ void R_LightScaleTexture(byte *in, int inwidth, int inheight, qboolean only_gamm
     }
 }
 
-
 /*
 ==================
 R_BlendOverTexture
@@ -180,7 +179,7 @@ R_BlendOverTexture
 Apply a color blend over a set of pixels
 ==================
 */
-void R_BlendOverTexture(unsigned char *data, const uint32_t pixelCount, uint32_t l)
+void R_BlendOverTexture( unsigned char *data, const uint32_t pixelCount, uint32_t l )
 {
     uint32_t i;
 
@@ -249,7 +248,7 @@ render a scene. They also improve the scene's realism.
 #define ByteToFloat(a)          ((float)(a) * 1.0f/255.0f)
 #define FloatToByte(a)          (byte)((a) * 255.0f)
 
-void R_MipMapNormal(byte *out, byte *in, int width, int height, const qboolean swizzle) {
+void R_MipMapNormal( byte *out, byte *in, int width, int height, const qboolean swizzle ) {
     int		i, j;
     int		row;
     int sx = swizzle ? 3 : 0;
@@ -295,7 +294,7 @@ void R_MipMapNormal(byte *out, byte *in, int width, int height, const qboolean s
     }
 }
 
-void R_MipMap(byte *out, byte *in, int width, int height) {
+void R_MipMap( byte *out, byte *in, int width, int height ) {
     int		i, j;
     int		row;
 
@@ -336,13 +335,13 @@ void R_MipMap(byte *out, byte *in, int width, int height) {
     }
 }
 
-void R_MipMap2(unsigned* const out, unsigned* const in, int inWidth, int inHeight) {
+void R_MipMap2( unsigned * const out, unsigned * const in, int inWidth, int inHeight ) {
     int			i, j, k;
-    byte* outpix;
+    byte        *outpix;
     int			inWidthMask, inHeightMask;
     int			total;
     int			outWidth, outHeight;
-    unsigned* temp;
+    unsigned    *temp;
 
     outWidth = inWidth >> 1;
     outHeight = inHeight >> 1;
@@ -401,8 +400,8 @@ is greater than half the original size.
 If a larger shrinking is needed, use the mipmap function before or after.
 ================
 */
-void ResampleTexture(unsigned* in, int inwidth, int inheight, unsigned* out,
-    int outwidth, int outheight) {
+void ResampleTexture( unsigned *in, int inwidth, int inheight, unsigned *out,
+    int outwidth, int outheight ) {
     int		i, j;
     unsigned* inrow, * inrow2;
     unsigned	frac, fracstep;
@@ -441,8 +440,8 @@ void ResampleTexture(unsigned* in, int inwidth, int inheight, unsigned* out,
     }
 }
 
-void GetScaledDimension(const unsigned int width, const unsigned int height, 
-    unsigned int* const outW, unsigned int* const outH, int isPicMip)
+void GetScaledDimension( const unsigned int width, const unsigned int height, 
+    unsigned int * const outW, unsigned int * const outH, int isPicMip )
 {
     const unsigned int max_texture_size = 2048;
 
@@ -473,15 +472,12 @@ void GetScaledDimension(const unsigned int width, const unsigned int height,
     *outH = scaled_height;
 }
 
-void imsave(char* fileName, unsigned char* buffer2, unsigned int width, unsigned int height);
-void fsWriteFile(const char *qpath, const void *buffer, int size);
-
-void fsWriteFile(const char* qpath, const void *buffer, int size)
+void fsWriteFile( const char *qpath, const void *buffer, int size )
 {
 
-    unsigned char* buf = (unsigned char*)buffer;
+    unsigned char *buf = (unsigned char*)buffer;
 
-    FILE* f = fopen(qpath, "wb");
+    FILE *f = fopen(qpath, "wb");
     if (!f)
     {
         fprintf(stderr, "Failed to open %s\n", qpath);
@@ -525,12 +521,12 @@ void fsWriteFile(const char* qpath, const void *buffer, int size)
     fclose(f);
 }
 
-void imsave(char *fileName, unsigned char *buffer2, unsigned int width, unsigned int height)
+void imsave( char *fileName, unsigned char *buffer2, unsigned int width, unsigned int height)
 {
 
     const unsigned int cnPixels = width * height;
 
-    unsigned char* buffer = (unsigned char*)malloc(cnPixels * 3 + 18);
+    unsigned char *buffer = (unsigned char*)malloc(cnPixels * 3 + 18);
 
     memset(buffer, 0, 18);
     buffer[2] = 2;		// uncompressed type
@@ -571,8 +567,8 @@ void imsave(char *fileName, unsigned char *buffer2, unsigned int width, unsigned
     vk_debug("imsave: %s\n", fileName);
 }
 
-void DEBUG_resample(const char *name, unsigned char *data, unsigned char *pBuffer,
-    unsigned int width, unsigned int height, unsigned int scaled_width, unsigned int scaled_height)
+void DEBUG_resample( const char *name, unsigned char *data, unsigned char *pBuffer,
+    unsigned int width, unsigned int height, unsigned int scaled_width, unsigned int scaled_height )
 {
     const char* slash = strrchr(name, '/');
 

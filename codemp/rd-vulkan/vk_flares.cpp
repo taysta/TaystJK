@@ -57,7 +57,7 @@ up to five or more times in a frame with 3D status bar icons).
 // flare states maintain visibility over multiple frames for fading
 // layers: view, mirror, menu
 typedef struct flare_s {
-	struct		flare_s* next;		// for active chain
+	struct		flare_s *next;		// for active chain
 
 	int			addedFrame;
 	uint32_t	testCount;
@@ -87,7 +87,7 @@ static flare_t *r_activeFlares, *r_inactiveFlares;
 R_ClearFlares
 ==================
 */
-void R_ClearFlares(void) {
+void R_ClearFlares( void ) {
 	int		i;
 
 	if (!vk.fragmentStores)
@@ -108,9 +108,9 @@ void R_ClearFlares(void) {
 R_SearchFlare
 ==================
 */
-static flare_t *R_SearchFlare(void *surface)
+static flare_t *R_SearchFlare( void *surface )
 {
-	flare_t* f;
+	flare_t *f;
 
 	// see if a flare with a matching surface, scene, and view exists
 	for (f = r_activeFlares; f; f = f->next) {
@@ -129,9 +129,9 @@ RB_AddFlare
 This is called at surface tesselation time
 ==================
 */
-void RB_AddFlare(void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t normal) {
+void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t normal ) {
 	int				i;
-	flare_t* f;
+	flare_t			*f;
 	vec3_t			local;
 	float			d = 1;
 	vec4_t			eye, clip, normalized, window;
@@ -219,7 +219,7 @@ void RB_AddFlare(void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t n
 RB_AddDlightFlares
 ==================
 */
-void RB_AddDlightFlares(void) {
+void RB_AddDlightFlares( void ) {
 	dlight_t* l;
 	int				i, j, k;
 	fog_t* fog = NULL;
@@ -290,10 +290,10 @@ static float *vk_ortho(	float x1, float x2,
 RB_TestFlare
 ==================
 */
-void RB_TestFlare(flare_t *f) {
+void RB_TestFlare( flare_t *f ) {
 	qboolean		visible;
 	float			fade;
-	float* m;
+	float			*m;
 	uint32_t		offset;
 
 	backEnd.pc.c_flareTests++;
@@ -383,7 +383,7 @@ void RB_TestFlare(flare_t *f) {
 RB_RenderFlare
 ==================
 */
-void RB_RenderFlare(flare_t *f) {
+void RB_RenderFlare( flare_t *f ) {
 	float			size;
 	vec3_t			color;
 	int				iColor[3];
@@ -525,7 +525,7 @@ when occluded by something in the main view, and portal flares that should
 extend past the portal edge will be overwritten.
 ==================
 */
-void RB_RenderFlares(void) {
+void RB_RenderFlares( void ) {
 	flare_t* f;
 	flare_t** prev;
 	qboolean	draw;

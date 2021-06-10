@@ -146,7 +146,7 @@ PFN_vkGetImageMemoryRequirements2KHR			qvkGetImageMemoryRequirements2KHR;
 
 PFN_vkDebugMarkerSetObjectNameEXT				qvkDebugMarkerSetObjectNameEXT;
 
-static char *Q_stradd(char *dst, const char *src)
+static char *Q_stradd( char *dst, const char *src )
 {
     char c;
     while ((c = *src++) != '\0')
@@ -155,9 +155,9 @@ static char *Q_stradd(char *dst, const char *src)
     return dst;
 }
 
-static qboolean vk_used_instance_extension(const char *ext)
+static qboolean vk_used_instance_extension( const char *ext )
 {
-    const char* u;
+    const char *u;
 
     // allow all VK_*_surface extensions
     u = strrchr(ext, '_');
@@ -179,7 +179,7 @@ static qboolean vk_used_instance_extension(const char *ext)
 
 }
 
-static void vk_create_instance(void)
+static void vk_create_instance( void )
 {
 #ifndef NDEBUG
     const char *validation_layer_name_lunarg = "VK_LAYER_LUNARG_standard_validation";
@@ -286,7 +286,7 @@ static void vk_create_instance(void)
     free(extension_properties);
 }
 
-static VkFormat get_hdr_format(VkFormat base_format)
+static VkFormat get_hdr_format( VkFormat base_format )
 {
     if (r_fbo->integer == 0) {
         return base_format;
@@ -302,7 +302,7 @@ static VkFormat get_hdr_format(VkFormat base_format)
     }
 }
 
-static VkFormat get_depth_format(VkPhysicalDevice physical_device) {
+static VkFormat get_depth_format( VkPhysicalDevice physical_device ) {
     VkFormatProperties props;
     VkFormat formats[2];
     uint32_t i;
@@ -329,7 +329,7 @@ static VkFormat get_depth_format(VkPhysicalDevice physical_device) {
     return VK_FORMAT_UNDEFINED; // never get here
 }
 
-static qboolean vk_blit_enabled(VkPhysicalDevice physical_device, const VkFormat srcFormat, const VkFormat dstFormat)
+static qboolean vk_blit_enabled( VkPhysicalDevice physical_device, const VkFormat srcFormat, const VkFormat dstFormat )
 {
     VkFormatProperties formatProps;
 
@@ -361,7 +361,7 @@ static const present_format_t present_formats[] = {
 	//{32, VK_FORMAT_B10G11R11_UFLOAT_PACK32, VK_FORMAT_B10G11R11_UFLOAT_PACK32}
 };
 
-static void get_present_format(int present_bits, VkFormat *bgr, VkFormat *rgb) {
+static void get_present_format( int present_bits, VkFormat *bgr, VkFormat *rgb ) {
 	const present_format_t *pf, *sel;
 	int i;
 
@@ -382,7 +382,7 @@ static void get_present_format(int present_bits, VkFormat *bgr, VkFormat *rgb) {
 	}
 }
 
-qboolean vk_select_surface_format(VkPhysicalDevice physical_device, VkSurfaceKHR surface)
+qboolean vk_select_surface_format( VkPhysicalDevice physical_device, VkSurfaceKHR surface )
 {
 	VkFormat base_bgr, base_rgb;
 	VkFormat ext_bgr, ext_rgb;
@@ -453,7 +453,7 @@ qboolean vk_select_surface_format(VkPhysicalDevice physical_device, VkSurfaceKHR
     return qtrue;
 }
 
- void vk_setup_surface_formats(VkPhysicalDevice physical_device)
+ void vk_setup_surface_formats( VkPhysicalDevice physical_device )
 {
     vk.color_format		= get_hdr_format(vk.base_format.format);
     vk.depth_format		= get_depth_format(physical_device);
@@ -465,9 +465,9 @@ qboolean vk_select_surface_format(VkPhysicalDevice physical_device, VkSurfaceKHR
         vk.capture_format = vk.color_format;
 }
 
-static const char *renderer_name(const VkPhysicalDeviceProperties *props) {
+static const char *renderer_name( const VkPhysicalDeviceProperties *props ) {
 	static char buf[sizeof(props->deviceName) + 64];
-	const char* device_type;
+	const char	*device_type;
 
 	switch (props->deviceType) {
 		case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: device_type = "Integrated"; break;
@@ -483,7 +483,7 @@ static const char *renderer_name(const VkPhysicalDeviceProperties *props) {
 	return buf;
 }
 
-static qboolean vk_create_device(VkPhysicalDevice physical_device, int device_index) {
+static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_index ) {
 
 	ri.Printf(PRINT_ALL, "selected physical device: %i\n\n", device_index);
 
@@ -685,7 +685,7 @@ static qboolean vk_create_device(VkPhysicalDevice physical_device, int device_in
 #define INIT_DEVICE_FUNCTION_EXT(func) \
 	q##func = (PFN_ ## func) qvkGetDeviceProcAddr(vk.device, #func);
 
-void vk_init_library(void)
+void vk_init_library( void )
 {
 	VkPhysicalDeviceProperties props;
 	VkPhysicalDevice *physical_devices;
@@ -889,7 +889,7 @@ void vk_init_library(void)
 #undef INIT_DEVICE_FUNCTION
 #undef INIT_DEVICE_FUNCTION_EXT
 
-void vk_deinit_library(void)
+void vk_deinit_library( void )
 {
 	qvkCreateInstance = NULL;
 	qvkEnumerateInstanceExtensionProperties = NULL;
@@ -1002,7 +1002,7 @@ void vk_deinit_library(void)
 }
 
 #define FORMAT_DEPTH(format, r_bits, g_bits, b_bits) case(VK_FORMAT_##format): *r = r_bits; *b = b_bits; *g = g_bits; return qtrue;
-qboolean vk_surface_format_color_depth(VkFormat format, int* r, int* g, int* b) {
+qboolean vk_surface_format_color_depth( VkFormat format, int *r, int *g, int *b ) {
 	switch (format) {
 		// Common formats from https://vulkan.gpuinfo.org/listsurfaceformats.php
 		FORMAT_DEPTH(B8G8R8A8_UNORM, 255, 255, 255)

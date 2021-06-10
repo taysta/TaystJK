@@ -25,7 +25,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-
 static const imgFlags_t lightmapFlags = IMGFLAG_NOLIGHTSCALE | IMGFLAG_NO_COMPRESSION | IMGFLAG_LIGHTMAP | IMGFLAG_NOSCALE;
 
 /*
@@ -151,7 +150,7 @@ R_ColorShiftLightingBytes
 
 ===============
 */
-void R_ColorShiftLightingBytes(byte in[3]) {
+void R_ColorShiftLightingBytes( byte in[3] ) {
 	int shift, r, g, b;
 
 	// shift the color data based on overbright range
@@ -507,7 +506,6 @@ static void ParseFace( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int *
 	surf->data = (surfaceType_t *)cv;
 }
 
-
 /*
 ===============
 ParseMesh
@@ -699,7 +697,6 @@ static void ParseFlare( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int 
 	}
 }
 
-
 /*
 =================
 R_MergedWidthPoints
@@ -707,7 +704,7 @@ R_MergedWidthPoints
 returns true if there are grid points merged on a width edge
 =================
 */
-int R_MergedWidthPoints(srfGridMesh_t *grid, int offset) {
+int R_MergedWidthPoints( srfGridMesh_t *grid, int offset ) {
 	int i, j;
 
 	for (i = 1; i < grid->width-1; i++) {
@@ -728,7 +725,7 @@ R_MergedHeightPoints
 returns true if there are grid points merged on a height edge
 =================
 */
-int R_MergedHeightPoints(srfGridMesh_t *grid, int offset) {
+int R_MergedHeightPoints( srfGridMesh_t *grid, int offset ) {
 	int i, j;
 
 	for (i = 1; i < grid->height-1; i++) {
@@ -882,7 +879,6 @@ void R_FixSharedVertexLodError( world_t &worldData ) {
 		R_FixSharedVertexLodError_r( i + 1, grid1, worldData);
 	}
 }
-
 
 /*
 ===============
@@ -1384,7 +1380,7 @@ void R_StitchAllPatches( world_t &worldData ) {
 R_MovePatchSurfacesToHunk
 ===============
 */
-void R_MovePatchSurfacesToHunk(world_t &worldData) {
+void R_MovePatchSurfacesToHunk( world_t &worldData ) {
 	int i, size;
 	srfGridMesh_t *grid, *hunkgrid;
 
@@ -1484,8 +1480,6 @@ static	void R_LoadSurfaces( lump_t *surfs, lump_t *verts, lump_t *indexLump, wor
 	vk_debug("...loaded %d faces, %i meshes, %i trisurfs, %i flares\n", numFaces, numMeshes, numTriSurfs, numFlares );
 }
 
-
-
 /*
 =================
 R_LoadSubmodels
@@ -1542,8 +1536,6 @@ Ghoul2 Insert End
 	}
 }
 
-
-
 //==================================================================
 
 /*
@@ -1551,7 +1543,7 @@ Ghoul2 Insert End
 R_SetParent
 =================
 */
-static	void R_SetParent (mnode_t *node, mnode_t *parent)
+static	void R_SetParent ( mnode_t *node, mnode_t *parent )
 {
 	node->parent = parent;
 	if (node->contents != -1)
@@ -1565,7 +1557,7 @@ static	void R_SetParent (mnode_t *node, mnode_t *parent)
 R_LoadNodesAndLeafs
 =================
 */
-static	void R_LoadNodesAndLeafs (lump_t *nodeLump, lump_t *leafLump, world_t &worldData) {
+static	void R_LoadNodesAndLeafs ( lump_t *nodeLump, lump_t *leafLump, world_t &worldData ) {
 	int			i, j, p;
 	dnode_t		*in;
 	dleaf_t		*inLeaf;
@@ -1664,7 +1656,6 @@ static	void R_LoadShaders( lump_t *l, world_t &worldData ) {
 	}
 }
 
-
 /*
 =================
 R_LoadMarksurfaces
@@ -1691,7 +1682,6 @@ static	void R_LoadMarksurfaces (lump_t *l, world_t &worldData)
 		out[i] = worldData.surfaces + j;
 	}
 }
-
 
 /*
 =================
@@ -1891,7 +1881,6 @@ static	void R_LoadFogs( lump_t *l, lump_t *brushesLump, lump_t *sidesLump, world
 	}
 
 }
-
 
 /*
 ================
@@ -2211,7 +2200,6 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 		ri.FS_FreeFile( buffer );
 	}
 }
-
 
 // new wrapper used for convenience to tell z_malloc()-fail recovery code whether it's safe to dump the cached-bsp or not.
 //

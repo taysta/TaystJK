@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-void vk_create_sync_primitives(void)
+void vk_create_sync_primitives( void )
 {
     uint32_t i;
     VkFenceCreateInfo fence_desc;
@@ -56,7 +56,7 @@ void vk_create_sync_primitives(void)
     }
 }
 
-void vk_destroy_sync_primitives(void)
+void vk_destroy_sync_primitives( void )
 {
     uint32_t i;
 
@@ -579,7 +579,7 @@ void vk_create_framebuffers()
     
 }
 
-void vk_destroy_render_passes(void)
+void vk_destroy_render_passes( void )
 {
     uint32_t i;
 
@@ -666,7 +666,7 @@ void vk_destroy_framebuffers( void )
     }
 }
 
-static qboolean vk_find_screenmap_drawsurfs(void)
+static qboolean vk_find_screenmap_drawsurfs( void )
 {
     const void* curCmd = &backEndData->commands.cmds;
     const drawBufferCommand_t* db_cmd;
@@ -729,7 +729,7 @@ static void vk_begin_render_pass(VkRenderPass renderPass, VkFramebuffer frameBuf
     qvkCmdBeginRenderPass(vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
 }
 
-void vk_begin_screenmap_render_pass(void)
+void vk_begin_screenmap_render_pass( void )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.screenmap;
 
@@ -748,7 +748,7 @@ void vk_begin_screenmap_render_pass(void)
     vk_begin_render_pass(vk.render_pass.screenmap, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_main_render_pass(void)
+void vk_begin_main_render_pass( void )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
 
@@ -761,7 +761,7 @@ void vk_begin_main_render_pass(void)
     vk_begin_render_pass(vk.render_pass.main, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_post_bloom_render_pass(void)
+void vk_begin_post_bloom_render_pass( void )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
 
@@ -775,7 +775,7 @@ void vk_begin_post_bloom_render_pass(void)
     vk_begin_render_pass(vk.render_pass.post_bloom, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_bloom_extract_render_pass(void)
+void vk_begin_bloom_extract_render_pass( void )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.bloom_extract;
 
@@ -788,7 +788,7 @@ void vk_begin_bloom_extract_render_pass(void)
     vk_begin_render_pass(vk.render_pass.bloom_extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_blur_render_pass(uint32_t index)
+void vk_begin_blur_render_pass( uint32_t index )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.blur[index];
 
@@ -893,12 +893,12 @@ void vk_begin_frame( void )
     }
 }
 
-void vk_end_render_pass(void)
+void vk_end_render_pass( void )
 {
     qvkCmdEndRenderPass(vk.cmd->command_buffer);
 }
 
-void vk_release_geometry_buffers(void)
+void vk_release_geometry_buffers( void )
 {
     uint32_t i;
 
@@ -911,12 +911,12 @@ void vk_release_geometry_buffers(void)
     vk.geometry_buffer_memory = VK_NULL_HANDLE;
 }
 
-void vk_wait_idle(void)
+void vk_wait_idle( void )
 {
     VK_CHECK(qvkDeviceWaitIdle(vk.device));
 }
 
-static void vk_resize_geometry_buffer(void)
+static void vk_resize_geometry_buffer( void )
 {
     uint32_t i;
 
@@ -939,7 +939,7 @@ static void vk_resize_geometry_buffer(void)
     ri.Printf(PRINT_DEVELOPER, "...geometry buffer resized to %iK\n", (int)(vk.geometry_buffer_size / 1024));
 }
 
-void vk_release_resources(void) {
+void vk_release_resources( void ) {
     uint32_t i, j;
 
     vk_wait_idle();
@@ -992,7 +992,7 @@ void vk_release_resources(void) {
     Com_Memset(vk.cmd->buf_offset, 0, sizeof(vk.cmd->buf_offset));
 }
 
-void vk_end_frame(void)
+void vk_end_frame( void )
 {
     if (vk.frame_count == 0)
         return;
@@ -1101,7 +1101,7 @@ void vk_end_frame(void)
     }
 }
 
-static qboolean is_bgr(VkFormat format) {
+static qboolean is_bgr( VkFormat format ) {
     switch (format) {
     case VK_FORMAT_B8G8R8A8_UNORM:
     case VK_FORMAT_B8G8R8A8_SNORM:
@@ -1115,7 +1115,7 @@ static qboolean is_bgr(VkFormat format) {
     }
 }
 
-void vk_read_pixels(byte *buffer, uint32_t width, uint32_t height)
+void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
 {
     VkCommandBuffer command_buffer;
     VkDeviceMemory memory;

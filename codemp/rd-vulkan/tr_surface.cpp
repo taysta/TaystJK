@@ -39,9 +39,7 @@ It is safe to actually issue drawing commands here if you don't want to
 use the shader system.
 */
 
-
 //============================================================================
-
 
 /*
 ==============
@@ -65,7 +63,6 @@ void RB_CheckOverflow( int verts, int indexes ) {
 
 	RB_BeginSurface(tess.shader, tess.fogNum );
 }
-
 
 /*
 ==============
@@ -194,7 +191,6 @@ static void RB_SurfaceSprite( void ) {
 
 	RB_AddQuadStamp( backEnd.currentEntity->e.origin, left, up, backEnd.currentEntity->e.shaderRGBA );
 }
-
 
 /*
 =======================
@@ -425,8 +421,6 @@ void RB_SurfaceTriangles( srfTriangles_t *srf ) {
 
 	tess.numVertexes += srf->numVerts;
 }
-
-
 
 /*
 ==============
@@ -783,7 +777,7 @@ RB_SurfaceCylinder
 #define NUM_CYLINDER_SEGMENTS 32
 
 // FIXME: use quad stamp?
-static void DoCylinderPart(polyVert_t *verts)
+static void DoCylinderPart( polyVert_t *verts )
 {
 	int			vbase;
 	int			i;
@@ -1138,14 +1132,13 @@ static void RB_SurfaceElectricity()
 
 //================================================================================
 
-
 /*
 ** VectorArrayNormalize
 *
 * The inputs to this routing seem to always be close to length = 1.0 (about 0.6 to 2.0)
 * This means that we don't have to worry about zero length or enormously long vectors.
 */
-static void VectorArrayNormalize(vec4_t *normals, unsigned int count)
+static void VectorArrayNormalize( vec4_t *normals, unsigned int count )
 {
 //    assert(count);
 
@@ -1195,12 +1188,10 @@ static void VectorArrayNormalize(vec4_t *normals, unsigned int count)
 
 }
 
-
-
 /*
 ** LerpMeshVertexes
 */
-static void LerpMeshVertexes (md3Surface_t *surf, float backlerp)
+static void LerpMeshVertexes ( md3Surface_t *surf, float backlerp )
 {
 	short	*oldXyz, *newXyz, *oldNormals, *newNormals;
 	float	*outXyz, *outNormal;
@@ -1302,7 +1293,7 @@ static void LerpMeshVertexes (md3Surface_t *surf, float backlerp)
 RB_SurfaceMesh
 =============
 */
-void RB_SurfaceMesh(md3Surface_t *surface) {
+void RB_SurfaceMesh( md3Surface_t *surface ) {
 	int				j;
 	float			backlerp;
 	int				*triangles;
@@ -1350,7 +1341,6 @@ void RB_SurfaceMesh(md3Surface_t *surface) {
 	tess.numVertexes += surface->numVerts;
 
 }
-
 
 /*
 ==============
@@ -1446,7 +1436,6 @@ void RB_SurfaceFace( srfSurfaceFace_t *surf ) {
 	tess.numVertexes += surf->numPoints;
 }
 
-
 static float	LodErrorForVolume( vec3_t local, float radius ) {
 	vec3_t		world;
 	float		d;
@@ -1477,7 +1466,7 @@ static float	LodErrorForVolume( vec3_t local, float radius ) {
 	return r_lodCurveError->value / d;
 }
 
-void RB_SurfaceGridEstimate(srfGridMesh_t *cv, int *numVertexes, int *numIndexes)
+void RB_SurfaceGridEstimate( srfGridMesh_t *cv, int *numVertexes, int *numIndexes )
 {
 	int		lodWidth, lodHeight;
 	float	lodError;
@@ -1764,7 +1753,6 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 	}
 }
 
-
 /*
 ===========================================================================
 
@@ -1780,7 +1768,7 @@ RB_SurfaceAxis
 Draws x/y/z lines from the origin for orientation debugging
 ===================
 */
-static void RB_SurfaceAxis(void) {
+static void RB_SurfaceAxis( void ) {
 	int i;
 
 	RB_EndSurface();
@@ -2007,7 +1995,6 @@ void RB_SurfaceFlare( srfFlare_t *surf ) {
 #endif
 }
 
-
 void RB_SurfaceDisplayList( srfDisplayList_t *surf ) {
 	// all appropriate state must be set in RB_BeginSurface
 	// this isn't implemented yet...
@@ -2016,7 +2003,6 @@ void RB_SurfaceDisplayList( srfDisplayList_t *surf ) {
 
 void RB_SurfaceSkip( void *surf ) {
 }
-
 
 void (*rb_surfaceTable[SF_NUM_SURFACE_TYPES])( void *) = {
 	(void(*)(void*))RB_SurfaceBad,			// SF_BAD,

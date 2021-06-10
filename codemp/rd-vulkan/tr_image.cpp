@@ -34,9 +34,6 @@ static unsigned char s_gammatable[256];*/
 int		gl_filter_min = GL_LINEAR_MIPMAP_NEAREST;
 int		gl_filter_max = GL_LINEAR;
 
-//#define FILE_HASH_SIZE		1024	// actually the shader code still needs this (from another module, great),
-//static	image_t*		hashTable[FILE_HASH_SIZE];
-
 /*
 ** R_GammaCorrect
 */
@@ -301,10 +298,6 @@ byte	mipBlendColors[16][4] = {
 	{0,0,255,128},
 };
 
-
-
-
-
 class CStringComparator
 {
 public:
@@ -316,18 +309,18 @@ AllocatedImages_t AllocatedImages;
 AllocatedImages_t::iterator itAllocatedImages;
 int giTextureBindNum = 1024;	// will be set to this anyway at runtime, but wtf?
 
-void R_Add_AllocatedImage(image_t *image) {
+void R_Add_AllocatedImage( image_t *image) {
 	AllocatedImages[image->imgName] = image;
 }
 // return = number of images in the list, for those interested
 //
-int R_Images_StartIteration(void)
+int R_Images_StartIteration( void )
 {
 	itAllocatedImages = AllocatedImages.begin();
 	return AllocatedImages.size();
 }
 
-image_t *R_Images_GetNextIteration(void)
+image_t *R_Images_GetNextIteration( void )
 {
 	if (itAllocatedImages == AllocatedImages.end())
 		return NULL;
@@ -354,7 +347,7 @@ static void R_Images_DeleteImageContents( image_t *pImage )
 //
 // (avoid using ri->xxxx stuff here in case running on dedicated)
 //
-void R_Images_DeleteLightMaps(void)
+void R_Images_DeleteLightMaps( void )
 {
 	for (AllocatedImages_t::iterator itImage = AllocatedImages.begin(); itImage != AllocatedImages.end(); /* empty */)
 	{
@@ -375,7 +368,7 @@ void R_Images_DeleteLightMaps(void)
 
 // special function currently only called by Dissolve code...
 //
-void R_Images_DeleteImage(image_t *pImage)
+void R_Images_DeleteImage( image_t *pImage )
 {
 	// Even though we supply the image handle, we need to get the corresponding iterator entry...
 	//
@@ -393,7 +386,7 @@ void R_Images_DeleteImage(image_t *pImage)
 
 // called only at app startup, vid_restart, app-exit
 //
-void R_Images_Clear(void)
+void R_Images_Clear( void )
 {
 	image_t *pImage;
 	//	int iNumImages =
@@ -407,7 +400,6 @@ void R_Images_Clear(void)
 
 	giTextureBindNum = 1024;
 }
-
 
 void RE_RegisterImages_Info_f( void )
 {
@@ -431,7 +423,7 @@ void RE_RegisterImages_Info_f( void )
 
 // currently, this just goes through all the images and dumps any not referenced on this level...
 //
-qboolean RE_RegisterImages_LevelLoadEnd(void)
+qboolean RE_RegisterImages_LevelLoadEnd( void )
 {
 	vk_debug("RE_RegisterImages_LevelLoadEnd():\n");
 
@@ -474,7 +466,7 @@ qboolean RE_RegisterImages_LevelLoadEnd(void)
 	return imageDeleted;
 }
 
-image_t *noLoadImage(const char *name, imgFlags_t flags) {
+image_t *noLoadImage( const char *name, imgFlags_t flags ) {
 	if (!name) {
 		return NULL;
 	}
@@ -510,7 +502,7 @@ image_t *noLoadImage(const char *name, imgFlags_t flags) {
 //
 // This is called by both R_FindImageFile and anything that creates default images...
 //
-static image_t *R_FindImageFile_NoLoad(const char *name, qboolean mipmap, qboolean allowPicmip, qboolean allowTC, int glWrapClampMode )
+static image_t *R_FindImageFile_NoLoad( const char *name, qboolean mipmap, qboolean allowPicmip, qboolean allowTC, int glWrapClampMode )
 {
 	if (!name) {
 		return NULL;

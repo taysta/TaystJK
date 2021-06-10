@@ -44,7 +44,7 @@ bool g_bDynamicGlowSupported = false;
 #define	MAC_EVENT_PUMP_MSEC		5
 
 //used by RF_DISTORTION
-static inline bool R_WorldCoordToScreenCoordFloat(vec3_t worldCoord, float *x, float *y)
+static inline bool R_WorldCoordToScreenCoordFloat( vec3_t worldCoord, float *x, float *y )
 {
 	int	xcenter, ycenter;
 	vec3_t	local, transformed;
@@ -296,14 +296,13 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 #endif 
 }
 
-
 #ifdef USE_PMLIGHT
 /*
 =================
 RB_BeginDrawingLitView
 =================
 */
-static void RB_BeginDrawingLitSurfs(void)
+static void RB_BeginDrawingLitSurfs( void )
 {
 	// we will need to change the projection matrix before drawing
 	// 2D images again
@@ -318,18 +317,17 @@ static void RB_BeginDrawingLitSurfs(void)
 	glState.faceCulling = -1;		// force face culling to set next time
 }
 
-
 /*
 ==================
 RB_RenderLitSurfList
 ==================
 */
-static void RB_RenderLitSurfList(dlight_t* dl) {
-	shader_t* shader, * oldShader;
+static void RB_RenderLitSurfList( dlight_t *dl ) {
+	shader_t		*shader, *oldShader;
 	int				fogNum;
 	int				entityNum, oldEntityNum;
 	qboolean		depthRange, isCrosshair;
-	const litSurf_t* litSurf;
+	const litSurf_t *litSurf;
 	unsigned int	oldSort;
 	double			originalTime; // -EC- 
 
@@ -445,7 +443,6 @@ static void RB_RenderLitSurfList(dlight_t* dl) {
 }
 #endif // USE_PMLIGHT
 
-
 /*
 =============
 RE_StretchRaw
@@ -455,7 +452,7 @@ Stretches a raw 32 bit power of 2 bitmap image over the given screen rectangle.
 Used for cinematics.
 =============
 */
-void RE_StretchRaw (int x, int y, int w, int h, int cols, int rows, const byte *data, int client, qboolean dirty)
+void RE_StretchRaw ( int x, int y, int w, int h, int cols, int rows, const byte *data, int client, qboolean dirty )
 {
 	int			i, j;
 	int			start, end;
@@ -792,7 +789,7 @@ const void *RB_RotatePic2 ( const void *data )
 }
 
 #ifdef USE_PMLIGHT
-static void RB_LightingPass(void)
+static void RB_LightingPass( void )
 {
 	dlight_t* dl;
 	int	i;
@@ -1060,7 +1057,7 @@ const void	*RB_WorldEffects( const void *data )
 RB_ClearColor
 =============
 */
-static const void *RB_ClearColor(const void *data)
+static const void *RB_ClearColor( const void *data )
 {
 	const clearColorCommand_t* cmd = (const clearColorCommand_t*)data;
 
@@ -1076,7 +1073,7 @@ static const void *RB_ClearColor(const void *data)
 RB_ExecuteRenderCommands
 ====================
 */
-extern const void *R_DrawWireframeAutomap(const void *data); //tr_world.cpp
+extern const void *R_DrawWireframeAutomap( const void *data ); //tr_world.cpp
 void RB_ExecuteRenderCommands( const void *data ) {
 	int		t1, t2;
 

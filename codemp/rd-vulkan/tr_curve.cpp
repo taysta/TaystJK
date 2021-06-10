@@ -296,7 +296,7 @@ static void PutPointsOnCurve( drawVert_t	ctrl[MAX_GRID_SIZE][MAX_GRID_SIZE],
 R_CreateSurfaceGridMesh
 =================
 */
-srfGridMesh_t *R_CreateSurfaceGridMesh(int width, int height,
+srfGridMesh_t *R_CreateSurfaceGridMesh( int width, int height,
 								drawVert_t ctrl[MAX_GRID_SIZE][MAX_GRID_SIZE], float errorTable[2][MAX_GRID_SIZE] ) {
 	int i, j, size;
 	drawVert_t	*vert;

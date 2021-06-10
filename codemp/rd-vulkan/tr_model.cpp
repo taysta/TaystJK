@@ -35,7 +35,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	LS(x) x=LittleShort(x)
 #define	LF(x) x=LittleFloat(x)
 
-static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *name, qboolean &bAlreadyCached );
+static qboolean R_LoadMD3 ( model_t *mod, int lod, void *buffer, const char *name, qboolean &bAlreadyCached );
 /*
 Ghoul2 Insert Start
 */
@@ -83,7 +83,7 @@ typedef struct CachedEndianedModelBinary_s CachedEndianedModelBinary_t;
 typedef std::map <sstring_t,CachedEndianedModelBinary_t>	CachedModels_t;
 CachedModels_t *CachedModels = NULL;	// the important cache item.
 
-void RE_RegisterModels_StoreShaderRequest(const char *psModelFileName, const char *psShaderName, int *piShaderIndexPoke)
+void RE_RegisterModels_StoreShaderRequest( const char *psModelFileName, const char *psShaderName, int *piShaderIndexPoke )
 {
 	char sModelName[MAX_QPATH];
 
@@ -191,7 +191,7 @@ qboolean RE_RegisterModels_GetDiskFile( const char *psModelFileName, void **ppvB
 //
 // don't use ri->xxx functions in case running on dedicated
 //
-void *RE_RegisterModels_Malloc(int iSize, void *pvDiskBufferIfJustLoaded, const char *psModelFileName, qboolean *pqbAlreadyFound, memtag_t eTag)
+void *RE_RegisterModels_Malloc( int iSize, void *pvDiskBufferIfJustLoaded, const char *psModelFileName, qboolean *pqbAlreadyFound, memtag_t eTag )
 {
 	char sModelName[MAX_QPATH];
 
@@ -263,7 +263,7 @@ void *RE_RegisterModels_Malloc(int iSize, void *pvDiskBufferIfJustLoaded, const 
 
 // Unfortunately the dedicated server also hates shader loading. So we need an alternate of this func.
 //
-void *RE_RegisterServerModels_Malloc(int iSize, void *pvDiskBufferIfJustLoaded, const char *psModelFileName, qboolean *pqbAlreadyFound, memtag_t eTag)
+void *RE_RegisterServerModels_Malloc( int iSize, void *pvDiskBufferIfJustLoaded, const char *psModelFileName, qboolean *pqbAlreadyFound, memtag_t eTag )
 {
 	char sModelName[MAX_QPATH];
 
@@ -336,7 +336,7 @@ void *RE_RegisterServerModels_Malloc(int iSize, void *pvDiskBufferIfJustLoaded, 
 
 // dump any models not being used by this level if we're running low on memory...
 //
-static int GetModelDataAllocSize(void)
+static int GetModelDataAllocSize( void )
 {
 	return	Z_MemSize( TAG_MODEL_MD3) +
 			Z_MemSize( TAG_MODEL_GLM) +
@@ -418,7 +418,7 @@ qboolean RE_RegisterModels_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLev
 //
 // (avoid using ri->xxxx stuff here in case running on dedicated)
 //
-static void RE_RegisterModels_DumpNonPure(void)
+static void RE_RegisterModels_DumpNonPure( void )
 {
 	ri.Printf( PRINT_DEVELOPER,  "RE_RegisterModels_DumpNonPure():\n");
 
@@ -491,7 +491,7 @@ void RE_RegisterModels_Info_f( void )
 
 // (don't use ri->xxx functions since the renderer may not be running here)...
 //
-static void RE_RegisterModels_DeleteAll(void)
+static void RE_RegisterModels_DeleteAll( void )
 {
 	if(!CachedModels) {
 		return;	//argh!
@@ -513,7 +513,7 @@ static void RE_RegisterModels_DeleteAll(void)
 // do not use ri->xxx functions in here, the renderer may not be running (ie. if on a dedicated server)...
 //
 static int giRegisterMedia_CurrentLevel=0;
-void RE_RegisterMedia_LevelLoadBegin(const char *psMapName, ForceReload_e eForceReload)
+void RE_RegisterMedia_LevelLoadBegin( const char *psMapName, ForceReload_e eForceReload )
 {
 	// for development purposes we may want to ditch certain media just before loading a map...
 	//
@@ -557,14 +557,14 @@ void RE_RegisterMedia_LevelLoadBegin(const char *psMapName, ForceReload_e eForce
 	}
 }
 
-int RE_RegisterMedia_GetLevel(void)
+int RE_RegisterMedia_GetLevel( void )
 {
 	return giRegisterMedia_CurrentLevel;
 }
 
 // this is now only called by the client, so should be ok to dump media...
 //
-void RE_RegisterMedia_LevelLoadEnd(void)
+void RE_RegisterMedia_LevelLoadEnd( void )
 {
 	RE_RegisterModels_LevelLoadEnd(qfalse);
 
@@ -639,7 +639,7 @@ static long generateHashValue( const char *fname, const int size ) {
 	return hash;
 }
 
-void RE_InsertModelIntoHash(const char *name, model_t *mod)
+void RE_InsertModelIntoHash( const char *name, model_t *mod )
 {
 	int			hash;
 	modelHash_t	*mh;
@@ -1429,7 +1429,7 @@ qhandle_t RE_RegisterModel( const char *name )
 R_LoadMD3
 =================
 */
-static qboolean R_LoadMD3 (model_t *mod, int lod, void *buffer, const char *mod_name, qboolean &bAlreadyCached ) {
+static qboolean R_LoadMD3 ( model_t *mod, int lod, void *buffer, const char *mod_name, qboolean &bAlreadyCached ) {
 	int					i, j;
 	md3Header_t			*pinmodel;
 	md3Surface_t		*surf;
@@ -1671,8 +1671,8 @@ void R_ModelInit( void )
 	mod->type = MOD_BAD;
 }
 
-extern void KillTheShaderHashTable(void);
-void RE_HunkClearCrap(void)
+extern void KillTheShaderHashTable( void );
+void RE_HunkClearCrap( void )
 { //get your dirty sticky assets off me, you damn dirty hunk!
 	KillTheShaderHashTable();
 	tr.numModels = 0;
@@ -1681,7 +1681,7 @@ void RE_HunkClearCrap(void)
 	tr.numSkins = 0;
 }
 
-void R_ModelFree(void)
+void R_ModelFree( void )
 {
 	if(CachedModels) {
 		RE_RegisterModels_DeleteAll();

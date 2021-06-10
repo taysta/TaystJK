@@ -874,7 +874,7 @@ void		vk_get_pipeline_def( uint32_t pipeline, Vk_Pipeline_Def *def );
 
 // image process
 void		GetScaledDimension( const unsigned int width, const unsigned int height, 
-	unsigned int *const outW, unsigned int *const outH, int isPicMip );
+	unsigned int * const outW, unsigned int * const outH, int isPicMip );
 void		R_SetColorMappings( void );
 void		R_LightScaleTexture( byte *in, int inwidth, int inheight, qboolean only_gamma );
 void		ResampleTexture( unsigned *in, int inwidth, int inheight, unsigned *out, int outwidth, int outheight );

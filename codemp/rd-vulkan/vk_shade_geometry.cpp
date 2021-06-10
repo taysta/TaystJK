@@ -29,7 +29,7 @@ static VkBuffer shade_bufs[8];
 static int bind_base;
 static int bind_count;
 
-void vk_select_texture(const int index) 
+void vk_select_texture( const int index ) 
 {
 	if (vk.ctmu == index)
 		return;
@@ -40,17 +40,17 @@ void vk_select_texture(const int index)
 	vk.ctmu = index;
 }
 
-void vk_set_depthrange(const Vk_Depth_Range depthRange) 
+void vk_set_depthrange( const Vk_Depth_Range depthRange ) 
 {
 	tess.depthRange = depthRange;
 }
 
-VkBuffer vk_get_vertex_buffer(void)
+VkBuffer vk_get_vertex_buffer( void )
 {
 	return vk.cmd->vertex_buffer;
 }
-
-static void get_mvp_transform(float *mvp)
+ 
+static void get_mvp_transform( float *mvp )
 {
 	if (backEnd.projection2D)
 	{
@@ -78,7 +78,7 @@ static void get_mvp_transform(float *mvp)
 	}
 }
 
-void vk_update_mvp(const float *m) {
+void vk_update_mvp( const float *m ) {
 	float push_constants[16]; // mvp transform
 
 	// Specify push constants.
@@ -91,7 +91,7 @@ void vk_update_mvp(const float *m) {
 		VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(push_constants), push_constants);
 }
 
-void vk_set_2d(void) 
+void vk_set_2d( void ) 
 {
 	backEnd.projection2D = qtrue;
 
@@ -108,7 +108,7 @@ void vk_set_2d(void)
 	return;
 }
 
-static void vk_bind_index_attr(int index)
+static void vk_bind_index_attr( int index )
 {
 	if (bind_base == -1) {
 		bind_base = index;
@@ -119,7 +119,7 @@ static void vk_bind_index_attr(int index)
 	}
 }
 
-static void vk_bind_attr(int index, unsigned int item_size, const void *src) {
+static void vk_bind_attr( int index, unsigned int item_size, const void *src ) {
 	const uint32_t offset = PAD(vk.cmd->vertex_buffer_offset, 32);
 	const uint32_t size = tess.numVertexes * item_size;
 
@@ -136,7 +136,7 @@ static void vk_bind_attr(int index, unsigned int item_size, const void *src) {
 	vk_bind_index_attr(index);
 }
 
-uint32_t vk_tess_index(uint32_t numIndexes, const void *src) {
+uint32_t vk_tess_index( uint32_t numIndexes, const void *src ) {
 	const uint32_t offset = vk.cmd->vertex_buffer_offset;
 	const uint32_t size = numIndexes * sizeof(tess.indexes[0]);
 
@@ -152,7 +152,7 @@ uint32_t vk_tess_index(uint32_t numIndexes, const void *src) {
 	}
 }
 
-void vk_bind_index_buffer(VkBuffer buffer, uint32_t offset)
+void vk_bind_index_buffer( VkBuffer buffer, uint32_t offset )
 {
 	if (vk.cmd->curr_index_buffer != buffer || vk.cmd->curr_index_offset != offset)
 		qvkCmdBindIndexBuffer(vk.cmd->command_buffer, buffer, offset, VK_INDEX_TYPE_UINT32);
@@ -161,7 +161,7 @@ void vk_bind_index_buffer(VkBuffer buffer, uint32_t offset)
 	vk.cmd->curr_index_offset = offset;
 }
 
-void vk_bind_index(void)
+void vk_bind_index( void )
 {
 #ifdef USE_VBO
 	if (tess.vboIndex) {
@@ -174,7 +174,7 @@ void vk_bind_index(void)
 	vk_bind_index_ext(tess.numIndexes, tess.indexes);
 }
 
-void vk_bind_index_ext(const int numIndexes, const uint32_t *indexes)
+void vk_bind_index_ext( const int numIndexes, const uint32_t *indexes )
 {
 	uint32_t offset	= vk_tess_index( numIndexes, indexes );
 
@@ -187,7 +187,7 @@ void vk_bind_index_ext(const int numIndexes, const uint32_t *indexes)
 	}
 }
 
-void vk_bind_geometry(uint32_t flags)
+void vk_bind_geometry( uint32_t flags )
 {
 	bind_base = -1;
 	bind_count = 0;
@@ -275,7 +275,7 @@ void vk_bind_geometry(uint32_t flags)
 	}
 }
 
-void vk_bind_lighting(int stage, int bundle)
+void vk_bind_lighting( int stage, int bundle )
 {
 	bind_base = -1;
 	bind_count = 0;
@@ -305,7 +305,7 @@ void vk_bind_lighting(int stage, int bundle)
 	}
 }
 
-void vk_update_uniform_descriptor(VkDescriptorSet descriptor, VkBuffer buffer)
+void vk_update_uniform_descriptor( VkDescriptorSet descriptor, VkBuffer buffer )
 {
 	VkDescriptorBufferInfo info;
 	VkWriteDescriptorSet desc;
@@ -328,7 +328,7 @@ void vk_update_uniform_descriptor(VkDescriptorSet descriptor, VkBuffer buffer)
 	qvkUpdateDescriptorSets(vk.device, 1, &desc, 0, NULL);
 }
 
-void vk_create_storage_buffer(uint32_t size)
+void vk_create_storage_buffer( uint32_t size )
 {
 	VkMemoryRequirements memory_requirements;
 	VkMemoryAllocateInfo alloc_info;
@@ -370,7 +370,7 @@ void vk_create_storage_buffer(uint32_t size)
 	VK_SET_OBJECT_NAME(vk.storage.memory, "storage buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 }
 
-void vk_update_attachment_descriptors(void) {
+void vk_update_attachment_descriptors( void ) {
 
 	if (vk.color_image_view)
 	{
@@ -427,7 +427,7 @@ void vk_update_attachment_descriptors(void) {
 	}
 }
 
-void vk_init_descriptors() {
+void vk_init_descriptors( void ) {
 	VkDescriptorSetAllocateInfo alloc;
 	VkDescriptorBufferInfo info;
 	VkWriteDescriptorSet desc;
@@ -495,7 +495,7 @@ void vk_init_descriptors() {
 	}
 }
 
-void vk_create_vertex_buffer(VkDeviceSize size)
+void vk_create_vertex_buffer( VkDeviceSize size )
 {
 	int i;
 	void *data;
@@ -551,12 +551,12 @@ void vk_create_vertex_buffer(VkDeviceSize size)
 	vk.geometry_buffer_size_new = 0;
 }
 
-void vk_reset_descriptor(int index)
+void vk_reset_descriptor( int index )
 {
 	vk.cmd->descriptor_set.current[index] = VK_NULL_HANDLE;
 }
 
-void vk_update_descriptor(int tmu, VkDescriptorSet curDesSet)
+void vk_update_descriptor( int tmu, VkDescriptorSet curDesSet )
 {
 	if (vk.cmd->descriptor_set.current[tmu] != curDesSet) {
 		vk.cmd->descriptor_set.start = 
@@ -568,12 +568,12 @@ void vk_update_descriptor(int tmu, VkDescriptorSet curDesSet)
 	vk.cmd->descriptor_set.current[tmu] = curDesSet;
 }
 
-void vk_update_descriptor_offset(int index, uint32_t offset)
+void vk_update_descriptor_offset( int index, uint32_t offset )
 {
 	vk.cmd->descriptor_set.offset[index] = offset;
 }
 
-void vk_bind_descriptor_sets() 
+void vk_bind_descriptor_sets( void ) 
 {
 	uint32_t offsets[2], offset_count;
 	uint32_t start, end, count;
@@ -598,7 +598,7 @@ void vk_bind_descriptor_sets()
 	vk.cmd->descriptor_set.start = ~0U;
 }
 
-void vk_bind_pipeline(uint32_t pipeline) {
+void vk_bind_pipeline( uint32_t pipeline ) {
 	VkPipeline vkpipe;
 
 	vkpipe = vk_gen_pipeline(pipeline);
@@ -612,7 +612,7 @@ void vk_bind_pipeline(uint32_t pipeline) {
 	//vk_world.dirty_depth_attachment = VK_TRUE;
 }
 
-void vk_draw_geometry(Vk_Depth_Range depRg, VkBool32 indexed)
+void vk_draw_geometry( Vk_Depth_Range depRg, VkBool32 indexed )
 {
 	VkViewport viewport;
 	VkRect2D scissor_rect;
@@ -656,7 +656,7 @@ void vk_draw_geometry(Vk_Depth_Range depRg, VkBool32 indexed)
 	}
 }
 
-void ComputeColors(const int b, color4ub_t *dest, const shaderStage_t *pStage, int forceRGBGen)
+void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, int forceRGBGen )
 {
 	int			i;
 	qboolean killGen = qfalse;
@@ -936,7 +936,7 @@ avoidGen:
 	}
 }
 
-uint32_t vk_push_uniform(const vkUniform_t *uniform) {
+uint32_t vk_push_uniform( const vkUniform_t *uniform ) {
 	const uint32_t offset = vk.cmd->uniform_read_offset = PAD(vk.cmd->vertex_buffer_offset, vk.uniform_alignment);
 
 	if (offset + vk.uniform_item_size > vk.geometry_buffer_size)
@@ -959,7 +959,7 @@ uint32_t vk_push_uniform(const vkUniform_t *uniform) {
 RB_CalcFogProgramParms
 ========================
 */
-const fogProgramParms_t *RB_CalcFogProgramParms(void)
+const fogProgramParms_t *RB_CalcFogProgramParms( void )
 {
 	static fogProgramParms_t parm;
 	const fog_t* fog;
@@ -1014,7 +1014,7 @@ const fogProgramParms_t *RB_CalcFogProgramParms(void)
 }
 
 #ifdef USE_PMLIGHT
-static void vk_set_light_params(vkUniform_t *uniform, const dlight_t *dl) {
+static void vk_set_light_params( vkUniform_t *uniform, const dlight_t *dl ) {
 	float radius;
 
 	if (!glConfig.deviceSupportsGamma && !vk.fboActive)
@@ -1041,7 +1041,7 @@ static void vk_set_light_params(vkUniform_t *uniform, const dlight_t *dl) {
 }
 #endif
 
-static void vk_set_fog_params(vkUniform_t *uniform, int *fogStage)
+static void vk_set_fog_params( vkUniform_t *uniform, int *fogStage )
 {
 	if (tess.fogNum && tess.shader->fogPass) {
 		const fogProgramParms_t *fp = RB_CalcFogProgramParms();
@@ -1071,7 +1071,7 @@ Blends a fog texture on top of everything else
 ===================
 */
 static vkUniform_t	uniform;
-static void RB_FogPass(void) {
+static void RB_FogPass( void ) {
 	uint32_t pipeline = vk.std_pipeline.fog_pipelines[tess.shader->fogPass - 1][tess.shader->cullType][tess.shader->polygonOffset];
 
 #ifdef USE_FOG_ONLY
@@ -1102,7 +1102,7 @@ static void RB_FogPass(void) {
 #endif
 }
 
-void vk_bind(image_t *image) {
+void vk_bind( image_t *image ) {
 	if (!image) {
 		vk_debug("vk_bind: NULL image\n");
 		image = tr.defaultImage;
@@ -1113,7 +1113,7 @@ void vk_bind(image_t *image) {
 	vk_update_descriptor(vk.ctmu + VK_SAMPLER_LAYOUT_BEGIN, image->descriptor_set);
 }
 
-void R_BindAnimatedImage(const textureBundle_t *bundle) {
+void R_BindAnimatedImage( const textureBundle_t *bundle ) {
 
 	int64_t index;
 	double	v;
@@ -1152,7 +1152,7 @@ void R_BindAnimatedImage(const textureBundle_t *bundle) {
 	vk_bind(bundle->image[index]);
 }
 
-void ComputeTexCoords(const int b, const textureBundle_t *bundle) {
+void ComputeTexCoords( const int b, const textureBundle_t *bundle ) {
 	int	i;
 	int tm;
 	vec2_t* src, * dst;
@@ -1268,7 +1268,7 @@ void ComputeTexCoords(const int b, const textureBundle_t *bundle) {
 }
 
 #ifdef USE_PMLIGHT
-void vk_lighting_pass(void)
+void vk_lighting_pass( void )
 {
 	static uint32_t uniform_offset;
 	static int fog_stage;
@@ -1332,7 +1332,7 @@ void vk_lighting_pass(void)
 #endif // USE_PMLIGHT
 
 static ss_input ssInput;
-void RB_StageIteratorGeneric(void)
+void RB_StageIteratorGeneric( void )
 {
 	const shaderStage_t		*pStage;
 	Vk_Pipeline_Def			def;

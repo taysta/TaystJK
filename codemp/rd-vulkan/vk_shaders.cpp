@@ -30,8 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // The graphics pipeline is the sequence of the operations that take the
 // vertices and textures of your meshes all way to the pixels in the
 // render targets.
-
-static VkShaderModule SHADER_MODULE(const uint8_t *bytes, const int count) {
+static VkShaderModule SHADER_MODULE( const uint8_t *bytes, const int count ) {
     VkShaderModuleCreateInfo desc;
     VkShaderModule module;
 
@@ -49,9 +48,9 @@ static VkShaderModule SHADER_MODULE(const uint8_t *bytes, const int count) {
 
     return module;
 }
-#define SHADER_MODULE(name) SHADER_MODULE(name,sizeof(name))
+#define SHADER_MODULE( name ) SHADER_MODULE( name, sizeof( name ) )
 
-void vk_create_shader_modules(void)
+void vk_create_shader_modules( void )
 {
     int i, j, k, l;
 
@@ -171,7 +170,7 @@ void vk_create_shader_modules(void)
     VK_SET_OBJECT_NAME(vk.shaders.gamma_vs, "gamma post-processing vertex module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
 }
 
-void vk_destroy_shader_modules(void)
+void vk_destroy_shader_modules( void )
 {
     int i, j, k, l;
 

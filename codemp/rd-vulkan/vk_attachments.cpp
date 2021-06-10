@@ -25,27 +25,27 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "tr_local.h"
 
 typedef struct vk_attach_desc_s {
-    VkImage descriptor;
-    VkImageView *image_view;
-    VkImageUsageFlags usage;
-    VkMemoryRequirements reqs;
-    uint32_t memoryTypeIndex;
-    VkDeviceSize  memory_offset;
-    VkImageAspectFlags aspect_flags;
-    VkAccessFlags access_flags;
-    VkImageLayout image_layout;
-    VkFormat image_format;
+    VkImage                 descriptor;
+    VkImageView             *image_view;
+    VkImageUsageFlags       usage;
+    VkMemoryRequirements    reqs;
+    uint32_t                memoryTypeIndex;
+    VkDeviceSize            memory_offset;
+    VkImageAspectFlags      aspect_flags;
+    VkAccessFlags           access_flags;
+    VkImageLayout           image_layout;
+    VkFormat                image_format;
 } vk_attach_desc_t;
 
 static vk_attach_desc_t attachments[MAX_ATTACHMENTS_IN_POOL + 1]; // +1 for SSAA
 static uint32_t num_attachments = 0;
 
-static void vk_clear_attachment_pool(void)
+static void vk_clear_attachment_pool( void )
 {
     num_attachments = 0;
 }
 
-static void vk_alloc_attachment_memory(void)
+static void vk_alloc_attachment_memory( void )
 {
     VkImageViewCreateInfo view_desc;
     VkMemoryDedicatedAllocateInfoKHR alloc_info2;
@@ -165,7 +165,7 @@ static void vk_alloc_attachment_memory(void)
     num_attachments = 0;
 }
 
-static void vk_get_image_memory_requirements(VkImage image, VkMemoryRequirements* memory_requirements)
+static void vk_get_image_memory_requirements( VkImage image, VkMemoryRequirements *memory_requirements )
 {
     if (vk.dedicatedAllocation) {
         VkMemoryRequirements2KHR memory_requirements2;
@@ -192,8 +192,8 @@ static void vk_get_image_memory_requirements(VkImage image, VkMemoryRequirements
     }
 }
 
-static void vk_add_attachment_desc(VkImage desc, VkImageView* image_view, VkImageUsageFlags usage, VkMemoryRequirements* reqs, 
-    VkFormat image_format, VkImageAspectFlags aspect_flags, VkAccessFlags access_flags, VkImageLayout image_layout)
+static void vk_add_attachment_desc( VkImage desc, VkImageView *image_view, VkImageUsageFlags usage, VkMemoryRequirements *reqs, 
+    VkFormat image_format, VkImageAspectFlags aspect_flags, VkAccessFlags access_flags, VkImageLayout image_layout )
 {
     if (num_attachments >= ARRAY_LEN(attachments)) {
         ri.Error(ERR_FATAL, "Attachments array overflow: max attachments: %d while %d given", (int)ARRAY_LEN(vk.image_memory), num_attachments);
@@ -212,8 +212,8 @@ static void vk_add_attachment_desc(VkImage desc, VkImageView* image_view, VkImag
     }
 }
 
-static void create_color_attachment(uint32_t width, uint32_t height, VkSampleCountFlagBits samples, VkFormat format,
-    VkImageUsageFlags usage, VkImage *image, VkImageView *image_view, VkImageLayout image_layout, qboolean multisample)
+static void create_color_attachment( uint32_t width, uint32_t height, VkSampleCountFlagBits samples, VkFormat format,
+    VkImageUsageFlags usage, VkImage *image, VkImageView *image_view, VkImageLayout image_layout, qboolean multisample )
 {
     VkImageCreateInfo desc;
     VkMemoryRequirements memory_requirements;
@@ -254,8 +254,8 @@ static void create_color_attachment(uint32_t width, uint32_t height, VkSampleCou
     }
 }
 
-static void create_depth_attachment(uint32_t width, uint32_t height, VkSampleCountFlagBits samples, 
-    VkImage* image, VkImageView* image_view)
+static void create_depth_attachment( uint32_t width, uint32_t height, VkSampleCountFlagBits samples, 
+    VkImage *image, VkImageView *image_view )
 {
     VkImageCreateInfo desc;
     VkMemoryRequirements memory_requirements;
@@ -293,7 +293,7 @@ static void create_depth_attachment(uint32_t width, uint32_t height, VkSampleCou
         VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 }
 
-void vk_create_attachments(void)
+void vk_create_attachments( void )
 {
     uint32_t i;
 
@@ -424,7 +424,7 @@ void vk_clear_depthstencil_attachments( qboolean clear_stencil ) {
     qvkCmdClearAttachments( vk.cmd->command_buffer, 1, &attachment, 1, clear_rect );
 }
 
-void vk_clear_color_attachments(const vec4_t color)
+void vk_clear_color_attachments( const vec4_t color )
 {
     VkClearAttachment attachment;
     VkClearRect clear_rect[2];
@@ -449,7 +449,7 @@ void vk_clear_color_attachments(const vec4_t color)
     qvkCmdClearAttachments(vk.cmd->command_buffer, 1, &attachment, rect_count, clear_rect);
 }
 
-void vk_destroy_attachments(void)
+void vk_destroy_attachments( void )
 {
     uint32_t i;
 

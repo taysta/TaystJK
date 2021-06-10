@@ -134,7 +134,7 @@ R_GetCommandBufferReserved
 make sure there is enough command space
 ============
 */
-static void* R_GetCommandBufferReserved(int bytes, int reservedBytes) {
+static void* R_GetCommandBufferReserved( int bytes, int reservedBytes ) {
 	renderCommandList_t* cmdList;
 
 	cmdList = &backEndData->commands;
@@ -167,7 +167,6 @@ void *R_GetCommandBuffer( int bytes ) {
 	return R_GetCommandBufferReserved(bytes, PAD(sizeof(swapBuffersCommand_t), sizeof(void*)));
 }
 
-
 /*
 =============
 R_AddDrawSurfCmd
@@ -194,7 +193,6 @@ void	R_AddDrawSurfCmd( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		tr.drawSurfCmd = cmd;
 	}
 }
-
 
 /*
 =============
@@ -226,7 +224,7 @@ void RE_SetColor( const float *rgba ) {
 	cmd->color[3] = rgba[3];
 }
 
-void VK_AdjustFrom640(float *x, float *y, float *w, float *h) {
+void VK_AdjustFrom640( float *x, float *y, float *w, float *h ) {
 	//*x = *x * glConfig.screen_xscale + glConfig.screen_bias;
 	*x *= vk.xscale2D;
 	*y *= vk.yscale2D;
@@ -348,7 +346,7 @@ void RE_RotatePic2 ( float x, float y, float w, float h,
 	cmd->a = a;
 }
 
-void RE_RenderWorldEffects(void)
+void RE_RenderWorldEffects( void )
 {
 	drawBufferCommand_t	*cmd;
 
@@ -359,7 +357,7 @@ void RE_RenderWorldEffects(void)
 	cmd->commandId = RC_WORLD_EFFECTS;
 }
 
-void RE_RenderAutoMap(void)
+void RE_RenderAutoMap( void )
 {
 	drawBufferCommand_t	*cmd;
 
@@ -436,7 +434,6 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	}
 }
 
-
 /*
 =============
 RE_EndFrame
@@ -512,7 +509,7 @@ to be rendered with bad shaders. To fix this, need to go through all render comm
 sortedIndex.
 ==============
 */
-void FixRenderCommandList(int newShader)
+void FixRenderCommandList( int newShader )
 {
 	renderCommandList_t* cmdList = &BE_Commands;
 
@@ -595,7 +592,7 @@ void FixRenderCommandList(int newShader)
 	}
 }
 
-qboolean R_CanMinimize(void)
+qboolean R_CanMinimize( void )
 {
 	if (vk.fboActive || vk.offscreenRender)
 		return qtrue;

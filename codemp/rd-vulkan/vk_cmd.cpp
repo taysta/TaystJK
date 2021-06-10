@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-void vk_create_command_pool(VkCommandPool *pPool)
+void vk_create_command_pool( VkCommandPool *pPool )
 {
     VkCommandPoolCreateInfo desc;
     desc.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -37,7 +37,7 @@ void vk_create_command_pool(VkCommandPool *pPool)
     vk_debug("Create command pool: vk.command_pool \n");
 }
 
-void vk_create_command_buffer(VkCommandPool pool, VkCommandBuffer *pBuf)
+void vk_create_command_buffer( VkCommandPool pool, VkCommandBuffer *pBuf )
 {
     VkCommandBufferAllocateInfo alloc_info;
     alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -51,7 +51,7 @@ void vk_create_command_buffer(VkCommandPool pool, VkCommandBuffer *pBuf)
     vk_debug("Create command buffer: vk.cmd->command_buffer \n");
 }
 
-VkCommandBuffer vk_begin_command_buffer(void)
+VkCommandBuffer vk_begin_command_buffer( void )
 {
     VkCommandBufferBeginInfo begin_info;
     VkCommandBufferAllocateInfo alloc_info;
@@ -74,7 +74,7 @@ VkCommandBuffer vk_begin_command_buffer(void)
     return command_buffer;
 }
 
-void vk_end_command_buffer(VkCommandBuffer command_buffer)
+void vk_end_command_buffer( VkCommandBuffer command_buffer )
 {
     VkSubmitInfo submit_info;
     VkCommandBuffer cmdbuf[1];

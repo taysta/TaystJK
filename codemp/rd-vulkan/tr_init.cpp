@@ -323,10 +323,10 @@ PFNGLUNLOCKARRAYSEXTPROC qglUnlockArraysEXT;
 
 bool g_bTextureRectangleHack = false;
 
-void RE_SetLightStyle(int style, int color);
+void RE_SetLightStyle( int style, int color );
 void RE_GetBModelVerts( int bmodelIndex, vec3_t *verts, vec3_t normal );
 
-void R_Set2DRatio(void) {
+void R_Set2DRatio( void ) {
 	if (cl_ratioFix->integer)
 		tr.widthRatioCoef = ((float)(SCREEN_WIDTH * gls.windowHeight) / (float)(SCREEN_HEIGHT * gls.windowWidth));
 	else
@@ -361,7 +361,7 @@ Return value must be freed with Hunk_FreeTempMemory()
 ==================
 */
 
-byte *RB_ReadPixels(int x, int y, int width, int height, size_t *offset, int *padlen, int lineAlign)
+byte *RB_ReadPixels( int x, int y, int width, int height, size_t *offset, int *padlen, int lineAlign )
 {
 	byte *buffer, *bufstart;
 	int bufAlign, linelen;
@@ -564,7 +564,7 @@ static void R_LevelShot( void ) {
 	vk_debug("[skipnotify]Wrote %s\n", checkname );
 }
 
-void R_ScreenShot_f (void) {
+void R_ScreenShot_f ( void ) {
 	char checkname[MAX_OSPATH] = {0};
 	qboolean silent = qfalse;
 	int			typeMask;
@@ -713,7 +713,7 @@ R_PrintLongString
 Workaround for ri.Printf's 1024 characters buffer limit.
 ================
 */
-void R_PrintLongString(const char *string)
+void R_PrintLongString( const char *string )
 {
 	char buffer[1024];
 	const char *p = string;
@@ -744,7 +744,7 @@ void R_PrintLongString(const char *string)
 	}
 }
 
-void R_RemapSkyShader_f (void) {
+void R_RemapSkyShader_f ( void ) {
 	int num;
 
 	if (ri.Cmd_Argc() != 2 || !strlen(ri.Cmd_Argv(1))) {
@@ -760,7 +760,7 @@ void R_RemapSkyShader_f (void) {
 	}
 }
 
-void R_ClearRemaps_f(void) {
+void R_ClearRemaps_f( void ) {
 	int num;
 
 	for (num = 0; num < tr.numShaders; num++) {
@@ -1046,7 +1046,7 @@ Ghoul2 Insert End
 R_Init
 ===============
 */
-extern void R_InitWorldEffects(void); //tr_WorldEffects.cpp
+extern void R_InitWorldEffects( void ); //tr_WorldEffects.cpp
 void R_Init( void ) {
 	int i;
 	byte *ptr;
@@ -1186,7 +1186,7 @@ void RE_EndRegistration( void ) {
 	// moved to RB_SwapBuffers
 }
 
-void RE_GetLightStyle(int style, color4ub_t color)
+void RE_GetLightStyle( int style, color4ub_t color )
 {
 	if (style >= MAX_LIGHT_STYLES)
 	{
@@ -1198,7 +1198,7 @@ void RE_GetLightStyle(int style, color4ub_t color)
 	baDest->i = baSource->i;
 }
 
-void RE_SetLightStyle(int style, int color)
+void RE_SetLightStyle( int style, int color )
 {
 	if (style >= MAX_LIGHT_STYLES)
 	{

@@ -30,9 +30,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	FOG_S			256
 #define	FOG_T			32
 
-static image_t* hashTable[FILE_HASH_SIZE];
+static image_t *hashTable[FILE_HASH_SIZE];
 
-static int generateHashValue(const char *fname)
+static int generateHashValue( const char *fname )
 {
     uint32_t i = 0;
     int	hash = 0;
@@ -48,9 +48,9 @@ static int generateHashValue(const char *fname)
     return hash;
 }
 
-size_t cstrlen(const char *str)
+size_t cstrlen( const char *str )
 {
-    const char* s;
+    const char *s;
 
     for (s = str; *s; ++s)
         ;
@@ -169,8 +169,8 @@ VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	return sampler;
 }
 
-uint32_t vk_find_memory_type_lazy(uint32_t memory_type_bits, VkMemoryPropertyFlags properties, 
-	VkMemoryPropertyFlags *outprops) {
+uint32_t vk_find_memory_type_lazy( uint32_t memory_type_bits, VkMemoryPropertyFlags properties, 
+	VkMemoryPropertyFlags *outprops ) {
     VkPhysicalDeviceMemoryProperties memory_properties;
     uint32_t i;
 
@@ -189,7 +189,7 @@ uint32_t vk_find_memory_type_lazy(uint32_t memory_type_bits, VkMemoryPropertyFla
 
 }
 
-uint32_t vk_find_memory_type(uint32_t memory_type_bits, VkMemoryPropertyFlags properties)
+uint32_t vk_find_memory_type( uint32_t memory_type_bits, VkMemoryPropertyFlags properties )
 {
     VkPhysicalDeviceMemoryProperties memory_properties;
     uint32_t i;
@@ -206,7 +206,7 @@ uint32_t vk_find_memory_type(uint32_t memory_type_bits, VkMemoryPropertyFlags pr
     return ~0U;
 }
 
-static qboolean RawImage_HasAlpha(const byte *scan, const int numPixels)
+static qboolean RawImage_HasAlpha( const byte *scan, const int numPixels )
 {
 	int i;
 
@@ -224,9 +224,9 @@ static qboolean RawImage_HasAlpha(const byte *scan, const int numPixels)
 	return qfalse;
 }
 
-void vk_record_buffer_memory_barrier(VkCommandBuffer cb, VkBuffer buffer, VkDeviceSize size,
+void vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, VkDeviceSize size,
 	VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
-	VkAccessFlags src_access, VkAccessFlags dst_access) {
+	VkAccessFlags src_access, VkAccessFlags dst_access ) {
 
 	VkBufferMemoryBarrier barrier;
 	barrier.sType = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
@@ -242,12 +242,12 @@ void vk_record_buffer_memory_barrier(VkCommandBuffer cb, VkBuffer buffer, VkDevi
 	qvkCmdPipelineBarrier(cb, src_stages, dst_stages, 0, 0, NULL, 1, &barrier, 0, NULL);
 }
 
-void vk_record_image_layout_transition(VkCommandBuffer cmdBuf, VkImage image, 
+void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
 	VkImageAspectFlags image_aspect_flags, VkAccessFlags src_access_flags, 
 	VkImageLayout old_layout, VkAccessFlags dst_access_flags, 
 	VkImageLayout new_layout, uint32_t src_family_index,
 	uint32_t dst_family_index, VkPipelineStageFlags src_stage_mask, 
-	VkPipelineStageFlags dst_stage_mask)
+	VkPipelineStageFlags dst_stage_mask )
 {
 	VkImageMemoryBarrier barrier;
 
@@ -275,11 +275,11 @@ void vk_record_image_layout_transition(VkCommandBuffer cmdBuf, VkImage image,
 	qvkCmdPipelineBarrier(cmdBuf, src_stage_mask, dst_stage_mask, 0, 0, NULL, 0, NULL, 1, &barrier);
 }
 
-void vk_upload_image(Image_Upload_Data *upload_data, image_t *image) {
-	int w = upload_data->base_level_width;
-	int h = upload_data->base_level_height;
-	int bytes_per_pixel;
-	byte* buffer;
+void vk_upload_image( Image_Upload_Data *upload_data, image_t *image ) {
+	int		w = upload_data->base_level_width;
+	int		h = upload_data->base_level_height;
+	int		bytes_per_pixel;
+	byte	*buffer;
 
 	if (r_texturebits->integer > 16 || r_texturebits->integer == 0 || (image->flags & IMGFLAG_LIGHTMAP)) {
 		image->internalFormat = VK_FORMAT_R8G8B8A8_UNORM;
@@ -305,17 +305,17 @@ void vk_upload_image(Image_Upload_Data *upload_data, image_t *image) {
 	}
 }
 
-void vk_generate_image_upload_data(image_t *image, byte *data, Image_Upload_Data *upload_data) {
+void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data ) {
 
-	qboolean mipmap = (image->flags & IMGFLAG_MIPMAP) ? qtrue : qfalse;
-	qboolean picmip = (image->flags & IMGFLAG_PICMIP) ? qtrue : qfalse;
-	byte *resampled_buffer = NULL;
-	int scaled_width, scaled_height;
-	int width = image->width;
-	int height = image->height;
-	unsigned* scaled_buffer;
-	int mip_level_size;
-	int miplevel;
+	qboolean	mipmap = (image->flags & IMGFLAG_MIPMAP) ? qtrue : qfalse;
+	qboolean	picmip = (image->flags & IMGFLAG_PICMIP) ? qtrue : qfalse;
+	byte		*resampled_buffer = NULL;
+	int			scaled_width, scaled_height;
+	int			width = image->width;
+	int			height = image->height;
+	unsigned	*scaled_buffer;
+	int			mip_level_size;
+	int			miplevel;
 
 	if (image->flags & IMGFLAG_NOSCALE) {
 		//
@@ -478,12 +478,12 @@ void vk_generate_image_upload_data(image_t *image, byte *data, Image_Upload_Data
 		ri.Hunk_FreeTempMemory(resampled_buffer);
 }
 
-static void vk_ensure_staging_buffer_allocation(VkDeviceSize size) {
+static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
 	VkBufferCreateInfo buffer_desc;
 	VkMemoryRequirements memory_requirements;
 	VkMemoryAllocateInfo alloc_info;
 	uint32_t memory_type;
-	void* data;
+	void *data;
 
 	if (vk_world.staging_buffer_size >= size)
 		return;
@@ -525,8 +525,8 @@ static void vk_ensure_staging_buffer_allocation(VkDeviceSize size) {
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer_memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 }
 
-void vk_upload_image_data(VkImage image, int x, int y, int width, int height, 
-	qboolean mipmap, const uint8_t *pixels, int bytes_per_pixel) {
+void vk_upload_image_data( VkImage image, int x, int y, int width, int height, 
+	qboolean mipmap, const uint8_t *pixels, int bytes_per_pixel ) {
 
 	VkCommandBuffer command_buffer;
 	VkBufferImageCopy regions[16];
@@ -592,10 +592,10 @@ void vk_upload_image_data(VkImage image, int x, int y, int width, int height,
 	vk_end_command_buffer(command_buffer);
 }
 
-static void allocate_and_bind_image_memory(VkImage image) {
+static void allocate_and_bind_image_memory( VkImage image ) {
 	VkMemoryRequirements memory_requirements;
-	VkDeviceSize alignment;
-	ImageChunk_t* chunk;
+	VkDeviceSize		alignment;
+	ImageChunk_t		*chunk;
 	int i;
 
 	qvkGetImageMemoryRequirements(vk.device, image, &memory_requirements);
@@ -648,7 +648,7 @@ static void allocate_and_bind_image_memory(VkImage image) {
 	VK_CHECK(qvkBindImageMemory(vk.device, image, chunk->memory, chunk->used - memory_requirements.size));
 }
 
-void vk_update_descriptor_set(image_t *image, qboolean mipmap) {
+void vk_update_descriptor_set( image_t *image, qboolean mipmap ) {
 	Vk_Sampler_Def sampler_def;
 	VkDescriptorImageInfo image_info;
 	VkWriteDescriptorSet descriptor_write;
@@ -686,11 +686,11 @@ void vk_update_descriptor_set(image_t *image, qboolean mipmap) {
 	qvkUpdateDescriptorSets(vk.device, 1, &descriptor_write, 0, NULL);
 }
 
-byte *vk_resample_image_data(const image_t *image, byte *data, const int data_size, int *bytes_per_pixel)
+byte *vk_resample_image_data( const image_t *image, byte *data, const int data_size, int *bytes_per_pixel )
 {
-	byte* buffer;
-	uint16_t* p;
-	int i;
+	byte		*buffer;
+	uint16_t	*p;
+	int			i;
 
 	switch (image->internalFormat) {
 	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
@@ -741,10 +741,8 @@ byte *vk_resample_image_data(const image_t *image, byte *data, const int data_si
 	}
 }
 
-void vk_create_image(int width, int height, VkFormat format, int mip_levels, image_t *image) {
-	
-	
-	
+void vk_create_image( int width, int height, VkFormat format, int mip_levels, image_t *image ) {
+
 	// create image
 	{
 		VkImageCreateInfo desc;
@@ -769,6 +767,7 @@ void vk_create_image(int width, int height, VkFormat format, int mip_levels, ima
 
 		allocate_and_bind_image_memory(image->handle);
 	}
+
 	// create image view
 	{
 		VkImageViewCreateInfo desc;
@@ -813,7 +812,7 @@ void vk_create_image(int width, int height, VkFormat format, int mip_levels, ima
 	VK_SET_OBJECT_NAME(image->descriptor_set, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT);
 }
 
-void vk_delete_textures(void) {
+void vk_delete_textures( void ) {
 
 	image_t *img;
 	int i;
@@ -838,7 +837,7 @@ void vk_delete_textures(void) {
 	Com_Memset(glState.currenttextures, 0, sizeof(glState.currenttextures));
 }
 
-image_t *R_CreateImage(const char *name, byte *pic, int width, int height, imgFlags_t flags){
+image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgFlags_t flags ){
     image_t				*image;
     Image_Upload_Data	upload_data;
     int					namelen;
@@ -910,7 +909,7 @@ image_t *R_CreateImage(const char *name, byte *pic, int width, int height, imgFl
     return image;
 }
 
-image_t *R_FindImageFile(const char *name, imgFlags_t flags){
+image_t *R_FindImageFile( const char *name, imgFlags_t flags ){
         image_t		*image;
 		char		strippedName[MAX_QPATH];
         int			width, height;
@@ -999,7 +998,7 @@ image_t *R_FindImageFile(const char *name, imgFlags_t flags){
         return image;
 }
 
-void RE_UploadCinematic(int cols, int rows, const byte *data, int client, qboolean dirty)
+void RE_UploadCinematic( int cols, int rows, const byte *data, int client, qboolean dirty )
 {
 	image_t *image;
 
@@ -1044,7 +1043,7 @@ void RE_UploadCinematic(int cols, int rows, const byte *data, int client, qboole
     }
 }
 
-static int Hex(char c)
+static int Hex( char c )
 {
 	if (c >= '0' && c <= '9') {
 		return c - '0';
@@ -1068,7 +1067,7 @@ Create solid color texture from following input formats (hex):
 #rrggbb
 ==================
 */
-static qboolean R_BuildDefaultImage(const char *format) {
+static qboolean R_BuildDefaultImage( const char *format ) {
 	byte data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 	byte color[4];
 	int i, len, hex[6];
@@ -1121,7 +1120,7 @@ static qboolean R_BuildDefaultImage(const char *format) {
 	return qtrue;
 }
 
-static void R_CreateDefaultImage(void)
+static void R_CreateDefaultImage( void )
 {
 	uint32_t x;
 	byte data[DEFAULT_SIZE][DEFAULT_SIZE][4];
@@ -1169,10 +1168,10 @@ static void R_CreateDefaultImage(void)
 	tr.defaultImage = R_CreateImage("*default", (byte*)data, DEFAULT_SIZE, DEFAULT_SIZE, IMGFLAG_MIPMAP);
 }
 
-static void R_CreateDlightImage(void)
+static void R_CreateDlightImage( void )
 {
     int		width, height;
-    byte* pic;
+    byte	*pic;
 
 	vk_debug("%s \n", __func__);
 
@@ -1212,10 +1211,10 @@ static void R_CreateDlightImage(void)
     }
 }
 
-static void R_CreateFogImage(void)
+static void R_CreateFogImage( void )
 {
     int		x, y;
-    byte* data;
+    byte	*data;
     float	d;
 
 	vk_debug("%s \n", __func__);
@@ -1243,7 +1242,7 @@ static void R_CreateFogImage(void)
 R_CreateBuiltinImages
 ==================
 */
-static void R_CreateBuiltinImages(void) {
+static void R_CreateBuiltinImages( void ) {
 	int		x, y;
 	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 
@@ -1280,7 +1279,7 @@ static void R_CreateBuiltinImages(void) {
 	R_CreateFogImage();
 }
 
-void R_InitImages(void)
+void R_InitImages( void )
 {
 	vk_debug("Initialize images \n");
 

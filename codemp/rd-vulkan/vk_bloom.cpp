@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-qboolean vk_bloom(void)
+qboolean vk_bloom( void )
 {
 	uint32_t i;
 

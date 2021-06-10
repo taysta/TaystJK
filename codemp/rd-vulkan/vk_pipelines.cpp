@@ -28,8 +28,8 @@ static VkVertexInputAttributeDescription attribs[8];
 static uint32_t num_binds;
 static uint32_t num_attrs;
 
-static void vk_create_layout_binding(int binding, VkDescriptorType type, 
-    VkShaderStageFlags flags, VkDescriptorSetLayout *layout) {
+static void vk_create_layout_binding( int binding, VkDescriptorType type, 
+    VkShaderStageFlags flags, VkDescriptorSetLayout *layout ) {
     VkDescriptorSetLayoutBinding descriptor_binding;
     VkDescriptorSetLayoutCreateInfo desc;
 
@@ -47,7 +47,7 @@ static void vk_create_layout_binding(int binding, VkDescriptorType type,
     VK_CHECK(qvkCreateDescriptorSetLayout(vk.device, &desc, NULL, layout));
 }
 
-void vk_create_descriptor_layout(void)
+void vk_create_descriptor_layout( void )
 {
     vk_debug("Create: vk.descriptor_pool, vk.set_layout, vk.pipeline_layout\n");
 
@@ -89,7 +89,7 @@ void vk_create_descriptor_layout(void)
     }
 }
 
-void vk_create_pipeline_layout(void)
+void vk_create_pipeline_layout( void )
 {
     // Pipeline layouts
     VkDescriptorSetLayout set_layouts[7];
@@ -153,7 +153,7 @@ void vk_create_pipeline_layout(void)
     VK_SET_OBJECT_NAME(vk.pipeline_layout_blend, "pipeline layout - blend", VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_LAYOUT_EXT);
 }
 
-static void vk_push_bind(uint32_t binding, uint32_t stride)
+static void vk_push_bind( uint32_t binding, uint32_t stride )
 {
     bindings[num_binds].binding = binding;
     bindings[num_binds].stride = stride;
@@ -161,7 +161,7 @@ static void vk_push_bind(uint32_t binding, uint32_t stride)
     num_binds++;
 }
 
-static void vk_push_attr(uint32_t location, uint32_t binding, VkFormat format)
+static void vk_push_attr( uint32_t location, uint32_t binding, VkFormat format )
 {
     attribs[num_attrs].location = location;
     attribs[num_attrs].binding = binding;
@@ -174,7 +174,7 @@ static void vk_push_attr(uint32_t location, uint32_t binding, VkFormat format)
 // descriptions as part of graphics pipeline creation	
 // A vertex binding describes at which rate to load data
 // from memory throughout the vertices
-static void vk_push_vertex_input_binding_attribute(const Vk_Pipeline_Def *def) {
+static void vk_push_vertex_input_binding_attribute( const Vk_Pipeline_Def *def ) {
     num_binds = num_attrs = 0; // reset
 
     switch (def->shader_type) {
@@ -383,8 +383,8 @@ static void vk_push_vertex_input_binding_attribute(const Vk_Pipeline_Def *def) {
     }
 }
 
-static void vk_set_pipeline_color_blend_attachment_factor(const Vk_Pipeline_Def *def, 
-    VkPipelineColorBlendAttachmentState *attachment_blend_state) 
+static void vk_set_pipeline_color_blend_attachment_factor( const Vk_Pipeline_Def *def, 
+    VkPipelineColorBlendAttachmentState *attachment_blend_state ) 
 {
     // source
     switch (def->state_bits & GLS_SRCBLEND_BITS)
@@ -454,7 +454,7 @@ static void vk_set_pipeline_color_blend_attachment_factor(const Vk_Pipeline_Def 
     }
 }
 
-static void set_shader_stage_desc(VkPipelineShaderStageCreateInfo *desc, VkShaderStageFlagBits stage, VkShaderModule shader_module, const char *entry) {
+static void set_shader_stage_desc( VkPipelineShaderStageCreateInfo *desc, VkShaderStageFlagBits stage, VkShaderModule shader_module, const char *entry ) {
     desc->sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     desc->pNext = NULL;
     desc->flags = 0;
@@ -1037,7 +1037,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     return pipeline;
 }
 
-static void vk_create_post_process_pipeline(int program_index, uint32_t width, uint32_t height)
+static void vk_create_post_process_pipeline( int program_index, uint32_t width, uint32_t height )
 {
     VkPipelineShaderStageCreateInfo shader_stages[2];
     VkPipelineVertexInputStateCreateInfo vertex_input_state;
@@ -1327,7 +1327,7 @@ static void vk_create_post_process_pipeline(int program_index, uint32_t width, u
     VK_SET_OBJECT_NAME(*pipeline, pipeline_name, VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT);
 }
 
-void vk_create_blur_pipeline(uint32_t index, uint32_t width, uint32_t height, qboolean horizontal_pass)
+void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, qboolean horizontal_pass )
 {
     VkPipelineShaderStageCreateInfo shader_stages[2];
     VkPipelineVertexInputStateCreateInfo vertex_input_state;
@@ -1509,7 +1509,7 @@ void vk_create_blur_pipeline(uint32_t index, uint32_t width, uint32_t height, qb
     VK_SET_OBJECT_NAME(*pipeline, va("%s blur pipeline %i", horizontal_pass ? "horizontal" : "vertical", index / 2 + 1), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT);
 }
 
-uint32_t vk_alloc_pipeline(const Vk_Pipeline_Def *def) {
+uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
     VK_Pipeline_t* pipeline;
 
     if (vk.pipelines_count >= MAX_VK_PIPELINES) {
@@ -1527,7 +1527,7 @@ uint32_t vk_alloc_pipeline(const Vk_Pipeline_Def *def) {
     }
 }
 
-VkPipeline vk_gen_pipeline(uint32_t index) {
+VkPipeline vk_gen_pipeline( uint32_t index ) {
     if (index < vk.pipelines_count) {
         VK_Pipeline_t* pipeline = vk.pipelines + index;
         if (pipeline->handle[vk.renderPassIndex] == VK_NULL_HANDLE)
@@ -1539,7 +1539,7 @@ VkPipeline vk_gen_pipeline(uint32_t index) {
     }
 }
 
-uint32_t vk_find_pipeline_ext(uint32_t base, const Vk_Pipeline_Def *def, qboolean use) {
+uint32_t vk_find_pipeline_ext( uint32_t base, const Vk_Pipeline_Def *def, qboolean use ) {
     const Vk_Pipeline_Def *cur_def;
     uint32_t index;
 
@@ -1559,7 +1559,7 @@ found:
     return index;
 }
 
-void vk_get_pipeline_def(uint32_t pipeline, Vk_Pipeline_Def *def) {
+void vk_get_pipeline_def( uint32_t pipeline, Vk_Pipeline_Def *def ) {
     if (pipeline >= vk.pipelines_count) {
         Com_Memset(def, 0, sizeof(*def));
     }
@@ -1568,7 +1568,7 @@ void vk_get_pipeline_def(uint32_t pipeline, Vk_Pipeline_Def *def) {
     }
 }
 
-void vk_alloc_persistent_pipelines(void)
+void vk_alloc_persistent_pipelines( void )
 {
     unsigned int state_bits;
     Vk_Pipeline_Def def;
@@ -1830,7 +1830,7 @@ void vk_alloc_persistent_pipelines(void)
     }
 }
 
-void vk_create_pipelines(void)
+void vk_create_pipelines( void )
 {
     vk_alloc_persistent_pipelines();
 
@@ -1839,7 +1839,7 @@ void vk_create_pipelines(void)
     vk_create_bloom_pipelines();
 }
 
-void vk_create_bloom_pipelines(void)
+void vk_create_bloom_pipelines( void )
 {
     if (vk.fboActive && r_bloom->integer)
     {
@@ -1860,7 +1860,7 @@ void vk_create_bloom_pipelines(void)
     }
 }
 
-void vk_update_post_process_pipelines(void)
+void vk_update_post_process_pipelines( void )
 {
     if (vk.fboActive) {
         // update gamma shader

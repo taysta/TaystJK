@@ -81,7 +81,6 @@ void R_InitNextFrame( void ) {
 	//r_frameCount++;
 }
 
-
 /*
 ====================
 RE_ClearScene
@@ -204,9 +203,7 @@ void RE_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts
 	}
 }
 
-
 //=================================================================================
-
 
 /*
 =====================
@@ -279,7 +276,6 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
 
 	r_numentities++;
 }
-
 
 /************************************************************************************************
  * RE_AddMiniRefEntityToScene                                                                   *
@@ -393,8 +389,8 @@ void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, floa
 RE_AddLinearLightToScene
 =====================
 */
-void RE_AddLinearLightToScene(const vec3_t start, const vec3_t end, float intensity, float r, float g, float b) {
-	dlight_t* dl;
+void RE_AddLinearLightToScene( const vec3_t start, const vec3_t end, float intensity, float r, float g, float b ) {
+	dlight_t	*dl;
 	if (VectorCompare(start, end)) {
 		RE_AddDynamicLightToScene(start, intensity, r, g, b, 0);
 		return;
@@ -467,9 +463,9 @@ Rendering a scene may require multiple views to be rendered
 to handle mirrors,
 @@@@@@@@@@@@@@@@@@@@@
 */
-void RE_RenderWorldEffects(void);
-void RE_RenderAutoMap(void);
-void RE_RenderScene(const refdef_t* fd) {
+void RE_RenderWorldEffects( void );
+void RE_RenderAutoMap( void );
+void RE_RenderScene( const refdef_t *fd ) {
 	renderCommand_t	lastRenderCommand;
 	viewParms_t		parms;
 	int				startTime;

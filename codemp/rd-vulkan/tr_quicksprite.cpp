@@ -27,12 +27,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_quicksprite.h"
 
-
 //////////////////////////////////////////////////////////////////////
 // Singleton System
 //////////////////////////////////////////////////////////////////////
 CQuickSpriteSystem SQuickSprite;
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -70,7 +68,7 @@ CQuickSpriteSystem::~CQuickSpriteSystem()
 
 }
 
-void CQuickSpriteSystem::Flush(void)
+void CQuickSpriteSystem::Flush( void )
 {
 	if (tess.numIndexes == 0)
 		return;
@@ -114,7 +112,7 @@ void CQuickSpriteSystem::Flush(void)
 	tess.numIndexes = 0;
 }
 
-void CQuickSpriteSystem::StartGroup(const textureBundle_t *bundle, uint32_t pipeline, int fogIndex)
+void CQuickSpriteSystem::StartGroup( const textureBundle_t *bundle, uint32_t pipeline, int fogIndex )
 {
 	tess.numVertexes = 0;
 	tess.numIndexes = 0;
@@ -132,14 +130,14 @@ void CQuickSpriteSystem::StartGroup(const textureBundle_t *bundle, uint32_t pipe
 	}
 }
 
-void CQuickSpriteSystem::EndGroup(void)
+void CQuickSpriteSystem::EndGroup( void )
 {
 	Flush();
 
 	//qglColor4ub(255,255,255,255);
 }
 
-void CQuickSpriteSystem::Add(float *pointdata, color4ub_t color, vec2_t fog)
+void CQuickSpriteSystem::Add( float *pointdata, color4ub_t color, vec2_t fog )
 {
 	float *curcoord;
 	float *curfogtexcoord;

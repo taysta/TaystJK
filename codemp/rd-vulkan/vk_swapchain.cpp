@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-void vk_restart_swapchain(const char *funcname)
+void vk_restart_swapchain( const char *funcname )
 {
     uint32_t i;
     ri.Printf(PRINT_WARNING, "%s(): restarting swapchain...\n", funcname);
@@ -56,7 +56,7 @@ void vk_restart_swapchain(const char *funcname)
     vk_update_post_process_pipelines();
 }
 
-static const char *vk_pmode_to_str(VkPresentModeKHR mode)
+static const char *vk_pmode_to_str( VkPresentModeKHR mode )
 {
     static char buf[32];
 
@@ -69,21 +69,20 @@ static const char *vk_pmode_to_str(VkPresentModeKHR mode)
     };
 }
 
-void vk_create_swapchain(VkPhysicalDevice physical_device, VkDevice device, 
-    VkSurfaceKHR surface, VkSurfaceFormatKHR surface_format, VkSwapchainKHR *swapchain) 
+void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device, 
+    VkSurfaceKHR surface, VkSurfaceFormatKHR surface_format, VkSwapchainKHR *swapchain ) 
 {
-    VkImageViewCreateInfo view;
-    VkSurfaceCapabilitiesKHR surface_caps;
-    VkExtent2D image_extent;
-    uint32_t present_mode_count, i;
-    VkPresentModeKHR present_mode;
-    VkPresentModeKHR *present_modes;
-    uint32_t image_count;
-    VkSwapchainCreateInfoKHR desc;
-    qboolean mailbox_supported = qfalse;
-    qboolean immediate_supported = qfalse;
-    qboolean fifo_relaxed_supported = qfalse;
-    int v;
+    int                         v;
+    VkImageViewCreateInfo       view;
+    VkSurfaceCapabilitiesKHR    surface_caps;
+    VkExtent2D                  image_extent;
+    uint32_t                    present_mode_count, i, image_count;
+    VkPresentModeKHR            present_mode, *present_modes;
+    VkSwapchainCreateInfoKHR    desc;
+    qboolean                    mailbox_supported = qfalse;
+    qboolean                    immediate_supported = qfalse;
+    qboolean                    fifo_relaxed_supported = qfalse;
+ 
 
     VK_CHECK(qvkGetPhysicalDeviceSurfaceCapabilitiesKHR(physical_device, surface, &surface_caps));
 
@@ -238,7 +237,7 @@ void vk_create_swapchain(VkPhysicalDevice physical_device, VkDevice device,
    
 }
 
-void vk_destroy_swapchain(void) {
+void vk_destroy_swapchain ( void ) {
     uint32_t i;
 
     for (i = 0; i < vk.swapchain_image_count; i++) {

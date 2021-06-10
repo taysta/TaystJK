@@ -52,13 +52,13 @@ static const vec3_t sky_clip[6] =
 AddSkyPolygon
 ================
 */
-static void AddSkyPolygon(int nump, vec3_t vecs)
+static void AddSkyPolygon( int nump, vec3_t vecs )
 {
 	int		i, j;
 	vec3_t	v, av;
 	float	s, t, dv;
 	int		axis;
-	float* vp;
+	float	*vp;
 	// s = [0]/[2], t = [1]/[2]
 	static const int vec_to_st[6][3] =
 	{
@@ -147,17 +147,17 @@ static void AddSkyPolygon(int nump, vec3_t vecs)
 ClipSkyPolygon
 ================
 */
-static void ClipSkyPolygon(int nump, vec3_t vecs, int stage)
+static void ClipSkyPolygon( int nump, vec3_t vecs, int stage )
 {
-	const float* norm;
-	float* v;
+	const float	*norm;
+	float		*v;
 	qboolean	front, back;
-	float	d, e;
-	float	dists[MAX_CLIP_VERTS];
-	int		sides[MAX_CLIP_VERTS];
-	vec3_t	newv[2][MAX_CLIP_VERTS];
-	int		newc[2];
-	int		i, j;
+	float		d, e;
+	float		dists[MAX_CLIP_VERTS];
+	int			sides[MAX_CLIP_VERTS];
+	vec3_t		newv[2][MAX_CLIP_VERTS];
+	int			newc[2];
+	int			i, j;
 
 	if (nump > MAX_CLIP_VERTS - 2)
 		ri.Error(ERR_DROP, "ClipSkyPolygon: MAX_CLIP_VERTS");
@@ -243,7 +243,7 @@ static void ClipSkyPolygon(int nump, vec3_t vecs, int stage)
 ClearSkyBox
 ==============
 */
-static void ClearSkyBox(void) {
+static void ClearSkyBox( void ) {
 	int		i;
 
 	for (i = 0; i < 6; i++) {
@@ -257,7 +257,7 @@ static void ClearSkyBox(void) {
 RB_ClipSkyPolygons
 ================
 */
-void RB_ClipSkyPolygons(shaderCommands_t* input)
+void RB_ClipSkyPolygons( shaderCommands_t *input )
 {
 	vec3_t		p[5];	// need one extra point for clipping
 	int			i, j;
@@ -289,7 +289,7 @@ CLOUD VERTEX GENERATION
 **
 ** Parms: s, t range from -1 to 1
 */
-static void MakeSkyVec(float s, float t, int axis, vec3_t outXYZ)
+static void MakeSkyVec( float s, float t, int axis, vec3_t outXYZ )
 {
 	// 1 = s, 2 = t, 3 = 2048
 	static const int st_to_vec[6][3] =
@@ -333,11 +333,11 @@ static void MakeSkyVec(float s, float t, int axis, vec3_t outXYZ)
 CullPoints
 =================
 */
-static qboolean CullPoints(vec4_t v[], const int count)
+static qboolean CullPoints( vec4_t v[], const int count )
 {
-	const cplane_t* frust;
-	int i, j;
-	float dist;
+	const cplane_t	*frust;
+	int				i, j;
+	float			dist;
 
 	for (i = 0; i < 5; i++) {
 		frust = &backEnd.viewParms.frustum[i];
@@ -356,8 +356,7 @@ static qboolean CullPoints(vec4_t v[], const int count)
 	return qfalse;
 }
 
-
-static qboolean CullSkySide(const int mins[2], const int maxs[2])
+static qboolean CullSkySide( const int mins[2], const int maxs[2] )
 {
 	int s, t;
 	vec4_t v[4];
@@ -387,15 +386,13 @@ static qboolean CullSkySide(const int mins[2], const int maxs[2])
 	return qfalse;
 }
 
-
-static void FillSkySide(const int mins[2], const int maxs[2], float skyTexCoords[SKY_SUBDIVISIONS + 1][SKY_SUBDIVISIONS + 1][2])
+static void FillSkySide( const int mins[2], const int maxs[2], float skyTexCoords[SKY_SUBDIVISIONS + 1][SKY_SUBDIVISIONS + 1][2] )
 {
 	const int vertexStart = tess.numVertexes;
 	const int tHeight = maxs[1] - mins[1] + 1;
 	const int sWidth = maxs[0] - mins[0] + 1;
 	int s, t;
 
-	
 	if (CullSkySide(mins, maxs))
 		return;
 
@@ -441,7 +438,7 @@ static void FillSkySide(const int mins[2], const int maxs[2], float skyTexCoords
 	}
 }
 
-static void DrawSkySide(image_t *image, const int mins[2], const int maxs[2])
+static void DrawSkySide( image_t *image, const int mins[2], const int maxs[2] )
 {
 	tess.numVertexes = 0;
 	tess.numIndexes = 0;
@@ -464,7 +461,7 @@ static void DrawSkySide(image_t *image, const int mins[2], const int maxs[2])
 	}
 }
 
-static void DrawSkyBox(const shader_t* shader)
+static void DrawSkyBox( const shader_t *shader )
 {
 	int	i;
 	sky_min = 0;
@@ -526,7 +523,7 @@ static void DrawSkyBox(const shader_t* shader)
 	}
 }
 
-static void FillCloudBox(void)
+static void FillCloudBox( void )
 {
 	int i;
 
@@ -619,9 +616,9 @@ static void FillCloudBox(void)
 /*
 ** R_BuildCloudData
 */
-void R_BuildCloudData(shaderCommands_t* input)
+void R_BuildCloudData( shaderCommands_t *input )
 {
-	const shader_t* shader;
+	const shader_t *shader;
 
 	shader = input->shader;
 
@@ -641,7 +638,7 @@ void R_BuildCloudData(shaderCommands_t* input)
 	}
 }
 
-static void BuildSkyTexCoords(void)
+static void BuildSkyTexCoords( void )
 {
 	float s, t;
 	int i, j;
@@ -685,7 +682,7 @@ static void BuildSkyTexCoords(void)
 ** R_InitSkyTexCoords
 ** Called when a sky shader is parsed
 */
-void R_InitSkyTexCoords(float heightCloud)
+void R_InitSkyTexCoords( float heightCloud )
 {
 	int i, s, t;
 	float radiusWorld = 4096;
@@ -751,7 +748,7 @@ void R_InitSkyTexCoords(float heightCloud)
 /*
 ** RB_DrawSun
 */
-void RB_DrawSun(float scale, shader_t* shader) {
+void RB_DrawSun( float scale, shader_t *shader ) {
 	float		size;
 	float		dist;
 	vec3_t		origin, vec1, vec2;
@@ -794,7 +791,7 @@ All of the visible sky triangles are in tess
 Other things could be stuck in here, like birds in the sky, etc
 ================
 */
-void RB_StageIteratorSky(void)
+void RB_StageIteratorSky( void )
 {
 	if (r_fastsky->integer && vk.fastSky){
 		return;

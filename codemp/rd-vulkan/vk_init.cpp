@@ -32,12 +32,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 int vkSamples = VK_SAMPLE_COUNT_1_BIT;
 int vkMaxSamples = VK_SAMPLE_COUNT_1_BIT;
 
-VkBool32 is_vk_initialized(void)
+VkBool32 is_vk_initialized( void )
 {
 	return vk.isInitialized;
 }
 
-static void vk_set_render_scale(void)
+static void vk_set_render_scale( void )
 {
 	if (gls.windowWidth != glConfig.vidWidth || gls.windowHeight != glConfig.vidHeight)
 	{
@@ -78,7 +78,7 @@ static void vk_set_render_scale(void)
 	}
 }
 
-void get_viewport_rect(VkRect2D *r)
+void get_viewport_rect( VkRect2D *r )
 {
 	if (backEnd.projection2D)
 	{
@@ -96,7 +96,7 @@ void get_viewport_rect(VkRect2D *r)
 	}
 }
 
-void get_viewport(VkViewport *viewport, Vk_Depth_Range depth_range) {
+void get_viewport( VkViewport *viewport, Vk_Depth_Range depth_range ) {
 	VkRect2D r;
 
 	get_viewport_rect(&r);
@@ -146,7 +146,7 @@ void get_viewport(VkViewport *viewport, Vk_Depth_Range depth_range) {
 	}
 }
 
-void get_scissor_rect(VkRect2D *r) {
+void get_scissor_rect( VkRect2D *r ) {
 
 	if (backEnd.viewParms.portalView != PV_NONE)
 	{
@@ -171,7 +171,7 @@ void get_scissor_rect(VkRect2D *r) {
 	}
 }
 
-static void vk_render_splash(void)
+static void vk_render_splash( void )
 {
 	VkCommandBufferBeginInfo begin_info;
 	VkCommandBuffer command_buffer = vk.cmd->command_buffer;
@@ -270,7 +270,7 @@ static void vk_render_splash(void)
 	return;
 }
 
-void vk_create_window(void) {
+void vk_create_window( void ) {
 	//R_Set2DRatio();
 
 	if (glConfig.vidWidth == 0)
@@ -328,7 +328,7 @@ void vk_create_window(void) {
 	glState.glStateBits = GLS_DEPTHTEST_DISABLE | GLS_DEPTHMASK_TRUE;
 }
 
-void vk_initialize(void)
+void vk_initialize( void )
 {
 	int i;
 	VkPhysicalDeviceProperties props;
@@ -451,7 +451,7 @@ void vk_initialize(void)
 }
 
 // Shutdown vulkan subsystem by releasing resources acquired by Vk_Instance.
-void vk_shutdown(void)
+void vk_shutdown( void )
 {
     ri.Printf( PRINT_ALL, "vk_shutdown()\n" );
 
