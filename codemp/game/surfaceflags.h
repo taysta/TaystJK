@@ -53,23 +53,23 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define CONTENTS_TELEPORTER		(0x00080000u) // ""
 #define CONTENTS_ITEM			(0x00100000u) // ""
 #define CONTENTS_NOSHOT			(0x00200000u) // shots pass through me
-#define CONTENTS_STRUCTURAL		(0x00400000u) //
-#define CONTENTS_AREAPORTAL		(0x00800000u) //
-#define CONTENTS_CLUSTERPORTAL	(0x01000000u) //
-#define CONTENTS_DONOTENTER		(0x02000000u) //
+#define CONTENTS_UNUSED00400000	(0x00400000u) //
+#define CONTENTS_UNUSED00800000	(0x00800000u) //
+#define CONTENTS_UNUSED01000000	(0x01000000u) //
+#define CONTENTS_UNUSED02000000	(0x02000000u) //
 #define CONTENTS_UNUSED04000000	(0x04000000u) //
 #define	CONTENTS_DETAIL			(0x08000000u) // brushes not used for the bsp
 #define	CONTENTS_INSIDE			(0x10000000u) // volume is considered to be inside (i.e. indoors)
-#define CONTENTS_ORIGIN			(0x20000000u) //
+#define CONTENTS_UNUSED20000000	(0x20000000u) //
 #define CONTENTS_UNUSED40000000	(0x40000000u) //
 #define	CONTENTS_TRANSLUCENT	(0x80000000u) // don't consume surface fragments inside
 #define CONTENTS_ALL			(0xFFFFFFFFu)
 
 #define SURF_NONE				(0x00000000u)
-#define SURF_LADDER				(0x00000001u) //
-#define SURF_FLESH				(0x00000002u) //
-#define SURF_POINTLIGHT			(0x00000004u) //
-#define SURF_DUST				(0x00000008u) //
+#define SURF_UNUSED00000001		(0x00000001u) //
+#define SURF_UNUSED00000002		(0x00000002u) //
+#define SURF_UNUSED00000004		(0x00000004u) //
+#define SURF_UNUSED00000008		(0x00000008u) //
 #define SURF_UNUSED00000010		(0x00000010u) //
 #define SURF_UNUSED00000020		(0x00000020u) //
 #define SURF_UNUSED00000040		(0x00000040u) //
@@ -92,11 +92,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	SURF_NODLIGHT			(0x00800000u) // don't dlight even if solid (solid lava, skies)
 #define	SURF_NOMISCENTS			(0x01000000u) // no client models allowed on this surface
 #define	SURF_FORCESIGHT			(0x02000000u) // not visible without Force Sight
-#define SURF_NONSOLID			(0x04000000u) //
-#define SURF_NOLIGHTMAP			(0x08000000u) //
-#define SURF_LIGHTFILTER		(0x10000000u) //
-#define SURF_ALPHASHADOW		(0x20000000u) //
-#define SURF_HINT				(0x40000000u) //
+#define SURF_UNUSED04000000		(0x04000000u) //
+#define SURF_UNUSED08000000		(0x08000000u) //
+#define SURF_UNUSED10000000		(0x10000000u) //
+#define SURF_UNUSED20000000		(0x20000000u) //
+#define SURF_UNUSED40000000		(0x40000000u) //
 #define SURF_UNUSED80000000		(0x80000000u) //
 
 #define MATERIAL_BITS			5
