@@ -34,7 +34,7 @@ void vk_select_texture( const int index )
 	if (vk.ctmu == index)
 		return;
 
-	if (index >= glConfig.numTextureUnits)
+	if ( index >= glConfig.maxActiveTextures )
 		ri.Error(ERR_DROP, "%s: texture unit overflow = %i", __func__, index);
 
 	vk.ctmu = index;

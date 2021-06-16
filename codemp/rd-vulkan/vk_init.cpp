@@ -357,20 +357,20 @@ void vk_initialize( void )
 	// default chunk size, may be doubled on demand
 	vk.image_chunk_size = IMAGE_CHUNK_SIZE; 
 
-	// numTextureUnits must not exceed MAX_TEXTURE_UNITS
+	// maxActiveTextures must not exceed MAX_TEXTURE_UNITS
 	if (props.limits.maxPerStageDescriptorSamplers != 0xFFFFFFFF)
-		glConfig.numTextureUnits = props.limits.maxPerStageDescriptorSamplers;
+		glConfig.maxActiveTextures = props.limits.maxPerStageDescriptorSamplers;
 	else
-		glConfig.numTextureUnits = props.limits.maxBoundDescriptorSets;
-	if (glConfig.numTextureUnits > MAX_TEXTURE_UNITS)
-		glConfig.numTextureUnits = MAX_TEXTURE_UNITS;
+		glConfig.maxActiveTextures = props.limits.maxBoundDescriptorSets;
+	if (glConfig.maxActiveTextures > MAX_TEXTURE_UNITS)
+		glConfig.maxActiveTextures = MAX_TEXTURE_UNITS;
 
 	vk.maxBoundDescriptorSets = props.limits.maxBoundDescriptorSets;
 	vk.maxAnisotropy = props.limits.maxSamplerAnisotropy;
 	vk.maxLod = 1 + Q_log2( glConfig.maxTextureSize );
 
 	ri.Printf(PRINT_ALL, "\nVK_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize);
-	ri.Printf(PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.numTextureUnits);
+	ri.Printf(PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.maxActiveTextures);
 
 	vk.xscale2D = glConfig.vidWidth * (1.0 / 640.0);
 	vk.yscale2D = glConfig.vidHeight * (1.0 / 480.0);

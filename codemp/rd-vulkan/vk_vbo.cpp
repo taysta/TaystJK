@@ -489,7 +489,7 @@ void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 	if (!r_vbo->integer)
 		return;
 
-	if (glConfig.numTextureUnits < 3) {
+	if (glConfig.maxActiveTextures < 3) {
 		ri.Printf(PRINT_WARNING, "... not enough texture units for VBO\n");
 		return;
 	}
