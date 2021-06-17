@@ -29,7 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 class CQuickSpriteSystem
 {
 private:
-	VkPipeline		vk_pipeline;
+	uint32_t		vk_pipeline;
 	const textureBundle_t *mTexBundle;
 	int				mFogIndex;
 	qboolean		mUseFog;

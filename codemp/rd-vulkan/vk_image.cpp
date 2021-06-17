@@ -22,7 +22,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "tr_local.h"
-#include "rd-common\tr_types.h"
 
 #define	DEFAULT_SIZE	16
 #define FILE_HASH_SIZE	1024

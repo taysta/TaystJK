@@ -194,7 +194,7 @@ typedef struct orientationr_s {
 	float		modelMatrix[16];
 } orientationr_t;
 
-enum imgFlags_t
+typedef enum
 {
 	IMGFLAG_NONE			= 0x0000,
 	IMGFLAG_MIPMAP			= 0x0001,
@@ -207,11 +207,26 @@ enum imgFlags_t
 	IMGFLAG_NOSCALE			= 0x0080,
 	IMGFLAG_RGB				= 0x0100,
 	IMGFLAG_COLORSHIFT		= 0x0200,
-};
+} imgFlags_t;
+
 #if defined( _WIN32 )
 DEFINE_ENUM_FLAG_OPERATORS( imgFlags_t );
-#elif
-// not rn ..
+#elif defined( __linux__ )
+inline constexpr imgFlags_t operator | (imgFlags_t a, imgFlags_t b) throw() {
+	return imgFlags_t(((int)a) | ((int)b));
+}
+inline imgFlags_t &operator |= (imgFlags_t &a, imgFlags_t b) throw() {
+	return (imgFlags_t &)(((int&)a) |= ((int)b));
+}
+inline constexpr imgFlags_t operator & (imgFlags_t a, imgFlags_t b) throw() {
+	return imgFlags_t(((int)a) & ((int)b));
+}
+inline imgFlags_t &operator &= (imgFlags_t &a, imgFlags_t b) throw() {
+	return (imgFlags_t &)(((int &)a) &= ((int)b));
+}
+inline constexpr imgFlags_t operator ~ (imgFlags_t a) throw() {
+	return imgFlags_t(~((int)a));
+}
 #endif
 
 typedef struct image_s {

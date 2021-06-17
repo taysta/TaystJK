@@ -1337,7 +1337,7 @@ void RB_StageIteratorGeneric( void )
 	const shaderStage_t		*pStage;
 	Vk_Pipeline_Def			def;
 	uint32_t				stage = 0;
-	VkPipeline				pipeline;
+	uint32_t				pipeline;
 	int						tess_flags, i;
 	int						fog_stage = 0;
 	qboolean				fogCollapse;
@@ -1506,7 +1506,7 @@ void RB_StageIteratorGeneric( void )
 	// Now check for surfacesprites.
 	if (r_surfaceSprites->integer && !r_vbo->integer)
 	{
-		boolean ssFound = qfalse;
+		qboolean ssFound = qfalse;
 
 		for (stage = 1; stage < tess.shader->numUnfoggedPasses; stage++)
 		{
