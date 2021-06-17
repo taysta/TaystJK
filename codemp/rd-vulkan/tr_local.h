@@ -1592,7 +1592,6 @@ void		R_DecomposeLitSort( unsigned sort, int* entityNum, shader_t** shader, int*
 void		R_AddLitSurf( surfaceType_t* surface, shader_t* shader, int fogIndex );
 #endif
 
-void			ScanAndLoadShaderFiles( void );
 shader_t		*GeneratePermanentShader( void );
 static qboolean ParseShader( const char **text );
 
