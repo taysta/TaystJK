@@ -11113,7 +11113,7 @@ void UI_BuildQ3Model_List( void )
 
 		if (ui_sv_pure.integer) {
 			baseSkin = qfalse;
-			for (k = 0 ; k <= BASE_MODEL_COUNT ; k++) {
+			for (k = 0 ; k < BASE_MODEL_COUNT ; k++) {
 				if (!Q_stricmp(dirptr, baseModelList[k])) {
 					baseSkin = qtrue;
 					break;

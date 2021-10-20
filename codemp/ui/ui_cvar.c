@@ -92,7 +92,7 @@ static void CVU_StrafeHelper (void) {
 }
 
 static void CVU_UpdateModelList(void) {
-	uiClientState_t cstate = {0};
+/*	uiClientState_t cstate = {0};
 
 	if (startup) {//we don't want to redundantly call these on startup
 		UI_UpdateCurrentServerInfo();
@@ -104,11 +104,10 @@ static void CVU_UpdateModelList(void) {
 		trap->Cvar_Set("ui_sv_pure", "0");
 		return;
 	}
-
 	UI_UpdateSaberHiltInfo();
 	UI_BuildQ3Model_List();
 	UI_BuildPlayerModel_List(qtrue);
-	UI_Load(); //refreshes the available species in the selection feeder
+	UI_Load(); //refreshes the available species in the selection feeder */
 }
 
 //
