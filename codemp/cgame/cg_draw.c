@@ -10906,8 +10906,10 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
             memcpy(color, wColor, sizeof(vec4_t));
         else if (moveDir == 8)
             memcpy(color, centerColor, sizeof(vec4_t));
-        else if (moveDir == 9 || moveDir == 10 || moveDir == 3 || moveDir == 5)
+        else if (moveDir == 9 || moveDir == 10)
             memcpy(color, rearColor, sizeof(vec4_t));
+        else if (moveDir == 3 || moveDir == 5)
+            memcpy(color, wColor, sizeof(vec4_t));
         color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
     }
 
