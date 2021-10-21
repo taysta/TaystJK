@@ -10902,13 +10902,11 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
             memcpy(color, normalColor, sizeof(vec4_t));
         else if (moveDir == 2 || moveDir == 6)
             memcpy(color, invertColor, sizeof(vec4_t));
-        else if (moveDir == 0 || moveDir == 3)
+        else if (moveDir == 0 || moveDir == 4)
             memcpy(color, wColor, sizeof(vec4_t));
         else if (moveDir == 8)
             memcpy(color, centerColor, sizeof(vec4_t));
-        else if (moveDir == 9 || moveDir == 10)
-            memcpy(color, rearColor, sizeof(vec4_t));
-        else if (moveDir == 3 || moveDir == 5)
+        else if (moveDir == 9 || moveDir == 10 || moveDir == 3 || moveDir == 5)
             memcpy(color, rearColor, sizeof(vec4_t));
         color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
     }
@@ -11117,8 +11115,8 @@ static void CG_StrafeHelper(centity_t *cent)
 			DrawStrafeLine(velocityAngle, (135.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove > 0), 10); //D
             DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
             DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
-            DrawStrafeLine(velocityAngle, (180 + 45 + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
-            DrawStrafeLine(velocityAngle, (180 - 45 + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+            DrawStrafeLine(velocityAngle, (180.0f + 45.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+            DrawStrafeLine(velocityAngle, (-180.0f - 45.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
 		}
 	}
 	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_SWOOP || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP) {
