@@ -81,7 +81,7 @@ void CQuickSpriteSystem::Flush( void )
 	vk_bind_pipeline(vk_pipeline);
 	vk_bind_index();
 	vk_bind_geometry(TESS_XYZ | TESS_RGBA0 | TESS_ST0);
-	vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
+	vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
 
 	//only for software fog pass (global soft/volumetric) -rww
 	//if (mUseFog && (r_drawfog->integer != 2 || mFogIndex != tr.world->globalFog))

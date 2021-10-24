@@ -42,8 +42,6 @@ typedef struct {
 static	edgeDef_t	edgeDefs[SHADER_MAX_VERTEXES][MAX_EDGE_DEFS];
 static	int			numEdgeDefs[SHADER_MAX_VERTEXES];
 static	int			facing[SHADER_MAX_INDEXES / 3];
-static vec4_t		extrudedEdges[SHADER_MAX_VERTEXES * 4];
-static int			numExtrudedEdges;
 
 static void R_AddEdgeDef(int i1, int i2, int facing) {
 	int		c = numEdgeDefs[i1];
@@ -56,13 +54,15 @@ static void R_AddEdgeDef(int i1, int i2, int facing) {
 	numEdgeDefs[i1]++;
 }
 
-static void R_ExtrudeShadowEdges(void) {
-	int		i;
-	int		c, c2;
-	int		j, k;
-	int		i2;
+static void R_CalcShadowEdges(void) {
+	qboolean	sil_edge;
+	int			i;
+	int			c, c2;
+	int			j, k;
+	int			i2;
+	color4ub_t *colors;
 
-	numExtrudedEdges = 0;
+	tess.numIndexes = 0;
 
 	// an edge is NOT a silhouette edge if its face doesn't face the light,
 	// or if it has a reverse paired edge that also faces the light.
@@ -75,7 +75,7 @@ static void R_ExtrudeShadowEdges(void) {
 				continue;
 			}
 
-			qboolean sil_edge = qtrue;
+			sil_edge = qtrue;
 			i2 = edgeDefs[i][j].i2;
 			c2 = numEdgeDefs[i2];
 			for (k = 0; k < c2; k++) {
@@ -88,52 +88,29 @@ static void R_ExtrudeShadowEdges(void) {
 			// if it doesn't share the edge with another front facing
 			// triangle, it is a sil edge
 			if (sil_edge) {
-				VectorCopy(tess.xyz[i], extrudedEdges[numExtrudedEdges * 4 + 0]);
-				VectorCopy(tess.xyz[i + tess.numVertexes], extrudedEdges[numExtrudedEdges * 4 + 1]);
-				VectorCopy(tess.xyz[i2], extrudedEdges[numExtrudedEdges * 4 + 2]);
-				VectorCopy(tess.xyz[i2 + tess.numVertexes], extrudedEdges[numExtrudedEdges * 4 + 3]);
-				numExtrudedEdges++;
+				if (tess.numIndexes > ARRAY_LEN(tess.indexes) - 6) {
+					i = tess.numVertexes;
+					break;
+				}
+
+				tess.indexes[tess.numIndexes + 0] = i;
+				tess.indexes[tess.numIndexes + 1] = i2;
+				tess.indexes[tess.numIndexes + 2] = i + tess.numVertexes;
+				tess.indexes[tess.numIndexes + 3] = i2;
+				tess.indexes[tess.numIndexes + 4] = i2 + tess.numVertexes;
+				tess.indexes[tess.numIndexes + 5] = i + tess.numVertexes;
+
+				tess.numIndexes += 6;
 			}
 		}
 	}
-}
 
-static void vk_renderShadowEdges(uint32_t pipeline)
-{
-	int i = 0;
+	tess.numVertexes *= 2;
 
-	while (i < numExtrudedEdges) {
-		int count = numExtrudedEdges - i;
-		if (count > (SHADER_MAX_VERTEXES - 1) / 4)
-			count = (SHADER_MAX_VERTEXES - 1) / 4;
+	colors = &tess.svars.colors[0][0]; // we need at least 2x SHADER_MAX_VERTEXES there
 
-		memcpy(tess.xyz, extrudedEdges[i * 4], 4 * count * sizeof(vec4_t));
-		tess.numVertexes = count * 4;
-		int k = 0;
-
-		for (k = 0; k < count; k++)
-		{
-			tess.indexes[k * 6 + 0] = k * 4 + 0;
-			tess.indexes[k * 6 + 1] = k * 4 + 2;
-			tess.indexes[k * 6 + 2] = k * 4 + 1;
-
-			tess.indexes[k * 6 + 3] = k * 4 + 2;
-			tess.indexes[k * 6 + 4] = k * 4 + 3;
-			tess.indexes[k * 6 + 5] = k * 4 + 1;
-		}
-		tess.numIndexes = count * 6;
-
-		for (k = 0; k < tess.numVertexes; k++)
-		{
-			VectorSet((float*)tess.svars.colors[0][k], 50, 50, 50);
-			tess.svars.colors[0][k][3] = 255;
-		}
-
-		vk_bind_pipeline(pipeline);
-		vk_bind_geometry(TESS_XYZ | TESS_RGBA0);
-		vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
-
-		i += count;
+	for (i = 0; i < tess.numVertexes; i++) {
+		Vector4Set(colors[i], 50, 50, 50, 255);
 	}
 }
 
@@ -150,15 +127,43 @@ triangleFromEdge[ v1 ][ v2 ]
 =================
 */
 void RB_ShadowTessEnd(void) {
-	int		i;
-	int		numTris;
-	vec3_t	lightDir;
+	int			i, numTris;
+	vec3_t		lightDir;
+	uint32_t	pipeline[2];
 
-	// we can only do this if we have enough space in the vertex buffers
-	if (tess.numVertexes >= SHADER_MAX_VERTEXES / 2) {
+	if (glConfig.stencilBits < 4)
 		return;
-	}
 
+#if 1
+	vec3_t	entLight;
+	vec3_t	worldxyz;
+	float	groundDist;
+
+#ifdef USE_PMLIGHT
+	if (r_dlightMode->integer == 2 && r_shadows->integer == 2)
+		VectorCopy(backEnd.currentEntity->shadowLightDir, entLight);
+	else
+#endif
+		VectorCopy(backEnd.currentEntity->lightDir, entLight);
+
+	entLight[2] = 0.0f;
+	VectorNormalize(entLight);
+
+	//Oh well, just cast them straight down no matter what onto the ground plane.
+	//This presets no chance of screwups and still looks better than a stupid
+	//shader blob.
+	VectorSet(lightDir, entLight[0] * 0.3f, entLight[1] * 0.3f, 1.0f);
+	
+	// project vertexes away from light direction
+	for (i = 0; i < tess.numVertexes; i++) {
+		//add or.origin to vert xyz to end up with world oriented coord, then figure
+		//out the ground pos for the vert to project the shadow volume to
+		VectorAdd(tess.xyz[i], backEnd.ori.origin, worldxyz);
+		groundDist = worldxyz[2] - backEnd.currentEntity->e.shadowPlane;
+		groundDist += 16.0f; //fudge factor
+		VectorMA(tess.xyz[i], -groundDist, lightDir, tess.xyz[i + tess.numVertexes]);
+	}
+#else
 #ifdef USE_PMLIGHT
 	if (r_dlightMode->integer == 2 && r_shadows->integer == 2)
 		VectorCopy(backEnd.currentEntity->shadowLightDir, lightDir);
@@ -176,6 +181,7 @@ void RB_ShadowTessEnd(void) {
 	for (i = 0; i < tess.numVertexes; i++) {
 		VectorMA(tess.xyz[i], -512, lightDir, tess.xyz[i + tess.numVertexes]);
 	}
+#endif 
 
 	// decide which triangles face the light
 	Com_Memset(numEdgeDefs, 0, tess.numVertexes * sizeof(numEdgeDefs[0]));
@@ -185,23 +191,23 @@ void RB_ShadowTessEnd(void) {
 	{
 		int		i1, i2, i3;
 		vec3_t	d1, d2, normal;
-		float* v1, * v2, * v3;
+		float	*v1, *v2, *v3;
 		float	d;
 
-		i1 = tess.indexes[i * 3 + 0];
-		i2 = tess.indexes[i * 3 + 1];
-		i3 = tess.indexes[i * 3 + 2];
+		i1 = tess.indexes[ i*3 + 0 ];
+		i2 = tess.indexes[ i*3 + 1];
+		i3 = tess.indexes[ i*3 + 2];
 
-		v1 = tess.xyz[i1];
-		v2 = tess.xyz[i2];
-		v3 = tess.xyz[i3];
+		v1 = tess.xyz[ i1 ];
+		v2 = tess.xyz[ i2 ];
+		v3 = tess.xyz[ i3 ];
 
-		VectorSubtract(v2, v1, d1);
-		VectorSubtract(v3, v1, d2);
-		CrossProduct(d1, d2, normal);
+		VectorSubtract( v2, v1, d1 );
+		VectorSubtract( v3, v1, d2 );
+		CrossProduct( d1, d2, normal );
 
-		d = DotProduct(normal, lightDir);
-		if (d > 0) {
+		d = DotProduct( normal, lightDir );
+		if ( d > 0 ) {
 			facing[i] = 1;
 		}
 		else {
@@ -209,33 +215,36 @@ void RB_ShadowTessEnd(void) {
 		}
 
 		// create the edges
-		R_AddEdgeDef(i1, i2, facing[i]);
-		R_AddEdgeDef(i2, i3, facing[i]);
-		R_AddEdgeDef(i3, i1, facing[i]);
+		R_AddEdgeDef( i1, i2, facing[i] );
+		R_AddEdgeDef( i2, i3, facing[i] );
+		R_AddEdgeDef( i3, i1, facing[i] );
 	}
-
-
-
-	R_ExtrudeShadowEdges();
-
+	
+	R_CalcShadowEdges();
 
 	// draw the silhouette edges
 	vk_bind(tr.whiteImage);
-	vk_bind_index();
+
 	// mirrors have the culling order reversed
 	if (backEnd.viewParms.portalView == PV_MIRROR) {
-		vk_renderShadowEdges(vk.std_pipeline.shadow_volume_pipelines[0][1]);
-		vk_renderShadowEdges(vk.std_pipeline.shadow_volume_pipelines[1][1]);
+		pipeline[0] = vk.std_pipeline.shadow_volume_pipelines[0][1];
+		pipeline[1] = vk.std_pipeline.shadow_volume_pipelines[1][1];
 	}
-	else{
-		vk_renderShadowEdges(vk.std_pipeline.shadow_volume_pipelines[0][0]);
-		vk_renderShadowEdges(vk.std_pipeline.shadow_volume_pipelines[1][0]);
+	else {
+		pipeline[0] = vk.std_pipeline.shadow_volume_pipelines[0][0];
+		pipeline[1] = vk.std_pipeline.shadow_volume_pipelines[1][0];
 	}
 
-	//tess.numVertexes /= 2;
+	vk_bind_pipeline(pipeline[0]); // back-sided
+	vk_bind_index();
+	vk_bind_geometry(TESS_XYZ | TESS_RGBA0);
+	vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
+	vk_bind_pipeline(pipeline[1]); // front-sided
+	vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
+
+	tess.numVertexes /= 2;
 
 	backEnd.doneShadows = qtrue;
-
 	tess.numIndexes = 0;
 }
 
@@ -252,41 +261,33 @@ overlap and double darken.
 */
 void RB_ShadowFinish(void)
 {
+	float tmp[16];
+	int i;
 
-	if (!backEnd.doneShadows) {
+	if (!backEnd.doneShadows)
 		return;
-	}
 
 	backEnd.doneShadows = qfalse;
 
-	if (r_shadows->integer != 2) {
+	if (r_shadows->integer != 2)
 		return;
-	}
-	if (glConfig.stencilBits < 4) {
+	
+	if (glConfig.stencilBits < 4)
 		return;
-	}
-	float tmp[16];
+
+	static const vec3_t verts[4] = {
+		{ -100, 100, -10 },
+		{  100, 100, -10 },
+		{ -100,-100, -10 },
+		{  100,-100, -10 }
+	};
 
 	vk_bind(tr.whiteImage);
 
-	tess.indexes[0] = 0;
-	tess.indexes[1] = 1;
-	tess.indexes[2] = 2;
-	tess.indexes[3] = 0;
-	tess.indexes[4] = 2;
-	tess.indexes[5] = 3;
-	tess.numIndexes = 6;
-
-	VectorSet(tess.xyz[0], -100, 100, -10);
-	VectorSet(tess.xyz[1], 100, 100, -10);
-	VectorSet(tess.xyz[2], 100, -100, -10);
-	VectorSet(tess.xyz[3], -100, -100, -10);
-	int i = 0;
-
 	for (i = 0; i < 4; i++)
 	{
-		VectorSet((float*)tess.svars.colors[0][i], 153, 153, 153);
-		tess.svars.colors[0][i][3] = 255;
+		VectorCopy(verts[i], tess.xyz[i]);
+		Vector4Set(tess.svars.colors[0][i], 153, 153, 153, 255);
 	}
 	tess.numVertexes = 4;
 
@@ -300,8 +301,8 @@ void RB_ShadowFinish(void)
 
 	vk_bind_pipeline(vk.std_pipeline.shadow_finish_pipeline);
 	vk_update_mvp(NULL);
-	vk_bind_geometry(TESS_XYZ | TESS_RGBA0 /*| TESS_ST0 */);
-	vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
+	vk_bind_geometry(TESS_XYZ | TESS_RGBA0);
+	vk_draw_geometry(DEPTH_RANGE_NORMAL, qfalse);
 
 	Com_Memcpy(vk_world.modelview_transform, tmp, 64);
 
@@ -318,17 +319,20 @@ RB_ProjectionShadowDeform
 */
 void RB_ProjectionShadowDeform(void)
 {
+	int		i;
+	float	*xyz;
 	vec3_t	ground;
+	float	groundDist, d, h;
 	vec3_t	light;
 	vec3_t	lightDir;
 
-	float* xyz = (float*)tess.xyz;
+	xyz = (float*)tess.xyz;
 
 	ground[0] = backEnd.ori.axis[0][2];
 	ground[1] = backEnd.ori.axis[1][2];
 	ground[2] = backEnd.ori.axis[2][2];
 
-	float groundDist = backEnd.ori.origin[2] - backEnd.currentEntity->e.shadowPlane;
+	groundDist = backEnd.ori.origin[2] - backEnd.currentEntity->e.shadowPlane;
 
 #ifdef USE_PMLIGHT
 	if (r_dlightMode->integer == 2 && r_shadows->integer == 2)
@@ -337,7 +341,7 @@ void RB_ProjectionShadowDeform(void)
 #endif
 		VectorCopy(backEnd.currentEntity->lightDir, lightDir);
 
-	float d = DotProduct(lightDir, ground);
+	d = DotProduct(lightDir, ground);
 	// don't let the shadows get too long or go negative
 	if (d < 0.5)
 	{
@@ -350,10 +354,10 @@ void RB_ProjectionShadowDeform(void)
 	light[1] = lightDir[1] * d;
 	light[2] = lightDir[2] * d;
 
-	int	i;
+
 	for (i = 0; i < tess.numVertexes; i++, xyz += 4)
 	{
-		float h = DotProduct(xyz, ground) + groundDist;
+		h = DotProduct(xyz, ground) + groundDist;
 
 		xyz[0] -= light[0] * h;
 		xyz[1] -= light[1] * h;

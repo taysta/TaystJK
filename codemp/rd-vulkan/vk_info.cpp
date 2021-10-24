@@ -48,9 +48,9 @@ const char *vk_format_string( VkFormat format )
         CASE_STR(VK_FORMAT_D24_UNORM_S8_UINT);
         CASE_STR(VK_FORMAT_D32_SFLOAT);
         CASE_STR(VK_FORMAT_D32_SFLOAT_S8_UINT);
-    default:
-        Com_sprintf(buf, sizeof(buf), "#%i", format);
-        return buf;
+        default:
+            Com_sprintf(buf, sizeof(buf), "#%i", format);
+            return buf;
     }
 }
 
@@ -86,9 +86,9 @@ const char *vk_result_string( VkResult code ) {
         CASE_STR(VK_ERROR_VALIDATION_FAILED_EXT);
         CASE_STR(VK_ERROR_INVALID_SHADER_NV);
         CASE_STR(VK_ERROR_NOT_PERMITTED_EXT);
-    default:
-        sprintf(buffer, "code %i", code);
-        return buffer;
+        default:
+            sprintf(buffer, "code %i", code);
+            return buffer;
     }
 }
 
@@ -96,199 +96,140 @@ const char *vk_shadertype_string( Vk_Shader_Type code ) {
     static char buffer[32];
 
     switch (code) {
-            CASE_STR(TYPE_COLOR_WHITE);
-            CASE_STR(TYPE_COLOR_GREEN);
-            CASE_STR(TYPE_COLOR_RED);
-            CASE_STR(TYPE_FOG_ONLY);
-            CASE_STR(TYPE_DOT);
+        CASE_STR(TYPE_COLOR_WHITE);
+        CASE_STR(TYPE_COLOR_GREEN);
+        CASE_STR(TYPE_COLOR_RED);
+        CASE_STR(TYPE_FOG_ONLY);
+        CASE_STR(TYPE_DOT);
 
 
-            CASE_STR(TYPE_SINGLE_TEXTURE_LIGHTING);
-            CASE_STR(TYPE_SINGLE_TEXTURE_LIGHTING_LINEAR);
+        CASE_STR(TYPE_SINGLE_TEXTURE_LIGHTING);
+        CASE_STR(TYPE_SINGLE_TEXTURE_LIGHTING_LINEAR);
 
-            CASE_STR(TYPE_SINGLE_TEXTURE_DF);
+        CASE_STR(TYPE_SINGLE_TEXTURE_DF);
 
-            CASE_STR(TYPE_SINGLE_TEXTURE);
-            CASE_STR(TYPE_SINGLE_TEXTURE_ENV);
+        CASE_STR(TYPE_SINGLE_TEXTURE);
+        CASE_STR(TYPE_SINGLE_TEXTURE_ENV);
 
-            CASE_STR(TYPE_MULTI_TEXTURE_MUL2);
-            CASE_STR(TYPE_MULTI_TEXTURE_MUL2_ENV);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD2_IDENTITY);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD2_IDENTITY_ENV);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD2);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD2_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_MUL2);
+        CASE_STR(TYPE_MULTI_TEXTURE_MUL2_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD2_IDENTITY);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD2_IDENTITY_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD2);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD2_ENV);
 
-            CASE_STR(TYPE_MULTI_TEXTURE_MUL3);
-            CASE_STR(TYPE_MULTI_TEXTURE_MUL3_ENV);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD3_IDENTITY);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD3_IDENTITY_ENV);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD3);
-            CASE_STR(TYPE_MULTI_TEXTURE_ADD3_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_MUL3);
+        CASE_STR(TYPE_MULTI_TEXTURE_MUL3_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD3_IDENTITY);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD3_IDENTITY_ENV);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD3);
+        CASE_STR(TYPE_MULTI_TEXTURE_ADD3_ENV);
 
-            CASE_STR(TYPE_BLEND2_ADD);
-            CASE_STR(TYPE_BLEND2_ADD_ENV);
-            CASE_STR(TYPE_BLEND2_MUL);
-            CASE_STR(TYPE_BLEND2_MUL_ENV);
-            CASE_STR(TYPE_BLEND2_ALPHA);
-            CASE_STR(TYPE_BLEND2_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND2_ONE_MINUS_ALPHA);
-            CASE_STR(TYPE_BLEND2_ONE_MINUS_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND2_MIX_ALPHA);
-            CASE_STR(TYPE_BLEND2_MIX_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND2_MIX_ONE_MINUS_ALPHA);
-            CASE_STR(TYPE_BLEND2_MIX_ONE_MINUS_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND2_ADD);
+        CASE_STR(TYPE_BLEND2_ADD_ENV);
+        CASE_STR(TYPE_BLEND2_MUL);
+        CASE_STR(TYPE_BLEND2_MUL_ENV);
+        CASE_STR(TYPE_BLEND2_ALPHA);
+        CASE_STR(TYPE_BLEND2_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND2_ONE_MINUS_ALPHA);
+        CASE_STR(TYPE_BLEND2_ONE_MINUS_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND2_MIX_ALPHA);
+        CASE_STR(TYPE_BLEND2_MIX_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND2_MIX_ONE_MINUS_ALPHA);
+        CASE_STR(TYPE_BLEND2_MIX_ONE_MINUS_ALPHA_ENV);
 
-            CASE_STR(TYPE_BLEND2_DST_COLOR_SRC_ALPHA);
-            CASE_STR(TYPE_BLEND2_DST_COLOR_SRC_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND2_DST_COLOR_SRC_ALPHA);
+        CASE_STR(TYPE_BLEND2_DST_COLOR_SRC_ALPHA_ENV);
 
-            CASE_STR(TYPE_BLEND3_ADD);
-            CASE_STR(TYPE_BLEND3_ADD_ENV);
-            CASE_STR(TYPE_BLEND3_MUL);
-            CASE_STR(TYPE_BLEND3_MUL_ENV);
-            CASE_STR(TYPE_BLEND3_ALPHA);
-            CASE_STR(TYPE_BLEND3_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND3_ONE_MINUS_ALPHA);
-            CASE_STR(TYPE_BLEND3_ONE_MINUS_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND3_MIX_ALPHA);
-            CASE_STR(TYPE_BLEND3_MIX_ALPHA_ENV);
-            CASE_STR(TYPE_BLEND3_MIX_ONE_MINUS_ALPHA);
-            CASE_STR(TYPE_BLEND3_MIX_ONE_MINUS_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND3_ADD);
+        CASE_STR(TYPE_BLEND3_ADD_ENV);
+        CASE_STR(TYPE_BLEND3_MUL);
+        CASE_STR(TYPE_BLEND3_MUL_ENV);
+        CASE_STR(TYPE_BLEND3_ALPHA);
+        CASE_STR(TYPE_BLEND3_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND3_ONE_MINUS_ALPHA);
+        CASE_STR(TYPE_BLEND3_ONE_MINUS_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND3_MIX_ALPHA);
+        CASE_STR(TYPE_BLEND3_MIX_ALPHA_ENV);
+        CASE_STR(TYPE_BLEND3_MIX_ONE_MINUS_ALPHA);
+        CASE_STR(TYPE_BLEND3_MIX_ONE_MINUS_ALPHA_ENV);
 
-            CASE_STR(TYPE_BLEND3_DST_COLOR_SRC_ALPHA);
-            CASE_STR(TYPE_BLEND3_DST_COLOR_SRC_ALPHA_ENV);
-    default:
-        sprintf(buffer, "code %i", code);
-        return buffer;
+        CASE_STR(TYPE_BLEND3_DST_COLOR_SRC_ALPHA);
+        CASE_STR(TYPE_BLEND3_DST_COLOR_SRC_ALPHA_ENV);
+        default:
+            sprintf(buffer, "code %i", code);
+            return buffer;
     }
 }
+
 #undef CASE_STR
 
-static const char *TruncateVKExtensionsString( const char *extensionsString, int maxExtensions )
-{
-    const char  *p = extensionsString;
-    const char  *q;
-    int numExtensions = 0;
-    size_t extensionsLen = strlen(extensionsString);
+const char *renderer_name( const VkPhysicalDeviceProperties *props ) {
+    static char buf[sizeof(props->deviceName) + 64];
+    const char	*device_type;
 
-    char *truncatedExtensions;
-
-    while ((q = strchr(p, ' ')) != NULL && numExtensions <= maxExtensions)
-    {
-        p = q + 1;
-        numExtensions++;
+    switch ( props->deviceType ) {
+        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: device_type = "Integrated"; break;
+        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: device_type = "Discrete"; break;
+        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: device_type = "Virtual"; break;
+        case VK_PHYSICAL_DEVICE_TYPE_CPU: device_type = "CPU"; break;
+        default: device_type = "OTHER"; break;
     }
 
-    if (q != NULL)
-    {
-        // We still have more extensions. We'll call this the end
+    Com_sprintf(buf, sizeof(buf), "%s %s, 0x%04x",
+        device_type, props->deviceName, props->deviceID);
 
-        extensionsLen = p - extensionsString - 1;
-    }
-
-    truncatedExtensions = (char*)Hunk_Alloc(extensionsLen + 1, h_low);
-    Q_strncpyz(truncatedExtensions, extensionsString, extensionsLen + 1);
-
-    return truncatedExtensions;
-}
-
-static void vk_print_instance_extensions( int setting )
-{
-    uint32_t i = 0;
-    uint32_t nInsExt = 0;
-    VkExtensionProperties *pInsExt;
-
-    // To retrieve a list of supported extensions before creating an instance
-    VK_CHECK(qvkEnumerateInstanceExtensionProperties(NULL, &nInsExt, NULL));
-    assert(nInsExt > 0);
-
-    pInsExt = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * nInsExt);
-    VK_CHECK(qvkEnumerateInstanceExtensionProperties(NULL, &nInsExt, pInsExt));
-
-    vk_debug("----- Total %d Instance Extension Supported -----\n", nInsExt);
-    for (i = 0; i < nInsExt; ++i)
-    {
-        vk_debug("%s\n", pInsExt[i].extensionName);
-    }
-    vk_debug("----- ------------------------------------- -----\n\n");
-
-    if (setting)
-    {
-        uint32_t indicator = 0;
-
-        char ext_str[BIG_INFO_STRING] = { 0 };
-
-        for (i = 0; i < nInsExt; ++i)
-        {
-            uint32_t len = strlen(pInsExt[i].extensionName);
-            memcpy(ext_str + indicator, pInsExt[i].extensionName, len);
-
-            indicator += len;
-            ext_str[indicator++] = ' ';
-        }
-
-        glConfig.extensions_string = TruncateVKExtensionsString(ext_str, 128);
-        free(pInsExt);
-    }
-}
-
-static void vk_print_device_extensions( void )
-{
-    uint32_t i, nDevExts = 0;
-    VkExtensionProperties *pDevExt;
-
-    // To query the extensions available to a given physical device
-    VK_CHECK(qvkEnumerateDeviceExtensionProperties(vk.physical_device, NULL, &nDevExts, NULL));
-
-    assert(nDevExts > 0);
-
-    pDevExt = (VkExtensionProperties*)malloc(sizeof(VkExtensionProperties) * nDevExts);
-
-    qvkEnumerateDeviceExtensionProperties(vk.physical_device, NULL, &nDevExts, pDevExt);
-
-    vk_debug("--------- Total %d Device Extension Supported ---------\n", nDevExts);
-    for (i = 0; i < nDevExts; ++i)
-    {
-        vk_debug(" %s \n", pDevExt[i].extensionName);
-    }
-    vk_debug("--------- ----------------------------------- ---------\n");
-
-    free(pDevExt);
+    return buf;
 }
 
 void vk_get_vulkan_properties( VkPhysicalDeviceProperties *props )
 {
-    const char  *device_type, *vendor_name;
+    const char  *vendor_name;
+    char		driver_version[128];
     uint32_t    major, minor, patch;
 
     vk_debug("\nActive 3D API: Vulkan\n");
 
     // To query general properties of physical devices once enumerated
-    qvkGetPhysicalDeviceProperties(vk.physical_device, props);
+    qvkGetPhysicalDeviceProperties( vk.physical_device, props );
 
-    major = VK_VERSION_MAJOR(props->apiVersion);
-    minor = VK_VERSION_MINOR(props->apiVersion);
-    patch = VK_VERSION_PATCH(props->apiVersion);
+    major = VK_VERSION_MAJOR( props->apiVersion );
+    minor = VK_VERSION_MINOR( props->apiVersion );
+    patch = VK_VERSION_PATCH( props->apiVersion );
 
-    switch (props->deviceType) {
-        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: device_type = "INTEGRATED_GPU"; break;
-        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: device_type = "DISCRETE_GPU";  break;
-        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: device_type = "VIRTUAL_GPU"; break;
-        case VK_PHYSICAL_DEVICE_TYPE_CPU: device_type = "CPU"; break;
-        default: device_type = "OTHER"; break;
+    // decode driver version
+    switch ( props->vendorID ) {
+        case 0x10DE: // NVidia
+            Com_sprintf( driver_version, sizeof(driver_version), "%i.%i.%i.%i",
+                ( props->driverVersion >> 22 ) & 0x3FF,
+                ( props->driverVersion >> 14 ) & 0x0FF,
+                ( props->driverVersion >> 6 ) & 0x0FF,
+                ( props->driverVersion >> 0 ) & 0x03F );
+            break;
+    #ifdef _WIN32
+        case 0x8086: // Intel
+            Com_sprintf( driver_version, sizeof(driver_version), "%i.%i",
+                ( props->driverVersion >> 14 ),
+                ( props->driverVersion >> 0 ) & 0x3FFF );
+            break;
+    #endif
+        default:
+            Com_sprintf( driver_version, sizeof(driver_version), "%i.%i.%i",
+                ( props->driverVersion >> 22 ),
+                ( props->driverVersion >> 12 ) & 0x3FF,
+                ( props->driverVersion >> 0 ) & 0xFFF );
     }
 
     vk.offscreenRender = qtrue;
 
-    switch (props->vendorID) {
+    switch ( props->vendorID ) {
         case 0x1002: vendor_name = "Advanced Micro Devices, Inc."; break;
         case 0x106B: vendor_name = "Apple Inc."; break;
-        case 0x10DE: 
-            vendor_name = "NVIDIA"; 
-#ifdef _WIN32
+        case 0x10DE:
+            vendor_name = "NVIDIA";
             // https://github.com/SaschaWillems/Vulkan/issues/493
             // we can't render to offscreen presentation surfaces on nvidia
             vk.offscreenRender = qfalse;
-#endif
             break;
         case 0x14E4: vendor_name = "Broadcom Inc."; break;
         case 0x1AE0: vendor_name = "Google Inc."; break;
@@ -296,29 +237,192 @@ void vk_get_vulkan_properties( VkPhysicalDeviceProperties *props )
         default: vendor_name = "OTHER"; break;
     }
 
-    ri.Printf(PRINT_ALL, "----- Vulkan -----\n");
-    ri.Printf(PRINT_ALL, "Api version: %d.%d.%d\n", major, minor, patch);
-    ri.Printf(PRINT_ALL, "Driver version: %d\n", props->driverVersion);
-    ri.Printf(PRINT_ALL, "Vendor id: 0x%X (%s)\n", props->vendorID, vendor_name);
-    ri.Printf(PRINT_ALL, "Device id: 0x%X\n", props->deviceID);
-    ri.Printf(PRINT_ALL, "Device type: %s\n", device_type);
-    ri.Printf(PRINT_ALL, "Device name: %s\n", props->deviceName);
-    ri.Printf(PRINT_ALL, "\n");
+    Com_sprintf( vk.version_string, sizeof(vk.version_string), "API: %i.%i.%i, Driver: %s",
+        major, minor, patch, driver_version );
+    Q_strncpyz( vk.vendor_string, vendor_name, sizeof(vk.vendor_string) );
+    Q_strncpyz( vk.renderer_string, renderer_name(props), sizeof(vk.renderer_string) );
 
-    char tmpBuf[128] = { 0 };
-    char rd_string[128] = { 0 };
+    glConfig.vendor_string = (const char*)vk.vendor_string;
+    glConfig.version_string = (const char*)vk.version_string;
+    glConfig.renderer_string = (const char*)vk.renderer_string;
 
-    snprintf(tmpBuf, 128, " Vk api version: %d.%d.%d ", major, minor, patch);
-    glConfig.vendor_string = (const char*)vendor_name;
-    glConfig.version_string = (const char*)tmpBuf;
-    glConfig.renderer_string = (const char*)props->deviceName;
+    ri.Printf( PRINT_ALL, "----- Vulkan -----\n" );
+    ri.Printf( PRINT_ALL, "VK_VENDOR: %s\n", vk.vendor_string );
+    ri.Printf( PRINT_ALL, "VK_RENDERER: %s\n", vk.renderer_string );
+    ri.Printf( PRINT_ALL, "VK_VERSION: %s\n", vk.version_string );
+    ri.Printf( PRINT_ALL, "use the \gfxinfo command for details \n\n", vk.version_string );
 
-    VK_SET_OBJECT_NAME((intptr_t)vk.device, glConfig.renderer_string, VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_EXT);
+    VK_SET_OBJECT_NAME( (intptr_t)vk.device, vk.renderer_string, VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_EXT );
+}
 
-    //
-    // Info that for UI display
-    //
-    vk_print_instance_extensions(1);
+/*
+================
+R_PrintLongString
 
-    vk_print_device_extensions();
+Workaround for ri.Printf's 1024 characters buffer limit.
+================
+*/
+void R_PrintLongString( const char *string )
+{
+    char buffer[1024];
+    const char *p = string;
+    int remainingLength = strlen( string );
+
+    while ( remainingLength > 0 )
+    {
+        // Take as much characters as possible from the string without splitting words between buffers
+        // This avoids the client console splitting a word up when one half fits on the current line,
+        // but the second half would have to be written on a new line
+        int charsToTake = sizeof(buffer) - 1;
+        if ( remainingLength > charsToTake ) {
+            while ( p[charsToTake - 1] > ' ' && p[charsToTake] > ' ' ) {
+                charsToTake--;
+                if ( charsToTake == 0 ) {
+                    charsToTake = sizeof(buffer) - 1;
+                    break;
+                }
+            }
+        }
+        else if ( remainingLength < charsToTake ) {
+            charsToTake = remainingLength;
+        }
+
+        Q_strncpyz( buffer, p, charsToTake + 1 );
+        ri.Printf( PRINT_ALL, "%s", buffer );
+        remainingLength -= charsToTake;
+        p += charsToTake;
+    }
+}
+
+/*
+================
+GfxInfo
+
+Prints persistent rendering configuration
+================
+*/
+static void GfxInfo ( void )
+{
+    const char *fsstrings[] = { "windowed", "fullscreen" };
+    const char *fs;
+    int mode;
+
+    ri.Printf( PRINT_ALL, "VK_VENDOR: %s\n", vk.vendor_string );
+    ri.Printf( PRINT_ALL, "VK_RENDERER: %s\n", vk.renderer_string );
+    ri.Printf( PRINT_ALL, "VK_VERSION: %s\n", vk.version_string );
+
+    ri.Printf( PRINT_ALL, "\nVK_DEVICE_EXTENSIONS:\n" );
+    R_PrintLongString( vk.device_extensions_string );
+
+    ri.Printf( PRINT_ALL, "\n\nVK_INSTANCE_EXTENSIONS:\n" );
+    R_PrintLongString( vk.instance_extensions_string );
+
+    ri.Printf( PRINT_ALL, "\n\nVK_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize );
+    ri.Printf( PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.maxActiveTextures );
+    ri.Printf( PRINT_ALL, "\nPIXELFORMAT: color(%d-bits) Z(%d-bit) stencil(%d-bits)\n", 
+        glConfig.colorBits, glConfig.depthBits, glConfig.stencilBits );
+
+    ri.Printf( PRINT_ALL, " presentation: %s\n", vk_format_string( vk.present_format.format ) );
+    if ( vk.color_format != vk.present_format.format )
+        ri.Printf( PRINT_ALL, " color: %s\n", vk_format_string( vk.color_format ));
+  
+    if ( vk.capture_format != vk.present_format.format || vk.capture_format != vk.color_format )
+        ri.Printf( PRINT_ALL, " capture: %s\n", vk_format_string( vk.capture_format ) );
+
+    ri.Printf( PRINT_ALL, " depth: %s\n", vk_format_string( vk.depth_format ) );
+
+    if ( glConfig.isFullscreen )
+    {
+        const char *modefs = ri.Cvar_VariableString( "r_modeFullscreen" );
+        if (*modefs)
+            mode = atoi(modefs);
+        else
+            mode = ri.Cvar_VariableIntegerValue( "r_mode" );
+        fs = fsstrings[1];
+    }
+    else
+    {
+        mode = ri.Cvar_VariableIntegerValue( "r_mode" );
+        fs = fsstrings[0];
+    }
+
+    if ( glConfig.vidWidth != gls.windowWidth || glConfig.vidHeight != gls.windowHeight )
+        ri.Printf( PRINT_ALL, "RENDER: %d x %d, MODE: %d, %d x %d %s hz:", glConfig.vidWidth, glConfig.vidHeight, mode, gls.windowWidth, gls.windowHeight, fs );
+    else
+        ri.Printf( PRINT_ALL, "MODE: %d, %d x %d %s hz:", mode, gls.windowWidth, gls.windowHeight, fs );
+
+    if ( glConfig.displayFrequency )
+        ri.Printf( PRINT_ALL, " %d\n", glConfig.displayFrequency );
+    else
+        ri.Printf( PRINT_ALL, " N/A\n" );
+}
+
+
+/*
+================
+VarInfo
+
+Prints info that may change every R_Init() call
+================
+*/
+static void VarInfo( void )
+{
+    int displayRefresh;
+    const char *enablestrings[] = { "disabled", "enabled" };
+
+    displayRefresh = ri.Cvar_VariableIntegerValue( "r_displayRefresh" );
+    if ( displayRefresh )
+        ri.Printf( PRINT_ALL, "Display refresh set to %d\n", displayRefresh );
+
+    if ( tr.world )
+        ri.Printf( PRINT_ALL, "Light Grid size set to (%.2f %.2f %.2f)\n", tr.world->lightGridSize[0], tr.world->lightGridSize[1], tr.world->lightGridSize[2] );
+
+    if ( glConfig.deviceSupportsGamma)
+        ri.Printf( PRINT_ALL, "GAMMA: hardware w/ %d overbright bits\n", tr.overbrightBits );
+    else
+        ri.Printf( PRINT_ALL, "GAMMA: software w/ %d overbright bits\n", tr.overbrightBits );
+
+    ri.Printf( PRINT_ALL, "texturemode: %s\n", r_textureMode->string );
+    ri.Printf( PRINT_ALL, "texture bits: %d\n", r_texturebits->integer ? r_texturebits->integer : 32 );
+    ri.Printf( PRINT_ALL, "picmip: %d%s\n", r_picmip->integer, r_nomip->integer ? ", worldspawn only" : "" );
+    ri.Printf( PRINT_ALL, "anisotropic filtering: %s  ", enablestrings[(r_ext_texture_filter_anisotropic->integer != 0) && vk.maxAnisotropy] );
+    if ( r_ext_texture_filter_anisotropic->integer != 0 && vk.maxAnisotropy )
+    {
+        if ( Q_isintegral( r_ext_texture_filter_anisotropic->value ) )
+            ri.Printf( PRINT_ALL, "(%i of ", (int)r_ext_texture_filter_anisotropic->value );
+        else
+            ri.Printf( PRINT_ALL, "(%f of ", r_ext_texture_filter_anisotropic->value );
+
+        if ( Q_isintegral( vk.maxAnisotropy ) )
+            ri.Printf( PRINT_ALL, "%i)\n", (int)vk.maxAnisotropy );
+        else
+            ri.Printf( PRINT_ALL, "%f)\n", vk.maxAnisotropy );
+    }
+
+    if ( r_vertexLight->integer )
+        ri.Printf( PRINT_ALL, "HACK: using vertex lightmap approximation\n" );
+}
+
+/*
+===============
+GfxInfo_f
+===============
+*/
+void GfxInfo_f( void )
+{
+    GfxInfo();
+    VarInfo();
+}
+
+void vk_info_f( void ) {
+#ifdef USE_VK_STATS
+    ri.Printf(PRINT_ALL, "max_vertex_usage: %iKb\n", (int)((vk.stats.vertex_buffer_max + 1023) / 1024));
+    ri.Printf(PRINT_ALL, "max_push_size: %ib\n", vk.stats.push_size_max);
+
+    ri.Printf(PRINT_ALL, "pipeline handles: %i\n", vk.pipeline_create_count);
+    ri.Printf(PRINT_ALL, "pipeline descriptors: %i, base: %i\n", vk.pipelines_count, vk.pipelines_world_base);
+    ri.Printf(PRINT_ALL, "image chunks: %i\n", vk_world.num_image_chunks);
+#else
+    ri.Printf(PRINT_ALL, "vk_info statistics are not enabled in this build.\n");
+#endif
 }

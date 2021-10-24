@@ -37,8 +37,6 @@ glstate_t	glState;
 window_t	window;
 glstatic_t	gls;
 
-//static void GfxInfo_f( void );
-
 cvar_t	*r_verbose;
 cvar_t	*r_ignore;
 
@@ -218,8 +216,8 @@ cvar_t	*r_vbo;
 // the main view, all the 3D icons, etc
 #define	DEFAULT_MAX_POLYS		600
 #define	DEFAULT_MAX_POLYVERTS	3000
-cvar_t	*r_maxpolys;
-cvar_t	*r_maxpolyverts;
+static cvar_t	*r_maxpolys;
+static cvar_t	*r_maxpolyverts;
 int		max_polys;
 int		max_polyverts;
 
@@ -706,44 +704,6 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 	return (const void*)(cmd + 1);
 }
 
-/*
-================
-R_PrintLongString
-
-Workaround for ri.Printf's 1024 characters buffer limit.
-================
-*/
-void R_PrintLongString( const char *string )
-{
-	char buffer[1024];
-	const char *p = string;
-	int remainingLength = strlen(string);
-
-	while (remainingLength > 0)
-	{
-		// Take as much characters as possible from the string without splitting words between buffers
-		// This avoids the client console splitting a word up when one half fits on the current line,
-		// but the second half would have to be written on a new line
-		int charsToTake = sizeof(buffer) - 1;
-		if (remainingLength > charsToTake) {
-			while (p[charsToTake - 1] > ' ' && p[charsToTake] > ' ') {
-				charsToTake--;
-				if (charsToTake == 0) {
-					charsToTake = sizeof(buffer) - 1;
-					break;
-				}
-			}
-		} else if (remainingLength < charsToTake) {
-			charsToTake = remainingLength;
-		}
-
-		Q_strncpyz( buffer, p, charsToTake + 1 );
-		vk_debug("%s", buffer );
-		remainingLength -= charsToTake;
-		p += charsToTake;
-	}
-}
-
 void R_RemapSkyShader_f ( void ) {
 	int num;
 
@@ -781,14 +741,15 @@ static consoleCommand_t	commands[] = {
 	{ "screenshot",			R_ScreenShot_f },
 	{ "screenshot_png",		R_ScreenShot_f },
 	{ "screenshot_tga",		R_ScreenShot_f },
-	//{ "gfxinfo",			GfxInfo_f },
+	{ "gfxinfo",			GfxInfo_f },
 	{ "r_we",				R_WorldEffect_f },
 	{ "imagecacheinfo",		RE_RegisterImages_Info_f },
 	{ "modellist",			R_Modellist_f },
 	{ "modelcacheinfo",		RE_RegisterModels_Info_f },
 	{ "r_cleardecals",		RE_ClearDecals },
 	{ "remapSky",			R_RemapSkyShader_f },
-	{ "clearRemaps",		R_ClearRemaps_f }
+	{ "clearRemaps",		R_ClearRemaps_f },
+	{ "vkinfo",				vk_info_f }
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );

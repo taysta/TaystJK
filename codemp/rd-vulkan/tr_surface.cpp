@@ -1541,7 +1541,7 @@ Just copy the grid of points and triangulate
 void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 	int		i, j;
 	float	*xyz, *normal;
-	float	*texCoords0, * texCoords1, * texCoords2, * texCoords3, * texCoords4;
+	float	*texCoords0, *texCoords1, *texCoords2, *texCoords3, *texCoords4;
 	unsigned char *color;
 	drawVert_t	*dv;
 	int		rows, irows, vrows;
@@ -1611,7 +1611,6 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 	}
 	heightTable[lodHeight] = cv->height-1;
 	lodHeight++;
-
 
 	// very large grids may have more points or indexes than can be fit
 	// in the tess structure, so we may have to issue it in multiple passes
@@ -1708,7 +1707,6 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 					normal[2] = dv->normal[2];
 				}
 				normal += 4;
-				//texCoords0 += 2;// *NUM_TEX_COORDS;
 
 				*(unsigned *)color = ComputeFinalVertexColor((byte *)dv->color);
 				color += 4;

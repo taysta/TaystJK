@@ -29,7 +29,7 @@ Logs comments to specific vulkan log
 ================
 */
 void QDECL vk_debug( const char *msg, ... ) {
-//#ifndef NDEBUG
+#ifdef _DEBUG
 	FILE* fp;
 	va_list         argptr;
 	char            text[1024];
@@ -41,15 +41,17 @@ void QDECL vk_debug( const char *msg, ... ) {
 	fp = fopen("./vk_log.log", "a");
 	fprintf(fp, text);
 	fclose(fp);
-//#endif
+#endif
+	return;
 }
 
+#ifdef USE_VK_VALIDATION
 /*
 ================
 Vulkan validation layer debug callback
 ================
 */
-#ifndef NDEBUG
+
 VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
 	VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT object_type,
 	uint64_t object, size_t location, int32_t message_code,
@@ -145,7 +147,7 @@ void DrawTris( shaderCommands_t *pInput){
 	}
 
 	vk_bind_pipeline(pipeline);
-    vk_draw_geometry(DEPTH_RANGE_ZERO, VK_TRUE);
+    vk_draw_geometry(DEPTH_RANGE_ZERO, qtrue);
 }
 
 /*
@@ -293,7 +295,7 @@ void RB_ShowImages ( image_t** const pImg, uint32_t numImages )
 
 		vk_bind_pipeline(vk.std_pipeline.images_debug_pipeline);
 		vk_bind_geometry(TESS_XYZ | TESS_RGBA0 | TESS_ST0);
-		vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
+		vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
 	}
 
 	tess.numIndexes = 0;

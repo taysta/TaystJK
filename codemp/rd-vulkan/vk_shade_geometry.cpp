@@ -89,6 +89,10 @@ void vk_update_mvp( const float *m ) {
 
 	qvkCmdPushConstants(vk.cmd->command_buffer, vk.pipeline_layout, 
 		VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(push_constants), push_constants);
+
+#ifdef USE_VK_STATS
+	vk.stats.push_size += sizeof(push_constants);
+#endif
 }
 
 void vk_set_2d( void ) 
@@ -497,13 +501,16 @@ void vk_init_descriptors( void ) {
 
 void vk_create_vertex_buffer( VkDeviceSize size )
 {
-	int i;
-	void *data;
-	vk_debug("Create vertex buffer: vk.cmd->vertex_buffer \n");
-	VkDeviceSize vertex_buffer_offset;
 	VkMemoryRequirements vb_memory_requirements;
-
+	VkDeviceSize vertex_buffer_offset;
+	VkMemoryAllocateInfo alloc_info;
 	VkBufferCreateInfo desc;
+	uint32_t memory_type_bits;
+	void *data;
+	int i;
+
+	vk_debug("Create vertex buffer: vk.cmd->vertex_buffer \n");
+	
 	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	desc.pNext = NULL;
 	desc.flags = 0;
@@ -521,9 +528,8 @@ void vk_create_vertex_buffer( VkDeviceSize size )
 		qvkGetBufferMemoryRequirements(vk.device, vk.tess[i].vertex_buffer, &vb_memory_requirements);
 	}
 
-	uint32_t memory_type_bits = vb_memory_requirements.memoryTypeBits;
+	memory_type_bits = vb_memory_requirements.memoryTypeBits;
 
-	VkMemoryAllocateInfo alloc_info;
 	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = vb_memory_requirements.size * NUM_COMMAND_BUFFERS;
@@ -549,6 +555,8 @@ void vk_create_vertex_buffer( VkDeviceSize size )
 
 	vk.geometry_buffer_size = vb_memory_requirements.size;
 	vk.geometry_buffer_size_new = 0;
+
+	Com_Memset(&vk.stats, 0, sizeof(vk.stats));
 }
 
 void vk_reset_descriptor( int index )
@@ -612,7 +620,7 @@ void vk_bind_pipeline( uint32_t pipeline ) {
 	//vk_world.dirty_depth_attachment = VK_TRUE;
 }
 
-void vk_draw_geometry( Vk_Depth_Range depRg, VkBool32 indexed )
+void vk_draw_geometry( Vk_Depth_Range depRg, qboolean indexed )
 {
 	VkViewport viewport;
 	VkRect2D scissor_rect;
@@ -1081,7 +1089,7 @@ static void RB_FogPass( void ) {
 	vk_set_fog_params(&uniform, &fog_stage);
 	vk_push_uniform(&uniform);
 	vk_update_descriptor(3, tr.fogImage->descriptor_set);
-	vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
+	vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
 #else
 	const fog_t *fog;
 	int			i;

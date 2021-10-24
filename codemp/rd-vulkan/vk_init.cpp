@@ -502,7 +502,7 @@ __cleanup:
 	if (vk.surface != VK_NULL_HANDLE)
 		qvkDestroySurfaceKHR(vk.instance, vk.surface, NULL);
 
-#ifdef _DEBUG
+#ifdef USE_VK_VALIDATION
 	if (qvkDestroyDebugReportCallbackEXT && vk.debug_callback)
 		qvkDestroyDebugReportCallbackEXT(vk.instance, vk.debug_callback, NULL);
 #endif

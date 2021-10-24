@@ -167,7 +167,7 @@ static qboolean vk_used_instance_extension( const char *ext )
     if (Q_stricmp(ext, VK_KHR_SWAPCHAIN_EXTENSION_NAME) == 0)
         return qtrue;
 
-#ifdef _DEBUG
+#ifdef USE_VK_VALIDATION
     if (Q_stricmp(ext, VK_EXT_DEBUG_REPORT_EXTENSION_NAME) == 0)
         return qtrue;
 #endif
@@ -181,7 +181,7 @@ static qboolean vk_used_instance_extension( const char *ext )
 
 static void vk_create_instance( void )
 {
-#ifndef NDEBUG
+#ifdef USE_VK_VALIDATION
     const char *validation_layer_name_lunarg = "VK_LAYER_LUNARG_standard_validation";
     const char *validation_layer_name_khronos = "VK_LAYER_KHRONOS_validation"; // causes lower fps?
 #endif
@@ -189,8 +189,9 @@ static void vk_create_instance( void )
     VkApplicationInfo appInfo;
     VkInstanceCreateInfo desc;
     VkExtensionProperties *extension_properties;
-    uint32_t i, n, count, extension_count;
-    const char **extension_names, *ext;
+    uint32_t i, n, len, count, extension_count;
+    const char **extension_names, *ext, *end;
+	char *str;
 
 	vk_debug("----- Create Instance -----\n");
 
@@ -212,8 +213,27 @@ static void vk_create_instance( void )
     extension_names = (const char**)malloc(sizeof(char*) * (count));
 
     VK_CHECK(qvkEnumerateInstanceExtensionProperties(NULL, &count, extension_properties));
+
+	// fill vk.instance_extensions_string
+	str = vk.instance_extensions_string; *str = '\0';
+	end = &vk.instance_extensions_string[sizeof(vk.instance_extensions_string) - 1];
+
     for (i = 0; i < count; i++) {
         ext = extension_properties[i].extensionName;
+
+		// add the device extension to vk.instance_extensions_string
+		{
+			if (i != 0) {
+				if (str + 1 >= end)
+					continue;
+				str = Q_stradd(str, " ");
+			}
+			len = (uint32_t)strlen(ext);
+			if (str + len >= end)
+				continue;
+			str = Q_stradd(str, ext);
+		}
+
         if (!vk_used_instance_extension(ext)) {
             continue;
         }
@@ -228,8 +248,6 @@ static void vk_create_instance( void )
         extension_names[extension_count++] = ext;
     }
 
-	vk_debug("----- Total %d instance extensions used. -----\n", extension_count);
-
     // create instance
     desc.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     desc.pNext = NULL;
@@ -238,7 +256,7 @@ static void vk_create_instance( void )
     desc.enabledExtensionCount = extension_count;
     desc.ppEnabledExtensionNames = extension_names;
 
-#ifndef NDEBUG
+#ifdef USE_VK_VALIDATION
     desc.enabledLayerCount = 1;
     desc.ppEnabledLayerNames = &validation_layer_name_lunarg;
 
@@ -465,24 +483,6 @@ qboolean vk_select_surface_format( VkPhysicalDevice physical_device, VkSurfaceKH
         vk.capture_format = vk.color_format;
 }
 
-static const char *renderer_name( const VkPhysicalDeviceProperties *props ) {
-	static char buf[sizeof(props->deviceName) + 64];
-	const char	*device_type;
-
-	switch (props->deviceType) {
-		case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: device_type = "Integrated"; break;
-		case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: device_type = "Discrete"; break;
-		case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: device_type = "Virtual"; break;
-		case VK_PHYSICAL_DEVICE_TYPE_CPU: device_type = "CPU"; break;
-		default: device_type = "OTHER"; break;
-	}
-
-	Com_sprintf(buf, sizeof(buf), "%s %s, 0x%04x",
-		device_type, props->deviceName, props->deviceID);
-
-	return buf;
-}
-
 static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_index ) {
 
 	ri.Printf(PRINT_ALL, "selected physical device: %i\n\n", device_index);
@@ -527,9 +527,10 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 
 	// create VkDevice
 	{
+		char *str;
 		const char *device_extension_list[4];
 		uint32_t device_extension_count;
-		const char *ext;
+		const char *ext, *end;
 		const float priority = 1.0;
 		VkExtensionProperties *extension_properties;
 		VkDeviceQueueCreateInfo queue_desc;
@@ -541,15 +542,16 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 		qboolean dedicatedAllocation = qfalse;
 		qboolean memoryRequirements2 = qfalse;
 		qboolean debugMarker = qfalse;
-		uint32_t i, count = 0;
+		uint32_t i, len, count = 0;
 
 		VK_CHECK(qvkEnumerateDeviceExtensionProperties(physical_device, NULL, &count, NULL));
 		extension_properties = (VkExtensionProperties*)malloc(count * sizeof(VkExtensionProperties));
 		VK_CHECK(qvkEnumerateDeviceExtensionProperties(physical_device, NULL, &count, extension_properties));
 
 		// fill glConfig.extensions_string
-		//str = glConfig.extensions_string; *str = '\0';
-		//end = &glConfig.extensions_string[sizeof(glConfig.extensions_string) - 1];
+		str = vk.device_extensions_string; *str = '\0';
+		end = &vk.device_extensions_string[sizeof(vk.device_extensions_string) - 1];
+		glConfig.extensions_string = (const char*)vk.device_extensions_string;
 
 		for (i = 0; i < count; i++) {
 			ext = extension_properties[i].extensionName;
@@ -567,7 +569,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			}
 
 			// add this device extension to glConfig
-			/*if (i != 0) {
+			if (i != 0) {
 				if (str + 1 >= end)
 					continue;
 				str = Q_stradd(str, " ");
@@ -575,7 +577,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			len = (uint32_t)strlen(ext);
 			if (str + len >= end)
 				continue;
-			str = Q_stradd(str, ext);*/
+			str = Q_stradd(str, ext);
 		}
 
 		free(extension_properties);
@@ -726,7 +728,7 @@ void vk_init_library( void )
 	INIT_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR)
 	INIT_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR)
 
-#ifdef _DEBUG
+#ifdef USE_VK_VALIDATION
 	INIT_INSTANCE_FUNCTION_EXT(vkCreateDebugReportCallbackEXT)
 	INIT_INSTANCE_FUNCTION_EXT(vkDestroyDebugReportCallbackEXT)
 
@@ -909,7 +911,7 @@ void vk_deinit_library( void )
 	qvkGetPhysicalDeviceSurfaceFormatsKHR = NULL;
 	qvkGetPhysicalDeviceSurfacePresentModesKHR = NULL;
 	qvkGetPhysicalDeviceSurfaceSupportKHR = NULL;
-#ifdef _DEBUG
+#ifdef USE_VK_VALIDATION
 	qvkCreateDebugReportCallbackEXT = NULL;
 	qvkDestroyDebugReportCallbackEXT = NULL;
 #endif
@@ -1006,26 +1008,26 @@ qboolean vk_surface_format_color_depth( VkFormat format, int *r, int *g, int *b 
 	switch (format) {
 		// Common formats from https://vulkan.gpuinfo.org/listsurfaceformats.php
 		FORMAT_DEPTH(B8G8R8A8_UNORM, 255, 255, 255)
-			FORMAT_DEPTH(B8G8R8A8_SRGB, 255, 255, 255)
-			FORMAT_DEPTH(A2B10G10R10_UNORM_PACK32, 1023, 1023, 1023)
-			FORMAT_DEPTH(R8G8B8A8_UNORM, 255, 255, 255)
-			FORMAT_DEPTH(R8G8B8A8_SRGB, 255, 255, 255)
-			FORMAT_DEPTH(A2R10G10B10_UNORM_PACK32, 1023, 1023, 1023)
-			FORMAT_DEPTH(R5G6B5_UNORM_PACK16, 31, 63, 31)
-			FORMAT_DEPTH(R8G8B8A8_SNORM, 255, 255, 255)
-			FORMAT_DEPTH(A8B8G8R8_UNORM_PACK32, 255, 255, 255)
-			FORMAT_DEPTH(A8B8G8R8_SNORM_PACK32, 255, 255, 255)
-			FORMAT_DEPTH(A8B8G8R8_SRGB_PACK32, 255, 255, 255)
-			FORMAT_DEPTH(R16G16B16A16_UNORM, 65535, 65535, 65535)
-			FORMAT_DEPTH(R16G16B16A16_SNORM, 65535, 65535, 65535)
-			FORMAT_DEPTH(B5G6R5_UNORM_PACK16, 31, 63, 31)
-			FORMAT_DEPTH(B8G8R8A8_SNORM, 255, 255, 255)
-			FORMAT_DEPTH(R4G4B4A4_UNORM_PACK16, 15, 15, 15)
-			FORMAT_DEPTH(B4G4R4A4_UNORM_PACK16, 15, 15, 15)
-			FORMAT_DEPTH(A1R5G5B5_UNORM_PACK16, 31, 31, 31)
-			FORMAT_DEPTH(R5G5B5A1_UNORM_PACK16, 31, 31, 31)
-			FORMAT_DEPTH(B5G5R5A1_UNORM_PACK16, 31, 31, 31)
-	default:
-		*r = 255; *g = 255; *b = 255; return qfalse;
+		FORMAT_DEPTH(B8G8R8A8_SRGB, 255, 255, 255)
+		FORMAT_DEPTH(A2B10G10R10_UNORM_PACK32, 1023, 1023, 1023)
+		FORMAT_DEPTH(R8G8B8A8_UNORM, 255, 255, 255)
+		FORMAT_DEPTH(R8G8B8A8_SRGB, 255, 255, 255)
+		FORMAT_DEPTH(A2R10G10B10_UNORM_PACK32, 1023, 1023, 1023)
+		FORMAT_DEPTH(R5G6B5_UNORM_PACK16, 31, 63, 31)
+		FORMAT_DEPTH(R8G8B8A8_SNORM, 255, 255, 255)
+		FORMAT_DEPTH(A8B8G8R8_UNORM_PACK32, 255, 255, 255)
+		FORMAT_DEPTH(A8B8G8R8_SNORM_PACK32, 255, 255, 255)
+		FORMAT_DEPTH(A8B8G8R8_SRGB_PACK32, 255, 255, 255)
+		FORMAT_DEPTH(R16G16B16A16_UNORM, 65535, 65535, 65535)
+		FORMAT_DEPTH(R16G16B16A16_SNORM, 65535, 65535, 65535)
+		FORMAT_DEPTH(B5G6R5_UNORM_PACK16, 31, 63, 31)
+		FORMAT_DEPTH(B8G8R8A8_SNORM, 255, 255, 255)
+		FORMAT_DEPTH(R4G4B4A4_UNORM_PACK16, 15, 15, 15)
+		FORMAT_DEPTH(B4G4R4A4_UNORM_PACK16, 15, 15, 15)
+		FORMAT_DEPTH(A1R5G5B5_UNORM_PACK16, 31, 31, 31)
+		FORMAT_DEPTH(R5G5B5A1_UNORM_PACK16, 31, 31, 31)
+		FORMAT_DEPTH(B5G5R5A1_UNORM_PACK16, 31, 31, 31)
+		default:
+			*r = 255; *g = 255; *b = 255; return qfalse;
 	}
 }

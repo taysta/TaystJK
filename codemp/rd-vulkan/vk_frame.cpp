@@ -861,16 +861,23 @@ void vk_begin_frame( void )
     }
 #endif
 
+#ifdef USE_VK_STATS
+    if (vk.cmd->vertex_buffer_offset > vk.stats.vertex_buffer_max) {
+        vk.stats.vertex_buffer_max = vk.cmd->vertex_buffer_offset;
+    }
+
+    if (vk.stats.push_size > vk.stats.push_size_max) {
+        vk.stats.push_size_max = vk.stats.push_size;
+    }
+#endif
 
     vk.cmd->last_pipeline = VK_NULL_HANDLE;
     backEnd.screenMapDone = qfalse;
 
-    // Begin render pass.
     if (vk_find_screenmap_drawsurfs()) {
         vk_begin_screenmap_render_pass();
     }
     else {
-        
         vk_begin_main_render_pass();
     }
 
@@ -891,6 +898,11 @@ void vk_begin_frame( void )
     if (vk.maxBoundDescriptorSets >= 6) {
         vk_update_descriptor(4, tr.whiteImage->descriptor_set);
     }
+
+#ifdef USE_VK_STATS
+    // other stats
+    vk.stats.push_size = 0;
+#endif
 }
 
 void vk_end_render_pass( void )
@@ -990,6 +1002,9 @@ void vk_release_resources( void ) {
     }
 
     Com_Memset(vk.cmd->buf_offset, 0, sizeof(vk.cmd->buf_offset));
+    Com_Memset(vk.cmd->vbo_offset, 0, sizeof(vk.cmd->vbo_offset));
+
+    Com_Memset( &vk.stats, 0, sizeof( vk.stats ) );
 }
 
 void vk_end_frame( void )

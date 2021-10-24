@@ -4538,7 +4538,7 @@ static void CreateInternalShaders( void )
 	stages[0].bundle[0].image[0] = tr.defaultImage;
 	stages[0].active = qtrue;
 	stages[0].stateBits = GLS_DEFAULT;
-	shader.sort = SS_STENCIL_SHADOW;
+	shader.sort = SS_BANNER;
 	tr.shadowShader = FinishShader();
 
 	InitShader("<cinematic>", lightmapsNone, stylesDefault);
@@ -4556,7 +4556,6 @@ static void CreateExternalShaders( void )
 	tr.projectionShadowShader->sort = SS_BANNER;
 	// investigate why default sort order gives issues with saber sort order.
 	//tr.projectionShadowShader->sort = SS_STENCIL_SHADOW;
-
 
 	//tr.flareShader = R_FindShader("flareShader", lightmapsNone, stylesDefault, qtrue);
 	tr.flareShader = R_FindShader("gfx/misc/Flareparticle", lightmapsNone, stylesDefault, qtrue);

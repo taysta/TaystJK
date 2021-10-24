@@ -49,6 +49,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //#define VK_NO_PROTOTYPES
 #include "vulkan/vulkan.h"
 
+#if defined (_DEBUG)
+#if defined (_WIN32)
+#define USE_VK_VALIDATION
+#endif
+#endif
+
 #ifndef MAX
 #define MAX(x,y) ((x)>(y)?(x):(y))
 #endif
@@ -56,8 +62,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #ifndef MIN
 #define MIN(x,y) ((x)<(y)?(x):(y))
 #endif
+
 //#define USE_REVERSED_DEPTH
 //#define USE_BUFFER_CLEAR
+//#define USE_VANILLA_SHADOWFINISH
+#define USE_VK_STATS
 
 #define NUM_COMMAND_BUFFERS				2
 #define VK_NUM_BLOOM_PASSES				4
@@ -106,6 +115,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // extra math
 #define DotProduct4( a , b )			((a)[0]*(b)[0] + (a)[1]*(b)[1] + (a)[2]*(b)[2] + (a)[3]*(b)[3])
 #define VectorScale4( a , b , c )		((c)[0]=(a)[0]*(b),(c)[1]=(a)[1]*(b),(c)[2]=(a)[2]*(b),(c)[3]=(a)[3]*(b))
+#define Vector4Set( v, x, y, z, w )		((v)[0]=(x),(v)[1]=(y),(v)[2]=(z),v[3]=(w))
+#define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
 #define LERP( a, b, w )					((a)*(1.0f-(w))+(b)*(w))
 #define LUMA( r, g, b )					(0.2126f*(r)+0.7152f*(g)+0.0722f*(b))
 #ifndef SGN
@@ -258,7 +269,7 @@ extern PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR	qvkGetPhysicalDeviceSurface
 extern PFN_vkGetPhysicalDeviceSurfaceFormatsKHR		    qvkGetPhysicalDeviceSurfaceFormatsKHR;
 extern PFN_vkGetPhysicalDeviceSurfacePresentModesKHR	qvkGetPhysicalDeviceSurfacePresentModesKHR;
 extern PFN_vkGetPhysicalDeviceSurfaceSupportKHR		    qvkGetPhysicalDeviceSurfaceSupportKHR;
-#ifndef NDEBUG
+#ifdef USE_VK_VALIDATION
 extern PFN_vkCreateDebugReportCallbackEXT				qvkCreateDebugReportCallbackEXT;
 extern PFN_vkDestroyDebugReportCallbackEXT				qvkDestroyDebugReportCallbackEXT;
 #endif
@@ -507,13 +518,20 @@ typedef struct vk_tess_s {
 // Vk_Instance contains engine-specific vulkan resources that persist entire renderer lifetime.
 // This structure is initialized/deinitialized by vk_initialize/vk_shutdown functions correspondingly.
 typedef struct {
-	VkInstance				instance;
-	VkPhysicalDevice		physical_device;
-	VkSurfaceKHR			surface;
-	VkSurfaceFormatKHR		base_format;
-	VkSurfaceFormatKHR		present_format;
+	VkInstance			instance;
+	VkPhysicalDevice	physical_device;
+	VkSurfaceKHR		surface;
+	VkSurfaceFormatKHR	base_format;
+	VkSurfaceFormatKHR	present_format;
 
-#ifndef NDEBUG
+	// to prevent changes to rd-common, move these here
+	char			renderer_string[MAX_STRING_CHARS];
+	char			vendor_string[MAX_STRING_CHARS];
+	char			version_string[MAX_STRING_CHARS];
+	char			device_extensions_string[MAX_STRING_CHARS];
+	char			instance_extensions_string[MAX_STRING_CHARS];
+
+#ifdef USE_VK_VALIDATION
 	VkDebugReportCallbackEXT debug_callback;
 #endif
 
@@ -577,7 +595,7 @@ typedef struct {
 	} render_pass;
 
 	struct {
-		VkImage image;
+		VkImage		image;
 		VkImageView image_view;
 	} capture;
 
@@ -595,6 +613,13 @@ typedef struct {
 		VkBuffer		vertex_buffer;
 		VkDeviceMemory	buffer_memory;
 	} vbo;
+
+	// statistics
+	struct {
+		VkDeviceSize	vertex_buffer_max;
+		uint32_t		push_size;
+		uint32_t		push_size_max;
+	} stats;
 
 	// host visible memory that holds vertex, index and uniform data
 	VkDeviceMemory		geometry_buffer_memory;
@@ -855,7 +880,7 @@ void		vk_bind_index_buffer( VkBuffer buffer, uint32_t offset );
 void		vk_bind_index( void );
 void		vk_bind_index_ext( const int numIndexes, const uint32_t *indexes );
 void		vk_bind_pipeline( uint32_t pipeline );
-void		vk_draw_geometry( Vk_Depth_Range depRg, VkBool32 indexed );
+void		vk_draw_geometry( Vk_Depth_Range depRg, qboolean indexed );
 void		vk_bind_geometry( uint32_t flags );
 void		vk_bind_lighting( int stage, int bundle );
 void		vk_reset_descriptor( int index);
@@ -902,7 +927,10 @@ qboolean	vk_bloom( void );
 const char	*vk_format_string( VkFormat format );
 const char	*vk_result_string( VkResult code );
 const char	*vk_shadertype_string( Vk_Shader_Type code );
+const char	*renderer_name( const VkPhysicalDeviceProperties *props );
 void		vk_get_vulkan_properties( VkPhysicalDeviceProperties *props );
+void		vk_info_f( void );
+void		GfxInfo_f( void );
 
 // debug
 void		vk_debug( const char *msg, ... );
@@ -926,6 +954,6 @@ static void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReport
 
 #define VK_CHECK( function_call ) { \
 	VkResult result = function_call; \
-	if ( result != VK_SUCCESS ) \
+	if ( result < 0 ) \
 		vk_debug( "Vulkan: error %s returned by %s \n", vk_result_string( result ), #function_call ); \
 }

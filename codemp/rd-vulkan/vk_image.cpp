@@ -359,7 +359,7 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 	}
 	else {
 		if (image->flags & IMGFLAG_COLORSHIFT) {
-			byte* p = data;
+			byte *p = data;
 			int i, n = width * height;
 
 			for (i = 0; i < n; i++, p += 4) {
@@ -623,9 +623,11 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 	if (chunk == NULL) {
 		VkMemoryAllocateInfo alloc_info;
 		VkDeviceMemory memory;
+		VkResult result;
 
 		if (vk_world.num_image_chunks >= MAX_IMAGE_CHUNKS) {
-			ri.Error(ERR_FATAL, "Vulkan: image chunk limit has been reached");
+			ri.Error(ERR_DROP, "Image chunk limit has been reached");
+			vk_restart_swapchain( __func__ );
 		}
 
 		alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -633,7 +635,12 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		alloc_info.allocationSize = vk.image_chunk_size;
 		alloc_info.memoryTypeIndex = vk_find_memory_type(memory_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-		VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory));
+		result = qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory);
+		
+		if (result < 0) {
+			ri.Error(ERR_DROP, "GPU memory heap overflow");
+			vk_restart_swapchain( __func__ );
+		}
 
 		chunk = &vk_world.image_chunks[vk_world.num_image_chunks];
 		chunk->memory = memory;

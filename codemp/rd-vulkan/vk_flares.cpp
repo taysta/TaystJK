@@ -290,7 +290,7 @@ static float *vk_ortho(	float x1, float x2,
 RB_TestFlare
 ==================
 */
-void RB_TestFlare( flare_t *f ) {
+static void RB_TestFlare( flare_t *f ) {
 	qboolean		visible;
 	float			fade;
 	float			*m;

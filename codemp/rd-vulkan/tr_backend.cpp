@@ -167,6 +167,8 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		backEnd.isHyperspace = qfalse;
 	}
 
+	//glState.faceCulling = -1;		// force face culling to set next time
+
 	// we will only draw a sun if there was sky rendered in this view
 	backEnd.skyRenderedThisView = qfalse;
 
@@ -218,7 +220,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			oldShaderSort = shader->sort;
 #endif
 
-#if 0
+#ifdef USE_VANILLA_SHADOWFINISH
 			if (!didShadowPass && shader && shader->sort > SS_BANNER)
 			{
 				RB_ShadowFinish();
@@ -287,7 +289,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	//vk_update_mvp();
 	vk_set_depthrange(DEPTH_RANGE_NORMAL);
 
-#if 0
+#ifdef USE_VANILLA_SHADOWFINISH
 	if (!didShadowPass)
 	{
 		RB_ShadowFinish();
@@ -847,7 +849,10 @@ const void	*RB_DrawSurfs( const void *data ) {
 		RB_DrawSun(0.1f, tr.sunShader);
 	}
 
+#ifndef USE_VANILLA_SHADOWFINISH
 	RB_ShadowFinish();
+#endif
+
 	RB_RenderFlares();
 
 #ifdef USE_PMLIGHT

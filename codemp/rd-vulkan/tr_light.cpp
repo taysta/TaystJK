@@ -252,7 +252,7 @@ by the Calc_* functions
 */
 void R_SetupEntityLighting(const trRefdef_t* refdef, trRefEntity_t* ent) {
 	int				i;
-	dlight_t* dl;
+	dlight_t		*dl;
 	float			power;
 	vec3_t			dir;
 	float			d;

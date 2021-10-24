@@ -1306,7 +1306,7 @@ public:
 		vk_bind_pipeline(vk.std_pipeline.worldeffect_pipeline[mBlendMode]);
 		vk_bind_index();
 		vk_bind_geometry(TESS_XYZ | TESS_RGBA0 | TESS_ST0);
-		vk_draw_geometry(DEPTH_RANGE_NORMAL, VK_TRUE);
+		vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
 
 		mParticlesRendered += mParticleCountRender;
 	}
