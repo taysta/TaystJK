@@ -183,7 +183,7 @@ static void vk_render_splash( void )
 	VkImageBlit imageBlit;
 	float ratio;
 
-	ratio = ((float)(SCREEN_WIDTH * gls.windowHeight) / (float)(SCREEN_HEIGHT * gls.windowWidth));
+	ratio = ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
 
 	if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f) {
 		splashImage = R_FindImageFile("menu/splash_16_9", IMGFLAG_CLAMPTOEDGE);
@@ -229,8 +229,8 @@ static void vk_render_splash( void )
 	imageBlit.dstSubresource.mipLevel = 0;
 	imageBlit.dstSubresource.baseArrayLayer = 0;
 	imageBlit.dstSubresource.layerCount = 1;
-	imageBlit.dstOffsets[0] = { 0, 0, 0 };
-	imageBlit.dstOffsets[1] = { gls.captureWidth, gls.captureHeight, 1 };
+	imageBlit.dstOffsets[0] = { vk.blitX0, vk.blitY0, 0 };
+	imageBlit.dstOffsets[1] = { ( gls.windowWidth - vk.blitX0 ), ( gls.windowHeight - vk.blitY0 ), 1 };
 
 	qvkCmdBlitImage(command_buffer, splashImage->handle,
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageBuffer,

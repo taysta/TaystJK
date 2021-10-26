@@ -951,8 +951,6 @@ void R_Register( void )
 #endif
 	r_renderWidth						= ri.Cvar_Get("r_renderWidth",						"800",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
 	r_renderHeight						= ri.Cvar_Get("r_renderHeight",						"600",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
-	ri.Cvar_CheckRange(r_renderWidth, 96, NULL, qtrue);
-	ri.Cvar_CheckRange(r_renderHeight, 72, NULL, qtrue);
 	r_renderScale						= ri.Cvar_Get("r_renderScale",						"0",						CVAR_ARCHIVE_ND | CVAR_LATCH, "Scaling mode to be used with custom render resolution:\n"
 		" 0 - disabled\n"
 		" 1 - nearest filtering, stretch to full size\n"

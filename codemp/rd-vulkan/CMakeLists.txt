@@ -173,9 +173,9 @@ list(APPEND MPVulkanRendererLibraries          ${ZLIB_LIBRARIES})
 list(APPEND MPVulkanRendererIncludeDirectories ${MINIZIP_INCLUDE_DIRS})
 list(APPEND MPVulkanRendererLibraries          ${MINIZIP_LIBRARIES})
 
-find_package(OpenGL REQUIRED)
-set(MPVulkanRendererIncludeDirectories ${MPVulkanRendererIncludeDirectories} ${OPENGL_INCLUDE_DIR})
-set(MPVulkanRendererLibraries ${MPVulkanRendererLibraries} ${OPENGL_LIBRARIES})
+#find_package(OpenGL REQUIRED)
+#set(MPVulkanRendererIncludeDirectories ${MPVulkanRendererIncludeDirectories} ${OPENGL_INCLUDE_DIR})
+#set(MPVulkanRendererLibraries ${MPVulkanRendererLibraries} ${OPENGL_LIBRARIES})
 
 set(MPVulkanRendererIncludeDirectories ${MPVulkanRendererIncludeDirectories} ${OpenJKLibDir})
 add_library(${MPVulkanRenderer} SHARED ${MPVulkanRendererFiles})
