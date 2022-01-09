@@ -11098,6 +11098,14 @@ static void CG_StrafeHelper(centity_t *cent)
 	if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SWOOP || moveStyle == MV_BOTCPM || (moveStyle == MV_SLICK && !onGround)) {//QW, CPM, PJK, WSW, RJCPM have center line
 		if (cg_strafeHelper.integer & SHELPER_CENTER)
 			DrawStrafeLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
+
+        //backwards strafe?
+        if (cg_strafeHelper.integer & SHELPER_REAR) {
+            DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
+            DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
+            DrawStrafeLine(velocityAngle, 180, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //S
+         }
+
 	}
 	if (moveStyle != MV_QW && moveStyle != MV_SWOOP) { //Every style but QW has WA/WD lines
 		if (cg_strafeHelper.integer & SHELPER_WA)
@@ -11186,7 +11194,7 @@ static void CG_DrawAccelMeter(void)
 	}
 	percentAccel = total / (float)PERCENT_SAMPLES;
 
-	//if (cg_draw2D.integer == 2) 
+	//if (cg_draw2D.integer == 2)
 	//percentAccel = actualAccel / (potentialSpeed - cg.currentSpeed);
 
 	//if ( percentAccel ) {
