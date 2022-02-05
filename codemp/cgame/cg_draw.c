@@ -11527,7 +11527,9 @@ static void CG_RaceTimer(void)
 
 	{
 		char timerStr[48] = { 0 };
-		const int time = (cg.time - cg.predictedPlayerState.duelTime);
+        char startStr[48] = { 0 };
+
+        const int time = (cg.time - cg.predictedPlayerState.duelTime);
 		const int minutes = (time / 1000) / 60;
 		const int seconds = (time / 1000) % 60;
 		const int milliseconds = (time % 1000);
@@ -11539,7 +11541,7 @@ static void CG_RaceTimer(void)
 			cg.displacementSamples = 0;
 		}
 
-		if (cg_raceTimer.integer > 1) {
+		if (cg_raceTimer.integer > 1 || cg_raceStart.integer) {
 			if (time > 0) {
 				if (!cg.startSpeed)
 					cg.startSpeed = (int)(cg.currentSpeed + 0.5f);
@@ -11560,12 +11562,19 @@ static void CG_RaceTimer(void)
 		if (cg_raceTimer.integer > 1) {
 			if (cg.displacementSamples)
 				Q_strcat(timerStr, sizeof(timerStr), va("Max: %i\nAvg: %i", (int)(cg.maxSpeed + 0.5f), cg.displacement / cg.displacementSamples));
-			if (time < 3000)
+			if (time < 3000 && !cg_raceStart.integer)
 				Q_strcat(timerStr, sizeof(timerStr), va("\nStart: %i", cg.startSpeed));
-		}
+
+        }
 
 		CG_Text_Paint(cg_raceTimerX.integer, cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE], timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-	}
+
+		if(cg_raceStart.integer)
+		{
+            Com_sprintf(startStr, sizeof(startStr), "Start: %i", cg.startSpeed);
+            CG_Text_Paint(cg_raceStartX.integer, cg_raceStartY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE], startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        }
+    }
 }
 
 #define ACCEL_SAMPLES 32

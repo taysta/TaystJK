@@ -2101,7 +2101,7 @@ void CG_Say_f( void ) {
 			Com_sprintf(numberStr, sizeof(numberStr), "%02i:%02i", newtime->tm_hour, newtime->tm_min);
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
-		else if (!Q_stricmp(word, "%GS%")) {
+		else if (!Q_stricmp(word, "%J%")) {
             char buf[1024];
             for(int i = 0; i <= cg_speedometerJumps.integer; i++){
                 if(cg.lastGroundSpeeds[i] != 0){
