@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "game/bg_public.h"
 #include "cg_public.h"
 
+
 // The entire cgame module is unloaded and reloaded on each level change,
 // so there is NO persistant data between levels on the client side.
 // If you absolutely need something stored, it can either be kept
@@ -1278,7 +1279,8 @@ Ghoul2 Insert End
 	int					lastGroundTime;//japro
 	qboolean			firstTimeInAir;
 	float				lastGroundSpeed;
-	float				lastZSpeed;
+	float               lastGroundSpeeds[100];
+    float				lastZSpeed;
 	int					lastJumpHeightTime;//japro
 	float				lastJumpHeight;
 	int					lastStartTime;//japro
@@ -1390,6 +1392,7 @@ enum
 // stored in the clientInfo_t, itemInfo_t, weaponInfo_t, and powerupInfo_t
 typedef struct cgMedia_s {
 	qhandle_t	charsetShader;
+	qhandle_t	speedsetShader;
 	qhandle_t	whiteShader;
 
 	qhandle_t	loadBarLED;
@@ -2204,12 +2207,14 @@ Ghoul2 Insert End
 //
 // cg_drawtools.c
 //
+void SCR_DrawSmallString( int x, int y, const char *s, int len );
 void CG_FillRect( float x, float y, float width, float height, const float *color );
 void CG_DrawPic( float x, float y, float width, float height, qhandle_t hShader );
 void CG_DrawRotatePic( float x, float y, float width, float height,float angle, qhandle_t hShader );
 void CG_DrawRotatePic2( float x, float y, float width, float height,float angle, qhandle_t hShader );
 void CG_DrawString( float x, float y, const char *string,
 				   float charWidth, float charHeight, const float *modulate );
+extern int ColorIndexFromChar( char ccode );
 
 void CG_DrawNumField (float x, float y, int width, int value, float charWidth, float charHeight, int style, qboolean zeroFill);
 

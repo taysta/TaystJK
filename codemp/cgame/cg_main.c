@@ -2878,6 +2878,7 @@ Ghoul2 Insert End
 
 	// load a few needed things before we do any screen updates
 	cgs.media.charsetShader			= trap->R_RegisterShaderNoMip( "gfx/2d/charsgrid_med" );
+	cgs.media.speedsetShader        = trap->R_RegisterShaderNoMip("gfx/2d/bigchars");
 	cgs.media.whiteShader			= trap->R_RegisterShader( "white" );
 
 	cgs.media.loadBarLED			= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick" );

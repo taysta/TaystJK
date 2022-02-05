@@ -45,6 +45,11 @@ XCVAR_DEF( cg_movementKeysSize,		"1.0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometer,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerX,			"132",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerY,			"459",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumpsX,			"132",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumpsY,			"459",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumps,			"10",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumpsColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayX,		"640",	NULL,					CVAR_ARCHIVE )

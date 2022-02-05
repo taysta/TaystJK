@@ -2007,7 +2007,8 @@ static void CG_AddStrafeTrail_f(void)
 
 void CG_Say_f( void ) {
 	char msg[MAX_SAY_TEXT] = {0};
-	char word[MAX_SAY_TEXT] = {0};
+    char speeds[MAX_SAY_TEXT] = {0};
+    char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
 	int clientNum = -1, messagetype = 0;
@@ -2100,6 +2101,15 @@ void CG_Say_f( void ) {
 			Com_sprintf(numberStr, sizeof(numberStr), "%02i:%02i", newtime->tm_hour, newtime->tm_min);
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
+		else if (!Q_stricmp(word, "%GS%")) {
+            char buf[1024];
+            for(int i = 0; i <= cg_speedometerJumps.integer; i++){
+                if(cg.lastGroundSpeeds[i] != 0){
+                    Q_strcat( buf, sizeof(buf), va( "%.0f ", cg.lastGroundSpeeds[i]));
+                }
+		    }
+            Q_strncpyz(word, buf, sizeof(word));
+        }
 
 		Q_strcat(word, MAX_SAY_TEXT, " ");
 		Q_strcat(msg, MAX_SAY_TEXT, word);
@@ -2212,7 +2222,6 @@ static consoleCommand_t	commands[] = {
 
 	{ "PTelemark",					CG_PTelemark_f },
 	{ "PTele",						CG_PTele_f },
-
 	{ "remapShader",				CG_RemapShader_f },
 	{ "listRemaps",					CG_ListRemaps_f },
 	{ "listEmojis",					CG_ListEmojis_f },
