@@ -1279,7 +1279,7 @@ Ghoul2 Insert End
 	int					lastGroundTime;//japro
 	qboolean			firstTimeInAir;
 	float				lastGroundSpeed;
-	float               lastGroundSpeeds[100];
+	float               lastGroundSpeeds[512];
     float				lastZSpeed;
 	int					lastJumpHeightTime;//japro
 	float				lastJumpHeight;
@@ -1436,6 +1436,18 @@ typedef struct cgMedia_s {
 	qhandle_t	keyLeftOnShader;
 	qhandle_t	keyRightOffShader;
 	qhandle_t	keyRightOnShader;
+    qhandle_t	keyCrouchOffShader2;
+    qhandle_t	keyCrouchOnShader2;
+    qhandle_t	keyJumpOffShader2;
+    qhandle_t	keyJumpOnShader2;
+    qhandle_t	keyBackOffShader2;
+    qhandle_t	keyBackOnShader2;
+    qhandle_t	keyForwardOffShader2;
+    qhandle_t	keyForwardOnShader2;
+    qhandle_t	keyLeftOffShader2;
+    qhandle_t	keyLeftOnShader2;
+    qhandle_t	keyRightOffShader2;
+    qhandle_t	keyRightOnShader2;
 //JAPRO - Clientside - Movement keys - End
 
 	qhandle_t	bloodExplosionShader;//JAPRO - Clientside - Re add cg_blood

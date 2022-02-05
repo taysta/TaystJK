@@ -10931,8 +10931,12 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		return;
 
 	if (cg_strafeHelper.integer & SHELPER_NEWBARS) {
-		Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + cg_strafeHelperCutoff.integer/30, x, (SCREEN_HEIGHT / 2) - cg_strafeHelperCutoff.integer/30, lineWidth, color, 0.75f, 0);
-		//CG_DottedLine( x, 260, x, 220, 1, 100, color, 0.75f ); //240 is center, so 220 - 260 is symetrical on crosshair.'
+	    if(cg_strafeHelperCutoff.integer > 256){
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 4, x, (SCREEN_HEIGHT / 2) - 4, lineWidth, color, 0.75f, 0);
+        } else{
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 20 - cg_strafeHelperCutoff.integer/16, x, (SCREEN_HEIGHT / 2) - 20 + cg_strafeHelperCutoff.integer/16, lineWidth, color, 0.75f, 0);
+            //CG_DottedLine( x, 260, x, 220, 1, 100, color, 0.75f ); //240 is center, so 220 - 260 is symetrical on crosshair.'
+	    }
 	}
 	if (cg_strafeHelper.integer & SHELPER_OLDBARS && active && moveDir != 0) { //Not sure how to deal with multiple lines for W only so just fuck it for now..
 		//Proper way is to tell which line we are closest to aiming at and display the shit for that...
@@ -10941,14 +10945,19 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	if (cg_strafeHelper.integer & SHELPER_OLDSTYLE) {
 		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
 		int heightIn = LINE_HEIGHT;
-		//distance = sqrt( ((320-x)*(320-x)) + ((480-LINE_HEIGHT)*(480-LINE_HEIGHT)) ); 
+		//distance = sqrt( ((320-x)*(320-x)) + ((480-LINE_HEIGHT)*(480-LINE_HEIGHT)) );
 
 		/*if (cutoff > SCREEN_HEIGHT)
 			cutoff = SCREEN_HEIGHT;*/
-		if (cutoff < LINE_HEIGHT + 20) {
+		if (cg_strafeHelperTinyBars.integer) {
             cutoff = LINE_HEIGHT + 15;
             heightIn = LINE_HEIGHT + 5;
-        }
+        } else if (cutoff < LINE_HEIGHT + 20) {
+                cutoff = LINE_HEIGHT + 20;
+        } else if (cutoff > SCREEN_HEIGHT) {
+		        cutoff = SCREEN_HEIGHT;
+		}
+
 		//Com_Printf("Numdots %i\n", distance);
 		//if (distance < 0)
 			//distance = 100;
@@ -11588,7 +11597,7 @@ static void CG_Speedometer(void)
 		static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
 		const float accel = currentSpeed - lastSpeed;
 		float total, avgAccel;
-		int t, i;
+		int t, i, speedometerJumps;
 		unsigned short frameTime;
 		static unsigned short index;
 		static int	previous, lastupdate, jumpsCounter = 0;
@@ -11668,7 +11677,10 @@ static void CG_Speedometer(void)
 
             vec4_t colorGroundSpeed = {1, 1, 1, 1};
             vec4_t colorGroundSpeeds = {1, 1, 1, 1};
-
+            if(cg_speedometerJumps.integer > 256)
+                speedometerJumps = 256;
+            else
+                speedometerJumps = cg_speedometerJumps.integer;
             if (cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE || cg.predictedPlayerState.velocity[2] < 0) { //On ground or Moving down
 				cg.firstTimeInAir = qfalse;
 			}
@@ -11728,8 +11740,8 @@ static void CG_Speedometer(void)
                     Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);
 					CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_LEFT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
                 }
-                speedometerXPos += 52;
 			}
+            speedometerXPos += 52;
         }
 
 		//Speedsounds
@@ -11871,34 +11883,70 @@ static void CG_MovementKeys(centity_t *cent)
 		y += yOffset;
 
 		if (cmd.upmove < 0)
-			CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
-		else 
-			CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader2 );
+            else
+			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
+		else
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader2 );
+            else
+			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
 
 		if (cmd.upmove > 0)
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader2 );
+            else
 			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
 		else
-			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader2 );
+            else
+			    CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
 
 		if (cmd.forwardmove < 0)
-			CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOnShader );
-		else
-			CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOffShader );
+			if(cg_movementKeys.integer == 2)
+		        CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOnShader2 );
+			else
+			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOnShader );
+        else
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOffShader2 );
+            else
+			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOffShader );
 
 		if (cmd.forwardmove > 0)
-			CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader2 );
+            else
+			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
 		else
-			CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader2 );
+            else
+			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
 
 		if (cmd.rightmove < 0)
-			CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
+            else
+			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
 		else
-			CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader2 );
+            else
+			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
 
 		if (cmd.rightmove > 0)
-			CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
+            else
+			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
 		else
-			CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+            if(cg_movementKeys.integer == 2)
+                CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader2 );
+            else
+			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
 
 }
 

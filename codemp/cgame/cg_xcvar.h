@@ -46,9 +46,9 @@ XCVAR_DEF( cg_speedometer,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerX,			"132",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerY,			"459",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
-XCVAR_DEF( cg_speedometerJumpsX,			"132",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerJumpsY,			"459",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerJumps,			"10",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumpsX,			"185",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumpsY,			"300",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumps,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerJumpsColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
@@ -96,6 +96,7 @@ XCVAR_DEF( cg_strafeHelperPrecision,			"256",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperCutoff,				"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperActiveColor,	"0 255 0 200",	CG_StrafeHelperActiveColorChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,								CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeHelperTinyBars,		        "0",	NULL,								CVAR_ARCHIVE )
 
 //Sounds
 XCVAR_DEF( cg_rollSounds,						"1",	NULL,								CVAR_ARCHIVE )
