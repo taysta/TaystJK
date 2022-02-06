@@ -1,3 +1,6 @@
+# TaystJK
+To see a list of changes check the [changelog](https://github.com/taysta/TaystJK/blob/master/CHANGELOG.md#taystjk-changes-from-eternaljk)
+
 # EternalJK
 
 This fork focuses on the adding to the jaPRO integration and Client Engine modifications.
