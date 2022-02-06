@@ -22,8 +22,28 @@ Installing and running TaystJK:
 * [tayst](https://github.com/taysta)
 
 ## Upstream Contributors 
+rd-vulkan:
+* [sunny](https://github.com/JKSunny)
+
+EternalJK:
 * [eternal](https://github.com/eternalcodes)
 * [bucky](https://github.com/Bucky21659)
 * [loda](https://github.com/videoP)
-* [sunny](https://github.com/JKSunny)
-* [tayst](https://github.com/taysta)
+
+OpenJK:
+* Ensiform
+* Razish
+* Xycaleth
+* eezstreet
+* exidl
+* ImperatorPrime
+* mrwonko
+* redsaurus
+* Scooper
+* Sil
+* smcv
+
+Other Thanks:
+* Duo
+* Alpha
+* Kane
