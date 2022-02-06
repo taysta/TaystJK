@@ -9,8 +9,8 @@ Key: [-] removed, [+] added, [\*] modified
 * [+] Added running count of previous groundspeeds with cvar `cg_speedometerJumps N` where N is the number of jumps you would like to display
 * [\*] CGAZ bars are now affected by `cg_strafeHelperCutoff`
 * [\*] Updated Style bars can be made smaller with new cvar `cg_strafeHelperTinyBars 1`
-* [\*] Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX x` and `cg_raceStartY y`
-* [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`, personally I like use this style made smaller with `cg_movemenyKeysSize` and positioned over the crosshair with `cg_movementKeysX x` and `cg_movementKeysY y`
+* [\*] Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
+* [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`,  I use this style made smaller with `cg_movemenyKeysSize` over the crosshair using `cg_movementKeysX x` and `cg_movementKeysY y`
 * [\*] Speedometer colors can now be disabled with cvar `cg_speedometerColors 0`
 * [+] Added additional speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`, `cg_speedometerJumpsColors`
 * [\*] Fixed issue with compiling on linux
