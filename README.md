@@ -44,7 +44,6 @@ OpenJK:
 * smcv
 
 ## Special Thanks
-This wouldn't have been possible without these guys:
 * Bucky
 * Eternal
 * Duo
