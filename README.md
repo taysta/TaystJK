@@ -29,11 +29,11 @@ Installing and running EternalJK:
 * Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to upstream (eternaljk/master)
 
 ### Vulkan support
-Credits to JKSunny:
+Credits to JKSunny:<br />
 Support Initially started by porting to [Quake-III-Arena-Kenny-Edition](https://github.com/kennyalive/Quake-III-Arena-Kenny-Edition).<br />
-After that, I found [vkQuake3](https://github.com/suijingfeng/vkQuake3/tree/master/code), hence the file structure.
+After that, [vkQuake3](https://github.com/suijingfeng/vkQuake3/tree/master/code), hence the file structure.
 
-Lastly, I stumbled across [Quake3e](https://github.com/ec-/Quake3e).<br />
+Lastly, [Quake3e](https://github.com/ec-/Quake3e).<br />
 Which is highly maintained, and is packed with many additions compared to the other repositories.
 
 Therefore the vulkan renderer is now based on Quake3e. <br />A list of the additions can be found on [here](https://github.com/ec-/Quake3e#user-content-vulkan-renderer).
