@@ -13,7 +13,7 @@ Key: [-] removed, [+] added, [\*] modified
 * [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`,  I use this style made smaller with `cg_movemenyKeysSize` over the crosshair using `cg_movementKeysX x` and `cg_movementKeysY y`
 * [\*] Speedometer colors can now be disabled with cvar `cg_speedometerColors 0`
 * [+] Added additional speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`, `cg_speedometerJumpsColors`
-* [+] Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 say_team ^6Jumps:^5 %J%`
+* [+] Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say_team ^6Jumps:^5 %J%"`
 * [\*] Fixed issue with compiling on linux
 * [\*] Fixed issue with playing pure base servers on linux
 
