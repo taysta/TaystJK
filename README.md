@@ -1,6 +1,6 @@
 # EternalJK
 
-This fork focuses on the jaPRO integration and Client Engine modifications.
+This fork focuses on the adding to the jaPRO integration and Client Engine modifications.
 
 If you have any suggestions or would like to submit a bug report, please post them in [issues](https://github.com/eternalcodes/EternalJK/issues).
 
@@ -17,7 +17,7 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 Installing and running EternalJK:
 
-1. [Download the latest release](https://github.com/eternalcodes/EternalJK/releases).
+1. [Download the latest release](https://github.com/taysta/TaystJK/releases).
 2. Extract the file into the Jedi Academy `GameData` folder. For Steam users, this will be in `<Steam Folder>/steamapps/common/Jedi Academy/GameData/`.
 3. Run eternaljk.x86.exe (Rename to jamp.exe for better steam support)
 
@@ -29,6 +29,7 @@ Installing and running EternalJK:
 * Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to upstream (eternaljk/master)
 
 ### Vulkan support
+Credits to JKSunny:
 Support Initially started by porting to [Quake-III-Arena-Kenny-Edition](https://github.com/kennyalive/Quake-III-Arena-Kenny-Edition).<br />
 After that, I found [vkQuake3](https://github.com/suijingfeng/vkQuake3/tree/master/code), hence the file structure.
 
@@ -46,3 +47,5 @@ Many thanks to all the contributors that worked & are still working hard on impr
 ## Contributors 
 * [bucky](https://github.com/Bucky21659)
 * [loda](https://github.com/videoP)
+* [sunny](https://github.com/JKSunny)
+* [tayst](https://github.com/taysta)
