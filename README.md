@@ -1,5 +1,5 @@
 # Tayst's EternalJK Fork
-To see a list of changes check the [wiki](https://github.com/taysta/TaystJK/wiki/TaystJK-changes-from-EternalJK)
+### To see a list of changes check the [Wiki](https://github.com/taysta/EternalJK/wiki/tayst's-changes-to-EternalJK)
 
 ## License
 
