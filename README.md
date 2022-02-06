@@ -29,6 +29,7 @@ EternalJK:
 * [eternal](https://github.com/eternalcodes)
 * [bucky](https://github.com/Bucky21659)
 * [loda](https://github.com/videoP)
+* Alpha
 
 OpenJK:
 * Ensiform
@@ -43,7 +44,10 @@ OpenJK:
 * Sil
 * smcv
 
-Other Thanks:
+Special thanks, wouldn't have been possible without these guys:
+* Bucky
+* Eternal
 * Duo
-* Alpha
+* Razish
 * Kane
+
