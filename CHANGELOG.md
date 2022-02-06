@@ -3,19 +3,21 @@ Key: [-] removed, [+] added, [\*] modified
 
 # Features
 
-## TaystJK changes from EternalJK
+## Tayst's changes to EternalJK
 
 * [\*] Additional strafe bars added for other key presses (now draws 2 lines for all key combinations A, WA, W, WD, D, SD, S, SA)
-* [+] Added running count of previous groundspeeds with cvar `cg_speedometerJumps N` where N is the number of jumps you would like to display
-* [\*] CGAZ bars are now affected by `cg_strafeHelperCutoff`
+* * [\*] CGAZ bars are now affected by `cg_strafeHelperCutoff`
 * [\*] Updated Style bars can be made smaller with new cvar `cg_strafeHelperTinyBars 1`
-* [\*] Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
-* [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`,  I use this style made smaller with `cg_movemenyKeysSize` over the crosshair using `cg_movementKeysX x` and `cg_movementKeysY y`
-* [\*] Speedometer colors can now be disabled with cvar `cg_speedometerColors 0`
+* [+] Added running count of previous groundspeeds with cvar `cg_speedometerJumps N` where N is the number of jumps you would like to display
 * [+] Added additional speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`, `cg_speedometerJumpsColors`
 * [+] Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say_team ^6Jumps:^5 %J%"`
+* [\*] Speedometer colors can now be disabled with cvar `cg_speedometerColors 0`
+* [\*] Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
+* [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`,  I use this style made smaller with `cg_movemenyKeysSize` over the crosshair using `cg_movementKeysX x` and `cg_movementKeysY y`
+* [+] Added additional movement keys style `cg_movemenyKeys 2"`
 * [\*] Fixed issue with compiling on linux
 * [\*] Fixed issue with playing pure base servers on linux
+* [+] Included JKSunny's vulkan renderer
 
 ## Single- and Multiplayer
 
