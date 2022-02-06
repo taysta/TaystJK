@@ -1,5 +1,5 @@
 # TaystJK
-To see a list of changes check the [changelog](https://github.com/taysta/TaystJK/blob/master/CHANGELOG.md#taystjk-changes-from-eternaljk)
+To see a list of changes check the [wiki](https://github.com/taysta/TaystJK/wiki#taystjk-changes-from-eternaljk)
 
 # EternalJK
 
