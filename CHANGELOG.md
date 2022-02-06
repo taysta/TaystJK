@@ -3,6 +3,19 @@ Key: [-] removed, [+] added, [\*] modified
 
 # Features
 
+## TaystJK changes from EternalJK
+
+* [\*] Additional strafe bars added for other key presses (now draws 2 lines for all key combinations A, WA, W, WD, D, SD, S, SA)
+* [+] Added running count of previous groundspeeds with cvar cg_speedometerJumps N where N is the number of jumps you would like to display
+* [\*] CGAZ bars are now affected by cg_strafeHelperCutoff
+* [\*] Updated Style bars can be made smaller with new cvar cg_strafeHelperTinyBars 1
+* [\*] Race timer start speed can now be moved seperate from the rest of the race timer with cvars cg_raceStart 1, cg_raceStartX x and cg_raceStartY y
+* [\*] Added second movement keys style with cvar cg_movemenyKeys 2, personally I like use this style made smaller with cg_movemenyKeysSize and positioned over the crosshair with cg_movementKeysX x and cg_movementKeysY y
+* [\*] Speedometer colors can now be disabled with cvar cg_speedometerColors 0
+* [+] Added additional speedometer jumps configuration cvars cg_speedometerJumpsX, cg_speedometerJumpsY, cg_speedometerJumpsColors
+* [\*] Fixed issue with compiling on linux
+* [\*] Fixed issue with playing pure base servers on linux
+
 ## Single- and Multiplayer
 
 * [\*] OpenJK now writes configs/screenshots/etc to `fs_homepath` directory. No longer have to run as administrator on Windows. (Multi-User support)
