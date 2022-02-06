@@ -41,10 +41,10 @@ Therefore the vulkan renderer is now based on Quake3e. <br />A list of the addit
 Many thanks to all the contributors that worked & are still working hard on improving the Q3 engine!
 
 ## Maintainers
-
-* [eternal](https://github.com/eternalcodes)
+* [tayst](https://github.com/taysta)
 
 ## Contributors 
+* [eternal](https://github.com/eternalcodes)
 * [bucky](https://github.com/Bucky21659)
 * [loda](https://github.com/videoP)
 * [sunny](https://github.com/JKSunny)
