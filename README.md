@@ -1,4 +1,4 @@
-# TaystJK
+# Tayst's EternalJK Fork
 To see a list of changes check the [wiki](https://github.com/taysta/TaystJK/wiki/TaystJK-changes-from-EternalJK)
 
 ## License
