@@ -3,7 +3,7 @@ configuration: Release
 before_build:
 - cmd: cmake -G "Visual Studio 14 2015" -T v140_xp -D MSVC_RUNTIME=static -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_BUILD_TYPE=RELEASE -DBuildMPGame=OFF -DBuildMPDed=OFF -DBuildMPCGame=OFF .
 build:
-  project: OpenJK.sln
+  project: EternalJK.sln
   parallel: true
   verbosity: minimal
 after_build:
