@@ -10,7 +10,7 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## For players
 
-Installing and running TaystJK:
+Installing and running EternalJK:
 
 ### Windows:
 1. [Download the latest release](https://github.com/taysta/TaystJK/releases).
