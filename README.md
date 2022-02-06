@@ -7,7 +7,6 @@ To see a list of changes check the [wiki](https://github.com/taysta/TaystJK/wiki
 
 OpenJK is licensed under GPLv2 as free software. You are free to use, modify and redistribute OpenJK following the terms in LICENSE.txt.
 
-
 ## For players
 
 Installing and running EternalJK:
@@ -17,11 +16,11 @@ Installing and running EternalJK:
 2. Extract the file into the Jedi Academy `GameData` folder. For Steam users, this will be in `<Steam Folder>/steamapps/common/Jedi Academy/GameData/`.
 3. Run eternaljk.x86.exe (Rename to jamp.exe for better steam support)
 
-
 ## Maintainers
 * [tayst](https://github.com/taysta)
 
 ## Upstream Contributors 
+
 rd-vulkan:
 * [sunny](https://github.com/JKSunny)
 
@@ -44,10 +43,9 @@ OpenJK:
 * Sil
 * smcv
 
-Special thanks, wouldn't have been possible without these guys:
+## Special Thanks
+This wouldn't have been possible without these guys:
 * Bucky
 * Eternal
 * Duo
 * Razish
-* Kane
-
