@@ -32,7 +32,7 @@ void vk_create_command_pool( VkCommandPool *pPool )
     desc.queueFamilyIndex = vk.queue_family_index;
 
     VK_CHECK(qvkCreateCommandPool(vk.device, &desc, NULL, pPool));
-    VK_SET_OBJECT_NAME(pPool, "command pool", VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT);
+    VK_SET_OBJECT_NAME(*pPool, "command pool", VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT);
 
     vk_debug("Create command pool: vk.command_pool \n");
 }
