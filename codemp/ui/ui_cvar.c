@@ -92,7 +92,7 @@ static void CVU_StrafeHelper (void) {
 }
 
 static void CVU_UpdateModelList(void) {
-/*	uiClientState_t cstate = {0};
+	uiClientState_t cstate = {0};
 
 	if (startup) {//we don't want to redundantly call these on startup
 		UI_UpdateCurrentServerInfo();

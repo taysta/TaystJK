@@ -11393,7 +11393,7 @@ void UI_BuildPlayerModel_List( qboolean inGameLoad )
 			if (ui_sv_pure.integer)
 			{ //i guess wait to do this until here after we've read a PlayerChoice.txt file
 				baseSpecies = qfalse;
-				for (w = 0; w <= BASE_SPECIES_COUNT; w++) {
+				for (w = 0; w < BASE_SPECIES_COUNT; w++) {
 					if (!Q_stricmp(dirptr, baseSpeciesList[w])) {
 						baseSpecies = qtrue;
 						break;
