@@ -1435,16 +1435,16 @@ static qboolean isGlobalVGS(const char *s) {
 	return qfalse;
 }
 
-static qboolean CG_ProximityCheck(vec3_t pos1, vec3_t pos2) { //Returns qtrue if two vectors are within 32 of eachother in every way?
-	int i;
-	for (i = 0; i <= 2; i++) {
-		if (pos1[i] < (pos2[i] - 32))
-			return qfalse;
-		if (pos1[i] > (pos2[i] + 32))
-			return qfalse;
-	}
-	return qtrue;
-}
+//static qboolean CG_ProximityCheck(vec3_t pos1, vec3_t pos2) { //Returns qtrue if two vectors are within 32 of eachother in every way?
+//	int i;
+//	for (i = 0; i <= 2; i++) {
+//		if (pos1[i] < (pos2[i] - 32))
+//			return qfalse;
+//		if (pos1[i] > (pos2[i] + 32))
+//			return qfalse;
+//	}
+//	return qtrue;
+//}
 
 /*
 ==============

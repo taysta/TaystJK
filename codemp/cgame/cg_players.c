@@ -325,11 +325,13 @@ sfxHandle_t	CG_CustomSound( int clientNum, const char *soundName ) {
 	}
 
 	for (i = 0; i < MAX_CUSTOM_VGS_SOUNDS; i++) {
-		if (i < numCVGSSounds && !strcmp(lSoundName, bg_customVGSSoundNames[i]))
-			if (ci->gender == GENDER_FEMALE)
-				return cgs.media.femaleVGSSounds[i];
-			else
-				return cgs.media.maleVGSSounds[i];
+		if (i < numCVGSSounds && !strcmp(lSoundName, bg_customVGSSoundNames[i])) {
+            if (ci->gender == GENDER_FEMALE) {
+                return cgs.media.femaleVGSSounds[i];
+            } else {
+                return cgs.media.maleVGSSounds[i];
+            }
+        }
 	}
 
 	//trap->Error( ERR_DROP, "Unknown custom sound: %s", lSoundName );
@@ -1043,119 +1045,119 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 }
 
 static char *defaultModelTable[] = {
-	{ "luke" },
-	{ "jedi_rm" },
-	{ "jedi_kdm" },
-	{ "jedi_hm" },
-	{ "rodian" },
-	{ "jedi" },
-	{ "prisoner" },
-	{ "imperial" },
-	{ "bespin_cop" },
-	{ "rebel" },
+	 "luke" ,
+	 "jedi_rm" ,
+	 "jedi_kdm" ,
+	 "jedi_hm" ,
+	 "rodian" ,
+	 "jedi" ,
+	 "prisoner" ,
+	 "imperial" ,
+	 "bespin_cop" ,
+	 "rebel" ,
 };
 static const int MAX_DEFAULT_MODELS = ARRAY_LEN(defaultModelTable);
 
 static char *defaultFemaleModelTable[] = {
-	{ "alora" },
-	{ "alora2" },
-	{ "jedi_hf" },
-	{ "jedi_tf" },
-	{ "jedi_zf" },
-	//{ "monmothma" }, //viewers found this one confusing to fight against
-	{ "tavion_new" },
-	{ "tavion" },
+	 "alora" ,
+	 "alora2" ,
+	 "jedi_hf" ,
+	 "jedi_tf" ,
+	 "jedi_zf" ,
+	 "monmothma" , //viewers found this one confusing to fight against
+	 "tavion_new" ,
+	 "tavion" ,
 };
 static const int MAX_DEFAULT_FEMALE_MODELS = ARRAY_LEN(defaultFemaleModelTable);
 
 static char *defaultSkinTable[] = {
-	{ "default" },
-	{ "red" },
-	{ "blue" },
+	 "default" ,
+	 "red" ,
+	 "blue" ,
 };
 static const int MAX_DEFAULT_SKINS = ARRAY_LEN(defaultSkinTable);
 
 static char *jadenFemaleTwilekHeadTable[] = {
-	{ "head_a1" },
-	{ "head_a2" },
+	 "head_a1" ,
+	 "head_a2" ,
 	//{ "head_a3" }, //no
-	{ "head_a4" },
-	{ "head_b1" },
-	{ "head_b2" },
-	{ "head_b3" },
-	{ "head_b4" },
+	 "head_a4" ,
+	 "head_b1" ,
+	 "head_b2" ,
+	 "head_b3" ,
+	 "head_b4" ,
 };
 static const int MAX_JADENTF_HEADS = ARRAY_LEN(jadenFemaleTwilekHeadTable);
 
 static char *jadenFemaleHeadTable[] = {
-	{ "head_a1" },
-	{ "head_b1" },
-	{ "head_c1" },
+	 "head_a1" ,
+	 "head_b1" ,
+	 "head_c1" ,
 };
 static const int MAX_JADENF_HEADS = ARRAY_LEN(jadenFemaleHeadTable);
 
 static char *jadenFemaleTorsoTable[] = {
-	{ "torso_a1" },
-	{ "torso_b1" },
-	{ "torso_c1" },
-	{ "torso_d1" },
-	{ "torso_e1" },
-	{ "torso_f1" },
+	 "torso_a1" ,
+	 "torso_b1" ,
+	 "torso_c1" ,
+	 "torso_d1" ,
+	 "torso_e1" ,
+	 "torso_f1" ,
 	//{ "torso_g1" }, //no
 };
 static const int MAX_JADENF_TORSOS = ARRAY_LEN(jadenFemaleTorsoTable);
 
 static char *jadenFemaleLowerTable[] = {
-	{ "lower_a1" },
-	{ "lower_b1" },
-	{ "lower_c1" },
-	{ "lower_d1" },
+	 "lower_a1" ,
+	 "lower_b1" ,
+	 "lower_c1" ,
+	 "lower_d1" ,
 	//{ "lower_e1" }, //no
 };
 static const int MAX_JADENF_LOWERS = ARRAY_LEN(jadenFemaleLowerTable);
 
 static char *jadenMaleHumanHeadTable[] = {
-	{ "head_a1" },
-	{ "head_a2" },
-	{ "head_b1" },
-	{ "head_b2" },
-	{ "head_c1" },
+	 "head_a1" ,
+	 "head_a2" ,
+	 "head_b1" ,
+	 "head_b2" ,
+	 "head_c1" ,
 };
 static const int MAX_JADENHM_HEADS = ARRAY_LEN(jadenMaleHumanHeadTable);
 
 static char *jadenMaleHeadTable[] = {
-	{ "head_a1" },
-	{ "head_b1" },
-	{ "head_c1" },
+	 "head_a1" ,
+	 "head_b1" ,
+	 "head_c1" ,
 };
 static const int MAX_JADENM_HEADS = ARRAY_LEN(jadenMaleHeadTable);
 
 static char *jadenMaleHumanTorsoTable[] = {
-	{ "torso_a1" },
-	{ "torso_b1" },
-	{ "torso_c1" },
-	{ "torso_d1" },
-	{ "torso_d2" },
-	{ "torso_e1" },
-	{ "torso_f1" },
+	 "torso_a1" ,
+	 "torso_b1" ,
+	 "torso_c1" ,
+	 "torso_d1" ,
+	 "torso_d2" ,
+	 "torso_e1" ,
+	 "torso_f1" ,
 };
 static const int MAX_JADENHM_TORSOS = ARRAY_LEN(jadenMaleHumanTorsoTable);
 
 static char *jadenMaleTorsoTable[] = {
-	{ "torso_a1" },
-	{ "torso_b1" },
-	{ "torso_c1" },
-	{ "torso_d1" },
-	{ "torso_e1" },
-	{ "torso_f1" },
+	 "torso_a1" ,
+	 "torso_b1" ,
+	 "torso_c1" ,
+	 "torso_d1" ,
+	 "torso_e1" ,
+	 "torso_f1" ,
 };
 static const int MAX_JADENM_TORSOS = ARRAY_LEN(jadenMaleTorsoTable);
 
 static char *jadenMaleLowerTable[] = {
-	{ "lower_a1" },
-	{ "lower_b1" },
-	{ "lower_c1" },
-	{ "lower_d1" },
+	 "lower_a1" ,
+	 "lower_b1" ,
+	 "lower_c1" ,
+	 "lower_d1" ,
 };
 static const int MAX_JADENM_LOWERS = ARRAY_LEN(jadenMaleLowerTable);
 
@@ -2046,7 +2048,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	if (clientNum == cg.clientNum && strlen(cg_forceOwnSaber.string) && Q_stricmp(cg_forceOwnSaber.string, "none"))
 	{
 		parsed = sscanf(cg_forceOwnSaber.string, "%s %s", saber1, saber2);
-		if (parsed > 0 && saber1 && saber1[0] && Q_stricmp(saber1, "none"))
+		if (parsed > 0 && saber1[0] && Q_stricmp(saber1, "none"))
 			v = saber1;
 	}
 
@@ -2071,7 +2073,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	if (clientNum == cg.clientNum && parsed == 2)
 	{
-		if (saber2 && saber2[0] && Q_stricmp(saber2, "none"))
+		if (saber2[0] && Q_stricmp(saber2, "none"))
 			v = saber2;
 	}
 
@@ -4712,8 +4714,8 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 			}
 		}
 
-	if (!(cgFPLSState && cent->currentState.clientNum == cg.predictedPlayerState.clientNum))
-		lookAngles[PITCH] = 0;
+	    if (!(cgFPLSState && cent->currentState.clientNum == cg.predictedPlayerState.clientNum))
+		    lookAngles[PITCH] = 0;
 
 		if (cent->currentState.otherEntityNum2)
 		{
@@ -7014,7 +7016,7 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	float diff;
 	clientInfo_t *client;
 	centity_t *saberEnt;
-	saberTrail_t *saberTrail;
+	saberTrail_t *saberTrail = 0;
 	mdxaBone_t	boltMatrix;
 	vec3_t futureAngles;
 	effectTrailArgStruct_t fx;

@@ -1377,7 +1377,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	int			i;
 	vec4_t		calcColor;
 	float		value, inc, percent;
-	qboolean	flash = qfalse;
+//	qboolean	flash = qfalse;
 
 	inc = (float)100 / MAX_TICS;
 	value = cg.snap->ps.fd.forcePower;
@@ -1385,7 +1385,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	// Make the hud flash by setting forceHUDTotalFlashTime above cg.time
 	if (cg.forceHUDTotalFlashTime > cg.time)
 	{
-		flash = qtrue;
+//		flash = qtrue;
 		if ( cg.forceHUDNextFlashTime < cg.time )
 		{
 			cg.forceHUDNextFlashTime = cg.time + 400;
@@ -4493,7 +4493,7 @@ float CG_DrawMiniMap(float y)
 		float		angleLook;
 		float		anglePlayer;
 		float		angle;
-		float		distance, actualDist;
+		float		distance = 0; //, actualDist;
 		vec4_t color;
 
 
@@ -4519,7 +4519,7 @@ float CG_DrawMiniMap(float y)
 		// Get the distances
 		VectorSubtract(cg.predictedPlayerState.origin, cent->lerpOrigin, dirPlayer);
 		dirPlayer[2] = 0;
-		actualDist = distance = VectorNormalize(dirPlayer);
+	//	actualDist = distance = VectorNormalize(dirPlayer);
 
 		if (distance > MAX_MINIMAP_RANGE * 0.8f) //Cap distance, so their icon doesnt go off the minimap
 			distance = MAX_MINIMAP_RANGE*0.8f;
@@ -6041,8 +6041,8 @@ static void CG_DrawLagometer( void ) {
 static void CG_DrawSpeedGraph( void ) {
 	int		a, i;
 	float	x, y, v;
-	float	ax, ay, aw, ah, mid, range;
-	int		color;
+	float	ax, ay, aw, ah, range; // mid, range;
+//	int		color;
 	float	vscale;
 
 	x = SCREEN_WIDTH - cg_lagometerX.integer * cgs.widthRatioCoef;
@@ -6074,9 +6074,9 @@ static void CG_DrawSpeedGraph( void ) {
 	else
 		ah = 48;
 
-	color = -1;
+//	color = -1;
 	range = ah / 3;
-	mid = ay + range;
+//	mid = ay + range;
 
 	// draw the speed graph
 	range = ah;
@@ -8340,10 +8340,10 @@ CG_DrawSpectator
 */
 static void CG_DrawSpectator(void)
 {
-	const char* s;
+//	const char* s;
 	int xOffset = 0;
 
-	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
+//	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
 	if ((cgs.gametype == GT_DUEL || cgs.gametype == GT_POWERDUEL) &&
 		cgs.duelist1 != -1 &&
 		cgs.duelist2 != -1)
@@ -10874,7 +10874,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	float x, y, startx, starty, lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
 	static const int LINE_HEIGHT = 230; //240 is midpoint, so it should be a little higher so crosshair is always on it.
-	static const vec4_t activeColor = {0, 1, 0, 0.75}, normalColor = {1, 1, 1, 0.75}, invertColor = {0.5f, 1, 1, 0.75}, wColor = {1, 0.5, 0.5, 0.75}, rearColor = {0.5, 1,1, 0.75}, centerColor = {0.5, 1, 1, 0.75};
+	static const vec4_t normalColor = {1, 1, 1, 0.75}, invertColor = {0.5f, 1, 1, 0.75}, wColor = {1, 0.5, 0.5, 0.75}, rearColor = {0.5, 1,1, 0.75}, centerColor = {0.5, 1, 1, 0.75}; //activeColor = {0, 1, 0, 0.75},
 	vec4_t color = {1, 1, 1, 0.75};
 
 	//how the fuck do these colors work, 0111 is cyan?
@@ -11166,8 +11166,8 @@ static void CG_DrawAccelMeter(void)
 	const float potentialSpeed = sqrtf(cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2 * (250 * optimalAccel));
 	float actualAccel, total, percentAccel, x;
 	const float accel = cg.currentSpeed - cg.previousSpeed;
-	static int t, i, previous, lastupdate;
-	unsigned short frameTime;
+	static int i; //, previous, t;
+//	unsigned short frameTime;
 	static float previousTimes[PERCENT_SAMPLES];
 	static unsigned short index;
 
@@ -11195,12 +11195,12 @@ static void CG_DrawAccelMeter(void)
 
 	//Com_Printf("Actual Accel this frame is %.3f, last speed was %.3f, current speed is %.3f, potential speed was %.3f, coef is %.3f\n", accel, cg.previousSpeed, cg.currentSpeed, potentialSpeed, actualAccel/(potentialSpeed - currentSpeed));
 
-	t = trap->Milliseconds();
-	frameTime = t - previous;
-	previous = t;
+//	t = trap->Milliseconds();
+//	frameTime = t - previous;
+//	previous = t;
 	//if (t - lastupdate > 20)	//don't sample faster than this
 	{
-		lastupdate = t;
+//		lastupdate = t;
 		previousTimes[index % PERCENT_SAMPLES] = actualAccel / (potentialSpeed - cg.currentSpeed);
 		index++;
 	}
@@ -11451,10 +11451,10 @@ static void CG_JumpDistance( void )
 static void CG_DrawYawSpeed( void ) {
     static unsigned short previousYaws[YAW_FRAMES];
     static unsigned short index;
-    static int    previous, lastupdate;
+    static int    lastupdate; //previous, lastupdate;
     int        t, i, yaw, total;
-    unsigned short frameTime;
-    const int        xOffset = 0;
+//    unsigned short frameTime;
+//    const int        xOffset = 0;
 
     const float diff = AngleSubtract(cg.predictedPlayerState.viewangles[YAW], cg.lastYawSpeed);
     float yawspeed = diff / (cg.frametime * 0.001f);
@@ -11462,8 +11462,8 @@ static void CG_DrawYawSpeed( void ) {
         yawspeed = -yawspeed;
 
     t = trap->Milliseconds();
-    frameTime = t - previous;
-    previous = t;
+//    frameTime = t - previous;
+//    previous = t;
     if (t - lastupdate > 20)    //don't sample faster than this
     {
         lastupdate = t;
@@ -11590,19 +11590,19 @@ static void CG_RaceTimer(void)
 static void CG_Speedometer(void)
 {
 		const char *accelStr, *accelStr2, *accelStr3;
-		char speedStr[32] = {0}, speedStr2[32] = {0}, speedStr3[32] = {0}, startStr[32] = {0};
+		char speedStr[32] = {0}, speedStr2[32] = {0}, speedStr3[32] = {0};
 		vec4_t colorSpeed = {1, 1, 1, 1};
-        vec4_t colorSpeeds = {1, 1, 1, 1};
+//        vec4_t colorSpeeds = {1, 1, 1, 1};
         const float currentSpeed = cg.currentSpeed;
 		static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
 		const float accel = currentSpeed - lastSpeed;
 		float total, avgAccel;
-		int t, i, speedometerJumps;
-		unsigned short frameTime;
+		int t, i;
+//		unsigned short frameTime;
 		static unsigned short index;
-		static int	previous, lastupdate, jumpsCounter = 0;
+		static int lastupdate, jumpsCounter = 0;//	previous, lastupdate, jumpsCounter = 0;
         static qboolean clearOnNextJump = qfalse;
-        float newXPos;
+//        float newXPos;
 
 		lastSpeed = currentSpeed;
 
@@ -11613,8 +11613,8 @@ static void CG_Speedometer(void)
 		}
 
 		t = trap->Milliseconds();
-		frameTime = t - previous;
-		previous = t;
+//		frameTime = t - previous;
+//		previous = t;
 		if (t - lastupdate > 5)	//don't sample faster than this
 		{
 			lastupdate = t;
@@ -11673,14 +11673,10 @@ static void CG_Speedometer(void)
 		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometerJumps.integer > 0))) {
 			char speedStr4[32] = {0};
             char speedsStr4[32] = {0};
-            char speedsStr2[16] = {0};
 
             vec4_t colorGroundSpeed = {1, 1, 1, 1};
             vec4_t colorGroundSpeeds = {1, 1, 1, 1};
-            if(cg_speedometerJumps.integer > 256)
-                speedometerJumps = 256;
-            else
-                speedometerJumps = cg_speedometerJumps.integer;
+
             if (cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE || cg.predictedPlayerState.velocity[2] < 0) { //On ground or Moving down
 				cg.firstTimeInAir = qfalse;
 			}
