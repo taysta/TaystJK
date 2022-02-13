@@ -1585,7 +1585,7 @@ static void CG_Cosmetics_f(void)
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
+//		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);
@@ -2007,7 +2007,7 @@ static void CG_AddStrafeTrail_f(void)
 
 void CG_Say_f( void ) {
 	char msg[MAX_SAY_TEXT] = {0};
-    char speeds[MAX_SAY_TEXT] = {0};
+//    char speeds[MAX_SAY_TEXT] = {0};
     char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
