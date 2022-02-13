@@ -943,7 +943,7 @@ static void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReport
 	{
 		VkDebugMarkerObjectNameInfoEXT info;
 		info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
-		info.pNext = NULL;
+		info.pNext = nullptr;
 		info.objectType = objType;
 		info.object = obj;
 		info.pObjectName = objName;

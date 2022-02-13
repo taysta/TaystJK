@@ -1593,7 +1593,7 @@ void		R_AddLitSurf( surfaceType_t* surface, shader_t* shader, int fogIndex );
 #endif
 
 shader_t		*GeneratePermanentShader( void );
-static qboolean ParseShader( const char **text );
+//static qboolean ParseShader( const char **text );
 
 #define	CULL_IN		0		// completely unclipped
 #define	CULL_CLIP	1		// clipped by one or more planes

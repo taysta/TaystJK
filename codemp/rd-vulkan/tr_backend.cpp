@@ -125,9 +125,9 @@ static void RB_LightingPass(void);
 
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	shader_t	*shader, *oldShader;
-	int			fogNum, oldFogNum;
-	int			dlighted, oldDlighted;
-	qboolean	depthRange, isCrosshair, didShadowPass;
+	int			fogNum;//, oldFogNum;
+	int			dlighted;//, oldDlighted;
+	qboolean	depthRange, isCrosshair; //, didShadowPass;
 
 	// save original time for entity shader offsets
 	float originalTime = backEnd.refdef.floatTime;
@@ -180,13 +180,13 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	int oldEntityNum		= -1;
 	backEnd.currentEntity	= &tr.worldEntity;
 	oldShader				= NULL;
-	oldFogNum				= -1;
-	oldDlighted				= qfalse;
+//	oldFogNum				= -1;
+//	oldDlighted				= qfalse;
 	unsigned int oldSort	= MAX_UINT;
 	oldShaderSort			= -1;
 	depthRange				= qfalse;
 	backEnd.pc.c_surfaces	+= numDrawSurfs;
-	didShadowPass			= qfalse;
+//	didShadowPass			= qfalse;
 	
 	for (i = 0, drawSurf = drawSurfs; i < numDrawSurfs; i++, drawSurf++)
 	{
@@ -1065,9 +1065,53 @@ RB_ClearColor
 static const void *RB_ClearColor( const void *data )
 {
 	const clearColorCommand_t* cmd = (const clearColorCommand_t*)data;
-
-	backEnd.projection2D = qtrue;
-	vk_clear_color_attachments(colorBlack);
+    backEnd.projection2D = qtrue;
+    switch(r_fastsky->integer){
+	    case 1:
+            vk_clear_color_attachments(colorBlack);
+            break;
+	    case 2:
+            vk_clear_color_attachments(colorRed);
+            break;
+	    case 3:
+            vk_clear_color_attachments(colorGreen);
+            break;
+        case 4:
+            vk_clear_color_attachments(colorBlue);
+            break;
+        case 5:
+            vk_clear_color_attachments(colorYellow);
+            break;
+        case 6:
+            vk_clear_color_attachments(colorOrange);
+            break;
+        case 7:
+            vk_clear_color_attachments(colorMagenta);
+            break;
+        case 8:
+            vk_clear_color_attachments(colorCyan);
+            break;
+        case 9:
+            vk_clear_color_attachments(colorWhite);
+            break;
+        case 10:
+            vk_clear_color_attachments(colorLtGrey);
+            break;
+        case 11:
+            vk_clear_color_attachments(colorMdGrey);
+            break;
+        case 12:
+            vk_clear_color_attachments(colorDkGrey);
+            break;
+        case 13:
+            vk_clear_color_attachments(colorLtBlue);
+            break;
+	    case 14:
+            vk_clear_color_attachments(colorDkBlue);
+            break;
+	    default:
+            vk_clear_color_attachments(colorBlack);
+    }
 	backEnd.projection2D = qfalse;
 
 	return (const void*)(cmd + 1);

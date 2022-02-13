@@ -250,7 +250,7 @@ void vk_get_vulkan_properties( VkPhysicalDeviceProperties *props )
     ri.Printf( PRINT_ALL, "VK_VENDOR: %s\n", vk.vendor_string );
     ri.Printf( PRINT_ALL, "VK_RENDERER: %s\n", vk.renderer_string );
     ri.Printf( PRINT_ALL, "VK_VERSION: %s\n", vk.version_string );
-    ri.Printf( PRINT_ALL, "use the \gfxinfo command for details \n\n", vk.version_string );
+    ri.Printf( PRINT_ALL, "use the gfxinfo command for details \n\n", vk.version_string );
 
     VK_SET_OBJECT_NAME( (intptr_t)vk.device, vk.renderer_string, VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_EXT );
 }

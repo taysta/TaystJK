@@ -565,7 +565,7 @@ void Con_Init (void) {
 		int day, year;
 		char month[4];
 
-		if (sscanf(SOURCE_DATE, "%s %i %i", &month, &day, &year) == 3) {
+		if (sscanf(SOURCE_DATE, "%s %i %i", month, &day, &year) == 3) {
 			int mm = 0;
 
 			//sry..

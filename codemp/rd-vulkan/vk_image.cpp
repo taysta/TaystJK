@@ -265,10 +265,10 @@ void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image,
 	barrier.subresourceRange.baseArrayLayer = 0;
 	barrier.subresourceRange.layerCount = VK_REMAINING_ARRAY_LAYERS;
 
-	if (src_stage_mask == NULL) 
+	if (src_stage_mask == 0)
 		src_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
-	if (dst_stage_mask == NULL) 
+	if (dst_stage_mask == 0)
 		dst_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
 	qvkCmdPipelineBarrier(cmdBuf, src_stage_mask, dst_stage_mask, 0, 0, NULL, 0, NULL, 1, &barrier);
@@ -579,14 +579,14 @@ void vk_upload_image_data( VkImage image, int x, int y, int width, int height,
 	vk_record_image_layout_transition(command_buffer, image, VK_IMAGE_ASPECT_COLOR_BIT, 0, 
 		VK_IMAGE_LAYOUT_UNDEFINED, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		NULL, NULL);
+		0, 0);
 
 	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
 
 	vk_record_image_layout_transition(command_buffer, image, VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_SHADER_READ_BIT, 
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		NULL, NULL);
+		0, 0);
 
 	vk_end_command_buffer(command_buffer);
 }
@@ -604,7 +604,7 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 			(int)(memory_requirements.size / 1024));
 	}
 
-	chunk = NULL;
+	chunk = nullptr;
 
 	// Try to find an existing chunk of sufficient capacity.
 	alignment = memory_requirements.alignment;
@@ -893,8 +893,10 @@ image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgF
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
     else if (flags & IMGFLAG_CLAMPTOEDGE)
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-    else
+    else{
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        }
+
 
 	if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
 		image->flags &= ~(IMGFLAG_PICMIP);

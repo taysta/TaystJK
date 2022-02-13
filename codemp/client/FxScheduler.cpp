@@ -508,7 +508,7 @@ SEffectTemplate *CFxScheduler::GetNewEffectTemplate( int *id, const char *file )
 	// wanted zero to be a bogus effect ID, so we just skip it.
 	for ( int i = 1; i < FX_MAX_EFFECTS; i++ )
 	{
-		effect = &mEffectTemplates[i];
+        effect = &mEffectTemplates[i];
 
 		if ( !effect->mInUse )
 		{

@@ -736,7 +736,7 @@ void vk_begin_screenmap_render_pass( void )
     vk_record_image_layout_transition(vk.cmd->command_buffer, vk.screenMap.color_image, 
         VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED, 
         VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
 
     vk.renderPassIndex = RENDER_PASS_SCREENMAP;
 
@@ -837,9 +837,9 @@ void vk_begin_frame( void )
     VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    begin_info.pNext = NULL;
+    begin_info.pNext = nullptr;
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-    begin_info.pInheritanceInfo = NULL;
+    begin_info.pInheritanceInfo = nullptr;
     VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
 
 #if 1
@@ -849,7 +849,7 @@ void vk_begin_frame( void )
             vk.color_image, VK_IMAGE_ASPECT_COLOR_BIT,
             VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED,
             VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
 
     }
     else {
@@ -857,7 +857,7 @@ void vk_begin_frame( void )
             vk.swapchain_images[vk.swapchain_image_index], VK_IMAGE_ASPECT_COLOR_BIT,
             VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED,
             VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
     }
 #endif
 
@@ -1225,7 +1225,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         invalidate_ptr = qtrue;
     }
 
-    VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory));
+    VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, nullptr, &memory));
     VK_CHECK(qvkBindImageMemory(vk.device, dstImage, memory, 0));
 
     command_buffer = vk_begin_command_buffer();
@@ -1235,14 +1235,14 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             VK_IMAGE_ASPECT_COLOR_BIT,
             srcImageAccess, srcImageLayout,
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
     }
 
     vk_record_image_layout_transition(command_buffer, dstImage,
         VK_IMAGE_ASPECT_COLOR_BIT,
         0, VK_IMAGE_LAYOUT_UNDEFINED,
         VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
 
     // end_command_buffer( command_buffer );
 
@@ -1361,8 +1361,8 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         }
     }
 
-    qvkDestroyImage(vk.device, dstImage, NULL);
-    qvkFreeMemory(vk.device, memory, NULL);
+    qvkDestroyImage(vk.device, dstImage, nullptr);
+    qvkFreeMemory(vk.device, memory, nullptr);
 
     // restore previous layout
     if (srcImage == vk.color_image) {
@@ -1372,7 +1372,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             VK_IMAGE_ASPECT_COLOR_BIT,
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             srcImageAccess, srcImageLayout,
-            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, NULL, NULL);
+            VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 0, 0);
 
         vk_end_command_buffer(command_buffer);
     }

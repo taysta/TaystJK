@@ -386,7 +386,7 @@ powerups/ysaligreenshell
     {
         map gfx/mp/ysalshell
         blendFunc GL_ONE GL_ONE
-        rgbGen const ( 0.000000 0.000000 0.300000 )
+        rgbGen const ( 0.000000 0.300000 0.000000 )
         tcMod rotate 30
     }
     {

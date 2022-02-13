@@ -428,7 +428,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 
 	if (r_fastsky->integer && vk.fastSky) {
 		clearColorCommand_t *clrcmd;
-		if ((clrcmd = (clearColorCommand_t*)R_GetCommandBuffer(sizeof(*clrcmd))) == NULL)
+		if ((clrcmd = (clearColorCommand_t*)R_GetCommandBuffer(sizeof(*clrcmd))) == nullptr)
 			return;
 		clrcmd->commandId = RC_CLEARCOLOR;
 	}

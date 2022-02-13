@@ -176,7 +176,7 @@ static void vk_render_splash( void )
 	VkCommandBufferBeginInfo begin_info;
 	VkCommandBuffer command_buffer = vk.cmd->command_buffer;
 	VkSubmitInfo submit_info;
-	VkPresentInfoKHR present_info;
+//	VkPresentInfoKHR present_info;
 	VkPipelineStageFlags wait_dst_stage_mask = VK_PIPELINE_STAGE_TRANSFER_BIT;
 	VkImage imageBuffer;
 	image_t* splashImage;
@@ -257,15 +257,15 @@ static void vk_render_splash( void )
 	submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
 	VK_CHECK(qvkQueueSubmit(vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence));
 
-	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-	present_info.pNext = NULL;
-	present_info.waitSemaphoreCount = 1;
-	present_info.pWaitSemaphores = &vk.cmd->rendering_finished;
-	present_info.swapchainCount = 1;
-	present_info.pSwapchains = &vk.swapchain;
-	present_info.pImageIndices = &vk.swapchain_image_index;
-	present_info.pResults = NULL;
-	VkResult result = qvkQueuePresentKHR(vk.queue, &present_info);
+//	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+//	present_info.pNext = NULL;
+//	present_info.waitSemaphoreCount = 1;
+//	present_info.pWaitSemaphores = &vk.cmd->rendering_finished;
+//	present_info.swapchainCount = 1;
+//	present_info.pSwapchains = &vk.swapchain;
+//	present_info.pImageIndices = &vk.swapchain_image_index;
+//	present_info.pResults = NULL;
+//	VkResult result = qvkQueuePresentKHR(vk.queue, &present_info);
 
 	return;
 }
