@@ -11702,7 +11702,6 @@ static void CG_Speedometer(void)
                         colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) *
                                                    (cg.lastGroundSpeeds[i] / 250)); //color the string
                         colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
-                        CG_Text_Paint(qfalse,qfalse, qfalse, colorGroundSpeeds,qfalse, qfalse, qfalse, qfalse,qfalse); //print the jump
                     }
 			        if(strcmp(speedsStr4, "0") != 0) {
                         CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef),cg_speedometerJumpsY.value, cg_speedometerSize.value, colorGroundSpeeds,speedsStr4, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED,FONT_NONE); //print the jump
