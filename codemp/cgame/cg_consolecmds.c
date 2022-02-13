@@ -2102,7 +2102,7 @@ void CG_Say_f( void ) {
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
 		else if (!Q_stricmp(word, "%J%")) {
-            char buf[1024];
+            char buf[MAX_STRING_CHARS] = {0};
             for(int i = 0; i <= cg_speedometerJumps.integer; i++){
                 if(cg.lastGroundSpeeds[i] != 0){
                     Q_strcat( buf, sizeof(buf), va( "%.0f ", cg.lastGroundSpeeds[i]));
