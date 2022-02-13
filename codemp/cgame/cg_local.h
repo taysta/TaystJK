@@ -1619,6 +1619,7 @@ typedef struct cgMedia_s {
 	// All the player shells
 	qhandle_t	ysaliredShader;
 	qhandle_t	ysaliblueShader;
+    qhandle_t	ysaligreenShader;
 	qhandle_t	ysalimariShader;
 	qhandle_t	boonShader;
 	qhandle_t	endarkenmentShader;

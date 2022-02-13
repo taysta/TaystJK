@@ -377,3 +377,24 @@ gfx/hud/i_icon_ammodisp
 		rgbGen vertex
 	}
 }
+
+powerups/ysaligreenshell
+{
+	qer_editorimage	gfx/mp/ysalshell
+	q3map_material	SolidMetal
+	deformvertexes	wave	100 sin 0 1 0 1
+    {
+        map gfx/mp/ysalshell
+        blendFunc GL_ONE GL_ONE
+        rgbGen const ( 0.000000 0.000000 0.300000 )
+        tcMod rotate 30
+    }
+    {
+        map gfx/mp/ysalshell
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen const ( 0.100000 0.400000 0.100000 )
+        tcMod rotate -18
+        tcMod turb 1 0.005 0 1
+    }
+}

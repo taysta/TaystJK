@@ -10909,8 +10909,8 @@ void CG_Player( centity_t *cent ) {
 		}
 	}
 
-#define _STRAFETRAILS 0
-#if _STRAFETRAILS
+#define STRAFETRAILS 0
+#if STRAFETRAILS
 #define STRAFETRAILWEIGHT_X 300
 #define STRAFETRAILWEIGHT_Y 1500
 	//Raz: BEGIN strafe trails
@@ -11647,7 +11647,7 @@ skipTrail:
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaliblueShader);
 		}
 		else {
-			CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.4f, cgs.media.invulnerabilityShader);
+			CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaligreenShader);
 		}
 	}
 stillDoSaber:
@@ -12599,7 +12599,7 @@ stillDoSaber:
 
 	if (cent->frame_minus1_refreshed)
 		cent->frame_minus2_refreshed = 1;
-#if _STRAFETRAILS
+#if STRAFETRAILS
 	VectorCopy( cent->frame_minus1, cent->frame_minus2 );
 	if ( cent->frame_minus1_refreshed2 )
 		cent->frame_minus2_refreshed2 = 1;

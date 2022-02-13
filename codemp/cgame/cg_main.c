@@ -1419,6 +1419,7 @@ static void CG_RegisterGraphics( void ) {
 
 	cgs.media.ysaliredShader		= trap->R_RegisterShader( "powerups/ysaliredshell");
 	cgs.media.ysaliblueShader		= trap->R_RegisterShader( "powerups/ysaliblueshell");
+	cgs.media.ysaligreenShader      = trap->R_RegisterShader( "powerups/ysaligreenshell");
 	cgs.media.ysalimariShader		= trap->R_RegisterShader( "powerups/ysalimarishell");
 	cgs.media.boonShader			= trap->R_RegisterShader( "powerups/boonshell");
 	cgs.media.endarkenmentShader	= trap->R_RegisterShader( "powerups/endarkenmentshell");

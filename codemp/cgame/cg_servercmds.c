@@ -1218,7 +1218,7 @@ static void CG_MapRestart( void ) {
 		CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );
 	}
 
-	if (cg_autoRecordDemo.integer && cg.recording && (1 << cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback) {
+	if (cg_autoRecordDemo.integer && cg.recording && (1 < cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback) {
 		time_t rawtime;
 		char timeBuf[256] = { 0 }, buf[256] = { 0 }, mapname[MAX_QPATH] = { 0 };
 			
@@ -1668,7 +1668,7 @@ static void CG_Print_f( void ) {
 
 void CG_ChatBox_AddString(char *chatStr);
 static void CG_Chat_f( void ) {
-	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
+	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}; //, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
 
 	trap->Cmd_Argv( 0, cmd, sizeof( cmd ) );
 
