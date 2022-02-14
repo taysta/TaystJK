@@ -12,19 +12,19 @@ cd build
 
 case "${ARCH}" in
 	x64)
-		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DBuildDiscordRichPresence=OFF
 		;;
 
 	x86)
-		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32
+		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32 -DBuildDiscordRichPresence=OFF
 		;;
 
 	x86_64-w64-mingw32)
-		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/${ARCH}.cmake
+		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/${ARCH}.cmake -DBuildDiscordRichPresence=OFF
 		;;
 
 	i686-w64-mingw32)
-		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/${ARCH}.cmake
+		cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/${ARCH}.cmake -DBuildDiscordRichPresence=OFF
 		;;
 esac
 
