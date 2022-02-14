@@ -73,6 +73,7 @@ before_script:
       export CC=clang-9 ;
       export CXX=clang++-9 ;
     fi
+
 script:
   - cmake --version
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then ./continuous_integration/travis/build/linux_osx.sh "${ARCH=x64}" "${CMAKE_BUILD_TYPE=Release}" ; fi
@@ -95,7 +96,7 @@ jobs:
   include:
 
     # ===========================
-    #           RELEASE          
+    #           RELEASE
     # ===========================
 
     - name: "(Release) x64 [GCC 9] - Ubuntu 18.04"
@@ -144,7 +145,7 @@ jobs:
       env: ARCH=i686-w64-mingw32
 
     # =========================
-    #           DEBUG          
+    #           DEBUG
     # =========================
 
     - name: "(Debug) x64 [GCC 9] - Ubuntu 18.04"
@@ -195,18 +196,3 @@ jobs:
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - CMAKE_BUILD_TYPE=Debug
         - ARCH=x86
-
-    © 2022 GitHub, Inc.
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
