@@ -752,7 +752,7 @@ void RB_DrawSun( float scale, shader_t *shader ) {
 	float		size;
 	float		dist;
 	vec3_t		origin, vec1, vec2;
-	byte		sunColor[4] = { 255, 255, 255, 255 };
+	color4ub_t	sunColor = { 255, 255, 255, 255 };
 
 	if (!backEnd.skyRenderedThisView)
 		return;

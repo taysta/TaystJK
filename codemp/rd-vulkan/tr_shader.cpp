@@ -3886,7 +3886,7 @@ from the current global working shader
 shader_t *FinishShader( void )
 {
 	qboolean		hasLightmapStage;
-	int				stage, i, n;
+	int				stage, i, n, m;
 	qboolean		colorBlend;
 	qboolean		depthMask;
 	qboolean		fogCollapse;
@@ -4271,7 +4271,7 @@ shader_t *FinishShader( void )
 			}
 
 			stype = def.shader_type;
-			def.mirror = VK_FALSE;
+			def.mirror = qfalse;
 			pStage->vk_pipeline[0] = vk_find_pipeline_ext(0, &def, qtrue);
 			if (pStage->depthFragment) {
 				def.shader_type = TYPE_SINGLE_TEXTURE_DF;
@@ -4279,7 +4279,7 @@ shader_t *FinishShader( void )
 				def.shader_type = stype;
 			}
 
-			def.mirror = VK_TRUE;
+			def.mirror = qtrue;
 			pStage->vk_mirror_pipeline[0] = vk_find_pipeline_ext(0, &def, qfalse);
 			if (pStage->depthFragment) {
 				def.shader_type = TYPE_SINGLE_TEXTURE_DF;
@@ -4332,6 +4332,27 @@ shader_t *FinishShader( void )
 			}
 			if (EqualRGBgen(lastStage[n], &stages[i + 1]) && EqualACgen(lastStage[n], &stages[i + 1])) {
 				stages[i + 1].tessFlags &= ~(TESS_RGBA0 << n);
+			}
+		}
+	}
+
+	// make sure that amplitude for TMOD_STRETCH is not zero
+	for (i = 0; i < shader.numUnfoggedPasses; i++) {
+		if (!stages[i].active) {
+			continue;
+		}
+		for (n = 0; n < stages[i].numTexBundles; n++) {
+			for (m = 0; m < stages[i].bundle[n].numTexMods; m++) {
+				if (stages[i].bundle[n].texMods[m].type == TMOD_STRETCH) {
+					if (fabsf(stages[i].bundle[n].texMods[m].wave.amplitude) < EPSILON) {
+						if (stages[i].bundle[n].texMods[m].wave.amplitude >= 0.0f) {
+							stages[i].bundle[n].texMods[m].wave.amplitude = EPSILON;
+						}
+						else {
+							stages[i].bundle[n].texMods[m].wave.amplitude = -EPSILON;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -4532,6 +4553,13 @@ static void CreateInternalShaders( void )
 	stages[0].active = qtrue;
 	stages[0].stateBits = GLS_DEFAULT;
 	tr.defaultShader = FinishShader();
+
+	InitShader("<white>", lightmapsNone, stylesDefault);
+	stages[0].bundle[0].image[0] = tr.whiteImage;
+	stages[0].active = qtrue;
+	stages[0].bundle[0].rgbGen = CGEN_EXACT_VERTEX;
+	stages[0].stateBits = GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+	tr.whiteShader = FinishShader();
 
 	// shadow shader is just a marker
 	InitShader("<stencil shadow>", lightmapsNone, stylesDefault);

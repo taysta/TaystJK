@@ -107,7 +107,7 @@ void vk_set_2d( void )
 	// set 2D virtual screen size
 	// set time for 2D shaders
 	backEnd.refdef.time = ri.Milliseconds() * ri.Cvar_VariableValue("timescale");
-	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
+	backEnd.refdef.floatTime = (double)backEnd.refdef.time * 0.001; // -EC-: cast to double
 
 	return;
 }
@@ -617,7 +617,6 @@ void vk_bind_pipeline( uint32_t pipeline ) {
 	}
 
 	vk_world.dirty_depth_attachment |= (vk.pipelines[pipeline].def.state_bits & GLS_DEPTHMASK_TRUE);
-	//vk_world.dirty_depth_attachment = VK_TRUE;
 }
 
 void vk_draw_geometry( Vk_Depth_Range depRg, qboolean indexed )
@@ -822,8 +821,8 @@ void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, 
 	case CGEN_LIGHTMAPSTYLE:
 		for (i = 0; i < tess.numVertexes; i++)
 		{
-			byteAlias_t* baDest = (byteAlias_t*)&tess.svars.colors[b],
-				* baSource = (byteAlias_t*)&styleColors[pStage->lightmapStyle];
+			byteAlias_t *baDest = (byteAlias_t *)&tess.svars.colors[b],
+						*baSource = (byteAlias_t *)&styleColors[pStage->lightmapStyle];
 			baDest->i = baSource->i;
 		}
 		break;

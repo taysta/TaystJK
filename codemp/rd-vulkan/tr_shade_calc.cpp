@@ -260,7 +260,7 @@ void RB_CalcBulgeVertexes( deformStage_t *ds )
 		float		now;
 		int			off;
 
-		now = backEnd.refdef.time * ds->bulgeSpeed * 0.001f;
+		now = backEnd.refdef.floatTime * ds->bulgeSpeed;
 
 		for ( i = 0; i < tess.numVertexes; i++, xyz += 4, st += 2, normal += 4 )
 		{
@@ -318,7 +318,7 @@ void DeformText( const char *text ) {
 	vec3_t	origin, width, height;
 	int		len;
 	int		ch;
-	byte	color[4];
+	color4ub_t color;
 	float	bottom, top;
 	vec3_t	mid;
 

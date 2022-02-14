@@ -1013,9 +1013,10 @@ void R_Init( void ) {
 	vk_debug("----- R_Init -----\n" );
 	ri.Printf(PRINT_ALL, "----- R_Init -----\n");
 	// clear all our internal state
-	memset( &tr, 0, sizeof( tr ) );
-	memset( &backEnd, 0, sizeof( backEnd ) );
-	memset( &tess, 0, sizeof( tess ) );
+	Com_Memset( &tr, 0, sizeof( tr ) );
+	Com_Memset( &backEnd, 0, sizeof( backEnd ) );
+	Com_Memset( &tess, 0, sizeof( tess ) );
+	//Com_Memset( &glState, 0, sizeof( glState ) );
 
 #ifndef FINAL_BUILD
 	if ( (intptr_t)tess.xyz & 15 ) {
@@ -1025,31 +1026,43 @@ void R_Init( void ) {
 	//
 	// init function tables
 	//
-	for ( i = 0; i < FUNCTABLE_SIZE; i++ )
-	{
-		tr.sinTable[i]		= sin( DEG2RAD( i * 360.0f / ( ( float ) ( FUNCTABLE_SIZE - 1 ) ) ) );
-		tr.squareTable[i]	= ( i < FUNCTABLE_SIZE/2 ) ? 1.0f : -1.0f;
-		tr.sawToothTable[i] = (float)i / FUNCTABLE_SIZE;
+	for (i = 0; i < FUNCTABLE_SIZE; i++) {
+		if (i == 0) {
+			tr.sinTable[i] = EPSILON;
+		}
+		else if (i == (FUNCTABLE_SIZE - 1)) {
+			tr.sinTable[i] = -EPSILON;
+		}
+		else {
+			tr.sinTable[i] = sin(DEG2RAD(i * 360.0f / ((float)(FUNCTABLE_SIZE - 1))));
+		}
+		tr.squareTable[i] = (i < FUNCTABLE_SIZE / 2) ? 1.0f : -1.0f;
+		if (i == 0) {
+			tr.sawToothTable[i] = EPSILON;
+		}
+		else {
+			tr.sawToothTable[i] = (float)i / FUNCTABLE_SIZE;
+		}
 		tr.inverseSawToothTable[i] = 1.0f - tr.sawToothTable[i];
-
-		if ( i < FUNCTABLE_SIZE / 2 )
-		{
-			if ( i < FUNCTABLE_SIZE / 4 )
-			{
-				tr.triangleTable[i] = ( float ) i / ( FUNCTABLE_SIZE / 4 );
+		if (i < FUNCTABLE_SIZE / 2) {
+			if (i < FUNCTABLE_SIZE / 4) {
+				if (i == 0) {
+					tr.triangleTable[i] = EPSILON;
+				}
+				else {
+					tr.triangleTable[i] = (float)i / (FUNCTABLE_SIZE / 4);
+				}
 			}
-			else
-			{
-				tr.triangleTable[i] = 1.0f - tr.triangleTable[i-FUNCTABLE_SIZE / 4];
+			else {
+				tr.triangleTable[i] = 1.0f - tr.triangleTable[i - FUNCTABLE_SIZE / 4];
 			}
 		}
-		else
-		{
-			tr.triangleTable[i] = -tr.triangleTable[i-FUNCTABLE_SIZE/2];
+		else {
+			tr.triangleTable[i] = -tr.triangleTable[i - FUNCTABLE_SIZE / 2];
 		}
 	}
-	R_InitFogTable();
 
+	R_InitFogTable();
 	R_ImageLoader_Init();
 	R_NoiseInit();
 	R_Register();
@@ -1128,6 +1141,7 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 	}
 
 	tr.registered = qfalse;
+	tr.inited = qfalse;
 }
 
 /*
@@ -1153,7 +1167,8 @@ void RE_GetLightStyle( int style, color4ub_t color )
 		return;
 	}
 
-	byteAlias_t *baDest = (byteAlias_t *)&color, *baSource = (byteAlias_t *)&styleColors[style];
+	byteAlias_t *baDest = (byteAlias_t *)&color, 
+				*baSource = (byteAlias_t *)&styleColors[style];
 	baDest->i = baSource->i;
 }
 

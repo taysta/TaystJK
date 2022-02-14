@@ -23,7 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-void vk_create_command_pool( VkCommandPool *pPool )
+void vk_create_command_pool( void )
 {
     VkCommandPoolCreateInfo desc;
     desc.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -31,24 +31,28 @@ void vk_create_command_pool( VkCommandPool *pPool )
     desc.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT | VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     desc.queueFamilyIndex = vk.queue_family_index;
 
-    VK_CHECK(qvkCreateCommandPool(vk.device, &desc, NULL, pPool));
-    VK_SET_OBJECT_NAME(pPool, "command pool", VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT);
+    VK_CHECK( qvkCreateCommandPool( vk.device, &desc, NULL, &vk.command_pool ) );
+    VK_SET_OBJECT_NAME( vk.command_pool, "command pool", VK_DEBUG_REPORT_OBJECT_TYPE_COMMAND_POOL_EXT );
 
     vk_debug("Create command pool: vk.command_pool \n");
 }
 
-void vk_create_command_buffer( VkCommandPool pool, VkCommandBuffer *pBuf )
+void vk_create_command_buffer( void )
 {
-    VkCommandBufferAllocateInfo alloc_info;
-    alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    alloc_info.pNext = NULL;
-    alloc_info.commandPool = pool;
-    alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    alloc_info.commandBufferCount = 1;
+    uint32_t i;
 
-    VK_CHECK(qvkAllocateCommandBuffers(vk.device, &alloc_info, pBuf));
+    for ( i = 0; i < NUM_COMMAND_BUFFERS; i++ ) {
+        VkCommandBufferAllocateInfo alloc_info;
+        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        alloc_info.pNext = NULL;
+        alloc_info.commandPool = vk.command_pool;
+        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        alloc_info.commandBufferCount = 1;
 
-    vk_debug("Create command buffer: vk.cmd->command_buffer \n");
+        VK_CHECK( qvkAllocateCommandBuffers( vk.device, &alloc_info, &vk.tess[i].command_buffer ) );
+
+        vk_debug( va("Create command buffer: vk.cmd->command_buffer[%d] \n", i ) );
+    }
 }
 
 VkCommandBuffer vk_begin_command_buffer( void )
@@ -68,7 +72,6 @@ VkCommandBuffer vk_begin_command_buffer( void )
     begin_info.pNext = NULL;
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
     begin_info.pInheritanceInfo = NULL;
-
     VK_CHECK(qvkBeginCommandBuffer(command_buffer, &begin_info));
 
     return command_buffer;

@@ -398,7 +398,6 @@ void VBO_PushData(int itemIndex, shaderCommands_t *input)
 	vbo_t *vbo = &world_vbo;
 	vbo_item_t *vi = vbo->items + itemIndex;
 	int i;
-	int forceRGBGen = 0;
 
 	VBO_AddGeometry(vbo, vi, input);
 
