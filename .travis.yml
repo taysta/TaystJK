@@ -1,197 +1,49 @@
-# ===========================================================================
-# Copyright (C) 2013 - 2019, OpenJK contributors
-# Copyright (C) 2019 - 2020, CleanJoKe contributors
-# This file is part of the OpenJK source code.
-# OpenJK is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, see <http://www.gnu.org/licenses/>.
-# ===========================================================================
-
-# https://blog.travis-ci.com/
-
 language: cpp
-os: linux
+sudo: required
 dist: bionic
 
-# https://docs.travis-ci.com/user/environment-variables/
-
-# https://docs.travis-ci.com/user/reference/overview/
-
-# https://docs.travis-ci.com/user/job-lifecycle/
-
-# For arm64, check :
-# https://docs.travis-ci.com/user/multi-cpu-architectures
-
-# Linux
-# https://docs.travis-ci.com/user/reference/bionic/
-# macOS
-# https://docs.travis-ci.com/user/reference/osx/
-# Only Windows Server, version 1803 is currently supported with Visual Studio 2017. (12 january 2020)
-# https://docs.travis-ci.com/user/reference/windows/
-
-# https://docs.travis-ci.com/user/installing-dependencies
-
-# CMAKE_BUILD_TYPE defaulted to Release
-# ARCH defaulted to x64 (x64 VMs)
-
-# Cross-compiling using Toolchains (MinGW)
-# https://launchpad.net/ubuntu/+source/gcc-mingw-w64
-# https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/cross_compiling/Mingw
-
-# https://docs.travis-ci.com/user/caching/
-cache: ccache
-
-before_install:
-  - |
-    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      chmod +x ./continuous_integration/travis/install/linux.sh ;
-      export CMAKE_VERSION=cmake-3.16.3 ;
-    fi
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then chmod +x ./continuous_integration/travis/build/linux_osx.sh ; fi
-  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then export PATH=$MSBUILD_PATH:$PATH ; fi
+addons:
+  homebrew:
+    update: true
+    packages:
+      - libpng
+      - sdl2
 
 install:
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./continuous_integration/travis/install/linux.sh "${ARCH=x64}" "${TRAVIS_COMPILER}" "${TRAVIS_CPU_ARCH}" "${CMAKE_VERSION}" ; fi
-  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then ./continuous_integration/travis/install/windows.bat ; fi
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export PATH="/usr/local/opt/ccache/libexec:$PATH" ; fi
+  - if [[ "${TRAVIS_OS_NAME}" != "osx" ]]; then ./scripts/travis/install.sh "${host:-native}" $opts; fi
+script: ./scripts/travis/build.sh "${host:-native}" "${flavour:-Release}" $opts
 
-before_script:
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_CPU_ARCH}" = "amd64" ]; then export PATH=`pwd`/${CMAKE_VERSION}/bin:$PATH ; fi
-  - |
-    if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_COMPILER}" = "gcc" ]; then
-      export CC=gcc-9 ;
-      export CXX=g++-9 ;
-    fi
-  - |
-    if [ "${TRAVIS_OS_NAME}" = "linux" ] && [ "${TRAVIS_COMPILER}" = "clang" ]; then
-      export CC=clang-9 ;
-      export CXX=clang++-9 ;
-    fi
-script:
-  - cmake --version
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then ./continuous_integration/travis/build/linux_osx.sh "${ARCH=x64}" "${CMAKE_BUILD_TYPE=Release}" ; fi
-  - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then ./continuous_integration/travis/build/windows.bat "${ARCH=x64}" "${CMAKE_BUILD_TYPE=Release}" ; fi
-
-addons:
-  apt:
-    sources:
-      # For gcc-9 g++-9 / gcc-9-multilib g++-9-multilib (see continuous_integration -> travis -> install -> linux)
-      - sourceline: 'ppa:ubuntu-toolchain-r/test'
-  homebrew:
-    packages:
-      # Install sdl2, ccache and update cmake
-      - sdl2
-      - ccache
-      - cmake
-    update: true
-
-jobs:
+matrix:
   include:
-
-    # ===========================
-    #           RELEASE          
-    # ===========================
-
-    - name: "(Release) x64 [GCC 9] - Ubuntu 18.04"
+    # Linux x64 Release
+    - os: linux
       compiler: gcc
 
-    - name: "(Release) arm64 [GCC 9] - Ubuntu 18.04"
-      arch: arm64
-      compiler: gcc
-
-      #    - name: "(Release) x64 [clang 9] - Ubuntu 18.04"
-      #      compiler: clang
-
-    #    - name: "(Release) arm64 [clang 9] - Ubuntu 18.04"
-    #      arch: arm64
-    #      compiler: clang
-
-    - name: "(Release) x64 [Visual Studio 2017] - Windows Server, version 1803"
-      os: windows
-      env: MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-
-    - name: "(Release) x64 [Apple clang version 11.0.0] - macOS 10.14"
-      os: osx
-      osx_image: xcode11.3
+    # macOS
+    - os: osx
+      osx_image: xcode9.4
       compiler: clang
 
-    - name: "(Release) x64 [MinGW-64 7] - Ubuntu 18.04"
+    # Linux x64 Debug
+    - os: linux
       compiler: gcc
-      env: ARCH=x86_64-w64-mingw32
+      env: flavour=Debug
 
-    - name: "(Release) x86 [GCC 9] - Ubuntu 18.04"
+    # Linux i686 gcc
+    - os: linux
       compiler: gcc
-      env: ARCH=x86
+      env: host=i686-linux-gnu
 
-    #   - name: "(Release) x86 [clang 9] - Ubuntu 18.04"
-    #     compiler: clang
-    #     env: ARCH=x86
-
-    - name: "(Release) x86 [Visual Studio 2017] - Windows Server, version 1803"
-      os: windows
-      env:
-        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-        - ARCH=x86
-
-    - name: "(Release) x86 [MinGW-64 7] - Ubuntu 18.04"
+    # Linux x64 mingw32
+    - os: linux
       compiler: gcc
-      env: ARCH=i686-w64-mingw32
+      env: host=x86_64-w64-mingw32
 
-    # =========================
-    #           DEBUG          
-    # =========================
-
-    - name: "(Debug) x64 [GCC 9] - Ubuntu 18.04"
+    # Linux i686 mingw32
+    - os: linux
       compiler: gcc
-      env: CMAKE_BUILD_TYPE=Debug
+      env: host=i686-w64-mingw32
 
-      #    - name: "(Debug) arm64 [GCC 9] - Ubuntu 18.04"
-      #      arch: arm64
-      #      compiler: gcc
-      #      env: CMAKE_BUILD_TYPE=Debug
-
-      #    - name: "(Debug) x64 [clang 9] - Ubuntu 18.04"
-      #      compiler: clang
-      #      env: CMAKE_BUILD_TYPE=Debug
-
-    #    - name: "(Debug) arm64 [clang 9] - Ubuntu 18.04"
-    #      arch: arm64
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Debug
-
-    - name: "(Debug) x64 [Visual Studio 2017] - Windows Server, version 1803"
-      os: windows
-      env:
-        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-        - CMAKE_BUILD_TYPE=Debug
-
-    #    - name: "(Debug) x64 [Apple clang version 11.0.0] - macOS 10.14"
-    #      os: osx
-    #      osx_image: xcode11.3
-    #      compiler: clang
-    #      env: CMAKE_BUILD_TYPE=Debug
-
-    - name: "(Debug) x86 [GCC 9] - Ubuntu 18.04"
-      compiler: gcc
-      env:
-        - CMAKE_BUILD_TYPE=Debug
-        - ARCH=x86
-
-    #    - name: "(Debug) x86 [clang 9] - Ubuntu 18.04"
-    #      compiler: clang
-    #      env:
-    #        - CMAKE_BUILD_TYPE=Debug
-    #        - ARCH=x86
-
-    - name: "(Debug) x86 [Visual Studio 2017] - Windows Server, version 1803"
-      os: windows
-      env:
-        - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
-        - CMAKE_BUILD_TYPE=Debug
-        - ARCH=x86
+    # Linux clang
+    - os: linux
+      compiler: clang
