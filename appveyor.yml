@@ -30,12 +30,12 @@ configuration:
 init:
   - ps: $env:SHORT_COMMIT_HASH=$env:appveyor_repo_commit.substring(0,8)
   - ps: Update-AppveyorBuild -Version "1.0-git-$env:SHORT_COMMIT_HASH"
-  - ps: $env:ARTIFACT_FILE="openjk-$(Get-Date -UFormat "%Y-%m-%d")-$env:SHORT_COMMIT_HASH-windows.zip"
+  - ps: $env:ARTIFACT_FILE="eternaljk-$(Get-Date -UFormat "%Y-%m-%d")-$env:SHORT_COMMIT_HASH-windows.zip"
   - echo "Artifact file='%ARTIFACT_FILE%'"
   - cmake --version
   - msbuild /version
 
-clone_folder: C:\projects\OpenJK
+clone_folder: C:\projects\EternalJK
 
 #scripts to run before build
 before_build:
@@ -61,8 +61,8 @@ after_build:
   - 7z l %ARTIFACT_FILE% # list files in the zip file
 
 artifacts:
-  - path: openjk-*-windows.zip
-    name: OpenJK Jedi Academy ZIP
+  - path: eternaljk-*-windows.zip
+    name: EternalJK Jedi Academy ZIP
     type: zip
 
 deploy_script:
