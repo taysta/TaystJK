@@ -51,7 +51,7 @@ before_build:
 
 build:
   parallel: true
-  project: EternalJK.sln
+  project: C:\projects\EternalJK\build\EternalJK.sln
   verbosity: normal
 
 after_build:
