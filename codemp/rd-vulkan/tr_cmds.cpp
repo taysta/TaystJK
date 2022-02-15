@@ -224,15 +224,11 @@ void RE_SetColor( const float *rgba ) {
 	cmd->color[3] = rgba[3];
 }
 
-void VK_AdjustFrom640( float *x, float *y, float *w, float *h ) {
-	//*x = *x * glConfig.screen_xscale + glConfig.screen_bias;
+static void vk_adjust_from_640( float *x, float *y, float *w, float *h ) {
 	*x *= vk.xscale2D;
 	*y *= vk.yscale2D;
 	*w *= vk.xscale2D;
 	*h *= vk.yscale2D;
-
-	backEnd.refdef.time = ri.Milliseconds();
-	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
 }
 
 /*
@@ -267,14 +263,7 @@ void RE_StretchPic ( float x, float y, float w, float h,
 		return;
 	}
 
-	VK_AdjustFrom640(&x, &y, &w, &h);
-
-	// set 2D virtual screen size
-	//qglOrtho(0, glConfig.vidWidth, glConfig.vidHeight, 0, 0, 1);
-
-	// set time for 2D shaders
-	backEnd.refdef.time = ri.Milliseconds();
-	backEnd.refdef.floatTime = backEnd.refdef.time * 0.001f;
+	vk_adjust_from_640( &x, &y, &w, &h );
 
 	cmd->commandId = RC_STRETCH_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
@@ -302,7 +291,7 @@ void RE_RotatePic ( float x, float y, float w, float h,
 		return;
 	}
 
-	VK_AdjustFrom640(&x, &y, &w, &h);
+	vk_adjust_from_640( &x, &y, &w, &h );
 
 	cmd->commandId = RC_ROTATE_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
@@ -331,7 +320,7 @@ void RE_RotatePic2 ( float x, float y, float w, float h,
 		return;
 	}
 
-	VK_AdjustFrom640(&x, &y, &w, &h);
+	vk_adjust_from_640( &x, &y, &w, &h );
 
 	cmd->commandId = RC_ROTATE_PIC2;
 	cmd->shader = R_GetShaderByHandle( hShader );
@@ -428,7 +417,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 
 	if (r_fastsky->integer && vk.fastSky) {
 		clearColorCommand_t *clrcmd;
-		if ((clrcmd = (clearColorCommand_t*)R_GetCommandBuffer(sizeof(*clrcmd))) == nullptr)
+		if ( ( clrcmd = (clearColorCommand_t*)R_GetCommandBuffer( sizeof( *clrcmd ) ) ) == nullptr )
 			return;
 		clrcmd->commandId = RC_CLEARCOLOR;
 	}

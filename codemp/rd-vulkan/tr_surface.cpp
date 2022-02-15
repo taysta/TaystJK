@@ -66,12 +66,12 @@ void RB_CheckOverflow( int verts, int indexes ) {
 
 /*
 ==============
-RB_AddQuadStampExt
+RB_AddQuadStamp2
 ==============
 */
-void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, byte *color, float s1, float t1, float s2, float t2 ) {
-	vec3_t		normal;
-	int			ndx;
+void RB_AddQuadStamp2( float x, float y, float w, float h, float s1, float t1, float s2, float t2, color4ub_t color ) {
+	int			numIndexes;
+	int			numVerts;
 
 #ifdef USE_VBO
 	VBO_Flush();
@@ -83,69 +83,125 @@ void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, byte *color, flo
 	tess.surfType = SF_TRIANGLES;
 #endif
 
-	ndx = tess.numVertexes;
+	numIndexes = tess.numIndexes;
+	numVerts = tess.numVertexes;
+
+	tess.numVertexes += 4;
+	tess.numIndexes += 6;
+
+	tess.indexes[numIndexes + 0] = numVerts + 3;
+	tess.indexes[numIndexes + 1] = numVerts + 0;
+	tess.indexes[numIndexes + 2] = numVerts + 2;
+	tess.indexes[numIndexes + 3] = numVerts + 2;
+	tess.indexes[numIndexes + 4] = numVerts + 0;
+	tess.indexes[numIndexes + 5] = numVerts + 1;
+
+	tess.xyz[numVerts + 0][0] = x;
+	tess.xyz[numVerts + 0][1] = y;
+	tess.xyz[numVerts + 0][2] = 0;
+
+	tess.xyz[numVerts + 1][0] = x + w;
+	tess.xyz[numVerts + 1][1] = y;
+	tess.xyz[numVerts + 1][2] = 0;
+
+	tess.xyz[numVerts + 2][0] = x + w;
+	tess.xyz[numVerts + 2][1] = y + h;
+	tess.xyz[numVerts + 2][2] = 0;
+
+	tess.xyz[numVerts + 3][0] = x;
+	tess.xyz[numVerts + 3][1] = y + h;
+	tess.xyz[numVerts + 3][2] = 0;
+
+	tess.texCoords[0][numVerts + 0][0] = s1;
+	tess.texCoords[0][numVerts + 0][1] = t1;
+	tess.texCoords[0][numVerts + 1][0] = s2;
+	tess.texCoords[0][numVerts + 1][1] = t1;
+	tess.texCoords[0][numVerts + 2][0] = s2;
+	tess.texCoords[0][numVerts + 2][1] = t2;
+	tess.texCoords[0][numVerts + 3][0] = s1;
+	tess.texCoords[0][numVerts + 3][1] = t2;
+
+	byteAlias_t *baDest = NULL, *baSource = (byteAlias_t *)color;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 0]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 1]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
+
+}
+
+/*
+==============
+RB_AddQuadStampExt
+==============
+*/
+void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, color4ub_t color, float s1, float t1, float s2, float t2 ) {
+	vec3_t		normal;
+	int			numIndexes;
+	int			numVerts;
+
+#ifdef USE_VBO
+	VBO_Flush();
+#endif
+
+	RB_CHECKOVERFLOW( 4, 6 );
+
+#ifdef USE_VBO
+	tess.surfType = SF_TRIANGLES;
+#endif
+
+	numIndexes = tess.numIndexes;
+	numVerts = tess.numVertexes;
+
+	tess.numVertexes += 4;
+	tess.numIndexes += 6;
 
 	// triangle indexes for a simple quad
-	tess.indexes[ tess.numIndexes ] = ndx;
-	tess.indexes[ tess.numIndexes + 1 ] = ndx + 1;
-	tess.indexes[ tess.numIndexes + 2 ] = ndx + 3;
+	tess.indexes[numIndexes + 0] = numVerts + 0;
+	tess.indexes[numIndexes + 1] = numVerts + 1;
+	tess.indexes[numIndexes + 2] = numVerts + 3;
+	tess.indexes[numIndexes + 3] = numVerts + 3;
+	tess.indexes[numIndexes + 4] = numVerts + 1;
+	tess.indexes[numIndexes + 5] = numVerts + 2;
 
-	tess.indexes[ tess.numIndexes + 3 ] = ndx + 3;
-	tess.indexes[ tess.numIndexes + 4 ] = ndx + 1;
-	tess.indexes[ tess.numIndexes + 5 ] = ndx + 2;
+	tess.xyz[numVerts + 0][0] = origin[0] + left[0] + up[0];
+	tess.xyz[numVerts + 0][1] = origin[1] + left[1] + up[1];
+	tess.xyz[numVerts + 0][2] = origin[2] + left[2] + up[2];
 
-	tess.xyz[ndx][0] = origin[0] + left[0] + up[0];
-	tess.xyz[ndx][1] = origin[1] + left[1] + up[1];
-	tess.xyz[ndx][2] = origin[2] + left[2] + up[2];
+	tess.xyz[numVerts + 1][0] = origin[0] - left[0] + up[0];
+	tess.xyz[numVerts + 1][1] = origin[1] - left[1] + up[1];
+	tess.xyz[numVerts + 1][2] = origin[2] - left[2] + up[2];
 
-	tess.xyz[ndx+1][0] = origin[0] - left[0] + up[0];
-	tess.xyz[ndx+1][1] = origin[1] - left[1] + up[1];
-	tess.xyz[ndx+1][2] = origin[2] - left[2] + up[2];
+	tess.xyz[numVerts + 2][0] = origin[0] - left[0] - up[0];
+	tess.xyz[numVerts + 2][1] = origin[1] - left[1] - up[1];
+	tess.xyz[numVerts + 2][2] = origin[2] - left[2] - up[2];
 
-	tess.xyz[ndx+2][0] = origin[0] - left[0] - up[0];
-	tess.xyz[ndx+2][1] = origin[1] - left[1] - up[1];
-	tess.xyz[ndx+2][2] = origin[2] - left[2] - up[2];
-
-	tess.xyz[ndx+3][0] = origin[0] + left[0] - up[0];
-	tess.xyz[ndx+3][1] = origin[1] + left[1] - up[1];
-	tess.xyz[ndx+3][2] = origin[2] + left[2] - up[2];
-
+	tess.xyz[numVerts + 3][0] = origin[0] + left[0] - up[0];
+	tess.xyz[numVerts + 3][1] = origin[1] + left[1] - up[1];
+	tess.xyz[numVerts + 3][2] = origin[2] + left[2] - up[2];
 
 	// constant normal all the way around
 	VectorSubtract( vec3_origin, backEnd.viewParms.ori.axis[0], normal );
 
-	tess.normal[ndx][0] = tess.normal[ndx+1][0] = tess.normal[ndx+2][0] = tess.normal[ndx+3][0] = normal[0];
-	tess.normal[ndx][1] = tess.normal[ndx+1][1] = tess.normal[ndx+2][1] = tess.normal[ndx+3][1] = normal[1];
-	tess.normal[ndx][2] = tess.normal[ndx+1][2] = tess.normal[ndx+2][2] = tess.normal[ndx+3][2] = normal[2];
+	tess.normal[numVerts][0] = tess.normal[numVerts + 1][0] = tess.normal[numVerts + 2][0] = tess.normal[numVerts + 3][0] = normal[0];
+	tess.normal[numVerts][1] = tess.normal[numVerts + 1][1] = tess.normal[numVerts + 2][1] = tess.normal[numVerts + 3][1] = normal[1];
+	tess.normal[numVerts][2] = tess.normal[numVerts + 1][2] = tess.normal[numVerts + 2][2] = tess.normal[numVerts + 3][2] = normal[2];
 
 	// standard square texture coordinates
-	tess.texCoords[0][ndx+0][0] = tess.texCoords[1][ndx][0] = s1;
-	tess.texCoords[0][ndx+0][1] = tess.texCoords[1][ndx][1] = t1;
+	tess.texCoords[0][numVerts + 0][0] = tess.texCoords[1][numVerts + 0][0] = s1;
+	tess.texCoords[0][numVerts + 0][1] = tess.texCoords[1][numVerts + 0][1] = t1;
+	tess.texCoords[0][numVerts + 1][0] = tess.texCoords[1][numVerts + 1][0] = s2;
+	tess.texCoords[0][numVerts + 1][1] = tess.texCoords[1][numVerts + 1][1] = t1;
+	tess.texCoords[0][numVerts + 2][0] = tess.texCoords[1][numVerts + 2][0] = s2;
+	tess.texCoords[0][numVerts + 2][1] = tess.texCoords[1][numVerts + 2][1] = t2;
+	tess.texCoords[0][numVerts + 3][0] = tess.texCoords[1][numVerts + 3][0] = s1;
+	tess.texCoords[0][numVerts + 3][1] = tess.texCoords[1][numVerts + 3][1] = t2;
 
-	tess.texCoords[0][ndx+1][0] = tess.texCoords[1][ndx+1][0] = s2;
-	tess.texCoords[0][ndx+1][1] = tess.texCoords[1][ndx+1][1] = t1;
-
-	tess.texCoords[0][ndx+2][0] = tess.texCoords[1][ndx+2][0] = s2;
-	tess.texCoords[0][ndx+2][1] = tess.texCoords[1][ndx+2][1] = t2;
-
-	tess.texCoords[0][ndx+3][0] = tess.texCoords[1][ndx+3][0] = s1;
-	tess.texCoords[0][ndx+3][1] = tess.texCoords[1][ndx+3][1] = t2;
-
-	// constant color all the way around
 	// should this be identity and let the shader specify from entity?
-	byteAlias_t *baSource = (byteAlias_t *)color, *baDest;
-	baDest = (byteAlias_t *)&tess.vertexColors[ndx + 0];
-	baDest->ui = baSource->ui;
-	baDest = (byteAlias_t *)&tess.vertexColors[ndx + 1];
-	baDest->ui = baSource->ui;
-	baDest = (byteAlias_t *)&tess.vertexColors[ndx + 2];
-	baDest->ui = baSource->ui;
-	baDest = (byteAlias_t *)&tess.vertexColors[ndx + 3];
-	baDest->ui = baSource->ui;
-
-
-	tess.numVertexes += 4;
-	tess.numIndexes += 6;
+	byteAlias_t *baDest = NULL, *baSource = (byteAlias_t *)color;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 0]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 1]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
 }
 
 /*
@@ -153,7 +209,7 @@ void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, byte *color, flo
 RB_AddQuadStamp
 ==============
 */
-void RB_AddQuadStamp( vec3_t origin, vec3_t left, vec3_t up, byte *color ) {
+void RB_AddQuadStamp( vec3_t origin, vec3_t left, vec3_t up, color4ub_t color ) {
 	RB_AddQuadStampExt( origin, left, up, color, 0, 0, 1, 1 );
 }
 
@@ -268,7 +324,7 @@ void RB_SurfacePolychain( srfPoly_t *p ) {
 		tess.texCoords[0][numv][0] = p->verts[i].st[0];
 		tess.texCoords[0][numv][1] = p->verts[i].st[1];
 		byteAlias_t *baDest = (byteAlias_t *)&tess.vertexColors[numv++],
-			*baSource = (byteAlias_t *)&p->verts[ i ].modulate;
+					*baSource = (byteAlias_t *)&p->verts[ i ].modulate;
 		baDest->i = baSource->i;
 	}
 

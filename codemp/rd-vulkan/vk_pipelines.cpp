@@ -1578,8 +1578,8 @@ void vk_alloc_persistent_pipelines( void )
         Com_Memset(&def, 0, sizeof(def));
         def.shader_type = TYPE_SINGLE_TEXTURE_IDENTITY;
         def.face_culling = CT_FRONT_SIDED;
-        def.polygon_offset = VK_FALSE;
-        def.mirror = VK_FALSE;
+        def.polygon_offset = qfalse;
+        def.mirror = qfalse;
 
         vk.std_pipeline.skybox_pipeline = vk_find_pipeline_ext(0, &def, qtrue);
     }
@@ -1590,8 +1590,8 @@ void vk_alloc_persistent_pipelines( void )
         //def.shader_type = TYPE_SINGLE_TEXTURE_IDENTITY;
         def.shader_type = TYPE_SINGLE_TEXTURE;
         def.face_culling = CT_TWO_SIDED;
-        def.polygon_offset = VK_FALSE;
-        def.mirror = VK_FALSE;
+        def.polygon_offset = qfalse;
+        def.mirror = qfalse;
 
         def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
         vk.std_pipeline.worldeffect_pipeline[0] = vk_find_pipeline_ext(0, &def, qtrue);
@@ -1605,11 +1605,11 @@ void vk_alloc_persistent_pipelines( void )
     {
         {
             cullType_t cull_types[2] = { CT_FRONT_SIDED, CT_BACK_SIDED };
-            VkBool32 mirror_flags[2] = { VK_FALSE, VK_TRUE };
+            qboolean mirror_flags[2] = { qfalse, qtrue };
             int i, j;
 
             Com_Memset(&def, 0, sizeof(def));
-            def.polygon_offset = VK_FALSE;
+            def.polygon_offset = qfalse;
             def.state_bits = 0;
             def.shader_type = TYPE_SINGLE_TEXTURE;
             def.shadow_phase = SHADOW_EDGES;
@@ -1627,10 +1627,10 @@ void vk_alloc_persistent_pipelines( void )
         {
             Com_Memset(&def, 0, sizeof(def));
             def.face_culling = CT_FRONT_SIDED;
-            def.polygon_offset = VK_FALSE;
+            def.polygon_offset = qfalse;
             def.state_bits = GLS_DEPTHMASK_TRUE | GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
             def.shader_type = TYPE_SINGLE_TEXTURE;
-            def.mirror = VK_FALSE;
+            def.mirror = qfalse;
             def.shadow_phase = SHADOW_FS_QUAD;
             def.primitives = TRIANGLE_STRIP;
             vk.std_pipeline.shadow_finish_pipeline = vk_find_pipeline_ext(0, &def, r_shadows->integer ? qtrue : qfalse);
@@ -1648,12 +1648,12 @@ void vk_alloc_persistent_pipelines( void )
         //    GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL,	// modulated
         //    GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL			// additive
         //};
-        VkBool32 polygon_offset[2] = { VK_FALSE, VK_TRUE };
+        qboolean polygon_offset[2] = { qfalse, qtrue };
         int i, j, k, l;
  
         Com_Memset(&def, 0, sizeof(def));
         def.shader_type = TYPE_SINGLE_TEXTURE;
-        def.mirror = VK_FALSE;
+        def.mirror = qfalse;
 
         for (i = 0; i < 2; i++)
         {

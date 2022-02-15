@@ -32,11 +32,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 int vkSamples = VK_SAMPLE_COUNT_1_BIT;
 int vkMaxSamples = VK_SAMPLE_COUNT_1_BIT;
 
-VkBool32 is_vk_initialized( void )
-{
-	return vk.isInitialized;
-}
-
 static void vk_set_render_scale( void )
 {
 	if (gls.windowWidth != glConfig.vidWidth || gls.windowHeight != glConfig.vidHeight)
@@ -316,26 +311,30 @@ void vk_create_window( void ) {
 		gls.initTime = ri.Milliseconds();
 	}
 
-	if (!is_vk_initialized()) {
+	if ( !vk.active && vk.instance ){
 		// might happen after REF_KEEP_WINDOW
 		vk_initialize();
-
 		gls.initTime = ri.Milliseconds();
 	}
-
-	vk_init_descriptors();
+	if ( vk.active ) {
+		vk_init_descriptors();
+	}
+	else {
+		ri.Error( ERR_FATAL, "Recursive error during Vulkan initialization" );
+	}
 
 	glState.glStateBits = GLS_DEPTHTEST_DISABLE | GLS_DEPTHMASK_TRUE;
+
+	tr.inited = qtrue;
 }
 
 void vk_initialize( void )
 {
-	int i;
 	VkPhysicalDeviceProperties props;
 
 	vk_init_library();
 
-	qvkGetDeviceQueue(vk.device, vk.queue_family_index, 0, &vk.queue);
+	qvkGetDeviceQueue( vk.device, vk.queue_family_index, 0, &vk.queue );
 
 	vk_get_vulkan_properties(&props);
 
@@ -346,11 +345,11 @@ void vk_initialize( void )
 
 	// Memory alignment
 	vk.uniform_alignment = props.limits.minUniformBufferOffsetAlignment;
-	vk.uniform_item_size = PAD(sizeof(vkUniform_t), vk.uniform_alignment);
-	vk.storage_alignment = MAX(props.limits.minStorageBufferOffsetAlignment, sizeof(uint32_t)); //for flare visibility tests
+	vk.uniform_item_size = PAD( sizeof(vkUniform_t), vk.uniform_alignment );
+	vk.storage_alignment = MAX( props.limits.minStorageBufferOffsetAlignment, sizeof(uint32_t) ); //for flare visibility tests
 
 	// maxTextureSize must not exceed IMAGE_CHUNK_SIZE
-	glConfig.maxTextureSize = MIN(props.limits.maxImageDimension2D, log2pad(sqrtf(IMAGE_CHUNK_SIZE / 4), 0));
+	glConfig.maxTextureSize = MIN( props.limits.maxImageDimension2D, log2pad( sqrtf( IMAGE_CHUNK_SIZE / 4 ), 0 ) );
 	if (glConfig.maxTextureSize > MAX_TEXTURE_SIZE)
 		glConfig.maxTextureSize = MAX_TEXTURE_SIZE; // ResampleTexture() relies on that maximum
 
@@ -358,22 +357,23 @@ void vk_initialize( void )
 	vk.image_chunk_size = IMAGE_CHUNK_SIZE; 
 
 	// maxActiveTextures must not exceed MAX_TEXTURE_UNITS
-	if (props.limits.maxPerStageDescriptorSamplers != 0xFFFFFFFF)
+	if ( props.limits.maxPerStageDescriptorSamplers != 0xFFFFFFFF )
 		glConfig.maxActiveTextures = props.limits.maxPerStageDescriptorSamplers;
 	else
 		glConfig.maxActiveTextures = props.limits.maxBoundDescriptorSets;
-	if (glConfig.maxActiveTextures > MAX_TEXTURE_UNITS)
+
+	if ( glConfig.maxActiveTextures > MAX_TEXTURE_UNITS )
 		glConfig.maxActiveTextures = MAX_TEXTURE_UNITS;
 
 	vk.maxBoundDescriptorSets = props.limits.maxBoundDescriptorSets;
 	vk.maxAnisotropy = props.limits.maxSamplerAnisotropy;
 	vk.maxLod = 1 + Q_log2( glConfig.maxTextureSize );
 
-	ri.Printf(PRINT_ALL, "\nVK_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize);
-	ri.Printf(PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.maxActiveTextures);
+	ri.Printf( PRINT_ALL, "\nVK_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize );
+	ri.Printf( PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.maxActiveTextures );
 
-	vk.xscale2D = glConfig.vidWidth * (1.0 / 640.0);
-	vk.yscale2D = glConfig.vidHeight * (1.0 / 480.0);
+	vk.xscale2D = glConfig.vidWidth * ( 1.0 / 640.0 );
+	vk.yscale2D = glConfig.vidHeight * ( 1.0 / 480.0 );
 
 	vk.windowAdjusted = qfalse;
 	vk.blitFilter = GL_NEAREST;
@@ -381,73 +381,70 @@ void vk_initialize( void )
 
 	vk_set_render_scale();
 
-	if (r_fbo->integer)
+	if ( r_fbo->integer )
 		vk.fboActive = qtrue;		
 
 	//if (r_ext_multisample->integer && !r_ext_supersample->integer)
-	if (r_ext_multisample->integer)
+	if ( r_ext_multisample->integer )
 		vk.msaaActive = qtrue;
 
 	// MSAA
-	vkMaxSamples = MIN(props.limits.sampledImageColorSampleCounts, props.limits.sampledImageDepthSampleCounts);
+	vkMaxSamples = MIN( props.limits.sampledImageColorSampleCounts, props.limits.sampledImageDepthSampleCounts);
 
 	if (vk.msaaActive) {
 		VkSampleCountFlags mask = vkMaxSamples;
-		vkSamples = MAX(log2pad(r_ext_multisample->integer, 1), VK_SAMPLE_COUNT_2_BIT);
-		while (vkSamples > mask)
+		vkSamples = MAX( log2pad( r_ext_multisample->integer, 1 ), VK_SAMPLE_COUNT_2_BIT );
+		while ( vkSamples > mask )
 			vkSamples >>= 1;
 	}
 	else {
 		vkSamples = VK_SAMPLE_COUNT_1_BIT;
 	}
-	ri.Printf(PRINT_ALL, "MSAA max: %dx, using %dx\n", vkMaxSamples, vkSamples);
+
+	ri.Printf( PRINT_ALL, "MSAA max: %dx, using %dx\n", vkMaxSamples, vkSamples );
 
 	// Anisotropy
-	ri.Printf(PRINT_ALL, "Anisotropy max: %dx, using %dx\n\n", r_ext_max_anisotropy->integer, r_ext_texture_filter_anisotropic->integer);
+	ri.Printf( PRINT_ALL, "Anisotropy max: %dx, using %dx\n\n", r_ext_max_anisotropy->integer, r_ext_texture_filter_anisotropic->integer );
 
 	// Screenmap
 	vk.screenMapSamples = MIN(vkMaxSamples, VK_SAMPLE_COUNT_4_BIT);
 	vk.screenMapWidth = (float)glConfig.vidWidth / 16.0;
 	vk.screenMapHeight = (float)glConfig.vidHeight / 16.0;	
 
-	if (vk.screenMapWidth < 4)
+	if ( vk.screenMapWidth < 4 )
 		vk.screenMapWidth = 4;	
 	
-	if (vk.screenMapHeight < 4)
+	if ( vk.screenMapHeight < 4 )
 		vk.screenMapHeight = 4;
 
 	vk_create_sync_primitives();
-	vk_create_command_pool(&vk.command_pool);
-
-	for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
-		vk_create_command_buffer(vk.command_pool, &vk.tess[i].command_buffer);
-	}
-
+	vk_create_command_pool();
+	vk_create_command_buffer();
 	vk_create_descriptor_layout();
 	vk_create_pipeline_layout();
 
 	vk.geometry_buffer_size_new = VERTEX_BUFFER_SIZE;
-	vk_create_vertex_buffer(vk.geometry_buffer_size_new);
-	vk_create_storage_buffer(MAX_FLARES * vk.storage_alignment);
+	vk_create_vertex_buffer( vk.geometry_buffer_size_new );
+	vk_create_storage_buffer( MAX_FLARES * vk.storage_alignment );
 	vk_create_shader_modules();
 
 	{
 		VkPipelineCacheCreateInfo ci;
 		Com_Memset(&ci, 0, sizeof(ci));
 		ci.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
-		VK_CHECK(qvkCreatePipelineCache(vk.device, &ci, nullptr, &vk.pipelineCache));
+		VK_CHECK(qvkCreatePipelineCache(vk.device, &ci, VK_NULL_HANDLE, &vk.pipelineCache));
 	}
 
 	vk.renderPassIndex = RENDER_PASS_MAIN; // default render pass
 	vk.initSwapchainLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
-	vk_create_swapchain(vk.physical_device, vk.device, vk.surface, vk.present_format, &vk.swapchain);
+	vk_create_swapchain( vk.physical_device, vk.device, vk.surface, vk.present_format, &vk.swapchain );
 	vk_render_splash();
 	vk_create_attachments();
 	vk_create_render_passes();
 	vk_create_framebuffers();
 
-	vk.isInitialized = VK_TRUE;
+	vk.active = qtrue;
 }
 
 // Shutdown vulkan subsystem by releasing resources acquired by Vk_Instance.
@@ -514,5 +511,5 @@ __cleanup:
 
 	vk_deinit_library();
 
-    vk.isInitialized = VK_FALSE;
+	vk.active = qfalse;
 }

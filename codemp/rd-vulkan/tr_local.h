@@ -248,7 +248,7 @@ typedef struct image_s {
 	VkImage					handle;
 	VkImageView				view;
 	VkDescriptorSet			descriptor_set;
-	VkBool32				isLightmap;
+	qboolean				isLightmap;
 	uint32_t				mipLevels;		// gl texture binding
 	VkSamplerAddressMode	wrapClampMode;	
 } image_t;
@@ -1034,7 +1034,7 @@ void		R_Modellist_f ( void );
 //====================================================
 
 
-#define	MAX_DRAWIMAGES			4096
+#define	MAX_DRAWIMAGES			2048
 #define	MAX_LIGHTMAPS			256
 #define	MAX_SKINS				1024
 
@@ -1204,7 +1204,7 @@ typedef struct backEndState_s {
 	trRefEntity_t		*currentEntity;
 	qboolean			skyRenderedThisView;	// flag for drawing sun
 	qboolean			projection2D;			// if qtrue, drawstretchpic doesn't need to change modes
-	unsigned char		color2D[4];
+	color4ub_t			color2D;
 	qboolean			vertexes2D;				// shader needs to be finished
 	trRefEntity_t		entity2D;				// currentEntity will point at this when doing 2D rendering
 
@@ -1238,6 +1238,7 @@ typedef struct drawSurfsCommand_s drawSurfsCommand_t;
 
 typedef struct trGlobals_s {
 	qboolean				registered;			// cleared at shutdown, set at beginRegistration
+	qboolean				inited;				// cleared at shutdown, set at vk_create_window
 
 	window_t				window;
 
@@ -1268,6 +1269,7 @@ typedef struct trGlobals_s {
 	image_t					*identityLightImage;// full of tr.identityLightByte
 
 	shader_t				*defaultShader;
+	shader_t				*whiteShader;
 	shader_t				*cinematicShader;
 	shader_t				*shadowShader;
 	shader_t				*distortionShader;
@@ -1556,7 +1558,6 @@ extern cvar_t	*r_bloom_intensity;
 extern cvar_t	*r_renderWidth;
 extern cvar_t	*r_renderHeight;
 extern cvar_t	*r_renderScale;
-extern cvar_t	*r_ignorehwgamma;		// overrides hardware gamma capabilities
 #ifdef USE_PMLIGHT
 extern cvar_t	*r_dlightMode;			// 0 - vq3, 1 - pmlight
 extern cvar_t	*r_dlightScale;			// 0.1 - 1.0
@@ -1593,7 +1594,6 @@ void		R_AddLitSurf( surfaceType_t* surface, shader_t* shader, int fogIndex );
 #endif
 
 shader_t		*GeneratePermanentShader( void );
-//static qboolean ParseShader( const char **text );
 
 #define	CULL_IN		0		// completely unclipped
 #define	CULL_CLIP	1		// clipped by one or more planes
@@ -1613,7 +1613,7 @@ void		RE_UploadCinematic( int cols, int rows, const byte *data, int client, qboo
 
 void		RE_BeginFrame( stereoFrame_t stereoFrame );
 void		RE_BeginRegistration( glconfig_t *glconfig );
-void		R_ColorShiftLightingBytes( byte in[4], byte out[4] ); //rwwRMG - added
+void		R_ColorShiftLightingBytes( byte in[4], byte out[4], qboolean hasAlpha ); //rwwRMG - added
 void		RE_LoadWorldMap( const char *mapname );
 
 void		RE_SetWorldVisData( const byte *vis );
@@ -1772,8 +1772,9 @@ void RB_CheckOverflow( int verts, int indexes );
 void RB_StageIteratorGeneric( void );
 void RB_StageIteratorSky( void );
 
-void RB_AddQuadStamp( vec3_t origin, vec3_t left, vec3_t up, byte *color );
-void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, byte *color, float s1, float t1, float s2, float t2 );
+void RB_AddQuadStamp( vec3_t origin, vec3_t left, vec3_t up, color4ub_t color );
+void RB_AddQuadStampExt( vec3_t origin, vec3_t left, vec3_t up, color4ub_t color, float s1, float t1, float s2, float t2 );
+void RB_AddQuadStamp2( float x, float y, float w, float h, float s1, float t1, float s2, float t2, color4ub_t color );
 
 /*
 ============================================================
@@ -2186,9 +2187,11 @@ char		*GenerateImageMappingName( const char *name );
 void		R_Add_AllocatedImage( image_t *image );
 
 void		vk_bind( image_t *image );
-void		vk_upload_image( Image_Upload_Data *upload_data, image_t *image );
+void		vk_upload_image( image_t *image, byte *pic );
+void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );
-void		vk_create_image( int width, int height, VkFormat format, int mip_levels, image_t *image );
+void		vk_create_image( image_t *image, int width, int height, int mip_levels );
+
 byte		*vk_resample_image_data( const image_t *image, byte *data, const int data_size, int *bytes_per_pixel );
 
 static QINLINE unsigned int log2pad(unsigned int v, int roundup)
