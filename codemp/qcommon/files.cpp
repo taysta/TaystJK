@@ -278,9 +278,7 @@ typedef struct fileHandleData_s {
 			handleFiles({}),
 			handleSync(qfalse),
 			handleAsync(qfalse),
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-            writerThread(nullptr),
-#endif
+			writerThread(nullptr),
 			closed(qfalse),
 			fileSize(0),
 			zipFilePos(0),
@@ -292,13 +290,10 @@ typedef struct fileHandleData_s {
 	qfile_ut	handleFiles;
 	qboolean	handleSync;
 	qboolean	handleAsync;
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
 	std::thread	*writerThread;
 	std::mutex	writeLock;
 	std::condition_variable	cv;
-#endif
 	std::deque<std::vector<byte> > writes;
-
 	qboolean	closed;
 	char		ospath[MAX_OSPATH];
 	int			fileSize;
@@ -353,10 +348,8 @@ static void FS_ResetFileHandleData( fileHandleData_t *f ) {
 	f->handleFiles = {};
 	f->handleSync = qfalse;
 	f->handleAsync = qfalse;
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-    assert(f->writerThread == nullptr);
+	assert(f->writerThread == nullptr);
 	f->writerThread = nullptr;
-#endif
 	f->writes.clear();
 	f->closed = qfalse;
 	f->ospath[0] = '\0';
@@ -1073,13 +1066,10 @@ void FS_FCloseAio( int handle ) {
 	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
 		Com_Error( ERR_FATAL, "FCloseAio called with invalid handle %d\n", f );
 	}
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-    fsh[f].writerThread->join();
-#endif
+	fsh[f].writerThread->join();
 	delete fsh[f].writerThread;
 	fsh[f].writerThread = nullptr;
-#endif
-    FS_ResetFileHandleData( &fsh[f] );
+	FS_ResetFileHandleData( &fsh[f] );
 }
 
 /*
@@ -1118,14 +1108,10 @@ void FS_FCloseFile( fileHandle_t f ) {
 		if ( fsh[f].handleAsync ) {
 			// queue the file to be closed after all pending operations are completed.
 			{
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
 				std::lock_guard<std::mutex> l( fsh[f].writeLock );
-#endif
 				fsh[f].closed = qtrue;
 			}
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-            fsh[f].cv.notify_one();
-#endif
+			fsh[f].cv.notify_one();
 			return;
 		} else {
 			fclose (fsh[f].handleFiles.file.o);
@@ -1147,13 +1133,9 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 	while ( qtrue ) {
 		std::vector<byte> write;
 		{
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
 			std::unique_lock<std::mutex> l( f->writeLock );
-#endif
 			while ( f->writes.empty() && !f->closed ) {
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-                f->cv.wait( l );
-#endif
+				f->cv.wait( l );
 			}
 			if ( f->closed && f->writes.empty() ) {
 				break;
@@ -1182,9 +1164,7 @@ fileHandle_t FS_FOpenFileWriteAsync( const char *filename, qboolean safe ) {
 	Q_strncpyz( fsh[f].name, filename, sizeof( fsh[f].name ) );
 	fsh[f].handleAsync = qtrue;
 	// spawn writer thread
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-    fsh[f].writerThread = new std::thread( FS_AsyncWriterThread, f );
-#endif
+	fsh[f].writerThread = new std::thread( FS_AsyncWriterThread, f );
 	return f;
 }
 
@@ -1869,14 +1849,10 @@ int FS_Write( const void *buffer, int len, fileHandle_t h ) {
 
 	if ( fsh[h].handleAsync ) {
 		{
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
 			std::lock_guard<std::mutex> l( fsh[h].writeLock );
-#endif
 			fsh[h].writes.emplace_back( buf, buf + len );
 		}
-#if !defined(__MINGW32__) && !defined(__MINGW64__)
-        fsh[h].cv.notify_one();
-#endif
+		fsh[h].cv.notify_one();
 		return len;
 	} else {
 		f = FS_FileForHandle( h );
