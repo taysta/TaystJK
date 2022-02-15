@@ -68,6 +68,23 @@ before_install:
     fi
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then chmod +x ./continuous_integration/travis/build/linux_osx.sh ; fi
   - if [ "${TRAVIS_OS_NAME}" = "windows" ]; then export PATH=$MSBUILD_PATH:$PATH ; fi
+  - case $TRAVIS_OS_NAME in
+    windows)
+    [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+    choco uninstall -y mingw
+    choco upgrade --no-progress -y msys2
+    export msys2='cmd //C RefreshEnv.cmd '
+    export msys2+='& set MSYS=winsymlinks:nativestrict '
+    export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+    export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+    export msys2+=" -msys2 -c "\"\$@"\" --"
+    $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+    ## Install more MSYS2 packages from https://packages.msys2.org/base here
+    taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+    export PATH=/C/tools/msys64/mingw64/bin:$PATH
+    export MAKE=mingw32-make  # so that Autotools can find it
+    ;;
+    esac
 
 install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ./continuous_integration/travis/install/linux.sh "${ARCH=x64}" "${TRAVIS_COMPILER}" "${TRAVIS_CPU_ARCH}" "${CMAKE_VERSION}" ; fi
@@ -86,24 +103,6 @@ before_script:
       export CC=clang-9 ;
       export CXX=clang++-9 ;
     fi
-  - |
-    case $TRAVIS_OS_NAME in
-      windows)
-        [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
-        choco uninstall -y mingw
-        choco upgrade --no-progress -y msys2
-        export msys2='cmd //C RefreshEnv.cmd '
-        export msys2+='& set MSYS=winsymlinks:nativestrict '
-        export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-        export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-        export msys2+=" -msys2 -c "\"\$@"\" --"
-        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
-        ## Install more MSYS2 packages from https://packages.msys2.org/base here
-        taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
-        export PATH=/C/tools/msys64/mingw64/bin:$PATH
-        export MAKE=mingw32-make  # so that Autotools can find it
-        ;;
-      esac
 script:
   - cmake --version
   - if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${TRAVIS_OS_NAME}" = "osx" ]; then travis_wait ./continuous_integration/travis/build/linux_osx.sh "${ARCH=x64}" "${CMAKE_BUILD_TYPE=Release}" ; fi
