@@ -131,7 +131,6 @@ to the appropriate place.
 A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 =============
 */
-//timescale warning fix - std mutex not supported by mingw
 #if !defined(__MINGW32__) && !defined(__MINGW64__)
 std::recursive_mutex printfLock;
 #endif
@@ -809,10 +808,13 @@ void Com_InitPushEvent( void ) {
 Com_PushEvent
 =================
 */
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 std::mutex pushLock;
+#endif
 void Com_PushEvent( sysEvent_t *event ) {
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 	std::lock_guard<std::mutex> l( pushLock );
-
+#endif
 	sysEvent_t		*ev;
 	static int printedWarning = 0;
 
@@ -845,7 +847,9 @@ Com_GetEvent
 */
 sysEvent_t	Com_GetEvent( void ) {
 	{
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 		std::lock_guard<std::mutex> l( pushLock );
+#endif
 		if ( com_pushedEventsHead > com_pushedEventsTail ) {
 			com_pushedEventsTail++;
 			return com_pushedEvents[ (com_pushedEventsTail-1) & (MAX_PUSHED_EVENTS-1) ];
