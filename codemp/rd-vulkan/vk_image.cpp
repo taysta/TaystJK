@@ -141,7 +141,7 @@ VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	desc.addressModeW = address_mode;
 	desc.mipLodBias = 0.0f;
 
-	if ( def->noAnisotropy ) {
+	if ( def->noAnisotropy || mipmap_mode == VK_SAMPLER_MIPMAP_MODE_NEAREST || mag_filter == VK_FILTER_NEAREST ) {
 		desc.anisotropyEnable = VK_FALSE;
 		desc.maxAnisotropy = 1.0f;
 	}
@@ -265,27 +265,30 @@ void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image,
 	barrier.subresourceRange.baseArrayLayer = 0;
 	barrier.subresourceRange.layerCount = VK_REMAINING_ARRAY_LAYERS;
 
-	if (src_stage_mask == 0)
+	if ( src_stage_mask == VK_NULL_HANDLE ) 
 		src_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
-	if (dst_stage_mask == 0)
+	if ( dst_stage_mask == VK_NULL_HANDLE ) 
 		dst_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
 	qvkCmdPipelineBarrier(cmdBuf, src_stage_mask, dst_stage_mask, 0, 0, NULL, 0, NULL, 1, &barrier);
 }
 
-void vk_upload_image( Image_Upload_Data *upload_data, image_t *image ) {
-	int		w = upload_data->base_level_width;
-	int		h = upload_data->base_level_height;
-	int		bytes_per_pixel;
-	byte	*buffer;
+void vk_upload_image( image_t *image, byte *pic ) {
 
-	if (r_texturebits->integer > 16 || r_texturebits->integer == 0 || (image->flags & IMGFLAG_LIGHTMAP)) {
+	Image_Upload_Data upload_data;
+	int w, h;
+
+	vk_generate_image_upload_data( image, pic, &upload_data );
+
+	w = upload_data.base_level_width;
+	h = upload_data.base_level_height;
+
+	if ( r_texturebits->integer > 16 || r_texturebits->integer == 0 || ( image->flags & IMGFLAG_LIGHTMAP ) ) {
 		image->internalFormat = VK_FORMAT_R8G8B8A8_UNORM;
 		//image->internalFormat = VK_FORMAT_B8G8R8A8_UNORM;
-	}
-	else {
-		qboolean has_alpha = RawImage_HasAlpha(upload_data->buffer, w * h);
+	} else {
+		qboolean has_alpha = RawImage_HasAlpha( upload_data.buffer, w * h );
 		image->internalFormat = has_alpha ? VK_FORMAT_B4G4R4A4_UNORM_PACK16 : VK_FORMAT_A1R5G5B5_UNORM_PACK16;
 	}
 
@@ -293,15 +296,13 @@ void vk_upload_image( Image_Upload_Data *upload_data, image_t *image ) {
 	image->view = VK_NULL_HANDLE;
 	image->descriptor_set = VK_NULL_HANDLE;
 
-	image->uploadWidth = upload_data->base_level_width;
-	image->uploadHeight = upload_data->base_level_height;
+	image->uploadWidth = w;
+	image->uploadHeight = h;
 
-	vk_create_image(w, h, (VkFormat)image->internalFormat, upload_data->mip_levels, image);
-	buffer = vk_resample_image_data(image, upload_data->buffer, upload_data->buffer_size, &bytes_per_pixel);
-	vk_upload_image_data(image->handle, 0, 0, w, h, (qboolean)(upload_data->mip_levels > 1), buffer, bytes_per_pixel); // check boolean
-	if (buffer != upload_data->buffer) {
-		ri.Hunk_FreeTempMemory(buffer);
-	}
+	vk_create_image( image, w, h, upload_data.mip_levels );
+	vk_upload_image_data( image, 0, 0, w, h, upload_data.mip_levels, upload_data.buffer, upload_data.buffer_size );
+
+	ri.Hunk_FreeTempMemory( upload_data.buffer );
 }
 
 void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data ) {
@@ -363,7 +364,7 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 			int i, n = width * height;
 
 			for (i = 0; i < n; i++, p += 4) {
-				R_ColorShiftLightingBytes(p, p);
+				R_ColorShiftLightingBytes( p, p, qfalse );
 			}
 		}
 	}
@@ -524,14 +525,19 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer_memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 }
 
-void vk_upload_image_data( VkImage image, int x, int y, int width, int height, 
-	qboolean mipmap, const uint8_t *pixels, int bytes_per_pixel ) {
-
+void vk_upload_image_data( image_t *image, int x, int y, int width, 
+	int height, int mipmaps, byte *pixels, int size ) 
+{
 	VkCommandBuffer command_buffer;
 	VkBufferImageCopy regions[16];
 	VkBufferImageCopy region;
+	byte *buf;
+	int bpp;
+
 	int num_regions = 0;
 	int buffer_size = 0;
+
+	buf = vk_resample_image_data( image, pixels, size, &bpp );
 
 	while (qtrue) {
 		Com_Memset(&region, 0, sizeof(region));
@@ -552,9 +558,9 @@ void vk_upload_image_data( VkImage image, int x, int y, int width, int height,
 		regions[num_regions] = region;
 		num_regions++;
 
-		buffer_size += width * height * bytes_per_pixel;
+		buffer_size += width * height * bpp;
 
-		if (!mipmap || (width == 1 && height == 1) || num_regions >= ARRAY_LEN(regions))
+		if ( num_regions >= mipmaps || (width == 1 && height == 1) || num_regions >= ARRAY_LEN( regions ) )
 			break;
 
 		x >>= 1;
@@ -567,8 +573,8 @@ void vk_upload_image_data( VkImage image, int x, int y, int width, int height,
 		if (height < 1) height = 1;
 	}
 
-	vk_ensure_staging_buffer_allocation(buffer_size);
-	Com_Memcpy(vk_world.staging_buffer_ptr, pixels, buffer_size);
+	vk_ensure_staging_buffer_allocation (buffer_size );
+	Com_Memcpy( vk_world.staging_buffer_ptr, buf, buffer_size );
 
 	command_buffer = vk_begin_command_buffer();
 
@@ -576,19 +582,23 @@ void vk_upload_image_data( VkImage image, int x, int y, int width, int height,
 		VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 
 		VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_TRANSFER_READ_BIT);
 
-	vk_record_image_layout_transition(command_buffer, image, VK_IMAGE_ASPECT_COLOR_BIT, 0, 
+	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 0, 
 		VK_IMAGE_LAYOUT_UNDEFINED, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		0, 0);
+		VK_NULL_HANDLE, VK_NULL_HANDLE);
 
-	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
+	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
 
-	vk_record_image_layout_transition(command_buffer, image, VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT, 
+	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_SHADER_READ_BIT, 
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		0, 0);
+		VK_NULL_HANDLE, VK_NULL_HANDLE);
 
 	vk_end_command_buffer(command_buffer);
+
+	if ( buf != pixels ) {
+		ri.Hunk_FreeTempMemory( buf );
+	}
 }
 
 static void allocate_and_bind_image_memory( VkImage image ) {
@@ -604,7 +614,7 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 			(int)(memory_requirements.size / 1024));
 	}
 
-	chunk = nullptr;
+	chunk = VK_NULL_HANDLE;
 
 	// Try to find an existing chunk of sufficient capacity.
 	alignment = memory_requirements.alignment;
@@ -696,7 +706,7 @@ byte *vk_resample_image_data( const image_t *image, byte *data, const int data_s
 {
 	byte		*buffer;
 	uint16_t	*p;
-	int			i;
+	int			i, n;
 
 	switch (image->internalFormat) {
 	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
@@ -741,14 +751,33 @@ byte *vk_resample_image_data( const image_t *image, byte *data, const int data_s
 		*bytes_per_pixel = 4;
 		return buffer;
 
+	case VK_FORMAT_R8G8B8_UNORM: {
+		buffer = (byte*)ri.Hunk_AllocateTempMemory( (data_size * 3) / 4 );
+		for ( i = 0, n = 0; i < data_size; i += 4, n += 3 ) {
+			buffer[n + 0] = data[i + 0];
+			buffer[n + 1] = data[i + 1];
+			buffer[n + 2] = data[i + 2];
+		}
+		*bytes_per_pixel = 3;
+		return buffer;
+	}
+
 	default:
 		*bytes_per_pixel = 4;
 		return data;
 	}
 }
 
-void vk_create_image( int width, int height, VkFormat format, int mip_levels, image_t *image ) {
+void vk_create_image( image_t *image, int width, int height, int mip_levels ) {
+	VkFormat format = (VkFormat)image->internalFormat;
 
+	if ( image->handle ) {
+		qvkDestroyImage( vk.device, image->handle, NULL );
+	}
+
+	if ( image->view ) {
+		qvkDestroyImageView( vk.device, image->view, NULL );
+	}
 	// create image
 	{
 		VkImageCreateInfo desc;
@@ -769,9 +798,9 @@ void vk_create_image( int width, int height, VkFormat format, int mip_levels, im
 		desc.queueFamilyIndexCount = 0;
 		desc.pQueueFamilyIndices = NULL;
 		desc.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-		VK_CHECK(qvkCreateImage(vk.device, &desc, NULL, &image->handle));
+		VK_CHECK( qvkCreateImage( vk.device, &desc, NULL, &image->handle ) );
 
-		allocate_and_bind_image_memory(image->handle);
+		allocate_and_bind_image_memory( image->handle );
 	}
 
 	// create image view
@@ -792,14 +821,14 @@ void vk_create_image( int width, int height, VkFormat format, int mip_levels, im
 		desc.subresourceRange.levelCount = VK_REMAINING_MIP_LEVELS;
 		desc.subresourceRange.baseArrayLayer = 0;
 		desc.subresourceRange.layerCount = 1;
-		VK_CHECK(qvkCreateImageView(vk.device, &desc, NULL, &image->view));
+		VK_CHECK( qvkCreateImageView( vk.device, &desc, NULL, &image->view ) );
 	}
 
-	if (!is_vk_initialized()) // splash screen does not require a descriptorset
+	if ( !vk.active ) // splash screen does not require a descriptorset
 		return;
 
 	// create associated descriptor set
-	if (image->descriptor_set == VK_NULL_HANDLE)
+	if ( image->descriptor_set == VK_NULL_HANDLE )
 	{
 		VkDescriptorSetAllocateInfo desc;
 
@@ -808,14 +837,14 @@ void vk_create_image( int width, int height, VkFormat format, int mip_levels, im
 		desc.descriptorPool = vk.descriptor_pool;
 		desc.descriptorSetCount = 1;
 		desc.pSetLayouts = &vk.set_layout_sampler;
-		VK_CHECK(qvkAllocateDescriptorSets(vk.device, &desc, &image->descriptor_set));
+		VK_CHECK( qvkAllocateDescriptorSets( vk.device, &desc, &image->descriptor_set ) );
 	}
 
-	vk_update_descriptor_set(image, mip_levels > 1 ? qtrue : qfalse);
+	vk_update_descriptor_set( image, mip_levels > 1 ? qtrue : qfalse );
 
-	VK_SET_OBJECT_NAME(image->handle, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT);
-	VK_SET_OBJECT_NAME(image->view, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT);
-	VK_SET_OBJECT_NAME(image->descriptor_set, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT);
+	VK_SET_OBJECT_NAME( image->handle, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+	VK_SET_OBJECT_NAME( image->view, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
+	VK_SET_OBJECT_NAME( image->descriptor_set, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT );
 }
 
 void vk_delete_textures( void ) {
@@ -845,7 +874,6 @@ void vk_delete_textures( void ) {
 
 image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgFlags_t flags ){
     image_t				*image;
-    Image_Upload_Data	upload_data;
     int					namelen;
     long				hash;
 
@@ -893,26 +921,20 @@ image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgF
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
     else if (flags & IMGFLAG_CLAMPTOEDGE)
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-    else{
+    else
         image->wrapClampMode = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        }
-
 
 	if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
 		image->flags &= ~(IMGFLAG_PICMIP);
 	}
 
-    vk_generate_image_upload_data(image, pic, &upload_data);
-
-    vk_upload_image(&upload_data, image);
+    vk_upload_image( image, pic );
 	
 #if 0
 	const char *psNewName = GenerateImageMappingName(name);
 	//Q_strncpyz(image->imgName, psNewName, sizeof(image->imgName));
 	R_Add_AllocatedImage(image);
 #endif 
-
-    ri.Hunk_FreeTempMemory(upload_data.buffer);
 
     return image;
 }
@@ -1010,44 +1032,26 @@ void RE_UploadCinematic( int cols, int rows, const byte *data, int client, qbool
 {
 	image_t *image;
 
-    if (!tr.scratchImage[client]) {
+    if ( !tr.scratchImage[client] ) {
 		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), (byte*)data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
     }
 
     image = tr.scratchImage[client];
 
-    vk_bind(image);
+    vk_bind( image );
 
     // if the scratchImage isn't in the format we want, specify it as a new texture
-    if ((cols != image->width) || (rows != image->height))
-    {
-        byte *buffer;
-        int bytes_per_pixel;
-
+    if ( cols != image->width || rows != image->height )  {
 		image->width = image->uploadWidth = cols;
 		image->height = image->uploadHeight = rows;
 
-        qvkDestroyImage(vk.device, image->handle, NULL);
-        qvkDestroyImageView(vk.device, image->view, NULL);
-        //qvkFreeDescriptorSets(vk.device, vk.descriptor_pool, 1, &image->descriptor_set);
+		vk_create_image( image, cols, rows, 1 );
+		vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4 );
 
-        vk_create_image(cols, rows, (VkFormat)image->internalFormat, 1, image);
-        buffer = vk_resample_image_data(image, (byte*)data, cols * rows * 4, &bytes_per_pixel);
-        vk_upload_image_data(image->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
-        if (buffer != data) {
-            ri.Hunk_FreeTempMemory(buffer);
-        }
     }
     else if (dirty)
     {
-        byte *buffer;
-        int bytes_per_pixel;
-
-        buffer = vk_resample_image_data(image, (byte*)data, cols * rows * 4, &bytes_per_pixel);
-        vk_upload_image_data(image->handle, 0, 0, cols, rows, qfalse, buffer, bytes_per_pixel);
-        if (buffer != data) {
-            ri.Hunk_FreeTempMemory(buffer);
-        }
+        vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4 );
     }
 }
 

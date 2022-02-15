@@ -40,7 +40,7 @@ int		gl_filter_max = GL_LINEAR;
 void R_GammaCorrect( byte *buffer, int bufSize ) {
 	int i;
 
-	if (vk.capture.image != VK_NULL_HANDLE)
+	if ( vk.capture.image != VK_NULL_HANDLE )
 		return;
 
 	for ( i = 0; i < bufSize; i++ ) {
@@ -175,82 +175,78 @@ R_ImageList_f
 ===============
 */
 void R_ImageList_f( void ) {
-	int		i=0;
-	image_t	*image;
-	int		texels=0;
-	float	texBytes = 0.0f;
-	const char *yesno[] = {"no ", "yes"};
+	const image_t *image;
+	int i, estTotalSize = 0;
 
-	ri.Printf (PRINT_ALL, "\n      -w-- -h-- -mm- -if-- wrap --name-------\n");
+	ri.Printf( PRINT_ALL, "\n -n- --w-- --h-- type  -size- mipmap --name-------\n" );
 
-	int iNumImages = R_Images_StartIteration();
-	while ( (image = R_Images_GetNextIteration()) != NULL)
+	for ( i = 0; i < tr.numImages; i++ )
 	{
-		texels   += image->width*image->height;
-		texBytes += image->width*image->height * R_BytesPerTex (image->internalFormat);
-		ri.Printf (PRINT_ALL, "%4i: %4i %4i  %s \n",
-			i, image->width, image->height, yesno[image->mipmap] );
-		switch ( image->internalFormat ) {
-		case 1:
-			ri.Printf (PRINT_ALL, "I    " );
-			break;
-		case 2:
-			ri.Printf (PRINT_ALL, "IA   " );
-			break;
-		case 3:
-			ri.Printf (PRINT_ALL, "RGB  " );
-			break;
-		case 4:
-			ri.Printf (PRINT_ALL, "RGBA " );
-			break;
-		case GL_RGBA8:
-			ri.Printf (PRINT_ALL, "RGBA8" );
-			break;
-		case GL_RGB8:
-			ri.Printf (PRINT_ALL, "RGB8" );
-			break;
-		case GL_RGB4_S3TC:
-			ri.Printf (PRINT_ALL, "S3TC " );
-			break;
-		case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
-			ri.Printf (PRINT_ALL, "DXT1 " );
-			break;
-		case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
-			ri.Printf (PRINT_ALL, "DXT5 " );
-			break;
-		case GL_RGBA4:
-			ri.Printf (PRINT_ALL, "RGBA4" );
-			break;
-		case GL_RGB5:
-			ri.Printf (PRINT_ALL, "RGB5 " );
-			break;
-		default:
-			ri.Printf (PRINT_ALL, "???? " );
+		const char *yesno[] = {"no ", "yes"};
+		const char *format = "???? ";
+		const char *sizeSuffix;
+		int estSize;
+		int displaySize;
+
+		image = tr.images[ i ];
+		estSize = image->uploadHeight * image->uploadWidth;
+
+		switch ( image->internalFormat )
+		{
+			case VK_FORMAT_B8G8R8A8_UNORM:
+				format = "BGRA ";
+				estSize *= 4;
+				break;
+			case VK_FORMAT_R8G8B8A8_UNORM:
+				format = "RGBA ";
+				estSize *= 4;
+				break;
+			case VK_FORMAT_R8G8B8_UNORM:
+				format = "RGB  ";
+				estSize *= 3;
+				break;
+			case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
+				format = "RGBA ";
+				estSize *= 2;
+				break;
+			case VK_FORMAT_A1R5G5B5_UNORM_PACK16:
+				format = "RGB  ";
+				estSize *= 2;
+				break;
 		}
 
-		switch ( image->wrapClampMode ) {
-		case GL_REPEAT:
-			ri.Printf (PRINT_ALL, "rept " );
-			break;
-		case GL_CLAMP:
-			ri.Printf (PRINT_ALL, "clmp " );
-			break;
-		case GL_CLAMP_TO_EDGE:
-			ri.Printf (PRINT_ALL, "clpE " );
-			break;
-		default:
-			ri.Printf (PRINT_ALL, "%4i ", image->wrapClampMode );
-			break;
+		// mipmap adds about 50%
+		if (image->flags & IMGFLAG_MIPMAP)
+			estSize += estSize / 2;
+
+		sizeSuffix = "b ";
+		displaySize = estSize;
+
+		if ( displaySize >= 2048 )
+		{
+			displaySize = ( displaySize + 1023 ) / 1024;
+			sizeSuffix = "kb";
 		}
 
-		ri.Printf (PRINT_ALL, "%s\n", image->imgName );
-		i++;
+		if ( displaySize >= 2048 )
+		{
+			displaySize = ( displaySize + 1023 ) / 1024;
+			sizeSuffix = "Mb";
+		}
+
+		if ( displaySize >= 2048 )
+		{
+			displaySize = ( displaySize + 1023 ) / 1024;
+			sizeSuffix = "Gb";
+		}
+
+		ri.Printf( PRINT_ALL, " %3i %5i %5i %s %4i%s %s %s\n", i, image->uploadWidth, image->uploadHeight, format, displaySize, sizeSuffix, yesno[(int)image->mipmap], image->imgName );
+		estTotalSize += estSize;
 	}
-	ri.Printf (PRINT_ALL, " ---------\n");
-	ri.Printf (PRINT_ALL, "      -w-- -h-- -mm- -if- wrap --name-------\n");
-	ri.Printf (PRINT_ALL, " %i total texels (not including mipmaps)\n", texels );
-	ri.Printf (PRINT_ALL, " %.2fMB total texture mem (not including mipmaps)\n", texBytes/1048576.0f );
-	ri.Printf (PRINT_ALL, " %i total images\n\n", iNumImages );
+
+	ri.Printf( PRINT_ALL, " -----------------------\n" );
+	ri.Printf( PRINT_ALL, " approx %i kbytes\n", (estTotalSize + 1023) / 1024 );
+	ri.Printf( PRINT_ALL, " %i total images\n\n", tr.numImages );
 }
 
 //=======================================================================

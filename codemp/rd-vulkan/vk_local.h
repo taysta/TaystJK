@@ -71,7 +71,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define NUM_COMMAND_BUFFERS				2
 #define VK_NUM_BLOOM_PASSES				4
 
-#define MAX_SWAPCHAIN_IMAGES			4
+#define MAX_SWAPCHAIN_IMAGES			8
 #define MIN_SWAPCHAIN_IMAGES_IMM		3
 #define MIN_SWAPCHAIN_IMAGES_FIFO		3
 #define MIN_SWAPCHAIN_IMAGES_MAILBOX	3
@@ -119,6 +119,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
 #define LERP( a, b, w )					((a)*(1.0f-(w))+(b)*(w))
 #define LUMA( r, g, b )					(0.2126f*(r)+0.7152f*(g)+0.0722f*(b))
+#define EPSILON 1e-6f
 #ifndef SGN
 #define SGN( x )						(((x) >= 0) ? !!(x) : -1)
 #endif
@@ -386,8 +387,8 @@ typedef struct {
 	uint32_t				state_bits; // GLS_XXX flags
 	cullType_t				face_culling;// cullType_t
 
-	VkBool32				polygon_offset;
-	VkBool32				mirror;
+	qboolean				polygon_offset;
+	qboolean				mirror;
 
 	Vk_Shader_Type			shader_type;	
 	Vk_Shadow_Phase			shadow_phase;
@@ -431,8 +432,6 @@ typedef struct {
 
 	qboolean max_lod_1_0; // fixed 1.0 lod
 	qboolean noAnisotropy;
-
-	VkBool32 mipmap;
 } Vk_Sampler_Def;
 
 struct ImageChunk_t {
@@ -476,7 +475,6 @@ typedef struct {
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
 	// with vmCmdClearAttachment (dirty_depth_attachment != 0), or it have just been
 	// cleared by render pass instance clear op (dirty_depth_attachment == 0).
-	//VkBool32 dirty_depth_attachment;
 	int dirty_depth_attachment;
 
 	// MVP
@@ -753,8 +751,8 @@ typedef struct {
 
 	VkImageLayout initSwapchainLayout;
 
-	VkBool32 isInitialized;
-	VkBool32 msaaActive;
+	qboolean active;
+	qboolean msaaActive;
 
 	qboolean	offscreenRender;
 	qboolean	windowAdjusted;
@@ -793,7 +791,6 @@ extern Vk_World		vk_world;		// this data is cleared during ref re-init
 
 // ...
 qboolean	vk_surface_format_color_depth( VkFormat format, int* r, int* g, int* b );
-VkBool32	is_vk_initialized( void );
 void		vk_create_window( void );
 void		vk_initialize( void );
 void		vk_shutdown( void );
@@ -848,8 +845,8 @@ void		vk_destroy_shader_modules( void );
 // command
 VkCommandBuffer vk_begin_command_buffer( void );
 void		vk_end_command_buffer( VkCommandBuffer command_buffer );
-void		vk_create_command_pool( VkCommandPool *pPool );
-void		vk_create_command_buffer( VkCommandPool pool, VkCommandBuffer *pBuf );
+void		vk_create_command_pool( void );
+void		vk_create_command_buffer( void );
 void		vk_record_image_layout_transition( VkCommandBuffer command_buffer, VkImage image, 
 	VkImageAspectFlags image_aspect_flags, VkAccessFlags src_access_flags, 
 	VkImageLayout old_layout, VkAccessFlags dst_access_flags, VkImageLayout new_layout,
@@ -864,7 +861,7 @@ uint32_t	vk_find_memory_type_lazy( uint32_t memory_type_bits, VkMemoryPropertyFl
 void		vk_create_attachments( void );
 void		vk_destroy_attachments( void );
 void		vk_update_attachment_descriptors( void );
-void		vk_clear_color_attachments( const float *color );
+void		vk_clear_color_attachments( const vec4_t color );
 void		vk_clear_depthstencil_attachments( qboolean clear_stencil );
 
 // shade geometry
@@ -911,8 +908,6 @@ void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHei
 // image
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
-void		vk_upload_image_data( VkImage image, int x, int y, int width, int height, 
-	qboolean mipmap, const uint8_t *pixels, int bytes_per_pixel );
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 
 	VkDeviceSize size, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access );
@@ -943,7 +938,7 @@ static void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReport
 	{
 		VkDebugMarkerObjectNameInfoEXT info;
 		info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
-		info.pNext = nullptr;
+		info.pNext = VK_NULL_HANDLE;
 		info.objectType = objType;
 		info.object = obj;
 		info.pObjectName = objName;

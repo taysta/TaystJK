@@ -196,8 +196,8 @@ void RB_ShowImages ( image_t** const pImg, uint32_t numImages )
 	if (!backEnd.projection2D)
 		vk_set_2d();
 
-	const float black[4] = { 0, 0, 0, 1 };
-	vk_clear_color_attachments(black);
+	const vec4_t black = { 0, 0, 0, 1 };
+	vk_clear_color_attachments( black );
 
 	for (i = 0; i < tr.numImages; i++) {
 		image_t *image = tr.images[i];

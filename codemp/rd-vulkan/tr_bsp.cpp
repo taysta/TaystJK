@@ -100,7 +100,7 @@ R_ColorShiftLightingBytes
 
 ===============
 */
-void R_ColorShiftLightingBytes( byte in[4], byte out[4] ) {
+void R_ColorShiftLightingBytes( byte in[4], byte out[4], qboolean hasAlpha ) {
 	int shift, r, g, b;
 
 	// shift the color data based on overbright range
@@ -122,58 +122,28 @@ void R_ColorShiftLightingBytes( byte in[4], byte out[4] ) {
 		b = b * 255 / max;
 	}
 
-	if (r_mapGreyScale->integer) {
-		const byte luma = LUMA(r, g, b);
+	if ( r_mapGreyScale->integer ) {
+		const byte luma = LUMA( r, g, b );
 		out[0] = luma;
 		out[1] = luma;
 		out[2] = luma;
 	}
-	else if (r_mapGreyScale->value) {
-		const float scale = fabs(r_mapGreyScale->value);
-		const float luma = LUMA(r, g, b);
-		out[0] = LERP(r, luma, scale);
-		out[1] = LERP(g, luma, scale);
-		out[2] = LERP(b, luma, scale);
+	else if ( r_mapGreyScale->value ) {
+		const float scale = fabs( r_mapGreyScale->value );
+		const float luma = LUMA( r, g, b );
+		out[0] = LERP( r, luma, scale );
+		out[1] = LERP( g, luma, scale );
+		out[2] = LERP( b, luma, scale );
 	}
 	else {
 		out[0] = r;
 		out[1] = g;
 		out[2] = b;
 	}
-	out[3] = in[3];
-}
 
-/*
-===============
-R_ColorShiftLightingBytes
-
-===============
-*/
-void R_ColorShiftLightingBytes( byte in[3] ) {
-	int shift, r, g, b;
-
-	// shift the color data based on overbright range
-	shift = Q_max(0, r_mapOverBrightBits->integer - tr.overbrightBits);
-
-	// shift the data based on overbright range
-	r = in[0] << shift;
-	g = in[1] << shift;
-	b = in[2] << shift;
-
-	// normalize by color instead of saturating to white
-	if ((r | g | b) > 255) {
-		int		max;
-
-		max = r > g ? r : g;
-		max = max > b ? max : b;
-		r = r * 255 / max;
-		g = g * 255 / max;
-		b = b * 255 / max;
+	if ( hasAlpha ) {
+		out[3] = in[3];
 	}
-
-	in[0] = r;
-	in[1] = g;
-	in[2] = b;
 }
 
 /*
@@ -183,54 +153,54 @@ R_LoadLightmaps
 ===============
 */
 #define	LIGHTMAP_SIZE	128
-static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldData ) {
-	byte		*buf, *buf_p;
+static	void R_LoadLightmaps(lump_t* l, const char* psMapName, world_t& worldData) {
+	byte* buf, * buf_p;
 	int			len;
-	byte		image[LIGHTMAP_SIZE*LIGHTMAP_SIZE*4];
-	int			i, j;
+	byte		image[LIGHTMAP_SIZE * LIGHTMAP_SIZE * 4];
+	int			i, j, x, y;
 	float maxIntensity = 0;
 	double sumIntensity = 0;
 
-	if (&worldData == &s_worldData)
+	if ( &worldData == &s_worldData )
 	{
 		tr.numLightmaps = 0;
 	}
 
-    len = l->filelen;
-	if ( !len ) {
+	len = l->filelen;
+	if (!len) {
 		return;
 	}
 	buf = fileBase + l->fileofs;
 
 	// create all the lightmaps
 	tr.numLightmaps = len / (LIGHTMAP_SIZE * LIGHTMAP_SIZE * 3);
-	if ( tr.numLightmaps == 1 ) {
+	if (tr.numLightmaps == 1) {
 		//FIXME: HACK: maps with only one lightmap turn up fullbright for some reason.
 		//this avoids this, but isn't the correct solution.
 		tr.numLightmaps++;
 	}
 
 	// if we are in r_vertexLight mode, we don't need the lightmaps at all
-	if ( r_vertexLight->integer ) {
+	if (r_vertexLight->integer) {
 		return;
 	}
 
 	char sMapName[MAX_QPATH];
-	COM_StripExtension(psMapName, sMapName, sizeof(sMapName));
+	COM_StripExtension( psMapName, sMapName, sizeof( sMapName ) );
 
-	for ( i = 0 ; i < tr.numLightmaps ; i++ ) {
+	for ( i = 0; i < tr.numLightmaps; i++ ) {
 		// expand the 24 bit on-disk to 32 bit
-		buf_p = buf + i * LIGHTMAP_SIZE*LIGHTMAP_SIZE * 3;
+		buf_p = buf + i * LIGHTMAP_SIZE * LIGHTMAP_SIZE * 3;
 
 		if ( r_lightmap->integer == 2 )
 		{	// color code by intensity as development tool	(FIXME: check range)
 			for ( j = 0; j < LIGHTMAP_SIZE * LIGHTMAP_SIZE; j++ )
 			{
-				float r = buf_p[j*3+0];
-				float g = buf_p[j*3+1];
-				float b = buf_p[j*3+2];
+				float r = buf_p[j * 3 + 0];
+				float g = buf_p[j * 3 + 1];
+				float b = buf_p[j * 3 + 2];
 				float intensity;
-				float out[3] = {0.0f, 0.0f, 0.0f};
+				float out[3] = { 0.0f, 0.0f, 0.0f };
 
 				intensity = 0.33f * r + 0.685f * g + 0.063f * b;
 
@@ -244,32 +214,34 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 
 				HSVtoRGB( intensity, 1.00, 0.50, out );
 
-				image[j*4+0] = out[0] * 255;
-				image[j*4+1] = out[1] * 255;
-				image[j*4+2] = out[2] * 255;
-				image[j*4+3] = 255;
+				image[j * 4 + 0] = out[0] * 255;
+				image[j * 4 + 1] = out[1] * 255;
+				image[j * 4 + 2] = out[2] * 255;
+				image[j * 4 + 3] = 255;
 
 				sumIntensity += intensity;
 			}
-		} else {
-			for ( j = 0 ; j < LIGHTMAP_SIZE * LIGHTMAP_SIZE; j++ ) {
-				R_ColorShiftLightingBytes( &buf_p[j*3], &image[j*4] );
-				image[j*4+3] = 255;
+		}
+		else {
+			for ( y = 0; y < LIGHTMAP_SIZE; y++ ) {
+				for ( x = 0; x < LIGHTMAP_SIZE; x++ ) {
+					byte* dst = &image[(y * LIGHTMAP_SIZE + x) * 4];
+					R_ColorShiftLightingBytes( buf_p, dst, qfalse );
+					dst[3] = 255;
+					buf_p += 3;
+				}
 			}
 		}
-		/*tr.lightmaps[i] = R_CreateImage( va("*%s/lightmap%d",sMapName,i), image,
-			LIGHTMAP_SIZE, LIGHTMAP_SIZE, GL_RGBA, qfalse, qfalse, (qboolean)r_ext_compressed_lightmaps->integer, GL_CLAMP );*/
 
-		vk_debug("lightmap %s pass %d before create: \n", sMapName, i);
 		tr.lightmaps[i] = R_CreateImage(va("*%s/lightmap%d", sMapName, i), image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, lightmapFlags | IMGFLAG_CLAMPTOEDGE);
-		vk_debug("lightmap %s pass %d after create: \n", sMapName, i);
+
+		vk_debug("lightmap %s loaded \n", sMapName);
 	}
 
-	if ( r_lightmap->integer == 2 )	{
-		vk_debug("Brightest lightmap value: %d\n", ( int ) ( maxIntensity * 255 ) );
+	if ( r_lightmap->integer == 2 ) {
+		ri.Printf(PRINT_ALL, "Brightest lightmap value: %d\n", (int)( maxIntensity * 255 ) );
 	}
 }
-
 
 /*
 =================
@@ -466,7 +438,7 @@ static void ParseFace( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, int *
 		}
 
 		for(k=0;k<MAXLIGHTMAPS;k++) {
-			R_ColorShiftLightingBytes( verts[i].color[k], (byte *)&cv->points[i][VERTEX_COLOR+k] );
+			R_ColorShiftLightingBytes( verts[i].color[k], (byte *)&cv->points[i][VERTEX_COLOR+k], qtrue );
 		}
 	}
 
@@ -564,7 +536,7 @@ static void ParseMesh ( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, worl
 		}
 		for(k=0;k<MAXLIGHTMAPS;k++)
 		{
-			R_ColorShiftLightingBytes( verts[i].color[k], points[i].color[k] );
+			R_ColorShiftLightingBytes( verts[i].color[k], points[i].color[k], qtrue );
 		}
 	}
 
@@ -647,7 +619,7 @@ static void ParseTriSurf( dsurface_t *ds, mapVert_t *verts, msurface_t *surf, in
 
 		for(k=0;k<MAXLIGHTMAPS;k++)
 		{
-			R_ColorShiftLightingBytes( verts[i].color[k], tri->verts[i].color[k] );
+			R_ColorShiftLightingBytes( verts[i].color[k], tri->verts[i].color[k], qtrue );
 		}
 	}
 
@@ -1918,8 +1890,8 @@ void R_LoadLightGrid( lump_t *l, world_t &worldData ) {
 	{
 		for(j=0;j<MAXLIGHTMAPS;j++)
 		{
-			R_ColorShiftLightingBytes(w->lightGridData[i].ambientLight[j]);
-			R_ColorShiftLightingBytes(w->lightGridData[i].directLight[j]);
+			R_ColorShiftLightingBytes(w->lightGridData[i].ambientLight[j], w->lightGridData[i].ambientLight[j], qfalse);
+			R_ColorShiftLightingBytes(w->lightGridData[i].directLight[j], w->lightGridData[i].directLight[j], qfalse);
 		}
 	}
 }

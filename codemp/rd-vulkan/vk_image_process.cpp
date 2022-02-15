@@ -28,7 +28,12 @@ void R_SetColorMappings( void)
     int		i, j;
     int		inf;
     int		shift = 0;
-    float g;
+    float   g;
+
+    if ( !tr.inited ) {
+        // it may be called from window handling functions where gamma flags is now yet known/set
+        return;
+    }
 
     // setup the overbright lighting
     // negative value will force gamma in windowed mode

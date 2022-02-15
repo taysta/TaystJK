@@ -119,15 +119,53 @@ static postRender_t g_postRenders[MAX_POST_RENDERS];
 static int g_numPostRenders = 0;
 #endif
 
+/*
+================
+RB_Hyperspace
+
+A player has predicted a teleport, but hasn't arrived yet
+================
+*/
+static void RB_Hyperspace(void) {
+	color4ub_t c;
+
+	if ( !backEnd.isHyperspace ) {
+		// do initialization shit
+	}
+
+	if ( tess.shader != tr.whiteShader ) {
+		if ( tess.numIndexes ) {
+			RB_EndSurface();
+		}
+		RB_BeginSurface( tr.whiteShader, 0 );
+	}
+
+#ifdef USE_VBO
+	VBO_UnBind();
+#endif
+
+	vk_set_2d();
+
+	c[0] = c[1] = c[2] = ( backEnd.refdef.time & 255 );
+	c[3] = 255;
+
+	RB_AddQuadStamp2( backEnd.refdef.x, backEnd.refdef.y, backEnd.refdef.width, backEnd.refdef.height,
+		0.0, 0.0, 0.0, 0.0, c );
+
+	RB_EndSurface();
+
+	backEnd.isHyperspace = qtrue;
+}
+
 #ifdef USE_PMLIGHT
 static void RB_LightingPass(void);
 #endif
 
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	shader_t	*shader, *oldShader;
-	int			fogNum;//, oldFogNum;
-	int			dlighted;//, oldDlighted;
-	qboolean	depthRange, isCrosshair; //, didShadowPass;
+	int			fogNum;
+	int			dlighted;
+	qboolean	depthRange, isCrosshair, didShadowPass;
 
 	// save original time for entity shader offsets
 	float originalTime = backEnd.refdef.floatTime;
@@ -148,22 +186,14 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	//vk_clear_depthstencil_attachments(r_shadows->integer == 2 ? qtrue : qfalse);
 	vk_clear_depthstencil_attachments(qtrue);
 
-	if ((backEnd.refdef.rdflags & RDF_HYPERSPACE))
-	{
-		float	c;
-		vec4_t	color;
+	if ( backEnd.refdef.rdflags & RDF_HYPERSPACE ) {
+		RB_Hyperspace();
 
-		c = (backEnd.refdef.time & 255) / 255.0f;
-		color[0] = color[1] = color[2] = c;
-		color[3] = 1.0;
+		backEnd.projection2D = qfalse;
 
-		vk_clear_color_attachments(color);
-
-		backEnd.isHyperspace = qtrue;
-		return;
-	}
-	else
-	{
+		// force depth range and viewport/scissor updates
+		vk.cmd->depth_range = DEPTH_RANGE_COUNT;
+	} else {
 		backEnd.isHyperspace = qfalse;
 	}
 
@@ -180,13 +210,11 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	int oldEntityNum		= -1;
 	backEnd.currentEntity	= &tr.worldEntity;
 	oldShader				= NULL;
-//	oldFogNum				= -1;
-//	oldDlighted				= qfalse;
 	unsigned int oldSort	= MAX_UINT;
 	oldShaderSort			= -1;
 	depthRange				= qfalse;
 	backEnd.pc.c_surfaces	+= numDrawSurfs;
-//	didShadowPass			= qfalse;
+	didShadowPass			= qfalse;
 	
 	for (i = 0, drawSurf = drawSurfs; i < numDrawSurfs; i++, drawSurf++)
 	{
@@ -519,79 +547,34 @@ RB_StretchPic
 */
 const void *RB_StretchPic ( const void *data ) {
 	const stretchPicCommand_t	*cmd;
-	int		numVerts, numIndexes;
+	shader_t *shader;
 
 	cmd = (const stretchPicCommand_t *)data;
-
-	if (cmd->shader != tess.shader)
-	{
-		if (tess.numIndexes) {
+	
+	shader = cmd->shader;
+	if ( shader != tess.shader ) {
+		if ( tess.numIndexes ) {
 			RB_EndSurface();
 		}
 		backEnd.currentEntity = &backEnd.entity2D;
-		RB_BeginSurface(cmd->shader, 0);
+		RB_BeginSurface( shader, 0 );
 	}
 
 #ifdef USE_VBO
 	VBO_UnBind();
 #endif
 
-	if (!backEnd.projection2D)
+	if ( !backEnd.projection2D )
 	{
 		vk_set_2d();
 	}	
 
-	if (r_bloom->integer) {
+	if ( r_bloom->integer ) {
 		vk_bloom();
 	}
 
-	RB_CHECKOVERFLOW(4, 6);
-	numVerts = tess.numVertexes;
-	numIndexes = tess.numIndexes;
-
-	tess.numVertexes += 4;
-	tess.numIndexes += 6;
-
-	tess.indexes[numIndexes] = numVerts + 3;
-	tess.indexes[numIndexes + 1] = numVerts + 0;
-	tess.indexes[numIndexes + 2] = numVerts + 2;
-	tess.indexes[numIndexes + 3] = numVerts + 2;
-	tess.indexes[numIndexes + 4] = numVerts + 0;
-	tess.indexes[numIndexes + 5] = numVerts + 1;
-
-	byteAlias_t* baDest = NULL, * baSource = (byteAlias_t*)&backEnd.color2D;
-	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 0]; baDest->ui = baSource->ui;
-	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 1]; baDest->ui = baSource->ui;
-	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
-	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
-
-	tess.xyz[numVerts][0] = cmd->x;
-	tess.xyz[numVerts][1] = cmd->y;
-	tess.xyz[numVerts][2] = 0;
-
-	tess.texCoords[0][numVerts][0] = cmd->s1;
-	tess.texCoords[0][numVerts][1] = cmd->t1;
-
-	tess.xyz[numVerts + 1][0] = cmd->x + cmd->w;
-	tess.xyz[numVerts + 1][1] = cmd->y;
-	tess.xyz[numVerts + 1][2] = 0;
-
-	tess.texCoords[0][numVerts + 1][0] = cmd->s2;
-	tess.texCoords[0][numVerts + 1][1] = cmd->t1;
-
-	tess.xyz[numVerts + 2][0] = cmd->x + cmd->w;
-	tess.xyz[numVerts + 2][1] = cmd->y + cmd->h;
-	tess.xyz[numVerts + 2][2] = 0;
-
-	tess.texCoords[0][numVerts + 2][0] = cmd->s2;
-	tess.texCoords[0][numVerts + 2][1] = cmd->t2;
-
-	tess.xyz[numVerts + 3][0] = cmd->x;
-	tess.xyz[numVerts + 3][1] = cmd->y + cmd->h;
-	tess.xyz[numVerts + 3][2] = 0;
-
-	tess.texCoords[0][numVerts + 3][0] = cmd->s1;
-	tess.texCoords[0][numVerts + 3][1] = cmd->t2;
+	RB_AddQuadStamp2( cmd->x, cmd->y, cmd->w, cmd->h, cmd->s1, cmd->t1, 
+		cmd->s2, cmd->t2, backEnd.color2D );
 
 	return (const void *)(cmd + 1);
 }
@@ -643,7 +626,7 @@ const void *RB_RotatePic ( const void *data )
 		tess.numVertexes += 4;
 		tess.numIndexes += 6;
 
-		tess.indexes[ numIndexes ] = numVerts + 3;
+		tess.indexes[ numIndexes + 0 ] = numVerts + 3;
 		tess.indexes[ numIndexes + 1 ] = numVerts + 0;
 		tess.indexes[ numIndexes + 2 ] = numVerts + 2;
 		tess.indexes[ numIndexes + 3 ] = numVerts + 2;
@@ -656,31 +639,28 @@ const void *RB_RotatePic ( const void *data )
 		baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
 		baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
 
-		tess.xyz[ numVerts ][0] = m[0][0] * (-cmd->w) + m[2][0];
-		tess.xyz[ numVerts ][1] = m[0][1] * (-cmd->w) + m[2][1];
-		tess.xyz[ numVerts ][2] = 0;
-
-		tess.texCoords[0][ numVerts ][0] = cmd->s1;
-		tess.texCoords[0][ numVerts ][1] = cmd->t1;
+		tess.xyz[ numVerts + 0 ][0] = m[0][0] * (-cmd->w) + m[2][0];
+		tess.xyz[ numVerts + 0 ][1] = m[0][1] * (-cmd->w) + m[2][1];
+		tess.xyz[ numVerts + 0 ][2] = 0;
 
 		tess.xyz[ numVerts + 1 ][0] = m[2][0];
 		tess.xyz[ numVerts + 1 ][1] = m[2][1];
 		tess.xyz[ numVerts + 1 ][2] = 0;
 
-		tess.texCoords[0][ numVerts + 1 ][0] = cmd->s2;
-		tess.texCoords[0][ numVerts + 1 ][1] = cmd->t1;
-
 		tess.xyz[ numVerts + 2 ][0] = m[1][0] * (cmd->h) + m[2][0];
 		tess.xyz[ numVerts + 2 ][1] = m[1][1] * (cmd->h) + m[2][1];
 		tess.xyz[ numVerts + 2 ][2] = 0;
-
-		tess.texCoords[0][ numVerts + 2 ][0] = cmd->s2;
-		tess.texCoords[0][ numVerts + 2 ][1] = cmd->t2;
 
 		tess.xyz[ numVerts + 3 ][0] = m[0][0] * (-cmd->w) + m[1][0] * (cmd->h) + m[2][0];
 		tess.xyz[ numVerts + 3 ][1] = m[0][1] * (-cmd->w) + m[1][1] * (cmd->h) + m[2][1];
 		tess.xyz[ numVerts + 3 ][2] = 0;
 
+		tess.texCoords[0][ numVerts + 0 ][0] = cmd->s1;
+		tess.texCoords[0][ numVerts + 0 ][1] = cmd->t1;
+		tess.texCoords[0][ numVerts + 1 ][0] = cmd->s2;
+		tess.texCoords[0][ numVerts + 1 ][1] = cmd->t1;
+		tess.texCoords[0][ numVerts + 2 ][0] = cmd->s2;
+		tess.texCoords[0][ numVerts + 2 ][1] = cmd->t2;
 		tess.texCoords[0][ numVerts + 3 ][0] = cmd->s1;
 		tess.texCoords[0][ numVerts + 3 ][1] = cmd->t2;
 
@@ -742,7 +722,7 @@ const void *RB_RotatePic2 ( const void *data )
 			tess.numVertexes += 4;
 			tess.numIndexes += 6;
 
-			tess.indexes[ numIndexes ] = numVerts + 3;
+			tess.indexes[ numIndexes + 0 ] = numVerts + 3;
 			tess.indexes[ numIndexes + 1 ] = numVerts + 0;
 			tess.indexes[ numIndexes + 2 ] = numVerts + 2;
 			tess.indexes[ numIndexes + 3 ] = numVerts + 2;
@@ -755,31 +735,28 @@ const void *RB_RotatePic2 ( const void *data )
 			baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
 			baDest = (byteAlias_t *)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
 
-			tess.xyz[ numVerts ][0] = m[0][0] * (-cmd->w * 0.5f) + m[1][0] * (-cmd->h * 0.5f) + m[2][0];
-			tess.xyz[ numVerts ][1] = m[0][1] * (-cmd->w * 0.5f) + m[1][1] * (-cmd->h * 0.5f) + m[2][1];
-			tess.xyz[ numVerts ][2] = 0;
-
-			tess.texCoords[0][ numVerts ][0] = cmd->s1;
-			tess.texCoords[0][ numVerts ][1] = cmd->t1;
+			tess.xyz[ numVerts + 0 ][0] = m[0][0] * (-cmd->w * 0.5f) + m[1][0] * (-cmd->h * 0.5f) + m[2][0];
+			tess.xyz[ numVerts + 0 ][1] = m[0][1] * (-cmd->w * 0.5f) + m[1][1] * (-cmd->h * 0.5f) + m[2][1];
+			tess.xyz[ numVerts + 0 ][2] = 0;
 
 			tess.xyz[ numVerts + 1 ][0] = m[0][0] * (cmd->w * 0.5f) + m[1][0] * (-cmd->h * 0.5f) + m[2][0];
 			tess.xyz[ numVerts + 1 ][1] = m[0][1] * (cmd->w * 0.5f) + m[1][1] * (-cmd->h * 0.5f) + m[2][1];
 			tess.xyz[ numVerts + 1 ][2] = 0;
 
-			tess.texCoords[0][ numVerts + 1 ][0] = cmd->s2;
-			tess.texCoords[0][ numVerts + 1 ][1] = cmd->t1;
-
 			tess.xyz[ numVerts + 2 ][0] = m[0][0] * (cmd->w * 0.5f) + m[1][0] * (cmd->h * 0.5f) + m[2][0];
 			tess.xyz[ numVerts + 2 ][1] = m[0][1] * (cmd->w * 0.5f) + m[1][1] * (cmd->h * 0.5f) + m[2][1];
 			tess.xyz[ numVerts + 2 ][2] = 0;
-
-			tess.texCoords[0][ numVerts + 2 ][0] = cmd->s2;
-			tess.texCoords[0][ numVerts + 2 ][1] = cmd->t2;
 
 			tess.xyz[ numVerts + 3 ][0] = m[0][0] * (-cmd->w * 0.5f) + m[1][0] * (cmd->h * 0.5f) + m[2][0];
 			tess.xyz[ numVerts + 3 ][1] = m[0][1] * (-cmd->w * 0.5f) + m[1][1] * (cmd->h * 0.5f) + m[2][1];
 			tess.xyz[ numVerts + 3 ][2] = 0;
 
+			tess.texCoords[0][ numVerts + 0 ][0] = cmd->s1;
+			tess.texCoords[0][ numVerts + 0 ][1] = cmd->t1;
+			tess.texCoords[0][ numVerts + 1 ][0] = cmd->s2;
+			tess.texCoords[0][ numVerts + 1 ][1] = cmd->t1;
+			tess.texCoords[0][ numVerts + 2 ][0] = cmd->s2;
+			tess.texCoords[0][ numVerts + 2 ][1] = cmd->t2;
 			tess.texCoords[0][ numVerts + 3 ][0] = cmd->s1;
 			tess.texCoords[0][ numVerts + 3 ][1] = cmd->t2;
 
@@ -967,7 +944,7 @@ const void	*RB_DrawBuffer( const void *data ) {
 	if (r_clear->integer) {
 		const vec4_t color = { 1, 0, 0.5, 1 };
 		backEnd.projection2D = qtrue; // to ensure we have viewport that occupies entire window
-		vk_clear_color_attachments(color);
+		vk_clear_color_attachments( color );
 		backEnd.projection2D = qfalse;
 	}
 	return (const void *)(cmd + 1);
@@ -1065,53 +1042,35 @@ RB_ClearColor
 static const void *RB_ClearColor( const void *data )
 {
 	const clearColorCommand_t* cmd = (const clearColorCommand_t*)data;
-    backEnd.projection2D = qtrue;
-    switch(r_fastsky->integer){
-	    case 1:
-            vk_clear_color_attachments(colorBlack);
-            break;
-	    case 2:
-            vk_clear_color_attachments(colorRed);
-            break;
-	    case 3:
-            vk_clear_color_attachments(colorGreen);
-            break;
-        case 4:
-            vk_clear_color_attachments(colorBlue);
-            break;
-        case 5:
-            vk_clear_color_attachments(colorYellow);
-            break;
-        case 6:
-            vk_clear_color_attachments(colorOrange);
-            break;
-        case 7:
-            vk_clear_color_attachments(colorMagenta);
-            break;
-        case 8:
-            vk_clear_color_attachments(colorCyan);
-            break;
-        case 9:
-            vk_clear_color_attachments(colorWhite);
-            break;
-        case 10:
-            vk_clear_color_attachments(colorLtGrey);
-            break;
-        case 11:
-            vk_clear_color_attachments(colorMdGrey);
-            break;
-        case 12:
-            vk_clear_color_attachments(colorDkGrey);
-            break;
-        case 13:
-            vk_clear_color_attachments(colorLtBlue);
-            break;
-	    case 14:
-            vk_clear_color_attachments(colorDkBlue);
-            break;
-	    default:
-            vk_clear_color_attachments(colorBlack);
-    }
+	vec4_t *color;
+
+	backEnd.projection2D = qtrue;
+
+	if( !r_fastsky->integer ){
+		color = &colorBlack;
+	}
+	else {
+		switch( r_fastsky->integer ){
+			case 1: color = &colorBlack; break;
+			case 2: color = &colorRed; break;
+			case 3: color = &colorGreen; break;
+			case 4: color = &colorBlue; break;
+			case 5: color = &colorYellow; break;
+			case 6: color = &colorOrange; break;
+			case 7: color = &colorMagenta; break;
+			case 8: color = &colorCyan; break;
+			case 9: color = &colorWhite; break;
+			case 10: color = &colorLtGrey; break;
+			case 11: color = &colorMdGrey; break;
+			case 12: color = &colorDkGrey; break;
+			case 13: color = &colorLtBlue; break;
+			case 14: color = &colorDkBlue; break;
+			default: color = &colorBlack;
+		}
+	}
+
+	vk_clear_color_attachments( (float*)color );
+
 	backEnd.projection2D = qfalse;
 
 	return (const void*)(cmd + 1);

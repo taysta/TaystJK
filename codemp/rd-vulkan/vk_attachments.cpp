@@ -157,7 +157,7 @@ static void vk_alloc_attachment_memory( void )
             attachments[i].access_flags,
             attachments[i].image_layout,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-            NULL, NULL
+            VK_NULL_HANDLE, VK_NULL_HANDLE
         );
     }
     vk_end_command_buffer(command_buffer);
@@ -395,12 +395,11 @@ void vk_clear_depthstencil_attachments( qboolean clear_stencil ) {
     VkClearAttachment attachment;
     VkClearRect clear_rect[1];
 
-    if ( !is_vk_initialized() )
+    if ( !vk.active )
         return;
 
-    if ( vk_world.dirty_depth_attachment == 0 ) {
+    if ( vk_world.dirty_depth_attachment == 0 )
         return;
-    }
 
     attachment.colorAttachment = 0;
 #ifdef USE_REVERSED_DEPTH
@@ -430,7 +429,7 @@ void vk_clear_color_attachments( const vec4_t color )
     VkClearRect clear_rect[2];
     uint32_t rect_count;
     
-    if (!is_vk_initialized())
+    if ( !vk.active )
         return;
   
     attachment.colorAttachment = 0;
@@ -441,12 +440,12 @@ void vk_clear_color_attachments( const vec4_t color )
     attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 
 
-    get_scissor_rect(&clear_rect[0].rect);
+    get_scissor_rect( &clear_rect[0].rect );
     clear_rect[0].baseArrayLayer = 0;
     clear_rect[0].layerCount = 1;
     rect_count = 1;
 
-    qvkCmdClearAttachments(vk.cmd->command_buffer, 1, &attachment, rect_count, clear_rect);
+    qvkCmdClearAttachments( vk.cmd->command_buffer, 1, &attachment, rect_count, clear_rect );
 }
 
 void vk_destroy_attachments( void )
