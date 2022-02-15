@@ -290,10 +290,12 @@ typedef struct fileHandleData_s {
 	qfile_ut	handleFiles;
 	qboolean	handleSync;
 	qboolean	handleAsync;
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 	std::thread	*writerThread;
 	std::mutex	writeLock;
 	std::condition_variable	cv;
 	std::deque<std::vector<byte> > writes;
+#endif
 	qboolean	closed;
 	char		ospath[MAX_OSPATH];
 	int			fileSize;
@@ -1108,7 +1110,9 @@ void FS_FCloseFile( fileHandle_t f ) {
 		if ( fsh[f].handleAsync ) {
 			// queue the file to be closed after all pending operations are completed.
 			{
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 				std::lock_guard<std::mutex> l( fsh[f].writeLock );
+#endif
 				fsh[f].closed = qtrue;
 			}
 			fsh[f].cv.notify_one();
@@ -1133,7 +1137,9 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 	while ( qtrue ) {
 		std::vector<byte> write;
 		{
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 			std::unique_lock<std::mutex> l( f->writeLock );
+#endif
 			while ( f->writes.empty() && !f->closed ) {
 				f->cv.wait( l );
 			}
@@ -1849,7 +1855,9 @@ int FS_Write( const void *buffer, int len, fileHandle_t h ) {
 
 	if ( fsh[h].handleAsync ) {
 		{
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 			std::lock_guard<std::mutex> l( fsh[h].writeLock );
+#endif
 			fsh[h].writes.emplace_back( buf, buf + len );
 		}
 		fsh[h].cv.notify_one();
