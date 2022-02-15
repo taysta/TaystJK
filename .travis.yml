@@ -58,6 +58,7 @@ cache:
   directories:
     - $HOME/AppData/Local/Temp/chocolatey
     - /C/tools/msys64
+  - |
   ccache
 
 before_install:
