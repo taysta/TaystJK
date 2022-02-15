@@ -132,13 +132,13 @@ A raw string should NEVER be passed as fmt, because of "%f" type crashers.
 =============
 */
 //timescale warning fix - std mutex not supported by mingw
-#if !defined(__MINGW32__) || !defined(__MINGW64__)
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 std::recursive_mutex printfLock;
 #endif
 void QDECL Com_Printf( const char *fmt, ... ) {
-    #if !defined(__MINGW32__) || !defined(__MINGW64__)
-    std::lock_guard<std::recursive_mutex> l( printfLock );
-    #endif
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
+   std::lock_guard<std::recursive_mutex> l( printfLock );
+#endif
 	static qboolean opening_qconsole = qfalse;
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
