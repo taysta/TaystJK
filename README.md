@@ -1,5 +1,5 @@
 # EternalJK Experimental Fork
-### To see a list of new features, check the [Wiki](https://github.com/taysta/EternalJK/wiki/tayst's-changes-to-EternalJK)
+### To see a list of new features, check the [Wiki](https://github.com/taysta/EternalJK/wiki/Changes-to-EternalJK)
 
 ## License
 
