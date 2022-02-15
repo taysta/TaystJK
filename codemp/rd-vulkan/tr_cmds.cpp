@@ -390,7 +390,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	//
 	// gamma stuff
 	//
-	if (r_gamma->modified || r_greyscale->modified || r_dither->modified) {
+	if ( r_gamma->modified || r_greyscale->modified || r_dither->modified ) {
 		r_gamma->modified = qfalse;
 		r_greyscale->modified = qfalse;
 		r_dither->modified = qfalse;
@@ -398,9 +398,14 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		R_SetColorMappings();
 	}
 
-	if (cl_ratioFix->modified) {
+	if ( cl_ratioFix->modified ) {
 		R_Set2DRatio();
 		cl_ratioFix->modified = qfalse;
+	}
+
+	if ( r_fastsky->modified && vk.fastSky ) {
+		vk_set_fastsky_color();
+		r_fastsky->modified = qfalse;
 	}
 
 	//
@@ -415,7 +420,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 
 	cmd->buffer = 0;
 
-	if (r_fastsky->integer && vk.fastSky) {
+	if ( r_fastsky->integer && vk.fastSky ) {
 		clearColorCommand_t *clrcmd;
 		if ( ( clrcmd = (clearColorCommand_t*)R_GetCommandBuffer( sizeof( *clrcmd ) ) ) == nullptr )
 			return;

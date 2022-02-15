@@ -791,6 +791,7 @@ extern Vk_World		vk_world;		// this data is cleared during ref re-init
 
 // ...
 qboolean	vk_surface_format_color_depth( VkFormat format, int* r, int* g, int* b );
+void		vk_set_fastsky_color( void );
 void		vk_create_window( void );
 void		vk_initialize( void );
 void		vk_shutdown( void );
