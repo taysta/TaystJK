@@ -162,10 +162,13 @@ static void RB_LightingPass(void);
 #endif
 
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
-	shader_t	*shader, *oldShader;
-	int			fogNum;
-	int			dlighted;
-	qboolean	depthRange, isCrosshair, didShadowPass;
+	shader_t		*shader, *oldShader;
+	int				fogNum;
+	int				dlighted;
+	Vk_Depth_Range	depthRange; 
+#ifdef USE_VANILLA_SHADOWFINISH
+	qboolean		didShadowPass;
+#endif
 
 	// save original time for entity shader offsets
 	float originalTime = backEnd.refdef.floatTime;
@@ -212,10 +215,12 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	oldShader				= NULL;
 	unsigned int oldSort	= MAX_UINT;
 	oldShaderSort			= -1;
-	depthRange				= qfalse;
+	depthRange				= DEPTH_RANGE_NORMAL;
 	backEnd.pc.c_surfaces	+= numDrawSurfs;
+#ifdef USE_VANILLA_SHADOWFINISH
 	didShadowPass			= qfalse;
-	
+#endif
+
 	for (i = 0, drawSurf = drawSurfs; i < numDrawSurfs; i++, drawSurf++)
 	{
 		if (drawSurf->sort == oldSort) {
@@ -266,7 +271,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		//
 		if (entityNum != oldEntityNum)
 		{
-			depthRange = isCrosshair = qfalse;
+			depthRange = DEPTH_RANGE_NORMAL;
 
 			if (entityNum != REFENTITYNUM_WORLD)
 			{
@@ -276,12 +281,14 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 				// set up the transformation matrix
 				R_RotateForEntity(backEnd.currentEntity, &backEnd.viewParms, &backEnd.ori );
 
+				if ( backEnd.currentEntity->e.renderfx & RF_NODEPTH ) {
+					// No depth at all, very rare but some things for seeing through walls
+					depthRange = DEPTH_RANGE_ZERO;
+				}
+
 				if (backEnd.currentEntity->e.renderfx & RF_DEPTHHACK) {
 					// hack the depth range to prevent view model from poking into walls
-					depthRange = qtrue;
-
-					//if (backEnd.currentEntity->e.renderfx & RF_CROSSHAIR)
-					//	isCrosshair = qtrue;
+					depthRange = DEPTH_RANGE_WEAPON;
 				}
 			}
 			else
@@ -296,7 +303,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			tess.shaderTime = backEnd.refdef.floatTime - tess.shader->timeOffset;
 
 			Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
-			vk_set_depthrange(depthRange ? DEPTH_RANGE_WEAPON : DEPTH_RANGE_NORMAL);
+			vk_set_depthrange( depthRange );
 			vk_update_mvp(NULL);
 			oldEntityNum = entityNum;
 		}
@@ -356,7 +363,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 	shader_t		*shader, *oldShader;
 	int				fogNum;
 	int				entityNum, oldEntityNum;
-	qboolean		depthRange, isCrosshair;
+	Vk_Depth_Range	depthRange;
 	const litSurf_t *litSurf;
 	unsigned int	oldSort;
 	double			originalTime; // -EC- 
@@ -365,11 +372,11 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 	originalTime = backEnd.refdef.floatTime;
 
 	// draw everything
-	oldEntityNum = -1;
-	backEnd.currentEntity = &tr.worldEntity;
-	oldShader = NULL;
-	oldSort = MAX_UINT;
-	depthRange = qfalse;
+	oldEntityNum			= -1;
+	backEnd.currentEntity	= &tr.worldEntity;
+	oldShader				= NULL;
+	oldSort					= MAX_UINT;
+	depthRange				= DEPTH_RANGE_NORMAL;
 
 	tess.dlightUpdateParams = qtrue;
 
@@ -411,7 +418,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 		// change the modelview matrix if needed
 		//
 		if (entityNum != oldEntityNum) {
-			depthRange = isCrosshair = qfalse;
+			depthRange = DEPTH_RANGE_NORMAL;
 
 			if (entityNum != REFENTITYNUM_WORLD) {
 				backEnd.currentEntity = &backEnd.refdef.entities[entityNum];
@@ -424,12 +431,14 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 				// set up the transformation matrix
 				R_RotateForEntity(backEnd.currentEntity, &backEnd.viewParms, &backEnd.ori );
 
+				if ( backEnd.currentEntity->e.renderfx & RF_NODEPTH ) {
+					// No depth at all, very rare but some things for seeing through walls
+					depthRange = DEPTH_RANGE_ZERO;
+				}
+
 				if (backEnd.currentEntity->e.renderfx & RF_DEPTHHACK) {
 					// hack the depth range to prevent view model from poking into walls
-					depthRange = qtrue;
-
-					//if (backEnd.currentEntity->e.renderfx & RF_CROSSHAIR)
-					//	isCrosshair = qtrue;
+					depthRange = DEPTH_RANGE_WEAPON;
 				}
 			}
 			else {
@@ -1046,30 +1055,7 @@ static const void *RB_ClearColor( const void *data )
 
 	backEnd.projection2D = qtrue;
 
-	if( !r_fastsky->integer ){
-		color = &colorBlack;
-	}
-	else {
-		switch( r_fastsky->integer ){
-			case 1: color = &colorBlack; break;
-			case 2: color = &colorRed; break;
-			case 3: color = &colorGreen; break;
-			case 4: color = &colorBlue; break;
-			case 5: color = &colorYellow; break;
-			case 6: color = &colorOrange; break;
-			case 7: color = &colorMagenta; break;
-			case 8: color = &colorCyan; break;
-			case 9: color = &colorWhite; break;
-			case 10: color = &colorLtGrey; break;
-			case 11: color = &colorMdGrey; break;
-			case 12: color = &colorDkGrey; break;
-			case 13: color = &colorLtBlue; break;
-			case 14: color = &colorDkBlue; break;
-			default: color = &colorBlack;
-		}
-	}
-
-	vk_clear_color_attachments( (float*)color );
+	vk_clear_color_attachments( (float*)tr.fastskyColor );
 
 	backEnd.projection2D = qfalse;
 

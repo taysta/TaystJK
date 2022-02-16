@@ -1353,6 +1353,8 @@ typedef struct trGlobals_s {
 	int						numDrawSurfCmds;
 	drawSurfsCommand_t		*drawSurfCmd;
 	int						lastRenderCommand;
+
+	vec4_t					*fastskyColor;
 } trGlobals_t;
 
 struct glconfigExt_t

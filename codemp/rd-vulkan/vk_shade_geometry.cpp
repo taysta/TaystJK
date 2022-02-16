@@ -1338,6 +1338,18 @@ void vk_lighting_pass( void )
 }
 #endif // USE_PMLIGHT
 
+void ForceAlpha(unsigned char *dstColors, int TR_ForceEntAlpha)
+{
+	int	i;
+
+	dstColors += 3;
+
+	for ( i = 0; i < tess.numVertexes; i++, dstColors += 4 )
+	{
+		*dstColors = TR_ForceEntAlpha;
+	}
+}
+
 static ss_input ssInput;
 void RB_StageIteratorGeneric( void )
 {
@@ -1375,27 +1387,27 @@ void RB_StageIteratorGeneric( void )
 	fogCollapse = qfalse;
 
 #ifdef USE_FOG_COLLAPSE
-	if (tess.fogNum && tess.shader->fogPass && tess.shader->fogCollapse && r_drawfog->value == 2) {
+	if ( tess.fogNum && tess.shader->fogPass && tess.shader->fogCollapse && r_drawfog->value == 2 ) {
 		fogCollapse = qtrue;
 	}
 #endif
 	
-	if (fogCollapse) {
-		vk_set_fog_params(&uniform, &fog_stage);
-		VectorCopy(backEnd.ori.viewOrigin, uniform.eyePos);
-		vk_push_uniform(&uniform);
-		vk_update_descriptor(5, tr.fogImage->descriptor_set);
+	if ( fogCollapse ) {
+		vk_set_fog_params( &uniform, &fog_stage );
+		VectorCopy( backEnd.ori.viewOrigin, uniform.eyePos );
+		vk_push_uniform( &uniform );
+		vk_update_descriptor( 5, tr.fogImage->descriptor_set );
 	}
 	else {
 		fog_stage = 0;
-		if (tess_flags & TESS_VPOS) {
-			VectorCopy(backEnd.ori.viewOrigin, uniform.eyePos);
-			vk_push_uniform(&uniform);
+		if ( tess_flags & TESS_VPOS ) {
+			VectorCopy( backEnd.ori.viewOrigin, uniform.eyePos );
+			vk_push_uniform( &uniform );
 			tess_flags &= ~TESS_VPOS;
 		}
 	}
 
-	for (stage = 0; stage < MAX_SHADER_STAGES; stage++)
+	for ( stage = 0; stage < MAX_SHADER_STAGES; stage++ )
 	{
 		int forceRGBGen = 0;
 
@@ -1408,15 +1420,15 @@ void RB_StageIteratorGeneric( void )
 #endif
 
 		// reject this stage if it's not a glow stage but we are doing a glow pass.
-		if (g_bRenderGlowingObjects && !pStage->glow)
+		if ( g_bRenderGlowingObjects && !pStage->glow )
 			continue;
 
 		// we check for surfacesprites AFTER drawing everything else
-		if (pStage->ss && pStage->ss->surfaceSpriteType)
+		if ( pStage->ss && pStage->ss->surfaceSpriteType )
 			continue;
 
 		// vertexLightmap isnt used rn
-		if (stage && r_lightmap->integer && !(pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap || pStage->bundle[0].vertexLightmap))
+		if ( stage && r_lightmap->integer && !( pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap || pStage->bundle[0].vertexLightmap ) )
 			break;
 
 		/*if (NULL == pStage)
@@ -1424,20 +1436,15 @@ void RB_StageIteratorGeneric( void )
 
 		if (!pStage->active)
 			break;
-
-		if (backEnd.currentEntity){
-			assert(backEnd.currentEntity->e.renderfx >= 0);
-
-			// we want to be able to rip a hole in the thing being disintegrated,
-			// and by doing the depth-testing it avoids some kinds of artefacts, but will probably introduce others?
-			if (backEnd.currentEntity->e.renderfx & RF_DISINTEGRATE1)
-				stateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHMASK_TRUE | GLS_ATEST_GE_C0;
+		*/
+		
+		if ( backEnd.currentEntity ){
+			assert( backEnd.currentEntity->e.renderfx >= 0 );
 
 			//want to use RGBGen from ent
-			if (backEnd.currentEntity->e.renderfx & RF_RGB_TINT)
+			if ( backEnd.currentEntity->e.renderfx & RF_RGB_TINT )
 				forceRGBGen = CGEN_ENTITY;
 		}
-		*/
 
 		tess_flags |= pStage->tessFlags;
 
@@ -1454,11 +1461,11 @@ void RB_StageIteratorGeneric( void )
 			}
 		}
 
-		vk_select_texture(0);
+		vk_select_texture( 0 );
 
 		// for 2D flipped images
-		if (backEnd.projection2D) {
-			if (pStage->vk_2d_pipeline == VK_NULL_HANDLE) {
+		if ( backEnd.projection2D ) {
+			if ( pStage->vk_2d_pipeline == VK_NULL_HANDLE ) {
 				vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
 
 				// use an excisting pipeline with the same def or create a new one.
@@ -1468,35 +1475,56 @@ void RB_StageIteratorGeneric( void )
 
 			pipeline = pStage->vk_2d_pipeline;
 		}
+		else if ( backEnd.currentEntity ){
+			vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
+
+			// we want to be able to rip a hole in the thing being disintegrated,
+			// and by doing the depth-testing it avoids some kinds of artefacts, but will probably introduce others?
+			if ( backEnd.currentEntity->e.renderfx & RF_DISINTEGRATE1 )
+				def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHMASK_TRUE | GLS_ATEST_GE_C0;
+
+			if( backEnd.currentEntity->e.renderfx & RF_FORCE_ENT_ALPHA ) {
+				ForceAlpha( (unsigned char *) tess.svars.colors, backEnd.currentEntity->e.shaderRGBA[3] );
+				
+				// depth write, so faces through the model will be stomped over by nearer ones. this works because
+				// we draw RF_FORCE_ENT_ALPHA stuff after everything else, including standard alpha surfs.
+				if ( backEnd.currentEntity->e.renderfx & RF_ALPHA_DEPTH ) 
+					def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHMASK_TRUE;
+				else
+					def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;	
+			}
+			
+			pipeline = vk_find_pipeline_ext( 0, &def, qfalse );
+		}
 		else {
-			if (backEnd.viewParms.portalView == PV_MIRROR)
+			if ( backEnd.viewParms.portalView == PV_MIRROR )
 				pipeline = pStage->vk_mirror_pipeline[fog_stage];
-			//else if (backEnd.viewParms.portalView == PV_PORTAL)
-			//	pipeline = pStage->vk_portal_pipeline;
 			else
 				pipeline = pStage->vk_pipeline[fog_stage];
 		}
 
-		if (r_lightmap->integer && pStage->bundle[1].isLightmap) {
+		if ( r_lightmap->integer && pStage->bundle[1].isLightmap ) {
 			//vk_select_texture(0);
-			vk_bind(tr.whiteImage); // replace diffuse texture with a white one thus effectively render only lightmap
+			vk_bind( tr.whiteImage ); // replace diffuse texture with a white one thus effectively render only lightmap
 		}
 
-		vk_bind_pipeline(pipeline);
-		vk_bind_geometry(tess_flags);
-		vk_draw_geometry(tess.depthRange, qtrue);
 
-		if (pStage->depthFragment) {
-			if (backEnd.viewParms.portalView == PV_MIRROR)
+		vk_bind_pipeline( pipeline );
+		vk_bind_geometry( tess_flags );
+		vk_draw_geometry( tess.depthRange, qtrue );
+
+		if ( pStage->depthFragment ) {
+			if ( backEnd.viewParms.portalView == PV_MIRROR )
 				pipeline = pStage->vk_mirror_pipeline_df;
 			else
 				pipeline = pStage->vk_pipeline_df;
-			vk_bind_pipeline(pipeline);
-			vk_draw_geometry(tess.depthRange, qtrue);
+
+			vk_bind_pipeline( pipeline );
+			vk_draw_geometry( tess.depthRange, qtrue );
 		}
 
 		// allow skipping out to show just lightmaps during development
-		if (r_lightmap->integer && (pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap))
+		if ( r_lightmap->integer && ( pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap ) )
 			break;
 
 		tess_flags = 0;

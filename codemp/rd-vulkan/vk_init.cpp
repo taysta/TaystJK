@@ -265,6 +265,30 @@ static void vk_render_splash( void )
 	return;
 }
 
+void vk_set_fastsky_color( void ) {
+	vec4_t *out;
+
+	switch( r_fastsky->integer ){
+		case 1: out = &colorBlack; break;
+		case 2: out = &colorRed; break;
+		case 3: out = &colorGreen; break;
+		case 4: out = &colorBlue; break;
+		case 5: out = &colorYellow; break;
+		case 6: out = &colorOrange; break;
+		case 7: out = &colorMagenta; break;
+		case 8: out = &colorCyan; break;
+		case 9: out = &colorWhite; break;
+		case 10: out = &colorLtGrey; break;
+		case 11: out = &colorMdGrey; break;
+		case 12: out = &colorDkGrey; break;
+		case 13: out = &colorLtBlue; break;
+		case 14: out = &colorDkBlue; break;
+		default: out = &colorBlack;
+	}
+
+	tr.fastskyColor = out;
+}
+
 void vk_create_window( void ) {
 	//R_Set2DRatio();
 
