@@ -120,8 +120,7 @@ jobs:
       run: cmake --build .
 
     - uses: actions/upload-artifact@v2
-      if: false
-      #if: matrix.cc == 'gcc' && matrix.config == 'Release'
+      if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
       with:
         name: linux-${{ matrix.arch }}
         path: bin
