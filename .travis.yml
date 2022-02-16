@@ -118,10 +118,10 @@ jobs:
       os: windows
       env: MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
 
-    - name: "(Release) x64 [Apple clang version 11.0.0] - macOS 10.14"
-      os: osx
-      osx_image: xcode11.3
-      compiler: clang
+#    - name: "(Release) x64 [Apple clang version 11.0.0] - macOS 10.14"
+#      os: osx
+#      osx_image: xcode11.3
+#      compiler: clang
 
     - name: "(Release) x86 [GCC 9] - Ubuntu 18.04"
       compiler: gcc
@@ -136,6 +136,7 @@ jobs:
       env:
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - ARCH=x86
+
 
     # =========================
     #           DEBUG
@@ -164,6 +165,18 @@ jobs:
       env:
         - MSBUILD_PATH="c:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
         - CMAKE_BUILD_TYPE=Debug
+
+    #    - name: "(Debug) x64 [Apple clang version 11.0.0] - macOS 10.14"
+    #      os: osx
+    #      osx_image: xcode11.3
+    #      compiler: clang
+    #      env: CMAKE_BUILD_TYPE=Debug
+
+    - name: "(Debug) x86 [GCC 9] - Ubuntu 18.04"
+      compiler: gcc
+      env:
+        - CMAKE_BUILD_TYPE=Debug
+        - ARCH=x86
 
     #    - name: "(Debug) x86 [clang 9] - Ubuntu 18.04"
     #      compiler: clang
