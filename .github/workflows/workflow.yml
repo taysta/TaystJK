@@ -159,7 +159,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifact_dir: D-x86
+          - artifact_dir: linux-x86
             artifact_name: eternaljk-linux-x86.zip
 
           - artifact_dir: linux-x86_64
