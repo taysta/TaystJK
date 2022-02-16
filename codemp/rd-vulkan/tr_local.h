@@ -211,7 +211,7 @@ typedef enum
 
 #if defined( _WIN32 )
 DEFINE_ENUM_FLAG_OPERATORS( imgFlags_t );
-#elif defined( __linux__ )
+#elif defined( __linux__ ) || defined( __APPLE__ )
 inline constexpr imgFlags_t operator | (imgFlags_t a, imgFlags_t b) throw() {
 	return imgFlags_t(((int)a) | ((int)b));
 }
@@ -1034,7 +1034,7 @@ void		R_Modellist_f ( void );
 //====================================================
 
 
-#define	MAX_DRAWIMAGES			2048
+#define	MAX_DRAWIMAGES			4096
 #define	MAX_LIGHTMAPS			256
 #define	MAX_SKINS				1024
 

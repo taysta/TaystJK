@@ -1033,7 +1033,7 @@ static qboolean SurfIsOffscreen( const drawSurf_t *drawSurf, vec4_t clipDest[128
 	return qfalse;
 }
 
-
+#if 0
 /*
 ================
 R_GetModelViewBounds
@@ -1104,6 +1104,7 @@ static void R_GetModelViewBounds( int *mins, int *maxs )
 	maxs[0] = (int)(0.5 + 0.5 * (1.0 + maxn[0]) * tr.viewParms.viewportWidth);
 	maxs[1] = (int)(0.5 + 0.5 * (1.0 + maxn[1]) * tr.viewParms.viewportHeight);
 }
+#endif
 
 /*
 ========================
@@ -1156,15 +1157,17 @@ qboolean R_MirrorViewBySurface( drawSurf_t *drawSurf, int entityNum ) {
 	}
 #endif
 
+#if 0
 	// causing artifacts with mirrors.
 	if (tess.numVertexes > 2 && r_fastsky->integer && vk.fastSky) {
-		/*int mins[2], maxs[2];
+		int mins[2], maxs[2];
 		R_GetModelViewBounds(mins, maxs);
 		newParms.scissorX = newParms.viewportX + mins[0];
 		newParms.scissorY = newParms.viewportY + mins[1];
 		newParms.scissorWidth = maxs[0] - mins[0];
-		newParms.scissorHeight = maxs[1] - mins[1];*/
+		newParms.scissorHeight = maxs[1] - mins[1];
 	}
+#endif
 
 	R_MirrorPoint(oldParms.ori.origin, &surface, &camera, newParms.ori.origin);
 

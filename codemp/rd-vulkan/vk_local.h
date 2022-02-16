@@ -907,6 +907,7 @@ void		R_MipMap( byte *out, byte *in, int width, int height );
 void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHeight );
 
 // image
+void		vk_texture_mode( const char *string );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 

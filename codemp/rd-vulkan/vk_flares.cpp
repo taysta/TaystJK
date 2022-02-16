@@ -133,7 +133,7 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 	int				i;
 	flare_t			*f;
 	vec3_t			local;
-	float			d = 1;
+	//float			d = 1;
 	vec4_t			eye, clip, normalized, window;
 
 	backEnd.pc.c_flareAdds++;

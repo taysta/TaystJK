@@ -123,6 +123,7 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
             case VK_PRESENT_MODE_MAILBOX_KHR: mailbox_supported = qtrue; break;
             case VK_PRESENT_MODE_IMMEDIATE_KHR: immediate_supported = qtrue; break;
             case VK_PRESENT_MODE_FIFO_RELAXED_KHR: fifo_relaxed_supported = qtrue; break;
+            default: break;
         }
     }
 

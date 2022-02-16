@@ -1173,15 +1173,15 @@ qboolean R_InitializeWireframeAutomap(void)
 
 //draw the automap with the given transformation matrix -rww
 #define QUADINFINITY			16777216
-static float g_lastHeight = 0.0f;
-static bool g_lastHeightValid = false;
+//static float g_lastHeight = 0.0f;
+//static bool g_lastHeightValid = false;
 static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits );
 
 const void *R_DrawWireframeAutomap( const void *data )
 {
 	const drawBufferCommand_t *cmd = (const drawBufferCommand_t *)data;
-	float e = 0.0f;
-	wireframeMapSurf_t *s = g_autoMapFrame.surfs;
+	//float e = 0.0f;
+	//wireframeMapSurf_t *s = g_autoMapFrame.surfs;
 
 	// TEMP
 	return (const void*)(cmd + 1);

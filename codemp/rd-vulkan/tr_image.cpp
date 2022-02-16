@@ -28,12 +28,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include <map>
 
-/*static byte			 s_intensitytable[256];
-static unsigned char s_gammatable[256];*/
-
-int		gl_filter_min = GL_LINEAR_MIPMAP_NEAREST;
-int		gl_filter_max = GL_LINEAR;
-
 /*
 ** R_GammaCorrect
 */
@@ -47,22 +41,6 @@ void R_GammaCorrect( byte *buffer, int bufSize ) {
 		buffer[i] = s_gammatable[buffer[i]];
 	}
 }
-
-typedef struct textureMode_s {
-	const char *name;
-	int	minimize, maximize;
-} textureMode_t;
-
-textureMode_t modes[] = {
-	{"GL_NEAREST", GL_NEAREST, GL_NEAREST},
-	{"GL_LINEAR", GL_LINEAR, GL_LINEAR},
-	{"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST},
-	{"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR},
-	{"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST},
-	{"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR}
-};
-
-static const size_t numTextureModes = ARRAY_LEN(modes);
 
 // makeup a nice clean, consistant name to query for and file under, for map<> usage...
 //
@@ -250,49 +228,6 @@ void R_ImageList_f( void ) {
 }
 
 //=======================================================================
-
-/*
-==================
-R_BlendOverTexture
-
-Apply a color blend over a set of pixels
-==================
-*/
-static void R_BlendOverTexture( byte *data, int pixelCount, byte blend[4] ) {
-	int		i;
-	int		inverseAlpha;
-	int		premult[3];
-
-	inverseAlpha = 255 - blend[3];
-	premult[0] = blend[0] * blend[3];
-	premult[1] = blend[1] * blend[3];
-	premult[2] = blend[2] * blend[3];
-
-	for ( i = 0 ; i < pixelCount ; i++, data+=4 ) {
-		data[0] = ( data[0] * inverseAlpha + premult[0] ) >> 9;
-		data[1] = ( data[1] * inverseAlpha + premult[1] ) >> 9;
-		data[2] = ( data[2] * inverseAlpha + premult[2] ) >> 9;
-	}
-}
-
-byte	mipBlendColors[16][4] = {
-	{0,0,0,0},
-	{255,0,0,128},
-	{0,255,0,128},
-	{0,0,255,128},
-	{255,0,0,128},
-	{0,255,0,128},
-	{0,0,255,128},
-	{255,0,0,128},
-	{0,255,0,128},
-	{0,0,255,128},
-	{255,0,0,128},
-	{0,255,0,128},
-	{0,0,255,128},
-	{255,0,0,128},
-	{0,255,0,128},
-	{0,0,255,128},
-};
 
 class CStringComparator
 {
@@ -493,6 +428,7 @@ image_t *noLoadImage( const char *name, imgFlags_t flags ) {
 	return NULL;
 }
 
+#if 0
 // returns image_t struct if we already have this, else NULL. No disk-open performed
 //	(important for creating default images).
 //
@@ -535,6 +471,7 @@ static image_t *R_FindImageFile_NoLoad( const char *name, qboolean mipmap, qbool
 
 	return NULL;
 }
+#endif
 
 /*
 =================
