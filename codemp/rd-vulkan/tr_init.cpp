@@ -903,7 +903,7 @@ void R_Register( void )
 		" 0+ - use explicit device index\n" \
 		" -1 - first discrete GPU\n" \
 		" -2 - first integrated GPU");
-	ri.Cvar_CheckRange(r_device, -2, NULL, qtrue);
+	ri.Cvar_CheckRange(r_device, -2, 8, qtrue);
 	r_device->modified					= qfalse;
 
 	r_stencilbits						= ri.Cvar_Get("r_stencilbits",						"8",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");

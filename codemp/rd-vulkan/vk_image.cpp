@@ -31,6 +31,55 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 static image_t *hashTable[FILE_HASH_SIZE];
 
+int		gl_filter_min = GL_LINEAR_MIPMAP_NEAREST;
+int		gl_filter_max = GL_LINEAR;
+
+typedef struct textureMode_s {
+	const char *name;
+	int	minimize, maximize;
+} textureMode_t;
+
+textureMode_t modes[] = {
+	{"GL_NEAREST", GL_NEAREST, GL_NEAREST},
+	{"GL_LINEAR", GL_LINEAR, GL_LINEAR},
+	{"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST},
+	{"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR},
+	{"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST},
+	{"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR}
+};
+
+void vk_update_descriptor_set( image_t *image, qboolean mipmap );
+
+void vk_texture_mode( const char *string ) {
+	const textureMode_t *mode;
+	image_t	*img;
+	uint32_t		i;
+	
+	mode = NULL;
+	for ( i = 0 ; i < ARRAY_LEN( modes ) ; i++ ) {
+		if ( !Q_stricmp( modes[i].name, string ) ) {
+			mode = &modes[i];
+			break;
+		}
+	}
+
+	if ( mode == NULL ) {
+		ri.Printf( PRINT_ALL, "bad texture filter name '%s'\n", string );
+		return;
+	}
+
+	gl_filter_min = mode->minimize;
+	gl_filter_max = mode->maximize;
+
+	vk_wait_idle();
+	for ( i = 0 ; i < tr.numImages ; i++ ) {
+		img = tr.images[i];
+		if ( img->flags & IMGFLAG_MIPMAP ) {
+			vk_update_descriptor_set( img, qtrue );
+		}
+	}
+}
+
 static int generateHashValue( const char *fname )
 {
     uint32_t i = 0;

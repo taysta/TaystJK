@@ -43,6 +43,7 @@ bool g_bDynamicGlowSupported = false;
 
 #define	MAC_EVENT_PUMP_MSEC		5
 
+#if 0
 //used by RF_DISTORTION
 static inline bool R_WorldCoordToScreenCoordFloat( vec3_t worldCoord, float *x, float *y )
 {
@@ -93,13 +94,6 @@ static inline bool R_WorldCoordToScreenCoord( vec3_t worldCoord, int *x, int *y 
 	return retVal;
 }
 
-/*
-==================
-RB_RenderDrawSurfList
-==================
-*/
-
-#if 0
 //number of possible surfs we can postrender.
 //note that postrenders lack much of the optimization that the standard sort-render crap does,
 //so it's slower.
@@ -161,6 +155,11 @@ static void RB_Hyperspace(void) {
 static void RB_LightingPass(void);
 #endif
 
+/*
+==================
+RB_RenderDrawSurfList
+==================
+*/
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	shader_t		*shader, *oldShader;
 	int				fogNum;
@@ -1051,7 +1050,6 @@ RB_ClearColor
 static const void *RB_ClearColor( const void *data )
 {
 	const clearColorCommand_t* cmd = (const clearColorCommand_t*)data;
-	vec4_t *color;
 
 	backEnd.projection2D = qtrue;
 

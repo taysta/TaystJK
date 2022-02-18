@@ -28,7 +28,7 @@ static char *s_shaderText = NULL;
 
 // the shader is parsed into these global variables, then copied into
 // dynamically allocated memory if it is valid.
-static	shaderStage_t	stages[MAX_SHADER_STAGES] = { 0 };
+static	shaderStage_t	stages[MAX_SHADER_STAGES] = {{ 0 }};
 static	shader_t		shader;
 static	texModInfo_t	texMods[MAX_SHADER_STAGES][TR_MAX_TEXMODS];
 
@@ -127,20 +127,6 @@ static long generateHashValue( const char *fname, const int size ) {
 	hash = (hash ^ (hash >> 10) ^ (hash >> 20));
 	hash &= (size - 1);
 	return hash;
-}
-
-static void ClearGlobalShader( void )
-{
-	int	i;
-
-	Com_Memset(&shader, 0, sizeof(shader));
-	Com_Memset(&stages, 0, sizeof(stages));
-	for (i = 0; i < MAX_SHADER_STAGES; i++) {
-		stages[i].bundle[0].texMods = texMods[i];
-		stages[i].bundle[0].mGLFogColorOverride = GLFOGOVERRIDE_NONE;
-	}
-
-	shader.contentFlags = CONTENTS_SOLID | CONTENTS_OPAQUE;
 }
 
 qboolean ShaderHashTableExists( void )

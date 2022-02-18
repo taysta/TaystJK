@@ -907,6 +907,7 @@ void		R_MipMap( byte *out, byte *in, int width, int height );
 void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHeight );
 
 // image
+void		vk_texture_mode( const char *string );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 
@@ -929,27 +930,15 @@ void		vk_info_f( void );
 void		GfxInfo_f( void );
 
 // debug
-void		vk_debug( const char *msg, ... );
-void		vk_create_debug_callback( void );
-void		R_DebugGraphics( void );
-
-static void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReportObjectTypeEXT objType )
-{
-	if (qvkDebugMarkerSetObjectNameEXT && obj)
-	{
-		VkDebugMarkerObjectNameInfoEXT info;
-		info.sType = VK_STRUCTURE_TYPE_DEBUG_MARKER_OBJECT_NAME_INFO_EXT;
-		info.pNext = VK_NULL_HANDLE;
-		info.objectType = objType;
-		info.object = obj;
-		info.pObjectName = objName;
-		qvkDebugMarkerSetObjectNameEXT(vk.device, &info);
-	}
-}
-#define VK_SET_OBJECT_NAME( obj, objName, objType) vk_set_object_name( (uint64_t)( obj ), ( objName ), ( objType ) );
+void		vk_set_object_name( uint64_t obj, const char *objName, VkDebugReportObjectTypeEXT objType );
+#define		VK_SET_OBJECT_NAME( obj, objName, objType) vk_set_object_name( (uint64_t)( obj ), ( objName ), ( objType ) );
 
 #define VK_CHECK( function_call ) { \
 	VkResult result = function_call; \
 	if ( result < 0 ) \
 		vk_debug( "Vulkan: error %s returned by %s \n", vk_result_string( result ), #function_call ); \
 }
+
+void		vk_debug( const char *msg, ... );
+void		vk_create_debug_callback( void );
+void		R_DebugGraphics( void );

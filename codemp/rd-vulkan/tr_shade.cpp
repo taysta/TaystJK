@@ -27,22 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "tr_quicksprite.h"
 
 shaderCommands_t	tess;
-static qboolean		setArraysOnce;
-
-color4ub_t	styleColors[MAX_LIGHT_STYLES];
-
-extern bool g_bRenderGlowingObjects;
-
-/*
-===================
-R_DrawStripElements
-
-===================
-*/
-static int		c_vertexes;		// for seeing how long our average strips are
-static int		c_begins;
-
-//extern bool tr_stencilled; //tr_backend.cpp
+color4ub_t			styleColors[MAX_LIGHT_STYLES];
 
 /*
 ==============
