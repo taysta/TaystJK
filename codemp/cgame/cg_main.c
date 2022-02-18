@@ -1604,7 +1604,7 @@ Ghoul2 Insert End
 	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
 
 	//cosmetics
-	if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA) {
+
 		cgs.media.cosmetics.santaHat	= trap->R_RegisterModel("models/players/hats/santahat.md3");
 		cgs.media.cosmetics.pumpkin		= trap->R_RegisterModel("models/players/hats/pumpkin.md3");
 		cgs.media.cosmetics.cap			= trap->R_RegisterModel("models/players/hats/cap.md3");
@@ -1612,7 +1612,6 @@ Ghoul2 Insert End
 		cgs.media.cosmetics.kringekap	= trap->R_RegisterModel("models/players/hats/cringe.md3");
 		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
 		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
-	}
 	//jaPRO mod assets - end
 
 	// register the inline models

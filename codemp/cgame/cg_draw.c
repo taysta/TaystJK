@@ -11699,8 +11699,7 @@ static void CG_Speedometer(void)
 			    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
 			        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //creat the string
 			        if(cg_speedometerJumpsColors.value) {
-                        colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) *
-                                                   (cg.lastGroundSpeeds[i] / 250)); //color the string
+                        colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
                         colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
                     }
 			        if(strcmp(speedsStr4, "0") != 0) {
