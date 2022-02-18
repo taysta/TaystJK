@@ -151,7 +151,7 @@ jobs:
 
   create-testing:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
+    needs: [vs2019, vs2017_xp, macos, linux]
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -177,7 +177,7 @@ jobs:
             *.zip
   update-release:
     if: ${{ github.event_name == 'release' }}
-    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
+    needs: [vs2019, vs2017_xp, macos, linux]
     runs-on: ubuntu-latest
 
     strategy:
