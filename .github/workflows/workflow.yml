@@ -3,10 +3,10 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches: 
+    branches:
     - master
   pull_request:
-    branches: 
+    branches:
     - master
 
 jobs:
@@ -58,7 +58,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build --install . --config RelWithDebInfo
+      run: cmake --build . --config RelWithDebInfo
 
   macos:
     name: Build macOS AppleClang
@@ -79,7 +79,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build --install .
+      run: cmake --build .
 
   linux:
     name: Build Linux, ${{ matrix.build_type }}
@@ -104,4 +104,4 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build --install .
+      run: cmake --build .
