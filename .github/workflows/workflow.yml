@@ -35,7 +35,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build . --config ${{ matrix.build_type }}
+      run: cmake --build --install . --config ${{ matrix.build_type }}
 
   vs2017_xp:
     name: Build VS 2017, Windows XP
@@ -58,7 +58,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build . --config RelWithDebInfo
+      run: cmake --build --install . --config RelWithDebInfo
 
   macos:
     name: Build macOS AppleClang
@@ -79,7 +79,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build .
+      run: cmake --build --install .
 
   linux:
     name: Build Linux, ${{ matrix.build_type }}
@@ -104,4 +104,4 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build .
+      run: cmake --build --install .
