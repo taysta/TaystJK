@@ -41,7 +41,7 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install .
+        run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.config == 'RelWithDebInfo' }}
@@ -182,23 +182,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifacts: ./linux-x86/*
-            artifact_name: oDFe-linux-x86.zip
-
           - artifacts: ./linux-x86_64/*
-            artifact_name: oDFe-linux-x86_64.zip
+            artifact_name: EternalJK-linux.zip
 
           - artifacts: ./windows-mingw-x86/*
-            artifact_name: oDFe-windows-x86.zip
+            artifact_name: EternalJK-windows-Win32.zip
 
           - artifacts: ./windows-mingw-x86_64/*
-            artifact_name: oDFe-windows-x86_64.zip
+            artifact_name: EternalJK-windows-x64.zip
 
           - artifacts: ./macos-x86_64/*
-            artifact_name: oDFe-macos-x86_64.zip
-
-          - artifacts: windows-msvc-x86/ windows-msvc-x86_64/ windows-msvc-arm64/ # linux-aarch64/ linux-armv7/
-            artifact_name: oDFe-other.zip
+            artifact_name: EternalJK-macos.zip
 
     steps:
       - name: Download Artifacts
