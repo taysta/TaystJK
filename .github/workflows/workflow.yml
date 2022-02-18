@@ -41,7 +41,7 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: cmake --install .
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.config == 'RelWithDebInfo' }}
@@ -76,7 +76,7 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: cmake --install .
 
   macos:
     name: Build macOS AppleClang
@@ -130,7 +130,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -151,7 +151,7 @@ jobs:
 
   create-testing:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [vs2019, vs2017_xp, macos, linux]
+    needs: [vs2019, macos, linux]
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -159,10 +159,9 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip      ./linux-x86/*
-          7z a -r EternalJK-linux-x86_64.zip   ./linux-x86_64/*
-          7z a -r EternalJK-windows-x86.zip    ./windows-mingw-x86/*
-          7z a -r EternalJK-windows-x86_64.zip ./windows-mingw-x86_64/*
+          7z a -r EternalJK-linux.zip          ./linux-x86/*
+          7z a -r EternalJK-windows-x86.zip    ./windows-x86/*
+          7z a -r EternalJK-windows-x86_64.zip ./windows-x86_64/*
           7z a -r EternalJK-macos-x86_64.zip   ./macos-x86_64/*
 
 
@@ -177,7 +176,7 @@ jobs:
             *.zip
   update-release:
     if: ${{ github.event_name == 'release' }}
-    needs: [vs2019, vs2017_xp, macos, linux]
+    needs: [vs2019, macos, linux]
     runs-on: ubuntu-latest
 
     strategy:
