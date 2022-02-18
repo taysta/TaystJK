@@ -47,7 +47,7 @@ jobs:
         if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
           name: windows-msvc-${{ matrix.pkg_suffix }}
-          path: bin
+          path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
   vs2017_xp:
@@ -108,7 +108,7 @@ jobs:
         if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
           name: macos-${{ matrix.arch }}
-          path: bin
+          path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
 
@@ -146,7 +146,7 @@ jobs:
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux-${{ matrix.arch }}
-          path: bin
+          path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
   create-testing:
