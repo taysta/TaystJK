@@ -36,7 +36,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
+        run: cmake --build . --config ${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}\build\install
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
@@ -71,7 +71,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
+        run: cmake --build . --config RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}\build\install
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
