@@ -145,7 +145,7 @@ jobs:
           if-no-files-found: error
 
   create-testing:
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: [vs2019, macos, linux]
     runs-on: ubuntu-latest
     steps:
