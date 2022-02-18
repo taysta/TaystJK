@@ -102,7 +102,7 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: cmake --install .
 
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
@@ -140,7 +140,7 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: cmake --install .
 
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
