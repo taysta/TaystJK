@@ -12592,25 +12592,25 @@ stillDoSaber:
 			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
 		}
 	}else {
-        if (cg_forceHats.integer & JAPRO_COSMETIC_SANTAHAT) {
+        if (cg_forceHats.integer == 1) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_PUMKIN) {
+        else if (cg_forceHats.integer == 2) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_CAP) {
+        else if (cg_forceHats.integer == 3) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_FEDORA) {
+        else if (cg_forceHats.integer == 4) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_CRINGE) {
+        else if (cg_forceHats.integer  == 5) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_SOMBRERO) {
+        else if (cg_forceHats.integer == 6) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs);
         }
-        else if (cg_forceHats.integer & JAPRO_COSMETIC_TOPHAT) {
+        else if (cg_forceHats.integer == 7) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
         }
     }
