@@ -43,6 +43,13 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.config == 'RelWithDebInfo' }}
+        with:
+          name: windows-msvc-${{ matrix.pkg_suffix }}
+          path: bin
+          if-no-files-found: error
+
   vs2017_xp:
     name: Build VS 2017, Windows XP
     runs-on: windows-2016
@@ -97,6 +104,14 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
+      - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
+        with:
+          name: macos-${{ matrix.arch }}
+          path: bin
+          if-no-files-found: error
+
+
   linux:
     name: Build Linux, ${{ matrix.build_type }}
     runs-on: ubuntu-20.04
@@ -126,3 +141,77 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
+
+      - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
+        with:
+          name: linux-${{ matrix.arch }}
+          path: bin
+          if-no-files-found: error
+
+  create-testing:
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Create binary archives
+        run: |
+          7z a -r EternalJK-linux-x86.zip      ./linux-x86/*
+          7z a -r EternalJK-linux-x86_64.zip   ./linux-x86_64/*
+          7z a -r EternalJK-windows-x86.zip    ./windows-mingw-x86/*
+          7z a -r EternalJK-windows-x86_64.zip ./windows-mingw-x86_64/*
+          7z a -r EternalJK-macos-x86_64.zip   ./macos-x86_64/*
+
+
+      - name: Create latest build
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: Latest Build
+          files: |
+            *.zip
+  update-release:
+    if: ${{ github.event_name == 'release' }}
+    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - artifacts: ./linux-x86/*
+            artifact_name: oDFe-linux-x86.zip
+
+          - artifacts: ./linux-x86_64/*
+            artifact_name: oDFe-linux-x86_64.zip
+
+          - artifacts: ./windows-mingw-x86/*
+            artifact_name: oDFe-windows-x86.zip
+
+          - artifacts: ./windows-mingw-x86_64/*
+            artifact_name: oDFe-windows-x86_64.zip
+
+          - artifacts: ./macos-x86_64/*
+            artifact_name: oDFe-macos-x86_64.zip
+
+          - artifacts: windows-msvc-x86/ windows-msvc-x86_64/ windows-msvc-arm64/ # linux-aarch64/ linux-armv7/
+            artifact_name: oDFe-other.zip
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Create archive
+        run: 7z a -r ${{ matrix.artifact_name }} ${{ matrix.artifacts }}
+
+      - name: Upload archive
+        uses: "svenstaro/upload-release-action@v2"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file: ${{ matrix.artifact_name }}
