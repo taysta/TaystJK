@@ -36,7 +36,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }}
+        run: cmake --build . --config ${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
@@ -71,7 +71,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config RelWithDebInfo
+        run: cmake --build . --config RelWithDebInfo -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
@@ -92,7 +92,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -107,7 +107,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
-          name: macos-${{ matrix.arch }}
+          name: macos
           path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
@@ -145,7 +145,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
-          name: linux-${{ matrix.arch }}
+          name: linux
           path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
@@ -159,10 +159,10 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux.zip          ./linux-x86/*
-          7z a -r EternalJK-windows-x86.zip    ./windows-x86/*
-          7z a -r EternalJK-windows-x86_64.zip ./windows-x86_64/*
-          7z a -r EternalJK-macos-x86_64.zip   ./macos-x86_64/*
+          7z a -r EternalJK-linux.zip          ./linux/*
+          7z a -r EternalJK-windows-x86.zip    ./windows-vs2019-Win32/*
+          7z a -r EternalJK-windows-x86_64.zip ./windows-vs2019-x64/*
+          7z a -r EternalJK-macos.zip   ./macos/*
 
 
       - name: Create latest build
@@ -182,16 +182,16 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifacts: ./linux-x86_64/*
+          - artifacts: ./linux/*
             artifact_name: EternalJK-linux.zip
 
-          - artifacts: ./windows-mingw-x86/*
+          - artifacts: ./windows-vs2019-x86/*
             artifact_name: EternalJK-windows-Win32.zip
 
-          - artifacts: ./windows-mingw-x86_64/*
+          - artifacts: ./windows-vs2019-x86_64/*
             artifact_name: EternalJK-windows-x64.zip
 
-          - artifacts: ./macos-x86_64/*
+          - artifacts: ./macos/*
             artifact_name: EternalJK-macos.zip
 
     steps:
