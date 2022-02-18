@@ -38,10 +38,10 @@ jobs:
         shell: bash
         run: cmake --build . --config ${{ matrix.build_type }}
 
-    - name: Install
-      working-directory: ${{runner.workspace}}/build
-      shell: bash
-      run: cmake --install . --config ${{ matrix.build_type }}
+      - name: Install
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --install . --config ${{ matrix.build_type }}
 
   vs2017_xp:
     name: Build VS 2017, Windows XP
