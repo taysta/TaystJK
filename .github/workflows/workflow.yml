@@ -59,11 +59,15 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }}
+
       - name: Build
-        run: |
-          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0
-          make clean ARCH=${{ matrix.arch }}
-          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config ${{ matrix.build_type }}
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
@@ -197,7 +201,7 @@ jobs:
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux
-          path: ${{runner.workspace}}/build/install
+          path: bin
           if-no-files-found: error
 
   ubuntu-arm:
@@ -273,7 +277,7 @@ jobs:
         if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
           name: macos
-          path: ${{runner.workspace}}/build/install
+          path: bin
           if-no-files-found: error
 
   create-testing:
@@ -286,10 +290,14 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux.zip          ./linux/*
-          7z a -r EternalJK-windows-x86.zip    ./windows-vs2019-Win32/*
-          7z a -r EternalJK-windows-x86_64.zip ./windows-vs2019-x64/*
-          7z a -r EternalJK-macos.zip          ./macos/*
+          7z a -r eternaljk-linux-x86.zip           ./linux-x86/*
+          7z a -r eternaljk-linux-x86_64.zip         ./linux-x86_64/*
+          7z a -r eternaljk-windows-mingw-x86.zip    ./windows-mingw-x86/*
+          7z a -r eternaljk-windows-mingw-x86_64.zip ./windows-mingw-x86_64/*
+          7z a -r eternaljk-windows-msvc-x86.zip     ./windows-msvc-x86/*
+          7z a -r eternaljk-windows-msvc-x86_64.zip  ./windows-msvc-x86_64/*
+          7z a -r eternaljk-windows-msvc-arm64.zip   ./windows-msvc-arm64/*
+          7z a -r eternaljk-macos-x86_64.zip         ./macos-x86_64/*
 
 
       - name: Create latest build
@@ -309,17 +317,24 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifacts: ./linux/*
-            artifact_name: EternalJK-linux.zip
+          - artifact_dir: linux-x86
+            artifact_name: eternaljk-linux-x86.zip
 
-          - artifacts: ./windows-vs2019-x86/*
-            artifact_name: EternalJK-windows-Win32.zip
+          - artifact_dir: linux-x86_64
+            artifact_name: eternaljk-linux-x86_64.zip
 
-          - artifacts: ./windows-vs2019-x86_64/*
-            artifact_name: EternalJK-windows-x64.zip
+          - artifact_dir: windows-mingw-x86
+            artifact_name: eternaljk-windows-x86.zip
 
-          - artifacts: ./macos/*
-            artifact_name: EternalJK-macos.zip
+          - artifact_dir: windows-mingw-x86_64
+            artifact_name: eternaljk-windows-x86_64.zip
+
+          - artifact_dir: windows-msvc-arm64
+            artifact_name: eternaljk-windows-arm64.zip
+
+          - artifact_dir: macos-x86_64
+            artifact_name: eternaljk-macos-x86_64.zip
+
 
     steps:
       - name: Download Artifacts
