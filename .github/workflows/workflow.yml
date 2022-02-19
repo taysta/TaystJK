@@ -103,8 +103,8 @@ jobs:
           submodules: recursive
 
       - name: Create Build Environment
-        mkdir bin
         run: cmake -E make_directory ${{runner.workspace}}/build
+             mkdir bin
 
       - name: Configure CMake
         shell: bash
