@@ -243,7 +243,7 @@ jobs:
           if-no-files-found: error
           retention-days: 5
 
-  macos:
+  macos-x86:
     name: Build macOS AppleClang
     runs-on: macos-10.15
 
