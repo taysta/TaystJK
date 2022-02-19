@@ -80,6 +80,12 @@ XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
 XCVAR_DEF( cg_drawScores,			"1",	NULL,					CVAR_ARCHIVE ) //team score counter in top right
 XCVAR_DEF( cg_drawVote,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_showpos,				"0",	NULL,					CVAR_NONE )
+XCVAR_DEF( cg_pitchAngle,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchAngleX,         "400",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchAngleY,         "400",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchAngleY,         "400",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchAngleColor,         "400",    NULL,                   CVAR_ARCHIVE )
+
 
 //Crosshair
 XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )

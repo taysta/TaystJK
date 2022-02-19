@@ -11757,8 +11757,24 @@ static void CG_Speedometer(void)
 static void CG_DrawShowPos(void)
 {
 	static char showPosString[128];
-	playerState_t *ps = &cg.predictedPlayerState;
+    static char showPitchString[8];
+
+    playerState_t *ps = &cg.predictedPlayerState;
 	float vel;
+    vec4_t colorPitch = {1, 1, 1, 1};
+
+    if(cg_pitchAngle.value && ((float)ps->viewangles[PITCH] > cg_pitchAngleColor.value || (float)ps->viewangles[PITCH] < (cg_pitchAngleColor.value * - 1.0))) {
+        colorPitch[1] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+        colorPitch[2] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+    }else if(cg_pitchAngle.value){
+        colorPitch[0] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+        colorPitch[2] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+    }
+
+    if(cg_pitchAngle.integer){
+        Com_sprintf(showPitchString, sizeof(showPitchString), "%.1f", (float)ps->viewangles[PITCH]);
+        CG_Text_Paint(cg_pitchAngleX.integer, cg_pitchAngleY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
+    }
 
 	if (!cg_showpos.integer)
 		return;
