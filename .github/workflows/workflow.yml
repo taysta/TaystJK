@@ -61,11 +61,11 @@ jobs:
 
       - name: Configure CMake
         shell: bash
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}\build
         run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }}
 
       - name: Build
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}\build
         shell: bash
         run: cmake --build .
       - uses: actions/upload-artifact@v2
