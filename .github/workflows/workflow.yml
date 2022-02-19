@@ -67,7 +67,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }}
+        run: cmake --build .
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
