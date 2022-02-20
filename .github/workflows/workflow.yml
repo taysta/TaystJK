@@ -21,25 +21,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-msvc:
-    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
+  vs2019:
+    name: Build VS 2019, ${{ matrix.build_type }}, ${{ matrix.arch }}
     runs-on: windows-2019
     strategy:
-      fail-fast: false
       matrix:
-
-        arch: [x86, x64]
-        config: [Release]
-        include:
-
-          - arch: x86
-            platform: Win32
-            pkg_suffix: x86
-
-          - arch: x64
-            platform: x64
-            suffix: .x64
-            pkg_suffix: x64
+        build_type: [Release]
+        arch: [Win32, x64]
 
     steps:
       - uses: actions/checkout@v2
@@ -53,28 +41,23 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }}, -DESTDIR=bin
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }}
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.config }}
-
-      - name: Create Binary Directory
-        working-directory: ${{github.workspace}}
-        run: mkdir bin
+        run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.config }}
-
+        run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.config == 'Release' }}
+        if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
-          name: windows-${{ matrix.pkg_suffix }}
-          path: bin
+          name: windows-vs2019-${{ matrix.arch }}
+          path: ${{runner.workspace}}/build/
           if-no-files-found: error
 
   ubuntu-x86:
@@ -180,8 +163,8 @@ jobs:
         run: |
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-msvc-x86.zip  ./windows-msvc-x86/*
-          7z a -r EternalJK-windows-msvc-x64.zip  ./windows-msvc-x86_64/*
+          7z a -r EternalJK-windows-msvc-x86.zip  ./windows-vs2019-Win32/*
+          7z a -r EternalJK-windows-msvc-x64.zip  ./windows-vs2019-x64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
       - name: Create latest build
@@ -212,9 +195,9 @@ jobs:
             artifact_name: EternalJK-windows-msvc-x86.zip
 
           - artifacts: ./windows-vs2019-x86_64/*
-            artifact_name: EternalJK-windows-msvc-x64.zip.zip
+            artifact_name: EternalJK-windows-msvc-x64.zip
 
-          - artifacts: ./macos/*
+          - artifacts: ./macos-x86_64/*
             artifact_name: EternalJK-macos-x86_64.zip
 
     steps:
