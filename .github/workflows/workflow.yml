@@ -53,13 +53,16 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }}, -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }}, -DESTDIR=bin
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: cmake --build . --config ${{ matrix.config }}
 
+      - name: Create Binary Directory
+        working-directory: ${{github.workspace}}
+        run: mkdir bin
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
@@ -71,7 +74,7 @@ jobs:
         if: ${{ matrix.config == 'Release' }}
         with:
           name: windows-${{ matrix.pkg_suffix }}
-          path: ${{runner.workspace}}/install
+          path: bin
           if-no-files-found: error
 
   ubuntu-x86:
