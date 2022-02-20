@@ -36,7 +36,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }} --destdir bin
+        run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
@@ -47,7 +47,7 @@ jobs:
         if: matrix.config == 'RelWithDebInfo'
         with:
           name: windows-msvc-${{ matrix.pkg_suffix }}
-          path: bin
+          path: ${{runner.workspace}}
           if-no-files-found: error
 
   vs2017_xp:
