@@ -53,25 +53,25 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch.platform }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}\install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.confix }}
+        run: cmake --build . --config ${{ matrix.platform }}
 
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.config }}
+        run: cmake --install . --config ${{ matrix.platform }}
 
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.config == 'Release' }}
         with:
           name: windows-${{ matrix.pkg_suffix }}
-          path: ${{runner.workspace}}/install
+          path: ${{runner.workspace}}\install
           if-no-files-found: error
 
   ubuntu-x86:
