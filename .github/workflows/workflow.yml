@@ -1,114 +1,31 @@
 name: Build
 
 on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
-      - '*.txt'
-      - '.gitignore'
-      - 'docs/*'
+  workflow_dispatch:
   push:
     branches:
       - master
-    paths-ignore:
-      - '**.md'
-      - '*.txt'
-      - '.gitignore'
-      - 'docs/*'
-  release:
-    types: [published]
-
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  windows-msys:
-    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-    runs-on: windows-latest
+  vs2019:
+    name: Build VS 2019, ${{ matrix.build_type }}, ${{ matrix.arch }}
+    runs-on: windows-2019
     strategy:
-      fail-fast: false
       matrix:
-        arch: [x86, x86_64]
-        cc: [gcc]
-        config: [Release]
-        include:
-          - arch: x86
-            msystem: MINGW32
-            prefix: mingw-w64-i686
-
-          - arch: x86_64
-            msystem: MINGW64
-            prefix: mingw-w64-x86_64
-
-          - config: Release
-            rule: install
-
-    defaults:
-      run:
-        shell: msys2 {0}
+        build_type: [Debug, RelWithDebInfo]
+        arch: [Win32, x64]
 
     steps:
-      - uses: msys2/setup-msys2@v2
-        with:
-          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
-          msystem: ${{ matrix.msystem }}
-          path-type: minimal
-          release: false
-          update: false
-
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
 
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}\build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }}
-
-      - name: Build
-        working-directory: ${{runner.workspace}}\build
-        shell: bash
-        run: cmake --build .
-      - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'gcc' && matrix.config == 'Release'
-        with:
-          name: windows-mingw-${{ matrix.arch }}
-          path: bin
-          if-no-files-found: error
-
-
-  windows-msvc:
-    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [arm64, x86, x64]
-        config: [Release]
-        include:
-          - arch: arm64
-            platform: ARM64
-            suffix: .arm64
-            pkg_suffix: arm64
-
-          - arch: x86
-            platform: Win32
-            pkg_suffix: x86
-
-          - arch: x64
-            platform: x64
-            suffix: .x64
-            pkg_suffix: x86_64
-
-    steps:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
-             mkdir bin
 
       - name: Configure CMake
         shell: bash
@@ -119,18 +36,6 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: cmake --build . --config ${{ matrix.build_type }}
-
-      - name: Install
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --install .
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ matrix.config == 'RelWithDebInfo' }}
-        with:
-          name: windows-msvc-${{ matrix.pkg_suffix }}
-          path: bin
-          if-no-files-found: error
 
   vs2017_xp:
     name: Build VS 2017, Windows XP
@@ -155,99 +60,7 @@ jobs:
         shell: bash
         run: cmake --build . --config RelWithDebInfo
 
-  ubuntu-x86:
-    name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x86, x86_64]
-        cc: [gcc]
-        config: [Release]
-        include:
-          - config: Release
-            rule: install
-          - arch: x86
-            use_sdl: USE_SDL=0
-          - arch: x86_64
-            use_sdl: USE_SDL=1
-
-    steps:
-      - name: Create Build Environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
-          cmake -E make_directory ${{runner.workspace}}/build
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
-
-      - name: Build
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --build .
-
-      - name: Install
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --install .
-
-      - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
-        with:
-          name: linux
-          path: bin
-          if-no-files-found: error
-
-  ubuntu-arm:
-    name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [aarch64, armv7]
-        cc: [gcc]
-        config: [Release]
-        include:
-          - config: Release
-            rule: install
-
-    steps:
-      - uses: actions/checkout@v2
-        if: false
-        with:
-          submodules: recursive
-
-      - name: Build ${{ matrix.arch }}
-        uses: uraimo/run-on-arch-action@v2.0.5
-        if: false
-        with:
-          arch: ${{ matrix.arch }}
-          distro: ubuntu20.04
-          githubToken: ${{ github.token }}
-          shell: /bin/sh
-          run: |
-            apt-get -qq update
-            apt-get install -y make gcc g++
-            apt-get -y install libcurl4-openssl-dev mesa-common-dev libxxf86dga-dev libxrandr-dev libxxf86vm-dev libasound-dev
-            make ${{ matrix.rule }} -j 4 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin
-            make clean ARCH=${{ matrix.arch }}
-            make ${{ matrix.rule }} -j 4 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin
-      - uses: actions/upload-artifact@v2
-        if: false
-        #if: matrix.cc == 'gcc' && matrix.config == 'Release'
-        with:
-          name: linux-${{ matrix.arch }}
-          path: bin
-          if-no-files-found: error
-          retention-days: 5
-
-  macos-x86:
+  macos:
     name: Build macOS AppleClang
     runs-on: macos-10.15
 
@@ -261,92 +74,34 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: cmake --build .
 
-      - name: Install
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --install .
-
-      - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
-        with:
-          name: macos
-          path: bin
-          if-no-files-found: error
-
-  create-testing:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-
-      - name: Create binary archives
-        run: |
-          7z a -r eternaljk-linux-x86.zip           ./linux-x86/*
-          7z a -r eternaljk-linux-x86_64.zip         ./linux-x86_64/*
-          7z a -r eternaljk-windows-mingw-x86.zip    ./windows-mingw-x86/*
-          7z a -r eternaljk-windows-mingw-x86_64.zip ./windows-mingw-x86_64/*
-          7z a -r eternaljk-windows-msvc-x86.zip     ./windows-msvc-x86/*
-          7z a -r eternaljk-windows-msvc-x86_64.zip  ./windows-msvc-x86_64/*
-          7z a -r eternaljk-windows-msvc-arm64.zip   ./windows-msvc-arm64/*
-          7z a -r eternaljk-macos-x86_64.zip         ./macos-x86_64/*
-
-
-      - name: Create latest build
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: Latest Build
-          files: |
-            *.zip
-  update-release:
-    if: ${{ github.event_name == 'release' }}
-    needs: [windows-msys, windows-msvc, ubuntu-x86, ubuntu-arm, macos-x86]
-    runs-on: ubuntu-latest
-
+  linux:
+    name: Build Linux, ${{ matrix.build_type }}
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        include:
-          - artifact_dir: linux-x86
-            artifact_name: eternaljk-linux-x86.zip
-
-          - artifact_dir: linux-x86_64
-            artifact_name: eternaljk-linux-x86_64.zip
-
-          - artifact_dir: windows-mingw-x86
-            artifact_name: eternaljk-windows-x86.zip
-
-          - artifact_dir: windows-mingw-x86_64
-            artifact_name: eternaljk-windows-x86_64.zip
-
-          - artifact_dir: windows-msvc-arm64
-            artifact_name: eternaljk-windows-arm64.zip
-
-          - artifact_dir: macos-x86_64
-            artifact_name: eternaljk-macos-x86_64.zip
-
+        build_type: [Debug, RelWithDebInfo]
 
     steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+      - uses: actions/checkout@v2
 
-      - name: Create archive
-        run: 7z a -r ${{ matrix.artifact_name }} ${{ matrix.artifacts }}
+      - name: Create Build Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
+          cmake -E make_directory ${{runner.workspace}}/build
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF
 
-      - name: Upload archive
-        uses: "svenstaro/upload-release-action@v2"
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file: ${{ matrix.artifact_name }}
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build .
