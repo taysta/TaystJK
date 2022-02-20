@@ -173,7 +173,7 @@ jobs:
 
   create-testing:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [vs2019, macos, linux]
+    needs: [windows-msvc, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -195,9 +195,10 @@ jobs:
           title: Latest Build
           files: |
             *.zip
+
   update-release:
     if: ${{ github.event_name == 'release' }}
-    needs: [vs2019, macos, linux]
+    needs: [windows-msvc, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
 
     strategy:
