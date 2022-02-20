@@ -135,16 +135,14 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: |
-          cmake --install .
-          7z a -r EternalJK-linux.zip          ./build/*
-
+        run: cmake --install .
 
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux
           path: ${{runner.workspace}}/EternalJK-linux.zip
+
           if-no-files-found: error
 
   create-testing:
@@ -160,7 +158,7 @@ jobs:
           7z a -r EternalJK-linux.zip          ./linux/*
           7z a -r EternalJK-windows-x86.zip    ./windows-vs2019-Win32/*
           7z a -r EternalJK-windows-x86_64.zip ./windows-vs2019-x64/*
-          7z a -r EternalJK-macos.zip   ./macos/*
+          7z a -r EternalJK-macos.zip          ./macos/*
 
 
       - name: Create latest build
