@@ -135,13 +135,16 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install .
+        run: |
+        cmake --install .
+        7z a -r EternalJK-linux.zip          ./build/*
+
 
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux
-          path: ${{runner.workspace}}/build/install
+          path: ${{runner.workspace}}/EternalJK-linux.zip
           if-no-files-found: error
 
   create-testing:
