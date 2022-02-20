@@ -44,7 +44,6 @@ jobs:
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
           name: windows-msvc-${{ matrix.pkg_suffix }}
           path: ${{runner.workspace}}/build/
@@ -100,7 +99,6 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
           name: macos
           path: ${{runner.workspace}}/build/install
@@ -138,7 +136,6 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux
           path: ${{runner.workspace}}/EternalJK-linux.zip
