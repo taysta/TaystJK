@@ -124,7 +124,7 @@ jobs:
 
   macos-x86:
     name: ${{ matrix.config }} macOS ${{ matrix.arch }}
-    runs-on: macos-latest
+    runs-on: macos-10.15
     strategy:
       fail-fast: false
       matrix:
