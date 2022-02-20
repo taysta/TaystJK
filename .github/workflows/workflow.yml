@@ -71,7 +71,6 @@ jobs:
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
           name: windows-${{ matrix.pkg_suffix }}
           path: |
@@ -121,7 +120,6 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
           name: linux-${{ matrix.arch }}
           path: ${{runner.workspace}}/install
@@ -164,7 +162,6 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
           name: macos-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/install
@@ -180,11 +177,12 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip          ./linux-x86/*
-          7z a -r EternalJK-linux-x86_64.zip          ./linux-x86_64/*
-          7z a -r EternalJK-windows-msvc-x86.zip    ./windows-vs2019-Win32/*
-          7z a -r EternalJK-windows-msvc-x64.zip ./windows-vs2019-x64/*
-          7z a -r EternalJK-macos-x86_64.zip   ./macos/*
+          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
+          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
+          7z a -r EternalJK-windows-msvc-x86.zip  ./windows-msvc-x86/*
+          7z a -r EternalJK-windows-msvc-x64.zip  ./windows-msvc-x86_64/*
+          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
+
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
         with:
