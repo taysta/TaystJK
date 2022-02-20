@@ -63,7 +63,7 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}\build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }}
+        run: cmake --build . --config ${{ matrix.build_type }} CMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
 
       - name: Install
         working-directory: ${{runner.workspace}}\build
