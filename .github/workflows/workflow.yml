@@ -41,7 +41,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }} -DCMAKE_INSTALL_PREFIX=bin
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -51,12 +51,14 @@ jobs:
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: |
+        mkdir bin
+        cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
         with:
           name: windows-vs2019-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install
+          path: bin
           if-no-files-found: error
 
   ubuntu-x86:
