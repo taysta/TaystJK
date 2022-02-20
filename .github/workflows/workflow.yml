@@ -136,8 +136,8 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         shell: bash
         run: |
-        cmake --install .
-        7z a -r EternalJK-linux.zip          ./build/*
+          cmake --install .
+          7z a -r EternalJK-linux.zip          ./build/*
 
 
       - uses: actions/upload-artifact@v2
