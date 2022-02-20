@@ -23,19 +23,14 @@ on:
 jobs:
   windows-msvc:
     name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        #arch: [arm64, x86, x64]
-        #arch: [x86, x64]
+
         arch: [x86, x64]
         config: [Release]
         include:
-          # - arch: arm64
-          #   platform: ARM64
-          #   suffix: .arm64
-          #   pkg_suffix: arm64
 
           - arch: x86
             platform: Win32
@@ -63,18 +58,18 @@ jobs:
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }}
+        run: cmake --build .
 
       - name: Install
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: cmake --install .
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.config == 'Release' }}
         with:
           name: windows-${{ matrix.pkg_suffix }}
-          path: build\*
+          path: build
           if-no-files-found: error
 
   ubuntu-x86:
