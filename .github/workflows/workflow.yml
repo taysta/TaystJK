@@ -1,23 +1,50 @@
-name: Build
+name: build
 
 on:
-  workflow_dispatch:
+  # Run on pushes to tags, the "master" branch, and PR's
   push:
+    tags-ignore:
     branches:
       - master
-      - uploadartifacts
+    paths-ignore:
+      - '**.md'
+      - '*.txt'
+      - '.gitignore'
+      - 'docs/*'
   pull_request:
-    branches:
-      - master
+    paths-ignore:
+      - '**.md'
+      - '*.txt'
+      - '.gitignore'
+      - 'docs/*'
+
+  workflow_dispatch:
 
 jobs:
-  vs2019:
-    name: Build VS 2019, ${{ matrix.build_type }}, ${{ matrix.arch }}
-    runs-on: windows-2019
+  windows-msvc:
+    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
+    runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-        build_type: [Debug, RelWithDebInfo]
-        arch: [Win32, x64]
+        #arch: [arm64, x86, x64]
+        #arch: [x86, x64]
+        arch: [x86, x64]
+        config: [Release]
+        include:
+          # - arch: arm64
+          #   platform: ARM64
+          #   suffix: .arm64
+          #   pkg_suffix: arm64
+
+          - arch: x86
+            platform: Win32
+            pkg_suffix: x86
+
+          - arch: x64
+            platform: x64
+            suffix: .x64
+            pkg_suffix: x64
 
     steps:
       - uses: actions/checkout@v2
@@ -46,36 +73,25 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
-          name: windows-msvc-${{ matrix.pkg_suffix }}
-          path: ${{runner.workspace}}/build/
+          name: windows-${{ matrix.pkg_suffix }}
+          path: |
+            bin/*.exe
+            bin/*.dll
           if-no-files-found: error
 
-  vs2017_xp:
-    name: Build VS 2017, Windows XP
-    runs-on: windows-2016
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A Win32 -T v141_xp
-
-      - name: Build
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --build . --config RelWithDebInfo
-
-  macos:
-    name: Build macOS AppleClang
-    runs-on: macos-10.15
+  macos-x86:
+    name: ${{ matrix.config }} macOS ${{ matrix.arch }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64]
+        cc: [clang]
+        cxx: [clang++]
+        config: [Release]
+        include:
+          - config: Release
+            rule: install
 
     steps:
       - uses: actions/checkout@v2
@@ -102,18 +118,28 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
         with:
-          name: macos
+          name: macos-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
 
-  linux:
-    name: Build Linux, ${{ matrix.build_type }}
+  ubuntu-x86:
+    name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
+        arch: [x86, x86_64]
         cc: [gcc]
-        build_type: [Debug, RelWithDebInfo]
+        cxx: [g++]
+        config: [Release]
+        include:
+          - config: Release
+            rule: install
+          - arch: x86
+            use_sdl: true
+          - arch: x86_64
+            use_sdl: true
 
     steps:
       - uses: actions/checkout@v2
@@ -126,7 +152,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/linux
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -141,8 +167,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'RelWithDebInfo'
         with:
-          name: linux
-          path: ${{runner.workspace}}/build/install
+          name: linux-${{ matrix.arch }}
+          path: ${{runner.workspace}}/install
           if-no-files-found: error
 
   create-testing:
@@ -155,10 +181,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux.zip          ./linux/*
-          7z a -r EternalJK-windows-x86.zip    ./windows-vs2019-Win32/*
-          7z a -r EternalJK-windows-x86_64.zip ./windows-vs2019-x64/*
-          7z a -r EternalJK-macos.zip   ./macos/*
+          7z a -r EternalJK-linux-x86.zip          ./linux-x86/*
+          7z a -r EternalJK-linux-x86_64.zip          ./linux-x86_64/*
+          7z a -r EternalJK-windows-msvc-x86.zip    ./windows-vs2019-Win32/*
+          7z a -r EternalJK-windows-msvc-x64.zip ./windows-vs2019-x64/*
+          7z a -r EternalJK-macos-x86_64.zip   ./macos/*
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -176,7 +203,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifacts: ./linux/*
+          - artifacts: ./linux-x86/*
             artifact_name: EternalJK-linux.zip
 
           - artifacts: ./windows-vs2019-x86/*
