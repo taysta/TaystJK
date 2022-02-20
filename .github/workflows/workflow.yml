@@ -41,7 +41,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }} -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }} -DCMAKE_INSTALL_PREFIX=/${{runner.workspace}}/install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -56,7 +56,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: windows-vs2019-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install/
+          path: /${{runner.workspace}}/install/
           if-no-files-found: error
 
   ubuntu-x86:
