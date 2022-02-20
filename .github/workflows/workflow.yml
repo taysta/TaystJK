@@ -204,16 +204,19 @@ jobs:
       matrix:
         include:
           - artifacts: ./linux-x86/*
-            artifact_name: EternalJK-linux.zip
+            artifact_name: EternalJK-linux-x86.zip
+
+          - artifacts: ./linux-x86_64/*
+            artifact_name: EternalJK-linux-x86_64.zip
 
           - artifacts: ./windows-vs2019-x86/*
-            artifact_name: EternalJK-windows-Win32.zip
+            artifact_name: EternalJK-windows-msvc-x86.zip
 
           - artifacts: ./windows-vs2019-x86_64/*
-            artifact_name: EternalJK-windows-x64.zip
+            artifact_name: EternalJK-windows-msvc-x64.zip.zip
 
           - artifacts: ./macos/*
-            artifact_name: EternalJK-macos.zip
+            artifact_name: EternalJK-macos-x86_64.zip
 
     steps:
       - name: Download Artifacts
