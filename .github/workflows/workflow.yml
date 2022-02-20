@@ -46,7 +46,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: windows-msvc-${{ matrix.pkg_suffix }}
-          path: ${{runner.workspace}}/build/
+          path: C:/Program Files/EternalJK/JediAcademy/
           if-no-files-found: error
 
   vs2017_xp:
@@ -101,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: macos
-          path: ${{runner.workspace}}/build/install
+          path: /Users/runner/work/EternalJK/build/install/macos/JediAcademy/
           if-no-files-found: error
 
 
@@ -138,7 +138,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: linux
-          path: ${{runner.workspace}}/EternalJK-linux.zip
+          path: /home/runner/work/EternalJK/build/install/linux/JediAcademy/
 
           if-no-files-found: error
 
