@@ -57,25 +57,24 @@ jobs:
 
       - name: Configure CMake
         shell: bash
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}/src
         run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }}
 
       - name: Build
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}/src
         shell: bash
         run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}/src
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
+        if: ${{ matrix.config == 'Release' }}
         with:
           name: windows-${{ matrix.pkg_suffix }}
-          path: |
-            bin/*.exe
-            bin/*.dll
+          path: bin/*
           if-no-files-found: error
 
   ubuntu-x86:
@@ -120,6 +119,7 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
           name: linux-${{ matrix.arch }}
           path: ${{runner.workspace}}/install
@@ -149,7 +149,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/macos
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -162,9 +162,10 @@ jobs:
         run: cmake --install .
 
       - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
           name: macos-${{ matrix.arch }}
-          path: ${{runner.workspace}}/build/install
+          path: ${{runner.workspace}}/install
           if-no-files-found: error
 
   create-testing:
