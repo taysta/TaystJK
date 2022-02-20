@@ -32,8 +32,8 @@ jobs:
         config: [Release]
         include:
 
-          - arch: Win32, x64
-            platform: Win32, x64
+          - arch: x86
+            platform: Win32
             pkg_suffix: x86
 
           - arch: x64
