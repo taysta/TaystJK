@@ -166,16 +166,6 @@ jobs:
           7z a -r EternalJK-windows-msvc-x64.zip  ./windows-vs2019-x64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
-      - name: Create latest build
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: Latest Build
-          files: |
-            *.zip
-
   update-release:
     if: ${{ github.event_name == 'release' }}
     needs: [vs2019, ubuntu-x86, macos-x86]
