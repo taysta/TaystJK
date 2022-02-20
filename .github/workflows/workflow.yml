@@ -23,7 +23,7 @@ on:
 jobs:
   windows-msvc:
     name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       fail-fast: false
       matrix:
@@ -79,50 +79,6 @@ jobs:
             bin/*.dll
           if-no-files-found: error
 
-  macos-x86:
-    name: ${{ matrix.config }} macOS ${{ matrix.arch }}
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x86_64]
-        cc: [clang]
-        cxx: [clang++]
-        config: [Release]
-        include:
-          - config: Release
-            rule: install
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create Build Environment
-        run: |
-          brew install zlib libjpeg libpng sdl2
-          cmake -E make_directory ${{runner.workspace}}/build
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/macos
-
-      - name: Build
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --build .
-
-      - name: Install
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --install .
-
-      - uses: actions/upload-artifact@v2
-        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
-        with:
-          name: macos-${{ matrix.arch }}
-          path: ${{runner.workspace}}/build/install
-          if-no-files-found: error
-
-
   ubuntu-x86:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
     runs-on: ubuntu-20.04
@@ -169,6 +125,49 @@ jobs:
         with:
           name: linux-${{ matrix.arch }}
           path: ${{runner.workspace}}/install
+          if-no-files-found: error
+
+  macos-x86:
+    name: ${{ matrix.config }} macOS ${{ matrix.arch }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64]
+        cc: [clang]
+        cxx: [clang++]
+        config: [Release]
+        include:
+          - config: Release
+            rule: install
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create Build Environment
+        run: |
+          brew install zlib libjpeg libpng sdl2
+          cmake -E make_directory ${{runner.workspace}}/build
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/macos
+
+      - name: Build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build .
+
+      - name: Install
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --install .
+
+      - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'clang' && matrix.config == 'RelWithDebInfo'
+        with:
+          name: macos-${{ matrix.arch }}
+          path: ${{runner.workspace}}/build/install
           if-no-files-found: error
 
   create-testing:
