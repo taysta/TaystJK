@@ -87,7 +87,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/macos
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -125,7 +125,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/build/install/linux
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
