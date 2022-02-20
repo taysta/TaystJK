@@ -11758,17 +11758,24 @@ static void CG_DrawShowPos(void)
 {
 	static char showPosString[128];
     static char showPitchString[8];
-
+    vec4_t colorPitch = {0, 0, 0, 1};
     playerState_t *ps = &cg.predictedPlayerState;
 	float vel;
-    vec4_t colorPitch = {1, 1, 1, 1};
+    float pitchAngle;
+    float pitchColor;
+    pitchAngle = abs(ps->viewangles[PITCH] + cg_pitchAngleOffset.value);
+    if(pitchAngle > 90){
+        pitchAngle = 90;
+    }
 
-    if(cg_pitchAngle.value && ((float)ps->viewangles[PITCH] > cg_pitchAngleColor.value || (float)ps->viewangles[PITCH] < (cg_pitchAngleColor.value * - 1.0))) {
-        colorPitch[1] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
-        colorPitch[2] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+    if(cg_pitchAngle.value && (pitchAngle < cg_pitchRedAngle.value)) {
+        pitchColor = pitchAngle / cg_pitchRedAngle.value;
+        colorPitch[0] = pitchColor;
+        pitchColor = 1 - (pitchAngle / cg_pitchRedAngle.value) / 2;
+        colorPitch[1] = pitchColor;
     }else if(cg_pitchAngle.value){
-        colorPitch[0] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
-        colorPitch[2] = 1.0 / ((ps->viewangles[PITCH] / 30.0) * (ps->viewangles[PITCH]) / 30.0);
+        colorPitch[0] = 1;
+        colorPitch[1] = 0;
     }
 
     if(cg_pitchAngle.integer){
