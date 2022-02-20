@@ -27,7 +27,21 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        arch: [Win32, x64]
+        arch: [x86, x64]
+        include:
+          # - arch: arm64
+          #   platform: ARM64
+          #   suffix: .arm64
+          #   pkg_suffix: arm64
+
+          - arch: x86
+            platform: Win32
+            pkg_suffix: x86
+
+          - arch: x64
+            platform: x64
+            suffix: .x64
+            pkg_suffix: x64
 
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +55,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.arch }} -DCMAKE_INSTALL_PREFIX=bin
+        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} -DCMAKE_INSTALL_PREFIX=bin
 
       - name: Build
         working-directory: ${{runner.workspace}}/build
@@ -55,7 +69,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: windows-vs2019-${{ matrix.arch }}
+          name: windows-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/bin
           if-no-files-found: error
 
@@ -162,8 +176,8 @@ jobs:
         run: |
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-msvc-x86.zip  ./windows-vs2019-Win32/*
-          7z a -r EternalJK-windows-msvc-x64.zip  ./windows-vs2019-x64/*
+          7z a -r EternalJK-windows-x86.zip  ./windows-x86/*
+          7z a -r EternalJK-windows-x84_64.zip  ./windows-x86_64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
   update-release:
@@ -181,10 +195,10 @@ jobs:
             artifact_name: EternalJK-linux-x86_64.zip
 
           - artifacts: ./windows-vs2019-x86/*
-            artifact_name: EternalJK-windows-msvc-x86.zip
+            artifact_name: EternalJK-windows-x86.zip
 
           - artifacts: ./windows-vs2019-x86_64/*
-            artifact_name: EternalJK-windows-msvc-x64.zip
+            artifact_name: EternalJK-windows-x86_64.zip
 
           - artifacts: ./macos-x86_64/*
             artifact_name: EternalJK-macos-x86_64.zip
