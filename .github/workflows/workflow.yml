@@ -22,7 +22,7 @@ on:
 
 jobs:
   vs2019:
-    name: Build VS 2019, ${{ matrix.build_type }}, ${{ matrix.arch }}
+    name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
     runs-on: windows-2019
     strategy:
       matrix:
@@ -54,7 +54,6 @@ jobs:
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.config == 'RelWithDebInfo' }}
         with:
           name: windows-vs2019-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/
