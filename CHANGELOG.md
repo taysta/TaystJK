@@ -3,7 +3,7 @@ Key: [-] removed, [+] added, [\*] modified
 
 # Features
 
-## Tayst's changes to EternalJK
+## Tayst's Fork
 
 * [\*] Additional strafe bars added for other key presses (now draws 2 lines for all key combinations A, WA, W, WD, D, SD, S, SA)
 * * [\*] CGAZ bars are now affected by `cg_strafeHelperCutoff`
@@ -21,6 +21,8 @@ Key: [-] removed, [+] added, [\*] modified
 * [+] Force Cosmetics  `cg_forceHats`
 * [+] New Invulnerability Shell Shader `cg_newInvShell 1`
 * [+] Pitch Angle Helper with supporting cvars `cg_pitchAngle` `cg_pitchAngleX` `cg_pitchAngleY` `cg_pitchRedAngle` `cg_pitchAngleOffset`
+* [+] Start speed goal `cg_startGoal`
+* [+] Start first jump speed goal `cg_jumptGoal`
 
 ## Single- and Multiplayer
 

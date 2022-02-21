@@ -11537,6 +11537,7 @@ static void CG_RaceTimer(void)
 	{
 		char timerStr[48] = { 0 };
         char startStr[48] = { 0 };
+        vec4_t colorStartSpeed = {1, 1, 1, 1};
 
         const int time = (cg.time - cg.predictedPlayerState.duelTime);
 		const int minutes = (time / 1000) / 60;
@@ -11580,8 +11581,13 @@ static void CG_RaceTimer(void)
 
 		if(cg_raceStart.integer)
 		{
+		    if(cg_startGoal.value && (cg_startGoal.value < cg.startSpeed)){
+                colorStartSpeed[0] = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+                colorStartSpeed[1] = 1;
+                colorStartSpeed[2] = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+		    }
             Com_sprintf(startStr, sizeof(startStr), "Start: %i", cg.startSpeed);
-            CG_Text_Paint(cg_raceStartX.integer, cg_raceStartY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE], startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+            CG_Text_Paint(cg_raceStartX.integer, cg_raceStartY.integer, cg_raceTimerSize.value, colorStartSpeed, startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         }
     }
 }static float firstSpeed;
@@ -11671,7 +11677,6 @@ static void CG_Speedometer(void)
 		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometerJumps.integer > 0))) {
 			char speedStr4[32] = {0};
             char speedsStr4[32] = {0};
-            char speedzStr4[32] = {0};
 
             vec4_t colorGroundSpeed = {1, 1, 1, 1};
             vec4_t colorGroundSpeeds = {1, 1, 1, 1};
@@ -11731,11 +11736,16 @@ static void CG_Speedometer(void)
 			    }
 			    jumpsCounter--;  //reduce jump counter
             }
-
-            if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value) {
+            if(cg_jumpGoal.value && (cg_jumpGoal.value < cg.lastGroundSpeed) && jumpsCounter == 1){
+                colorGroundSpeed[0] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+                colorGroundSpeed[1] = 1;
+                colorGroundSpeed[2] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+            }else if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value){
+                colorGroundSpeed[0] = 1;
                 colorGroundSpeed[1] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
                 colorGroundSpeed[2] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
             }
+
 			if ((cg.lastGroundTime > cg.time - 1500) && (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)) {
                 if (cg.lastGroundSpeed) {
                     Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);

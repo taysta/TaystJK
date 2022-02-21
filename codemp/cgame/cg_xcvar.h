@@ -86,6 +86,8 @@ XCVAR_DEF( cg_pitchAngleY,         "248",    NULL,                   CVAR_ARCHIV
 XCVAR_DEF( cg_pitchRedAngle,         "50",    NULL,                   CVAR_ARCHIVE )
 XCVAR_DEF( cg_pitchAngleOffset,         "0",    NULL,                   CVAR_ARCHIVE )
 XCVAR_DEF( cg_newInvShell,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_jumpGoal,         "0",    NULL,                   CVAR_NONE )
+XCVAR_DEF( cg_startGoal,         "0",    NULL,                   CVAR_NONE )
 
 //Crosshair
 XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )
