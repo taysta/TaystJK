@@ -177,7 +177,7 @@ jobs:
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
           7z a -r EternalJK-windows-x86.zip  ./windows-x86/*
-          7z a -r EternalJK-windows-x84_64.zip  ./windows-x86_64/*
+          7z a -r EternalJK-windows-x84_64.zip  ./windows-x64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
   update-release:
@@ -194,10 +194,10 @@ jobs:
           - artifacts: ./linux-x86_64/*
             artifact_name: EternalJK-linux-x86_64.zip
 
-          - artifacts: ./windows-vs2019-x86/*
+          - artifacts: ./windows-x86/*
             artifact_name: EternalJK-windows-x86.zip
 
-          - artifacts: ./windows-vs2019-x86_64/*
+          - artifacts: ./windows-x64/*
             artifact_name: EternalJK-windows-x86_64.zip
 
           - artifacts: ./macos-x86_64/*
