@@ -11647,7 +11647,11 @@ skipTrail:
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaliblueShader);
 		}
 		else {
-			CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaligreenShader);
+		    if(cg_newInvShell.integer){
+                CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaligreenShader);
+            }else{
+                CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.0f, cgs.media.invulnerabilityShader);
+            }
 		}
 	}
 stillDoSaber:
