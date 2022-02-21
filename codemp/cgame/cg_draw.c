@@ -11601,7 +11601,7 @@ static void CG_Speedometer(void)
         const float currentSpeed = cg.currentSpeed;
 		static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
 		const float accel = currentSpeed - lastSpeed;
-		float total, avgAccel;
+		float total, avgAccel, groundSpeedColor, groundSpeedsColor, currentSpeedColor;
 		int t, i;
 //		unsigned short frameTime;
 		static unsigned short index;
@@ -11613,8 +11613,9 @@ static void CG_Speedometer(void)
 
 		if (currentSpeed > 250 && (cg_speedometerColors.integer == 1))
 		{
-			colorSpeed[1] = 1 / ((currentSpeed/250)*(currentSpeed/250));
-			colorSpeed[2] = 1 / ((currentSpeed/250)*(currentSpeed/250));
+            currentSpeedColor = 1 / ((currentSpeed/250)*(currentSpeed/250));
+			colorSpeed[1] = currentSpeedColor;
+			colorSpeed[2] = currentSpeedColor;
 		}
 
 		t = trap->Milliseconds();
@@ -11700,31 +11701,21 @@ static void CG_Speedometer(void)
                 clearOnNextJump = qtrue;
             }
 			if(cg_speedometerJumps.value && (jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
-			    float groundSpeedColor;
 			    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
-                    groundSpeedColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                    groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
 			        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
-			        if(cg_speedometerJumpsColors.integer == 1) {
-                        colorGroundSpeeds[1] = groundSpeedColor;//color the string
-                        colorGroundSpeeds[2] = groundSpeedColor;
+			        if(cg_speedometerJumpsColors.integer == 1) { //color the string
+                        colorGroundSpeeds[1] = groundSpeedsColor;
+                        colorGroundSpeeds[2] = groundSpeedsColor;
                     }else if(cg_speedometerJumpsColors.integer > 1){
-			            if (jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) {
-                            colorGroundSpeeds[0] = groundSpeedColor;
+			            if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) || (i==0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
+                            colorGroundSpeeds[0] = groundSpeedsColor;
                             colorGroundSpeeds[1] = 1;
-                            colorGroundSpeeds[2] = groundSpeedColor;
+                            colorGroundSpeeds[2] = groundSpeedsColor;
                         } else {
                             colorGroundSpeeds[0] = 1;
-                            colorGroundSpeeds[1] = groundSpeedColor;
-                            colorGroundSpeeds[2] = groundSpeedColor;
-                        }
-			            if(i==0 && (cg.lastGroundSpeeds[0] > firstSpeed)) {
-                            colorGroundSpeeds[0] = groundSpeedColor;
-                            colorGroundSpeeds[1] = 1;
-                            colorGroundSpeeds[2] = groundSpeedColor;
-			            }else if(i==0 && (cg.lastGroundSpeeds[0] < firstSpeed)) {
-                            colorGroundSpeeds[0] = 1;
-                            colorGroundSpeeds[1] = groundSpeedColor;
-                            colorGroundSpeeds[2] = groundSpeedColor;
+                            colorGroundSpeeds[1] = groundSpeedsColor;
+                            colorGroundSpeeds[2] = groundSpeedsColor;
                         }
 			        }
 			        if(strcmp(speedsStr4, "0") != 0) {
@@ -11739,7 +11730,7 @@ static void CG_Speedometer(void)
 			    }
 			    jumpsCounter--;  //reduce jump counter
             }
-			float groundSpeedColor = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+			groundSpeedColor = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
             if(cg_jumpGoal.value && (cg_jumpGoal.value < cg.lastGroundSpeed) && jumpsCounter == 1){
                 colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
