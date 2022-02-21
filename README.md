@@ -1,5 +1,5 @@
 # EternalJK
-### To see a list of new features, check the [Wiki](https://github.com/taysta/EternalJK/wiki/Changes-to-EternalJK)
+### To see a list of new features, check the [Wiki](https://github.com/taysta/EternalJK/wiki/New)
 
 ## License
 

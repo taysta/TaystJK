@@ -18,6 +18,9 @@ Key: [-] removed, [+] added, [\*] modified
 * [\*] Fixed issue with compiling on linux
 * [\*] Fixed issue with playing pure base servers on linux
 * [+] Included JKSunny's vulkan renderer
+* [+] Force Cosmetics  `cg_forceHats`
+* [+] New Invulnerability Shell Shader `cg_newInvShell 1`
+* [+] Pitch Angle Helper with supporting cvars `cg_pitchAngle` `cg_pitchAngleX` `cg_pitchAngleY` `cg_pitchRedAngle` `cg_pitchAngleOffset`
 
 ## Single- and Multiplayer
 
