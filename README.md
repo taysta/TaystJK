@@ -49,3 +49,5 @@ OpenJK:
 * Duo
 * Razish
 * Ent
+* Ensiform
+* Yberion
