@@ -48,3 +48,4 @@ OpenJK:
 * Eternal
 * Duo
 * Razish
+* Ent
