@@ -11886,10 +11886,10 @@ static void CG_MovementKeys(centity_t *cent)
 			}
 
 			if (cgs.newHud) {
-				if (!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) {
+				if ((!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) && cg_movementKeys.integer != 2) {
 					yOffset += 12; //445
 				}
-				else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
+				else if ((cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) && cg_movementKeys.integer != 2) {
 					xOffset -= cg_hudFiles.integer != 1 ? 12 : 23; //452 : //442
 					yOffset -= 14; //420
 				}
