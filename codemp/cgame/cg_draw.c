@@ -11582,9 +11582,10 @@ static void CG_RaceTimer(void)
 		if(cg_raceStart.integer)
 		{
 		    if(cg_startGoal.value && (cg_startGoal.value < cg.startSpeed)){
-                colorStartSpeed[0] = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+		        float startColor = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+                colorStartSpeed[0] = startColor;
                 colorStartSpeed[1] = 1;
-                colorStartSpeed[2] = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+                colorStartSpeed[2] = startColor;
 		    }
             Com_sprintf(startStr, sizeof(startStr), "Start: %i", cg.startSpeed);
             CG_Text_Paint(cg_raceStartX.integer, cg_raceStartY.integer, cg_raceTimerSize.value, colorStartSpeed, startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
@@ -11699,29 +11700,31 @@ static void CG_Speedometer(void)
                 clearOnNextJump = qtrue;
             }
 			if(cg_speedometerJumps.value && (jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
+			    float groundSpeedColor;
 			    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
-			        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //creat the string
+                    groundSpeedColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+			        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
 			        if(cg_speedometerJumpsColors.integer == 1) {
-                        colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
-                        colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                        colorGroundSpeeds[1] = groundSpeedColor;//color the string
+                        colorGroundSpeeds[2] = groundSpeedColor;
                     }else if(cg_speedometerJumpsColors.integer > 1){
-			            if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]))) {
-                            colorGroundSpeeds[0] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
+			            if (jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) {
+                            colorGroundSpeeds[0] = groundSpeedColor;
                             colorGroundSpeeds[1] = 1;
-                            colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                            colorGroundSpeeds[2] = groundSpeedColor;
                         } else {
                             colorGroundSpeeds[0] = 1;
-                            colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
-                            colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                            colorGroundSpeeds[1] = groundSpeedColor;
+                            colorGroundSpeeds[2] = groundSpeedColor;
                         }
 			            if(i==0 && (cg.lastGroundSpeeds[0] > firstSpeed)) {
-                            colorGroundSpeeds[0] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
+                            colorGroundSpeeds[0] = groundSpeedColor;
                             colorGroundSpeeds[1] = 1;
-                            colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                            colorGroundSpeeds[2] = groundSpeedColor;
 			            }else if(i==0 && (cg.lastGroundSpeeds[0] < firstSpeed)) {
                             colorGroundSpeeds[0] = 1;
-                            colorGroundSpeeds[1] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250)); //color the string
-                            colorGroundSpeeds[2] = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                            colorGroundSpeeds[1] = groundSpeedColor;
+                            colorGroundSpeeds[2] = groundSpeedColor;
                         }
 			        }
 			        if(strcmp(speedsStr4, "0") != 0) {
@@ -11736,14 +11739,15 @@ static void CG_Speedometer(void)
 			    }
 			    jumpsCounter--;  //reduce jump counter
             }
+			float groundSpeedColor = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
             if(cg_jumpGoal.value && (cg_jumpGoal.value < cg.lastGroundSpeed) && jumpsCounter == 1){
-                colorGroundSpeed[0] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+                colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
-                colorGroundSpeed[2] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+                colorGroundSpeed[2] = groundSpeedColor;
             }else if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value){
                 colorGroundSpeed[0] = 1;
-                colorGroundSpeed[1] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
-                colorGroundSpeed[2] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
+                colorGroundSpeed[1] = groundSpeedColor;
+                colorGroundSpeed[2] = groundSpeedColor;
             }
 
 			if ((cg.lastGroundTime > cg.time - 1500) && (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)) {
