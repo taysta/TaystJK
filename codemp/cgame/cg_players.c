@@ -1263,7 +1263,7 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 					sum += (int)tolower(ci->modelName[j]); //Convert to lowercase
 				}
 				if (sum < 0) { //sanity...
-					sum = -sum;
+					sum = 0;
 				}
 
 				if (ci->gender == GENDER_FEMALE) {
