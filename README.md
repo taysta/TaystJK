@@ -52,3 +52,4 @@ OpenJK:
 * Ent
 * Ensiform
 * Yberion
+* Daniel
