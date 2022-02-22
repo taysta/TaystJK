@@ -168,6 +168,14 @@ void Cbuf_ExecuteText (int exec_when, const char *text)
 	}
 }
 
+bool IsOpeningQuote(const char *quote, bool canLookBehind) {
+    const char *prev = canLookBehind ? quote - 1 : NULL;
+    const char *next = quote + 1;
+    if (quote && *quote == '"' && *next && !isspace((unsigned)*next) && *next != '"' && !(prev && *prev == '"') && *next != ';')
+        return true; // waaaaaaaaaaaaaaaaaaaaaaaaaaaaah it doesn't properly detect "" ; ";" " ;; ;;;;;;;;""" " "";" "; ;" " ";";;;"""""""""""""";; " ";";"" waaaaaaaaaaaaaaaaaaaaaaaaaaaaah
+    return false;
+}
+
 /*
 ============
 Cbuf_Execute
@@ -201,10 +209,14 @@ void Cbuf_Execute (void)
 		quotes = 0;
 		for (i=0 ; i< cmd_text.cursize ; i++)
 		{
-			if (text[i] == '"')
-				quotes++;
+			if (text[i] == '"') {
+				if (IsOpeningQuote(text + i, i > 0))
+					++quotes;
+				else if (quotes)
+					--quotes;
+			}
 
-			if ( !(quotes&1)) {
+			if (!quotes) {
 				if (i < cmd_text.cursize - 1) {
 					if (! in_star_comment && text[i] == '/' && text[i+1] == '/')
 						in_slash_comment = qtrue;
@@ -219,7 +231,7 @@ void Cbuf_Execute (void)
 						break;
 					}
 				}
-				if (! in_slash_comment && ! in_star_comment && text[i] == ';')
+				if (! in_slash_comment && ! in_star_comment && text[i] == ';' && !quotes)
 					break;
 			}
 			if (! in_star_comment && (text[i] == '\n' || text[i] == '\r')) {
@@ -354,6 +366,7 @@ static	int			cmd_argc;
 static	char		*cmd_argv[MAX_STRING_TOKENS];		// points into cmd_tokenized
 static	char		cmd_tokenized[BIG_INFO_STRING+MAX_STRING_TOKENS];	// will have 0 bytes inserted
 static	char		cmd_cmd[BIG_INFO_STRING]; // the original command we received (no token processing)
+static	bool		cmd_quoted[MAX_STRING_TOKENS];
 
 static	cmd_function_t	*cmd_functions;		// possible commands to execute
 
@@ -398,7 +411,7 @@ Cmd_ArgsFrom
 Returns a single string containing argv(arg) to argv(argc()-1)
 ============
 */
-char *Cmd_ArgsFrom( int arg ) {
+char *Cmd_ArgsFrom( int arg, bool useQuotes ) {
 	static	char	cmd_args[BIG_INFO_STRING];
 	int		i;
 
@@ -406,7 +419,11 @@ char *Cmd_ArgsFrom( int arg ) {
 	if (arg < 0)
 		arg = 0;
 	for ( i = arg ; i < cmd_argc ; i++ ) {
+		if (useQuotes && cmd_quoted[i])
+			Q_strcat(cmd_args, sizeof(cmd_args), "\"");
 		Q_strcat( cmd_args, sizeof( cmd_args ), cmd_argv[i] );
+		if (useQuotes && cmd_quoted[i])
+			Q_strcat(cmd_args, sizeof(cmd_args), "\"");
 		if ( i != cmd_argc-1 ) {
 			Q_strcat( cmd_args, sizeof( cmd_args ), " " );
 		}
@@ -512,7 +529,7 @@ will point into this temporary buffer.
 */
 // NOTE TTimo define that to track tokenization issues
 //#define TKN_DBG
-static void Cmd_TokenizeString2( const char *text_in, qboolean ignoreQuotes ) {
+static void Cmd_TokenizeString2( const char *text_in, qboolean ignoreQuotes, bool nestedQuotes ) {
 	const char	*text;
 	char	*textOut;
 
@@ -568,7 +585,45 @@ static void Cmd_TokenizeString2( const char *text_in, qboolean ignoreQuotes ) {
 
 		// handle quoted strings
     // NOTE TTimo this doesn't handle \" escaping
+		if (nestedQuotes) {
+			if (*text == '"') {
+				cmd_quoted[cmd_argc] = true;
+				cmd_argv[cmd_argc] = textOut;
+				cmd_argc++;
+				text++;
+				const char *textStart = text;
+				int quoteLevel = 0;
+				while (*text) {
+					if (*text == '"') {
+						if (IsOpeningQuote(text, text > textStart)) {
+							++quoteLevel;
+							*textOut++ = *text++;
+						}
+						else {
+							if (quoteLevel) {
+								--quoteLevel;
+								*textOut++ = *text++;
+							}
+							else {
+								break;
+							}
+						}
+					}
+					else {
+						*textOut++ = *text++;
+					}
+				}
+				*textOut++ = 0;
+				if (!*text) {
+					return;		// all tokens parsed
+				}
+				text++;
+				continue;
+			}
+		}
+		else {
 		if ( !ignoreQuotes && *text == '"' ) {
+				cmd_quoted[cmd_argc] = false;
 			cmd_argv[cmd_argc] = textOut;
 			cmd_argc++;
 			text++;
@@ -582,8 +637,10 @@ static void Cmd_TokenizeString2( const char *text_in, qboolean ignoreQuotes ) {
 			text++;
 			continue;
 		}
+		}
 
 		// regular token
+		cmd_quoted[cmd_argc] = false;
 		cmd_argv[cmd_argc] = textOut;
 		cmd_argc++;
 
@@ -620,7 +677,7 @@ Cmd_TokenizeString
 ============
 */
 void Cmd_TokenizeString( const char *text_in ) {
-	Cmd_TokenizeString2( text_in, qfalse );
+	Cmd_TokenizeString2( text_in, qfalse, false );
 }
 
 /*
@@ -629,7 +686,11 @@ Cmd_TokenizeStringIgnoreQuotes
 ============
 */
 void Cmd_TokenizeStringIgnoreQuotes( const char *text_in ) {
-	Cmd_TokenizeString2( text_in, qtrue );
+	Cmd_TokenizeString2( text_in, qtrue, false );
+}
+
+void Cmd_TokenizeStringNestedQuotes(const char *text_in) {
+	Cmd_TokenizeString2(text_in, qtrue, true);
 }
 
 /*
@@ -851,7 +912,7 @@ void	Cmd_ExecuteString( const char *text ) {
 	cmd_function_t	*cmd, **prev;
 
 	// execute the command line
-	Cmd_TokenizeString( text );
+	Cmd_TokenizeStringNestedQuotes( text );
 	if ( !Cmd_Argc() ) {
 		return;		// no tokens
 	}

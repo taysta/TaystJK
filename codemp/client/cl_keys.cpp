@@ -1320,11 +1320,13 @@ void Key_Bind_f( void ) {
 		return;
 	}
 
+	bool useQuotes = !(c == 3); // don't bother appending quotes for just a single command
+
     switch (mod) {
-        case BINDINGMOD_ALT:	Key_SetBindingAlt(b, Cmd_ArgsFrom(2));		break;
-        case BINDINGMOD_CTRL:	Key_SetBindingCtrl(b, Cmd_ArgsFrom(2));		break;
-        case BINDINGMOD_SHIFT:	Key_SetBindingShift(b, Cmd_ArgsFrom(2));	break;
-        default:				Key_SetBinding(b, Cmd_ArgsFrom(2));			break;
+	case BINDINGMOD_ALT:	Key_SetBindingAlt(b, Cmd_ArgsFrom(2, useQuotes));		break;
+	case BINDINGMOD_CTRL:	Key_SetBindingCtrl(b, Cmd_ArgsFrom(2, useQuotes));		break;
+	case BINDINGMOD_SHIFT:	Key_SetBindingShift(b, Cmd_ArgsFrom(2, useQuotes));		break;
+	default:				Key_SetBinding(b, Cmd_ArgsFrom(2, useQuotes));			break;
     }
 }
 
@@ -1529,11 +1531,30 @@ void CL_ParseBinding( int key, qboolean down, unsigned time )
 	// allow button up commands if in game even if key catcher is set
 	allowUpCmds = (qboolean)( cls.state != CA_DISCONNECTED );
 
+	// filter semicolons that aren't in quotes into magic chars, preserving semicolons that are in quotes
+	const char nonQuotedSemicolonMagicChar = '\x01';
+	bool inQuote = false;
+	int quotes = 0;
+	while (*p) {
+		if (*p == '"') {
+			if (IsOpeningQuote(p, p > buf))
+				++quotes;
+			else if (quotes)
+				--quotes;
+		}
+		else if (*p == ';' && !quotes) {
+			*p = nonQuotedSemicolonMagicChar;
+		}
+		p++;
+	}
+
+	p = buf;
+
 	while( 1 )
 	{
 		while( isspace( *p ) )
 			p++;
-		end = strchr( p, ';' );
+		end = strchr( p, nonQuotedSemicolonMagicChar); // end commands at non-quoted semicolons
 		if( end )
 			*end = '\0';
 		if( *p == '+' )

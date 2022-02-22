@@ -422,7 +422,7 @@ int		Cmd_Argc (void);
 char	*Cmd_Argv (int arg);
 void	Cmd_ArgvBuffer( int arg, char *buffer, int bufferLength );
 char	*Cmd_Args (void);
-char	*Cmd_ArgsFrom( int arg );
+char	*Cmd_ArgsFrom( int arg, bool useQuotes = false );
 void	Cmd_ArgsBuffer( char *buffer, int bufferLength );
 void	Cmd_ArgsFromBuffer( int arg, char *buffer, int bufferLength );
 char	*Cmd_Cmd (void);
@@ -433,6 +433,8 @@ void	Cmd_Args_Sanitize( size_t length = MAX_CVAR_VALUE_STRING, const char *strip
 
 void	Cmd_TokenizeString( const char *text );
 void	Cmd_TokenizeStringIgnoreQuotes( const char *text_in );
+void	Cmd_TokenizeStringNestedQuotes(const char *text_in);
+bool	IsOpeningQuote(const char *quote, bool canLookBehind);
 // Takes a null terminated string.  Does not need to be /n terminated.
 // breaks the string up into arg tokens.
 
