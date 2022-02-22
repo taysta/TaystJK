@@ -23,6 +23,10 @@ Key: [-] removed, [+] added, [\*] modified
 * [+] Pitch Angle Helper with supporting cvars `cg_pitchAngle` `cg_pitchAngleX` `cg_pitchAngleY` `cg_pitchRedAngle` `cg_pitchAngleOffset`
 * [+] Start speed goal `cg_startGoal`
 * [+] Start first jump speed goal `cg_jumptGoal`
+* [+] Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like `bind a "bind b "set c "d ; e" ; say "hello there"""`
+* [+] You can now bind key combinations using an `Alt` / `Ctrl` / `Shift` modifier key. For example, `bind ctrl+x kill` will make `Ctrl` + `X` perform `kill`.
+* [+] You can now bind the right-side `Alt` / `Ctrl` / `Shift` keys separately from the left-side keys. For example, `bind rctrl kill` will make the right-side `Ctrl` key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
+
 
 ## Single- and Multiplayer
 
