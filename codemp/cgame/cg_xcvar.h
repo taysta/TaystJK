@@ -105,6 +105,7 @@ XCVAR_DEF( cg_strafeHelperCutoff,				"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperActiveColor,	"0 255 0 200",	CG_StrafeHelperActiveColorChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperTinyBars,		        "0",	NULL,								CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeHelperInvertKeys,		        "0",	NULL,								CVAR_ARCHIVE )
 
 //Sounds
 XCVAR_DEF( cg_rollSounds,						"1",	NULL,								CVAR_ARCHIVE )
