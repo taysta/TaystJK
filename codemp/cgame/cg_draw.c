@@ -11581,7 +11581,7 @@ static void CG_RaceTimer(void)
 
 		if(cg_raceStart.integer)
 		{
-		    if(cg_startGoal.value && (cg_startGoal.value < cg.startSpeed)){
+		    if(cg_startGoal.value && (cg_startGoal.value <= cg.startSpeed)){
 		        float startColor = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
                 colorStartSpeed[0] = startColor;
                 colorStartSpeed[1] = 1;
@@ -11731,7 +11731,7 @@ static void CG_Speedometer(void)
 			    jumpsCounter--;  //reduce jump counter
             }
 			groundSpeedColor = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
-            if(cg_jumpGoal.value && (cg_jumpGoal.value < cg.lastGroundSpeed) && jumpsCounter == 1){
+            if(cg_jumpGoal.value && (cg_jumpGoal.value <= cg.lastGroundSpeed) && jumpsCounter == 1){
                 colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
                 colorGroundSpeed[2] = groundSpeedColor;
