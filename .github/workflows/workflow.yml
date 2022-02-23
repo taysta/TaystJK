@@ -97,7 +97,7 @@ jobs:
       - name: Create Build Environment
         run: |
           sudo apt-get update
-          sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
+          sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev build-essential
           cmake -E make_directory ${{runner.workspace}}/build
       - name: Configure CMake
         shell: bash
