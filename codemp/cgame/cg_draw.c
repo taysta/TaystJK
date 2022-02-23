@@ -11783,7 +11783,7 @@ static void CG_DrawShowPos(void)
     if(cg_pitchAngle.value && (pitchAngle < cg_pitchRedAngle.value)) {
         pitchColor = pitchAngle / cg_pitchRedAngle.value;
         colorPitch[0] = pitchColor;
-        pitchColor = 1 - (pitchAngle / cg_pitchRedAngle.value) / 2;
+        pitchColor = 1.0 - (pitchAngle / cg_pitchRedAngle.value) / 2.0;
         colorPitch[1] = pitchColor;
     }else if(cg_pitchAngle.value){
         colorPitch[0] = 1;

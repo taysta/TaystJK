@@ -381,7 +381,6 @@ SVC_RateLimit
 ================
 */
 qboolean SVC_RateLimit( leakyBucket_t *bucket, int burst, int period, int now ) {
-    qboolean	block = qfalse;
 
     if ( bucket != NULL ) {
 		int interval = now - bucket->lastTime;
