@@ -688,8 +688,8 @@ static qboolean vk_find_screenmap_drawsurfs( void )
     }
 }
 
-static void vk_begin_render_pass(VkRenderPass renderPass, VkFramebuffer frameBuffer, 
-    qboolean clearValues, uint32_t width, uint32_t height)
+static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBuffer, 
+    qboolean clearValues, uint32_t width, uint32_t height )
 {
     VkRenderPassBeginInfo render_pass_begin_info;
     VkClearValue clear_values[3];
@@ -704,13 +704,19 @@ static void vk_begin_render_pass(VkRenderPass renderPass, VkFramebuffer frameBuf
     render_pass_begin_info.renderArea.extent.width = width;
     render_pass_begin_info.renderArea.extent.height = height;
 
-    if (clearValues) {
+    if ( clearValues ) {
         /// attachments layout:
         // [0] - resolve/color/presentation
         // [1] - depth/stencil
         // [2] - multisampled color, optional
 
-        Com_Memset(clear_values, 0, sizeof(clear_values));
+        Com_Memset( clear_values, 0, sizeof(clear_values) );
+
+#ifdef USE_BUFFER_CLEAR
+        if(vk.renderPassIndex == RENDER_PASS_MAIN){
+            clear_values[0].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+        }
+#endif
 #ifndef USE_REVERSED_DEPTH
         clear_values[1].depthStencil.depth = 1.0;
 #endif
@@ -726,7 +732,7 @@ static void vk_begin_render_pass(VkRenderPass renderPass, VkFramebuffer frameBuf
         render_pass_begin_info.pClearValues = NULL;
     }
 
-    qvkCmdBeginRenderPass(vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+    qvkCmdBeginRenderPass( vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE );
 }
 
 void vk_begin_screenmap_render_pass( void )
