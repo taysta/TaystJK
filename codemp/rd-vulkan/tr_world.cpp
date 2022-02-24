@@ -339,18 +339,15 @@ R_AddWorldSurface
 */
 static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noViewCount = qfalse )
 {
-
-	if (!noViewCount)
+	if ( !noViewCount ) 
 	{
-		if ( surf->viewCount == tr.viewCount )
-		{
+		if ( surf->viewCount == tr.viewCount ) {
 			return;
 		}
 
 		surf->viewCount = tr.viewCount;
 		// FIXME: bmodel fog?
 	}
-
 
 	/*
 	if (r_shadows->integer == 2)
@@ -366,7 +363,7 @@ static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noView
 #ifdef _ALT_AUTOMAP_METHOD
 	if (!tr_drawingAutoMap && R_CullSurface( surf->data, surf->shader ) )
 #else
-	if (R_CullSurface(surf->data, surf->shader))
+	if ( R_CullSurface( surf->data, surf->shader ) )
 #endif
 	{
 		return;
@@ -375,7 +372,7 @@ static void R_AddWorldSurface( msurface_t *surf, int dlightBits, qboolean noView
 #ifdef USE_PMLIGHT
 	{
 		surf->vcVisible = tr.viewCount;
-		R_AddDrawSurf(surf->data, surf->shader, surf->fogIndex, 0);
+		R_AddDrawSurf( surf->data, surf->shader, surf->fogIndex, 0 );
 		return;
 	}
 #endif // USE_PMLIGHT
@@ -596,7 +593,8 @@ void R_AddBrushModelSurfaces ( trRefEntity_t *ent ) {
 	bmodel_t	*bmodel;
 	int			clip;
 	model_t		*pModel;
-	int			i;
+	dlight_t	*dl;
+	int			i, s;
 
 	pModel = R_GetModelByHandle( ent->e.hModel );
 
@@ -608,31 +606,27 @@ void R_AddBrushModelSurfaces ( trRefEntity_t *ent ) {
 	}
 
 #ifdef USE_PMLIGHT
-	{
-		dlight_t	*dl;
-		int			s;
+	for ( s = 0; s < bmodel->numSurfaces; s++ ) {
+		R_AddWorldSurface( bmodel->firstSurface + s, 0, qtrue );
+	}
 
-		for (s = 0; s < bmodel->numSurfaces; s++) {
-			R_AddWorldSurface(bmodel->firstSurface + s, 0);
-		}
+	R_SetupEntityLighting( &tr.refdef, ent );
 
-		R_SetupEntityLighting(&tr.refdef, ent);
+	R_TransformDlights( tr.viewParms.num_dlights, tr.viewParms.dlights, &tr.ori );
 
-		R_TransformDlights(tr.viewParms.num_dlights, tr.viewParms.dlights, &tr.ori );
+	for ( i = 0; i < tr.viewParms.num_dlights; i++ ) {
+		dl = &tr.viewParms.dlights[i];
 
-		for (i = 0; i < tr.viewParms.num_dlights; i++) {
-			dl = &tr.viewParms.dlights[i];
-			if (!R_LightCullBounds(dl, bmodel->bounds[0], bmodel->bounds[1])) {
-				tr.lightCount++;
-				tr.light = dl;
-				for (s = 0; s < bmodel->numSurfaces; s++) {
-					R_AddLitSurface(bmodel->firstSurface + s, dl);
-				}
+		if ( !R_LightCullBounds( dl, bmodel->bounds[0], bmodel->bounds[1] ) ) {
+			tr.lightCount++;
+			tr.light = dl;
+
+			for ( s = 0; s < bmodel->numSurfaces; s++ ) {
+				R_AddLitSurface( bmodel->firstSurface + s, dl );
 			}
 		}
-		return;
-}
-#endif // USE_PMLIGHT
+	}
+#endif
 }
 
 float GetQuadArea( vec3_t v1, vec3_t v2, vec3_t v3, vec3_t v4 )
