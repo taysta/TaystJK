@@ -713,8 +713,11 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
         Com_Memset( clear_values, 0, sizeof(clear_values) );
 
 #ifdef USE_BUFFER_CLEAR
-        if(vk.renderPassIndex == RENDER_PASS_MAIN){
-            clear_values[0].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+        if( vk.renderPassIndex == RENDER_PASS_MAIN ){
+            if ( vk.msaaActive )
+                clear_values[2].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+            else
+                clear_values[0].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
         }
 #endif
 #ifndef USE_REVERSED_DEPTH

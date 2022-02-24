@@ -1438,7 +1438,7 @@ void RB_StageIteratorGeneric( void )
 			break;
 		*/
 		
-		if ( backEnd.currentEntity ){
+		if ( backEnd.currentEntity ) {
 			assert( backEnd.currentEntity->e.renderfx >= 0 );
 
 			//want to use RGBGen from ent
@@ -1475,8 +1475,8 @@ void RB_StageIteratorGeneric( void )
 
 			pipeline = pStage->vk_2d_pipeline;
 		}
-		else if ( backEnd.currentEntity ){
-			vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
+		else if ( backEnd.currentEntity ) {
+			vk_get_pipeline_def(pStage->vk_pipeline[fog_stage], &def);
 
 			// we want to be able to rip a hole in the thing being disintegrated,
 			// and by doing the depth-testing it avoids some kinds of artefacts, but will probably introduce others?

@@ -754,32 +754,37 @@ void RB_DrawSun( float scale, shader_t *shader ) {
 	vec3_t		origin, vec1, vec2;
 	color4ub_t	sunColor = { 255, 255, 255, 255 };
 
-	if (!backEnd.skyRenderedThisView)
+	if ( !backEnd.skyRenderedThisView )
 		return;
 
-	vk_update_mvp(NULL);
+	vk_update_mvp( NULL );
 
 	dist = backEnd.viewParms.zFar / 1.75;		// div sqrt(3)
 	size = dist * scale;
 
-	VectorMA(backEnd.viewParms. ori .origin, dist, tr.sunDirection, origin);
-	PerpendicularVector(vec1, tr.sunDirection);
-	CrossProduct(tr.sunDirection, vec1, vec2);
+	VectorMA( backEnd.viewParms.ori.origin, dist, tr.sunDirection, origin );
+	PerpendicularVector( vec1, tr.sunDirection );
+	CrossProduct( tr.sunDirection, vec1, vec2 );
 
-	VectorScale(vec1, size, vec1);
-	VectorScale(vec2, size, vec2);
+	VectorScale( vec1, size, vec1 );
+	VectorScale( vec2, size, vec2 );
 
 	// farthest depth range
-	vk_set_depthrange(DEPTH_RANGE_ONE);
+	vk_set_depthrange( DEPTH_RANGE_ONE );
 
-	RB_BeginSurface(shader, 0);
+	RB_BeginSurface( shader, 0 );
 
-	RB_AddQuadStamp(origin, vec1, vec2, sunColor);
+	RB_AddQuadStamp( origin, vec1, vec2, sunColor );
+
+	// Reset currentEntity to world so that any previously referenced entities
+	// don't have influence on the rendering of the sun (i.e. RF_ renderer flags).
+	backEnd.currentEntity = &tr.worldEntity;
+	backEnd.ori = backEnd.viewParms.world;
 
 	RB_EndSurface();
 
 	// back to normal depth range
-	vk_set_depthrange(DEPTH_RANGE_NORMAL);
+	vk_set_depthrange( DEPTH_RANGE_NORMAL );
 }
 
 /*
