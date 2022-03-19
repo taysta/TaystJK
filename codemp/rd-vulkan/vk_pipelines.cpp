@@ -1587,7 +1587,6 @@ void vk_alloc_persistent_pipelines( void )
     vk_debug("Create worldeffect pipeline \n");
     {
         Com_Memset(&def, 0, sizeof(def));
-        //def.shader_type = TYPE_SINGLE_TEXTURE_IDENTITY;
         def.shader_type = TYPE_SINGLE_TEXTURE;
         def.face_culling = CT_TWO_SIDED;
         def.polygon_offset = qfalse;
@@ -1596,8 +1595,7 @@ void vk_alloc_persistent_pipelines( void )
         def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
         vk.std_pipeline.worldeffect_pipeline[0] = vk_find_pipeline_ext(0, &def, qtrue);
 
-        // def.state_bits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
-        def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+        def.state_bits = GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
         vk.std_pipeline.worldeffect_pipeline[1] = vk_find_pipeline_ext(0, &def, qtrue);
     }
 
