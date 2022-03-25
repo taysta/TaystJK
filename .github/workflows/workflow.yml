@@ -176,6 +176,10 @@ jobs:
     needs: [vs2019, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
 
