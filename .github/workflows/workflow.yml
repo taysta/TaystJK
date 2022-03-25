@@ -187,40 +187,17 @@ jobs:
           7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
+      - name: Create latest build
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: Latest Build
+          files: |
+            *.zip          
+
   update-release:
     if: ${{ github.event_name == 'release' }}
     needs: [vs2019, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - artifacts: ./linux-x86/*
-            artifact_name: EternalJK-linux-x86.zip
-
-          - artifacts: ./linux-x86_64/*
-            artifact_name: EternalJK-linux-x86_64.zip
-
-          - artifacts: ./windows-x86/*
-            artifact_name: EternalJK-windows-x86.zip
-
-          - artifacts: ./windows-x64/*
-            artifact_name: EternalJK-windows-x86_64.zip
-
-          - artifacts: ./macos-x86_64/*
-            artifact_name: EternalJK-macos-x86_64.zip
-
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-
-      - name: Create archive
-        run: 7z a -r ${{ matrix.artifact_name }} ${{ matrix.artifacts }}
-
-      - name: Upload archive
-        uses: "svenstaro/upload-release-action@v2"
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file: ${{ matrix.artifact_name }}
