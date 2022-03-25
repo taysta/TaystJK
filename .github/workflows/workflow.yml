@@ -29,11 +29,6 @@ jobs:
         build_type: [Release]
         arch: [x86, x64]
         include:
-          # - arch: arm64
-          #   platform: ARM64
-          #   suffix: .arm64
-          #   pkg_suffix: arm64
-
           - arch: x86
             platform: Win32
             pkg_suffix: x86
@@ -188,8 +183,8 @@ jobs:
         run: |
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-x86.zip  ./windows-x86/*
-          7z a -r EternalJK-windows-x84_64.zip  ./windows-x64/*
+          7z a -r EternalJK-windows-x86.zip       ./windows-x86/*
+          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
   update-release:
