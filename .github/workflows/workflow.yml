@@ -199,9 +199,4 @@ jobs:
           prerelease: false
           title: Latest Build
           files: |
-            *.zip          
-
-  update-release:
-    if: ${{ github.event_name == 'release' }}
-    needs: [vs2019, ubuntu-x86, macos-x86]
-    runs-on: ubuntu-latest
+            *.zip
