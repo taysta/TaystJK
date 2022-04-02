@@ -295,6 +295,16 @@ XDOCS_CVAR_DEF("cg_duelMusic", "Enables special in-game music for private duels"
 			SETTING("1", "Play music track for private duels (baseJKA behavior)")
 )
 
+XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have cosmetics on non-japro servers",
+    SETTING("1", "Santa Hat") NL
+    SETTING("2", "Jack'o Lantern") NL
+    SETTING("3", "Baseball Cap") NL
+    SETTING("4", "Indiana Jones") NL
+    SETTING("5", "Propeller Hat") NL
+    SETTING("6", "Sombrero") NL
+    SETTING("7", "Top Hat")
+
+)
 //Visuals
 
 XDOCS_CVAR_DEF("cg_remaps", "Show or hide serverside remaps",
@@ -326,6 +336,7 @@ XDOCS_CVAR_DEF("cg_blood", "Show blood when shot by guns",
 	SETTING("1", "Only show blood") NL
 	SETTING("2", "Show blood and gibs")
 )
+
 
 XDOCS_CVAR_DEF("cg_thirdPersonFlagAlpha", "Custom transparency of the CTF flag",""
 )
