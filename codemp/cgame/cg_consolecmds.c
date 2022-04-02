@@ -1059,17 +1059,22 @@ static bitInfo_T strafeTweaks[] = {
 	{"Updated style"},//1
 	{"Cgaz style"},//2
 	{"Warsow style"},//3
-	{"Sound"},//4
+    {"Sound"},//4
 	{"W"},//5
 	{"WA"},//6
 	{"WD"},//7
 	{"A"},//8
 	{"D"},//9
-	{"Rear"},//10
-	{"Center"},//11
-	{"Accel bar"},//12
-	{"Weze style"},//13
-	{"Line Crosshair"}//13
+    {"Rear"},//10
+    {"Center"},//11
+    {"Accel bar"},//12
+    {"Weze style"},//13
+    {"Line Crosshair"},//14
+    {"S"},//15
+    {"SA"},//16
+    {"SD"},//17
+    {"Small Lines"},//18
+    {"Invert"}//19
 };
 static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN( strafeTweaks );
 
@@ -1310,7 +1315,8 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qtrue,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qfalse//Old JA+ style grapple line
+	qfalse,//Old JA+ style grapple line
+    qtrue//New FFA respawn bubble
 };
 
 //JA+ Specific = amaltdim ?
@@ -1334,7 +1340,8 @@ static qboolean japlusPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qfalse,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qtrue//Old JA+ style grapple line
+	qtrue,//Old JA+ style grapple line
+    qtrue//New FFA respawn bubble
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1356,7 +1363,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Color respawn bubbles by team" },//15
 	{ "Hide player cosmetics" },//16
 	{ "Disable breathing effects" },//17
-	{ "Old JA+ style grapple line" }//18
+	{ "Old JA+ style grapple line" },//18
+    { "New FFA respawn bubble" }
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -1445,6 +1453,7 @@ static bitInfo_T speedometerSettings[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Speed graph" },//7
 	{ "Display speed in kilometers instead of units" },//8
 	{ "Display speed in imperial miles instead of units" },//9
+    { "Pre-speed jumps array" }
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 

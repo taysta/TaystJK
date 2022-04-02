@@ -48,8 +48,8 @@ XCVAR_DEF( cg_speedometerY,			"459",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerJumpsX,			"185",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerJumpsY,			"300",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerJumps,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
-XCVAR_DEF( cg_speedometerJumpsColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumps,			    "10",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumpsColors,		"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayX,		"640",	NULL,					CVAR_ARCHIVE )
@@ -80,12 +80,11 @@ XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
 XCVAR_DEF( cg_drawScores,			"1",	NULL,					CVAR_ARCHIVE ) //team score counter in top right
 XCVAR_DEF( cg_drawVote,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_showpos,				"0",	NULL,					CVAR_NONE )
-XCVAR_DEF( cg_pitchAngle,         "0",    NULL,                   CVAR_ARCHIVE )
-XCVAR_DEF( cg_pitchAngleX,         "312",    NULL,                   CVAR_ARCHIVE )
-XCVAR_DEF( cg_pitchAngleY,         "248",    NULL,                   CVAR_ARCHIVE )
-XCVAR_DEF( cg_pitchRedAngle,         "50",    NULL,                   CVAR_ARCHIVE )
-XCVAR_DEF( cg_pitchAngleOffset,         "0",    NULL,                   CVAR_ARCHIVE )
-XCVAR_DEF( cg_newInvShell,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelper,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperX,         "312",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperY,         "248",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperRange,         "50",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperOffset,         "0",    NULL,                   CVAR_ARCHIVE )
 XCVAR_DEF( cg_jumpGoal,         "0",    NULL,                   CVAR_NONE )
 XCVAR_DEF( cg_startGoal,         "0",    NULL,                   CVAR_NONE )
 
@@ -94,6 +93,8 @@ XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairIdentifyTarget,	"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairSaberStyleColor,	"0",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairColor,	"0 0 0 255",	CG_CrosshairColorChange,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_crosshairScope,	        "0",	NULL,					                    CVAR_ARCHIVE )
+
 
 //Strafehelper
 XCVAR_DEF( cg_strafeHelper,						"3008", CG_ClearThirdPersonDamp,			CVAR_ARCHIVE )
@@ -104,8 +105,6 @@ XCVAR_DEF( cg_strafeHelperPrecision,			"256",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperCutoff,				"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperActiveColor,	"0 255 0 200",	CG_StrafeHelperActiveColorChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,								CVAR_ARCHIVE )
-XCVAR_DEF( cg_strafeHelperTinyBars,		        "0",	NULL,								CVAR_ARCHIVE )
-XCVAR_DEF( cg_strafeHelperInvertKeys,		        "0",	NULL,								CVAR_ARCHIVE )
 
 //Sounds
 XCVAR_DEF( cg_rollSounds,						"1",	NULL,								CVAR_ARCHIVE )

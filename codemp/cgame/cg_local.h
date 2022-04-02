@@ -143,6 +143,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_HIDECOSMETICS		(1<<16)
 #define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
 #define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
+#define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
+
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger

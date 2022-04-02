@@ -11647,7 +11647,7 @@ skipTrail:
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaliblueShader);
 		}
 		else {
-		    if(cg_newInvShell.integer){
+		    if(cg_stylePlayer.integer & JAPRO_STYLE_NEWRESPAWN){
                 CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaligreenShader);
             }else{
                 CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.0f, cgs.media.invulnerabilityShader);

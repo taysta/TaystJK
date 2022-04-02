@@ -67,6 +67,11 @@ static void CG_DrawTrajectoryLine(void);
 #define SHELPER_ACCELMETER		(1<<12)
 #define SHELPER_WEZE			(1<<13)
 #define SHELPER_CROSSHAIR		(1<<14)
+#define SHELPER_S				(1<<15)
+#define SHELPER_SA				(1<<16)
+#define SHELPER_SD				(1<<17)
+#define SHELPER_TINY		    (1<<18)
+#define SHELPER_INVERT			(1<<19)
 
 #define SPEEDOMETER_ENABLE			(1<<0)
 #define SPEEDOMETER_GROUNDSPEED		(1<<1)
@@ -78,6 +83,8 @@ static void CG_DrawTrajectoryLine(void);
 #define SPEEDOMETER_SPEEDGRAPH		(1<<7)
 #define SPEEDOMETER_KPH				(1<<8)
 #define SPEEDOMETER_MPH				(1<<9)
+#define SPEEDOMETER_JUMPS			(1<<10)
+
 //japro end
 
 // nmckenzie: DUEL_HEALTH
@@ -10949,7 +10956,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 
 		/*if (cutoff > SCREEN_HEIGHT)
 			cutoff = SCREEN_HEIGHT;*/
-		if (cg_strafeHelperTinyBars.integer) {
+		if (cg_strafeHelper.integer & SHELPER_TINY) {
             cutoff = LINE_HEIGHT + 15;
             heightIn = LINE_HEIGHT + 5;
         } else if (cutoff < LINE_HEIGHT + 20) {
@@ -11112,23 +11119,39 @@ static void CG_StrafeHelper(centity_t *cent)
 			DrawStrafeLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
 
         //backwards strafe?
-        if (cg_strafeHelper.integer & SHELPER_REAR) {
-            DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
-            DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
-            DrawStrafeLine(velocityAngle, 180.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //S
-            DrawStrafeLine(velocityAngle, (90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD backwards
-            DrawStrafeLine(velocityAngle, (-90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 1); //WA backwards
-            DrawStrafeLine(velocityAngle, (90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD forwards
-            DrawStrafeLine(velocityAngle, (-90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA forwards
-         }
-
+        if (cg_strafeHelper.integer & SHELPER_REAR && cg_strafeHelper.integer & SHELPER_S)
+            DrawStrafeLine(velocityAngle, 180.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //Rear Center
 	}
 	if (moveStyle != MV_QW && moveStyle != MV_SWOOP) { //Every style but QW has WA/WD lines
 		if (cg_strafeHelper.integer & SHELPER_WA)
 			DrawStrafeLine(velocityAngle, (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 1); //WA
 		if (cg_strafeHelper.integer & SHELPER_WD)
 			DrawStrafeLine(velocityAngle, (-optimalDeltaAngle - (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD
+
+        //backwards strafe?
+        if (cg_strafeHelper.integer & SHELPER_REAR) {
+            if (cg_strafeHelper.integer & SHELPER_SA) {
+                DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
+            }
+            if (cg_strafeHelper.integer & SHELPER_SD) {
+                DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
+            }
+        }
+
+        //inverted
+        if (cg_strafeHelper.integer & SHELPER_INVERT)
+        {
+            if(cg_strafeHelper.integer & SHELPER_WA)
+                DrawStrafeLine(velocityAngle, (-90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 9); //WA backwards
+            if(cg_strafeHelper.integer & SHELPER_WD)
+                DrawStrafeLine(velocityAngle, (90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 10); //WD backwards
+            if(cg_strafeHelper.integer & SHELPER_SA)
+                DrawStrafeLine(velocityAngle, (-90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 9); //SA forwards
+            if(cg_strafeHelper.integer & SHELPER_SD)
+                DrawStrafeLine(velocityAngle, (90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 10); //SD forwards
+        }
 	}
+
 	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP || (moveStyle == MV_SLICK && onGround)) { //JKA, Q3, RJQ3, Jetpack? have A/D
 		if (cg_strafeHelper.integer & SHELPER_A)
 			DrawStrafeLine(velocityAngle, (-45.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 2); //A
@@ -11139,16 +11162,6 @@ static void CG_StrafeHelper(centity_t *cent)
 		if (cg_strafeHelper.integer & SHELPER_REAR) {
 			DrawStrafeLine(velocityAngle, (225.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 9); //A
 			DrawStrafeLine(velocityAngle, (135.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove > 0), 10); //D
-            DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
-            DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
-            DrawStrafeLine(velocityAngle, (225.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
-            DrawStrafeLine(velocityAngle, (-225.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
-            if(cg_strafeHelperInvertKeys.integer == 1){
-                DrawStrafeLine(velocityAngle, (90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 10); //WD backwards
-                DrawStrafeLine(velocityAngle, (-90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 9); //WA backwards
-                DrawStrafeLine(velocityAngle, (90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 10); //SD forwards
-                DrawStrafeLine(velocityAngle, (-90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 9); //SA forwards
-            }
 		}
 	}
 	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_SWOOP || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP) {
@@ -11157,6 +11170,12 @@ static void CG_StrafeHelper(centity_t *cent)
 			DrawStrafeLine(velocityAngle, (45.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0); //W
 			DrawStrafeLine(velocityAngle, (-45.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0); //W
 		}
+
+        //S only
+        if (cg_strafeHelper.integer & SHELPER_S && cg_strafeHelper.integer & SHELPER_REAR) {
+            DrawStrafeLine(velocityAngle, (225.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean) (cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+            DrawStrafeLine(velocityAngle, (-225.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean) (cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+        }
 	}
 }
 
@@ -11678,7 +11697,7 @@ static void CG_Speedometer(void)
 		}
     speedometerXPos += 52;
 
-		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometerJumps.integer > 0))) {
+		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometer.integer & SPEEDOMETER_JUMPS))) {
 			char speedStr4[32] = {0};
             char speedsStr4[32] = {0};
 
@@ -11689,55 +11708,67 @@ static void CG_Speedometer(void)
 				cg.firstTimeInAir = qfalse;
 			}
 			else if (!cg.firstTimeInAir) { //Moving up for first time
-				cg.firstTimeInAir = qtrue;
-				cg.lastGroundSpeed = currentSpeed;
-				cg.lastGroundTime = cg.time;
-                if (clearOnNextJump == qtrue) {
-                    Com_Memset(&cg.lastGroundSpeeds, 0, sizeof(cg.lastGroundSpeeds));
-                    jumpsCounter = 0;
-                    clearOnNextJump = qfalse;
+                cg.firstTimeInAir = qtrue;
+                cg.lastGroundSpeed = currentSpeed;
+                cg.lastGroundTime = cg.time;
+                if (cg_speedometer.integer & SPEEDOMETER_JUMPS) {
+
+                    if (clearOnNextJump == qtrue) {
+                        Com_Memset(&cg.lastGroundSpeeds, 0, sizeof(cg.lastGroundSpeeds));
+                        jumpsCounter = 0;
+                        clearOnNextJump = qfalse;
+                    }
+                    cg.lastGroundSpeeds[++jumpsCounter] = cg.lastGroundSpeed; //add last ground speed to the array
                 }
-                cg.lastGroundSpeeds[++jumpsCounter] = cg.lastGroundSpeed; //add last ground speed to the array
             }
-            if ((cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE && cg.predictedPlayerState.pm_time <= 0 && cg.currentSpeed < 250) || cg.currentSpeed == 0) {
-                clearOnNextJump = qtrue;
-            }
-			if(cg_speedometerJumps.value && (jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
-			    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
-                    groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
-			        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
-			        if(cg_speedometerJumpsColors.integer == 1) { //color the string
-                        colorGroundSpeeds[1] = groundSpeedsColor;
-                        colorGroundSpeeds[2] = groundSpeedsColor;
-                    }else if(cg_speedometerJumpsColors.integer > 1){
-			            if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) || (i==0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
-                            colorGroundSpeeds[0] = groundSpeedsColor;
-                            colorGroundSpeeds[1] = 1;
-                            colorGroundSpeeds[2] = groundSpeedsColor;
-                        } else {
-                            colorGroundSpeeds[0] = 1;
+            if (cg_speedometer.integer & SPEEDOMETER_JUMPS) {
+                if ((cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE &&
+                     cg.predictedPlayerState.pm_time <= 0 && cg.currentSpeed < 250) || cg.currentSpeed == 0) {
+                    clearOnNextJump = qtrue;
+                }
+                if (cg_speedometerJumps.value &&
+                    (jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
+                    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
+                        groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
+                        if (cg_speedometerJumpsColors.integer == 1) { //color the string
                             colorGroundSpeeds[1] = groundSpeedsColor;
                             colorGroundSpeeds[2] = groundSpeedsColor;
+                        } else if (cg_speedometerJumpsColors.integer > 1) {
+                            if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) ||
+                                (i == 0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
+                                colorGroundSpeeds[0] = groundSpeedsColor;
+                                colorGroundSpeeds[1] = 1;
+                                colorGroundSpeeds[2] = groundSpeedsColor;
+                            } else {
+                                colorGroundSpeeds[0] = 1;
+                                colorGroundSpeeds[1] = groundSpeedsColor;
+                                colorGroundSpeeds[2] = groundSpeedsColor;
+                            }
                         }
-			        }
-			        if(strcmp(speedsStr4, "0") != 0) {
-                        CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef),cg_speedometerJumpsY.value, cg_speedometerSize.value, colorGroundSpeeds,speedsStr4, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED,FONT_NONE); //print the jump
-			            jumpsXPos += 52; //shift x
-			        }
-			    }
-            } else if(cg_speedometerJumps.value && jumpsCounter == cg_speedometerJumps.integer) { //we out of the first n jumps
-                firstSpeed = cg.lastGroundSpeeds[0];
-                for(i = 0; i <= cg_speedometerJumps.integer; i++){ //shuffle jumps array down
-                    cg.lastGroundSpeeds[i] = cg.lastGroundSpeeds[i+1];
-			    }
-			    jumpsCounter--;  //reduce jump counter
+                        if (strcmp(speedsStr4, "0") != 0) {
+                            CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef), cg_speedometerJumpsY.value,
+                                          cg_speedometerSize.value, colorGroundSpeeds, speedsStr4, 0.0f, 0,
+                                          ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE); //print the jump
+                            jumpsXPos += 52; //shift x
+                        }
+                    }
+                } else if (cg_speedometerJumps.value &&
+                           jumpsCounter == cg_speedometerJumps.integer) { //we out of the first n jumps
+                    firstSpeed = cg.lastGroundSpeeds[0];
+                    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //shuffle jumps array down
+                        cg.lastGroundSpeeds[i] = cg.lastGroundSpeeds[i + 1];
+                    }
+                    jumpsCounter--;  //reduce jump counter
+                }
             }
-			groundSpeedColor = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
-            if(cg_jumpGoal.value && (cg_jumpGoal.value <= cg.lastGroundSpeed) && jumpsCounter == 1){
+
+            groundSpeedColor = 1 / ((cg.lastGroundSpeed / 250) * (cg.lastGroundSpeed / 250));
+            if (cg_jumpGoal.value && (cg_jumpGoal.value <= cg.lastGroundSpeed) && jumpsCounter == 1) {
                 colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
                 colorGroundSpeed[2] = groundSpeedColor;
-            }else if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value){
+            } else if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value) {
                 colorGroundSpeed[0] = 1;
                 colorGroundSpeed[1] = groundSpeedColor;
                 colorGroundSpeed[2] = groundSpeedColor;
@@ -11777,24 +11808,25 @@ static void CG_DrawShowPos(void)
 	float vel;
     float pitchAngle;
     float pitchColor;
-    pitchAngle = abs(ps->viewangles[PITCH] + cg_pitchAngleOffset.value);
+    float pitchRange;
+    pitchAngle = abs(ps->viewangles[PITCH] + cg_pitchHelperOffset.value);
     if(pitchAngle > 90){
         pitchAngle = 90;
     }
-
-    if(cg_pitchAngle.value && (pitchAngle < cg_pitchRedAngle.value)) {
-        pitchColor = pitchAngle / cg_pitchRedAngle.value;
+    pitchRange = cg_pitchHelperRange.value / 2;
+    if(cg_pitchHelper.value && (pitchAngle < pitchRange)) {
+        pitchColor = pitchAngle / pitchRange;
         colorPitch[0] = pitchColor;
-        pitchColor = 1.0 - (pitchAngle / cg_pitchRedAngle.value) / 2.0;
+        pitchColor = 1.0 - (pitchAngle / pitchRange) / 2.0;
         colorPitch[1] = pitchColor;
-    }else if(cg_pitchAngle.value){
+    }else if(cg_pitchHelper.value){
         colorPitch[0] = 1;
         colorPitch[1] = 0;
     }
 
-    if(cg_pitchAngle.integer){
+    if(cg_pitchHelper.value){
         Com_sprintf(showPitchString, sizeof(showPitchString), "%.1f", (float)ps->viewangles[PITCH]);
-        CG_Text_Paint(cg_pitchAngleX.integer, cg_pitchAngleY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
+        CG_Text_Paint(cg_pitchHelperX.integer, cg_pitchHelperY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
     }
 
 	if (!cg_showpos.integer)
