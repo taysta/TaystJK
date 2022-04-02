@@ -231,16 +231,16 @@ XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location",""
 XDOCS_CVAR_DEF("cg_disruptorNew", "Enable new disruptor effects",""
 )
 
-XDOCS_CVAR_DEF("cg_disruptorTeamColour", "Changes disruptor effects colors according to team",""
+XDOCS_CVAR_DEF("cg_disruptorTeamColour", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
 )
 
-XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)",""
+XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)","Requires cg_disruptorNew 1"
 )
 
 XDOCS_CVAR_DEF("cg_disruptorSpiral", "Enable disruptor spiral effect",""
 )
 
-XDOCS_CVAR_DEF("cg_disruptorSpiralColor", "Changes disruptor spiral color (accepts hexcode eg. xffffff)",""
+XDOCS_CVAR_DEF("cg_disruptorSpiralColor", "Changes disruptor spiral color (accepts hexcode eg. xffffff)","Requires cg_disruptorSpiral 1"
 )
 
 XDOCS_CVAR_DEF("cg_disruptorMainTime", "Amount of time to display disruptor primary fire",""

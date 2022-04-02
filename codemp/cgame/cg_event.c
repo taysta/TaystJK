@@ -2800,9 +2800,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
             VectorCopy(cent->currentState.origin2, start);
             VectorCopy(cent->lerpOrigin, end);
             mainTime = cg_disruptorMainTime.integer;
-            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+            if (cg_disruptorSpiral.integer )
                 CG_RailSpiral(&cgs.clientinfo[cent->currentState.eventParm], start, end, mainTime);
-            else if ( (cg_disruptorNew.integer) )
+            else if (cg_disruptorNew.integer)
                 CG_RailTrail(&cgs.clientinfo[cent->currentState.eventParm], start, end, mainTime);
             else
                 FX_DisruptorMainShot(start, end);
@@ -2838,9 +2838,9 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
             VectorCopy(cent->currentState.origin2, start);
             VectorCopy(cent->lerpOrigin, end);
             altTime = cg_disruptorAltTime.integer;
-            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+            if (cg_disruptorSpiral.integer)
                 CG_RailSpiral(&cgs.clientinfo[cent->currentState.eventParm], start, end, altTime);
-            else if ( (cg_disruptorNew.integer) )
+            else if (cg_disruptorNew.integer)
                 CG_RailTrail(&cgs.clientinfo[cent->currentState.eventParm], start, end, altTime);
             else
                 FX_DisruptorAltShot(start, end, cent->currentState.shouldtarget);
