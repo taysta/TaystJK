@@ -240,7 +240,7 @@ XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts h
 XDOCS_CVAR_DEF("cg_disruptorSpiral", "Enable disruptor spiral effect",""
 )
 
-XDOCS_CVAR_DEF("cg_disruptorSpiral", "Changes disruptor spiral color (accepts hexcode eg. xffffff)",""
+XDOCS_CVAR_DEF("cg_disruptorSpiralColor", "Changes disruptor spiral color (accepts hexcode eg. xffffff)",""
 )
 
 XDOCS_CVAR_DEF("cg_disruptorMainTime", "Amount of time to display disruptor primary fire",""
