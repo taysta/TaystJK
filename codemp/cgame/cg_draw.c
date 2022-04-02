@@ -11920,14 +11920,21 @@ static void CG_MovementKeys(centity_t *cent)
 			}
 		}
 
-		x = SCREEN_WIDTH - (SCREEN_WIDTH - cg_movementKeysX.integer) * cgs.widthRatioCoef;
-		y = cg_movementKeysY.integer;
-
-		w = (16*cg_movementKeysSize.value)*cgs.widthRatioCoef;
-		h = 16*cg_movementKeysSize.value;
+        if(cg_movementKeys.integer == 2)
+        {
+            w = (8*cg_movementKeysSize.value)*cgs.widthRatioCoef;
+            h = 8*cg_movementKeysSize.value;
+            x = SCREEN_WIDTH / 2 - w*1.5;
+            y = SCREEN_HEIGHT / 2 - h*1.5;
+        }else{
+            w = (16*cg_movementKeysSize.value)*cgs.widthRatioCoef;
+            h = 16*cg_movementKeysSize.value;
+            x = SCREEN_WIDTH - (SCREEN_WIDTH - cg_movementKeysX.integer) * cgs.widthRatioCoef;
+            y = cg_movementKeysY.integer;
+        }
 
 		xOffset = yOffset = 0;
-		if (cgs.newHud) {
+		if (cgs.newHud && cg_movementKeys.integer != 2) {
 			switch (cg_hudFiles.integer)
 			{
 				default:										break;
@@ -11938,81 +11945,80 @@ static void CG_MovementKeys(centity_t *cent)
 			}
 
 			if (cgs.newHud) {
-				if ((!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) && cg_movementKeys.integer != 2) {
+				if (!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) {
 					yOffset += 12; //445
 				}
-				else if ((cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) && cg_movementKeys.integer != 2) {
+				else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
 					xOffset -= cg_hudFiles.integer != 1 ? 12 : 23; //452 : //442
 					yOffset -= 14; //420
 				}
 			}
+            x += xOffset*cgs.widthRatioCoef;
+            y += yOffset;
 		}
 
-		x += xOffset*cgs.widthRatioCoef;
-		y += yOffset;
-
 		if (cmd.upmove < 0)
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader2 );
             else
 			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
 		else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader2 );
             else
 			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
 
 		if (cmd.upmove > 0)
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader2 );
             else
 			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
 		else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader2 );
             else
 			    CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
 
 		if (cmd.forwardmove < 0)
-			if(cg_movementKeys.integer == 2)
+			if(cg_movementKeys.integer > 1)
 		        CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOnShader2 );
 			else
 			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOnShader );
         else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOffShader2 );
             else
 			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOffShader );
 
 		if (cmd.forwardmove > 0)
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader2 );
             else
 			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
 		else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader2 );
             else
 			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
 
 		if (cmd.rightmove < 0)
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
             else
 			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
 		else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader2 );
             else
 			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
 
 		if (cmd.rightmove > 0)
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
             else
 			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
 		else
-            if(cg_movementKeys.integer == 2)
+            if(cg_movementKeys.integer > 1)
                 CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader2 );
             else
 			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
