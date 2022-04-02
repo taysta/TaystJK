@@ -4563,6 +4563,7 @@ static void CreateInternalShaders( void )
 	tr.cinematicShader = FinishShader();
 }
 
+extern cvar_t* r_slickSurfaceRemapShader;
 static void CreateExternalShaders( void )
 {
 	vk_debug("CreateExternalShaders\n");
@@ -4588,6 +4589,7 @@ static void CreateExternalShaders( void )
 	}
 
 	tr.sunShader = R_FindShader("sun", lightmapsNone, stylesDefault, qtrue);
+	tr.slickRemapShader = R_FindShader(r_slickSurfaceRemapShader->string, lightmapsNone, stylesDefault, qtrue);
 }
 
 void R_InitShaders( qboolean server )

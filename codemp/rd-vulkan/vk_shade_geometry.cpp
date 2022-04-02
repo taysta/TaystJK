@@ -941,6 +941,15 @@ avoidGen:
 			break;
 		}
 	}
+
+	// modulate?
+	if (tess.colorModulate)
+	{
+		for (int i = 0; i < tess.numVertexes; i++)
+		{
+			memcpy(dest[i], tess.colorModulated, sizeof(color4ub_t));
+		}
+	}
 }
 
 uint32_t vk_push_uniform( const vkUniform_t *uniform ) {

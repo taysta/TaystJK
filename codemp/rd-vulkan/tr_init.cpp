@@ -262,6 +262,10 @@ cvar_t *se_language;
 cvar_t *r_aviMotionJpegQuality;
 cvar_t *r_screenshotJpegQuality;
 
+// slick surface remap --eez
+cvar_t* r_slickSurfaceRemap;
+cvar_t* r_slickSurfaceRemapShader;
+
 // Vulkan
 #include "vk_local.h"
 Vk_Instance vk;
@@ -995,6 +999,9 @@ Ghoul2 Insert End
 
 	ri.Cvar_CheckRange( r_aviMotionJpegQuality, 10, 100, qtrue );
 	ri.Cvar_CheckRange( r_screenshotJpegQuality, 10, 100, qtrue );
+
+	r_slickSurfaceRemap = ri.Cvar_Get("r_slickSurfaceRemap", "0", CVAR_ARCHIVE_ND, "");
+	r_slickSurfaceRemapShader = ri.Cvar_Get("r_slickSurfaceRemapShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 
 	for ( size_t i = 0; i < numCommands; i++ )
 		ri.Cmd_AddCommand( commands[i].cmd, commands[i].func, "" );

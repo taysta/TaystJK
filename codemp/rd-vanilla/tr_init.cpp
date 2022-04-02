@@ -2008,7 +2008,7 @@ extern qboolean R_InitializeWireframeAutomap( void ); //tr_world.cpp
 
 extern qhandle_t RE_RegisterServerSkin( const char *name );
 
-static const cplane_t* RE_GetFrustrum(void)
+static const cplane_t* RE_GetFrustum(void)
 {
 	return tr.viewParms.frustum;
 }
@@ -2211,7 +2211,7 @@ Q_EXPORT refexport_t* QDECL GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	re.ext.Font_StrLenPixels				= RE_Font_StrLenPixelsNew;
 
 	// Custom
-	re.ext.GetFrustum						= RE_GetFrustrum;
+	re.ext.GetFrustum						= RE_GetFrustum;
 
 	return &re;
 }
