@@ -152,7 +152,9 @@ cvar_t	*r_portalOnly;
 cvar_t	*r_subdivisions;
 cvar_t	*r_lodCurveError;
 
-
+// slick surface remap --eez
+cvar_t* r_slickSurfaceRemap;
+cvar_t* r_slickSurfaceRemapShader;
 
 cvar_t	*r_overBrightBits;
 cvar_t	*r_mapOverBrightBits;
@@ -1751,6 +1753,9 @@ Ghoul2 Insert End
 
 	for ( size_t i = 0; i < numCommands; i++ )
 		ri.Cmd_AddCommand( commands[i].cmd, commands[i].func, "" );
+
+	r_slickSurfaceRemap = ri.Cvar_Get("r_slickSurfaceRemap", "0", CVAR_ARCHIVE_ND, "");
+	r_slickSurfaceRemapShader = ri.Cvar_Get("r_slickSurfaceRemapShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 }
 
 
@@ -2003,6 +2008,11 @@ extern qboolean R_InitializeWireframeAutomap( void ); //tr_world.cpp
 
 extern qhandle_t RE_RegisterServerSkin( const char *name );
 
+static const cplane_t* RE_GetFrustrum(void)
+{
+	return tr.viewParms.frustum;
+}
+
 /*
 @@@@@@@@@@@@@@@@@@@@@
 GetRefAPI
@@ -2199,6 +2209,9 @@ Q_EXPORT refexport_t* QDECL GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	//re.G2VertSpaceServer	= G2VertSpaceServer;
 
 	re.ext.Font_StrLenPixels				= RE_Font_StrLenPixelsNew;
+
+	// Custom
+	re.ext.GetFrustum						= RE_GetFrustrum;
 
 	return &re;
 }

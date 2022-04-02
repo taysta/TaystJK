@@ -243,6 +243,7 @@ typedef struct refexport_s {
 
 	struct {
 		float				(*Font_StrLenPixels)					( const char *text, const int iFontIndex, const float scale );
+		const cplane_t*		(*GetFrustum)();
 	} ext;
 
 } refexport_t;

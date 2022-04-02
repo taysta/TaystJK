@@ -96,6 +96,7 @@ void FX_PlayEntityEffectID( int id, vec3_t org,
 void FX_AddScheduledEffects( qboolean portal )
 {
 	theFxScheduler.AddScheduledEffects(!!portal);
+	tc_vis_render();
 }
 
 void FX_Draw2DEffects( float screenXScale, float screenYScale )
