@@ -1795,7 +1795,7 @@ void CG_DrawHUD(centity_t	*cent)
 	int	scoreBias;
 	char scoreBiasStr[16];
 
-	if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || cg_strafeHelper.integer || cg_raceTimer.integer > 1 || cg_showpos.integer)
+	if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || cg_strafeHelper.integer || cg_raceTimer.integer > 1 || cg_raceStart.integer|| cg_showpos.integer)
 		CG_CalculateSpeed(cent);
 
 	//JAPRO - Clientside - Movement Keys Start
@@ -1856,7 +1856,7 @@ void CG_DrawHUD(centity_t	*cent)
 
 		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 5, SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 5, lineWidth*cgs.widthRatioCoef, hcolor, hcolor[3], 0); //640x480, 320x240
 	}
-	if (cg_raceTimer.integer)
+	if (cg_raceTimer.integer || cg_raceStart.integer)
 		CG_RaceTimer();
 	if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)
 		CG_DrawSpeedGraph();
@@ -11593,22 +11593,24 @@ static void CG_RaceTimer(void)
 		}
 
 		cg.lastRaceTime = time;
+        if (cg_raceTimer.integer != 0) {
+            if (cg_raceTimer.integer < 3)
+                Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%i\n", minutes, seconds, milliseconds / 100);
+            else
+                Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%03i\n", minutes, seconds, milliseconds);
 
-		if (cg_raceTimer.integer < 3)
-			Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%i\n", minutes, seconds, milliseconds / 100);
-		else
-			Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%03i\n", minutes, seconds, milliseconds);
+            if (cg_raceTimer.integer > 1) {
+                if (cg.displacementSamples)
+                    Q_strcat(timerStr, sizeof(timerStr), va("Max: %i\nAvg: %i", (int) (cg.maxSpeed + 0.5f),
+                                                            cg.displacement / cg.displacementSamples));
+                if (time < 3000 && !cg_raceStart.integer)
+                    Q_strcat(timerStr, sizeof(timerStr), va("\nStart: %i", cg.startSpeed));
 
-		if (cg_raceTimer.integer > 1) {
-			if (cg.displacementSamples)
-				Q_strcat(timerStr, sizeof(timerStr), va("Max: %i\nAvg: %i", (int)(cg.maxSpeed + 0.5f), cg.displacement / cg.displacementSamples));
-			if (time < 3000 && !cg_raceStart.integer)
-				Q_strcat(timerStr, sizeof(timerStr), va("\nStart: %i", cg.startSpeed));
+            }
 
+            CG_Text_Paint(cg_raceTimerX.integer, cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE],
+                          timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         }
-
-		CG_Text_Paint(cg_raceTimerX.integer, cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE], timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-
 		if(cg_raceStart.integer)
 		{
 		    if(cg_startGoal.value && (cg_startGoal.value <= cg.startSpeed)){
@@ -11641,7 +11643,7 @@ static void CG_Speedometer(void)
 
 		lastSpeed = currentSpeed;
 
-		if (currentSpeed > 250 && cg_speedometer.integer & SPEEDOMETER_COLORS)
+		if (currentSpeed > 250 && !(cg_speedometer.integer & SPEEDOMETER_COLORS))
 		{
             currentSpeedColor = 1 / ((currentSpeed/250)*(currentSpeed/250));
 			colorSpeed[1] = currentSpeedColor;
@@ -11777,7 +11779,7 @@ static void CG_Speedometer(void)
                 colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
                 colorGroundSpeed[2] = groundSpeedColor;
-            } else if (cg.lastGroundSpeed > 250 && cg_speedometer.integer & SPEEDOMETER_COLORS) {
+            } else if (cg.lastGroundSpeed > 250 && !(cg_speedometer.integer & SPEEDOMETER_COLORS)) {
                 colorGroundSpeed[0] = 1;
                 colorGroundSpeed[1] = groundSpeedColor;
                 colorGroundSpeed[2] = groundSpeedColor;

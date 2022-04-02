@@ -231,7 +231,7 @@ static bitInfo_t speedometerSettings[] = {
 	{ "Display speed in imperial miles instead of units" },
     { "Pre-speed jumps array"},
     { "Pre-speed jumps array" },
-    { "Speedometer Colors"},
+    { "Disable speedometer colors"},
     { "Array Colors 1" },
     { "Array Colors 2" }
 };

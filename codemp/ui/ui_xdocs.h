@@ -75,7 +75,7 @@ XDOCS_CVAR_DEF("cg_speedometerJumpsY", "Vertical location of the jumps array",""
 XDOCS_CVAR_DEF("cg_jumpGoal", "Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled",""
 )
 
-XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_startSpeed 1",""
+XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_raceStart 1",""
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",

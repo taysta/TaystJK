@@ -1454,7 +1454,7 @@ static bitInfo_T speedometerSettings[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Display speed in kilometers instead of units" },//8
 	{ "Display speed in imperial miles instead of units" },//9
     { "Pre-speed jumps array" },//10
-    { "Speedometer Colors"},//11
+    { "Disable speedometer colors"},//11
     { "Array Colors 1" },//12
     { "Array Colors 2" }//13
 };
