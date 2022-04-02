@@ -358,7 +358,7 @@ static void CG_DrawZoomMask( void )
 			flip = !flip;
 		}
 	}
-	else if ( cg.predictedPlayerState.zoomMode)
+	else if ( cg.predictedPlayerState.zoomMode == 1)
 	{
 		// disruptor zoom mode
 		level = (float)(50.0f - zoomFov) / 50.0f;//(float)(80.0f - zoomFov) / 80.0f;
@@ -377,8 +377,11 @@ static void CG_DrawZoomMask( void )
 		level *= 103.0f;
 
 		// Draw target mask
-		trap->R_SetColor( colorTable[CT_WHITE] );
-		CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+        if( cg_crosshairScope.integer == 0)
+        {
+            trap->R_SetColor( colorTable[CT_WHITE] );
+            CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+        }
 
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
@@ -393,7 +396,10 @@ static void CG_DrawZoomMask( void )
 		}
 
 		// Draw rotating insert
-		CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
+        if( cg_crosshairScope.integer == 0 )
+        {
+            CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
+        }
 
 		// Increase the light levels under the center of the target
 //		CG_DrawPic( 198, 118, 246, 246, cgs.media.disruptorLight );
@@ -6700,7 +6706,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	if ( cg.predictedPlayerState.zoomMode != 0 )
+	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crosshairScope.integer == 0 )
 	{//not while scoped
 		return;
 	}
