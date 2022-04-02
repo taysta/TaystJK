@@ -4,6 +4,7 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+* [\*] New disruptor effects from jamme (spiral, custom colors, team colors, primary & alt fire times,
 * [\*] New minimalist scope that uses the crosshair `cg_crossHairScope 1`
 * [\*] Additional strafe bars added for other key presses (now draws 2 lines for all key combinations A, WA, W, WD, D, SD, S, SA) configured with new `/speedometer` settings
 * [\*] CGAZ bars are now affected by `cg_strafeHelperCutoff`

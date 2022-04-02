@@ -2344,7 +2344,8 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 
 				// draw a rail trail
 				//Com_Printf( "Predicted alt fire\n" );
-				FX_DisruptorAltShot( muzzlePoint, trace.endpos, qtrue );//loda - fix so not always full charge
+
+				//FX_DisruptorAltShot( muzzlePoint, trace.endpos, qtrue );//loda - fix so not always full charge
 			}
 			else
 			{
@@ -2357,7 +2358,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 
 				// draw a rail trail
 				//Com_Printf( "Predicted prim fire\n" );
-				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
+				//FX_DisruptorMainShot( muzzlePoint, trace.endpos );
 
 				/*// explosion at end if not SURF_NOIMPACT
 				if ( !(trace.surfaceFlags & SURF_NOIMPACT) )
@@ -2366,6 +2367,15 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 					CG_MissileHitWall( ent->weapon, cg.predictedPlayerState.clientNum, trace.endpos, trace.plane.normal, IMPACTSOUND_DEFAULT );
 				}*/
 			}
+            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+                CG_RailSpiral(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);
+            else if ((cg_disruptorNew.integer))
+                CG_RailTrail(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);
+            else if (altFire) {
+                float charge = (float)(cg.time - cg.predictedPlayerState.weaponChargeTime) / 50.0f;
+                FX_DisruptorAltShot(muzzlePoint, trace.endpos, charge >= 30.0f);
+            } else
+                FX_DisruptorMainShot(muzzlePoint, trace.endpos);
 		}
 		else if (ent->weapon == WP_STUN_BATON)
 		{

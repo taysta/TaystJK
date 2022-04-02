@@ -583,6 +583,9 @@ typedef struct wpobject_s
 
 //=============================================
 
+extern vec3_t defaultColors[10];
+extern int Q_parseColor( const char *p, const vec3_t *numberColors, float *color );
+
 char	*COM_SkipPath( char *pathname );
 const char	*COM_GetExtension( const char *name );
 void	COM_StripExtension( const char *in, char *out, int destsize );

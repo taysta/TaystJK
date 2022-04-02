@@ -2783,7 +2783,8 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 				break;
 		}
-
+            vec3_t start, end;
+            int mainTime;
 		{
 			if (cent->currentState.eventParm != cg.snap->ps.clientNum || cg.renderingThirdPerson)
 			{ //h4q3ry
@@ -2796,7 +2797,15 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 					VectorCopy(cg.lastFPFlashPoint, cent->currentState.origin2);
 				}
 			}
-			FX_DisruptorMainShot( cent->currentState.origin2, cent->lerpOrigin );
+            VectorCopy(cent->currentState.origin2, start);
+            VectorCopy(cent->lerpOrigin, end);
+            mainTime = cg_disruptorMainTime.integer;
+            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+                CG_RailSpiral(&cgs.clientinfo[cent->currentState.eventParm], start, end, mainTime);
+            else if ( (cg_disruptorNew.integer) )
+                CG_RailTrail(&cgs.clientinfo[cent->currentState.eventParm], start, end, mainTime);
+            else
+                FX_DisruptorMainShot(start, end);
 		}
 		break;
 
@@ -2812,7 +2821,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 				break;
 		}
-
+            int altTime;
 		{
 			if (cent->currentState.eventParm != cg.snap->ps.clientNum ||
 				cg.renderingThirdPerson)
@@ -2826,7 +2835,15 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 					VectorCopy(cg.lastFPFlashPoint, cent->currentState.origin2);
 				}
 			}
-			FX_DisruptorAltShot( cent->currentState.origin2, cent->lerpOrigin, cent->currentState.shouldtarget );
+            VectorCopy(cent->currentState.origin2, start);
+            VectorCopy(cent->lerpOrigin, end);
+            altTime = cg_disruptorAltTime.integer;
+            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+                CG_RailSpiral(&cgs.clientinfo[cent->currentState.eventParm], start, end, altTime);
+            else if ( (cg_disruptorNew.integer) )
+                CG_RailTrail(&cgs.clientinfo[cent->currentState.eventParm], start, end, altTime);
+            else
+                FX_DisruptorAltShot(start, end, cent->currentState.shouldtarget);
 		}
 		break;
 

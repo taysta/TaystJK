@@ -2604,4 +2604,8 @@ void	CG_SetLightstyle (int i);
 Ghoul2 Insert End
 */
 
+void CG_RailSpiral( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
+void CG_RailTrail( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
+
+
 extern cgameImport_t *trap;

@@ -221,10 +221,32 @@ XDOCS_CVAR_DEF("cg_pitchHelperRange", "The range of numbers to display as green 
 XDOCS_CVAR_DEF("cg_pitchHelperOffset", "Offset the green range up or down (eg. range 30, offset 10 = +25 to -5)",""
 )
 
-XDOCS_CVAR_DEF("cg_pitchHelperX", "Move the pitch helper's horizontal location)",""
+XDOCS_CVAR_DEF("cg_pitchHelperX", "Move the pitch helper's horizontal location",""
 )
 
-XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location)",""
+XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location",""
+)
+
+// Disruptor trail effects
+XDOCS_CVAR_DEF("cg_disruptorNew", "Enable new disruptor effects",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorTeamColour", "Changes disruptor effects colors according to team",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorSpiral", "Enable disruptor spiral effect",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorSpiral", "Changes disruptor spiral color (accepts hexcode eg. xffffff)",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorMainTime", "Amount of time to display disruptor primary fire",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorAltTime", "Amount of time to display disruptor alt fire",""
 )
 //Sounds
 
