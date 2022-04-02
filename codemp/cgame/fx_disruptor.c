@@ -40,7 +40,7 @@ void FX_DisruptorMainShot( vec3_t start, vec3_t end )
 	trap->FX_AddLine( start, end, 0.1f, 6.0f, 0.0f,
 							1.0f, 0.0f, 0.0f,
 							WHITE, WHITE, 0.0f,
-							150, trap->R_RegisterShader( "gfx/effects/redLine" ),
+							cg_disruptorMainTime.integer, trap->R_RegisterShader( "gfx/effects/redLine" ),
 							FX_SIZE_LINEAR | FX_ALPHA_LINEAR );
 
 //	VectorSubtract( end, start, dir );
@@ -64,7 +64,7 @@ void FX_DisruptorAltShot( vec3_t start, vec3_t end, qboolean fullCharge )
     trap->FX_AddLine( start, end, 0.1f, 10.0f, 0.0f,
                       1.0f, 0.0f, 0.0f,
                       WHITE, WHITE, 0.0f,
-                      175, trap->R_RegisterShader( "gfx/effects/redLine" ),
+                      cg_disruptorAltTime.integer, trap->R_RegisterShader( "gfx/effects/redLine" ),
                       FX_SIZE_LINEAR | FX_ALPHA_LINEAR );
 
     if ( fullCharge )
@@ -75,7 +75,7 @@ void FX_DisruptorAltShot( vec3_t start, vec3_t end, qboolean fullCharge )
         trap->FX_AddLine( start, end, 0.1f, 7.0f, 0.0f,
                           1.0f, 0.0f, 0.0f,
                           YELLER, YELLER, 0.0f,
-                          150, trap->R_RegisterShader( "gfx/misc/whiteline2" ),
+                          cg_disruptorAltTime.integer, trap->R_RegisterShader( "gfx/misc/whiteline2" ),
                           FX_SIZE_LINEAR | FX_ALPHA_LINEAR );
     }
 }

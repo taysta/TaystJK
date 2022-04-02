@@ -396,8 +396,8 @@ XCVAR_DEF( ui_tm2_c5_cnt,						"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 XCVAR_DEF( ui_tm2_cnt,							"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 XCVAR_DEF( ui_tm3_cnt,							"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 
-XCVAR_DEF( cg_disruptorMainTime,				"-1",					NULL,					CVAR_ARCHIVE )	//from smod
-XCVAR_DEF( cg_disruptorAltTime,					"-1",					NULL,					CVAR_ARCHIVE )	//from smod
+XCVAR_DEF( cg_disruptorMainTime,				"150",					NULL,					CVAR_ARCHIVE )	//from smod
+XCVAR_DEF( cg_disruptorAltTime,					"175",					NULL,					CVAR_ARCHIVE )	//from smod
 XCVAR_DEF( cg_disruptorTeamColour,				"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorSpiral,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorCoreColor,				"xff4400",				NULL,					CVAR_ARCHIVE )
