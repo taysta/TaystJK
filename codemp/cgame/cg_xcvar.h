@@ -45,11 +45,9 @@ XCVAR_DEF( cg_movementKeysSize,		"1.0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometer,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerX,			"132",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerY,			"459",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerColors,			"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
-XCVAR_DEF( cg_speedometerJumpsX,			"185",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerJumpsY,			"300",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_speedometerJumps,			    "10",	NULL,					CVAR_ARCHIVE ) //bitvalue
-XCVAR_DEF( cg_speedometerJumpsColors,		"1",	NULL,					CVAR_ARCHIVE ) //bitvalue
+XCVAR_DEF( cg_speedometerJumpsX,	"185",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumpsY,	"300",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumps,		 "10",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayX,		"640",	NULL,					CVAR_ARCHIVE )
@@ -58,7 +56,7 @@ XCVAR_DEF( cg_raceTimer,			"2",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimerX,			"5",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimerY,			"280",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_raceStart,			"1",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_raceStart,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartX,			"300",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartY,			"280",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_smallScoreboard,		"0",	NULL,					CVAR_ARCHIVE )
@@ -93,7 +91,7 @@ XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairIdentifyTarget,	"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairSaberStyleColor,	"0",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairColor,	"0 0 0 255",	CG_CrosshairColorChange,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_crosshairScope,	        "0",	NULL,					                    CVAR_ARCHIVE )
+XCVAR_DEF( cg_crossHairScope,	        "0",	NULL,					                    CVAR_ARCHIVE )
 
 
 //Strafehelper

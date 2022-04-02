@@ -1453,7 +1453,10 @@ static bitInfo_T speedometerSettings[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Speed graph" },//7
 	{ "Display speed in kilometers instead of units" },//8
 	{ "Display speed in imperial miles instead of units" },//9
-    { "Pre-speed jumps array" }
+    { "Pre-speed jumps array" },//10
+    { "Speedometer Colors"},//11
+    { "Array Colors 1" },//12
+    { "Array Colors 2" }//13
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 
@@ -1496,7 +1499,17 @@ void CG_SpeedometerSettings_f(void)
 			value ^= (1 << index); //Toggle index item
 
 			trap->Cvar_Set("cg_speedometer", va("%i", value));
-		}
+		} else if (index == 12 || index == 13){ //Radio button these options
+            //Toggle index, and make sure everything else in this group (8,9) is turned off
+            int groupMask = (1 << 12) + (1 << 13);
+            int value = cg_speedometer.integer;
+
+            groupMask &= ~(1 << index); //Remove index from groupmask
+            value &= ~(groupMask); //Turn groupmask off
+            value ^= (1 << index); //Toggle index item
+
+            trap->Cvar_Set("cg_speedometer", va("%i", value));
+        }
 		else {
 			trap->Cvar_Set("cg_speedometer", va("%i", (1 << index) ^ (cg_speedometer.integer & mask)));
 		}

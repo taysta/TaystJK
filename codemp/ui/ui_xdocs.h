@@ -11,9 +11,9 @@
 #define PADGROUP( specialChar, text ) specialChar text specialChar
 
 // describes one possible setting. use their aliases when possible
-#define DESCLINE( color, prefix, desc )		LINE( "    ", color, prefix, " "S_COLOR_GREY"-"S_COLOR_WHITE" ", desc )
+#define DESCLINE( color, prefix, desc )		LINE( "    ", color, prefix, " " S_COLOR_GREY"-" S_COLOR_WHITE" ", desc )
 #define EMPTYLINE( prefix, moreDesc )		LINE( "    ", "", prefix, "   ", moreDesc )
-#define EXAMPLE( example, desc )			S_COLOR_WHITE "Example: "S_COLOR_GREY"\"" S_COLOR_WHITE example S_COLOR_GREY "\" -> " S_COLOR_WHITE desc ""
+#define EXAMPLE( example, desc )			S_COLOR_WHITE "Example: " S_COLOR_GREY"\"" S_COLOR_WHITE example S_COLOR_GREY "\" -> " S_COLOR_WHITE desc ""
 
 // aliases for DESCLINE
 #define SETTING( setting, desc )			DESCLINE( S_COLOR_WHITE, PADGROUP( "\x1f", setting ), desc )
@@ -37,7 +37,9 @@
 
 XDOCS_CVAR_DEF("cg_movementKeys", "Show the movement keys onscreen",
 	SETTING("0", "Movement keys are hidden") NL
-	SETTING("1", "Movement keys are shown")
+	SETTING("1", "Movement keys are shown") NL
+    SETTING("2", "Crosshair style") NL
+    SETTING("3", "Moveable crosshair style")
 )
 
 XDOCS_CVAR_DEF("cg_movementKeysX", "Horizontal location of the movement keys",""
@@ -59,6 +61,21 @@ XDOCS_CVAR_DEF("cg_speedometerY", "Vertical location of the speedometer",""
 )
 
 XDOCS_CVAR_DEF("cg_speedometerSize", "Scale of the speedometer",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumps", "The amount of jumps to store in the jumps array, enable with the /speedometer command",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumpsX", "Horizontal location of the jumps array",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumpsY", "Vertical location of the jumps array",""
+)
+
+XDOCS_CVAR_DEF("cg_jumpGoal", "Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled",""
+)
+
+XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_startSpeed 1",""
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",
@@ -86,6 +103,15 @@ XDOCS_CVAR_DEF("cg_raceTimerY", "Vertical location of the race timer onscreen","
 )
 
 XDOCS_CVAR_DEF("cg_raceTimerSize", "Scale of the race timer",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStart", "Enable race timer start time separately from the race timer",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStartX", "Horizontal location of the race start timer onscreen",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStartY", "Vertical location of the race start timer onscreen",""
 )
 
 XDOCS_CVAR_DEF("cg_smallScoreboard", "Always use the small version of the scoreboard",
@@ -143,6 +169,9 @@ XDOCS_CVAR_DEF("cg_crossHairBlue", "Custom blue color of the crosshair",""
 )
 
 XDOCS_CVAR_DEF("cg_crossHairAlpha", "Custom transparency of the crosshair",""
+)
+
+XDOCS_CVAR_DEF("cg_crossHairScope", "Minimalist crosshair disruptor scope replacement",""
 )
 
 XDOCS_CVAR_DEF("cg_hudColors", "Changes the colors of the HUD based on saber style and force",

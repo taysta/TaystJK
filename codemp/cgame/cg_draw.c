@@ -84,6 +84,10 @@ static void CG_DrawTrajectoryLine(void);
 #define SPEEDOMETER_KPH				(1<<8)
 #define SPEEDOMETER_MPH				(1<<9)
 #define SPEEDOMETER_JUMPS			(1<<10)
+#define SPEEDOMETER_COLORS          (1<<11)
+#define SPEEDOMETER_JUMPSCOLORS1    (1<<12)
+#define SPEEDOMETER_JUMPSCOLORS2    (1<<13)
+
 
 //japro end
 
@@ -377,7 +381,7 @@ static void CG_DrawZoomMask( void )
 		level *= 103.0f;
 
 		// Draw target mask
-        if( cg_crosshairScope.integer == 0)
+        if( cg_crossHairScope.integer == 0)
         {
             trap->R_SetColor( colorTable[CT_WHITE] );
             CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
@@ -396,7 +400,7 @@ static void CG_DrawZoomMask( void )
 		}
 
 		// Draw rotating insert
-        if( cg_crosshairScope.integer == 0 )
+        if( cg_crossHairScope.integer == 0 )
         {
             CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
         }
@@ -6706,7 +6710,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crosshairScope.integer == 0 )
+	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crossHairScope.integer == 0 )
 	{//not while scoped
 		return;
 	}
@@ -11124,8 +11128,7 @@ static void CG_StrafeHelper(centity_t *cent)
 		if (cg_strafeHelper.integer & SHELPER_CENTER)
 			DrawStrafeLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
 
-        //backwards strafe?
-        if (cg_strafeHelper.integer & SHELPER_REAR && cg_strafeHelper.integer & SHELPER_S)
+        if (cg_strafeHelper.integer & SHELPER_REAR && cg_strafeHelper.integer & SHELPER_S && cg_strafeHelper.integer & SHELPER_CENTER)
             DrawStrafeLine(velocityAngle, 180.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //Rear Center
 	}
 	if (moveStyle != MV_QW && moveStyle != MV_SWOOP) { //Every style but QW has WA/WD lines
@@ -11134,7 +11137,6 @@ static void CG_StrafeHelper(centity_t *cent)
 		if (cg_strafeHelper.integer & SHELPER_WD)
 			DrawStrafeLine(velocityAngle, (-optimalDeltaAngle - (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD
 
-        //backwards strafe?
         if (cg_strafeHelper.integer & SHELPER_REAR) {
             if (cg_strafeHelper.integer & SHELPER_SA) {
                 DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
@@ -11638,7 +11640,7 @@ static void CG_Speedometer(void)
 
 		lastSpeed = currentSpeed;
 
-		if (currentSpeed > 250 && (cg_speedometerColors.integer == 1))
+		if (currentSpeed > 250 && cg_speedometer.integer & SPEEDOMETER_COLORS)
 		{
             currentSpeedColor = 1 / ((currentSpeed/250)*(currentSpeed/250));
 			colorSpeed[1] = currentSpeedColor;
@@ -11737,10 +11739,10 @@ static void CG_Speedometer(void)
                     for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
                         groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
                         Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
-                        if (cg_speedometerJumpsColors.integer == 1) { //color the string
+                        if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS1) { //color the string
                             colorGroundSpeeds[1] = groundSpeedsColor;
                             colorGroundSpeeds[2] = groundSpeedsColor;
-                        } else if (cg_speedometerJumpsColors.integer > 1) {
+                        } else if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS2) {
                             if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) ||
                                 (i == 0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
                                 colorGroundSpeeds[0] = groundSpeedsColor;
@@ -11774,7 +11776,7 @@ static void CG_Speedometer(void)
                 colorGroundSpeed[0] = groundSpeedColor;
                 colorGroundSpeed[1] = 1;
                 colorGroundSpeed[2] = groundSpeedColor;
-            } else if (cg.lastGroundSpeed > 250 && cg_speedometerColors.value) {
+            } else if (cg.lastGroundSpeed > 250 && cg_speedometer.integer & SPEEDOMETER_COLORS) {
                 colorGroundSpeed[0] = 1;
                 colorGroundSpeed[1] = groundSpeedColor;
                 colorGroundSpeed[2] = groundSpeedColor;

@@ -229,7 +229,11 @@ static bitInfo_t speedometerSettings[] = {
 	{ "Speed graph" },
 	{ "Display speed in kilometers instead of units" },
 	{ "Display speed in imperial miles instead of units" },
-    { "Pre-speed jumps array"}
+    { "Pre-speed jumps array"},
+    { "Pre-speed jumps array" },
+    { "Speedometer Colors"},
+    { "Array Colors 1" },
+    { "Array Colors 2" }
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 
