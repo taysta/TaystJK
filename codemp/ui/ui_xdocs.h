@@ -210,6 +210,22 @@ XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",
 XDOCS_CVAR_DEF("cg_strafeHelper", "Configure with the /strafehelper command",""
 )
 
+//Pitchhelper
+
+XDOCS_CVAR_DEF("cg_pitchHelper", "Draw pitch angle independently from /cg_showpos",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperRange", "The range of numbers to display as green (eg. range 30, offset 0 = +15 to -15)",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperOffset", "Offset the green range up or down (eg. range 30, offset 10 = +25 to -5)",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperX", "Move the pitch helper's horizontal location)",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location)",""
+)
 //Sounds
 
 XDOCS_CVAR_DEF("cg_rollSounds", "Play sound when players roll",
