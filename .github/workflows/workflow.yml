@@ -27,8 +27,13 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        arch: [x86, x64]
+        arch: [arm64, x86, x64]
         include:
+          - arch: arm64
+            platform: ARM64
+            suffix: .arm64
+            pkg_suffix: arm64
+
           - arch: x86
             platform: Win32
             pkg_suffix: x86
