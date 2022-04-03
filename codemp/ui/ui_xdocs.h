@@ -306,7 +306,7 @@ XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have cosmetics on non
     SETTING("5", "Propeller Hat") NL
     SETTING("6", "Sombrero") NL
     SETTING("7", "Top Hat") NL
-    SETTING("7", "Mask")
+    SETTING("8", "Mask")
 
 
 )
