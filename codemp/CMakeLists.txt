@@ -460,7 +460,6 @@ if(BuildMPEngine)
 		"${MPDir}/client/cl_net_chan.cpp"
 		"${MPDir}/client/cl_parse.cpp"
 		"${MPDir}/client/cl_scrn.cpp"
-		"${MPDir}/client/cl_tc_vis.cpp"
 		"${MPDir}/client/cl_ui.cpp"
 		"${MPDir}/client/cl_uiapi.cpp"
 		"${MPDir}/client/cl_uiapi.h"

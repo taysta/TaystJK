@@ -354,22 +354,8 @@ because a surface may be forced to perform a RB_End due
 to overflow.
 ==============
 */
-extern cvar_t* r_slickSurfaceRemap;
 void RB_BeginSurface( shader_t *shader, int fogNum ) {
 	shader_t *state = (shader->remappedShader) ? shader->remappedShader : shader;
-	if (state->surfaceFlags & SURF_SLICK && r_slickSurfaceRemap->integer)
-	{
-		state = tr.slickRemapShader;
-		tess.colorModulate = true;
-		tess.colorModulated[0] = 0;
-		tess.colorModulated[1] = 64;
-		tess.colorModulated[2] = 128; 
-		tess.colorModulated[3] = 255;
-	}
-	else
-	{
-		tess.colorModulate = false;
-	}
 
 	tess.numIndexes = 0;
 	tess.numVertexes = 0;
@@ -1427,15 +1413,6 @@ avoidGen:
 			break;
 		case ACFF_NONE:
 			break;
-		}
-	}
-
-	// modulate?
-	if (tess.colorModulate)
-	{
-		for (int i = 0; i < tess.numVertexes; i++)
-		{
-			memcpy(tess.svars.colors[i], tess.colorModulated, sizeof(color4ub_t));
 		}
 	}
 }

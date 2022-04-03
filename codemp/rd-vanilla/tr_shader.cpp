@@ -4172,12 +4172,10 @@ static void CreateInternalShaders( void ) {
 	ARB_InitGPUShaders();
 }
 
-extern cvar_t* r_slickSurfaceRemapShader;
 static void CreateExternalShaders( void ) {
 	tr.projectionShadowShader = R_FindShader( "projectionShadow", lightmapsNone, stylesDefault, qtrue );
 	tr.projectionShadowShader->sort = SS_STENCIL_SHADOW;
 	tr.sunShader = R_FindShader( "sun", lightmapsNone, stylesDefault, qtrue );
-	tr.slickRemapShader = R_FindShader(r_slickSurfaceRemapShader->string, lightmapsNone, stylesDefault, qtrue);
 }
 
 /*
