@@ -21,6 +21,57 @@ on:
   workflow_dispatch:
 
 jobs:
+  windows-msys:
+    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [ x86, x86_64 ]
+        cc: [ gcc ]
+        config: [ Release ]
+        include:
+          - arch: x86
+            msystem: MINGW32
+            prefix: mingw-w64-i686
+
+          - arch: x86_64
+            msystem: MINGW64
+            prefix: mingw-w64-x86_64
+
+          - config: Release
+            rule: install
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
+          msystem: ${{ matrix.msystem }}
+          path-type: minimal
+          release: false
+          update: false
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Build
+        run: |
+          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
+          make clean ARCH=${{ matrix.arch }}
+          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
+      - uses: actions/upload-artifact@v2
+        if: matrix.cc == 'gcc' && matrix.config == 'Release'
+        with:
+          name: windows-mingw-${{ matrix.arch }}
+          path: bin
+          if-no-files-found: error
+          retention-days: 5
+
   vs2019:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
     runs-on: windows-2019
