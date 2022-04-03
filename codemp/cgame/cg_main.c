@@ -1612,7 +1612,9 @@ Ghoul2 Insert End
 		cgs.media.cosmetics.kringekap	= trap->R_RegisterModel("models/players/hats/cringe.md3");
 		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
 		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
-	//jaPRO mod assets - end
+        cgs.media.cosmetics.mask		= trap->R_RegisterModel("models/players/hats/mask.md3");
+
+    //jaPRO mod assets - end
 
 	// register the inline models
 	breakPoint = cgs.numInlineModels = trap->CM_NumInlineModels();

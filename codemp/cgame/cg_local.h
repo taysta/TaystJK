@@ -158,6 +158,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	JAPRO_COSMETIC_CRINGE	(1<<4)
 #define	JAPRO_COSMETIC_SOMBRERO	(1<<5)
 #define	JAPRO_COSMETIC_TOPHAT	(1<<6)
+#define	JAPRO_COSMETIC_MASK	    (1<<7)
 
 //#define JAPRO_CINFO_UNLAGGEDPUSHPULL (1<<19)	//push pull unlagged
 
@@ -1861,7 +1862,8 @@ typedef struct cgMedia_s {
 		qhandle_t	kringekap;
 		qhandle_t	sombrero;
 		qhandle_t	tophat;
-	} cosmetics;
+        qhandle_t	mask;
+    } cosmetics;
 
 	//japro vgs
 	sfxHandle_t		maleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];
