@@ -114,6 +114,9 @@ XDOCS_CVAR_DEF("cg_raceStartX", "Horizontal location of the race start timer ons
 XDOCS_CVAR_DEF("cg_raceStartY", "Vertical location of the race start timer onscreen",""
 )
 
+XDOCS_CVAR_DEF("cg_scoreboardTime", "Displays the local time on the scoreboard",""
+)
+
 XDOCS_CVAR_DEF("cg_smallScoreboard", "Always use the small version of the scoreboard",
 	SETTING("0", "Scoreboard scales depending on number of players (Base behavior)") NL
 	SETTING("1", "Scoreboard is always small")
