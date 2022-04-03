@@ -78,7 +78,8 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        arch: [arm64, x86, x64]
+        # arch: [arm64, x86, x64]
+        arch: [ x86, x64 ]
         include:
           # - arch: arm64 # todo fix arm64 building
           #  platform: ARM64
