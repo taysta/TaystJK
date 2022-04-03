@@ -20,8 +20,8 @@ on:
 
   workflow_dispatch:
 
-#jobs: #todo fix mingw building
-#  windows-msys:
+jobs:
+#  windows-msys: #todo fix mingw building
 #    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
 #    runs-on: windows-2019
 #    strategy:
