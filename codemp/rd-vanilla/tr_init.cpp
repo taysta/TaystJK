@@ -152,10 +152,6 @@ cvar_t	*r_portalOnly;
 cvar_t	*r_subdivisions;
 cvar_t	*r_lodCurveError;
 
-// slick surface remap --eez
-cvar_t* r_slickSurfaceRemap;
-cvar_t* r_slickSurfaceRemapShader;
-
 cvar_t	*r_overBrightBits;
 cvar_t	*r_mapOverBrightBits;
 
@@ -1753,9 +1749,6 @@ Ghoul2 Insert End
 
 	for ( size_t i = 0; i < numCommands; i++ )
 		ri.Cmd_AddCommand( commands[i].cmd, commands[i].func, "" );
-
-	r_slickSurfaceRemap = ri.Cvar_Get("r_slickSurfaceRemap", "0", CVAR_ARCHIVE_ND, "");
-	r_slickSurfaceRemapShader = ri.Cvar_Get("r_slickSurfaceRemapShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 }
 
 

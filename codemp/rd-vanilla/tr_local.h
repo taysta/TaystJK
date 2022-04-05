@@ -995,7 +995,6 @@ typedef struct trGlobals_s {
 	shader_t				*shadowShader;
 	shader_t				*distortionShader;
 	shader_t				*projectionShadowShader;
-	shader_t*				slickRemapShader;
 
 	shader_t				*sunShader;
 
@@ -1477,10 +1476,6 @@ struct shaderCommands_s
 
 	//rww - doing a fade, don't compute shader color/alpha overrides
 	bool		fading;
-
-	// eez - color-modulate some brushes
-	bool colorModulate;
-	color4ub_t colorModulated;
 };
 
 #ifdef _MSC_VER
