@@ -2367,7 +2367,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 					CG_MissileHitWall( ent->weapon, cg.predictedPlayerState.clientNum, trace.endpos, trace.plane.normal, IMPACTSOUND_DEFAULT );
 				}*/
 			}
-            if (cg_disruptorSpiral.integer)
+            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
                 CG_RailSpiral(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);
             else if (cg_disruptorNew.integer)
                 CG_RailTrail(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);

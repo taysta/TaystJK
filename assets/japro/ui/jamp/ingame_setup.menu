@@ -33,6 +33,7 @@
 			hide			vidrestart
 			hide			visuals
 			hide			morevisuals
+			hide			evenmorevisuals
 			hide			hud
 			hide			sound
 			hide			options
@@ -143,6 +144,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				hide			options
@@ -208,6 +210,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				hide			options
@@ -273,6 +276,7 @@
 				hide			vidrestart
 				show			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				hide			options
@@ -338,6 +342,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				show			hud
 				hide			sound
 				hide			options
@@ -403,6 +408,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				show			sound
 				hide			langapply
@@ -469,6 +475,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				show			options
@@ -534,6 +541,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				hide			options
@@ -614,6 +622,7 @@
 				hide			vidrestart
 				hide			visuals
 				hide			morevisuals
+				hide			evenmorevisuals
 				hide			hud
 				hide			sound
 				hide			options
@@ -3140,7 +3149,7 @@
 		{
 			name				done2button_glow
 			style				WINDOW_STYLE_SHADER
-			rect				260 285 200 16
+			rect				260 305 200 16
 			background			"gfx/menus/menu_blendbox"
 			forecolor			1 0.5 0.5 1
 			visible				0
@@ -3151,6 +3160,247 @@
 		{
 			name				done2
 			group				morevisuals
+	  		type				ITEM_TYPE_BUTTON
+			text				"Even More Visuals"
+			rect				260 303 200 20
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			100
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			1 .682 0 1
+			visible				0
+			descText			"Show more visual options."
+			action
+			{
+				play 			"sound/interface/button1"
+				show			evenmorevisuals
+				hide			done2button_glow
+				hide			morevisuals
+			}
+			mouseenter			{ show done2button_glow }
+			mouseexit			{ hide done2button_glow }
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		//	EVEN MORE VISUALS
+		//
+		//----------------------------------------------------------------------------------------------
+		itemDef
+        		{
+        			name				crosshairscope
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_MULTI
+        			text				"Crosshair Scope:"
+        			cvar				"cg_crosshairScope"
+        			cvarFloatList
+        			{
+        				@MENUS_OFF 0
+        				@MENUS_ON 1
+        			}
+        			rect				220 43 300 20
+        			textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Toggle crosshair scope. No scope graphics; just keep drawing your crosshair and zoom in."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight1 }
+        			mouseexit			{ hide highlight1 }
+        		}
+
+        		itemDef
+        		{
+        			name				maintime
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_NUMERICFIELD
+        			text				"Primary fire time:"
+        			cvar				"cg_disruptorMainTime"
+        			bitMask				"7"
+        			rect				220 63 300 20
+        			textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"How long to draw the trail for primary fire shots."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight2 }
+        			mouseexit			{ hide highlight2 }
+        		}
+
+        		itemDef
+        		{
+        			name				alttime
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_NUMERICFIELD
+        			text				"Alt fire time:"
+        			cvar				"cg_disruptorAltTime"
+        			rect				220 83 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"How long to draw the trail for alt fire shots."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight3 }
+        			mouseexit			{ hide highlight3 }
+        		}
+
+        		itemDef
+        		{
+        			name				newdisruptor
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_MULTI
+        			text				"New Disruptor Trails:"
+        			cvar				"cg_disruptorNew"
+        			cvarFloatList
+        			{
+        				@MENUS_OFF 0
+        				@MENUS_ON 1
+        			}
+        			rect				220 103 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Toggle to enable new disruptor trails."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight4 }
+        			mouseexit			{ hide highlight4 }
+        		}
+
+        		itemDef
+        		{
+        			name				teamcolors
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_MULTI
+        			text				"Disruptor Team Colors:"
+        			cvar				"cg_disruptorTeemColor"
+        			cvarFloatList
+        			{
+        				@MENUS_OFF 0
+        				@MENUS_ON 1
+        			}
+        			cvarTest			cg_disruptorNew
+                    showCvar			{ 1 }
+        			rect				220 123 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Show leader in FFA or opponent in private duel."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight5 }
+        			mouseexit			{ hide highlight5 }
+        		}
+
+        		itemDef
+        		{
+        			name				corecolor
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_EDITFIELD
+        			text				"Core Color:"
+        			cvar				"cg_disruptorCoreColor"
+        			cvarTest			cg_disruptorNew
+                    showCvar			{ 1 }
+        			rect				220 143 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Change the color of the trail effect. Must be hexcode in the format xffffff"
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight6 }
+        			mouseexit			{ hide highlight6 }
+        		}
+
+        		itemDef
+        		{
+        			name				spiral
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_MULTI
+        			text				"Spiral effect:"
+        			cvar				"cg_disruptorSpiral"
+        			cvarFloatList
+        			{
+        				@MENUS_OFF 0
+        				@MENUS_ON 1
+        			}
+        			cvarTest			cg_disruptorNew
+                    showCvar			{ 1 }
+        			rect				220 163 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Toggle to the disruptor spiral effect."
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight7 }
+        			mouseexit			{ hide highlight7 }
+        		}
+
+        		itemDef
+        		{
+        			name				spiralcolor
+        			group				evenmorevisuals
+        	  		type				ITEM_TYPE_EDITFIELD
+        			text				"Spiral Color:"
+        			cvar				"cg_disruptorSpiralColor"
+        			cvarTest			cg_disruptorSpiral
+                    showCvar			{ 1 }
+        			cvarTest			cg_disruptorNew
+                    showCvar			{ 1 }
+        			rect				220 183 300 20
+        				textalign			ITEM_ALIGN_RIGHT
+        			textalignx			165
+        			textaligny			0
+        			font 				4
+        			textscale 			1
+        			forecolor			.615 .615 .956 1
+        			visible				0
+        			descText			"Change the color of the spiral effect. Must be Hexcode in the format xffffff"
+        			action				{ play "sound/interface/button1" }
+        			mouseenter			{ show highlight8 }
+        			mouseexit			{ hide highlight8 }
+        		}
+
+		itemDef
+		{
+			name				done4button_glow
+			style				WINDOW_STYLE_SHADER
+			rect				260 305 200 16
+			background			"gfx/menus/menu_blendbox"
+			forecolor			1 0.5 0.5 1
+			visible				0
+			decoration
+		}
+
+		itemDef
+		{
+			name				done4
+			group				evenmorevisuals
 	  		type				ITEM_TYPE_BUTTON
 			text				"Done"
 			rect				260 303 200 20
@@ -3166,11 +3416,11 @@
 			{
 				play 			"sound/interface/button1"
 				show			visuals
-				hide			done2button_glow
-				hide			morevisuals
+				hide			done4button_glow
+				hide			evenmorevisuals
 			}
-			mouseenter			{ show done2button_glow }
-			mouseexit			{ hide done2button_glow }
+			mouseenter			{ show done4button_glow }
+			mouseexit			{ hide done4button_glow }
 		}
 
 		//----------------------------------------------------------------------------------------------
@@ -3336,11 +3586,11 @@
 
 		itemDef
 		{
-			name				drawenemyinfo
+			name				scoreboardtime
 			group				hud
 	  		type				ITEM_TYPE_MULTI
-			text				"Draw Enemy Info:"
-			cvar				"cg_drawEnemyInfo"
+			text				"Scoreboard Time:"
+			cvar				"cg_scoreboardTime"
 			cvarFloatList
 			{
 				@MENUS_OFF 0
@@ -3354,10 +3604,36 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			visible				0
-			descText			"Show leader in FFA or opponent in private duel."
+			descText			"Toggle to display the local time on the scoreboard."
 			action				{ play "sound/interface/button1" }
 			mouseenter			{ show highlight7 }
 			mouseexit			{ hide highlight7 }
+		}
+
+		itemDef
+		{
+			name				drawenemyinfo
+			group				hud
+	  		type				ITEM_TYPE_MULTI
+			text				"Draw Enemy Info:"
+			cvar				"cg_drawEnemyInfo"
+			cvarFloatList
+			{
+				@MENUS_OFF 0
+				@MENUS_ON 1
+			}
+			rect				220 183 300 20
+				textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			visible				0
+			descText			"Show leader in FFA or opponent in private duel."
+			action				{ play "sound/interface/button1" }
+			mouseenter			{ show highlight8 }
+			mouseexit			{ hide highlight8 }
 		}
 
 		itemDef
@@ -3372,7 +3648,7 @@
 				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
-			rect				220 183 300 20
+			rect				220 203 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3382,8 +3658,8 @@
 			visible				0
 			descText			@MENUS_DRAW_OVERLAY_SHOWING
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight8 }
-			mouseexit			{ hide highlight8 }
+			mouseenter			{ show highlight9 }
+			mouseexit			{ hide highlight9 }
 		}
 
 		itemDef
@@ -3398,7 +3674,7 @@
 				@MENUS_OFF 0
 				@MENUS_ON 1
 			}
-			rect				220 203 300 20
+			rect				220 223 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3408,8 +3684,36 @@
 			visible				0
 			descText			"Toggle radar which shows teammates close-by."
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight9 }
-			mouseexit			{ hide highlight9 }
+			mouseenter			{ show highlight10 }
+			mouseexit			{ hide highlight10 }
+		}
+
+		itemDef
+		{
+			name				movementkeys
+			group				hud
+	  		type				ITEM_TYPE_MULTI
+			text				"Movement Keys:"
+			cvar				"cg_movementKeys"
+			cvarFloatList
+			{
+			    "Off" 0
+				"Crosshair" 2
+				"Style 1" 1
+				"Style 2" 3
+			}
+			rect				220 243 300 20
+				textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			visible				0
+			descText			"Display direction key arrow presses onscreen"
+			action				{ play "sound/interface/button1" }
+			mouseenter			{ show highlight11 }
+			mouseexit			{ hide highlight11 }
 		}
 
 		itemDef
@@ -3426,7 +3730,7 @@
 				"Jedi Outcast" 2
 				"Elegance" 3
 			}
-			rect				220 223 300 20
+			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3436,8 +3740,8 @@
 			visible				0
 			descText			"Toggle HUD used in-game."
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight10 }
-			mouseexit			{ hide highlight10 }
+			mouseenter			{ show highlight12 }
+			mouseexit			{ hide highlight12 }
 		}
 
 		itemDef
@@ -3454,7 +3758,7 @@
 			}
 			cvarTest			cg_hudFiles
 			showCvar			{ 1 }
-			rect				220 243 300 20
+			rect				220 283 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3464,8 +3768,8 @@
 			visible				0
 			descText			"Recolors simple HUD based on current amount of health/ammo/force."
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight11 }
-			mouseexit			{ hide highlight11 }
+			mouseenter			{ show highlight13 }
+			mouseexit			{ hide highlight13 }
 		}
 
 		itemDef
@@ -3482,7 +3786,7 @@
 			}
 			cvarTest			cg_hudFiles
 			hideCvar			{ 1 }
-			rect				220 243 300 20
+			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3492,8 +3796,8 @@
 			visible				0
 			descText			"Toggle to display your personal score on the HUD."
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight11 }
-			mouseexit			{ hide highlight11 }
+			mouseenter			{ show highlight12 }
+			mouseexit			{ hide highlight12 }
 		}
 
 		itemDef
@@ -3510,7 +3814,7 @@
 			}
 			cvarTest			cg_hudFiles
 			hideCvar			{ 1, 3 }
-			rect				220 263 300 20
+			rect				220 283 300 20
 				textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
@@ -3520,8 +3824,8 @@
 			visible				0
 			descText			"Toggle to display the color tinting on your HUD while on red or blue team."
 			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight12 }
-			mouseexit			{ hide highlight12 }
+			mouseenter			{ show highlight13 }
+			mouseexit			{ hide highlight13 }
 		}
 
 
@@ -3888,7 +4192,7 @@
 				English  			english
 				@MENUS_LANG_FRENCH  francais
 				Deutsch				deutsch
-				"Español" 			espanol
+				"Espaï¿½ol" 			espanol
 			}
 			rect				220 263 300 20
 				textalign			ITEM_ALIGN_RIGHT
@@ -4017,12 +4321,12 @@
 			mouseexit			{ hide highlight2 }
 		}
 
-		/*itemDef
+		itemDef
 		{
 			name				dynamiccrosshair
 			group				options
 	  		type				ITEM_TYPE_MULTI
-			text				"Dynamic Crosshair"
+			text				"Dynamic Crosshair:"
 			cvar				"cg_dynamicCrosshair"
 			cvarFloatList
 			{
@@ -4030,7 +4334,7 @@
 				@MENUS_ON 1
 			}
 			rect				220 83 300 20
-				textalign			ITEM_ALIGN_RIGHT
+			textalign			ITEM_ALIGN_RIGHT
 			textalignx			165
 			textaligny			0
 			font 				4
@@ -4048,7 +4352,7 @@
 			name				dynamiccrosshairprecision
 			group				options
 	  		type				ITEM_TYPE_MULTI
-			text				"Dynamic Crosshair Precision:
+			text				"Dynamic Crosshair Precision:"
 			cvar				"cg_dynamicCrosshairPrecision"
 			cvarFloatList
 			{
@@ -4067,7 +4371,7 @@
 			action				{ play "sound/interface/button1" }
 			mouseenter			{ show highlight4 }
 			mouseexit			{ hide highlight4 }
-		}*/
+		}
 
 		itemDef
 		{
@@ -4496,7 +4800,7 @@
 		{
 			name				timenudge
 			group				network
-			type				ITEM_TYPE_NUMERICFIELD
+			type				ITEM_TYPE_EDITFIELD
 			text				"Time Nudge:"
 			cvar				"cl_timeNudge"
 			rect				220 183 300 20
@@ -4511,27 +4815,6 @@
 			action				{ play "sound/interface/button1" }
 			mouseenter			{ show highlight8 }
 			mouseexit			{ hide highlight8 }
-		}
-
-		itemDef
-		{
-			name				timenudgeduration
-			group				network
-			type				ITEM_TYPE_NUMERICFIELD
-			text				"Time Nudge Duration:"
-			cvar				"cl_timeNudgeDuration"
-			rect				220 203 300 20
-				textalign			ITEM_ALIGN_RIGHT
-			textalignx			165
-			textaligny			0
-			font 				4
-			textscale 			1
-			forecolor			.615 .615 .956 1
-			visible				0
-			descText			"Configure your timenudge duration."
-			action				{ play "sound/interface/button1" }
-			mouseenter			{ show highlight9 }
-			mouseexit			{ hide highlight9 }
 		}
 
 		// APPLY CHANGES BUTTON
