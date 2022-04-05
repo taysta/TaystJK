@@ -42,7 +42,7 @@ static int winding_cmp(const void *a, const void *b);
 static void add_vert_to_face(visFace_t *face, vec3_t vert, vec4_t color, vec2_t tex_coords);
 static float *get_uv_coords(vec2_t uv, vec3_t vert, vec3_t normal);
 static void free_vis_brushes(visBrushNode_t *brushes);
-static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull);
+static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, visBrushType_t type);
 
 
 static visBrushNode_t *trigger_head = NULL;
@@ -64,6 +64,8 @@ static cvar_t *slick_shader_setting;
 static cvar_t* trigger_cull_setting;
 static cvar_t* clip_cull_setting;
 static cvar_t* slick_cull_setting;
+
+static cvar_t* trigger_entity_filter;
 
 static qhandle_t trigger_shader;
 static qhandle_t clip_shader;
@@ -95,6 +97,8 @@ void tc_vis_init(void) {
 	clip_cull_setting = Cvar_Get("r_renderClipBrushesCull", "0", CVAR_ARCHIVE_ND);
 	slick_cull_setting = Cvar_Get("r_renderSlickSurfacesCull", "0", CVAR_ARCHIVE_ND);
 
+	trigger_entity_filter = Cvar_Get("r_renderTriggerFilter", "", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
+
 	trigger_shader = re->RegisterShader(trigger_shader_setting->string);
 	clip_shader = re->RegisterShader(clip_shader_setting->string);
 	slick_shader = re->RegisterShader(slick_shader_setting->string);
@@ -106,18 +110,88 @@ void tc_vis_init(void) {
 
 void tc_vis_render(void) {
 	if (triggers_draw->integer) {
-		draw(trigger_head, trigger_shader, (qboolean)!!!trigger_cull_setting->integer);
+		draw(trigger_head, trigger_shader, (qboolean)!!!trigger_cull_setting->integer, TRIGGER_BRUSH);
 	}
 	if (clips_draw->integer) {
-		draw(clip_head, clip_shader, (qboolean)!!!clip_cull_setting->integer);
+		draw(clip_head, clip_shader, (qboolean)!!!clip_cull_setting->integer, CLIP_BRUSH);
 	}
 	if (slicks_draw->integer) {
-		draw(slick_head, slick_shader, (qboolean)!!!slick_cull_setting->integer);
+		draw(slick_head, slick_shader, (qboolean)!!!slick_cull_setting->integer, SLICK_BRUSH);
 	}
 }
 
 // ripped from breadsticks
 static void add_triggers(void) {
+	// make an array of strings
+	char** filteredTrigs = nullptr;
+	// count number of commas/semicolons
+	int breakCount = 1;
+	char* str = trigger_entity_filter->string;
+	size_t longestStr = 0, curStr = 0;
+	while (str && *str)
+	{
+		if (*str == ';' || *str == ',')
+		{
+			if (++curStr > longestStr)
+			{
+				longestStr = curStr;
+			}
+			if (curStr > 1)
+			{
+				breakCount++;
+			}
+			curStr = 0;
+		}
+		++curStr;
+		++str;
+	}
+
+	if (longestStr == 0 && curStr != 0)
+	{
+		longestStr = curStr;
+	}
+	
+	if (breakCount > 0 && longestStr > 0)
+	{
+		size_t allocSize = strlen(trigger_entity_filter->string) + 1;
+		char* tempBuffer = (char*)malloc(allocSize);
+		char* str = tempBuffer;
+		Q_strncpyz(tempBuffer, trigger_entity_filter->string, allocSize);
+		filteredTrigs = (char**)malloc(sizeof(char*) * breakCount);
+		if (filteredTrigs && tempBuffer)
+		{
+			for (int i = 0; i < breakCount; i++)
+			{
+				// find first semicolon or comma in `str`, turn into terminator
+				char* tstr = str;
+				if (!*tstr)
+				{
+					filteredTrigs[i] = (char*)malloc(longestStr);
+					filteredTrigs[i][0] = '\0';
+					break;
+				}
+				while (tstr && *tstr)
+				{
+					if (*tstr == ',' || *tstr == ';')
+					{
+						*tstr = '\0';
+						tstr++;
+						break;
+					}
+					tstr++;
+				}
+				filteredTrigs[i] = (char*)malloc(longestStr);
+				Q_strncpyz(filteredTrigs[i], str, longestStr);
+				str = tstr;
+			}
+		}
+		if (tempBuffer)
+		{
+			free(tempBuffer);
+		}
+	}
+	
+
 	const char *entities = cmg.entityString;
 	for (;; ) {
 		bool is_trigger = false;
@@ -147,6 +221,17 @@ static void add_triggers(void) {
 			if (!Q_stricmp(token, "classname")) {
 				token = COM_Parse(&entities);
 				is_trigger = !!Q_stristr(token, "trigger");
+				if (filteredTrigs) {
+					for (int i = 0; i < breakCount; i++)
+					{
+						if (!Q_stricmp(token, filteredTrigs[i]))
+						{
+							is_trigger = false;
+							break;
+						}
+					}
+				}
+				
 			}
 
 			if (!Q_stricmp(token, "origin")) {
@@ -163,6 +248,15 @@ static void add_triggers(void) {
 				gen_visible_brush(cmg.leafbrushes[leaf->firstLeafBrush + i], origin, TRIGGER_BRUSH, trigger_color);
 			}
 		}
+	}
+
+	if (filteredTrigs)
+	{
+		for (int i = 0; i < breakCount; i++)
+		{
+			free(filteredTrigs[i]);
+		}
+		free(filteredTrigs);
 	}
 }
 
@@ -397,12 +491,38 @@ static qboolean CullFace(const visFace_t *face) {
 	return qfalse;
 }
 
-static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull) {
+extern qboolean SV_inPVS(const vec3_t p1, const vec3_t p2);
+static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, visBrushType_t type) {
 	frustum = re->ext.GetFrustum();
 	while (brush) {
 		for (int i = 0; i < brush->numFaces; ++i) {
+			// ensure not frustum culled
 			if (!ignoreCull && CullFace(brush->faces + i)) continue;
-			re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
+
+			// ensure in same PVS
+			qboolean inPVS = qfalse;
+			for (int j = 0; j < brush->faces[i].numVerts; j++) {
+				if (SV_inPVS(re->ext.GetViewPosition(), brush->faces[i].verts[j].xyz)) {
+					inPVS = qtrue;
+					break;
+				}
+			}
+			if (inPVS) {
+				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
+					static polyVert_t extruded[800];
+					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof polyVert_t * 800, sizeof polyVert_t * brush->faces[i].numVerts));
+					for (int j = 0; j < brush->faces[i].numVerts; j++)
+					{
+						extruded[j].xyz[3] += 3.0f;
+					}
+					re->AddPolyToScene(shader, brush->faces[i].numVerts, extruded, 1);
+				}
+				else {
+					re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
+				}
+				
+			}
+			
 		}
 		brush = brush->next;
 	}

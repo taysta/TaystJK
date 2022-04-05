@@ -214,8 +214,8 @@ cvar_t	*r_vbo;
 
 // the limits apply to the sum of all scenes in a frame --
 // the main view, all the 3D icons, etc
-#define	DEFAULT_MAX_POLYS		600
-#define	DEFAULT_MAX_POLYVERTS	3000
+#define	DEFAULT_MAX_POLYS		32000
+#define	DEFAULT_MAX_POLYVERTS	128000
 static cvar_t	*r_maxpolys;
 static cvar_t	*r_maxpolyverts;
 int		max_polys;
@@ -1230,6 +1230,11 @@ static const cplane_t* RE_GetFrustum(void)
 	return tr.viewParms.frustum;
 }
 
+static const vec_t* RE_GetViewPosition(void)
+{
+	return tr.viewParms.ori.origin;
+}
+
 /*
 @@@@@@@@@@@@@@@@@@@@@
 GetRefAPI
@@ -1426,7 +1431,8 @@ Q_EXPORT refexport_t* QDECL GetRefAPI( int apiVersion, refimport_t *rimp ) {
 	//re.G2VertSpaceServer	= G2VertSpaceServer;
 
 	re.ext.Font_StrLenPixels				= RE_Font_StrLenPixelsNew;
-	re.ext.GetFrustum                      = RE_GetFrustum;
+	re.ext.GetFrustum                       = RE_GetFrustum;
+	re.ext.GetViewPosition                  = RE_GetViewPosition;
 
 	return &re;
 }
