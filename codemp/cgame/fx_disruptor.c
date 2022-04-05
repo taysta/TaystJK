@@ -188,7 +188,7 @@ void CG_RailSpiral( clientInfo_t *ci, vec3_t start, vec3_t end, int time ) {
     for (i = 0 ; i < 36; i++)
         RotatePointAroundVector(axis[i], vec, temp, i * 10);//banshee 2.4 was 10
 
-    if (!cg_disruptorTeamColour.integer) {
+    if (!cg_disruptorTeamColor.integer) {
         if (cg_disruptorCoreColor.string[0] != '0') {
             Q_parseColor( cg_disruptorCoreColor.string, defaultColors, coreColor );
         } else {

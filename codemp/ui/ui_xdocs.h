@@ -234,7 +234,7 @@ XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location",""
 XDOCS_CVAR_DEF("cg_disruptorNew", "Enable new disruptor effects",""
 )
 
-XDOCS_CVAR_DEF("cg_disruptorTeamColour", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
+XDOCS_CVAR_DEF("cg_disruptorTeamColor", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
 )
 
 XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)","Requires cg_disruptorNew 1"
