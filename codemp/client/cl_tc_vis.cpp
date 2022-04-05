@@ -95,13 +95,13 @@ void tc_vis_init(void) {
 	clip_shader = re->RegisterShader(clip_shader_setting->string);
 	slick_shader = re->RegisterShader(slick_shader_setting->string);
 	if (trigger_shader == 0) {
-		trigger_shader = re->RegisterShader("<default>");
+		trigger_shader = re->RegisterShader("white");
 	}
 	if (clip_shader == 0) {
-		clip_shader = re->RegisterShader("<default>");
+		clip_shader = re->RegisterShader("white");
 	}
 	if (slick_shader == 0) {
-		slick_shader = re->RegisterShader("<default>");
+		slick_shader = re->RegisterShader("white");
 	}
 
 	add_triggers();
