@@ -85,15 +85,24 @@ void tc_vis_init(void) {
 	clips_draw = Cvar_Get("r_renderClipBrushes", "0", CVAR_ARCHIVE_ND);
 	slicks_draw = Cvar_Get("r_renderSlickSurfaces", "0", CVAR_ARCHIVE_ND);
 
-	trigger_shader_setting = Cvar_Get("r_renderTriggerBrushesShader", "tcRenderShader", CVAR_ARCHIVE_ND);
-	clip_shader_setting = Cvar_Get("r_renderClipBrushesShader", "tcRenderShader", CVAR_ARCHIVE_ND);
-	slick_shader_setting = Cvar_Get("r_renderSlickSurfacesShader", "tcRenderShader", CVAR_ARCHIVE_ND);
+	trigger_shader_setting = Cvar_Get("r_renderTriggerBrushesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
+	clip_shader_setting = Cvar_Get("r_renderClipBrushesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
+	slick_shader_setting = Cvar_Get("r_renderSlickSurfacesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
 
 	trigger_entity_filter = Cvar_Get("r_renderTriggerFilter", "", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 
 	trigger_shader = re->RegisterShader(trigger_shader_setting->string);
 	clip_shader = re->RegisterShader(clip_shader_setting->string);
 	slick_shader = re->RegisterShader(slick_shader_setting->string);
+	if (trigger_shader == 0) {
+		trigger_shader = re->RegisterShader("<default>");
+	}
+	if (clip_shader == 0) {
+		clip_shader = re->RegisterShader("<default>");
+	}
+	if (slick_shader == 0) {
+		slick_shader = re->RegisterShader("<default>");
+	}
 
 	add_triggers();
 	add_clips();
