@@ -42,7 +42,7 @@ static int winding_cmp(const void *a, const void *b);
 static void add_vert_to_face(visFace_t *face, vec3_t vert, vec4_t color, vec2_t tex_coords);
 static float *get_uv_coords(vec2_t uv, vec3_t vert, vec3_t normal);
 static void free_vis_brushes(visBrushNode_t *brushes);
-static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, visBrushType_t type);
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type);
 
 
 static visBrushNode_t *trigger_head = NULL;
@@ -60,10 +60,6 @@ static cvar_t *slicks_draw;
 static cvar_t *trigger_shader_setting;
 static cvar_t *clip_shader_setting;
 static cvar_t *slick_shader_setting;
-
-static cvar_t* trigger_cull_setting;
-static cvar_t* clip_cull_setting;
-static cvar_t* slick_cull_setting;
 
 static cvar_t* trigger_entity_filter;
 
@@ -93,10 +89,6 @@ void tc_vis_init(void) {
 	clip_shader_setting = Cvar_Get("r_renderClipBrushesShader", "tcRenderShader", CVAR_ARCHIVE_ND);
 	slick_shader_setting = Cvar_Get("r_renderSlickSurfacesShader", "tcRenderShader", CVAR_ARCHIVE_ND);
 
-	trigger_cull_setting = Cvar_Get("r_renderTriggerBrushesCull", "1", CVAR_ARCHIVE_ND);
-	clip_cull_setting = Cvar_Get("r_renderClipBrushesCull", "0", CVAR_ARCHIVE_ND);
-	slick_cull_setting = Cvar_Get("r_renderSlickSurfacesCull", "0", CVAR_ARCHIVE_ND);
-
 	trigger_entity_filter = Cvar_Get("r_renderTriggerFilter", "", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 
 	trigger_shader = re->RegisterShader(trigger_shader_setting->string);
@@ -108,15 +100,43 @@ void tc_vis_init(void) {
 	add_slicks();
 }
 
+static vec3_t g_pvsLocation;
+static int g_pvsArea;
+static byte* g_pvsMask;
+static void SetPVSLocation(const vec3_t p)
+{
+	int leafnum, cluster;
+
+	VectorCopy(p, g_pvsLocation);
+	leafnum = CM_PointLeafnum(p);
+	cluster = CM_LeafCluster(leafnum);
+	g_pvsArea = CM_LeafArea(leafnum);
+	g_pvsMask = CM_ClusterPVS(cluster);
+}
+
+static qboolean InPVS(const vec3_t p)
+{
+	int leafnum = CM_PointLeafnum(p);
+	int cluster = CM_LeafCluster(leafnum);
+	int area = CM_LeafArea(leafnum);
+
+	if (g_pvsMask && (!g_pvsMask[cluster >> 3] & (1 << (cluster & 7))))
+		return qfalse;
+	if (!CM_AreasConnected(g_pvsArea, area))
+		return qfalse;
+	return qtrue;
+}
+
 void tc_vis_render(void) {
+	SetPVSLocation(re->ext.GetViewPosition());
 	if (triggers_draw->integer) {
-		draw(trigger_head, trigger_shader, (qboolean)!!!trigger_cull_setting->integer, TRIGGER_BRUSH);
+		draw(trigger_head, trigger_shader, TRIGGER_BRUSH);
 	}
 	if (clips_draw->integer) {
-		draw(clip_head, clip_shader, (qboolean)!!!clip_cull_setting->integer, CLIP_BRUSH);
+		draw(clip_head, clip_shader, CLIP_BRUSH);
 	}
 	if (slicks_draw->integer) {
-		draw(slick_head, slick_shader, (qboolean)!!!slick_cull_setting->integer, SLICK_BRUSH);
+		draw(slick_head, slick_shader, SLICK_BRUSH);
 	}
 }
 
@@ -481,28 +501,14 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 	}
 }
 
-static qboolean CullFace(const visFace_t *face) {
-	if (!face->numVerts) return qtrue;
-
-	for (int i = 0; i < 5; ++i) {
-		const int s = BoxOnPlaneSide(face->mins, face->maxs, frustum + i);
-		if (s == 2) return qtrue;
-	}
-	return qfalse;
-}
-
-extern qboolean SV_inPVS(const vec3_t p1, const vec3_t p2);
-static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, visBrushType_t type) {
+static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
 	frustum = re->ext.GetFrustum();
 	while (brush) {
 		for (int i = 0; i < brush->numFaces; ++i) {
-			// ensure not frustum culled
-			if (!ignoreCull && CullFace(brush->faces + i)) continue;
-
 			// ensure in same PVS
 			qboolean inPVS = qfalse;
 			for (int j = 0; j < brush->faces[i].numVerts; j++) {
-				if (SV_inPVS(re->ext.GetViewPosition(), brush->faces[i].verts[j].xyz)) {
+				if (InPVS(brush->faces[i].verts[j].xyz)) {
 					inPVS = qtrue;
 					break;
 				}
@@ -510,17 +516,16 @@ static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, v
 			if (inPVS) {
 				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
 					static polyVert_t extruded[800];
-					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof polyVert_t * 800, sizeof polyVert_t * brush->faces[i].numVerts));
-					for (int j = 0; j < brush->faces[i].numVerts; j++)
+					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * brush->faces[i].numVerts));
+					for (int j = 0; j < brush->faces[i].numVerts && j < 800; j++)
 					{
-						extruded[j].xyz[3] += 3.0f;
+						extruded[j].xyz[2] += 3.0f;
 					}
 					re->AddPolyToScene(shader, brush->faces[i].numVerts, extruded, 1);
 				}
 				else {
 					re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
 				}
-				
 			}
 			
 		}
