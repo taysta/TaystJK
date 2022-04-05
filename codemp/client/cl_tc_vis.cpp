@@ -510,7 +510,7 @@ static void draw(visBrushNode_t *brush, qhandle_t shader, qboolean ignoreCull, v
 			if (inPVS) {
 				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
 					static polyVert_t extruded[800];
-					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof polyVert_t * 800, sizeof polyVert_t * brush->faces[i].numVerts));
+					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof(polyVert_t ) * 800, sizeof(polyVert_t) * brush->faces[i].numVerts));
 					for (int j = 0; j < brush->faces[i].numVerts; j++)
 					{
 						extruded[j].xyz[3] += 3.0f;
