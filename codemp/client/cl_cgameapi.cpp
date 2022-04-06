@@ -321,7 +321,6 @@ static void CL_AddCgameCommand( const char *cmdName ) {
 static void CL_CM_LoadMap( const char *mapname, qboolean subBSP ) {
 	if ( subBSP )	CM_LoadSubBSP( va( "maps/%s.bsp", mapname+1 ), qfalse );
 	else			CM_LoadMap( mapname, qtrue, NULL );
-	tc_vis_init();
 }
 
 static void CL_GetGlconfig( glconfig_t *glconfig ) {

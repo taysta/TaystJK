@@ -114,6 +114,9 @@ XDOCS_CVAR_DEF("cg_raceStartX", "Horizontal location of the race start timer ons
 XDOCS_CVAR_DEF("cg_raceStartY", "Vertical location of the race start timer onscreen",""
 )
 
+XDOCS_CVAR_DEF("cg_scoreboardTime", "Displays the local time on the scoreboard",""
+)
+
 XDOCS_CVAR_DEF("cg_smallScoreboard", "Always use the small version of the scoreboard",
 	SETTING("0", "Scoreboard scales depending on number of players (Base behavior)") NL
 	SETTING("1", "Scoreboard is always small")
@@ -231,7 +234,7 @@ XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location",""
 XDOCS_CVAR_DEF("cg_disruptorNew", "Enable new disruptor effects",""
 )
 
-XDOCS_CVAR_DEF("cg_disruptorTeamColour", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
+XDOCS_CVAR_DEF("cg_disruptorTeamColor", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
 )
 
 XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)","Requires cg_disruptorNew 1"
@@ -302,7 +305,9 @@ XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have cosmetics on non
     SETTING("4", "Indiana Jones") NL
     SETTING("5", "Propeller Hat") NL
     SETTING("6", "Sombrero") NL
-    SETTING("7", "Top Hat")
+    SETTING("7", "Top Hat") NL
+    SETTING("8", "Mask")
+
 
 )
 //Visuals

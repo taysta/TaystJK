@@ -661,12 +661,6 @@ void CL_Netchan_TransmitNextFragment( netchan_t *chan );
 qboolean CL_Netchan_Process( netchan_t *chan, msg_t *msg );
 
 //
-// cl_tc_vis.c
-//
-void tc_vis_init(void);
-void tc_vis_render(void);
-
-//
 // cl_avi.c
 //
 qboolean CL_OpenAVIForWriting( const char *filename );

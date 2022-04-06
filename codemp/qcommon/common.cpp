@@ -312,6 +312,146 @@ void NORETURN QDECL Com_Error( int code, const char *fmt, ... ) {
 	Sys_Error ("%s", com_errorMessage);
 }
 
+void Com_IfCvar_f(void) {
+    int args = Cmd_Argc();
+    if (args < 4) {
+        Com_Printf("^7Usage: ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...\n");
+        Com_Printf("Setting can optionally begin with special modifiers prepended with ^3$^7 (=, !=, >, <, >=, <=, contains, beginswith, endswith, else) and can reference the value of another cvar by prepending that cvar's name with $.\n");
+        Com_Printf("Simple example:  ^5ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye^7\n");
+        Com_Printf("    If cg_myCvar is 0, then ^5say_team hi^7 is executed. If it's 1, then ^5say_team bye^7 is executed.\n");
+        Com_Printf("Complex example: ^5ifCvar cg_myCvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team \"hello there\"^7\n");
+        Com_Printf("    If cg_myCvar is greater than or equal to the value of cg_someOtherCvar, then ^5quit^7 is executed. If it contains the word 'beer' anywhere, then ^5set model desann^7 is executed. For anything else, ^5bind x say_team \"hello there\"^7 is executed.\n");
+        return;
+    }
+
+    const char *cvarStr = Cvar_VariableString(Cmd_Argv(1));
+    const float cvarVal = atof(cvarStr);
+
+    for (int i = 2; i < args;) {
+        const char *argStr = Cmd_Argv(i);
+        if (!VALIDSTRING(argStr))
+            continue;
+        bool checkPassed = false;
+
+        // special operators beginning with $
+        // regardless of these, the value itself can also begin with a $ to indicate a cvar check
+        // e.g. $cg_foo will compare with the current setting of cg_foo
+        if (!Q_stricmpn(argStr, "$else", 5)) {
+            checkPassed = true;
+        }
+        else if (!Q_stricmpn(argStr, "$=", 2)) {
+            checkPassed = !!(cvarVal == (*(argStr + 2) == '$' && *(argStr + 3) ? atof(Cvar_VariableString(argStr + 3)) : atof(argStr + 2)));
+        }
+        else if (!Q_stricmpn(argStr, "$!=", 3)) {
+            checkPassed = !!(cvarVal != (*(argStr + 3) == '$' && *(argStr + 4) ? atof(Cvar_VariableString(argStr + 4)) : atof(argStr + 3)));
+        }
+        else if (!Q_stricmpn(argStr, "$>=", 3)) {
+            checkPassed = !!(cvarVal >= (*(argStr + 3) == '$' && *(argStr + 4) ? atof(Cvar_VariableString(argStr + 4)) : atof(argStr + 3)));
+        }
+        else if (!Q_stricmpn(argStr, "$<=", 3)) {
+            checkPassed = !!(cvarVal <= (*(argStr + 3) == '$' && *(argStr + 4) ? atof(Cvar_VariableString(argStr + 4)) : atof(argStr + 3)));
+        }
+        else if (!Q_stricmpn(argStr, "$>", 2)) {
+            checkPassed = !!(cvarVal > (*(argStr + 2) == '$' && *(argStr + 3) ? atof(Cvar_VariableString(argStr + 3)) : atof(argStr + 2)));
+        }
+        else if (!Q_stricmpn(argStr, "$<", 2)) {
+            checkPassed = !!(cvarVal < (*(argStr + 2) == '$' && *(argStr + 3) ? atof(Cvar_VariableString(argStr + 3)) : atof(argStr + 2)));
+        }
+        else if (!Q_stricmpn(argStr, "$contains", 9) && *(argStr + 9)) { // contains a certain string somewhere as a substring
+            checkPassed = !!(Q_stristr((char *)cvarStr, (*(argStr + 9) == '$' && *(argStr + 10) ? Cvar_VariableString(argStr + 3) : argStr + 9)));
+        }
+        else if ((!Q_stricmpn(argStr, "$beginswith", 11) || !Q_stricmpn(argStr, "$startswith", 11)) && *(argStr + 11)) { // begins with a certain string
+            const char *compare = *(argStr + 11) == '$' && *(argStr + 12) ? Cvar_VariableString(argStr + 11) : argStr + 11;
+            checkPassed = static_cast<qboolean>(!Q_stricmpn(cvarStr, compare, strlen(compare)));
+        }
+        else if (!Q_stricmpn(argStr, "$endswith", 9) && *(argStr + 11)) { // ends with a certain string
+            const char *compare = *(argStr + 9) == '$' && *(argStr + 9) ? Cvar_VariableString(argStr + 9) : argStr + 9;
+            size_t compareLen = strlen(compare);
+            size_t cvarStrLen = strlen(cvarStr);
+            if (compareLen <= cvarStrLen)
+                checkPassed = !Q_stricmp(cvarStr + cvarStrLen - compareLen, compare);
+        }
+        else { // fall back to string comparison if they didn't use any special operators
+            checkPassed = !Q_stricmp(cvarStr, *argStr == '$' && *(argStr + 1) ? Cvar_VariableString(argStr + 1) : argStr);
+        }
+
+        int numArgsOfThisCommand = atoi(Cmd_Argv(i + 1));
+        if (numArgsOfThisCommand < 1 || numArgsOfThisCommand >= 1024) { // sanity check
+            Com_Printf("\"%s^7\" is not a valid number of arguments. This number must include the command itself, e.g. the number for ^5say_team hi^7 would be 2.\n", Cmd_Argv(i + 1));
+            return;
+        }
+
+        if (checkPassed) { // we matched this condition; execute the specified command
+            char finalCommand[MAX_STRING_CHARS] = { 0 };
+            for (int j = i + 2; j < i + numArgsOfThisCommand + 2; j++) {
+                const char *p = Cmd_Argv(j);
+                Q_strcat(finalCommand, sizeof(finalCommand), va("%s%s", j == i + 2 ? "" : " ", strchr(p, ' ') ? va("\"%s\"", p) : p)); // quotes and spaces as needed
+            }
+            if (finalCommand[0]) {
+                Cbuf_AddText(finalCommand);
+                Cbuf_AddText("\n");
+            }
+            return;
+        }
+        else { // we didn't match this condition; skip to the next one and continue the loop
+            i += 2 + numArgsOfThisCommand;
+        }
+    }
+}
+
+void Com_StrSub_f(void) {
+    int args = Cmd_Argc();
+    if (args < 2) {
+        Com_Printf("Usage:   strSub <arguments ...>\n");
+        Com_Printf("To insert a cvar, surround it with $ symbols.\n");
+        Com_Printf("Example: strSub say_team Hello, I am $name$\n");
+        return;
+    }
+
+    char *buf = (char *)calloc(args - 1, MAX_STRING_CHARS);
+    memset(buf, 0, (args - 1) * MAX_STRING_CHARS);
+    for (int i = 1; i < args; i++) {
+        const char *argsPtr = Cmd_Argv(i), *r = argsPtr;
+        char *writeBase = buf + ((i - 1) * MAX_STRING_CHARS), *w = writeBase;
+        // loop through each char
+        while (*r && r - argsPtr < MAX_STRING_CHARS - 1 && w - writeBase < MAX_STRING_CHARS - 1) {
+            if (*r == '$') {
+                if (!*(r + 1)) { // sanity check for the very last char being an opening $ for some reason
+                    *w/*++*/ = '$';
+                    break;
+                }
+                if (*(r + 1) == '$') { // allow $$ escape, i guess
+                    *w++ = '$';
+                    r += 2;
+                    continue;
+                }
+                // $cvarname; get the contents of the specified cvar
+                const char *next$ = strchr(r + 1, '$');
+                int cvarLen = next$ ? (next$ - 1) - r : strlen(r + 1);
+                char *cvarName = (char *)malloc(cvarLen + 1);
+                Q_strncpyz(cvarName, r + 1, cvarLen + 1);
+                char *cvarContents = Cvar_VariableString(cvarName);
+                free(cvarName);
+                Q_strcat(writeBase, MAX_STRING_CHARS, cvarContents);
+                w += strlen(cvarContents);
+                r += 2 + cvarLen;
+            }
+            else { // just a regular char; copy it
+                *w++ = *r++;
+            }
+        }
+    }
+
+    // put together the final command that will be executed
+    char finalCommand[MAX_STRING_CHARS] = { 0 };
+    for (int i = 1; i < args; i++) {
+        char *p = buf + ((i - 1) * MAX_STRING_CHARS);
+        Q_strcat(finalCommand, sizeof(finalCommand), va("%s%s", i == 1 ? "" : " ", strchr(p, ' ') ? va("\"%s\"", p) : p)); // quotes and spaces as needed
+    }
+    free(buf);
+    Cbuf_AddText(finalCommand);
+    Cbuf_AddText("\n");
+}
 
 /*
 =============
@@ -1214,6 +1354,8 @@ void Com_Init( char *commandLine ) {
 		Cmd_SetCommandCompletionFunc( "writeconfig", Cmd_CompleteCfgName );
 		Cmd_AddCommand("write", Com_WriteConfig_f, "Write the configuration to file");
 		Cmd_SetCommandCompletionFunc("write", Cmd_CompleteCfgName);
+        Cmd_AddCommand("strSub", Com_StrSub_f, "Executes a command, substituting in the contents of cvar(s). Surround cvar names with $ dollar signs.");
+        Cmd_AddCommand("ifCvar", Com_IfCvar_f, "Executes a certain command based on the current setting of a cvar.");
 
 		Com_ExecuteCfg();
 
@@ -1575,6 +1717,7 @@ void Com_Frame( void ) {
 		msec = com_frameTime - lastTime;
 
 		Cbuf_Execute ();
+        Cbuf_CheckPending();
 
 		// mess with msec if needed
 		msec = Com_ModifyMsec( msec );

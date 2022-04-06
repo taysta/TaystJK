@@ -12573,29 +12573,33 @@ stillDoSaber:
 	}
 
 	//[Kameleon] - Nerevar's Santa Hat.
-	if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
-		if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
-			CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
-		}
-	}else if (!cg.demoPlayback){
+
+    if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
+        if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
+        }
+        else if (ci->cosmetics & JAPRO_COSMETIC_MASK) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs);
+        }
+    }else if (!cg.demoPlayback && cgs.serverMod != SVMOD_JAPRO){
         if (cg_forceCosmetics.integer == 1) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs);
         }
@@ -12616,6 +12620,9 @@ stillDoSaber:
         }
         else if (cg_forceCosmetics.integer == 7) {
             CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs);
+        }
+        else if (cg_forceCosmetics.integer == 8) {
+            CG_DrawHatOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs);
         }
     }
 	//[/Kameleon]

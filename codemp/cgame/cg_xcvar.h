@@ -60,6 +60,7 @@ XCVAR_DEF( cg_raceStart,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartX,			"300",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartY,			"280",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_smallScoreboard,		"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_scoreboardTime,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreDeaths,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_killMessage,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_newFont,				"0",	NULL,					CVAR_ARCHIVE )
@@ -398,7 +399,7 @@ XCVAR_DEF( ui_tm3_cnt,							"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 
 XCVAR_DEF( cg_disruptorMainTime,				"150",					NULL,					CVAR_ARCHIVE )	//from smod
 XCVAR_DEF( cg_disruptorAltTime,					"175",					NULL,					CVAR_ARCHIVE )	//from smod
-XCVAR_DEF( cg_disruptorTeamColour,				"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_disruptorTeamColor,				"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorSpiral,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorCoreColor,				"xff4400",				NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorSpiralColor,				"xff2200",				NULL,					CVAR_ARCHIVE )
