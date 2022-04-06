@@ -378,9 +378,6 @@ XDOCS_CVAR_DEF("r_renderTriggerBrushes", "Render trigger brushes",""
 XDOCS_CVAR_DEF("r_renderTriggerBrushesShader", "The shader for trigger brushes",""
 )
 
-XDOCS_CVAR_DEF("r_renderTriggerFilter", "Filter triggers to hide with r_renderTriggerBrushes",""
-)
-
 XDOCS_CVAR_DEF("cg_noFX", "Determines if effects and map models are shown",
 	SETTING("0", "No effects are removed") NL
 	SETTING("1", "Removes effects") NL
