@@ -61,8 +61,6 @@ static cvar_t *trigger_shader_setting;
 static cvar_t *clip_shader_setting;
 static cvar_t *slick_shader_setting;
 
-static cvar_t* trigger_entity_filter;
-
 static qhandle_t trigger_shader;
 static qhandle_t clip_shader;
 static qhandle_t slick_shader;
@@ -88,8 +86,6 @@ void tc_vis_init(void) {
 	trigger_shader_setting = Cvar_Get("r_renderTriggerBrushesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
 	clip_shader_setting = Cvar_Get("r_renderClipBrushesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
 	slick_shader_setting = Cvar_Get("r_renderSlickSurfacesShader", "tcRenderShader", CVAR_LATCH | CVAR_ARCHIVE_ND);
-
-	trigger_entity_filter = Cvar_Get("r_renderTriggerFilter", "", CVAR_LATCH | CVAR_ARCHIVE_ND, "");
 
 	trigger_shader = re->RegisterShader(trigger_shader_setting->string);
 	clip_shader = re->RegisterShader(clip_shader_setting->string);
@@ -151,75 +147,6 @@ void tc_vis_render(void) {
 
 // ripped from breadsticks
 static void add_triggers(void) {
-	// make an array of strings
-	char** filteredTrigs = nullptr;
-	// count number of commas/semicolons
-	int breakCount = 1;
-	char* str = trigger_entity_filter->string;
-	size_t longestStr = 0, curStr = 0;
-	while (str && *str)
-	{
-		if (*str == ';' || *str == ',')
-		{
-			if (++curStr > longestStr)
-			{
-				longestStr = curStr;
-			}
-			if (curStr > 1)
-			{
-				breakCount++;
-			}
-			curStr = 0;
-		}
-		++curStr;
-		++str;
-	}
-
-	if (longestStr == 0 && curStr != 0)
-	{
-		longestStr = curStr;
-	}
-	
-	if (breakCount > 0 && longestStr > 0)
-	{
-		size_t allocSize = strlen(trigger_entity_filter->string) + 1;
-		char* tempBuffer = (char*)malloc(allocSize);
-		char* str = tempBuffer;
-		Q_strncpyz(tempBuffer, trigger_entity_filter->string, allocSize);
-		filteredTrigs = (char**)malloc(sizeof(char*) * breakCount);
-		if (filteredTrigs && tempBuffer)
-		{
-			for (int i = 0; i < breakCount; i++)
-			{
-				// find first semicolon or comma in `str`, turn into terminator
-				char* tstr = str;
-				if (!*tstr)
-				{
-					filteredTrigs[i] = (char*)malloc(longestStr);
-					filteredTrigs[i][0] = '\0';
-					break;
-				}
-				while (tstr && *tstr)
-				{
-					if (*tstr == ',' || *tstr == ';')
-					{
-						*tstr = '\0';
-						tstr++;
-						break;
-					}
-					tstr++;
-				}
-				filteredTrigs[i] = (char*)malloc(longestStr);
-				Q_strncpyz(filteredTrigs[i], str, longestStr);
-				str = tstr;
-			}
-		}
-		if (tempBuffer)
-		{
-			free(tempBuffer);
-		}
-	}
-	
 
 	const char *entities = cmg.entityString;
 	for (;; ) {
@@ -250,17 +177,6 @@ static void add_triggers(void) {
 			if (!Q_stricmp(token, "classname")) {
 				token = COM_Parse(&entities);
 				is_trigger = !!Q_stristr(token, "trigger");
-				if (filteredTrigs) {
-					for (int i = 0; i < breakCount; i++)
-					{
-						if (!Q_stricmp(token, filteredTrigs[i]))
-						{
-							is_trigger = false;
-							break;
-						}
-					}
-				}
-				
 			}
 
 			if (!Q_stricmp(token, "origin")) {
@@ -277,15 +193,6 @@ static void add_triggers(void) {
 				gen_visible_brush(cmg.leafbrushes[leaf->firstLeafBrush + i], origin, TRIGGER_BRUSH, trigger_color);
 			}
 		}
-	}
-
-	if (filteredTrigs)
-	{
-		for (int i = 0; i < breakCount; i++)
-		{
-			free(filteredTrigs[i]);
-		}
-		free(filteredTrigs);
 	}
 }
 
