@@ -360,6 +360,27 @@ XDOCS_CVAR_DEF("cg_zoomFov", "The field of view when using +zoom",""
 XDOCS_CVAR_DEF("cg_fleshSparks", "Maximum number of sparks from a saber hit",""
 )
 
+XDOCS_CVAR_DEF("r_renderClipBrushes", "Render clip brushes",""
+)
+
+XDOCS_CVAR_DEF("r_renderClipBrushesShader", "Shader for clip brush rendering",""
+)
+
+XDOCS_CVAR_DEF("r_renderSlickSurfaces", "Render slick surfaces",""
+)
+
+XDOCS_CVAR_DEF("r_renderSlickSurfacesShader", "Shader for slick surface rendering",""
+)
+
+XDOCS_CVAR_DEF("r_renderTriggerBrushes", "Render trigger brushes",""
+)
+
+XDOCS_CVAR_DEF("r_renderTriggerBrushesShader", "The shader for trigger brushes",""
+)
+
+XDOCS_CVAR_DEF("r_renderTriggerFilter", "Filter triggers to hide with r_renderTriggerBrushes",""
+)
+
 XDOCS_CVAR_DEF("cg_noFX", "Determines if effects and map models are shown",
 	SETTING("0", "No effects are removed") NL
 	SETTING("1", "Removes effects") NL
