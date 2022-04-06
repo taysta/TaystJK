@@ -35,7 +35,7 @@ OpenJK:
 * Ensiform
 * Razish
 * Xycaleth
-* eezstreet
+* [eezstreet](https://github.com/eezstreet)
 * exidl
 * ImperatorPrime
 * mrwonko
@@ -53,3 +53,4 @@ OpenJK:
 * Ensiform
 * Yberion
 * Daniel
+* Eezstreet
