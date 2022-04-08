@@ -1,6 +1,8 @@
+---
 layout: page
 title: "Page 2"
-permalink: /Page-2/
+permalink: /page2.html
+---
 
 ## Welcome to GitHub Pages
 
