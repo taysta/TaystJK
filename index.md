@@ -2,7 +2,7 @@
 * More strafe bars, draws 2 lines for all keys A, WA, W, WD, D, SD, S, SA, enable with new `/strafehelper` options
 * Updated Style (`strafehelper 1`) can be made smaller with new option `/strafehelper 18`
 * CGAZ Style (`strafehelper 2`) is now affected by `cg_strafeHelperCutoff`
-***
+
 ## Speedometer Updates
 * Running count of previous groundspeeds with `/speedometer 10` and cvar `cg_speedometerJumps N` where N is the number of jumps
 * Speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`
@@ -11,7 +11,7 @@
 * `/speedometer 13` displays speeds as red/green based on difference from previous jump
 <br>![cg_speedometerJumpsColors 2](https://imgur.com/mZKTakh.png)
 * `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
-***
+
 ## Trigger/Clip/Slick Rendering 
 <br>![Clip/](https://imgur.com/hzh902m.png)
 * `r_renderClipBrushes 1` enable rendering of clip brushes
@@ -20,16 +20,16 @@
 * `r_renderTriggerBrushesShader` shader to render over trigger brushes
 * `r_renderSlickSurfaces 1` enable rendering of slick surfaces
 * `r_renderSlickSurfacesShader` shader to render over slick surfaces
-***
+
 ## Race Timer Update
 * Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
 * You can now set a start speed goal, if your start speed is above your goal speed, the text will be green `cg_startGoal` 
-***
+
 ## Movement Keys Updates
 * Added second movement keys style with cvar `cg_movemenyKeys 2` that sits over the crosshair, can be scaled with `cg_movementKeysSize` 
 <br>![cg_movementKeys 2](https://imgur.com/KiDaQUi.png)
 * `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
-***
+
 ## Disruptor Updates
 * `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
 * New trail effects enabled with `cg_disruptorNew 1`
@@ -39,14 +39,14 @@
     * `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
     * `cg_disruptorMainTime` Amount of time to display disruptor primary fire
     * `cg_disruptorAltTime` Amount of time to display disruptor alt fire
-***
+
 ## Pitch Helper
 * Pitch helper is a new tool to help you maintain your pitch aim at a desired level based on colored text as a visual queue
 * Pitch angle can now be drawn independently from  `cg_showpos` by enabling `cg_pitchHelper 1`
 * Center point has green text and goes as a gradient to orange until it leaves `cg_pitchHelperRange` where the orange becomes red.
 * The whole range can be offset up or down with `cg_pitchHelperOffset`
 * The drawn number can be moved with `cg_pitchHelperX` and `cg_pitchHelperX`
-***
+
 ## Keybind & Command Updates
 
 * You can now bind key combinations using an Alt / Ctrl / Shift modifier key. For example, `bind ctrl+x kill` will make Ctrl + X perform `kill`.
@@ -108,18 +108,18 @@ Example:`say darth;​waitf 333;​say vader`
 
 Cancels any pending `waitf`(s) that contain the argument. Use `""` to match anything.  
 Example: `waitfcancel vader`
-***
+
 ## Miscellaneous Updates 
 * `cg_scoreboardTime 1` display the local time on the scoreboard
 * New FFA invulnerability shell, enable with `/styleplayer 16`
 * Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
 * cosmetics can now be forced onto all player models on non-japro servers with the cvar `cg_forceCosmetics`
 
-***
+
 ## Crash Fixes
 * Fixed Linux related crash
 * Fixed null skin name crash
-***
+
 ## Vulkan Renderer
 * Enable with `cl_renderer rd-vulkan; vid_restart`
 * `r_fbo 1; r_bloom 1` to enable bloom, adjust with `r_bloom_intensity` and `r_bloom_threshold`
