@@ -1,1 +1,3 @@
 remote_theme: just-the-docs/just-the-docs
+# Color scheme supports "light" (default) and "dark"
+color_scheme: dark
