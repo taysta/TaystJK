@@ -251,7 +251,11 @@ XDOCS_CVAR_DEF("cg_disruptorMainTime", "Amount of time to display disruptor prim
 
 XDOCS_CVAR_DEF("cg_disruptorAltTime", "Amount of time to display disruptor alt fire",""
 )
-//Sounds
+
+XDOCS_CVAR_DEF("cg_ambientSounds", "Play ambient sounds",
+SETTING("0", "Don't play ambient sounds") NL
+SETTING("1", "Play ambient sounds")
+)
 
 XDOCS_CVAR_DEF("cg_rollSounds", "Play sound when players roll",
 	SETTING("0", "Don't play roll sounds") NL

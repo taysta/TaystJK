@@ -3692,8 +3692,10 @@ static void CG_AddCEntity( centity_t *cent ) {
 			return;
 		if (cg_noFX.integer == 2 && cent->currentState.eType == ET_SPEAKER)
 			return;
-	}
-
+	} else if(!cg_ambientSounds.integer && cent->currentState.eType == ET_SPEAKER)
+    {
+        return;
+    }
 	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION)
 	{ //don't render anything then
 		if (cent->currentState.eType == ET_GENERAL ||
@@ -3719,22 +3721,24 @@ static void CG_AddCEntity( centity_t *cent ) {
 	// calculate the current origin
 	CG_CalcEntityLerpPositions( cent );
 
-	// add automatic effects
-	CG_EntityEffects( cent );
-/*
-Ghoul2 Insert Start
-*/
+    if( cg_ambientSounds.integer )
+    {
+	    // add automatic effects
+	    CG_EntityEffects( cent );
 
-	// add local sound set if any
-	if ( cent->currentState.soundSetIndex && cent->currentState.eType != ET_MOVER )
-	{
-		const char *soundSet = CG_ConfigString( CS_AMBIENT_SET + cent->currentState.soundSetIndex );
+        /*
+        Ghoul2 Insert Start
+        */
 
-		if (soundSet && soundSet[0])
-		{
-			trap->S_AddLocalSet(soundSet, cg.refdef.vieworg, cent->lerpOrigin, cent->currentState.number, cg.time);
-		}
-	}
+        // add local sound set if any
+        if (cent->currentState.soundSetIndex && cent->currentState.eType != ET_MOVER) {
+            const char *soundSet = CG_ConfigString(CS_AMBIENT_SET + cent->currentState.soundSetIndex);
+
+            if (soundSet && soundSet[0]) {
+                trap->S_AddLocalSet(soundSet, cg.refdef.vieworg, cent->lerpOrigin, cent->currentState.number, cg.time);
+            }
+        }
+    }
 /*
 Ghoul2 Insert End
 */

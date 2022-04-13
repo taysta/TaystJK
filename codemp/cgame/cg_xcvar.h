@@ -404,6 +404,8 @@ XCVAR_DEF( cg_disruptorSpiral,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorCoreColor,				"xff4400",				NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorSpiralColor,				"xff2200",				NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_disruptorNew,				        "0",				NULL,					    CVAR_ARCHIVE )
+XCVAR_DEF( cg_ambientSounds,				    "1",				NULL,					    CVAR_ARCHIVE )
+
 
 
 
