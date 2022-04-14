@@ -336,7 +336,7 @@ void CG_RegisterWeapon( int weaponNum) {
 	case WP_BOWCASTER:
 		weaponInfo->selectSound			= trap->S_RegisterSound("sound/weapons/bowcaster/select.wav");
 
-		weaponInfo->altFlashSound[0]		= trap->S_RegisterSound( "sound/weapons/bowcaster/fire.wav");
+		weaponInfo->altFlashSound[0]		= trap->S_RegisterSound( "sound/weapons/bowcaster/altfire.wav");
 		weaponInfo->altFiringSound			= NULL_SOUND;
 		weaponInfo->altChargeSound			= NULL_SOUND;
 		weaponInfo->altMuzzleEffect		= trap->FX_RegisterEffect( "bowcaster/muzzle_flash" );
