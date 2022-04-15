@@ -1332,53 +1332,65 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 		//
 		else if (!Q_stricmp(token, "animMap") || !Q_stricmp(token, "clampanimMap") || !Q_stricmp(token, "oneshotanimMap"))
 		{
-			int	totalImages = 0;
-			int maxAnimations = MAX_IMAGE_ANIMATIONS;
+			int			totalImages = 0;
+			int			maxAnimations = MAX_IMAGE_ANIMATIONS;
+			image_t		*images[MAX_IMAGE_ANIMATIONS];
+			imgFlags_t	flags;
+			bool		bClamp = !Q_stricmp( token, "clampanimMap" );
+			bool		oneShot = !Q_stricmp( token, "oneshotanimMap" );
 
-			token = COM_ParseExt(text, qfalse);
-			if (!token[0])
+			token = COM_ParseExt( text, qfalse );
+			if ( !token[0] )
 			{
-				ri.Printf(PRINT_WARNING, "WARNING: missing parameter for 'animMap' keyword in shader '%s'\n", shader.name);
+				ri.Printf( PRINT_ALL, S_COLOR_YELLOW  "WARNING: missing parameter for '%s' keyword in shader '%s'\n", (bClamp ? "animMap":"clampanimMap"), shader.name );
 				return qfalse;
 			}
-			stage->bundle[0].imageAnimationSpeed = atof(token);
+			stage->bundle[0].imageAnimationSpeed = atof( token );
+			stage->bundle[0].oneShotAnimMap = oneShot;
 
 			// parse up to MAX_IMAGE_ANIMATIONS animations
-			while (1) {
+			while ( 1 ) {
 				int num;
 
-				token = COM_ParseExt(text, qfalse);
-				if (!token[0]) {
+				token = COM_ParseExt( text, qfalse );
+				if ( !token[0] )
 					break;
-				}
-				num = stage->bundle[0].numImageAnimations;
-				if (num < maxAnimations) {
-					imgFlags_t flags = IMGFLAG_NONE;
 
-					if (!shader.noMipMaps)
+				num = stage->bundle[0].numImageAnimations;
+				if ( num < maxAnimations ) {
+					flags = IMGFLAG_NONE;
+
+					if ( !shader.noMipMaps )
 						flags |= IMGFLAG_MIPMAP;
 
-					if (!shader.noPicMip)
+					if ( !shader.noPicMip )
 						flags |= IMGFLAG_PICMIP;
 
-					if (!shader.noTC)
+					if ( !shader.noTC )
 						flags |= IMGFLAG_NO_COMPRESSION;
 
-					if (shader.noLightScale)
+					if ( shader.noLightScale )
 						flags |= IMGFLAG_NOLIGHTSCALE;
 
-					stage->bundle[0].image[num] = R_FindImageFile(token, flags);
-					if (!stage->bundle[0].image[num])
+					if( bClamp )
+						flags |= IMGFLAG_CLAMPTOEDGE;
+
+					images[num] = R_FindImageFile( token, flags );
+					if ( !images[num] )
 					{
-						ri.Printf(PRINT_WARNING, "WARNING: R_FindImageFile could not find '%s' in shader '%s'\n", token, shader.name);
+						ri.Printf( PRINT_WARNING, "WARNING: R_FindImageFile could not find '%s' in shader '%s'\n", token, shader.name );
 						return qfalse;
 					}
 					stage->bundle[0].numImageAnimations++;
 				}
+
 				totalImages++;
 			}
 
-			if (totalImages > maxAnimations) {
+			// Copy image ptrs into an array of ptrs
+			memcpy( stage->bundle[0].image,	images,	stage->bundle[0].numImageAnimations * sizeof( image_t* ) );
+
+			if ( totalImages > maxAnimations ) {
 				ri.Printf(PRINT_WARNING, "WARNING: ignoring excess images for 'animMap' (found %d, max is %d) in shader '%s'\n",
 					totalImages, maxAnimations, shader.name);
 			}
@@ -1832,9 +1844,11 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 		}
 	}
 
+	/*
+	// disable this for now, because it seems to be causing artifacts instead of fixing them for JK3.
 	if (depthMaskExplicit && shader.sort == SS_BAD) {
 		// fix decals on q3wcp18 and other maps
-		if (blendSrcBits == GLS_SRCBLEND_SRC_ALPHA && blendDstBits == GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA /*&& stage->rgbGen == CGEN_VERTEX*/) {
+		if (blendSrcBits == GLS_SRCBLEND_SRC_ALPHA && blendDstBits == GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA ) {
 			depthMaskBits &= ~GLS_DEPTHMASK_TRUE;
 			shader.sort = shader.polygonOffset ? SS_DECAL : SS_OPAQUE + 0.01f;
 		}
@@ -1842,7 +1856,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 			depthMaskBits &= ~GLS_DEPTHMASK_TRUE;
 			shader.sort = SS_SEE_THROUGH;
 		}
-	}
+	}*/
 
 	//
 	// compute state bits
@@ -3872,7 +3886,7 @@ from the current global working shader
 shader_t *FinishShader( void )
 {
 	qboolean		hasLightmapStage;
-	int				stage, i, n, m;
+	int				stage, i, n, m, lmStage, numStyles;
 	qboolean		colorBlend;
 	qboolean		depthMask;
 	qboolean		fogCollapse;
@@ -3895,6 +3909,76 @@ shader_t *FinishShader( void )
 	//
 	if (shader.polygonOffset && shader.sort == SS_BAD) {
 		shader.sort = SS_DECAL;
+	}
+
+	//
+	// set lightmap stage
+	//
+	for( lmStage = 0; lmStage < MAX_SHADER_STAGES; lmStage++ )
+	{
+		shaderStage_t *pStage = &stages[lmStage];
+
+		if ( pStage->active && pStage->bundle[0].isLightmap )
+			break;
+	}
+
+	if ( lmStage < MAX_SHADER_STAGES )
+	{
+		if ( shader.lightmapIndex[0] == LIGHTMAP_BY_VERTEX )
+		{
+			if ( lmStage == 0 )	//< MAX_SHADER_STAGES-1)
+			{//copy the rest down over the lightmap slot
+				memmove(&stages[lmStage], &stages[lmStage+1], sizeof(shaderStage_t) * ( MAX_SHADER_STAGES - lmStage - 1 ));
+				memset(&stages[MAX_SHADER_STAGES-1], 0, sizeof(shaderStage_t));
+				//change blending on the moved down stage
+				stages[lmStage].stateBits = GLS_DEFAULT;
+			}
+			//change anything that was moved down (or the *white if LM is first) to use vertex color
+			stages[lmStage].bundle[0].rgbGen = CGEN_EXACT_VERTEX;
+			stages[lmStage].bundle[0].alphaGen = AGEN_SKIP;
+			lmStage = MAX_SHADER_STAGES;	//skip the style checking below
+		}
+	}
+
+	if ( lmStage < MAX_SHADER_STAGES )// && !r_fullbright->value)
+	{
+		for( numStyles =0 ; numStyles < MAXLIGHTMAPS; numStyles++ ) {
+			if ( shader.styles[numStyles] >= LS_UNUSED )
+				break;
+		}
+
+		numStyles--;
+
+		if ( numStyles > 0 )
+		{
+			for( i = MAX_SHADER_STAGES - 1; i > lmStage+numStyles; i-- )
+				stages[i] = stages[i-numStyles];
+
+			for( i = 0; i <numStyles; i++ )
+			{
+				stages[lmStage+i+1] = stages[lmStage];
+				
+				shaderStage_t *pStage = &stages[lmStage+i+1];
+
+				if ( shader.lightmapIndex[ i + 1 ] == LIGHTMAP_BY_VERTEX ) {
+					pStage->bundle[0].image[0] = tr.whiteImage;
+				}
+				else if ( shader.lightmapIndex[ i + 1 ] < 0 ) {
+					Com_Error( ERR_DROP, "FinishShader: light style with no light map or vertex color for shader %s", shader.name);
+				}
+				else {
+					pStage->bundle[0].image[0] = tr.lightmaps[shader.lightmapIndex[i+1]];
+					pStage->bundle[0].tcGen = (texCoordGen_t)( TCGEN_LIGHTMAP + i + 1 );
+				}
+
+				pStage->bundle[0].rgbGen = CGEN_LIGHTMAPSTYLE;
+				pStage->stateBits &= ~(GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS);
+				pStage->stateBits |= GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE;
+			}
+		}
+
+		for( i = 0; i <= numStyles; i++ )
+			stages[lmStage+i].lightmapStyle = shader.styles[i];
 	}
 
 	//

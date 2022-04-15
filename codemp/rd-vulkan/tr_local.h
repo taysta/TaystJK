@@ -456,7 +456,7 @@ typedef struct surfaceSprite_s
 	int				facing;		// Hangdown on vertical sprites, faceup on others.
 } surfaceSprite_t;
 
-#define	MAX_IMAGE_ANIMATIONS	8
+#define	MAX_IMAGE_ANIMATIONS	32
 
 typedef struct textureBundle_s {
 	image_t			*image[MAX_IMAGE_ANIMATIONS];
