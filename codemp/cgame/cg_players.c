@@ -13102,8 +13102,7 @@ void CG_ResetPlayerEntity( centity_t *cent )
 	//reset lerp origin smooth point
 	VectorCopy(cent->lerpOrigin, cent->beamEnd);
 
-	if (cent->currentState.eType != ET_NPC ||
-		!(cent->currentState.eFlags & EF_DEAD))
+	if (!(cent->currentState.eFlags & EF_DEAD))
 	{
 		CG_ClearLerpFrame( cent, ci, &cent->pe.legs, cent->currentState.legsAnim, qfalse);
 		CG_ClearLerpFrame( cent, ci, &cent->pe.torso, cent->currentState.torsoAnim, qtrue);
@@ -13125,11 +13124,11 @@ void CG_ResetPlayerEntity( centity_t *cent )
 		cent->pe.torso.yawing = qfalse;
 		cent->pe.torso.pitchAngle = cent->rawAngles[PITCH];
 		cent->pe.torso.pitching = qfalse;
-
+/*
 		if (cent->currentState.eType == ET_NPC)
 		{ //just start them off at 0 pitch
 			cent->pe.torso.pitchAngle = 0;
-		}
+		}*/
 
 		if ((cent->ghoul2 == NULL) && ci->ghoul2Model && trap->G2_HaveWeGhoul2Models(ci->ghoul2Model))
 		{
