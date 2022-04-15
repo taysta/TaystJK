@@ -168,52 +168,61 @@ void get_scissor_rect( VkRect2D *r ) {
 
 static void vk_render_splash( void )
 {
-	VkCommandBufferBeginInfo begin_info;
-	VkCommandBuffer command_buffer = vk.cmd->command_buffer;
-	VkSubmitInfo submit_info;
-	VkPresentInfoKHR present_info;
-	VkPipelineStageFlags wait_dst_stage_mask = VK_PIPELINE_STAGE_TRANSFER_BIT;
-	VkImage imageBuffer;
-	image_t* splashImage;
-	VkImageBlit imageBlit;
-	float ratio;
+	VkCommandBufferBeginInfo	begin_info;
+	VkSubmitInfo				submit_info;
+	VkPresentInfoKHR			present_info;
+	VkPipelineStageFlags		wait_dst_stage_mask;
+	VkImage						imageBuffer;
+	image_t						*splashImage;
+	VkImageBlit					imageBlit;
+	float						ratio;
 
-	ratio = ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
+	return;
 
-	if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f) {
+	ratio = ( (float)( SCREEN_WIDTH * glConfig.vidHeight ) / (float)( SCREEN_HEIGHT * glConfig.vidWidth ) );
+
+	if ( cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f ){
 		splashImage = R_FindImageFile("menu/splash_16_9", IMGFLAG_CLAMPTOEDGE);
+
+		if ( !splashImage ){
+			splashImage = R_FindImageFile("menu/splash", IMGFLAG_CLAMPTOEDGE);
+		}
 	}
-	else {
+	else{
 		splashImage = R_FindImageFile("menu/splash", IMGFLAG_CLAMPTOEDGE);
 	}
 
-	VK_CHECK(qvkWaitForFences(vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10));
-	VK_CHECK(qvkResetFences(vk.device, 1, &vk.cmd->rendering_finished_fence));
+	if( !splashImage ){
+		return;
+	}
 
-	qvkAcquireNextImageKHR(vk.device, vk.swapchain, UINT64_MAX, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index);
+	VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
+	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
+
+	qvkAcquireNextImageKHR( vk.device, vk.swapchain, UINT64_MAX, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
 	imageBuffer = vk.swapchain_images[vk.swapchain_image_index];
 
 	// begin the command buffer
-	Com_Memset(&begin_info, 0, sizeof(begin_info));
+	Com_Memset( &begin_info, 0, sizeof(begin_info) );
 	begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 	begin_info.pNext = NULL;
 	begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 	begin_info.pInheritanceInfo = NULL;
-	VK_CHECK(qvkBeginCommandBuffer(command_buffer, &begin_info));
+	VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
 
-	vk_record_image_layout_transition(command_buffer, splashImage->handle,
+	vk_record_image_layout_transition( vk.cmd->command_buffer, splashImage->handle,
 		VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED,
 		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT );
 
-	vk_record_image_layout_transition(command_buffer, imageBuffer,
+	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer,
 		VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED,
 		VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT );
 
-	Com_Memset(&imageBlit, 0, sizeof(imageBlit));
+	Com_Memset( &imageBlit, 0, sizeof(imageBlit) );
 	imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 	imageBlit.srcSubresource.mipLevel = 0;
 	imageBlit.srcSubresource.baseArrayLayer = 0;
@@ -227,30 +236,32 @@ static void vk_render_splash( void )
 	imageBlit.dstOffsets[0] = { vk.blitX0, vk.blitY0, 0 };
 	imageBlit.dstOffsets[1] = { ( gls.windowWidth - vk.blitX0 ), ( gls.windowHeight - vk.blitY0 ), 1 };
 
-	qvkCmdBlitImage(command_buffer, splashImage->handle,
+	qvkCmdBlitImage( vk.cmd->command_buffer, splashImage->handle,
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageBuffer,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1,
-		&imageBlit, VK_FILTER_LINEAR);
+		&imageBlit, VK_FILTER_LINEAR );
 
-	vk_record_image_layout_transition(command_buffer, imageBuffer,
+	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer,
 		VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
 		vk.queue_family_index, vk.queue_family_index,
-		VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT);
+		VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT );
 
 	// we can end the command buffer now
-	VK_CHECK(qvkEndCommandBuffer(command_buffer));
+	VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );
+
+	wait_dst_stage_mask = VK_PIPELINE_STAGE_TRANSFER_BIT;
 
 	submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submit_info.pNext = NULL;
 	submit_info.commandBufferCount = 1;
-	submit_info.pCommandBuffers = &command_buffer;
+	submit_info.pCommandBuffers = &vk.cmd->command_buffer;
 	submit_info.waitSemaphoreCount = 1;
 	submit_info.pWaitSemaphores = &vk.cmd->image_acquired;
 	submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
 	submit_info.signalSemaphoreCount = 1;
 	submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
-	VK_CHECK(qvkQueueSubmit(vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence));
+	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence ) );
 
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;
@@ -260,7 +271,7 @@ static void vk_render_splash( void )
 	present_info.pSwapchains = &vk.swapchain;
 	present_info.pImageIndices = &vk.swapchain_image_index;
 	present_info.pResults = NULL;
-	qvkQueuePresentKHR(vk.queue, &present_info);
+	qvkQueuePresentKHR( vk.queue, &present_info );
 
 	return;
 }

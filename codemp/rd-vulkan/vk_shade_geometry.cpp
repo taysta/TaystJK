@@ -1125,38 +1125,64 @@ void R_BindAnimatedImage( const textureBundle_t *bundle ) {
 	int64_t index;
 	double	v;
 
-	if (bundle->isVideoMap) {
-		ri.CIN_RunCinematic(bundle->videoMapHandle);
-		ri.CIN_UploadCinematic(bundle->videoMapHandle);
+	if ( bundle->isVideoMap ) {
+		ri.CIN_RunCinematic( bundle->videoMapHandle );
+		ri.CIN_UploadCinematic( bundle->videoMapHandle );
 		return;
 	}
-	if (bundle->isScreenMap) {
-		if (!backEnd.screenMapDone) {
-			vk_bind(tr.blackImage);
+	if ( bundle->isScreenMap ) {
+		if ( !backEnd.screenMapDone ) {
+			vk_bind( tr.blackImage );
 		}
 		else {
 
-			vk_update_descriptor(vk.ctmu + VK_SAMPLER_LAYOUT_BEGIN, vk.screenMap.color_descriptor);
+			vk_update_descriptor( vk.ctmu + VK_SAMPLER_LAYOUT_BEGIN, vk.screenMap.color_descriptor );
 		}
 		return;
 	}
-	if (bundle->numImageAnimations <= 1) {
+
+	if ( ( r_fullbright->value /*|| tr.refdef.doFullbright */ ) && bundle->isLightmap )
+	{
+		vk_bind( tr.whiteImage );
+		return;
+	}
+
+	if ( bundle->numImageAnimations <= 1 ) {
 		vk_bind(bundle->image[0]);
 		return;
 	}
 
-	// it is necessary to do this messy calc to make sure animations line up
-	// exactly with waveforms of the same frequency
-	//int index = (int)(tess.shaderTime * tess.xstages[stage]->bundle[0].imageAnimationSpeed * FUNCTABLE_SIZE) >> FUNCTABLE_SIZE2;
-	v = tess.shaderTime * bundle->imageAnimationSpeed;
-	index = v;
-
-	if (index < 0) {
-		index = 0;	// may happen with shader time offsets
+	if ( backEnd.currentEntity->e.renderfx & RF_SETANIMINDEX )
+	{
+		index = backEnd.currentEntity->e.skinNum;
 	}
-	index %= bundle->numImageAnimations;
+	else
+	{
+		// it is necessary to do this messy calc to make sure animations line up
+		// exactly with waveforms of the same frequency
+		index = Q_ftol( tess.shaderTime * bundle->imageAnimationSpeed * FUNCTABLE_SIZE );
+		index >>= FUNCTABLE_SIZE2;
 
-	vk_bind(bundle->image[index]);
+		if ( index < 0 ) {
+			index = 0;	// may happen with shader time offsets
+		}
+	}
+
+	if ( bundle->oneShotAnimMap )
+	{
+		if ( index >= bundle->numImageAnimations )
+		{
+			// stick on last frame
+			index = bundle->numImageAnimations - 1;
+		}
+	}
+	else
+	{
+		// loop
+		index %= bundle->numImageAnimations;
+	}
+
+	vk_bind( bundle->image[index] );
 }
 
 void ComputeTexCoords( const int b, const textureBundle_t *bundle ) {
