@@ -1861,8 +1861,19 @@ void CG_DrawHUD(centity_t	*cent)
 	}
 	if (cg_raceTimer.integer || cg_raceStart.integer)
 		CG_RaceTimer();
-	if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)
-		CG_DrawSpeedGraph();
+
+    if ((cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH) && !(cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPHOLD)) {
+        rectDef_t speedgraphRect;
+        vec4_t foreColor = { 0.0f,0.8f,1.0f,0.8f };
+        vec4_t backColor = { 0.0f,0.8f,1.0f,0.0f };
+        speedgraphRect.x = (320.0f - (150.0f / 2.0f));
+        speedgraphRect.y = SCREEN_HEIGHT - 22 - 2;
+        speedgraphRect.w = 150.0f;
+        speedgraphRect.h = 22.0f;
+        CG_AddSpeed();
+        CG_DrawSpeedGraph(&speedgraphRect, foreColor, backColor);
+    }else if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)
+		CG_DrawSpeedGraph2();
 //JAPRO - Clientside - Lead Indicator Start
 	if (cg_leadIndicator.integer)
 		CG_LeadIndicator();
