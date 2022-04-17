@@ -12075,71 +12075,46 @@ static void CG_MovementKeys(centity_t *cent)
             y += yOffset;
 		}
 
-		if (cmd.upmove < 0)
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader2 );
-            else
-			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
-		else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader2 );
-            else
-			    CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
-
-		if (cmd.upmove > 0)
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader2 );
-            else
-			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
-		else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader2 );
-            else
-			    CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
-
-		if (cmd.forwardmove < 0)
-			if(cg_movementKeys.integer > 1)
-		        CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOnShader2 );
-			else
-			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOnShader );
+    if(cg_movementKeys.integer > 1){
+        if (cmd.upmove < 0)
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader2 );
+        if (cmd.upmove > 0)
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader2 );
+        if (cmd.forwardmove < 0)
+            CG_DrawPic(w + x, h * 2 + y, w, h, cgs.media.keyBackOnShader2);
+        if (cmd.forwardmove > 0)
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader2 );
+        if (cmd.rightmove < 0)
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
+        if (cmd.rightmove > 0)
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
+    }
+    else if(cg_movementKeys.integer == 1){
+        if (cmd.upmove < 0)
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
         else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w + x, h*2 + y, w, h, cgs.media.keyBackOffShader2 );
-            else
-			    CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOffShader );
-
-		if (cmd.forwardmove > 0)
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader2 );
-            else
-			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
-		else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader2 );
-            else
-			    CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
-
-		if (cmd.rightmove < 0)
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
-            else
-			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
-		else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader2 );
-            else
-			    CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
-
-		if (cmd.rightmove > 0)
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
-            else
-			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
-		else
-            if(cg_movementKeys.integer > 1)
-                CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader2 );
-            else
-			    CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
+        if (cmd.upmove > 0)
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
+        else
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
+        if (cmd.forwardmove < 0)
+            CG_DrawPic(w + x, h + y, w, h, cgs.media.keyBackOnShader);
+        else
+            CG_DrawPic(w + x, h + y, w, h, cgs.media.keyBackOffShader);
+        if (cmd.forwardmove > 0)
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
+        else
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
+        if (cmd.rightmove < 0)
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
+        else
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
+        if (cmd.rightmove > 0)
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
+        else
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+    }
 
 }
 
