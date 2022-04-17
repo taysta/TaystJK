@@ -233,7 +233,8 @@ static bitInfo_t speedometerSettings[] = {
     { "Pre-speed jumps array" },
     { "Disable speedometer colors"},
     { "Array Colors 1" },
-    { "Array Colors 2" }
+    { "Array Colors 2" },
+    { "Old Speedgraph" }
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 

@@ -46,7 +46,10 @@ static void CG_DrawShowPos(void);
 static void CG_MovementKeys(centity_t *cent);
 static void CG_JumpHeight(centity_t *cent);
 static void CG_RaceTimer(void);
-static void CG_DrawSpeedGraph( void );
+static void CG_AddSpeed(void);
+static void CG_DrawSpeedGraph2( void );
+static void CG_DrawSpeedGraph(rectDef_t* rect, const vec4_t foreColor, vec4_t backColor);
+
 static void CG_JumpDistance( void );
 static void CG_DrawVerticalSpeed(void);
 static void CG_DrawYawSpeed(void);
@@ -87,7 +90,7 @@ static void CG_DrawTrajectoryLine(void);
 #define SPEEDOMETER_COLORS          (1<<11)
 #define SPEEDOMETER_JUMPSCOLORS1    (1<<12)
 #define SPEEDOMETER_JUMPSCOLORS2    (1<<13)
-
+#define SPEEDOMETER_SPEEDGRAPHOLD   (1<<14)
 
 //japro end
 
@@ -6055,14 +6058,14 @@ static void CG_DrawLagometer( void ) {
 	CG_DrawDisconnect();
 }
 
-static void CG_DrawSpeedGraph( void ) {
-	int		a, i;
+static void CG_DrawSpeedGraph2( void ) {
+	int		a, i, aw;
 	float	x, y, v;
-	float	ax, ay, aw, ah, range; // mid, range;
+	float	ax, ay, ah, range; // mid, range;
 //	int		color;
 	float	vscale;
 
-	x = SCREEN_WIDTH - cg_lagometerX.integer * cgs.widthRatioCoef;
+	x = SCREEN_WIDTH - (float)cg_lagometerX.integer * cgs.widthRatioCoef;
 	y = SCREEN_HEIGHT - cg_lagometerY.integer - 56;
 
 	if (cg_hudFiles.integer == 0) {
@@ -6101,16 +6104,115 @@ static void CG_DrawSpeedGraph( void ) {
 
 	for (a = 0 ; a < aw ; a++) {
 		i = ( speedgraph.frameCount - 1 - a ) & (SPEED_SAMPLES - 1);
-		v = speedgraph.frameSamples[i];
+		v = (float)speedgraph.frameSamples[i];
 		if (v > 0) {
 			trap->R_SetColor(g_color_table[ColorIndex(COLOR_GREEN)]);
 			v = v * vscale;
 			if (v > range)
 				v = range;
-			trap->R_DrawStretchPic(ax + (aw - a) * cgs.widthRatioCoef, ay + ah - v, 1 * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader);
+			trap->R_DrawStretchPic(ax + (float)(aw - a) * cgs.widthRatioCoef, ay + ah - v, 1 * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader);
 		}
 	}
 	trap->R_SetColor(NULL);
+}
+
+
+#define SPEEDOMETER_NUM_SAMPLES 500
+float speedSamples[SPEEDOMETER_NUM_SAMPLES];
+// array indices
+int oldestSpeedSample = 0;
+int maxSpeedSample = 0;
+
+/*
+===================
+CG_AddSpeed
+append a speed to the sample history
+===================
+*/
+void CG_AddSpeed(void)
+{
+    float speed;
+    vec3_t vel;
+
+    VectorCopy(cg.snap->ps.velocity, vel);
+
+    /*if (cg_drawSpeed.integer & SPEEDOMETER_IGNORE_Z)
+        vel[2] = 0;*/
+
+    speed = VectorLength(vel);
+
+    if (speed > speedSamples[maxSpeedSample])
+    {
+        maxSpeedSample = oldestSpeedSample;
+        speedSamples[oldestSpeedSample++] = speed;
+        oldestSpeedSample %= SPEEDOMETER_NUM_SAMPLES;
+        return;
+    }
+
+    speedSamples[oldestSpeedSample] = speed;
+    if (maxSpeedSample == oldestSpeedSample++)
+    {
+        // if old max was overwritten find a new one
+        int i;
+        for (maxSpeedSample = 0, i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
+        {
+            if (speedSamples[i] > speedSamples[maxSpeedSample])
+                maxSpeedSample = i;
+        }
+    }
+
+    oldestSpeedSample %= SPEEDOMETER_NUM_SAMPLES;
+}
+
+#define SPEEDOMETER_MIN_RANGE 900
+#define SPEED_MED 1000.f
+#define SPEED_FAST 1600.f
+#define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
+#define VectorLerp( f, s, e, r ) ((r)[0]=(s)[0]+(f)*((e)[0]-(s)[0]),\
+  (r)[1]=(s)[1]+(f)*((e)[1]-(s)[1]),\
+  (r)[2]=(s)[2]+(f)*((e)[2]-(s)[2]))
+/*
+===================
+CG_DrawSpeedGraph
+===================
+*/
+static void CG_DrawSpeedGraph(rectDef_t* rect, const vec4_t foreColor,
+                              vec4_t backColor)
+{
+    int i;
+    float val, max, top;
+    // colour of graph is interpolated between these values
+    const vec3_t slow = { 0.0f, 0.0f, 1.0f };
+    const vec3_t medium = { 0.0f, 1.0f, 0.0f };
+    const vec3_t fast = { 1.0f, 0.0f, 0.0f };
+    vec4_t color;
+
+    max = speedSamples[maxSpeedSample];
+    if (max < SPEEDOMETER_MIN_RANGE)
+        max = SPEEDOMETER_MIN_RANGE;
+
+    trap->R_SetColor(backColor);
+    CG_DrawPic(rect->x, rect->y, rect->w, rect->h, cgs.media.whiteShader);
+
+    Vector4Copy(foreColor, color);
+
+    for (i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
+    {
+        val = speedSamples[(oldestSpeedSample + i) % SPEEDOMETER_NUM_SAMPLES];
+        if (val < SPEED_MED)
+            VectorLerp(val / SPEED_MED, slow, medium, color);
+        else if (val < SPEED_FAST)
+            VectorLerp((val - SPEED_MED) / (SPEED_FAST - SPEED_MED),
+                       medium, fast, color);
+        else
+            VectorCopy(fast, color);
+        trap->R_SetColor(color);
+        top = rect->y + (1 - val / max) * rect->h;
+        CG_DrawPic(rect->x + ((float)i / (float)SPEEDOMETER_NUM_SAMPLES) * rect->w, top,
+                   rect->w / (float)SPEEDOMETER_NUM_SAMPLES, val * rect->h / max,
+                   cgs.media.whiteShader);
+    }
+    trap->R_SetColor(NULL);
 }
 
 void CG_DrawSiegeMessage( const char *str, int objectiveScreen )
