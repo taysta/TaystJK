@@ -4,6 +4,9 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+* [+] Music commands from NewMod
+* [\*] Improved the order that shader files are read. If there are two shaders sharing the same name, the one that was found in a file later on JKA file list (phone book order) takes precedence.
+* [+] Trigger/clip/slick rendering `r_renderTriggerBrushes` `r_renderClipBrushes` `r_renderSlickSurfaces`
 * [\*] Added covid mask and replaced pumpkin mask, both assets from MB2
 * [+] New disruptor effects from jamme (spiral, custom colors, team colors, primary & alt fire times)
 * [+] New minimalist scope that uses the crosshair `cg_crossHairScope 1`
@@ -28,6 +31,8 @@ Key: [-] removed, [+] added, [\*] modified
 * [+] Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like `bind a "bind b "set c "d ; e" ; say "hello there"""`
 * [+] You can now bind key combinations using an `Alt` / `Ctrl` / `Shift` modifier key. For example, `bind ctrl+x kill` will make `Ctrl` + `X` perform `kill`.
 * [+] You can now bind the right-side `Alt` / `Ctrl` / `Shift` keys separately from the left-side keys. For example, `bind rctrl kill` will make the right-side `Ctrl` key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
+* [+] `waitf` & `delay` from NewMod
+* [+] `ifCvar` & `strSub` from NewMod
 
 
 ## Single- and Multiplayer
