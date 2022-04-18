@@ -472,7 +472,34 @@ void Com_Quit_f( void ) {
 	Sys_Quit ();
 }
 
+//Simulate hardware media keys
+void Com_MediaKeys_f(const int key) {
+#ifdef _WIN32
+    INPUT ip;
+	ip.type = INPUT_KEYBOARD;
+	ip.ki.wScan = ip.ki.time = ip.ki.dwExtraInfo = ip.ki.dwFlags = 0;
+	ip.ki.wVk = key;
+	SendInput(1, &ip, sizeof(INPUT));
+	ip.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &ip, sizeof(INPUT));
+#endif
+}
 
+void Com_MNext_f(void) {
+    Com_MediaKeys_f(0xB0);
+}
+
+void Com_MPrev_f(void) {
+    Com_MediaKeys_f(0xB1);
+}
+
+void Com_MStop_f(void) {
+    Com_MediaKeys_f(0xB2);
+}
+
+void Com_MPause_f(void) {
+    Com_MediaKeys_f(0xB3);
+}
 
 /*
 ============================================================================
@@ -1344,7 +1371,10 @@ void Com_Init( char *commandLine ) {
 			Cmd_AddCommand ("freeze", Com_Freeze_f);
 		}
 		Cmd_AddCommand ("quit", Com_Quit_f, "Quits the game" );
-
+        Cmd_AddCommand("mnext", Com_MNext_f, "Simulates hardware 'next track' key");
+        Cmd_AddCommand("mprev", Com_MPrev_f, "Simulates hardware 'previous track' key");
+        Cmd_AddCommand("mstop", Com_MStop_f, "Simulates hardware 'stop media' key");
+        Cmd_AddCommand("mpause", Com_MPause_f, "Simulates hardware 'pause media' key");
 		Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
 
 #ifndef FINAL_BUILD
