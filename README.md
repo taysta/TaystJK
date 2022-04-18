@@ -54,3 +54,6 @@ OpenJK:
 * Yberion
 * Daniel
 * Eezstreet
+* Daggo
+* Fau
+* TomArrow
