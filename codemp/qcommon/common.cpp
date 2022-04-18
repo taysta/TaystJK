@@ -1371,10 +1371,12 @@ void Com_Init( char *commandLine ) {
 			Cmd_AddCommand ("freeze", Com_Freeze_f);
 		}
 		Cmd_AddCommand ("quit", Com_Quit_f, "Quits the game" );
+#ifdef _WIN32
         Cmd_AddCommand("mnext", Com_MNext_f, "Simulates hardware 'next track' key");
         Cmd_AddCommand("mprev", Com_MPrev_f, "Simulates hardware 'previous track' key");
         Cmd_AddCommand("mstop", Com_MStop_f, "Simulates hardware 'stop media' key");
         Cmd_AddCommand("mpause", Com_MPause_f, "Simulates hardware 'pause media' key");
+#endif
 		Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
 
 #ifndef FINAL_BUILD
