@@ -106,6 +106,22 @@ void RB_EndSurface( void ) {
 		return;
 	}
 
+	if ( skyboxportal ) {
+		// world
+		if( !( backEnd.refdef.rdflags & RDF_SKYBOXPORTAL ) ) {
+			// don't process these tris at all
+			if( tess.shader->optimalStageIteratorFunc == RB_StageIteratorSky )	
+				return;
+		}
+
+		// portal sky
+		else if( !drawskyboxportal ) {
+			// /only/ process sky tris
+			if( !( tess.shader->optimalStageIteratorFunc == RB_StageIteratorSky ) )
+				return;
+		}
+	}
+
 	//
 	// update performance counters
 	//

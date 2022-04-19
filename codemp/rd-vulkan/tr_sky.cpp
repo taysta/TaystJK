@@ -798,9 +798,11 @@ Other things could be stuck in here, like birds in the sky, etc
 */
 void RB_StageIteratorSky( void )
 {
-	if (r_fastsky->integer && vk.fastSky){
+	if ( r_fastsky->integer && vk.fastSky )
 		return;
-	}
+
+	if ( skyboxportal && !( backEnd.refdef.rdflags & RDF_SKYBOXPORTAL ) )
+		return;
 
 #ifdef USE_VBO
 	VBO_UnBind();
@@ -809,34 +811,34 @@ void RB_StageIteratorSky( void )
 	// go through all the polygons and project them onto
 	// the sky box to see which blocks on each side need
 	// to be drawn
-	RB_ClipSkyPolygons(&tess);
+	RB_ClipSkyPolygons( &tess );
 
 	// r_showsky will let all the sky blocks be drawn in
 	// front of everything to allow developers to see how
 	// much sky is getting sucked in
-	if (r_showsky->integer) {
-		vk_set_depthrange(DEPTH_RANGE_ZERO);
+	if ( r_showsky->integer ) {
+		vk_set_depthrange( DEPTH_RANGE_ZERO );
 	}
 	else {
-		vk_set_depthrange(DEPTH_RANGE_ONE);
+		vk_set_depthrange( DEPTH_RANGE_ONE );
 	}
 
 	// draw the outer skybox
-	if (tess.shader->sky->outerbox[0] && tess.shader->sky->outerbox[0] != tr.defaultImage) {
-		DrawSkyBox(tess.shader);
+	if ( tess.shader->sky->outerbox[0] && tess.shader->sky->outerbox[0] != tr.defaultImage ) {
+		DrawSkyBox( tess.shader );
 	}
 
 	// generate the vertexes for all the clouds, which will be drawn
 	// by the generic shader routine
-	R_BuildCloudData(&tess);
+	R_BuildCloudData( &tess );
 
 	// draw the inner skybox
-	if (tess.numVertexes) {
+	if ( tess.numVertexes ) {
 		RB_StageIteratorGeneric();
 	}
 
 	// back to normal depth range
-	vk_set_depthrange(DEPTH_RANGE_NORMAL);
+	vk_set_depthrange( DEPTH_RANGE_NORMAL );
 
 	// note that sky was drawn so we will draw a sun later
 	backEnd.skyRenderedThisView = qtrue;
