@@ -177,8 +177,6 @@ static void vk_render_splash( void )
 	VkImageBlit					imageBlit;
 	float						ratio;
 
-	return;
-
 	ratio = ( (float)( SCREEN_WIDTH * glConfig.vidHeight ) / (float)( SCREEN_HEIGHT * glConfig.vidWidth ) );
 
 	if ( cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f ){

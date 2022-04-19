@@ -1123,7 +1123,6 @@ void vk_bind( image_t *image ) {
 void R_BindAnimatedImage( const textureBundle_t *bundle ) {
 
 	int64_t index;
-	double	v;
 
 	if ( bundle->isVideoMap ) {
 		ri.CIN_RunCinematic( bundle->videoMapHandle );
