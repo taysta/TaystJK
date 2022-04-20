@@ -3527,7 +3527,7 @@ static void CL_SetServerInfo(serverInfo_t *server, const char *info, int ping) {
 			char *filteredHostName = Info_ValueForKey(info, "hostname");
 			if (strlen(filteredHostName)) {
 				Q_strstrip(filteredHostName, "\xac\x82\xe2\xa2\x80", NULL);
-				while (*filteredHostName == '\x20' || *filteredHostName == '\x2e') *filteredHostName++;
+//				while (*filteredHostName == '\x20' || *filteredHostName == '\x2e') *filteredHostName++;
 			}
 			//server->clients = atoi(Info_ValueForKey(info, "clients"));
 			Q_strncpyz(server->hostName, filteredHostName, MAX_NAME_LENGTH);

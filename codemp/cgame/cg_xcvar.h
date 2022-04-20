@@ -45,6 +45,9 @@ XCVAR_DEF( cg_movementKeysSize,		"1.0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometer,			"0",	NULL,					CVAR_ARCHIVE ) //bitvalue
 XCVAR_DEF( cg_speedometerX,			"132",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerY,			"459",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumpsX,	"185",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumpsY,	"300",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_speedometerJumps,		 "10",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayX,		"640",	NULL,					CVAR_ARCHIVE )
@@ -52,8 +55,12 @@ XCVAR_DEF( cg_drawTeamOverlayY,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimer,			"2",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimerX,			"5",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_raceTimerY,			"280",	NULL,					CVAR_ARCHIVE ) 
+XCVAR_DEF( cg_raceTimerY,			"280",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_raceStart,			"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_raceStartX,			"300",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_raceStartY,			"280",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_smallScoreboard,		"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_scoreboardTime,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreDeaths,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_killMessage,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_newFont,				"0",	NULL,					CVAR_ARCHIVE )
@@ -72,12 +79,21 @@ XCVAR_DEF( cg_drawScore,			"2",	NULL,					CVAR_ARCHIVE ) //score counter on HUD
 XCVAR_DEF( cg_drawScores,			"1",	NULL,					CVAR_ARCHIVE ) //team score counter in top right
 XCVAR_DEF( cg_drawVote,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_showpos,				"0",	NULL,					CVAR_NONE )
+XCVAR_DEF( cg_pitchHelper,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperX,         "312",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperY,         "248",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperRange,         "50",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_pitchHelperOffset,         "0",    NULL,                   CVAR_ARCHIVE )
+XCVAR_DEF( cg_jumpGoal,         "0",    NULL,                   CVAR_NONE )
+XCVAR_DEF( cg_startGoal,         "0",    NULL,                   CVAR_NONE )
 
 //Crosshair
 XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairIdentifyTarget,	"1",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairSaberStyleColor,	"0",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairColor,	"0 0 0 255",	CG_CrosshairColorChange,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_crossHairScope,	        "0",	NULL,					                    CVAR_ARCHIVE )
+
 
 //Strafehelper
 XCVAR_DEF( cg_strafeHelper,						"3008", CG_ClearThirdPersonDamp,			CVAR_ARCHIVE )
@@ -124,6 +140,7 @@ XCVAR_DEF( cg_defaultModelRandom,				"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_defaultModel,						"kyle",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_defaultFemaleModel,				"jan",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_forceModel,						"0",	CG_ForceModelChange,	CVAR_ARCHIVE )
+XCVAR_DEF( cg_forceCosmetics,				    "0",	NULL,	                CVAR_ARCHIVE )
 XCVAR_DEF( cg_forceAllyModel,					"none",	CG_ForceModelChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_forceEnemyModel,					"none",	CG_ForceModelChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_jumpHeight,						"0",	NULL,					CVAR_ARCHIVE )
@@ -379,6 +396,17 @@ XCVAR_DEF( ui_tm2_c4_cnt,						"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 XCVAR_DEF( ui_tm2_c5_cnt,						"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 XCVAR_DEF( ui_tm2_cnt,							"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
 XCVAR_DEF( ui_tm3_cnt,							"0",					NULL,					CVAR_ROM|CVAR_INTERNAL )
+
+XCVAR_DEF( cg_disruptorMainTime,				"150",					NULL,					CVAR_ARCHIVE )	//from smod
+XCVAR_DEF( cg_disruptorAltTime,					"175",					NULL,					CVAR_ARCHIVE )	//from smod
+XCVAR_DEF( cg_disruptorTeamColor,				"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_disruptorSpiral,					"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_disruptorCoreColor,				"xff4400",				NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_disruptorSpiralColor,				"xff2200",				NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_disruptorNew,				        "0",				NULL,					    CVAR_ARCHIVE )
+XCVAR_DEF( cg_ambientSounds,				    "1",				NULL,					    CVAR_ARCHIVE )
+
+
 
 
 #undef XCVAR_DEF

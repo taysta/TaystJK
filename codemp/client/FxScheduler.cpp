@@ -401,6 +401,20 @@ struct primitiveType_s { const char *name; EPrimType type; } primitiveTypes[] = 
 };
 static const size_t numPrimitiveTypes = ARRAY_LEN( primitiveTypes );
 
+// hack for some known broken effects, we will force their life to 1
+// concussion and laser mine are intentionally omitted
+static char brokenEffectFilenames[][32] = {
+        "atst/shot", "atst/shot_red", "atst/side_alt_shot", "atst/side_main_shot", "blaster/npcshot", "blaster/shot",
+        "bryar/crackleShot", "bryar/npcshot", "emplaced/shot", "emplaced/shotnpc", "eweb/shot", "eweb/shotnpc",
+        "flechette/alt_shot", "flechette/shot", "mp/itemcone", "noghri_stick/shot", "repeater/alt_projectile",
+        "repeater/projectile", "rocket/shot", "ships/imp_blastershot", "ships/imp_torpshot", "ships/mine", "ships/reb_blastershot",
+        "ships/reb_torpshot", "ships/swoop_blastershot", "turret/hoth_shot", "turret/shot", "turret/turb_shot", "tusken/shot"
+};
+
+static int compareFilenames(const void *a, const void *b) {
+    return Q_stricmp((const char *)a, (const char *)b);
+}
+
 int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 {
 	CGPGroup			*primitiveGroup;
@@ -418,6 +432,13 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 		// failure
 		return 0;
 	}
+
+    // hack for projectiles
+    void *isProjectile = NULL;
+    if (VALIDSTRING(file))
+    {
+        isProjectile = bsearch(file, brokenEffectFilenames, ARRAY_LEN(brokenEffectFilenames), sizeof(*brokenEffectFilenames), compareFilenames);
+    }
 	if ((pair = base->GetPairs())!=0)
 	{
 		grpName = pair->GetName();
@@ -447,6 +468,12 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 
 		if ( type != None )
 		{
+
+            if (isProjectile)
+            {
+                prim->ParseLife("1");
+            }
+
 			prim = new CPrimitiveTemplate;
 
 			prim->mType = type;
@@ -508,7 +535,7 @@ SEffectTemplate *CFxScheduler::GetNewEffectTemplate( int *id, const char *file )
 	// wanted zero to be a bogus effect ID, so we just skip it.
 	for ( int i = 1; i < FX_MAX_EFFECTS; i++ )
 	{
-		effect = &mEffectTemplates[i];
+        effect = &mEffectTemplates[i];
 
 		if ( !effect->mInUse )
 		{

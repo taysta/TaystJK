@@ -1170,7 +1170,7 @@ void CG_DrawWeaponSelect( void ) {
 	int				holdX,x,y,pad;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				sideMax,holdCount,iconCnt;
-	int				height;
+//	int				height;
 	int		yOffset = 0;
 	qboolean drewConc = qfalse;
 
@@ -1286,7 +1286,7 @@ void CG_DrawWeaponSelect( void ) {
 	trap->R_SetColor(colorTable[CT_WHITE]);
 	// Work backwards from current icon
 	holdX = x - ((bigIconSize/2) + pad + smallIconSize) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
-	height = smallIconSize * 1;//cg.iconHUDPercent;
+//	height = smallIconSize * 1;//cg.iconHUDPercent;
 	drewConc = qfalse;
 
 	for (iconCnt=1;iconCnt<(sideLeftIconCnt+1);i--)
@@ -1326,9 +1326,9 @@ void CG_DrawWeaponSelect( void ) {
 
 		if (cgs.media.weaponIcons[i])
 		{
-			weaponInfo_t	*weaponInfo;
+//			weaponInfo_t	*weaponInfo;
 			CG_RegisterWeapon( i );
-			weaponInfo = &cg_weapons[i];
+//			weaponInfo = &cg_weapons[i];
 
 			trap->R_SetColor(colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
@@ -1350,12 +1350,12 @@ void CG_DrawWeaponSelect( void ) {
 	}
 
 	// Current Center Icon
-	height = bigIconSize * cg.iconHUDPercent;
+//	height = bigIconSize * cg.iconHUDPercent;
 	if (cgs.media.weaponIcons[cg.weaponSelect])
 	{
-		weaponInfo_t	*weaponInfo;
+//		weaponInfo_t	*weaponInfo;
 		CG_RegisterWeapon( cg.weaponSelect );
-		weaponInfo = &cg_weapons[cg.weaponSelect];
+//		weaponInfo = &cg_weapons[cg.weaponSelect];
 
 		trap->R_SetColor( colorTable[CT_WHITE]);
 		if (!CG_WeaponCheck(cg.weaponSelect))
@@ -1384,7 +1384,7 @@ void CG_DrawWeaponSelect( void ) {
 	// Right side ICONS
 	// Work forwards from current icon
 	holdX = x + ((bigIconSize/2) + pad) * cgs.widthRatioCoef; //JAPRO - Clientside - Ratio fix
-	height = smallIconSize * cg.iconHUDPercent;
+//	height = smallIconSize * cg.iconHUDPercent;
 	for (iconCnt=1;iconCnt<(sideRightIconCnt+1);i++)
 	{
 		if ( i == WP_CONCUSSION )
@@ -1420,9 +1420,9 @@ void CG_DrawWeaponSelect( void ) {
 
 		if (/*weaponData[i].weaponIcon[0]*/cgs.media.weaponIcons[i])
 		{
-			weaponInfo_t	*weaponInfo;
+//			weaponInfo_t	*weaponInfo;
 			CG_RegisterWeapon( i );
-			weaponInfo = &cg_weapons[i];
+//			weaponInfo = &cg_weapons[i];
 			// No ammo for this weapon?
 			trap->R_SetColor( colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
@@ -2344,7 +2344,8 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 
 				// draw a rail trail
 				//Com_Printf( "Predicted alt fire\n" );
-				FX_DisruptorAltShot( muzzlePoint, trace.endpos, qtrue );//loda - fix so not always full charge
+
+				//FX_DisruptorAltShot( muzzlePoint, trace.endpos, qtrue );//loda - fix so not always full charge
 			}
 			else
 			{
@@ -2357,7 +2358,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 
 				// draw a rail trail
 				//Com_Printf( "Predicted prim fire\n" );
-				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
+				//FX_DisruptorMainShot( muzzlePoint, trace.endpos );
 
 				/*// explosion at end if not SURF_NOIMPACT
 				if ( !(trace.surfaceFlags & SURF_NOIMPACT) )
@@ -2366,6 +2367,15 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 					CG_MissileHitWall( ent->weapon, cg.predictedPlayerState.clientNum, trace.endpos, trace.plane.normal, IMPACTSOUND_DEFAULT );
 				}*/
 			}
+            if (cg_disruptorSpiral.integer && cg_disruptorNew.integer)
+                CG_RailSpiral(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);
+            else if (cg_disruptorNew.integer)
+                CG_RailTrail(&cgs.clientinfo[cent->currentState.number], muzzlePoint, trace.endpos, cg_disruptorAltTime.integer);
+            else if (altFire) {
+                float charge = (float)(cg.time - cg.predictedPlayerState.weaponChargeTime) / 50.0f;
+                FX_DisruptorAltShot(muzzlePoint, trace.endpos, charge >= 30.0f);
+            } else
+                FX_DisruptorMainShot(muzzlePoint, trace.endpos);
 		}
 		else if (ent->weapon == WP_STUN_BATON)
 		{

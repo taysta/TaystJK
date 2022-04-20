@@ -23,13 +23,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 // cg_draw.c -- draw all of the graphical elements during
 // active (after loading) gameplay
-
 #include "cg_local.h"
 
 #include "game/bg_saga.h"
 
 #include "ui/ui_shared.h"
 #include "ui/ui_public.h"
+
 
 extern float CG_RadiusForCent( centity_t *cent );
 qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
@@ -46,7 +46,10 @@ static void CG_DrawShowPos(void);
 static void CG_MovementKeys(centity_t *cent);
 static void CG_JumpHeight(centity_t *cent);
 static void CG_RaceTimer(void);
-static void CG_DrawSpeedGraph( void );
+static void CG_AddSpeed(void);
+static void CG_DrawSpeedGraph2( void );
+static void CG_DrawSpeedGraph(rectDef_t* rect, const vec4_t foreColor, vec4_t backColor);
+
 static void CG_JumpDistance( void );
 static void CG_DrawVerticalSpeed(void);
 static void CG_DrawYawSpeed(void);
@@ -67,6 +70,11 @@ static void CG_DrawTrajectoryLine(void);
 #define SHELPER_ACCELMETER		(1<<12)
 #define SHELPER_WEZE			(1<<13)
 #define SHELPER_CROSSHAIR		(1<<14)
+#define SHELPER_S				(1<<15)
+#define SHELPER_SA				(1<<16)
+#define SHELPER_SD				(1<<17)
+#define SHELPER_TINY		    (1<<18)
+#define SHELPER_INVERT			(1<<19)
 
 #define SPEEDOMETER_ENABLE			(1<<0)
 #define SPEEDOMETER_GROUNDSPEED		(1<<1)
@@ -78,6 +86,12 @@ static void CG_DrawTrajectoryLine(void);
 #define SPEEDOMETER_SPEEDGRAPH		(1<<7)
 #define SPEEDOMETER_KPH				(1<<8)
 #define SPEEDOMETER_MPH				(1<<9)
+#define SPEEDOMETER_JUMPS			(1<<10)
+#define SPEEDOMETER_COLORS          (1<<11)
+#define SPEEDOMETER_JUMPSCOLORS1    (1<<12)
+#define SPEEDOMETER_JUMPSCOLORS2    (1<<13)
+#define SPEEDOMETER_SPEEDGRAPHOLD   (1<<14)
+
 //japro end
 
 // nmckenzie: DUEL_HEALTH
@@ -351,7 +365,7 @@ static void CG_DrawZoomMask( void )
 			flip = !flip;
 		}
 	}
-	else if ( cg.predictedPlayerState.zoomMode)
+	else if ( cg.predictedPlayerState.zoomMode == 1)
 	{
 		// disruptor zoom mode
 		level = (float)(50.0f - zoomFov) / 50.0f;//(float)(80.0f - zoomFov) / 80.0f;
@@ -370,8 +384,11 @@ static void CG_DrawZoomMask( void )
 		level *= 103.0f;
 
 		// Draw target mask
-		trap->R_SetColor( colorTable[CT_WHITE] );
-		CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+        if( cg_crossHairScope.integer == 0)
+        {
+            trap->R_SetColor( colorTable[CT_WHITE] );
+            CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+        }
 
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
@@ -386,7 +403,10 @@ static void CG_DrawZoomMask( void )
 		}
 
 		// Draw rotating insert
-		CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
+        if( cg_crossHairScope.integer == 0 )
+        {
+            CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
+        }
 
 		// Increase the light levels under the center of the target
 //		CG_DrawPic( 198, 118, 246, 246, cgs.media.disruptorLight );
@@ -1377,7 +1397,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	int			i;
 	vec4_t		calcColor;
 	float		value, inc, percent;
-	qboolean	flash = qfalse;
+//	qboolean	flash = qfalse;
 
 	inc = (float)100 / MAX_TICS;
 	value = cg.snap->ps.fd.forcePower;
@@ -1385,7 +1405,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	// Make the hud flash by setting forceHUDTotalFlashTime above cg.time
 	if (cg.forceHUDTotalFlashTime > cg.time)
 	{
-		flash = qtrue;
+//		flash = qtrue;
 		if ( cg.forceHUDNextFlashTime < cg.time )
 		{
 			cg.forceHUDNextFlashTime = cg.time + 400;
@@ -1768,7 +1788,7 @@ CG_DrawHUD
 ================
 */
 
-float speedometerXPos;
+float speedometerXPos, jumpsXPos;
 void Dzikie_CG_DrawLine (float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff);
 void CG_DrawHUD(centity_t	*cent)
 {
@@ -1778,7 +1798,7 @@ void CG_DrawHUD(centity_t	*cent)
 	int	scoreBias;
 	char scoreBiasStr[16];
 
-	if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || cg_strafeHelper.integer || cg_raceTimer.integer > 1 || cg_showpos.integer)
+	if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || cg_strafeHelper.integer || cg_raceTimer.integer > 1 || cg_raceStart.integer|| cg_showpos.integer)
 		CG_CalculateSpeed(cent);
 
 	//JAPRO - Clientside - Movement Keys Start
@@ -1786,7 +1806,7 @@ void CG_DrawHUD(centity_t	*cent)
 		CG_MovementKeys(cent);
 	//JAPRO - Clientside - Speedometer Start
 	speedometerXPos = cg_speedometerX.integer;
-
+    jumpsXPos = cg_speedometerJumpsX.integer;
 	if (cgs.newHud) {
 		switch (cg_hudFiles.integer)
 		{
@@ -1839,10 +1859,21 @@ void CG_DrawHUD(centity_t	*cent)
 
 		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 5, SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 5, lineWidth*cgs.widthRatioCoef, hcolor, hcolor[3], 0); //640x480, 320x240
 	}
-	if (cg_raceTimer.integer)
+	if (cg_raceTimer.integer || cg_raceStart.integer)
 		CG_RaceTimer();
-	if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)
-		CG_DrawSpeedGraph();
+
+    if ((cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH) && !(cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPHOLD)) {
+        rectDef_t speedgraphRect;
+        vec4_t foreColor = { 0.0f,0.8f,1.0f,0.8f };
+        vec4_t backColor = { 0.0f,0.8f,1.0f,0.0f };
+        speedgraphRect.x = (320.0f - (150.0f / 2.0f));
+        speedgraphRect.y = SCREEN_HEIGHT - 22 - 2;
+        speedgraphRect.w = 150.0f;
+        speedgraphRect.h = 22.0f;
+        CG_AddSpeed();
+        CG_DrawSpeedGraph(&speedgraphRect, foreColor, backColor);
+    }else if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)
+		CG_DrawSpeedGraph2();
 //JAPRO - Clientside - Lead Indicator Start
 	if (cg_leadIndicator.integer)
 		CG_LeadIndicator();
@@ -4493,7 +4524,7 @@ float CG_DrawMiniMap(float y)
 		float		angleLook;
 		float		anglePlayer;
 		float		angle;
-		float		distance, actualDist;
+		float		distance = 0; //, actualDist;
 		vec4_t color;
 
 
@@ -4519,7 +4550,7 @@ float CG_DrawMiniMap(float y)
 		// Get the distances
 		VectorSubtract(cg.predictedPlayerState.origin, cent->lerpOrigin, dirPlayer);
 		dirPlayer[2] = 0;
-		actualDist = distance = VectorNormalize(dirPlayer);
+	//	actualDist = distance = VectorNormalize(dirPlayer);
 
 		if (distance > MAX_MINIMAP_RANGE * 0.8f) //Cap distance, so their icon doesnt go off the minimap
 			distance = MAX_MINIMAP_RANGE*0.8f;
@@ -6038,14 +6069,14 @@ static void CG_DrawLagometer( void ) {
 	CG_DrawDisconnect();
 }
 
-static void CG_DrawSpeedGraph( void ) {
-	int		a, i;
+static void CG_DrawSpeedGraph2( void ) {
+	int		a, i, aw;
 	float	x, y, v;
-	float	ax, ay, aw, ah, mid, range;
-	int		color;
+	float	ax, ay, ah, range; // mid, range;
+//	int		color;
 	float	vscale;
 
-	x = SCREEN_WIDTH - cg_lagometerX.integer * cgs.widthRatioCoef;
+	x = SCREEN_WIDTH - (float)cg_lagometerX.integer * cgs.widthRatioCoef;
 	y = SCREEN_HEIGHT - cg_lagometerY.integer - 56;
 
 	if (cg_hudFiles.integer == 0) {
@@ -6074,9 +6105,9 @@ static void CG_DrawSpeedGraph( void ) {
 	else
 		ah = 48;
 
-	color = -1;
+//	color = -1;
 	range = ah / 3;
-	mid = ay + range;
+//	mid = ay + range;
 
 	// draw the speed graph
 	range = ah;
@@ -6084,16 +6115,115 @@ static void CG_DrawSpeedGraph( void ) {
 
 	for (a = 0 ; a < aw ; a++) {
 		i = ( speedgraph.frameCount - 1 - a ) & (SPEED_SAMPLES - 1);
-		v = speedgraph.frameSamples[i];
+		v = (float)speedgraph.frameSamples[i];
 		if (v > 0) {
 			trap->R_SetColor(g_color_table[ColorIndex(COLOR_GREEN)]);
 			v = v * vscale;
 			if (v > range)
 				v = range;
-			trap->R_DrawStretchPic(ax + (aw - a) * cgs.widthRatioCoef, ay + ah - v, 1 * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader);
+			trap->R_DrawStretchPic(ax + (float)(aw - a) * cgs.widthRatioCoef, ay + ah - v, 1 * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader);
 		}
 	}
 	trap->R_SetColor(NULL);
+}
+
+
+#define SPEEDOMETER_NUM_SAMPLES 500
+float speedSamples[SPEEDOMETER_NUM_SAMPLES];
+// array indices
+int oldestSpeedSample = 0;
+int maxSpeedSample = 0;
+
+/*
+===================
+CG_AddSpeed
+append a speed to the sample history
+===================
+*/
+void CG_AddSpeed(void)
+{
+    float speed;
+    vec3_t vel;
+
+    VectorCopy(cg.snap->ps.velocity, vel);
+
+    /*if (cg_drawSpeed.integer & SPEEDOMETER_IGNORE_Z)
+        vel[2] = 0;*/
+
+    speed = VectorLength(vel);
+
+    if (speed > speedSamples[maxSpeedSample])
+    {
+        maxSpeedSample = oldestSpeedSample;
+        speedSamples[oldestSpeedSample++] = speed;
+        oldestSpeedSample %= SPEEDOMETER_NUM_SAMPLES;
+        return;
+    }
+
+    speedSamples[oldestSpeedSample] = speed;
+    if (maxSpeedSample == oldestSpeedSample++)
+    {
+        // if old max was overwritten find a new one
+        int i;
+        for (maxSpeedSample = 0, i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
+        {
+            if (speedSamples[i] > speedSamples[maxSpeedSample])
+                maxSpeedSample = i;
+        }
+    }
+
+    oldestSpeedSample %= SPEEDOMETER_NUM_SAMPLES;
+}
+
+#define SPEEDOMETER_MIN_RANGE 900
+#define SPEED_MED 1000.f
+#define SPEED_FAST 1600.f
+#define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
+#define VectorLerp( f, s, e, r ) ((r)[0]=(s)[0]+(f)*((e)[0]-(s)[0]),\
+  (r)[1]=(s)[1]+(f)*((e)[1]-(s)[1]),\
+  (r)[2]=(s)[2]+(f)*((e)[2]-(s)[2]))
+/*
+===================
+CG_DrawSpeedGraph
+===================
+*/
+static void CG_DrawSpeedGraph(rectDef_t* rect, const vec4_t foreColor,
+                              vec4_t backColor)
+{
+    int i;
+    float val, max, top;
+    // colour of graph is interpolated between these values
+    const vec3_t slow = { 0.0f, 0.0f, 1.0f };
+    const vec3_t medium = { 0.0f, 1.0f, 0.0f };
+    const vec3_t fast = { 1.0f, 0.0f, 0.0f };
+    vec4_t color;
+
+    max = speedSamples[maxSpeedSample];
+    if (max < SPEEDOMETER_MIN_RANGE)
+        max = SPEEDOMETER_MIN_RANGE;
+
+    trap->R_SetColor(backColor);
+    CG_DrawPic(rect->x, rect->y, rect->w, rect->h, cgs.media.whiteShader);
+
+    Vector4Copy(foreColor, color);
+
+    for (i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
+    {
+        val = speedSamples[(oldestSpeedSample + i) % SPEEDOMETER_NUM_SAMPLES];
+        if (val < SPEED_MED)
+            VectorLerp(val / SPEED_MED, slow, medium, color);
+        else if (val < SPEED_FAST)
+            VectorLerp((val - SPEED_MED) / (SPEED_FAST - SPEED_MED),
+                       medium, fast, color);
+        else
+            VectorCopy(fast, color);
+        trap->R_SetColor(color);
+        top = rect->y + (1 - val / max) * rect->h;
+        CG_DrawPic(rect->x + ((float)i / (float)SPEEDOMETER_NUM_SAMPLES) * rect->w, top,
+                   rect->w / (float)SPEEDOMETER_NUM_SAMPLES, val * rect->h / max,
+                   cgs.media.whiteShader);
+    }
+    trap->R_SetColor(NULL);
 }
 
 void CG_DrawSiegeMessage( const char *str, int objectiveScreen )
@@ -6693,7 +6823,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	if ( cg.predictedPlayerState.zoomMode != 0 )
+	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crossHairScope.integer == 0 )
 	{//not while scoped
 		return;
 	}
@@ -8340,10 +8470,10 @@ CG_DrawSpectator
 */
 static void CG_DrawSpectator(void)
 {
-	const char* s;
+//	const char* s;
 	int xOffset = 0;
 
-	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
+//	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
 	if ((cgs.gametype == GT_DUEL || cgs.gametype == GT_POWERDUEL) &&
 		cgs.duelist1 != -1 &&
 		cgs.duelist2 != -1)
@@ -10874,7 +11004,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	float x, y, startx, starty, lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
 	static const int LINE_HEIGHT = 230; //240 is midpoint, so it should be a little higher so crosshair is always on it.
-	static const vec4_t activeColor = {0, 1, 0, 0.75}, normalColor = {1, 1, 1, 0.75}, invertColor = {0.5f, 1, 1, 0.75}, wColor = {1, 0.5, 0.5, 0.75}, rearColor = {0.5, 1,1, 0.75}, centerColor = {0.5, 1, 1, 0.75};
+	static const vec4_t normalColor = {1, 1, 1, 0.75}, invertColor = {0.5f, 1, 1, 0.75}, wColor = {1, 0.5, 0.5, 0.75}, rearColor = {0.5, 1,1, 0.75}, centerColor = {0.5, 1, 1, 0.75}; //activeColor = {0, 1, 0, 0.75},
 	vec4_t color = {1, 1, 1, 0.75};
 
 	//how the fuck do these colors work, 0111 is cyan?
@@ -10897,20 +11027,21 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		color[3] = cg.strafeHelperActiveColor[3];
 		//memcpy(color, activeColor, sizeof(vec4_t));
 	}
-	else {
-		if (moveDir == 1 || moveDir == 7)
-			memcpy(color, normalColor, sizeof(vec4_t));
-		else if (moveDir == 2 || moveDir == 6)
-			memcpy(color, invertColor, sizeof(vec4_t));
-		else if (moveDir == 0)
-			memcpy(color, wColor, sizeof(vec4_t));
-		else if (moveDir == 8)
-			memcpy(color, centerColor, sizeof(vec4_t));
-		else if (moveDir == 9 || moveDir == 10)
-			memcpy(color, rearColor, sizeof(vec4_t));
-
-		color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
-	}
+    else {
+        if (moveDir == 1 || moveDir == 7)
+            memcpy(color, normalColor, sizeof(vec4_t));
+        else if (moveDir == 2 || moveDir == 6)
+            memcpy(color, invertColor, sizeof(vec4_t));
+        else if (moveDir == 0 || moveDir == 4)
+            memcpy(color, wColor, sizeof(vec4_t));
+        else if (moveDir == 8)
+            memcpy(color, centerColor, sizeof(vec4_t));
+        else if (moveDir == 9 || moveDir == 10)
+            memcpy(color, rearColor, sizeof(vec4_t));
+        else if (moveDir == 3 || moveDir == 5)
+            memcpy(color, wColor, sizeof(vec4_t));
+        color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
+    }
 
 	if (!(cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) && !cg.renderingThirdPerson)
 		VectorCopy(cg.refdef.vieworg, start);
@@ -10930,8 +11061,12 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		return;
 
 	if (cg_strafeHelper.integer & SHELPER_NEWBARS) {
-		Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 20, x, (SCREEN_HEIGHT / 2) - 20, lineWidth, color, 0.75f, 0);
-		//CG_DottedLine( x, 260, x, 220, 1, 100, color, 0.75f ); //240 is center, so 220 - 260 is symetrical on crosshair.'
+	    if(cg_strafeHelperCutoff.integer > 256){
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 4, x, (SCREEN_HEIGHT / 2) - 4, lineWidth, color, 0.75f, 0);
+        } else{
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 20 - cg_strafeHelperCutoff.integer/16, x, (SCREEN_HEIGHT / 2) - 20 + cg_strafeHelperCutoff.integer/16, lineWidth, color, 0.75f, 0);
+            //CG_DottedLine( x, 260, x, 220, 1, 100, color, 0.75f ); //240 is center, so 220 - 260 is symetrical on crosshair.'
+	    }
 	}
 	if (cg_strafeHelper.integer & SHELPER_OLDBARS && active && moveDir != 0) { //Not sure how to deal with multiple lines for W only so just fuck it for now..
 		//Proper way is to tell which line we are closest to aiming at and display the shit for that...
@@ -10939,12 +11074,19 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	}
 	if (cg_strafeHelper.integer & SHELPER_OLDSTYLE) {
 		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
-		//distance = sqrt( ((320-x)*(320-x)) + ((480-LINE_HEIGHT)*(480-LINE_HEIGHT)) ); 
+		int heightIn = LINE_HEIGHT;
+		//distance = sqrt( ((320-x)*(320-x)) + ((480-LINE_HEIGHT)*(480-LINE_HEIGHT)) );
 
-		if (cutoff > SCREEN_HEIGHT)
-			cutoff = SCREEN_HEIGHT;
-		if (cutoff < LINE_HEIGHT + 20)
-			cutoff = LINE_HEIGHT + 20;
+		/*if (cutoff > SCREEN_HEIGHT)
+			cutoff = SCREEN_HEIGHT;*/
+		if (cg_strafeHelper.integer & SHELPER_TINY) {
+            cutoff = LINE_HEIGHT + 15;
+            heightIn = LINE_HEIGHT + 5;
+        } else if (cutoff < LINE_HEIGHT + 20) {
+                cutoff = LINE_HEIGHT + 20;
+        } else if (cutoff > SCREEN_HEIGHT) {
+		        cutoff = SCREEN_HEIGHT;
+		}
 
 		//Com_Printf("Numdots %i\n", distance);
 		//if (distance < 0)
@@ -10952,7 +11094,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		//else if (distance > 1000)
 			//distance = 1000;
 
-		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, SCREEN_HEIGHT, x, LINE_HEIGHT, lineWidth, color, color[3], cutoff);
+		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, SCREEN_HEIGHT, x, heightIn, lineWidth, color, color[3], cutoff);
 		//CG_DottedLineSegment( 320, 480, x, LINE_HEIGHT, 1, distance, color, color[3], cutoff ); //240 is center, so 220 - 260 is symetrical on crosshair.
 	}
 	if (cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) {
@@ -10978,6 +11120,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 
 qboolean CG_InRollAnim( centity_t *cent );
 int PM_GetMovePhysics();
+
 static void CG_StrafeHelper(centity_t *cent)
 {
 	vec_t * velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
@@ -11097,16 +11240,43 @@ static void CG_StrafeHelper(centity_t *cent)
 	if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SWOOP || moveStyle == MV_BOTCPM || (moveStyle == MV_SLICK && !onGround)) {//QW, CPM, PJK, WSW, RJCPM have center line
 		if (cg_strafeHelper.integer & SHELPER_CENTER)
 			DrawStrafeLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
+
+        if (cg_strafeHelper.integer & SHELPER_REAR && cg_strafeHelper.integer & SHELPER_S && cg_strafeHelper.integer & SHELPER_CENTER)
+            DrawStrafeLine(velocityAngle, 180.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //Rear Center
 	}
+
 	if (moveStyle != MV_QW && moveStyle != MV_SWOOP) { //Every style but QW has WA/WD lines
 		if (cg_strafeHelper.integer & SHELPER_WA)
 			DrawStrafeLine(velocityAngle, (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 1); //WA
 		if (cg_strafeHelper.integer & SHELPER_WD)
 			DrawStrafeLine(velocityAngle, (-optimalDeltaAngle - (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD
+
+        if (cg_strafeHelper.integer & SHELPER_REAR) {
+            if (cg_strafeHelper.integer & SHELPER_SA) {
+                DrawStrafeLine(velocityAngle, (180.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 3); //SA
+            }
+            if (cg_strafeHelper.integer & SHELPER_SD) {
+                DrawStrafeLine(velocityAngle, (180.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 5); //SD
+            }
+        }
+
+        //inverted
+        if (cg_strafeHelper.integer & SHELPER_INVERT)
+        {
+            if(cg_strafeHelper.integer & SHELPER_WA)
+                DrawStrafeLine(velocityAngle, (-90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 9); //WA backwards
+            if(cg_strafeHelper.integer & SHELPER_WD)
+                DrawStrafeLine(velocityAngle, (90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 10); //WD backwards
+            if(cg_strafeHelper.integer & SHELPER_SA)
+                DrawStrafeLine(velocityAngle, (-90.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove < 0), 9); //SA forwards
+            if(cg_strafeHelper.integer & SHELPER_SD)
+                DrawStrafeLine(velocityAngle, (90.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove < 0 && cmd.rightmove > 0), 10); //SD forwards
+        }
 	}
+
 	if (moveStyle == MV_JKA || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_JETPACK || moveStyle == MV_SPEED || moveStyle == MV_SP || (moveStyle == MV_SLICK && onGround)) { //JKA, Q3, RJQ3, Jetpack? have A/D
 		if (cg_strafeHelper.integer & SHELPER_A)
-			DrawStrafeLine(velocityAngle, -(45.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 2); //A
+			DrawStrafeLine(velocityAngle, (-45.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove < 0), 2); //A
 		if (cg_strafeHelper.integer & SHELPER_D)
 			DrawStrafeLine(velocityAngle, (45.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove == 0 && cmd.rightmove > 0), 6); //D
 
@@ -11122,6 +11292,12 @@ static void CG_StrafeHelper(centity_t *cent)
 			DrawStrafeLine(velocityAngle, (45.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0); //W
 			DrawStrafeLine(velocityAngle, (-45.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove == 0), 0); //W
 		}
+
+        //S only
+        if (cg_strafeHelper.integer & SHELPER_S && cg_strafeHelper.integer & SHELPER_REAR) {
+            DrawStrafeLine(velocityAngle, (225.0f + (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean) (cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+            DrawStrafeLine(velocityAngle, (-225.0f - (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f))), (qboolean) (cmd.forwardmove < 0 && cmd.rightmove == 0), 4); //S
+        }
 	}
 }
 
@@ -11133,8 +11309,8 @@ static void CG_DrawAccelMeter(void)
 	const float potentialSpeed = sqrtf(cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2 * (250 * optimalAccel));
 	float actualAccel, total, percentAccel, x;
 	const float accel = cg.currentSpeed - cg.previousSpeed;
-	static int t, i, previous, lastupdate;
-	unsigned short frameTime;
+	static int i; //, previous, t;
+//	unsigned short frameTime;
 	static float previousTimes[PERCENT_SAMPLES];
 	static unsigned short index;
 
@@ -11162,12 +11338,12 @@ static void CG_DrawAccelMeter(void)
 
 	//Com_Printf("Actual Accel this frame is %.3f, last speed was %.3f, current speed is %.3f, potential speed was %.3f, coef is %.3f\n", accel, cg.previousSpeed, cg.currentSpeed, potentialSpeed, actualAccel/(potentialSpeed - currentSpeed));
 
-	t = trap->Milliseconds();
-	frameTime = t - previous;
-	previous = t;
+//	t = trap->Milliseconds();
+//	frameTime = t - previous;
+//	previous = t;
 	//if (t - lastupdate > 20)	//don't sample faster than this
 	{
-		lastupdate = t;
+//		lastupdate = t;
 		previousTimes[index % PERCENT_SAMPLES] = actualAccel / (potentialSpeed - cg.currentSpeed);
 		index++;
 	}
@@ -11181,7 +11357,7 @@ static void CG_DrawAccelMeter(void)
 	}
 	percentAccel = total / (float)PERCENT_SAMPLES;
 
-	//if (cg_draw2D.integer == 2) 
+	//if (cg_draw2D.integer == 2)
 	//percentAccel = actualAccel / (potentialSpeed - cg.currentSpeed);
 
 	//if ( percentAccel ) {
@@ -11418,10 +11594,10 @@ static void CG_JumpDistance( void )
 static void CG_DrawYawSpeed( void ) {
     static unsigned short previousYaws[YAW_FRAMES];
     static unsigned short index;
-    static int    previous, lastupdate;
+    static int    lastupdate; //previous, lastupdate;
     int        t, i, yaw, total;
-    unsigned short frameTime;
-    const int        xOffset = 0;
+//    unsigned short frameTime;
+//    const int        xOffset = 0;
 
     const float diff = AngleSubtract(cg.predictedPlayerState.viewangles[YAW], cg.lastYawSpeed);
     float yawspeed = diff / (cg.frametime * 0.001f);
@@ -11429,8 +11605,8 @@ static void CG_DrawYawSpeed( void ) {
         yawspeed = -yawspeed;
 
     t = trap->Milliseconds();
-    frameTime = t - previous;
-    previous = t;
+//    frameTime = t - previous;
+//    previous = t;
     if (t - lastupdate > 20)    //don't sample faster than this
     {
         lastupdate = t;
@@ -11503,7 +11679,10 @@ static void CG_RaceTimer(void)
 
 	{
 		char timerStr[48] = { 0 };
-		const int time = (cg.time - cg.predictedPlayerState.duelTime);
+        char startStr[48] = { 0 };
+        vec4_t colorStartSpeed = {1, 1, 1, 1};
+
+        const int time = (cg.time - cg.predictedPlayerState.duelTime);
 		const int minutes = (time / 1000) / 60;
 		const int seconds = (time / 1000) % 60;
 		const int milliseconds = (time % 1000);
@@ -11515,11 +11694,10 @@ static void CG_RaceTimer(void)
 			cg.displacementSamples = 0;
 		}
 
-		if (cg_raceTimer.integer > 1) {
+		if (cg_raceTimer.integer > 1 || cg_raceStart.integer) {
 			if (time > 0) {
 				if (!cg.startSpeed)
 					cg.startSpeed = (int)(cg.currentSpeed + 0.5f);
-
 				if (cg.currentSpeed > cg.maxSpeed)
 					cg.maxSpeed = (int)(cg.currentSpeed + 0.5f);
 				cg.displacement += cg.currentSpeed;
@@ -11528,49 +11706,66 @@ static void CG_RaceTimer(void)
 		}
 
 		cg.lastRaceTime = time;
+        if (cg_raceTimer.integer != 0) {
+            if (cg_raceTimer.integer < 3)
+                Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%i\n", minutes, seconds, milliseconds / 100);
+            else
+                Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%03i\n", minutes, seconds, milliseconds);
 
-		if (cg_raceTimer.integer < 3)
-			Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%i\n", minutes, seconds, milliseconds / 100);
-		else
-			Com_sprintf(timerStr, sizeof(timerStr), "%i:%02i.%03i\n", minutes, seconds, milliseconds);
+            if (cg_raceTimer.integer > 1) {
+                if (cg.displacementSamples)
+                    Q_strcat(timerStr, sizeof(timerStr), va("Max: %i\nAvg: %i", (int) (cg.maxSpeed + 0.5f),
+                                                            cg.displacement / cg.displacementSamples));
+                if (time < 3000 && !cg_raceStart.integer)
+                    Q_strcat(timerStr, sizeof(timerStr), va("\nStart: %i", cg.startSpeed));
 
-		if (cg_raceTimer.integer > 1) {
-			if (cg.displacementSamples)
-				Q_strcat(timerStr, sizeof(timerStr), va("Max: %i\nAvg: %i", (int)(cg.maxSpeed + 0.5f), cg.displacement / cg.displacementSamples));
-			if (time < 3000)
-				Q_strcat(timerStr, sizeof(timerStr), va("\nStart: %i", cg.startSpeed));
-		}
+            }
 
-		CG_Text_Paint(cg_raceTimerX.integer, cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE], timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-	}
-}
-
+            CG_Text_Paint(cg_raceTimerX.integer, cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE],
+                          timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        }
+		if(cg_raceStart.integer)
+		{
+		    if(cg_startGoal.value && (cg_startGoal.value <= cg.startSpeed)){
+		        float startColor = 1 / (((float)cg.startSpeed/250)*((float)cg.startSpeed/250));
+                colorStartSpeed[0] = startColor;
+                colorStartSpeed[1] = 1;
+                colorStartSpeed[2] = startColor;
+		    }
+            Com_sprintf(startStr, sizeof(startStr), "Start: %i", cg.startSpeed);
+            CG_Text_Paint(cg_raceStartX.integer, cg_raceStartY.integer, cg_raceTimerSize.value, colorStartSpeed, startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        }
+    }
+}static float firstSpeed;
 #define ACCEL_SAMPLES 32
 static void CG_Speedometer(void)
 {
 		const char *accelStr, *accelStr2, *accelStr3;
 		char speedStr[32] = {0}, speedStr2[32] = {0}, speedStr3[32] = {0};
 		vec4_t colorSpeed = {1, 1, 1, 1};
-		const float currentSpeed = cg.currentSpeed;
+        const float currentSpeed = cg.currentSpeed;
 		static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
 		const float accel = currentSpeed - lastSpeed;
-		float total, avgAccel;
+		float total, avgAccel, groundSpeedColor, groundSpeedsColor, currentSpeedColor;
 		int t, i;
-		unsigned short frameTime;
+//		unsigned short frameTime;
 		static unsigned short index;
-		static int	previous, lastupdate;
- 
+		static int lastupdate, jumpsCounter = 0;//	previous, lastupdate, jumpsCounter = 0;
+        static qboolean clearOnNextJump = qfalse;
+//        float newXPos;
+
 		lastSpeed = currentSpeed;
- 
-		if (currentSpeed > 250)
+
+		if (currentSpeed > 250 && !(cg_speedometer.integer & SPEEDOMETER_COLORS))
 		{
-			colorSpeed[1] = 1 / ((currentSpeed/250)*(currentSpeed/250));
-			colorSpeed[2] = 1 / ((currentSpeed/250)*(currentSpeed/250));
+            currentSpeedColor = 1 / ((currentSpeed/250)*(currentSpeed/250));
+			colorSpeed[1] = currentSpeedColor;
+			colorSpeed[2] = currentSpeedColor;
 		}
 
 		t = trap->Milliseconds();
-		frameTime = t - previous;
-		previous = t;
+//		frameTime = t - previous;
+//		previous = t;
 		if (t - lastupdate > 5)	//don't sample faster than this
 		{
 			lastupdate = t;
@@ -11606,53 +11801,111 @@ static void CG_Speedometer(void)
 			accelStr3 = "^7m: ";
 		}
 
-		if (!(cg_speedometer.integer & SPEEDOMETER_KPH) && !(cg_speedometer.integer & SPEEDOMETER_MPH))
+    if (!(cg_speedometer.integer & SPEEDOMETER_KPH) && !(cg_speedometer.integer & SPEEDOMETER_MPH))
 		{
 			Com_sprintf(speedStr, sizeof(speedStr), "   %.0f", floorf(currentSpeed + 0.5f));
 			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorWhite, accelStr, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorSpeed, speedStr, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-		}
+            CG_Text_Paint(speedometerXPos  * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr, 0.0f, 0, ITEM_ALIGN_LEFT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        }
 		else if (cg_speedometer.integer & SPEEDOMETER_KPH)
 		{
 			Com_sprintf(speedStr2, sizeof(speedStr2), "   %.1f", currentSpeed * 0.05);
-			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorWhite, accelStr2, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorSpeed, speedStr2, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr2, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr2, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
 		}
 		else if (cg_speedometer.integer & SPEEDOMETER_MPH)
 		{
 			Com_sprintf(speedStr3, sizeof(speedStr3), "   %.1f", currentSpeed * 0.03106855);
-			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorWhite, accelStr3, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorSpeed, speedStr3, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr3, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+			CG_Text_Paint(speedometerXPos*cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr3, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
 		}
+    speedometerXPos += 52;
 
-		speedometerXPos += 52;
-
-		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED) {
+		if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometer.integer & SPEEDOMETER_JUMPS))) {
 			char speedStr4[32] = {0};
-			vec4_t colorGroundSpeed = {1, 1, 1, 1};
+            char speedsStr4[32] = {0};
 
-			if (cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE || cg.predictedPlayerState.velocity[2] < 0) { //On ground or Moving down
+            vec4_t colorGroundSpeed = {1, 1, 1, 1};
+            vec4_t colorGroundSpeeds = {1, 1, 1, 1};
+
+            if (cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE || cg.predictedPlayerState.velocity[2] < 0) { //On ground or Moving down
 				cg.firstTimeInAir = qfalse;
 			}
 			else if (!cg.firstTimeInAir) { //Moving up for first time
-				cg.firstTimeInAir = qtrue;
-				cg.lastGroundSpeed = currentSpeed;
-				cg.lastGroundTime = cg.time;
-			}
+                cg.firstTimeInAir = qtrue;
+                cg.lastGroundSpeed = currentSpeed;
+                cg.lastGroundTime = cg.time;
+                if (cg_speedometer.integer & SPEEDOMETER_JUMPS) {
 
-			if (cg.lastGroundSpeed > 250) {
-				colorGroundSpeed[1] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
-				colorGroundSpeed[2] = 1 / ((cg.lastGroundSpeed/250)*(cg.lastGroundSpeed/250));
-			}
-			if ((cg.lastGroundTime > cg.time - 1500)) {
-				if (cg.lastGroundSpeed) {
-					Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);
-					CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.integer, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_RIGHT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-				}
-			}
+                    if (clearOnNextJump == qtrue) {
+                        Com_Memset(&cg.lastGroundSpeeds, 0, sizeof(cg.lastGroundSpeeds));
+                        jumpsCounter = 0;
+                        clearOnNextJump = qfalse;
+                    }
+                    cg.lastGroundSpeeds[++jumpsCounter] = cg.lastGroundSpeed; //add last ground speed to the array
+                }
+            }
+            if (cg_speedometer.integer & SPEEDOMETER_JUMPS) {
+                if ((cg.predictedPlayerState.groundEntityNum != ENTITYNUM_NONE &&
+                     cg.predictedPlayerState.pm_time <= 0 && cg.currentSpeed < 250) || cg.currentSpeed == 0) {
+                    clearOnNextJump = qtrue;
+                }
+                if (cg_speedometerJumps.value &&
+                    (jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
+                    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
+                        groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / 250) * (cg.lastGroundSpeeds[i] / 250));
+                        Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
+                        if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS1) { //color the string
+                            colorGroundSpeeds[1] = groundSpeedsColor;
+                            colorGroundSpeeds[2] = groundSpeedsColor;
+                        } else if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS2) {
+                            if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) ||
+                                (i == 0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
+                                colorGroundSpeeds[0] = groundSpeedsColor;
+                                colorGroundSpeeds[1] = 1;
+                                colorGroundSpeeds[2] = groundSpeedsColor;
+                            } else {
+                                colorGroundSpeeds[0] = 1;
+                                colorGroundSpeeds[1] = groundSpeedsColor;
+                                colorGroundSpeeds[2] = groundSpeedsColor;
+                            }
+                        }
+                        if (strcmp(speedsStr4, "0") != 0) {
+                            CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef), cg_speedometerJumpsY.value,
+                                          cg_speedometerSize.value, colorGroundSpeeds, speedsStr4, 0.0f, 0,
+                                          ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE); //print the jump
+                            jumpsXPos += 52; //shift x
+                        }
+                    }
+                } else if (cg_speedometerJumps.value &&
+                           jumpsCounter == cg_speedometerJumps.integer) { //we out of the first n jumps
+                    firstSpeed = cg.lastGroundSpeeds[0];
+                    for (i = 0; i <= cg_speedometerJumps.integer; i++) { //shuffle jumps array down
+                        cg.lastGroundSpeeds[i] = cg.lastGroundSpeeds[i + 1];
+                    }
+                    jumpsCounter--;  //reduce jump counter
+                }
+            }
 
-			speedometerXPos += 52;
-		}
+            groundSpeedColor = 1 / ((cg.lastGroundSpeed / 250) * (cg.lastGroundSpeed / 250));
+            if (cg_jumpGoal.value && (cg_jumpGoal.value <= cg.lastGroundSpeed) && jumpsCounter == 1) {
+                colorGroundSpeed[0] = groundSpeedColor;
+                colorGroundSpeed[1] = 1;
+                colorGroundSpeed[2] = groundSpeedColor;
+            } else if (cg.lastGroundSpeed > 250 && !(cg_speedometer.integer & SPEEDOMETER_COLORS)) {
+                colorGroundSpeed[0] = 1;
+                colorGroundSpeed[1] = groundSpeedColor;
+                colorGroundSpeed[2] = groundSpeedColor;
+            }
+
+			if ((cg.lastGroundTime > cg.time - 1500) && (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)) {
+                if (cg.lastGroundSpeed) {
+                    Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);
+					CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_LEFT|ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+                }
+			}
+            speedometerXPos += 52;
+        }
 
 		//Speedsounds
 		for (i = 0; i<MAX_CLIENT_SPEEDPOINTS; i++) { //Add a speedpoint to the first available slot
@@ -11673,8 +11926,32 @@ static void CG_Speedometer(void)
 static void CG_DrawShowPos(void)
 {
 	static char showPosString[128];
-	playerState_t *ps = &cg.predictedPlayerState;
+    static char showPitchString[8];
+    vec4_t colorPitch = {0, 0, 0, 1};
+    playerState_t *ps = &cg.predictedPlayerState;
 	float vel;
+    float pitchAngle;
+    float pitchColor;
+    float pitchRange;
+    pitchAngle = abs(ps->viewangles[PITCH] + cg_pitchHelperOffset.value);
+    if(pitchAngle > 90){
+        pitchAngle = 90;
+    }
+    pitchRange = cg_pitchHelperRange.value / 2;
+    if(cg_pitchHelper.value && (pitchAngle < pitchRange)) {
+        pitchColor = pitchAngle / pitchRange;
+        colorPitch[0] = pitchColor;
+        pitchColor = 1.0 - (pitchAngle / pitchRange) / 2.0;
+        colorPitch[1] = pitchColor;
+    }else if(cg_pitchHelper.value){
+        colorPitch[0] = 1;
+        colorPitch[1] = 0;
+    }
+
+    if(cg_pitchHelper.value){
+        Com_sprintf(showPitchString, sizeof(showPitchString), "%.1f", (float)ps->viewangles[PITCH]);
+        CG_Text_Paint(cg_pitchHelperX.integer, cg_pitchHelperY.integer, 1.0f, colorPitch, showPitchString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
+    }
 
 	if (!cg_showpos.integer)
 		return;
@@ -11761,14 +12038,21 @@ static void CG_MovementKeys(centity_t *cent)
 			}
 		}
 
-		x = SCREEN_WIDTH - (SCREEN_WIDTH - cg_movementKeysX.integer) * cgs.widthRatioCoef;
-		y = cg_movementKeysY.integer;
-
-		w = (16*cg_movementKeysSize.value)*cgs.widthRatioCoef;
-		h = 16*cg_movementKeysSize.value;
+        if(cg_movementKeys.integer == 2)
+        {
+            w = (8*cg_movementKeysSize.value)*cgs.widthRatioCoef;
+            h = 8*cg_movementKeysSize.value;
+            x = SCREEN_WIDTH / 2 - w*1.5;
+            y = SCREEN_HEIGHT / 2 - h*1.5;
+        }else{
+            w = (16*cg_movementKeysSize.value)*cgs.widthRatioCoef;
+            h = 16*cg_movementKeysSize.value;
+            x = SCREEN_WIDTH - (SCREEN_WIDTH - cg_movementKeysX.integer) * cgs.widthRatioCoef;
+            y = cg_movementKeysY.integer;
+        }
 
 		xOffset = yOffset = 0;
-		if (cgs.newHud) {
+		if (cgs.newHud && cg_movementKeys.integer != 2) {
 			switch (cg_hudFiles.integer)
 			{
 				default:										break;
@@ -11787,40 +12071,50 @@ static void CG_MovementKeys(centity_t *cent)
 					yOffset -= 14; //420
 				}
 			}
+            x += xOffset*cgs.widthRatioCoef;
+            y += yOffset;
 		}
 
-		x += xOffset*cgs.widthRatioCoef;
-		y += yOffset;
-
-		if (cmd.upmove < 0)
-			CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
-		else 
-			CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
-
-		if (cmd.upmove > 0)
-			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
-		else
-			CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
-
-		if (cmd.forwardmove < 0)
-			CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOnShader );
-		else
-			CG_DrawPic( w + x, h + y, w, h, cgs.media.keyBackOffShader );
-
-		if (cmd.forwardmove > 0)
-			CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
-		else
-			CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
-
-		if (cmd.rightmove < 0)
-			CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
-		else
-			CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
-
-		if (cmd.rightmove > 0)
-			CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
-		else
-			CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+    if(cg_movementKeys.integer > 1){
+        if (cmd.upmove < 0)
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader2 );
+        if (cmd.upmove > 0)
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader2 );
+        if (cmd.forwardmove < 0)
+            CG_DrawPic(w + x, h * 2 + y, w, h, cgs.media.keyBackOnShader2);
+        if (cmd.forwardmove > 0)
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader2 );
+        if (cmd.rightmove < 0)
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
+        if (cmd.rightmove > 0)
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
+    }
+    else if(cg_movementKeys.integer == 1){
+        if (cmd.upmove < 0)
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOnShader );
+        else
+            CG_DrawPic( w*2 + x, y, w, h, cgs.media.keyCrouchOffShader );
+        if (cmd.upmove > 0)
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOnShader );
+        else
+            CG_DrawPic( x, y, w, h, cgs.media.keyJumpOffShader );
+        if (cmd.forwardmove < 0)
+            CG_DrawPic(w + x, h + y, w, h, cgs.media.keyBackOnShader);
+        else
+            CG_DrawPic(w + x, h + y, w, h, cgs.media.keyBackOffShader);
+        if (cmd.forwardmove > 0)
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOnShader );
+        else
+            CG_DrawPic( w + x, y, w, h, cgs.media.keyForwardOffShader );
+        if (cmd.rightmove < 0)
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader );
+        else
+            CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOffShader );
+        if (cmd.rightmove > 0)
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
+        else
+            CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+    }
 
 }
 

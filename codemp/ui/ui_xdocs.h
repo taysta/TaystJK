@@ -11,9 +11,9 @@
 #define PADGROUP( specialChar, text ) specialChar text specialChar
 
 // describes one possible setting. use their aliases when possible
-#define DESCLINE( color, prefix, desc )		LINE( "    ", color, prefix, " "S_COLOR_GREY"-"S_COLOR_WHITE" ", desc )
+#define DESCLINE( color, prefix, desc )		LINE( "    ", color, prefix, " " S_COLOR_GREY"-" S_COLOR_WHITE" ", desc )
 #define EMPTYLINE( prefix, moreDesc )		LINE( "    ", "", prefix, "   ", moreDesc )
-#define EXAMPLE( example, desc )			S_COLOR_WHITE "Example: "S_COLOR_GREY"\"" S_COLOR_WHITE example S_COLOR_GREY "\" -> " S_COLOR_WHITE desc ""
+#define EXAMPLE( example, desc )			S_COLOR_WHITE "Example: " S_COLOR_GREY"\"" S_COLOR_WHITE example S_COLOR_GREY "\" -> " S_COLOR_WHITE desc ""
 
 // aliases for DESCLINE
 #define SETTING( setting, desc )			DESCLINE( S_COLOR_WHITE, PADGROUP( "\x1f", setting ), desc )
@@ -37,7 +37,9 @@
 
 XDOCS_CVAR_DEF("cg_movementKeys", "Show the movement keys onscreen",
 	SETTING("0", "Movement keys are hidden") NL
-	SETTING("1", "Movement keys are shown")
+	SETTING("1", "Movement keys are shown") NL
+    SETTING("2", "Crosshair style") NL
+    SETTING("3", "Moveable crosshair style")
 )
 
 XDOCS_CVAR_DEF("cg_movementKeysX", "Horizontal location of the movement keys",""
@@ -59,6 +61,21 @@ XDOCS_CVAR_DEF("cg_speedometerY", "Vertical location of the speedometer",""
 )
 
 XDOCS_CVAR_DEF("cg_speedometerSize", "Scale of the speedometer",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumps", "The amount of jumps to store in the jumps array, enable with the /speedometer command",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumpsX", "Horizontal location of the jumps array",""
+)
+
+XDOCS_CVAR_DEF("cg_speedometerJumpsY", "Vertical location of the jumps array",""
+)
+
+XDOCS_CVAR_DEF("cg_jumpGoal", "Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled",""
+)
+
+XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_raceStart 1",""
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",
@@ -86,6 +103,18 @@ XDOCS_CVAR_DEF("cg_raceTimerY", "Vertical location of the race timer onscreen","
 )
 
 XDOCS_CVAR_DEF("cg_raceTimerSize", "Scale of the race timer",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStart", "Enable race timer start time separately from the race timer",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStartX", "Horizontal location of the race start timer onscreen",""
+)
+
+XDOCS_CVAR_DEF("cg_raceStartY", "Vertical location of the race start timer onscreen",""
+)
+
+XDOCS_CVAR_DEF("cg_scoreboardTime", "Displays the local time on the scoreboard",""
 )
 
 XDOCS_CVAR_DEF("cg_smallScoreboard", "Always use the small version of the scoreboard",
@@ -145,6 +174,9 @@ XDOCS_CVAR_DEF("cg_crossHairBlue", "Custom blue color of the crosshair",""
 XDOCS_CVAR_DEF("cg_crossHairAlpha", "Custom transparency of the crosshair",""
 )
 
+XDOCS_CVAR_DEF("cg_crossHairScope", "Minimalist crosshair disruptor scope replacement",""
+)
+
 XDOCS_CVAR_DEF("cg_hudColors", "Changes the colors of the HUD based on saber style and force",
 	"This only applies to the simple HUD." NL
 	SETTING("0", "Style and force colors will not change (Base behavior)") NL
@@ -181,7 +213,49 @@ XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",
 XDOCS_CVAR_DEF("cg_strafeHelper", "Configure with the /strafehelper command",""
 )
 
-//Sounds
+//Pitchhelper
+
+XDOCS_CVAR_DEF("cg_pitchHelper", "Draw pitch angle independently from /cg_showpos",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperRange", "The range of numbers to display as green (eg. range 30, offset 0 = +15 to -15)",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperOffset", "Offset the green range up or down (eg. range 30, offset 10 = +25 to -5)",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperX", "Move the pitch helper's horizontal location",""
+)
+
+XDOCS_CVAR_DEF("cg_pitchHelperY", "Move the pitch helper's vertical location",""
+)
+
+// Disruptor trail effects
+XDOCS_CVAR_DEF("cg_disruptorNew", "Enable new disruptor effects",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorTeamColor", "Changes disruptor effects colors according to team","Requires cg_disruptorNew 1 or cg_disruptorSpiral 1"
+)
+
+XDOCS_CVAR_DEF("cg_disruptorCoreColor", "Changes disruptor line color (accepts hexcode eg. xffffff)","Requires cg_disruptorNew 1"
+)
+
+XDOCS_CVAR_DEF("cg_disruptorSpiral", "Enable disruptor spiral effect",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorSpiralColor", "Changes disruptor spiral color (accepts hexcode eg. xffffff)","Requires cg_disruptorSpiral 1"
+)
+
+XDOCS_CVAR_DEF("cg_disruptorMainTime", "Amount of time to display disruptor primary fire",""
+)
+
+XDOCS_CVAR_DEF("cg_disruptorAltTime", "Amount of time to display disruptor alt fire",""
+)
+
+XDOCS_CVAR_DEF("cg_ambientSounds", "Play ambient sounds",
+SETTING("0", "Don't play ambient sounds") NL
+SETTING("1", "Play ambient sounds")
+)
 
 XDOCS_CVAR_DEF("cg_rollSounds", "Play sound when players roll",
 	SETTING("0", "Don't play roll sounds") NL
@@ -228,6 +302,18 @@ XDOCS_CVAR_DEF("cg_duelMusic", "Enables special in-game music for private duels"
 			SETTING("1", "Play music track for private duels (baseJKA behavior)")
 )
 
+XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have cosmetics on non-japro servers",
+    SETTING("1", "Santa Hat") NL
+    SETTING("2", "Jack'o Lantern") NL
+    SETTING("3", "Baseball Cap") NL
+    SETTING("4", "Indiana Jones") NL
+    SETTING("5", "Propeller Hat") NL
+    SETTING("6", "Sombrero") NL
+    SETTING("7", "Top Hat") NL
+    SETTING("8", "Mask")
+
+
+)
 //Visuals
 
 XDOCS_CVAR_DEF("cg_remaps", "Show or hide serverside remaps",
@@ -260,6 +346,7 @@ XDOCS_CVAR_DEF("cg_blood", "Show blood when shot by guns",
 	SETTING("2", "Show blood and gibs")
 )
 
+
 XDOCS_CVAR_DEF("cg_thirdPersonFlagAlpha", "Custom transparency of the CTF flag",""
 )
 
@@ -275,6 +362,24 @@ XDOCS_CVAR_DEF("cg_zoomFov", "The field of view when using +zoom",""
 )
 
 XDOCS_CVAR_DEF("cg_fleshSparks", "Maximum number of sparks from a saber hit",""
+)
+
+XDOCS_CVAR_DEF("r_renderClipBrushes", "Render clip brushes",""
+)
+
+XDOCS_CVAR_DEF("r_renderClipBrushesShader", "Shader for clip brush rendering",""
+)
+
+XDOCS_CVAR_DEF("r_renderSlickSurfaces", "Render slick surfaces",""
+)
+
+XDOCS_CVAR_DEF("r_renderSlickSurfacesShader", "Shader for slick surface rendering",""
+)
+
+XDOCS_CVAR_DEF("r_renderTriggerBrushes", "Render trigger brushes",""
+)
+
+XDOCS_CVAR_DEF("r_renderTriggerBrushesShader", "The shader for trigger brushes",""
 )
 
 XDOCS_CVAR_DEF("cg_noFX", "Determines if effects and map models are shown",

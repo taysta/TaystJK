@@ -112,7 +112,9 @@ if(WIN32)
 	endif()
 else()
 	set(X86 OFF)
-	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
+	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
+		set(Architecture "arm64")
+	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
 		set(X86 ON)
@@ -246,6 +248,7 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
 		if (X86)
 			# "x86 vm will crash without -mstackrealign since MMX
 			# instructions will be used no matter what and they

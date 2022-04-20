@@ -2463,7 +2463,7 @@ void WP_SaberGetHiltInfo( const char *singleHilts[MAX_SABER_HILTS], const char *
 #ifdef UI_BUILD
 		baseHilt = qfalse;
 		if (ui_sv_pure.integer) {
-			for (w = 0; w <= BASE_HILT_COUNT; w++) {
+			for (w = 0; w < BASE_HILT_COUNT; w++) {
 				if (!Q_stricmp(saberName, baseHiltList[w])) {
 					baseHilt = qtrue;
 					break;

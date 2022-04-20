@@ -212,7 +212,7 @@ void CG_DrawInformation( void ) {
 			trap->Cvar_VariableStringBuffer( "cl_motdString", motdString, sizeof( motdString ) );
 			if (cgs.legacyProtocol)
 				Com_sprintf(motdString, sizeof(motdString), "1.01 update for Jedi Academy is now available online. Please update your game.");
-			else if (motdString && motdString[0] && strlen(motdString))
+			else if (motdString[0] && strlen(motdString))
 				CG_DrawProportionalString( (SCREEN_WIDTH / 2), (SCREEN_HEIGHT - 55), motdString, UI_CENTER|UI_INFOFONT|UI_DROPSHADOW, colorWhite);
 		}
 

@@ -87,7 +87,12 @@ static bitInfo_t strafeTweaks[] = {
 	{ "Center" },
 	{ "Accel bar" },
 	{ "Weze style" },
-	{ "Line Crosshair" }
+	{ "Line Crosshair" },
+    {"S" },
+    {"SA" },
+    {"SD" },
+    {"Small Lines" },
+    {"Invert" }
 };
 static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN(strafeTweaks);
 
@@ -162,7 +167,10 @@ static bitInfo_t playerStyles[] = {
 	{ "Fade corpses immediately" },
 	{ "Disable corpse fading SFX" },
 	{ "Color respawn bubbles by team" },
-	{ "Hide player cosmetics" }
+	{ "Hide player cosmetics" },
+    { "Disable breathing effects" },
+    { "Old JA+ style grapple line" },
+    { "New FFA respawn bubble" }
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -221,6 +229,12 @@ static bitInfo_t speedometerSettings[] = {
 	{ "Speed graph" },
 	{ "Display speed in kilometers instead of units" },
 	{ "Display speed in imperial miles instead of units" },
+    { "Pre-speed jumps array"},
+    { "Pre-speed jumps array" },
+    { "Disable speedometer colors"},
+    { "Array Colors 1" },
+    { "Array Colors 2" },
+    { "Old Speedgraph" }
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 

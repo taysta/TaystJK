@@ -1419,6 +1419,7 @@ static void CG_RegisterGraphics( void ) {
 
 	cgs.media.ysaliredShader		= trap->R_RegisterShader( "powerups/ysaliredshell");
 	cgs.media.ysaliblueShader		= trap->R_RegisterShader( "powerups/ysaliblueshell");
+	cgs.media.ysaligreenShader      = trap->R_RegisterShader( "powerups/ysaligreenshell");
 	cgs.media.ysalimariShader		= trap->R_RegisterShader( "powerups/ysalimarishell");
 	cgs.media.boonShader			= trap->R_RegisterShader( "powerups/boonshell");
 	cgs.media.endarkenmentShader	= trap->R_RegisterShader( "powerups/endarkenmentshell");
@@ -1565,6 +1566,20 @@ Ghoul2 Insert End
 	cgs.media.keyLeftOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on" );
 	cgs.media.keyRightOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off" );
 	cgs.media.keyRightOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on" );
+
+    //Movement Keys 2
+    cgs.media.keyCrouchOffShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_off2" );
+    cgs.media.keyCrouchOnShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_on2" );
+    cgs.media.keyJumpOffShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_off2" );
+    cgs.media.keyJumpOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/jump_on2" );
+    cgs.media.keyBackOffShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_off2" );
+    cgs.media.keyBackOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/back_on2" );
+    cgs.media.keyForwardOffShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_off2" );
+    cgs.media.keyForwardOnShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/forward_on2" );
+    cgs.media.keyLeftOffShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_off2" );
+    cgs.media.keyLeftOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on2" );
+    cgs.media.keyRightOffShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off2" );
+    cgs.media.keyRightOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on2" );
 	//Movement Keys - End
 
 	//japro gibs
@@ -1589,7 +1604,7 @@ Ghoul2 Insert End
 	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
 
 	//cosmetics
-	if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA) {
+
 		cgs.media.cosmetics.santaHat	= trap->R_RegisterModel("models/players/hats/santahat.md3");
 		cgs.media.cosmetics.pumpkin		= trap->R_RegisterModel("models/players/hats/pumpkin.md3");
 		cgs.media.cosmetics.cap			= trap->R_RegisterModel("models/players/hats/cap.md3");
@@ -1597,8 +1612,9 @@ Ghoul2 Insert End
 		cgs.media.cosmetics.kringekap	= trap->R_RegisterModel("models/players/hats/cringe.md3");
 		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
 		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
-	}
-	//jaPRO mod assets - end
+        cgs.media.cosmetics.mask		= trap->R_RegisterModel("models/players/hats/mask.md3");
+
+    //jaPRO mod assets - end
 
 	// register the inline models
 	breakPoint = cgs.numInlineModels = trap->CM_NumInlineModels();
@@ -2878,6 +2894,7 @@ Ghoul2 Insert End
 
 	// load a few needed things before we do any screen updates
 	cgs.media.charsetShader			= trap->R_RegisterShaderNoMip( "gfx/2d/charsgrid_med" );
+	cgs.media.speedsetShader        = trap->R_RegisterShaderNoMip("gfx/2d/bigchars");
 	cgs.media.whiteShader			= trap->R_RegisterShader( "white" );
 
 	cgs.media.loadBarLED			= trap->R_RegisterShaderNoMip( "gfx/hud/load_tick" );

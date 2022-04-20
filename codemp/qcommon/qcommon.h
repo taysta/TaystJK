@@ -369,6 +369,7 @@ void Cbuf_AddText( const char *text );
 void Cbuf_ExecuteText( int exec_when, const char *text );
 // this can be used in place of either Cbuf_AddText or Cbuf_InsertText
 
+void Cbuf_CheckPending(void);
 void Cbuf_Execute (void);
 // Pulls off \n terminated lines of text from the command buffer and sends
 // them through Cmd_ExecuteString.  Stops when the buffer is empty.
@@ -422,7 +423,7 @@ int		Cmd_Argc (void);
 char	*Cmd_Argv (int arg);
 void	Cmd_ArgvBuffer( int arg, char *buffer, int bufferLength );
 char	*Cmd_Args (void);
-char	*Cmd_ArgsFrom( int arg );
+char	*Cmd_ArgsFrom( int arg, bool useQuotes = false );
 void	Cmd_ArgsBuffer( char *buffer, int bufferLength );
 void	Cmd_ArgsFromBuffer( int arg, char *buffer, int bufferLength );
 char	*Cmd_Cmd (void);
@@ -433,6 +434,8 @@ void	Cmd_Args_Sanitize( size_t length = MAX_CVAR_VALUE_STRING, const char *strip
 
 void	Cmd_TokenizeString( const char *text );
 void	Cmd_TokenizeStringIgnoreQuotes( const char *text_in );
+void	Cmd_TokenizeStringNestedQuotes(const char *text_in);
+bool	IsOpeningQuote(const char *quote, bool canLookBehind);
 // Takes a null terminated string.  Does not need to be /n terminated.
 // breaks the string up into arg tokens.
 
@@ -763,6 +766,10 @@ void 		QDECL Com_DPrintf( const char *fmt, ... );
 void		QDECL Com_OPrintf( const char *fmt, ...); // Outputs to the VC / Windows Debug window (only in debug compile)
 void 		NORETURN QDECL Com_Error( int code, const char *fmt, ... );
 void 		NORETURN Com_Quit_f( void );
+void		Com_MNext_f(void);
+void		Com_MPrev_f(void);
+void		Com_MStop_f(void);
+void		Com_MPause_f(void);
 int			Com_EventLoop( void );
 int			Com_Milliseconds( void );	// will be journaled properly
 uint32_t	Com_BlockChecksum( const void *buffer, int length );

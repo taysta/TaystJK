@@ -11113,7 +11113,7 @@ void UI_BuildQ3Model_List( void )
 
 		if (ui_sv_pure.integer) {
 			baseSkin = qfalse;
-			for (k = 0 ; k <= BASE_MODEL_COUNT ; k++) {
+			for (k = 0 ; k < BASE_MODEL_COUNT ; k++) {
 				if (!Q_stricmp(dirptr, baseModelList[k])) {
 					baseSkin = qtrue;
 					break;
@@ -11393,7 +11393,7 @@ void UI_BuildPlayerModel_List( qboolean inGameLoad )
 			if (ui_sv_pure.integer)
 			{ //i guess wait to do this until here after we've read a PlayerChoice.txt file
 				baseSpecies = qfalse;
-				for (w = 0; w <= BASE_SPECIES_COUNT; w++) {
+				for (w = 0; w < BASE_SPECIES_COUNT; w++) {
 					if (!Q_stricmp(dirptr, baseSpeciesList[w])) {
 						baseSpecies = qtrue;
 						break;

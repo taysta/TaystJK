@@ -2662,7 +2662,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	}
 	if ( level.gametype == GT_SIEGE ) {
 		Q_strcat( buf, sizeof( buf ), va( "siegeclass\\%s\\", className ) );
-		Q_strcat( buf, sizeof( buf ), va( "sdt\\%i\\", className ) );
+		Q_strcat( buf, sizeof( buf ), va( "sdt\\%i\\", client->sess.siegeDesiredTeam ) );
 	}
 
 	trap->GetConfigstring( CS_PLAYERS+clientNum, oldClientinfo, sizeof( oldClientinfo ) );

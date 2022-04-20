@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "game/bg_public.h"
 #include "cg_public.h"
 
+
 // The entire cgame module is unloaded and reloaded on each level change,
 // so there is NO persistant data between levels on the client side.
 // If you absolutely need something stored, it can either be kept
@@ -142,6 +143,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_HIDECOSMETICS		(1<<16)
 #define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
 #define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
+#define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
+
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -155,6 +158,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	JAPRO_COSMETIC_CRINGE	(1<<4)
 #define	JAPRO_COSMETIC_SOMBRERO	(1<<5)
 #define	JAPRO_COSMETIC_TOPHAT	(1<<6)
+#define	JAPRO_COSMETIC_MASK	    (1<<7)
 
 //#define JAPRO_CINFO_UNLAGGEDPUSHPULL (1<<19)	//push pull unlagged
 
@@ -1278,7 +1282,8 @@ Ghoul2 Insert End
 	int					lastGroundTime;//japro
 	qboolean			firstTimeInAir;
 	float				lastGroundSpeed;
-	float				lastZSpeed;
+	float               lastGroundSpeeds[512];
+    float				lastZSpeed;
 	int					lastJumpHeightTime;//japro
 	float				lastJumpHeight;
 	int					lastStartTime;//japro
@@ -1390,6 +1395,7 @@ enum
 // stored in the clientInfo_t, itemInfo_t, weaponInfo_t, and powerupInfo_t
 typedef struct cgMedia_s {
 	qhandle_t	charsetShader;
+	qhandle_t	speedsetShader;
 	qhandle_t	whiteShader;
 
 	qhandle_t	loadBarLED;
@@ -1433,6 +1439,18 @@ typedef struct cgMedia_s {
 	qhandle_t	keyLeftOnShader;
 	qhandle_t	keyRightOffShader;
 	qhandle_t	keyRightOnShader;
+    qhandle_t	keyCrouchOffShader2;
+    qhandle_t	keyCrouchOnShader2;
+    qhandle_t	keyJumpOffShader2;
+    qhandle_t	keyJumpOnShader2;
+    qhandle_t	keyBackOffShader2;
+    qhandle_t	keyBackOnShader2;
+    qhandle_t	keyForwardOffShader2;
+    qhandle_t	keyForwardOnShader2;
+    qhandle_t	keyLeftOffShader2;
+    qhandle_t	keyLeftOnShader2;
+    qhandle_t	keyRightOffShader2;
+    qhandle_t	keyRightOnShader2;
 //JAPRO - Clientside - Movement keys - End
 
 	qhandle_t	bloodExplosionShader;//JAPRO - Clientside - Re add cg_blood
@@ -1604,6 +1622,7 @@ typedef struct cgMedia_s {
 	// All the player shells
 	qhandle_t	ysaliredShader;
 	qhandle_t	ysaliblueShader;
+    qhandle_t	ysaligreenShader;
 	qhandle_t	ysalimariShader;
 	qhandle_t	boonShader;
 	qhandle_t	endarkenmentShader;
@@ -1843,7 +1862,8 @@ typedef struct cgMedia_s {
 		qhandle_t	kringekap;
 		qhandle_t	sombrero;
 		qhandle_t	tophat;
-	} cosmetics;
+        qhandle_t	mask;
+    } cosmetics;
 
 	//japro vgs
 	sfxHandle_t		maleVGSSounds[MAX_CUSTOM_VGS_SOUNDS];
@@ -2204,12 +2224,14 @@ Ghoul2 Insert End
 //
 // cg_drawtools.c
 //
+void SCR_DrawSmallString( int x, int y, const char *s, int len );
 void CG_FillRect( float x, float y, float width, float height, const float *color );
 void CG_DrawPic( float x, float y, float width, float height, qhandle_t hShader );
 void CG_DrawRotatePic( float x, float y, float width, float height,float angle, qhandle_t hShader );
 void CG_DrawRotatePic2( float x, float y, float width, float height,float angle, qhandle_t hShader );
 void CG_DrawString( float x, float y, const char *string,
 				   float charWidth, float charHeight, const float *modulate );
+extern int ColorIndexFromChar( char ccode );
 
 void CG_DrawNumField (float x, float y, int width, int value, float charWidth, float charHeight, int style, qboolean zeroFill);
 
@@ -2583,5 +2605,9 @@ void	CG_SetLightstyle (int i);
 /*
 Ghoul2 Insert End
 */
+
+void CG_RailSpiral( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
+void CG_RailTrail( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
+
 
 extern cgameImport_t *trap;

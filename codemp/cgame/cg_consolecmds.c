@@ -1059,17 +1059,22 @@ static bitInfo_T strafeTweaks[] = {
 	{"Updated style"},//1
 	{"Cgaz style"},//2
 	{"Warsow style"},//3
-	{"Sound"},//4
+    {"Sound"},//4
 	{"W"},//5
 	{"WA"},//6
 	{"WD"},//7
 	{"A"},//8
 	{"D"},//9
-	{"Rear"},//10
-	{"Center"},//11
-	{"Accel bar"},//12
-	{"Weze style"},//13
-	{"Line Crosshair"}//13
+    {"Rear"},//10
+    {"Center"},//11
+    {"Accel bar"},//12
+    {"Weze style"},//13
+    {"Line Crosshair"},//14
+    {"S"},//15
+    {"SA"},//16
+    {"SD"},//17
+    {"Small Lines"},//18
+    {"Invert"}//19
 };
 static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN( strafeTweaks );
 
@@ -1310,7 +1315,8 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qtrue,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qfalse//Old JA+ style grapple line
+	qfalse,//Old JA+ style grapple line
+    qtrue//New FFA respawn bubble
 };
 
 //JA+ Specific = amaltdim ?
@@ -1334,7 +1340,8 @@ static qboolean japlusPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qfalse,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qtrue//Old JA+ style grapple line
+	qtrue,//Old JA+ style grapple line
+    qtrue//New FFA respawn bubble
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1356,7 +1363,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Color respawn bubbles by team" },//15
 	{ "Hide player cosmetics" },//16
 	{ "Disable breathing effects" },//17
-	{ "Old JA+ style grapple line" }//18
+	{ "Old JA+ style grapple line" },//18
+    { "New FFA respawn bubble" }
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -1445,6 +1453,11 @@ static bitInfo_T speedometerSettings[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Speed graph" },//7
 	{ "Display speed in kilometers instead of units" },//8
 	{ "Display speed in imperial miles instead of units" },//9
+    { "Pre-speed jumps array" },//10
+    { "Disable speedometer colors"},//11
+    { "Array Colors 1" },//12
+    { "Array Colors 2" },//13
+    { "Old Speedgraph" }//14
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 
@@ -1487,7 +1500,17 @@ void CG_SpeedometerSettings_f(void)
 			value ^= (1 << index); //Toggle index item
 
 			trap->Cvar_Set("cg_speedometer", va("%i", value));
-		}
+		} else if (index == 12 || index == 13){ //Radio button these options
+            //Toggle index, and make sure everything else in this group (8,9) is turned off
+            int groupMask = (1 << 12) + (1 << 13);
+            int value = cg_speedometer.integer;
+
+            groupMask &= ~(1 << index); //Remove index from groupmask
+            value &= ~(groupMask); //Turn groupmask off
+            value ^= (1 << index); //Toggle index item
+
+            trap->Cvar_Set("cg_speedometer", va("%i", value));
+        }
 		else {
 			trap->Cvar_Set("cg_speedometer", va("%i", (1 << index) ^ (cg_speedometer.integer & mask)));
 		}
@@ -1505,7 +1528,8 @@ static bitInfo_T cosmetics[] = {
 	{ "Indiana Jones" },
 	{ "Kane's Kringe Kap" },
 	{ "Sombrero" },
-	{ "Top hat" }
+	{ "Top hat" },
+    { "Mask" }
 };
 static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
@@ -1585,7 +1609,7 @@ static void CG_Cosmetics_f(void)
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
+//		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);
@@ -2007,7 +2031,8 @@ static void CG_AddStrafeTrail_f(void)
 
 void CG_Say_f( void ) {
 	char msg[MAX_SAY_TEXT] = {0};
-	char word[MAX_SAY_TEXT] = {0};
+//    char speeds[MAX_SAY_TEXT] = {0};
+    char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
 	int clientNum = -1, messagetype = 0;
@@ -2100,6 +2125,15 @@ void CG_Say_f( void ) {
 			Com_sprintf(numberStr, sizeof(numberStr), "%02i:%02i", newtime->tm_hour, newtime->tm_min);
 			Q_strncpyz(word, numberStr, sizeof(word));
 		}
+		else if (!Q_stricmp(word, "%J%")) {
+            char buf[MAX_STRING_CHARS] = {0};
+            for(int i = 0; i <= cg_speedometerJumps.integer; i++){
+                if(cg.lastGroundSpeeds[i] != 0){
+                    Q_strcat( buf, sizeof(buf), va( "%.0f ", cg.lastGroundSpeeds[i]));
+                }
+		    }
+            Q_strncpyz(word, buf, sizeof(word));
+        }
 
 		Q_strcat(word, MAX_SAY_TEXT, " ");
 		Q_strcat(msg, MAX_SAY_TEXT, word);
@@ -2212,7 +2246,6 @@ static consoleCommand_t	commands[] = {
 
 	{ "PTelemark",					CG_PTelemark_f },
 	{ "PTele",						CG_PTele_f },
-
 	{ "remapShader",				CG_RemapShader_f },
 	{ "listRemaps",					CG_ListRemaps_f },
 	{ "listEmojis",					CG_ListEmojis_f },
