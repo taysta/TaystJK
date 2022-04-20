@@ -1164,15 +1164,16 @@ CG_DrawWeaponSelect
 */
 void CG_DrawWeaponSelect( void ) {
 	int				i;
-	int				bits;
+	int				bits, value;
 	int				count;
 	int				smallIconSize,bigIconSize;
 	int				holdX,x,y,pad;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				sideMax,holdCount,iconCnt;
 //	int				height;
-	int		yOffset = 0;
-	qboolean drewConc = qfalse;
+	int		        yOffset = 0;
+	qboolean        drewConc = qfalse;
+    char            ammoStr[4];
 
 	if (cg.predictedPlayerState.emplacedIndex)
 	{ //can't cycle when on a weapon
@@ -1329,9 +1330,22 @@ void CG_DrawWeaponSelect( void ) {
 //			weaponInfo_t	*weaponInfo;
 			CG_RegisterWeapon( i );
 //			weaponInfo = &cg_weapons[i];
+            if(i != WP_SABER && i != WP_MELEE && i != WP_STUN_BATON && i != WP_BRYAR_PISTOL && cg_weaponCycleAmmo.integer) {
+                value = cg.predictedPlayerState.ammo[weaponData[i].ammoIndex];
 
+                Com_sprintf(ammoStr, sizeof(ammoStr), "%i", value);
+                CG_Text_Paint(holdX - CG_Text_Width(ammoStr, 0.6f, FONT_SMALL2) / 2.0f + (smallIconSize / 2) * cgs.widthRatioCoef,
+                              y + yOffset,
+                              0.6f,
+                              colorTable[CT_YELLOW],
+                              ammoStr,
+                              0.0f,
+                              0,
+                              3,
+                              FONT_SMALL2);
+            }
 			trap->R_SetColor(colorTable[CT_WHITE]);
-			if (!CG_WeaponCheck(i))
+            if (!CG_WeaponCheck(i))
 			{
 				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, /*weaponInfo->weaponIconNoAmmo*/cgs.media.weaponIcons_NA[i] ); //JAPRO - Clientside - Ratio fix
 			}
@@ -1357,7 +1371,26 @@ void CG_DrawWeaponSelect( void ) {
 		CG_RegisterWeapon( cg.weaponSelect );
 //		weaponInfo = &cg_weapons[cg.weaponSelect];
 
-		trap->R_SetColor( colorTable[CT_WHITE]);
+        if(cg.weaponSelect != WP_SABER && cg.weaponSelect != WP_MELEE && cg.weaponSelect != WP_STUN_BATON && cg.weaponSelect != WP_BRYAR_PISTOL && cg_weaponCycleAmmo.integer) {
+            value = cg.predictedPlayerState.ammo[weaponData[cg.weaponSelect].ammoIndex];
+
+            Com_sprintf(ammoStr, sizeof(ammoStr), "%i", value);
+            CG_Text_Paint(x - (CG_Text_Width(ammoStr, 0.8f, FONT_SMALL2) / 2),
+                          y - 10 + yOffset,
+                          0.8f,
+                          colorTable[CT_YELLOW],
+                          ammoStr,
+                          0.0f,
+                          0,
+                          3,
+                          FONT_SMALL2);
+        }
+        trap->R_SetColor(colorTable[CT_WHITE]);
+
+        if (!CG_WeaponCheck(i))
+        {
+            trap->R_SetColor(colorTable[CT_WHITE]);
+        }
 		if (!CG_WeaponCheck(cg.weaponSelect))
 		{
 			CG_DrawPic( x-(bigIconSize/2 * cgs.widthRatioCoef), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize * cgs.widthRatioCoef, bigIconSize, cgs.media.weaponIcons_NA[cg.weaponSelect] ); //JAPRO - Clientside - Ratio fix
@@ -1425,6 +1458,23 @@ void CG_DrawWeaponSelect( void ) {
 //			weaponInfo = &cg_weapons[i];
 			// No ammo for this weapon?
 			trap->R_SetColor( colorTable[CT_WHITE]);
+
+            if(i != WP_SABER && i != WP_MELEE && i != WP_STUN_BATON && i != WP_BRYAR_PISTOL && cg_weaponCycleAmmo.integer)
+            {
+                value = cg.predictedPlayerState.ammo[weaponData[i].ammoIndex];
+
+                Com_sprintf(ammoStr, sizeof(ammoStr), "%i", value);
+                CG_Text_Paint(holdX - CG_Text_Width(ammoStr, 0.6f, FONT_SMALL2) / 2 + (smallIconSize / 2) * cgs.widthRatioCoef,
+                              y + yOffset,
+                              0.6f,
+                              colorTable[CT_YELLOW],
+                              ammoStr,
+                              0.0f,
+                              0,
+                              3,
+                              FONT_SMALL2);
+            }
+            trap->R_SetColor( colorTable[CT_WHITE]);
 			if (!CG_WeaponCheck(i))
 			{
 				CG_DrawPic( holdX, y+10+yOffset, smallIconSize * cgs.widthRatioCoef, smallIconSize, cgs.media.weaponIcons_NA[i] ); //JAPRO - Clientside - Ratio fix
