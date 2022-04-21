@@ -196,10 +196,25 @@ XDOCS_CVAR_DEF("cg_drawScore", "Displays your score in the lower right",
 	SETTING("2", "Score, team score, and bias is drawn")
 )
 
-XDOCS_CVAR_DEF("cg_drawScores", "Displays team scores in the upper right",
-	SETTING("0", "Team scores are hidden") NL
-	SETTING("1", "Team scores are drawn") NL
-	SETTING("2", "Team scores are drawn and colored based on team colors")
+XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",
+	SETTING("0", "Big text") NL
+	SETTING("1", "Small text 1") NL
+	SETTING("2", "Small text 2") NL
+    SETTING("3", "Small text 3") NL
+    SETTING("4", "Medium text") NL
+    SETTING("5", "Large text") NL
+    SETTING("6", "Small text 4") NL
+    SETTING("7", "Counter strike")
+)
+
+XDOCS_CVAR_DEF("cg_drawFPS", "Draw the match timer",
+SETTING("0", "Big text") NL
+SETTING("1", "Small text 1") NL
+SETTING("2", "Small text 2") NL
+SETTING("3", "Small text 3") NL
+SETTING("4", "Medium text") NL
+SETTING("5", "Large text") NL
+SETTING("6", "Small text 4")
 )
 
 XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",

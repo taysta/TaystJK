@@ -4,6 +4,8 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+* [+] New team scoreboard `cg_drawScores 3`
+* [+] New counter strike style timer `cg_drawTimer 7`
 * [+] Show ammo for weapons on the selection cycle with `cg_weaponCycleAmmo`
 * [+] Music commands from NewMod
 * [\*] Improved the order that shader files are read. If there are two shaders sharing the same name, the one that was found in a file later on JKA file list (phone book order) takes precedence.

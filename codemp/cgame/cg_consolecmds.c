@@ -311,8 +311,9 @@ void CG_LoadHud_f( void ) {
 
 	if ( cgs.newHud && cg_hudFiles.integer == 3 ) {
 		hudSet = "ui/elegance_hud.txt";
-	}
-	else {
+	} else if(cgs.newHud && cg_hudFiles.integer == 4){
+        hudSet = "ui/tayst_hud.txt";
+    } else {
 		hudSet = cg_hudFiles.string;
 		if ( !VALIDSTRING(hudSet) )
 		{

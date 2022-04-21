@@ -3626,7 +3626,104 @@ void CG_DrawTeamBackground( int x, int y, int w, int h, float alpha, int team )
 
 ===========================================================================================
 */
+/*
+==================
+CG_DrawTaystHUD
+==================
+*/
+static void CG_DrawTaystHUD(char* s) {
+    rectDef_t background, redBackground, blueBackground;
+    float xOffset = 0.0f;
+    char temp[4];
+    char temp2[4];
+    vec4_t color = {0.0f, 0.0f, 0.0f, 0.1f};
+    vec4_t color1 = {1.0f, 0.0f, 0.0f, 0.4f};
+    vec4_t color2 = {0.0f, 0.0f, 1.0f, 0.4f};
+    int w = 0;
 
+    //draw the new timer
+    if(cg_drawTimer.integer == 7) {
+        w = (int) CG_Text_Width(s, 1.0f, FONT_LARGE);
+        background.x = (320.0f - ((w + 10.0f) / 2.0f));
+        background.y = 0.0f;
+        background.w = w + 10;
+        background.h = 22.0f;
+        xOffset = background.w / 2.0f;
+        trap->R_SetColor(color);
+        CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
+
+        CG_Text_Paint((float) (SCREEN_WIDTH - w) / 2.0f,
+                      -5.0f,
+                      1.0f,
+                      colorTable[CT_WHITE],
+                      s,
+                      0.0f,
+                      0,
+                      ITEM_TEXTSTYLE_SHADOWED,
+                      FONT_LARGE);
+    }
+
+    //draw new scores here too since they scale off the new timer's size
+    if(cg_drawScores.integer == 3) {
+        Q_strncpyz(temp2, cgs.scores1 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores1)), sizeof(temp2));
+        Q_strncpyz(temp, cgs.scores2 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores2)), sizeof(temp));
+
+        if (cg_drawScores.integer && cgs.gametype >= GT_TEAM) {
+            if (cgs.scores1 > cgs.scores2) {
+                if (cg_drawTimer.integer == 7)
+                    redBackground.x = (320.0f - ((w + 10.0f) / 2.0f)) - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
+                else
+                    redBackground.x = 320.0f - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
+                redBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
+                blueBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
+                xOffset += redBackground.w / 2.0f;
+            } else {
+                if (cg_drawTimer.integer == 7)
+                    redBackground.x = (320.0f - ((w + 10.0f) / 2.0f)) - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
+                else
+                    redBackground.x = 320.0f - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
+                redBackground.w = CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10;
+                blueBackground.w = CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10;
+                xOffset += blueBackground.w / 2.0f;
+            }
+            redBackground.y = 0.0f;
+            redBackground.h = 22.0f;
+            if (cg_drawTimer.integer == 7)
+                blueBackground.x = (320.0f + ((w + 10.0f) / 2.0f));
+            else
+                blueBackground.x = (320.0f);
+            blueBackground.y = 0.0f;
+            blueBackground.h = 22.0f;
+
+            trap->R_SetColor(color1);
+            CG_DrawPic(redBackground.x, redBackground.y, redBackground.w, redBackground.h, cgs.media.whiteShader);
+            CG_Text_Paint(SCREEN_WIDTH / 2.0f - xOffset - CG_Text_Width(temp2, 0.8f, FONT_LARGE) / 2.0f,
+                          -5.0f +
+                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
+                          0.8f,
+                          colorWhite,
+                          temp2,
+                          0,
+                          0,
+                          ITEM_TEXTSTYLE_SHADOWED,
+                          FONT_LARGE);
+
+            trap->R_SetColor(color2);
+            CG_DrawPic(blueBackground.x, blueBackground.y, blueBackground.w, blueBackground.h, cgs.media.whiteShader);
+            CG_Text_Paint(SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp, 0.8f, FONT_LARGE) / 2.0f,
+                          -5.0f +
+                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
+                          0.8f,
+                          colorWhite,
+                          temp,
+                          0,
+                          0,
+                          ITEM_TEXTSTYLE_SHADOWED,
+                          FONT_LARGE);
+        }
+    }
+    return;
+}
 /*
 ================
 CG_DrawMiniScoreboard
@@ -3647,7 +3744,7 @@ static float CG_DrawMiniScoreboard ( float y )
 		return y;
 	}
 
-	if ( cgs.gametype >= GT_TEAM )
+	if ( cgs.gametype >= GT_TEAM && cg_drawScores.integer != 3)
 	{
 		if (cg_drawScores.integer == 1) {
 		Q_strncpyz( temp, va( "%s: ", CG_GetStringEdString( "MP_INGAME", "RED" ) ), sizeof( temp ) );
@@ -5296,7 +5393,14 @@ static float CG_DrawTimer( float y ) {
 	char		*s;
 	int			w;
 	int			msec, secs, mins;
-	int			drawTimerStyle = cg_drawFPS.integer ? cg_drawFPS.integer : cg_drawTimer.integer; //style this the same as the fps counter if it's enabled.
+	int			drawTimerStyle;
+
+    if(cg_drawTimer.integer != 7){
+        drawTimerStyle = cg_drawFPS.integer ? cg_drawFPS.integer : cg_drawTimer.integer; //style this the same as the fps counter if it's enabled.
+    }else{
+        drawTimerStyle = cg_drawTimer.integer;
+    }
+
 
 	if (cg_drawTimer.integer < 0)
 		msec = cg.time;
@@ -5317,38 +5421,44 @@ static float CG_DrawTimer( float y ) {
 	if (drawTimerStyle < 4 && trap->R_Language_IsAsian())
 		drawTimerStyle = 5;
 
-	switch (drawTimerStyle)
-	{
-		default:
-		case 1:
-			w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
-			CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
-			break;
-		case 2:
-			w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
-			CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
-			break;
-		case 3:
-			w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
-			CG_DrawStringExt(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, colorWhite, qfalse, qtrue, SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 0);
-			break;
-		case 4:
-			w = CG_Text_Width(s, 1.0f, FONT_SMALL);
-			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL);
-			return y + CG_Text_Height(s, 1.0f, FONT_SMALL);
-			break;
-		case 5:
-			w = CG_Text_Width(s, 1.0f, FONT_MEDIUM);
-			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
-			return y + CG_Text_Height(s, 1.0f, FONT_MEDIUM);
-			break;
-		case 6:
-			w = CG_Text_Width(s, 1.0f, FONT_SMALL2);
-			CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL2);
-			return y + CG_Text_Height(s, 1.0f, FONT_SMALL2);
-			break;
-	}
-
+        switch (drawTimerStyle) {
+            default:
+            case 1:
+                w = CG_DrawStrlen(s) * BIGCHAR_WIDTH;
+                CG_DrawBigString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+                break;
+            case 2:
+                w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+                CG_DrawSmallString(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, 1.0f);
+                break;
+            case 3:
+                w = CG_DrawStrlen(s) * SMALLCHAR_WIDTH;
+                CG_DrawStringExt(SCREEN_WIDTH - 5 - w * cgs.widthRatioCoef, y + 2, s, colorWhite, qfalse, qtrue,
+                                 SMALLCHAR_WIDTH * cgs.widthRatioCoef, SMALLCHAR_HEIGHT, 0);
+                break;
+            case 4:
+                w = CG_Text_Width(s, 1.0f, FONT_SMALL);
+                CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED,
+                              FONT_SMALL);
+                return y + CG_Text_Height(s, 1.0f, FONT_SMALL);
+                break;
+            case 5:
+                w = CG_Text_Width(s, 1.0f, FONT_MEDIUM);
+                CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED,
+                              FONT_MEDIUM);
+                return y + CG_Text_Height(s, 1.0f, FONT_MEDIUM);
+                break;
+            case 6:
+                w = CG_Text_Width(s, 1.0f, FONT_SMALL2);
+                CG_Text_Paint(SCREEN_WIDTH - 5 - w, y, 1.0f, colorTable[CT_WHITE], s, 0.0f, 0, ITEM_TEXTSTYLE_SHADOWED,
+                              FONT_SMALL2);
+                return y + CG_Text_Height(s, 1.0f, FONT_SMALL2);
+                break;
+            case 7:
+                CG_DrawTaystHUD(s);
+                return y;
+                break;
+        }
 	return y + BIGCHAR_HEIGHT + 4;
 }
 
@@ -5709,6 +5819,9 @@ static void CG_DrawUpperRight( void ) {
 		if ( cg_drawTimer.integer ) {
 			y = CG_DrawTimer( y );
 		}
+        if(cg_drawScores.integer == 3 && cg_drawTimer.integer != 7){
+            CG_DrawTaystHUD("");
+        }
 
 		if ( cg_drawRadar.integer && ( cgs.gametype >= GT_TEAM || cg.predictedPlayerState.m_iVehicleNum ) )
 		{//draw Radar in Siege mode or when in a vehicle of any kind

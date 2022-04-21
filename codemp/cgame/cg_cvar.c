@@ -69,7 +69,9 @@ static void CG_UpdateHUD(void) {
 			case '3':
 				cgs.newHud = qtrue;
 				break;
-		}
+            case '4':
+                cgs.newHud = qtrue;
+        }
 	}
 
 	CG_LoadHud_f();
