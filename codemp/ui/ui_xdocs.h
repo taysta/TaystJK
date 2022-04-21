@@ -34,6 +34,14 @@
 /* CVARS */
 
 // EternalJK HUD cvars:
+XDOCS_CVAR_DEF("cg_hudFiles", "HUD style",
+    SETTING("0", "JKA HUD") NL
+    SETTING("1", "Simple HUD") NL
+    SETTING("2", "JK2 HUD") NL
+    SETTING("3", "Elegant HUD") NL
+    SETTING("4", "Quake HUD")
+)
+
 
 XDOCS_CVAR_DEF("cg_movementKeys", "Show the movement keys onscreen",
 	SETTING("0", "Movement keys are hidden") NL
@@ -208,13 +216,13 @@ XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",
 )
 
 XDOCS_CVAR_DEF("cg_drawFPS", "Draw the match timer",
-SETTING("0", "Big text") NL
-SETTING("1", "Small text 1") NL
-SETTING("2", "Small text 2") NL
-SETTING("3", "Small text 3") NL
-SETTING("4", "Medium text") NL
-SETTING("5", "Large text") NL
-SETTING("6", "Small text 4")
+    SETTING("0", "Big text") NL
+    SETTING("1", "Small text 1") NL
+    SETTING("2", "Small text 2") NL
+    SETTING("3", "Small text 3") NL
+    SETTING("4", "Medium text") NL
+    SETTING("5", "Large text") NL
+    SETTING("6", "Small text 4")
 )
 
 XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",

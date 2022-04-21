@@ -4,6 +4,7 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+* [+] New Quake style HUD `cg_hudFiles 4`
 * [+] New team scoreboard `cg_drawScores 3`
 * [+] New counter strike style timer `cg_drawTimer 7`
 * [+] Show ammo for weapons on the selection cycle with `cg_weaponCycleAmmo`
