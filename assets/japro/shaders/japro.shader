@@ -456,3 +456,95 @@ gfx/misc/splash
         tcMod turb 0.02 0.01 0 1
     }
 }
+
+gfx/tayst_hud/ammo_tic_1
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/ammo_tic_1
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+gfx/tayst_hud/health_tic_1
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/health_tic_1
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+gfx/tayst_hud/armor_tic_1
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/armor_tic_1
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+gfx/tayst_hud/force_tic_1
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/force_tic_1
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+gfx/tayst_hud/shield
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/shield
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+gfx/tayst_hud/health
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/health
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
+
+
+gfx/tayst_hud/force
+{
+	nopicmip
+	nomipmaps
+	notc
+	cull disable
+	{
+        map  gfx/tayst_hud/force
+		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+		rgbGen vertex
+	}
+}
