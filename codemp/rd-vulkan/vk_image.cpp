@@ -50,7 +50,7 @@ textureMode_t modes[] = {
 
 void vk_update_descriptor_set( image_t *image, qboolean mipmap );
 
-void vk_texture_mode( const char *string ) {
+void vk_texture_mode( const char *string, const qboolean init ) {
 	const textureMode_t *mode;
 	image_t	*img;
 	uint32_t		i;
@@ -70,6 +70,11 @@ void vk_texture_mode( const char *string ) {
 
 	gl_filter_min = mode->minimize;
 	gl_filter_max = mode->maximize;
+
+	if( init ){
+		r_textureMode->modified = qfalse; // no need to do this a seccond time in tr_cmds
+		return;
+	}
 
 	vk_wait_idle();
 	for ( i = 0 ; i < tr.numImages ; i++ ) {

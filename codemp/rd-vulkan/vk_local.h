@@ -74,6 +74,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MAX_SWAPCHAIN_IMAGES			8
 #define MIN_SWAPCHAIN_IMAGES_IMM		3
 #define MIN_SWAPCHAIN_IMAGES_FIFO		3
+#define MIN_SWAPCHAIN_IMAGES_FIFO_0		4
 #define MIN_SWAPCHAIN_IMAGES_MAILBOX	3
 
 #define MAX_VK_SAMPLERS					32
@@ -907,7 +908,7 @@ void		R_MipMap( byte *out, byte *in, int width, int height );
 void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHeight );
 
 // image
-void		vk_texture_mode( const char *string );
+void		vk_texture_mode( const char *string, const qboolean init );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 

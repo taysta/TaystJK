@@ -155,12 +155,15 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
             present_mode = VK_PRESENT_MODE_FIFO_KHR;
             image_count = MAX( MIN_SWAPCHAIN_IMAGES_FIFO, surface_caps.minImageCount );
         }
-        if (image_count < 2) {
-            image_count = 2;
-        }
     }
 
-    if ( surface_caps.maxImageCount > 0 ) {
+    if (image_count < 2) {
+        image_count = 2;
+    }
+
+    if ( surface_caps.maxImageCount == 0 && present_mode == VK_PRESENT_MODE_FIFO_KHR ) {
+		image_count = MAX( MIN_SWAPCHAIN_IMAGES_FIFO_0, surface_caps.minImageCount );
+	} else if ( surface_caps.maxImageCount > 0 ) {
         image_count = MIN( MIN( image_count, surface_caps.maxImageCount ), MAX_SWAPCHAIN_IMAGES );
     }
 
