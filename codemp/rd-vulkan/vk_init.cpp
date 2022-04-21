@@ -472,6 +472,7 @@ void vk_initialize( void )
 	vk.initSwapchainLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
 	vk_create_swapchain( vk.physical_device, vk.device, vk.surface, vk.present_format, &vk.swapchain );
+	vk_texture_mode( r_textureMode->string, qtrue );
 	vk_render_splash();
 	vk_create_attachments();
 	vk_create_render_passes();

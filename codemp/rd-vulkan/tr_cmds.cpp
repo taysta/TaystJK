@@ -382,9 +382,8 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	// texturemode stuff
 	//
 	if ( r_textureMode->modified ) {
-		vk_texture_mode( r_textureMode->string );
+		vk_texture_mode( r_textureMode->string, qfalse );
 		r_textureMode->modified = qfalse;
-		r_ext_texture_filter_anisotropic->modified = qfalse;
 	}
 
 	//
