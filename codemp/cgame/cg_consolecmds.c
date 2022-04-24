@@ -969,7 +969,7 @@ static void CG_Flipkick_f(void)
 static void CG_Lowjump_f(void)
 {
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
-		trap->SendConsoleCommand("+moveup;wait 2;-moveup\n");
+		trap->SendConsoleCommand("+moveup;waitf 2;-moveup\n");
 		return;
 	}
 
@@ -981,7 +981,7 @@ static void CG_Lowjump_f(void)
 static void CG_NorollDown_f(void)
 {
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
-		trap->SendConsoleCommand("+speed;wait 2;-moveup;+movedown;-speed\n");
+		trap->SendConsoleCommand("+speed;waitf 2;-moveup;+movedown;-speed\n");
 		return;
 	}
 
