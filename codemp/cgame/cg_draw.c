@@ -5931,6 +5931,309 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 //#endif
 }
 
+void Q_LimitStr( char *string, int len ) {
+    int       i;
+    char    *p;
+
+    if( !string || len <= 0 ) {
+        return;
+    }
+
+    i = 0;
+    p = string;
+    while( *p && i < len ) {
+        if( Q_IsColorString( p ) ) {
+            p += 2;
+            continue;
+        }
+        p++;
+        i++;
+    }
+
+    if (p)
+        *p = '\0';
+}
+
+static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
+    float x, w, h, xx, yy;
+    int i, j, len, elements = 2;
+    const char *p;
+    char nameBuf[64];
+    vec4_t		hcolor, fpcolor;
+    int pwidth, lwidth;
+    int plyrs;
+    char hp[16];
+    char ap[16];
+    char fp[16]; //japro
+    clientInfo_t *ci;
+    gitem_t	*item;
+    int ret_y, count;
+    float xOffset = 0*cgs.widthRatioCoef;
+    float padding = 15.0f;
+    vec4_t color1 = {1.0f, 0.0f, 0.0f, 0.4f};
+    vec4_t color2 = {0.0f, 0.0f, 1.0f, 0.4f};
+    vec4_t colorGrey = {0.4, 0.4, 0.4, 0.4f};
+    rectDef_t background;
+
+    if ( !cg_drawTeamOverlay.integer ) {
+        return y;
+    }
+
+    if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_RED && cg.snap->ps.persistant[PERS_TEAM] != TEAM_BLUE ) {
+        return y; // Not on any team
+    }
+
+    if(cg_drawTimer.integer != 7 && cg_drawScores.integer!= 3){
+        overlayXPos = SCREEN_WIDTH / 2;
+    }
+
+    plyrs = 0;
+
+    //TODO: On basejka servers, we won't have valid teaminfo if we're spectating someone.
+    //		Find a way to detect invalid info and return early?
+
+    // max player name width
+    pwidth = 0;
+    count = (numSortedTeamPlayers > 8) ? 8 : numSortedTeamPlayers;
+    for (i = 0; i < count; i++) {
+        ci = cgs.clientinfo + sortedTeamPlayers[i];
+        if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
+            plyrs++;
+            len = CG_DrawStrlen(ci->name);
+            if (len > pwidth)
+                pwidth = len;
+        }
+    }
+
+    if (!plyrs)
+        return y;
+
+    if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH)
+        pwidth = TEAM_OVERLAY_MAXNAME_WIDTH;
+
+    // max location name width JAPRO
+    lwidth = 0;
+    for (i = 1; i < MAX_LOCATIONS; i++) {
+        p = CG_GetLocationString(CG_ConfigString(CS_LOCATIONS+i));
+        if (p && *p) {
+            len = CG_DrawStrlen(p);
+            if (len > lwidth)
+                lwidth = len;
+        }
+    }
+
+    if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH)
+        lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
+
+    if (lwidth)
+        ret_y = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+    else
+        ret_y = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+
+    if(count > 4)
+        ret_y = ret_y * 2 + 15.0f;
+
+    for (i = 0; i < count; i++)
+    {
+        ci = cgs.clientinfo + sortedTeamPlayers[i];
+        if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM])
+        {
+            if (cg_drawTeamOverlay.integer == 4)
+            {
+                char nameBuf[64];
+                trap->Cvar_VariableStringBuffer("name", nameBuf, sizeof(nameBuf));
+
+                if (!Q_stricmp(nameBuf, ci->name))
+                    continue;
+                //Com_Printf("ours: %s, his: %s\n", nameBuf, ci->name);
+            }
+
+            if(i < 4)
+            {
+                    background.w =
+                            ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
+                    background.x = (SCREEN_WIDTH) - ((i + 1) * (background.w));
+                    background.y = 0.0f;
+                    if (lwidth)
+                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+                    else
+                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+                    if(i > 0)
+                        background.x -= i * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
+
+                if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
+                    trap->R_SetColor(color1);
+                } else
+                {
+                    trap->R_SetColor(color2);
+                }
+                if (ci->health < 1){
+                    trap->R_SetColor(colorGrey);
+                }
+                CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
+                trap->R_SetColor( NULL );
+            }else if(i < 8)
+            {
+                    background.w =
+                            ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
+                    background.x = (SCREEN_WIDTH) - ((i - 4 + 1) * (background.w));
+                    background.y = 5.0f + CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+                    if (lwidth )
+                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+                    else
+                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+                if((i - 4) > 0)
+                    background.x -= (i - 4) * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
+                if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED)
+                {
+                    trap->R_SetColor(color1);
+                } else
+                {
+                    trap->R_SetColor(color2);
+                }
+                CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
+                trap->R_SetColor( NULL );
+            }
+
+           hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
+            sprintf(nameBuf, "%s", ci->name);
+            Q_LimitStr(nameBuf, 16);
+            xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
+
+            if(lwidth)
+                yy = background.y + background.h / 4.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 2.5f;
+            else
+                yy = background.y + background.h / 3.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 2.5f;
+
+            CG_Text_Paint( xx,
+                          yy,
+                          0.55f,
+                          hcolor,
+                          nameBuf,
+                          0.0f,
+                          0,
+                          ITEM_TEXTSTYLE_SHADOWED,
+                          FONT_SMALL2);
+
+
+            if (lwidth) {
+                p = CG_GetLocationString(CG_ConfigString(CS_LOCATIONS+ci->location));
+                if (!p || !*p)
+                    p = "unknown";
+                len = CG_DrawStrlen(p);
+                if (len > lwidth)
+                    len = lwidth;
+                sprintf(nameBuf, "%s", p);
+                Q_LimitStr(nameBuf, 16);
+                xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
+
+                CG_Text_Paint( xx,
+                               background.y + background.h / 2.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 1.25f,
+                               0.55f,
+                               hcolor,
+                               nameBuf,
+                               0.0f,
+                               0,
+                               ITEM_TEXTSTYLE_SHADOWED,
+                               FONT_SMALL2);
+
+            }
+
+            CG_GetColorForHealth( ci->health, ci->armor, hcolor );
+
+            if (cgs.serverMod == SVMOD_JAPRO) {
+                int forcepoints = ci->armor % 100, armor = ci->armor;
+                if (!forcepoints) { //sad hack, fix this sometime.. if we are at 0 fp it thinks we are at full or whatever.. cuz %100
+                    forcepoints = 100;
+                    armor -= 100;
+                }
+                CG_GetColorForForce( forcepoints, fpcolor );
+                Com_sprintf (hp, sizeof(hp), "%3i", ci->health);
+                Com_sprintf (ap, sizeof(ap), "%3i",	armor / 100);
+                Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
+                elements++;
+            }
+            else
+                Com_sprintf (hp, sizeof(hp), "%3i", ci->health);
+                Com_sprintf (ap, sizeof(ap), "%3i",	ci->armor);
+
+            xx = background.x + background.w / 3.0f - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+            if(lwidth)
+                yy = background.y + (3.0f * background.h) / 4.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
+            else
+                yy = background.y + (2.0f * background.h) / 3.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
+
+
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           hp,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_SHADOWED,
+                           FONT_SMALL2);
+
+            xx = background.x + (2 * background.w) / 3.0f - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           ap,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_SHADOWED,
+                           FONT_SMALL2);
+
+//        if (cgs.serverMod == SVMOD_JAPRO) {
+//            else {
+//                CG_DrawStringExt( xx + xOffset, y,
+//                                  st, hcolor, qfalse, qfalse,
+//                                  TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
+//            }
+//
+//            // draw weapon icon
+//            xx += TINYCHAR_WIDTH * 3*cgs.widthRatioCoef;
+//
+//            if ( cg_weapons[ci->curWeapon].weaponIcon ) {
+//                CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+//                            cg_weapons[ci->curWeapon].weaponIcon );
+//            } else {
+//                CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+//                            cgs.media.deferShader );
+//            }
+//
+//            // Draw powerup icons
+//            if (right) {
+//                xx = x;
+//            } else {
+//                xx = x + w - TINYCHAR_WIDTH*cgs.widthRatioCoef;
+//            }
+//            for (j = 0; j <= PW_NUM_POWERUPS; j++) {
+//                if (ci->powerups & (1 << j)) {
+//
+//                    item = BG_FindItemForPowerup( j );
+//
+//                    if (item) {
+//                        CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+//                                    trap->R_RegisterShader( item->icon ) );
+//                        if (right) {
+//                            xx -= TINYCHAR_WIDTH*cgs.widthRatioCoef;
+//                        } else {
+//                            xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            y += TINYCHAR_HEIGHT;
+        }
+    }
+
+    return ret_y;
+//#endif
+}
 
 static int CG_DrawPowerupIcons(int y)
 {
