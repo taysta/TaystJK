@@ -6128,7 +6128,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                 xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
                 CG_Text_Paint( xx,
-                               background.y + background.h / 2.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 1.25f,
+                               background.y + background.h / 2.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 1.4f,
                                0.55f,
                                hcolor,
                                nameBuf,
