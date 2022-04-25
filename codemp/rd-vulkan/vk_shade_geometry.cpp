@@ -54,8 +54,8 @@ static void get_mvp_transform( float *mvp )
 {
 	if (backEnd.projection2D)
 	{
-		float mvp0 = 2.0f / glConfig.vidWidth;
-		float mvp5 = 2.0f / glConfig.vidHeight;
+		float mvp0 = 2.0f / SCREEN_WIDTH;
+		float mvp5 = 2.0f / SCREEN_HEIGHT;
 
 		mvp[0] = mvp0; mvp[1] = 0.0f; mvp[2] = 0.0f; mvp[3] = 0.0f;
 		mvp[4] = 0.0f; mvp[5] = mvp5; mvp[6] = 0.0f; mvp[7] = 0.0f;
@@ -376,19 +376,19 @@ void vk_create_storage_buffer( uint32_t size )
 
 void vk_update_attachment_descriptors( void ) {
 
-	if (vk.color_image_view)
+	if ( vk.color_image_view )
 	{
 		VkDescriptorImageInfo info;
 		VkWriteDescriptorSet desc;
 		Vk_Sampler_Def sd;
 
-		Com_Memset(&sd, 0, sizeof(sd));
+		Com_Memset( &sd, 0, sizeof(sd) );
 		sd.gl_mag_filter = sd.gl_min_filter = vk.blitFilter;
 		sd.address_mode = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 		sd.max_lod_1_0 = qtrue;
 		sd.noAnisotropy = qtrue;
 
-		info.sampler = vk_find_sampler(&sd);
+		info.sampler = vk_find_sampler( &sd );
 		info.imageView = vk.color_image_view;
 		info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 		desc.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -402,30 +402,30 @@ void vk_update_attachment_descriptors( void ) {
 		desc.pBufferInfo = NULL;
 		desc.pTexelBufferView = NULL;
 
-		qvkUpdateDescriptorSets(vk.device, 1, &desc, 0, NULL);
+		qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
 
 		// screenmap
 		sd.gl_mag_filter = sd.gl_min_filter = GL_LINEAR;
 		sd.max_lod_1_0 = qfalse;
 		sd.noAnisotropy = qtrue;
 
-		info.sampler = vk_find_sampler(&sd);
+		info.sampler = vk_find_sampler( &sd );
 
 		info.imageView = vk.screenMap.color_image_view;
 		desc.dstSet = vk.screenMap.color_descriptor;
 
-		qvkUpdateDescriptorSets(vk.device, 1, &desc, 0, NULL);
+		qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
 
 		// bloom images
-		if (r_bloom->integer)
+		if ( vk.bloomActive )
 		{
 			uint32_t i;
-			for (i = 0; i < ARRAY_LEN(vk.bloom_image_descriptor); i++)
+			for (i = 0; i < ARRAY_LEN( vk.bloom_image_descriptor ); i++)
 			{
 				info.imageView = vk.bloom_image_view[i];
 				desc.dstSet = vk.bloom_image_descriptor[i];
 
-				qvkUpdateDescriptorSets(vk.device, 1, &desc, 0, NULL);
+				qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
 			}
 		}
 	}
@@ -442,7 +442,7 @@ void vk_init_descriptors( void ) {
 	alloc.descriptorPool = vk.descriptor_pool;
 	alloc.descriptorSetCount = 1;
 	alloc.pSetLayouts = &vk.set_layout_storage;
-	VK_CHECK(qvkAllocateDescriptorSets(vk.device, &alloc, &vk.storage.descriptor));
+	VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.storage.descriptor ) );
 
 	info.buffer = vk.storage.buffer;
 	info.offset = 0;
@@ -459,41 +459,41 @@ void vk_init_descriptors( void ) {
 	desc.pBufferInfo = &info;
 	desc.pTexelBufferView = NULL;
 
-	qvkUpdateDescriptorSets(vk.device, 1, &desc, 0, NULL);
+	qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
 
-	for (i = 0; i < NUM_COMMAND_BUFFERS; i++)
+	for ( i = 0; i < NUM_COMMAND_BUFFERS; i++ )
 	{
 		alloc.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 		alloc.pNext = NULL;
 		alloc.descriptorPool = vk.descriptor_pool;
 		alloc.descriptorSetCount = 1;
 		alloc.pSetLayouts = &vk.set_layout_uniform;
-		VK_CHECK(qvkAllocateDescriptorSets(vk.device, &alloc, &vk.tess[i].uniform_descriptor));
+		VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.tess[i].uniform_descriptor ) );
 
-		vk_update_uniform_descriptor(vk.tess[i].uniform_descriptor, vk.tess[i].vertex_buffer);
-		VK_SET_OBJECT_NAME(vk.tess[i].uniform_descriptor, "uniform descriptor", VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT);
+		vk_update_uniform_descriptor( vk.tess[i].uniform_descriptor, vk.tess[i].vertex_buffer );
+		VK_SET_OBJECT_NAME( vk.tess[i].uniform_descriptor, "uniform descriptor", VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT );
 	}
 
-	if (vk.color_image_view)
+	if ( vk.color_image_view )
 	{
 		alloc.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 		alloc.pNext = NULL;
 		alloc.descriptorPool = vk.descriptor_pool;
 		alloc.descriptorSetCount = 1;
 		alloc.pSetLayouts = &vk.set_layout_sampler;
-		VK_CHECK(qvkAllocateDescriptorSets(vk.device, &alloc, &vk.color_descriptor));
+		VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.color_descriptor ) );
 
-		// bloo images
-		if (r_bloom->integer)
+		// bloom images
+		if ( vk.bloomActive )
 		{
-			for (i = 0; i < ARRAY_LEN(vk.bloom_image_descriptor); i++)
+			for (i = 0; i < ARRAY_LEN( vk.bloom_image_descriptor ); i++)
 			{
-				VK_CHECK(qvkAllocateDescriptorSets(vk.device, &alloc, &vk.bloom_image_descriptor[i]));
+				VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.bloom_image_descriptor[i] ) );
 			}
 		}
 
 		alloc.descriptorSetCount = 1;
-		VK_CHECK(qvkAllocateDescriptorSets(vk.device, &alloc, &vk.screenMap.color_descriptor)); // screenmap
+		VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.screenMap.color_descriptor ) ); // screenmap
 
 		vk_update_attachment_descriptors();
 	}
@@ -1501,7 +1501,10 @@ void RB_StageIteratorGeneric( void )
 			pipeline = pStage->vk_2d_pipeline;
 		}
 		else if ( backEnd.currentEntity ) {
-			vk_get_pipeline_def(pStage->vk_pipeline[fog_stage], &def);
+			if ( backEnd.viewParms.portalView == PV_MIRROR )
+				vk_get_pipeline_def(pStage->vk_mirror_pipeline[fog_stage], &def);
+			else
+				vk_get_pipeline_def(pStage->vk_pipeline[fog_stage], &def);
 
 			// we want to be able to rip a hole in the thing being disintegrated,
 			// and by doing the depth-testing it avoids some kinds of artefacts, but will probably introduce others?

@@ -299,95 +299,95 @@ void vk_create_attachments( void )
 
     vk_clear_attachment_pool();
 
-    if (vk.fboActive) 
+    if ( vk.fboActive ) 
     {
         VkImageUsageFlags usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
 
-        if (r_bloom->integer) {
+        if ( vk.bloomActive ) {
             uint32_t width = gls.captureWidth;
             uint32_t height = gls.captureHeight;
 
-            create_color_attachment(width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
-                usage, &vk.bloom_image[0], &vk.bloom_image_view[0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse);
+            create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
+                usage, &vk.bloom_image[0], &vk.bloom_image_view[0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
 
-            for (i = 1; i < ARRAY_LEN(vk.bloom_image); i += 2) {
+            for ( i = 1; i < ARRAY_LEN(vk.bloom_image); i += 2 ) {
                 width /= 2;
                 height /= 2;
-                create_color_attachment(width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
-                    usage, &vk.bloom_image[i + 0], &vk.bloom_image_view[i + 0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse);
+                create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
+                    usage, &vk.bloom_image[i + 0], &vk.bloom_image_view[i + 0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
 
-                create_color_attachment(width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
-                    usage, &vk.bloom_image[i + 1], &vk.bloom_image_view[i + 1], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse);
+                create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.bloom_format,
+                    usage, &vk.bloom_image[i + 1], &vk.bloom_image_view[i + 1], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
             }
         }
 
         // post-processing / msaa-resolve. usage 21
-        create_color_attachment(glConfig.vidWidth, glConfig.vidHeight, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
-           usage, &vk.color_image, &vk.color_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse);
+        create_color_attachment( glConfig.vidWidth, glConfig.vidHeight, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
+           usage, &vk.color_image, &vk.color_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
 
         // screenmap  usage 20
         usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
 
-        if (vk.screenMapSamples > VK_SAMPLE_COUNT_1_BIT) {
-            create_color_attachment(vk.screenMapWidth, vk.screenMapHeight, (VkSampleCountFlagBits)vk.screenMapSamples, vk.color_format,
-               usage, &vk.screenMap.color_image_msaa, &vk.screenMap.color_image_view_msaa, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue);
+        if ( vk.screenMapSamples > VK_SAMPLE_COUNT_1_BIT ) {
+            create_color_attachment( vk.screenMapWidth, vk.screenMapHeight, (VkSampleCountFlagBits)vk.screenMapSamples, vk.color_format,
+               usage, &vk.screenMap.color_image_msaa, &vk.screenMap.color_image_view_msaa, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue );
         }
 
-        create_color_attachment(vk.screenMapWidth, vk.screenMapHeight, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
-            usage, &vk.screenMap.color_image, &vk.screenMap.color_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse);
+        create_color_attachment( vk.screenMapWidth, vk.screenMapHeight, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
+            usage, &vk.screenMap.color_image, &vk.screenMap.color_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
 
         // screenmap depth
-        create_depth_attachment(vk.screenMapWidth, vk.screenMapHeight, (VkSampleCountFlagBits)vk.screenMapSamples,
-            &vk.screenMap.depth_image, &vk.screenMap.depth_image_view);
+        create_depth_attachment( vk.screenMapWidth, vk.screenMapHeight, (VkSampleCountFlagBits)vk.screenMapSamples,
+            &vk.screenMap.depth_image, &vk.screenMap.depth_image_view );
         
         // MSAA
         if (vk.msaaActive) {
-            create_color_attachment(glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples, vk.color_format, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-                &vk.msaa_image, &vk.msaa_image_view, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue);
+            create_color_attachment( glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples, vk.color_format, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+                &vk.msaa_image, &vk.msaa_image_view, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue );
         }
 
         // SSAA
-        if (r_ext_supersample->integer) {
+        if ( r_ext_supersample->integer ) {
             // capture buffer
             usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-            create_color_attachment(gls.captureWidth, gls.captureHeight, VK_SAMPLE_COUNT_1_BIT, vk.capture_format,
-                usage, &vk.capture.image, &vk.capture.image_view , VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, qfalse);
+            create_color_attachment( gls.captureWidth, gls.captureHeight, VK_SAMPLE_COUNT_1_BIT, vk.capture_format,
+                usage, &vk.capture.image, &vk.capture.image_view , VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, qfalse );
         }
     }
     else {
         // MSAA
-        if (vk.msaaActive) {
-            create_color_attachment(glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples, vk.color_format, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-                &vk.msaa_image, &vk.msaa_image_view, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue);
+        if ( vk.msaaActive ) {
+            create_color_attachment( glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples, vk.color_format, VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+                &vk.msaa_image, &vk.msaa_image_view, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qtrue );
         }
     }
 
     // depth
-    create_depth_attachment(glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples,
-        &vk.depth_image, &vk.depth_image_view);
+    create_depth_attachment( glConfig.vidWidth, glConfig.vidHeight, (VkSampleCountFlagBits)vkSamples,
+        &vk.depth_image, &vk.depth_image_view );
 
     vk_alloc_attachment_memory();
 
-    for (i = 0; i < vk.image_memory_count; i++)
+    for ( i = 0; i < vk.image_memory_count; i++ )
     {
-        VK_SET_OBJECT_NAME(vk.image_memory[i], va("framebuffer memory chunk %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
+        VK_SET_OBJECT_NAME( vk.image_memory[i], va("framebuffer memory chunk %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
     }
 
-    VK_SET_OBJECT_NAME(vk.depth_image, "depth attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT);
-    VK_SET_OBJECT_NAME(vk.depth_image_view, "depth attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT);
+    VK_SET_OBJECT_NAME( vk.depth_image, "depth attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+    VK_SET_OBJECT_NAME( vk.depth_image_view, "depth attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
 
 
-    VK_SET_OBJECT_NAME(vk.color_image, "color attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT);
-    VK_SET_OBJECT_NAME(vk.color_image_view, "color attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT);
+    VK_SET_OBJECT_NAME( vk.color_image, "color attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+    VK_SET_OBJECT_NAME( vk.color_image_view, "color attachment", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
 
 
-    VK_SET_OBJECT_NAME(vk.capture.image, "capture image", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT);
-    VK_SET_OBJECT_NAME(vk.capture.image_view, "capture image view", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT);
+    VK_SET_OBJECT_NAME( vk.capture.image, "capture image", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+    VK_SET_OBJECT_NAME( vk.capture.image_view, "capture image view", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
 
-    for (i = 0; i < ARRAY_LEN(vk.bloom_image); i++)
+    for ( i = 0; i < ARRAY_LEN(vk.bloom_image); i++ )
     {
-        VK_SET_OBJECT_NAME(vk.bloom_image[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT);
-        VK_SET_OBJECT_NAME(vk.bloom_image_view[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT);
+        VK_SET_OBJECT_NAME( vk.bloom_image[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+        VK_SET_OBJECT_NAME( vk.bloom_image_view[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
     }
 }
 

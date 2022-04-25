@@ -754,6 +754,7 @@ typedef struct {
 
 	qboolean active;
 	qboolean msaaActive;
+	qboolean bloomActive;
 
 	qboolean	offscreenRender;
 	qboolean	windowAdjusted;

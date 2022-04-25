@@ -1863,7 +1863,7 @@ void vk_create_pipelines( void )
 
 void vk_create_bloom_pipelines( void )
 {
-    if (vk.fboActive && r_bloom->integer)
+    if ( vk.bloomActive )
     {
         uint32_t width = gls.captureWidth;
         uint32_t height = gls.captureHeight;

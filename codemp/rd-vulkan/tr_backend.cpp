@@ -455,7 +455,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 			R_TransformDlights(1, dl, &backEnd.ori );
 			tess.dlightUpdateParams = qtrue;
 
-			vk_set_depthrange(depthRange ? DEPTH_RANGE_WEAPON : DEPTH_RANGE_NORMAL);
+			vk_set_depthrange( depthRange );
 
 			Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
 			vk_update_mvp(NULL);
@@ -578,7 +578,7 @@ const void *RB_StretchPic ( const void *data ) {
 		vk_set_2d();
 	}	
 
-	if ( r_bloom->integer ) {
+	if ( vk.bloomActive ) {
 		vk_bloom();
 	}
 
