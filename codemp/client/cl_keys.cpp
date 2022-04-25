@@ -530,7 +530,7 @@ void Field_KeyDownEvent( field_t *edit, int key ) {
 		return;
 	}
 
-#if 1
+#if 0
 	// ctrl backspace is del
 	if ((key == A_BACKSPACE) && kg.keys[A_CTRL].down) {
 		while (edit->cursor > 0) {
@@ -556,9 +556,123 @@ void Field_KeyDownEvent( field_t *edit, int key ) {
 		return;
 	}
 #endif
-	
-	key = tolower( key );
-	len = strlen( edit->buffer );
+
+    key = tolower(key);
+    len = strlen(edit->buffer);
+
+    // ctrl+backspace / ctrl+shift+backspace
+    if ((key == A_BACKSPACE) && (kg.keys[A_CTRL].down || kg.keys[A_CTRL2].down)) {
+        while (edit->cursor > 0) {
+            bool isSpace = !!(edit->buffer[edit->cursor - 1] == ' ' || edit->buffer[edit->cursor - 1] == ';');
+            bool prevIsSpace = !!(edit->cursor > 1 && (edit->buffer[edit->cursor - 2] == ' ' || edit->buffer[edit->cursor - 2] == ';'));
+
+            if (isSpace && !prevIsSpace && !(kg.keys[A_SHIFT].down || kg.keys[A_SHIFT2].down))
+                break;
+
+            memmove(edit->buffer + edit->cursor - 1, edit->buffer + edit->cursor, len + 1 - edit->cursor);
+            edit->cursor--;
+            if (edit->cursor < edit->scroll)
+            {
+                edit->scroll--;
+            }
+
+            len = strlen(edit->buffer);
+        }
+
+        // Change scroll if cursor is no longer visible
+        if (edit->cursor < edit->scroll) {
+            edit->scroll = edit->cursor;
+        }
+        else if (edit->cursor >= edit->scroll + edit->widthInChars && edit->cursor <= len) {
+            edit->scroll = edit->cursor - edit->widthInChars + 1;
+        }
+        return;
+    }
+
+    // ctrl+del / ctrl+shift+del
+    if ((key == A_DELETE) && (kg.keys[A_CTRL].down || kg.keys[A_CTRL2].down) && edit->cursor < len) {
+        bool startedWithNonSpace = !!(edit->buffer[edit->cursor] != ' ' && edit->buffer[edit->cursor] != ';');
+        bool hasGottenSpace = false;
+
+        while (edit->cursor < len) {
+            bool isNonSpace = !!(edit->buffer[edit->cursor] != ' ' && edit->buffer[edit->cursor] != ';');
+
+            if (isNonSpace && !(startedWithNonSpace && !hasGottenSpace) && !(kg.keys[A_SHIFT].down || kg.keys[A_SHIFT2].down))
+                break;
+
+            if (!isNonSpace)
+                hasGottenSpace = true;
+
+            memmove(edit->buffer + edit->cursor,
+                    edit->buffer + edit->cursor + 1, len - edit->cursor);
+
+            len = strlen(edit->buffer);
+        }
+
+        // Change scroll if cursor is no longer visible
+        if (edit->cursor < edit->scroll) {
+            edit->scroll = edit->cursor;
+        }
+        else if (edit->cursor >= edit->scroll + edit->widthInChars && edit->cursor <= len) {
+            edit->scroll = edit->cursor - edit->widthInChars + 1;
+        }
+        return;
+    }
+
+    // ctrl+left / ctrl+shift+left
+    if ((key == A_CURSOR_LEFT) && (kg.keys[A_CTRL].down || kg.keys[A_CTRL2].down) && edit->cursor > 0) {
+        bool startedWithSpace = !!(edit->buffer[edit->cursor - 1] == ' ' || edit->buffer[edit->cursor - 1] == ';');
+        bool hasGottenNonSpace = false;
+
+        while (edit->cursor > 0) {
+            bool isSpace = !!(edit->buffer[edit->cursor - 1] == ' ' || edit->buffer[edit->cursor - 1] == ';');
+            bool prevIsSpace = !!(edit->cursor > 1 && (edit->buffer[edit->cursor - 2] == ' ' || edit->buffer[edit->cursor - 2] == ';'));
+
+            if (isSpace && !prevIsSpace && !(startedWithSpace && !hasGottenNonSpace) && !(kg.keys[A_SHIFT].down || kg.keys[A_SHIFT2].down))
+                break;
+
+            if (!isSpace)
+                hasGottenNonSpace = true;
+
+            edit->cursor--;
+        }
+
+        // Change scroll if cursor is no longer visible
+        if (edit->cursor < edit->scroll) {
+            edit->scroll = edit->cursor;
+        }
+        else if (edit->cursor >= edit->scroll + edit->widthInChars && edit->cursor <= len) {
+            edit->scroll = edit->cursor - edit->widthInChars + 1;
+        }
+        return;
+    }
+
+    // ctrl+right / ctrl+shift+right
+    if ((key == A_CURSOR_RIGHT) && (kg.keys[A_CTRL].down || kg.keys[A_CTRL2].down) && edit->cursor < len) {
+        bool startedWithNonSpace = !!(edit->buffer[edit->cursor] != ' ' && edit->buffer[edit->cursor] != ';');
+        bool hasGottenSpace = false;
+
+        while (edit->cursor < len) {
+            bool isNonSpace = !!(edit->buffer[edit->cursor] != ' ' && edit->buffer[edit->cursor] != ';');
+
+            if (isNonSpace && !(startedWithNonSpace && !hasGottenSpace) && !(kg.keys[A_SHIFT].down || kg.keys[A_SHIFT2].down))
+                break;
+
+            if (!isNonSpace)
+                hasGottenSpace = true;
+
+            edit->cursor++;
+        }
+
+        // Change scroll if cursor is no longer visible
+        if (edit->cursor < edit->scroll) {
+            edit->scroll = edit->cursor;
+        }
+        else if (edit->cursor >= edit->scroll + edit->widthInChars && edit->cursor <= len) {
+            edit->scroll = edit->cursor - edit->widthInChars + 1;
+        }
+        return;
+    }
 
 	switch ( key ) {
 		case A_DELETE:
