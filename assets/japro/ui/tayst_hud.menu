@@ -328,7 +328,7 @@ assetGlobalDef
 			name				forceamount
 			group				none
 			rect				-68 69 6 12
-			forecolor			.359 .524 .722 1
+			forecolor			1 1 1 1
 		}		
 
 		// Numeric counter for ammo
