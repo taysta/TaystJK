@@ -424,7 +424,7 @@ void vk_initialize( void )
 	// MSAA
 	vkMaxSamples = MIN( props.limits.sampledImageColorSampleCounts, props.limits.sampledImageDepthSampleCounts);
 
-	if (vk.msaaActive) {
+	if ( vk.msaaActive ) {
 		VkSampleCountFlags mask = vkMaxSamples;
 		vkSamples = MAX( log2pad( r_ext_multisample->integer, 1 ), VK_SAMPLE_COUNT_2_BIT );
 		while ( vkSamples > mask )
@@ -438,6 +438,10 @@ void vk_initialize( void )
 
 	// Anisotropy
 	ri.Printf( PRINT_ALL, "Anisotropy max: %dx, using %dx\n\n", r_ext_max_anisotropy->integer, r_ext_texture_filter_anisotropic->integer );
+		
+	// Bloom
+	if ( vk.fboActive && r_bloom->integer )
+		vk.bloomActive = qtrue;
 
 	// Screenmap
 	vk.screenMapSamples = MIN(vkMaxSamples, VK_SAMPLE_COUNT_4_BIT);

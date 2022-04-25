@@ -578,7 +578,7 @@ const void *RB_StretchPic ( const void *data ) {
 		vk_set_2d();
 	}	
 
-	if ( r_bloom->integer ) {
+	if ( vk.bloomActive ) {
 		vk_bloom();
 	}
 

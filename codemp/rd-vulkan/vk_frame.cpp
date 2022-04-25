@@ -130,7 +130,7 @@ void vk_create_render_passes()
     attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     //attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     attachments[1].stencilLoadOp = r_stencilbits->integer ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    if (r_bloom->integer) {
+    if ( vk.bloomActive ) {
         attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom pass
         //attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
         attachments[1].stencilStoreOp = r_stencilbits->integer ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -166,7 +166,7 @@ void vk_create_render_passes()
     desc.attachmentCount = 2;
 
 
-    if (vk.msaaActive)
+    if ( vk.msaaActive )
     {
         attachments[2].flags = 0;
         attachments[2].format = vk.color_format;
@@ -176,7 +176,7 @@ void vk_create_render_passes()
 #else
         attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 #endif
-        if (r_bloom->integer) {
+        if ( vk.bloomActive ) {
             attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom pass
         }
         else {
@@ -246,7 +246,7 @@ void vk_create_render_passes()
     VK_SET_OBJECT_NAME(vk.render_pass.main, "render pass - main", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
 
     // post-bloom pass
-    if (r_bloom->integer)
+    if ( vk.bloomActive )
     {
         // color buffer
         attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
@@ -521,7 +521,7 @@ void vk_create_framebuffers()
         VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.screenmap));
         VK_SET_OBJECT_NAME(vk.framebuffers.screenmap, "framebuffer - screenmap", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
 
-        if (vk.capture.image != VK_NULL_HANDLE)
+        if ( vk.capture.image != VK_NULL_HANDLE )
         {
             attachments[0] = vk.capture.image_view;
 
@@ -535,7 +535,7 @@ void vk_create_framebuffers()
             VK_SET_OBJECT_NAME(vk.framebuffers.capture, "framebuffer - capture", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
         }
 
-        if (r_bloom->integer)
+        if ( vk.bloomActive )
         {
             uint32_t width = gls.captureWidth;
             uint32_t height = gls.captureHeight;
@@ -999,25 +999,25 @@ void vk_release_resources( void ) {
 
 void vk_end_frame( void )
 {
-    if (vk.frame_count == 0)
+    if ( vk.frame_count == 0 )
         return;
 
     vk.frame_count = 0;
 
-    if (vk.geometry_buffer_size_new)
+    if ( vk.geometry_buffer_size_new )
     {
         vk_resize_geometry_buffer();
         return;
     }
 
-    if (vk.fboActive) {
+    if ( vk.fboActive ) {
         {
             vk.cmd->last_pipeline = VK_NULL_HANDLE; // do not restore clobbered descriptors in vk_bloom()
 
-            if (r_bloom->integer)
+            if ( vk.bloomActive )
                 vk_bloom();
 
-            if (backEnd.screenshotMask && vk.capture.image)
+            if ( backEnd.screenshotMask && vk.capture.image )
             {
                 vk_end_render_pass();
 
@@ -1029,29 +1029,29 @@ void vk_end_frame( void )
                 qvkCmdDraw(vk.cmd->command_buffer, 4, 1, 0, 0);
             }
 
-            if (!ri.VK_IsMinimized()) {
+            if ( !ri.VK_IsMinimized() ) {
                 vk_end_render_pass();
 
                 vk.renderWidth = gls.windowWidth;
                 vk.renderHeight = gls.windowHeight;
                 vk.renderScaleX = vk.renderScaleY = 1.0;
 
-                vk_begin_render_pass(vk.render_pass.gamma, vk.framebuffers.gamma[vk.swapchain_image_index],
-                    qfalse, vk.renderWidth, vk.renderHeight);
+                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.swapchain_image_index],
+                    qfalse, vk.renderWidth, vk.renderHeight );
 
-                qvkCmdBindPipeline(vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.gamma_pipeline);
+                qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.gamma_pipeline );
 
-                qvkCmdBindDescriptorSets(vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-                    vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL);
+                qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+                    vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL );
 
-                qvkCmdDraw(vk.cmd->command_buffer, 4, 1, 0, 0);
+                qvkCmdDraw( vk.cmd->command_buffer, 4, 1, 0, 0 );
             }
         }
     }
 
     vk_end_render_pass();
 
-    VK_CHECK(qvkEndCommandBuffer(vk.cmd->command_buffer));
+    VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );
 
     VkPipelineStageFlags wait_dst_stage_mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
  
@@ -1062,7 +1062,7 @@ void vk_end_frame( void )
     submit_info.commandBufferCount = 1;
     submit_info.pCommandBuffers = &vk.cmd->command_buffer;
 
-    if (!ri.VK_IsMinimized()) {
+    if ( !ri.VK_IsMinimized() ) {
         submit_info.waitSemaphoreCount = 1;
         submit_info.pWaitSemaphores = &vk.cmd->image_acquired;
         submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
@@ -1077,7 +1077,7 @@ void vk_end_frame( void )
         submit_info.pSignalSemaphores = NULL;
     }
 
-    VK_CHECK(qvkQueueSubmit(vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence));
+    VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence ) );
     vk.cmd->waitForFence = qtrue;
 
     // presentation may take undefined time to complete, we can't measure it in a reliable way
@@ -1096,12 +1096,12 @@ void vk_end_frame( void )
     present_info.pImageIndices = &vk.swapchain_image_index;
     present_info.pResults = NULL;
 
-    VkResult result = qvkQueuePresentKHR(vk.queue, &present_info);
-    if (result < 0) {
-        switch (result) {
-        case VK_ERROR_DEVICE_LOST: ri.Printf(PRINT_DEVELOPER, "vkQueuePresentKHR: device lost\n"); break;
+    VkResult result = qvkQueuePresentKHR( vk.queue, &present_info );
+    if ( result < 0 ) {
+        switch ( result ) {
+        case VK_ERROR_DEVICE_LOST: ri.Printf( PRINT_DEVELOPER, "vkQueuePresentKHR: device lost\n" ); break;
         case VK_ERROR_OUT_OF_DATE_KHR: vk_restart_swapchain( __func__ ); break;
-        default: ri.Error(ERR_FATAL, "vkQueuePresentKHR returned %s", vk_result_string(result)); break;
+        default: ri.Error( ERR_FATAL, "vkQueuePresentKHR returned %s", vk_result_string( result ) ); break;
         }
     }
 }
