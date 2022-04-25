@@ -224,13 +224,6 @@ void RE_SetColor( const float *rgba ) {
 	cmd->color[3] = rgba[3];
 }
 
-static void vk_adjust_from_640( float *x, float *y, float *w, float *h ) {
-	*x *= vk.xscale2D;
-	*y *= vk.yscale2D;
-	*w *= vk.xscale2D;
-	*h *= vk.yscale2D;
-}
-
 /*
 =============
 RE_StretchPic
@@ -263,8 +256,6 @@ void RE_StretchPic ( float x, float y, float w, float h,
 		return;
 	}
 
-	vk_adjust_from_640( &x, &y, &w, &h );
-
 	cmd->commandId = RC_STRETCH_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
 	cmd->x = x;
@@ -290,8 +281,6 @@ void RE_RotatePic ( float x, float y, float w, float h,
 	if ( !cmd ) {
 		return;
 	}
-
-	vk_adjust_from_640( &x, &y, &w, &h );
 
 	cmd->commandId = RC_ROTATE_PIC;
 	cmd->shader = R_GetShaderByHandle( hShader );
@@ -319,8 +308,6 @@ void RE_RotatePic2 ( float x, float y, float w, float h,
 	if ( !cmd ) {
 		return;
 	}
-
-	vk_adjust_from_640( &x, &y, &w, &h );
 
 	cmd->commandId = RC_ROTATE_PIC2;
 	cmd->shader = R_GetShaderByHandle( hShader );

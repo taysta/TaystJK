@@ -29,6 +29,7 @@ void R_SetColorMappings( void)
     int		inf;
     int		shift = 0;
     float   g;
+    qboolean applyGamma;
 
     if ( !tr.inited ) {
         // it may be called from window handling functions where gamma flags is now yet known/set
@@ -38,11 +39,20 @@ void R_SetColorMappings( void)
     // setup the overbright lighting
     // negative value will force gamma in windowed mode
     tr.overbrightBits = abs(r_overBrightBits->integer);
-    if (!glConfig.deviceSupportsGamma && !vk.fboActive)
-        tr.overbrightBits = 0;		// need hardware gamma for overbright
 
-    if (!glConfig.isFullscreen && r_overBrightBits->integer >= 0 && !vk.fboActive)
-        tr.overbrightBits = 0;
+
+	// never overbright in windowed mode
+	if ( !glConfig.isFullscreen && r_overBrightBits->integer >= 0 && !vk.fboActive ) {
+		tr.overbrightBits = 0;
+		applyGamma = qfalse;
+	} else {
+		if ( !glConfig.deviceSupportsGamma && !vk.fboActive ) {
+			tr.overbrightBits = 0; // need hardware gamma for overbright
+			applyGamma = qfalse;
+		} else {
+			applyGamma = qtrue;
+		}
+	}
 
     // clear
     for (i = 0; i < 255; i++)
@@ -111,8 +121,11 @@ void R_SetColorMappings( void)
     if (glConfig.deviceSupportsGamma) {
         if (vk.fboActive)
             ri.WIN_SetGamma(&glConfig, s_gammatable_linear, s_gammatable_linear, s_gammatable_linear);
-        else
-            ri.WIN_SetGamma(&glConfig, s_gammatable, s_gammatable, s_gammatable);
+        else {
+            if ( applyGamma ) {
+                ri.WIN_SetGamma(&glConfig, s_gammatable, s_gammatable, s_gammatable);
+            }
+        }
     }
 }
 

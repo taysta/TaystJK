@@ -54,8 +54,8 @@ static void get_mvp_transform( float *mvp )
 {
 	if (backEnd.projection2D)
 	{
-		float mvp0 = 2.0f / glConfig.vidWidth;
-		float mvp5 = 2.0f / glConfig.vidHeight;
+		float mvp0 = 2.0f / SCREEN_WIDTH;
+		float mvp5 = 2.0f / SCREEN_HEIGHT;
 
 		mvp[0] = mvp0; mvp[1] = 0.0f; mvp[2] = 0.0f; mvp[3] = 0.0f;
 		mvp[4] = 0.0f; mvp[5] = mvp5; mvp[6] = 0.0f; mvp[7] = 0.0f;
@@ -1501,7 +1501,10 @@ void RB_StageIteratorGeneric( void )
 			pipeline = pStage->vk_2d_pipeline;
 		}
 		else if ( backEnd.currentEntity ) {
-			vk_get_pipeline_def(pStage->vk_pipeline[fog_stage], &def);
+			if ( backEnd.viewParms.portalView == PV_MIRROR )
+				vk_get_pipeline_def(pStage->vk_mirror_pipeline[fog_stage], &def);
+			else
+				vk_get_pipeline_def(pStage->vk_pipeline[fog_stage], &def);
 
 			// we want to be able to rip a hole in the thing being disintegrated,
 			// and by doing the depth-testing it avoids some kinds of artefacts, but will probably introduce others?
