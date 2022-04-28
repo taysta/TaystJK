@@ -1566,6 +1566,11 @@ Ghoul2 Insert End
 	cgs.media.keyLeftOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on" );
 	cgs.media.keyRightOffShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off" );
 	cgs.media.keyRightOnShader		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on" );
+    cgs.media.keyAttackOn	    	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_on" );
+    cgs.media.keyAttackOff		    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_off" );
+    cgs.media.keyAltOn	    	    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_on" );
+    cgs.media.keyAltOff		        = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_off" );
+
 
     //Movement Keys 2
     cgs.media.keyCrouchOffShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_off2" );
@@ -1580,6 +1585,10 @@ Ghoul2 Insert End
     cgs.media.keyLeftOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/left_on2" );
     cgs.media.keyRightOffShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_off2" );
     cgs.media.keyRightOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on2" );
+    cgs.media.keyAttackOn2	    	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_on2" );
+    cgs.media.keyAttackOff2		    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_off2" );
+    cgs.media.keyAltOn2	    	    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_on2" );
+    cgs.media.keyAltOff2		    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_off2" );
 	//Movement Keys - End
 
 	//japro gibs

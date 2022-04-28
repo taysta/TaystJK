@@ -12669,7 +12669,17 @@ static void CG_MovementKeys(centity_t *cent)
 
 			lastZSpeed = zspeed;
 
-			switch ( moveDir )
+
+            if ((cent->currentState.eFlags & EF_FIRING) && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
+                cmd.buttons |= BUTTON_ATTACK;
+                cmd.buttons &= ~BUTTON_ALT_ATTACK;
+            } else if (cent->currentState.eFlags & EF_ALT_FIRING) {
+                cmd.buttons |= BUTTON_ALT_ATTACK;
+                cmd.buttons &= ~BUTTON_ATTACK;
+            }
+
+
+            switch ( moveDir )
 			{
 			case 0: // W
 				cmd.forwardmove = 1;
@@ -12755,6 +12765,11 @@ static void CG_MovementKeys(centity_t *cent)
             CG_DrawPic( x, h + y, w, h, cgs.media.keyLeftOnShader2 );
         if (cmd.rightmove > 0)
             CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader2 );
+        if (cmd.buttons & BUTTON_ATTACK)
+            CG_DrawPic(x, 2 * h + y, w, h, cgs.media.keyAttackOn2);
+        if (cmd.buttons & BUTTON_ALT_ATTACK)
+            CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn);
+
     }
     else if(cg_movementKeys.integer == 1){
         if (cmd.upmove < 0)
@@ -12781,6 +12796,15 @@ static void CG_MovementKeys(centity_t *cent)
             CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOnShader );
         else
             CG_DrawPic( w*2 + x, h + y, w, h, cgs.media.keyRightOffShader );
+        if (cmd.buttons & BUTTON_ATTACK)
+            CG_DrawPic(w * 3 + x, y, w, h, cgs.media.keyAttackOn);
+        else
+            CG_DrawPic(w * 3 + x, y, w, h, cgs.media.keyAttackOff);
+
+        if (cmd.buttons & BUTTON_ALT_ATTACK)
+            CG_DrawPic(w * 3 + x, h + y, w, h, cgs.media.keyAltOn);
+        else
+            CG_DrawPic(w * 3 + x, h + y, w, h, cgs.media.keyAltOff);
     }
 
 }

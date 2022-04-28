@@ -1439,6 +1439,10 @@ typedef struct cgMedia_s {
 	qhandle_t	keyLeftOnShader;
 	qhandle_t	keyRightOffShader;
 	qhandle_t	keyRightOnShader;
+    qhandle_t   keyAttackOn;
+    qhandle_t   keyAttackOff;
+    qhandle_t   keyAltOn;
+    qhandle_t   keyAltOff;
     qhandle_t	keyCrouchOffShader2;
     qhandle_t	keyCrouchOnShader2;
     qhandle_t	keyJumpOffShader2;
@@ -1451,6 +1455,11 @@ typedef struct cgMedia_s {
     qhandle_t	keyLeftOnShader2;
     qhandle_t	keyRightOffShader2;
     qhandle_t	keyRightOnShader2;
+    qhandle_t   keyAttackOn2;
+    qhandle_t   keyAttackOff2;
+    qhandle_t   keyAltOn2;
+    qhandle_t   keyAltOff2;
+
 //JAPRO - Clientside - Movement keys - End
 
 	qhandle_t	bloodExplosionShader;//JAPRO - Clientside - Re add cg_blood
