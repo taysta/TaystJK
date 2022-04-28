@@ -57,3 +57,4 @@ OpenJK:
 * Daggo
 * Fau
 * TomArrow
+* TriForce
