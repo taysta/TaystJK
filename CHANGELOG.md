@@ -4,6 +4,7 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+* [*] Add attack/altattack inputs to `cg_movementKeys`
 * [+] Add console/chat field support for [shift+]ctrl+backspace/del/left/right shortcuts
 * [+] New team overlay `cg_drawTeamOverlay 3`, use `cg_drawTeamOverlay 4` to ignore local client  
 * [+] New Quake style HUD `cg_hudFiles 4`
