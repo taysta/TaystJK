@@ -1263,7 +1263,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 				if (!shader.noPicMip)
 					flags |= IMGFLAG_PICMIP;
 
-				if (!shader.noTC)
+				if (shader.noTC)
 					flags |= IMGFLAG_NO_COMPRESSION;
 
 				if (shader.noLightScale)
@@ -1312,7 +1312,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 			if (!shader.noPicMip)
 				flags |= IMGFLAG_PICMIP;
 
-			if (!shader.noTC)
+			if (shader.noTC)
 				flags |= IMGFLAG_NO_COMPRESSION;
 
 			if (shader.noLightScale)
@@ -1366,7 +1366,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 					if ( !shader.noPicMip )
 						flags |= IMGFLAG_PICMIP;
 
-					if ( !shader.noTC )
+					if ( shader.noTC )
 						flags |= IMGFLAG_NO_COMPRESSION;
 
 					if ( shader.noLightScale )
@@ -1407,7 +1407,8 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 			handle = ri.CIN_PlayCinematic(token, 0, 0, 256, 256, (CIN_loop | CIN_silent | CIN_shader));
 			if (handle != -1) {
 				if (!tr.scratchImage[handle]) {
-					tr.scratchImage[handle] = R_CreateImage(va("*scratch%i", handle), NULL, 256, 256, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
+					tr.scratchImage[handle] = R_CreateImage(va("*scratch%i", handle), NULL, 256, 256, 
+						IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE | IMGFLAG_NO_COMPRESSION);
 				}
 
 				stage->bundle[0].isVideoMap = qtrue;
@@ -2558,11 +2559,6 @@ static qboolean ParseShader( const char **text )
 			continue;
 		}
 		else if (!Q_stricmp(token, "noTC"))
-		{
-			shader.noTC = 1;
-			continue;
-		}
-		else if (!Q_stricmp(token, "notc"))
 		{
 			shader.noTC = 1;
 			continue;

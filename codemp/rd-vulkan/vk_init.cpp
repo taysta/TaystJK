@@ -361,6 +361,19 @@ void vk_create_window( void ) {
 	tr.inited = qtrue;
 }
 
+static void vk_initTextureCompression( void )
+{
+	if ( r_ext_compressed_textures->integer )
+	{
+		VkFormatProperties formatProps;
+		qvkGetPhysicalDeviceFormatProperties( vk.physical_device, VK_FORMAT_BC3_UNORM_BLOCK, &formatProps );
+		if ( formatProps.linearTilingFeatures && formatProps.optimalTilingFeatures )
+		{
+			vk.compressed_format = VK_FORMAT_BC3_UNORM_BLOCK; //GL_COMPRESSED_RGBA_S3TC_DXT5_EXT
+		}
+	}
+}
+
 void vk_initialize( void )
 {
 	VkPhysicalDeviceProperties props;
@@ -404,6 +417,8 @@ void vk_initialize( void )
 
 	ri.Printf( PRINT_ALL, "\nVK_MAX_TEXTURE_SIZE: %d\n", glConfig.maxTextureSize );
 	ri.Printf( PRINT_ALL, "VK_MAX_TEXTURE_UNITS: %d\n", glConfig.maxActiveTextures );
+
+	vk_initTextureCompression();
 
 	vk.xscale2D = glConfig.vidWidth * ( 1.0 / 640.0 );
 	vk.yscale2D = glConfig.vidHeight * ( 1.0 / 480.0 );

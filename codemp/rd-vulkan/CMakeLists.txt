@@ -142,6 +142,11 @@ set(MPVulkanRendererVulkanAssets
 source_group("renderer\\vulkan" FILES ${MPVulkanRendererVulkanAssets})
 set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererVulkanAssets})
 
+set(MPVulkanRendererUtils
+	"${MPDir}/rd-vulkan/utils/stb_dxt.h")
+source_group("renderer\\utils" FILES ${MPVulkanRendererUtils})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererUtils})
+
 set(MPVulkanRendererCommonFiles
 	"${MPDir}/qcommon/matcomp.cpp"
 	"${MPDir}/qcommon/q_shared.cpp"
