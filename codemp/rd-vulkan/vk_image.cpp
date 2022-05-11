@@ -23,6 +23,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
+#define STB_DXT_IMPLEMENTATION
+#include "utils/stb_dxt.h"
+
 #define	DEFAULT_SIZE	16
 #define FILE_HASH_SIZE	1024
 #define	DLIGHT_SIZE		16
@@ -338,14 +341,6 @@ void vk_upload_image( image_t *image, byte *pic ) {
 	w = upload_data.base_level_width;
 	h = upload_data.base_level_height;
 
-	if ( r_texturebits->integer > 16 || r_texturebits->integer == 0 || ( image->flags & IMGFLAG_LIGHTMAP ) ) {
-		image->internalFormat = VK_FORMAT_R8G8B8A8_UNORM;
-		//image->internalFormat = VK_FORMAT_B8G8R8A8_UNORM;
-	} else {
-		qboolean has_alpha = RawImage_HasAlpha( upload_data.buffer, w * h );
-		image->internalFormat = has_alpha ? VK_FORMAT_B4G4R4A4_UNORM_PACK16 : VK_FORMAT_A1R5G5B5_UNORM_PACK16;
-	}
-
 	image->handle = VK_NULL_HANDLE;
 	image->view = VK_NULL_HANDLE;
 	image->descriptor_set = VK_NULL_HANDLE;
@@ -364,12 +359,14 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 	qboolean	mipmap = (image->flags & IMGFLAG_MIPMAP) ? qtrue : qfalse;
 	qboolean	picmip = (image->flags & IMGFLAG_PICMIP) ? qtrue : qfalse;
 	byte		*resampled_buffer = NULL;
+	byte		*compressed_buffer = NULL;
 	int			scaled_width, scaled_height;
 	int			width = image->width;
 	int			height = image->height;
 	unsigned	*scaled_buffer;
 	int			mip_level_size;
 	int			miplevel;
+	qboolean	compressed = qfalse;
 
 	if (image->flags & IMGFLAG_NOSCALE) {
 		//
@@ -457,9 +454,33 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 	upload_data->base_level_width = scaled_width;
 	upload_data->base_level_height = scaled_height;
 
+	if (r_texturebits->integer > 16 || r_texturebits->integer == 0 || (image->flags & IMGFLAG_LIGHTMAP)) {
+		if (!vk.compressed_format || (image->flags & IMGFLAG_NO_COMPRESSION)) {
+			image->internalFormat = VK_FORMAT_R8G8B8A8_UNORM;
+			//image->internalFormat = VK_FORMAT_B8G8R8A8_UNORM;
+		}
+		else {
+			image->internalFormat = vk.compressed_format;
+			compressed = qtrue;
+		}
+	}
+	else {
+		qboolean has_alpha = RawImage_HasAlpha(data, scaled_width * scaled_height);
+		image->internalFormat = has_alpha ? VK_FORMAT_B4G4R4A4_UNORM_PACK16 : VK_FORMAT_A1R5G5B5_UNORM_PACK16;
+	}
+
 	if (scaled_width == width && scaled_height == height && !mipmap) {
 		upload_data->mip_levels = 1;
-		upload_data->buffer_size = scaled_width * scaled_height * 4;
+
+		if ( compressed ) {
+			upload_data->buffer_size = rygCompressedSize(scaled_width, scaled_height);
+			compressed_buffer = (byte*)ri.Hunk_AllocateTempMemory(upload_data->buffer_size);
+			rygCompress(compressed_buffer, data, scaled_width, scaled_height);
+			data = compressed_buffer;
+		}
+		else {
+			upload_data->buffer_size = scaled_width * scaled_height * 4;
+		}
 
 		if (data != NULL) {
 			Com_Memcpy(upload_data->buffer, data, upload_data->buffer_size);
@@ -467,6 +488,9 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 
 		if (resampled_buffer != NULL) {
 			ri.Hunk_FreeTempMemory(resampled_buffer);
+		}
+		if (compressed_buffer != NULL) {
+			ri.Hunk_FreeTempMemory(compressed_buffer);
 		}
 
 		return;	//return upload_data;
@@ -495,11 +519,19 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 			R_LightScaleTexture((byte*)scaled_buffer, scaled_width, scaled_height, qtrue);
 	}
 
-	miplevel = 0;
-	mip_level_size = scaled_width * scaled_height * 4;
-
-	Com_Memcpy(upload_data->buffer, scaled_buffer, mip_level_size);
+	if ( compressed ) {
+		mip_level_size = rygCompressedSize( scaled_width, scaled_height );
+		compressed_buffer = (byte*)ri.Hunk_AllocateTempMemory( mip_level_size );
+		rygCompress( compressed_buffer, (byte*)scaled_buffer, scaled_width, scaled_height );
+		Com_Memcpy( upload_data->buffer, compressed_buffer, mip_level_size );
+	}
+	else {
+		mip_level_size = scaled_width * scaled_height * 4;
+		Com_Memcpy( upload_data->buffer, scaled_buffer, mip_level_size );
+	}
 	upload_data->buffer_size = mip_level_size;
+
+	miplevel = 0;
 
 	if (mipmap) {
 		while (scaled_width > 1 || scaled_height > 1) {
@@ -513,13 +545,20 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 			if (scaled_height < 1) scaled_height = 1;
 
 			miplevel++;
-			mip_level_size = scaled_width * scaled_height * 4;
 
 			if (r_colorMipLevels->integer) {
 				R_BlendOverTexture((byte*)scaled_buffer, scaled_width * scaled_height, miplevel);
 			}
 
-			Com_Memcpy(&upload_data->buffer[upload_data->buffer_size], scaled_buffer, mip_level_size);
+			if ( compressed ) {
+				mip_level_size = rygCompressedSize( scaled_width, scaled_height );
+				rygCompress( compressed_buffer, (byte*)scaled_buffer, scaled_width, scaled_height );
+				Com_Memcpy( &upload_data->buffer[upload_data->buffer_size], compressed_buffer, mip_level_size );
+			}
+			else {
+				mip_level_size = scaled_width * scaled_height * 4;
+				Com_Memcpy( &upload_data->buffer[upload_data->buffer_size], scaled_buffer, mip_level_size );
+			}
 			upload_data->buffer_size += mip_level_size;
 		}
 	}
@@ -530,6 +569,8 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 
 	if (resampled_buffer != NULL)
 		ri.Hunk_FreeTempMemory(resampled_buffer);
+	if (compressed_buffer != NULL)
+		ri.Hunk_FreeTempMemory(compressed_buffer);
 }
 
 static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
@@ -586,12 +627,19 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 	VkBufferImageCopy regions[16];
 	VkBufferImageCopy region;
 	byte *buf;
-	int bpp;
+	int bpp, mip_level_size;
+	qboolean compressed = qfalse;
 
 	int num_regions = 0;
 	int buffer_size = 0;
 
-	buf = vk_resample_image_data( image, pixels, size, &bpp );
+	if ( image->internalFormat == VK_FORMAT_BC3_UNORM_BLOCK ) {
+		compressed = qtrue;
+		buf = pixels;
+	}
+	else {
+		buf = vk_resample_image_data( image, pixels, size, &bpp );
+	}
 
 	while (qtrue) {
 		Com_Memset(&region, 0, sizeof(region));
@@ -612,7 +660,12 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		regions[num_regions] = region;
 		num_regions++;
 
-		buffer_size += width * height * bpp;
+		if ( compressed )
+			mip_level_size = rygCompressedSize(width, height);
+		else
+			mip_level_size = width * height * bpp;
+
+		buffer_size += mip_level_size;
 
 		if ( num_regions >= mipmaps || (width == 1 && height == 1) || num_regions >= ARRAY_LEN( regions ) )
 			break;
@@ -1087,7 +1140,8 @@ void RE_UploadCinematic( int cols, int rows, const byte *data, int client, qbool
 	image_t *image;
 
     if ( !tr.scratchImage[client] ) {
-		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), (byte*)data, cols, rows, IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE);
+		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), (byte*)data, cols, rows, 
+			IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE | IMGFLAG_NO_COMPRESSION);
     }
 
     image = tr.scratchImage[client];

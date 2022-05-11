@@ -171,6 +171,9 @@ void R_ImageList_f( void ) {
 
 		switch ( image->internalFormat )
 		{
+			case VK_FORMAT_BC3_UNORM_BLOCK:
+				format = "RGBA ";
+				break;
 			case VK_FORMAT_B8G8R8A8_UNORM:
 				format = "BGRA ";
 				estSize *= 4;

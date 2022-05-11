@@ -749,6 +749,7 @@ typedef struct {
 	VkFormat color_format;
 	VkFormat bloom_format;
 	VkFormat capture_format;
+	VkFormat compressed_format;
 
 	VkImageLayout initSwapchainLayout;
 
