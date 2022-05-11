@@ -1443,22 +1443,14 @@ typedef struct cgMedia_s {
     qhandle_t   keyAttackOff;
     qhandle_t   keyAltOn;
     qhandle_t   keyAltOff;
-    qhandle_t	keyCrouchOffShader2;
     qhandle_t	keyCrouchOnShader2;
-    qhandle_t	keyJumpOffShader2;
     qhandle_t	keyJumpOnShader2;
-    qhandle_t	keyBackOffShader2;
     qhandle_t	keyBackOnShader2;
-    qhandle_t	keyForwardOffShader2;
     qhandle_t	keyForwardOnShader2;
-    qhandle_t	keyLeftOffShader2;
     qhandle_t	keyLeftOnShader2;
-    qhandle_t	keyRightOffShader2;
     qhandle_t	keyRightOnShader2;
     qhandle_t   keyAttackOn2;
-    qhandle_t   keyAttackOff2;
     qhandle_t   keyAltOn2;
-    qhandle_t   keyAltOff2;
 
 //JAPRO - Clientside - Movement keys - End
 

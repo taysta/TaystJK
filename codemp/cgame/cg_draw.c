@@ -12768,7 +12768,7 @@ static void CG_MovementKeys(centity_t *cent)
         if (cmd.buttons & BUTTON_ATTACK)
             CG_DrawPic(x, 2 * h + y, w, h, cgs.media.keyAttackOn2);
         if (cmd.buttons & BUTTON_ALT_ATTACK)
-            CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn);
+            CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn2);
 
     }
     else if(cg_movementKeys.integer == 1){
