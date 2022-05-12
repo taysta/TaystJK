@@ -89,6 +89,9 @@ XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above y
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",
 	SETTING("0", "The team overlay is not drawn") NL
 	SETTING("1", "The team overlay is drawn")
+    SETTING("2", "The team overlay is drawn, excluding the local client")
+    SETTING("3", "The new team overlay is drawn")
+    SETTING("4", "The team overlay is drawn, excluding the local client")
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlayX", "Horizontal location of the team overlay",
@@ -113,7 +116,7 @@ XDOCS_CVAR_DEF("cg_raceTimerY", "Vertical location of the race timer onscreen","
 XDOCS_CVAR_DEF("cg_raceTimerSize", "Scale of the race timer",""
 )
 
-XDOCS_CVAR_DEF("cg_raceStart", "Enable race timer start time separately from the race timer",""
+XDOCS_CVAR_DEF("cg_raceStart", "Enable race timer start speed separately from the race timer",""
 )
 
 XDOCS_CVAR_DEF("cg_raceStartX", "Horizontal location of the race start timer onscreen",""
@@ -202,6 +205,14 @@ XDOCS_CVAR_DEF("cg_drawScore", "Displays your score in the lower right",
 	SETTING("0", "Score is hidden") NL
 	SETTING("1", "Score is drawn beside the HUD") NL
 	SETTING("2", "Score, team score, and bias is drawn")
+)
+
+XDOCS_CVAR_DEF("cg_drawScores", "Displays the team scores",
+"This does not apply to the simple HUD." NL
+SETTING("0", "Scores are hidden") NL
+SETTING("1", "Team scores are drawn in the top right") NL
+SETTING("2", "Team scores are drawn in the top right with color") NL
+SETTING("2", "Large team scores")
 )
 
 XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",
