@@ -5889,17 +5889,18 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
 			}
 
-			// draw weapon icon
-			xx += TINYCHAR_WIDTH * 3*cgs.widthRatioCoef;
+            if(cg_drawTeamOverlayWeapons.integer) {
+                // draw weapon icon
+                xx += TINYCHAR_WIDTH * 3 * cgs.widthRatioCoef;
 
-			if ( cg_weapons[ci->curWeapon].weaponIcon ) {
-				CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-					cg_weapons[ci->curWeapon].weaponIcon );
-			} else {
-				CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-					cgs.media.deferShader );
-			}
-
+                if (cg_weapons[ci->curWeapon].weaponIcon) {
+                    CG_DrawPic(xx + xOffset, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                               cg_weapons[ci->curWeapon].weaponIcon);
+                } else {
+                    CG_DrawPic(xx + xOffset, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                               cgs.media.deferShader);
+                }
+            }
 			// Draw powerup icons
 			if (right) {
 				xx = x;
@@ -5956,7 +5957,7 @@ void Q_LimitStr( char *string, int len ) {
 
 static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     float x, w, h, xx, yy;
-    int i, j, len, elements = 2;
+    int i, j, g, len, forcepoints, armor, elements = 2;
     const char *p;
     char nameBuf[64];
     vec4_t		hcolor, fpcolor;
@@ -6047,55 +6048,38 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                     continue;
                 //Com_Printf("ours: %s, his: %s\n", nameBuf, ci->name);
             }
-
             if(i < 4)
             {
-                    background.w =
-                            ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
-                    background.x = (SCREEN_WIDTH) - ((i + 1) * (background.w));
-                    background.y = 0.0f;
-                    if (lwidth)
-                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
-                    else
-                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
-                    if(i > 0)
-                        background.x -= i * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
-
-                if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
-                    trap->R_SetColor(color1);
-                } else
-                {
-                    trap->R_SetColor(color2);
-                }
-                if (ci->health < 1){
-                    trap->R_SetColor(colorGrey);
-                }
-                CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
-                trap->R_SetColor( NULL );
+                g = i;
+                background.y = 0.0f;
             }else if(i < 8)
             {
-                    background.w =
-                            ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
-                    background.x = (SCREEN_WIDTH) - ((i - 4 + 1) * (background.w));
-                    background.y = 5.0f + CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
-                    if (lwidth )
-                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
-                    else
-                        background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
-                if((i - 4) > 0)
-                    background.x -= (i - 4) * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
-                if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED)
-                {
-                    trap->R_SetColor(color1);
-                } else
-                {
-                    trap->R_SetColor(color2);
-                }
-                CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
-                trap->R_SetColor( NULL );
+                g = i - 4;
+                background.y = TINYCHAR_HEIGHT + background.h;
             }
+            background.w = ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
+            background.x = (SCREEN_WIDTH) - ((g + 1) * (background.w));
 
-           hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
+            if (lwidth)
+                background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+            else
+                background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+            if(g > 0)
+                background.x -= g * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
+
+            if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
+                trap->R_SetColor(color1);
+            } else
+            {
+                trap->R_SetColor(color2);
+            }
+            if (ci->health < 1){
+                trap->R_SetColor(colorGrey);
+            }
+            CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
+            trap->R_SetColor( NULL );
+
+            hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
             sprintf(nameBuf, "%s", ci->name);
             Q_LimitStr(nameBuf, 16);
             xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
@@ -6136,13 +6120,13 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                0,
                                ITEM_TEXTSTYLE_SHADOWED,
                                FONT_SMALL2);
-
             }
 
             CG_GetColorForHealth( ci->health, ci->armor, hcolor );
 
             if (cgs.serverMod == SVMOD_JAPRO) {
-                int forcepoints = ci->armor % 100, armor = ci->armor;
+                forcepoints = ci->armor % 100;
+                armor = ci->armor;
                 if (!forcepoints) { //sad hack, fix this sometime.. if we are at 0 fp it thinks we are at full or whatever.. cuz %100
                     forcepoints = 100;
                     armor -= 100;
@@ -6151,88 +6135,109 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                 Com_sprintf (hp, sizeof(hp), "%3i", ci->health);
                 Com_sprintf (ap, sizeof(ap), "%3i",	armor / 100);
                 Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
-                elements++;
+                elements = 3;
             }
-            else
-                Com_sprintf (hp, sizeof(hp), "%3i", ci->health);
-                Com_sprintf (ap, sizeof(ap), "%3i",	ci->armor);
+            else {
+                Com_sprintf(hp, sizeof(hp), "%3i", ci->health);
+                Com_sprintf(ap, sizeof(ap), "%3i", ci->armor);
+            }
 
-            xx = background.x + background.w / 3.0f - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+            xx = background.x + background.w / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
             if(lwidth)
                 yy = background.y + (3.0f * background.h) / 4.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
             else
                 yy = background.y + (2.0f * background.h) / 3.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
 
+            if (cgs.serverMod == SVMOD_JAPRO) {
+                CG_Text_Paint( xx,
+                               yy,
+                               0.55f,
+                               hcolor,
+                               hp,
+                               0.0f,
+                               0,
+                               ITEM_TEXTSTYLE_SHADOWED,
+                               FONT_SMALL2);
 
-            CG_Text_Paint( xx,
-                           yy,
-                           0.55f,
-                           hcolor,
-                           hp,
-                           0.0f,
-                           0,
-                           ITEM_TEXTSTYLE_SHADOWED,
-                           FONT_SMALL2);
+                xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
 
-            xx = background.x + (2 * background.w) / 3.0f - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+                CG_Text_Paint( xx,
+                               yy,
+                               0.55f,
+                               hcolor,
+                               ap,
+                               0.0f,
+                               0,
+                               ITEM_TEXTSTYLE_SHADOWED,
+                               FONT_SMALL2);
 
-            CG_Text_Paint( xx,
-                           yy,
-                           0.55f,
-                           hcolor,
-                           ap,
-                           0.0f,
-                           0,
-                           ITEM_TEXTSTYLE_SHADOWED,
-                           FONT_SMALL2);
+                xx = background.x + 3 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
 
-//        if (cgs.serverMod == SVMOD_JAPRO) {
-//            else {
-//                CG_DrawStringExt( xx + xOffset, y,
-//                                  st, hcolor, qfalse, qfalse,
-//                                  TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
-//            }
-//
-//            // draw weapon icon
-//            xx += TINYCHAR_WIDTH * 3*cgs.widthRatioCoef;
-//
-//            if ( cg_weapons[ci->curWeapon].weaponIcon ) {
-//                CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-//                            cg_weapons[ci->curWeapon].weaponIcon );
-//            } else {
-//                CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-//                            cgs.media.deferShader );
-//            }
-//
-//            // Draw powerup icons
-//            if (right) {
-//                xx = x;
-//            } else {
-//                xx = x + w - TINYCHAR_WIDTH*cgs.widthRatioCoef;
-//            }
-//            for (j = 0; j <= PW_NUM_POWERUPS; j++) {
-//                if (ci->powerups & (1 << j)) {
-//
-//                    item = BG_FindItemForPowerup( j );
-//
-//                    if (item) {
-//                        CG_DrawPic( xx + xOffset, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-//                                    trap->R_RegisterShader( item->icon ) );
-//                        if (right) {
-//                            xx -= TINYCHAR_WIDTH*cgs.widthRatioCoef;
-//                        } else {
-//                            xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            y += TINYCHAR_HEIGHT;
+                CG_Text_Paint( xx,
+                               yy,
+                               0.55f,
+                               fpcolor,
+                               fp,
+                               0.0f,
+                               0,
+                               ITEM_TEXTSTYLE_SHADOWED,
+                               FONT_SMALL2);
+            }
+            else {
+
+                CG_Text_Paint(xx,
+                              yy,
+                              0.55f,
+                              hcolor,
+                              hp,
+                              0.0f,
+                              0,
+                              ITEM_TEXTSTYLE_SHADOWED,
+                              FONT_SMALL2);
+
+                xx = background.x + 2 * (background.w) / ((float) elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+
+                CG_Text_Paint(xx,
+                              yy,
+                              0.55f,
+                              hcolor,
+                              ap,
+                              0.0f,
+                              0,
+                              ITEM_TEXTSTYLE_SHADOWED,
+                              FONT_SMALL2);
+            }
+
+            trap->R_SetColor( NULL );
+            y = background.y + background.h;
+            xx = background.x;
+            if(cg_drawTeamOverlayWeapons.integer) {
+
+                // Draw weapon icons
+                if (cg_weapons[ci->curWeapon].weaponIcon) {
+                    CG_DrawPic(xx, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                               cg_weapons[ci->curWeapon].weaponIcon);
+                } else {
+                    CG_DrawPic(xx, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                               cgs.media.deferShader);
+                }
+            }
+
+            // Draw powerup icons
+            for (j = 0; j <= PW_NUM_POWERUPS; j++) {
+                if (ci->powerups & (1 << j)) {
+                    item = BG_FindItemForPowerup( j );
+                    if(cg_drawTeamOverlayWeapons.integer)
+                        xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
+                    if (item) {
+                        CG_DrawPic( xx, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                                    trap->R_RegisterShader( item->icon ) );
+                    }
+                }
+            }
         }
     }
-
     return ret_y;
-//#endif
 }
 
 static int CG_DrawPowerupIcons(int y)
