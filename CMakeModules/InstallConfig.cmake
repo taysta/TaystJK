@@ -17,7 +17,7 @@
 #============================================================================
 
 # Subdirectory to package JKA into
-set(JKAInstallDir "JediAcademy")
+set(JKAInstallDir "EternalJK")
 
 # Install components
 set(JKAMPCoreComponent "JKAMPCore")

@@ -5932,7 +5932,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 //#endif
 }
 
-void Q_LimitStr( char *string, int len ) {
+void CG_LimitStr( char *string, int len ) {
     int       i;
     char    *p;
 
@@ -5956,25 +5956,17 @@ void Q_LimitStr( char *string, int len ) {
 }
 
 static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
-    float x, w, h, xx, yy;
-    int i, j, g, len, forcepoints, armor, elements = 2;
+    float xx, yy;
+    int i, j, g, len, forcepoints, armor, pwidth, lwidth, plyrs, ret_y, count, elements = 2;
     const char *p;
-    char nameBuf[64];
-    vec4_t		hcolor, fpcolor;
-    int pwidth, lwidth;
-    int plyrs;
-    char hp[16];
-    char ap[16];
-    char fp[16]; //japro
+    char nameBuf[64], hp[16], ap[16], fp[16];
+    vec4_t hcolor, fpcolor;
     clientInfo_t *ci;
     gitem_t	*item;
-    int ret_y, count;
-    float xOffset = 0*cgs.widthRatioCoef;
-    float padding = 15.0f;
     vec4_t color1 = {1.0f, 0.0f, 0.0f, 0.4f};
     vec4_t color2 = {0.0f, 0.0f, 1.0f, 0.4f};
-    vec4_t colorGrey = {0.4, 0.4, 0.4, 0.4f};
-    rectDef_t background;
+    vec4_t colorGrey = {0.4f, 0.4f, 0.4f, 0.4f};
+    rectDef_t background = {0.0f, 0.0f, 0.0f, 0.0f};
 
     if ( !cg_drawTeamOverlay.integer ) {
         return y;
@@ -6081,7 +6073,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
 
             hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
             sprintf(nameBuf, "%s", ci->name);
-            Q_LimitStr(nameBuf, 16);
+            CG_LimitStr(nameBuf, 16);
             xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
             if(lwidth)
@@ -6108,7 +6100,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                 if (len > lwidth)
                     len = lwidth;
                 sprintf(nameBuf, "%s", p);
-                Q_LimitStr(nameBuf, 16);
+                CG_LimitStr(nameBuf, 16);
                 xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
                 CG_Text_Paint( xx,
