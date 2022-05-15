@@ -254,7 +254,7 @@ assetGlobalDef
 			name				ammo_tic1
 			background			"gfx/tayst_hud/ammo_tic_1"
 			forecolor			1 1 1 1
-			rect				-115 65 15 8
+			rect				-114 65 15 8
 		}		
 
 		itemDef 
