@@ -34,14 +34,14 @@ qboolean vk_begin_dglow_blur( void )
 
 	for ( i = 0; i < VK_NUM_BLUR_PASSES * 2; i += 2 ) {
 		// horizontal blur
-		vk_begin_blur_render_pass( i + 0, vk.framebuffers.dglow.blur, vk.render_pass.dglow.blur );
+		vk_begin_dglow_blur_render_pass( i + 0 );
 		qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.dglow_blur_pipeline[i + 0] );
 		qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.dglow_image_descriptor[i + 0], 0, NULL );
 		qvkCmdDraw( vk.cmd->command_buffer, 4, 1, 0, 0 );
 		vk_end_render_pass();
 
 		// vectical blur
-		vk_begin_blur_render_pass( i + 1, vk.framebuffers.dglow.blur, vk.render_pass.dglow.blur );
+		vk_begin_dglow_blur_render_pass( i + 1 );
 		qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.dglow_blur_pipeline[i + 1] );
 		qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.dglow_image_descriptor[i + 1], 0, NULL );
 		qvkCmdDraw( vk.cmd->command_buffer, 4, 1, 0, 0 );

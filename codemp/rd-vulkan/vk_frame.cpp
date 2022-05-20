@@ -912,15 +912,26 @@ void vk_begin_bloom_extract_render_pass( void )
     vk_begin_render_pass(vk.render_pass.bloom.extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_blur_render_pass( uint32_t index, VkFramebuffer *framebuffer, VkRenderPass *renderpass )
+void vk_begin_bloom_blur_render_pass( uint32_t index )
 {
-    VkFramebuffer frameBuffer = framebuffer[index];
+    VkFramebuffer frameBuffer = vk.framebuffers.bloom.blur[index];
 
     vk.renderWidth = gls.captureWidth / (2 << (index / 2));
     vk.renderHeight = gls.captureHeight / (2 << (index / 2));
     vk.renderScaleX = vk.renderScaleY = 1.0f;
 
-    vk_begin_render_pass( renderpass[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
+    vk_begin_render_pass( vk.render_pass.bloom.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
+}
+
+void vk_begin_dglow_blur_render_pass( uint32_t index )
+{
+    VkFramebuffer frameBuffer = vk.framebuffers.dglow.blur[index];
+
+    vk.renderWidth = gls.captureWidth / (2 << (index / 2));
+    vk.renderHeight = gls.captureHeight / (2 << (index / 2));
+    vk.renderScaleX = vk.renderScaleY = 1.0f;
+
+    vk_begin_render_pass( vk.render_pass.dglow.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
 }
 
 void vk_begin_dglow_extract_render_pass( void )

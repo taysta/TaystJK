@@ -945,15 +945,16 @@ void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer,
 	VkAccessFlags src_access, VkAccessFlags dst_access );
 
 // post-processing
-void		vk_begin_blur_render_pass( uint32_t index, VkFramebuffer *framebuffer, VkRenderPass *renderpass );
 void		vk_begin_post_blend_render_pass( VkRenderPass renderpass );
 
 // bloom
 void		vk_begin_bloom_extract_render_pass( void );
+void		vk_begin_bloom_blur_render_pass( uint32_t index );
 qboolean	vk_bloom( void );
 
 // dynamic glow
 void		vk_begin_dglow_extract_render_pass( void );
+void		vk_begin_dglow_blur_render_pass( uint32_t index );
 qboolean	vk_begin_dglow_blur( void );
 
 // info
