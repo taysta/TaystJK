@@ -801,6 +801,9 @@ void RB_StageIteratorSky( void )
 	if ( r_fastsky->integer && vk.fastSky )
 		return;
 
+	if ( backEnd.isGlowPass )
+		return;
+
 	if ( skyboxportal && !( backEnd.refdef.rdflags & RDF_SKYBOXPORTAL ) )
 		return;
 

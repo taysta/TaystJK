@@ -71,6 +71,7 @@ set(MPVulkanRendererFiles
 	"${MPDir}/rd-vulkan/vk_bloom.cpp"
 	"${MPDir}/rd-vulkan/vk_cmd.cpp"
 	"${MPDir}/rd-vulkan/vk_debug.cpp"
+	"${MPDir}/rd-vulkan/vk_dynamic_glow.cpp"
 	"${MPDir}/rd-vulkan/vk_flares.cpp"
 	"${MPDir}/rd-vulkan/vk_frame.cpp"
 	"${MPDir}/rd-vulkan/vk_image.cpp"

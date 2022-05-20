@@ -69,7 +69,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define USE_VK_STATS
 
 #define NUM_COMMAND_BUFFERS				2
-#define VK_NUM_BLOOM_PASSES				4
+#define VK_NUM_BLUR_PASSES				4
 
 #define MAX_SWAPCHAIN_IMAGES			8
 #define MIN_SWAPCHAIN_IMAGES_IMM		3
@@ -80,8 +80,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MAX_VK_SAMPLERS					32
 #define MAX_VK_PIPELINES				( 1024 + 128 )
 #define USE_DEDICATED_ALLOCATION
-// depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + bloom_extract + blur pairs
-#define MAX_ATTACHMENTS_IN_POOL			( 6 + 1 + VK_NUM_BLOOM_PASSES * 2 ) 
+// depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
+#define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
 #define VK_SAMPLER_LAYOUT_BEGIN			2
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
@@ -380,7 +380,8 @@ typedef enum {
 typedef enum {
 	RENDER_PASS_SCREENMAP = 0,
 	RENDER_PASS_MAIN,
-	RENDER_PASS_POST_BLOOM,
+	RENDER_PASS_POST_BLEND,
+	RENDER_PASS_DGLOW,
 	RENDER_PASS_COUNT
 } renderPass_t;
 
@@ -552,7 +553,8 @@ typedef struct {
 	VkCommandPool	command_pool;
 
 	VkDescriptorSet	color_descriptor;
-	VkDescriptorSet bloom_image_descriptor[1 + VK_NUM_BLOOM_PASSES * 2];
+	VkDescriptorSet bloom_image_descriptor[1 + VK_NUM_BLUR_PASSES * 2];
+	VkDescriptorSet dglow_image_descriptor[1 + VK_NUM_BLUR_PASSES * 2];
 	
 	VkImage			depth_image;
 	VkImageView		depth_image_view;
@@ -563,8 +565,13 @@ typedef struct {
 	VkImage			color_image;
 	VkImageView		color_image_view;
 	
-	VkImage			bloom_image[1 + VK_NUM_BLOOM_PASSES * 2];
-	VkImageView		bloom_image_view[1 + VK_NUM_BLOOM_PASSES * 2];
+	VkImage			bloom_image[1 + VK_NUM_BLUR_PASSES * 2];
+	VkImageView		bloom_image_view[1 + VK_NUM_BLUR_PASSES * 2];
+
+	VkImage			dglow_image[1 + VK_NUM_BLUR_PASSES * 2];
+	VkImageView		dglow_image_view[1 + VK_NUM_BLUR_PASSES * 2];
+	VkImage			dglow_msaa_image;
+	VkImageView		dglow_msaa_image_view;
 
 	// screenmap
 	struct {
@@ -587,10 +594,19 @@ typedef struct {
 		VkRenderPass main;
 		VkRenderPass gamma;
 		VkRenderPass screenmap;
-		VkRenderPass blur[VK_NUM_BLOOM_PASSES * 2]; // horizontal-vertical pairs
-		VkRenderPass bloom_extract;
-		VkRenderPass post_bloom;
 		VkRenderPass capture;
+
+		struct {
+			VkRenderPass blur[VK_NUM_BLUR_PASSES * 2];
+			VkRenderPass extract;
+			VkRenderPass blend;
+		} bloom;
+
+		struct {
+			VkRenderPass blur[VK_NUM_BLUR_PASSES * 2];
+			VkRenderPass extract;
+			VkRenderPass blend;
+		} dglow;
 	} render_pass;
 
 	struct {
@@ -603,9 +619,17 @@ typedef struct {
 		VkFramebuffer main[MAX_SWAPCHAIN_IMAGES];
 		VkFramebuffer gamma[MAX_SWAPCHAIN_IMAGES];
 		VkFramebuffer screenmap;
-		VkFramebuffer blur[VK_NUM_BLOOM_PASSES * 2];
-		VkFramebuffer bloom_extract;
 		VkFramebuffer capture;
+
+		struct {
+			VkRenderPass blur[VK_NUM_BLUR_PASSES * 2];
+			VkRenderPass extract;
+		} bloom;
+
+		struct {
+			VkFramebuffer blur[VK_NUM_BLUR_PASSES * 2];
+			VkFramebuffer extract;
+		} dglow;
 	} framebuffers;
 
 	struct {
@@ -639,9 +663,11 @@ typedef struct {
 
 	VkPipeline gamma_pipeline;
 	VkPipeline bloom_extract_pipeline;
-	VkPipeline blur_pipeline[VK_NUM_BLOOM_PASSES * 2]; // horizontal & vertical pairs
+	VkPipeline bloom_blur_pipeline[VK_NUM_BLUR_PASSES * 2]; // horizontal & vertical pairs
 	VkPipeline bloom_blend_pipeline;
 	VkPipeline capture_pipeline;
+	VkPipeline dglow_blur_pipeline[VK_NUM_BLUR_PASSES * 2]; // horizontal & vertical pairs
+	VkPipeline dglow_blend_pipeline;
 
 	// Standard pipeline(s)
 	struct  {
@@ -756,6 +782,7 @@ typedef struct {
 	qboolean active;
 	qboolean msaaActive;
 	qboolean bloomActive;
+	qboolean dglowActive;
 
 	qboolean	offscreenRender;
 	qboolean	windowAdjusted;
@@ -811,8 +838,8 @@ qboolean	R_CanMinimize( void );
 // pipeline
 void		vk_create_pipelines(void);
 void		vk_create_bloom_pipelines( void );
+void		vk_create_dglow_pipelines( void );
 void		vk_alloc_persistent_pipelines( void );
-void		vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, qboolean horizontal_pass );
 void		vk_create_descriptor_layout( void );
 void		vk_create_pipeline_layout( void );
 void		vk_destroy_pipelines( qboolean reset );
@@ -917,11 +944,17 @@ void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer,
 	VkDeviceSize size, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access );
 
+// post-processing
+void		vk_begin_blur_render_pass( uint32_t index, VkFramebuffer *framebuffer, VkRenderPass *renderpass );
+void		vk_begin_post_blend_render_pass( VkRenderPass renderpass );
+
 // bloom
-void		vk_begin_blur_render_pass( uint32_t index );
-void		vk_begin_post_bloom_render_pass( void );
 void		vk_begin_bloom_extract_render_pass( void );
 qboolean	vk_bloom( void );
+
+// dynamic glow
+void		vk_begin_dglow_extract_render_pass( void );
+qboolean	vk_begin_dglow_blur( void );
 
 // info
 const char	*vk_format_string( VkFormat format );

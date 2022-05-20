@@ -23,8 +23,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-extern bool g_bRenderGlowingObjects;
-
 static VkBuffer shade_bufs[8];
 static int bind_base;
 static int bind_count;
@@ -428,6 +426,19 @@ void vk_update_attachment_descriptors( void ) {
 				qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
 			}
 		}
+
+		// dglow images
+		if ( vk.dglowActive )
+		{
+			uint32_t i;
+			for ( i = 0; i < ARRAY_LEN( vk.dglow_image_descriptor ); i++ )
+			{
+				info.imageView = vk.dglow_image_view[i];
+				desc.dstSet = vk.dglow_image_descriptor[i];
+
+				qvkUpdateDescriptorSets( vk.device, 1, &desc, 0, NULL );
+			}
+		}
 	}
 }
 
@@ -484,12 +495,15 @@ void vk_init_descriptors( void ) {
 		VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.color_descriptor ) );
 
 		// bloom images
-		if ( vk.bloomActive )
-		{
-			for (i = 0; i < ARRAY_LEN( vk.bloom_image_descriptor ); i++)
-			{
+		if ( vk.bloomActive ) {
+			for ( i = 0; i < ARRAY_LEN( vk.bloom_image_descriptor ); i++ )
 				VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.bloom_image_descriptor[i] ) );
-			}
+		}
+
+		// dglow images
+		if ( vk.dglowActive ) {
+			for ( i = 0; i < ARRAY_LEN( vk.dglow_image_descriptor ); i++ )
+				VK_CHECK( qvkAllocateDescriptorSets( vk.device, &alloc, &vk.dglow_image_descriptor[i] ) );
 		}
 
 		alloc.descriptorSetCount = 1;
@@ -1063,7 +1077,11 @@ static void vk_set_fog_params( vkUniform_t *uniform, int *fogStage )
 			uniform->fogEyeT[1] = 1.0; // fog eye in
 		}
 		// fragment data
-		VectorCopy4(fp->fogColor, uniform->fogColor);
+		if ( backEnd.isGlowPass )
+			VectorCopy4( colorBlack, uniform->fogColor );
+		else
+			VectorCopy4( fp->fogColor, uniform->fogColor );
+
 		*fogStage = 1;
 	}
 	else {
@@ -1437,16 +1455,13 @@ void RB_StageIteratorGeneric( void )
 		int forceRGBGen = 0;
 
 		pStage = tess.xstages[stage];
-		if (!pStage)
+
+		if ( !pStage || !pStage->active )
 			break;
 
 #ifdef USE_VBO
 		tess.vboStage = stage;
 #endif
-
-		// reject this stage if it's not a glow stage but we are doing a glow pass.
-		if ( g_bRenderGlowingObjects && !pStage->glow )
-			continue;
 
 		// we check for surfacesprites AFTER drawing everything else
 		if ( pStage->ss && pStage->ss->surfaceSpriteType )
@@ -1456,13 +1471,6 @@ void RB_StageIteratorGeneric( void )
 		if ( stage && r_lightmap->integer && !( pStage->bundle[0].isLightmap || pStage->bundle[1].isLightmap || pStage->bundle[0].vertexLightmap ) )
 			break;
 
-		/*if (NULL == pStage)
-			break;
-
-		if (!pStage->active)
-			break;
-		*/
-		
 		if ( backEnd.currentEntity ) {
 			assert( backEnd.currentEntity->e.renderfx >= 0 );
 
@@ -1485,6 +1493,10 @@ void RB_StageIteratorGeneric( void )
 					ComputeColors(i, tess.svars.colors[i], pStage, forceRGBGen);
 			}
 		}
+	
+		// reject this stage if it's not a glow stage but we are doing a glow pass.
+		if ( backEnd.isGlowPass && !pStage->glow )
+			continue;
 
 		vk_select_texture( 0 );
 
@@ -1536,6 +1548,17 @@ void RB_StageIteratorGeneric( void )
 			vk_bind( tr.whiteImage ); // replace diffuse texture with a white one thus effectively render only lightmap
 		}
 
+		// move glow bundle to texture 0
+		// does not work with multitextured dglow yet.
+		if ( backEnd.isGlowPass && pStage->glow ){
+			vk_get_pipeline_def( pStage->vk_pipeline[fog_stage], &def );
+			def.shader_type = TYPE_SINGLE_TEXTURE;
+			pipeline = vk_find_pipeline_ext( 0, &def, qfalse );
+
+			vk_select_texture( 0 );
+			vk_bind( pStage->bundle[ ( pStage->numTexBundles - 1 ) ].image[0] );
+			Com_Memcpy( tess.svars.colors[0], tess.svars.colors[( pStage->numTexBundles - 1 )], sizeof(tess.svars.colors[0]) );
+		}
 
 		vk_bind_pipeline( pipeline );
 		vk_bind_geometry( tess_flags );

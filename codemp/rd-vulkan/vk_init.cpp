@@ -458,6 +458,10 @@ void vk_initialize( void )
 	if ( vk.fboActive && r_bloom->integer )
 		vk.bloomActive = qtrue;
 
+	// Dynamic glow
+	if( vk.fboActive && glConfig.maxActiveTextures >= 4 && r_DynamicGlow->integer )
+		vk.dglowActive = qtrue;
+
 	// Screenmap
 	vk.screenMapSamples = MIN(vkMaxSamples, VK_SAMPLE_COUNT_4_BIT);
 	vk.screenMapWidth = (float)glConfig.vidWidth / 16.0;

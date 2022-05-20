@@ -3719,12 +3719,8 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 	// NOTE: This is required because a ghoul model might need to be rendered twice a frame (don't cringe,
 	// it's not THAT bad), so we only delete it when doing the glow pass. Warning though, this assumes that
 	// the glow is rendered _second_!!! If that changes, change this!
-	extern bool g_bRenderGlowingObjects;
-	extern bool g_bDynamicGlowSupported;
-	if (!tess.shader->hasGlow || g_bRenderGlowingObjects || !g_bDynamicGlowSupported || !r_DynamicGlow->integer)
-	{
+	if ( !tess.shader->hasGlow || backEnd.isGlowPass || !vk.dglowActive )
 		delete storeSurf;
-	}
 #endif
 
 	tess.numVertexes += surface->numVerts;

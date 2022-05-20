@@ -321,6 +321,29 @@ void vk_create_attachments( void )
             }
         }
 
+        if( vk.dglowActive ){
+            uint32_t width = gls.captureWidth;
+            uint32_t height = gls.captureHeight;
+
+            create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
+                usage, &vk.dglow_image[0], &vk.dglow_image_view[0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
+
+            if( vk.msaaActive ){
+                create_color_attachment( width, height, (VkSampleCountFlagBits)vkSamples, vk.color_format,
+                usage, &vk.dglow_msaa_image, &vk.dglow_msaa_image_view, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, qfalse );          
+            }
+
+            for ( i = 1; i < ARRAY_LEN(vk.dglow_image); i += 2 ) {
+                width /= 2;
+                height /= 2;
+                create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
+                    usage, &vk.dglow_image[i + 0], &vk.dglow_image_view[i + 0], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
+
+                create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
+                    usage, &vk.dglow_image[i + 1], &vk.dglow_image_view[i + 1], VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
+            }
+        }
+
         // post-processing / msaa-resolve. usage 21
         create_color_attachment( glConfig.vidWidth, glConfig.vidHeight, VK_SAMPLE_COUNT_1_BIT, vk.color_format,
            usage, &vk.color_image, &vk.color_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );
@@ -389,6 +412,15 @@ void vk_create_attachments( void )
         VK_SET_OBJECT_NAME( vk.bloom_image[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
         VK_SET_OBJECT_NAME( vk.bloom_image_view[i], va("bloom attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
     }
+
+    for ( i = 0; i < ARRAY_LEN(vk.dglow_image); i++ )
+    {
+        VK_SET_OBJECT_NAME( vk.dglow_image[i], va("dglow attachment %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+        VK_SET_OBJECT_NAME( vk.dglow_image_view[i], va("dglow attachment view %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
+    }
+    VK_SET_OBJECT_NAME( vk.dglow_msaa_image, "msaa dglow attachment %i", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_EXT );
+    VK_SET_OBJECT_NAME( vk.dglow_msaa_image_view, "msaa dglow attachment view %i", VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
+
 }
 
 void vk_clear_depthstencil_attachments( qboolean clear_stencil ) {
@@ -513,6 +545,23 @@ void vk_destroy_attachments( void )
         qvkDestroyImageView(vk.device, vk.capture.image_view, NULL);
         vk.capture.image = VK_NULL_HANDLE;
         vk.capture.image_view = VK_NULL_HANDLE;
+    }
+
+    // dynamic glow
+    if ( vk.dglow_image[0] ) {
+        for ( i = 0; i < ARRAY_LEN(vk.dglow_image); i++ ) {
+            qvkDestroyImage( vk.device, vk.dglow_image[i], NULL );
+            qvkDestroyImageView( vk.device, vk.dglow_image_view[i], NULL );
+            vk.dglow_image[i] = VK_NULL_HANDLE;
+            vk.dglow_image_view[i] = VK_NULL_HANDLE;
+        }
+    }
+
+    if ( vk.dglow_msaa_image_view ) {
+        qvkDestroyImage(vk.device, vk.dglow_msaa_image, NULL);
+        qvkDestroyImageView(vk.device, vk.dglow_msaa_image_view, NULL);
+        vk.dglow_msaa_image = VK_NULL_HANDLE;
+        vk.dglow_msaa_image_view = VK_NULL_HANDLE;
     }
 
     // image memory

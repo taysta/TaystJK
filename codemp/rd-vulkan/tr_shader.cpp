@@ -2445,7 +2445,7 @@ static qboolean ParseShader( const char **text )
 			stages[s].active = qtrue;
 			if (stages[s].glow)
 			{
-				shader.hasGlow = true;
+				shader.hasGlow = qtrue;
 			}
 			s++;
 			continue;
@@ -3480,6 +3480,9 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 	}
 
 	st0->numTexBundles++;
+
+	if( st1->glow )
+		st0->glow = true;
 
 	//
 	// move down subsequent shaders
