@@ -30,6 +30,7 @@ qboolean vk_begin_dglow_blur( void )
 	if ( vk.renderPassIndex == RENDER_PASS_SCREENMAP )
 		return qfalse;
 
+	vk_clear_depthstencil_attachments( qtrue );
 	vk_end_render_pass(); // end dglow extract
 
 	for ( i = 0; i < VK_NUM_BLUR_PASSES * 2; i += 2 ) {
@@ -48,7 +49,7 @@ qboolean vk_begin_dglow_blur( void )
 		vk_end_render_pass();
 	}
 
-	vk_begin_post_blend_render_pass( vk.render_pass.dglow.blend );
+	vk_begin_post_blend_render_pass( vk.render_pass.dglow.blend, qtrue );
 	{
 		VkDescriptorSet dset[VK_NUM_BLUR_PASSES];
 

@@ -945,7 +945,7 @@ void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer,
 	VkAccessFlags src_access, VkAccessFlags dst_access );
 
 // post-processing
-void		vk_begin_post_blend_render_pass( VkRenderPass renderpass );
+void		vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues );
 
 // bloom
 void		vk_begin_bloom_extract_render_pass( void );

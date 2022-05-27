@@ -58,7 +58,7 @@ qboolean vk_bloom( void )
 		vk_end_render_pass();
 	}
 
-	vk_begin_post_blend_render_pass( vk.render_pass.bloom.blend ); // begin post-bloom
+	vk_begin_post_blend_render_pass( vk.render_pass.bloom.blend, qfalse ); // begin post-bloom
 	{
 		VkDescriptorSet dset[VK_NUM_BLUR_PASSES];
 

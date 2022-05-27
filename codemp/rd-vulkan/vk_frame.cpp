@@ -269,9 +269,6 @@ void vk_create_render_passes()
             // color buffer
             attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 
-            // depth buffer
-            attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-
             if ( vk.msaaActive ) {
                 attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
                 attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -282,6 +279,12 @@ void vk_create_render_passes()
         
             // color buffer
             attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
+
+            // depth buffer
+            attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+            attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
 
             if ( vk.msaaActive ) {
                 attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
@@ -886,7 +889,7 @@ void vk_begin_main_render_pass( void )
     vk_begin_render_pass(vk.render_pass.main, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_post_blend_render_pass( VkRenderPass renderpass )
+void vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
 
@@ -896,7 +899,7 @@ void vk_begin_post_blend_render_pass( VkRenderPass renderpass )
     vk.renderHeight = glConfig.vidHeight;
     vk.renderScaleX = vk.renderScaleY = 1.0f;
 
-    vk_begin_render_pass( renderpass, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
+    vk_begin_render_pass( renderpass, frameBuffer, clearValues, vk.renderWidth, vk.renderHeight);
 }
 
 void vk_begin_bloom_extract_render_pass( void )
