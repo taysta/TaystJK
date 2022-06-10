@@ -3233,7 +3233,7 @@ shader_t *R_FindShader( const char *name, const int *lightmapIndex, const byte *
 			flags |= IMGFLAG_CLAMPTOEDGE;
 		}
 
-		image = R_FindImageFile(name, flags);
+		image = R_FindImageFile(strippedName, flags);
 		if (!image) {
 			vk_debug("shader [%s] image not found, fallback to default shader\n", name);
 			setDefaultShader();

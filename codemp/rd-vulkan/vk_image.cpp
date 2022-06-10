@@ -1080,21 +1080,6 @@ image_t *R_FindImageFile( const char *name, imgFlags_t flags ){
             }
         }
 
-		if (strrchr(name, '.') > name) {
-			// try with stripped extension
-			COM_StripExtension(name, strippedName, sizeof(strippedName));
-			for (image = hashTable[hash]; image; image = image->next) {
-				if (!Q_stricmp(strippedName, image->imgName)) {
-					//if ( strcmp( strippedName, "*white" ) ) {
-					if (image->flags != flags) {
-						ri.Printf(PRINT_DEVELOPER, "WARNING: reused image %s with mixed flags (%i vs %i)\n", strippedName, image->flags, flags);
-					}
-					//}
-					return image;
-				}
-			}
-		}
-
         //
         // load the pic from disk
         //
