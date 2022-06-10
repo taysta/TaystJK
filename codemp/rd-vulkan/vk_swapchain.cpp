@@ -93,6 +93,13 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         image_extent.height = MIN( surface_caps.maxImageExtent.height, MAX( surface_caps.minImageExtent.height, (uint32_t)glConfig.vidHeight ) );
     }
 
+    // Minimization can set the window size to 0 when a swapchain restart is triggered, which results in a GPU crash later.
+	// Window resizing below the gls window size also results in the same issue, though of course that's not normally possible.
+	// With this clamping, new frames still aren't displayed while the window is too small, but that shouldn't matter while
+	// minimized. If windowed mode resizing is ever implemented later then something more dynamic needs to be setup anyway.
+	if ( image_extent.width < gls.windowWidth) image_extent.width = gls.windowWidth;
+	if ( image_extent.height < gls.windowHeight) image_extent.height = gls.windowHeight;
+
     vk.fastSky = qtrue;
 
     if ( !vk.fboActive ) {

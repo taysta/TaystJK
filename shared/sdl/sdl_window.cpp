@@ -939,7 +939,18 @@ void WIN_VK_MinimizeFix(void) {
 }
 
 qboolean WIN_VK_IsMinimized(void) {
-	return (qboolean)com_minimized->integer;
+	if ( com_minimized->integer )
+	{
+		//double check
+		Uint32 flags = SDL_GetWindowFlags( screen );
+
+		if( ( flags & SDL_WINDOW_MINIMIZED ) || ( flags & SDL_WINDOW_HIDDEN ) )
+			return qtrue;
+		
+		Cvar_SetValue( "com_minimized", 0 );
+	}
+	
+	return qfalse;
 }
 
 void *WIN_VK_GetInstanceProcAddress(void)
