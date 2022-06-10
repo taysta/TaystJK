@@ -835,9 +835,7 @@ void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, 
 	case CGEN_LIGHTMAPSTYLE:
 		for (i = 0; i < tess.numVertexes; i++)
 		{
-			byteAlias_t *baDest = (byteAlias_t *)&tess.svars.colors[b],
-						*baSource = (byteAlias_t *)&styleColors[pStage->lightmapStyle];
-			baDest->i = baSource->i;
+			*(int *)dest[i] = *(int *)styleColors[pStage->lightmapStyle];
 		}
 		break;
 	}

@@ -3464,6 +3464,11 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 			st0->bundle[1] = st1->bundle[0];
 	}
 
+	// preserve lightmap style
+	if (st1->lightmapStyle)
+	{
+		st0->lightmapStyle = st1->lightmapStyle;
+	}
 
 	if (st0->mtEnv)
 	{
