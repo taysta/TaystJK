@@ -130,8 +130,8 @@ void vk_create_render_passes()
     attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     //attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     attachments[1].stencilLoadOp = r_stencilbits->integer ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    if ( vk.bloomActive ) {
-        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom pass
+    if ( vk.bloomActive || vk.dglowActive ) {
+        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom/dynamic-glow pass
         //attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
         attachments[1].stencilStoreOp = r_stencilbits->integer ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
     }
@@ -176,8 +176,8 @@ void vk_create_render_passes()
 #else
         attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 #endif
-        if ( vk.bloomActive ) {
-            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom pass
+        if ( vk.bloomActive || vk.dglowActive ) {
+            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom/dynamic-glow pass
         }
         else {
             attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE; // Intermediate storage (not written)
@@ -239,29 +239,61 @@ void vk_create_render_passes()
     deps[1].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;						// Don't read things from the shader before ready
     deps[1].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;					// Only need the current fragment (or tile) synchronized, not the whole framebuffer
 
-    //desc.dependencyCount = 2;
-    //desc.pDependencies = deps;
-
     VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.main));
     VK_SET_OBJECT_NAME(vk.render_pass.main, "render pass - main", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
 
-    // post-bloom pass
-    if ( vk.bloomActive )
+    if ( vk.bloomActive || vk.dglowActive )
     {
         // color buffer
         attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
-         // depth buffer
+
+        // depth buffer
         attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
         attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
         attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        if (vk.msaaActive) {
-            // msaa render target
-            attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+
+        if( vk.bloomActive )
+        {
+            if (vk.msaaActive) {
+                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            }
+
+            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.blend ) );
+            VK_SET_OBJECT_NAME( vk.render_pass.bloom.blend, "render pass - bloom post blend", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
         }
-        VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.post_bloom));
-        VK_SET_OBJECT_NAME(vk.render_pass.post_bloom, "render pass - post_bloom", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
+
+        if( vk.dglowActive )
+        {
+            // color buffer
+            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+
+            if ( vk.msaaActive ) {
+                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            }
+
+            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.extract ) );
+            VK_SET_OBJECT_NAME( vk.render_pass.dglow.extract, "render pass - dglow extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );        
+        
+            // color buffer
+            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
+
+            // depth buffer
+            attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+            attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
+
+            if ( vk.msaaActive ) {
+                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+            }
+
+            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.blend ) );
+            VK_SET_OBJECT_NAME( vk.render_pass.dglow.blend, "render pass - dglow post blend", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
+        }
 
         // bloom extraction, using resolved/main fbo as a source
         desc.attachmentCount = 1;
@@ -269,7 +301,7 @@ void vk_create_render_passes()
         color_attachment_ref.attachment = 0;
         color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
-        Com_Memset(&subpass, 0, sizeof(subpass));
+        Com_Memset( &subpass, 0, sizeof(subpass) );
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
@@ -283,13 +315,26 @@ void vk_create_render_passes()
         attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         attachments[0].initialLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
         attachments[0].finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.bloom_extract));
-        VK_SET_OBJECT_NAME(vk.render_pass.bloom_extract, "render pass - bloom_extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
 
-        for (i = 0; i < ARRAY_LEN(vk.render_pass.blur); i++)
+        if( vk.bloomActive )
         {
-            VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.blur[i]));
-            VK_SET_OBJECT_NAME(vk.render_pass.blur[i], va("render pass - blur %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
+            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.extract ) );
+            VK_SET_OBJECT_NAME( vk.render_pass.bloom.extract, "render pass - bloom_extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
+
+            for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++ )
+            {
+                VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.blur[i] ) );
+                VK_SET_OBJECT_NAME( vk.render_pass.bloom.blur[i], va( "render pass - bloom blur %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
+            }
+        }
+
+        if( vk.dglowActive )
+        {
+            for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ )
+            {
+                VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.blur[i] ) );
+                VK_SET_OBJECT_NAME( vk.render_pass.dglow.blur[i], va( "render pass - dglow blur %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
+            }
         }
     }
 
@@ -535,41 +580,83 @@ void vk_create_framebuffers()
             VK_SET_OBJECT_NAME(vk.framebuffers.capture, "framebuffer - capture", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
         }
 
+        if( vk.dglowActive )
+        {
+            uint32_t width = gls.captureWidth;
+            uint32_t height = gls.captureHeight;
+
+            desc.renderPass = vk.render_pass.dglow.extract;
+            desc.width = width;
+            desc.height = height;
+
+            desc.attachmentCount = 2;
+            attachments[0] = vk.dglow_image_view[0];
+            attachments[1] = vk.depth_image_view;
+
+            if ( vk.msaaActive ) {
+                desc.attachmentCount = 3;
+                attachments[2] = vk.dglow_msaa_image_view;
+            }
+
+            VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.dglow.extract ) );
+            VK_SET_OBJECT_NAME( vk.framebuffers.dglow.extract, "framebuffer - dglow extract", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
+
+            for ( i = 0; i < ARRAY_LEN( vk.framebuffers.dglow.blur ); i += 2 )
+            {
+                width /= 2;
+                height /= 2;
+
+                desc.renderPass = vk.render_pass.dglow.blur[i];
+                desc.width = width;
+                desc.height = height;    
+                desc.attachmentCount = 1;
+
+                attachments[0] = vk.dglow_image_view[i + 0 + 1];
+                VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.dglow.blur[i + 0] ) );
+
+                attachments[0] = vk.dglow_image_view[i + 1 + 1];
+                VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.dglow.blur[i + 1] ) );
+
+                VK_SET_OBJECT_NAME( vk.framebuffers.dglow.blur[i + 0], va( "framebuffer - dglow blur %i", i + 0 ), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
+                VK_SET_OBJECT_NAME( vk.framebuffers.dglow.blur[i + 1], va( "framebuffer - dglow blur %i", i + 1 ), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
+            }
+        }
+
         if ( vk.bloomActive )
         {
             uint32_t width = gls.captureWidth;
             uint32_t height = gls.captureHeight;
 
             // bloom color extraction
-            desc.renderPass = vk.render_pass.bloom_extract;
+            desc.renderPass = vk.render_pass.bloom.extract;
             desc.width = width;
             desc.height = height;
 
             desc.attachmentCount = 1;
             attachments[0] = vk.bloom_image_view[0];
 
-            VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.bloom_extract));
+            VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.bloom.extract ) );
 
-            VK_SET_OBJECT_NAME(vk.framebuffers.bloom_extract, "framebuffer - bloom extraction", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
+            VK_SET_OBJECT_NAME( vk.framebuffers.bloom.extract, "framebuffer - bloom extraction", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
 
-            for (i = 0; i < ARRAY_LEN(vk.framebuffers.blur); i += 2)
+            for ( i = 0; i < ARRAY_LEN(vk.framebuffers.bloom.blur); i += 2 )
             {
                 width /= 2;
                 height /= 2;
 
-                desc.renderPass = vk.render_pass.blur[i];
+                desc.renderPass = vk.render_pass.bloom.blur[i];
                 desc.width = width;
                 desc.height = height;    
                 desc.attachmentCount = 1;
 
                 attachments[0] = vk.bloom_image_view[i + 0 + 1];
-                VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.blur[i + 0]));
+                VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.bloom.blur[i + 0] ) );
 
                 attachments[0] = vk.bloom_image_view[i + 1 + 1];
-                VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.blur[i + 1]));
+                VK_CHECK( qvkCreateFramebuffer( vk.device, &desc, NULL, &vk.framebuffers.bloom.blur[i + 1] ) );
 
-                VK_SET_OBJECT_NAME(vk.framebuffers.blur[i + 0], va("framebuffer - blur %i", i + 0), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
-                VK_SET_OBJECT_NAME(vk.framebuffers.blur[i + 1], va("framebuffer - blur %i", i + 1), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
+                VK_SET_OBJECT_NAME( vk.framebuffers.bloom.blur[i + 0], va( "framebuffer - bloom blur %i", i + 0 ), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
+                VK_SET_OBJECT_NAME( vk.framebuffers.bloom.blur[i + 1], va( "framebuffer - bloom blur %i", i + 1 ), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT );
             }
         }
 
@@ -585,41 +672,58 @@ void vk_destroy_render_passes( void )
 
     vk_debug("Destroy vk.render_pass\n");
 
-    if (vk.render_pass.main != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.main, NULL);
+    if ( vk.render_pass.main != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.main, NULL );
         vk.render_pass.main = VK_NULL_HANDLE;
     }
 
-    if (vk.render_pass.bloom_extract != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.bloom_extract, NULL);
-        vk.render_pass.bloom_extract = VK_NULL_HANDLE;
+    if ( vk.render_pass.bloom.extract != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.extract, NULL );
+        vk.render_pass.bloom.extract = VK_NULL_HANDLE;
     }
 
-    for (i = 0; i < ARRAY_LEN(vk.render_pass.blur); i++) {
-        if (vk.render_pass.blur[i] != VK_NULL_HANDLE) {
-            qvkDestroyRenderPass(vk.device, vk.render_pass.blur[i], NULL);
-            vk.render_pass.blur[i] = VK_NULL_HANDLE;
+    for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++) {
+        if ( vk.render_pass.bloom.blur[i] != VK_NULL_HANDLE ) {
+            qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blur[i], NULL );
+            vk.render_pass.bloom.blur[i] = VK_NULL_HANDLE;
         }
     }
 
-    if (vk.render_pass.post_bloom != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.post_bloom, NULL);
-        vk.render_pass.post_bloom = VK_NULL_HANDLE;
+    if ( vk.render_pass.bloom.blend != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blend, NULL );
+        vk.render_pass.bloom.blend = VK_NULL_HANDLE;
     }
 
-    if (vk.render_pass.screenmap != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.screenmap, NULL);
+    if ( vk.render_pass.screenmap != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.screenmap, NULL );
         vk.render_pass.screenmap = VK_NULL_HANDLE;
     }
 
-    if (vk.render_pass.gamma != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.gamma, NULL);
+    if ( vk.render_pass.gamma != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.gamma, NULL );
         vk.render_pass.gamma = VK_NULL_HANDLE;
     }
 
-    if (vk.render_pass.capture != VK_NULL_HANDLE) {
-        qvkDestroyRenderPass(vk.device, vk.render_pass.capture, NULL);
+    if ( vk.render_pass.capture != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.capture, NULL );
         vk.render_pass.capture = VK_NULL_HANDLE;
+    }
+
+    if ( vk.render_pass.dglow.extract != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.extract, NULL );
+        vk.render_pass.dglow.extract = VK_NULL_HANDLE;
+    }
+
+    for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ ) {
+        if ( vk.render_pass.dglow.blur[i] != VK_NULL_HANDLE ) {
+            qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blur[i], NULL );
+            vk.render_pass.dglow.blur[i] = VK_NULL_HANDLE;
+        }
+    }
+
+    if ( vk.render_pass.dglow.blend != VK_NULL_HANDLE ) {
+        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blend, NULL );
+        vk.render_pass.dglow.blend = VK_NULL_HANDLE;
     }
 }
 
@@ -629,39 +733,51 @@ void vk_destroy_framebuffers( void )
 
     vk_debug("Destroy vk.framebuffers\n");
 
-    for (i = 0; i < vk.swapchain_image_count; i++)
+    for ( i = 0; i < vk.swapchain_image_count; i++ )
     {
-        if (vk.framebuffers.main[i] != VK_NULL_HANDLE) {
-            if (!vk.fboActive || i == 0) {
-                qvkDestroyFramebuffer(vk.device, vk.framebuffers.main[i], NULL);
+        if ( vk.framebuffers.main[i] != VK_NULL_HANDLE ) {
+            if ( !vk.fboActive || i == 0 ) {
+                qvkDestroyFramebuffer( vk.device, vk.framebuffers.main[i], NULL );
             }
             vk.framebuffers.main[i] = VK_NULL_HANDLE;
         }
-        if (vk.framebuffers.gamma[i] != VK_NULL_HANDLE) {
-            qvkDestroyFramebuffer(vk.device, vk.framebuffers.gamma[i], NULL);
+        if ( vk.framebuffers.gamma[i] != VK_NULL_HANDLE ) {
+            qvkDestroyFramebuffer( vk.device, vk.framebuffers.gamma[i], NULL );
             vk.framebuffers.gamma[i] = VK_NULL_HANDLE;
         }
     }
 
-    if (vk.framebuffers.bloom_extract != VK_NULL_HANDLE) {
-        qvkDestroyFramebuffer(vk.device, vk.framebuffers.bloom_extract, NULL);
-        vk.framebuffers.bloom_extract = VK_NULL_HANDLE;
+    if ( vk.framebuffers.bloom.extract != VK_NULL_HANDLE ) {
+        qvkDestroyFramebuffer( vk.device, vk.framebuffers.bloom.extract, NULL );
+        vk.framebuffers.bloom.extract = VK_NULL_HANDLE;
     }
 
-    if (vk.framebuffers.screenmap != VK_NULL_HANDLE) {
+    if ( vk.framebuffers.screenmap != VK_NULL_HANDLE ) {
         qvkDestroyFramebuffer(vk.device, vk.framebuffers.screenmap, NULL);
         vk.framebuffers.screenmap = VK_NULL_HANDLE;
     }
 
-    if (vk.framebuffers.capture != VK_NULL_HANDLE) {
-        qvkDestroyFramebuffer(vk.device, vk.framebuffers.capture, NULL);
+    if ( vk.framebuffers.capture != VK_NULL_HANDLE ) {
+        qvkDestroyFramebuffer( vk.device, vk.framebuffers.capture, NULL );
         vk.framebuffers.capture = VK_NULL_HANDLE;
     }
 
-    for (i = 0; i < ARRAY_LEN(vk.framebuffers.blur); i++) {
-        if (vk.framebuffers.blur[i] != VK_NULL_HANDLE) {
-            qvkDestroyFramebuffer(vk.device, vk.framebuffers.blur[i], NULL);
-            vk.framebuffers.blur[i] = VK_NULL_HANDLE;
+    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.bloom.blur ); i++ ) {
+        if ( vk.framebuffers.bloom.blur[i] != VK_NULL_HANDLE ) {
+            qvkDestroyFramebuffer( vk.device, vk.framebuffers.bloom.blur[i], NULL );
+            vk.framebuffers.bloom.blur[i] = VK_NULL_HANDLE;
+        }
+    }
+
+    if ( vk.framebuffers.dglow.extract != VK_NULL_HANDLE ) {
+        qvkDestroyFramebuffer( vk.device, vk.framebuffers.dglow.extract, NULL );
+        vk.framebuffers.dglow.extract = VK_NULL_HANDLE;
+    }
+
+    for ( i = 0; i < ARRAY_LEN( vk.framebuffers.dglow.blur ); i++ ) {
+        if ( vk.framebuffers.dglow.blur[i] != VK_NULL_HANDLE ) {
+            qvkDestroyFramebuffer( vk.device, vk.framebuffers.dglow.blur[i], NULL );
+            vk.framebuffers.dglow.blur[i] = VK_NULL_HANDLE;
         }
     }
 }
@@ -713,11 +829,14 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
         Com_Memset( clear_values, 0, sizeof(clear_values) );
 
 #ifdef USE_BUFFER_CLEAR
-        if( vk.renderPassIndex == RENDER_PASS_MAIN ){
-            if ( vk.msaaActive )
-                clear_values[2].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
-            else
-                clear_values[0].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+        switch( vk.renderPassIndex ){
+            case RENDER_PASS_MAIN:
+                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+                break;
+            case RENDER_PASS_DGLOW:
+
+                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
+                break;
         }
 #endif
 #ifndef USE_REVERSED_DEPTH
@@ -728,7 +847,7 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
         render_pass_begin_info.clearValueCount = vk.msaaActive ? 3 : 2;
         render_pass_begin_info.pClearValues = clear_values;
 
-        vk_world.dirty_depth_attachment = 0;
+        vk_world.dirty_depth_attachment = 0;  
     }
     else {
         render_pass_begin_info.clearValueCount = 0;
@@ -770,23 +889,22 @@ void vk_begin_main_render_pass( void )
     vk_begin_render_pass(vk.render_pass.main, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_post_bloom_render_pass( void )
+void vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
 
-    vk.renderPassIndex = RENDER_PASS_POST_BLOOM;
+    vk.renderPassIndex = RENDER_PASS_POST_BLEND;
 
     vk.renderWidth = glConfig.vidWidth;
     vk.renderHeight = glConfig.vidHeight;
-
     vk.renderScaleX = vk.renderScaleY = 1.0f;
 
-    vk_begin_render_pass(vk.render_pass.post_bloom, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
+    vk_begin_render_pass( renderpass, frameBuffer, clearValues, vk.renderWidth, vk.renderHeight);
 }
 
 void vk_begin_bloom_extract_render_pass( void )
 {
-    VkFramebuffer frameBuffer = vk.framebuffers.bloom_extract;
+    VkFramebuffer frameBuffer = vk.framebuffers.bloom.extract;
 
     //vk.renderPassIndex = RENDER_PASS_BLOOM_EXTRACT; // doesn't matter, we will use dedicated pipelines
 
@@ -794,20 +912,44 @@ void vk_begin_bloom_extract_render_pass( void )
     vk.renderHeight = gls.captureHeight;
     vk.renderScaleX = vk.renderScaleY = 1.0f;
 
-    vk_begin_render_pass(vk.render_pass.bloom_extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
+    vk_begin_render_pass(vk.render_pass.bloom.extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
 }
 
-void vk_begin_blur_render_pass( uint32_t index )
+void vk_begin_bloom_blur_render_pass( uint32_t index )
 {
-    VkFramebuffer frameBuffer = vk.framebuffers.blur[index];
+    VkFramebuffer frameBuffer = vk.framebuffers.bloom.blur[index];
 
     vk.renderWidth = gls.captureWidth / (2 << (index / 2));
     vk.renderHeight = gls.captureHeight / (2 << (index / 2));
-
     vk.renderScaleX = vk.renderScaleY = 1.0f;
 
-    vk_begin_render_pass(vk.render_pass.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
+    vk_begin_render_pass( vk.render_pass.bloom.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
 }
+
+void vk_begin_dglow_blur_render_pass( uint32_t index )
+{
+    VkFramebuffer frameBuffer = vk.framebuffers.dglow.blur[index];
+
+    vk.renderWidth = gls.captureWidth / (2 << (index / 2));
+    vk.renderHeight = gls.captureHeight / (2 << (index / 2));
+    vk.renderScaleX = vk.renderScaleY = 1.0f;
+
+    vk_begin_render_pass( vk.render_pass.dglow.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
+}
+
+void vk_begin_dglow_extract_render_pass( void )
+{
+    VkFramebuffer frameBuffer = vk.framebuffers.dglow.extract;
+
+    vk.renderPassIndex = RENDER_PASS_DGLOW;
+
+    vk.renderWidth = glConfig.vidWidth;
+    vk.renderHeight = glConfig.vidHeight;
+    vk.renderScaleX = vk.renderScaleY = 1.0f;
+
+    vk_begin_render_pass( vk.render_pass.dglow.extract, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight );
+}
+
 
 void vk_begin_frame( void )
 {

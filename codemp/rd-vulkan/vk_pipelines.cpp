@@ -59,7 +59,7 @@ void vk_create_descriptor_layout( void )
         uint32_t i, maxSets;
 
         pool_size[0].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        pool_size[0].descriptorCount = MAX_DRAWIMAGES + 1 + 1 + 1 + VK_NUM_BLOOM_PASSES * 2;
+        pool_size[0].descriptorCount = MAX_DRAWIMAGES + 1 + 1 + 1 + ( VK_NUM_BLUR_PASSES * 4 ) + 1;
 
         pool_size[1].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
         pool_size[1].descriptorCount = NUM_COMMAND_BUFFERS;
@@ -145,7 +145,7 @@ void vk_create_pipeline_layout( void )
     desc.pPushConstantRanges = NULL;
     VK_CHECK(qvkCreatePipelineLayout(vk.device, &desc, NULL, &vk.pipeline_layout_post_process));
 
-    desc.setLayoutCount = VK_NUM_BLOOM_PASSES;
+    desc.setLayoutCount = VK_NUM_BLUR_PASSES;
 
     VK_CHECK(qvkCreatePipelineLayout(vk.device, &desc, NULL, &vk.pipeline_layout_blend));
 
@@ -1101,7 +1101,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 1: // bloom extraction
             pipeline = &vk.bloom_extract_pipeline;
             fs_module = vk.shaders.bloom_fs;
-            renderpass = vk.render_pass.bloom_extract;
+            renderpass = vk.render_pass.bloom.extract;
             layout = vk.pipeline_layout_post_process;
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "bloom extraction pipeline";
@@ -1110,7 +1110,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 2: // final bloom blend
             pipeline = &vk.bloom_blend_pipeline;
             fs_module = vk.shaders.blend_fs;
-            renderpass = vk.render_pass.post_bloom;
+            renderpass = vk.render_pass.bloom.blend;
             layout = vk.pipeline_layout_blend;
             samples = (VkSampleCountFlagBits)vkSamples;
             pipeline_name = "bloom blend pipeline";
@@ -1124,6 +1124,15 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "capture buffer pipeline";
             blend = qfalse;
+            break;
+        case 4: // final dglow blend
+            pipeline = &vk.dglow_blend_pipeline;
+            fs_module = vk.shaders.blend_fs;
+            renderpass = vk.render_pass.dglow.blend;
+            layout = vk.pipeline_layout_blend;
+            samples = (VkSampleCountFlagBits)vkSamples;
+            pipeline_name = "bloom blend pipeline";
+            blend = qtrue;
             break;
         default: // gamma correction
             pipeline = &vk.gamma_pipeline;
@@ -1352,7 +1361,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     VK_SET_OBJECT_NAME( *pipeline, pipeline_name, VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
 }
 
-void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, qboolean horizontal_pass )
+static void vk_create_blur_pipeline( char *name, int program_index, uint32_t index, uint32_t width, uint32_t height, qboolean horizontal_pass )
 {
     VkPipelineShaderStageCreateInfo shader_stages[2];
     VkPipelineVertexInputStateCreateInfo vertex_input_state;
@@ -1372,10 +1381,26 @@ void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, q
     } frag_spec_data; 
     VkSpecializationMapEntry spec_entries[3];
     VkSpecializationInfo frag_spec_info;
-    VkPipeline* pipeline;
+    VkRenderPass renderpass;
+    VkPipeline *pipeline;
     uint32_t i;
 
-    pipeline = &vk.blur_pipeline[index];
+    switch( program_index ){
+        case 1:
+            pipeline = &vk.bloom_blur_pipeline[index];
+            renderpass = vk.render_pass.bloom.blur[index];
+            frag_spec_data.correction = 0.0; // intensity?
+            break;
+        case 2:
+            pipeline = &vk.dglow_blur_pipeline[index];
+            renderpass = vk.render_pass.dglow.blur[index];
+            frag_spec_data.correction = 0.15; // intensity?
+            break;
+        default:
+            pipeline = VK_NULL_HANDLE;
+            renderpass = VK_NULL_HANDLE;
+            break;
+    }
 
     if ( *pipeline != VK_NULL_HANDLE ) {
         vk_wait_idle();
@@ -1410,7 +1435,6 @@ void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, q
 
     frag_spec_data.texoffset_x = 1.2 / (float)width; 
     frag_spec_data.texoffset_y = 1.2 / (float)height;
-    frag_spec_data.correction = 1.0; // intensity?
 
     if ( horizontal_pass ) {
         frag_spec_data.texoffset_y = 0.0;
@@ -1523,14 +1547,13 @@ void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, q
     create_info.pColorBlendState = &blend_state;
     create_info.pDynamicState = NULL;
     create_info.layout = vk.pipeline_layout_post_process; // one input attachment
-    create_info.renderPass = vk.render_pass.blur[index];
+    create_info.renderPass = renderpass;
     create_info.subpass = 0;
     create_info.basePipelineHandle = VK_NULL_HANDLE;
     create_info.basePipelineIndex = -1;
 
     VK_CHECK( qvkCreateGraphicsPipelines( vk.device, VK_NULL_HANDLE, 1, &create_info, NULL, pipeline ) );
-
-    VK_SET_OBJECT_NAME( *pipeline, va("%s blur pipeline %i", horizontal_pass ? "horizontal" : "vertical", index / 2 + 1), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
+    VK_SET_OBJECT_NAME( *pipeline, va( "%s %s blur pipeline %i", name, horizontal_pass ? "horizontal" : "vertical", index / 2 + 1 ), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
 }
 
 uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
@@ -1859,37 +1882,58 @@ void vk_create_pipelines( void )
     vk.pipelines_world_base = vk.pipelines_count;
 
     vk_create_bloom_pipelines();
+    vk_create_dglow_pipelines();
 }
 
 void vk_create_bloom_pipelines( void )
 {
-    if ( vk.bloomActive )
-    {
-        uint32_t width = gls.captureWidth;
-        uint32_t height = gls.captureHeight;
-        uint32_t i;
+    if ( !vk.bloomActive )
+        return;
 
-        vk_create_post_process_pipeline(1, width, height); // bloom extraction
+    uint32_t width = gls.captureWidth;
+    uint32_t height = gls.captureHeight;
+    uint32_t i;
 
-        for (i = 0; i < ARRAY_LEN(vk.blur_pipeline); i += 2) {
-            width /= 2;
-            height /= 2;
-            vk_create_blur_pipeline(i + 0, width, height, qtrue); // horizontal
-            vk_create_blur_pipeline(i + 1, width, height, qfalse); // vertical
-        }
+    vk_create_post_process_pipeline( 1, width, height ); // bloom extraction
 
-        vk_create_post_process_pipeline(2, glConfig.vidWidth, glConfig.vidHeight); // bloom blending
+    for ( i = 0; i < ARRAY_LEN( vk.bloom_blur_pipeline ); i += 2 ) {
+        width /= 2;
+        height /= 2;
+        vk_create_blur_pipeline( "bloom", 1, i + 0, width, height, qtrue); // horizontal
+        vk_create_blur_pipeline( "bloom", 1, i + 1, width, height, qfalse); // vertical
+    } 
+
+    vk_create_post_process_pipeline( 2, glConfig.vidWidth, glConfig.vidHeight ); // post process blending
+}
+
+void vk_create_dglow_pipelines( void )
+{
+    if ( !vk.dglowActive )
+        return;
+
+    uint32_t width = gls.captureWidth;
+    uint32_t height = gls.captureHeight;
+    uint32_t i;
+
+    for ( i = 0; i < ARRAY_LEN( vk.dglow_blur_pipeline ); i += 2 ) {
+        width /= 2;
+        height /= 2;
+        vk_create_blur_pipeline( "dglow", 2, i + 0, width, height, qtrue); // horizontal
+        vk_create_blur_pipeline( "dglow", 2, i + 1, width, height, qfalse); // vertical
     }
+
+    vk_create_post_process_pipeline( 4, glConfig.vidWidth, glConfig.vidHeight ); // post process blending
 }
 
 void vk_update_post_process_pipelines( void )
 {
-    if (vk.fboActive) {
+    if ( vk.fboActive ) {
         // update gamma shader
         vk_create_post_process_pipeline(0, 0, 0);
-        if (vk.capture.image) {
+
+        if ( vk.capture.image ) {
             // update capture pipeline
-            vk_create_post_process_pipeline(3, gls.captureWidth, gls.captureHeight);
+            vk_create_post_process_pipeline( 3, gls.captureWidth, gls.captureHeight );
         }
     }
 }
@@ -1899,10 +1943,10 @@ void vk_destroy_pipelines( qboolean reset )
     uint32_t i, j;
 
     // Destroy pipelines
-    for (i = 0; i < vk.pipelines_count; i++) {
-        for (j = 0; j < RENDER_PASS_COUNT; j++) {
-            if (vk.pipelines[i].handle[j] != VK_NULL_HANDLE) {
-                qvkDestroyPipeline(vk.device, vk.pipelines[i].handle[j], NULL);
+    for ( i = 0; i < vk.pipelines_count; i++ ) {
+        for ( j = 0; j < RENDER_PASS_COUNT; j++ ) {
+            if ( vk.pipelines[i].handle[j] != VK_NULL_HANDLE ) {
+                qvkDestroyPipeline( vk.device, vk.pipelines[i].handle[j], NULL );
                 vk.pipelines[i].handle[j] = VK_NULL_HANDLE;
                 vk.pipeline_create_count--;
             }
@@ -1910,35 +1954,47 @@ void vk_destroy_pipelines( qboolean reset )
 
     }
 
-    if (reset) {
-        Com_Memset(&vk.pipelines, 0, sizeof(vk.pipelines));
+    if ( reset ) {
+        Com_Memset( &vk.pipelines, 0, sizeof(vk.pipelines) );
         vk.pipelines_count = 0;
     }
 
-    if (vk.gamma_pipeline) {
-        qvkDestroyPipeline(vk.device, vk.gamma_pipeline, NULL);
+    if ( vk.gamma_pipeline ) {
+        qvkDestroyPipeline( vk.device, vk.gamma_pipeline, NULL );
         vk.gamma_pipeline = VK_NULL_HANDLE;
     }
 
-    if (vk.bloom_extract_pipeline != VK_NULL_HANDLE) {
-        qvkDestroyPipeline(vk.device, vk.bloom_extract_pipeline, NULL);
+    if ( vk.bloom_extract_pipeline != VK_NULL_HANDLE ) {
+        qvkDestroyPipeline( vk.device, vk.bloom_extract_pipeline, NULL );
         vk.bloom_extract_pipeline = VK_NULL_HANDLE;
     }
 
-    if (vk.bloom_blend_pipeline != VK_NULL_HANDLE) {
-        qvkDestroyPipeline(vk.device, vk.bloom_blend_pipeline, NULL);
+    if ( vk.bloom_blend_pipeline != VK_NULL_HANDLE ) {
+        qvkDestroyPipeline( vk.device, vk.bloom_blend_pipeline, NULL );
         vk.bloom_blend_pipeline = VK_NULL_HANDLE;
     }
 
-    if (vk.capture_pipeline) {
-        qvkDestroyPipeline(vk.device, vk.capture_pipeline, NULL);
+    if ( vk.capture_pipeline ) {
+        qvkDestroyPipeline( vk.device, vk.capture_pipeline, NULL );
         vk.capture_pipeline = VK_NULL_HANDLE;
     }
 
-    for (i = 0; i < ARRAY_LEN(vk.blur_pipeline); i++) {
-        if (vk.blur_pipeline[i] != VK_NULL_HANDLE) {
-            qvkDestroyPipeline(vk.device, vk.blur_pipeline[i], NULL);
-            vk.blur_pipeline[i] = VK_NULL_HANDLE;
+    for ( i = 0; i < ARRAY_LEN( vk.bloom_blur_pipeline ); i++ ) {
+        if ( vk.bloom_blur_pipeline[i] != VK_NULL_HANDLE ) {
+            qvkDestroyPipeline( vk.device, vk.bloom_blur_pipeline[i], NULL );
+            vk.bloom_blur_pipeline[i] = VK_NULL_HANDLE;
         }
+    }
+
+    for ( i = 0; i < ARRAY_LEN( vk.dglow_blur_pipeline ); i++ ) {
+        if ( vk.dglow_blur_pipeline[i] != VK_NULL_HANDLE ) {
+            qvkDestroyPipeline( vk.device, vk.dglow_blur_pipeline[i], NULL );
+            vk.dglow_blur_pipeline[i] = VK_NULL_HANDLE;
+        }
+    }
+
+    if ( vk.dglow_blend_pipeline != VK_NULL_HANDLE ) {
+        qvkDestroyPipeline( vk.device, vk.dglow_blend_pipeline, NULL );
+        vk.dglow_blend_pipeline = VK_NULL_HANDLE;
     }
 }

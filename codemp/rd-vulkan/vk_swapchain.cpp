@@ -51,6 +51,7 @@ void vk_restart_swapchain( const char *funcname )
     vk_create_render_passes();
     vk_create_framebuffers();
     vk_create_bloom_pipelines();
+    vk_create_dglow_pipelines();
 
     vk_update_attachment_descriptors();
     vk_update_post_process_pipelines();
@@ -92,6 +93,13 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         image_extent.height = MIN( surface_caps.maxImageExtent.height, MAX( surface_caps.minImageExtent.height, (uint32_t)glConfig.vidHeight ) );
     }
 
+    // Minimization can set the window size to 0 when a swapchain restart is triggered, which results in a GPU crash later.
+	// Window resizing below the gls window size also results in the same issue, though of course that's not normally possible.
+	// With this clamping, new frames still aren't displayed while the window is too small, but that shouldn't matter while
+	// minimized. If windowed mode resizing is ever implemented later then something more dynamic needs to be setup anyway.
+	if ( image_extent.width < gls.windowWidth) image_extent.width = gls.windowWidth;
+	if ( image_extent.height < gls.windowHeight) image_extent.height = gls.windowHeight;
+
     vk.fastSky = qtrue;
 
     if ( !vk.fboActive ) {
@@ -130,9 +138,9 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
     free( present_modes );
 
     if ( ( v = ri.Cvar_VariableIntegerValue( "r_swapInterval" ) ) != 0 ) {
-        if ( v == 2 && mailbox_supported )
+        if ( v == 3 && mailbox_supported )
             present_mode = VK_PRESENT_MODE_MAILBOX_KHR;
-        else if ( fifo_relaxed_supported )
+        else if ( v == 2 && fifo_relaxed_supported )
             present_mode = VK_PRESENT_MODE_FIFO_RELAXED_KHR;
         else
             present_mode = VK_PRESENT_MODE_FIFO_KHR;

@@ -32,14 +32,6 @@ backEndState_t	backEnd;
 //extern qboolean tr_distortionNegate; 
 //extern void RB_CaptureScreenImage(void);
 //extern void RB_DistortionFill(void);
-//static void RB_DrawGlowOverlay();
-//static void RB_BlurGlowTexture();
-
-// Whether we are currently rendering only glowing objects or not.
-bool g_bRenderGlowingObjects = false;
-
-// Whether the current hardware supports dynamic glows/flares.
-bool g_bDynamicGlowSupported = false;
 
 #define	MAC_EVENT_PUMP_MSEC		5
 
@@ -157,26 +149,14 @@ static void RB_LightingPass(void);
 #endif
 
 /*
-==================
-RB_RenderDrawSurfList
-==================
+=================
+RB_BeginDrawingView
+
+Any mirrored or portaled views have already been drawn, so prepare
+to actually render the visible surfaces for this view
+=================
 */
-void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
-	shader_t		*shader, *oldShader;
-	int				fogNum;
-	int				dlighted;
-	Vk_Depth_Range	depthRange; 
-#ifdef USE_VANILLA_SHADOWFINISH
-	qboolean		didShadowPass;
-#endif
-
-	// save original time for entity shader offsets
-	float originalTime = backEnd.refdef.floatTime;
-
-	// Any mirrored or portaled views have already been drawn, 
-	// so prepare to actually render the visible surfaces for this view
-	// clear the z buffer, set the modelview, etc
-	// RB_BeginDrawingView ();
+static void RB_BeginDrawingView( void ) {
 
 	// we will need to change the projection matrix before drawing
 	// 2D images again
@@ -200,27 +180,49 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		backEnd.isHyperspace = qfalse;
 	}
 
-	//glState.faceCulling = -1;		// force face culling to set next time
+	glState.faceCulling = -1;		// force face culling to set next time
 
 	// we will only draw a sun if there was sky rendered in this view
 	backEnd.skyRenderedThisView = qfalse;
+}
 
-	// draw everything
-	int			i, entityNum;
-	float		oldShaderSort;
-	drawSurf_t	*drawSurf;
+/*
+==================
+RB_RenderDrawSurfList
+==================
+*/
+void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
+	shader_t		*shader, *oldShader;
+	int				i, fogNum, entityNum, oldEntityNum, dlighted;
+	Vk_Depth_Range	depthRange; 
+	drawSurf_t		*drawSurf;
+	unsigned int	oldSort;
+	float			oldShaderSort, originalTime;
 
-	int oldEntityNum		= -1;
+#ifdef USE_VANILLA_SHADOWFINISH
+	qboolean		didShadowPass;
+
+	if ( backEnd.isGlowPass )
+	{ //only shadow on initial passes
+		didShadowPass = true;
+	}
+#endif
+
+	// save original time for entity shader offsets
+	originalTime = backEnd.refdef.floatTime;
+
+	oldEntityNum			= -1;
 	backEnd.currentEntity	= &tr.worldEntity;
 	oldShader				= NULL;
-	unsigned int oldSort	= MAX_UINT;
+	oldSort					= MAX_UINT;
 	oldShaderSort			= -1;
 	depthRange				= DEPTH_RANGE_NORMAL;
-	backEnd.pc.c_surfaces	+= numDrawSurfs;
 #ifdef USE_VANILLA_SHADOWFINISH
 	didShadowPass			= qfalse;
 #endif
-
+	
+	backEnd.pc.c_surfaces	+= numDrawSurfs;
+	
 	for (i = 0, drawSurf = drawSurfs; i < numDrawSurfs; i++, drawSurf++)
 	{
 		if (drawSurf->sort == oldSort) {
@@ -228,12 +230,26 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			rb_surfaceTable[*drawSurf->surface](drawSurf->surface);
 			continue;
 		}
-		oldSort = drawSurf->sort;
+		
 		R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &fogNum, &dlighted);
 
 		if (vk.renderPassIndex == RENDER_PASS_SCREENMAP && entityNum != REFENTITYNUM_WORLD && backEnd.refdef.entities[entityNum].e.renderfx & RF_DEPTHHACK) {
 			continue;
 		}
+
+		// check if we have amy dynamic glow surfaces before dglow pass
+		if( !backEnd.hasGlowSurfaces && vk.dglowActive && !backEnd.isGlowPass && shader->hasGlow )
+			backEnd.hasGlowSurfaces = qtrue;
+
+		// if we're rendering glowing objects, but this shader has no stages with glow, skip it!
+		if ( backEnd.isGlowPass && !shader->hasGlow )
+		{
+			shader = oldShader;
+			entityNum = oldEntityNum;
+			continue;
+		}
+
+		oldSort = drawSurf->sort;
 
 		//
 		// change the tess parameters if needed
@@ -821,9 +837,15 @@ const void	*RB_DrawSurfs( const void *data ) {
 	backEnd.refdef = cmd->refdef;
 	backEnd.viewParms = cmd->viewParms;
 
+	backEnd.hasGlowSurfaces = qfalse;
+	backEnd.isGlowPass = qfalse;
+
 #ifdef USE_VBO
 	VBO_UnBind();
 #endif
+
+	// clear the z buffer, set the modelview, etc
+	RB_BeginDrawingView();
 
 	RB_RenderDrawSurfList( cmd->drawSurfs, cmd->numDrawSurfs );
 
@@ -831,8 +853,8 @@ const void	*RB_DrawSurfs( const void *data ) {
 	VBO_UnBind();
 #endif
 
-	if (r_drawSun->integer) {
-		RB_DrawSun(0.1f, tr.sunShader);
+	if ( r_drawSun->integer ) {
+		RB_DrawSun( 0.1f, tr.sunShader );
 	}
 
 #ifndef USE_VANILLA_SHADOWFINISH
@@ -842,7 +864,7 @@ const void	*RB_DrawSurfs( const void *data ) {
 	RB_RenderFlares();
 
 #ifdef USE_PMLIGHT
-	if (backEnd.refdef.numLitSurfs) {
+	if ( backEnd.refdef.numLitSurfs ) {
 		RB_BeginDrawingLitSurfs();
 		RB_LightingPass();
 	}
@@ -851,79 +873,24 @@ const void	*RB_DrawSurfs( const void *data ) {
 	// draw main system development information (surface outlines, etc)
 	R_DebugGraphics();
 
-#if 0
-	// Dynamic Glow/Flares:
-	/*
-		The basic idea is to render the glowing parts of the scene to an offscreen buffer, then take
-		that buffer and blur it. After it is sufficiently blurred, re-apply that image back to
-		the normal screen using a additive blending. To blur the scene I use a vertex program to supply
-		four texture coordinate offsets that allow 'peeking' into adjacent pixels. In the register
-		combiner (pixel shader), I combine the adjacent pixels using a weighting factor. - Aurelio
-	*/
-
-	// Render dynamic glowing/flaring objects.
-	if ( !(backEnd.refdef.rdflags & RDF_NOWORLDMODEL) && g_bDynamicGlowSupported && r_DynamicGlow->integer )
-	{
-		// Copy the normal scene to texture.
-		qglDisable( GL_TEXTURE_2D );
-		qglEnable( GL_TEXTURE_RECTANGLE_ARB );
-		qglBindTexture( GL_TEXTURE_RECTANGLE_ARB, tr.sceneImage );
-		qglCopyTexSubImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, 0, 0, 0, 0, glConfig.vidWidth, glConfig.vidHeight );
-		qglDisable( GL_TEXTURE_RECTANGLE_ARB );
-		qglEnable( GL_TEXTURE_2D );
-
-		// Just clear colors, but leave the depth buffer intact so we can 'share' it.
-		qglClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		qglClear( GL_COLOR_BUFFER_BIT );
-
-		// Render the glowing objects.
-		g_bRenderGlowingObjects = true;
-		RB_RenderDrawSurfList( cmd->drawSurfs, cmd->numDrawSurfs );
-		g_bRenderGlowingObjects = false;
-
-		qglFinish();
-
-		// Copy the glow scene to texture.
-		qglDisable( GL_TEXTURE_2D );
-		qglEnable( GL_TEXTURE_RECTANGLE_ARB );
-		qglBindTexture( GL_TEXTURE_RECTANGLE_ARB, tr.screenGlow );
-		qglCopyTexSubImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, 0, 0, 0, 0, glConfig.vidWidth, glConfig.vidHeight );
-		qglDisable( GL_TEXTURE_RECTANGLE_ARB );
-		qglEnable( GL_TEXTURE_2D );
-
-		// Resize the viewport to the blur texture size.
-		const int oldViewWidth = backEnd.viewParms.viewportWidth;
-		const int oldViewHeight = backEnd.viewParms.viewportHeight;
-		backEnd.viewParms.viewportWidth = tr.dynamicGlowWidth;
-		backEnd.viewParms.viewportHeight = tr.dynamicGlowHeight;
-		SetViewportAndScissor();
-
-		// Blur the scene.
-		RB_BlurGlowTexture();
-
-		// Copy the finished glow scene back to texture.
-		qglDisable( GL_TEXTURE_2D );
-		qglEnable( GL_TEXTURE_RECTANGLE_ARB );
-		qglBindTexture( GL_TEXTURE_RECTANGLE_ARB, tr.blurImage );
-		qglCopyTexSubImage2D( GL_TEXTURE_RECTANGLE_ARB, 0, 0, 0, 0, 0, backEnd.viewParms.viewportWidth, backEnd.viewParms.viewportHeight );
-		qglDisable( GL_TEXTURE_RECTANGLE_ARB );
-		qglEnable( GL_TEXTURE_2D );
-
-		// Set the viewport back to normal.
-		backEnd.viewParms.viewportWidth = oldViewWidth;
-		backEnd.viewParms.viewportHeight = oldViewHeight;
-		SetViewportAndScissor();
-		qglClear( GL_COLOR_BUFFER_BIT );
-
-		// Draw the glow additively over the screen.
-		RB_DrawGlowOverlay();
-	}
-#endif
-
-	if (cmd->refdef.switchRenderPass) {
+	if ( cmd->refdef.switchRenderPass ) {
 		vk_end_render_pass();
 		vk_begin_main_render_pass();
 		backEnd.screenMapDone = qtrue;
+	}
+
+	// checked in previous RB_RenderDrawSurfList() if there is at least one glowing surface
+	if ( vk.dglowActive && !( backEnd.refdef.rdflags & RDF_NOWORLDMODEL ) && backEnd.hasGlowSurfaces )
+	{
+		vk_end_render_pass();
+		
+		backEnd.isGlowPass = qtrue;
+		vk_begin_dglow_extract_render_pass();
+
+		RB_RenderDrawSurfList( cmd->drawSurfs, cmd->numDrawSurfs );
+		
+		vk_begin_dglow_blur();
+		backEnd.isGlowPass = qfalse;
 	}
 	
 	//TODO Maybe check for rdf_noworld stuff but q3mme has full 3d ui

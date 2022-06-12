@@ -2445,7 +2445,7 @@ static qboolean ParseShader( const char **text )
 			stages[s].active = qtrue;
 			if (stages[s].glow)
 			{
-				shader.hasGlow = true;
+				shader.hasGlow = qtrue;
 			}
 			s++;
 			continue;
@@ -3162,7 +3162,7 @@ shader_t *R_FindShader( const char *name, const int *lightmapIndex, const byte *
 			flags |= IMGFLAG_CLAMPTOEDGE;
 		}
 
-		image = R_FindImageFile(name, flags);
+		image = R_FindImageFile(strippedName, flags);
 		if (!image) {
 			vk_debug("shader [%s] image not found, fallback to default shader\n", name);
 			setDefaultShader();
@@ -3393,6 +3393,11 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 			st0->bundle[1] = st1->bundle[0];
 	}
 
+	// preserve lightmap style
+	if (st1->lightmapStyle)
+	{
+		st0->lightmapStyle = st1->lightmapStyle;
+	}
 
 	if (st0->mtEnv)
 	{
@@ -3409,6 +3414,9 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 	}
 
 	st0->numTexBundles++;
+
+	if( st1->glow )
+		st0->glow = true;
 
 	//
 	// move down subsequent shaders
