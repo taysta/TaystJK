@@ -242,11 +242,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip         ./linux-x86/JediAcademy/*
-          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/JediAcademy/*
-          7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
-          # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
-          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/JediAcademy/*
+          7z a -r EternalJK-linux-x86.zip         ./linux-x86/EternalJK/*
+          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/EternalJK/*
+          7z a -r EternalJK-windows-x86.zip       ./windows-x86/EternalJK/*
+          # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/EternalJK/*
+          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/EternalJK/*
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
