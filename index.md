@@ -1,6 +1,4 @@
-[New - taysta/EternalJK Wiki](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0)
-
-> # New - taysta/EternalJK Wiki
+> # New from taysta/EternalJK
 >
 > ## Strafe Helper Updates
 >
@@ -23,7 +21,6 @@
 > * * *
 >
 > ## Trigger/Clip/Slick Rendering
->
 >
 > -   `r_renderClipBrushes 1` enable rendering of clip brushes
 > -   `r_renderClipBrushesShader` shader to render over clip brushes
