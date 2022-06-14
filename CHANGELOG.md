@@ -26,7 +26,7 @@ Key: [-] removed, [+] added, [\*] modified
 * [\*] Speedometer colors can now be disabled with `/speedometer`
 * [\*] Race timer start speed can now be moved separate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
 * [\*] Added second movement keys style with cvar `cg_movemenyKeys 2`, adjust with `cg_movemenyKeysSize`, `cg_movementKeys 3` is the same, but is affected by `cg_movementKeysX x` and `cg_movementKeysY y`
-* [+] Added additional movement keys style `cg_movemenyKeys 2"`
+* [+] Added additional movement keys style `cg_movementKeys 2/3"`
 * [\*] Fixed issue with compiling on linux
 * [\*] Fixed issue with playing pure base servers on linux
 * [+] Included JKSunny's vulkan renderer
