@@ -1,3 +1,5 @@
+[New - taysta/EternalJK Wiki](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0)
+
 > # New - taysta/EternalJK Wiki
 >
 > ## Strafe Helper Updates
@@ -14,8 +16,7 @@
 > -   Speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`
 > -   Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say Jumps: %J%"`
 > -   Speedometer colors can now be disabled with `speedometer 11`
-> -   `speedometer 13` displays speeds as red/green based on difference from previous jump  
-      >     ![cg_speedometerJumpsColors 2](https://camo.githubusercontent.com/8c34a50dc8fee5fb5ac4e743ecf55f8c19c13cf14c4f1ef611026e084e7a63d5/68747470733a2f2f696d6775722e636f6d2f6d5a4b54616b682e706e67)
+> -   `speedometer 13` displays speeds as red/green based on difference from previous jump
 > -   `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
 > -   Updated speed graph, revert to old style with `speedometer 14`
 >
@@ -23,8 +24,6 @@
 >
 > ## Trigger/Clip/Slick Rendering
 >
->
-> ![Clip/](https://camo.githubusercontent.com/f60039865b1aa024208142bbfd4a2eecabdfa7cace946d174db8b78e97ec020a/68747470733a2f2f696d6775722e636f6d2f687a683930326d2e706e67)
 >
 > -   `r_renderClipBrushes 1` enable rendering of clip brushes
 > -   `r_renderClipBrushesShader` shader to render over clip brushes
@@ -44,7 +43,7 @@
 >
 > ## Movement Keys Updates
 >
-> -   `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`  
+> -   `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
 > -   `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
 > -   Movement key overlay now includes attack/altattack inputs
 >
@@ -54,7 +53,7 @@
 >
 > -   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
 > -   New trail effects enabled with `cg_disruptorNew 1`
->     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
+      >     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
 >     -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
 >     -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
 >     -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
@@ -89,70 +88,52 @@
 > -   Example: `strsub say "Hello, I am $name$"`
 >
 >
-[Newmod - Documentation](https://jkanewmod.github.io/documentation_commands.html)
+[New - taysta/EternalJK Wiki](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0)
 
-> #### If Cvar (`ifCvar`)
-> 
-> Executes a certain command based on the current setting of a cvar.
-> 
-> Usage: `ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...`
-> 
-> Settings can optionally begin with special modifiers prepended with `$` dollar sign:
-> 
-> Modifier
-> 
-> Description
-> 
-> **Modifier:** `$=`
-> 
-> **Description:** Convert the setting to a number and compare whether it is equal to another number.
-> 
-> **Modifier:** `$!=`
-> 
-> **Description:** Convert the setting to a number and compare whether it is unequal to another number.
-> 
-> **Modifier:** `$>`
-> 
-> **Description:** Convert the setting to a number and compare whether it is greater than another number.
-> 
-> **Modifier:** `$<`
-> 
-> **Description:** Convert the setting to a number and compare whether it is less than another number.
-> 
-> **Modifier:** `$>=`
-> 
-> **Description:** Convert the setting to a number and compare whether it is greater than or equal to another number.
-> 
-> **Modifier:** `$<=`
-> 
-> **Description:** Convert the setting to a number and compare whether it is less than or equal to another number.
-> 
-> **Modifier:** `$contains`
-> 
-> **Description:** Compare whether the setting contains some text anywhere in it.
-> 
-> **Modifier:** `$beginswith`
-> 
-> **Description:** Compare whether the setting begins with some text.
-> 
-> **Modifier:** `$endswith`
-> 
-> **Description:** Compare whether the setting ends with some text.
-> 
-> **Modifier:** `$else`
-> 
-> **Description:** This keyword will cause the comparison to always be true.
-> 
-> **Modifier:** (No modifier used)
-> 
-> **Description:** Compare whether the setting matches some text.
-> 
-> Settings can also reference the value of another cvar by prepending that cvar's name with $.
-> 
-> Simple example: `ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye` → if cg\_myCvar is `0`, then `say_team hi` is executed. If it's `1`, then `say_team bye` is executed.
-> 
-> Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
+> ## Keybind & Command Updates
 >
+> -   You can now bind key combinations using an Alt / Ctrl / Shift modifier key. For example, `bind ctrl+x kill` will make Ctrl + X perform `kill`.
+>
+> -   You can now bind the _right-side_ Alt / Ctrl / Shift keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ Ctrl key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
+>
+> -   Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
+>
+>
+> #### [](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0#string-substitution-strsub)String Substitution (`strSub`)
+>
+> -   Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
+>
+> -   Example: `strsub say "Hello, I am $name$"`
+>
+>
+> #### [](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0#if-cvar-ifcvar)If Cvar (`ifCvar`)
+>
+> -   Executes a certain command based on the current setting of a cvar.
+>
+> -   Usage: `ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...`
+>
+> -   Settings can optionally begin with special modifiers prepended with `$` dollar sign:
+>
+>
+> | **Modifier**       	| **Description**                                                                                    	|
+> |--------------------	|----------------------------------------------------------------------------------------------------	|
+> | `$=`               	| Convert the setting to a number and compare whether it is equal to another number.                 	|
+> | `$!=`              	| Convert the setting to a number and compare whether it is unequal to another number.               	|
+> | `$>`               	| Convert the setting to a number and compare whether it is greater than another number.             	|
+> | `$<`               	| Convert the setting to a number and compare whether it is less than another number.                	|
+> | `$>=`              	| Convert the setting to a number and compare whether it is greater than or equal to another number. 	|
+> | `$<=`              	| Convert the setting to a number and compare whether it is less than or equal to another number.    	|
+> | `$contains`        	| Compare whether the setting contains some text anywhere in it.                                     	|
+> | `$beginswith`      	| Compare whether the setting begins with some text.                                                 	|
+> | `$endswith`        	| Compare whether the setting ends with some text.                                                   	|
+> | `else`             	| This keyword will cause the comparison to always be true.                                          	|
+> | (No modifier used) 	| Compare whether the setting matches some text.
+>
+> -   Settings can also reference the value of another cvar by prepending that cvar's name with $.
+>
+> -   Simple example: `ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye` → if cg\_myCvar is `0`, then `say_team hi` is executed. If it's `1`, then `say_team bye` is executed.
+>
+> -   Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
 >
 > #### Delay (`delay`)
 >
