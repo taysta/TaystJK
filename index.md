@@ -1,5 +1,3 @@
-[New - taysta/EternalJK Wiki](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0)
-
 > # New - taysta/EternalJK Wiki
 >
 > ## Strafe Helper Updates
