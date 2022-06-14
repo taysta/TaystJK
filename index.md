@@ -45,7 +45,6 @@
 > ## Movement Keys Updates
 >
 > -   `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`  
-      >     ![cg_movementKeys 2](https://camo.githubusercontent.com/d8d639d34d8d368d731cbd0629c4ce4f5b3d5891642d4c97ebcc260e0a1fa73f/68747470733a2f2f696d6775722e636f6d2f4b6944615155692e706e67)
 > -   `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
 > -   Movement key overlay now includes attack/altattack inputs
 >
@@ -55,7 +54,7 @@
 >
 > -   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
 > -   New trail effects enabled with `cg_disruptorNew 1`
-      >     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
+>     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
 >     -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
 >     -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
 >     -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
