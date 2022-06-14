@@ -88,24 +88,7 @@
 > -   Example: `strsub say "Hello, I am $name$"`
 >
 >
-
-> ## Keybind & Command Updates
->
-> -   You can now bind key combinations using an Alt / Ctrl / Shift modifier key. For example, `bind ctrl+x kill` will make Ctrl + X perform `kill`.
->
-> -   You can now bind the _right-side_ Alt / Ctrl / Shift keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ Ctrl key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
->
-> -   Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
->
->
-> #### [](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0#string-substitution-strsub)String Substitution (`strSub`)
->
-> -   Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
->
-> -   Example: `strsub say "Hello, I am $name$"`
->
->
-> #### [](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0#if-cvar-ifcvar)If Cvar (`ifCvar`)
+> #### If Cvar (`ifCvar`)
 >
 > -   Executes a certain command based on the current setting of a cvar.
 >
