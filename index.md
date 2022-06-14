@@ -53,7 +53,7 @@
 >
 > -   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
 > -   New trail effects enabled with `cg_disruptorNew 1`
-      >     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
+>     -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
 >     -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
 >     -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
 >     -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
@@ -88,7 +88,6 @@
 > -   Example: `strsub say "Hello, I am $name$"`
 >
 >
-[New - taysta/EternalJK Wiki](https://webcache.googleusercontent.com/search?q=cache:gUoJ9d0qD1wJ:https://github-wiki-see.page/m/taysta/EternalJK/wiki/New&hl=en&gl=us&strip=0&vwsrc=0)
 
 > ## Keybind & Command Updates
 >
