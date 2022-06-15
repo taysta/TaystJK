@@ -1,40 +1,34 @@
 # New from taysta/EternalJK
 
-## Strafe Helper Updates
+## Vulkan Renderer
 
--   More strafe bars, draws 2 lines for all keys A, WA, W, WD, D, SD, S, SA, enable with new `strafehelper` options
--   Updated Style (`strafehelper 1`) can be made smaller with new option `strafehelper 18`
--   CGAZ Style (`strafehelper 2`) is now affected by `cg_strafeHelperCutoff`
-
-* * *
-
-## Speedometer Updates
-
--   Running count of previous groundspeeds with `speedometer 10` and cvar `cg_speedometerJumps N` where N is the number of jumps
--   Speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`
--   Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say Jumps: %J%"`
--   Speedometer colors can now be disabled with `speedometer 11`
--   `speedometer 13` displays speeds as red/green based on difference from previous jump
--   `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
--   Updated speed graph, revert to old style with `speedometer 14`
+-   Enable with `cl_renderer rd-vulkan; vid_restart`
+-   `r_fbo 1; r_bloom 1` to enable bloom, adjust with `r_bloom_intensity` and `r_bloom_threshold`
+-   See more info [here](https://github.com/ec-/Quake3e#vulkan-renderer)
+-   From JKSunny
 
 * * *
 
-## Trigger/Clip/Slick Rendering
+## Miscellaneous Updates
 
--   `r_renderClipBrushes 1` enable rendering of clip brushes
--   `r_renderClipBrushesShader` shader to render over clip brushes
--   `r_renderTriggerBrushes 1` enable rendering of trigger brushes
--   `r_renderTriggerBrushesShader` shader to render over trigger brushes
--   `r_renderSlickSurfaces 1` enable rendering of slick surfaces
--   `r_renderSlickSurfacesShader` shader to render over slick surfaces
-
-* * *
-
-## Race Timer Update
-
--   Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
--   You can now set a start speed goal, if your start speed is above your goal speed, the text will be green `cg_startGoal`
+-   `cg_scoreboardTime 1` Display the local time on the scoreboard
+-   `cg_ambientSounds 0` Enable/disable ambient map sounds
+-   `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
+-   `styleplayer 16` New FFA invulnerability shell
+-   `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
+-   `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
+-   `cg_hudFiles 4` new Quake Champions style hud
+-   `cg_drawTimer 7` new csgo style match timer
+-   `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
+-   Fixed various Linux compiling problems and related crashes
+-   Fixed null skin name crash
+-   Water wake shader fix from Circa
+-   Textureless MP Swoop fix from MagSul
+-   Jawa sound fixes from eezstreet
+-   Broken effects fixes
+-   Weapon charge sounds now accurately reflect their charge times
+-   Reduced NPCs choppy/laggy movement
+-   Chat/console now support \[<kbd>shift</kbd>+\]<kbd>ctrl</kbd>+<kbd>backspace</kbd>/<kbd>del</kbd>/<kbd>left</kbd>/<kbd>right</kbd> shortcuts
 
 * * *
 
@@ -46,34 +40,11 @@
 
 * * *
 
-## Disruptor Updates
-
--   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
--   New trail effects enabled with `cg_disruptorNew 1`
-    -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
-    -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
-    -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
-    -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
-    -   `cg_disruptorMainTime` Amount of time to display disruptor primary fire
-    -   `cg_disruptorAltTime` Amount of time to display disruptor alt fire
-
-* * *
-
-## Pitch Helper
-
--   Pitch helper is a new tool to help you maintain your pitch aim at a desired level based on colored text as a visual queue
--   `cg_pitchHelper 1` Pitch angle can now be drawn independently from `cg_showpos`
--   Center point has green text and goes as a gradient to orange until it leaves `cg_pitchHelperRange` where the orange becomes red.
--   The whole range can be offset up or down with `cg_pitchHelperOffset`
--   The drawn number can be moved with `cg_pitchHelperX` and `cg_pitchHelperX`
-
-* * *
-
 ## Keybind & Command Updates
 
--   You can now bind key combinations using an Alt / Ctrl / Shift modifier key. For example, `bind ctrl+x kill` will make Ctrl + X perform `kill`.
+-   You can now bind key combinations using an <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> modifier key. For example, `bind ctrl+x kill` will make Ctrl + X perform `kill`.
 
--   You can now bind the _right-side_ Alt / Ctrl / Shift keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ Ctrl key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
+-   You can now bind the _right-side_ <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ <kbd>Ctrl</kbd> key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
 
 -   Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
 
@@ -150,27 +121,6 @@ Note that some music players do not support media buttons by default; for exampl
 
 * * *
 
-## Miscellaneous Updates
-
--   `cg_scoreboardTime 1` Display the local time on the scoreboard
--   `cg_ambientSounds 0` Enable/disable ambient map sounds
--   `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
--   `styleplayer 16` New FFA invulnerability shell
--   `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
--   `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
--   `cg_hudFiles 4` new Quake Champions style hud
--   `cg_drawTimer 7` new csgo style match timer
--   `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
--   Fixed various Linux compiling problems and related crashes
--   Fixed null skin name crash
--   Water wake shader fix from Circa
--   Textureless MP Swoop fix from MagSul
--   Jawa sound fixes from eezstreet
--   Broken effects fixes
--   Weapon charge sounds now accurately reflect their charge times
--   Reduced NPCs choppy/laggy movement
--   Chat/console now support \[shift+\]ctrl+backspace/del/left/right shortcuts
-
 ## Shader Overrides
 
 -   If there are two shaders sharing the same name, the one that was found in a file later on JKA file list (phone book order) takes precedence. For example if there is a shader called gfx/2d/charsgrid\_med in both shaders/original.shader and shaders/fonts.shader only the shader found in shaders/original.shader will be used then.
@@ -178,9 +128,61 @@ Note that some music players do not support media buttons by default; for exampl
 
 * * *
 
-## Vulkan Renderer
+## Pitch Helper
 
--   Enable with `cl_renderer rd-vulkan; vid_restart`
--   `r_fbo 1; r_bloom 1` to enable bloom, adjust with `r_bloom_intensity` and `r_bloom_threshold`
--   See more info [here](https://github.com/ec-/Quake3e#vulkan-renderer)
--   From JKSunny
+-   Pitch helper is a new tool to help you maintain your pitch aim at a desired level based on colored text as a visual queue
+-   `cg_pitchHelper 1` Pitch angle can now be drawn independently from `cg_showpos`
+-   Center point has green text and goes as a gradient to orange until it leaves `cg_pitchHelperRange` where the orange becomes red.
+-   The whole range can be offset up or down with `cg_pitchHelperOffset`
+-   The drawn number can be moved with `cg_pitchHelperX` and `cg_pitchHelperX`
+
+* * *
+
+## Strafe Helper Updates
+
+-   More strafe bars, draws 2 lines for all keys A, WA, W, WD, D, SD, S, SA, enable with new `strafehelper` options
+-   Updated Style (`strafehelper 1`) can be made smaller with new option `strafehelper 18`
+-   CGAZ Style (`strafehelper 2`) is now affected by `cg_strafeHelperCutoff`
+
+* * *
+
+## Speedometer Updates
+
+-   Running count of previous groundspeeds with `speedometer 10` and cvar `cg_speedometerJumps N` where N is the number of jumps
+-   Speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`
+-   Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say Jumps: %J%"`
+-   Speedometer colors can now be disabled with `speedometer 11`
+-   `speedometer 13` displays speeds as red/green based on difference from previous jump
+-   `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
+-   Updated speed graph, revert to old style with `speedometer 14`
+
+* * *
+
+## Trigger/Clip/Slick Rendering
+
+-   `r_renderClipBrushes 1` enable rendering of clip brushes
+-   `r_renderClipBrushesShader` shader to render over clip brushes
+-   `r_renderTriggerBrushes 1` enable rendering of trigger brushes
+-   `r_renderTriggerBrushesShader` shader to render over trigger brushes
+-   `r_renderSlickSurfaces 1` enable rendering of slick surfaces
+-   `r_renderSlickSurfacesShader` shader to render over slick surfaces
+
+* * *
+
+## Race Timer Update
+
+-   Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
+-   You can now set a start speed goal, if your start speed is above your goal speed, the text will be green `cg_startGoal`
+
+* * *
+
+## Disruptor Updates
+
+-   New trail effects enabled with `cg_disruptorNew 1`
+    -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
+    -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
+    -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
+    -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
+    -   `cg_disruptorMainTime` Amount of time to display disruptor primary fire
+    -   `cg_disruptorAltTime` Amount of time to display disruptor alt fire
+-   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
