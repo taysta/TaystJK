@@ -1,6 +1,7 @@
 ---
 title: Trigger, Clip & Slick Rendering
 parent: Strafe Cvars
+grand_parent: Cvars
 has_children: false
 nav_order: 4
 ---

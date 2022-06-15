@@ -1,6 +1,7 @@
 ---
 title: Pitch Helper
 parent: HUD Cvars
+grand_parent: Cvars
 has_children: false
 nav_order: 2
 ---

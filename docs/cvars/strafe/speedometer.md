@@ -1,6 +1,7 @@
 ---
 title: Speedometer Cvars
 parent: Strafe Cvars
+grand_parent: Cvars
 has_children: false
 nav_order: 2
 ---
