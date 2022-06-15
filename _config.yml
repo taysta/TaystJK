@@ -1,5 +1,4 @@
 remote_theme: just-the-docs/just-the-docs
-color_scheme: dark
 
 title: EternalJK
 description: An improved Jedi Academy Multiplayer client
@@ -69,7 +68,7 @@ nav_sort: case_sensitive # Capital letters sorted before lowercase
 back_to_top: true
 back_to_top_text: "Back to top"
 
-footer_content: "EternalJK is licensed under GPLv2 as free software. You are free to use, modify and redistribute EternalJK following the terms in LICENSE.txt."
+# footer_content: "EternalJK is licensed under GPLv2 as free software. You are free to use, modify and redistribute EternalJK following the terms in LICENSE.txt."
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
@@ -78,7 +77,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 
 
 # Footer "Edit this page on GitHub" link text
-gh_edit_link: true # show or hide edit this page link
+gh_edit_link: true # show or hide edit this page link.
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: "https://github.com/taysta/EternalJK" # the github URL for your repo
 gh_edit_branch: "gh-pages" # the branch that your docs is served from
@@ -86,7 +85,7 @@ gh_edit_branch: "gh-pages" # the branch that your docs is served from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
 
 # Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
-color_scheme: nil
+color_scheme: dark
 
 # Google Analytics Tracking (optional)
 # e.g, UA-1234567-89
