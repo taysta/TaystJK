@@ -1,6 +1,6 @@
 # EternalJK
 [![build](https://github.com/taysta/EternalJK/actions/workflows/workflow.yml/badge.svg)](https://github.com/taysta/EternalJK/actions/workflows/workflow.yml)
-### To see a list of new features, check the [changelog](https://github.com/taysta/EternalJK/blob/master/CHANGELOG.md)
+### To see a list of new features, check the [wiki](https://taysta.github.io/EternalJK/)
 
 ## License
 
