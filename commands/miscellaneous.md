@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Miscellaneous Commands
-permalink: /docs/commands/miscellaneous/miscellaneous
 parent: Commands
 nav_order: 1
 has_children: true
