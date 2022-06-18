@@ -1,5 +1,5 @@
 ---
-title: Speedometer Cvars
+title: Speedometer
 parent: Strafe Cvars
 permalink: /cvars/strafe#speedometer
 grand_parent: Cvars

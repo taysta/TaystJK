@@ -1,5 +1,5 @@
 ---
-title: Trigger, Clip & Slick Rendering
+title: Draw Trigger, Clip & Slick
 parent: Strafe Cvars
 permalink: /cvars/strafe#trigger-slick-clip-rendering
 grand_parent: Cvars

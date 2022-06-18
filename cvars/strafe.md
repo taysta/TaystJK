@@ -23,7 +23,7 @@ nav_order: 6
 - `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
 - Updated speed graph, revert to old style with `speedometer 14`
 
-## Strafe Helper Updates
+## Strafe Helper
 
 - More strafe bars, draws 2 lines for all keys A, WA, W, WD, D, SD, S, SA, enable with new `strafehelper` options
 - Updated Style (`strafehelper 1`) can be made smaller with new option `strafehelper 18`

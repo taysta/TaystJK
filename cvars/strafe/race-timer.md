@@ -1,5 +1,5 @@
 ---
-title: Racetimer Cvars
+title: Racetimer
 parent: Strafe Cvars
 permalink: /cvars/strafe#race-timer
 grand_parent: Cvars
