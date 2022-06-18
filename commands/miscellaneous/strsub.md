@@ -1,5 +1,5 @@
 ---
-title: String Substitution
+title: strSub
 permalink: /commands/miscellaneous#string-substitution-strsub
 parent: Miscellaneous Commands
 grand_parent: Commands
