@@ -7,16 +7,9 @@ has_children: true
 ---
 
 # Miscellaneous Commands
-{: .no_toc }
-
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-   {:toc}
-
 
 ## String Substitution 
+
 **`strSub`**
 
 -   Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
@@ -24,7 +17,8 @@ has_children: true
 -   Example: `strsub say "Hello, I am $name$"`
 
 
-## If Cvar 
+## If Cvar
+
 **`ifCvar`**
 
 -   Executes a certain command based on the current setting of a cvar.
@@ -55,24 +49,28 @@ has_children: true
 -   Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
 
 ## Delay
+
 **`delay`**
 
 Waits a specified time (in milliseconds) before executing whatever follows. Unlike the base JKA `wait` command, other commands may freely execute in the meantime.  
 Example:`say darth;​delay 1000;​say vader`
 
 ## Delay Cancel 
+
 **`delaycancel`**
 
 Cancels any pending `delay`(s) that contain the argument. Use `""` to match anything.  
  Example: `delaycancel vader`
 
 ## Wait Freely 
+
 **`waitf`**
 
 Waits a specified time (in number of frames) before executing whatever follows. Unlike the base JKA `wait` command, other commands may freely execute in the meantime.  
 Example:`say darth;​waitf 333;​say vader`
 
 ## Wait Freely Cancel 
+
 **`waitfcancel`**
 
 Cancels any pending `waitf`(s) that contain the argument. Use `""` to match anything.  
