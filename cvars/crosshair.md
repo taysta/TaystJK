@@ -1,10 +1,14 @@
 ---
 title: Crosshair Cvars
 parent: Cvars
-has_children: false
+has_children: true
 nav_order: 1
 ---
 
 # Crosshair Cvars
 
--   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
+## Crosshair Scope
+
+`cg_crosshairScope 0/1` 
+
+Enables minimalist scope: crosshair, charge and ammo

@@ -1,10 +1,14 @@
 ---
 title: Sound Cvars
 parent: Cvars
-has_children: false
+has_children: true
 nav_order: 5
 ---
 
 # Sound Cvars
 
--   `cg_ambientSounds 0` Enable/disable ambient map sounds
+## Ambient Sounds
+
+`cg_ambientSounds`
+
+Enable/disable ambient map sounds
