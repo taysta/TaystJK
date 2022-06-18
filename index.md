@@ -1,5 +1,5 @@
 ---
-title: Home
+title: New
 has_children: false
 nav_order: 1
 ---
