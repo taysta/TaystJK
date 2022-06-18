@@ -17,7 +17,7 @@ exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "pac
 # include: ["docs/tests/"]
 
 # Set a path/url to a logo that will be displayed instead of the title
-#logo: "/assets/images/just-the-docs.png"
+logo: "https://raw.githubusercontent.com/eternalcodes/EternalJK/master/shared/icons/icon.ico"
 
 # Enable or disable the site search
 # Supports true (default) or false
@@ -85,7 +85,7 @@ gh_edit_branch: "gh-pages" # the branch that your docs is served from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
 
 # Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
-color_scheme: dark
+color_scheme: nil
 
 # Google Analytics Tracking (optional)
 # e.g, UA-1234567-89
