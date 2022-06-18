@@ -76,3 +76,21 @@ Waits a specified time (in number of frames) before executing whatever follows. 
 
 Cancels any pending `waitf`(s) that contain the argument. Use `""` to match anything.  
 ***Example:*** `waitfcancel vader`
+
+## Music Controls
+
+### Next Track
+
+`mnext`
+
+### Previous Track 
+
+`mprev`
+
+### Pause/Play Music 
+
+`mpause`
+
+### Stop Music 
+
+`mstop`

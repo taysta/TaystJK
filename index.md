@@ -17,58 +17,58 @@ nav_order: 1
 
 ## Miscellaneous Updates
 
--   `cg_scoreboardTime 1` Display the local time on the scoreboard
--   `cg_ambientSounds 0` Enable/disable ambient map sounds
--   `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
--   `styleplayer 16` New FFA invulnerability shell
--   `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
--   `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
--   `cg_hudFiles 4` new Quake Champions style hud
--   `cg_drawTimer 7` new csgo style match timer
--   `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
--   Fixed various Linux compiling problems and related crashes
--   Fixed null skin name crash
--   Water wake shader fix from Circa
--   Textureless MP Swoop fix from MagSul
--   Jawa sound fixes from eezstreet
--   Broken effects fixes
--   Weapon charge sounds now accurately reflect their charge times
--   Reduced NPCs choppy/laggy movement
--   Chat/console now support \[<kbd>shift</kbd>+\]<kbd>ctrl</kbd>+<kbd>backspace</kbd>/<kbd>del</kbd>/<kbd>left</kbd>/<kbd>right</kbd> shortcuts
+- `cg_scoreboardTime 1` Display the local time on the scoreboard
+- `cg_ambientSounds 0` Enable/disable ambient map sounds
+- `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
+- `styleplayer 16` New FFA invulnerability shell
+- `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
+- `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
+- `cg_hudFiles 4` new Quake Champions style hud
+- `cg_drawTimer 7` new csgo style match timer
+- `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
+- Fixed various Linux compiling problems and related crashes
+- Fixed null skin name crash
+- Water wake shader fix from Circa
+- Textureless MP Swoop fix from MagSul
+- Jawa sound fixes from eezstreet
+- Broken effects fixes
+- Weapon charge sounds now accurately reflect their charge times
+- Reduced NPCs choppy/laggy movement
+- Chat/console now support \[<kbd>shift</kbd>+\]<kbd>ctrl</kbd>+<kbd>backspace</kbd>/<kbd>del</kbd>/<kbd>left</kbd>/<kbd>right</kbd> shortcuts
 
 * * *
 
 ## Movement Keys Updates
 
--   `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
--   `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
--   Movement key overlay now includes attack/altattack inputs
+- `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
+- `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
+- Movement key overlay now includes attack/altattack inputs
 
 * * *
 
 ## Keybind & Command Updates
 
--   You can now bind key combinations using an <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> modifier key. For example, `bind ctrl+x kill` will make <kbd>Ctrl</kbd> + <kbd>X</kbd> perform `kill`.
+- You can now bind key combinations using an <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> modifier key. For example, `bind ctrl+x kill` will make <kbd>Ctrl</kbd> + <kbd>X</kbd> perform `kill`.
 
--   You can now bind the _right-side_ <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ <kbd>Ctrl</kbd> key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
+- You can now bind the _right-side_ <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ <kbd>Ctrl</kbd> key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
 
--   Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
+- Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
 
 
 #### String Substitution (`strSub`)
 
--   Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
+- Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
 
--   Example: `strsub say "Hello, I am $name$"`
+- Example: `strsub say "Hello, I am $name$"`
 
 
 #### If Cvar (`ifCvar`)
 
--   Executes a certain command based on the current setting of a cvar.
+- Executes a certain command based on the current setting of a cvar.
 
--   Usage: `ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...`
+- Usage: `ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...`
 
--   Settings can optionally begin with special modifiers prepended with `$` dollar sign:
+- Settings can optionally begin with special modifiers prepended with `$` dollar sign:
 
 
 | **Modifier**       	| **Description**                                                                                    	|
@@ -85,11 +85,11 @@ nav_order: 1
 | `else`             	| This keyword will cause the comparison to always be true.                                          	|
 | (No modifier used) 	| Compare whether the setting matches some text.
 
--   Settings can also reference the value of another cvar by prepending that cvar's name with $.
+- Settings can also reference the value of another cvar by prepending that cvar's name with $.
 
--   Simple example: `ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye` → if cg\_myCvar is `0`, then `say_team hi` is executed. If it's `1`, then `say_team bye` is executed.
+- Simple example: `ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye` → if cg\_myCvar is `0`, then `say_team hi` is executed. If it's `1`, then `say_team bye` is executed.
 
--   Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
+- Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
 
 #### Delay (`delay`)
 
@@ -99,7 +99,7 @@ Example:`say darth;​delay 1000;​say vader`
 #### Delay Cancel (`delaycancel`)
 
 Cancels any pending `delay`(s) that contain the argument. Use `""` to match anything.  
- Example: `delaycancel vader`
+Example: `delaycancel vader`
 
 #### Wait Freely (`waitf`)
 
