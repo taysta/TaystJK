@@ -40,7 +40,7 @@ nav_order: 1
 
 ## Movement Keys Updates
 
-- `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
+- `cg_movementKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
 - `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
 - Movement key overlay now includes attack/altattack inputs
 
