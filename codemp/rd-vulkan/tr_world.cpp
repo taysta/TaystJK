@@ -590,11 +590,11 @@ R_AddBrushModelSurfaces
 =================
 */
 void R_AddBrushModelSurfaces ( trRefEntity_t *ent ) {
-	bmodel_t	*bmodel;
-	int			clip;
-	model_t		*pModel;
-	dlight_t	*dl;
-	int			i, s;
+	bmodel_t		*bmodel;
+	int				clip;
+	const model_t	*pModel;
+	dlight_t		*dl;
+	int				i, s;
 
 	pModel = R_GetModelByHandle( ent->e.hModel );
 
@@ -1338,9 +1338,9 @@ R_PointInLeaf
 ===============
 */
 static mnode_t *R_PointInLeaf( const vec3_t p ) {
-	mnode_t		*node;
-	float		d;
-	cplane_t	*plane;
+	mnode_t			*node;
+	float			d;
+	const cplane_t	*plane;
 
 	if ( !tr.world ) {
 		Com_Error (ERR_DROP, "R_PointInLeaf: bad model");

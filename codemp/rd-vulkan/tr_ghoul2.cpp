@@ -912,6 +912,7 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 	if (!largestScale)
 		largestScale = 1;
 	
+#if 0
 	float radius = Q_fabs(0.75 * largestScale * ent->e.radius);
 
 	float tmpVec[3];
@@ -944,7 +945,42 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 		flod *= currentModel->numLods;
 		lod = Q_ftol(flod);
 	}
+#endif
+#if 1
+	projectedRadius = ProjectRadius( 0.75*largestScale*ent->e.radius, ent->e.origin );
 
+	// we reduce the radius to make the LOD match other model types which use
+	// the actual bound box size
+	if ( projectedRadius != 0 )	
+ 	{
+ 		lodscale = (r_lodscale->value+r_autolodscalevalue->value);
+ 		if ( lodscale > 20 ) 
+		{
+			lodscale = 20;	 
+		}
+		else if ( lodscale < 0 )
+		{
+			lodscale = 0;
+		}
+ 		flod = 1.0f - projectedRadius * lodscale;
+ 	}
+ 	else
+ 	{
+ 		// object intersects near view plane, e.g. view weapon
+ 		flod = 0;
+ 	}
+ 	flod *= currentModel->numLods;
+	lod = Q_ftol( flod );
+
+ 	if ( lod < 0 )
+ 	{
+ 		lod = 0;
+ 	}
+ 	else if ( lod >= currentModel->numLods )
+ 	{
+ 		lod = currentModel->numLods - 1;
+ 	}
+#endif
 	lod += lodBias;
 
 	if (lod >= currentModel->numLods)

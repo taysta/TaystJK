@@ -30,7 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 static	int			r_firstSceneDrawSurf;
 #ifdef USE_PMLIGHT
-int					r_firstSceneLitSurf;
+static int			r_firstSceneLitSurf;
 #endif
 
 int					r_numdlights;
@@ -38,8 +38,10 @@ static	int			r_firstSceneDlight;
 
 static	int			r_numentities;
 static	int			r_firstSceneEntity;
+
 static	int			r_numminientities;
 static	int			r_firstSceneMiniEntity;
+
 static	int			refEntParent = -1;
 
 static	int			r_numpolys;
@@ -111,9 +113,9 @@ Adds all the scene's polys into this view's drawsurf list
 =====================
 */
 void R_AddPolygonSurfaces( void ) {
-	int			i;
-	shader_t	*sh;
-	srfPoly_t	*poly;
+	int				i;
+	shader_t		*sh;
+	const srfPoly_t	*poly;
 
 	tr.currentEntityNum = REFENTITYNUM_WORLD;
 	tr.shiftedEntityNum = tr.currentEntityNum << QSORT_REFENTITYNUM_SHIFT;
@@ -131,11 +133,11 @@ RE_AddPolyToScene
 =====================
 */
 void RE_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts, int numPolys ) {
-	srfPoly_t	*poly;
-	int			i, j;
-	int			fogIndex;
-	fog_t		*fog;
-	vec3_t		bounds[2];
+	srfPoly_t		*poly;
+	int				i, j;
+	int				fogIndex;
+	const fog_t		*fog;
+	vec3_t			bounds[2];
 
 	if ( !tr.registered ) {
 		return;
@@ -344,7 +346,7 @@ RE_AddDynamicLightToScene
 
 =====================
 */
-void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, float g, float b, int additive ) {
+static void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, float g, float b, int additive ) {
 	dlight_t	*dl;
 
 	if ( !tr.registered ) {

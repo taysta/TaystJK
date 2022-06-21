@@ -28,21 +28,20 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 trGlobals_t		tr;
 
-const static float s_flipMatrix[16] QALIGN(16) = {
+static const float s_flipMatrix[16] QALIGN(16) = {
 	// convert from our coordinate system (looking down X)
 	// to OpenGL's coordinate system (looking down -Z)
 	0, 0, -1, 0,
 	-1, 0, 0, 0,
 	0, 1, 0, 0,
 	0, 0, 0, 1
-
 };
 
 refimport_t	ri;
 
 // entities that will have procedurally generated surfaces will just
 // point at this for their sorting surface
-surfaceType_t	entitySurface = SF_ENTITY;
+static surfaceType_t entitySurface = SF_ENTITY;
 
 /*
 =================
@@ -125,10 +124,10 @@ int R_CullLocalPointAndRadius( const vec3_t pt, float radius )
 */
 int R_CullPointAndRadius( const vec3_t pt, float radius )
 {
-	int			i;
-	float		dist;
-	cplane_t	*frust;
-	qboolean	mightBeClipped = qfalse;
+	int				i;
+	float			dist;
+	const cplane_t	*frust;
+	qboolean		mightBeClipped = qfalse;
 
 	if (r_nocull->integer == 1) {
 		return CULL_CLIP;
@@ -205,7 +204,7 @@ R_LocalNormalToWorld
 
 =================
 */
-void R_LocalNormalToWorld( const vec3_t local, vec3_t world ) {
+static void R_LocalNormalToWorld( const vec3_t local, vec3_t world ) {
 	world[0] = local[0] * tr.ori.axis[0][0] + local[1] * tr.ori.axis[1][0] + local[2] * tr.ori.axis[2][0];
 	world[1] = local[0] * tr.ori.axis[0][1] + local[1] * tr.ori.axis[1][1] + local[2] * tr.ori.axis[2][1];
 	world[2] = local[0] * tr.ori.axis[0][2] + local[1] * tr.ori.axis[1][2] + local[2] * tr.ori.axis[2][2];
@@ -665,7 +664,7 @@ static void R_SetupProjectionZ( viewParms_t *dest ) {
 R_MirrorPoint
 =================
 */
-void R_MirrorPoint( vec3_t in, orientation_t *surface, orientation_t *camera, vec3_t out ) {
+static void R_MirrorPoint( const vec3_t in, const orientation_t *surface, const orientation_t *camera, vec3_t out ) {
 	int		i;
 	vec3_t	local;
 	vec3_t	transformed;
@@ -682,7 +681,7 @@ void R_MirrorPoint( vec3_t in, orientation_t *surface, orientation_t *camera, ve
 	VectorAdd(transformed, camera->origin, out);
 }
 
-void R_MirrorVector( vec3_t in, orientation_t *surface, orientation_t *camera, vec3_t out ) {
+static void R_MirrorVector( const vec3_t in, const orientation_t *surface, const orientation_t *camera, vec3_t out ) {
 	int		i;
 	float	d;
 
@@ -693,13 +692,12 @@ void R_MirrorVector( vec3_t in, orientation_t *surface, orientation_t *camera, v
 	}
 }
 
-
 /*
 =============
 R_PlaneForSurface
 =============
 */
-void R_PlaneForSurface( surfaceType_t *surfType, cplane_t *plane ) {
+static void R_PlaneForSurface( const surfaceType_t *surfType, cplane_t *plane ) {
 	srfTriangles_t	*tri;
 	srfPoly_t		*poly;
 	drawVert_t		*v1, *v2, *v3;
@@ -746,7 +744,7 @@ be moving and rotating.
 Returns qtrue if it should be mirrored
 =================
 */
-qboolean R_GetPortalOrientations( drawSurf_t *drawSurf, int entityNum,
+static qboolean R_GetPortalOrientations( const drawSurf_t *drawSurf, int entityNum,
 	orientation_t *surface, orientation_t *camera,
 	vec3_t pvsOrigin, portalView_t *portalView )
 {
@@ -1114,7 +1112,7 @@ Returns qtrue if another view has been rendered
 ========================
 */
 extern int r_numdlights;
-qboolean R_MirrorViewBySurface( drawSurf_t *drawSurf, int entityNum ) {
+static qboolean R_MirrorViewBySurface( const drawSurf_t *drawSurf, int entityNum ) {
 	vec4_t			clipDest[128];
 	viewParms_t		newParms;
 	viewParms_t		oldParms;
@@ -1195,7 +1193,7 @@ R_SpriteFogNum
 See if a sprite is inside a fog volume
 =================
 */
-int R_SpriteFogNum(trRefEntity_t *ent) {
+static int R_SpriteFogNum( const trRefEntity_t *ent ) {
 	int		i, j;
 	fog_t	*fog;
 
@@ -1548,7 +1546,7 @@ void R_SortDrawSurfs( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 R_AddEntitySurfaces
 =============
 */
-void R_AddEntitySurfaces( void ) {
+static void R_AddEntitySurfaces( void ) {
 	trRefEntity_t	*ent;
 	shader_t		*shader;
 
@@ -1666,7 +1664,7 @@ void R_AddEntitySurfaces( void ) {
 R_GenerateDrawSurfs
 ====================
 */
-void R_GenerateDrawSurfs( void ) {
+static void R_GenerateDrawSurfs( void ) {
 	R_AddWorldSurfaces();
 
 	R_AddPolygonSurfaces();
@@ -1694,7 +1692,7 @@ A view may be either the actual camera view,
 or a mirror / remote location
 ================
 */
-void R_RenderView( viewParms_t *parms ) {
+void R_RenderView( const viewParms_t *parms ) {
 	int		firstDrawSurf;
 
 	if (parms->viewportWidth <= 0 || parms->viewportHeight <= 0) {

@@ -303,7 +303,7 @@ static void RB_SurfaceOrientedQuad( void )
 RB_SurfacePolychain
 =============
 */
-void RB_SurfacePolychain( srfPoly_t *p ) {
+void RB_SurfacePolychain( const srfPoly_t *p ) {
 	int		i;
 	int		numv;
 
@@ -382,11 +382,11 @@ inline static uint32_t ComputeFinalVertexColor( const byte *colors ) {
 RB_SurfaceTriangles
 =============
 */
-void RB_SurfaceTriangles( srfTriangles_t *srf ) {
-	int			i;
-	drawVert_t	*dv;
-	float		*xyz, *normal, *texCoords0, *texCoords1, *texCoords2, *texCoords3, *texCoords4;
-	byte		*color;
+void RB_SurfaceTriangles( const srfTriangles_t *srf ) {
+	int					i;
+	const drawVert_t	*dv;
+	float				*xyz, *normal, *texCoords0, *texCoords1, *texCoords2, *texCoords3, *texCoords4;
+	byte				*color;
 
 #ifdef USE_VBO
 
@@ -1868,7 +1868,7 @@ RB_SurfaceEntity
 Entities that have a single procedurally generated surface
 ====================
 */
-void RB_SurfaceEntity( surfaceType_t *surfType ) {
+void RB_SurfaceEntity( const surfaceType_t *surfType ) {
 #ifdef USE_VBO
 	VBO_Flush();
 #endif
@@ -1934,7 +1934,7 @@ void RB_SurfaceEntity( surfaceType_t *surfType ) {
 	return;
 }
 
-void RB_SurfaceBad( surfaceType_t *surfType ) {
+void RB_SurfaceBad( const surfaceType_t *surfType ) {
 	ri.Printf( PRINT_ALL, "Bad surface tesselated.\n" );
 }
 

@@ -38,7 +38,7 @@ because a surface may be forced to perform a RB_End due
 to overflow.
 ==============
 */
-void RB_BeginSurface( shader_t* shader, int fogNum ) {
+void RB_BeginSurface( shader_t *shader, int fogNum ) {
 	shader_t *state = (shader->remappedShader) ? shader->remappedShader : shader;
 
 #ifdef USE_VBO
@@ -77,7 +77,7 @@ void RB_BeginSurface( shader_t* shader, int fogNum ) {
 ** RB_EndSurface
 */
 void RB_EndSurface( void ) {
-	shaderCommands_t *input;
+	const shaderCommands_t *input;
 
 	input = &tess;
 

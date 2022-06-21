@@ -755,7 +755,7 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		result = qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory);
 		
 		if (result < 0) {
-			ri.Error(ERR_DROP, "GPU memory heap overflow");
+			ri.Error(ERR_DROP, va("GPU memory heap overflow: Code %i", result));
 			vk_restart_swapchain( __func__ );
 		}
 
@@ -1048,7 +1048,6 @@ image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgF
 
 image_t *R_FindImageFile( const char *name, imgFlags_t flags ){
         image_t		*image;
-		char		strippedName[MAX_QPATH];
         int			width, height;
         byte		*pic;
         int			hash;

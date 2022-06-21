@@ -100,7 +100,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define ST1_OFFSET						( ST0_OFFSET + ST0_SIZE )
 
 #define IMAGE_CHUNK_SIZE				( 32 * 1024 * 1024 )
-#define MAX_IMAGE_CHUNKS				96
+#define MAX_IMAGE_CHUNKS				256
 
 #define TESS_XYZ						( 1 )
 #define TESS_RGBA0 						( 2 )

@@ -44,7 +44,7 @@ static	texModInfo_t	texMods[MAX_SHADER_STAGES][TR_MAX_TEXMODS];
 static	shader_t* hashTable[FILE_HASH_SIZE];
 
 #define MAX_SHADERTEXT_HASH		2048
-static char **shaderTextHashTable[MAX_SHADERTEXT_HASH] = { 0 };
+static const char **shaderTextHashTable[MAX_SHADERTEXT_HASH] = { 0 };
 
 const int lightmapsNone[MAXLIGHTMAPS] =
 {
@@ -362,9 +362,9 @@ surfaceparm <name>
 ===============
 */
 static void ParseSurfaceParm( const char **text ) {
-	char	*token;
-	int		numInfoParms = sizeof(infoParms) / sizeof(infoParms[0]);
-	int		i;
+	const char	*token;
+	int			numInfoParms = sizeof(infoParms) / sizeof(infoParms[0]);
+	int			i;
 
 	token = COM_ParseExt(text, qfalse);
 	for (i = 0; i < numInfoParms; i++) {
@@ -886,8 +886,8 @@ ParseVector
 ===============
 */
 qboolean ParseVector( const char **text, int count, float *v ) {
-	char	*token;
-	int		i;
+	const char	*token;
+	int			i;
 
 	// FIXME: spaces are currently required after parens, should change parseext...
 	token = COM_ParseExt(text, qfalse);
@@ -1150,7 +1150,7 @@ ParseWaveForm
 */
 static void ParseWaveForm( const char **text, waveForm_t *wave )
 {
-	char *token;
+	const char *token;
 
 	token = COM_ParseExt(text, qfalse);
 	if (token[0] == 0)
@@ -1885,7 +1885,7 @@ deformVertexes text[0-7]
 ===============
 */
 static void ParseDeform( const char **text ) {
-	char			*token;
+	const char		*token;
 	deformStage_t	*ds;
 
 	token = COM_ParseExt(text, qfalse);
@@ -2034,11 +2034,11 @@ skyParms <outerbox> <cloudheight> <innerbox>
 ===============
 */
 static void ParseSkyParms( const char **text ) {
-	char		*token;
-	const char	*suf[6] = { "rt", "bk", "lf", "ft", "up", "dn" };
-	char		pathname[MAX_QPATH];
-	int			i;
-	imgFlags_t	imgFlags;
+	const char			*token;
+	static const char	*suf[6] = { "rt", "bk", "lf", "ft", "up", "dn" };
+	char				pathname[MAX_QPATH];
+	int					i;
+	imgFlags_t			imgFlags;
 
 	imgFlags = IMGFLAG_MIPMAP | IMGFLAG_PICMIP;
 
@@ -2107,7 +2107,7 @@ ParseSort
 =================
 */
 static void ParseSort( const char **text ) {
-	char	*token;
+	const char	*token;
 
 	token = COM_ParseExt(text, qfalse);
 	if (token[0] == 0) {
@@ -2754,7 +2754,7 @@ qhandle_t RE_RegisterShaderNoMip( const char *name )
 	return sh->index;
 }
 
-int COM_CompressShader( char *data_p )
+static int COM_CompressShader( char *data_p )
 {
 	char *in, *out;
 	int c;
@@ -2870,7 +2870,8 @@ static void ScanAndLoadShaderFiles( void )
 	const char	*p;
 	int			numShaderFiles;
 	int			i;
-	char		*oldp, *token, *hashMem, *textEnd;
+	const char	*token, *hashMem;
+	char		*oldp, *textEnd;
 	int			shaderTextHashTableSizes[MAX_SHADERTEXT_HASH], hash, size;
 	char		shaderName[MAX_QPATH];
 	int			shaderLine;
@@ -3003,7 +3004,7 @@ static void ScanAndLoadShaderFiles( void )
 	hashMem = (char*)ri.Hunk_Alloc(size * sizeof(char*), h_low);
 
 	for (i = 0; i < MAX_SHADERTEXT_HASH; i++) {
-		shaderTextHashTable[i] = (char**)hashMem;
+		shaderTextHashTable[i] = (const char**)hashMem;
 		hashMem = ((char*)hashMem) + ((shaderTextHashTableSizes[i] + 1) * sizeof(char*));
 	}
 
@@ -3062,42 +3063,6 @@ static void InitShader( const char *name, const int *lightmapIndex, const byte *
 	}
 
 	shader.contentFlags = CONTENTS_SOLID | CONTENTS_OPAQUE;
-}
-
-qhandle_t RE_RegisterShaderFromImage( const char *name, const int *lightmapIndex, byte *styles, image_t *image, qboolean mipRawImage )
-{
-	int hash;
-	shader_t *sh;
-
-	hash = generateHashValue(name, FILE_HASH_SIZE);
-
-	//
-	// see if the shader is already loaded
-	//
-	sh = hashTable[hash];
-	while (sh)
-	{
-		// NOTE: if there was no shader or image available with the name strippedName
-		// then a default shader is created with lightmapIndex == LIGHTMAP_NONE, so we
-		// have to check all default shaders otherwise for every call to R_FindShader
-		// with that same strippedName a new default shader is created.
-		if (IsShader(sh, name, lightmapIndex, styles))
-		{
-			return sh->index;
-		}
-
-		sh = sh->next;
-	}
-
-	InitShader(name, lightmapIndex, styles);
-
-	//
-	// create the default shading commands
-	//
-	R_CreateDefaultShadingCmds(image);
-
-	sh = FinishShader();
-	return sh->index;
 }
 
 /*

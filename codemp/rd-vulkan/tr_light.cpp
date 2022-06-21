@@ -20,7 +20,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===========================================================================
 */
-
 // tr_light.c
 
 #include "tr_local.h"
@@ -30,7 +29,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define	DLIGHT_MINIMUM_RADIUS	16
 // never calculate a range less than this to prevent huge light numbers
-
 
 /*
 ===============
@@ -212,13 +210,12 @@ static void R_SetupEntityLightingGrid( trRefEntity_t *ent ) {
 	VectorNormalize2( direction, ent->lightDir );
 }
 
-
 /*
 ===============
 LogLight
 ===============
 */
-static void LogLight( trRefEntity_t *ent ) {
+static void LogLight( const trRefEntity_t *ent ) {
 	int	max1, max2;
 
 	if ( !(ent->e.renderfx & RF_FIRST_PERSON ) ) {
@@ -250,9 +247,9 @@ Calculates all the lighting values that will be used
 by the Calc_* functions
 =================
 */
-void R_SetupEntityLighting(const trRefdef_t* refdef, trRefEntity_t* ent) {
+void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
 	int				i;
-	dlight_t		*dl;
+	const dlight_t	*dl;
 	float			power;
 	vec3_t			dir;
 	float			d;
