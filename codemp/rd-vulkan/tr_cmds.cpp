@@ -405,7 +405,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 
 	cmd->buffer = 0;
 
-	if ( r_fastsky->integer && vk.fastSky ) {
+	if ( vk.fastSky && ( r_fastsky->integer || ( tr.world && tr.world->globalFog != -1 ) ) ) {
 		clearColorCommand_t *clrcmd;
 		if ( ( clrcmd = (clearColorCommand_t*)R_GetCommandBuffer( sizeof( *clrcmd ) ) ) == nullptr )
 			return;
