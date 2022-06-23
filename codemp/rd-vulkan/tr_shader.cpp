@@ -2041,6 +2041,9 @@ static void ParseSkyParms( const char **text ) {
 	imgFlags_t			imgFlags;
 
 	imgFlags = IMGFLAG_MIPMAP | IMGFLAG_PICMIP;
+	if (shader.noTC) {
+		imgFlags |= IMGFLAG_NO_COMPRESSION;
+	}
 
 	shader.sky = (skyParms_t*)Hunk_Alloc(sizeof(skyParms_t), h_low);
 
