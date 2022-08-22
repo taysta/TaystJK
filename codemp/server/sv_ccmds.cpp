@@ -1524,6 +1524,21 @@ void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes ) {
 	FS_Write( msg->data + headerBytes, len, cl->demo.demofile );
 }
 
+void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes, int messageNum ) { // Version that specifies messagenumber manually, for buffered (pre-record) messages.
+	int		len, swlen;
+
+	// write the packet sequence
+	len = messageNum;
+	swlen = LittleLong( len );
+	FS_Write( &swlen, 4, cl->demo.demofile );
+
+	// skip the packet sequencing information
+	len = msg->cursize - headerBytes;
+	swlen = LittleLong( len );
+	FS_Write( &swlen, 4, cl->demo.demofile );
+	FS_Write( msg->data + headerBytes, len, cl->demo.demofile );
+}
+
 void SV_StopRecordDemo( client_t *cl ) {
 	int		len;
 
@@ -1646,7 +1661,7 @@ void SV_DemoFilename( char *buf, int bufSize ) {
 
 // defined in sv_client.cpp
 extern void SV_CreateClientGameStateMessage( client_t *client, msg_t* msg );
-
+extern std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
 void SV_RecordDemo( client_t *cl, char *demoName ) {
 	char		name[MAX_OSPATH];
 	byte		bufData[MAX_MSGLEN];
@@ -1678,11 +1693,47 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 	}
 	cl->demo.demorecording = qtrue;
 
+	cl->demo.isBot = (cl->netchan.remoteAddress.type == NA_BOT) ? qtrue : qfalse;
+	cl->demo.botReliableAcknowledge = cl->reliableSent;
+
+	// Ok we have two options now. Either the classical way of starting with gamestate.
+	// OR, if enabled, we use our pre-recorded buffer to start recording a bit in the past,
+	// in which case we also don't have to worry about demowaiting since the pre-record
+	// already takes care of that
+	if (sv_demoPreRecord->integer) {
+		// Pre-recording is enabled. Let's check for the oldest available keyframe.
+		demoPreRecordBufferIt firstOldKeyframe;
+		qboolean firstOldKeyframeFound = qfalse;
+		for (demoPreRecordBufferIt it = demoPreRecordBuffer[cl - svs.clients].begin(); it != demoPreRecordBuffer[cl - svs.clients].end(); it++) {
+			if (it->isKeyframe && it->time < sv.time) {
+				firstOldKeyframe = it;
+				firstOldKeyframeFound = qtrue;
+				break;
+			}
+		}
+		if (firstOldKeyframeFound) {
+			int index = 0;
+			// Dump this keyframe (gamestate message) and all following non-keyframes into the demo.
+			for (demoPreRecordBufferIt it = firstOldKeyframe; it != demoPreRecordBuffer[cl - svs.clients].end(); it++,index++) {
+				static byte preRecordBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
+				static msg_t		preRecordMsg;
+
+				if (!it->isKeyframe || index == 0) {
+					// We only want a keyframe at the beginning of the demo, none after.
+					Com_Memset(&preRecordMsg, 0, sizeof(msg_t));
+					Com_Memset(&preRecordBufData, 0, sizeof(preRecordBufData));
+					preRecordMsg.data = preRecordBufData;
+					MSG_FromBuffered(&preRecordMsg, &it->msg);
+					MSG_WriteByte(&preRecordMsg, svc_EOF); // We didn't do that for the ones we put into the buffer, so we do it now.
+					SV_WriteDemoMessage(cl,&preRecordMsg,0,it->msgNum);
+				}
+			}
+			return; // No need to go through the whole normal demo procedure with demowaiting etc.
+		}
+	}
+
 	// don't start saving messages until a non-delta compressed message is received
 	cl->demo.demowaiting = qtrue;
-
-	cl->demo.isBot = ( cl->netchan.remoteAddress.type == NA_BOT ) ? qtrue : qfalse;
-	cl->demo.botReliableAcknowledge = cl->reliableSent;
 
 	// write out the gamestate message
 	MSG_Init( &msg, bufData, sizeof( bufData ) );

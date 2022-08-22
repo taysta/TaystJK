@@ -24,6 +24,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "server.h"
 #include "qcommon/cm_public.h"
 
+
+std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
+
 /*
 =============================================================================
 
@@ -158,6 +161,16 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		// non-delta frames until the client acks.
 		oldframe = NULL;
 		lastframe = 0;
+	} else if ( sv_demoPreRecord->integer && client->demo.preRecord.keyframeWaiting ) {
+		// demo is waiting for a non-delta-compressed frame for this client, so don't delta compress
+		oldframe = NULL;
+		lastframe = 0;
+	} else if ( client->demo.preRecord.minDeltaFrame > deltaMessage ) {
+		// we saved a non-delta frame to the pre-record buffer and sent it to the client, but the client didn't ack it
+		// we can't delta against an old frame that's not in the demo without breaking the demo.  so send
+		// non-delta frames until the client acks.
+		oldframe = NULL;
+		lastframe = 0;
 	} else {
 		// we have a valid snapshot to delta from
 		oldframe = &client->frames[ deltaMessage & PACKET_MASK ];
@@ -177,6 +190,11 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 			client->demo.minDeltaFrame = client->netchan.outgoingSequence;
 		}
 		client->demo.demowaiting = qfalse;
+		if ( client->demo.preRecord.keyframeWaiting ) {
+			// this is a non-delta frame, so we can delta against it in the demo
+			client->demo.preRecord.minDeltaFrame = client->netchan.outgoingSequence;
+		}
+		client->demo.preRecord.keyframeWaiting = qfalse;
 	}
 
 	MSG_WriteByte (msg, svc_snapshot);
@@ -737,6 +755,8 @@ static int SV_RateMsec( client_t *client, int messageSize ) {
 }
 
 extern void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes );
+// defined in sv_client.cpp
+extern void SV_CreateClientGameStateMessage(client_t* client, msg_t* msg);
 /*
 =======================
 SV_SendMessageToClient
@@ -763,11 +783,66 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageSent = (sv_pingFix->integer ? Sys_Milliseconds() : svs.time);
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageAcked = -1;
 
+	if (sv_demoPreRecord->integer) { // If pre record demo message buffering is enabled, we write this message to the buffer.
+		static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
+		Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
+		MSG_ToBuffered(msg,&bmt.msg);
+		bmt.msgNum = client->netchan.outgoingSequence;
+		bmt.time = sv.time;
+		bmt.isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
+		demoPreRecordBuffer[client - svs.clients].push_back(bmt);
+	}
+
 	// save the message to demo.  this must happen before sending over network as that encodes the backing databuf
 	if ( client->demo.demorecording && !client->demo.demowaiting ) {
 		msg_t msgcopy = *msg;
 		MSG_WriteByte( &msgcopy, svc_EOF );
 		SV_WriteDemoMessage( client, &msgcopy, 0 );
+	}
+
+	// Check for whether a new keyframe must be written in pre recording, and if so, do it.
+	if (sv_demoPreRecord->integer) {
+		if (client->demo.preRecord.lastKeyframeTime + sv_demoPreRecordKeyframeDistance->integer < sv.time) {
+			// Save a keyframe.
+			static byte keyframeBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
+			static msg_t		keyframeMsg;
+			static bufferedMessageContainer_t bmt;
+			Com_Memset(&keyframeMsg, 0, sizeof(msg_t));
+			Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
+
+			MSG_Init(&keyframeMsg, keyframeBufData, sizeof(keyframeBufData));
+
+			int tmp = client->reliableSent; //Idk if this is still needed? Might have been from an older version of SV_CreateClientGameStateMessage that changed that?
+			SV_CreateClientGameStateMessage(client, &keyframeMsg);
+			client->reliableSent = tmp;
+
+			MSG_ToBuffered(&keyframeMsg, &bmt.msg);
+			bmt.msgNum = client->netchan.outgoingSequence; // Yes the keyframe duplicates the messagenum of a message. This is (part of) why we dump only one keyframe at the start of the demo and discard future keyframes
+			bmt.time = sv.time;
+			bmt.isKeyframe = qtrue; // This is a keyframe (gamestate that will be followed by non-delta frames)
+			demoPreRecordBuffer[client - svs.clients].push_back(bmt);
+			client->demo.preRecord.keyframeWaiting = qtrue;
+			client->demo.preRecord.lastKeyframeTime = sv.time;
+		}
+	}
+
+	// Clean up pre-record buffer, whether preRecord is enabled or not (because it might have just been disabled)
+	{
+		// The goal is to always maintain *at least* sv_demoPreRecord milliseconds of buffer. Rather more than less. 
+		// So we find the last keyframe that is older than sv_demoPreRecord milliseconds (or just that old) and then delete everything *before* it.
+		demoPreRecordBufferIt lastTooOldKeyframe;
+		qboolean lastTooOldKeyframeFound = qfalse;
+		for (demoPreRecordBufferIt it = demoPreRecordBuffer[client - svs.clients].begin(); it != demoPreRecordBuffer[client - svs.clients].end(); it++) {
+			if (it->isKeyframe && (it->time + sv_demoPreRecord->integer) < sv.time) {
+				lastTooOldKeyframe = it;
+				lastTooOldKeyframeFound = qtrue;
+			}
+		}
+		if (lastTooOldKeyframeFound) {
+			// The lastTooOldKeyframe itself won't be erased because .erase()'s second parameter is not inclusive, 
+			// aka it deletes up to that element, but not that element itself.
+			demoPreRecordBuffer[client - svs.clients].erase(demoPreRecordBuffer[client - svs.clients].begin(),lastTooOldKeyframe);
+		}
 	}
 
 	// bots need to have their snapshots built, but

@@ -51,6 +51,7 @@ void MSG_Clear (msg_t *buf);
 void MSG_WriteData (msg_t *buf, const void *data, int length);
 void MSG_Bitstream( msg_t *buf );
 
+
 struct usercmd_s;
 struct entityState_s;
 struct playerState_s;
@@ -168,6 +169,33 @@ void		Sys_ShowIP(void);
 
 #define MAX_DOWNLOAD_WINDOW			8		// max of eight download frames
 #define MAX_DOWNLOAD_BLKSIZE		2048	// 2048 byte block chunks
+
+
+/*
+* Buffered messages (structs that actually contain the data array) for buffering/prerecording
+*/
+
+typedef struct {
+	qboolean	allowoverflow;	// if false, do a Com_Error
+	qboolean	overflowed;		// set to true if the buffer size failed (with allowoverflow set)
+	qboolean	oob;			// set to true if the buffer size failed (with allowoverflow set)
+	byte	data[MAX_MSGLEN];
+	int		maxsize;
+	int		cursize;
+	int		readcount;
+	int		bit;				// for bitwise reads and writes
+} bufferedMsg_t;
+
+typedef struct {
+	bufferedMsg_t msg;
+	int msgNum; // Message number
+	int time; // We don't want to wait infinitely for old messages to arrive.
+	//qboolean containsFullSnapshot; // Doesn't matter for serverside pre-Recording because we have the keyframes. Comment back in for clientside buffered recording.
+	qboolean isKeyframe; // Is a gamestate message as typical for writing at the start of demos.
+} bufferedMessageContainer_t;
+
+void MSG_ToBuffered(msg_t* src, bufferedMsg_t* dst);
+void MSG_FromBuffered(msg_t* dst, bufferedMsg_t* src);
 
 
 /*

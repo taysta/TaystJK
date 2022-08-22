@@ -73,6 +73,9 @@ cvar_t	*sv_maxOOBRate;
 cvar_t	*sv_maxOOBRateIP;
 cvar_t	*sv_autoWhitelist;
 
+cvar_t	*sv_demoPreRecord; // If not 0, how many milliseconds of past packets should be stored so demos can be retroactively recorded for that duration?
+cvar_t	*sv_demoPreRecordKeyframeDistance; // A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept.
+
 cvar_t	*sv_snapShotDuelCull;
 
 cvar_t	*sv_pingFix;

@@ -1021,6 +1021,9 @@ void SV_Init (void) {
 	sv_maxOOBRateIP = Cvar_Get("sv_maxOOBRateIP", "1", CVAR_ARCHIVE, "Maximum rate of handling incoming server commands per IP address" );
 	sv_autoWhitelist = Cvar_Get("sv_autoWhitelist", "1", CVAR_ARCHIVE, "Save player IPs to allow them using server during DOS attack" );
 
+	sv_demoPreRecord = Cvar_Get("sv_demoPreRecord", "15000", CVAR_ARCHIVE, "If not 0, how many milliseconds of past packets should be stored so demos can be retroactively recorded for that duration?");
+	sv_demoPreRecordKeyframeDistance = Cvar_Get("sv_demoPreRecordKeyframeDistance", "5000", CVAR_ARCHIVE, "A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.");
+
 	sv_snapShotDuelCull = Cvar_Get("sv_snapShotDuelCull", "1", CVAR_NONE, "Snapshot-based duel isolation");
 
 	sv_pingFix = Cvar_Get("sv_pingFix", "1", CVAR_ARCHIVE_ND, "Improved scoreboard client ping calculation");
