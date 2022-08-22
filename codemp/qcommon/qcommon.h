@@ -189,7 +189,7 @@ typedef struct {
 typedef struct {
 	bufferedMsg_t msg;
 	int msgNum; // Message number
-	int time; // We don't want to wait infinitely for old messages to arrive.
+	int time; // So we can discard very old buffered messages. Or for clientside recording, so we don't have to wait infinitely for old messages to arrive (which they never may).
 	//qboolean containsFullSnapshot; // Doesn't matter for serverside pre-Recording because we have the keyframes. Comment back in for clientside buffered recording.
 	qboolean isKeyframe; // Is a gamestate message as typical for writing at the start of demos.
 } bufferedMessageContainer_t;
