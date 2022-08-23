@@ -845,6 +845,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	}
 	else { // Pre-recording disabled. Clear buffer to prevent unexpected behavior if it is turned back on.
 		demoPreRecordBuffer[client - svs.clients].clear();
+		client->demo.preRecord.lastKeyframeTime = -sv_demoPreRecordKeyframeDistance->integer*2; // Make sure that turning pre-recording on again will immediately cause creation of a keyframe
 	}
 
 
