@@ -824,10 +824,9 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			client->demo.preRecord.keyframeWaiting = qtrue;
 			client->demo.preRecord.lastKeyframeTime = sv.time;
 		}
-	}
 
-	// Clean up pre-record buffer, whether preRecord is enabled or not (because it might have just been disabled)
-	{
+		// Clean up pre-record buffer
+		// 
 		// The goal is to always maintain *at least* sv_demoPreRecord milliseconds of buffer. Rather more than less. 
 		// So we find the last keyframe that is older than sv_demoPreRecord milliseconds (or just that old) and then delete everything *before* it.
 		demoPreRecordBufferIt lastTooOldKeyframe;
@@ -841,9 +840,13 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		if (lastTooOldKeyframeFound) {
 			// The lastTooOldKeyframe itself won't be erased because .erase()'s second parameter is not inclusive, 
 			// aka it deletes up to that element, but not that element itself.
-			demoPreRecordBuffer[client - svs.clients].erase(demoPreRecordBuffer[client - svs.clients].begin(),lastTooOldKeyframe);
+			demoPreRecordBuffer[client - svs.clients].erase(demoPreRecordBuffer[client - svs.clients].begin(), lastTooOldKeyframe);
 		}
 	}
+	else { // Pre-recording disabled. Clear buffer to prevent unexpected behavior if it is turned back on.
+		demoPreRecordBuffer[client - svs.clients].clear();
+	}
+
 
 	// bots need to have their snapshots built, but
 	// they query them directly without needing to be sent
