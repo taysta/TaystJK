@@ -4331,7 +4331,7 @@ shader_t *FinishShader( void )
 			}
 
 			// this will be a copy of the vk_pipeline[0] but with faceculling disabled
-			pStage->vk_2d_pipeline = VK_NULL_HANDLE;
+			pStage->vk_2d_pipeline = NULL;
 		}
 	}
 
