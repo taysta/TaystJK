@@ -954,6 +954,23 @@ void vk_create_image( image_t *image, int width, int height, int mip_levels ) {
 	VK_SET_OBJECT_NAME( image->descriptor_set, image->imgName, VK_DEBUG_REPORT_OBJECT_TYPE_DESCRIPTOR_SET_EXT );
 }
 
+static void vk_destroy_image_resources( VkImage *image, VkImageView *imageView )
+{
+	if ( image != NULL ) {
+		if ( *image != VK_NULL_HANDLE ) {
+			qvkDestroyImage( vk.device, *image, NULL );
+			*image = VK_NULL_HANDLE;
+		}
+	}
+	if ( imageView != NULL ) {
+		if ( *imageView != VK_NULL_HANDLE ) {
+			qvkDestroyImageView( vk.device, *imageView, NULL );
+			*imageView = VK_NULL_HANDLE;
+		}
+	}
+}
+
+
 void vk_delete_textures( void ) {
 
 	image_t *img;
@@ -963,13 +980,9 @@ void vk_delete_textures( void ) {
 
 	for (i = 0; i < tr.numImages; i++) {
 		img = tr.images[i];
+		vk_destroy_image_resources( &img->handle, &img->view );
+
 		// img->descriptor will be released with pool reset
-		if (img->handle != VK_NULL_HANDLE) {
-			qvkDestroyImage(vk.device, img->handle, NULL);
-			qvkDestroyImageView(vk.device, img->view, NULL);
-		}
-		img->handle = VK_NULL_HANDLE;
-		img->view = VK_NULL_HANDLE;
 	}
 
 	Com_Memset(tr.images, 0, sizeof(tr.images));

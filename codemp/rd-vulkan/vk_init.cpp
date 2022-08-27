@@ -565,8 +565,7 @@ __cleanup:
 		qvkDestroyInstance(vk.instance, NULL);
 
 	Com_Memset(&vk, 0, sizeof(vk));
+	Com_Memset(&vk_world, 0, sizeof(vk_world));
 
 	vk_deinit_library();
-
-	vk.active = qfalse;
 }
