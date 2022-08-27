@@ -1664,6 +1664,11 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 				else
 				{
 					shader.portalRange = atof(token);
+
+					if ( shader.portalRange < 0.001f )
+						shader.portalRangeR = 0.0f;
+					else
+						shader.portalRangeR = 1.0f / shader.portalRange;
 				}
 			}
 			else

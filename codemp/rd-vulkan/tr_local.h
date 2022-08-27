@@ -579,6 +579,7 @@ typedef struct shader_s {
 	fogParms_t	*fogParms;
 
 	float		portalRange;						// distance to fog out at
+	float		portalRangeR;
 
 	int			multitextureEnv;					// 0, GL_MODULATE, GL_ADD (FIXME: put in stage)
 
