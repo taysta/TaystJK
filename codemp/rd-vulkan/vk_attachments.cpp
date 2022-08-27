@@ -157,7 +157,7 @@ static void vk_alloc_attachment_memory( void )
             attachments[i].access_flags,
             attachments[i].image_layout,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-            VK_NULL_HANDLE, VK_NULL_HANDLE
+            NULL, NULL
         );
     }
     vk_end_command_buffer(command_buffer);

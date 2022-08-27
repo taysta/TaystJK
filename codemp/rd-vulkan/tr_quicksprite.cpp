@@ -37,7 +37,7 @@ CQuickSpriteSystem SQuickSprite;
 //////////////////////////////////////////////////////////////////////
 
 CQuickSpriteSystem::CQuickSpriteSystem() :
-	vk_pipeline(VK_NULL_HANDLE),
+	vk_pipeline(NULL),
 	mTexBundle(NULL),
 	mFogIndex(-1),
 	mUseFog(qfalse)

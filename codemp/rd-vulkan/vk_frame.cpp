@@ -864,7 +864,8 @@ void vk_begin_screenmap_render_pass( void )
     vk_record_image_layout_transition(vk.cmd->command_buffer, vk.screenMap.color_image, 
         VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED, 
         VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, VK_NULL_HANDLE, VK_NULL_HANDLE);
+        VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
+        NULL, NULL);
 
     vk.renderPassIndex = RENDER_PASS_SCREENMAP;
 
@@ -1368,7 +1369,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             srcImageAccess, srcImageLayout,
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-            VK_NULL_HANDLE, VK_NULL_HANDLE);
+            NULL, NULL);
     }
 
     vk_record_image_layout_transition(command_buffer, dstImage,
@@ -1376,7 +1377,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         0, VK_IMAGE_LAYOUT_UNDEFINED,
         VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-        VK_NULL_HANDLE, VK_NULL_HANDLE);
+        NULL, NULL);
 
     // end_command_buffer( command_buffer );
 
@@ -1507,7 +1508,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             srcImageAccess, srcImageLayout,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-            VK_NULL_HANDLE, VK_NULL_HANDLE);
+            NULL, NULL);
 
         vk_end_command_buffer(command_buffer);
     }

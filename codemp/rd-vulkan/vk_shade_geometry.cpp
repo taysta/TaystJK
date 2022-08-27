@@ -1500,7 +1500,7 @@ void RB_StageIteratorGeneric( void )
 
 		// for 2D flipped images
 		if ( backEnd.projection2D ) {
-			if ( pStage->vk_2d_pipeline == VK_NULL_HANDLE ) {
+			if ( pStage->vk_2d_pipeline == NULL ) {
 				vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
 
 				// use an excisting pipeline with the same def or create a new one.

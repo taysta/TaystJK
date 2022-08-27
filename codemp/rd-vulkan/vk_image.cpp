@@ -322,10 +322,10 @@ void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image,
 	barrier.subresourceRange.baseArrayLayer = 0;
 	barrier.subresourceRange.layerCount = VK_REMAINING_ARRAY_LAYERS;
 
-	if ( src_stage_mask == VK_NULL_HANDLE ) 
+	if ( src_stage_mask == NULL ) 
 		src_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
-	if ( dst_stage_mask == VK_NULL_HANDLE ) 
+	if ( dst_stage_mask == NULL ) 
 		dst_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
 	qvkCmdPipelineBarrier(cmdBuf, src_stage_mask, dst_stage_mask, 0, 0, NULL, 0, NULL, 1, &barrier);
@@ -692,14 +692,14 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 0, 
 		VK_IMAGE_LAYOUT_UNDEFINED, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		VK_NULL_HANDLE, VK_NULL_HANDLE);
+		NULL, NULL);
 
 	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
 
 	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT, 
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_SHADER_READ_BIT, 
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		VK_NULL_HANDLE, VK_NULL_HANDLE);
+		NULL, NULL);
 
 	vk_end_command_buffer(command_buffer);
 
