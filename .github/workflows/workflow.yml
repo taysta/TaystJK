@@ -30,9 +30,9 @@ jobs:
         arch: [x86, x64]
         include:
           # - arch: arm64
-          #   platform: ARM64
-          #   suffix: .arm64
-          #   pkg_suffix: arm64
+          #  platform: ARM64
+          #  suffix: .arm64
+          #  pkg_suffix: arm64
 
           - arch: x86
             platform: Win32
@@ -181,51 +181,27 @@ jobs:
     needs: [vs2019, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
-          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-x86.zip  ./windows-x86/*
-          7z a -r EternalJK-windows-x84_64.zip  ./windows-x64/*
-          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
+          7z a -r EternalJK-linux-x86.zip         ./linux-x86/JediAcademy/*
+          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/JediAcademy/*
+          7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
+          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/JediAcademy/*
 
-  update-release:
-    if: ${{ github.event_name == 'release' }}
-    needs: [vs2019, ubuntu-x86, macos-x86]
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - artifacts: ./linux-x86/*
-            artifact_name: EternalJK-linux-x86.zip
-
-          - artifacts: ./linux-x86_64/*
-            artifact_name: EternalJK-linux-x86_64.zip
-
-          - artifacts: ./windows-x86/*
-            artifact_name: EternalJK-windows-x86.zip
-
-          - artifacts: ./windows-x64/*
-            artifact_name: EternalJK-windows-x86_64.zip
-
-          - artifacts: ./macos-x86_64/*
-            artifact_name: EternalJK-macos-x86_64.zip
-
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-
-      - name: Create archive
-        run: 7z a -r ${{ matrix.artifact_name }} ${{ matrix.artifacts }}
-
-      - name: Upload archive
-        uses: "svenstaro/upload-release-action@v2"
+      - name: Create latest build
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file: ${{ matrix.artifact_name }}
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: Latest Build
+          files: |
+            *.zip
