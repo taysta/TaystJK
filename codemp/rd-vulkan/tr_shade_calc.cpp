@@ -128,7 +128,7 @@ RB_CalcDeformVertexes
 
 ========================
 */
-void RB_CalcDeformVertexes( deformStage_t *ds )
+static void RB_CalcDeformVertexes( deformStage_t *ds )
 {
 	int i;
 	vec3_t	offset;
@@ -179,7 +179,7 @@ RB_CalcDeformNormals
 Wiggle the normals for wavy environment mapping
 =========================
 */
-void RB_CalcDeformNormals( deformStage_t *ds ) {
+static void RB_CalcDeformNormals( deformStage_t *ds ) {
 	int i;
 	float	scale;
 	float	*xyz = ( float * ) tess.xyz;
@@ -211,7 +211,7 @@ RB_CalcBulgeVertexes
 
 ========================
 */
-void RB_CalcBulgeVertexes( deformStage_t *ds )
+static void RB_CalcBulgeVertexes( deformStage_t *ds )
 {
 	//Old bulge code:
 	/*
@@ -275,7 +275,6 @@ void RB_CalcBulgeVertexes( deformStage_t *ds )
 	}
 }
 
-
 /*
 ======================
 RB_CalcMoveVertexes
@@ -283,7 +282,7 @@ RB_CalcMoveVertexes
 A deformation that can move an entire surface along a wave path
 ======================
 */
-void RB_CalcMoveVertexes( deformStage_t *ds ) {
+static void RB_CalcMoveVertexes( deformStage_t *ds ) {
 	int			i;
 	float		*xyz;
 	float		*table;
@@ -305,7 +304,6 @@ void RB_CalcMoveVertexes( deformStage_t *ds ) {
 	}
 }
 
-
 /*
 =============
 DeformText
@@ -313,7 +311,7 @@ DeformText
 Change a polygon into a bunch of text polygons
 =============
 */
-void DeformText( const char *text ) {
+static void DeformText( const char *text ) {
 	int		i;
 	vec3_t	origin, width, height;
 	int		len;
@@ -853,14 +851,14 @@ doesn't fit our shader data.
 ========================
 */
 void RB_CalcFogTexCoords( float *st ) {
-	int			i;
-	float		*v;
-	float		s, t;
-	float		eyeT;
-	qboolean	eyeOutside;
-	fog_t		*fog;
-	vec3_t		localVec;
-	vec4_t		fogDistanceVector, fogDepthVector;
+	int				i;
+	float			*v;
+	float			s, t;
+	float			eyeT;
+	qboolean		eyeOutside;
+	const fog_t		*fog;
+	vec3_t			localVec;
+	vec4_t			fogDistanceVector, fogDepthVector;
 
 	fog = tr.world->fogs + tess.fogNum;
 

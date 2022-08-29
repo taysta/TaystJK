@@ -362,9 +362,9 @@ surfaceparm <name>
 ===============
 */
 static void ParseSurfaceParm( const char **text ) {
-	char	*token;
-	int		numInfoParms = sizeof(infoParms) / sizeof(infoParms[0]);
-	int		i;
+	const char	*token;
+	int			numInfoParms = sizeof(infoParms) / sizeof(infoParms[0]);
+	int			i;
 
 	token = COM_ParseExt(text, qfalse);
 	for (i = 0; i < numInfoParms; i++) {
@@ -886,8 +886,8 @@ ParseVector
 ===============
 */
 qboolean ParseVector( const char **text, int count, float *v ) {
-	char	*token;
-	int		i;
+	const char	*token;
+	int			i;
 
 	// FIXME: spaces are currently required after parens, should change parseext...
 	token = COM_ParseExt(text, qfalse);
@@ -1150,7 +1150,7 @@ ParseWaveForm
 */
 static void ParseWaveForm( const char **text, waveForm_t *wave )
 {
-	char *token;
+	const char *token;
 
 	token = COM_ParseExt(text, qfalse);
 	if (token[0] == 0)
@@ -1664,6 +1664,11 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 				else
 				{
 					shader.portalRange = atof(token);
+
+					if ( shader.portalRange < 0.001f )
+						shader.portalRangeR = 0.0f;
+					else
+						shader.portalRangeR = 1.0f / shader.portalRange;
 				}
 			}
 			else
@@ -1885,7 +1890,7 @@ deformVertexes text[0-7]
 ===============
 */
 static void ParseDeform( const char **text ) {
-	char			*token;
+	const char		*token;
 	deformStage_t	*ds;
 
 	token = COM_ParseExt(text, qfalse);
@@ -2034,13 +2039,16 @@ skyParms <outerbox> <cloudheight> <innerbox>
 ===============
 */
 static void ParseSkyParms( const char **text ) {
-	char		*token;
-	const char	*suf[6] = { "rt", "bk", "lf", "ft", "up", "dn" };
-	char		pathname[MAX_QPATH];
-	int			i;
-	imgFlags_t	imgFlags;
+	const char			*token;
+	static const char	*suf[6] = { "rt", "bk", "lf", "ft", "up", "dn" };
+	char				pathname[MAX_QPATH];
+	int					i;
+	imgFlags_t			imgFlags;
 
 	imgFlags = IMGFLAG_MIPMAP | IMGFLAG_PICMIP;
+	if (shader.noTC) {
+		imgFlags |= IMGFLAG_NO_COMPRESSION;
+	}
 
 	shader.sky = (skyParms_t*)Hunk_Alloc(sizeof(skyParms_t), h_low);
 
@@ -2107,7 +2115,7 @@ ParseSort
 =================
 */
 static void ParseSort( const char **text ) {
-	char	*token;
+	const char	*token;
 
 	token = COM_ParseExt(text, qfalse);
 	if (token[0] == 0) {
@@ -2754,7 +2762,7 @@ qhandle_t RE_RegisterShaderNoMip( const char *name )
 	return sh->index;
 }
 
-int COM_CompressShader( char *data_p )
+static int COM_CompressShader( char *data_p )
 {
 	char *in, *out;
 	int c;
@@ -2865,101 +2873,173 @@ a single large text block that can be scanned for shader names
 #define	MAX_SHADER_FILES	4096
 static void ScanAndLoadShaderFiles( void )
 {
-    char **shaderFiles;
-    char *buffers[MAX_SHADER_FILES];
-    const char *p;
-    char *pw;
-    int numShaderFiles;
-    int i;
-    const char *token, *oldp, *hashMem;
-    int shaderTextHashTableSizes[MAX_SHADERTEXT_HASH], hash, size;
-    int sum;
+	char		**shaderFiles;
+	char		*buffers[MAX_SHADER_FILES];
+	const char	*p;
+	int			numShaderFiles;
+	int			i;
+	const char	*token, *hashMem;
+	char		*oldp, *textEnd;
+	int			shaderTextHashTableSizes[MAX_SHADERTEXT_HASH], hash, size;
+	char		shaderName[MAX_QPATH];
+	int			shaderLine;
+	long		sum = 0, summand;
 
-    // scan for shader files
-    shaderFiles = ri.FS_ListFiles( "shaders", ".shader", &numShaderFiles );
+	// scan for shader files
+	shaderFiles = ri.FS_ListFiles("shaders", ".shader", &numShaderFiles);
+
+	if (!shaderFiles || !numShaderFiles)
+	{
+		ri.Error(ERR_FATAL, "ERROR: no shader files found");
+		return;
+	}
+
+	if (numShaderFiles > MAX_SHADER_FILES) {
+		numShaderFiles = MAX_SHADER_FILES;
+	}
+
+	// load and parse shader files
+	for (i = 0; i < numShaderFiles; i++)
+	{
+		char filename[MAX_QPATH];
+
+		Com_sprintf(filename, sizeof(filename), "shaders/%s", shaderFiles[i]);
+		vk_debug("...loading '%s'\n", filename);
+		summand = ri.FS_ReadFile(filename, (void**)&buffers[i]);
+
+		if (!buffers[i]) {
+			vk_debug("Couldn't load %s", filename);
+		}
+
+		// Do a simple check on the shader structure in that file to make sure one bad shader file cannot fuck up all other shaders.
+		p = buffers[i];
+		COM_BeginParseSession(filename);
+		while (1)
+		{
+			token = COM_ParseExt(&p, qtrue);
+
+			if (!*token)
+				break;
+
+			Q_strncpyz(shaderName, token, sizeof(shaderName));
+			shaderLine = COM_GetCurrentParseLine();
+
+			if (token[0] == '#')
+			{
+				vk_debug("WARNING: Deprecated shader comment \"%s\" on line %d in file %s.  Ignoring line.\n",
+					shaderName, shaderLine, filename);
+				SkipRestOfLine(&p);
+				continue;
+			}
+
+			token = COM_ParseExt(&p, qtrue);
+			if (token[0] != '{' || token[1] != '\0')
+			{
+				vk_debug("WARNING: Ignoring shader file %s. Shader \"%s\" on line %d missing opening brace",
+					filename, shaderName, shaderLine);
+				if (token[0])
+				{
+					vk_debug(" (found \"%s\" on line %d)", token, COM_GetCurrentParseLine());
+				}
+				vk_debug(".\n");
+				ri.FS_FreeFile(buffers[i]);
+				buffers[i] = NULL;
+				break;
+			}
+
+			if (!SkipBracedSection(&p, 1))
+			{
+				vk_debug("WARNING: Ignoring shader file %s. Shader \"%s\" on line %d missing closing brace.\n",
+					filename, shaderName, shaderLine);
+				ri.FS_FreeFile(buffers[i]);
+				buffers[i] = NULL;
+				break;
+			}
+		}
 
 
-    if ( numShaderFiles > MAX_SHADER_FILES ) {
-        ri.Printf( PRINT_WARNING, "WARNING: too many shader files, truncating...\n" );
-        numShaderFiles = MAX_SHADER_FILES;
-    }
+		if (buffers[i])
+			sum += summand;
+	}
 
-    if (numShaderFiles == 0) {
-        ri.Error( ERR_FATAL, "ERROR: no shader files found" );
-    }
+	// build single large buffer
+	s_shaderText = (char*)ri.Hunk_Alloc(sum + numShaderFiles * 2, h_low);
+	s_shaderText[0] = '\0';
+	textEnd = s_shaderText;
 
-    assert(numShaderFiles > 0);
-    sum = 0;
-    // load and parse shader files
-    for ( i = 0; i < numShaderFiles; i++)
-    {
-        char filename[MAX_QPATH];
+	// free in reverse order, so the temp files are all dumped
+	for (i = numShaderFiles - 1; i >= 0; i--)
+	{
+		if (!buffers[i])
+			continue;
 
-        Com_sprintf( filename, sizeof( filename ), "%s/%s", "shaders", shaderFiles[i] );
-        ri.Printf( PRINT_ALL, "...loading '%s'\n", filename );
-        ri.FS_ReadFile( filename, (void **)&buffers[i] );
-        if ( !buffers[i] ) {
-            ri.Error( ERR_DROP, "Couldn't load %s", filename );
-        }
-        sum += COM_Compress(buffers[i]);
-    }
+		strcat(textEnd, buffers[i]);
+		strcat(textEnd, "\n");
+		textEnd += strlen(textEnd);
+		ri.FS_FreeFile(buffers[i]);
+	}
 
-    // build single large buffer
-    s_shaderText = (char *)ri.Hunk_Alloc( sum + numShaderFiles + 1, h_low );
-    pw = s_shaderText;
-    for ( i = 0; i < numShaderFiles ; i++ ) {
-        strcat( pw, buffers[i] );
-        strcat( pw, "\n" );
-        pw += strlen( pw );
-        ri.FS_FreeFile( (void*) buffers[i] );
-    }
-    assert((int)strlen(s_shaderText) == sum + numShaderFiles);
+	COM_CompressShader(s_shaderText);
 
-    // free up memory
-    ri.FS_FreeFileList( shaderFiles );
+	// free up memory
+	ri.FS_FreeFileList(shaderFiles);
 
-    Com_Memset(shaderTextHashTableSizes, 0, sizeof(shaderTextHashTableSizes));
-    size = 0;
-    p = s_shaderText;
+	memset(shaderTextHashTableSizes, 0, sizeof(shaderTextHashTableSizes));
+	size = 0;
 
-    while ( 1 ) {
-        // look for label
-        token = COM_ParseExt( &p, qtrue );
-        if ( token[0] == 0 ) {
-            break;
-        }
+	p = s_shaderText;
+	// look for shader names
+	while (1) {
+		token = COM_ParseExt(&p, qtrue);
+		if (token[0] == 0) {
+			break;
+		}
 
-        hash = generateHashValue(token, MAX_SHADERTEXT_HASH);
-        shaderTextHashTableSizes[hash]++;
-        size++;
-        SkipBracedSection(&p, 0);
-    }
+		if (token[0] == '#')
+		{
+			SkipRestOfLine(&p);
+			continue;
+		}
 
-    size += MAX_SHADERTEXT_HASH;
+		hash = generateHashValue(token, MAX_SHADERTEXT_HASH);
+		shaderTextHashTableSizes[hash]++;
+		size++;
+		SkipBracedSection(&p, 0);
+	}
 
-    hashMem = (char *)ri.Hunk_Alloc( size * sizeof(char *), h_low );
+	size += MAX_SHADERTEXT_HASH;
 
-    for (i = 0; i < MAX_SHADERTEXT_HASH; i++) {
-        shaderTextHashTable[i] = (const char **) hashMem;
-        hashMem = ((char *) hashMem) + ((shaderTextHashTableSizes[i] + 1) * sizeof(char *));
-    }
+	hashMem = (char*)ri.Hunk_Alloc(size * sizeof(char*), h_low);
 
-    Com_Memset(shaderTextHashTableSizes, 0, sizeof(shaderTextHashTableSizes));
+	for (i = 0; i < MAX_SHADERTEXT_HASH; i++) {
+		shaderTextHashTable[i] = (const char**)hashMem;
+		hashMem = ((char*)hashMem) + ((shaderTextHashTableSizes[i] + 1) * sizeof(char*));
+	}
 
-    // look for label
-    p = s_shaderText;
-    while ( 1 ) {
-        oldp = p;
-        token = COM_ParseExt( &p, qtrue );
-        if ( token[0] == 0 ) {
-            break;
-        }
+	memset(shaderTextHashTableSizes, 0, sizeof(shaderTextHashTableSizes));
 
-        hash = generateHashValue(token, MAX_SHADERTEXT_HASH);
-        shaderTextHashTable[hash][shaderTextHashTableSizes[hash]++] = oldp;
+	p = s_shaderText;
+	// look for shader names
+	while (1) {
+		oldp = (char*)p;
+		token = COM_ParseExt(&p, qtrue);
+		if (token[0] == 0) {
+			break;
+		}
 
-        SkipBracedSection(&p, 0);
-    }
+		if (token[0] == '#')
+		{
+			SkipRestOfLine(&p);
+			continue;
+		}
+
+		hash = generateHashValue(token, MAX_SHADERTEXT_HASH);
+		shaderTextHashTable[hash][shaderTextHashTableSizes[hash]++] = oldp;
+
+		SkipBracedSection(&p, 0);
+	}
+
+	return;
 }
 
 /*
@@ -2991,42 +3071,6 @@ static void InitShader( const char *name, const int *lightmapIndex, const byte *
 	}
 
 	shader.contentFlags = CONTENTS_SOLID | CONTENTS_OPAQUE;
-}
-
-qhandle_t RE_RegisterShaderFromImage( const char *name, const int *lightmapIndex, byte *styles, image_t *image, qboolean mipRawImage )
-{
-	int hash;
-	shader_t *sh;
-
-	hash = generateHashValue(name, FILE_HASH_SIZE);
-
-	//
-	// see if the shader is already loaded
-	//
-	sh = hashTable[hash];
-	while (sh)
-	{
-		// NOTE: if there was no shader or image available with the name strippedName
-		// then a default shader is created with lightmapIndex == LIGHTMAP_NONE, so we
-		// have to check all default shaders otherwise for every call to R_FindShader
-		// with that same strippedName a new default shader is created.
-		if (IsShader(sh, name, lightmapIndex, styles))
-		{
-			return sh->index;
-		}
-
-		sh = sh->next;
-	}
-
-	InitShader(name, lightmapIndex, styles);
-
-	//
-	// create the default shading commands
-	//
-	R_CreateDefaultShadingCmds(image);
-
-	sh = FinishShader();
-	return sh->index;
 }
 
 /*
@@ -4292,7 +4336,7 @@ shader_t *FinishShader( void )
 			}
 
 			// this will be a copy of the vk_pipeline[0] but with faceculling disabled
-			pStage->vk_2d_pipeline = VK_NULL_HANDLE;
+			pStage->vk_2d_pipeline = NULL;
 		}
 	}
 

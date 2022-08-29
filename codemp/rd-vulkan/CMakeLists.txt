@@ -112,32 +112,10 @@ source_group("rd-common" FILES ${MPVulkanRendererRdCommonFiles})
 set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererRdCommonFiles})
 
 set(MPVulkanRendererVulkanAssets
-	"${MPDir}/rd-vulkan/vulkan/GLSL.std.450.h"
-	"${MPDir}/rd-vulkan/vulkan/libspirv.h"
-	"${MPDir}/rd-vulkan/vulkan/spirv.h"
-	"${MPDir}/rd-vulkan/vulkan/spirv.hpp"
-	"${MPDir}/rd-vulkan/vulkan/spirv.hpp11"
-	"${MPDir}/rd-vulkan/vulkan/spirv.json"
-	"${MPDir}/rd-vulkan/vulkan/spirv.lua"
-	"${MPDir}/rd-vulkan/vulkan/spirv.py"
-	"${MPDir}/rd-vulkan/vulkan/vk_dispatch_table_helper.h"
-	"${MPDir}/rd-vulkan/vulkan/vk_enum_string_helper.h"
-	"${MPDir}/rd-vulkan/vulkan/vk_icd.h"
-	"${MPDir}/rd-vulkan/vulkan/vk_layer.h"
-	"${MPDir}/rd-vulkan/vulkan/vk_layer_dispatch_table.h"
 	"${MPDir}/rd-vulkan/vulkan/vk_platform.h"
-	"${MPDir}/rd-vulkan/vulkan/vk_sdk_platform.h"
 	"${MPDir}/rd-vulkan/vulkan/vulkan.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan.hpp"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_android.h"
 	"${MPDir}/rd-vulkan/vulkan/vulkan_core.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_ios.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_macos.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_mir.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_vi.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_wayland.h"
 	"${MPDir}/rd-vulkan/vulkan/vulkan_win32.h"
-	"${MPDir}/rd-vulkan/vulkan/vulkan_xcb.h"
 	"${MPDir}/rd-vulkan/vulkan/vulkan_xlib.h"
 	"${MPDir}/rd-vulkan/vulkan/vulkan_xlib_xrandr.h")
 source_group("renderer\\vulkan" FILES ${MPVulkanRendererVulkanAssets})

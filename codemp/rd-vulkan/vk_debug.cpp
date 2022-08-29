@@ -126,7 +126,7 @@ void R_ShaderList_f( void ) {
 Draws triangle outlines for debugging
 ================
 */
-void DrawTris( shaderCommands_t *pInput){
+void DrawTris( const shaderCommands_t *pInput){
     uint32_t pipeline;
 
 	if (tess.numIndexes == 0)
@@ -167,7 +167,7 @@ void DrawTris( shaderCommands_t *pInput){
 Draws vertex normals for debugging
 ================
 */
-void DrawNormals( shaderCommands_t *input)
+void DrawNormals( const shaderCommands_t *input)
 {
 	int		i;
 

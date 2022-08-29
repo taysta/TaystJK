@@ -112,7 +112,6 @@ static void Transpose( int width, int height, drawVert_t ctrl[MAX_GRID_SIZE][MAX
 
 }
 
-
 /*
 =================
 MakeMeshNormals

@@ -891,23 +891,16 @@ void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, 
 		break;
 	case AGEN_PORTAL:
 	{
-		unsigned char alpha;
-
 		for (i = 0; i < tess.numVertexes; i++)
 		{
+			unsigned char alpha;
 			float len;
 			vec3_t v;
 
 			VectorSubtract(tess.xyz[i], backEnd.viewParms.ori.origin, v);
-			len = VectorLength(v);
-
-			len /= tess.shader->portalRange;
-
-			if (len < 0)
-			{
-				alpha = 0;
-			}
-			else if (len > 1)
+			len = VectorLength( v ) * tess.shader->portalRangeR;
+			
+			if ( len > 1 )
 			{
 				alpha = 0xff;
 			}
@@ -1500,7 +1493,7 @@ void RB_StageIteratorGeneric( void )
 
 		// for 2D flipped images
 		if ( backEnd.projection2D ) {
-			if ( pStage->vk_2d_pipeline == VK_NULL_HANDLE ) {
+			if ( pStage->vk_2d_pipeline == NULL ) {
 				vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
 
 				// use an excisting pipeline with the same def or create a new one.

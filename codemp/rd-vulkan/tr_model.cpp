@@ -20,9 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===========================================================================
 */
-
 // tr_models.c -- model loading and caching
-
 
 #include "tr_local.h"
 #include "qcommon/disablewarnings.h"
@@ -54,8 +52,6 @@ static	modelHash_t 		*mhHashTable[FILE_HASH_SIZE];
 /*
 Ghoul2 Insert End
 */
-
-
 // This stuff looks a bit messy, but it's kept here as black box, and nothing appears in any .H files for other
 //	modules to worry about. I may make another module for this sometime.
 //
@@ -106,7 +102,6 @@ void RE_RegisterModels_StoreShaderRequest( const char *psModelFileName, const ch
 		ModelBin.ShaderRegisterData.push_back( StringOffsetAndShaderIndexDest_t( iNameOffset,iPokeOffset) );
 	}
 }
-
 
 static const byte FakeGLAFile[] =
 {
@@ -185,7 +180,6 @@ qboolean RE_RegisterModels_GetDiskFile( const char *psModelFileName, void **ppvB
 		return qtrue;
 	}
 }
-
 
 // if return == true, no further action needed by the caller...
 //
@@ -411,8 +405,6 @@ qboolean RE_RegisterModels_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLev
 	return bAtLeastoneModelFreed;
 }
 
-
-
 // scan through all loaded models and see if their PAK checksums are still valid with the current pure PAK lists,
 //	dump any that aren't (so people can't cheat by using models with huge spikes that show through walls etc)
 //
@@ -488,7 +480,6 @@ void RE_RegisterModels_Info_f( void )
 	ri.Printf( PRINT_ALL, "%d bytes total (%.2fMB)\n",iTotalBytes, (float)iTotalBytes / 1024.0f / 1024.0f);
 }
 
-
 // (don't use ri->xxx functions since the renderer may not be running here)...
 //
 static void RE_RegisterModels_DeleteAll( void )
@@ -508,7 +499,6 @@ static void RE_RegisterModels_DeleteAll( void )
 		CachedModels->erase(itModel++);
 	}
 }
-
 
 // do not use ri->xxx functions in here, the renderer may not be running (ie. if on a dedicated server)...
 //
@@ -573,8 +563,6 @@ void RE_RegisterMedia_LevelLoadEnd( void )
 //	RE_InitDissolve();
 	ri.S_RestartMusic();
 }
-
-
 
 /*
 ** R_GetModelByHandle
@@ -1165,7 +1153,6 @@ fail:
 	return 0;
 }
 
-
 /*
 ====================
 RE_RegisterModel
@@ -1404,7 +1391,6 @@ fail:
 	return 0;
 }
 
-
 // wrapper function needed to avoid problems with mid-function returns so I can safely use this bool to tell the
 //	z_malloc-fail recovery code whether it's safe to ditch any model caches...
 //
@@ -1420,9 +1406,6 @@ qhandle_t RE_RegisterModel( const char *name )
 
 	return q;
 }
-
-
-
 
 /*
 =================
@@ -1615,7 +1598,6 @@ static qboolean R_LoadMD3 ( model_t *mod, int lod, void *buffer, const char *mod
 	return qtrue;
 }
 
-
 //=============================================================================
 /*
 ** RE_BeginRegistration
@@ -1690,8 +1672,6 @@ void R_ModelFree( void )
 	}
 }
 
-
-
 /*
 ================
 R_Modellist_f
@@ -1724,9 +1704,7 @@ void R_Modellist_f( void ) {
 #endif
 }
 
-
 //=============================================================================
-
 
 /*
 ================
@@ -1794,7 +1772,6 @@ int R_LerpTag( orientation_t *tag, qhandle_t handle, int startFrame, int endFram
 	return qtrue;
 }
 
-
 /*
 ====================
 R_ModelBounds
@@ -1826,5 +1803,3 @@ void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 	VectorCopy( frame->bounds[0], mins );
 	VectorCopy( frame->bounds[1], maxs );
 }
-
-
