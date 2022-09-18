@@ -2255,7 +2255,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 		}
 	}
 
-	Q_strncpyz(cosmeticString, va("%i", cosmetics), sizeof(cosmeticString));
+    Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
 }
 
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?

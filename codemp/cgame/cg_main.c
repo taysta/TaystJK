@@ -1615,6 +1615,29 @@ Ghoul2 Insert End
 		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
 		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
         cgs.media.cosmetics.mask		= trap->R_RegisterModel("models/players/hats/mask.md3");
+    	cgs.media.cosmetics.goose = trap->R_RegisterModel("models/players/hats/goose.md3");
+        cgs.media.cosmetics.fedora2 = trap->R_RegisterModel("models/players/hats/fedora2.md3");
+        cgs.media.cosmetics.fedora3 = trap->R_RegisterModel("models/players/hats/fedora3.md3");
+        cgs.media.cosmetics.fedora4 = trap->R_RegisterModel("models/players/hats/fedora4.md3");
+        cgs.media.cosmetics.headcrab = trap->R_RegisterModel("models/players/hats/headcrab.md3");
+    	cgs.media.cosmetics.vadercape = trap->R_RegisterModel("models/players/hats/vadercape.md3");
+    	cgs.media.cosmetics.yodacape = trap->R_RegisterModel("models/players/hats/yodacape.md3");
+    	cgs.media.cosmetics.horns = trap->R_RegisterModel("models/players/hats/horns.md3");
+    	cgs.media.cosmetics.metalhelm = trap->R_RegisterModel("models/players/hats/metalhelm.md3");
+    	cgs.media.cosmetics.afro = trap->R_RegisterModel("models/players/hats/afro.md3");
+    	cgs.media.cosmetics.ak47 = trap->R_RegisterModel("models/players/hats/ak47.md3");
+    	cgs.media.cosmetics.bucket = trap->R_RegisterModel("models/players/hats/bucket.md3");
+    	cgs.media.cosmetics.crowbar = trap->R_RegisterModel("models/players/hats/crowbar.md3");
+    	cgs.media.cosmetics.crown = trap->R_RegisterModel("models/players/hats/crown.md3");
+    	cgs.media.cosmetics.royalcape = trap->R_RegisterModel("models/players/hats/royalcape.md3");
+    	cgs.media.cosmetics.beard = trap->R_RegisterModel("models/players/hats/beard.md3");
+    	cgs.media.cosmetics.grogucape = trap->R_RegisterModel("models/players/hats/grogucape.md3");
+    	cgs.media.cosmetics.plaguemask = trap->R_RegisterModel("models/players/hats/plaguemask.md3");
+    	cgs.media.cosmetics.glasses = trap->R_RegisterModel("models/players/hats/glasses.md3");
+    	cgs.media.cosmetics.mario = trap->R_RegisterModel("models/players/hats/mario.md3");
+    	cgs.media.cosmetics.rpg = trap->R_RegisterModel("models/players/hats/rpg.md3");
+    	cgs.media.cosmetics.predator = trap->R_RegisterModel("models/players/hats/predatorhelm.md3");
+    	cgs.media.cosmetics.saiyan = trap->R_RegisterModel("models/players/hats/supersaiyan.md3");
 
     //jaPRO mod assets - end
 

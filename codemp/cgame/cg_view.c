@@ -2847,8 +2847,38 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 
 				trap->Cvar_VariableStringBuffer(yawString, yawBuf, sizeof(yawBuf));
 
-				if (atoi(yawBuf) != 140)
-					trap->Cvar_Set(yawString, "140");
+				if (atoi(yawBuf) != 0)
+					trap->Cvar_Set(yawString, "0");
+			}
+			if (cgs.restricts & RESTRICT_ANGLE && cg.xyspeed) {
+				char angleBuf[64];
+				char angleString[32] = { 0 };
+
+				angleString[0] = 'c';
+				angleString[1] = 'g';
+				angleString[2] = '_';
+				angleString[3] = 't';
+				angleString[4] = 'h';
+				angleString[5] = 'i';
+				angleString[6] = 'r';
+				angleString[7] = 'd';
+				angleString[8] = 'p';
+				angleString[9] = 'e';
+				angleString[10] = 'r';
+				angleString[11] = 's';
+				angleString[12] = 'o';
+				angleString[13] = 'n';
+				angleString[14] = 'a';
+				angleString[15] = 'n';
+				angleString[16] = 'g';
+				angleString[17] = 'l';
+				angleString[18] = 'e';
+				angleString[19] = '\0';
+
+				trap->Cvar_VariableStringBuffer(angleString, angleBuf, sizeof(angleBuf));
+
+				if (atoi(angleBuf) != 0)
+					trap->Cvar_Set(angleString, "0");
 			}
 		}
 	}

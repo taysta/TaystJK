@@ -1530,7 +1530,31 @@ static bitInfo_T cosmetics[] = {
 	{ "Kane's Kringe Kap" },
 	{ "Sombrero" },
 	{ "Top hat" },
-    { "Mask" }
+    { "Mask" }, //Combine A
+    { "Graduation cap" },
+    { "Goose" },
+    { "Black fedora" },
+    { "Blue fedora" },
+	{ "Pimp hat" },
+	{ "Headcrab" },
+	{ "Vader Cape" },//Combine B
+	{ "Shoulder Yoda" },//Combine B
+	{ "Horns" },
+	{ "Metal Helm" },
+	{ "Afro" },
+	{ "AK47" },//Combine B
+	{ "Bucket" },
+	{ "Crowbar" },//Combine B
+	{ "Crown" },
+	{ "Royal Cape" },//Combine B
+	{ "Beard" },//Combine A
+    { "Grogu" },//Combine B
+    { "Plague Mask" },//A
+    { "Glasses" },//A
+    { "Mario" },
+    { "Rocket Launcher" },//B
+    { "Predator" },
+    { "Super Saiyan" }
 };
 static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
@@ -1609,8 +1633,8 @@ static void CG_Cosmetics_f(void)
 	}
 	else {
 		char arg[8] = { 0 };
-		int index;
-//		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
+        unsigned int index;
+		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);
@@ -1620,15 +1644,44 @@ static void CG_Cosmetics_f(void)
 			return;
 		}
 
-		//Radio button all options for now
-		trap->Cvar_Set("cp_cosmetics", "0");
+        if (index != 7 && index != 9 && index != 14 && index != 15 && index != 19 && index != 21 && index != 23 && index != 24 && index != 25 && index != 26 && index != 27 && index != 29) { //Hats
+            //Toggle index, and make sure everything else in this group is turned off
+            unsigned int groupMask =
+                    (1 << 0) + (1 << 1) + (1 << 2) + (1 << 3) + (1 << 4) + (1 << 5) + (1 << 6) + (1 << 8) + (1 << 10) +
+                    (1 << 11) + (1 << 12) + (1 << 13) +
+                    (1 << 16) + (1 << 17) + (1 << 18) + (1 << 20) + (1 << 22) + (1 << 28) + (1 << 30) + (1 << 31);
+            unsigned int value = cp_cosmetics.integer;
 
-		if (!(cp_cosmetics.integer & (1 << index)))
-			trap->Cvar_Set("cp_cosmetics", va("%i", (1 << index)));
+            groupMask &= ~(1 << index); //Remove index from groupmask
+            value &= ~(groupMask); //Turn groupmask off
+            value ^= (1 << index); //Toggle index item
+            trap->Cvar_Set("cp_cosmetics", va("%i", value));
+        }
+        else if (index == 9 || index == 14 || index == 15 || index == 19 || index == 21 || index == 23 || index == 25 || index == 29) { //Capes
+            unsigned int groupMask =
+                    (1 << 9) + (1 << 14) + (1 << 15) + (1 << 19) + (1 << 21) + (1 << 23) + (1 << 25) + (1 << 29); //working
+            unsigned int value = cp_cosmetics.integer;
 
-		trap->Cvar_Update(&cp_cosmetics);
+            groupMask &= ~(1 << index); //Remove index from groupmask
+            value &= ~(groupMask); //Turn groupmask off
+            value ^= (1 << index); //Toggle index item
 
-		Com_Printf("%s %s^7\n", cosmetics[index].string, ((cp_cosmetics.integer & (1 << index))
+            trap->Cvar_Set("cp_cosmetics", va("%i", value));
+        }
+        else { //Masks
+            unsigned int groupMask = (1 << 7) + (1 << 24) + (1 << 26) + (1 << 27); //working
+            unsigned int value = cp_cosmetics.integer;
+
+            groupMask &= ~(1 << index); //Remove index from groupmask
+            value &= ~(groupMask); //Turn groupmask off
+            value ^= (1 << index); //Toggle index item
+
+            trap->Cvar_Set("cp_cosmetics", va("%i", value));
+        }
+
+        trap->Cvar_Update(&cp_cosmetics);
+
+            Com_Printf("%s %s^7\n", cosmetics[index].string, ((cp_cosmetics.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled"));
 	}
 }

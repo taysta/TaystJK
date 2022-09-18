@@ -1390,6 +1390,13 @@ const char *cg_stringEdVGSTable[MAX_CUSTOM_VGS_SOUNDS] = {
 	"VGS_TEAM_THANKS",
 	"VGS_TEAM_WAIT",
 	"VGS_TEAM_YES",
+    "VGS_MEME_FIXITNOW",
+    "VGS_MEME_TFISTHAT",
+    "VGS_MEME_BANHIM",
+    "VGS_MEME_OHSORRY",
+    "VGS_MEME_HUH",
+    "VGS_MEME_SURPRISE",
+    "VGS_MEME_YABLEWIT",
 	NULL
 };
 
@@ -1432,6 +1439,8 @@ static qboolean isGlobalVGS(const char *s) {
 		return qtrue;
 	if (!Q_stricmpn(s, "*taunt_", 7))
 		return qtrue;
+    if (!Q_stricmpn(s, "*meme_", 6))
+        return qtrue;
 	return qfalse;
 }
 

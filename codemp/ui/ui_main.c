@@ -3881,7 +3881,10 @@ static qboolean UI_VGS_Global_HandleKey(int key) {
 	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
 		item = Menu_FindItemByName(menu, "glb_08");
 	}
-	else {
+	else if ((key == A_LOW_M) || (key == A_CAP_M)) {
+		item = Menu_FindItemByName(menu, "meme");
+	}
+    else {
 		return (qfalse);
 	}
 
@@ -3985,6 +3988,48 @@ static qboolean UI_VGS_Taunt_HandleKey(int key) {
 	}
 	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
 		item = Menu_FindItemByName(menu, "tnt_05");
+	}
+	else {
+		return (qfalse);
+	}
+
+	if (item) {
+		Item_RunScript(item, item->action);
+	}
+
+	return (qtrue);
+}
+
+static qboolean UI_VGS_Meme_HandleKey(int key) {
+	menuDef_t* menu;
+	itemDef_t* item;
+
+	menu = Menu_GetFocused();
+
+	if (!menu) {
+		return (qfalse);
+	}
+
+	if ((key == A_LOW_F) || (key == A_CAP_F)) {
+		item = Menu_FindItemByName(menu, "meme_01");
+	}
+	else if ((key == A_LOW_T) || (key == A_CAP_T)) {
+		item = Menu_FindItemByName(menu, "meme_02");
+	}
+	else if ((key == A_LOW_B) || (key == A_CAP_B)) {
+		item = Menu_FindItemByName(menu, "meme_03");
+	}
+	else if ((key == A_LOW_O) || (key == A_CAP_O)) {
+		item = Menu_FindItemByName(menu, "meme_04");
+	}
+	else if ((key == A_LOW_H) || (key == A_CAP_H)) {
+		item = Menu_FindItemByName(menu, "meme_05");
+	}
+	else if ((key == A_LOW_S) || (key == A_CAP_S)) {
+		item = Menu_FindItemByName(menu, "meme_06");
+	}
+	else if ((key == A_LOW_Y) || (key == A_CAP_Y)) {
+		item = Menu_FindItemByName(menu, "meme_07");
 	}
 	else {
 		return (qfalse);
@@ -5239,6 +5284,8 @@ static qboolean UI_OwnerDrawHandleKey(int ownerDraw, int flags, float *special, 
 		return UI_VGS_Respond_HandleKey(key);
 	case UI_VGS_TAUNT:
 		return UI_VGS_Taunt_HandleKey(key);
+	case UI_VGS_MEME:
+		return UI_VGS_Meme_HandleKey(key);
 	case UI_VGS_ATTACK:
 		return UI_VGS_Attack_HandleKey(key);
 	case UI_VGS_DEFEND:

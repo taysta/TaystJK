@@ -420,6 +420,9 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
 	frustum = re->ext.GetFrustum();
 	while (brush) {
+
+        //Todo, find out if this is what slows shit down. Can we change PVS optimization?
+
 		for (int i = 0; i < brush->numFaces; ++i) {
 			// ensure in same PVS
 			qboolean inPVS = qfalse;

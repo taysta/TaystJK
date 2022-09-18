@@ -122,6 +122,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define RESTRICT_FLIPKICKBIND		(1<<7)	//
 #define RESTRICT_STRAFETRAIL		(1<<8)	//force plugin for racers
 #define RESTRICT_DO					(1<<9)	//force plugin for racers
+#define RESTRICT_ANGLE				(1<<10)	//force plugin for racers
 
 //Style playermodel stuff
 #define JAPRO_STYLE_FULLBRIGHT			(1<<0)
@@ -159,6 +160,30 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	JAPRO_COSMETIC_SOMBRERO	(1<<5)
 #define	JAPRO_COSMETIC_TOPHAT	(1<<6)
 #define	JAPRO_COSMETIC_MASK	    (1<<7)
+#define	JAPRO_COSMETIC_GRADCAP  (1<<8)
+#define	JAPRO_COSMETIC_GOOSE	(1<<9)
+#define	JAPRO_COSMETIC_FEDORA2  (1<<10)
+#define	JAPRO_COSMETIC_FEDORA3   (1<<11)
+#define	JAPRO_COSMETIC_FEDORA4   (1<<12)
+#define	JAPRO_COSMETIC_HEADCRAB  (1<<13)
+#define	JAPRO_COSMETIC_VADERCAPE  (1<<14)
+#define	JAPRO_COSMETIC_YODACAPE  (1<<15)
+#define	JAPRO_COSMETIC_HORNS	  (1<<16)
+#define	JAPRO_COSMETIC_METALHELM  (1<<17)
+#define	JAPRO_COSMETIC_AFRO		(1<<18)
+#define	JAPRO_COSMETIC_AK47		(1<<19)
+#define	JAPRO_COSMETIC_BUCKET	(1<<20)
+#define	JAPRO_COSMETIC_CROWBAR	(1<<21)
+#define	JAPRO_COSMETIC_CROWN	(1<<22)
+#define	JAPRO_COSMETIC_ROYALCAPE	(1<<23)
+#define	JAPRO_COSMETIC_BEARD	(1<<24)
+#define	JAPRO_COSMETIC_GROGUCAPE	(1<<25)
+#define	JAPRO_COSMETIC_PLAGUEMASK	(1<<26)
+#define	JAPRO_COSMETIC_GLASSES	(1<<27)
+#define	JAPRO_COSMETIC_MARIO		(1<<28)
+#define	JAPRO_COSMETIC_RPG		(1<<29)
+#define	JAPRO_COSMETIC_PREDATOR		(1<<30)
+#define	JAPRO_COSMETIC_SAIYAN		(1<<31)
 
 //#define JAPRO_CINFO_UNLAGGEDPUSHPULL (1<<19)	//push pull unlagged
 
@@ -1864,6 +1889,30 @@ typedef struct cgMedia_s {
 		qhandle_t	sombrero;
 		qhandle_t	tophat;
         qhandle_t	mask;
+        qhandle_t	gradcap;
+        qhandle_t	goose;
+        qhandle_t	fedora2;
+        qhandle_t	fedora3;
+        qhandle_t	fedora4;
+        qhandle_t	headcrab;
+        qhandle_t	vadercape;
+        qhandle_t	yodacape;
+        qhandle_t	horns;
+        qhandle_t	metalhelm;
+        qhandle_t	afro;
+        qhandle_t	ak47;
+        qhandle_t	bucket;
+        qhandle_t	crowbar;
+        qhandle_t	crown;
+        qhandle_t	royalcape;
+        qhandle_t	beard;
+        qhandle_t	grogucape;
+        qhandle_t	plaguemask;
+        qhandle_t	glasses;
+        qhandle_t	mario;
+        qhandle_t	rpg;
+        qhandle_t	predator;
+        qhandle_t	saiyan;
     } cosmetics;
 
 	//japro vgs

@@ -278,6 +278,13 @@ const char *bg_customVGSSoundNames[MAX_CUSTOM_VGS_SOUNDS] = {
 	"*team_thanks",
 	"*team_wait",
 	"*team_yes",
+	"*meme_fixitnow",
+	"*meme_tfisthat",
+	"*meme_banhim",
+	"*meme_ohsorry",
+	"*meme_huh",
+	"*meme_surprise",
+	"*meme_yablewit",
 	NULL
 };
 
