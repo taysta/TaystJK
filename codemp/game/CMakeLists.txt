@@ -167,7 +167,6 @@ set(MPGameFiles ${MPGameFiles} ${MPGameCommonSafeFiles})
 set(MPGameCgameFiles
 	"${MPDir}/cgame/animtable.h"
 	"${MPDir}/cgame/cg_public.h"
-	"${MPDir}/cgame/nm_cg_autodl.h"
 
 	)
 source_group("cgame" FILES ${MPGameCgameFiles})
