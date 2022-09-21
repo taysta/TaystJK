@@ -1,5 +1,0 @@
-// hud menu defs
-// 
-{
-	loadMenu { "ui/elegance_hud.menu" }
-}
