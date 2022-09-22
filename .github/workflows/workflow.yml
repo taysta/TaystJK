@@ -21,56 +21,56 @@ on:
   workflow_dispatch:
 
 jobs:
-#  windows-msys: #todo fix mingw building
-#    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-#    runs-on: windows-2019
-#    strategy:
-#      fail-fast: false
-#     matrix:
-#        arch: [ x86, x86_64 ]
-#        cc: [ gcc ]
-#        config: [ Release ]
-#        include:
-#          - arch: x86
-#            msystem: MINGW32
-#            prefix: mingw-w64-i686
-#
-#          - arch: x86_64
-#            msystem: MINGW64
-#            prefix: mingw-w64-x86_64
-#
-#          - config: Release
-#            rule: install
-#
-#    defaults:
-#      run:
-#        shell: msys2 {0}
-#
-#    steps:
-#      - uses: msys2/setup-msys2@v2
-#        with:
-#          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
-#          msystem: ${{ matrix.msystem }}
-#          path-type: minimal
-#          release: false
-#          update: false
-#
-#      - uses: actions/checkout@v2
-#        with:
-#          submodules: recursive
-#
-#      - name: Build
-#        run: |
-#          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
-#          make clean ARCH=${{ matrix.arch }}
-#          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
-#      - uses: actions/upload-artifact@v2
-#        if: matrix.cc == 'gcc' && matrix.config == 'Release'
-#        with:
-#          name: windows-mingw-${{ matrix.arch }}
-#          path: bin
-#          if-no-files-found: error
-#          retention-days: 5
+  #  windows-msys: #todo fix mingw building
+  #    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
+  #    runs-on: windows-2019
+  #    strategy:
+  #      fail-fast: false
+  #     matrix:
+  #        arch: [ x86, x86_64 ]
+  #        cc: [ gcc ]
+  #        config: [ Release ]
+  #        include:
+  #          - arch: x86
+  #            msystem: MINGW32
+  #            prefix: mingw-w64-i686
+  #
+  #          - arch: x86_64
+  #            msystem: MINGW64
+  #            prefix: mingw-w64-x86_64
+  #
+  #          - config: Release
+  #            rule: install
+  #
+  #    defaults:
+  #      run:
+  #        shell: msys2 {0}
+  #
+  #    steps:
+  #      - uses: msys2/setup-msys2@v2
+  #        with:
+  #          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
+  #          msystem: ${{ matrix.msystem }}
+  #          path-type: minimal
+  #          release: false
+  #          update: false
+  #
+  #      - uses: actions/checkout@v2
+  #        with:
+  #          submodules: recursive
+  #
+  #      - name: Build
+  #        run: |
+  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
+  #          make clean ARCH=${{ matrix.arch }}
+  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
+  #      - uses: actions/upload-artifact@v2
+  #        if: matrix.cc == 'gcc' && matrix.config == 'Release'
+  #        with:
+  #          name: windows-mingw-${{ matrix.arch }}
+  #          path: bin
+  #          if-no-files-found: error
+  #          retention-days: 5
 
   vs2019:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
@@ -167,7 +167,7 @@ jobs:
           else
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
           fi
-          
+
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
@@ -178,11 +178,22 @@ jobs:
         shell: bash
         run: cmake --install .
 
+      - name: Create binary archive
+        working-directory: ${{runner.workspace}}/install/JediAcademy
+        shell: bash
+        run: |
+          if [ ${{ matrix.arch }} == "x86" ]; then
+          chmod +x eternaljk.i386
+          else
+          chmod +x eternaljk.${{ matrix.arch }}  
+          fi
+          tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *      
+
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
           name: linux-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install
+          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}.tar
           if-no-files-found: error
 
   macos-x86:
@@ -221,11 +232,18 @@ jobs:
         shell: bash
         run: cmake --install .
 
+      - name: Create binary archive
+        working-directory: ${{runner.workspace}}/install/JediAcademy
+        shell: bash
+        run: |
+          chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
+          tar -cvf EternalJK-macos-${{ matrix.arch }}.tar      *
+
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
           name: macos-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install
+          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}.tar
           if-no-files-found: error
 
   create-testing:
@@ -242,11 +260,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip         ./linux-x86/JediAcademy/*
-          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/JediAcademy/*
+          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
+          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
           # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
-          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/JediAcademy/*
+          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
