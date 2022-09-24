@@ -131,7 +131,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86, x86_64]
+        arch: [x86_64] # [x86, x86_64] disable 32-bit builds as there is some dependency error at the moment with them
         cc: [gcc]
         cxx: [g++]
         config: [Release]
@@ -151,8 +151,8 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
-            sudo apt-get -y install aptitude
-            sudo aptitude -y install gcc-multilib g++-multilib ninja-build libpcre2-8-0=10.34-7 libglib2.0-dev:i386 libjpeg-dev:i386 libpng-dev:i386 libsdl2-dev:i386 libcurl4-openssl-dev:i386
+            sudo apt-get -y install gcc-multilib g++-multilib ninja-build
+            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libglib2.0-dev:i386 libjpeg-dev:i386 libpng-dev:i386 libsdl2-dev:i386 libcurl4-openssl-dev:i386
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
