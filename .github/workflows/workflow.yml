@@ -138,8 +138,8 @@ jobs:
         include:
           - config: Release
             rule: install
-          - arch: x86
-            use_sdl: true
+          # - arch: x86
+          #   use_sdl: true
           - arch: x86_64
             use_sdl: true
 
