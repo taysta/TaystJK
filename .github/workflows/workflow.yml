@@ -90,10 +90,10 @@ jobs:
             platform: Win32
             pkg_suffix: x86
 
-          - arch: x64
-            platform: x64
-            suffix: .x64
-            pkg_suffix: x64
+          # - arch: x64
+          #  platform: x64
+          #  suffix: .x64
+          #  pkg_suffix: x64
 
     steps:
       - uses: actions/checkout@v2
@@ -260,7 +260,7 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
+          # 7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
           # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
