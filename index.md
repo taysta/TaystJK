@@ -25,6 +25,7 @@ nav_order: 1
 - `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
 - `cg_hudFiles 4` new Quake Champions style hud
 - `cg_drawTimer 7` new csgo style match timer
+- `cg_drawScores 3` new way to display team scores for tffa scores and duel scores for duel gametype
 - `cg_drawTimerCountdown` makes the timer count down instead if the server has a timelimit set
 - `cg_drawTimerCountdown 1` new csgo style match timer
 - `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
