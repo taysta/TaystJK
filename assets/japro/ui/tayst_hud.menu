@@ -314,13 +314,13 @@ assetGlobalDef
 			rect				-56 92 15 8
 		}		
 
-		/*itemDef
+		itemDef
     	{
     		name				force_icon
     		background			"gfx/tayst_hud/force"
     		forecolor			1 1 1 1
     		rect				-37 88 16 16
-    	}*/
+    	}
 
 		// Numeric counter for force
 		itemDef 
