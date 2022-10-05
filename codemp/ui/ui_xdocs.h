@@ -212,7 +212,7 @@ XDOCS_CVAR_DEF("cg_drawScores", "Displays the team scores",
 SETTING("0", "Scores are hidden") NL
 SETTING("1", "Team scores are drawn in the top right") NL
 SETTING("2", "Team scores are drawn in the top right with color") NL
-SETTING("2", "Large team scores")
+SETTING("3", "Large team scores")
 )
 
 XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",

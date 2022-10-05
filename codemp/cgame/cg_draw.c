@@ -3873,6 +3873,30 @@ void CG_DrawTeamBackground( int x, int y, int w, int h, float alpha, int team )
 
 ===========================================================================================
 */
+
+void CG_LimitStr( char *string, int len ) {
+    int       i;
+    char    *p;
+
+    if( !string || len <= 0 ) {
+        return;
+    }
+
+    i = 0;
+    p = string;
+    while( *p && i < len ) {
+        if( Q_IsColorString( p ) ) {
+            p += 2;
+            continue;
+        }
+        p++;
+        i++;
+    }
+
+    if (p)
+        *p = '\0';
+}
+
 /*
 ==================
 CG_DrawTaystHUD
@@ -3884,26 +3908,45 @@ static void CG_DrawTaystHUD(char* s) {
     float xOffset = 0.0f;
     char temp[4];
     char temp2[4];
-    vec4_t color = {0.0f, 0.0f, 0.0f, 0.1f};
-    vec4_t color1 = {1.0f, 0.0f, 0.0f, 0.4f};
-    vec4_t color2 = {0.0f, 0.0f, 1.0f, 0.4f};
-    int w = 0;
+    char biggest[4];
+
+    vec4_t color0 = {0.0f, 0.0f, 0.0f, 0.7f};
+    vec4_t color1 = {0.02f, 0.4f, 0.65f, 0.7f};
+    vec4_t color2 = {0.65f, 0.01f, 0.02f, 0.7f};
+
+    float w = 0.0f;
+
+    clientInfo_t *d1;
+    clientInfo_t *d2;
+
+    char nameBuf[64];
+    char nameBuf2[64];
+
+
+    float nameFontSize = 0.5f;
+    float timerFontSize = 1.0f;
+    float scoreFontSize = 1.4f;
+
+    float topPadding = 15.0f;
+    float widthPadding = 15.0f;
+    float boxHeights = 25.0f;
+    float iconHeight;
+
+    w = CG_Text_Width(s, 1.0f, FONT_LARGE);
+    background.x = (SCREEN_WIDTH / 2.0f - (w + 10.0f) / 2.0f);
+    background.y = 0.0f + topPadding;
+    background.w = w + 10.0f;
+    background.h = 22.0f;
 
     //draw the new timer
     if(cg_drawTimer.integer == 7) {
-        w = (int) CG_Text_Width(s, 1.0f, FONT_LARGE);
-        background.x = (320.0f - ((w + 10.0f) / 2.0f));
-        background.y = 0.0f;
-        background.w = w + 10;
-        background.h = 22.0f;
+
         overlayXPos = background.x + background.w;
         xOffset = background.w / 2.0f;
-        trap->R_SetColor(color);
-        CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
 
         CG_Text_Paint((float) (SCREEN_WIDTH - w) / 2.0f,
-                      -5.0f,
-                      1.0f,
+                      -5 + topPadding,
+                      timerFontSize,
                       colorTable[CT_WHITE],
                       s,
                       0.0f,
@@ -3914,65 +3957,249 @@ static void CG_DrawTaystHUD(char* s) {
 
     //draw new scores here too since they scale off the new timer's size
     if(cg_drawScores.integer == 3) {
-        Q_strncpyz(temp2, cgs.scores1 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores1)), sizeof(temp2));
-        Q_strncpyz(temp, cgs.scores2 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores2)), sizeof(temp));
+        //tffa
+        if (cg_drawScores.integer && cgs.gametype >= GT_TEAM)
+        {
+            Q_strncpyz(temp2, cgs.scores1 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores1)), sizeof(temp2));
+            Q_strncpyz(temp, cgs.scores2 == SCORE_NOT_PRESENT ? "-" : (va("%i", cgs.scores2)), sizeof(temp));
 
-        if (cg_drawScores.integer && cgs.gametype >= GT_TEAM) {
-            if (CG_Text_Width(temp2, 0.8f, FONT_LARGE) > (CG_Text_Width(temp, 0.8f, FONT_LARGE))) {
-                if (cg_drawTimer.integer == 7)
-                    redBackground.x = (320.0f - ((w + 10.0f) / 2.0f)) - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
-                else
-                    redBackground.x = 320.0f - (CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10);
-                redBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
-                blueBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
-                xOffset += redBackground.w / 2.0f;
-            } else {
-                if (cg_drawTimer.integer == 7)
-                    redBackground.x = (320.0f - ((w + 10.0f) / 2.0f)) - (CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10);
-                else
-                    redBackground.x = 320.0f - (CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10);
-                redBackground.w = CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10;
+            //position boxes, pick the wider box for width
+            if (CG_Text_Width(temp, 0.8f, FONT_LARGE) > (CG_Text_Width(temp2, 0.8f, FONT_LARGE)))
+            {
+
                 blueBackground.w = CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10;
+                redBackground.w = CG_Text_Width(temp, 0.8f, FONT_LARGE) + 10;
                 xOffset += blueBackground.w / 2.0f;
+                strcpy(biggest, temp);
             }
-            redBackground.y = 0.0f;
-            redBackground.h = 22.0f;
-            if (cg_drawTimer.integer == 7)
-                blueBackground.x = (320.0f + ((w + 10.0f) / 2.0f));
             else
-                blueBackground.x = (320.0f);
-            blueBackground.y = 0.0f;
+            {
+                blueBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
+                redBackground.w = CG_Text_Width(temp2, 0.8f, FONT_LARGE) + 10;
+                xOffset += redBackground.w / 2.0f;
+                strcpy(biggest, temp2);
+            }
+
+            if (cg_drawTimer.integer == 7)
+            {
+                blueBackground.x = background.x - blueBackground.w;
+                redBackground.x = background.x + background.w;
+            }
+            else
+            {
+                blueBackground.x = 320.0f - (CG_Text_Width(biggest, 0.8f, FONT_LARGE) + 10);
+                redBackground.x = (320.0f);
+            }
+
+            blueBackground.y = 15.0f;
+            redBackground.y = 15.0f;
+
             blueBackground.h = 22.0f;
-            overlayXPos = blueBackground.x + blueBackground.w;
+            redBackground.h = 22.0f;
 
+            overlayXPos = redBackground.x + redBackground.w;
+
+            //draw boxes
             trap->R_SetColor(color1);
-            CG_DrawPic(redBackground.x, redBackground.y, redBackground.w, redBackground.h, cgs.media.whiteShader);
-            CG_Text_Paint(SCREEN_WIDTH / 2.0f - xOffset - CG_Text_Width(temp2, 0.8f, FONT_LARGE) / 2.0f,
-                          -5.0f +
-                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
-                          0.8f,
-                          colorWhite,
-                          temp2,
-                          0,
-                          0,
-                          ITEM_TEXTSTYLE_SHADOWED,
-                          FONT_LARGE);
-
-            trap->R_SetColor(color2);
             CG_DrawPic(blueBackground.x, blueBackground.y, blueBackground.w, blueBackground.h, cgs.media.whiteShader);
-            CG_Text_Paint(SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp, 0.8f, FONT_LARGE) / 2.0f,
-                          -5.0f +
+            trap->R_SetColor(color2);
+            CG_DrawPic(redBackground.x, redBackground.y, redBackground.w, redBackground.h, cgs.media.whiteShader);
+
+
+            //draw scores
+            CG_Text_Paint(SCREEN_WIDTH / 2.0f - xOffset - CG_Text_Width(temp, 0.8f, FONT_LARGE) / 2.0f,
+                          10.0f +
                           (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
                           0.8f,
                           colorWhite,
                           temp,
                           0,
                           0,
-                          ITEM_TEXTSTYLE_SHADOWED,
+                          ITEM_TEXTSTYLE_NORMAL,
+                          FONT_LARGE);
+
+            CG_Text_Paint(SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp2, 0.8f, FONT_LARGE) / 2.0f,
+                          10.0f +
+                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
+                          0.8f,
+                          colorWhite,
+                          temp2,
+                          0,
+                          0,
+                          ITEM_TEXTSTYLE_NORMAL,
                           FONT_LARGE);
         }
+
+        //duel
+        else if ( cg_drawScores.integer == 3 && cgs.gametype == GT_DUEL )
+        {
+
+            if ( !cg.snap )
+            {
+                return;
+            }
+
+            if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 )
+            {
+                return;
+            }
+
+            if ( cgs.gametype == GT_POWERDUEL || ( cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] ) )
+            {
+                return;
+            }
+
+            //quit if we dont have 2 duelists
+            if ( !cgs.clientinfo[cgs.duelist1].infoValid || !cgs.clientinfo[cgs.duelist2].infoValid )
+            {
+                return;
+            }
+
+            //select duelists
+
+            d1 = &cgs.clientinfo[cg.snap->ps.clientNum];
+            d2 = 0;
+            if (cg.snap->ps.clientNum == cgs.duelist1)
+            {
+                d2 = &cgs.clientinfo[cgs.duelist2];
+            }
+            else if (cg.snap->ps.clientNum == cgs.duelist2)
+            {
+                d2 = &cgs.clientinfo[cgs.duelist1];
+            }
+            else if (cg.snap->ps.clientNum == cgs.duelist3)
+            {
+                d2 = &cgs.clientinfo[cgs.duelist1];
+            }
+
+            Q_strncpyz(temp2, d1->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d1->score)), sizeof(temp2));
+            Q_strncpyz(temp, d2->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d2->score)), sizeof(temp));
+
+            //position the boxes, pick the wider box for width
+            if ( CG_Text_Width( temp2, scoreFontSize, FONT_LARGE ) > ( CG_Text_Width( temp, scoreFontSize, FONT_LARGE ) ) )
+            {
+                blueBackground.w = CG_Text_Width( temp2, scoreFontSize, FONT_LARGE ) + widthPadding;
+                redBackground.w = CG_Text_Width( temp2, scoreFontSize, FONT_LARGE ) + widthPadding;
+                xOffset += blueBackground.w / 2.0f;
+                strcpy(biggest, temp2);
+            }
+            else
+            {
+                blueBackground.w = CG_Text_Width( temp, scoreFontSize, FONT_LARGE ) + widthPadding;
+                redBackground.w = CG_Text_Width( temp, scoreFontSize, FONT_LARGE ) + widthPadding;
+                xOffset += redBackground.w / 2.0f;
+                strcpy(biggest, temp);
+            }
+
+            //x positions are based on the middle timer being on or not
+            if ( cg_drawTimer.integer == 7 )
+            {
+                blueBackground.x = background.x - blueBackground.w - 6.0f;
+                redBackground.x = background.x + background.w + 6.0f;
+                xOffset += 6.0f;
+            }
+            else
+            {
+                blueBackground.x = 320.0f - (CG_Text_Width(biggest, scoreFontSize, FONT_LARGE) + widthPadding);
+                redBackground.x = ( 320.0f );
+            }
+
+            blueBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_LARGE ) ) / 2.0f + 3.0f;
+            redBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_LARGE ) ) / 2.0f + 3.0f;
+
+            blueBackground.h = boxHeights;
+            redBackground.h = boxHeights;
+
+            //print score boxes
+
+            trap->R_SetColor( color1 );
+            CG_DrawPic( blueBackground.x, blueBackground.y, blueBackground.w, blueBackground.h, cgs.media.whiteShader );
+
+            trap->R_SetColor( color2 );
+            CG_DrawPic( redBackground.x, redBackground.y, redBackground.w, redBackground.h, cgs.media.whiteShader );
+
+            trap->R_SetColor( colorWhite );
+
+            //draw icons
+            iconHeight = boxHeights - 3.0f;
+
+            if ( d1->modelIcon )
+            {
+                CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef + 1.0f, blueBackground.y + 1.0f, boxHeights * cgs.widthRatioCoef - 3.0f, iconHeight,
+                            d1->modelIcon );
+            }
+
+            if ( d2->modelIcon )
+            {
+                CG_DrawPic(redBackground.x + redBackground.w + 2.0f, redBackground.y + 1.0f, boxHeights * cgs.widthRatioCoef - 3.0f, iconHeight,
+                           d2->modelIcon );
+            }
+
+            //draw scores
+            CG_Text_Paint( SCREEN_WIDTH / 2.0f - xOffset - CG_Text_Width(temp2, scoreFontSize, FONT_LARGE) / 2.0f,
+                           topPadding - 12.0f,
+                           scoreFontSize,
+                           colorWhite,
+                           temp2,
+                           0,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_MEDIUM );
+
+            CG_Text_Paint( SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp, scoreFontSize, FONT_LARGE) / 2.0f,
+                           topPadding - 12.0f,
+                           scoreFontSize,
+                          colorWhite,
+                          temp,
+                          0,
+                          0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_MEDIUM );
+
+            //truncate names
+            if ( !Q_stricmp( nameBuf, d1->name ) )
+            {
+                return;
+            }
+            sprintf( nameBuf, "%s", d1->name );
+            CG_LimitStr( nameBuf, 18 );
+            Q_StripColor(nameBuf);
+
+            if ( !Q_stricmp( nameBuf2, d2->name ) )
+            {
+                return;
+            }
+            sprintf( nameBuf2, "%s", d2->name );
+            CG_LimitStr( nameBuf2, 18 );
+            Q_StripColor(nameBuf2);
+
+            //draw name boxes
+            trap->R_SetColor( color0 );
+            CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef, blueBackground.y + blueBackground.h, blueBackground.w + blueBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( "nameBuf", nameFontSize, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+            CG_DrawPic( redBackground.x, redBackground.y + redBackground.h, redBackground.w + boxHeights * cgs.widthRatioCoef, ( float )CG_Text_Height( "nameBuf", nameFontSize, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+
+            //draw names
+            CG_Text_Paint( blueBackground.x + blueBackground.w - CG_Text_Width( nameBuf, nameFontSize, FONT_SMALL2) - 1.0f,
+                           blueBackground.y + boxHeights + 0.5f,
+                           nameFontSize,
+                           colorMdGrey,
+                           nameBuf,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2 );
+
+            CG_Text_Paint( redBackground.x + 1.0f,
+                           redBackground.y + boxHeights + 0.5f,
+                           nameFontSize,
+                           colorMdGrey,
+                           nameBuf2,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2 );
+        }
     }
-    return;
 }
 /*
 ================
@@ -5734,10 +5961,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	int ret_y, count;
 	float xOffset = 0*cgs.widthRatioCoef;
 
-    //if (cg_hudFiles.integer == 4){
-        //CG_DrawNewTeamOverlay(y, right, upper);
-        //return y;
-    //}
+
 	if ( !cg_drawTeamOverlay.integer ) {
 	//if ( !cg_drawTeamOverlay.integer || (cg.predictedPlayerState.pm_flags & PMF_FOLLOW) || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_SPECTATOR) { //disabling this in spec cuz it doesn't work right
 		return y;
@@ -5765,11 +5989,13 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		}
 	}
 
-	if (!plyrs)
-		return y;
+	if (!plyrs) {
+        return y;
+    }
 
-	if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH)
-		pwidth = TEAM_OVERLAY_MAXNAME_WIDTH;
+    if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH) {
+        pwidth = TEAM_OVERLAY_MAXNAME_WIDTH;
+    }
 
 	// max location name width
 	lwidth = 0;
@@ -5782,8 +6008,9 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		}
 	}
 
-	if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH)
-		lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
+	if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH) {
+        lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
+    }
 
 	w = (pwidth + lwidth + 4 + 7) * TINYCHAR_WIDTH*cgs.widthRatioCoef;
 
@@ -5940,29 +6167,6 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 //#endif
 }
 
-void CG_LimitStr( char *string, int len ) {
-    int       i;
-    char    *p;
-
-    if( !string || len <= 0 ) {
-        return;
-    }
-
-    i = 0;
-    p = string;
-    while( *p && i < len ) {
-        if( Q_IsColorString( p ) ) {
-            p += 2;
-            continue;
-        }
-        p++;
-        i++;
-    }
-
-    if (p)
-        *p = '\0';
-}
-
 static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     float xx, yy;
     int i, j, g, len, forcepoints, armor, pwidth, lwidth, plyrs, ret_y, count, elements = 2;
@@ -5971,8 +6175,8 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     vec4_t hcolor, fpcolor;
     clientInfo_t *ci;
     gitem_t	*item;
-    vec4_t color1 = {1.0f, 0.0f, 0.0f, 0.4f};
-    vec4_t color2 = {0.0f, 0.0f, 1.0f, 0.4f};
+    vec4_t color1 = {0.65f, 0.01f, 0.02f, 0.7f};
+    vec4_t color2 = {0.02f, 0.4f, 0.65f, 0.7f};
     vec4_t colorGrey = {0.4f, 0.4f, 0.4f, 0.4f};
     rectDef_t background = {0.0f, 0.0f, 0.0f, 0.0f};
 
@@ -6096,7 +6300,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                           nameBuf,
                           0.0f,
                           0,
-                          ITEM_TEXTSTYLE_SHADOWED,
+                          ITEM_TEXTSTYLE_NORMAL,
                           FONT_SMALL2);
 
 
@@ -6118,7 +6322,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                nameBuf,
                                0.0f,
                                0,
-                               ITEM_TEXTSTYLE_SHADOWED,
+                               ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
             }
 
@@ -6156,7 +6360,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                hp,
                                0.0f,
                                0,
-                               ITEM_TEXTSTYLE_SHADOWED,
+                               ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
 
                 xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
@@ -6168,7 +6372,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                ap,
                                0.0f,
                                0,
-                               ITEM_TEXTSTYLE_SHADOWED,
+                               ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
 
                 xx = background.x + 3 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
@@ -6180,7 +6384,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                fp,
                                0.0f,
                                0,
-                               ITEM_TEXTSTYLE_SHADOWED,
+                               ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
             }
             else {
@@ -6192,7 +6396,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                               hp,
                               0.0f,
                               0,
-                              ITEM_TEXTSTYLE_SHADOWED,
+                              ITEM_TEXTSTYLE_NORMAL,
                               FONT_SMALL2);
 
                 xx = background.x + 2 * (background.w) / ((float) elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
@@ -6204,7 +6408,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                               ap,
                               0.0f,
                               0,
-                              ITEM_TEXTSTYLE_SHADOWED,
+                              ITEM_TEXTSTYLE_NORMAL,
                               FONT_SMALL2);
             }
 
