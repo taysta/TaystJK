@@ -5644,6 +5644,14 @@ static float CG_DrawTimer( float y ) {
 	else
 		msec = cg.time - cgs.levelStartTime;
 
+    if (cg_drawTimer.integer == 7 && cgs.timelimit > 0 && cg_drawTimerCountdown.integer) {
+        const int timelimit = cgs.timelimit * 60 * 1000;
+        const int endTime = cgs.levelStartTime + timelimit;
+
+        if (endTime >= cg.time)
+            msec = endTime - cg.time;
+    }
+
 	secs = msec / 1000;
 	mins = secs / 60;
 
