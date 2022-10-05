@@ -15,6 +15,7 @@ nav_order: 3
 - `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
 - `cg_scoreboardTime 1` Display the local time on the scoreboard
 - `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
+- `cg_drawScores 3` new way to display team scores for tffa scores and duel scores for duel gametype
 
 ## Movement Keys
 
