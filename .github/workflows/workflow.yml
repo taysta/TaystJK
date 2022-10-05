@@ -79,7 +79,8 @@ jobs:
       matrix:
         build_type: [Release]
         # arch: [arm64, x86, x64]
-        arch: [ x86, x64 ]
+        # arch: [ x86, x64 ]
+        arch: [x86]
         include:
           # - arch: arm64 # todo fix arm64 building
           #  platform: ARM64
@@ -167,7 +168,6 @@ jobs:
           else
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
           fi
-
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
@@ -187,8 +187,7 @@ jobs:
           else
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
-          tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *      
-
+          tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
@@ -238,7 +237,6 @@ jobs:
         run: |
           chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
           tar -cvf EternalJK-macos-${{ matrix.arch }}.tar      *
-
       - uses: actions/upload-artifact@v2
         if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
@@ -265,7 +263,6 @@ jobs:
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
           # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
-
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
         with:
