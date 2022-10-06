@@ -308,7 +308,7 @@ static void vk_create_instance( void )
 
     result = qvkCreateInstance(&desc, NULL, &vk.instance);
 #endif
-
+    result = qvkCreateInstance(&desc, NULL, &vk.instance);
     switch (result) {
         case VK_SUCCESS:
             vk_debug("--- Vulkan create instance success! ---\n\n"); break;
