@@ -79,8 +79,7 @@ jobs:
       matrix:
         build_type: [Release]
         # arch: [arm64, x86, x64]
-        # arch: [ x86, x64 ]
-        arch: [x86]
+        arch: [ x86, x64 ]
         include:
           # - arch: arm64 # todo fix arm64 building
           #  platform: ARM64
@@ -91,10 +90,10 @@ jobs:
             platform: Win32
             pkg_suffix: x86
 
-          # - arch: x64
-          #  platform: x64
-          #  suffix: .x64
-          #  pkg_suffix: x64
+          - arch: x64
+            platform: x64
+            suffix: .x64
+            pkg_suffix: x64
 
     steps:
       - uses: actions/checkout@v2
@@ -132,15 +131,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64] # [x86, x86_64] disable 32-bit builds as there is some dependency error at the moment with them
+        arch: [x86, x86_64]
         cc: [gcc]
         cxx: [g++]
         config: [Release]
         include:
           - config: Release
             rule: install
-          # - arch: x86
-          #   use_sdl: true
+          - arch: x86
+            use_sdl: true
           - arch: x86_64
             use_sdl: true
 
@@ -152,8 +151,11 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
+            sudo apt-get -y install aptitude
             sudo apt-get -y install gcc-multilib g++-multilib ninja-build
-            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libglib2.0-dev:i386 libjpeg-dev:i386 libpng-dev:i386 libsdl2-dev:i386 libcurl4-openssl-dev:i386
+            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
+            sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
+
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
@@ -258,10 +260,10 @@ jobs:
 
       - name: Create binary archives
         run: |
-          # 7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
+          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
-          # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
+          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
