@@ -127,7 +127,7 @@ jobs:
 
   ubuntu-x86:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -199,7 +199,7 @@ jobs:
 
   macos-x86:
     name: ${{ matrix.config }} macOS ${{ matrix.arch }}
-    runs-on: macos-10.15
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
