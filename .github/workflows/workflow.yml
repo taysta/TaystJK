@@ -75,7 +75,7 @@ jobs:
 
   ubuntu-x86:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -99,8 +99,11 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
+            sudo apt-get -y install aptitude
             sudo apt-get -y install gcc-multilib g++-multilib ninja-build
-            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libglib2.0-dev:i386 libjpeg-dev:i386 libpng-dev:i386 libsdl2-dev:i386 libcurl4-openssl-dev:i386
+            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
+            sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
+          
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
@@ -193,7 +196,7 @@ jobs:
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/JediAcademy/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/JediAcademy/*
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          # 7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
+          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/JediAcademy/*
 
       - name: Create latest build
