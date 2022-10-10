@@ -936,9 +936,9 @@ const void	*RB_SwapBuffers( const void *data ) {
 	const swapBuffersCommand_t	*cmd;
 
 	// finish any 2D drawing if needed
-	//if ( tess.numIndexes ) {
-		RB_EndSurface();
-	//}
+	RB_EndSurface();
+
+	ResetGhoul2RenderableSurfaceHeap();
 
 	// texture swapping test
 	if ( r_showImages->integer ) {

@@ -359,6 +359,8 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		return;
 	}
 	
+	ResetGhoul2RenderableSurfaceHeap();
+
 	backEnd.doneBloom = qfalse;
 
 	tr.frameCount++;

@@ -965,7 +965,6 @@ typedef struct
 	byte		latLong[2];
 } mgrid_t;
 
-
 typedef struct world_s {
 	char		name[MAX_QPATH];		// ie: maps/tim_dm2.bsp
 	char		baseName[MAX_QPATH];	// ie: tim_dm2
@@ -1020,6 +1019,42 @@ typedef struct world_s {
 } world_t;
 
 //======================================================================
+
+typedef enum {
+	MOD_BAD,
+	MOD_BRUSH,
+	MOD_MESH,
+	/*
+	Ghoul2 Insert Start
+	*/
+	MOD_MDXM,
+	MOD_MDXA
+	/*
+	Ghoul2 Insert End
+	*/
+
+} modtype_t;
+
+typedef struct model_s {
+	char		name[MAX_QPATH];
+	modtype_t	type;
+	int			index;				// model = tr.models[model->mod_index]
+
+	int			dataSize;			// just for listing purposes
+	bmodel_t	*bmodel;			// only if type == MOD_BRUSH
+	md3Header_t	*md3[MD3_MAX_LODS];	// only if type == MOD_MESH
+/*
+Ghoul2 Insert Start
+*/
+	mdxmHeader_t *mdxm;				// only if type == MOD_GL2M which is a GHOUL II Mesh file NOT a GHOUL II animation file
+	mdxaHeader_t *mdxa;				// only if type == MOD_GL2A which is a GHOUL II Animation file
+/*
+Ghoul2 Insert End
+*/
+	unsigned char	numLods;
+	bool			bspInstance;			// model is a bsp instance
+} model_t;
+
 
 #define	MAX_MOD_KNOWN	1024
 
@@ -1575,7 +1610,6 @@ extern cvar_t	*r_nomip;				// apply picmip only on worldspawn textures
 #ifdef USE_VBO
 extern cvar_t	*r_vbo;
 #endif
-
 /*
 Ghoul2 Insert Start
 */
@@ -1924,18 +1958,17 @@ public:
 		surfaceData		= src.surfaceData;
 		alternateTex	= src.alternateTex;
 		goreChain		= src.goreChain;
-
 		return *this;
 	}
 #endif
 
 CRenderableSurface():
 	ident( SF_MDX ),
-	boneCache( 0 ),
+	boneCache( nullptr ),
 #ifdef _G2_GORE
-	surfaceData( 0 ),
-	alternateTex( 0 ),
-	goreChain( 0 )
+	surfaceData( nullptr ),
+	alternateTex( nullptr ),
+	goreChain( nullptr )
 #else
 	surfaceData( 0 )
 #endif
@@ -1945,10 +1978,10 @@ CRenderableSurface():
 	void Init()
 	{
 		ident			= SF_MDX;
-		boneCache		= 0;
-		surfaceData		= 0;
-		alternateTex	= 0;
-		goreChain		= 0;
+		boneCache		= nullptr;
+		surfaceData		= nullptr;
+		alternateTex	= nullptr;
+		goreChain		= nullptr;
 	}
 #endif
 };
@@ -2134,6 +2167,7 @@ void			Multiply_3x4Matrix( mdxaBone_t *out, mdxaBone_t *in2, mdxaBone_t *in );
 extern qboolean R_LoadMDXM ( model_t *mod, void *buffer, const char *name, qboolean &bAlreadyCached );
 extern qboolean R_LoadMDXA ( model_t *mod, void *buffer, const char *name, qboolean &bAlreadyCached );
 void			RE_InsertModelIntoHash( const char *name, model_t *mod );
+void			ResetGhoul2RenderableSurfaceHeap( void );
 /*
 Ghoul2 Insert End
 */
@@ -2193,8 +2227,6 @@ void		vk_upload_image( image_t *image, byte *pic );
 void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );
 void		vk_create_image( image_t *image, int width, int height, int mip_levels );
-
-byte		*vk_resample_image_data( const image_t *image, byte *data, const int data_size, int *bytes_per_pixel );
 
 static QINLINE unsigned int log2pad(unsigned int v, int roundup)
 {

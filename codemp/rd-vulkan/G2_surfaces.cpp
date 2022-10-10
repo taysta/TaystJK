@@ -58,7 +58,7 @@ extern void G2_ConstructUsedBoneList(CConstructBoneList &CBL);
 surfaceInfo_t *G2_FindOverrideSurface(int surfaceNum, surfaceInfo_v &surfaceList)
 {
 	// look through entire list
-	for(size_t i=0; i<surfaceList.size(); i++)
+	for (size_t i = 0, size = surfaceList.size(); i < size; i++)
 	{
 		if (surfaceList[i].surface == surfaceNum)
 		{

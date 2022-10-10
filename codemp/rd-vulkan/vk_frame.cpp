@@ -857,7 +857,7 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
     qvkCmdBeginRenderPass( vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE );
 }
 
-void vk_begin_screenmap_render_pass( void )
+static void vk_begin_screenmap_render_pass( void )
 {
     VkFramebuffer frameBuffer = vk.framebuffers.screenmap;
 
