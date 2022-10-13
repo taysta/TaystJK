@@ -55,7 +55,7 @@ jobs:
   #          release: false
   #          update: false
   #
-  #      - uses: actions/checkout@v2
+  #      - uses: actions/checkout@v3
   #        with:
   #          submodules: recursive
   #
@@ -64,7 +64,7 @@ jobs:
   #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
   #          make clean ARCH=${{ matrix.arch }}
   #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
-  #      - uses: actions/upload-artifact@v2
+  #      - uses: actions/upload-artifact@v3
   #        if: matrix.cc == 'gcc' && matrix.config == 'Release'
   #        with:
   #          name: windows-mingw-${{ matrix.arch }}
@@ -96,10 +96,10 @@ jobs:
             pkg_suffix: x64
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v1.1
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
@@ -119,7 +119,7 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: windows-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/bin
@@ -144,7 +144,7 @@ jobs:
             use_sdl: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create Build Environment
         run: |
@@ -190,7 +190,7 @@ jobs:
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
           tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
           name: linux-${{ matrix.arch }}
@@ -212,7 +212,7 @@ jobs:
             rule: install
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create Build Environment
         run: |
@@ -239,7 +239,7 @@ jobs:
         run: |
           chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
           tar -cvf EternalJK-macos-${{ matrix.arch }}.tar      *
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
           name: macos-${{ matrix.arch }}
@@ -251,12 +251,12 @@ jobs:
     needs: [vs2019, ubuntu-x86, macos-x86]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - name: Create binary archives
         run: |
