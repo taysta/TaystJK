@@ -971,7 +971,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 		return;
 	}
 
-	if ( cg.weaponSelect != WP_SABER )
+	if ( cent->currentState.weapon != WP_SABER )
 	{
 		return;
 	}
@@ -1078,7 +1078,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 		return;
 	}
 
-	value = ps->ammo[weaponData[cg.weaponSelect].ammoIndex];
+	value = ps->ammo[weaponData[cent->currentState.weapon].ammoIndex];
 	if (value < 0)	// No ammo
 	{
 		return;
@@ -1097,8 +1097,8 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 	focusItem = Menu_FindItemByName(menuHUD, "ammoamount");
 	trap->R_SetColor( hudTintColor );
 
-	if (weaponData[cg.weaponSelect].energyPerShot == 0 &&
-		weaponData[cg.weaponSelect].altEnergyPerShot == 0)
+	if (weaponData[cent->currentState.weapon].energyPerShot == 0 &&
+		weaponData[cent->currentState.weapon].altEnergyPerShot == 0)
 
 	{ //just draw "infinite"
 		inc = 8 / MAX_HUD_TICS;
@@ -1147,13 +1147,13 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 
 			if ( (cent->currentState.eFlags & EF_DOUBLE_AMMO) )
 			{
-				inc = (float) (ammoData[weaponData[cg.weaponSelect].ammoIndex].max*2.0f) / MAX_HUD_TICS;
+				inc = (float) (ammoData[weaponData[cent->currentState.weapon].ammoIndex].max*2.0f) / MAX_HUD_TICS;
 			}
 			else
 			{
-				inc = (float) ammoData[weaponData[cg.weaponSelect].ammoIndex].max / MAX_HUD_TICS;
+				inc = (float) ammoData[weaponData[cent->currentState.weapon].ammoIndex].max / MAX_HUD_TICS;
 			}
-			value = ps->ammo[weaponData[cg.weaponSelect].ammoIndex];
+			value = ps->ammo[weaponData[cent->currentState.weapon].ammoIndex];
 
 			CG_DrawNumField (
 				SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -1167,16 +1167,16 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 		}else if(focusItem && cg_hudFiles.integer == 4){
             if ( (cent->currentState.eFlags & EF_DOUBLE_AMMO) )
             {
-                inc = (float) (ammoData[weaponData[cg.weaponSelect].ammoIndex].max*2.0f) / MAX_HUD_TICS;
+                inc = (float) (ammoData[weaponData[cent->currentState.weapon].ammoIndex].max*2.0f) / MAX_HUD_TICS;
             }
             else
             {
-                inc = (float) ammoData[weaponData[cg.weaponSelect].ammoIndex].max / MAX_HUD_TICS;
+                inc = (float) ammoData[weaponData[cent->currentState.weapon].ammoIndex].max / MAX_HUD_TICS;
             }
-            value = ps->ammo[weaponData[cg.weaponSelect].ammoIndex];
+            value = ps->ammo[weaponData[cent->currentState.weapon].ammoIndex];
 
-            Com_sprintf(ammoStr, sizeof(ammoStr), "%i", ps->ammo[weaponData[cg.weaponSelect].ammoIndex]);
-            Com_sprintf(ammoStr2, sizeof(ammoStr2), " /%i", ammoData[weaponData[cg.weaponSelect].ammoIndex].max);
+            Com_sprintf(ammoStr, sizeof(ammoStr), "%i", ps->ammo[weaponData[cent->currentState.weapon].ammoIndex]);
+            Com_sprintf(ammoStr2, sizeof(ammoStr2), " /%i", ammoData[weaponData[cent->currentState.weapon].ammoIndex].max);
             CG_Text_Paint(SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef -  CG_Text_Width(ammoStr, 1.0f, FONT_MEDIUM), focusItem->window.rect.y, 1.0f, colorWhite, ammoStr, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
             CG_Text_Paint(SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef, focusItem->window.rect.y + CG_Text_Height(ammoStr, 1.0f, FONT_MEDIUM) - CG_Text_Height(ammoStr2, 0.6f, FONT_MEDIUM), 0.6f, colorWhite, ammoStr2, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
         }
@@ -1187,7 +1187,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 	// Draw tics
 	for (i=MAX_HUD_TICS-1;i>=0;i--)
 	{
-        if(cg.weaponSelect == WP_STUN_BATON || cg.weaponSelect == WP_MELEE || cg.weaponSelect == WP_SABER)
+        if(cent->currentState.weapon == WP_STUN_BATON || cent->currentState.weapon == WP_MELEE || cent->currentState.weapon == WP_SABER)
             break;
 		focusItem = Menu_FindItemByName(menuHUD, ammoTicName[i]);
 
@@ -1222,7 +1222,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 	}
     trap->R_SetColor( hudTintColor );
     if(cg_hudFiles.integer == 4){
-        switch (cg.weaponSelect){
+        switch (cent->currentState.weapon){
             case WP_DISRUPTOR:
             case WP_BOWCASTER:
             case WP_DEMP2:
