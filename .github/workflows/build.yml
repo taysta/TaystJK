@@ -1,7 +1,7 @@
 name: build
 
 on:
-  # Run on pushes to tags, the "master" branch, and PR's
+  # Run on pushes to tags, the "master" branch, PR's and workflow_dispatch events
   push:
     tags-ignore:
     branches:
@@ -17,89 +17,30 @@ on:
       - '*.txt'
       - '.gitignore'
       - 'docs/*'
-
   workflow_dispatch:
 
 jobs:
-  #  windows-msys: #todo fix mingw building
-  #    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-  #    runs-on: windows-2019
-  #    strategy:
-  #      fail-fast: false
-  #     matrix:
-  #        arch: [ x86, x86_64 ]
-  #        cc: [ gcc ]
-  #        config: [ Release ]
-  #        include:
-  #          - arch: x86
-  #            msystem: MINGW32
-  #            prefix: mingw-w64-i686
-  #
-  #          - arch: x86_64
-  #            msystem: MINGW64
-  #            prefix: mingw-w64-x86_64
-  #
-  #          - config: Release
-  #            rule: install
-  #
-  #    defaults:
-  #      run:
-  #        shell: msys2 {0}
-  #
-  #    steps:
-  #      - uses: msys2/setup-msys2@v2
-  #        with:
-  #          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
-  #          msystem: ${{ matrix.msystem }}
-  #          path-type: minimal
-  #          release: false
-  #          update: false
-  #
-  #      - uses: actions/checkout@v2
-  #        with:
-  #          submodules: recursive
-  #
-  #      - name: Build
-  #        run: |
-  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
-  #          make clean ARCH=${{ matrix.arch }}
-  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
-  #      - uses: actions/upload-artifact@v2
-  #        if: matrix.cc == 'gcc' && matrix.config == 'Release'
-  #        with:
-  #          name: windows-mingw-${{ matrix.arch }}
-  #          path: bin
-  #          if-no-files-found: error
-  #          retention-days: 5
-
-  vs2019:
+  vs2022:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       matrix:
         build_type: [Release]
-        # arch: [arm64, x86, x64]
-        arch: [ x86, x64 ]
+        arch: [x86, x64]
         include:
-          # - arch: arm64 # todo fix arm64 building
-          #  platform: ARM64
-          #  suffix: .arm64
-          #  pkg_suffix: arm64
-
           - arch: x86
             platform: Win32
             pkg_suffix: x86
-
           - arch: x64
             platform: x64
             suffix: .x64
             pkg_suffix: x64
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v1.1
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
@@ -119,15 +60,15 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: windows-${{ matrix.arch }}
           path: ${{runner.workspace}}/build/bin
           if-no-files-found: error
 
-  ubuntu-x86:
+  ubuntu:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -144,7 +85,7 @@ jobs:
             use_sdl: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create Build Environment
         run: |
@@ -155,12 +96,12 @@ jobs:
             sudo apt-get -y install gcc-multilib g++-multilib ninja-build
             sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
             sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
-
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
           fi
           cmake -E make_directory ${{runner.workspace}}/build
+
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
@@ -170,6 +111,7 @@ jobs:
           else
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
           fi
+
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
@@ -190,16 +132,17 @@ jobs:
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
           tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *
-      - uses: actions/upload-artifact@v2
+
+      - uses: actions/upload-artifact@v3
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
           name: linux-${{ matrix.arch }}
           path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}.tar
           if-no-files-found: error
 
-  macos-x86:
+  macos:
     name: ${{ matrix.config }} macOS ${{ matrix.arch }}
-    runs-on: macos-10.15
+    runs-on: macos-12
     strategy:
       fail-fast: false
       matrix:
@@ -212,7 +155,7 @@ jobs:
             rule: install
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create Build Environment
         run: |
@@ -239,7 +182,7 @@ jobs:
         run: |
           chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
           tar -cvf EternalJK-macos-${{ matrix.arch }}.tar      *
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
           name: macos-${{ matrix.arch }}
@@ -248,23 +191,24 @@ jobs:
 
   create-testing:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [vs2019, ubuntu-x86, macos-x86]
-    runs-on: ubuntu-latest
+    needs: [vs2022, ubuntu, macos]
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - name: Create binary archives
         run: |
           7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
           7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
-          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
+          7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
+
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
         with:
