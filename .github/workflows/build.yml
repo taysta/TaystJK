@@ -1,7 +1,7 @@
 name: build
 
 on:
-  # Run on pushes to tags, the "master" branch, and PR's
+  # Run on pushes to tags, the "master" branch, PR's and workflow_dispatch events
   push:
     tags-ignore:
     branches:
@@ -17,79 +17,20 @@ on:
       - '*.txt'
       - '.gitignore'
       - 'docs/*'
-
   workflow_dispatch:
 
 jobs:
-  #  windows-msys: #todo fix mingw building
-  #    name: ${{ matrix.config }} Windows ${{ matrix.arch }}
-  #    runs-on: windows-2019
-  #    strategy:
-  #      fail-fast: false
-  #     matrix:
-  #        arch: [ x86, x86_64 ]
-  #        cc: [ gcc ]
-  #        config: [ Release ]
-  #        include:
-  #          - arch: x86
-  #            msystem: MINGW32
-  #            prefix: mingw-w64-i686
-  #
-  #          - arch: x86_64
-  #            msystem: MINGW64
-  #            prefix: mingw-w64-x86_64
-  #
-  #          - config: Release
-  #            rule: install
-  #
-  #    defaults:
-  #      run:
-  #        shell: msys2 {0}
-  #
-  #    steps:
-  #      - uses: msys2/setup-msys2@v2
-  #        with:
-  #          install: ${{ matrix.prefix }}-binutils ${{ matrix.prefix }}-make ${{ matrix.prefix }}-${{ matrix.cc }}
-  #          msystem: ${{ matrix.msystem }}
-  #          path-type: minimal
-  #          release: false
-  #          update: false
-  #
-  #      - uses: actions/checkout@v3
-  #        with:
-  #          submodules: recursive
-  #
-  #      - name: Build
-  #        run: |
-  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=vulkan CNAME=quake3e-vulkan BUILD_SERVER=0
-  #          make clean ARCH=${{ matrix.arch }}
-  #          make ${{ matrix.rule }} -j 8 ARCH=${{ matrix.arch }} CC=${{ matrix.cc }} DESTDIR=bin USE_SDL=0 USE_RENDERER_DLOPEN=0 RENDERER_DEFAULT=opengl
-  #      - uses: actions/upload-artifact@v3
-  #        if: matrix.cc == 'gcc' && matrix.config == 'Release'
-  #        with:
-  #          name: windows-mingw-${{ matrix.arch }}
-  #          path: bin
-  #          if-no-files-found: error
-  #          retention-days: 5
-
-  vs2019:
+  vs2022:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
     runs-on: windows-latest
     strategy:
       matrix:
         build_type: [Release]
-        # arch: [arm64, x86, x64]
-        arch: [ x86, x64 ]
+        arch: [x86, x64]
         include:
-          # - arch: arm64 # todo fix arm64 building
-          #  platform: ARM64
-          #  suffix: .arm64
-          #  pkg_suffix: arm64
-
           - arch: x86
             platform: Win32
             pkg_suffix: x86
-
           - arch: x64
             platform: x64
             suffix: .x64
@@ -125,7 +66,7 @@ jobs:
           path: ${{runner.workspace}}/build/bin
           if-no-files-found: error
 
-  ubuntu-x86:
+  ubuntu:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
     runs-on: ubuntu-latest
     strategy:
@@ -155,12 +96,12 @@ jobs:
             sudo apt-get -y install gcc-multilib g++-multilib ninja-build
             sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
             sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
-
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
           fi
           cmake -E make_directory ${{runner.workspace}}/build
+
       - name: Configure CMake
         shell: bash
         working-directory: ${{runner.workspace}}/build
@@ -170,6 +111,7 @@ jobs:
           else
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
           fi
+
       - name: Build
         working-directory: ${{runner.workspace}}/build
         shell: bash
@@ -190,6 +132,7 @@ jobs:
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
           tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *
+
       - uses: actions/upload-artifact@v3
         if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
@@ -197,7 +140,7 @@ jobs:
           path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}.tar
           if-no-files-found: error
 
-  macos-x86:
+  macos:
     name: ${{ matrix.config }} macOS ${{ matrix.arch }}
     runs-on: macos-latest
     strategy:
@@ -248,7 +191,7 @@ jobs:
 
   create-testing:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [vs2019, ubuntu-x86, macos-x86]
+    needs: [vs2022, ubuntu, macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -265,6 +208,7 @@ jobs:
           7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/*
           7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/*
           7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
+
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
         with:
