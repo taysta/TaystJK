@@ -22,7 +22,7 @@ on:
 jobs:
   vs2022:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       matrix:
         build_type: [Release]
@@ -68,7 +68,7 @@ jobs:
 
   ubuntu:
     name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -142,7 +142,7 @@ jobs:
 
   macos:
     name: ${{ matrix.config }} macOS ${{ matrix.arch }}
-    runs-on: macos-latest
+    runs-on: macos-12
     strategy:
       fail-fast: false
       matrix:
@@ -192,7 +192,7 @@ jobs:
   create-testing:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: [vs2022, ubuntu, macos]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
