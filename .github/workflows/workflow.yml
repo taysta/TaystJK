@@ -74,7 +74,7 @@ jobs:
 
   vs2019:
     name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
-    runs-on: windows-2019
+    runs-on: windows-latest
     strategy:
       matrix:
         build_type: [Release]
