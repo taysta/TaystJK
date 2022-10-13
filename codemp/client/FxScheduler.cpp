@@ -418,7 +418,6 @@ static int compareFilenames(const void *a, const void *b) {
 int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 {
 	CGPGroup			*primitiveGroup;
-	CPrimitiveTemplate	*prim;
 	const char			*grpName;
 	SEffectTemplate		*effect = 0;
 	EPrimType			type;
@@ -468,13 +467,12 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 
 		if ( type != None )
 		{
+			CPrimitiveTemplate *prim = new CPrimitiveTemplate;
 
             if (isProjectile)
             {
                 prim->ParseLife("1");
             }
-
-			prim = new CPrimitiveTemplate;
 
 			prim->mType = type;
 			prim->ParsePrimitive( primitiveGroup );
