@@ -1,11 +1,8 @@
 name: build
 
 on:
-  # Run on pushes to tags, the "master" branch, PR's and workflow_dispatch events
+  workflow_dispatch:
   push:
-    tags-ignore:
-    branches:
-      - master
     paths-ignore:
       - '**.md'
       - '*.txt'
@@ -17,24 +14,26 @@ on:
       - '*.txt'
       - '.gitignore'
       - 'docs/*'
-  workflow_dispatch:
+  release:
+    types: [published]
+
+env:
+  newline: \\n
 
 jobs:
-  vs2022:
-    name: ${{ matrix.build_type }} Windows ${{ matrix.arch }}
+  msvc:
+    name: Windows ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
     runs-on: windows-2022
     strategy:
       matrix:
-        build_type: [Release]
-        arch: [x86, x64]
+        arch: [x86, x86_64]
+        build_type: [Debug, Release]
+        portable: [Portable, Non-Portable]
         include:
           - arch: x86
             platform: Win32
-            pkg_suffix: x86
-          - arch: x64
+          - arch: x86_64
             platform: x64
-            suffix: .x64
-            pkg_suffix: x64
 
     steps:
       - uses: actions/checkout@v3
@@ -43,46 +42,54 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
 
       - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
+        run: cmake -E make_directory ${{ runner.workspace }}/build
 
       - name: Configure CMake
         shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} -DCMAKE_INSTALL_PREFIX=bin
+        working-directory: ${{ runner.workspace }}/build
+        run: |
+          if [ "${{ matrix.portable }}" == "Portable" ]; then
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DBuildPortableVersion=ON -DCMAKE_INSTALL_PREFIX=bin"
+          else
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DBuildPortableVersion=OFF -DCMAKE_INSTALL_PREFIX=bin"
+          fi
+          cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} $OPTIONS
+
+      - name: Get SHORT_SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Update Version Hash
+        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        shell: bash
+        run: |
+          sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
 
       - name: Build
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v3
         with:
-          name: windows-${{ matrix.arch }}
-          path: ${{runner.workspace}}/build/bin
+          name: windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ runner.workspace }}/build/bin
           if-no-files-found: error
 
   ubuntu:
-    name: ${{ matrix.config }} Ubuntu ${{ matrix.arch }}
+    name: Ubuntu ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         arch: [x86, x86_64]
-        cc: [gcc]
-        cxx: [g++]
-        config: [Release]
-        include:
-          - config: Release
-            rule: install
-          - arch: x86
-            use_sdl: true
-          - arch: x86_64
-            use_sdl: true
+        build_type: [Debug, Release]
+        portable: [Portable, Non-Portable]
 
     steps:
       - uses: actions/checkout@v3
@@ -100,30 +107,46 @@ jobs:
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
           fi
-          cmake -E make_directory ${{runner.workspace}}/build
+          cmake -E make_directory ${{ runner.workspace }}/build
 
       - name: Configure CMake
         shell: bash
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         run: |
-          if [ ${{ matrix.arch }} == "x86" ]; then
-          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/linux-i686.cmake
+          if [ "${{ matrix.portable }}" == "Portable" ]; then
+            OPTIONS="-DUseInternalLibs=ON -DBuildPortableVersion=ON -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
           else
-          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+            OPTIONS="-DUseInternalLibs=OFF -DBuildPortableVersion=OFF -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
+          fi
+          
+          if [ ${{ matrix.arch }} == "x86" ]; then
+          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} $OPTIONS -DCMAKE_TOOLCHAIN_FILE=CMakeModules/Toolchains/linux-i686.cmake
+          else
+          cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} $OPTIONS
           fi
 
+      - name: Get SHORT_SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Update Version Hash
+        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        shell: bash
+        run: |
+          sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
+
       - name: Build
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --build .
 
       - name: Install
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
-        working-directory: ${{runner.workspace}}/install/JediAcademy
+        working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
           if [ ${{ matrix.arch }} == "x86" ]; then
@@ -131,28 +154,23 @@ jobs:
           else
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
-          tar -cvf EternalJK-linux-${{ matrix.arch }}.tar      *
+          tar -czvf EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
-        if: matrix.cc == 'gcc' && matrix.config == 'Release'
         with:
-          name: linux-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}.tar
+          name: linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
   macos:
-    name: ${{ matrix.config }} macOS ${{ matrix.arch }}
+    name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
     runs-on: macos-12
     strategy:
       fail-fast: false
       matrix:
         arch: [x86_64]
-        cc: [clang]
-        cxx: [clang++]
-        config: [Release]
-        include:
-          - config: Release
-            rule: install
+        build_type: [Debug, Release]
+        portable: [Portable, Non-Portable]
 
     steps:
       - uses: actions/checkout@v3
@@ -160,38 +178,56 @@ jobs:
       - name: Create Build Environment
         run: |
           brew install zlib libjpeg libpng sdl2
-          cmake -E make_directory ${{runner.workspace}}/build
+          cmake -E make_directory ${{ runner.workspace }}/build
+
       - name: Configure CMake
         shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/install
+        working-directory: ${{ runner.workspace }}/build
+        run: |
+          if [ "${{ matrix.portable }}" == "Portable" ]; then
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DUseInternalLibs=ON -DBuildPortableVersion=ON -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
+          else
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DUseInternalLibs=OFF -DBuildPortableVersion=OFF -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
+          fi
+          cmake $GITHUB_WORKSPACE $OPTIONS
+
+      - name: Get SHORT_SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Update Version Hash
+        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        shell: bash
+        run: |
+          sed -i.bak 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
+          rm cg_consolecmds.c.bak
 
       - name: Build
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --build .
 
       - name: Install
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
-        working-directory: ${{runner.workspace}}/install/JediAcademy
+        working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
           chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
-          tar -cvf EternalJK-macos-${{ matrix.arch }}.tar      *
+          tar -czvf EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
+
       - uses: actions/upload-artifact@v3
-        if: matrix.cc == 'clang' && matrix.config == 'Release'
         with:
-          name: macos-${{ matrix.arch }}
-          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}.tar
+          name: macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ runner.workspace }}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
-  create-testing:
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    needs: [vs2022, ubuntu, macos]
+  create-latest:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [msvc, ubuntu, macos]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -203,11 +239,10 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-linux-x86.zip         ./linux-x86/*
-          7z a -r EternalJK-linux-x86_64.zip      ./linux-x86_64/*
-          7z a -r EternalJK-windows-x86.zip       ./windows-x86/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r EternalJK-windows-x84_64.zip    ./windows-x64/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r EternalJK-macos-x86_64.zip      ./macos-x86_64/*
+          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
+          mv ./linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
+          mv ./macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
@@ -218,3 +253,82 @@ jobs:
           title: Latest Build
           files: |
             *.zip
+            *.tar.gz
+
+  create-prerelease:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
+    needs: [msvc, ubuntu, macos]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create binary archives
+        run: |
+          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./linux-x86-Release-Non-Portable/*     ./EternalJK-linux-x86.tar.gz
+          mv ./linux-x86_64-Release-Non-Portable/*  ./EternalJK-linux-x86_64.tar.gz
+          mv ./macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
+
+      - name: Create latest build
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest-beta"
+          prerelease: true
+          title: Latest Build
+          files: |
+            *.zip
+            *.tar.gz
+
+  create-release:
+    if: github.event_name == 'release'
+    needs: [msvc, ubuntu, macos]
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        include:
+          - artifact_dir: windows-x86-Release-Portable/JediAcademy
+            artifact_name: EternalJK-windows-x86.zip
+            zip: true
+
+          - artifact_dir: linux-x86-Release-Non-Portable
+            artifact_name: EternalJK-linux-x86.tar.gz
+            zip: false
+
+          - artifact_dir: linux-x86_64-Release-Non-Portable
+            artifact_name: EternalJK-linux-x86_64.tar.gz
+            zip: false
+
+          - artifact_dir: macos-x86_64-Release-Non-Portable
+            artifact_name: EternalJK-macos-x86_64.tar.gz
+            zip: false
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create archive
+        run: |
+          if [ "${{ matrix.zip }}" == "true" ]; then
+            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          else
+            mv ./${{ matrix.artifact_dir }}/* ${{ matrix.artifact_name }}
+          fi
+
+      - name: Upload archives
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file: ${{ matrix.artifact_name }}
