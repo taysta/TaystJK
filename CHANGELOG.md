@@ -4,12 +4,14 @@ Key: [-] removed, [+] added, [\*] modified
 # Features
 
 ## Tayst's Fork
+
 * [*] Add attack/altattack inputs to `cg_movementKeys`
 * [+] Add console/chat field support for [shift+]ctrl+backspace/del/left/right shortcuts
 * [+] New team overlay `cg_drawTeamOverlay 3`, use `cg_drawTeamOverlay 4` to ignore local client  
 * [+] New Quake style HUD `cg_hudFiles 4`
-* [+] New team scoreboard `cg_drawScores 3`
+* [+] New team & duel score hud `cg_drawScores 3`
 * [+] New counter strike style timer `cg_drawTimer 7`
+* [+] Draw timer countdown `cg_drawTimerCountdown 1`
 * [+] Show ammo for weapons on the selection cycle with `cg_weaponCycleAmmo`
 * [+] Music commands from NewMod
 * [\*] Improved the order that shader files are read. If there are two shaders sharing the same name, the one that was found in a file later on JKA file list (phone book order) takes precedence.
