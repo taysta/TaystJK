@@ -239,7 +239,7 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           mv ./linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
           mv ./linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
           mv ./macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
