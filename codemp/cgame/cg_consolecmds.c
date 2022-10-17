@@ -1084,14 +1084,20 @@ extern void CG_ClearThirdPersonDamp(void);
 void CG_StrafeHelper_f( void ) {
 	if ( trap->Cmd_Argc() == 1 ) {
 		int i = 0;
+
+		dynTable_init();
+		dynTable_addHeader("num", ALIGN_LEFT);
+		dynTable_addHeader("Enabled", ALIGN_CENTER);
+		dynTable_addHeader("Name", ALIGN_LEFT);
+
 		for ( i = 0; i < MAX_STRAFEHELPER_TWEAKS; i++ ) {
-			if ( (cg_strafeHelper.integer & (1 << i)) ) {
-				Com_Printf( "%2d [X] %s\n", i, strafeTweaks[i].string );
-			}
-			else {
-				Com_Printf( "%2d [ ] %s\n", i, strafeTweaks[i].string );
-			}
+
+			dynTable_addCell(va("%d", i));
+			dynTable_addCell(va("%c", cg_strafeHelper.integer & (1 << i) ? 'X' : ' '));
+			dynTable_addCell(va("%s", strafeTweaks[i].string));
 		}
+
+		dynTable_print();
 		return;
 	}
 	else {

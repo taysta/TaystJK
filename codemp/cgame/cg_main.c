@@ -2895,6 +2895,7 @@ Ghoul2 Insert End
 	//Load emojis
 	CG_LoadEmojis();
 
+
 	//Load sabers.cfg data
 	WP_SaberLoadParms();
 
@@ -3449,6 +3450,256 @@ static void CG_FX_CameraShake( void ) {
 	TCGCameraShake *data = &cg.sharedBuffer.cameraShake;
 	if (cg_screenShake.integer)
 		CG_DoCameraShake( data->mOrigin, data->mIntensity, data->mRadius, data->mTime );
+}
+
+char *dynTable_sepLine(int len)
+{
+	int i;
+	char *buff;
+
+	buff = calloc(len + 3, sizeof(char));
+	if (buff)
+	{
+		buff[0] = '^';
+		buff[1] = '5';
+
+		for (i = 2; i < len + 2; i++)
+		{
+			buff[i] = '-';
+		}
+		buff[i] = '\0';
+
+		return buff;
+	}
+	return NULL;
+}
+
+
+static dynTable_t dynTable;
+void dynTable_init(void)
+{
+	dynTable.row = NULL;
+	dynTable.totalRows = 0;
+	dynTable.totalColumns = 0;
+	dynTable.currentColumn = 0;
+	dynTable.currentRow = NULL;
+	dynTable.currentCell = NULL;
+	dynTable.columnInfo = NULL;
+}
+
+void *dynTable_malloc(size_t size)
+{
+	void *ptr = malloc(size);
+		
+	if (ptr == NULL)
+	{
+		trap->Error(ERR_DROP, "Failed to allocate memory for table.");
+	}
+
+	return ptr;
+}
+
+dynCell_t *dynTable_createCell(const char *content, int cleanLen)
+{
+	dynCell_t *newCell = dynTable_malloc(sizeof(dynCell_t));
+	int len = strlen(content);
+
+	newCell->content = dynTable_malloc((len + 1) * sizeof(char));
+	memset(newCell->content, 0, (len + 1));
+	strcpy(newCell->content, content);
+	newCell->len = cleanLen;
+	newCell->next = NULL;
+
+	return newCell;
+}
+
+dynRow_t *dynTable_createRow(void)
+{
+	dynRow_t *newRow = dynTable_malloc(sizeof(dynRow_t));
+
+	newRow->cell = NULL;
+	newRow->next = NULL;
+
+	dynTable.totalRows++;
+
+	return newRow;
+}
+
+void dynTable_addHeader(const char *headerName, tableAlignment_t mode)
+{
+	dynCell_t *newCell;
+	int cleanLen = Q_PrintStrlen(headerName);
+	int currentColumn = dynTable.currentColumn;
+
+	newCell = dynTable_createCell(headerName, cleanLen);
+
+	if (dynTable.columnInfo == NULL)
+	{
+		dynTable.columnInfo = dynTable_malloc(sizeof(columnInfo_t));
+	}
+	else
+	{
+		dynColumnInfo_t *newColumnInfo;
+		newColumnInfo = realloc(dynTable.columnInfo, sizeof(columnInfo_t) * (currentColumn + 1));
+		if (newColumnInfo == NULL)
+		{
+			trap->Error(ERR_DROP, "Failed to reallocate memory for table column info.");
+		}
+		dynTable.columnInfo = newColumnInfo;
+	}
+
+	dynTable.columnInfo[currentColumn].alignment = mode;
+	dynTable.columnInfo[currentColumn].longestCell = 0;
+
+	if (dynTable.row == NULL) //This should always be NULL for the first time this function is called.
+	{
+		dynTable.row = dynTable_createRow();
+		dynTable.currentRow = dynTable.row;
+
+		dynTable.row->cell = newCell;
+		dynTable.currentCell = dynTable.row->cell;
+		dynTable.columnInfo[currentColumn].longestCell = cleanLen;
+	}
+	else //Append additional columns to the list
+	{
+		dynTable.currentCell->next = newCell;
+		dynTable.currentCell = newCell;
+
+		if (cleanLen > dynTable.columnInfo[currentColumn].longestCell) dynTable.columnInfo[currentColumn].longestCell = cleanLen;
+	}
+
+	dynTable.currentColumn++;
+	dynTable.totalColumns++;
+}
+
+void dynTable_addCell(const char *content)
+{
+	dynCell_t *newCell;
+	int cleanLen = Q_PrintStrlen(content);
+
+	newCell = dynTable_createCell(content, cleanLen);
+
+	if (dynTable.currentColumn == dynTable.totalColumns) //We've filled up all columns in the current row. So lets add a new row.
+	{
+		dynRow_t *newRow = dynTable_createRow();
+		newRow->cell = newCell;
+
+		dynTable.currentColumn = 0;
+
+		dynTable.currentRow->next = newRow;
+		dynTable.currentRow = newRow;
+		dynTable.currentCell = dynTable.currentRow->cell;
+	}
+	else
+	{
+		dynTable.currentCell->next = newCell;
+		dynTable.currentCell = newCell;
+	}
+
+	if (cleanLen > dynTable.columnInfo[dynTable.currentColumn].longestCell) dynTable.columnInfo[dynTable.currentColumn].longestCell = cleanLen;
+
+	dynTable.currentColumn++;
+}
+
+void dynTable_print(void)
+{
+	int currentRow = 0, currentColumn = 0;
+	int len, count;
+	char separator[MAX_STRING_CHARS] = { 0 };
+	char row[MAX_STRING_CHARS] = { 0 };
+	char *line = NULL;
+	dynRow_t *tempRow = dynTable.row;
+
+	while (tempRow != NULL)
+	{
+		dynCell_t *tempCell = tempRow->cell;
+
+		while (tempCell != NULL)
+		{
+			len = dynTable.columnInfo[currentColumn].longestCell - tempCell->len;
+			for (count = 0; count < len; count++)
+			{
+				separator[count] = ' ';
+			}
+			separator[count] = 0;
+
+
+			if (currentColumn == 0) // We add the initial separator characters to the first column only.
+			{
+				Com_sprintf(row, sizeof(row), "%s%c ", S_COLOR_CYAN,'|');
+			}
+	
+			switch (dynTable.columnInfo[currentColumn].alignment)
+			{
+			case ALIGN_LEFT:
+
+				for (count = 0; count < len; count++)
+				{
+					separator[count] = ' ';
+				}
+				separator[count] = 0;
+
+				Com_sprintf(row, sizeof(row), "%s %s%s%s %s%c", row, S_COLOR_YELLOW, tempCell->content, separator,S_COLOR_CYAN,  '|');
+				break;
+
+			case ALIGN_CENTER:
+
+				for (count = 0; count < (len / 2); count++)
+				{
+					separator[count] = ' ';
+				}
+				separator[count] = 0;
+
+				Com_sprintf(row, sizeof(row), "%s %s%s%s%s%s %s%c", row, separator, S_COLOR_YELLOW, tempCell->content, separator, (len % 2 ? " " : ""), S_COLOR_CYAN, '|');
+				break;
+			}
+
+			tempCell = tempCell->next;
+			currentColumn++;
+		}
+
+		if (!line) line = dynTable_sepLine(Q_PrintStrlen(row));
+
+		if (currentRow == 0)
+		{
+			trap->Print("%s\n%s\n%s\n",line, row, line);
+		}
+		else
+		{
+			trap->Print("%s\n", row);
+		}
+
+		memset(separator, 0, sizeof(separator));
+		memset(row, 0, sizeof(row));	
+
+		tempRow = tempRow->next;
+		currentRow++;
+		currentColumn = 0;
+	}
+	trap->Print("%s\n", line);
+	free(line);
+	dynTable_free();
+}
+
+void dynTable_free(void)
+{
+	while (dynTable.row != NULL)
+	{
+		dynRow_t *tempRow = dynTable.row;
+
+		while (tempRow->cell != NULL)
+		{
+			dynCell_t *tempCell = tempRow->cell;
+			tempRow->cell = tempRow->cell->next;
+			free(tempCell->content);
+			free(tempCell);
+		}
+
+		dynTable.row = dynTable.row->next;
+		free(tempRow);
+	}
+
+	free(dynTable.columnInfo);
 }
 
 /*
