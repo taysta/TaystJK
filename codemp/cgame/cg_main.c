@@ -1613,38 +1613,41 @@ Ghoul2 Insert End
 	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
 
 	//cosmetics
+	//hats
+	cgs.media.cosmetics.afro = trap->R_RegisterModel("models/cosmetics/hats/afro.md3");
+	cgs.media.cosmetics.beard = trap->R_RegisterModel("models/cosmetics/hats/beard.md3");
+	cgs.media.cosmetics.bucket = trap->R_RegisterModel("models/cosmetics/hats/bucket.md3");
+	cgs.media.cosmetics.cap = trap->R_RegisterModel("models/cosmetics/hats/cap.md3");
+	cgs.media.cosmetics.kringekap = trap->R_RegisterModel("models/cosmetics/hats/cringe.md3");
+	cgs.media.cosmetics.crown = trap->R_RegisterModel("models/cosmetics/hats/crown.md3");
+	cgs.media.cosmetics.fedora = trap->R_RegisterModel("models/cosmetics/hats/fedora.md3");
+	cgs.media.cosmetics.fedora2 = trap->R_RegisterModel("models/cosmetics/hats/fedora2.md3");
+	cgs.media.cosmetics.fedora3 = trap->R_RegisterModel("models/cosmetics/hats/fedora3.md3");
+	cgs.media.cosmetics.fedora4 = trap->R_RegisterModel("models/cosmetics/hats/fedora4.md3");
+	cgs.media.cosmetics.glasses = trap->R_RegisterModel("models/cosmetics/hats/glasses.md3");
+    cgs.media.cosmetics.gradcap = trap->R_RegisterModel("models/cosmetics/hats/gradcap.md3");
+    cgs.media.cosmetics.headcrab = trap->R_RegisterModel("models/cosmetics/hats/headcrab.md3");
+	cgs.media.cosmetics.horns = trap->R_RegisterModel("models/cosmetics/hats/horns.md3");
+	cgs.media.cosmetics.mario = trap->R_RegisterModel("models/cosmetics/hats/mario.md3");
+	cgs.media.cosmetics.mask = trap->R_RegisterModel("models/cosmetics/hats/mask.md3");
+	cgs.media.cosmetics.metalhelm = trap->R_RegisterModel("models/cosmetics/hats/metalhelm.md3");
+	cgs.media.cosmetics.plaguemask = trap->R_RegisterModel("models/cosmetics/hats/plaguemask.md3");
+	cgs.media.cosmetics.predator = trap->R_RegisterModel("models/cosmetics/hats/predatorhelm.md3");
+	cgs.media.cosmetics.pumpkin = trap->R_RegisterModel("models/cosmetics/hats/pumpkin.md3");
+	cgs.media.cosmetics.santaHat = trap->R_RegisterModel("models/cosmetics/hats/santahat.md3");
+	cgs.media.cosmetics.sombrero = trap->R_RegisterModel("models/cosmetics/hats/sombrero.md3");
+	cgs.media.cosmetics.saiyan = trap->R_RegisterModel("models/cosmetics/hats/supersaiyan.md3");
+	cgs.media.cosmetics.tophat = trap->R_RegisterModel("models/cosmetics/hats/tophat.md3");
 
-		cgs.media.cosmetics.santaHat	= trap->R_RegisterModel("models/players/hats/santahat.md3");
-		cgs.media.cosmetics.pumpkin		= trap->R_RegisterModel("models/players/hats/pumpkin.md3");
-		cgs.media.cosmetics.cap			= trap->R_RegisterModel("models/players/hats/cap.md3");
-		cgs.media.cosmetics.fedora		= trap->R_RegisterModel("models/players/hats/fedora.md3");
-		cgs.media.cosmetics.kringekap	= trap->R_RegisterModel("models/players/hats/cringe.md3");
-		cgs.media.cosmetics.sombrero	= trap->R_RegisterModel("models/players/hats/sombrero.md3");
-		cgs.media.cosmetics.tophat		= trap->R_RegisterModel("models/players/hats/tophat.md3");
-        cgs.media.cosmetics.mask		= trap->R_RegisterModel("models/players/hats/mask.md3");
-    	cgs.media.cosmetics.goose = trap->R_RegisterModel("models/players/hats/goose.md3");
-        cgs.media.cosmetics.fedora2 = trap->R_RegisterModel("models/players/hats/fedora2.md3");
-        cgs.media.cosmetics.fedora3 = trap->R_RegisterModel("models/players/hats/fedora3.md3");
-        cgs.media.cosmetics.fedora4 = trap->R_RegisterModel("models/players/hats/fedora4.md3");
-        cgs.media.cosmetics.headcrab = trap->R_RegisterModel("models/players/hats/headcrab.md3");
-    	cgs.media.cosmetics.vadercape = trap->R_RegisterModel("models/players/hats/vadercape.md3");
-    	cgs.media.cosmetics.yodacape = trap->R_RegisterModel("models/players/hats/yodacape.md3");
-    	cgs.media.cosmetics.horns = trap->R_RegisterModel("models/players/hats/horns.md3");
-    	cgs.media.cosmetics.metalhelm = trap->R_RegisterModel("models/players/hats/metalhelm.md3");
-    	cgs.media.cosmetics.afro = trap->R_RegisterModel("models/players/hats/afro.md3");
-    	cgs.media.cosmetics.ak47 = trap->R_RegisterModel("models/players/hats/ak47.md3");
-    	cgs.media.cosmetics.bucket = trap->R_RegisterModel("models/players/hats/bucket.md3");
-    	cgs.media.cosmetics.crowbar = trap->R_RegisterModel("models/players/hats/crowbar.md3");
-    	cgs.media.cosmetics.crown = trap->R_RegisterModel("models/players/hats/crown.md3");
-    	cgs.media.cosmetics.royalcape = trap->R_RegisterModel("models/players/hats/royalcape.md3");
-    	cgs.media.cosmetics.beard = trap->R_RegisterModel("models/players/hats/beard.md3");
-    	cgs.media.cosmetics.grogucape = trap->R_RegisterModel("models/players/hats/grogucape.md3");
-    	cgs.media.cosmetics.plaguemask = trap->R_RegisterModel("models/players/hats/plaguemask.md3");
-    	cgs.media.cosmetics.glasses = trap->R_RegisterModel("models/players/hats/glasses.md3");
-    	cgs.media.cosmetics.mario = trap->R_RegisterModel("models/players/hats/mario.md3");
-    	cgs.media.cosmetics.rpg = trap->R_RegisterModel("models/players/hats/rpg.md3");
-    	cgs.media.cosmetics.predator = trap->R_RegisterModel("models/players/hats/predatorhelm.md3");
-    	cgs.media.cosmetics.saiyan = trap->R_RegisterModel("models/players/hats/supersaiyan.md3");
+	//capes
+	cgs.media.cosmetics.ak47 = trap->R_RegisterModel("models/cosmetics/capes/ak47.md3");
+	cgs.media.cosmetics.crowbar = trap->R_RegisterModel("models/cosmetics/capes/crowbar.md3");
+	cgs.media.cosmetics.goose = trap->R_RegisterModel("models/cosmetics/capes/goose.md3");
+	cgs.media.cosmetics.grogucape = trap->R_RegisterModel("models/cosmetics/capes/grogucape.md3");
+	cgs.media.cosmetics.royalcape = trap->R_RegisterModel("models/cosmetics/capes/royalcape.md3");
+	cgs.media.cosmetics.rpg = trap->R_RegisterModel("models/cosmetics/capes/rpg.md3");
+	cgs.media.cosmetics.vadercape = trap->R_RegisterModel("models/cosmetics/capes/vadercape.md3");
+	cgs.media.cosmetics.yodacape = trap->R_RegisterModel("models/cosmetics/capes/yodacape.md3");
 
     //jaPRO mod assets - end
 
@@ -2780,6 +2783,77 @@ forceTicPos_t ammoTicPos[] =
 	69,  34, -10,  10, "gfx/hud/ammo_tick7", 0,
 };
 
+static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics, cosmeticItem_t **storePtr) 
+{
+	int fileCnt, i, j, fileLen;
+	char cosmeticFiles[MAX_QPATH * 256]; //lets support 256 cosmetics for every category for now.
+	char cosmetic[MAX_QPATH];
+	cosmeticItem_t *cosmeticsPtr;
+	char *ptr;
+
+	fileCnt = trap->FS_GetFileList(path, ".md3", cosmeticFiles, sizeof(cosmeticFiles));
+
+	if (!fileCnt) return;
+
+	cosmeticsPtr = malloc(fileCnt * sizeof(*cosmeticsPtr));
+	if (!cosmeticsPtr) trap->Error(ERR_DROP, S_COLOR_RED"ERROR: Failed to allocate memory for cosmetics.\n");
+
+	ptr = cosmeticFiles;
+	j = 0;
+
+	for (i = 0; i < fileCnt; i++, ptr += fileLen + 1)
+	{
+		memset(cosmetic, 0, MAX_QPATH);
+		fileLen = strlen(ptr);
+
+		if ((pathLen + fileLen) > (MAX_QPATH - 1))
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] path exceeded max length of %d, skipping...\n", MAX_QPATH - 1);
+			continue;
+		}
+
+		Q_strncpyz(cosmetic, ptr, sizeof(cosmetic));
+		COM_StripExtension(cosmetic, cosmetic, sizeof(cosmetic));
+
+		if (strlen(cosmetic) > (MAX_COSMETIC_LENGTH - 1))
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename exceeded max length of %d, skipping...\n", cosmetic, MAX_COSMETIC_LENGTH - 1);
+			continue;
+		}
+
+		if (Q_isanumber(cosmetic))
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename contains only digits, skipping...\n", cosmetic);
+			continue;
+		}
+
+		if (isdigit(cosmetic[0]))
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename starts with a digit, skipping...\n", cosmetic);
+			continue;
+		}
+
+		Q_strncpyz(cosmeticsPtr[j].name, cosmetic, sizeof(cosmeticsPtr[j].name));
+		j++;
+	}
+
+	if (j < fileCnt)
+	{
+		cosmeticItem_t *temp = realloc(cosmeticsPtr, j * sizeof(*cosmeticsPtr));
+		if (!temp) trap->Error(ERR_DROP, S_COLOR_RED"ERROR: Failed to reallocate memory for cosmetics.\n");
+		cosmeticsPtr = temp;
+	}
+
+	*storePtr = cosmeticsPtr;
+	*totalCosmetics = j;
+}
+
+static void CG_FreeCosmetics(void)
+{
+	if (localCosmetics.hats) free(localCosmetics.hats);
+	if (localCosmetics.capes) free(localCosmetics.capes);
+}
+
 /*
 =================
 CG_LoadEmojis
@@ -2894,6 +2968,10 @@ Ghoul2 Insert End
 
 	//Load emojis
 	CG_LoadEmojis();
+
+	//Load cosmetics
+	CG_LoadCosmetics(COSMETIC_HATS_PATH, COSMETIC_HATS_PATH_LENGTH, &localCosmetics.totalHats, &localCosmetics.hats);
+	CG_LoadCosmetics(COSMETIC_CAPES_PATH, COSMETIC_CAPES_PATH_LENGTH, &localCosmetics.totalCapes, &localCosmetics.capes);
 
 
 	//Load sabers.cfg data
@@ -3221,6 +3299,8 @@ void CG_Shutdown( void )
 	if (cg.log.started)
 		CG_LogPrintf( cg.log.file, "End log\n----------------------------------------------------------------\n\n" );
 	CG_CloseLog( &cg.log.file);
+
+	CG_FreeCosmetics();
 }
 
 /*
