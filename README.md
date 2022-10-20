@@ -1,5 +1,5 @@
 # EternalJK
-[![build](https://github.com/JKSunny/EternalJK/actions/workflows/workflow.yml/badge.svg)](https://github.com/JKSunny/EternalJK/actions/workflows/workflow.yml)
+[![build](https://github.com/JKSunny/EternalJK/actions/workflows/build.yml/badge.svg)](https://github.com/JKSunny/EternalJK/actions/workflows/build.yml)
 
 This fork focuses on the jaPRO integration and Client Engine modifications.
 
