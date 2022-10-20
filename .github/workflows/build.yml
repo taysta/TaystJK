@@ -77,13 +77,13 @@ jobs:
         run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v3
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         with:
           name: EternalJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
@@ -149,13 +149,13 @@ jobs:
         run: cmake --build .
 
       - name: Install
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
@@ -167,7 +167,7 @@ jobs:
           tar -czvf EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         with:
           name: EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
@@ -219,13 +219,13 @@ jobs:
         run: cmake --build .
 
       - name: Install
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
@@ -233,7 +233,7 @@ jobs:
           tar -czvf EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
-        if: ${{ matrix.build_type }} == 'Release'
+        if: ${{ matrix.build_type == 'Release' }}
         with:
           name: EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
