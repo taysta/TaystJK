@@ -85,7 +85,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type }} == 'Release'
         with:
-          name: windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: EternalJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
           if-no-files-found: error
 
@@ -169,7 +169,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type }} == 'Release'
         with:
-          name: linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
@@ -235,7 +235,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type }} == 'Release'
         with:
-          name: macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
