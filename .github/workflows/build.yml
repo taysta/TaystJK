@@ -77,11 +77,13 @@ jobs:
         run: cmake --build . --config ${{ matrix.build_type }}
 
       - name: Install
+        if: ${{ matrix.build_type }} == 'Release'
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v3
+        if: ${{ matrix.build_type }} == 'Release'
         with:
           name: windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
@@ -95,7 +97,7 @@ jobs:
       matrix:
         arch: [x86, x86_64]
         build_type: [Debug, Release]
-        portable: [Portable, Non-Portable]
+        portable: [Non-Portable]
 
     steps:
       - uses: actions/checkout@v3
@@ -147,11 +149,13 @@ jobs:
         run: cmake --build .
 
       - name: Install
+        if: ${{ matrix.build_type }} == 'Release'
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
+        if: ${{ matrix.build_type }} == 'Release'
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
@@ -163,6 +167,7 @@ jobs:
           tar -czvf EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
+        if: ${{ matrix.build_type }} == 'Release'
         with:
           name: linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
@@ -176,7 +181,7 @@ jobs:
       matrix:
         arch: [x86_64]
         build_type: [Debug, Release]
-        portable: [Portable, Non-Portable]
+        portable: [Non-Portable]
 
     steps:
       - uses: actions/checkout@v3
@@ -214,11 +219,13 @@ jobs:
         run: cmake --build .
 
       - name: Install
+        if: ${{ matrix.build_type }} == 'Release'
         working-directory: ${{ runner.workspace }}/build
         shell: bash
         run: cmake --install .
 
       - name: Create binary archive
+        if: ${{ matrix.build_type }} == 'Release'
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
@@ -226,6 +233,7 @@ jobs:
           tar -czvf EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
+        if: ${{ matrix.build_type }} == 'Release'
         with:
           name: macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
@@ -245,10 +253,10 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
-          mv ./linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
-          mv ./macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
+          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./EternalJK-linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
+          mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
+          mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
@@ -275,10 +283,10 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-windows-x86.zip         ./windows-x86-Release-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./linux-x86-Release-Non-Portable/*     ./EternalJK-linux-x86.tar.gz
-          mv ./linux-x86_64-Release-Non-Portable/*  ./EternalJK-linux-x86_64.tar.gz
-          mv ./macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
+          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./EternalJK-linux-x86-Release-Non-Portable/*     ./EternalJK-linux-x86.tar.gz
+          mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  ./EternalJK-linux-x86_64.tar.gz
+          mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
@@ -299,19 +307,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifact_dir: windows-x86-Release-Portable/JediAcademy
+          - artifact_dir: EternalJK-windows-x86-Release-Non-Portable/JediAcademy
             artifact_name: EternalJK-windows-x86.zip
             zip: true
 
-          - artifact_dir: linux-x86-Release-Non-Portable
+          - artifact_dir: EternalJK-linux-x86-Release-Non-Portable
             artifact_name: EternalJK-linux-x86.tar.gz
             zip: false
 
-          - artifact_dir: linux-x86_64-Release-Non-Portable
+          - artifact_dir: EternalJK-linux-x86_64-Release-Non-Portable
             artifact_name: EternalJK-linux-x86_64.tar.gz
             zip: false
 
-          - artifact_dir: macos-x86_64-Release-Non-Portable
+          - artifact_dir: EternalJK-macos-x86_64-Release-Non-Portable
             artifact_name: EternalJK-macos-x86_64.tar.gz
             zip: false
 
