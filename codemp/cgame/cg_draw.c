@@ -2059,7 +2059,7 @@ void CG_DrawHUD(centity_t	*cent)
 		else if (lineWidth > 5)
 			lineWidth = 5;
 
-		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) - 5, SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 5, lineWidth*cgs.widthRatioCoef, hcolor, hcolor[3], 0); //640x480, 320x240
+		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, (SCREEN_HEIGHT / 2.0f) - 5.0f, SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, (SCREEN_HEIGHT / 2.0f) + 5.0f, lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
 	}
 	if (cg_raceTimer.integer || cg_raceStart.integer)
 		CG_RaceTimer();
@@ -11925,7 +11925,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	VectorCopy(velocity, angs);
 	angs[YAW] += diff;
 	AngleVectors( angs, forward, NULL, NULL );
-	VectorScale( forward, sensitivity, delta ); // line length
+	VectorScale( forward, (float)sensitivity, delta ); // line length
 
 	line[0] = delta[0] + start[0];
 	line[1] = delta[1] + start[1];
@@ -11938,15 +11938,16 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 
 	if (cg_strafeHelper.integer & SHELPER_NEWBARS) {
 	    if(cg_strafeHelperCutoff.integer > 256){
-            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 4, x, (SCREEN_HEIGHT / 2) - 4, lineWidth, color, 0.75f, 0);
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2.0f) + 4, x, (SCREEN_HEIGHT / 2.0f) - 4, lineWidth, color, 0.75f, 0);
         } else{
-            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 20 - cg_strafeHelperCutoff.integer/16, x, (SCREEN_HEIGHT / 2) - 20 + cg_strafeHelperCutoff.integer/16, lineWidth, color, 0.75f, 0);
+            Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2.0f) + 20 - (float)cg_strafeHelperCutoff.integer/16.0f, x, (SCREEN_HEIGHT / 2.0f) - 20 + (float)cg_strafeHelperCutoff.integer/16.0f, lineWidth, color, 0.75f, 0);
             //CG_DottedLine( x, 260, x, 220, 1, 100, color, 0.75f ); //240 is center, so 220 - 260 is symetrical on crosshair.'
 	    }
 	}
 	if (cg_strafeHelper.integer & SHELPER_OLDBARS && active && moveDir != 0) { //Not sure how to deal with multiple lines for W only so just fuck it for now..
 		//Proper way is to tell which line we are closest to aiming at and display the shit for that...
-		CG_FillRect(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (-4.444 * AngleSubtract(cg.predictedPlayerState.viewangles[YAW], angs[YAW])), 12, colorTable[CT_RED]);
+        float width = (float)(-4.444 * AngleSubtract(cg.predictedPlayerState.viewangles[YAW], angs[YAW]));
+		CG_FillRect(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, width, 12, colorTable[CT_RED]);
 	}
 	if (cg_strafeHelper.integer & SHELPER_OLDSTYLE) {
 		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
@@ -11970,7 +11971,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		//else if (distance > 1000)
 			//distance = 1000;
 
-		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, SCREEN_HEIGHT, x, heightIn, lineWidth, color, color[3], cutoff);
+		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, SCREEN_HEIGHT, x, (float)heightIn, lineWidth, color, color[3], (float)cutoff);
 		//CG_DottedLineSegment( 320, 480, x, LINE_HEIGHT, 1, distance, color, color[3], cutoff ); //240 is center, so 220 - 260 is symetrical on crosshair.
 	}
 	if (cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) {
@@ -11983,7 +11984,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 			cutoff = LINE_HEIGHT + 20;
 
 		if (CG_WorldCoordToScreenCoord(start, &startx, &starty))
-			Dzikie_CG_DrawLine(startx - lineWidth / 2.0f, starty, x, y, lineWidth, color, color[3], cutoff);
+			Dzikie_CG_DrawLine(startx - lineWidth / 2.0f, starty, x, y, lineWidth, color, color[3], (float)cutoff);
 			//CG_DottedLineSegment( startx, starty, x, y, 1, distance, color, color[3], cutoff ); //240 is center, so 220 - 260 is symetrical on crosshair.
 	}
 	if (cg_strafeHelper.integer & SHELPER_WEZE) {
@@ -12075,7 +12076,7 @@ static void DrawStrafeTriangles(vec3_t velocity, float diff, float baseSpeed, in
     optimalAccel = baseSpeed * ((float) cg.frametime / 1000.0f);
     potentialSpeed = cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2.0f * (250.0f * optimalAccel);
 
-    if (33.0f < (sqrtf(accel/potentialSpeed) / potentialSpeed) * 10.0f) { //good strafe = green
+    if (80.0f < (sqrtf(accel/potentialSpeed)) * 10.0f) { //good strafe = green
         color1[0] = 0.0f;
         color1[1] = 1.0f;
         color1[2] = 0.0f;
