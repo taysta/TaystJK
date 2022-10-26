@@ -11936,6 +11936,8 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	if ( !CG_WorldCoordToScreenCoord(line, &x, &y))
 		return;
 
+    x -= lineWidth / 2.0f;
+
 	if (cg_strafeHelper.integer & SHELPER_NEWBARS) {
 	    if(cg_strafeHelperCutoff.integer > 256){
             Dzikie_CG_DrawLine(x, (SCREEN_HEIGHT / 2) + 4, x, (SCREEN_HEIGHT / 2) - 4, lineWidth, color, 0.75f, 0);
@@ -11970,7 +11972,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		//else if (distance > 1000)
 			//distance = 1000;
 
-		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2, SCREEN_HEIGHT, x, heightIn, lineWidth, color, color[3], cutoff);
+		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, SCREEN_HEIGHT, x, heightIn, lineWidth, color, color[3], cutoff);
 		//CG_DottedLineSegment( 320, 480, x, LINE_HEIGHT, 1, distance, color, color[3], cutoff ); //240 is center, so 220 - 260 is symetrical on crosshair.
 	}
 	if (cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) {
@@ -11983,7 +11985,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 			cutoff = LINE_HEIGHT + 20;
 
 		if (CG_WorldCoordToScreenCoord(start, &startx, &starty))
-			Dzikie_CG_DrawLine(startx, starty, x, y, lineWidth, color, color[3], cutoff);
+			Dzikie_CG_DrawLine(startx - lineWidth / 2.0f, starty, x, y, lineWidth, color, color[3], cutoff);
 			//CG_DottedLineSegment( startx, starty, x, y, 1, distance, color, color[3], cutoff ); //240 is center, so 220 - 260 is symetrical on crosshair.
 	}
 	if (cg_strafeHelper.integer & SHELPER_WEZE) {
