@@ -74,6 +74,7 @@ static void CG_DrawTrajectoryLine(void);
 #define SHELPER_SD				(1<<17)
 #define SHELPER_TINY		    (1<<18)
 #define SHELPER_INVERT			(1<<19)
+#define SHELPER_ACCELZONES      (1<<20)
 
 #define SPEEDOMETER_ENABLE			(1<<0)
 #define SPEEDOMETER_GROUNDSPEED		(1<<1)
@@ -11993,6 +11994,136 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	}
 }
 
+
+static int CG_GetAccel()
+{
+#define ACCEL_SAMPLE_COUNT 16
+#define ACCEL_SAMPLE_MASK (ACCEL_SAMPLE_COUNT-1)
+    int i;
+    float t, dt;
+    float accel;
+    float newSpeed;
+    static float oldSpeed = 0.0f;
+    static float oldTime = 0.0f;
+    static float accelHistory[ACCEL_SAMPLE_COUNT] = {0.0f};
+    static int sampleCount = 0;
+
+    t = (float)cg.time * 0.001f;
+    dt = t - oldTime;
+    if( dt < 0.0f )
+    {
+        oldTime = t;
+    }
+    else if( dt > 0.0f )
+    {
+        // raw acceleration
+        newSpeed = cg.currentSpeed;
+        accel = ( newSpeed - oldSpeed ) / dt;
+        accelHistory[sampleCount&ACCEL_SAMPLE_MASK] = accel;
+        sampleCount++;
+        oldSpeed = newSpeed;
+        oldTime = t;
+    }
+
+    // average accel for n frames (TODO: emphasis on later frames)
+    accel = 0.0f;
+    for( i = 0; i < ACCEL_SAMPLE_COUNT; i++ )
+        accel += accelHistory[i];
+    accel /= (float)(ACCEL_SAMPLE_COUNT);
+
+    return (int)(1000*accel);
+}
+
+static float* CG_GetStrafeX(vec3_t velocity, float diff, float sensitivity){
+    vec3_t start, angs, forward, delta, line;
+    static float x, y;
+
+    //get sensitivity
+    if (cg_strafeHelperPrecision.integer < 100)
+        sensitivity = 100.0f;
+    else if (cg_strafeHelperPrecision.integer > 10000)
+        sensitivity = 10000.0f;
+
+    //get origin
+    if (!(cg_strafeHelper.integer & SHELPER_SUPEROLDSTYLE) && !cg.renderingThirdPerson)
+        VectorCopy(cg.refdef.vieworg, start);
+    else
+        VectorCopy(cg.predictedPlayerState.origin, start); //This created problems for some peoplem, use refdef instead? (avygeil fix)
+
+    VectorCopy(velocity, angs);
+    angs[YAW] += diff;
+    AngleVectors( angs, forward, NULL, NULL );
+    VectorScale( forward, sensitivity, delta );
+
+    line[0] = delta[0] + start[0];
+    line[1] = delta[1] + start[1];
+    line[2] = start[2];
+
+    if(!CG_WorldCoordToScreenCoord(line, &x, &y)){
+        return NULL;
+    }
+
+    return &x;
+}
+
+static void DrawStrafeTriangles(vec3_t velocity, float diff, float baseSpeed, int moveDir) {
+    float lx, lx2, rx, rx2, lineWidth, sensitivity, accel, optimalAccel, potentialSpeed;
+    static float lWidth, rWidth, width;
+    vec4_t color1 = {1.0f, 1.0f, 1.0f, 0.8f};
+
+    accel = (float) CG_GetAccel();
+    optimalAccel = baseSpeed * ((float) cg.frametime / 1000.0f);
+    potentialSpeed = cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2.0f * (250.0f * optimalAccel);
+
+    if (33.0f < (sqrtf(accel/potentialSpeed) / potentialSpeed) * 10.0f) { //good strafe = green
+        color1[0] = 0.0f;
+        color1[1] = 1.0f;
+        color1[2] = 0.0f;
+    } else if (-5000.0f > accel) { //decelerating = red
+        color1[0] = 1.0f;
+        color1[1] = 0.0f;
+        color1[2] = 0.0f;
+    }
+
+    lineWidth = cg_strafeHelperLineWidth.value; //offset the triangles by half of the line width
+    if (lineWidth < 0.25f) {
+        lineWidth = 0.25f;
+    }else if (lineWidth > 5.0f) {
+        lineWidth = 5.0f;
+    }
+
+    sensitivity = cg_strafeHelperPrecision.value;
+
+    if (CG_GetStrafeX(velocity, diff, sensitivity) != NULL && CG_GetStrafeX(velocity, 90 - diff, sensitivity) != NULL) {
+        lx = *CG_GetStrafeX(velocity, diff, sensitivity);
+        lx2 = *CG_GetStrafeX(velocity, 90 - diff, sensitivity);
+        lWidth = (lx - lx2) / 2.0f;
+    }
+
+    if (CG_GetStrafeX(velocity, -diff, sensitivity) != NULL && CG_GetStrafeX(velocity, diff - 90, sensitivity) != NULL) {
+        rx = *CG_GetStrafeX(velocity, -diff, sensitivity);
+        rx2 = *CG_GetStrafeX(velocity, diff - 90, sensitivity);
+        rWidth = (rx2 - rx) / 2.0f;
+    }
+
+    if(lWidth && lWidth > 0 && rWidth > lWidth){ //use smaller width for both to avoid perspective stretching
+        width = lWidth;
+    }else if(rWidth && rWidth > 0 && lWidth > rWidth){
+        width = rWidth;
+    }
+
+    trap->R_SetColor(color1);
+
+    if(CG_GetStrafeX(velocity, diff, sensitivity) != NULL) {
+        CG_DrawPic(*CG_GetStrafeX(velocity, diff, sensitivity) - width + lineWidth / 2.0f, SCREEN_HEIGHT / 2 - 4.0f, width, 8.0f,
+                   cgs.media.leftTriangle);
+    }
+
+    if(CG_GetStrafeX(velocity, -diff, sensitivity) != NULL) {
+        CG_DrawPic(*CG_GetStrafeX(velocity, -diff, sensitivity) - lineWidth / 2.0f, SCREEN_HEIGHT / 2 - 4.0f, width, 8.0f, cgs.media.rightTriangle);
+    }
+}
+
 qboolean CG_InRollAnim( centity_t *cent );
 int PM_GetMovePhysics();
 
@@ -12111,6 +12242,11 @@ static void CG_StrafeHelper(centity_t *cent)
 
 	velocity[2] = 0;
 	vectoangles( velocity, velocityAngle ); //We have the offset from our Velocity angle that we should be aiming at, so now we need to get our velocity angle.
+
+    //Accel Zones (tayst)
+    if((moveStyle == MV_CPM || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_PJK || moveStyle == MV_SLICK) && cg_strafeHelper.integer & SHELPER_ACCELZONES) {
+        DrawStrafeTriangles(velocityAngle, optimalDeltaAngle, baseSpeed, moveDir);
+    }
 
 	if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SWOOP || moveStyle == MV_BOTCPM || (moveStyle == MV_SLICK && !onGround)) {//QW, CPM, PJK, WSW, RJCPM have center line
 		if (cg_strafeHelper.integer & SHELPER_CENTER)

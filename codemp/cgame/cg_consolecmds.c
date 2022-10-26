@@ -1075,7 +1075,8 @@ static bitInfo_T strafeTweaks[] = {
     {"SA"},//16
     {"SD"},//17
     {"Small Lines"},//18
-    {"Invert"}//19
+    {"Invert"},//19
+    {"Accel Zones"} //20
 };
 static const int MAX_STRAFEHELPER_TWEAKS = ARRAY_LEN( strafeTweaks );
 

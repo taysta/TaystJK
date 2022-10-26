@@ -1476,6 +1476,8 @@ typedef struct cgMedia_s {
     qhandle_t	keyRightOnShader2;
     qhandle_t   keyAttackOn2;
     qhandle_t   keyAltOn2;
+    qhandle_t   leftTriangle;
+    qhandle_t   rightTriangle;
 
 //JAPRO - Clientside - Movement keys - End
 
