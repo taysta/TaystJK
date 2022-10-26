@@ -11908,14 +11908,12 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
             memcpy(color, normalColor, sizeof(vec4_t));
         else if (moveDir == 2 || moveDir == 6)
             memcpy(color, invertColor, sizeof(vec4_t));
-        else if (moveDir == 0 || moveDir == 4)
+        else if (moveDir == 0 || moveDir == 4 || moveDir == 3 || moveDir == 5)
             memcpy(color, wColor, sizeof(vec4_t));
         else if (moveDir == 8)
             memcpy(color, centerColor, sizeof(vec4_t));
         else if (moveDir == 9 || moveDir == 10)
             memcpy(color, rearColor, sizeof(vec4_t));
-        else if (moveDir == 3 || moveDir == 5)
-            memcpy(color, wColor, sizeof(vec4_t));
         color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
     }
 
@@ -12262,7 +12260,7 @@ static void CG_StrafeHelper(centity_t *cent)
 		if (cg_strafeHelper.integer & SHELPER_WA)
 			DrawStrafeLine(velocityAngle, (optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove < 0), 1); //WA
 		if (cg_strafeHelper.integer & SHELPER_WD)
-			DrawStrafeLine(velocityAngle, (-optimalDeltaAngle - (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD
+			DrawStrafeLine(velocityAngle, -(optimalDeltaAngle + (cg_strafeHelperOffset.value * 0.01f)), (qboolean)(cmd.forwardmove > 0 && cmd.rightmove > 0), 7); //WD
 
         if (cg_strafeHelper.integer & SHELPER_REAR) {
             if (cg_strafeHelper.integer & SHELPER_SA) {
