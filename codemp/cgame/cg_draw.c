@@ -4073,6 +4073,9 @@ static void CG_DrawTaystHUD(char* s) {
                 d2 = &cgs.clientinfo[cgs.duelist1];
             }
 
+            if(d1 == NULL || d2 == NULL)
+                return;
+
             Q_strncpyz(temp2, d1->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d1->score)), sizeof(temp2));
             Q_strncpyz(temp, d2->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d2->score)), sizeof(temp));
 
