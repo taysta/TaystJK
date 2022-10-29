@@ -2056,8 +2056,8 @@ void CG_DrawHUD(centity_t	*cent)
 		lineWidth = cg_strafeHelperLineWidth.value;
 		if (lineWidth < 0.25f)
 			lineWidth = 0.25f;
-		else if (lineWidth > 5)
-			lineWidth = 5;
+		else if (lineWidth > 5.0f)
+			lineWidth = 5.0f;
 
 		Dzikie_CG_DrawLine(SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, (SCREEN_HEIGHT / 2.0f) - 5.0f, SCREEN_WIDTH / 2.0f - lineWidth / 2.0f, (SCREEN_HEIGHT / 2.0f) + 5.0f, lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
 	}
@@ -11841,8 +11841,8 @@ void Dzikie_CG_DrawSpeed(int moveDir) {
 		return; //No cg.snap causes this to return.
 	}
 
-	midx=SCREEN_WIDTH/2;
-	midy=SCREEN_HEIGHT/2;
+	midx=SCREEN_WIDTH/2.0f;
+	midy=SCREEN_HEIGHT/2.0f;
 	VectorCopy(cg.predictedPlayerState.velocity,velocity_copy);
 	velocity_copy[2]=0;
 	VectorCopy(cg.refdef.viewangles, viewangle_copy);
@@ -11854,26 +11854,26 @@ void Dzikie_CG_DrawSpeed(int moveDir) {
 	accel/=1000;
 	optiangle=(g_speed-accel)/length;
 	if ((optiangle<=1) && (optiangle>=-1))
-		optiangle=acos(optiangle);
+		optiangle=acosf(optiangle);
 	else
 		optiangle=0;
 	length/=5;
 	//length = VectorLength(cg.predictedPlayerState.velocity)/5;
-	if (length>(SCREEN_HEIGHT/2))
-		length=(float)(SCREEN_HEIGHT/2);
+	if (length>(SCREEN_HEIGHT/2.0f))
+		length=(float)(SCREEN_HEIGHT/2.0f);
 	vectoangles(velocity_copy,velocity_angle);
 	diff=AngleSubtract(viewangle_copy[YAW],velocity_angle[YAW]);
-	diff=diff/180*M_PI;
+	diff=diff/180*(float)M_PI;
 
 	//Com_Printf("Diff is %.3f\n", diff);
 
 //	str = va( "%f %f %f", g_speed, accel, optiangle);
 //	w = CG_Text_Width_Ext( str, 0.25f, 0, &cgs.media.limboFont1 );
 //	CG_Text_Paint_Ext( (float)(SCREEN_WIDTH/2), (float)(SCREEN_HEIGHT/2), 0.25f, 0.25f, colorWhite, str, 0, 0, ITEM_TEXTSTYLE_SHADOWED, &cgs.media.limboFont1 );
-	Dzikie_CG_DrawLine (midx, midy, midx+length*sin(diff), midy-length*cos(diff), 1, colorRed, 0.75f, 0);
-	Dzikie_CG_DrawLine (midx,midy,midx+cmd.rightmove,midy-cmd.forwardmove,1,colorCyan,0.75f,0);
-	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sin(diff+optiangle),midy-length/2*cos(diff+optiangle),1,colorRed,0.75f,0);
-	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sin(diff-optiangle),midy-length/2*cos(diff-optiangle),1,colorRed,0.75f,0);
+	Dzikie_CG_DrawLine (midx, midy, midx+length*sinf(diff), midy-length*cosf(diff), 1, colorRed, 0.75f, 0);
+	Dzikie_CG_DrawLine (midx,midy,midx+(float)cmd.rightmove,midy-(float)cmd.forwardmove,1,colorCyan,0.75f,0);
+	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sinf(diff+optiangle),midy-length/2*cosf(diff+optiangle),1,colorRed,0.75f,0);
+	Dzikie_CG_DrawLine (midx,midy,midx+length/2*sinf(diff-optiangle),midy-length/2*cosf(diff-optiangle),1,colorRed,0.75f,0);
 
 }
 
@@ -11883,8 +11883,8 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	float x, y, startx, starty, lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
 	static const int LINE_HEIGHT = 230; //240 is midpoint, so it should be a little higher so crosshair is always on it.
-	static const vec4_t normalColor = {1, 1, 1, 0.75}, invertColor = {0.5f, 1, 1, 0.75}, wColor = {1, 0.5, 0.5, 0.75}, rearColor = {0.5, 1,1, 0.75}, centerColor = {0.5, 1, 1, 0.75}; //activeColor = {0, 1, 0, 0.75},
-	vec4_t color = {1, 1, 1, 0.75};
+	static const vec4_t normalColor = {1, 1, 1, 0.75f}, invertColor = {0.5f, 1, 1, 0.75f}, wColor = {1, 0.5f, 0.5f, 0.75f}, rearColor = {0.5f, 1,1, 0.7f}, centerColor = {0.5f, 1, 1, 0.75f}; //activeColor = {0, 1, 0, 0.75},
+	vec4_t color = {1, 1, 1, 0.75f};
 
 	//how the fuck do these colors work, 0111 is cyan?
 
@@ -11896,8 +11896,8 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 	lineWidth = cg_strafeHelperLineWidth.value;
 	if (lineWidth < 0.25f)
 		lineWidth = 0.25f;
-	else if (lineWidth > 5)
-		lineWidth = 5;
+	else if (lineWidth > 5.0f)
+		lineWidth = 5.0f;
 
 	if (active) {
 		color[0] = cg.strafeHelperActiveColor[0];
@@ -11905,8 +11905,7 @@ static void DrawStrafeLine(vec3_t velocity, float diff, qboolean active, int mov
 		color[2] = cg.strafeHelperActiveColor[2];
 		color[3] = cg.strafeHelperActiveColor[3];
 		//memcpy(color, activeColor, sizeof(vec4_t));
-	}
-    else {
+	}else {
         if (moveDir == 1 || moveDir == 7)
             memcpy(color, normalColor, sizeof(vec4_t));
         else if (moveDir == 2 || moveDir == 6)
@@ -12119,12 +12118,12 @@ static void DrawStrafeTriangles(vec3_t velocity, float diff, float baseSpeed, in
     trap->R_SetColor(color1);
 
     if(CG_GetStrafeX(velocity, diff, sensitivity) != NULL) {
-        CG_DrawPic(*CG_GetStrafeX(velocity, diff, sensitivity) - width + lineWidth / 2.0f, SCREEN_HEIGHT / 2 - 4.0f, width, 8.0f,
+        CG_DrawPic(*CG_GetStrafeX(velocity, diff, sensitivity) - width + lineWidth / 2.0f, SCREEN_HEIGHT / 2.0f - 4.0f, width, 8.0f,
                    cgs.media.leftTriangle);
     }
 
     if(CG_GetStrafeX(velocity, -diff, sensitivity) != NULL) {
-        CG_DrawPic(*CG_GetStrafeX(velocity, -diff, sensitivity) - lineWidth / 2.0f, SCREEN_HEIGHT / 2 - 4.0f, width, 8.0f, cgs.media.rightTriangle);
+        CG_DrawPic(*CG_GetStrafeX(velocity, -diff, sensitivity) - lineWidth / 2.0f, SCREEN_HEIGHT / 2.0f - 4.0f, width, 8.0f, cgs.media.rightTriangle);
     }
 }
 
@@ -12254,7 +12253,7 @@ static void CG_StrafeHelper(centity_t *cent)
 
 	if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SWOOP || moveStyle == MV_BOTCPM || (moveStyle == MV_SLICK && !onGround)) {//QW, CPM, PJK, WSW, RJCPM have center line
 		if (cg_strafeHelper.integer & SHELPER_CENTER)
-			DrawStrafeLine(velocityAngle, 0, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
+			DrawStrafeLine(velocityAngle, 0.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove != 0), 8); //Center
 
         if (cg_strafeHelper.integer & SHELPER_REAR && cg_strafeHelper.integer & SHELPER_S && cg_strafeHelper.integer & SHELPER_CENTER)
             DrawStrafeLine(velocityAngle, 180.0f, (qboolean)(cmd.forwardmove == 0 && cmd.rightmove == 0), 8); //Rear Center
