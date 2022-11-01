@@ -334,7 +334,7 @@ XCVAR_DEF( cg_simpleItems,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_showMiss,							"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_showVehBounds,					"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_showVehMiss,						"0",					NULL,					CVAR_NONE )
-//XCVAR_DEF( cg_smoothClients,					"0",					NULL,					CVAR_ARCHIVE ) //breaks interp on non-JAPRO servers
+XCVAR_DEF( cg_smoothClients,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_snapshotTimeout,					"10",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_speedTrail,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_stats,							"0",					NULL,					CVAR_NONE )

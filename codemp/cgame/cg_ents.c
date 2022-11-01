@@ -3518,17 +3518,20 @@ void CG_CalcEntityLerpPositions( centity_t *cent ) {
 }*/
 
 void CG_CalcEntityLerpPositions( centity_t *cent ) {
+    qboolean goAway = qfalse;
+
 	// if this player does not want to see extrapolated players
-	//if ( /*!cg_smoothClients.integer ||*/ cgs.serverMod == SVMOD_JAPRO)
-	//{
+	//if ( !cg_smoothClients.integer ) {
+	if ( !cg_smoothClients.integer || (cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA) ) {
 		// make sure the clients use TR_INTERPOLATE
-		if ( (cent->currentState.number != cg.clientNum && cent->currentState.number < MAX_CLIENTS) || cent->currentState.eType == ET_NPC ) {
+		if ( cent->currentState.number < MAX_CLIENTS ) {
 			cent->currentState.pos.trType = TR_INTERPOLATE;
 			cent->nextState.pos.trType = TR_INTERPOLATE;
 		}
-	//}
+	}
 
-	if (cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.m_iVehicleNum == cent->currentState.number && cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
+	if (cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.m_iVehicleNum == cent->currentState.number &&
+        cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
 	{ //special case for vehicle we are riding
 		centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
@@ -3549,47 +3552,37 @@ void CG_CalcEntityLerpPositions( centity_t *cent ) {
 	// first see if we can interpolate between two snaps for
 	// linear extrapolated clients
 	if ( cent->interpolate && cent->currentState.pos.trType == TR_LINEAR_STOP
-		&& ((cent->currentState.number != cg.clientNum && cent->currentState.number < MAX_CLIENTS) || cent->currentState.eType == ET_NPC) ) {
-		CG_InterpolateEntityPosition( cent );
-		return;
-	}
-
-	if (cent->interpolate && cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
+		&& cent->currentState.number < MAX_CLIENTS )
 	{
 		CG_InterpolateEntityPosition( cent );
+        goAway = qtrue;
+	}
+
+	else if (cent->interpolate && cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
+	{
+		CG_InterpolateEntityPosition( cent );
+		goAway = qtrue;
+	}
+	else
+	{
+		// just use the current frame and evaluate as best we can
+		BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
+		BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
+	}
+
+	if (cent->currentState.number == cg.clientNum) {
+		VectorCopy(cg.predictedPlayerState.origin, cent->lerpOrigin);
+		VectorCopy(cg.predictedPlayerState.origin, cent->currentState.pos.trBase);
+	}
+
+	if (goAway)
+	{
 		return;
 	}
-
-//JAPRO - Clientside - Unlagged Timenudge Extrapolation - Start
-	// interpolating failed (probably no nextSnap), so extrapolate this can also happen if the teleport bit is flipped, but that won't be noticeable
-	if ( cent->currentState.number < MAX_CLIENTS &&	cent->currentState.clientNum != cg.predictedPlayerState.clientNum )
-	{
-#if 0//_DEBUGTIMENUDGE
-		if (!cg_smoothTimenudge.integer)
-			cent->currentState.pos.trType = TR_LINEAR_STOP;//was tr_linear_stop, but that was jerky? huh
-		else
-#endif
-			cent->currentState.pos.trType = TR_LINEAR;
-		cent->currentState.pos.trTime = cg.snap->serverTime;
-		if (cgs.svfps)
-			cent->currentState.pos.trDuration = 1000 / cgs.svfps;
-		else
-			cent->currentState.pos.trDuration = 50;
-#ifdef _DEBUGTIMENUDGE
-		if (cl_timenudgeDuration.integer > 0)
-			cent->currentState.pos.trDuration = cl_timenudgeDuration.integer;
-#endif
-		//cg.time - cg.frame->serverTime ) / (cg.nextFrame->serverTime - cg.frame->serverTime), cg_latestSnapshotTime
-	}
-//JAPRO - Clientside - Unlagged Timenudge Extrapolation - End
-
-
-	BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
-	BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
 
 	// adjust for riding a mover if it wasn't rolled into the predicted
 	// player state
-	if ( cent->currentState.number != cg.clientNum ) {
+	if ( cent->currentState.number != cg.predictedPlayerState.clientNum ) {
 		CG_AdjustPositionForMover( cent->lerpOrigin, cent->currentState.groundEntityNum,
 		cg.snap->serverTime, cg.time, cent->lerpOrigin );
 	}
@@ -3866,7 +3859,21 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 		veh->bodyHeight = cg.time; //indicate we have already been added
 	}
 
-	CG_AddCEntity( &cg_entities[cg.predictedPlayerState.clientNum] );
+    if (cg_smoothClients.integer) //&& cg_smoothClients.integer != 2)
+    { //jaPRO - fix smoothClients
+        //so for some reason I'll probably never understand, temporarily disabling smoothClients is the only way I could find to fix the jittery movement on local player
+        //in CG_CalcEntityLerpPositions, I tried checking if cent->currentState.number == cg.clientNum, cg.predictedPlayerState.clientNum, cg.snap->ps.clientNum,
+        //cg_entities[cg.predictedPlayerState.clientNum].currentState.number, as well as any and every logical combination of these
+        //I also tried doing the same with saberOwner, I tried both currentState and nextState, the checks work, but the problem persists
+        //on JK2 the issue doesn't exist, so it might be something to do with the JKA specific optimizations in CG_PredictPlayerState
+        //regardless, this method to temporarily change the vmCvar value works and is probably the best way to do it every frame (could also use atoi/atof on the vmCvar string if needed)
+        cg_smoothClients.integer = 0;
+        CG_AddCEntity( &cg_entities[cg.predictedPlayerState.clientNum] );
+        cg_smoothClients.integer = (int)cg_smoothClients.value;
+    }
+    else {
+	    CG_AddCEntity( &cg_entities[cg.predictedPlayerState.clientNum] );
+    }
 
 	/*
 	// lerp the non-predicted value for lightning gun origins
@@ -3906,28 +3913,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 				//if we were to add the vehicle after the pilot, the pilot's bolt would lag a frame behind.
 				continue;
 			}
-			else if (cgs.serverMod == SVMOD_JAPRO && !cg.demoPlayback && !cgs.localServer && cg.nextSnap /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
-			{//loda
-				if (cent->nextState.eType == ET_MISSILE || cent->nextState.eType == ET_GENERAL)
-				{ // transition it immediately and add it
-					CG_TransitionEntity( cent );
-					cent->interpolate = qtrue;
-				}
-			}
 			CG_AddCEntity( cent );
-		}
-	}
-
-	//im pretty sure this code is reudundant and slows everything down, but i'm keeping it just incase it's necessary for unlagged projectiles/hitscan
-	if (cgs.serverMod == SVMOD_JAPRO && !cg.demoPlayback && !cgs.localServer /*&& ((cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN) || (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ))*/&& ps->clientNum == cg.clientNum && !ps->stats[STAT_RACEMODE])
-	{// add each entity sent over by the server - loda
-		for ( num = 0 ; num < cg.snap->numEntities ; num++ ) {
-			cent = &cg_entities[ cg.snap->entities[ num ].number ];
-			//unlagged - early transitioning
-			if ( !cg.nextSnap || cent->nextState.eType != ET_MISSILE && cent->nextState.eType != ET_GENERAL ) {
-			//unlagged - early transitioning
-				CG_AddCEntity( cent );
-			}
 		}
 	}
 
