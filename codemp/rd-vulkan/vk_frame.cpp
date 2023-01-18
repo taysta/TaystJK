@@ -966,7 +966,6 @@ void vk_begin_frame( void )
         vk.cmd_index %= NUM_COMMAND_BUFFERS;
 
         if ( !ri.VK_IsMinimized() ) {
-            //result = qvkAcquireNextImageKHR( vk.device, vk.swapchain, UINT64_MAX, vk.image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
             result = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000LLU, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
             if ( result < 0 ) {
                 switch ( result ) {
@@ -983,7 +982,16 @@ void vk_begin_frame( void )
         //vk.cmd_index %= NUM_COMMAND_BUFFERS;
 
         vk.cmd->waitForFence = qfalse;
-        VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_FALSE, 1e10 ) );
+		result = qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_FALSE, 1e10 );
+		if ( result != VK_SUCCESS ) {
+			if ( result == VK_ERROR_DEVICE_LOST ) {
+				// silently discard previous command buffer
+				ri.Printf( PRINT_WARNING, "Vulkan: %s returned %s", "vkWaitForfences", vk_result_string( result ) );
+			} else {
+				ri.Error( ERR_FATAL, "Vulkan: %s returned %s", "vkWaitForfences", vk_result_string( result ) );
+			}
+		}
+		VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_FALSE, 1e10 ) );
     }
 
     VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
@@ -1142,6 +1150,11 @@ void vk_release_resources( void ) {
 
 void vk_end_frame( void )
 {
+    const VkPipelineStageFlags wait_dst_stage_mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    VkPresentInfoKHR present_info;
+    VkSubmitInfo submit_info;
+    VkResult result;
+
     if ( vk.frame_count == 0 )
         return;
 
@@ -1179,13 +1192,9 @@ void vk_end_frame( void )
                 vk.renderHeight = gls.windowHeight;
                 vk.renderScaleX = vk.renderScaleY = 1.0;
 
-                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.swapchain_image_index],
-                    qfalse, vk.renderWidth, vk.renderHeight );
-
+                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.swapchain_image_index], qfalse, vk.renderWidth, vk.renderHeight );
                 qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.gamma_pipeline );
-
-                qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-                    vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL );
+                qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL );
 
                 qvkCmdDraw( vk.cmd->command_buffer, 4, 1, 0, 0 );
             }
@@ -1195,11 +1204,8 @@ void vk_end_frame( void )
     vk_end_render_pass();
 
     VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );
-
-    VkPipelineStageFlags wait_dst_stage_mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
  
-    // Queue submission and synchronization
-    VkSubmitInfo submit_info;
+    // Queue submission and synchronization 
     submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submit_info.pNext = NULL;
     submit_info.commandBufferCount = 1;
@@ -1229,7 +1235,6 @@ void vk_end_frame( void )
     if (ri.VK_IsMinimized())
         return;
 
-    VkPresentInfoKHR present_info;
     present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     present_info.pNext = NULL;
     present_info.waitSemaphoreCount = 1;
@@ -1239,7 +1244,7 @@ void vk_end_frame( void )
     present_info.pImageIndices = &vk.swapchain_image_index;
     present_info.pResults = NULL;
 
-    VkResult result = qvkQueuePresentKHR( vk.queue, &present_info );
+    result = qvkQueuePresentKHR( vk.queue, &present_info );
     if ( result < 0 ) {
         switch ( result ) {
         case VK_ERROR_DEVICE_LOST: ri.Printf( PRINT_DEVELOPER, "vkQueuePresentKHR: device lost\n" ); break;
