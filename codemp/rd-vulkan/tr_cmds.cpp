@@ -23,8 +23,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-static renderCommandList_t	BE_Commands;
-
 /*
 =====================
 R_PerformanceCounters
@@ -477,100 +475,6 @@ void RE_TakeVideoFrame( int width, int height, byte *captureBuffer, byte *encode
 	cmd->captureBuffer = captureBuffer;
 	cmd->encodeBuffer = encodeBuffer;
 	cmd->motionJpeg = motionJpeg;
-}
-
-/*
-=============
-
-FixRenderCommandList
-https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=493
-Arnout: this is a nasty issue. Shaders can be registered after drawsurfaces are generated
-but before the frame is rendered. This will, for the duration of one frame, cause drawsurfaces
-to be rendered with bad shaders. To fix this, need to go through all render commands and fix
-sortedIndex.
-==============
-*/
-void FixRenderCommandList( int newShader )
-{
-	renderCommandList_t* cmdList = &BE_Commands;
-
-	if (cmdList) {
-		const void* curCmd = cmdList->cmds;
-
-		while (1) {
-			switch (*(const int*)curCmd) {
-			case RC_SET_COLOR:
-			{
-				const setColorCommand_t* sc_cmd = (const setColorCommand_t*)curCmd;
-				curCmd = (const void*)(sc_cmd + 1);
-				break;
-			}
-			case RC_STRETCH_PIC:
-			{
-				const stretchPicCommand_t* sp_cmd = (const stretchPicCommand_t*)curCmd;
-				curCmd = (const void*)(sp_cmd + 1);
-				break;
-			}
-			case RC_ROTATE_PIC:
-			{
-				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
-				curCmd = (const void*)(sp_cmd + 1);
-				break;
-			}
-			case RC_ROTATE_PIC2:
-			{
-				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
-				curCmd = (const void*)(sp_cmd + 1);
-				break;
-			}
-			case RC_DRAW_SURFS:
-			{
-				int i;
-				drawSurf_t	*drawSurf;
-				shader_t	*shader;
-				int			fogNum;
-				int			entityNum;
-				int			dlightMap;
-				int			sortedIndex;
-				const drawSurfsCommand_t* ds_cmd = (const drawSurfsCommand_t*)curCmd;
-
-				for (i = 0, drawSurf = ds_cmd->drawSurfs; i < ds_cmd->numDrawSurfs; i++, drawSurf++) {
-					R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &fogNum, &dlightMap);
-					sortedIndex = ((drawSurf->sort >> QSORT_SHADERNUM_SHIFT)& (MAX_SHADERS - 1));
-					if (sortedIndex >= newShader) {
-						sortedIndex = shader->sortedIndex;
-						drawSurf->sort = (sortedIndex << QSORT_SHADERNUM_SHIFT) | entityNum | (fogNum << QSORT_FOGNUM_SHIFT) | (int)dlightMap;
-					}
-				}
-				curCmd = (const void*)(ds_cmd + 1);
-				break;
-			}
-			case RC_DRAW_BUFFER:
-			case RC_WORLD_EFFECTS:
-			case RC_AUTO_MAP:
-			{
-				const drawBufferCommand_t* db_cmd = (const drawBufferCommand_t*)curCmd;
-				curCmd = (const void*)(db_cmd + 1);
-				break;
-			}
-			case RC_SWAP_BUFFERS:
-			{
-				const swapBuffersCommand_t* sb_cmd = (const swapBuffersCommand_t*)curCmd;
-				curCmd = (const void*)(sb_cmd + 1);
-				break;
-			}
-			case RC_CLEARCOLOR:
-			{
-				const clearColorCommand_t* cc_cmd = (const clearColorCommand_t*)curCmd;
-				curCmd = (const void*)(cc_cmd + 1);
-				break;
-			}
-			case RC_END_OF_LIST:
-			default:
-				return;
-			}
-		}
-	}
 }
 
 qboolean R_CanMinimize( void )

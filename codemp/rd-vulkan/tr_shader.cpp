@@ -4415,6 +4415,107 @@ shader_t *FinishShader( void )
 //========================================================================================
 
 /*
+=============
+
+FixRenderCommandList
+https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=493
+Arnout: this is a nasty issue. Shaders can be registered after drawsurfaces are generated
+but before the frame is rendered. This will, for the duration of one frame, cause drawsurfaces
+to be rendered with bad shaders. To fix this, need to go through all render commands and fix
+sortedIndex.
+==============
+*/
+extern bool gServerSkinHack;
+static void FixRenderCommandList( int newShader ) {
+	if ( gServerSkinHack )
+		return;
+
+	renderCommandList_t *cmdList = &backEndData->commands;
+
+	if ( cmdList ) {
+		const void* curCmd = cmdList->cmds;
+
+		*( (int *)( cmdList->cmds + cmdList->used ) ) = RC_END_OF_LIST;
+
+		while ( 1 ) {
+			curCmd = PADP(curCmd, sizeof(void *));
+
+			switch (*(const int*)curCmd) {
+			case RC_SET_COLOR:
+			{
+				const setColorCommand_t* sc_cmd = (const setColorCommand_t*)curCmd;
+				curCmd = (const void*)(sc_cmd + 1);
+				break;
+			}
+			case RC_STRETCH_PIC:
+			{
+				const stretchPicCommand_t* sp_cmd = (const stretchPicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_ROTATE_PIC:
+			{
+				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_ROTATE_PIC2:
+			{
+				const rotatePicCommand_t* sp_cmd = (const rotatePicCommand_t*)curCmd;
+				curCmd = (const void*)(sp_cmd + 1);
+				break;
+			}
+			case RC_DRAW_SURFS:
+			{
+				int i;
+				drawSurf_t	*drawSurf;
+				shader_t	*shader;
+				int			fogNum;
+				int			entityNum;
+				int			dlightMap;
+				int			sortedIndex;
+				const drawSurfsCommand_t* ds_cmd = (const drawSurfsCommand_t*)curCmd;
+
+				for ( i = 0, drawSurf = ds_cmd->drawSurfs; i < ds_cmd->numDrawSurfs; i++, drawSurf++ ) {
+					R_DecomposeSort( drawSurf->sort, &entityNum, &shader, &fogNum, &dlightMap );
+					sortedIndex = (( drawSurf->sort >> QSORT_SHADERNUM_SHIFT ) & SHADERNUM_MASK);
+					if ( sortedIndex >= newShader ) {
+						sortedIndex = shader->sortedIndex;
+						drawSurf->sort = (sortedIndex << QSORT_SHADERNUM_SHIFT) | (entityNum << QSORT_REFENTITYNUM_SHIFT) | ( fogNum << QSORT_FOGNUM_SHIFT ) | (int)dlightMap;
+					}
+				}
+				curCmd = (const void *)(ds_cmd + 1);
+				break;
+			}
+			case RC_DRAW_BUFFER:
+			case RC_WORLD_EFFECTS:
+			case RC_AUTO_MAP:
+			{
+				const drawBufferCommand_t* db_cmd = (const drawBufferCommand_t*)curCmd;
+				curCmd = (const void*)(db_cmd + 1);
+				break;
+			}
+			case RC_SWAP_BUFFERS:
+			{
+				const swapBuffersCommand_t* sb_cmd = (const swapBuffersCommand_t*)curCmd;
+				curCmd = (const void*)(sb_cmd + 1);
+				break;
+			}
+			case RC_CLEARCOLOR:
+			{
+				const clearColorCommand_t* cc_cmd = (const clearColorCommand_t*)curCmd;
+				curCmd = (const void*)(cc_cmd + 1);
+				break;
+			}
+			case RC_END_OF_LIST:
+			default:
+				return;
+			}
+		}
+	}
+}
+
+/*
 ==============
 SortNewShader
 
@@ -4454,14 +4555,14 @@ static void SortNewShader( void )
 shader_t *GeneratePermanentShader( void )
 {
 	shader_t	*newShader;
-	int			i, b, hash;
+	int			i, b, size;
 
-	if (tr.numShaders == MAX_SHADERS) {
+	if ( tr.numShaders == MAX_SHADERS ) {
 		vk_debug("WARNING: GeneratePermanentShader - MAX_SHADERS hit\n");
 		return tr.defaultShader;
 	}
 
-	newShader = (shader_t*)ri.Hunk_Alloc(sizeof(shader_t), h_low);
+	newShader = (shader_t*)ri.Hunk_Alloc( sizeof(shader_t), h_low );
 
 	*newShader = shader;
 
@@ -4473,32 +4574,33 @@ shader_t *GeneratePermanentShader( void )
 
 	tr.numShaders++;
 
-	for (i = 0; i < newShader->numUnfoggedPasses; i++)
+	for ( i = 0; i < newShader->numUnfoggedPasses; i++ )
 	{
-		if (!stages[i].active) {
+		if ( !stages[i].active ) {
 			break;
 		}
-		newShader->stages[i] = (shaderStage_t*)ri.Hunk_Alloc(sizeof(stages[i]), h_low);
+		newShader->stages[i] = (shaderStage_t*)ri.Hunk_Alloc( sizeof(stages[i]), h_low );
 		*newShader->stages[i] = stages[i];
 
-		for (b = 0; b < NUM_TEXTURE_BUNDLES; b++)
+		for ( b = 0; b < NUM_TEXTURE_BUNDLES; b++ )
 		{
-			int size = newShader->stages[i]->bundle[b].numTexMods * sizeof(texModInfo_t);
-			newShader->stages[i]->bundle[b].texMods = (texModInfo_t*)ri.Hunk_Alloc(size, h_low);
-			memcpy(newShader->stages[i]->bundle[b].texMods, stages[i].bundle[b].texMods, size);
-
-			size = newShader->stages[i]->bundle[b].numTexMods * sizeof(texModInfo_t);
-			if (size) {
-				newShader->stages[i]->bundle[b].texMods = (texModInfo_t*)ri.Hunk_Alloc(size, h_low);
-				Com_Memcpy(newShader->stages[i]->bundle[b].texMods, stages[i].bundle[b].texMods, size);
+			if ( newShader->stages[i]->bundle[b].numTexMods )
+			{
+				size = newShader->stages[i]->bundle[b].numTexMods * sizeof( texModInfo_t );
+				if ( size ) {
+					newShader->stages[i]->bundle[b].texMods = (texModInfo_t*)ri.Hunk_Alloc( size, h_low );
+					Com_Memcpy( newShader->stages[i]->bundle[b].texMods, stages[i].bundle[b].texMods, size );
+				}
+			} 
+			else {
+				newShader->stages[i]->bundle[b].texMods = 0;	//clear the globabl ptr jic
 			}
-
 		}
 	}
 
 	SortNewShader();
 
-	hash = generateHashValue(newShader->name, FILE_HASH_SIZE);
+	const int hash = generateHashValue(newShader->name, FILE_HASH_SIZE);
 	newShader->next = hashTable[hash];
 	hashTable[hash] = newShader;
 

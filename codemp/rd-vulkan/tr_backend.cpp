@@ -249,7 +249,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			continue;
 		}
 
-		oldSort = drawSurf->sort;
+		//oldSort = drawSurf->sort;
 
 		//
 		// change the tess parameters if needed
@@ -995,17 +995,13 @@ const void	*RB_WorldEffects( const void *data )
 	cmd = (const drawBufferCommand_t *)data;
 
 	// Always flush the tess buffer
-	//if ( tess.shader && tess.numIndexes )
-	//{
+	if ( tess.shader && tess.numIndexes )
 		RB_EndSurface();
-	//}
 
 	RB_RenderWorldEffects();
 
-	if(tess.shader)
-	{
+	if ( tess.shader )
 		RB_BeginSurface( tess.shader, tess.fogNum );
-	}
 
 	return (const void *)(cmd + 1);
 }
