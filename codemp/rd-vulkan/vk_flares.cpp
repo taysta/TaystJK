@@ -77,6 +77,7 @@ typedef struct flare_s {
 
 	vec3_t		origin;
 	vec3_t		color;
+	vec3_t		normal;
 } flare_t;
 
 static flare_t	r_flareStructs[MAX_FLARES];
@@ -133,7 +134,7 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 	int				i;
 	flare_t			*f;
 	vec3_t			local;
-	//float			d = 1;
+	float			d = 1.0f;
 	vec4_t			eye, clip, normalized, window;
 
 	backEnd.pc.c_flareAdds++;
@@ -141,7 +142,7 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 	if (normal && (normal[0] || normal[1] || normal[2])) {
 		VectorSubtract(backEnd.viewParms.ori.origin, point, local);
 		VectorNormalizeFast(local);
-		//d = fabs(DotProduct(local, normal));
+		d = fabs(DotProduct(local, normal));
 		// If the viewer is behind the flare don't add it.
 		//if (d < 0) {
 		//	d = -d;
@@ -195,10 +196,11 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 
 	VectorCopy(point, f->origin);
 	VectorCopy(color, f->color);
+	VectorCopy(normal, f->normal);
 
 	// fade the intensity of the flare down as the
 	// light surface turns away from the viewer
-	//VectorScale(f->color, d , f->color);
+	VectorScale(f->color, d , f->color);
 
 	// save info needed to test
 	f->windowX = backEnd.viewParms.viewportX + window[0];
@@ -383,78 +385,54 @@ static void RB_TestFlare( flare_t *f ) {
 RB_RenderFlare
 ==================
 */
-void RB_RenderFlare( flare_t *f ) {
-	float			size;
-	vec3_t			color;
-	color4ub_t		c;
-	float distance, intensity, factor;
-	byte fogFactors[3] = { 255, 255, 255 };
-	float r_flareCoeff = 150;
 
-	//if ( f->drawIntensity == 0.0 )
-	//	return;
+void RB_RenderFlare( flare_t *f ) {
+	color4ub_t		color;
 
 	backEnd.pc.c_flareRenders++;
 
-	// We don't want too big values anyways when dividing by distance.
-	if (f->eyeZ > -1.0f)
-		distance = 1.0f;
-	else
-		distance = -f->eyeZ;
+	srfFlare_t *flare = (srfFlare_t *)f->surface;
 
-	// calculate the flare size..
-	size = backEnd.viewParms.viewportWidth * (r_flareSize->value / 640.0f + 8 / distance);
+	backEnd.currentEntity = &tr.worldEntity;
+	RB_BeginSurface( flare->shader, f->fogNum );
 
-	/*
-	 * This is an alternative to intensity scaling. It changes the size of the flare on screen instead
-	 * with growing distance. See in the description at the top why this is not the way to go.
-		// size will change ~ 1/r.
-		size = backEnd.viewParms.viewportWidth * (r_flareSize->value / (distance * -2.0f));
-	*/
+	vec3_t		dir;
+	vec3_t		left, up;
+	vec3_t		origin;
+	float		d, dist;
 
-	/*
-	 * As flare sizes stay nearly constant with increasing distance we must decrease the intensity
-	 * to achieve a reasonable visual result. The intensity is ~ (size^2 / distance^2) which can be
-	 * got by considering the ratio of
-	 * (flaresurface on screen) : (Surface of sphere defined by flare origin and distance from flare)
-	 * An important requirement is:
-	 * intensity <= 1 for all distances.
-	 *
-	 * The formula used here to compute the intensity is as follows:
-	 * intensity = flareCoeff * size^2 / (distance + size*sqrt(flareCoeff))^2
-	 * As you can see, the intensity will have a max. of 1 when the distance is 0.
-	 * The coefficient flareCoeff will determine the falloff speed with increasing distance.
-	 */
+	// calculate the xyz locations for the four corners
+	VectorMA( f->origin, 3, f->normal, origin );
+	float* snormal = f->normal;
 
-	factor = distance + size * sqrt(r_flareCoeff);
+	VectorSubtract( origin, backEnd.viewParms.ori.origin, dir );
+	dist = VectorNormalize( dir );
 
-	intensity = r_flareCoeff * size * size / (factor * factor);
+	d = -DotProduct( dir, snormal );
+	if ( d < 0 )
+		d = -d;
 
-	VectorScale(f->color, f->drawIntensity * intensity, color);
-
+	// fade the intensity of the flare down as the
+	// light surface turns away from the viewer
+	color[0] = d * 255.0f;
+	color[1] = d * 255.0f;
+	color[2] = d * 255.0f;
+	color[3] = 255.0f;	//only gets used if the shader has cgen exact_vertex!
 	
+	float radius = tess.shader->portalRange ? tess.shader->portalRange : 30;
+	if ( dist < 512.0f )
+		radius = radius * dist / 512.0f;
 
-	// Calculations for fogging
-	if (tr.world && f->fogNum > 0 && f->fogNum < tr.world->numfogs)
-	{
-		tess.numVertexes = 1;
-		VectorCopy(f->origin, tess.xyz[0]);
-		tess.fogNum = f->fogNum;
+	if ( radius < 5.0f )
+		radius = 5.0f;
 
-		RB_CalcModulateColorsByFog(fogFactors);
-
-		// We don't need to render the flare if colors are 0 anyways.
-		if (!(fogFactors[0] || fogFactors[1] || fogFactors[2]))
-			return;
+	VectorScale( backEnd.viewParms.ori.axis[1], radius, left );
+	VectorScale( backEnd.viewParms.ori.axis[2], radius, up );
+	if ( backEnd.viewParms.portalView == PV_MIRROR ) {
+		VectorSubtract( vec3_origin, left, left );
 	}
 
-	RB_BeginSurface( tr.flareShader, f->fogNum );
-
-	c[0] = color[0] * fogFactors[0];
-	c[1] = color[1] * fogFactors[1];
-	c[2] = color[2] * fogFactors[2];
-	c[3] = 255;
-	RB_AddQuadStamp2(f->windowX - size, f->windowY - size, size * 2, size * 2, 0, 0, 1, 1, c);
+	RB_AddQuadStamp( origin, left, up, color );
 
 	RB_EndSurface();
 }
@@ -535,15 +513,7 @@ void RB_RenderFlares( void ) {
 		return;		// none visible
 	}
 
-#ifdef USE_REVERSED_DEPTH
-	m = vk_ortho(backEnd.viewParms.viewportX, backEnd.viewParms.viewportX + backEnd.viewParms.viewportWidth,
-		backEnd.viewParms.viewportY, backEnd.viewParms.viewportY + backEnd.viewParms.viewportHeight, 1.0, 0.0);
-#else
-	m = vk_ortho(backEnd.viewParms.viewportX, backEnd.viewParms.viewportX + backEnd.viewParms.viewportWidth,
-		backEnd.viewParms.viewportY, backEnd.viewParms.viewportY + backEnd.viewParms.viewportHeight, 0.0, 1.0);
-#endif
-
-	vk_update_mvp(m);
+	vk_update_mvp(NULL);
 
 	for (f = r_activeFlares; f; f = f->next) {
 		if (f->frameSceneNum == backEnd.viewParms.frameSceneNum && f->drawIntensity) {

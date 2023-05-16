@@ -132,9 +132,9 @@ cvar_t	*r_shadowRange;
 
 
 cvar_t	*r_flares;
-cvar_t	*r_flareSize;
+//cvar_t	*r_flareSize;
 cvar_t	*r_flareFade;
-cvar_t	*r_flareCoeff;
+//cvar_t	*r_flareCoeff;
 
 cvar_t	*r_nobind;
 cvar_t	*r_singleShader;
@@ -815,10 +815,10 @@ void R_Register( void )
 	r_autolodscalevalue					= ri.Cvar_Get( "r_autolodscalevalue",				"0",						CVAR_ROM, "" );
 
 	r_flares							= ri.Cvar_Get( "r_flares",							"1",						CVAR_ARCHIVE_ND, "" );
-	r_flareSize							= ri.Cvar_Get( "r_flareSize",						"40",						CVAR_ARCHIVE_ND, "" );
+	//r_flareSize							= ri.Cvar_Get( "r_flareSize",						"40",						CVAR_ARCHIVE_ND, "" );
 	r_flareFade							= ri.Cvar_Get( "r_flareFade",						"10",						CVAR_ARCHIVE_ND, "" );
-	r_flareCoeff						= ri.Cvar_Get( "r_flareCoeff",						"150",						CVAR_ARCHIVE_ND, "" );
-	ri.Cvar_CheckRange(r_flareCoeff, 0.1f, 250, qfalse);
+	//r_flareCoeff						= ri.Cvar_Get( "r_flareCoeff",						"150",						CVAR_ARCHIVE_ND, "" );
+	//ri.Cvar_CheckRange(r_flareCoeff, 0.1f, 250, qfalse);
 
 	r_znear								= ri.Cvar_Get( "r_znear",							"4",						CVAR_ARCHIVE_ND, "" );
 	ri.Cvar_CheckRange( r_znear, 0.001f, 10, qfalse );

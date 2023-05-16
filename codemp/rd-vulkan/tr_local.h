@@ -827,6 +827,7 @@ typedef struct srfFlare_s {
 	vec3_t			origin;
 	vec3_t			normal;
 	vec3_t			color;
+	shader_t		*shader;
 } srfFlare_t;
 
 #define VERTEX_LM			5
@@ -1552,9 +1553,9 @@ extern	cvar_t	*r_clear;				// force screen clear every frame
 
 extern	cvar_t	*r_shadows;				// controls shadows: 0 = none, 1 = blur, 2 = stencil, 3 = black planar projection
 extern	cvar_t	*r_flares;				// light flares
-extern	cvar_t	*r_flareSize;			// light flare size
+//extern	cvar_t	*r_flareSize;			// light flare size
 extern cvar_t	*r_flareFade;
-extern cvar_t	*r_flareCoeff;			// coefficient for the flare intensity falloff function. 
+//extern cvar_t	*r_flareCoeff;			// coefficient for the flare intensity falloff function. 
 
 extern	cvar_t	*r_intensity;
 

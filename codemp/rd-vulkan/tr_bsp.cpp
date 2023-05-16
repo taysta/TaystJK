@@ -657,6 +657,11 @@ static void ParseFlare( const dsurface_t *ds, const mapVert_t *verts, msurface_t
 	flare = (struct srfFlare_s *)Hunk_Alloc( sizeof( *flare ), h_low );
 	flare->surfaceType = SF_FLARE;
 
+	if ( surf->shader == tr.defaultShader )
+		flare->shader = tr.flareShader;
+	else
+		flare->shader = surf->shader;
+
 	surf->data = (surfaceType_t *)flare;
 
 	for ( i = 0 ; i < 3 ; i++ ) {
