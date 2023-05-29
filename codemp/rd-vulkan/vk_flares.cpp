@@ -209,9 +209,9 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 	f->eyeZ = eye[2];
 
 #ifdef USE_REVERSED_DEPTH
-	f->drawZ = (clip[2] + 0.20) / clip[3];
+	f->drawZ = (clip[2] + 0.10) / clip[3];
 #else
-	f->drawZ = (clip[2] - 0.20) / clip[3];
+	f->drawZ = (clip[2] - 0.10) / clip[3];
 #endif
 
 }
@@ -360,14 +360,18 @@ static void RB_TestFlare( flare_t *f ) {
 			f->visible = qtrue;
 			f->fadeTime = backEnd.refdef.time - 1;
 		}
-		fade = ((backEnd.refdef.time - f->fadeTime) / 1000.0f) * r_flareFade->value;
+		//fade = ((backEnd.refdef.time - f->fadeTime) / 1000.0f) * r_flareFade->value;
+		fade = ( ( backEnd.refdef.time - f->fadeTime ) / 500.0f );
 	}
 	else {
-		if (f->visible) {
+		// Dont fade out when flare is occluded. Will result in the ability to see
+		// flares through surfaces on high movement speeds
+		/*if (f->visible) {
 			f->visible = qfalse;
 			f->fadeTime = backEnd.refdef.time - 1;
 		}
-		fade = 1.0f - ((backEnd.refdef.time - f->fadeTime) / 1000.0f) * r_flareFade->value;
+		fade = 1.0f - ((backEnd.refdef.time - f->fadeTime) / 1000.0f) * r_flareFade->value;*/
+		fade = 0.0f;
 	}
 
 	if (fade < 0) {
@@ -457,7 +461,6 @@ void RB_RenderFlares( void ) {
 	flare_t* f;
 	flare_t** prev;
 	qboolean	draw;
-	float* m;
 
 	if (!r_flares->integer)
 		return;
