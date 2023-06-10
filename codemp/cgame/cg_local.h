@@ -1431,6 +1431,10 @@ Ghoul2 Insert End
 	int					snapshotTimeoutTime;
 #endif
 
+	// Japro trigger_newpush prediction
+	int					lastBounceTime;
+	vec3_t				lastVelocity;
+
 	struct {//chatlog
 		fileHandle_t	file;
 		qboolean		started;
@@ -2170,6 +2174,7 @@ typedef struct cgs_s {
 	gametype_t		gametype;
 	int				debugMelee;
 	int				stepSlideFix;
+	int				fixSlidePhysics;
 	int				noSpecMove;
 	int				dmflags;
 	int				fraglimit;
