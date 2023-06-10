@@ -2098,10 +2098,10 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 	if (player->client->lastBounceTime > level.time - 500)
 		return;
 
-	scale = trigger->speed ? trigger->speed : 2.0f; //Check for bounds? scale can be negative, that means "bounce".
+	(trigger->speed) ? (scale = trigger->speed) : (scale = 2.0f); //Check for bounds? scale can be negative, that means "bounce".
 	player->client->lastBounceTime = level.time;
 
-	if (trigger->noise_index) 
+	if (trigger->noise_index)
 		G_Sound(player, CHAN_AUTO, trigger->noise_index);
 
 	if (trigger->spawnflags & 1) {
