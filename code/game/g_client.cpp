@@ -2117,6 +2117,14 @@ void G_SetSabersFromCVars( gentity_t *ent )
 				}
 			}
 		}
+		else
+		{
+			WP_RemoveSaber(ent, 1);
+		}
+	}
+	else
+	{
+		WP_RemoveSaber(ent, 1);
 	}
 }
 
