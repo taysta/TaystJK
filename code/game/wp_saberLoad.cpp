@@ -149,6 +149,7 @@ stringID_table_t HolsterTable[] =
 	ENUM2STRING(HOLSTER_NONE),
 	ENUM2STRING(HOLSTER_HIPS),
 	ENUM2STRING(HOLSTER_BACK),
+	ENUM2STRING(HOLSTER_LHIP),
 	{ "none", HOLSTER_NONE },
 	{ "hips", HOLSTER_HIPS },
 	{ "back", HOLSTER_BACK },
@@ -1936,7 +1937,7 @@ static void Saber_ParseHolsterPlace( saberInfo_t *saber, const char **p ) {
 	if ( COM_ParseString( p, &value ) )
 		return;
 	holsterType = GetIDForString( HolsterTable, value );
-	if ( holsterType >= HOLSTER_NONE && holsterType <= HOLSTER_BACK )
+	if ( holsterType >= HOLSTER_NONE && holsterType < HOLSTER_NUM_POSITIONS )
 		saber->holsterPlace = (holster_locations_t)holsterType;
 }
 static void Saber_ParseIgnitionFlare( saberInfo_t *saber, const char **p ) {

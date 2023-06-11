@@ -635,7 +635,7 @@ void WP_SaberAddHolsteredG2SaberModels( gentity_t *ent, int specificSaberNum )
 		holster_locations_t holsterPlace = ent->client->ps.saber[saberNum].holsterPlace;
 		vec3_t offset = { 0.0f, 0.0f, 0.0f };
 		vec3_t angles = { 0.0f, 0.0f, 0.0f };
-		if ( holsterPlace == HOLSTER_HIPS )
+		if ( (holsterPlace == HOLSTER_HIPS) || (holsterPlace == HOLSTER_LHIP) )
 		{
 			angles[PITCH] = 180.0f;
 			angles[YAW] = 0.0f;
