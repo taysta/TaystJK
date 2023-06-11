@@ -341,7 +341,7 @@ SetForceCmd SetForceTable[NUM_FORCE_POWERS] = {
 	{ "forceSpeed",			"setForceSpeed",		FORCE_LEVEL_3			},
 	{ "forcePush",			"setForcePush",			FORCE_LEVEL_3			},
 	{ "forcePull",			"setForcePull",			FORCE_LEVEL_3			},
-	{ "forceMindTrick",		"setForceMindTrick",	FORCE_LEVEL_4			},
+	{ "forceMindTrick",		"setMindTrick",			FORCE_LEVEL_4			},
 	{ "forceGrip",			"setForceGrip",			FORCE_LEVEL_3			},
 	{ "forceLightning",		"setForceLightning",	FORCE_LEVEL_3			},
 	{ "saberThrow",			"setSaberThrow",		FORCE_LEVEL_3			},

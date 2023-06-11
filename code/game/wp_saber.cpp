@@ -13166,7 +13166,7 @@ void ForceInsanity( gentity_t *self )
 				traceEnt->client->enemyTeam = traceEnt->client->playerTeam;
 				traceEnt->client->playerTeam = saveTeam;
 				//FIXME: need a *charmed* timer on this...?  Or do TEAM_PLAYERS assume that "confusion" means they should switch to team_enemy when done?
-				traceEnt->NPC->darkCharmedTime = level.time + insanityTime[self->client->ps.forcePowerLevel[FP_TELEPATHY]];
+				traceEnt->NPC->darkCharmedTime = level.time + insanityTime[self->client->ps.forcePowerLevel[FP_INSANITY]];
 				if ( traceEnt->ghoul2.size() && traceEnt->headBolt != -1 )
 				{//FIXME: what if already playing effect?
 					G_PlayEffect( G_EffectIndex( "force/drain_hand" ), traceEnt->playerModel, traceEnt->headBolt, traceEnt->s.number, traceEnt->currentOrigin, insanityTime[self->client->ps.forcePowerLevel[FP_INSANITY]], qtrue );
