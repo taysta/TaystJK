@@ -75,10 +75,12 @@ cvar_t	*sv_maxOOBRate;
 cvar_t	*sv_maxOOBRateIP;
 cvar_t	*sv_autoWhitelist;
 
+#ifdef DEDICATED
 cvar_t	*sv_demoPreRecord; // Activate demo pre-recording
 cvar_t	*sv_demoPreRecordTime; // How many seconds of past packets should be stored so demos can be retroactively recorded for that duration?
 cvar_t	*sv_demoPreRecordKeyframeDistance; // A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message (in seconds)? The shorter the distance, the more precisely the pre-record duration will be kept.
 cvar_t	*sv_demoWriteMeta; // Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.
+#endif
 
 cvar_t	*sv_snapShotDuelCull;
 
