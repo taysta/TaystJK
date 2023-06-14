@@ -26,6 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
 std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
+std::map<std::string,std::string> demoMetaData[MAX_CLIENTS];
 
 /*
 =============================================================================
@@ -788,6 +789,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
 		MSG_ToBuffered(msg,&bmt.msg);
 		bmt.msgNum = client->netchan.outgoingSequence;
+		bmt.lastClientCommand = client->lastClientCommand;
 		bmt.time = sv.time;
 		bmt.isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
 		demoPreRecordBuffer[client - svs.clients].push_back(bmt);
@@ -818,6 +820,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 			MSG_ToBuffered(&keyframeMsg, &bmt.msg);
 			bmt.msgNum = client->netchan.outgoingSequence; // Yes the keyframe duplicates the messagenum of a message. This is (part of) why we dump only one keyframe at the start of the demo and discard future keyframes
+			bmt.lastClientCommand = client->lastClientCommand;
 			bmt.time = sv.time;
 			bmt.isKeyframe = qtrue; // This is a keyframe (gamestate that will be followed by non-delta frames)
 			demoPreRecordBuffer[client - svs.clients].push_back(bmt);

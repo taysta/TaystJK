@@ -314,6 +314,7 @@ extern	cvar_t	*sv_autoWhitelist;
 
 extern	cvar_t	*sv_demoPreRecord;
 extern	cvar_t	*sv_demoPreRecordKeyframeDistance;
+extern	cvar_t	*sv_demoWriteMeta;
 
 extern	cvar_t	*sv_snapShotDuelCull;
 
@@ -422,6 +423,9 @@ void SV_WriteDownloadToClient( client_t *cl , msg_t *msg );
 void SV_Heartbeat_f( void );
 void SV_RecordDemo( client_t *cl, char *demoName );
 void SV_StopRecordDemo( client_t *cl );
+void SV_ClearClientDemoMeta( client_t *cl );
+void SV_ClearClientDemoPreRecord( client_t *cl );
+void SV_ClearAllDemoPreRecord( );
 void SV_AutoRecordDemo( client_t *cl );
 void SV_StopAutoRecordDemos();
 void SV_BeginAutoRecordDemos();

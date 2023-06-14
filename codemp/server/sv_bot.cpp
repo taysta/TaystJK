@@ -232,6 +232,8 @@ void SV_BotFreeClient( int clientNum ) {
 
 	if ( cl->demo.demorecording ) {
 		SV_StopRecordDemo( cl );
+		SV_ClearClientDemoPreRecord( cl );
+		SV_ClearClientDemoMeta(cl);
 	}
 }
 

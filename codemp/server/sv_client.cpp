@@ -128,7 +128,6 @@ SV_DirectConnect
 A "connect" OOB command has been received
 ==================
 */
-extern std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
 void SV_DirectConnect( netadr_t from ) {
 	char		userinfo[MAX_INFO_STRING];
 	int			i;
@@ -332,8 +331,8 @@ gotnewcl:
 	SV_UserinfoChanged( newcl );
 
 	// When a new client connects, we reset the pre-record buffer for this client.
-	demoPreRecordBuffer[clientNum].clear();
-	newcl->demo.preRecord.lastKeyframeTime = -sv_demoPreRecordKeyframeDistance->integer * 2; // Make sure that turning pre-recording on again will immediately cause creation of a keyframe
+	SV_ClearClientDemoPreRecord(newcl);
+	SV_ClearClientDemoMeta(newcl);
 
 	// send the connect packet to the client
 	NET_OutOfBandPrint( NS_SERVER, from, "connectResponse" );
@@ -414,6 +413,8 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 
 	if ( drop->demo.demorecording ) {
 		SV_StopRecordDemo( drop );
+		SV_ClearClientDemoPreRecord( drop );
+		SV_ClearClientDemoMeta( drop );
 	}
 
 	// if this was the last client on the server, send a heartbeat

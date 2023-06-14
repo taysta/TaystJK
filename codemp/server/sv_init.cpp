@@ -456,6 +456,7 @@ void SV_SpawnServer( char *server, qboolean killBots, ForceReload_e eForceReload
 	const char	*p;
 
 	SV_StopAutoRecordDemos();
+	SV_ClearAllDemoPreRecord();
 
 	SV_SendMapChange();
 
@@ -1023,6 +1024,7 @@ void SV_Init (void) {
 
 	sv_demoPreRecord = Cvar_Get("sv_demoPreRecord", "15000", CVAR_ARCHIVE, "If not 0, how many milliseconds of past packets should be stored so demos can be retroactively recorded for that duration?");
 	sv_demoPreRecordKeyframeDistance = Cvar_Get("sv_demoPreRecordKeyframeDistance", "5000", CVAR_ARCHIVE, "A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.");
+	sv_demoWriteMeta = Cvar_Get("sv_demoWriteMeta", "1", CVAR_ARCHIVE, "Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.");
 
 	sv_snapShotDuelCull = Cvar_Get("sv_snapShotDuelCull", "1", CVAR_NONE, "Snapshot-based duel isolation");
 

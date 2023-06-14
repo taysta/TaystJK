@@ -131,6 +131,7 @@
 	sv_autoRaceDemo	0 //Requires custom server executable with "svrecord" command.
 	sv_demoPreRecord 15000 // If not 0, how many milliseconds of past packets should be stored so demos can be retroactively recorded for that duration?
 	sv_demoPreRecordKeyframeDistance 5000 // A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.
+	sv_demoWriteMeta 1 // Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.
 
 #### Bots 
 	bot_nochat			0	
@@ -387,6 +388,13 @@
 	amlogout	
 	amlookup	
 
+#### Serverside demo recording
+	svrecord				// Record a server-side demo (including pre-record time if sv_demoPreRecord is not 0 and metadata -default and custom set via svdemometa- if sv_demoWriteMeta is 1).
+	svstoprecord			// Stop recording a server-side demo.
+	svdemometa				// Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, "[data]". If data is not provided, the key is cleared. metakey must be letters only, no numbers
+	svdemoclearmeta			// Clears metadata for server-side demos for one player. Call with clientnum.
+	svdemoclearprerecord	// Clears pre-record data for a particular client and forces new keyframe generation. Basically discards previously pre-recorded packets. Call with clientnum.
+	svrenamedemo			// Rename a server-side demo
 
 ## ClientCvars ##
 
