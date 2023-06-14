@@ -1803,7 +1803,6 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 		int i;
 		ssMeta << "{";
 		ssMeta << "\"wr\":\"EternalJK_Server\""; // Writer (keyword used by other tools too to identify origin of demo)
-		ssMeta << ",\"ost\":" << (int64_t)std::time(nullptr) << ""; // Original start time. When was demo recording started?
 
 		// Go through manually set metadata and add it.
 		for (auto it = demoMetaData[cl - svs.clients].begin(); it != demoMetaData[cl - svs.clients].end(); it++) {
@@ -1863,7 +1862,8 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 					if (index == 0 && sv_demoWriteMeta->integer) {
 						// This goes before the first messsage
 
-						ssMeta << ",\"prso\":" << (sv.time-it->time) << ""; // Pre-recording start offset. Offset from start of demo to when the command to start recording was called
+						ssMeta << ",\"ost\":" << ((int64_t)std::time(nullptr) - ((sv.time - it->time)/1000)); // Original start time. When was demo recording started?
+						ssMeta << ",\"prso\":" << (sv.time-it->time); // Pre-recording start offset. Offset from start of demo to when the command to start recording was called
 
 						ssMeta << "}"; // End JSON object
 						SV_WriteEmptyMessageWithMetadata(it->lastClientCommand, cl->demo.demofile,ssMeta.str().c_str(),it->msgNum-1);
@@ -1891,6 +1891,7 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 
 	if (sv_demoWriteMeta->integer) {
 		// Write metadata first
+		ssMeta << ",\"ost\":" << (int64_t)std::time(nullptr); // Original start time. When was demo recording started?
 		ssMeta << "}"; // End JSON object
 		SV_WriteEmptyMessageWithMetadata(cl->lastClientCommand, cl->demo.demofile, ssMeta.str().c_str(), cl->netchan.outgoingSequence - 2);
 	}
