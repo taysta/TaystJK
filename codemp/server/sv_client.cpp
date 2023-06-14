@@ -330,9 +330,11 @@ gotnewcl:
 
 	SV_UserinfoChanged( newcl );
 
+#ifdef DEDICATED
 	// When a new client connects, we reset the pre-record buffer for this client.
 	SV_ClearClientDemoPreRecord(newcl);
 	SV_ClearClientDemoMeta(newcl);
+#endif
 
 	// send the connect packet to the client
 	NET_OutOfBandPrint( NS_SERVER, from, "connectResponse" );
@@ -411,11 +413,13 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 		drop->state = CS_ZOMBIE;		// become free in a few seconds
 	}
 
+#ifdef DEDICATED
 	if ( drop->demo.demorecording ) {
 		SV_StopRecordDemo( drop );
 		SV_ClearClientDemoPreRecord( drop );
 		SV_ClearClientDemoMeta( drop );
 	}
+#endif
 
 	// if this was the last client on the server, send a heartbeat
 	// to the master so it is known the server is empty
@@ -605,9 +609,11 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 	// call the game begin function
 	GVM_ClientBegin( client - svs.clients );
 
+#ifdef DEDICATED
 	if (sv_autoDemo->integer == 1) { //Bots dont trigger this so whatever
 		SV_BeginAutoRecordDemos();
 	}	
+#endif
 }
 
 /*

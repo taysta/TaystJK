@@ -30,10 +30,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <ctime>
 
-
+#ifdef DEDICATED
 extern std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
 extern std::map<std::string, std::string> demoMetaData[MAX_CLIENTS];
-
+#endif
 
 /*
 ===============================================================================
@@ -296,8 +296,10 @@ static void SV_MapRestart_f( void ) {
 		return;
 	}
 
+#ifdef DEDICATED
 	SV_StopAutoRecordDemos();
 	SV_ClearAllDemoPreRecord();
+#endif
 
 	// toggle the server bit so clients can detect that a
 	// map_restart has happened
@@ -382,7 +384,9 @@ static void SV_MapRestart_f( void ) {
 	sv.time += 100;
 	svs.time += 100;
 
+#ifdef DEDICATED
 	SV_BeginAutoRecordDemos();
+#endif
 }
 
 //===============================================================
@@ -1518,6 +1522,7 @@ static void SV_KillServer_f( void ) {
 	SV_Shutdown( "killserver" );
 }
 
+#ifdef DEDICATED
 void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes ) {
 	int		len, swlen;
 
@@ -1550,15 +1555,8 @@ void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes, int messag
 
 
 
-constexpr char* postEOFMetadataMarker = "HIDDENMETA";
-constexpr int strlenConstExpr(const char* txt) {
-	int count = 0;
-	while (*txt != 0) {
-		count++;
-		txt++;
-	}
-	return count;
-}
+constexpr char postEOFMetadataMarker[] = "HIDDENMETA";
+
 // Write an empty message at start of demo with metadata.
 // Metadata must be in JSON format to maintain compatibility for this format,
 // that way every demo writing tool/client/server can read/write different parameters
@@ -1587,7 +1585,7 @@ void SV_WriteEmptyMessageWithMetadata(int lastClientCommand, fileHandle_t f, con
 
 	// Normal demo readers will quit here. For all intents and purposes this demo message is over. But we're gonna put the metadata here now. Since it comes after svc_EOF, nobody will ever be bothered by it 
 	// but we can read it if we want to.
-	constexpr int metaMarkerLength = strlenConstExpr(postEOFMetadataMarker);
+	constexpr int metaMarkerLength = sizeof(postEOFMetadataMarker)-1;
 	// This is how the demo huffman operates. Worst case a byte can take almost 2 bytes to save, from what I understand. When reading past the end, we need to detect if we SHOULD read past the end.
 	// For each byte we need to read, thus, the message length must be at least 2 bytes longer still. Hence at the end we will artificially set the message length to be minimum that long.
 	// We will only read x amount of bytes (where x is the length of the meta marker) and see if the meta marker is present. If it is, we then proceeed to read a bigstring.
@@ -1638,20 +1636,18 @@ void SV_StopRecordDemo( client_t *cl ) {
 }
 
 void SV_ClearClientDemoMeta( client_t *cl ) {
-	int		len;
 
 	demoMetaData[cl - svs.clients].clear();
 }
 
 void SV_ClearClientDemoPreRecord( client_t *cl ) {
-	int		len;
 
 	demoPreRecordBuffer[cl - svs.clients].clear();
+	Com_Memset(&cl->demo.preRecord,0,sizeof(cl->demo.preRecord));
 	cl->demo.preRecord.lastKeyframeTime = -sv_demoPreRecordKeyframeDistance->integer * 2; // Make sure that restarting recording will immediately create a keyframe.
 }
 
 void SV_ClearAllDemoPreRecord( ) {
-	int		len;
 
 	if (svs.clients) {
 		for (client_t* client = svs.clients; client - svs.clients < sv_maxclients->integer; client++) {
@@ -1976,6 +1972,7 @@ static int QDECL SV_DemoFolderTimeComparator( const void *arg1, const void *arg2
 	return rightTime - leftTime;
 }
 
+
 // returns number of folders found.  pass NULL result pointer for just a count.
 static int SV_FindLeafFolders( const char *baseFolder, char *result, int maxResults, int maxFolderLength ) {
 	char *fileList = (char *)Z_Malloc( MAX_OSPATH * maxResults, TAG_FILESYS ); // too big for stack since this is recursive
@@ -2271,6 +2268,9 @@ static void SV_DemoClearPreRecord_f(void) {
 	SV_ClearClientDemoPreRecord(cl);
 }
 
+
+#endif
+
 /*
 =================
 SV_WhitelistIP_f
@@ -2345,15 +2345,17 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_AddCommand ("svtell", SV_ConTell_f, "Private message from the server to a user" );
 	Cmd_AddCommand ("forcetoggle", SV_ForceToggle_f, "Toggle g_forcePowerDisable bits" );
 	Cmd_AddCommand ("weapontoggle", SV_WeaponToggle_f, "Toggle g_weaponDisable bits" );
+#ifdef DEDICATED
 	Cmd_AddCommand ("svrecord", SV_Record_f, "Record a server-side demo" );
 	Cmd_AddCommand ("svstoprecord", SV_StopRecord_f, "Stop recording a server-side demo" );
 	Cmd_AddCommand ("svdemometa", SV_DemoMeta_f, "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]");
 	Cmd_AddCommand ("svdemoclearmeta", SV_DemoClearMeta_f, "Clears metadata for server-side demos for one player. Call with clientnum.");
 	Cmd_AddCommand ("svdemoclearprerecord", SV_DemoClearPreRecord_f, "Clears pre-record data for a particular client. Call with clientnum.");
 	Cmd_AddCommand ("svrenamedemo", SV_RenameDemo_f, "Rename a server-side demo");
+	Cmd_AddCommand("sv_listrecording", SV_ListRecording_f, "Lists demos being recorded");
+#endif
 	Cmd_AddCommand ("sv_rehashbans", SV_RehashBans_f, "Reloads banlist from file" );
 	Cmd_AddCommand ("sv_listbans", SV_ListBans_f, "Lists bans" );
-	Cmd_AddCommand( "sv_listrecording", SV_ListRecording_f, "Lists demos being recorded" );
 	Cmd_AddCommand ("sv_banaddr", SV_BanAddr_f, "Bans a user" );
 	Cmd_AddCommand ("sv_exceptaddr", SV_ExceptAddr_f, "Adds a ban exception for a user" );
 	Cmd_AddCommand ("sv_bandel", SV_BanDel_f, "Removes a ban" );

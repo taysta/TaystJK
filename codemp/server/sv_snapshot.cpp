@@ -24,9 +24,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "server.h"
 #include "qcommon/cm_public.h"
 
-
+#ifdef DEDICATED
 std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
 std::map<std::string,std::string> demoMetaData[MAX_CLIENTS];
+#endif
 
 /*
 =============================================================================
@@ -137,9 +138,11 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 	// bots never acknowledge, but it doesn't matter since the only use case is for serverside demos
 	// in which case we can delta against the very last message every time
 	deltaMessage = client->deltaMessage;
+#ifdef DEDICATED
 	if ( client->demo.isBot ) {
 		client->deltaMessage = client->netchan.outgoingSequence;
 	}
+#endif
 
 	// try to use a previous frame as the source for delta compressing the snapshot
 	if ( deltaMessage <= 0 || client->state != CS_ACTIVE ) {
@@ -152,7 +155,9 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		Com_DPrintf ("%s: Delta request from out of date packet.\n", client->name);
 		oldframe = NULL;
 		lastframe = 0;
-	} else if ( client->demo.demorecording && client->demo.demowaiting ) {
+	} 
+#ifdef DEDICATED
+	else if ( client->demo.demorecording && client->demo.demowaiting ) {
 		// demo is waiting for a non-delta-compressed frame for this client, so don't delta compress
 		oldframe = NULL;
 		lastframe = 0;
@@ -166,13 +171,15 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		// demo is waiting for a non-delta-compressed frame for this client, so don't delta compress
 		oldframe = NULL;
 		lastframe = 0;
-	} else if ( client->demo.preRecord.minDeltaFrame > deltaMessage ) {
+	} else if (sv_demoPreRecord->integer && client->demo.preRecord.minDeltaFrame > deltaMessage ) {
 		// we saved a non-delta frame to the pre-record buffer and sent it to the client, but the client didn't ack it
 		// we can't delta against an old frame that's not in the demo without breaking the demo.  so send
 		// non-delta frames until the client acks.
 		oldframe = NULL;
 		lastframe = 0;
-	} else {
+	} 
+#endif
+	else {
 		// we have a valid snapshot to delta from
 		oldframe = &client->frames[ deltaMessage & PACKET_MASK ];
 		lastframe = client->netchan.outgoingSequence - deltaMessage;
@@ -185,6 +192,7 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		}
 	}
 
+#ifdef DEDICATED
 	if ( oldframe == NULL ) {
 		if ( client->demo.demowaiting ) {
 			// this is a non-delta frame, so we can delta against it in the demo
@@ -197,6 +205,19 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 		}
 		client->demo.preRecord.keyframeWaiting = qfalse;
 	}
+	else {
+		if (!client->demo.preRecord.keyframeWaiting) {
+			// We got the frame we needed acked, so reset this to 0
+			// to avoid any potential shenanigans after map changes or so
+			client->demo.preRecord.minDeltaFrame = 0;
+		}
+		if (!client->demo.demowaiting) {
+			// We got the frame we needed acked, so reset this to 0
+			// to avoid any potential shenanigans after map changes or so
+			client->demo.minDeltaFrame = 0;
+		}
+	}
+#endif
 
 	MSG_WriteByte (msg, svc_snapshot);
 
@@ -206,8 +227,11 @@ static void SV_WriteSnapshotToClient( client_t *client, msg_t *msg ) {
 
 	// send over the current server time so the client can drift
 	// its view of time to try to match
-	if( client->oldServerTime &&
-		!( client->demo.demorecording && client->demo.isBot ) ) {
+	if( client->oldServerTime 
+#ifdef DEDICATED
+		&& !( client->demo.demorecording && client->demo.isBot )
+#endif
+		) {
 		// The server has not yet got an acknowledgement of the
 		// new gamestate from this client, so continue to send it
 		// a time as if the server has not restarted. Note from
@@ -302,9 +326,12 @@ void SV_UpdateServerCommandsToClient( client_t *client, msg_t *msg ) {
 	int		i;
 	int		reliableAcknowledge;
 
+#ifdef DEDICATED
 	if ( client->demo.isBot && client->demo.demorecording ) {
 		reliableAcknowledge = client->demo.botReliableAcknowledge;
-	} else {
+	} else
+#endif
+	{
 		reliableAcknowledge = client->reliableAcknowledge;
 	}
 
@@ -504,6 +531,7 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 			continue;
 		}
 
+#ifdef DEDICATED
 		if (sv_autoDemo->integer == 2) //How find out how to only add all entities for the bot named RECORDER, not all bots? what entities can we still exclude?
 		{
 			sharedEntity_t *ent2;
@@ -513,6 +541,7 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 				continue;
 			}
 		}
+#endif
 
 		// ignore if not touching a PV leaf
 		// check area
@@ -784,6 +813,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageSent = (sv_pingFix->integer ? Sys_Milliseconds() : svs.time);
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageAcked = -1;
 
+#ifdef DEDICATED
 	if (sv_demoPreRecord->integer) { // If pre record demo message buffering is enabled, we write this message to the buffer.
 		static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
 		Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
@@ -824,6 +854,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			bmt.time = sv.time;
 			bmt.isKeyframe = qtrue; // This is a keyframe (gamestate that will be followed by non-delta frames)
 			demoPreRecordBuffer[client - svs.clients].push_back(bmt);
+			client->demo.preRecord.minDeltaFrame = 0;
 			client->demo.preRecord.keyframeWaiting = qtrue;
 			client->demo.preRecord.lastKeyframeTime = sv.time;
 		}
@@ -847,10 +878,8 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		}
 	}
 	else { // Pre-recording disabled. Clear buffer to prevent unexpected behavior if it is turned back on.
-		demoPreRecordBuffer[client - svs.clients].clear();
-		client->demo.preRecord.lastKeyframeTime = -sv_demoPreRecordKeyframeDistance->integer*2; // Make sure that turning pre-recording on again will immediately cause creation of a keyframe
+		SV_ClearClientDemoPreRecord(client);
 	}
-
 
 	// bots need to have their snapshots built, but
 	// they query them directly without needing to be sent
@@ -859,6 +888,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		client->demo.botReliableAcknowledge = client->reliableSent;
 		return;
 	}
+#endif
 
 	// send the datagram
 	SV_Netchan_Transmit( client, msg );	//msg->cursize, msg->data );
@@ -956,6 +986,7 @@ void SV_SendClientSnapshot( client_t *client ) {
 	// build the snapshot
 	SV_BuildClientSnapshot( client );
 
+#ifdef DEDICATED
 	if ( !client->demo.demorecording ) { //dont think this needs to be done with singledemo option
 		if (sv_autoDemo->integer == 2) {
 			if (client->netchan.remoteAddress.type == NA_BOT && !Q_stricmp(client->name, "RECORDER")) {
@@ -968,10 +999,15 @@ void SV_SendClientSnapshot( client_t *client ) {
 			}
 		}
 	}
+#endif
 
 	// bots need to have their snapshots built, but
 	// they query them directly without needing to be sent
-	if ( client->netchan.remoteAddress.type == NA_BOT && !client->demo.demorecording ) {
+	if ( client->netchan.remoteAddress.type == NA_BOT
+#ifdef DEDICATED
+		&& !client->demo.demorecording 
+#endif
+		) {
 		return;
 	}
 
