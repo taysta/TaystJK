@@ -1030,8 +1030,9 @@ void SV_Init (void) {
 	sv_autoWhitelist = Cvar_Get("sv_autoWhitelist", "1", CVAR_ARCHIVE, "Save player IPs to allow them using server during DOS attack" );
 
 #ifdef DEDICATED
-	sv_demoPreRecord = Cvar_Get("sv_demoPreRecord", "15000", CVAR_ARCHIVE, "If not 0, how many milliseconds of past packets should be stored so demos can be retroactively recorded for that duration?");
-	sv_demoPreRecordKeyframeDistance = Cvar_Get("sv_demoPreRecordKeyframeDistance", "5000", CVAR_ARCHIVE, "A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.");
+	sv_demoPreRecord = Cvar_Get("sv_demoPreRecord", "0", CVAR_ARCHIVE, "Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)");
+	sv_demoPreRecordTime = Cvar_Get("sv_demoPreRecordTime", "15", CVAR_ARCHIVE, "How many seconds of past packets should be stored for server demo pre-recording?");
+	sv_demoPreRecordKeyframeDistance = Cvar_Get("sv_demoPreRecordKeyframeDistance", "5", CVAR_ARCHIVE, "A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.");
 	sv_demoWriteMeta = Cvar_Get("sv_demoWriteMeta", "1", CVAR_ARCHIVE, "Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.");
 #endif
 

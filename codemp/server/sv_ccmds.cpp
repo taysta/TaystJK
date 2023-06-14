@@ -1644,7 +1644,7 @@ void SV_ClearClientDemoPreRecord( client_t *cl ) {
 
 	demoPreRecordBuffer[cl - svs.clients].clear();
 	Com_Memset(&cl->demo.preRecord,0,sizeof(cl->demo.preRecord));
-	cl->demo.preRecord.lastKeyframeTime = -sv_demoPreRecordKeyframeDistance->integer * 2; // Make sure that restarting recording will immediately create a keyframe.
+	cl->demo.preRecord.lastKeyframeTime = -(1000*sv_demoPreRecordKeyframeDistance->integer) * 2; // Make sure that restarting recording will immediately create a keyframe.
 }
 
 void SV_ClearAllDemoPreRecord( ) {

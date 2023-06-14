@@ -834,7 +834,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 	// Check for whether a new keyframe must be written in pre recording, and if so, do it.
 	if (sv_demoPreRecord->integer) {
-		if (client->demo.preRecord.lastKeyframeTime + sv_demoPreRecordKeyframeDistance->integer < sv.time) {
+		if (client->demo.preRecord.lastKeyframeTime + (1000*sv_demoPreRecordKeyframeDistance->integer) < sv.time) {
 			// Save a keyframe.
 			static byte keyframeBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
 			static msg_t		keyframeMsg;
@@ -861,12 +861,12 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 		// Clean up pre-record buffer
 		// 
-		// The goal is to always maintain *at least* sv_demoPreRecord milliseconds of buffer. Rather more than less. 
-		// So we find the last keyframe that is older than sv_demoPreRecord milliseconds (or just that old) and then delete everything *before* it.
+		// The goal is to always maintain *at least* sv_demoPreRecordTime seconds of buffer. Rather more than less. 
+		// So we find the last keyframe that is older than sv_demoPreRecordTime seconds (or just that old) and then delete everything *before* it.
 		demoPreRecordBufferIt lastTooOldKeyframe;
 		qboolean lastTooOldKeyframeFound = qfalse;
 		for (demoPreRecordBufferIt it = demoPreRecordBuffer[client - svs.clients].begin(); it != demoPreRecordBuffer[client - svs.clients].end(); it++) {
-			if (it->isKeyframe && (it->time + sv_demoPreRecord->integer) < sv.time) {
+			if (it->isKeyframe && (it->time + (1000*sv_demoPreRecordTime->integer)) < sv.time) {
 				lastTooOldKeyframe = it;
 				lastTooOldKeyframeFound = qtrue;
 			}
