@@ -1848,7 +1848,7 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 				static byte preRecordBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
 				static msg_t		preRecordMsg;
 
-				if (!it->isKeyframe || index == 0) {
+				if ((!it->isKeyframe || index == 0) && it->msgNum <= cl->netchan.outgoingSequence && it->time <= sv.time) { // Check against outgoing sequence and server time too, *just in case* we ended up with some old messages
 					// We only want a keyframe at the beginning of the demo, none after.
 					Com_Memset(&preRecordMsg, 0, sizeof(msg_t));
 					Com_Memset(&preRecordBufData, 0, sizeof(preRecordBufData));

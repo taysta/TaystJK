@@ -416,9 +416,9 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 #ifdef DEDICATED
 	if ( drop->demo.demorecording ) {
 		SV_StopRecordDemo( drop );
-		SV_ClearClientDemoPreRecord( drop );
-		SV_ClearClientDemoMeta( drop );
 	}
+	SV_ClearClientDemoPreRecord(drop); // Happens on (re)connect too but let's be safe/clean :)
+	SV_ClearClientDemoMeta(drop);
 #endif
 
 	// if this was the last client on the server, send a heartbeat

@@ -815,6 +815,29 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 #ifdef DEDICATED
 	if (sv_demoPreRecord->integer) { // If pre record demo message buffering is enabled, we write this message to the buffer.
+
+		// But first, Do a quick cleanup of possible old packages in the buffer that have msgNum > client->netchan.outgoingSequence
+		// This shouldn't really happen as we clear the buffer on disconnects/connects and map_restarts but let's be safe.
+		demoPreRecordBufferIt lastEvilPackage;
+		qboolean evilPackagesFound = qfalse;
+		for (demoPreRecordBufferIt it = demoPreRecordBuffer[client - svs.clients].begin(); it != demoPreRecordBuffer[client - svs.clients].end(); it++) {
+			if (it->msgNum > client->netchan.outgoingSequence || it->time > sv.time) {
+				lastEvilPackage = it;
+				evilPackagesFound = qtrue;
+			}
+			else {
+				break;
+			}
+		}
+		if (evilPackagesFound) {
+			// The lastTooOldKeyframe itself won't be erased because .erase()'s second parameter is not inclusive, 
+			// aka it deletes up to that element, but not that element itself.
+			Com_Printf("Found evil old messages in demoPreRecordBuffer. This shouldn't happen.\n");
+			lastEvilPackage++; // .erase() function excludes the last element, but we want to delete the last evil package too.
+			demoPreRecordBuffer[client - svs.clients].erase(demoPreRecordBuffer[client - svs.clients].begin(), lastEvilPackage);
+		}
+
+		// Now put the current messsage in the buffer.
 		static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
 		Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
 		MSG_ToBuffered(msg,&bmt.msg);
