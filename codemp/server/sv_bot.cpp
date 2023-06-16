@@ -233,9 +233,9 @@ void SV_BotFreeClient( int clientNum ) {
 #ifdef DEDICATED
 	if ( cl->demo.demorecording ) {
 		SV_StopRecordDemo( cl );
-		SV_ClearClientDemoPreRecord( cl );
-		SV_ClearClientDemoMeta(cl);
 	}
+	SV_ClearClientDemoPreRecord(cl);
+	SV_ClearClientDemoMeta(cl);
 #endif
 }
 
