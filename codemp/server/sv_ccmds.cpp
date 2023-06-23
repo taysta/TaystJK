@@ -27,6 +27,14 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "server/sv_gameapi.h"
 #include "qcommon/game_version.h"
 
+#include <sstream>
+#include <ctime>
+
+#ifdef DEDICATED
+extern std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
+extern std::map<std::string, std::string> demoMetaData[MAX_CLIENTS];
+#endif
+
 /*
 ===============================================================================
 
@@ -288,7 +296,10 @@ static void SV_MapRestart_f( void ) {
 		return;
 	}
 
+#ifdef DEDICATED
 	SV_StopAutoRecordDemos();
+	SV_ClearAllDemoPreRecord();
+#endif
 
 	// toggle the server bit so clients can detect that a
 	// map_restart has happened
@@ -373,7 +384,9 @@ static void SV_MapRestart_f( void ) {
 	sv.time += 100;
 	svs.time += 100;
 
+#ifdef DEDICATED
 	SV_BeginAutoRecordDemos();
+#endif
 }
 
 //===============================================================
@@ -1509,6 +1522,7 @@ static void SV_KillServer_f( void ) {
 	SV_Shutdown( "killserver" );
 }
 
+#ifdef DEDICATED
 void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes ) {
 	int		len, swlen;
 
@@ -1522,6 +1536,84 @@ void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes ) {
 	swlen = LittleLong( len );
 	FS_Write( &swlen, 4, cl->demo.demofile );
 	FS_Write( msg->data + headerBytes, len, cl->demo.demofile );
+}
+
+void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes, int messageNum ) { // Version that specifies messagenumber manually, for buffered (pre-record) messages.
+	int		len, swlen;
+
+	// write the packet sequence
+	len = messageNum;
+	swlen = LittleLong( len );
+	FS_Write( &swlen, 4, cl->demo.demofile );
+
+	// skip the packet sequencing information
+	len = msg->cursize - headerBytes;
+	swlen = LittleLong( len );
+	FS_Write( &swlen, 4, cl->demo.demofile );
+	FS_Write( msg->data + headerBytes, len, cl->demo.demofile );
+}
+
+
+
+constexpr char postEOFMetadataMarker[] = "HIDDENMETA";
+
+// Write an empty message at start of demo with metadata.
+// Metadata must be in JSON format to maintain compatibility for this format,
+// that way every demo writing tool/client/server can read/write different parameters
+// without conflicting.
+// But the JSON is not verified in this function, so just be good.
+// "lastClientCommand" is client->lastClientCommand, but if you are pre-recording,
+// you should get the older value
+// "messageNum" is the messageNum of the metadata messsage.
+// Normally the first message in a demo is the "header" or gamestate message with first message num -1
+// With metadata, this becomes sthe first message instead. So it's first demo message num - 2
+void SV_WriteEmptyMessageWithMetadata(int lastClientCommand, fileHandle_t f, const char* metaData, int messageNum) {
+	byte			bufData[MAX_MSGLEN];
+	msg_t			buf;
+	int				i;
+	int				len;
+	entityState_t* ent;
+	entityState_t	nullstate;
+	char* s;
+
+	
+	MSG_Init(&buf, bufData, sizeof(bufData));
+	MSG_Bitstream(&buf);
+	// NOTE, MRE: all server->client messages now acknowledge
+	MSG_WriteLong(&buf, lastClientCommand);
+	MSG_WriteByte(&buf, svc_EOF);
+
+	// Normal demo readers will quit here. For all intents and purposes this demo message is over. But we're gonna put the metadata here now. Since it comes after svc_EOF, nobody will ever be bothered by it 
+	// but we can read it if we want to.
+	constexpr int metaMarkerLength = sizeof(postEOFMetadataMarker)-1;
+	// This is how the demo huffman operates. Worst case a byte can take almost 2 bytes to save, from what I understand. When reading past the end, we need to detect if we SHOULD read past the end.
+	// For each byte we need to read, thus, the message length must be at least 2 bytes longer still. Hence at the end we will artificially set the message length to be minimum that long.
+	// We will only read x amount of bytes (where x is the length of the meta marker) and see if the meta marker is present. If it is, we then proceeed to read a bigstring.
+	// This same thing is technically not true for the custom compressed types (as their size is always the real size of the data) but we'll just leave it like this to be universal and simple.
+	constexpr int maxBytePerByteSaved = 2;
+	constexpr int metaMarkerPresenceMinimumByteLengthExtra = metaMarkerLength * maxBytePerByteSaved;
+
+	const int requiredCursize = buf.cursize + metaMarkerPresenceMinimumByteLengthExtra; // We'll just set it to this value at the end if it ends up smaller.
+
+	for (int i = 0; i < metaMarkerLength; i++) {
+		MSG_WriteByte(&buf, postEOFMetadataMarker[i]);
+	}
+	MSG_WriteBigString(&buf, metaData);
+
+
+	MSG_WriteByte(&buf, svc_EOF); // Done. Not really needed but whatever.
+
+	if (buf.cursize < requiredCursize) {
+		buf.cursize = requiredCursize;
+	}
+
+	// write it to the demo file
+	len = LittleLong(messageNum);
+	FS_Write(&len, 4, f);
+	len = LittleLong(buf.cursize);
+	FS_Write(&len, 4, f);
+
+	FS_Write(buf.data, buf.cursize, f);
 }
 
 void SV_StopRecordDemo( client_t *cl ) {
@@ -1541,6 +1633,27 @@ void SV_StopRecordDemo( client_t *cl ) {
 	cl->demo.demorecording = qfalse;
 	if (com_developer->integer)
 		Com_Printf ("Stopped demo for client %d.\n", cl - svs.clients);
+}
+
+void SV_ClearClientDemoMeta( client_t *cl ) {
+
+	demoMetaData[cl - svs.clients].clear();
+}
+
+void SV_ClearClientDemoPreRecord( client_t *cl ) {
+
+	demoPreRecordBuffer[cl - svs.clients].clear();
+	Com_Memset(&cl->demo.preRecord,0,sizeof(cl->demo.preRecord));
+	cl->demo.preRecord.lastKeyframeTime = -(1000*sv_demoPreRecordKeyframeDistance->integer) * 2; // Make sure that restarting recording will immediately create a keyframe.
+}
+
+void SV_ClearAllDemoPreRecord( ) {
+
+	if (svs.clients) {
+		for (client_t* client = svs.clients; client - svs.clients < sv_maxclients->integer; client++) {
+			SV_ClearClientDemoPreRecord( client );
+		}
+	}
 }
 
 // stops all recording demos
@@ -1646,12 +1759,12 @@ void SV_DemoFilename( char *buf, int bufSize ) {
 
 // defined in sv_client.cpp
 extern void SV_CreateClientGameStateMessage( client_t *client, msg_t* msg );
-
 void SV_RecordDemo( client_t *cl, char *demoName ) {
 	char		name[MAX_OSPATH];
 	byte		bufData[MAX_MSGLEN];
 	msg_t		msg;
 	int			len;
+	std::stringstream ssMeta; // JSON metadata
 
 	if ( cl->demo.demorecording ) {
 		Com_Printf( "Already recording.\n" );
@@ -1678,11 +1791,88 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 	}
 	cl->demo.demorecording = qtrue;
 
+	cl->demo.isBot = (cl->netchan.remoteAddress.type == NA_BOT) ? qtrue : qfalse;
+	cl->demo.botReliableAcknowledge = cl->reliableSent;
+
+	// Save metadata message if desired
+	if (sv_demoWriteMeta->integer) {
+		int i;
+		ssMeta << "{";
+		ssMeta << "\"wr\":\"EternalJK_Server\""; // Writer (keyword used by other tools too to identify origin of demo)
+
+		// Go through manually set metadata and add it.
+		for (auto it = demoMetaData[cl - svs.clients].begin(); it != demoMetaData[cl - svs.clients].end(); it++) {
+			if (it->first != "wr" && it->first != "ost" && it->first != "prso") { // Can't overwrite default parameters (writer, original start time, pre-record start offset)
+				
+				ssMeta << ",\"" << it->first << "\":"; // JSON Key
+				
+				// Check if value is number
+				bool isNumber = true;
+				for (int i = 0; i < it->second.size(); i++) {
+					if (!(it->second[i] >= '0' && it->second[i] <= '9' || it->second[i] == '.')) { // Allow floating point numbers too
+						isNumber = false;
+						break;
+					}
+				}
+
+				if (isNumber) {
+					ssMeta << it->second; // JSON Number value (no quotes)
+				}
+				else {
+					ssMeta << "\"" << it->second << "\""; // JSON String value (with quotes)
+				}
+			}
+		}
+		//ssMeta << "}"; // Don't end the json array here, we want to add extra info in the case of pre-recording
+	}
+
+	// Ok we have two options now. Either the classical way of starting with gamestate.
+	// OR, if enabled, we use our pre-recorded buffer to start recording a bit in the past,
+	// in which case we also don't have to worry about demowaiting since the pre-record
+	// already takes care of that
+	if (sv_demoPreRecord->integer) {
+		// Pre-recording is enabled. Let's check for the oldest available keyframe.
+		demoPreRecordBufferIt firstOldKeyframe;
+		qboolean firstOldKeyframeFound = qfalse;
+		for (demoPreRecordBufferIt it = demoPreRecordBuffer[cl - svs.clients].begin(); it != demoPreRecordBuffer[cl - svs.clients].end(); it++) {
+			if (it->isKeyframe && it->time < sv.time) {
+				firstOldKeyframe = it;
+				firstOldKeyframeFound = qtrue;
+				break;
+			}
+		}
+		if (firstOldKeyframeFound) {
+			int index = 0;
+			// Dump this keyframe (gamestate message) and all following non-keyframes into the demo.
+			for (demoPreRecordBufferIt it = firstOldKeyframe; it != demoPreRecordBuffer[cl - svs.clients].end(); it++,index++) {
+				static byte preRecordBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
+				static msg_t		preRecordMsg;
+
+				if ((!it->isKeyframe || index == 0) && it->msgNum <= cl->netchan.outgoingSequence && it->time <= sv.time) { // Check against outgoing sequence and server time too, *just in case* we ended up with some old messages
+					// We only want a keyframe at the beginning of the demo, none after.
+					Com_Memset(&preRecordMsg, 0, sizeof(msg_t));
+					Com_Memset(&preRecordBufData, 0, sizeof(preRecordBufData));
+					preRecordMsg.data = preRecordBufData;
+					MSG_FromBuffered(&preRecordMsg, &it->msg);
+					MSG_WriteByte(&preRecordMsg, svc_EOF); // We didn't do that for the ones we put into the buffer, so we do it now.
+					if (index == 0 && sv_demoWriteMeta->integer) {
+						// This goes before the first messsage
+
+						ssMeta << ",\"ost\":" << ((int64_t)std::time(nullptr) - ((sv.time - it->time)/1000)); // Original start time. When was demo recording started?
+						ssMeta << ",\"prso\":" << (sv.time-it->time); // Pre-recording start offset. Offset from start of demo to when the command to start recording was called
+
+						ssMeta << "}"; // End JSON object
+						SV_WriteEmptyMessageWithMetadata(it->lastClientCommand, cl->demo.demofile,ssMeta.str().c_str(),it->msgNum-1);
+					}
+					SV_WriteDemoMessage(cl,&preRecordMsg,0,it->msgNum);
+				}
+			}
+			return; // No need to go through the whole normal demo procedure with demowaiting etc.
+		}
+	}
+
 	// don't start saving messages until a non-delta compressed message is received
 	cl->demo.demowaiting = qtrue;
-
-	cl->demo.isBot = ( cl->netchan.remoteAddress.type == NA_BOT ) ? qtrue : qfalse;
-	cl->demo.botReliableAcknowledge = cl->reliableSent;
 
 	// write out the gamestate message
 	MSG_Init( &msg, bufData, sizeof( bufData ) );
@@ -1694,6 +1884,13 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 
 	// finished writing the client packet
 	MSG_WriteByte( &msg, svc_EOF );
+
+	if (sv_demoWriteMeta->integer) {
+		// Write metadata first
+		ssMeta << ",\"ost\":" << (int64_t)std::time(nullptr); // Original start time. When was demo recording started?
+		ssMeta << "}"; // End JSON object
+		SV_WriteEmptyMessageWithMetadata(cl->lastClientCommand, cl->demo.demofile, ssMeta.str().c_str(), cl->netchan.outgoingSequence - 2);
+	}
 
 	// write it to the demo file
 	len = LittleLong( cl->netchan.outgoingSequence - 1 );
@@ -1774,6 +1971,7 @@ static int QDECL SV_DemoFolderTimeComparator( const void *arg1, const void *arg2
 	}
 	return rightTime - leftTime;
 }
+
 
 // returns number of folders found.  pass NULL result pointer for just a count.
 static int SV_FindLeafFolders( const char *baseFolder, char *result, int maxResults, int maxFolderLength ) {
@@ -1970,6 +2168,109 @@ static void SV_Record_f( void ) {
 	SV_RecordDemo( cl, demoName );
 }
 
+// Set metadata for demos of a particular client
+static void SV_DemoMeta_f(void) {
+	int i,len;
+	client_t* cl;
+	const char* key = NULL;
+	const char* data = NULL;
+
+	if (!svs.clients) {
+		Com_Printf("Can't set demo metadata, svs.clients is null\n");
+		return;
+	}
+
+	if (Cmd_Argc() != 4 && Cmd_Argc() != 3) {
+		Com_Printf("svdemometa <clientnum> <metakey> <metadata>, for example svdemometa 2 runstarttime 235254. Leave out <metadata> to remove key.\n");
+		return;
+	}
+
+	int clIndex = atoi(Cmd_Argv(1));
+	if (clIndex < 0 || clIndex >= sv_maxclients->integer) {
+		Com_Printf("Unknown client number %d.\n", clIndex);
+		return;
+	}
+	cl = &svs.clients[clIndex];
+
+	key = Cmd_Argv(2);
+	data = Cmd_Argc() == 4 ? Cmd_Argv(3) : "";
+
+	// Quick sanity check for key (must be valid json key)
+	// Let's be strict and only allow letters
+	len = strlen(key);
+	if (len == 0) {
+		Com_Printf("Metadata key must not be empty\n");
+		return;
+	}
+	for (i = 0; i < len; i++) {
+		if (!(key[i] > 'a' && key[i] < 'z' || key[i] > 'A' && key[i] < 'Z')) {
+			Com_Printf("Metadata key must only contain a-z (lower or upper case)\n");
+			return;
+		}
+	}
+	len = strlen(data);
+	if (len == 0) {
+		// Empty data provided. Remove key if it exists.
+		if (demoMetaData[cl - svs.clients].find(key) != demoMetaData[cl - svs.clients].end()) {
+			demoMetaData[cl - svs.clients].erase(key);
+		}
+	}
+	else {
+		demoMetaData[cl - svs.clients][key] = data;
+	}
+
+}
+// Clear metadata for demos of a particular client
+static void SV_DemoClearMeta_f(void) {
+	client_t* cl;
+	
+	if (!svs.clients) {
+		Com_Printf("Can't clear demo metadata, svs.clients is null\n");
+		return;
+	}
+
+	if (Cmd_Argc() != 2) {
+		Com_Printf("svdemoclearmeta <clientnum>\n");
+		return;
+	}
+
+	int clIndex = atoi(Cmd_Argv(1));
+	if (clIndex < 0 || clIndex >= sv_maxclients->integer) {
+		Com_Printf("Unknown client number %d.\n", clIndex);
+		return;
+	}
+	cl = &svs.clients[clIndex];
+
+	SV_ClearClientDemoMeta(cl);
+}
+// Clear pre-record data for demos of a particular client
+// Careful with overusage: This will force generation of new keyframes & non-delta snaps
+static void SV_DemoClearPreRecord_f(void) {
+	client_t* cl;
+	
+	if (!svs.clients) {
+		Com_Printf("Can't clear demo pre-record, svs.clients is null\n");
+		return;
+	}
+
+	if (Cmd_Argc() != 2) {
+		Com_Printf("svdemoclearprerecord <clientnum>\n");
+		return;
+	}
+
+	int clIndex = atoi(Cmd_Argv(1));
+	if (clIndex < 0 || clIndex >= sv_maxclients->integer) {
+		Com_Printf("Unknown client number %d.\n", clIndex);
+		return;
+	}
+	cl = &svs.clients[clIndex];
+
+	SV_ClearClientDemoPreRecord(cl);
+}
+
+
+#endif
+
 /*
 =================
 SV_WhitelistIP_f
@@ -2044,12 +2345,17 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_AddCommand ("svtell", SV_ConTell_f, "Private message from the server to a user" );
 	Cmd_AddCommand ("forcetoggle", SV_ForceToggle_f, "Toggle g_forcePowerDisable bits" );
 	Cmd_AddCommand ("weapontoggle", SV_WeaponToggle_f, "Toggle g_weaponDisable bits" );
+#ifdef DEDICATED
 	Cmd_AddCommand ("svrecord", SV_Record_f, "Record a server-side demo" );
 	Cmd_AddCommand ("svstoprecord", SV_StopRecord_f, "Stop recording a server-side demo" );
+	Cmd_AddCommand ("svdemometa", SV_DemoMeta_f, "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]");
+	Cmd_AddCommand ("svdemoclearmeta", SV_DemoClearMeta_f, "Clears metadata for server-side demos for one player. Call with clientnum.");
+	Cmd_AddCommand ("svdemoclearprerecord", SV_DemoClearPreRecord_f, "Clears pre-record data for a particular client. Call with clientnum.");
 	Cmd_AddCommand ("svrenamedemo", SV_RenameDemo_f, "Rename a server-side demo");
+	Cmd_AddCommand("sv_listrecording", SV_ListRecording_f, "Lists demos being recorded");
+#endif
 	Cmd_AddCommand ("sv_rehashbans", SV_RehashBans_f, "Reloads banlist from file" );
 	Cmd_AddCommand ("sv_listbans", SV_ListBans_f, "Lists bans" );
-	Cmd_AddCommand( "sv_listrecording", SV_ListRecording_f, "Lists demos being recorded" );
 	Cmd_AddCommand ("sv_banaddr", SV_BanAddr_f, "Bans a user" );
 	Cmd_AddCommand ("sv_exceptaddr", SV_ExceptAddr_f, "Adds a ban exception for a user" );
 	Cmd_AddCommand ("sv_bandel", SV_BanDel_f, "Removes a ban" );

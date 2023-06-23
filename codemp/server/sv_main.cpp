@@ -64,14 +64,23 @@ cvar_t	*sv_newfloodProtect;
 cvar_t	*sv_lanForceRate; // dedicated 1 (LAN) server forces local client rates to 99999 (bug #491)
 cvar_t	*sv_needpass;
 cvar_t	*sv_filterCommands; // strict filtering on commands (1: strip ['\r', '\n'], 2: also strip ';')
+#ifdef DEDICATED
 cvar_t	*sv_autoDemo;
 cvar_t	*sv_autoDemoBots;
 cvar_t	*sv_autoDemoMaxMaps;
+#endif
 cvar_t	*sv_legacyFixes;
 cvar_t	*sv_banFile;
 cvar_t	*sv_maxOOBRate;
 cvar_t	*sv_maxOOBRateIP;
 cvar_t	*sv_autoWhitelist;
+
+#ifdef DEDICATED
+cvar_t	*sv_demoPreRecord; // Activate demo pre-recording
+cvar_t	*sv_demoPreRecordTime; // How many seconds of past packets should be stored so demos can be retroactively recorded for that duration?
+cvar_t	*sv_demoPreRecordKeyframeDistance; // A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message (in seconds)? The shorter the distance, the more precisely the pre-record duration will be kept.
+cvar_t	*sv_demoWriteMeta; // Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.
+#endif
 
 cvar_t	*sv_snapShotDuelCull;
 
@@ -547,7 +556,9 @@ void SVC_Info( netadr_t from ) {
 	Info_SetValueForKey( infostring, "wdisable", va("%i", wDisable ) );
 	Info_SetValueForKey( infostring, "fdisable", va("%i", Cvar_VariableIntegerValue( "g_forcePowerDisable" ) ) );
 	//Info_SetValueForKey( infostring, "pure", va("%i", sv_pure->integer ) );
+#ifdef DEDICATED
 	Info_SetValueForKey( infostring, "autodemo", va("%i", sv_autoDemo->integer ) );
+#endif
 
 	if( sv_minPing->integer ) {
 		Info_SetValueForKey( infostring, "minPing", va("%i", sv_minPing->integer) );

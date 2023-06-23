@@ -230,9 +230,13 @@ void SV_BotFreeClient( int clientNum ) {
 		cl->gentity->r.svFlags &= ~SVF_BOT;
 	}
 
+#ifdef DEDICATED
 	if ( cl->demo.demorecording ) {
 		SV_StopRecordDemo( cl );
 	}
+	SV_ClearClientDemoPreRecord(cl);
+	SV_ClearClientDemoMeta(cl);
+#endif
 }
 
 /*

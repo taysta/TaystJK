@@ -123,6 +123,7 @@ typedef enum {
 } clientState_t;
 
 
+#ifdef DEDICATED
 // struct to hold demo data for a single demo
 typedef struct {
 	char		demoName[MAX_OSPATH];
@@ -132,8 +133,19 @@ typedef struct {
 	fileHandle_t	demofile;
 	qboolean	isBot;
 	int			botReliableAcknowledge; // for bots, need to maintain a separate reliableAcknowledge to record server messages into the demo file
-} demoInfo_t;
+	struct  { 
+		// this is basically the equivalent of the demowaiting and minDeltaFrame values above, except it's for the demo pre-record feature and will be done every sv_demoPreRecordKeyframeDistance seconds.
+		qboolean keyframeWaiting;
+		int minDeltaFrame;
 
+		int lastKeyframeTime; // When was the last keyframe (gamestate followed by non-delta frames) saved? If more than sv_demoPreRecordKeyframeDistance, we make a new keyframe.
+	} preRecord;
+} demoInfo_t;
+#endif
+
+#ifdef DEDICATED
+typedef std::vector<bufferedMessageContainer_t>::iterator demoPreRecordBufferIt;
+#endif
 
 typedef struct client_s {
 	clientState_t	state;
@@ -193,7 +205,9 @@ typedef struct client_s {
 	int				oldServerTime;
 	qboolean		csUpdated[MAX_CONFIGSTRINGS];
 
+#ifdef DEDICATED
 	demoInfo_t		demo;
+#endif
 
 #ifdef DEDICATED
 	qboolean		disableDuelCull;	//set for clients with "Duel see others" option set in cp_pluginDisable on JA+ servers
@@ -293,14 +307,22 @@ extern	cvar_t	*sv_newfloodProtect;
 extern	cvar_t	*sv_lanForceRate;
 extern	cvar_t	*sv_needpass;
 extern	cvar_t	*sv_filterCommands;
+#ifdef DEDICATED
 extern	cvar_t	*sv_autoDemo;
 extern	cvar_t	*sv_autoDemoBots;
 extern	cvar_t	*sv_autoDemoMaxMaps;
+#endif
 extern	cvar_t	*sv_legacyFixes;
 extern	cvar_t	*sv_banFile;
 extern	cvar_t	*sv_maxOOBRate;
 extern	cvar_t	*sv_maxOOBRateIP;
 extern	cvar_t	*sv_autoWhitelist;
+#ifdef DEDICATED
+extern	cvar_t	*sv_demoPreRecord;
+extern	cvar_t	*sv_demoPreRecordTime;
+extern	cvar_t	*sv_demoPreRecordKeyframeDistance;
+extern	cvar_t	*sv_demoWriteMeta;
+#endif
 
 extern	cvar_t	*sv_snapShotDuelCull;
 
@@ -407,11 +429,16 @@ void SV_WriteDownloadToClient( client_t *cl , msg_t *msg );
 // sv_ccmds.c
 //
 void SV_Heartbeat_f( void );
+#ifdef DEDICATED
 void SV_RecordDemo( client_t *cl, char *demoName );
 void SV_StopRecordDemo( client_t *cl );
+void SV_ClearClientDemoMeta( client_t *cl );
+void SV_ClearClientDemoPreRecord( client_t *cl );
+void SV_ClearAllDemoPreRecord( );
 void SV_AutoRecordDemo( client_t *cl );
 void SV_StopAutoRecordDemos();
 void SV_BeginAutoRecordDemos();
+#endif
 
 //
 // sv_snapshot.c

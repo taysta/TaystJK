@@ -78,6 +78,28 @@ void MSG_Init( msg_t *buf, byte *data, int length ) {
 	buf->maxsize = length;
 }
 
+void MSG_ToBuffered(msg_t* src, bufferedMsg_t* dst) {
+	dst->allowoverflow = src->allowoverflow;
+	dst->overflowed = src->overflowed;
+	dst->oob = src->oob;
+	dst->maxsize = src->maxsize;
+	dst->cursize = src->cursize;
+	dst->readcount = src->readcount;
+	dst->bit = src->bit;
+	Com_Memcpy(dst->data, src->data, sizeof(dst->data));
+}
+
+void MSG_FromBuffered(msg_t* dst, bufferedMsg_t* src) {
+	dst->allowoverflow = src->allowoverflow;
+	dst->overflowed = src->overflowed;
+	dst->oob = src->oob;
+	dst->maxsize = src->maxsize;
+	dst->cursize = src->cursize;
+	dst->readcount = src->readcount;
+	dst->bit = src->bit;
+	Com_Memcpy(dst->data, src->data, sizeof(src->data));
+}
+
 void MSG_InitOOB( msg_t *buf, byte *data, int length ) {
 	if (!g_nOverrideChecked)
 	{

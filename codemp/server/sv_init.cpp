@@ -428,8 +428,11 @@ void SV_SendMapChange(void)
 		{
 			if (svs.clients[i].state >= CS_CONNECTED)
 			{
-				if ( svs.clients[i].netchan.remoteAddress.type != NA_BOT ||
-					svs.clients[i].demo.demorecording )
+				if ( svs.clients[i].netchan.remoteAddress.type != NA_BOT 
+#ifdef DEDICATED
+					|| svs.clients[i].demo.demorecording 
+#endif
+					)
 				{
 					SV_SendClientMapChange( &svs.clients[i] ) ;
 				}
@@ -454,8 +457,10 @@ void SV_SpawnServer( char *server, qboolean killBots, ForceReload_e eForceReload
 	qboolean	isBot;
 	char		systemInfo[16384];
 	const char	*p;
-
+#ifdef DEDICATED
 	SV_StopAutoRecordDemos();
+	SV_ClearAllDemoPreRecord();
+#endif
 
 	SV_SendMapChange();
 
@@ -748,6 +753,7 @@ Ghoul2 Insert End
 	}
 	*/
 
+#ifdef DEDICATED
 	for ( client_t *client = svs.clients; client - svs.clients < sv_maxclients->integer; client++) {
 		// bots will not request gamestate, so it must be manually sent
 		// cannot do this above where it says it will because mapname is not set at that time
@@ -757,6 +763,7 @@ Ghoul2 Insert End
 	}
 
 	SV_BeginAutoRecordDemos();
+#endif
 }
 
 
@@ -1004,10 +1011,11 @@ void SV_Init (void) {
 	sv_filterCommands = Cvar_Get( "sv_filterCommands", "2", CVAR_ARCHIVE );
 
 //	sv_debugserver = Cvar_Get ("sv_debugserver", "0", 0);
-
+#ifdef DEDICATED
 	sv_autoDemo = Cvar_Get( "sv_autoDemo", "0", CVAR_ARCHIVE_ND | CVAR_SERVERINFO, "Automatically take server-side demos" );
 	sv_autoDemoBots = Cvar_Get( "sv_autoDemoBots", "0", CVAR_ARCHIVE_ND, "Record server-side demos for bots" );
 	sv_autoDemoMaxMaps = Cvar_Get( "sv_autoDemoMaxMaps", "0", CVAR_ARCHIVE_ND );
+#endif
 
 #ifndef DEDICATED //Default this to off on client to avoid potential mod compatibility issues.
 	sv_legacyFixes = Cvar_Get( "sv_legacyFixes", "0", CVAR_ARCHIVE );
@@ -1020,6 +1028,13 @@ void SV_Init (void) {
 	sv_maxOOBRate = Cvar_Get("sv_maxOOBRate", "1000", CVAR_ARCHIVE, "Maximum rate of handling incoming server commands" );
 	sv_maxOOBRateIP = Cvar_Get("sv_maxOOBRateIP", "1", CVAR_ARCHIVE, "Maximum rate of handling incoming server commands per IP address" );
 	sv_autoWhitelist = Cvar_Get("sv_autoWhitelist", "1", CVAR_ARCHIVE, "Save player IPs to allow them using server during DOS attack" );
+
+#ifdef DEDICATED
+	sv_demoPreRecord = Cvar_Get("sv_demoPreRecord", "0", CVAR_ARCHIVE, "Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)");
+	sv_demoPreRecordTime = Cvar_Get("sv_demoPreRecordTime", "15", CVAR_ARCHIVE, "How many seconds of past packets should be stored for server demo pre-recording?");
+	sv_demoPreRecordKeyframeDistance = Cvar_Get("sv_demoPreRecordKeyframeDistance", "5", CVAR_ARCHIVE, "A demo can only start with a gamestate and full non-delta snapshot. How often should we save such a gamestate message? The shorter the distance, the more precisely the pre-record duration will be kept, but also the higher the RAM usage and regularity of non-delta frames being sent to the clients.");
+	sv_demoWriteMeta = Cvar_Get("sv_demoWriteMeta", "1", CVAR_ARCHIVE, "Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.");
+#endif
 
 	sv_snapShotDuelCull = Cvar_Get("sv_snapShotDuelCull", "1", CVAR_NONE, "Snapshot-based duel isolation");
 
