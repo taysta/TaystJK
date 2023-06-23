@@ -55,7 +55,7 @@ PFN_vkGetPhysicalDeviceSurfaceFormatsKHR		qvkGetPhysicalDeviceSurfaceFormatsKHR;
 PFN_vkGetPhysicalDeviceSurfacePresentModesKHR	qvkGetPhysicalDeviceSurfacePresentModesKHR;
 PFN_vkGetPhysicalDeviceSurfaceSupportKHR		qvkGetPhysicalDeviceSurfaceSupportKHR;
 
-#ifndef NDEBUG
+#ifdef USE_VK_VALIDATION
 PFN_vkCreateDebugReportCallbackEXT				qvkCreateDebugReportCallbackEXT;
 PFN_vkDestroyDebugReportCallbackEXT				qvkDestroyDebugReportCallbackEXT;
 #endif
@@ -308,7 +308,11 @@ static void vk_create_instance( void )
 
     result = qvkCreateInstance(&desc, NULL, &vk.instance);
 #endif
-    result = qvkCreateInstance(&desc, NULL, &vk.instance);
+
+	// hotfix: reintroduce duplicate instance creation. 
+	// mysterious x64-linux configuration causing a crash after vid_restart.
+	result = qvkCreateInstance(&desc, NULL, &vk.instance);
+
     switch (result) {
         case VK_SUCCESS:
             vk_debug("--- Vulkan create instance success! ---\n\n"); break;
@@ -714,7 +718,9 @@ void vk_init_library( void )
 	uint32_t device_count;
 	int device_index, i;
 	VkResult res;
+	qboolean deviceCountRetried = qfalse;
 
+__initStart:
 	Com_Memset(&vk, 0, sizeof(vk));
 
 	qvkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)ri.VK_GetInstanceProcAddress();
@@ -763,6 +769,27 @@ void vk_init_library( void )
 
 	res = qvkEnumeratePhysicalDevices(vk.instance, &device_count, NULL);
 	if (device_count == 0) {
+#ifdef _WIN32
+		if (!deviceCountRetried) {
+			// May be a conflict between VK_LAYER_AMD_swichable_graphics and VK_LAYER_NV_optimus on laptops with AMD + Nvidia GPUs:
+			// https://stackoverflow.com/questions/68109171/vkenumeratephysicaldevices-not-finding-all-gpus/68631366#68631366
+			ri.Printf(PRINT_WARNING, "Vulkan: No physical devices found. Retrying with AMD_SWITCHABLE_GRAPHICS disabled.\n");
+
+			// Clear instance with a subset of vk_shutdown
+			qvkDestroySurfaceKHR(vk.instance, vk.surface, NULL);
+#ifdef USE_VK_VALIDATION
+			if (qvkDestroyDebugReportCallbackEXT && vk.debug_callback)
+				qvkDestroyDebugReportCallbackEXT(vk.instance, vk.debug_callback, NULL);
+#endif
+			qvkDestroyInstance(vk.instance, NULL);
+			vk_deinit_library();
+
+			// Disable the AMD layer and try again.
+			SetEnvironmentVariable("DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1", "1");
+			deviceCountRetried = qtrue;
+			goto __initStart;
+		}
+#endif
 		ri.Error(ERR_FATAL, "Vulkan: no physical devices found");
 		return;
 	}

@@ -101,6 +101,29 @@ void G2Time_ReportTimers(void)
 
 //rww - RAGDOLL_END
 
+static const int MAX_RENDERABLE_SURFACES = 4096;
+static CRenderableSurface renderSurfHeap[MAX_RENDERABLE_SURFACES];
+static int currentRenderSurfIndex = 0;
+
+static CRenderableSurface *AllocGhoul2RenderableSurface( void )
+{
+	if ( currentRenderSurfIndex >= MAX_RENDERABLE_SURFACES )
+	{
+		ri.Error( ERR_DROP, "AllocRenderableSurface: Reached maximum number of Ghoul2 renderable surfaces (%d)", MAX_RENDERABLE_SURFACES );
+		return NULL;
+	}
+
+	CRenderableSurface *rs = &renderSurfHeap[currentRenderSurfIndex++];
+
+	rs->Init();
+
+	return rs;
+}
+
+void ResetGhoul2RenderableSurfaceHeap( void ) {
+	currentRenderSurfIndex = 0;
+}
+
 bool HackadelicOnClient=false; // means this is a render traversal
 
 qboolean G2_SetupModelPointers(CGhoul2Info *ghlInfo);
@@ -785,21 +808,6 @@ public:
 #endif
 	{}
 };
-
-#ifdef _G2_GORE
-#define MAX_RENDER_SURFACES (2048)
-static CRenderableSurface RSStorage[MAX_RENDER_SURFACES];
-static unsigned int NextRS=0;
-
-CRenderableSurface *AllocRS()
-{
-	CRenderableSurface *ret=&RSStorage[NextRS];
-	ret->Init();
-	NextRS++;
-	NextRS%=MAX_RENDER_SURFACES;
-	return ret;
-}
-#endif
 
 /*
 
@@ -2484,49 +2492,10 @@ void RenderSurfaces(CRenderSurface &RS) //also ended up just ripping right from 
 			shader = R_GetShaderByHandle( surfInfo->shaderIndex );
 		}
 
-		//rww - catch surfaces with bad shaders
-		//assert(shader != tr.defaultShader);
-		//Alright, this is starting to annoy me because of the state of the assets. Disabling for now.
-		// we will add shadows even if the main object isn't visible in the view
-		// stencil shadows can't do personal models unless I polyhedron clip
-		//using z-fail now so can do personal models -rww
-		if ( /*!RS.personalModel
-			&& */r_shadows->integer == 2
-//			&& RS.fogNum == 0
-			&& (RS.renderfx & RF_SHADOW_PLANE )
-			&& !(RS.renderfx & ( RF_NOSHADOW | RF_DEPTHHACK ) )
-			&& shader->sort == SS_OPAQUE )
-		{		// set the surface info to point at the where the transformed bone list is going to be for when the surface gets rendered out
-			CRenderableSurface *newSurf = new CRenderableSurface;
-			if (surface->numVerts >= SHADER_MAX_VERTEXES/2)
-			{ //we need numVerts*2 xyz slots free in tess to do shadow, if this surf is going to exceed that then let's try the lowest lod -rww
-				mdxmSurface_t *lowsurface = (mdxmSurface_t *)G2_FindSurface(RS.currentModel, RS.surfaceNum, RS.currentModel->numLods-1);
-				newSurf->surfaceData = lowsurface;
-			}
-			else
-			{
-				newSurf->surfaceData = surface;
-			}
-			newSurf->boneCache = RS.boneCache;
-			R_AddDrawSurf( (surfaceType_t *)newSurf, tr.shadowShader, 0, qfalse );
-		}
-
-		// projection shadows work fine with personal models
-		if ( r_shadows->integer == 3
-//			&& RS.fogNum == 0
-			&& (RS.renderfx & RF_SHADOW_PLANE )
-			&& shader->sort == SS_OPAQUE )
-		{		// set the surface info to point at the where the transformed bone list is going to be for when the surface gets rendered out
-			CRenderableSurface *newSurf = new CRenderableSurface;
-			newSurf->surfaceData = surface;
-			newSurf->boneCache = RS.boneCache;
-			R_AddDrawSurf( (surfaceType_t *)newSurf, tr.projectionShadowShader, 0, qfalse );
-		}
-
 		// don't add third_person objects if not viewing through a portal
 		if ( !RS.personalModel )
 		{		// set the surface info to point at the where the transformed bone list is going to be for when the surface gets rendered out
-			CRenderableSurface *newSurf = new CRenderableSurface;
+			CRenderableSurface *newSurf = AllocGhoul2RenderableSurface();
 			newSurf->surfaceData = surface;
 			newSurf->boneCache = RS.boneCache;
 			R_AddDrawSurf( (surfaceType_t *)newSurf, (shader_t *)shader, RS.fogNum, qfalse );
@@ -2559,7 +2528,7 @@ void RenderSurfaces(CRenderSurface &RS) //also ended up just ripping right from 
 					}
 					else if (tex->tex[RS.lod])
 					{
-						CRenderableSurface *newSurf2 = AllocRS();
+						CRenderableSurface *newSurf2 = AllocGhoul2RenderableSurface();
 						*newSurf2=*newSurf;
 						newSurf2->goreChain=0;
 						newSurf2->alternateTex=tex->tex[RS.lod];
@@ -2616,6 +2585,46 @@ void RenderSurfaces(CRenderSurface &RS) //also ended up just ripping right from 
 			}
 #endif
 		}
+
+		//rww - catch surfaces with bad shaders
+		//assert(shader != tr.defaultShader);
+		//Alright, this is starting to annoy me because of the state of the assets. Disabling for now.
+		// we will add shadows even if the main object isn't visible in the view
+		// stencil shadows can't do personal models unless I polyhedron clip
+		//using z-fail now so can do personal models -rww
+		if ( /*!RS.personalModel
+			&& */r_shadows->integer == 2
+//			&& RS.fogNum == 0
+			&& (RS.renderfx & RF_SHADOW_PLANE )
+			&& !(RS.renderfx & ( RF_NOSHADOW | RF_DEPTHHACK ) )
+			&& shader->sort == SS_OPAQUE )
+		{		// set the surface info to point at the where the transformed bone list is going to be for when the surface gets rendered out
+			CRenderableSurface *newSurf = AllocGhoul2RenderableSurface();
+			if (surface->numVerts >= SHADER_MAX_VERTEXES/2)
+			{ //we need numVerts*2 xyz slots free in tess to do shadow, if this surf is going to exceed that then let's try the lowest lod -rww
+				mdxmSurface_t *lowsurface = (mdxmSurface_t *)G2_FindSurface(RS.currentModel, RS.surfaceNum, RS.currentModel->numLods-1);
+				newSurf->surfaceData = lowsurface;
+			}
+			else
+			{
+				newSurf->surfaceData = surface;
+			}
+			newSurf->boneCache = RS.boneCache;
+			R_AddDrawSurf( (surfaceType_t *)newSurf, tr.shadowShader, 0, qfalse );
+		}
+
+		// projection shadows work fine with personal models
+		if ( r_shadows->integer == 3
+//			&& RS.fogNum == 0
+			&& (RS.renderfx & RF_SHADOW_PLANE )
+			&& shader->sort == SS_OPAQUE )
+		{		// set the surface info to point at the where the transformed bone list is going to be for when the surface gets rendered out
+			CRenderableSurface *newSurf = AllocGhoul2RenderableSurface();
+			newSurf->surfaceData = surface;
+			newSurf->boneCache = RS.boneCache;
+			R_AddDrawSurf( (surfaceType_t *)newSurf, tr.projectionShadowShader, 0, qfalse );
+		}
+
 	}
 
 	// if we are turning off all descendants, then stop this recursion now
@@ -3495,7 +3504,9 @@ static inline float G2_GetVertBoneWeightNotSlow( const mdxmVertex_t *pVert, cons
 //This is a slightly mangled version of the same function from the sof2sp base.
 //It provides a pretty significant performance increase over the existing one.
 void RB_SurfaceGhoul(CRenderableSurface* surf)
-{
+{	
+	mdxmSurface_t	*surface;
+	
 #ifdef G2_PERFORMANCE_ANALYSIS
 	G2PerformanceTimer_RB_SurfaceGhoul.Start();
 #endif
@@ -3607,8 +3618,8 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 #endif
 
 	// grab the pointer to the surface info within the loaded mesh file
-	mdxmSurface_t* surface = surf->surfaceData;
-	CBoneCache* bones = surf->boneCache;
+	surface = surf->surfaceData;
+	CBoneCache *bones = surf->boneCache;
 
 #ifndef _G2_GORE //we use this later, for gore
 	delete surf;
@@ -3707,7 +3718,7 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 		}
 
 #ifdef _G2_GORE
-	CRenderableSurface* storeSurf = surf;
+	//CRenderableSurface* storeSurf = surf;
 
 	while (surf->goreChain)
 	{
@@ -3755,8 +3766,8 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 	// NOTE: This is required because a ghoul model might need to be rendered twice a frame (don't cringe,
 	// it's not THAT bad), so we only delete it when doing the glow pass. Warning though, this assumes that
 	// the glow is rendered _second_!!! If that changes, change this!
-	if ( !tess.shader->hasGlow || backEnd.isGlowPass || !vk.dglowActive )
-		delete storeSurf;
+	//if ( !tess.shader->hasGlow || backEnd.isGlowPass || !vk.dglowActive )
+		//delete storeSurf;
 #endif
 
 	tess.numVertexes += surface->numVerts;
