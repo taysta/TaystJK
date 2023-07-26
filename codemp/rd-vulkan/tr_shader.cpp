@@ -3085,46 +3085,17 @@ static void InitShader( const char *name, const int *lightmapIndex, const byte *
 #define EXTERNAL_LIGHTMAP     "lm_%04d.tga"     // THIS MUST BE IN SYNC WITH Q3MAP2
 static inline const int *R_FindLightmap( const int *lightmapIndex )
 {
-	image_t	*image;
-	char	fileName[MAX_QPATH];
-
-
-	//vk_debug("lightmapindex: %d\n", lightmapIndex);
-
 	// don't bother with vertex lighting
-	if (*lightmapIndex < 0)
+	if ( *lightmapIndex < 0 )
 		return lightmapIndex;
 
-	// does this lightmap already exist?
-	if (*lightmapIndex < tr.numLightmaps && tr.lightmaps[*lightmapIndex] != NULL)
-		return lightmapIndex;
-
-	// bail if no world dir
-	if (tr.worldDir[0] == '\0')
+	// do the lightmaps exist?
+	for ( int i = 0; i < MAXLIGHTMAPS; i++ )
 	{
-		return lightmapsVertex;
+		if ( lightmapIndex[i] >= tr.numLightmaps || tr.lightmaps[lightmapIndex[i]] == NULL )
+			return lightmapsVertex;
 	}
 
-	// sync up render thread, because we're going to have to load an image
-	//R_SyncRenderThread();
-
-	// attempt to load an external lightmap
-	imgFlags_t flags;
-
-	flags = IMGFLAG_NONE | IMGFLAG_CLAMPTOEDGE;
-
-	vk_debug("attempt to load lightmap: %s\n", fileName);
-	Com_sprintf(fileName, sizeof(fileName), "%s/" EXTERNAL_LIGHTMAP, tr.worldDir, *lightmapIndex);
-	image = R_FindImageFile(fileName, flags);
-	if (image == NULL)
-	{
-		return lightmapsVertex;
-	}
-
-	// add it to the lightmap list
-	if (*lightmapIndex >= tr.numLightmaps)
-		tr.numLightmaps = *lightmapIndex + 1;
-	tr.lightmaps[*lightmapIndex] = image;
 	return lightmapIndex;
 }
 
@@ -3140,15 +3111,17 @@ shader_t *R_FindShader( const char *name, const int *lightmapIndex, const byte *
 		return tr.defaultShader;
 	}
 
-	lightmapIndex = R_FindLightmap(lightmapIndex);
-
-	if (lightmapIndex[0] < LIGHTMAP_2D)
+	if ( lightmapIndex[0] >= 0 && lightmapIndex[0] >= tr.numLightmaps ) {
+		lightmapIndex = lightmapsVertex;
+	} else if (lightmapIndex[0] < LIGHTMAP_2D)
 	{
 		// negative lightmap indexes cause stray pointers (think tr.lightmaps[lightmapIndex])
 		vk_debug("WARNING: shader '%s' has invalid lightmap index of %d\n", name, lightmapIndex[0]);
 		lightmapIndex = lightmapsVertex;
 	}
-
+	
+	lightmapIndex = R_FindLightmap(lightmapIndex);
+	
 	COM_StripExtension(name, strippedName, sizeof(strippedName));
 
 	hash = generateHashValue(strippedName, FILE_HASH_SIZE);

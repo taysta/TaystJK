@@ -1296,6 +1296,7 @@ typedef struct trGlobals_s {
 	int						frameSceneNum;		// zeroed at RE_BeginFrame
 
 	qboolean				worldMapLoaded;
+	qboolean				worldInternalLightmapping; // qtrue indicates lightmap atlasing
 	world_t					*world;
 	char					worldDir[MAX_QPATH];// ie: maps/tim_dm2 (copy of world_t::name sans extension but still includes the path)
 
@@ -1321,7 +1322,10 @@ typedef struct trGlobals_s {
 	shader_t				*sunShader;
 
 	int						numLightmaps;
-	image_t					*lightmaps[MAX_LIGHTMAPS];
+	image_t					**lightmaps;
+
+	int						lightmapAtlasSize[2];
+	int						lightmapsPerAtlasSide[2];
 
 	trRefEntity_t			*currentEntity;
 	trRefEntity_t			worldEntity;		// point currentEntity at this when rendering world
