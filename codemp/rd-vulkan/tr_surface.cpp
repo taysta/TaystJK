@@ -1899,22 +1899,21 @@ void RB_SurfaceEntity( const surfaceType_t *surfType ) {
 		break;
 	case RT_ENT_CHAIN:
 		{
-			int				i, count, start;
 			static trRefEntity_t	tempEnt = *backEnd.currentEntity;
 			//rww - if not static then currentEntity is garbage because
 			//this is a local. This was not static in sof2.. but I guess
 			//they never check ce.renderfx so it didn't show up.
 
-			start = backEnd.currentEntity->e.uRefEnt.uMini.miniStart;
-			count = backEnd.currentEntity->e.uRefEnt.uMini.miniCount;
-			assert(count > 0);
+			const int start = backEnd.currentEntity->e.uRefEnt.uMini.miniStart;
+			const int count = backEnd.currentEntity->e.uRefEnt.uMini.miniCount;
+			assert( count > 0 );
 			backEnd.currentEntity = &tempEnt;
 
-			assert(backEnd.currentEntity->e.renderfx >= 0);
+			assert( backEnd.currentEntity->e.renderfx >= 0 );
 
-			for(i=0;i<count;i++)
+			for ( int i = 0, j = start; i < count; i++, j++ )
 			{
-				memcpy(&backEnd.currentEntity->e, &backEnd.refdef.miniEntities[start+i], sizeof(backEnd.refdef.miniEntities[start+i]));
+				memcpy(&backEnd.currentEntity->e, &backEnd.refdef.miniEntities[j], sizeof(backEnd.refdef.miniEntities[j]));
 
 				assert(backEnd.currentEntity->e.renderfx >= 0);
 
@@ -1931,6 +1930,8 @@ void RB_SurfaceEntity( const surfaceType_t *surfType ) {
 	tess.surfType = SF_ENTITY;
 #endif
 
+	// FIX ME: just a testing hack. Pretty sure we can merge all of these
+	tess.shader->entityMergable = qtrue;
 	return;
 }
 

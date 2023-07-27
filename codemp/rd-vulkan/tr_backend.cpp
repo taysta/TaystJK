@@ -193,7 +193,7 @@ RB_RenderDrawSurfList
 */
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	shader_t		*shader, *oldShader;
-	int				i, fogNum, entityNum, oldEntityNum, dlighted;
+	int				i, fogNum, oldFogNum, entityNum, oldEntityNum, dlighted, oldDlighted;
 	Vk_Depth_Range	depthRange; 
 	drawSurf_t		*drawSurf;
 	unsigned int	oldSort;
@@ -217,6 +217,9 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	oldSort					= MAX_UINT;
 	oldShaderSort			= -1;
 	depthRange				= DEPTH_RANGE_NORMAL;
+	oldFogNum				= -1;
+	oldDlighted				= qfalse;
+	qboolean				push_constant;
 #ifdef USE_VANILLA_SHADOWFINISH
 	didShadowPass			= qfalse;
 #endif
@@ -246,6 +249,8 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		{
 			shader = oldShader;
 			entityNum = oldEntityNum;
+			fogNum = oldFogNum;
+			dlighted = oldDlighted;
 			continue;
 		}
 
@@ -255,7 +260,13 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		// change the tess parameters if needed
 		// a "entityMergable" shader is a shader that can have surfaces from seperate
 		// entities merged into a single batch, like smoke and blood puff sprites
-		if (((oldSort ^ drawSurfs->sort) & ~QSORT_REFENTITYNUM_MASK) || !shader->entityMergable) {
+		
+		push_constant = qfalse;
+
+		//if (((oldSort ^ drawSurfs->sort) & ~QSORT_REFENTITYNUM_MASK) || !shader->entityMergable) {
+		if ( shader != oldShader || fogNum != oldFogNum || dlighted != oldDlighted
+			|| ( entityNum != oldEntityNum && !shader->entityMergable ) ) 
+		{	
 			if (oldShader != NULL) {
 				RB_EndSurface();
 			}
@@ -278,6 +289,10 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 #endif
 			RB_BeginSurface(shader, fogNum);
 			oldShader = shader;
+			oldFogNum = fogNum;
+			oldDlighted = dlighted;
+
+			push_constant = qtrue;
 		}
 
 		oldSort = drawSurf->sort;
@@ -317,10 +332,14 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			// we have to reset the shaderTime as well otherwise image animations on
 			// the world (like water) continue with the wrong frame
 			tess.shaderTime = backEnd.refdef.floatTime - tess.shader->timeOffset;
-
-			Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
+			
 			vk_set_depthrange( depthRange );
-			vk_update_mvp(NULL);
+			
+			if ( push_constant ) {
+				Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
+				vk_update_mvp(NULL);
+			}
+
 			oldEntityNum = entityNum;
 		}
 
