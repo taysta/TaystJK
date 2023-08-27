@@ -509,7 +509,7 @@ void vk_shutdown( void )
 {
     ri.Printf( PRINT_ALL, "vk_shutdown()\n" );
 
-	if (!qvkQueuePresentKHR) {// not fully initialized
+	if ( qvkQueuePresentKHR == NULL ) {// not fully initialized
 		goto __cleanup;
 	}
 
