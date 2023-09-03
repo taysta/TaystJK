@@ -1753,8 +1753,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 		// If this stage has glow...	GLOWXXX
 		else if (Q_stricmp(token, "glow") == 0)
 		{
-			stage->glow = true;
-
+			stage->glow = stage->bundle[0].glow = true;
 			continue;
 		}
 		//
@@ -3303,7 +3302,7 @@ Attempt to combine two stages into a single multitexture stage
 FIXME: I think modulated add + modulated add collapses incorrectly
 =================
 */
-static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shaderStage_t *st1, int num_stages) {
+static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shaderStage_t *st1, int num_stages, qboolean firstStage ) {
 	int abits, bbits;
 	int i, mtEnv;
 	textureBundle_t tmpBundle;
@@ -3375,6 +3374,15 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 		{
 			nonIdenticalColors = qtrue;
 		}
+	}
+
+	// in case this makes sense: ..
+	// vanilla only collapses first 2 stages and skips non matching color gen ..
+	// so, if the first shader stage is not glow but the second stage is and has matching color gen, disable glow stage
+	if ( !r_DynamicGlowAllStages->integer 
+		&& firstStage && !st0->mtEnv && !nonIdenticalColors && !st0->glow && st1->glow )
+	{
+			st1->glow = st1->bundle[0].glow = false;
 	}
 
 	if (nonIdenticalColors)
@@ -3452,11 +3460,11 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 		if (mtEnv == GL_BLEND_ONE_MINUS_ALPHA || mtEnv == GL_BLEND_ALPHA || mtEnv == GL_BLEND_MIX_ALPHA || mtEnv == GL_BLEND_MIX_ONE_MINUS_ALPHA || mtEnv == GL_BLEND_DST_COLOR_SRC_ALPHA)
 		{
 			// pass original state bits so recursive detection will work for these shaders
-			return 1 + CollapseMultitexture(st0bits, st0, st1, num_stages - 1);
+			return 1 + CollapseMultitexture(st0bits, st0, st1, num_stages - 1, firstStage);
 		}
 		if (abits == 0)
 		{
-			return 1 + CollapseMultitexture(st0->stateBits, st0, st1, num_stages - 1);
+			return 1 + CollapseMultitexture(st0->stateBits, st0, st1, num_stages - 1, firstStage);
 		}
 	}
 
@@ -4101,8 +4109,9 @@ shader_t *FinishShader( void )
 	// look for multitexture potential
 	//
 	//if (r_ext_multitexture->integer) {
+
 	for (i = 0; i < stage - 1; i++) {
-		stage -= CollapseMultitexture(stages[i + 0].stateBits, &stages[i + 0], &stages[i + 1], stage - i);
+		stage -= CollapseMultitexture(stages[i + 0].stateBits, &stages[i + 0], &stages[i + 1], stage - i, ( i == 0 ? qtrue: qfalse ) );
 	}
 	//}
 
@@ -4414,10 +4423,10 @@ shader_t *FinishShader( void )
 			if (stages[i].bundle[n].image[0] != NULL) {
 				lastStage[n] = &stages[i];
 			}
-			if (EqualTCgen(n, lastStage[n], &stages[i + 1])) {
+			if ( EqualTCgen( n, lastStage[ n ], &stages[ i+1 ] ) && (lastStage[n]->tessFlags & (TESS_ST0 << n) ) ) {
 				stages[i + 1].tessFlags &= ~(TESS_ST0 << n);
 			}
-			if (EqualRGBgen(lastStage[n], &stages[i + 1]) && EqualACgen(lastStage[n], &stages[i + 1])) {
+			if ( EqualRGBgen( lastStage[n], &stages[ i+1 ] ) && EqualACgen( lastStage[n], &stages[ i+1 ] ) && (lastStage[n]->tessFlags & (TESS_RGBA0 << n) ) ) {
 				stages[i + 1].tessFlags &= ~(TESS_RGBA0 << n);
 			}
 		}

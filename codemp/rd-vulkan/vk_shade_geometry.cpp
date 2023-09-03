@@ -1475,6 +1475,14 @@ void RB_StageIteratorGeneric( void )
 		for (i = 0; i < pStage->numTexBundles; i++) {
 			if (pStage->bundle[i].image[0] != NULL) {
 				vk_select_texture(i);
+
+				// use blackimage for non glow stages during a glowPass
+				if ( backEnd.isGlowPass && !pStage->bundle[i].glow ) {
+					vk_bind( tr.blackImage );
+					Com_Memset( tess.svars.colors[i], 0xff, tess.numVertexes * 4 );
+					continue;
+				}
+
 				R_BindAnimatedImage(&pStage->bundle[i]);
 
 				if (tess_flags & (TESS_ST0 << i))
@@ -1537,18 +1545,6 @@ void RB_StageIteratorGeneric( void )
 		if ( r_lightmap->integer && pStage->bundle[1].isLightmap ) {
 			//vk_select_texture(0);
 			vk_bind( tr.whiteImage ); // replace diffuse texture with a white one thus effectively render only lightmap
-		}
-
-		// move glow bundle to texture 0
-		// does not work with multitextured dglow yet.
-		if ( backEnd.isGlowPass && pStage->glow ){
-			vk_get_pipeline_def( pStage->vk_pipeline[fog_stage], &def );
-			def.shader_type = TYPE_SINGLE_TEXTURE;
-			pipeline = vk_find_pipeline_ext( 0, &def, qfalse );
-
-			vk_select_texture( 0 );
-			vk_bind( pStage->bundle[ ( pStage->numTexBundles - 1 ) ].image[0] );
-			Com_Memcpy( tess.svars.colors[0], tess.svars.colors[( pStage->numTexBundles - 1 )], sizeof(tess.svars.colors[0]) );
 		}
 
 		vk_bind_pipeline( pipeline );
