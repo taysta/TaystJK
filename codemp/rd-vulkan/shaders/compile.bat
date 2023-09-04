@@ -112,8 +112,6 @@ for %%f in (%glsl%*.frag) do (
 "%cl%" -S frag -V -o "%tmpf%" %glsl%gen_frag.tmpl -DUSE_FIXED_COLOR -DUSE_ATEST -DUSE_FOG
 "%bh%" "%tmpf%" %outf% frag_tx0_fixed_fog
 
-@rem single-texture fragment, depth-fragment
-
 @rem double-texture fragment, identity colors (1.0)
 
 "%cl%" -S frag -V -o "%tmpf%" %glsl%gen_frag.tmpl -DUSE_CLX_IDENT -DUSE_TX1
@@ -132,7 +130,7 @@ for %%f in (%glsl%*.frag) do (
 
 @rem single-texture fragment, depth-fragment
 
-"%cl%" -S frag -V -o "%tmpf%" %glsl%gen_frag.tmpl -DUSE_ATEST -DUSE_DF
+"%cl%" -S frag -V -o "%tmpf%" %glsl%gen_frag.tmpl -DUSE_CLX_IDENT -DUSE_ATEST -DUSE_DF
 "%bh%" "%tmpf%" %outf% frag_tx0_df
 
 

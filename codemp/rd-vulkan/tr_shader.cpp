@@ -3855,7 +3855,7 @@ shader_t *FinishShader( void )
 	hasLightmapStage = qfalse;
 	colorBlend = qfalse;
 	depthMask = qfalse;
-	fogCollapse = qtrue;
+	fogCollapse = qfalse;
 
 	//
 	// set sky stuff appropriate
@@ -4140,6 +4140,12 @@ shader_t *FinishShader( void )
 		shader.fogPass = FP_LE;
 	}
 
+#ifdef USE_FOG_COLLAPSE
+	if ( vk.maxBoundDescriptorSets >= 6 && !(shader.contentFlags & CONTENTS_FOG) && shader.fogPass != FP_NONE ) {
+		fogCollapse = qtrue;
+	}
+#endif
+
 	shader.tessFlags = TESS_XYZ;
 	stages[0].tessFlags = TESS_RGBA0 | TESS_ST0;
 
@@ -4338,7 +4344,7 @@ shader_t *FinishShader( void )
 					}
 					break;
 				}
-			}
+			} // switch mtEnv3 / mtEnv
 
 			for (env_mask = 0, n = 0; n < pStage->numTexBundles; n++) {
 				if (pStage->bundle[n].numTexMods) {
@@ -4389,23 +4395,30 @@ shader_t *FinishShader( void )
 	}
 
 #ifdef USE_FOG_COLLAPSE
-	// single-stage, combined fog pipelines for world surfaces
-	//if (vk.maxBoundDescriptorSets >= 6 && stage == 1 && tr.mapLoading && !(shader.contentFlags & CONTENTS_FOG)) {
-	if (vk.maxBoundDescriptorSets >= 6 && stage == 1 && tr.mapLoading && !(shader.contentFlags & CONTENTS_FOG) && fogCollapse) {
+	// single-stage, combined fog pipelines
+	if ( stage == 1 && fogCollapse) {
 		Vk_Pipeline_Def def;
-		Vk_Pipeline_Def def_mirror;
-
+		
 		shaderStage_t *pStage = &stages[0];
 
 		vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
-		vk_get_pipeline_def(pStage->vk_mirror_pipeline[0], &def_mirror);
 
-		def.fog_stage = 1;
-		def_mirror.fog_stage = 1;
-		pStage->vk_pipeline[1] = vk_find_pipeline_ext(0, &def, qfalse);
-		pStage->vk_mirror_pipeline[1] = vk_find_pipeline_ext(0, &def_mirror, qfalse);
+		if ( def.shader_type >= TYPE_GENERIC_BEGIN && def.shader_type <= TYPE_GENERIC_END ) {
+			Vk_Pipeline_Def def_mirror;
+			vk_get_pipeline_def(pStage->vk_mirror_pipeline[0], &def_mirror);
 
-		shader.fogCollapse = qtrue;
+			def.fog_stage = 1;
+			def_mirror.fog_stage = 1;
+			def.acff = pStage->bundle[0].adjustColorsForFog;
+			def_mirror.acff = pStage->bundle[0].adjustColorsForFog;
+
+			pStage->vk_pipeline[1] = vk_find_pipeline_ext(0, &def, qfalse);
+			pStage->vk_mirror_pipeline[1] = vk_find_pipeline_ext(0, &def_mirror, qfalse);
+
+			pStage->bundle[0].adjustColorsForFog = ACFF_NONE; // will be handled in shader from now
+
+			shader.fogCollapse = qtrue;
+		}
 		//stages[0].adjustColorsForFog = ACFF_NONE;
 	}
 #endif // USE_FOG_COLLAPSE

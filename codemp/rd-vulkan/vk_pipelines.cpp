@@ -192,6 +192,7 @@ static void vk_push_vertex_input_binding_attribute( const Vk_Pipeline_Def *def )
             vk_push_attr( 0, 0, VK_FORMAT_R32G32B32A32_SFLOAT );
             break;
 
+        case TYPE_SINGLE_TEXTURE_DF:
         case TYPE_SINGLE_TEXTURE_IDENTITY:
         case TYPE_SINGLE_TEXTURE_FIXED_COLOR:
             vk_push_bind( 0, sizeof( vec4_t ) );					// xyz array
@@ -201,7 +202,6 @@ static void vk_push_vertex_input_binding_attribute( const Vk_Pipeline_Def *def )
             break;
 
         case TYPE_SINGLE_TEXTURE:
-        case TYPE_SINGLE_TEXTURE_DF:
             vk_push_bind( 0, sizeof( vec4_t ) );					// xyz array
             vk_push_bind( 1, sizeof( color4ub_t ) );				// color array
             vk_push_bind( 2, sizeof( vec2_t ) );					// st0 array
@@ -528,8 +528,9 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         int32_t discard_mode;
         float   identity_color;
         float   identity_alpha;
+        int32_t acff;
     } frag_spec_data; 
-    VkSpecializationMapEntry spec_entries[11];
+    VkSpecializationMapEntry spec_entries[12];
     VkSpecializationInfo frag_spec_info;
     VkBool32 alphaToCoverage = VK_FALSE;
     unsigned int atest_bits;
@@ -550,7 +551,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
 
         case TYPE_SINGLE_TEXTURE_DF:
             state_bits |= GLS_DEPTHMASK_TRUE;
-            vs_module = &vk.shaders.vert.gen[sh][0][0][0][0];
+            vs_module = &vk.shaders.vert.ident1[0][0][0];
             fs_module = &vk.shaders.frag.gen0_df;
             break;
 
@@ -865,6 +866,12 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     frag_spec_data.identity_color = ((float)def->color.rgb) / 255.0;
 	frag_spec_data.identity_alpha = ((float)def->color.alpha) / 255.0;
 
+	if ( def->fog_stage ) {
+		frag_spec_data.acff = def->acff;
+	} else {
+		frag_spec_data.acff = 0;
+	}
+
 	//
 	// vertex module specialization data
 	//
@@ -924,8 +931,11 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     spec_entries[10].offset = offsetof(struct FragSpecData, identity_alpha);
     spec_entries[10].size = sizeof(frag_spec_data.identity_alpha);
 
+    spec_entries[11].constantID = 10;
+    spec_entries[11].offset = offsetof(struct FragSpecData, acff);
+    spec_entries[11].size = sizeof(frag_spec_data.acff);
 
-    frag_spec_info.mapEntryCount = 10;
+    frag_spec_info.mapEntryCount = 11;
     frag_spec_info.pMapEntries = spec_entries + 1;
     frag_spec_info.dataSize = sizeof( frag_spec_data );
     frag_spec_info.pData = &frag_spec_data;
