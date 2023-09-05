@@ -1399,6 +1399,7 @@ typedef struct trGlobals_s {
 	int						numDrawSurfCmds;
 	drawSurfsCommand_t		*drawSurfCmd;
 	int						lastRenderCommand;
+	int						numFogs; // read before parsing shaders
 
 	vec4_t					*fastskyColor;
 } trGlobals_t;

@@ -1889,6 +1889,20 @@ static	void R_LoadPlanes( const lump_t *l, world_t &worldData ) {
 
 /*
 =================
+R_PreLoadFogs
+=================
+*/
+static void R_PreLoadFogs( const lump_t *l ) {
+	if ( l->filelen % sizeof( dfog_t ) ) {
+		tr.numFogs = 0;
+	} else {
+		tr.numFogs = l->filelen / sizeof( dfog_t );
+	}
+}
+
+
+/*
+=================
 R_LoadFogs
 
 =================
@@ -2330,6 +2344,7 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 
 	// load into heap
 	R_LoadShaders( &header->lumps[LUMP_SHADERS], worldData );
+	R_PreLoadFogs( &header->lumps[LUMP_FOGS] );
 	R_LoadLightmaps( &header->lumps[LUMP_LIGHTMAPS], &header->lumps[LUMP_SURFACES], worldData );
 	R_LoadPlanes (&header->lumps[LUMP_PLANES], worldData);
 	R_LoadFogs( &header->lumps[LUMP_FOGS], &header->lumps[LUMP_BRUSHES], &header->lumps[LUMP_BRUSHSIDES], worldData, index );

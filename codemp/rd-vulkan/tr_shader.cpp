@@ -4143,6 +4143,54 @@ shader_t *FinishShader( void )
 #ifdef USE_FOG_COLLAPSE
 	if ( vk.maxBoundDescriptorSets >= 6 && !(shader.contentFlags & CONTENTS_FOG) && shader.fogPass != FP_NONE ) {
 		fogCollapse = qtrue;
+		if ( stage == 1 ) {
+			// we can always fog-collapse single-stage shaders
+		} else {
+			if ( tr.numFogs ) {
+				// check for (un)acceptable blend modes
+				for ( i = 0; i < stage; i++ ) {
+					const uint32_t blendBits = stages[i].stateBits & GLS_BLEND_BITS;
+					switch ( blendBits & GLS_SRCBLEND_BITS ) {
+					case GLS_SRCBLEND_DST_COLOR:
+					case GLS_SRCBLEND_ONE_MINUS_DST_COLOR:
+					case GLS_SRCBLEND_DST_ALPHA:
+					case GLS_SRCBLEND_ONE_MINUS_DST_ALPHA:
+						fogCollapse = qfalse;
+						break;
+					}
+					switch ( blendBits & GLS_DSTBLEND_BITS ) {
+						case GLS_DSTBLEND_DST_ALPHA:
+						case GLS_DSTBLEND_ONE_MINUS_DST_ALPHA:
+						fogCollapse = qfalse;
+						break;
+					}
+				}
+				if ( fogCollapse ) {
+					for ( i = 1; i < stage; i++ ) {
+						const uint32_t blendBits = stages[i].stateBits & GLS_BLEND_BITS;
+						if ( blendBits == (GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA) || blendBits == (GLS_SRCBLEND_ONE || GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA) ) {
+							if ( stages[i].bundle[0].adjustColorsForFog == ACFF_NONE ) {
+								fogCollapse = qfalse;
+								break;
+							}
+						}
+					}
+				}
+				if ( fogCollapse ) {
+					// correct add mode
+					for ( i = 1; i < stage; i++ ) {
+						const uint32_t blendBits = stages[i].stateBits & GLS_BLEND_BITS;
+						if ( blendBits == (GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE) ) {
+							stages[i].bundle[0].adjustColorsForFog = ACFF_MODULATE_RGBA;
+						}
+					}
+				}
+			}
+		}
+	}
+	if ( tr.numFogs == 0 ) {
+		// if there is no fogs - assume that we can apply all color optimizations without any restrictions
+		fogCollapse = qtrue;
 	}
 #endif
 
@@ -4167,7 +4215,6 @@ shader_t *FinishShader( void )
 	{
 		// create pipelines for each shader stage
 		Vk_Pipeline_Def def;
-		Vk_Shader_Type	stype;
 
 		Com_Memset(&def, 0, sizeof( def ) );
 		def.face_culling = shader.cullType;
@@ -4236,7 +4283,7 @@ shader_t *FinishShader( void )
 				case GL_MODULATE:
 					pStage->tessFlags = TESS_RGBA0 | TESS_ST0 | TESS_ST1;
 					def.shader_type = TYPE_MULTI_TEXTURE_MUL2;
-					if ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) {
+					if ( ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) || fogCollapse ) {
 						if ( pStage->bundle[0].rgbGen == CGEN_IDENTITY && pStage->bundle[1].rgbGen == CGEN_IDENTITY ) {
 							if ( pStage->bundle[1].alphaGen == AGEN_SKIP && pStage->bundle[0].alphaGen == AGEN_SKIP ) {
 								pStage->tessFlags = TESS_ST0 | TESS_ST1;
@@ -4256,7 +4303,7 @@ shader_t *FinishShader( void )
 				case GL_ADD:
 					pStage->tessFlags = TESS_RGBA0 | TESS_ST0 | TESS_ST1;
 					def.shader_type = TYPE_MULTI_TEXTURE_ADD2_1_1;
-					if ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) {
+					if ( ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) || fogCollapse ) {
 						if ( pStage->bundle[0].rgbGen == CGEN_IDENTITY && pStage->bundle[1].rgbGen == CGEN_IDENTITY ) {
 							if ( pStage->bundle[0].alphaGen == AGEN_SKIP && pStage->bundle[1].alphaGen == AGEN_SKIP ) {
 								pStage->tessFlags = TESS_ST0 | TESS_ST1;
@@ -4276,7 +4323,7 @@ shader_t *FinishShader( void )
 				case GL_ADD_NONIDENTITY:
 					pStage->tessFlags = TESS_RGBA0 | TESS_ST0 | TESS_ST1;
 					def.shader_type = TYPE_MULTI_TEXTURE_ADD2;
-					if ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) {
+					if ( ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE && pStage->bundle[1].adjustColorsForFog == ACFF_NONE ) || fogCollapse ) {
 						if ( pStage->bundle[0].rgbGen == CGEN_IDENTITY && pStage->bundle[1].rgbGen == CGEN_IDENTITY ) {
 							if ( pStage->bundle[0].alphaGen == AGEN_SKIP && pStage->bundle[1].alphaGen == AGEN_SKIP ) {
 								pStage->tessFlags = TESS_ST0 | TESS_ST1;
@@ -4326,7 +4373,7 @@ shader_t *FinishShader( void )
 				default:
 					pStage->tessFlags = TESS_RGBA0 | TESS_ST0;
 					def.shader_type = TYPE_SINGLE_TEXTURE;
-					if ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE ) {
+					if ( pStage->bundle[0].adjustColorsForFog == ACFF_NONE || fogCollapse ) {
 						if ( pStage->bundle[0].rgbGen == CGEN_IDENTITY ) {
 							if ( pStage->bundle[0].alphaGen == AGEN_SKIP ) {
 								pStage->tessFlags = TESS_ST0;
@@ -4372,56 +4419,48 @@ shader_t *FinishShader( void )
 				def.face_culling = CT_TWO_SIDED;
 			}
 
-			stype = def.shader_type;
 			def.mirror = qfalse;
 			pStage->vk_pipeline[0] = vk_find_pipeline_ext(0, &def, qtrue);
-			if (pStage->depthFragment) {
-				def.shader_type = TYPE_SINGLE_TEXTURE_DF;
-				pStage->vk_pipeline_df = vk_find_pipeline_ext(0, &def, qtrue);
-				def.shader_type = stype;
-			}
-
 			def.mirror = qtrue;
 			pStage->vk_mirror_pipeline[0] = vk_find_pipeline_ext(0, &def, qfalse);
-			if (pStage->depthFragment) {
+
+			if ( pStage->depthFragment ) {
+				def.mirror = qfalse;
 				def.shader_type = TYPE_SINGLE_TEXTURE_DF;
-				pStage->vk_mirror_pipeline_df = vk_find_pipeline_ext(0, &def, qfalse);
-				def.shader_type = stype;
+				pStage->vk_pipeline_df = vk_find_pipeline_ext( 0, &def, qtrue );
+				def.mirror = qtrue;
+				def.shader_type = TYPE_SINGLE_TEXTURE_DF;
+				pStage->vk_mirror_pipeline_df = vk_find_pipeline_ext( 0, &def, qfalse );
 			}
 
 			// this will be a copy of the vk_pipeline[0] but with faceculling disabled
 			pStage->vk_2d_pipeline = NULL;
-		}
-	}
+		
 
 #ifdef USE_FOG_COLLAPSE
-	// single-stage, combined fog pipelines
-	if ( stage == 1 && fogCollapse) {
-		Vk_Pipeline_Def def;
-		
-		shaderStage_t *pStage = &stages[0];
+			// single-stage, combined fog pipelines
+			if ( fogCollapse && tr.numFogs > 0 ) {
+				Vk_Pipeline_Def def;
+				Vk_Pipeline_Def def_mirror;
 
-		vk_get_pipeline_def(pStage->vk_pipeline[0], &def);
+				vk_get_pipeline_def( pStage->vk_pipeline[0], &def );
+				vk_get_pipeline_def( pStage->vk_mirror_pipeline[0], &def_mirror );
 
-		if ( def.shader_type >= TYPE_GENERIC_BEGIN && def.shader_type <= TYPE_GENERIC_END ) {
-			Vk_Pipeline_Def def_mirror;
-			vk_get_pipeline_def(pStage->vk_mirror_pipeline[0], &def_mirror);
+				def.fog_stage = 1;
+				def_mirror.fog_stage = 1;
+				def.acff = pStage->bundle[0].adjustColorsForFog;
+				def_mirror.acff = pStage->bundle[0].adjustColorsForFog;
 
-			def.fog_stage = 1;
-			def_mirror.fog_stage = 1;
-			def.acff = pStage->bundle[0].adjustColorsForFog;
-			def_mirror.acff = pStage->bundle[0].adjustColorsForFog;
+				pStage->vk_pipeline[1] = vk_find_pipeline_ext( 0, &def, qfalse );
+				pStage->vk_mirror_pipeline[1] = vk_find_pipeline_ext( 0, &def_mirror, qfalse );
 
-			pStage->vk_pipeline[1] = vk_find_pipeline_ext(0, &def, qfalse);
-			pStage->vk_mirror_pipeline[1] = vk_find_pipeline_ext(0, &def_mirror, qfalse);
+				pStage->bundle[0].adjustColorsForFog = ACFF_NONE; // will be handled in shader from now
 
-			pStage->bundle[0].adjustColorsForFog = ACFF_NONE; // will be handled in shader from now
-
-			shader.fogCollapse = qtrue;
-		}
-		//stages[0].adjustColorsForFog = ACFF_NONE;
-	}
+				shader.fogCollapse = qtrue;
+			}
 #endif // USE_FOG_COLLAPSE
+		}
+	}
 
 #ifdef USE_PMLIGHT
 	FindLightingStages();
