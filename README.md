@@ -3,7 +3,7 @@
 
 This fork focuses on the jaPRO integration and Client Engine modifications.
 
-If you have any suggestions or would like to submit a bug report, please post them in [issues](https://github.com/eternalcodes/EternalJK/issues).
+If you have any suggestions or would like to submit a bug report, please post them in [issues](https://github.com/JKSunny/EternalJK/issues).
 
 [![Website](https://img.shields.io/badge/website-japro-brightgreen.svg)](http://playja.pro) [![Fork](https://img.shields.io/badge/repository-japro%20game%20library-blue.svg)](https://github.com/videoP/jaPRO)
 
@@ -18,14 +18,18 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 Installing and running EternalJK:
 
-1. [Download the latest release](https://github.com/eternalcodes/EternalJK/releases).
+1. [Download the latest release](https://github.com/JKSunny/EternalJK/releases).
 2. Extract the file into the Jedi Academy `GameData` folder. For Steam users, this will be in `<Steam Folder>/steamapps/common/Jedi Academy/GameData/`.
 3. Run eternaljk.x86.exe (Rename to jamp.exe for better steam support)
+
+#### How to enable vulkan 
+1. Open up the console by pressing <kbd>~ Tilde</kbd> key
+2. Type "/cl_renderer rd-vulkan; vid_restart" and hit enter
 
 ## For Developers
 
 ### Contributing to EternalJK
-* [Fork](https://github.com/eternalcodes/EternalJK/fork) the EternalJK project on GitHub
+* [Fork](https://github.com/JKSunny/EternalJK/fork) the EternalJK project on GitHub
 * Create a new branch on your fork and make your changes
 * Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to upstream (eternaljk/master)
 
