@@ -116,9 +116,6 @@ else()
 		set(Architecture "arm64")
 		add_definitions(-DPNG_ARM_NEON_OPT=0)
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
-	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
-		set(Architecture "arm64")
-	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
 		set(X86 ON)
@@ -204,7 +201,7 @@ if(MSVC)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /EHsc /arch:SSE2")
 
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:SSE2")
-
+	
 	# Configure MSVC Runtime
 	include(MSVCRuntime)
 	if(NOT DEFINED MSVC_RUNTIME)
@@ -247,7 +244,7 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 	
 	# enable support for multithreading
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-
+	
 	if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
