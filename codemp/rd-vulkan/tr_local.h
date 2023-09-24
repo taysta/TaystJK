@@ -487,6 +487,7 @@ typedef struct textureBundle_s {
 	qboolean		isScreenMap;
 
 	int				videoMapHandle;
+	bool			glow;
 } textureBundle_t;
 
 
@@ -514,7 +515,6 @@ typedef struct shaderStage_s {
 
 	// Whether this object emits a glow or not.
 	bool			glow;
-
 
 	uint32_t		vk_pipeline[2];
 	uint32_t		vk_2d_pipeline;
@@ -1296,6 +1296,7 @@ typedef struct trGlobals_s {
 	int						frameSceneNum;		// zeroed at RE_BeginFrame
 
 	qboolean				worldMapLoaded;
+	qboolean				worldInternalLightmapping; // qtrue indicates lightmap atlasing
 	world_t					*world;
 	char					worldDir[MAX_QPATH];// ie: maps/tim_dm2 (copy of world_t::name sans extension but still includes the path)
 
@@ -1321,7 +1322,10 @@ typedef struct trGlobals_s {
 	shader_t				*sunShader;
 
 	int						numLightmaps;
-	image_t					*lightmaps[MAX_LIGHTMAPS];
+	image_t					**lightmaps;
+
+	int						lightmapAtlasSize[2];
+	int						lightmapsPerAtlasSide[2];
 
 	trRefEntity_t			*currentEntity;
 	trRefEntity_t			worldEntity;		// point currentEntity at this when rendering world
@@ -1395,6 +1399,7 @@ typedef struct trGlobals_s {
 	int						numDrawSurfCmds;
 	drawSurfsCommand_t		*drawSurfCmd;
 	int						lastRenderCommand;
+	int						numFogs; // read before parsing shaders
 
 	vec4_t					*fastskyColor;
 } trGlobals_t;
@@ -1518,6 +1523,7 @@ extern cvar_t	*r_ext_texture_filter_anisotropic;
 extern cvar_t	*r_environmentMapping;
 
 extern cvar_t	*r_DynamicGlow;
+extern cvar_t	*r_DynamicGlowAllStages;
 extern cvar_t	*r_DynamicGlowPasses;
 extern cvar_t	*r_DynamicGlowDelta;
 extern cvar_t	*r_DynamicGlowIntensity;
