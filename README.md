@@ -13,11 +13,11 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## Upstream Contributors 
 
-rd-vulkan:
+EternalJK-Vulkan:
 * [Sunny](https://github.com/JKSunny)
 
 EternalJK:
-* [Eternal](https://github.com/eternalcodes/EternalJK))
+* [Eternal](https://github.com/eternalcodes/EternalJK)
 
 OpenJK:
 * [OpenJK-Maintainers](https://github.com/eternalcodes/EternalJK)
