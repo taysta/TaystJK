@@ -722,7 +722,7 @@ gentity_t *SelectRandomFurthestSpawnPoint ( vec3_t avoidPoint, vec3_t origin, ve
 		&& team != TEAM_FREE
 		&& team != TEAM_SPECTATOR )
 	{
-		char *classname = NULL;
+		const char *classname = NULL;
 		if ( team == TEAM_RED )
 		{
 			classname = "info_player_start_red";
@@ -832,7 +832,7 @@ gentity_t *SelectDuelSpawnPoint( int team, vec3_t avoidPoint, vec3_t origin, vec
 	float		list_dist[MAX_SPAWN_POINTS];
 	gentity_t	*list_spot[MAX_SPAWN_POINTS];
 	int			numSpots, rnd, i, j;
-	char		*spotName;
+	const char	*spotName;
 
 	if (team == DUELTEAM_LONE)
 	{

@@ -284,7 +284,7 @@ static void SV_MapRestart_f( void ) {
 	}
 
 	// check for changes in variables that can't just be restarted
-	// check for maxclients change 
+	// check for maxclients change
 	if ( sv_maxclients->modified || sv_gametype->modified ) { // why does it do this? especially for maxclients.. seems useless?
 		char	mapname[MAX_QPATH];
 
@@ -1576,14 +1576,14 @@ void SV_WriteEmptyMessageWithMetadata(int lastClientCommand, fileHandle_t f, con
 	entityState_t	nullstate;
 	char* s;
 
-	
+
 	MSG_Init(&buf, bufData, sizeof(bufData));
 	MSG_Bitstream(&buf);
 	// NOTE, MRE: all server->client messages now acknowledge
 	MSG_WriteLong(&buf, lastClientCommand);
 	MSG_WriteByte(&buf, svc_EOF);
 
-	// Normal demo readers will quit here. For all intents and purposes this demo message is over. But we're gonna put the metadata here now. Since it comes after svc_EOF, nobody will ever be bothered by it 
+	// Normal demo readers will quit here. For all intents and purposes this demo message is over. But we're gonna put the metadata here now. Since it comes after svc_EOF, nobody will ever be bothered by it
 	// but we can read it if we want to.
 	constexpr int metaMarkerLength = sizeof(postEOFMetadataMarker)-1;
 	// This is how the demo huffman operates. Worst case a byte can take almost 2 bytes to save, from what I understand. When reading past the end, we need to detect if we SHOULD read past the end.
@@ -1803,9 +1803,9 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 		// Go through manually set metadata and add it.
 		for (auto it = demoMetaData[cl - svs.clients].begin(); it != demoMetaData[cl - svs.clients].end(); it++) {
 			if (it->first != "wr" && it->first != "ost" && it->first != "prso") { // Can't overwrite default parameters (writer, original start time, pre-record start offset)
-				
+
 				ssMeta << ",\"" << it->first << "\":"; // JSON Key
-				
+
 				// Check if value is number
 				bool isNumber = true;
 				for (int i = 0; i < it->second.size(); i++) {
@@ -2026,13 +2026,13 @@ void SV_BeginAutoRecordDemos() {
 				}
 			}
 
-			if (humans) { //mm.. stop demos of only bots being started when map_restart calls this 
+			if (humans) { //mm.. stop demos of only bots being started when map_restart calls this
 				for ( client_t *client = svs.clients; client - svs.clients < sv_maxclients->integer; client++ ) {
 					if ( client->state == CS_ACTIVE && !client->demo.demorecording ) {
 						if ( client->netchan.remoteAddress.type == NA_BOT && !Q_stricmp(client->name, "RECORDER") ) { //Only record a bot named RECORDER who is in spectate
 
 							//client->gentity->playerState->fd.forcePowersActive
-							//client->gentity->r.broadcastClients 
+							//client->gentity->r.broadcastClients
 
 							//client->gentity->playerState->
 
@@ -2223,7 +2223,7 @@ static void SV_DemoMeta_f(void) {
 // Clear metadata for demos of a particular client
 static void SV_DemoClearMeta_f(void) {
 	client_t* cl;
-	
+
 	if (!svs.clients) {
 		Com_Printf("Can't clear demo metadata, svs.clients is null\n");
 		return;
@@ -2247,7 +2247,7 @@ static void SV_DemoClearMeta_f(void) {
 // Careful with overusage: This will force generation of new keyframes & non-delta snaps
 static void SV_DemoClearPreRecord_f(void) {
 	client_t* cl;
-	
+
 	if (!svs.clients) {
 		Com_Printf("Can't clear demo pre-record, svs.clients is null\n");
 		return;

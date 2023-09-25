@@ -428,9 +428,9 @@ void SV_SendMapChange(void)
 		{
 			if (svs.clients[i].state >= CS_CONNECTED)
 			{
-				if ( svs.clients[i].netchan.remoteAddress.type != NA_BOT 
+				if ( svs.clients[i].netchan.remoteAddress.type != NA_BOT
 #ifdef DEDICATED
-					|| svs.clients[i].demo.demorecording 
+					|| svs.clients[i].demo.demorecording
 #endif
 					)
 				{

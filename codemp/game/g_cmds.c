@@ -49,24 +49,28 @@ DeathmatchScoreboardMessage
 ==================
 */
 void DeathmatchScoreboardMessage( gentity_t *ent ) {
-	char		entry[1024];
-	char		string[1400];
-	int			stringlength;
+	char		entry[256];
+	char		string[MAX_STRING_CHARS-1];
+	int			stringlength, prefix;
 	int			i, j;
 	gclient_t	*cl;
 	int			numSorted, scoreFlags, accuracy, perfect;
 
 	// send the latest information on all clients
-	string[0] = 0;
+	string[0] = '\0';
 	stringlength = 0;
 	scoreFlags = 0;
 
 	numSorted = level.numConnectedClients;
 
+	// This is dumb that we are capping to 20 clients but support 32 in server
 	if (numSorted > MAX_CLIENT_SCORE_SEND)
 	{
 		numSorted = MAX_CLIENT_SCORE_SEND;
 	}
+
+	// estimate prefix length to avoid oversize of final string
+	prefix = Com_sprintf( entry, sizeof(entry), "scores %i %i %i", level.teamScores[TEAM_RED], level.teamScores[TEAM_BLUE], level.numConnectedClients );
 
 	for (i=0 ; i < numSorted ; i++) {
 		int		ping;
@@ -93,27 +97,27 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 //JAPRO - Serverside - Scoreboard Deaths - Start
 		if (ent->client->pers.isJAPRO == qtrue)
 		{
-			Com_sprintf (entry, sizeof(entry),
-				" %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i", 
-				level.sortedClients[i], 
-				cl->ps.persistant[PERS_SCORE], 
-				ping, 
+			j = Com_sprintf (entry, sizeof(entry),
+				" %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i",
+				level.sortedClients[i],
+				cl->ps.persistant[PERS_SCORE],
+				ping,
 				(level.time - cl->pers.enterTime)/60000,
 				scoreFlags,
 				g_entities[level.sortedClients[i]].s.powerups,
-				accuracy, 
+				accuracy,
 				cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
 				cl->ps.persistant[PERS_EXCELLENT_COUNT],
-				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT], 
-				cl->ps.persistant[PERS_DEFEND_COUNT], 
-				cl->ps.persistant[PERS_ASSIST_COUNT], 
+				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT],
+				cl->ps.persistant[PERS_DEFEND_COUNT],
+				cl->ps.persistant[PERS_ASSIST_COUNT],
 				perfect,
 				cl->ps.persistant[PERS_CAPTURES],
 				cl->ps.persistant[PERS_KILLED]);
 		}
 		else
 		{
-			Com_sprintf (entry, sizeof(entry),
+			j = Com_sprintf (entry, sizeof(entry),
 				" %i %i %i %i %i %i %i %i %i %i %i %i %i %i",
 				level.sortedClients[i],
 				cl->ps.persistant[PERS_SCORE],
@@ -121,27 +125,24 @@ void DeathmatchScoreboardMessage( gentity_t *ent ) {
 				(level.time - cl->pers.enterTime)/60000,
 				scoreFlags,
 				g_entities[level.sortedClients[i]].s.powerups,
-				accuracy, 
+				accuracy,
 				cl->ps.persistant[PERS_IMPRESSIVE_COUNT],
 				cl->ps.persistant[PERS_EXCELLENT_COUNT],
-				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT], 
-				cl->ps.persistant[PERS_DEFEND_COUNT], 
-				cl->ps.persistant[PERS_ASSIST_COUNT], 
+				cl->ps.persistant[PERS_GAUNTLET_FRAG_COUNT],
+				cl->ps.persistant[PERS_DEFEND_COUNT],
+				cl->ps.persistant[PERS_ASSIST_COUNT],
 				perfect,
 				cl->ps.persistant[PERS_CAPTURES]);
 		}
 //JAPRO - Serverside - Scoreboard Deaths - End
-		j = strlen(entry);
-		if (stringlength + j > 1022)
+		if (stringlength + j + prefix >= sizeof(string))
 			break;
-		strcpy (string + stringlength, entry);
+
+		strcpy( string + stringlength, entry );
 		stringlength += j;
 	}
 
-	//still want to know the total # of clients
-	i = level.numConnectedClients;
-
-	trap->SendServerCommand( ent-g_entities, va("scores %i %i %i%s", i,
+	trap->SendServerCommand( ent-g_entities, va("scores %i %i %i%s", level.numConnectedClients,
 		level.teamScores[TEAM_RED], level.teamScores[TEAM_BLUE],
 		string ) );
 }
@@ -268,7 +269,7 @@ Returns a player number for either a number or name string
 Returns -1 if invalid
 ==================
 */
-int JP_ClientNumberFromString(gentity_t *to, const char *s) 
+int JP_ClientNumberFromString(gentity_t *to, const char *s)
 {
 	gclient_t	*cl;
 	int			idnum, i, match = -1;
@@ -321,7 +322,7 @@ int JP_ClientNumberFromString(gentity_t *to, const char *s)
 		return idnum;
 	}
 
-	if (s[0] == '3' && (s[1] >= '0' && s[1] <= '1' && strlen(s) == 2)) 
+	if (s[0] == '3' && (s[1] >= '0' && s[1] <= '1' && strlen(s) == 2))
 	{
 		idnum = atoi( s );
 		cl = &level.clients[idnum];
@@ -331,7 +332,7 @@ int JP_ClientNumberFromString(gentity_t *to, const char *s)
 		}
 		return idnum;
 	}
-	
+
 
 
 
@@ -343,11 +344,11 @@ int JP_ClientNumberFromString(gentity_t *to, const char *s)
 		}
 		SanitizeString2( cl->pers.netname, n2 );
 
-		for (i=0 ; i < level.numConnectedClients ; i++) 
+		for (i=0 ; i < level.numConnectedClients ; i++)
 		{
 			cl=&level.clients[level.sortedClients[i]];
 			SanitizeString2( cl->pers.netname, n2 );
-			if (strstr(n2, s2)) 
+			if (strstr(n2, s2))
 			{
 				if(match != -1)
 				{ //found more than one match
@@ -441,7 +442,7 @@ static QINLINE qboolean ClientIgnoreAll(const int selfID) {
 qboolean G_AdminUsableOn(gclient_t *ourClient, gclient_t *theirClient, unsigned int adminCmd) {
 	if (!ourClient|| !theirClient)
 		return qfalse;
-	if ((theirClient->sess.accountFlags & adminCmd) && ourClient != theirClient) //He has that cmd so... 
+	if ((theirClient->sess.accountFlags & adminCmd) && ourClient != theirClient) //He has that cmd so...
 		return qfalse;
 	return qtrue;
 }
@@ -833,8 +834,8 @@ void Cmd_Noclip_f( gentity_t *ent ) {
 
 			trap->Argv(1, client, sizeof(client));
 			clientid = JP_ClientNumberFromString(ent, client);
-			if (clientid == -1 || clientid == -2)  
-				return; 
+			if (clientid == -1 || clientid == -2)
+				return;
 			target = &g_entities[clientid];
 			if (!target->client || target->client->ps.m_iVehicleNum)
 				return;
@@ -1065,17 +1066,17 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 	}
 
 	if ( client->sess.sessionTeam == TEAM_RED ) {
-		if (client->sess.raceMode) 
+		if (client->sess.raceMode)
 			trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEREDTEAM")) );
 		else
 			trap->SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEREDTEAM")) );
 	} else if ( client->sess.sessionTeam == TEAM_BLUE ) {
-		if (client->sess.raceMode) 
+		if (client->sess.raceMode)
 			trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEBLUETEAM")));
 		else
 			trap->SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEBLUETEAM")));
 	} else if ( client->sess.sessionTeam == TEAM_SPECTATOR && oldTeam != TEAM_SPECTATOR ) {
-		if (client->sess.raceMode) 
+		if (client->sess.raceMode)
 			trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHESPECTATORS")));
 		else
 			trap->SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHESPECTATORS")));
@@ -1100,7 +1101,7 @@ void BroadcastTeamChange( gclient_t *client, int oldTeam )
 		}
 		else
 		{
-			if (client->sess.raceMode) 
+			if (client->sess.raceMode)
 				trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEBATTLE")));
 			else
 				trap->SendServerCommand( -1, va("cp \"%s" S_COLOR_WHITE " %s\n\"", client->pers.netname, G_GetStringEdString("MP_SVGAME", "JOINEDTHEBATTLE")));
@@ -2269,13 +2270,13 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		//G_LogPrintf( "sayclan: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
-			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ", 
+			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 			locMsg = location;
 		}
 		else
 		{
-			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ", 
+			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		}
 		color = COLOR_RED;
@@ -2284,13 +2285,13 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		//G_LogPrintf( "sayadmin: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
-			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ", 
+			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 			locMsg = location;
 		}
 		else
 		{
-			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ", 
+			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		}
 		color = COLOR_YELLOW;
@@ -2857,7 +2858,7 @@ void Cmd_AmMapList_f(gentity_t *ent)
 			sortedMaps[i] = mapname;//String_Alloc(mapname);
 			mapname += len + 1;
 		}
-	
+
 		qsort(sortedMaps, numMaps, sizeof(sortedMaps[0]), compcstr);
 		Q_strncpyz(buf, "   ", sizeof(buf));
 
@@ -3138,11 +3139,11 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 		trap->SendServerCommand( ent-g_entities, va( "print \"%s\n\"", G_GetStringEdString( "MP_SVGAME", "NOVOTE" ) ) );
 		return;
 	}
-	
+
 	if ((g_tweakVote.integer & TV_MAPLOADTIMEOUT) && (level.startTime > (level.time - 1000*30))) { //Dont let a vote be called within 30sec of mapload ever
 		trap->SendServerCommand( ent-g_entities, "print \"You are not allowed to callvote within 30 seconds of map load.\n\"" );//print to wait X more minutes..seconds?
 		return;
-	} //fuck this stupid thing.. why does it work on 1 server but not the other..	
+	} //fuck this stupid thing.. why does it work on 1 server but not the other..
 
 	if ((g_fullAdminLevel.integer & JAPRO_ACCOUNTFLAG_A_CALLVOTE) || (g_juniorAdminLevel.integer & JAPRO_ACCOUNTFLAG_A_CALLVOTE)) { //Admin only voting mode.. idk
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_CALLVOTE, qfalse, qfalse, "callVote"))
@@ -3310,7 +3311,7 @@ validVote:
 	if (g_tweakVote.integer & TV_MAPCHANGEVOTEDELAY) {
 		if (!Q_stricmp(arg1, "map"))
 			level.voteExecuteDelay = vote->voteDelay ? g_voteDelay.integer : 0;
-		else 
+		else
 			level.voteExecuteDelay = vote->voteDelay ? 3000 : 0;
 	}
 	else
@@ -3363,7 +3364,7 @@ validVote:
 	}
 
 	trap->SetConfigstring( CS_VOTE_TIME,	va( "%i", level.voteTime ) );
-	//trap->SetConfigstring( CS_VOTE_STRING,	level.voteDisplayString );	
+	//trap->SetConfigstring( CS_VOTE_STRING,	level.voteDisplayString );
 	trap->SetConfigstring( CS_VOTE_STRING,	va("%s", level.voteDisplayString) );	 //dunno why this has to be done here..
 
 	trap->SetConfigstring( CS_VOTE_YES,		va( "%i", level.voteYes ) );
@@ -3449,7 +3450,7 @@ void Cmd_Vote_f( gentity_t *ent ) {
 	} else {
 		level.voteNo++;
 		ent->client->pers.vote = 2;
-		trap->SetConfigstring( CS_VOTE_NO, va("%i", level.voteNo ) );	
+		trap->SetConfigstring( CS_VOTE_NO, va("%i", level.voteNo ) );
 		if (g_tweakVote.integer & TV_SHOW_VOTES)
 			trap->SendServerCommand( -1, va("print \"%s^7 voted no\n\"", ent->client->pers.netname) );
 		else
@@ -4222,7 +4223,7 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 
 	if (level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL || level.gametype >= GT_TEAM)
 	{ //rather pointless in this mode..
-		if (dueltype == 0 || dueltype == 1) 
+		if (dueltype == 0 || dueltype == 1)
 			trap->SendServerCommand( ent-g_entities, va("print \"%s\n\"", G_GetStringEdString("MP_SVGAME", "NODUEL_GAMETYPE")) );
 		else
 			trap->SendServerCommand(ent-g_entities, "print \"This gametype does not support gun dueling.\n\"");
@@ -4290,10 +4291,10 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 		ent->client->ps.forceHandExtendTime = level.time + 1000; //Moved this up here
 
 //JAPRO - Serverside - Fullforce Duels + Duel Messages - Start
-		if (challenged->client->ps.duelIndex == ent->s.number && (challenged->client->ps.duelTime + 2000) >= level.time && 
+		if (challenged->client->ps.duelIndex == ent->s.number && (challenged->client->ps.duelTime + 2000) >= level.time &&
 			(
-			((dueltypes[challenged->client->ps.clientNum] == dueltype) && (dueltype == 0 || dueltype == 1)) 
-			|| 
+			((dueltypes[challenged->client->ps.clientNum] == dueltype) && (dueltype == 0 || dueltype == 1))
+			||
 			(dueltypes[challenged->client->ps.clientNum] != 0 && (dueltypes[challenged->client->ps.clientNum] != 1) && dueltype > 1)
 			))
 		{
@@ -4337,10 +4338,10 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Gun)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					break;
 			}
-						
+
 			G_SetAnim(ent, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_STAND1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
 			G_SetAnim(challenged, &ent->client->pers.cmd, SETANIM_BOTH, BOTH_STAND1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0);
-					
+
 			if ( ent->client->ps.saberHolstered < 2 )
 			{
 				if (ent->client->saber[0].soundOff){
@@ -4493,7 +4494,7 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 
 		ent->client->ps.duelIndex = challenged->s.number;
 		ent->client->ps.duelTime = level.time + 2000;//Is this where the freeze comes from?
-		if (dueltype == 0 || dueltype == 1) 
+		if (dueltype == 0 || dueltype == 1)
 			dueltypes[ent->client->ps.clientNum] = dueltype;//JAPRO - Serverside - Fullforce Duels
 		else if (!ent->client->ps.duelInProgress)
 			dueltypes[ent->client->ps.clientNum] = dueltype;
@@ -4759,9 +4760,9 @@ void Cmd_Saber_f(gentity_t *ent)
 		return;
 	}
 
-	if (level.time - ent->client->ps.footstepTime < 750 
-		|| level.time - ent->client->ps.forceHandExtendTime < 750 
-		|| ent->client->ps.saberMove != LS_READY 
+	if (level.time - ent->client->ps.footstepTime < 750
+		|| level.time - ent->client->ps.forceHandExtendTime < 750
+		|| ent->client->ps.saberMove != LS_READY
 		|| ent->client->ps.saberInFlight) {
 		trap->SendServerCommand( ent-g_entities, "print \"You must be idle to use this command (saber).\n\"" );
 		return;
@@ -4837,7 +4838,7 @@ void Cmd_Ignore_f(gentity_t *ent)
 			const int targetID = JP_ClientNumberFromString(ent, netname);
 			if (targetID == clientNum) {
 				trap->SendServerCommand(clientNum, "print \"Cannot ignore self\n\"");
-			} 
+			}
 			else if (targetID >= 0) {
 				trap->SendServerCommand(clientNum, va(ClientIgnore(clientNum, targetID) ?  "print \"Ignored %s\n\"" : "print \"Unignored %s\n\"", g_entities[targetID].client->pers.netname));
 			}
@@ -4850,13 +4851,13 @@ void Cmd_Ignore_f(gentity_t *ent)
 
 void Cmd_Clanpass_f(gentity_t *ent)
 {
-	char   pass[MAX_STRING_CHARS]; 
+	char   pass[MAX_STRING_CHARS];
 
 	trap->Argv(1, pass, sizeof(pass)); //Password
 
 	if (trap->Argc() == 1) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: clanPass <password>\n\"" ); 
-		return; 
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: clanPass <password>\n\"" );
+		return;
 	}
 	if (trap->Argc() == 2) {
 		Q_strncpyz( ent->client->sess.clanpass, pass, sizeof(ent->client->sess.clanpass) );
@@ -4865,13 +4866,13 @@ void Cmd_Clanpass_f(gentity_t *ent)
 
 void Cmd_SayTeamMod_f(gentity_t *ent)//clanpass
 {
-	char   type[MAX_STRING_CHARS]; 
+	char   type[MAX_STRING_CHARS];
 
 	trap->Argv(1, type, sizeof(type)); //Type
 
 	if (trap->Argc() == 1) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: say_team_mod <normal, clan, or admin>\n\"" ); 
-		return; 
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: say_team_mod <normal, clan, or admin>\n\"" );
+		return;
 	}
 	if (trap->Argc() == 2) {
 		if (!Q_stricmp(type, "normal"))
@@ -4980,9 +4981,9 @@ void Cmd_Amlogout_f(gentity_t *ent)
 	}
 
 	if (found)
-		trap->SendServerCommand( ent-g_entities, "print \"You are no longer an admin.\n\"");        
+		trap->SendServerCommand( ent-g_entities, "print \"You are no longer an admin.\n\"");
 	else
-		trap->SendServerCommand( ent-g_entities, "print \"You are not logged in as an admin!\n\"");       
+		trap->SendServerCommand( ent-g_entities, "print \"You are not logged in as an admin!\n\"");
 
 }
 //[JAPRO - Serverside - All - Amlogout Function - End]
@@ -5013,7 +5014,7 @@ void Cmd_Amlockteam_f(gentity_t *ent)
 		}
 
 		trap->Argv( 1, teamname, sizeof( teamname ) );
-				
+
 		if (!Q_stricmp(teamname, "red") || !Q_stricmp( teamname, "r"))
 		{
 			if (level.isLockedred == qfalse)
@@ -5090,21 +5091,21 @@ Cmd_Amforceteam_f
 */
 void Cmd_Amforceteam_f(gentity_t *ent)
 {
-		char arg[MAX_NETNAME]; 
+		char arg[MAX_NETNAME];
 		char teamname[MAX_TEAMNAME];
 		int  clientid = 0;//stfu compiler
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_FORCETEAM, qfalse, qfalse, "amForceTeam"))
 			return;
 
-		if (trap->Argc() != 3) 
-        { 
-            trap->SendServerCommand( ent-g_entities, "print \"Usage: amForceTeam <client> <team>\n\"" ); 
-            return; 
+		if (trap->Argc() != 3)
+        {
+            trap->SendServerCommand( ent-g_entities, "print \"Usage: amForceTeam <client> <team>\n\"" );
+            return;
         }
 
 		if (level.gametype >= GT_TEAM || level.gametype == GT_FFA)
-		{	
+		{
 			qboolean everyone = qfalse;
 			gclient_t *client;
 			int i;
@@ -5119,9 +5120,9 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 				clientid = JP_ClientNumberFromString(ent, arg);
 
 				if (clientid == -1 || clientid == -2)//No clients or multiple clients are a match
-				{ 
-					return; 
-				} 
+				{
+					return;
+				}
 
 				if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_FORCETEAM)) {
 					if (g_entities[clientid].client->ps.clientNum != ent->client->ps.clientNum)
@@ -5215,7 +5216,7 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 			}
 			else
 			{
-				trap->SendServerCommand( ent-g_entities, "print \"Usage: amForceTeam <client> <team>\n\"" ); 
+				trap->SendServerCommand( ent-g_entities, "print \"Usage: amForceTeam <client> <team>\n\"" );
 			}
 		}
 		else
@@ -5237,30 +5238,30 @@ void Cmd_Ampsay_f(gentity_t *ent)
 {
 		int pos = 0;
 		char real_msg[MAX_STRING_CHARS];
-		char *msg = ConcatArgs(1); 
+		char *msg = ConcatArgs(1);
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_CSPRINT, qfalse, qfalse, "amPsay"))
 			return;
 
 		while(*msg)
-		{ 
+		{
 			if(msg[0] == '\\' && msg[1] == 'n')
-			{ 
-				msg++;           // \n is 2 chars, so increase by one here. (one, cuz it's increased down there again...) 
-				real_msg[pos++] = '\n';  // put in a real \n 
-			} 
-			else 
-			{ 
-				  real_msg[pos++] = *msg;  // otherwise just copy 
-			} 
-			msg++;                         // increase the msg pointer 
+			{
+				msg++;           // \n is 2 chars, so increase by one here. (one, cuz it's increased down there again...)
+				real_msg[pos++] = '\n';  // put in a real \n
+			}
+			else
+			{
+				  real_msg[pos++] = *msg;  // otherwise just copy
+			}
+			msg++;                         // increase the msg pointer
 		}
 		real_msg[pos] = 0;
 
-		if (trap->Argc() < 2) 
-		{ 
+		if (trap->Argc() < 2)
+		{
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amPsay <message>.\n\"" );
-			return; 
+			return;
 		}
 
 		trap->SendServerCommand(-1, va("cp \"%s\"", real_msg));
@@ -5279,16 +5280,16 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 {
 		gentity_t * targetplayer;
 		int i;
-		int clientid = -1; 
-		char   arg[MAX_NETNAME]; 
+		int clientid = -1;
+		char   arg[MAX_NETNAME];
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_FREEZE, qfalse, qfalse, "amFreeze"))
 			return;
 
-		if (trap->Argc() != 2) 
-        { 
+		if (trap->Argc() != 2)
+        {
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amFreeze <client> or /amFreeze +all or /amFreeze -all.\n\"" );
-			return; 
+			return;
 		}
 
 		trap->Argv(1, arg, sizeof(arg));
@@ -5304,11 +5305,11 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 						continue;
 					if (!targetplayer->client->pers.amfreeze)
 						targetplayer->client->pers.amfreeze = qtrue;
-						G_ScreenShake(targetplayer->client->ps.origin, &g_entities[i],  3.0f, 2000, qtrue); 
+						G_ScreenShake(targetplayer->client->ps.origin, &g_entities[i],  3.0f, 2000, qtrue);
 						G_Sound(targetplayer, CHAN_AUTO, G_SoundIndex("sound/ambience/thunder_close1"));
 				}
 			}
-			trap->SendServerCommand( -1, "cp \"You have all been frozen\n\"" ); 
+			trap->SendServerCommand( -1, "cp \"You have all been frozen\n\"" );
 			return;
 		}
 		else if(Q_stricmp(arg, "-all") == 0)
@@ -5323,14 +5324,14 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 						continue;
 					if (targetplayer->client->pers.amfreeze)
 					{
-						targetplayer->client->pers.amfreeze = qfalse; 
+						targetplayer->client->pers.amfreeze = qfalse;
 						targetplayer->client->ps.saberCanThrow = qtrue;
 						targetplayer->client->ps.forceRestricted = qfalse;
 						targetplayer->takedamage = qtrue;
 					}
 				}
 			}
-			trap->SendServerCommand( -1, "cp \"You have all been unfrozen\n\"" ); 
+			trap->SendServerCommand( -1, "cp \"You have all been unfrozen\n\"" );
 			return;
 		}
 		else
@@ -5338,10 +5339,10 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 			clientid = JP_ClientNumberFromString(ent, arg);
 		}
 
-        if (clientid == -1 || clientid == -2) 
-        { 
-            return; 
-        } 
+        if (clientid == -1 || clientid == -2)
+        {
+            return;
+        }
 
 		if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_FREEZE)) {
 			if (g_entities[clientid].client->ps.clientNum != ent->client->ps.clientNum)
@@ -5357,17 +5358,17 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 
 		if (g_entities[clientid].client->pers.amfreeze)
 		{
-			g_entities[clientid].client->pers.amfreeze = qfalse; 
+			g_entities[clientid].client->pers.amfreeze = qfalse;
 			g_entities[clientid].client->ps.saberCanThrow = qtrue;
 			g_entities[clientid].client->ps.forceRestricted = qfalse;
 			g_entities[clientid].takedamage = qtrue;
-			trap->SendServerCommand(clientid, "cp \"You have been unfrozen\n\""); 
+			trap->SendServerCommand(clientid, "cp \"You have been unfrozen\n\"");
 		}
 		else
 		{
 			g_entities[clientid].client->pers.amfreeze = qtrue;
-			trap->SendServerCommand(clientid, "cp \"You have been frozen\n\""); 
-			G_ScreenShake(g_entities[clientid].client->ps.origin, &g_entities[clientid], 3.0f, 2000, qtrue); 
+			trap->SendServerCommand(clientid, "cp \"You have been frozen\n\"");
+			G_ScreenShake(g_entities[clientid].client->ps.origin, &g_entities[clientid], 3.0f, 2000, qtrue);
 			G_Sound(&g_entities[clientid], CHAN_AUTO, G_SoundIndex("sound/ambience/thunder_close1"));
 		 }
 	  }
@@ -5382,25 +5383,25 @@ Cmd_Amkick_f
 */
 void Cmd_Amkick_f(gentity_t *ent)
 {
-		int clientid = -1; 
-		char   arg[MAX_NETNAME]; 
+		int clientid = -1;
+		char   arg[MAX_NETNAME];
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINKICK, qfalse, qfalse, "amKick"))
 			return;
 
-		if (trap->Argc() != 2) 
-        { 
+		if (trap->Argc() != 2)
+        {
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amKick <client>.\n\"" );
-            return; 
-        } 
+            return;
+        }
 
-		trap->Argv(1, arg, sizeof(arg)); 
+		trap->Argv(1, arg, sizeof(arg));
         clientid = JP_ClientNumberFromString(ent, arg);
 
-        if (clientid == -1 || clientid == -2)  
-        { 
-			return; 
-        } 
+        if (clientid == -1 || clientid == -2)
+        {
+			return;
+        }
 
 		if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_ADMINKICK)) {
 			if (g_entities[clientid].client->ps.clientNum != ent->client->ps.clientNum)
@@ -5423,25 +5424,25 @@ Cmd_Amban_f
 */
 void Cmd_Amban_f(gentity_t *ent)
 {
-		int clientid = -1; 
-		char   arg[MAX_NETNAME]; 
+		int clientid = -1;
+		char   arg[MAX_NETNAME];
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINBAN, qfalse, qfalse, "amBan"))
 			return;
 
-		if (trap->Argc() != 2) 
-        { 
+		if (trap->Argc() != 2)
+        {
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amBan <client>.\n\"" );
-            return; 
-        } 
+            return;
+        }
 
-		trap->Argv(1, arg, sizeof(arg)); 
+		trap->Argv(1, arg, sizeof(arg));
         clientid = JP_ClientNumberFromString(ent, arg);
 
-        if (clientid == -1 || clientid == -2)  
-        { 
-			return; 
-        } 
+        if (clientid == -1 || clientid == -2)
+        {
+			return;
+        }
 
 		if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_ADMINBAN)) {
 			if (g_entities[clientid].client->ps.clientNum != ent->client->ps.clientNum)
@@ -5464,17 +5465,17 @@ Cmd_Ammap_f
 */
 void Cmd_Ammap_f(gentity_t *ent)
 {
-		char    gametype[2]; 
+		char    gametype[2];
 		int		gtype;
 		char    mapname[MAX_MAPNAMELENGTH];
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_CHANGEMAP, qfalse, qfalse, "amMap"))
 			return;
 
-		if (trap->Argc() != 3) 
-		{ 
+		if (trap->Argc() != 3)
+		{
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amMap <gametype #> <map>.\n\"" );
-			return; 
+			return;
 		}
 
 		trap->Argv(1, gametype, sizeof(gametype));
@@ -5491,7 +5492,7 @@ void Cmd_Ammap_f(gentity_t *ent)
 			trap->SendServerCommand( ent-g_entities, "print \"Invalid gametype.\n\"" );
 			return;
 		}
-	
+
 		gtype = atoi(gametype);
 
 		{
@@ -5516,7 +5517,7 @@ void Cmd_Ammap_f(gentity_t *ent)
 					}
 					possibleMapName += len + 1;
 				}
-			}	
+			}
 			if (!found)
 				return;
 		}
@@ -5539,15 +5540,15 @@ Cmd_Amvstr_f
 */
 void Cmd_Amvstr_f(gentity_t *ent)
 {
-		char   arg[MAX_STRING_CHARS], buf[MAX_CVAR_VALUE_STRING];; 
+		char   arg[MAX_STRING_CHARS], buf[MAX_CVAR_VALUE_STRING];;
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_VSTR, qfalse, qfalse, "amVstr"))
 			return;
 
-		if (trap->Argc() != 2) 
-		{ 
+		if (trap->Argc() != 2)
+		{
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amVstr <vstr>.\n\"" );
-			return; 
+			return;
 		}
 
 		trap->Argv(1, arg, sizeof(arg));
@@ -5609,23 +5610,23 @@ Cmd_Amgrantadmin_f
 void Cmd_Amgrantadmin_f(gentity_t *ent)
 {
 		char arg[MAX_NETNAME];
-		int clientid = -1; 
+		int clientid = -1;
 		int args = trap->Argc();
 
 		if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_GRANTADMIN, qfalse, qfalse, "amGrantAdmin"))
 			return;
 
-		if (args != 2 && args != 3) 
-		{ 
+		if (args != 2 && args != 3)
+		{
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amGrantAdmin <client>.\n\"" );
-			return; 
+			return;
 		}
 
-		trap->Argv(1, arg, sizeof(arg)); 
+		trap->Argv(1, arg, sizeof(arg));
 		clientid = JP_ClientNumberFromString(ent, arg);
 
-		if (clientid == -1 || clientid == -2)  
-			return;  
+		if (clientid == -1 || clientid == -2)
+			return;
 
 		if (!g_entities[clientid].client)
 			return;
@@ -5650,7 +5651,7 @@ void Cmd_Amgrantadmin_f(gentity_t *ent)
 				trap->SendServerCommand( clientid, "print \"You have been granted Junior admin privileges.\n\"" );
 		}
 		else if (args == 3) {
-			trap->Argv(2, arg, sizeof(arg)); 
+			trap->Argv(2, arg, sizeof(arg));
 			if (!Q_stricmp(arg, "none")) {
 				int i;
 				for (i=0; i<=JAPRO_MAX_ADMIN_BITS; i++) {//Loop this 0-22 is admin flags.
@@ -5728,17 +5729,17 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "engage_FullForceDuel ");
 		Q_strcat(buf, sizeof(buf), "engage_gunDuel ");
 	}
-	if (g_allowSaberSwitch.integer) 
+	if (g_allowSaberSwitch.integer)
 		Q_strcat(buf, sizeof(buf), "saber ");
-	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_rabbit.integer)) 
+	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_rabbit.integer))
 		Q_strcat(buf, sizeof(buf), "throwFlag ");
-	if (g_allowTargetLaser.integer) 
+	if (g_allowTargetLaser.integer)
 		Q_strcat(buf, sizeof(buf), "+button15 (target laser) ");
 	if ((level.gametype >= GT_TEAM) && g_allowSpotting.integer)
 		Q_strcat(buf, sizeof(buf), "spot ");
-	if (g_allowGrapple.integer) 
+	if (g_allowGrapple.integer)
 		Q_strcat(buf, sizeof(buf), "+button12 (grapple) ");
-	if (g_tweakJetpack.integer) 
+	if (g_tweakJetpack.integer)
 		Q_strcat(buf, sizeof(buf), "double jump (jetpack) ");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
@@ -5750,7 +5751,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "rWorst ");
 		Q_strcat(buf, sizeof(buf), "rHardest ");
 		Q_strcat(buf, sizeof(buf), "rPopular ");
-		if (g_raceMode.integer > 1) 
+		if (g_raceMode.integer > 1)
 			Q_strcat(buf, sizeof(buf), "race ");
 		Q_strcat(buf, sizeof(buf), "jump ");
 		Q_strcat(buf, sizeof(buf), "move ");
@@ -5774,47 +5775,47 @@ void Cmd_Aminfo_f(gentity_t *ent)
 
 	Q_strncpyz(buf, "   ^3Emote commands: ", sizeof(buf));
 	if (!(g_emotesDisable.integer & (1 << E_BEG)))
-		Q_strcat(buf, sizeof(buf), "amBeg "); 
+		Q_strcat(buf, sizeof(buf), "amBeg ");
 	if (!(g_emotesDisable.integer & (1 << E_BEG2)))
-		Q_strcat(buf, sizeof(buf), "amBeg2 "); 
+		Q_strcat(buf, sizeof(buf), "amBeg2 ");
 	if (!(g_emotesDisable.integer & (1 << E_BERNIE)))
-		Q_strcat(buf, sizeof(buf), "amBernie "); 
+		Q_strcat(buf, sizeof(buf), "amBernie ");
 	if (!(g_emotesDisable.integer & (1 << E_BREAKDANCE)))
-		Q_strcat(buf, sizeof(buf), "amBreakdance[2/3/4] "); 
+		Q_strcat(buf, sizeof(buf), "amBreakdance[2/3/4] ");
 	if (!(g_emotesDisable.integer & (1 << E_CHEER)))
-		Q_strcat(buf, sizeof(buf), "amCheer "); 
+		Q_strcat(buf, sizeof(buf), "amCheer ");
 	if (!(g_emotesDisable.integer & (1 << E_COWER)))
-		Q_strcat(buf, sizeof(buf), "amCower "); 
+		Q_strcat(buf, sizeof(buf), "amCower ");
 	if (!(g_emotesDisable.integer & (1 << E_DANCE)))
-		Q_strcat(buf, sizeof(buf), "amDance "); 
+		Q_strcat(buf, sizeof(buf), "amDance ");
 	if (!(g_emotesDisable.integer & (1 << E_HUG)))
-		Q_strcat(buf, sizeof(buf), "amHug "); 
+		Q_strcat(buf, sizeof(buf), "amHug ");
 	if (!(g_emotesDisable.integer & (1 << E_SABERFLIP)))
-		Q_strcat(buf, sizeof(buf), "amFlip "); 
+		Q_strcat(buf, sizeof(buf), "amFlip ");
 	if (!(g_emotesDisable.integer & (1 << E_NOISY)))
-		Q_strcat(buf, sizeof(buf), "amNoisy "); 
+		Q_strcat(buf, sizeof(buf), "amNoisy ");
 	if (!(g_emotesDisable.integer & (1 << E_POINT)))
-		Q_strcat(buf, sizeof(buf), "amPoint "); 
+		Q_strcat(buf, sizeof(buf), "amPoint ");
 	if (!(g_emotesDisable.integer & (1 << E_RAGE)))
-		Q_strcat(buf, sizeof(buf), "amRage "); 
+		Q_strcat(buf, sizeof(buf), "amRage ");
 	if (!(g_emotesDisable.integer & (1 << E_SIGNAL)))
-		Q_strcat(buf, sizeof(buf), "amSignal[2/3/4] "); 
+		Q_strcat(buf, sizeof(buf), "amSignal[2/3/4] ");
 	if (!(g_emotesDisable.integer & (1 << E_SIT)))
-		Q_strcat(buf, sizeof(buf), "amSit[2/3/4/5] "); 
+		Q_strcat(buf, sizeof(buf), "amSit[2/3/4/5] ");
 	if (!(g_emotesDisable.integer & (1 << E_SLAP)))
-		Q_strcat(buf, sizeof(buf), "amSlap "); 
+		Q_strcat(buf, sizeof(buf), "amSlap ");
 	if (!(g_emotesDisable.integer & (1 << E_SLEEP)))
-		Q_strcat(buf, sizeof(buf), "amSleep "); 
+		Q_strcat(buf, sizeof(buf), "amSleep ");
 	if (!(g_emotesDisable.integer & (1 << E_SURRENDER)))
-		Q_strcat(buf, sizeof(buf), "amSurrender "); 
+		Q_strcat(buf, sizeof(buf), "amSurrender ");
 	if (!(g_emotesDisable.integer & (1 << E_SMACK)))
-		Q_strcat(buf, sizeof(buf), "amSmack "); 
+		Q_strcat(buf, sizeof(buf), "amSmack ");
 	if (!(g_emotesDisable.integer & (1 << E_TAUNT)))
-		Q_strcat(buf, sizeof(buf), "amTaunt[2] "); 
+		Q_strcat(buf, sizeof(buf), "amTaunt[2] ");
 	if (!(g_emotesDisable.integer & (1 << E_VICTORY)))
-		Q_strcat(buf, sizeof(buf), "amVictory "); 
+		Q_strcat(buf, sizeof(buf), "amVictory ");
 	if (!(g_emotesDisable.integer & (1 << E_JAWARUN)))
-		Q_strcat(buf, sizeof(buf), "amRun"); 
+		Q_strcat(buf, sizeof(buf), "amRun");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
 	Q_strncpyz(buf, "   ^3Admin commands: ", sizeof(buf));
@@ -5822,47 +5823,47 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "you are not an administrator on this server.\n");
 	else {
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINTELE, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amTele "); 
+			Q_strcat(buf, sizeof(buf), "amTele ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_TELEMARK, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amTeleMark "); 
+			Q_strcat(buf, sizeof(buf), "amTeleMark ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_FREEZE, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amFreeze "); 
+			Q_strcat(buf, sizeof(buf), "amFreeze ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINBAN, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amBan "); 
+			Q_strcat(buf, sizeof(buf), "amBan ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINKICK, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amKick "); 
+			Q_strcat(buf, sizeof(buf), "amKick ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_KILLVOTE, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amKillVote "); 
+			Q_strcat(buf, sizeof(buf), "amKillVote ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_NPC, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "NPC "); 
+			Q_strcat(buf, sizeof(buf), "NPC ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_NOCLIP, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "Noclip "); 
+			Q_strcat(buf, sizeof(buf), "Noclip ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_ADMINTELE, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amTele "); 
+			Q_strcat(buf, sizeof(buf), "amTele ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_GRANTADMIN, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amGrantAdmin "); 
+			Q_strcat(buf, sizeof(buf), "amGrantAdmin ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_CHANGEMAP, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amMap "); 
+			Q_strcat(buf, sizeof(buf), "amMap ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_LISTMAPS, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amListMaps "); 
+			Q_strcat(buf, sizeof(buf), "amListMaps ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_CSPRINT, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amPsay "); 
+			Q_strcat(buf, sizeof(buf), "amPsay ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_FORCETEAM, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amForceTeam "); 
+			Q_strcat(buf, sizeof(buf), "amForceTeam ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_LOOKUP, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amLookup "); 
+			Q_strcat(buf, sizeof(buf), "amLookup ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_VSTR, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amVstr "); 
+			Q_strcat(buf, sizeof(buf), "amVstr ");
 		if (G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_RENAME, qfalse, qfalse, NULL))
-			Q_strcat(buf, sizeof(buf), "amRename "); 
+			Q_strcat(buf, sizeof(buf), "amRename ");
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 		buf[0] = '\0';
 	}
-	
+
 	if (ent->client->pers.isJAPRO)
-		trap->SendServerCommand( ent-g_entities, "print \"   ^2You are using the client plugin recommended by the server.\n\"" ); 
+		trap->SendServerCommand( ent-g_entities, "print \"   ^2You are using the client plugin recommended by the server.\n\"" );
 	else
-		trap->SendServerCommand( ent-g_entities, "print \"   ^1You do not have the client plugin. Download at www.playja.pro\n\"" ); 
+		trap->SendServerCommand( ent-g_entities, "print \"   ^1You do not have the client plugin. Download at www.playja.pro\n\"" );
 
 }
 
@@ -5882,20 +5883,20 @@ static void Cmd_Amlookup_f( gentity_t *ent )
 	if (trap->Argc() != 2) {
 		trap->SendServerCommand( ent-g_entities, "print \"Usage: /amLookup <client>\n\"" );
 		return;
-	}	
+	}
 
 	trap->Argv(1, client, sizeof(client));
 	clientid = JP_ClientNumberFromString(ent, client);
 
-	if (clientid == -1 || clientid == -2)  
-		return; 
+	if (clientid == -1 || clientid == -2)
+		return;
 
 	fLen = trap->FS_Open(PLAYER_LOG, &f, FS_READ);
 	if (!f) {
 		Com_Printf ("ERROR: Couldn't load player logfile %s\n", PLAYER_LOG);
 		return;
 	}
-	
+
 	if (fLen >= 80*1024) {
 		trap->FS_Close(f);
 		Com_Printf ("ERROR: Couldn't load player logfile %s, file is too large\n", PLAYER_LOG);
@@ -5930,7 +5931,7 @@ static void Cmd_Amlookup_f( gentity_t *ent )
 		Q_strncpyz(last, pch, sizeof(last));
     	pch = strtok (NULL, ";\n");
 	}
-	trap->SendServerCommand(ent-g_entities, va("print \"^5 This players IP has used the following names on this server:\n  %s\n\"", msg)); 
+	trap->SendServerCommand(ent-g_entities, va("print \"^5 This players IP has used the following names on this server:\n  %s\n\"", msg));
 }
 
 //Jetpack start
@@ -5947,7 +5948,7 @@ static void Cmd_Jetpack_f(gentity_t *ent)
 		if (ent->client->ps.duelInProgress) {
 			trap->SendServerCommand( ent-g_entities, "print \"Command not allowed in duel. (jetpack).\n\"" );
 		}
-		else 
+		else
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_JETPACK);
 	}
 }
@@ -6032,7 +6033,7 @@ static void Cmd_Spot_f(gentity_t *ent) {
 		if (dist > 8192*8192) // Out of range
 			continue;
 		//
-		
+
 		JP_Trace( &tr, headlevel, NULL, NULL, hit->client->ps.origin, ent->s.number, MASK_SOLID, qfalse, 0, 0 );
 		if (tr.fraction != 1.0) //if not line of sight
 			continue;
@@ -6201,7 +6202,7 @@ void Cmd_Coop_f(gentity_t* ent) { //Should this only show logged in people..?
 			challenged->client->ps.ammo[i] = 999;
 		}
 
-		
+
 	}
 	else { //Print the message asking them to accept
 		trap->SendServerCommand(ent - g_entities, va("print \"You asked %s to co-op\n\"", challenged->client->pers.netname));
@@ -6213,7 +6214,7 @@ void Cmd_Coop_f(gentity_t* ent) { //Should this only show logged in people..?
 	if (!ent->client->ps.duelInProgress)
 		dueltypes[ent->client->ps.clientNum] = dueltype; //Coop
 
-	
+
 }
 #endif
 
@@ -6251,7 +6252,7 @@ void Cmd_Clanwhois_f( gentity_t *ent ) { //Should this only show logged in peopl
 			char strName[MAX_NETNAME] = {0};
 
 			Q_strncpyz(strNum, va("^5%2i^3:", i), sizeof(strNum));
-			//CG_Printf("^5%2d^3: ^7%s\n", i, cl->name); 
+			//CG_Printf("^5%2d^3: ^7%s\n", i, cl->name);
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
 			tmpMsg = va("%-2s ^7%s\n", strNum, strName);
 
@@ -6267,7 +6268,7 @@ void Cmd_Clanwhois_f( gentity_t *ent ) { //Should this only show logged in peopl
 //[JAPRO - Serverside - All - Clanwhois Function - End]
 
 static void Cmd_ModVersion_f(gentity_t *ent) {
-	trap->SendServerCommand(ent-g_entities, va("print \"^5The servers version of the mod was compiled on %s at %s\n\"", __DATE__, __TIME__)); 
+	trap->SendServerCommand(ent-g_entities, va("print \"^5The servers version of the mod was compiled on %s at %s\n\"", __DATE__, __TIME__));
 }
 
 extern qboolean BG_InKnockDown( int anim ); //bg_pmove.c
@@ -6738,7 +6739,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +attack for gravboost, +altattack for speedboost.\n\"");
 			else if (newStyle == MV_BOTCPM)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button14 for strafebot.\n\"");
-			else 
+			else
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated.\n\"");
 		}
 
@@ -6771,7 +6772,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 			if (ent->client->ps.m_iVehicleNum) { //If we are in a vehicle, properly eject from it?
 				if (ourSwoop && ourSwoop->m_pVehicle && ourSwoop->client && ourSwoop->s.NPC_class == CLASS_VEHICLE && ourSwoop->m_pVehicle->m_pVehicleInfo) {//if ourVeh is a vehicle then perform appropriate checks
 					ourSwoop->m_pVehicle->m_pVehicleInfo->Eject( ourSwoop->m_pVehicle, (bgEntity_t *)ent, qtrue );
-				}			
+				}
 			}
 			*/
 			G_LeaveVehicle( ent, qfalse );
@@ -6796,7 +6797,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 			ent->client->ps.ammo[AMMO_DETPACK] = 4;
 		}
 		else {
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_JETPACK); 
+			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] &= ~(1 << HI_JETPACK);
 		}
 		if (newStyle != MV_COOP_JKA) {
 			ent->client->ps.ammo[AMMO_POWERCELL] = 0;
@@ -6809,7 +6810,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 }
 
 void IntegerToRaceName(int style, char* styleString, size_t styleStringSize);
-static void Cmd_JumpChange_f(gentity_t *ent) 
+static void Cmd_JumpChange_f(gentity_t *ent)
 {
 	char jLevel[32];
 	int level;
@@ -6832,7 +6833,7 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 		return;
 	}
 
-	if (ent->client->sess.movementStyle == MV_COOP_JKA || ent->client->sess.movementStyle == MV_Q3 || ent->client->sess.movementStyle == MV_CPM || ent->client->sess.movementStyle == MV_JETPACK || 
+	if (ent->client->sess.movementStyle == MV_COOP_JKA || ent->client->sess.movementStyle == MV_Q3 || ent->client->sess.movementStyle == MV_CPM || ent->client->sess.movementStyle == MV_JETPACK ||
 		ent->client->sess.movementStyle == MV_WSW || ent->client->sess.movementStyle == MV_BOTCPM || ent->client->sess.movementStyle == MV_SLICK) {
 		char styleString[16];
 		IntegerToRaceName(ent->client->sess.movementStyle, styleString, sizeof(styleString));
@@ -6930,7 +6931,7 @@ static void Cmd_Hide_f(gentity_t *ent)
 
 	if (ent->client->pers.noFollow)
 		trap->SendServerCommand(ent-g_entities, "print \"You can not be spectated now.\n\"");
-	else 
+	else
 		trap->SendServerCommand(ent-g_entities, "print \"You can be spectated now.\n\"");
 }
 
@@ -7091,7 +7092,7 @@ static void Cmd_Practice_f(gentity_t *ent)
 			trap->SendServerCommand(ent-g_entities, "print \"Practice mode enabled: timer reset.\n\"");
 			ResetPlayerTimers(ent, qtrue);
 		}
-		else 
+		else
 			trap->SendServerCommand(ent-g_entities, "print \"Practice mode enabled.\n\"");
 	}
 	else {
@@ -7110,7 +7111,7 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 {
 		if (!ent->client)
 			return;
-		
+
 		if (ent->client && ent->client->ps.duelInProgress && ent->client->pers.lastUserName[0]) {
 			gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
 			if (duelAgainst->client && duelAgainst->client->pers.lastUserName[0]) {
@@ -7124,7 +7125,7 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 
 		/*
 		if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) { //Ehh. bandaid fix to stop a lot of potential abuse.. droptoground fixes this?
-			trap->SendServerCommand( ent-g_entities, "print \"You must be ingame to use this command (amTelemark).\n\"" ); 
+			trap->SendServerCommand( ent-g_entities, "print \"You must be ingame to use this command (amTelemark).\n\"" );
 			return;
 		}
 		*/
@@ -7134,7 +7135,7 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 			ent->client->pers.telemarkOrigin[2] += 58;
 		ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
 		ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
-		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"", 
+		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"",
 			(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
@@ -7157,7 +7158,7 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 		return;
 	}
 	if (trap->Argc() == 2)//Amtele to player
-	{ 
+	{
 		char client[MAX_NETNAME];
 		int clientid = -1;
 		vec3_t	angles = {0, 0, 0}, origin;
@@ -7165,8 +7166,8 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 		trap->Argv(1, client, sizeof(client));
 		clientid = JP_ClientNumberFromString(ent, client);
 
-		if (clientid == -1 || clientid == -2)  
-			return; 
+		if (clientid == -1 || clientid == -2)
+			return;
 
 		if (g_entities[clientid].client->pers.noFollow || g_entities[clientid].client->sess.sessionTeam == TEAM_SPECTATOR) {
 			if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_SEEHIDDEN, qfalse, qfalse, NULL))
@@ -7182,7 +7183,7 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 	}
 
 	if (trap->Argc() == 4)
-	{ 
+	{
 		char x[32], y[32], z[32];
 		vec3_t angles = {0, 0, 0}, origin;
 
@@ -7193,7 +7194,7 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 		origin[0] = atoi(x);
 		origin[1] = atoi(y);
 		origin[2] = atoi(z);
-			
+
 		AmTeleportPlayer( ent, origin, angles, qtrue, qtrue, qfalse );
 		return;
 	}
@@ -7241,20 +7242,20 @@ void Cmd_Warp_f(gentity_t *ent)
 	trap->Argv(1, enteredWarpName, sizeof(enteredWarpName));
 
 	for (i = 0;i < MAX_NUM_WARPS; i++) {
-		if (!warpList[i].name[0]) //dis right? 
+		if (!warpList[i].name[0]) //dis right?
 			break;
 		if (!Q_stricmp(enteredWarpName, warpList[i].name)) {
 			warpNum = i;
 			break;
 		}
-	}		
+	}
 	if (warpNum != -1) { //Loda fixme, check if these are not null?
-		origin[0] = warpList[warpNum].x; 
+		origin[0] = warpList[warpNum].x;
 		origin[1] = warpList[warpNum].y;
 		origin[2] = warpList[warpNum].z;
 		angles[YAW] = warpList[warpNum].yaw;
 		AmTeleportPlayer( ent, origin, angles, qtrue, qfalse, qfalse); //Maybe this should not be droptofloor but whatever
-	}	
+	}
 }
 
 
@@ -7288,9 +7289,9 @@ void Cmd_Amtele_f(gentity_t *ent)
 			trap->SendServerCommand( ent-g_entities, "print \"Usage: /amTele or /amTele <client> or /amTele <client> <client> or /amTele <X> <Y> <Z> <YAW> or /amTele <player> <X> <Y> <Z> <YAW>.\n\"" );
 			return;
 		}
-		
+
 		if (trap->Argc() == 1)//Amtele to telemark
-		{ 
+		{
 			if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0)
 			{
 				angles[YAW] = ent->client->pers.telemarkAngle;
@@ -7303,12 +7304,12 @@ void Cmd_Amtele_f(gentity_t *ent)
 		}
 
 		if (trap->Argc() == 2)//Amtele to player
-		{ 
+		{
 			trap->Argv(1, client1, sizeof(client1));
 			clientid1 = JP_ClientNumberFromString(ent, client1);
 
-			if (clientid1 == -1 || clientid1 == -2)  
-				return; 
+			if (clientid1 == -1 || clientid1 == -2)
+				return;
 
 			if (g_entities[clientid1].client->pers.noFollow || g_entities[clientid1].client->sess.sessionTeam == TEAM_SPECTATOR) {
 				if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_SEEHIDDEN, qfalse, qfalse, NULL))
@@ -7323,14 +7324,14 @@ void Cmd_Amtele_f(gentity_t *ent)
 		}
 
 		if (trap->Argc() == 3)//Amtele player to player
-		{ 
+		{
 			trap->Argv(1, client1, sizeof(client1));
 			trap->Argv(2, client2, sizeof(client2));
 			clientid1 = JP_ClientNumberFromString(ent, client1);
 			clientid2 = JP_ClientNumberFromString(ent, client2);
 
-			if (clientid1 == -1 || clientid1 == -2 || clientid2 == -1 || clientid2 == -2)  
-				return; 
+			if (clientid1 == -1 || clientid1 == -2 || clientid2 == -1 || clientid2 == -2)
+				return;
 
 			if (g_entities[clientid2].client->pers.noFollow || g_entities[clientid2].client->sess.sessionTeam == TEAM_SPECTATOR) {
 				if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_SEEHIDDEN, qfalse, qfalse, NULL))
@@ -7355,7 +7356,7 @@ void Cmd_Amtele_f(gentity_t *ent)
 		}
 
 		if (trap->Argc() == 4)//|| trap->Argc() == 5)//Amtele to origin (if no angle specified, default 0?)
-		{ 
+		{
 			trap->Argv(1, x, sizeof(x));
 			trap->Argv(2, y, sizeof(y));
 			trap->Argv(3, z, sizeof(z));
@@ -7369,7 +7370,7 @@ void Cmd_Amtele_f(gentity_t *ent)
 				trap->Argv(4, yaw, sizeof(yaw));
 				angles[YAW] = atoi(yaw);
 			}*/
-			
+
 			AmTeleportPlayer( ent, origin, angles, droptofloor, race, qfalse );
 			return;
 		}
@@ -7391,7 +7392,7 @@ void Cmd_Amtele_f(gentity_t *ent)
 
 				trap->Argv(4, yaw, sizeof(yaw));
 				angles[YAW] = atoi(yaw);
-			
+
 				AmTeleportPlayer( ent, origin, angles, droptofloor, race, qfalse );
 			}
 
@@ -7462,33 +7463,33 @@ void Cmd_Amtele_f(gentity_t *ent)
 //[JAPRO - Serverside - All - Amrename - Start]
 void Cmd_Amrename_f(gentity_t *ent)
 {
-	int		clientid = -1; 
+	int		clientid = -1;
 	char	arg[MAX_STRING_CHARS];
-	char	userinfo[MAX_INFO_STRING]; 
+	char	userinfo[MAX_INFO_STRING];
 
 	if (!ent->client)
 		return;
 
 	if (!G_AdminAllowed(ent, JAPRO_ACCOUNTFLAG_A_RENAME, qfalse, qfalse, "amRename"))
 		return;
-    
+
 	if ( trap->Argc() != 3) {
 		trap->SendServerCommand( ent-g_entities, "print \"Usage: /amRename <client> <newname>.\n\"" );
 		return;
-	} 
-	trap->Argv(1, arg, sizeof(arg)); 
-	
+	}
+	trap->Argv(1, arg, sizeof(arg));
+
 	clientid = JP_ClientNumberFromString(ent, arg);
-	
+
 	if (clientid == -1 || clientid == -2)
 		return;
 
-	trap->Argv(2, arg, sizeof(arg)); 
-	
-	trap->GetUserinfo(clientid, userinfo, sizeof(userinfo)); 
+	trap->Argv(2, arg, sizeof(arg));
+
+	trap->GetUserinfo(clientid, userinfo, sizeof(userinfo));
 	Info_SetValueForKey(userinfo, "name", arg);
-	trap->SetUserinfo(clientid, userinfo); 
-	ClientUserinfoChanged(clientid); 
+	trap->SetUserinfo(clientid, userinfo);
+	ClientUserinfoChanged(clientid);
 	level.clients[clientid].pers.netnameTime = level.time + 5000;
 }
 
@@ -7571,7 +7572,7 @@ void Cmd_Nudge_f(gentity_t *ent)//JAPRO - test entity nudge cmd
 	if ( trap->Argc() != 4) {
 		trap->SendServerCommand( ent-g_entities, "print \"Usage: /nudge <X> <Y> <Z>.\n\"" );
 		return;
-	} 
+	}
 
 	AngleVectors( ent->client->ps.viewangles, forward, NULL, NULL );
 
@@ -7588,7 +7589,7 @@ void Cmd_Nudge_f(gentity_t *ent)//JAPRO - test entity nudge cmd
 		vec3_t oldOrigin, newOrigin;
 
 		//trap->SendServerCommand( ent-g_entities, "print \"Nudging.\n\"" );
-		trap->Argv(1, nudgeXStr, sizeof(nudgeXStr)); 
+		trap->Argv(1, nudgeXStr, sizeof(nudgeXStr));
 		trap->Argv(2, nudgeYStr, sizeof(nudgeYStr));
 		trap->Argv(3, nudgeZStr, sizeof(nudgeZStr));
 
@@ -7597,7 +7598,7 @@ void Cmd_Nudge_f(gentity_t *ent)//JAPRO - test entity nudge cmd
 		nudgeZ = atoi(nudgeZStr);
 
 		//trap->Print("Nudging %i %i %i\n", nudgeX, nudgeY, nudgeZ);
-		
+
 		oldOrigin[0] = ent->s.pos.trBase[0];
 		oldOrigin[1] = ent->s.pos.trBase[1];
 		oldOrigin[2] = ent->s.pos.trBase[2];
@@ -7704,7 +7705,7 @@ static qboolean LoadEnts(char *fileName) {
 			}
 		}
 	}
-	
+
 	fLen = trap->FS_Open(fileName, &fh, FS_READ);
 
 	if (!fh) {
@@ -7716,7 +7717,7 @@ static qboolean LoadEnts(char *fileName) {
 		Com_Printf ("Couldn't load entities from %s, file is too large\n", fileName);
 		return qfalse;
 	}
-	
+
 	trap->FS_Read(buf, fLen, fh);
 	buf[fLen] = '%';
 	trap->FS_Close(fh);
@@ -7797,7 +7798,7 @@ static void Cmd_TestBSP_f(gentity_t *self) {
 	// don't support rotation any other way
 	ent->s.angles[0] = 0.0;
 	ent->s.angles[2] = 0.0;
-	
+
 	G_SpawnString("bspmodel", "t1_inter", &out);
 
 	ent->s.eFlags = EF_PERMANENT;
@@ -7857,7 +7858,7 @@ static void Cmd_TestBSP_f(gentity_t *self) {
 	Com_Printf("Spot 1\n");
 
 	newEnt->classname = "misc_bsp";
-	newEnt->model = "t1_inter";	
+	newEnt->model = "t1_inter";
 
 
 	Com_Printf("Spot 2\n");
@@ -7908,7 +7909,7 @@ static void Cmd_MapEnts_f(gentity_t *self)
 		if (LoadEnts(fileName))
 			trap->SendServerCommand( self-g_entities, "print \"Entities loaded\n\"" );
 	}
-	else 
+	else
 		trap->SendServerCommand( self-g_entities, "print \"Usage: mapEnts <save/load> <name>\n\"" );
 }
 #endif
@@ -7966,7 +7967,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	if (d_saberBoxTraceSize.integer)
 		Q_strcat(buf, sizeof(buf), va("   ^5Increased saber hitbox size by: ^2%i\n", d_saberBoxTraceSize.integer));
 	if (d_saberInterpolate.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Saber interpolate\n");	
+		Q_strcat(buf, sizeof(buf), "   ^5Saber interpolate\n");
 	if (g_duelStartArmor.integer)
 		Q_strcat(buf, sizeof(buf), va("   ^5Duelers start with ^2%i ^5armor\n", g_duelStartArmor.integer));
 	if (g_duelStartHealth.integer && g_duelStartHealth.integer != 100)
@@ -7976,7 +7977,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	if (!d_saberSPStyleDamage.integer && g_saberTouchDmg.value != 1.0f)
 		Q_strcat(buf, sizeof(buf), va("   ^5Saber touch damage^3: ^2%i\n", g_saberTouchDmg.integer));
 	if (g_saberDmgDelay_Idle.integer != 350)
-		Q_strcat(buf, sizeof(buf), va("   ^5Idle saber damage delay^3: ^2%i\n", g_saberDmgDelay_Idle.integer)); 
+		Q_strcat(buf, sizeof(buf), va("   ^5Idle saber damage delay^3: ^2%i\n", g_saberDmgDelay_Idle.integer));
 	if (g_saberDmgDelay_Wound.integer != 0) //Add dmgdelay_wound print?
 		Q_strcat(buf, sizeof(buf), va("   ^5Saber wound delay^3: ^2%i\n", g_saberDmgDelay_Wound.integer)); //idk what this even is
 	if (g_saberDmgDelay_Hit.integer != 0)
@@ -8159,7 +8160,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	else if (g_fixSlidePhysics.integer > 1)
 		Q_strcat(buf, sizeof(buf), "   ^5Fixed physics for players on slick surfaces\n");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
-	
+
 	//Force changes
 	if (g_forcePowerDisable.integer < (1<<NUM_FORCE_POWERS)) {
 		Q_strncpyz(buf, " ^3Force Changes:\n", sizeof(buf));
@@ -8230,7 +8231,7 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 	if ( level.pause.state != PAUSE_NONE ) { // racers cant hold flag neway
 		return;
 	}
-	
+
 	if (!g_allowFlagThrow.integer)
 		return;
 
@@ -8335,7 +8336,7 @@ void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 		if (cl->pers.netname[0]) {
 			Q_strncpyz(strNum, va("^5%2i^3:", i), sizeof(strNum));
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
-				
+
 			if (g_entities[i].r.svFlags & SVF_BOT) {
 				Q_strncpyz(strRate, "^7Bot", sizeof(strRate)); //dont fucking know why it needs 4 spaces
 				Q_strncpyz(strSnaps, "^7Bot", sizeof(strSnaps));
@@ -8384,7 +8385,7 @@ void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 			}
 
 			tmpMsg = va( "%-2s%-10s%-12s%-14s%-14s%-11s%-8s^7%s\n", strNum, strRate, strSnaps, strPackets, strTimenudge, strFPS, realFPS, strName);
-								
+
 			if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {
 				trap->SendServerCommand( ent-g_entities, va("print \"%s\"", msg));
 				msg[0] = '\0';
@@ -8577,7 +8578,7 @@ command_t commands[] = {
 
 	{ "login",				Cmd_ACLogin_f,				CMD_NOINTERMISSION },
 	{ "logout",				Cmd_ACLogout_f,				CMD_NOINTERMISSION },
-	
+
 	{ "mapents",			Cmd_MapEnts_f,				CMD_CHEAT|CMD_NOINTERMISSION },
 
 	{ "master",				Cmd_AddMaster_f,			CMD_NOINTERMISSION },

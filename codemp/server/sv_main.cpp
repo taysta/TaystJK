@@ -390,8 +390,9 @@ SVC_RateLimit
 ================
 */
 qboolean SVC_RateLimit( leakyBucket_t *bucket, int burst, int period, int now ) {
+	qboolean	block = qfalse;
 
-    if ( bucket != NULL ) {
+	if ( bucket != NULL ) {
 		int interval = now - bucket->lastTime;
 		int expired = interval / period;
 		int expiredRemainder = interval % period;
@@ -406,12 +407,12 @@ qboolean SVC_RateLimit( leakyBucket_t *bucket, int burst, int period, int now ) 
 
 		if ( bucket->burst < burst ) {
 			bucket->burst++;
-
-			return qfalse;
+		} else {
+			block = qtrue;
 		}
 	}
 
-	return qtrue;
+	return block;
 }
 
 /*
@@ -724,7 +725,7 @@ void SV_ConnectionlessPacket( netadr_t from, msg_t *msg ) {
 	char	*s;
 	char	*c;
 
-	if (sv_maxOOBRateIP->integer && com_dedicated->integer && from.type != NA_LOOPBACK) {
+	if (sv_maxOOBRateIP->integer) {
 		int rate = Com_Clampi(1, 1000, sv_maxOOBRateIP->integer);
 		int period = 1000 / rate;
 		int burst = 10 * rate;
@@ -1150,7 +1151,7 @@ int SV_FrameMsec()
 
 		if (svs.hibernation.enabled)
 			frameMsec = 1000.0f / sv_hibernateFPS->value;
-		else 
+		else
 			frameMsec = 1000.0f / sv_fps->value;
 
 		if(frameMsec < sv.timeResidual)
