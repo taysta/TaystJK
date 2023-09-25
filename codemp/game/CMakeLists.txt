@@ -25,6 +25,7 @@ set(MPGameIncludeDirectories
 	"${MPDir}"
 	"${SharedDir}"
 	"${GSLIncludeDirectory}"
+	"${CMAKE_BINARY_DIR}/shared"
 	)
 if(WIN32)
 	set(MPGameLibraries "winmm")
@@ -167,7 +168,6 @@ set(MPGameFiles ${MPGameFiles} ${MPGameCommonSafeFiles})
 set(MPGameCgameFiles
 	"${MPDir}/cgame/animtable.h"
 	"${MPDir}/cgame/cg_public.h"
-
 	)
 source_group("cgame" FILES ${MPGameCgameFiles})
 set(MPGameFiles ${MPGameFiles} ${MPGameCgameFiles})

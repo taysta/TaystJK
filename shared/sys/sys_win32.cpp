@@ -19,6 +19,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===========================================================================
 */
 
+#include "qcommon/q_version.h"
 #include "sys_local.h"
 #include "sys_loadlib.h"
 #include <direct.h>
@@ -165,7 +166,7 @@ char *Sys_GetCurrentUser( void )
 */
 char *Sys_DefaultHomePath( void )
 {
-#if defined(_PORTABLE_VERSION)
+#if defined(BUILD_PORTABLE)
 	Com_Printf( "Portable install requested, skipping homepath support\n" );
 	return NULL;
 #else
