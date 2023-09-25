@@ -189,7 +189,7 @@ XCVAR_DEF( cg_displayNetSettings,			"125 0 125",NULL,					CVAR_ROM|CVAR_USERINFO
 
 //group timenudge, maxpackets, maxfps into cg_displaynetSettings ?
 XCVAR_DEF( cl_timeNudge,						"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cl_maxPackets,						"125",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cl_maxPackets,						"100",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cjp_client,						"1.4JAPRO",	NULL,					CVAR_USERINFO|CVAR_ROM )
 XCVAR_DEF( cp_clanPwd,							"none",	NULL,					CVAR_USERINFO )
 XCVAR_DEF( cp_sbRGB1,							"0",	NULL,					CVAR_ARCHIVE | CVAR_USERINFO )
@@ -345,7 +345,7 @@ XCVAR_DEF( cg_thirdPersonAngle,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonHorzOffset,			"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonPitchOffset,			"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonVertOffset,			"16",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_thirdPersonRange,					"80",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPersonRange,					"100",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonSpecialCam,			"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_thirdPersonCameraDamp,			"0.3",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonTargetDamp,			"0.5",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
