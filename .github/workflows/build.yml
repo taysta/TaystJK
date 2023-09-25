@@ -259,10 +259,10 @@ jobs:
           mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
 
       - name: Create latest build
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          tag_name: "latest"
           prerelease: false
           title: Latest Build
           files: |
@@ -289,10 +289,10 @@ jobs:
           mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
 
       - name: Create latest build
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest-beta"
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          tag_name: "latest-beta"
           prerelease: true
           title: Beta Build
           files: |
