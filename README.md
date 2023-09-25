@@ -10,13 +10,6 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## For players
 
-Installing and running EternalJK:
-
-### Windows:
-1. [Download the latest release](https://github.com/taysta/TaystJK/releases).
-2. Extract the file into the Jedi Academy `GameData` folder. For Steam users, this will be in `<Steam Folder>/steamapps/common/Jedi Academy/GameData/`.
-3. Run eternaljk.x86.exe (Rename to jamp.exe for better steam support)
-
 ## Maintainers
 * [tayst](https://github.com/taysta)
 
@@ -58,3 +51,4 @@ OpenJK:
 * Fau
 * TomArrow
 * TriForce
+* Alereon
