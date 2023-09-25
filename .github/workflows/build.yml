@@ -254,7 +254,7 @@ jobs:
       - name: Create binary archives
         run: |
           7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r EternalJK-windows-x86_64.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           mv ./EternalJK-linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
           mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
           mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
@@ -265,7 +265,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
           prerelease: false
-          name: Latest Build
+          title: Latest Build
           files: |
             *.zip
             *.tar.gz
@@ -296,7 +296,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest-beta"
           prerelease: true
-          name: Beta Build
+          title: Beta Build
           files: |
             *.zip
             *.tar.gz
