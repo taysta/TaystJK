@@ -61,7 +61,7 @@ if(WIN32)
 	include(InstallRequiredSystemLibraries)
 
 	if(BuildMPEngine)
-		string(REPLACE "/" "\\\\" ICON "${MPDir}/win32/icon.ico")
+		string(REPLACE "." "\\\\" ICON "${MPDir}/win32/icon.ico")
 		set(CPACK_NSIS_CREATE_ICONS_EXTRA
 			"${CPACK_NSIS_CREATE_ICONS_EXTRA}
 			CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Jedi Academy MP.lnk' \\\\

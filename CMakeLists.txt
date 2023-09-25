@@ -90,7 +90,7 @@ endif()
 # Custom CMake Modules needed
 #
 #=============================================================================
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/CMakeModules")
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 #=============================================================================
 #
@@ -248,6 +248,7 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
 		if (X86)
 			# "x86 vm will crash without -mstackrealign since MMX
 			# instructions will be used no matter what and they
