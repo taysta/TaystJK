@@ -264,7 +264,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: "latest"
           prerelease: false
-          title: Latest Build
+          name: Latest Build
           files: |
             *.zip
             *.tar.gz
@@ -294,7 +294,7 @@ jobs:
           token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: "latest-beta"
           prerelease: true
-          title: Beta Build
+          name: Beta Build
           files: |
             *.zip
             *.tar.gz
