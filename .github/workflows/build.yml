@@ -254,6 +254,7 @@ jobs:
       - name: Create binary archives
         run: |
           7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           mv ./EternalJK-linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
           mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
           mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
@@ -284,6 +285,7 @@ jobs:
       - name: Create binary archives
         run: |
           7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r EternalJK-windows-x86_64.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           mv ./EternalJK-linux-x86-Release-Non-Portable/*     ./EternalJK-linux-x86.tar.gz
           mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  ./EternalJK-linux-x86_64.tar.gz
           mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
@@ -309,6 +311,10 @@ jobs:
         include:
           - artifact_dir: EternalJK-windows-x86-Release-Non-Portable/JediAcademy
             artifact_name: EternalJK-windows-x86.zip
+            zip: true
+
+          - artifact_dir: EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy
+            artifact_name: EternalJK-windows-x86_64.zip
             zip: true
 
           - artifact_dir: EternalJK-linux-x86-Release-Non-Portable
