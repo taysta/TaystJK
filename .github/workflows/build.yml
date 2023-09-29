@@ -66,7 +66,7 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
         shell: bash
         run: |
           sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
@@ -85,7 +85,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: EternalJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
           if-no-files-found: error
 
@@ -138,7 +138,7 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
         shell: bash
         run: |
           sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
@@ -160,17 +160,17 @@ jobs:
         shell: bash
         run: |
           if [ ${{ matrix.arch }} == "x86" ]; then
-          chmod +x eternaljk.i386
+          chmod +x taystjk.i386
           else
-          chmod +x eternaljk.${{ matrix.arch }}  
+          chmod +x taystjk.${{ matrix.arch }}  
           fi
-          tar -czvf EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
+          tar -czvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{runner.workspace}}/install/JediAcademy/EternalJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          name: TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{runner.workspace}}/install/JediAcademy/TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
   macos:
@@ -207,7 +207,7 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/EternalJK/codemp/cgame
+        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
         shell: bash
         run: |
           sed -i.bak 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
@@ -229,14 +229,14 @@ jobs:
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
-          tar -czvf EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
+          chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
+          tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ runner.workspace }}/install/JediAcademy/EternalJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ runner.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
   create-latest:
@@ -253,11 +253,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r EternalJK-windows-x86_64.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./EternalJK-linux-x86-Release-Non-Portable/*     EternalJK-linux-x86.tar.gz
-          mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  EternalJK-linux-x86_64.tar.gz
-          mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  EternalJK-macos-x86_64.tar.gz
+          7z a -r TaystJK-windows-x86.zip         ./TaystJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windows-x86_64.zip         ./TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./TaystJK-linux-x86-Release-Non-Portable/*     TaystJK-linux-x86.tar.gz
+          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  TaystJK-linux-x86_64.tar.gz
+          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  TaystJK-macos-x86_64.tar.gz
 
       - name: Create latest build
         uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
@@ -284,11 +284,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r EternalJK-windows-x86.zip         ./EternalJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r EternalJK-windows-x86_64.zip         ./EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./EternalJK-linux-x86-Release-Non-Portable/*     ./EternalJK-linux-x86.tar.gz
-          mv ./EternalJK-linux-x86_64-Release-Non-Portable/*  ./EternalJK-linux-x86_64.tar.gz
-          mv ./EternalJK-macos-x86_64-Release-Non-Portable/*  ./EternalJK-macos-x86_64.tar.gz
+          7z a -r TaystJK-windows-x86.zip         ./TaystJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windows-x86_64.zip         ./TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
+          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
+          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
 
       - name: Create latest build
         uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
@@ -309,24 +309,24 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifact_dir: EternalJK-windows-x86-Release-Non-Portable/JediAcademy
-            artifact_name: EternalJK-windows-x86.zip
+          - artifact_dir: TaystJK-windows-x86-Release-Non-Portable/JediAcademy
+            artifact_name: TaystJK-windows-x86.zip
             zip: true
 
-          - artifact_dir: EternalJK-windows-x86_64-Release-Non-Portable/JediAcademy
-            artifact_name: EternalJK-windows-x86_64.zip
+          - artifact_dir: TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy
+            artifact_name: TaystJK-windows-x86_64.zip
             zip: true
 
-          - artifact_dir: EternalJK-linux-x86-Release-Non-Portable
-            artifact_name: EternalJK-linux-x86.tar.gz
+          - artifact_dir: TaystJK-linux-x86-Release-Non-Portable
+            artifact_name: TaystJK-linux-x86.tar.gz
             zip: false
 
-          - artifact_dir: EternalJK-linux-x86_64-Release-Non-Portable
-            artifact_name: EternalJK-linux-x86_64.tar.gz
+          - artifact_dir: TaystJK-linux-x86_64-Release-Non-Portable
+            artifact_name: TaystJK-linux-x86_64.tar.gz
             zip: false
 
-          - artifact_dir: EternalJK-macos-x86_64-Release-Non-Portable
-            artifact_name: EternalJK-macos-x86_64.tar.gz
+          - artifact_dir: TaystJK-macos-x86_64-Release-Non-Portable
+            artifact_name: TaystJK-macos-x86_64.tar.gz
             zip: false
 
     steps:
