@@ -1016,6 +1016,47 @@ typedef struct clientCheckpoint_s {
 	qboolean isSet;
 } clientCheckpoint_t;
 
+typedef enum
+{
+	ALIGN_LEFT,
+	ALIGN_CENTER,
+	ALIGN_RIGHT,
+}tableAlignment_t;
+
+typedef struct dynCell_s dynCell_t;
+typedef struct dynRow_s dynRow_t;
+typedef struct dynTable_s dynTable_t;
+
+typedef struct dynColumnInfo_s
+{
+	int longestCell;
+	tableAlignment_t alignment;
+}dynColumnInfo_t;
+
+struct dynCell_s 
+{
+	char		*content;		// The amount of columns each row should have.
+	int 			len;		//Mark row as being used if the cells of the row are filled with content.
+	dynCell_t *next;
+};
+
+struct dynRow_s 
+{
+	dynCell_t		*cell;		// The amount of columns each row should have.
+	dynRow_t *next;
+};
+
+struct dynTable_s
+{
+	dynRow_t *row;
+	int totalRows;
+	int totalColumns;
+	int currentColumn;
+	dynRow_t *currentRow;
+	dynCell_t *currentCell;
+	dynColumnInfo_t *columnInfo;
+};
+
 typedef struct cg_s {
 	int			clientFrame;		// incremented each frame
 
@@ -2245,6 +2286,16 @@ void CG_NextInventory_f(void);
 void CG_PrevInventory_f(void);
 void CG_NextForcePower_f(void);
 void CG_PrevForcePower_f(void);
+
+//Dynamic tables
+void dynTable_init(void);
+void *dynTable_malloc(size_t size);
+dynCell_t *dynTable_createCell(const char *content, int cleanLen);
+dynRow_t *dynTable_createRow(void);
+void dynTable_addHeader(const char *headerName, tableAlignment_t mode);
+void dynTable_addCell(const char *content);
+void dynTable_print(void);
+void dynTable_free(void);
 
 //
 // cg_view.c
