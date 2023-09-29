@@ -160,9 +160,9 @@ jobs:
         shell: bash
         run: |
           if [ ${{ matrix.arch }} == "x86" ]; then
-          chmod +x taystjk.i386
+          chmod +x eternaljk.i386
           else
-          chmod +x taystjk.${{ matrix.arch }}  
+          chmod +x eternaljk.${{ matrix.arch }}  
           fi
           tar -czvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
@@ -229,7 +229,7 @@ jobs:
         working-directory: ${{ runner.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
+          chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
