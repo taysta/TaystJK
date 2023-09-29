@@ -2452,7 +2452,11 @@ image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgT
 	{
 		GL_Bind(image);
 
-		if (pic)
+        if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
+            image->flags &= ~(IMGFLAG_PICMIP);
+        }
+
+        if (pic)
 		{
 			Upload32( pic, image->width, image->height, image->type, image->flags,
 				isLightmap, image->internalFormat, &image->uploadWidth,

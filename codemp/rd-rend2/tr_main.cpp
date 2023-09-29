@@ -1019,7 +1019,7 @@ void R_SetupProjectionZ(viewParms_t *dest)
 {
 	float zNear, zFar, depth;
 	
-	zNear   = dest->zNear;
+	zNear   = dest->zNear  * tr.widthRatioCoef;
 	zFar	= dest->zFar;
 
 	depth	= zFar - zNear;

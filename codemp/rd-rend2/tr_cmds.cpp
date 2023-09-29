@@ -627,6 +627,11 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		R_SetColorMappings();
 	}
 
+    if (cl_ratioFix->modified) {
+        R_Set2DRatio();
+        cl_ratioFix->modified = qfalse;
+    }
+
 	// check for errors
 	if ( !r_ignoreGLErrors->integer )
 	{

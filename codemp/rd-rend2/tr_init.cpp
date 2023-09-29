@@ -165,6 +165,7 @@ cvar_t  *r_shadowCascadeZFar;
 cvar_t  *r_shadowCascadeZBias;
 cvar_t	*r_ignoreDstAlpha;
 
+cvar_t	*r_smartpicmip;
 cvar_t	*r_ignoreGLErrors;
 cvar_t	*r_logFile;
 
@@ -172,6 +173,7 @@ cvar_t	*r_texturebits;
 
 cvar_t	*r_drawBuffer;
 cvar_t	*r_lightmap;
+cvar_t	*r_distanceCull;
 cvar_t	*r_vertexLight;
 cvar_t	*r_uiFullScreen;
 cvar_t	*r_shadows;
@@ -272,11 +274,13 @@ cvar_t *r_debugContext;
 cvar_t *r_debugWeather;
 
 cvar_t	*r_aspectCorrectFonts;
+cvar_t	*cl_ratioFix;
 
 extern void	RB_SetGL2D (void);
 static void R_Splash()
 {
 	const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float ratio = (float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth);
 
 	qglViewport( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	qglClearBufferfv(GL_COLOR, 0, black);
@@ -287,6 +291,8 @@ static void R_Splash()
 	GL_Cull(CT_TWO_SIDED);
 
 	image_t *pImage = R_FindImageFile( "menu/splash", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
+    if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f)
+        pImage = R_FindImageFile("menu/splash_16_9", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
 	if (pImage )
 		GL_Bind( pImage );
 
@@ -1387,6 +1393,31 @@ static void R_CaptureFrameData_f()
 	}
 }
 
+void R_RemapSkyShader_f (void) {
+    int num;
+
+    if (ri.Cmd_Argc() != 2 || !strlen(ri.Cmd_Argv(1))) {
+        ri.Printf(PRINT_ALL, "Usage: /remapSky <new>\n");
+        return;
+    }
+
+    for (num = 0; num < tr.numShaders; num++) {
+        if (tr.shaders[num]->isSky)
+        {
+            R_RemapShader(tr.shaders[num]->name, ri.Cmd_Argv(1), NULL);
+        }
+    }
+}
+
+void R_ClearRemaps_f(void) {
+    int num;
+
+    for (num = 0; num < tr.numShaders; num++) {
+        tr.shaders[num]->remappedShader = NULL;
+    }
+}
+
+
 typedef struct consoleCommand_s {
 	const char	*cmd;
 	xcommand_t	func;
@@ -1406,6 +1437,9 @@ static consoleCommand_t	commands[] = {
 	//{ "imagecacheinfo",		RE_RegisterImages_Info_f },
 	{ "modellist",			R_Modellist_f },
 	//{ "modelcacheinfo",		RE_RegisterModels_Info_f },
+    { "r_cleardecals",		RE_ClearDecals },
+    { "remapSky",			R_RemapSkyShader_f },
+    { "clearRemaps",		R_ClearRemaps_f },
 	{ "vbolist",			R_VBOList_f },
 	{ "capframes",			R_CaptureFrameData_f },
 };
@@ -1453,7 +1487,8 @@ void R_Register( void )
 
 	r_picmip = ri.Cvar_Get ("r_picmip", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	ri.Cvar_CheckRange( r_picmip, 0, 16, qtrue );
-	r_roundImagesDown = ri.Cvar_Get ("r_roundImagesDown", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
+    r_smartpicmip						= ri.Cvar_Get( "r_smartpicmip", "1", CVAR_ARCHIVE_ND|CVAR_LATCH, "Applies r_picmip setting to map textures only." );
+    r_roundImagesDown = ri.Cvar_Get ("r_roundImagesDown", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_colorMipLevels = ri.Cvar_Get ("r_colorMipLevels", "0", CVAR_LATCH, "" );
 	r_detailTextures = ri.Cvar_Get( "r_detailtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_texturebits = ri.Cvar_Get( "r_texturebits", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
@@ -1576,7 +1611,9 @@ void R_Register( void )
 	r_drawworld = ri.Cvar_Get ("r_drawworld", "1", CVAR_CHEAT, "" );
 	r_drawfog = ri.Cvar_Get("r_drawfog", "2", CVAR_CHEAT, "");
 	r_lightmap = ri.Cvar_Get ("r_lightmap", "0", 0, "" );
-	r_portalOnly = ri.Cvar_Get ("r_portalOnly", "0", CVAR_CHEAT, "" );
+    r_distanceCull = ri.Cvar_Get( "r_distanceCull", "0", CVAR_ARCHIVE_ND, "" );
+
+    r_portalOnly = ri.Cvar_Get ("r_portalOnly", "0", CVAR_CHEAT, "" );
 
 	r_skipBackEnd = ri.Cvar_Get ("r_skipBackEnd", "0", CVAR_CHEAT, "");
 
@@ -1615,7 +1652,8 @@ void R_Register( void )
 	r_surfaceSprites = ri.Cvar_Get("r_surfaceSprites", "1", CVAR_ARCHIVE, "");
 
 	r_aspectCorrectFonts = ri.Cvar_Get( "r_aspectCorrectFonts", "0", CVAR_ARCHIVE, "" );
-	r_maxpolys = ri.Cvar_Get( "r_maxpolys", XSTRING( DEFAULT_MAX_POLYS ), 0, "");
+    cl_ratioFix	= ri.Cvar_Get( "cl_ratioFix", "1", CVAR_ARCHIVE, "" );
+    r_maxpolys = ri.Cvar_Get( "r_maxpolys", XSTRING( DEFAULT_MAX_POLYS ), 0, "");
 	r_maxpolyverts = ri.Cvar_Get( "r_maxpolyverts", XSTRING( DEFAULT_MAX_POLYVERTS ), 0, "" );
 
 /*
@@ -1979,6 +2017,7 @@ void R_Init( void ) {
 	R_InitImagesPool();
 
 	InitOpenGL();
+    R_Set2DRatio();
 
 	R_InitGPUBuffers();
 
@@ -2098,6 +2137,17 @@ static void GetRealRes( int *w, int *h ) {
 	*h = glConfig.vidHeight;
 }
 
+static const cplane_t* RE_GetFrustum(void)
+{
+    return tr.viewParms.frustum;
+}
+
+static const vec_t* RE_GetViewPosition(void)
+{
+    return tr.viewParms.ori.origin;
+}
+
+
 // STUBS, REPLACEME
 qboolean stub_InitializeWireframeAutomap() { return qtrue; }
 
@@ -2128,6 +2178,17 @@ void RE_SetLightStyle(int style, int color)
 }
 
 void RE_GetBModelVerts(int bmodelIndex, vec3_t *verts, vec3_t normal);
+
+void R_Set2DRatio(void) {
+    if (cl_ratioFix->integer)
+        tr.widthRatioCoef = ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
+    else
+        tr.widthRatioCoef = 1.0f;
+
+    if (tr.widthRatioCoef > 1)
+        tr.widthRatioCoef = 1.0f;
+}
+
 void RE_WorldEffectCommand(const char *cmd);
 
 void stub_RE_AddWeatherZone ( vec3_t mins, vec3_t maxs ) {} // Intentionally left blank. Rend2 reads the zones manually on bsp load
@@ -2362,6 +2423,10 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	/*
 	Ghoul2 Insert End
 	*/
+
+    // Custom
+    re.ext.GetFrustum						= RE_GetFrustum;
+    re.ext.GetViewPosition                  = RE_GetViewPosition;
 
 	re.ext.Font_StrLenPixels = RE_Font_StrLenPixelsNew;
 

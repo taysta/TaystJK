@@ -251,6 +251,7 @@ extern cvar_t	*r_maxpolyverts;
 extern int		max_polyverts;
 
 extern	cvar_t	*r_aspectCorrectFonts;
+extern	cvar_t	*cl_ratioFix;
 
 /*
 Ghoul2 Insert Start
@@ -2620,6 +2621,8 @@ typedef struct trGlobals_s {
 	float					rangedFog;
 	float					distanceCull, distanceCullSquared; //rwwRMG - added
 
+    float					widthRatioCoef;
+
 	// Specific to Jedi Academy
 	int						numBSPModels;
 	int						currentLevel;
@@ -2687,6 +2690,8 @@ extern  cvar_t  *r_arb_seamless_cube_map;
 extern  cvar_t  *r_arb_vertex_type_2_10_10_10_rev;
 extern	cvar_t	*r_arb_buffer_storage;
 
+extern cvar_t	*r_smartpicmip;
+
 extern	cvar_t	*r_nobind;						// turns off binding to appropriate textures
 extern	cvar_t	*r_singleShader;				// make most world faces use default shader
 extern	cvar_t	*r_roundImagesDown;
@@ -2699,6 +2704,7 @@ extern	cvar_t	*r_offsetUnits;
 
 extern	cvar_t	*r_fullbright;					// avoid lightmap pass
 extern	cvar_t	*r_lightmap;					// render lightmaps only
+extern	cvar_t	*r_distanceCull;				// distancecull
 extern	cvar_t	*r_vertexLight;					// vertex lighting mode for better performance
 extern	cvar_t	*r_uiFullScreen;				// ui is running fullscreen
 
@@ -2929,6 +2935,7 @@ void		R_UpdateSubImage( image_t *image, byte *pic, int x, int y, int width, int 
 
 void		R_SetColorMappings( void );
 void		R_GammaCorrect( byte *buffer, int bufSize );
+void		R_Set2DRatio(void);
 
 void	R_ImageList_f( void );
 void	R_SkinList_f( void );
