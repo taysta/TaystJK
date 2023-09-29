@@ -6723,11 +6723,25 @@ static void UI_UpdateSaberCvars ( void )
 	trap->Cvar_Set ( "saber2", UI_Cvar_VariableString ( "ui_saber2" ) );
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber_color" ) );
-	trap->Cvar_SetValue( "color1", (float)colorI);
+	if (*uiInfo.hat)
+	{
+		trap->Cvar_Set("color1", va("%d%s", colorI, uiInfo.hat));
+	}
+	else
+	{
+		trap->Cvar_SetValue("color1", (float)colorI);
+	}
 	trap->Cvar_Set ( "g_saber_color", UI_Cvar_VariableString ( "ui_saber_color" ));
 
 	colorI = TranslateSaberColor( UI_Cvar_VariableString ( "ui_saber2_color" ) );
-	trap->Cvar_SetValue( "color2", (float)colorI );
+	if (*uiInfo.cape)
+	{
+		trap->Cvar_Set("color2", va("%d%s", colorI, uiInfo.cape));
+	}
+	else
+	{
+		trap->Cvar_SetValue("color2", (float)colorI);
+	}
 	trap->Cvar_Set ( "g_saber2_color", UI_Cvar_VariableString ( "ui_saber2_color" ));
 
 	if (ui_allowSaberSwitch.integer) {
@@ -6898,15 +6912,22 @@ static void UI_UpdateSaberColor( qboolean secondSaber ) {
 }
 
 const char *SaberColorToString( saber_colors_t color );
-
 static void UI_GetSaberCvars ( void )
 {
+	char color[MAX_QPATH];
+
 //	trap->Cvar_Set ( "ui_saber_type", UI_Cvar_VariableString ( "g_saber_type" ) );
 	trap->Cvar_Set ( "ui_saber", UI_Cvar_VariableString ( "saber1" ) );
 	trap->Cvar_Set ( "ui_saber2", UI_Cvar_VariableString ( "saber2" ));
 
-	trap->Cvar_Set("g_saber_color", SaberColorToString(trap->Cvar_VariableValue("color1")));
-	trap->Cvar_Set("g_saber2_color", SaberColorToString(trap->Cvar_VariableValue("color2")));
+	trap->Cvar_VariableStringBuffer("color1", color, sizeof(color));
+	trap->Cvar_Set("g_saber_color", SaberColorToString(atoi(color)));
+	Q_StripDigits(color, uiInfo.hat, MAX_COSMETIC_LENGTH, REMOVE_DIGITS_INITIAL);
+
+	memset(color, 0, sizeof(color));
+	trap->Cvar_VariableStringBuffer("color2", color, sizeof(color));
+	trap->Cvar_Set("g_saber2_color", SaberColorToString(atoi(color)));
+	Q_StripDigits(color, uiInfo.cape, MAX_COSMETIC_LENGTH, REMOVE_DIGITS_INITIAL);
 
 	trap->Cvar_Set ( "ui_saber_color", UI_Cvar_VariableString ( "g_saber_color" ) );
 	trap->Cvar_Set ( "ui_saber2_color", UI_Cvar_VariableString ( "g_saber2_color" ) );

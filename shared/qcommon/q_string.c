@@ -381,6 +381,37 @@ void Q_StripColor(char *text)
 	}
 }
 
+void Q_StripDigits(const char* input, char* output, int len, int mode)
+{
+	int i = 0;
+	int j = 0;
+	qboolean nonDigit = qfalse;
+
+	memset(output, 0, len);
+
+	while (*input && i < len)
+	{
+		if (mode == REMOVE_DIGITS_ALL)
+		{
+			if (!isdigit(*input))
+			{
+				output[j++] = *input;
+			}
+		}
+		else if (mode == REMOVE_DIGITS_INITIAL)
+		{
+			if (!isdigit(*input) || nonDigit)
+			{
+				output[j++] = *input;
+				nonDigit = qtrue;
+			}
+		}
+		input++;
+		i++;
+	}
+	output[j] = '\0';
+}
+
 /*
 Q_strstrip
 

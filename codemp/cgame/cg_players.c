@@ -1755,6 +1755,44 @@ static void CG_SetDeferredClientInfo( clientInfo_t *ci ) {
 	CG_LoadClientInfo( ci );
 }
 
+void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, char *ciCosName, char *ciCosPath)
+{
+	fileHandle_t file;
+	char path[MAX_QPATH];
+	int fileSize;
+
+	if (!Q_stricmp(cosName, "none")) //No hat.
+	{
+		memset(ciCosPath, 0, sizeof(ciCosPath));
+		return;
+	}
+
+	if (strlen(cosName) > MAX_COSMETIC_LENGTH)
+	{
+		Com_Printf(S_COLOR_YELLOW"WARNING: illegal cosmetic detected, skipping: [%s].\n", cosName);
+		Q_strncpyz(ciCosName, "none", MAX_COSMETIC_LENGTH);
+		memset(ciCosPath, 0, MAX_QPATH);
+		return;
+	}
+
+	Com_sprintf(path, sizeof(path), "%s%s.md3", cosmeticPath, cosName);
+	fileSize = trap->FS_Open(path, &file, FS_READ);
+
+	if (fileSize <= 0) //Doesnt exist.
+	{
+		Q_strncpyz(ciCosName, "none", MAX_COSMETIC_LENGTH);
+		memset(ciCosPath, 0,MAX_QPATH);
+	}
+	else
+	{
+		Q_strncpyz(ciCosName, cosName, MAX_COSMETIC_LENGTH);
+		Q_strncpyz(ciCosPath, path, MAX_QPATH);
+	}
+
+	trap->FS_Close(file);
+}
+
+
 /*
 ======================
 CG_NewClientInfo
@@ -1769,6 +1807,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	const char	*configstring;
 	const char	*v;
 	const char	*yo;//rgb
+	char cosmeticStr[MAX_COSMETIC_LENGTH];
 	char		*slash = NULL;
 	char		saber1[MAX_QPATH] = {0}, saber2[MAX_QPATH] = {0};
 	int			parsed = 0;
@@ -1825,10 +1864,34 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	newInfo.icolor1 = atoi(v);
 
+	//hats
+	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
+	if (*cosmeticStr)
+	{
+		CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, newInfo.hat, newInfo.hatPath);
+	}
+	else
+	{
+		Q_strncpyz(newInfo.hat, "none", sizeof(newInfo.hat));
+		memset(newInfo.hatPath, 0, sizeof(newInfo.hatPath));
+	}
+
 	v = Info_ValueForKey( configstring, "c2" );
 	CG_ColorFromString( v, newInfo.color2 );
 
 	newInfo.icolor2 = atoi(v);
+
+	//capes
+	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
+	if (*cosmeticStr)
+	{
+		CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, newInfo.cape, newInfo.capePath);
+	}
+	else
+	{
+		Q_strncpyz(newInfo.cape, "none", sizeof(newInfo.cape));
+		memset(newInfo.capePath, 0, sizeof(newInfo.capePath));
+	}
 
 	// bot skill
 	v = Info_ValueForKey( configstring, "skill" );
@@ -1879,7 +1942,15 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor1 == SABER_RGB ) {
-		trap->Cvar_Set( "color1", va( "%i", SABER_RGB ) );
+		if (*newInfo.hat && Q_stricmp(newInfo.hat, "none"))
+		{
+			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hat));
+		}
+		else
+		{
+			trap->Cvar_Set( "color1", va( "%i", SABER_RGB ) );
+		}
+
 		trap->Cvar_Set( "cp_sbRGB1", yo );
 	}
 
@@ -1893,7 +1964,15 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor2 == SABER_RGB ) {
-		trap->Cvar_Set( "color2", va( "%i", SABER_RGB ) );
+		if (*newInfo.cape && Q_stricmp(newInfo.cape, "none"))
+		{
+			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.cape));
+		}
+		else
+		{
+			trap->Cvar_Set("color2", va("%i", SABER_RGB));
+		}
+
 		trap->Cvar_Set( "cp_sbRGB2", yo );
 	}
 
@@ -1902,7 +1981,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// cosmetics
 	yo = Info_ValueForKey(configstring, "c5");
-	newInfo.cosmetics = atoi(yo); //This should be strtoul even though this works for some reason
+	if (cgs.serverMod == SVMOD_JAPRO)
+	{
+		newInfo.cosmetics = atoi(yo); //This should be strtoul even though this works for some reason
+	}
 
 	// Gender hints
 	newInfo.gender = GENDER_MALE; //reset this so default/missing models don't inherit it from deferred userinfo
@@ -9790,6 +9872,92 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
 }
 //[/Kameleon]
 
+void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, const char *path, refEntity_t parent, int position)
+{
+	int newBolt;
+	mdxaBone_t matrix;
+	vec3_t boltOrg, bAngles;
+	refEntity_t re;
+
+	if (!cent->ghoul2)
+	{
+		return;
+	}
+
+	if (cent->currentState.eFlags & EF_DEAD)
+	{
+		return;
+	}
+
+	if (!cg.renderingThirdPerson && cent->currentState.clientNum == cg.clientNum)
+	{
+		return;
+	}
+
+	if (!cg.renderingThirdPerson && cg.snap->ps.clientNum == cent->currentState.clientNum && cgs.clientinfo[cg.clientNum].team == TEAM_SPECTATOR && (cg.snap->ps.pm_flags & PMF_FOLLOW))
+	{
+		return;
+	}
+
+	if (CG_IsMindTricked(cent->currentState.trickedentindex, cent->currentState.trickedentindex2, cent->currentState.trickedentindex3, cent->currentState.trickedentindex4, cg.snap->ps.clientNum))
+	{
+		return;
+	}
+
+	if (position == 0)//hat
+		newBolt = trap->G2API_AddBolt(cent->ghoul2, 0, "*head_top");
+	else if (position == 1)//cape
+		newBolt = trap->G2API_AddBolt(cent->ghoul2, 0, "*back");
+	else if (position == 2) {//grogu - no idea how to stop him from having limited roll/pitch angles
+		newBolt = trap->G2API_AddBolt(cent->ghoul2, 0, "*back");
+	}
+
+	if (newBolt != -1)
+	{
+		memset(&re, 0, sizeof(refEntity_t));
+
+		// My angle fix :3 - Kameleon
+		VectorCopy(cent->lerpAngles, bAngles);
+		bAngles[PITCH] = 0;
+		bAngles[YAW] = cent->turAngles[YAW];
+
+		trap->G2API_GetBoltMatrix(cent->ghoul2, 0, newBolt, &matrix, bAngles, cent->lerpOrigin, time, gameModels, cent->modelScale);
+		BG_GiveMeVectorFromMatrix(&matrix, ORIGIN, boltOrg);
+
+		BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_X, re.axis[0]); //fwd
+		BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Y, re.axis[1]); //right
+		BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, re.axis[2]); //up/down
+
+		VectorMA(boltOrg, 0, re.axis[1], boltOrg);
+		VectorMA(boltOrg, 0, re.axis[1], boltOrg);
+		VectorMA(boltOrg, -2, re.axis[2], boltOrg);
+
+		//rotational transitions
+		//configure the initial rotational axis
+		/*VectorCopy(axis[1], ent.axis[0]);
+		VectorScale(axis[0], -1, ent.axis[1]); //reversed since this is a right hand rule system.
+		VectorCopy(axis[2], ent.axis[2]);
+
+		//debug/config rotation statement.
+
+		ApplyAxisRotation(ent.axis, PITCH, AngOffset[PITCH]);
+		ApplyAxisRotation(ent.axis, YAW, AngOffset[YAW]);
+		ApplyAxisRotation(ent.axis, ROLL, AngOffset[ROLL]);
+
+		VectorCopy(boltOrg, ent.origin);*/
+
+		re.hModel = trap->R_RegisterModel(path);
+		VectorCopy(boltOrg, re.lightingOrigin);
+		VectorCopy(boltOrg, re.origin);
+
+		re.renderfx = parent.renderfx;
+		re.customShader = parent.customShader;
+
+		trap->R_AddRefEntityToScene(&re);
+	}
+}
+//[/Kameleon]
+
 
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
 void CG_Player( centity_t *cent ) {
@@ -12681,7 +12849,8 @@ stillDoSaber:
             CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.rpg, legs, 1);
         }
     }else if (!cg.demoPlayback && cgs.serverMod != SVMOD_JAPRO){
-        if (cg_forceCosmetics.integer == 1) {
+        if (cg_forceCosmetics.integer == 1) 
+		{
             CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);
         }
         else if (cg_forceCosmetics.integer == 2) {
@@ -12705,6 +12874,17 @@ stillDoSaber:
         else if (cg_forceCosmetics.integer == 8) {
             CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs, 0);
         }
+		else if (cg_forceCosmetics.integer == -1)
+		{
+			if (Q_stricmp(ci->hat, "none") && *ci->hatPath)
+			{
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, ci->hatPath, legs, 0);
+			}
+			if (Q_stricmp(ci->cape, "none") && *ci->capePath)
+			{
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, ci->capePath, legs, 1);
+			}
+		}
             //loda todo
     }
 	//[/Kameleon]

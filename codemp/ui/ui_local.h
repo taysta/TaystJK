@@ -153,6 +153,10 @@ typedef struct playerInfo_s {
 #define MAX_SCROLLTEXT_SIZE		4096
 #define MAX_SCROLLTEXT_LINES	64
 
+//Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
+//The remaining 2 bytes are to support the actual saber colors, since EternalJK supports up to 12 colors, we need to reserve 2 bytes for the color.
+#define MAX_COSMETIC_LENGTH 14 
+
 typedef struct aliasInfo_s {
 	const char *name;
 	const char *ai;
@@ -389,6 +393,9 @@ typedef struct uiInfo_s {
 
 	int						languageCount;
 	int						languageCountIndex;
+
+	char				hat[MAX_COSMETIC_LENGTH];
+	char				cape[MAX_COSMETIC_LENGTH];
 } uiInfo_t;
 extern uiInfo_t uiInfo;
 

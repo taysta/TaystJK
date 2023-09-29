@@ -1566,11 +1566,8 @@ static bitInfo_T cosmetics[] = {
 static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
-static void CG_Cosmetics_f(void)
+static void CG_Cosmetics_JaPRO(void)
 {
-	if (cgs.serverMod < SVMOD_JAPRO)
-		return;
-
 	//cosmeticUnlocks[i].bitvalue;
 	//trap->SendClientCommand( "cosmetics" );
 
@@ -1690,6 +1687,150 @@ static void CG_Cosmetics_f(void)
 
             Com_Printf("%s %s^7\n", cosmetics[index].string, ((cp_cosmetics.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled"));
+	}
+}
+
+static void CG_Cosmetics(void)
+{
+	int argCount = trap->Cmd_Argc();
+
+	if (argCount == 1)
+	{
+		Com_Printf("Usage: cosmetics <category/clear> [id]\nAvailable categories:\n- Hats\n- Capes\n");
+		return;
+	}
+	else 
+	{
+		if (argCount >= 2)
+		{
+			char arg[16];
+			int i;
+			int totalCosmetics;
+			cosmeticItem_t *cosItems;
+			const char *ciCosItem;
+			const char *cvar;
+
+			trap->Cmd_Argv(1, arg, sizeof(arg));
+
+			if (!Q_stricmp("Hats", arg))
+			{
+				totalCosmetics = localCosmetics.totalHats;
+				cosItems = localCosmetics.hats;
+				ciCosItem = cgs.clientinfo[cg.clientNum].hat;
+				cvar = "color1";
+			}
+			else if (!Q_stricmp("Capes", arg))
+			{
+				totalCosmetics = localCosmetics.totalCapes;
+				cosItems = localCosmetics.capes;
+				ciCosItem = cgs.clientinfo[cg.clientNum].cape;
+				cvar = "color2";
+			}
+			else if (!Q_stricmp("Clear", arg))
+			{
+				char cvarValue[MAX_COSMETIC_LENGTH];
+
+				trap->Cvar_VariableStringBuffer("color1", cvarValue, sizeof(cvarValue));
+				trap->Cvar_Set("color1",va("%d", atoi(cvarValue)));
+
+				memset(cvarValue, 0, sizeof(cvarValue));
+
+				trap->Cvar_VariableStringBuffer("color2", cvarValue, sizeof(cvarValue));
+				trap->Cvar_Set("color2", va("%d", atoi(cvarValue)));
+				return;
+			}
+			else
+			{
+				Com_Printf("Invalid category or command.\n");
+				return;
+			}
+
+			arg[0] = toupper(arg[0]);
+
+			if (!totalCosmetics)
+			{
+				Com_Printf("No %s found.\n", arg);
+				return;
+			}
+
+			if (argCount == 2)
+			{ 
+				dynTable_init();
+
+				dynTable_addHeader("Num", ALIGN_LEFT);
+				dynTable_addHeader(arg, ALIGN_LEFT);
+				dynTable_addHeader("Enabled", ALIGN_CENTER);
+
+				for (i = 0; i < totalCosmetics; i++)
+				{
+					dynTable_addCell(va("%i", i));
+					dynTable_addCell(cosItems[i].name);
+					if (!Q_stricmp(cosItems[i].name, ciCosItem))
+					{
+						dynTable_addCell("X");
+					}
+					else
+					{
+						dynTable_addCell(" ");
+					}
+				}
+
+				dynTable_print();
+				return;
+			}
+			else
+			{
+				char cvarValue[MAX_COSMETIC_LENGTH];
+				int cosmeticID;
+
+				memset(arg, 0, sizeof(arg));
+				trap->Cmd_Argv(2, arg, sizeof(arg));
+
+				if (!Q_isanumber(arg))
+				{
+					Com_Printf("Provide the ID number of the cosmetic.\n");
+					return;
+				}
+
+				cosmeticID = atoi(arg);
+
+				if (cosmeticID < 0 || cosmeticID > (totalCosmetics - 1))
+				{
+					Com_Printf("Provide a valid ID number. (0-%d)\n", (totalCosmetics - 1));
+					return;
+				}
+
+				cosmeticItem_t *item = &cosItems[cosmeticID];
+
+				trap->Cvar_VariableStringBuffer(cvar, cvarValue, sizeof(cvarValue));
+
+				if (Q_stricmp(cgs.clientinfo[cg.clientNum].hat, item->name))
+				{
+					Com_sprintf(cvarValue, sizeof(cvarValue), "%d%s", atoi(cvarValue), item->name);
+					trap->Cvar_Set(cvar, cvarValue);
+					Com_Printf("^3'%s' ^2Enabled\n", item->name);
+				}
+				else
+				{
+					Com_sprintf(cvarValue, sizeof(cvarValue), "%d", atoi(cvarValue));
+					trap->Cvar_Set(cvar, cvarValue);
+					Com_Printf("^3'%s' ^1Disabled\n", item->name);
+				}
+				return;
+			}
+		}
+	}
+}
+
+static void CG_Cosmetics_f(void)
+{
+	if (cgs.serverMod < SVMOD_JAPRO)
+	{
+		CG_Cosmetics();
+	}
+	else
+	{
+		CG_Cosmetics_JaPRO();
 	}
 }
 
@@ -2312,7 +2453,7 @@ static consoleCommand_t	commands[] = {
 	{ "listEmojis",					CG_ListEmojis_f },
 	{ "loadTrail",					CG_SpawnStrafeTrailFromCFG_f },
 	{ "weaplast",					CG_LastWeapon_f },
-	{ "do",							CG_Do_f }
+	{ "do",							CG_Do_f },
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );

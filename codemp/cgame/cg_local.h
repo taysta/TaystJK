@@ -318,6 +318,16 @@ typedef struct playerEntity_s {
 
 #define DEFAULT_MALE_SOUNDPATH "chars/mp_generic_male/misc"//"chars/kyle/misc"
 
+//Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
+//The remaining 2 bytes are to support the actual saber colors, since EternalJK supports up to 12 colors, we need to reserve 2 bytes for the color.
+#define MAX_COSMETIC_LENGTH 14 
+#define COSMETIC_HATS_PATH "models/cosmetics/hats/"
+#define COSMETIC_HATS_PATH_LENGTH strlen(COSMETIC_HATS_PATH)
+
+#define COSMETIC_CAPES_PATH "models/cosmetics/capes/"
+#define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
+
+
 typedef struct clientInfo_s {
 	qboolean		infoValid;
 
@@ -436,6 +446,10 @@ typedef struct clientInfo_s {
 	vec3_t		rgb1, rgb2;//rgb sabers, use different ones for strafetrails. oh no.
 
 	unsigned int	cosmetics;
+	char		hat[MAX_COSMETIC_LENGTH];
+	char		hatPath[MAX_QPATH];
+	char		cape[MAX_COSMETIC_LENGTH];
+	char		capePath[MAX_QPATH];
 
 #define _STRAFETRAILS 0
 #if _STRAFETRAILS
@@ -1001,6 +1015,21 @@ typedef struct chatBoxItem_s
 	int				lines;
 	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];
 } chatBoxItem_t;
+
+typedef struct cosmeticItem_s
+{
+	char name[MAX_COSMETIC_LENGTH];
+} cosmeticItem_t;
+
+typedef struct cosmetics_s
+{
+	cosmeticItem_t *hats;
+	cosmeticItem_t *capes;
+	int totalHats;
+	int totalCapes;
+} cosmetics_t;
+
+cosmetics_t localCosmetics;
 
 #define	MAX_CLIENT_SPEEDPOINTS		32
 typedef struct clientSpeedpoint_s
