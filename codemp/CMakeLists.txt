@@ -49,6 +49,11 @@ if(BuildMPRdVulkan)
 endif(BuildMPRdVulkan)
 
 
+#	Add rend2 JKA Renderer Project
+if(BuildMPRend2)
+	add_subdirectory("${MPDir}/rd-rend2")
+endif(BuildMPRend2)
+
 #    Common things between Engine and Dedicated Server
 if(BuildMPEngine OR BuildMPDed)
 
@@ -264,11 +269,11 @@ if(BuildMPEngine OR BuildMPDed)
 
 		${SharedCommonFiles}
 		)
-		
+
 		if(MSVC) #dunno how to do this for other compilers
 			set_source_files_properties(${MPDir}/qcommon/cm_polylib.cpp PROPERTIES COMPILE_FLAGS /arch:IA32)
 		endif(MSVC)
-		
+
 	if(WIN32)
 		set(MPEngineAndDedCommonFiles ${MPEngineAndDedCommonFiles})
 	endif(WIN32)
@@ -370,7 +375,7 @@ if(BuildMPEngine)
 		find_package(OpenGL REQUIRED)
 		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENGL_INCLUDE_DIR})
 		set(MPEngineLibraries ${MPEngineLibraries} ${OPENGL_LIBRARIES})
-		
+
 		if(BuildDiscordRichPresence)
 			if (APPLE)
 				set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
@@ -399,7 +404,7 @@ if(BuildMPEngine)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENAL_INCLUDE_DIR})
 			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
 		endif(UseInternalOpenAL)
-		
+
 		if(BuildDiscordRichPresence)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
