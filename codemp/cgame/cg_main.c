@@ -3193,6 +3193,7 @@ Ghoul2 Insert End
 #endif
 
 	CG_InitMarkPolys();
+    CG_InitNewHUD();
 
 	// remove the last loading update
 	cg.infoScreenText[0] = 0;

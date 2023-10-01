@@ -11280,6 +11280,9 @@ static void CG_Draw2D( void ) {
 		return;
 	}
 
+    //todo: guard this with cvar
+    CG_Draw2DNew(  );
+
 	CG_Draw2DScreenTints();
 
 	if (cg.snap->ps.rocketLockIndex != ENTITYNUM_NONE && (cg.time - cg.snap->ps.rocketLockTime) > 0)

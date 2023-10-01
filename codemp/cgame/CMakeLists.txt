@@ -63,6 +63,7 @@ set(MPCGameCgameFiles
 	"${MPDir}/cgame/cg_effects.c"
 	"${MPDir}/cgame/cg_ents.c"
 	"${MPDir}/cgame/cg_event.c"
+	"${MPDir}/cgame/cg_hud.c"
 	"${MPDir}/cgame/cg_info.c"
 	"${MPDir}/cgame/cg_light.c"
 	"${MPDir}/cgame/cg_localents.c"
@@ -91,11 +92,14 @@ set(MPCGameCgameFiles
 	"${MPDir}/cgame/fx_force.c"
 	"${MPDir}/cgame/fx_heavyrepeater.c"
 	"${MPDir}/cgame/fx_rocketlauncher.c"
+	"${MPDir}/cgame/hud_obituary.c"
+	"${MPDir}/cgame/hud_shared.c"
 	"${MPDir}/cgame/animtable.h"
 	"${MPDir}/cgame/cg_local.h"
 	"${MPDir}/cgame/cg_public.h"
 	"${MPDir}/cgame/cg_xcvar.h"
 	"${MPDir}/cgame/fx_local.h"
+	"${MPDir}/cgame/hud_local.h"
 	)
 source_group("cgame" FILES ${MPCGameCgameFiles})
 set(MPCGameFiles ${MPCGameFiles} ${MPCGameCgameFiles})

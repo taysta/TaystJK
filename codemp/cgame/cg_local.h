@@ -2648,6 +2648,9 @@ void CG_Respawn( void );
 void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops );
 void CG_CheckChangedPredictableEvents( playerState_t *ps );
 
+void CG_InitNewHUD( void );
+void CG_Draw2DNew( void );
+void CG_AddObituary( int killer, int victim, weapon_t weapon, meansOfDeath_t mod );
 
 //
 // cg_siege.c

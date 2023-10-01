@@ -131,6 +131,7 @@ static void CG_Obituary( entityState_t *ent ) {
 	char			targetName[MAX_NETNAME+2] = {0};
 	char			attackerName[MAX_NETNAME+2] = {0};
 	gender_t		gender = GENDER_MALE;
+    int weapon = ent->weapon;
 
 	if ( target < 0 || target >= MAX_CLIENTS ) {
 		trap->Error( ERR_DROP, "CG_Obituary: target out of range" );
@@ -150,6 +151,7 @@ static void CG_Obituary( entityState_t *ent ) {
 	Com_sprintf(targetName, sizeof(targetName), "%s%s", targetInfo->name, S_COLOR_WHITE);
 	targetInfo->deaths++;
 
+    CG_AddObituary( attacker, target, weapon, mod );
 	// check for single client messages
 	switch( mod ) {
 	case MOD_SUICIDE:
