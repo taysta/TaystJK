@@ -139,6 +139,9 @@ set(MPCGameGFiles
 source_group("ghoul2" FILES ${MPCGameG2Files})
 set(MPCGameFiles ${MPCGameFiles} ${MPCGameG2Files})
 
+list(APPEND MPCGameIncludeDirectories ${CJSON_INCLUDE_DIRS})
+list(APPEND MPCGameLibraries          ${CJSON_LIBRARIES})
+
 add_library(${MPCGame} SHARED ${MPCGameFiles})
 
 if(NOT MSVC)
