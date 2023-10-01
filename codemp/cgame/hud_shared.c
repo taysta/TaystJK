@@ -4,23 +4,23 @@
 
 vec4_t hud_weapon_colors[WP_NUM_WEAPONS] = {
         { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_NONE
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_STUN_BATON
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_MELEE
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_SABER
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_BRYAR_PISTOL
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_BLASTER
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_DISRUPTOR
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_BOWCASTER
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_REPEATER
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_DEMP2
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_FLECHETTE
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_ROCKET_LAUNCHER
+        { 0.0f, 1.0f, 1.0f, 1.0f }, // WP_STUN_BATON
+        { 1.0f, 1.0f, 0.0f, 1.0f }, // WP_MELEE
+        { 0.5f, 0.0f, 1.0f, 1.0f }, // WP_SABER
+        { 0.0f, 1.0f, 1.0f, 1.0f }, // WP_BRYAR_PISTOL
+        { 1.0f, 1.0f, 0.5f, 1.0f }, // WP_BLASTER
+        { 0.0f, 1.0f, 0.0f, 1.0f }, // WP_DISRUPTOR
+        { 0.0f, 1.0f, 0.5f, 1.0f }, // WP_BOWCASTER
+        { 0.0f, 0.0f, 1.0f, 1.0f }, // WP_REPEATER
+        { 0.5f, 1.0f, 0.0f, 1.0f }, // WP_DEMP2
+        { 1.0f, 0.5f, 0.0f, 1.0f }, // WP_FLECHETTE
+        { 1.0f, 0.0f, 0.0f, 1.0f }, // WP_ROCKET_LAUNCHER
         { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_THERMAL
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_TRIP_MINE
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_DET_PACK
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_CONCUSSION
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_BRYAR_OLD
-        { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_EMPLACED_GUN
+        { 1.0f, 1.0f, 0.4f, 1.0f }, // WP_TRIP_MINE
+        { 1.0f, 0.4f, 0.0f, 1.0f }, // WP_DET_PACK
+        { 1.0f, 0.0f, 1.0f, 1.0f }, // WP_CONCUSSION
+        { 0.0f, 1.0f, 1.0f, 1.0f }, // WP_BRYAR_OLD
+        { 0.0f, 0.5f, 1.0f, 1.0f }, // WP_EMPLACED_GUN
         { 1.0f, 1.0f, 1.0f, 1.0f }, // WP_TURRET
 };
 
