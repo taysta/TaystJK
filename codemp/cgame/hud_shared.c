@@ -48,44 +48,44 @@ const char *hud_weapon_icons[WP_NUM_WEAPONS] = {
 
 const char *hud_mod_icons[ MOD_MAX ] = {
         "hud/mod/generic", // MOD_UNKNOWN
-        "gfx/hud/w_icon_stunbaton", // MOD_STUN_BATON
-        "gfx/hud/w_icon_melee", // MOD_MELEE
-        "gfx/hud/w_icon_lightsaber", // MOD_SABER
-        "gfx/hud/w_icon_blaster_pistol", // MOD_BRYAR_PISTOL
-        "gfx/hud/w_icon_blaster_pistol", // MOD_BRYAR_PISTOL_ALT
-        "gfx/hud/w_icon_blaster", // MOD_BLASTER
-        "gfx/hud/w_icon_blaster", // MOD_TURBLAST
-        "gfx/hud/w_icon_disruptor", // MOD_DISRUPTOR
-        "gfx/hud/w_icon_disruptor", // MOD_DISRUPTOR_SPLASH
-        "gfx/hud/w_icon_disruptor", // MOD_DISRUPTOR_SNIPER
-        "gfx/hud/w_icon_bowcaster", // MOD_BOWCASTER
-        "gfx/hud/w_icon_repeater", // MOD_REPEATER
-        "gfx/hud/w_icon_repeater", // MOD_REPEATER_ALT
-        "gfx/hud/w_icon_repeater", // MOD_REPEATER_ALT_SPLASH
-        "gfx/hud/w_icon_demp2", // MOD_DEMP2
-        "gfx/hud/w_icon_demp2", // MOD_DEMP2_ALT
-        "gfx/hud/w_icon_flachette", // MOD_FLECHETTE
-        "gfx/hud/w_icon_flachette", // MOD_FLECHETTE_ALT_SPLASH
-        "gfx/hud/w_icon_merrsonn", // MOD_ROCKET
-        "gfx/hud/w_icon_merrsonn", // MOD_ROCKET_SPLASH
-        "gfx/hud/w_icon_merrsonn", // MOD_ROCKET_HOMING
-        "gfx/hud/w_icon_merrsonn", // MOD_ROCKET_HOMING_SPLASH
-        "gfx/hud/w_icon_thermal", // MOD_THERMAL
-        "gfx/hud/w_icon_thermal", // MOD_THERMAL_SPLASH
-        "gfx/hud/w_icon_tripmine", // MOD_TRIP_MINE_SPLASH
-        "gfx/hud/w_icon_tripmine", // MOD_TIMED_MINE_SPLASH
-        "gfx/hud/w_icon_detpack", // MOD_DET_PACK_SPLASH
-        "hud/mod/generic", // MOD_VEHICLE
-        "gfx/hud/w_icon_melee", // MOD_CONC
-        "gfx/hud/w_icon_melee", // MOD_CONC_ALT
-        "hud/mod/generic", // MOD_FORCE_DARK
-        "hud/mod/i_icon_sentrygun", // MOD_SENTRY
-        "hud/mod/generic", // MOD_WATER
-        "hud/mod/generic", // MOD_SLIME
-        "hud/mod/generic", // MOD_LAVA
-        "hud/mod/generic", // MOD_CRUSH
+        "hud/mod/stun", // MOD_STUN_BATON
+        "hud/mod/melee", // MOD_MELEE
+        "hud/mod/saber", // MOD_SABER
+        "hud/mod/pistol", // MOD_BRYAR_PISTOL
+        "hud/mod/pistol", // MOD_BRYAR_PISTOL_ALT
+        "hud/mod/rifle", // MOD_BLASTER
+        "hud/mod/rifle", // MOD_TURBLAST
+        "hud/mod/disruptor", // MOD_DISRUPTOR
+        "hud/mod/disruptor", // MOD_DISRUPTOR_SPLASH
+        "hud/mod/disruptor_alt", // MOD_DISRUPTOR_SNIPER
+        "hud/mod/bowcaster", // MOD_BOWCASTER
+        "hud/mod/repeater", // MOD_REPEATER
+        "hud/mod/repeater_alt", // MOD_REPEATER_ALT
+        "hud/mod/repeater_alt", // MOD_REPEATER_ALT_SPLASH
+        "hud/mod/demp2", // MOD_DEMP2
+        "hud/mod/demp2_alt", // MOD_DEMP2_ALT
+        "hud/mod/flachette", // MOD_FLECHETTE
+        "hud/mod/flachette_alt", // MOD_FLECHETTE_ALT_SPLASH
+        "hud/mod/merrsonn", // MOD_ROCKET
+        "hud/mod/merrsonn", // MOD_ROCKET_SPLASH
+        "hud/mod/merrsonn_alt", // MOD_ROCKET_HOMING
+        "hud/mod/merrsonn_alt", // MOD_ROCKET_HOMING_SPLASH
+        "hud/mod/thermal", // MOD_THERMAL
+        "hud/mod/thermal_alt", // MOD_THERMAL_SPLASH
+        "hud/mod/mine", // MOD_TRIP_MINE_SPLASH
+        "hud/mod/mine", // MOD_TIMED_MINE_SPLASH
+        "hud/mod/detpack", // MOD_DET_PACK_SPLASH
+        "hud/mod/swoop", // MOD_VEHICLE
+        "hud/mod/concussion", // MOD_CONC
+        "hud/mod/concussion_alt", // MOD_CONC_ALT
+        "hud/mod/force", // MOD_FORCE_DARK
+        "hud/mod/portable_turret", // MOD_SENTRY
+        "hud/mod/water", // MOD_WATER
+        "hud/mod/ooze", // MOD_SLIME
+        "hud/mod/lava", // MOD_LAVA
+        "hud/mod/crushed", // MOD_CRUSH
         "hud/mod/telefrag", // MOD_TELEFRAG
-        "hud/mod/generic", // MOD_FALLING
+        "hud/mod/fall", // MOD_FALLING
         "hud/mod/generic", // MOD_SUICIDE
         "hud/mod/generic", // MOD_TARGET_LASER
         "hud/mod/generic", // MOD_TRIGGER_HURT
