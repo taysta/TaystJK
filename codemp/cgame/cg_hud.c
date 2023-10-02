@@ -1,22 +1,27 @@
 /*
 ===========================================================================
-Copyright (C) 2022 Sergei Shubin
+Copyright (C) 1999 - 2005, Id Software, Inc.
+Copyright (C) 2000 - 2013, Raven Software, Inc.
+Copyright (C) 2001 - 2013, Activision, Inc.
+Copyright (C) 2005 - 2015, ioquake3 contributors
+Copyright (C) 2013 - 2015, OpenJK contributors
+Copyright (C) 2015 - 2021, EternalJK contributors
+Copyright (C) 2015 - 2023, TaystJK contributors
 
-This file is part of Quake III Champions source code.
 
-Quake III Champions source code is free software; you can redistribute it
-and/or modify it under the terms of the GNU General Public License as
-published by the Free Software Foundation; either version 2 of the License,
-or (at your option) any later version.
+This file is part of the TaystJK source code.
 
-Quake III Champions source code is distributed in the hope that it will be
-useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+TaystJK is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Quake III Champions source code; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+along with this program; if not, see <https://www.gnu.org/licenses/>.
 ===========================================================================
 */
 
@@ -28,8 +33,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "hud_local.h"
 
 void CG_InitNewHUD( void ) {
-	hud_initmedia();
-	hud_initobituary();
+	HUD_InitMedia();
+	HUD_InitObituary();
 }
 
 /*
@@ -40,6 +45,5 @@ CG_Draw2DNew
 
 void CG_Draw2DNew( void ) {
 	trap->R_SetColor( NULL );
-	hud_drawobituary(); //todo: create/check killfeed cvar
-
+	HUD_DrawObituary();
 }

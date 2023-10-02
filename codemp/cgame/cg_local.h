@@ -2652,7 +2652,7 @@ void CG_CheckChangedPredictableEvents( playerState_t *ps );
 
 void CG_InitNewHUD( void );
 void CG_Draw2DNew( void );
-void CG_AddObituary( int killer, int victim, weapon_t weapon, meansOfDeath_t mod );
+void CG_AddObituary( int killer, int victim, meansOfDeath_t mod );
 
 //
 // cg_siege.c

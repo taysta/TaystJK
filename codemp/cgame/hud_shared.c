@@ -1,8 +1,34 @@
-#include "../qcommon/q_shared.h"
+/*
+===========================================================================
+Copyright (C) 1999 - 2005, Id Software, Inc.
+Copyright (C) 2000 - 2013, Raven Software, Inc.
+Copyright (C) 2001 - 2013, Activision, Inc.
+Copyright (C) 2005 - 2015, ioquake3 contributors
+Copyright (C) 2013 - 2015, OpenJK contributors
+Copyright (C) 2015 - 2021, EternalJK contributors
+Copyright (C) 2015 - 2023, TaystJK contributors
+
+
+This file is part of the TaystJK source code.
+
+TaystJK is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see <https://www.gnu.org/licenses/>.
+===========================================================================
+*/
+
 #include "cg_local.h"
 #include "hud_local.h"
 
-vec4_t hud_mod_colors[MOD_MAX] = {
+vec4_t hudModColors[MOD_MAX] = {
         { 1.0f, 1.0f, 1.0f, 1.0f }, // MOD_UNKNOWN
         { 0.0f, 1.0f, 1.0f, 1.0f }, // MOD_STUN_BATON
         { 1.0f, 1.0f, 0.0f, 1.0f }, // MOD_MELEE
@@ -48,7 +74,7 @@ vec4_t hud_mod_colors[MOD_MAX] = {
         { 1.0f, 1.0f, 1.0f, 1.0f }  // MOD_TEAM_CHANGE
 };
 
-const char *hud_mod_icons[ MOD_MAX ] = {
+const char *hudModIcons[ MOD_MAX ] = {
         "hud/mod/generic", // MOD_UNKNOWN
         "hud/mod/stun", // MOD_STUN_BATON
         "hud/mod/melee", // MOD_MELEE
@@ -94,13 +120,13 @@ const char *hud_mod_icons[ MOD_MAX ] = {
         "hud/mod/generic", // MOD_TEAM_CHANGE
 };
 
-hud_media_t hud_media;
+hudMedia_t hm;
 
 // get all the required assets
-void hud_initmedia( void ) {
+void HUD_InitMedia( void ) {
 	int i;
 	for ( i = 0; i < MOD_MAX; i++ ) {
-		hud_media.icon_mod[i] = trap->R_RegisterShaderNoMip( hud_mod_icons[i] );
+        hm.modIcon[i] = trap->R_RegisterShaderNoMip( hudModIcons[i] );
 	}
 }
 
