@@ -35,6 +35,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // If you absolutely need something stored, it can either be kept
 // by the server in the server stored userinfos, or stashed in a cvar.
 
+#define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
+
 #define	POWERUP_BLINKS		5
 
 #define	POWERUP_BLINK_TIME	1000

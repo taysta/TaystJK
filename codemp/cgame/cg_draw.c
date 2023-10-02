@@ -7057,7 +7057,6 @@ void CG_AddSpeed(void)
 #define SPEEDOMETER_MIN_RANGE 900
 #define SPEED_MED 1000.f
 #define SPEED_FAST 1600.f
-#define Vector4Copy( a, b )				((b)[0]=(a)[0],(b)[1]=(a)[1],(b)[2]=(a)[2],(b)[3]=(a)[3])
 #define VectorLerp( f, s, e, r ) ((r)[0]=(s)[0]+(f)*((e)[0]-(s)[0]),\
   (r)[1]=(s)[1]+(f)*((e)[1]-(s)[1]),\
   (r)[2]=(s)[2]+(f)*((e)[2]-(s)[2]))
