@@ -74,7 +74,7 @@ void hud_drawobituary( void ) {
         wepColor[1] = hud_mod_colors[p->mod][1];
         wepColor[2] = hud_mod_colors[p->mod][2];
 
-        if (cgs.gametype > GT_TEAM) { //team gametype
+        if (cgs.gametype >= GT_TEAM) { //team gametype
             if ( cgs.clientinfo[p->killer].team == TEAM_BLUE ) {
                 Vector4Copy(blueTeam, killerColor);
             } else if ( cgs.clientinfo[p->killer].team == TEAM_RED) {
@@ -129,7 +129,7 @@ void hud_drawobituary( void ) {
             CG_Text_Paint( x - ((2.0f * xPad) + iconWidth) - victimWidth, y + (0.125f * (iconHeight - textHeight)), scale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
             //method of death icon
             trap->R_SetColor( wepColor ); //set the icon color
-            CG_DrawPic( x - (xPad + victimWidth), y, iconWidth, iconHeight, deathicon ); //draw the icon
+            CG_DrawPic( x - (xPad + iconWidth), y, iconWidth, iconHeight, deathicon ); //draw the icon
             trap->R_SetColor( NULL );
             //move the cursor down for the next line
             y += (yPad + iconHeight);
