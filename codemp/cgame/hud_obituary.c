@@ -33,31 +33,56 @@ static int killfeedAlignment = KF_LEFT; //todo: make this a cvar
 static obituary_t hudObituary[MAX_OBITUARY];
 static int hudNumObituary;
 
-void HUD_InitObituary( void ) {
+void HUD_InitObituary(void) {
     hudNumObituary = 0;
 }
 
-static void HUD_PurgeObituary( void ) {
-	static obituary_t obituary[MAX_OBITUARY];
-	int i, numObituary;
-	memcpy( obituary, hudObituary, sizeof( obituary ) );
+static void HUD_PurgeObituary(void) {
+    static obituary_t obituary[MAX_OBITUARY];
+    int i, numObituary;
+    memcpy(obituary, hudObituary, sizeof(obituary));
     numObituary = 0;
-	for ( i = 0; i < hudNumObituary; i++ ) {
-		if ( cg.time - obituary[i].time > OBITUARY_TIMEOUT ) {
-			continue;
-		}
-		memcpy( &hudObituary[numObituary], &obituary[i], sizeof( obituary_t ) );
+    for (i = 0; i < hudNumObituary; i++) {
+        if (cg.time - obituary[i].time > OBITUARY_TIMEOUT) {
+            continue;
+        }
+        memcpy( &hudObituary[numObituary], &obituary[i], sizeof(obituary_t));
         numObituary++;
-	}
+    }
     hudNumObituary = numObituary;
 }
 
 void HUD_DrawObituary(void) {
-    static float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    static float blueTeam[4] = { 0.0f, 0.0f, 1.0f, 0.15f };
-    static float redTeam[4] = { 1.0f, 0.0f, 0.0f, 0.15f };
-    static float player[4] = { 0.5f, 0.0f, 0.5f, 0.15f };
-    static float neutral[4] = { 0.5f, 0.5f, 0.5f, 0.15f };
+    static float color[4] = {
+            1.0f,
+            1.0f,
+            1.0f,
+            1.0f
+    };
+    static float blueTeam[4] = {
+            0.0f,
+            0.0f,
+            1.0f,
+            0.15f
+    };
+    static float redTeam[4] = {
+            1.0f,
+            0.0f,
+            0.0f,
+            0.15f
+    };
+    static float player[4] = {
+            0.5f,
+            0.0f,
+            0.5f,
+            0.15f
+    };
+    static float neutral[4] = {
+            0.5f,
+            0.5f,
+            0.5f,
+            0.15f
+    };
     static float x, y, iconSize, iconHeight, iconWidth, padding, xPadding, yPadding, textScale, textHeight;
     float wepColor[4], killerColor[4], victimColor[4];
     float killerWidth, victimWidth, totalWidth;
@@ -76,8 +101,7 @@ void HUD_DrawObituary(void) {
     yPadding = (padding * iconHeight);
     y = (0.5f * iconHeight);
 
-    switch(killfeedAlignment)
-    {
+    switch(killfeedAlignment) {
         case KF_LEFT:
             x = 0.5f * iconWidth;
             break;
@@ -156,22 +180,19 @@ void HUD_DrawObituary(void) {
 
         if (p->killer == p->victim || p->killer == ENTITYNUM_WORLD) { // Suicide
             totalWidth = victimWidth + (2.0f * xPadding) + iconWidth; // For Center Alignment
-            switch(killfeedAlignment)
-            {
+            switch(killfeedAlignment) {
                 case KF_LEFT:
-                    // Adjust x position calculations for left alignment
-                    CG_FillRect(x, y, (victimWidth + xPadding), iconHeight, victimColor );
-                    CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
+                    CG_FillRect(x, y, (victimWidth + xPadding), iconHeight, victimColor);
+                    CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
                     CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
                     break;
 
                 case KF_CENTER:
-                    // Adjust x position for each suicide obituary in center alignment
                     x = (SCREEN_WIDTH - totalWidth) * 0.5f;
-                    CG_FillRect(x, y, (victimWidth + xPadding), iconHeight, victimColor );
-                    CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
+                    CG_FillRect(x, y, (victimWidth + xPadding), iconHeight, victimColor);
+                    CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
                     CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
@@ -179,10 +200,8 @@ void HUD_DrawObituary(void) {
 
                 case KF_RIGHT:
                 default:
-                    // Keep your current calculations for right alignment.
-                    CG_FillRect(x - ((2.0f * xPadding) + iconWidth) - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight, victimColor );
-                    CG_Text_Paint(x - ((2.0f * xPadding) + iconWidth) - victimWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
-
+                    CG_FillRect(x - ((2.0f * xPadding) + iconWidth) - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight, victimColor);
+                    CG_Text_Paint(x - ((2.0f * xPadding) + iconWidth) - victimWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
                     trap->R_SetColor(wepColor);
                     CG_DrawPic(x - (xPadding + iconWidth), y, iconWidth, iconHeight, deathicon);
                     break;
@@ -204,8 +223,6 @@ void HUD_DrawObituary(void) {
                     CG_FillRect(x + killerWidth + (2.0f * xPadding) + iconWidth, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x + killerWidth + (2.5f * xPadding) + iconWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
                     break;
-
-
                 case KF_CENTER:
                     x = (SCREEN_WIDTH - totalWidth) * 0.5f;
                     CG_FillRect(x, y, (killerWidth + xPadding), iconHeight, killerColor);
@@ -217,21 +234,18 @@ void HUD_DrawObituary(void) {
                     CG_FillRect(x + killerWidth + (2.0f * xPadding) + iconWidth, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x + killerWidth + (2.5f * xPadding) + iconWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
                     break;
-
-
                 case KF_RIGHT:
                 default:
                     // Keep your current calculations for right alignment.
-                    CG_FillRect(x - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight,
-                                victimColor);
+                    CG_FillRect(x - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x - victimWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color,
-                                  cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
+                    cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
                     CG_FillRect(x - victimWidth - ((2.0f * xPadding) + iconWidth) - killerWidth - (0.5f * xPadding), y,
-                                (killerWidth + xPadding), iconHeight, killerColor);
+                    (killerWidth + xPadding), iconHeight, killerColor);
                     CG_Text_Paint(x - victimWidth - ((2.0f * xPadding) + iconWidth) - killerWidth,
-                                  y + (0.125f * (iconHeight - textHeight)), textScale, color,
-                                  cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
+                    y + (0.125f * (iconHeight - textHeight)), textScale, color,
+                    cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
                     trap->R_SetColor(wepColor);
                     CG_DrawPic(x - victimWidth - (xPadding + iconWidth), y, iconWidth, iconHeight, deathicon);
                     break;
@@ -243,15 +257,15 @@ void HUD_DrawObituary(void) {
     }
 }
 
-void CG_AddObituary( int killer, int victim, meansOfDeath_t mod ) {
-	int i;
+void CG_AddObituary(int killer, int victim, meansOfDeath_t mod) {
+    int i;
 
-	if ( hudNumObituary == MAX_OBITUARY ) {
-		for ( i = 0; i < MAX_OBITUARY - 1; i++ ) {
-			memcpy( &hudObituary[i], &hudObituary[i + 1], sizeof( obituary_t ) );
-		}
+    if (hudNumObituary == MAX_OBITUARY) {
+        for (i = 0; i < MAX_OBITUARY - 1; i++) {
+            memcpy(&hudObituary[i], &hudObituary[i + 1], sizeof(obituary_t));
+        }
         hudNumObituary--;
-	}
+    }
     hudObituary[hudNumObituary].killer = killer;
     hudObituary[hudNumObituary].victim = victim;
     hudObituary[hudNumObituary].mod = mod;
