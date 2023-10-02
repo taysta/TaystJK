@@ -25,6 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cg_local.h"
 #include "ghoul2/G2.h"
 #include "game/bg_saga.h"
+#include "cJSON.h"
 
 extern int			cgSiegeTeam1PlShader;
 extern int			cgSiegeTeam2PlShader;
@@ -1755,41 +1756,161 @@ static void CG_SetDeferredClientInfo( clientInfo_t *ci ) {
 	CG_LoadClientInfo( ci );
 }
 
-void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, char *ciCosName, char *ciCosPath)
+void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmeticItem_t **ciCosmetic, cosmeticItem_t *localCosmetics, int totalCosmetics)
 {
 	fileHandle_t file;
 	char path[MAX_QPATH];
 	int fileSize;
+	int i;
+	cosmeticItem_t *item = NULL;
 
 	if (!Q_stricmp(cosName, "none")) //No hat.
 	{
-		memset(ciCosPath, 0, sizeof(ciCosPath));
+		*ciCosmetic = NULL;
 		return;
 	}
 
 	if (strlen(cosName) > MAX_COSMETIC_LENGTH)
 	{
 		Com_Printf(S_COLOR_YELLOW"WARNING: illegal cosmetic detected, skipping: [%s].\n", cosName);
-		Q_strncpyz(ciCosName, "none", MAX_COSMETIC_LENGTH);
-		memset(ciCosPath, 0, MAX_QPATH);
+		*ciCosmetic = NULL;
 		return;
 	}
 
-	Com_sprintf(path, sizeof(path), "%s%s.md3", cosmeticPath, cosName);
+	for (i = 0; i < totalCosmetics; i++)
+	{
+		if (!Q_stricmp(cosName, localCosmetics[i].name))
+		{
+			item = &localCosmetics[i];
+			break;
+		}
+	}
+
+	if (!item) //Cosmetic is not found.
+	{
+		item = NULL;
+		return;
+	}
+
+	//this should always be true, but check again just to be safe.
+	Com_sprintf(path, sizeof(path), "%s%s.md3", cosmeticPath, item->name);
 	fileSize = trap->FS_Open(path, &file, FS_READ);
 
-	if (fileSize <= 0) //Doesnt exist.
+	if (fileSize <= 0) // File Doesnt exist.
 	{
-		Q_strncpyz(ciCosName, "none", MAX_COSMETIC_LENGTH);
-		memset(ciCosPath, 0,MAX_QPATH);
+		*ciCosmetic = NULL;
 	}
 	else
 	{
-		Q_strncpyz(ciCosName, cosName, MAX_COSMETIC_LENGTH);
-		Q_strncpyz(ciCosPath, path, MAX_QPATH);
+		*ciCosmetic = item;
 	}
 
 	trap->FS_Close(file);
+}
+
+static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, cosmeticItem_t **cosmetic, const char *model, const char *skin)
+{
+	char fullPath[MAX_QPATH];
+	char *cosmeticName;
+	fileHandle_t file;
+	int fileSize;
+
+	if (*cosmetic == NULL) return;
+
+	cosmeticName = (*cosmetic)->name;
+
+	if (pathLen + strlen(cosmeticName) + strlen("cosmetic") + 1 >= MAX_QPATH)
+	{
+		Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), path too long.\n", cosmeticName);
+		return;
+	}
+
+	Com_sprintf(fullPath, sizeof(fullPath),"%s%s.cosmetic", settingsPath, cosmeticName);
+	fileSize = trap->FS_Open(fullPath, &file, FS_READ);
+
+	if (fileSize <= 0) //File doesn't exist.
+	{
+		(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+		trap->FS_Close(file);
+	}
+	else
+	{
+		char *buff = malloc((fileSize + 1) * sizeof(char));
+		cJSON *json;
+		cJSON *jsonModel;
+		cJSON *jsonSkin;
+
+		if (!buff)
+		{
+			trap->FS_Close(file);
+			trap->Error(ERR_DROP,S_COLOR_RED"ERROR: Failed to allocate memory of cosmetic offsets.\n");
+		}
+
+		trap->FS_Read(buff, fileSize, file);
+		buff[fileSize] = '\0';
+		trap->FS_Close(file);
+
+		json = cJSON_Parse(buff);
+
+		if (!json)
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),failed to parse JSON.\n", cosmeticName);
+			(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+			free(buff);
+			return;
+		}
+
+		jsonModel = cJSON_GetObjectItemCaseSensitive(json, va("%s",model));
+
+		if (!jsonModel) // No custom offsets for model has been found, set offsets to 0;
+		{
+			(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+			cJSON_Delete(json);
+			free(buff);
+			return;
+		}
+		else
+		{
+			jsonSkin = cJSON_GetObjectItemCaseSensitive(jsonModel, va("%s", skin));
+
+			if (!jsonSkin) //No custom offsets for the skin has been found, take the ones from the model.
+			{
+				cJSON* xOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "xOffset");
+				cJSON* yOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "yOffset");
+				cJSON* zOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "zOffset");
+
+				if (cJSON_IsNumber(xOffset) && cJSON_IsNumber(yOffset) && cJSON_IsNumber(zOffset)) {
+					(*cosmetic)->xOffset = xOffset->valueint;
+					(*cosmetic)->yOffset = yOffset->valueint;
+					(*cosmetic)->zOffset = zOffset->valueint;
+				}
+				else
+				{
+					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the model (%s) JSON object does not contain valid offset values.\n", cosmeticName, model);
+					(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+				}
+			}
+			else
+			{
+				cJSON* xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
+				cJSON* yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
+				cJSON* zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
+
+				if (cJSON_IsNumber(xOffset) && cJSON_IsNumber(yOffset) && cJSON_IsNumber(zOffset)) {
+					(*cosmetic)->xOffset = xOffset->valueint;
+					(*cosmetic)->yOffset = yOffset->valueint;
+					(*cosmetic)->zOffset = zOffset->valueint;
+				}
+				else
+				{
+					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, skin);
+					(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+				}
+			}
+		}
+		cJSON_Delete(json);
+		free(buff);
+	}
 }
 
 
@@ -1868,12 +1989,11 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, newInfo.hat, newInfo.hatPath);
+		CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hatItem, localCosmetics.hats, localCosmetics.totalHats);
 	}
 	else
 	{
-		Q_strncpyz(newInfo.hat, "none", sizeof(newInfo.hat));
-		memset(newInfo.hatPath, 0, sizeof(newInfo.hatPath));
+		newInfo.hatItem = NULL;
 	}
 
 	v = Info_ValueForKey( configstring, "c2" );
@@ -1885,12 +2005,11 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, newInfo.cape, newInfo.capePath);
+		CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.capeItem, localCosmetics.capes, localCosmetics.totalCapes);
 	}
 	else
 	{
-		Q_strncpyz(newInfo.cape, "none", sizeof(newInfo.cape));
-		memset(newInfo.capePath, 0, sizeof(newInfo.capePath));
+		newInfo.capeItem = NULL;
 	}
 
 	// bot skill
@@ -1942,9 +2061,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor1 == SABER_RGB ) {
-		if (*newInfo.hat && Q_stricmp(newInfo.hat, "none"))
+		if (newInfo.hatItem)
 		{
-			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hat));
+			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hatItem->name));
 		}
 		else
 		{
@@ -1964,9 +2083,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor2 == SABER_RGB ) {
-		if (*newInfo.cape && Q_stricmp(newInfo.cape, "none"))
+		if (newInfo.capeItem)
 		{
-			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.cape));
+			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.capeItem->name));
 		}
 		else
 		{
@@ -2069,6 +2188,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			}
 		}
 	}
+
+	//Now that the model and skin are validated, we can load custom offsets for cosmetics.
+	CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,&newInfo.hatItem, newInfo.modelName, newInfo.skinName);
+	CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.capeItem, newInfo.modelName, newInfo.skinName);
 
 	if (cgs.gametype == GT_SIEGE)
 	{ //entries only sent in siege mode
@@ -9872,12 +9995,13 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
 }
 //[/Kameleon]
 
-void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, const char *path, refEntity_t parent, int position)
+void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, const char *basePath, cosmeticItem_t *cosmetic, refEntity_t parent, int position)
 {
 	int newBolt;
 	mdxaBone_t matrix;
 	vec3_t boltOrg, bAngles;
 	refEntity_t re;
+	char finalPath[MAX_QPATH];
 
 	if (!cent->ghoul2)
 	{
@@ -9932,6 +10056,10 @@ void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, 
 		VectorMA(boltOrg, 0, re.axis[1], boltOrg);
 		VectorMA(boltOrg, -2, re.axis[2], boltOrg);
 
+		boltOrg[0] += cosmetic->xOffset;
+		boltOrg[1] += cosmetic->yOffset;
+		boltOrg[2] += cosmetic->zOffset;
+
 		//rotational transitions
 		//configure the initial rotational axis
 		/*VectorCopy(axis[1], ent.axis[0]);
@@ -9946,7 +10074,9 @@ void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, 
 
 		VectorCopy(boltOrg, ent.origin);*/
 
-		re.hModel = trap->R_RegisterModel(path);
+		Com_sprintf(finalPath, sizeof(finalPath), "%s%s.md3", basePath, cosmetic->name);
+
+		re.hModel = trap->R_RegisterModel(finalPath);
 		VectorCopy(boltOrg, re.lightingOrigin);
 		VectorCopy(boltOrg, re.origin);
 
@@ -12876,13 +13006,13 @@ stillDoSaber:
         }
 		else if (cg_forceCosmetics.integer == -1)
 		{
-			if (Q_stricmp(ci->hat, "none") && *ci->hatPath)
+			if (ci->hatItem)
 			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, ci->hatPath, legs, 0);
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_HATS_PATH, ci->hatItem, legs, 0);
 			}
-			if (Q_stricmp(ci->cape, "none") && *ci->capePath)
+			if (ci->capeItem)
 			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, ci->capePath, legs, 1);
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_CAPES_PATH, ci->capeItem, legs, 1);
 			}
 		}
             //loda todo

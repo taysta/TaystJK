@@ -1716,14 +1716,14 @@ static void CG_Cosmetics(void)
 			{
 				totalCosmetics = localCosmetics.totalHats;
 				cosItems = localCosmetics.hats;
-				ciCosItem = cgs.clientinfo[cg.clientNum].hat;
+				ciCosItem = cgs.clientinfo[cg.clientNum].hatItem;
 				cvar = "color1";
 			}
 			else if (!Q_stricmp("Capes", arg))
 			{
 				totalCosmetics = localCosmetics.totalCapes;
 				cosItems = localCosmetics.capes;
-				ciCosItem = cgs.clientinfo[cg.clientNum].cape;
+				ciCosItem = cgs.clientinfo[cg.clientNum].capeItem;
 				cvar = "color2";
 			}
 			else if (!Q_stricmp("Clear", arg))
@@ -1804,7 +1804,7 @@ static void CG_Cosmetics(void)
 
 				trap->Cvar_VariableStringBuffer(cvar, cvarValue, sizeof(cvarValue));
 
-				if (Q_stricmp(cgs.clientinfo[cg.clientNum].hat, item->name))
+				if (ciCosItem != item)
 				{
 					Com_sprintf(cvarValue, sizeof(cvarValue), "%d%s", atoi(cvarValue), item->name);
 					trap->Cvar_Set(cvar, cvarValue);
