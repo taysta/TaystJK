@@ -53,17 +53,11 @@ void hud_drawobituary( void ) {
 	y = 25;
 
 	for ( p = hud_obituary; p < hud_obituary + hud_numobituary; p++ ) {
-		if ( p->weapon > WP_NONE && p->weapon < WP_NUM_WEAPONS ) {
-			deathicon = hud_media.icon_weapon[p->weapon];
-			wepcolor[0] = hud_weapon_colors[p->weapon][0];
-			wepcolor[1] = hud_weapon_colors[p->weapon][1];
-			wepcolor[2] = hud_weapon_colors[p->weapon][2];
-			wepcolor[3] = color[3];
-		} else {
-			deathicon = hud_media.icon_mod[p->mod];
-			wepcolor[0] = wepcolor[1] = wepcolor[2] = 1.0f;
-			wepcolor[3] = color[3];
-		}
+        deathicon = hud_media.icon_mod[p->mod];
+        wepcolor[0] = hud_mod_colors[p->mod][0];
+        wepcolor[1] = hud_mod_colors[p->mod][1];
+        wepcolor[2] = hud_mod_colors[p->mod][2];
+        wepcolor[3] = color[3];
 
 		if ( cg.time - p->time > OBITUARY_FADEOUTTIME ) {
 			color[3] = 1.0f - ( (float)cg.time - p->time - OBITUARY_FADEOUTTIME ) / ( OBITUARY_TIMEOUT - OBITUARY_FADEOUTTIME );
@@ -75,15 +69,15 @@ void hud_drawobituary( void ) {
 		if ( p->killer == p->victim || p->killer == ENTITYNUM_WORLD ) {
             CG_Text_Paint( x, y, 0.4f, colorWhite, va( "%s ^7%s", cgs.clientinfo[p->victim].name, "suicides" ), 0, 2, 2, FONT_MEDIUM);
 
-			y += 24;
+			y += 30;
 			continue;
 		}
-		dim = CG_Text_Width( cgs.clientinfo[p->killer].name, 0.4f, FONT_MEDIUM);
+		dim = CG_Text_Width( cgs.clientinfo[p->killer].name, 0.6f, FONT_MEDIUM);
         CG_Text_Paint( x, y, 0.4f, colorWhite, cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM );
-        CG_Text_Paint( x + dim + 30 , y, 0.4f, colorWhite, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
-        trap->R_SetColor( NULL );
-        CG_DrawPic( x + dim + 6, y - 2, 18, 18, deathicon );
-		y += 24;
+        CG_Text_Paint( x + dim + (36 * cgs.widthRatioCoef), y, 0.6f, colorWhite, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM );
+        trap->R_SetColor( wepcolor );
+        CG_DrawPic( x + dim + (6 * cgs.widthRatioCoef), y - 3, 24 * cgs.widthRatioCoef, 24, deathicon );
+		y += 30;
 	}
 	trap->R_SetColor( NULL );
 }
