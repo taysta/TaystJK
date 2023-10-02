@@ -28,15 +28,28 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #if !defined( HUD_LOCAL_H )
 #define HUD_LOCAL_H
 
-#define MAX_OBITUARY 6
+
+#define MAX_OBITUARY 8 //todo: make these cvars
 #define OBITUARY_TIMEOUT 2500
 #define OBITUARY_FADEOUTTIME 2000
-#define OBITUARY_ICON_SIZE 26.0f
+#define OBITUARY_ICON_SIZE 26.0f //todo: make these cvars
 
 #define OBITUARY_PADDING_SCALAR 0.2f
 #define OBITUARY_TEXT_DOWNSCALE 32.0f
-extern vec4_t       hudModColors[MOD_MAX];
-extern const char	*hudModIcons[MOD_MAX];
+
+enum KillfeedAlignment
+{
+    KF_LEFT,
+    KF_CENTER,
+    KF_RIGHT,
+};
+
+typedef struct {
+    int	killer;
+    int victim;
+    meansOfDeath_t mod;
+    int time;
+} obituary_t;
 
 typedef struct {
     qhandle_t	deathIcon; // for generic kill message
@@ -44,6 +57,8 @@ typedef struct {
 } hudMedia_t;
 
 extern hudMedia_t hm;
+extern vec4_t       hudModColors[MOD_MAX];
+extern const char	*hudModIcons[MOD_MAX];
 
 // get all the required assets
 void HUD_InitMedia( void );

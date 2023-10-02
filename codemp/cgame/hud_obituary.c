@@ -29,22 +29,7 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #include "cg_local.h"
 #include "hud_local.h"
 
-enum KillfeedAlignment
-{
-    KF_LEFT,
-    KF_CENTER,
-    KF_RIGHT,
-};
-
-int killfeedAlignment = KF_LEFT; // default value
-
-typedef struct {
-	int	killer;
-	int victim;
-	meansOfDeath_t mod;
-	int time;
-} obituary_t;
-
+static int killfeedAlignment = KF_LEFT; //todo: make this a cvar
 static obituary_t hudObituary[MAX_OBITUARY];
 static int hudNumObituary;
 
