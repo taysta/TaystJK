@@ -32,7 +32,7 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #define MAX_OBITUARY 8
 #define OBITUARY_TIMEOUT 2500
 #define OBITUARY_FADEOUTTIME 2000
-#define OBITUARY_ICON_SIZE 26.0f //todo: make these cvars
+#define OBITUARY_ICON_SIZE 26.0f
 
 #define OBITUARY_PADDING_SCALAR 0.2f
 #define OBITUARY_TEXT_DOWNSCALE 32.0f
