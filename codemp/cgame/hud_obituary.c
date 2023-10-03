@@ -32,16 +32,16 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 static int killfeedAlignment;
 static obituary_t hudObituary[MAX_OBITUARY];
 static int hudNumObituary;
-static int kfXOffset, kfYOffset, kfSize;
+static float kfXOffset, kfYOffset, kfSize;
 void HUD_InitObituary(void) {
     hudNumObituary = 0;
 }
 
 void HUD_InitKFAlignment(void) {
     killfeedAlignment = cg_killfeedAlignment.integer;
-    kfXOffset = cg_killfeedX.integer;
-    kfYOffset = cg_killfeedY.integer;
-    kfSize = cg_killfeedSize.integer;
+    kfXOffset = cg_killfeedX.value;
+    kfYOffset = cg_killfeedY.value;
+    kfSize = cg_killfeedSize.value;
 }
 
 static void HUD_PurgeObituary(void) {
@@ -94,7 +94,7 @@ void HUD_DrawObituary(void) {
     float wepColor[4], killerColor[4], victimColor[4];
     float killerWidth, victimWidth, totalWidth;
     obituary_t *p;
-    qhandle_t deathicon;
+    qhandle_t deathIcon;
 
     HUD_PurgeObituary();
 
@@ -130,7 +130,7 @@ void HUD_DrawObituary(void) {
 
     for (p = hudObituary; p < hudObituary + hudNumObituary; p++) {
         // Set the method of death icon
-        deathicon = hm.modIcon[p->mod];
+        deathIcon = hm.modIcon[p->mod];
         // Set the icons' color
         wepColor[0] = hudModColors[p->mod][0];
         wepColor[1] = hudModColors[p->mod][1];
@@ -199,24 +199,24 @@ void HUD_DrawObituary(void) {
                     CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathIcon);
                     break;
 
                 case KF_CENTER:
-                    x = (SCREEN_WIDTH - totalWidth) * 0.5f;
+                    x += (SCREEN_WIDTH - totalWidth) * 0.5f;
                     CG_FillRect(x, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x + victimWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathIcon);
                     break;
 
                 case KF_RIGHT:
                 default:
-                    CG_FillRect(x - ((2.0f * xPadding) + iconWidth) - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight, victimColor);
+                    CG_FillRect(x - ((2.5f * xPadding) + iconWidth) - victimWidth, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x - ((2.0f * xPadding) + iconWidth) - victimWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x - (xPadding + iconWidth), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x - (xPadding + iconWidth), y, iconWidth, iconHeight, deathIcon);
                     break;
             }
             trap->R_SetColor(NULL);
@@ -231,7 +231,7 @@ void HUD_DrawObituary(void) {
                     CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x + killerWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x + killerWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathIcon);
 
                     CG_FillRect(x + killerWidth + (2.0f * xPadding) + iconWidth, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x + killerWidth + (2.5f * xPadding) + iconWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
@@ -242,25 +242,22 @@ void HUD_DrawObituary(void) {
                     CG_Text_Paint(x + (0.5f * xPadding), y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
 
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x + killerWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x + killerWidth + (1.5f * xPadding), y, iconWidth, iconHeight, deathIcon);
 
                     CG_FillRect(x + killerWidth + (2.0f * xPadding) + iconWidth, y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x + killerWidth + (2.5f * xPadding) + iconWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
                     break;
                 case KF_RIGHT:
                 default:
-                    // Keep your current calculations for right alignment.
                     CG_FillRect(x - victimWidth - (0.5f * xPadding), y, (victimWidth + xPadding), iconHeight, victimColor);
                     CG_Text_Paint(x - victimWidth, y + (0.125f * (iconHeight - textHeight)), textScale, color,
                     cgs.clientinfo[p->victim].name, 0, 0, 4, FONT_MEDIUM);
 
-                    CG_FillRect(x - victimWidth - ((2.0f * xPadding) + iconWidth) - killerWidth - (0.5f * xPadding), y,
-                    (killerWidth + xPadding), iconHeight, killerColor);
-                    CG_Text_Paint(x - victimWidth - ((2.0f * xPadding) + iconWidth) - killerWidth,
-                    y + (0.125f * (iconHeight - textHeight)), textScale, color,
-                    cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
                     trap->R_SetColor(wepColor);
-                    CG_DrawPic(x - victimWidth - (xPadding + iconWidth), y, iconWidth, iconHeight, deathicon);
+                    CG_DrawPic(x - victimWidth - (xPadding + iconWidth), y, iconWidth, iconHeight, deathIcon);
+
+                    CG_FillRect(x - victimWidth - ((2.5f * xPadding) + iconWidth) - killerWidth, y,(killerWidth + xPadding), iconHeight, killerColor);
+                    CG_Text_Paint(x - victimWidth - ((2.0f * xPadding) + iconWidth) - killerWidth,y + (0.125f * (iconHeight - textHeight)), textScale, color,cgs.clientinfo[p->killer].name, 0, 0, 4, FONT_MEDIUM);
                     break;
             }
             // Move the cursor down for the next line
