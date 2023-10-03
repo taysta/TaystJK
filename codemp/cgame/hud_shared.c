@@ -75,16 +75,16 @@ vec4_t hudModColors[MOD_MAX] = {
 };
 
 const char *hudModIcons[ MOD_MAX ] = {
-        "hud/mod/generic",          // MOD_UNKNOWN
-        "hud/mod/stun",             // MOD_STUN_BATON
-        "hud/mod/melee",            // MOD_MELEE
-        "hud/mod/saber",            // MOD_SABER
-        "hud/mod/pistol",           // MOD_BRYAR_PISTOL
-        "hud/mod/pistol",           // MOD_BRYAR_PISTOL_ALT
-        "hud/mod/rifle",            // MOD_BLASTER
-        "hud/mod/rifle",            // MOD_TURBLAST
-        "hud/mod/disruptor",        // MOD_DISRUPTOR
-        "hud/mod/disruptor",        // MOD_DISRUPTOR_SPLASH
+        "hud/mod/generic",           // MOD_UNKNOWN
+        "hud/mod/stun",              // MOD_STUN_BATON
+        "hud/mod/melee",             // MOD_MELEE
+        "hud/mod/saber",             // MOD_SABER
+        "hud/mod/pistol",            // MOD_BRYAR_PISTOL
+        "hud/mod/pistol",            // MOD_BRYAR_PISTOL_ALT
+        "hud/mod/rifle",             // MOD_BLASTER
+        "hud/mod/rifle_alt",         // MOD_TURBLAST
+        "hud/mod/disruptor",         // MOD_DISRUPTOR
+        "hud/mod/disruptor",         // MOD_DISRUPTOR_SPLASH
         "hud/mod/disruptor_alt",    // MOD_DISRUPTOR_SNIPER
         "hud/mod/bowcaster",        // MOD_BOWCASTER
         "hud/mod/repeater",         // MOD_REPEATER
@@ -92,16 +92,16 @@ const char *hudModIcons[ MOD_MAX ] = {
         "hud/mod/repeater_alt",     // MOD_REPEATER_ALT_SPLASH
         "hud/mod/demp2",            // MOD_DEMP2
         "hud/mod/demp2_alt",        // MOD_DEMP2_ALT
-        "hud/mod/flachette",        // MOD_FLECHETTE
-        "hud/mod/flachette_alt",    // MOD_FLECHETTE_ALT_SPLASH
+        "hud/mod/flechette",        // MOD_FLECHETTE
+        "hud/mod/flechette_alt",    // MOD_FLECHETTE_ALT_SPLASH
         "hud/mod/merrsonn",         // MOD_ROCKET
-        "hud/mod/merrsonn",         // MOD_ROCKET_SPLASH
+        "hud/mod/merrsonn_splash",  // MOD_ROCKET_SPLASH
         "hud/mod/merrsonn_alt",     // MOD_ROCKET_HOMING
         "hud/mod/merrsonn_alt",     // MOD_ROCKET_HOMING_SPLASH
         "hud/mod/thermal",          // MOD_THERMAL
-        "hud/mod/thermal",          // MOD_THERMAL_SPLASH
+        "hud/mod/thermal_alt",      // MOD_THERMAL_SPLASH
         "hud/mod/mine",             // MOD_TRIP_MINE_SPLASH
-        "hud/mod/mine",             // MOD_TIMED_MINE_SPLASH
+        "hud/mod/mine_alt",         // MOD_TIMED_MINE_SPLASH
         "hud/mod/detpack",          // MOD_DET_PACK_SPLASH
         "hud/mod/swoop",            // MOD_VEHICLE
         "hud/mod/concussion",       // MOD_CONC
