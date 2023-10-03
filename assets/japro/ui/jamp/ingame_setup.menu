@@ -27,6 +27,7 @@
 
 			show			setup_background
 			show			video
+			hide			video2
 			hide			advancedvideo
 			hide			lighting
 			hide			advancedlighting
@@ -75,7 +76,7 @@
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
 			text				@MENUS_SETUP
-			rect				20 5 510 28
+			rect				20 5 530 28
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			255
 			textaligny			2
@@ -204,6 +205,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				show			lighting
 				hide			advancedlighting
@@ -270,6 +272,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -336,6 +339,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -402,6 +406,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -469,6 +474,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -535,6 +541,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -616,6 +623,7 @@
 
 				show			setup_background
 				hide 			video
+				hide 			video2
 				hide			advancedvideo
 				hide			lighting
 				hide			advancedlighting
@@ -841,9 +849,9 @@
 		//----------------------------------------------------------------------------------------------
 		itemDef
 		{
-				name 			graphics
-			group 			video
-			text			@MENUS_VIDEO_QUALITY
+			name				renderer
+			group 			    video
+			text				"Renderer:"
 				type 			ITEM_TYPE_MULTI
 			rect			220 43 300 20
 				textalign		ITEM_ALIGN_RIGHT
@@ -853,19 +861,10 @@
 			textscale 		1
 			style			WINDOW_STYLE_FILLED
 			forecolor		.615 .615 .956 1
-			descText		@MENUS_SELECT_PRESET_GRAPHIC
-
-				visible 		0
-
-			cvar 			"ui_r_glCustom"
-			cvarFloatList
-			{
-				@MENUS_HIGH_QUALITY	0
-				@MENUS_NORMAL		1
-				@MENUS_FAST			2
-				@MENUS_FASTEST		3
-				@MENUS_CUSTOM		4
-			}
+			cvarStrList			{  "Vanilla" , "rd-vanilla" , "Vulkan", "rd-vulkan", "Rend2" , "rd-rend2" }
+			descText			"Change the renderer library to use."
+			cvar				"cl_renderer"
+			visible				1
 
 			mouseenter
 			{
@@ -1622,6 +1621,506 @@
 			}
 			mouseenter			{ show advancedvideobutton_glow }
 			mouseexit			{ hide advancedvideobutton_glow }
+		}
+
+		// rend2 addition: button advanced video settings
+		itemDef
+		{
+ 			name				advanced_video
+			group				advancedvideo
+      		type				ITEM_TYPE_BUTTON
+			text				"Rend2 Video Settings"
+			rect				260 303 200 20
+	   		textalign			ITEM_ALIGN_CENTER
+			textalignx			100
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			1 .682 0 1
+			visible				0
+			descText			"Configure rend2 video options"
+			cvarTest			"cl_renderer"
+			hideCvar			{ "rd-vanilla" }
+
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				hide			advancedvideo
+				show			video2
+				hide			applybutton_glow
+			}
+			mouseenter
+			{
+				show			highlight14
+			}
+			mouseexit
+			{
+				hide			highlight14
+			}
+		}
+
+		// rend2 addition: button advanced video settings
+		itemDef
+		{
+ 			name				advanced_video
+			group				video2
+      		type				ITEM_TYPE_BUTTON
+			text				"Back"
+			rect				220 303 300 20
+				textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			0.65 0.65 1 1
+			visible				0
+			descText			"Rend2 video settings"
+			cvarTest			"cl_renderer"
+			hideCvar			{ "rd-vanilla" }
+
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				show			video
+				hide			video2
+				hide			applybutton_glow
+			}
+			mouseenter
+			{
+				show			highlight14
+			}
+			mouseexit
+			{
+				hide			highlight14
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				hdr
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"HDR:"
+			rect			    220 43 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Rendering in HDR Colorspace"
+			cvar				"r_hdr"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight1
+			}
+			mouseexit
+			{
+				hide			highlight1
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				tonemapping
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Tonemapping:"
+			rect			    220 63 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Tonemapping"
+			cvar				"r_tonemap"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight2
+			}
+			mouseexit
+			{
+				hide			highlight2
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				autoexp
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Autoexposure:"
+			rect			    220 83 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Autoexposure"
+			cvar				"r_autoexposure"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight3
+			}
+			mouseexit
+			{
+				hide			highlight3
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				hdrlightmap
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"HDR Lighting support:"
+			rect			    220 103 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Load hdr lighting data. (requires rend2 lighting data)"
+			cvar				"r_floatLightmap"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				0
+			cvarTest			"r_hdr"
+			hideCvar			{ 0 }
+
+			mouseenter
+			{
+				show			highlight4
+			}
+			mouseexit
+			{
+				hide			highlight4
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				deluxemap
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Deluxemapping:"
+			rect			    220 123 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Enables normalmapping and specularmapping on static geometry."
+			cvar				"r_deluxemapping"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight5
+			}
+			mouseexit
+			{
+				hide			highlight5
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				deluxeSpec
+			group				video2
+			type				ITEM_TYPE_SLIDER
+			text				"Deluxemap Specular:"
+			cvarfloat			"r_deluxeSpecular" 1 0.0 1.0
+			rect			    220 143 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			visible				0
+			descText			"Scale the specular response from deluxemaps."
+			cvarTest			"r_deluxemapping"
+			hideCvar			{ 0 }
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+			}
+			mouseenter
+			{
+				show			highlight6
+			}
+			mouseexit
+			{
+				hide			highlight6
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				cubemap
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Cubemapping:"
+			rect			    220 163 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Render cubemaps for reflections."
+			cvar				"r_cubemapping"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight7
+			}
+			mouseexit
+			{
+				hide			highlight7
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				cubemapbounces
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Cubemapping bounces:"
+			rect			    220 183 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"How many reflection bounces to render in cubemaps."
+			cvar				"r_cubemappingBounces"
+			cvarFloatList
+			{
+				"0" 	0
+				"1" 	1
+				"2" 	2
+			}
+			cvarTest			"r_cubemapping"
+			hideCvar			{ 0 }
+			visible				1
+
+			mouseenter
+			{
+				show			highlight8
+			}
+			mouseexit
+			{
+				hide			highlight8
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				parallax
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Parallax Occlusion Mapping:"
+			rect			    220 203 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Parallax Occlusion Mapping (requires rend2 materials)"
+			cvar				"r_parallaxmapping"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight9
+			}
+			mouseexit
+			{
+				hide			highlight9
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				genNormals
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"Generate Normalmaps:"
+			rect			    220 223 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Generate normalmaps from diffuse textures."
+			cvar				"r_genNormalMaps"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				1
+
+			mouseenter
+			{
+				show			highlight10
+			}
+			mouseexit
+			{
+				hide			highlight10
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
+		}
+
+		// rend2 addition
+		itemDef
+		{
+			name				ssao
+			group				video2
+			type				ITEM_TYPE_MULTI
+			text				"SSAO:"
+			rect			    220 243 300 20
+			textalign			ITEM_ALIGN_RIGHT
+			textalignx			165
+			textaligny			0
+			font 				4
+			textscale 			1
+			forecolor			.615 .615 .956 1
+			descText			"Screenspace ambient occlusion"
+			cvar				"r_ssao"
+			cvarFloatList
+			{
+				@MENUS_OFF 	0
+				@MENUS_ON 	1
+			}
+			visible				0
+
+			mouseenter
+			{
+				show			highlight11
+			}
+			mouseexit
+			{
+				hide			highlight11
+			}
+			action
+			{
+				play			"sound/interface/button1.wav" ;
+				setcvar			ui_r_modified	1 ;
+				show			applyChanges
+			}
 		}
 
 		// APPLY CHANGES BUTTON
