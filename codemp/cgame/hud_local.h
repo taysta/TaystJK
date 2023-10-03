@@ -29,7 +29,7 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #define HUD_LOCAL_H
 
 
-#define MAX_OBITUARY 8 //todo: make these cvars
+#define MAX_OBITUARY 8
 #define OBITUARY_TIMEOUT 2500
 #define OBITUARY_FADEOUTTIME 2000
 #define OBITUARY_ICON_SIZE 26.0f //todo: make these cvars
@@ -39,9 +39,9 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 enum KillfeedAlignment
 {
+    KF_RIGHT,
     KF_LEFT,
     KF_CENTER,
-    KF_RIGHT,
 };
 
 typedef struct {
@@ -64,5 +64,5 @@ extern const char	*hudModIcons[MOD_MAX];
 void HUD_InitMedia( void );
 void HUD_InitObituary( void );
 void HUD_DrawObituary( void );
-
+void HUD_InitKFAlignment( void );
 #endif

@@ -444,6 +444,26 @@ XDOCS_CVAR_DEF("g_gametype", "Gametype that the server is currently on",
 	SETTING("9", "CTY")
 )
 
+XDOCS_CVAR_DEF("cg_killfeed", "Draw a killfeed on the HUD",
+SETTING("0", "Disable the HUD killfeed") NL
+SETTING("1", "Draw killfeed HUD") NL
+SETTING("2", "Draw killfeed HUD + console death messages")
+)
+
+XDOCS_CVAR_DEF("cg_killfeedAlignment", "Align the killfeed",
+SETTING("0", "Align items to the right") NL
+SETTING("1", "Align items to the center") NL
+SETTING("2", "Align items to the left")
+)
+
+XDOCS_CVAR_DEF("cg_killfeedX", "Offset the killfeed's horizontal position from its current position",""
+)
+
+XDOCS_CVAR_DEF("cg_killfeedY", "Offset the killfeed's vertical position from its current position",""
+)
+XDOCS_CVAR_DEF("cg_killfeedSize", "Resize the killfeed",""
+)
+
 //Work from above this line
 
 // ...

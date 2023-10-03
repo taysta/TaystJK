@@ -11279,8 +11279,8 @@ static void CG_Draw2D( void ) {
 		return;
 	}
 
-    //todo: guard this with cvar
-    CG_Draw2DNew(  );
+    if(cg_killfeed.integer)
+        CG_Draw2DNew(  );
 
 	CG_Draw2DScreenTints();
 

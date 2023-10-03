@@ -29,12 +29,19 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #include "cg_local.h"
 #include "hud_local.h"
 
-static int killfeedAlignment = KF_LEFT; //todo: make this a cvar
+static int killfeedAlignment;
 static obituary_t hudObituary[MAX_OBITUARY];
 static int hudNumObituary;
-
+static int kfXOffset, kfYOffset, kfSize;
 void HUD_InitObituary(void) {
     hudNumObituary = 0;
+}
+
+void HUD_InitKFAlignment(void) {
+    killfeedAlignment = cg_killfeedAlignment.integer;
+    kfXOffset = cg_killfeedX.integer;
+    kfYOffset = cg_killfeedY.integer;
+    kfSize = cg_killfeedSize.integer;
 }
 
 static void HUD_PurgeObituary(void) {
@@ -71,16 +78,16 @@ void HUD_DrawObituary(void) {
             0.0f,
             0.15f
     };
-    static float player[4] = {
-            0.5f,
+    static float playerColor[4] = {
             0.0f,
-            0.5f,
+            1.0f,
+            0.0f,
             0.15f
     };
-    static float neutral[4] = {
-            0.5f,
-            0.5f,
-            0.5f,
+    static float neutralColor[4] = {
+            0.6f,
+            0.6f,
+            0.6f,
             0.15f
     };
     static float x, y, iconSize, iconHeight, iconWidth, padding, xPadding, yPadding, textScale, textHeight;
@@ -92,7 +99,10 @@ void HUD_DrawObituary(void) {
     HUD_PurgeObituary();
 
     // Set up the killfeed
-    iconSize = OBITUARY_ICON_SIZE;
+    if(cg_killfeedSize.integer)
+        iconSize = kfSize;
+    else
+        iconSize = OBITUARY_ICON_SIZE;
     padding = OBITUARY_PADDING_SCALAR;
     iconWidth = (iconSize * cgs.widthRatioCoef);
     iconHeight = iconSize;
@@ -115,6 +125,9 @@ void HUD_DrawObituary(void) {
             break;
     }
 
+    x += kfXOffset;
+    y += kfYOffset;
+
     for (p = hudObituary; p < hudObituary + hudNumObituary; p++) {
         // Set the method of death icon
         deathicon = hm.modIcon[p->mod];
@@ -126,8 +139,8 @@ void HUD_DrawObituary(void) {
         // Set the box colors based on game type
         if (cgs.gametype >= GT_TEAM) {
             // Use a neutral grey color
-            Vector4Copy(neutral, victimColor);
-            Vector4Copy(neutral, killerColor);
+            Vector4Copy(neutralColor, victimColor);
+            Vector4Copy(neutralColor, killerColor);
             // Get the killer's team color
             if (cgs.clientinfo[p->killer].team == TEAM_BLUE) {
                 Vector4Copy(blueTeam, killerColor);
@@ -136,7 +149,7 @@ void HUD_DrawObituary(void) {
             }
             // Check if it's the local player
             if (p->killer == cg.snap->ps.clientNum) {
-                Vector4Copy(player, killerColor);
+                Vector4Copy(playerColor, killerColor);
             }
             // Get the victim's team color
             if (cgs.clientinfo[p->victim].team == TEAM_BLUE) {
@@ -146,18 +159,18 @@ void HUD_DrawObituary(void) {
             }
             // Check if it's the local player
             if (p->victim == cg.snap->ps.clientNum) {
-                Vector4Copy(player, victimColor);
+                Vector4Copy(playerColor, victimColor);
             }
         } else {
             // Use a neutral grey color
-            Vector4Copy(neutral, victimColor);
-            Vector4Copy(neutral, killerColor);
+            Vector4Copy(neutralColor, victimColor);
+            Vector4Copy(neutralColor, killerColor);
             // Unless it's the local player
             if (p->killer == cg.snap->ps.clientNum) {
-                Vector4Copy(player, killerColor);
+                Vector4Copy(playerColor, killerColor);
             }
             if (p->victim == cg.snap->ps.clientNum) {
-                Vector4Copy(player, victimColor);
+                Vector4Copy(playerColor, victimColor);
             }
         }
 
@@ -259,7 +272,7 @@ void HUD_DrawObituary(void) {
 
 void CG_AddObituary(int killer, int victim, meansOfDeath_t mod) {
     int i;
-
+    HUD_InitKFAlignment();
     if (hudNumObituary == MAX_OBITUARY) {
         for (i = 0; i < MAX_OBITUARY - 1; i++) {
             memcpy(&hudObituary[i], &hudObituary[i + 1], sizeof(obituary_t));
