@@ -90,7 +90,7 @@ void HUD_DrawObituary(void) {
             0.6f,
             0.15f
     };
-    static float x, y, iconSize, iconHeight, iconWidth, padding, xPadding, yPadding, textScale, textHeight;
+    float x, y, iconSize, iconHeight, iconWidth, padding, xPadding, yPadding, textScale, textHeight;
     float wepColor[4], killerColor[4], victimColor[4];
     float killerWidth, victimWidth, totalWidth;
     obituary_t *p;
