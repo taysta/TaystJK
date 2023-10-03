@@ -1807,13 +1807,14 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 
 	trap->FS_Close(file);
 }
-
+#define VALID_COSMETIC_OFFSETS(x, y, z) (cJSON_IsNumber(x) && cJSON_IsNumber(y) && cJSON_IsNumber(z))
 static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, cosmeticItem_t **cosmetic, const char *model, const char *skin)
 {
 	char fullPath[MAX_QPATH];
 	char *cosmeticName;
 	fileHandle_t file;
-	int fileSize;
+	int fileSize, i;
+	qboolean modelFallback = qfalse; //Let's set the default value to false.
 
 	if (*cosmetic == NULL) return;
 
@@ -1839,6 +1840,8 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 		cJSON *json;
 		cJSON *jsonModel;
 		cJSON *jsonSkin;
+		cJSON *jsonModelFallback;
+		cJSON *xOffset, *yOffset, *zOffset;
 
 		if (!buff)
 		{
@@ -1854,7 +1857,7 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 
 		if (!json)
 		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),failed to parse JSON.\n", cosmeticName);
+			Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), failed to parse JSON.\n", cosmeticName);
 			(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
 			free(buff);
 			return;
@@ -1862,48 +1865,148 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 
 		jsonModel = cJSON_GetObjectItemCaseSensitive(json, va("%s",model));
 
-		if (!jsonModel) // No custom offsets for model has been found, set offsets to 0;
+		if (!jsonModel) // No custom offsets for the exact model have been been found, lets look for wildcard names.
 		{
-			(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
-			cJSON_Delete(json);
-			free(buff);
-			return;
+			char* ptr;
+			int longestLen = 0;
+			int skinLen = strlen(model);
+			int len;
+			int index = -1;
+
+			for (i = 0; i < cJSON_GetArraySize(json); i++)
+			{
+				cJSON* temp = cJSON_GetArrayItem(json, i);
+
+				if (!cJSON_IsObject(temp)) continue;
+				ptr = strchr(temp->string, '*');
+				if (!ptr) continue;
+				len = ptr - temp->string;
+
+				if (len <= skinLen && !strncmp(temp->string, model, len))
+				{
+					if (len > longestLen)
+					{
+						longestLen = len;
+						index = i;
+					}
+				}
+			}
+
+			if (index > -1) //We found a wildcard model.
+			{
+				jsonModel = cJSON_GetArrayItem(json, index);
+				goto foundValidModel;
+			}
+			else
+			{
+				(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+				cJSON_Delete(json);
+				free(buff);
+				return;
+			}
 		}
 		else
 		{
-			jsonSkin = cJSON_GetObjectItemCaseSensitive(jsonModel, va("%s", skin));
-
-			if (!jsonSkin) //No custom offsets for the skin has been found, take the ones from the model.
+			foundValidModel:
+			jsonModelFallback = cJSON_GetObjectItem(jsonModel, "modelFallback");
+			if (cJSON_IsBool(jsonModelFallback))
 			{
-				cJSON* xOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "xOffset");
-				cJSON* yOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "yOffset");
-				cJSON* zOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "zOffset");
-
-				if (cJSON_IsNumber(xOffset) && cJSON_IsNumber(yOffset) && cJSON_IsNumber(zOffset)) {
-					(*cosmetic)->xOffset = xOffset->valueint;
-					(*cosmetic)->yOffset = yOffset->valueint;
-					(*cosmetic)->zOffset = zOffset->valueint;
+				if (cJSON_IsTrue(jsonModelFallback)) {
+					modelFallback = qtrue;
 				}
 				else
 				{
-					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the model (%s) JSON object does not contain valid offset values.\n", cosmeticName, model);
-					(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+					modelFallback = qfalse;
+				}
+			}
+
+			jsonSkin = cJSON_GetObjectItemCaseSensitive(jsonModel, va("%s", skin));
+
+			if (!jsonSkin) // No custom offsets for the exact skin have been been found, lets look for wildcard names.
+			{	
+				char *ptr;
+				int longestLen = 0;
+				int skinLen = strlen(skin);
+				int len;
+				int index = -1;
+
+				for (i = 0; i < cJSON_GetArraySize(jsonModel); i++)
+				{
+					cJSON *temp = cJSON_GetArrayItem(jsonModel, i);
+
+					if (!cJSON_IsObject(temp)) continue;
+					ptr = strchr(temp->string, '*');
+					if (!ptr) continue;
+					len = ptr - temp->string;
+
+					if (len <= skinLen && !strncmp(temp->string, skin, len))
+					{
+						if (len > longestLen)
+						{
+							longestLen = len;
+							index = i;
+						}
+					}
+				}
+
+				if (index > -1) //We found a wildcard skin.
+				{
+					jsonSkin = cJSON_GetArrayItem(jsonModel, index);
+
+					xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
+					yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
+					zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
+
+					if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
+						(*cosmetic)->xOffset = xOffset->valueint;
+						(*cosmetic)->yOffset = yOffset->valueint;
+						(*cosmetic)->zOffset = zOffset->valueint;
+					}
+					else
+					{
+						Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
+						(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+					}
+				}
+				else //No wildcard found, check if we should fallback to the model's offsets or not.
+				{
+					if (modelFallback)
+					{
+						xOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "xOffset");
+						yOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "yOffset");
+						zOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "zOffset");
+
+						if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
+							(*cosmetic)->xOffset = xOffset->valueint;
+							(*cosmetic)->yOffset = yOffset->valueint;
+							(*cosmetic)->zOffset = zOffset->valueint;
+						}
+						else
+						{
+							Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the model (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonModel->string);
+							(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+						}
+					}
+					else
+					{
+						(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+					}
 				}
 			}
 			else
 			{
-				cJSON* xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
-				cJSON* yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
-				cJSON* zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
+				xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
+				yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
+				zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
 
-				if (cJSON_IsNumber(xOffset) && cJSON_IsNumber(yOffset) && cJSON_IsNumber(zOffset)) {
+				if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
 					(*cosmetic)->xOffset = xOffset->valueint;
 					(*cosmetic)->yOffset = yOffset->valueint;
 					(*cosmetic)->zOffset = zOffset->valueint;
 				}
 				else
 				{
-					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, skin);
+					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
 					(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
 				}
 			}
