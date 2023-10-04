@@ -132,9 +132,16 @@ void HUD_DrawObituary(void) {
         // Set the method of death icon
         deathIcon = hm.modIcon[p->mod];
         // Set the icons' color
-        wepColor[0] = hudModColors[p->mod][0];
-        wepColor[1] = hudModColors[p->mod][1];
-        wepColor[2] = hudModColors[p->mod][2];
+        if(cg_killfeedColors.integer){
+            wepColor[0] = hudModColors[p->mod][0];
+            wepColor[1] = hudModColors[p->mod][1];
+            wepColor[2] = hudModColors[p->mod][2];
+        } else {
+            wepColor[0] = color[0];
+            wepColor[1] = color[0];
+            wepColor[2] = color[0];
+        }
+
 
         // Set the box colors based on game type
         if (cgs.gametype >= GT_TEAM) {

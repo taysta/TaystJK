@@ -461,7 +461,11 @@ XDOCS_CVAR_DEF("cg_killfeedX", "Offset the killfeed's horizontal position from i
 
 XDOCS_CVAR_DEF("cg_killfeedY", "Offset the killfeed's vertical position from its current position",""
 )
+
 XDOCS_CVAR_DEF("cg_killfeedSize", "Resize the killfeed",""
+)
+
+XDOCS_CVAR_DEF("cg_killfeedColors", "Color the killfeed icons",""
 )
 
 //Work from above this line
