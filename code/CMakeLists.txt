@@ -175,7 +175,7 @@ if(BuildSPEngine OR BuildJK2SPEngine)
 		"${SPDir}/qcommon/z_memman_pc.cpp"
 		"${SPDir}/qcommon/qfiles.h"
 		"${SPDir}/qcommon/qcommon.h"
-		"${SPDir}/qcommon/stv_version.h"
+		"${SPDir}/qcommon/game_version.h"
 		"${SPDir}/qcommon/timing.h"
 		"${SPDir}/qcommon/MiniHeap.h"
 
@@ -190,7 +190,7 @@ if(BuildSPEngine OR BuildJK2SPEngine)
 		)
 	source_group("common" FILES ${SPEngineCommonFiles})
 	set(SPEngineFiles ${SPEngineFiles} ${SPEngineCommonFiles})
-	
+
 	set(SPEngineCommonSafeFiles
 		"${SharedDir}/qcommon/safe/files.cpp"
 		"${SharedDir}/qcommon/safe/files.h"

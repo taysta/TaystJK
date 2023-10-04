@@ -28,8 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "client.h"
 #include "qcommon/stringed_ingame.h"
-#include "qcommon/stv_version.h"
-#include "qcommon/q_version.h"
+#include "qcommon/game_version.h"
 
 int g_console_field_width = 78;
 
@@ -573,14 +572,6 @@ void Con_DrawSolidConsole( float frac )
 	for (x=0 ; x<i ; x++) {
 		SCR_DrawSmallChar( cls.glconfig.vidWidth - ( i - x + 1 ) * SMALLCHAR_WIDTH,
 			(lines-(SMALLCHAR_HEIGHT+SMALLCHAR_HEIGHT/2)), JK_VERSION[x] );
-	}
-
-	const char *revision = "revision: " GIT_HASH;
-	i = strlen(revision);
-
-	for (x = 0; x < i; x++) {
-		SCR_DrawSmallChar( cls.glconfig.vidWidth - (i - x + 1) * SMALLCHAR_WIDTH,
-			(lines - (SMALLCHAR_HEIGHT * 2 + SMALLCHAR_HEIGHT / 2)), revision[x] );
 	}
 
 	// draw the text

@@ -28,7 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "g_nav.h"
 #include "bg_saga.h"
 #include "b_local.h"
-#include "qcommon/q_version.h"
+#include "qcommon/game_version.h"
 
 NORETURN_PTR void (*Com_Error)( int level, const char *error, ... );
 void (*Com_Printf)( const char *msg, ... );
@@ -199,7 +199,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	BG_VehicleLoadParms();
 
 	trap->Print ("------- Game Initialization -------\n");
-	trap->Print ("gamename: %s\n", GAMEVERSION);
+	trap->Print ("gamename: %s\n", JK_VERSION);
 	trap->Print ("gamedate: %s\n", SOURCE_DATE);
 
 	G_RegisterCvars();

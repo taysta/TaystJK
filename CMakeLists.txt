@@ -1,17 +1,17 @@
 #============================================================================
 # Copyright (C) 2013 - 2018, OpenJK contributors
-# 
+#
 # This file is part of the OpenJK source code.
-# 
+#
 # OpenJK is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #============================================================================
@@ -246,7 +246,7 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 
 	# enable somewhat modern C++
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-	
+
 	if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
@@ -320,17 +320,18 @@ else()
 	message(STATUS "SOURCE_DATE_EPOCH is set ($ENV{SOURCE_DATE_EPOCH}): SOURCE_DATE set to \"${SOURCE_DATE}\"")
 endif()
 
-# Current Git SHA1 hash
+# Current Git tag/version
+# ideally we would separate the hash suffix into its own variable, but sed is not available everywhere
 execute_process(
-	COMMAND "git" "rev-parse" "--short" "HEAD"
-	OUTPUT_VARIABLE GIT_HASH
-	RESULT_VARIABLE GIT_HASH_ERROR
+	COMMAND "git" "describe" "--tag"
+	OUTPUT_VARIABLE GIT_TAG
+	RESULT_VARIABLE GIT_TAG_ERROR
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
-if(GIT_HASH_ERROR AND NOT GIT_HASH_ERROR EQUAL 0)
-	message(WARNING "Unable to determine Git revision")
-	set(GIT_HASH UNKNOWN)
+if(GIT_TAG_ERROR AND NOT GIT_TAG_ERROR EQUAL 0)
+	message(WARNING "Unable to determine Git tag")
+	set(GIT_TAG vUNKNOWN)
 endif()
-message(STATUS "Git revision is ${GIT_HASH}")
+message(STATUS "Git tag is ${GIT_TAG}")
 
 configure_file(shared/qcommon/q_version.h.in shared/qcommon/q_version.h @ONLY)
 
