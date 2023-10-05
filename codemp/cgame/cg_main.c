@@ -3721,7 +3721,7 @@ void dynTable_print(void)
 				}
 				separator[count] = 0;
 
-				Com_sprintf(row, sizeof(row), "%s %s%s%s %s%c", row, S_COLOR_YELLOW, tempCell->content, separator,S_COLOR_CYAN,  '|');
+				Q_strcat(row, sizeof(row), va(" %s%s%s %s%c", S_COLOR_YELLOW, tempCell->content, separator, S_COLOR_CYAN, '|'));
 				break;
 
 			case ALIGN_CENTER:
@@ -3732,7 +3732,7 @@ void dynTable_print(void)
 				}
 				separator[count] = 0;
 
-				Com_sprintf(row, sizeof(row), "%s %s%s%s%s%s %s%c", row, separator, S_COLOR_YELLOW, tempCell->content, separator, (len % 2 ? " " : ""), S_COLOR_CYAN, '|');
+				Q_strcat(row, sizeof(row), va(" %s%s%s%s%s %s%c", row, separator, S_COLOR_YELLOW, tempCell->content, separator, (len % 2 ? " " : ""), S_COLOR_CYAN, '|'));
 				break;
 			}
 

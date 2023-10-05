@@ -199,6 +199,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_CHATLOG_PRINT			(1<<3)
 #define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
 
+typedef struct cosmeticItem_s cosmeticItem_t;
+
 typedef enum //server mod enum
 {
 	SVMOD_BASEJKA,
@@ -321,11 +323,16 @@ typedef struct playerEntity_s {
 //Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
 //The remaining 2 bytes are to support the actual saber colors, since EternalJK supports up to 12 colors, we need to reserve 2 bytes for the color.
 #define MAX_COSMETIC_LENGTH 14 
+
 #define COSMETIC_HATS_PATH "models/cosmetics/hats/"
 #define COSMETIC_HATS_PATH_LENGTH strlen(COSMETIC_HATS_PATH)
+#define COSMETIC_HATS_SETTINGS_PATH "cosmetics/hats/"
+#define COSMETIC_HATS_SETTINGS_PATH_LENGTH strlen(COSMETIC_HATS_SETTINGS_PATH)
 
 #define COSMETIC_CAPES_PATH "models/cosmetics/capes/"
 #define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
+#define COSMETIC_CAPES_SETTINGS_PATH "cosmetics/capes/"
+#define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
 
 
 typedef struct clientInfo_s {
@@ -446,6 +453,8 @@ typedef struct clientInfo_s {
 	vec3_t		rgb1, rgb2;//rgb sabers, use different ones for strafetrails. oh no.
 
 	unsigned int	cosmetics;
+	cosmeticItem_t	*hatItem;
+	cosmeticItem_t	*capeItem;
 	char		hat[MAX_COSMETIC_LENGTH];
 	char		hatPath[MAX_QPATH];
 	char		cape[MAX_COSMETIC_LENGTH];
@@ -1016,10 +1025,13 @@ typedef struct chatBoxItem_s
 	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];
 } chatBoxItem_t;
 
-typedef struct cosmeticItem_s
+struct cosmeticItem_s
 {
 	char name[MAX_COSMETIC_LENGTH];
-} cosmeticItem_t;
+	int xOffset;
+	int yOffset;
+	int zOffset;
+};
 
 typedef struct cosmetics_s
 {
