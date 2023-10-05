@@ -328,12 +328,12 @@ typedef struct playerEntity_s {
 
 #define COSMETIC_HATS_PATH "models/cosmetics/hats/"
 #define COSMETIC_HATS_PATH_LENGTH strlen(COSMETIC_HATS_PATH)
-#define COSMETIC_HATS_SETTINGS_PATH "cosmetics/hats/"
+#define COSMETIC_HATS_SETTINGS_PATH "settings/cosmetics/hats/"
 #define COSMETIC_HATS_SETTINGS_PATH_LENGTH strlen(COSMETIC_HATS_SETTINGS_PATH)
 
 #define COSMETIC_CAPES_PATH "models/cosmetics/capes/"
 #define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
-#define COSMETIC_CAPES_SETTINGS_PATH "cosmetics/capes/"
+#define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
 #define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
 
 
