@@ -413,7 +413,8 @@ XCVAR_DEF( cg_killfeed,				            "0",				NULL,					    CVAR_ARCHIVE )
 XCVAR_DEF( cg_killfeedX,				        "0",				NULL,					    CVAR_ARCHIVE )
 XCVAR_DEF( cg_killfeedY,				        "0",				NULL,					    CVAR_ARCHIVE )
 XCVAR_DEF( cg_killfeedAlignment,				"0",				NULL,					    CVAR_ARCHIVE )
-XCVAR_DEF( cg_killfeedSize,                     "24",               NULL,                       CVAR_ARCHIVE )
+XCVAR_DEF( cg_killfeedIconSize,                 "24",               NULL,                       CVAR_ARCHIVE )
+XCVAR_DEF( cg_killfeedTextSize,                 "2",               NULL,                       CVAR_ARCHIVE )
 XCVAR_DEF( cg_killfeedColors,                   "0",                NULL,                       CVAR_ARCHIVE )
 
 

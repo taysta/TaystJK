@@ -32,10 +32,10 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 #define MAX_OBITUARY 8
 #define OBITUARY_TIMEOUT 2500
 #define OBITUARY_FADEOUTTIME 2000
-#define OBITUARY_ICON_SIZE 26.0f
+#define OBITUARY_ICON_SIZE 18.0f
+#define OBITUARY_TEXT_SIZE 2.0f
 
 #define OBITUARY_PADDING_SCALAR 0.2f
-#define OBITUARY_TEXT_DOWNSCALE 32.0f
 
 enum KillfeedAlignment
 {

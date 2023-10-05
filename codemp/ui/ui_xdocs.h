@@ -452,8 +452,8 @@ SETTING("2", "Draw killfeed HUD + console death messages")
 
 XDOCS_CVAR_DEF("cg_killfeedAlignment", "Align the killfeed",
 SETTING("0", "Align items to the right") NL
-SETTING("1", "Align items to the center") NL
-SETTING("2", "Align items to the left")
+SETTING("1", "Align items to the left") NL
+SETTING("2", "Align items to the center")
 )
 
 XDOCS_CVAR_DEF("cg_killfeedX", "Offset the killfeed's horizontal position from its current position",""
@@ -462,9 +462,10 @@ XDOCS_CVAR_DEF("cg_killfeedX", "Offset the killfeed's horizontal position from i
 XDOCS_CVAR_DEF("cg_killfeedY", "Offset the killfeed's vertical position from its current position",""
 )
 
-XDOCS_CVAR_DEF("cg_killfeedSize", "Resize the killfeed",""
+XDOCS_CVAR_DEF("cg_killfeedIconSize", "Resize the killfeed",""
 )
-
+XDOCS_CVAR_DEF("cg_killfeedTextSize", "Resize the killfeed",""
+)
 XDOCS_CVAR_DEF("cg_killfeedColors", "Color the killfeed icons",""
 )
 
