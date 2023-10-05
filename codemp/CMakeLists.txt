@@ -793,7 +793,8 @@ install(FILES
 
 install(FILES
 		${CMAKE_SOURCE_DIR}/assets/settings/cosmetics/example.cosmetic
-	DESTINATION "${JKAInstallDir}/EternalJK/settings/"
-	COMPONENT ${JKAMPCoreComponent})
+		DESTINATION "${JKAInstallDir}/EternalJK/settings/"
+		COMPONENT ${JKAMPCoreComponent})
 
-
+install(DIRECTORY DESTINATION ${JKAInstallDir}/EternalJK/settings/cosmetics/hats)
+install(DIRECTORY DESTINATION ${JKAInstallDir}/EternalJK/settings/cosmetics/capes)
