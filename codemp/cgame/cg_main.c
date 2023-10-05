@@ -3733,7 +3733,7 @@ void dynTable_print(void)
 				}
 				separator[count] = 0;
 
-				Q_strcat(row, sizeof(row), va(" %s%s%s%s%s %s%c", row, separator, S_COLOR_YELLOW, tempCell->content, separator, (len % 2 ? " " : ""), S_COLOR_CYAN, '|'));
+				Q_strcat(row, sizeof(row), va(" %s%s%s%s%s %s%c", separator, S_COLOR_YELLOW, tempCell->content, separator, (len % 2 ? " " : ""), S_COLOR_CYAN, '|'));
 				break;
 			}
 

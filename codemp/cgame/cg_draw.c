@@ -10377,7 +10377,7 @@ char *Q_strtokm(char *str, const char *delim)
 //add chatbox string
 void CG_ChatBox_AddString(char *chatStr)
 {
-	chatBoxItem_t *chat = &cg.chatItems[cg.chatItemActive];
+	chatBoxItem_t *chat = &cg.chats[cg.chatActive];
 	char tempChatStr[MAX_SAY_TEXT+MAX_NETNAME] = { 0 }, *r = chatStr, *w = tempChatStr;
 	float chatLen;
 
@@ -10673,9 +10673,9 @@ void CG_ChatBox_AddString(char *chatStr)
 		chat->lines++;
 	}
 
-	cg.chatItemActive++;
-	if (cg.chatItemActive >= cg_chatBoxLines.integer) {
-		cg.chatItemActive = 0;
+	cg.chatActive++;
+	if (cg.chatActive >= cg_chatBoxLines.integer) {
+		cg.chatActive = 0;
 	}
 }
 
@@ -10713,7 +10713,7 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 
 	while (i < cg_chatBoxLines.integer)
 	{
-		if (cg.chatItems[i].time >= cg.time || drawAnyway)
+		if (cg.chats[i].time >= cg.time || drawAnyway)
 		{
 			int check = numToDraw;
 			int insertionPoint = numToDraw;
@@ -10721,15 +10721,15 @@ static QINLINE void CG_ChatBox_DrawStrings(void)
 			while (check >= 0)
 			{
 				if (drawThese[check] &&
-					cg.chatItems[i].time < drawThese[check]->time)
+					cg.chats[i].time < drawThese[check]->time)
 				{ //insert here
 					insertionPoint = check;
 				}
 				check--;
 			}
-			CG_ChatBox_ArrayInsert(drawThese, insertionPoint, cg_chatBoxLines.integer, &cg.chatItems[i]);
+			CG_ChatBox_ArrayInsert(drawThese, insertionPoint, cg_chatBoxLines.integer, &cg.chats[i]);
 			numToDraw++;
-			linesToDraw += cg.chatItems[i].lines;
+			linesToDraw += cg.chats[i].lines;
 		}
 		i++;
 	}

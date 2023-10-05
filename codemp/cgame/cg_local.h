@@ -455,12 +455,8 @@ typedef struct clientInfo_s {
 	vec3_t		rgb1, rgb2;//rgb sabers, use different ones for strafetrails. oh no.
 
 	unsigned int	cosmetics;
-	cosmeticItem_t	*hatItem;
-	cosmeticItem_t	*capeItem;
-	char		hat[MAX_COSMETIC_LENGTH];
-	char		hatPath[MAX_QPATH];
-	char		cape[MAX_COSMETIC_LENGTH];
-	char		capePath[MAX_QPATH];
+	cosmeticItem_t	*hat;
+	cosmeticItem_t	*cape;
 
 #define _STRAFETRAILS 0
 #if _STRAFETRAILS
@@ -1371,8 +1367,8 @@ Ghoul2 Insert End
 
 	float				distanceCull;
 
-	chatBoxItem_t		chatItems[MAX_CHATBOX_ITEMS];
-	int					chatItemActive;
+	chatBoxItem_t		chats[MAX_CHATBOX_ITEMS];
+	int					chatActive;
 
 #if 0
 	int					snapshotTimeoutTime;

@@ -2092,11 +2092,25 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hatItem, localCosmetics.hats, localCosmetics.totalHats);
+		if (ci->hat)
+		{
+			if (Q_stricmpn(ci->hat->name, cosmeticStr, strlen(ci->hat->name)))
+			{
+				CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hat, localCosmetics.hats, localCosmetics.totalHats);
+			}
+			else
+			{
+				newInfo.hat = ci->hat;
+			}
+		}
+		else
+		{
+			CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hat, localCosmetics.hats, localCosmetics.totalHats);
+		}
 	}
 	else
 	{
-		newInfo.hatItem = NULL;
+		newInfo.hat = NULL;
 	}
 
 	v = Info_ValueForKey( configstring, "c2" );
@@ -2108,11 +2122,25 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.capeItem, localCosmetics.capes, localCosmetics.totalCapes);
+		if (ci->cape)
+		{
+			if (Q_stricmpn(ci->cape->name, cosmeticStr, strlen(ci->cape->name)))
+			{
+				CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.cape, localCosmetics.capes, localCosmetics.totalCapes);
+			}
+			else
+			{
+				newInfo.cape = ci->cape;
+			}
+		}
+		else
+		{
+			CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.cape, localCosmetics.capes, localCosmetics.totalCapes);
+		}
 	}
 	else
 	{
-		newInfo.capeItem = NULL;
+		newInfo.cape = NULL;
 	}
 
 	// bot skill
@@ -2164,9 +2192,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor1 == SABER_RGB ) {
-		if (newInfo.hatItem)
+		if (newInfo.hat)
 		{
-			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hatItem->name));
+			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hat->name));
 		}
 		else
 		{
@@ -2186,9 +2214,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor2 == SABER_RGB ) {
-		if (newInfo.capeItem)
+		if (newInfo.cape)
 		{
-			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.capeItem->name));
+			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.cape->name));
 		}
 		else
 		{
@@ -2287,14 +2315,17 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			//check skin name for a trailing slash or something
 			slash = strrchr(newInfo.skinName, '/');
 			if (slash) {
-				*slash = 0;
+				*slash = 0;	
 			}
 		}
 	}
 
-	//Now that the model and skin are validated, we can load custom offsets for cosmetics.
-	CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,&newInfo.hatItem, newInfo.modelName, newInfo.skinName);
-	CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.capeItem, newInfo.modelName, newInfo.skinName);
+	//Now that the model and skin are validated, we can load custom offsets for cosmetics if needed.
+	if (newInfo.hat && newInfo.hat != ci->hat || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
+	CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,&newInfo.hat, newInfo.modelName, newInfo.skinName);
+
+	if (newInfo.cape && newInfo.cape != ci->cape || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.cape) || (Q_stricmp(newInfo.skinName, ci->skinName)) && newInfo.cape)
+	CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
 
 	if (cgs.gametype == GT_SIEGE)
 	{ //entries only sent in siege mode
@@ -13109,13 +13140,13 @@ stillDoSaber:
         }
 		else if (cg_forceCosmetics.integer == -1)
 		{
-			if (ci->hatItem)
+			if (ci->hat)
 			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_HATS_PATH, ci->hatItem, legs, 0);
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_HATS_PATH, ci->hat, legs, 0);
 			}
-			if (ci->capeItem)
+			if (ci->cape)
 			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_CAPES_PATH, ci->capeItem, legs, 1);
+				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_CAPES_PATH, ci->cape, legs, 1);
 			}
 		}
             //loda todo

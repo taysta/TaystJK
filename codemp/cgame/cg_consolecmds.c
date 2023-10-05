@@ -1716,14 +1716,14 @@ static void CG_Cosmetics(void)
 			{
 				totalCosmetics = localCosmetics.totalHats;
 				cosItems = localCosmetics.hats;
-				ciCosItem = cgs.clientinfo[cg.clientNum].hatItem;
+				ciCosItem = cgs.clientinfo[cg.clientNum].hat;
 				cvar = "color1";
 			}
 			else if (!Q_stricmp("Capes", arg))
 			{
 				totalCosmetics = localCosmetics.totalCapes;
 				cosItems = localCosmetics.capes;
-				ciCosItem = cgs.clientinfo[cg.clientNum].capeItem;
+				ciCosItem = cgs.clientinfo[cg.clientNum].cape;
 				cvar = "color2";
 			}
 			else if (!Q_stricmp("Clear", arg))
