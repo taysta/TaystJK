@@ -86,7 +86,7 @@ void HUD_DrawObituary(void) {
     else
         textScale = OBITUARY_TEXT_SIZE;
 
-    y = kfYOffset;
+    y = 10.0f + kfYOffset;
     padding = OBITUARY_PADDING_SCALAR;
     iconWidth = (iconSize * cgs.widthRatioCoef);
     iconHeight = iconSize;
@@ -182,10 +182,10 @@ void HUD_DrawObituary(void) {
         //offset the allignment
         switch (killfeedAlignment){
             case KF_RIGHT:
-                x = SCREEN_WIDTH - totalWidth + kfXOffset;
+                x = SCREEN_WIDTH - totalWidth - (10.0f + kfXOffset) * cgs.widthRatioCoef;
                 break;
             case KF_LEFT:
-                x = 0.0f + kfXOffset;
+                x = (10.0f + kfXOffset) * cgs.widthRatioCoef;
                 break;
             case KF_CENTER:
                 x = (SCREEN_WIDTH - totalWidth) * 0.5f + kfXOffset;
@@ -202,12 +202,12 @@ void HUD_DrawObituary(void) {
         }
         trap->R_SetColor(wepColor);
         CG_DrawPic(x + boxCenterX - 0.5f * iconWidth, boxCenterY - 0.5f * iconHeight, iconWidth, iconHeight, deathIcon);
-        x += (boxCenterX * 2.0f);
         trap->R_SetColor(NULL);
+        x += (boxCenterX * 2.0f);
         CG_FillRect(x, y, victimTextWidth + xPadding, maxHeight + yPadding, victimColor);
         CG_Text_Paint(x + (0.5f * xPadding), victimTextStartY, textScale, color, cgs.clientinfo[p->victim].name, 0, 0, 0, FONT_MEDIUM);
 
-        y += (2.0f * boxCenterY) + yPadding;
+        y += boxCenterY + yPadding;
     }
 }
 
