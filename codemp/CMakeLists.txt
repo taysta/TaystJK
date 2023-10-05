@@ -790,3 +790,10 @@ install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3
 	DESTINATION "${JKAInstallDir}/EternalJK"
 	COMPONENT ${JKAMPCoreComponent})
+
+install(FILES
+		${CMAKE_SOURCE_DIR}/assets/settings/cosmetics/example.cosmetic
+	DESTINATION "${JKAInstallDir}/EternalJK/settings/"
+	COMPONENT ${JKAMPCoreComponent})
+
+

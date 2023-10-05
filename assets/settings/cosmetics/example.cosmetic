@@ -1,0 +1,44 @@
+{
+    "desann": {
+		"modelFallback": false,
+        "xOffset": 30,
+        "yOffset": 15,
+        "zOffset": -24,
+        "default": {
+            "xOffset": 10,
+            "yOffset": 20,
+            "zOffset": 30
+        },
+        "red": {
+            "xOffset": 40,
+            "yOffset": 50,
+            "zOffset": 60
+        },
+		 "blue": {
+            "xOffset": 20,
+            "yOffset": 40,
+            "zOffset": 50
+        }
+    },
+	"kyle": {
+		"modelFallback": true,
+        "xOffset": 30,
+        "yOffset": 15,
+        "zOffset": -24,
+		 "defa*": {
+            "xOffset": 10,
+            "yOffset": 20,
+            "zOffset": 30
+        },
+		 "blue": {
+            "xOffset": 40,
+            "yOffset": 50,
+            "zOffset": 60
+        },
+		 "de*": {
+            "xOffset": 10,
+            "yOffset": 20,
+            "zOffset": 30
+        }
+    }
+}
