@@ -7,24 +7,21 @@ on:
       - master
       - beta
     paths-ignore:
-      - '**.md'
-      - '*.txt'
-      - '.gitignore'
-      - 'docs/*'
+      - "**.md"
+      - "*.txt"
+      - ".gitignore"
+      - "docs/*"
   pull_request:
     branches:
       - master
       - beta
     paths-ignore:
-      - '**.md'
-      - '*.txt'
-      - '.gitignore'
-      - 'docs/*'
+      - "**.md"
+      - "*.txt"
+      - ".gitignore"
+      - "docs/*"
   release:
     types: [published]
-
-env:
-  newline: \\n
 
 jobs:
   msvc:
@@ -35,6 +32,9 @@ jobs:
         arch: [x86, x86_64]
         build_type: [Debug, Release]
         portable: [Portable, Non-Portable]
+        exclude:
+          - build_type: Debug
+            portable: Portable
         include:
           - arch: x86
             platform: Win32
@@ -61,15 +61,71 @@ jobs:
           fi
           cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} $OPTIONS
 
-      - name: Get SHORT_SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
+      - name: Build
+        working-directory: ${{ runner.workspace }}/build
         shell: bash
+        run: cmake --build . --config ${{ matrix.build_type }}
+
+      - name: Install
+        if: ${{ matrix.build_type == 'Release' }} 
+        working-directory: ${{ runner.workspace }}/build
+        shell: bash
+        run: cmake --install . --config ${{ matrix.build_type }}
+
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.build_type == 'Release' }} 
+        with:
+          name: OpenJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ runner.workspace }}/build/bin
+          if-no-files-found: error
+
+  msvcxp:
+    name: WinXP ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        arch: [x86, x86_64]
+        build_type: [Debug, Release]
+        portable: [Portable, Non-Portable]
+        include:
+          - arch: x86
+            platform: Win32
+          - arch: x86_64
+            platform: x64
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install v141_xp Toolchain
+        continue-on-error: true
+        shell: powershell
         run: |
-          sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
+          Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
+          $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+          $WorkLoads = '--add Microsoft.VisualStudio.Component.WinXP'
+          $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, '--quiet', '--norestart', '--nocache')
+          $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
+          if ($process.ExitCode -eq 0) {
+              Write-Host "components have been successfully added"
+          } else {
+              Write-Host "components were not installed"
+          }
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{ runner.workspace }}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{ runner.workspace }}/build
+        run: |
+          if [ "${{ matrix.portable }}" == "Portable" ]; then
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DBuildPortableVersion=ON -DCMAKE_INSTALL_PREFIX=bin"
+          else
+            OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DBuildPortableVersion=OFF -DCMAKE_INSTALL_PREFIX=bin"
+          fi
+          cmake $GITHUB_WORKSPACE -T v141_xp -A ${{ matrix.platform }} $OPTIONS
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
@@ -80,10 +136,11 @@ jobs:
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ runner.workspace }}/build
         shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
+        run: |
+          cmake --install . --config ${{ matrix.build_type }}
 
       - uses: actions/upload-artifact@v3
-        if: ${{ matrix.build_type == 'Release' }}
+        if: ${{ matrix.build_type == 'Release' }} 
         with:
           name: TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
@@ -126,22 +183,12 @@ jobs:
           else
             OPTIONS="-DUseInternalLibs=OFF -DBuildPortableVersion=OFF -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
           fi
-          
+
           if [ ${{ matrix.arch }} == "x86" ]; then
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} $OPTIONS -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake
           else
           cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} $OPTIONS
           fi
-
-      - name: Get SHORT_SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
-        shell: bash
-        run: |
-          sed -i 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
@@ -201,17 +248,6 @@ jobs:
             OPTIONS="-DCMAKE_BUILD_TYPE=${{ runner.build_type }} -DUseInternalLibs=OFF -DBuildPortableVersion=OFF -DBuildDiscordRichPresence=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/install"
           fi
           cmake $GITHUB_WORKSPACE $OPTIONS
-
-      - name: Get SHORT_SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Update Version Hash
-        working-directory: ${{ runner.workspace }}/TaystJK/codemp/cgame
-        shell: bash
-        run: |
-          sed -i.bak 's/Your client version of the mod was/Your build revision is ${{ steps.vars.outputs.sha_short }} ${{ env.newline }}Your client version of the mod was/' cg_consolecmds.c
-          rm cg_consolecmds.c.bak
 
       - name: Build
         working-directory: ${{ runner.workspace }}/build
