@@ -1323,6 +1323,8 @@ typedef struct cg_s {
 
 	vec3_t			lastFPFlashPoint;
 
+	qboolean		mouseMode;
+
 /*
 Ghoul2 Insert Start
 */
