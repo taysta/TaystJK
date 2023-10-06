@@ -85,8 +85,8 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x86_64]
-        build_type: [Debug, Release]
-        portable: [Portable, Non-Portable]
+        build_type: [Release]
+        portable: [Non-Portable]
         include:
           - arch: x86
             platform: Win32
