@@ -142,7 +142,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }} 
         with:
-          name: TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: TaystJK-winxp-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ runner.workspace }}/build/bin
           if-no-files-found: error
 
