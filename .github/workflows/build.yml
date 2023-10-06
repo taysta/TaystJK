@@ -211,7 +211,7 @@ jobs:
           else
           chmod +x eternaljk.${{ matrix.arch }}  
           fi
-          tar -czvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
+          tar -zcvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
@@ -266,7 +266,7 @@ jobs:
         shell: bash
         run: |
           chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
-          tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
+          tar -zcvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz      *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
@@ -320,8 +320,8 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windows-x86.zip         ./TaystJK-windows-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r TaystJK-windows-x86_64.zip         ./TaystJK-windows-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windows-x86.zip         ./TaystJK-windows-x86-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windows-x86_64.zip         ./TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
           mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
@@ -345,11 +345,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifact_dir: TaystJK-windows-x86-Release-Non-Portable/
+          - artifact_dir: TaystJK-windows-x86-Release-Non-Portable/JediAcademy/
             artifact_name: TaystJK-windows-x86.zip
             zip: true
 
-          - artifact_dir: TaystJK-windows-x86_64-Release-Non-Portable/
+          - artifact_dir: TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/
             artifact_name: TaystJK-windows-x86_64.zip
             zip: true
 
