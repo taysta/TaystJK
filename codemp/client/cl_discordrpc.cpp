@@ -179,21 +179,24 @@ static char *GetGameType(qboolean imageKey)
 cvar_t *cl_discordRichPresenceSharePassword;
 char *joinSecret()
 {
+	static char buff[128];
+
+	memset(buff, 0, sizeof(buff));
+
 	if (clc.demoplaying)
 		return NULL;
 
 	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE )
 	{
-		char *x = (char *)malloc( sizeof( char ) * 128 );
 		char *password = Cvar_VariableString("password");
 
 		if (cl_discordRichPresenceSharePassword->integer && cl.discord.needPassword && strlen(password)) {
-			Com_sprintf(x, 128, "%s %s %s", cls.servername, cl.discord.fs_game, password);
+			Com_sprintf(buff, sizeof(buff), "%s %s %s", cls.servername, cl.discord.fs_game, password);
 		}
 		else {
-			Com_sprintf(x, 128, "%s %s \"\"", cls.servername, cl.discord.fs_game);
+			Com_sprintf(buff, sizeof(buff), "%s %s \"\"", cls.servername, cl.discord.fs_game);
 		}
-		return x;
+		return buff;
 	}
 
 	return NULL;
@@ -201,16 +204,17 @@ char *joinSecret()
 
 char *PartyID()
 {
+	static char buff[128];
+
+	memset(buff, 0 , sizeof(buff));
 	if (clc.demoplaying)
 		return NULL;
 
 	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE ) 
 	{
-		char *x = (char *)malloc( sizeof( char ) * 128 );
-
-		Q_strncpyz( x, va( "%s", cls.servername ), 128 );
-		strcat( x, "x" );
-		return x;
+		Q_strncpyz(buff, va( "%s", cls.servername ), sizeof(buff));
+		strcat(buff, "x" );
+		return buff;
 	}
 
 	return NULL;
@@ -393,9 +397,6 @@ void CL_DiscordShutdown(void)
 
 void CL_DiscordUpdatePresence(void)
 {
-	char *partyID = PartyID();
-	char *joinID = joinSecret();
-
 	if (!cls.discordInitialized)
 		return;
 
@@ -418,7 +419,7 @@ void CL_DiscordUpdatePresence(void)
 	}
 	if (!clc.demoplaying && !com_sv_running->integer)
 	{ //send join information blank since it won't do anything in this case
-		discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
+		discordPresence.partyId = joinSecret(); // Server-IP zum abgleichen discordchat - send join request in discord chat
 		if (cl_discordRichPresence->integer > 1) {
 			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
 			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
@@ -427,7 +428,7 @@ void CL_DiscordUpdatePresence(void)
 			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : NULL;
 			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : NULL;
 		}
-		discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
+		discordPresence.joinSecret = PartyID(); // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	}
 	Discord_UpdatePresence( &discordPresence );
 
