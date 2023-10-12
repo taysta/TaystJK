@@ -1707,7 +1707,7 @@ static void CG_Cosmetics(void)
 			int i;
 			int totalCosmetics;
 			cosmeticItem_t *cosItems;
-			const char *ciCosItem;
+			cosmeticItem_t *ciCosItem;
 			const char *cvar;
 
 			trap->Cmd_Argv(1, arg, sizeof(arg));
@@ -1765,7 +1765,7 @@ static void CG_Cosmetics(void)
 				{
 					dynTable_addCell(va("%i", i));
 					dynTable_addCell(cosItems[i].name);
-					if (!Q_stricmp(cosItems[i].name, ciCosItem))
+					if (!Q_stricmp(cosItems[i].name, ciCosItem->name))
 					{
 						dynTable_addCell("X");
 					}
