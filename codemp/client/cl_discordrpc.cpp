@@ -212,7 +212,7 @@ char *PartyID()
 
 	if ( cls.state >= CA_LOADING && cls.state <= CA_ACTIVE ) 
 	{
-		Q_strncpyz(buff, va( "%s", cls.servername ), sizeof(buff));
+		Q_strncpyz(buff, cls.servername, sizeof(buff));
 		strcat(buff, "x" );
 		return buff;
 	}
@@ -309,30 +309,85 @@ static void handleDiscordError( int errcode, const char* message )
 
 static void handleDiscordJoin( const char* secret )
 {
-	char ip[60] = { 0 };
-	char fsgame[60] = { 0 };
-	char password[MAX_CVAR_VALUE_STRING];
-	int parsed = 0;
+	char ip[22] =  { 0 }; //xxx.xxx.xxx.xxx:xxxxx\0
+	char password[106] = { 0 };
+	int i = 0;
+	qboolean skippedFsgame = qfalse;
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
 		Com_Printf( "^5Discord: joining ^3(%s)^7\n", secret );
 	else
 		Com_Printf( "^1Discord: ^7join (^3%s^7)\n", secret );
-	
-	parsed = sscanf(secret, "%s %s %s", ip, fsgame, password);
 
-	switch (parsed)
+	// 
+	//This implementation is broken in EJK, when servers do not have fs_game set in their .cfg.
+	//If that's the case, then there will be an extra space in the secret in between the ip and password, which leads to the variables being incorrectly set or not being set at all.
+	//Ideally, this whole implementation should be scrapped and reimplemented.
+	// 
+	//Let's do a workaround for this.
+	
+	while (*secret && *secret != ' ') //Parse the ip first.
 	{
-		case 3: //ip, password, and fsgame
-			Cbuf_AddText(va("connect %s ; set password %s\n", ip, password));
-			break;
-		case 2://ip and fsgame
-		case 1://ip only
+		if (i >= sizeof(ip)) break;
+
+		ip[i++] = *secret;
+		secret++;
+	}
+
+	ip[i] = '\0';
+	i = 0;
+
+	if (*ip)
+	{
+		if (!strchr(secret, '\"')) //Check for quotes in the string, if they appear, it means we join a passwordless server.
+		{
+			if (*secret == ' ' && *(secret + 1) == ' ') //No quotes have been found, check whether the string contains 2 spaces between ip and fsgame.
+			{
+				secret += 2; //We found 2 spaces, which means the server has no fs_game set. move the pointer by 2 to skip the spaces.
+
+				while (*secret)
+				{
+					if (i >= sizeof(password)) break;
+
+					password[i++] = *secret;	//Everything after the spaces is the server password.
+					secret++;
+				}
+				password[i] = '\0';
+			}
+			else //1 space is found, which means the server has fs_game set.
+			{
+				secret++; //Increment the pointer by 1 to skip the space.
+				while (*secret)
+				{
+					while (!skippedFsgame && *secret != ' ' && *secret) //the first word after the space is fs_game, we can skip that.
+					{
+						secret++;
+
+						if (*secret == ' ') //We found the next space. Increment pointer again to skip it.
+						{
+							secret++;
+							skippedFsgame = qtrue;
+						}
+					}
+
+					if (i >= sizeof(password)) break;
+
+					password[i++] = *secret; //Every character after the second space, is part of the password. 
+					secret++;
+				}
+				password[i] = '\0';
+			}
+
+			Cbuf_AddText(va("set password %s; connect %s\n", password, ip));
+		}
+		else
+		{
 			Cbuf_AddText(va("connect %s\n", ip));
-			break;
-		default:
-			Com_Printf("^5Discord: %1Failed to parse server information from join secret\n");
-			break;
+		}
+	}
+	else
+	{
+		Com_Printf("^5Discord: %1Failed to parse server information from join secret\n");
 	}
 }
 
