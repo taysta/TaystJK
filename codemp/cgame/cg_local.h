@@ -1767,7 +1767,8 @@ typedef struct cgMedia_s {
 	qhandle_t	JK2HUDSaberStyle2;
 	qhandle_t	JK2HUDSaberStyle3;
 	qhandle_t	JK2HUDSaberStyle4;
-	qhandle_t	JK2HUDRightFrame;
+    qhandle_t	JK2HUDSaberStyle5;
+    qhandle_t	JK2HUDRightFrame;
 	qhandle_t	JK2HUDInnerRight;
 	qhandle_t	JK2weaponProngsOn;
 	qhandle_t	JK2weaponProngsOff;

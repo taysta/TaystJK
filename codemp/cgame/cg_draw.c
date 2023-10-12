@@ -983,71 +983,85 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
 		return;
 	}
 
-        trap->R_SetColor( colorTable[CT_WHITE] );
-        // draw the current saber style in this window
-        switch (cg.predictedPlayerState.fd.saberDrawAnimLevel) {
-            case SS_FAST:
-                focusItem = Menu_FindItemByName(menuHUD, "saberstyle_fast");
+    trap->R_SetColor( colorTable[CT_WHITE] );
+    // draw the current saber style in this window
+    switch (cg.predictedPlayerState.fd.saberDrawAnimLevel) {
+        case SS_FAST:
+            focusItem = Menu_FindItemByName(menuHUD, "saberstyle_fast");
 
-                if (focusItem) {
-                    //trap->R_SetColor(hudTintColor);
+            if (focusItem) {
+                //trap->R_SetColor(hudTintColor);
 
-                    CG_DrawPic(
-                            SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-                break;
-            case SS_MEDIUM:
-                focusItem = Menu_FindItemByName(menuHUD, "saberstyle_medium");
+                CG_DrawPic(
+                        SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+                        focusItem->window.rect.y,
+                        focusItem->window.rect.w * cgs.widthRatioCoef,
+                        focusItem->window.rect.h,
+                        focusItem->window.background
+                );
+            }
+            break;
+        case SS_MEDIUM:
+            focusItem = Menu_FindItemByName(menuHUD, "saberstyle_medium");
 
-                if (focusItem) {
-                    //trap->R_SetColor(hudTintColor);
+            if (focusItem) {
+                //trap->R_SetColor(hudTintColor);
 
-                    CG_DrawPic(
-                            SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-                break;
-            case SS_STRONG:
-                focusItem = Menu_FindItemByName(menuHUD, "saberstyle_strong");
+                CG_DrawPic(
+                        SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+                        focusItem->window.rect.y,
+                        focusItem->window.rect.w * cgs.widthRatioCoef,
+                        focusItem->window.rect.h,
+                        focusItem->window.background
+                );
+            }
+            break;
+        case SS_STRONG:
+            focusItem = Menu_FindItemByName(menuHUD, "saberstyle_strong");
 
-                if (focusItem) {
-                    //trap->R_SetColor(hudTintColor);
+            if (focusItem) {
+                //trap->R_SetColor(hudTintColor);
 
-                    CG_DrawPic(
-                            SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-                break;
-            case SS_DUAL:
-            case SS_STAFF:
-                focusItem = Menu_FindItemByName(menuHUD, "saberstyle_staff");
+                CG_DrawPic(
+                        SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+                        focusItem->window.rect.y,
+                        focusItem->window.rect.w * cgs.widthRatioCoef,
+                        focusItem->window.rect.h,
+                        focusItem->window.background
+                );
+            }
+            break;
+        case SS_DUAL:
+            focusItem = Menu_FindItemByName(menuHUD, "saberstyle_dual");
 
-                if (focusItem) {
-                    //trap->R_SetColor(hudTintColor);
+            if (focusItem) {
+                //trap->R_SetColor(hudTintColor);
 
-                    CG_DrawPic(
-                            SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-                return;
+                CG_DrawPic(
+                        SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+                        focusItem->window.rect.y,
+                        focusItem->window.rect.w * cgs.widthRatioCoef,
+                        focusItem->window.rect.h,
+                        focusItem->window.background
+                );
+            }
+            break;
+        case SS_STAFF:
+            focusItem = Menu_FindItemByName(menuHUD, "saberstyle_staff");
 
+            if (focusItem) {
+                //trap->R_SetColor(hudTintColor);
+
+                CG_DrawPic(
+                        SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+                        focusItem->window.rect.y,
+                        focusItem->window.rect.w * cgs.widthRatioCoef,
+                        focusItem->window.rect.h,
+                        focusItem->window.background
+                );
+            }
+            break;
+    return;
     }
 }
 
@@ -1518,8 +1532,11 @@ static void CG_DrawAmmoJK2(centity_t *cent, float x, float y)
 			CG_DrawPic(SCREEN_WIDTH - (SCREEN_WIDTH - x)*cgs.widthRatioCoef, y, 80*cgs.widthRatioCoef, 40, cgs.media.JK2HUDSaberStyle3);
 			break;
 		case SS_DUAL:
-		case SS_STAFF:
+            CG_DrawPic(SCREEN_WIDTH - (SCREEN_WIDTH - x)*cgs.widthRatioCoef, y, 80 * cgs.widthRatioCoef, 40, cgs.media.JK2HUDSaberStyle5);
+            break;
+        case SS_STAFF:
 			CG_DrawPic(SCREEN_WIDTH - (SCREEN_WIDTH - x)*cgs.widthRatioCoef, y, 80 * cgs.widthRatioCoef, 40, cgs.media.JK2HUDSaberStyle4);
+            break;
 		}
 		return;
 	}
