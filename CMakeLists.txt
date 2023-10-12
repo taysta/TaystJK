@@ -40,7 +40,7 @@ option(BuildMPDed "Whether to create projects for the MP dedicated server (etern
 option(BuildMPGame "Whether to create projects for the MP server-side gamecode (jampgamex86.dll)" ON)
 option(BuildMPCGame "Whether to create projects for the MP clientside gamecode (cgamex86.dll)" ON)
 option(BuildMPUI "Whether to create projects for the MP UI code (uix86.dll)" ON)
-option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 renderer (rd-rend2_x86.dll)" ON)
+option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 renderer (rd-rend2e_x86.dll)" ON)
 
 option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
 
@@ -148,7 +148,7 @@ endif()
 set(MPEngine "eternaljk.${Architecture}")
 set(MPVanillaRenderer "rd-eternaljk_${Architecture}")
 set(MPVulkanRenderer "rd-vulkan_${Architecture}")
-set(MPRend2 "rd-rend2_${Architecture}")
+set(MPRend2 "rd-rend2e_${Architecture}")
 set(MPDed "eternaljkded.${Architecture}")
 set(MPGame "jampgame${Architecture}")
 set(MPCGame "cgame${Architecture}")
