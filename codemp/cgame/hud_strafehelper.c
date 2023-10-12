@@ -1797,22 +1797,22 @@ static void DF_DrawMovementKeys(centity_t* cent) {
     if(cg_movementKeys.integer == 1) {
         w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
         h = 16 * cg_movementKeysSize.value;
-        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 1.5f * cgs.widthRatioCoef;
+        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 1.5f;
         y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 2) {
         w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
         h = 16 * cg_movementKeysSize.value;
-        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f * cgs.widthRatioCoef;
+        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f;
         y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 3) {
         w = 8 * cg_movementKeysSize.value * cgs.widthRatioCoef;
         h = 8 * cg_movementKeysSize.value;
-        x = 0.5f * SCREEN_WIDTH - w * 1.5f * cgs.widthRatioCoef;
+        x = 0.5f * SCREEN_WIDTH - w * 1.5f;
         y = 0.5f * SCREEN_HEIGHT - h * 1.5f;
     } else if(cg_movementKeys.integer == 4) {
         w = 12 * cg_movementKeysSize.value * cgs.widthRatioCoef;
         h = 12 * cg_movementKeysSize.value;
-        x = 0.5f * SCREEN_WIDTH + cg_movementKeysX.value - w * 1.5f * cgs.widthRatioCoef;
+        x = 0.5f * SCREEN_WIDTH + cg_movementKeysX.value - w * 1.5f;
         y = 0.9f * SCREEN_HEIGHT + cg_movementKeysY.value - h * 1.5f;
     }
 
