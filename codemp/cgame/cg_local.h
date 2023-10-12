@@ -2669,7 +2669,8 @@ void CG_InitSiegeMode(void);
 void CG_SiegeRoundOver(centity_t *ent, int won);
 void CG_SiegeObjectiveCompleted(centity_t *ent, int won, int objectivenum);
 
-
+qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
+qboolean CG_InRollAnim( centity_t *cent );
 
 //===============================================
 
