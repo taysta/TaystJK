@@ -1427,7 +1427,7 @@
 			visible				0
 			descText			"Advanced video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-vanilla" }
+			hideCvar			{ "rd-eternaljk" , "rd-vulkan" }
 
 			action
 			{
@@ -1464,7 +1464,7 @@
 			visible				0
 			descText			"Advanced video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-vanilla" }
+			hideCvar			{ "rd-eternaljk , rd-vulkan" }
 
 			action
 			{
