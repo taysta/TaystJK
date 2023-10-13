@@ -1730,6 +1730,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -1769,6 +1770,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -1808,6 +1810,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -1849,6 +1852,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -1888,6 +1892,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -1960,6 +1965,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -2002,6 +2008,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -2041,6 +2048,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -2080,6 +2088,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
@@ -2119,6 +2128,7 @@
 			{
 				play			"sound/interface/button1.wav" ;
 				setcvar			ui_r_modified	1 ;
+				setcvar			ui_vidrestart	1 ;
 				show			applyChanges
 			}
 		}
