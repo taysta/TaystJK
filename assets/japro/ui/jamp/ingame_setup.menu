@@ -1710,7 +1710,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Rendering in HDR Colorspace"
-			cvar				"r_hdr"
+			cvar				"ui_r_hdr"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1750,7 +1750,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Tonemapping"
-			cvar				"r_tonemap"
+			cvar				"ui_r_tonemap"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1790,7 +1790,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Autoexposure"
-			cvar				"r_autoexposure"
+			cvar				"ui_r_autoexposure"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1830,7 +1830,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Load hdr lighting data. (requires rend2 lighting data)"
-			cvar				"r_floatLightmap"
+			cvar				"ui_r_floatLightmap"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1872,7 +1872,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Enables normalmapping and specularmapping on static geometry."
-			cvar				"r_deluxemapping"
+			cvar				"ui_r_deluxemapping"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1945,7 +1945,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Render cubemaps for reflections."
-			cvar				"r_cubemapping"
+			cvar				"ui_r_cubemapping"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -1985,7 +1985,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"How many reflection bounces to render in cubemaps."
-			cvar				"r_cubemappingBounces"
+			cvar				"ui_r_cubemappingBounces"
 			cvarFloatList
 			{
 				"0" 	0
@@ -2028,7 +2028,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Parallax Occlusion Mapping (requires rend2 materials)"
-			cvar				"r_parallaxmapping"
+			cvar				"ui_r_parallaxmapping"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -2068,7 +2068,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Generate normalmaps from diffuse textures."
-			cvar				"r_genNormalMaps"
+			cvar				"ui_r_genNormalMaps"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
@@ -2108,7 +2108,7 @@
 			textscale 			1
 			forecolor			.615 .615 .956 1
 			descText			"Screenspace ambient occlusion"
-			cvar				"r_ssao"
+			cvar				"ui_r_ssao"
 			cvarFloatList
 			{
 				@MENUS_OFF 	0
