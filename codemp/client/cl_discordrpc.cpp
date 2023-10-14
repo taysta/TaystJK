@@ -312,6 +312,7 @@ static void handleDiscordJoin( const char* secret )
 	char ip[22] =  { 0 }; //xxx.xxx.xxx.xxx:xxxxx\0
 	char password[106] = { 0 };
 	int i = 0;
+	netadr_t adr;
 	qboolean skippedFsgame = qfalse;
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
@@ -339,56 +340,62 @@ static void handleDiscordJoin( const char* secret )
 
 	if (*ip)
 	{
-		if (!strchr(secret, '\"')) //Check for quotes in the string, if they appear, it means we join a passwordless server.
+		if (NET_StringToAdr(ip, &adr))
 		{
-			if (*secret == ' ' && *(secret + 1) == ' ') //No quotes have been found, check whether the string contains 2 spaces between ip and fsgame.
+			if (!strchr(secret, '\"')) //Check for quotes in the string, if they appear, it means we join a passwordless server.
 			{
-				secret += 2; //We found 2 spaces, which means the server has no fs_game set. move the pointer by 2 to skip the spaces.
-
-				while (*secret)
+				if (*secret == ' ' && *(secret + 1) == ' ') //No quotes have been found, check whether the string contains 2 spaces between ip and fsgame.
 				{
-					if (i >= sizeof(password)) break;
+					secret += 2; //We found 2 spaces, which means the server has no fs_game set. move the pointer by 2 to skip the spaces.
 
-					password[i++] = *secret;	//Everything after the spaces is the server password.
-					secret++;
-				}
-				password[i] = '\0';
-			}
-			else //1 space is found, which means the server has fs_game set.
-			{
-				secret++; //Increment the pointer by 1 to skip the space.
-				while (*secret)
-				{
-					while (!skippedFsgame && *secret != ' ' && *secret) //the first word after the space is fs_game, we can skip that.
+					while (*secret)
 					{
-						secret++;
+						if (i >= sizeof(password)) break;
 
-						if (*secret == ' ') //We found the next space. Increment pointer again to skip it.
+						password[i++] = *secret;	//Everything after the spaces is the server password.
+						secret++;
+					}
+					password[i] = '\0';
+				}
+				else //1 space is found, which means the server has fs_game set.
+				{
+					secret++; //Increment the pointer by 1 to skip the space.
+					while (*secret)
+					{
+						while (!skippedFsgame && *secret != ' ' && *secret) //the first word after the space is fs_game, we can skip that.
 						{
 							secret++;
-							skippedFsgame = qtrue;
+
+							if (*secret == ' ') //We found the next space. Increment pointer again to skip it.
+							{
+								secret++;
+								skippedFsgame = qtrue;
+							}
 						}
+
+						if (i >= sizeof(password)) break;
+
+						password[i++] = *secret; //Every character after the second space, is part of the password. 
+						secret++;
 					}
-
-					if (i >= sizeof(password)) break;
-
-					password[i++] = *secret; //Every character after the second space, is part of the password. 
-					secret++;
+					password[i] = '\0';
 				}
-				password[i] = '\0';
-			}
 
-			Cbuf_AddText(va("set password %s; connect %s\n", password, ip));
+				Q_strstrip(password, ";", NULL);
+
+				Cbuf_AddText(va("set password %s; connect %i.%i.%i.%i:%hu\n", password, adr.ip[0], adr.ip[1], adr.ip[2], adr.ip[3], BigShort(adr.port)));
+			}
+			else
+			{
+				Cbuf_AddText(va("connect %i.%i.%i.%i:%hu\n", adr.ip[0], adr.ip[1], adr.ip[2], adr.ip[3], BigShort(adr.port)));
+			}
 		}
 		else
 		{
-			Cbuf_AddText(va("connect %s\n", ip));
+			Com_Printf("^5Discord: ^1Invalid IP address ^3(%s)\n", ip);
 		}
 	}
-	else
-	{
-		Com_Printf("^5Discord: %1Failed to parse server information from join secret\n");
-	}
+	Com_Printf("^5Discord: ^1Failed to parse server information from join secret\n");
 }
 
 static void handleDiscordSpectate( const char* secret )
