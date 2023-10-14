@@ -863,7 +863,7 @@
 			forecolor		.615 .615 .956 1
 			cvarStrList			{  "Vanilla" , "rd-eternaljk" , "Vulkan", "rd-vulkan", "Rend2" , "rd-rend2e" }
 			descText			"Change the renderer library to use."
-			cvar				"cl_renderer"
+			cvar				"ui_cl_renderer"
 			visible				1
 
 			mouseenter
