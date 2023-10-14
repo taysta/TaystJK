@@ -481,7 +481,7 @@ void CL_DiscordUpdatePresence(void)
 	}
 	if (!clc.demoplaying && !com_sv_running->integer)
 	{ //send join information blank since it won't do anything in this case
-		discordPresence.partyId = joinSecret(); // Server-IP zum abgleichen discordchat - send join request in discord chat
+		discordPresence.partyId = PartyID(); // Server-IP zum abgleichen discordchat - send join request in discord chat
 		if (cl_discordRichPresence->integer > 1) {
 			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
 			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
@@ -490,7 +490,7 @@ void CL_DiscordUpdatePresence(void)
 			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : NULL;
 			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : NULL;
 		}
-		discordPresence.joinSecret = PartyID(); // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
+		discordPresence.joinSecret = joinSecret(); // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	}
 	Discord_UpdatePresence( &discordPresence );
 
