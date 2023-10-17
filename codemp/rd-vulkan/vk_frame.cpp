@@ -1076,14 +1076,14 @@ void vk_refraction_extract( void ) {
 		0, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
 		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		VK_NULL_HANDLE, VK_NULL_HANDLE);
+		NULL, NULL);
 	
 	vk_record_image_layout_transition(vk.cmd->command_buffer, srcImage,
 		VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
 		srcImageAccess, srcImageLayout,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		VK_NULL_HANDLE, VK_NULL_HANDLE);
+		NULL, NULL);
 }
 
 void vk_begin_post_refraction_extract_render_pass( void )
