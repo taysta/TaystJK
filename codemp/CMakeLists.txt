@@ -412,7 +412,7 @@ if(BuildMPEngine)
 		endif(BuildDiscordRichPresence)
 	endif()
 
-	if(UseInternalSDL2)
+	if(UseInternalSDL2 AND MSVC) # Windows
 		if(CMAKE_SIZEOF_VOID_P EQUAL 4)
 			set(MPEngineLibraries
 				${MPEngineLibraries}
@@ -430,11 +430,25 @@ if(BuildMPEngine)
 		set(MPEngineIncludeDirectories
 			${MPEngineIncludeDirectories}
 			${OpenJKLibDir}/SDL2/include
-			)
+		)
+	elseif(UseInternalSDL2 AND DARWIN) # macOS
+		set(MPEngineLibraries
+			${MPEngineLibraries}
+			${OpenJKLibDir}/SDL2/lib/libSDL2main.a
+		)
+		set(MPEngineIncludeDirectories
+			${MPEngineIncludeDirectories}
+			${OpenJKLibDir}/SDL2/include
+		)
 	else()
-		find_package(SDL2 REQUIRED)
-		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${SDL2_INCLUDE_DIR})
-		set(MPEngineLibraries ${MPEngineLibraries} ${SDL2_LIBRARY})
+		find_package(SDL2 REQUIRED CONFIG)
+		if (TARGET SDL2::SDL2)
+			set(SDL2_INCLUDE_DIR "")
+			set(SDL2_LIBRARY SDL2::SDL2)
+		endif()
+		string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
+		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${SDL2_INCLUDE_DIRS})
+		set(MPEngineLibraries ${MPEngineLibraries} ${SDL2_LIBRARIES})
 	endif()
 
 	# EAX is Windows-Only (right?)
@@ -544,10 +558,12 @@ if(BuildMPEngine)
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineMp3Files})
 
 	set(MPEngineSysFiles
-		"${SharedDir}/sdl/sdl_window.cpp"
 		"${SharedDir}/sdl/sdl_icon.h"
 		"${SharedDir}/sdl/sdl_input.cpp"
+		"${SharedDir}/sdl/sdl_qgl.h"
 		"${SharedDir}/sdl/sdl_sound.cpp"
+		"${SharedDir}/sdl/sdl_sound.h"
+		"${SharedDir}/sdl/sdl_window.cpp"
 		"${SharedDir}/sys/sys_loadlib.h"
 		"${SharedDir}/sys/sys_local.h"
 		"${SharedDir}/sys/sys_main.cpp"
@@ -600,14 +616,21 @@ if(BuildMPEngine)
 			if(CMAKE_SIZEOF_VOID_P EQUAL 4)
 				set(MPEngineExtraInstallFiles
 					${OpenJKLibDir}/SDL2/bin/x86/SDL2.dll
-					)
+				)
 			else()
 				set(MPEngineExtraInstallFiles
-					${OpenJKLibDir}/SDL2/bin/x64/SDL2.dll
-					)
+					${OpenJKLibDir}/SDL2/bin/x64/SDL264.dll
+				)
 			endif()
 		endif()
 	else(WIN32)
+		if(UseInternalSDL2)
+			if(DARWIN)
+				set(MPEngineExtraInstallFiles
+					${OpenJKLibDir}/SDL2/lib/libSDL2-2.0.0.dylib
+				)
+			endif(DARWIN)
+		endif(UseInternalSDL2)
 		if(MakeApplicationBundles)
 			add_executable(${MPEngine} MACOSX_BUNDLE ${MPEngineFiles})
 			set_target_properties(${MPEngine} PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${MPDir}/macosx/OpenJKInfo.plist")

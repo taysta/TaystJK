@@ -8,7 +8,7 @@ on:
 jobs:
   macos-universal2:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-latest
+    runs-on: macos-13-xlarge
     strategy:
       fail-fast: false
       matrix:
@@ -19,18 +19,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get dependencies
+      - name: Get arm64 dependencies
         run: |
-          brew update
-          brew install cmake dylibbundler sdl2 zlib libjpeg libpng
+          brew install dylibbundler sdl2 libpng
+
+      - name: Get x86_64 dependencies
+        run: |
+          arch --x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+          (echo; echo 'eval "$(/usr/local/bin/brew shellenv)"') >> /Users/runner/.bash_profile
+          eval "$(/usr/local/bin/brew shellenv)"
+
+          arch --x86_64 /usr/local/Homebrew/bin/brew install sdl2 libpng cmake
 
       - name: Make build
         run: |
-          chmod +x macsourceports_universal2.sh
+          chmod +x build_universal2.sh
           chmod +x scripts/universal2/build_app_bundle.sh
           chmod +x scripts/universal2/constants.sh
           chmod +x scripts/universal2/sign_and_notarize.sh
-          ./macsourceports_universal2.sh
+          ./build_universal2.sh
 
       - name: Create binary archive
         if: ${{ matrix.build_type == 'Release' }}
