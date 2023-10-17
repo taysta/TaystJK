@@ -4732,13 +4732,6 @@ static void CreateInternalShaders( void )
 	stages[0].stateBits = GLS_DEFAULT;
 	tr.defaultShader = FinishShader();
 
-	InitShader("<white>", lightmapsNone, stylesDefault);
-	stages[0].bundle[0].image[0] = tr.whiteImage;
-	stages[0].active = qtrue;
-	stages[0].bundle[0].rgbGen = CGEN_EXACT_VERTEX;
-	stages[0].stateBits = GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
-	tr.whiteShader = FinishShader();
-
 	// shadow shader is just a marker
 	InitShader("<stencil shadow>", lightmapsNone, stylesDefault);
 	stages[0].bundle[0].image[0] = tr.defaultImage;
@@ -4746,6 +4739,44 @@ static void CreateInternalShaders( void )
 	stages[0].stateBits = GLS_DEFAULT;
 	shader.sort = SS_BANNER;
 	tr.shadowShader = FinishShader();
+
+	// distortion shader is just a marker
+	InitShader("internal_distortion", lightmapsNone, stylesDefault);
+	stages[0].bundle[0].image[0] = tr.whiteImage;
+	stages[0].active = qtrue;
+	stages[0].stateBits = GLS_DEFAULT;
+	shader.sort = SS_BLEND0;
+
+	if ( vk.refractionActive ) 
+	{
+		shader.defaultShader = qfalse;
+		tr.distortionShader = FinishShader();
+		tr.distortionShader->useDistortion = qtrue;
+	} 
+	else 
+	{
+		// https://github.com/MBII/OpenJK/blob/8cf83b7a522bb7675074b576de929d6e149b429b/codemp/rd-vulkan/tr_shader.cpp#L4607
+		stages[0].bundle[0].rgbGen = CGEN_CONST;
+		stages[0].bundle[0].constantColor[0] = 80;
+		stages[0].bundle[0].constantColor[1] = 90;
+		stages[0].bundle[0].constantColor[2] = 100;
+		stages[0].bundle[0].alphaGen = AGEN_WAVEFORM;
+		stages[0].bundle[0].alphaWave.func = GF_SIN;
+		stages[0].bundle[0].alphaWave.base = 0.07f;
+		stages[0].bundle[0].alphaWave.amplitude = 0.03f;
+		stages[0].bundle[0].alphaWave.phase = 0;
+		stages[0].bundle[0].alphaWave.frequency = 0.33f;
+		stages[0].stateBits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+		shader.contentFlags = CONTENTS_TRANSLUCENT;
+		tr.distortionShader = FinishShader();
+	}
+
+	InitShader("<white>", lightmapsNone, stylesDefault);
+	stages[0].bundle[0].image[0] = tr.whiteImage;
+	stages[0].active = qtrue;
+	stages[0].bundle[0].rgbGen = CGEN_EXACT_VERTEX;
+	stages[0].stateBits = GLS_DEPTHTEST_DISABLE | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
+	tr.whiteShader = FinishShader();
 
 	InitShader("<cinematic>", lightmapsNone, stylesDefault);
 	stages[0].bundle[0].image[0] = tr.defaultImage; // will be updated by specific cinematic images
