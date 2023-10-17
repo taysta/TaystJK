@@ -185,7 +185,7 @@ jobs:
         shell: bash
         run: cmake --install .
 
-      - name: Create binary archive
+      - name: Create TaystJK binary archive
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
