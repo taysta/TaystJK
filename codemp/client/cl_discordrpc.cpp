@@ -426,6 +426,15 @@ static void handleDiscordJoinRequest( const DiscordUser* request )
 	if ( response != -1 ) {
 		Discord_Respond( request->userId, response );
 	}
+
+#ifdef WIN32
+	if (com_unfocused->integer || com_minimized->integer)
+		con_alert = qtrue;
+#endif
+
+	if (!cls.discordNotificationSound)
+		cls.discordNotificationSound = S_RegisterSound("sound/interface/secret_area.mp3");
+	S_StartLocalSound(cls.discordNotificationSound, CHAN_AUTO);
 }
 
 static DiscordRichPresence discordPresence;

@@ -1395,6 +1395,9 @@ void CL_Snd_Restart_f( void ) {
 
 	extern void S_RestartMusic( void );
 	S_RestartMusic();
+#if defined(DISCORD)
+	cls.discordNotificationSound = S_RegisterSound("sound/interface/secret_area.mp3");
+#endif
 }
 
 
@@ -2642,6 +2645,9 @@ void CL_StartHunkUsers( void ) {
 	if ( !cls.soundRegistered ) {
 		cls.soundRegistered = qtrue;
 		S_BeginRegistration();
+#if defined(DISCORD)
+		cls.discordNotificationSound = S_RegisterSound("sound/interface/secret_area.mp3");
+#endif
 	}
 
 	if ( !cls.uiStarted ) {

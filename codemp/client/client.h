@@ -324,6 +324,7 @@ typedef struct clientStatic_s {
 #if defined(DISCORD) && !defined(_DEBUG)
 	qboolean	discordInitialized;
 	int			discordUpdateTime;
+	sfxHandle_t	discordNotificationSound;
 #endif
 
 	int			numlocalservers;
