@@ -985,15 +985,26 @@ void CL_SetCGameTime( void ) {
 		// smoothness or better responsiveness.
 		int tn;
 
+#if !defined(TOURNAMENT_CLIENT) //!defined(LAN_CLIENT)
 		tn = cl_timeNudge->integer;
 
-		if (tn < 0 && (cl.snap.ps.pm_type == PM_SPECTATOR || cl.snap.ps.pm_flags & PMF_FOLLOW || clc.demoplaying))
+        if (tn < 0 && cl.snap.valid && (cl.snap.ps.pm_type == PM_SPECTATOR || cl.snap.ps.pm_flags & PMF_FOLLOW || clc.demoplaying))
+#endif
 			tn = 0; // JAPRO ENGINE - disable negative timenudge when spectating
 #ifdef _DEBUG
 		if (tn<-900) {
 			tn = -900;
 		} else if (tn>900) {
 			tn = 900;
+		}
+#elif defined (TOURNAMENT_CLIENT)
+		if (tn < -30) {
+			Cvar_Set("cl_timeNudge", "-30");
+			tn = -30;
+		}
+		else if (tn > 30) {
+			Cvar_Set("cl_timeNudge", "30");
+				tn = 30;
 		}
 #else
 		if (tn<-2000) {//JAPRO ENGINE

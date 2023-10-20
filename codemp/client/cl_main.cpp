@@ -55,7 +55,9 @@ cvar_t	*rconAddress;
 cvar_t	*cl_timeout;
 cvar_t	*cl_maxpackets;
 cvar_t	*cl_packetdup;
+#ifndef TOURNAMENT_CLIENT
 cvar_t	*cl_timeNudge;
+#endif
 cvar_t	*cl_showTimeDelta;
 
 cvar_t	*cl_shownet;
@@ -98,9 +100,9 @@ cvar_t	*cl_framerate;
 // ja_guid is a persistent "cookie" that allows servers to track players across game sessions
 cvar_t	*cl_enableGuid;
 cvar_t	*cl_guidServerUniq;
-
+#ifndef TOURNAMENT_CLIENT
 cvar_t	*cl_idrive; //JAPRO ENGINE
-
+#endif
 cvar_t	*protocolswitch;
 
 cvar_t	*cl_autolodscale;
@@ -2420,6 +2422,10 @@ void CL_Frame ( int msec ) {
 	}
 
 	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer)))) {
+#ifndef TOURNAMENT_CLIENT
+	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer))))
+#endif
+	{
 		render = qtrue;
 		cls.lastDrawTime = cls.realtime;
 	}
@@ -3277,12 +3283,15 @@ void CL_Init( void ) {
 	Cvar_Get("com_protocol", va("%i", PROTOCOL_VERSION), CVAR_ROM, "1.01 protocol");
 	Cvar_Get("com_legacyprotocol", va("%i", PROTOCOL_LEGACY), CVAR_ROM, "1.00 protocol");
 
-	cl_yawspeed = Cvar_Get ("cl_yawspeed", "140", CVAR_ARCHIVE_ND );
-	cl_pitchspeed = Cvar_Get ("cl_pitchspeed", "140", CVAR_ARCHIVE_ND );
-	cl_anglespeedkey = Cvar_Get ("cl_anglespeedkey", "1.5", CVAR_ARCHIVE_ND );
+	cl_yawspeed = Cvar_Get ("cl_yawspeed", "140", CVAR_ARCHIVE );
+	cl_pitchspeed = Cvar_Get ("cl_pitchspeed", "140", CVAR_ARCHIVE );
+	cl_anglespeedkey = Cvar_Get ("cl_anglespeedkey", "1.5", CVAR_ARCHIVE );
 
+#ifndef TOURNAMENT_CLIENT
 	cl_maxpackets = Cvar_Get ("cl_maxpackets", "100", CVAR_ARCHIVE );
-	cl_packetdup = Cvar_Get ("cl_packetdup", "1", CVAR_ARCHIVE_ND );
+    cl_timeNudge = Cvar_Get ("cl_timeNudge", "0", CVAR_TEMP );
+    cl_packetdup = Cvar_Get ("cl_packetdup", "1", CVAR_ARCHIVE_ND );
+#endif
 
 	cl_run = Cvar_Get ("cl_run", "1", CVAR_ARCHIVE_ND, "Always run");
 	cl_sensitivity = Cvar_Get ("sensitivity", "5", CVAR_ARCHIVE, "Mouse sensitivity value");

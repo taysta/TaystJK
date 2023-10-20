@@ -487,7 +487,11 @@ void CL_SystemInfoChanged( void ) {
 			if (!strlen(value) || !FS_FilenameCompare(value, "OpenJK"))
 				Q_strncpyz(value, BASEGAME, sizeof(BASEGAME));
 
-			if (cls.state < CA_ACTIVE && Cvar_VariableIntegerValue("fs_globalcfg")) {
+#ifndef TOURNAMENT_CLIENT
+            if (cls.state < CA_ACTIVE && !clc.demoplaying && Cvar_VariableIntegerValue("fs_globalcfg"))
+#else
+			if (cls.state < CA_ACTIVE)
+#endif
 				Cbuf_ExecuteText(EXEC_APPEND, va("execq %s.cfg\n", value));
 			}
 

@@ -608,6 +608,8 @@ issues.
 
 #ifdef DEDICATED
 #	define Q3CONFIG_CFG PRODUCT_NAME "_server.cfg"
+#elif defined(TOURNAMENT_CLIENT)
+#	define Q3CONFIG_CFG "eternaljktc.cfg"
 #else
 #	define Q3CONFIG_CFG PRODUCT_NAME ".cfg"
 #endif
@@ -840,7 +842,9 @@ extern	cvar_t	*com_G2Report;
 extern	cvar_t	*com_affinity;
 extern	cvar_t	*com_busyWait;
 
+#ifndef TOURNAMENT_CLIENT
 extern	cvar_t	*com_renderfps;
+#endif
 
 // both client and server must agree to pause
 extern	cvar_t	*cl_paused;

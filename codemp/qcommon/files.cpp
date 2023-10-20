@@ -251,8 +251,10 @@ static cvar_t		*fs_cdpath;
 static cvar_t		*fs_copyfiles;
 static cvar_t		*fs_gamedirvar;
 static cvar_t		*fs_dirbeforepak; //rww - when building search path, keep directories at top and insert pk3's under them
-static cvar_t		*fs_loadpakdlls;
-#ifndef DEDICATED
+#ifndef TOURNAMENT_CLIENT
+cvar_t				*fs_loadpakdlls;
+#endif
+#if !defined(DEDICATED) && !defined(TOURNAMENT_CLIENT)
 static cvar_t		*fs_globalcfg;
 #endif
 static searchpath_t	*fs_searchpaths;
@@ -3184,7 +3186,11 @@ void FS_Which_f( void ) {
 
 	// just wants to see if file is there
 	for ( search=fs_searchpaths; search; search=search->next ) {
+#ifndef TOURNAMENT_CLIENT
 		if (search->pack && (!isDLL || fs_loadpakdlls->integer)) {
+#else
+        if (search->pack && !isDLL) {
+#endif
 			long hash = FS_HashFileName( filename, search->pack->hashSize );
 
 			// is the element a pak file?
@@ -3657,17 +3663,25 @@ void FS_Startup( const char *gameName ) {
 
 #ifndef DEDICATED
 	//cancer?
+#ifndef TOURNAMENT_CLIENT
 	fs_globalcfg = Cvar_Get("fs_globalcfg", "1", CVAR_ARCHIVE/* | CVAR_LATCH*/ | CVAR_NORESTART | CVAR_PROTECTED, "Only read/write files from base and EternalJK folders (requires filesystem restart)");
 
 	if (fs_globalcfg->integer)
 		fs_gamedirvar = fs_basegame;
 	else
+        fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
+#else
+	fs_gamedirvar = Cvar_Get("fs_basegame", ETERNALJKGAME, CVAR_INIT);//?
 #endif
-		fs_gamedirvar = Cvar_Get ("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory" );
+#else
+	fs_gamedirvar = Cvar_Get("fs_game", "", CVAR_INIT|CVAR_SYSTEMINFO, "Mod directory");
+#endif
 
 	fs_dirbeforepak = Cvar_Get("fs_dirbeforepak", "0", CVAR_INIT|CVAR_PROTECTED, "Prioritize directories before paks if not pure" );
 
+#ifndef TOURNAMENT_CLIENT
 	fs_loadpakdlls = Cvar_Get("fs_loadpakdlls", "1", CVAR_NORESTART|CVAR_PROTECTED, "Toggle loading DLLs from pk3 files");
+#endif
 
 	// add search path elements in reverse priority order (lowest priority first)
 	if (fs_cdpath->string[0]) {

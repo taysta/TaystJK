@@ -299,7 +299,11 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 	VectorCopy( cam.focus, cam.target.ideal );
 
 	{
+#ifndef TOURNAMENT_CLIENT
 		float vertOffset = cg_thirdPersonVertOffset.value;
+#else
+		float vertOffset = 16.0f;
+#endif
 
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 			vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
@@ -308,7 +312,11 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 			//Leave only last 2 digits
 			vertOffset = (int)vertOffset % 100;
 			if (vertOffset < 1)
+#ifndef TOURNAMENT_CLIENT
 				vertOffset = cg_thirdPersonVertOffset.value;
+#else
+				vertOffset = 16.0f;
+#endif
 		}
 
 		if (cg.snap && cg.snap->ps.m_iVehicleNum)
@@ -367,8 +375,12 @@ CG_CalcTargetThirdPersonViewLocation
 */
 static void CG_CalcIdealThirdPersonViewLocation(void)
 {
+#ifndef TOURNAMENT_CLIENT
 	float thirdPersonRange = cg_thirdPersonRange.value;
-	float newThirdPersonRange;// = cg_thirdPersonRange.value;
+#else
+	float thirdPersonRange = 80.0f;
+#endif
+	float newThirdPersonRange = thirdPersonRange;// = cg_thirdPersonRange.value;
 	int f;
 
 	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
@@ -378,7 +390,11 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		//Chop off end two digits
 		thirdPersonRange /= 100;
 		if (thirdPersonRange < 1)
+#ifndef TOURNAMENT_CLIENT
 			thirdPersonRange = cg_thirdPersonRange.value;
+#else
+			thirdPersonRange = 80.0f;
+#endif
 	}
 
 //JAPRO - Clientside - Allow for +zoom - Start
@@ -567,7 +583,13 @@ static void CG_UpdateThirdPersonTargetDamp(float dtime)
 	}
 	else if (cg_thirdPersonTargetDamp.value>0.0f)
 	{
-		dampfactor = 1.0 - cg_thirdPersonTargetDamp.value;	// We must exponent the amount LEFT rather than the amount bled off
+#ifdef TOURNAMENT_CLIENT
+	if (cg_thirdPersonTargetDamp.value < 0.5) {
+		trap->Cvar_Set("cg_thirdPersonTargetDamp", "0.5");
+		trap->Cvar_Update(&cg_thirdPersonTargetDamp);
+	}
+#endif
+        dampfactor = 1.0f - cg_thirdPersonTargetDamp.value;	// We must exponent the amount LEFT rather than the amount bled off
 
 		CG_DampPosition(&cam.target, dampfactor, dtime);
 	}
@@ -602,6 +624,13 @@ static void CG_UpdateThirdPersonCameraDamp(float dtime, float stiffFactor, float
 
 	// Set the cam.loc.ideal
 	CG_CalcIdealThirdPersonViewLocation();
+
+#ifdef TOURNAMENT_CLIENT
+	if (cg_thirdPersonCameraDamp.value < 0.3) {
+		trap->Cvar_Set("cg_thirdPersonCameraDamp", "0.3");
+		trap->Cvar_Update(&cg_thirdPersonCameraDamp);
+	}
+#endif
 
 	// First thing we do is calculate the appropriate damping factor for the camera.
 	dampfactor=0.0f;
@@ -1218,11 +1247,19 @@ static void CG_OffsetFighterView( void )
 {
 	vec3_t vehFwd, vehRight, vehUp, backDir;
 	vec3_t	camOrg, camBackOrg;
+#ifndef TOURNAMENT_CLIENT
 	float horzOffset = cg_thirdPersonHorzOffset.value;
 	float vertOffset = cg_thirdPersonVertOffset.value;
 	float pitchOffset = cg_thirdPersonPitchOffset.value;
 	float yawOffset = cg_thirdPersonAngle.value;
 	float range = cg_thirdPersonRange.value;
+#else
+	float horzOffset = 0.0f;
+	float vertOffset = 16.0f;
+	float pitchOffset = 0.0f;
+	float yawOffset = 0.0f;
+	float range = 80.0f;
+#endif
 	trace_t	trace;
 	centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
@@ -1294,6 +1331,7 @@ static qboolean CG_CalcFov( void ) {
 	int		inwater;
 	float	cgFov = cg_fov.value;
 
+#ifndef TOURNAMENT_CLIENT
 	if (cgFov < 1)
 	{
 		cgFov = 1;
@@ -1302,6 +1340,18 @@ static qboolean CG_CalcFov( void ) {
 	{
 		cgFov = 140;
 	}
+#else
+	if (cgFov < 80) {
+		trap->Cvar_Set("cg_fov", "80");
+		trap->Cvar_Update(&cg_fov);
+		cgFov = cg_fov.value;
+	}
+	else if (cgFov > 97) {
+		trap->Cvar_Set("cg_fov", "97");
+		trap->Cvar_Update(&cg_fov);
+		cgFov = cg_fov.value;
+	}
+#endif
 
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
 		// if in intermission, use a fixed value
@@ -1562,7 +1612,11 @@ static qboolean CG_ThirdPersonActionCam(void)
 	VectorNormalize(positionDir);
 
 	//position the cam based on the direction and saber position
+#ifndef TOURNAMENT_CLIENT
 	VectorMA(cent->lerpOrigin, cg_thirdPersonRange.value*2, positionDir, desiredPos);
+#else
+	VectorMA(cent->lerpOrigin, 160.0f, positionDir, desiredPos);
+#endif
 
 	//trace to the desired pos to see how far that way we can actually go before we hit something
 	//the endpos will be valid for our desiredpos no matter what
@@ -1772,12 +1826,15 @@ static int CG_CalcViewValues( void ) {
 	}
 	VectorCopy( cg.refdef.viewangles, cg_lastTurretViewAngles );
 
+#ifndef TOURNAMENT_CLIENT
 	if (cg_cameraOrbit.integer) {
 		if (cg.time > cg.nextOrbitTime) {
 			cg.nextOrbitTime = cg.time + cg_cameraOrbitDelay.integer;
 			cg_thirdPersonAngle.value += cg_cameraOrbit.value;
 		}
 	}
+#endif
+
 	// add error decay
 	if ( cg_errorDecay.value > 0 ) {
 		int		t;
@@ -1807,6 +1864,7 @@ static int CG_CalcViewValues( void ) {
 		}
 		else if ( cg.renderingThirdPerson ) { // loda
 			// back away from character
+#ifndef TOURNAMENT_CLIENT
 			if (cg_thirdPersonSpecialCam.integer &&
 				BG_SaberInSpecial(cg.snap->ps.saberMove))
 			{ //the action cam
@@ -1816,6 +1874,7 @@ static int CG_CalcViewValues( void ) {
 				}
 			}
 			else
+#endif
 			{
 				CG_OffsetThirdPersonView();
 			}
@@ -2582,26 +2641,33 @@ static QINLINE void CG_DoAsync( void ) {
 }
 
 int thirdPersonModificationCount = -1;
+#ifndef TOURNAMENT_CLIENT
 int	thirdPersonRangeModificationCount = -1;
 int	thirdPersonVertOffsetModificationCount = -1;
 int	maxPacketsModificationCount = -1;
 int timeNudgeModificationCount = -1;
 int	maxFPSModificationCount = -1;
+#else
+int timeNudgeModificationCount = -1;
+//int	netSettingsModificationCount = -1;
+int	maxFPSModificationCount = -1;
+int	maxPacketsModificationCount = -1;
+#endif
 
 static QINLINE void CG_UpdateNetUserinfo(void) {
 	//Have to find a new place to auto update cjp_client
 	if (cg.time > cg.userinfoUpdateDebounce) {
 		qboolean updateDisplay = qfalse, updateNet = qfalse;
 
-		if (thirdPersonModificationCount != cg_thirdPerson.modificationCount) {
-			updateDisplay = qtrue;
-		}
-		else if (thirdPersonRangeModificationCount != cg_thirdPersonRange.modificationCount) {
-			updateDisplay = qtrue;
-		}
-		else if (thirdPersonVertOffsetModificationCount != cg_thirdPersonVertOffset.modificationCount) {
-			updateDisplay = qtrue;
-		}
+        if (thirdPersonModificationCount != cg_thirdPerson.modificationCount) {
+            updateDisplay = qtrue;
+        }
+#ifndef TOURNAMENT_CLIENT
+        else if (thirdPersonRangeModificationCount != cg_thirdPersonRange.modificationCount) {
+            updateDisplay = qtrue;
+        } else if (thirdPersonVertOffsetModificationCount != cg_thirdPersonVertOffset.modificationCount) {
+            updateDisplay = qtrue;
+        }
 
 		if (maxFPSModificationCount != com_maxFPS.modificationCount) {
 			updateNet = qtrue;
@@ -2629,9 +2695,29 @@ static QINLINE void CG_UpdateNetUserinfo(void) {
 			trap->Cvar_Set("cg_displayNetSettings", va("%i %i %i", cl_maxPackets.integer, cl_timeNudge.integer, com_maxFPS.integer));
 			//Com_Printf("^1Updating net\n");
 
-			cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
-		}
-	}
+            cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+        }
+#else
+        if (maxFPSModificationCount != com_maxFPS.modificationCount)
+            updateNet = qtrue;
+        else if (maxPacketsModificationCount != cl_maxPackets.modificationCount)
+            updateNet = qtrue;
+
+        if (updateDisplay) {
+            thirdPersonModificationCount = cg_thirdPerson.modificationCount;
+            trap->Cvar_Set("cg_displayCameraPosition", va("%i %i %i", cg_thirdPerson.integer, cg_thirdPersonRange.integer, cg_thirdPersonVertOffset.integer));
+
+            cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+        }
+        if (updateNet) {
+            maxPacketsModificationCount = cl_maxPackets.modificationCount;
+            maxFPSModificationCount = com_maxFPS.modificationCount;
+            trap->Cvar_Set("cg_displayNetSettings", va("%i 0 %i", cl_maxPackets.integer, com_maxFPS.integer));
+
+            cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+        }
+#endif
+    }
 }
 
 //=========================================================================

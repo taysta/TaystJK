@@ -536,7 +536,11 @@ void Con_Init (void) {
 	con_scale = Cvar_Get("con_scale", "1.0", CVAR_ARCHIVE_ND, "Console character scale");
 	Cvar_CheckRange(con_scale, 0.2, 10.0f, qfalse);
 
+#ifndef TOURNAMENT_CLIENT
 	con_opacity = Cvar_Get ("con_opacity", "1.0", CVAR_ARCHIVE_ND, "Opacity of console background");
+#else
+    con_opacity = Cvar_Get("con_opacity", "0.5", CVAR_ARCHIVE_ND, "Opacity of console background");
+#endif
 	con_ratioFix = Cvar_Get("con_ratioFix", "1", CVAR_ARCHIVE_ND, "Correct console background height, should probably disable for custom console backgrounds.");
 	con_autoclear = Cvar_Get ("con_autoclear", "1", CVAR_ARCHIVE_ND, "Automatically clear console input on close");
 	con_notifywords = Cvar_Get("con_notifywords", "0", CVAR_ARCHIVE, "Notifies you when defined words are mentioned");

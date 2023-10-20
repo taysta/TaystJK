@@ -489,7 +489,11 @@ static void CG_ShowSpecCamera_f(void)
 	//Chop off end two digits
 	thirdPersonRange /= 100;
 	if (thirdPersonRange < 1)
+#ifndef TOURNAMENT_CLIENT
 		thirdPersonRange = cg_thirdPersonRange.value;
+#else
+		thirdPersonRange = 80;
+#endif
 
 	vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];
 	if (vertOffset < 0)
@@ -497,7 +501,11 @@ static void CG_ShowSpecCamera_f(void)
 	//Leave only last 2 digits
 	vertOffset = (int)vertOffset % 100;
 	if (vertOffset < 1)
+#ifndef TOURNAMENT_CLIENT
 		vertOffset = cg_thirdPersonVertOffset.value;
+#else
+		vertOffset = 16;
+#endif
 
 	trap->Print("^5Camera Settings^3:^7 Range %i, Offset %i^7\n", thirdPersonRange, vertOffset);
 }

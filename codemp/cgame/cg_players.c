@@ -10025,7 +10025,11 @@ void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 				//reset this
 				cg_vehThirdPersonAlpha = 1.0f;
 				//use the cvar
+#ifndef TOURNAMENT_CLIENT
 				alpha = cg_thirdPersonAlpha.value;
+#else
+				alpha = 1.0f;
+#endif
 			}
 		}
 	}
@@ -10035,7 +10039,11 @@ void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 		cg_vehThirdPersonAlpha = 1.0f;
 		//use the cvar
 		setFlags = RF_FORCE_ENT_ALPHA;
+#ifndef TOURNAMENT_CLIENT
 		alpha = cg_thirdPersonAlpha.value;
+#else
+		alpha = 1.0;
+#endif
 	}
 
 	if ( alpha < 1.0f )

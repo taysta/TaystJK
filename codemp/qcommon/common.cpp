@@ -66,8 +66,10 @@ cvar_t	*cl_paused;
 cvar_t	*sv_paused;
 cvar_t	*com_cameraMode;
 cvar_t  *com_homepath;
+#ifndef TOURNAMENT_CLIENT
 cvar_t	*com_renderfps;
 cvar_t	*cl_commandsize;//Loda - FPS UNLOCK ENGINE
+#endif
 #ifndef _WIN32
 cvar_t	*com_ansiColor = NULL;
 #endif
@@ -1440,8 +1442,10 @@ void Com_Init( char *commandLine ) {
 		com_cl_running = Cvar_Get ("cl_running", "0", CVAR_ROM, "Is the client running?" );
 		com_buildScript = Cvar_Get( "com_buildScript", "0", 0 );
 
-		com_renderfps = Cvar_Get("com_renderfps", "0", CVAR_ARCHIVE_ND);
+#ifndef TOURNAMENT_CLIENT
+		com_renderfps = Cvar_Get("com_renderfps", "0", CVAR_TEMP);
 		cl_commandsize = Cvar_Get("cl_commandsize", "64", CVAR_ARCHIVE_ND);//Loda - FPS UNLOCK ENGINE
+#endif
 #ifndef _WIN32
 		com_ansiColor = Cvar_Get( "com_ansiColor", "1", CVAR_ARCHIVE_ND );
 #endif

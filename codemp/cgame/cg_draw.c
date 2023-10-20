@@ -11708,10 +11708,18 @@ static void CG_DrawTrajectoryLine(void) {
 		BG_EvaluateTrajectory(&trajectory, cg.time + TICKRATE*i, newPos);
 
 		VectorSubtract(trajectory.trBase, newPos, length);
+#ifndef TOURNAMENT_CLIENT
 		radius = 1 + (VectorLength(length) * 0.001f * (cg_fov.value / 90.0f));
+#else
+		radius = 1 + (VectorLength(length) * 0.001f * (97.0f / 90.0f));
+#endif
 
 		if (cg.predictedPlayerState.zoomMode) {
+#ifndef TOURNAMENT_CLIENT
 			radius *= cg.predictedPlayerState.zoomFov / cg_fov.value;
+#else
+			radius *= cg.predictedPlayerState.zoomFov / 97.0f;
+#endif
 			radius *= radius;
 		}
 		if (radius < 1.0f)

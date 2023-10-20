@@ -404,6 +404,12 @@ extern	cvar_t	*cl_noprint;
 extern	cvar_t	*cl_timegraph;
 extern	cvar_t	*cl_maxpackets;
 extern	cvar_t	*cl_packetdup;
+#ifndef TOURNAMENT_CLIENT
+extern	cvar_t	*cl_timeNudge;
+#else
+#define ALLOWED_MAXPACKETS 100
+#endif
+
 extern	cvar_t	*cl_shownet;
 extern	cvar_t	*cl_showSend;
 extern	cvar_t	*cl_timeNudge;
@@ -428,10 +434,10 @@ extern	cvar_t	*m_yaw;
 extern	cvar_t	*m_forward;
 extern	cvar_t	*m_side;
 extern	cvar_t	*m_filter;
-
+#ifndef TOURNAMENT_CLIENT
 extern	cvar_t	*cl_idrive;//JAPRO ENGINE
 extern	cvar_t	*cl_commandsize;//JAPRO ENGINE
-
+#endif
 extern	cvar_t	*cl_timedemo;
 extern	cvar_t	*cl_aviFrameRate;
 extern	cvar_t	*cl_aviMotionJpeg;

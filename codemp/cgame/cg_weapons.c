@@ -2189,7 +2189,11 @@ static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlag
 	int missileSpeed, offset, seed = cg.oldTime % 10000;//or nextsnap? or pm?
 	qboolean gravity = qfalse;// longTrail = qtrue;
 	float spreadX = 0, spreadY = 0;
+#ifndef TOURNAMENT_CLIENT //LAN_CLIENT
 	int timenudge = cl_timeNudge.integer;
+#else
+	int timenudge = 0;
+#endif
 
 	//weapon = &cg_weapons[weap];
 
