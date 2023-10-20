@@ -1108,6 +1108,121 @@ void Cvar_Set_f( void ) {
 	}
 }
 
+#ifdef CVAR_ALIAS
+/*
+============
+Cvar_Set_f
+
+Allows setting and defining of arbitrary cvars from console, even if they
+weren't declared in C code.
+============
+*/
+void Cvar_SetAlias_f( void ) {
+	int		c;
+	char	*cmd;
+	cvar_t	*v = NULL;
+
+	c = Cmd_Argc();
+	cmd = Cmd_Argv(0);
+
+	if (!c)
+	{
+		//cvar_t *var = NULL;
+
+		// list off currently set aliases
+		for ( v=cvar_vars;
+			v;
+			v=v->next )
+		{
+			char *value = v->latchedString ? v->latchedString : v->string;
+			if (!v || !(v->flags & CVAR_ALIAS))
+				continue;
+
+			/*Com_Printf( S_COLOR_GREY "Cvar "
+				S_COLOR_WHITE "%s = " S_COLOR_GREY "\"" S_COLOR_WHITE "%s" S_COLOR_GREY "\"" S_COLOR_WHITE ", "
+				S_COLOR_WHITE "default = " S_COLOR_GREY "\"" S_COLOR_WHITE "%s" S_COLOR_GREY "\"" S_COLOR_WHITE "\n",
+				var->name, value, var->resetString );*/
+
+			//Com_Printf( S_COLOR_GREY "Alias " S_COLOR_WHITE "%s = " S_COLOR_GREY "\"" S_COLOR_WHITE "%s" S_COLOR_GREY "\"" S_COLOR_WHITE "\n",
+			Com_Printf( S_COLOR_GREY "Alias " S_COLOR_WHITE "%s = " S_COLOR_WHITE "\"%s\"\n",
+				v->name, value );
+		}
+		return;
+	}
+
+	if ( c < 2 ) {
+		Com_Printf ("usage: %s <variable> <value>\n", cmd);
+		return;
+	}
+
+	if ( c == 2 ) {
+		Cvar_Print_f();
+		return;
+	}
+	v = Cvar_User_Set (Cmd_Argv(1), Cmd_ArgsFrom(2));
+	if( !v ) {
+		return;
+	}
+
+	if( !( v->flags & CVAR_ALIAS) ) {
+		v->flags |= CVAR_ALIAS;
+		cvar_modifiedFlags |= CVAR_ALIAS;
+	}
+}
+
+/*
+============
+Cvar_Copy_f
+
+Allows copying cvar string values to either
+system clipboard, or to a new cvar
+============
+*/
+void Cvar_Copy_f( void ) {
+	int		c;
+	char	*cmd, *srcName, *destName;
+	cvar_t	*src = NULL, *dest = NULL;
+
+	c = Cmd_Argc();
+	cmd = Cmd_Argv( 0 );
+
+	if ( c < 2 || c > 3 ) {
+		Com_Printf( "usage: %s <variable> <optional: newVariable>\n", cmd, cmd );
+		return;
+	}
+
+	srcName = Cmd_Argv( 1 );
+	src = Cvar_FindVar( srcName );
+	if ( !src ) {
+		Com_Printf( "Cvar %s does not exist.\n", srcName );
+		return;
+	}
+
+	if ( !VALIDSTRING( src->string ) || strlen( src->string ) < 1 ) { //shouldn't happen but just to be safe
+		Com_Printf( S_COLOR_RED "Cvar %s has invalid string value.\n", srcName );
+		return;
+	}
+
+	if ( c == 2 ) { //copy cvar value to clipboard
+		Sys_SetClipboardData( src->string );
+		Com_Printf( S_COLOR_GREEN "Cvar %s's value was copied to clipboard.\n", srcName );
+		return;
+	}
+
+	destName = Cmd_Argv( 2 );
+	dest = Cvar_FindVar( destName );
+	if ( dest )
+	{
+		if ( dest->flags & (CVAR_INIT|CVAR_LATCH|CVAR_ROM|CVAR_CHEAT|CVAR_INTERNAL|CVAR_PARENTAL|CVAR_PROTECTED) ) {
+			Com_Printf( S_COLOR_YELLOW "Destination cvar %s has invalid flags.\n", destName );
+			return;
+		}
+	}
+
+	dest = Cvar_User_Set( destName, src->string );
+}
+#endif
+
 /*
 ============
 Cvar_Math_f
@@ -1174,47 +1289,58 @@ Appends lines containing "set variable value" for all variables
 with the archive flag set to qtrue.
 ============
 */
+static void Cvar_WriteVariables_Real( fileHandle_t f, qboolean modifiedOnly ) {
+    cvar_t	*var;
+    char buffer[1024];
+    char *cvarStr = NULL;
+    if ( cvar_sort ) {
+        Com_DPrintf( "Cvar_Sort: sort cvars\n" );
+        cvar_sort = qfalse;
+        Cvar_Sort();
+    }
+    for ( var = cvar_vars; var; var = var->next )
+    {
+        if ( !var->name || Q_stricmp( var->name, "cl_cdkey" ) == 0 )
+            continue;
+        if ( var->flags & CVAR_ARCHIVE ) {
+            // write the latched value, even if it hasn't taken effect yet
+            cvarStr = ( VALIDSTRING(var->latchedString) ? var->latchedString : var->string );
+            if( strlen( var->name ) + strlen( cvarStr ) + 10 > sizeof( buffer ) ) {
+                Com_Printf( S_COLOR_YELLOW "WARNING: value of variable "
+                                           "\"%s\" too long to write to file\n", var->name );
+                continue;
+            }
+
+            if ( (var->flags & CVAR_NODEFAULT) && !strcmp( cvarStr, var->resetString ))
+                continue;
+
+            if ( modifiedOnly ) {
+                if (var->flags & CVAR_INTERNAL)
+                    continue;
+
+                if (!var->modificationCount)
+                    continue;
+
+                if (!Q_stricmpn(var->name, "g_", 2) || !Q_stricmpn(var->name, "d_", 2) ||
+                    !Q_stricmpn(var->name, "r_", 2) || !Q_stricmpn(var->name, "ui_", 3) || !Q_stricmpn(var->name, "bot_", 4))
+                    continue;
+
+                if ( !(var->flags & CVAR_USER_CREATED) && !Q_stricmp( cvarStr, var->resetString ) )
+                    continue;
+            }
+
+            Com_sprintf( buffer, sizeof(buffer), "seta %s \"%s\"\n", var->name, cvarStr );
+            FS_Write( buffer, strlen( buffer ), f );
+        }
+    }
+}
+
 void Cvar_WriteVariables( fileHandle_t f ) {
-	cvar_t	*var;
-	char buffer[1024];
+    Cvar_WriteVariables_Real( f, qfalse );
+}
 
-	if ( cvar_sort ) {
-		Com_DPrintf( "Cvar_Sort: sort cvars\n" );
-		cvar_sort = qfalse;
-		Cvar_Sort();
-	}
-
-	for ( var = cvar_vars; var; var = var->next )
-	{
-		if ( !var->name || Q_stricmp( var->name, "cl_cdkey" ) == 0 )
-			continue;
-
-		if ( var->flags & CVAR_ARCHIVE ) {
-			// write the latched value, even if it hasn't taken effect yet
-			if ( var->latchedString ) {
-				if( strlen( var->name ) + strlen( var->latchedString ) + 10 > sizeof( buffer ) ) {
-					Com_Printf( S_COLOR_YELLOW "WARNING: value of variable "
-							"\"%s\" too long to write to file\n", var->name );
-					continue;
-				}
-				if ( (var->flags & CVAR_NODEFAULT) && !strcmp( var->latchedString, var->resetString ) ) {
-					continue;
-				}
-				Com_sprintf (buffer, sizeof(buffer), "seta %s \"%s\"\n", var->name, var->latchedString);
-			} else {
-				if( strlen( var->name ) + strlen( var->string ) + 10 > sizeof( buffer ) ) {
-					Com_Printf( S_COLOR_YELLOW "WARNING: value of variable "
-							"\"%s\" too long to write to file\n", var->name );
-					continue;
-				}
-				if ( (var->flags & CVAR_NODEFAULT) && !strcmp( var->string, var->resetString ) ) {
-					continue;
-				}
-				Com_sprintf (buffer, sizeof(buffer), "seta %s \"%s\"\n", var->name, var->string);
-			}
-			FS_Write( buffer, strlen( buffer ), f );
-		}
-	}
+void Cvar_WriteModifiedVariables( fileHandle_t f ) {
+    Cvar_WriteVariables_Real( f, qtrue );
 }
 
 /*
@@ -1385,11 +1511,23 @@ void Cvar_UnsetUserCreated_f(void)
 {
 	cvar_t	*curvar = cvar_vars;
 	uint32_t count = 0;
+	char *s = NULL;
+	int len = 0;
+
+	if (Cmd_Argc() >= 2) { //specified a prefix to search for
+		s = Cmd_Argv(1);
+		len = strlen(s);
+	}
 
 	while ( curvar )
 	{
 		if ( ( curvar->flags & CVAR_USER_CREATED ) )
 		{
+			if (VALIDSTRING(s) && Q_stricmpn(curvar->name, s, len)) {
+				curvar = curvar->next;
+				continue;
+			}
+
 			// throw out any variables the user created
 			curvar = Cvar_Unset( curvar );
 			count++;
@@ -1643,6 +1781,14 @@ void Cvar_Init (void) {
 	Cmd_AddCommand( "cvar_usercreated", Cvar_ListUserCreated_f, "Show all user created cvars" );
 	Cmd_AddCommand( "cvar_modified", Cvar_ListModified_f, "Show all modified cvars" );
 	Cmd_AddCommand( "cvar_restart", Cvar_Restart_f, "Resetart the cvar sub-system" );
+#ifdef CVAR_ALIAS
+	Cmd_AddCommand( "alias", Cvar_SetAlias_f, "Set a cvar and apply alias flag" ); //need to update this to allow alias buttons (alias binds that have different action when pressed/depressed)
+	Cmd_SetCommandCompletionFunc( "alias", Cvar_CompleteCvarName );
+	Cmd_AddCommand( "copy", Cvar_Copy_f, "Copy a cvar's value to either the clipboard or another cvar" );
+	Cmd_SetCommandCompletionFunc( "copy", Cvar_CompleteCvarName );
+	Cmd_AddCommand( "cvarCopy", Cvar_Copy_f, "Copy a cvar's value to either the clipboard or another cvar" );
+	Cmd_SetCommandCompletionFunc( "cvarCopy", Cvar_CompleteCvarName );
+#endif
 }
 
 static void Cvar_Realloc(char **string, char *memPool, int &memPoolUsed)
