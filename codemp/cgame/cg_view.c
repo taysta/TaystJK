@@ -2572,6 +2572,13 @@ static QINLINE void CG_DoAsync( void ) {
 			cg.numFKFrames++;
 		}
 	}
+	if (cgs.serverMod == SVMOD_JAPLUS && !(cg.predictedPlayerState.pm_flags & PMF_FOLLOW) && cg.predictedPlayerState.pm_type != PM_SPECTATOR) {
+		//end all be all
+		if (cg_antiAmKiss.integer &&
+			(cg.predictedPlayerState.torsoAnim == BOTH_KISSEE || cg.predictedPlayerState.legsAnim == BOTH_KISSEE)) {
+			trap->SendConsoleCommand("force_throw\n");
+		}
+	}
 }
 
 int thirdPersonModificationCount = -1;
