@@ -1514,7 +1514,7 @@ NPC Behavior state thinking
 
 ===============
 */
-void NPC_ExecuteBState ( gentity_t *self)//, int msec )
+void NPC_ExecuteBState ( gentity_t *self, int msec )
 {
 	bState_t	bState;
 
@@ -1645,7 +1645,7 @@ void NPC_ExecuteBState ( gentity_t *self)//, int msec )
 
 	// run the bot through the server like it was a real client
 //=== Save the ucmd for the second no-think Pmove ============================
-	NPCS.ucmd.serverTime = level.time - 50;
+	NPCS.ucmd.serverTime = level.time - msec;
 	memcpy( &NPCS.NPCInfo->last_ucmd, &NPCS.ucmd, sizeof( usercmd_t ) );
 	if ( !NPCS.NPCInfo->attackHoldTime )
 	{
@@ -1763,13 +1763,16 @@ Main NPC AI - called once per frame
 #if	AI_TIMERS
 extern int AITime;
 #endif//	AI_TIMERS
+#define NPC_FRAMETIME (g_npcFixLerp.integer ? level.frameTime : (FRAMETIME/2))
 void NPC_Think ( gentity_t *self)//, int msec )
 {
 	vec3_t	oldMoveDir;
 	int i = 0;
 	gentity_t *player;
+	const int frameTime = NPC_FRAMETIME;
 
-	self->nextthink = level.time + FRAMETIME;
+	//self->nextthink = level.time + (g_npcFixLerp.integer ? level.frameTime : (FRAMETIME/2));
+	self->nextthink = level.time + frameTime;
 
 	SetNPCGlobals( self );
 
@@ -1809,8 +1812,7 @@ void NPC_Think ( gentity_t *self)//, int msec )
 		return;
 	}
 
-	self->nextthink = level.time + FRAMETIME/2;
-
+	//self->nextthink = level.time + frameTime;
 
 	while (i < MAX_CLIENTS)
 	{
@@ -1872,7 +1874,7 @@ void NPC_Think ( gentity_t *self)//, int msec )
 
 		if ( NPCS.NPC->s.weapon == WP_SABER && g_npcspskill.integer >= 2 && NPCS.NPCInfo->rank > RANK_LT_JG )
 		{//Jedi think faster on hard difficulty, except low-rank (reborn)
-			NPCS.NPCInfo->nextBStateThink = level.time + FRAMETIME/2;
+			NPCS.NPCInfo->nextBStateThink = level.time + (FRAMETIME/2);
 		}
 		else
 		{//Maybe even 200 ms?
@@ -1883,7 +1885,7 @@ void NPC_Think ( gentity_t *self)//, int msec )
 		if (self->s.NPC_class != CLASS_VEHICLE ||
 			!self->m_pVehicle)
 		{ //ok, let's not do this at all for vehicles.
-			NPC_ExecuteBState( self );
+			NPC_ExecuteBState( self, frameTime );
 		}
 
 #if	AI_TIMERS
@@ -1899,7 +1901,7 @@ void NPC_Think ( gentity_t *self)//, int msec )
 	{
 		VectorCopy( oldMoveDir, self->client->ps.moveDir );
 		//or use client->pers.lastCommand?
-		NPCS.NPCInfo->last_ucmd.serverTime = level.time - 50;
+		NPCS.NPCInfo->last_ucmd.serverTime = level.time - frameTime;
 		if ( !NPCS.NPC->next_roff_time || NPCS.NPC->next_roff_time < level.time )
 		{//If we were following a roff, we don't do normal pmoves.
 			//FIXME: firing angles (no aim offset) or regular angles?

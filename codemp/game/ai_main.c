@@ -154,11 +154,6 @@ void BotStraightTPOrderCheck(gentity_t *ent, int ordernum, bot_state_t *bs)
 		}
 		break;
 	case TEAMPLAYSTATE_FOLLOWING:
-		bs->teamplayState = ordernum;
-		bs->isSquadLeader = 0;
-		bs->squadLeader = ent;
-		bs->wpDestSwitchTime = 0;
-		break;
 	case TEAMPLAYSTATE_ASSISTING:
 		bs->teamplayState = ordernum;
 		bs->isSquadLeader = 0;
@@ -345,7 +340,7 @@ int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent);
 
 void ExitLevel( void );
 
-void QDECL BotAI_Print(int type, char *fmt, ...) { return; }
+void QDECL BotAI_Print(int type, char *fmt, ...) { }
 
 qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower );
 
@@ -552,7 +547,7 @@ BotInputToUserCommand
 */
 void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3], int time, int useTime) {
 	vec3_t angles, forward, right;
-	short temp;
+	int temp;
 	int j;
 	float f, r, u, m;
 
@@ -626,15 +621,15 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 	//set the view independent movement
 	f = DotProduct(forward, bi->dir);
 	r = DotProduct(right, bi->dir);
-	u = fabs(forward[2]) * bi->dir[2];
-	m = fabs(f);
+	u = fabsf(forward[2]) * bi->dir[2];
+	m = fabsf(f);
 
-	if (fabs(r) > m) {
-		m = fabs(r);
+	if (fabsf(r) > m) {
+		m = fabsf(r);
 	}
 
-	if (fabs(u) > m) {
-		m = fabs(u);
+	if (fabsf(u) > m) {
+		m = fabsf(u);
 	}
 
 	if (m > 0) {
@@ -1205,11 +1200,7 @@ int PassWayCheck(bot_state_t *bs, int windex)
 		}
 	}
 
-	if (bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_FWD))
-	{ //we're not travelling in a direction on the trail that will allow us to pass this point
-		return 0;
-	}
-	else if (!bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_BACK))
+	if ((bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_FWD)) || (!bs->wpDirection && (gWPArray[windex]->flags & WPFLAG_ONEWAY_BACK)))
 	{ //we're not travelling in a direction on the trail that will allow us to pass this point
 		return 0;
 	}
@@ -4824,20 +4815,88 @@ void BotAimLeading(bot_state_t *bs, vec3_t headlevel, float leadAmount)
 #endif
 	}
 
-
-	if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE && 
-	g_entities[bs->client].client->ps.saberMove != LS_READY) { //Poke
-		vec3_t saberDiff;
-		VectorSubtract(bs->currentEnemy->client->ps.origin, g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberDiff);
-		VectorAdd(saberDiff, predictedSpot, predictedSpot);
-	}
-
-
 	VectorSubtract(predictedSpot, bs->eye, a);
 	vectoangles(a, ang);
 	VectorCopy(ang, bs->goalAngles);
+    bs->goalAngles[YAW] = AngleNormalize360(bs->goalAngles[YAW]);
+    bs->goalAngles[PITCH] = AngleNormalize360(bs->goalAngles[PITCH]);
+
+    if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE &&
+        g_entities[bs->client].client->ps.saberMove != LS_READY) { //Poke and Wiggle
+
+        /*
+        vec3_t saberEnd, saberAngs;
+        VectorCopy(g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberEnd); //Vector of the tip of the saber
+        VectorSubtract(saberEnd, bs->origin, saberEnd);//This might be backwards, but its the vector of saber tip relative to us
+
+        vectoangles(saberEnd, saberAngs); //Turn saber tip into angles
+
+        saberAngs[YAW] -= 150;
+
+        saberAngs[PITCH] += 25;//who knows!
+
+        saberAngs[YAW] = AngleSubtract(saberAngs[YAW], bs->viewangles[YAW]);
+        saberAngs[PITCH] = AngleSubtract(saberAngs[PITCH], bs->viewangles[PITCH]);
+
+        bs->goalAngles[YAW] -= saberAngs[YAW]; //Offset our ideal angles by this to keep saber tip always pointed at enemy?
+        bs->goalAngles[PITCH] -= saberAngs[PITCH] * 0.5;
+        */
+
+        //Poke
+        vec3_t saberPos = { 0 }, saberAngles = { 0 }, saberDiff = { 0 };
+
+        if (bs->frame_Enemy_Len >= BWEAPONRANGE_SABER) {
+            VectorCopy(g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberPos);
+        }
+        else {
+            VectorCopy(g_entities[bs->client].client->saber[0].blade[0].trail.base, saberPos);
+        }
+
+        VectorSubtract(saberPos, bs->eye, saberAngles);
+        vectoangles(saberAngles, saberAngles);
+        saberAngles[YAW] = AngleNormalize360(saberAngles[YAW]);
+        saberAngles[PITCH] = AngleNormalize180(saberAngles[PITCH]);
+
+        AnglesSubtract(bs->cur_ps.viewangles, saberAngles, saberDiff);
+        saberDiff[YAW] = AngleNormalize360(saberDiff[YAW]);
+        saberDiff[PITCH] = AngleNormalize180(saberDiff[PITCH]);
+
+        //wiggle
+        if (level.time % 100 > 50) {
+            saberDiff[YAW] = AngleNormalize360(saberDiff[YAW] + 3.0f);
+        }
+        else {
+            saberDiff[YAW] = AngleNormalize360(saberDiff[YAW] - 3.0f);
+        }
+
+        if (level.time % 200 > 100) {
+            saberDiff[PITCH] = AngleNormalize180(saberDiff[PITCH] + 6.0f);
+        }
+        else {
+            saberDiff[PITCH] = AngleNormalize180(saberDiff[PITCH] - 6.0f);
+        }
+
+        bs->goalAngles[YAW] = AngleNormalize360(bs->goalAngles[YAW] + saberDiff[YAW]);
+        bs->goalAngles[PITCH] = AngleNormalize180(bs->goalAngles[PITCH] + saberDiff[PITCH]);
+
+        /*if (level.time % 100 > 50) {
+            bs->goalAngles[YAW] += 3.0f;
+        }
+        else {
+            bs->goalAngles[YAW] -= 3.0f;
+        }
+
+        if (level.time % 200 > 100) {
+            bs->goalAngles[PITCH] += 6.0f;
+        }
+        else {
+            bs->goalAngles[PITCH] -= 6.0f;
+        }
 
 
+        bs->goalAngles[YAW] = AngleNormalize360(bs->goalAngles[YAW]);
+        bs->goalAngles[PITCH] = AngleNormalize360(bs->goalAngles[PITCH]);*/
+    }
 	if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE && 
 		g_entities[bs->client].client->ps.saberMove != LS_READY) { //Poke and Wiggle
 
@@ -4882,8 +4941,6 @@ void BotAimLeading(bot_state_t *bs, vec3_t headlevel, float leadAmount)
 		bs->goalAngles[YAW] = AngleNormalize360(bs->goalAngles[YAW]);
 		bs->goalAngles[PITCH] = AngleNormalize360(bs->goalAngles[PITCH]);
 	}
-
-
 }
 
 //wobble our aim around based on our sk1llz
@@ -7445,7 +7502,7 @@ void NewBotAI_GetLSForcepower(bot_state_t *bs)
 		}
 	}
 
-	if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && rand() > 0.5)
+	if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && Q_flrand(0.0f, 1.0f) > 0.5f)
 		useTheForce = qfalse;
 
 	if (useTheForce) {
