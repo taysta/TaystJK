@@ -3884,7 +3884,7 @@ static qboolean UI_VGS_Global_HandleKey(int key) {
 	else if ((key == A_LOW_W) || (key == A_CAP_W)) {
 		item = Menu_FindItemByName(menu, "glb_08");
 	}
-	else if ((key == A_LOW_M) || (key == A_CAP_M)) {
+	else if ((key == A_LOW_M) || (key == A_CAP_M) && trap->Cvar_VariableValue("cg_allowMemeVGS")) {
 		item = Menu_FindItemByName(menu, "meme");
 	}
     else {

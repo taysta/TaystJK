@@ -3622,6 +3622,10 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				int ourTeam;
 				s = CG_ConfigString( CS_SOUNDS + es->eventParm ); //eh?
 
+				if (!cg_allowMemeVGS.integer && !Q_stricmpn(s, "*meme_", 6)) {
+					break;
+				}
+
 				ourTeam = cg.predictedPlayerState.persistant[PERS_TEAM];
 				if (cg.predictedPlayerState.pm_flags & PMF_FOLLOW)
 					ourTeam = TEAM_SPECTATOR;
