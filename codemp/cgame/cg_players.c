@@ -6199,10 +6199,9 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	vec3_t		mid, rgb;//rgb
 	qhandle_t	blade = 0, glow = 0;
 	refEntity_t saber, sbak;//rgb
-	float radiusmult;
-	float radiusRange;
-	float radiusStart;
-	float pulse;//rgb
+	float radiusmult, radiusRange, radiusStart;
+	float saberRadius = 0.0f;
+	float pulse = 0.0f;//rgb
 	int i;//rgb
 
 	if ( length < 0.5f )
@@ -6317,8 +6316,34 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	radiusRange = radius * 0.075f;
 	radiusStart = radius-radiusRange;
 
-	saber.radius = (radiusStart + Q_flrand(-1.0f, 1.0f) * radiusRange)*radiusmult;
-	//saber.radius = (2.8f + Q_flrand(-1.0f, 1.0f) * 0.2f)*radiusmult;
+	saberRadius = (radiusStart + Q_flrand(-1.0f, 1.0f) * radiusRange)*radiusmult;
+
+	VectorScale( rgb, 255.0f, rgb );
+	if (cg_saberIgnitionFlare.integer && length <= (lengthMax * 0.25f))
+	{
+		float ignitionRadius = (saberRadius*1.5f)+length;
+
+		saber.renderfx = rfx;
+		saber.radius = ignitionRadius;
+		VectorCopy(origin, saber.origin);
+		saber.reType = RT_SPRITE;
+		saber.customShader = cgs.media.saberIgnitionFlare;
+
+		for (i = 0; i < 3; i++) {
+			saber.shaderRGBA[i] = rgb[i];
+		}
+		saber.shaderRGBA[3] = 255;
+		trap->R_AddRefEntityToScene( &saber );
+
+		// white flash in the middle
+		saber.radius *= 0.25f;
+		for (i = 0; i <= 3; i++) {
+			saber.shaderRGBA[i] = 255;
+		}
+		trap->R_AddRefEntityToScene( &saber );
+	}
+
+	saber.radius = saberRadius;
 
 	VectorCopy( origin, saber.origin );
 	VectorCopy( dir, saber.axis[0] );
@@ -6537,6 +6562,14 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 
 	effectradius = ((radius * 1.6f * v1) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
 	coreradius = ((radius * 0.4f * v2) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
+
+	//float ignite_len, ignite_radius;
+	//ignite_len = lengthMax * 0.25f;
+	//ignite_radius = effectradius * effectradius * 1.5f;
+	//ignite_radius -= blade_len;
+	float ignite_len = lengthMax * 0.25f, ignite_radius  = (effectradius * effectradius * 1.5f)-blade_len;
+	//Com_Printf("effectradius %f ignite_radius %f\n", effectradius, ignite_radius);
+
 	effectradius *= cg_shaderSaberGlow.value;
 	coreradius *= pulse + cg_shaderSaberCore.value;
 
@@ -6544,6 +6577,28 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		rfx |= RF_FORCEPOST;
 
 	VectorScale( rgb, 255.0f, rgb );
+	//saber ignition flare
+	if ( cg_saberIgnitionFlare.integer && blade_len <= ignite_len )
+	{
+		saber.renderfx = rfx;
+		saber.radius = ignite_radius;
+		VectorCopy( blade_muz, saber.origin );
+		saber.reType = RT_SPRITE;
+		saber.customShader = cgs.media.saberIgnitionFlare;
+
+		for (i = 0; i < 3; i++) {
+			saber.shaderRGBA[i] = rgb[i];
+		}
+		saber.shaderRGBA[3] = 255;
+		trap->R_AddRefEntityToScene( &saber );
+
+		// white flash in the middle
+		saber.radius *= 0.25f;
+		for (i = 0; i <= 3; i++) {
+			saber.shaderRGBA[i] = 255;
+		}
+		trap->R_AddRefEntityToScene( &saber );
+	}
 
 	saber.renderfx = rfx;
 	if ( blade_len - ((effectradius*AngleScale) / 2) > 0 ) {

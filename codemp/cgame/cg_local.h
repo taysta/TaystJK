@@ -1605,6 +1605,9 @@ typedef struct cgMedia_s {
 	qhandle_t	ShaderSaberEnd;
 	qhandle_t	ShaderSaberEndRGB;
 
+	//rp
+	qhandle_t saberIgnitionFlare;
+
 #define _SHITTYLINEFX 1
 #if _SHITTYLINEFX
 	qhandle_t	rgbSaberGlow2Shader;

@@ -165,6 +165,7 @@ XCVAR_DEF( cg_engineModifications,				"1",	CG_MemoryPatchChange,	CVAR_ARCHIVE ) 
 
 //rp features
 XCVAR_DEF( cg_forceOwnSaber,					"none", CVU_ForceOwnSaber,		CVAR_NONE ) //CVAR_TEMP )
+XCVAR_DEF( cg_saberIgnitionFlare,				"1",	NULL,					CVAR_NONE )
 
 //Auto login
 XCVAR_DEF( cg_autoLoginServer1,					"0",	NULL,					CVAR_ARCHIVE )
