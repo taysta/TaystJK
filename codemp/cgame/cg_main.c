@@ -671,6 +671,8 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.ShaderSaberEnd = trap->R_RegisterShader("gfx/effects/sabers/saber_end");
 	cgs.media.ShaderSaberEndRGB = trap->R_RegisterShader("gfx/effects/sabers/saber_end_rgb");
 
+	//rp
+	cgs.media.saberIgnitionFlare = trap->R_RegisterShaderNoMip( "gfx/effects/flare1" );
 #if _SHITTYLINEFX
 	//Flame 1
 	cgs.media.rgbSaberGlow2Shader		= trap->R_RegisterShader( "gfx/effects/sabers/RGBglow2" );
