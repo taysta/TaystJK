@@ -949,7 +949,8 @@ intptr_t CL_UISystemCalls( intptr_t *args ) {
 		return 0;
 
 	case UI_UPDATESCREEN:
-		SCR_UpdateScreen();
+		//SCR_UpdateScreen();
+		SCR_UpdateScreenAndInput();
 		return 0;
 
 	case UI_CM_LERPTAG:

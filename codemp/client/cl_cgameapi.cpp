@@ -981,7 +981,8 @@ intptr_t CL_CgameSystemCalls( intptr_t *args ) {
 		// We can't call Com_EventLoop here, a restart will crash and this _does_ happen
 		// if there is a map change while we are downloading at pk3.
 		// ZOID
-		SCR_UpdateScreen();
+		//SCR_UpdateScreen();
+		SCR_UpdateScreenAndInput();
 		return 0;
 
 	case CG_CM_LOADMAP:

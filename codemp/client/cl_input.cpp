@@ -962,6 +962,10 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	forward += movespeed * s1;
 	forward -= movespeed * s2;		
 
+	//snaphud
+	cl.snappinghud.m[0] = forward;
+	cl.snappinghud.m[1] = side;
+
 	cmd->forwardmove = ClampChar( forward );
 	cmd->rightmove = ClampChar( side );
 	cmd->upmove = ClampChar( up );
