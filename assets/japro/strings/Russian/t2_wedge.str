@@ -1,0 +1,138 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           13WEA001
+LANG_ENGLISH        "Thanks for the assistance, Jaden. Luke tells me you're going to be a great Jedi. Let's get to Kril'dor and take out that mining platform!"
+LANG_RUSSIAN         "Спасибо за помощь, Джейден. Люк говорит, что ты будешь великим джедаем. Летим на Крил'дор и выведем из строя эту добывающую платформу!"
+
+REFERENCE           13WEA002
+NOTES               "(via comm)"
+LANG_ENGLISH        "This facility is lightly defended. I don't think they expected us to find it. My targeting computer will lock onto your beacons. Place them on the key structural points, then get out of there fast. I'll be flying in lasers blazing. If everything goes as planned, we'll have the defenses down before they know what hit 'em."
+LANG_RUSSIAN         "Этот строение слабо защищено. Не думаю, что они ждут нас. Мой наводящий компьютер будет нацелен на твои маяки. Размести их на ключевых линиях поверхности, после чего убирайся оттуда, и поскорее. Я буду лететь в отсветах лазеров. Если все пойдет по плану, мы нейтрализуем оборону до того, как они узнают, кто на них напал."
+
+REFERENCE           13WEA003
+NOTES               "(via comm)"
+LANG_ENGLISH        "Okay, Jaden. Start with the shield generator, otherwise this'll be a short mission!"
+LANG_RUSSIAN         "Итак, Джейден. Начни с генератора щита, иначе это задание окажется очень коротким!"
+
+REFERENCE           13WEA004
+NOTES               "(via comm)"
+LANG_ENGLISH        "Take out the communications array next so they can't signal for help!"
+LANG_RUSSIAN         "Выведим из строя блок коммуникаций, чтобы они не послали сигнал о помощи!"
+
+REFERENCE           13WEA005
+NOTES               "(via comm)"
+LANG_ENGLISH        "Plant the next beacon on the power generator so we can disable those turbolasers!"
+LANG_RUSSIAN         "Помести следующий маяк на силовом генераторе, чтобы мы смогли отключить эти турболазеры!"
+
+REFERENCE           13WEA006
+NOTES               "(via comm)"
+LANG_ENGLISH        "Put a beacon in the hangar so they can't scramble air support."
+LANG_RUSSIAN         "Помести маяк на ангар, чтобы они не смогли получить поддержку с воздуха."
+
+REFERENCE           13WEA007
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, a number of troops are making their way to the storage tanks to sabotage them. Stop them or this mission will be for nothing!"
+LANG_RUSSIAN         "Джейден, к контейнерам идет отряд солдат, чтобы устроить диверсию. Останови их, или заданию уже ничто не поможет!"
+
+REFERENCE           13WEA008
+NOTES               "(via comm)"
+LANG_ENGLISH        "Head for the garrison. That should weaken their resistance!"
+LANG_RUSSIAN         "Доберись до гарнизона. Это ослабит их сопротивление!"
+
+REFERENCE           13WEA009
+NOTES               "(via comm)"
+LANG_ENGLISH        "Get to the command center next, Jaden! That's the last target."
+LANG_RUSSIAN         "После этого иди в центр управления, Джейден! Это последняя цель."
+
+REFERENCE           13WEA010
+NOTES               "(via comm)"
+LANG_ENGLISH        "Move it Jaden, I'm coming in!"
+LANG_RUSSIAN         "Двигайся, Джейден, я на подходе!"
+
+REFERENCE           13WEA011
+NOTES               "(via comm)"
+LANG_ENGLISH        "You're doing great, Jaden."
+LANG_RUSSIAN         "Отличная работа, Джейден."
+
+REFERENCE           13WEA012
+NOTES               "(via comm)"
+LANG_ENGLISH        "This is too easy!"
+LANG_RUSSIAN         "Все слишком просто!"
+
+REFERENCE           13WEA013
+NOTES               "(via comm)"
+LANG_ENGLISH        "Making another run."
+LANG_RUSSIAN         "Еще один заход."
+
+REFERENCE           13WEA014
+NOTES               "(via comm)"
+LANG_ENGLISH        "Just three more to go."
+LANG_RUSSIAN         "Осталось еще три."
+
+REFERENCE           13WEA015
+NOTES               "(via comm)"
+LANG_ENGLISH        "Just two more to go."
+LANG_RUSSIAN         "Осталось только два."
+
+REFERENCE           13WEA016
+NOTES               "(via comm)"
+LANG_ENGLISH        "One more left."
+LANG_RUSSIAN         "Еще один."
+
+REFERENCE           13WEA017
+NOTES               "(via comm)"
+LANG_ENGLISH        "That did it, get back to your ship, Jaden, we're outta here!"
+LANG_RUSSIAN         "Получилось, возвращайся на корабль, Джейден, нам нужно отсюда выбираться!"
+
+REFERENCE           13WEA018
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, troops coming up on your position!"
+LANG_RUSSIAN         "Джейден, к твоей позиции подходит пехота!"
+
+REFERENCE           13WEA019
+NOTES               "(via comm)"
+LANG_ENGLISH        "Watch your left."
+LANG_RUSSIAN         "Смотри влево."
+
+REFERENCE           13WEA020
+NOTES               "(via comm)"
+LANG_ENGLISH        "Watch your right."
+LANG_RUSSIAN         "Смотри вправо."
+
+REFERENCE           13WEA021
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, take out that gun!"
+LANG_RUSSIAN         "Джейден, выведи из строя орудие!"
+
+REFERENCE           13WEA022
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, I'm getting heavy fire here!"
+LANG_RUSSIAN         "Джейден, я под сильным обстрелом!"
+
+REFERENCE           13JAK001
+LANG_ENGLISH        "Watch your fire, General!"
+LANG_RUSSIAN         "Следите за стрельбой, генерал!"
+
+REFERENCE           13JAK002
+LANG_ENGLISH        "I need some cover fire!"
+LANG_RUSSIAN         "Мне нужен огонь поддержки!"
+
+REFERENCE           13JAK003
+LANG_ENGLISH        "Roger that, General."
+LANG_RUSSIAN         "Вас понял, генерал."
+
+
+ENDMARKER

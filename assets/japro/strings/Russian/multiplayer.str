@@ -1,0 +1,539 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "multiplayer"
+
+REFERENCE           40MOM001
+LANG_ENGLISH        "1 point remaining"
+LANG_RUSSIAN         "осталось 1 очко"
+
+REFERENCE           40MOM002
+LANG_ENGLISH        "2 points remaining"
+LANG_RUSSIAN         "осталось 2 очка"
+
+REFERENCE           40MOM003
+LANG_ENGLISH        "3 points remaining"
+LANG_RUSSIAN         "осталось 3 очка"
+
+REFERENCE           40MOM004
+LANG_ENGLISH        "1 minute remains"
+LANG_RUSSIAN         "осталась 1 минута"
+
+REFERENCE           40MOM005
+LANG_ENGLISH        "5 minutes remain"
+LANG_RUSSIAN         "осталось 5 минут"
+
+REFERENCE           40MOM006
+LANG_ENGLISH        "You won the match"
+LANG_RUSSIAN         "Вы выиграли матч"
+
+REFERENCE           40MOM007
+LANG_ENGLISH        "You came in 2nd"
+LANG_RUSSIAN         "Вы стали вторым"
+
+REFERENCE           40MOM008
+LANG_ENGLISH        "You came in 3rd"
+LANG_RUSSIAN         "Вы стали третьим"
+
+REFERENCE           40MOM009
+LANG_ENGLISH        "You did not rank"
+LANG_RUSSIAN         "Вы не достигли ранга"
+
+REFERENCE           40MOM010
+LANG_ENGLISH        "You lost the match"
+LANG_RUSSIAN         "Вы проиграли матч"
+
+REFERENCE           40MOM011
+LANG_ENGLISH        "Your team won the match"
+LANG_RUSSIAN         "Ваш отряд выиграл матч"
+
+REFERENCE           40MOM012
+LANG_ENGLISH        "Your team lost the match"
+LANG_RUSSIAN         "Ваш отряд проиграл матч"
+
+REFERENCE           40MOM013
+LANG_ENGLISH        "The Republic won the match"
+LANG_RUSSIAN         "Республика выиграла матч"
+
+REFERENCE           40MOM014
+LANG_ENGLISH        "The Empire won the match"
+LANG_RUSSIAN         "Империя выиграла матч"
+
+REFERENCE           40MOM015
+LANG_ENGLISH        "Red team won the match"
+LANG_RUSSIAN         "Красный отряд выиграл матч"
+
+REFERENCE           40MOM016
+LANG_ENGLISH        "Blue team won the match"
+LANG_RUSSIAN         "Синий отряд выиграл матч"
+
+REFERENCE           40MOM017
+LANG_ENGLISH        "Denied"
+LANG_RUSSIAN         "Отклонено"
+
+REFERENCE           40MOM018
+LANG_ENGLISH        "Your commendations are"
+LANG_RUSSIAN         "Ваши рекомендации"
+
+REFERENCE           40MOM019
+LANG_ENGLISH        "Ace award"
+LANG_RUSSIAN         "Приз Аса"
+
+REFERENCE           40MOM020
+LANG_ENGLISH        "First Strike award"
+LANG_RUSSIAN         "Приз за Первый удар"
+
+REFERENCE           40MOM021
+LANG_ENGLISH        "Jedi Master award"
+LANG_RUSSIAN         "Награда Мастера джедай"
+
+REFERENCE           40MOM022
+LANG_ENGLISH        "Carrier award"
+LANG_RUSSIAN         "Приз за Карьеру"
+
+REFERENCE           40MOM023
+LANG_ENGLISH        "Demolitionist award"
+LANG_RUSSIAN         "Награда Разрушителя"
+
+REFERENCE           40MOM024
+LANG_ENGLISH        "Defender award"
+LANG_RUSSIAN         "Приз Защитника"
+
+REFERENCE           40MOM025
+LANG_ENGLISH        "Impressive award"
+LANG_RUSSIAN         "Награда за Эффектность"
+
+REFERENCE           40MOM026
+LANG_ENGLISH        "Tactician award"
+LANG_RUSSIAN         "Приз за Тактику"
+
+REFERENCE           40MOM027
+LANG_ENGLISH        "Untouchable award"
+LANG_RUSSIAN         "Приз Неприкасаемых"
+
+REFERENCE           40MOM028
+LANG_ENGLISH        "Objective Complete"
+LANG_RUSSIAN         "Задача выполнена"
+
+REFERENCE           40MOM029
+LANG_ENGLISH        "Enemy completed objective"
+LANG_RUSSIAN         "Враг справился с задачей"
+
+REFERENCE           40MOM030
+LANG_ENGLISH        "Your team is in the lead"
+LANG_RUSSIAN         "Ваш отряд впереди"
+
+REFERENCE           40MOM031
+LANG_ENGLISH        "Enemy team is in the lead"
+LANG_RUSSIAN         "Вражеский отряд впереди"
+
+REFERENCE           40MOM032
+LANG_ENGLISH        "The teams are tied for the lead"
+LANG_RUSSIAN         "Отряды идут ноздря в ноздрю"
+
+REFERENCE           40MOM033
+LANG_ENGLISH        "The Empire"
+LANG_RUSSIAN         "Империя"
+
+REFERENCE           40MOM034
+LANG_ENGLISH        "The Rebellion"
+LANG_RUSSIAN         "Сопротивление"
+
+REFERENCE           40MOM035
+LANG_ENGLISH        "3"
+LANG_RUSSIAN         "3"
+
+REFERENCE           40MOM036
+LANG_ENGLISH        "2"
+LANG_RUSSIAN         "2"
+
+REFERENCE           40MOM037
+LANG_ENGLISH        "1"
+LANG_RUSSIAN         "1"
+
+REFERENCE           40MOM038
+LANG_ENGLISH        "You may begin"
+LANG_RUSSIAN         "Вы можете начинать"
+
+REFERENCE           40MOM039
+LANG_ENGLISH        "The Blue team has stolen the flag"
+LANG_RUSSIAN         "Синий отряд похитил флаг"
+
+REFERENCE           40MOM040
+LANG_ENGLISH        "The Red team has stolen the flag"
+LANG_RUSSIAN         "Красный отряд похитил флаг"
+
+REFERENCE           40MOM041
+LANG_ENGLISH        "The Blue team has returned their flag"
+LANG_RUSSIAN         "Синий отряд вернул свой флаг"
+
+REFERENCE           40MOM042
+LANG_ENGLISH        "The Red team has returned their flag"
+LANG_RUSSIAN         "Красный отряд вернул свой флаг"
+
+REFERENCE           40MOM043
+LANG_ENGLISH        "The Blue team has scored"
+LANG_RUSSIAN         "Синий отряда набрал"
+
+REFERENCE           40MOM044
+LANG_ENGLISH        "The Red team has scored"
+LANG_RUSSIAN         "Красный отряд набрал"
+
+REFERENCE           40MOM045
+LANG_ENGLISH        "Blue team is in the lead"
+LANG_RUSSIAN         "Синий отряд впереди"
+
+REFERENCE           40MOM046
+LANG_ENGLISH        "Red team is in the lead"
+LANG_RUSSIAN         "Красный отряд впереди"
+
+REFERENCE           40MOM047
+LANG_ENGLISH        "The Blue team has stolen the Ysalamiri"
+LANG_RUSSIAN         "Синий отряд похитил Йсаламири"
+
+REFERENCE           40MOM048
+LANG_ENGLISH        "The Red team has stolen the Ysalamiri"
+LANG_RUSSIAN         "Красный отряд похитил Йсаламири"
+
+REFERENCE           40MOM049
+LANG_ENGLISH        "The Blue team has returned their Ysalamiri"
+LANG_RUSSIAN         "Синий отряд вернул свою Йсаламири"
+
+REFERENCE           40MOM050
+LANG_ENGLISH        "The Red team has returned their Ysalamiri"
+LANG_RUSSIAN         "Красный отряд вернул свою Йсаламири"
+
+REFERENCE           40JAO001
+LANG_ENGLISH        "Cover me"
+LANG_RUSSIAN         "Прикрой меня"
+
+REFERENCE           40JAO002
+LANG_ENGLISH        "I'll cover you"
+LANG_RUSSIAN         "Я тебя прикрою"
+
+REFERENCE           40JAO003
+LANG_ENGLISH        "Hold this position"
+LANG_RUSSIAN         "Держать позицию"
+
+REFERENCE           40JAO004
+LANG_ENGLISH        "Follow me"
+LANG_RUSSIAN         "За мной"
+
+REFERENCE           40JAO005
+LANG_ENGLISH        "Regroup team"
+LANG_RUSSIAN         "Перегруппировать отряд"
+
+REFERENCE           40JAO006
+LANG_ENGLISH        "Need backup"
+LANG_RUSSIAN         "Нужно подкрепление "
+
+REFERENCE           40JAO007
+LANG_ENGLISH        "Fall back"
+LANG_RUSSIAN         "Отступать"
+
+REFERENCE           40JAO008
+LANG_ENGLISH        "I've got their flag"
+LANG_RUSSIAN         "Я взял их флаг"
+
+REFERENCE           40JAO009
+LANG_ENGLISH        "I'll get their flag"
+LANG_RUSSIAN         "Я возьму их флаг"
+
+REFERENCE           40JAO010
+LANG_ENGLISH        "Get their flag"
+LANG_RUSSIAN         "Бери их флаг"
+
+REFERENCE           40JAO011
+LANG_ENGLISH        "I've got their flag, but ours is gone"
+LANG_RUSSIAN         "Я взял их флаг, но наш пропал"
+
+REFERENCE           40JAO012
+LANG_ENGLISH        "Where is our flag"
+LANG_RUSSIAN         "Где наш флаг"
+
+REFERENCE           40JAO013
+LANG_ENGLISH        "They've got our flag"
+LANG_RUSSIAN         "Они забрали наш флаг"
+
+REFERENCE           40JAO014
+LANG_ENGLISH        "Protect the flag"
+LANG_RUSSIAN         "Защищай флага"
+
+REFERENCE           40JAO015
+LANG_ENGLISH        "Go for the objective"
+LANG_RUSSIAN         "Вперед, к цели"
+
+REFERENCE           40JAO016
+LANG_ENGLISH        "Objective complete"
+LANG_RUSSIAN         "Задача выполнена"
+
+REFERENCE           40JAO017
+LANG_ENGLISH        "I'm going for the objective"
+LANG_RUSSIAN         "Я собираюсь выполнить задачу"
+
+REFERENCE           40JAO018
+LANG_ENGLISH        "They're going for the objective"
+LANG_RUSSIAN         "Они собираются выполнить задачу"
+
+REFERENCE           40JAO019
+LANG_ENGLISH        "Guard the base"
+LANG_RUSSIAN         "Охранять базу"
+
+REFERENCE           40JAO020
+LANG_ENGLISH        "Guard the objective"
+LANG_RUSSIAN         "Охранять цель"
+
+REFERENCE           40TAA001
+LANG_ENGLISH        "Cover me"
+LANG_RUSSIAN         "Прикрой меня"
+
+REFERENCE           40TAA002
+LANG_ENGLISH        "I'll cover you"
+LANG_RUSSIAN         "Я тебя прикрою"
+
+REFERENCE           40TAA003
+LANG_ENGLISH        "Hold this position"
+LANG_RUSSIAN         "Держать позицию"
+
+REFERENCE           40TAA004
+LANG_ENGLISH        "Follow me"
+LANG_RUSSIAN         "За мной"
+
+REFERENCE           40TAA005
+LANG_ENGLISH        "Regroup team"
+LANG_RUSSIAN         "Перегруппировать отряд"
+
+REFERENCE           40TAA006
+LANG_ENGLISH        "Need backup"
+LANG_RUSSIAN         "Нужно подкрепление "
+
+REFERENCE           40TAA007
+LANG_ENGLISH        "Fall back"
+LANG_RUSSIAN         "Отступать"
+
+REFERENCE           40TAA008
+LANG_ENGLISH        "I've got their flag"
+LANG_RUSSIAN         "Я взял их флаг"
+
+REFERENCE           40TAA009
+LANG_ENGLISH        "I'll get their flag"
+LANG_RUSSIAN         "Я возьму их флаг"
+
+REFERENCE           40TAA010
+LANG_ENGLISH        "Get their flag"
+LANG_RUSSIAN         "Бери их флаг"
+
+REFERENCE           40TAA011
+LANG_ENGLISH        "I've got their flag, but ours is gone"
+LANG_RUSSIAN         "Я взял их флаг, но наш пропал"
+
+REFERENCE           40TAA012
+LANG_ENGLISH        "Where is our flag"
+LANG_RUSSIAN         "Где наш флаг"
+
+REFERENCE           40TAA013
+LANG_ENGLISH        "They've got our flag"
+LANG_RUSSIAN         "Они забрали наш флаг"
+
+REFERENCE           40TAA014
+LANG_ENGLISH        "Protect the flag"
+LANG_RUSSIAN         "Защищай флага"
+
+REFERENCE           40TAA015
+LANG_ENGLISH        "Go for the objective"
+LANG_RUSSIAN         "Вперед, к цели"
+
+REFERENCE           40TAA016
+LANG_ENGLISH        "Objective complete"
+LANG_RUSSIAN         "Задача выполнена"
+
+REFERENCE           40TAA017
+LANG_ENGLISH        "I'm going for the objective"
+LANG_RUSSIAN         "Я собираюсь выполнить задачу"
+
+REFERENCE           40TAA018
+LANG_ENGLISH        "They're going for the objective"
+LANG_RUSSIAN         "Они собираются выполнить задачу"
+
+REFERENCE           40TAA019
+LANG_ENGLISH        "Guard the base"
+LANG_RUSSIAN         "Охранять базу"
+
+REFERENCE           40TAA020
+LANG_ENGLISH        "Guard the objective"
+LANG_RUSSIAN         "Охранять цель"
+
+REFERENCE           40RS1001
+LANG_ENGLISH        "Cover me"
+LANG_RUSSIAN         "Прикрой меня"
+
+REFERENCE           40RS1002
+LANG_ENGLISH        "I'll cover you"
+LANG_RUSSIAN         "Я тебя прикрою"
+
+REFERENCE           40RS1003
+LANG_ENGLISH        "Hold this position"
+LANG_RUSSIAN         "Держать позицию"
+
+REFERENCE           40RS1004
+LANG_ENGLISH        "Follow me"
+LANG_RUSSIAN         "За мной"
+
+REFERENCE           40RS1005
+LANG_ENGLISH        "Regroup team"
+LANG_RUSSIAN         "Перегруппировать отряд"
+
+REFERENCE           40RS1006
+LANG_ENGLISH        "Need backup"
+LANG_RUSSIAN         "Нужно подкрепление "
+
+REFERENCE           40RS1007
+LANG_ENGLISH        "Fall back"
+LANG_RUSSIAN         "Отступать"
+
+REFERENCE           40RS1008
+LANG_ENGLISH        "I've got their flag"
+LANG_RUSSIAN         "Я взял их флаг"
+
+REFERENCE           40RS1009
+LANG_ENGLISH        "I'll get their flag"
+LANG_RUSSIAN         "Я возьму их флаг"
+
+REFERENCE           40RS1010
+LANG_ENGLISH        "Get their flag"
+LANG_RUSSIAN         "Бери их флаг"
+
+REFERENCE           40RS1011
+LANG_ENGLISH        "I've got their flag, but ours is gone"
+LANG_RUSSIAN         "Я взял их флаг, но наш пропал"
+
+REFERENCE           40RS1012
+LANG_ENGLISH        "Where is our flag"
+LANG_RUSSIAN         "Где наш флаг"
+
+REFERENCE           40RS1013
+LANG_ENGLISH        "They've got our flag"
+LANG_RUSSIAN         "Они забрали наш флаг"
+
+REFERENCE           40RS1014
+LANG_ENGLISH        "Protect the flag"
+LANG_RUSSIAN         "Защищай флага"
+
+REFERENCE           40RS1015
+LANG_ENGLISH        "Go for the objective"
+LANG_RUSSIAN         "Вперед, к цели"
+
+REFERENCE           40RS1016
+LANG_ENGLISH        "Objective complete"
+LANG_RUSSIAN         "Задача выполнена"
+
+REFERENCE           40RS1017
+LANG_ENGLISH        "I'm going for the objective"
+LANG_RUSSIAN         "Я собираюсь выполнить задачу"
+
+REFERENCE           40RS1018
+LANG_ENGLISH        "They're going for the objective"
+LANG_RUSSIAN         "Они собираются выполнить задачу"
+
+REFERENCE           40RS1019
+LANG_ENGLISH        "Guard the base"
+LANG_RUSSIAN         "Охранять базу"
+
+REFERENCE           40RS1020
+LANG_ENGLISH        "Guard the objective"
+LANG_RUSSIAN         "Охранять цель"
+
+REFERENCE           40IO1001
+LANG_ENGLISH        "Cover me"
+LANG_RUSSIAN         "Прикрой меня"
+
+REFERENCE           40IO1002
+LANG_ENGLISH        "I'll cover you"
+LANG_RUSSIAN         "Я тебя прикрою"
+
+REFERENCE           40IO1003
+LANG_ENGLISH        "Hold this position"
+LANG_RUSSIAN         "Держать позицию"
+
+REFERENCE           40IO1004
+LANG_ENGLISH        "Follow me"
+LANG_RUSSIAN         "За мной"
+
+REFERENCE           40IO1005
+LANG_ENGLISH        "Regroup team"
+LANG_RUSSIAN         "Перегруппировать отряд"
+
+REFERENCE           40IO1006
+LANG_ENGLISH        "Need backup"
+LANG_RUSSIAN         "Нужно подкрепление "
+
+REFERENCE           40IO1007
+LANG_ENGLISH        "Fall back"
+LANG_RUSSIAN         "Отступать"
+
+REFERENCE           40IO1008
+LANG_ENGLISH        "I've got their flag"
+LANG_RUSSIAN         "Я взял их флаг"
+
+REFERENCE           40IO1009
+LANG_ENGLISH        "I'll get their flag"
+LANG_RUSSIAN         "Я возьму их флаг"
+
+REFERENCE           40IO1010
+LANG_ENGLISH        "Get their flag"
+LANG_RUSSIAN         "Бери их флаг"
+
+REFERENCE           40IO1011
+LANG_ENGLISH        "I've got their flag, but ours is gone"
+LANG_RUSSIAN         "Я взял их флаг, но наш пропал"
+
+REFERENCE           40IO1012
+LANG_ENGLISH        "Where is our flag"
+LANG_RUSSIAN         "Где наш флаг"
+
+REFERENCE           40IO1013
+LANG_ENGLISH        "They've got our flag"
+LANG_RUSSIAN         "Они забрали наш флаг"
+
+REFERENCE           40IO1014
+LANG_ENGLISH        "Protect the flag"
+LANG_RUSSIAN         "Защищай флага"
+
+REFERENCE           40IO1015
+LANG_ENGLISH        "Go for the objective"
+LANG_RUSSIAN         "Вперед, к цели"
+
+REFERENCE           40IO1016
+LANG_ENGLISH        "Objective complete"
+LANG_RUSSIAN         "Задача выполнена"
+
+REFERENCE           40IO1017
+LANG_ENGLISH        "I'm going for the objective"
+LANG_RUSSIAN         "Я собираюсь выполнить задачу"
+
+REFERENCE           40IO1018
+LANG_ENGLISH        "They're going for the objective"
+LANG_RUSSIAN         "Они собираются выполнить задачу"
+
+REFERENCE           40IO1019
+LANG_ENGLISH        "Guard the base"
+LANG_RUSSIAN         "Охранять базу"
+
+REFERENCE           40IO1020
+LANG_ENGLISH        "Guard the objective"
+LANG_RUSSIAN         "Охранять цель"
+
+
+ENDMARKER
+
+

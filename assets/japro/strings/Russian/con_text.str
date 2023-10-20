@@ -1,0 +1,53 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "Text printed at console"
+
+REFERENCE           DUMP_USAGE
+LANG_ENGLISH        "usage: condump <filename>"
+LANG_RUSSIAN         "применение: condump <имя файла>"
+
+REFERENCE           NEED_CD
+LANG_ENGLISH        "Disk 1 not in drive"
+LANG_RUSSIAN         "Диск 1 отсутствует"
+
+REFERENCE           NO_DEMO_SELECTED
+LANG_ENGLISH        "No demo selected."
+LANG_RUSSIAN         "Демонстрационный ролик не выбран."
+
+REFERENCE           FAILED_MEMTEST
+LANG_ENGLISH        "Your machine failed to allocate %dMB in a memory test, which may mean you'll have problems running this game all the way through.\n\nContinue anyway?"
+LANG_RUSSIAN         "Ваша машина не смогла выделить %dMB в ходе теста памяти, что может означать проблемы при запуске игры.\n\nПродолжить?"
+
+REFERENCE           INSUFFICIENT_MEMORY
+LANG_ENGLISH        "Insufficient memory to run this game!\n"
+LANG_RUSSIAN         "Для запуска этой игры не хватает памяти!\n"
+
+REFERENCE           LOW_DESKTOP_COLOUR_DEPTH
+LANG_ENGLISH        "Low Desktop Color Depth"
+LANG_RUSSIAN         "Низкая глубина цвета рабочего стола"
+
+REFERENCE           TRY_ANYWAY
+LANG_ENGLISH        "It is highly unlikely that a correct windowed\ndisplay can be initialized with the current\ndesktop display depth. Select 'OK' to try\nanyway. Select 'Cancel' to try a fullscreen\nmode instead."
+LANG_RUSSIAN         "Весьма маловероятно, что правильное отображение\nв оконном режиме сможет инициализироваться\nпри текущей глубине цвета рабочего стола.\nВыберите 'ОК', чтобы попробовать. Выберите\n'Отмена', чтобы перейти к полноэкранному режиму."
+
+REFERENCE           SKIPPING
+LANG_ENGLISH        "Skipping cinematic...\n"
+LANG_RUSSIAN         "Пропуск кинематографии...\n"
+
+REFERENCE           SAVING_GAME
+LANG_ENGLISH        "Saving game"
+LANG_RUSSIAN         "Запись игры"
+
+
+ENDMARKER

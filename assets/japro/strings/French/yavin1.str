@@ -1,0 +1,101 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           01PIL001
+NOTES               "(o.s.)"
+LANG_ENGLISH        "We'll be arriving at the Academy in just a few minutes."
+LANG_FRENCH         "Через несколько минут мы прибудем в академию."
+
+REFERENCE           01ROP001
+NOTES               "(chatting to student)"
+LANG_ENGLISH        "...that would be so great."
+LANG_FRENCH         "...это было бы здорово."
+
+REFERENCE           01ROP002
+NOTES               "to Jaden"
+LANG_ENGLISH        "Aren't you excited? We're gonna be Jedi! Learning the ways of the Force, building a lightsaber..."
+LANG_FRENCH         "Разве не круто? Мы станем джедаями! Изучение путей Силы, сборка световых мечей..."
+
+REFERENCE           01ROP003
+LANG_ENGLISH        "Of course, you already have one. I'm gonna get one of those stupid training sabers and then..."
+LANG_FRENCH         "Конечно, у тебя один уже есть. А мне достанется один из этих глупых тренировочных мечей, и ..."
+
+REFERENCE           01JAK001
+LANG_ENGLISH        "I wouldn't worry about that."
+LANG_FRENCH         "Меня это не волнует."
+
+REFERENCE           01ROP004
+LANG_ENGLISH        "I can't help it. I want to make a good impression..."
+LANG_FRENCH         "Ничего не могу поделать. Хочу произвести хорошее впечатление..."
+
+REFERENCE           01JAK002
+LANG_ENGLISH        "You seem really nervous."
+LANG_FRENCH         "Похоже, ты весь на нервах."
+
+REFERENCE           01ROP005
+LANG_ENGLISH        "Aren't you? I mean why would you be? You already have a lightsaber so you're probably way ahead of me...I'm Rosh, by the way."
+LANG_FRENCH         "А как ты? То-есть с чего тебе волноваться? У тебя уже есть световой меч, так что, скорее всего, ты уже лучше меня...Я Рош, кстати."
+
+REFERENCE           01ROP006
+LANG_ENGLISH        "Um...what's your name?"
+LANG_FRENCH         "Эм...А как тебя зовут?"
+
+REFERENCE           01JAK003
+LANG_ENGLISH        "Jaden."
+LANG_FRENCH         "Джейден."
+
+REFERENCE           01ROP007
+LANG_ENGLISH        "So, where'd you get that lightsaber?"
+LANG_FRENCH         "Так откуда у тебя световой меч?"
+
+REFERENCE           01JAK004
+LANG_ENGLISH        "Well, it's kind of a long story. I found myself on..."
+LANG_FRENCH         "Это долгая история. Это было в..."
+
+REFERENCE           01PIL002
+NOTES               "(o.s.)"
+LANG_ENGLISH        "Hold on!"
+LANG_FRENCH         "Держитесь."
+
+REFERENCE           01LUK001
+NOTES               "(via comm)"
+LANG_ENGLISH        "Academy to Yavin Runner II. Do you copy?"
+LANG_FRENCH         "Академия Гонцу Явина II. Прием?"
+
+REFERENCE           01PIL003
+NOTES               "(groggy and shaken)"
+LANG_ENGLISH        "Loud and clear. We made an emergency landing several clicks west of the Academy."
+LANG_FRENCH         "Вас слышу. Мы совершили аварийную посадку за несколько кликов на запад от академии."
+
+REFERENCE           01LUK002
+NOTES               "(via comm)"
+LANG_ENGLISH        "Is everyone all right?"
+LANG_FRENCH         "Все в порядке?"
+
+REFERENCE           01PIL004
+LANG_ENGLISH        "I think so."
+LANG_FRENCH         "Думаю, да."
+
+REFERENCE           01LUK003
+NOTES               "(via comm)"
+LANG_ENGLISH        "Good, we'll send a shuttle to pick you up. Can you lead the students to the nearby Massassi Temple?"
+LANG_FRENCH         "Хорошо, мы пошлем за вами челнок. Вы не могли бы вывести учеников к соседнему храму Массасси?"
+
+REFERENCE           01PIL005
+LANG_ENGLISH        "Affirmative, Academy. We'll meet you there."
+LANG_FRENCH         "Так точно, академия. Мы встретим вас там."
+
+
+ENDMARKER

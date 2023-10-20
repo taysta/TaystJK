@@ -121,11 +121,8 @@ public:
 private:
 
 	void	AddEntry( const char *psLocalReference );
-	int		GetNumStrings(void);
 	void	SetString( const char *psLocalReference, const char *psNewString, SE_BOOL bEnglishDebug );
-	SE_BOOL	SetReference( int iIndex, const char *psNewString );
 	void	AddFlagReference( const char *psLocalReference, const char *psFlagName );
-	const char *GetCurrentFileName(void);
 	const char *GetCurrentReference_ParseOnly( void );
 	SE_BOOL	CheckLineForKeyword( const char *psKeyword, const char *&psLine);
 	const char *InsideQuotes( const char *psLine );
@@ -1247,24 +1244,5 @@ const char *SE_LoadLanguage( const char *psLanguage, SE_BOOL bLoadDebug /* = SE_
 
 	return psErrorMessage;
 }
-
-
-// called in Com_Frame, so don't take up any time! (can also be called during dedicated)
-//
-// instead of re-loading just the files we've already loaded I'm going to load the whole language (simpler)
-//
-void SE_CheckForLanguageUpdates(void)
-{
-	if (se_language && se_language->modified)
-	{
-		const char *psErrorMessage = SE_LoadLanguage( se_language->string, SE_TRUE );
-		if ( psErrorMessage )
-		{
-			Com_Error( ERR_DROP, psErrorMessage );
-		}
-		se_language->modified = SE_FALSE;
-	}
-}
-
 
 ///////////////////////// eof //////////////////////////

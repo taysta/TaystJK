@@ -1,0 +1,138 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           12PRO001
+LANG_ENGLISH        "Master Katarn has informed me that he is continuing his investigation of Rosh Penin's disappearance near Nar Kreeta and can assist you on this mission."
+LANG_RUSSIAN         "Мастер Катарн сообщил мне, что он продолжает расследование исчезновения Роша Пенина в окрестностях Нар Крита, и может помочь тебе с этим заданием."
+
+REFERENCE           12KYK001
+NOTES               "(VIA COMM)"
+LANG_ENGLISH        "Y'know, normally I'm the one going into danger while Jan flies the ship. But this'll work too. Find those prisoners, and bring them back here for pickup."
+LANG_RUSSIAN         "Знаешь, обычно я один подвергаюсь опасности, пока Жан летает на корабле. Но это тоже сработает. Найди этих заключенных и приведи их сюда, мы их заберем."
+
+REFERENCE           12JAK001
+LANG_ENGLISH        "Locked."
+LANG_RUSSIAN         "Закрыто."
+
+REFERENCE           12JAK002
+LANG_ENGLISH        "This place is locked down pretty tight."
+LANG_RUSSIAN         "Здесь все здорово заблокировано."
+
+REFERENCE           12JAK003
+NOTES               "(sees a suspicious room)"
+LANG_ENGLISH        "What's this all about?"
+LANG_RUSSIAN         "Зачем это все?"
+
+REFERENCE           12JAK004
+LANG_ENGLISH        "There are the cells. But how do I open them?"
+LANG_RUSSIAN         "Тут камеры. Но как их открыть?"
+
+REFERENCE           12JAK005
+LANG_ENGLISH        "There are the cells."
+LANG_RUSSIAN         "Вот камеры."
+
+REFERENCE           12JAK006
+NOTES               "(curiously)"
+LANG_ENGLISH        "Must be some kind of arena..."
+LANG_RUSSIAN         "Похоже на какую-то арену..."
+
+REFERENCE           12PR1001
+LANG_ENGLISH        "Hurry! Get us out of here before the Rancor comes!"
+LANG_RUSSIAN         "Быстрее! Вытащи нас отсюда, пока не пришел Ранкор!"
+
+REFERENCE           12JAK007
+LANG_ENGLISH        "Rancor?!"
+LANG_RUSSIAN         "Ранкор?!"
+
+REFERENCE           12PR1002
+NOTES               "(breathless)"
+LANG_ENGLISH        "Thanks, that was close! Listen, there are three other cell blocks full of prisoners. We have to free them!"
+LANG_RUSSIAN         "Спасибо, почти попался! Слушай, тут еще три блока камер с заключенными. Нужно их освободить!"
+
+REFERENCE           12JAK008
+LANG_ENGLISH        "Okay, I'll get them out. Take the access tunnel down the hall and someone will be there to pick you up."
+LANG_RUSSIAN         "Да, я вытащу их. Идите по входному тоннелю внизу зала и там вас заберут."
+
+REFERENCE           12PR1003
+LANG_ENGLISH        "Is the way clear?"
+LANG_RUSSIAN         "Путь свободен?"
+
+REFERENCE           12JAK009
+LANG_ENGLISH        "Yes."
+LANG_RUSSIAN         "Да."
+
+REFERENCE           12PR1004
+LANG_ENGLISH        "I took this key card from a guard."
+LANG_RUSSIAN         "Я взял эту карточку у охранника."
+
+REFERENCE           12JAK010
+LANG_ENGLISH        "I'm not sure, wait here."
+LANG_RUSSIAN         "Не уверен, подожди здесь."
+
+REFERENCE           12JAK011
+LANG_ENGLISH        "Okay, it's clear now."
+LANG_RUSSIAN         "Хорошо, теперь все чисто."
+
+REFERENCE           12KYK002
+NOTES               "(VIA COMM)"
+LANG_ENGLISH        "Jaden, what's your status?"
+LANG_RUSSIAN         "Джейден, твое положение?"
+
+REFERENCE           12JAK012
+LANG_ENGLISH        "The elders are on their way to the access tunnel, but there are other prisoners that I need to rescue!"
+LANG_RUSSIAN         "Старейшины идут ко входному тоннелю, но есть и другие заключенные, которых надо спасти!"
+
+REFERENCE           12KYK003
+NOTES               "(VIA COMM)"
+LANG_ENGLISH        "All right, I'll pick 'em up as they come. Be careful, Jaden."
+LANG_RUSSIAN         "Хорошо, я заберу их, когда подойдут. Береги себя, Джейден."
+
+REFERENCE           12JAK013
+NOTES               "(to self)"
+LANG_ENGLISH        "This whole place is set up as a betting parlor."
+LANG_RUSSIAN         "Это место похоже на постоялый двор."
+
+REFERENCE           12JAK014
+LANG_ENGLISH        "Head to the arena entrance!"
+LANG_RUSSIAN         "Идите ко входу на арену!"
+
+REFERENCE           12PR1005
+LANG_ENGLISH        "The rancor!"
+LANG_RUSSIAN         "Ранкор!"
+
+REFERENCE           12PR2001
+LANG_ENGLISH        "Look out!"
+LANG_RUSSIAN         "Берегись!"
+
+REFERENCE           12PR1006
+LANG_ENGLISH        "Run!"
+LANG_RUSSIAN         "Беги!"
+
+REFERENCE           12PR2002
+LANG_ENGLISH        "Help!"
+LANG_RUSSIAN         "Помогите!"
+
+REFERENCE           12JAK015
+LANG_ENGLISH        "Kyle, this is Jaden. That's all of them."
+LANG_RUSSIAN         "Кайл, это Джейден. Это все."
+
+REFERENCE           12KYK004
+NOTES               "(VIA COMM)"
+LANG_ENGLISH        "Get back to the access tunnel. I'll pick you up there."
+LANG_RUSSIAN         "Возвращайся во входной туннель. Я заберу тебя оттуда."
+
+
+ENDMARKER
+

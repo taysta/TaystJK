@@ -1,0 +1,41 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           7
+LANG_ENGLISH        "Master Skywalker and Master Katarn have left the Academy. I have been instructed to provide you with a set of possible missions."
+LANG_RUSSIAN         "Мастер Скайуокер и мастер Катарн покинули академию. Я получил приказ поручить тебе несколько возможных заданий."
+
+REFERENCE           8
+LANG_ENGLISH        "Master Skywalker and Master Katarn have not yet returned from their respective missions."
+LANG_RUSSIAN         "Мастер Скайуокер и мастер Катарн еще не вернулись с задания."
+
+REFERENCE           9
+LANG_ENGLISH        "Hey, Jaden. I'm not sure if Luke's discovered anything on Dagobah, but I found out that Rosh has been captured. I tried to find out where they've taken him, but those blasted Sith cultists are covering their tracks pretty well."
+LANG_RUSSIAN         "Эй, Джейден. Я не уверен, нашел ли Люк на Дагобаре что-либо, но я узнал, что Рош попал в плен. Я пытался узнать, куда его забрали, но эти чертовы последователи культа Ситх очень хорошо заметают следы."
+
+REFERENCE           10
+LANG_ENGLISH        "Jaden, I learned that some Disciples of Ragnos were on Dagobah. They siphoned the dark Force energy from the cave there. "
+LANG_RUSSIAN         "Джейден, я узнал, что какие-то последователи Рагноса были на Дагобаре. Из местной пещеры они забрали темную энергию Силы."
+
+REFERENCE           11
+LANG_ENGLISH        "Luke's coming up with a plan for tracking down the Disciples of Ragnos  but it may take some time. If you want, you can take one more mission. Otherwise, meet us in the audience chamber."
+LANG_RUSSIAN         "Люк готовит план выслеживания последователей Рагноса, но это займет некоторое время. Если хочешь, можешь взяться еще за одно задание. В противном случае, встретимся в общем зале."
+
+REFERENCE           12
+LANG_ENGLISH        "Luke's ready to present his plan to find the cult leaders. Get to the audience chamber."
+LANG_RUSSIAN         "Люк уже готов представить свой план поиска лидеров культа. Направляйся в общий зал."
+
+
+ENDMARKER

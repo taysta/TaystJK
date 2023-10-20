@@ -1,0 +1,171 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           18KYK001
+LANG_ENGLISH        "Grife, it's good to get out of that rain. Now we need to get up into the castle. There's a turbolift over there."
+LANG_FRENCH         "Хорошо, что мы вышли из-под дождя. Теперь нам нужно подняться в замок. Вон там есть турболифт."
+
+REFERENCE           18KYK002
+LANG_ENGLISH        "Hmmm... locked down. Ever feel like you're not welcome? Let's see if we can find another way out of here."
+LANG_FRENCH         "Хм... изолирован. Похоже, нас не ждали. Посмотрим, не найдется ли в замок другой путь."
+
+REFERENCE           18KYK003
+NOTES               "(shaking his head)"
+LANG_ENGLISH        "They always lock the door... you think they'd have learned by now."
+LANG_FRENCH         "Они всегда запирают двери... думаешь, теперь-то они этому научились."
+
+REFERENCE           18KYK004
+NOTES               "(checking the door)"
+LANG_ENGLISH        "Doesn't look like there's a key. That would be too easy."
+LANG_FRENCH         "Не похоже, что тут есть ключ. Это было бы слишком просто."
+
+REFERENCE           18KYK005
+NOTES               "(sighs in frustration)"
+LANG_ENGLISH        "The console to unlock the door's probably hidden in some room twelve floors up or something. How does that make sense?"
+LANG_FRENCH         "Щиток, отпирающий дверь, скорее всего спрятан в комнате на двенадцать этажей выше, или типа того. Какая нам разница?"
+
+REFERENCE           18KYK006
+LANG_ENGLISH        "Wonder where this leads..."
+LANG_FRENCH         "Интересно, куда она ведет..."
+
+REFERENCE           18KYK007
+LANG_ENGLISH        "Ugh... of course, it has to be a garbage pit, doesn't it? Well, let's go, no one ever said being a Jedi was glamorous."
+LANG_FRENCH         "У-г-х... разумеется, конечно это мусорная яма, как иначе? Ну, двинулись, и пусть никто не называет джедаев неженками."
+
+REFERENCE           18KYK008
+LANG_ENGLISH        "Jaden! Run to the middle! You can jump out there!"
+LANG_FRENCH         "Джейден! Беги к центру! Ты можешь оттуда выпрыгнуть!"
+
+REFERENCE           18KYK009
+LANG_ENGLISH        "That was too close. We've gotta get outta here. Take that chute and I'll take this one. With luck, we'll meet up on the other side. "
+LANG_FRENCH         "Еще бы чуть-чуть. Нам нужно отсюда убираться. Бери этот сток, а я возьму тот. Если нам улыбнется удача, встретимся на другой стороне. "
+
+REFERENCE           18KYK010
+LANG_ENGLISH        "Well, that worked out well. I thought I'd have to search high and low for you."
+LANG_FRENCH         "Хорошо, все просто здорово получилось. Я уж думал, что придется тебя искать среди безвести пропавших."
+
+REFERENCE           18KYK011
+LANG_ENGLISH        "This lift is locked down, too."
+LANG_FRENCH         "Этот лифт тоже изолирован."
+
+REFERENCE           18KYK012
+LANG_ENGLISH        "Maybe this switch..."
+LANG_FRENCH         "Может, этот переключатель..."
+
+REFERENCE           18KYK013
+NOTES               "(annoyed that it didn't work)"
+LANG_ENGLISH        "Oh, come on..."
+LANG_FRENCH         "Ох, давай же..."
+
+REFERENCE           18KYK014
+NOTES               "(reacting to a console that starts beeping)"
+LANG_ENGLISH        "Uh-oh."
+LANG_FRENCH         "Ой-ей."
+
+REFERENCE           18KYK015
+LANG_ENGLISH        "Jaden, watch out!!!"
+LANG_FRENCH         "Джейден, берегись!!!"
+
+REFERENCE           18KYK016
+NOTES               "(straining)"
+LANG_ENGLISH        "Uhh... Jaden... Find a way to drain the water! If this power conduit... hits the floor... we're both gonna be fried!"
+LANG_FRENCH         "Ух... Джейден... Найди способ откачать воду! Если этот напорный трубопровод... долбанет в пол... мы с тобой здорово поджаримся!"
+
+REFERENCE           18KYK017
+LANG_ENGLISH        "Well look at that. Guess we made our own path."
+LANG_FRENCH         "Ты только посмотри на это. Похоже, мы прошли."
+
+REFERENCE           18JAK001
+LANG_ENGLISH        "Kyle!"
+LANG_FRENCH         "Кайл!"
+
+REFERENCE           18KYK018
+NOTES               "(yelling over the wind)"
+LANG_ENGLISH        "Relax, kid, I've seen tubes like this before; we can ride them to the top!"
+LANG_FRENCH         "Расслабься, я уже видел такие трубы, на них мы сможем прокатиться до самого верха!"
+
+REFERENCE           18KYK019
+NOTES               "(yelling over the wind)"
+LANG_ENGLISH        "If we hit that laser grid, we're done for! Head for that grate!"
+LANG_FRENCH         "Если мы попадем в этот лазерный модулятор, то дело в шляпе! Направляйся к решетке!"
+
+REFERENCE           18KYK020
+NOTES               "(sarcastically)"
+LANG_ENGLISH        "Well, that was fun."
+LANG_FRENCH         "Это было весело."
+
+REFERENCE           18KYK021
+LANG_ENGLISH        "Not again. Why even put doors in this place if they're always gonna be locked?!"
+LANG_FRENCH         "Но чтобы еще раз - никогда. Да зачем здесь вообще ставить двери, если они вечно заперты?!"
+
+REFERENCE           18KYK022
+NOTES               "(seeing the dangerous tunnel)"
+LANG_ENGLISH        "You gotta be kidding me."
+LANG_FRENCH         "Ты меня разыгрываешь."
+
+REFERENCE           18KYK023
+NOTES               "(sarcastically)"
+LANG_ENGLISH        "Remind me to have a talk with the architect when we're done here."
+LANG_FRENCH         "Напомни мне поговорить с архитектором, когда мы здесь управимся."
+
+REFERENCE           18KYK032
+NOTES               "(yelling down from above)"
+LANG_ENGLISH        "C'mon, Jaden."
+LANG_FRENCH         "Вперед, Джейден."
+
+REFERENCE           18KYK024
+LANG_ENGLISH        "Finally! A lift that works."
+LANG_FRENCH         "Наконец-то! Работающий лифт."
+
+REFERENCE           18KYK025
+LANG_ENGLISH        "The castle's still a few more levels up, but they've shut down the lifts above us. Looks like we gotta find another way up."
+LANG_FRENCH         "Замок несколькими этажами выше, но они отключили лифты над нами. Похоже, придется искать другой путь наверх."
+
+REFERENCE           18KYK026
+LANG_ENGLISH        "Maybe we can move those mirrors to feed the energy back into the machine and overload it."
+LANG_FRENCH         "Может быть, нам удастся сдвинуть эти зеркала, чтобы наполнить машину энергией и перегрузить ее."
+
+REFERENCE           18KYK027
+LANG_ENGLISH        "Good idea! We can feed the energy back into the machine and overload it!"
+LANG_FRENCH         "Отличная мысль! Мы можем наполнить машину энергией и перегрузить ее!"
+
+REFERENCE           18KYK028
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, are you okay?"
+LANG_FRENCH         "Джейден, ты в порядке?"
+
+REFERENCE           18JAK003
+LANG_ENGLISH        "Yeah, I'm fine, where are you?"
+LANG_FRENCH         "Да, я в норме, а где вы?"
+
+REFERENCE           18KYK029
+LANG_ENGLISH        "I'm not really sure. I'll have to catch up with you. Go on ahead without me."
+LANG_FRENCH         "Я не вполне уверен. Мне придется тебя догнать. Иди дальше без меня."
+
+REFERENCE           18KYK030
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden? it looks like I'm a little boxed in here."
+LANG_FRENCH         "Джейден? Похоже, меня тут заперли."
+
+REFERENCE           18JAK004
+LANG_ENGLISH        "Are you okay?"
+LANG_FRENCH         "Вы в порядке?"
+
+REFERENCE           18KYK031
+LANG_ENGLISH        "I'm fine, but I'll have to find another way to reach you. Go on up without me."
+LANG_FRENCH         "Я в норме, но мне придется искать другую дорогу, чтобы объединиться с тобой. Иди дальше без меня."
+
+
+ENDMARKER

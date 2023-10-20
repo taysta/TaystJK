@@ -1,0 +1,116 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           10SO1001
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "Anything to report?"
+LANG_RUSSIAN         "Есть о чем докладывать?"
+
+REFERENCE           10ST1001
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "No, sir."
+LANG_RUSSIAN         "Нет, сэр."
+
+REFERENCE           10SO1002
+NOTES               "(nods)  (use for snowtrooper)"
+LANG_ENGLISH        "Keep sharp. We've lost contact with the perimeter patrols. Could be the storm... or Wampas. You don't want one of those things surprising you."
+LANG_RUSSIAN         "Не теряйте бдительности. Мы потеряли связь с передовыми патрулями. Может, дело в буре... или вампах. Ни то, ни другое не должно оказаться для вас неожиданностью."
+
+REFERENCE           10ST2001
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "I'm glad we're guarding this hole and not the command center."
+LANG_RUSSIAN         "Я рад, что мы охраняем эту дыру, а не командный центр."
+
+REFERENCE           10ST1002
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "Why? It's probably nice and warm in there."
+LANG_RUSSIAN         "Почему? Там, наверно, тепло и уютно."
+
+REFERENCE           10ST2002
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "I don't want to be anywhere near those Sith fanatics. They give me the creeps."
+LANG_RUSSIAN         "Я не хочу и близко подходить к этим фанатикам Ситх. Они наводят на меня ужас."
+
+REFERENCE           10ST1003
+NOTES               "(use for snowtrooper)"
+LANG_ENGLISH        "Yeah, I know what you mean."
+LANG_RUSSIAN         "Ага, я понимаю, о чем ты."
+
+REFERENCE           10JAK001
+LANG_ENGLISH        "I wonder if there's anything useful in here..."
+LANG_RUSSIAN         "Интересно, здесь есть хоть что-то полезное..."
+
+REFERENCE           10JAK002
+LANG_ENGLISH        "Hmmph, won't be getting in this way. There's got to be another way."
+LANG_RUSSIAN         "Хм, так я никуда не попаду. Должен быть другой путь."
+
+REFERENCE           10CU1001
+NOTES               "(talking into comlink)"
+LANG_ENGLISH        "Command Center to Alora."
+LANG_RUSSIAN         "Командный центр Алоре."
+
+REFERENCE           10ALO001
+NOTES               "(via comm)"
+LANG_ENGLISH        "Alora here."
+LANG_RUSSIAN         "Алора на связи."
+
+REFERENCE           10CU1002
+NOTES               "(talking into comlink"
+LANG_ENGLISH        "We've just finished downloading the data. The Rebels must have erased everything during the evacuation. Luckily for us, the computer kept logging their flight information."
+LANG_RUSSIAN         "Мы только что закончили загрузку данных. Похоже, во время эвакуации повстанцы стерли практически все. К счастью для нас, компьютер регистрировал информацию о полетах."
+
+REFERENCE           10ALO002
+NOTES               "(via comm)"
+LANG_ENGLISH        "And...?"
+LANG_RUSSIAN         "И?.."
+
+REFERENCE           10CU1003
+NOTES               "(talking into comlink"
+LANG_ENGLISH        "And we found Rogue Leader's flight trajectory when he left Hoth. From it, we've been able to determine that Skywalker went to Dagobah."
+LANG_RUSSIAN         "И мы нашли траекторию полета лидера эскадрона Жулик, когда он покидал Хот. Так мы смогли определить, что Скайуокер летел на Дагобар."
+
+REFERENCE           10ALO003
+NOTES               "(via comm)"
+LANG_ENGLISH        "Dagobah? That sneaky little Jedi."
+LANG_RUSSIAN         "Дагобар? Этот хитрый маленький джедай."
+
+REFERENCE           10JAK003
+LANG_ENGLISH        "This isn't good. I'd better find this Alora."
+LANG_RUSSIAN         "Это плохо. Лучше найти эту Алору."
+
+REFERENCE           10ALO004
+LANG_ENGLISH        "Yes, Master. Dagobah. Skywalker didn't mention it in his journals; he must have been trying to protect something."
+LANG_RUSSIAN         "Да, хозяин. Дагобар. Скайуокер не упоминал о нем в своих журналах, должно быть, он пытался сохранить что-то в тайне."
+
+REFERENCE           10TAA001
+NOTES               "(pleased) HOLO or via comm"
+LANG_ENGLISH        "Well done, my apprentice. Meet me there."
+LANG_RUSSIAN         "Неплохо, мой ученик. Встретимся там."
+
+REFERENCE           10ALO005
+LANG_ENGLISH        "Ah. You must be the saber-wielding troublemaker who neutralized our perimeter guard. Are the Jedi stretched so thin that Skywalker sends children to battle the Disciples of Ragnos?"
+LANG_RUSSIAN         "А. Похоже, ты тот комок неприятностей с мечом, который нейтрализовал нашу охрану на периметре. Разве джедаи так измельчали, что Скайуокер посылает на бой с последователями Рагноса детишек?"
+
+REFERENCE           10ALO006
+NOTES               "(Pause)"
+LANG_ENGLISH        "We'll meet again, whelp."
+LANG_RUSSIAN         "Мы еще встретимся, щенок."
+
+REFERENCE           10JAK004
+LANG_ENGLISH        "I can't wait."
+LANG_RUSSIAN         "Не могу дождаться."
+
+
+ENDMARKER

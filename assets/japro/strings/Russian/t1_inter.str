@@ -1,0 +1,62 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           03ROP001
+LANG_ENGLISH        "So how's your training going? I've just been sent on a few errands, nothing exciting."
+LANG_RUSSIAN         "Как идет твое обучение? Съездил в несколько командировок, ничего особенного."
+
+REFERENCE           03JE1001
+LANG_ENGLISH        "Same here. I guess that's just how the training works."
+LANG_RUSSIAN         "То же самое. Интересно, как идет это обучение."
+
+REFERENCE           03ROP002
+LANG_ENGLISH        "I thought it was just me."
+LANG_RUSSIAN         "Я думал, что я тут один такой."
+
+REFERENCE           03ROP003
+LANG_ENGLISH        "Ever wonder if your Master is holding you back? Y'know, making sure you don't become too powerful?"
+LANG_RUSSIAN         "Интересно, может, твой учитель сдерживает тебя? Ну знаешь, чтобы ты не стал слишком сильным?"
+
+REFERENCE           03JE1002
+LANG_ENGLISH        "Why would you say that?"
+LANG_RUSSIAN         "Зачем ты так говоришь?"
+
+REFERENCE           03ROP004
+LANG_ENGLISH        "Well... Kyle doesn't seem to really foster my talents. I've gone on a couple of missions with him, but he doesn't let me do any of the really important stuff."
+LANG_RUSSIAN         "Ну... Не похоже, чтобы Кайл особо развивал мои таланты. Я побывал с ним на паре заданий, но ничего важного он мне не доверял."
+
+REFERENCE           03JE1003
+LANG_ENGLISH        "Maybe he's observing you, seeing how you accomplish your missions. I wouldn't worry about it."
+LANG_RUSSIAN         "Может, он наблюдает за тобой, как ты справляешься со своими заданиями. Я бы об этом не волновался."
+
+REFERENCE           03ROP005
+LANG_ENGLISH        "I'm not so sure. What do you think Jaden?"
+LANG_RUSSIAN         "Я не вполне уверен. Как ты думаешь, Джейден?"
+
+REFERENCE           03JAK001
+LANG_ENGLISH        "Well, I..."
+LANG_RUSSIAN         "Ну, я..."
+
+REFERENCE           03KYK001
+LANG_ENGLISH        "Ready to get back out there? Did I interrupt something?"
+LANG_RUSSIAN         "Готов уходить отсюда? Я ничему не помешал?"
+
+REFERENCE           03ROP006
+NOTES               "(sheepish)"
+LANG_ENGLISH        "No, not at all. I'm ready, let's go!"
+LANG_RUSSIAN         "Нет, вовсе нет. Я готов, пошли!"
+
+
+ENDMARKER

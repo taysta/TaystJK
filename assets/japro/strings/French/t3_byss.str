@@ -1,0 +1,124 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           21KYK001
+LANG_ENGLISH        "I'm going with you on this one. Rosh disappeared near Byss and it's too dangerous for anyone to go alone."
+LANG_FRENCH         "На этот раз я полечу вместе с тобой. Рош исчез возле Бисса, туда опасно лететь в одиночку."
+
+REFERENCE           21JAK001
+NOTES               "(concentrating)"
+LANG_ENGLISH        "I don't sense the dark side here, Kyle."
+LANG_FRENCH         "Я не чувствую здесь темной стороны, Кайл."
+
+REFERENCE           21KYK002
+LANG_ENGLISH        "Me neither. That's not good. Tavion must have been here already."
+LANG_FRENCH         "Я тоже. Это плохо. Тавион уже должно-быть побывала здесь."
+
+REFERENCE           21KYK003
+LANG_ENGLISH        "They've got a tractor beam on us. I can't break free!"
+LANG_FRENCH         "Они поймали нас притягивающим лучом. Я не могу пробиться!"
+
+REFERENCE           21KYK004
+LANG_ENGLISH        "Okay here's the plan: I served on one of these ships back in my Imperial days. You disable the tractor beam and I'll trigger the ship's self-destruct. Ready?"
+LANG_FRENCH         "О'кей, вот мой план: когда-то давно я служил под началом имперцев на таком корабле. Ты отключаешь притягивающий луч, а я включу механизм самоликвидации корабля. Готовы?"
+
+REFERENCE           21JAK002
+LANG_ENGLISH        "Ready as I'll ever be."
+LANG_FRENCH         "Всегда готовы."
+
+REFERENCE           21KYK005
+LANG_ENGLISH        "Find the tractor beam and disable it!"
+LANG_FRENCH         "Найди притягивающий луч и выведи его из строя!"
+
+REFERENCE           21KYK006
+LANG_ENGLISH        "What are you waiting for, an invitation?"
+LANG_FRENCH         "Чего ты ждешь, торжественного приглашения?"
+
+REFERENCE           21KYK007
+LANG_ENGLISH        "Go!"
+LANG_FRENCH         "Вперед!"
+
+REFERENCE           21KYK008
+LANG_ENGLISH        "Jan told me there would be days like this. Get going!"
+LANG_FRENCH         "Жан говорил мне, что такие деньки настанут. Продолжать движение!"
+
+REFERENCE           21KYK009
+LANG_ENGLISH        "We're not gonna get out of here if you don't do your part!"
+LANG_FRENCH         "Мы не выберемся отсюда, если ты не справишься со своей задачей!"
+
+REFERENCE           21JAK003
+LANG_ENGLISH        "Tractor beam disabled."
+LANG_FRENCH         "Притягивающий луч отключен."
+
+REFERENCE           21KYK010
+NOTES               "(via comm)"
+LANG_ENGLISH        "Good. Head back to the ship. I just need a little more time."
+LANG_FRENCH         "Хорошо. Возвращайся на корабль. Мне нужно еще немного времени."
+
+REFERENCE           21KYK011
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden! Someone must have sent a distress signal. We've got incoming fighters!"
+LANG_FRENCH         "Джейден! Похоже, кто-то послал сигнал бедствия. К нам приближаются истребители!"
+
+REFERENCE           21KYK012
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, I still need more time! Get to the guns and hold off those TIEs!"
+LANG_FRENCH         "Джейден, мне нужно еще время! Берись за орудия и сдерживай эти ТАЙцев!"
+
+REFERENCE           21KYK013
+NOTES               "(via comm)"
+LANG_ENGLISH        "They're sending TIE Bombers!"
+LANG_FRENCH         "Они посылают ТАЙские бомбардировщики!"
+
+REFERENCE           21KYK014
+NOTES               "(via comm)"
+LANG_ENGLISH        "Good shooting!"
+LANG_FRENCH         "Хорошая стрельба!"
+
+REFERENCE           21KYK015
+NOTES               "(via comm)"
+LANG_ENGLISH        "Just another minute!"
+LANG_FRENCH         "Еще минутку!"
+
+REFERENCE           21KYK016
+NOTES               "(via comm)"
+LANG_ENGLISH        "Almost done!"
+LANG_FRENCH         "Почти закончил!"
+
+REFERENCE           21KYK017
+NOTES               "(via comm)"
+LANG_ENGLISH        "We're taking too much fire!"
+LANG_FRENCH         "У нас слишком много попаданий!"
+
+REFERENCE           21KYK018
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, we want this bucket of bolts to explode after we get off it!"
+LANG_FRENCH         "Джейден, нам надо, чтобы эта консервная банка взорвалась после нашего взлета!"
+
+REFERENCE           21KYK019
+NOTES               "(via comm)"
+LANG_ENGLISH        "I'm done, meet me back at the Claw!"
+LANG_FRENCH         "Все готово, встречайте меня на Когте!"
+
+REFERENCE           21KYK020
+LANG_ENGLISH        "An Imperial Dreadnaught! I'm gonna get us out of here!"
+LANG_FRENCH         "Имперский дредноут! Я вытащу нас отсюда!"
+
+REFERENCE           21KYK021
+LANG_ENGLISH        "Let's get out of here. This ship is gonna blow!"
+LANG_FRENCH         "Нужно уходить. Этот корабль сейчас взорвется."
+
+
+ENDMARKER

@@ -1,0 +1,73 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           17LUK001
+LANG_ENGLISH        "The Disciples of Ragnos are getting bold. They've managed to siphon Force energy from every site that was mentioned in my journal. We still don't know what it is they're planning to do with the energy though."
+LANG_RUSSIAN         "Приверженцы Рагноса набираются наглости. Они смогли откачать энергию Силы из всех мест, указанных в моем журнале. И мы еще не знаем, что они собираются делать с этой энергией."
+
+REFERENCE           17LUK002
+NOTES               "(pauses)"
+LANG_ENGLISH        "It's imperative that we track down the leader of this cult."
+LANG_RUSSIAN         "Нам приказано выследить лидера этого культа."
+
+REFERENCE           17JE1001
+LANG_ENGLISH        "But how? If they've already hit every place in your journal...?"
+LANG_RUSSIAN         "Но как? Если они уже побывали во всех местах, описанных в журнале?.."
+
+REFERENCE           17LUK003
+LANG_ENGLISH        "There are several places I didn't mention by name that they've discovered, like Dagobah. My fear is that they may use clues in my journals to discover other places."
+LANG_RUSSIAN         "Есть несколько мест, не упомянутых напрямую, например Дагобар. Я опасаюсь, что с помощью намеков в моем журнале они найдут эти места."
+
+REFERENCE           17LUK004
+NOTES               "(pauses)"
+LANG_ENGLISH        "We need to beat them to these locations. Considering how we... lost a student last time, we must be very cautious. Everyone will travel in pairs. Kyle, Jaden, you'll be going to Vjun. "
+LANG_RUSSIAN         "Мы должны выгнать их оттуда. Так как мы... потеряли в прошлый раз ученика, все должны быть предельно осторожны. Все отправляются в парах. Кайл, Джейден, вы летите на Вьюн. "
+
+REFERENCE           17KYK001
+NOTES               "(confused)"
+LANG_ENGLISH        "Vjun? Isn't that just a big, dead rock?"
+LANG_RUSSIAN         "Вьюн? Это не тот огромный безжизненный кусок скалы?"
+
+REFERENCE           17LUK005
+NOTES               "(amused, but serious)"
+LANG_ENGLISH        "It also happens to be the location of one of my father's strongholds."
+LANG_RUSSIAN         "Там еще находится одна из цитаделей моего отца."
+
+REFERENCE           17KYK002
+NOTES               "(surprised, a bit intimidated)"
+LANG_ENGLISH        "Ooookay, so it's a big, dead, important rock."
+LANG_RUSSIAN         "Оооокей, значит это огромный безжизненный кусок скалы немалой важности."
+
+REFERENCE           17LUK006
+LANG_ENGLISH        "Streen, you and Tionne are..."
+LANG_RUSSIAN         "Стрин, ты и Тионн..."
+
+REFERENCE           17KYK003
+NOTES               "(to Jaden, a little spooked)"
+LANG_ENGLISH        "This ought to be interesting. I'd heard rumors that Luke had been to Vjun, but he never really talked about it. "
+LANG_RUSSIAN         "Это будет интересно. До меня доходили слухи, что Люк бывал на Вьюне, но он никогда не говорил об этом. "
+
+REFERENCE           17LUK007
+NOTES               "(pause)"
+LANG_ENGLISH        "Vjun is dangerous. The dark side is strong there... oppressive. Be extremely careful."
+LANG_RUSSIAN         "Вьюн опасен. Темная сторона сильна там... очень сильна. Будьте чрезвычайно осторожны."
+
+REFERENCE           17KYK004
+NOTES               "(serious)"
+LANG_ENGLISH        "Sure, Luke. Don't worry."
+LANG_RUSSIAN         "Конечно, Люк. Не волнуйся."
+
+
+ENDMARKER

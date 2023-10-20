@@ -1,0 +1,113 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           28JE1001
+LANG_ENGLISH        "Jaden, you made it! Did you find Rosh?"
+LANG_RUSSIAN         "Джейден, у тебя получилось! Рош нашелся?"
+
+REFERENCE           28JAK001
+LANG_ENGLISH        "He's hurt, but safe. Kyle's taking care of him. Any sign of Tavion?"
+LANG_RUSSIAN         "Он ранен, но это не опасно. Кайл позаботится о нем. Есть какие-нибудь признаки Тавион?"
+
+REFERENCE           28JE1002
+LANG_ENGLISH        "Not yet. We're trying to locate Ragnos' tomb. Master Skywalker's group landed in another part of the valley to search for it."
+LANG_RUSSIAN         "Еще нет. Мы пытаемся найти гробницу Рагноса. Группа мастера Скайуокера приземлилась в другой части долины, чтобы найти ее."
+
+REFERENCE           28JAK002
+LANG_ENGLISH        "I'd better get going."
+LANG_RUSSIAN         "Мне лучше идти."
+
+REFERENCE           28JE1003
+LANG_ENGLISH        "Be careful, this place is crawling with dark Force users."
+LANG_RUSSIAN         "Осторожно, это место кишит последователями темной стороны Силы."
+
+REFERENCE           28JE1004
+LANG_ENGLISH        "Jaden? What happened to-"
+LANG_RUSSIAN         "Джейден? Что случилось с-"
+
+REFERENCE           28JAK003
+LANG_ENGLISH        "Out of my way. The scepter will be mine."
+LANG_RUSSIAN         "Прочь с дороги. Скипетр будет моим."
+
+REFERENCE           28JE1005
+LANG_ENGLISH        "Oh no... I sense the dark side in you, Jaden... I can't let you pass. "
+LANG_RUSSIAN         "О, нет... Я ощущаю в тебе темную сторону, Джейден... Мы не можем позволить тебе пройти. "
+
+REFERENCE           28JAK004
+LANG_ENGLISH        "I will pass, whether you want me to or not."
+LANG_RUSSIAN         "Я пройду независимо от ваших желаний."
+
+REFERENCE           28JAK005
+NOTES               "(to himself)"
+LANG_ENGLISH        "How do I get out of this room?"
+LANG_RUSSIAN         "Как мне выйти из этой комнаты?"
+
+REFERENCE           28JAK006
+NOTES               "(to himself)"
+LANG_ENGLISH        "This place is crawling with Sith wannabes!"
+LANG_RUSSIAN         "Это место кишмя кишит поклонниками Ситх!"
+
+REFERENCE           28JAK007
+NOTES               "(to himself)"
+LANG_ENGLISH        "How do I get up there?"
+LANG_RUSSIAN         "Как мне туда подняться?"
+
+REFERENCE           28JAK008
+NOTES               "(to himself)"
+LANG_ENGLISH        "If I'm not careful, I'll end up buried here, too!"
+LANG_RUSSIAN         "Если я не буду осторожней, то тоже буду лежать тут!"
+
+REFERENCE           MR_28JE2006
+LANG_ENGLISH        "Stop him!"
+LANG_RUSSIAN         "Остановите его!"
+
+REFERENCE           MS_28JE2007
+LANG_ENGLISH        "Stop her!"
+LANG_RUSSIAN         "Остановите ее!"
+
+REFERENCE           28JE2008
+LANG_ENGLISH        "Jaden, let go of your anger!"
+LANG_RUSSIAN         "Джейден, выпусти свой гнев!"
+
+REFERENCE           28JE2009
+LANG_ENGLISH        "Why, Jaden?!"
+LANG_RUSSIAN         "Зачем, Джейден?!"
+
+REFERENCE           28JE2010
+LANG_ENGLISH        "Where's Kyle?"
+LANG_RUSSIAN         "Где же Кайл?"
+
+REFERENCE           28JE2011
+LANG_ENGLISH        "Where's Rosh?"
+LANG_RUSSIAN         "Где же Рош?"
+
+REFERENCE           28JE2012
+LANG_ENGLISH        "Jaden, I must stop you."
+LANG_RUSSIAN         "Джейден, я должен тебя остановить."
+
+REFERENCE           28CU1001
+LANG_ENGLISH        "Don't let the Jedi get to the valley!"
+LANG_RUSSIAN         "Не дайте джедаю войти в долину!"
+
+REFERENCE           28CU1002
+LANG_ENGLISH        "Stop that Jedi!"
+LANG_RUSSIAN         "Остановите этого джедая!"
+
+REFERENCE           28CU1003
+LANG_ENGLISH        "Stop the Jedi!"
+LANG_RUSSIAN         "Остановите джедая!"
+
+
+ENDMARKER

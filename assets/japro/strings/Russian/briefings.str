@@ -1,0 +1,141 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           ""
+
+REFERENCE           T1_SOUR
+LANG_ENGLISH        "We've been receiving a number of reports that the Disciples of Ragnos have been trying to hire mercenaries and smugglers to haul some cargo. If we can contact one of these mercenary groups, maybe we can find out the cult's base of operations. One of the smuggling rings that we know about is based at Mos Eisley. Go there and see what you can find out."
+LANG_RUSSIAN         "Я получил множество отчетов о том, что последователи Рагноса пытались с помощью наемников и контрабандистов переправить какой-то груз. Если мы свяжемся с одним из отрядов наемников, то, быть может, узнаем месторасположение оперативной базы культа. Одно из колец контрабанды, о которых мы знаем, базируется в Мос Эйсли. Отправляйтесь туда и выясните, что сможете."
+
+REFERENCE           T1_SURPRISE
+LANG_ENGLISH        "A moisture farmer on Tatooine recently overheard a group of smugglers talking about a Sith cult in a local bar and had his R5 droid record the conversation. Unfortunately, he became afraid and sold the droid to some Jawas before leaving Tatooine. We need to get a hold of that droid before the Jawas wipe its memory. You are to locate the Jawas, purchase the droid, and return to the Academy."
+LANG_RUSSIAN         "Мокрый фермер с Татуина недавно подслушал разговоры группы контрабандистов, они говорили о культе Ситх в местном баре, у фермера даже осталась запись с его дроида Р5. К несчастью, он испугался и продал дроида каким-то джавам, после чего покинул Татуин. Нам нужно заполучить этого дроида, пока джавы не стерли его память. Вы должны найти джавов, купить дроида и вернуться в академию."
+
+REFERENCE           T1_FATAL
+LANG_ENGLISH        "Officials from the planet Bakura have requested our assistance. An unknown party has taken control of a power station up in the mountains. They sent a team to investigate, but they haven't reported in. Their concerns are two-fold:  they want to stop whoever has taken over the station, and more importantly ensure that the station itself remains undamaged. The station is built over a dormant volcano, and if the facility is destroyed, the volcano could destroy a heavily populated city. The Bakurans' need someone to infiltrate the facility and thwart the group's plan."
+LANG_RUSSIAN         "Власти планеты Бакура просят нас о помощи. Неизвестная сторона взяла под контроль электростанцию в горах. Они выслали разведывательный отряд, но те ничего не сообщили. Они хотят следующего:  остановить того, кто захватил станцию, и, что более важно, обеспечить сохранность станции. Станция выстроена над дремлющим вулканом, если ее уничтожить, вулкан разрушит густозаселенный город. Бакуранцам нужен кто-то, кто проникнет в станцию и сорвет планы захватчиков."
+
+REFERENCE           T1_DANGER
+LANG_ENGLISH        "The Academy has received a distress call from a merchant ship that crashed on the planet Blenjeel. They were pulled out of hyperspace when they crossed paths with an Interdictor cruiser. The Imperials, apparently not wanting their presence known, fired on the merchant ship. The merchants managed to make it to the planet surface and call for help. As far as we know, the planet is uninhabited."
+LANG_RUSSIAN         "Академия получила сигнал бедствия с торгового корабля, разбившегося на планете Бленжил. Их вытащили из гиперпространства, когда они пересекали путь крейсера Интердиктор. Имперцы, не желая раскрывать себя, подбили торговый корабль. Торговцы смогли добраться до поверхности планеты и послать призыв о помощи. Насколько нам известно, планета необитаема."
+
+REFERENCE           T1_RAIL
+LANG_ENGLISH        "The city of Coronet on Corellia has had numerous reports of activity by the Disciples of Ragnos. However, it's not clear if it's really the Sith cult or if the locals are just being paranoid after hearing about it on the Holonet. Go to Coronet and determine the truth."
+LANG_RUSSIAN         "Город Коронет на Кореллии свидетельствует о многих случаях повышения активности последователей Рагноса. Однако, не ясно, замешан ли тут культ Ситх или это просто местные страдают паранойей после новостей с ГолоСети. Летите на Коронет и выясните, в чем там дело. "
+
+REFERENCE           T2_TRIP
+LANG_ENGLISH        "A spaceport worker on the planet Zonju V may have information pertaining to the Cult's connection with the Imperial Remnant. The worker is hiding at an abandoned outpost three kilometers outside of Zoronhed. Meet up with the worker and find out what he knows."
+LANG_RUSSIAN         "Работник космопорта на планете Зонджу V имеет информацию, касающуюся связи культа с остатками империи. Рабочий скрывается на заброшенном аванпосту в трех километрах от Зоронхеда. Встретьте рабочего и выясните, что ему известно."
+
+REFERENCE           T2_DPRED
+LANG_ENGLISH        "New Republic Intelligence has intercepted transmissions coming from the planet Dosuun. They believe that suspected cult members sent the transmissions from a base on the planet. Since there are no Republic fleets in this area of the Outer Rim, they have asked us to investigate."
+LANG_RUSSIAN         "Разведслужба Новой Республики перехватила передачи, идущие с планеты Досуун. Они предполагают, что члены культа посылают передачи с базы на планете. Так как в этой окраинной области нет сил республиканского флота, нас попросили расследовать это дело."
+
+REFERENCE           T2_RANCOR
+LANG_ENGLISH        "We have received word from a mining guild on Nar Kreeta that a number of elders are held captive by the local Hutt crimelord. These elders went to negotiate a treaty with the Hutt, but never returned. The crimelord claims no one ever came to see him."
+LANG_RUSSIAN         "Мы получили пару слов от шахтерской гильдии Нар Крита - многих старших членов гильдии захватил местный криминальный авторитет Хатт. Эти старейшины шли к Хатту, чтобы подписать договор, но никто не вернулся. Криминальный авторитет заявляет, что никто не должен его видеть."
+
+REFERENCE           T2_ROGUE
+LANG_ENGLISH        "We have received anonymous information that a large number of assassin droids have flooded the black market recently. These droids have been banned for a number of years and no public companies produce them. Lannik Racto, a small-time crimelord on Coruscant, is suspected to be manufacturing these new droids. Capture Racto so that we may determine where his factory is."
+LANG_RUSSIAN         "Мы получили массу информации о том, что недавно черный рынок просто затопили дроиды-убийцы. Этих дроидов много лет назад сняли с производства и ни одна компания республики их не изготовляет. Ланник Ракто, мелкий криминальный авторитет с Корусанта, подозревается в изготовлении этих дроидов. Захватите Лакто, чтобы мы смогли узнать, где находится его завод."
+
+REFERENCE           T2_WEDGE
+LANG_ENGLISH        "New Republic Intelligence has recently discovered the existence of an Imperial tibanna gas platform on the planet Kril'dor. If the Republic can take control of the platform, it would deal a severe blow to the Imperial Remnant. General Wedge Antilles of Rogue Squadron has come up with a bold plan in which he and a single ground troop could capture the entire facility. General Antilles believes that only a Jedi could accomplish the ground portion of the mission."
+LANG_RUSSIAN         "Разведслужба Новой Республики недавно обнаружила на планете Крил'дор имперскую платформу по добыче газа тибанна. Если Республика захватит эту платформу, это сильно ударит по имперским остаткам. Генерал Вэдж Атиллес из Эскадрона Жулик разработал дерзкий план, согласно которому он с небольшим отрядом захватит все сооружение. Генерал Атиллес полагает, что только джедай может справиться с наземной частью задания."
+
+REFERENCE           T3_BYSS
+LANG_ENGLISH        "Since Rosh never completed his mission at Byss, we still need to determine if Tavion managed to siphon Force energy from the remains of the planet. The Emperor spent a lot of time there, so it would be a huge source of power. If it has been taken, we'll have an idea of just how powerful Tavion is."
+LANG_RUSSIAN         "Так как Рош никак не закончит свое задание на Биссе, нам все еще нужно узнать, смогла ли Тавион забрать энергию Силы из остатков планеты. Император провел там много времени, так что это будет большой источник энергии. Если она будет захвачена, то мы сможем хоть что-то сказать о мощи Тавион."
+
+REFERENCE           T3_RIFT
+LANG_ENGLISH        "We've received word from the Chandrilans that some cultists have broken into an ancient tomb that is supposedly the burial site of a Jedi Knight. Hurry there and stop them from siphoning that Force power."
+LANG_RUSSIAN         "Чандрилане сообщают нам, что какие-то последователи культа вломились в древнюю гробницу, предположительно являвшуюся местом захоронения рыцаря джедая. Спешите туда и не дайте им забрать энергию Силы."
+
+REFERENCE           T3_STAMP
+LANG_ENGLISH        "We got word from a freighter captain that there are members of the cult at the spaceport on Taanab. Head over there and find out what they are doing there."
+LANG_RUSSIAN         "Как сообщил нам капитан фрахтового судна, в космопорту Таанаб находятся последователи культа. Отправляйтесь туда и выясните, что они там делают."
+
+REFERENCE           T3_HEVIL
+LANG_ENGLISH        "Our resident Jedi scholar Tionne recently learned of the planet Yalara from our Jedi Holocron. The planet was once home to a peaceful, yet primitive species that was not ready to be integrated into galactic society. For this reason, the Jedi Master Broden Kel Verdox harnessed the power of the planet to create a cloaking device, hiding the entire planet from discovery. But now, someone else has discovered Yalara. Go to Yalara and find out if anyone has been there. If the cloaking device is in danger of being stolen, it would be better to destroy it rather than have it fall into the wrong hands."
+LANG_RUSSIAN         "Наш постоянный ученик-джедай Тионн недавно узнал из одного джедайского Голокрона о планете Ялара. Когда-то планета служила домом миролюбивой, но пока еще примитивной расы, не готовой к вступлению в межгалактическое сообщество. Посему мастер джедай Броден Кел Вердокс собрал силы планеты и создал маскирующее устройство, скрывающее всю планету. Но теперь кто-то обнаружил Ялару. Летите на Ялару и выясните, посещал ли ее кто-то еще. Если маскирующее устройства находится под угрозой похищения, лучше его уничтожить, чем отдать врагам."
+
+REFERENCE           T3_BOUNTY
+LANG_ENGLISH        "Information has surfaced about a large stockpile of old weapons hidden in the wastes of Ord Mantell. Destroy the stockpiles so they don't fall into the wrong hands. Records from the time of the Rebellion indicate there should be seven caches hidden in the ruined city."
+LANG_RUSSIAN         "Всплыла информация о больших запасах старого оружия, спрятанных в пустынных районах Орд Мантелла. Уничтожьте запасы, чтобы они не попали в чужие руки. Записи времен повстанцев показывают, что в разрушенном городе должно быть семь тайников."
+
+REFERENCE           NONE
+LANG_ENGLISH        "No briefing is available for this mission."
+LANG_RUSSIAN         "Для этого задания никаких инструкций не будет."
+
+REFERENCE           YAVIN2
+LANG_ENGLISH        "Report to the training grounds with Rosh to begin Force power training with Kyle Katarn."
+LANG_RUSSIAN         "С Рошем доложитесь Кайлу Катарну по поводу обучению на полигоне работе с энергией Силы. "
+
+REFERENCE           ACADEMY2
+LANG_ENGLISH        "Master Skywalker has summoned all available Jedi back to the Academy."
+LANG_RUSSIAN         "Мастер Скайуокер отозвал всех джедаев назад в академию."
+
+REFERENCE           HOTH2
+LANG_ENGLISH        "Investigate the site of Luke's vision of Obi-Wan in the wastelands of Hoth to determine if the cult of Ragnos has been there."
+LANG_RUSSIAN         "Обследуйте место, которое Люк увидел в видении с Оби-Ваном - пустоши Хота - чтобы узнать, побывал ли там культ Рагноса."
+
+REFERENCE           HOTH3
+LANG_ENGLISH        "Discover what the Imperial Remnant troops are doing in Echo Base."
+LANG_RUSSIAN         "Узнайте, что остатки имперских сил делали на базе Эхо."
+
+REFERENCE           ACADEMY3
+LANG_ENGLISH        "Return to the Academy and report to Luke what you have found on Hoth."
+LANG_RUSSIAN         "Возвращайтесь в академию и доложите Люку о своих находках на Хоте."
+
+REFERENCE           ACADEMY4
+LANG_ENGLISH        "Master Skywalker has summoned all available Jedi to the Academy to relay some important information about the Disciples of Ragnos."
+LANG_RUSSIAN         "Мастер Скайуокер отозвал всех джедаев назад в академию, чтобы передать важную информацию о последователях Рагноса."
+
+REFERENCE           VJUN1
+LANG_ENGLISH        "Master Skywalker has dispatched the Jedi to locations of heavy Force activity in the hopes of catching up with the Disciples of Ragnos. Travel with Master Kyle Katarn to Darth Vader's castle on Vjun to stop the cult from draining its Force energy."
+LANG_RUSSIAN         "Мастер Скайуокер в спешке выслал джедаев в места, где Сила особенно активна, в надежде перехватить последователей Рагноса. Отправляйтесь вместе с мастером Кайлом Катарном в твердыню Дарта Вейдера, чтобы не позволить культу собрать энергию Силы."
+
+REFERENCE           VJUN2
+LANG_ENGLISH        "Make your way through the underworks of Bast Castle and find an entry into the castle itself."
+LANG_RUSSIAN         "Пройдите через основание базы Баст и найдите вход в сам замок."
+
+REFERENCE           VJUN3
+LANG_ENGLISH        "Enter Vader's castle and stop the cult from draining its Force energy. Try to meet back up with Kyle."
+LANG_RUSSIAN         "Войдите в твердыню Дарта Вейдера, чтобы не позволить культу собрать энергию Силы. Постарайтесь встретиться с Кайлом."
+
+REFERENCE           ACADEMY5
+LANG_ENGLISH        "Return to the Academy and report to Luke what you have found on Vjun."
+LANG_RUSSIAN         "Возвращайтесь в академию и доложите Люку о своих находках на Вьюне."
+
+REFERENCE           ACADEMY6
+LANG_ENGLISH        "Master Skywalker has summoned all Jedi back to the Academy. He has formulated a plan to stop the Disciples of Ragnos."
+LANG_RUSSIAN         "Мастер Скайуокер отозвал всех джедаев назад в академию. Он составил план, способный остановить последователей Рагноса."
+
+REFERENCE           TASPIR1
+LANG_ENGLISH        "Gain entrance into the cult facility on Taspir III to search for Rosh Penin."
+LANG_RUSSIAN         "Войдите в строение культа на Таспире III и разыщите там Роша Пенина."
+
+REFERENCE           TASPIR2
+LANG_ENGLISH        "Look for Kyle and Rosh in the cult facility."
+LANG_RUSSIAN         "Ищите Кайла и Роша в здании культа."
+
+REFERENCE           KOR1
+LANG_ENGLISH        "Travel to Korriban, burial place of Marka Ragnos to confront Tavion."
+LANG_RUSSIAN         "Летите на Коррибан, место захоронения Марка Рагноса, и сорвите планы Тавион."
+
+REFERENCE           KOR2
+LANG_ENGLISH        "Enter  the Tomb of Ragnos to confront Tavion.\n\n"
+LANG_RUSSIAN         "Войдите в гробницу Рагноса, и сорвите планы Тавион.\n\n"
+
+
+ENDMARKER

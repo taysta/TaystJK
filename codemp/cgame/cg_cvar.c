@@ -131,6 +131,33 @@ static void CG_StrafeHelperActiveColorChange(void) {
 	//Com_Printf("New color is %f, %f, %f, %f\n", cg.strafeHelperActiveColor[0], cg.strafeHelperActiveColor[1], cg.strafeHelperActiveColor[2], cg.strafeHelperActiveColor[3]);
 }
 
+void CVU_LanguageModified(void) { //handles switching to and from the cyrillic charset
+	char language[MAX_QPATH] = { 0 };
+
+	if (trap->R_Language_IsAsian()) {
+		cgs.media.charsetShader = trap->R_RegisterShaderNoMip("gfx/2d/charsgrid_med");
+		return;
+	}
+
+	trap->Cvar_VariableStringBuffer("se_language", language, sizeof(language));
+
+	if (language[0] != '\0' && strlen(language) > 0) {
+		//cgs.media.charsetShader = 0;
+
+		if (!Q_stricmpn(language, "Rus", 3)) {
+			cgs.media.charsetShader = trap->R_RegisterShaderNoMip("gfx/2d/charsgrid_med_cyr");
+		}
+	}
+
+	if (!cgs.media.charsetShader)
+		cgs.media.charsetShader = trap->R_RegisterShaderNoMip("gfx/2d/charsgrid_med");
+
+	//if (cg.snap)
+	//	trap->SendConsoleCommand("ui_load ; ");
+
+	//trap->SendConsoleCommand("snd_restart ; se_restart\n"); //source of the saber hum when loading while alt tabbed bug
+}
+
 #ifdef WIN32
 #include "windows.h"
 #define PATCH(addr, value, type) { type patch = value; MemoryPatch((void *)addr, (void *)&patch, sizeof(type)); }

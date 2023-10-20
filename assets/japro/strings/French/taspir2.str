@@ -1,0 +1,299 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           27JAK001
+NOTES               "(recognizes her)"
+LANG_ENGLISH        "You!"
+LANG_FRENCH         "Ты!"
+
+REFERENCE           27ALO001
+NOTES               "(taunting)"
+LANG_ENGLISH        "So, the itty-bitty Jedi has come to rescue his friend... that's so sweet."
+LANG_FRENCH         "Значит, ушлый джедай пришел спасти своего друга... как мило."
+
+REFERENCE           27JAK002
+LANG_ENGLISH        "Where's Rosh?"
+LANG_FRENCH         "Где Рош?"
+
+REFERENCE           27ALO002
+NOTES               "(separate last three words)"
+LANG_ENGLISH        "What makes you think he wants to be rescued? Tavion turned him to the dark side. Just. Like. That."
+LANG_FRENCH         "А кто сказал, что его нужно спасать? Тавион обратила его на темную сторону. Именно. Так. И есть."
+
+REFERENCE           27JAK003
+NOTES               "(angrily)"
+LANG_ENGLISH        "Where is he?"
+LANG_FRENCH         "Где он?"
+
+REFERENCE           27ALO003
+LANG_ENGLISH        "Ooo, someone's getting awfully angry, aren't they? Forgetting your Jedi training?"
+LANG_FRENCH         "О-о-о, кто-то у нас ужасно рассердился, верно? А как-же ваши джедайские тренировки?"
+
+REFERENCE           27JAK004
+NOTES               "(regaining control)"
+LANG_ENGLISH        "Look... Alora. Why serve Tavion? It's not too late to join us and fight her-"
+LANG_FRENCH         "Послушай... Алора. Зачем служить Тавион? Еще не поздно перейти к нам и сразиться с ней"
+
+REFERENCE           27ALO004
+LANG_ENGLISH        "(laughs)"
+LANG_FRENCH         "(смех)"
+
+REFERENCE           27JAK005
+LANG_ENGLISH        "I'm taking Rosh out of here. Make it easy on yourself and tell me where he is."
+LANG_FRENCH         "Я забираю Роша. Облегчи себе задачу и скажи мне, где он."
+
+REFERENCE           27ALO005
+NOTES               "(playful)"
+LANG_ENGLISH        "Oh, he's around. I think I'll go look for him..."
+LANG_FRENCH         "О, где-то рядом. Думаю, мне стоит его поискать..."
+
+REFERENCE           27ALO006
+LANG_ENGLISH        "Oooh, but you are persistent, Jedi."
+LANG_FRENCH         "О-о-х, а ты настойчив, джедай."
+
+REFERENCE           27ALO007
+LANG_ENGLISH        "Are all Jedi as weak as Rosh, or just Katarn's personal brats?"
+LANG_FRENCH         "Все джедаи так же слабы, как и Рош, или это личные выкормыши Катарна?"
+
+REFERENCE           27ALO008
+LANG_ENGLISH        "Perhaps you, too, will learn to serve Tavion..."
+LANG_FRENCH         "Быть может, ты тоже научишься служить Тавион..."
+
+REFERENCE           27ALO009
+LANG_ENGLISH        "Imagine the power if you joined us..."
+LANG_FRENCH         "Представь себе силу, которую получишь у нас..."
+
+REFERENCE           27JAK006
+NOTES               "(surprised to see him)"
+LANG_ENGLISH        "Rosh!"
+LANG_FRENCH         "Рош!"
+
+REFERENCE           27ROP001
+NOTES               "(scared)"
+LANG_ENGLISH        "Jaden..."
+LANG_FRENCH         "Джейден..."
+
+REFERENCE           27JAK007
+LANG_ENGLISH        "You don't look like much of a captive, Rosh. Did you dream this up or was it Tavion's idea?"
+LANG_FRENCH         "Что-то не похоже, что тебя держат насильно, Рош. Это ты придумал, или это идея Тавион?"
+
+REFERENCE           27ROP002
+NOTES               "(nervously"
+LANG_ENGLISH        "No, Jaden - wait! I was wrong! Please! Take me back to the Academy. I need... help."
+LANG_FRENCH         "Нет, Джейден - стой! Я был не прав! Прошу тебя! Отвези меня в академию. Мне нужна... помощь."
+
+REFERENCE           27ROP003
+NOTES               "(nervously"
+LANG_ENGLISH        "Jaden, stay back."
+LANG_FRENCH         "Джейден, не подходи."
+
+REFERENCE           27ROP004
+NOTES               "(ignites lightsaber)"
+LANG_ENGLISH        "Please... don't hurt me."
+LANG_FRENCH         "Пожалуйста... не убивай меня."
+
+REFERENCE           27JAK008
+LANG_ENGLISH        "You tried to kill me! And now you've lured me into a trap!"
+LANG_FRENCH         "Ты пытался убить меня! А теперь сам попался в западню!"
+
+REFERENCE           27ROP005
+NOTES               "(nervously)"
+LANG_ENGLISH        "Jaden, I was... scared. You have to believe me. We're friends, remember? Let's get out of here before Alora comes back."
+LANG_FRENCH         "Джейден, я... испугался. Поверь мне. Мы же друзья, помнишь? Давай уйдем отсюда, пока не вернулась Алора."
+
+REFERENCE           27JAK009
+NOTES               "(still angry, suspicious)"
+LANG_ENGLISH        "How do I know you won't betray me again? You're always trying to beat me. How do I know this isn't just another trick?"
+LANG_FRENCH         "Откуда мне знать, не предашь ли ты опять? Ты всегда пытался обойти меня. Откуда мне знать, что это не очередной трюк?"
+
+REFERENCE           27KYK001
+NOTES               "(telepathy)"
+LANG_ENGLISH        "Jaden! Don't do it!"
+LANG_FRENCH         "Джейден! Не делай этого!"
+
+REFERENCE           27ALO010
+LANG_ENGLISH        "Finish him, Jedi!"
+LANG_FRENCH         "Прикончи его, джедай!"
+
+REFERENCE           27ROP006
+NOTES               "(trying to be convincing, but too scared)"
+LANG_ENGLISH        "Wait, listen to what you're saying! You're.. you're angry! Don't give in to it, that leads to the dark side, right?"
+LANG_FRENCH         "Стой, послушай, что ты говоришь! Ты... ты в гневе! Не позволяй овладеть собой тому, что приведет тебя на темную сторону, да?"
+
+REFERENCE           27KYK002
+NOTES               "(telepathy)"
+LANG_ENGLISH        "He only fell to the dark side because he was scared. Afraid of dying. Put away your saber."
+LANG_FRENCH         "Он перешел на темную сторону из страха. Боялся смерти. Убери свой меч."
+
+REFERENCE           27ALO011
+LANG_ENGLISH        "Strike him down! Give in to your anger."
+LANG_FRENCH         "Добей его! Отдайся своему гневу."
+
+REFERENCE           27KYK003
+NOTES               "(telepathy)"
+LANG_ENGLISH        "Jaden, you're better than that! Don't give in to your anger! Rosh is telling the truth!"
+LANG_FRENCH         "Джейден, ты выше этого! Не потдавайся своему гневу! Рош говорит правду!"
+
+REFERENCE           27JAK010
+NOTES               "(coming to his senses)"
+LANG_ENGLISH        "I'm sorry Rosh, you're right. I almost let my anger get the best of me. Let's get out of here."
+LANG_FRENCH         "Прости, Рош, ты прав. Гнев почти поглотил меня. Нужно уходить отсюда."
+
+REFERENCE           27ROP007
+NOTES               "(extremely relieved)"
+LANG_ENGLISH        "Thank you, Jaden."
+LANG_FRENCH         "Спасибо тебе, Джейден."
+
+REFERENCE           27ALO012
+LANG_ENGLISH        "You Jedi are blandly predictable. Tavion thought that turning you would gain us an ally."
+LANG_FRENCH         "Вы, джедаи, народ до отвращения предсказуемый. Тавион считала, что, обратив тебя, получит союзника."
+
+REFERENCE           27ALO013
+NOTES               "(she walks towards Rosh)"
+LANG_ENGLISH        "But since you won't be turned, I guess it's up to me to clean up her mistake."
+LANG_FRENCH         "Но, ты не хочешь быть с нами, мне следует исправить ее ошибку."
+
+REFERENCE           27JAK011
+LANG_ENGLISH        "Stand down, Alora. You were no match for me on Hoth, and now I am a Jedi Knight."
+LANG_FRENCH         "Отступи, Алора. Ты не была ровней мне на Хоте, а теперь я рыцарь джедай."
+
+REFERENCE           27ALO014
+LANG_ENGLISH        "Tavion has taught me many things as well, you sanctimonious fool!"
+LANG_FRENCH         "Тавион многому меня научила, ты тупица!"
+
+REFERENCE           27ROP008
+NOTES               "(She severs Rosh's arm and he falls screaming.)"
+LANG_ENGLISH        "Aaahhhhhh!"
+LANG_FRENCH         "А-а-а-х-х-х!"
+
+REFERENCE           27JAK012
+LANG_ENGLISH        "Rosh!"
+LANG_FRENCH         "Рош!"
+
+REFERENCE           27ROP009
+NOTES               "(in pain)"
+LANG_ENGLISH        "Unggh...."
+LANG_FRENCH         "У-н-г-г-х...."
+
+REFERENCE           27KYK004
+LANG_ENGLISH        "Rosh!"
+LANG_FRENCH         "Рош!"
+
+REFERENCE           27ROP010
+NOTES               "(weakly)"
+LANG_ENGLISH        "I'll be..."
+LANG_FRENCH         "Я еще..."
+
+REFERENCE           27KYK005
+LANG_ENGLISH        "Sith Spit! I need to get him to a bacta tank. Go to Korriban and help Luke and the others. I'll be there as soon as I can."
+LANG_FRENCH         "Клинок Ситх! Нужно засунуть его в контейнер бакты. Лети на Коррибан и помоги Люку и остальным. Я прилечу как можно скорее."
+
+REFERENCE           27KYK006
+LANG_ENGLISH        "Jaden. I sensed your struggle with the dark side. I am glad you made the right choice."
+LANG_FRENCH         "Джейден. Я ощутил твою борьбу с темной стороной. Я рад, что ты на верной стороне."
+
+REFERENCE           27JAK013
+LANG_ENGLISH        "Thank you... but it was Rosh who made me see what the right choice was. Tell him that when he wakes up."
+LANG_FRENCH         "Спасибо... но именно Рош показал мне, что нужно выбирать. Скажите ему об этом, когда он очнется."
+
+REFERENCE           27KYK007
+LANG_ENGLISH        "I will. Now go."
+LANG_FRENCH         "Хорошо. Теперь иди."
+
+REFERENCE           27ROP011
+LANG_ENGLISH        "Jaden, no. Let go of your anger."
+LANG_FRENCH         "Джейден, нет. Отпусти свой гнев."
+
+REFERENCE           27JAK014
+LANG_ENGLISH        "Why should I? You yourself said how powerful the dark side was."
+LANG_FRENCH         "Зачем это? Ты сам сказал, как сильна темная сторона."
+
+REFERENCE           27ROP012
+LANG_ENGLISH        "I was wrong."
+LANG_FRENCH         "Я был не прав."
+
+REFERENCE           27JAK015
+LANG_ENGLISH        "No, you were weak."
+LANG_FRENCH         "Нет, ты был слаб."
+
+REFERENCE           27ROP013
+LANG_ENGLISH        "Jaden... no."
+LANG_FRENCH         "Джейден... нет."
+
+REFERENCE           27ALO015
+LANG_ENGLISH        "Well done, Jedi. You have become one of us."
+LANG_FRENCH         "Отлично, джедай. Ты стал одним из нас."
+
+REFERENCE           27JAK016
+NOTES               "(angrily, with venom)"
+LANG_ENGLISH        "No!"
+LANG_FRENCH         "Нет!"
+
+REFERENCE           27ALO016
+LANG_ENGLISH        "Join us. With Marka Ragnos as our Master, we will defeat the Jedi and rule the galaxy."
+LANG_FRENCH         "Присоединяйся к нам. Под началом Марка Рагноса мы победим всех джедаев и будем править галактикой."
+
+REFERENCE           27JAK017
+LANG_ENGLISH        "Join you? Why should I trade one master for another? The scepter of Ragnos is too powerful to be left in the hands of someone as weak as Tavion. If anything, it should belong to ME."
+LANG_FRENCH         "Присоединиться к тебе? Зачем мне менять одного учителя на другого? Скипетр Рагноса слишком могуществен, чтобы оставаться в руках таких слабаков, как Тавион. В любом случае, он должен принадлежать МНЕ."
+
+REFERENCE           27ALO017
+LANG_ENGLISH        "Oh, you think so?"
+LANG_FRENCH         "Ох, не думаю."
+
+REFERENCE           27JAK018
+LANG_ENGLISH        "You, on the other hand, are useless. I should have killed you on Hoth."
+LANG_FRENCH         "Однако, с другой стороны, ты бесполезна. Нужно было прикончить тебя на Хоте."
+
+REFERENCE           27ALO018
+LANG_ENGLISH        "You won't get a second chance. Tavion has taught me much since then!"
+LANG_FRENCH         "Ты не получишь второго шанса. Тавион многому научила меня с тех пор!"
+
+REFERENCE           27ROP014
+LANG_ENGLISH        "K-Ky...le..."
+LANG_FRENCH         "К-Кай...айл..."
+
+REFERENCE           27KYK008
+LANG_ENGLISH        "Rosh!"
+LANG_FRENCH         "Рош!"
+
+REFERENCE           27ROP015
+LANG_ENGLISH        "I'm... sor..ry. Jaden... has turned. You've... lost both...your... students."
+LANG_FRENCH         "Мне... жа..жаль. Джейден... обратили. Вы... потеряли обоих...своих... учеников."
+
+REFERENCE           27KYK009
+LANG_ENGLISH        "No. You are a Jedi."
+LANG_FRENCH         "Нет. Ты джедай."
+
+REFERENCE           27ROP016
+NOTES               "(dies)"
+LANG_ENGLISH        "Thank... you..."
+LANG_FRENCH         "Спасибо... вам..."
+
+REFERENCE           MR_27KYK010
+LANG_ENGLISH        "But I've still lost Jaden. Where did he go?"
+LANG_FRENCH         "Но Джейден я все же потерял. Куда он пошел?"
+
+REFERENCE           MS_27KYK010
+LANG_ENGLISH        "But I've still lost Jaden. Where did she go?"
+LANG_FRENCH         "Но Джейден я все же потерял. Куда она пошла?"
+
+REFERENCE           27KYK012
+NOTES               "(concentrates, reaching out with the Force, realizes what Jaden's intending)"
+LANG_ENGLISH        "Oh no! I've got to get to Korriban!"
+LANG_FRENCH         "О, нет! Мне нужно добраться до Коррибана!"
+
+
+ENDMARKER

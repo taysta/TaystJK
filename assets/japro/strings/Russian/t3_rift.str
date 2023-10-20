@@ -1,0 +1,80 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           23LUK001
+LANG_ENGLISH        "If they are indeed attempting to steal Force power from that tomb, Tavion might be there. Be careful and call for assistance if you find her."
+LANG_RUSSIAN         "Если они и в самом деле собираются красть энергию Силы из этого захоронения, Тавион должна быть там. Будьте осторожны и вызовите подмогу, если найдете ее."
+
+REFERENCE           23JAK001
+NOTES               "(to himself)"
+LANG_ENGLISH        "This place is amazing!"
+LANG_RUSSIAN         "Это потрясающее место!"
+
+REFERENCE           23JAK002
+NOTES               "(to himself)"
+LANG_ENGLISH        "It seems like it goes on forever."
+LANG_RUSSIAN         "Похоже, этому нет конца и края."
+
+REFERENCE           23JAK003
+NOTES               "(to himself)"
+LANG_ENGLISH        "I think I can make that."
+LANG_RUSSIAN         "Думаю, что смогу это сделать."
+
+REFERENCE           23JAK004
+NOTES               "(to himself)"
+LANG_ENGLISH        "This way feels right..."
+LANG_RUSSIAN         "Похоже, я иду верной дорогой..."
+
+REFERENCE           23JAK005
+NOTES               "(to himself)"
+LANG_ENGLISH        "Can't go that way."
+LANG_RUSSIAN         "Сюда нельзя."
+
+REFERENCE           23JAK006
+NOTES               "(to himself)"
+LANG_ENGLISH        "How am I supposed to get over there?"
+LANG_RUSSIAN         "И как мне туда пролезть?"
+
+REFERENCE           23JAK007
+NOTES               "(to himself)"
+LANG_ENGLISH        "How do I get out of here?"
+LANG_RUSSIAN         "И как мне отсюда выбраться?"
+
+REFERENCE           23JAK008
+NOTES               "(to himself)"
+LANG_ENGLISH        "How am I going to get up there?"
+LANG_RUSSIAN         "И как мне туда залезть?"
+
+REFERENCE           23JAK009
+NOTES               "(to himself)"
+LANG_ENGLISH        "Great, how am I going to get down there without breaking my neck...?"
+LANG_RUSSIAN         "Отлично, и как мне туда спуститься с целой шеей?.."
+
+REFERENCE           23JAK010
+NOTES               "(to himself)"
+LANG_ENGLISH        "I should re-seal the tomb so no one else can disturb it."
+LANG_RUSSIAN         "Мне необходимо запечатать гробницу, чтобы больше никто не потревожил ее."
+
+REFERENCE           23JAK011
+NOTES               "(to himself)"
+LANG_ENGLISH        "That could be of use..."
+LANG_RUSSIAN         "Это может пригодиться..."
+
+REFERENCE           23JAK012
+LANG_ENGLISH        "That should do it. Rest peacefully."
+LANG_RUSSIAN         "Так и поступим. Покойся с миром."
+
+
+ENDMARKER

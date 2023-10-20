@@ -1,0 +1,974 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "in game text for single player and MP items"
+
+REFERENCE           OBJECTIVES
+LANG_ENGLISH        "Mission Objectives:"
+LANG_RUSSIAN         "Цели миссии:"
+
+REFERENCE           OBJNONE
+LANG_ENGLISH        "No objectives currently specified."
+LANG_RUSSIAN         "На данный момент цели не указаны."
+
+REFERENCE           INSUFFICIENTENERGY
+LANG_ENGLISH        "Weapon ammo depleted."
+LANG_RUSSIAN         "Закончились боеприпасы для оружия. "
+
+REFERENCE           MISSIONFAILED
+LANG_ENGLISH        "MISSION FAILED"
+LANG_RUSSIAN         "ЗАДАНИЕ ПРОВАЛЕНО"
+
+REFERENCE           MISSIONFAILED_PLAYER
+LANG_ENGLISH        "YOU HAVE DIED."
+LANG_RUSSIAN         "ВЫ ПОГИБЛИ."
+
+REFERENCE           MISSIONFAILED_LUKE
+LANG_ENGLISH        "LUKE SKYWALKER HAS DIED."
+LANG_RUSSIAN         "ЛЮК СКАЙУОКЕР ПОГИБ."
+
+REFERENCE           MISSIONFAILED_CHEWIE
+LANG_ENGLISH        "CHEWBACCA HAS DIED."
+LANG_RUSSIAN         "ЧУБАККА ПОГИБ."
+
+REFERENCE           MISSIONFAILED_KYLE
+LANG_ENGLISH        "KYLE KATARN HAS DIED."
+LANG_RUSSIAN         "КАЙЛ КАТАРН ПОГИБ."
+
+REFERENCE           MISSIONFAILED_ROSH
+LANG_ENGLISH        "ROSH PENIN HAS DIED."
+LANG_RUSSIAN         "РОШ ПЕНИН ПОГИБ."
+
+REFERENCE           MISSIONFAILED_WEDGE
+LANG_ENGLISH        "WEDGE ANTILLES HAS DIED."
+LANG_RUSSIAN         "ВЭДЖ АНТИЛЛЕС ПОГИБ."
+
+REFERENCE           MISSIONFAILED_TURNED
+LANG_ENGLISH        "YOU'VE TURNED ON YOUR FRIENDS."
+LANG_RUSSIAN         "ВЫ ПОШЛИ ПРОТИВ СВОИХ ДРУЗЕЙ."
+
+REFERENCE           MISSIONFAILED_R5D2
+LANG_ENGLISH        "THE R5 UNIT WAS DESTROYED."
+LANG_RUSSIAN         "МОДУЛЬ Р5 БЫЛ УНИЧТОЖЕН."
+
+REFERENCE           MISSIONFAILED_PRISONERS
+LANG_ENGLISH        "TOO MANY PRISONERS HAVE DIED."
+LANG_RUSSIAN         "ПОГИБЛО СЛИШКОМ МНОГО ПЛЕННИКОВ."
+
+REFERENCE           MISSIONFAILED_EMPLACEDGUNS
+LANG_ENGLISH        "ALL EMPLACED GUNS WERE DESTROYED."
+LANG_RUSSIAN         "БЫЛИ УНИЧТОЖЕНЫ ВСЕ РАЗМЕЩЕННЫЕ ОРУДИЯ."
+
+REFERENCE           MISSIONFAILED_KYLECAPTURE
+LANG_ENGLISH        "YOU HAVE BEEN CAPTURED."
+LANG_RUSSIAN         "ВАС СХВАТИЛИ."
+
+REFERENCE           MISSIONFAILED_LADYLUCK
+LANG_ENGLISH        "THE DREADNAUGHT HAS BEEN DESTROYED."
+LANG_RUSSIAN         "ДРЕДНОУТ БЫЛ УНИЧТОЖЕН."
+
+REFERENCE           MISSIONFAILED_UNKNOWN
+LANG_ENGLISH        " "
+LANG_RUSSIAN         " "
+
+REFERENCE           MISSIONFAILED_TOOMANYALLIESDIED
+LANG_ENGLISH        "YOU KILLED TOO MANY ALLIES."
+LANG_RUSSIAN         "ВЫ УБИЛИ СЛИШКОМ МНОГО СОЮЗНИКОВ."
+
+REFERENCE           RELOADMISSION
+LANG_ENGLISH        "Press fire button to restart or ESCAPE to access menu."
+LANG_RUSSIAN         "Нажмите клавишу атаки, чтобы осуществить повторный запуск, или ESCAPE, чтобы перейти в меню."
+
+REFERENCE           CONTINUE
+LANG_ENGLISH        "Press fire button to continue."
+LANG_RUSSIAN         "Нажмите клавишу атаки, чтобы продолжить"
+
+REFERENCE           LSDS_CHOICE
+LANG_ENGLISH        "Deactivate your lightsaber remain on the path of light.\n\nAttack Rosh to turn to the dark side."
+LANG_RUSSIAN         "Чтобы остаться на стороне света, выключите свой световой меч.\n\nНападите на Роша, чтобы перейти на темную сторону Силы."
+
+REFERENCE           MISSIONCOMPLETION
+LANG_ENGLISH        "LEVEL STATS"
+LANG_RUSSIAN         "СТАТИСТИКА УРОВНЯ"
+
+REFERENCE           SECRETAREAS
+LANG_ENGLISH        "Secret Areas Found: "
+LANG_RUSSIAN         "Обнаружено секретных мест: "
+
+REFERENCE           ENEMIESKILLED
+LANG_ENGLISH        "Enemies Killed: "
+LANG_RUSSIAN         "Убито врагов: "
+
+REFERENCE           FAVORITEWEAPON
+LANG_ENGLISH        "Favorite Weapon: "
+LANG_RUSSIAN         "Любимое оружие: "
+
+REFERENCE           SHOTSFIRED
+LANG_ENGLISH        "Shots Fired: "
+LANG_RUSSIAN         "Сделано выстрелов: "
+
+REFERENCE           HITS
+LANG_ENGLISH        "Hits: "
+LANG_RUSSIAN         "Попадания: "
+
+REFERENCE           ACCURACY
+LANG_ENGLISH        "Accuracy: "
+LANG_RUSSIAN         "Точность: "
+
+REFERENCE           FORCEUSE
+LANG_ENGLISH        "Force Use"
+LANG_RUSSIAN         "Использование Силы"
+
+REFERENCE           HEAL
+LANG_ENGLISH        "Heal: "
+LANG_RUSSIAN         "Исцеление: "
+
+REFERENCE           SPEED
+LANG_ENGLISH        "Speed: "
+LANG_RUSSIAN         "Скорость: "
+
+REFERENCE           ABSORB
+LANG_ENGLISH        "Absorb:"
+LANG_RUSSIAN         "Поглощение:"
+
+REFERENCE           PULL
+LANG_ENGLISH        "Pull: "
+LANG_RUSSIAN         "Рывок: "
+
+REFERENCE           PUSH
+LANG_ENGLISH        "Push: "
+LANG_RUSSIAN         "Толчок: "
+
+REFERENCE           PROTECTION
+LANG_ENGLISH        "Protection:"
+LANG_RUSSIAN         "Защита:"
+
+REFERENCE           MINDTRICK
+LANG_ENGLISH        "Mind Trick: "
+LANG_RUSSIAN         "Обман Разума: "
+
+REFERENCE           GRIP
+LANG_ENGLISH        "Grip: "
+LANG_RUSSIAN         "Хватка: "
+
+REFERENCE           LIGHTNING
+LANG_ENGLISH        "Lightning: "
+LANG_RUSSIAN         "Молния: "
+
+REFERENCE           LIGHTSABERUSE
+LANG_ENGLISH        "Lightsaber Use "
+LANG_RUSSIAN         "Использование светового меча "
+
+REFERENCE           THROWN
+LANG_ENGLISH        "Thrown: "
+LANG_RUSSIAN         "Броски: "
+
+REFERENCE           BLOCKS
+LANG_ENGLISH        "Blocks: "
+LANG_RUSSIAN         "Блоки: "
+
+REFERENCE           LEGATTACKS
+LANG_ENGLISH        "Leg Attacks: "
+LANG_RUSSIAN         "Удары по ногам: "
+
+REFERENCE           ARMATTACKS
+LANG_ENGLISH        "Arm Attacks: "
+LANG_RUSSIAN         "Удары по рукам: "
+
+REFERENCE           BODYATTACKS
+LANG_ENGLISH        "Body Attacks: "
+LANG_RUSSIAN         "Удары по корпусу: "
+
+REFERENCE           OTHERATTACKS
+LANG_ENGLISH        "Other Attacks: "
+LANG_RUSSIAN         "Другие удары: "
+
+REFERENCE           CURRENTFORCEPOWERS
+LANG_ENGLISH        "CURRENT FORCE POWER LEVELS"
+LANG_RUSSIAN         "ТЕКУЩИЕ УРОВНИ СПОСОБНОСТЕЙ В СИЛЕ"
+
+REFERENCE           HEAL2
+LANG_ENGLISH        "Heal"
+LANG_RUSSIAN         "Исцеление"
+
+REFERENCE           JUMP2
+LANG_ENGLISH        "Jump"
+LANG_RUSSIAN         "Прыжок"
+
+REFERENCE           SPEED2
+LANG_ENGLISH        "Speed"
+LANG_RUSSIAN         "Скорость"
+
+REFERENCE           PUSH2
+LANG_ENGLISH        "Push"
+LANG_RUSSIAN         "Толкание"
+
+REFERENCE           MINDTRICK2
+LANG_ENGLISH        "Mind Trick"
+LANG_RUSSIAN         "Обман Разума"
+
+REFERENCE           GRIP2
+LANG_ENGLISH        "Grip"
+LANG_RUSSIAN         "Хватка"
+
+REFERENCE           LIGHTNING2
+LANG_ENGLISH        "Lightning"
+LANG_RUSSIAN         "Молния"
+
+REFERENCE           SABER_THROW2
+LANG_ENGLISH        "Saber Throw"
+LANG_RUSSIAN         "Бросок меча"
+
+REFERENCE           SABER_OFFENSE2
+LANG_ENGLISH        "Saber Offense"
+LANG_RUSSIAN         "Атака мечом"
+
+REFERENCE           SABER_DEFENSE2
+LANG_ENGLISH        "Saber Defense"
+LANG_RUSSIAN         "Защита мечом"
+
+REFERENCE           PULL2
+LANG_ENGLISH        "Pull"
+LANG_RUSSIAN         "Рывок"
+
+REFERENCE           NONE
+LANG_ENGLISH        "NONE"
+LANG_RUSSIAN         "НЕТ"
+
+REFERENCE           DATAPAD_UPDATED
+LANG_ENGLISH        "Datapad updated"
+LANG_RUSSIAN         "Планшет заданий обновлен"
+
+REFERENCE           PICKUPLINE
+NOTES               "Printed before item name when pick is obtained"
+LANG_ENGLISH        "Obtained"
+LANG_RUSSIAN         "Получено"
+
+REFERENCE           SABER_DESC
+LANG_ENGLISH        "Lightsaber\nAn elegant weapon for a more civilized age, the lightsaber is the preferred weapon of the Jedi Knight. The lightsaber is an energy blade of great power that can be used by the wielder for both attack and defense.\nPrimary Fire - Slashing and swinging attacks\nSecondary Fire - Force powered saber throw\nDefensive Ability - Deflects blaster and energy weapon fire, parries enemy lightsaber attacks\nAmmo Type - N/A"
+LANG_RUSSIAN         "Световой меч\nИзящное оружие для более цивилизованных времен, световой меч - излюбленное оружие рыцарей джедай. Световой меч представляет собой энергетический клинок небывалой мощи, позволяющий и нападать, и защищаться.\n\nОсновная атака - Рубящие и колющие выпады\nДополнительная атака - бросок меча с помощью энергии Силы\nСпособность к защите - Отражает выстрелы бластеров и энергетического оружия, парирует выпады вражеских световых мечей\nТип боеприпасов - Отсутствует"
+
+REFERENCE           NEW_BLASTER_PISTOL_DESC
+LANG_ENGLISH        "DL-44 Heavy Blaster Pistol \nOne of the most common firearms in the galaxy, the DL-44 Heavy Blaster Pistol is a hand-held energy weapon with a slow rate of fire and incredible accuracy.\nPrimary Fire - Slow, single shot with great accuracy and damage\nSecondary Fire - Charged energy buildup for increased damage blast attack\nAmmo Type - Blaster Pack"
+LANG_RUSSIAN         "Тяжелый бластер DL-44 \nОдно из самых распространенных вооружений в галактике, тяжелый бластер DL-44 обладает низким темпом стрельбы и поразительной точностью.\n\nОсновная атака - Мощный одиночный выстрел большой точности.\nДополнительная атака - Накопление энергии для усиленного выстрела\nТип боеприпасов - Обойма для бластера"
+
+REFERENCE           ALONGTIME
+LANG_ENGLISH        "A long time ago in a galaxy far,\nfar away...."
+LANG_RUSSIAN         "Давным-давно в одной далекой галактике\n...."
+
+REFERENCE           BLASTER_PISTOL_DESC
+LANG_ENGLISH        "Bryar Blaster Pistol \nKyle Katarn's weapon of choice, the Bryar Blaster Pistol is a common hand-held energy weapon with a slow rate of fire and incredible accuracy.\nPrimary Fire - Slow, single shot with great accuracy and damage\nSecondary Fire - Charged energy buildup for increased damage blast attack\nAmmo Type - Blaster Pack"
+LANG_RUSSIAN         "Бластерный пистолет Браяр \nЛюбимое оружие Кайла Катарна, бластерный пистолет Браяр является типичным ручным энергетическим оружием с низким темпом стрельбы и поразительной точностью.\n\nОсновная атака - Мощный одиночный выстрел большой точности.\nДополнительная атака - Накопление энергии для усиленного выстрела\nТип боеприпасов - Обойма для бластера"
+
+REFERENCE           BLASTER_RIFLE_DESC
+LANG_ENGLISH        "E-11 Blaster Rifle \nThe primary weapon of the Imperial forces, the E-11 is a sturdy and deadly blaster rifle capable of inflicting great damage despite its small size. The E-11's compact design makes it easy to carry and conceal.\nPrimary Fire - Slow, single shot with moderate accuracy and great damage\nSecondary Fire - Rapid, burst fire with low accuracy and expanded firing area\nAmmo Type - Blaster Pack"
+LANG_RUSSIAN         "Лазерная винтовка E-11 \nОсновное оружие имперских сил, E-11 представляет собой долговечный  и смертоносный бластер, способный, несмотря на свой размер, нанести смертельный урон. Компактность Е-11 позволяет с легкостью ее переносить и скрывать.\n\nОсновная атака - Мощный одиночный выстрел средней точности.\nДополнительная атака - Стрельба очередью, точность и кучность слабые.\nТип боеприпасов - Обойма для бластера"
+
+REFERENCE           DISRUPTOR_RIFLE_DESC
+LANG_ENGLISH        "Tenloss DXR-6 Disruptor rifle \nThis nefarious weapon affects matter at the molecular level, ripping apart living material with ease. Because of the weapon's inhumane nature, the DXR-6 is outlawed throughout the galaxy and is generally only used by scattered droid and Remnant forces.\nPrimary Fire - Single shot with slow fire rate, fast projectile and small radius damage\nSecondary Fire - Scoped mode: Single shot with slow fire rate, increased damage and high weapon energy consumption\nAmmo Type - Power cell"
+LANG_RUSSIAN         "Аннигилирующая винтовка Тенлосс DXR-6 Disruptor rifle \nЭто оружие мерзавцев воздействует на материю на молекулярном уровне, с легкостью разрывая на части органику. Из-за негуманности DXR-6 находится вне закона в галактике, поэтоми его используют, как правило, сбежавшие дроиды и остатки имперских сил. Заряженный одиночный выстрел наносит повышенный урон и потребляет много энергии\nТип боеприпасов - Энергетический элемент питания"
+
+REFERENCE           BOWCASTER_DESC
+LANG_ENGLISH        "Wookiee Bowcaster\nThis archaic-looking weapon fires powerful bolts of metal enveloped in pockets of energy. Capable of inflicting incredible damage, the bowcaster requires tremendous physical strength to fire. Most bowcasters sold outside the Wookiee homeworld come equipped with self-cocking actions that allow physically weaker creatures to fire them.\nPrimary Fire - Slow, single shot with radius damage. Hold FIRE to charge weapon for spread attack\nSecondary Fire - Unleashes a reflective shot that bounces off solid surfaces\nAmmo Type - Power cell"
+LANG_RUSSIAN         "Арбалет Вуки\nЭто архаичное оружие стреляет мощными металлическими стрелами, окутанными энергетической оболочкой. Способный нанести невероятный ущерб, арбалет требует от стрелка огромной физической силы. Большинство арбалетов, что продается вне родной планеты Вуки,\ оснащаются самозарядными устройствами, что позволяет их использовать более слабым существам. \n\nОсновная атака - Медленные одиночные выстрелы с некоторым радиусом поражения. Держите клавишу атаки для веерного выстрела\nДополнительная атака - Выстреливает рикошетящим снарядом, отскакивающим от твердой поверхности\nТип боеприпасов - Энергетический элемент питания"
+
+REFERENCE           HEAVYREPEATER_DESC
+LANG_ENGLISH        "Imperial Heavy Repeater with Concussion Launcher\nThis destructive projectile weapon is extremely deadly, firing rapid streams of metal bullets. Imperial forces use the Heavy Repeater's deadly suppressive fire and concussion launcher for crowd control and to spread heavy fire over large areas.\nPrimary Fire - Fully automatic projectile fire \nSecondary Fire - Single shot, concussion explosive round\nAmmo type - Metallic bolts"
+LANG_RUSSIAN         "Имперская тяжелая магазинная винтовка с оглушающим гранатометом\nЭто разрушительное оружие чрезвычайно опасно, оно стреляет скоростными потоками металлических пуль. Имперские силы используют подавляющий оглушающий огонь тяжелой магазинной винтовки для управления толпой и для ведения огня по большим\nобластям.\n\nОсновная атака - Автоматическая стрельба\nДополнительная атака - Одиночный выстрел оглушающей гранатой.\nТип боеприпасов - Металлические стрелы"
+
+REFERENCE           DEMP2_DESC
+LANG_ENGLISH        "Destructive Electro-Magnetic Pulse 2 Gun\nCommonly referred to as the DEMP 2, this pulse rifle is primarily used against droids and electrical devices. The DEMP 2 fires high-powered ion bursts that disrupt electrical systems. Unlike previous incarnations of the weapon, the DEMP 2's ion charges are capable of damaging living material.\nPrimary Fire - Single shot, stuns humans, damages droids\nSecondary Fire - Charged energy attack that creates an expanding shell of electromagnetic energy on impact that damages humanoids, droids and turrets\nAmmo Type - Power cell"
+LANG_RUSSIAN         "Деструктор электромагнитных сигналов 2\nОбычно именуемая DEMP 2, эта импульсная винтовка главным образом используется против дроидов и электронных устройств. DEMP 2 стреляет высокоэнергетическими ионными разрядами, разрушающими электронные системы, также они эффективны против персональных щитов. В отличие от предыдущих вариантов оружия, ионные заряды DEMP 2 наносят урон живой материи.\n\nОсновная атака - Одиночный выстрел, оглушает человека, ломает дроида\nДополнительная атака - Полный выстрел, выпускающий почти мгновенную ударную волну, которая наносит ущерб гуманоидам, дроидам и орудийным башням\nТип боеприпасов - Энергетический элемент питания"
+
+REFERENCE           FLECHETTE_DESC
+LANG_ENGLISH        "Golan Arms FC1 Flechette Weapon\nWidely used by the Corporate Sector Authority's police squads, the FC1 fires shards of metal in a widespread pattern. The weapon is designed to hit multiple targets in close proximity, but great care must be taken to avoid ricochet damage.\nPrimary Fire - Single shot, spread fire\nSecondary Fire - Fires two bouncing proximity mines which explode after a short time\nAmmo Type - Metallic Bolts"
+LANG_RUSSIAN         "Осколочное орудие Голан Армс FC1\nШироко используемая в полицейских силах Корпоративного Сектора, FC1 стреляет кусочками металла по широкой дуге. Оружие предназначено для поражения нескольких целей на близком расстоянии, но нужно опасаться рикошета.\n\nОсновная атака - Одиночный выстрел, массовое поражение\nДополнительная атака - Выпускает две прыгающие контактные мины с ударными взрывателями, детонирующими через небольшой интервал времени\nТип боеприпасов - Металлические стрелы"
+
+REFERENCE           CONCUSSION_DESC
+LANG_ENGLISH        "Stouker Concussion Rifle  \nThe Stouker fires a concussive blast creating an explosion that spreads about 4 meters in diameter.\nPrimary Fire - Single shot, large explosive effect that damages everything, slow firing rate\nSecondary Fire - Fires a smaller projectile shot that has a smaller explosive radius but does much more damage in that radius and has a more severe recoil\nAmmo Type - Metallic Bolts"
+LANG_RUSSIAN         "Оглушающая винтовка Стоукер\nСтоукер стреляет оглушающим зарядом, который производит взрыв диаметром примерно 4 метра.\n\nОсновная атака - Одиночный выстрел, сильный взрывной эффект, который наносит урон всем, низкий темп стрельбы.\nДополнительная атака - Стреляет более мелким зарядом с меньшим радиусом поражения, но наносит при этом больший урон\nТип боеприпасов - Металлические стрелы"
+
+REFERENCE           MERR_SONN_DESC
+LANG_ENGLISH        "Merr-Sonn PLX-2M Portable Missile System   \nThe PLX-2M is an extremely powerful weapon that fires Arakyd 3T3 missiles. The sheer explosive power of the PLX-2M makes it dangerous to fire blindly in close quarters, but is extremely effective when used as a 'smart' tracking weapon.\nPrimary Fire - Fires a single, forward-firing explosive missile\nSecondary Fire - Fires a single 'smart' missile that tracks acquired and locked targets\nAmmo Type - Rockets"
+LANG_RUSSIAN         "Переносная ракетная установка Мерр-Сонн PLX-2M \nPLX-2M представляет собой чрезвычайно мощное оружие, стреляющее ракетами Аракид 3T3. Абсолютная разрушительная мощь PLX-2M делает его опасным для стрельбы вслепую на малых дистанциях, но он чрезвычайно эффективен при использовании в режиме 'умного' наведения.\n\nОсновная атака - Стреляет вперед одной разрывной ракетой \nДополнительная атака - Выпускает одну 'умную' ракету, которая идет за полученными и назначенными целями.\nТип боеприпасов - Ракеты"
+
+REFERENCE           THERMAL_DETONATOR_DESC
+LANG_ENGLISH        "Thermal Detonator \nThe thermal detonator is a radius-damage grenade that releases a barrage of thermal energy capable of disintegrating all matter around it.\nPrimary Fire - Detonator explodes after a short time. Press FIRE longer for longer throw\nSecondary Fire - Detonator explodes on impact. Press ALT-FIRE longer for longer throw"
+LANG_RUSSIAN         "Термический детонатор \nТермический детонатор представляет собой гранату большой радиуса поражения, выпускающей огневой вал энергии, способной аннигилировать окружающую ее материю.\n\nОсновная атака - После небольшой задержки граната взрывается. Держите клавишу атаки нажатой для более сильного броска\nДополнительная атака - Граната взрывается при контакте с целью или поверхностью. Для более сильного броска дольше держите нажатой клавишу дополнительной атаки"
+
+REFERENCE           TRIP_MINE_DESC
+LANG_ENGLISH        "Trip Mines \nTrip mines consist of a beam projector affixed to a shaped explosive casing. The laser activates when the mine is placed and extends a beam from the charge to the nearest surface that intersects its path. If the beam is broken or the charge is fired upon, the mine detonates and causes radius damage to anything in range.\nPrimary Fire - Once placed, triggered by breaking the beam\nSecondary Fire - Once placed, the mine acts as a proximity device, waiting until an enemy comes within blast radius, then detonates, damaging any enemies in the area"
+LANG_RUSSIAN         "Навесные мины \nНавесные мины состоят из излучателя, прикрепленного к сформированному корпусу со взрывчаткой. Лазер включается, когда мина установлена, он выпускает луч от заряда до ближайшей поверхности. Если луч прервать или выстрелить по заряду, мина взорвется и нанесет урон всему, что находится в радиусе поражения.\n\nОсновная атака  -  После установки действует как мина с лазером.\nДополнительная атака - После установки мина реагирует на движение, она детонирует, когда враг оказывается рядом, после чего взрывается, нанося урон врагам в радиусе поражения."
+
+REFERENCE           DET_PACK_DESC
+LANG_ENGLISH        "Detonation Packs \nA detonation pack is essentially a small explosive device with a remote detonation trigger. The pack is placed or thrown and can be detonated at will by the user. Detonation packs are commonly used to ambush enemies or open sealed doors.\nPrimary Fire - Sets charge at the user's feet\nSecondary Fire - Explodes all set charges"
+LANG_RUSSIAN         "Взрывпакеты \nВзрывпакет представляет собой небольшое взрывное устройство с дистанционным взрывателем. Пакет ставится или бросается, после чего может быть взорван по желанию игрока. Обычно взрывпакеты используются в засадах или для взламывания запертых дверей.\n\nОсновная атака - Заряд падает под ноги игроку\nДополнительная атака - Взрывает все установленные заряды"
+
+REFERENCE           STUN_BATON_DESC
+LANG_ENGLISH        "Stun Baton \nCommonly used to subdue unruly prisoners, the stun baton was designed for use in melee combat where killing your opponent is not necessarily the desired outcome.\nPrimary Fire - Short range jabbing electrical stun attack\nSecondary Fire - None"
+LANG_RUSSIAN         "Оглушающая дубинка \nОбычно используется для усмирения непокорных заключенных, разрабатывалась для ближнего боя, причем смерть вашего противника при этом являлась нежелательным исходом.\n\nОсновная атака - Короткий электрошоковый тычок дубинкой\nДополнительная атака - Отсутствует"
+
+REFERENCE           NEURO_SAAV_DESC
+LANG_ENGLISH        "Neuro-Saav Model TD2.3 Electrobinoculars\nElectrobinoculars operate in low-light and normal light conditions to magnify distant objects and provide a heads-up display that features detailed information on the area viewed. The heads-up display measures distances and offers various telemetry readouts on the object or area in view. Powered by normal battery cells that drain power at a minimal rate."
+LANG_RUSSIAN         "Электронный бинокль Нейро-Саав, модель TD2.3 \nЭлектронные бинокли предназначены для условий плохой и обычной освещенности, они дают увеличенное изображение объектов, а также статистику по обозреваемой области. Индикация на бинокле отображает расстояние и дает различные показания телеметрии по объекту или области обзора. Источником питания является обычный элемент питания, энергия потребляется в минимальном режиме."
+
+REFERENCE           BACTA_DESC
+LANG_ENGLISH        "BioTech Bacta Canister\nBacta canisters are portable, disposable packs of bacta ointments and emergency care tools. Designed for use in the field, bacta canisters can be used to heal wounds and restore vitality during medical recovery. No field medic should be without them."
+LANG_RUSSIAN         "Канистра бакты БиоТек\nКонтейнеры с бактой представляют собой одноразовые упаковки мази бакты и средств первой помощи. Разработанные для полевых условий, контейнеры с бактой могут использоваться для лечения ранений и восстановления сил во время медицинского лечения. Ни один полевой врач не обходится без них."
+
+REFERENCE           INQUISITOR_DESC
+LANG_ENGLISH        "Seeker Drone\nAn attack drone similar to the training drones used by Jedi to practice their lightsaber skills, the Seeker hovers around its user and attacks any enemy the user fires upon. The drone operates automatically for a limited time and then self-destructs\nwhen its power is depleted."
+LANG_RUSSIAN         "Разведывательный аппарат\nАтакующий аппарат похож на своих тренировочных собратьев, используемых джедаями для обучения фехтованию световыми мечами, он рыскает вокруг своего владельца и атакует врага, в которого стреляет игрок. Аппарат самостоятельно действует некоторое время, после чего после израсходования\n всей своей энергии самоликвидируется."
+
+REFERENCE           LA_GOGGLES_DESC
+LANG_ENGLISH        "Light Amplification Goggles\nAlso known as infra-goggles, this helpful device creates a balance of light levels that allows the user to see well in most situations. The resulting effect enhances the overall brightness but casts everything in a greenish hue. The goggles require batteries to function, draining them at roughly the same rate as Electrobinoculars. Light Amplification Goggles can be worn during combat, but will not function without an available power source."
+LANG_RUSSIAN         "Светоусиливающие очки\nТакже известны, как инфра-очки; это полезное устройство создает приемлемое распределение уровней света, что в большинстве случаев позволяет осуществлять хороший обзор. Они усиливают яркость изображения, но все приобретает серые тона. Для работы очкам нужна батарея, которую они расходуют с той же скоростью, что и электронный бинокль. Светоусиливающие очки можно одевать в бою, но без батареи они не будут работать."
+
+REFERENCE           PORTABLE_SENTRY_DESC
+LANG_ENGLISH        "Portable Assault Sentry  \nThis deadly weapon is roughly the size of a large backpack, but don't let its size fool you. Once activated, the weapon unfurls and is set to auto-target any enemy threat. The Sentry drains battery life at an accelerated rate and, once it's deployed, can't be restored to its original portable condition."
+LANG_RUSSIAN         "Портативный штурмовой часовой  \nЭто смертоносное оружие не больше рюкзака, но не позволяйте его размерам ввести себя в заблуждение. После включения оружие разворачивается и настраивается на самонаведение. Часовой в ускоренном режиме расходует энергию батареи и после развертывания он не сворачивается."
+
+REFERENCE           SECURITY_KEY_DESC
+LANG_ENGLISH        "Security Key"
+LANG_RUSSIAN         "Ключ безопасности"
+
+REFERENCE           EMPTY_INV
+LANG_ENGLISH        "EMPTY INVENTORY"
+LANG_RUSSIAN         "ПУСТОЙ ИНВЕНТАРЬ"
+
+REFERENCE           FORCE_HEAL_DESC
+LANG_ENGLISH        "Force Heal\nDuration: Instantaneous effect\nArea Of Effect: Jedi only\nEffect: Jedi have the ability to heal themselves after injury\n\n"
+LANG_RUSSIAN         "Исцеление Силы\nПродолжительность действия: Мгновенный эффект\nОбласть воздействия: Только джедай\nЭффект: Джедаи могут лечить свои раны\n\n"
+
+REFERENCE           FORCE_JUMP_DESC
+LANG_ENGLISH        "Force Jump\nDuration: Immediate\nArea Of Effect: Jedi only\nEffect: Allows Jedi to make a tremendous vertical leap\n\n"
+LANG_RUSSIAN         "Прыжок Силы\nПродолжительность действия: Мгновенно\nОбласть воздействия: Только джедай\nЭффект: Позволяет джедаю совершить великолепный вертикальный прыжок\n\n"
+
+REFERENCE           FORCE_SPEED_DESC
+LANG_ENGLISH        "Force Speed\nDuration: 10 seconds\nArea of Effect: Jedi and surroundings\nEffect:  A Jedi speeds up and the world appears to slow down around them\n\n"
+LANG_RUSSIAN         "Скорость Силы\nПродолжительность действия: 10 секунд\nОбласть воздействия: Джедай и его окрестности\nЭффект:  Джедай ускоряется, и мир вокруг него будто приостанавливается\n\n"
+
+REFERENCE           FORCE_PUSH_DESC
+LANG_ENGLISH        "Force Push\nDuration: Instantaneous effect\nArea Of Effect: Objects or Persons\nEffect: Allows Jedi to push objects away from themselves and defend from missile and Force Grip attacks\n\n"
+LANG_RUSSIAN         "Давление Силы\nПродолжительность действия: Мгновенный эффект\nОбласть воздействия: Предметы или существа\nЭффект: Позволяет джедаю отталкивать объекты и защищаться от ракет и Хватки Силы\n\n"
+
+REFERENCE           FORCE_PULL_DESC
+LANG_ENGLISH        "Force Pull\nDuration: Instantaneous effect\nArea Of Effect: Objects or Persons\nEffect: Allows Jedi to pull specific world objects to themselves\n\n"
+LANG_RUSSIAN         "Рывок Силы\nПродолжительность действия: Мгновенный эффект\nОбласть воздействия: Объекты или субъекты\nЭффект: Позволяет джедаю притягивать к себе различные предметы\n\n"
+
+REFERENCE           FORCE_MIND_TRICK_DESC
+LANG_ENGLISH        "Mind Trick\nDuration: Variable\nArea Of Effect: Humanoids\nEffect: Allows Jedi to confuse and/or misdirect attention \n\n"
+LANG_RUSSIAN         "Обман Разума\nПродолжительность действия: Переменная\nОбласть воздействия: Гуманоиды\nЭффект: Позволяет джедаю вводить в замешательство и/или отвлекать от себя внимание\n\n"
+
+REFERENCE           FORCE_GRIP_DESC
+LANG_ENGLISH        "Force Grip\nDuration: Instantaneous\nArea Of Effect: Living persons only\nEffect: Allows Jedi to choke or constrict the organs of a living being\n\n"
+LANG_RUSSIAN         "Хватка Силы\nПродолжительность действия: Мгновенно\nОбласть воздействия: Только живые существа\nЭффект: Позволяет джедаю душить или сжимать органы живых существ\n\n"
+
+REFERENCE           FORCE_LIGHTNING_DESC
+LANG_ENGLISH        "Force Lightning\nDuration: Variable\nArea Of Effect: Living persons only\nEffect: Allows Jedi to hurl a devastating electrical attack against enemies\n\n"
+LANG_RUSSIAN         "Молния Силы\nПродолжительность действия: Переменная\nОбласть воздействия: Только живые существа\nЭффект: Позволяет джедаю выпустить на врага разрушительный электрический вихрь\n\n"
+
+REFERENCE           FORCE_SABER_DEFENSE_DESC
+LANG_ENGLISH        "Lightsaber Defense\nDuration: Always on\nArea Of Effect: N/A\nEffect: Jedi can block damage with a lightsaber  \n\n"
+LANG_RUSSIAN         "Защита световым мечом\nПродолжительность действия: Всегда активна\nОбласть воздействия: Отсутствует\nЭффект: световным мечом джедай может парировать выпады и выстрелы\n\n"
+
+REFERENCE           FORCE_SABER_OFFENSE_DESC
+LANG_ENGLISH        "Lightsaber Offense\nDuration: Always on\nArea Of Effect: N/A\nEffect: As a Jedi gains combat experience, their lightsaber attack effectiveness increases\n\n"
+LANG_RUSSIAN         "Нападение световым мечом\nПродолжительность действия: Всегда активно\nОбласть воздействия: Отсутствует\nЭффект: С ростом боевого опыта джедаев растет и эффективность их меча\n\n"
+
+REFERENCE           FORCE_SABER_THROW_DESC
+LANG_ENGLISH        "Lightsaber Throw\nDuration: Instant\nArea Of Effect: Player arc\nEffect:  A Jedi can throw a lightsaber and use it as a missile weapon\n\n"
+LANG_RUSSIAN         "Бросок светового меча\nПродолжительность действия: Мгновенно\nОбласть воздействия: Дуга игрока\nЭффект:  Джедай может бросить световой меч и использовать его как метательное оружие\n\n"
+
+REFERENCE           FORCE_ABSORB_DESC
+LANG_ENGLISH        "Force Absorption\nDuration: 20 seconds\nArea Of Effect: Jedi only\nEffect: Jedi can absorb dark Force power, Force Push and Force Pull directed at them\n\n"
+LANG_RUSSIAN         "Поглощение Силы\nПродолжительность действия: 20 секунд\nОбласть воздействия: Только джедай\nЭффект: Джедай может поглощать темную энергию Силы, Давление Силы и Рывок Силы, направленные на него\n\n"
+
+REFERENCE           FORCE_PROTECT_DESC
+LANG_ENGLISH        "Force Protection\nDuration: Variable\nArea Of Effect: Jedi only\nEffect: Allows Jedi to decrease incoming damage from energy, physical, projectile, and explosive sources\n\n"
+LANG_RUSSIAN         "Защита Силы\nПродолжительность действия: Переменная\nОбласть воздействия: Только джедай\nЭффект: Позволяет джедаю снижать получаемый урон энергетического, физического, метательного или взрывчатого характера\n\n"
+
+REFERENCE           FORCE_SENSE_DESC
+LANG_ENGLISH        "Force Sense\nDuration: Variable\nArea Of Effect: Objects or persons\nEffect: Allows Jedi to see people and objects that are invisible or behind solids\n\n"
+LANG_RUSSIAN         "Чувство Силы\nПродолжительность действия: Переменная\nОбласть воздействия: Предметы или существа\nЭффект: Позволяет джедаю видеть людей и препятствия, которые не видно или которые заслонены объектами\n\n"
+
+REFERENCE           FORCE_DRAIN_DESC
+LANG_ENGLISH        "Force Drain\nDuration: Variable\nArea Of Effect: Living persons only\nEffect: Allows Jedi to transfer the life essence of a person to themselves\n\n"
+LANG_RUSSIAN         "Высасывание Силы\nПродолжительность действия: Переменная\nОбласть воздействия: Только живые существа\nЭффект: Позволяет джедаю забирать себе жизненную силу врага\n\n"
+
+REFERENCE           FORCE_RAGE_DESC
+LANG_ENGLISH        "Force Rage\nDuration: 10 seconds\nArea Of Effect: Jedi only\nEffect: Affords Jedi protection against damage, an increase in speed, and an increase in damage potential, at the expense of health. The Jedi needs some recovery time after a Rage ends\n\n"
+LANG_RUSSIAN         "Гнев Силы\nПродолжительность действия: 10 секунд\nОбласть воздействия: Только джедай\nЭффект: Дает джедаю защиту от ран, повышает его скорость и потенциальную разрушающую мощь за счет здоровья. После прекращения действия Гнева Силы джедаю нужно время на восстановление\n\n"
+
+REFERENCE           INCORRECT_KEY
+LANG_ENGLISH        "Incorrect security key"
+LANG_RUSSIAN         "Неправильный ключ безопасности"
+
+REFERENCE           CANT_CARRY_SECURITY_KEY
+LANG_ENGLISH        "You can't carry any more security keys"
+LANG_RUSSIAN         "Вы не можете нести большее количество ключей безопасности"
+
+REFERENCE           TOOK_IMPERIAL_SECURITY_KEY
+LANG_ENGLISH        "You took the security key"
+LANG_RUSSIAN         "Вы взяли ключ безопасности"
+
+REFERENCE           CANT_CARRY_GOODIE_KEY
+LANG_ENGLISH        "You can't carry any more supply keys"
+LANG_RUSSIAN         "Вы не можете нести большее количество интендантских ключей"
+
+REFERENCE           TOOK_IMPERIAL_GOODIE_KEY
+LANG_ENGLISH        "You took the supply key"
+LANG_RUSSIAN         "Вы взяли интендантский ключ"
+
+REFERENCE           SECURITY_KEY_UNLOCKEDDOOR
+LANG_ENGLISH        "Your security key unlocked the door"
+LANG_RUSSIAN         "Ваш ключ безопасности открыл дверь"
+
+REFERENCE           NEED_SECURITY_KEY
+LANG_ENGLISH        "You need a security key!"
+LANG_RUSSIAN         "Вам нужен ключ безопасности!"
+
+REFERENCE           WEAPON_MELEE
+LANG_ENGLISH        "Melee"
+LANG_RUSSIAN         "Ближний бой"
+
+REFERENCE           WEAPON_STUN_BATON
+LANG_ENGLISH        "Stun Baton"
+LANG_RUSSIAN         "Оглушающая дубинка"
+
+REFERENCE           WEAPON_SABER
+LANG_ENGLISH        "Lightsaber"
+LANG_RUSSIAN         "Световой меч"
+
+REFERENCE           WEAPON_BRYAR_PISTOL
+LANG_ENGLISH        "Bryar Blaster Pistol"
+LANG_RUSSIAN         "Бластерный пистолет Браяр"
+
+REFERENCE           WEAPON_BLASTER
+LANG_ENGLISH        "E11-Blaster Rifle"
+LANG_RUSSIAN         "Лазерная винтовка Е-11"
+
+REFERENCE           WEAPON_DISRUPTOR
+LANG_ENGLISH        "Tenloss DXR-6 Disruptor rifle"
+LANG_RUSSIAN         "Аннигилирующая винтовка Тенлосс DXR-6"
+
+REFERENCE           WEAPON_BOWCASTER
+LANG_ENGLISH        "Wookiee Bowcaster"
+LANG_RUSSIAN         "Арбалет Вуки"
+
+REFERENCE           WEAPON_REPEATER
+LANG_ENGLISH        "Imperial Heavy Repeater"
+LANG_RUSSIAN         "Имперская тяжелая магазинная винтовка"
+
+REFERENCE           WEAPON_DEMP2
+LANG_ENGLISH        "Destructive Electro-Magnetic Pulse 2 Gun"
+LANG_RUSSIAN         "Деструктор электромагнитных импульсов 2"
+
+REFERENCE           WEAPON_FLECHETTE
+LANG_ENGLISH        "Golan Arms FC1 Flechette Weapon"
+LANG_RUSSIAN         "Осколочное орудие Голан Армс FC1"
+
+REFERENCE           WEAPON_ROCKET_LAUNCHER
+LANG_ENGLISH        "Merr-Sonn PLX-2M Portable Missile System"
+LANG_RUSSIAN         "Портативная ракетная установка Мерр-Сонн PLX-2M"
+
+REFERENCE           WEAPON_THERMAL
+LANG_ENGLISH        "Thermal Detonator"
+LANG_RUSSIAN         "Термический детонатор"
+
+REFERENCE           WEAPON_TRIP_MINE
+LANG_ENGLISH        "Trip Mines"
+LANG_RUSSIAN         "Подвесная мина"
+
+REFERENCE           WEAPON_DET_PACK
+LANG_ENGLISH        "Detonation Packs"
+LANG_RUSSIAN         "Взрывпакеты"
+
+REFERENCE           ITEM_BINOCULARS
+LANG_ENGLISH        "Neuro-Saav Model TD2.3 Electrobinoculars"
+LANG_RUSSIAN         "Электронный бинокль Нейро-Саав модель TD2.3"
+
+REFERENCE           ITEM_BACTA
+LANG_ENGLISH        "BioTech Bacta Canister"
+LANG_RUSSIAN         "Контейнер бакты БиоТек"
+
+REFERENCE           ITEM_SEEKER
+LANG_ENGLISH        "Seeker Drone"
+LANG_RUSSIAN         "Разведывательный аппарат"
+
+REFERENCE           ITEM_LA_GOGGLES
+LANG_ENGLISH        "Light Amplification Goggles"
+LANG_RUSSIAN         "Светоусиливающие очки"
+
+REFERENCE           ITEM_SENTRY_GUN
+LANG_ENGLISH        "Portable Assault Sentry"
+LANG_RUSSIAN         "Портативный штурмовой часовой"
+
+REFERENCE           WEAPON_ATST_MAIN
+LANG_ENGLISH        "ATST Main Cannon"
+LANG_RUSSIAN         "Главный калибр ATST"
+
+REFERENCE           WEAPON_ATST_SIDE
+LANG_ENGLISH        "ATST Side Cannons"
+LANG_RUSSIAN         "Боковые орудия ATST"
+
+REFERENCE           AMMO_FORCE
+LANG_ENGLISH        "Force Crystal"
+LANG_RUSSIAN         "Кристалл Силы"
+
+REFERENCE           AMMO_BLASTER
+LANG_ENGLISH        "Blaster Pack Ammo"
+LANG_RUSSIAN         "Обойма для бластера"
+
+REFERENCE           AMMO_POWERCELL
+LANG_ENGLISH        "Power Cell Ammo"
+LANG_RUSSIAN         "Энергетический элемент питания"
+
+REFERENCE           AMMO_METALLIC_BOLTS
+LANG_ENGLISH        "Metallic Bolt Ammo"
+LANG_RUSSIAN         "Металлические стрелы"
+
+REFERENCE           AMMO_ROCKETS
+LANG_ENGLISH        "Rocket Ammo"
+LANG_RUSSIAN         "Ракетный боеприпас"
+
+REFERENCE           AMMO_THERMAL
+LANG_ENGLISH        "Belt of Thermal Detonators"
+LANG_RUSSIAN         "Пояс термических детонаторов"
+
+REFERENCE           AMMO_TRIPMINE
+LANG_ENGLISH        "Pack of Trip Mines"
+LANG_RUSSIAN         "Упаковка подвесных мин"
+
+REFERENCE           ITEM_BATTERY
+LANG_ENGLISH        "Batteries"
+LANG_RUSSIAN         "Батареи"
+
+REFERENCE           ITEM_MEDPAK_INSTANT
+LANG_ENGLISH        "Instant use Medpack"
+LANG_RUSSIAN         "Медпакет мгновенного применения"
+
+REFERENCE           ITEM_SHIELD_SM_INSTANT
+LANG_ENGLISH        "Small Shield Booster"
+LANG_RUSSIAN         "Малый излучатель щита"
+
+REFERENCE           ITM_SHIELD_LRG_PICKUP
+LANG_ENGLISH        "Large Shield Booster"
+LANG_RUSSIAN         "Большой излучатель щита"
+
+REFERENCE           AMMO_DETPACK
+LANG_ENGLISH        "Pack of Detonation Packs"
+LANG_RUSSIAN         "Упаковка взрывпакетов"
+
+REFERENCE           FORCE_HEAL_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi goes into a meditative stance for a short time and must remain stationary. Any movement or attack will prevent healing. Healing rate depends on game difficulty.\n"
+LANG_RUSSIAN         "Ранг 1 - Джедай на некоторое время погружается в медитацию и должен сохранять неподвижность. Любое движение или нападение помешают лечению. Скорость лечения зависит от сложности игры."
+
+REFERENCE           FORCE_HEAL_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi no longer needs to be stationary. The Jedi will heal over a short period of time. Healing rate depends on game difficulty.\n"
+LANG_RUSSIAN         "Ранг 2 - Джедаю нет нужды сохранять неподвижность. Джедай исцелится за короткий промежуток времени. Скорость лечения зависит от сложности игры."
+
+REFERENCE           FORCE_HEAL_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi heals more rapidly than rank 2. Healing rate depends on game difficulty."
+LANG_RUSSIAN         "Ранг 3 - Джедай лечится еще быстрее, чем при 2 ранге. Скорость лечения зависит от сложности игры."
+
+REFERENCE           FORCE_JUMP_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can leap up to three times their normal jump height."
+LANG_RUSSIAN         "Ранг 1 - Джедай может подпрыгнуть в три раза выше обычного человека."
+
+REFERENCE           FORCE_JUMP_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can leap up to six times their normal jump height."
+LANG_RUSSIAN         "Ранг 2 - Джедай может подпрыгнуть в шесть раз выше обычного человека."
+
+REFERENCE           FORCE_JUMP_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can leap up to twelve times their normal jump height."
+LANG_RUSSIAN         "Ранг 3 - Джедай может подпрыгнуть в двенадцать раза выше обычного человека."
+
+REFERENCE           FORCE_SPEED_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi moves 33% faster than normal"
+LANG_RUSSIAN         "Ранг 1 - Джедай двигается на 33% быстрее обычного человека"
+
+REFERENCE           FORCE_SPEED_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi moves 100% faster than normal"
+LANG_RUSSIAN         "Ранг 2 - Джедай двигается на 100% быстрее обычного человека"
+
+REFERENCE           FORCE_SPEED_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi moves 400% faster than normal"
+LANG_RUSSIAN         "Ранг 3 - Джедай двигается на 400% быстрее обычного человека"
+
+REFERENCE           FORCE_PUSH_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi uses the Force to push a specific enemy or object focused on. They can also use it to get out of a Force Grip or Drain."
+LANG_RUSSIAN         "Ранг 1 - С помощью Силы джедай толкает определенного врага или объект, на котором сконцентрирует внимание. К тому же они могут уходить от воздействия Хватки Силы или Высасывания Силы."
+
+REFERENCE           FORCE_PUSH_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi uses the Force to push back multiple enemies or objects in a limited arc."
+LANG_RUSSIAN         "Ранг 2 - С помощью Силы джедай по ограниченной дуге может оттолкнуть нескольких врагов или предметов."
+
+REFERENCE           FORCE_PUSH_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can push back multiple enemies with enough force to do damage by pushing the enemies into solid surfaces or off ledges. They can also use it to attempt to break saber locks."
+LANG_RUSSIAN         "Ранг 3 - Джедай может оттолкнуть нескольких противников с силой, достаточной для нанесения им ран при ударе о твердую поверхность или углы. Также джедай может попробовать разнимать сцепленные мечи."
+
+REFERENCE           FORCE_PULL_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can pull certain levers and objects in the targeting reticle; can also pull one enemy.\n"
+LANG_RUSSIAN         "Ранг 1 - Джедай может тянуть определенные рукояти и предметы, на которых сосредотачивается; также он может притягивать одного врага."
+
+REFERENCE           FORCE_PULL_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can pull the weapon out of the hands of an enemy, providing the enemy is facing them."
+LANG_RUSSIAN         "Ранг 2 - Джедай может вырвать у противника оружие и направить его на ошеломленного врага."
+
+REFERENCE           FORCE_PULL_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can pull multiple enemies and their weapons."
+LANG_RUSSIAN         "Ранг 3 - Джедай может тащить несколько противников и их оружие."
+
+REFERENCE           FORCE_MIND_TRICK_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can confuse one enemy for 10 seconds by directly targeting that enemy.\nNote:  A direct attack made by the Jedi on a confused enemy will cancel the effect. Mind trick does not work on some, more powerful enemies such as Cultists and Reborn."
+LANG_RUSSIAN         "Ранг 1 - Джедай может ввести в смятение одного врага на 10 секунд, воздействуя непосредственно на него.\nЗамечание: Непосредственное нападение со стороны джедая сведет эффект на нет. Обман разума не действует на более сильных врагов, таких, как возрожденные и последователи культа."
+
+REFERENCE           FORCE_MIND_TRICK_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can confuse one enemy for 15 seconds by directly targeting that enemy or distract multiple enemies that have not noticed them by using mind trick on a nearby surface."
+LANG_RUSSIAN         "Ранг 2 - Джедай может ввести в смятение одного врага на 15 секунд, воздействуя непосредственно на него, или отвлечь нескольких противников, не заметивших его, воздействуя обманом разума на ближайшую к ним поверхность."
+
+REFERENCE           FORCE_MIND_TRICK_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can turn one enemy into an ally for 30 seconds by directly targeting that enemy or distract multiple enemies that have not noticed them by using mind trick on a nearby surface. An ally will not respond to direct attacks by the Jedi."
+LANG_RUSSIAN         "Ранг 3 - Джедай может ввести в смятение одного врага на 30 секунд, воздействуя непосредственно на него, или отвлечь нескольких противников, не заметивших его, воздействуя обманом разума на ближайшую к ним поверхность. Союзник не ответит на непосредственное нападение джедая."
+
+REFERENCE           FORCE_GRIP_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can grip and hold one enemy immobile, but undamaged for 5 seconds."
+LANG_RUSSIAN         "Ранг 1 - Джедай может схватить и обездвижить одного противника на 5 секунд."
+
+REFERENCE           FORCE_GRIP_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can lift one enemy off the ground and do damage, with the effect lasting as long as there is Force power."
+LANG_RUSSIAN         "Ранг 2 - Джедай может поднять врага над землей и нанести ему ранения, пока у него есть энергия Силы."
+
+REFERENCE           FORCE_GRIP_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can lift one enemy off the ground and do damage as with rank 2, but can also smash the enemy into surfaces or use the enemy as a shield."
+LANG_RUSSIAN         "Ранг 3 - Джедай может поднять одного врага над землей и нанести ему повреждения, как и при ранге 2, но еще он может ударять врага о поверхность и использовать в качестве живого щита."
+
+REFERENCE           FORCE_LIGHTNING_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi launches a single bolt that fires forward, doing instant damage.\n"
+LANG_RUSSIAN         "Ранг 1 - Джедай выпускает вперед один разряд, наносящий единовременный урон."
+
+REFERENCE           FORCE_LIGHTNING_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can maintain the Force Lightning for a sustained forward attack.\n"
+LANG_RUSSIAN         "Ранг 2 - Джедай может выпускать перед собой Молнию Силы и довольно долго наносить ею урон."
+
+REFERENCE           FORCE_LIGHTNING_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi emanates a sustained fan of electricity in a large forward arc, damaging anything in front of them."
+LANG_RUSSIAN         "Ранг 3 - Джедай выпускает перед собой непрерывный веер электрических разрядов, наносящий ущерб всем, кто находится в пределах большой фронтальной дуги."
+
+REFERENCE           FORCE_SABER_DEFENSE_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can deflect projectiles and melee attacks in a small arc directly in front of them. Deflected projectiles go in a random direction.\n"
+LANG_RUSSIAN         "Ранг 1 - Джедай может отражать метательные снаряды и выпады в ближнем бою, входящие в небольшую дугу перед ним. Отбитые метательные снаряды улетают в произвольном направлении."
+
+REFERENCE           FORCE_SABER_DEFENSE_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can deflect projectiles and melee attacks in a larger arc directly in front of them. Increased deflection speed. Deflected projectiles go in the general direction of their origin.\n"
+LANG_RUSSIAN         "Ранг 2 - Джедай может отражать метательные снаряды и выпады в ближнем бою, входящие в большую дугу перед ним. Увеличивается скорость отражения. Отраженные снаряды улетают туда, откуда они прилетели."
+
+REFERENCE           FORCE_SABER_DEFENSE_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi has a larger defense area and can deflect projectiles back at the attacker. Increased deflection speed."
+LANG_RUSSIAN         "Ранг 3 - У джедая расширяется зона защиты и он может отбивать метательные снаряды обратно в нападающего. Увеличивается скорость отражения."
+
+REFERENCE           FORCE_ABSORB_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can absorb minor amounts of Force power directed at them with no ill effects and gain some Force power back as a result."
+LANG_RUSSIAN         "Ранг 1 - Джедай может безболезненно поглощать небольшие порции Силы, направленной на него, и получать при этом немного энергии силы."
+
+REFERENCE           FORCE_ABSORB_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can absorb moderate amounts of Force power directed at them with no ill effects and gain a modest amount of Force power back as a result."
+LANG_RUSSIAN         "Ранг 2 - Джедай может безболезненно поглощать достаточные порции Силы, направленной на него, и получать при этом немного энергии силы."
+
+REFERENCE           FORCE_ABSORB_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can absorb a great amount of Force power directed at them with no ill effects and gain a large amount of Force power back as a result."
+LANG_RUSSIAN         "Ранг 3 - Джедай может безболезненно поглощать большие порции Силы, направленной на него, и получать при этом много энергии силы."
+
+REFERENCE           FORCE_PROTECT_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi is protected against 25% of the damage from physical and energy and projectile based attacks, but not from Force based attacks."
+LANG_RUSSIAN         "Ранг 1 - Джедай защищен от 25% урона, получаемого от физического и энергетического воздействия, но не от атаки Силы."
+
+REFERENCE           FORCE_PROTECT_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi is protected against 50% of the damage from physical and energy and projectile based attacks, but not from Force based attacks."
+LANG_RUSSIAN         "Ранг 2 - Джедай защищен от 50% урона, получаемого от физического и энергетического воздействия, но не от атаки Силы."
+
+REFERENCE           FORCE_PROTECT_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi is protected against 75% of the damage from physical and energy and projectile based attacks, but not from Force based attacks."
+LANG_RUSSIAN         "Ранг 3 - Джедай защищен от 75% урона, получаемого от физического и энергетического воздействия, но не от атаки Силы."
+
+REFERENCE           FORCE_SENSE_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can sense people and invisible markers at short range for 5 seconds."
+LANG_RUSSIAN         "Ранг 1 - Джедай на небольшом расстоянии в течении 5 секунд ощущает людей и невидимые знаки."
+
+REFERENCE           FORCE_SENSE_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can sense people, objects, and invisible markers at medium range for 10 seconds."
+LANG_RUSSIAN         "Ранг 2 - Джедай на умеренном расстоянии в течении 10 секунд ощущает людей, невидимые знаки и предметы."
+
+REFERENCE           FORCE_SENSE_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can sense people, objects, invisible markers, and the health of living beings at long range for 20 seconds."
+LANG_RUSSIAN         "Ранг 3 - Джедай на большом расстоянии в течении 20 секунд ощущает людей, невидимые знаки, предметы и здоровье живых существ."
+
+REFERENCE           FORCE_DRAIN_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi can drain life essence from another person and transfer it to themselves by making direct physical contact with that person."
+LANG_RUSSIAN         "Ранг 1 - Джедай может высасывать жизнь из существа и забирать ее себе при непосредственном физическом контакте."
+
+REFERENCE           FORCE_DRAIN_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can drain life essence from another person and transfer it to themselves by making direct physical contact with them or from a short distance away."
+LANG_RUSSIAN         "Ранг 2 - Джедай может высасывать жизнь из существа и забирать ее себе при непосредственном физическом контакте или с небольшого расстояния."
+
+REFERENCE           FORCE_DRAIN_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi can drain life essence from another person and transfer it to themselves by making direct physical contact with them or from a safe distance away. From a distance, multiple people can be drained at one time."
+LANG_RUSSIAN         "Ранг 3 - Джедай может высасывать жизнь из существа и забирать ее себе при непосредственном физическом контакте или с безопасного расстояния. На расстоянии жизнь может забираться у нескольких людей сразу."
+
+REFERENCE           FORCE_RAGE_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi is protected against 50% of all damage, has stronger attacks, and cannot die. However, the Jedi loses health rapidly and must wait for 10 seconds after the rage before it can be used again. The Jedi must have at least 25 health to use this power."
+LANG_RUSSIAN         "Ранг 1 - Джедай защищен от 50% любых повреждений, его атака усиливается и он не может умереть. Однако при этом джедай быстро теряет здоровье и должен 10 секунд восстанавливаться до повторного использования гнева. Для использования этой способности у джедая должно быть хотя бы 25 единиц здоровья."
+
+REFERENCE           FORCE_RAGE_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi is protected against 75% of all damage, is 25% faster, has stronger attacks, and cannot die. However, the Jedi loses health and must wait for 10 seconds after the rage before it can be used again. The Jedi must have at least 25 health to use this power."
+LANG_RUSSIAN         "Ранг 2 - Джедай защищен от 75% любых повреждений, он двигается на 25% быстрее, его атака усиливается и он не может умереть. Однако при этом джедай быстро теряет здоровье и должен 10 секунд восстанавливаться до повторного использования гнева. Для использования этой способности у джедая должно быть хотя бы 25 единиц здоровья."
+
+REFERENCE           FORCE_RAGE_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi is protected against 90% of all damage, is 50% faster, has stronger attacks, and cannot die. The Jedi loses only a small amount of health but still must wait for 10 seconds after the rage before it can be used again. The Jedi must have at least 25 health to use this power."
+LANG_RUSSIAN         "Ранг 2 - Джедай защищен от 90% любых повреждений, он двигается на 50% быстрее, его атака усиливается и он не может умереть. Однако при этом джедай быстро теряет здоровье и должен 10 секунд восстанавливаться до повторного использования гнева. Для использования этой способности у джедая должно быть хотя бы 25 единиц здоровья."
+
+REFERENCE           FORCE_SABER_OFFENSE_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Jedi is proficient in the use of a lightsaber and has a chance to break saber locks and parrys against other Jedi of similar proficiency."
+LANG_RUSSIAN         "Ранг 1 - Джедай весьма искусен в фехтовании световым мечом и имеет шанс на разблокирование скрещенных клинков и парирование выпадов другого джедая того же уровня мастерства."
+
+REFERENCE           FORCE_SABER_OFFENSE_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi is proficient in the use of a lightsaber and has a chance to break saber locks and parrys against other Jedi of similar proficiency and will break saber locks and parrys against weaker opponents."
+LANG_RUSSIAN         "Ранг 2 - Джедай весьма искусен в фехтовании световым мечом и имеет шанс на разблокирование скрещенных клинков и парирование выпадов другого джедая того же уровня мастерства, также он сможет разнять сблокированные клинки и отбить выпады более слабого противника."
+
+REFERENCE           FORCE_SABER_OFFENSE_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi is proficient in the use of a lightsaber and has a chance to break saber locks and parrys against other Jedi of similar proficiency and will break saber locks and parrys against weaker opponents."
+LANG_RUSSIAN         "Ранг 3 - Джедай весьма искусен в фехтовании световым мечом и имеет шанс на разблокирование скрещенных клинков и парирование выпадов другого джедая того же уровня мастерства, также он сможет разнять сблокированные клинки и отбить выпады более слабого противника."
+
+REFERENCE           FORCE_SABER_THROW_LVL1_DESC
+LANG_ENGLISH        "Rank 1 - Lightsaber flies straight from the player and returns.\n"
+LANG_RUSSIAN         "Ранг 1 - Световой меч вылетает из руки игрока и возвращается обратно."
+
+REFERENCE           FORCE_SABER_THROW_LVL2_DESC
+LANG_ENGLISH        "Rank 2 - Jedi can exert control over the flying lightsaber as it arcs out, but the lightsaber still returns directly to the player. "
+LANG_RUSSIAN         "Ранг 2 - Джедай может оказывать влияние на траекторию полета светового меча, но он все равно возвращается к игроку."
+
+REFERENCE           FORCE_SABER_THROW_LVL3_DESC
+LANG_ENGLISH        "Rank 3 - Jedi will automatically steer the saber into nearby enemies."
+LANG_RUSSIAN         "Ранг 3 - Джедай самостоятельно направляет световой меч в ближайших врагов."
+
+REFERENCE           ITEM_GOODIE_KEY
+LANG_ENGLISH        "Supply Key"
+LANG_RUSSIAN         "Ключ интенданта"
+
+REFERENCE           GOODIE_KEY_DESC
+LANG_ENGLISH        "Supply Key\nAn electronic security pass used by Imperial officers to access secure cargo shipment containers"
+LANG_RUSSIAN         "Ключ интенданта\nЭлектронный пропуск безопасности, используемый имперскими офицерами для получения доступа к грузовым контейнерам"
+
+REFERENCE           YOU_TOOK_SUPPLY_KEY
+LANG_ENGLISH        "You took the supply key"
+LANG_RUSSIAN         "Вы взяли интендантский ключ"
+
+REFERENCE           SECURITY_KEY_DP_DESC
+LANG_ENGLISH        "Security Key\nAn electronic Level 2 clearance security pass used to access secure areas\n"
+LANG_RUSSIAN         "Ключ безопасности\nЭлектронный пропуск 2 уровня доступа, используемый для прохода в зоны безопасности \n"
+
+REFERENCE           ITEM_SECURITY_KEY
+LANG_ENGLISH        "Security Key"
+LANG_RUSSIAN         "Ключ безопасности"
+
+REFERENCE           YOU_TOOK_SECURITY_KEY
+LANG_ENGLISH        "You took the security key"
+LANG_RUSSIAN         "Вы взяли ключ безопасности"
+
+REFERENCE           NEW_FORCE_POWER_INFO
+LANG_ENGLISH        "New Force Power Information"
+LANG_RUSSIAN         "Сведения о новой способности в Силе"
+
+REFERENCE           NEW_OBJECTIVE_INFO
+LANG_ENGLISH        "New Objective Information"
+LANG_RUSSIAN         "Сведения о новой задаче"
+
+REFERENCE           SECRET_AREA
+LANG_ENGLISH        "Secret Area!"
+LANG_RUSSIAN         "Засекреченная зона!"
+
+REFERENCE           NEED_KEY_TO_OPEN
+LANG_ENGLISH        "You need a key to open this."
+LANG_RUSSIAN         "Чтобы открыть ее, вам нужен ключ."
+
+REFERENCE           ONE_KILL_PER_5_SECONDS
+LANG_ENGLISH        "Only one kill per 5 seconds!"
+LANG_RUSSIAN         "Только одно убийство в 5 секунд!"
+
+REFERENCE           CHECKPOINT
+LANG_ENGLISH        "Checkpoint!"
+LANG_RUSSIAN         "Контрольная точка!"
+
+REFERENCE           SECRETAREAS_OF
+NOTES               "used to display "0 of 3" secret-areas-found string."
+LANG_ENGLISH        "of"
+LANG_RUSSIAN         "из"
+
+REFERENCE           EXIT_VIEW
+LANG_ENGLISH        "Press 'JUMP' to exit."
+LANG_RUSSIAN         "Нажмите 'ПРЫЖОК', чтобы выйти."
+
+REFERENCE           LIGHTSABERCOMBATSTYLE_FAST
+LANG_ENGLISH        "Lightsaber Combat Style: Fast"
+LANG_RUSSIAN         "Стиль боя световым мечом: Быстрый"
+
+REFERENCE           LIGHTSABERCOMBATSTYLE_MEDIUM
+LANG_ENGLISH        "Lightsaber Combat Style: Medium"
+LANG_RUSSIAN         "Стиль боя световым мечом: Средний"
+
+REFERENCE           LIGHTSABERCOMBATSTYLE_STRONG
+LANG_ENGLISH        "Lightsaber Combat Style: Strong"
+LANG_RUSSIAN         "Стиль боя световым мечом: Сильный"
+
+REFERENCE           LIGHTSABERCOMBATSTYLE_DESANN
+LANG_ENGLISH        "Lightsaber Combat Style: Desann"
+LANG_RUSSIAN         "Стиль боя световым мечом: Дезанн"
+
+REFERENCE           LIGHTSABERCOMBATSTYLE_TAVION
+LANG_ENGLISH        "Lightsaber Combat Style: Tavion"
+LANG_RUSSIAN         "Стиль боя световым мечом: Тавион"
+
+REFERENCE           ITEM_MEDPAC
+NOTES               "MP version of ITEM_BACTA"
+LANG_ENGLISH        "BioTech Bacta Canister"
+LANG_RUSSIAN         "Контейнер бакты БиоТек"
+
+REFERENCE           ITEM_SHIELD
+NOTES               "MP force field item"
+LANG_ENGLISH        "Forcefield"
+LANG_RUSSIAN         "Силовое поле"
+
+REFERENCE           ITEM_SHIELD_LRG_INSTANT
+NOTES               "MP item"
+LANG_ENGLISH        "Large Shield Booster"
+LANG_RUSSIAN         "Большой излучатель щита"
+
+REFERENCE           ITEM_FORCE_ENLIGHTEN_LIGHT
+LANG_ENGLISH        "Light Force Enlightenment"
+LANG_RUSSIAN         "Посвящение светлой Силы"
+
+REFERENCE           ITEM_FORCE_ENLIGHTEN_DARK
+LANG_ENGLISH        "Dark Force Enlightenment"
+LANG_RUSSIAN         "Посвящение темной Силы"
+
+REFERENCE           ITEM_FORCE_BOON
+LANG_ENGLISH        "Force Boon"
+LANG_RUSSIAN         "Дар Силы"
+
+REFERENCE           ITEM_YSALIMARI
+LANG_ENGLISH        "Ysalamiri"
+LANG_RUSSIAN         "Йсаламири"
+
+REFERENCE           WEAPON_EMPLACED
+LANG_ENGLISH        "Emplaced Gun"
+LANG_RUSSIAN         "Размещенное орудие"
+
+REFERENCE           WEAPON_TURRETWP
+LANG_ENGLISH        "Turret Gun"
+LANG_RUSSIAN         "Турель"
+
+REFERENCE           DARK_RAGE2
+LANG_ENGLISH        "Dark Rage"
+LANG_RUSSIAN         "Темная ярость"
+
+REFERENCE           TEAM_CTF_REDFLAG
+LANG_ENGLISH        "Red Flag"
+LANG_RUSSIAN         "Красный флаг"
+
+REFERENCE           TEAM_CTF_BLUEFLAG
+LANG_ENGLISH        "Blue Flag"
+LANG_RUSSIAN         "Синий флаг"
+
+REFERENCE           TEAM_CTF_NEUTRALFLAG
+LANG_ENGLISH        "Neutral Flag"
+LANG_RUSSIAN         "Нейтральный флаг"
+
+REFERENCE           ITEM_REDCUBE
+LANG_ENGLISH        "Red Cube"
+LANG_RUSSIAN         "Красный куб"
+
+REFERENCE           ITEM_BLUECUBE
+LANG_ENGLISH        "Blue Cube"
+LANG_RUSSIAN         "Синий куб"
+
+REFERENCE           ITEM_DATAPAD
+LANG_ENGLISH        "Datapad"
+LANG_RUSSIAN         "Планшет"
+
+REFERENCE           PROTECT2
+LANG_ENGLISH        "Protect"
+LANG_RUSSIAN         "Защита"
+
+REFERENCE           ABSORB2
+LANG_ENGLISH        "Absorb"
+LANG_RUSSIAN         "Поглощение"
+
+REFERENCE           TEAM_HEAL2
+LANG_ENGLISH        "Team Heal"
+LANG_RUSSIAN         "Исцеление отряда"
+
+REFERENCE           SEEING2
+LANG_ENGLISH        "Sense"
+LANG_RUSSIAN         "Чувство"
+
+REFERENCE           DRAIN2
+LANG_ENGLISH        "Drain"
+LANG_RUSSIAN         "Высасывание"
+
+REFERENCE           TEAM_REPLENISH2
+LANG_ENGLISH        "Team Energize"
+LANG_RUSSIAN         "Зарядка отряда"
+
+REFERENCE           DOOR_OPENED_ELSEWHERE
+LANG_ENGLISH        "This door is opened elsewhere."
+LANG_RUSSIAN         "Эта дверь открывается в другом месте."
+
+REFERENCE           WEAPON_BLASTER_PISTOL
+LANG_ENGLISH        "DL-44 Heavy Blaster Pistol"
+LANG_RUSSIAN         "Тяжелый бластер DL-44"
+
+REFERENCE           WEAPON_CONCUSSION_RIFLE
+LANG_ENGLISH        "Stouker Concussion Rifle"
+LANG_RUSSIAN         "Оглушающая винтовка Стоукер"
+
+REFERENCE           AMMO_ALL
+LANG_ENGLISH        "Ammo Dispenser"
+LANG_RUSSIAN         "Раздатчик боеприпасов"
+
+REFERENCE           ITEM_MEDPAC_BIG
+LANG_ENGLISH        "Big Bacta"
+LANG_RUSSIAN         "Большая бакта"
+
+REFERENCE           ITEM_EWEB_HOLDABLE
+LANG_ENGLISH        "E-Web"
+LANG_RUSSIAN         "E-Web"
+
+REFERENCE           ITEM_CLOAK
+LANG_ENGLISH        "Cloak"
+LANG_RUSSIAN         "Маскировка"
+
+REFERENCE           FAST_STYLE
+LANG_ENGLISH        "Fast Style\n\nFast and efficient, but with limited range. Short, quick motions allow for multiple attacks but with minimum damage. This style can be chained indefinitely. It utilizes a defensive stance in which the Jedi holds his saber across his front in a ready position to fend off attacks or make quick jabs. Represented by a blue bar on the right side of the HUD."
+LANG_RUSSIAN         "Быстрый стиль\n\nБыстро и эффективно, но на ближней дистанции. Короткие, быстрые движения позволяют наносить множество ударов, правда, с минимальной силой. Этот стиль дает бесконечное число связок и комбинаций выпадов. Он использует защитную стойку, в которой джедай в позиции готовности держит меч перед собой горизонтально, что дает возможность парировать выпады противника или сделать молниеносный выпад. Обозначается синей полоской в правой части верхней индикации."
+
+REFERENCE           STRONG_STYLE
+LANG_ENGLISH        "Strong Style\n\nUses powerful strikes to batter through defenses. This style incorporates great range and power, but often leaves the Jedi open for counter attack. It utilizes a powerful, aggressive stance in which the Jedi holds his saber high and back, ready to go into a heavy swing. Represented by a red bar  on the right side of the HUD."
+LANG_RUSSIAN         "Сильный стиль\n\nИспользует мощные удары, пробивающие защиту. Этот стиль объединяет силу и большой радиус действия, но при этом джедай зачастую открывается для контратаки. Стиль использует прочную, атакующую стойку, в которой джедай высоко поднимает меч, готовясь сделать мощный рубящий удар. Обозначается красной полоской в правой части верхней индикации."
+
+REFERENCE           CANT_SAVE_DEAD
+LANG_ENGLISH        "Can't save game while dead!"
+LANG_RUSSIAN         "Мертвые не могут записывать игры!"
+
+
+ENDMARKER

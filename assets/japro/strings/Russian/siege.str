@@ -1,0 +1,1195 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "Siege specific strings"
+
+REFERENCE           HEALTH
+LANG_ENGLISH        "HEALTH:"
+LANG_RUSSIAN         "ЗДОРОВЬЕ:"
+
+REFERENCE           SHIELDS
+LANG_ENGLISH        "SHIELDS:"
+LANG_RUSSIAN         "ЩИТЫ:"
+
+REFERENCE           SPEED
+LANG_ENGLISH        "SPEED:"
+LANG_RUSSIAN         "СКОРОСТЬ:"
+
+REFERENCE           DEMO_IMP_DEMO
+LANG_ENGLISH        "Imperial Demolitionist: The demolitionist is average in combat, but is an expert at laying traps and taking out large objectives."
+LANG_RUSSIAN         "Имперский разрушитель: Разрушитель неплох в бою, но особенно хорошо умеет ставить ловушки и сносить большие объекты."
+
+REFERENCE           DEMO_MERC_DEMO
+LANG_ENGLISH        "Mercenary Demolitionist:  The demolitionist is average in combat, but is an expert at laying traps and taking out large objectives."
+LANG_RUSSIAN         "Наемник-разрушитель:  Разрушитель неплох в бою, но особенно хорошо умеет ставить ловушки и сносить большие объекты."
+
+REFERENCE           DEMO_REBEL_DEMO
+LANG_ENGLISH        "Rebel Demolitionist: The demolitionist is average in combat, but is an expert at laying traps and taking out large objectives."
+LANG_RUSSIAN         "Разрушитель повстанцев: Разрушитель неплох в бою, но особенно хорошо умеет ставить ловушки и сносить большие объекты."
+
+REFERENCE           HVY_DJEDI_DESTROYER
+LANG_ENGLISH        "Dark Jedi Destroyer: This heavy weapons is well trained in dark Force powers, utilizing many different powers, but mastering none. Although he carries a saber, he prefers the destructive nature of his powers over his blade."
+LANG_RUSSIAN         "Темный джедай - уничтожитель: Это тяжелое оружие очень хорошо владеет темной Силой, оно использует много сил, но служит лишь одной. Хотя он и носит меч, в бою предпочитает следовать разрушительной природе своей силы, а не использовать клинок."
+
+REFERENCE           HVY_MERC_SPECIALIST
+LANG_ENGLISH        "Mercenary Heavy Weapons Specialist: This heavy weapons member is slow, but makes up for it with sheer firepower."
+LANG_RUSSIAN         "Наемный специалист по тяжелым вооружениям: Этот представитель тяжелого вооружения неповоротлив, что с лихвой окупается его огневой мощью."
+
+REFERENCE           HVY_REBEL_SPECIALIST
+LANG_ENGLISH        "Rebel Heavy Weapons Specialist:  This heavy weapons member is slow, but is heavily armed, dealing out great amounts of damage."
+LANG_RUSSIAN         "Специалист по тяжелым вооружениям повстанцев:  Этот представитель тяжелого вооружения неповоротлив, что с лихвой окупается его огневой мощью."
+
+REFERENCE           INF_CULTIST
+LANG_ENGLISH        "Cultist:  This infantry member has a number of low level Force abilities but is untrained in the ways of the dark Jedi."
+LANG_RUSSIAN         "Представитель культа:  Этот пехотинец обладает некоторыми слабыми способностями в Силе, но еще не обучен темным путям. "
+
+REFERENCE           INF_JEDI_HUNTER
+LANG_ENGLISH        "Jedi Hunter:  This infantry member is a specialist is neutralizing Jedi. The Ysalimiri protects him against the Force while the flechette gun is an excellent anti-lightsaber weapon at close range."
+LANG_RUSSIAN         "Охотник на джедаев:  Этот пехотинец специализируется на устранении джедаев. Йсаламири защищает его от воздействия Силы, а гвоздомет превосходно справляется с световым мечом в ближнем бою."
+
+REFERENCE           INF_LIGHT_FORCE_ADVENTURER
+LANG_ENGLISH        "Light Force Adventurer:  This infantry member has a number of low level Force abilities but is untrained in the ways of the Jedi."
+LANG_RUSSIAN         "Изыскатель светлой Силы:  Этот пехотинец обладает некоторыми слабыми способностями в Силе, но еще не обучен  путям джедаев."
+
+REFERENCE           INF_MERCENARY
+LANG_ENGLISH        "Mercenary:  This member of the Mercenary infantry is good at both offensive and defensive combat and can hold his own against most forces."
+LANG_RUSSIAN         "Наемник:  Этот наемный пехотинец хорош в нападении и обороне, к тому же он способен справиться с большей частью воздействий Силой."
+
+REFERENCE           INF_PROTECTOR
+LANG_ENGLISH        "Protector: Enlisted by the Jedi to protect Force-sensitive areas, this well-armed infantry member can make a difference in any battle."
+LANG_RUSSIAN         "Защитник: Завербованный джедаями для защиты областей Силы, этот хорошо вооруженный пехотинец может кардинально изменить картину боя."
+
+REFERENCE           INF_REBEL_ASSAULT
+LANG_ENGLISH        "Rebel Assault Specialist: This assault member is moderately equipped, but can take take a large amount of damage."
+LANG_RUSSIAN         "Специалист по штурму повстанцев: Этот штурмовик обладает средним оснащением, но может выдержать много попаданий."
+
+REFERENCE           INF_REBEL_INFANTRY
+LANG_ENGLISH        "Rebel Infantry: This member of the infantry is trained and equipped for defensive combat; laying down tripmines to slow the enemy down."
+LANG_RUSSIAN         "Пехотинец повстанцев: Этот пехотинец обучен и подготовлен к обороне; он ставит щиты и мины, чтобы замедлить продвижение противника."
+
+REFERENCE           INF_SNOWTROOPER
+LANG_ENGLISH        "Snowtrooper:  This member of the infantry is specially trained and equipped for lightning attacks against heavy defenses."
+LANG_RUSSIAN         "Пехотинец бури:  Этот пехотинец обучен и оснащен для взламывания тяжелых линий обороны с помощью молний."
+
+REFERENCE           JEDI_DJEDI_DUELIST
+LANG_ENGLISH        "Dark Jedi Duelist:  This Dark Jedi has scant offensive or defensive Force powers but is unequaled in the art of combat with two lightsabers.\n"
+LANG_RUSSIAN         "Темный джедай - дуэлянт:  У этого темного джедая мало наступательных или защитных способностей в Силе, однако он непревзойден в искусстве боя на световых мечах."
+
+REFERENCE           JEDI_DJEDI_KNIGHT
+LANG_ENGLISH        "Dark Jedi Knight: The Dark Jedi Knight is trained in both the lightsaber and dark side of the Force, creating a well-balanced combatant with equal parts strength and weakness.\n"
+LANG_RUSSIAN         "Темный рыцарь джедай: Темный рыцарь джедай хорошо владеет как световым мечом, так и темной стороной Силы, что делает его отменным бойцом с равными слабыми и сильными сторонами."
+
+REFERENCE           JEDI_DJEDI_MARAUDER
+LANG_ENGLISH        "Dark Side Maurauder: This Dark Jedi has a moderate range of offensive and defensive Force powers but is unequaled in the art of combat with the arcane double-bladed lightsaber."
+LANG_RUSSIAN         "Темный мародер: У этого темного джедая средний набор наступательных или защитных способностей в Силе, однако он непревзойден в искусстве боя с тайным двухклинковым оружием."
+
+REFERENCE           JEDI_JEDI_DUELIST
+LANG_ENGLISH        "Jedi Duelist:  This Jedi has moderate offensive and defensive Force powers but is unequaled in the art of combat with two lightsabers.\n"
+LANG_RUSSIAN         "Джедай - дуэлянт:  У этого джедая средний набор наступательных или защитных способностей в Силе, однако он непревзойден в искусстве боя на парных световых мечах."
+
+REFERENCE           JEDI_JEDI_GUARDIAN
+LANG_ENGLISH        "Jedi Guardian: This Jedi has scant offensive or defensive Force powers but is unequaled in the art of combat with the arcane double-bladed lightsaber."
+LANG_RUSSIAN         "Страж джедай: У этого джедая мало наступательных или защитных способностей в Силе, однако он непревзойден в искусстве боя с тайным двухклинковым оружием."
+
+REFERENCE           JEDI_JEDI_KNIGHT
+LANG_ENGLISH        "Jedi Knight: The Jedi Knight is trained in both the lightsaber and light side of the Force, creating a well-balanced combatant with equal parts strength and weakness."
+LANG_RUSSIAN         "Рыцарь джедай: Рыцарь джедай хорошо владеет как световым мечом, так и светлой стороной Силы, что делает его отменным бойцом с равными слабыми и сильными сторонами."
+
+REFERENCE           SUPP_IMP_SUPPLIER
+LANG_ENGLISH        "Imperial Supply:  This support member keeps the other troops healthy and able to fight by providing them with necessary supplies in the field."
+LANG_RUSSIAN         "Имперский интендант:  Этот работник снабжения поддерживает здоровье и боеспособность других пехотинцев, обеспечивая их снабжением в полевых условиях."
+
+REFERENCE           SUPP_IMP_TECH
+NOTES               "Keep within the character limit of this string. It uses up all the available area in English."
+LANG_ENGLISH        "Imperial Tech:  The tech can break the defenses of the enemy by hacking their doors and computer systems, or by a more direct approach with the DEMP2 gun. The tech can also dispense ammo if no one is near, resupply allies when they are near, and repair certain objects and objectives (all via the 'use' key)."
+LANG_RUSSIAN         "Имперский техник:  Этот солдат вспомогательных технических частей может взламывать защиту врага, вскрывая двери и компьютерные системы, или попросту из DEMP2. К тому же техник может подносить боеприпасы, если никого нет рядом, пополнять боезапас ближайших союзников и ремонтировать некоторые вещи и объекты (все с использованием клавиши 'использовать')."
+
+REFERENCE           SUPP_JEDI_HEALER
+LANG_ENGLISH        "Jedi Healer: This support member has great interest in saving lives. The Healer can move quickly and stealthily in order to heal her teammates."
+LANG_RUSSIAN         "Целитель джедай: Этот солдат частей обеспечения заинтересован в спасении жизней. Целитель тайно и быстро перемещается, чтобы лечить своих товарищей по оружию."
+
+REFERENCE           SUPP_REBEL_SUPPLY
+LANG_ENGLISH        "Rebel Supplier:  This support member keeps the other troops healthy and able to fight by providing them with necessary supplies in the field."
+LANG_RUSSIAN         "Интендант повстанцев:  Этот работник снабжения поддерживает здоровье и боеспособность других пехотинцев, обеспечивая их снабжением в полевых условиях."
+
+REFERENCE           SUPP_REBEL_TECH
+NOTES               "Keep within the character limit of this string. It uses up all the available area in English."
+LANG_ENGLISH        "Rebel Tech:  The tech can break the defenses of the enemy by hacking their doors and computer systems, or by a more direct approach with the DEMP2 gun. The tech can also dispense ammo if no one is near, resupply allies when they are near, and repair certain objects and objectives (all via the 'use' key)."
+LANG_RUSSIAN         "Техник повстанцев:  Этот солдат вспомогательных технических частей может взламывать защиту врага, вскрывая двери и компьютерные системы, или попросту из DEMP2. К тому же техник может подносить боеприпасы, если никого нет рядом, пополнять боезапас ближайших союзников и ремонтировать некоторые вещи и объекты (все с использованием клавиши 'использовать')."
+
+REFERENCE           SUPP_SMUGGLER
+LANG_ENGLISH        "Mercenary Tech:  This Chiss support member can help defend choke points. The tech can also dispense ammo canisters if no one is near, resupply allies when they are near, and repair certain objects and objectives (all via the 'use' key)."
+LANG_RUSSIAN         "Техник наемников:  Этот вольный солдат Чисса может чинить разные предметы и помогать в обороне в узких местах. К тому же техник может подносить боеприпасы, если никого нет рядом, пополнять боезапас ближайших союзников и ремонтировать некоторые вещи и объекты (все с использованием клавиши 'использовать')."
+
+REFERENCE           VAN_BOUNTY_HUNTER
+LANG_ENGLISH        "Bounty Hunter:  This Rodian assault member is moderately equipped, but can take take a large amount of damage."
+LANG_RUSSIAN         "Вольный охотник:  Этот Родианский штурмовик обладает средним оснащением, но может выдержать много попаданий."
+
+REFERENCE           VAN_DFORCE_ASSASSIN
+LANG_ENGLISH        "Dark Force Assassin: This vanguard member is physically weaker than other team members and has limited Force ability, yet is an expert marksman who is deadly in his own right."
+LANG_RUSSIAN         "Темный ассасин: Этот солдат авангарда физически слабее других и обладает ограниченными способностями в Силе, зато он превосходный стрелок, приносящий смерть по своему усмотрению."
+
+REFERENCE           VAN_DJEDI_INVADER
+LANG_ENGLISH        "Dark Jedi Invader:  This dark Jedi is physically weaker than other team members, but uses his speed and stealth abilities to achieve his objectives."
+LANG_RUSSIAN         "Темный джедай - захватчик:  Этот темный джедай физически слабее других солдат, но за счет своей скорости и умения маскироваться достигает своих целей."
+
+REFERENCE           VAN_IMP_SNIPER
+LANG_ENGLISH        "Imperial Sniper:  This scout member is light on equipment, but is an expert marksman who can get to a vantage point quickly and fortify his position with a portable sentry gun."
+LANG_RUSSIAN         "Имперский снайпер:  Этот разведчик легко экипирован, зато это исключительный стрелок, способный быстро добраться в нужное место и укрепить свою позицию с помощью охранного орудия."
+
+REFERENCE           VAN_JEDI_SCOUT
+LANG_ENGLISH        "Jedi Scout: This vanguard member is physically weaker than other team members, but uses his speed and stealth abilities to achieve his objectives.\n"
+LANG_RUSSIAN         "Разведчик джедай: Этот солдат авангарда физически слабее других солдат, но за счет своей скорости и умения маскироваться достигает своих целей.\n"
+
+REFERENCE           VAN_MERC_SNIPER
+LANG_ENGLISH        "Mercenary Sniper: This scout member is light on equipment, but is an expert marksman who can get to a higher vantage point quickly via a jetpack."
+LANG_RUSSIAN         "Снайпер-наемник: Этот разведчик легко экипирован, зато это исключительный стрелок, способный быстро добраться в нужное место с помощью ракетного ускорителя."
+
+REFERENCE           VAN_REBEL_SNIPER
+LANG_ENGLISH        "Rebel Sniper: This scout member is an expert marksman who can quickly get in place unseen."
+LANG_RUSSIAN         "Снайпер повстанцев: Этот разведчик - отличный стрелок, быстро и незаметно занимающий нужную позицию."
+
+REFERENCE           VAN_ROCKETTROOPER
+LANG_ENGLISH        "Imperial Heavy Weapons Specialist: This heavy weapons member is slow, but makes up for it with sheer firepower."
+LANG_RUSSIAN         "Имперский специалист по тяжелым вооружениям: Этот представитель тяжелого вооружения неповоротлив, что с лихвой окупается его огневой мощью."
+
+REFERENCE           3_KOR_LS_BRIEF
+LANG_ENGLISH        "Stop the Dark Jedi from resurrecting Marka Ragnos!"
+LANG_RUSSIAN         "Не дайте темному джедаю возродить Марка Рагноса!"
+
+REFERENCE           3_KOR_LS_WON
+LANG_ENGLISH        "Your team has stopped the Dark Jedi from resurrecting Marka Ragnos!"
+LANG_RUSSIAN         "Ваш отряд не дал темному джедаю возродить Марка Рагноса!"
+
+REFERENCE           3_KOR_LS_LOST
+LANG_ENGLISH        "Your team has failed to stop the Dark Jedi from resurrecting Marka Ragnos."
+LANG_RUSSIAN         "Ваш отряд не смог помешать темному джедаю возродить Марка Рагноса."
+
+REFERENCE           3_KOR_LS_OBJ1
+LANG_ENGLISH        "Destroy the entrance to the Temple of Ragnos."
+LANG_RUSSIAN         "Уничтожьте вход в храм Рагноса."
+
+REFERENCE           3_KOR_LS_OBJ1_COMP_TEAM1
+LANG_ENGLISH        "The temple entrance has been destroyed!"
+LANG_RUSSIAN         "Вход в храм был уничтожен!"
+
+REFERENCE           3_KOR_LS_OBJ1_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have destroyed the temple entrance."
+LANG_RUSSIAN         "Джедай уничтожил вход в храм."
+
+REFERENCE           3_KOR_LS_OBJ2
+LANG_ENGLISH        "Capture the red crystal and place it on the red pedestal."
+LANG_RUSSIAN         "Захватите красный кристалл и поместите его на красный постамент."
+
+REFERENCE           3_KOR_LS_OBJ2_COMP_TEAM1
+LANG_ENGLISH        "The red crystal has been placed on the pedestal!"
+LANG_RUSSIAN         "Красный кристалл был помещен на постамент!"
+
+REFERENCE           3_KOR_LS_OBJ2_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have placed the red crystal."
+LANG_RUSSIAN         "Джедай разместил красный кристалл."
+
+REFERENCE           3_KOR_LS_OBJ3
+LANG_ENGLISH        "Capture the green crystal and place it on the green pedestal."
+LANG_RUSSIAN         "Захватите зеленый кристалл и поместите его на зеленый постамент."
+
+REFERENCE           3_KOR_LS_OBJ3_COMP_TEAM1
+LANG_ENGLISH        "The green crystal has been placed on the pedestal!"
+LANG_RUSSIAN         "Зеленый кристалл был помещен на постамент!"
+
+REFERENCE           3_KOR_LS_OBJ3_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have placed the green crystal."
+LANG_RUSSIAN         "Джедай разместил зеленый кристалл."
+
+REFERENCE           3_KOR_LS_OBJ4
+LANG_ENGLISH        "Capture the blue crystal and place it on the blue pedestal."
+LANG_RUSSIAN         "Захватите синий кристалл и поместите его на синий постамент."
+
+REFERENCE           3_KOR_LS_OBJ4_COMP_TEAM1
+LANG_ENGLISH        "The blue crystal has been placed on the pedestal!"
+LANG_RUSSIAN         "Синий кристалл был помещен на постамент!"
+
+REFERENCE           3_KOR_LS_OBJ4_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have placed the blue crystal."
+LANG_RUSSIAN         "Джедай разместил синий кристалл."
+
+REFERENCE           3_KOR_LS_OBJ5
+LANG_ENGLISH        "Bring the scepter of Ragnos to the altar in his statue!"
+LANG_RUSSIAN         "Принесите скипетр Рагноса к алтарю с его статуей!"
+
+REFERENCE           3_KOR_LS_OBJ5_COMP_TEAM1
+LANG_ENGLISH        "Scepter has been brought to the altar!"
+LANG_RUSSIAN         "Скипетр был поднесен к алтарю!"
+
+REFERENCE           3_KOR_LS_OBJ5_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have opened the gateway to the burial valley."
+LANG_RUSSIAN         "Джедай открыл ворота к долине захоронений."
+
+REFERENCE           3_KOR_LS_OBJ6
+LANG_ENGLISH        "Destroy the sarcophagus of Ragnos so the Dark Jedi cannot resurrect him."
+LANG_RUSSIAN         "Уничтожьте саркофаг Рагноса, чтобы темный джедай не смог его возродить."
+
+REFERENCE           3_KOR_LS_OBJ6_COMP_TEAM1
+LANG_ENGLISH        "The sarcophagus of Ragnos has been destroyed!"
+LANG_RUSSIAN         "Саркофаг Рагноса был уничтожен!"
+
+REFERENCE           3_KOR_LS_OBJ6_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have destroyed the sarcophagus of Ragnos."
+LANG_RUSSIAN         "Джедай уничтожил саркофаг Рагноса."
+
+REFERENCE           3_KOR_DS_BRIEF
+LANG_ENGLISH        "Prevent the Jedi from destroying the sarcophagus of Marka Ragnos."
+LANG_RUSSIAN         "Не дайте джедаю уничтожить саркофаг Марка Рагноса."
+
+REFERENCE           3_KOR_DS_WON
+LANG_ENGLISH        "Your team has stopped the Jedi from destroying the sarcophagus of Marka Ragnos!"
+LANG_RUSSIAN         "Ваш отряд не позволил джедаю уничтожить саркофаг Марки Рагноса!"
+
+REFERENCE           3_KOR_DS_LOST
+LANG_ENGLISH        "Your team has failed to stop the Jedi from destroying the sarcophagus of Marka Ragnos!"
+LANG_RUSSIAN         "Ваш отряд не смог помешать джедаю уничтожить саркофаг Марка Рагноса!"
+
+REFERENCE           3_KOR_DS_OBJ1
+LANG_ENGLISH        "Defend the temple gate!"
+LANG_RUSSIAN         "Защищайте ворота храма!"
+
+REFERENCE           3_KOR_DS_OBJ1_DESC
+LANG_ENGLISH        "The only way into the temple is through the main gate, do not let the Light Jedi through!"
+LANG_RUSSIAN         "Единственный вход в храм - его главные ворота, не пропустите светлого джедая!"
+
+REFERENCE           3_KOR_DS_OBJ_2
+LANG_ENGLISH        "Defend the red crystal!"
+LANG_RUSSIAN         "Защищайте красный кристалл!"
+
+REFERENCE           3_KOR_DS_OBJ_2_DESC
+LANG_ENGLISH        "Stop the Light Jedi from placing the red crystal on its pedestal! Once all 3 crystals have been placed, the valley gate will open!"
+LANG_RUSSIAN         "Помешайте светлому джедаю поместить красный кристалл на красном пьедестале! Когда все 3 кристалла будут на своих местах, тогда ворота в долину откроются!"
+
+REFERENCE           3_KOR_DS_OBJ_3
+LANG_ENGLISH        "Defend the green crystal!"
+LANG_RUSSIAN         "Защищайте зеленый кристалл!"
+
+REFERENCE           3_KOR_DS_OBJ_3_DESC
+LANG_ENGLISH        "Stop the Light Jedi from placing the green crystal on its pedestal! Once all 3 crystals have been placed, the valley gate will open!"
+LANG_RUSSIAN         "Помешайте светлому джедаю разместить зеленый кристалл на зеленом пьедестале! Когда все 3 кристалла будут на своих местах, тогда ворота в долину откроются!"
+
+REFERENCE           3_KOR_DS_OBJ_4
+LANG_ENGLISH        "Defend the blue crystal!"
+LANG_RUSSIAN         "Защищайте синий кристалл!"
+
+REFERENCE           3_KOR_DS_OBJ_4_DESC
+LANG_ENGLISH        "Stop the Light Jedi from placing the blue crystal on its pedestal! Once all 3 crystals have been placed, the valley gate will open!"
+LANG_RUSSIAN         "Помешайте светлому джедаю поместить синий кристалл на синем пьедестале! Когда все 3 кристалла будут на своих местах, тогда ворота в долину откроются!"
+
+REFERENCE           3_KOR_DS_OBJ_5
+LANG_ENGLISH        "Defend the scepter of Ragnos!"
+LANG_RUSSIAN         "Защищайте скипетр Рагноса!"
+
+REFERENCE           3_KOR_DS_OBJ_5_DESC
+LANG_ENGLISH        "The Light Jedi are trying to bring the scepter to the altar in the statue of Ragnos to deactivate the shield, defend the scepter and  the altar!"
+LANG_RUSSIAN         "Светлый джедай пытается принести его к алтарю со статуей Рагноса, чтобы отключить щит, защищайте скипетр и алтарь!"
+
+REFERENCE           3_KOR_DS_OBJ_6
+LANG_ENGLISH        "Defend the coffin!"
+LANG_RUSSIAN         "Защищайте гроб!"
+
+REFERENCE           3_KOR_DS_OBJ_6_DESC
+LANG_ENGLISH        "Defend the coffin so Ragnos will not be destroyed!"
+LANG_RUSSIAN         "Защищайте гроб Рагноса, иначе он будет уничтожен!"
+
+REFERENCE           3_KOR_DS_OBJ1_COMP_TEAM1
+LANG_ENGLISH        "The Dark Jedi have prevented your team from destroying the sarcophagus of Marka Ragnos."
+LANG_RUSSIAN         "Темный джедай не позволил вашему отряду уничтожить саркофаг Марки Рагноса."
+
+REFERENCE           3_KOR_DS_OBJ1_COMP_TEAM2
+LANG_ENGLISH        "The Jedi have failed in their task to destroy the sarcophagus of Marka Ragnos!"
+LANG_RUSSIAN         "Джедаи не смогли уничтожить саркофаг Марки Рагноса!"
+
+REFERENCE           INF_REB_PILOT
+LANG_ENGLISH        "Rebel Pilot: These pilots are experts at piloting all kinds of Rebel ships, including X-Wings, Z-95s and Lambda Shuttles, but are not useful for ground combat."
+LANG_RUSSIAN         "Пилот повстанцев: Эти пилоты являются экспертами в пилотировании любых кораблей повстанцев, включая истребители с X-образными крыльями, Z-95 и челноки Лямбда, но в наземном бою они бесполезны."
+
+REFERENCE           INF_IMP_PILOT
+LANG_ENGLISH        "Imperial TIE Pilot: These pilots are experts at piloting TIE Fighters and Bombers, but are not useful for ground combat."
+LANG_RUSSIAN         "Имперский тайский пилот: Это специалисты по пилотажу тайских истребителей и бомбардировщиков, но для боя на поверхности они не годятся."
+
+REFERENCE           SUPP_IMP_LT_TECH
+LANG_ENGLISH        "Imperial Light Tech:  This support member can break the defenses of the enemy by hacking their doors and computer systems, or by a more direct approach with the DEMP2 gun."
+LANG_RUSSIAN         "Имперский легкий техник:  Этот солдат вспомогательных технических частей может взламывать защиту врага, вскрывая двери и компьютерные системы, или попросту из DEMP2."
+
+REFERENCE           SUPP_REBEL_LT_TECH
+LANG_ENGLISH        "Rebel Light Tech:  This support member can break the defenses of the enemy by hacking their doors and computer systems, or by a more direct approach with the DEMP2 gun."
+LANG_RUSSIAN         "Легкий техник повстанцев:  Этот солдат вспомогательных технических частей может взламывать защиту врага, вскрывая двери и компьютерные системы, или попросту из DEMP2."
+
+REFERENCE           DEMO_IMP_LT_DEMO
+LANG_ENGLISH        "Imperial Light Demolitionist: The demolitionist is average in combat, but is an expert at laying traps and taking out large objectives."
+LANG_RUSSIAN         "Имперский легкий разрушитель: Разрушитель неплох в бою, но особенно хорошо умеет ставить ловушки и сносить большие объекты."
+
+REFERENCE           VAN_IMP_LT_SNIPER
+LANG_ENGLISH        "Imperial Light Sniper:  This vanguard member is light on equipment, but is an expert marksman who can get to a vantage point quickly and fortify his position with a portable shield."
+LANG_RUSSIAN         "Имперский легкий снайпер:  Этот солдат авангарда легко экипирован, зато это исключительный стрелок, способный быстро добраться в нужное место и укрепить свою позицию с помощью портативного щита."
+
+REFERENCE           VAN_REBEL_LT_SNIPER
+LANG_ENGLISH        "Rebel Light Sniper: This vanguard member is light on equipment, but is an expert marksman who can get to a vantage point quickly and fortify his position with a portable shield."
+LANG_RUSSIAN         "Легкий снайпер повстанцев: Этот солдат авангарда легко экипирован, зато это исключительный стрелок, способный быстро добраться в нужное место и укрепить свою позицию с помощью портативного щита."
+
+REFERENCE           DEMO_REBEL_LT_DEMO
+LANG_ENGLISH        "Rebel Light Demolitionist: The demolitionist is average in combat, but is an expert at laying traps and taking out large objectives."
+LANG_RUSSIAN         "Легкий разрушитель повстанцев: Разрушитель неплох в бою, но особенно хорошо умеет ставить ловушки и сносить большие объекты."
+
+REFERENCE           HVY_REBEL_HVY_INFANTRY
+LANG_ENGLISH        "Rebel Heavy Infantry: This member of the infantry is trained and equipped for defensive combat."
+LANG_RUSSIAN         "Тяжелый пехотинец повстанцев: Этот пехотинец обучен и снаряжен для ведения оборонительного боя."
+
+REFERENCE           HVY_STORMTROOPER
+LANG_ENGLISH        "Imperial Stormtrooper: A bit more heavily armed than your standard Stormtrooper, the Stormtroopers on the Star Destroyer come equipped with a Flechette in case they run into any Jedi."
+LANG_RUSSIAN         "Имперский штурмовик: Чуть мощнее вооружен, чем обычный штурмовик; служащие со Звезды Смерти экипируются гвоздометами на случай встречи с джедаем."
+
+REFERENCE           JEDI_DJEDI_APPRENTICE
+LANG_ENGLISH        "Dark Jedi Apprentice: This Dark Jedi is trained in both the lightsaber and dark side of the Force, creating a well-balanced combatant."
+LANG_RUSSIAN         "Ученик темного джедая: Этот темный джедай хорошо владеет как световым мечом, так и темной стороной Силы, что делает его отменным бойцом с равными слабыми и сильными сторонами."
+
+REFERENCE           JEDI_JEDI_APPRENTICE
+LANG_ENGLISH        "Jedi Apprentice: This Jedi is trained in both the lightsaber and light side of the Force, creating a well-balanced combatant.\n"
+LANG_RUSSIAN         "Ученик джедая: Этот джедай хорошо владеет как световым мечом, так и светлой стороной Силы, что делает его отменным бойцом с равными слабыми и сильными сторонами."
+
+REFERENCE           KORR_PRINT_1
+LANG_ENGLISH        "Temple gate under attack!"
+LANG_RUSSIAN         "Нападение на ворота храма!"
+
+REFERENCE           KORR_PRINT_2
+LANG_ENGLISH        "Green crystal room gate under attack!"
+LANG_RUSSIAN         "Ворота в комнату с зеленым кристаллом атакованы!"
+
+REFERENCE           KORR_PRINT_3
+LANG_ENGLISH        "Red crystal room gate under attack!"
+LANG_RUSSIAN         "Ворота в комнату с красным кристаллом атакованы!"
+
+REFERENCE           KORR_PRINT_4
+LANG_ENGLISH        "Blue crystal room gate under attack!"
+LANG_RUSSIAN         "Ворота в комнату с синим кристаллом атакованы!"
+
+REFERENCE           KORR_PRINT_5
+LANG_ENGLISH        "Scepter temple gate under attack!"
+LANG_RUSSIAN         "Нападение на ворота храма скипетра!"
+
+REFERENCE           KORR_PRINT_6
+LANG_ENGLISH        "Altar room gate under attack!"
+LANG_RUSSIAN         "Ворота в алтарную комнату с атакованы!"
+
+REFERENCE           KORR_PRINT_7
+LANG_ENGLISH        "Scepter has been dropped!"
+LANG_RUSSIAN         "Скипетр был брошен!"
+
+REFERENCE           KORR_PRINT_8
+LANG_ENGLISH        "Scepter has returned to its temple!"
+LANG_RUSSIAN         "Скипетр вернулся в свой храм!"
+
+REFERENCE           KORR_PRINT_9
+LANG_ENGLISH        "Red crystal has been dropped!"
+LANG_RUSSIAN         "Красный кристалл был брошен!"
+
+REFERENCE           KORR_PRINT_10
+LANG_ENGLISH        "Blue crystal has been dropped!"
+LANG_RUSSIAN         "Синий кристалл был брошен!"
+
+REFERENCE           KORR_PRINT_11
+LANG_ENGLISH        "Green crystal has been dropped!"
+LANG_RUSSIAN         "Зеленый кристалл был брошен!"
+
+REFERENCE           KORR_PRINT_12
+LANG_ENGLISH        "Red crystal returned to place of origin!"
+LANG_RUSSIAN         "Красный кристалл вернулся на свое место!"
+
+REFERENCE           KORR_PRINT_13
+LANG_ENGLISH        "Blue crystal returned to place of origin!"
+LANG_RUSSIAN         "Синий кристалл вернулся на свое место!"
+
+REFERENCE           KORR_PRINT_14
+LANG_ENGLISH        "Green crystal returned to place of origin!"
+LANG_RUSSIAN         "Зеленый кристалл вернулся на свое место!"
+
+REFERENCE           KORR_PRINT_15
+LANG_ENGLISH        "Green crystal has been taken from its room!"
+LANG_RUSSIAN         "Зеленый кристалл был вынесен из своего помещения!"
+
+REFERENCE           KORR_PRINT_16
+LANG_ENGLISH        "Blue crystal has been taken from its room!"
+LANG_RUSSIAN         "Синий кристалл был вынесен из своего помещения!"
+
+REFERENCE           KORR_PRINT_17
+LANG_ENGLISH        "Red crystal has been taken from its room!"
+LANG_RUSSIAN         "Красный кристалл был вынесен из своего помещения!"
+
+REFERENCE           KORR_PRINT_18
+LANG_ENGLISH        "Green crystal room breached!"
+LANG_RUSSIAN         "Комната с зеленым кристаллом взломана!"
+
+REFERENCE           KORR_PRINT_19
+LANG_ENGLISH        "Blue crystal room breached!"
+LANG_RUSSIAN         "Комната с синим кристаллом взломана!"
+
+REFERENCE           KORR_PRINT_20
+LANG_ENGLISH        "Red crystal room breached!"
+LANG_RUSSIAN         "Комната с красным кристаллом взломана!"
+
+REFERENCE           KORR_PRINT_21
+LANG_ENGLISH        "The shield over the coffin has been disabled!"
+LANG_RUSSIAN         "Щит над гробом был отключен!"
+
+REFERENCE           KORR_PUSHBACK
+LANG_ENGLISH        "Your team has been pushed back!"
+LANG_RUSSIAN         "Ваш отряд был отброшен!"
+
+REFERENCE           KORR_ADVANCE
+LANG_ENGLISH        "Your team has advanced!"
+LANG_RUSSIAN         "Ваш отряд продвинулся вперед!"
+
+REFERENCE           KORR_PRINT_22
+LANG_ENGLISH        "Altar room door destroyed!"
+LANG_RUSSIAN         "Дверь в алтарную комнату уничтожена!"
+
+REFERENCE           KORR_PRINT_23
+LANG_ENGLISH        "Rebels have taken the scepter from its temple!"
+LANG_RUSSIAN         "Повстанцы забрали скипетр из храма!"
+
+REFERENCE           KORR_PRINT_24
+LANG_ENGLISH        "Rebels have breached the scepter chamber!"
+LANG_RUSSIAN         "Повстанцы вломились в палату со скипетром!"
+
+REFERENCE           KORR_PRINT_25
+LANG_ENGLISH        "Valley gate has been destroyed!"
+LANG_RUSSIAN         "Ворота в долину были уничтожены!"
+
+REFERENCE           DESE_PRINT_1
+LANG_ENGLISH        "Rancor arena gate under attack!"
+LANG_RUSSIAN         "Нападение на ворота арены ранкора!"
+
+REFERENCE           DESE_PRINT_2
+LANG_ENGLISH        "Protocol droid part has been dropped!"
+LANG_RUSSIAN         "Деталь дроида была брошена!"
+
+REFERENCE           DESE_PRINT_3
+LANG_ENGLISH        "Station 3 under attack!"
+LANG_RUSSIAN         "Станция 3 подверглась нападению!"
+
+REFERENCE           DESE_PRINT_4
+LANG_ENGLISH        "Station 1 under attack!"
+LANG_RUSSIAN         "Станция 1 подверглась нападению!"
+
+REFERENCE           DESE_PRINT_5
+LANG_ENGLISH        "Station 2 under attack!"
+LANG_RUSSIAN         "Станция 2 подверглась нападению!"
+
+REFERENCE           DESE_PRINT_6
+LANG_ENGLISH        "Wall under attack!"
+LANG_RUSSIAN         "Стена подверглась нападению!"
+
+REFERENCE           DESE_PRINT_7
+LANG_ENGLISH        "Station 3 has been disabled!"
+LANG_RUSSIAN         "Станция 3 была выведена из строя!"
+
+REFERENCE           DESE_PRINT_8
+LANG_ENGLISH        "Station 1 has been disabled!"
+LANG_RUSSIAN         "Станция 1 была выведена из строя!"
+
+REFERENCE           DESE_PRINT_9
+LANG_ENGLISH        "Station 2 has been disabled!"
+LANG_RUSSIAN         "Станция 2 была выведена из строя!"
+
+REFERENCE           DESE_PRINT_10
+LANG_ENGLISH        "Protocol droid part has been taken!"
+LANG_RUSSIAN         "Деталь дроида была подобрана!"
+
+REFERENCE           DESE_PRINT_11
+LANG_ENGLISH        "Protocol droid part has been rescued!"
+LANG_RUSSIAN         "Деталь дроида была спасена!"
+
+REFERENCE           DEST_PRINT_1
+LANG_ENGLISH        "Turbo laser defenses under attack!"
+LANG_RUSSIAN         "Турболазерная оборона подверглась нападению!"
+
+REFERENCE           DEST_PRINT_2
+LANG_ENGLISH        "Solar ionization reactor under attack!"
+LANG_RUSSIAN         "Реактор солнечного ионизатора подвергся нападению!"
+
+REFERENCE           DEST_PRINT_3
+LANG_ENGLISH        "Shield generator domes under attack!"
+LANG_RUSSIAN         "Купола генератора щитов подверглись нападению!"
+
+REFERENCE           DEST_PRINT_4
+LANG_ENGLISH        "Communications array under attack!"
+LANG_RUSSIAN         "Блок коммуникации подвергся нападению!"
+
+REFERENCE           DEST_PRINT_5
+LANG_ENGLISH        "Secret data returned to data room!"
+LANG_RUSSIAN         "Секретные данные возвращены в помещение данных!"
+
+REFERENCE           DEST_PRINT_6
+LANG_ENGLISH        "Secret data has been dropped!"
+LANG_RUSSIAN         "Секретные данные были брошены!"
+
+REFERENCE           DEST_PRINT_7
+LANG_ENGLISH        "Exterior objectives destroyed, shields disabled!"
+LANG_RUSSIAN         "Внешние цели уничтожены, щиты отключены!"
+
+REFERENCE           DEST_PRINT_8
+LANG_ENGLISH        "Secret data taken from data room!"
+LANG_RUSSIAN         "Секретные данные были взяты из помещения данных!"
+
+REFERENCE           DEST_PRINT_9
+LANG_ENGLISH        "Data room under attack!"
+LANG_RUSSIAN         "Помещение данных атаковано!"
+
+REFERENCE           HOTH_PRINT_1
+LANG_ENGLISH        "Access codes have been dropped!"
+LANG_RUSSIAN         "Коды доступа были брошены!"
+
+REFERENCE           HOTH_PRINT_2
+LANG_ENGLISH        "Access codes have been returned!"
+LANG_RUSSIAN         "Коды доступа были возвращены!"
+
+REFERENCE           HOTH_PRINT_3
+LANG_ENGLISH        "Access codes have been stolen!"
+LANG_RUSSIAN         "Коды доступа были украдены!"
+
+REFERENCE           HOTH_PRINT_4
+LANG_ENGLISH        "Imperials have breached the command center!"
+LANG_RUSSIAN         "Имперцы вломились в командный центр!"
+
+REFERENCE           HOTH_PRINT_5
+LANG_ENGLISH        "Command center under attack!"
+LANG_RUSSIAN         "Командный центр подвергся нападению!"
+
+REFERENCE           HOTH_PRINT_6
+LANG_ENGLISH        "Hangar door to infirmary breached!"
+LANG_RUSSIAN         "Дверь ангара, ведущая в лазарет, взломана!"
+
+REFERENCE           HOTH_PRINT_7
+LANG_ENGLISH        "Ion cannon control station breached!"
+LANG_RUSSIAN         "Станция управления ионной пушкой взломана!"
+
+REFERENCE           HOTH_PRINT_8
+LANG_ENGLISH        "Shield generator under attack!"
+LANG_RUSSIAN         "Генератор щитов подвергся нападению!"
+
+REFERENCE           DEST_OBJ_1
+LANG_ENGLISH        "Destroy deflector shield generator domes!"
+LANG_RUSSIAN         "Уничтожьте купола генератора отражающих щитов!"
+
+REFERENCE           DEST_OBJ_1_FINAL
+LANG_ENGLISH        "Deflector shield generator domes destroyed!"
+LANG_RUSSIAN         "Купола генератора отражающих щитов уничтожены!"
+
+REFERENCE           DEST_OBJ_1_DESC
+LANG_ENGLISH        "Destroy the two shield generator domes!"
+LANG_RUSSIAN         "Уничтожьте два купола генератора отражающих щитов!"
+
+REFERENCE           DEST_OBJ_2
+LANG_ENGLISH        "Destroy the solar ionization reactor!"
+LANG_RUSSIAN         "Уничтожьте реактор солнечного ионизатора!"
+
+REFERENCE           DEST_OBJ_2_FINAL
+LANG_ENGLISH        "Solar ionization reactor destroyed!"
+LANG_RUSSIAN         "Реактор солнечного ионизатора уничтожен!"
+
+REFERENCE           DEST_OBJ_3
+LANG_ENGLISH        "Destroy the communcations array!"
+LANG_RUSSIAN         "Уничтожьте блок коммуникаций!"
+
+REFERENCE           DEST_OBJ_3_FINAL
+LANG_ENGLISH        "Communcations tower destroyed!"
+LANG_RUSSIAN         "Передающая вышка уничтожена!"
+
+REFERENCE           DEST_OBJ_4
+LANG_ENGLISH        "Destroy turbolaser defenses!"
+LANG_RUSSIAN         "Уничтожьте защитные турболазеры!"
+
+REFERENCE           DEST_OBJ_4_FINAL
+LANG_ENGLISH        "Turbolaser defenses destroyed!"
+LANG_RUSSIAN         "Защитные турболазеры уничтожены!"
+
+REFERENCE           DEST_OBJ_4_DESC
+LANG_ENGLISH        "Destroy all of the turbolaser defenses located around the Star Destroyer!"
+LANG_RUSSIAN         "Уничтожьте все защитные турболазеры в окрестностях Звездного Разрушителя!"
+
+REFERENCE           DEST_OBJ_5
+LANG_ENGLISH        "Land shuttle in main docking bay to advance position!"
+LANG_RUSSIAN         "Чтобы перейти на позиции, посадите челнок в главном доке!"
+
+REFERENCE           DEST_OBJ_5_FINAL
+LANG_ENGLISH        "Shuttle has landed, troops advancing!"
+LANG_RUSSIAN         "Челнок произвел посадку, пехота продвигается вперед!"
+
+REFERENCE           DEST_OBJ_5_DESC
+LANG_ENGLISH        "Land the Lambda shuttle in the main docking bay so your troops can advance!"
+LANG_RUSSIAN         "Посадите челнок Лямбда в главном стыковочном доке, чтобы ваши солдаты смогли двигаться вперед!"
+
+REFERENCE           DEST_OBJ_6
+LANG_ENGLISH        "Disable the tractor beam!"
+LANG_RUSSIAN         "Отключите притягивающий луч!"
+
+REFERENCE           DEST_OBJ_6_FINAL
+LANG_ENGLISH        "Tractor beam disabled, the Falcon has escaped!"
+LANG_RUSSIAN         "Притягивающий луч отключен, Сокол ушел!"
+
+REFERENCE           DEST_OBJ_6_DESC
+LANG_ENGLISH        "Disable the tractor beam so the Millenium Falcon can escape!"
+LANG_RUSSIAN         "Отключите притягивающий луч, чтобы Тысячелетний Сокол смог уйти!"
+
+REFERENCE           DEST_OBJ_7
+LANG_ENGLISH        "Return the secret data to your shuttle!"
+LANG_RUSSIAN         "Принесите секретные данные на свой челнок!"
+
+REFERENCE           DEST_OBJ_7_FINAL
+LANG_ENGLISH        "Secret data has been recovered!"
+LANG_RUSSIAN         "Секретные данные получены!"
+
+REFERENCE           DEST_OBJ_7_DESC
+LANG_ENGLISH        "Make your way into the data room, capture the secret data, and return to your shuttle!"
+LANG_RUSSIAN         "Пройдите в помещение данных, захватите секретные данные, и возвращайтесь на челнок!"
+
+REFERENCE           DEST_OBJ_8
+LANG_ENGLISH        "Complete interior objectives to escape with the secret data"
+LANG_RUSSIAN         "Завершите внутренние задачи, чтобы убежать с секретными данными"
+
+REFERENCE           DEST_OBJ_8_FINAL
+LANG_ENGLISH        "Rebels have escaped with the data!"
+LANG_RUSSIAN         "Повстанцы сбежали вместе с данными!"
+
+REFERENCE           DEST_OBJ_8_DESC
+LANG_ENGLISH        "After completing the interior objectives, you have to escape!"
+LANG_RUSSIAN         "После выполнения внутренних задач вы должны сбежать!"
+
+REFERENCE           DEST_OBJ_WIN_REB
+LANG_ENGLISH        "The Rebels have escaped with the secret data!"
+LANG_RUSSIAN         "Повстанцы сбежали вместе с секретными данными!"
+
+REFERENCE           DEST_OBJ_LOSE_REB
+LANG_ENGLISH        "The Rebels have failed to escape with the secret data!"
+LANG_RUSSIAN         "Повстанцам не удалось сбежать вместе с секретными данными!"
+
+REFERENCE           DEST_REB_BRIEF
+LANG_ENGLISH        "Destroy the exterior objectives, disable the tractor beam and escape with the secret data!"
+LANG_RUSSIAN         "Уничтожьте внешние цели, отключите притягивающий луч и уходите с секретными данными!"
+
+REFERENCE           DEST_IMP_OBJ_1
+LANG_ENGLISH        "Defend the Star Destroyer!"
+LANG_RUSSIAN         "Защищайте Звездный Разрушитель!"
+
+REFERENCE           DEST_IMP_WIN
+LANG_ENGLISH        "The Star Destroyer is safe!"
+LANG_RUSSIAN         "Звездный Разрушитель спасен!"
+
+REFERENCE           DEST_IMP_BRIEF
+LANG_ENGLISH        "Defend the Star Destroyer against the Rebel attackers. Don't let the Falcon escape and don't let them steal the data!"
+LANG_RUSSIAN         "Защищайте Звездный Разрушитель от нападения повстанцев! Не дайте Соколу уйти и сохраните данные!"
+
+REFERENCE           DEST_IMP_OBJ_1_WIN
+LANG_ENGLISH        "The Imperials have captured the Falcon!"
+LANG_RUSSIAN         "Имперцы захватили Сокол!"
+
+REFERENCE           DEST_IMP_OBJ_1_LOSE
+LANG_ENGLISH        "The Rebels have saved the Falcon and escaped with the data!"
+LANG_RUSSIAN         "Повстанцы спасли Сокол и сбежали вместе с данными!"
+
+REFERENCE           DEST_OBJ_1_BRIEFING
+LANG_ENGLISH        "Defend the Star Destroyer from the Rebel attackers!"
+LANG_RUSSIAN         "Защищайте Звездный Разрушитель от нападения повстанцев!"
+
+REFERENCE           DESE_OBJ_1
+LANG_ENGLISH        "Breach the security wall!"
+LANG_RUSSIAN         "Пробейте стену безопасности!"
+
+REFERENCE           DESE_OBJ_1_FINAL
+LANG_ENGLISH        "Security wall has been breached!"
+LANG_RUSSIAN         "Стена безопасности была пробита!"
+
+REFERENCE           DESE_OBJ_1_DESC
+LANG_ENGLISH        "There are two weakened areas in the wall; destroy either area to advance your troops!"
+LANG_RUSSIAN         "В стене есть две ослабленные области, уничтожьте их,  и ваши солдаты смогут пройти!"
+
+REFERENCE           DESE_OBJ_2
+LANG_ENGLISH        "Destroy all communications and security systems to gain access to the arena!"
+LANG_RUSSIAN         "Чтобы получить доступ к арене, уничтожьте все системы связи и безопасности!"
+
+REFERENCE           DESE_OBJ_2_FINAL
+LANG_ENGLISH        "Systems destroyed, the arena doors are open!"
+LANG_RUSSIAN         "Системы уничтожены, двери арены открыты!"
+
+REFERENCE           DESE_OBJ_2_DESC
+LANG_ENGLISH        "The arena doors are protected by the city's security systems. Destroy three control panels in each of the three stations to gain entrance."
+LANG_RUSSIAN         "Двери арены защищены городскими системами безопасности. Уничтожьте три панели управления на трех станциях, и вы получите доступ."
+
+REFERENCE           DESE_OBJ_3
+LANG_ENGLISH        "Destroy the arena gate to advance your troops!"
+LANG_RUSSIAN         "Уничтожьте ворота арены, чтобы пропустить своих солдат!"
+
+REFERENCE           DESE_OBJ_3_FINAL_REB
+LANG_ENGLISH        "Arena gate destroyed!"
+LANG_RUSSIAN         "Ворота арены уничтожены!"
+
+REFERENCE           DESE_OBJ_3_FINAL_MERC
+LANG_ENGLISH        "Arena gate destroyed!"
+LANG_RUSSIAN         "Ворота арены уничтожены!"
+
+REFERENCE           DESE_OBJ_3_DESC
+LANG_ENGLISH        "Destroy the arena gate to get into the city!"
+LANG_RUSSIAN         "Уничтожьте ворота арены, чтобы попасть в город!"
+
+REFERENCE           DESE_OBJ_4
+LANG_ENGLISH        "Disable the shields in the control tower!"
+LANG_RUSSIAN         "Отключите щиты в диспетчерской вышке!"
+
+REFERENCE           DESE_OBJ_4_FINAL
+LANG_ENGLISH        "Shields have been disabled!"
+LANG_RUSSIAN         "Щиты отключены!"
+
+REFERENCE           DESE_OBJ_4_DESC
+LANG_ENGLISH        "The airbase doors are protected by a shield, gain access to the control tower and activate the panel to disable it."
+LANG_RUSSIAN         "Двери авиабазы защищены щитом, получите доступ к диспетчерской вышке и включите панель, чтобы отключить силовое поле."
+
+REFERENCE           DESE_OBJ_5
+LANG_ENGLISH        "Find and bring all the protocol droid parts back to the Falcon!"
+LANG_RUSSIAN         "Найдите принесите на Сокол все запчасти от дроида-референта!"
+
+REFERENCE           DESE_OBJ_5_FINAL
+LANG_ENGLISH        "Protocol droid has been rescued!"
+LANG_RUSSIAN         "Дроид-референт был спасен!"
+
+REFERENCE           DESE_OBJ_5_DESC
+LANG_ENGLISH        "A protocol droid was dismantled for spare parts after its capture. Find all four missing pieces and bring them back to the Falcon!"
+LANG_RUSSIAN         "После захвата дроид-референт был разобран на запчасти. Найдите все недостающие части и принесите их на Сокол!"
+
+REFERENCE           DESE_OBJ_REB_WIN
+LANG_ENGLISH        "The Rebels have rescued the protocol droid!"
+LANG_RUSSIAN         "Повстанцы спасли дроида-референта!"
+
+REFERENCE           DESE_FINAL_REB_LOSE
+LANG_ENGLISH        "The Rebels have failed to rescue the protocol droid!"
+LANG_RUSSIAN         "Повстанцы не смогли спасти дроида-референта!"
+
+REFERENCE           DESE_MERC_OBJ_2
+LANG_ENGLISH        "Defend the 3 stations!"
+LANG_RUSSIAN         "Защищайте 3 станции!"
+
+REFERENCE           DESE_MERC_OBJ_2_DESC
+LANG_ENGLISH        "There are 3 communications and security panels in 3 different stations, don't let the Rebels destroy them!"
+LANG_RUSSIAN         "На разных станциях находятся три коммуникационных панели и три панели безопасности, не дайте повстанцам уничтожить их!"
+
+REFERENCE           DESE_MERC_OBJ_3
+LANG_ENGLISH        "Defend the arena gate!"
+LANG_RUSSIAN         "Защищайте ворота арены!"
+
+REFERENCE           DESE_MERC_OBJ_3_DESC
+LANG_ENGLISH        "The only way for the Rebels to reach the starpad is through the arena gate; don't let them destroy it!"
+LANG_RUSSIAN         "Повстанцы могут добраться до взлетной площадки только через ворота арены - не дайте их уничтожить!"
+
+REFERENCE           DESE_MERC_OBJ_4
+LANG_ENGLISH        "Defend the control tower!"
+LANG_RUSSIAN         "Защищайте диспетчерскую вышку!"
+
+REFERENCE           DESE_MERC_OBJ_4_DESC
+LANG_ENGLISH        "There are two doors protected by a shield, defend the shield control panel in the control tower so the Rebels cannot enter!"
+LANG_RUSSIAN         "Две двери защищены щитом, защищайте панель управления щитом в диспетчерской вышке, чтобы повстанцы не смогли войти!"
+
+REFERENCE           DESE_MERC_OBJ_5
+LANG_ENGLISH        "Defend the protocol droid parts!"
+LANG_RUSSIAN         "Защищайте запчасти дроида-референта!"
+
+REFERENCE           DESE_MERC_OBJ_5_DESC
+LANG_ENGLISH        "The Rebels are trying to retrieve a stolen protocol droid. Defend the missing pieces and don't let them return the parts to the Falcon!"
+LANG_RUSSIAN         "Повстанцы пытаются забрать украденного дроида-референта. Защищайте недостающие детали и не дайте повстанцам забрать их на Сокол!"
+
+REFERENCE           DESE_REBEL_BRIEFING
+LANG_ENGLISH        "Make your way through the city to find and recover the protocol droid parts!"
+LANG_RUSSIAN         "Пройдите через город и разыщите детали дроида-референта!"
+
+REFERENCE           DESE_MERC_OBJ_1
+LANG_ENGLISH        "Defend the weakened wall!"
+LANG_RUSSIAN         "Защищайте ослабленную стену!"
+
+REFERENCE           DESE_MERC_WINROUND
+LANG_ENGLISH        "You have succesfully completed your mission!"
+LANG_RUSSIAN         "Вы успешно справились со своим заданием!"
+
+REFERENCE           DESE_MERCWIN_REBLOSE
+LANG_ENGLISH        "You have failed to complete your mission!"
+LANG_RUSSIAN         "Вы не справились со своим заданием!"
+
+REFERENCE           DESE_MERC_OBJ_1_DESC
+LANG_ENGLISH        "Defend the weakened wall sections so the Rebels cannot get through!"
+LANG_RUSSIAN         "Защищайте ослабленные участки стены, чтобы повстанцы не пробились через нее!"
+
+REFERENCE           HOTH_IMP_OBJ_1_NEW
+LANG_ENGLISH        "Advance the AT-ST through the wall to advance!"
+LANG_RUSSIAN         "Проведите AT-ST через стену, чтобы двигаться дальше!"
+
+REFERENCE           HOTH_IMP_OBJ_1_NEW_DESC
+LANG_ENGLISH        "An attacking AT-AT has taken out the blast door on the wall, move the AT-ST through to advance!"
+LANG_RUSSIAN         "Нападающий AT-AT сделал пролом в стене, проведите AT-ST через проход!"
+
+REFERENCE           HOTH_OBJ_1
+LANG_ENGLISH        "Extend the bridge to advance the AT-ST!"
+LANG_RUSSIAN         "Выдвиньте мост, чтобы AT-ST прошел дальше!"
+
+REFERENCE           HOTH_OBJ_1_FINAL
+LANG_ENGLISH        "Bridge extended!"
+LANG_RUSSIAN         "Мост выдвинут!"
+
+REFERENCE           HOTH_OBJ_1_DESC
+LANG_ENGLISH        "The AT-ST cannot cross the crevice until the bridge is extended. Make your way to the ground bunker below the command center to extend it!"
+LANG_RUSSIAN         "AT-ST не может пересечь трещину, пока не будет выдвинут мост. Чтобы вдвинуть его, вам нужно добраться до подземного бункера под центром управления!"
+
+REFERENCE           HOTH_OBJ_2
+LANG_ENGLISH        "Destroy the shield generator to disable the shield!"
+LANG_RUSSIAN         "Уничтожьте генератор щита, чтобы вывести из строя щит!"
+
+REFERENCE           HOTH_OBJ_2_IMP_FINAL
+LANG_ENGLISH        "Shield generator destroyed, your team has advanced!"
+LANG_RUSSIAN         "Генератор щита уничтожен, ваш отряд продвинулся вперед!"
+
+REFERENCE           HOTH_OBJ_2_REB_FINAL
+LANG_ENGLISH        "Shield generator destroyed!"
+LANG_RUSSIAN         "Генератор щита уничтожен!"
+
+REFERENCE           HOTH_OBJ_2_DESC
+LANG_ENGLISH        "The door  that leads to the data room is protected by an energy shield, once it is disabled the door can be accessed."
+LANG_RUSSIAN         "Дверь, ведущая в комнату данных, защищена энергетическим полем, если его отключить, вы сможете пройти."
+
+REFERENCE           HOTH_OBJ_3
+LANG_ENGLISH        "Steal the hangar access codes from the droid to enter the hangar!"
+LANG_RUSSIAN         "Украдите коды доступа в ангар из дроида, чтобы войти в ангар!"
+
+REFERENCE           HOTH_OBJ_3_IMP_FINAL
+LANG_ENGLISH        "Hangar doors unlocked, your team has advanced!"
+LANG_RUSSIAN         "Двери ангара открыты, ваш отряд продвинулся вперед!"
+
+REFERENCE           HOTH_OBJ_3_REB_FINAL
+LANG_ENGLISH        "Hangar doors unlocked!"
+LANG_RUSSIAN         "Двери ангара открыты!"
+
+REFERENCE           HOTH_OBJ_3_DESC
+LANG_ENGLISH        "The droid in the data room contains access codes for  the main base. Destroy the droid, and bring its head to the command post near the hangar!"
+LANG_RUSSIAN         "Дроид в комнате данных содержит коды доступа на главную базу. Уничтожьте дроида и принесите его голову на пост управления возле ангара!"
+
+REFERENCE           HOTH_OBJ_4
+LANG_ENGLISH        "Breach the infirmary to advance your troops!"
+LANG_RUSSIAN         "Пробейтесь в лазарет, чтобы пропустить своих солдат!"
+
+REFERENCE           HOTH_OBJ_4_IMP_FINAL
+LANG_ENGLISH        "Infirmary breached, your team has advanced!"
+LANG_RUSSIAN         "Вы пробились в лазарет, ваш отряд продвинулся вперед!"
+
+REFERENCE           HOTH_OBJ_4_REB_FINAL
+LANG_ENGLISH        "Infirmary breached, your team has been pushed back!"
+LANG_RUSSIAN         "Вы пробились в лазарет, ваш отряд был отброшен!"
+
+REFERENCE           HOTH_OBJ_4_DESC
+LANG_ENGLISH        "Breach the infirmary to push the enemy back!"
+LANG_RUSSIAN         "Пробейтесь в лазарет, чтобы отбросить врага!"
+
+REFERENCE           HOTH_OBJ_5
+LANG_ENGLISH        "Destroy the command center!"
+LANG_RUSSIAN         "Уничтожьте центр управления!"
+
+REFERENCE           HOTH_OBJ_5_FINAL
+LANG_ENGLISH        "Communications center destroyed!"
+LANG_RUSSIAN         "Центр коммуникации уничтожен!"
+
+REFERENCE           HOTH_OBJ_5_DESC
+LANG_ENGLISH        "Destroy the command center  to win the battle!"
+LANG_RUSSIAN         "Уничтожьте центр управления, чтобы выиграть сражение!"
+
+REFERENCE           HOTH_IMP_WIN_FINAL
+LANG_ENGLISH        "The Imperials have completed their mission!"
+LANG_RUSSIAN         "Имперцы справились со своим заданием!"
+
+REFERENCE           HOTH_IMP_LOSE_FINAL
+LANG_ENGLISH        "The Imperials have not completed their mission!"
+LANG_RUSSIAN         "Имперцы не справились со своим заданием!"
+
+REFERENCE           HOTH_IMPERIAL_BRIEF
+LANG_ENGLISH        "The Imperials must invade the Rebel base and destroy the command center."
+LANG_RUSSIAN         "Имперцы должны вторгнуться на базу Сопротивления и уничтожить центр управления."
+
+REFERENCE           HOTH_REBE_OBJ_1
+LANG_ENGLISH        "Defend the outer wall!"
+LANG_RUSSIAN         "Защищайте внешнюю стену!"
+
+REFERENCE           HOTH_REBE_OBJ_1_DESC
+LANG_ENGLISH        "An Imperial AT-AT has taken out the outer blast door, defend it against the AT-ST!	"
+LANG_RUSSIAN         "Имперский AT-AT выломал внешнюю дверь, защищайте ее от AT-ST!	"
+
+REFERENCE           HOTH_REBE_OBJ_2
+LANG_ENGLISH        "Defend the bridge control room!"
+LANG_RUSSIAN         "Защищайте пункт управления мостом!"
+
+REFERENCE           HOTH_REBE_OBJ_2_DESC
+LANG_ENGLISH        "The bridge is controlled in a bunker under the command center, stop the Imperials from accessing it!"
+LANG_RUSSIAN         "Мост управляется из бункера под центром управления, не пускайте туда имперцев!"
+
+REFERENCE           HOTH_REBE_OBJ_3
+LANG_ENGLISH        "Defend the shield generator!"
+LANG_RUSSIAN         "Защищайте генератор щита!"
+
+REFERENCE           HOTH_REBE_OBJ_3_DESC
+LANG_ENGLISH        "The shield generator protects the entry to the data room; stop the Imperials from destroying the generator!"
+LANG_RUSSIAN         "Генератор щита защищает вход в помещение данных, не позволяйте имперцам уничтожить его!"
+
+REFERENCE           HOTH_REBE_OBJ_4
+LANG_ENGLISH        "Defend the access codes!"
+LANG_RUSSIAN         "Защищайте коды доступа!"
+
+REFERENCE           HOTH_REBE_OBJ_4_DESC
+LANG_ENGLISH        "The droid in the data room contains access codes to the main base. Stop the Imperials from getting the droid's head!	"
+LANG_RUSSIAN         "Дроид в комнате данных содержит коды доступа на главную базу. Не дайте имперцам заполучить голову дроида!	"
+
+REFERENCE           HOTH_REBE_OBJ_5
+LANG_ENGLISH        "Defend the infirmary!"
+LANG_RUSSIAN         "Защищайте лазарет!"
+
+REFERENCE           HOTH_REBE_OBJ_5_DESC
+LANG_ENGLISH        "The only route to the command center is through the infirmary. Prevent the Imperials from advancing by defending the infirmary!	"
+LANG_RUSSIAN         "Единственная дорога в центр управления проходит через лазарет. Не дайте имперцам пройти и держите лазарет!	"
+
+REFERENCE           HOTH_REBE_OBJ_6
+LANG_ENGLISH        "Defend the command center!"
+LANG_RUSSIAN         "Защищайте центр управления!"
+
+REFERENCE           HOTH_REBE_OBJ_6_DESC
+LANG_ENGLISH        "Keep the Imperials from destroying the command center!"
+LANG_RUSSIAN         "Не дайте имперцам уничтожить центр управления!"
+
+REFERENCE           HOTH_REBEL_OBJ_1_WIN
+LANG_ENGLISH        "The command center is safe!"
+LANG_RUSSIAN         "Центр управления в безопасности!"
+
+REFERENCE           HOTH_REBEL_OBJ_1_BRIEF
+LANG_ENGLISH        "The Imperials have started an assault to knock out the Rebel command center;\nyou must not let them destroy it!"
+LANG_RUSSIAN         "Имперцы перешли в наступление на центр управления повстанцев;\nвы должны защитить его!"
+
+REFERENCE           HOTH_REBELS_WIN_MISSION
+LANG_ENGLISH        "The Rebels have successfully completed their mission!"
+LANG_RUSSIAN         "Повстанцы успешно справились со своим заданием!"
+
+REFERENCE           HOTH_REBELS_FAILED_MISSION
+LANG_ENGLISH        "The Rebels have failed to complete their mission!"
+LANG_RUSSIAN         "Повстанцы не справились со своим заданием!"
+
+REFERENCE           HOTH_REBEL_MAIN_BRIEFING
+LANG_ENGLISH        "Defend the base at all costs and do not let the Imperials destroy the command center!"
+LANG_RUSSIAN         "Любой ценой защитите базу и не позвольте имперцам разрушить центр управления!"
+
+REFERENCE           HOTH_OBJ_1_NEW_IMP_FINAL
+LANG_ENGLISH        "The wall has been breached.\nYou've advanced!"
+LANG_RUSSIAN         "Стена безопасности была пробита.\n Вы наступаете!"
+
+REFERENCE           HOTH_OBJ_1_NEW_REB_FINAL
+LANG_ENGLISH        "The wall has been breached.\nYou've been pushed back!"
+LANG_RUSSIAN         "Стена безопасности была пробита.\n Вас отбросили!"
+
+REFERENCE           HVY_MERC_ASSAULT
+LANG_ENGLISH        "Merc Heavy Weapons: This Trandoshan heavy weapons member is slow, but comes heavily armed with a Concussion Rifle."
+LANG_RUSSIAN         "Тяжело вооруженный наемник: Этот представитель тяжелой пехоты с Трандошана неповоротлив, но вооружен оглушающей винтовкой."
+
+REFERENCE           INF_JEDI_WARRIOR
+LANG_ENGLISH        "Jedi Warrior: Trained in the art of double-bladed lightsaber combat, his kicks can surprise enemy lightsaber duelists. This Jedi is also trained to use Force Absorb and Force Protect. "
+LANG_RUSSIAN         "Воитель джедай: Он обучен искусству боя с двулезвийным оружием, его выпады могут поразить любого фехтовальщика на световых мечах. К тому же этот джедай владеет Поглощением Силы и Защитой Силы. "
+
+REFERENCE           HVY_JEDI_KNIGHT
+LANG_ENGLISH        "Jedi Knight: The Jedi Knight has trained in all three styles of single-lightsaber combat and has a wide range of useful powers, including Force Jump 3."
+LANG_RUSSIAN         "Рыцарь джедай: Рыцарь джедай владеет всеми тремя стилями фехтования одним мечом и обладает большим набором способностей в Силе, включая и Прыжок Силы 3."
+
+REFERENCE           DEMO_JEDI_DEMO
+LANG_ENGLISH        "Jedi Demolitionist:  A very specialized Jedi, trained to use explosives in addition to a single lightsaber, medium combat style, the demolitionist has only a few low-level powers."
+LANG_RUSSIAN         "Разрушитель джедай: Очень специфический джедай, обученный взрывному делу и фехтованию одним световым мечом, его стиль фехтования - средний, способности в Силе у него слабые и их мало."
+
+REFERENCE           INF_DJEDI_MAULER
+LANG_ENGLISH        "Dark Jedi Mauler: Forged into a killing machine, the Dark Jedi Mauler combines mastery of the double-bladed lightsaber with Force Rage and Force Grip to obliterate all opposition."
+LANG_RUSSIAN         "Темный джедай - мучитель: Закаленная машина смерти, темный джедай - мучитель совмещает мастерство фехтования глефой с Гневом Силы и Хваткой Силы, что позволяет ему сломить любое сопротивление."
+
+REFERENCE           DEMO_DJEDI_DEMO
+LANG_ENGLISH        "Dark Jedi Demolitionist: This Dark Jedi has been instructed in the ways of the single lightsaber strong combat style and the use of explosives."
+LANG_RUSSIAN         "Темный джедай - разрушитель: Этот темный джедай обучен фехтованию одним световым мечом в силовом стиле, а также обращению со взрывчаткой."
+
+REFERENCE           SUPP_DJEDI_TECH
+LANG_ENGLISH        "Dark Jedi Cultist: Trained to use the single saber medium and strong combat styles, this cultist has multiple purposes. He has Force Jump 3 and Team Energize 3, which can restore Force power to his teammates."
+LANG_RUSSIAN         "Темный джедай - последователь культа: Обученный среднему и сильному стилям фехтования одним световым мечом, этот последователь культа универсален. Он он обладает способностями прыжок силы и зарядка силы 3 ранга, что позволяет восстанавливать запасы Силы его товарищей по отряду."
+
+REFERENCE           HOTH_LOC_1
+LANG_ENGLISH        "Wrecked AT-AT"
+LANG_RUSSIAN         "Разбитый AT-AT"
+
+REFERENCE           HOTH_LOC_2
+LANG_ENGLISH        "Trenches"
+LANG_RUSSIAN         "Окопы"
+
+REFERENCE           HOTH_LOC_3
+LANG_ENGLISH        "Barricade"
+LANG_RUSSIAN         "Заграждение"
+
+REFERENCE           HOTH_LOC_4
+LANG_ENGLISH        "Ion Control Room"
+LANG_RUSSIAN         "Щит управления ионной пушкой"
+
+REFERENCE           HOTH_LOC_5
+LANG_ENGLISH        "Bridge"
+LANG_RUSSIAN         "Мост"
+
+REFERENCE           HOTH_LOC_6
+LANG_ENGLISH        "Wampa Cave"
+LANG_RUSSIAN         "Пещера вампы"
+
+REFERENCE           HOTH_LOC_7
+LANG_ENGLISH        "Data Room"
+LANG_RUSSIAN         "Помещение данных"
+
+REFERENCE           HOTH_LOC_8
+LANG_ENGLISH        "Hangar Door Control Room"
+LANG_RUSSIAN         "Щит управления дверью ангара"
+
+REFERENCE           HOTH_LOC_9
+LANG_ENGLISH        "Main Hangar Bay"
+LANG_RUSSIAN         "Главная платформа ангара"
+
+REFERENCE           HOTH_LOC_10
+LANG_ENGLISH        "Bridge Control Room"
+LANG_RUSSIAN         "Щит управления мостом"
+
+REFERENCE           HOTH_LOC_11
+LANG_ENGLISH        "Infirmary"
+LANG_RUSSIAN         "Лазарет"
+
+REFERENCE           HOTH_LOC_12
+LANG_ENGLISH        "Command Center"
+LANG_RUSSIAN         "Центр управления"
+
+REFERENCE           DESE_LOC_1
+LANG_ENGLISH        "City Entrance"
+LANG_RUSSIAN         "Вход в город"
+
+REFERENCE           DESE_LOC_2
+LANG_ENGLISH        "Security Wall"
+LANG_RUSSIAN         "Стена безопасности"
+
+REFERENCE           DESE_LOC_3
+LANG_ENGLISH        "Station 1"
+LANG_RUSSIAN         "Станция 1"
+
+REFERENCE           DESE_LOC_4
+LANG_ENGLISH        "Station 2"
+LANG_RUSSIAN         "Станция 2"
+
+REFERENCE           DESE_LOC_5
+LANG_ENGLISH        "Station 3"
+LANG_RUSSIAN         "Станция 3"
+
+REFERENCE           DESE_LOC_6
+LANG_ENGLISH        "Arena Entrance"
+LANG_RUSSIAN         "Вход на арену"
+
+REFERENCE           DESE_LOC_7
+LANG_ENGLISH        "Arena"
+LANG_RUSSIAN         "Арена"
+
+REFERENCE           DESE_LOC_8
+LANG_ENGLISH        "Protocol Droid Leg Room"
+LANG_RUSSIAN         "Комната с ногой дроида-референта"
+
+REFERENCE           DESE_LOC_9
+LANG_ENGLISH        "Protocol Droid Torso Room"
+LANG_RUSSIAN         "Комната с туловищем дроида-референта"
+
+REFERENCE           DESE_LOC_10
+LANG_ENGLISH        "Protocol Droid Head Room"
+LANG_RUSSIAN         "Комната с головой дроида-референта"
+
+REFERENCE           DESE_LOC_11
+LANG_ENGLISH        "Protocol Droid Arm Room"
+LANG_RUSSIAN         "Комната с манипулятором дроида-референта"
+
+REFERENCE           DESE_LOC_12
+LANG_ENGLISH        "Command Tower"
+LANG_RUSSIAN         "Диспетчерская вышка"
+
+REFERENCE           DESE_LOC_13
+LANG_ENGLISH        "Falcon"
+LANG_RUSSIAN         "Сокол"
+
+REFERENCE           KORR_LOC_1
+LANG_ENGLISH        "Lava Pit"
+LANG_RUSSIAN         "Яма с лавой"
+
+REFERENCE           KORR_LOC_2
+LANG_ENGLISH        "Temple Entrance"
+LANG_RUSSIAN         "Вход в храм"
+
+REFERENCE           KORR_LOC_3
+LANG_ENGLISH        "Pedestal Platform"
+LANG_RUSSIAN         "Постамент"
+
+REFERENCE           KORR_LOC_4
+LANG_ENGLISH        "Red Crystal Room"
+LANG_RUSSIAN         "Комната с красным кристаллом"
+
+REFERENCE           KORR_LOC_5
+LANG_ENGLISH        "Green Crystal Room"
+LANG_RUSSIAN         "Комната с зеленым кристаллом"
+
+REFERENCE           KORR_LOC_6
+LANG_ENGLISH        "Blue Crystal Room"
+LANG_RUSSIAN         "Комната с синим кристаллом"
+
+REFERENCE           KORR_LOC_7
+LANG_ENGLISH        "Valley Entrance Gate"
+LANG_RUSSIAN         "Ворота, ведущие в долину"
+
+REFERENCE           KORR_LOC_8
+LANG_ENGLISH        "Scepter Room"
+LANG_RUSSIAN         "Комната со скипетром"
+
+REFERENCE           KORR_LOC_9
+LANG_ENGLISH        "Altar Room"
+LANG_RUSSIAN         "Комната с алтарем"
+
+REFERENCE           KORR_LOC_10
+LANG_ENGLISH        "Coffin Platform"
+LANG_RUSSIAN         "Платформа с гробом"
+
+REFERENCE           DESE_TEAM1_REBELS
+LANG_ENGLISH        "Rebels"
+LANG_RUSSIAN         "Повстанцы"
+
+REFERENCE           DESE_TEAM2_MERCS
+LANG_ENGLISH        "Mercs"
+LANG_RUSSIAN         "Наемники"
+
+REFERENCE           HOTH_TEAM1_IMPERIAL
+LANG_ENGLISH        "Imperial"
+LANG_RUSSIAN         "Имперский"
+
+REFERENCE           HOTH_TEAM2_REBEL
+LANG_ENGLISH        "Rebel"
+LANG_RUSSIAN         "Мятежный"
+
+REFERENCE           KORR_TEAM1_LIGHTJEDI
+LANG_ENGLISH        "Light Jedi"
+LANG_RUSSIAN         "Светлый джедай"
+
+REFERENCE           KORR_TEAM2_DARKJEDI
+LANG_ENGLISH        "Dark Jedi"
+LANG_RUSSIAN         "Темный джедай"
+
+
+ENDMARKER

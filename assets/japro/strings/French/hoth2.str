@@ -1,0 +1,94 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           09JAK004
+LANG_ENGLISH        "Hmmm. Nothing. Is Master Skywalker wrong about this place?"
+LANG_FRENCH         "Хммм. Ни черта. Может, мастер Скайуокер ошибался насчет этого места?"
+
+REFERENCE           09JAK005
+NOTES               "(sees something in the distance)"
+LANG_ENGLISH        "What's that?"
+LANG_FRENCH         "Что это было?"
+
+REFERENCE           09JAK006
+LANG_ENGLISH        "Guess I'd better check it out."
+LANG_FRENCH         "Думаю, лучше проверить."
+
+REFERENCE           09JAK007
+NOTES               "(looks around)"
+LANG_ENGLISH        "I can probably cover more distance with one of those tauntauns."
+LANG_FRENCH         "Может, я одолею большее расстояние с помощью этих тоон-тоон."
+
+REFERENCE           09JAK008
+NOTES               "(catches a tauntaun)"
+LANG_ENGLISH        "Gotcha!"
+LANG_FRENCH         "Попался!"
+
+REFERENCE           09JAK009
+LANG_ENGLISH        "Imperials? Here? Maybe Master Luke was right after all."
+LANG_FRENCH         "Имперцы? Здесь? Похоже, мастер Люк все-же был прав."
+
+REFERENCE           09JAK010
+NOTES               "(leaving his tauntaun)"
+LANG_ENGLISH        "Thanks for the ride."
+LANG_FRENCH         "Спасибо за поездку."
+
+REFERENCE           09JAK011
+NOTES               "(to wampa)"
+LANG_ENGLISH        "I don't want to hurt you!"
+LANG_FRENCH         "Я не хочу делать тебе больно!"
+
+REFERENCE           09JAK012
+NOTES               "(freezing)"
+LANG_ENGLISH        "So... cold."
+LANG_FRENCH         "Так... холодно."
+
+REFERENCE           09JAK013
+NOTES               "(freezing)"
+LANG_ENGLISH        "I'm... freezing."
+LANG_FRENCH         "Я... замерзаю."
+
+REFERENCE           09JAK014
+NOTES               "(freezes to death)"
+LANG_ENGLISH        "Got t-to get..."
+LANG_FRENCH         "Нужно добра-а-аться..."
+
+REFERENCE           09JAK015
+LANG_ENGLISH        "There... Echo Base!"
+LANG_FRENCH         "Вон... База Эхо!"
+
+REFERENCE           09JAK016
+LANG_ENGLISH        "Doesn't look like they got in from here. Must be another way in."
+LANG_FRENCH         "Не похоже, что они заходят здесь. Должен быть другой путь внутрь."
+
+REFERENCE           09JAK017
+LANG_ENGLISH        "This isn't what it looked like in the holovids. The weather here must be fierce!"
+LANG_FRENCH         "По головиду все выглядит совершенно по-другому. Погода тут, похоже, просто ужасная!"
+
+REFERENCE           09JAK018
+LANG_ENGLISH        "This entrance is blocked, too. How did they get in?"
+LANG_FRENCH         "Этот вход тоже закрыт. Как же они туда заходят?"
+
+REFERENCE           09JAK019
+NOTES               "(looking around)"
+LANG_ENGLISH        "I guess I should keep following the beacons."
+LANG_FRENCH         "Полагаю, стоит идти по маякам."
+
+REFERENCE           09JAK020
+LANG_ENGLISH        "Why would they be guarding this pile of junk?"
+LANG_FRENCH         "Зачем им охранять эту кучу хлама?"
+
+
+ENDMARKER

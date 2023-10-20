@@ -1,0 +1,125 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           07KYK001
+LANG_ENGLISH        "This one sounds like it could be nasty, so I'll be going with you. You'll find some of the galaxy's worst lowlifes on Tatooine."
+LANG_RUSSIAN         "Что-то во мне это не вызывает доверия, так что я пойду с тобой. На Татуине ты найдешь самый грязные отбросы галактики."
+
+REFERENCE           07KYK002
+LANG_ENGLISH        "Well I'll be, the Millenium Falcon!"
+LANG_RUSSIAN         "Будь я проклят, Тысячелетний Сокол!"
+
+REFERENCE           07KYK003
+LANG_ENGLISH        "Han? Chewie? Anybody here?"
+LANG_RUSSIAN         "Хан? Чуви? Здесь есть кто-нибудь?"
+
+REFERENCE           07KYK004
+NOTES               "(pause, shrug)"
+LANG_ENGLISH        "I guess they're out."
+LANG_RUSSIAN         "Полагаю, они вышли."
+
+REFERENCE           07KYK005
+LANG_ENGLISH        "Luke's info was good. These are definitely freelance cargo ships."
+LANG_RUSSIAN         "Сведения Люка подтвердились. Определенно здесь есть корабли вольных торговцев."
+
+REFERENCE           07KYK006
+LANG_ENGLISH        "I've got a bad feeling about this. Listen. Stay here and guard the entrance to the docking bay. If anyone tries to enter or leave, detain them. I'll head over to the Krayt Cantina and ask around. I know some people there."
+LANG_RUSSIAN         "Не нравится мне все это. Слушай. Оставайся здесь и охраняй доступ к стыковочной платформе. Если кто-то попытается войти или выйти, задержи его. Я отправлюсь в Крайт Кантина и проведу небольшое расследование. Я там знаю пару человек."
+
+REFERENCE           07JAK001
+NOTES               "(sputtering and intimidated)"
+LANG_ENGLISH        "A Jedi? Me? No, not yet. I'm one of Kyle Katarn's students."
+LANG_RUSSIAN         "Джедай? Я? Нет, еще нет. Я один из учеников Кайла Катарна."
+
+REFERENCE           07JAK002
+LANG_ENGLISH        "He's talking to some locals. We're investigating a cult that's been cropping up everywhere. You must be Chewbacca. Why are you here?"
+LANG_RUSSIAN         "Он разговаривает с местными. Мы интересуемся культом, возникающим буквально повсюду. А ты, похоже, Чубакка. Зачем вы здесь?"
+
+REFERENCE           07JAK003
+NOTES               "(starstruck)"
+LANG_ENGLISH        "Leia Organa? Wow... it must be important business."
+LANG_RUSSIAN         "Лея Органа? Ух ты... похоже, дело серьезное."
+
+REFERENCE           07JAK004
+LANG_ENGLISH        "We can't get to the ships! The whole place is locked down!"
+LANG_RUSSIAN         "Мы не можем добраться до кораблей! Все заблокировано!"
+
+REFERENCE           07JAK005
+LANG_ENGLISH        "Good idea, we won't be such easy targets inside!"
+LANG_RUSSIAN         "Отличная мысль, внутри в нас будет сложнее попасть!"
+
+REFERENCE           07JAK006
+LANG_ENGLISH        "Locked. Maybe one of those guys has a keycard."
+LANG_RUSSIAN         "Заперто. Может, у одного из этих ребят есть карточка-ключ."
+
+REFERENCE           07JAK007
+LANG_ENGLISH        "We need more cover! Let's get back to our ship!"
+LANG_RUSSIAN         "Нам нужно прикрытие! Возвращаемся на корабль!"
+
+REFERENCE           07JAK008
+LANG_ENGLISH        "I'll disengage the tractor beams if you think you can hold these guys!"
+LANG_RUSSIAN         "Я отключу притягивающие лучи, если вы сможете сдерживать этих парней!"
+
+REFERENCE           07JAK009
+LANG_ENGLISH        "Okay, that's it for the Raven's Claw, now for the Falcon."
+LANG_RUSSIAN         "Вот, это вам за Коготь Ворона, а это за Сокола."
+
+REFERENCE           07JAK010
+LANG_ENGLISH        "Okay, that's it for the Falcon, now for the Raven's Claw."
+LANG_RUSSIAN         "Вот, это вам за Сокола, а это за Коготь Ворона."
+
+REFERENCE           07JAK011
+NOTES               "(into comlink)"
+LANG_ENGLISH        "The tractor beams are down Chewbacca, I'm on my way."
+LANG_RUSSIAN         "Притягивающие лучи отключены, Чубакка, я уже иду."
+
+REFERENCE           07KYK007
+NOTES               "(somewhat sarcastically)"
+LANG_ENGLISH        "Did I miss something?"
+LANG_RUSSIAN         "Я что-то пропустил?"
+
+REFERENCE           07KYK008
+LANG_ENGLISH        "Good to see you, too, Chewie!"
+LANG_RUSSIAN         "Я тоже рад тебя видеть, Чуви!"
+
+REFERENCE           07KYK009
+NOTES               "(pause, looks around)"
+LANG_ENGLISH        "Guess these mercs didn't want us here."
+LANG_RUSSIAN         "Похоже, этим наемникам не нравится наше присутствие."
+
+REFERENCE           07KYK010
+LANG_ENGLISH        "Heh, that's high praise, coming from a Wookiee."
+LANG_RUSSIAN         "Хех, похвала Вуки завсегда в цене."
+
+REFERENCE           07JAK012
+NOTES               "( a little embarrassed)"
+LANG_ENGLISH        "Thanks... I think."
+LANG_RUSSIAN         "Спасибо... Я полагаю."
+
+REFERENCE           07KYK011
+NOTES               "(looks around)"
+LANG_ENGLISH        "These mercs aren't cheap; someone in this Cult must have a lot of credits. Or worse, it's backed by the Remnant. Listen, we gotta get back to Luke and tell him what's going on. Can you tell Leia about the Cult?"
+LANG_RUSSIAN         "Эти наемники стоят не дешево, похоже, у культа есть много кредиток. Или, что еще хуже, за ними стоят остатки имперских сил. Слушайте, нам нужно вернуться к Люку и рассказать ему о случившемся. Расскажешь Лейе о культе?"
+
+REFERENCE           07JAK013
+LANG_ENGLISH        "If he hadn't shown up when he did, I'd have been in a whole lot of trouble."
+LANG_RUSSIAN         "Если он не показался, когда должен, то у нас куча неприятностей."
+
+REFERENCE           07KYK012
+LANG_ENGLISH        "Yeah, well, the way Chewie tells it, you held your own. Nice work."
+LANG_RUSSIAN         "Ага, ну, как говорит Чуви, ты у нас не промах. Отличная работа."
+
+
+ENDMARKER

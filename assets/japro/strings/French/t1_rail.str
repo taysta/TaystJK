@@ -1,0 +1,76 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           05KYK001
+LANG_ENGLISH        "I still have a few contacts in Coronet; we'll hit a few of the local cantinas and see what crops up. We'll also follow up with some of the people who reported this so-called cult activity."
+LANG_FRENCH         "У меня есть связи на Коронете, мы прошвырнемся по местным забегаловкам и посмотрим, что из этого выйдет. Также мы проследим за некоторыми из тех, кто докладывал об этих так называемых последователях культа."
+
+REFERENCE           05KYK002
+LANG_ENGLISH        "Then Jan punches the Weequay right in the-"
+LANG_FRENCH         "Потом Жан треснул Викэя справа -"
+
+REFERENCE           05ME1001
+NOTES               "(via comm)"
+LANG_ENGLISH        "...can anyone hear me? We're under attack! Somebody's trying to blow up the tram!"
+LANG_FRENCH         "...меня кто-нибудь слышит? На нас напали! Кто-то пытается взорвать вагонетку!"
+
+REFERENCE           05KYK003
+LANG_ENGLISH        "The message is coming from that cargo tram down below!"
+LANG_FRENCH         "Передача идет с грузовой вагонетки под нами!"
+
+REFERENCE           05KYK004
+LANG_ENGLISH        "You take the tram! I'll take care of these ships!"
+LANG_FRENCH         "займись вагонеткой! Я позабочусь о кораблях!"
+
+REFERENCE           05KYK005
+NOTES               "(via comm)"
+LANG_ENGLISH        "Head towards the front and clear out each car. Keep the enemy in front of you so you don't have to worry about your flank!"
+LANG_FRENCH         "Направляйся вперед и освободи все вагоны. Держи врага перед собой, чтобы не волноваться за фланги!"
+
+REFERENCE           05JAK001
+NOTES               "(into his comlink"
+LANG_ENGLISH        "Kyle, there's a bomb on the tram!"
+LANG_FRENCH         "Кайл, на вагонетке поставлена бомба!"
+
+REFERENCE           05KYK006
+NOTES               "(via comm)"
+LANG_ENGLISH        "Disarm it quickly! You're about to enter a heavily populated area!"
+LANG_FRENCH         "Быстро обезвредь ее! Ты въезжаешь в густонаселенный район!"
+
+REFERENCE           05JAK002
+LANG_ENGLISH        "That wasn't so bad."
+LANG_FRENCH         "Все не так плохо."
+
+REFERENCE           05JAK003
+NOTES               "(into his comlink)"
+LANG_ENGLISH        "Okay, mission accomplished."
+LANG_FRENCH         "Все, задание выполнено."
+
+REFERENCE           05KYK007
+NOTES               "(via comm)"
+LANG_ENGLISH        "Bad news, Jaden! The tram is speeding up. I think they're going to ram it into the station! You have to get to the control room and stop that train!"
+LANG_FRENCH         "Плохие новости, Джейден! Вагонетка разгоняется. Думаю, они хотят таранить станцию! Тебе надо попасть к щитку управления и остановить поезд!"
+
+REFERENCE           05JAK005
+LANG_ENGLISH        "That was too close..."
+LANG_FRENCH         "Еще бы чуть-чуть..."
+
+REFERENCE           05KYK008
+NOTES               "(via comm)"
+LANG_ENGLISH        "Great work, Jaden! I took out those ships, so I think we're in the clear now."
+LANG_FRENCH         "Отличная работа, Джейден! Я разобрался с этими кораблями, так что, думаю, путь свободен."
+
+
+ENDMARKER

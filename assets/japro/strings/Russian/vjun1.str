@@ -1,0 +1,95 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           17KYK005
+LANG_ENGLISH        "Great, looks like somebody's home. Luke sure knows how to pick 'em. We'll set down in that canyon and try to sneak into the castle."
+LANG_RUSSIAN         "Отлично, похоже, никого нет дома. Люк наверняка знает, как их забрать. Мы расположимся в этом каньоне и попробуем проникнуть в замок."
+
+REFERENCE           17KYK006
+LANG_ENGLISH        "Great, looks like somebody's home. Luke sure knows how to pick 'em. We'll set down there at the base of the castle. "
+LANG_RUSSIAN         "Отлично, похоже, никого нет дома. Люк наверняка знает, как их забрать. Мы расположимся здесь, у основания замка. "
+
+REFERENCE           17KYK007
+NOTES               "(in pain)"
+LANG_ENGLISH        "Argh! This rain's like acid! Find some cover, fast!"
+LANG_RUSSIAN         "А-р-г-х! Этот дождь похоже кислотный! Быстрее в укрытие!"
+
+REFERENCE           17KYK008
+LANG_ENGLISH        "We're gonna have to run from cover to cover. You've learned how to Protect yourself using the Force. Use it so the rain doesn't hit you."
+LANG_RUSSIAN         "Нам придется перебегать от укрытия к укрытию. Ты можешь защищаться с помощью Силы. Используй этот навык, и дождь не коснется вас."
+
+REFERENCE           17KYK009
+LANG_ENGLISH        "We're gonna have to run from cover to cover. Keep out of the rain as much as possible."
+LANG_RUSSIAN         "Нам придется перебегать от укрытия к укрытию. Как можно меньше мокни под дождем."
+
+REFERENCE           17KYK010
+LANG_ENGLISH        "Looks like the welcome wagon's arrived."
+LANG_RUSSIAN         "Похоже, прибыла приветственная тележка."
+
+REFERENCE           17KYK011
+LANG_ENGLISH        "What are these things?"
+LANG_RUSSIAN         "Это еще что за хрень?"
+
+REFERENCE           17KYK012
+NOTES               "(examining the body)"
+LANG_ENGLISH        "Must be some kind of trooper designed for nasty environments like this."
+LANG_RUSSIAN         "Похоже, какая-то пехота, предназначенная для действий в подобных условиях."
+
+REFERENCE           17KYK013
+LANG_ENGLISH        "I say we try to avoid this garrison. Our objective is the castle."
+LANG_RUSSIAN         "Я бы советовал избегать этого гарнизона. Наша цель - замок."
+
+REFERENCE           17KYK014
+LANG_ENGLISH        "Take cover!"
+LANG_RUSSIAN         "В укрытие!"
+
+REFERENCE           17KYK015
+LANG_ENGLISH        "Guess they're expecting us now..."
+LANG_RUSSIAN         "Думаю, теперь они о нас знают..."
+
+REFERENCE           17KYK016
+NOTES               "(looks around, planning)"
+LANG_ENGLISH        "Okay. We'll have to get to that turbolaser and take out the bomber first."
+LANG_RUSSIAN         "О'кей. Нам нужно добраться до этого турболазера и сразу же обезвредить бомбометателя."
+
+REFERENCE           17KYK017
+LANG_ENGLISH        "Okay, the turbolaser should be on the other side of this door."
+LANG_RUSSIAN         "О'кей, турболазер должен находиться по ту сторону этой двери."
+
+REFERENCE           17KYK018
+NOTES               "(tries it)"
+LANG_ENGLISH        "It's locked!"
+LANG_RUSSIAN         "Она закрыта."
+
+REFERENCE           17KYK019
+NOTES               "(looks around)"
+LANG_ENGLISH        "There was a control room back there. Wait here and let me know if I get it open."
+LANG_RUSSIAN         "Позади была комната управления. Стой здесь и дай мне знать, если я ее открою."
+
+REFERENCE           17JAK001
+LANG_ENGLISH        "That's it Kyle, I'm going in."
+LANG_RUSSIAN         "Открыто, Кайл, я вхожу."
+
+REFERENCE           17KYK020
+NOTES               "(via comm)"
+LANG_ENGLISH        "Be right there."
+LANG_RUSSIAN         "Подожди здесь."
+
+REFERENCE           17KYK021
+LANG_ENGLISH        "Great shot! Now let's get to the castle."
+LANG_RUSSIAN         "Отличный выстрел! Теперь нужно пробираться в замок."
+
+
+ENDMARKER

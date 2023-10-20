@@ -1,0 +1,88 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           04KYK001
+LANG_ENGLISH        "This should be a total blue milk run, kid. But it'll give you a chance to pick up some negotiating skills. Let's head to Tatooine."
+LANG_RUSSIAN         "Это будет всеобщая утечка синего молока, парнишка. Но это даст тебе возможность приобрести навыки в ведении переговоров. Летим на Татуин."
+
+REFERENCE           04KYK002
+NOTES               "(looking around, troubled)"
+LANG_ENGLISH        "Jawas. Never around when you need them."
+LANG_RUSSIAN         "Джавы. Их никогда нет, когда они нужны."
+
+REFERENCE           04KYK003
+NOTES               "(Walks a few steps)"
+LANG_ENGLISH        "Tracks... maybe they've already come and gone."
+LANG_RUSSIAN         "Следы... может, они уже приезжали и уехали."
+
+REFERENCE           04KYK004
+NOTES               "(stands up and looks around, points)"
+LANG_ENGLISH        "Go see if you can find their sandcrawler; they might have stopped in that canyon. I'll talk to the moisture farmers, see if they know anything about this cult."
+LANG_RUSSIAN         "Сходи, поищи их песчаный краулер, они должны были остановиться в каньоне. Я поговорю с гидропонными фермерами, может, они знают о культе."
+
+REFERENCE           04JAK001
+NOTES               "(cautious)"
+LANG_ENGLISH        "All right."
+LANG_RUSSIAN         "Хорошо."
+
+REFERENCE           04KYK005
+NOTES               "(to Jaden)"
+LANG_ENGLISH        "Don't worry, Jawas are pretty friendly. "
+LANG_RUSSIAN         "Не беспокойся, джавы не агрессивны. "
+
+REFERENCE           04JAK002
+LANG_ENGLISH        "I wonder if I can get up there?"
+LANG_RUSSIAN         "Интересно, смогу я туда залезть?"
+
+REFERENCE           04JAK003
+LANG_ENGLISH        "This is not the droid we're looking for."
+LANG_RUSSIAN         "Это не тот дроид, которого мы ищем."
+
+REFERENCE           04JAK004
+LANG_ENGLISH        "You're not an R5 unit."
+LANG_RUSSIAN         "Ты не модель Р5."
+
+REFERENCE           04JAK005
+NOTES               "(annoyed)"
+LANG_ENGLISH        "Where is this blasted droid?"
+LANG_RUSSIAN         "И где этот проклятый дроид?"
+
+REFERENCE           04JAK006
+LANG_ENGLISH        "How many droids do these jawas have?"
+LANG_RUSSIAN         "И сколько у этих джав дроидов?"
+
+REFERENCE           04JAK007
+LANG_ENGLISH        "Are these even the right jawas?"
+LANG_RUSSIAN         "Может, это не те джавы?"
+
+REFERENCE           04JAK008
+LANG_ENGLISH        "You must be the droid we were sent for. But it doesn't look like there's any Jawas left to negotiate with. I guess you better just follow me."
+LANG_RUSSIAN         "Должно быть, ты и есть тот дроид, за которым нас посылали. Но, похоже, эти джавы не оставили ничего, с чем можно было бы говорить. Полагаю, вам лучше просто следовать за мной."
+
+REFERENCE           04KYK006
+NOTES               "(sarcastically)"
+LANG_ENGLISH        "I was starting to get worried, any problems?"
+LANG_RUSSIAN         "Я уже начинал волноваться, какие-нибудь проблемы?"
+
+REFERENCE           04JAK009
+LANG_ENGLISH        "Not unless you count the Sand People I ran into."
+LANG_RUSSIAN         "Ничего особенного, если не считать песчаных людей, на которых мне пришлось наткнуться."
+
+REFERENCE           04KYK007
+LANG_ENGLISH        "Well! You're still in one piece, so you must have handled yourself all right. Let's get this droid back to the Academy."
+LANG_RUSSIAN         "Здорово! У тебя все конечности на месте, значит всё оказалось неплохо. Давай отвезем этого дроида в академию."
+
+
+ENDMARKER

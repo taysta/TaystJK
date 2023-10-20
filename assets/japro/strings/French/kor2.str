@@ -1,0 +1,342 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           29JAK001
+NOTES               "Light Side"
+LANG_ENGLISH        "Tavion! This stops here!"
+LANG_FRENCH         "Тавион! Все закончится здесь!"
+
+REFERENCE           29TAA001
+NOTES               "Light Side"
+LANG_ENGLISH        "Ah, Kyle's 'good' student. You're too late. Soon, Marka Ragnos will return and obliterate the Jedi. The Sith shall rule again!"
+LANG_FRENCH         "Ах, кайловский 'хорошист'. Слишком поздно. Скоро Марка Рагнос вернется и сотрет джедаев в порошок. Ситх вновь вернется к власти!"
+
+REFERENCE           29JAK002
+NOTES               "Light Side"
+LANG_ENGLISH        "You're delusional. Kyle told me all about you. How you went crawling away after he defeated you."
+LANG_FRENCH         "Ты бредишь. Кайл мне все про тебя рассказал. Как ты уползала после поражения, которое он нанес тебе."
+
+REFERENCE           29TAA002
+NOTES               "(enraged)  Light Side"
+LANG_ENGLISH        "Silence, whelp!"
+LANG_FRENCH         "Заткнись, щенок!"
+
+REFERENCE           29TAA003
+NOTES               "Light Side"
+LANG_ENGLISH        "I will make Kyle Katarn's failure complete. My victory, Rosh's corruption, and now your death will drive him to the dark side."
+LANG_FRENCH         "Я полностью сорву планы Кайла Катарна. Победа будет за мной, разложение Роша, а теперь и твоя смерть склонят его на темную сторону."
+
+REFERENCE           29JAK003
+NOTES               "Light Side"
+LANG_ENGLISH        "Never!"
+LANG_FRENCH         "Никогда!"
+
+REFERENCE           29TAA004
+NOTES               "(weakly, beaten) Light Side"
+LANG_ENGLISH        "I will... not cower as I did before Katarn."
+LANG_FRENCH         "Я не... сдамся, как перед Катарном."
+
+REFERENCE           29MAR001
+NOTES               "Light Side"
+LANG_ENGLISH        "I shall not be denied!"
+LANG_FRENCH         "Меня ничто не остановит!"
+
+REFERENCE           29JAK004
+NOTES               "Light Side"
+LANG_ENGLISH        "By the Force!"
+LANG_FRENCH         "Во имя Силы!"
+
+REFERENCE           29TAA005
+NOTES               "Light Side"
+LANG_ENGLISH        "Marka Ragnos!"
+LANG_FRENCH         "Марка Рагнос!"
+
+REFERENCE           29MAR002
+NOTES               "Light Side"
+LANG_ENGLISH        "A mere Jedi child will not undo my return!"
+LANG_FRENCH         "Просто джедайский ученик не помешает моему возвращению!"
+
+REFERENCE           29JAK005
+NOTES               "(firmly) Light Side"
+LANG_ENGLISH        "That's Jedi KNIGHT, Ragnos."
+LANG_FRENCH         "Я РЫЦАРЬ джедай, Рагнос."
+
+REFERENCE           29MAR003
+NOTES               "(venomously) Light Side"
+LANG_ENGLISH        "You will kneel before me, Jedi."
+LANG_FRENCH         "Ты упадешь предо мной на колени, джедай."
+
+REFERENCE           29MAR004
+NOTES               "(screaming in impotent rage) Light Side"
+LANG_ENGLISH        "No!!! This is impossible!!! I will return, Jedi! One day I shall return and annihilate you all!"
+LANG_FRENCH         "Нет!!! Это невозможно!!! Я вернусь, джедай! Однажды я вернусь и сотру тебя в порошок!"
+
+REFERENCE           29JAK006
+NOTES               "Light Side"
+LANG_ENGLISH        "It's over. Ragnos will not be resurrected. The scepter is destroyed."
+LANG_FRENCH         "Все кончено. Рагнос не возродится. Скипетру конец."
+
+REFERENCE           29KYK001
+NOTES               "Light Side"
+LANG_ENGLISH        "And Tavion?"
+LANG_FRENCH         "А Тавион?"
+
+REFERENCE           29JAK007
+NOTES               "Light Side"
+LANG_ENGLISH        "Dead. Ragnos had possessed her. Her body couldn't withstand the corruption. When I destroyed the scepter and Ragnos left her body, there was nothing left."
+LANG_FRENCH         "Мертва. Рагнос забрал ее. Ее тело не смогло справиться с разложением. Когда скипетр был уничтожен и Рагнос покинул ее тело, ничего не осталось."
+
+REFERENCE           29LUK001
+NOTES               "Light Side"
+LANG_ENGLISH        "Jaden, you did more than we could have ever hoped. You have become a true Jedi."
+LANG_FRENCH         "Джейден, вы сделали больше, чем мы надеялись. Вы стали настоящим джедаем."
+
+REFERENCE           29JAK008
+NOTES               "Light Side"
+LANG_ENGLISH        "Thank you, Master Skywalker. But I couldn't have done it without Kyle."
+LANG_FRENCH         "Благодарю вас, мастер Скайуокер. Но у меня бы ничего не получилось без Кайла."
+
+REFERENCE           29KYK002
+NOTES               "Light Side"
+LANG_ENGLISH        "Don't get all mushy on me, kid. C'mon, let's get outta here."
+LANG_FRENCH         "Не смущай меня... Вперед, валим отсюда."
+
+REFERENCE           29LUK002
+NOTES               "Light Side"
+LANG_ENGLISH        "I've heard from the New Republic. The Imperials supporting the Disciples of Ragnos have been defeated and the remaining cultists have been rounded up. It seems they lost their powers when the scepter was destroyed."
+LANG_FRENCH         "Я слышал от Новой Республики. Имперцы, поддерживавшие последователей Рагноса, были разбиты, а оставшиеся последователи культа окружены. Похоже, после уничтожения скипетра они потеряли свою силу."
+
+REFERENCE           29JAK009
+NOTES               "Light Side"
+LANG_ENGLISH        "I hope that's the last we see of them."
+LANG_FRENCH         "Надеюсь, мы их больше никогда не увидим."
+
+REFERENCE           29KYK003
+NOTES               "Light Side"
+LANG_ENGLISH        "If there's one thing I've learned, it's never say never."
+LANG_FRENCH         "Если я чему и научился, так это никогда не говорить никогда."
+
+REFERENCE           29LUK003
+NOTES               "Light Side"
+LANG_ENGLISH        "Rosh, I hope your experience has taught you the patience and humility that may one day turn you into a great Jedi. "
+LANG_FRENCH         "Рош, надеюсь, ваш опыт научил вас терпению и человечности, которые однажды превратят вас в великого джедая. "
+
+REFERENCE           29ROP001
+NOTES               "Light Side"
+LANG_ENGLISH        "Yes Master Skywalker, thank you."
+LANG_FRENCH         "Да, мастер Скайуокер, спасибо."
+
+REFERENCE           29LUK004
+NOTES               "Light Side"
+LANG_ENGLISH        "Jaden, you fought bravely, resisted the dark side, and saved another Jedi from certain death. You will be a valuable member of the Jedi Order."
+LANG_FRENCH         "Джейден, вы храбро сражались, противостояли темной стороне и спасли другого джедая от верной смерти. Вы станете ценным членом Ордена Джедаев."
+
+REFERENCE           29KYK004
+NOTES               "Light Side"
+LANG_ENGLISH        "You deserve it, Jaden. You're the best student I've ever trained and a terrific Jedi."
+LANG_FRENCH         "Ты это заслужил, Джейден. Ты лучший ученик под моим началом и потрясающий джедай."
+
+REFERENCE           29JAK010
+NOTES               "(beaming with pride) Light Side"
+LANG_ENGLISH        "Thank you both."
+LANG_FRENCH         "Спасибо вам обоим."
+
+REFERENCE           29KYK005
+NOTES               "Light Side"
+LANG_ENGLISH        "There's still a galaxy full of trouble out there, are you ready for another mission?"
+LANG_FRENCH         "И все же галактика полна неприятностей, готовы ли вы к следующему заданию?"
+
+REFERENCE           29JAK011
+NOTES               "Light Side"
+LANG_ENGLISH        "As luck would have it, I am."
+LANG_FRENCH         "Если посчастливиться его добыть, то да."
+
+REFERENCE           29JAK012
+NOTES               "(threateningly) Dark Side"
+LANG_ENGLISH        "Tavion! Give me the scepter."
+LANG_FRENCH         "Тавион! Отдай мне скипетр."
+
+REFERENCE           29TAA006
+NOTES               "Dark Side"
+LANG_ENGLISH        "Ah, Kyle's 'good' student. Or is it? I sense the dark side in you. Are you here to witness the resurrection?"
+LANG_FRENCH         "Ах, Кайловский 'хорошист'. Ой ли? Я ощущаю в тебе темную сторону. Хочешь быть свидетелем возрождения?"
+
+REFERENCE           29JAK013
+NOTES               "Dark Side"
+LANG_ENGLISH        "No, I'm here to kill you, something that my old Master couldn't do."
+LANG_FRENCH         "Нет, я здесь чтобы убить тебя, чего не смог сделать мой старый учитель."
+
+REFERENCE           29TAA007
+NOTES               "Dark Side"
+LANG_ENGLISH        "With Ragnos reborn, the Jedi will be wiped out and we can serve him as he rules the galaxy."
+LANG_FRENCH         "После возрождения Рагноса джедаи будут выметены поганой метлой, мы будем служить ему, а он будет править галактикой."
+
+REFERENCE           29JAK014
+NOTES               "Dark Side"
+LANG_ENGLISH        "I will no longer 'serve' anyone. I will have the scepter and its power for myself. Now give it to me."
+LANG_FRENCH         "Я больше никому не буду 'служить'. Я заберу себе скипетр и его мощь. А теперь отдай мне его."
+
+REFERENCE           29TAA008
+NOTES               "(laughs) Dark Side"
+LANG_ENGLISH        "Impudent whelp, I will enjoy slaying you!"
+LANG_FRENCH         "Дерзкий щенок, я с радостью прирежу тебя!"
+
+REFERENCE           29TAA009
+NOTES               "(weakly, beaten) Dark Side"
+LANG_ENGLISH        "I will.. not cower as I did before Katarn. Finish it. Kill me!"
+LANG_FRENCH         "Я не... сдамся, как перед Катарном. Закончи. Убей меня."
+
+REFERENCE           29KYK006
+NOTES               "(shouting at him) Dark Side"
+LANG_ENGLISH        "Jaden, stop!"
+LANG_FRENCH         "Джейден, стой!"
+
+REFERENCE           29JAK015
+NOTES               "Dark Side"
+LANG_ENGLISH        "Don't get in my way, Kyle."
+LANG_FRENCH         "Не становись у меня на пути, Кайл."
+
+REFERENCE           29KYK007
+NOTES               "Dark Side"
+LANG_ENGLISH        "Jaden, I know you're angry, but it's not too late to renounce the dark side. Tavion and her cult has been stopped, we can end this here!"
+LANG_FRENCH         "Джейден, я знаю, ты в гневе, но еще не поздно отказаться от темной стороны. Тавион и ее культ больше не представляют угрозы, мы можем прямо здесь покончить со всем этим!"
+
+REFERENCE           29JAK016
+NOTES               "(fiendishly) Dark Side"
+LANG_ENGLISH        "Oh, no... this is just the beginning."
+LANG_FRENCH         "О, нет... это еще лишь начало."
+
+REFERENCE           29KYK008
+NOTES               "Dark Side"
+LANG_ENGLISH        "Jaden, the lure of the dark side is strong, but it will ultimately destroy you! Fight it! Rosh resisted it, you can, too!"
+LANG_FRENCH         "Джейден, привлекательность темной стороны велика, но она полностью уничтожит тебя! Сражайся с ней! Рош противостоял ей, ты тоже сможешь!"
+
+REFERENCE           29JAK017
+NOTES               "Dark Side"
+LANG_ENGLISH        "Rosh was weak! He was too afraid to grasp the true power of the dark side!"
+LANG_FRENCH         "Рош слабак! Он слишком боялся взять истинную мощь темной стороны!"
+
+REFERENCE           29KYK009
+NOTES               "Dark Side"
+LANG_ENGLISH        "I can't let you do this, Jaden..."
+LANG_FRENCH         "Я не позволю тебе это сделать, Джейден..."
+
+REFERENCE           29JAK018
+NOTES               "(taunting him) Dark Side"
+LANG_ENGLISH        "Then stop me, Master."
+LANG_FRENCH         "Тогда остановите меня, мастер."
+
+REFERENCE           29LUK005
+NOTES               "Dark Side"
+LANG_ENGLISH        "Kyle! What happened here?"
+LANG_FRENCH         "Кайл! что здесь произошло?"
+
+REFERENCE           MR_29KYK010
+NOTES               "Dark Side"
+LANG_ENGLISH        "Jaden... has turned to the dark side. And he's taken the scepter."
+LANG_FRENCH         "Джейден... перешел на темную сторону Силы. И он забрал скипетр."
+
+REFERENCE           MS_29KYK010
+NOTES               "Dark Side"
+LANG_ENGLISH        "Jaden... has turned to the dark side. And she's taken the scepter."
+LANG_FRENCH         "Джейден... перешла на темную сторону Силы. И она забрала скипетр."
+
+REFERENCE           29LUK006
+NOTES               "Dark Side"
+LANG_ENGLISH        "And Rosh?"
+LANG_FRENCH         "А Рош?"
+
+REFERENCE           MR_29KYK012
+NOTES               "Dark Side"
+LANG_ENGLISH        "Dead. Jaden killed him. He felt betrayed by Rosh and the anger was too strong for him to control."
+LANG_FRENCH         "Мертв. Джейден убил его. Он посчитал себя преданным Рошем и был в такой ярости, что не справился с ней."
+
+REFERENCE           MS_29KYK012
+NOTES               "Dark Side"
+LANG_ENGLISH        "Dead. Jaden killed him. She felt betrayed by Rosh and the anger was too strong for her to control."
+LANG_FRENCH         "Мертв. Джейден убила его. Она посчитала себя преданной Рошем и была в такой ярости, что не справилась с ней."
+
+REFERENCE           MR_29LUK007
+NOTES               "(looking over) Dark Side"
+LANG_ENGLISH        "I... misjudged him. I'm sorry, Kyle."
+LANG_FRENCH         "Я... недооценивал его. Мне жаль, Кайл."
+
+REFERENCE           MS_29LUK007
+NOTES               "Dark Side"
+LANG_ENGLISH        "I... misjudged her. I'm sorry, Kyle."
+LANG_FRENCH         "Я... недооценивал ее. Мне жаль, Кайл."
+
+REFERENCE           29KYK014
+NOTES               "Dark Side"
+LANG_ENGLISH        "I've failed both my students, Luke. Maybe I shouldn't be teaching at the Academy. It's not like I've been the perfect Jedi, myself."
+LANG_FRENCH         "Я подвел обоих своих учеников, Люк. Возможно, мне не стоит преподавать в академии. Я и сам вел себя не как образцовый джедай."
+
+REFERENCE           29LUK009
+NOTES               "Dark Side"
+LANG_ENGLISH        "No Kyle. Yoda and Ben were both great teachers, yet even they lost students."
+LANG_FRENCH         "Нет, Кайл. Йода и Бен были великолепными учителями, и даже они теряли учеников."
+
+REFERENCE           MR_29LUK010
+NOTES               "(closes eyes) Dark Side"
+LANG_ENGLISH        "I can still sense good in him."
+LANG_FRENCH         "Я все еще чувствую в нем добро."
+
+REFERENCE           MS_29LUK010
+NOTES               "(closes eyes) Dark Side"
+LANG_ENGLISH        "I can still sense good in her."
+LANG_FRENCH         "Я все еще чувствую в ней добро."
+
+REFERENCE           29LUK012
+NOTES               "Dark Side"
+LANG_ENGLISH        "There's always hope, Kyle, remember that."
+LANG_FRENCH         "Всегда есть надежда, Кайл, помни об этом."
+
+REFERENCE           29KYK015
+NOTES               "Dark Side"
+LANG_ENGLISH        "You may be right."
+LANG_FRENCH         "Может, ты и прав."
+
+REFERENCE           29KYK016
+NOTES               "Dark Side"
+LANG_ENGLISH        "Well, at least Tavion and her cult have been stopped. Ragnos won't be coming back."
+LANG_FRENCH         "Ну, по крайней мере Тавион и ее культ прекратили свое существование. Рагнос уже не вернется."
+
+REFERENCE           29LUK013
+NOTES               "Dark Side"
+LANG_ENGLISH        "But the scepter is too powerful. We must find Jaden and destroy it."
+LANG_FRENCH         "Но скипетр обладает слишком большой силой. Мы должны найти Джейден и уничтожить его."
+
+REFERENCE           29KYK017
+NOTES               "Dark Side"
+LANG_ENGLISH        "I'll take care of it. As my student, Jaden is my responsibility. I'm taking a leave of absence from the Academy for a while. If I find Jaden, I'll let you know."
+LANG_FRENCH         "Я займусь этим. Джейден мой ученик, и я отвечаю за все это. Я на некоторое время покину академию. Если я найду Джейден, то дам тебе знать."
+
+REFERENCE           29LUK014
+NOTES               "Dark Side"
+LANG_ENGLISH        "Be careful. If there's anything I can do to help..."
+LANG_FRENCH         "Будь осторожен. Если я хоть чем-то могу помочь..."
+
+REFERENCE           29KYK018
+NOTES               "Dark Side"
+LANG_ENGLISH        "I will."
+LANG_FRENCH         "Хорошо."
+
+REFERENCE           29LUK015
+NOTES               "Dark Side"
+LANG_ENGLISH        "And may the Force be with you, Kyle."
+LANG_FRENCH         "И да пребудет с тобой Сила, Кайл."
+
+
+ENDMARKER

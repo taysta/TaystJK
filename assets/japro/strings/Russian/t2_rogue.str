@@ -1,0 +1,55 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           14KYK001
+NOTES               "(VIA COMM)"
+LANG_ENGLISH        "Hey, Jaden. You should be able to handle this no problem. Small-time thugs like Racto are usually very intimidated by the sight of a lightsaber!"
+LANG_RUSSIAN         "Эй, Джейден. У тебя не должно быть проблем. Мелкие уголовники вроде Ракто обычно сильно пугаются вида светового меча!"
+
+REFERENCE           14LAR001
+NOTES               "(yelling)"
+LANG_ENGLISH        "Did you think you could just barge in here and take me into custody, Jedi? "
+LANG_RUSSIAN         "Ты думаешь, что можешь просто прилететь сюда и посадить меня, джедай? "
+
+REFERENCE           14LAR002
+LANG_ENGLISH        "How did you get up here? No matter. If it's trouble you're looking for, you came to the right place, Jedi."
+LANG_RUSSIAN         "Откуда ты здесь? Не важно. Если ты ищешь неприятностей, то пришел по адресу, джедай."
+
+REFERENCE           14LAR003
+LANG_ENGLISH        "That'll teach a Jedi to break into..."
+LANG_RUSSIAN         "Это научит джедая, как вламываться в..."
+
+REFERENCE           14JAK001
+LANG_ENGLISH        "Now, let's talk about these assassin droids."
+LANG_RUSSIAN         "А теперь поговорим об этих дроидах-убийцах."
+
+REFERENCE           14LAR004
+LANG_ENGLISH        "Ummm... okay."
+LANG_RUSSIAN         "Эммм... хорошо."
+
+REFERENCE           14JAK002
+LANG_ENGLISH        "Where is your factory?"
+LANG_RUSSIAN         "Где находится ваш завод?"
+
+REFERENCE           14LAR005
+LANG_ENGLISH        "Hidden on Nar Shaddaa. If you don't hurt me, I'll tell you where it is."
+LANG_RUSSIAN         "Спрятан на Нар Шаддаа. Если ты не тронешь меня, я скажу, где это."
+
+REFERENCE           14JAK003
+LANG_ENGLISH        "You're coming with me."
+LANG_RUSSIAN         "А сейчас ты пойдешь со мной."
+
+
+ENDMARKER

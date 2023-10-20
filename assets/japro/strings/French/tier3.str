@@ -1,0 +1,41 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           13
+LANG_ENGLISH        "Now that you're a Jedi Knight, Luke and I have decided to give you some more challenging missions. You still need to be careful though, trouble can crop up anywhere."
+LANG_FRENCH         "Теперь, когда ты рыцарь джедай, Люк и я решили поручать тебе более сложные миссии. Хотя тебе следует быть осторожей, неприятности имеют свойство появляться на ровном месте."
+
+REFERENCE           14
+LANG_ENGLISH        "I've been tracing Tavion's movements over the past few months. It looks like she acquired the scepter from a collector on Commenor. Then she killed him."
+LANG_FRENCH         "Последние несколько месяцев я слежу за передвижением Тавион. Похоже, что скипетр она получила у коллекционера с Комменора. Потом она убила его."
+
+REFERENCE           15
+LANG_ENGLISH        "Luke and I have been trying to find out what Tavion could be hoping to do with Ragnos' scepter, but so far no luck. Keep your ears open for any rumors."
+LANG_FRENCH         "Люк и я пытались узнать, что же Тавион надеялась совершить с помощью скипетра Рагноса, но мы далеки от ответа. Не упускайте ни одного слуха."
+
+REFERENCE           16
+LANG_ENGLISH        "We haven't received any new reports about cult activity in the last few days, but I don't think they've decided to go into hiding. They must be close to completing their plan."
+LANG_FRENCH         "За последние несколько дней мы не получали сообщений о деятельности культа, но я не думаю, что они решили заползти в подполье. Похоже, они близки к завершению своего плана."
+
+REFERENCE           17
+LANG_ENGLISH        "We've been getting reports of Imperial ships moving through Republic space. They may be mobilizing to assist the Disciples of Ragnos. You probably have time for one more mission, but keep yourself available. Something big is going to happen...soon."
+LANG_FRENCH         "К нам поступают доклады об имперских кораблях в космическом пространстве республики. Возможно они мобилизируются чтобы поддержать последователей Рагноса. Скорее всего у тебя есть время на одно задание, но будь в пределах досягаемости. Скоро произойдет нечто грандиозное...очень скоро."
+
+REFERENCE           18
+LANG_ENGLISH        "We need you back at the Academy right away!"
+LANG_FRENCH         "Нам срочно нужно вернуться в академию!"
+
+
+ENDMARKER

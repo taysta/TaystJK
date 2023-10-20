@@ -1,0 +1,103 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           T1_SURPRISE
+LANG_ENGLISH        "Good work Jaden. Kyle tells me you recovered the droid on your own. It's too bad about the jawas... Artoo will scour the droid's memory banks and see what information it turns up."
+LANG_FRENCH         "Хорошая работа, Джейден. Кайл рассказал, что тебе самостоятельно удалось получить дроида. Жаль, конечно, джавов... Р2 прочистит банки памяти дроида, посмотрим, какая информация там окажется."
+
+REFERENCE           T1_FATAL
+LANG_ENGLISH        "Sorry I never made it to Bakura. You seemed to handle yourself okay though."
+LANG_FRENCH         "Жаль, что удача не улыбнулась мне на Бакуре. Хотя вы держались молодцом."
+
+REFERENCE           T1_SOUR
+LANG_ENGLISH        "Kyle told me about what happened in Mos Eisley. It's a good thing Chewie was there, but you did well regardless. It looks like this cult and the Imperials may be working together more closely than we thought..."
+LANG_FRENCH         "Кайл рассказал мне о том, что произошло в Мос Эйсли. Хорошо, что там был Чуви, но и вы хорошо себя показали. Похоже, что культ и имперцы сотрудничают намного теснее, чем мы предполагали..."
+
+REFERENCE           T1_DANGER
+LANG_ENGLISH        "That's too bad about the merchants. Sounds like those sand burrowers must have gotten them all. Nasty critters. Glad you got back safe and sound. We'll let Coruscant know to mark the planet as hazardous."
+LANG_FRENCH         "Жаль торговцев. Похоже, что эти песчаные черви всех их сьели. Мерзкие твари. Рад, что вам удалось выжить. Мы передадим на Корусант, что планета опасна."
+
+REFERENCE           T1_RAIL_01
+NOTES               "(VIA HOLO)"
+LANG_ENGLISH        "Excellent work on the tram. It's lucky you two showed up when you did. If that tram exploded in the city, it could've killed thousands of people."
+LANG_FRENCH         "Отличная работа на вагонетке. Какая удача, что в нужный час вы оба показали, на что способны. Если бы вагонетка взорвалась в городе, погибли бы тысячи людей."
+
+REFERENCE           T1_RAIL_02
+NOTES               "(VIA HOLO)"
+LANG_ENGLISH        "Looks like the locals mistook this group for the cult. However,  one of the spaceport workers said he overheard someone talking about some kind of a payment from the Disciples of Ragnos."
+LANG_FRENCH         "Похоже, местные ошиблись насчет этой группы последователей культа. Тем не менее, один из работников космопорта сказал, что он подслушал разговор, в котором кто-то говорил о плате от последователей Рагноса."
+
+REFERENCE           T1_RAIL_03
+NOTES               "(VIA HOLO)"
+LANG_ENGLISH        "So the cult is behind the attack. What could they possibly gain from terrorizing Coronet?"
+LANG_FRENCH         "Но за нападением стоит культ. Но какой им прок в устрашении Коронета?"
+
+REFERENCE           T1_RAIL_04
+NOTES               "(VIA HOLO)"
+LANG_ENGLISH        "Maybe it was just a diversion for something else."
+LANG_FRENCH         "Может, это была просто диверсия, или нечто в подобном духе."
+
+REFERENCE           T1_RAIL_05
+NOTES               "(VIA HOLO)"
+LANG_ENGLISH        "Could be... whatever the case, it doesn't look good..."
+LANG_FRENCH         "Возможно... в любом случае, все это дурно пахнет..."
+
+REFERENCE           T2_TRIP
+NOTES               "via comm?"
+LANG_ENGLISH        "Well that was an adventure. These Cultists sure know how to cover their tracks."
+LANG_FRENCH         "Вот это было приключение. Этот культ знает, как заметать следы."
+
+REFERENCE           T2_RANCOR
+LANG_ENGLISH        "Nice work, Jaden! The elders have been returned to the town. I wish I could've seen that slimy Hutt's face when he found out all his prisoners had escaped."
+LANG_FRENCH         "Отличная работа, Джейден! Старейшины вернулись в город. Хотел бы я увидеть липкую рожу Хатта, когда он узнал о побеге всех своих пленников. "
+
+REFERENCE           T2_WEDGE
+LANG_ENGLISH        "Great work, Jaden, Luke was right about you! The Republic is sending troops to defend the platform. Thanks to you, the Remnant isn't going to be supplying the Disciples of Ragnos any time soon!"
+LANG_FRENCH         "Отличная работа, Джейден, Люк был прав насчет тебя! Республика посылает войска для защиты платформы. Благодаря вам остатки имперцев больше не смогут снабжать последователей Рагноса!"
+
+REFERENCE           T2_DPRED
+LANG_ENGLISH        "We've informed the Republic of this hidden Remnant operation and they should be there to clean it up soon. Too bad Rax didn't have any useful info. I'm proud of how you handled yourself, Jaden, well done."
+LANG_FRENCH         "Мы информировали Республику об этой тайной операции остатков имперских сил и скоро они проведут тут зачистку территории. Жаль, что у Ракса не оказалось хоть сколько-нибудь полезной информации. Я горд тобой, Джейден, молодец."
+
+REFERENCE           T2_ROGUE
+LANG_ENGLISH        "Based on the information you got from Racto, New Republic agents raided the droid factory on Nar Shaddaa and shut it down. Good work Jaden!"
+LANG_FRENCH         "На основе сведений, полученных от Ракто, агенты Новой Республики совершили рейд на завод дроидов на Нар Шаддаа и вывели его из строя. Хорошая работа, Джейден!"
+
+REFERENCE           T3_BYSS
+LANG_ENGLISH        "That was a close one. I've relayed the information about Byss to Luke. Good work, by the way."
+LANG_FRENCH         "Еще бы чуть-чуть, и все. Я передал Люку информацию о Биссе. Кстати, хорошая работа."
+
+REFERENCE           T3_STAMP
+LANG_ENGLISH        "Jaden. We think these cultists were planning on releasing that mutated rancor into the city and using the ensuing chaos to steal supplies, credits, and whatever else they could get their hands on. Good work."
+LANG_FRENCH         "Джейден. Мы полагаем, последователи культа планировали выпустить в город этого мутировавшего ранкора и под шумиху выкрасть снаряжение, кредитки и все, что им может понадобиться. Отличная работа."
+
+REFERENCE           T3_RIFT
+LANG_ENGLISH        "So you didn't run into Tavion. That's good... and bad. At least you stopped the cultists. But we can't keep this up forever. We've got to stop Tavion once and for all!"
+LANG_FRENCH         "Значит, тебе не встретилась Тавион. Это и хорошо... и плохо. По крайней мере мы помешали последователям культа. Но долго так продолжаться не может. Мы должны остановить Тавион раз и навсегда!"
+
+REFERENCE           T3_HEVIL
+LANG_ENGLISH        "Darth Vader used many Noghri as assassins and bodyguards. We think Vader ordered the Noghri to wipe out the Yalarans guarding the cloaking device. Now that the device is destroyed, no one can claim it. The remaining Noghri have been picked up and returned home."
+LANG_FRENCH         "Дарт Вейдер использовал Ногри как убийц и телохранителей. Мы полагаем, Вейдер приказал Ногри выбить Яларанцев, охраняющих маскирующее устройство. Теперь, когда устройство уничтожено, никто его не получит. Остатки Ногри собрались и вернулись домой."
+
+REFERENCE           T3_HEVIL_ALT
+LANG_ENGLISH        "It's a good thing we were able to destroy that device before the Empire could use it for their purposes. But I am saddened that we were unable to save the innocent people of Yalara."
+LANG_FRENCH         "Хорошо, что мы смогли уничтожить это устройство до того, как оно попало в лапы Империи. Но я опечален тем, что мы не смогли спасти невинный народ Ялара."
+
+REFERENCE           T3_BOUNTY
+LANG_ENGLISH        "So, you met Boba Fett. I'm impressed! I ran into him once myself back on Coruscant, just barely got out alive. Not someone you want as an enemy, but, well... I guess we have something in common now."
+LANG_FRENCH         "Значит, у тебя была встреча Бобой Феттом. Поразительно! Я натолкнулся на него на Корусанте, и едва унес ноги. Это не самый лучший вариант врага, но... Полагаю, у нас теперь есть одно общее дело."
+
+
+ENDMARKER

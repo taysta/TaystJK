@@ -2282,6 +2282,27 @@ void CL_CheckUserinfo( void ) {
 
 }
 
+/*
+==================
+SE_CheckForLanguageUpdates
+
+ called in CL_Frame, so don't take up any time! (can also be called during dedicated)
+ instead of re-loading just the files we've already loaded I'm going to load the whole language (simpler)
+ ==================
+ */
+static void SE_CheckForLanguageUpdates( void )
+{
+	if ( se_language && se_language->modified ) {
+		const char *psErrorMessage = SE_LoadLanguage( se_language->string, SE_TRUE );
+		if ( psErrorMessage )
+		{
+			Com_Error( ERR_DROP, psErrorMessage );
+		}
+
+		se_language->modified = SE_FALSE;
+	}
+}
+
 qboolean cl_afkName;
 static size_t afkPrefixLen = 0;
 
@@ -2388,7 +2409,6 @@ CL_Frame
 */
 static unsigned int frameCount;
 static float avgFrametime=0.0;
-extern void SE_CheckForLanguageUpdates(void);
 void CL_Frame ( int msec ) {
 	qboolean render = qfalse;
 	qboolean takeVideoFrame = qfalse;

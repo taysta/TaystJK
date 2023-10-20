@@ -1,0 +1,406 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "the objectives... duh..."
+
+REFERENCE           LIGHTSIDE_OBJ
+LANG_ENGLISH        "This is set to 2 (failed) if the player has turned Dark Side."
+LANG_RUSSIAN         "Если игрок переходит на темную сторону, этот пункт устанавливается в 2 (провал)."
+
+REFERENCE           HOTH2_OBJ1
+LANG_ENGLISH        "Investigate the site where Luke had his force vision."
+LANG_RUSSIAN         "Обследуйте место, где у Люка было видение Силы."
+
+REFERENCE           HOTH2_OBJ2
+LANG_ENGLISH        "Find a way into Echo Base."
+LANG_RUSSIAN         "Найдите путь в базу Эхо."
+
+REFERENCE           HOTH2_OBJ3
+LANG_ENGLISH        "Find an alternate entrance to Echo Base."
+LANG_RUSSIAN         "Найдите другой путь в базу Эхо."
+
+REFERENCE           HOTH3_OBJ1
+LANG_ENGLISH        "Discover what the Imperials are doing in Echo Base"
+LANG_RUSSIAN         "Узнайте, что остатки имперских сил делают на базе Эхо"
+
+REFERENCE           HOTH3_OBJ2
+LANG_ENGLISH        "Make your way to the Hanger Bay to confront Alora."
+LANG_RUSSIAN         "Проберитесь на ангарную платформу и сразитесь с Алорой. "
+
+REFERENCE           HOTH3_OBJ3
+LANG_ENGLISH        "Defeat Alora."
+LANG_RUSSIAN         "Нанесите поражение Алоре."
+
+REFERENCE           T2_DPREDICAMENT_OBJ1
+LANG_ENGLISH        "Escape the Prison!"
+LANG_RUSSIAN         "Бегите из тюрьмы!"
+
+REFERENCE           T2_DPREDICAMENT_OBJ2
+LANG_ENGLISH        "Disable security locks from Commander's Office."
+LANG_RUSSIAN         "Отключите запоры безопасности из кабинета командующего."
+
+REFERENCE           T2_DPREDICAMENT_OBJ3
+LANG_ENGLISH        "Gain access to the Docking Bay."
+LANG_RUSSIAN         "Получите доступ к стыковочной платформе."
+
+REFERENCE           T2_DPREDICAMENT_OBJ4
+LANG_ENGLISH        "Defeat Rax Joris to get your lightsaber back."
+LANG_RUSSIAN         "Победите Ракса Джориса, чтобы вернуть свой световой меч."
+
+REFERENCE           T2_RANCOR_OBJ1
+LANG_ENGLISH        "Infiltrate the Hutt's stronghold and locate the prisoners."
+LANG_RUSSIAN         "Проникните в оплот Хатта и отыщите пленников."
+
+REFERENCE           T2_RANCOR_OBJ2
+LANG_ENGLISH        "Release the prisoners from their cells and guide them to the ventilation pipe for pickup by Kyle."
+LANG_RUSSIAN         "Выпустите заключенных из камер и отведите их к вентиляционной трубе, чтобы их забрал Кайл."
+
+REFERENCE           T2_RANCOR_OBJ3
+LANG_ENGLISH        "Clear the way to the exit."
+LANG_RUSSIAN         "Расчищайте путь к выходу."
+
+REFERENCE           T2_RANCOR_OBJ4
+LANG_ENGLISH        "Get back to the access tunnel for extraction."
+LANG_RUSSIAN         "Возвращайтесь во входной туннель и покиньте это место."
+
+REFERENCE           T2_RANCOR_OBJ6
+LANG_ENGLISH        "Avoid the rancor."
+LANG_RUSSIAN         "Избегайте ранкор."
+
+REFERENCE           T2_RANCOR_OBJ5
+LANG_ENGLISH        "You have saved %d of %d prisoners."
+LANG_RUSSIAN         "Вы спасли %d из %d заключенных."
+
+REFERENCE           T2_RANCOR_OBJ5_2
+NOTES               "This is called in code if the current number saved is greater than the amount that had to be saved to complete the objective."
+LANG_ENGLISH        "You have saved %d of %d prisoners and %d additional."
+LANG_RUSSIAN         "Вы спасли %d из %d заключенных и %d сверх того."
+
+REFERENCE           T2_WEDGE_OBJ1
+LANG_ENGLISH        "Place a targeting beacon on the roof of the Shield Generator building."
+LANG_RUSSIAN         "Поместите наводящий маяк на крышу здания генераторов защитного поля."
+
+REFERENCE           T2_WEDGE_OBJ2
+LANG_ENGLISH        "Place a targeting beacon on the roof of the Hangar."
+LANG_RUSSIAN         "Поместите наводящий маяк на крышу ангара."
+
+REFERENCE           T2_WEDGE_OBJ3
+LANG_ENGLISH        "Place a targeting beacon on the roof of the Barracks."
+LANG_RUSSIAN         "Поместите наводящий маяк на крышу бараков."
+
+REFERENCE           T2_WEDGE_OBJ4
+LANG_ENGLISH        "Place a targeting beacon on the roof of the Communications Array."
+LANG_RUSSIAN         "Поместите наводящий маяк на крышу блока связи."
+
+REFERENCE           T2_WEDGE_OBJ5
+LANG_ENGLISH        "Place a targeting beacon on the Power Generator."
+LANG_RUSSIAN         "Поместите наводящий маяк на силовой генератор."
+
+REFERENCE           T2_WEDGE_OBJ6
+LANG_ENGLISH        "Place a targeting beacon inside the Command Tower."
+LANG_RUSSIAN         "Поместите наводящий маяк в диспетчерскую вышку."
+
+REFERENCE           T2_WEDGE_OBJ7
+LANG_ENGLISH        "Stop the Imperials from detonating the Tibanna Gas Tanks."
+LANG_RUSSIAN         "Не дайте имперцам подорвать цистерны с газом тибана."
+
+REFERENCE           T2_WEDGE_OBJ8
+LANG_ENGLISH        "Return to your Ship."
+LANG_RUSSIAN         "Возвращайтесь на корабль."
+
+REFERENCE           T2_WEDGE_OBJ9
+LANG_ENGLISH        "Disarm the four remaining Bombs on the Tibanna Gas Tanks."
+LANG_RUSSIAN         "Обезвредьте четыре оставшихся бомбы на цистернах с газом тибанна."
+
+REFERENCE           T2_WEDGE_OBJ10
+LANG_ENGLISH        "Disarm the three remaining Bombs on the Tibanna Gas Tanks."
+LANG_RUSSIAN         "Обезвредьте три оставшихся бомбы на цистернах с газом тибанна."
+
+REFERENCE           T2_WEDGE_OBJ11
+LANG_ENGLISH        "Disarm the two remaining Bombs on the Tibanna Gas Tanks."
+LANG_RUSSIAN         "Обезвредьте две оставшихся бомбы на цистернах с газом тибанна."
+
+REFERENCE           T2_WEDGE_OBJ12
+LANG_ENGLISH        "Disarm the one remaining Bomb on the Tibanna Gas Tanks."
+LANG_RUSSIAN         "Обезвредьте одну оставшуюся бомбу на цистернах с газом тибанна."
+
+REFERENCE           T3_RIFT_OBJ1
+LANG_ENGLISH        "Tavion's minions are preparing for her arrival. Stop them from desecrating the Jedi Tomb."
+LANG_RUSSIAN         "Слуги Тавион готовятся к ее прибытию. Не дайте им освятить гробницу джедая."
+
+REFERENCE           T3_RIFT_OBJ2
+LANG_ENGLISH        "Defeat the Jedi and find a way to protect the Jedi Master's coffin."
+LANG_RUSSIAN         "Победите джедая и найдите способ защитить гроб мастера джедай."
+
+REFERENCE           T3_RIFT_OBJ3
+LANG_ENGLISH        "Escape from the tomb."
+LANG_RUSSIAN         "Уходите из гробницы."
+
+REFERENCE           T1_DANGER_OBJ1
+LANG_ENGLISH        "Find and bring back to your ship an Energy Cell."
+LANG_RUSSIAN         "Найдите и принесите на свой корабль элемент питания."
+
+REFERENCE           T1_DANGER_OBJ2
+LANG_ENGLISH        "Find and bring back to your ship a Power Coupling."
+LANG_RUSSIAN         "Найдите и принесите на свой корабль силовое соединение."
+
+REFERENCE           T1_DANGER_OBJ3
+LANG_ENGLISH        "Find and bring back to your ship a Damper."
+LANG_RUSSIAN         "Найдите и принесите на свой корабль глушитель."
+
+REFERENCE           T1_DANGER_OBJ4
+LANG_ENGLISH        "Find and bring back to your ship a Power Converter."
+LANG_RUSSIAN         "Найдите и принесите на свой корабль силовой преобразователь."
+
+REFERENCE           T1_DANGER_OBJ5
+LANG_ENGLISH        "Only one ship part may be carried at a time. Return a part to the ship in order to retrieve another."
+LANG_RUSSIAN         "За раз можно нести только одну запчасть от корабля. Чтобы получить деталь, нужно вернуть на корабль предыдущую."
+
+REFERENCE           T3_BOUNTY_OBJ1
+LANG_ENGLISH        "Destroy all Weapon Caches."
+LANG_RUSSIAN         "Уничтожьте все тайники с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ2
+LANG_ENGLISH        "Return to your Ship."
+LANG_RUSSIAN         "Возвращайтесь на корабль."
+
+REFERENCE           T3_BOUNTY_OBJ3
+LANG_ENGLISH        "Six Weapon Caches left."
+LANG_RUSSIAN         "Осталось шесть тайников с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ4
+LANG_ENGLISH        "Five Weapon Caches left."
+LANG_RUSSIAN         "Осталось пять тайников с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ5
+LANG_ENGLISH        "Four Weapon Caches left."
+LANG_RUSSIAN         "Осталось четыре тайника с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ6
+LANG_ENGLISH        "Three Weapon Caches left."
+LANG_RUSSIAN         "Осталось три тайника с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ7
+LANG_ENGLISH        "Two Weapon Caches left."
+LANG_RUSSIAN         "Осталось два тайника с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ8
+LANG_ENGLISH        "One Weapon Cache left."
+LANG_RUSSIAN         "Остался один тайник с оружием."
+
+REFERENCE           T3_BOUNTY_OBJ9
+LANG_ENGLISH        "Defeat Boba Fett to get out of this\none alive."
+LANG_RUSSIAN         "Чтобы остаться в живых, вы должны победить\nБобу Фетта."
+
+REFERENCE           T2_ROGUE_OBJ1
+LANG_ENGLISH        "Capture Lannik Racto."
+LANG_RUSSIAN         "Захватите Ланника Ракто."
+
+REFERENCE           T2_ROGUE_OBJ2
+LANG_ENGLISH        "Gain access to Racto's office building."
+LANG_RUSSIAN         "Получите доступ в административное здание Ракто."
+
+REFERENCE           T2_TRIP_OBJ1
+LANG_ENGLISH        "Meet the contact at his outpost."
+LANG_RUSSIAN         "Встретьтесь со связным на его аванпосту."
+
+REFERENCE           T2_TRIP_OBJ2
+LANG_ENGLISH        "Escape from the mercenaries and make your way to the far city gate."
+LANG_RUSSIAN         "Бегите от наемников и направляйтесь к дальним воротам города."
+
+REFERENCE           T3_BYSS_OBJ1
+LANG_ENGLISH        "Disable the tractor beam holding the Raven's Claw in place."
+LANG_RUSSIAN         "Отключите притягивающий луч, удерживающий Коготь Ворона."
+
+REFERENCE           T3_BYSS_OBJ2
+LANG_ENGLISH        "Use the laser turrets at the top of the ship to hold off the attacking TIE fighters"
+LANG_RUSSIAN         "С помощью верхних лазерных башенок корабля сдерживайте натиск тайских истребителей"
+
+REFERENCE           T3_BYSS_OBJ3
+LANG_ENGLISH        "Get back to your Ship."
+LANG_RUSSIAN         "Возвращайтесь на свой корабль."
+
+REFERENCE           T3_HEVIL_OBJ1
+LANG_ENGLISH        "Reach the top of the tower where the cloaking emitter is located."
+LANG_RUSSIAN         "Доберитесь до верхушки вышки, где находится маскирующий излучатель."
+
+REFERENCE           T3_HEVIL_OBJ2
+LANG_ENGLISH        "Set the detonator charges to destroy the Cloak Generator."
+LANG_RUSSIAN         "Установите взрывчатку, чтобы уничтожить маскирующий генератор."
+
+REFERENCE           T3_HEVIL_OBJ3
+LANG_ENGLISH        "Defeat the Noghri guardians."
+LANG_RUSSIAN         "Победите стражей Ногри."
+
+REFERENCE           T3_STAMP_OBJ1
+LANG_ENGLISH        "Defeat the cultists."
+LANG_RUSSIAN         "Нанесите поражение последователям культа."
+
+REFERENCE           T3_STAMP_OBJ2
+LANG_ENGLISH        "Find a way to stop the mutated rancor. Weapons are useless against it."
+LANG_RUSSIAN         "Найдите способ остановить мутировавшего ранкора. Оружие против него бесполезно."
+
+REFERENCE           T3_STAMP_OBJ3
+LANG_ENGLISH        "Place a new crate over the conveyor belt to trap the mutant rancor."
+LANG_RUSSIAN         "Чтобы поймать ранкора-мутанта, поставьте на ленту конвейер новый ящик. "
+
+REFERENCE           T3_STAMP_OBJ4
+LANG_ENGLISH        "Trap the mutant rancor on the conveyor belt by using the hanging crate."
+LANG_RUSSIAN         "Поймайте ранкора-мутанта на ленте конвейера с помощью подвешенного ящика."
+
+REFERENCE           TASPIR1_OBJ1
+LANG_ENGLISH        "Gain access to the Imperial Power facility."
+LANG_RUSSIAN         "Получите доступ к имперской силовой электростанции."
+
+REFERENCE           TASPIR1_OBJ2
+LANG_ENGLISH        "Extend the bridge and heat shields leading to the Security Override controls."
+LANG_RUSSIAN         "Выдвиньте мост и раскалите щиты, ведущие к ручному управлению."
+
+REFERENCE           TASPIR1_OBJ3
+LANG_ENGLISH        "Enable power to the main walkway by using the Security Override controls."
+LANG_RUSSIAN         "Включите основную дорожку с помощью ручного управления. "
+
+REFERENCE           TASPIR1_OBJ4
+LANG_ENGLISH        "Extend the main walkway to the Imperial Power facility."
+LANG_RUSSIAN         "Выдвиньте главную дорожку к имперской силовой электростанции."
+
+REFERENCE           TASPIR2_OBJ1
+LANG_ENGLISH        "Find Rosh Penin."
+LANG_RUSSIAN         "Найдите Роша Пенина."
+
+REFERENCE           TASPIR2_OBJ2
+LANG_ENGLISH        "Defeat Alora."
+LANG_RUSSIAN         "Нанесите поражение Алоре."
+
+REFERENCE           VJUN1_OBJ1
+LANG_ENGLISH        "Make your way to Bast Castle through the acidic rain."
+LANG_RUSSIAN         "Через кислотный дождь проберитесь к замку Баст."
+
+REFERENCE           VJUN1_OBJ2
+LANG_ENGLISH        "Find a way to the emplaced gun and use it to destroy the Tie-Bombers."
+LANG_RUSSIAN         "Найдите дорогу к стационарному орудию и с его помощью уничтожьте тайские бомбардировщики."
+
+REFERENCE           VJUN2_OBJ1
+LANG_ENGLISH        "Find a way into the upper parts of the Castle."
+LANG_RUSSIAN         "Найдите дорогу в верхнюю часть замка."
+
+REFERENCE           VJUN3_OBJ1
+LANG_ENGLISH        "Investigate Cult activities."
+LANG_RUSSIAN         "Изучите деятельность культа."
+
+REFERENCE           YAVIN1_OBJ1
+LANG_ENGLISH        "Make your way to the Massassi Temple with Rosh."
+LANG_RUSSIAN         "Вместе с Рошем проберитесь на в храм Массасси."
+
+REFERENCE           YAVIN1_OBJ2
+LANG_ENGLISH        "Find a way to rescue Rosh from the ledge he is on."
+LANG_RUSSIAN         "Найдите способ забрать Роша оттуда, где он оказался."
+
+REFERENCE           YAVIN2_OBJ1
+LANG_ENGLISH        "Complete the Training Course."
+LANG_RUSSIAN         "Завершите свое обучение."
+
+REFERENCE           T1_FATAL_OBJ1
+LANG_ENGLISH        "Disarm the 5 bombs the Imperials have placed."
+LANG_RUSSIAN         "Обезвредьте 5 бомб, установленных имперцами."
+
+REFERENCE           T1_FATAL_OBJ2
+LANG_ENGLISH        "Disarm the last 4 bombs."
+LANG_RUSSIAN         "Обезвредьте 4 оставшиеся бомбы."
+
+REFERENCE           T1_FATAL_OBJ3
+LANG_ENGLISH        "Disarm the last 3 bombs."
+LANG_RUSSIAN         "Обезвредьте 3 оставшиеся бомбы."
+
+REFERENCE           T1_FATAL_OBJ4
+LANG_ENGLISH        "Disarm the last 2 bombs."
+LANG_RUSSIAN         "Обезвредьте 2 оставшиеся бомбы."
+
+REFERENCE           T1_FATAL_OBJ5
+LANG_ENGLISH        "Disarm the last bomb."
+LANG_RUSSIAN         "Обезвредьте последнюю бомбу."
+
+REFERENCE           T1_FATAL_OBJ6
+LANG_ENGLISH        "Get back to your ship."
+LANG_RUSSIAN         "Возвращайтесь на свой корабль."
+
+REFERENCE           KOR1_OBJ1
+LANG_ENGLISH        "Find a way through the Sith Catacombs to the Valley floor."
+LANG_RUSSIAN         "Через катакомбы Ситх найдите путь к уровню Долины."
+
+REFERENCE           KOR1_OBJ2
+LANG_ENGLISH        "Find a way to open the door to the valley."
+LANG_RUSSIAN         "Найдите способ открыть дверь в долину."
+
+REFERENCE           KOR2_OBJ1
+LANG_ENGLISH        "Navigate the ancient ruins and enter the Tomb of Ragnos."
+LANG_RUSSIAN         "Пройдите по древним развалинам и войдите в гробницу Рагноса."
+
+REFERENCE           KOR2_OBJ2
+LANG_ENGLISH        "Stop Tavion from resurrecting Marka Ragnos."
+LANG_RUSSIAN         "Не дайте Тавион возродить Марка Рагноса."
+
+REFERENCE           KOR2_OBJ3
+LANG_ENGLISH        "Defeat Tavion/Ragnos."
+LANG_RUSSIAN         "Одолейте Тавион/Рагноса."
+
+REFERENCE           KOR2_OBJ4
+LANG_ENGLISH        "Defeat Kyle Katarn."
+LANG_RUSSIAN         "Одолейте Кайла Катарна."
+
+REFERENCE           T1_RAIL_OBJ1
+LANG_ENGLISH        "Make your way to the front of the tram."
+LANG_RUSSIAN         "Проберитесь к передней части вагонетки."
+
+REFERENCE           T1_RAIL_OBJ2
+LANG_ENGLISH        "Disarm the bomb."
+LANG_RUSSIAN         "Обезвредьте бомбу."
+
+REFERENCE           T1_RAIL_OBJ3
+LANG_ENGLISH        "Stop the tram from reaching the station."
+LANG_RUSSIAN         "Не дайте вагонетке дойти до станции."
+
+REFERENCE           T1_SOUR_OBJ1
+LANG_ENGLISH        "Eliminate the mercenary threat."
+LANG_RUSSIAN         "Нейтрализуйте угрозу со стороны наемников."
+
+REFERENCE           T1_SOUR_OBJ2
+LANG_ENGLISH        "Disable the tractor beams holding the Raven's Claw."
+LANG_RUSSIAN         "Отключите притягивающий луч, удерживающий Коготь Ворона."
+
+REFERENCE           T1_SOUR_OBJ3
+LANG_ENGLISH        "Disable the tractor beams holding the Millennium Falcon."
+LANG_RUSSIAN         "Отключите притягивающий луч, удерживающий Тысячелетнего Сокола."
+
+REFERENCE           T1_SOUR_OBJ4
+LANG_ENGLISH        "Get back to the Millenium Falcon."
+LANG_RUSSIAN         "Возвращайтесь на Тысячелетний Сокол."
+
+REFERENCE           T1_SURPRISE_OBJ1
+LANG_ENGLISH        "Locate the missing Sandcrawler."
+LANG_RUSSIAN         "Найдите пропавший песчаный краулер."
+
+REFERENCE           T1_SURPRISE_OBJ2
+LANG_ENGLISH        "Eliminate the Tusken Raiders."
+LANG_RUSSIAN         "Уничтожьте Тусканских рейдеров."
+
+REFERENCE           T1_SURPRISE_OBJ3
+LANG_ENGLISH        "Retrieve the droid from the Sandcrawler."
+LANG_RUSSIAN         "Заберите дроида с песчаного краулера."
+
+REFERENCE           T1_SURPRISE_OBJ4
+LANG_ENGLISH        "Prevent the droid from being destroyed."
+LANG_RUSSIAN         "Сохраните дроида целым и невредимым."
+
+
+ENDMARKER

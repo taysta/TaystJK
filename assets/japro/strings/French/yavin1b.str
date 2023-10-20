@@ -1,0 +1,201 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           01PIL006
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, we can't get to you. Make your way to the temple. The shuttle will meet us there."
+LANG_FRENCH         "Джейден, я не могу до тебя добраться. Найди дорогу в храм. Там нас заберет челнок."
+
+REFERENCE           01ROP008
+LANG_ENGLISH        "Jaden, hey! I'm stuck. Can you help?"
+LANG_FRENCH         "Джейден, эй! Я застрял. Можешь помочь?"
+
+REFERENCE           01JAK005
+LANG_ENGLISH        "Hold on, Rosh! I'm on my way."
+LANG_FRENCH         "Держись, Рош! Я иду."
+
+REFERENCE           01ROP009
+NOTES               "(pointing)"
+LANG_ENGLISH        "Jaden, see if you can make your way around there."
+LANG_FRENCH         "Джейден, посмотри, может, ты сможешь сюда пробраться."
+
+REFERENCE           01ROP010
+LANG_ENGLISH        "Maybe you can use your lightsaber to cut those trees down and make a bridge."
+LANG_FRENCH         "Может, с помощью своего меча ты срубишь пару деревьев и сделаешь мост."
+
+REFERENCE           01ROP011
+LANG_ENGLISH        "Thanks Jaden, let's get to the temple. "
+LANG_FRENCH         "Спасибо тебе, Джейден, пошли к храму. "
+
+REFERENCE           01ROP012
+LANG_ENGLISH        "Whoa, howlers!"
+LANG_FRENCH         "Ух ты, ревуны!"
+
+REFERENCE           01ROP013
+LANG_ENGLISH        "Watch out!"
+LANG_FRENCH         "Берегись!"
+
+REFERENCE           01ROP014
+LANG_ENGLISH        "These howlers make good target practice, eh, Jaden?"
+LANG_FRENCH         "Эти ревуны просто отличные мишени, верно, Джейден?"
+
+REFERENCE           01ROP015
+LANG_ENGLISH        "Gotcha!"
+LANG_FRENCH         "Попался!"
+
+REFERENCE           01ROP016
+LANG_ENGLISH        "Look out cause here I come!"
+LANG_FRENCH         "Берегись, вот он я!"
+
+REFERENCE           01ROP017
+LANG_ENGLISH        "Hey, maybe you can use your saber to make another bridge."
+LANG_FRENCH         "Эй, может сделаешь мечом еще один мост."
+
+REFERENCE           01ROP018
+LANG_ENGLISH        "Great, let's go."
+LANG_FRENCH         "Отлично, пошли."
+
+REFERENCE           01ROP019
+LANG_ENGLISH        "The river's too wide and strong to wade across. There's got to be another way."
+LANG_FRENCH         "Река слишком полноводна и широка, чтобы пересечь ее. Должен быть другой путь."
+
+REFERENCE           01ROP020
+NOTES               "(loud whisper)"
+LANG_ENGLISH        "Jaden, get down! There's stormtroopers in the clearing!"
+LANG_FRENCH         "Джейден, пригнись! Там штурмовики!"
+
+REFERENCE           01ROP021
+LANG_ENGLISH        "Maybe you should check it out."
+LANG_FRENCH         "Может ты все проверишь?.."
+
+REFERENCE           01ROP022
+LANG_ENGLISH        "You're the one with the lightsaber after all."
+LANG_FRENCH         "Кроме всего прочего, только у тебя есть световой меч."
+
+REFERENCE           01JAK006
+LANG_ENGLISH        "Stay here."
+LANG_FRENCH         "Стой здесь."
+
+REFERENCE           01TAA001
+NOTES               "(surprised)"
+LANG_ENGLISH        "What?"
+LANG_FRENCH         "Чего?"
+
+REFERENCE           01JAK007
+NOTES               "(Opens eyes)"
+LANG_ENGLISH        "Huh? What? Who are you?"
+LANG_FRENCH         "Ох? Что? Кто вы?"
+
+REFERENCE           01KYK001
+LANG_ENGLISH        "Kyle Katarn, at your service. Welcome to a day in the life of a Jedi. "
+LANG_FRENCH         "Кайл Катарн, к вашим услугам. Добро пожаловать в день из жизни джедая. "
+
+REFERENCE           01JAK008
+LANG_ENGLISH        "What happened?"
+LANG_FRENCH         "Что произошло?"
+
+REFERENCE           01KYK002
+LANG_ENGLISH        "We were kind of hoping you could tell us."
+LANG_FRENCH         "Мы надеялись, вы нам расскажете."
+
+REFERENCE           01ROP023
+LANG_ENGLISH        "I saw a huge flash of light and ran over to find you just lying unconscious."
+LANG_FRENCH         "Я увидел мощную вспышку, и подойдя, обнаружил тебя без сознания."
+
+REFERENCE           01LUK004
+LANG_ENGLISH        "Do you recall anything?"
+LANG_FRENCH         "Ты ничего не помнишь?"
+
+REFERENCE           01JAK009
+LANG_ENGLISH        "I... I saw three people. One was holding some sort of scepter and it was glowing. That's all I can remember."
+LANG_FRENCH         "Там... Там было три человека. Один из них держал нечто вроде светящегося скипетра. Это все, что я могу припомнить."
+
+REFERENCE           01ROP024
+LANG_ENGLISH        "A scepter? That sounds bad."
+LANG_FRENCH         "Скипетр? Звучит очень плохо."
+
+REFERENCE           01KYK003
+LANG_ENGLISH        "It always is."
+LANG_FRENCH         "Как обычно."
+
+REFERENCE           01LUK005
+LANG_ENGLISH        "Are you able to stand?"
+LANG_FRENCH         "Можешь стоять на ногах?"
+
+REFERENCE           01JAK010
+LANG_ENGLISH        "...yeah... I'm okay."
+LANG_FRENCH         "...ага... Я в норме."
+
+REFERENCE           01LUK006
+NOTES               "concerned"
+LANG_ENGLISH        "I sense a disturbance in the Force."
+LANG_FRENCH         "Я чувствую возмущение в Силе."
+
+REFERENCE           01KYK004
+LANG_ENGLISH        "You always sense a disturbance in the Force. But yeah, I sense it too. It could just be residual dark side aura from this temple."
+LANG_FRENCH         "Ты вечно чувствуешь возмущение в Силе. Но я тоже его чувствую. Возможно, это остатки темной ауры этого храма."
+
+REFERENCE           01LUK007
+LANG_ENGLISH        "Perhaps..."
+LANG_FRENCH         "Возможно..."
+
+REFERENCE           01LUK008
+NOTES               "(To Kyle"
+LANG_ENGLISH        "Kyle, why don't you..."
+LANG_FRENCH         "Кайл, почему бы тебе не..."
+
+REFERENCE           01KYK005
+NOTES               "(sarcastic)"
+LANG_ENGLISH        "Stay here and investigate? I'd love to. Why don't you take the kids back home now?"
+LANG_FRENCH         "Остаться здесь и расследовать? Я бы с радостью. Почему бы тебе не отвезти ребят домой?"
+
+REFERENCE           01LUK009
+LANG_ENGLISH        "Be careful Kyle."
+LANG_FRENCH         "Береги себя, Кайл."
+
+REFERENCE           01LUK010
+NOTES               "(a bit louder)"
+LANG_ENGLISH        "Everyone follow me to the shuttle."
+LANG_FRENCH         "Всем следовать за мной в челнок."
+
+REFERENCE           01ROP025
+LANG_ENGLISH        "I think that was Luke Skywalker. I can't believe it!"
+LANG_FRENCH         "Думаю, это был Люк Скайуокер. Просто не верится!"
+
+REFERENCE           01TAA002
+NOTES               "In shadows"
+LANG_ENGLISH        "Did you recover Skywalker's records?"
+LANG_FRENCH         "Вы вернули записи Скайуокера?"
+
+REFERENCE           01ALO001
+NOTES               "satisfied chuckle"
+LANG_ENGLISH        "Yes. With all the Jedi in the jungle, it was almost too easy."
+LANG_FRENCH         "Да. Это было не слишком сложно с джунглями, полными джедаев."
+
+REFERENCE           01TAA003
+LANG_ENGLISH        "Excellent."
+LANG_FRENCH         "Превосходно."
+
+REFERENCE           09ROP004_Y1
+NOTES               "(cockily)"
+LANG_ENGLISH        "No problem."
+LANG_FRENCH         "Нет проблем."
+
+REFERENCE           HINT1
+LANG_ENGLISH        "There must be a way to open this."
+LANG_FRENCH         "Должен быть способ открыть это."
+
+
+ENDMARKER

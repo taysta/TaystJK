@@ -1,0 +1,91 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           26LUK001
+LANG_ENGLISH        "The time has come to put an end to the Disciples of Ragnos. I believe that Tavion is storing Force power in the scepter for one purpose, to resurrect Marka Ragnos."
+LANG_FRENCH         "Пришло время положить конец сторонникам Рагноса. Я полагаю, Тавион хранит энергию Силы в скипетре с одной целью - это возрождение Марка Рагноса."
+
+REFERENCE           26JAK001
+LANG_ENGLISH        "Is that possible?"
+LANG_FRENCH         "Разве такое возможно?"
+
+REFERENCE           26LUK002
+LANG_ENGLISH        "The Force holds a great many secrets. It may be possible that, if a high enough concentration of Force energy is infused into a body, the cells might regenerate, bringing the person back to life."
+LANG_FRENCH         "Тайны Силы неисчислимы. Вполне возможно, что при достаточной концентрации Силы, направленной в тело, клетки могут регенерировать, что даст новую жизнь."
+
+REFERENCE           26JAK002
+LANG_ENGLISH        "We have to stop them!"
+LANG_FRENCH         "Нужно их остановить!"
+
+REFERENCE           26KYK001
+LANG_ENGLISH        "No kiddin'. So we're going to Korriban, huh? Not exactly a vacation spot."
+LANG_FRENCH         "Без шуток. Значит, мы отправляемся на Коррибан, ага? Не самый лучший курорт."
+
+REFERENCE           26JAK003
+LANG_ENGLISH        "Korriban? Never heard of it."
+LANG_FRENCH         "Коррибан? Расскажите о нем."
+
+REFERENCE           26KYK002
+LANG_ENGLISH        "It's the burial place of a whole bunch of Sith lords."
+LANG_FRENCH         "Это место захоронения целой кучи лордов Ситх."
+
+REFERENCE           26LUK003
+LANG_ENGLISH        "If Ragnos is resurrected, there's no telling what he might be able to do. It will take all of our strength to stop him. "
+LANG_FRENCH         "Если Рагнос возродится, то и говорить не стоит, что тогда будет. Чтобы остановить его, потребуются вся наши силы."
+
+REFERENCE           26KYK003
+LANG_ENGLISH        "We're not heading to Korriban just yet. I just received a distress signal from Rosh."
+LANG_FRENCH         "Мы пока еще не летим на Коррибан. Я только что получил сигнал бедствия от Роша."
+
+REFERENCE           26JAK004
+LANG_ENGLISH        "Rosh? Where is he?"
+LANG_FRENCH         "Рош? Где он?"
+
+REFERENCE           26KYK004
+LANG_ENGLISH        "He's being held captive on Taspir III. It's an Imperial controlled planet, a real paradise."
+LANG_FRENCH         "Его держат на Таспире III. Это планета под контролем Империи, настоящий рай."
+
+REFERENCE           26JAK005
+LANG_ENGLISH        "How did he get a message out?"
+LANG_FRENCH         "Как же он отправил сообщение?"
+
+REFERENCE           26KYK005
+LANG_ENGLISH        "I don't know. But we can't leave him there."
+LANG_FRENCH         "Я не знаю. Но мы не можем бросить его там."
+
+REFERENCE           26JAK006
+LANG_ENGLISH        "Rosh could still belong to the dark side. It could be a trap."
+LANG_FRENCH         "Рош все еще может оставаться на темной стороне. Возможно, это ловушка."
+
+REFERENCE           26KYK006
+LANG_ENGLISH        "It could be. But I'm not willing to let him die there if it isn't."
+LANG_FRENCH         "Может быть. Но я не хочу позволить ему умереть, если это не так."
+
+REFERENCE           26JAK007
+LANG_ENGLISH        "Kyle, what about Ragnos? We have to go to Korriban."
+LANG_FRENCH         "Кайл, а как-же Рагнос? Нам нужно лететь на Коррибан."
+
+REFERENCE           26KYK007
+NOTES               "(insistent)"
+LANG_ENGLISH        "If we're lucky, we'll catch up with everyone else before the fireworks start. If you don't want to help me..."
+LANG_FRENCH         "Если нам повезет, мы управимся до начала фейерверка. Если ты не хочешь мне помочь..."
+
+REFERENCE           26JAK008
+NOTES               "(resigned) )"
+LANG_ENGLISH        "No. I'm coming."
+LANG_FRENCH         "Нет. Я иду."
+
+
+ENDMARKER

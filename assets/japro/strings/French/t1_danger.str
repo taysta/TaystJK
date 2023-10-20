@@ -1,0 +1,132 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           06LUK001
+LANG_ENGLISH        "This should be an easy assignment. I think you can handle it while Kyle is away with Rosh. Take a shuttle, land at the coordinates of the distress beacon, and pick up any survivors."
+LANG_FRENCH         "Это будет простое задание. Думаю, вы справитесь с ним, пока Кайл занят поисками Роша. Берите челнок, садитесь по координатам аварийного маяка и забирайте всех выживших."
+
+REFERENCE           06JAK001
+NOTES               "(to himself)"
+LANG_ENGLISH        "Nice work, Jaden."
+LANG_FRENCH         "Отличная работа, Джейден."
+
+REFERENCE           06JAK002
+NOTES               "(looks at his broken shuttle)"
+LANG_ENGLISH        "Some rescue mission."
+LANG_FRENCH         "Миссия спасения."
+
+REFERENCE           06JAK003
+NOTES               "(yelling)"
+LANG_ENGLISH        "Hello?"
+LANG_FRENCH         "Есть кто?"
+
+REFERENCE           06JAK004
+NOTES               "(Pause)"
+LANG_ENGLISH        "Hello?"
+LANG_FRENCH         "Эй?"
+
+REFERENCE           06JAK005
+LANG_ENGLISH        "Hey, you there!"
+LANG_FRENCH         "Эй, ты там!"
+
+REFERENCE           06ME1001
+NOTES               "(hysterically. gets interrupted by sudden attack of sand creature)"
+LANG_ENGLISH        "Thank the  Force you've come, this place is-"
+LANG_FRENCH         "Слава Силе, вы пришли, это место..."
+
+REFERENCE           06JAK006
+NOTES               "(surprised)"
+LANG_ENGLISH        "What was that?"
+LANG_FRENCH         "Что это было?"
+
+REFERENCE           06JAK007
+LANG_ENGLISH        "Maybe I can find what I need in the merchant ship."
+LANG_FRENCH         "Может, я найду требуемое на торговом корабле."
+
+REFERENCE           06JAK008
+LANG_ENGLISH        "This power converter should do."
+LANG_FRENCH         "Думаю, сгодится этот силовой преобразователь."
+
+REFERENCE           06JAK009
+LANG_ENGLISH        "Great, a feeder line."
+LANG_FRENCH         "Отлично, фидерная линия."
+
+REFERENCE           06JAK010
+LANG_ENGLISH        "This energy cell should work for the cooling unit."
+LANG_FRENCH         "Этот элемент питания нужен для охлаждающего модуля. "
+
+REFERENCE           06JAK011
+LANG_ENGLISH        "Just the power coupling I need for the acceleration compensator."
+LANG_FRENCH         "Для компенсатора ускорения мне нужен силовой проводник."
+
+REFERENCE           06JAK012
+LANG_ENGLISH        "This damper should be compatible with my hyperdrive motivator."
+LANG_FRENCH         "Этот глушитель должен быть совместим с мотиватором моего гипер-двигателя."
+
+REFERENCE           06JAK013
+LANG_ENGLISH        "I think I can jury rig this power coupling into my gravity flux compensator."
+LANG_FRENCH         "Думаю, что могу присобачить этой силовой провод в мой компенсатор гравитационных завихрений."
+
+REFERENCE           06JAK014
+NOTES               "When avoiding sand burrowers:"
+LANG_ENGLISH        "That was close!"
+LANG_FRENCH         "Почти попался!"
+
+REFERENCE           06JAK015
+NOTES               "When avoiding sand burrowers:"
+LANG_ENGLISH        "Whew!"
+LANG_FRENCH         "Фух!"
+
+REFERENCE           06JAK016
+NOTES               "When trying to stand still when a sand burrower is nearby."
+LANG_ENGLISH        "Come on, no-one here, go away..."
+LANG_FRENCH         "Давай, здесь никого, уходи..."
+
+REFERENCE           06JAK017
+NOTES               "If he throws a thermal on the ground:"
+LANG_ENGLISH        "Go on... fetch!"
+LANG_FRENCH         "Вперед... есть!"
+
+REFERENCE           06JAK018
+NOTES               "If Jaden kills a sand burrower:"
+LANG_ENGLISH        "I got one!"
+LANG_FRENCH         "Один есть!"
+
+REFERENCE           06JAK019
+LANG_ENGLISH        "I've gotta get over there."
+LANG_FRENCH         "Мне нужно туда попасть."
+
+REFERENCE           06JAK020
+LANG_ENGLISH        "How am I going to get over there?"
+LANG_FRENCH         "Кто я такой, чтобы туда залезть?"
+
+REFERENCE           06JAK021
+LANG_ENGLISH        "Doesn't look like I can go that way."
+LANG_FRENCH         "Не похоже, что я так пройду."
+
+REFERENCE           06JAK022
+LANG_ENGLISH        "Better not touch the ground."
+LANG_FRENCH         "Лучше не касаться земли."
+
+REFERENCE           06JAK023
+LANG_ENGLISH        "Should be safe here."
+LANG_FRENCH         "Здесь должно быть безопасно."
+
+REFERENCE           06JAK024
+LANG_ENGLISH        "That should do it. Now to get off this crazy rock."
+LANG_FRENCH         "Так все на месте. Теперь пора сваливать с этой сумасшедшей скалы."
+
+
+ENDMARKER

@@ -1,0 +1,399 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           MLUK_01
+NOTES               "(concerned)"
+LANG_ENGLISH        "Kyle and I have sensed great anger in you, Jaden. You must learn to control it, or it could lead you to the dark side."
+LANG_RUSSIAN         "Я и Кайл ощущаем в тебе большой гнев, Джейден. Тебе надо научиться сдерживать его, иначе он приведет тебя к темной стороне."
+
+REFERENCE           MKYK_01
+NOTES               "(a word of advice)"
+LANG_ENGLISH        "Look, Jaden, I know better than almost anyone here that the dark side is tempting, especially in the middle of a fight, but you better watch it, okay?"
+LANG_RUSSIAN         "Послушай, Джейден, лучше кого бы то ни было я знаю, насколько привлекательна темная сторона Силы, особенно в бою, но тебе лучше следить за этим, о'кей?"
+
+REFERENCE           MLUK_02
+NOTES               "(sternly, seriously)"
+LANG_ENGLISH        "Jaden. You are playing with powers that will consume you. If you don't change your ways, you will fall to the dark side completely."
+LANG_RUSSIAN         "Джейден. Ты играешь с силами, которые поглотят тебя. Если ты не свернешь с пути, то полностью перейдешь на темную сторону."
+
+REFERENCE           MKYK_02
+NOTES               "(rebuking)"
+LANG_ENGLISH        "Jaden, the dark side is not something you play with; trust me, I know. You better get it under control while you still can!"
+LANG_RUSSIAN         "Джейден, с темной стороной не играют; поверь мне, уж я-то знаю. Тебе лучше взять его под контроль, пока ты это можешь!"
+
+REFERENCE           MLUK_03
+NOTES               "(pleased, with praise)"
+LANG_ENGLISH        "Jaden, you are truly on the path of the Jedi. I sense that you are at peace."
+LANG_RUSSIAN         "Джейден, ты на пути истинного джедая. Я чувствую, что ты в мире с собой и со всем светом."
+
+REFERENCE           MKYK_03
+NOTES               "(proud)"
+LANG_ENGLISH        "I'm proud of you, Jaden. Despite everything, you've really kept your balance and control."
+LANG_RUSSIAN         "Я горжусь тобой, Джейден. Несмотря ни на что, ты сохраняешь уравновешенность и власть над собой."
+
+REFERENCE           MLUK_04
+NOTES               "(pleased)"
+LANG_ENGLISH        "I sense much good in you. Keep on your current path and you will truly be a Jedi."
+LANG_RUSSIAN         "Я ощущаю в тебе много добра. Держись этого пути и ты станешь истинным джедаем."
+
+REFERENCE           MKYK_04
+NOTES               "(encouraging)"
+LANG_ENGLISH        "You're making good progress. Luke and I can sense the good in you. You'll be a Jedi in no time."
+LANG_RUSSIAN         "Ты делаешь успехи. Мы с Люком ощущаем в тебе добро. Вне всяких сомнений, ты очень скоро станешь джедаем."
+
+REFERENCE           MLUK_05
+NOTES               "(cautiously, advising)"
+LANG_ENGLISH        "Your future is clouded. Make your choices carefully."
+LANG_RUSSIAN         "Твое будущее туманно. Осторожно делай выбор."
+
+REFERENCE           MKYK_05
+NOTES               "(advising, approving)"
+LANG_ENGLISH        "I gotta say, I admire how you've kept your balance. You've got a good, strong spirit. Keep it up."
+LANG_RUSSIAN         "Должен сказать, я восхищен твоим самообладанием. У тебя добрый, сильный дух. Так держать."
+
+REFERENCE           MKYK_06
+LANG_ENGLISH        "Be careful walking the line between light and dark. It can go either way"
+LANG_RUSSIAN         "Будь осторожней, шагая по границе между светом и тьмой. Ведь свернуть можно в обе стороны."
+
+REFERENCE           MST_01L01
+LANG_ENGLISH        "That Bith was really getting on my nerves so I shot him. How was I supposed to know he was a friend of the Admiral?"
+LANG_RUSSIAN         "Этот Бит действовал мне на нервы, так что я подстрелил его. Откуда мне было знать, что он дружит с адмиралом?"
+
+REFERENCE           MST_01L02
+LANG_ENGLISH        "You'll be executed for sure. "
+LANG_RUSSIAN         "Тебя наверняка казнят. "
+
+REFERENCE           MST_01L03
+LANG_ENGLISH        "No way. They don't know it was me."
+LANG_RUSSIAN         "Ни за что. Они не знают, что это был я."
+
+REFERENCE           MST_01L04
+LANG_ENGLISH        "Sure they do. Your pistol has a tracking device in it. The higher-ups can trace when your weapon was fired and where."
+LANG_RUSSIAN         "Наверняка знают. На твоем пистолете есть жучок. Наши шишки знают, когда ты стреляешь из него и где."
+
+REFERENCE           MST_01L05
+LANG_ENGLISH        "You're kidding? Ummm... I have to go check on something."
+LANG_RUSSIAN         "Ты шутишь? Мммм... Схожу-ка я проверю кое-что."
+
+REFERENCE           MST_02L01
+LANG_ENGLISH        "Y'know, I used to race on the swoop circuit."
+LANG_RUSSIAN         "Знаешь, мне пришлось прокатиться по головокружительной спускающейся трассе."
+
+REFERENCE           MST_02L02
+LANG_ENGLISH        "You did, huh? Were you good?"
+LANG_RUSSIAN         "Что, правда? И как успехи?"
+
+REFERENCE           MST_02L03
+LANG_ENGLISH        "One of the best. Top three every race."
+LANG_RUSSIAN         "Я один из лучших. Входил в лучшую тройку на каждом заезде."
+
+REFERENCE           MST_02L04
+LANG_ENGLISH        "So how come you're not a scout trooper?"
+LANG_RUSSIAN         "Так почему же ты не разведчик?"
+
+REFERENCE           MST_02L05
+LANG_ENGLISH        "Once I put the helmet on, I couldn't see. I sideswiped another cadet and caused a pile up that destroyed twelve speeder bikes. I was kicked out of the trooper corps."
+LANG_RUSSIAN         "Как-то раз я напялил шлем и ничего не смог увидеть. Я подрезал другого кадета и началась куча-мала, в которой разбилось двенадцать спидеров. Меня вышвырнули из пехотного корпуса."
+
+REFERENCE           MST_02L06
+LANG_ENGLISH        "That's tough."
+LANG_RUSSIAN         "Жизнь жестока."
+
+REFERENCE           MST_03L01
+LANG_ENGLISH        "Y'know, I'd rather be fighting Rebels out on the front lines than guarding... what are we guarding?"
+LANG_RUSSIAN         "Знаешь, я бы лучше бился с повстанцами на линии фронта, чем охранял... что мы там охраняем?"
+
+REFERENCE           MST_03L02
+LANG_ENGLISH        "It doesn't matter. We just have to guard it and make sure no one gets past."
+LANG_RUSSIAN         "Какая разница. Просто мы должны это охранять и никого не пускать."
+
+REFERENCE           MST_03L03
+LANG_ENGLISH        "Yeah. Like some lone Rebel is going to sneak in here."
+LANG_RUSSIAN         "Ага. Как будто какой-то повстанец решит сюда пролезть."
+
+REFERENCE           MST_03L04
+LANG_ENGLISH        "We're probably protecting dried nerf steaks or something like that."
+LANG_RUSSIAN         "Скорее всего, мы охраняем сушеные нерфовые стейки или что-то вроде того."
+
+REFERENCE           MST_04L01
+LANG_ENGLISH        "Have you been by auxiliary hall B?"
+LANG_RUSSIAN         "Ты был во вспомогательном зале Б?"
+
+REFERENCE           MST_04L02
+LANG_ENGLISH        "Yeah, why?"
+LANG_RUSSIAN         "У, зачем?"
+
+REFERENCE           MST_04L03
+LANG_ENGLISH        "I thought I heard something down there. Could be a Wampa."
+LANG_RUSSIAN         "Мне показалось, что внизу я что-то услышал.. Возможно, это вампа."
+
+REFERENCE           MST_04L04
+LANG_ENGLISH        "We cleared this place out when we got here. There are no wampas inside the base."
+LANG_RUSSIAN         "Когда мы пришли, то вычистили всю местность. На территории базы вампов нет."
+
+REFERENCE           MST_04L05
+LANG_ENGLISH        "I don't know. I'm not going there alone."
+LANG_RUSSIAN         "Я не знаю. Сам я туда не пойду."
+
+REFERENCE           MST_04L06
+LANG_ENGLISH        "Let's go check it out right now. I'll prove to you there are no wampas."
+LANG_RUSSIAN         "Давай пойдем проверим. Я докажу тебе, что вампов здесь нет."
+
+REFERENCE           MST_05L01
+LANG_ENGLISH        "This place is creepy. Was this really Darth Vader's castle?"
+LANG_RUSSIAN         "От этого места просто в дрожь бросает. Это что, правда был замок Дарта Вейдера?"
+
+REFERENCE           MST_05L02
+LANG_ENGLISH        "That's what I heard."
+LANG_RUSSIAN         "Мне так говорили."
+
+REFERENCE           MST_05L03
+LANG_ENGLISH        "I'm sure glad I wasn't stationed here when Vader was alive. I heard he liked to use stormtroopers for lightsaber practice."
+LANG_RUSSIAN         "Я очень рад, что меня не поместили сюда, когда Вейдер был жив. Я слышал, любил практиковаться в фехтовании световым мечом на штурмовиках."
+
+REFERENCE           MST_05L04
+LANG_ENGLISH        "I've never even seen a lightsaber."
+LANG_RUSSIAN         "Я никогда не видел световой меч."
+
+REFERENCE           MST_05L05
+LANG_ENGLISH        "Let's hope we never have to."
+LANG_RUSSIAN         "Будем надеяться, и не увидишь."
+
+REFERENCE           MST_06L01
+LANG_ENGLISH        "Have you seen the new Blastech E-19?"
+LANG_RUSSIAN         "Видел новый Бластек E-19?"
+
+REFERENCE           MST_06L02
+LANG_ENGLISH        "Are they any good?"
+LANG_RUSSIAN         "Ну и как они?"
+
+REFERENCE           MST_06L03
+LANG_ENGLISH        "I just got one. I'm going to try it out at the firing range when my shift's over."
+LANG_RUSSIAN         "У меня уже есть один. Когда моя смена кончится, я испытаю его на стрельбище."
+
+REFERENCE           MST_06L04
+LANG_ENGLISH        "Let me know how it goes. My E-15 could use an upgrade."
+LANG_RUSSIAN         "Расскажешь, как он в деле. Мою E-15 можно модернизировать."
+
+REFERENCE           MST_06L05
+LANG_ENGLISH        "My shift's over at 1600. Why don't you join me?"
+LANG_RUSSIAN         "Моя смена заканчивается в 1600. Не хочешь составить компанию?"
+
+REFERENCE           MST_06L06
+LANG_ENGLISH        "I'll clear it with my squad leader and let you know."
+LANG_RUSSIAN         "Я согласую с командиром взода и дам тебе знать."
+
+REFERENCE           MST_07L01
+LANG_ENGLISH        "What's with the increased security in sector seven?"
+LANG_RUSSIAN         "А что с усилением безопасности сектора семь?"
+
+REFERENCE           MST_07L02
+LANG_ENGLISH        "Last week's break in."
+LANG_RUSSIAN         "Вломился кто-то на прошлой неделе."
+
+REFERENCE           MST_07L03
+LANG_ENGLISH        "I hear they captured the insurgents."
+LANG_RUSSIAN         "Говорят, они схватили мятежников."
+
+REFERENCE           MST_07L04
+LANG_ENGLISH        "They did, but they refuse to talk. There's no way of telling if they acted alone or if it was an inside job."
+LANG_RUSSIAN         "Да, но говорить они не стали. И говорить не стоит об одиночном задании или работе полевых агентов."
+
+REFERENCE           MST_07L05
+LANG_ENGLISH        "They'll talk. The Admiral will see to that."
+LANG_RUSSIAN         "Они расколются. Адмирал об этом позаботится."
+
+REFERENCE           MST_08L01
+LANG_ENGLISH        "So how long you been here?"
+LANG_RUSSIAN         "Сколько ты уже здесь?"
+
+REFERENCE           MST_08L02
+LANG_ENGLISH        "Just got in."
+LANG_RUSSIAN         "Только прибыл."
+
+REFERENCE           MST_08L03
+LANG_ENGLISH        "Yeah? Who’s your commander?"
+LANG_RUSSIAN         "Да? А кто твой командир?"
+
+REFERENCE           MST_08L04
+LANG_ENGLISH        "Someone called Ra’fel."
+LANG_RUSSIAN         "Кто-то по имени Ра'фел."
+
+REFERENCE           MST_08L05
+LANG_ENGLISH        "You mean ‘Friendly Fire’? You better make out your will now..."
+LANG_RUSSIAN         "Имеешь ввиду 'огонь по своим'? Сейчас тебе лучше исполнить свое желание..."
+
+REFERENCE           MST_08L06
+LANG_ENGLISH        "What're you talking about?"
+LANG_RUSSIAN         "О чем ты говоришь?"
+
+REFERENCE           MST_08L07
+LANG_ENGLISH        "You haven't heard? Guy's a real one-man army."
+LANG_RUSSIAN         "А ты не слышал? Ребята просто армия одного бойца."
+
+REFERENCE           MST_08L08
+LANG_ENGLISH        "What?"
+LANG_RUSSIAN         "Чего?"
+
+REFERENCE           MST_08L09
+LANG_ENGLISH        "As soon as the action starts he's blazing away like no-one's business. You wanna make dead certain he's in front of you or you'll be getting new rear vents in your armor."
+LANG_RUSSIAN         "Как только началась заваруха, он поливал все огнем, как будто это никого не касалось. Если хочешь убить его, убедись, что он стоит перед тобой, иначе получишь пару дыр в броню для вентиляции."
+
+REFERENCE           MST_08L10
+LANG_ENGLISH        "You're kidding me."
+LANG_RUSSIAN         "Ты шутишь."
+
+REFERENCE           MST_08L11
+LANG_ENGLISH        "No, I’m serious."
+LANG_RUSSIAN         "Нет, кроме шуток."
+
+REFERENCE           MST_09L01
+LANG_ENGLISH        "I heard you got chewed out by the commander."
+LANG_RUSSIAN         "Я слышал, ты ругал своего командира."
+
+REFERENCE           MST_09L02
+LANG_ENGLISH        "I was making faces at him the whole time  These helmets are great!"
+LANG_RUSSIAN         "Я все время корчу ему рожи. Эти шлемы - чудо!"
+
+REFERENCE           MST_09L03
+LANG_ENGLISH        "You do that too? I thought I was the only one..."
+LANG_RUSSIAN         "Ты так тоже делаешь? Я думал, это только я..."
+
+REFERENCE           MST_09L04
+LANG_ENGLISH        "Look alert, officer approaching..."
+LANG_RUSSIAN         "Готовься, офицер на подходе..."
+
+REFERENCE           MST_10L01
+LANG_ENGLISH        "Boy, I could sure go for a death-stick right about now."
+LANG_RUSSIAN         "Боже, я бы прямо сейчас сходил за жезлом смерти."
+
+REFERENCE           MST_10L02
+LANG_ENGLISH        "Bah, those things will kill you."
+LANG_RUSSIAN         "Вах, эти штуки тебя прикончат."
+
+REFERENCE           MRT_01L01
+LANG_ENGLISH        "Do you know where the armory is? My weapon keeps jamming."
+LANG_RUSSIAN         "Ты не знаешь, где оружейная? Мое оружие заедает."
+
+REFERENCE           MRT_01L02
+LANG_ENGLISH        "I wouldn’t worry about it. There’s nothing to fight here but wind gusts."
+LANG_RUSSIAN         "Я бы о нем не волновался. Здесь не с кем сражаться, кроме порывов ветра."
+
+REFERENCE           MRT_01L03
+LANG_ENGLISH        "I like being posted out here. Nice and quiet."
+LANG_RUSSIAN         "Хотел бы я, чтобы меня перевели отсюда. Тихо и спокойно."
+
+REFERENCE           MRT_01L04
+LANG_ENGLISH        "Yeah, I guess your right..."
+LANG_RUSSIAN         "Ага, думаю, ты прав..."
+
+REFERENCE           MIS_01L01
+LANG_ENGLISH        "Is it just me, or are Rodians kinda creepy?"
+LANG_RUSSIAN         "Дело во мне, или родианцев бросает в дрожь?"
+
+REFERENCE           MIS_01L02
+LANG_ENGLISH        "I know what you mean. Those weird antenna-things, right?"
+LANG_RUSSIAN         "Я понимаю, о чем ты. Эти странные антенны, да?"
+
+REFERENCE           MIS_01L03
+LANG_ENGLISH        "Yeah. That and the nose. Pretty spooky."
+LANG_RUSSIAN         "Ага. Они и нос. Жуть какая."
+
+REFERENCE           MIS_01L04
+LANG_ENGLISH        "Yeah. Spooky."
+LANG_RUSSIAN         "Ага. Жуть."
+
+REFERENCE           MCU_01L01
+LANG_ENGLISH        "We’re wanted up in the throne room."
+LANG_RUSSIAN         "Мы нужны в тронном зале."
+
+REFERENCE           MCU_01L02
+LANG_ENGLISH        "For what?"
+LANG_RUSSIAN         "Зачем это?"
+
+REFERENCE           MCU_01L03
+LANG_ENGLISH        "I guess they’re almost done up there. We’ll be leaving soon."
+LANG_RUSSIAN         "Думаю, они там наверху здорово измотались. Скоро мы будем уходить."
+
+REFERENCE           MCU_02L01
+LANG_ENGLISH        "Are you new here?"
+LANG_RUSSIAN         "Ты здесь новичок?"
+
+REFERENCE           MCU_02L02
+LANG_ENGLISH        "Yeah."
+LANG_RUSSIAN         "Ага."
+
+REFERENCE           MCU_02L03
+LANG_ENGLISH        "You made a wise choice. The master will soon return to lead us to glory."
+LANG_RUSSIAN         "Ты сделал мудрый выбор. Скоро вернется повелитель и приведет нас к славе."
+
+REFERENCE           MRE_01L01
+LANG_ENGLISH        "Our goal is near."
+LANG_RUSSIAN         "Наша цель близка."
+
+REFERENCE           MRE_01L02
+LANG_ENGLISH        "Yes. Soon, Ragnos will be risen, and he will guide us to a new age."
+LANG_RUSSIAN         "Да. Скоро возродится Рагнос, он поведет нас в новый век. "
+
+REFERENCE           MME_01L01
+LANG_ENGLISH        "I can hardly see in this thing. It’s like being a stormtrooper all over again."
+LANG_RUSSIAN         "Я с трудом себе это представляю. Похоже, опять придется побыть штурмовиком."
+
+REFERENCE           MME_01L02
+LANG_ENGLISH        "You were a stormtrooper?"
+LANG_RUSSIAN         "Ты был штурмовиком?"
+
+REFERENCE           MME_01L03
+LANG_ENGLISH        "Yeah, but I couldn’t stand taking orders so I jumped ship first chance I got."
+LANG_RUSSIAN         "Да, но я не мог стоять и слушать приказы, так что я прыгнул на корабль при первой же возможности."
+
+REFERENCE           MME_01L04
+LANG_ENGLISH        "Smart move. By the way, the boss gave us orders to patrol the north hall."
+LANG_RUSSIAN         "Умный ход. Кстати, шеф приказал нам патрулировать северный зал."
+
+REFERENCE           MME_01L05
+LANG_ENGLISH        "Okay, let’s go."
+LANG_RUSSIAN         "О'кей, идем."
+
+REFERENCE           MME_02L01
+LANG_ENGLISH        "Did you put your bet in?"
+LANG_RUSSIAN         "Ты уже сделал ставку?"
+
+REFERENCE           MME_02L02
+LANG_ENGLISH        "Why bother? The odds are terrible. Most prisoners don’t even get ten meters before the rancor eats them. It’s a waste of credits."
+LANG_RUSSIAN         "Зачем беспокоиться? Разница огромная. Большая часть заключенных даже пробегают десять метров, пока ранкор их не съест. Это растрата кредиток."
+
+REFERENCE           MME_02L03
+LANG_ENGLISH        "Maybe, but if one of them ever does make a break, I’m gonna be rich."
+LANG_RUSSIAN         "Может быть, но даже если кто-то из них сбежит, я буду богат."
+
+REFERENCE           MME_02L04
+LANG_ENGLISH        "Keep dreamin’."
+LANG_RUSSIAN         "Мечтай-мечтай."
+
+REFERENCE           MME_03L01
+LANG_ENGLISH        "Hokk, do you read?"
+LANG_RUSSIAN         "Хокк, слышишь меня?"
+
+REFERENCE           MME_03L02
+LANG_ENGLISH        "I read you, J'aahn."
+LANG_RUSSIAN         "Тебя слышу, Дж'аан."
+
+REFERENCE           MME_03L03
+LANG_ENGLISH        "Meet me at station Six-C."
+LANG_RUSSIAN         "Встречай меня на станции Шесть-Ц."
+
+
+ENDMARKER

@@ -1,0 +1,76 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           19KYK009
+LANG_ENGLISH        "We looked everywhere after getting free, but Tavion had already taken Rosh and fled."
+LANG_RUSSIAN         "После освобождения мы обыскали буквально все, но Тавион захватила Роша и сбежала."
+
+REFERENCE           19LUK001
+LANG_ENGLISH        "So now we know who is leading this cult. But that doesn't explain why there are so many dark Force users."
+LANG_RUSSIAN         "Итак, теперь мы знаем, кто возглавляет культ. Но это не объясняет, откуда взялось так много последователей темной Силы."
+
+REFERENCE           19KYK010
+LANG_ENGLISH        "Some of Desann's leftover Reborn were with her. As for the cultists, Jaden has a theory."
+LANG_RUSSIAN         "С ней были остатки возрождения Дезанн. А насчет последователей культа у Джейдена есть своя теория."
+
+REFERENCE           19JAK010
+LANG_ENGLISH        "If the scepter can store the Force, maybe it can release it too. Tavion could be using it to empower her followers."
+LANG_RUSSIAN         "Если скипетр может накапливать Силу, то он же может ее и отдавать. Тавион могла использовать ее на своих приверженцах."
+
+REFERENCE           19LUK002
+NOTES               "(nodding)"
+LANG_ENGLISH        "Corrupting disciples with the dark side of the Force... that would explain a lot. Did you get a good look at the scepter?"
+LANG_RUSSIAN         "Порча сторонников темной стороной Силы... это многое объясняет. Вы хорошо рассмотрели скипетр?"
+
+REFERENCE           19KYK011
+LANG_ENGLISH        "Yeah, I'd bet it belonged to Ragnos. We need to figure out what Tavion plans on doing with it if we're going to stop her."
+LANG_RUSSIAN         "Ага, держу пари, это штука Рагноса. Нужно выяснить, что Тавион планирует с ним сделать и как ее остановить."
+
+REFERENCE           19LUK003
+LANG_ENGLISH        "Agreed."
+LANG_RUSSIAN         "Согласен."
+
+REFERENCE           19LUK004
+NOTES               "(turning to Jaden, proud of him)"
+LANG_ENGLISH        "You are going to need to build a new lightsaber to replace the one you lost. While we try to figure out what Tavion's next move is, I'd like you to take a more active role at the Academy."
+LANG_RUSSIAN         "Вам надо сделать новый световой меч взамен утерянного. Пока мы будем выяснять планы Тавион, я бы хотел, чтобы вы играли более активную роль в академии."
+
+REFERENCE           19JAK011
+NOTES               "(not understanding)"
+LANG_ENGLISH        "Sir?"
+LANG_RUSSIAN         "Сэр?"
+
+REFERENCE           19LUK005
+LANG_ENGLISH        "Jaden, you handled yourself exceptionally well on Vjun. To confront three dark Jedi and defeat them took bravery and skill. For your efforts I feel you are ready to join our ranks as a Jedi Knight."
+LANG_RUSSIAN         "Джейден, вы исключительно хорошо показали себя на Вьюне. Противостояние трем темным джедаям и нанесение им поражения требует отваги и мастерства. Ваши заслуги показывают, что вы достойны вступить в ряды рыцарей джедай."
+
+REFERENCE           19KYK012
+LANG_ENGLISH        "Congratulations."
+LANG_RUSSIAN         "Поздравляю тебя."
+
+REFERENCE           19JAK012
+LANG_ENGLISH        "Yes, Master Skywalker. Thank you both."
+LANG_RUSSIAN         "Да, мастер Скайуокер. Спасибо вам обоим."
+
+REFERENCE           19KYK013
+LANG_ENGLISH        "Jaden, after the battle, I felt the anger seething inside you. You may be a Jedi Knight now, but you still must beware of the dark side."
+LANG_RUSSIAN         "Джейден, после боя я ощутил в тебе зарождающиеся семена гнева. Теперь ты можешь стать рыцарем джедай, но тебе надо остерегаться темной стороны."
+
+REFERENCE           19JAK013
+LANG_ENGLISH        "Yes, Kyle. I'll try not to fail you."
+LANG_RUSSIAN         "Да, Кайл. Я постараюсь не подвести вас."
+
+
+ENDMARKER

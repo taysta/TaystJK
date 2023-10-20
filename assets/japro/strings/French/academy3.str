@@ -1,0 +1,79 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           10LUK001
+LANG_ENGLISH        "So they know about Dagobah. Master Yoda hid there, knowing his presence would be masked by the planet's strong dark side aura. If they find it..."
+LANG_FRENCH         "Значит, им известно о Дагобаре. Там скрывается мастер Йода, его присутствие маскируется мощной темной аурой самой планеты. Если они ее найдут..."
+
+REFERENCE           10KYK001
+LANG_ENGLISH        "Did you find anything on Hoth?"
+LANG_FRENCH         "Удалось что-нибудь узнать на Хоте?"
+
+REFERENCE           10JAK005
+LANG_ENGLISH        "Nothing. They must have already taken the Force energy from there."
+LANG_FRENCH         "Ни черта. Похоже, они уже выкачали оттуда всю Силу."
+
+REFERENCE           10LUK002
+LANG_ENGLISH        "Just as others have reported. Bespin, Endor, Coruscant, everywhere..."
+LANG_FRENCH         "Как и следует из других докладов. Беспин, Эндор, Корусант - везде..."
+
+REFERENCE           10LUK003
+NOTES               "(pause)"
+LANG_ENGLISH        "Kyle, what about Byss?"
+LANG_FRENCH         "Кайл, что там с Биссом?"
+
+REFERENCE           10KYK002
+LANG_ENGLISH        "Rosh hasn't returned. He's long overdue and we haven't heard from him."
+LANG_FRENCH         "Рош еще не вернулся. Он сильно опаздывает и мы ничего от него не слышали."
+
+REFERENCE           10LUK004
+NOTES               "(closes his eyes)"
+LANG_ENGLISH        "I sense he's still alive..."
+LANG_FRENCH         "Я ощущаю, что он еще жив..."
+
+REFERENCE           10KYK003
+LANG_ENGLISH        "I'm going to Byss to look for him. I know some people that can get me into some of the outlying Imperial outposts. I'll see what I can find out."
+LANG_FRENCH         "Я отправлюсь на Бисс и поищу его. Я знаю людей, которые помогут мне добраться до пограничных аванпостов Империи. Посмотрим, что я смогу выяснить."
+
+REFERENCE           10LUK005
+LANG_ENGLISH        "Very well."
+LANG_FRENCH         "Очень хорошо."
+
+REFERENCE           10JAK006
+LANG_ENGLISH        "What about me? I want to help. Rosh is my friend."
+LANG_FRENCH         "А как же я? Я хочу помочь. Рош ведь мой друг."
+
+REFERENCE           10KYK004
+LANG_ENGLISH        "You can help by staying here and completing your training."
+LANG_FRENCH         "Ты поможешь, если останешься здесь и закончишь свое обучение."
+
+REFERENCE           10LUK006
+LANG_ENGLISH        "Kyle's right. There are still missions for you to undertake and we can't neglect the training of one of our most promising students."
+LANG_FRENCH         "Кайл прав. Вас ждет много заданий и мы не можем пренебречь обучением одного из наших самых многообещающих учеников."
+
+REFERENCE           10JAK007
+LANG_ENGLISH        "Promising?"
+LANG_FRENCH         "Многообещающих?"
+
+REFERENCE           10LUK007
+LANG_ENGLISH        "Yes. Due to your heroics on Hoth, we are promoting you to Apprentice."
+LANG_FRENCH         "Да. За ваши подвиги на Хоте мы переводим вас в падаваны."
+
+REFERENCE           10JAK008
+LANG_ENGLISH        "Thank you Master Skywalker. Master... uh, Kyle."
+LANG_FRENCH         "Спасибо вам Мастер Скайуокер. Мастер... хм, Кайл."
+
+
+ENDMARKER

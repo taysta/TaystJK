@@ -1,0 +1,56 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           25JAK001
+NOTES               "(to himself)"
+LANG_ENGLISH        "Well, this is where the captain saw the cultists... It doesn't look like-"
+LANG_FRENCH         "Так вот где капитан видел членов культа... Это не похоже на"
+
+REFERENCE           25JAK002
+NOTES               "(alarmed)"
+LANG_ENGLISH        "That's not good!"
+LANG_FRENCH         "Это очень плохо!"
+
+REFERENCE           25JAK003
+NOTES               "re: te"
+LANG_ENGLISH        "Maybe those fuel tanks will slow it down!"
+LANG_FRENCH         "Может, эти баки с горючим замедлят его!"
+
+REFERENCE           25JAK004
+NOTES               "(re: the rancor"
+LANG_ENGLISH        "What did I ever do to him?!"
+LANG_FRENCH         "Что он именно от меня хочет?!"
+
+REFERENCE           25JAK005
+NOTES               "(re: the rancor"
+LANG_ENGLISH        "I can't stop it!"
+LANG_FRENCH         "Я не могу его остановить!"
+
+REFERENCE           25JAK006
+NOTES               "(to himself)"
+LANG_ENGLISH        "Maybe I can trap it between those containers and the door..."
+LANG_FRENCH         "Может, поймать его между контейнерами и дверью..."
+
+REFERENCE           25JAK007
+NOTES               "(shrugs, pleasantly surprised, like that was easy)"
+LANG_ENGLISH        "That'll work, too."
+LANG_FRENCH         "Это тоже сработает."
+
+REFERENCE           25KYK001
+LANG_ENGLISH        "Stay alert on this one. If there are Disciples of Ragnos at Tanaab, they probably aren't just passing through."
+LANG_FRENCH         "Следи за ним. Если на Танаабе есть последователи Рагноса, то они прошли не просто так."
+
+
+ENDMARKER

@@ -1,0 +1,511 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "non-technical key names displayed during key-bind menu, keep them short if you can"
+
+REFERENCE           KEYNAME_ALT
+LANG_ENGLISH        "ALT"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_BACKSPACE
+LANG_ENGLISH        "BACKSPACE"
+LANG_RUSSIAN         "RETOUR"
+
+REFERENCE           KEYNAME_CAPSLOCK
+LANG_ENGLISH        "CAPSLOCK"
+LANG_RUSSIAN         "VERRMAJ"
+
+REFERENCE           KEYNAME_CTRL
+LANG_ENGLISH        "CTRL"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_DEL
+LANG_ENGLISH        "DEL"
+LANG_RUSSIAN         "SUPPR"
+
+REFERENCE           KEYNAME_END
+LANG_ENGLISH        "END"
+LANG_RUSSIAN         "FIN"
+
+REFERENCE           KEYNAME_ENTER
+LANG_ENGLISH        "ENTER"
+LANG_RUSSIAN         "ENTREE"
+
+REFERENCE           KEYNAME_ESCAPE
+LANG_ENGLISH        "ESCAPE"
+LANG_RUSSIAN         "ECHAP"
+
+REFERENCE           KEYNAME_EURO
+LANG_ENGLISH        "EURO"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_HOME
+LANG_ENGLISH        "HOME"
+LANG_RUSSIAN         "ORIGINE"
+
+REFERENCE           KEYNAME_INS
+LANG_ENGLISH        "INS"
+LANG_RUSSIAN         "INSER"
+
+REFERENCE           KEYNAME_PAUSE
+LANG_ENGLISH        "PAUSE"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_PGDN
+LANG_ENGLISH        "PGDN"
+LANG_RUSSIAN         "PGBAS"
+
+REFERENCE           KEYNAME_PGUP
+LANG_ENGLISH        "PGUP"
+LANG_RUSSIAN         "PGHAUT"
+
+REFERENCE           KEYNAME_SCROLLLOCK
+LANG_ENGLISH        "SCROLLLOCK"
+LANG_RUSSIAN         "DEFILEMENT"
+
+REFERENCE           KEYNAME_SEMICOLON
+LANG_ENGLISH        "SEMICOLON"
+LANG_RUSSIAN         "M"
+
+REFERENCE           KEYNAME_SHIFT
+LANG_ENGLISH        "SHIFT"
+LANG_RUSSIAN         "MAJ"
+
+REFERENCE           KEYNAME_SPACE
+LANG_ENGLISH        "SPACE"
+LANG_RUSSIAN         "ESPACE"
+
+REFERENCE           KEYNAME_TAB
+LANG_ENGLISH        "TAB"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_KP_PLUS
+LANG_ENGLISH        "KP_PLUS"
+LANG_RUSSIAN         "PN_PLUS"
+
+REFERENCE           KEYNAME_KP_MINUS
+LANG_ENGLISH        "KP_MINUS"
+LANG_RUSSIAN         "PN_MOINS"
+
+REFERENCE           KEYNAME_KP_ENTER
+LANG_ENGLISH        "KP_ENTER"
+LANG_RUSSIAN         "PN_ENTR"
+
+REFERENCE           KEYNAME_KP_DEL
+LANG_ENGLISH        "KP_DEL"
+LANG_RUSSIAN         "PN_SUPPR"
+
+REFERENCE           KEYNAME_KP_INS
+LANG_ENGLISH        "KP_INS"
+LANG_RUSSIAN         "PN_INSER"
+
+REFERENCE           KEYNAME_KP_END
+LANG_ENGLISH        "KP_END"
+LANG_RUSSIAN         "PN_FIN"
+
+REFERENCE           KEYNAME_KP_DOWNARROW
+LANG_ENGLISH        "KP_DOWN"
+LANG_RUSSIAN         "PN_BAS"
+
+REFERENCE           KEYNAME_KP_PGDN
+LANG_ENGLISH        "KP_PGDN"
+LANG_RUSSIAN         "PN_PGBAS"
+
+REFERENCE           KEYNAME_KP_LEFTARROW
+LANG_ENGLISH        "KP_LEFT"
+LANG_RUSSIAN         "PN_GAUCHE"
+
+REFERENCE           KEYNAME_KP_5
+LANG_ENGLISH        "KP_5"
+LANG_RUSSIAN         "PN_5"
+
+REFERENCE           KEYNAME_KP_RIGHTARROW
+LANG_ENGLISH        "KP_RIGHT"
+LANG_RUSSIAN         "PN_DROITE"
+
+REFERENCE           KEYNAME_KP_HOME
+LANG_ENGLISH        "KP_HOME"
+LANG_RUSSIAN         "PN_ORIGINE"
+
+REFERENCE           KEYNAME_KP_UPARROW
+LANG_ENGLISH        "KP_UP"
+LANG_RUSSIAN         "PN_HAUT"
+
+REFERENCE           KEYNAME_KP_PGUP
+LANG_ENGLISH        "KP_PGUP"
+LANG_RUSSIAN         "PN_PGBAS"
+
+REFERENCE           KEYNAME_KP_NUMLOCK
+LANG_ENGLISH        "KP_NUMLOCK"
+LANG_RUSSIAN         "PN_VERRNUM"
+
+REFERENCE           KEYNAME_KP_STAR
+LANG_ENGLISH        "KP_STAR"
+LANG_RUSSIAN         "PN_*"
+
+REFERENCE           KEYNAME_KP_SLASH
+LANG_ENGLISH        "KP_SLASH"
+LANG_RUSSIAN         "PN_SLASH"
+
+REFERENCE           KEYNAME_F1
+LANG_ENGLISH        "F1"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F2
+LANG_ENGLISH        "F2"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F3
+LANG_ENGLISH        "F3"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F4
+LANG_ENGLISH        "F4"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F5
+LANG_ENGLISH        "F5"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F6
+LANG_ENGLISH        "F6"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F7
+LANG_ENGLISH        "F7"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F8
+LANG_ENGLISH        "F8"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F9
+LANG_ENGLISH        "F9"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F10
+LANG_ENGLISH        "F10"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F11
+LANG_ENGLISH        "F11"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_F12
+LANG_ENGLISH        "F12"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_MWHEELUP
+LANG_ENGLISH        "MWHEELUP"
+LANG_RUSSIAN         "MOLETTEHT"
+
+REFERENCE           KEYNAME_MWHEELDOWN
+LANG_ENGLISH        "MWHEELDOWN"
+LANG_RUSSIAN         "MOLETTEBAS"
+
+REFERENCE           KEYNAME_MOUSE1
+LANG_ENGLISH        "MOUSE1"
+LANG_RUSSIAN         "SOURIS1"
+
+REFERENCE           KEYNAME_MOUSE2
+LANG_ENGLISH        "MOUSE2"
+LANG_RUSSIAN         "SOURIS2"
+
+REFERENCE           KEYNAME_MOUSE3
+LANG_ENGLISH        "MOUSE3"
+LANG_RUSSIAN         "SOURIS3"
+
+REFERENCE           KEYNAME_MOUSE4
+LANG_ENGLISH        "MOUSE4"
+LANG_RUSSIAN         "SOURIS4"
+
+REFERENCE           KEYNAME_MOUSE5
+LANG_ENGLISH        "MOUSE5"
+LANG_RUSSIAN         "SOURIS5"
+
+REFERENCE           KEYNAME_UPARROW
+LANG_ENGLISH        "UP"
+LANG_RUSSIAN         "HAUT"
+
+REFERENCE           KEYNAME_DOWNARROW
+LANG_ENGLISH        "DOWN"
+LANG_RUSSIAN         "BAS"
+
+REFERENCE           KEYNAME_LEFTARROW
+LANG_ENGLISH        "LEFT"
+LANG_RUSSIAN         "GAUCHE"
+
+REFERENCE           KEYNAME_RIGHTARROW
+LANG_ENGLISH        "RIGHT"
+LANG_RUSSIAN         "DROITE"
+
+REFERENCE           KEYNAME_JOY0
+LANG_ENGLISH        "JOY0"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY1
+LANG_ENGLISH        "JOY1"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY2
+LANG_ENGLISH        "JOY2"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY3
+LANG_ENGLISH        "JOY3"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY4
+LANG_ENGLISH        "JOY4"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY5
+LANG_ENGLISH        "JOY5"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY6
+LANG_ENGLISH        "JOY6"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY7
+LANG_ENGLISH        "JOY7"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY8
+LANG_ENGLISH        "JOY8"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY9
+LANG_ENGLISH        "JOY9"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY10
+LANG_ENGLISH        "JOY10"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY11
+LANG_ENGLISH        "JOY11"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY12
+LANG_ENGLISH        "JOY12"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY13
+LANG_ENGLISH        "JOY13"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY14
+LANG_ENGLISH        "JOY14"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY15
+LANG_ENGLISH        "JOY15"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY16
+LANG_ENGLISH        "JOY16"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY17
+LANG_ENGLISH        "JOY17"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY18
+LANG_ENGLISH        "JOY18"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY19
+LANG_ENGLISH        "JOY19"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY20
+LANG_ENGLISH        "JOY20"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY21
+LANG_ENGLISH        "JOY21"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY22
+LANG_ENGLISH        "JOY22"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY23
+LANG_ENGLISH        "JOY23"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY24
+LANG_ENGLISH        "JOY24"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY25
+LANG_ENGLISH        "JOY25"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY26
+LANG_ENGLISH        "JOY26"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY27
+LANG_ENGLISH        "JOY27"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY28
+LANG_ENGLISH        "JOY28"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY29
+LANG_ENGLISH        "JOY29"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY30
+LANG_ENGLISH        "JOY30"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_JOY31
+LANG_ENGLISH        "JOY31"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX0
+LANG_ENGLISH        "AUX0"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX1
+LANG_ENGLISH        "AUX1"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX2
+LANG_ENGLISH        "AUX2"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX3
+LANG_ENGLISH        "AUX3"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX4
+LANG_ENGLISH        "AUX4"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX5
+LANG_ENGLISH        "AUX5"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX6
+LANG_ENGLISH        "AUX6"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX7
+LANG_ENGLISH        "AUX7"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX8
+LANG_ENGLISH        "AUX8"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX9
+LANG_ENGLISH        "AUX9"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX10
+LANG_ENGLISH        "AUX10"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX11
+LANG_ENGLISH        "AUX11"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX12
+LANG_ENGLISH        "AUX12"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX13
+LANG_ENGLISH        "AUX13"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX14
+LANG_ENGLISH        "AUX14"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX15
+LANG_ENGLISH        "AUX15"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX16
+LANG_ENGLISH        "AUX16"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX17
+LANG_ENGLISH        "AUX17"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX18
+LANG_ENGLISH        "AUX18"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX19
+LANG_ENGLISH        "AUX19"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX20
+LANG_ENGLISH        "AUX20"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX21
+LANG_ENGLISH        "AUX21"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX22
+LANG_ENGLISH        "AUX22"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX23
+LANG_ENGLISH        "AUX23"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX24
+LANG_ENGLISH        "AUX24"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX25
+LANG_ENGLISH        "AUX25"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX26
+LANG_ENGLISH        "AUX26"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX27
+LANG_ENGLISH        "AUX27"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX28
+LANG_ENGLISH        "AUX28"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX29
+LANG_ENGLISH        "AUX29"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX30
+LANG_ENGLISH        "AUX30"
+LANG_RUSSIAN         "#same"
+
+REFERENCE           KEYNAME_AUX31
+LANG_ENGLISH        "AUX31"
+LANG_RUSSIAN         "#same"
+
+
+ENDMARKER
+
+

@@ -1,0 +1,56 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           22LUK001
+LANG_ENGLISH        "That cloaking device is too powerful to fall into the wrong hands, cult or otherwise. It may be better to just destroy it."
+LANG_FRENCH         "Это маскирующее устройство слишком важно, чтобы попасть в неправильные руки, например, к культу. Лучше просто уничтожить его."
+
+REFERENCE           22JAK001
+NOTES               "(to himself)"
+LANG_ENGLISH        "Looks like no one's home. Guess I should get up to the top and disable that cloaking device."
+LANG_FRENCH         "Похоже, никого нет дома. Так, мне нужно подняться наверх и отключить маскирующее устройство."
+
+REFERENCE           22JAK002
+NOTES               "(to himself)"
+LANG_ENGLISH        "Imperials! Now I have to destroy that thing."
+LANG_FRENCH         "Имперцы! Теперь мне придется уничтожить эту штуку."
+
+REFERENCE           22JAK003
+NOTES               "(to himself)"
+LANG_ENGLISH        "Maybe I should shut it down first so the explosion doesn't take out the whole tower."
+LANG_FRENCH         "Возможно, стоит сначала отключить его, чтобы взрыв не разнес всю башню."
+
+REFERENCE           22JAK004
+NOTES               "(Pronounced 'NO-gree') (to himself)"
+LANG_ENGLISH        "Noghri? How did they get here?"
+LANG_FRENCH         "Ногри? Как они сюда попали?"
+
+REFERENCE           22JAK005
+NOTES               "(to himself)"
+LANG_ENGLISH        "Okay, the power's down."
+LANG_FRENCH         "Хорошо, все отключено."
+
+REFERENCE           22JAK006
+NOTES               "(to himself, thinking)"
+LANG_ENGLISH        "Maybe if I cut these pipes..."
+LANG_FRENCH         "Может, если перерезать эти трубы..."
+
+REFERENCE           22JAK007
+NOTES               "(to himself, noticing det packs)"
+LANG_ENGLISH        "Maybe I can use these old det packs..."
+LANG_FRENCH         "Может, мне использовать эти старые взрывпакеты..."
+
+
+ENDMARKER

@@ -1,0 +1,106 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           09LUK001
+LANG_ENGLISH        "I have called you all here to relay some... disturbing news. Someone sliced into my personal records and accessed some highly sensitive data about places where I felt a strong connection to the Force. Places like Cloud City, Hoth, and Byss."
+LANG_FRENCH         "Я вызвал вас, чтобы сообщить кое-какие... неприятные новости. Кто-то вломился в мои личные записи и получил доступ к очень важным данным о местах, где я ощущаю особую связь с Силой. Места вроде Города-в-облаках, Хота и Бисса."
+
+REFERENCE           09ROP001
+NOTES               "(piping up)"
+LANG_ENGLISH        "What could they get from that, besides a tour?"
+LANG_FRENCH         "И какая им от этого польза, кроме путешествия?"
+
+REFERENCE           09KYK001
+NOTES               "(glaring at Rosh)"
+LANG_ENGLISH        "Something nasty."
+LANG_FRENCH         "Что-то мерзкое."
+
+REFERENCE           09LUK002
+LANG_ENGLISH        "I believe that the scepter Jaden saw was somehow used to drain the residual Force power from the Massassi Temple."
+LANG_FRENCH         "Я полагаю, скипетр, из рассказа Джейден, каким-то образом связан с выкачиванием остаточной Силы из храма Массасси."
+
+REFERENCE           09JE1001
+LANG_ENGLISH        "Drain the Force? How can anyone do that?"
+LANG_FRENCH         "Выкачивал Силу? Как такое возможно?"
+
+REFERENCE           09LUK003
+LANG_ENGLISH        "I'm not sure. But I've learned from the Jedi Holocron that devices were created in the past that could absorb and store Force energy."
+LANG_FRENCH         "Я не уверен. Но из Голокрона Джедаев я узнал, что в прошлом уже создавались устройства, собирающие энергию Силы."
+
+REFERENCE           09KYK002
+LANG_ENGLISH        "Those people Jaden saw may have discovered some way to harvest Force power with that scepter."
+LANG_FRENCH         "Те люди, из рассказа Джейден, скорее всего, как-то научились собирать энергию Силы с помощью скипетра."
+
+REFERENCE           09LUK004
+LANG_ENGLISH        "Which could be dangerous indeed."
+LANG_FRENCH         "Что может быть опасно."
+
+REFERENCE           09JAK001
+NOTES               "(speaks up)"
+LANG_ENGLISH        "So what are we going to do?"
+LANG_FRENCH         "Так что же мы будем делать?"
+
+REFERENCE           09LUK005
+LANG_ENGLISH        "We'll have to investigate any locations from my records. That includes all of you students. Corran, you're going to Wayland. Kyle, I need you to look at the Valley of the Jedi..."
+LANG_FRENCH         "Мы осмотрим все места из моих записей. Это касается всех студентов. Корран, ты отправляешься в Вэйланд. Кайл, ты должен осмотреть Аллею Джедаев..."
+
+REFERENCE           09ROP002
+NOTES               "(turning towards Jaden)"
+LANG_ENGLISH        "Finally, some real action!"
+LANG_FRENCH         "Наконец-то, хоть какое-то задание!"
+
+REFERENCE           09JAK002
+NOTES               "(seems worried)"
+LANG_ENGLISH        "Why would they be stealing Force power?"
+LANG_FRENCH         "Зачем им забирать энергию Силы?"
+
+REFERENCE           09ROP003
+NOTES               "(shrugs, doesn't care)"
+LANG_ENGLISH        "I don't know. You worry too much, Jaden. I bet that these cult guys can't take on a Jedi."
+LANG_FRENCH         "Я не знаю. Ты не волнуйся, Джейден. Держу пари, этим служителям культа не одолеть Джедаев."
+
+REFERENCE           09JAK003
+LANG_ENGLISH        "Well, we're not Jedi yet. We're just students."
+LANG_FRENCH         "Ну, мы же пока не Джедаи. Мы просто студенты."
+
+REFERENCE           09KYK003
+LANG_ENGLISH        "You may be 'just' students, but you're both well on your way. Don't rush it."
+LANG_FRENCH         "Может, вы и 'просто' студенты, но идете вы верной дорогой. Не забегайте вперед."
+
+REFERENCE           09LUK006
+LANG_ENGLISH        "Jaden, I'm sending you to Hoth, where I had a vision of Obi-Wan Kenobi. I imagine there is a pretty strong aura there."
+LANG_FRENCH         "Джейден, я посылаю вса на Хот, там в видении ко мне приходил Оби-Ван Кеноби. Полагаю, там очень сильная аура."
+
+REFERENCE           09LUK007
+NOTES               "(To Rosh:)"
+LANG_ENGLISH        "Rosh, I'm sending you to the remains of the planet Byss. It's very remote, so I doubt the Cult has been there. Don't stay too long; the Imperial Remnant may still be operating in the area."
+LANG_FRENCH         "Рош, я отправляю вса к останкам планеты Бисс. Она находится очень далеко, и я сомневаюсь, что культ там уже побывал. Не задерживайтесь, остатки имперских сил все еще могут находиться в том районе."
+
+REFERENCE           09ROP004
+NOTES               "(cockily)"
+LANG_ENGLISH        "No problem."
+LANG_FRENCH         "Нет проблем."
+
+REFERENCE           09LUK008
+LANG_ENGLISH        "That's everyone then. May the Force be with all of you."
+LANG_FRENCH         "Тогда это все. И да пребудет с вами Сила."
+
+REFERENCE           09ROP005
+NOTES               "(joking)"
+LANG_ENGLISH        "Good luck. Call me if you need any help."
+LANG_FRENCH         "Желаю удачи. Если вам понадобится помощь, вызывайте меня."
+
+
+ENDMARKER

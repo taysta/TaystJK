@@ -1,0 +1,62 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+VERSION             "1"
+CONFIG              "W:\bin\stringed.cfg"
+FILENOTES           "XMAKE-auto-generated from "w:\documents\script\jedi academy script2.txt""
+
+REFERENCE           26KYK008
+NOTES               "(via comm)"
+LANG_ENGLISH        "I'll go in the back way. If we enter from both sides, we're bound to find him."
+LANG_FRENCH         "Я пойду назад. Если мы войдем в комнату с двух сторон, то обязательно найдем его."
+
+REFERENCE           26JAK009
+NOTES               "(uncomfortable)"
+LANG_ENGLISH        "It's hot here!"
+LANG_FRENCH         "Здесь жарковато!"
+
+REFERENCE           26JAK010
+NOTES               "(to himself)"
+LANG_ENGLISH        "Better be careful..."
+LANG_FRENCH         "Лучше смотри под ноги..."
+
+REFERENCE           26JAK011
+NOTES               "(to himself)"
+LANG_ENGLISH        "Don't think I'll go for a swim..."
+LANG_FRENCH         "Не думаю, что мне хочется купаться..."
+
+REFERENCE           26JAK012
+NOTES               "(to himself)"
+LANG_ENGLISH        "They've disabled the controls. There must be another way to retract the bridge."
+LANG_FRENCH         "Они отключили управление. Должен быть другой способ выдвинуть мостик."
+
+REFERENCE           26JAK013
+NOTES               "(to himself)"
+LANG_ENGLISH        "Manual releases. Not convenient, but clever."
+LANG_FRENCH         "Ручное выдвижение. Неудобно, зато разумно."
+
+REFERENCE           26KYK009
+NOTES               "(via comm)"
+LANG_ENGLISH        "Jaden, I've just landed on the other side of the facility. I'm going in."
+LANG_FRENCH         "Джейден, я только что приземлился на другой стороне комплекса. Я вхожу."
+
+REFERENCE           26KYK010
+NOTES               "(via comm)"
+LANG_ENGLISH        "There's a lot of resistance here!"
+LANG_FRENCH         "Здесь сильное сопротивление!""
+
+REFERENCE           26KYK011
+NOTES               "(via comm, sarcastic)"
+LANG_ENGLISH        "Is it just me, or is it really hot here?"
+LANG_FRENCH         "Дело во мне, или тут действительно очень жарко?"
+
+
+ENDMARKER
