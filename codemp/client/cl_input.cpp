@@ -1001,47 +1001,136 @@ CL_JoystickEvent
 Joystick values stay set until changed
 =================
 */
+#ifndef _WIN32
 void CL_JoystickEvent( int axis, int value, int time ) {
 	if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
 		Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
 	}
 	cl.joystickAxis[axis] = value;
 }
+#else
+extern cvar_t *in_activeJoystick;
+extern cvar_t *in_joystick;
+typedef enum joystickType_s {
+	JOYTYPE_UNKNOWN,//or standard, mayb?
+	JOYTYPE_STANDARD,
+	JOYTYPE_X360, //or xbox one?
+	JOYTYPE_XONE, //if its even worth trying to distinguish..
+	JOYTYPE_PS4,
+	JOYTYPE_NUM_TYPES,
+} joystickType_t;
+
+static joystickType_t joyType = JOYTYPE_UNKNOWN;
+
+//static qboolean dualShock4 = qfalse;
+void CL_JoystickInit(void) {
+	Com_Memset(cl.joystickAxis, 0, sizeof(cl.joystickAxis));
+	//detect a supported controller type (FIXME: find a better way to query this info so it supports 3rd party controllers or standard xinput compliant gamepads?))
+	joyType = JOYTYPE_UNKNOWN;
+
+	if (VALIDSTRING(in_activeJoystick->string) && strlen(in_activeJoystick->string) > 0) {
+		joyType = JOYTYPE_STANDARD;
+		if (!Q_stricmpn(in_activeJoystick->string, "Xbox 360", 8)) {
+			joyType = JOYTYPE_X360;
+		}
+		else if (!Q_stricmpn(in_activeJoystick->string, "Xbox ", 5)) {
+			joyType = JOYTYPE_XONE;
+		}
+		else if (Q_stristr(in_activeJoystick->string, "PS4")) {
+			Com_Printf("Dualshock 4 controller detected\n");
+			//dualShock4 = qtrue;
+			joyType = JOYTYPE_PS4;
+		}
+	}
+
+	if (in_joystick->integer == 2)
+	{ //override to force old behavior
+		joyType = JOYTYPE_STANDARD;
+	}
+
+	in_joystick->modified = qfalse;
+	in_activeJoystick->modified = qfalse;
+}
+
+void CL_JoystickEvent( int axis, int value, int time ) {
+	int realAxis;
+
+	if ( axis < 0 || axis >= MAX_JOYSTICK_AXIS ) {
+		Com_Error( ERR_DROP, "CL_JoystickEvent: bad axis %i", axis );
+	}
+
+	if (joyType == JOYTYPE_UNKNOWN || (in_joystick && in_joystick->modified) || (in_activeJoystick && in_activeJoystick->modified)) {
+		CL_JoystickInit();
+	}
+
+	//provided the above works, all that's left to is implement the axis remapping (maybe process them too so we don't need the controller-specific hacks in CL_JoystickMove
+	//realAxis = axis;
+	if (joyType == JOYTYPE_UNKNOWN || joyType == JOYTYPE_STANDARD)
+	{
+		realAxis = axis;
+	}
+	else //if (joyType == JOYTYPE_PS4)
+	{
+		switch (axis)
+		{
+			default:
+				realAxis = axis;
+				break;
+			case AXIS_YAW: //left trigger state
+				realAxis = AXIS_UP;
+				break;
+			case AXIS_PITCH: //right trigger state
+				realAxis = AXIS_ROLL;
+				break;
+			case AXIS_UP: //right stick yaw
+				realAxis = AXIS_YAW;
+				break;
+			case AXIS_ROLL: //right stick pitch
+				realAxis = AXIS_PITCH;
+				break;
+		}
+	}
+
+	cl.joystickAxis[realAxis] = value;
+}
+#endif
 
 /*
 =================
 CL_JoystickMove
 =================
 */
-extern cvar_t *in_joystick;
-void CL_JoystickMove( usercmd_t *cmd ) {
+extern cvar_t* in_joystick;
+#ifndef _WIN32
+void CL_JoystickMove(usercmd_t* cmd) {
 	float	anglespeed;
 
-	if ( !in_joystick->integer )
+	if (!in_joystick->integer)
 	{
 		return;
 	}
 
-	if ( !(in_speed.active ^ cl_run->integer) ) {
+	if (!(in_speed.active ^ cl_run->integer)) {
 		cmd->buttons |= BUTTON_WALKING;
 	}
 
-	if ( in_speed.active ) {
+	if (in_speed.active) {
 		anglespeed = 0.001 * cls.frametime * cl_anglespeedkey->value;
-	} else {
+	}
+	else {
 		anglespeed = 0.001 * cls.frametime;
 	}
 
-	if ( !in_strafe.active ) {
-		if ( cl_mYawOverride )
+	if (!in_strafe.active) {
+		if (cl_mYawOverride)
 		{
-			if ( cl_mSensitivityOverride )
+			if (cl_mSensitivityOverride)
 			{
-				cl.viewangles[YAW] += cl_mYawOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_SIDE]/2.0f;
+				cl.viewangles[YAW] += cl_mYawOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_SIDE] / 2.0f;
 			}
 			else
 			{
-				cl.viewangles[YAW] += cl_mYawOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_SIDE]/2.0f;
+				cl.viewangles[YAW] += cl_mYawOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_SIDE] / 2.0f;
 			}
 		}
 		else
@@ -1051,32 +1140,154 @@ void CL_JoystickMove( usercmd_t *cmd ) {
 	}
 	else
 	{
-		cmd->rightmove = ClampChar( cmd->rightmove + cl.joystickAxis[AXIS_SIDE] );
+		cmd->rightmove = ClampChar(cmd->rightmove + cl.joystickAxis[AXIS_SIDE]);
 	}
 
-	if ( in_mlooking || cl_freelook->integer ) {
-		if ( cl_mPitchOverride )
+	if (in_mlooking || cl_freelook->integer) {
+		if (cl_mPitchOverride)
 		{
-			if ( cl_mSensitivityOverride )
+			if (cl_mSensitivityOverride)
 			{
-				cl.viewangles[PITCH] += cl_mPitchOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_FORWARD]/2.0f;
+				cl.viewangles[PITCH] += cl_mPitchOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_FORWARD] / 2.0f;
 			}
 			else
 			{
-				cl.viewangles[PITCH] += cl_mPitchOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_FORWARD]/2.0f;
+				cl.viewangles[PITCH] += cl_mPitchOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_FORWARD] / 2.0f;
 			}
 		}
 		else
 		{
 			cl.viewangles[PITCH] += anglespeed * (cl_pitchspeed->value / 100.0f) * cl.joystickAxis[AXIS_FORWARD];
 		}
-	} else
+	}
+	else
 	{
-		cmd->forwardmove = ClampChar( cmd->forwardmove + cl.joystickAxis[AXIS_FORWARD] );
+		cmd->forwardmove = ClampChar(cmd->forwardmove + cl.joystickAxis[AXIS_FORWARD]);
 	}
 
-	cmd->upmove = ClampChar( cmd->upmove + cl.joystickAxis[AXIS_UP] );
+	cmd->upmove = ClampChar(cmd->upmove + cl.joystickAxis[AXIS_UP]);
 }
+#else
+void CL_JoystickMove(usercmd_t* cmd)
+{ //360 controller support ?
+	//ok rn i think this is only working with dualshock 4
+	float	anglespeed;
+
+	if (!in_joystick->integer)
+	{
+		return;
+	}
+
+	if (!(in_speed.active ^ cl_run->integer)) {
+		cmd->buttons |= BUTTON_WALKING;
+	}
+
+	if (in_speed.active) {
+		anglespeed = 0.001 * cls.frametime * cl_anglespeedkey->value;
+	}
+	else {
+		anglespeed = 0.001 * cls.frametime;
+	}
+
+	if (com_developer && com_developer->integer == 2) {
+		switch (joyType) {
+		default: break;
+		case JOYTYPE_UNKNOWN:
+			Com_Printf("JOYTYPE_UNKNOWN "); break;
+		case JOYTYPE_STANDARD:
+			Com_Printf("JOYTYPE_STANDARD "); break;
+		case JOYTYPE_X360:
+			Com_Printf("JOYTYPE_X360 "); break;
+		case JOYTYPE_XONE:
+			Com_Printf("JOYTYPE_XONE "); break;
+		case JOYTYPE_PS4:
+			Com_Printf("JOYTYPE_PS4 "); break;
+		}
+
+		Com_Printf("AXIS_SIDE = %i AXIS_FORWARD = %i AXIS_UP = %i AXIS_ROLL = %i AXIS_YAW = %i AXIS_PITCH = %i\n", cl.joystickAxis[AXIS_SIDE], cl.joystickAxis[AXIS_FORWARD], cl.joystickAxis[AXIS_UP], cl.joystickAxis[AXIS_ROLL], cl.joystickAxis[AXIS_YAW], cl.joystickAxis[AXIS_PITCH]);
+	}
+
+	if (!in_strafe.active) {
+		if (cl_mYawOverride)
+		{
+			if (cl_mSensitivityOverride)
+			{
+				cl.viewangles[YAW] -= cl_mYawOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_SIDE] / 128.0f;
+			}
+			else
+			{
+				cl.viewangles[YAW] -= cl_mYawOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_SIDE] / 128.0f;
+			}
+		}
+		else
+		{
+			cl.viewangles[YAW] -= anglespeed * (cl_yawspeed->value / 100.0f) * cl.joystickAxis[AXIS_SIDE] / 128.0f;
+		}
+	}
+	else
+	{
+		cmd->rightmove = ClampChar(cmd->rightmove - cl.joystickAxis[AXIS_SIDE]);
+	}
+
+	if (in_mlooking || cl_freelook->integer) {
+		if (cl_mPitchOverride)
+		{
+			if (cl_mSensitivityOverride)
+			{
+				cl.viewangles[PITCH] += cl_mPitchOverride * cl_mSensitivityOverride * cl.joystickAxis[AXIS_PITCH] / 128.0f;
+			}
+			else
+			{
+				cl.viewangles[PITCH] += cl_mPitchOverride * OVERRIDE_MOUSE_SENSITIVITY * cl.joystickAxis[AXIS_PITCH] / 128.0f;
+			}
+		}
+		else
+		{
+			cl.viewangles[PITCH] += anglespeed * (cl_pitchspeed->value / 100.0f) * cl.joystickAxis[AXIS_PITCH] / 128.0f;
+		}
+	}
+	else
+	{
+		cmd->forwardmove = ClampChar(cmd->forwardmove - cl.joystickAxis[AXIS_FORWARD]);
+	}
+
+	cmd->forwardmove = ClampChar(cmd->forwardmove - cl.joystickAxis[AXIS_FORWARD] / 64.0f);
+	cmd->rightmove = ClampChar(cmd->rightmove + cl.joystickAxis[AXIS_SIDE] / 64.0f);
+	//cmd->upmove = ClampChar( cmd->upmove + cl.joystickAxis[AXIS_UP] ); //haha, no! xD
+
+	if ((in_joystick->integer & 2) || joyType == JOYTYPE_X360 || joyType == JOYTYPE_XONE || joyType == JOYTYPE_PS4)
+	{ //analogue movement handling...
+	  //FIXME: maybe use this for regular joysticks too?
+		if (cmd->rightmove < -127)
+			cmd->rightmove = -127; //fuck
+
+		if (cmd->forwardmove < -127)
+			cmd->forwardmove = -127; //FUCK
+
+		if ((cl.joystickAxis[AXIS_FORWARD] || cl.joystickAxis[AXIS_SIDE]) &&
+			cl.joystickAxis[AXIS_FORWARD] <= 14500 && cl.joystickAxis[AXIS_FORWARD] >= -14500 &&
+			cl.joystickAxis[AXIS_SIDE] <= 14500 && cl.joystickAxis[AXIS_SIDE] >= -14500)
+		{ //this is supposed to make us walk when the stick is moved slightly, need a better way to detect this
+			cmd->forwardmove /= 2.76; //3?
+			cmd->rightmove /= 2.76;
+			cmd->buttons |= BUTTON_WALKING; //yo idk nemore
+		}
+	}
+
+	if (joyType == JOYTYPE_PS4)
+	{ //remap L2/R2 triggers so they're attack/alt attack buttons
+		if (cl.joystickAxis[AXIS_ROLL] > 0) //right trigger pull
+			cmd->buttons |= BUTTON_ATTACK;
+
+		if (cl.joystickAxis[AXIS_UP] > 0) //left trigger pull
+			cmd->buttons |= BUTTON_ALT_ATTACK;
+	}
+	else if (joyType == JOYTYPE_STANDARD)
+	{
+		cmd->upmove = ClampChar(cmd->upmove + cl.joystickAxis[AXIS_UP]);
+	}
+}
+#endif
 
 /*
 =================

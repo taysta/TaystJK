@@ -41,6 +41,8 @@ static cvar_t *in_joystickThreshold = NULL;
 static cvar_t *in_joystickNo		= NULL;
 static cvar_t *in_joystickUseAnalog = NULL;
 
+cvar_t *in_activeJoystick;
+
 extern cvar_t *snd_mute_losefocus;
 
 static SDL_Window *SDL_window = NULL;
@@ -466,6 +468,7 @@ static void IN_ActivateMouse( void )
 IN_DeactivateMouse
 ===============
 */
+static cvar_t *ui_drawCursor = NULL;
 static void IN_DeactivateMouse( void )
 {
 	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
@@ -543,7 +546,7 @@ static void IN_InitJoystick( void )
 		SDL_JoystickClose(stick);
 
 	stick = NULL;
-	memset(&stick_state, '\0', sizeof (stick_state));
+	Com_Memset(&stick_state, '\0', sizeof (stick_state));
 
 	if (!SDL_WasInit(SDL_INIT_JOYSTICK))
 	{
@@ -554,6 +557,12 @@ static void IN_InitJoystick( void )
 			return;
 		}
 		Com_DPrintf("SDL_Init(SDL_INIT_JOYSTICK) passed.\n");
+	}
+
+	if (!in_joystick->integer) {
+		Com_Printf("Joystick is not active.\n");
+		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+		return;
 	}
 
 	total = SDL_NumJoysticks();
@@ -568,35 +577,32 @@ static void IN_InitJoystick( void )
 
 	Cvar_Get( "in_availableJoysticks", buf, CVAR_ROM );
 
-	if( !in_joystick->integer ) {
-		Com_DPrintf( "Joystick is not active.\n" );
-		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-		return;
-	}
-
 	in_joystickNo = Cvar_Get( "in_joystickNo", "0", CVAR_ARCHIVE_ND );
 	if( in_joystickNo->integer < 0 || in_joystickNo->integer >= total )
 		Cvar_Set( "in_joystickNo", "0" );
 
-	in_joystickUseAnalog = Cvar_Get( "in_joystickUseAnalog", "0", CVAR_ARCHIVE_ND );
+	in_joystickUseAnalog = Cvar_Get( "in_joystickUseAnalog", "1", CVAR_ARCHIVE_ND );
 
-	in_joystickThreshold = Cvar_Get( "joy_threshold", "0.15", CVAR_ARCHIVE_ND );
+	in_joystickThreshold = Cvar_Get( "joy_threshold", "0.30", CVAR_ARCHIVE_ND );
 
 	stick = SDL_JoystickOpen( in_joystickNo->integer );
 
+	in_activeJoystick = Cvar_Get("in_activeJoystick", "none", CVAR_ROM);
+
 	if (stick == NULL) {
-		Com_DPrintf( "No joystick opened.\n" );
+		Com_Printf( "No joystick opened.\n" );
 		return;
 	}
 
-	Com_DPrintf( "Joystick %d opened\n", in_joystickNo->integer );
-	Com_DPrintf( "Name:       %s\n", SDL_JoystickNameForIndex(in_joystickNo->integer) );
-	Com_DPrintf( "Axes:       %d\n", SDL_JoystickNumAxes(stick) );
-	Com_DPrintf( "Hats:       %d\n", SDL_JoystickNumHats(stick) );
-	Com_DPrintf( "Buttons:    %d\n", SDL_JoystickNumButtons(stick) );
-	Com_DPrintf( "Balls:      %d\n", SDL_JoystickNumBalls(stick) );
-	Com_DPrintf( "Use Analog: %s\n", in_joystickUseAnalog->integer ? "Yes" : "No" );
-	Com_DPrintf( "Threshold: %f\n", in_joystickThreshold->value );
+	Cvar_Set( "in_activeJoystick", SDL_JoystickNameForIndex(in_joystickNo->integer) );
+	Com_Printf( "Joystick %d opened\n", in_joystickNo->integer );
+	Com_Printf( "Name:       %s\n", SDL_JoystickNameForIndex(in_joystickNo->integer) );
+	Com_Printf( "Axes:       %d\n", SDL_JoystickNumAxes(stick) );
+	Com_Printf( "Hats:       %d\n", SDL_JoystickNumHats(stick) );
+	Com_Printf( "Buttons:    %d\n", SDL_JoystickNumButtons(stick) );
+	Com_Printf( "Balls:      %d\n", SDL_JoystickNumBalls(stick) );
+	Com_Printf( "Use Analog: %s\n", in_joystickUseAnalog->integer ? "Yes" : "No" );
+	Com_Printf( "Threshold: %f\n", in_joystickThreshold->value );
 
 	SDL_JoystickEventState(SDL_QUERY);
 }
