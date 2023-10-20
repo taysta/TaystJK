@@ -12,7 +12,7 @@
 		visible					0
 		fullscreen				0
 		outOfBoundsClick									// this closes the window if it gets a click out of the rectangle
-		rect					140 60 360 360
+		rect					140 20 360 400
 		focusColor				1 1 1 1								// Focus color for text and items
 		style					1
 		border					1
@@ -42,7 +42,7 @@
 			name				setup_background
 			group				none
 			style				WINDOW_STYLE_FILLED
-			rect				0 0 360 360
+			rect				0 0 360 400
 			backcolor			0 0 .35 .9
 			forecolor			1 1 1 1
 			border				1
@@ -78,7 +78,7 @@
 		itemDef 
 		{
 			name				serverinfoList
-			rect				10 27 340 280
+			rect				10 27 340 325
 			type				ITEM_TYPE_LISTBOX
 			style				WINDOW_STYLE_FILLED
 			feeder				FEEDER_SERVERSTATUS
@@ -123,7 +123,7 @@
 			font				3
 			textscale			.8
 			style				WINDOW_STYLE_FILLED
-			rect				10 310 170 30
+			rect				10 355 170 30
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			85
 			textaligny			5
@@ -137,7 +137,7 @@
 			mouseEnter 
 			{ 
 				show			button_glow
-				setitemrect		button_glow	0 310 200 28
+				setitemrect		button_glow	0 355 200 28
 			}
 			mouseExit 
 			{ 
@@ -154,7 +154,7 @@
 			font				3
 			textscale			.8
 			style				WINDOW_STYLE_FILLED
-			rect				180 310 170 30
+			rect				180 355 170 30
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			85
 			textaligny			5
@@ -168,7 +168,7 @@
 			mouseEnter 
 			{ 
 				show			button_glow
-				setitemrect		button_glow	170 310 200 28
+				setitemrect		button_glow	170 355 200 28
 			}
 			mouseExit 
 			{ 
