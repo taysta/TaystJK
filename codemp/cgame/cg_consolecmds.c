@@ -195,6 +195,161 @@ void CG_ClientList_f( void )
 	Com_Printf( "Listed %2d clients\n", count );
 }
 
+static void CG_UserInfoList_f(void)
+{
+	clientInfo_t *ci;
+	centity_t *cent;
+	int i;
+	int r, g, b;
+
+	for (i = 0; i < MAX_CLIENTS; i++)
+	{
+		ci = &cgs.clientinfo[i];
+		cent = &cg_entities[i];
+
+		if (!ci || !ci->infoValid || !cent)
+			continue;
+
+		if (ci->botSkill != -1)
+			continue;
+
+		if (!VALIDSTRING(ci->name) || !VALIDSTRING(ci->modelName))
+			continue;
+
+		switch( ci->team )
+		{
+			case TEAM_FREE:
+				Com_Printf(S_COLOR_WHITE "%2d " S_COLOR_YELLOW "F   " S_COLOR_WHITE "%s ", i, ci->name);
+					break;
+
+			case TEAM_RED:
+				Com_Printf(S_COLOR_WHITE "%2d " S_COLOR_RED "R   " S_COLOR_WHITE "%s ", i, ci->name);
+					break;
+
+			case TEAM_BLUE:
+				Com_Printf(S_COLOR_WHITE "%2d " S_COLOR_BLUE "B   " S_COLOR_WHITE "%s ", i, ci->name);
+					break;
+
+			default:
+			case TEAM_SPECTATOR:
+				Com_Printf(S_COLOR_WHITE "%2d " S_COLOR_WHITE "S   " S_COLOR_WHITE "%s ", i, ci->name);
+				break;
+		}
+
+		if (VALIDSTRING(ci->modelName)) {
+			if (VALIDSTRING(ci->skinName) && Q_stricmp(ci->skinName, "default"))
+				Com_Printf(S_COLOR_WHITE "%s" S_COLOR_WHITE "/%s ", ci->modelName, ci->skinName);
+			else
+				Com_Printf(S_COLOR_WHITE "%s ", ci->modelName);
+
+			if (ci->gender == GENDER_FEMALE)
+				Com_Printf(S_COLOR_WHITE "(female) ");
+			else if (ci->gender == GENDER_NEUTER)
+				Com_Printf(S_COLOR_WHITE "(gender neutral) "); //lol
+		}
+
+		if (VALIDSTRING(ci->saberName)) {
+			Com_Printf(S_COLOR_WHITE "%s ", ci->saberName);
+			switch (ci->icolor1) {
+				default:
+				case SABER_RED:
+					Com_Printf(S_COLOR_RED "(Red) ");
+					break;
+				case SABER_ORANGE:
+					Com_Printf(S_COLOR_ORANGE "(Orange) ");
+					break;
+				case SABER_YELLOW:
+					Com_Printf(S_COLOR_YELLOW "(Yellow) ");
+					break;
+				case SABER_GREEN:
+					Com_Printf(S_COLOR_GREEN "(Green) ");
+					break;
+				case SABER_BLUE:
+					Com_Printf(S_COLOR_BLUE "(Blue) ");
+					break;
+				case SABER_PURPLE:
+					Com_Printf(S_COLOR_MAGENTA "(Purple) ");
+					break;
+				case SABER_RGB:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(RGB) "); //todo: parse RGB col, ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]or
+					break;
+				case SABER_FLAME1:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Flame #1) ", ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]);
+					break;
+				case SABER_ELEC1:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Electric #1) ", ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]);
+					break;
+				case SABER_FLAME2:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Flame #2) ", ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]);
+					break;
+				case SABER_ELEC2:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Electric #2) ", ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]);
+					break;
+				case SABER_BLACK:
+					Com_Printf(S_COLOR_GREY "(Black) ");
+					break;
+			}
+		}
+
+		if (VALIDSTRING(ci->saber2Name) && strlen(ci->saber2Name) && Q_stricmp(ci->saber2Name, "none")) {
+			Com_Printf(S_COLOR_WHITE "%s ", ci->saber2Name);
+			switch (ci->icolor2) {
+				default:
+				case SABER_RED:
+					Com_Printf(S_COLOR_RED "(Red) ");
+					break;
+				case SABER_ORANGE:
+					Com_Printf(S_COLOR_ORANGE "(Orange) ");
+					break;
+				case SABER_YELLOW:
+					Com_Printf(S_COLOR_YELLOW "(Yellow) ");
+					break;
+				case SABER_GREEN:
+					Com_Printf(S_COLOR_GREEN "(Green) ");
+					break;
+				case SABER_BLUE:
+					Com_Printf(S_COLOR_BLUE "(Blue) ");
+					break;
+				case SABER_PURPLE:
+					Com_Printf(S_COLOR_MAGENTA "(Purple) ");
+					break;
+				case SABER_RGB:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(RGB) "); //todo: parse RGB col, ci->rgb1[0], ci->rgb1[1], ci->rgb1[2]or
+					break;
+				case SABER_FLAME1:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Flame #1) ", ci->rgb2[0], ci->rgb2[1], ci->rgb2[2]);
+					break;
+				case SABER_ELEC1:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Electric #1) ", ci->rgb2[0], ci->rgb2[1], ci->rgb2[2]);
+					break;
+				case SABER_FLAME2:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Flame #2) ", ci->rgb2[0], ci->rgb2[1], ci->rgb2[2]);
+					break;
+				case SABER_ELEC2:
+					Com_Printf(S_COLOR_WHITE "[%.0f %.0f %.0f] " S_COLOR_CYAN "(Electric #2) ", ci->rgb2[0], ci->rgb2[1], ci->rgb2[2]);
+					break;
+				case SABER_BLACK:
+					Com_Printf(S_COLOR_GREY "(Black) ");
+					break;
+			}
+		}
+
+		if (VALIDSTRING(ci->teamName) && strlen(ci->teamName))
+			Com_Printf(S_COLOR_WHITE "%s ", ci->teamName);
+
+		if (cent) {
+			r = cent->currentState.customRGBA[0];
+			g = cent->currentState.customRGBA[1];
+			b = cent->currentState.customRGBA[2];
+			if ((r > 0 && r < 255) || (g > 0 && g < 255) || (b > 0 && b < 255))
+				Com_Printf(S_COLOR_WHITE "RGBA: " S_COLOR_RED "%03i " S_COLOR_GREEN "%03i " S_COLOR_BLUE "%03i ", r, g, b);
+		}
+
+		if (ci->deferred)
+			Com_Printf(S_COLOR_WHITE "(deferred) ");
+		Com_Printf("\n");
+	}
+}
 
 static void CG_TellTarget_f( void ) {
 	int		clientNum;
@@ -2442,6 +2597,8 @@ static consoleCommand_t	commands[] = {
 	{ "speedometer",				CG_SpeedometerSettings_f },
 	{ "cosmetics",					CG_Cosmetics_f },
 	{ "chatlog",					CG_ChatLogSettings_f },
+
+	{ "clientlistInfo",				CG_UserInfoList_f },
 
 	{ "addSpeedsound",				CG_AddSpeedpoint_f },
 	{ "listSpeedsounds",			CG_ListSpeedpoints_f },
