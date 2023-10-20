@@ -67,6 +67,11 @@ cvar_t	*cl_aviFrameRate;
 cvar_t	*cl_aviMotionJpeg;
 cvar_t	*cl_avi2GBLimit;
 cvar_t	*cl_forceavidemo;
+#if JAMME_PIPES
+cvar_t	*cl_aviPipe;
+cvar_t	*cl_aviPipeCommand;
+cvar_t	*cl_aviPipeContainer;
+#endif
 
 cvar_t	*cl_freelook;
 cvar_t	*cl_sensitivity;
@@ -2866,6 +2871,17 @@ void CL_SetForcePowers_f( void ) {
 CL_VideoFilename
 ==================
 */
+#if JAMME_PIPES
+void CL_VideoFilename( char *buf, int bufSize, char *container ) {
+	time_t rawtime;
+	char timeStr[32] = {0}; // should really only reach ~19 chars
+
+	time( &rawtime );
+	strftime( timeStr, sizeof( timeStr ), "%Y-%m-%d_%H-%M-%S", localtime( &rawtime ) ); // or gmtime
+
+	Com_sprintf( buf, bufSize, "videos/video%s.%s", timeStr, container );
+}
+#else
 void CL_VideoFilename( char *buf, int bufSize ) {
 	time_t rawtime;
 	char timeStr[32] = {0}; // should really only reach ~19 chars
@@ -2875,6 +2891,7 @@ void CL_VideoFilename( char *buf, int bufSize ) {
 
 	Com_sprintf( buf, bufSize, "videos/video%s.avi", timeStr );
 }
+#endif
 
 /*
 ===============
@@ -2884,9 +2901,44 @@ video
 video [filename]
 ===============
 */
+#if JAMME_PIPES
 void CL_Video_f( void )
 {
-	char  filename[ MAX_OSPATH ];
+	char	filename[ MAX_OSPATH ] = { 0 };
+	char	*container = "avi", *name = NULL, *extension = NULL;
+	int		argc = Cmd_Argc();
+
+	//if ( argc >= 3 )
+	//	container = Cmd_Argv( 2 );
+
+	if (cl_aviPipe->integer) {
+		if (!VALIDSTRING(cl_aviPipeContainer->string)) {
+			Cvar_Set("cl_aviPipeContainer", "mp4");
+		}
+
+		container = cl_aviPipeContainer->string;
+	}
+
+	if ( argc >= 2 ) { // explicit filename
+		name = Cmd_Argv(1);
+		Com_sprintf( filename, MAX_OSPATH, "videos/%s.%s", name, container );
+	}
+	else
+	{
+		CL_VideoFilename( filename, MAX_OSPATH, container );
+
+		if ( FS_FileExists( filename ) ) {
+			Com_Printf( "Video: Couldn't create a file\n");
+			return;
+ 		}
+	}
+
+	CL_OpenAVIForWriting( filename );
+}
+#else
+void CL_Video_f( void )
+{
+	char  filename[ MAX_OSPATH ] = { 0 };
 
 	if( !clc.demoplaying )
 	{
@@ -2911,6 +2963,7 @@ void CL_Video_f( void )
 
 	CL_OpenAVIForWriting( filename );
 }
+#endif
 
 /*
 ===============
@@ -3280,6 +3333,12 @@ void CL_Init( void ) {
 	cl_aviMotionJpeg = Cvar_Get ("cl_aviMotionJpeg", "1", CVAR_ARCHIVE);
 	cl_avi2GBLimit = Cvar_Get ("cl_avi2GBLimit", "1", CVAR_ARCHIVE );
 	cl_forceavidemo = Cvar_Get ("cl_forceavidemo", "0", 0);
+
+#if JAMME_PIPES
+	cl_aviPipe = Cvar_Get("cl_aviPipe", "0", CVAR_ARCHIVE_ND, "use ffmpeg pipe for avi recording");
+	cl_aviPipeCommand = Cvar_Get("cl_aviPipeCommand", PIPE_COMMAND_DEFAULT, CVAR_TEMP, "");
+	cl_aviPipeContainer = Cvar_Get("cl_aviPipeContainer", "mp4", CVAR_TEMP, "");
+#endif
 
 	rconAddress = Cvar_Get ("rconAddress", "", 0, "Alternate server address to remotely access via rcon protocol");
 

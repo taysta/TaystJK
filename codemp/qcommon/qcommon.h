@@ -749,6 +749,11 @@ void FS_Rename( const char *from, const char *to );
 
 qboolean FS_WriteToTemporaryFile( const void *data, size_t dataLength, char **tempFileName );
 
+#if JAMME_PIPES
+fileHandle_t FS_PipeOpen(const char *qcmd, const char *qpath, const char *mode);
+//int FS_PipeWrite(const void *buffer, int len, fileHandle_t h); //just using FS_Write directly
+void FS_PipeClose(fileHandle_t f);
+#endif
 
 /*
 ==============================================================

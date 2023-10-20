@@ -4568,3 +4568,91 @@ qboolean FS_WriteToTemporaryFile( const void *data, size_t dataLength, char **te
 
 	return qfalse;
 }
+
+#if JAMME_PIPES
+//pipes!!
+fileHandle_t FS_PipeOpen(const char *qcmd, const char *qpath, const char *mode) {
+	char			*ospath;
+	fileHandle_t	f;
+	char            temp[2048];
+	char            cmd[2048];
+	const char		*space;
+
+	if (!fs_searchpaths) {
+		Com_Error(ERR_FATAL, "Filesystem call made without initialization\n");
+	}
+
+	f = FS_HandleForFile();
+	fsh[f].zipFile = qfalse;
+
+	ospath = FS_BuildOSPath(fs_homepath->string, fs_gamedir, qpath);
+
+	if (fs_debug->integer) {
+		Com_Printf("FS_PipeOpen ospath: %s\n", ospath);
+	}
+
+	if(FS_CreatePath(ospath)) {
+		return 0;
+	}
+
+	Com_sprintf(temp, sizeof(temp), "/%s", qcmd);
+	FS_ReplaceSeparators(temp);
+	if (space = strchr(temp, ' ')) {
+		char quotedCmd[2048];
+		Q_strncpyz(quotedCmd, temp, sizeof(quotedCmd));
+		quotedCmd[(space-temp)] = '\0';
+		Com_sprintf(cmd, sizeof(cmd), "\"%s%s\"%s", fs_homepath->string, quotedCmd, space);
+	} else {
+		Com_sprintf(cmd, sizeof(cmd), "\"%s%s\"", fs_homepath->string, temp);
+	}
+
+	if (fs_debug->integer) {
+		Com_Printf("FS_PipeOpen cmd: %s\n", cmd);
+	}
+
+#ifdef _WIN32
+	fsh[f].handleFiles.file.o = _popen(cmd, mode);
+#else
+	fsh[f].handleFiles.file.o = popen(cmd, mode);
+#endif
+
+	Q_strncpyz(fsh[f].name, qpath, sizeof(fsh[f].name));
+
+	fsh[f].handleSync = qfalse;
+#if 1//def USE_AIO
+	fsh[f].handleAsync = qfalse;
+#endif
+	if (!fsh[f].handleFiles.file.o) {
+		f = 0;
+	}
+	return f;
+}
+
+#if 0 //this is pointless, can just call FS_Write directly
+int FS_PipeWrite(const void *buffer, int len, fileHandle_t h) {
+	return FS_Write(buffer, len, h);
+}
+#endif
+
+void FS_PipeClose(fileHandle_t f) {
+	if (!fs_searchpaths) {
+		Com_Error(ERR_FATAL, "Filesystem call made without initialization\n");
+	}
+
+#if 0
+	if (fsh[f].streamed) {
+		Sys_EndStreamedFile(f); //this function is just a stub in jamme code
+	}
+#endif
+
+	// we didn't find it as a pak, so close it as a unique file
+	if (fsh[f].handleFiles.file.o) {
+#ifdef _WIN32
+		_pclose(fsh[f].handleFiles.file.o);
+#else
+		pclose(fsh[f].handleFiles.file.o);
+#endif
+	}
+	Com_Memset(&fsh[f], 0, sizeof(fsh[f]));
+}
+#endif

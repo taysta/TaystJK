@@ -682,3 +682,10 @@ void CL_WriteAVIVideoFrame( const byte *imageBuffer, int size );
 void CL_WriteAVIAudioFrame( const byte *pcmBuffer, int size );
 qboolean CL_CloseAVI( void );
 qboolean CL_VideoRecording( void );
+
+#if JAMME_PIPES
+extern cvar_t *cl_aviPipe;
+#define PIPE_COMMAND_DEFAULT "ffmpeg -f avi -i - -threads 0 -preset faster -y -pix_fmt yuv444p -crf 16 %o 2> ffmpeglog.txt"
+extern cvar_t *cl_aviPipeCommand;
+extern cvar_t *cl_aviPipeContainer;
+#endif
