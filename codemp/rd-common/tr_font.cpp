@@ -1474,7 +1474,7 @@ int RE_Font_HeightPixels(const int iFontHandle, const float fScale)
 // iMaxPixelWidth is -1 for "all of string", else pixel display count...
 //
 cvar_t *cl_coloredTextShadows;
-void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
+void RE_Font_DrawStringFloat(float ox, float oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
 {
 	static qboolean gbInShadow = qfalse;	// MUST default to this
 	float				fox, foy, fx, fy;
@@ -1576,7 +1576,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 			}
 			dropShadowText[r] = 0;
 
-			RE_Font_DrawString(ox + offset, oy + offset, dropShadowText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+			RE_Font_DrawStringFloat(ox + offset, oy + offset, dropShadowText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
 		}
 		else
 		{
@@ -1585,7 +1585,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 			offset = Round(curfont->GetPointSize() * fScale * 0.075f);
 
 			gbInShadow = qtrue;
-			RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+			RE_Font_DrawStringFloat(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
 			gbInShadow = qfalse;
 		}
 	}
@@ -1707,6 +1707,10 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 	//let it remember the old color //RE_SetColor(NULL);
 }
 
+void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
+{
+	RE_Font_DrawStringFloat((float)ox, (float)oy, psText, rgba, iFontHandle, iMaxPixelWidth, fScale);
+}
 int RE_RegisterFont(const char *psName)
 {
 	FontIndexMap_t::iterator it = g_mapFontIndexes.find(psName);
