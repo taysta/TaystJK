@@ -117,6 +117,7 @@ XCVAR_DEF( cg_strafeHelperInactiveAlpha,		"200",	NULL,								CVAR_ARCHIVE )
 //Sounds
 XCVAR_DEF( cg_rollSounds,						"1",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_jumpSounds,						"0",	NULL,								CVAR_ARCHIVE )
+XCVAR_DEF( cg_voteBeep,							"1",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_chatSounds,						"1",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_hitsounds,						"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceSounds,						"1",	NULL,								CVAR_ARCHIVE ) //Bitvalue, but so far we just have RS_TIMER_START set up

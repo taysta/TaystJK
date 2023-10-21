@@ -9180,7 +9180,7 @@ static void CG_DrawVote(void) {
 	// play a talk beep whenever it is modified
 	if ( cgs.voteModified ) {
 		cgs.voteModified = qfalse;
-		if (cg_chatSounds.integer)
+		if (cg_voteBeep.integer)
 			trap->S_StartLocalSound( cgs.media.talkSound, CHAN_LOCAL_SOUND ); //Now what the fuck is this
 	}
 
