@@ -179,7 +179,11 @@ void CG_InitSiegeMode(void)
 		goto failure;
 	}
 
+#if !NEW_SCOREBOARD
 	Com_sprintf(levelname, sizeof(levelname), "%s.siege", cgs.rawmapname);
+#else
+	Com_sprintf(levelname, sizeof(levelname), "maps/%s.siege", cgs.rawmapname);
+#endif
 
 	if (!levelname[0])
 	{

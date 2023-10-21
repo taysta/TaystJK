@@ -420,6 +420,18 @@ void CG_TileClear( void ) {
 	CG_TileClearBox( right, top, w - right, bottom - top + 1, cgs.media.backTileShader );
 }
 
+#if NEW_SCOREBOARD
+//void CG_LerpColour( const vector4 *start, const vector4 *end, vector4 *out, float point ) {
+void CG_LerpColour( const vec4_t start, const vec4_t end, vec4_t out, float point ) {
+	int i;
+	for (i = 0; i < 4; i++) {
+		out[i] = start[i] + point * (end[i] - start[i]);
+	}
+	/*out->r = start->r + point*(end->r - start->r);
+	out->g = start->g + point*(end->g - start->g);
+	out->b = start->b + point*(end->b - start->b);*/
+}
+#endif
 
 
 /*

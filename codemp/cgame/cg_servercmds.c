@@ -304,7 +304,11 @@ void CG_ParseServerinfo( void ) {
 	trap->Cvar_Set ( "ui_about_mapname", mapname );
 
 	Com_sprintf( cgs.mapname, sizeof( cgs.mapname ), "maps/%s.bsp", mapname );
+#if !NEW_SCOREBOARD
 	Com_sprintf( cgs.rawmapname, sizeof( cgs.rawmapname ), "maps/%s", mapname );
+#else
+	Q_strncpyz( cgs.rawmapname, mapname, sizeof( cgs.rawmapname ) );
+#endif
 
 	trap->Cvar_Set ( "ui_about_gametype", va("%i", cgs.gametype ) );
 	trap->Cvar_Set ( "ui_about_fraglimit", va("%i", cgs.fraglimit ) );
