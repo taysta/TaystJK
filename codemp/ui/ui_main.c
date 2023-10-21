@@ -12394,6 +12394,7 @@ typedef struct helpDescription_s {
 	char	*cvarName;
 	char	*descriptionShort;
 	char	*descriptionLong;
+	char	*execText; //
 } helpDescription_t;
 
 static helpDescription_t cvarHelp[] = {
@@ -12420,10 +12421,13 @@ static void UI_CvarHelp(const char *cvarName, qboolean enter, char *helpBuffer, 
 	if (!xDocs)
 		return;
 
-	if (enter)
+	if (enter && VALIDSTRING(xDocs->descriptionLong) && strlen(xDocs->descriptionLong))
 		Com_sprintf(helpBuffer, helpBufferSize, "%s\n%s", xDocs->descriptionShort, xDocs->descriptionLong);
 	else //what shows up in autocomplete/cvarlist, cmds only use this
 		Com_sprintf(helpBuffer, helpBufferSize, "%s", xDocs->descriptionShort);
+	if (VALIDSTRING(xDocs->execText) && strlen(xDocs->execText)) {
+		trap->Cmd_ExecuteText(EXEC_NOW, va("%s\n", xDocs->execText));
+	}
 }
 
 /*
