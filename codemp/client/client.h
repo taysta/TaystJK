@@ -36,6 +36,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define	RETRANSMIT_TIMEOUT	3000	// time between connection packet retransmits
 
+#ifdef USE_CURL
+#include "cl_curl.h"
+#endif /* USE_CURL */
+
 // file full of random crap that gets used to create ja_guid
 #define QKEY_FILE "jakey"
 #define QKEY_SIZE 2048
@@ -258,6 +262,18 @@ typedef struct clientConnection_s {
 
 	// big stuff at end of structure so most offsets are 15 bits or less
 	netchan_t	netchan;
+
+#ifdef USE_CURL
+	struct {
+		qboolean	gotError;
+		qboolean	enabled;
+		qboolean	used;
+		qboolean	disconnected;
+		char		downloadURL[MAX_OSPATH];
+		CURL		*downloadCURL;
+		CURLM		*downloadCURLM;
+	} curl;
+#endif /* USE_CURL */
 } clientConnection_t;
 
 extern	clientConnection_t clc;
