@@ -1567,6 +1567,191 @@ static void SV_KillServer_f( void ) {
 }
 
 #ifdef DEDICATED
+void SV_DemoCompleted(client_t *cl) {
+	cl->demo.demofile = 0;
+	cl->demo.demoplaying = qfalse;
+	if (com_developer->integer)
+		Com_Printf("Completed demo playback on client %d.\n", cl - svs.clients);
+}
+
+void SV_ReadDemoMessage(client_t *cl, msg_t *msg)
+{
+	int			r;
+	msg_t		buf;
+	byte		bufData[ MAX_MSGLEN ];
+	int			s;
+
+	if (!cl->demo.demoplaying || !cl->demo.demofile) {
+		SV_DemoCompleted(cl);
+		return;
+	}
+
+
+	r = FS_Read(&s, 4, cl->demo.demofile); //read sequence
+	if (r != 4) {
+		SV_DemoCompleted(cl);
+		return;
+	}
+
+	MSG_Init(&buf, bufData, sizeof(bufData));
+	r = FS_Read(&buf.cursize, 4, cl->demo.demofile);
+	if (r != 4) {
+		SV_DemoCompleted(cl);
+		return;
+	}
+	buf.cursize = LittleLong(buf.cursize);
+	if (buf.cursize == -1) {
+		SV_DemoCompleted(cl);
+		return;
+	}
+	if (buf.cursize > buf.maxsize) {
+		//Com_Error(ERR_DROP, "CL_ReadDemoMessage: demoMsglen > MAX_MSGLEN");
+		Com_Printf("SV_ReadDemoMessage: demoMsglen > MAX_MSGLEN on client %d", cl - svs.clients);
+		SV_DemoCompleted(cl);
+		return;
+	}
+	r = FS_Read(buf.data, buf.cursize, cl->demo.demofile);
+	if (r != buf.cursize) {
+		Com_Printf(S_COLOR_RED "Demo file was truncated on client %d.\n", cl-svs.clients);
+		SV_DemoCompleted(cl);
+		return;
+	}
+
+	//clc.lastPacketTime = cls.realtime;
+	buf.readcount = 0; //wuts this do?
+	MSG_Bitstream(&buf);
+	int reliableAcknowledge = MSG_ReadLong(&buf); //dunno if this is necessary or if i want to set this on the client during playback
+	/*if ( reliableAcknowledge < cl->reliableSequence - MAX_RELIABLE_COMMANDS ) {
+		reliableAcknowledge = cl->reliableSequence;
+	}*/
+	//int cmd = MSG_ReadByte(&buf);
+
+	while ( 1 ) {
+		msg_t *msg = &buf;
+		int cmd;
+
+		if ( msg->readcount > msg->cursize ) {
+			//Com_Error (ERR_DROP,"CL_ParseServerMessage: read past end of server message");
+			//break;
+			Com_Printf(S_COLOR_RED "SV_ReadDemoMessage : CL_ParseServerMessage: read past end of server message for client %d\n", cl - svs.clients);
+			SV_DemoCompleted(cl);
+			return;
+		}
+
+		cmd = MSG_ReadByte( msg );
+
+		if ( cmd == svc_EOF) {
+			//SHOWNET( msg, "END OF MESSAGE" );
+			break;
+		}
+
+		/*if ( cl_shownet->integer >= 2 ) {
+			if ( !svc_strings[cmd] ) {
+				Com_Printf( "%3i:BAD CMD %i\n", msg->readcount-1, cmd );
+			} else {
+				SHOWNET( msg, svc_strings[cmd] );
+			}
+		}*/
+
+		// other commands
+		switch ( cmd ) {
+			default:
+				//Com_Error (ERR_DROP,"CL_ParseServerMessage: Illegible server message\n");
+				Com_Printf(S_COLOR_RED "SV_ReadDemoMessage : CL_ParseServerMessage: Illegible server message for client %d\n", cl - svs.clients);
+				SV_DemoCompleted(cl);
+				break;
+			case svc_nop:
+				break;
+			case svc_serverCommand:
+				//CL_ParseCommandString(msg);
+				MSG_ReadLong( msg );
+				MSG_ReadString( msg );
+				break;
+			case svc_gamestate:
+			{
+				MSG_ReadLong( msg );
+
+				while (1) {
+					int gscmd = MSG_ReadByte(msg);
+
+					if (cmd == svc_EOF) {
+						break;
+					}
+
+					if (cmd == svc_configstring) {
+						//int len;
+						int start;
+
+						start = msg->readcount;
+						MSG_ReadShort(msg);
+						MSG_ReadBigString(msg);
+					}
+				}
+				break;
+			}
+			case svc_snapshot:
+				//CL_ParseSnapshot( msg );
+			{
+				int len, serverTime, deltaNum, snapFlags;
+				//cl->frames[cl->netchan.outgoingSequence & PACKET_MASK].messageSize = buf.cursize; //?
+				clientSnapshot_t *newSnap = &cl->frames[cl->netchan.outgoingSequence & PACKET_MASK];
+				clientSnapshot_t *old = &cl->frames[(cl->netchan.outgoingSequence & PACKET_MASK) - 1];
+
+				serverTime = MSG_ReadLong(msg);
+				deltaNum = MSG_ReadByte(msg);
+				if (!deltaNum) {
+					deltaNum = -1;
+				}
+				else {
+					deltaNum = cl->messageAcknowledge - deltaNum;
+				}
+
+				snapFlags = MSG_ReadByte(msg);
+				if (deltaNum <= 0) {
+					cl->demo.demowaiting = qfalse;
+				}
+
+				//areamask
+				newSnap->areabytes = len = MSG_ReadByte(msg);
+				if ((unsigned)len > sizeof(newSnap->areabits))
+				{
+					//Com_Error (ERR_DROP,"CL_ParseSnapshot: Invalid size %d for areamask", len);
+					Com_Printf(S_COLOR_RED "SV_ReadDemoMessage : CL_ParseSnapshot: Invalid size %d for areamask for client %d", len, cl - svs.clients);
+					SV_DemoCompleted(cl);
+					return;
+				}
+
+				MSG_ReadData(msg, &newSnap->areabits, len);
+
+				// read playerstate into their new snapshot
+				//SHOWNET( msg, "playerstate" );
+				if ( old ) {
+					MSG_ReadDeltaPlayerstate( msg, &old->ps, &newSnap->ps );
+					if (newSnap->ps.m_iVehicleNum)
+					{ //this means we must have written our vehicle's ps too
+						MSG_ReadDeltaPlayerstate( msg, &old->vps, &newSnap->vps, qtrue );
+					}
+				} else {
+					MSG_ReadDeltaPlayerstate( msg, NULL, &newSnap->ps );
+					if (newSnap->ps.m_iVehicleNum)
+					{ //this means we must have written our vehicle's ps too
+						MSG_ReadDeltaPlayerstate( msg, NULL, &newSnap->vps, qtrue );
+					}
+				}
+				break;
+			}
+			case svc_setgame:
+			case svc_download:
+				break;
+			case svc_mapchange:
+				/*if ( cls.cgameStarted )
+					CGVM_MapChange();*/
+				SV_DemoCompleted(cl);
+				break;
+		}
+	}
+}
+
 void SV_WriteDemoMessage ( client_t *cl, msg_t *msg, int headerBytes ) {
 	int		len, swlen;
 
@@ -1781,6 +1966,105 @@ void SV_ListRecording_f(void) {
 	}
 }
 
+// code is a merge of the cl_main.cpp function of the same name and SV_SendClientGameState in sv_client.cpp
+static void SV_PlayDemo(client_t *cl, char *demoName) {
+
+	Q_strncpyz(cl->demo.demoName, demoName, sizeof(cl->demo.demoName));
+	if (1) { //com_developer->integer) {
+		Com_Printf("playing %s on client %d.\n", cl->demo.demoName, cl - svs.clients);
+	}
+
+	//cl->demo.demofile = FS_FOpenFileWriteAsync( demoName );
+	FS_FOpenFileRead(cl->demo.demoName, &cl->demo.demofile, qtrue);
+	if ( !cl->demo.demofile ) {
+		//Com_Printf("ERROR: couldn't open.\n");
+		Com_Printf("ERROR: couldn't open %s.\n", cl->demo.demoName);
+		return;
+	}
+
+	cl->demo.demoplaying = qtrue;
+
+	cl->demo.isBot = ( cl->netchan.remoteAddress.type == NA_BOT ) ? qtrue : qfalse;
+	cl->demo.botReliableAcknowledge = cl->reliableSent;
+
+#if 1
+	msg_t msg = {};
+	SV_ReadDemoMessage(cl, &msg);
+	/*cl->state = CA_CONNECTED;
+	while (cl->state >= CA_CONNECTED && cl->state < CA_PRIMED) {
+		//CL_ReadDemoMessage();
+		SV_ReadDemoMessage(cl, &msg);
+	}*/
+#endif
+}
+
+static void SV_PlayDemo_f( void ) {
+	char		demoName[MAX_OSPATH];
+	char		name[MAX_OSPATH];
+	int			i;
+	char		*s;
+	client_t	*cl;
+	//int			len;
+
+	if ( svs.clients == NULL ) {
+		Com_Printf( "cannot record server demo - null svs.clients\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() < 2 ) {
+		Com_Printf( "svplaydemo <demoname> <clientnum>\n" );
+		return;
+	}
+
+	if ( Cmd_Argc() == 3 ) {
+		int clIndex = atoi( Cmd_Argv( 2 ) );
+		if ( clIndex < 0 || clIndex >= sv_maxclients->integer ) {
+			Com_Printf( "Unknown client number %d.\n", clIndex );
+			return;
+		}
+		cl = &svs.clients[clIndex];
+	} else {
+		for ( i=0, cl=svs.clients ; i < sv_maxclients->integer ; i++, cl++ )
+		{
+			if ( !cl->state )
+			{
+				continue;
+			}
+
+			if ( cl->demo.demorecording || cl->demo.demoplaying )
+			{
+				continue;
+			}
+
+			if ( cl->state == CS_ACTIVE )
+			{
+				break;
+			}
+		}
+	}
+
+	if (cl - svs.clients >= sv_maxclients->integer) {
+		Com_Printf( "No active client could be found.\n" );
+		return;
+	}
+
+	if ( cl->demo.demoplaying ) {
+		Com_Printf( "Already playing.\n" );
+		return;
+	}
+
+	if ( cl->state != CS_ACTIVE ) {
+		Com_Printf( "Client is not active.\n" );
+		return;
+	}
+
+	s = Cmd_Argv( 1 );
+	Q_strncpyz( demoName, s, sizeof( demoName ) );
+	Com_sprintf( name, sizeof( name ), "demos/%s.dm_%d", demoName, PROTOCOL_VERSION ); //Should use DEMO_EXTENSION
+
+	SV_PlayDemo( cl, name ); //fixme: add logic to check extension & demo path
+}
+
 /*
 ==================
 SV_DemoFilename
@@ -1912,6 +2196,8 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 	// don't start saving messages until a non-delta compressed message is received
 	cl->demo.demowaiting = qtrue;
 
+	cl->demo.isBot = ( cl->netchan.remoteAddress.type == NA_BOT ) ? qtrue : qfalse;
+	cl->demo.botReliableAcknowledge = cl->reliableSent;
 	// write out the gamestate message
 	MSG_Init( &msg, bufData, sizeof( bufData ) );
 
@@ -2386,7 +2672,8 @@ void SV_AddOperatorCommands( void ) {
 #ifdef DEDICATED
 	Cmd_AddCommand ("svrecord", SV_Record_f, "Record a server-side demo" );
 	Cmd_AddCommand ("svstoprecord", SV_StopRecord_f, "Stop recording a server-side demo" );
-	Cmd_AddCommand ("svdemometa", SV_DemoMeta_f, "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]");
+    Cmd_AddCommand ("svplaydemo", SV_PlayDemo_f, "Play demo on client");
+    Cmd_AddCommand ("svdemometa", SV_DemoMeta_f, "Sets a new metadata entry for server-side demos for one player. Call with clientnum, metakey, [data]");
 	Cmd_AddCommand ("svdemoclearmeta", SV_DemoClearMeta_f, "Clears metadata for server-side demos for one player. Call with clientnum.");
 	Cmd_AddCommand ("svdemoclearprerecord", SV_DemoClearPreRecord_f, "Clears pre-record data for a particular client. Call with clientnum.");
 	Cmd_AddCommand ("svrenamedemo", SV_RenameDemo_f, "Rename a server-side demo");

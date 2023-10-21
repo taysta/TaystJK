@@ -133,6 +133,7 @@ typedef struct {
 	fileHandle_t	demofile;
 	qboolean	isBot;
 	int			botReliableAcknowledge; // for bots, need to maintain a separate reliableAcknowledge to record server messages into the demo file
+	qboolean	demoplaying;
 	struct  {
 		// this is basically the equivalent of the demowaiting and minDeltaFrame values above, except it's for the demo pre-record feature and will be done every sv_demoPreRecordKeyframeDistance seconds.
 		qboolean keyframeWaiting;
