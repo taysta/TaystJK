@@ -5672,6 +5672,21 @@ void Item_ListBox_Paint(itemDef_t *item) {
 	qhandle_t image;
 	qhandle_t optionalImage1, optionalImage2, optionalImage3;
 	listBoxDef_t *listPtr = item->typeData.listbox;
+	vec4_t hoverColor = { 0 };
+
+	if ( listPtr->elementStyle == LISTBOX_IMAGE ) { // The listbox type for images uses borderColor to outline elements
+		//Vector4Copy( item->window.borderColor, hoverColor );
+		hoverColor[0] = item->window.borderColor[0];
+		hoverColor[1] = item->window.borderColor[1];
+		hoverColor[2] = item->window.borderColor[2];
+		hoverColor[3] *= 0.3f;
+	} else { // Other types of listbox have a specific outline color
+		//Vector4Copy( item->window.outlineColor, hoverColor );
+		hoverColor[0] = item->window.outlineColor[0];
+		hoverColor[1] = item->window.outlineColor[1];
+		hoverColor[2] = item->window.outlineColor[2];
+		hoverColor[3] *= 0.5f;
+	}
 //JLF MPMOVED
 
 	// the listbox is horizontal or vertical and has a fixed size scroll bar going either direction
@@ -5768,13 +5783,17 @@ void Item_ListBox_Paint(itemDef_t *item) {
 
 #ifndef _CGAME
 				if (i == item->cursorPos) {
-					if ((int)item->special != FEEDER_Q3HEADS || ui_selectedModelIndex.integer != -1)
+					if ((int)item->special != FEEDER_Q3HEADS || ui_selectedModelIndex.integer > -1)
 						DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, item->window.borderColor);
+				} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+					DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
 				}
 #else
 				if (i == item->cursorPos)
 				{
 					DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, item->window.borderColor);
+				} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+					DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
 				}
 #endif
 
@@ -5808,6 +5827,7 @@ void Item_ListBox_Paint(itemDef_t *item) {
 	else
 	{
 		//JLF new variable (code idented with if)
+#ifndef UI_BUILD
 		if (!listPtr->scrollhidden)
 		{
 
@@ -5833,6 +5853,39 @@ void Item_ListBox_Paint(itemDef_t *item) {
 			}
 			DC->drawHandlePic(x, thumb, SCROLLBAR_SIZE, SCROLLBAR_SIZE, DC->Assets.scrollBarThumb);
 		}
+#else
+		if (!listPtr->scrollhidden)
+		{
+			float width = (SCROLLBAR_SIZE * DC->widthRatioCoef);
+			float xOffset = (SCROLLBAR_SIZE - width)  / 2.0f;
+			// draw scrollbar to right side of the window
+			//x = item->window.rect.x + item->window.rect.w - SCROLLBAR_SIZE - 1;
+			x = item->window.rect.x + item->window.rect.w - SCROLLBAR_SIZE - (1 * DC->widthRatioCoef);
+
+			if ( (int)item->special == FEEDER_Q3HEADS )
+				x -= 2;
+
+			if (xOffset < 0.0f)
+				xOffset *= -1.0f;
+			x += xOffset;
+
+			y = item->window.rect.y + 1;
+			DC->drawHandlePic(x, y, width, SCROLLBAR_SIZE, DC->Assets.scrollBarArrowUp);
+			y += SCROLLBAR_SIZE - 1;
+
+			listPtr->endPos = listPtr->startPos;
+			sizeHeight = item->window.rect.h - (SCROLLBAR_SIZE * 2);
+			DC->drawHandlePic(x, y, width, sizeHeight+1, DC->Assets.scrollBar);
+			y += sizeHeight - 1;
+			DC->drawHandlePic(x, y, width, SCROLLBAR_SIZE, DC->Assets.scrollBarArrowDown);
+			// thumb
+			thumb = Item_ListBox_ThumbDrawPosition(item);//Item_ListBox_ThumbPosition(item);
+			if (thumb > y - SCROLLBAR_SIZE - 1) {
+				thumb = y - SCROLLBAR_SIZE - 1;
+			}
+			DC->drawHandlePic(x, thumb, width, SCROLLBAR_SIZE, DC->Assets.scrollBarThumb);
+		}
+#endif
 //JLF end
 
 		// adjust size for item painting
@@ -5879,10 +5932,21 @@ void Item_ListBox_Paint(itemDef_t *item) {
 #endif
 						}
 
+#ifndef _CGAME
+						if (i == item->cursorPos) {
+							if ((int)item->special != FEEDER_Q3HEADS || ui_selectedModelIndex.integer > -1)
+								DC->drawRect(x, y, listPtr->elementWidth - 1, listPtr->elementHeight - 1, item->window.borderSize, item->window.borderColor);
+						} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+							DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
+						}
+#else
 						if (i == item->cursorPos)
 						{
 							DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, item->window.borderColor);
+						} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+							DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
 						}
+#endif
 
 						sizeWidth -= listPtr->elementWidth;
 						if (sizeWidth < listPtr->elementWidth)
@@ -5926,6 +5990,8 @@ void Item_ListBox_Paint(itemDef_t *item) {
 					if (i == item->cursorPos)
 					{
 						DC->drawRect(x, y, listPtr->elementWidth - 1, listPtr->elementHeight - 1, item->window.borderSize, item->window.borderColor);
+					} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+						DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
 					}
 
 					listPtr->endPos++;
@@ -6028,6 +6094,8 @@ void Item_ListBox_Paint(itemDef_t *item) {
 				if (i == item->cursorPos)
 				{
 					DC->fillRect(x + 2, y + listPtr->elementHeight + 2, item->window.rect.w - SCROLLBAR_SIZE - 4, listPtr->elementHeight, item->window.outlineColor);
+				} else if (i == listPtr->cursorPos && (item->window.flags & WINDOW_HASFOCUS) && (item->window.flags & WINDOW_MOUSEOVER)) {
+					DC->drawRect(x, y, listPtr->elementWidth-1, listPtr->elementHeight-1, item->window.borderSize, hoverColor);
 				}
 
 				sizeHeight -= listPtr->elementHeight;
