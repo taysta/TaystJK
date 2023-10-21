@@ -4998,7 +4998,7 @@ qboolean CG_G2PlayerHeadAnims( centity_t *cent )
 	return qfalse;
 }
 
-extern int cgFPLSState;
+int cgFPLSState = 0;
 static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngles)
 {
 	clientInfo_t *ci;
@@ -6069,9 +6069,15 @@ static QINLINE int ClampSaberColor(int color) {
 
 static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int bnum ) //rgb
 {
+	qboolean isNPC = (cnum >= MAX_CLIENTS);
+	if (isNPC)
+	{
+		cnum = 0;
+	}
+
 	clientInfo_t *ci = &cgs.clientinfo[cnum];
 #if NEW_SABER_PARMS
-	if (ci->saber[bnum].useCustomRGBColor)
+	if (ci->saber[bnum].useCustomRGBColor && !isNPC)
 		color = SABER_RGB;
 #endif
 		
@@ -6331,9 +6337,6 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	{ //draw the blade as a post-render so it doesn't get in the cap...
 		rfx |= RF_FORCEPOST;
 	}
-
-	for ( i=0; i<3; i++ ) //rgb
-		rgb[i] *= 255; //rgb
 
 	radiusRange = radius * 0.075f;
 	radiusStart = radius-radiusRange;
@@ -7428,7 +7431,7 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 			axis_[3] = {{0,0,0}, {0,0,0}, {0,0,0}};	// shut the compiler up
 	trace_t	trace;
 	int i = 0;
-	int trailDur;
+	float trailDur;
 	float saberLen;
 	float diff;
 	clientInfo_t *client;
@@ -8012,7 +8015,7 @@ CheckTrail:
 			VectorCopy(saberTrail->tip, saberTrail->dualtip);
 			saberTrail->lastTime = cg.time;
 			saberTrail->inAction = cg.time;
-			return;
+			goto JustDoIt; //return;
 		}
 		else if (cg.time > saberTrail->lastTime) {
 			float dirlen0, dirlen1, dirlen2, lagscale;
@@ -8133,17 +8136,18 @@ JustDoIt:
 	//	will get rendered properly in a mirror...not sure if this is necessary??
 	//CG_DoSaber( org_, axis_[0], saberLen, client->saber[saberNum].blade[bladeNum].lengthMax, client->saber[saberNum].blade[bladeNum].radius,
 	//	scolor, renderfx, (qboolean)(saberNum==0&&bladeNum==0) );
-	if (sfxSabers) {
+	if (!sfxSabers)
+	{
+		CG_DoSaber( org_, axis_[0], saberLen, client->saber[saberNum].blade[bladeNum].lengthMax, client->saber[saberNum].blade[bladeNum].radius,
+			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3 && !(client->saber[saberNum].saberFlags2 & SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum );//rgb -- fix casting?
+	}
+	else
+	{
 		CG_DoSFXSaber(fx.mVerts[0].origin, fx.mVerts[1].origin, fx.mVerts[2].origin, fx.mVerts[3].origin,
 			(client->saber[saberNum].blade[bladeNum].lengthMax), (client->saber[saberNum].blade[bladeNum].radius),
-			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3
-				&& !(client->saber[saberNum].saberFlags2 & SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum);
-	} else {
-		CG_DoSaber( org_, axis_[0], saberLen, client->saber[saberNum].blade[bladeNum].lengthMax, client->saber[saberNum].blade[bladeNum].radius,
-			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3 && !(client->saber[saberNum].saberFlags2&SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum );//rgb -- fix casting?
-	}
+			scolor, renderfx, (qboolean)(client->saber[saberNum].numBlades < 3 && !(client->saber[saberNum].saberFlags2 & SFL2_NO_DLIGHT)), cent->currentState.clientNum, saberNum );
 
-	if (sfxSabers && cg.time > saberTrail->inAction)
+		if (cg.time > saberTrail->inAction)
 	{
 		saberTrail->inAction = cg.time;
 
@@ -8155,40 +8159,41 @@ JustDoIt:
 		VectorCopy(rgb1, fx.mVerts[0].rgb);
 		fx.mVerts[0].alpha = 255.0f;
 
-		fx.mVerts[0].ST[0] = 0.0f;
-		fx.mVerts[0].ST[1] = 4.0f;
-		fx.mVerts[0].destST[0] = 4.0f;
-		fx.mVerts[0].destST[1] = 4.0f;
+            fx.mVerts[0].ST[0] = 0.0f;
+            fx.mVerts[0].ST[1] = 1.0f;
+            fx.mVerts[0].destST[0] = 1.0f;
+            fx.mVerts[0].destST[1] = 1.0f;
 
-		// new tip
-		VectorCopy(rgb1, fx.mVerts[1].rgb);
-		fx.mVerts[1].alpha = 255.0f;
-		
-		fx.mVerts[1].ST[0] = 0.0f;
-		fx.mVerts[1].ST[1] = 0.0f;
-		fx.mVerts[1].destST[0] = 4.0f;
-		fx.mVerts[1].destST[1] = 0.0f;
+            // new tip
+            VectorCopy(rgb1, fx.mVerts[1].rgb);
+            fx.mVerts[1].alpha = 255.0f;
 
-		// old tip
-		VectorCopy(rgb1, fx.mVerts[2].rgb);
-		fx.mVerts[2].alpha = 255.0f;
+            fx.mVerts[1].ST[0] = 0.0f;
+            fx.mVerts[1].ST[1] = 0.0f;
+            fx.mVerts[1].destST[0] = 1.0f;
+            fx.mVerts[1].destST[1] = 0.0f;
 
-		fx.mVerts[2].ST[0] = 4.0f;
-		fx.mVerts[2].ST[1] = 0.0f;
-		fx.mVerts[2].destST[0] = 4.0f;
-		fx.mVerts[2].destST[1] = 0.0f;
+            // old tip
+            VectorCopy(rgb1, fx.mVerts[2].rgb);
+            fx.mVerts[2].alpha = 255.0f;
 
-		// old muzzle
-		VectorCopy(rgb1, fx.mVerts[3].rgb);
-		fx.mVerts[3].alpha = 255.0f;
+            fx.mVerts[2].ST[0] = 1.0f;
+            fx.mVerts[2].ST[1] = 0.0f;
+            fx.mVerts[2].destST[0] = 1.0f;
+            fx.mVerts[2].destST[1] = 0.0f;
 
-		fx.mVerts[3].ST[0] = 4.0f;
-		fx.mVerts[3].ST[1] = 4.0f;
-		fx.mVerts[3].destST[0] = 4.0f;
-		fx.mVerts[3].destST[1] = 4.0f;
+            // old muzzle
+            VectorCopy(rgb1, fx.mVerts[3].rgb);
+            fx.mVerts[3].alpha = 255.0f;
 
-		trap->FX_AddPrimitive(&fx);
-	}
+            fx.mVerts[3].ST[0] = 1.0f;
+            fx.mVerts[3].ST[1] = 1.0f;
+            fx.mVerts[3].destST[0] = 1.0f;
+            fx.mVerts[3].destST[1] = 1.0f;
+
+		    trap->FX_AddPrimitive(&fx);
+	    }
+    }
 }
 
 int CG_IsMindTricked(int trickIndex1, int trickIndex2, int trickIndex3, int trickIndex4, int client)
@@ -9277,8 +9282,6 @@ void CG_G2Animated( centity_t *cent )
 }
 //rww - here ends the majority of my g2animent stuff.
 
-//Disabled for now, I'm too lazy to keep it working with all the stuff changing around.
-int cgFPLSState = 0;
 void CG_ForceFPLSPlayerModel(centity_t *cent, clientInfo_t *ci)
 {
 	animation_t *anim;
