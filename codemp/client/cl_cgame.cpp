@@ -609,6 +609,9 @@ rescan:
 
 	if (!Q_stricmp(cmd, "print")) {
 		s = Cmd_Argv(1);
+		if (Q_stristr(s, "@@@PLRENAME")) {
+			stampColor = COLOR_MAGENTA;
+		}
 		if (Q_stristr(s, "@@@PLCONNECT") || Q_stristr(s, "@@@DISCONNECT") || Q_stristr(s, "@@@WAS_KICKED") || Q_stristr(s, "timed out")) {
 			stampColor = COLOR_YELLOW;
 #ifdef _WIN32
@@ -616,7 +619,7 @@ rescan:
 			con_alert = qtrue;
 #endif
 		}
-		if (Q_stristr(s, "@@@PLCALLEDVOTE")) {
+		else if (Q_stristr(s, "@@@PLCALLEDVOTE")) {
 			stampColor = COLOR_ORANGE;
 #ifdef _WIN32
 		if (con_notifyvote->integer)
