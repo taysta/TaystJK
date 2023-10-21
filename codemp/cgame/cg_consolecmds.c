@@ -110,7 +110,7 @@ static void CG_PTelemark_f (void) {
 static void CG_PTele_f (void) {
 	if (cg.telemarkX || cg.telemarkY || cg.telemarkZ || cg.telemarkYaw)
 		trap->SendConsoleCommand(va("setviewpos %i %i %i %i\n", cg.telemarkX, cg.telemarkY, cg.telemarkZ, cg.telemarkYaw));
-	else 
+	else
 		trap->Print("No telemark set!\n");
 }
 
@@ -928,12 +928,27 @@ void CG_SpawnStrafeTrailFromCFG_f(void) //loda fixme
 }
 #endif
 
+int CG_Do_GetIndex(void) {
+	int index = 0;
+
+	while (index < MAX_DO_BUFFERS)
+	{
+		if (!cg.doVstrTime[index]) {
+			return index;
+		}
+		index++;
+	}
+
+	Com_Printf("CG_Do_GetIndex(): " S_COLOR_YELLOW "Out of free do buffers!\n");
+	return -1;
+}
+
 void CG_Do_f(void) //loda fixme
 {
-	char vstr[MAX_QPATH], delay[32];
-	int delayMS;
+	char vstr[MAX_QPATH];
+	int delay;
 
-	if (trap->Cmd_Argc() != 3) {
+	if (trap->Cmd_Argc() < 2) {
 		Com_Printf("Usage: /do <vstr> <delay>\n");
 		return;
 	}
@@ -941,27 +956,46 @@ void CG_Do_f(void) //loda fixme
 	if (cgs.restricts & RESTRICT_DO) {
 		return;
 	}
-
-	if ((cg.clientNum == cg.predictedPlayerState.clientNum) || !cg.snap) {
-		if (cg.predictedPlayerState.stats[STAT_RACEMODE])
-			return;
-	}
-	else {
-		if (cg.snap->ps.stats[STAT_RACEMODE])
+	else if (cgs.serverMod == SVMOD_JAPRO && cg.clientNum == cg.predictedPlayerState.clientNum  && cg.predictedPlayerState.stats[STAT_RACEMODE]) {
 			return;
 	}
 
 	trap->Cmd_Argv( 1, vstr, sizeof( vstr ) );
-	trap->Cmd_Argv( 2, delay, sizeof( delay ) );
 	
-	delayMS = atoi(delay);
-	if (delay < 0)
-		delayMS = 0;
-	else if (delayMS > 1000*60*60)
-		delayMS = 1000*60*60;
+	if (trap->Cmd_Argc() == 3)
+		delay = atoi(CG_Argv(2));
+	else
+		delay = 1;
 
-	Com_sprintf(cg.doVstr, sizeof(cg.doVstr), "vstr %s\n", vstr);
-	cg.doVstrTime = cg.time + delayMS;
+	if (delay < 0)
+		delay = 0;
+	else if (delay > 1000*60*60)
+		delay = 1000*60*60;
+
+	int index = 0;
+	while (index < MAX_DO_BUFFERS)
+	{
+		if (!cg.doVstrTime[index]) {
+			Com_sprintf(cg.doVstr[index], sizeof(cg.doVstr[index]), "vstr %s\n", vstr);
+			cg.doVstrTime[index] = trap->Milliseconds() + delay;
+			return;
+		}
+		index++;
+	}
+
+	Com_Printf("CG_Do_f(): " S_COLOR_RED "No free do command buffers available!\n");
+}
+
+static void CG_DoCancel_f(void) {
+	int j;
+	//Com_Printf("Canceling all queued commands.\n");
+
+	//mayb should add a verbose mode
+	for (j = 0; j < MAX_DO_BUFFERS; j++) {
+		cg.doVstr[j][0] = '\0';
+		cg.doVstrTime[j] = 0;
+	}
+	Com_Printf("Canceled all queued commands.\n");
 }
 
 static void CG_Saber_f(void) // this should be serverside for JAPRO.  Clientside for JAPLUS etc?
@@ -1077,21 +1111,35 @@ static void CG_Sabercolor_f(void)
         return;
     }
 
-	//Ideally this should also take saber # into account and let them specify different colors for each saber if using duals but whatever.
+    if (argc == 5)
+    {
+        int bladeNum = Com_Clampi(1, MAX_BLADES, atoi(CG_Argv(1)));
 
-	trap->Cmd_Argv(1, redStr, sizeof(redStr));
-	trap->Cmd_Argv(2, greenStr, sizeof(greenStr));
-	trap->Cmd_Argv(3, blueStr, sizeof(blueStr));
+        red = atoi(CG_Argv(2));
+        green = atoi(CG_Argv(3));
+        blue = atoi(CG_Argv(4));
 
-	red = atoi(redStr);
-	blue = atoi(blueStr);
-	green = atoi(greenStr);
+        trap->Cvar_Set(va("color%i", bladeNum), va("%i", SABER_RGB));
+        trap->Cvar_Set(va("cp_sbRGB%i", bladeNum), va("%i", red | ((green | (blue << 8)) << 8)));
+        return;
+    }
 
-	trap->Cvar_Set("color1", va("%i", SABER_RGB));
-	trap->Cvar_Set("cp_sbRGB1", va("%i", red | ((green | (blue << 8)) << 8)));
-	trap->Cvar_Set("color2", va("%i", SABER_RGB));
-	trap->Cvar_Set("cp_sbRGB2", va("%i", red | ((green | (blue << 8)) << 8)));
+    if (argc >= 6)
+    {
+        red = atoi(CG_Argv(1));
+        green = atoi(CG_Argv(2));
+        blue = atoi(CG_Argv(3));
 
+        trap->Cvar_Set("color1", va("%i", SABER_RGB));
+        trap->Cvar_Set("cp_sbRGB1", va("%i", red | ((green | (blue << 8)) << 8)));
+
+        red = atoi(CG_Argv(4));
+        green = atoi(CG_Argv(5));
+        blue = atoi(CG_Argv(6));
+
+        trap->Cvar_Set("color2", va("%i", SABER_RGB));
+        trap->Cvar_Set("cp_sbRGB2", va("%i", red | ((green | (blue << 8)) << 8)));
+    }
 }
 
 static void CG_Amcolor_f(void)
@@ -1149,37 +1197,46 @@ static void CG_Flipkick_f(void)
 
 static void CG_Lowjump_f(void)
 {
+	int index;
+
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+moveup;waitf 2;-moveup\n");
 		return;
 	}
 
+	index = CG_Do_GetIndex();
 	trap->SendConsoleCommand("+moveup\n");
-	Q_strncpyz(cg.doVstr, "-moveup\n", sizeof(cg.doVstr));
-	cg.doVstrTime = cg.time;
+	Q_strncpyz(cg.doVstr[index], "-moveup\n", sizeof(cg.doVstr));
+	cg.doVstrTime[index] = trap->Milliseconds();
 }
 
 static void CG_NorollDown_f(void)
 {
+	int index;
+
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+speed;waitf 2;-moveup;+movedown;-speed\n");
 		return;
 	}
 
+	index = CG_Do_GetIndex();
 	trap->SendConsoleCommand("+speed;-moveup\n");
-	Q_strncpyz(cg.doVstr, "+movedown;-speed\n", sizeof(cg.doVstr));
-	cg.doVstrTime = cg.time;
+	Q_strncpyz(cg.doVstr[index], "+movedown;-speed\n", sizeof(cg.doVstr));
+	cg.doVstrTime[index] = trap->Milliseconds();
 }
 
 static void CG_NorollUp_f(void)
 {
+	int index;
+
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || cgs.restricts & RESTRICT_DO) {
 		trap->SendConsoleCommand("-movedown\n");
 		return;
 	}
 
-	Q_strncpyz(cg.doVstr, "-movedown;-speed\n", sizeof(cg.doVstr)); //?
-	cg.doVstrTime = cg.time;
+	index = CG_Do_GetIndex();
+	Q_strncpyz(cg.doVstr[index], "-movedown;-speed\n", sizeof(cg.doVstr)); //?
+	cg.doVstrTime[index] = trap->Milliseconds();
 }
 
 static void CG_GrappleDown_f(void) {
@@ -1187,13 +1244,20 @@ static void CG_GrappleDown_f(void) {
 }
 
 static void CG_GrappleUp_f(void) {
-	if (cgs.serverMod == SVMOD_JAPLUS) {
-		trap->SendConsoleCommand("-button12;+use\n");
-		Q_strncpyz(cg.doVstr, "-use\n", sizeof(cg.doVstr));
-		cg.doVstrTime = cg.time;
-	}
-	else
-		trap->SendConsoleCommand("-button12\n");
+    if (cgs.serverMod == SVMOD_JAPLUS) {
+        const int index = CG_Do_GetIndex();
+        trap->SendConsoleCommand("-button12;+use\n");
+        if (index != -1) {
+            strcpy(cg.doVstr[index], "-use\n");
+            cg.doVstrTime[index] = trap->Milliseconds() + cg.frametime; //trap->Milliseconds() + 1;
+        }
+        else {//fallback
+            trap->SendConsoleCommand("wait 5;-use\n");
+        }
+    }
+    else {
+        trap->SendConsoleCommand("-button12\n");
+    }
 }
 
 qboolean CG_WeaponSelectable(int i);
@@ -1503,8 +1567,10 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qtrue,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qfalse,//Old JA+ style grapple line
-    qtrue//New FFA respawn bubble
+	qtrue,//Old JA+ style grapple line
+	qtrue,//Disable alternate standing pose
+	qtrue,//Force alternate standing pose on all characters
+	qtrue//Seasonal cosmetics
 };
 
 //JA+ Specific = amaltdim ?
@@ -1529,7 +1595,9 @@ static qboolean japlusPlayerStyles[] = {
 	qfalse,//Hide player cosmetics
 	qtrue,//Disable breathing effects
 	qtrue,//Old JA+ style grapple line
-    qtrue//New FFA respawn bubble
+	qtrue,//Disable alternate standing pose
+	qtrue,//Force alternate standing pose on all characters
+	qtrue//Seasonal cosmetics
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1552,7 +1620,9 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Hide player cosmetics" },//16
 	{ "Disable breathing effects" },//17
 	{ "Old JA+ style grapple line" },//18
-    { "New FFA respawn bubble" }
+	{ "Enable alternate stand pose on some characters" },//19
+	{ "Force alternate stand pose on all characters" },//20
+	{ "Seasonal Cosmetics"},//21
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -1698,7 +1768,6 @@ void CG_SpeedometerSettings_f(void)
             groupMask &= ~(1 << index); //Remove index from groupmask
             value &= ~(groupMask); //Turn groupmask off
             value ^= (1 << index); //Toggle index item
-
             trap->Cvar_Set("cg_speedometer", va("%i", value));
         }
 		else {
@@ -1750,6 +1819,9 @@ static const int MAX_COSMETICS = ARRAY_LEN(cosmetics);
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
 static void CG_Cosmetics_JaPRO(void)
 {
+	if (cgs.serverMod < SVMOD_JAPRO)
+		return;
+
 	//cosmeticUnlocks[i].bitvalue;
 	//trap->SendClientCommand( "cosmetics" );
 
@@ -2414,7 +2486,6 @@ static void CG_AddStrafeTrail_f(void)
 
 void CG_Say_f( void ) {
 	char msg[MAX_SAY_TEXT] = {0};
-//    char speeds[MAX_SAY_TEXT] = {0};
     char word[MAX_SAY_TEXT] = {0};
 	char numberStr[MAX_SAY_TEXT] = {0};
 	int i, number = 0, numWords = trap->Cmd_Argc();
@@ -2637,6 +2708,8 @@ static consoleCommand_t	commands[] = {
 	{ "loadTrail",					CG_SpawnStrafeTrailFromCFG_f },
 	{ "weaplast",					CG_LastWeapon_f },
 	{ "do",							CG_Do_f },
+	{ "doStop",						CG_DoCancel_f },
+	{ "doCancel",					CG_DoCancel_f }
 };
 
 static const size_t numCommands = ARRAY_LEN( commands );

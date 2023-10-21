@@ -1657,14 +1657,14 @@ static void UI_DrawGameType(rectDef_t *rect, float scale, vec4_t color, int text
 
 static void UI_DrawNetGameType(rectDef_t *rect, float scale, vec4_t color, int textStyle, int iMenuFont)
 {
-	if (ui_netGametype.integer < 0 || ui_netGametype.integer >= uiInfo.numGameTypes)
+	if (ui_netGameType.integer < 0 || ui_netGameType.integer >= uiInfo.numGameTypes)
 	{
-		trap->Cvar_Set("ui_netGametype", "0");
-		trap->Cvar_Update(&ui_netGametype);
+		trap->Cvar_Set("ui_netGameType", "0");
+		trap->Cvar_Update(&ui_netGameType);
 		trap->Cvar_Set("ui_actualNetGametype", "0");
 		trap->Cvar_Update(&ui_actualNetGametype);
 	}
-	Text_Paint(rect->x, rect->y, scale, color, UI_GetGameTypeName(uiInfo.gameTypes[ui_netGametype.integer].gtEnum) , 0, 0, textStyle, iMenuFont);
+	Text_Paint(rect->x, rect->y, scale, color, UI_GetGameTypeName(uiInfo.gameTypes[ui_netGameType.integer].gtEnum) , 0, 0, textStyle, iMenuFont);
 }
 
 static void UI_DrawAutoSwitch(rectDef_t *rect, float scale, vec4_t color, int textStyle, int iMenuFont) {
@@ -2078,7 +2078,7 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
 		value = -1;
 	}
 
-	if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_SIEGE)
+	if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_SIEGE)
 	{
 		if (value > 1 )
 		{
@@ -2226,7 +2226,7 @@ void UpdateBotButtons(void)
 		return;
 	}
 
-	if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_SIEGE)
+	if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_SIEGE)
 	{
 		Menu_ShowItemByName(menu, "humanbotfield", qfalse);
 		Menu_ShowItemByName(menu, "humanbotnonfield", qtrue);
@@ -3417,13 +3417,13 @@ static qboolean UI_OwnerDrawVisible(int flags) {
 			flags &= ~UI_SHOW_ANYNONTEAMGAME;
 		}
 		if (flags & UI_SHOW_NETANYTEAMGAME) {
-			if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum <= GT_TEAM ) {
+			if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum <= GT_TEAM ) {
 				vis = qfalse;
 			}
 			flags &= ~UI_SHOW_NETANYTEAMGAME;
 		}
 		if (flags & UI_SHOW_NETANYNONTEAMGAME) {
-			if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum > GT_TEAM ) {
+			if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum > GT_TEAM ) {
 				vis = qfalse;
 			}
 			flags &= ~UI_SHOW_NETANYNONTEAMGAME;
@@ -4824,7 +4824,7 @@ static qboolean UI_NetGameType_HandleKey(int flags, float *special, int key)
 {
 	if (key == A_MOUSE1 || key == A_MOUSE2 || key == A_ENTER || key == A_KP_ENTER)
 	{
-		int value = ui_netGametype.integer;
+		int value = ui_netGameType.integer;
 
 		if (key == A_MOUSE2)
 		{
@@ -4858,9 +4858,9 @@ static qboolean UI_NetGameType_HandleKey(int flags, float *special, int key)
 			value = 0;
 		}
 
-		trap->Cvar_Set( "ui_netGametype", va("%d", value));
-		trap->Cvar_Update(&ui_netGametype);
-		trap->Cvar_Set( "ui_actualNetGametype", va("%d", uiInfo.gameTypes[ui_netGametype.integer].gtEnum));
+		trap->Cvar_Set( "ui_netGameType", va("%d", value));
+		trap->Cvar_Update(&ui_netGameType);
+		trap->Cvar_Set( "ui_actualNetGametype", va("%d", uiInfo.gameTypes[ui_netGameType.integer].gtEnum));
 		trap->Cvar_Update(&ui_actualNetGametype);
 		trap->Cvar_Set( "ui_currentNetMap", "0");
 		trap->Cvar_Update(&ui_currentNetMap);
@@ -7594,13 +7594,13 @@ void UI_UpdateCvarsForClass(const int team,const int baseClass,const int index)
 
 void UI_ClampMaxPlayers( void ) {
 	// duel requires 2 players
-	if ( uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_DUEL ) {
+	if ( uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_DUEL ) {
 		if ( (int)trap->Cvar_VariableValue( "sv_maxClients" ) < 2 )
 			trap->Cvar_Set( "sv_maxClients", "2" );
 	}
 
 	// power duel requires 3 players
-	else if ( uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_POWERDUEL ) {
+	else if ( uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_POWERDUEL ) {
 		if ( (int)trap->Cvar_VariableValue( "sv_maxClients" ) < 3 )
 			trap->Cvar_Set( "sv_maxClients", "3" );
 	}
@@ -7656,7 +7656,7 @@ static void UI_RunMenuScript(char **args)
 			{
 				trap->Cvar_SetValue( "dedicated", Com_Clamp( 0, 2, ui_dedicated.integer ) );
 			}
-			trap->Cvar_SetValue( "g_gametype", Com_Clamp( 0, GT_MAX_GAME_TYPE, uiInfo.gameTypes[ui_netGametype.integer].gtEnum ) );
+			trap->Cvar_SetValue( "g_gametype", Com_Clamp( 0, GT_MAX_GAME_TYPE, uiInfo.gameTypes[ui_netGameType.integer].gtEnum ) );
 			//trap->Cvar_Set("g_redTeam", UI_Cvar_VariableString("ui_teamName"));
 			//trap->Cvar_Set("g_blueTeam", UI_Cvar_VariableString("ui_opponentName"));
 			trap->Cmd_ExecuteText( EXEC_APPEND, va( "wait ; wait ; map %s\n", uiInfo.mapList[ui_currentNetMap.integer].mapLoadName ) );
@@ -7880,7 +7880,7 @@ static void UI_RunMenuScript(char **args)
 		// On the solo game creation screen, we can't see siege maps
 		else if (Q_stricmp(name, "checkforsiege") == 0)
 		{
-			if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_SIEGE)
+			if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_SIEGE)
 			{
 				// fake out the handler to advance to the next game type
 				UI_NetGameType_HandleKey(0, NULL, A_MOUSE1);
@@ -7933,8 +7933,8 @@ static void UI_RunMenuScript(char **args)
 				trap->Cmd_ExecuteText(EXEC_APPEND, va("callvote forcespec \"%i\"\n", uiInfo.playerIndexes[uiInfo.playerIndex]));
 			}
 		} else if (Q_stricmp(name, "voteGame") == 0) {
-			if (ui_netGametype.integer >= 0 && ui_netGametype.integer < uiInfo.numGameTypes) {
-				trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote g_gametype %i\n",uiInfo.gameTypes[ui_netGametype.integer].gtEnum) );
+			if (ui_netGameType.integer >= 0 && ui_netGameType.integer < uiInfo.numGameTypes) {
+				trap->Cmd_ExecuteText( EXEC_APPEND, va("callvote g_gametype %i\n",uiInfo.gameTypes[ui_netGameType.integer].gtEnum) );
 			}
 		} else if (Q_stricmp(name, "voteLeader") == 0) {
 			if (uiInfo.teamIndex >= 0 && uiInfo.teamIndex < uiInfo.myTeamCount) {
@@ -8405,7 +8405,7 @@ static void UI_RunMenuScript(char **args)
 		{
 			int blueValue,redValue,i;
 
-			if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_SIEGE)
+			if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_SIEGE)
 			{
 				//hmm, I guess I'll set bot_minplayers to 0 here too. -rww
 				trap->Cvar_Set("bot_minplayers", "0");
@@ -8994,7 +8994,7 @@ UI_MapCountByGameType
 static int UI_MapCountByGameType(qboolean singlePlayer) {
 	int i, c, game;
 	c = 0;
-	game = singlePlayer ? uiInfo.gameTypes[ui_gametype.integer].gtEnum : uiInfo.gameTypes[ui_netGametype.integer].gtEnum;
+	game = singlePlayer ? uiInfo.gameTypes[ui_gametype.integer].gtEnum : uiInfo.gameTypes[ui_netGameType.integer].gtEnum;
 	if (game == GT_TEAM)
 		game = GT_FFA;
 
@@ -12083,7 +12083,7 @@ void UI_Init( qboolean inGameLoad ) {
 
 	trap->Cvar_Register(NULL, "debug_protocol", "", 0 );
 
-	trap->Cvar_SetValue("ui_actualNetGameType", ui_netGametype.value);
+	trap->Cvar_SetValue("ui_actualNetGameType", ui_netGameType.value);
 	trap->Cvar_Update(&ui_actualNetGametype);
 
 	//console cmd autocompletion

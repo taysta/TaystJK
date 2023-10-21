@@ -52,6 +52,7 @@ XCVAR_DEF( cg_speedometerSize,		"0.75",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlay,		"0",	CG_TeamOverlayChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayX,		"640",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayY,		"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_enhancedFlagStatus,	"2",	NULL,					CVAR_NONE ) //CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawTeamOverlayWeapons,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_weaponCycleAmmo,		"0",	NULL,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceTimer,			"2",	NULL,					CVAR_ARCHIVE )
@@ -68,6 +69,8 @@ XCVAR_DEF( cg_drawPartnerViewSize,	"240",	NULL,					CVAR_ARCHIVE_ND ) //viewport
 
 XCVAR_DEF( cg_smallScoreboard,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreboardTime,		"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_drawScoreboardIcons,			"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_drawScoreboardPlayerCount,	"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreDeaths,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_killMessage,			"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_newFont,				"0",	NULL,					CVAR_ARCHIVE )
@@ -103,7 +106,6 @@ XCVAR_DEF( cg_crosshairSaberStyleColor,	"0",	NULL,										CVAR_ARCHIVE )
 XCVAR_DEF( cg_crosshairColor,	"0 0 0 255",	CG_CrosshairColorChange,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_crossHairScope,	        "0",	NULL,					                    CVAR_ARCHIVE )
 
-
 //Strafehelper
 XCVAR_DEF( cg_strafeHelper,						"3008", CG_ClearThirdPersonDamp,			CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeHelper_FPS,					"0",	NULL,								CVAR_ARCHIVE ) //fats _ syntax to follow smod ;s
@@ -133,7 +135,6 @@ XCVAR_DEF( cg_cameraFPS,						"125",	CG_ClearThirdPersonDamp,			CVAR_ARCHIVE ) /
 XCVAR_DEF( cg_blood,							"0",	NULL,								CVAR_ARCHIVE ) //JAPRO - Clientside - re add cg_blood
 XCVAR_DEF( cg_thirdPersonFlagAlpha,				"1",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_stylePlayer,						"0",	NULL,								CVAR_ARCHIVE )
-
 XCVAR_DEF( cg_alwaysShowAbsorb,					"0",	NULL,								CVAR_ARCHIVE )
 XCVAR_DEF( cg_zoomFov,							"30.0",	NULL,								CVAR_ARCHIVE )					
 XCVAR_DEF( cg_fleshSparks,						"7",	NULL,								CVAR_ARCHIVE )
@@ -156,7 +157,7 @@ XCVAR_DEF( cg_forceEnemyModel,					"none",	CG_ForceModelChange,	CVAR_ARCHIVE )
 XCVAR_DEF( cg_jumpHeight,						"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_zoomSensitivity,					"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_leadIndicator,					"0",	NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_drawHitBox,						"0",	NULL,					0 )
+XCVAR_DEF( cg_drawHitBox,						"0",	NULL,					CVAR_TEMP )
 XCVAR_DEF( cg_drawPlayerNames,					"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawPlayerNamesScale,				"0.5",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawInventory,					"1",	NULL,					CVAR_ARCHIVE )
@@ -171,6 +172,7 @@ XCVAR_DEF( cg_engineModifications,				"1",	CG_MemoryPatchChange,	CVAR_ARCHIVE ) 
 
 //rp features
 XCVAR_DEF( cg_forceOwnSaber,					"none", CVU_ForceOwnSaber,		CVAR_NONE ) //CVAR_TEMP )
+XCVAR_DEF( cg_forceOwnModel,					"none",	CVU_ForceOwnModel,		CVAR_TEMP )
 XCVAR_DEF( cg_saberIgnitionFlare,				"1",	NULL,					CVAR_NONE )
 
 //Auto login
@@ -204,6 +206,7 @@ XCVAR_DEF( cp_clanPwd,							"none",	NULL,					CVAR_USERINFO )
 XCVAR_DEF( cp_sbRGB1,							"0",	NULL,					CVAR_ARCHIVE | CVAR_USERINFO )
 XCVAR_DEF( cp_sbRGB2,							"0",	NULL,					CVAR_ARCHIVE | CVAR_USERINFO )
 XCVAR_DEF( cp_cosmetics,						"0",	NULL,					CVAR_ARCHIVE | CVAR_USERINFO )
+XCVAR_DEF( cg_grappleLineColor,					"1",		NULL,				CVAR_ARCHIVE_ND )
 
 //XCVAR_DEF( cg_predictRacemode,				"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_legstuck,							"0",	NULL,					CVAR_NONE )
@@ -228,22 +231,11 @@ XCVAR_DEF( cg_strafeTrailGhost,					"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_drainFX,							"1",	NULL,					CVAR_NONE )
 //Make maxpackets userinfo maybe idk
 
-#if 1
 XCVAR_DEF( cg_logStrafeTrail,					"0",	NULL,					0 )
-#endif
-
-#define _DRAWTRIGGERS 0
-#if _DRAWTRIGGERS
-XCVAR_DEF( cg_drawTriggers,						"0",	NULL,					CVAR_NONE )
-#endif
-
 XCVAR_DEF( cg_cleanChatbox,						"0",	NULL,					CVAR_ARCHIVE )
 
-#define _DEBUGTIMENUDGE 1
-#ifdef _DEBUGTIMENUDGE
-//XCVAR_DEF( cg_smoothTimenudge,				"0",							0 )
 XCVAR_DEF( cl_timenudgeDuration,				"0",	NULL,					0 )
-#endif
+XCVAR_DEF( cg_disablePlayerInterpolation,				"0",	NULL,					0 )
 
 XCVAR_DEF( cg_drawTrajectory,					"0",	NULL,					0 )
 
@@ -314,7 +306,7 @@ XCVAR_DEF( cg_lagometerX,						"48",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_lagometerY,						"144",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_marks,							"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_noPlayerAnims,					"0",					NULL,					CVAR_CHEAT )
-XCVAR_DEF( cg_noPredict,						"0",					NULL,					CVAR_NONE )
+XCVAR_DEF( cg_noPredict,						"0",					NULL,					CVAR_TEMP )
 XCVAR_DEF( cg_noProjectileTrail,				"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_noTaunt,							"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_oldPainSounds,					"0",					NULL,					CVAR_ARCHIVE )
@@ -335,6 +327,7 @@ XCVAR_DEF( cg_saberClash,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_shaderSaberCore,					"0.625",				NULL,					CVAR_NONE )
 XCVAR_DEF( cg_shaderSaberGlow,					"0.625",				NULL,					CVAR_NONE )//1.25?
 XCVAR_DEF( cg_saberTeamColors,					"1",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_saberStaffMultiColor,				"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_noRGBSabers,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( disco,								"0",					NULL,					CVAR_INTERNAL ) //xD
 XCVAR_DEF( cg_scorePlums,						"0",					NULL,					CVAR_ARCHIVE )
@@ -344,8 +337,8 @@ XCVAR_DEF( cg_simpleItems,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_showMiss,							"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_showVehBounds,					"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_showVehMiss,						"0",					NULL,					CVAR_NONE )
-XCVAR_DEF( cg_smoothClients,					"0",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_snapshotTimeout,					"10",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_smoothClients,					"1",					NULL,					CVAR_ARCHIVE )
+//XCVAR_DEF( cg_snapshotTimeout,					"10",					NULL,					CVAR_ARCHIVE ) //unused
 XCVAR_DEF( cg_speedTrail,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_stats,							"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_teamChatsOnly,					"0",					NULL,					CVAR_ARCHIVE )
@@ -355,7 +348,7 @@ XCVAR_DEF( cg_thirdPersonAngle,					"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonHorzOffset,			"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonPitchOffset,			"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonVertOffset,			"16",					NULL,					CVAR_ARCHIVE )
-XCVAR_DEF( cg_thirdPersonRange,					"100",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_thirdPersonRange,					"80",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonSpecialCam,			"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_thirdPersonCameraDamp,			"0.3",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonTargetDamp,			"0.5",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )

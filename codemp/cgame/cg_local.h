@@ -147,7 +147,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
 #define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
 #define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
-
+#define JAPRO_STYLE_ENABLE_ALTERNATEPOSE	(1<<20)
+#define JAPRO_STYLE_FORCE_ALTERNATEPOSE		(1<<21)
+#define JAPRO_STYLE_SEASONALCOSMETICS       (1<<22)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -335,7 +337,7 @@ typedef struct playerEntity_s {
 #define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
 #define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
 #define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
-
+#define MAX_DO_BUFFERS 16
 
 typedef struct clientInfo_s {
 	qboolean		infoValid;
@@ -345,8 +347,8 @@ typedef struct clientInfo_s {
 	saberInfo_t		saber[MAX_SABERS];
 	void			*ghoul2Weapons[MAX_SABERS];
 
-	char			saberName[64];
-	char			saber2Name[64];
+	char			saberName[MAX_QPATH];
+	char			saber2Name[MAX_QPATH];
 
 	char			name[MAX_QPATH];
 	char			cleanname[MAX_QPATH];
@@ -380,8 +382,6 @@ typedef struct clientInfo_s {
 
 	int				medkitUsageTime;
 
-	int				breathPuffTime;
-
 	// when clientinfo is changed, the loading of models/skins/sounds
 	// can be deferred until you are dead, to prevent hitches in
 	// gameplay
@@ -390,8 +390,6 @@ typedef struct clientInfo_s {
 //	char			headModelName[MAX_QPATH];
 //	char			headSkinName[MAX_QPATH];
 	char			forcePowers[MAX_QPATH];
-//	char			redTeam[MAX_TEAMNAME];
-//	char			blueTeam[MAX_TEAMNAME];
 
 	char			teamName[MAX_TEAMNAME];
 
@@ -464,7 +462,7 @@ typedef struct clientInfo_s {
 #endif
 
 	int			deaths; //counted locally client-side, incase the server doesn't send this information already
-	int			breathTime; //can maybe just use breathPuffTime?
+	qboolean	useAlternateStandAnim;
 } clientInfo_t;
 
 //rww - cheap looping sound struct
@@ -524,7 +522,9 @@ typedef struct centity_s {
 	vec3_t			lerpOrigin;
 	vec3_t			lerpAngles;
 
+#define RAGOFFSET_THING 1
 #if 0
+    vec3_t			lerpOriginOffset; //bucky
 	//add up bone offsets until next client frame before adding them in
 	qboolean		hasRagOffset;
 	vec3_t			ragOffsets;
@@ -614,10 +614,13 @@ typedef struct centity_s {
 	qboolean		cloaked;
 
 	int				vChatTime;
-#if 1
 	vec3_t			lastOrigin; //strafetrail
 	int				lastStrafeTrailTime;
-#endif
+
+	int				breathPuffTime;
+	int				breathTime; //can maybe just use breathPuffTime from ci?
+
+	qboolean		doLerp; // for entity position smoothing
 } centity_t;
 
 
@@ -1181,7 +1184,11 @@ typedef struct cg_s {
 	qboolean	zoomed;
 	int			zoomTime;
 
+	int			damageTaken[32];
+
 	qboolean	coldBreathEffects;
+	qboolean	rainSoundEffects;
+
 	float		zoomSensitivity;
 
 	// information screen text during loading
@@ -1213,7 +1220,7 @@ typedef struct cg_s {
 	int			centerPrintTime;
 	int			centerPrintCharWidth;
 	int			centerPrintY;
-	char		centerPrint[1024];
+	char		centerPrint[MAX_STRING_CHARS];
 	int			centerPrintLines;
 
 	//idk
@@ -1366,8 +1373,8 @@ Ghoul2 Insert End
 
 	float				distanceCull;
 
-	chatBoxItem_t		chats[MAX_CHATBOX_ITEMS];
-	int					chatActive;
+	chatBoxItem_t		chatItems[MAX_CHATBOX_ITEMS];
+	int					chatItemActive;
 
 #if 0
 	int					snapshotTimeoutTime;
@@ -1422,20 +1429,18 @@ Ghoul2 Insert End
 
 	vec4_t				strafeHelperActiveColor;
 	vec4_t				crosshairColor;
-	int					drawingStrafeTrails;//optimization i guess
-	int					doVstrTime;
-	char				doVstr[MAX_QPATH];
+	int					doVstrTime[MAX_DO_BUFFERS];
+	char				doVstr[MAX_DO_BUFFERS][MAX_STRING_CHARS];
 	short				numFKFrames;
 	short				numJumps;
 	int					userinfoUpdateDebounce;
+	char				lastChatMsg[MAX_SAY_TEXT + MAX_NETNAME + 32];
+
+	int					drawingStrafeTrails;//optimization i guess
 	qboolean			loggingStrafeTrail;
 	char				logStrafeTrailFilename[MAX_QPATH];
 	fileHandle_t		strafeTrailFileHandle;
-	char				lastChatMsg[MAX_SAY_TEXT + MAX_NETNAME + 32];
 	float				predictedTimeFrac;	// frameInterpolation * (next->commandTime - prev->commandTime)
-#if 0
-	int					snapshotTimeoutTime;
-#endif
 
 	struct {//chatlog
 		fileHandle_t	file;
@@ -1556,8 +1561,6 @@ typedef struct cgMedia_s {
     qhandle_t   keyAttackOn2;
     qhandle_t   keyAltOn2;
     qhandle_t   leftTriangle;
-    qhandle_t   rightTriangle;
-
 //JAPRO - Clientside - Movement keys - End
 
 	qhandle_t	bloodExplosionShader;//JAPRO - Clientside - Re add cg_blood
@@ -2221,6 +2224,10 @@ typedef struct cgs_s {
 	int				redflag, blueflag;		// flag status from configstrings
 	int				flagStatus;
 
+	//new flagstatus stuff
+	clientInfo_t	*redFlagCarrier, *blueFlagCarrier;
+	int				redFlagTime, blueFlagTime;
+
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - Start]
 	serverMod_t	serverMod;
 	int			cinfo;
@@ -2235,9 +2242,10 @@ typedef struct cgs_s {
 	unsigned int ignoredVGS;
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - End]
 
-	qboolean  newHud;
+	qboolean	cvarsRegistered;
+	qboolean	newHud, hudLoaded;
+	qboolean	jaPROEngine; //egh
 	float widthRatioCoef;
-	qboolean  jaPROEngine; //egh
 
 	//
 	// locally derived information from gamestate
@@ -2391,6 +2399,10 @@ void CG_DrawSmallStringColor( float x, float y, const char *s, vec4_t color );
 
 int CG_DrawStrlen( const char *str );
 
+#if NEW_SCOREBOARD
+void CG_LerpColour( const vec4_t start, const vec4_t end, vec4_t out, float point );
+#endif
+
 float	*CG_FadeColor( int startMsec, int totalMsec );
 float *CG_TeamColor( int team );
 void CG_TileClear( void );
@@ -2438,6 +2450,9 @@ qboolean CG_YourTeamHasFlag(void);
 qboolean CG_OtherTeamHasFlag(void);
 qhandle_t CG_StatusHandle(int task);
 
+//japro
+qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
+qboolean CG_InRollAnim( centity_t *cent );
 
 
 //
@@ -2604,7 +2619,7 @@ localEntity_t *CG_MakeExplosion( vec3_t origin, vec3_t dir,
 
 void CG_SurfaceExplosion( vec3_t origin, vec3_t normal, float radius, float shake_speed, qboolean smoke );
 
-void CG_TestLine( vec3_t start, vec3_t end, int time, unsigned int color, int radius);
+void CG_TestLine( vec3_t start, vec3_t end, int time, unsigned int color, float radius);
 
 void CG_InitGlass( void );
 
@@ -2673,9 +2688,6 @@ void CG_AddObituary( int killer, int victim, meansOfDeath_t mod );
 void CG_InitSiegeMode(void);
 void CG_SiegeRoundOver(centity_t *ent, int won);
 void CG_SiegeObjectiveCompleted(centity_t *ent, int won, int objectivenum);
-
-qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
-qboolean CG_InRollAnim( centity_t *cent );
 
 //===============================================
 
@@ -2759,6 +2771,5 @@ Ghoul2 Insert End
 
 void CG_RailSpiral( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
 void CG_RailTrail( clientInfo_t *ci, vec3_t start, vec3_t end, int time );
-
 
 extern cgameImport_t *trap;

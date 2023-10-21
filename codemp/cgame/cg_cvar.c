@@ -230,6 +230,21 @@ static void CVU_ForceOwnSaber(void)
 	CG_NewClientInfo(cg.clientNum, qtrue); //dunno why the one in JA++ didn't have this
 }
 
+static void CVU_ForceOwnModel(void)
+{ //maybe make this load and validate the specified hilt file? fallback if it doesn't?
+	int len = strlen(cg_forceOwnModel.string);
+
+	if (len > MAX_QPATH || !Q_stricmp(cg_forceOwnModel.string, "0")) {
+		trap->Cvar_Set("cg_forceOwnModel", "none");
+		return;
+	}
+
+	if (!cg.snap)
+		return; //since we're already expecting to load our clientinfo
+
+	CG_NewClientInfo(cg.clientNum, qtrue); //dunno why the one in JA++ didn't have this
+}
+
 //
 // Cvar table
 //
