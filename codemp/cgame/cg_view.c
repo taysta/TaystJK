@@ -1358,7 +1358,7 @@ static qboolean CG_CalcFov( void ) {
 		fov_x = 80;//90;
 	} else {
 		// user selectable
-		if ( 0 ) { //cgs.dmflags & DF_FIXED_FOV ) {
+		if ( cgs.dmflags & DF_FIXED_FOV ) {
 			// dmflag to prevent wide fov for all clients
 			fov_x = 80;//90;
 		} else {
