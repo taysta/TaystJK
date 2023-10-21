@@ -1051,13 +1051,31 @@ static void CG_Autologin_f(void)
 
 static void CG_Sabercolor_f(void)
 {
-	char redStr[8], blueStr[8], greenStr[8];
-	int red, blue, green;
-	if (trap->Cmd_Argc() != 4)
-	{
-		Com_Printf("Usage: /saberColor <red> <green> <blue> e.g. /saberColor 255 255 0\n");
-		return;
-	}
+    int red, blue, green;
+    const int argc = trap->Cmd_Argc();
+
+    if (argc < 4)
+    {
+        //Com_Printf("Usage: /saberColor <red> <green> <blue> e.g. /saberColor 255 255 0\n");
+        Com_Printf(
+                "Usages: /saberColor <red> <green> <blue> - /saberColor <optional blade num> <red> <green> <blue> - /saberColor <red 1> <green 1> <blue 1> <red 2> <green 2> <blue 2>\n"
+                "Example: /saberColor 255 255 0 (sets both blade colors) - /saberColor 2 255 90 120 (sets second blade color) - /saberColor 60 110 200 160 120 255 (sets both blades to specified colors)\n");
+        return;
+    }
+
+    if (argc == 4)
+    {
+        red = atoi(CG_Argv(1));
+        green = atoi(CG_Argv(2));
+        blue = atoi(CG_Argv(3));
+
+        trap->Cvar_Set("color1", va("%i", SABER_RGB));
+        trap->Cvar_Set("cp_sbRGB1", va("%i", red | ((green | (blue << 8)) << 8)));
+
+        trap->Cvar_Set("color2", va("%i", SABER_RGB));
+        trap->Cvar_Set("cp_sbRGB2", va("%i", red | ((green | (blue << 8)) << 8)));
+        return;
+    }
 
 	//Ideally this should also take saber # into account and let them specify different colors for each saber if using duals but whatever.
 

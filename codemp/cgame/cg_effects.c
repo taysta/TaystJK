@@ -208,6 +208,9 @@ void CG_TestLine( vec3_t start, vec3_t end, int time, unsigned int color, int ra
 	}
 	else
 	{
+		if (color == -1) //special case for brighter red than default
+			color = CGDEBUG_SaberColor(SABER_RED);
+		else
 		color = CGDEBUG_SaberColor( color );
 		re->shaderRGBA[0] = color & 0xff;
 		color >>= 8;
