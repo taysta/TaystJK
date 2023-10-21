@@ -756,7 +756,7 @@ int Text_Width(const char *text, float scale, int iMenuFont)
 {
 	int iFontIndex = MenuFontToHandle(iMenuFont);
 
-	return trap->R_Font_StrLenPixels(text, iFontIndex, scale);
+	return trap->ext.R_Font_StrLenPixels(text, iFontIndex, scale);
 }
 
 int Text_Height(const char *text, float scale, int iMenuFont)
@@ -815,7 +815,7 @@ void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const cha
 
 			{
 				int iFontIndex = MenuFontToHandle( iMenuFont );
-				int iNextXpos  = trap->R_Font_StrLenPixels(sTemp, iFontIndex, scale );
+				int iNextXpos  = trap->ext.R_Font_StrLenPixels(sTemp, iFontIndex, scale );
 
 				Text_Paint(x+iNextXpos, y, scale, color, va("%c",cursor), 0, limit, style|ITEM_TEXTSTYLE_BLINK, iMenuFont);
 			}
@@ -832,7 +832,7 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 	int iFontIndex = MenuFontToHandle(iMenuFont);
 
 	//float fMax = *maxX;
-	int iPixelLen = trap->R_Font_StrLenPixels(text, iFontIndex, scale);
+	int iPixelLen = trap->ext.R_Font_StrLenPixels(text, iFontIndex, scale);
 	if (x + iPixelLen > *maxX)
 	{
 		// whole text won't fit, so we need to print just the amount that does...
@@ -844,7 +844,7 @@ static void Text_Paint_Limit(float *maxX, float x, float y, float scale, vec4_t 
 		char *psOutLastGood = psOut;
 		unsigned int uiLetter;
 
-		while (*psText && (x + trap->R_Font_StrLenPixels(sTemp, iFontIndex, scale)<=*maxX)
+		while (*psText && (x + trap->ext.R_Font_StrLenPixels(sTemp, iFontIndex, scale)<=*maxX)
 			   && psOut < &sTemp[sizeof(sTemp)-1]	// sanity
 				)
 		{
