@@ -3350,7 +3350,7 @@ qboolean FS_idPak( char *pak, char *base ) {
 	int i;
 
 	for (i = 0; i < NUM_ID_PAKS; i++) {
-		if ( !FS_FilenameCompare(pak, va("%s/assets%d", base, i)) ) {
+		if ( !FS_FilenameCompare(pak, va("%s/assets%d", base, i)) && !FS_FilenameCompare(pak, va("%s/japro-assets.pk3", fs_basegame->string))) {
 			break;
 		}
 	}
@@ -3939,7 +3939,7 @@ const char *FS_ReferencedPakPureChecksums( void ) {
 				}
 				checksum ^= search->pack->pure_checksum;
 				numPaks++;
-				if (search->pack && search->pack->checksum == 1767559464) {
+				if (search->pack && search->pack->checksum == 1767559464) { //assets 0?
 					break;
 				}
 			}
