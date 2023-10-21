@@ -1677,8 +1677,8 @@ void G_SpawnCosmeticUnlocks(void) {
 
 	fLen = trap->FS_Open(filename, &f, FS_READ);
 
-	if (!f) {
-		//Com_Printf ("Couldn't load cosmetic unlocks from %s\n", filename);
+	if (!f || !fLen) {
+		Com_Printf ("Couldn't load cosmetic unlocks from %s\n", filename);
 		return;
 	}
 	if (fLen >= MAX_FILESIZE) {

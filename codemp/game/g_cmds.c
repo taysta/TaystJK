@@ -6277,6 +6277,32 @@ static void Cmd_ModVersion_f(gentity_t *ent) {
 	trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN "The servers version of the mod was compiled on %s at %s\n\"", __DATE__, __TIME__));
 }
 
+void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
+static void Cmd_Cosmetics_f(gentity_t *ent) {
+	int i;
+	qboolean printed = qfalse;
+	char styleString[16] = {0};
+
+	for (i=0; i < MAX_COSMETIC_UNLOCKS; i++) { //Loop through cosmetics and print restrictions.
+		if (!cosmeticUnlocks[i].active)
+			continue;
+		if (!printed) {
+			trap->SendServerCommand(ent-g_entities, "print \"    " S_COLOR_CYAN "There are cosmetic unlocks on the server:\n\"");
+			printed = qtrue;
+		}
+		IntegerToRaceName(cosmeticUnlocks[i].style, styleString, sizeof(styleString));
+		if (cosmeticUnlocks[i].duration) {
+			trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN "%i" S_COLOR_YELLOW ": %s (%s) in under %.3f seconds\n\"", cosmeticUnlocks[i].bitvalue, cosmeticUnlocks[i].mapname, styleString, ((float)cosmeticUnlocks[i].duration) * 0.001f));
+		}
+		else {
+			trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN "%i" S_COLOR_YELLOW ": %s (%s)\n\"", cosmeticUnlocks[i].bitvalue, cosmeticUnlocks[i].mapname, styleString));
+		}
+	}
+	if (!printed) { //No cosmetic locks
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "There are no cosmetic unlocks on the server\n\"");
+	}
+}
+
 extern qboolean BG_InKnockDown( int anim ); //bg_pmove.c
 static void DoEmote(gentity_t *ent, int anim, qboolean freeze, qboolean nosaber, int body)
 {
