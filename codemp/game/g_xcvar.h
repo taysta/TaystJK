@@ -128,10 +128,19 @@ XCVAR_DEF( g_randFix,					"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_restarted,					"0",			NULL,				CVAR_ROM,										qfalse )
 XCVAR_DEF( g_saberBladeFaces,			"1",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_saberDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_saberDebugBox,				"0",			NULL,				CVAR_CHEAT,										qfalse )
-#ifndef FINAL_BUILD
-XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,					CVAR_CHEAT,										qfalse )
+#define DEBUG_SABER_BOX
+#ifdef DEBUG_SABER_BOX
+XCVAR_DEF( g_saberDebugBox,				"0",			NULL,				CVAR_TEMP,										qtrue )
+XCVAR_DEF( g_saberDebugBoxClient,		"-1",			NULL,				CVAR_TEMP,										qtrue )
 #endif
+//g_saberDebugPrint 1: print various information about saber collisions.
+//g_saberDebugPrint 2: print information about broken parries.
+//g_saberDebugPrint 3: spew everything.
+//g_saberDebugPrint 4: spew damage output only.
+//g_saberDebugPrint 5: spew attack str only.
+//g_saberDebugPrint 6: spew attack strengh and all information about parries
+XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,				CVAR_TEMP,										qtrue )
+XCVAR_DEF( g_saberDebugPrintToClients,	"0",			NULL,				CVAR_TEMP,										qtrue )
 XCVAR_DEF( g_saberDmgDelay_Idle,		"350",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgDelay_Wound,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgVelocityScale,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )

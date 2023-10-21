@@ -3215,6 +3215,13 @@ void G_BreakArm(gentity_t *ent, int arm)
 		return;
 	}
 
+	if (g_debugDamage.integer && ent->client) {
+
+		if (g_debugDamage.integer >= 3)
+			trap->SendServerCommand(-1, va("print \"Client %i broke limb %i\n\"", ent->client->ps.clientNum, arm));
+		else
+			trap->Print("Client %i broke limb %i\n", ent->client->ps.clientNum, arm);
+	}
 	if (arm == BROKENLIMB_LARM)
 	{
 		if (ent->client->saber[1].model[0] &&

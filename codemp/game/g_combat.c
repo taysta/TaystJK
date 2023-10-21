@@ -5640,8 +5640,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 
 	if ( g_debugDamage.integer ) {
-		trap->Print( "%i: client:%i health:%i damage:%i armor:%i\n", level.time, targ->s.number,
-			targ->health, take, asave );
+        if (g_debugDamage.integer >= 2)
+            trap->SendServerCommand(-1, va("print \"%i: client:%i health:%i damage:%i armor:%i\n\"", level.time, targ->s.number, targ->health, take, asave));
+        else
+            trap->Print( "%i: client:%i health:%i damage:%i armor:%i\n", level.time, targ->s.number,
+                targ->health, take, asave );
 	}
 
 	if (g_damageNumbers.integer && attacker->client && targ && targ->client && targ != attacker && targ->health > 0 && targ->client->ps.stats[STAT_HEALTH] > 0 && (take + asave) > 1) { //JAPRO - Serverside - Damage numbers  - Start
@@ -5928,6 +5931,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				gPainHitLoc = -1;
 			}
 
+            if (g_debugDamage.integer) {
+                if (g_debugDamage.integer >= 3)
+                    trap->SendServerCommand(-1, va("print \"Client %i was hit on surf %s %i\n\"", targ->client->ps.clientNum, hitSurface, gPainHitLoc));
+                else
+                    trap->Print("print \"Client %i was hit on surf %s %i\n\"", targ->client->ps.clientNum, hitSurface, gPainHitLoc);
+            }
 			if (gPainHitLoc < HL_MAX && gPainHitLoc >= 0 && targ->locationDamage[gPainHitLoc] < Q3_INFINITE &&
 				(targ->s.eType == ET_PLAYER || targ->s.NPC_class != CLASS_VEHICLE))
 			{

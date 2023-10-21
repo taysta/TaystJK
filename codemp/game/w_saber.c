@@ -197,12 +197,12 @@ static QINLINE int G_SaberAttackPower(gentity_t *ent, qboolean attacking)
 			}
 		}
 
-#ifndef FINAL_BUILD
-		if (g_saberDebugPrint.integer > 1)
+		if (g_saberDebugPrint.integer == 3 || g_saberDebugPrint.integer == 5)
 		{
 			Com_Printf("Client %i: ATT STR: %i\n", ent->s.number, baseLevel);
+			if (g_saberDebugPrintToClients.integer)
+				trap->SendServerCommand(ent->s.number, va("print \"Client %i: ATT STR: %i\n\"", ent->s.number, baseLevel));
 		}
-#endif
 	}
 
 	if ((ent->client->ps.brokenLimbs & (1 << BROKENLIMB_RARM)) ||
@@ -346,6 +346,20 @@ void SaberUpdateSelf(gentity_t *ent)
 	else
 	{ //Standard contents (saber is active)
 #ifdef DEBUG_SABER_BOX
+		if ((g_saberDebugBox.integer == 1 || g_saberDebugBox.integer == 4) &&
+			(g_saberDebugBoxClient.integer < 0 || (ent->r.ownerNum >= 0 && ent->r.ownerNum < MAX_CLIENTS && g_saberDebugBoxClient.integer == ent->r.ownerNum)))
+		{
+			vec3_t dbgMins;
+			vec3_t dbgMaxs;
+
+			VectorAdd( ent->r.currentOrigin, ent->r.mins, dbgMins );
+			VectorAdd( ent->r.currentOrigin, ent->r.maxs, dbgMaxs );
+
+			G_DebugBoxLines(dbgMins, dbgMaxs, (int)((10.0f/sv_fps.value)*100.0f));
+			//G_DebugBoxLines(dbgMins, dbgMaxs, (1000 / sv_fps.value));
+			//G_DebugBoxLines(dbgMins, dbgMaxs, ((1000 / sv_fps.integer) - 1));
+		}
+#elif 0
 		if (g_saberDebugBox.integer == 1|| g_saberDebugBox.integer == 4)
 		{
 			vec3_t dbgMins;
@@ -468,12 +482,14 @@ static QINLINE void SetSaberBoxSize(gentity_t *saberent)
 		{//no sabers/blades to FORCE to be on, so turn off blocking altogether
 			VectorSet( saberent->r.mins, 0, 0, 0 );
 			VectorSet( saberent->r.maxs, 0, 0, 0 );
-#ifndef FINAL_BUILD
 			if (g_saberDebugPrint.integer > 1)
 			{
 				Com_Printf("Client %i in broken parry, saber box 0\n", owner->s.number);
+				if (g_saberDebugPrintToClients.integer) {
+					char *s = va("print \"Client %i in broken parry, saber box 0\n\"", owner->s.number);
+					trap->SendServerCommand(owner->s.number, s);
 			}
-#endif
+			}
 			return;
 		}
 	}
@@ -2010,19 +2026,24 @@ static QINLINE qboolean WP_GetSaberDeflectionAngle( gentity_t *attacker, gentity
 			&& (defSaberLevel == attSaberLevel || Q_irand( 0, defSaberLevel-attSaberLevel ) >= 0) )//and the defender's style is stronger
 		{
 			//bounce straight back
-#ifndef FINAL_BUILD
 			int attMove = attacker->client->ps.saberMove;
-#endif
 			attacker->client->ps.saberMove = PM_SaberBounceForAttack( attacker->client->ps.saberMove );
-#ifndef FINAL_BUILD
-			if (g_saberDebugPrint.integer)
+			if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 			{
 				Com_Printf( "attack %s vs. parry %s bounced to %s\n",
 					animTable[saberMoveData[attMove].animToUse].name,
 					animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
 					animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name );
+
+				if (g_saberDebugPrintToClients.integer) {
+					char *s = va("print \"attack %s vs. parry %s bounced to %s\n\"",
+						animTable[saberMoveData[attMove].animToUse].name,
+						animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
+						animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name);
+					trap->SendServerCommand(attacker->client->ps.clientNum, s);
+					trap->SendServerCommand(defender->client->ps.clientNum, s);
+			    }
 			}
-#endif
 			attacker->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
 			return qfalse;
 		}
@@ -2065,38 +2086,46 @@ static QINLINE qboolean WP_GetSaberDeflectionAngle( gentity_t *attacker, gentity
 			}
 			if ( newQuad == defQuad )
 			{//bounce straight back
-#ifndef FINAL_BUILD
 				int attMove = attacker->client->ps.saberMove;
-#endif
 				attacker->client->ps.saberMove = PM_SaberBounceForAttack( attacker->client->ps.saberMove );
-#ifndef FINAL_BUILD
-				if (g_saberDebugPrint.integer)
+				if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 				{
 					Com_Printf( "attack %s vs. parry %s bounced to %s\n",
 						animTable[saberMoveData[attMove].animToUse].name,
 						animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
 						animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name );
+					if (g_saberDebugPrintToClients.integer) {
+						char *s = va("print \"attack %s vs. parry %s bounced to %s\n\"",
+							animTable[saberMoveData[attMove].animToUse].name,
+							animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
+							animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name);
+						trap->SendServerCommand(attacker->client->ps.clientNum, s);
+						trap->SendServerCommand(defender->client->ps.clientNum, s);
 				}
-#endif
+				}
 				attacker->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
 				return qfalse;
 			}
 			//else, pick a deflection
 			else
 			{
-#ifndef FINAL_BUILD
 				int attMove = attacker->client->ps.saberMove;
-#endif
 				attacker->client->ps.saberMove = PM_SaberDeflectionForQuad( newQuad );
-#ifndef FINAL_BUILD
-				if (g_saberDebugPrint.integer)
+				if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 				{
 					Com_Printf( "attack %s vs. parry %s deflected to %s\n",
 						animTable[saberMoveData[attMove].animToUse].name,
 						animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
 						animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name );
+					if (g_saberDebugPrintToClients.integer) {
+						char *s = va("print \"attack %s vs. parry %s deflected to %s\n\"",
+							animTable[saberMoveData[attMove].animToUse].name,
+							animTable[saberMoveData[defender->client->ps.saberMove].animToUse].name,
+							animTable[saberMoveData[attacker->client->ps.saberMove].animToUse].name);
+						trap->SendServerCommand(attacker->client->ps.clientNum, s);
+						trap->SendServerCommand(defender->client->ps.clientNum, s);
+				    }
 				}
-#endif
 				attacker->client->ps.saberBlocked = BLOCKED_BOUNCE_MOVE;
 				return qtrue;
 			}
@@ -2934,6 +2963,18 @@ qboolean WP_SabersIntersect( gentity_t *ent1, int ent1SaberNum, int ent1BladeNum
 					}
 
 #ifdef DEBUG_SABER_BOX
+					if ( (g_saberDebugBox.integer == 2 || g_saberDebugBox.integer == 4) &&
+					(g_saberDebugBoxClient.integer < 0 || (ent1->client && ent1->client->ps.clientNum == g_saberDebugBoxClient.integer) || (ent2->client && ent2->client->ps.clientNum == g_saberDebugBoxClient.integer)))
+					{
+						G_TestLine(saberBase1, saberTip1, ent1->client->saber[ent1SaberNum].blade[ent1BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+						G_TestLine(saberTip1, saberTipNext1, ent1->client->saber[ent1SaberNum].blade[ent1BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+						G_TestLine(saberTipNext1, saberBase1, ent1->client->saber[ent1SaberNum].blade[ent1BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+
+						G_TestLine(saberBase2, saberTip2, ent2->client->saber[ent2SaberNum].blade[ent2BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+						G_TestLine(saberTip2, saberTipNext2, ent2->client->saber[ent2SaberNum].blade[ent2BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+						G_TestLine(saberTipNext2, saberBase2, ent2->client->saber[ent2SaberNum].blade[ent2BladeNum].color, (int)((10.0f/sv_fps.value)*100.0f));
+					}
+#elif 0
 					if ( g_saberDebugBox.integer == 2 || g_saberDebugBox.integer == 4 )
 					{
 						G_TestLine(saberBase1, saberTip1, ent1->client->saber[ent1SaberNum].blade[ent1BladeNum].color, 500);
@@ -4169,12 +4210,18 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				}
 			}
 			*/
-			if ( level.gametype != GT_DUEL
-				&& level.gametype != GT_POWERDUEL
-				&& level.gametype != GT_SIEGE )
-			{//in faster-paced games, sabers do more damage
-				fDmg *= 2.0f;
-			}
+            switch (level.gametype)
+            {
+                default: //in faster-paced games, sabers do more damage
+                    if (!(g_tweakSaber.integer & ST_DUELSTYLESPDMG)) {
+                        fDmg *= 2.0f;
+                    }
+                    break;
+                case GT_DUEL:
+                case GT_POWERDUEL:
+                case GT_SIEGE:
+                break;
+            }
 			if ( fDmg )
 			{//the longer the trace, the more damage it does
 				//FIXME: in SP, we only use the part of the trace that's actually *inside* the hit ent...
@@ -4188,9 +4235,10 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 					dmg = ceil( fDmg*traceLength*(1.0f-tr.fraction)*0.1f*0.33f );//(1.0f-tr.fraction) isn't really accurate, but kind of simulates what we have in SP
 				}
 #ifdef DEBUG_SABER_BOX
-				if ( g_saberDebugBox.integer == 3 || g_saberDebugBox.integer == 4 )
+				if ( (g_saberDebugBox.integer == 3 || g_saberDebugBox.integer == 4) &&
+					(g_saberDebugBoxClient.integer < 0 || (self->client && self->client->ps.clientNum == g_saberDebugBoxClient.integer)) )
 				{
-					G_TestLine( saberStart, saberEnd, 0x0000ff, 50 );
+					G_TestLine( saberStart, saberEnd, 0x0000ff, (int)((10.0f/sv_fps.value)*100.0f) );
 				}
 #endif
 			}
@@ -4563,12 +4611,13 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 		//dmg *= 2;
 	}
 
-#ifndef FINAL_BUILD
-	if (g_saberDebugPrint.integer > 2 && dmg > 1)
+	if (g_saberDebugPrint.integer > 2 && g_saberDebugPrint.integer != 5 && g_saberDebugPrint.integer != 6 && dmg > 1)
 	{
 		Com_Printf("CL %i SABER DMG: %i\n", self->s.number, dmg);
+		if (g_saberDebugPrintToClients.integer && self->client) {
+			trap->SendServerCommand(self->client->ps.clientNum, va("print \"CL %i SABER DMG: %i\n\"", self->s.number, dmg));
+	    }
 	}
-#endif
 
 	VectorSubtract(saberEnd, saberStart, dir);
 	VectorNormalize(dir);
@@ -5058,12 +5107,15 @@ blockStuff:
 				self->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
 				didOffense = qtrue;
 
-#ifndef FINAL_BUILD
-				if (g_saberDebugPrint.integer)
+				if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 				{
 					Com_Printf("Client %i clashed into client %i's saber, did BLOCKED_ATK_BOUNCE\n", self->s.number, otherOwner->s.number);
+					if (g_saberDebugPrintToClients.integer) {
+						char *s = va("print \"Client %i clashed into client %i's saber, did BLOCKED_ATK_BOUNCE\n\"", self->s.number, otherOwner->s.number);
+						trap->SendServerCommand(self->s.number, s);
+						trap->SendServerCommand(otherOwner->s.number, s);
+				    }
 				}
-#endif
 			}
 		}
 
@@ -5105,12 +5157,15 @@ blockStuff:
 			self->client->ps.saberMove = BG_BrokenParryForAttack( self->client->ps.saberMove );
 			self->client->ps.saberBlocked = BLOCKED_BOUNCE_MOVE;
 
-#ifndef FINAL_BUILD
-			if (g_saberDebugPrint.integer)
+			if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 			{
 				Com_Printf("Client %i sent client %i into a reflected attack with a knockaway\n", otherOwner->s.number, self->s.number);
+				if (g_saberDebugPrintToClients.integer) {
+					char *s = va("print \"Client %i sent client %i into a reflected attack with a knockaway\n\"", otherOwner->s.number, self->s.number);
+					trap->SendServerCommand(self->s.number, s);
+					trap->SendServerCommand(otherOwner->s.number, s);
+			    }
 			}
-#endif
 
 			didDefense = qtrue;
 		}
@@ -5130,12 +5185,15 @@ blockStuff:
 				saberCheckKnockdown_BrokenParry(&g_entities[otherOwner->client->ps.saberEntityNum], otherOwner, self);
 			}
 
-#ifndef FINAL_BUILD
-			if (g_saberDebugPrint.integer)
+			if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 			{
 				Com_Printf("Client %i sent client %i into a broken parry\n", self->s.number, otherOwner->s.number);
+				if (g_saberDebugPrintToClients.integer) {
+					char *s = va("print \"Client %i sent client %i into a broken parry\n\"", self->s.number, otherOwner->s.number);
+					trap->SendServerCommand(self->s.number, s);
+					trap->SendServerCommand(otherOwner->s.number, s);
+			    }
 			}
-#endif
 
 			otherOwner->client->ps.saberMove = BG_BrokenParryForParry( otherOwner->client->ps.saberMove );
 			otherOwner->client->ps.saberBlocked = BLOCKED_PARRY_BROKEN;
@@ -5156,12 +5214,15 @@ blockStuff:
 				 !didOffense &&
 				 !unblockable)
 		{ //they are in a parry, and we are slamming down on them with a move of equal or greater force than their defense, so send them into a broken parry.. unless they are already in one.
-#ifndef FINAL_BUILD
-			if (g_saberDebugPrint.integer)
+			if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 			{
 				Com_Printf("Client %i bounced off of client %i's saber\n", self->s.number, otherOwner->s.number);
+				if (g_saberDebugPrintToClients.integer) {
+					char *s = va("print \"Client %i bounced off of client %i's saber\n\"", self->s.number, otherOwner->s.number);
+					trap->SendServerCommand(self->s.number, s);
+					trap->SendServerCommand(otherOwner->s.number, s);
+			    }
 			}
-#endif
 
 			if (!tryDeflectAgain)
 			{
@@ -5197,12 +5258,15 @@ blockStuff:
 					defendStr += Q_irand(0, otherOwner->client->saber[1].parryBonus );
 				}
 
-#ifndef FINAL_BUILD
-				if (g_saberDebugPrint.integer)
+				if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 				{
 					Com_Printf("Client %i and client %i bounced off of each other's sabers\n", self->s.number, otherOwner->s.number);
+					if (g_saberDebugPrintToClients.integer) {
+						char *s = va("print \"Client %i and client %i bounced off of each other's sabers\n\"", self->s.number, otherOwner->s.number);
+						trap->SendServerCommand(self->s.number, s);
+						trap->SendServerCommand(otherOwner->s.number, s);
+				    }
 				}
-#endif
 
 				attackBonus = Q_irand(0, self->client->saber[0].breakParryBonus );
 				if ( self->client->saber[1].model[0]
@@ -5308,12 +5372,15 @@ blockStuff:
 						saberCheckKnockdown_BrokenParry(&g_entities[otherOwner->client->ps.saberEntityNum], otherOwner, self);
 					}
 
-#ifndef FINAL_BUILD
-					if (g_saberDebugPrint.integer)
+					if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 					{
 						Com_Printf("Client %i forced client %i into a broken parry with a stronger attack\n", self->s.number, otherOwner->s.number);
+						if (g_saberDebugPrintToClients.integer) {
+							char *s = va("print \"Client %i forced client %i into a broken parry with a stronger attack\n\"", self->s.number, otherOwner->s.number);
+							trap->SendServerCommand(self->s.number, s);
+							trap->SendServerCommand(otherOwner->s.number, s);
+					    }
 					}
-#endif
 				}
 				else
 				{ //They are attacking, so are we, and obviously they have an attack level higher than or equal to ours
@@ -5342,12 +5409,15 @@ blockStuff:
 						{
 							otherOwner->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
 						}
-#ifndef FINAL_BUILD
-						if (g_saberDebugPrint.integer)
+						if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 						{
 							Com_Printf("Equal attack level bounce/deflection for clients %i and %i\n", self->s.number, otherOwner->s.number);
+							if (g_saberDebugPrintToClients.integer) {
+								char *s = va("print \"Equal attack level bounce/deflection for clients %i and %i\n\"", self->s.number, otherOwner->s.number);
+								trap->SendServerCommand(self->s.number, s);
+								trap->SendServerCommand(otherOwner->s.number, s);
+					    	}
 						}
-#endif
 						if (!(g_tweakSaber.integer & ST_NO_REDCHAIN)) {
 							self->client->ps.saberEventFlags |= SEF_DEFLECTED;
 							otherOwner->client->ps.saberEventFlags |= SEF_DEFLECTED;
@@ -5364,12 +5434,15 @@ blockStuff:
 							saberCheckKnockdown_BrokenParry(&g_entities[self->client->ps.saberEntityNum], self, otherOwner);
 						}
 
-#ifndef FINAL_BUILD
-						if (g_saberDebugPrint.integer)
+						if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 						{
 							Com_Printf("Client %i hit client %i's stronger attack, was forced into a broken parry\n", self->s.number, otherOwner->s.number);
+							if (g_saberDebugPrintToClients.integer) {
+								char *s = va("print \"Client %i hit client %i's stronger attack, was forced into a broken parry\n\"", self->s.number, otherOwner->s.number);
+								trap->SendServerCommand(self->s.number, s);
+								trap->SendServerCommand(otherOwner->s.number, s);
+						    }
 						}
-#endif
 
 						if (!(g_tweakSaber.integer & ST_NO_REDCHAIN)) {
 							otherOwner->client->ps.saberEventFlags &= ~SEF_BLOCKED;
@@ -5388,12 +5461,15 @@ blockStuff:
 					otherOwner->client->ps.saberEventFlags &= ~SEF_PARRIED;
 					self->client->ps.saberEventFlags &= ~SEF_BLOCKED;
 
-#ifndef FINAL_BUILD
-					if (g_saberDebugPrint.integer)
+					if (g_saberDebugPrint.integer && g_saberDebugPrint.integer != 4 && g_saberDebugPrint.integer != 5)
 					{
 						Com_Printf("Client %i broke through %i's parry with a special or stronger attack\n", self->s.number, otherOwner->s.number);
+						if (g_saberDebugPrintToClients.integer) {
+							char *s = va("print \"Client %i broke through %i's parry with a special or stronger attack\n\"", self->s.number, otherOwner->s.number);
+							trap->SendConsoleCommand(self->s.number, s);
+							trap->SendConsoleCommand(otherOwner->s.number, s);
+					    }
 					}
-#endif
 				}
 				else if (PM_SaberInParry(G_GetParryForBlock(otherOwner->client->ps.saberBlocked)) && !didOffense && tryDeflectAgain)
 				{ //We want to try deflecting again because the other is in the parry and we haven't made any new moves
@@ -8328,13 +8404,6 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 	gentity_t *vehEnt = NULL;
 	int rSaberNum = 0;
 	int rBladeNum = 0;
-
-#ifdef _DEBUG
-	if (g_disableServerG2.integer)
-	{
-		return;
-	}
-#endif
 
 	if (self && self->inuse && self->client)
 	{

@@ -113,6 +113,9 @@ void CG_DamageFeedback( int yawByte, int pitchByte, int damage ) {
 	float		dist;
 	float		yaw, pitch;
 
+	if (cg.snap->ps.persistant[PERS_ATTACKER] >= 0 && cg.snap->ps.persistant[PERS_ATTACKER] < MAX_CLIENTS)
+		cg.damageTaken[cg.snap->ps.persistant[PERS_ATTACKER]] += damage;
+
 	// show the attacking player's head and name in corner
 	cg.attackerTime = cg.time;
 

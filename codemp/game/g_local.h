@@ -107,9 +107,7 @@ extern vec3_t gPainPoint;
 
 #define FL_BBRUSH					0x04000000 //I am a breakable brush
 
-#ifndef FINAL_BUILD
 #define DEBUG_SABER_BOX
-#endif
 
 // make sure this matches game/match.h for botlibs
 #define EC "\x19"
