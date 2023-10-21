@@ -82,6 +82,9 @@ XCVAR_DEF( g_debugMelee,				"0",			NULL,				CVAR_SERVERINFO,								qtrue )
 XCVAR_DEF( g_debugMove,					"0",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_debugSaberLocks,			"0",			NULL,				CVAR_CHEAT,										qfalse )
 XCVAR_DEF( g_debugServerSkel,			"0",			NULL,				CVAR_CHEAT,										qfalse )
+#ifdef _DEBUG
+XCVAR_DEF( g_disableServerG2,			"0",			NULL,				CVAR_NONE,										qtrue )
+#endif
 XCVAR_DEF( g_dismember,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_doWarmup,					"0",			NULL,				CVAR_NONE,										qtrue )
 //XCVAR_DEF( g_engineModifications,		"1",			NULL,				CVAR_ARCHIVE,									qfalse )
