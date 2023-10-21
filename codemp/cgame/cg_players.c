@@ -2345,6 +2345,14 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			}
 		}
 	}
+    ci->useAlternateStandAnim = qfalse;
+    newInfo.useAlternateStandAnim = qfalse;
+
+    if (!Q_stricmpn(v, "kyle", 4) || !Q_stricmpn(v, "desann", 6)) // || (!Q_stricmpn(v, "tavion", 6) && Q_stricmpn(v, "tavion_new", 10)))
+    {
+        ci->useAlternateStandAnim = qtrue;
+        newInfo.useAlternateStandAnim = qtrue;
+    }
 
 	//Now that the model and skin are validated, we can load custom offsets for cosmetics if needed.
 	if ((newInfo.hat && newInfo.hat != ci->hat) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
@@ -11243,6 +11251,20 @@ void CG_Player( centity_t *cent ) {
 			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
 				cent->currentState.torsoAnim = BOTH_ATTACK3;
 		}
+	}
+
+	if ((((cg_stylePlayer.integer & JAPRO_STYLE_ENABLE_ALTERNATEPOSE) && ci->useAlternateStandAnim) || (cg_stylePlayer.integer & JAPRO_STYLE_FORCE_ALTERNATEPOSE))
+		&& cent->currentState.weapon == WP_SABER && !BG_InSlopeAnim(cent->currentState.legsAnim))
+	{
+		if (cent->currentState.torsoAnim == BOTH_STAND1 && (cent->currentState.saberHolstered == 2 || cent->currentState.saberInFlight))
+			cent->currentState.torsoAnim = BOTH_STAND9;
+		else if (cent->currentState.torsoAnim == BOTH_STAND1IDLE1)
+			cent->currentState.torsoAnim = BOTH_STAND9IDLE1;
+
+		if (cent->currentState.legsAnim == BOTH_STAND1 && (cent->currentState.saberHolstered == 2 || cent->currentState.saberInFlight) && cent->currentState.torsoAnim != BOTH_CONSOLE1)
+			cent->currentState.legsAnim = BOTH_STAND9;
+		else if (cent->currentState.legsAnim == BOTH_STAND1IDLE1)
+			cent->currentState.legsAnim = BOTH_STAND9IDLE1;
 	}
 
 	CG_G2PlayerAngles( cent, legs.axis, rootAngles );
