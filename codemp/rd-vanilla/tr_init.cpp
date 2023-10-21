@@ -1546,16 +1546,20 @@ void R_AtiHackToggle_f(void)
 
 void R_RemapSkyShader_f (void) {
 	int num;
+	char *newSky = ri.Cmd_Argv(1);
 
-	if (ri.Cmd_Argc() != 2 || !strlen(ri.Cmd_Argv(1))) {
+	if (ri.Cmd_Argc() != 2 || !strlen(newSky)) {
 		ri.Printf(PRINT_ALL, "Usage: /remapSky <new>\n");
 		return;
 	}
 
+	if (Q_stricmp(newSky, "clear") && !strchr(newSky, '/'))
+		newSky = va("textures/skies/%s", ri.Cmd_Argv(1));
+
 	for (num = 0; num < tr.numShaders; num++) {
 		if (tr.shaders[num]->sky)
 		{
-			R_RemapShader(tr.shaders[num]->name, ri.Cmd_Argv(1), NULL);
+			R_RemapShader(tr.shaders[num]->name, newSky, NULL);
 		}
 	}
 }
