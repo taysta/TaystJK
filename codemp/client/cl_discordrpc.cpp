@@ -248,12 +248,12 @@ char *GetServerDetails() {
 		}
 		
 		if (clc.demoplaying) {
-			return va("Playing demo - %s", Q_CleanStr(Cvar_VariableString("ui_about_hostname")));
+			return va("Playing demo - %s", ReturnServerName());
 		}
 
 		if (com_sv_running->integer) {
 			if (Q_stricmp(Cvar_VariableString("sv_hostname"), "*Jedi*"))
-				return va("Playing offline - %s\n", Q_CleanStr(Cvar_VariableString("sv_hostname")));
+				return va("Playing offline - %s\n", ReturnServerName());
 			
 			return (char*)"Playing offline";
 		}
@@ -454,7 +454,7 @@ void CL_DiscordInitialize(void)
 
 	Discord_UpdateHandlers( &handlers );
 
-	cl_discordRichPresenceSharePassword = Cvar_Get("cl_discordRichPresenceSharePassword", "1", CVAR_ARCHIVE_ND, "If set, sends password to Discord friends who request to join your game");
+	cl_discordRichPresenceSharePassword = Cvar_Get("cl_discordRichPresenceSharePassword", "0", CVAR_ARCHIVE_ND, "If set, sends password to Discord friends who request to join your game");
 
 	Q_strncpyz(cl.discord.hostName, "*Jedi*", sizeof(cl.discord.hostName));
 	Q_strncpyz(cl.discord.mapName, "menu", sizeof(cl.discord.mapName));
@@ -468,6 +468,12 @@ void CL_DiscordShutdown(void)
 
 void CL_DiscordUpdatePresence(void)
 {
+	char *partyID = PartyID();
+	char *joinID = joinSecret();
+	char *serverDetails = GetServerDetails();
+	int playerCount = cls.state >= CA_LOADING ? cl.discord.playerCount : 0;
+	int maxPlayers = cls.state >= CA_LOADING ? cl.discord.maxPlayers : 0;
+
 	if (!cls.discordInitialized)
 		return;
 
@@ -475,9 +481,9 @@ void CL_DiscordUpdatePresence(void)
 		cl.discord.gametype = GT_FFA;
 
 	Com_Memset( &discordPresence, 0, sizeof( discordPresence ) );
-	
+
 	discordPresence.state = GetServerState();
-	discordPresence.details = GetServerDetails();
+	discordPresence.details = serverDetails;
 	discordPresence.largeImageKey = ReturnMapIcon();
 	discordPresence.largeImageText = ReturnMapName();
 	if (cl_discordRichPresence->integer > 1 || cls.state < CA_ACTIVE || cl.discord.gametype == GT_FFA) {
@@ -490,20 +496,23 @@ void CL_DiscordUpdatePresence(void)
 	}
 	if (!clc.demoplaying && !com_sv_running->integer)
 	{ //send join information blank since it won't do anything in this case
-		discordPresence.partyId = PartyID(); // Server-IP zum abgleichen discordchat - send join request in discord chat
+		discordPresence.partyId = partyID; // Server-IP zum abgleichen discordchat - send join request in discord chat
 		if (cl_discordRichPresence->integer > 1) {
-			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
-			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
+			discordPresence.partySize = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : 0;
+			discordPresence.partyMax = cls.state == CA_ACTIVE ? 1 : 0;
 		}
 		else {
-			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : NULL;
-			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : NULL;
+			discordPresence.partySize = playerCount;
+			discordPresence.partyMax = maxPlayers;
 		}
-		discordPresence.joinSecret = joinSecret(); // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
+		discordPresence.joinSecret = joinID; // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	}
 	Discord_UpdatePresence( &discordPresence );
 
+#ifdef WIN32
+	//if (cls.state == CA_ACTIVE)
+		Sys_SteamUpdateRichPresence("status", serverDetails, qfalse);
+#endif
 	Discord_RunCallbacks();
 }
-
 #endif
