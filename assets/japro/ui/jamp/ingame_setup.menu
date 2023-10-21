@@ -76,7 +76,7 @@
 			style				WINDOW_STYLE_SHADER
 			background			"gfx/menus/menu_blendbox"
 			text				@MENUS_SETUP
-			rect				20 5 530 28
+			rect				20 5 510 28
 			textalign			ITEM_ALIGN_CENTER
 			textalignx			255
 			textaligny			2
@@ -836,7 +836,7 @@
 			name				highlightApplyButton
 			group				highlights
 			style				WINDOW_STYLE_SHADER
-			rect				365 303 120 22
+			rect				365 293 120 32
 			background			"gfx/menus/menu_blendbox"
 			forecolor			1 1 1 1
 			visible			0

@@ -47,6 +47,19 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // Wind
 extern vec3_t cl_windVec;
 
+//snaphud start
+#define SNAPHUD_MAXZONES	128
+
+typedef struct {
+	int			speed;
+	float		zones[SNAPHUD_MAXZONES];
+	int			count;
+	vec2_t		m;
+	//qboolean	promode = qfalse;
+	qboolean	promode;
+} snappingHud_t;
+//snaphud end
+
 // snapshots are a view of the server at a given time
 typedef struct clSnapshot_s {
 	qboolean		valid;			// cleared if delta parsing was invalid
@@ -145,6 +158,9 @@ typedef struct clientActive_s {
 	// and teleport direction changes
 	vec3_t		viewangles;
 
+	//snaphud
+	snappingHud_t snappinghud;
+
 	int			serverId;			// included in each client message so the server
 												// can tell if it is for a prior map_restart
 	// big stuff at end of structure so most offsets are 15 bits or less
@@ -156,7 +172,7 @@ typedef struct clientActive_s {
 
 	char			*mSharedMemory;
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	struct {
 		qboolean		needPassword;
 		char			hostName[MAX_HOSTNAMELENGTH];
@@ -337,7 +353,7 @@ typedef struct clientStatic_s {
 
 	int			afkTime;
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#ifdef DISCORD
 	qboolean	discordInitialized;
 	int			discordUpdateTime;
 	sfxHandle_t	discordNotificationSound;
@@ -391,6 +407,7 @@ typedef struct console_s {
 	int 	linewidth;		// characters across screen
 	int		totallines;		// total lines in console scrollback
 
+	int		linecount;
 	int		charWidth;		// Scaled console character width
 	int		charHeight;		// Scaled console character height.
 
@@ -490,7 +507,7 @@ extern cvar_t	*cl_afkTimeUnfocused;
 
 extern cvar_t	*cl_logChat;
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#ifdef DISCORD
 extern cvar_t	*cl_discordRichPresence;
 #endif
 
@@ -500,12 +517,7 @@ extern cvar_t	*cl_discordRichPresence;
 // cl_main
 //
 
-void CL_Init (void);
-void CL_FlushMemory(void);
-void CL_ShutdownAll( qboolean shutdownRef );
 void CL_AddReliableCommand( const char *cmd, qboolean isDisconnectCmd );
-
-void CL_StartHunkUsers( void );
 
 qboolean CL_GetSnapshot( int snapshotNumber, snapshot_t *snapshot );
 qboolean CL_GetDefaultState( int index, entityState_t *state );
@@ -536,7 +548,7 @@ int CL_ServerStatus( const char *serverAddress, char *serverStatusString, int ma
 void CL_RandomizeColors(const char *in, char *out);
 void CL_Afk_f(void);
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#ifdef DISCORD
 void CL_DiscordInitialize(void);
 void CL_DiscordShutdown(void);
 void CL_DiscordUpdatePresence(void);
@@ -620,6 +632,7 @@ extern qboolean con_alert;
 //
 void	SCR_Init (void);
 void	SCR_UpdateScreen (void);
+void	SCR_UpdateScreenAndInput (void);
 
 void	SCR_DebugGraph (float value, int color);
 

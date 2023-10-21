@@ -629,6 +629,13 @@ void CG_DrawHealth( menuDef_t *menuHUD )
 
 	// What's the health?
 	healthAmt = ps->stats[STAT_HEALTH];
+	if (healthAmt > ps->stats[STAT_MAX_HEALTH] && cg_hudFiles.integer != 4)
+	{
+		healthAmt = ps->stats[STAT_MAX_HEALTH];
+	}
+
+
+	inc = (float) ps->stats[STAT_MAX_HEALTH] / MAX_HUD_TICS;
     currValue = healthAmt;
 
     inc = ps->stats[STAT_MAX_HEALTH] / MAX_HUD_TICS;
@@ -705,7 +712,6 @@ void CG_DrawHealth( menuDef_t *menuHUD )
         }
     }
 
-
 	// Print the mueric amount
 	focusItem = Menu_FindItemByName(menuHUD, "healthamount");
 	if (focusItem && cg_hudFiles.integer != 4)
@@ -722,8 +728,7 @@ void CG_DrawHealth( menuDef_t *menuHUD )
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
-	} else if (focusItem && cg_hudFiles.integer == 4)
-    {
+	} else if (focusItem && cg_hudFiles.integer == 4) {
         Com_sprintf(numString, sizeof(numString), "%i", ps->stats[STAT_HEALTH]);
         CG_Text_Paint(focusItem->window.rect.x * cgs.widthRatioCoef, focusItem->window.rect.y, 1.0f, colorWhite, numString, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
         Com_sprintf(numString2, sizeof(numString2), " /%i", ps->stats[STAT_MAX_HEALTH]);
@@ -758,11 +763,8 @@ void CG_DrawArmor( menuDef_t *menuHUD )
 
     maxArmor = ps->stats[STAT_MAX_HEALTH];
     currValue = ps->stats[STAT_ARMOR];
-
     inc = maxArmor / MAX_HUD_TICS;
-
     // Print the health tics, fading out the one which is partial health
-
 	memcpy(calcColor, hudTintColor, sizeof(vec4_t));
 	for (i = (MAX_HUD_TICS - 1);i>=0;i--)
 	{
@@ -851,7 +853,6 @@ void CG_DrawArmor( menuDef_t *menuHUD )
             currValue -= inc;
         }
     }
-
 	focusItem = Menu_FindItemByName(menuHUD, "armoramount");
 	if (focusItem && cg_hudFiles.integer != 4)
 	{
@@ -939,10 +940,11 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
     // draw the current saber style in this window
     switch (cg.predictedPlayerState.fd.saberDrawAnimLevel) {
         case SS_FAST:
+        case SS_TAVION:
             focusItem = Menu_FindItemByName(menuHUD, "saberstyle_fast");
 
             if (focusItem) {
-                //trap->R_SetColor(hudTintColor);
+                trap->R_SetColor(hudTintColor);
 
                 CG_DrawPic(
                         SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -957,7 +959,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
             focusItem = Menu_FindItemByName(menuHUD, "saberstyle_medium");
 
             if (focusItem) {
-                //trap->R_SetColor(hudTintColor);
+                trap->R_SetColor(hudTintColor);
 
                 CG_DrawPic(
                         SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -968,11 +970,12 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
                 );
             }
             break;
+        case SS_DESANN:
         case SS_STRONG:
             focusItem = Menu_FindItemByName(menuHUD, "saberstyle_strong");
 
             if (focusItem) {
-                //trap->R_SetColor(hudTintColor);
+                trap->R_SetColor(hudTintColor);
 
                 CG_DrawPic(
                         SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -987,7 +990,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
             focusItem = Menu_FindItemByName(menuHUD, "saberstyle_dual");
 
             if (focusItem) {
-                //trap->R_SetColor(hudTintColor);
+                trap->R_SetColor(hudTintColor);
 
                 CG_DrawPic(
                         SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -1002,7 +1005,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
             focusItem = Menu_FindItemByName(menuHUD, "saberstyle_staff");
 
             if (focusItem) {
-                //trap->R_SetColor(hudTintColor);
+                trap->R_SetColor(hudTintColor);
 
                 CG_DrawPic(
                         SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
@@ -1013,6 +1016,7 @@ static void CG_DrawSaberStyle( centity_t *cent, menuDef_t *menuHUD)
                 );
             }
             break;
+            trap->R_SetColor(NULL);
     return;
     }
 }
@@ -1154,7 +1158,7 @@ static void CG_DrawAmmo( centity_t	*cent,menuDef_t *menuHUD)
 	// Draw tics
 	for (i=MAX_HUD_TICS-1;i>=0;i--)
 	{
-        if(cent->currentState.weapon == WP_STUN_BATON || cent->currentState.weapon == WP_MELEE || cent->currentState.weapon == WP_SABER)
+        if(cg_hudFiles.integer == 4 && (cent->currentState.weapon == WP_STUN_BATON || cent->currentState.weapon == WP_MELEE || cent->currentState.weapon == WP_SABER))
             break;
 		focusItem = Menu_FindItemByName(menuHUD, ammoTicName[i]);
 
@@ -1550,7 +1554,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	int			i;
 	vec4_t		calcColor;
 	float		value, inc, percent;
-//	qboolean	flash = qfalse;
+	qboolean	flash = qfalse;
 
 	inc = (float)100 / MAX_TICS;
 	value = cg.snap->ps.fd.forcePower;
@@ -1558,7 +1562,7 @@ void CG_DrawForcePowerJK2(float x, float y)
 	// Make the hud flash by setting forceHUDTotalFlashTime above cg.time
 	if (cg.forceHUDTotalFlashTime > cg.time)
 	{
-//		flash = qtrue;
+		flash = qtrue;
 		if ( cg.forceHUDNextFlashTime < cg.time )
 		{
 			cg.forceHUDNextFlashTime = cg.time + 400;
@@ -1621,12 +1625,10 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
 	int				i;
 	vec4_t			calcColor;
     vec4_t			calcColor2;
-
     float			value,inc,percent;
 	itemDef_t		*focusItem;
 	const int		maxForcePower = 100;
     char            fpString[8];
-
     qboolean	flash=qfalse;
 
 	// Can we find the menu?
@@ -1746,9 +1748,7 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
 			focusItem->window.rect.h,
 			NUM_FONT_SMALL,
 			qfalse);
-    } else if (focusItem && cg_hudFiles.integer == 4)
-    {
-
+    } else if (focusItem && cg_hudFiles.integer == 4) {
         if ( flash ) {
             memcpy(calcColor2, colorTable[CT_RED], sizeof(vec4_t));
         }
@@ -1767,14 +1767,15 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
 float PM_GroundDistance2(void)
 {
 	trace_t tr;
+	playerState_t *ps = &cg.predictedPlayerState;
 	vec3_t down;
 
-	VectorCopy(cg.predictedPlayerState.origin, down);
+	VectorCopy(ps->origin, down);
 	down[2] -= 4096;
-	CG_Trace(&tr, cg.predictedPlayerState.origin, NULL, NULL, down, cg.predictedPlayerState.clientNum, MASK_SOLID);
-	VectorSubtract(cg.predictedPlayerState.origin, tr.endpos, down);
+	CG_Trace(&tr, ps->origin, NULL, NULL, down, ps->clientNum, MASK_SOLID);
+	VectorSubtract(ps->origin, tr.endpos, down);
 
-	return VectorLength(down) - 24.0f;
+	return VectorLength(down) - ps->viewheight;
 }
 //JAPRO - Clientside - Ground Distance function for use in jump detection for movement keys - End
 
@@ -2064,7 +2065,7 @@ void CG_DrawHUD(centity_t	*cent)
 
 	if (cg.predictedPlayerState.pm_type != PM_SPECTATOR)
 	{
-		if (cg_hudFiles.integer == 1)
+		if (cgs.newHud && cg_hudFiles.integer == 1)
 		{
 			int x = 0;
 			int y = SCREEN_HEIGHT - 80;
@@ -2286,11 +2287,7 @@ void CG_DrawHUD(centity_t	*cent)
 				else
 				{
 					CG_DrawAmmo(cent,menuHUD);
-				}
-
-
-                if(cg_hudFiles.integer == 4)
-                {
+				} if(cg_hudFiles.integer == 4) {
                     focusItem = Menu_FindItemByName(menuHUD, "force_icon");
                     if (focusItem) {
                         trap->R_SetColor(hudTintColor);
@@ -4289,12 +4286,11 @@ static float CG_DrawEnemyInfo ( float y )
 	size = ICON_SIZE * 1.25;
 	y += 5;
 
-	if ( ci->modelIcon )
-	{
-		CG_DrawPic( SCREEN_WIDTH - (size + 5 - xOffset) * cgs.widthRatioCoef, y, size * cgs.widthRatioCoef, size, ci->modelIcon );
-	}
-
-	y += size;
+    if ( ci->modelIcon )
+    {
+        CG_DrawPic( SCREEN_WIDTH - (size + 5 - xOffset) * cgs.widthRatioCoef, y, size * cgs.widthRatioCoef, size, ci->modelIcon );
+        y += size;
+    }
 	CG_Text_Paint(SCREEN_WIDTH - 5*cgs.widthRatioCoef - CG_Text_Width(ci->name, 1.0f, FONT_SMALL2) + xOffset*cgs.widthRatioCoef, y, 1.0f, colorWhite, ci->name, 0, 0, 0, FONT_SMALL2);
 	y += 15;
 	CG_Text_Paint(SCREEN_WIDTH - 5*cgs.widthRatioCoef - CG_Text_Width(title, 1.0f, FONT_SMALL2) + xOffset*cgs.widthRatioCoef, y, 1.0f, colorWhite, title, 0, 0, 0, FONT_SMALL2);
@@ -4994,7 +4990,7 @@ float CG_DrawMiniMap(float y)
 		float		angleLook;
 		float		anglePlayer;
 		float		angle;
-		float		distance = 0; //, actualDist;
+		float		distance, actualDist;
 		vec4_t color;
 
 
@@ -5020,7 +5016,7 @@ float CG_DrawMiniMap(float y)
 		// Get the distances
 		VectorSubtract(cg.predictedPlayerState.origin, cent->lerpOrigin, dirPlayer);
 		dirPlayer[2] = 0;
-	//	actualDist = distance = VectorNormalize(dirPlayer);
+		actualDist = distance = VectorNormalize(dirPlayer);
 
 		if (distance > MAX_MINIMAP_RANGE * 0.8f) //Cap distance, so their icon doesnt go off the minimap
 			distance = MAX_MINIMAP_RANGE*0.8f;
@@ -5698,7 +5694,7 @@ static float CG_DrawSnapshot( float y ) {
 CG_DrawFPS
 ==================
 */
-#define	FPS_FRAMES	60 //increased from 16 for accuracy
+#define	FPS_FRAMES	90 //increased from 16 for accuracy
 static float CG_DrawFPS( float y ) {
 	char		*s;
 	static unsigned short previousTimes[FPS_FRAMES], index;
@@ -5783,7 +5779,6 @@ static float CG_DrawTimer( float y ) {
         drawTimerStyle = cg_drawTimer.integer;
     }
 
-
 	if (cg_drawTimer.integer < 0)
 		msec = cg.time;
 	else
@@ -5796,7 +5791,6 @@ static float CG_DrawTimer( float y ) {
         if (endTime >= cg.time)
             msec = endTime - cg.time;
     }
-
 	secs = msec / 1000;
 	mins = secs / 60;
 
@@ -5856,10 +5850,6 @@ static float CG_DrawTimer( float y ) {
 
 extern const char *CG_GetLocationString(const char *loc); //cg_main.c
 void CG_GetColorForForce( int forcepoints, vec4_t hcolor );
-/*static float CG_DrawNewTeamOverlay( float y, qboolean right, qboolean upper ) {
-
-    return y;
-}*/
 /*
 =================
 CG_DrawTeamOverlay
@@ -5907,13 +5897,11 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		}
 	}
 
-	if (!plyrs) {
+	if (!plyrs)
         return y;
-    }
 
-    if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH) {
+	if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH)
         pwidth = TEAM_OVERLAY_MAXNAME_WIDTH;
-    }
 
 	// max location name width
 	lwidth = 0;
@@ -5926,9 +5914,8 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		}
 	}
 
-	if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH) {
+	if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH)
         lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
-    }
 
 	w = (pwidth + lwidth + 4 + 7) * TINYCHAR_WIDTH*cgs.widthRatioCoef;
 
@@ -6371,7 +6358,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             }
         }
     }
-    return ret_y;
+    return (float)ret_y;
 }
 
 static int CG_DrawPowerupIcons(int y)
@@ -6453,7 +6440,7 @@ static void CG_DrawInventory(int y)
 	if (!cg.snap)
 		return;
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE])
+	if (cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
 		return;
 
 	if (cg.snap->ps.pm_type == PM_SPECTATOR)
@@ -6737,7 +6724,7 @@ static void CG_DrawLagometer( void ) {
 	int		highestPing = 1;
 	int		color;
 
-	if (!cg_lagometer.integer || cgs.localServer) {
+	if (!cg_lagometer.integer || (cgs.localServer && !cg_drawSnapshot.integer)) {
 		CG_DrawDisconnect();
 		return;
 	}
@@ -7500,20 +7487,44 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 
 		trap->R_SetColor(hcolor);
 	}
-	else if (cg_drawCrosshair.integer == 10) {
+	else if (cg_drawCrosshair.integer == 10 || cg_drawCrosshair.integer == 11) {
 		hcolor[0] = 1.0f;
 		hcolor[1] = 1.0f;
 		hcolor[2] = 1.0f;
 		hcolor[3] = 3.0f;
 		trap->R_SetColor(hcolor);
+
+		if (cg_drawCrosshair.integer == 11) {
+			const float screenXScale = (cgs.glconfig.vidWidth * (1.0f / SCREEN_WIDTH));
+			const float screenYScale = (cgs.glconfig.vidHeight * (1.0f / SCREEN_HEIGHT));
+
+			hShader = cgs.media.whiteShader;
+			w = 3/screenXScale;
+			h = 3/screenYScale;
+			x = SCREEN_WIDTH / 2;
+			y = SCREEN_HEIGHT / 2;
+			const float gap = 14/screenXScale;
+
+			CG_DrawPic(x + 1, y + 1, w, h, hShader);
+			CG_DrawPic(x - 1, y - 1, w, h, hShader);
+			CG_DrawPic(x, y + 14, w, h, hShader);
+			CG_DrawPic(x, y - 14, w, h, hShader);
+			CG_DrawPic(x + 14, y, w, h, hShader);
+			CG_DrawPic(x - 14, y, w, h, hShader);
+
+	    }
 	}
-	else if ((cg.crosshairColor[0] || cg.crosshairColor[1] || cg.crosshairColor[2]) && !cg_crosshairIdentifyTarget.integer)
+	else if (cg.crosshairColor[0] > 0.0f && cg.crosshairColor[1] > 0.0f && cg.crosshairColor[2] > 0.0f)
 	{
 		hcolor[0] = cg.crosshairColor[0];
 		hcolor[1] = cg.crosshairColor[1];
 		hcolor[2] = cg.crosshairColor[2];
 		hcolor[3] = cg.crosshairColor[3];
 		trap->R_SetColor( hcolor );
+	}
+	else if (!cg_crosshairIdentifyTarget.integer)
+	{
+		trap->R_SetColor(colorTable[CT_WHITE]);
 	}
 	else
 	{
@@ -7861,7 +7872,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 	if ( corona ) // drawing extra bits
 	{
 		ecolor[3] = 0.5f;
-		ecolor[0] = ecolor[1] = ecolor[2] = (1 - ecolor[3]) * ( sin( cg.time * 0.001f ) * 0.08f + 0.35f ); // don't draw full color
+		ecolor[0] = ecolor[1] = ecolor[2] = (1.0f - ecolor[3]) * ( sinf( (float)cg.time * 0.001f ) * 0.08f + 0.35f ); // don't draw full color
 		ecolor[3] = 1.0f;
 
 		trap->R_SetColor( ecolor );
@@ -7869,9 +7880,9 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		w *= 2.0f;
 		h *= 2.0f;
 
-		trap->R_DrawStretchPic(x + cg.refdef.x + 0.5 * (SCREEN_WIDTH - w * cgs.widthRatioCoef),
-			y + cg.refdef.y + 0.5 * (SCREEN_HEIGHT - h),
-			w * cgs.widthRatioCoef, h, 0, 0, 1, 1, cgs.media.forceCoronaShader);
+		trap->R_DrawStretchPic(x + (float)cg.refdef.x + 0.5f * (SCREEN_WIDTH - w),
+			y + (float)cg.refdef.y + 0.5f * (SCREEN_HEIGHT - h),
+			w, h, 0, 0, 1, 1, cgs.media.forceCoronaShader);
 	}
 
 	trap->R_SetColor( NULL );
@@ -8136,8 +8147,8 @@ void CG_BracketEntity( centity_t *cent, float radius )
 	y -= (size*0.5f);
 
 	/*
-	if ( x >= 0 && x <= 640
-		&& y >= 0 && y <= 480 )
+	if ( x >= 0 && x <= SCREEN_WIDTH
+		&& y >= 0 && y <= SCREEN_HEIGHT )
 	*/
 	{//brackets would be drawn on the screen, so draw them
 	//upper left corner
@@ -8767,7 +8778,8 @@ qboolean staticCrosshairOverride() {
 	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 		return qtrue;
 
-	if (cg_strafeHelper.integer & SHELPER_UPDATED ||
+	if (cg_strafeHelper.integer & SHELPER_ORIGINAL ||
+        cg_strafeHelper.integer & SHELPER_UPDATED ||
 		cg_strafeHelper.integer & SHELPER_CGAZ ||
 		cg_strafeHelper.integer & SHELPER_WSW ||
 		cg_strafeHelper.integer & SHELPER_WEZE)
@@ -9103,10 +9115,10 @@ CG_DrawSpectator
 */
 static void CG_DrawSpectator(void)
 {
-//	const char* s;
+	const char* s;
 	int xOffset = 0;
 
-//	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
+	s = CG_GetStringEdString("MP_INGAME", "SPECTATOR");
 	if ((cgs.gametype == GT_DUEL || cgs.gametype == GT_POWERDUEL) &&
 		cgs.duelist1 != -1 &&
 		cgs.duelist2 != -1)
