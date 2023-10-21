@@ -53,6 +53,12 @@ static HANDLE qconsole_hin;
 static FILE *stdinptr, *stdoutptr, *stderrptr;
 static qboolean never_detach;
 
+#ifndef DEDICATED
+#include "client/client.h"
+extern cvar_t *com_viewlog;
+extern console_t con;
+#endif
+
 /*
 ==================
 CON_ColorCharToAttrib
@@ -205,7 +211,7 @@ static void CON_Show( void )
 	writeArea.Left = 0;
 	writeArea.Top = binfo.dwCursorPosition.Y;
 	writeArea.Bottom = binfo.dwCursorPosition.Y;
-	writeArea.Right = MAX_EDIT_LINE;
+	writeArea.Right = binfo.srWindow.Right;
 
 	// set color to white
 	attrib = CON_ColorCharToAttrib( COLOR_WHITE );
@@ -300,7 +306,6 @@ void CON_Init( void )
 		stdinptr = freopen( "CONIN$", "r", stdin );
 		stdoutptr = freopen( "CONOUT$", "w", stdout );
 		stderrptr = freopen( "CONOUT$", "w", stderr );
-		never_detach = qtrue;
 	}
 #endif
 
@@ -360,6 +365,56 @@ void CON_CreateConsoleWindow(void) {
 		}
 
 		CON_Init();
+
+#ifndef DEDICATED
+		if (com_viewlog && com_viewlog->modified && con.initialized)
+		{ //dump client console output to the new console window
+			int		l, i;
+			short	*line;
+			char buffer[CON_TEXTSIZE] = { 0 };
+			char lineCharacter;
+			bool emptyline;
+
+			for (l = 0; l <= con.current; l++)
+			{
+				line = con.text + (l%con.totallines)*con.linewidth;
+				if (!line)
+					break;
+				emptyline = true;
+				for (i = 0; i < con.linewidth; i++) { //check for completely empty lines
+					if ((line[i] & 0xff) != ' ') {
+						emptyline = false;
+						break;
+					}
+				}
+				if (emptyline)
+					continue;
+
+				/*for (i = 0; i < con.linewidth; i++)
+					buffer[i] = (char) (line[i] & 0xff);*/
+
+				for (i = 0; i < con.linewidth; i++) {
+					lineCharacter = (char)(line[i] & 0xff);
+					if (lineCharacter != '\0' && i < 9)
+						lineCharacter = '\r';
+					buffer[i] = lineCharacter;
+				}
+
+				for (i = con.linewidth - 1; i >= 0; i--)
+				{
+					if (buffer[i] == ' ')
+						buffer[i] = 0;
+					else
+						break;
+				}
+
+				//Q_strcat(buffer, sizeof(buffer), "\n");
+				Q_strcat(buffer, sizeof(buffer), "\r\n");
+				CON_Print(buffer);
+			}
+
+		}
+#endif
 	}
 }
 
