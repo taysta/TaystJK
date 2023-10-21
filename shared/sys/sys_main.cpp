@@ -41,6 +41,9 @@ cvar_t *com_maxfps;
 cvar_t *com_maxfpsMinimized;
 cvar_t *com_maxfpsUnfocused;
 
+#if defined(WIN32) && !defined(DEDICATED)
+cvar_t	*com_viewlog;
+#endif
 /*
 =================
 Sys_SetBinaryPath
@@ -120,6 +123,8 @@ char *Sys_GetClipboardData( void ) {
 void Sys_SetClipboardData(const char * cbText) {
 #ifdef DEDICATED
 	return;
+#elif WIN32
+	Sys_SetClipboardDataWin32(cbText);
 #else
 	SDL_SetClipboardText(cbText);
 #endif
@@ -172,6 +177,9 @@ void Sys_Init( void ) {
 #endif
 	com_maxfpsUnfocused = Cvar_Get( "com_maxfpsUnfocused", "0", CVAR_ARCHIVE_ND );
 	com_maxfpsMinimized = Cvar_Get( "com_maxfpsMinimized", "50", CVAR_ARCHIVE_ND );
+#if defined(WIN32) && !defined(DEDICATED)
+	com_viewlog = Cvar_Get("viewlog", "0", CVAR_NONE);
+#endif
 }
 
 static void NORETURN Sys_Exit( int ex ) {
@@ -305,6 +313,7 @@ from executable path, then fs_basepath.
 void *Sys_LoadDll( const char *name, qboolean useSystemLib )
 {
 	void *dllhandle = NULL;
+	cvar_t	*fs_loadpakdlls = Cvar_Get("fs_loadpakdlls", "1", CVAR_NORESTART|CVAR_PROTECTED, "Toggle loading DLLs from pk3 files");
 
 	// Don't load any DLLs that end with the pk3 extension
 	if ( COM_CompareExtension( name, ".pk3" ) )
@@ -469,6 +478,7 @@ static void FreeUnpackDLLResult(UnpackDLLResult *result)
 		Z_Free((void *)result->tempDLLPath);
 }
 
+extern cvar_t *fs_loadpakdlls;
 void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallProc *systemcalls )
 {
 	void	*libHandle = NULL;
@@ -558,8 +568,18 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 
 #if defined(_DEBUG)
 	libHandle = Sys_LoadLibrary( filename );
-	if ( !libHandle )
+#if WIN32
+	if (!libHandle) {
+		Com_sprintf(filename, sizeof(filename), "%s%s%s%s", Cvar_VariableString("fs_basepath"), name, ARCH_STRING, DLL_EXT);
+		libHandle = Sys_LoadLibrary(filename);
+		if (!libHandle) {//ok try again in ETJK folder?
+			Com_sprintf(filename, sizeof(filename), "%s%s%s", FS_BuildOSPath(Cvar_VariableString("fs_basepath"), ETERNALJKGAME, name), ARCH_STRING, DLL_EXT);
+			libHandle = Sys_LoadLibrary( filename );
+		}
+	}
 #endif
+#endif
+	if ( !libHandle )
 	{
 		UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
 		if (!unpackResult.succeeded)

@@ -163,17 +163,18 @@ char *Sys_GetCurrentUser( void )
 /*
 * Builds the path for the user's game directory
 */
+extern cvar_t *fs_portable;
 char *Sys_DefaultHomePath( void )
 {
 #if defined(BUILD_PORTABLE)
 	Com_Printf( "Portable install requested, skipping homepath support\n" );
 	return NULL;
 #else
-	if ( Cvar_VariableIntegerValue( "fs_portable" ) )
+	if ( fs_portable && fs_portable->integer )
 	{
 		Com_Printf("fs_portable enabled, skipping fs_homepath support\n");
 
-		if (Cvar_VariableIntegerValue("fs_portable") == 2)
+		if (fs_portable->integer == 2)
 			return NULL;
 
 		FILE *ftest = fopen(va("%s/w", Sys_DefaultInstallPath()), "w");
@@ -183,8 +184,9 @@ char *Sys_DefaultHomePath( void )
 			remove(va("%s/w", Sys_DefaultInstallPath()));
 			return NULL;
 		}
-		else
+		else {
 			Com_Printf("fs_portable write test failed, using fs_homepath\n");
+	    }
 	}
 
 	if ( !homePath[0] )
@@ -600,18 +602,26 @@ LOAD/UNLOAD DLL
 //file back out again so it can be loaded is a library. If the read
 //fails then the dll is probably not in the pk3 and we are running
 //a pure server -rww
+extern cvar_t *fs_loadpakdlls;
 UnpackDLLResult Sys_UnpackDLL(const char *name)
 {
 	UnpackDLLResult result = {};
 	void *data;
 	long len;
 	
-	if (Cvar_VariableIntegerValue("fs_loadpakdlls") == 1) {
+#ifdef TOURNAMENT_CLIENT
+	if (1)
+		len = FS_ReadDLLInPAK(name, &data);
+	else
+		len = FS_ReadFile(name, &data);
+#else
+	if (!fs_loadpakdlls || fs_loadpakdlls->integer == 1) {
 		len = FS_ReadDLLInPAK(name, &data);
 	}
 	else {
 		len = FS_ReadFile(name, &data);
 	}
+#endif
 
 	if (len >= 1)
 	{
@@ -658,8 +668,9 @@ void Sys_PlatformInit( void ) {
 
 		timeBeginPeriod( timerResolution );
 	}
-	else
+	else {
 		timerResolution = 0;
+    }
 }
 
 /*
@@ -693,6 +704,38 @@ void Sys_Sleep( int msec )
 	Sleep( msec );
 #endif
 }
+#ifndef DEDICATED
+void Sys_SetClipboardDataWin32(const char *cbText)
+{
+	char far	*buffer;
+	int			size = 0;
+	HGLOBAL		clipbuffer;
+
+	if (!cbText || !cbText[0])
+		return;
+
+	size = strlen(cbText);
+	if (size < 1)
+		return;
+
+	OpenClipboard(NULL);
+	EmptyClipboard();
+
+	clipbuffer = GlobalAlloc(GMEM_DDESHARE, size + 1);
+	if (!clipbuffer)
+		return;
+
+	buffer = (char far *)GlobalLock(clipbuffer);
+	if (!buffer)
+		return;
+
+	strcpy(buffer, cbText);
+
+	GlobalUnlock(clipbuffer);
+	SetClipboardData(CF_TEXT, clipbuffer);
+	CloseClipboard();
+}
+#endif
 
 /*
 ================
@@ -713,11 +756,33 @@ provided the end-user has the goods.
 Unfortunately! this is platform specific and so we have to do it here.
 ================
 */
+#define STEAMCLIENT_INTERFACE_VERSION "SteamClient018"
 
 typedef bool(__stdcall* SteamAPIInit_Type)();
 typedef void(__stdcall* SteamAPIShutdown_Type)();
 static SteamAPIInit_Type SteamAPI_Init;
 static SteamAPIShutdown_Type SteamAPI_Shutdown;
+
+typedef bool(__thiscall *SteamAPISetRichPresence_Type)(void *GetFriends, const char *pchKey, const char *pchValue);
+typedef void(__stdcall *SteamAPIClearRichPresence_Type)();
+
+typedef void*(__cdecl *SteamAPISteamClient_Type)();
+typedef __int32(__thiscall *SteamAPI_GetHSteamPipe_Type)();
+typedef __int32(__thiscall *SteamAPI_GetHSteamUser_Type)();
+typedef void*(__thiscall *SteamAPIGetSteamFriends_Type)(void *SteamClient, int hSteamUser, int hSteamPipe, char *InterfaceVersion);
+
+static SteamAPISetRichPresence_Type SteamAPI_SetRichPresence;
+static SteamAPIClearRichPresence_Type SteamAPI_ClearRichPresence;
+
+static SteamAPISteamClient_Type SteamAPI_SteamClient;
+static SteamAPI_GetHSteamPipe_Type SteamAPI_GetSteamPipe;
+static SteamAPI_GetHSteamUser_Type SteamAPI_GetSteamUser;
+static SteamAPIGetSteamFriends_Type SteamAPI_GetSteamFriends;
+
+static qboolean SteamRichPresenceSupported = qfalse;
+static int steamPipe;
+static int steamUser;
+
 static void* gp_steamLibrary = nullptr;
 
 void Sys_SteamInit()
@@ -755,6 +820,60 @@ void Sys_SteamInit()
 		Sys_UnloadLibrary(gp_steamLibrary);
 		gp_steamLibrary = nullptr;
 		return;
+	}
+
+	SteamAPI_SetRichPresence = (SteamAPISetRichPresence_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_ISteamFriends_SetRichPresence");
+	SteamAPI_ClearRichPresence = (SteamAPIClearRichPresence_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_ISteamFriends_ClearRichPresence");
+
+	SteamAPI_SteamClient = (SteamAPISteamClient_Type)Sys_LoadFunction(gp_steamLibrary, "SteamClient");
+	SteamAPI_GetSteamPipe = (SteamAPI_GetHSteamPipe_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_GetHSteamPipe");
+	SteamAPI_GetSteamUser = (SteamAPI_GetHSteamUser_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_GetHSteamUser");
+	SteamAPI_GetSteamFriends = (SteamAPIGetSteamFriends_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_ISteamClient_GetISteamFriends");
+
+
+	if (SteamAPI_SteamClient && SteamAPI_GetSteamPipe && SteamAPI_GetSteamUser && SteamAPI_GetSteamFriends && SteamAPI_SetRichPresence && SteamAPI_ClearRichPresence)
+	{
+		return;//dunno....
+		Com_Printf(S_COLOR_GREY "Steam rich presence integration supported.\n");
+		steamPipe = SteamAPI_GetSteamPipe();
+		Com_Printf(S_COLOR_GREY "Got Steam communication pipe %i\n", steamPipe);
+		steamUser = SteamAPI_GetSteamUser();
+		Com_Printf(S_COLOR_GREY "Connected to global Steam user %i\n", steamUser);
+		SteamRichPresenceSupported = qtrue;
+	}
+	else
+	{
+		Com_Printf(S_COLOR_RED "Steam rich presence integration not supported by loaded steam_api.dll.\n");
+	}
+}
+
+void Sys_SteamUpdateRichPresence(const char* pchKey, const char* pchValue, qboolean shutdown)
+{
+	void *SteamClient = NULL;
+	void *GetFriends = NULL;
+	//void *SteamClient = SteamAPI_SteamClient();
+	//void *GetFriends = SteamAPI_GetSteamFriends(SteamClient);
+
+	if (!SteamRichPresenceSupported)
+		return;
+
+	SteamClient = SteamAPI_SteamClient();
+	SteamClient;
+	GetFriends = SteamAPI_GetSteamFriends(SteamClient, steamUser, steamPipe, (char *)STEAMCLIENT_INTERFACE_VERSION);
+
+	if (shutdown) {
+		SteamAPI_ClearRichPresence();
+		return;
+	}
+
+	if (!pchKey || !pchKey[0] || !pchValue || !pchValue[0]) {
+		Com_Printf(S_COLOR_RED "Sys_SteamUpdateRichPresence: Tried to update with null perameter!\n");
+		return;
+	}
+
+	if (!SteamAPI_SetRichPresence(GetFriends, pchKey, pchValue))
+	{
+		Com_Printf(S_COLOR_RED "SteamAPI_SetRichPresence Failed?\n");
 	}
 }
 

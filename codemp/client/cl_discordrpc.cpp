@@ -3,7 +3,7 @@ Author: Blackwolf
 Discord Integration with some usefull functions, have fun.
 You need to link the static library also 'discord_rpc.lib'.
 */
-#if defined DISCORD && !(_DEBUG)
+#if defined DISCORD
 #include <discord_rpc.h>
 #include <discord_register.h>
 

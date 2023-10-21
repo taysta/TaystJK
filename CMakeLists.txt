@@ -71,6 +71,8 @@ endif()
 
 if(APPLE)
   set(UseInternalJPEGDefault ON)
+  set(UseInternalOpenALDefault ON)
+  set(UseInternalPNGDefault    ON)
 endif()
 
 option(UseInternalOpenAL "If set, use bundled OpenAL."  ${UseInternalOpenALDefault})
@@ -139,6 +141,11 @@ message(STATUS "Architecture is ${Architecture}")
 if(WIN32 AND CMAKE_VERSION VERSION_LESS "3.4")
 	message(WARNING "Building on Windows platform with CMake version less than 3.4 is deprecated. Manifest file will fail to be included.")
 endif()
+
+# Current Git SHA1 hash
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+message(STATUS "Git revision is ${GIT_SHA1}")
 
 #=============================================================================
 #
@@ -236,12 +243,21 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -ggdb")
 
 	if (X86)
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse2")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
+		if (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" MATCHES "Clang"))
+			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse2")
+			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
+		endif()
 	endif()
 
-	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+	if (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" MATCHES "Clang"))
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+	else()
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O2")
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+	endif()
 
 	# enable somewhat modern C++
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -253,7 +269,6 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsigned-char")
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
 		if (X86)
 			# "x86 vm will crash without -mstackrealign since MMX
 			# instructions will be used no matter what and they
@@ -313,6 +328,10 @@ else()
 	message(ERROR "Unsupported compiler")
 endif()
 
+if (NOT CMAKE_BUILD_TYPE)
+	message(STATUS "No build type selected, default to RELEASE")
+	set(CMAKE_BUILD_TYPE "RELEASE")
+endif()
 set(SharedDefines ${SharedDefines} "$<$<CONFIG:Debug>:_DEBUG>")
 set(SharedDefines ${SharedDefines} "$<$<NOT:$<CONFIG:Debug>>:FINAL_BUILD>")
 

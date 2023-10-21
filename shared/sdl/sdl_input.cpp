@@ -47,6 +47,9 @@ extern cvar_t *snd_mute_losefocus;
 
 static SDL_Window *SDL_window = NULL;
 
+extern cvar_t *r_fullscreen;
+extern cvar_t *r_noborder;
+
 #define CTRL(a) ((a)-'a'+1)
 
 /*
@@ -308,6 +311,10 @@ static fakeAscii_t IN_TranslateSDLToJKKey( SDL_Keysym *keysym, qboolean down ) {
 			case SDLK_F10:			key = A_F10;			break;
 			case SDLK_F11:			key = A_F11;			break;
 			case SDLK_F12:			key = A_F12;			break;
+#ifdef MACOS_X
+			case SDLK_F13:			key = A_F13;			break;
+			case SDLK_KP_EQUALS:	key = A_KP_EQUALS;		break;
+#endif
 
 			case SDLK_BACKSPACE:	key = A_BACKSPACE;		break;
 			case SDLK_KP_PERIOD:	key = A_KP_PERIOD;		break;
@@ -933,6 +940,7 @@ static void IN_ProcessEvents( int eventTime )
 				break;
 
 			case SDL_WINDOWEVENT:
+				eventTime = Sys_Milliseconds2();
 				switch( e.window.event )
 				{
 					case SDL_WINDOWEVENT_MINIMIZED: Cvar_SetValue( "com_minimized", 1 ); break;
@@ -945,7 +953,7 @@ static void IN_ProcessEvents( int eventTime )
 #ifdef _WIN32
 						con_alert = qfalse;
 #endif
-						if (snd_mute_losefocus->integer)
+						if (snd_mute_losefocus->integer && !CL_VideoRecording())
 							SNDDMA_Activate(qfalse);
 						break;
 					}
@@ -958,7 +966,7 @@ static void IN_ProcessEvents( int eventTime )
 							CL_Afk_f();
 							cls.afkTime = cls.realtime;
 						}
-						if (snd_mute_losefocus->integer)
+						if (snd_mute_losefocus->integer && !CL_VideoRecording())
 							SNDDMA_Activate(qtrue);
 						break;
 					}

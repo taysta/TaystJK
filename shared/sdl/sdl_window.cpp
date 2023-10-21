@@ -26,6 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "rd-common/tr_types.h"
 #include "sys/sys_local.h"
 #include "sdl_icon.h"
+#include <VersionHelpers.h>
 
 enum rserr_t
 {
@@ -150,8 +151,11 @@ void GLimp_Minimize(void)
 
 #ifdef _WIN32
 qboolean con_alert;
+extern qboolean CL_VideoRecording(void);
 static FLASHWINFO fi;
 void GLimp_Alert(void) {
+	if (CL_VideoRecording())
+		return;
 	FlashWindowEx(&fi);
 }
 #endif
@@ -770,9 +774,9 @@ window_t WIN_Init( const windowDesc_t *windowDesc, glconfig_t *glConfig )
 	r_allowSoftwareGL	= Cvar_Get( "r_allowSoftwareGL",	"0",		CVAR_ARCHIVE_ND|CVAR_LATCH );
 
 	// Window cvars
-	r_fullscreen		= Cvar_Get( "r_fullscreen",			"1",		CVAR_ARCHIVE|CVAR_LATCH );
+	r_fullscreen		= Cvar_Get( "r_fullscreen",			"1",		CVAR_ARCHIVE );
 	r_noborder			= Cvar_Get( "r_noborder",			"0",		CVAR_ARCHIVE|CVAR_LATCH );
-	r_centerWindow		= Cvar_Get( "r_centerWindow",		"1",		CVAR_ARCHIVE_ND|CVAR_LATCH );
+	r_centerWindow		= Cvar_Get( "r_centerWindow",		"2",		CVAR_ARCHIVE_ND|CVAR_LATCH );
 	vid_xpos			= Cvar_Get( "vid_xpos",				"12",		CVAR_ARCHIVE_ND|CVAR_LATCH );
 	vid_ypos			= Cvar_Get( "vid_ypos",				"36",		CVAR_ARCHIVE_ND|CVAR_LATCH );
 	r_customwidth		= Cvar_Get( "r_customwidth",		"1920",		CVAR_ARCHIVE|CVAR_LATCH );
@@ -781,7 +785,7 @@ window_t WIN_Init( const windowDesc_t *windowDesc, glconfig_t *glConfig )
 	r_stereo			= Cvar_Get( "r_stereo",				"0",		CVAR_ARCHIVE_ND|CVAR_LATCH );
 	r_mode				= Cvar_Get( "r_mode",				"-2",		CVAR_ARCHIVE|CVAR_LATCH );
 	r_displayRefresh	= Cvar_Get( "r_displayRefresh",		"0",		CVAR_LATCH );
-	Cvar_CheckRange( r_displayRefresh, 0, 240, qtrue );
+	Cvar_CheckRange( r_displayRefresh, 0, 1000, qtrue );
 
 	// Window render surface cvars
 	r_stencilbits		= Cvar_Get( "r_stencilbits",		"8",		CVAR_ARCHIVE_ND|CVAR_LATCH );
@@ -807,8 +811,10 @@ window_t WIN_Init( const windowDesc_t *windowDesc, glconfig_t *glConfig )
 		}
 	}
 
-	glConfig->deviceSupportsGamma =
-		(qboolean)(!r_ignorehwgamma->integer && SDL_SetWindowBrightness( screen, 1.0f ) >= 0);
+	if (Cvar_VariableIntegerValue("r_gammaShaders"))
+		glConfig->deviceSupportsGamma = qtrue;
+	else
+		glConfig->deviceSupportsGamma = (qboolean)(!r_ignorehwgamma->integer && SDL_SetWindowBrightness( screen, 1.0f ) >= 0);
 
 	// This depends on SDL_INIT_VIDEO, hence having it here
 	IN_Init( screen );

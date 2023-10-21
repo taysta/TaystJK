@@ -167,7 +167,6 @@ typedef enum graphicsApi_e
 
 	// Only OpenGL needs special treatment..
 	GRAPHICS_API_OPENGL,
-
 	// Vulkan
 	GRAPHICS_API_VULKAN,
 } graphicsApi_t;
@@ -215,6 +214,9 @@ qboolean	WIN_GL_ExtensionSupported( const char *extension );
 
 uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 );
 
+#if defined(WIN32) && !defined(DEDICATED)
+void Sys_SteamUpdateRichPresence(const char* pchKey, const char* pchValue, qboolean shutdown);
+#endif
 // Vulkan
 void		*WIN_VK_GetInstanceProcAddress(void);
 qboolean	WIN_VK_createSurfaceImpl(VkInstance instance, VkSurfaceKHR *surface);

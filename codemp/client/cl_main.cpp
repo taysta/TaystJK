@@ -136,7 +136,7 @@ cvar_t	*cl_afkTimeUnfocused;
 
 cvar_t	*cl_logChat;
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 cvar_t	*cl_discordRichPresence;
 #endif
 
@@ -2529,7 +2529,7 @@ void CL_Frame ( int msec ) {
 		CL_TakeVideoFrame( );
 	}
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	if (cl_discordRichPresence->integer) {
 		if ( cls.realtime >= 5000 && !cls.discordInitialized )
 		{ //we just turned it on
@@ -3571,7 +3571,7 @@ void CL_Init( void ) {
 	CL_GenerateQKey(); //loda fixme, malware warning!
 	CL_UpdateGUID( NULL, 0 );
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	if (cl_discordRichPresence->integer) {
 		CL_DiscordInitialize();
 		cls.discordInitialized = qtrue;
@@ -3647,7 +3647,7 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand("colorstring");
 	Cmd_RemoveCommand("colorname");
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	if (cl_discordRichPresence->integer || cls.discordInitialized)
 		CL_DiscordShutdown();
 #endif

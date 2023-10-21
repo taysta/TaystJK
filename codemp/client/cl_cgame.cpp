@@ -203,7 +203,7 @@ void CL_DoAutoLODScale(void)
 	Cvar_Set( "r_autolodscalevalue", va("%f", finalLODScaleFactor) );
 }
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#ifdef DISCORD
 static void CL_UpdateDiscordServerInfo(const char *info)
 {
 	char *value = NULL;
@@ -344,7 +344,7 @@ void CL_ConfigstringModified( void ) {
 		CL_ParsePlayerInfo(CS_PLAYERS, CS_G2BONES);
 	}
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	if (index == CS_SERVERINFO)
 	{
 		s = cl.gameState.stringData + cl.gameState.stringOffsets[CS_SERVERINFO];
@@ -726,7 +726,7 @@ void CL_InitCGame( void ) {
 	mapname = Info_ValueForKey( info, "mapname" );
 	Com_sprintf( cl.mapname, sizeof( cl.mapname ), "maps/%s.bsp", mapname );
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	CL_UpdateDiscordServerInfo(info);
 #endif
 
