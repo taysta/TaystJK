@@ -250,8 +250,9 @@ extern int		max_polys;
 extern cvar_t	*r_maxpolyverts;
 extern int		max_polyverts;
 
-extern	cvar_t	*r_aspectCorrectFonts;
-extern	cvar_t	*cl_ratioFix;
+extern cvar_t	*r_aspectCorrectFonts;
+extern cvar_t	*r_ratioFix;
+extern cvar_t	*r_fontOverride;
 
 /*
 Ghoul2 Insert Start

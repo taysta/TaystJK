@@ -1390,10 +1390,10 @@ float RE_Font_StrLenPixelsNew( const char *psText, const int iFontHandle, const 
 
 			float fValue = iPixelAdvance * ((uiLetter > (unsigned)g_iNonScaledCharRange) ? fScaleAsian : fScale);
 
-			if ( r_aspectCorrectFonts->integer == 1 || cl_ratioFix->integer == 1 ) {
+			if ( r_ratioFix->integer || r_aspectCorrectFonts->integer == 1 ) {
 				fValue *= tr.widthRatioCoef;
 			}
-			else if ( r_aspectCorrectFonts->integer == 2 || cl_ratioFix->integer == 2 ) { // ?? duno
+			else if ( r_aspectCorrectFonts->integer == 2 ) { // ?? duno
 				fValue = ceilf(
 					fValue * tr.widthRatioCoef
 				);
@@ -1685,11 +1685,11 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 								hShader							// qhandle_t hShader
 								);
 
-				if ( r_aspectCorrectFonts->integer == 1  || cl_ratioFix->integer == 1 ) {
+				if ( r_ratioFix->integer || r_aspectCorrectFonts->integer == 1 ) {
 					fx += fAdvancePixels
 						* tr.widthRatioCoef;
 				}
-				else if ( r_aspectCorrectFonts->integer == 2 || cl_ratioFix->integer == 2 ) { // xD
+				else if ( r_aspectCorrectFonts->integer == 2 ) {
 					fx += ceilf( fAdvancePixels
 						* tr.widthRatioCoef );
 				}
@@ -1738,6 +1738,8 @@ void R_InitFonts(void)
 	g_iNonScaledCharRange = INT_MAX;	// default all chars to have no special scaling (other than user supplied)
 
 	cl_coloredTextShadows = ri.Cvar_Get("cl_coloredTextShadows", "0", CVAR_ARCHIVE, "Toggle JK2 1.02-style colored text shadows");
+	if (!r_ratioFix)
+		r_ratioFix = ri.Cvar_Get("cl_ratioFix", "1", CVAR_ARCHIVE_ND, "");
 }
 
 /*

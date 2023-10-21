@@ -411,9 +411,9 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		R_SetGammaCorrectionLUT();
 	}
 
-	if (cl_ratioFix->modified) {
+	if (r_ratioFix->modified) {
 		R_Set2DRatio();
-		cl_ratioFix->modified = qfalse;
+		r_ratioFix->modified = qfalse;
 	}
 
 	// check for errors

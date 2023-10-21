@@ -1271,7 +1271,8 @@ extern	cvar_t	*r_debugSort;
 extern	cvar_t	*r_marksOnTriangleMeshes;
 
 extern	cvar_t	*r_aspectCorrectFonts;
-extern	cvar_t	*cl_ratioFix;
+extern	cvar_t	*r_ratioFix;
+extern	cvar_t	*r_fontOverride;
 
 /*
 Ghoul2 Insert Start

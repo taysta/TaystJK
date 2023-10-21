@@ -274,7 +274,7 @@ cvar_t *r_debugContext;
 cvar_t *r_debugWeather;
 
 cvar_t	*r_aspectCorrectFonts;
-cvar_t	*cl_ratioFix;
+cvar_t	*r_ratioFix;
 
 extern void	RB_SetGL2D (void);
 static void R_Splash()
@@ -291,7 +291,7 @@ static void R_Splash()
 	GL_Cull(CT_TWO_SIDED);
 
 	image_t *pImage = R_FindImageFile( "menu/splash", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
-    if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f)
+    if (r_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f)
         pImage = R_FindImageFile("menu/splash_16_9", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
 	if (pImage )
 		GL_Bind( pImage );
@@ -1652,7 +1652,7 @@ void R_Register( void )
 	r_surfaceSprites = ri.Cvar_Get("r_surfaceSprites", "1", CVAR_ARCHIVE, "");
 
 	r_aspectCorrectFonts = ri.Cvar_Get( "r_aspectCorrectFonts", "0", CVAR_ARCHIVE, "" );
-    cl_ratioFix	= ri.Cvar_Get( "cl_ratioFix", "1", CVAR_ARCHIVE, "" );
+    r_ratioFix	= ri.Cvar_Get( "cl_ratioFix", "1", CVAR_ARCHIVE, "" );
     r_maxpolys = ri.Cvar_Get( "r_maxpolys", XSTRING( DEFAULT_MAX_POLYS ), 0, "");
 	r_maxpolyverts = ri.Cvar_Get( "r_maxpolyverts", XSTRING( DEFAULT_MAX_POLYVERTS ), 0, "" );
 
@@ -2180,7 +2180,7 @@ void RE_SetLightStyle(int style, int color)
 void RE_GetBModelVerts(int bmodelIndex, vec3_t *verts, vec3_t normal);
 
 void R_Set2DRatio(void) {
-    if (cl_ratioFix->integer)
+    if (r_ratioFix->integer)
         tr.widthRatioCoef = ((float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth));
     else
         tr.widthRatioCoef = 1.0f;
