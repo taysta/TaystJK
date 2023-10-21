@@ -1694,6 +1694,7 @@ void Com_Frame( void ) {
 		int           timeBeforeEvents = 0;
 		int           timeBeforeClient = 0;
 		int           timeAfter = 0;
+		auto	      busyWait = (qboolean)com_busyWait->integer;
 
 		// write config file if anything changed
 		Com_WriteConfiguration();

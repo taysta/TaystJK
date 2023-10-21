@@ -2591,10 +2591,18 @@ void CG_DrawAutoMap(void)
 }
 
 static QINLINE void CG_DoAsync( void ) {
-	if ( cg.doVstrTime && cg.time > cg.doVstrTime ) {
-		trap->SendConsoleCommand(cg.doVstr);
-		cg.doVstrTime = 0;
-	}
+        int doIndex = 0;
+        const int time = trap->Milliseconds();
+        while (doIndex < MAX_DO_BUFFERS)
+        {
+            if (cg.doVstrTime[doIndex] && time > cg.doVstrTime[doIndex]) {
+                //cg.doVstr[doIndex][0] = '\0';
+                cg.doVstrTime[doIndex] = 0;
+                trap->SendConsoleCommand(cg.doVstr[doIndex]);
+            }
+            doIndex++;
+        }
+
 	if (!(cgs.restricts & RESTRICT_FLIPKICKBIND)) {	//Now flipkick time
 
 		//Need to decouple frames from kick i guess.

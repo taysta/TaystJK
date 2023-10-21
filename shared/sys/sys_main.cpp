@@ -710,6 +710,23 @@ char *Sys_StripAppBundle( char *dir )
 #	endif
 #endif
 
+#ifdef DEDICATED
+static void IN_FrameLoop(void) {}
+#elif 0
+#include <thread>
+void IN_ProcessEventsNow(void);
+static void IN_FrameLoop(void) {
+	//std::this_thread::yield();
+	while (true) {
+		//IN_Frame();
+		//SDL_PumpEvents();
+		IN_ProcessEventsNow();
+		//Sys_Sleep(4);
+		std::this_thread::sleep_for(std::chrono::milliseconds(4));
+	}
+}
+#endif
+
 int main ( int argc, char* argv[] )
 {
 	int		i;
