@@ -5329,8 +5329,6 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		return;
 	}
 
-	if (!self->NPC && self->client->ps.fd.forcePowerSelected == FP_LEVITATION)
-		self->client->ps.fd.forcePowerSelected = 0;
 
 	/*
 	if (self->client->ps.fd.saberAnimLevel > self->client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE])
