@@ -59,7 +59,6 @@ typedef struct
 extern	pml_t		pml;
 
 // movement parameters
-// movement parameters
 extern  float   forceSpeedLevels[];
 extern  float   forceJumpHeight[];
 extern  float   forceJumpStrength[];

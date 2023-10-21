@@ -2409,7 +2409,6 @@ void MSG_ReadDeltaPlayerstate (msg_t *msg, playerState_t *from, playerState_t *t
 			numFields = (int)ARRAY_LEN( playerStateFields );
 		}
 	}
-//=====_OPTIMIZED_VEHICLE_NETWORKING=======================================================================
 #else//_OPTIMIZED_VEHICLE_NETWORKING
 	numFields = (int)ARRAY_LEN( playerStateFields );
 #endif//_OPTIMIZED_VEHICLE_NETWORKING

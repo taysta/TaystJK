@@ -2415,13 +2415,13 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	if (v && Q_stricmp(v, ci->saberName))
 	{
-		Q_strncpyz( newInfo.saberName, v, 64 );
+		Q_strncpyz( newInfo.saberName, v, MAX_QPATH );
 		WP_SetSaber(clientNum, newInfo.saber, 0, newInfo.saberName);
 		saberUpdate[0] = qtrue;
 	}
 	else
 	{
-		Q_strncpyz( newInfo.saberName, ci->saberName, 64 );
+		Q_strncpyz( newInfo.saberName, ci->saberName, MAX_QPATH );
 		memcpy(&newInfo.saber[0], &ci->saber[0], sizeof(newInfo.saber[0]));
 		newInfo.ghoul2Weapons[0] = ci->ghoul2Weapons[0];
 	}
@@ -2440,13 +2440,13 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	if (v && Q_stricmp(v, ci->saber2Name))
 	{
-		Q_strncpyz( newInfo.saber2Name, v, 64 );
+		Q_strncpyz( newInfo.saber2Name, v, MAX_QPATH );
 		WP_SetSaber(clientNum, newInfo.saber, 1, newInfo.saber2Name);
 		saberUpdate[1] = qtrue;
 	}
 	else
 	{
-		Q_strncpyz( newInfo.saber2Name, ci->saber2Name, 64 );
+		Q_strncpyz( newInfo.saber2Name, ci->saber2Name, MAX_QPATH );
 		memcpy(&newInfo.saber[1], &ci->saber[1], sizeof(newInfo.saber[1]));
 		newInfo.ghoul2Weapons[1] = ci->ghoul2Weapons[1];
 	}
@@ -3548,9 +3548,7 @@ static void CG_SetLerpFrameAnimation( centity_t *cent, clientInfo_t *ci, lerpFra
 		int beginFrame = -1;
 		int firstFrame;
 		int lastFrame;
-#if 0 //disabled for now
 		float unused;
-#endif
 
 		animSpeed = 50.0f / anim->frameLerp;
 		if (lf->animation->loopFrames != -1)
@@ -3699,8 +3697,7 @@ static void CG_SetLerpFrameAnimation( centity_t *cent, clientInfo_t *ci, lerpFra
 		{ //make sure we're humanoid before we access the motion bone
 			trap->G2API_SetBoneAnim(cent->ghoul2, 0, "Motion", firstFrame, lastFrame, flags, animSpeed, cg.time, beginFrame, blendTime);
 		}
-
-#if 0 //disabled for now
+        //bucky: this is for animating players with broken limbs
 		if (cent->localAnimIndex <= 1 && cent->currentState.brokenLimbs &&
 			(cent->currentState.brokenLimbs & (1 << BROKENLIMB_LARM)))
 		{ //broken left arm
@@ -3857,7 +3854,6 @@ static void CG_SetLerpFrameAnimation( centity_t *cent, clientInfo_t *ci, lerpFra
 				ci->brokenLimbs &= ~broken;
 			}
 		}
-#endif
 	}
 }
 
@@ -4336,21 +4332,8 @@ qboolean CG_RagDoll(centity_t *cent, vec3_t forcedAngles)
 				{ //Hit something or start in solid, so flag it and break.
 					//This is a slight hack, but if we aren't done with the death anim, we don't really want to
 					//go into ragdoll unless our body has a relatively "flat" pitch.
-#if 0
-					vec3_t vSub;
 
-					//Check the pitch from the head to the right foot (should be reasonable)
-					VectorSubtract(boltPoints[2], boltPoints[3], vSub);
-					VectorNormalize(vSub);
-					vectoangles(vSub, vSub);
-
-					if (deathDone || (vSub[PITCH] < 50 && vSub[PITCH] > -50))
-					{
-						inSomething = qtrue;
-					}
-#else
 					inSomething = qtrue;
-#endif
 					break;
 				}
 
@@ -6373,8 +6356,9 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	saber.customShader = glow;
 
 	//rgb
-	if ( color < SABER_RGB )
+	if ( color < SABER_RGB ) {
 		saber.shaderRGBA[0] = saber.shaderRGBA[1] = saber.shaderRGBA[2] = saber.shaderRGBA[3] = 0xff;
+	}
 	else {
 		for ( i = 0; i < 3; i++ )
 			saber.shaderRGBA[i] = rgb[i];
@@ -9277,7 +9261,6 @@ void CG_G2Animated( centity_t *cent )
 //rww - here ends the majority of my g2animent stuff.
 
 //Disabled for now, I'm too lazy to keep it working with all the stuff changing around.
-#if 1
 int cgFPLSState = 0;
 void CG_ForceFPLSPlayerModel(centity_t *cent, clientInfo_t *ci)
 {
@@ -9406,7 +9389,6 @@ void CG_ForceFPLSPlayerModel(centity_t *cent, clientInfo_t *ci)
 	//shared operations if possible.
 	trap->G2API_AttachInstanceToEntNum(cent->ghoul2, cent->currentState.number, qfalse);
 }
-#endif
 
 //for allocating and freeing npc clientinfo structures.
 //Remember to free this before game shutdown no matter what
@@ -10208,7 +10190,6 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
         re.hModel = hatModel;
         VectorCopy(boltOrg, re.lightingOrigin);
         VectorCopy(boltOrg, re.origin);
-
 		re.renderfx = parent.renderfx;
 		re.customShader = parent.customShader;
  
@@ -11301,61 +11282,54 @@ void CG_Player( centity_t *cent ) {
 	//It works and we end up only reconstructing it once, but it doesn't seem like the best solution.
 	trap->G2API_GetBoltMatrix(cent->ghoul2, 0, ci->bolt_lhand, &lHandMatrix, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
 	gotLHandMatrix = qtrue;
-#if 1
-	if (cg.renderingThirdPerson)
-	{
-		if (cgFPLSState != 0)
-		{
-			CG_ForceFPLSPlayerModel(cent, ci);
-			cgFPLSState = 0;
-			return;
-		}
-	}
-	else if (ci->team == TEAM_SPECTATOR || (cg.snap && (cg.snap->ps.pm_flags & PMF_FOLLOW)))
-	{ //don't allow this when spectating
-		if (cgFPLSState != 0)
-		{
-			trap->Cvar_Set("cg_fpls", "0");
-			cg_fpls.integer = 0;
 
-			CG_ForceFPLSPlayerModel(cent, ci);
-			cgFPLSState = 0;
-			return;
-		}
+	if (cent->currentState.eType == ET_PLAYER) {
+        if (cg.renderingThirdPerson) {
+            if (cgFPLSState != 0) {
+                CG_ForceFPLSPlayerModel(cent, ci);
+                cgFPLSState = 0;
+                return;
+            }
+        } else if (ci->team == TEAM_SPECTATOR ||
+                   (cg.snap && (cg.snap->ps.pm_flags & PMF_FOLLOW))) { //don't allow this when spectating
+            if (cgFPLSState != 0) {
+                trap->Cvar_Set("cg_fpls", "0");
+                cg_fpls.integer = 0;
 
-		if (cg_fpls.integer)
-		{
-			trap->Cvar_Set("cg_fpls", "0");
-		}
-	}
-	else
-	{
-		if (cg_fpls.integer && (cent->currentState.weapon == WP_SABER || cent->currentState.weapon == WP_MELEE) && cg.snap && cent->currentState.number == cg.snap->ps.clientNum) //|| cent->currentState.weapon == WP_MELEE)?
-		{
+                CG_ForceFPLSPlayerModel(cent, ci);
+                cgFPLSState = 0;
+                return;
+            }
 
-			if (cgFPLSState != cg_fpls.integer)
-			{
-				CG_ForceFPLSPlayerModel(cent, ci);
-				cgFPLSState = cg_fpls.integer;
-				return;
-			}
+            if (cg_fpls.integer) {
+                trap->Cvar_Set("cg_fpls", "0");
+            }
+        } else {
+            if (cg_fpls.integer && (cent->currentState.weapon == WP_SABER || cent->currentState.weapon == WP_MELEE) &&
+                cg.snap &&
+                cent->currentState.number == cg.snap->ps.clientNum) //|| cent->currentState.weapon == WP_MELEE)?
+            {
 
-			if (cg_fpls.integer < 3) {
-				trap->G2API_GetBoltMatrix(cent->ghoul2, 0, ci->bolt_head, &headMatrix, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
-				BG_GiveMeVectorFromMatrix(&headMatrix, ORIGIN, cg.refdef.vieworg);
-			}
-		}
-		else if (!cg_fpls.integer && cgFPLSState)
-		{
-			if (cgFPLSState != cg_fpls.integer)
-			{
-				CG_ForceFPLSPlayerModel(cent, ci);
-				cgFPLSState = cg_fpls.integer;
-				return;
-			}
-		}
-	}
-#endif
+                if (cgFPLSState != cg_fpls.integer) {
+                    CG_ForceFPLSPlayerModel(cent, ci);
+                    cgFPLSState = cg_fpls.integer;
+                    return;
+                }
+
+                if (cg_fpls.integer < 3) {
+                    trap->G2API_GetBoltMatrix(cent->ghoul2, 0, ci->bolt_head, &headMatrix, cent->turAngles,
+                                              cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
+                    BG_GiveMeVectorFromMatrix(&headMatrix, ORIGIN, cg.refdef.vieworg);
+                }
+            } else if (!cg_fpls.integer && cgFPLSState) {
+                if (cgFPLSState != cg_fpls.integer) {
+                    CG_ForceFPLSPlayerModel(cent, ci);
+                    cgFPLSState = cg_fpls.integer;
+                    return;
+                }
+            }
+        }
+    }
 
 	if (cent->currentState.eFlags & EF_DEAD)
 	{
@@ -11436,181 +11410,6 @@ void CG_Player( centity_t *cent ) {
 			trap->R_AddRefEntityToScene(&reframe_minus2);
 		}
 	}
-
-#define STRAFETRAILS 0
-#if STRAFETRAILS
-#define STRAFETRAILWEIGHT_X 300
-#define STRAFETRAILWEIGHT_Y 1500
-	//Raz: BEGIN strafe trails
-	if ( cg_strafeTrail.integer != 1 || VectorLength( cent->currentState.pos.trDelta ) < STRAFETRAILWEIGHT_X ) {
-		cent->frame_minus1_refreshed2 = 0;
-		cent->frame_minus2_refreshed2 = 0;
-	}
-
-	if ( cent->frame_minus1_refreshed2 || cent->frame_minus2_refreshed2 ) {
-		vec3_t tDir, vel;
-		float distVelBase, speed;
-		vec4_t stColor;
-		const vec4_t stColorRed = { 1.0f, 0.0f, 0.0f, 0.7f }, stColorYellow = { 0.8f, 0.8f, 0.0f, 0.0f };
-
-		if ( cent->currentState.number == cg.snap->ps.clientNum )
-			VectorCopy( cg.predictedPlayerState.velocity, vel );
-		else
-			VectorCopy( cent->currentState.pos.trDelta, vel );
-		vel[2] = 0.0f;
-
-		speed = Com_Clamp( 0.0f, STRAFETRAILWEIGHT_X, VectorLength( vel ) );
-
-		VectorCopy( cent->currentState.pos.trDelta, tDir );
-		speed = speed - STRAFETRAILWEIGHT_X;
-		//	distVelBase = (speed)*(VectorNormalize( tDir ));
-		distVelBase = min( (speed) / (STRAFETRAILWEIGHT_Y - STRAFETRAILWEIGHT_X), 1.0f );
-
-		stColor[0] = stColorYellow[0] + distVelBase*(stColorRed[0] - stColorYellow[0]);
-		stColor[1] = stColorYellow[1] + distVelBase*(stColorRed[1] - stColorYellow[1]);
-		stColor[2] = stColorYellow[2] + distVelBase*(stColorRed[2] - stColorYellow[2]);
-		stColor[3] = stColorYellow[3] + distVelBase*(stColorRed[3] - stColorYellow[3]);
-		distVelBase *= 15.0f;
-
-		if ( cent->frame_minus1_refreshed2 ) {
-			refEntity_t reframe_minus1 = legs;
-			reframe_minus1.renderfx = RF_RGB_TINT | RF_FORCE_ENT_ALPHA;
-			reframe_minus1.shaderRGBA[0] = stColor[0] * 255;
-			reframe_minus1.shaderRGBA[1] = stColor[1] * 255;
-			reframe_minus1.shaderRGBA[2] = stColor[2] * 255;
-			reframe_minus1.shaderRGBA[3] = stColor[3] * 255;
-
-			// if the client gets a bad framerate we will only receive frame positions once per frame anyway, so we might
-			//	end up with speed trails very spread out. in order to avoid that, we'll get the direction of the last
-			//	trail from the player and place the trail refent a set distance from the player location this frame
-			VectorSubtract( cent->frame_minus1, legs.origin, tDir );
-			VectorNormalize( tDir );
-
-			cent->frame_minus12[0] = legs.origin[0] + tDir[0]*distVelBase;
-			cent->frame_minus12[1] = legs.origin[1] + tDir[1]*distVelBase;
-			cent->frame_minus12[2] = legs.origin[2] + tDir[2]*distVelBase;
-
-			VectorCopy( cent->frame_minus12, reframe_minus1.origin );
-
-			reframe_minus1.customShader = cgs.media.solidWhite;//media.gfx.world.solidWhite;
-
-			//SE_R_AddRefEntityToScene( &reframe_minus1, cent->currentState.number );
-			trap->R_AddRefEntityToScene( &reframe_minus1 );
-		}
-
-		if ( cent->frame_minus2_refreshed2 ) {
-			refEntity_t reframe_minus2 = legs;
-
-			reframe_minus2.renderfx = RF_RGB_TINT | RF_FORCE_ENT_ALPHA;
-			reframe_minus2.shaderRGBA[0] = stColor[0] * 255;
-			reframe_minus2.shaderRGBA[1] = stColor[1] * 255;
-			reframe_minus2.shaderRGBA[2] = stColor[2] * 255;
-			reframe_minus2.shaderRGBA[3] = (stColor[3] * 255)*0.75f;
-
-			// Same as above but do it between trail points instead of the player and first trail entry
-			VectorSubtract( cent->frame_minus22, cent->frame_minus12, tDir );
-			VectorNormalize( tDir );
-
-			cent->frame_minus22[0] = cent->frame_minus12[0] + tDir[0]*distVelBase;
-			cent->frame_minus22[1] = cent->frame_minus12[1] + tDir[1]*distVelBase;
-			cent->frame_minus22[2] = cent->frame_minus12[2] + tDir[2]*distVelBase;
-
-			VectorCopy( cent->frame_minus22, reframe_minus2.origin );
-
-			reframe_minus2.customShader = cgs.media.solidWhite;;//media.gfx.world.solidWhite;
-
-			//SE_R_AddRefEntityToScene( &reframe_minus2, cent->currentState.number );
-			trap->R_AddRefEntityToScene( &reframe_minus2 );
-		}
-	}
-	else if ( cg_strafeTrail.integer == 2 ) {
-		vec3_t vel;
-		float speed;
-		if ( cent->currentState.number == cg.snap->ps.clientNum )
-			VectorCopy( cg.predictedPlayerState.velocity, vel );
-		else
-			VectorCopy( cent->currentState.pos.trDelta, vel );
-		vel[2] = 0.0f;
-
-		speed = Com_Clamp( 0.0f, STRAFETRAILWEIGHT_X, VectorLength( vel ) );
-
-		if ( speed > STRAFETRAILWEIGHT_X ) {
-			localEntity_t *leCore = CG_AllocLocalEntity();
-			refEntity_t   *reCore = &leCore->refEntity;
-			localEntity_t *leGlow = CG_AllocLocalEntity();
-			refEntity_t   *reGlow = &leGlow->refEntity;
-#define RADIUS   4
-#define ROTATION 1
-#define SPACING  5
-			vec3_t move, vec;
-			float  len;
-			vec3_t start, end;
-			float speed2 = speed - STRAFETRAILWEIGHT_X;
-
-			if ( cent->currentState.number == cg.snap->ps.clientNum ) {
-				if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR )
-					goto skipTrail;
-				VectorCopy( cent->lerpOrigin, start );
-				VectorCopy( cent->lastOrigin, end );
-			}
-			else {
-				VectorCopy( cent->lerpOrigin, start );
-				VectorCopy( cent->lastOrigin, end );
-			}
-			VectorCopy( start, move );
-			VectorSubtract( end, start, vec );
-			len = VectorNormalize( vec );
-			if ( len > 1000.0f )
-				goto skipTrail;
-
-			//Glow
-			leGlow->leType = LE_FADE_RGB;
-			leGlow->startTime = cg.time;
-			leGlow->endTime = cg.time + min( speed2 * 2, ( STRAFETRAILWEIGHT_Y ) );
-			leGlow->lifeRate = 1.0f / (leGlow->endTime - leGlow->startTime);
-			reGlow->shaderTime = cg.time / min( speed2 * 2, ( STRAFETRAILWEIGHT_Y ) );
-			reGlow->reType = RT_LINE;
-			reGlow->radius = min( speed2 / STRAFETRAILWEIGHT_Y, 1.0f )*7.0f;
-			reGlow->customShader = trap->R_RegisterShader( "gfx/misc/whiteline2" );//media.gfx.world.strafeTrail;
-			VectorCopy( start, reGlow->origin );
-			VectorCopy( end, reGlow->oldorigin );
-			reGlow->shaderRGBA[0] = ci->rgb1[0];
-			reGlow->shaderRGBA[1] = ci->rgb1[1];
-			reGlow->shaderRGBA[2] = ci->rgb1[2];
-			reGlow->shaderRGBA[3] = 255;
-			leGlow->color[0] = ci->rgb1[0] / 255;
-			leGlow->color[1] = ci->rgb1[1] / 255;
-			leGlow->color[2] = ci->rgb1[2] / 255;
-			leGlow->color[3] = 1.0f;
-
-			//Core
-			leCore->leType = LE_FADE_RGB;
-			leCore->startTime = cg.time;
-			leCore->endTime = cg.time + min( speed2 * 2, ( STRAFETRAILWEIGHT_Y ) );
-			leCore->lifeRate = 1.0f / (leCore->endTime - leCore->startTime);
-			reCore->shaderTime = cg.time / min( speed2 * 2, ( STRAFETRAILWEIGHT_Y ) );
-			reCore->reType = RT_LINE;
-			reCore->radius = min( speed2 / STRAFETRAILWEIGHT_Y, 1.0f )*4.0f;
-			reCore->customShader = trap->R_RegisterShader( "gfx/misc/whiteline2" );//media.gfx.world.strafeTrail;
-			VectorCopy( start, reCore->origin );
-			VectorCopy( end, reCore->oldorigin );
-			reCore->shaderRGBA[0] = ci->rgb1[0];
-			reCore->shaderRGBA[1] = ci->rgb1[1];
-			reCore->shaderRGBA[2] = ci->rgb1[2];
-			reCore->shaderRGBA[3] = 255;
-			leCore->color[0] = 1.0f;
-			leCore->color[1] = 1.0f;
-			leCore->color[2] = 1.0f;
-			leCore->color[3] = 0.6f;
-
-			AxisClear( reGlow->axis );
-			AxisClear( reCore->axis );
-		}
-	}
-skipTrail:
-	VectorCopy( cent->lerpOrigin, cent->lastOrigin );
-#endif
-	//END strafe trails
 
 	//trigger animation-based sounds, done before next lerp frame.
 	CG_TriggerAnimSounds(cent);
@@ -12175,9 +11974,9 @@ skipTrail:
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaliblueShader);
 		}
 		else {
-		    if(cg_stylePlayer.integer & JAPRO_STYLE_NEWRESPAWN){
+		    if(cg_stylePlayer.integer & JAPRO_STYLE_NEWRESPAWN) {
                 CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaligreenShader);
-            }else{
+            } else {
                 CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.0f, cgs.media.invulnerabilityShader);
             }
 		}
@@ -12598,13 +12397,6 @@ stillDoSaber:
 			}
 		}
 
-		//If the arm the saber is in is broken, turn it off.
-		/*
-		if (cent->currentState.brokenLimbs & (1 << BROKENLIMB_RARM))
-		{
-			BG_SI_SetDesiredLength(&ci->saber[0], 0, -1);
-		}
-		*/
 		//Leaving right arm on, at least for now.
 		if (cent->currentState.brokenLimbs & (1 << BROKENLIMB_LARM))
 		{
@@ -13101,7 +12893,6 @@ stillDoSaber:
 	}
 
 	//[Kameleon] - Nerevar's Santa Hat.
-
     if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
         if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
             CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);

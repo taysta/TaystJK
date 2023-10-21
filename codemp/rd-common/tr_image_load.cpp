@@ -138,6 +138,4 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 			return;
 		}
 	}
-
-	return;
 }

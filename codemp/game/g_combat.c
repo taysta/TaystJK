@@ -2675,7 +2675,6 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 					else if (!attacker->client->sess.raceMode) {
 						AddScore( attacker, self->r.currentOrigin, -1 ); //Only take away a point if its not FFA or CTF i guess, sure
 					}
-
 				}
 				if (level.gametype == GT_JEDIMASTER)
 				{
@@ -4905,12 +4904,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	//reall though, same frame kills are fine? why wouldnt you want to allow it.. if both people really do saber eachother at same time.
 	//so why doesnt it happen in baseJK? i really doubt its based on health/dmg, so its probably just only awarded to person with lowest clientnum or something?
-#if 0
 	if (g_sameFrameKillFix.integer && mod == MOD_SABER || mod == MOD_MELEE) { //dunno what the point of adding this is if it cant be tested/reproduced
 		if (attacker && attacker->client && (attacker->health < 0) && (attacker->health < (targ->health - damage))) //We hit the attacker stronger than they hit us that frame.
 			return;
 	}
-#endif
 
 	// the intermission has allready been qualified for, so don't
 	// allow any extra scoring

@@ -25,7 +25,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // cl_main.c  -- client main loop
 
 #include "client.h"
-
 #include <limits.h>
 #include "ghoul2/G2.h"
 #include "qcommon/cm_public.h"
@@ -37,6 +36,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cl_lan.h"
 #include "snd_local.h"
 #include "sys/sys_loadlib.h"
+#include <string>
 
 cvar_t *cl_name;
 
@@ -2695,7 +2695,7 @@ void CL_InitRef( void ) {
 	GetRefAPI_t	GetRefAPI;
 	char		dllName[MAX_OSPATH];
 
-	Com_Printf( "----- Initializing Renderer ----\n" );
+	Com_Printf( "---------- Initializing Renderer ---------\n" );
 
 	cl_renderer = Cvar_Get( "cl_renderer", DEFAULT_RENDER_LIBRARY, CVAR_ARCHIVE|CVAR_LATCH, "Which renderer library to use" );
 
@@ -2813,7 +2813,7 @@ void CL_InitRef( void ) {
 
 	ret = GetRefAPI( REF_API_VERSION, &ri );
 
-//	Com_Printf( "-------------------------------\n");
+	Com_Printf("---- Renderer Initialization Complete ----\n");
 
 	if ( !ret ) {
 		Com_Error (ERR_FATAL, "Couldn't initialize refresh" );
@@ -3351,7 +3351,7 @@ CL_Init
 ====================
 */
 void CL_Init( void ) {
-//	Com_Printf( "----- Client Initialization -----\n" );
+	Com_Printf( "--------- Client Initialization ----------\n" );
 
 	Con_Init ();
 
@@ -3375,7 +3375,6 @@ void CL_Init( void ) {
 
 	cl_timeout = Cvar_Get ("cl_timeout", "200", 0);
 
-	cl_timeNudge = Cvar_Get ("cl_timeNudge", "0", CVAR_TEMP );
 	cl_shownet = Cvar_Get ("cl_shownet", "0", CVAR_TEMP );
 	cl_showSend = Cvar_Get ("cl_showSend", "0", CVAR_TEMP );
 	cl_showTimeDelta = Cvar_Get ("cl_showTimeDelta", "0", CVAR_TEMP );
@@ -3497,18 +3496,20 @@ void CL_Init( void ) {
 	Cvar_Get ("cg_viewsize", "100", CVAR_ARCHIVE_ND );
 
 	cl_ratioFix = Cvar_Get("cl_ratioFix", "1", CVAR_ARCHIVE, "Widescreen aspect ratio correction");
+	cl_ratioFix->modified = qfalse;
+
+	cl_chatStylePrefix = Cvar_Get("cl_chatStylePrefix", "", CVAR_ARCHIVE, "String inserted before sent chat messages");
+	cl_chatStyleSuffix = Cvar_Get("cl_chatStyleSuffix", "", CVAR_ARCHIVE, "String appended to send chat messages");
 
 	cl_colorString = Cvar_Get("cl_colorString", "0", CVAR_ARCHIVE, "Bit value of selected colors in colorString, configure chat colors with /colorstring");
 	cl_colorStringCount = Cvar_Get("cl_colorStringCount", "0", CVAR_INTERNAL | CVAR_ROM | CVAR_ARCHIVE);
 	cl_colorStringRandom = Cvar_Get("cl_colorStringRandom", "2", CVAR_ARCHIVE, "Randomness of the colors changing, higher numbers are less random");
 
-	cl_chatStylePrefix = Cvar_Get("cl_chatStylePrefix", "", CVAR_ARCHIVE, "String inserted before sent chat messages");
-	cl_chatStyleSuffix = Cvar_Get("cl_chatStyleSuffix", "", CVAR_ARCHIVE, "String appended to send chat messages");
-
-	cl_afkPrefix = Cvar_Get("cl_afkPrefix", "[AFK]", CVAR_ARCHIVE, "Prefix to add to player name when AFK");
 	cl_afkTime = Cvar_Get("cl_afkTime", "10", CVAR_ARCHIVE, "Minutes to autorename to afk, 0 to disable");
 	cl_afkTimeUnfocused = Cvar_Get("cl_afkTimeUnfocused", "5", CVAR_ARCHIVE, "Minutes to autorename to afk while unfocused/minimized");
+	cl_afkPrefix = Cvar_Get("cl_afkPrefix", "[AFK]", CVAR_ARCHIVE, "Prefix to add to player name when AFK");
 	cl_unfocusedTime = 0;
+	cl_afkPrefix->modified = qfalse;
 
 	cl_logChat = Cvar_Get("cl_logChat", "0", CVAR_ARCHIVE, "Toggle engine chat logs");
 
@@ -3578,7 +3579,7 @@ void CL_Init( void ) {
 	}
 #endif
 
-//	Com_Printf( "----- Client Initialization Complete -----\n" );
+	Com_Printf( "----- Client Initialization Complete -----\n" );
 }
 
 
@@ -3591,7 +3592,7 @@ CL_Shutdown
 void CL_Shutdown( void ) {
 	static qboolean recursive = qfalse;
 
-	//Com_Printf( "----- CL_Shutdown -----\n" );
+	Com_Printf( "----- CL_Shutdown -----\n" );
 
 	if ( recursive ) {
 		Com_Printf ("WARNING: Recursive CL_Shutdown called!\n");
@@ -3662,7 +3663,7 @@ void CL_Shutdown( void ) {
 	Com_Memset( &cls, 0, sizeof( cls ) );
 	Key_SetCatcher( 0 );
 
-	//Com_Printf( "-----------------------\n" );
+	Com_Printf( "-----------------------\n" );
 
 }
 
@@ -3780,7 +3781,7 @@ void CL_ServerInfoPacket( netadr_t from, msg_t *msg ) {
 			Cvar_Set("protocolswitch", "1");
 		}
 		else if (prot == PROTOCOL_LEGACY) {
-			Cvar_Set("protocolswitch", "2");
+				Cvar_Set("protocolswitch", "2");
 		}
 	}
 
@@ -4033,7 +4034,6 @@ void CL_ServerStatusResponse( netadr_t from, msg_t *msg ) {
 		Com_sprintf(&serverStatus->string[len], sizeof(serverStatus->string)-len, "\\%s", s);
 
 		score = ping = 0;
-		sscanf(s, "%d %d", &score, &ping);
 		s = strchr(s, ' ');
 		if (s)
 			s = strchr(s+1, ' ');
@@ -4172,7 +4172,7 @@ void CL_GlobalServers_f( void ) {
 		return;
 	}
 	to.type = NA_IP;
-	to.port = BigShort(PORT_MASTER);
+	    to.port = BigShort(PORT_MASTER);
 
 	Com_Printf( "Requesting servers from the master %s (%s)...\n", masteraddress, NET_AdrToString( to ) );
 

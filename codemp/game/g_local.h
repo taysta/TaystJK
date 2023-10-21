@@ -278,6 +278,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define ST_EASIERBACKSLASH		(1<<15) //no prediction yet
 #define ST_SABERGUN				(1<<16)
 #define ST_FASTCYCLE			(1<<17)
+#define ST_DUELSTYLESPDMG		(1<<18)
 
 //Saberstyles
 #define SABERSTYLE_BLUE (1<<0)//no blue
@@ -298,6 +299,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define RESTRICT_FLAG_CROUCHJUMP (1<<6)
 #define RESTRICT_FLAG_DOUBLEJUMP (1<<7)
 #define RESTRICT_FLAG_ALLOWTELES (1<<8)
+#define RESTRICT_FLAG_BHOP (1<<9)
 
 //JAPRO - Serverside - Unlagged bitvalues
 #define UNLAGGED_PROJ_NUDGE	(1<<0)

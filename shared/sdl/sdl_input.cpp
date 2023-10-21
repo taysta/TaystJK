@@ -557,13 +557,13 @@ static void IN_InitJoystick( void )
 
 	if (!SDL_WasInit(SDL_INIT_JOYSTICK))
 	{
-		Com_DPrintf("Calling SDL_Init(SDL_INIT_JOYSTICK)...\n");
+		Com_Printf("Calling SDL_Init(SDL_INIT_JOYSTICK)...\n");
 		if (SDL_Init(SDL_INIT_JOYSTICK) == -1)
 		{
-			Com_DPrintf("SDL_Init(SDL_INIT_JOYSTICK) failed: %s\n", SDL_GetError());
+			Com_Printf("SDL_Init(SDL_INIT_JOYSTICK) failed: %s\n", SDL_GetError());
 			return;
 		}
-		Com_DPrintf("SDL_Init(SDL_INIT_JOYSTICK) passed.\n");
+		Com_Printf("SDL_Init(SDL_INIT_JOYSTICK) passed.\n");
 	}
 
 	if (!in_joystick->integer) {
@@ -624,7 +624,7 @@ void IN_Init( void *windowData )
 
 	SDL_window = (SDL_Window *)windowData;
 
-	Com_DPrintf( "\n------- Input Initialization -------\n" );
+	Com_Printf( "\n------- Input Initialization -------\n" );
 
 	// joystick variables
 	in_keyboardDebug = Cvar_Get( "in_keyboardDebug", "0", CVAR_ARCHIVE_ND );
@@ -641,13 +641,13 @@ void IN_Init( void *windowData )
 	mouseAvailable = (qboolean)( in_mouse->value != 0 );
 
 	if (in_mouse->integer != 2 && SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "0")) {
-		Com_DPrintf("IN_Init: Using raw mouse input\n");
+		Com_Printf("IN_Init: Using raw mouse input\n");
 	}
 	else if (SDL_SetHint("SDL_MOUSE_RELATIVE_MODE_WARP", "1")) {
-		Com_DPrintf("IN_Init: Not using raw input\n");
+		Com_Printf("IN_Init: Not using raw input\n");
 	}
 	else {
-		Com_DPrintf("IN_Init: SDL_SetHint failed to set \"SDL_MOUSE_RELATIVE_MODE_WARP\" hint\n");
+        Com_Printf(S_COLOR_YELLOW "IN_Init: SDL_SetHint failed to set \"SDL_MOUSE_RELATIVE_MODE_WARP\" hint!\n");
 	}
 
 	IN_DeactivateMouse( );
@@ -657,7 +657,7 @@ void IN_Init( void *windowData )
 	Cvar_SetValue( "com_minimized", ( appState & SDL_WINDOW_MINIMIZED ) != 0 );
 
 	IN_InitJoystick( );
-	Com_DPrintf( "------------------------------------\n" );
+	Com_Printf( "------------------------------------\n" );
 }
 
 uint8_t ConvertUTF32ToExpectedCharset( uint32_t utf32 )

@@ -761,7 +761,7 @@ void CG_ReattachLimb(centity_t *source)
 				stubCapName = "hips_cap_r_leg";
 				break;
 			default:
-				source->torsoBolt = 0;
+	source->torsoBolt = 0;
 				source->ghoul2weapon = NULL;
 				return;
 			}

@@ -431,7 +431,6 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 		// failure
 		return 0;
 	}
-
     // hack for projectiles
     void *isProjectile = NULL;
     if (VALIDSTRING(file))
@@ -467,8 +466,7 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 
 		if ( type != None )
 		{
-			CPrimitiveTemplate *prim = new CPrimitiveTemplate;
-
+			auto *prim = new CPrimitiveTemplate;
             if (isProjectile)
             {
                 prim->ParseLife("1");

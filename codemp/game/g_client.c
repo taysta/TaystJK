@@ -2255,13 +2255,14 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 		}
 	}
 
-    Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
+	Q_strncpyz(cosmeticString, va("%i", cosmetics), sizeof(cosmeticString));
 }
 
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?
 	gentity_t	*ent = g_entities + clientNum;
 	gclient_t	*client = ent->client;
 	int			teamLeader, team=TEAM_FREE, health=100, maxHealth=100;
+	int			val;
 	char		*s=NULL,						*value=NULL,
 				userinfo[MAX_INFO_STRING]={0},	buf[MAX_INFO_STRING]={0},		oldClientinfo[MAX_INFO_STRING]={0},
 				model[MAX_QPATH]={0},			forcePowers[MAX_QPATH]={0},		oldname[MAX_NETNAME]={0},
@@ -2299,55 +2300,17 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	}
 
 	s = Info_ValueForKey( userinfo, "cp_pluginDisable" );
-	if (atoi(s) & JAPRO_PLUGIN_JAWARUN)
-		client->pers.JAWARUN = qtrue;
-	else
-		client->pers.JAWARUN = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_BHOP)
-		client->pers.onlyBhop = qtrue;
-	else
-		client->pers.onlyBhop = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_NOROLL)
-		client->pers.noRoll = qtrue;
-	else
-		client->pers.noRoll = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_NOCART)
-		client->pers.noCartwheel = qtrue;
-	else
-		client->pers.noCartwheel = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_CENTERMUZZLE)
-		client->pers.centerMuzzle = qtrue;
-	else
-		client->pers.centerMuzzle = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_NOCENTERCP)
-		client->pers.showCenterCP = qfalse;
-	else
-		client->pers.showCenterCP = qtrue;
-
-	if (atoi(s) & JAPRO_PLUGIN_CHATBOXCP)
-		client->pers.showChatCP = qtrue;
-	else
-		client->pers.showChatCP = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_CONSOLECP)
-		client->pers.showConsoleCP = qtrue;
-	else
-		client->pers.showConsoleCP = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_NODMGNUMBERS)
-		client->pers.noDamageNumbers = qtrue;
-	else
-		client->pers.noDamageNumbers = qfalse;
-
-	if (atoi(s) & JAPRO_PLUGIN_NODUELTELE)
-		client->pers.noDuelTele = qtrue;
-	else
-		client->pers.noDuelTele = qfalse;
+	val = atoi(s);
+	client->pers.JAWARUN = (qboolean)(val & JAPRO_PLUGIN_JAWARUN);
+	client->pers.onlyBhop = (qboolean)(val & JAPRO_PLUGIN_BHOP);
+	client->pers.noRoll = (qboolean)(val & JAPRO_PLUGIN_NOROLL);
+	client->pers.noCartwheel = (qboolean)(val & JAPRO_PLUGIN_NOCART);
+	client->pers.centerMuzzle = (qboolean)(val & JAPRO_PLUGIN_CENTERMUZZLE);
+	client->pers.showCenterCP = !(qboolean)(val & JAPRO_PLUGIN_NOCENTERCP);
+	client->pers.showChatCP = (qboolean)(val & JAPRO_PLUGIN_CHATBOXCP);
+	client->pers.showConsoleCP = (qboolean)(val & JAPRO_PLUGIN_CONSOLECP);
+	client->pers.noDamageNumbers = (qboolean)(val & JAPRO_PLUGIN_NODMGNUMBERS);
+	client->pers.noDuelTele = (qboolean)(val & JAPRO_PLUGIN_NODUELTELE);
 
 	s = Info_ValueForKey( userinfo, "rate" );
 	client->pers.rate = atoi(s);
@@ -2825,7 +2788,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 						count++;
 				#endif
 			}
-			if ( count > g_maxConnPerIP.integer ) //>= ?
+			if ( count >= g_maxConnPerIP.integer )
 			{
 			//	client->pers.connected = CON_DISCONNECTED;
 				//trap->Print("Too may connections\n");
@@ -3386,7 +3349,6 @@ tryTorso:
 		trap->G2API_SetBoneAnim(self->ghoul2, 0, "Motion", firstFrame, lastFrame, aFlags, lAnimSpeedScale, level.time, -1, 150);
 	}
 
-#if 0 //disabled for now
 	if (self->client->ps.brokenLimbs != self->client->brokenLimbs ||
 		setTorso)
 	{
@@ -3507,7 +3469,6 @@ tryTorso:
 			self->client->brokenLimbs &= ~broken;
 		}
 	}
-#endif
 }
 
 void GiveClientItems(gclient_t *client) {

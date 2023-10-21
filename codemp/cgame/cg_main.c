@@ -1572,7 +1572,6 @@ Ghoul2 Insert End
 
     //Accel hud triangles
     cgs.media.leftTriangle		    = trap->R_RegisterShaderNoMip ( "gfx/hud/arrow_left" );
-    cgs.media.rightTriangle		    = trap->R_RegisterShaderNoMip ( "gfx/hud/arrow_right" );
 
     //Movement Keys 2
     cgs.media.keyCrouchOnShader2	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/crouch_on2" );
@@ -1700,9 +1699,6 @@ Ghoul2 Insert End
 Ghoul2 Insert Start
 */
 
-
-//	CG_LoadingString( "BSP instances" );
-
 	for(i = 1; i < MAX_SUB_BSP; i++)
 	{
 		const char		*bspName = 0;
@@ -1759,8 +1755,6 @@ Ghoul2 Insert Start
 	//the new method is to append a * after an indexed model name and
 	//then append the skin name after that (note that this is only
 	//used for NPCs)
-
-//	CG_LoadingString("weapons");
 
 	CG_InitG2Weapons();
 
@@ -2976,7 +2970,6 @@ Ghoul2 Insert End
 	CG_LoadCosmetics(COSMETIC_HATS_PATH, COSMETIC_HATS_PATH_LENGTH, &localCosmetics.totalHats, &localCosmetics.hats);
 	CG_LoadCosmetics(COSMETIC_CAPES_PATH, COSMETIC_CAPES_PATH_LENGTH, &localCosmetics.totalCapes, &localCosmetics.capes);
 
-
 	//Load sabers.cfg data
 	WP_SaberLoadParms();
 
@@ -3163,7 +3156,6 @@ Ghoul2 Insert End
 	CG_ParseServerinfo();
 
 	// load the new map
-//	CG_LoadingString( "collision map" );
 
 	trap->CM_LoadMap( cgs.mapname, qfalse );
 
@@ -3175,11 +3167,7 @@ Ghoul2 Insert End
 	cg.coldBreathEffects = qfalse;
 	CG_RegisterSounds();
 
-//	CG_LoadingString( "graphics" );
-
 	CG_RegisterGraphics();
-
-//	CG_LoadingString( "clients" );
 
 	CG_RegisterClients();		// if low on memory, some clients will be deferred
 
@@ -3204,10 +3192,8 @@ Ghoul2 Insert End
 
 	CG_StartMusic(qfalse);
 
-//	CG_LoadingString( "Clearing light styles" );
 	CG_ClearLightStyles();
 
-//	CG_LoadingString( "Creating automap data" );
 	//init automap
 	trap->R_InitializeWireframeAutomap();
 

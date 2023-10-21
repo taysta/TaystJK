@@ -1186,7 +1186,7 @@ static void CG_OffsetFirstPersonView( void ) {
 	delta = cg.bobfracsin * cg_bobRoll.value * speed;
 	if (cg.predictedPlayerState.pm_flags & PMF_DUCKED)
 		delta *= 3;		// crouching accentuates roll
-	if (cg.bobcycle & 1)
+	if ((int)cg.bobcycle & 1)
 		delta = -delta;
 	angles[ROLL] += delta;
 
@@ -2541,8 +2541,8 @@ void CG_DrawAutoMap(void)
 	trap->R_GetRealRes(&vWidth, &vHeight);
 
 	//set scaling values so that the 640x480 will result at 1.0/1.0
-	hScale = vWidth/640.0f;
-	vScale = vHeight/480.0f;
+	hScale = vWidth/(float)SCREEN_WIDTH;
+	vScale = vHeight/(float)SCREEN_HEIGHT;
 
 	x = r_autoMapX.value;
 	y = r_autoMapY.value;
@@ -2665,7 +2665,7 @@ int	maxPacketsModificationCount = -1;
 static QINLINE void CG_UpdateNetUserinfo(void) {
 	//Have to find a new place to auto update cjp_client
 	if (cg.time > cg.userinfoUpdateDebounce) {
-		qboolean updateDisplay = qfalse, updateNet = qfalse;
+        qboolean updateDisplay = qfalse, updateNet = qfalse;
 
         if (thirdPersonModificationCount != cg_thirdPerson.modificationCount) {
             updateDisplay = qtrue;
@@ -2677,31 +2677,32 @@ static QINLINE void CG_UpdateNetUserinfo(void) {
             updateDisplay = qtrue;
         }
 
-		if (maxFPSModificationCount != com_maxFPS.modificationCount) {
-			updateNet = qtrue;
-		}
-		else if (timeNudgeModificationCount != cl_timeNudge.modificationCount) {
-			updateNet = qtrue;
-		}
-		else if (maxPacketsModificationCount != cl_maxPackets.modificationCount) {
-			updateNet = qtrue;
-		}
+        if (maxFPSModificationCount != com_maxFPS.modificationCount) {
+            updateNet = qtrue;
+        } else if (timeNudgeModificationCount != cl_timeNudge.modificationCount) {
+            updateNet = qtrue;
+        } else if (maxPacketsModificationCount != cl_maxPackets.modificationCount) {
+            updateNet = qtrue;
+        }
 
-		if (updateDisplay) {
-			thirdPersonModificationCount = cg_thirdPerson.modificationCount;
-			thirdPersonRangeModificationCount = cg_thirdPersonRange.modificationCount;
-			thirdPersonVertOffsetModificationCount = cg_thirdPersonVertOffset.modificationCount;
-			trap->Cvar_Set("cg_displayCameraPosition", va("%i %i %i", cg_thirdPerson.integer, cg_thirdPersonRange.integer, cg_thirdPersonVertOffset.integer));
-			//Com_Printf("^1Updating display\n");
+        if (updateDisplay) {
+            thirdPersonModificationCount = cg_thirdPerson.modificationCount;
+            thirdPersonRangeModificationCount = cg_thirdPersonRange.modificationCount;
+            thirdPersonVertOffsetModificationCount = cg_thirdPersonVertOffset.modificationCount;
+            trap->Cvar_Set("cg_displayCameraPosition",
+                           va("%i %i %i", cg_thirdPerson.integer, cg_thirdPersonRange.integer,
+                              cg_thirdPersonVertOffset.integer));
+            //Com_Printf("^1Updating display\n");
 
-			cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
-		}
-		if (updateNet) {
-			maxPacketsModificationCount = cl_maxPackets.modificationCount;
-			timeNudgeModificationCount = cl_timeNudge.modificationCount;
-			maxFPSModificationCount = com_maxFPS.modificationCount;
-			trap->Cvar_Set("cg_displayNetSettings", va("%i %i %i", cl_maxPackets.integer, cl_timeNudge.integer, com_maxFPS.integer));
-			//Com_Printf("^1Updating net\n");
+            cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
+        }
+        if (updateNet) {
+            maxPacketsModificationCount = cl_maxPackets.modificationCount;
+            timeNudgeModificationCount = cl_timeNudge.modificationCount;
+            maxFPSModificationCount = com_maxFPS.modificationCount;
+            trap->Cvar_Set("cg_displayNetSettings",
+                           va("%i %i %i", cl_maxPackets.integer, cl_timeNudge.integer, com_maxFPS.integer));
+            //Com_Printf("^1Updating net\n");
 
             cg.userinfoUpdateDebounce = cg.time + 1000 * 8; //every 8s
         }
@@ -3059,13 +3060,13 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		else if (cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS] < 0)
 			cg.renderingThirdPerson = qfalse;
 		else
-			cg.renderingThirdPerson = cg_thirdPerson.integer;
+			cg.renderingThirdPerson = (qboolean)cg_thirdPerson.integer;
 
 		if (cg.snap->ps.stats[STAT_HEALTH] <= 0)
 			cg.renderingThirdPerson = qtrue;
 	}
 	else {
-		cg.renderingThirdPerson = cg_thirdPerson.integer || (cg.snap->ps.stats[STAT_HEALTH] <= 0);
+		cg.renderingThirdPerson = (qboolean)(cg_thirdPerson.integer || cg.snap->ps.stats[STAT_HEALTH] <= 0);
 	}
 
 	if (cg.snap->ps.stats[STAT_HEALTH] > 0)
@@ -3073,7 +3074,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		if (cg.predictedPlayerState.weapon == WP_EMPLACED_GUN && cg.predictedPlayerState.emplacedIndex /*&&
 			cg_entities[cg.predictedPlayerState.emplacedIndex].currentState.weapon == WP_NONE*/)
 		{ //force third person for e-web and emplaced use
-			cg.renderingThirdPerson = 1;
+			cg.renderingThirdPerson = qtrue;
 		}
 		else if (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE ||
 			BG_InGrappleMove(cg.predictedPlayerState.torsoAnim) || BG_InGrappleMove(cg.predictedPlayerState.legsAnim) ||
@@ -3082,27 +3083,27 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		{
 			if (!cg_thirdPerson.integer && cg_fpls.integer && (cg.predictedPlayerState.weapon == WP_SABER || cg.predictedPlayerState.weapon == WP_MELEE))
 			{ //force to first person for fpls
-				cg.renderingThirdPerson = 0;
+				cg.renderingThirdPerson = qfalse;
 			}
 			else
 			{
-				cg.renderingThirdPerson = 1;
+				cg.renderingThirdPerson = qtrue;
 			}
 		}
-		else if (cg.snap->ps.zoomMode)
+		else if (cg.predictedPlayerState.zoomMode)
 		{ //always force first person when zoomed
-			cg.renderingThirdPerson = 0;
+			cg.renderingThirdPerson = qfalse;
 		}
 	}
 
 	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
 	{ //always first person for spec
-		cg.renderingThirdPerson = 0;
+		cg.renderingThirdPerson = qfalse;
 	}
 
-	if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR)
+	if (cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_SPECTATOR)
 	{
-		cg.renderingThirdPerson = 0;
+		cg.renderingThirdPerson = qfalse;
 	}
 
 	// build cg.refdef

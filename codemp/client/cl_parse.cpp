@@ -493,7 +493,6 @@ void CL_SystemInfoChanged( void ) {
 			if (cls.state < CA_ACTIVE)
 #endif
 				Cbuf_ExecuteText(EXEC_APPEND, va("execq %s.cfg\n", value));
-			}
 
 			if (!FS_FilenameCompare(value, BASEGAME))
 			{

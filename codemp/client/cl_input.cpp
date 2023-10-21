@@ -829,53 +829,54 @@ Moves the local angle positions
 ================
 */
 void CL_AdjustAngles( void ) {
-	float	speed;
+    float	speed;
 
-	if ( in_speed.active ) {
-		speed = 0.001 * cls.frametime * cl_anglespeedkey->value;
-	} else {
-		speed = 0.001 * cls.frametime;
-	}
+    if (in_speed.active) {
+        speed = 0.001 * cls.frametime * cl_anglespeedkey->value;
+    }
+    else {
+        speed = 0.001 * cls.frametime;
+    }
 
-	if ( !in_strafe.active ) {
-		if ( cl_mYawOverride )
-		{
-			if ( cl_mSensitivityOverride )
-			{
-				cl.viewangles[YAW] -= cl_mYawOverride*cl_mSensitivityOverride*speed*cl_yawspeed->value*CL_KeyState (&in_right);
-				cl.viewangles[YAW] += cl_mYawOverride*cl_mSensitivityOverride*speed*cl_yawspeed->value*CL_KeyState (&in_left);
-			}
-			else
-			{
-				cl.viewangles[YAW] -= cl_mYawOverride*OVERRIDE_MOUSE_SENSITIVITY*speed*cl_yawspeed->value*CL_KeyState (&in_right);
-				cl.viewangles[YAW] += cl_mYawOverride*OVERRIDE_MOUSE_SENSITIVITY*speed*cl_yawspeed->value*CL_KeyState (&in_left);
-			}
-		}
-		else
-		{
-			cl.viewangles[YAW] -= speed*cl_yawspeed->value*CL_KeyState (&in_right);
-			cl.viewangles[YAW] += speed*cl_yawspeed->value*CL_KeyState (&in_left);
-		}
-	}
+    if ( !in_strafe.active ) {
+        if ( cl_mYawOverride )
+        {
+            if ( cl_mSensitivityOverride )
+            {
+                cl.viewangles[YAW] -= cl_mYawOverride * cl_mSensitivityOverride * speed * cl_yawspeed->value * CL_KeyState(&in_right);
+                cl.viewangles[YAW] += cl_mYawOverride * cl_mSensitivityOverride * speed * cl_yawspeed->value * CL_KeyState(&in_left);
+            }
+            else
+            {
+                cl.viewangles[YAW] -= cl_mYawOverride * OVERRIDE_MOUSE_SENSITIVITY * speed * cl_yawspeed->value * CL_KeyState(&in_right);
+                cl.viewangles[YAW] += cl_mYawOverride * OVERRIDE_MOUSE_SENSITIVITY * speed * cl_yawspeed->value * CL_KeyState(&in_left);
+            }
+        }
+        else
+        {
+            cl.viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&in_right);
+            cl.viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&in_left);
+        }
+    }
 
-	if ( cl_mPitchOverride )
-	{
-		if ( cl_mSensitivityOverride )
-		{
-			cl.viewangles[PITCH] -= cl_mPitchOverride*cl_mSensitivityOverride*speed*cl_pitchspeed->value * CL_KeyState (&in_lookup);
-			cl.viewangles[PITCH] += cl_mPitchOverride*cl_mSensitivityOverride*speed*cl_pitchspeed->value * CL_KeyState (&in_lookdown);
-		}
-		else
-		{
-			cl.viewangles[PITCH] -= cl_mPitchOverride*OVERRIDE_MOUSE_SENSITIVITY*speed*cl_pitchspeed->value * CL_KeyState (&in_lookup);
-			cl.viewangles[PITCH] += cl_mPitchOverride*OVERRIDE_MOUSE_SENSITIVITY*speed*cl_pitchspeed->value * CL_KeyState (&in_lookdown);
-		}
-	}
-	else
-	{
-		cl.viewangles[PITCH] -= speed*cl_pitchspeed->value * CL_KeyState (&in_lookup);
-		cl.viewangles[PITCH] += speed*cl_pitchspeed->value * CL_KeyState (&in_lookdown);
-	}
+    if ( cl_mPitchOverride )
+    {
+        if ( cl_mSensitivityOverride )
+        {
+            cl.viewangles[PITCH] -= cl_mPitchOverride * cl_mSensitivityOverride * speed * cl_pitchspeed->value * CL_KeyState(&in_lookup);
+            cl.viewangles[PITCH] += cl_mPitchOverride * cl_mSensitivityOverride * speed * cl_pitchspeed->value * CL_KeyState(&in_lookdown);
+        }
+        else
+        {
+            cl.viewangles[PITCH] -= cl_mPitchOverride * OVERRIDE_MOUSE_SENSITIVITY * speed * cl_pitchspeed->value * CL_KeyState(&in_lookup);
+            cl.viewangles[PITCH] += cl_mPitchOverride * OVERRIDE_MOUSE_SENSITIVITY * speed * cl_pitchspeed->value * CL_KeyState(&in_lookdown);
+        }
+    }
+    else
+    {
+        cl.viewangles[PITCH] -= speed * cl_pitchspeed->value * CL_KeyState(&in_lookup);
+        cl.viewangles[PITCH] += speed * cl_pitchspeed->value * CL_KeyState(&in_lookdown);
+    }
 }
 
 /*

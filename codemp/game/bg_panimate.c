@@ -2700,16 +2700,16 @@ void BG_SaberStartTransAnim( int clientNum, int saberAnimLevel, int weapon, int 
 	if (pm && JK2SWINGS(pm->ps))
 #endif
 	{
-		if (((anim) >= BOTH_T1_BR__R && (anim) <= BOTH_T1_BL_TL) ||
-			((anim) >= BOTH_T2_BR__R && (anim) <= BOTH_T2_BL_TL) ||
-			((anim) >= BOTH_T3_BR__R && (anim) <= BOTH_T3_BL_TL))
+		if ((anim >= BOTH_T1_BR__R && anim <= BOTH_T1_BL_TL) ||
+			(anim >= BOTH_T2_BR__R && anim <= BOTH_T2_BL_TL) ||
+			(anim >= BOTH_T3_BR__R && anim <= BOTH_T3_BL_TL))
 		{
 			if (saberAnimLevel == SS_FAST || saberAnimLevel == SS_STRONG) {
 				animSpeed = 0;
+			}
 				return;
 			}
 		}
-	}
 
 	if ( anim >= BOTH_A1_T__B_ && anim <= BOTH_ROLL_STAB )
 	{

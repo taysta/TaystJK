@@ -2379,4 +2379,3 @@ void SV_RemoveOperatorCommands( void ) {
 	Cmd_RemoveCommand ("svsay");
 #endif
 }
-

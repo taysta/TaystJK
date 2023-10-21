@@ -458,8 +458,8 @@ void FX_DrawPortableShield(centity_t *cent)
 	normal[0] = 1;
 	normal[1] = 1;
 
-	start[2] += height/2;
-	end[2] += height/2;
+	start[2] += 0.5f * (float)height;
+	end[2] += 0.5f * (float)height;
 
 	if (team == TEAM_RED)
 	{

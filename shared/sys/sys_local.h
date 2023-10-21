@@ -36,8 +36,10 @@ void 		Sys_QueEvent( int time, sysEventType_t type, int value, int value2, int p
 void		Sys_SigHandler( int signal );
 #ifdef _WIN32
 extern void	GLimp_Alert(void);
+#ifndef DEDICATED
+extern void Sys_SetClipboardDataWin32(const char *cbText);
 #endif
-#ifndef _WIN32
+#else
 void		Sys_AnsiColorPrint( const char *msg );
 #endif
 

@@ -535,33 +535,6 @@ void Field_KeyDownEvent( field_t *edit, int key ) {
 		return;
 	}
 
-#if 0
-	// ctrl backspace is del
-	if ((key == A_BACKSPACE) && kg.keys[A_CTRL].down) {
-		while (edit->cursor > 0) {
-			len = strlen(edit->buffer);
-			//Com_Printf("Deleting %c\n", (char)edit->buffer[edit->cursor - 1]);
-
-			if (edit->buffer[edit->cursor-1] == ' ' && edit->buffer[edit->cursor-2] != ' ') //Idk, break if its a space (unless its a group of spaces?)
-				break;
-			if (edit->buffer[edit->cursor - 1] == '/' && edit->buffer[edit->cursor - 2] != '/') //Idk, break if its a space (unless its a group of spaces?)
-				break;
-			if (edit->buffer[edit->cursor - 1] == '_' && edit->buffer[edit->cursor - 2] != '_') //Idk, break if its a space (unless its a group of spaces?)
-				break;
-			if (edit->buffer[edit->cursor - 1] == '-' && edit->buffer[edit->cursor - 2] != '-') //Idk, break if its a space (unless its a group of spaces?)
-				break;
-
-			memmove(edit->buffer + edit->cursor - 1, edit->buffer + edit->cursor, len + 1 - edit->cursor);
-			edit->cursor--;
-			if (edit->cursor < edit->scroll)
-			{
-				edit->scroll--;
-			}
-		}
-		return;
-	}
-#endif
-
     key = tolower(key);
     len = strlen(edit->buffer);
 
@@ -1025,13 +998,13 @@ void Message_Key( int key ) {
 				*dst = 0;
 			}
 
-			CL_RandomizeColors(chatField.buffer, coloredString);
+            CL_RandomizeColors(chatField.buffer, coloredString);
 			if ( chat_playerNum != -1 )			Com_sprintf( buffer, sizeof( buffer ), "tell %i \"%s\"\n", chat_playerNum, chatField.buffer);
 			else if ( chat_team )				Com_sprintf( buffer, sizeof( buffer ), "say_team \"%s\"\n", chatField.buffer);
-			else if (strlen(cl_chatStylePrefix->string) || strlen(cl_chatStyleSuffix->string))
+                else if (strlen(cl_chatStylePrefix->string) || strlen(cl_chatStyleSuffix->string))
 												Com_sprintf( buffer, sizeof( buffer ), "say \"%s%s%s\"\n", cl_chatStylePrefix->string, coloredString, cl_chatStyleSuffix->string );
 			else								Com_sprintf( buffer, sizeof( buffer ), "say \"%s\"\n", coloredString );
-			CL_AddReliableCommand( buffer, qfalse );
+            CL_AddReliableCommand( buffer, qfalse );
 		}
 		Key_SetCatcher( Key_GetCatcher() & ~KEYCATCH_MESSAGE );
 		Field_Clear( &chatField );

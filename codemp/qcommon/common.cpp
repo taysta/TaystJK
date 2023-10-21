@@ -139,9 +139,7 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 
 	std::lock_guard<std::recursive_mutex> l( printfLock );
 
-	std::recursive_mutex printfLock;
-
-	static qboolean opening_qconsole = qfalse;
+    static qboolean opening_qconsole = qfalse;
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
 
@@ -1710,7 +1708,9 @@ void Com_Frame( void ) {
 		if(!com_timedemo->integer)
 		{
 			if(com_dedicated->integer)
+			{
 				minMsec = SV_FrameMsec();
+			}
 			else
 			{
 				if(com_minimized->integer && com_maxfpsMinimized->integer > 0)

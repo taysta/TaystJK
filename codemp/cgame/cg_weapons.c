@@ -928,9 +928,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 			hand.renderfx |= RF_FULLBRIGHT;
 		}
 		else {
-			hand.shaderRGBA[0] = 255;
-			hand.shaderRGBA[1] = 255;
-			hand.shaderRGBA[2] = 255;
+			hand.shaderRGBA[0] = hand.shaderRGBA[1] = hand.shaderRGBA[2] = 255;
 			hand.renderfx |= RF_RGB_TINT;
 		}
 	}
@@ -1373,7 +1371,6 @@ void CG_DrawWeaponSelect( void ) {
 
         if(cg.weaponSelect != WP_SABER && cg.weaponSelect != WP_MELEE && cg.weaponSelect != WP_STUN_BATON && cg.weaponSelect != WP_BRYAR_PISTOL && cg_weaponCycleAmmo.integer) {
             value = cg.predictedPlayerState.ammo[weaponData[cg.weaponSelect].ammoIndex];
-
             Com_sprintf(ammoStr, sizeof(ammoStr), "%i", value);
             CG_Text_Paint(x - (CG_Text_Width(ammoStr, 0.8f, FONT_SMALL2) / 2),
                           y - 10 + yOffset,
@@ -1458,7 +1455,6 @@ void CG_DrawWeaponSelect( void ) {
 //			weaponInfo = &cg_weapons[i];
 			// No ammo for this weapon?
 			trap->R_SetColor( colorTable[CT_WHITE]);
-
             if(i != WP_SABER && i != WP_MELEE && i != WP_STUN_BATON && i != WP_BRYAR_PISTOL && cg_weaponCycleAmmo.integer)
             {
                 value = cg.predictedPlayerState.ammo[weaponData[i].ammoIndex];

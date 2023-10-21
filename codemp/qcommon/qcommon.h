@@ -328,7 +328,7 @@ private:
 	VMSwap();
 	vm_t *oldVM;
 public:
-	VMSwap( vm_t *newVM ) : oldVM( currentVM ) { currentVM = newVM; };
+	explicit VMSwap( vm_t *newVM ) : oldVM( currentVM ) { currentVM = newVM; };
 	~VMSwap() { if ( oldVM ) currentVM = oldVM; };
 };
 

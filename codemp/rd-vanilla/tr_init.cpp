@@ -286,7 +286,8 @@ void R_Set2DRatio(void) {
 		tr.widthRatioCoef = 1.0f;
 }
 
-void R_Splash()
+extern void	RB_SetGL2D (void);
+static void R_Splash(void)
 {
 	image_t *pImage = NULL;
 	float ratio = (float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth);
@@ -297,7 +298,6 @@ void R_Splash()
 	if (!pImage)
 		pImage = R_FindImageFile("menu/splash", qfalse, qfalse, qfalse, GL_CLAMP);
 
-	extern void	RB_SetGL2D (void);
 	RB_SetGL2D();
 	if (pImage)
 	{//invalid paths?
@@ -335,10 +335,10 @@ void R_Splash()
 
 static void GLW_InitTextureCompression( void )
 {
-	bool newer_tc, old_tc;
+	qboolean newer_tc, old_tc;
 
 	// Check for available tc methods.
-	newer_tc = ri.GL_ExtensionSupported("GL_ARB_texture_compression") && ri.GL_ExtensionSupported("GL_EXT_texture_compression_s3tc");
+	newer_tc = (qboolean)(ri.GL_ExtensionSupported("GL_ARB_texture_compression") && ri.GL_ExtensionSupported("GL_EXT_texture_compression_s3tc"));
 	old_tc = ri.GL_ExtensionSupported("GL_S3_s3tc");
 
 	if ( old_tc )
@@ -1581,11 +1581,7 @@ static consoleCommand_t	commands[] = {
 
 static const size_t numCommands = ARRAY_LEN( commands );
 
-#ifdef _DEBUG
-#define MIN_PRIMITIVES -1
-#else
 #define MIN_PRIMITIVES 0
-#endif
 #define MAX_PRIMITIVES 3
 
 /*

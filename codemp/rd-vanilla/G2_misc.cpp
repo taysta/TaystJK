@@ -583,7 +583,7 @@ void G2_TransformModel(CGhoul2Info_v &ghoul2, const int frameNum, vec3_t scale, 
 		{
 			continue;
 		}
-		assert(g.mBoneCache);
+		assert(g.mBoneCache); //the npc at the end of apoc's stupid map causes this, the above work around just makes it crash in G2_TracePolys
 //		assert(G2_MODEL_OK(&g));
 		// stop us building this model more than once per frame
 		g.mMeshFrameNum = frameNum;

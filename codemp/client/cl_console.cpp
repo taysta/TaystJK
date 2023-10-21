@@ -243,7 +243,7 @@ void Con_CopyLink(void) {
 	int l, x, i, pointDiff;
 	short *line;
 	char *buffer, n[] = "\0";
-	const char *link, *point1, *point2, *point3;
+	const char *link = NULL, *point1 = NULL, *point2 = NULL, *point3 = NULL;
 	qboolean containsNum = qfalse, containsPoint = qfalse;
 
 	buffer = (char *)Hunk_AllocateTempMemory(con.linewidth);

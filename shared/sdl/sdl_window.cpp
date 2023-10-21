@@ -894,11 +894,7 @@ void WIN_SetGamma( glconfig_t *glConfig, byte red[256], byte green[256], byte bl
 #if defined(_WIN32)
 	// Win2K and newer put this odd restriction on gamma ramps...
 	{
-		OSVERSIONINFO	vinfo;
-
-		vinfo.dwOSVersionInfoSize = sizeof( vinfo );
-		GetVersionEx( &vinfo );
-		if( vinfo.dwMajorVersion >= 5 && vinfo.dwPlatformId == VER_PLATFORM_WIN32_NT )
+		if( IsWindowsXPOrGreater())
 		{
 			Com_DPrintf( "performing gamma clamp.\n" );
 			for( j = 0 ; j < 3 ; j++ )

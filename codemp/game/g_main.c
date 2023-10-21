@@ -4142,7 +4142,8 @@ void G_RunFrame( int levelTime ) {
 	iTimer_ItemRun = trap->PrecisionTimer_End(timer_ItemRun);
 #endif
 
-	SiegeCheckTimers();
+	if (level.gametype == GT_SIEGE)
+        SiegeCheckTimers();
 
 #ifdef _G_FRAME_PERFANAL
 	trap->PrecisionTimer_Start(&timer_ROFF);

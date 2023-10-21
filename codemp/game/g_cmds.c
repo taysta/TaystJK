@@ -6876,7 +6876,6 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 	trap->Argv(1, jLevel, sizeof(jLevel));
 	level = atoi(jLevel);
 
-	if (level >= 1 && level <= 3) {
 		ent->client->ps.fd.forcePowerLevel[FP_LEVITATION] = level;
 		AmTeleportPlayer( ent, ent->client->ps.origin, ent->client->ps.viewangles, qtrue, qtrue, qfalse ); //Good
 		if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag) {
@@ -6886,9 +6885,6 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 		else
 			trap->SendServerCommand( ent-g_entities, va("print \"Jumplevel updated (%i).\n\"", level ));
 	}
-	else
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /jump <level>\n\"" );
-}
 
 static void Cmd_BackwardsRocket_f(gentity_t *ent)
 {
@@ -6992,7 +6988,7 @@ static void Cmd_Ysal_f(gentity_t *ent)
 		ent->client->ps.powerups[PW_YSALAMIRI] = 0;
 	}
 	else {
-		ent->client->ps.powerups[PW_YSALAMIRI] = 2147483648;
+		ent->client->ps.powerups[PW_YSALAMIRI] = Q3_INFINITE;
 	}
 }
 
@@ -7227,9 +7223,10 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 		origin[1] = atoi(y);
 		origin[2] = atoi(z);
 
-		AmTeleportPlayer( ent, origin, angles, qtrue, qtrue, qfalse );
-		return;
-	}
+            AmTeleportPlayer(ent, origin, angles, qtrue, qtrue, qfalse);
+        }
+            break;
+    }
 }
 
 void Cmd_WarpList_f(gentity_t *ent)
@@ -7289,7 +7286,6 @@ void Cmd_Warp_f(gentity_t *ent)
 		AmTeleportPlayer( ent, origin, angles, qtrue, qfalse, qfalse); //Maybe this should not be droptofloor but whatever
 	}
 }
-
 
 //[JAPRO - Serverside - All - Amtele Function - Start]
 void Cmd_Amtele_f(gentity_t *ent)
@@ -7461,12 +7457,12 @@ void Cmd_Amtele_f(gentity_t *ent)
 			if (clientid1 == -1 || clientid1 == -2)
 				return;
 
-			if (!G_AdminUsableOn(ent->client, g_entities[clientid1].client, JAPRO_ACCOUNTFLAG_A_ADMINTELE)) {
-				if (g_entities[clientid1].client->ps.clientNum != ent->client->ps.clientNum)
-					return;
-				else
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command on this player (amTele).\n\"" );
-			}
+                if (!G_AdminUsableOn(ent->client, g_entities[clientid1].client, JAPRO_ACCOUNTFLAG_A_ADMINTELE)) {
+                    if (g_entities[clientid1].client->ps.clientNum != ent->client->ps.clientNum)
+                        return;
+                    else
+                        trap->SendServerCommand(ent-g_entities, "print \"You are not authorized to use this command on this player (amTele).\n\"");
+                }
 
 			teleporter = &g_entities[clientid1];
 
@@ -7782,22 +7778,22 @@ static qboolean LoadEnts(char *fileName) {
 			Q_strncpyz(newEnt->model, TempEntity.model, sizeof(TempEntity.model));
 
 			{
-				char tmp[48] = {0}, *p = NULL;
+				char tmp[48] = {0}, *pp = NULL;
 				const char *delim = " ";
-				int i = 0;
+				int ii = 0;
 				vec3_t temp;
 
 				Q_strncpyz(tmp, TempEntity.origin, sizeof(tmp));
 				p = strtok( tmp, delim );
-				while ( p != NULL ) {
-					if (i == 0)
-						temp[0] = atoi(p);
-					else if (i == 1)
-						temp[1] = atoi(p);
-					else if (i == 2)
-						temp[2] = atoi(p);
-					p = strtok( NULL, delim );
-					i++;
+				while ( pp != NULL ) {
+					if (ii == 0)
+						temp[0] = atoi(pp);
+					else if (ii == 1)
+						temp[1] = atoi(pp);
+					else if (ii == 2)
+						temp[2] = atoi(pp);
+					pp = strtok( NULL, delim );
+					ii++;
 				}
 				VectorCopy(temp, newEnt->s.origin);
 			}
@@ -8727,12 +8723,11 @@ void ClientCommand( int clientNum ) {
 		return;
 	}
 
-	else if ( (command->flags & CMD_ALIVE)
+	else if (( (command->flags & CMD_ALIVE)
 		&& (ent->health <= 0
 			|| ent->client->tempSpectate >= level.time
 			|| ent->client->sess.sessionTeam == TEAM_SPECTATOR) )
 	{
-		trap->SendServerCommand( clientNum, va( "print \"%s\n\"", G_GetStringEdString( "MP_SVGAME", "MUSTBEALIVE" ) ) );
 		return;
 	}
 

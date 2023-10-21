@@ -19,7 +19,7 @@
         int i;                                                  \
         i = sqlite3_ ## f;                                      \
         if (i != SQLITE_OK) {                                   \
-            fprintf (stderr, "%s failed with status %d: %s\n",  \
+            Com_Printf("%s failed with status %d: %s\n",  \
                      #f, i, sqlite3_errmsg (db));               \
         }                                                       \
     }                                                           \
@@ -28,7 +28,7 @@
         int i;                                                  \
         i = sqlite3_ ## f;                                      \
         if (i != SQLITE_ ## x) {                                \
-            fprintf (stderr, "%s failed with status %d: %s\n",  \
+            Com_Printf("%s failed with status %d: %s\n",  \
                      #f, i, sqlite3_errmsg (db));               \
         }                                                       \
     }   
@@ -1047,7 +1047,7 @@ void CleanupLocalRun() { //This should never actually change anything since we i
 	if (s == SQLITE_DONE)
 		trap->Print("Cleaned up racetimes\n");
 	else 
-		G_ErrorPrint("ERROR: SQL Delete Failed (CleanupLocalRun)", s);
+		G_ErrorPrint("ERROR: SQL Delete Failed (CleanupLocalRun)\n", s);
 
 	CALL_SQLITE (finalize(stmt));
 	CALL_SQLITE (close(db));
@@ -2505,7 +2505,7 @@ void Svcmd_DeleteAccount_f(void)
 			if (s == SQLITE_DONE)
 				trap->Print("Account deleted.\n");
 			else
-				G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_DeleteAccount_f 1)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_DeleteAccount_f 1)\n", s);
 			CALL_SQLITE(finalize(stmt));
 		}
 		else
@@ -2519,7 +2519,7 @@ void Svcmd_DeleteAccount_f(void)
 
 		s = sqlite3_step(stmt);
 		if (s != SQLITE_DONE)
-			G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_DeleteAccount_f 2)", s);
+			G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_DeleteAccount_f 2)\n", s);
 		CALL_SQLITE(finalize(stmt));
 
 		CALL_SQLITE(close(db));
@@ -3017,7 +3017,7 @@ void Svcmd_ClanDelete_f(void) {
 		trap->Print( "Clan deleted.\n");
 	}
 	else
-		G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_ClanDelete_f 2)", s);
+		G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_ClanDelete_f 2)\n", s);
 
 	CALL_SQLITE (finalize(stmt));
 
@@ -3169,7 +3169,7 @@ void Svcmd_ClanKick_f(void) {
 		trap->Print( "User removed from clan.\n");
 	}
 	else
-		G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_ClanKick_f 3)", s);
+		G_ErrorPrint("ERROR: SQL Delete Failed (Svcmd_ClanKick_f 3)\n", s);
 
 	CALL_SQLITE (finalize(stmt));
 
@@ -3618,7 +3618,7 @@ void Cmd_LeaveTeam_f( gentity_t *ent ) {
 			trap->SendServerCommand(ent-g_entities, "print \"Clan left.\n\"");
 		}
 		else
-			G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_JoinTeam_f 3)", s);
+			G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_JoinTeam_f 3)\n", s);
 
 		CALL_SQLITE (finalize(stmt));
 
@@ -4282,7 +4282,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 			if (s == SQLITE_DONE)
 				trap->SendServerCommand(ent-g_entities, "print \"Player removed.\n\"");//eh, maybe check if they were even in the team b4 printing this
 			else 
-				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 2)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 2)\n", s);
 			CALL_SQLITE (finalize(stmt));
 
 		}
@@ -4295,7 +4295,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 			if (s == SQLITE_DONE)
 				trap->SendServerCommand(ent-g_entities, "print \"Clan made private.\n\"");//eh, maybe check if they were even in the team b4 printing this
 			else 
-				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 3)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 3)\n", s);
 			CALL_SQLITE (finalize(stmt));
 		}
 		else if (!Q_stricmp(command, "public")) {
@@ -4306,7 +4306,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 			if (s == SQLITE_DONE)
 				trap->SendServerCommand(ent-g_entities, "print \"Clan made public.\n\"");//eh, maybe check if they were even in the team b4 printing this
 			else 
-				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 4)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 4)\n", s);
 			CALL_SQLITE (finalize(stmt));
 		}
 		else if (!Q_stricmp(command, "longname")) {
@@ -4332,7 +4332,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 			if (s == SQLITE_DONE)
 				trap->SendServerCommand(ent-g_entities, "print \"Longname set.\n\"");//eh, maybe check if they were even in the team b4 printing this
 			else 
-				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 5)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 5)\n", s);
 			CALL_SQLITE (finalize(stmt));
 		}
 		else if (!Q_stricmp(command, "tag")) {
@@ -4357,7 +4357,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 			if (s == SQLITE_DONE)
 				trap->SendServerCommand(ent-g_entities, "print \"Tag set.\n\"");//eh, maybe check if they were even in the team b4 printing this
 			else 
-				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 6)", s);
+				G_ErrorPrint("ERROR: SQL Delete Failed (Cmd_AdminTeam_f 6)\n", s);
 			CALL_SQLITE (finalize(stmt));
 		}
 		else {

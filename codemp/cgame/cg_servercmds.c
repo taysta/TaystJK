@@ -171,7 +171,7 @@ and whenever the server updates any serverinfo flagged cvars
 void CG_ParseServerinfo( void ) {
 	const char *info = NULL;
 	const char *gamename = NULL;
-	char *mapname;
+	char *mapname = NULL;
 	int i, value;
 	char restrictString[16] = { 0 };
 
