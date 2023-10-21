@@ -2285,6 +2285,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// model
 	v = Info_ValueForKey( configstring, "model" );
+    if (clientNum == cg.clientNum && VALIDSTRING(cg_forceOwnModel.string) && strlen(cg_forceOwnModel.string)
+        && Q_stricmp(cg_forceOwnModel.string, "none") && Q_stricmp(cg_forceOwnModel.string, "0")) {
+        v = cg_forceOwnModel.string;
+    }
 	if ( cg_forceModel.integer ) {
 		// forcemodel makes everyone use a single model
 		// to prevent load hitches
