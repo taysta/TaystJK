@@ -232,8 +232,13 @@ keyname_t keynames[MAX_KEYS] =
 	{ 0xac, 0xac, "LEFTARROW", A_CURSOR_LEFT, false						},
 	{ 0xad, 0xad, "RIGHTARROW", A_CURSOR_RIGHT, false					},
 	{ L'\u00AE', L'\u00AE', NULL, A_REGISTERED, false					}, // registered trademark symbol
+#ifndef MACOS_X
 	{ 0xaf, 0,	  NULL, A_UNDEFINED_7, false							},
 	{ 0xb0, 0,	  NULL, A_UNDEFINED_8, false							},
+#else
+	{ 0x46, 0x46, "F13", A_F13, false									},
+	{ 0x67, 0x67, "KP_EQUALS", A_KP_EQUALS, false						},
+#endif
 	{ 0xb1, 0,	  NULL, A_UNDEFINED_9, false							},
 	{ 0xb2, 0,	  NULL, A_UNDEFINED_10, false							},
 	{ 0xb3, 0,	  NULL, A_UNDEFINED_11, false							},
