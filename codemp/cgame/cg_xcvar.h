@@ -61,6 +61,11 @@ XCVAR_DEF( cg_raceTimerY,			"280",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStart,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartX,			"300",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_raceStartY,			"280",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_drawPlayerView,		"-1",	NULL,					CVAR_NONE )
+XCVAR_DEF( cg_drawPartnerView,		"1",	NULL,					CVAR_ARCHIVE_ND )
+XCVAR_DEF( cg_drawPartnerViewPos,	"1",	NULL,					CVAR_NONE )
+XCVAR_DEF( cg_drawPartnerViewSize,	"240",	NULL,					CVAR_ARCHIVE_ND ) //viewport height in real pixels
+
 XCVAR_DEF( cg_smallScoreboard,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreboardTime,		"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_scoreDeaths,			"1",	NULL,					CVAR_ARCHIVE )

@@ -39,6 +39,7 @@ static void CG_DrawSiegeTimer(int timeRemaining, qboolean isMyTeam);
 static void CG_DrawSiegeDeathTimer( int timeRemaining );
 static void CG_LeadIndicator( void );
 static void CG_PlayerLabels( void );
+static QINLINE void CG_PlayerView(centity_t *cent);
 
 static void CG_DrawTrajectoryLine(void);
 
@@ -11499,6 +11500,20 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 
 	// draw status bar and other floating elements
  	CG_Draw2D();
+
+    //
+    if (cg_drawPartnerView.integer)
+    {
+        if (cg.snap->ps.duelInProgress && (cg_drawPartnerView.integer >= 2 ||
+                                           (cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)))
+        {
+            centity_t *partner = &cg_entities[cg.predictedPlayerState.duelIndex];
+
+            if (partner && partner->currentValid) {
+                CG_PlayerView(partner);
+            }
+        }
+    }
 }
 
 int CG_GetBulletSpeed(int weapon, qboolean altFire);
@@ -11757,3 +11772,277 @@ static void CG_DrawTrajectoryLine(void) {
 		VectorCopy(newPos, oldPos);
 	}
 }
+
+extern qboolean BG_CrouchAnim(int anim);
+//void CG_G2AnimEntModelLoad(centity_t *cent);
+static QINLINE void CG_PlayerView(centity_t *cent)
+{
+	refdef_t refdef = { 0 };
+	int u;
+	int oldBreathTime = cent->breathTime, oldBreathPuffTime = cent->breathPuffTime;
+	int viewHeight = (BG_CrouchAnim(cent->currentState.legsAnim) ? 12 : 36);
+	qboolean firstPerson = (qboolean)(cg_drawPartnerView.integer >= 2);
+
+	if (!cg.snap)
+		return;
+
+	if (cg.scoreBoardShowing)
+		return;
+
+	if (!cent || !cent->currentValid)
+		return;
+
+	//base viewport refdef off of current
+	Com_Memcpy(&refdef, &cg.refdef, sizeof(refdef));
+
+	//refdef.rdflags = RDF_AUTOMAP;
+
+	if (cg_drawPartnerView.integer == 2 &&
+		(cent->currentState.weapon == WP_SABER || cent->currentState.weapon == WP_MELEE))
+	{ //override firstPerson mode with saber or melee
+		firstPerson = qfalse;
+	}
+
+	//calculate viewport width, height, fov, and position on-screen
+	refdef.height = cg_drawPartnerViewSize.integer; //just take the height and calculate a width for a 4:3 ratio with it
+	refdef.width = (int)(cg_drawPartnerViewSize.value * ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT));
+
+	//calculate fov
+	refdef.fov_x = cg_fov.value;
+	refdef.fov_y = atan2( refdef.height, (refdef.width / tan( refdef.fov_x / 360 * M_PI )) );
+	refdef.fov_y = refdef.fov_y * 360 / M_PI;
+
+	//x & y might need the const values for 2D rendering
+	refdef.x = (cgs.glconfig.vidWidth - refdef.width - 2);
+	//refdef.y = (SCREEN_HEIGHT - cg_lagometerY.integer) * cgs.screenYScale;
+	//refdef.y = (SCREEN_HEIGHT - cg_lagometerY.integer - 48.0f - 24.0f) * (cgs.glconfig.vidHeight * (1.0f / SCREEN_HEIGHT));
+	//refdef.y -= refdef.height/2;
+	refdef.y = (cgs.glconfig.vidHeight / 2) - (refdef.height / 2);
+
+
+	trap->R_ClearScene(); //necessary?
+	trap->FX_AddScheduledEffects(qfalse); //add scheduled effects to scene (are these actually be the effects scheduled for next frame??)
+
+	//meh fuck all this just hack it for now,..
+	if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING))
+		cg_stylePlayer.integer |= JAPRO_STYLE_DISABLEBREATHING;
+
+	//draw the player the viewport's focused on
+	cent->breathTime = cent->breathPuffTime = cg.time;
+	if (!firstPerson) { //don't draw if we're emulating first-person view
+		cg_disablePlayerInterpolation.integer = 0;
+		CG_ManualEntityRender(cent);
+		cg_disablePlayerInterpolation.integer = (int)cg_disablePlayerInterpolation.value;
+	}
+	cent->breathTime = oldBreathTime;
+	cent->breathPuffTime = oldBreathPuffTime;
+
+	//now draw us
+#if 1
+	cg.renderingThirdPerson = qtrue;
+	CG_ManualEntityRender(&cg_entities[cg.predictedPlayerState.clientNum]);
+	cg.renderingThirdPerson = (qboolean)cg_thirdPerson.integer;
+#else
+	//this sets up a local entity that more closely represents the player's non-predicted state, origin and angles are lagged
+	//this has issues with scheduled FX (namely sabertrail), doesn't currently stay up to date with clientinfo changes & probably has other issues besides that
+	const int clientNum = cg.clientNum;// cg.predictedPlayerState.clientNum;
+	static centity_t localplayer = { 0 };
+	if (!localplayer.npcClient) {
+		Com_Memcpy(&localplayer, &cg_entities[clientNum], sizeof(localplayer));
+		localplayer.currentState.eType = localplayer.nextState.eType = ET_NPC;
+		localplayer.currentState.NPC_class = localplayer.nextState.NPC_class = CLASS_KYLE;
+		//localplayer.currentState.number = localplayer.nextState.number = 32;
+		//localplayer.currentState.clientNum = localplayer.nextState.clientNum = 0;
+		localplayer.ghoul2 = localplayer.ghoul2weapon = localplayer.frame_hold = localplayer.grip_arm = NULL;
+		CG_CreateNPCClient(&localplayer.npcClient);
+		/*Com_Memcpy(&localplayer.npcClient, &cgs.clientinfo[clientNum], sizeof(localplayer.npcClient));
+		localplayer.npcClient->ghoul2Model = NULL;
+		for (u = 0; u < MAX_SABERS; u++) {
+			localplayer.npcClient->ghoul2Weapons[u] = NULL;
+		}*/
+		CG_G2AnimEntModelLoad(&localplayer);
+	}
+
+	if (cg.snap && cg.nextSnap) {
+
+		BG_PlayerStateToEntityState(&cg.snap->ps, &localplayer.currentState, qfalse);
+		BG_PlayerStateToEntityState(&cg.nextSnap->ps, &localplayer.nextState, qfalse);
+
+		/*localplayer.npcClient->torsoModel = cgs.clientinfo[clientNum].torsoModel;
+		localplayer.npcClient->torsoSkin = cgs.clientinfo[clientNum].torsoSkin;
+
+		localplayer.npcClient->legsModel = cgs.clientinfo[clientNum].legsModel;
+		localplayer.npcClient->legsSkin = cgs.clientinfo[clientNum].legsSkin;*/
+		//dunno need to keep track of this somehow
+		if (!cgs.clientinfo[cg.clientNum].infoValid || cgs.clientinfo[cg.clientNum].deferred) {
+			Com_Printf("local player clientinfo change??\n");
+			const clientInfo_t *ci = &cgs.clientinfo[cg.clientNum];
+			//Q_strncpyz()
+			/*localplayer.npcClient->icolor1 = ci->icolor1;
+			localplayer.npcClient->icolor2 = ci->icolor2;*/
+			Com_Memcpy(&localplayer.npcClient, &cgs.clientinfo[cg.clientNum], sizeof(localplayer.npcClient));
+			localplayer.ghoul2 = localplayer.ghoul2weapon = localplayer.frame_hold = localplayer.grip_arm = NULL;
+			CG_G2AnimEntModelLoad(&localplayer);
+		}
+
+		//localplayer.currentState.eType = localplayer.nextState.eType = ET_NPC;
+		//localplayer.currentState.NPC_class = localplayer.nextState.NPC_class = CLASS_KYLE;
+		for (u = 0; u <= CHAN_MUSIC; u++)
+			trap->S_MuteSound(localplayer.currentState.number, u);
+		CG_ManualEntityRender(&localplayer);
+	}
+#endif
+
+	//add the rest of these entities to the scene now
+	for (u = 0; u < cg.snap->numEntities; u++)
+	{
+		if (cent == &cg_entities[cg.snap->entities[u].number] ||
+			cg_entities[cg.snap->entities[u].number].currentState.number == cg.snap->ps.clientNum)
+			continue; //don't re-add either of us, already did that above
+
+		CG_ManualEntityRender(&cg_entities[cg.snap->entities[u].number]);
+	}
+	//set this back after we've added all of our entities, this is to avoid running logic I might have assumed would only be called once per frame.
+	cg_stylePlayer.integer = (int)cg_stylePlayer.value;
+
+	//now calculate the view origin & angle
+	VectorCopy(cent->lerpOrigin, refdef.vieworg);
+	VectorCopy(cent->lerpAngles, refdef.viewangles);
+
+	//hack to get proper lerpAngles since breathing offsets this
+	//this wasn't working the way I wanted to, so instead I'm overriding the cg_stylePlayer values when adding these two to the scene.
+	/*if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.number != cg.snap->ps.clientNum)
+	{
+		if ((cent->currentState.torsoAnim >= BOTH_ATTACK1 && cent->currentState.torsoAnim <= BOTH_ROLL_STAB) ||
+			(cent->currentState.torsoAnim < BOTH_SABERFAST_STANCE || cent->currentState.torsoAnim > BOTH_SABERSTAFF_STANCE))
+		{ //not attacking
+			if (cent->breathTime - cg.time < 0)
+				refdef.viewangles[PITCH] -= (float)(cent->breathTime - cg.time) * 0.0025f;
+			else
+				refdef.viewangles[PITCH] += (float)(cent->breathTime - cg.time) * 0.0025f;
+		}
+	}*/
+
+	if (firstPerson)
+	{
+		//CG_OffsetFirstPersonView();
+		refdef.vieworg[2] += viewHeight;
+	}
+	else
+	{//CG_OffsetThirdPersonView();
+		trace_t trace;
+		vec3_t	focusAngles, fwd, target, location;//, diff;
+		const vec3_t	cameramins = { -4, -4, -4 };
+		const vec3_t	cameramaxs = { 4, 4, 4 };
+
+		VectorCopy(refdef.viewangles, focusAngles);
+		if (cent->currentState.eFlags & EF_DEAD) {
+			focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		}
+
+		focusAngles[PITCH] = Com_Clamp(-80.0, 80.0, refdef.viewangles[PITCH]);
+
+		AngleVectors(focusAngles, fwd, NULL, NULL);
+		VectorCopy(refdef.vieworg, location);
+		location[2] += viewHeight;
+		location[2] += 16;
+		VectorMA(location, -80, fwd, target);
+
+		//just trace once from the original location out to where we want the camera & use the endpoint if it hits something
+		CG_Trace(&trace, location, cameramins, cameramaxs, target, cent->currentState.number, /*MASK_CAMERACLIP*/(MASK_SOLID|CONTENTS_PLAYERCLIP));
+		if (trace.fraction < 1.0f) {
+			VectorCopy(trace.endpos, target);
+		}
+		VectorCopy(target, refdef.vieworg);
+	}
+
+	AnglesToAxis(refdef.viewangles, refdef.viewaxis);
+
+	//render us
+	trap->R_RenderScene(&refdef);
+
+	{
+		//Now draw 2D graphics for it
+		//funfact, it seems that if a frame doesn't end with some sort of 2D draw call (like it would here with just trap->R_RenderScene), then external OpenGL hook programs almost completely break
+		float x, y, w, h;
+		const float XScale = ((float)cgs.glconfig.vidWidth * (1.0f / SCREEN_WIDTH));
+		const float YScale = ((float)cgs.glconfig.vidHeight * (1.0f / SCREEN_HEIGHT));
+		const float ViewWidth2D = (float)refdef.width / XScale;
+		const float ViewHeight2D = (float)refdef.height / YScale;
+		const float StartX = (float)refdef.x / XScale;
+		const float StartY = (float)refdef.y / YScale;
+		//maybe add scale factors for the viewport size relative to the fullscreen size??
+
+		{ //draw a small border around the viewport
+			x = StartX - 1.0f;
+			y = StartY - 1.0f;
+			w = ViewWidth2D + 2.0f;
+			h = ViewHeight2D + 2.0f;
+
+			trap->R_SetColor(colorTable[CT_BLACK]);
+			CG_DrawTopBottom(x, y, w, h, 1.0f);
+			CG_DrawSides(x, y, w, h, 1.0f);
+			trap->R_SetColor(NULL);
+		}
+
+		{ //draw a crosshair in the middle
+			x = StartX + (ViewWidth2D / 2.0f);
+			y = StartY + (ViewHeight2D / 2.0f);
+
+			//w = (float)(cg_crosshairSize.value / XScaleFactor); //*((float)refdef.width / cgs.glconfig.vidWidth);
+			//h = (float)(cg_crosshairSize.value / YScaleFactor); //*((float)refdef.height / cgs.glconfig.vidHeight);
+
+			w = h = (cg_crosshairSize.value / 2.0f);
+			w /= XScale; //w /= ((float)cgs.glconfig.vidWidth * (1.0f / refdef.width));
+			h /= YScale; //h /= ((float)cgs.glconfig.vidHeight * (1.0f / refdef.height));
+
+			x -= (w/2.0f);
+			y -= (h/2.0f);
+
+			trap->R_DrawStretchPic(x, y, w, h, 0, 0, 1, 1,
+				cgs.media.crosshairShader[cg_drawCrosshair.integer % NUM_CROSSHAIRS]);
+		}
+
+#if 0
+		if (!(cg.snap->ps.pm_flags & PMF_FOLLOW) && cgs.clientinfo[cent->currentState.clientNum].infoValid)
+		{//draw their name
+			x = StartX + 2.0f;
+			y = StartY + 2.0f;
+
+			CG_Text_Paint(x, y, 0.5f, colorWhite, cgs.clientinfo[cent->currentState.clientNum].name, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_SMALL2);
+		}
+#endif
+
+		if (cg_speedometer.integer & SPEEDOMETER_ENABLE)
+		{ //draw their approx speed
+			const float currentSpeed = sqrtf(cent->currentState.pos.trDelta[0] * cent->currentState.pos.trDelta[0] + cent->currentState.pos.trDelta[1] * cent->currentState.pos.trDelta[1]);
+			const float scale = 0.50f;
+			static float lastSpeed = 0.0f;
+			char *s, c = COLOR_WHITE;
+			vec4_t colorSpeed = { 1, 1, 1, 1 };
+
+			x = StartX + 2.0f;
+			y = StartY + ViewHeight2D;
+
+			if (currentSpeed > lastSpeed)
+				c = COLOR_GREEN;
+			else if (currentSpeed < lastSpeed)
+				c = COLOR_RED;
+			else
+				c = COLOR_WHITE;
+
+			s = va("%c%c\xb5:   ", Q_COLOR_ESCAPE, c);
+			y -= CG_Text_Height(s, scale, FONT_SMALL2);
+			y -= 6.0f;
+
+			if (currentSpeed > cent->currentState.speed) {
+				colorSpeed[1] = 1 / ((currentSpeed/cent->currentState.speed)*(currentSpeed/cent->currentState.speed));
+				colorSpeed[2] = 1 / ((currentSpeed/cent->currentState.speed)*(currentSpeed/cent->currentState.speed));
+			}
+
+			CG_Text_Paint(x, y, scale, colorWhite, s, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+			CG_Text_Paint(x + CG_Text_Width(s, scale, FONT_SMALL2), y, scale, colorSpeed, va("%.0f", currentSpeed), 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+		}
+	}
+}
+

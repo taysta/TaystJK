@@ -80,13 +80,6 @@ qboolean CG_NoUseableForce(void)
 {
 	int i = FP_HEAL;
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] &&
-		cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_SPEED)
-		return qtrue;
-
-	if (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0)
-		return qtrue;
-
 	while (i < NUM_FORCE_POWERS)
 	{
 		if (i != FP_SABERTHROW &&
