@@ -1287,6 +1287,12 @@ static void SV_ConTell_f(void) {
 	SV_SendServerCommand(cl, "chat \"" SVTELL_PREFIX S_COLOR_MAGENTA "%s" S_COLOR_WHITE "\"\n", text);
 }
 
+const char *toggleDisableStrings[] =
+{
+	"Disabled",
+	"Enabled"
+};
+
 const char *forceToggleNamePrints[NUM_FORCE_POWERS] = {
 	"HEAL",
 	"JUMP",
@@ -1308,15 +1314,24 @@ const char *forceToggleNamePrints[NUM_FORCE_POWERS] = {
 	"SABER THROW",
 };
 
+static void SV_PrintForceToggleHelp(qboolean listPowers, qboolean usageHelp,  int forcePowerDisableBits) {
+	int i;
+
+	for( i = 0; i < NUM_FORCE_POWERS; i++ ) {
+		Com_Printf ("%i - %s - Status: %s\n", i, forceToggleNamePrints[i], toggleDisableStrings[!(forcePowerDisableBits & (1<<i))]);
+	}
+
+	if (usageHelp) {
+		Com_Printf( "Example usage: forcetoggle 3 (toggles PUSH)\n" );
+		Com_Printf( "specifying -1 will toggle all forcepowers\n" );
+		Com_Printf( "specifying -2 enables all forcepowers" );
+		Com_Printf( "specifying %i will disable all forcepowers", NUM_FORCE_POWERS+1 );
+	}
+}
 static void SV_ForceToggle_f( void ) {
 	int bits = Cvar_VariableIntegerValue("g_forcePowerDisable");
 	int i, val;
 	char *s;
-	const char *disablestrings[] =
-	{
-		"Enabled",
-		"Disabled"
-	};
 
 	// make sure server is running
 	if( !com_sv_running->integer ) {
@@ -1325,10 +1340,7 @@ static void SV_ForceToggle_f( void ) {
 	}
 
 	if ( Cmd_Argc() != 2 ) {
-		for(i = 0; i < NUM_FORCE_POWERS; i++ ) {
-			Com_Printf ("%i - %s - Status: %s\n", i, forceToggleNamePrints[i], disablestrings[!(bits & (1<<i))]);
-		}
-		Com_Printf( "Example usage: forcetoggle 3(toggles PUSH)\n" );
+		SV_PrintForceToggleHelp(qtrue, qtrue, bits);
 		return;
 	}
 
@@ -1339,21 +1351,53 @@ static void SV_ForceToggle_f( void ) {
 		if( val >= 0 && val < NUM_FORCE_POWERS) {
 			bits ^= (1 << val);
 			Cvar_SetValue("g_forcePowerDisable", bits);
-			Com_Printf( "%s %s^7\n", forceToggleNamePrints[val], (bits & (1<<val)) ? "^2Enabled" : "^1Disabled" );
+			Com_Printf( "%s %s%s %s\n", forceToggleNamePrints[val],
+				(bits & (1<<val)) ? S_COLOR_RED : S_COLOR_GREEN, toggleDisableStrings[!(bits & (1<<val))], S_COLOR_WHITE );
+			return;
 		}
-		else {
+		switch (val)
+		{
+			default:
+				break;
+			case -1: //invert selection?
+				bits = ~bits; //i think thats right?
+				Cvar_SetValue("g_forcePowerDisable", bits);
+				SV_PrintForceToggleHelp(qtrue, qfalse, bits);
+				Com_Printf("Toggled all forcepowers.\n");
+				return;
+			case -2: //enable all
+				Cvar_Set("g_forcePowerDisable", "0");
+				SV_PrintForceToggleHelp(qtrue, qfalse, 0);
+				Com_Printf("All force powers enabled.\n");
+				return;
+			case NUM_FORCE_POWERS+1: //disable all
+				val = 0;
 			for ( i = 0; i<NUM_FORCE_POWERS; i++ ) {
-				if ( (bits & (1 << i)) )		Com_Printf( "%2d [X] %s\n", i, forceToggleNamePrints[i] );
-				else							Com_Printf( "%2d [ ] %s\n", i, forceToggleNamePrints[i] );
+					bits |= (i << 1);
 			}
-			Com_Printf ("Specified a power that does not exist.\nExample usage: forcetoggle 3\n(toggles PUSH)\n");
+				Cvar_SetValue("g_forcePowerDisable", bits);
+				SV_PrintForceToggleHelp(qtrue, qfalse, bits);
+				Com_Printf("All force powers disabled.\n");
+				return;
 		}
+		SV_PrintForceToggleHelp(qtrue, qtrue, bits);
+		//Com_Printf ("Specified a power that does not exist.\n");
+		Com_Printf ("Invalid option specified. (%s)\n", s);
+		return;
 	}
 	else {
-		for(i = 0; i < NUM_FORCE_POWERS; i++ ) {
-			Com_Printf ("%i - %s - Status: %s\n", i, forceToggleNamePrints[i], disablestrings[!(bits & (1<<i))]);
+		int len = (int)strlen(s);
+		for (i = 0; i < NUM_FORCE_POWERS; i++) {
+			if (!Q_stricmpn(forceToggleNamePrints[i], s, len)) {
+				bits ^= (1 << i);
+				Cvar_SetValue("g_forcePowerDisable", (float)bits);
+				Com_Printf( "%s %s^7\n", forceToggleNamePrints[i], (bits & (1<<i)) ? "^2Enabled" : "^1Disabled" );
+				return;
+		    }
 		}
-		Com_Printf ("Specified a power that does not exist.\nExample usage: forcetoggle 3\n(toggles PUSH)\n");
+		//didn't find it
+		SV_PrintForceToggleHelp(qtrue, qtrue, bits);
+		Com_Printf("Invalid forcepower specified.\n");
 	}
 }
 

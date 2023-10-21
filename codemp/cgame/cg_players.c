@@ -2312,7 +2312,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			}
 		}
 	//}
-	//loda	
+	//loda
 
 		if ((newInfo.team != cg.predictedPlayerState.persistant[PERS_TEAM] || cg.predictedPlayerState.persistant[PERS_TEAM] == TEAM_FREE) && strlen(cg_forceEnemyModel.string) && Q_stricmp(cg_forceEnemyModel.string, "0") && Q_stricmp(cg_forceEnemyModel.string, "none"))
 		{
@@ -2341,7 +2341,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			//check skin name for a trailing slash or something
 			slash = strrchr(newInfo.skinName, '/');
 			if (slash) {
-				*slash = 0;	
+				*slash = 0;
 			}
 		}
 	}
@@ -6080,7 +6080,7 @@ static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int
 	if (ci->saber[bnum].useCustomRGBColor && !isNPC)
 		color = SABER_RGB;
 #endif
-		
+
 	switch( color )
 	{
 		case SABER_RED:
@@ -6146,8 +6146,8 @@ static void CG_DoSaberLight( saberInfo_t *saber, int cnum, int bnum )//rgb
 		return;
 	}
 
-	//cancel if black sabers? --loda 
-	
+	//cancel if black sabers? --loda
+
 	if ( (saber->saberFlags2&SFL2_NO_DLIGHT) )
 	{//no dlight!
 		return;
@@ -6583,7 +6583,7 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		radiusmult = 0.5f + ((blade_len / lengthMax) / 2);
 	else
 		radiusmult = 1.0f;
-	
+
 	pulse = Q_fabs(sinf((float)cg.time / 25.0f)) * 0.25f;
 
 	effectradius = ((radius * 1.6f * v1) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
@@ -8152,7 +8152,7 @@ JustDoIt:
 		saberTrail->inAction = cg.time;
 
 		fx.mShader = cgs.media.ShaderSaberTrail;
-		fx.mKillTime = 2;
+        fx.mKillTime = 2;
 		fx.mSetFlags = FX_USE_ALPHA;
 
 		// New muzzle
@@ -9396,7 +9396,7 @@ void CG_ForceFPLSPlayerModel(centity_t *cent, clientInfo_t *ci)
 		//TIE Pilot
 		trap->G2API_SetSurfaceOnOff(cent->ghoul2, "torso_l_hose", TURN_OFF);
 		trap->G2API_SetSurfaceOnOff(cent->ghoul2, "torso_r_hose", TURN_OFF);
-		
+
 		if (cg_fpls.integer == 2 || cg_fpls.integer == 3) { //removes everything but the saber hilt
 			trap->G2API_SetSurfaceOnOff(cent->ghoul2, "hips", TURN_OFF);
 			trap->G2API_SetSurfaceOnOff(cent->ghoul2, "hipsa", TURN_OFF);
@@ -10206,13 +10206,13 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
 		ApplyAxisRotation(ent.axis, ROLL, AngOffset[ROLL]);
 
 		VectorCopy(boltOrg, ent.origin);*/
- 
+
         re.hModel = hatModel;
         VectorCopy(boltOrg, re.lightingOrigin);
         VectorCopy(boltOrg, re.origin);
 		re.renderfx = parent.renderfx;
 		re.customShader = parent.customShader;
- 
+
         trap->R_AddRefEntityToScene(&re);
     }
 }
@@ -10311,7 +10311,7 @@ void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, 
 }
 //[/Kameleon]
 
-
+extern qboolean BG_InSlopeAnim( int anim );
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
 void CG_Player( centity_t *cent ) {
 	clientInfo_t	*ci;
@@ -10377,7 +10377,7 @@ void CG_Player( centity_t *cent ) {
 		VectorClear(cent->modelScale);
 	}
 
-	if ((cg_smoothClients.integer || cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) &&
+	if ((cg_smoothClients.integer || cent->doLerp || cent->currentState.heldByClient) && (cent->currentState.groundEntityNum >= ENTITYNUM_WORLD || cent->currentState.eType == ET_TERRAIN) && //added cg_smoothClients as well
 		!(cent->currentState.eFlags2 & EF2_HYPERSPACE) && cg.predictedPlayerState.m_iVehicleNum != cent->currentState.number)
 	{ //always smooth when being thrown
 		vec3_t			posDif;
@@ -10789,7 +10789,124 @@ void CG_Player( centity_t *cent ) {
 
 			VectorAdd( cent->lerpOrigin, bmins, absmin );
 			VectorAdd( cent->lerpOrigin, bmaxs, absmax );
-			CG_CubeOutline( absmin, absmax, 1, COLOR_RED, 0.25 );
+			CG_CubeOutline( absmin, absmax, 1, -1, 0.25f );
+
+			if ((cg_drawHitBox.integer & 2) && cent->currentState.weapon == WP_SABER &&
+				(cent->currentState.saberEntityNum >= 0 && cent->currentState.saberEntityNum < MAX_ENTITIESTOTAL))
+			{
+				centity_t *saberEnt = &cg_entities[cent->currentState.saberEntityNum];
+				if (saberEnt->currentValid) {
+					//vec3_t bmins ={ -15, -15, DEFAULT_MINS_2 }, bmaxs ={ 15, 15, DEFAULT_MAXS_2 }, absmin, absmax;
+					VectorClear(bmins);
+					VectorClear(bmaxs);
+					VectorClear(absmin);
+					VectorClear(absmax);
+
+					if (saberEnt->currentState.solid) {
+						x = (saberEnt->currentState.solid & 255);
+						zd = ((saberEnt->currentState.solid >> 8) & 255);
+						zu = ((saberEnt->currentState.solid >> 16) & 255) - 32;
+
+						bmins[0] = bmins[1] = -x;
+						bmaxs[0] = bmaxs[1] = x;
+						bmins[2] = -zd;
+						bmaxs[2] = zu;
+					}
+					else {
+#define SABER_BOX_SIZE 16.0f
+						VectorSet(bmins, -SABER_BOX_SIZE, -SABER_BOX_SIZE, -SABER_BOX_SIZE);
+						VectorSet(bmaxs, SABER_BOX_SIZE, SABER_BOX_SIZE, SABER_BOX_SIZE);
+#undef SABER_BOX_SIZE
+					}
+
+#if 0
+					if ((level.time - owner->client->lastSaberStorageTime) > 200 ||
+						(level.time - owner->client->saber[j].blade[k].storageTime) > 100)
+					{ //it's been too long since we got a reliable point storage, so use the defaults and leave.
+						VectorSet(saberent->r.mins, -SABER_BOX_SIZE, -SABER_BOX_SIZE, -SABER_BOX_SIZE);
+						VectorSet(saberent->r.maxs, SABER_BOX_SIZE, SABER_BOX_SIZE, SABER_BOX_SIZE);
+						return;
+					}
+
+					if (dualSabers || owner->client->saber[0].numBlades > 1)
+					{//dual sabers or multi-blade saber
+						if (owner->client->ps.saberHolstered > 1)
+						{//entirely off
+							//no blocking at all
+							VectorSet(saberent->r.mins, 0, 0, 0);
+							VectorSet(saberent->r.maxs, 0, 0, 0);
+							return;
+						}
+					}
+					else
+					{//single saber
+						if (owner->client->ps.saberHolstered)
+						{//off
+							//no blocking at all
+							VectorSet(saberent->r.mins, 0, 0, 0);
+							VectorSet(saberent->r.maxs, 0, 0, 0);
+							return;
+						}
+					}
+					//Start out at the saber origin, then go through all the blades and push out the extents
+					//for each blade, then set the box relative to the origin.
+					VectorCopy(saberent->r.currentOrigin, saberent->r.mins);
+					VectorCopy(saberent->r.currentOrigin, saberent->r.maxs);
+
+					for (i = 0; i < 3; i++)
+					{
+						for (j = 0; j < MAX_SABERS; j++)
+						{
+							if (!owner->client->saber[j].model[0])
+								break;
+
+							if (dualSabers
+								&& owner->client->ps.saberHolstered == 1
+								&& j == 1)
+							{ //this mother is holstered, get outta here.
+								j++;
+								continue;
+							}
+							for (k = 0; k < owner->client->saber[j].numBlades; k++)
+							{
+								if (k > 0)
+								{//not the first blade
+									if (!dualSabers)
+									{//using a single saber
+										if (owner->client->saber[j].numBlades > 1)
+										{//with multiple blades
+											if (owner->client->ps.saberHolstered == 1)
+											{//all blades after the first one are off
+												break;
+											}
+										}
+									}
+								}
+								if (forceBlock)
+								{//only do blocking with blades that are marked to block
+									if (!alwaysBlock[j][k]) //this blade shouldn't be blocking
+										continue;
+								}
+								//VectorMA(owner->client->saber[j].blade[k].muzzlePoint, owner->client->saber[j].blade[k].lengthMax*0.5f, owner->client->saber[j].blade[k].muzzleDir, saberOrg);
+								VectorCopy(owner->client->saber[j].blade[k].muzzlePoint, saberOrg);
+								VectorMA(owner->client->saber[j].blade[k].muzzlePoint, owner->client->saber[j].blade[k].lengthMax, owner->client->saber[j].blade[k].muzzleDir, saberTip);
+
+								if (saberOrg[i] < saberent->r.mins[i])
+									saberent->r.mins[i] = saberOrg[i];
+								if (saberTip[i] < saberent->r.mins[i])
+									saberent->r.mins[i] = saberTip[i];
+
+								if (saberOrg[i] > saberent->r.maxs[i])
+									saberent->r.maxs[i] = saberOrg[i];
+								if (saberTip[i] > saberent->r.maxs[i])
+									saberent->r.maxs[i] = saberTip[i];
+#endif
+
+					VectorAdd( saberEnt->lerpOrigin, bmins, absmin );
+					VectorAdd( saberEnt->lerpOrigin, bmaxs, absmax );
+					CG_CubeOutline(absmin, absmax, 1, -1, 0.25f);
+				}
+			}
 		}
 	}
 //JAPRO - Clientside - Draw Player Collision Hitbox - End
@@ -11984,7 +12101,7 @@ void CG_Player( centity_t *cent ) {
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.4f, cgs.media.ysalimariShader);
 		}
 	}
-	
+
 	if (cent->currentState.powerups & (1 << PW_FORCE_BOON))
 	{
 		CG_DrawPlayerSphere(cent, cent->lerpOrigin, 2.0f, cgs.media.boonShader);
@@ -12622,7 +12739,7 @@ stillDoSaber:
 		legs.shaderRGBA[2] = 0;
 		legs.renderfx |= RF_MINLIGHT;
 	}
-	
+
 //JAPRO - Clientside - Brightskins - Start
 	if (cg_stylePlayer.integer & JAPRO_STYLE_FULLBRIGHT)
 	{
@@ -12636,8 +12753,8 @@ stillDoSaber:
 			legs.renderfx |= RF_RGB_TINT;
 		}
 	}
-	
-	if (cgs.jaPROEngine && !(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD) && (cg.snap->ps.clientNum == cent->currentState.number)) {
+
+	if (!(cg_stylePlayer.integer & JAPRO_STYLE_PLAYERLOD) && (cg.snap->ps.clientNum == cent->currentState.number)) {
 		legs.renderfx |= RF_NOLOD;
 	}
 //JAPRO - Clientside - Brightskins - End
