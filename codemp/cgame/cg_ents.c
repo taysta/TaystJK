@@ -360,49 +360,6 @@ static void CG_EntityEffects( centity_t *cent ) {
 		i = (float) ((cl >> 24) & 0xFF) * 4.0;
 		trap->R_AddLightToScene( cent->lerpOrigin, i, r, g, b );
 	}
-
-#if _DRAWTRIGGERS
-	if (cg_drawTriggers.integer) {
-		clipHandle_t 	cmodel;
-
-		if ( cent->currentState.solid == SOLID_BMODEL ) 
-		{
-			cmodel = cgs.inlineDrawModel[cent->currentState.modelindex];
-		}
-		else 
-		{
-			cmodel = cgs.gameModels[cent->currentState.modelindex];
-		}
-
-		//cmodel = trap->CM_InlineModel( cent->currentState.modelindex );
-
-		if (cmodel) { //entity is a bmodel i guess
-			{
-				vec3_t		verts[24], normal;
-				int i;
-				//Com_Printf("modelindex %i\n", cent->currentState.modelindex);
-
-				if (cg_drawTriggers.integer > 1 && cent->currentState.modelindex >= MAX_CLIENTS) {
-					trap->R_GetBModelVerts(cgs.inlineDrawModel[cent->currentState.modelindex], verts, normal);
-					for (i=0; i<24; i++) {
-						if (verts[i] && verts[i+1])
-							CG_TestLine( verts[i], verts[i+1], 1, COLOR_RED, 1 );
-
-						if (cg_drawTriggers.integer > 2)
-							CG_DoGlass(verts, normal, verts[0], normal, 256, 20);
-					}
-				}
-
-				/*if (cent->currentState.modelindex > 0 && cent->currentState.modelindex)
-					trap->R_GetBModelVerts(cent->currentState.modelindex, verts, normal);
-				for (i=0; i<2; i++) {
-					CG_TestLine( verts[0], verts[1], 1, COLOR_RED, 1 );
-				}*/
-			}
-		}
-	}
-#endif
-
 }
 
 localEntity_t *FX_AddOrientedLine(vec3_t start, vec3_t end, vec3_t normal, float stScale, float scale,
