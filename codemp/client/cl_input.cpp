@@ -748,8 +748,20 @@ void IN_SpeedDown(void) {IN_KeyDown(&in_speed);}
 void IN_SpeedUp(void) {IN_KeyUp(&in_speed);}
 void IN_StrafeDown(void) {IN_KeyDown(&in_strafe);}
 void IN_StrafeUp(void) {IN_KeyUp(&in_strafe);}
+void IN_Button0Down(void)
+{
+	if (!clc.demoplaying && cl.snap.valid && cl.snap.ps.pm_type == PM_SPECTATOR)
+	{
+		int targetId = CGVM_CrosshairPlayer();
 
-void IN_Button0Down(void) {IN_KeyDown(&in_buttons[0]);}
+		if (targetId > -1)
+		{//switch from freelook to following player we're looking at, if any
+			CL_AddReliableCommand(va("follow %i", targetId), qfalse);
+			return;
+		}
+	}
+	IN_KeyDown(&in_buttons[0]);
+}
 void IN_Button0Up(void) {IN_KeyUp(&in_buttons[0]);}
 void IN_Button1Down(void) {IN_KeyDown(&in_buttons[1]);}
 void IN_Button1Up(void) {IN_KeyUp(&in_buttons[1]);}
@@ -1581,6 +1593,20 @@ void CL_FinishMove( usercmd_t *cmd ) {
 	}
 	//always needed in for the cl_crazyShipControls
 	VectorCopy( cl.viewangles, cl_lastViewAngles );
+
+	if (!clc.demoplaying && cl.snap.valid && cl.snap.ps.pm_type == PM_SPECTATOR)
+	{
+		int targetId = CGVM_CrosshairPlayer();
+		char buf[16] = {0};
+
+		if ((cmd->buttons & BUTTON_ATTACK) && targetId > -1)
+		{//switch from freelook to following player we're looking at, if any
+			cmd->buttons &= ~BUTTON_ATTACK;
+			Cbuf_AddText("-attack\n");
+			Com_sprintf(buf, sizeof(buf), "follow %i", targetId);
+			CL_AddReliableCommand(buf, qfalse);
+		}
+	}
 }
 
 /*
