@@ -1728,7 +1728,7 @@ void CL_CheckForResend( void ) {
 		else
 			Info_SetValueForKey(info, "protocol", va("%i", PROTOCOL_LEGACY));
 
-		Com_DPrintf("^3set protocol %s\n", Info_ValueForKey(info, "protocol"));
+		Com_DPrintf(S_COLOR_YELLOW "set protocol %s\n", Info_ValueForKey(info, "protocol"));
 			
 		Info_SetValueForKey( info, "qport", va("%i", port ) );
 		Info_SetValueForKey( info, "challenge", va("%i", clc.challenge ) );

@@ -190,7 +190,7 @@ void Con_Copy(void) {
 	}
 
 	if (l > con.current) {
-		Com_Printf("^3Console is empty! Nothing copied.\n");
+		Com_Printf(S_COLOR_YELLOW "Console is empty! Nothing copied.\n");
 		return;
 	}
 

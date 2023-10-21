@@ -1596,7 +1596,7 @@ void PrintRaceTime(char *username, char *playername, char *message, char *style,
 
 	}
 
-	trap->SendServerCommand( -1, va("print \"%s in ^3%-12s^%i max:^3%-10i^%i avg:^3%-10i^%i style:^3%-10s^%i by ^%i%s %s^7\n\"",
+	trap->SendServerCommand( -1, va("print \"%s in ^3%-12s^%i max:^3%-10i^%i avg:^3%-10i^%i style:^3%-10s^%i by ^%i%s %s" S_COLOR_WHITE "\n\"",
 				messageStr, timeStr, color, topspeed, color, average, color, style, color, nameColor, nameStr, awardString));
 }
 
@@ -2237,9 +2237,9 @@ void Cmd_ACLogin_f( gentity_t *ent ) { //loda fixme show lastip ? or use lastip 
 			ent->client->pers.unlocks = unlocks;
 
 			if ((flags & JAPRO_ACCOUNTFLAG_A_READAMSAY) && !(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_A_READAMSAY))
-				trap->SendServerCommand(-1, va("print \"%s^7 (%s) has logged in as an admin\n\"", ent->client->pers.netname, ent->client->pers.userName));
+				trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " (%s) has logged in as an admin\n\"", ent->client->pers.netname, ent->client->pers.userName));
 			else
-				trap->SendServerCommand(-1, va("print \"%s^7 (%s) has logged in\n\"", ent->client->pers.netname, ent->client->pers.userName));
+				trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " (%s) has logged in\n\"", ent->client->pers.netname, ent->client->pers.userName));
 
 			for (i=0; i<32; i++) {//Loop this
 				if (flags & (1 << i))//Problem, only add to flags, not remove?
@@ -2800,7 +2800,7 @@ void Svcmd_FlagAccount_f( void ) {
 			CALL_SQLITE (bind_text (stmt, 2, username, -1, SQLITE_STATIC));
 			s = sqlite3_step(stmt);
 			if (s == SQLITE_DONE) {
-				trap->Print( "%s %s^7\n", accountFlags[index].string, ((flags & (1 << index))
+				trap->Print( "%s %s" S_COLOR_WHITE "\n", accountFlags[index].string, ((flags & (1 << index))
 					? "^1Disabled" : "^2Enabled") );
 			}
 			else {
@@ -2896,7 +2896,7 @@ void Svcmd_ListAdmins_f(void)
 			if (s == SQLITE_ROW) {
 				flags = sqlite3_column_int(stmt, 1);
 				Q_strncpyz(adminString, "Admin", sizeof(adminString));
-				Com_Printf(va("^5%2i^3: ^3%-18s %s^7\n", row, (char*)sqlite3_column_text(stmt, 0), adminString));
+				Com_Printf(va("^5%2i^3: ^3%-18s %s" S_COLOR_WHITE "\n", row, (char*)sqlite3_column_text(stmt, 0), adminString));
 				row++;
 			}
 			else if (s == SQLITE_DONE) {
@@ -3391,7 +3391,7 @@ void Cmd_ACLogout_f( gentity_t *ent ) { //If logged in, print logout msg, remove
 
 		//ent->client->pers.unlocks = 0;
 		//ent->client->sess.accountFlags = 0;
-		trap->SendServerCommand(-1, va("print \"%s^7 (%s) has logged out\n\"", ent->client->pers.netname, ent->client->pers.userName));
+		trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " (%s) has logged out\n\"", ent->client->pers.netname, ent->client->pers.userName));
 		Q_strncpyz(ent->client->pers.userName, "", sizeof(ent->client->pers.userName));
 	}
 	else
@@ -4549,9 +4549,9 @@ void Cmd_AccountStats_f(gentity_t *ent) { //Should i bother to cache player stat
 
 					//If rank == 0, put "Season rank: season_rank".  Else put "Rank: rank"
 					if (sqlite3_column_int(stmt, 2))
-						Com_sprintf(rankStr, sizeof(rankStr), "^2%i^7", sqlite3_column_int(stmt, 2));
+						Com_sprintf(rankStr, sizeof(rankStr), "^2%i" S_COLOR_WHITE "", sqlite3_column_int(stmt, 2));
 					else
-						Com_sprintf(rankStr, sizeof(rankStr), "^3%i^7", sqlite3_column_int(stmt, 3));
+						Com_sprintf(rankStr, sizeof(rankStr), "^3%i" S_COLOR_WHITE "", sqlite3_column_int(stmt, 3));
 
 					tmpMsg = va("^5%2i^3: ^3%-27s ^3%-10s ^3%-11s ^3%-12s %s\n", row + start, sqlite3_column_text(stmt, 0), styleStr, rankStr, timeStr, dateStr);
 					if (strlen(msg) + strlen(tmpMsg) >= sizeof(msg)) {
@@ -4626,12 +4626,12 @@ void Cmd_AccountStats_f(gentity_t *ent) { //Should i bother to cache player stat
 					getDateTime(sqlite3_column_int(stmt, 3), dateStr, sizeof(dateStr));
 
 					if (!Q_stricmp((char*)sqlite3_column_text(stmt, 0), username)) { //They are winner
-						Com_sprintf(opponent, sizeof(opponent), "^3%s^7", (char*)sqlite3_column_text(stmt, 1));
-						Com_sprintf(result, sizeof(result), "^2Win^7");
+						Com_sprintf(opponent, sizeof(opponent), "^3%s" S_COLOR_WHITE "", (char*)sqlite3_column_text(stmt, 1));
+						Com_sprintf(result, sizeof(result), "^2Win" S_COLOR_WHITE "");
 					}
 					else {
-						Com_sprintf(opponent, sizeof(opponent), "^3%s^7", (char*)sqlite3_column_text(stmt, 0));
-						Com_sprintf(result, sizeof(result), "^1Loss^7");
+						Com_sprintf(opponent, sizeof(opponent), "^3%s" S_COLOR_WHITE "", (char*)sqlite3_column_text(stmt, 0));
+						Com_sprintf(result, sizeof(result), "^1Loss" S_COLOR_WHITE "");
 					}
 
 					tmpMsg = va("^5%2i^3: ^3%-20s ^3%-12s ^3%-11s %s\n", row + start, opponent, result, type, dateStr);
@@ -4709,17 +4709,25 @@ void G_AddSimpleStat(gentity_t *self, gentity_t *other, int type) {
 	}
 	Q_strncpyz(UserStats[row].username, userName, sizeof(UserStats[row].username )); //If we are here it means name not found, so add it
 	UserStats[row].kills = UserStats[row].deaths = UserStats[row].suicides = UserStats[row].captures = UserStats[row].returns = 0; //I guess set all their shit to 0
-	//Add the one type ..
-	if (type == 1) //Kills
+	switch (type)
+	{//Add the one type ..
+		default: break;
+		case 1: //Kills
 		UserStats[row].kills++;
-	else if (type == 2) //Deaths
+			break;
+		case 2: //Deaths
 		UserStats[row].deaths++;
-	else if (type == 3) //Suicides
+			break;
+		case 3: //Suicides
 		UserStats[row].suicides++;
-	else if (type == 4) //Captures
+			break;
+		case 4: //Captures
 		UserStats[row].captures++;
-	else if (type == 5) //Returns
+			break;
+		case 5: //Returns
 		UserStats[row].returns++;
+			break;
+	}
 
 #endif
 }
@@ -4786,17 +4794,20 @@ void G_AddSimpleStatsToDB() {
 	pch = strtok (buf,";\n");
 	while (pch != NULL)
 	{
-		if ((args % 6) == 1)
-			Q_strncpyz(TempUserStats.username, pch, sizeof(TempUserStats.username));
-		else if ((args % 6) == 2)
-			TempUserStats.kills = atoi(pch);
-		else if ((args % 6) == 3)
-			TempUserStats.deaths = atoi(pch);
-		else if ((args % 6) == 4)
-			TempUserStats.suicides = atoi(pch);
-		else if ((args % 6) == 5)
-			TempUserStats.captures = atoi(pch);
-		else if ((args % 6) == 0) {
+		switch (args % 6)
+		{
+			case 1:
+				Q_strncpyz(TempUserStats.username, pch, sizeof(TempUserStats.username)); break;
+		case 2:
+			TempUserStats.kills = atoi(pch); break;
+		case 3:
+			TempUserStats.deaths = atoi(pch); break;
+		case 4:
+			TempUserStats.suicides = atoi(pch); break;
+		case 5:
+			TempUserStats.captures = atoi(pch); break;
+		default:
+		case 0:
 			TempUserStats.returns = atoi(pch);
 			//trap->Print("Inserting stat into db: %s, %i, %i, %i, %i, %i\n", TempUserStats.username, TempUserStats.kills, TempUserStats.deaths, TempUserStats.suicides, TempUserStats.captures, TempUserStats.returns);
 			CALL_SQLITE (bind_int (stmt, 1, TempUserStats.kills));
@@ -4808,6 +4819,7 @@ void G_AddSimpleStatsToDB() {
 			CALL_SQLITE_EXPECT (step (stmt), DONE);
 			CALL_SQLITE (reset (stmt));
 			CALL_SQLITE (clear_bindings (stmt));
+			break;
 		}
     	pch = strtok (NULL, ";\n");
 		args++;
@@ -5284,7 +5296,7 @@ void Cmd_DFFind_f(gentity_t *ent) {
 			trap->SendServerCommand(ent-g_entities, "print \"This map has multiple courses, you must specify one of the following with /rFind <username> <mapname (optional)> <season (optional - example: s1)> <style (optional)>.\n\"");
 			for (i = 0; i < level.numCourses; i++) { //32 max
 				if (level.courseName[i] && level.courseName[i][0])
-					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i ^7- ^3%s\n\"", i+1, level.courseName[i]));
+					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i " S_COLOR_WHITE "- ^3%s\n\"", i+1, level.courseName[i]));
 			}
 			return;
 		}
@@ -5396,7 +5408,7 @@ void Cmd_DFFind_f(gentity_t *ent) {
 				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr), qfalse);
 				getDateTime(sqlite3_column_int(stmt, 4), dateStr, sizeof(dateStr));
 				if (rawtime - sqlite3_column_int(stmt, 4) < 60*60*24) { //Today
-					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s^7", dateStr);
+					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s" S_COLOR_WHITE "", dateStr);
 				}
 				else {
 					Q_strncpyz(dateStrColored, dateStr, sizeof(dateStrColored));
@@ -5797,12 +5809,12 @@ void Cmd_DFRecent_f(gentity_t *ent) {
 
 				if (showSeasons) {	//If rank == 0, put season rank in yellow, else put rank in green
 					if (sqlite3_column_int(stmt, 3))
-						Com_sprintf(rankStr, sizeof(rankStr), "^2%i^7", sqlite3_column_int(stmt, 3));
+						Com_sprintf(rankStr, sizeof(rankStr), "^2%i" S_COLOR_WHITE "", sqlite3_column_int(stmt, 3));
 					else
-						Com_sprintf(rankStr, sizeof(rankStr), "^3%i^7", sqlite3_column_int(stmt, 6));
+						Com_sprintf(rankStr, sizeof(rankStr), "^3%i" S_COLOR_WHITE "", sqlite3_column_int(stmt, 6));
 				}
 				else
-					Com_sprintf(rankStr, sizeof(rankStr), "^2%i^7", sqlite3_column_int(stmt, 3));
+					Com_sprintf(rankStr, sizeof(rankStr), "^2%i" S_COLOR_WHITE "", sqlite3_column_int(stmt, 3));
 
 				tmpMsg = va("^5%2i^3: ^3%-18s ^3%-30s ^3%-11s ^3%-12s ^3%-12s %s\n", start+row, sqlite3_column_text(stmt, 0), sqlite3_column_text(stmt, 1), styleStr, rankStr, timeStr, dateStr);
 				if (strlen(msg) + strlen(tmpMsg) >= sizeof(msg)) {
@@ -5880,7 +5892,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 			trap->SendServerCommand(ent-g_entities, "print \"This map has multiple courses, you must specify one of the following with /rTop <coursename> <style (optional)> <season (optional - example: s1)> <page (optional)>.\n\"");
 			for (i = 0; i < level.numCourses; i++) { //32 max
 				if (level.courseName[i] && level.courseName[i][0])
-					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i ^7- ^3%s\n\"", i+1, level.courseName[i]));
+					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i " S_COLOR_WHITE "- ^3%s\n\"", i+1, level.courseName[i]));
 			}
 			return;
 		}
@@ -6011,7 +6023,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr), qfalse);
 				getDateTime(sqlite3_column_int(stmt, 4), dateStr, sizeof(dateStr));
 				if (rawtime - sqlite3_column_int(stmt, 4) < 60*60*24) { //Today
-					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s^7", dateStr);
+					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s" S_COLOR_WHITE "", dateStr);
 				}
 				else {
 					Q_strncpyz(dateStrColored, dateStr, sizeof(dateStrColored));
@@ -6059,7 +6071,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 			trap->SendServerCommand(ent-g_entities, "print \"This map has multiple courses, you must specify one of the following with /rTop <coursename> <style (optional)> <page (optional)>.\n\"");
 			for (i = 0; i < level.numCourses; i++) { //32 max
 				if (level.courseName[i] && level.courseName[i][0])
-					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i ^7- ^3%s\n\"", i+1, level.courseName[i]));
+					trap->SendServerCommand(ent-g_entities, va("print \"  ^5%i " S_COLOR_WHITE "- ^3%s\n\"", i+1, level.courseName[i]));
 			}
 			return;
 		}
@@ -6202,7 +6214,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr), qfalse);
 				getDateTime(sqlite3_column_int(stmt, 4), dateStr, sizeof(dateStr));
 				if (rawtime - sqlite3_column_int(stmt, 4) < 60*60*24) { //Today
-					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s^7", dateStr);
+					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s" S_COLOR_WHITE "", dateStr);
 				}
 				else {
 					Q_strncpyz(dateStrColored, dateStr, sizeof(dateStrColored));
@@ -6730,7 +6742,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 
 			Q_strncpyz(strNum, va("^5%2i^3:", i), sizeof(strNum));
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
-			Com_sprintf(strUser, sizeof(strUser), "^7%s^7", cl->pers.userName);
+			Com_sprintf(strUser, sizeof(strUser), "" S_COLOR_WHITE "%s" S_COLOR_WHITE "", cl->pers.userName);
 			Q_strncpyz(strIP, cl->sess.IP, sizeof(strIP));
 
 			if (cl->sess.sessionTeam != TEAM_SPECTATOR)
@@ -6743,36 +6755,36 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 			}
 			if (whois) {
 				if (cl->sess.accountFlags == g_juniorAdminLevel.integer)
-					Q_strncpyz(strAdmin, "^3Junior^7", sizeof(strAdmin));
+					Q_strncpyz(strAdmin, "^3Junior" S_COLOR_WHITE "", sizeof(strAdmin));
 				else if (cl->sess.accountFlags == g_fullAdminLevel.integer)
-					Q_strncpyz( strAdmin, "^3Full^7", sizeof(strAdmin));
+					Q_strncpyz( strAdmin, "^3Full" S_COLOR_WHITE "", sizeof(strAdmin));
 				else if (cl->sess.accountFlags & JAPRO_ACCOUNTFLAG_A_READAMSAY) //Damn this, how do we get it to ignore non admin account flags
-					Q_strncpyz(strAdmin, "^3Custom^7", sizeof(strAdmin));
+					Q_strncpyz(strAdmin, "^3Custom" S_COLOR_WHITE "", sizeof(strAdmin));
 				else
-					Q_strncpyz(strAdmin, "^7None^7", sizeof(strAdmin));
+					Q_strncpyz(strAdmin, "" S_COLOR_WHITE "None" S_COLOR_WHITE "", sizeof(strAdmin));
 			}
 
 			if (g_raceMode.integer) {
 				if (cl->sess.sessionTeam == TEAM_SPECTATOR) {
-					Q_strncpyz(strStyle, "^7^7", sizeof(strStyle));
-					Q_strncpyz(strRace, "^7^7", sizeof(strRace));
-					Q_strncpyz(strHidden, "^7^7", sizeof(strHidden));
+					Q_strncpyz(strStyle, "" S_COLOR_WHITE "" S_COLOR_WHITE "", sizeof(strStyle));
+					Q_strncpyz(strRace, "" S_COLOR_WHITE "" S_COLOR_WHITE "", sizeof(strRace));
+					Q_strncpyz(strHidden, "" S_COLOR_WHITE "" S_COLOR_WHITE "", sizeof(strHidden));
 				}
 				else {
 					char strStyleName[16] = {0};
-					Q_strncpyz(strRace, (cl->sess.raceMode) ? "^2Yes^7" : "^1No^7", sizeof(strRace));
-					Q_strncpyz(strHidden, (cl->pers.noFollow) ? "^2Yes^7" : "^1No^7", sizeof(strHidden));
+					Q_strncpyz(strRace, (cl->sess.raceMode) ? "^2Yes" S_COLOR_WHITE "" : "^1No" S_COLOR_WHITE "", sizeof(strRace));
+					Q_strncpyz(strHidden, (cl->pers.noFollow) ? "^2Yes" S_COLOR_WHITE "" : "^1No" S_COLOR_WHITE "", sizeof(strHidden));
 
-					Q_strncpyz(strStyle, "^7", sizeof(strStyle));
+					Q_strncpyz(strStyle, "" S_COLOR_WHITE "", sizeof(strStyle));
 					IntegerToRaceName(cl->ps.stats[STAT_MOVEMENTSTYLE],strStyleName, sizeof(strStyleName));
-					Q_strcat(strStyle, sizeof(strStyle), va("%s^7", strStyleName));
+					Q_strcat(strStyle, sizeof(strStyle), va("%s" S_COLOR_WHITE "", strStyleName));
 				}
 			}
 
 			if (g_entities[i].r.svFlags & SVF_BOT)
-				Q_strncpyz(strPlugin, "^7Bot^7", sizeof(strPlugin));
+				Q_strncpyz(strPlugin, "" S_COLOR_WHITE "Bot" S_COLOR_WHITE "", sizeof(strPlugin));
 			else
-				Q_strncpyz(strPlugin, (cl->pers.isJAPRO) ? "^2Yes^7" : "^1No^7", sizeof(strPlugin));
+				Q_strncpyz(strPlugin, (cl->pers.isJAPRO) ? "^2Yes" S_COLOR_WHITE "" : "^1No" S_COLOR_WHITE "", sizeof(strPlugin));
 
 			if (whois) { //No username means not logged in, so check if they have an account tied to their ip
 				if (!cl->pers.userName[0]) {
@@ -6787,7 +6799,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 					if (s == SQLITE_ROW) {
 						if (ip)
 							//Q_strncpyz(strUser, (char*)sqlite3_column_text(stmt, 0), sizeof(strUser));
-							Com_sprintf(strUser, sizeof(strUser), "^3%s^7", (char*)sqlite3_column_text(stmt, 0));
+							Com_sprintf(strUser, sizeof(strUser), "^3%s" S_COLOR_WHITE "", (char*)sqlite3_column_text(stmt, 0));
 					}
 					else if (s != SQLITE_DONE) {
 						G_ErrorPrint("ERROR: SQL Select Failed (Cmd_ACWhois_f)", s);

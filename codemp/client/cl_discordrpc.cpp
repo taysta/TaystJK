@@ -278,13 +278,13 @@ char *GetServerDetails() {
 static void handleDiscordReady( const DiscordUser* connectedUser )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
-		Com_Printf( "^5Discord: connected to user %s#%s - %s\n",
+		Com_Printf( S_COLOR_CYAN "Discord: connected to user %s#%s - %s\n",
 			connectedUser->username,
 			connectedUser->discriminator,
 			connectedUser->userId );
 	}
 	else {
-		Com_Printf( "^1Discord: ^7verbunden zu Nutzer ^3%s^7#^3%s ^7- ^3%s^7\n",
+		Com_Printf( S_COLOR_RED "Discord: " S_COLOR_WHITE "verbunden zu Nutzer " S_COLOR_YELLOW "%s" S_COLOR_WHITE "#" S_COLOR_YELLOW "%s " S_COLOR_WHITE "- " S_COLOR_YELLOW "%s" S_COLOR_WHITE "\n",
 			connectedUser->username,
 			connectedUser->discriminator,
 			connectedUser->userId );
@@ -294,17 +294,17 @@ static void handleDiscordReady( const DiscordUser* connectedUser )
 static void handleDiscordDisconnected( int errcode, const char* message )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^3disconnected ^3(%d: ^3%s)\n", errcode, message );
+		Com_Printf( S_COLOR_CYAN "Discord: " S_COLOR_YELLOW "disconnected " S_COLOR_YELLOW "(%d: " S_COLOR_YELLOW "%s)\n", errcode, message );
 	else
-		Com_Printf( "^1Discord: ^7getrennt (^3%d^7: ^3%s^7)\n", errcode, message );
+		Com_Printf( S_COLOR_RED "Discord: " S_COLOR_WHITE "getrennt (" S_COLOR_YELLOW "%d" S_COLOR_WHITE ": " S_COLOR_YELLOW "%s" S_COLOR_WHITE ")\n", errcode, message );
 }
 
 static void handleDiscordError( int errcode, const char* message )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: ^1Error - (%d: %s)\n", errcode, message );
+		Com_Printf( S_COLOR_CYAN "Discord: " S_COLOR_RED "Error - (%d: %s)\n", errcode, message );
 	else
-		Com_Printf( "^1Discord: ^7Fehler (^3%d^7: ^3%s^7)\n", errcode, message );
+		Com_Printf( S_COLOR_RED "Discord: " S_COLOR_WHITE "Fehler (" S_COLOR_YELLOW "%d" S_COLOR_WHITE ": " S_COLOR_YELLOW "%s" S_COLOR_WHITE ")\n", errcode, message );
 }
 
 static void handleDiscordJoin( const char* secret )
@@ -392,18 +392,18 @@ static void handleDiscordJoin( const char* secret )
 		}
 		else
 		{
-			Com_Printf("^5Discord: ^1Invalid IP address ^3(%s)\n", ip);
+			Com_Printf(S_COLOR_CYAN "Discord: " S_COLOR_RED "Invalid IP address ^3(%s)\n", ip);
 		}
 	}
-	Com_Printf("^5Discord: ^1Failed to parse server information from join secret\n");
+	Com_Printf("Discord: " S_COLOR_RED "Failed to parse server information from join secret\n");
 }
 
 static void handleDiscordSpectate( const char* secret )
 {
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german"))
-		Com_Printf( "^5Discord: spectating ^3(%s)^7\n", secret );
+		Com_Printf( S_COLOR_CYAN "Discord: spectating " S_COLOR_YELLOW "(%s)" S_COLOR_WHITE "\n", secret );
 	else
-		Com_Printf( "^1Discord: ^7spectate (^3%s^7)\n", secret );
+		Com_Printf( S_COLOR_RED "Discord: " S_COLOR_WHITE "spectate (" S_COLOR_YELLOW "%s" S_COLOR_WHITE ")\n", secret );
 }
 
 static void handleDiscordJoinRequest( const DiscordUser* request )
@@ -411,13 +411,13 @@ static void handleDiscordJoinRequest( const DiscordUser* request )
 	int response = -1;
 
 	if (Q_stricmp(Cvar_VariableString("se_language"), "german")) {
-		Com_Printf( "^5Discord: ^7join request from ^7%s#%s - %s\n",
+		Com_Printf( S_COLOR_CYAN "Discord: " S_COLOR_WHITE "join request from " S_COLOR_WHITE "%s#%s - %s\n",
 			request->username,
 			request->discriminator,
 			request->userId );
 	}
 	else {
-		Com_Printf( "^1Discord: ^7join request from ^3%s^7#^3%s ^7- ^3%s^7\n",
+		Com_Printf( S_COLOR_RED "Discord: " S_COLOR_WHITE "join request from " S_COLOR_YELLOW "%s" S_COLOR_WHITE "#" S_COLOR_YELLOW "%s " S_COLOR_WHITE "- " S_COLOR_YELLOW "%s" S_COLOR_WHITE "\n",
 				request->username,
 				request->discriminator,
 				request->userId );

@@ -2270,13 +2270,13 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		//G_LogPrintf( "sayclan: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
-			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ",
+			Com_sprintf (name, sizeof(name), EC"" S_COLOR_RED "<Clan>" S_COLOR_WHITE "(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 			locMsg = location;
 		}
 		else
 		{
-			Com_sprintf (name, sizeof(name), EC"^1<Clan>^7(%s%c%c"EC")"EC": ",
+			Com_sprintf (name, sizeof(name), EC"" S_COLOR_RED "<Clan>" S_COLOR_WHITE "(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		}
 		color = COLOR_RED;
@@ -2285,13 +2285,13 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 		//G_LogPrintf( "sayadmin: %s: %s\n", ent->client->pers.netname, chatText );
 		if (Team_GetLocationMsg(ent, location, sizeof(location)))
 		{
-			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ",
+			Com_sprintf (name, sizeof(name), EC"" S_COLOR_YELLOW "<Admin>" S_COLOR_WHITE "(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 			locMsg = location;
 		}
 		else
 		{
-			Com_sprintf (name, sizeof(name), EC"^3<Admin>^7(%s%c%c"EC")"EC": ",
+			Com_sprintf (name, sizeof(name), EC"" S_COLOR_YELLOW "<Admin>" S_COLOR_WHITE "(%s%c%c"EC")"EC": ",
 				ent->client->pers.netname, Q_COLOR_ESCAPE, COLOR_WHITE );
 		}
 		color = COLOR_YELLOW;
@@ -2741,7 +2741,7 @@ void Cmd_MapList_f( gentity_t *ent ) {
 		Q_StripColor( map );
 
 		if ( G_DoesMapSupportGametype( map, level.gametype ) || (g_tweakVote.integer & TV_IGNOREMAPARENAS) ) {  //ARGH?
-			char *tmpMsg = va( " ^%c%s", (++toggle&1) ? COLOR_GREEN : COLOR_YELLOW, map );
+			char *tmpMsg = va( " %c%c%s", Q_COLOR_ESCAPE, (++toggle&1) ? COLOR_GREEN : COLOR_YELLOW, map );
 			if ( strlen( buf ) + strlen( tmpMsg ) >= sizeof( buf ) ) {
 				trap->SendServerCommand( ent-g_entities, va( "print \"%s\"", buf ) );
 				buf[0] = '\0';
@@ -2869,7 +2869,7 @@ void Cmd_AmMapList_f(gentity_t *ent)
 				baseMapCount++;
 				continue;
 			}
-			tmpMsg = va( " ^3%-32s    ", sortedMaps[i]);
+			tmpMsg = va( " " S_COLOR_YELLOW "%-32s    ", sortedMaps[i]);
 			if (count >= limit) {
 				tmpMsg = va("\n   %s", tmpMsg);
 				count = 0;
@@ -2882,7 +2882,7 @@ void Cmd_AmMapList_f(gentity_t *ent)
 			Q_strcat( buf, sizeof( buf ), tmpMsg );
 		}
 		trap->SendServerCommand( ent-g_entities, va( "print \"%s\n\"", buf ) );
-		trap->SendServerCommand(ent-g_entities, va("print \"^5%i maps listed\n\"", numMaps - baseMapCount));
+		trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN "%i maps listed\n\"", numMaps - baseMapCount));
 	}
 }
 
@@ -3124,7 +3124,7 @@ void Svcmd_ToggleAllowVote_f( void ) {
 		trap->Cvar_Set( "g_allowVote", va( "%i", (1 << index) ^ (g_allowVote.integer & ((1 << validVoteStringsSize) - 1)) ) );
 		trap->Cvar_Update( &g_allowVote );
 
-		Com_Printf( "%s %s^7\n", validVoteStrings[index].string, ((g_allowVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled") );
+		Com_Printf( "%s %s" S_COLOR_WHITE "\n", validVoteStrings[index].string, ((g_allowVote.integer & (1 << index)) ? "" S_COLOR_GREEN "Enabled" : "" S_COLOR_RED "Disabled") );
 	}
 }
 
@@ -3277,13 +3277,13 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 
 			toggle = !toggle;
 			if ( validVoteStrings[i].shortHelp ) {
-				Q_strcat( buf, sizeof( buf ), va( "^%c%s %s ",
+				Q_strcat( buf, sizeof( buf ), va( "%c%c%s %s ", Q_COLOR_ESCAPE,
 					toggle ? COLOR_GREEN : COLOR_YELLOW,
 					validVoteStrings[i].string,
 					validVoteStrings[i].shortHelp ) );
 			}
 			else {
-				Q_strcat( buf, sizeof( buf ), va( "^%c%s ",
+				Q_strcat( buf, sizeof( buf ), va( "%c%c%s ", Q_COLOR_ESCAPE,
 					toggle ? COLOR_GREEN : COLOR_YELLOW,
 					validVoteStrings[i].string ) );
 			}
@@ -3342,8 +3342,8 @@ validVote:
 	}
 	Q_strstrip( level.voteStringClean, "\"\n\r", NULL );
 
-	trap->SendServerCommand( -1, va( "print \"%s^7 %s (%s^7)\n\"", ent->client->pers.netname, G_GetStringEdString( "MP_SVGAME", "PLCALLEDVOTE" ), level.voteStringClean ) );
-	G_LogPrintf ("%s^7 %s (%s^7)\n",  ent->client->pers.netname, G_GetStringEdString( "MP_SVGAME", "PLCALLEDVOTE" ), level.voteStringClean);
+	trap->SendServerCommand( -1, va( "print \"%s" S_COLOR_WHITE " %s (%s" S_COLOR_WHITE ")\n\"", ent->client->pers.netname, G_GetStringEdString( "MP_SVGAME", "PLCALLEDVOTE" ), level.voteStringClean ) );
+	G_LogPrintf ("%s" S_COLOR_WHITE " %s (%s" S_COLOR_WHITE ")\n",  ent->client->pers.netname, G_GetStringEdString( "MP_SVGAME", "PLCALLEDVOTE" ), level.voteStringClean);
 
 	// start the voting, the caller automatically votes yes
 	level.voteTime = level.time;
@@ -3442,20 +3442,20 @@ void Cmd_Vote_f( gentity_t *ent ) {
 		trap->SetConfigstring( CS_VOTE_YES, va("%i", level.voteYes ) );
 
 		if (g_tweakVote.integer & TV_SHOW_VOTES)
-			trap->SendServerCommand( -1, va("print \"%s^7 voted yes\n\"", ent->client->pers.netname) );
+			trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " voted yes\n\"", ent->client->pers.netname) );
 		else
 			trap->SendServerCommand( ent-g_entities, va("print \"%s (Yes)\n\"", G_GetStringEdString("MP_SVGAME", "PLVOTECAST")) );
-		G_LogPrintf ( "%s^7 voted yes\n", ent->client->pers.netname );
+		G_LogPrintf ( "%s" S_COLOR_WHITE " voted yes\n", ent->client->pers.netname );
 
 	} else {
 		level.voteNo++;
 		ent->client->pers.vote = 2;
 		trap->SetConfigstring( CS_VOTE_NO, va("%i", level.voteNo ) );
 		if (g_tweakVote.integer & TV_SHOW_VOTES)
-			trap->SendServerCommand( -1, va("print \"%s^7 voted no\n\"", ent->client->pers.netname) );
+			trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " voted no\n\"", ent->client->pers.netname) );
 		else
 			trap->SendServerCommand( ent-g_entities, va("print \"%s (No)\n\"", G_GetStringEdString("MP_SVGAME", "PLVOTECAST")) );
-		G_LogPrintf ( "%s^7 voted no\n", ent->client->pers.netname );
+		G_LogPrintf ( "%s" S_COLOR_WHITE " voted no\n", ent->client->pers.netname );
 	}
 
 	// a majority will be determined in CheckVote, which will also account
@@ -3546,7 +3546,7 @@ void Cmd_CallTeamVote_f( gentity_t *ent ) {
 	}
 	else {
 		trap->SendServerCommand( ent-g_entities, "print \"Invalid team vote string.\n\"" );
-		trap->SendServerCommand( ent-g_entities, va("print \"Allowed team vote strings are: ^%c%s %s\n\"", COLOR_GREEN, "leader", "<optional client name or number>" ));
+		trap->SendServerCommand( ent-g_entities, va("print \"Allowed team vote strings are: " S_COLOR_GREEN "%s %s\n\"", "leader", "<optional client name or number>" ));
 		return;
 	}
 
@@ -3556,7 +3556,7 @@ void Cmd_CallTeamVote_f( gentity_t *ent ) {
 		if ( level.clients[i].pers.connected == CON_DISCONNECTED )
 			continue;
 		if ( level.clients[i].sess.sessionTeam == team )
-			trap->SendServerCommand( i, va("print \"%s^7 called a team vote (%s)\n\"", ent->client->pers.netname, level.teamVoteStringClean[cs_offset] ) );
+			trap->SendServerCommand( i, va("print \"%s" S_COLOR_WHITE " called a team vote (%s)\n\"", ent->client->pers.netname, level.teamVoteStringClean[cs_offset] ) );
 	}
 
 	// start the voting, the caller autoamtically votes yes
@@ -4323,25 +4323,25 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 					G_AddEvent(ent, EV_PRIVATE_DUEL, 1);
 					G_AddEvent(challenged, EV_PRIVATE_DUEL, 1);
 					if (g_eloRanking.integer && ent->client->pers.userName[0] && challenged->client->pers.userName[0])
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Saber) [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					else
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Saber)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "!\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					break;
 				case	1://FF Duel
 					G_AddEvent(ent, EV_PRIVATE_DUEL, 2);
 					G_AddEvent(challenged, EV_PRIVATE_DUEL, 2);
 					if (g_eloRanking.integer && ent->client->pers.userName[0] && challenged->client->pers.userName[0])
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Force) [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (Force) [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					else
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Force)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (Force)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					break;
 				default://Gun duel
 					G_AddEvent(ent, EV_PRIVATE_DUEL, dueltypes[ent->client->ps.clientNum]);
 					G_AddEvent(challenged, EV_PRIVATE_DUEL, dueltypes[challenged->client->ps.clientNum]);
 					if (g_eloRanking.integer && ent->client->pers.userName[0] && challenged->client->pers.userName[0])
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Gun) [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (Gun) [Ranked]\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					else
-						trap->SendServerCommand(-1, va("print \"%s^7 %s %s^7! (Gun)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
+						trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " %s %s" S_COLOR_WHITE "! (Gun)\n\"", challenged->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELACCEPT"), ent->client->pers.netname) );
 					break;
 			}
 
@@ -4459,12 +4459,12 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 			//Print the message that a player has been challenged in private, only announce the actual duel initiation in private
 			switch (dueltype) {
 				case	0:
-					trap->SendServerCommand( challenged-g_entities, va("cp \"%s ^7%s\n^2(Saber Duel)\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE")) );
-					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n^2(Saber Duel)\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
+					trap->SendServerCommand( challenged-g_entities, va("cp \"%s " S_COLOR_WHITE "%s\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE")) );
+					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
 					break;
 				case	1:
-					trap->SendServerCommand( challenged-g_entities, va("cp \"%s ^7%s\n^4(Force Duel)\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE")) );
-					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n^4(Force Duel)\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
+					trap->SendServerCommand( challenged-g_entities, va("cp \"%s " S_COLOR_WHITE "%s\n" S_COLOR_BLUE "(Force Duel)\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE")) );
+					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n" S_COLOR_BLUE "(Force Duel)\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname) );
 					break;
 				default:
 					switch (dueltype - 2) {
@@ -4486,8 +4486,8 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 						case 17: Com_sprintf(weapStr, sizeof(weapStr), "Stun baton"); break;
 						default: Com_sprintf(weapStr, sizeof(weapStr), "Gun"); break;
 					}
-					trap->SendServerCommand( challenged-g_entities, va("cp \"%s ^7%s\n^4(%s Duel)\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE"), weapStr) );
-					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n^4(%s Duel)\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, weapStr) );
+					trap->SendServerCommand( challenged-g_entities, va("cp \"%s " S_COLOR_WHITE "%s\n" S_COLOR_BLUE "(%s Duel)\n\"", ent->client->pers.netname, G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGE"), weapStr) );
+					trap->SendServerCommand( ent-g_entities, va("cp \"%s %s\n" S_COLOR_BLUE "(%s Duel)\n\"", G_GetStringEdString("MP_SVGAME", "PLDUELCHALLENGED"), challenged->client->pers.netname, weapStr) );
 					break;
 			}
 		}
@@ -4930,9 +4930,9 @@ void Cmd_Amlogin_f(gentity_t *ent)
 
 			if (added) {
 				if (Q_stricmp(g_fullAdminMsg.string, "")) //Ok, so just set this to " " if you want it to print the normal login msg, or set it to "" to skip.  or "with junior admin" for more info.. etc
-					trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_fullAdminMsg.string));
+					trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " has logged in %s\n\"", ent->client->pers.netname, g_fullAdminMsg.string));
 				else
-					trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with full admin privileges.\n\"");
+					trap->SendServerCommand(ent - g_entities, "print \"" S_COLOR_GREEN "You are now logged in with full admin privileges.\n\"");
 				}
 			else {
 				trap->SendServerCommand(ent - g_entities, "print \"You are already logged in. Type in /amLogout to remove admin status.\n\"");
@@ -4950,16 +4950,16 @@ void Cmd_Amlogin_f(gentity_t *ent)
 
 			if (added) {
 				if (Q_stricmp(g_juniorAdminMsg.string, ""))
-					trap->SendServerCommand(-1, va("print \"%s^7 has logged in %s\n\"", ent->client->pers.netname, g_juniorAdminMsg.string));
+					trap->SendServerCommand(-1, va("print \"%s" S_COLOR_WHITE " has logged in %s\n\"", ent->client->pers.netname, g_juniorAdminMsg.string));
 				else
-					trap->SendServerCommand(ent - g_entities, "print \"^2You are now logged in with junior admin privileges.\n\"");
+					trap->SendServerCommand(ent - g_entities, "print \"" S_COLOR_GREEN "You are now logged in with junior admin privileges.\n\"");
 				}
 			else {
 				trap->SendServerCommand(ent - g_entities, "print \"You are already logged in. Type in /amLogout to remove admin status.\n\"");
 			}
 		}
 		else {
-			trap->SendServerCommand(ent - g_entities, "print \"^3Failed to log in: Incorrect password!\n\"");
+			trap->SendServerCommand(ent - g_entities, "print \"" S_COLOR_YELLOW "Failed to log in: Incorrect password!\n\"");
 		}
 	}
 }
@@ -5156,7 +5156,7 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 				{
 					if (g_entities[clientid].client->sess.sessionTeam != TEAM_RED) {
 						SetTeam(&g_entities[clientid], "red", qtrue );
-						trap->SendServerCommand( -1, va("print \"%s ^7has been forced to the ^1Red ^7team.\n\"", g_entities[clientid].client->pers.netname));
+						trap->SendServerCommand( -1, va("print \"%s " S_COLOR_WHITE "has been forced to the " S_COLOR_RED "Red " S_COLOR_WHITE "team.\n\"", g_entities[clientid].client->pers.netname));
 					}
 				}
 			}
@@ -5176,7 +5176,7 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 				{
 					if (g_entities[clientid].client->sess.sessionTeam != TEAM_BLUE) {
 						SetTeam(&g_entities[clientid], "blue", qtrue );
-						trap->SendServerCommand( -1, va("print \"%s ^7has been forced to the ^4Blue ^7team.\n\"", g_entities[clientid].client->pers.netname));
+						trap->SendServerCommand( -1, va("print \"%s " S_COLOR_WHITE "has been forced to the " S_COLOR_BLUE "Blue " S_COLOR_WHITE "team.\n\"", g_entities[clientid].client->pers.netname));
 					}
 				}
 			}
@@ -5196,7 +5196,7 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 				{
 					if (g_entities[clientid].client->sess.sessionTeam != TEAM_SPECTATOR) {
 						SetTeam(&g_entities[clientid], "spectator", qtrue );
-						trap->SendServerCommand( -1, va("print \"%s ^7has been forced to the ^3Spectator ^7team.\n\"", g_entities[clientid].client->pers.netname));
+						trap->SendServerCommand( -1, va("print \"%s " S_COLOR_WHITE "has been forced to the " S_COLOR_YELLOW "Spectator " S_COLOR_WHITE "team.\n\"", g_entities[clientid].client->pers.netname));
 					}
 				}
 			}
@@ -5216,7 +5216,7 @@ void Cmd_Amforceteam_f(gentity_t *ent)
 				{
 					if (g_entities[clientid].client->sess.sessionTeam != TEAM_FREE) {
 						SetTeam(&g_entities[clientid], "free", qtrue );
-						trap->SendServerCommand( -1, va("print \"%s ^7has been forced to the ^2Free ^7team.\n\"", g_entities[clientid].client->pers.netname));
+						trap->SendServerCommand( -1, va("print \"%s " S_COLOR_WHITE "has been forced to the " S_COLOR_GREEN "Free " S_COLOR_WHITE "team.\n\"", g_entities[clientid].client->pers.netname));
 					}
 				}
 			}
@@ -5529,8 +5529,8 @@ void Cmd_Ammap_f(gentity_t *ent)
 		}
 
 		//if (ent->client->sess.juniorAdmin)//Logged in as junior admin
-		trap->SendServerCommand( -1, va("print \"^3Map change triggered by ^7%s\n\"", ent->client->pers.netname ));
-		G_LogPrintf ( "Map change triggered by ^7%s\n", ent->client->pers.netname );
+		trap->SendServerCommand( -1, va("print \"" S_COLOR_YELLOW "Map change triggered by " S_COLOR_WHITE "%s\n\"", ent->client->pers.netname ));
+		G_LogPrintf ( "Map change triggered by " S_COLOR_WHITE "%s\n", ent->client->pers.netname );
 
 		trap->SendConsoleCommand( EXEC_APPEND, va("g_gametype %i\n", gtype));
 		trap->SendConsoleCommand( EXEC_APPEND, va("map %s\n", mapname));
@@ -5574,8 +5574,8 @@ void Cmd_Amvstr_f(gentity_t *ent)
 		if (!Q_stricmp(buf, ""))
 			return;
 
-		trap->SendServerCommand( -1, va("print \"^3Vstr (%s^3) executed by ^7%s\n\"", arg, ent->client->pers.netname ));
-		G_LogPrintf ( "Vstr (%s^7) executed by ^7%s\n", arg, ent->client->pers.netname );
+		trap->SendServerCommand( -1, va("print \"" S_COLOR_YELLOW "Vstr (%s" S_COLOR_YELLOW ") executed by " S_COLOR_WHITE "%s\n\"", arg, ent->client->pers.netname ));
+		G_LogPrintf ( "Vstr (%s" S_COLOR_WHITE ") executed by " S_COLOR_WHITE "%s\n", arg, ent->client->pers.netname );
 		trap->SendConsoleCommand( EXEC_APPEND, va("vstr %s\n", arg));
 
 }
@@ -5672,7 +5672,7 @@ void Cmd_Amgrantadmin_f(gentity_t *ent)
 void Cmd_Showmotd_f(gentity_t *ent)
 {
 	if (Q_stricmp(g_centerMOTD.string, "" ))
-		strcpy(ent->client->csMessage, G_NewString(va("^7%s\n", g_centerMOTD.string )));//Loda fixme, resize this so it does not allocate more than it needs (game_memory crash eventually?)
+		strcpy(ent->client->csMessage, G_NewString(va("" S_COLOR_WHITE "%s\n", g_centerMOTD.string )));//Loda fixme, resize this so it does not allocate more than it needs (game_memory crash eventually?)
 	ent->client->csTimeLeft = g_centerMOTDTime.integer;
 	if (Q_stricmp(g_consoleMOTD.string, "" ))
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", g_consoleMOTD.string));
@@ -5692,11 +5692,11 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	if (!ent || !ent->client)
 		return;
 
-	Q_strncpyz(buf, va("^5 Hi there, %s^5. This server is using the jaPRO mod.\n", ent->client->pers.netname), sizeof(buf));
-	Q_strcat(buf, sizeof(buf), "   ^3To display server settings, type ^7serverConfig" );
+	Q_strncpyz(buf, va(S_COLOR_CYAN " Hi there, %s" S_COLOR_CYAN ". This server is using the jaPRO mod.\n", ent->client->pers.netname), sizeof(buf));
+	Q_strcat(buf, sizeof(buf), "   " S_COLOR_YELLOW "To display server settings, type " S_COLOR_WHITE "serverConfig" );
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
-	Q_strncpyz(buf, "   ^3Account commands: ", sizeof(buf));
+	Q_strncpyz(buf, "   " S_COLOR_YELLOW "Account commands: ", sizeof(buf));
 	Q_strcat(buf, sizeof(buf), "register ");
 	Q_strcat(buf, sizeof(buf), "login ");
 	Q_strcat(buf, sizeof(buf), "logout ");
@@ -5707,7 +5707,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
 	if (g_allowRegistration.integer > 1) {
-		Q_strncpyz(buf, "   ^3Clan commands: ", sizeof(buf));
+		Q_strncpyz(buf, "   " S_COLOR_YELLOW "Clan commands: ", sizeof(buf));
 		Q_strcat(buf, sizeof(buf), "clanList ");
 		Q_strcat(buf, sizeof(buf), "clanInfo ");
 		Q_strcat(buf, sizeof(buf), "clanJoin ");
@@ -5718,7 +5718,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 	}
 
-	Q_strncpyz(buf, "   ^3Chat commands: ", sizeof(buf));
+	Q_strncpyz(buf, "   " S_COLOR_YELLOW "Chat commands: ", sizeof(buf));
 	Q_strcat(buf, sizeof(buf), "ignore ");
 	Q_strcat(buf, sizeof(buf), "clanPass ");
 	Q_strcat(buf, sizeof(buf), "clanWhoIs ");
@@ -5727,7 +5727,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	Q_strcat(buf, sizeof(buf), "say_team_mod");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
-	Q_strncpyz(buf, "   ^3Game commands: ", sizeof(buf));
+	Q_strncpyz(buf, "   " S_COLOR_YELLOW "Game commands: ", sizeof(buf));
 	Q_strcat(buf, sizeof(buf), "amMOTD ");
 	Q_strcat(buf, sizeof(buf), "printStats ");
 	Q_strcat(buf, sizeof(buf), "showNet ");
@@ -5750,7 +5750,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
 	if (g_raceMode.integer) {
-		Q_strncpyz(buf, "   ^3Defrag commands: ", sizeof(buf));
+		Q_strncpyz(buf, "   " S_COLOR_YELLOW "Defrag commands: ", sizeof(buf));
 		Q_strcat(buf, sizeof(buf), "rTop ");
 		Q_strcat(buf, sizeof(buf), "rLatest ");
 		Q_strcat(buf, sizeof(buf), "rRank ");
@@ -5779,7 +5779,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 	}
 
-	Q_strncpyz(buf, "   ^3Emote commands: ", sizeof(buf));
+	Q_strncpyz(buf, "   " S_COLOR_YELLOW "Emote commands: ", sizeof(buf));
 	if (!(g_emotesDisable.integer & (1 << E_BEG)))
 		Q_strcat(buf, sizeof(buf), "amBeg ");
 	if (!(g_emotesDisable.integer & (1 << E_BEG2)))
@@ -5824,7 +5824,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "amRun");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\n\"", buf));
 
-	Q_strncpyz(buf, "   ^3Admin commands: ", sizeof(buf));
+	Q_strncpyz(buf, "   " S_COLOR_YELLOW "Admin commands: ", sizeof(buf));
 	if (!(ent->client->sess.accountFlags)) //fixme.. idk
 		Q_strcat(buf, sizeof(buf), "you are not an administrator on this server.\n");
 	else {
@@ -5867,9 +5867,9 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	}
 
 	if (ent->client->pers.isJAPRO)
-		trap->SendServerCommand( ent-g_entities, "print \"   ^2You are using the client plugin recommended by the server.\n\"" );
+		trap->SendServerCommand( ent-g_entities, "print \"   " S_COLOR_GREEN "You are using the client plugin recommended by the server.\n\"" );
 	else
-		trap->SendServerCommand( ent-g_entities, "print \"   ^1You do not have the client plugin. Download at www.playja.pro\n\"" );
+		trap->SendServerCommand( ent-g_entities, "print \"   " S_COLOR_RED "You do not have the client plugin. Download at www.playja.pro\n\"" );
 
 }
 
@@ -5927,17 +5927,17 @@ static void Cmd_Amlookup_f( gentity_t *ent )
 		if (!Q_stricmp(strIP, pch)) {
 
 			if (multiple) {
-				Q_strcat(msg, sizeof(msg), va("\n  ^7%s", last));
+				Q_strcat(msg, sizeof(msg), va("\n  " S_COLOR_WHITE "%s", last));
 			}
 			else {
-				Q_strcat(msg, sizeof(msg), va("^7%s", last));
+				Q_strcat(msg, sizeof(msg), va("" S_COLOR_WHITE "%s", last));
 			}
 			multiple = qtrue;
 		}
 		Q_strncpyz(last, pch, sizeof(last));
     	pch = strtok (NULL, ";\n");
 	}
-	trap->SendServerCommand(ent-g_entities, va("print \"^5 This players IP has used the following names on this server:\n  %s\n\"", msg));
+	trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN " This players IP has used the following names on this server:\n  %s\n\"", msg));
 }
 
 //Jetpack start
@@ -6087,7 +6087,7 @@ static void Cmd_Spot_f(gentity_t *ent) {
 
 			if (teammate->client->sess.sessionTeam == ent->client->sess.sessionTeam) {
 				SpotIcon(teammate, target->client->ps.origin);
-				trap->SendServerCommand( teammate-g_entities, "cp \"^1!\n\n\n\n\n\n\n\n\n\n\"");
+				trap->SendServerCommand( teammate-g_entities, "cp \"" S_COLOR_RED "!\n\n\n\n\n\n\n\n\n\n\"");
 			}
 		}
 
@@ -6176,7 +6176,7 @@ void Cmd_Coop_f(gentity_t* ent) { //Should this only show logged in people..?
 
 	if (challenged->client->ps.duelIndex == ent->s.number /*&& (challenged->client->ps.duelTime + duelTimeout) >= level.time*/) {//We are accepting the duel - make this timeout TODO
 		int i;
-		trap->SendServerCommand(ent - g_entities, va("print \"%s^7 has accepted your co-op request\n\"", challenged->client->pers.netname));
+		trap->SendServerCommand(ent - g_entities, va("print \"%s" S_COLOR_WHITE " has accepted your co-op request\n\"", challenged->client->pers.netname));
 		trap->SendServerCommand(challenged - g_entities, va("print \"You accepted a co-op request with %s\n\"", ent->client->pers.netname));
 
 		ent->client->ps.duelInProgress = qtrue;
@@ -6257,10 +6257,10 @@ void Cmd_Clanwhois_f( gentity_t *ent ) { //Should this only show logged in peopl
 			char strNum[12] = {0};
 			char strName[MAX_NETNAME] = {0};
 
-			Q_strncpyz(strNum, va("^5%2i^3:", i), sizeof(strNum));
-			//CG_Printf("^5%2d^3: ^7%s\n", i, cl->name);
+			Q_strncpyz(strNum, va("" S_COLOR_CYAN "%2i" S_COLOR_YELLOW ":", i), sizeof(strNum));
+			//CG_Printf("" S_COLOR_CYAN "%2d" S_COLOR_YELLOW ": " S_COLOR_WHITE "%s\n", i, cl->name);
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
-			tmpMsg = va("%-2s ^7%s\n", strNum, strName);
+			tmpMsg = va("%-2s " S_COLOR_WHITE "%s\n", strNum, strName);
 
 			if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {
 				trap->SendServerCommand( ent-g_entities, va("print \"%s\"", msg));
@@ -6274,7 +6274,7 @@ void Cmd_Clanwhois_f( gentity_t *ent ) { //Should this only show logged in peopl
 //[JAPRO - Serverside - All - Clanwhois Function - End]
 
 static void Cmd_ModVersion_f(gentity_t *ent) {
-	trap->SendServerCommand(ent-g_entities, va("print \"^5The servers version of the mod was compiled on %s at %s\n\"", __DATE__, __TIME__));
+	trap->SendServerCommand(ent-g_entities, va("print \"" S_COLOR_CYAN "The servers version of the mod was compiled on %s at %s\n\"", __DATE__, __TIME__));
 }
 
 extern qboolean BG_InKnockDown( int anim ); //bg_pmove.c
@@ -6287,7 +6287,7 @@ static void DoEmote(gentity_t *ent, int anim, qboolean freeze, qboolean nosaber,
 	if (ent->client->ps.groundEntityNum == ENTITYNUM_NONE) //Not on ground
 		return;
 	if (ent->client->ps.duelInProgress) {
-		trap->SendServerCommand(ent-g_entities, "print \"^7Emotes not allowed in duel!\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_WHITE "Emotes not allowed in duel!\n\"");
 		return;
 	}
 	if (BG_InKnockDown(ent->s.legsAnim))
@@ -6295,11 +6295,11 @@ static void DoEmote(gentity_t *ent, int anim, qboolean freeze, qboolean nosaber,
 	if (BG_InRoll(&ent->client->ps, ent->s.legsAnim))//is this crashing? if ps is null or something?
 		return;
 	if (ent->client->sess.raceMode) {//No emotes in racemode i guess
-		trap->SendServerCommand(ent-g_entities, "print \"^7Emotes not allowed in racemode!\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_WHITE "Emotes not allowed in racemode!\n\"");
 		return;
 	}
 	if (level.gametype != GT_FFA) {
-		trap->SendServerCommand(ent-g_entities, "print \"^7Emotes not allowed in this gametype!\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_WHITE "Emotes not allowed in this gametype!\n\"");
 		return;
 	}
 
@@ -7141,7 +7141,7 @@ void Cmd_Amtelemark_f(gentity_t *ent)
 			ent->client->pers.telemarkOrigin[2] += 58;
 		ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
 		ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
-		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"",
+		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: " S_COLOR_YELLOW "<%i, %i, %i> %i, %i\n\"",
 			(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
@@ -7223,7 +7223,7 @@ void Cmd_WarpList_f(gentity_t *ent)
 	for (i = 0; i < MAX_NUM_WARPS; i++) {
 		if (!warpList[i].name[0])
 			break;
-		Q_strcat(buf, sizeof(buf), va(" ^3%s", warpList[i].name));
+		Q_strcat(buf, sizeof(buf), va(" " S_COLOR_YELLOW "%s", warpList[i].name));
 	}
 	if (buf[0] == '\0')
 		trap->SendServerCommand(ent-g_entities, "print \"There are no warps on this map\n\"");
@@ -7506,12 +7506,12 @@ void Cmd_Race_f(gentity_t *ent)
 		return;
 
 	if (ent->client->ps.powerups[PW_NEUTRALFLAG] || ent->client->ps.powerups[PW_REDFLAG] || ent->client->ps.powerups[PW_BLUEFLAG]) {
-		//trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed!\n\"");
+		//trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "This command is not allowed!\n\"");
 		return;
 	}
 
 	if (g_raceMode.integer < 2) {
-		trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed!\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "This command is not allowed!\n\"");
 		ent->client->sess.raceMode = qfalse;
 		return;
 	}
@@ -7537,7 +7537,7 @@ void Cmd_Race_f(gentity_t *ent)
 			return;//duno..
 		}
 		else {
-			trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed in this gametype!\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "This command is not allowed in this gametype!\n\"");
 			return;
 		}
 	}
@@ -7549,11 +7549,11 @@ void Cmd_Race_f(gentity_t *ent)
 		ent->r.svFlags &= ~SVF_SINGLECLIENT; //ehh?
 		ent->s.weapon = WP_SABER; //Dont drop our weapon
 		Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
-		trap->SendServerCommand(ent-g_entities, "print \"^5Race mode toggled off.\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "Race mode toggled off.\n\"");
 	}
 	else {
 		ent->client->sess.raceMode = qtrue;
-		trap->SendServerCommand(ent-g_entities, "print \"^5Race mode toggled on.\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "Race mode toggled on.\n\"");
 		//Delete all their projectiles / saved stuff
 		RemoveLaserTraps(ent);
 		RemoveDetpacks(ent);
@@ -7926,298 +7926,298 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	char buf[MAX_STRING_CHARS-64] = {0};
 
 	//Global, important changes
-	Q_strncpyz(buf, " ^3Global Changes:\n", sizeof(buf));
-	Q_strcat(buf, sizeof(buf), va("   ^5Server tickrate^3: ^2%i\n", sv_fps.integer));
-	Q_strcat(buf, sizeof(buf), va("   ^5Force regen time (BaseJKA 'sv_fps 20' equivalent)^3: ^2%i\n", g_forceRegenTime.integer - (1000/20))); //slightly off.. even ojk fps30/regen50 is not exactly base fps20/regen0
-	//Q_strcat(buf, sizeof(buf), va("   ^5Force regen time: ^2%i\n", g_forceRegenTime.integer));
+	Q_strncpyz(buf, " " S_COLOR_YELLOW "Global Changes:\n", sizeof(buf));
+	Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Server tickrate" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", sv_fps.integer));
+	Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Force regen time (BaseJKA 'sv_fps 20' equivalent)" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_forceRegenTime.integer - (1000/20))); //slightly off.. even ojk fps30/regen50 is not exactly base fps20/regen0
+	//Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Force regen time: " S_COLOR_GREEN "%i\n", g_forceRegenTime.integer));
 	if (g_saberDuelForceRegenTime.integer != g_forceRegenTime.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber Duel Force regen time: ^2%i\n", g_saberDuelForceRegenTime.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber Duel Force regen time: " S_COLOR_GREEN "%i\n", g_saberDuelForceRegenTime.integer));
 	if (g_forceDuelForceRegenTime.integer != g_forceRegenTime.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Force Duel Force regen time: ^2%i\n", g_forceDuelForceRegenTime.integer));
-	Q_strcat(buf, sizeof(buf), va("   ^5Location based damage^3: ^2%s\n", (g_locationBasedDamage.integer) ? "Yes" : "No")); //Only print if changed?
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Force Duel Force regen time: " S_COLOR_GREEN "%i\n", g_forceDuelForceRegenTime.integer));
+	Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Location based damage" S_COLOR_YELLOW ": " S_COLOR_GREEN "%s\n", (g_locationBasedDamage.integer) ? "Yes" : "No")); //Only print if changed?
 	if (!(dmflags.integer & DF_NO_FALLING) && g_maxFallDmg.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Fall damage capped at^3: ^2%i\n", g_maxFallDmg.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Fall damage capped at" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_maxFallDmg.integer));
 	if (g_fixKillCredit.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Prevents suiciding/spectating to avoid a kill\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Prevents suiciding/spectating to avoid a kill\n");
 	else if (g_fixKillCredit.integer > 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Prevents suiciding/spectating/disconnecting to avoid a kill\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Prevents suiciding/spectating/disconnecting to avoid a kill\n");
 	if (g_corpseRemovalTime.integer != 30)
-		Q_strcat(buf, sizeof(buf), va("   ^5Corpses dissapear after ^2%i ^5seconds\n", g_corpseRemovalTime.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Corpses dissapear after " S_COLOR_GREEN "%i " S_COLOR_CYAN "seconds\n", g_corpseRemovalTime.integer));
 	if (g_newBotAI.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5New bot AI for force and saber-only combat\n", g_corpseRemovalTime.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "New bot AI for force and saber-only combat\n", g_corpseRemovalTime.integer));
 	if (g_raceMode.integer == 1 && level.gametype == GT_FFA)
-		Q_strcat(buf, sizeof(buf), "   ^5Race mode is enabled\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Race mode is enabled\n");
 	else if (g_raceMode.integer > 1 && level.gametype == GT_FFA)
-		Q_strcat(buf, sizeof(buf), "   ^5Race mode option is enabled\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Race mode option is enabled\n");
 	if (g_showHealth.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Healthbars visible for all players\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Healthbars visible for all players\n");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 
 	//Saber changes
-	Q_strncpyz(buf, " ^3Saber Changes:\n", sizeof(buf));
-	Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage^3: ^2%s\n", (d_saberSPStyleDamage.integer) ? "SP" : "MP"));
+	Q_strncpyz(buf, " " S_COLOR_YELLOW "Saber Changes:\n", sizeof(buf));
+	Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber style damage" S_COLOR_YELLOW ": " S_COLOR_GREEN "%s\n", (d_saberSPStyleDamage.integer) ? "SP" : "MP"));
 	if (d_saberSPStyleDamage.integer != g_saberDuelSPDamage.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in saber duels^3: ^2%s\n", (g_saberDuelSPDamage.integer) ? "SP" : "MP"));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber style damage in saber duels" S_COLOR_YELLOW ": " S_COLOR_GREEN "%s\n", (g_saberDuelSPDamage.integer) ? "SP" : "MP"));
 	if ((d_saberSPStyleDamage.integer != g_forceDuelSPDamage.integer) && (level.gametype != GT_DUEL && level.gametype != GT_POWERDUEL && level.gametype < GT_TEAM))
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber style damage in force duels^3: ^2%s\n", (g_forceDuelSPDamage.integer) ? "SP" : "MP"));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber style damage in force duels" S_COLOR_YELLOW ": " S_COLOR_GREEN "%s\n", (g_forceDuelSPDamage.integer) ? "SP" : "MP"));
 	if (g_saberDamageScale.value != 1.0f)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber damage scale: ^2%.2f\n", g_saberDamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber damage scale: " S_COLOR_GREEN "%.2f\n", g_saberDamageScale.value));
 	if (g_blueDamageScale.value != 1.0f)
-		Q_strcat(buf, sizeof(buf), va("   ^5Blue damage scale: ^2%.2f\n", g_blueDamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Blue damage scale: " S_COLOR_GREEN "%.2f\n", g_blueDamageScale.value));
 	if (g_yellowDamageScale.value != 1.0f)
-		Q_strcat(buf, sizeof(buf), va("   ^5Yellow damage scale: ^2%.2f\n", g_yellowDamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Yellow damage scale: " S_COLOR_GREEN "%.2f\n", g_yellowDamageScale.value));
 	if (g_redDamageScale.value != 1.0f)
-		Q_strcat(buf, sizeof(buf), va("   ^5Red damage scale: ^2%.2f\n", g_redDamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Red damage scale: " S_COLOR_GREEN "%.2f\n", g_redDamageScale.value));
 	if (!d_saberGhoul2Collision.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Larger, square hitboxes for lightsabers\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Larger, square hitboxes for lightsabers\n");
 	if (d_saberBoxTraceSize.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Increased saber hitbox size by: ^2%i\n", d_saberBoxTraceSize.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Increased saber hitbox size by: " S_COLOR_GREEN "%i\n", d_saberBoxTraceSize.integer));
 	if (d_saberInterpolate.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Saber interpolate\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Saber interpolate\n");
 	if (g_duelStartArmor.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Duelers start with ^2%i ^5armor\n", g_duelStartArmor.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Duelers start with " S_COLOR_GREEN "%i " S_COLOR_CYAN "armor\n", g_duelStartArmor.integer));
 	if (g_duelStartHealth.integer && g_duelStartHealth.integer != 100)
-		Q_strcat(buf, sizeof(buf), va("   ^5Duelers start with ^2%i ^5health\n", g_duelStartHealth.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Duelers start with " S_COLOR_GREEN "%i " S_COLOR_CYAN "health\n", g_duelStartHealth.integer));
 	if (g_allowSaberSwitch.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Allow saber switch\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Allow saber switch\n");
 	if (!d_saberSPStyleDamage.integer && g_saberTouchDmg.value != 1.0f)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber touch damage^3: ^2%i\n", g_saberTouchDmg.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber touch damage" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_saberTouchDmg.integer));
 	if (g_saberDmgDelay_Idle.integer != 350)
-		Q_strcat(buf, sizeof(buf), va("   ^5Idle saber damage delay^3: ^2%i\n", g_saberDmgDelay_Idle.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Idle saber damage delay" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_saberDmgDelay_Idle.integer));
 	if (g_saberDmgDelay_Wound.integer != 0) //Add dmgdelay_wound print?
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber wound delay^3: ^2%i\n", g_saberDmgDelay_Wound.integer)); //idk what this even is
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber wound delay" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_saberDmgDelay_Wound.integer)); //idk what this even is
 	if (g_saberDmgDelay_Hit.integer != 0)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber damage delay^3: ^2%i\n", g_saberDmgDelay_Hit.integer));
-	Q_strcat(buf, sizeof(buf), va("   ^5Saber kick tweak^3: ^2%s\n", (d_saberKickTweak.integer) ? "Yes" : "No"));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber damage delay" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_saberDmgDelay_Hit.integer));
+	Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber kick tweak" S_COLOR_YELLOW ": " S_COLOR_GREEN "%s\n", (d_saberKickTweak.integer) ? "Yes" : "No"));
 	if (g_fixGroundStab.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Groundstabs damage players not on ground\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Groundstabs damage players not on ground\n");
 	else if (g_fixGroundStab.integer > 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Groundstabs damage players not on ground, but with reduced damage\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Groundstabs damage players not on ground, but with reduced damage\n");
 	if (g_backslashDamageScale.value != 1)
-		Q_strcat(buf, sizeof(buf), va("   ^5Backslash damage scale^3: ^2%.2f\n", g_backslashDamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Backslash damage scale" S_COLOR_YELLOW ": " S_COLOR_GREEN "%.2f\n", g_backslashDamageScale.value));
 	if (g_redDFADamageScale.value != 1)
-		Q_strcat(buf, sizeof(buf), va("   ^5Red DFA damage scale^3: ^2%.2f\n", g_redDFADamageScale.value));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Red DFA damage scale" S_COLOR_YELLOW ": " S_COLOR_GREEN "%.2f\n", g_redDFADamageScale.value));
 	if (g_tweakSaber.integer & ST_FIXYELLOWDFA)
-		Q_strcat(buf, sizeof(buf), "   ^5JK2 Style yellow DFA\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "JK2 Style yellow DFA\n");
 	if (g_tweakSaber.integer & ST_SPINBACKSLASH)
-		Q_strcat(buf, sizeof(buf), "   ^5Spinable backslash\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Spinable backslash\n");
 	if (g_tweakSaber.integer & ST_SPINREDDFA)
-		Q_strcat(buf, sizeof(buf), "   ^5Spinable red DFA\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Spinable red DFA\n");
 	if (g_tweakSaber.integer & ST_JK2LUNGE)
-		Q_strcat(buf, sizeof(buf), "   ^5JK2 style lunge\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "JK2 style lunge\n");
 	if (g_maxSaberDefense.integer)
-		Q_strcat(buf, sizeof(buf), va("   ^5Saber defense level capped at^3: ^2%i\n", g_maxSaberDefense.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Saber defense level capped at" S_COLOR_YELLOW ": " S_COLOR_GREEN "%i\n", g_maxSaberDefense.integer));
 	if ((g_tweakSaber.integer & ST_REDUCE_SABERBLOCK) && (!d_saberSPStyleDamage.integer || !g_saberDuelSPDamage.integer))
-		Q_strcat(buf, sizeof(buf), "   ^5Reduced saber block for MP style damage\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Reduced saber block for MP style damage\n");
 	if ((g_tweakSaber.integer & ST_REDUCE_SABERDROP) && (!d_saberSPStyleDamage.integer || !g_forceDuelSPDamage.integer))
-		Q_strcat(buf, sizeof(buf), "   ^5Reduced saber drop for MP style damage\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Reduced saber drop for MP style damage\n");
 	if (g_tweakSaber.integer & ST_FIXED_SABERSWITCH)
-		Q_strcat(buf, sizeof(buf), "   ^5Fixed saber switch swing\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Fixed saber switch swing\n");
 	if (g_tweakSaber.integer & ST_ALLOW_ROLLCANCEL)
-		Q_strcat(buf, sizeof(buf), "   ^5Roll cancel enabled\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Roll cancel enabled\n");
 	if (g_tweakSaber.integer & ST_NO_REDCHAIN)
-		Q_strcat(buf, sizeof(buf), "   ^5Red swings can not be chained\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Red swings can not be chained\n");
 	if (g_tweakSaber.integer & ST_REDDFAFIX)
-		Q_strcat(buf, sizeof(buf), "   ^5Red DFA boost exploit removed\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Red DFA boost exploit removed\n");
 	if (g_tweakSaber.integer & ST_REDDFANOFORCE)
-		Q_strcat(buf, sizeof(buf), "   ^5Red DFA costs 0 forcepoints\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Red DFA costs 0 forcepoints\n");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 
 	//Gun changes
 	if (g_weaponDisable.integer < (1<<WP_CONCUSSION) || g_startingWeapons.integer > (1<<WP_BRYAR_PISTOL)) { // Weapons are enabled?
-		Q_strncpyz(buf, " ^3Weapon Changes:\n", sizeof(buf));
+		Q_strncpyz(buf, " " S_COLOR_YELLOW "Weapon Changes:\n", sizeof(buf));
 		if (g_tweakWeapons.integer & WT_FAST_WEAPONSWITCH)
-			Q_strcat(buf, sizeof(buf), "   ^5Fast weapon switch\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Fast weapon switch\n");
 		if (d_projectileGhoul2Collision.integer == 0)
-			Q_strcat(buf, sizeof(buf), "   ^5Larger, square hitboxes for projectiles and hitscan\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Larger, square hitboxes for projectiles and hitscan\n");
 		else if (d_projectileGhoul2Collision.integer > 1)
-			Q_strcat(buf, sizeof(buf), "   ^5Larger, square hitboxes for projectiles\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Larger, square hitboxes for projectiles\n");
 		if (g_selfDamageScale.value != 0.5f)
-			Q_strcat(buf, sizeof(buf), va("   ^5Self damage scale: ^2%.2f\n", g_selfDamageScale.value));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Self damage scale: " S_COLOR_GREEN "%.2f\n", g_selfDamageScale.value));
 		if (g_fullInheritance.integer && g_projectileInheritance.value)
-			Q_strcat(buf, sizeof(buf), va("   ^5Full projectile inheritance: ^2%.2f%\n", g_projectileInheritance.value * 100.0f));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Full projectile inheritance: " S_COLOR_GREEN "%.2f%\n", g_projectileInheritance.value * 100.0f));
 		else if (g_projectileInheritance.value)
-			Q_strcat(buf, sizeof(buf), va("   ^5Forwards projectile inheritance: ^2%.2f%\n", g_projectileInheritance.value * 100.0f));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Forwards projectile inheritance: " S_COLOR_GREEN "%.2f%\n", g_projectileInheritance.value * 100.0f));
 		if ((g_unlagged.integer & UNLAGGED_PROJ_NUDGE) && !(g_unlagged.integer & UNLAGGED_HITSCAN)) // proj nudge only
-			Q_strcat(buf, sizeof(buf), "   ^5Lag compensation for projectiles\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lag compensation for projectiles\n");
 		else if ((g_unlagged.integer & UNLAGGED_HITSCAN) && !(g_unlagged.integer & UNLAGGED_PROJ_NUDGE)) // hitscan only
-			Q_strcat(buf, sizeof(buf), "   ^5Lag compensation for hitscan\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lag compensation for hitscan\n");
 		else if ((g_unlagged.integer & UNLAGGED_HITSCAN) && (g_unlagged.integer & UNLAGGED_PROJ_NUDGE)) //Proj + hitscan
-			Q_strcat(buf, sizeof(buf), "   ^5Lag compensation for projectiles and hitscan\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lag compensation for projectiles and hitscan\n");
 		if (g_projectileVelocityScale.value != 1.0f)
-			Q_strcat(buf, sizeof(buf), va("   ^5Projectile velocity scale: ^2%.2f\n", g_projectileVelocityScale.value));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Projectile velocity scale: " S_COLOR_GREEN "%.2f\n", g_projectileVelocityScale.value));
 		if (g_weaponDamageScale.value != 1.0f)
-			Q_strcat(buf, sizeof(buf), va("   ^5Weapon damage scale: ^2%.2f\n", g_weaponDamageScale.value));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Weapon damage scale: " S_COLOR_GREEN "%.2f\n", g_weaponDamageScale.value));
 		if (g_tweakWeapons.integer & WT_DEMP2_RANDOM)
-			Q_strcat(buf, sizeof(buf), "   ^5Nonrandom Demp2 alt damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Nonrandom Demp2 alt damage\n");
 		if (g_tweakWeapons.integer & WT_DEMP2_DAM)
-			Q_strcat(buf, sizeof(buf), "   ^5Increased Demp2 primary damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Increased Demp2 primary damage\n");
 		if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
-			Q_strcat(buf, sizeof(buf), "   ^5Decreased sniper alt max damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Decreased sniper alt max damage\n");
 		if (g_tweakWeapons.integer & WT_BOWCASTER_SPRD)
-			Q_strcat(buf, sizeof(buf), "   ^5Modified bowcaster primary spread\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Modified bowcaster primary spread\n");
 		if (g_tweakWeapons.integer & WT_REPEATER_ALT_DAM)
-			Q_strcat(buf, sizeof(buf), "   ^5Increased repeater alt damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Increased repeater alt damage\n");
 		if (g_tweakWeapons.integer & WT_FLECHETTE_SPRD)
-			Q_strcat(buf, sizeof(buf), "   ^5Nonrandom flechette primary spread\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Nonrandom flechette primary spread\n");
 		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM)
-			Q_strcat(buf, sizeof(buf), "   ^5Decreased flechette alt damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Decreased flechette alt damage\n");
 		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-			Q_strcat(buf, sizeof(buf), "   ^5Nonrandom flechette alt spread/velocity\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Nonrandom flechette alt spread/velocity\n");
 		if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
-			Q_strcat(buf, sizeof(buf), "   ^5Increased concussion rifle alt damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Increased concussion rifle alt damage\n");
 		if (g_tweakWeapons.integer & WT_PROJECTILE_KNOCKBACK)
-			Q_strcat(buf, sizeof(buf), "   ^5Removed knockback from most projectiles\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Removed knockback from most projectiles\n");
 		if (g_tweakWeapons.integer & WT_STUN_HEAL)
-			Q_strcat(buf, sizeof(buf), "   ^5Heal gun stun baton\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Heal gun stun baton\n");
 		if (g_tweakWeapons.integer & WT_STUN_LG)
-			Q_strcat(buf, sizeof(buf), "   ^5Lightning gun stun baton\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lightning gun stun baton\n");
 		if (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)
-			Q_strcat(buf, sizeof(buf), "   ^5Shocklance stun baton\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Shocklance stun baton\n");
 		if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY)
-			Q_strcat(buf, sizeof(buf), "   ^5Gravity affected projectiles\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Gravity affected projectiles\n");
 		if (g_tweakWeapons.integer & WT_PROJ_SNIPER)
-			Q_strcat(buf, sizeof(buf), "   ^5Projectile sniper enabled\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Projectile sniper enabled\n");
 		if (g_tweakWeapons.integer & WT_SLOW_SNIPER)
-			Q_strcat(buf, sizeof(buf), "   ^5Slower snipe rifle fire rate\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Slower snipe rifle fire rate\n");
 		if (g_tweakWeapons.integer & WT_CENTER_MUZZLEPOINT)
-			Q_strcat(buf, sizeof(buf), "   ^5Allowed center muzzlepoint setting\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Allowed center muzzlepoint setting\n");
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
-			Q_strcat(buf, sizeof(buf), "   ^5Pseudo random weapon spread\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Pseudo random weapon spread\n");
 		if (g_tweakWeapons.integer & WT_ROCKET_MORTAR)
-			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with mortar\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Rocket launcher alt fire is replaced with mortar\n");
 		else if (g_tweakWeapons.integer & WT_ROCKET_REDEEMER)
-			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with redeemer\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Rocket launcher alt fire is replaced with redeemer\n");
 		if (g_tweakWeapons.integer & WT_ALLOW_GUNROLL)
-			Q_strcat(buf, sizeof(buf), "   ^5Gunroll enabled\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Gunroll enabled\n");
 		if (g_tweakWeapons.integer & WT_NERFED_PISTOL)
-			Q_strcat(buf, sizeof(buf), "   ^5Lower max damage on pistol alt fire\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lower max damage on pistol alt fire\n");
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 	}
 
 	//CTF changes
 	if (level.gametype == GT_CTF || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)) {// CTF Settings
-		Q_strncpyz(buf, " ^3CTF Changes:\n", sizeof(buf));
+		Q_strncpyz(buf, " " S_COLOR_YELLOW "CTF Changes:\n", sizeof(buf));
 		if (g_flagDrag.value)
-			Q_strcat(buf, sizeof(buf), va("   ^5Flag Drag: ^2%.3f\n", g_flagDrag.value));
+			Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Flag Drag: " S_COLOR_GREEN "%.3f\n", g_flagDrag.value));
 		if (g_fixFlagSuicide.integer)
-			Q_strcat(buf, sizeof(buf), "   ^5Flag suicide fix enabled\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flag suicide fix enabled\n");
 		if (g_allowFlagThrow.integer)
-			Q_strcat(buf, sizeof(buf), "   ^5Flag throw enabled\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flag throw enabled\n");
 		if (g_fixFlagHitbox.integer)
-			Q_strcat(buf, sizeof(buf), "   ^5Increased flag hitbox size\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Increased flag hitbox size\n");
 		if (g_fixCTFScores.integer)
-			Q_strcat(buf, sizeof(buf), "   ^5Tweaked CTF scores\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Tweaked CTF scores\n");
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 	}
 
 	//Physics changes
-	Q_strncpyz(buf, " ^3Physics Changes:\n", sizeof(buf));
+	Q_strncpyz(buf, " " S_COLOR_YELLOW "Physics Changes:\n", sizeof(buf));
 	if (g_onlyBhop.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5No force jumps forced by server\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "No force jumps forced by server\n");
 	else if (g_onlyBhop.integer > 1)
-		Q_strcat(buf, sizeof(buf), "   ^5No force jumps option enabled\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "No force jumps option enabled\n");
 	if (g_tweakJetpack.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Tweaked jetpack physics\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Tweaked jetpack physics\n");
 	else if (g_movementStyle.integer == 0)
-		Q_strcat(buf, sizeof(buf), "   ^5Siege style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Siege style movement\n");
 	else if (g_movementStyle.integer == 2)
-		Q_strcat(buf, sizeof(buf), "   ^5QuakeWorld style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "QuakeWorld style movement\n");
 	else if (g_movementStyle.integer == 3)
-		Q_strcat(buf, sizeof(buf), "   ^5CPM style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "CPM style movement\n");
 	else if (g_movementStyle.integer == 4)
-		Q_strcat(buf, sizeof(buf), "   ^5Q3 style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Q3 style movement\n");
 	else if (g_movementStyle.integer == 5)
-		Q_strcat(buf, sizeof(buf), "   ^5PJK style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "PJK style movement\n");
 	else if (g_movementStyle.integer == 6)
-		Q_strcat(buf, sizeof(buf), "   ^5Warsow style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Warsow style movement\n");
 	else if (g_movementStyle.integer == MV_SP)
-		Q_strcat(buf, sizeof(buf), "   ^5SP style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "SP style movement\n");
 	else if (g_movementStyle.integer == MV_SLICK)
-		Q_strcat(buf, sizeof(buf), "   ^5Slick style movement\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Slick style movement\n");
 	if (g_fixRoll.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Tweaked roll\n"); // idk what the fuck this actually does to roll
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Tweaked roll\n"); // idk what the fuck this actually does to roll
 	else if (g_fixRoll.integer == 2)
-		Q_strcat(buf, sizeof(buf), "   ^5Chainable roll\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Chainable roll\n");
 	else if (g_fixRoll.integer > 2)
-		Q_strcat(buf, sizeof(buf), "   ^5JK2 style roll\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "JK2 style roll\n");
 	if (g_flipKick.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5JA+ style flipkick\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "JA+ style flipkick\n");
 	else if (g_flipKick.integer == 2)
-		Q_strcat(buf, sizeof(buf), "   ^5Floodprotected flipkick\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Floodprotected flipkick\n");
 	else if (g_flipKick.integer > 2)
-		Q_strcat(buf, sizeof(buf), "   ^5Flipkick enabled with JK2 style\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flipkick enabled with JK2 style\n");
 	if (g_glitchKickDamage.integer >= 0)
-		Q_strcat(buf, sizeof(buf), va("   ^5Glitch kick randomness removed, now does ^3%i ^5bonus damage\n", g_glitchKickDamage.integer));
+		Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Glitch kick randomness removed, now does " S_COLOR_YELLOW "%i " S_COLOR_CYAN "bonus damage\n", g_glitchKickDamage.integer));
 	if (g_nonRandomKnockdown.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Nonrandom flipkick knockdowns\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Nonrandom flipkick knockdowns\n");
 	else if (g_nonRandomKnockdown.integer == 2)
-		Q_strcat(buf, sizeof(buf), "   ^5Flipkick knockdown randomness has less variance\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flipkick knockdown randomness has less variance\n");
 	else if (g_nonRandomKnockdown.integer == 3)
-		Q_strcat(buf, sizeof(buf), "   ^5Flipkick knockdown based on viewangle\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flipkick knockdown based on viewangle\n");
 	else if (g_nonRandomKnockdown.integer == 4)
-		Q_strcat(buf, sizeof(buf), "   ^5Flipkick knockdown based on viewangle and random chance\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Flipkick knockdown based on viewangle and random chance\n");
 	else if (g_nonRandomKnockdown.integer > 4)
-		Q_strcat(buf, sizeof(buf), "   ^5No flipkick knockdowns\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "No flipkick knockdowns\n");
 	if (g_fixHighFPSAbuse.integer)
-		Q_strcat(buf, sizeof(buf), "   ^5Fixed physics changed due to high FPS\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Fixed physics changed due to high FPS\n");
 	if (g_fixSlidePhysics.integer == 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Fixed physics for NPCs on slick surfaces\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Fixed physics for NPCs on slick surfaces\n");
 	else if (g_fixSlidePhysics.integer > 1)
-		Q_strcat(buf, sizeof(buf), "   ^5Fixed physics for players on slick surfaces\n");
+		Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Fixed physics for players on slick surfaces\n");
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 
 	//Force changes
 	if (g_forcePowerDisable.integer < (1<<NUM_FORCE_POWERS)) {
-		Q_strncpyz(buf, " ^3Force Changes:\n", sizeof(buf));
+		Q_strncpyz(buf, " " S_COLOR_YELLOW "Force Changes:\n", sizeof(buf));
 		if (g_tweakForce.integer & FT_FORCECOMBO)
-			Q_strcat(buf, sizeof(buf), "   ^5Force combo enabled\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Force combo enabled\n");
 		if (g_tweakForce.integer & FT_FASTGRIP)
-			Q_strcat(buf, sizeof(buf), "   ^5Increased grip runspeed\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Increased grip runspeed\n");
 		if (g_fixGetups.integer == 1)
-			Q_strcat(buf, sizeof(buf), "   ^5Grip during knockdown recovery\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Grip during knockdown recovery\n");
 		else if (g_fixGetups.integer > 1)
-			Q_strcat(buf, sizeof(buf), "   ^5Grip/push/pull during knockdown recovery\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Grip/push/pull during knockdown recovery\n");
 		if (g_fixLightning.integer == 1)
-			Q_strcat(buf, sizeof(buf), "   ^5Lightning gives forcepoints to target\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lightning gives forcepoints to target\n");
 		else if (g_fixLightning.integer == 2)
-			Q_strcat(buf, sizeof(buf), "   ^5Lightning gives forcepoints to target, and has reduced damage\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lightning gives forcepoints to target, and has reduced damage\n");
 		else if (g_fixLightning.integer > 2)
-			Q_strcat(buf, sizeof(buf), "   ^5Lightning gives forcepoints to target, has reduced damage, and no melee bonus\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lightning gives forcepoints to target, has reduced damage, and no melee bonus\n");
 		if (g_fixSaberInGrip.integer == 1)
-			Q_strcat(buf, sizeof(buf), "   ^5Grip does not turn off targets lightsaber\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Grip does not turn off targets lightsaber\n");
 		else if (g_fixSaberInGrip.integer == 2)
-			Q_strcat(buf, sizeof(buf), "   ^5Grip does not turn off targets lightsaber, and target can turn on/off lightsaber in grip\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Grip does not turn off targets lightsaber, and target can turn on/off lightsaber in grip\n");
 		else if (g_fixSaberInGrip.integer > 2)
-			Q_strcat(buf, sizeof(buf), "   ^5Grip does not turn off targets lightsaber, target can turn on/off lightsaber in grip, and target can toggle saber style in grip\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Grip does not turn off targets lightsaber, target can turn on/off lightsaber in grip, and target can toggle saber style in grip\n");
 		if (g_tweakForce.integer & FT_FIXDRAINCOF)
-			Q_strcat(buf, sizeof(buf), "   ^5Force drain cone of fire is narrower, matching that of the visual effect\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Force drain cone of fire is narrower, matching that of the visual effect\n");
 		if (g_tweakForce.integer & FT_PUSHPULLKD)
-			Q_strcat(buf, sizeof(buf), "   ^5Knocked down players are affected by push/pull\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Knocked down players are affected by push/pull\n");
 		if (g_tweakForce.integer & FT_JK2KNOCKDOWN)
-			Q_strcat(buf, sizeof(buf), "   ^5Push/pull can knockdown all players like in JK2\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Push/pull can knockdown all players like in JK2\n");
 		if ((!(g_forcePowerDisable.integer & FP_PULL) || !(g_forcePowerDisable.integer & FP_PUSH)) && g_unlagged.integer & UNLAGGED_PUSHPULL)
-			Q_strcat(buf, sizeof(buf), "   ^5Lag compensation for force push/pull\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Lag compensation for force push/pull\n");
 		if (g_tweakForce.integer & FT_GRIPABSORB)
-			Q_strcat(buf, sizeof(buf), "   ^5Force absorb does not gain forcepoints from grip\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Force absorb does not gain forcepoints from grip\n");
 		if (g_tweakForce.integer & FT_JK2GRIP)
-			Q_strcat(buf, sizeof(buf), "   ^5JK2 1.02 style grip\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "JK2 1.02 style grip\n");
 		if (g_tweakForce.integer & FT_NO_CROUCHATTACK_FP)
-			Q_strcat(buf, sizeof(buf), "   ^5Crouch special attacks do not cost forcepower\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Crouch special attacks do not cost forcepower\n");
 		if (level.gametype >= GT_TEAM) {
 			if (g_teamAbsorbScale.value != 1.0f)
-				Q_strcat(buf, sizeof(buf), va("   ^5Absorb team scale: ^2%.2f\n", g_teamAbsorbScale.value));
+				Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Absorb team scale: " S_COLOR_GREEN "%.2f\n", g_teamAbsorbScale.value));
 			if (g_teamHealScale.value != 1.0f)
-				Q_strcat(buf, sizeof(buf), va("   ^5Team heal scale: ^2%.2f\n", g_teamHealScale.value));
+				Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Team heal scale: " S_COLOR_GREEN "%.2f\n", g_teamHealScale.value));
 			if (g_teamEnergizeScale.value != 1.0f)
-				Q_strcat(buf, sizeof(buf), va("   ^5Team energize scale: ^2%.2f\n", g_teamEnergizeScale.value));
+				Q_strcat(buf, sizeof(buf), va("   " S_COLOR_CYAN "Team energize scale: " S_COLOR_GREEN "%.2f\n", g_teamEnergizeScale.value));
 		}
 		if (g_tweakForce.integer & FT_NERFED_WEAPPULL)
-			Q_strcat(buf, sizeof(buf), "   ^5Nerfed weapon pull distance\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Nerfed weapon pull distance\n");
 		if (g_tweakForce.integer & FT_WEAPON_PULLRESIST)
-			Q_strcat(buf, sizeof(buf), "   ^5Pull resistance when shooting/charging weapons\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Pull resistance when shooting/charging weapons\n");
 		if (g_tweakForce.integer & FT_NORAGEFIRERATE)
-			Q_strcat(buf, sizeof(buf), "   ^5Dark rage does not affect weapon firerate\n");
+			Q_strcat(buf, sizeof(buf), "   " S_COLOR_CYAN "Dark rage does not affect weapon firerate\n");
 
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 	}
@@ -8328,7 +8328,7 @@ void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 		return;
 	}
 
-	trap->SendServerCommand(ent-g_entities, "print \"^5   Rate    Snaps     Maxpackets  Timenudge   MaxFPS   FPS   Name\n\"");
+	trap->SendServerCommand(ent-g_entities, "print \"" S_COLOR_CYAN "   Rate    Snaps     Maxpackets  Timenudge   MaxFPS   FPS   Name\n\"");
 
 	for (i=0; i<MAX_CLIENTS; i++) {//Build a list of clients
 		char *tmpMsg = NULL;
@@ -8340,57 +8340,57 @@ void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 		if (clientnum != -1 && (i != clientnum)) //dont need to check team_spectator since we already do
 			continue;
 		if (cl->pers.netname[0]) {
-			Q_strncpyz(strNum, va("^5%2i^3:", i), sizeof(strNum));
+			Q_strncpyz(strNum, va("" S_COLOR_CYAN "%2i" S_COLOR_YELLOW ":", i), sizeof(strNum));
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
 
 			if (g_entities[i].r.svFlags & SVF_BOT) {
-				Q_strncpyz(strRate, "^7Bot", sizeof(strRate)); //dont fucking know why it needs 4 spaces
-				Q_strncpyz(strSnaps, "^7Bot", sizeof(strSnaps));
+				Q_strncpyz(strRate, "" S_COLOR_WHITE "Bot", sizeof(strRate)); //dont fucking know why it needs 4 spaces
+				Q_strncpyz(strSnaps, "" S_COLOR_WHITE "Bot", sizeof(strSnaps));
 
-				Q_strncpyz(strFPS, "^7Bot", sizeof(strFPS));
-				Q_strncpyz(strPackets, "^7Bot", sizeof(strPackets));
-				Q_strncpyz(strTimenudge, "^7Bot", sizeof(strTimenudge));
-				Q_strncpyz(realFPS, "^7Bot", sizeof(realFPS));
+				Q_strncpyz(strFPS, "" S_COLOR_WHITE "Bot", sizeof(strFPS));
+				Q_strncpyz(strPackets, "" S_COLOR_WHITE "Bot", sizeof(strPackets));
+				Q_strncpyz(strTimenudge, "" S_COLOR_WHITE "Bot", sizeof(strTimenudge));
+				Q_strncpyz(realFPS, "" S_COLOR_WHITE "Bot", sizeof(realFPS));
 			}
 			else {
 				if (cl->pers.rate < sv_maxRate.integer || !sv_maxRate.integer) //sometimes it just doesnt read sv_maxrate cvar lol?
-					Q_strncpyz(strRate, va("^3%i", cl->pers.rate), sizeof(strRate));
+					Q_strncpyz(strRate, va("" S_COLOR_YELLOW "%i", cl->pers.rate), sizeof(strRate));
 				else
-					Q_strncpyz(strRate, va("^7%i", sv_maxRate.integer), sizeof(strRate)); // W/e
+					Q_strncpyz(strRate, va("" S_COLOR_WHITE "%i", sv_maxRate.integer), sizeof(strRate)); // W/e
 
 				if (cl->pers.snaps < sv_fps.integer || !sv_fps.integer)
-					Q_strncpyz(strSnaps, va("^3%i", cl->pers.snaps), sizeof(strSnaps));
+					Q_strncpyz(strSnaps, va("" S_COLOR_YELLOW "%i", cl->pers.snaps), sizeof(strSnaps));
 				else
-					Q_strncpyz(strSnaps, va("^7%i", sv_fps.integer), sizeof(strSnaps)); // W/e
+					Q_strncpyz(strSnaps, va("" S_COLOR_WHITE "%i", sv_fps.integer), sizeof(strSnaps)); // W/e
 
 				if (cl->pers.maxFPS == 0)
-					Q_strncpyz(strFPS, "^3?", sizeof(strFPS));
+					Q_strncpyz(strFPS, "" S_COLOR_YELLOW "?", sizeof(strFPS));
 				else if (cl->pers.maxFPS > 333 || cl->pers.maxFPS < 60)
-					Q_strncpyz(strFPS, va("^3%i", cl->pers.maxFPS), sizeof(strFPS));
+					Q_strncpyz(strFPS, va("" S_COLOR_YELLOW "%i", cl->pers.maxFPS), sizeof(strFPS));
 				else
-					Q_strncpyz(strFPS, va("^7%i", cl->pers.maxFPS), sizeof(strFPS));
+					Q_strncpyz(strFPS, va("" S_COLOR_WHITE "%i", cl->pers.maxFPS), sizeof(strFPS));
 
 				if (cl->pmoveMsec)
-					Q_strncpyz(realFPS, va("^7%i", 1000/cl->pmoveMsec), sizeof(realFPS));
+					Q_strncpyz(realFPS, va("" S_COLOR_WHITE "%i", 1000/cl->pmoveMsec), sizeof(realFPS));
 				else
-					Q_strncpyz(realFPS, "^3?", sizeof(realFPS));
+					Q_strncpyz(realFPS, "" S_COLOR_YELLOW "?", sizeof(realFPS));
 
 				if (cl->pers.maxPackets == 0)
-					Q_strncpyz(strPackets, "^3?", sizeof(strPackets));
+					Q_strncpyz(strPackets, "" S_COLOR_YELLOW "?", sizeof(strPackets));
 				else if (cl->pers.maxPackets < 30)
-					Q_strncpyz(strPackets, va("^3%i", cl->pers.maxPackets), sizeof(strPackets));
+					Q_strncpyz(strPackets, va("" S_COLOR_YELLOW "%i", cl->pers.maxPackets), sizeof(strPackets));
 				else
-					Q_strncpyz(strPackets, va("^7%i", cl->pers.maxPackets), sizeof(strPackets));
+					Q_strncpyz(strPackets, va("" S_COLOR_WHITE "%i", cl->pers.maxPackets), sizeof(strPackets));
 
 				if (cl->pers.timenudge == Q3_INFINITE)
-					Q_strncpyz(strTimenudge, "^3?", sizeof(strTimenudge));
+					Q_strncpyz(strTimenudge, "" S_COLOR_YELLOW "?", sizeof(strTimenudge));
 				else if (cl->pers.timenudge < -150 || cl->pers.timenudge > 0)
-					Q_strncpyz(strTimenudge, va("^3%i", cl->pers.timenudge), sizeof(strTimenudge));
+					Q_strncpyz(strTimenudge, va("" S_COLOR_YELLOW "%i", cl->pers.timenudge), sizeof(strTimenudge));
 				else
-					Q_strncpyz(strTimenudge, va("^7%i", cl->pers.timenudge), sizeof(strTimenudge));
+					Q_strncpyz(strTimenudge, va("" S_COLOR_WHITE "%i", cl->pers.timenudge), sizeof(strTimenudge));
 			}
 
-			tmpMsg = va( "%-2s%-10s%-12s%-14s%-14s%-11s%-8s^7%s\n", strNum, strRate, strSnaps, strPackets, strTimenudge, strFPS, realFPS, strName);
+			tmpMsg = va( "%-2s%-10s%-12s%-14s%-14s%-11s%-8s" S_COLOR_WHITE "%s\n", strNum, strRate, strSnaps, strPackets, strTimenudge, strFPS, realFPS, strName);
 
 			if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {
 				trap->SendServerCommand( ent-g_entities, va("print \"%s\"", msg));

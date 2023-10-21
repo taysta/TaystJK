@@ -5663,12 +5663,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 		if (!attacker->client->pers.noDamageNumbers) {
 			if (g_damageNumbers.integer == 1 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 6) 
-				trap->SendServerCommand(attacker-g_entities, va("print \"^3%i ^7damage given to (%s^7)\n\"", take + asave, targ->client->pers.netname));
+				trap->SendServerCommand(attacker-g_entities, va("print \"^3%i " S_COLOR_WHITE "damage given to (%s" S_COLOR_WHITE ")\n\"", take + asave, targ->client->pers.netname));
 			if (g_damageNumbers.integer == 2 || g_damageNumbers.integer == 5) {
 				trap->SendServerCommand( attacker-g_entities, va("cp \"%i\n\n\n\n\n\n\n\n\n\n\n\n\"", attacker->client->totalDamage));
 			}
 			if (g_damageNumbers.integer == 4)
-				trap->SendServerCommand( attacker-g_entities, va( "chat \"^3%i ^7damage given to (%s^7)\"", take + asave, targ->client->pers.netname ) );
+				trap->SendServerCommand( attacker-g_entities, va( "chat \"^3%i " S_COLOR_WHITE "damage given to (%s" S_COLOR_WHITE ")\"", take + asave, targ->client->pers.netname ) );
 			if (g_damageNumbers.integer == 3 || g_damageNumbers.integer == 6) {
 				vec3_t damageorigin = {targ->r.currentOrigin[0] + Q_flrand(-1.0f, 1.0f) * 8, targ->r.currentOrigin[1] + Q_flrand(-1.0f, 1.0f) * 8, targ->r.currentOrigin[2] + 16};
 				ScorePlum(attacker, damageorigin, take + asave);

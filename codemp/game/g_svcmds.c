@@ -949,7 +949,7 @@ void Svcmd_ToggleTweakSaber_f( void ) {
 			for (index = 0; index < MAX_SABER_TWEAKS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_tweakSaber", va("%i", (1 << index) ^ (g_tweakSaber.integer & mask)));
 				trap->Cvar_Update(&g_tweakSaber);
-				trap->Print("%s %s^7\n", saberTweaks[index].string, ((g_tweakSaber.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", saberTweaks[index].string, ((g_tweakSaber.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_TweakSaber();
 			}
 		} //DM End: New -1 toggle all options.
@@ -957,7 +957,7 @@ void Svcmd_ToggleTweakSaber_f( void ) {
 		trap->Cvar_Set( "g_tweakSaber", va( "%i", (1 << index) ^ (g_tweakSaber.integer & mask ) ) );
 		trap->Cvar_Update( &g_tweakSaber );
 
-		trap->Print( "%s %s^7\n", saberTweaks[index].string, ((g_tweakSaber.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", saberTweaks[index].string, ((g_tweakSaber.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 
 		CVU_TweakSaber();
@@ -1019,7 +1019,7 @@ void Svcmd_ToggleTweakForce_f( void ) {
 			for (index = 0; index < MAX_FORCE_TWEAKS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_tweakForce", va("%i", (1 << index) ^ (g_tweakForce.integer & mask)));
 				trap->Cvar_Update(&g_tweakForce);
-				trap->Print("%s %s^7\n", forceTweaks[index].string, ((g_tweakForce.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", forceTweaks[index].string, ((g_tweakForce.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_TweakForce();
 			}
 		} //DM End: New -1 toggle all options.
@@ -1027,7 +1027,7 @@ void Svcmd_ToggleTweakForce_f( void ) {
 		trap->Cvar_Set( "g_tweakForce", va( "%i", (1 << index) ^ (g_tweakForce.integer & mask ) ) );
 		trap->Cvar_Update( &g_tweakForce );
 
-		trap->Print( "%s %s^7\n", forceTweaks[index].string, ((g_tweakForce.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", forceTweaks[index].string, ((g_tweakForce.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 
 		CVU_TweakForce();
@@ -1086,7 +1086,7 @@ void Svcmd_ToggleWeaponDisable_f( void ) {
 		trap->Cvar_Set( "g_weaponDisable", va( "%i", (1 << index) ^ (g_weaponDisable.integer & mask ) ) );
 		trap->Cvar_Update( &g_weaponDisable );
 
-		trap->Print( "%s %s^7\n", weaponDisable[index].string, ((g_weaponDisable.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", weaponDisable[index].string, ((g_weaponDisable.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }
@@ -1145,7 +1145,7 @@ void Svcmd_ToggleStartingWeapons_f( void ) {
 			for (index = 0; index < MAX_STARTING_WEAPONS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_startingWeapons", va("%i", (1 << index) ^ (g_startingWeapons.integer & mask)));
 				trap->Cvar_Update(&g_startingWeapons);
-				trap->Print("%s %s^7\n", startingWeapons[index].string, ((g_startingWeapons.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", startingWeapons[index].string, ((g_startingWeapons.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 				CVU_StartingWeapons();
 			}
 		} //DM End: New -1 toggle all options.
@@ -1153,7 +1153,7 @@ void Svcmd_ToggleStartingWeapons_f( void ) {
 		trap->Cvar_Set( "g_startingWeapons", va( "%i", (1 << index) ^ (g_startingWeapons.integer & mask ) ) );
 		trap->Cvar_Update( &g_startingWeapons );
 
-		trap->Print( "%s %s^7\n", startingWeapons[index].string, ((g_startingWeapons.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", startingWeapons[index].string, ((g_startingWeapons.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 
 		CVU_StartingWeapons();
@@ -1208,14 +1208,14 @@ void Svcmd_ToggleStartingItems_f( void ) {
 			for (index = 0; index < MAX_STARTING_ITEMS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_startingItems", va("%i", (1 << index) ^ (g_startingItems.integer & mask)));
 				trap->Cvar_Update(&g_startingItems);
-				trap->Print("%s %s^7\n", startingItems[index].string, ((g_startingItems.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", startingItems[index].string, ((g_startingItems.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_startingItems", va( "%i", (1 << index) ^ (g_startingItems.integer & mask ) ) );
 		trap->Cvar_Update( &g_startingItems );
 
-		trap->Print( "%s %s^7\n", startingItems[index].string, ((g_startingItems.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", startingItems[index].string, ((g_startingItems.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }
@@ -1262,14 +1262,14 @@ void Svcmd_ToggleSaberDisable_f( void ) {
 			for (index = 0; index < MAX_SABER_DISABLES; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_saberDisable", va("%i", (1 << index) ^ (g_saberDisable.integer & mask)));
 				trap->Cvar_Update(&g_saberDisable);
-				trap->Print("%s %s^7\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_saberDisable", va( "%i", (1 << index) ^ (g_saberDisable.integer & mask ) ) );
 		trap->Cvar_Update( &g_saberDisable );
 
-		trap->Print( "%s %s^7\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }
@@ -1366,14 +1366,14 @@ void Svcmd_ToggleAdmin_f( void ) {
 			trap->Cvar_Set( "g_juniorAdminLevel", va( "%i", (1 << index) ^ (g_juniorAdminLevel.integer & mask ) ) );
 			trap->Cvar_Update( &g_juniorAdminLevel );
 
-			trap->Print( "%s %s^7\n", adminOptions[index].string, ((g_juniorAdminLevel.integer & (1 << index))
+			trap->Print( "%s %s" S_COLOR_WHITE "\n", adminOptions[index].string, ((g_juniorAdminLevel.integer & (1 << index))
 				? "^2Enabled" : "^1Disabled") );
 		}
 		else if (level == 1) {
 			trap->Cvar_Set( "g_fullAdminLevel", va( "%i", (1 << index) ^ (g_fullAdminLevel.integer & mask ) ) );
 			trap->Cvar_Update( &g_fullAdminLevel );
 
-			trap->Print( "%s %s^7\n", adminOptions[index].string, ((g_fullAdminLevel.integer & (1 << index))
+			trap->Print( "%s %s" S_COLOR_WHITE "\n", adminOptions[index].string, ((g_fullAdminLevel.integer & (1 << index))
 				? "^2Enabled" : "^1Disabled") );
 		}
 	}
@@ -1430,14 +1430,14 @@ void Svcmd_ToggleVote_f( void ) {
 			for (index = 0; index < MAX_VOTE_OPTIONS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_allowVote", va("%i", (1 << index) ^ (g_allowVote.integer & mask)));
 				trap->Cvar_Update(&g_allowVote);
-				trap->Print("%s %s^7\n", voteOptions[index].string, ((g_allowVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", voteOptions[index].string, ((g_allowVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_allowVote", va( "%i", (1 << index) ^ (g_allowVote.integer & mask ) ) );
 		trap->Cvar_Update( &g_allowVote );
 
-		trap->Print( "%s %s^7\n", voteOptions[index].string, ((g_allowVote.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", voteOptions[index].string, ((g_allowVote.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }
@@ -1489,14 +1489,14 @@ void Svcmd_ToggleTweakVote_f( void ) {
 			for (index = 0; index < MAX_VOTE_TWEAKS; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_tweakVote", va("%i", (1 << index) ^ (g_tweakVote.integer & mask)));
 				trap->Cvar_Update(&g_tweakVote);
-				trap->Print("%s %s^7\n", voteTweaks[index].string, ((g_tweakVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", voteTweaks[index].string, ((g_tweakVote.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_tweakVote", va( "%i", (1 << index) ^ (g_tweakVote.integer & mask ) ) );
 		trap->Cvar_Update( &g_tweakVote );
 
-		trap->Print( "%s %s^7\n", voteTweaks[index].string, ((g_tweakVote.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", voteTweaks[index].string, ((g_tweakVote.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }
@@ -1557,14 +1557,14 @@ void Svcmd_ToggleEmotes_f( void ) {
 			for (index = 0; index < MAX_EMOTE_DISABLES; index++) {  //Read every tweak option and set it to the opposite of what it is currently set to.
 				trap->Cvar_Set("g_emotesDisable", va("%i", (1 << index) ^ (g_emotesDisable.integer & mask)));
 				trap->Cvar_Update(&g_emotesDisable);
-				trap->Print("%s %s^7\n", emoteDisables[index].string, ((g_emotesDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
+				trap->Print("%s %s" S_COLOR_WHITE "\n", emoteDisables[index].string, ((g_emotesDisable.integer & (1 << index)) ? "^2Enabled" : "^1Disabled"));
 			}
 		} //DM End: New -1 toggle all options.
 
 		trap->Cvar_Set( "g_emotesDisable", va( "%i", (1 << index) ^ (g_emotesDisable.integer & mask ) ) );
 		trap->Cvar_Update( &g_emotesDisable );
 
-		trap->Print( "%s %s^7\n", emoteDisables[index].string, ((g_emotesDisable.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", emoteDisables[index].string, ((g_emotesDisable.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
 }

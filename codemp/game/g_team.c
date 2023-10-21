@@ -985,7 +985,7 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 	//PrintMsg (NULL, "%s" S_COLOR_WHITE " got the %s flag!\n",
 	//	other->client->pers.netname, TeamName(team));
 	if (level.gametype != GT_CTF) { //changed this from team == team_free
-		trap->SendServerCommand( -1, va("print \"%s^7 is now the rabbit!\n\"", other->client->pers.netname ));
+		trap->SendServerCommand( -1, va("print \"%s" S_COLOR_WHITE " is now the rabbit!\n\"", other->client->pers.netname ));
 		if (g_rabbit.integer == 2) {
 			other->client->ps.stats[STAT_WEAPONS] = (1 << WP_DISRUPTOR);
 			other->client->ps.ammo[AMMO_POWERCELL] = 300;
