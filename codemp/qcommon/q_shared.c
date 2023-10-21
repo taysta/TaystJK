@@ -176,7 +176,7 @@ void COM_BeginParseSession( const char *name )
 {
 	com_lines = 1;
 	com_tokenline = 0;
-	Com_sprintf(com_parsename, sizeof(com_parsename), "%s", name);
+    Q_strncpyz(com_parsename, name, sizeof(com_parsename));
 }
 
 int COM_GetCurrentParseLine( void )
@@ -548,6 +548,32 @@ qboolean SkipBracedSection (const char **program, int depth) {
 	return (qboolean)( depth == 0 );
 }
 
+/*
+=================
+SkipBracedSection
+
+The next token should be an open brace or set depth to 1 if already parsed it.
+Skips until a matching close brace is found.
+Internal brace depths are properly skipped.
+=================
+*/
+qboolean SkipBracedSection_Depth (const char **program, int depth) {
+    char			*token;
+
+    do {
+        token = COM_ParseExt( program, qtrue );
+        if( token[1] == 0 ) {
+            if( token[0] == '{' ) {
+                depth++;
+            }
+            else if( token[0] == '}' ) {
+                depth--;
+            }
+        }
+    } while( depth && *program );
+
+    return (qboolean)( depth == 0 );
+}
 /*
 =================
 SkipRestOfLine

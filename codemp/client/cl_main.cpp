@@ -2383,33 +2383,31 @@ static void CL_UpdateWidescreen(void) {
 
 
 int cl_nameModifiedTime = 0;
-static int lastModifiedColors = 0;
-static int lastModifiedName = 0;
-static int lastModifiedNotifyName = 0;
-static int widescreenModificationCount = 0;
-static void CL_CheckCvarUpdate(void) {
-	if (lastModifiedColors != cl_colorString->modificationCount) {
+static void CL_CheckCvarUpdate(void)
+{
+	if (cl_colorString->modified) {
 		// recalculate cl_colorStringCount
-		lastModifiedColors = cl_colorString->modificationCount;
-		int count = cl_colorString->integer;
+		int count;
+		cl_colorString->modified = qfalse;
+		count = cl_colorString->integer;
 		count = count - ((count >> 1) & 0x55555555);
 		count = (count & 0x33333333) + ((count >> 2) & 0x33333333);
 		count = (((count + (count >> 4)) & 0x0f0f0f0f) * 0x01010101) >> 24;
 		Cvar_Set("cl_colorStringCount", va("%i", count));
 	}
 
-	if (lastModifiedName != cl_name->modificationCount) {
-		lastModifiedName = cl_name->modificationCount;
+	if (cl_name->modified) {
+		cl_name->modified = qfalse;
 		cl_nameModifiedTime = cls.realtime;
 		CL_GetAfk();
 	}
-	if (lastModifiedNotifyName != con_notifywords->modificationCount) {
-		lastModifiedNotifyName = con_notifywords->modificationCount;
+	if (con_notifywords->modified) {
+		con_notifywords->modified = qfalse;
 		CL_UpdateNotificationWords();
 		//CL_PrintNotificationWords();
 	}
-	if (widescreenModificationCount != cl_ratioFix->modificationCount) {
-		widescreenModificationCount = cl_ratioFix->modificationCount;
+	if (cl_ratioFix->modified) {
+		cl_ratioFix->modified = qfalse;
 		CL_UpdateWidescreen();
 	}
 }
@@ -2426,13 +2424,11 @@ void CL_Frame ( int msec ) {
 	qboolean render = qfalse;
 	qboolean takeVideoFrame = qfalse;
 
-	CL_CheckCvarUpdate();
-
 	if ( !com_cl_running->integer ) {
 		return;
 	}
 
-	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer)))) {
+        CL_CheckCvarUpdate();
 #ifndef TOURNAMENT_CLIENT
 	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer))))
 #endif
@@ -2471,12 +2467,13 @@ void CL_Frame ( int msec ) {
 	if(cl_framerate->integer)
 	{
 		avgFrametime+=msec;
-		char mess[256];
+	//	char mess[256];
 		if(!(frameCount&0x1f))
 		{
-			Com_sprintf(mess,sizeof(mess),"Frame rate=%f\n\n",1000.0f*(1.0/(avgFrametime/32.0f)));
+	//		Com_sprintf(mess,sizeof(mess),"Frame rate=%f\n\n",1000.0f*(1.0/(avgFrametime/32.0f)));
 	//		Com_OPrintf("%s", mess);
-			Com_Printf("%s", mess);
+	//		Com_Printf("%s", mess);
+			Com_Printf("Frame rate=%f\n\n",1000.0f*(1.0/(avgFrametime/32.0f)));
 			avgFrametime=0.0f;
 		}
 		frameCount++;
@@ -2632,16 +2629,13 @@ This is the only place that any of these functions are called from
 ============================
 */
 void CL_StartHunkUsers( void ) {
-	if (!com_cl_running) {
-		return;
-	}
-
 	if ( !com_cl_running->integer ) {
 		return;
 	}
 
 	if ( !cls.rendererStarted ) {
 		cls.rendererStarted = qtrue;
+		Com_Memset(&cls.glconfig, 0, sizeof(cls.glconfig));
 		CL_InitRenderer();
 	}
 
@@ -3058,6 +3052,19 @@ static void CL_AddFavorite_f( void ) {
 	}
 }
 
+static void CL_DeferNameChange(void)
+{
+	char msg[MAX_STRINGED_SV_STRING] = { 0 };
+
+	//Com_Printf("You must wait 5 seconds before changing your name again.\n");
+	CL_CheckSVStringEdRef(msg, "@@@NONAMECHANGE");
+	Com_Printf("%s\n", msg);
+	/*if (cls.state == CA_ACTIVE) { //may jus want to use wait instead idk
+		Cvar_Get("deferNameChange", va("set name %s ; unset deferNameChange", cl_name->string), CVAR_TEMP|CVAR_USER_CREATED);
+		Cvar_Reset("name");
+		Cbuf_ExecuteText(EXEC_APPEND, "do deferredNameChange 5000");
+	}*/
+}
 void CL_Afk_f(void) {
 	char name[MAX_INFO_STRING] = { 0 }, afkPrefix[MAX_INFO_STRING] = { 0 };
 	if (cls.realtime - cl_nameModifiedTime <= 5000) {
@@ -3301,6 +3308,15 @@ static void CL_ColorName_f(void) {
 	Cvar_Set("name", va("%s", coloredName));
 	cl_colorString->integer = storebits;
 	cl_colorStringCount->integer = storebitcount;
+}
+
+static void CL_MaxFPS_f(void) {
+	if (Cmd_Argc() < 2) {
+		Cbuf_ExecuteText(EXEC_NOW, "print com_maxFPS\n");
+		return;
+	}
+
+	Cbuf_ExecuteText(EXEC_NOW, va("set com_maxFPS %s\n", Cmd_ArgsFrom(1)));
 }
 
 #define G2_VERT_SPACE_CLIENT_SIZE 256

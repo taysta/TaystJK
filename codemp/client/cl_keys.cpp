@@ -1432,6 +1432,87 @@ void Key_Bind_f( void ) {
 }
 
 /*
+===================
+Key_Rebind_f   //need to test this with the combo binds
+===================
+*/
+void Key_Rebind_f(void) {
+    int c = Cmd_Argc();
+    int k1, k2;
+    char *bind = NULL;
+    const char *key1 = NULL, *key2 = NULL;
+
+    if (c != 3) {
+        Com_Printf("bind <key1> <key2> : Swap bound command(s) between two keys.\n");
+        return;
+    }
+
+    k1 = Key_StringToKeynum(Cmd_Argv(1));
+    k2 = Key_StringToKeynum(Cmd_Argv(2));
+    if (k1 == -1 || k2 == -1) {
+        Com_Printf("\"%s\" isn't a valid key\n", Cmd_Argv(1));
+        return;
+    }
+    if (kg.keys[k2].binding[BINDINGMOD_NONE]) {
+        if (!kg.keys[k1].binding[BINDINGMOD_NONE]) {
+            Com_Printf("\"%s\" is not bound\n", Key_KeynumToString(k1));
+            return;
+        } else {
+            bind = kg.keys[k1].binding[BINDINGMOD_NONE];
+            key1 = Key_KeynumToString(k1);
+            key2 = Key_KeynumToString(k2);
+            Com_Printf("Swapped %s binding from %s to %s - ", kg.keys[k2].binding[BINDINGMOD_NONE], key2, key1);
+            Key_SetBinding(k2, bind);//okay what the fuck man...
+        }
+    } else {
+        Key_SetBinding(k1, "");
+    }
+    if (kg.keys[k2].binding[BINDINGMOD_ALT]) {
+        if (!kg.keys[k1].binding[BINDINGMOD_ALT]) {
+            Com_Printf("\"%s\" is not bound\n", Key_KeynumToString(k1));
+            return;
+        } else {
+            bind = kg.keys[k1].binding[BINDINGMOD_ALT];
+            key1 = Key_KeynumToString(k1);
+            key2 = Key_KeynumToString(k2);
+            Com_Printf("Swapped ALT+%s binding from %s to %s - ", kg.keys[k2].binding[BINDINGMOD_ALT], key2, key1);
+            Key_SetBindingAlt(k2, bind);//okay what the fuck man...
+        }
+    } else {
+        Key_SetBindingAlt(k1, "");
+    }
+    if (kg.keys[k2].binding[BINDINGMOD_CTRL]) {
+        if (!kg.keys[k1].binding[BINDINGMOD_CTRL]) {
+            Com_Printf("\"%s\" is not bound\n", Key_KeynumToString(k1));
+            return;
+        } else {
+            bind = kg.keys[k1].binding[BINDINGMOD_CTRL];
+            key1 = Key_KeynumToString(k1);
+            key2 = Key_KeynumToString(k2);
+            Com_Printf("Swapped CTRL+%s binding from %s to %s - ", kg.keys[k2].binding[BINDINGMOD_CTRL], key2, key1);
+            Key_SetBindingCtrl(k2, bind);//okay what the fuck man...
+        }
+    } else {
+        Key_SetBindingCtrl(k1, "");
+    }
+    if (kg.keys[k2].binding[BINDINGMOD_SHIFT]) {
+        if (!kg.keys[k1].binding[BINDINGMOD_SHIFT]) {
+            Com_Printf("\"%s\" is not bound\n", Key_KeynumToString(k1));
+            return;
+        } else {
+            bind = kg.keys[k1].binding[BINDINGMOD_SHIFT];
+            key1 = Key_KeynumToString(k1);
+            key2 = Key_KeynumToString(k2);
+            Com_Printf("Swapped SHIFT+%s binding from %s to %s - ", kg.keys[k2].binding[BINDINGMOD_SHIFT], key2, key1);
+            Key_SetBindingCtrl(k2, bind);//okay what the fuck man...
+            Com_Printf("Moved %s binding from %s to %s\n", bind, key1, key2);
+        }
+    } else {
+        Key_SetBindingShift(k1, "");
+    }
+}
+
+/*
 ============
 Key_WriteBindings
 
@@ -1544,6 +1625,31 @@ static void Key_CompleteBind( char *args, int argNum ) {
 }
 
 /*
+====================
+Key_CompleteBind
+====================
+*/
+static void Key_CompleteRebind( char *args, int argNum ) {
+	char *p;
+
+	if ( argNum == 2 ) {
+		// Skip "bind "
+		p = Com_SkipTokens( args, 1, " " );
+
+		if ( p > args )
+			Field_CompleteKeyname();
+	}
+	else if ( argNum >= 3 ) {
+		// Skip "bind <key> "
+		p = Com_SkipTokens( args, 2, " " );
+
+		if ( p > args )
+			Field_CompleteKeyname();
+			//Field_CompleteCommand( p, qtrue, qtrue );
+	}
+}
+
+/*
 ===================
 CL_InitKeyCommands
 ===================
@@ -1555,6 +1661,8 @@ void CL_InitKeyCommands( void ) {
 	Cmd_AddCommand( "unbind", Key_Unbind_f, "Unbind a key" );
 	Cmd_SetCommandCompletionFunc( "unbind", Key_CompleteUnbind );
 	Cmd_AddCommand( "unbindall", Key_Unbindall_f, "Delete all key bindings" );
+	Cmd_AddCommand("rebind", Key_Rebind_f, "Move or swap keybindings");
+	Cmd_SetCommandCompletionFunc("rebind", Key_CompleteRebind);
 	Cmd_AddCommand( "bindlist", Key_Bindlist_f, "Show all bindings in the console" );
 }
 

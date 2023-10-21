@@ -559,6 +559,7 @@ qboolean Cvar_Command( void );
 // was handled. (print or change)
 
 void 	Cvar_WriteVariables( fileHandle_t f );
+void 	Cvar_WriteModifiedVariables( fileHandle_t f );
 // writes lines containing "set variable value" for all variables
 // with the archive flag set to true.
 
@@ -638,6 +639,7 @@ void FS_HomeRemove( const char *homePath );
 void FS_Rmdir( const char *osPath, qboolean recursive );
 void FS_HomeRmdir( const char *homePath, qboolean recursive );
 
+qboolean FS_FileExistsInPaks( const char *qpath );
 qboolean FS_FileExists( const char *file );
 
 char   *FS_BuildOSPath( const char *base, const char *game, const char *qpath );
