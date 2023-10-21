@@ -1925,10 +1925,28 @@ static void UI_DrawForceSide(rectDef_t *rect, float scale, vec4_t color, int tex
 	Text_Paint(rect->x, rect->y, scale, color, s,0, 0, textStyle, iMenuFont);
 }
 
+static qboolean UI_AllWeaponsDisabled(int weaponDisable) {
+    int i;
+
+    if (!weaponDisable)
+        return qfalse;
+
+    for (i = 0; i < WP_NUM_WEAPONS; i++)
+    {
+        if (i == WP_NONE || i == WP_SABER)
+            continue;
+
+        if (!(weaponDisable & (1 << i)))
+            return qfalse;
+    }
+
+    return qtrue;
+}
+
 qboolean UI_HasSetSaberOnly( const char *info, const int gametype )
 {
-	int i = 0;
-	int wDisable = 0;
+    int i = 0;
+    int wDisable = 0;
 
     if ( gametype == GT_JEDIMASTER )
     { //set to 0
@@ -1944,18 +1962,7 @@ qboolean UI_HasSetSaberOnly( const char *info, const int gametype )
         wDisable = atoi(Info_ValueForKey(info, "g_weaponDisable"));
     }
 
-	while (i < WP_NUM_WEAPONS)
-	{
-		if (!(wDisable & (1 << i)) &&
-			i != WP_SABER && i != WP_NONE)
-		{
-			return qfalse;
-		}
-
-		i++;
-	}
-
-	return qtrue;
+    return UI_AllWeaponsDisabled(wDisable);
 }
 
 static qboolean UI_AllForceDisabled(int force)
@@ -2290,7 +2297,12 @@ void UpdateForceStatus()
 		}
 		else
 		{
-			UI_SetForceDisabled(disabledForce);
+			if (!cg_enableForceMenu.integer) {
+                UI_SetForceDisabled(disabledForce);
+            }
+			else {
+                UI_SetForceDisabled(0);
+            }
 			Menu_ShowItemByName(menu, "noforce", qfalse);
 			Menu_ShowItemByName(menu, "yesforce", qtrue);
 		}
@@ -3108,10 +3120,10 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
       UI_DrawGenericNum(&rect, scale, color, textStyle, uiForceAvailable, 1, forceMasteryPoints[MAX_FORCE_RANK], ownerDraw,iMenuFont);
       break;
 	case UI_FORCE_MASTERY_SET:
-      UI_DrawForceMastery(&rect, scale, color, textStyle, uiForceRank, 0, MAX_FORCE_RANK, iMenuFont);
+      UI_DrawForceMastery(&rect, scale, color, textStyle, uiForceRank, 1, MAX_FORCE_RANK, iMenuFont);
       break;
     case UI_FORCE_RANK:
-      UI_DrawForceMastery(&rect, scale, color, textStyle, uiForceRank, 0, MAX_FORCE_RANK, iMenuFont);
+      UI_DrawForceMastery(&rect, scale, color, textStyle, uiForceRank, 1, MAX_FORCE_RANK, iMenuFont);
       break;
 	case UI_FORCE_RANK_HEAL:
 	case UI_FORCE_RANK_LEVITATION:
@@ -8397,6 +8409,140 @@ static void UI_RunMenuScript(char **args)
 
 				trap->Cvar_Set(cvarString, va("%i",weaponDisable));
 			}
+		}
+#else //why the fuck..?
+        else if (Q_stricmp(name, "setui_dualforcepower") == 0)
+        {
+            int forcePowerDisable = trap->Cvar_VariableValue("g_forcePowerDisable");
+            int	i, forceBitFlag=0;
+
+            // Turn off all powers but a few
+            for (i=0;i<NUM_FORCE_POWERS;i++)
+            {
+                if ((i != FP_LEVITATION) &&
+                    (i != FP_PUSH) &&
+                    (i != FP_PULL) &&
+                    (i != FP_SABERTHROW) &&
+                    (i != FP_SABER_DEFENSE) &&
+                    (i != FP_SABER_OFFENSE))
+                {
+                    forceBitFlag |= (1<<i);
+                }
+            }
+
+            if (forcePowerDisable==0)
+            {
+                trap->Cvar_Set("ui_dualforcepower", "0");
+            }
+            else if (forcePowerDisable==forceBitFlag)
+            {
+                trap->Cvar_Set("ui_dualforcepower", "2");
+            }
+            else
+            {
+                trap->Cvar_Set("ui_dualforcepower", "1");
+            }
+        } else if (Q_stricmp(name, "dualForcePowers") == 0) {
+            int	dualforcePower,i, forcePowerDisable = 0;
+            dualforcePower = trap->Cvar_VariableValue("ui_dualforcepower");
+
+            if (dualforcePower==0)	// All force powers
+            {
+                forcePowerDisable = 0;
+            }
+            else if (dualforcePower==1)	// Remove All force powers
+            {
+                // It was set to something, so might as well make sure it got all flags set.
+                for (i=0;i<NUM_FORCE_POWERS;i++)
+                {
+                    forcePowerDisable |= (1<<i);
+                }
+            }
+            else if (dualforcePower==2)	// Limited force powers
+            {
+                forcePowerDisable = 0;
+
+                // Turn off all powers but a few
+                for (i=0;i<NUM_FORCE_POWERS;i++)
+                {
+                    if ((i != FP_LEVITATION) &&
+                        (i != FP_PUSH) &&
+                        (i != FP_PULL) &&
+                        (i != FP_SABERTHROW) &&
+                        (i != FP_SABER_DEFENSE) &&
+                        (i != FP_SABER_OFFENSE))
+                    {
+                        forcePowerDisable |= (1<<i);
+                    }
+                }
+            }
+
+            trap->Cvar_Set("g_forcePowerDisable", va("%i",forcePowerDisable));
+        } else if (Q_stricmp(name, "forcePowersDisable") == 0) {
+            int	i, forcePowerDisable, gametype = ui_netGameType.integer;
+            qboolean saberOnly = UI_AllWeaponsDisabled((int)trap->Cvar_VariableValue("g_weaponDisable"));
+
+            /*if (gameType == GT_DUEL || gameType == GT_POWERDUEL)
+                saberOnly = (qboolean)trap->Cvar_VariableValue("g_duelWeaponDisable");
+            else
+                saberOnly = (qboolean)trap->Cvar_VariableValue("g_weaponDisable");*/
+
+            forcePowerDisable = trap->Cvar_VariableValue("g_forcePowerDisable");
+
+            // It was set to something, so might as well make sure it got all flags set.
+            if (forcePowerDisable)
+            {
+                for (i = 0; i < NUM_FORCE_POWERS; i++)
+                {
+                    if (saberOnly && (i == FP_LEVITATION || i == FP_SABER_OFFENSE || i == FP_SABER_DEFENSE))
+                    {
+                        uiForcePowersRank[i] = FORCE_LEVEL_3;
+                        forcePowerDisable &= ~(1 << i);
+                        continue;
+                    }
+
+                    forcePowerDisable |= (1 << i);
+                }
+
+                trap->Cvar_SetValue("g_forcePowerDisable", forcePowerDisable);
+                //trap->Cvar_SetValue("g_forcePowerDisableFFA", forcePowerDisable);
+                if (saberOnly) { //allow us force jump and saber skills
+                    UI_UpdateClientForcePowers(UI_TeamName((int)trap->Cvar_VariableValue("ui_myteam")));
+                }
+            }
+        } else if (Q_stricmp(name, "weaponDisable") == 0) {
+            int	weaponDisable,i;
+            const char *cvarString;
+
+            if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_DUEL ||
+                uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_POWERDUEL)
+                cvarString = "g_duelWeaponDisable";
+            else
+                cvarString = "g_weaponDisable";
+
+            weaponDisable = trap->Cvar_VariableValue(cvarString);
+
+            // It was set to something, so might as well make sure it got all flags set.
+            if (weaponDisable)
+            {
+                for (i=0;i<WP_NUM_WEAPONS;i++)
+                {
+                    if (i!=WP_SABER)
+                    {
+                        weaponDisable |= (1<<i);
+                    }
+                }
+
+                trap->Cvar_SetValue(cvarString, weaponDisable);
+            }
+
+            //check if we're NF as well
+            //if (UI_AllForceDisabled((int)trap->Cvar_VariableValue("g_forcePowerDisable")))
+            if (ui_forcePowerDisable.integer)
+            { //ugly hack to enable saber attack/defense for saber-only NF games
+                char *fp = (char *)"forcePowersDisable";
+                UI_RunMenuScript(&fp);
+            }
 		}
 #endif
 		// If this is siege, change all the bots to humans, because we faked it earlier
