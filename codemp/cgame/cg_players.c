@@ -525,6 +525,18 @@ retryModel:
 	if (checkSkin)
 	{
 		ci->torsoSkin = checkSkin;
+
+		char skinlistBuf[8192] = { 0 }, *skin = skinlistBuf;
+		int i, skinLen, skinCount = trap->FS_GetFileList(va("models/players/%s", modelName), ".skin", skinlistBuf, sizeof(skinlistBuf));
+		for (i = 0; i < skinCount; i++, skin += skinLen + 1) {
+			skinLen = strlen(skin);
+			if (!Q_stricmp(skin, useSkinName)) {
+				Com_Printf("already loaded this skin %s %s\n", skin, useSkinName);
+				continue;
+			}
+			trap->R_RegisterSkin(skin);
+			//Com_Printf("preloading skin %s for model %s %s\n", skin, modelName, useSkinName);
+		}
 	}
 	else
 	{ //fallback to the default skin
@@ -725,7 +737,7 @@ retryModel:
 		char iconName[1024];
 		strcpy(iconName, "icon_");
 		j = strlen(iconName);
-		while (skinName[i] && skinName[i] != '|' && j < 1024)
+		while (skinName[i] && skinName[i] != '|' && j < 1023)
 		{
             iconName[j] = skinName[i];
 			j++;
@@ -897,7 +909,6 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 			}
 			soundpath[i] = 0;
 
-			trap->FS_Close(f);
 		}
 	}
 	else
@@ -907,6 +918,8 @@ void CG_LoadCISounds(clientInfo_t *ci, qboolean modelloaded, qboolean isDefaultM
 		else
 			isFemale = qfalse;
 	}
+
+	trap->FS_Close(f);
 
 	if (isFemale)
 		ci->gender = GENDER_FEMALE;
@@ -1263,7 +1276,8 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 				for (j = 0; ci->modelName[j] != '\0'; j++) {
 					sum += (int)tolower(ci->modelName[j]); //Convert to lowercase
 				}
-				if (sum < 0) { //sanity...
+				if (sum < 0)
+				{
 					sum = 0;
 				}
 
@@ -1317,13 +1331,15 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 
 				if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {//validate team color
 					BG_ValidateSkinForTeam(newModelName, newSkinName, ci->team, ci->colorOverride);
-					BG_ValidateSkinForTeam(newModelName, ci->skinName, ci->team, ci->colorOverride);
-					newSkinName = ci->skinName;
 				}
 
+                if (!VALIDSTRING(newModelName) || strlen(newModelName) < 1) newModelName = DEFAULT_MODEL;
+                if (!VALIDSTRING(newSkinName) || strlen(newSkinName) < 1) newSkinName = "default";
+                if (!CG_RegisterClientModelname(ci, newModelName, newSkinName, teamname, clientNum)) {
+                    trap->Error(ERR_DROP, "DEFAULT_MODEL / skin (%s/%s) failed to register", newModelName, newSkinName);
+                }
 				if (!CG_RegisterClientModelname(ci, newModelName, newSkinName, teamname, clientNum))
 					trap->Error(ERR_DROP, "DEFAULT_MODEL / skin (%s/%s) failed to register", newModelName, newSkinName);
-
 				modelloaded = qtrue;
 			}
 			// fall back to default team name
@@ -2175,6 +2191,11 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			newInfo.deaths = ci->deaths;
 	}
 
+	if (clientNum == cg.clientNum && newInfo.team == TEAM_SPECTATOR) {
+		Com_Memset(sortedTeamPlayers, 0, sizeof(sortedTeamPlayers));
+		numSortedTeamPlayers = 0;
+	}
+
 	// copy team info out to menu
 	if ( clientNum == cg.clientNum )	//this is me
 	{
@@ -2200,7 +2221,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		{
 			trap->Cvar_Set( "color1", va( "%i", SABER_RGB ) );
 		}
-
 		trap->Cvar_Set( "cp_sbRGB1", yo );
 	}
 
@@ -2222,7 +2242,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		{
 			trap->Cvar_Set("color2", va("%i", SABER_RGB));
 		}
-
 		trap->Cvar_Set( "cp_sbRGB2", yo );
 	}
 
@@ -2254,12 +2273,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// team leader
 	v = Info_ValueForKey( configstring, "tl" );
 	newInfo.teamLeader = atoi(v);
-
-//	v = Info_ValueForKey( configstring, "g_redteam" );
-//	Q_strncpyz(newInfo.redTeam, v, MAX_TEAMNAME);
-
-//	v = Info_ValueForKey( configstring, "g_blueteam" );
-//	Q_strncpyz(newInfo.blueTeam, v, MAX_TEAMNAME);
 
 	// model
 	v = Info_ValueForKey( configstring, "model" );

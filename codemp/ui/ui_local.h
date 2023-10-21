@@ -54,6 +54,10 @@ void UI_BuildQ3Model_List( void );
 void UI_BuildPlayerModel_List( qboolean inGameLoad );
 void UI_UpdateSaberHiltInfo( void );
 
+void UI_GetCharacterCvars( void );
+const char *UI_GetModelWithSkin(char *model);
+int UI_HeadIndexForModel(const char *model);
+void UI_SetTeamColorFromModel(const char *model);
 //
 // ui_players.c
 //

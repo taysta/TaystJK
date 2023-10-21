@@ -2828,6 +2828,59 @@ void CL_InitRef( void ) {
 
 //===========================================================================================
 
+
+void CL_SetGender(char* model)
+{
+	fileHandle_t f;
+	qboolean	isFemale = qfalse;
+	int			i = 0;
+	int			fLen = 0;
+	const char* dir;
+	char		soundpath[MAX_QPATH];
+
+	std::string input = dir = model;
+	std::string substr = input.substr(0, input.find("/", 0)).c_str();
+	if (substr.size())
+	{
+		dir = substr.c_str();
+	}
+
+	fLen = FS_FOpenFileRead(va("models/players/%s/sounds.cfg", dir), &f, qfalse);
+	if (!f)
+	{//no?  Look for _default sounds.cfg
+		fLen = FS_FOpenFileRead(va("models/players/%s/sounds_default.cfg", dir), &f, qfalse);
+	}
+	if (!f)
+	{
+		Cvar_Set("sex", "male");
+		FS_FCloseFile(f);
+		return;
+	}
+
+
+	soundpath[0] = 0;
+	FS_Read(soundpath, fLen, f);
+	soundpath[fLen] = 0;
+
+	i = fLen;
+
+	while (i >= 0 && soundpath[i] != '\n') {
+		if (soundpath[i] == 'f') {
+			isFemale = qtrue;
+			soundpath[i] = 0;
+		}
+		i--;
+	}
+	i = 0;
+
+	FS_FCloseFile(f);
+
+	if (isFemale)
+		Cvar_Set("sex", "female");
+	else
+		Cvar_Set("sex", "male");
+}
+
 #define MODEL_CHANGE_DELAY 5000
 int gCLModelDelay = 0;
 
@@ -2854,6 +2907,7 @@ void CL_SetModel_f( void ) {
 		*/
 		//rwwFIXMEFIXME: This is currently broken and doesn't seem to work for connecting clients
 		Cvar_Set( "model", arg );
+		CL_SetGender(arg);
 	}
 	else
 	{

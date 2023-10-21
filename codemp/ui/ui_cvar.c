@@ -105,9 +105,46 @@ static void CVU_UpdateModelList(void) {
 		return;
 	}
 	UI_UpdateSaberHiltInfo();
-	UI_BuildQ3Model_List();
-	UI_BuildPlayerModel_List(qtrue);
-	UI_Load(); //refreshes the available species in the selection feeder */
+	UI_BuildQ3Model_List(); //this crashes on linux???
+    UI_BuildPlayerModel_List(qtrue);
+	UI_Load(); //refreshes the available species in the selection feeder
+}
+
+static void UI_UpdateSelectedModelIndex(void) {
+    int newSelectedModelIndex = ui_selectedModelIndex.integer;
+
+    if (newSelectedModelIndex == -1)
+        newSelectedModelIndex = 0;
+
+    uiInfo.q3SelectedHead = newSelectedModelIndex;
+    Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, uiInfo.q3SelectedHead, NULL);
+}
+
+static void UI_PlayerModelChanged(void) {
+    const char *playerModel = NULL;
+    char *pipe = NULL;
+    int newSelectedModelIndex = -1;
+
+    if (!playerModel || !strlen(playerModel))
+        return;
+
+    pipe = strchr(model.string, '|');
+    if (pipe) {
+        //trap->Cvar_Set("ui_selectedModelIndex", "-1");
+        UI_GetCharacterCvars();
+        return;
+    }
+
+    playerModel = UI_GetModelWithSkin(model.string);
+    UI_SetTeamColorFromModel(playerModel);
+    newSelectedModelIndex = UI_HeadIndexForModel(playerModel);
+
+    if (newSelectedModelIndex != uiInfo.q3SelectedHead) {
+        //uiInfo.q3SelectedHead = newSelectedModelIndex;
+        //Menu_SetFeederSelection(NULL, FEEDER_Q3HEADS, uiInfo.q3SelectedHead, NULL);
+        trap->Cvar_SetValue("ui_selectedModelIndex", (float) newSelectedModelIndex);
+        //trap->Cvar_Update(&ui_selectedModelIndex); //no point in calling our update function for this since we've already update the feeder selection here
+    }
 }
 
 //
