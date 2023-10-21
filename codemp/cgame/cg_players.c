@@ -5040,7 +5040,7 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 		vec3_t lookAngles;
 		entityState_t *emplaced = NULL;
 
-		if (cent->currentState.hasLookTarget && cg_headTurn.integer &&
+		if (cg_headTurn.integer && cent->currentState.hasLookTarget && !(cg_entities[cent->currentState.lookTarget].currentState.eFlags & EF_INVULNERABLE) &&//don't look at people with chat bubble up?
 			cent->currentState.torsoAnim != BOTH_STAND1IDLE1 && cent->currentState.torsoAnim != BOTH_STAND2IDLE1 && cent->currentState.torsoAnim != BOTH_STAND2IDLE2 &&
 			cent->currentState.torsoAnim != BOTH_STAND3IDLE1 && cent->currentState.torsoAnim != BOTH_STAND5IDLE1 && cent->currentState.torsoAnim != BOTH_STAND9IDLE1 && //don't turn head while in idle animation
 			!(cg.snap->ps.duelInProgress && cent->currentState.clientNum == cg.snap->ps.clientNum && cent->currentState.lookTarget != cg.snap->ps.duelIndex)) //don't turn our head towards other people while we're dueling
@@ -5070,6 +5070,13 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 
 	    if (!(cgFPLSState && cent->currentState.clientNum == cg.predictedPlayerState.clientNum))
 		    lookAngles[PITCH] = 0;
+
+		if ((cent->currentState.torsoAnim == BOTH_STAND10 || cent->currentState.torsoAnim == BOTH_STAND8TOSTAND5 || cent->currentState.torsoAnim == BOTH_STAND5TOSTAND8 || cent->currentState.torsoAnim == BOTH_STAND10) &&
+			(cent->currentState.legsAnim == BOTH_STAND10 || cent->currentState.legsAnim == BOTH_STAND8TOSTAND5 || cent->currentState.legsAnim == BOTH_STAND5TOSTAND8 || cent->currentState.legsAnim == BOTH_STAND10)) {
+			VectorClear(cent->currentState.pos.trDelta);
+			VectorClear(cent->currentState.apos.trDelta);
+			cent->currentState.speed = 0.0f;
+		}
 
 		if (cent->currentState.otherEntityNum2)
 		{
