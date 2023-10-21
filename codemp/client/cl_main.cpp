@@ -1398,6 +1398,9 @@ void CL_Snd_Restart_f( void ) {
 	extern qboolean	s_soundMuted;
 	s_soundMuted = qfalse;		// we can play again
 
+	if (snd_mute_losefocus->integer && (com_unfocused->integer || com_minimized->integer))
+		s_soundMuted = qtrue;
+
 	extern void S_RestartMusic( void );
 	S_RestartMusic();
 #if defined(DISCORD)

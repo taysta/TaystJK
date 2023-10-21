@@ -583,12 +583,12 @@ rescan:
 		stampColor = COLOR_WHITE;
 
 #ifdef _WIN32
-		if (con_notifywords->integer == -1) {
+		if (con_notifywords->integer == -1 && (com_unfocused->integer || com_minimized->integer)) {
 			con_alert = qtrue;
 		}
 		else
 #endif
-		if (Q_stricmp(con_notifywords->string, "0")) {
+		if (Q_stricmp(con_notifywords->string, "0") && strlen(con_notifywords->string)) {
 			char *text = Q_strrchr(s, ':');
 			if (text) {
 				int i;
@@ -596,6 +596,7 @@ rescan:
 					if (strcmp(notifyWords[i], "") && Q_stristr(text, notifyWords[i])) {
 						stampColor = COLOR_CYAN;
 #ifdef _WIN32
+						if (com_unfocused->integer || com_minimized->integer)
 						con_alert = qtrue;
 #endif
 						break;
