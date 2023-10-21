@@ -817,11 +817,15 @@ IN_ProcessEvents
 ===============
 */
 void SNDDMA_Activate( qboolean activate );
+int SDL_MouseCursorX = 0, SDL_MouseCursorY = 0;
+extern cvar_t *in_useRelativeMouseCursor;
 static void IN_ProcessEvents( int eventTime )
 {
 	SDL_Event e;
 	fakeAscii_t key = A_NULL;
 	static fakeAscii_t lastKeyDown = A_NULL;
+	int mx = 0, my = 0;
+	Uint32 mouseMotionTime = 0;
 
 	if( !SDL_WasInit( SDL_INIT_VIDEO ) )
 			return;
@@ -966,15 +970,17 @@ static void IN_ProcessEvents( int eventTime )
 		}
 	}
 
-	if (in_mouserepeat->integer && cls.framecount & 1) {
+	if (in_mouserepeat->integer && (cls.framecount & 1)) {
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_X1))
 			Sys_QueEvent( eventTime, SE_KEY, A_MOUSE4, qtrue, 0, NULL);
-		if (in_mouserepeat->integer != 2) { //don't spam mouse5
-			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_X2))
+		if (in_mouserepeat->integer != 2 && (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_X2))) { //don't spam mouse5
 				Sys_QueEvent( eventTime, SE_KEY, A_MOUSE5, qtrue, 0, NULL);
 		}
 	}
 
+	if ( mx || my ) {
+		Sys_QueEvent( eventTime, SE_MOUSE, mx, my, 0, NULL );
+	}
 }
 
 /*

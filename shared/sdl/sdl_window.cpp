@@ -39,6 +39,7 @@ enum rserr_t
 
 static SDL_Window *screen = NULL;
 static SDL_GLContext opengl_context;
+static SDL_Cursor *cursor = NULL;
 static float displayAspect;
 
 cvar_t *r_sdlDriver;

@@ -503,13 +503,8 @@ float CL_KeyState( kbutton_t *key ) {
 	}
 #endif
 
-	val = (float)msec / frame_msec;
-	if ( val < 0 ) {
-		val = 0;
-	}
-	if ( val > 1 ) {
-		val = 1;
-	}
+    val = Com_Clamp( 0.0f, 1.0f, (float)msec / (float)frame_msec );
+
 
 	return val;
 }

@@ -72,13 +72,27 @@ void UIVM_KeyEvent( int key, qboolean down ) {
 	uie->KeyEvent( key, down );
 }
 
+extern int SDL_MouseCursorX, SDL_MouseCursorY;
+cvar_t *in_useRelativeMouseCursor = NULL;
 void UIVM_MouseEvent( int dx, int dy ) {
+	if (!in_useRelativeMouseCursor)
+		in_useRelativeMouseCursor = Cvar_Get("in_useRelativeMouseCursor", "1", CVAR_NONE, ""); //NOTE - IF THIS ISN'T 1 BY DEFAULT THE CURSOR WILL BE LOCKED TO A CORNER INGAME WHEN OPENING THE ESCAPE MENU
+
 	if ( uivm->isLegacy ) {
+		if ( !in_useRelativeMouseCursor->integer )
+			Cvar_Set( STRING(in_useRelativeMouseCursor), "1" );
 		VM_Call( uivm, UI_MOUSE_EVENT, dx, dy );
 		return;
 	}
 	VMSwap v( uivm );
 
+	if ( !in_useRelativeMouseCursor->integer ) {
+		//add check to make sure module is compatibl?
+		//dx = SDL_MouseCursorX;
+		//dy = SDL_MouseCursorY;
+		uie->MouseEvent( SDL_MouseCursorX, SDL_MouseCursorY );
+		return;
+	}
 	uie->MouseEvent( dx, dy );
 }
 

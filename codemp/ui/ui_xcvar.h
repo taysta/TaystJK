@@ -165,5 +165,6 @@ XCVAR_DEF( ui_headCount,					"-1",					NULL,				CVAR_ARCHIVE|CVAR_INTERNAL|CVAR_
 XCVAR_DEF( ui_showAllSkins,					"0",				CVU_UpdateModelList,	CVAR_ARCHIVE_ND )
 XCVAR_DEF( ui_sv_pure,						"0",				CVU_UpdateModelList,	CVAR_INTERNAL|CVAR_ROM|CVAR_NORESTART )
 
+XCVAR_DEF( ui_drawCursor,					"1",					NULL,				CVAR_NONE )
 XCVAR_DEF(cg_enableForceMenu,               "1",                    NULL,               CVAR_ARCHIVE)
 #undef XCVAR_DEF

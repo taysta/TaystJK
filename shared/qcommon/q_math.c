@@ -311,49 +311,21 @@ signed short ClampShort( int i )
 
 int Com_Clampi( int min, int max, int value )
 {
-	if ( value < min )
-	{
-		return min;
-	}
-	if ( value > max )
-	{
-		return max;
-	}
-	return value;
+    return ( ( value < min ? min : ( value > max ? max : value ) ) );
 }
 
 float Com_Clamp( float min, float max, float value ) {
-	if ( value < min ) {
-		return min;
-	}
-	if ( value > max ) {
-		return max;
-	}
-	return value;
+    return ( ( value < min ? min : ( value > max ? max : value ) ) );
 }
 
-int Com_AbsClampi( int min, int max, int value )
+int Com_AbsClampi(int min, int max, int value)
 {
-	if( value < 0 )
-	{
-		return Com_Clampi( -max, -min, value );
-	}
-	else
-	{
-		return Com_Clampi( min, max, value );
-	}
+    return (value < 0 ? Com_Clampi(-max, -min, value) : Com_Clampi(max, min, value));
 }
 
-float Com_AbsClamp( float min, float max, float value )
+float Com_AbsClamp(float min, float max, float value)
 {
-	if( value < 0.0f )
-	{
-		return Com_Clamp( -max, -min, value );
-	}
-	else
-	{
-		return Com_Clamp( min, max, value );
-	}
+    return (value < 0 ? Com_Clamp(-max, -min, value) : Com_Clamp(max, min, value));
 }
 
 

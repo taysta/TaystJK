@@ -12238,10 +12238,6 @@ void UI_Init( qboolean inGameLoad ) {
 	trap->ext.AddCommand("stylePlayer");
 	trap->ext.AddCommand("speedometer");
 
-	//Center cursor
-	uiInfo.uiDC.cursorx = SCREEN_WIDTH / 2;
-	uiInfo.uiDC.cursory = (SCREEN_HEIGHT / 2);
-
 	UI_GetCharacterCvars();
 }
 
@@ -12291,9 +12287,10 @@ void UI_Refresh( int realtime )
 	}
 	// draw cursor
 	UI_SetColor( NULL );
-	if (Menu_Count() > 0 && (trap->Key_GetCatcher() & KEYCATCH_UI)) {
-		UI_DrawHandlePic(uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 40.0f * uiInfo.uiDC.widthRatioCoef, 40.0f, uiInfo.uiDC.Assets.cursor);
-		//UI_DrawHandlePic( uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+	if (!uiInfo.newUIAPI || ui_drawCursor.integer) {
+		if ((trap->Key_GetCatcher() & KEYCATCH_UI) && Menu_Count() > 0) {
+			UI_DrawHandlePic( uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 42.0f * uiInfo.uiDC.widthRatioCoef, 42.0f, uiInfo.uiDC.Assets.cursor );
+		}
 	}
 
 	if (ui_rankChange.integer)
