@@ -1139,6 +1139,11 @@ void R_ScreenShotTGA_f (void) {
 	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
 		silent = qtrue;
 
+	if ( silent && ri.Cmd_Argc() >= 3 ) {
+		// explicit filename
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.tga", ri.Cmd_Argv(2));
+	}
+	else
 	if ( ri.Cmd_Argc() == 2 && !silent ) {
 		// explicit filename
 		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.tga", ri.Cmd_Argv( 1 ) );
@@ -1156,7 +1161,7 @@ void R_ScreenShotTGA_f (void) {
 	R_TakeScreenshot( 0, 0, glConfig.vidWidth, glConfig.vidHeight, checkname );
 
 	if ( !silent )
-		ri.Printf( PRINT_ALL, "[skipnotify]Wrote %s\n", checkname );
+		ri.Printf( PRINT_ALL, "Wrote %s\n", checkname );
 }
 
 /*
@@ -1183,7 +1188,11 @@ void R_ScreenShotPNG_f (void) {
 	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
 		silent = qtrue;
 
-	if ( ri.Cmd_Argc() == 2 && !silent ) {
+	if ( silent && ri.Cmd_Argc() >= 3 ) {
+		// explicit filename
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.png", ri.Cmd_Argv(2));
+	}
+	else if ( ri.Cmd_Argc() == 2 && !silent ) {
 		// explicit filename
 		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.png", ri.Cmd_Argv( 1 ) );
 	}
@@ -1214,7 +1223,11 @@ void R_ScreenShot_f (void) {
 	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
 		silent = qtrue;
 
-	if ( ri.Cmd_Argc() == 2 && !silent ) {
+	if ( silent && ri.Cmd_Argc() >= 3 ) {
+		// explicit filename
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.jpg", ri.Cmd_Argv(2));
+	}
+	else if ( ri.Cmd_Argc() == 2 && !silent ) {
 		// explicit filename
 		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.jpg", ri.Cmd_Argv( 1 ) );
 	}
