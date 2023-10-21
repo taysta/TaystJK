@@ -2850,7 +2850,7 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	if (cg.snap) {
 		if (ui_myteam.integer != cg.snap->ps.persistant[PERS_TEAM])
 		{
-			if (!(cg.snap->ps.pm_flags & PMF_FOLLOW || cg.snap->ps.pm_type == PM_SPECTATOR))
+			if (cg.snap->ps.clientNum == cg.clientNum)
 				trap->Cvar_Set ( "ui_myteam", va("%i", cg.snap->ps.persistant[PERS_TEAM]) );
 			else if (ui_myteam.integer != 3)
 				trap->Cvar_Set("ui_myteam", "3");
