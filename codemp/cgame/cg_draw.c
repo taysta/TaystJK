@@ -5640,12 +5640,20 @@ float CG_DrawMiniMap(float y)
 CG_DrawSnapshot
 ==================
 */
+extern int snapshotDelta;
+extern int commandTimeDelta;
 static float CG_DrawSnapshot( float y ) {
 	char		*s;
-	int			w, drawFont = cg_drawFPS.integer ? cg_drawFPS.integer : cg_drawSnapshot.integer;
+	int			w, drawFont = cg_drawFPS.integer;
 
+	if ( cg_drawSnapshot.integer >= 2 ) {
 	s = va( "time:%i snap:%i cmd:%i", cg.snap->serverTime,
 		cg.latestSnapshotNum, cgs.serverCommandSequence );
+	}
+	else if ( cg_drawSnapshot.integer == 1 ) {
+		s = va( "time:%i snap:%i(%i) cmd:%i(%i)", cg.snap->serverTime,
+			cg.latestSnapshotNum, snapshotDelta, cgs.serverCommandSequence, commandTimeDelta );
+	}
 
 	if (drawFont < 4 && trap->R_Language_IsAsian())
 		drawFont = 5;

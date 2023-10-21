@@ -323,6 +323,8 @@ times if the client system fails to return a
 valid snapshot.
 ========================
 */
+int snapshotDelta = 0;
+int commandTimeDelta = 0;
 static snapshot_t *CG_ReadNextSnapshot( void ) {
 	qboolean	r;
 	snapshot_t	*dest;
@@ -358,6 +360,10 @@ static snapshot_t *CG_ReadNextSnapshot( void ) {
 
 		// if it succeeded, return
 		if ( r ) {
+			if (cg.snap && dest) {
+				snapshotDelta = dest->serverTime - cg.snap->serverTime;
+				commandTimeDelta = dest->ps.commandTime - cg.snap->ps.commandTime;
+			}
 			CG_AddLagometerSnapshotInfo( dest );
 			return dest;
 		}

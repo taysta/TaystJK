@@ -920,6 +920,21 @@ void DoFall(centity_t *cent, entityState_t *es, int clientNum)
 {
 	int delta = es->eventParm;
 
+	if ( clientNum == cg.predictedPlayerState.clientNum )
+	{
+		// smooth landing z changes
+		cg.landChange = -delta;
+		if (cg.landChange > 32)
+		{
+			cg.landChange = 32;
+		}
+		if (cg.landChange < -32)
+		{
+			cg.landChange = -32;
+		}
+		cg.landTime = cg.time;
+	}
+
 	if (cent->currentState.eFlags & EF_DEAD)
 	{ //corpses crack into the ground ^_^
 		if (delta > 25)
@@ -959,21 +974,6 @@ void DoFall(centity_t *cent, entityState_t *es, int clientNum)
 	else
 	{
 		trap->S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.landSound );
-	}
-
-	if ( clientNum == cg.predictedPlayerState.clientNum )
-	{
-		// smooth landing z changes
-		cg.landChange = -delta;
-		if (cg.landChange > 32)
-		{
-			cg.landChange = 32;
-		}
-		if (cg.landChange < -32)
-		{
-			cg.landChange = -32;
-		}
-		cg.landTime = cg.time;
 	}
 }
 
@@ -1564,7 +1564,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FOOTSTEP:
 		DEBUGNAME("EV_FOOTSTEP");
 
-		if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != es->clientNum && cg.predictedPlayerState.duelIndex != es->clientNum))
+        if (cg.predictedPlayerState.duelInProgress && (cg.predictedPlayerState.clientNum != cent->currentState.clientNum && cg.predictedPlayerState.duelIndex != cent->currentState.clientNum))
 			break;
 
 		if (cg_footsteps.integer) {

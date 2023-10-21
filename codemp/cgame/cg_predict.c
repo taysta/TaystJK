@@ -1520,7 +1520,7 @@ void CG_PredictPlayerState( void ) {
 		//CG_CheckChangedPredictableEvents(&cg.predictedPlayerState);
 	}
 
-	if ( cg_showMiss.integer > 1 ) {
+	if ( cg_showMiss.integer == 2 ) {
 		trap->Print( "[%i : %i] ", cg_pmove.cmd.serverTime, cg.time );
 	}
 

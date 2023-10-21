@@ -1903,6 +1903,7 @@ Ghoul2 Insert End
 
 	if ( cent->currentState.time == -1 && cent->currentState.weapon == WP_TRIP_MINE && (cent->currentState.eFlags & EF_FIRING) )
 	{ //if force sight is active, render the laser multiple times up to the force sight level to increase visibility
+		int ownerNum = ((cg.predictedPlayerState.pm_flags & PMF_FOLLOW) || cg.predictedPlayerState.pm_type == PM_SPECTATOR) ? (cent->currentState.genericenemyindex - MAX_GENTITIES) : cg.predictedPlayerState.clientNum;
 		if (cent->currentState.bolt2 == 1)
 		{
 			VectorMA( ent.origin, 6.6f, ent.axis[0], beamOrg );// forward
@@ -3384,147 +3385,64 @@ CG_CalcEntityLerpPositions
 
 ===============
 */
-/*
-void CG_CalcEntityLerpPositions( centity_t *cent ) {
-	qboolean goAway = qfalse;
-
-	// if this player does not want to see extrapolated players
-	if ( !cg_smoothClients.integer ) {
-		// make sure the clients use TR_INTERPOLATE
-		if ( (cent->currentState.number != cg.clientNum && cent->currentState.number < MAX_CLIENTS) || cent->currentState.eType == ET_NPC ) {
-			cent->currentState.pos.trType = TR_INTERPOLATE;
-			cent->nextState.pos.trType = TR_INTERPOLATE;
-		}
+void CG_CalcEntityLerpPositions(centity_t* cent) {
+	if (cent->currentState.eType == ET_NPC) {
+		cent->doLerp = qtrue;
+	}
+	else if (cent->currentState.number < MAX_CLIENTS && cent->currentState.number != cg.clientNum) {
+		cent->doLerp = qtrue;
+	}
+	else {
+		cent->doLerp = qfalse;
 	}
 
-	if (cg.predictedPlayerState.m_iVehicleNum &&
-		cg.predictedPlayerState.m_iVehicleNum == cent->currentState.number &&
-		cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
-	{ //special case for vehicle we are riding
-		centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+	// if this player does not want to see extrapolated players
+	if (cg_smoothClients.integer && cent->doLerp) {
+		// make sure the clients use TR_INTERPOLATE
+		cent->currentState.pos.trType = TR_INTERPOLATE;
+		cent->nextState.pos.trType = TR_INTERPOLATE;
+	}
 
-		if (veh->currentState.owner == cg.predictedPlayerState.clientNum)
-		{ //only do this if the vehicle is pilotted by this client and predicting properly
-			BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
-			BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
+	// special case for vehicle we are riding
+	if (cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.m_iVehicleNum == cent->currentState.number
+		&& cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
+	{
+		centity_t* veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+
+		if (veh->currentState.owner == cg.predictedPlayerState.clientNum) {
+			// only do this if the vehicle is pilotted by this client and predicting properly
+			BG_EvaluateTrajectory(&cent->currentState.pos, cg.time, cent->lerpOrigin);
+			BG_EvaluateTrajectory(&cent->currentState.apos, cg.time, cent->lerpAngles);
 			return;
 		}
 	}
 
-	if ( cent->interpolate && cent->currentState.pos.trType == TR_INTERPOLATE ) {
-		CG_InterpolateEntityPosition( cent );
+	if (cent->interpolate && cent->currentState.pos.trType == TR_INTERPOLATE) {
+		CG_InterpolateEntityPosition(cent);
 		return;
 	}
 
 	// first see if we can interpolate between two snaps for
 	// linear extrapolated clients
-	if ( cent->interpolate && cent->currentState.pos.trType == TR_LINEAR_STOP
-		&& ((cent->currentState.number != cg.clientNum && cent->currentState.number < MAX_CLIENTS) || cent->currentState.eType == ET_NPC) ) {
-		CG_InterpolateEntityPosition( cent );
-		goAway = qtrue;
+	if (cent->interpolate && cent->currentState.pos.trType == TR_LINEAR_STOP && cent->doLerp) {
+		CG_InterpolateEntityPosition(cent);
+		return;
 	}
-	else if (cent->interpolate &&
-		cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
-	{
-		CG_InterpolateEntityPosition( cent );
-		goAway = qtrue;
-	}
-//JAPRO - Clientside - Unlagged - Start
-	else if (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_UNLAGGED)
-	{
+	else {
 		// just use the current frame and evaluate as best we can
-		BG_EvaluateTrajectory( &cent->currentState.pos, cg.time + cent->currentState.eventParm, cent->lerpOrigin );
-		BG_EvaluateTrajectory( &cent->currentState.apos, cg.time + cent->currentState.eventParm, cent->lerpAngles );
-		//Com_Printf("eventparm: %i\n",  cent->currentState.eventParm);
-	}
-//JAPRO - Clientside - Unlagged - End
-	else
-	{
-		BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
-		BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
+		BG_EvaluateTrajectory(&cent->currentState.pos, cg.time, cent->lerpOrigin);
+		BG_EvaluateTrajectory(&cent->currentState.apos, cg.time, cent->lerpAngles);
 	}
 
-	if (goAway)
-	{
-		return;
-	}
-
-	// adjust for riding a mover if it wasn't rolled into the predicted
-	// player state
-	if ( cent->currentState.number != cg.clientNum ) {
-		CG_AdjustPositionForMover( cent->lerpOrigin, cent->currentState.groundEntityNum, 
-		cg.snap->serverTime, cg.time, cent->lerpOrigin );
-	}
-}*/
-
-void CG_CalcEntityLerpPositions( centity_t *cent ) {
-    qboolean goAway = qfalse;
-
-	// if this player does not want to see extrapolated players
-	//if ( !cg_smoothClients.integer ) {
-	if ( !cg_smoothClients.integer || (cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA) ) {
-		// make sure the clients use TR_INTERPOLATE
-		if ( cent->currentState.number < MAX_CLIENTS ) {
-			cent->currentState.pos.trType = TR_INTERPOLATE;
-			cent->nextState.pos.trType = TR_INTERPOLATE;
-		}
-	}
-
-	if (cg.predictedPlayerState.m_iVehicleNum && cg.predictedPlayerState.m_iVehicleNum == cent->currentState.number &&
-        cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
-	{ //special case for vehicle we are riding
-		centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
-
-		if (veh->currentState.owner == cg.predictedPlayerState.clientNum)
-		{ //only do this if the vehicle is pilotted by this client and predicting properly
-			BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
-			BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
-			return;
-		}
-	}
-
-	if ( cent->interpolate && cent->currentState.pos.trType == TR_INTERPOLATE )
-	{
-		CG_InterpolateEntityPosition( cent );
-		return;
-	}
-
-	// first see if we can interpolate between two snaps for
-	// linear extrapolated clients
-	if ( cent->interpolate && cent->currentState.pos.trType == TR_LINEAR_STOP
-		&& cent->currentState.number < MAX_CLIENTS )
-	{
-		CG_InterpolateEntityPosition( cent );
-        goAway = qtrue;
-	}
-
-	else if (cent->interpolate && cent->currentState.eType == ET_NPC && cent->currentState.NPC_class == CLASS_VEHICLE)
-	{
-		CG_InterpolateEntityPosition( cent );
-		goAway = qtrue;
-	}
-	else
-	{
-		// just use the current frame and evaluate as best we can
-		BG_EvaluateTrajectory( &cent->currentState.pos, cg.time, cent->lerpOrigin );
-		BG_EvaluateTrajectory( &cent->currentState.apos, cg.time, cent->lerpAngles );
-	}
-
-	if (cent->currentState.number == cg.clientNum) {
-		VectorCopy(cg.predictedPlayerState.origin, cent->lerpOrigin);
-		VectorCopy(cg.predictedPlayerState.origin, cent->currentState.pos.trBase);
-	}
-
-	if (goAway)
-	{
-		return;
-	}
-
-	// adjust for riding a mover if it wasn't rolled into the predicted
-	// player state
-	if ( cent->currentState.number != cg.predictedPlayerState.clientNum ) {
-		CG_AdjustPositionForMover( cent->lerpOrigin, cent->currentState.groundEntityNum,
-		cg.snap->serverTime, cg.time, cent->lerpOrigin );
+	// adjust for riding a mover if it wasn't rolled into the predicted player state
+	if (cent->currentState.number != cg.predictedPlayerState.clientNum) {
+		CG_AdjustPositionForMover(
+			cent->lerpOrigin,
+			cent->currentState.groundEntityNum,
+			cg.snap->serverTime,
+			cg.time,
+			cent->lerpOrigin
+		);
 	}
 }
 
@@ -3741,20 +3659,20 @@ CG_AddPacketEntities
 
 ===============
 */
-void CG_AddPacketEntities( qboolean isPortal ) {
+void CG_AddPacketEntities(qboolean isPortal) { //base JKA function, probably should remove cg.frameInterpolation calc?
 	int					num;
-	centity_t			*cent;
-	playerState_t		*ps;
+	centity_t* cent;
+	playerState_t* ps;
 
 	if (isPortal)
 	{
-		for ( num = 0 ; num < cg.snap->numEntities ; num++ )
+		for (num = 0; num < cg.snap->numEntities; num++)
 		{
-			cent = &cg_entities[ cg.snap->entities[ num ].number ];
+			cent = &cg_entities[cg.snap->entities[num].number];
 
 			if (cent->currentState.isPortalEnt)
 			{
-				CG_AddCEntity( cent );
+				CG_AddCEntity(cent);
 			}
 		}
 		return;
@@ -3762,15 +3680,15 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 
 	// the auto-rotating items will all have the same axis
 	cg.autoAngles[0] = 0;
-	cg.autoAngles[1] = ( cg.time & 2047 ) * 360 / 2048.0;
+	cg.autoAngles[1] = (cg.time & 2047) * 360 / 2048.0;
 	cg.autoAngles[2] = 0;
 
 	cg.autoAnglesFast[0] = 0;
-	cg.autoAnglesFast[1] = ( cg.time & 1023 ) * 360 / 1024.0f;
+	cg.autoAnglesFast[1] = (cg.time & 1023) * 360 / 1024.0f;
 	cg.autoAnglesFast[2] = 0;
 
-	AnglesToAxis( cg.autoAngles, cg.autoAxis );
-	AnglesToAxis( cg.autoAnglesFast, cg.autoAxisFast );
+	AnglesToAxis(cg.autoAngles, cg.autoAxis);
+	AnglesToAxis(cg.autoAnglesFast, cg.autoAxisFast);
 
 	// Reset radar entities
 	cg.radarEntityCount = 0;
@@ -3780,17 +3698,17 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 	ps = &cg.predictedPlayerState;
 
 	CG_CheckPlayerG2Weapons(ps, &cg_entities[cg.predictedPlayerState.clientNum]);
-	BG_PlayerStateToEntityState( ps, &cg_entities[cg.predictedPlayerState.clientNum].currentState, qfalse );
+	BG_PlayerStateToEntityState(ps, &cg_entities[cg.predictedPlayerState.clientNum].currentState, qfalse);
 
 	if (cg.predictedPlayerState.m_iVehicleNum)
 	{ //add the vehicle I'm riding first
 		//BG_PlayerStateToEntityState( &cg.predictedVehicleState, &cg_entities[cg.predictedPlayerState.m_iVehicleNum].currentState, qfalse );
 		//cg_entities[cg.predictedPlayerState.m_iVehicleNum].currentState.eType = ET_NPC;
-		centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+		centity_t* veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
 		if (veh->currentState.owner == cg.predictedPlayerState.clientNum)
 		{
-			BG_PlayerStateToEntityState( &cg.predictedVehicleState, &veh->currentState, qfalse );
+			BG_PlayerStateToEntityState(&cg.predictedVehicleState, &veh->currentState, qfalse);
 			veh->currentState.eType = ET_NPC;
 
 			veh->currentState.pos.trType = TR_INTERPOLATE;
@@ -3799,21 +3717,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 		veh->bodyHeight = cg.time; //indicate we have already been added
 	}
 
-    if (cg_smoothClients.integer) //&& cg_smoothClients.integer != 2)
-    { //jaPRO - fix smoothClients
-        //so for some reason I'll probably never understand, temporarily disabling smoothClients is the only way I could find to fix the jittery movement on local player
-        //in CG_CalcEntityLerpPositions, I tried checking if cent->currentState.number == cg.clientNum, cg.predictedPlayerState.clientNum, cg.snap->ps.clientNum,
-        //cg_entities[cg.predictedPlayerState.clientNum].currentState.number, as well as any and every logical combination of these
-        //I also tried doing the same with saberOwner, I tried both currentState and nextState, the checks work, but the problem persists
-        //on JK2 the issue doesn't exist, so it might be something to do with the JKA specific optimizations in CG_PredictPlayerState
-        //regardless, this method to temporarily change the vmCvar value works and is probably the best way to do it every frame (could also use atoi/atof on the vmCvar string if needed)
-        cg_smoothClients.integer = 0;
-        CG_AddCEntity( &cg_entities[cg.predictedPlayerState.clientNum] );
-        cg_smoothClients.integer = (int)cg_smoothClients.value;
-    }
-    else {
-	    CG_AddCEntity( &cg_entities[cg.predictedPlayerState.clientNum] );
-    }
+	CG_AddCEntity(&cg_entities[cg.predictedPlayerState.clientNum]);
 
 	/*
 	// lerp the non-predicted value for lightning gun origins
@@ -3822,11 +3726,11 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 	//No longer have to do this.
 
 	// add each entity sent over by the server
-	for ( num = 0 ; num < cg.snap->numEntities ; num++ ) {
+	for (num = 0; num < cg.snap->numEntities; num++) {
 		// Don't re-add ents that have been predicted.
-		if (cg.snap->entities[ num ].number != cg.snap->ps.clientNum)
+		if (cg.snap->entities[num].number != cg.snap->ps.clientNum)
 		{
-			cent = &cg_entities[ cg.snap->entities[ num ].number ];
+			cent = &cg_entities[cg.snap->entities[num].number];
 			if (cent->currentState.eType == ET_PLAYER &&
 				cent->currentState.m_iVehicleNum)
 			{ //add his veh first
@@ -3836,7 +3740,7 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 				{
 					if (cg.snap->entities[j].number == cent->currentState.m_iVehicleNum)
 					{
-						centity_t *veh = &cg_entities[cg.snap->entities[j].number];
+						centity_t* veh = &cg_entities[cg.snap->entities[j].number];
 
 						CG_AddCEntity(veh);
 						veh->bodyHeight = cg.time; //indicate we have already been added
@@ -3853,16 +3757,16 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 				//if we were to add the vehicle after the pilot, the pilot's bolt would lag a frame behind.
 				continue;
 			}
-			CG_AddCEntity( cent );
+			CG_AddCEntity(cent);
 		}
 	}
 
-	for(num=0;num<cg_numpermanents;num++)
+	for (num = 0; num < cg_numpermanents; num++)
 	{
 		cent = cg_permanents[num];
 		if (cent->currentValid)
 		{
-			CG_AddCEntity( cent );
+			CG_AddCEntity(cent);
 		}
 	}
 }
