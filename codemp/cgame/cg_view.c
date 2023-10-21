@@ -579,7 +579,7 @@ static void CG_UpdateThirdPersonTargetDamp(float dtime)
 	else if (cg_thirdPersonTargetDamp.value>=1.0f||cg.thisFrameTeleport||cg.predictedPlayerState.m_iVehicleNum||cg_strafeHelper.integer & (1<<0)||cg_strafeHelper.integer & (1<<1)||cg_strafeHelper.integer & (1<<2)||cg_strafeHelper.integer & (1<<3)||cg_strafeHelper.integer & (1<<13))
 	{	// No damping.
 		VectorClear(cam.target.damp);
-		cam.lastTime = 0;
+		//cam.lastTime = 0;
 	}
 	else if (cg_thirdPersonTargetDamp.value>0.0f)
 	{
