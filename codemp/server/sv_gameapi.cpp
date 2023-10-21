@@ -403,6 +403,23 @@ int GVM_BG_GetItemIndexByTag( int tag, int type ) {
 	return ge->BG_GetItemIndexByTag( tag, type );
 }
 
+#ifdef DEDICATED
+int GVM_FS_Write(const void *buffer, int len, fileHandle_t f)
+{ //wrapper function to filter things out of log files
+	char *msg = (char *)buffer;
+
+	if (com_logChat && com_logChat->integer < 2 && msg)
+	{
+		if (!com_logChat->integer && (Q_stristr(msg, "say: ") || Q_stristr(msg, "sayteam: ") || Q_stristr(msg, "tell: "))) //0 - log nothing
+			return len;
+		if (com_logChat->integer == 1 && Q_stristr(msg, "tell: ")) //1 - only log public/team chat
+			return len; //return len so it thinks the write was successful
+	}
+
+	return FS_Write(buffer, len, f);
+}
+#endif
+
 //
 // game syscalls
 //	only used by legacy mods!
@@ -1870,7 +1887,11 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 		return 0;
 
 	case G_FS_WRITE:
+#ifndef DEDICATED
 		FS_Write( VMA(1), args[2], args[3] );
+#else
+		GVM_FS_Write( VMA(1), args[2], args[3] );
+#endif
 		return 0;
 
 	case G_FS_FCLOSE_FILE:
@@ -2792,6 +2813,15 @@ intptr_t SV_GameSystemCalls( intptr_t *args ) {
 void SV_InitGame( qboolean restart ) {
 	int i=0;
 	client_t *cl = NULL;
+#ifdef DEDICATED
+	cvar_t *g_log = Cvar_Get("g_log", "games.log", CVAR_NONE, "");
+
+	if (g_log)
+		Cvar_Unset(g_log); //unset this on map change...?
+	g_log = NULL;
+
+	svs.gameLoggingEnabled = qfalse;
+#endif
 
 	// clear level pointers
 	sv.entityParsePoint = CM_EntityString();
@@ -2836,6 +2866,15 @@ void SV_InitGame( qboolean restart ) {
 			}
 		}
 	}
+
+#ifdef DEDICATED
+	g_log = Cvar_Get("g_log", "games.log", CVAR_NONE, ""); //check again now
+	if (g_log && g_log->string && g_log->string[0] && VALIDSTRING(g_log->string)) {
+		svs.gameLoggingEnabled = qtrue;
+		Com_DPrintf(S_COLOR_CYAN "Game logging to %s\n", g_log->string);
+	}
+	g_log = NULL;
+#endif
 }
 
 void SV_BindGame( void ) {
@@ -2869,7 +2908,11 @@ void SV_BindGame( void ) {
 		gi.FS_GetFileList						= FS_GetFileList;
 		gi.FS_Open								= FS_FOpenFileByMode;
 		gi.FS_Read								= FS_Read;
+#ifdef DEDICATED
+		gi.FS_Write								= GVM_FS_Write;
+#else
 		gi.FS_Write								= FS_Write;
+#endif
 		gi.AdjustAreaPortalState				= SV_AdjustAreaPortalState;
 		gi.AreasConnected						= CM_AreasConnected;
 		gi.DebugPolygonCreate					= BotImport_DebugPolygonCreate;

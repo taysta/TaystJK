@@ -1038,13 +1038,18 @@ void SV_Init (void) {
 
 	sv_snapShotDuelCull = Cvar_Get("sv_snapShotDuelCull", "1", CVAR_NONE, "Snapshot-based duel isolation");
 
-	sv_pingFix = Cvar_Get("sv_pingFix", "1", CVAR_ARCHIVE_ND, "Improved scoreboard client ping calculation");
 	sv_hibernateTime = Cvar_Get("sv_hibernateTime", "0", CVAR_ARCHIVE_ND, "Time after which server will enter hibernation mode");
 	sv_hibernateFPS = Cvar_Get("sv_hibernateFPS", "2", CVAR_ARCHIVE_ND, "FPS during hibernation mode");
 	Cvar_CheckRange(sv_hibernateFPS, 1, 1000, qtrue);
 
 #ifdef DEDICATED
 	sv_antiDST = Cvar_Get("sv_antiDST", "1", CVAR_NONE, "Attempts to detect and kick players injecting or using DST");
+	sv_pingFix = Cvar_Get("sv_pingFix", "2", CVAR_ARCHIVE_ND, "Improved scoreboard client ping calculation - 1: always use new ping calculation - 2: fall back to old method if client's packet rate is less than 60");
+
+	//Used to control/force certain settings at all times
+	//sv_g_logSync = Cvar_Get("g_logsync", "0", CVAR_NONE, "");
+#else
+	sv_pingFix = Cvar_Get("sv_pingFix", "1", CVAR_ARCHIVE_ND, "Improved scoreboard client ping calculation");
 #endif
 
 	// initialize bot cvars so they are listed and can be set before loading the botlib

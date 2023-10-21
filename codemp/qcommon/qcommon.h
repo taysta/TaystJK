@@ -847,6 +847,10 @@ extern	cvar_t	*com_G2Report;
 
 extern	cvar_t	*com_affinity;
 extern	cvar_t	*com_busyWait;
+#ifdef DEDICATED
+extern	cvar_t	*com_logfile;
+extern	cvar_t	*com_logChat;
+#endif
 
 #ifndef TOURNAMENT_CLIENT
 extern	cvar_t	*com_renderfps;

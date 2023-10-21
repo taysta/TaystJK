@@ -354,6 +354,14 @@ gotnewcl:
 	newcl->lastUserInfoChange = 0; //reset the delay
 	newcl->lastUserInfoCount = 0; //reset the count
 
+#ifdef DEDICATED
+	newcl->chatLogPolicySent = qfalse;
+
+	//reset packetDeltas?
+	/*for (i = 0; i < PACKET_BACKUP; i++) {
+		previousPacketDeltas[clientNum][i] = 0;
+	}*/
+#endif
 	// if this was the first client on the server, or the last client
 	// the server can hold, send a heartbeat to the master.
 	count = 0;
@@ -1737,12 +1745,20 @@ On very fast clients, there may be multiple usercmd packed into
 each of the backup packets.
 ==================
 */
+#ifdef DEDICATED
+static unsigned short previousPacketDeltas[MAX_CLIENTS][PACKET_BACKUP];
+static unsigned short previousPacketDeltasIndex[MAX_CLIENTS];
+#endif
 static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 	int			i, key;
 	int			cmdCount;
 	usercmd_t	nullcmd;
 	usercmd_t	cmds[MAX_PACKET_USERCMDS];
 	usercmd_t	*cmd, *oldcmd;
+	qboolean	fixPing = (qboolean)sv_pingFix->integer;
+#ifdef DEDICATED
+	int			oldServerTime = 0, firstServerTime = 0, lastServerTime = 0;
+#endif
 
 	if ( delta ) {
 		cl->deltaMessage = cl->messageAcknowledge;
@@ -1762,6 +1778,17 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 		return;
 	}
 
+#ifdef DEDICATED
+	if (cl->lastUsercmd.serverTime)
+		oldServerTime = cl->lastUsercmd.serverTime;
+
+	if (cl->unfixPing) {
+		if (sv_pingFix->integer != 2)
+			cl->unfixPing = qfalse;
+		else if (fixPing && cl->unfixPing)
+			fixPing = qfalse;
+	}
+#endif
 	// use the checksum feed in the key
 	key = sv.checksumFeed;
 	// also use the message acknowledge
@@ -1791,8 +1818,8 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 
 	// save time for ping calculation
 	// With sv_pingFix enabled we store the time of the first acknowledge, instead of the last. And we use a time value that is not limited by sv_fps.
-	if (!sv_pingFix->integer || cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked == -1)
-		cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked = (sv_pingFix->integer ? Sys_Milliseconds() : svs.time);
+	if (!fixPing || cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked == -1)
+		cl->frames[cl->messageAcknowledge & PACKET_MASK].messageAcked = (fixPing ? Sys_Milliseconds() : svs.time);
 
 	// TTimo
 	// catch the no-cp-yet situation before SV_ClientEnterWorld
@@ -1813,6 +1840,12 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 	if ( cl->state == CS_PRIMED ) {
 		SV_ClientEnterWorld( cl, &cmds[0] );
 		// the moves can be processed normaly
+#ifdef DEDICATED
+		if (com_logChat && com_logChat->integer < 2 && (svs.gameLoggingEnabled || com_logfile->integer) && !cl->chatLogPolicySent) {
+			SV_SendServerCommand(cl, "print \"%sThis server logs %s chat messages\n\"", S_COLOR_CYAN, com_logChat->integer == 1 ? "all public and team" : "no");
+			cl->chatLogPolicySent = qtrue;
+		}
+#endif
 	}
 
 	// a bad cp command was sent, drop the client
@@ -1843,8 +1876,58 @@ static void SV_UserMove( client_t *cl, msg_t *msg, qboolean delta ) {
 		if ( cmds[i].serverTime <= cl->lastUsercmd.serverTime ) {
 			continue;
 		}
+#ifdef DEDICATED
+		else if (!firstServerTime) {
+			firstServerTime = cmds[i].serverTime;
+		}
+		else if (cmds[i].serverTime > lastServerTime) {
+			lastServerTime = cmds[i].serverTime;
+		}
+#endif
 		SV_ClientThink (cl, &cmds[ i ]);
 	}
+
+#ifdef DEDICATED
+	if (lastServerTime <= 0) {//lastServerTime is always 0 if client is sending 1 cmd per packet
+		lastServerTime = firstServerTime;
+	}
+
+	if (sv_pingFix->integer == 2 && oldServerTime > 0 && firstServerTime > 0 && lastServerTime > 0)
+	{
+		//int serverFrameMsec = (1000 / sv_fps->integer);
+		int packetDelta = lastServerTime - oldServerTime;
+
+		if (packetDelta > 0)
+		{
+			int w;
+			int clientNum = cl - svs.clients;
+			int total = 0, average = 0;
+
+			previousPacketDeltas[clientNum][previousPacketDeltasIndex[clientNum] % PACKET_BACKUP] = packetDelta;
+			previousPacketDeltasIndex[clientNum]++;
+			for (w = 0; w < PACKET_BACKUP; w++) { //smooth out packetDelta
+				total += previousPacketDeltas[clientNum][w];
+			}
+
+			if (!total) {//shouldn't happen, but don't divide by 0...
+				total = packetDelta; //1
+			}
+			average = Round(total / PACKET_BACKUP);
+
+			//allowing for some leeway but is supposed to use old ping calculation if their packet rate is less than 55-60
+			//cl->unfixPing = (qboolean)(packetDelta > 20);// serverFrameMsec)
+			cl->unfixPing = (qboolean)(average > 20);
+
+			if (cl->unfixPing && com_developer->integer > 3) { //debug spew...
+				char buf[MAX_STRING_CHARS] = { 0 };
+				Com_sprintf(buf, sizeof(buf),
+					S_COLOR_MAGENTA "Packet delta too low -  using old ping calc on client %i (delta %i average %i count %i)\n", packetDelta, average, cmdCount, cl - svs.clients);
+				Com_Printf(buf);
+				SV_SendServerCommand(cl, "print \"%s\"", buf);
+			}
+		}
+	}
+#endif
 }
 
 

@@ -1500,6 +1500,9 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 		player->client->pers.telemarkOrigin[1] = 0;
 		player->client->pers.telemarkOrigin[2] = 0;
 		player->client->pers.telemarkAngle = 0;
+		//record their tele stats
+		player->client->midRunTeleMarkCount = 0;
+		player->client->midRunTeleCount = 0;
 	}
 	
 	//If racemode and _coop, adjust timer for their partner if needed
@@ -1718,6 +1721,8 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			if (coopFinished)
 				duelAgainst->client->ps.duelTime = 0;
 		}
+		player->client->midRunTeleCount = 0;
+		player->client->midRunTeleMarkCount = 0;
 	}
 }
 
@@ -1828,6 +1833,8 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 					player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = jumplevel;
 					trap->SendServerCommand(player - g_entities, va("print \"Jumplevel updated (%i).\n\"", jumplevel));
 				}
+                if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP)
+                    player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_BHOP;
 			}
 		}
 	}
@@ -1868,7 +1875,7 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	if (trigger->spawnflags & RESTRICT_FLAG_ALLOWTELES) {
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_ALLOWTELES;
 	}
-	if (!trigger->spawnflags) {
+	if (!trigger->spawnflags || (trigger->spawnflags & RESTRICT_FLAG_BHOP)) { //wtf was i thinking?? bucky look at this shit asap
 		const int jumplevel = (trigger->count && trigger->count >= 1 && trigger->count <= 3) ? trigger->count : 3; //allow count to set jump level for different jump heights
 		if (player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != jumplevel) {
 			if (!player->client->savedJumpLevel) //so we only keep their original jumplevel
@@ -1908,7 +1915,7 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 	if (trigger->spawnflags & RESTRICT_FLAG_ALLOWTELES) {
 		player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_ALLOWTELES;
 	}
-	if (trigger->spawnflags == RESTRICT_FLAG_DISABLE) {
+	if (trigger->spawnflags == RESTRICT_FLAG_DISABLE || (trigger->spawnflags & RESTRICT_FLAG_BHOP)) {
 		player->client->ps.stats[STAT_RESTRICTIONS] &= ~JAPRO_RESTRICT_BHOP;
 		if (player->client->savedJumpLevel && player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != player->client->savedJumpLevel) {
 			player->client->ps.fd.forcePowerLevel[FP_LEVITATION] = player->client->savedJumpLevel;

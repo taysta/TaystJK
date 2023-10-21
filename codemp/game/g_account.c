@@ -11,7 +11,7 @@
 #include "curl/easy.h"
 #endif
 
-#define LOCAL_DB_PATH "japro/data.db"
+static char LOCAL_DB_PATH[MAX_QPATH];
 //#define GLOBAL_DB_PATH sv_globalDBPath.string
 //#define MAX_TMP_RACELOG_SIZE 80 * 1024
 
@@ -31,7 +31,7 @@
             Com_Printf("%s failed with status %d: %s\n",  \
                      #f, i, sqlite3_errmsg (db));               \
         }                                                       \
-    }   
+    }
 
 #if 0
 typedef struct RaceRecord_s {
@@ -1559,6 +1559,14 @@ void PrintRaceTime(char *username, char *playername, char *message, char *style,
 		Com_sprintf(messageStr, sizeof(messageStr), "^3%-16s^%i completed", message, color);
 	else
 		Com_sprintf(messageStr, sizeof(messageStr), "^%iCompleted", color);
+
+	if (level.clients[clientNum].ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //print number of teles?
+		if (level.clients[clientNum].midRunTeleCount < 1)
+			Q_strcat(messageStr, sizeof(messageStr), " (PRO)");
+		else
+			Q_strcat(messageStr, sizeof(messageStr), va(" with %i TPs & %i CPs", level.clients[clientNum].midRunTeleCount, level.clients[clientNum].midRunTeleMarkCount));
+			//Com_sprintf(messageStr, sizeof(messageStr), "%s (%i TPs - %i CPs)", messageStr, level.clients[clientNum].midRunTeleCount, level.clients[clientNum].midRunTeleMarkCount);
+	}
 
 	if (valid) {
 		if (global_newRank == 1) { //was 1 when it shouldnt have been.. ?
@@ -6858,6 +6866,17 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
     sqlite3_stmt * stmt;
 	int s;
 
+    char fs_game[MAX_QPATH];
+    trap->Cvar_VariableStringBuffer("fs_game", fs_game, sizeof(fs_game));
+    if (!VALIDSTRING(fs_game) || !strlen(fs_game)) {
+        trap->Cvar_VariableStringBuffer("fs_basegame", fs_game, sizeof(fs_game));
+
+        if (!VALIDSTRING(fs_game) || !strlen(fs_game)) {
+            Q_strncpyz(fs_game, "japro", sizeof(fs_game)); //fall back to this i guess
+        }
+    }
+
+    Com_sprintf(LOCAL_DB_PATH, sizeof(LOCAL_DB_PATH), "%s/data.db", fs_game);
 	CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
 	//sqlite_exec(db, "VACUUM;", 0, 0);

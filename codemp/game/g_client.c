@@ -1171,7 +1171,7 @@ static qboolean CopyToBodyQue( gentity_t *ent ) {
 
 	body->clipmask = CONTENTS_SOLID | CONTENTS_PLAYERCLIP;
 	body->r.contents = CONTENTS_CORPSE;
-	body->r.ownerNum = ent->s.number;
+    body->r.ownerNum = body->s.number; //allows us to destroy our own body..?
 
 	body->nextthink = level.time + BODY_SINK_TIME;
 	body->think = BodySink;
@@ -2293,7 +2293,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 
 //JAPRO - Serverside - Get Clients Mod version, if any - Start
 	s = Info_ValueForKey( userinfo, "cjp_client" );
-	if ( !strcmp( s, "1.4JAPRO" ) ) {
+	if ( !strcmp( s, "1.4JAPRO" ) || !strcmp( s, "1.5.1 JoF" )) { //this should be changed to !Q_stricmpn
 		client->pers.isJAPRO = qtrue;
 	} else {
 		client->pers.isJAPRO = qfalse;
@@ -2765,7 +2765,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 
 	if ( !isBot && firstTime )
 	{
-		if ( g_antiFakePlayer.integer )
+		if ( g_antiFakePlayer.integer && g_maxConnPerIP.integer > 0 )
 		{// patched, check for > g_maxConnPerIP connections from same IP
 			int count=0, i=0;
 			for ( i=0; i<sv_maxclients.integer; i++ )
@@ -3198,6 +3198,13 @@ void G_BreakArm(gentity_t *ent, int arm)
 
 	ent->client->ps.brokenLimbs = 0; //make sure it's cleared out
 	ent->client->ps.brokenLimbs |= (1 << arm); //this arm is now marked as broken
+	if (g_armBreakage.integer < 2 || !arm || (!(ent->client->ps.brokenLimbs & (1 << BROKENLIMB_LARM)) && !(ent->client->ps.brokenLimbs & (1 << BROKENLIMB_RARM)))) {
+		ent->client->ps.brokenLimbs = 0;
+		ent->client->ps.brokenLimbs |= (1 << arm);
+	}
+	else {
+		ent->client->ps.brokenLimbs |= (1 << arm);
+	}
 
 	//Do a pain anim based on the side. Since getting your arm broken does tend to hurt.
 	if (arm == BROKENLIMB_LARM)

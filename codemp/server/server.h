@@ -188,7 +188,11 @@ typedef struct client_s {
 	int				lastReliableTime[4];	// svs.time when reliable command was last received
 	int				lastPacketTime;		// svs.time when packet was last received
 	int				lastConnectTime;	// svs.time when connection started
+#ifdef DEDICATED
+	float			nextSnapshotTime;
+#else
 	int				nextSnapshotTime;	// send another snapshot when svs.time >= nextSnapshotTime
+#endif
 	qboolean		rateDelayed;		// true if nextSnapshotTime was set based on rate instead of snapshotMsec
 	int				timeoutCount;		// must timeout a few frames in a row so debugging doesn't break
 	clientSnapshot_t	frames[PACKET_BACKUP];	// updates can be delta'd from here
@@ -213,6 +217,11 @@ typedef struct client_s {
 #ifdef DEDICATED
 	qboolean		disableDuelCull;	//set for clients with "Duel see others" option set in cp_pluginDisable on JA+ servers
 	qboolean		jpPlugin;
+	//kms...
+	qboolean		unfixPing;			//set to true when client is estimated to have sent less than 60 packets in the last second,
+										//and falls back to baseJKA ping calculation when calculating it for this client
+
+	qboolean		chatLogPolicySent;	//set once client has been sent the "This server logs X chat messages" info, avoids sending message on map change
 #endif
 } client_t;
 
@@ -254,6 +263,9 @@ typedef struct serverStatic_s {
 
 	servermod_t	servermod;
 	qboolean	gvmIsLegacy;
+#ifdef DEDICATED
+	qboolean	gameLoggingEnabled;
+#endif
 } serverStatic_t;
 
 #define SERVER_MAXBANS	1024

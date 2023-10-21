@@ -306,6 +306,10 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 		ResetPlayerTimers(player, qtrue);
 	player->client->ps.fd.forceJumpZStart = -65536; //maybe this will fix that annoying overbounce tele shit
 
+	if (toMark && (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES)) {
+		player->client->midRunTeleCount++;
+	}
+
 	if (droptofloor) {
 		trace_t tr;
 		vec3_t down, mins, maxs;

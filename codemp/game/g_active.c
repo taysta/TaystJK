@@ -3715,7 +3715,7 @@ void ClientThink_real( gentity_t *ent ) {
 
 	if (isNPC && (ucmd->serverTime - client->ps.commandTime) < 1)
 	{
-		ucmd->serverTime = client->ps.commandTime + 100;
+        ucmd->serverTime = client->ps.commandTime + (g_npcFixLerp.integer ? level.frameTime : FRAMETIME);
 	}
 
 	client->lastUpdateFrame = level.framenum; //Unlagged
@@ -3905,8 +3905,8 @@ void ClientThink_real( gentity_t *ent ) {
 	if ( level.pause.state != PAUSE_NONE && !client->sess.raceMode) { //Only pause non racers?
 		ucmd->buttons = ucmd->generic_cmd = 0;
 		ucmd->forwardmove = ucmd->rightmove = ucmd->upmove = 0;
-		client->ps.pm_type = PM_FREEZE;
-	}
+        client->ps.pm_type = PM_SPINTERMISSION; //locks movement and viewangle
+        ent->takedamage = qfalse;	}
 	else  if ( client->noclip ) {
 		client->ps.pm_type = PM_NOCLIP;
 	} else if ( client->ps.eFlags & EF_DISINTEGRATION ) {

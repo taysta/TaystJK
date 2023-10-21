@@ -248,12 +248,12 @@ void CG_ParseServerinfo( void ) {
 	if (gamename) {
 		if (!Q_stricmpn(gamename, "JA+", 3)
 			|| !Q_stricmpn(gamename, "^4U^3A^5Galaxy", 14)
-			|| !Q_stricmpn(gamename, "AbyssMod", 8)) {	//uag :s - yes its fatz
+			|| !Q_stricmpn(gamename, "AbyssMod", 8)
+			|| !Q_stricmpn(gamename, "^5X^2Jedi ^5Academy", 19)) {	//uag :s - yes its fatz
 			cgs.serverMod = SVMOD_JAPLUS;
 			cgs.cinfo = atoi(Info_ValueForKey(info, "jp_cinfo"));//[JAPRO - Clientside - All - Add jp_cinfo variable to get cinfo from japlus servers]
 			cgs.hookpull = 800;
-			if (!Q_stricmpn(cjp_client.string, "1.4", 3))
-				cgs.pluginSet = qtrue;
+            cgs.pluginSet = qtrue;
 		}
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
 			cgs.serverMod = SVMOD_JAPRO;
@@ -1677,7 +1677,7 @@ static void CG_Print_f( void ) {
 
 void CG_ChatBox_AddString(char *chatStr);
 static void CG_Chat_f( void ) {
-	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}; //, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
+	char cmd[MAX_STRING_CHARS] = {0}, text[MAX_NETNAME+MAX_SAY_TEXT] = {0}, logtext[MAX_NETNAME+MAX_SAY_TEXT] = {0};
 
 	trap->Cmd_Argv( 0, cmd, sizeof( cmd ) );
 

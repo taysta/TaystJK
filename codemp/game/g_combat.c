@@ -487,7 +487,7 @@ rww - Toss the weapon away from the player in the specified direction.  Only eve
 */
 void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 {
-	vec3_t vel;
+	vec3_t vel = { 0 };
 	gitem_t *item;
 	gentity_t *launched;
 	int weapon = self->s.weapon;
@@ -2321,6 +2321,18 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 	G_BreakArm(self, 0); //unbreak anything we have broken
 	self->client->ps.saberEntityNum = self->client->saberStoredIndex; //in case we died while our saber was knocked away.
+
+	if (self->client->ps.weapon == WP_SABER && self->client->saberKnockedTime)
+	{
+		gentity_t *saberEnt = &g_entities[self->client->ps.saberEntityNum];
+		//trap->Print("DEBUG: Running saber cleanup for %s\n", self->client->pers.netname);
+		self->client->saberKnockedTime = 0;
+		saberReactivate(saberEnt, self);
+		saberEnt->r.contents = CONTENTS_LIGHTSABER;
+		saberEnt->think = saberBackToOwner;
+		saberEnt->nextthink = level.time;
+		G_RunObject(saberEnt);
+	}
 
 	self->client->bodyGrabIndex = ENTITYNUM_NONE;
 	self->client->bodyGrabTime = 0;
@@ -5220,10 +5232,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			}
 		}
 
+#ifndef NEW_GODMODE
 		// check for godmode
 		if ( (targ->flags & FL_GODMODE) && targ->s.eType != ET_NPC ) {
 			return;
 		}
+#endif
 
 		if (targ && targ->client && (targ->client->ps.eFlags & EF_INVULNERABLE) &&
 			attacker && attacker->client && targ != attacker)
@@ -5701,6 +5715,44 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
+#ifdef NEW_GODMODE
+	// add to the damage inflicted on a player this frame
+	// the total will be turned into screen blends and view angle kicks
+	// at the end of the frame
+	if ( client ) {
+		if ( attacker ) {
+			client->ps.persistant[PERS_ATTACKER] = attacker->s.number;
+		} else {
+			client->ps.persistant[PERS_ATTACKER] = ENTITYNUM_WORLD;
+		}
+		if ((targ->flags & FL_GODMODE) && targ->s.eType != ET_NPC) {
+			client->damage_armor += 0;
+			client->damage_blood += 0;
+			client->damage_knockback += knockback;
+		}
+		else {
+			client->damage_armor += asave;
+			client->damage_blood += take;
+			client->damage_knockback += knockback;
+		}
+		if ( dir ) {
+			VectorCopy ( dir, client->damage_from );
+			client->damage_fromWorld = qfalse;
+		} else {
+			VectorCopy ( targ->r.currentOrigin, client->damage_from );
+			client->damage_fromWorld = qtrue;
+		}
+
+		if (attacker && attacker->client)
+		{
+			BotDamageNotification(client, attacker);
+		}
+		else if (inflictor && inflictor->client)
+		{
+			BotDamageNotification(client, inflictor);
+		}
+	}
+#else
 	// add to the damage inflicted on a player this frame
 	// the total will be turned into screen blends and view angle kicks
 	// at the end of the frame
@@ -5730,6 +5782,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			BotDamageNotification(client, inflictor);
 		}
 	}
+#endif
 
 	// See if it's the player hurting the emeny flag carrier
 	if( level.gametype == GT_CTF || level.gametype == GT_CTY) {
@@ -5834,7 +5887,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			evEnt->s.otherEntityNum = targ->s.number;
 			evEnt->s.eventParm = DirToByte(dir);
 			evEnt->s.time2=shieldAbsorbed;
-	/*
+			    if (g_damageBasedShieldEffect.integer) {
 			shieldAbsorbed *= 20;
 
 			if (shieldAbsorbed > 1500)
@@ -5853,8 +5906,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			//flicker for as many ms as damage was absorbed (*20)
 			//therefore 10 damage causes 1/5 of a seond of flickering, whereas
 			//a full 100 causes 2 seconds (but is reduced to 1.5 seconds due to the max)
-
-	*/
+			}
 		}
 	}
 
@@ -5885,7 +5937,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				take /= (targ->client->ps.fd.forcePowerLevel[FP_RAGE]+1);
 			}
 		}
+#ifndef NEW_GODMODE
 		targ->health = targ->health - take;
+#else
+		if ((targ->flags & FL_GODMODE) && targ->s.eType != ET_NPC) {
+			targ->health = targ->health;
+		}
+		else {
+		targ->health = targ->health - take;
+		}
+#endif
 
 		if ( (targ->flags&FL_UNDYING) )
 		{//take damage down to 1, but never die
@@ -5942,19 +6003,19 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			{
 				targ->locationDamage[gPainHitLoc] += take;
 
-				if (g_armBreakage.integer && !targ->client->ps.brokenLimbs &&
-					targ->client->ps.stats[STAT_HEALTH] > 0 && targ->health > 0 &&
-					!(targ->s.eFlags & EF_DEAD))
-				{ //check for breakage
-					if (targ->locationDamage[HL_ARM_RT]+targ->locationDamage[HL_HAND_RT] >= 80)
-					{
-						G_BreakArm(targ, BROKENLIMB_RARM);
-					}
-					else if (targ->locationDamage[HL_ARM_LT]+targ->locationDamage[HL_HAND_LT] >= 80)
-					{
-						G_BreakArm(targ, BROKENLIMB_LARM);
-					}
-				}
+                if ((g_armBreakage.integer >= 2 || (g_armBreakage.integer == 1 && !targ->client->ps.brokenLimbs)) &&
+                    targ->client->ps.stats[STAT_HEALTH] > 0 && targ->health > 0 &&
+                    !(targ->s.eFlags & EF_DEAD))
+                { //check for breakage
+                    if (targ->locationDamage[HL_ARM_RT]+targ->locationDamage[HL_HAND_RT] >= 80)
+                    {
+                        G_BreakArm(targ, BROKENLIMB_RARM);
+                    }
+                    else if (targ->locationDamage[HL_ARM_LT]+targ->locationDamage[HL_HAND_LT] >= 80)
+                    {
+                        G_BreakArm(targ, BROKENLIMB_LARM);
+                    }
+                }
 			}
 		}
 		else

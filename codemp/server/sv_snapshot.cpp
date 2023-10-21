@@ -796,6 +796,7 @@ Called by SV_SendClientSnapshot and SV_SendClientGameState
 */
 void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	int			rateMsec;
+	qboolean	fixPing = (qboolean)(sv_pingFix->integer);
 
 	// MW - my attempt to fix illegible server message errors caused by
 	// packet fragmentation of initial snapshot.
@@ -806,6 +807,11 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		Com_Printf ("[ISM]SV_SendClientGameState() [1] for %s, writing out old fragments\n", client->name);
 		SV_Netchan_TransmitNextFragment(&client->netchan);
 	}
+
+#ifdef DEDICATED
+	if (sv_pingFix->integer == 2 && client->unfixPing)
+		fixPing = qfalse;
+#endif
 
 	// record information about the message
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageSize = msg->cursize;
@@ -922,7 +928,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	// TTimo - https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=491
 	// added sv_lanForceRate check
 	if ( client->netchan.remoteAddress.type == NA_LOOPBACK || (sv_lanForceRate->integer && Sys_IsLANAddress (client->netchan.remoteAddress)) ) {
-		client->nextSnapshotTime = svs.time + ((int) (1000.0 / sv_fps->integer * com_timescale->value));
+        client->nextSnapshotTime = svs.time + (int)(round(1000.0 / (sv_fps->integer * com_timescale->value)));
 		return;
 	}
 
@@ -937,7 +943,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		client->rateDelayed = qtrue;
 	}
 
-	client->nextSnapshotTime = svs.time + ((int) (rateMsec * com_timescale->value));
+    client->nextSnapshotTime = svs.time + (rateMsec * com_timescale->value);
 
 	// don't pile up empty snapshots while connecting
 	if ( client->state != CS_ACTIVE ) {

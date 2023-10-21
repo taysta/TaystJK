@@ -678,14 +678,16 @@ void Svcmd_ChangeGametype_f (void) {
 		RemoveCTFFlags();
 	}
 
-	for (i=0;  i<level.numPlayingClients; i++) { //Move people to the proper team if changing from team to non team gametype etc
-		cl = &level.clients[level.sortedClients[i]];
+	for (i=0, cl = level.clients; i < MAX_CLIENTS; i++, cl++) { //Move people to the proper team if changing from team to non team gametype etc
+		//cl = &level.clients[level.sortedClients[i]];
+		if (!cl || cl->pers.connected == CA_DISCONNECTED)
+			continue;
 
-		if (level.gametype < GT_TEAM && (cl->sess.sessionTeam == TEAM_RED || cl->sess.sessionTeam == TEAM_BLUE)) {
-			cl->sess.sessionTeam = TEAM_FREE;
+		if ((cl->sess.sessionTeam == TEAM_RED || cl->sess.sessionTeam == TEAM_BLUE) && level.gametype < GT_TEAM) {
+			SetTeam(&g_entities[i], "f", qtrue);
 		}
-		else if (level.gametype >= GT_TEAM && !g_raceMode.integer && cl->sess.sessionTeam == TEAM_FREE) {
-			cl->sess.sessionTeam = TEAM_SPECTATOR;
+		else if (cl->sess.sessionTeam == TEAM_FREE && level.gametype >= GT_TEAM && !g_raceMode.integer) {
+			SetTeam(&g_entities[i], "s", qtrue);
 		}
 	}
 
@@ -784,16 +786,43 @@ void Svcmd_Amgrantadmin_f(void)
 		}
 }
 
-static void SV_Pause_f( void ) {
-	//OSP: pause
+static void SV_Unpause( void ) {
+	level.pause.state = PAUSE_NONE;
+	level.pause.time = 0;
+	level.pause.delayTime = 0;
+}
+
+static void SV_Pause_f( void ) { //OSP: pause
+	int pauseDelay = 0, pauseTime = 0;
+	int argc = trap->Argc();
+
+	if ( level.pause.delayTime )
+	{ // cancel pending pause
+		SV_Unpause();
+		return;
+	}
+
+	if (argc >= 2) {
+		char arg[8] = { 0 };
+		trap->Argv(1, arg, sizeof(arg));
+		if (VALIDSTRING(arg)) pauseDelay = atoi(arg);
+	}
+
 	if ( level.pause.state == PAUSE_NONE ) {
-		level.pause.state = PAUSE_PAUSED;
-		level.pause.time = level.time + g_pauseTime.integer * 1000;
+		level.pause.state = pauseDelay ? PAUSE_NONE : PAUSE_PAUSED;
+		pauseTime = g_pauseTime.integer;
 	}
 	else if ( level.pause.state == PAUSE_PAUSED ) {
 		level.pause.state = PAUSE_UNPAUSING;
-		level.pause.time = level.time + g_unpauseTime.integer * 1000;
+		pauseTime = pauseDelay ? pauseDelay : g_unpauseTime.integer;
+		if (argc >= 2 && pauseDelay == 0) { //specified immediate unpause
+			SV_Unpause();
+			return;
 	}
+}
+
+	level.pause.time = level.time + pauseTime * 1000;
+	level.pause.delayTime = pauseDelay;
 }
 
 char *ConcatArgs( int start );
@@ -888,7 +917,7 @@ void Svcmd_ToggleTweakWeapons_f( void ) {
 		trap->Cvar_Set( "g_tweakWeapons", va( "%i", (1 << index) ^ (g_tweakWeapons.integer & mask ) ) );
 		trap->Cvar_Update( &g_tweakWeapons );
 
-		trap->Print( "%s %s^7\n", weaponTweaks[index].string, ((g_tweakWeapons.integer & (1 << index))
+		trap->Print( "%s %s" S_COLOR_WHITE "\n", weaponTweaks[index].string, ((g_tweakWeapons.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 
 		CVU_TweakWeapons();
@@ -913,7 +942,8 @@ static bitInfo_T saberTweaks[] = {
 	{"Make red DFA cost 0 forcepoints"},//15
 	{"Remove all backslash restrictions"},//16
 	{"Allow sabergun"},//17
-	{"Allow fast style change for single saber"}//17
+	{"Allow fast style change for single saber"},//17
+	{"Use duel mode damage for SP in FFA (removes 2x damage multiplier)"}//18
 };
 static const int MAX_SABER_TWEAKS = ARRAY_LEN( saberTweaks );
 
@@ -1272,6 +1302,104 @@ void Svcmd_ToggleSaberDisable_f( void ) {
 		trap->Print( "%s %s" S_COLOR_WHITE "\n", saberDisables[index].string, ((g_saberDisable.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled") );
 	}
+}
+
+//retarded testbsp
+void Svcmd_MiscBsp_f(void) {
+	char	temp[MAX_QPATH];
+	char	*out;
+	float	newAngle = 0;
+	int		tempint = 0;
+	vec3_t origin;
+
+	if (!sv_cheats.integer)
+		return;
+
+	Com_Printf("hi\n");
+
+	origin[0] = origin[1] = origin[2];
+
+	if (trap->Argc() == 2) {
+		char arg1[16] = { 0 };
+		trap->Argv(1, arg1, sizeof(arg1));
+
+		gentity_t	*ent;
+		ent = G_Spawn(qtrue);
+
+		ent->classname = "misc_bsp";
+
+		/*
+		if ( !G_CallSpawn( ent ) ) {
+			G_FreeEntity( ent );
+		}
+		*/
+
+		VectorCopy(origin, ent->s.origin);
+
+		VectorCopy( ent->s.origin, ent->s.pos.trBase );
+		VectorCopy( ent->s.origin, ent->r.currentOrigin );
+
+
+
+		//G_SpawnFloat( "angle", "0", &newAngle );
+		if (newAngle != 0.0)
+		{
+			ent->s.angles[1] = newAngle;
+		}
+		// don't support rotation any other way
+		ent->s.angles[0] = 0.0;
+		ent->s.angles[2] = 0.0;
+
+		//G_SpawnString("bspmodel", "", &out);
+		out = "mp/duel1";
+
+		ent->s.eFlags = EF_PERMANENT;
+
+		// Mainly for debugging
+		//G_SpawnInt( "spacing", "0", &tempint);
+		ent->s.time2 = tempint;
+		//G_SpawnInt( "flatten", "0", &tempint);
+		ent->s.time = tempint;
+
+		Com_sprintf(temp, MAX_QPATH, "#%s", out);
+		trap->SetBrushModel( (sharedEntity_t *)ent, temp );  // SV_SetBrushModel -- sets mins and maxs
+		G_BSPIndex(temp);
+
+		level.mNumBSPInstances++;
+		Com_sprintf(temp, MAX_QPATH, "%d-", level.mNumBSPInstances);
+		VectorCopy(ent->s.origin, level.mOriginAdjust);
+		level.mRotationAdjust = ent->s.angles[1];
+		level.mTargetAdjust = temp;
+		//level.hasBspInstances = qtrue; //rww - also not referenced anywhere.
+		level.mBSPInstanceDepth++;
+		/*
+		G_SpawnString("filter", "", &out);
+		strcpy(level.mFilter, out);
+		*/
+		//G_SpawnString("teamfilter", "", &out);
+		strcpy(level.mTeamFilter, "");
+
+		VectorCopy( ent->s.origin, ent->s.pos.trBase );
+		VectorCopy( ent->s.origin, ent->r.currentOrigin );
+		VectorCopy( ent->s.angles, ent->s.apos.trBase );
+		VectorCopy( ent->s.angles, ent->r.currentAngles );
+
+		ent->s.eType = ET_MOVER;
+
+		trap->LinkEntity ((sharedEntity_t *)ent);
+
+		trap->SetActiveSubBSP(ent->s.modelindex);
+		G_SpawnEntitiesFromString(qtrue);
+		trap->SetActiveSubBSP(-1);
+
+		level.mBSPInstanceDepth--;
+		//level.mFilter[0] = level.mTeamFilter[0] = 0;
+		level.mTeamFilter[0] = 0;
+
+
+	}
+
+
 }
 
 static bitInfo_T adminOptions[] = {
@@ -1674,6 +1802,9 @@ svcmd_t svcmds[] = {
 
 	{ "startingItems",				Svcmd_ToggleStartingItems_f,		qfalse },
 	{ "startingWeapons",			Svcmd_ToggleStartingWeapons_f,		qfalse },
+
+	{ "testBSP",					Svcmd_MiscBsp_f,					qfalse },
+
 	{ "toggleAdmin",				Svcmd_ToggleAdmin_f,				qfalse },
 	{ "toggleallowvote",			Svcmd_ToggleAllowVote_f,			qfalse },
 	{ "toggleEmotes",				Svcmd_ToggleEmotes_f,				qfalse },

@@ -116,7 +116,7 @@ XCVAR_DEF( g_maxHolocronCarry,			"3",			NULL,				CVAR_LATCH,										qfalse )
 XCVAR_DEF( g_motd,						"",				NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_needpass,					"0",			NULL,				CVAR_SERVERINFO|CVAR_ROM,						qfalse )
 XCVAR_DEF( g_noSpecMove,				"0",			NULL,				CVAR_SERVERINFO,								qtrue )
-XCVAR_DEF( g_npcspskill,				"0",			NULL,				CVAR_ARCHIVE|CVAR_INTERNAL,						qfalse )
+XCVAR_DEF( g_npcspskill,				"4",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_password,					"",				NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_powerDuelEndHealth,		"90",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_powerDuelStartHealth,		"150",			NULL,				CVAR_ARCHIVE,									qtrue )
@@ -173,9 +173,9 @@ XCVAR_DEF( g_weaponDisable,				"0",			CVU_WeaponDisable,	CVAR_SERVERINFO|CVAR_AR
 XCVAR_DEF( g_weaponRespawn,				"5",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( gamedate,					SOURCE_DATE,	NULL,				CVAR_ROM,										qfalse )
 XCVAR_DEF( gamename,					JK_VERSION,		NULL,				CVAR_SERVERINFO|CVAR_ROM,						qfalse )
-XCVAR_DEF( pmove_fixed,					"0",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )
-XCVAR_DEF( pmove_float,					"0",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )
-XCVAR_DEF( pmove_msec,					"8",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )
+XCVAR_DEF( pmove_fixed,					"0",			NULL,				CVAR_SYSTEMINFO,								qtrue )
+XCVAR_DEF( pmove_float,					"0",			NULL,				CVAR_SYSTEMINFO,								qtrue )
+XCVAR_DEF( pmove_msec,					"8",			NULL,				CVAR_SYSTEMINFO,								qtrue )
 XCVAR_DEF( RMG,							"0",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( sv_cheats,					"1",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( sv_fps,						"40",			NULL,				CVAR_ARCHIVE|CVAR_SERVERINFO,					qtrue )
@@ -193,7 +193,7 @@ XCVAR_DEF( g_fixExplosiveHitboxes,		"1",			NULL,				CVAR_ARCHIVE,									qtrue 
 XCVAR_DEF( g_rabbit,					"0",			CVU_Rabbit,			CVAR_ARCHIVE,									qtrue )
 
 //JAPRO Saber
-XCVAR_DEF( g_tweakSaber,				"0",			CVU_TweakSaber,		CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_tweakSaber,				"131072",		CVU_TweakSaber,		CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_backslashDamageScale,		"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_maxSaberDefense,			"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qtrue )
 XCVAR_DEF( g_saberTouchDmg,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
@@ -206,6 +206,11 @@ XCVAR_DEF( g_yellowDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) 
 XCVAR_DEF( g_redDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) //sad hack
 XCVAR_DEF( g_redDFADamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgDelay_Hit,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
+
+//rp
+//XCVAR_DEF( g_spSaberDrawAnimation,		"1",			NULL,				CVAR_NONE,										qtrue ) //not coded yet Lol
+XCVAR_DEF( g_enableCorpseDragging,		"0",			NULL,				CVAR_NONE,										qtrue )
+XCVAR_DEF( g_damageBasedShieldEffect,	"0",			NULL,				CVAR_NONE,										qtrue )
 
 //JAPRO FORCE
 XCVAR_DEF( g_tweakForce,				"0",			CVU_TweakForce,		CVAR_ARCHIVE,									qtrue )
@@ -260,7 +265,7 @@ XCVAR_DEF( g_duelRespawn,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 
 //JAPRO ADMIN
 XCVAR_DEF( g_juniorAdminLevel,			"0",			NULL,				CVAR_ARCHIVE,									qfalse )
-XCVAR_DEF( g_fullAdminLevel,			"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_fullAdminLevel,			"8388607",		NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_juniorAdminPass,			"",				NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_fullAdminPass,				"",				NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_juniorAdminMsg,			"",				NULL,				CVAR_ARCHIVE,									qfalse )
@@ -274,16 +279,19 @@ XCVAR_DEF( g_maxFallDmg,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_startingItems,				"0",			CVU_StartingItems,	CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_screenShake,				"0",			CVU_ScreenShake,	CVAR_ARCHIVE,									qtrue ) //should be g_forceScreenShake
 XCVAR_DEF( g_unlagged,					"0",			CVU_Unlagged,		CVAR_ARCHIVE|CVAR_LATCH,						qtrue )
-XCVAR_DEF( g_allowSaberSwitch,			"0",			CVU_SaberSwitch,	CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_allowSaberSwitch,			"1",			CVU_SaberSwitch,	CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_sameFrameKillFix,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_allowTeamSuicide,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_godChat,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_showHealth,				"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qtrue )
 XCVAR_DEF( g_damageNumbers,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixKillCredit,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_stopHealthESP,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_stopHealthESP,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_blockDuelHealthSpec,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_KOTH,						"0",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_KOTH,						"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qfalse ) //requires map_restart?
 XCVAR_DEF( g_scoreNPCs,					"2",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_npcFixLerp,				"1",			NULL,				CVAR_NONE,										qtrue ) //fixes the sv_fps 40 jerkiness but i think their ai runs faster now...
+XCVAR_DEF( g_npcThinkTime,				"0",			NULL,				CVAR_NONE,										qtrue ) //probably will just break things
 
 #define _ANTIWALLHACK 1
 #if _ANTIWALLHACK
@@ -316,9 +324,9 @@ XCVAR_DEF( g_mercyRule,					"0",			NULL,				CVAR_ARCHIVE,									qtrue ) //If t
 XCVAR_DEF( g_autoQuit,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 
 //JAPRO RACE / ACCOUNTS
-XCVAR_DEF( g_raceMode,					"0",			CVU_RaceMode,		CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_allowRaceTele,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_allowRegistration,			"1",			CVU_Registration,	CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_raceMode,					"2",			CVU_RaceMode,		CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_allowRaceTele,				"2",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_allowRegistration,			"0",			CVU_Registration,	CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( sv_pluginKey,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_forceLogin,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_validateCosmetics,			"1",			CVU_Cosmetics,		CVAR_ARCHIVE,									qtrue )

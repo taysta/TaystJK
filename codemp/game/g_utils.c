@@ -1907,8 +1907,19 @@ void TryUse( gentity_t *ent )
 		{
 			target->s.ragAttach = ent->s.number;
 		}
-		ent->client->bodyGrabTime = level.time + 1000;
-		ent->client->bodyGrabIndex = target->s.number;
+	if (g_enableCorpseDragging.integer && target->inuse && (target->s.eType == ET_BODY || (target->s.eFlags & EF_DEAD)) &&
+		ent->client->bodyGrabTime < level.time)
+	{ //then grab the body
+		target->s.eFlags |= EF_RAG; //make sure it's in rag state
+		if (!ent->s.number)
+		{ //switch cl 0 and entitynum_none, so we can operate on the "if non-0" concept
+			target->s.ragAttach = ENTITYNUM_NONE;
+		}
+		else
+		{
+			target->s.ragAttach = ent->s.number;
+		}
+		ent->client->bodyGrabTime = level.time + 1000;//250		ent->client->bodyGrabIndex = target->s.number;
 		return;
 	}
 #endif

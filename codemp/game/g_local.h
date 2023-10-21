@@ -1196,6 +1196,9 @@ struct gclient_s {
 	int			lastSpottedTime;
 	short		savedJumpLevel;//rabbit
 
+	int			midRunTeleMarkCount;
+	int			midRunTeleCount;
+
 	vec3_t		lastVelocity;
 
 	//Testunlagged
@@ -1340,6 +1343,7 @@ typedef struct level_locals_s {
 	int			framenum;
 	int			time;					// in msec
 	int			previousTime;			// so movers can back up when blocked
+	int			frameTime;
 
 	int			startTime;				// level.time the map was started
 
@@ -1472,6 +1476,7 @@ typedef struct level_locals_s {
 	struct {
 		int state; // loda fixme, not needed?	- well now it is. OSP: pause
 		int time;
+		int delayTime;
 	} pause;
 
 	struct {
