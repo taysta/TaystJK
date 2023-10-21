@@ -358,10 +358,10 @@ static void stb__OptimizeColorsBlock(unsigned char *block, unsigned short *pmax1
     int muv,minv,maxv;
 
 #ifdef NEW_OPTIMISATIONS
-#   define MIN(a,b)      (int)a + ( ((int)b-a) & ( ((int)b-a) >> 31 ) )
-#   define MAX(a,b)      (int)a + ( ((int)b-a) & ( ((int)a-b) >> 31 ) )
-#   define RANGE(a,b,n)  int min##n = MIN(a,b); int max##n = a+b - min##n; muv += a+b;
-#   define MINMAX(a,b,n) int min##n = MIN(min##a, min##b); int max##n = MAX(max##a, max##b); 
+#   define NMIN(a,b)      (int)a + ( ((int)b-a) & ( ((int)b-a) >> 31 ) )
+#   define NMAX(a,b)      (int)a + ( ((int)b-a) & ( ((int)a-b) >> 31 ) )
+#   define RANGE(a,b,n)  int min##n = NMIN(a,b); int max##n = a+b - min##n; muv += a+b;
+#   define MINMAX(a,b,n) int min##n = NMIN(min##a, min##b); int max##n = NMAX(max##a, max##b);
 
 	muv = 0;
 	RANGE(bp[0],  bp[4],  1);
@@ -381,8 +381,8 @@ static void stb__OptimizeColorsBlock(unsigned char *block, unsigned short *pmax1
 	MINMAX(9,10,13);
 	MINMAX(11,12,14);
 
-	minv = MIN(min13,min14);
-	maxv = MAX(max13,max14);
+	minv = NMIN(min13,min14);
+	maxv = NMAX(max13,max14);
 
 #else
 	muv = minv = maxv = bp[0];
