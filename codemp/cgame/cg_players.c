@@ -3543,7 +3543,7 @@ static void CG_SetLerpFrameAnimation( centity_t *cent, clientInfo_t *ci, lerpFra
 		return;
 	}
 
-	if ( cg_debugAnim.integer && (cg_debugAnim.integer < 0 || cg_debugAnim.integer == cent->currentState.clientNum) ) {
+	if ( cg_debugAnim.integer && (cg_debugAnim.integer == cent->currentState.clientNum || (cg_debugAnim.integer == -1 && cg.predictedPlayerState.clientNum == cent->currentState.clientNum) || cg_debugAnim.integer < -1) ) {
 		if (lf == &cent->pe.legs)
 		{
 			trap->Print( "%d: %d TORSO Anim: %i, '%s'\n", cg.time, cent->currentState.clientNum, newAnimation, GetStringForID(animTable, newAnimation));
