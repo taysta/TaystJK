@@ -324,8 +324,9 @@ static void CG_DrawZoomMask( void )
 			flip = !flip;
 		}
 	}
-	else if ( cg.predictedPlayerState.zoomMode == 1)
+	else if ( cg.predictedPlayerState.zoomMode )
 	{
+		float xOffset = 0.5f * (SCREEN_WIDTH - SCREEN_WIDTH*cgs.widthRatioCoef);
 		// disruptor zoom mode
 		level = (float)(50.0f - zoomFov) / 50.0f;//(float)(80.0f - zoomFov) / 80.0f;
 
@@ -345,10 +346,12 @@ static void CG_DrawZoomMask( void )
 		// Draw target mask
         if( cg_crossHairScope.integer == 0)
         {
+            trap->R_SetColor(colorTable[CT_BLACK]);
+            trap->R_DrawStretchPic(0, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0, cgs.media.whiteShader);
+            trap->R_DrawStretchPic(SCREEN_WIDTH - xOffset, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0, cgs.media.whiteShader);
             trap->R_SetColor( colorTable[CT_WHITE] );
-            CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+            CG_DrawPic( xOffset, 0, SCREEN_WIDTH*cgs.widthRatioCoef, SCREEN_HEIGHT, cgs.media.disruptorMask );
         }
-
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
 		{
@@ -364,7 +367,7 @@ static void CG_DrawZoomMask( void )
 		// Draw rotating insert
         if( cg_crossHairScope.integer == 0 )
         {
-            CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 640, 480, -level, cgs.media.disruptorInsert );
+            CG_DrawRotatePic2( SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, -level, cgs.media.disruptorInsert );
         }
 
 		// Increase the light levels under the center of the target
@@ -434,10 +437,10 @@ static void CG_DrawZoomMask( void )
 
 		for (fi = 18.5f; fi <= 18.5f + max; fi+= 3 ) // going from 15 to 45 degrees, with 5 degree increments
 		{
-			cx = 320 + sin( (fi+90.0f)/57.296f ) * 190;
-			cy = 240 + cos( (fi+90.0f)/57.296f ) * 190;
+			cx = (SCREEN_WIDTH / 2) + sin( (fi+90.0f)/57.296f ) * 190;
+			cy = (SCREEN_HEIGHT / 2) + cos( (fi+90.0f)/57.296f ) * 190;
 
-			CG_DrawRotatePic2( cx, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick );
+			CG_DrawRotatePic2( xOffset+cx*cgs.widthRatioCoef, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick );
 		}
 
 		if ( cg.predictedPlayerState.weaponstate == WEAPON_CHARGING_ALT )
@@ -452,7 +455,7 @@ static void CG_DrawZoomMask( void )
 				max = 1.0f;
 			}
 
-			trap->R_DrawStretchPic(257, 435, 134*max, 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
+			trap->R_DrawStretchPic(xOffset+257*cgs.widthRatioCoef, 435, (134*max)*cgs.widthRatioCoef, 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
 		}
 //		trap->R_SetColor( colorTable[CT_WHITE] );
 //		CG_DrawPic( 0, 0, 640, 480, cgs.media.disruptorMask );
