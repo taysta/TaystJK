@@ -1336,8 +1336,12 @@ static CFontInfo *GetFont_SBCSOverride(CFontInfo *pFont, Language_e eLanguageSBC
 
 CFontInfo *GetFont(int index)
 {
-	CFontInfo *pFont = GetFont_Actual( index );
+    CFontInfo *pFont;
 
+    if (r_fontOverride && r_fontOverride->integer > 0 && r_fontOverride->integer < 7)
+        pFont = GetFont_Actual(r_fontOverride->integer);
+    else
+        pFont = GetFont_Actual(index);
 	if (pFont)
 	{
 		// any SBCS overrides? (this has to be pretty quick, and is (sort of))...

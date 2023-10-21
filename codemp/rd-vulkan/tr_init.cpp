@@ -178,6 +178,7 @@ cvar_t	*r_marksOnTriangleMeshes;
 
 cvar_t	*r_aspectCorrectFonts;
 cvar_t	*r_ratioFix;
+cvar_t	*r_fontOverride;
 // Vulkan
 cvar_t	*r_defaultImage;
 cvar_t	*r_device;
@@ -898,6 +899,7 @@ void R_Register( void )
 	r_aspectCorrectFonts				= ri.Cvar_Get( "r_aspectCorrectFonts",				"0",						CVAR_ARCHIVE, "" );
 	r_maxpolys							= ri.Cvar_Get( "r_maxpolys",						XSTRING( DEFAULT_MAX_POLYS ),		CVAR_NONE, "" );
     r_ratioFix							= ri.Cvar_Get( "cl_ratioFix",						"1",						CVAR_ARCHIVE, "" );
+    r_fontOverride						= ri.Cvar_Get( "r_fontOverride",					"0",						CVAR_NONE, "" );
 	r_maxpolyverts						= ri.Cvar_Get( "r_maxpolyverts",					XSTRING( DEFAULT_MAX_POLYVERTS ),	CVAR_NONE, "" );
 
 	// Vulkan

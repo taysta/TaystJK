@@ -1594,6 +1594,7 @@ extern	cvar_t	*r_marksOnTriangleMeshes;
 extern	cvar_t	*r_aspectCorrectFonts;
 
 extern  cvar_t	*r_ratioFix;
+extern  cvar_t	*r_fontOverride;
 // Vulkan
 extern cvar_t	*r_defaultImage;
 extern cvar_t	*r_device;
