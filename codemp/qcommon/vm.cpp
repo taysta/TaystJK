@@ -166,6 +166,7 @@ vm_t *VM_Create( vmSlots_t vmSlot ) {
 	vm->slot = vmSlot;
 	Q_strncpyz( vm->name, vmNames[vmSlot], sizeof(vm->name) );
 
+	Com_Printf("Name: %s\n", vm->name);
 	// find the module api
 	FS_FindPureDLL( vm->name );
 	vm->dllHandle = Sys_LoadGameDll( vm->name, &vm->GetModuleAPI );
