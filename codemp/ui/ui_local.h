@@ -400,6 +400,7 @@ typedef struct uiInfo_s {
 
 	char				hat[MAX_COSMETIC_LENGTH];
 	char				cape[MAX_COSMETIC_LENGTH];
+    qboolean				newUIAPI;
 } uiInfo_t;
 extern uiInfo_t uiInfo;
 

@@ -12876,6 +12876,7 @@ Q_EXPORT uiExport_t* QDECL GetModuleAPI( int apiVersion, uiImport_t *import )
 	uie.MenuReset			= Menu_Reset;
 	uie.CvarHelp			= UI_CvarHelp;
 
+	uiInfo.newUIAPI = qtrue;
 	return &uie;
 }
 
