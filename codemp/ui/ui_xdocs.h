@@ -17,23 +17,65 @@
 
 // aliases for DESCLINE
 #define SETTING( setting, desc )			DESCLINE( S_COLOR_WHITE, PADGROUP( "\x1f", setting ), desc )
+#define BITFLAG( desc )						DESCLINE( S_COLOR_MAGENTA, PADGROUP( "\x1f", "\x19" ), desc )
 #define SPECIAL( special, desc )			DESCLINE( S_COLOR_YELLOW, PADGROUP( "\x1f", special ), desc )
+#define KEY( key, desc )					DESCLINE( S_COLOR_CYAN, PADGROUP( "\x1f", key ), desc )
+#define KEYVALUE( key, valueFormat, desc )	DESCLINE( S_COLOR_CYAN, PADGROUP( "\x1f", PADGROUP( "\x1d", key ) S_COLOR_WHITE "=" S_COLOR_CYAN PADGROUP( "\x1e", "["valueFormat"]" ) ), desc )
 
 // aliases for EMPTYLINE to continue the previous DESCLINE alias
 #define SETTING_NEXTLINE( moreDesc )		EMPTYLINE( PADGROUP( "\x1f", "" ), moreDesc )
+#define BITFLAG_NEXTLINE( moreDesc )		EMPTYLINE( PADGROUP( "\x1f", "" ), moreDesc )
 #define SPECIAL_NEXTLINE( moreDesc )		EMPTYLINE( PADGROUP( "\x1f", "" ), moreDesc )
+#define KEYVALUE_NEXTLINE( moreDesc )		EMPTYLINE( PADGROUP( "\x1f", PADGROUP( "\x1d", "" ) " " PADGROUP( "\x1e", "" ) ), moreDesc )
+
+// general headers for cvar types, bound to their own macro
+#define HEADER_BITFLAG_CVAR \
+	S_COLOR_MAGENTA"Bitflag Cvar"S_COLOR_WHITE": add bitflags together to combine settings." NL \
+	SETTING( "-1", "Enable all settings" ) NL \
+	SETTING( "0", "Disable all settings" ) NL
+
+#define HEADER_KEYVALUE_CVAR \
+	S_COLOR_CYAN"Key/Value Cvar"S_COLOR_WHITE": optionally use any number of key/value parameters." NL \
+	S_COLOR_WHITE"The format is "S_COLOR_GREY"\""S_COLOR_WHITE"key1=value1 key2=value2 [...]"S_COLOR_GREY"\""S_COLOR_WHITE". All keys have default values if unspecified." NL
 
 #ifdef XDOCS_CVAR_HELP
 #define XDOCS_CVAR_DEF(name, shortDesc, longDesc) { name, shortDesc, longDesc },
-#define XDOCS_CVAR_BITFLAG_DEF( name, shortDesc, longDesc ) { name, shortDesc, longDesc },
-#define XDOCS_CVAR_KEYVALUE_DEF( name, shortDesc, longDesc ) { name, shortDesc, longDesc },
+#define XDOCS_CVAR_BITVALUE_DEF( name, shortDesc, execText ) { name, shortDesc, "", execText }, //temp hack???
+#define XDOCS_CVAR_BITFLAG_DEF( name, shortDesc, longDesc ) { name, shortDesc, longDesc, "" },
+#define XDOCS_CVAR_KEYVALUE_DEF( name, shortDesc, longDesc ) { name, shortDesc, longDesc, "" },
 #define XDOCS_CMD_DEF( name, shortDesc ) { name, shortDesc, DEFAULT_FORMAT_CALLBACK },
+#endif
+
+#ifdef XDOCS_CVAR_SHORT_LIST
+	#define XDOCS_CVAR_DEF( name, shortDesc, longDesc ) { name, shortDesc, DEFAULT_FORMAT_CALLBACK },
+	#define XDOCS_CVAR_BITFLAG_DEF( name, shortDesc, longDesc ) { name, shortDesc, DEFAULT_FORMAT_CALLBACK },
+	#define XDOCS_CVAR_KEYVALUE_DEF( name, shortDesc, longDesc ) { name, shortDesc, DEFAULT_FORMAT_CALLBACK },
+	#define XDOCS_CMD_DEF( name, desc )
+#endif
+
+#ifdef XDOCS_CVAR_LONG_LIST
+	#define XDOCS_CVAR_DEF( name, shortDesc, longDesc ) { name, longDesc, SIMPLE_FORMAT_CALLBACK },
+	#define XDOCS_CVAR_BITFLAG_DEF( name, shortDesc, longDesc ) { name, HEADER_BITFLAG_CVAR longDesc, BITFLAG_FORMAT_CALLBACK },
+	#define XDOCS_CVAR_KEYVALUE_DEF( name, shortDesc, longDesc ) { name, HEADER_KEYVALUE_CVAR longDesc, KEYVALUE_FORMAT_CALLBACK },
+	#define XDOCS_CMD_DEF( name, desc )
+#endif
+
+#ifdef XDOCS_CMD_LIST
+	#define XDOCS_CVAR_DEF( name, shortDesc, longDesc )
+	#define XDOCS_CVAR_BITFLAG_DEF( name, shortDesc, longDesc )
+	#define XDOCS_CVAR_KEYVALUE_DEF( name, shortDesc, longDesc )
+	#define XDOCS_CMD_DEF( name, desc ) { name, desc, DEFAULT_FORMAT_CALLBACK },
 #endif
 
 /* --------------------------------------------------- */
 /* CVARS */
 
 // EternalJK HUD cvars:
+//XDOCS_CVAR_DEF("cg_", "Description",
+//"More somethings if needed." NL
+//SETTING("0", "something something probably (Base behavior)") NL
+//SETTING("1", "something else")
+//)
 XDOCS_CVAR_DEF("cg_hudFiles", "HUD style",
     SETTING("0", "JKA HUD") NL
     SETTING("1", "Simple HUD") NL
@@ -41,7 +83,6 @@ XDOCS_CVAR_DEF("cg_hudFiles", "HUD style",
     SETTING("3", "Elegant HUD") NL
     SETTING("4", "Quake HUD")
 )
-
 
 XDOCS_CVAR_DEF("cg_movementKeys", "Show the movement keys onscreen",
 	SETTING("0", "Movement keys are hidden") NL
@@ -60,8 +101,7 @@ XDOCS_CVAR_DEF("cg_movementKeysY", "Vertical location of the movement keys",""
 XDOCS_CVAR_DEF("cg_movementKeysSize", "Scale of the movement keys",""
 )
 
-XDOCS_CVAR_DEF("cg_speedometer", "Configure with the /speedometer command",""
-)
+XDOCS_CVAR_BITVALUE_DEF("cg_speedometer", "Configure with the /speedometer command", "speedometer")
 
 XDOCS_CVAR_DEF("cg_speedometerX", "Horizontal location of the speedometer",""
 )
@@ -154,8 +194,8 @@ XDOCS_CVAR_DEF("cg_newFont", "Uses a different font for the chat",
 )
 
 XDOCS_CVAR_DEF("cg_chatBoxShowHistory", "Allows showing message history in chatbox when console is open",
-	SETTING("0", "Enabled") NL
-	SETTING("1", "Disabled (baseJKA behavior)")
+	SETTING("0", "Disabled (baseJKA behavior)") NL
+	SETTING("1", "Enabled")
 )
 
 XDOCS_CVAR_DEF("cg_teamChatsOnly", "Hide non-team chat messages",
@@ -245,10 +285,8 @@ XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",
 
 //Strafehelper
 
-XDOCS_CVAR_DEF("cg_strafeHelper", "Configure with the /strafehelper command",""
-)
 
-//Pitchhelper
+XDOCS_CVAR_BITVALUE_DEF("cg_strafeHelper", "Configure with the /strafehelper command", "strafehelper")
 
 XDOCS_CVAR_DEF("cg_pitchHelper", "Draw pitch angle independently from /cg_showpos",""
 )
@@ -304,6 +342,13 @@ XDOCS_CVAR_DEF("cg_jumpSounds", "Play sound when players jump",
 	SETTING("1", "Play all jump sounds") NL
 	SETTING("2", "Play only when other clients jump") NL
 	SETTING("3", "Play only when local client jumps")
+)
+
+XDOCS_CVAR_DEF("cg_fallSounds", "Play sound when players fall",
+	SETTING("0", "Don't play fall sounds") NL
+	SETTING("1", "Play all fall sounds") NL
+	SETTING("2", "Play only when other clients fall") NL
+	SETTING("3", "Play only when local client falls")
 )
 
 XDOCS_CVAR_DEF("cg_chatSounds", "Play sound when chat messages are received",
@@ -492,10 +537,19 @@ XDOCS_CMD_DEF("clientlist", "Displays a list of all connected clients and their 
 #undef EXAMPLE
 
 #undef SETTING
+#undef BITFLAG
 #undef SPECIAL
+#undef KEYVALUE
 
 #undef SETTING_NEXTLINE
+#undef BITFLAG_NEXTLINE
 #undef SPECIAL_NEXTLINE
+#undef KEYVALUE_NEXTLINE
+
+#undef HEADER_BITFLAG_CVAR
+#undef HEADER_KEYVALUE_CVAR
 
 #undef XDOCS_CVAR_DEF
+#undef XDOCS_CVAR_BITFLAG_DEF
+#undef XDOCS_CVAR_KEYVALUE_DEF
 #undef XDOCS_CMD_DEF
