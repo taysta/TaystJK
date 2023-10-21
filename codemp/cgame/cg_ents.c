@@ -2555,195 +2555,162 @@ static void CG_DistortionTrail( centity_t *cent )
 }
 */
 
-void CG_GrappleEndpoint( centity_t *ent, vec3_t startPos ) {
-	refEntity_t		model;
-	memset( &model, 0, sizeof( model ) );
+void CG_GrappleEndpoint( centity_t *ent, vec3_t endPos ) {
+	refEntity_t		tmodel = {0 };
 
-	ent->currentState.angles[0] = -ent->currentState.angles[0];
-	ent->currentState.angles[1] = -ent->currentState.angles[1];
-	ent->currentState.angles[2] = -ent->currentState.angles[2];
+	tmodel.reType = RT_MODEL;
+    tmodel.hModel = cgs.media.grappleModel;
 
-	VectorMA(startPos, -4, ent->currentState.angles, startPos);
+	if (cgs.serverMod != SVMOD_JAPLUS) //this makes the JA+ hook disappear...
+		VectorMA( endPos, -4, ent->currentState.angles, endPos );
 
-	model.reType = RT_MODEL;
-	VectorCopy( startPos, model.lightingOrigin );
-	VectorCopy( startPos, model.origin );
+	VectorCopy(endPos, tmodel.lightingOrigin );
+	VectorCopy(endPos, tmodel.origin );
 
-	model.hModel = cgs.media.grappleModel;
-		
-	if ( ent->currentState.apos.trType != TR_INTERPOLATE ) {
-		if ( VectorNormalize2( ent->currentState.pos.trDelta, model.axis[0] ) == 0 ) {
-			VectorNormalize2( ent->currentState.angles, model.axis[0] ); //Its hit the wall.
-		}
-		
-		if ( ent->currentState.pos.trType != TR_STATIONARY ) { // spin as it moves
-			if ( ent->currentState.eFlags & EF_MISSILE_STICK )
-				RotateAroundDirection( model.axis, cg.time * 0.5f );//Did this so regular missiles don't get broken
-			else
-				RotateAroundDirection( model.axis, cg.time * 0.25f );//JFM:FLOAT FIX
-		} 
-		else {
-			if ( ent->currentState.eFlags & EF_MISSILE_STICK )
-				RotateAroundDirection( model.axis, (float)ent->currentState.pos.trTime * 0.5f );
-			else
-				RotateAroundDirection( model.axis, (float)ent->currentState.time );
-		}
-	}
-	else {
-		AnglesToAxis( ent->lerpAngles, model.axis );
-	}
+	if (cgs.serverMod != SVMOD_JAPLUS) {
+        if ( ent->currentState.apos.trType != TR_INTERPOLATE ) {
+            if (VectorNormalize2(ent->currentState.pos.trDelta, tmodel.axis[0] ) == 0 ) {
+                VectorNormalize2(ent->currentState.angles, tmodel.axis[0] ); //Its hit the wall.
+            }
 
-	trap->R_AddRefEntityToScene(&model);
-}
-
-void CG_GrappleStartpoint( centity_t *ent, vec3_t startPos ) {
-	refEntity_t		model;
-	memset( &model, 0, sizeof( model ) );
-
-
-		model.reType = RT_SABER_GLOW;
-		VectorCopy( startPos, model.lightingOrigin );
-		VectorCopy( startPos, model.origin );
-
-		model.customShader = cgs.media.redSaberGlowShader;
-		model.shaderRGBA[0] = model.shaderRGBA[1] = model.shaderRGBA[2] = model.shaderRGBA[3] = 0xff;
-
-		//model.renderfx;
-
-		//AnglesToAxis( ent->currentState.apos.trBase, model.axis );
-
-
-		// convert direction of travel into axis
-		
-		//AnglesToAxis( ent->currentState.angles, model.axis );
-
-		//model.hModel = cgs.media.grappleModel;
-
-		trap->R_AddRefEntityToScene( &model );
-
-
-}
-
-void CG_GrappleTrail( centity_t *ent ) {
-	vec3_t			color;//, angles;
-	entityState_t	*es;// *ees;
-	centity_t		*enemy;
-//	vec3_t			*temp, temp2, temp3;
-	refEntity_t		beam;
-
-	es = &ent->currentState;
-
-	memset( &beam, 0, sizeof( beam ) );
-
-	/*
-	if ( es->otherEntityNum >= 0 && es->otherEntityNum < cg.snap->numEntities ) {
-		if ( es->otherEntityNum == cg.predictedPlayerState.clientNum ) {
-			Com_Printf("1\n");
-			VectorCopy( cg.predictedPlayerState.origin, beam.oldorigin );
-		} else {
-			Com_Printf("2\n");
-			enemy = &cg_entities[ es->otherEntityNum ];
-			ees = &enemy->currentState;
-			BG_EvaluateTrajectory( &ees->pos, cg.time, beam.oldorigin );
-		}
-	} else {
-	*/
-		//Com_Printf("3\n");
-		VectorCopy( ent->lerpOrigin, beam.oldorigin );
-	//}
-
-	if (cg_entities[cg.clientNum].currentState.bolt1 == 1) {
-		return; //assuming we'll never grapple in a duel
-	}
-
-	if ( es->clientNum >= 0 && es->clientNum < MAX_CLIENTS ) {
-		mdxaBone_t	boltMatrix;
-		vec3_t		G2Angles, handPos;
-	
-		enemy = &cg_entities[ es->clientNum ];
-
-		if (enemy->ghoul2) {
-			VectorSet(G2Angles, 0, pm->ps->viewangles[YAW], 0);
-
-			trap->G2API_GetBoltMatrix( enemy->ghoul2, 0, 1,	&boltMatrix, G2Angles, enemy->currentState.pos.trBase, enemy->currentState.apos.trTime, NULL, enemy->modelScale );
-			handPos[0] = boltMatrix.matrix[0][3];
-			handPos[1] = boltMatrix.matrix[1][3];
-			handPos[2] = boltMatrix.matrix[2][3];
-
-			VectorCopy(handPos, beam.origin);
-		}
-		else {
-			VectorCopy(enemy->currentState.pos.trBase, beam.origin);
-			beam.origin[2] += 24;
+            if ( ent->currentState.pos.trType != TR_STATIONARY ) { // spin as it moves
+                if ( ent->currentState.eFlags & EF_MISSILE_STICK )
+                    RotateAroundDirection(tmodel.axis, cg.time * 0.5f );//Did this so regular missiles don't get broken
+                else
+                    RotateAroundDirection(tmodel.axis, cg.time * 0.25f );//JFM:FLOAT FIX
+            }
+            else {
+                if ( ent->currentState.eFlags & EF_MISSILE_STICK )
+                    RotateAroundDirection(tmodel.axis, (float)ent->currentState.pos.trTime * 0.5f );
+                else
+                    RotateAroundDirection(tmodel.axis, (float)ent->currentState.time );
+            }
+        } else {
+			AnglesToAxis(ent->lerpAngles, tmodel.axis );
 		}
 	}
 	else {
-		return;//idk
+		int i;
+		vec3_t angles = { 0 };
+		for (i = 0; i < 3; i++)
+			angles[i] = AngleNormalize360(ent->currentState.angles[i]);
+		if (angles[1] > 180.0)
+			angles[1] -= 360.0;
+		AnglesToAxis(angles, tmodel.axis);
 	}
-
-	ent->trailTime = cg.time;
-
-	beam.radius = 1;
-
-	beam.reType = RT_LINE;//RT_RAIL_CORE;
-	beam.customShader = cgs.media.grappleShader;
-	//beam.customShader = cgs.media.grappleShader;//cgs.media.railCoreShader;
-
-	//beam.shaderTexCoord[0] = 0.1f;
-	//beam.shaderTexCoord[1] = 1.0f;
-
-	//if( cgs.valkyrMode )
-		//CG_GetTrippyColor( es->clientNum * 700, 3000, color );
-	//else
-		//VectorCopy( ci->color, color );
-
-	color[0] = 1; 
-	color[1] = 0;
-	color[2] = 0;
-
-	beam.shaderRGBA[0] = color[0] * 255;
-	beam.shaderRGBA[1] = color[1] * 192;
-	beam.shaderRGBA[2] = color[2] * 192;
-	beam.shaderRGBA[3] = 0xff;
-
-	trap->R_AddRefEntityToScene( &beam );
-
-	
-	CG_GrappleEndpoint(ent, beam.oldorigin);
-	CG_GrappleStartpoint(ent, beam.origin);
-
-	return;
-
-	/*
-	VectorCopy( beam.oldorigin, temp2 );
-
-	memset (&beam, 0, sizeof(beam));
-	beam.reType = RT_SPRITE;
-	beam.radius = 10 + crandom();
-
-	angles[YAW] = 0;
-	angles[PITCH] = 0;
-	angles[ROLL] = crandom() * 10;
-	AnglesToAxis( angles, beam.axis );
-
-	beam.customShader = cgs.media.viewPainShader;//cgs.media.grapple_flare;
-
-	VectorSubtract( temp2, cg.refdef.vieworg, temp3 );
-	VectorNormalize( temp3 );
-	VectorScale( temp3, 16, temp3 );
-	VectorSubtract( temp2, temp3, beam.origin );
-	VectorCopy( beam.origin, beam.oldorigin);
-	
-	trap->R_AddRefEntityToScene( &beam );
-
-	// add dynamic light
-	trap->R_AddLightToScene( temp2, 50 + crandom()*2, color[0], color[1] * .5, color[2] );
-
-
-	//CG_TestLine(beam.origin, beam.oldorigin, 50, 0x0000ff, 2);
-	*/
+	trap->R_AddRefEntityToScene( &tmodel );
 }
 
+void CG_GrappleStartpoint( vec3_t startPos, vec3_t color ) {
+	refEntity_t		tmodel = {0 };
+	int i;
+    tmodel.customShader = cgs.media.rgbSaberGlowShader;
+	for (i = 0; i < 3; i++) tmodel.shaderRGBA[i] = color[i] * 255;
+    tmodel.shaderRGBA[3] = 0xff;
+
+    tmodel.reType = RT_SABER_GLOW;
+		VectorCopy(startPos, tmodel.lightingOrigin );
+		VectorCopy(startPos, tmodel.origin );
+
+		trap->R_AddRefEntityToScene( &tmodel );
+}
+
+#define CG_OldGrapple(startPos, endPos) (CG_TestLine(startPos, endPos, 1, 256, 1))
+static void CG_GrappleTrail( vec3_t startPos, vec3_t endPos, vec3_t color ) {
+    refEntity_t beam = { 0 };
+
+    if (cg_grappleLineColor.integer < 1 || cg_grappleLineColor.integer > 9) { //invalid color
+        CG_OldGrapple(startPos, endPos);
+        return;
+    }
+
+    VectorCopy(startPos, beam.origin);
+    VectorCopy(endPos, beam.oldorigin);
+
+    beam.radius = 1;
+    beam.reType = RT_LINE;//RT_RAIL_CORE;
+    beam.customShader = cgs.media.grappleShader;
+    beam.shaderRGBA[0] = color[0] * 255.0f;
+    beam.shaderRGBA[1] = color[1] * 192.0f;
+    beam.shaderRGBA[2] = color[2] * 192.0f;
+
+    trap->R_AddRefEntityToScene( &beam );
+}
+
+static void CG_DrawGrapple(centity_t *cent) {
+    //entityState_t	*es;
+    int				i, clientNum;
+    centity_t		*owner;
+    clientInfo_t	*ci;
+    mdxaBone_t		boltMatrix;
+    vec3_t			startPos = { 0 }, endPos = { 0 }, color = { 0 };
+
+    //Don't show grapple in duels
+    if (cg.predictedPlayerState.duelInProgress || (cgs.serverMod == SVMOD_JAPRO && cg_entities[cg.clientNum].currentState.bolt1 == 1))
+        return; //assuming we'll never grapple in a duel
+
+    if (cgs.serverMod == SVMOD_JAPRO) {
+        clientNum = cent->currentState.clientNum;
+    } else {
+        //clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.predictedPlayerState.clientNum : cent->currentState.otherEntityNum;
+        clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.snap->ps.clientNum : cent->currentState.otherEntityNum;
+    }
+
+    if (clientNum < 0 || clientNum >= MAX_CLIENTS)
+        return;
+
+    owner = &cg_entities[clientNum];
+    if (!owner)
+        return;
+
+    owner->trailTime = cg.time;
+    owner->bolt1 = cent->currentState.number;
+
+    //ci = &cgs.clientinfo[ es->clientNum ];
+    ci = &cgs.clientinfo[ clientNum ];
+    if (!ci || !ci->infoValid)
+        return;
+
+    trap->G2API_GetBoltMatrix(owner->ghoul2, 0, ci->bolt_rhand, &boltMatrix, owner->turAngles, owner->lerpOrigin, cg.time, cgs.gameModels, owner->modelScale);
+    for (i = 0; i < 3; i++)
+        startPos[i] = boltMatrix.matrix[i][3];
+
+    BG_EvaluateTrajectory(&cent->currentState.pos, cg.time, endPos);
+
+    if (!(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE)) { // old line style
+        CG_OldGrapple(startPos, endPos);
+        return;
+    }
+
+    switch (cg_grappleLineColor.integer) { //would be cool to have a setting that uses their clientinfo rgb color
+        default:
+        case 1:
+            VectorCopy(colorRed, color);
+            break;
+        case 2:
+            VectorCopy(colorTable[CT_HUD_GREEN], color);
+            break;
+        case 3:
+            VectorCopy(colorTable[CT_LTORANGE], color);
+            break;
+        case 4:
+            VectorCopy(colorTable[CT_LTBLUE2], color);
+            break;
+        case 5:
+            VectorCopy(colorTable[CT_DKPURPLE1], color);
+            break;
+        case 6:
+            VectorCopy(colorTable[CT_LTORANGE], color);
+        case 7:
+            VectorCopy(colorWhite, color);
+            break;
+    }
+
+    CG_GrappleTrail(startPos, endPos, color);
+    CG_GrappleEndpoint(cent, endPos);
+    if (cg_grappleLineColor.integer)
+        CG_GrappleStartpoint(startPos, color);
+}
 
 /*
 ===============
@@ -2765,35 +2732,10 @@ static void CG_Missile( centity_t *cent ) {
 	}
 
 	s1 = &cent->currentState;
-
-	if (cgs.serverMod == SVMOD_JAPLUS && s1->weapon == WP_STUN_BATON && !(cg_stylePlayer.integer & JAPRO_STYLE_OLDGRAPPLELINE))
+	if ((cgs.serverMod == SVMOD_JAPRO && s1->weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
+		(cgs.serverMod == SVMOD_JAPLUS && s1->weapon == WP_STUN_BATON))
 	{
-		int			clientNum = (cent->currentState.otherEntityNum == cg.snap->ps.clientNum) ? cg.predictedPlayerState.clientNum : cent->currentState.otherEntityNum;
-		vec3_t		rHandPos;
-		mdxaBone_t	boltMatrix;
-		vec3_t pos;
-
-		//Don't show grapple in duels
-		if (cg.predictedPlayerState.duelInProgress)
-			return;
-
-		cg_entities[clientNum].bolt1 = s1->number;
-
-		trap->G2API_GetBoltMatrix(cg_entities[clientNum].ghoul2, 0, cgs.clientinfo[clientNum].bolt_rhand, &boltMatrix, cg_entities[clientNum].turAngles, cg_entities[clientNum].lerpOrigin, cg.time, cgs.gameModels, cg_entities[clientNum].modelScale);
-
-		rHandPos[0] = boltMatrix.matrix[0][3];
-		rHandPos[1] = boltMatrix.matrix[1][3];
-		rHandPos[2] = boltMatrix.matrix[2][3];
-
-		BG_EvaluateTrajectory(&s1->pos, cg.time, pos);
-
-		CG_TestLine(rHandPos, pos, 1, 6, 1);
-		return;
-	}
-	else if ((cgs.serverMod == SVMOD_JAPRO && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
-		(cgs.serverMod == SVMOD_JAPLUS && cent->currentState.weapon == WP_STUN_BATON))
-	{
-		CG_GrappleTrail(cent);
+		CG_DrawGrapple(cent);
 		return;
 	}
 

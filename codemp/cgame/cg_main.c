@@ -691,7 +691,12 @@ static void CG_RegisterSounds( void ) {
 #endif
 
 #if _GRAPPLE
+	if (cgs.serverMod >= SVMOD_JAPLUS) { //Grapple model+texture+efx
+		cgs.media.grappleModel				= trap->R_RegisterModel( "models/items/grapple.md3" );
 	cgs.media.grappleShader				= trap->R_RegisterShader( "gfx/effects/grapple_line" );
+		cgs.effects.grappleHitWall			= trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
+		cgs.effects.grappleHitWall			= trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
+	}
 #endif
 
 	//Black
@@ -1311,14 +1316,6 @@ static void CG_RegisterGraphics( void ) {
 	cgs.effects.forceDrained	= trap->FX_RegisterEffect( "effects/mp/drainhit.efx");
 
 	cgs.effects.mDisruptorDeathSmoke = trap->FX_RegisterEffect("disruptor/death_smoke");
-
-#if _GRAPPLE
-	if (cgs.serverMod >= SVMOD_JAPLUS) {
-		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_wall.efx");
-		cgs.effects.grappleHitWall = trap->FX_RegisterEffect("effects/grapple/hit_player.efx");
-		cgs.media.grappleModel = trap->R_RegisterModel( "models/items/grapple.md3" );//Grapple model
-	}
-#endif
 
 	//breathing efx from SP
 	cgs.effects.breath = trap->FX_RegisterEffect("effects/misc/breath.efx");

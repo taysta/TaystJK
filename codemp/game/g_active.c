@@ -4685,8 +4685,6 @@ void ClientThink_real( gentity_t *ent ) {
 
 
 #if _GRAPPLE
-	//CHUNK 1
-
 		// sanity check, deals with falling etc;
 	if ( ent->client->hook && ent->client->hook->think == Weapon_HookThink && CanGrapple(ent)) {
 			ent->client->ps.pm_flags |= PMF_GRAPPLE;
@@ -4834,13 +4832,6 @@ void ClientThink_real( gentity_t *ent ) {
 	//rww - bgghoul2
 	pmove.ghoul2 = NULL;
 
-#ifdef _DEBUG
-	if (g_disableServerG2.integer)
-	{
-
-	}
-	else
-#endif
 	if (ent->ghoul2)
 	{
 		if (ent->localAnimIndex > 1)
@@ -5735,25 +5726,6 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 		return;
 	}
-
-	
-#if 0//_GRAPPLE
-	//CHUNK 3
-	// sanity check, deals with falling etc;
-
-	//Com_Printf("Chunk 3 start\n");
-
-
-	if ( ent->client->hook && ent->client->hook->think == Weapon_HookThink && CanGrapple(ent)) {
-		ent->client->ps.pm_flags |= PMF_GRAPPLE;
-	} else {
-		ent->client->ps.pm_flags &= ~( PMF_GRAPPLE );
-	}
-
-	//if (ent->client && ent->s.eType != ET_NPC)
-	//Com_Printf("Flags: %i, hasbeenfired: %i, fireheld: %i\n", ent->client->ps.pm_flags, ent->client->hookHasBeenFired, ent->client->fireHeld);
-#endif
-	
 
 	//Copy current velocity to lastvelocity
 	VectorCopy(ent->client->ps.velocity, ent->client->lastVelocity);

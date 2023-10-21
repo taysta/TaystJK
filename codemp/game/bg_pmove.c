@@ -4137,9 +4137,7 @@ static void PM_CheckWallJump( void )//loda fixme, wip
 }
 
 #if _GRAPPLE
-
-
-static void PM_GetGrappleAnim( void ) {
+static QINLINE void PM_GetGrappleAnim( void ) {
 	vec3_t  facingFwd, facingRight, facingAngles;
 	int	anim = -1;
 	float dotR, dotF;
@@ -4176,6 +4174,43 @@ static void PM_GetGrappleAnim( void ) {
 		PM_SetAnim(parts, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 	}
 }
+
+#ifdef _CGAME //buckyfixme: WHY DOES THIS ONLY WORK TOWARDS SPECIFIC MAP DIRECTIONS WTF
+static QINLINE void PM_GrappleSwing( void ) { //JA++
+	vec3_t dist;
+	vec3_t vel = { 0 };
+	float length, length2;
+
+	VectorCopy(pm->ps->velocity, vel);
+	VectorSubtract( pm->ps->lastHitLoc, pml.previous_origin, dist );
+	length = VectorLength( dist );
+
+	if ( length > 0.0f ) {
+		float	Unknown1, Unknown2;
+		vec3_t	UnknownVec;
+
+		VectorSubtract( pm->ps->lastHitLoc, pm->ps->origin, dist );
+		length2 = VectorLength( dist );
+		VectorNormalize( dist );
+
+		Unknown1 = pm->ps->gravity * length2 / length * pml.frametime;
+
+		VectorScale( dist, Unknown1, UnknownVec );
+		VectorAdd( UnknownVec, vel, UnknownVec );
+
+		Unknown2 = UnknownVec[2]*dist[2] + UnknownVec[1]*dist[2] + UnknownVec[0]*dist[0];
+		vel[0] = -Unknown2 * dist[0] + UnknownVec[0];
+		vel[1] = -Unknown2 * dist[1] + UnknownVec[1];
+		vel[2] = -Unknown2 * dist[2] + UnknownVec[2];
+
+		VectorCopy(vel, pm->ps->velocity);
+	}
+
+	pml.groundPlane = qfalse;
+
+	PM_GetGrappleAnim();
+}
+#endif
 
 static void PM_GrappleMove( void ) {
 	vec3_t vel, v;
@@ -4223,44 +4258,69 @@ PM_GrappleMoveTarzan
 ===================
 */
 static void PM_GrappleMoveTarzan( void ) {
-	vec3_t vel;
-	float vlen;
-	int pullSpeed = 800;
-	int pullStrength1 = 20;
-	int pullStrength2 = 40;
+	vec3_t dist;
+	vec3_t facingFwd, facingRight, facingAngles;
+	int    anim = -1;
+	float dotR, dotF;
+	float length, length2;
 
-#if _GAME
-	if (!pm->ps->stats[STAT_RACEMODE]) {
-		pullSpeed = g_hookStrength.integer;
-		pullStrength1 = g_hookStrength1.integer;
-		pullStrength2 = g_hookStrength2.integer;
-	}
-#else
-	if (!pm->ps->stats[STAT_RACEMODE]) {
-		pullSpeed = cgs.hookpull;
-	}
-#endif
+	VectorSubtract(pm->ps->lastHitLoc, pml.previous_origin, dist);
 
-	VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, vel); //Lasthitloc gets bugged?
-	vlen = VectorLength(vel);
-	VectorNormalize( vel );
+	length = VectorLength(dist);
 
-	if (vlen < ( pullSpeed / 2 ) )
-		PM_Accelerate(vel, 2 * vlen, vlen * ( pullStrength2 / (float)pullSpeed ) );
-	else
-		PM_Accelerate(vel, pullSpeed, pullStrength1);
+	if (length > 0.0f) {
+		float    Unknown1, Unknown2;
+		vec3_t    UnknownVec;
 
-	if ( vel[2] > 0.5f && pml.walking ) {
-		pml.walking = qfalse;
-		//PM_ForceLegsAnim( BOTH_JUMP1  ); //LEGS_JUMP
+		VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, dist);
+		length2 = VectorLength(dist);
+		VectorNormalize(dist);
+
+		Unknown1 = (float)pm->ps->gravity * length2 / length * pml.frametime;
+
+		VectorScale(dist, Unknown1, UnknownVec);
+		VectorAdd(UnknownVec, pm->ps->velocity, UnknownVec);
+
+		Unknown2 = UnknownVec[2] * dist[2] + UnknownVec[1] * dist[1] + UnknownVec[0] * dist[0];
+		pm->ps->velocity[0] = -Unknown2 * dist[0] + UnknownVec[0];
+		pm->ps->velocity[1] = -Unknown2 * dist[1] + UnknownVec[1];
+		pm->ps->velocity[2] = -Unknown2 * dist[2] + UnknownVec[2];
 	}
 
 	pml.groundPlane = qfalse;
 
-	PM_GetGrappleAnim();
+	VectorSet(facingAngles, 0, pm->ps->viewangles[1], 0);
+
+	AngleVectors(facingAngles, facingFwd, facingRight, NULL);
+	dotR = DotProduct(facingRight, pm->ps->velocity);
+	dotF = DotProduct(facingFwd, pm->ps->velocity);
+
+	if (fabsf(dotR) > fabsf(dotF) * 1.5f) {
+		if (dotR > 150) {
+			anim = BOTH_FORCEJUMPRIGHT1;
+		}
+		else if (dotR < -150) {
+			anim = BOTH_FORCEJUMPLEFT1;
+		}
+	}
+	else {
+		if (dotF > 150) {
+			anim = BOTH_FORCEJUMP1;
+		}
+		else if (dotF < -150) {
+			anim = BOTH_FORCEJUMPBACK1;
+		}
+	}
+	if (anim != -1) {
+		int parts = SETANIM_BOTH;
+		if (pm->ps->weaponTime) {//FIXME: really only care if we're in a saber attack anim...
+			parts = SETANIM_LEGS;
+		}
+
+		PM_SetAnim(parts, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
+    }
 }
 #endif
-
 /*
 ===================
 PM_WalkMove
@@ -13253,10 +13313,14 @@ void PmoveSingle (pmove_t *pmove) {
 				PM_GrappleMove();
 			}
 #else
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || pm->ps->stats[STAT_RACEMODE]))
+			if ((pm->ps->eFlags & EF_GRAPPLE_SWING) && !(pm->cmd.buttons & BUTTON_WALKING))
+			{
 				PM_GrappleMoveTarzan();
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE)))
+			}
+			if ((pm->ps->pm_flags & PMF_GRAPPLE) && (pm->cmd.buttons & BUTTON_GRAPPLE))
+			{
 				PM_GrappleMove();
+			}
 #endif
 
 #endif

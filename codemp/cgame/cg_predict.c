@@ -986,6 +986,28 @@ extern	vmCvar_t		cg_showVehBounds;
 pmove_t cg_vehPmove;
 qboolean cg_vehPmoveSet = qfalse;
 
+// retrieves the entityNum of your grapple hook
+// returns -1 on failure
+static QINLINE int FindGrappleHook( int clientNum ) {
+    int i;
+    centity_t *cent = NULL;
+    for ( i = 0; i < MAX_GENTITIES; i++ ) {
+        cent = &cg_entities[i];
+
+        if ( cent && cent->currentValid && cent->currentState.eType == ET_MISSILE && cent->currentState.weapon == WP_STUN_BATON
+             && !cent->currentState.generic1 )
+        {
+            // this is a hook
+            if ( cent->currentState.otherEntityNum == clientNum ) {//&& cg.japp.grappleLanded == cg.snap->serverTime ) {
+                // and it's ours, woohoo
+                return cent->currentState.number;
+            }
+        }
+    }
+
+    return -1;
+}
+
 void CG_PredictPlayerState( void ) {
 	int			cmdNum, current, i;
 	playerState_t	oldPlayerState;
@@ -1012,7 +1034,7 @@ void CG_PredictPlayerState( void ) {
 	}
 
 	// demo playback just copies the moves
-	if ( cg.demoPlayback || (cg.snap->ps.pm_flags & PMF_FOLLOW) ) {
+	if ( cg.demoPlayback || (cg.snap->ps.pm_flags & PMF_FOLLOW) || cg_noPredict.integer == 2 ) {
 		CG_InterpolatePlayerState( qfalse );
 		if (CG_Piloting(cg.predictedPlayerState.m_iVehicleNum))
 		{
@@ -1268,7 +1290,7 @@ void CG_PredictPlayerState( void ) {
 				CG_AdjustPositionForMover( cg.predictedPlayerState.origin,
 					cg.predictedPlayerState.groundEntityNum, cg.physicsTime, cg.oldTime, adjusted );
 
-				if ( cg_showMiss.integer ) {
+				if ( cg_showMiss.integer >= 3 ) { //this is pretty much always going to happen with lag?
 					if (!VectorCompare( oldPlayerState.origin, adjusted )) {
 						trap->Print("prediction error\n");
 					}
@@ -1345,6 +1367,42 @@ void CG_PredictPlayerState( void ) {
 				cg_pmove.ps->fd.saberAnimLevelBase = SS_DUAL;
 			}
 		}
+
+        // grapple prediction
+        //this is making it a lil laggy when the grapple hook speed is rather slow (i.e. jof cfg)
+        if (cgs.serverMod == SVMOD_JAPLUS) { //if ( cg_predictGrapple.integer ) {
+            //const qboolean doGrapplePull = (cg_pmove.cmd.buttons & BUTTON_GRAPPLE);
+            const qboolean doGrapplePull = ((cg_pmove.ps->pm_flags & PMF_GRAPPLE) && (cg_pmove.cmd.buttons & BUTTON_GRAPPLE));
+            const qboolean doReleaseGrapple = (cg_pmove.cmd.buttons & BUTTON_USE);
+            const qboolean isWalking = (cg_pmove.cmd.buttons & BUTTON_WALKING);
+            const qboolean grappleSwinging = (cg.predictedPlayerState.eFlags & EF_GRAPPLE_SWING);
+            const qboolean grapplePulling = (cg.predictedPlayerState.pm_flags & PMF_GRAPPLE);// _PULL;
+            if ( FindGrappleHook( cg.clientNum ) != -1 ) {
+                if ( doReleaseGrapple ) {
+                    cg.predictedPlayerState.pm_flags &= ~PMF_GRAPPLE;//_PULL;
+                    cg.predictedPlayerState.eFlags &= ~EF_GRAPPLE_SWING;
+                }
+                else if ( grappleSwinging ) {
+                    if ( doGrapplePull ) {
+                        cg.predictedPlayerState.pm_flags |= PMF_GRAPPLE;//_PULL;
+                        cg.predictedPlayerState.eFlags &= ~EF_GRAPPLE_SWING;
+                    }
+                    else if ( isWalking ) {
+                        cg.predictedPlayerState.eFlags &= ~EF_GRAPPLE_SWING;
+                    }
+                }
+                else if ( grapplePulling ) {
+                    if ( !doGrapplePull ) {
+                        cg.predictedPlayerState.pm_flags &= ~PMF_GRAPPLE;//_PULL;
+                        cg.predictedPlayerState.eFlags |= EF_GRAPPLE_SWING;
+                    }
+                }
+                else if ( !isWalking ) {
+                    //FIXME: only necessary on ja+?
+                    cg.predictedPlayerState.eFlags |= EF_GRAPPLE_SWING;
+                }
+            }
+        }
 
 		Pmove (&cg_pmove);
 

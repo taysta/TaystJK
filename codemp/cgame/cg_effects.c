@@ -181,7 +181,7 @@ int CGDEBUG_SaberColor( int saberColor )
 	}
 }
 
-void CG_TestLine( vec3_t start, vec3_t end, int time, unsigned int color, int radius) {
+void CG_TestLine( vec3_t start, vec3_t end, int time, unsigned int color, float radius) {
 	localEntity_t	*le;
 	refEntity_t		*re;
 
