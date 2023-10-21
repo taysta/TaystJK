@@ -42,7 +42,7 @@ option(BuildMPCGame "Whether to create projects for the MP clientside gamecode (
 option(BuildMPUI "Whether to create projects for the MP UI code (uix86.dll)" ON)
 option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 renderer (rd-rend2e_x86.dll)" ON)
 
-option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
+option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" OFF)
 
 option(BuildTests "Whether to build automatic unit tests (requires Boost)" OFF)
 
