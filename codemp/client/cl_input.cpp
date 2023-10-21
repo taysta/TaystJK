@@ -1500,6 +1500,7 @@ void CL_CmdButtons( usercmd_t *cmd ) {
 	// currently pressed, even if it isn't bound to anything
 	if ( kg.anykeydown && Key_GetCatcher( ) == 0 ) {
 		cmd->buttons |= BUTTON_ANY;
+		cls.afkTime = cls.realtime;
 	}
 }
 

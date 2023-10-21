@@ -720,7 +720,8 @@ void Field_CharEvent( field_t *edit, int ch ) {
 		return;
 	}
 
-	if (ch == 's' - 'a' + 1) {	// ctrl-s copies console to clipboard
+	//if (ch == 's' - 'a' + 1) {	// ctrl-s copies console to clipboard
+	if ((Key_GetCatcher() & KEYCATCH_CONSOLE) && ch == 's' - 'a' + 1) {	// ctrl-s copies console to clipboard
 		Con_Copy();
 	}
 
@@ -744,6 +745,15 @@ void Field_CharEvent( field_t *edit, int ch ) {
 				edit->scroll--;
 			}
 		}
+		return;
+	}
+
+	if (ch == 'i' - 'a' + 1 && cls.state >= CA_PRIMED && strlen(cls.servername)) {
+		char buf[MAX_OSPATH+8] = {0};
+		Com_sprintf(buf, sizeof(buf), "connect %s", cls.servername);
+		Sys_SetClipboardData(buf);
+		//Sys_SetClipboardData(cls.servername);
+		Com_Printf(S_COLOR_GREEN "Copied IP address " S_COLOR_WHITE "(%s) " S_COLOR_GREEN "to clipboard.\n", cls.servername);
 		return;
 	}
 
@@ -959,7 +969,7 @@ In game talk message
 */
 void Message_Key( int key ) {
 	char buffer[MAX_STRING_CHARS] = {0};
-	char coloredString[MAX_EDIT_LINE] = { 0 };
+	char coloredString[MAX_STRING_CHARS] = { 0 };
 
 	if ( key == A_ESCAPE ) {
 		Key_SetCatcher( Key_GetCatcher() & ~KEYCATCH_MESSAGE );
@@ -969,32 +979,31 @@ void Message_Key( int key ) {
 
 	if ( key == A_ENTER || key == A_KP_ENTER ) {
 		if ( chatField.buffer[0] && cls.state == CA_ACTIVE ) {
-			if (Q_strchrs(chatField.buffer, "%") || Q_strchrs(chatField.buffer, "\""))
+			if (Q_strchrs(chatField.buffer, "%") || Q_strchrs(chatField.buffer, "\"")  || !Q_strncmp(chatField.buffer, "GF", 2))
 			{ //replace " with '' and % with something github hates
 				char buffer[MAX_EDIT_LINE];
 				char *src = buffer, *dst = chatField.buffer;
 
 				Q_strncpyz(buffer, chatField.buffer, sizeof(buffer));
 
-				while (*src) {
-					if (*src == '%') {
-						*dst = '\xb0'; //(char)176 (degree sign)
-						dst++;
-						*dst = '/';
-						dst++;
-						*dst = '.';
-					}
-					else if (*src == '"') {
-						*dst = '\'';
-						dst++;
-						*dst = '\'';
-					}
-					else {
-						*dst = *src;
-					}
-					src++;
-					dst++;
-				}
+                while (*src)
+                {
+                    switch (*src) {
+                        case '%':
+                            *dst = '\xb0'; dst++;
+                            *dst = '/'; dst++;
+                            *dst = '.';
+                            break;
+                        case '"':
+                            *dst = '\''; dst++;
+                            *dst = '\'';
+                            break;
+                        default:
+                            *dst = *src;
+                            break;
+                    }
+                    src++; dst++;
+                }
 				*dst = 0;
 			}
 
@@ -1712,7 +1721,7 @@ void CL_KeyDownEvent( int key, unsigned time )
 		kg.anykeydown = qtrue;
 	}
 
-	if ( cl_allowAltEnter->integer && kg.keys[A_ALT].down && key == A_ENTER )
+	if ( cl_allowAltEnter->integer && (kg.keys[A_ALT].down || kg.keys[A_ALT2].down) && key == A_ENTER )
 	{
 		Cvar_SetValue( "r_fullscreen", !Cvar_VariableIntegerValue( "r_fullscreen" ) );
 		return;
@@ -1778,7 +1787,7 @@ void CL_KeyDownEvent( int key, unsigned time )
 		if ( !(Key_GetCatcher() & KEYCATCH_UI) ) {
 			if ( cls.state == CA_ACTIVE && !clc.demoplaying )
 				UIVM_SetActiveMenu( UIMENU_INGAME );
-			else if (clc.demoplaying) { //JAPRO ENGINE, stop escape in demo from fucking you to main menu
+			else if (clc.demoplaying && !CL_VideoRecording()) { //JAPRO ENGINE, stop escape in demo from fucking you to main menu
 				UIVM_SetActiveMenu(UIMENU_INGAME);
 			}
 			else {

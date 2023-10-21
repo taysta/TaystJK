@@ -3059,19 +3059,19 @@ static void CL_AddFavorite_f( void ) {
 }
 
 void CL_Afk_f(void) {
-	char name[MAX_TOKEN_CHARS], afkPrefix[MAX_TOKEN_CHARS];;
+	char name[MAX_INFO_STRING] = { 0 }, afkPrefix[MAX_INFO_STRING] = { 0 };
+	if (cls.realtime - cl_nameModifiedTime <= 5000) {
+		CL_DeferNameChange();
+		return;
+	}
 	Cvar_VariableStringBuffer("name", name, sizeof(name));
 	Cvar_VariableStringBuffer("cl_afkPrefix", afkPrefix, sizeof(afkPrefix));
-	if (cls.realtime - cl_nameModifiedTime <= 5000)
-		Com_Printf("You must wait 5 seconds before changing your name again.\n");
-	else {
-		if (cl_afkName) {
-			Cvar_Set("name", name + afkPrefixLen);
-		}
-		else {
-			Cvar_Set("name", va("%s%s", afkPrefix, name));
-		}
-	}
+    if (cl_afkName) {
+        Cvar_Set("name", name + afkPrefixLen);
+    }
+    else {
+        Cvar_Set("name", va("%s%s", afkPrefix, name));
+    }
 }
 
 typedef struct bitInfo_S {
@@ -3092,7 +3092,8 @@ static bitInfo_t colors[] = {
 };
 
 static void CL_ColorString_f(void) {
-	if (Cmd_Argc() == 1) {
+	const int argc = Cmd_Argc();
+	if (argc == 1) {
 		int i = 0;
 		for (i = 0; i < 10; i++) {
 			if ((cl_colorString->integer & (1 << i))) {
@@ -3104,7 +3105,7 @@ static void CL_ColorString_f(void) {
 		}
 		return;
 	}
-	else if (Cmd_Argc() == 2) {
+	else if (argc == 2) {
 		char arg[8] = { 0 };
 		int index;
 		const uint32_t mask = (1 << 10) - 1;
@@ -3222,7 +3223,7 @@ static void CL_ColorName_f(void) {
 	int storebitcount = cl_colorStringCount->integer;
 
 	if (cls.realtime - cl_nameModifiedTime <= 5000) {
-		Com_Printf("You must wait 5 seconds before changing your name again.\n");
+		CL_DeferNameChange();
 		return;
 	}
 
@@ -3414,17 +3415,17 @@ void CL_Init( void ) {
     cl_packetdup = Cvar_Get ("cl_packetdup", "1", CVAR_ARCHIVE_ND );
 #endif
 
-	cl_run = Cvar_Get ("cl_run", "1", CVAR_ARCHIVE_ND, "Always run");
+	cl_run = Cvar_Get ("cl_run", "1", CVAR_ARCHIVE, "Always run");
 	cl_sensitivity = Cvar_Get ("sensitivity", "5", CVAR_ARCHIVE, "Mouse sensitivity value");
-	cl_mouseAccel = Cvar_Get ("cl_mouseAccel", "0", CVAR_ARCHIVE_ND, "Mouse acceleration value");
+	cl_mouseAccel = Cvar_Get ("cl_mouseAccel", "0", CVAR_ARCHIVE, "Mouse acceleration value");
 	cl_freelook = Cvar_Get( "cl_freelook", "1", CVAR_ARCHIVE_ND, "Mouse look" );
 
 	// 0: legacy mouse acceleration
 	// 1: new implementation
-	cl_mouseAccelStyle = Cvar_Get( "cl_mouseAccelStyle", "0", CVAR_ARCHIVE_ND, "Mouse accelration style (0:legacy, 1:QuakeLive)" );
+	cl_mouseAccelStyle = Cvar_Get( "cl_mouseAccelStyle", "0", CVAR_ARCHIVE, "Mouse accelration style (0:legacy, 1:QuakeLive)" );
 	// offset for the power function (for style 1, ignored otherwise)
 	// this should be set to the max rate value
-	cl_mouseAccelOffset = Cvar_Get( "cl_mouseAccelOffset", "5", CVAR_ARCHIVE_ND, "Mouse acceleration offset for style 1" );
+	cl_mouseAccelOffset = Cvar_Get( "cl_mouseAccelOffset", "5", CVAR_ARCHIVE, "Mouse acceleration offset for style 1" );
 
 	cl_showMouseRate = Cvar_Get ("cl_showmouserate", "0", 0);
 	cl_framerate	= Cvar_Get ("cl_framerate", "0", CVAR_TEMP);
@@ -3507,6 +3508,7 @@ void CL_Init( void ) {
 	cl_colorString = Cvar_Get("cl_colorString", "0", CVAR_ARCHIVE, "Bit value of selected colors in colorString, configure chat colors with /colorstring");
 	cl_colorStringCount = Cvar_Get("cl_colorStringCount", "0", CVAR_INTERNAL | CVAR_ROM | CVAR_ARCHIVE);
 	cl_colorStringRandom = Cvar_Get("cl_colorStringRandom", "2", CVAR_ARCHIVE, "Randomness of the colors changing, higher numbers are less random");
+	cl_colorString->modified = cl_colorStringCount->modified = cl_colorStringRandom->modified = qfalse;
 
 	cl_afkTime = Cvar_Get("cl_afkTime", "10", CVAR_ARCHIVE, "Minutes to autorename to afk, 0 to disable");
 	cl_afkTimeUnfocused = Cvar_Get("cl_afkTimeUnfocused", "5", CVAR_ARCHIVE, "Minutes to autorename to afk while unfocused/minimized");
@@ -3516,7 +3518,7 @@ void CL_Init( void ) {
 
 	cl_logChat = Cvar_Get("cl_logChat", "0", CVAR_ARCHIVE, "Toggle engine chat logs");
 
-#if defined(DISCORD) && !defined(_DEBUG)
+#if defined(DISCORD)
 	cl_discordRichPresence = Cvar_Get("cl_discordRichPresence", "1", CVAR_ARCHIVE, "Allow/disallow sharing current game information on Discord profile status");
 #endif
 
@@ -3561,6 +3563,8 @@ void CL_Init( void ) {
 	Cmd_AddCommand("afk", CL_Afk_f, "Rename to or from afk");
 	Cmd_AddCommand("colorstring", CL_ColorString_f, "Color say text");
 	Cmd_AddCommand("colorname", CL_ColorName_f, "Color name");
+
+	Cmd_AddCommand("fps_max", CL_MaxFPS_f, "");
 
 	CL_InitRef();
 
@@ -3650,6 +3654,7 @@ void CL_Shutdown( void ) {
 	Cmd_RemoveCommand("afk");
 	Cmd_RemoveCommand("colorstring");
 	Cmd_RemoveCommand("colorname");
+    Cmd_RemoveCommand("fps_max");
 
 #if defined(DISCORD)
 	if (cl_discordRichPresence->integer || cls.discordInitialized)

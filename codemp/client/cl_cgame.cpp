@@ -774,7 +774,7 @@ void CL_InitCGame( void ) {
 	// clear anything that got printed
 	Con_ClearNotify ();
 
-	if (cl_logChat->integer) {
+	if (cl_logChat->integer && !clc.demoplaying) {
 		struct tm		*newtime;
 		time_t			rawtime;
 		char			logname[32];
