@@ -1656,21 +1656,21 @@ CG_Weapon_f
 */
 void CG_Weapon_f( void ) {
 	int		num;
+	playerState_t *ps = &cg.predictedPlayerState;
 
-	if ( !cg.snap ) {
+	if (!cg.snap)
 		return;
-	}
-	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
+	if (!ps)
 		return;
-	}
+	if (ps->pm_flags & PMF_FOLLOW)
+		return;
 
-	if (cg.snap->ps.emplacedIndex)
-	{
+	if (ps->emplacedIndex)
 		return;
-	}
 
-	if (!Q_stricmp(CG_Argv(1), "stun"))
+	if (!Q_stricmp(CG_Argv(1), "stun")) {
 		num = WP_STUN_BATON;
+	}
 	else {
 		num = atoi( CG_Argv( 1 ) );
 
@@ -1678,13 +1678,12 @@ void CG_Weapon_f( void ) {
 			return;
 		}
 
-		if (num == 1 && cg.snap->ps.weapon == WP_SABER)
+		if (num == 1 && ps->weapon == WP_SABER)
 		{
 			//maybe only show inventory if there's more selectable weapons?
 			cg.weaponSelectTime = cg.time;
 
-			if (cg.predictedPlayerState.weaponTime < 1)
-		//	if (cg.snap->ps.weaponTime < 1)
+			if (ps->weaponTime < 1)
 			{
 				trap->SendConsoleCommand("sv_saberswitch\n");
 			}
@@ -1699,7 +1698,7 @@ void CG_Weapon_f( void ) {
 		}
 		else
 		{
-			if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+			if (ps->stats[STAT_WEAPONS] & (1 << WP_SABER))
 			{
 				num = WP_SABER;
 			}
@@ -1709,27 +1708,47 @@ void CG_Weapon_f( void ) {
 			}
 		}
 
-		if (num == WP_BRYAR_PISTOL)
-		{
-			if (!(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_PISTOL)) && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BRYAR_OLD)))
-			{ //can't use either pistol
-				if ((cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_MELEE)))//switch to melee
-					num = WP_MELEE;
-				else if (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)) //switch to stun baton if melee isnt available
-					num = WP_STUN_BATON;
-			}
-			else if (cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD))
-			{//hack to make pistol button equip bryar or cycle between bryar and dl-44
-				if (cg.snap->ps.weapon == WP_BRYAR_PISTOL || !(cg.snap->ps.stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL)))
-					num = WP_BRYAR_OLD;
-				else if (cg.snap->ps.weapon == WP_BRYAR_OLD)
-					num = WP_BRYAR_PISTOL;
-			}
-		}
-		else if (num == WP_BLASTER && !(cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_BLASTER)) && (cg.snap->ps.stats[STAT_WEAPONS] & (1<<WP_STUN_BATON)))
-		{ //switch to stun baton if E-11 is not available..
-			num = WP_STUN_BATON;
-		}
+        if (num == WP_BRYAR_PISTOL)
+        {
+            if (cg.weaponSelect == WP_BRYAR_PISTOL || !(ps->stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL))) {
+                if (ps->stats[STAT_WEAPONS] & (1<<WP_MELEE))//switch to melee
+                    num = WP_MELEE;
+                else if (ps->stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD))
+                    num = WP_BRYAR_OLD;
+            }
+            else if (cg.weaponSelect == WP_MELEE) {
+                if (ps->stats[STAT_WEAPONS] & (1 << WP_BRYAR_OLD))
+                    num = WP_BRYAR_OLD;
+                else if (ps->stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL))
+                    num = WP_BRYAR_PISTOL;
+            }
+            else if (cg.weaponSelect == WP_BRYAR_OLD) {
+                if (ps->stats[STAT_WEAPONS] & (1 << WP_BRYAR_PISTOL))
+                    num = WP_BRYAR_PISTOL;
+                else if (ps->stats[STAT_WEAPONS] & (1 << WP_MELEE))
+                    num = WP_MELEE;
+            }
+        }
+        else if (num == WP_BLASTER && (ps->stats[STAT_WEAPONS] & (1<<WP_STUN_BATON) &&
+                                       (cg.weaponSelect == WP_BLASTER || !(ps->stats[STAT_WEAPONS] & (1<<WP_BLASTER)))))
+        { //switch to stun baton if E-11 is not available..
+            num = WP_STUN_BATON;
+        }
+        else if (num == WP_DISRUPTOR && (ps->stats[STAT_WEAPONS] & (1<<WP_CONCUSSION) &&
+                                         (cg.weaponSelect == WP_DISRUPTOR || !(ps->stats[STAT_WEAPONS] & (1<<WP_DISRUPTOR)))))
+        {
+            num = WP_CONCUSSION;
+        }
+        else if (num == WP_BOWCASTER && (ps->stats[STAT_WEAPONS] & (1<<WP_DEMP2)) &&
+                 (cg.weaponSelect == WP_BOWCASTER || !(ps->stats[STAT_WEAPONS] & (1<<WP_BOWCASTER))))
+        {
+            num = WP_DEMP2;
+        }
+        else if (num == WP_REPEATER && (ps->stats[STAT_WEAPONS] & (1<<WP_FLECHETTE)) &&
+                 (cg.weaponSelect == WP_REPEATER || !(ps->stats[STAT_WEAPONS] & (1<<WP_REPEATER))))
+        {
+            num = WP_FLECHETTE;
+        }
 
 		if (num > LAST_USEABLE_WEAPON+1)
 		{ //other weapons are off limits due to not actually being weapon weapons
@@ -1740,11 +1759,11 @@ void CG_Weapon_f( void ) {
 		{
 			int weap, i = 0;
 
-			if (cg.snap->ps.weapon >= WP_THERMAL &&
-				cg.snap->ps.weapon <= WP_DET_PACK)
+			if (ps->weapon >= WP_THERMAL &&
+				ps->weapon <= WP_DET_PACK)
 			{
 				// already in cycle range so start with next cycle item
-				weap = cg.snap->ps.weapon + 1;
+				weap = ps->weapon + 1;
 			}
 			else
 			{
@@ -1779,13 +1798,13 @@ void CG_Weapon_f( void ) {
 
 	cg.weaponSelectTime = cg.time;
 
-	if ( ! ( cg.snap->ps.stats[STAT_WEAPONS] & ( 1 << num ) ) )
+	if ( ! ( ps->stats[STAT_WEAPONS] & ( 1 << num ) ) )
 	{
 		if (num == WP_SABER)
 		{ //don't have saber, try melee on the same slot
 			num = WP_MELEE;
 
-			if ( ! ( cg.snap->ps.stats[STAT_WEAPONS] & ( 1 << num ) ) )
+			if ( ! ( ps->stats[STAT_WEAPONS] & ( 1 << num ) ) )
 			{
 				return;
 			}
@@ -1798,7 +1817,7 @@ void CG_Weapon_f( void ) {
 
 	if (cg.weaponSelect != num)
 	{
-		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+		trap->S_MuteSound(ps->clientNum, CHAN_WEAPON);
 	}
 
 	cg.weaponSelect = num;
@@ -2598,6 +2617,8 @@ void CG_MissileHitWall(int weapon, int clientNum, vec3_t origin, vec3_t dir, imp
 		FX_BlasterWeaponHitWall( origin, dir );
 		//FIXME: Give it its own hit wall effect
 		break;
+    default:
+        break;
 	}
 }
 
