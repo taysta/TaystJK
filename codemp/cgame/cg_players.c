@@ -4789,8 +4789,8 @@ static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
 	{
 		return;
 	}
-	
-	if (ci->breathPuffTime > cg.time) {
+
+	if (cent->breathPuffTime > cg.time) {
 		return;
 	}
 
@@ -4798,13 +4798,13 @@ static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
 	// TODO: It'd be nice if they breath faster when they're more damaged or when running...
 	if (trap->S_GetVoiceVolume(cent->currentState.number) > 0)
 	{//make breath when talking
-		ci->breathPuffTime = cg.time + 300; // every 200 ms
-		ci->breathTime = cg.time + 150;
+		cent->breathPuffTime = cg.time + 300; // every 200 ms
+		cent->breathTime = cg.time + 150;
 	}
 	else
 	{
-		ci->breathPuffTime = cg.time + 3000; // every 3 seconds.
-		ci->breathTime = cg.time + 1500;
+		cent->breathPuffTime = cg.time + 3000; // every 3 seconds.
+		cent->breathTime = cg.time + 1500;
 	}
 
 	if (cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING)
@@ -5034,19 +5034,17 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 			VectorCopy(cent->lerpAngles, lookAngles);
 		}
 
-		if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.eType == ET_PLAYER && !(cent->currentState.eFlags & EF_DEAD))
+		if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.eType == ET_PLAYER && !(cent->currentState.eFlags & EF_DEAD) && !cent->currentState.otherEntityNum2)
 		{
 			CG_BreathPuffs(cent, cent->lerpAngles, cent->currentState.origin);
 
 			if (cent->currentState.torsoAnim < BOTH_ATTACK1 || cent->currentState.torsoAnim > BOTH_ROLL_STAB ||
 				(cent->currentState.torsoAnim >= BOTH_SABERFAST_STANCE && cent->currentState.torsoAnim <= BOTH_SABERSTAFF_STANCE))
 			{ //not attacking
-				if ((ci->breathTime - cg.time) < 0) {
-					cent->lerpAngles[PITCH] += (float)(ci->breathTime - cg.time) * 0.0025f;
-				}
-				else {
-					cent->lerpAngles[PITCH] -= (float)(ci->breathTime - cg.time) * 0.0025f;
-				}
+				if (cent->breathTime - cg.time < 0)
+					cent->lerpAngles[PITCH] += (float)(cent->breathTime - cg.time) * 0.0025f;
+				else
+					cent->lerpAngles[PITCH] -= (float)(cent->breathTime - cg.time) * 0.0025f;
 			}
 		}
 

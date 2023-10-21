@@ -381,8 +381,6 @@ typedef struct clientInfo_s {
 
 	int				medkitUsageTime;
 
-	int				breathPuffTime;
-
 	// when clientinfo is changed, the loading of models/skins/sounds
 	// can be deferred until you are dead, to prevent hitches in
 	// gameplay
@@ -465,7 +463,6 @@ typedef struct clientInfo_s {
 #endif
 
 	int			deaths; //counted locally client-side, incase the server doesn't send this information already
-	int			breathTime; //can maybe just use breathPuffTime?
 } clientInfo_t;
 
 //rww - cheap looping sound struct
@@ -619,6 +616,9 @@ typedef struct centity_s {
 	vec3_t			lastOrigin; //strafetrail
 	int				lastStrafeTrailTime;
 #endif
+	int			breathTime; //can maybe just use breathPuffTime?
+	int			breathPuffTime; //can maybe just use breathPuffTime?
+
 } centity_t;
 
 
