@@ -230,7 +230,7 @@ static void CG_CalculateWeaponPosition( vec3_t origin, vec3_t angles ) {
 	VectorCopy( cg.refdef.viewangles, angles );
 
 	// on odd legs, invert some angles
-	if ( cg.bobcycle & 1 ) {
+	if ( (int)cg.bobcycle & 1 ) {
 		scale = -cg.xyspeed;
 	} else {
 		scale = cg.xyspeed;
@@ -597,7 +597,7 @@ Ghoul2 Insert End
 		int		shader = 0;
 		float	val = 0.0f;
 		float	scale = 1.0f;
-		addspriteArgStruct_t fxSArgs;
+		addspriteArgStruct_t fxSArgs = { 0 };
 		vec3_t flashorigin, flashdir;
 
 		if (!thirdPerson)
@@ -677,7 +677,7 @@ Ghoul2 Insert End
 		fxSArgs.eAlpha = 0.7f;
 		fxSArgs.rotation = Q_flrand(0.0f, 1.0f)*360;
 		fxSArgs.bounce = 0.0f;
-		fxSArgs.life = 1.0f;
+        fxSArgs.life = cg.frametime;
 		fxSArgs.shader = shader;
 		fxSArgs.flags = 0x08000000;
 
@@ -824,7 +824,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	}
 
 	// allow the gun to be completely removed
-	if ( !cg_drawGun.integer || cg.predictedPlayerState.zoomMode || cg.predictedPlayerState.torsoAnim == BOTH_BUTTON_HOLD ) {
+	if ( !cg_drawGun.integer || ps->zoomMode || ps->torsoAnim == BOTH_BUTTON_HOLD ) {
 		vec3_t		origin;
 
 		if ( cg.predictedPlayerState.eFlags & EF_FIRING ) {
@@ -847,7 +847,7 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	else
 		fovOffset = 0;
 
-	cent = &cg_entities[cg.predictedPlayerState.clientNum];
+	cent = &cg_entities[ps->clientNum];
 	CG_RegisterWeapon( ps->weapon );
 	weapon = &cg_weapons[ ps->weapon ];
 
