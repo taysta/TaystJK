@@ -117,10 +117,10 @@ int		c_pmove = 0;
 
 float forceSpeedLevels[4] =
 {
-	1, //rank 0?
-	1.25,
-	1.5,
-	1.75
+	1.0f, //rank 0?
+	1.25f,
+	1.5f,
+	1.75f
 };
 
 int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS] =
@@ -227,37 +227,43 @@ float forceJumpStrength[NUM_FORCE_POWER_LEVELS] =
 	840
 };
 
-static int GetFlipkick(playerState_t *ps) {
+static int GetFlipkick(playerState_t* ps) {
 	//if (!ps) //?
 		//return;
 #if _GAME
+	if (ps->duelInProgress) {
+		if (dueltypes[ps->clientNum] == 0) { //NF.. man this sucks.. fucks up JA+ nf duels
+			return 0;
+		}
+	}
+	return g_flipKick.integer;
+#else
+	switch (cgs.serverMod)
+	{
+	case SVMOD_JAPRO:
 		if (ps->duelInProgress) {
-			if (dueltypes[ps->clientNum] == 0) { //NF.. man this sucks.. fucks up JA+ nf duels
+			if (cg_dueltypes[ps->clientNum] == 1) { //NF
 				return 0;
 			}
 		}
-		return g_flipKick.integer;
-#else
-		if (cgs.serverMod == SVMOD_JAPRO) {
-			if (ps->duelInProgress) {
-				if (cg_dueltypes[ps->clientNum] == 1) { //NF 
-					return 0;
-				}
-			}
-			if (cgs.jcinfo & JAPRO_CINFO_FLIPKICK) { 
-				if (cgs.jcinfo & JAPRO_CINFO_FIXSIDEKICK)
-					return 3;
-				return 2; //1 ans 2 are the same thing clientside...hmm
-			}
+		if (cgs.jcinfo & JAPRO_CINFO_FLIPKICK) {
+			if (cgs.jcinfo & JAPRO_CINFO_FIXSIDEKICK)
+				return 3;
+			return 2; //1 ans 2 are the same thing clientside...hmm
 		}
-		if (cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & JAPLUS_CINFO_FLIPKICK))
+		break;
+	case SVMOD_JAPLUS:
+		if (cgs.cinfo & JAPLUS_CINFO_FLIPKICK)
 			return 1;
+	default:
+		break;
+	}
 
-		return 0;
+	return 0;
 #endif
 }
 
-static int GetFixRoll(playerState_t *ps) {
+static int GetFixRoll(playerState_t* ps) {
 	//If we are dueling saber only and duels are SP damages and FFA is mp damages..
 		//return 0
 	//If we are dueling force and duels are MP damages and FFA is sp damages
@@ -267,42 +273,41 @@ static int GetFixRoll(playerState_t *ps) {
 	//Would have to network this.. if we want to let servers do jk2 roll in NF duels, or shortroll in FF duels..
 
 #if _GAME
+	if (ps->stats[STAT_RACEMODE])
+		return 3;
+	if (ps->duelInProgress) {
+		if (dueltypes[ps->clientNum] == 0) { //NF
+			return 0;
+		}
+		if (dueltypes[ps->clientNum] == 1) { //FF
+			return 3;
+		}
+	}
+	return g_fixRoll.integer;
+#else
+	if (cgs.serverMod == SVMOD_JAPRO) {
 		if (ps->stats[STAT_RACEMODE])
 			return 3;
 		if (ps->duelInProgress) {
-			if (dueltypes[ps->clientNum] == 0) { //NF 
+			if (cg_dueltypes[ps->clientNum] == 1) { //NF
 				return 0;
 			}
-			if (dueltypes[ps->clientNum] == 1) { //FF
+			if (cg_dueltypes[ps->clientNum] == 2) { //FF
 				return 3;
 			}
 		}
-		return g_fixRoll.integer;
-#else
-		if (cgs.serverMod == SVMOD_JAPRO) {
-			if (ps->stats[STAT_RACEMODE])
-				return 3;
-			if (ps->duelInProgress) {
-				if (cg_dueltypes[ps->clientNum] == 1) { //NF 
-					return 0;
-				}
-				if (cg_dueltypes[ps->clientNum] == 2) { //FF
-					return 3;
-				}
-			}
-		}
+	}
 
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL3) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL3))
-			return 3;
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL2) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL2) || cgs.legacyProtocol)
-			return 2;
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL1) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL1))
-			return 1;
+	if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL3) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL3))
+		return 3;
+	if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL2) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL2) || cgs.legacyProtocol)
+		return 2;
+	if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL1) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL1))
+		return 1;
 
-		return 0;
+	return 0;
 #endif
 }
-
 
 //rww - Get a pointer to the bgEntity by the index
 bgEntity_t *PM_BGEntForNum( int num )
@@ -611,7 +616,7 @@ void PM_pitch_roll_for_slope( bgEntity_t *forwhom, vec3_t pass_slope, vec3_t sto
 		pm->ps->viewangles[PITCH] = dot * pitch;
 		pm->ps->viewangles[ROLL] = ((1-Q_fabs(dot)) * pitch * mod);
 		oldmins2 = pm->mins[2];
-		pm->mins[2] = -24 + 12 * fabs(pm->ps->viewangles[PITCH])/180.0f;
+		pm->mins[2] = -24 + 12 * fabsf(pm->ps->viewangles[PITCH])/180.0f;
 		//FIXME: if it gets bigger, move up
 		if ( oldmins2 > pm->mins[2] )
 		{//our mins is now lower, need to move up
@@ -2683,7 +2688,7 @@ static qboolean PM_CheckJump( void )
 			{
 				vec3_t fwd, right, traceto, mins, maxs, fwdAngles;
 				vec3_t	idealNormal={0}, wallNormal={0};
-				trace_t	trace;
+				trace_t	trace = { 0 };
 				qboolean doTrace = qfalse;
 //JAPRO - Serverside + Clientside - Re add flipkick sidekick - Start
 				int contents;// = MASK_SOLID;//MASK_PLAYERSOLID;
@@ -2712,31 +2717,33 @@ static qboolean PM_CheckJump( void )
 				VectorSet(maxs, pm->maxs[0],pm->maxs[1],24);
 				VectorSet(fwdAngles, 0, pm->ps->viewangles[YAW], 0);
 
-				memset(&trace, 0, sizeof(trace)); //to shut the compiler up
+				//memset(&trace, 0, sizeof(trace)); //to shut the compiler up
 
 				AngleVectors( fwdAngles, fwd, right, NULL );
 
 				//trace-check for a wall, if necc.
 				switch ( anim )
 				{
-				case BOTH_WALL_FLIP_LEFT:
-					//NOTE: purposely falls through to next case!
-				case BOTH_WALL_RUN_LEFT:
-					doTrace = qtrue;
-					VectorMA( pm->ps->origin, -16, right, traceto );
-					break;
+                    case BOTH_WALL_FLIP_LEFT:
+                        //NOTE: purposely falls through to next case!
+                    case BOTH_WALL_RUN_LEFT:
+                        doTrace = qtrue;
+                        VectorMA( pm->ps->origin, -16, right, traceto );
+                        break;
 
-				case BOTH_WALL_FLIP_RIGHT:
-					//NOTE: purposely falls through to next case!
-				case BOTH_WALL_RUN_RIGHT:
-					doTrace = qtrue;
-					VectorMA( pm->ps->origin, 16, right, traceto );
-					break;
+                    case BOTH_WALL_FLIP_RIGHT:
+                        //NOTE: purposely falls through to next case!
+                    case BOTH_WALL_RUN_RIGHT:
+                        doTrace = qtrue;
+                        VectorMA( pm->ps->origin, 16, right, traceto );
+                        break;
 
-				case BOTH_WALL_FLIP_BACK1:
-					doTrace = qtrue;
-					VectorMA( pm->ps->origin, 16, fwd, traceto );
-					break;
+                    case BOTH_WALL_FLIP_BACK1:
+                        doTrace = qtrue;
+                        VectorMA( pm->ps->origin, 16, fwd, traceto );
+                        break;
+                    default:
+                        break;
 				}
 
 				if ( doTrace )
@@ -6145,6 +6152,14 @@ qboolean PM_AdjustStandAnimForSlope( void )
 	{//need these bolts!
 		return qfalse;
 	}
+#if defined(_CGAME)
+	//return qfalse; //just disable prediction on this altogether?
+
+	//if (!cg.snap)
+	//	return qfalse;
+	if (!BG_InSlopeAnim(cg.snap->ps.legsAnim))
+		return qfalse;
+#endif
 
 	//step 1: find the 2 foot tags
 	PM_FootSlopeTrace( &diff, &interval );
@@ -10463,6 +10478,13 @@ qboolean BG_InKnockDown( int anim )
 	case BOTH_KNOCKDOWN5:
 		return qtrue;
 		break;
+#ifdef _CGAME
+	case BOTH_BACK_FALLING_GETUP:
+	case BOTH_BACK_FALLING_GETUP_SLOW:
+		if (cgs.serverMod == SVMOD_JAPRO)
+			return qtrue;
+		break;
+#endif
 	case BOTH_GETUP1:
 	case BOTH_GETUP2:
 	case BOTH_GETUP3:
@@ -12335,9 +12357,9 @@ void PmoveSingle (pmove_t *pmove) {
 				}
 #endif
 				//if emotedisable baseduel, lock player view here like in basejk
-				pm->cmd.rightmove = 0;
+				/*pm->cmd.rightmove = 0;
 				pm->cmd.upmove = 0;
-				pm->cmd.forwardmove = 0;
+				pm->cmd.forwardmove = 0;*/
 				//pm->cmd.buttons = 0; //let chatbox show in meditate
 			}
 			else if ( pm->ps->legsTimer > 0 || pm->ps->torsoTimer > 0 )
@@ -12350,9 +12372,9 @@ void PmoveSingle (pmove_t *pmove) {
 				{
 					stiffenedUp = qtrue;
 					PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
-					pm->cmd.rightmove = 0;
+					/*pm->cmd.rightmove = 0;
 					pm->cmd.upmove = 0;
-					pm->cmd.forwardmove = 0;
+					pm->cmd.forwardmove = 0;*/
 					pm->cmd.buttons = 0;
 				}
 #endif
@@ -12390,7 +12412,15 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->cmd.forwardmove = 0;
 		}
 	}
-
+#if defined(_CGAME)
+    if (pm->ps->duelInProgress && pm->ps->duelTime >= pm->cmd.serverTime) { //testme: duel start/bow prediction fix (game handles in ClientThink_real)
+		//pm->ps->speed = 0;
+		//pm->ps->basespeed = 0;
+		//pm->cmd.forwardmove = 0;
+		//pm->cmd.upmove = 0;
+		stiffenedUp = qtrue;
+	}
+#endif
 	if ( pm->ps->saberMove == LS_A_JUMP_T__B_ )
 	{//can't move during leap
 		if ( pm->ps->groundEntityNum != ENTITYNUM_NONE )
@@ -12409,9 +12439,26 @@ void PmoveSingle (pmove_t *pmove) {
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 			stiffenedUp = qtrue;
 		}
-		else if ((pm->ps->legsAnim >= BOTH_MELEE_BACKKICK && pm->ps->legsAnim <= BOTH_MELEE_SPINKICK)
-			|| pm->ps->legsAnim == BOTH_JUMP_BACKFLIP_ATCK || pm->ps->torsoAnim == BOTH_JUMP_BACKFLIP_ATCK)
+		else
+		{
+			switch (pm->ps->legsAnim)
+			{
+				default:
+					break;
+				case BOTH_JUMP_BACKFLIP_ATCKEE:
+					PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
+				case BOTH_MELEE_BACKKICK:
+				case BOTH_MELEE_SPINKICK:
+				case BOTH_JUMP_BACKKICK_SPIN:
+				case BOTH_JUMP_BACKFLIP_ATCK:
+				//case BOTH_NEW_STABER:
+				//case BOTH_NEW_STABEE:
+				case BOTH_FLIP_STAB:
+				case BOTH_JUMP_BACKFLIP_ATCK_MISSED:
 			stiffenedUp = qtrue;
+					break;
+			}
+		}
 	}
 #endif
 
@@ -12486,6 +12533,8 @@ void PmoveSingle (pmove_t *pmove) {
 
 	PM_CmdForSaberMoves(&pm->cmd);
 
+	BG_AdjustClientSpeed(pm->ps, &pm->cmd, pm->cmd.serverTime);
+
 	if ( pm->ps->stats[STAT_HEALTH] <= 0 ) {
 		pm->tracemask &= ~CONTENTS_BODY;	// corpses can fly through bodies
 	}
@@ -12495,8 +12544,6 @@ void PmoveSingle (pmove_t *pmove) {
 	if ( abs( pm->cmd.forwardmove ) > 64 || abs( pm->cmd.rightmove ) > 64 ) {
 		pm->cmd.buttons &= ~BUTTON_WALKING;
 	}
-
-	BG_AdjustClientSpeed(pm->ps, &pm->cmd, pm->cmd.serverTime); //move this down 2 blocks
 
 	// set the talk balloon flag
 	if ( pm->cmd.buttons & BUTTON_TALK ) {
@@ -13524,11 +13571,11 @@ void Pmove (pmove_t *pmove) {
 
 	pmove->ps->pmove_framecount = (pmove->ps->pmove_framecount+1) & ((1<<PS_PMOVEFRAMECOUNTBITS)-1);
 
-	//if (pmove->ps->stats[STAT_RACEMODE] /*pm->ps->clientNum < MAX_CLIENTS*/) {//racemode only?
+	if (pmove->ps->stats[STAT_RACEMODE] /*pm->ps->clientNum < MAX_CLIENTS*/) {//racemode only?
 		pmove->cmd.angles[ROLL] = 0;
 		pmove->ps->viewangles[ROLL] = 0;
 		pmove->ps->delta_angles[ROLL] = 0;
-	//}
+	}
 
 	// chop the move up if it is too long, to prevent framerate
 	// dependent behavior
@@ -13565,4 +13612,3 @@ void Pmove (pmove_t *pmove) {
 		}
 	}
 }
-
