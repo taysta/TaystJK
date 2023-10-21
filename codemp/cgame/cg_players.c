@@ -10276,7 +10276,7 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 }
 //[/Kameleon]
 
-
+extern qboolean BG_InSlopeAnim( int anim );
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
 void CG_Player( centity_t *cent ) {
 	clientInfo_t	*ci;
@@ -11219,12 +11219,31 @@ void CG_Player( centity_t *cent ) {
 			cent->currentState.torsoAnim = BOTH_ATTACK2;
 		}
 		else if (cent->currentState.weapon == WP_CONCUSSION) {
+
 			if (cent->currentState.legsAnim == BOTH_ATTACK2)
 				cent->currentState.legsAnim = BOTH_ATTACK3;
 			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
 				cent->currentState.torsoAnim = BOTH_ATTACK3;
 		}
 	}
+
+	if (cg_stylePlayer.integer & JAPRO_STYLE_ALTERNATEPOSE)
+	{ //jk2 standing animation, do this only with saber off & not in a slope anim
+		if (cent->currentState.weapon == WP_SABER && !BG_InSlopeAnim(cent->currentState.legsAnim)) {
+			if (cent->currentState.saberHolstered == 2 || cent->currentState.saberInFlight) {
+				if (cent->currentState.torsoAnim == BOTH_STAND1)
+					cent->currentState.torsoAnim = BOTH_STAND9;
+				else if (cent->currentState.torsoAnim == BOTH_STAND1IDLE1)
+					cent->currentState.torsoAnim = BOTH_STAND9IDLE1;
+
+				if (cent->currentState.legsAnim == BOTH_STAND1 && cent->currentState.torsoAnim != BOTH_CONSOLE1)
+					cent->currentState.legsAnim = BOTH_STAND9;
+				else if (cent->currentState.legsAnim == BOTH_STAND1IDLE1)
+					cent->currentState.legsAnim = BOTH_STAND9IDLE1;
+			}
+		}
+	}
+
 
 	CG_G2PlayerAngles( cent, legs.axis, rootAngles );
 	CG_G2PlayerHeadAnims( cent );
