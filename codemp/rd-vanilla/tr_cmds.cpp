@@ -411,6 +411,26 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		R_SetGammaCorrectionLUT();
 	}
 
+	if (r_overBrightBits->modified)
+	{
+		char mapname[MAX_QPATH] = {0};
+
+		R_IssuePendingRenderCommands();
+		R_SetColorMappings();
+		R_SetGammaCorrectionLUT();
+
+		if (ri.CGVMLoaded())
+		{
+			Q_strncpyz(mapname, tr.world->name, sizeof(mapname));
+			tr.worldMapLoaded = qfalse;
+			tr.world = NULL;
+			RE_LoadWorldMap(mapname);
+		}
+
+		//reset these last...
+		if (r_overBrightBits->modified)
+			r_overBrightBits->modified = qfalse;
+	}
 	if (r_ratioFix->modified) {
 		R_Set2DRatio();
 		r_ratioFix->modified = qfalse;

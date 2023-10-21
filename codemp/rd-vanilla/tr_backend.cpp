@@ -444,14 +444,25 @@ to actually render the visible surfaces for this view
 void RB_BeginDrawingView (void) {
 	int clearBits = GL_DEPTH_BUFFER_BIT;
 
-	// sync with gl if needed
-	if ( r_finish->integer == 1 && !glState.finishCalled ) {
-		qglFinish ();
-		glState.finishCalled = qtrue;
-	}
-	if ( r_finish->integer == 0 ) {
-		glState.finishCalled = qtrue;
-	}
+    // sync with gl if needed
+    if ( !r_finish->integer) {
+        glState.finishCalled = qtrue;
+    }
+    else if ( !glState.finishCalled ) {
+        if ( r_finish->integer & 1 ) {
+            qglFinish();
+        }
+        if ( r_finish->integer & 2 ) {
+            ri.WIN_Present( &window ); //uhh this helps render latency??
+        }
+        if ( r_finish->integer & 4 ) {
+            qglFlush();
+        }
+        if ( r_finish->integer & 8 ) {
+            qglEnd();
+        }
+        glState.finishCalled = qtrue;
+    }
 
 	// we will need to change the projection matrix before drawing
 	// 2D images again

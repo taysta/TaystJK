@@ -2060,6 +2060,11 @@ void RE_LoadWorldMap_Actual( const char *name, world_t &worldData, int index )
 	COM_StripExtension( worldData.baseName, worldData.baseName, sizeof( worldData.baseName ) );
 	COM_StripExtension( tr.worldDir, tr.worldDir, sizeof( tr.worldDir ) );
 
+	//update overbrightbits
+	if (!index) {
+		R_SetColorMappings();
+		R_SetGammaCorrectionLUT();
+	}
 	startMarker = (byte *)Hunk_Alloc(0, h_low);
 	c_gridVerts = 0;
 

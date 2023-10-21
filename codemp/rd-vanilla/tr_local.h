@@ -1880,7 +1880,7 @@ extern	int		max_polyverts;
 extern	backEndData_t	*backEndData;
 
 
-void RB_ExecuteRenderCommands( const void *data );
+void *R_GetCommandBuffer( int bytes );
 
 void R_IssuePendingRenderCommands( void );
 

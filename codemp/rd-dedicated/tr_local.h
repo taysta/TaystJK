@@ -1385,9 +1385,6 @@ image_t		*R_FindImageFile( const char *name, qboolean mipmap, qboolean allowPicm
 
 qboolean	R_GetModeInfo( int *width, int *height, int mode );
 
-void		R_SetColorMappings( void );
-void		R_GammaCorrect( byte *buffer, int bufSize );
-
 void	R_ImageList_f( void );
 void	R_SkinList_f( void );
 void	R_FontList_f( void );
@@ -1844,8 +1841,7 @@ extern	int		max_polyverts;
 
 extern	backEndData_t	*backEndData;
 
-
-void RB_ExecuteRenderCommands( const void *data );
+void *R_GetCommandBuffer( int bytes );
 
 void R_IssuePendingRenderCommands( void );
 

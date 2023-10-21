@@ -1414,12 +1414,25 @@ void R_SetColorMappings( void ) {
 
 	// setup the overbright lighting
 	tr.overbrightBits = r_overBrightBits->integer;
-	if ( !glConfig.deviceSupportsGamma ) {
-		tr.overbrightBits = 0;		// need hardware gamma for overbright
+	if ( !glConfig.deviceSupportsGamma && !glConfigExt.doGammaCorrectionWithShaders ) {
+		tr.overbrightBits = 0;		// need hardware gamma for overbright - no we don't
 	}
 
+	if (!ri.CGVMLoaded()) {
+		tr.overbrightBits = 0;
+	}
+	else if (tr.worldDir && tr.worldDir[0] && !r_overBrightBits->modified)
+	{
+		//if (!Q_stricmpn(tr.worldDir, "maps/mp/ffa3", 12) || !Q_stricmpn(tr.worldDir, "maps/ffa3", 9) ||
+		if (strstr(tr.worldDir, "ffa3") ||
+			!Q_stricmpn(tr.worldDir, "maps/kor2", 9) || !Q_stricmpn(tr.worldDir, "maps/t3_stamp", 13) ||
+			!Q_stricmpn(tr.worldDir, "maps/race", 9) || !Q_stricmpn(tr.worldDir, "maps/null", 9))
+		{
+			tr.overbrightBits = 0;
+		}
+	}
 
-	// never overbright in windowed mode
+	// never overbright in windowed mode - unless we are using software gamma
 	if ( !glConfig.isFullscreen && !glConfigExt.doGammaCorrectionWithShaders )
 	{
 		tr.overbrightBits = 0;
@@ -1469,7 +1482,7 @@ void R_SetColorMappings( void ) {
 			s_gammatable[i] = inf;
 		}
 
-		if ( glConfig.deviceSupportsGamma )
+		if ( glConfig.deviceSupportsGamma && !glConfigExt.doGammaCorrectionWithShaders )
 		{
 			ri.WIN_SetGamma( &glConfig, s_gammatable, s_gammatable, s_gammatable );
 		}
@@ -1552,9 +1565,6 @@ void	R_InitImages( void ) {
 		tr.dynamicGlowWidth = r_DynamicGlowWidth->integer;
 		tr.dynamicGlowHeight = r_DynamicGlowHeight->integer;
 	}
-#ifdef TECH
-	Com_Printf("DynamicGlowWidth = %i\nDynamicGlowHeight = %i\n", tr.dynamicGlowWidth, tr.dynamicGlowHeight);
-#endif
 
 	R_CreateBuiltinImages();
 
