@@ -2668,9 +2668,12 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 								attacker->client->pers.stats.teamKills++;
 						}
 					}
-					else if (level.gametype != GT_FFA && (level.gametype != GT_CTF || !g_fixCTFScores.integer)) {//we selfkilled
-						if (!attacker->client->sess.raceMode)
-							AddScore( attacker, self->r.currentOrigin, -1 ); //Only take away a point if its not FFA or CTF i guess, sure
+					else if (g_fixCTFScores.integer && (level.gametype == GT_CTF || (level.gametype == GT_TEAM && g_KOTH.integer))) {//do Nothing
+						if (level.gametype == GT_TEAM && g_KOTH.integer && attacker->client)
+							attacker->client->ps.persistant[PERS_KILLED]--;
+					}
+					else if (!attacker->client->sess.raceMode) {
+						AddScore( attacker, self->r.currentOrigin, -1 ); //Only take away a point if its not FFA or CTF i guess, sure
 					}
 
 				}

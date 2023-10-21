@@ -4052,6 +4052,92 @@ void G_RunFrame( int levelTime ) {
 		G_RunThink(ent);
 	}
 
+	if (g_KOTH.integer >= 2 && level.gametype == GT_TEAM)
+	{ //handle gradual healing in koth
+		static int lastHealthCheck = 0;
+
+		if (level.time - lastHealthCheck >= 1500)
+		{//prolly should refactor loops to go thru first 32 entity slots instead of this convoluted shite
+			int i, hp = 0;
+			int counts[TEAM_NUM_TEAMS] = { 0 };
+			team_t healTeam = TEAM_FREE;
+			gclient_t *cl = NULL;
+			gentity_t *ent = NULL;
+
+			for (i = 0, cl = level.clients; i < MAX_CLIENTS; i++, cl++)
+			{
+				if (!cl || cl->pers.connected == CON_DISCONNECTED)
+					continue;
+
+				if (cl->ps.duelInProgress || cl->sess.raceMode)
+					continue;
+
+				if (cl->sess.sessionTeam != TEAM_RED && cl->sess.sessionTeam != TEAM_BLUE)
+					continue;
+
+				if (cl->ps.stats[STAT_HEALTH] < 1 || (cl->ps.eFlags & EF_DEAD))
+					continue;
+
+				if (cl->pers.stats.kothLevelTime == level.previousTime) {
+					/*if (cl->sess.sessionTeam == TEAM_RED)
+						redCount++;
+					else //if (cl->sess.sessionTeam == TEAM_BLUE)
+						blueCount++;*/
+					counts[cl->sess.sessionTeam]++;
+				}
+			}
+
+			//hp = 100 / addTime;
+			//if (hp < 0) hp *= -1;
+
+			if (counts[TEAM_RED] > counts[TEAM_BLUE]) {
+				healTeam = TEAM_RED;
+				hp = counts[TEAM_RED] - counts[TEAM_BLUE];
+			}
+			else if (counts[TEAM_BLUE] > counts[TEAM_RED]) {
+				healTeam = TEAM_BLUE;
+				hp = counts[TEAM_BLUE] - counts[TEAM_RED];
+			}
+
+			if (healTeam != TEAM_FREE && hp > 0)
+			{
+				for (i = 0, cl = level.clients; i < MAX_CLIENTS; i++, cl++)
+				{
+					if (!cl || cl->pers.connected == CON_DISCONNECTED)
+						continue;
+
+					if (cl->ps.duelInProgress || cl->sess.raceMode)
+						continue;
+
+					if (cl->ps.stats[STAT_HEALTH] < 1 || (cl->ps.eFlags & EF_DEAD))
+						continue;
+
+					if (cl->sess.sessionTeam != healTeam || cl->pers.stats.kothLevelTime != level.previousTime)
+						continue;
+
+					ent = &g_entities[cl->ps.clientNum];
+					if (!ent || !ent->inuse)
+						continue;
+
+					//Com_Printf("ent->health %i cl->ps.stats[STAT_HEALTH] %i cl->ps.stats[STAT_MAX_HEALTH] %i cl->damage_armor %i cl->ps.stats[STAT_ARMOR] %i \n",
+					//	ent->health, cl->ps.stats[STAT_HEALTH], cl->ps.stats[STAT_MAX_HEALTH], cl->damage_armor, cl->ps.stats[STAT_ARMOR]);
+
+					if (cl->ps.stats[STAT_HEALTH] < cl->ps.stats[STAT_MAX_HEALTH])
+						cl->ps.stats[STAT_HEALTH] += hp;
+					else if (g_KOTH.integer >= 3 &&	cl->ps.stats[STAT_ARMOR] < 200)
+						cl->ps.stats[STAT_ARMOR] += hp;
+					else if	(cl->ps.stats[STAT_ARMOR] < 100)
+						cl->ps.stats[STAT_ARMOR] += hp;
+
+					if (ent->health != cl->ps.stats[STAT_HEALTH])
+						ent->health = cl->ps.stats[STAT_HEALTH];
+				}
+			}
+
+			lastHealthCheck = level.time;
+		}
+	}
+
 #ifdef _G_FRAME_PERFANAL
 	iTimer_ItemRun = trap->PrecisionTimer_End(timer_ItemRun);
 #endif

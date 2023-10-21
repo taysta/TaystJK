@@ -766,6 +766,7 @@ typedef struct {//JAPRO - Serverside - Stats
 	float racetime;
 
 	int kothTime;
+	int kothLevelTime;
 	short lowestHP;
 } stats_t;
 

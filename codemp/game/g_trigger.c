@@ -30,11 +30,10 @@ void InitTrigger( gentity_t *self ) {
 	if (!VectorCompare (self->s.angles, vec3_origin))
 		G_SetMovedir (self->s.angles, self->movedir);
 
-	if (self->model && self->model[0] == '*') { //Feature from Lugormod - Logical triggers without model key using mins/maxs instead
+	if (VALIDSTRING(self->model) && self->model[0] == '*') { //Feature from Lugormod - Logical triggers without model key using mins/maxs instead
 		trap->SetBrushModel( (sharedEntity_t *)self, self->model );
 	}
-	//Check for .md3 or .glm model ?
-	else {
+	else { //Check for .md3 or .glm model ?
 		G_SpawnVector("mins", "-8 -8 -8", self->r.mins);
 		G_SpawnVector("maxs", "8 8 8", self->r.maxs);
 	}
@@ -2079,13 +2078,13 @@ void Touch_KOTH( gentity_t *self, gentity_t *other, trace_t *trace )
 	const int nowTime = GetTimeMS();
 	int addTime;
 
+	if (!g_KOTH.integer)
+		return;
 	if( !other->client )
 		return;
 	if (other->s.eType == ET_NPC)
 		return;
 	if (self->flags & FL_INACTIVE) //set by target_deactivate
-		return;
-	if (!g_KOTH.integer)
 		return;
 	if (level.gametype != GT_TEAM)
 		return;
@@ -2093,14 +2092,9 @@ void Touch_KOTH( gentity_t *self, gentity_t *other, trace_t *trace )
 		return;
 	if (other->client->sess.raceMode)
 		return;
-	//if (level.startTime > (level.time - 1000*20)) //Dont enable for first 20 seconds of map
-		//return;
+    other->client->pers.stats.kothLevelTime = level.time;
 	if (nowTime - other->client->kothDebounce < 100) {//Some built in floodprotect per player?
 		return;
-	}
-	if (self->radius && ((self->r.currentOrigin[0]-other->client->ps.origin[0]) * (self->r.currentOrigin[0]-other->client->ps.origin[0]) +
-		(self->r.currentOrigin[1]-other->client->ps.origin[1]) * (self->r.currentOrigin[1]-other->client->ps.origin[1])) > self->radius*self->radius) {
-			return;
 	}
 	other->client->kothDebounce = nowTime;
 
@@ -2117,6 +2111,10 @@ void Touch_KOTH( gentity_t *self, gentity_t *other, trace_t *trace )
 
 	other->client->pers.stats.kothTime = nowTime;
 
+    if (self->radius && ((self->r.currentOrigin[0]-other->client->ps.origin[0]) * (self->r.currentOrigin[0]-other->client->ps.origin[0]) +
+                         (self->r.currentOrigin[1]-other->client->ps.origin[1]) * (self->r.currentOrigin[1]-other->client->ps.origin[1])) > self->radius*self->radius) {
+        return;
+    }
 	if (level.kothTime > 3000) {
 		AddTeamScore(other->s.pos.trBase, TEAM_RED, 1, qfalse);
 		//trap->SendServerCommand( -1, "chat \"Red Scored\"");
@@ -2127,6 +2125,9 @@ void Touch_KOTH( gentity_t *self, gentity_t *other, trace_t *trace )
 		AddTeamScore(other->s.pos.trBase, TEAM_BLUE, 1, qfalse);
 		//trap->SendServerCommand( -1, "chat \"Blue Scored\"");
 		CalculateRanks();
+	}
+
+	if (level.kothTime < -3000 || level.kothTime > 3000) {
 		level.kothTime = 0;
 	}
 
