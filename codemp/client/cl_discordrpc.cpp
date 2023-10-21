@@ -509,10 +509,6 @@ void CL_DiscordUpdatePresence(void)
 	}
 	Discord_UpdatePresence( &discordPresence );
 
-#ifdef WIN32
-	//if (cls.state == CA_ACTIVE)
-		Sys_SteamUpdateRichPresence("status", serverDetails, qfalse);
-#endif
 	Discord_RunCallbacks();
 }
 #endif
