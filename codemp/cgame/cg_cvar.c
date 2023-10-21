@@ -172,6 +172,10 @@ void MemoryPatch(void *address, void *patch, size_t size)
 
 static void CG_MemoryPatchChange(void) {
 	char buf[128] = { 0 };
+
+	if (!cg_legacyCGameAPI)
+		return;
+
 	trap->Cvar_VariableStringBuffer("version", buf, sizeof(buf));
 
 	if (Q_stricmp(buf, "JAmp: v1.0.1.0 win-x86 Oct 24 2003")) { //Its not the original exe i guess, so cancel the patch

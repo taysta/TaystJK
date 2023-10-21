@@ -390,6 +390,8 @@ int					cg_numpermanents = 0;
 weaponInfo_t		cg_weapons[MAX_WEAPONS];
 itemInfo_t			cg_items[MAX_ITEMS];
 
+qboolean			cg_legacyCGameAPI = qfalse;
+
 int CG_CrosshairPlayer( void ) {
 	if ( cg.time > (cg.crosshairClientTime + 1000) )
 		return -1;
@@ -3847,6 +3849,8 @@ Q_EXPORT cgameExport_t* QDECL GetModuleAPI( int apiVersion, cgameImport_t *impor
 	cge.AutomapInput			= CG_AutomapInput;
 	cge.MiscEnt					= CG_MiscEnt;
 	cge.CameraShake				= CG_FX_CameraShake;
+
+	cg_legacyCGameAPI = qfalse;
 
 	return &cge;
 }

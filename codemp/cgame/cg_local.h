@@ -2297,6 +2297,8 @@ extern	weaponInfo_t	cg_weapons[MAX_WEAPONS];
 extern	itemInfo_t		cg_items[MAX_ITEMS];
 extern	markPoly_t		cg_markPolys[MAX_MARK_POLYS];
 
+extern qboolean			cg_legacyCGameAPI;
+
 // cg_cvar.c
 #define XCVAR_PROTO
 	#include "cg_xcvar.h"

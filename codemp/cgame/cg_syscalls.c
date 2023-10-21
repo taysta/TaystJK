@@ -693,6 +693,10 @@ void trap_WE_AddWeatherZone( vec3_t mins, vec3_t maxs ) {
 	Q_syscall( CG_WE_ADDWEATHERZONE, mins, maxs );
 }
 
+static qboolean trap_LegacyCGameAPI(void) {
+	return qtrue;
+}
+
 
 // Translate import table funcptrs to syscalls
 
@@ -944,4 +948,6 @@ static void TranslateSyscalls( void ) {
 	trap->G2API_GetSurfaceName				= trap_G2API_GetSurfaceName;
 
 	trap->ext.R_Font_StrLenPixels			= trap_R_Font_StrLenPixelsFloat;
+
+	cg_legacyCGameAPI = qtrue;
 }
