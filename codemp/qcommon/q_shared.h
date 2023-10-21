@@ -73,6 +73,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define ARRAY_LEN( x ) ( sizeof( x ) / sizeof( *(x) ) )
 #define STRING( a ) #a
 #define XSTRING( a ) STRING( a )
+
+//convenience macros
+#define qbooleanStr( q ) ( q ? "qtrue" : "qfalse" )
+#define qbooleanStr2( q ) ( STRING( q ) q ? "qtrue" : "qfalse" )
+#define PRINTCODE(code)		Com_Printf(#code"\n");
+#define SPEWCODE(code)		PRINTCODE(code)
+
 /*
 #define G2_EHNANCEMENTS
 
