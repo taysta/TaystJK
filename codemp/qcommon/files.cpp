@@ -1472,7 +1472,7 @@ long FS_FOpenFileRead( const char *filename, fileHandle_t *file, qboolean unique
 		return -1;
 	}
 
-	isUserConfig = !Q_stricmp( filename, "autoexec.cfg" ) || !Q_stricmp( filename, Q3CONFIG_CFG );
+	isUserConfig = !Q_stricmp( filename, Q3CONFIG_AUTO ) || !Q_stricmp( filename, Q3CONFIG_CFG );
 
 	//
 	// search through the path, one element at a time

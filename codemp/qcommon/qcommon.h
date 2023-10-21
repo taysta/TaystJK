@@ -606,6 +606,7 @@ issues.
 
 #define	MAX_FILE_HANDLES	256
 
+#define Q3CONFIG_AUTO "autoexec.cfg"
 #ifdef DEDICATED
 #	define Q3CONFIG_CFG PRODUCT_NAME "_server.cfg"
 #elif defined(TOURNAMENT_CLIENT)
