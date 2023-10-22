@@ -3847,14 +3847,10 @@ shader_t *FinishShader( void )
 {
 	qboolean		hasLightmapStage;
 	int				stage, i, n, m, lmStage, numStyles;
-	qboolean		colorBlend;
-	qboolean		depthMask;
 	qboolean		fogCollapse;
 	shaderStage_t	*lastStage[NUM_TEXTURE_BUNDLES];
 
 	hasLightmapStage = qfalse;
-	colorBlend = qfalse;
-	depthMask = qfalse;
 	fogCollapse = qfalse;
 
 	//
@@ -4008,12 +4004,8 @@ shader_t *FinishShader( void )
 		//  vertexLightmap = qtrue;
 		//}
 
-		if (pStage->stateBits & GLS_DEPTHMASK_TRUE) {
-			depthMask = qtrue;
-		}
-
 		//
-		// determine fog color adjustment
+		// determine sort order and fog color adjustment
 		//
 		if ((pStage->stateBits & (GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS)) &&
 			(stages[0].stateBits & (GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS))) {
@@ -4045,7 +4037,23 @@ shader_t *FinishShader( void )
 				// we can't adjust this one correctly, so it won't be exactly correct in fog
 			}
 
-			colorBlend = qtrue;
+			// don't screw with sort order if this is a portal or environment
+			if ( !shader.sort ) {
+				// see through item, like a grill or grate
+				if ( pStage->stateBits & GLS_DEPTHMASK_TRUE ) {
+					shader.sort = SS_SEE_THROUGH;
+				} else {
+					if (( blendSrcBits == GLS_SRCBLEND_ONE ) && ( blendDstBits == GLS_DSTBLEND_ONE ))
+					{
+						// GL_ONE GL_ONE needs to come a bit later
+						shader.sort = SS_BLEND1;
+					}
+					else
+					{
+						shader.sort = SS_BLEND0;
+					}
+				}
+			}
 		}
 
 		stage++;
@@ -4053,19 +4061,8 @@ shader_t *FinishShader( void )
 
 	// there are times when you will need to manually apply a sort to
 	// opaque alpha tested shaders that have later blend passes
-	if (shader.sort == SS_BAD) {
-		if (colorBlend) {
-			// see through item, like a grill or grate
-			if (depthMask) {
-				shader.sort = SS_SEE_THROUGH;
-			}
-			else {
-				shader.sort = SS_BLEND0;
-			}
-		}
-		else {
-			shader.sort = SS_OPAQUE;
-		}
+	if ( !shader.sort ) {
+		shader.sort = SS_OPAQUE;
 	}
 
 	// fix alphaGen flags to avoid redundant comparisons in R_ComputeColors()
