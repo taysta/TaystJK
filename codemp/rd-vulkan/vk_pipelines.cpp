@@ -1201,7 +1201,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     VkGraphicsPipelineCreateInfo create_info;
     VkViewport viewport;
     VkRect2D scissor;
-    VkSpecializationMapEntry spec_entries[9];
+    VkSpecializationMapEntry spec_entries[11];
     VkSpecializationInfo frag_spec_info;
     VkPipeline *pipeline;
     VkShaderModule fs_module;
@@ -1216,6 +1216,8 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         float greyscale;
         float bloom_threshold;
         float bloom_intensity;
+        int bloom_threshold_mode;
+        int bloom_modulate;
         int dither;
         int depth_r;
         int depth_g;
@@ -1306,6 +1308,8 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     frag_spec_data.greyscale = r_greyscale->value;
     frag_spec_data.bloom_threshold = r_bloom_threshold->value;
     frag_spec_data.bloom_intensity = r_bloom_intensity->value;
+    frag_spec_data.bloom_threshold_mode = r_bloom_threshold_mode->integer;
+    frag_spec_data.bloom_modulate = r_bloom_modulate->integer;
     frag_spec_data.dither = r_dither->integer;
 
     if ( !vk_surface_format_color_depth( vk.present_format.format, &frag_spec_data.depth_r, &frag_spec_data.depth_g, &frag_spec_data.depth_b ) )
@@ -1332,22 +1336,30 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
     spec_entries[4].size = sizeof(frag_spec_data.bloom_intensity);
 
     spec_entries[5].constantID = 5;
-    spec_entries[5].offset = offsetof(struct FragSpecData, dither);
-    spec_entries[5].size = sizeof(frag_spec_data.dither);
+    spec_entries[5].offset = offsetof( struct FragSpecData, bloom_threshold_mode );
+    spec_entries[5].size = sizeof( frag_spec_data.bloom_threshold_mode );
 
     spec_entries[6].constantID = 6;
-    spec_entries[6].offset = offsetof(struct FragSpecData, depth_r);
-    spec_entries[6].size = sizeof(frag_spec_data.depth_r);
+    spec_entries[6].offset = offsetof( struct FragSpecData, bloom_modulate );
+    spec_entries[6].size = sizeof( frag_spec_data.bloom_modulate );
 
     spec_entries[7].constantID = 7;
-    spec_entries[7].offset = offsetof(struct FragSpecData, depth_g);
-    spec_entries[7].size = sizeof(frag_spec_data.depth_g);
+    spec_entries[7].offset = offsetof(struct FragSpecData, dither);
+    spec_entries[7].size = sizeof(frag_spec_data.dither);
 
     spec_entries[8].constantID = 8;
-    spec_entries[8].offset = offsetof(struct FragSpecData, depth_b);
-    spec_entries[8].size = sizeof(frag_spec_data.depth_b);
+    spec_entries[8].offset = offsetof(struct FragSpecData, depth_r);
+    spec_entries[8].size = sizeof(frag_spec_data.depth_r);
 
-    frag_spec_info.mapEntryCount = 9;
+    spec_entries[9].constantID = 9;
+    spec_entries[9].offset = offsetof(struct FragSpecData, depth_g);
+    spec_entries[9].size = sizeof(frag_spec_data.depth_g);
+
+    spec_entries[10].constantID = 10;
+    spec_entries[10].offset = offsetof(struct FragSpecData, depth_b);
+    spec_entries[10].size = sizeof(frag_spec_data.depth_b);
+
+    frag_spec_info.mapEntryCount = 11;
     frag_spec_info.pMapEntries = spec_entries;
     frag_spec_info.dataSize = sizeof(frag_spec_data);
     frag_spec_info.pData = &frag_spec_data;
@@ -2007,12 +2019,9 @@ void vk_create_pipelines( void )
     vk_alloc_persistent_pipelines();
 
     vk.pipelines_world_base = vk.pipelines_count;
-
-    vk_create_bloom_pipelines();
-    vk_create_dglow_pipelines();
 }
 
-void vk_create_bloom_pipelines( void )
+static void vk_create_bloom_pipelines( void )
 {
     if ( !vk.bloomActive )
         return;
@@ -2033,7 +2042,7 @@ void vk_create_bloom_pipelines( void )
     vk_create_post_process_pipeline( 2, glConfig.vidWidth, glConfig.vidHeight ); // post process blending
 }
 
-void vk_create_dglow_pipelines( void )
+static void vk_create_dglow_pipelines( void )
 {
     if ( !vk.dglowActive )
         return;
@@ -2062,6 +2071,9 @@ void vk_update_post_process_pipelines( void )
             // update capture pipeline
             vk_create_post_process_pipeline( 3, gls.captureWidth, gls.captureHeight );
         }
+
+        vk_create_bloom_pipelines();
+        vk_create_dglow_pipelines();
     }
 }
 
