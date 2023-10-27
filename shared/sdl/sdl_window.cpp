@@ -26,7 +26,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "rd-common/tr_types.h"
 #include "sys/sys_local.h"
 #include "sdl_icon.h"
+#ifdef WIN32
 #include <VersionHelpers.h>
+#endif
 
 enum rserr_t
 {
