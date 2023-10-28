@@ -279,8 +279,8 @@ void DF_DrawStrafeHUD(centity_t	*cent)
             rectDef_c speedgraphRect;
             vec4_t foreColor = { 0.0f,0.8f,1.0f,0.8f };
             vec4_t backColor = { 0.0f,0.8f,1.0f,0.0f };
-            speedgraphRect.x = (SCREEN_WIDTH * 0.5f - (150.0f / 2.0f));
-            speedgraphRect.y = SCREEN_HEIGHT - 22 - 2;
+            speedgraphRect.x = (cgs.screenWidth * 0.5f - (150.0f / 2.0f));
+            speedgraphRect.y = cgs.screenHeight - 22 - 2;
             speedgraphRect.w = 150.0f;
             speedgraphRect.h = 22.0f;
             DF_GraphAddSpeed();
@@ -318,9 +318,7 @@ void DF_DrawStrafeHUD(centity_t	*cent)
         else if (lineWidth > 5)
             lineWidth = 5;
 
-        DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f,
-					(0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f,
-					lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
+        DF_DrawLine((0.5f * cgs.screenWidth), (0.5f * cgs.screenHeight) - 5.0f, (0.5f * cgs.screenWidth), (0.5f * cgs.screenHeight) + 5.0f, lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
     }
 }
 
@@ -584,12 +582,12 @@ void DF_SetVelocityAngles()
 void DF_SetStrafeHelper(){
     float lineWidth;
     int sensitivity = cg_strafeHelperPrecision.integer;
-    int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
-    vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
-    vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
-    vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
-    vec4_t rearColor = { 0.75f, 0,1, 0.75f };
-    vec4_t activeColor = { 0, 1, 0, 1.0f };
+    const int LINE_HEIGHT = (int)((float)cgs.screenHeight * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+    const vec4_t twoKeyColor = { 1, 1, 1, 0.75f };
+    const vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f };
+    const vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f };
+    const vec4_t rearColor = { 0.75f, 0,1, 0.75f };
+    const vec4_t activeColor = {0, 1, 0, 0.75f};
 
     //set the default colors
     Vector4Copy(twoKeyColor, state.strafeHelper.twoKeyColor);
@@ -1067,9 +1065,9 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
 
     if (cg_strafeHelper.integer & SHELPER_ORIGINAL) {
         float startx, starty;
-        int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
-        if (cutoff > SCREEN_HEIGHT)
-            cutoff = SCREEN_HEIGHT;
+        int cutoff = cgs.screenHeight - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
+        if (cutoff > cgs.screenHeight)
+            cutoff = cgs.screenHeight;
         if (cutoff < state.strafeHelper.LINE_HEIGHT + 20)
             cutoff = state.strafeHelper.LINE_HEIGHT + 20;
 
@@ -1078,7 +1076,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     }
 
     if (cg_strafeHelper.integer & SHELPER_UPDATED) { //draw the updated style here
-        int cutoff = (int)SCREEN_HEIGHT - cg_strafeHelperCutoff.integer;
+        int cutoff = (int)cgs.screenHeight - cg_strafeHelperCutoff.integer;
         int heightIn = state.strafeHelper.LINE_HEIGHT;
 
         if (cg_strafeHelper.integer & SHELPER_TINY) {
@@ -1086,23 +1084,23 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
             heightIn = state.strafeHelper.LINE_HEIGHT + 5;
         } else if (cutoff < state.strafeHelper.LINE_HEIGHT + 20) {
             cutoff = state.strafeHelper.LINE_HEIGHT + 20;
-        } else if ((float)cutoff > SCREEN_HEIGHT) {
-            cutoff = SCREEN_WIDTH;
+        } else if ((float)cutoff > cgs.screenHeight) {
+            cutoff = cgs.screenHeight;
         }
-        DF_DrawLine((0.5f * SCREEN_WIDTH), SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, line.color[3], (float)cutoff);
+        DF_DrawLine((0.5f * cgs.screenWidth), cgs.screenHeight, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, line.color[3], (float)cutoff);
     }
 
     if (cg_strafeHelper.integer & SHELPER_CGAZ) { //draw the cgaz style strafehelper
         if (cg_strafeHelperCutoff.integer > 256) {
-            DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 4, line.x, (0.5f * SCREEN_HEIGHT) - 4, state.strafeHelper.lineWidth, line.color, 0.75f, 0); //maximum cutoff
+            DF_DrawLine(line.x, (0.5f * cgs.screenHeight) + 4, line.x, (0.5f * cgs.screenHeight) - 4, state.strafeHelper.lineWidth, line.color, 0.75f, 0); //maximum cutoff
         } else {
-            DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 20 - (float)cg_strafeHelperCutoff.integer / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) - 20 + (float)cg_strafeHelperCutoff.integer / 16.0f, state.strafeHelper.lineWidth, line.color, 0.75f, 0); //default/custom cutoff
+            DF_DrawLine(line.x, (0.5f * cgs.screenHeight) + 20 - (float)cg_strafeHelperCutoff.integer / 16.0f, line.x, (0.5f * cgs.screenHeight) - 20 + (float)cg_strafeHelperCutoff.integer / 16.0f, state.strafeHelper.lineWidth, line.color, 0.75f, 0); //default/custom cutoff
         }
     }
 
     if (cg_strafeHelper.integer & SHELPER_WSW && line.active) { //draw the wsw style strafehelper, not sure how to deal with multiple lines for W only so we don't draw any, the proper way is to tell which line we are closest to aiming at and display the strafehelper for that
         float width = (float)(-4.444 * AngleSubtract(state.viewAngles[YAW], line.angs[YAW]));
-        CG_FillRect((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT), width, 12, colorTable[CT_RED]);
+        CG_FillRect((0.5f * cgs.screenWidth), (0.5f * cgs.screenHeight), width, 12, colorTable[CT_RED]);
     }
 
     if (cg_strafeHelper.integer & SHELPER_WEZE && line.active) { //call the weze style strafehelper function
@@ -1126,7 +1124,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     else if (length > 2000)
         length = 2000;
     if (!ycutoff)
-        ycutoff = SCREEN_HEIGHT;
+        ycutoff = cgs.screenHeight;
 
     x1 -= 0.5f * size;
     x2 -= 0.5f * size;
@@ -1136,7 +1134,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     trap->R_SetColor(color);
 
     for (i = 0; i <= (int)(length / size); i++) {
-        if (x1 < SCREEN_WIDTH && y1 < SCREEN_HEIGHT && y1 < ycutoff)
+        if (x1 < cgs.screenWidth && y1 < cgs.screenHeight && y1 < ycutoff)
             CG_DrawPic(x1, y1, size,  size, cgs.media.whiteShader);
         x1 += stepx;
         y1 += stepy;
@@ -1157,8 +1155,8 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     vec3_t velocity_angle;
     float optiangle, g_speed, accel;
 
-    midx = (0.5f * SCREEN_WIDTH);
-    midy = 0.5f * SCREEN_HEIGHT;
+    midx = (0.5f * cgs.screenWidth);
+    midy = 0.5f * cgs.screenHeight;
     VectorCopy(state.velocity, velocity_copy);
     velocity_copy[2] = 0;
     VectorCopy(state.viewAngles, viewangle_copy);
@@ -1177,8 +1175,8 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     else
         optiangle = 0;
     length /= 5;
-    if (length > (0.5f * SCREEN_HEIGHT))
-        length = (float)(0.5f * SCREEN_HEIGHT);
+    if (length > (0.5f * cgs.screenHeight))
+        length = (float)(0.5f * cgs.screenHeight);
     vectoangles(velocity_copy, velocity_angle);
     diff = AngleSubtract(viewangle_copy[YAW], velocity_angle[YAW]);
     diff = diff / 180 * M_PI;
@@ -1252,10 +1250,10 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
 }
 
 //draws the acceleration zone triangle
- void DF_DrawTriangle(float start, float end) {
-    if(start <= SCREEN_WIDTH && start >= 0 && end <= SCREEN_WIDTH && end >= 0) {
+static void DF_DrawTriangle(float start, float end) {
+    if(start <= cgs.screenWidth && start >= 0 && end <= cgs.screenWidth && end >= 0) {
         DF_SetAccelColor();
-        CG_DrawPic(end, (0.5f * SCREEN_HEIGHT) - 4.0f, (start - end), 8.0f, cgs.media.leftTriangle);
+        CG_DrawPic(end, (0.5f * cgs.screenHeight) - 4.0f, (start - end), 8.0f, cgs.media.leftTriangle);
     }
     trap->R_SetColor(NULL); //set the color back to null
 }
@@ -1350,8 +1348,8 @@ tremulous
 //	int		color;
     float	vscale;
 
-    x = SCREEN_WIDTH - (float)cg_lagometerX.integer * cgs.widthRatioCoef;
-    y = SCREEN_HEIGHT - cg_lagometerY.integer - 56;
+    x = cgs.screenWidth - (float)cg_lagometerX.integer;
+    y = cgs.screenHeight - cg_lagometerY.integer - 56;
 
     if (cg_hudFiles.integer == 0) {
         y -= 16;
@@ -1361,15 +1359,15 @@ tremulous
     trap->R_SetColor(NULL);
 
     if (cg_lagometer.integer == 1 || cg_lagometer.integer == 2)
-        CG_DrawPic(x, y, 48 * cgs.widthRatioCoef, 48, cgs.media.lagometerShader);
+        CG_DrawPic(x, y, 48, 48, cgs.media.lagometerShader);
 
     if (cg_lagometer.integer == 2 || (cg_lagometer.integer == 3 && cg.currentSpeed != 0))
-        CG_Text_Paint(x + 2 * cgs.widthRatioCoef, y, 0.5f, colorWhite, va("%.0f", cg.currentSpeed), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
+        CG_Text_Paint(x + 2, y, 0.5f, colorWhite, va("%.0f", cg.currentSpeed), 0, 0, ITEM_TEXTSTYLE_SHADOWEDMORE, FONT_SMALL);
 
     if (cg_lagometer.integer != 1 && cg_lagometer.integer != 2)
         y -= 96;
 
-    x -= 1.0f * cgs.widthRatioCoef;
+    x -= 1.0f;
 
     ax = x;
     ay = y;
@@ -1395,7 +1393,7 @@ tremulous
             v = v * vscale;
             if (v > range)
                 v = range;
-            trap->R_DrawStretchPic(ax + (float)(aw - a) * cgs.widthRatioCoef, ay + ah - v, 1 * cgs.widthRatioCoef, v, 0, 0, 0, 0, cgs.media.whiteShader);
+            trap->R_DrawStretchPic(ax + (float)(aw - a), ay + ah - v, 1, v, 0, 0, 0, 0, cgs.media.whiteShader);
         }
     }
     trap->R_SetColor(NULL);
@@ -1423,7 +1421,7 @@ japro - Draw speedometer jump height
 
     if ((cg.lastJumpHeightTime > cg.time - 1500) && (cg.lastJumpHeight > 0.0f)) {
         Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.lastJumpHeight);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpHeightStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpHeightStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
 
     speedometerXPos += 42;
@@ -1461,7 +1459,7 @@ japro - Draw speedometer jump distance
 
     if ((cg.lastJumpDistanceTime > cg.time - 1500) && (cg.lastJumpDistance > 0.0f)) {
         Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.lastJumpDistance);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpDistanceStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpDistanceStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
 
     speedometerXPos += 62;
@@ -1481,7 +1479,7 @@ japro - Draw speedometer vertical speed
 
     if (vertspeed) {
         Com_sprintf(speedStr5, sizeof(speedStr5), "%.0f", vertspeed);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorWhite, speedStr5, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorWhite, speedStr5, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
 
     speedometerXPos += 42;
@@ -1527,7 +1525,7 @@ japro - Draw speedometer vertical speed
             Com_sprintf(yawStr, sizeof(yawStr), "^3%03i", (int)((float)yaw + 0.5f)); //added 8 whitespaces idk how much to add - fixme
         else
             Com_sprintf(yawStr, sizeof(yawStr), "%03i", (int)((float)yaw + 0.5f)); //added 8 whitespaces idk how much to add - fixme
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], yawStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], yawStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
 
     cg.lastYawSpeed = cg.predictedPlayerState.viewangles[YAW];
@@ -1557,9 +1555,9 @@ japro - Draw acceleration meter
     else
         x -= 52;
 
-    CG_DrawRect((x - 0.75f) * cgs.widthRatioCoef,
+    CG_DrawRect((x - 0.75f),
                 cg_speedometerY.value - 10.75f,
-                37.75f * cgs.widthRatioCoef,
+                37.75f,
                 13.75f,
                 0.5f,
                 colorTable[CT_BLACK]);
@@ -1583,9 +1581,9 @@ japro - Draw acceleration meter
     percentAccel = total / (float)PERCENT_SAMPLES;
 
     if (percentAccel && state.cgaz.currentSpeed) {
-        CG_FillRect((x + 0.25f) * cgs.widthRatioCoef,
+        CG_FillRect((x + 0.25f),
                     cg_speedometerY.value - 9.9f,
-                    (36 * percentAccel) * cgs.widthRatioCoef,
+                    (36 * percentAccel),
                     12,
                     colorTable[CT_RED]);
     }
@@ -1664,20 +1662,20 @@ japro - Draw the speedometer
     if (!(cg_speedometer.integer & SPEEDOMETER_KPH) && !(cg_speedometer.integer & SPEEDOMETER_MPH))
     {
         Com_sprintf(speedStr, sizeof(speedStr), "   %.0f", floorf(currentSpeed + 0.5f));
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr, 0.0f, 0, ITEM_ALIGN_LEFT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr, 0.0f, 0, ITEM_ALIGN_LEFT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
     else if (cg_speedometer.integer & SPEEDOMETER_KPH)
     {
-        Com_sprintf(speedStr2, sizeof(speedStr2), "   %.1f", currentSpeed * 0.1028699967);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        Com_sprintf(speedStr2, sizeof(speedStr2), "   %.1f", currentSpeed * 0.05);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
     else if (cg_speedometer.integer & SPEEDOMETER_MPH)
     {
-        Com_sprintf(speedStr3, sizeof(speedStr3), "   %.1f", currentSpeed * 0.06392043271);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
-        CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        Com_sprintf(speedStr3, sizeof(speedStr3), "   %.1f", currentSpeed * 0.03106855);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+        CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
     speedometerXPos += 52;
 
@@ -1734,7 +1732,7 @@ japro - Draw the speedometer
                         }
                     }
                     if (strcmp(speedsStr4, "0") != 0) {
-                        CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef), cg_speedometerJumpsY.value,
+                        CG_Text_Paint((jumpsXPos), cg_speedometerJumpsY.value,
                                       cg_speedometerSize.value, colorGroundSpeeds, speedsStr4, 0.0f, 0,
                                       ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE); //print the jump
                         jumpsXPos += 52; //shift x
@@ -1766,7 +1764,7 @@ japro - Draw the speedometer
         if ((cg.lastGroundTime > cg.time - 1500) && (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)) {
             if (cg.lastGroundSpeed) {
                 Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);
-                CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_LEFT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+                CG_Text_Paint(speedometerXPos, cg_speedometerY.value, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_LEFT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
             }
         }
         speedometerXPos += 52;
@@ -1840,28 +1838,28 @@ japro - Draw the movement keys
 
     //set positions based on which setting is used
     if(cg_movementKeys.integer == 1) {
-        w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
+        w = 16 * cg_movementKeysSize.value;
         h = 16 * cg_movementKeysSize.value;
-        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 1.5f;
-        y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
+        x = cgs.screenWidth * 0.5f + cg_movementKeysX.value - w * 1.5f;
+        y = cgs.screenHeight * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 2) {
-        w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
+        w = 16 * cg_movementKeysSize.value;
         h = 16 * cg_movementKeysSize.value;
-        x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f;
-        y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
+        x = cgs.screenWidth * 0.5f + cg_movementKeysX.value - w * 2.0f;
+        y = cgs.screenHeight * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 3) {
-        w = 6 * cg_movementKeysSize.value * cgs.widthRatioCoef;
-        h = 6 * cg_movementKeysSize.value;
-        x = 0.5f * SCREEN_WIDTH - w * 1.5f;
-        y = 0.5f * SCREEN_HEIGHT - h * 1.5f;
+        w = 8 * cg_movementKeysSize.value;
+        h = 8 * cg_movementKeysSize.value;
+        x = 0.5f * cgs.screenWidth - w * 1.5f;
+        y = 0.5f * cgs.screenHeight - h * 1.5f;
     } else if(cg_movementKeys.integer == 4) {
-        w = 12 * cg_movementKeysSize.value * cgs.widthRatioCoef;
+        w = 12 * cg_movementKeysSize.value;
         h = 12 * cg_movementKeysSize.value;
-        x = 0.5f * SCREEN_WIDTH + cg_movementKeysX.value - w * 1.5f;
-        y = 0.9f * SCREEN_HEIGHT + cg_movementKeysY.value - h * 1.5f;
+        x = 0.5f * cgs.screenWidth + cg_movementKeysX.value - w * 1.5f;
+        y = 0.9f * cgs.screenHeight + cg_movementKeysY.value - h * 1.5f;
     } else {
 		return;
-	}
+    }
 
     //draw the keys
     if (cg_movementKeys.integer == 3 || cg_movementKeys.integer == 4) { //new movement keys style
@@ -1973,7 +1971,7 @@ japro - Draw the movement keys
 
             }
 
-            CG_Text_Paint((float)cg_raceTimerX.integer * cgs.widthRatioCoef, (float)cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE],
+            CG_Text_Paint((float)cg_raceTimerX.integer, (float)cg_raceTimerY.integer, cg_raceTimerSize.value, colorTable[CT_WHITE],
                           timerStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         }
         if(cg_raceStart.integer)
@@ -1985,7 +1983,7 @@ japro - Draw the movement keys
                 colorStartSpeed[2] = startColor;
             }
             Com_sprintf(startStr, sizeof(startStr), "Start: %i", cg.startSpeed);
-            CG_Text_Paint((float)cg_raceStartX.integer * cgs.widthRatioCoef, (float)cg_raceStartY.integer, cg_raceTimerSize.value, colorStartSpeed, startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
+            CG_Text_Paint((float)cg_raceStartX.integer, (float)cg_raceStartY.integer, cg_raceTimerSize.value, colorStartSpeed, startStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         }
     }
 }
@@ -2034,6 +2032,6 @@ void DF_DrawShowPos(void)
     Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f",
                 (float)ps->origin[0], (float)ps->origin[1], (float)ps->origin[2], (float)ps->viewangles[PITCH], (float)ps->viewangles[YAW], vel);
 
-    CG_Text_Paint(SCREEN_WIDTH - (SCREEN_WIDTH - 340) * cgs.widthRatioCoef, 0, 0.6f, colorWhite,
+    CG_Text_Paint(cgs.screenWidth - (cgs.screenWidth - 340), 0, 0.6f, colorWhite,
                   showPosString, 0, 0, ITEM_TEXTSTYLE_OUTLINESHADOWED, FONT_SMALL2);
 }
