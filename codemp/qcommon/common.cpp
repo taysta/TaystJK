@@ -27,7 +27,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "stringed_ingame.h"
 #include "qcommon/cm_public.h"
 #include "qcommon/game_version.h"
-#include "qcommon/q_version.h"
 #include "../server/NPCNav/navigator.h"
 #include "../shared/sys/sys_local.h"
 #if defined(_WIN32)
@@ -1319,7 +1318,6 @@ Com_Init
 =================
 */
 void Com_Init( char *commandLine ) {
-	char	*s;
 	int		qport;
 
 	Com_Printf( "%s %s %s\n", JK_VERSION, PLATFORM_STRING, SOURCE_DATE );
@@ -1460,8 +1458,7 @@ void Com_Init( char *commandLine ) {
 
 		com_bootlogo = Cvar_Get( "com_bootlogo", "0", CVAR_ARCHIVE_ND, "Show intro movies" );
 
-		s = va("%s %s %s", JK_VERSION_OLD, PLATFORM_STRING, SOURCE_DATE );
-		com_version = Cvar_Get ("version", s, CVAR_ROM | CVAR_SERVERINFO );
+		com_version = Cvar_Get ("version", JK_VERSION " " PLATFORM_STRING " " SOURCE_DATE, CVAR_ROM | CVAR_SERVERINFO );
 
 		SE_Init();
 

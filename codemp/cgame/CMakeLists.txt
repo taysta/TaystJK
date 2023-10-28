@@ -25,6 +25,7 @@ set(MPCGameIncludeDirectories
 	"${MPDir}"
 	"${SharedDir}"
 	"${GSLIncludeDirectory}"
+	"${CMAKE_BINARY_DIR}/shared"
 	)
 if(WIN32)
 	set(MPCGameLibraries "odbc32" "odbccp32") # what are these even?
@@ -112,7 +113,7 @@ set(MPCGameCommonFiles
 	"${MPDir}/qcommon/q_shared.h"
 	"${MPDir}/qcommon/qfiles.h"
 	"${MPDir}/qcommon/tags.h"
-	
+
 	${SharedCommonFiles}
 	)
 source_group("common" FILES ${MPCGameCommonFiles})
