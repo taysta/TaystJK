@@ -168,9 +168,9 @@ jobs:
         run: |
           OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
+            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON -DBuildDiscordRichPresence=OFF"
           else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
+            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF -DBuildDiscordRichPresence=OFF"
           fi
           cmake $GITHUB_WORKSPACE $OPTIONS
 
