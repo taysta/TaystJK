@@ -369,7 +369,7 @@ void vk_create_attachments( void )
             uint32_t width = gls.captureWidth / REFRACTION_EXTRACT_SCALE;
             uint32_t height = gls.captureHeight / REFRACTION_EXTRACT_SCALE;
 
-            usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+            usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 
             create_color_attachment( width, height, VK_SAMPLE_COUNT_1_BIT, vk.capture_format,
                 usage, &vk.refraction_extract_image, &vk.refraction_extract_image_view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, qfalse );     
