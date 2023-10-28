@@ -34,6 +34,9 @@ static	texModInfo_t	texMods[MAX_SHADER_STAGES][TR_MAX_TEXMODS];
 // Hash value (generated using the generateHashValueForText function) for the original
 // retail JKA shader for gfx/2d/wedge.
 #define RETAIL_ROCKET_WEDGE_SHADER_HASH (1217042)
+// Hash value (generated using the generateHashValueForText function) for the original
+// retail JKA shader for gfx/menus/radar/arrow_w.
+#define RETAIL_ARROW_W_SHADER_HASH (1650186)
 
 #define FILE_HASH_SIZE		1024
 static	shader_t*		hashTable[FILE_HASH_SIZE];
