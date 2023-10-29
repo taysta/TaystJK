@@ -4275,7 +4275,7 @@ static float CG_DrawEnemyInfo ( float y )
 		clientNum = cgs.duelWinner;
 	}
 
-	if ( clientNum >= MAX_CLIENTS || !(&cgs.clientinfo[ clientNum ]) )
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS || !cgs.clientinfo[clientNum].infoValid )
 	{
 		return y;
 	}

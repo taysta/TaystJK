@@ -23,16 +23,15 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "qcommon/q_version.h"
 
-#ifdef XCVAR_PROTO
+#if defined(XCVAR_PROTO)
 	#define XCVAR_DEF( name, defVal, update, flags, announce ) extern vmCvar_t name;
-#endif
-
-#ifdef XCVAR_DECL
+#elif defined(XCVAR_DECL)
 	#define XCVAR_DEF( name, defVal, update, flags, announce ) vmCvar_t name;
-#endif
-
-#ifdef XCVAR_LIST
+#elif defined(XCVAR_LIST)
 	#define XCVAR_DEF( name, defVal, update, flags, announce ) { & name , #name , defVal , update , flags , announce },
+#else
+	#warning "missing XCVAR expansion def"
+	#define XCVAR_DEF( ... )
 #endif
 
 XCVAR_DEF( bg_fighterAltControl,		"0",			NULL,				CVAR_SYSTEMINFO,								qtrue )
@@ -86,12 +85,14 @@ XCVAR_DEF( g_debugMove,					"0",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_debugSaberLocks,			"0",			NULL,				CVAR_CHEAT,										qfalse )
 XCVAR_DEF( g_debugServerSkel,			"0",			NULL,				CVAR_CHEAT,										qfalse )
 #ifdef _DEBUG
-XCVAR_DEF( g_disableServerG2,			"0",			NULL,				CVAR_NONE,										qtrue )
+XCVAR_DEF( g_disableServerG2,			"0",			NULL,					CVAR_NONE,										qtrue )
 #endif
 XCVAR_DEF( g_dismember,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_doWarmup,					"0",			NULL,				CVAR_NONE,										qtrue )
 //XCVAR_DEF( g_engineModifications,		"1",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_ff_objectives,				"0",			NULL,				CVAR_CHEAT|CVAR_NORESTART,						qtrue )
+XCVAR_DEF( g_fixSaberDisarmBonus,		"1",			NULL,					CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_fixSaberMoveData,			"1",			CVU_FixSaberMoveData,	CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_filterBan,					"1",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_forceBasedTeams,			"0",			NULL,				CVAR_SERVERINFO|CVAR_ARCHIVE|CVAR_LATCH,		qfalse )
 XCVAR_DEF( g_forceClientUpdateRate,		"250",			NULL,				CVAR_NONE,										qfalse )
@@ -131,7 +132,7 @@ XCVAR_DEF( g_saberBladeFaces,			"1",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_saberDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDebugBox,				"0",			NULL,				CVAR_CHEAT,										qfalse )
 #ifndef FINAL_BUILD
-XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,				CVAR_CHEAT,										qfalse )
+XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,					CVAR_CHEAT,										qfalse )
 #endif
 XCVAR_DEF( g_saberDmgDelay_Idle,		"350",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgDelay_Wound,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )
@@ -199,15 +200,15 @@ XCVAR_DEF( g_saberDisable,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_blueDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) //sad hack
 XCVAR_DEF( g_yellowDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) //sad hack
 XCVAR_DEF( g_redDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) //sad hack
-XCVAR_DEF( g_redDFADamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) 
+XCVAR_DEF( g_redDFADamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgDelay_Hit,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 
 //JAPRO FORCE
 XCVAR_DEF( g_tweakForce,				"0",			CVU_TweakForce,		CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_fixSaberInGrip,			"0",			NULL,				CVAR_ARCHIVE,									qtrue ) 
+XCVAR_DEF( g_fixSaberInGrip,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixLightning,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixGetups,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_teamAbsorbScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue ) 
+XCVAR_DEF( g_teamAbsorbScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_teamHealScale,				"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_teamEnergizeScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 
@@ -379,7 +380,7 @@ XCVAR_DEF( g_forceDrainSelfRegenDelay,		"500",			NULL,				CVAR_ARCHIVE,									
 XCVAR_DEF( g_forceDrainRestartDelay,		"1500",			NULL,				CVAR_ARCHIVE,									qtrue )
 #endif
 
-#define _retardedsabertest 0 
+#define _retardedsabertest 0
 #if _retardedsabertest
 XCVAR_DEF( sv_saberFPS,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 #endif

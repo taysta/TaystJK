@@ -68,7 +68,7 @@ void HUD_DrawObituary(void) {
     static float playerColor[4] = {0.0f,1.0f,0.0f,0.15f};
     static float neutralColor[4] = {0.6f,0.6f,0.6f, 0.15f };
     float x, y, iconSize, iconHeight, iconWidth, padding, xPadding, yPadding, textScale, textHeight, killerTextHeight, victimTextHeight, boxCenterY, boxCenterX;
-    float wepColor[4], killerColor[4], victimColor[4];
+    float wepColor[4] = { 0 }, killerColor[4] = { 0 }, victimColor[4] = { 0 };
     float killerTextWidth, victimTextWidth, totalWidth, maxHeight, victimTextStartY, killerTextStartY;
     obituary_t *p;
     qhandle_t deathIcon;
@@ -155,7 +155,7 @@ void HUD_DrawObituary(void) {
         victimColor[3] = fminf(0.25f * color[3], victimColor[3]);
         wepColor[3] = color[3];
         //Get the sizes of everything
-        if((p->killer == p->victim) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
+        if((p->killer && p->victim) && (p->killer == p->victim) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
             suicide = qtrue;
             victimTextWidth = CG_Text_Width(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);
             victimTextHeight = (float)CG_Text_Height(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);
