@@ -36,12 +36,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	MAX_SPAWN_VARS			64
 #define	MAX_SPAWN_VARS_CHARS	4096
 
+// like a protocol version, but for mods
+#define	GAME_VERSION		"basejka-1"
 
-#define	GAME_VERSION			"basejka-1"
-
-#define DEFAULT_SABER			"single_1"
+#define DEFAULT_SABER			"single_8"
 #define DEFAULT_SABER_STAFF		"dual_1"
-#define DEFAULT_SABER_MODEL		"models/weapons2/saber_1/saber_1.glm"
+#define DEFAULT_SABER_MODEL		"models/weapons2/saber_1/saber_8.glm"
 #define	DEFAULT_MODEL			"kyle"
 #define DEFAULT_MODEL_FEMALE	"jan"
 
@@ -473,7 +473,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define JAPRO_CINFO_BACKSLASH				(1<<8)	//unlock backslash aim
 #define JAPRO_CINFO_REDDFA					(1<<9)	//unlock DFA aim
 #define JAPRO_CINFO_BHOP1					(1<<10)	//force bhop only mode
-#define JAPRO_CINFO_LG						(1<<11)	//Lightning Gun 
+#define JAPRO_CINFO_LG						(1<<11)	//Lightning Gun
 #define JAPRO_CINFO_JETPACK					(1<<12)	//jetpack physics
 #define JAPRO_CINFO_UNLAGGEDPROJ			(1<<13)	//allow unlagged
 #define JAPRO_CINFO_SCREENSHAKE				(1<<14)	//remove screenshake
@@ -510,17 +510,17 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 //ja+ cp_plugindisable stuff
 #define JAPRO_PLUGIN_NEWDRAINEFX			(1<<0)
 #define JAPRO_PLUGIN_DUELSEEOTHERS			(1<<1)
-#define JAPRO_PLUGIN_ENDDUELROTATION		(1<<2) 
+#define JAPRO_PLUGIN_ENDDUELROTATION		(1<<2)
 #define JAPRO_PLUGIN_BLACKSABERSDISABLE		(1<<3)
-#define JAPRO_PLUGIN_AUTOREPLYDISABLE		(1<<4) 
-#define JAPRO_PLUGIN_NEWFORCEEFFECT			(1<<5) 
+#define JAPRO_PLUGIN_AUTOREPLYDISABLE		(1<<4)
+#define JAPRO_PLUGIN_NEWFORCEEFFECT			(1<<5)
 #define JAPRO_PLUGIN_NEWDEATHMSG_DISABLE	(1<<6)
-#define JAPRO_PLUGIN_NEWSIGHTEFFECT			(1<<7) 
+#define JAPRO_PLUGIN_NEWSIGHTEFFECT			(1<<7)
 #define JAPRO_PLUGIN_NOALTDIMEFFECT			(1<<8)
-#define JAPRO_PLUGIN_HOLSTEREDSABER			(1<<9) 
+#define JAPRO_PLUGIN_HOLSTEREDSABER			(1<<9)
 #define JAPRO_PLUGIN_LEDGEGRAB				(1<<10)
-#define JAPRO_PLUGIN_NEWDFAPRIM				(1<<11) 
-#define JAPRO_PLUGIN_NEWDFAALT				(1<<12) 
+#define JAPRO_PLUGIN_NEWDFAPRIM				(1<<11)
+#define JAPRO_PLUGIN_NEWDFAALT				(1<<12)
 #define JAPRO_PLUGIN_NOSPCARTWHEEL			(1<<13)
 #define JAPRO_PLUGIN_ALLOWLIBCURL			(1<<14)
 
@@ -707,7 +707,7 @@ typedef enum {
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_CLIENTS_READY,				// bit mask of clients wishing to exit the intermission (FIXME: configstring?)
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
-	STAT_DASHTIME,				
+	STAT_DASHTIME,
 	STAT_LASTJUMPSPEED,
 	STAT_RACEMODE,
 	STAT_RESTRICTIONS,

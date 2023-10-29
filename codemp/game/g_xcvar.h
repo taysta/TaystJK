@@ -21,9 +21,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ===========================================================================
 */
 
-#include "qcommon/q_version.h"
-
-#if defined(XCVAR_PROTO)
+#if defined XCVAR_PROTO
 	#define XCVAR_DEF( name, defVal, update, flags, announce ) extern vmCvar_t name;
 #elif defined(XCVAR_DECL)
 	#define XCVAR_DEF( name, defVal, update, flags, announce ) vmCvar_t name;
@@ -168,7 +166,7 @@ XCVAR_DEF( g_warmup,					"20",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_weaponDisable,				"0",			CVU_WeaponDisable,	CVAR_SERVERINFO|CVAR_ARCHIVE/*|CVAR_LATCH*/,	qtrue )
 XCVAR_DEF( g_weaponRespawn,				"5",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( gamedate,					SOURCE_DATE,	NULL,				CVAR_ROM,										qfalse )
-XCVAR_DEF( gamename,					GAMEVERSION,	NULL,				CVAR_SERVERINFO|CVAR_ROM,						qfalse )
+XCVAR_DEF( gamename,					JK_VERSION,		NULL,				CVAR_SERVERINFO|CVAR_ROM,						qfalse )
 XCVAR_DEF( pmove_fixed,					"0",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )
 XCVAR_DEF( pmove_float,					"0",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )
 XCVAR_DEF( pmove_msec,					"8",			NULL,				CVAR_SYSTEMINFO|CVAR_ARCHIVE,					qtrue )

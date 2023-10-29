@@ -208,8 +208,8 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define WT_INFINITE_AMMO		(1<<17)
 #define WT_STUN_HEAL			(1<<18)
 #define WT_ANTI_VEHICLE			(1<<19)
-#define WT_ALLOW_GUNROLL		(1<<20) 
-#define WT_FAST_WEAPONSWITCH	(1<<21)   
+#define WT_ALLOW_GUNROLL		(1<<20)
+#define WT_FAST_WEAPONSWITCH	(1<<21)
 #define WT_IMPACT_NITRON		(1<<22)
 #define WT_STAKE_GUN			(1<<23)
 #define	WT_FIX_MINEAMMO			(1<<24)
@@ -220,7 +220,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define WT_SOLID_ROCKET			(1<<29)
 #define WT_NERFED_PISTOL		(1<<30)
 
-//wt_halt 
+//wt_halt
 //wt_hook
 //wt proj barrier
 //wt discord/tag
@@ -229,8 +229,8 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 /*
 //#define REDUCE_SABERBLOCK	(1<<20) //s
 #define ALLOW_GUNROLL		(1<<21)      //CLIENT
-#define FAST_WEAPONSWITCH	(1<<22)      
-//#define FIXED_SABERSWITCH	(1<<23) //s 
+#define FAST_WEAPONSWITCH	(1<<22)
+//#define FIXED_SABERSWITCH	(1<<23) //s
 #define IMPACT_NITRON		(1<<24)
 #define STAKE_GUN			(1<<25)
 //#define	REDUCE_SABERDROP	(1<<26) //s
@@ -1435,10 +1435,10 @@ typedef struct level_locals_s {
 	char		mTeamFilter[MAX_QPATH];
 
 //JAPRO - Serverside - Amlockteam - Start
-	qboolean	isLockedred;			
-	qboolean	isLockedblue;			
-	qboolean	isLockedspec;			
-	qboolean	isLockedfree;	
+	qboolean	isLockedred;
+	qboolean	isLockedblue;
+	qboolean	isLockedspec;
+	qboolean	isLockedfree;
 	fileHandle_t	duelLog;
 	fileHandle_t	raceLog;
 	fileHandle_t	failRaceLog;
@@ -1447,7 +1447,7 @@ typedef struct level_locals_s {
 #endif
 	fileHandle_t	playerLog;
 
-	char		courseName[24][32];//japro defrag	
+	char		courseName[24][32];//japro defrag
 	int			numCourses;
 	int			numRealVotingClients; //fixed vote checking
 

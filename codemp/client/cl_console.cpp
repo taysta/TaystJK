@@ -560,46 +560,6 @@ void Con_Init (void) {
 	Cmd_AddCommand( "clear", Con_Clear_f, "Clear console text" );
 	Cmd_AddCommand( "condump", Con_Dump_f, "Dump console text to file" );
 	Cmd_SetCommandCompletionFunc( "condump", Cmd_CompleteTxtName );
-
-	{//build version string for console
-		int day, year;
-		char month[4];
-
-		if (sscanf(SOURCE_DATE, "%s %i %i", month, &day, &year) == 3) {
-			int mm = 0;
-
-			//sry..
-			if (month[0] == 'J' && month[1] == 'a' && month[2] == 'n')
-				mm = 1;
-			else if (month[0] == 'F')
-				mm = 2;
-			else if (month[0] == 'M' && month[1] == 'a' && month[2] == 'r')
-				mm = 3;
-			else if (month[0] == 'A' && month[1] == 'p')
-				mm = 4;
-			else if (month[0] == 'M' && month[1] == 'a' && month[2] == 'y')
-				mm = 5;
-			else if (month[0] == 'J' && month[1] == 'u' && month[2] == 'n')
-				mm = 6;
-			else if (month[0] == 'J' && month[1] == 'u' && month[2] == 'l')
-				mm = 7;
-			else if (month[0] == 'A' && month[1] == 'u')
-				mm = 8;
-			else if (month[0] == 'S')
-				mm = 9;
-			else if (month[0] == 'O')
-				mm = 10;
-			else if (month[0] == 'N')
-				mm = 11;
-			else if (month[0] == 'D')
-				mm = 12;
-
-			Com_sprintf(version, sizeof(version), "EternalJK: [%02i/%02i/%04i]", mm, day, year);
-		}
-	}
-
-	if (!version[0])
-		Q_strncpyz(version, "EternalJK", sizeof(version));
 }
 
 /*
@@ -1016,7 +976,6 @@ void Con_DrawSolidConsole( float frac ) {
 	for (x = 0; x<i; x++) {
 		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2) + padding, ts[x]);
 	}
-
 
 	// draw the text
 	con.vislines = lines;
