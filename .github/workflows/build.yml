@@ -43,7 +43,9 @@ jobs:
       - uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
         with:
-            ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.3.1
@@ -95,6 +97,8 @@ jobs:
       - uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
         with:
+          fetch-depth: 0
+          fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Create Build Environment
@@ -164,6 +168,8 @@ jobs:
       - uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
         with:
+          fetch-depth: 0
+          fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
 
