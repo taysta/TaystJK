@@ -26,11 +26,11 @@ jobs:
 
       - name: Make build
         run: |
-          chmod +x macsourceports_universal2.sh
+          chmod +x scripts/universal2/build_universal2.sh
           chmod +x scripts/universal2/build_app_bundle.sh
           chmod +x scripts/universal2/constants.sh
           chmod +x scripts/universal2/sign_and_notarize.sh
-          ./macsourceports_universal2.sh
+          ./scripts/universal2/build_universal2.sh
 
       - name: Create binary archive
         if: ${{ matrix.build_type == 'Release' }}
