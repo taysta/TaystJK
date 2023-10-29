@@ -1,8 +1,8 @@
 remote_theme: just-the-docs/just-the-docs
 
-title: EternalJK
+title: TaystJK
 description: An improved Jedi Academy Multiplayer client
-baseurl: "/EternalJK" # the subpath of your site, e.g. /blog
+baseurl: "/TaystJK" # the subpath of your site, e.g. /blog
 url: "https://taysta.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
@@ -15,7 +15,7 @@ exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "pac
 # include: ["docs/tests/"]
 
 # Set a path/url to a logo that will be displayed instead of the title
-# logo: "https://raw.githubusercontent.com/eternalcodes/EternalJK/master/shared/icons/icon.ico"
+# logo: "https://raw.githubusercontent.com/taysta/TaystJK/master/shared/icons/icon.ico"
 
 # Enable or disable the site search
 # Supports true (default) or false
@@ -49,8 +49,8 @@ heading_anchors: true
 
 # Aux links for the upper right navigation
 aux_links:
-  "Download EternalJK on GitHub":
-    - "//github.com/taysta/EternalJK/releases/tag/latest"
+  "Download TaystJK on GitHub":
+    - "//github.com/taysta/TaystJK/releases/tag/latest"
 
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: true
@@ -66,7 +66,7 @@ nav_sort: case_sensitive # Capital letters sorted before lowercase
 back_to_top: true
 back_to_top_text: "Back to top"
 
-# footer_content: "EternalJK is licensed under GPLv2 as free software. You are free to use, modify and redistribute EternalJK following the terms in LICENSE.txt."
+# footer_content: "TaystJK is licensed under GPLv2 as free software. You are free to use, modify and redistribute TaystJK following the terms in LICENSE.txt."
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
@@ -77,7 +77,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true # show or hide edit this page link.
 gh_edit_link_text: "Edit this page on GitHub"
-gh_edit_repository: "https://github.com/taysta/EternalJK" # the github URL for your repo
+gh_edit_repository: "https://github.com/taysta/TaystJK" # the github URL for your repo
 gh_edit_branch: "gh-pages" # the branch that your docs is served from
 # gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
