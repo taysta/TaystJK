@@ -40,9 +40,8 @@ jobs:
             platform: x64
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           fetch-tags: true
 
       - name: Add msbuild to PATH
@@ -92,9 +91,8 @@ jobs:
         portable: [Non-Portable]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           fetch-tags: true
 
       - name: Create Build Environment
@@ -161,9 +159,8 @@ jobs:
         portable: [Non-Portable]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           fetch-tags: true
 
       - name: Create Build Environment
@@ -214,7 +211,7 @@ jobs:
     needs: [msvc, ubuntu, macos]
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -245,7 +242,7 @@ jobs:
     needs: [msvc, ubuntu, macos]
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -300,7 +297,7 @@ jobs:
             zip: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
