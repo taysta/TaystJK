@@ -41,6 +41,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
@@ -90,6 +93,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Create Build Environment
         run: |
@@ -156,6 +162,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Create Build Environment
         run: |
