@@ -9321,7 +9321,7 @@ static void CG_DrawIntermission( void ) {
 	cg.scoreBoardShowing = CG_DrawScoreboard();
 	if (cg_autoScreenshot.integer && !cgs.takenscreenshot) {
 		time_t rawtime;
-		char timeStr[128] = {0}; // should really only reach ~19 chars
+		char timeStr[32] = {0}; // should really only reach ~19 chars
 
 		time(&rawtime);
 		strftime(timeStr, sizeof(timeStr), "%Y-%m-%d_%H-%M-%S", localtime(&rawtime)); // or gmtime
