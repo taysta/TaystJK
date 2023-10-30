@@ -28,13 +28,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define	SCOREBOARD_X		(0)
 
-#define SB_HEADER			86
+#define SB_HEADER			32
 #define SB_TOP				(SB_HEADER+32)
 
 // Where the status bar starts, so we don't overwrite it
-#define SB_STATUSBAR		450
+#define SB_STATUSBAR		420
 
-#define SB_NORMAL_HEIGHT	22
+#define SB_NORMAL_HEIGHT	25
 #define SB_INTER_HEIGHT		15 // interleaved height
 
 #define SB_MAXCLIENTS_NORMAL  ((SB_STATUSBAR - SB_TOP) / SB_NORMAL_HEIGHT)
