@@ -4856,9 +4856,12 @@ a single large text block that can be scanned for shader names
 static void ScanAndLoadShaderFiles( void )
 {
 	char **shaderFiles;
+	char **shaderOverrideFiles;
 	char *buffers[MAX_SHADER_FILES];
+	char *overrideBuffers[MAX_SHADER_FILES];
 	const char *p;
 	int numShaderFiles;
+	int numOShaderFiles;
 	int i;
 	char *oldp, *token, *hashMem, *textEnd;
 	int shaderTextHashTableSizes[MAX_SHADERTEXT_HASH], hash, size;
@@ -4868,6 +4871,7 @@ static void ScanAndLoadShaderFiles( void )
 	long sum = 0, summand;
 	// scan for shader files
 	shaderFiles = ri.FS_ListFiles( "shaders", ".shader", &numShaderFiles );
+	shaderOverrideFiles = ri.FS_ListFiles( "shaders", ".oshader", &numOShaderFiles );
 
 	if ( !shaderFiles || !numShaderFiles )
 	{
@@ -4876,7 +4880,13 @@ static void ScanAndLoadShaderFiles( void )
 	}
 
 	if ( numShaderFiles > MAX_SHADER_FILES ) {
+		ri.Printf(PRINT_WARNING, "WARNING: too many .shader files, truncating...\n");
 		numShaderFiles = MAX_SHADER_FILES;
+	}
+
+	if ( numShaderFiles + numOShaderFiles > MAX_SHADER_FILES ) {
+		ri.Printf(PRINT_WARNING, "WARNING: too many combined shader files, truncating .oshader files...\n");
+		numOShaderFiles = MAX_SHADER_FILES - numShaderFiles;
 	}
 
 	// load and parse shader files
@@ -4956,10 +4966,99 @@ static void ScanAndLoadShaderFiles( void )
 			sum += summand;
 	}
 
+	// load and parse oshader files
+	for ( i = 0; i < numOShaderFiles; i++ )
+	{
+		char filename[MAX_QPATH];
+
+		// look for a .omtr file first
+		{
+			char *ext;
+			Com_sprintf( filename, sizeof( filename ), "shaders/%s", shaderOverrideFiles[i] );
+			if ( (ext = strrchr(filename, '.')) )
+			{
+				strcpy(ext, ".omtr");
+			}
+
+			if ( ri.FS_ReadFile( filename, NULL ) <= 0 )
+			{
+				Com_sprintf( filename, sizeof( filename ), "shaders/%s", shaderOverrideFiles[i] );
+			}
+		}
+
+		ri.Printf( PRINT_DEVELOPER, "...loading '%s'\n", filename );
+		summand = ri.FS_ReadFile( filename, (void **)&overrideBuffers[i] );
+
+		if ( !overrideBuffers[i] )
+			ri.Error( ERR_DROP, "Couldn't load %s", filename );
+
+		// Do a simple check on the shader structure in that file to make sure one bad shader file cannot fuck up all other shaders.
+		p = overrideBuffers[i];
+		COM_BeginParseSession(filename);
+		while(1)
+		{
+			token = COM_ParseExt(&p, qtrue);
+
+			if(!*token)
+				break;
+
+			Q_strncpyz(shaderName, token, sizeof(shaderName));
+			shaderLine = COM_GetCurrentParseLine();
+
+			if (token[0] == '#')
+			{
+				ri.Printf(PRINT_WARNING, "WARNING: Deprecated shader comment \"%s\" on line %d in file %s.  Ignoring line.\n",
+						  shaderName, shaderLine, filename);
+				SkipRestOfLine(&p);
+				continue;
+			}
+
+			token = COM_ParseExt(&p, qtrue);
+			if(token[0] != '{' || token[1] != '\0')
+			{
+				ri.Printf(PRINT_WARNING, "WARNING: Ignoring shader file %s. Shader \"%s\" on line %d missing opening brace",
+						  filename, shaderName, shaderLine);
+				if (token[0])
+				{
+					ri.Printf(PRINT_WARNING, " (found \"%s\" on line %d)", token, COM_GetCurrentParseLine());
+				}
+				ri.Printf(PRINT_WARNING, ".\n");
+				ri.FS_FreeFile(overrideBuffers[i]);
+				overrideBuffers[i] = NULL;
+				break;
+			}
+
+			if(!SkipBracedSection(&p, 1))
+			{
+				ri.Printf(PRINT_WARNING, "WARNING: Ignoring shader file %s. Shader \"%s\" on line %d missing closing brace.\n",
+						  filename, shaderName, shaderLine);
+				ri.FS_FreeFile(overrideBuffers[i]);
+				overrideBuffers[i] = NULL;
+				break;
+			}
+		}
+
+
+		if (overrideBuffers[i])
+			sum += summand;
+	}
+	Com_Printf("Total shader override files: %d\n", numOShaderFiles);
 	// build single large buffer
-	s_shaderText = (char *)ri.Hunk_Alloc( sum + numShaderFiles*2, h_low );
+	s_shaderText = (char *)ri.Hunk_Alloc( sum + (numShaderFiles+numOShaderFiles)*2, h_low );
 	s_shaderText[ 0 ] = '\0';
 	textEnd = s_shaderText;
+
+	// free overrides in forward order to ensure priority
+	for ( i = 0; i < numOShaderFiles; i++)
+	{
+		if ( !overrideBuffers[i] )
+			continue;
+
+		strcat( textEnd, overrideBuffers[i] );
+		strcat( textEnd, "\n" );
+		textEnd += strlen( textEnd );
+		ri.FS_FreeFile( overrideBuffers[i] );
+	}
 
 	// free in reverse order, so the temp files are all dumped
 	for ( i = numShaderFiles - 1; i >= 0 ; i-- )
@@ -4977,6 +5076,7 @@ static void ScanAndLoadShaderFiles( void )
 
 	// free up memory
 	ri.FS_FreeFileList( shaderFiles );
+	ri.FS_FreeFileList( shaderOverrideFiles );
 
 	Com_Memset(shaderTextHashTableSizes, 0, sizeof(shaderTextHashTableSizes));
 	size = 0;
