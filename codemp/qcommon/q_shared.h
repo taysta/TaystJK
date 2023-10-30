@@ -900,7 +900,7 @@ typedef enum {
 //
 // per-level limits
 //
-#define	MAX_CLIENTS			128		// absolute limit
+#define	MAX_CLIENTS			64		// absolute limit
 #define MAX_RADAR_ENTITIES	MAX_GENTITIES
 #define MAX_TERRAINS		1//32 //rwwRMG: inserted
 #define MAX_LOCATIONS		64
