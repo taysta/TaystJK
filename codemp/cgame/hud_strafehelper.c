@@ -288,7 +288,7 @@ void DF_DrawStrafeHUD(centity_t	*cent)
 /* Strafehelper */
 
 //main strafehelper function, sets states and then calls drawstrafeline function for each keypress
-static void DF_StrafeHelper() {
+void DF_StrafeHelper() {
     dfsline line = { 0 }, rearLine = { 0 },
             maxLine = { 0 }, rearMaxLine = { 0 },
             activeLine = { 0 }, rearActiveLine = { 0 },
@@ -417,7 +417,7 @@ static void DF_StrafeHelper() {
 /* Strafehelper Setters */
 
 //sets the dfstate function used for strafehelper calculations
-static void DF_SetPlayerState()
+void DF_SetPlayerState()
 {
     state.velocity = cg.predictedPlayerState.velocity;
     if (state.moveStyle == MV_SWOOP && cg.predictedPlayerState.m_iVehicleNum) {
@@ -446,7 +446,7 @@ static void DF_SetPlayerState()
 }
 
 //sets parts of the dfstate struct for a non-predicted client (spectator/demo playback)
-static void DF_SetClient(){
+void DF_SetClient(){
     state.moveDir = cg.snap->ps.movementDir;
     state.cmd = DF_DirToCmd(state.moveDir);
     if (cg.snap->ps.pm_flags & PMF_JUMP_HELD) {
@@ -455,13 +455,13 @@ static void DF_SetClient(){
 }
 
 //sets parts of the dfstate struct for a predicted client
-static void DF_SetClientReal(){
+void DF_SetClientReal(){
     state.moveDir = cg.predictedPlayerState.movementDir; //0-7 movement dir
     trap->GetUserCmd(trap->GetCurrentCmdNumber(), &state.cmd);
 }
 
 //sets the constants relative to the current movement styles physics
-static void DF_SetPhysics() {
+void DF_SetPhysics() {
     state.physics.stopspeed = pm_stopspeed;
     state.physics.duckscale = DF_GetDuckScale();
     state.physics.swimscale = pm_swimScale;
@@ -483,7 +483,7 @@ static void DF_SetPhysics() {
 }
 
 //calls functions that sets values to the cgaz struct
-static void DF_SetCGAZ(){
+void DF_SetCGAZ(){
     DF_SetFrameTime();
     DF_SetCurrentSpeed();
     DF_SetVelocityAngles();
@@ -493,7 +493,7 @@ static void DF_SetCGAZ(){
 /* CGAZ Setters */
 
 //sets the frametime for the cgaz struct
-static void DF_SetFrameTime(){
+void DF_SetFrameTime(){
     float frameTime;
     //get the frametime
     if (cg_strafeHelper_FPS.value < 1) {
@@ -509,21 +509,16 @@ static void DF_SetFrameTime(){
 }
 
 //sets the current speed for the cgaz struct
-static void DF_SetCurrentSpeed() {
-    if (cg.predictedPlayerState.m_iVehicleNum) {
-        centity_t *vehCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
-        //const vec_t* const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
-    } else {
-            float speed;
-            //get the current speed
-            speed = (float) sqrt(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-            //set the current speed
-            state.cgaz.currentSpeed = speed;
-    }
+void DF_SetCurrentSpeed() {
+    float speed;
+    //get the current speed
+    speed = (float)sqrt(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
+    //set the current speed
+    state.cgaz.currentSpeed = speed;
 }
 
 //sets the velocity angle for the cgaz struct
-static void DF_SetVelocityAngles()
+void DF_SetVelocityAngles()
 {
     vec3_t xyVel = { 0 };
     static vec3_t velAngles = { 0 };
@@ -539,7 +534,7 @@ static void DF_SetVelocityAngles()
 /* Strafehelper/Line Setters/Getters */
 
 //set the strafehelper user settings to the struct
-static void DF_SetStrafeHelper(){
+void DF_SetStrafeHelper(){
     float lineWidth;
     int sensitivity = cg_strafeHelperPrecision.integer;
     const int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
@@ -603,7 +598,7 @@ static void DF_SetStrafeHelper(){
 }
 
 //Take a moveDir and returns a cmd
-static usercmd_t DF_DirToCmd(int moveDir){
+usercmd_t DF_DirToCmd(int moveDir){
     usercmd_t outCmd;
     memcpy(&outCmd, &state.cmd, sizeof(usercmd_t));
     switch(moveDir){
@@ -646,7 +641,7 @@ static usercmd_t DF_DirToCmd(int moveDir){
 }
 
 //get the line struct - big function but no point simplifying it past this state
-static dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max) {
+dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max) {
     dfsline lineOut = { 0 }; //the line we will be returning
     qboolean active = qfalse, draw = qfalse;
     float fakeWishspeed;
@@ -657,7 +652,7 @@ static dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max) {
     fakeCmd.upmove = state.cmd.upmove; //get the real upmove value
     fakeWishspeed = DF_GetWishspeed(fakeCmd); //get the wishspeed for the fake cmd
     //check if the fake command matches the real command, if it does, the line is active (currently pressed)
-    if(state.cmd.rightmove == fakeCmd.rightmove && state.cmd.forwardmove == fakeCmd.forwardmove){
+    if((state.cmd.rightmove == fakeCmd.rightmove) && (state.cmd.forwardmove == fakeCmd.forwardmove)){
         active = qtrue;
     } else {
         active = qfalse;
@@ -675,8 +670,7 @@ static dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max) {
             } else { //it's the center line
                 if (moveDir == KEY_CENTER && state.strafeHelper.center) {
                     draw = qtrue;
-                    if (state.cmd.forwardmove == 0 && state.cmd.rightmove != 0
-                        || state.cmd.forwardmove == 0 && state.cmd.rightmove == 0) {
+                    if ((state.cmd.forwardmove == 0 && state.cmd.rightmove != 0) || (state.cmd.forwardmove == 0 && state.cmd.rightmove == 0)) {
                         active = qtrue; //center is active when A/D or no keys are pressed
                     } else {
                         active = qfalse;
@@ -825,7 +819,7 @@ static dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max) {
 }
 
 //get line x values to pass to drawstrafeine
-static void DF_SetAngleToX(dfsline *inLine) {
+void DF_SetAngleToX(dfsline *inLine) {
     vec3_t start, angs, forward, delta, line;
     float x = 0, y = 0;
     //get the view angles
@@ -854,7 +848,7 @@ static void DF_SetAngleToX(dfsline *inLine) {
 }
 
 //set the color of the line
-static void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max){
+void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max){
     vec4_t color = { 1, 1, 1, 0.75f };
     //get the default line color
     Vector4Copy(color,  inLine->color);
@@ -893,7 +887,7 @@ static void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max){
 /* Strafehelper Value Calculators */
 
 //calculates the optimum cgaz angle
-static float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate){
+float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate){
     float optimumDelta;
     if (onGround) {
         optimumDelta = acosf(
@@ -912,7 +906,7 @@ static float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, f
 }
 
 //calculates the maximum cgaz angle
-static float CGAZ_Max(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate){
+ float CGAZ_Max(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate){
     float maxDeltaAngle = 0;
     if (!onGround || (onGround && state.moveStyle == MV_SLICK)) {
         maxDeltaAngle = acosf(((-(accelerate * wishSpeed * frametime) / (2.0f * currentSpeed)))) * (180.0f / M_PI) - 45.0f;
@@ -924,18 +918,15 @@ static float CGAZ_Max(qboolean onGround, float accelerate, float currentSpeed, f
 }
 
 //takes a user commmand and returns the emulated wishspeed as a float
-static float DF_GetWishspeed(usercmd_t inCmd){
+ float DF_GetWishspeed(usercmd_t inCmd){
     int         i;
     vec3_t		wishvel;
     float		fmove, smove;
     vec3_t		forward, right, up;
     float		wishspeed;
-    float		scale;
 
     fmove = inCmd.forwardmove;
     smove = inCmd.rightmove;
-
-    scale = DF_GetCmdScale( inCmd );
 
     AngleVectors(state.viewAngles, forward, right, up);
     // project moves down to flat plane
@@ -990,7 +981,7 @@ static float DF_GetWishspeed(usercmd_t inCmd){
 }
 
 //takes a user command and returns the emulated command scale as a float
-static float DF_GetCmdScale( usercmd_t cmd) {
+ float DF_GetCmdScale( usercmd_t cmd) {
     int		max;
     float	total;
     float	scale;
@@ -1021,7 +1012,7 @@ static float DF_GetCmdScale( usercmd_t cmd) {
 /* Strafehelper Style Distributor */
 
 //takes a strafe line and draws it according to the strafehelper style set
-static void DF_DrawStrafeLine(dfsline line) {
+ void DF_DrawStrafeLine(dfsline line) {
 
     if (cg_strafeHelper.integer & SHELPER_ORIGINAL) {
         float startx, starty;
@@ -1075,7 +1066,7 @@ static void DF_DrawStrafeLine(dfsline line) {
 /* Drawing Functions */
 
 //draws a line on the screen
-static void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff) {
+ void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff) {
     float stepx, stepy, length = sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     int i;
 
@@ -1104,7 +1095,7 @@ static void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4
 }
 
 //draws the weze strafehelper
-static void DF_DrawStrafehelperWeze(int moveDir, dfsline inLine) {
+ void DF_DrawStrafehelperWeze(int moveDir, dfsline inLine) {
     usercmd_t cmd = { 0 };
     float length;
     float diff;
@@ -1148,13 +1139,13 @@ static void DF_DrawStrafehelperWeze(int moveDir, dfsline inLine) {
 }
 
 //plays the strafehelper sounds
-static void DF_StrafeHelperSound(float difference) {
+ void DF_StrafeHelperSound(float difference) {
     if (difference > -40.0f && difference < 10.0f) //Under aiming by a bit, but still good
         trap->S_StartLocalSound(cgs.media.hitSound4, CHAN_LOCAL_SOUND);
 }
 
 //sets the color of the triangles based on accel - code repeated from speedometer
-static void DF_SetAccelColor(){
+ void DF_SetAccelColor(){
     int t, i;
     float total, avgAccel;
     const float currentSpeed = state.cgaz.currentSpeed;
@@ -1210,7 +1201,7 @@ static void DF_SetAccelColor(){
 }
 
 //draws the acceleration zone triangle
-static void DF_DrawTriangle(float start, float end) {
+ void DF_DrawTriangle(float start, float end) {
     if(start <= SCREEN_WIDTH && start >= 0 && end <= SCREEN_WIDTH && end >= 0) {
         DF_SetAccelColor();
         CG_DrawPic(end, (0.5f * SCREEN_HEIGHT) - 4.0f, (start - end), 8.0f, cgs.media.leftTriangle);
@@ -1229,7 +1220,7 @@ CG_GraphAddSpeed
 tremulous - append a speed to the sample history for the speed graph
 ===================
 */
-static void DF_GraphAddSpeed(void) {
+ void DF_GraphAddSpeed(void) {
     float speed;
     vec3_t vel;
 
@@ -1264,7 +1255,7 @@ CG_DrawSpeedGraph
 tremulous - speedgraph initially ported by TomArrow
 ===================
 */
-static void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor) {
+ void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor) {
     int i;
     float val, max, top;
     // color of graph is interpolated between these values
@@ -1301,7 +1292,7 @@ static void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t ba
     trap->R_SetColor(NULL);
 }
 
-static void DF_DrawSpeedGraphOld( void ) {
+ void DF_DrawSpeedGraphOld( void ) {
     int		a, i, aw;
     float	x, y, v;
     float	ax, ay, ah, range; // mid, range;
@@ -1364,7 +1355,7 @@ CG_DrawJumpHeight
 japro - Draw speedometer jump height
 ===================
 */
-static void DF_DrawJumpHeight(centity_t* cent) {
+ void DF_DrawJumpHeight(centity_t* cent) {
     const vec_t* const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
     char jumpHeightStr[32] = { 0 };
 
@@ -1394,7 +1385,7 @@ CG_DrawJumpDistance
 japro - Draw speedometer jump distance
 ===================
 */
-static void DF_DrawJumpDistance(void) {
+ void DF_DrawJumpDistance(void) {
     char jumpDistanceStr[64] = { 0 };
 
     if (!cg.snap)
@@ -1430,7 +1421,7 @@ CG_DrawVerticalSpeed
 japro - Draw speedometer vertical speed
 ===================
 */
-static void DF_DrawVerticalSpeed(void) {
+ void DF_DrawVerticalSpeed(void) {
     char speedStr5[64] = { 0 };
     float vertspeed = cg.predictedPlayerState.velocity[2];
 
@@ -1445,7 +1436,7 @@ static void DF_DrawVerticalSpeed(void) {
     speedometerXPos += 42;
 }
 
-static void DF_DrawYawSpeed( void ) {
+ void DF_DrawYawSpeed( void ) {
     static unsigned short previousYaws[YAW_FRAMES];
     static unsigned short index;
     static int    lastupdate; //previous, lastupdate;
@@ -1499,12 +1490,12 @@ CG_DrawAccelMeter
 japro - Draw acceleration meter
 ===================
 */
-static void DF_DrawAccelMeter(void) {
+ void DF_DrawAccelMeter(void) {
     const float optimalAccel = cg.predictedPlayerState.speed * ((float)cg.frametime / 1000.0f);
     const float potentialSpeed = sqrtf(cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2 * (state.cgaz.wishspeed * optimalAccel));
     float actualAccel, total, percentAccel, x;
     const float accel = state.cgaz.currentSpeed - cg.previousSpeed;
-    static int t, i, previous, lastupdate;
+    int i;
     static float previousTimes[PERCENT_SAMPLES];
     static unsigned int index;
 
@@ -1528,7 +1519,6 @@ static void DF_DrawAccelMeter(void) {
     else if (actualAccel > (potentialSpeed - state.cgaz.currentSpeed)) //idk how
         actualAccel = (potentialSpeed - state.cgaz.currentSpeed) * 0.99f;
 
-    lastupdate = t;
     previousTimes[index % PERCENT_SAMPLES] = actualAccel / (potentialSpeed - state.cgaz.currentSpeed);
     index++;
 
@@ -1556,7 +1546,7 @@ CG_DrawSpeedometer
 japro - Draw the speedometer
 ===================
 */
-static void DF_DrawSpeedometer(void) {
+ void DF_DrawSpeedometer(void) {
     const char* accelStr, * accelStr2, * accelStr3;
     char speedStr[32] = { 0 }, speedStr2[32] = { 0 }, speedStr3[32] = { 0 };
     vec4_t colorSpeed = { 1, 1, 1, 1 };
@@ -1734,7 +1724,7 @@ CG_GetGroundDistance
 japro - Ground Distance function for use in jump detection for movement keys
 ===================
 */
-static float DF_GetGroundDistance(void) {
+ float DF_GetGroundDistance(void) {
     trace_t tr;
     vec3_t down;
 
@@ -1751,7 +1741,7 @@ CG_DrawMovementKeys
 japro - Draw the movement keys
 ===================
 */
-static void DF_DrawMovementKeys(centity_t* cent) {
+ void DF_DrawMovementKeys(centity_t* cent) {
     usercmd_t cmd = { 0 };
     playerState_t* ps = NULL;
     int moveDir;
@@ -1896,7 +1886,7 @@ static void DF_DrawMovementKeys(centity_t* cent) {
     }
 }
 
-static void DF_RaceTimer(void)
+ void DF_RaceTimer(void)
 {
     if (!cg.predictedPlayerState.stats[STAT_RACEMODE] || !cg.predictedPlayerState.duelTime) {
         cg.startSpeed = 0;

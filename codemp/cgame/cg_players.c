@@ -2094,7 +2094,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	{
 		if (ci->hat)
 		{
-			if (Q_stricmpn(ci->hat->name, cosmeticStr, strlen(ci->hat->name)))
+			if (Q_stricmp(ci->hat->name, cosmeticStr))
 			{
 				CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hat, localCosmetics.hats, localCosmetics.totalHats);
 			}
@@ -2124,7 +2124,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	{
 		if (ci->cape)
 		{
-			if (Q_stricmpn(ci->cape->name, cosmeticStr, strlen(ci->cape->name)))
+			if (Q_stricmp(ci->cape->name, cosmeticStr))
 			{
 				CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.cape, localCosmetics.capes, localCosmetics.totalCapes);
 			}
@@ -2321,10 +2321,10 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 
 	//Now that the model and skin are validated, we can load custom offsets for cosmetics if needed.
-	if (newInfo.hat && newInfo.hat != ci->hat || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
+	if ((newInfo.hat && newInfo.hat != ci->hat) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
 	CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,&newInfo.hat, newInfo.modelName, newInfo.skinName);
 
-	if (newInfo.cape && newInfo.cape != ci->cape || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.cape) || (Q_stricmp(newInfo.skinName, ci->skinName)) && newInfo.cape)
+	if ((newInfo.cape && newInfo.cape != ci->cape) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.cape) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.cape))
 	CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
 
 	if (cgs.gametype == GT_SIEGE)

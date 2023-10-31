@@ -1059,7 +1059,6 @@ typedef enum
 {
 	ALIGN_LEFT,
 	ALIGN_CENTER,
-	ALIGN_RIGHT,
 }tableAlignment_t;
 
 typedef struct dynCell_s dynCell_t;

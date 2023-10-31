@@ -316,7 +316,7 @@ CG_CheckLocalSounds
 ==================
 */
 void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
-	int			highScore, health, armor, reward, oldhealth, oldarmor;//JAPRO - Clientside - Hitsounds
+	int	highScore, reward;//JAPRO - Clientside - Hitsounds
 #ifdef JK2AWARDS
 	sfxHandle_t sfx;
 #endif
@@ -328,11 +328,6 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 
 	// hit changes
 	if ( ps->persistant[PERS_HITS] > ops->persistant[PERS_HITS] ) {
-		armor  = ps->persistant[PERS_ATTACKEE_ARMOR] & 0xff;
-		health = ps->persistant[PERS_ATTACKEE_ARMOR] >> 8;
-		oldhealth = ops->persistant[PERS_ATTACKEE_ARMOR] >> 8;//JAPRO - Clientside - Hitsounds
-		oldarmor  = ops->persistant[PERS_ATTACKEE_ARMOR] & 0xff;//JAPRO - Clientside - Hitsounds
-
 //JAPRO - Clientside - Hitsounds Start
 		switch (cg_hitsounds.integer)
 		{

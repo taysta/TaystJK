@@ -1639,7 +1639,6 @@ static void CG_Cosmetics_JaPRO(void)
 	else {
 		char arg[8] = { 0 };
         unsigned int index;
-		const uint32_t mask = (1 << MAX_COSMETICS) - 1;
 
 		trap->Cmd_Argv(1, arg, sizeof(arg));
 		index = atoi(arg);

@@ -2750,41 +2750,39 @@ static void CG_CloseLog(fileHandle_t *f) {
 //JK2 HUD
 forceTicPos_t forceTicPos[] =
 {
-
-	11,  41,  20,  10,	"gfx/hud/force_tick1", 0,		// Left Top
-	12,  45,  20,  10, "gfx/hud/force_tick2", 0,
-	14,  49,  20,  10, "gfx/hud/force_tick3", 0,
-	17,  52,  20,  10, "gfx/hud/force_tick4", 0,
-	22,  55,  10,  10, "gfx/hud/force_tick5", 0,
-	28,  57,  10,  20, "gfx/hud/force_tick6", 0,
-	34,  59,  10,  10,	"gfx/hud/force_tick7", 0,		// Left bottom
-
-	46,  59, -10,  10, "gfx/hud/force_tick7", 0,		// Right bottom
-	52,  57, -10,  20, "gfx/hud/force_tick6", 0,
-	58,  55, -10,  10, "gfx/hud/force_tick5", 0,
-	63,  52, -20,  10, "gfx/hud/force_tick4", 0,
-	66,  49, -20,  10, "gfx/hud/force_tick3", 0,
-	68,  45, -20,  10, "gfx/hud/force_tick2", 0,
-	69,  41, -20,  10,	"gfx/hud/force_tick1", 0,		// Right top
+    { 11,  41,  20,  10, "gfx/hud/force_tick1", 0},		// Left Top
+    {12,  45,  20,  10, "gfx/hud/force_tick2", 0},
+    {14,  49,  20,  10, "gfx/hud/force_tick3", 0},
+    {17,  52,  20,  10, "gfx/hud/force_tick4", 0},
+    {22,  55,  10,  10, "gfx/hud/force_tick5", 0},
+    {28,  57,  10,  20, "gfx/hud/force_tick6", 0},
+    {34,  59,  10,  10,	"gfx/hud/force_tick7", 0},		// Left bottom
+    {46, 59, -10,  	10,"gfx/hud/force_tick7",0},		// Right bottom
+    {52,57,-10 ,20,"gfx/hud/force_tick6",0},
+    {58 ,55,-10 ,10,"gfx/hud/force_tick5",0},
+    {63 ,52,-20 ,10,"gfx/hud/force_tick4",0},
+    {66 ,49,-20 ,10,"gfx/hud/force_tick3",0},
+    {68 ,45,-20 ,10,"gfx/hud/force_tick2",0},
+    {69 ,41,-20 ,10,"gfx/hud/force_tick1",0}		// Right top
 };
 
 forceTicPos_t ammoTicPos[] =
 {
-	12,  34,  10,  10, "gfx/hud/ammo_tick7", 0, 	// Bottom
-	13,  28,  10,  10, "gfx/hud/ammo_tick6", 0,
-	15,  23,  10,  10, "gfx/hud/ammo_tick5", 0,
-	19,  19,  10,  10, "gfx/hud/ammo_tick4", 0,
-	23,  15,  10,  10, "gfx/hud/ammo_tick3", 0,
-	29,  12,  10,  10, "gfx/hud/ammo_tick2", 0,
-	34,  11,  10,  10, "gfx/hud/ammo_tick1", 0,
+	{12,  34,  10,  10, "gfx/hud/ammo_tick7", 0},	// Bottom
+	{13,  28,  10,  10, "gfx/hud/ammo_tick6", 0},
+	{15,  23,  10,  10, "gfx/hud/ammo_tick5", 0},
+	{19,  19,  10,  10, "gfx/hud/ammo_tick4", 0},
+	{23,  15,  10,  10, "gfx/hud/ammo_tick3", 0},
+	{29, 12 ,10 ,10 ,"gfx/hud/ammo_tick2",0},
+	{34 ,11 ,10 ,10 ,"gfx/hud/ammo_tick1",0},
 
-	47,  11, -10,  10, "gfx/hud/ammo_tick1", 0,
-	52,  12, -10,  10, "gfx/hud/ammo_tick2", 0,
-	58,  15, -10,  10, "gfx/hud/ammo_tick3", 0,
-	62,  19, -10,  10, "gfx/hud/ammo_tick4", 0,
-	66,  23, -10,  10, "gfx/hud/ammo_tick5", 0,
-	68,  28, -10,  10, "gfx/hud/ammo_tick6", 0,
-	69,  34, -10,  10, "gfx/hud/ammo_tick7", 0,
+	{47 ,11 ,-10 ,10 ,"gfx/hud/ammo_tick1",0},
+	{52 ,12 ,-10 ,10 ,"gfx/hud/ammo_tick2",0},
+	{58 ,15 ,-10 ,10 ,"gfx/hud/ammo_tick3",0},
+	{62 ,19 ,-10 ,10 ,"gfx/hud/ammo_tick4",0},
+	{66 ,23 ,-10 ,10 ,"gfx/hud/ammo_tick5",0},
+	{68 ,28 ,-10 ,10 ,"gfx/hud/ammo_tick6",0},
+	{69 ,34 ,-10 ,10 ,"gfx/hud/ammo_tick7",0}
 };
 
 static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics, cosmeticItem_t **storePtr) 
@@ -2873,7 +2871,7 @@ static void CG_LoadEmojis(void) {
 	//get a list of all the available png files in the emoji folder
 	fileCnt = trap->FS_GetFileList("gfx/emoji", ".png", emojiExtensionListBuf, sizeof(emojiExtensionListBuf));
 
-	if (!fileCnt < 1 && cg_chatBoxEmojis.integer) {
+	if (!fileCnt && cg_chatBoxEmojis.integer) {
 		trap->Cvar_Set("cg_chatBoxEmojis", "0");
 		trap->Cvar_Update(&cg_chatBoxEmojis);
 		return;

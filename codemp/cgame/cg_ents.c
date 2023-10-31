@@ -2589,10 +2589,11 @@ void CG_GrappleEndpoint( centity_t *ent, vec3_t startPos ) {
 				RotateAroundDirection( model.axis, (float)ent->currentState.time );
 		}
 	}
-	else		
+	else {
 		AnglesToAxis( ent->lerpAngles, model.axis );
+	}
 
-		trap->R_AddRefEntityToScene( &model );
+	trap->R_AddRefEntityToScene(&model);
 }
 
 void CG_GrappleStartpoint( centity_t *ent, vec3_t startPos ) {
@@ -2629,7 +2630,6 @@ void CG_GrappleTrail( centity_t *ent ) {
 	centity_t		*enemy;
 //	vec3_t			*temp, temp2, temp3;
 	refEntity_t		beam;
-	clientInfo_t	*ci;
 
 	es = &ent->currentState;
 
@@ -2691,8 +2691,6 @@ void CG_GrappleTrail( centity_t *ent ) {
 
 	//beam.shaderTexCoord[0] = 0.1f;
 	//beam.shaderTexCoord[1] = 1.0f;
-
-	ci = &cgs.clientinfo[ es->clientNum ];
 
 	//if( cgs.valkyrMode )
 		//CG_GetTrippyColor( es->clientNum * 700, 3000, color );

@@ -148,7 +148,7 @@ void CG_SetInitialSnapshot( snapshot_t *snap ) {
 	}
 
 //JAPRO - Clientside - Autorecord Demo - Start
-	if ( cg_autoRecordDemo.integer && (1<<cgs.gametype) && cg.warmup <= 0 && !cg.demoPlayback )
+	if ( cg_autoRecordDemo.integer && cg.warmup <= 0 && !cg.demoPlayback )
 	{
 		time_t rawtime;
 		char timeBuf[256] = {0}, buf[256] = {0}, mapname[MAX_QPATH] = {0};

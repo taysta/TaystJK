@@ -187,56 +187,56 @@ void DF_DrawShowPos(void);
 int PM_GetMovePhysics();
 
 
-static void DF_StrafeHelper();
-static void DF_SetPlayerState();
-static void DF_SetClientReal();
-static void DF_SetClient();
-static void DF_SetPhysics();
+void DF_StrafeHelper();
+void DF_SetPlayerState();
+void DF_SetClientReal();
+void DF_SetClient();
+void DF_SetPhysics();
 
 /* Cgaz Init */
-static void DF_SetCGAZ();
-static void DF_SetFrameTime();
-static void DF_SetCurrentSpeed();
-static void DF_SetVelocityAngles();
+void DF_SetCGAZ();
+void DF_SetFrameTime();
+void DF_SetCurrentSpeed();
+void DF_SetVelocityAngles();
 
-static void DF_SetStrafeHelper();
-static dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max);
-static void DF_SetAngleToX(dfsline *inLine);
-static void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max);
+void DF_SetStrafeHelper();
+dfsline DF_GetLine(int moveDir, qboolean rear, qboolean max);
+void DF_SetAngleToX(dfsline *inLine);
+void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max);
 
 /* Cgaz functions */
-static float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed,
+float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed,
                       float frametime, float friction, float airaccelerate);
-static float CGAZ_Max(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate);
-static float DF_GetWishspeed(usercmd_t inCmd);
-static float DF_GetCmdScale(usercmd_t cmd);
+float CGAZ_Max(qboolean onGround, float accelerate, float currentSpeed, float wishSpeed, float frametime, float friction, float airaccelerate);
+float DF_GetWishspeed(usercmd_t inCmd);
+float DF_GetCmdScale(usercmd_t cmd);
 
 /* Strafe Helper Functions */
-static void DF_DrawStrafeLine(dfsline line);
-static void	DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff);
-static void DF_DrawStrafehelperWeze(int moveDir, dfsline inLine);
-static void DF_StrafeHelperSound(float difference);
-static void DF_SetAccelColor();
-static void DF_DrawTriangle(float start, float end);
+void DF_DrawStrafeLine(dfsline line);
+void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float alpha, float ycutoff);
+void DF_DrawStrafehelperWeze(int moveDir, dfsline inLine);
+void DF_StrafeHelperSound(float difference);
+void DF_SetAccelColor();
+void DF_DrawTriangle(float start, float end);
 
 
 /* Speedometer Functions */
-static void DF_GraphAddSpeed(void);
-static void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor);
-static void DF_DrawSpeedGraphOld( void );
-static void DF_DrawJumpHeight(centity_t* cent);
-static void DF_DrawJumpDistance(void);
-static void DF_DrawVerticalSpeed(void);
-static void DF_DrawAccelMeter(void);
-static void DF_DrawSpeedometer(void);
+void DF_GraphAddSpeed(void);
+void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor);
+void DF_DrawSpeedGraphOld( void );
+void DF_DrawJumpHeight(centity_t* cent);
+void DF_DrawJumpDistance(void);
+void DF_DrawVerticalSpeed(void);
+void DF_DrawAccelMeter(void);
+void DF_DrawSpeedometer(void);
 
-static void DF_RaceTimer(void);
-static void DF_DrawYawSpeed(void);
+void DF_RaceTimer(void);
+void DF_DrawYawSpeed(void);
 /* Misc Functions */
-static float DF_GetGroundDistance(void);
-static void DF_DrawMovementKeys(centity_t* cent);
+float DF_GetGroundDistance(void);
+void DF_DrawMovementKeys(centity_t* cent);
 
-static usercmd_t DF_DirToCmd(int moveDir);
+usercmd_t DF_DirToCmd(int moveDir);
 
 
 

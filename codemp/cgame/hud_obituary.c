@@ -155,7 +155,7 @@ void HUD_DrawObituary(void) {
         victimColor[3] = fminf(0.25f * color[3], victimColor[3]);
         wepColor[3] = color[3];
         //Get the sizes of everything
-        if((p->killer && p->victim) && (p->killer == p->victim) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
+        if(((p->killer && p->victim) && (p->killer == p->victim)) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
             suicide = qtrue;
             victimTextWidth = CG_Text_Width(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);
             victimTextHeight = (float)CG_Text_Height(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);

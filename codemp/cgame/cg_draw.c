@@ -9333,7 +9333,7 @@ static void CG_DrawIntermission( void ) {
 
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize)
 { //should be changed to return const char *
-	qboolean coop = (qboolean)style >= MV_COOP_JKA;
+	qboolean coop = (style >= MV_COOP_JKA ? qtrue : qfalse);
 
 	if (coop && styleStringSize >= 64) {
 		style -= (MV_COOP_JKA - 1);
@@ -11010,8 +11010,7 @@ static void CG_Draw2D( void ) {
 		return;
 	}
 
-    if(cg_killfeed.integer)
-        CG_Draw2DNew(  );
+    if (cg_killfeed.integer) CG_Draw2DNew();
 
 	CG_Draw2DScreenTints();
 
