@@ -1335,7 +1335,7 @@ void ComputeTexCoords( const int b, const textureBundle_t *bundle ) {
 	tess.svars.texcoordPtr[b] = src;
 }
 
-void ComputeTexMods( const textureBundle_t *bundle, float *outMatrix, float *outOffTurb ) {
+static void vk_compute_tex_mods( const textureBundle_t *bundle, float *outMatrix, float *outOffTurb ) {
 	int tm;
 	float matrix[6], currentmatrix[6];
 
@@ -1424,6 +1424,18 @@ void ComputeTexMods( const textureBundle_t *bundle, float *outMatrix, float *out
 			currentmatrix[5] = outOffTurb[1];
 			break;
 		}
+	}
+}
+
+static void vk_compute_tex_coords( const textureBundle_t *bundle, vktcMod_t *tcMod, vktcGen_t *tcGen ) {
+	vk_compute_tex_mods( bundle, tcMod->matrix, tcMod->offTurb ); 
+
+	tcGen->type = bundle->tcGen;
+
+	if ( bundle->tcGen == TCGEN_VECTOR )
+	{
+		VectorCopy( bundle->tcGenVectors[0], tcGen->vector0 );
+		VectorCopy( bundle->tcGenVectors[1], tcGen->vector1 );
 	}
 }
 
@@ -1589,6 +1601,10 @@ void RB_StageIteratorGeneric( void )
 			//want to use RGBGen from ent
 			if ( backEnd.currentEntity->e.renderfx & RF_RGB_TINT )
 				forceRGBGen = CGEN_ENTITY;
+
+			// refraction
+			if ( tess.shader->useDistortion == qtrue || backEnd.currentEntity->e.renderfx & RF_DISTORTION )
+				is_refraction = qtrue;
 		}
 
 		tess_flags |= pStage->tessFlags;
@@ -1656,13 +1672,10 @@ void RB_StageIteratorGeneric( void )
 			if ( tess.shader == tr.distortionShader )
 				def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHMASK_TRUE;
 			
-			// refraction
-			if ( tess.shader->useDistortion == qtrue || backEnd.currentEntity->e.renderfx & RF_DISTORTION ) 
+			if ( is_refraction ) 
 			{
 				def.shader_type = TYPE_REFRACTION;
 				def.face_culling = CT_TWO_SIDED;
-				is_refraction = qtrue;
-				push_uniform = qtrue;
 				tess_flags |= TESS_NNN;
 			}
 			
@@ -1687,26 +1700,18 @@ void RB_StageIteratorGeneric( void )
 
 			Com_Memset( &uniform.refraction, 0, sizeof(uniform.refraction) );
 
-			// only do tcGen/tcMod computations on the GPU for refraction for time being on master
 			{
-				ComputeTexMods( &pStage->bundle[0], 
-								uniform.refraction.tcMod.matrix, 
-								uniform.refraction.tcMod.offTurb ); 
+				// only do tcGen/tcMod computations on the GPU for refraction for time being on master
+				vk_compute_tex_coords( &pStage->bundle[0], &uniform.refraction.tcMod, &uniform.refraction.tcGen );
 
-				uniform.refraction.tcGen.type = pStage->bundle[0].tcGen;
+				trRefEntity_t *refEntity = backEnd.currentEntity;
+				orientationr_t ori;
 
-				if ( pStage->bundle[0].tcGen == TCGEN_VECTOR )
-				{
-					VectorCopy( pStage->bundle[0].tcGenVectors[0], uniform.refraction.tcGen.vector0 );
-					VectorCopy( pStage->bundle[0].tcGenVectors[1], uniform.refraction.tcGen.vector1 );
-				}
+				R_RotateForEntity( refEntity, &backEnd.viewParms, &ori );
+				Matrix16Copy( ori.modelMatrix, uniform.modelMatrix );
 			}
 
-			trRefEntity_t *refEntity = backEnd.currentEntity;
-			orientationr_t ori;
-
-			R_RotateForEntity( refEntity, &backEnd.viewParms, &ori );
-			Matrix16Copy( ori.modelMatrix, uniform.modelMatrix );
+			push_uniform = qtrue;
 		}
 
 		if ( push_uniform ) {
