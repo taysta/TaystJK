@@ -1,13 +1,33 @@
-//
-// Created by taylo on 8/10/2023.
-//
+/*
+===========================================================================
+Copyright (C) 1999 - 2005, Id Software, Inc.
+Copyright (C) 2000 - 2013, Raven Software, Inc.
+Copyright (C) 2001 - 2013, Activision, Inc.
+Copyright (C) 2005 - 2015, ioquake3 contributors
+Copyright (C) 2013 - 2015, OpenJK contributors
+Copyright (C) 2015 - 2021, EternalJK contributors
+Copyright (C) 2015 - 2023, TaystJK contributors
+
+
+This file is part of the TaystJK source code.
+
+TaystJK is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see <https://www.gnu.org/licenses/>.
+===========================================================================
+*/
 
 #ifndef ETERNALJK_HUD_STRAFEHELPER_H
 #define ETERNALJK_HUD_STRAFEHELPER_H
 
-//cg_multiversion.h
-#ifndef __CG_STRAFEHELPER_H_INCLUDED___
-#define __CG_STRAFEHELPER_H_INCLUDED___
 #include "cg_local.h"
 #include "../ui/ui_shared.h"
 #include "../game/bg_public.h"
@@ -188,15 +208,15 @@ int PM_GetMovePhysics();
 
 
 void DF_StrafeHelper();
-void DF_SetPlayerState();
+void DF_SetPlayerState(centity_t	*cent);
 void DF_SetClientReal();
 void DF_SetClient();
 void DF_SetPhysics();
 
 /* Cgaz Init */
-void DF_SetCGAZ();
+void DF_SetCGAZ(centity_t	*cent);
 void DF_SetFrameTime();
-void DF_SetCurrentSpeed();
+void DF_SetCurrentSpeed(centity_t	*cent);
 void DF_SetVelocityAngles();
 
 void DF_SetStrafeHelper();
@@ -283,7 +303,5 @@ typedef struct
 extern cgaz_t s;
 
 void trap_SnapVector( float *v );
-
-#endif //__CG_STRAFEHELPER_H_INCLUDED___
 
 #endif //ETERNALJK_HUD_STRAFEHELPER_H

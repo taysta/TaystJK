@@ -1,3 +1,30 @@
+/*
+===========================================================================
+Copyright (C) 1999 - 2005, Id Software, Inc.
+Copyright (C) 2000 - 2013, Raven Software, Inc.
+Copyright (C) 2001 - 2013, Activision, Inc.
+Copyright (C) 2005 - 2015, ioquake3 contributors
+Copyright (C) 2013 - 2015, OpenJK contributors
+Copyright (C) 2015 - 2021, EternalJK contributors
+Copyright (C) 2015 - 2023, TaystJK contributors
+
+
+This file is part of the TaystJK source code.
+
+TaystJK is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see <https://www.gnu.org/licenses/>.
+===========================================================================
+*/
+
 #include "hud_strafehelper.h"
 #include "cg_local.h"
 
@@ -213,7 +240,7 @@ qboolean DF_HasAutoJump() {
 void DF_DrawStrafeHUD(centity_t	*cent)
 {
     //set the playerstate
-    DF_SetPlayerState(); //state.
+    DF_SetPlayerState(cent); //state.
     if (cg_strafeHelper.integer) {
         DF_StrafeHelper();
     }
@@ -417,7 +444,7 @@ void DF_StrafeHelper() {
 /* Strafehelper Setters */
 
 //sets the dfstate function used for strafehelper calculations
-void DF_SetPlayerState()
+static void DF_SetPlayerState(centity_t	*cent)
 {
     state.velocity = cg.predictedPlayerState.velocity;
     if (state.moveStyle == MV_SWOOP && cg.predictedPlayerState.m_iVehicleNum) {
@@ -442,7 +469,7 @@ void DF_SetPlayerState()
     else
         VectorCopy(cg.predictedPlayerState.origin, state.viewOrg);
     VectorCopy(cg.predictedPlayerState.viewangles, state.viewAngles);
-    DF_SetCGAZ();
+    DF_SetCGAZ(cent);
 }
 
 //sets parts of the dfstate struct for a non-predicted client (spectator/demo playback)
@@ -483,9 +510,9 @@ void DF_SetPhysics() {
 }
 
 //calls functions that sets values to the cgaz struct
-void DF_SetCGAZ(){
+void DF_SetCGAZ(centity_t *cent){
     DF_SetFrameTime();
-    DF_SetCurrentSpeed();
+    DF_SetCurrentSpeed(cent);
     DF_SetVelocityAngles();
     state.cgaz.wishspeed = DF_GetWishspeed(state.cmd);
 }
@@ -509,12 +536,17 @@ void DF_SetFrameTime(){
 }
 
 //sets the current speed for the cgaz struct
-void DF_SetCurrentSpeed() {
-    float speed;
-    //get the current speed
-    speed = (float)sqrt(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-    //set the current speed
-    state.cgaz.currentSpeed = speed;
+void DF_SetCurrentSpeed(centity_t *cent) {
+	if (cg.predictedPlayerState.m_iVehicleNum) {
+		centity_t *vehCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+
+		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
+		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+	}
+	else {
+		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
+		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+	}
 }
 
 //sets the velocity angle for the cgaz struct
@@ -924,9 +956,12 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     float		fmove, smove;
     vec3_t		forward, right, up;
     float		wishspeed;
+    //float		scale;
 
     fmove = inCmd.forwardmove;
     smove = inCmd.rightmove;
+
+    //scale = DF_GetCmdScale( inCmd ); - for OCPM/SP
 
     AngleVectors(state.viewAngles, forward, right, up);
     // project moves down to flat plane
