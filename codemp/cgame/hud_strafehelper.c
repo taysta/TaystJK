@@ -444,7 +444,7 @@ void DF_StrafeHelper() {
 /* Strafehelper Setters */
 
 //sets the dfstate function used for strafehelper calculations
-static void DF_SetPlayerState(centity_t	*cent)
+void DF_SetPlayerState(centity_t	*cent)
 {
     state.velocity = cg.predictedPlayerState.velocity;
     if (state.moveStyle == MV_SWOOP && cg.predictedPlayerState.m_iVehicleNum) {
