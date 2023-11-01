@@ -2252,7 +2252,6 @@ void R_SetupViewParmsForOrthoRendering(
 
 void R_SetupPshadowMaps(trRefdef_t *refdef)
 {
-	viewParms_t		shadowParms;
 	int i;
 
 	// first, make a list of shadows

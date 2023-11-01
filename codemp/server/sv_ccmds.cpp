@@ -1570,12 +1570,7 @@ constexpr char postEOFMetadataMarker[] = "HIDDENMETA";
 void SV_WriteEmptyMessageWithMetadata(int lastClientCommand, fileHandle_t f, const char* metaData, int messageNum) {
 	byte			bufData[MAX_MSGLEN];
 	msg_t			buf;
-	int				i;
 	int				len;
-	entityState_t* ent;
-	entityState_t	nullstate;
-	char* s;
-
 
 	MSG_Init(&buf, bufData, sizeof(bufData));
 	MSG_Bitstream(&buf);
@@ -1796,7 +1791,6 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 
 	// Save metadata message if desired
 	if (sv_demoWriteMeta->integer) {
-		int i;
 		ssMeta << "{";
 		ssMeta << "\"wr\":\"EternalJK_Server\""; // Writer (keyword used by other tools too to identify origin of demo)
 
