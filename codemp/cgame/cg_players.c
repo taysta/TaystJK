@@ -2231,7 +2231,8 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// cosmetics
 	yo = Info_ValueForKey(configstring, "c5");
-	newInfo.cosmetics = atoi(yo);
+	if(yo != NULL)
+		newInfo.cosmetics = atoi(yo);
 	if ((cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS) && !newInfo.cosmetics)
 	{
 		qtime_t time = { 0 };
