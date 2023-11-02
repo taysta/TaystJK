@@ -1323,7 +1323,8 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Hide player cosmetics
 	qtrue,//Disable breathing effects
 	qfalse,//Old JA+ style grapple line
-    qtrue//New FFA respawn bubble
+    qtrue,//New FFA respawn bubble
+	qfalse//Seasonal cosmetics
 };
 
 //JA+ Specific = amaltdim ?
@@ -1348,7 +1349,8 @@ static qboolean japlusPlayerStyles[] = {
 	qfalse,//Hide player cosmetics
 	qtrue,//Disable breathing effects
 	qtrue,//Old JA+ style grapple line
-    qtrue//New FFA respawn bubble
+    qtrue,//New FFA respawn bubble
+	qtrue//Seasonal cosmetics
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1371,7 +1373,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Hide player cosmetics" },//16
 	{ "Disable breathing effects" },//17
 	{ "Old JA+ style grapple line" },//18
-    { "New FFA respawn bubble" }
+    { "New FFA respawn bubble" }, //19
+	{ "Seasonal Cosmetics" } //20
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 

@@ -2229,20 +2229,20 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	ParseRGBSaber( va( "%i,%i,%i", r, g, b ), newInfo.rgb2 );
 	// rgb end
 
-	// cosmetics
+	// seasonal cosmetics
 	yo = Info_ValueForKey(configstring, "c5");
-	if(yo != NULL)
-		newInfo.cosmetics = atoi(yo);
-	if ((cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS) && !newInfo.cosmetics)
+	if(yo[0])
 	{
-		qtime_t time = { 0 };
-
-		trap->RealTime(&time);
-		if ((time.tm_mon == 11 - 1 && time.tm_mday > 21) || time.tm_mon == 12 - 1 || (time.tm_mon == 1 - 1 && time.tm_mday < 8)) {
-			newInfo.cosmetics |= JAPRO_COSMETIC_SANTAHAT;
-		}
-		else if (time.tm_mon == 10 - 1 && time.tm_mday == 31) {
-			newInfo.cosmetics |= JAPRO_COSMETIC_PUMKIN;
+		newInfo.cosmetics = atoi(yo);
+		if (cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS)  {
+			qtime_t time = {0};
+			trap->RealTime(&time);
+			if ((time.tm_mon == 11 - 1 && time.tm_mday > 21) || time.tm_mon == 12 - 1 ||
+				(time.tm_mon == 1 - 1 && time.tm_mday < 8)) {
+				newInfo.cosmetics |= JAPRO_COSMETIC_SANTAHAT;
+			} else if (time.tm_mon == 10 - 1 && time.tm_mday == 31) {
+				newInfo.cosmetics |= JAPRO_COSMETIC_PUMKIN;
+			}
 		}
 	}
 
@@ -13027,7 +13027,7 @@ stillDoSaber:
 
 	//[Kameleon] - Nerevar's Santa Hat.
 
-    if (cgs.serverMod != SVMOD_JAPLUS && cgs.serverMod != SVMOD_BASEJKA && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
+    if (!(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
         if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
             CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);
         }
