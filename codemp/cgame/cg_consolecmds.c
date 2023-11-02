@@ -1324,7 +1324,7 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Disable breathing effects
 	qfalse,//Old JA+ style grapple line
     qtrue,//New FFA respawn bubble
-	qfalse//Seasonal cosmetics
+	qtrue//Seasonal cosmetics
 };
 
 //JA+ Specific = amaltdim ?

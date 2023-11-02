@@ -2231,18 +2231,15 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 
 	// seasonal cosmetics
 	yo = Info_ValueForKey(configstring, "c5");
-	if(yo[0])
-	{
-		newInfo.cosmetics = atoi(yo);
-		if (cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS)  {
-			qtime_t time = {0};
-			trap->RealTime(&time);
-			if ((time.tm_mon == 11 - 1 && time.tm_mday > 21) || time.tm_mon == 12 - 1 ||
-				(time.tm_mon == 1 - 1 && time.tm_mday < 8)) {
-				newInfo.cosmetics |= JAPRO_COSMETIC_SANTAHAT;
-			} else if (time.tm_mon == 10 - 1 && time.tm_mday == 31) {
-				newInfo.cosmetics |= JAPRO_COSMETIC_PUMKIN;
-			}
+	newInfo.cosmetics = atoi(yo);
+	if (cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS)  {
+		qtime_t time = {0};
+		trap->RealTime(&time);
+		if ((time.tm_mon == 11 - 1 && time.tm_mday > 21) || time.tm_mon == 12 - 1 ||
+			(time.tm_mon == 1 - 1 && time.tm_mday < 8)) {
+			newInfo.cosmetics |= JAPRO_COSMETIC_SANTAHAT;
+		} else if (time.tm_mon == 10 - 1 && time.tm_mday == 31) {
+			newInfo.cosmetics |= JAPRO_COSMETIC_PUMKIN;
 		}
 	}
 
