@@ -169,6 +169,7 @@ gfx/effects/grapple_line
 		map gfx/effects/grapple_line
 		blendFunc GL_ONE GL_ONE
 		rgbGen vertex
+		glow
 	}
 }
 
