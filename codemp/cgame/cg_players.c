@@ -2232,16 +2232,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	// seasonal cosmetics
 	yo = Info_ValueForKey(configstring, "c5");
 	newInfo.cosmetics = atoi(yo);
-	if (cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS)  {
-		qtime_t time = {0};
-		trap->RealTime(&time);
-		if ((time.tm_mon == 11 - 1 && time.tm_mday > 21) || time.tm_mon == 12 - 1 ||
-			(time.tm_mon == 1 - 1 && time.tm_mday < 8)) {
-			newInfo.cosmetics |= JAPRO_COSMETIC_SANTAHAT;
-		} else if (time.tm_mon == 10 - 1 && time.tm_mday == 31) {
-			newInfo.cosmetics |= JAPRO_COSMETIC_PUMKIN;
-		}
-	}
 
 	// Gender hints
 	newInfo.gender = GENDER_MALE; //reset this so default/missing models don't inherit it from deferred userinfo
@@ -10139,13 +10129,17 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
 }
 //[/Kameleon]
 
-void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, const char *basePath, cosmeticItem_t *cosmetic, refEntity_t parent, int position)
+static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, cosmeticItem_t *cosmetic, refEntity_t parent, int position)
 {
 	int newBolt;
 	mdxaBone_t matrix;
 	vec3_t boltOrg, bAngles;
 	refEntity_t re;
-	char finalPath[MAX_QPATH];
+
+	if (!cosmetic)
+	{
+		return;
+	}
 
 	if (!cent->ghoul2)
 	{
@@ -10218,9 +10212,8 @@ void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, 
 
 		VectorCopy(boltOrg, ent.origin);*/
 
-		Com_sprintf(finalPath, sizeof(finalPath), "%s%s.md3", basePath, cosmetic->name);
 
-		re.hModel = trap->R_RegisterModel(finalPath);
+		re.hModel = cosmetic->handle;
 		VectorCopy(boltOrg, re.lightingOrigin);
 		VectorCopy(boltOrg, re.origin);
 
@@ -13023,144 +13016,133 @@ stillDoSaber:
 	}
 
 	//[Kameleon] - Nerevar's Santa Hat.
+	//Cosmetics
+	if (!(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS))
+	{
+		cosmeticItem_t *hat = cg_forceCosmetics.integer ? cgs.clientinfo[cg.clientNum].hat : ci->hat;
+		cosmeticItem_t *cape = cg_forceCosmetics.integer ? cgs.clientinfo[cg.clientNum].cape : ci->cape;
 
-    if (!(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS)) {
-        if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_GRADCAP) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.gradcap, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA2) {
-        	CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora2, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA3) {
-        	CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora3, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA4) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora4, legs, 0);
-        }
-        else if (ci->cosmetics & JAPRO_COSMETIC_HEADCRAB) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.headcrab, legs, 0);
-		}
-        else if (ci->cosmetics & JAPRO_COSMETIC_HORNS) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.horns, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_METALHELM) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.metalhelm, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_AFRO) {
- 			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.afro, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_BUCKET) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.bucket, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CROWN) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.crown, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_MARIO) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mario, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_PREDATOR) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.predator, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_SAIYAN) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.saiyan, legs, 0);
-        }
-        if (ci->cosmetics & JAPRO_COSMETIC_MASK) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs, 0);
-        }
-		else if (ci->cosmetics & JAPRO_COSMETIC_BEARD) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.beard, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_PLAGUEMASK) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.plaguemask, legs, 0);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_GLASSES) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.glasses, legs, 0);
-		}
-//Can be combined
-		if (ci->cosmetics & JAPRO_COSMETIC_GOOSE) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.goose, legs, 1);
-		}
-		if (ci->cosmetics & JAPRO_COSMETIC_VADERCAPE) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.vadercape, legs, 1);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_YODACAPE) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.yodacape, legs, 1);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_AK47) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.ak47, legs, 1);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_CROWBAR) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.crowbar, legs, 1);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_ROYALCAPE) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.royalcape, legs, 1);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_GROGUCAPE) {
-			CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.grogucape, legs, 2);
-		}
-		else if (ci->cosmetics & JAPRO_COSMETIC_RPG) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.rpg, legs, 1);
-        }
-    }else if (!cg.demoPlayback && cgs.serverMod != SVMOD_JAPRO){
-        if (cg_forceCosmetics.integer == 1) 
+		if ((cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS))
 		{
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 2) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 3) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 4) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer  == 5) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 6) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 7) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs, 0);
-        }
-        else if (cg_forceCosmetics.integer == 8) {
-            CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs, 0);
-        }
-		else if (cg_forceCosmetics.integer == -1)
-		{
-			if (ci->hat)
-			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_HATS_PATH, ci->hat, legs, 0);
+			qtime_t time = { 0 };
+			trap->RealTime(&time);
+
+			if ((time.tm_mon == 10 && time.tm_mday > 21) || time.tm_mon == 11 || (time.tm_mon == 0 && time.tm_mday < 8)) { //Christmas
+				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_SANTAHAT;
+				if (!hat) hat = CG_CosmeticForName("santahat", localCosmetics.hats, localCosmetics.totalHats);
 			}
-			if (ci->cape)
-			{
-				CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, COSMETIC_CAPES_PATH, ci->cape, legs, 1);
+			else if (time.tm_mon == 9 && time.tm_mday == 2) { //Halloween
+				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_PUMKIN;
+				if (!hat) hat = CG_CosmeticForName("pumpkin", localCosmetics.hats, localCosmetics.totalHats);
 			}
 		}
-            //loda todo
-    }
+
+		if (cgs.serverMod == SVMOD_JAPRO)
+		{
+			if (ci->cosmetics & JAPRO_COSMETIC_SANTAHAT) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.santaHat, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_PUMKIN) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.pumpkin, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_CAP) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.cap, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_CRINGE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.kringekap, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_SOMBRERO) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.sombrero, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_TOPHAT) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.tophat, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_GRADCAP) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.gradcap, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA2) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora2, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA3) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora3, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_FEDORA4) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.fedora4, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_HEADCRAB) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.headcrab, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_HORNS) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.horns, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_METALHELM) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.metalhelm, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_AFRO) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.afro, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_BUCKET) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.bucket, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_CROWN) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.crown, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_MARIO) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mario, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_PREDATOR) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.predator, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_SAIYAN) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.saiyan, legs, 0);
+			}
+			if (ci->cosmetics & JAPRO_COSMETIC_MASK) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.mask, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_BEARD) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.beard, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_PLAGUEMASK) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.plaguemask, legs, 0);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_GLASSES) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.glasses, legs, 0);
+			}
+			//Can be combined
+			if (ci->cosmetics & JAPRO_COSMETIC_GOOSE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.goose, legs, 1);
+			}
+			if (ci->cosmetics & JAPRO_COSMETIC_VADERCAPE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.vadercape, legs, 1);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_YODACAPE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.yodacape, legs, 1);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_AK47) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.ak47, legs, 1);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_CROWBAR) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.crowbar, legs, 1);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_ROYALCAPE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.royalcape, legs, 1);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_GROGUCAPE) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.grogucape, legs, 2);
+			}
+			else if (ci->cosmetics & JAPRO_COSMETIC_RPG) {
+				CG_DrawCosmeticOnPlayer(cent, cg.time, cgs.gameModels, cgs.media.cosmetics.rpg, legs, 1);
+			}
+		}
+		else
+		{
+			CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, hat, legs, 0);
+			CG_DrawCosmeticOnPlayer2(cent, cg.time, cgs.gameModels, cape, legs, 1);
+		}
+	}
 	//[/Kameleon]
 
 	//cent->frame_minus2 = cent->frame_minus1;

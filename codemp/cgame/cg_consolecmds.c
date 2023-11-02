@@ -1693,6 +1693,25 @@ static void CG_Cosmetics_JaPRO(void)
 	}
 }
 
+cosmeticItem_t *CG_CosmeticForName(const char *name, cosmeticItem_t *cosmetics, int amount)
+{
+	int i ;
+
+	if (!name || !name[0])
+	{
+		return NULL;
+	}
+
+	for (i = 0; i < amount; i++)
+	{
+		if (!Q_stricmp(cosmetics[i].name, name))
+		{
+			return &cosmetics[i];
+		}
+	}
+	return NULL;
+}
+
 static void CG_Cosmetics(void)
 {
 	int argCount = trap->Cmd_Argc();
