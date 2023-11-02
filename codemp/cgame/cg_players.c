@@ -7450,7 +7450,10 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	{
 		if (saberNum == 0)
 		{
-			scolor = client->icolor1;
+			if (cg_saberStaffMultiColor.integer && bladeNum >= 1)
+				scolor = client->icolor2;
+			else
+				scolor = client->icolor1;
 		}
 		else
 		{

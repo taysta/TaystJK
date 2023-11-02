@@ -89,6 +89,7 @@ XCVAR_DEF( cg_pitchHelperOffset,         "0",    NULL,                   CVAR_AR
 XCVAR_DEF( cg_jumpGoal,         "0",    NULL,                   CVAR_NONE )
 XCVAR_DEF( cg_startGoal,         "0",    NULL,                   CVAR_NONE )
 XCVAR_DEF( cg_antiAmKiss,			"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_saberStaffMultiColor,			"0",	NULL,					CVAR_ARCHIVE )
 
 //Crosshair
 XCVAR_DEF( cg_crosshairSizeScale,		"1",	NULL,										CVAR_ARCHIVE )
