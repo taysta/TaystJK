@@ -11,8 +11,8 @@ if not defined FOUND (
 ) else (
 	echo Found CMake!
 )
-if not exist build\nul (mkdir build)
-pushd build
-cmake -G "Visual Studio 15 2017" -A Win32 -D CMAKE_INSTALL_PREFIX=../install ..
+if not exist build\nul (mkdir msvc15_x86)
+pushd msvc15_x86
+cmake -G "Visual Studio 15 2017" -A Win32 -D CMAKE_INSTALL_PREFIX=../install ../..
 popd
 pause
