@@ -1958,7 +1958,6 @@ CG_DrawHUD
 ================
 */
 
-float speedometerXPos, jumpsXPos;
 void CG_DrawHUD(centity_t	*cent)
 {
 	menuDef_t	*menuHUD = NULL;
@@ -1967,15 +1966,6 @@ void CG_DrawHUD(centity_t	*cent)
 	int	scoreBias;
 	char scoreBiasStr[16];
 
-	if (cgs.newHud) {
-		switch (cg_hudFiles.integer)
-		{
-			case 0: speedometerXPos -= 8; break;
-			case 1: speedometerXPos -= 56; break;
-			case 2: speedometerXPos -= 42; break;
-			default: break;
-		}
-	}
     //Defragmania Strafe Hud
     if(cg_speedometer.integer & SPEEDOMETER_ENABLE || (cg_strafeHelper.integer & (SHELPER_ORIGINAL | SHELPER_UPDATED | SHELPER_CGAZ | SHELPER_WSW | SHELPER_WEZE)) || cg_movementKeys.integer || cg_raceTimer.integer || cg_raceStart.integer || cg_showpos.integer){
         DF_DrawStrafeHUD(cent);

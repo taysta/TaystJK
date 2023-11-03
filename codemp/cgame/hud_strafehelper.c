@@ -250,9 +250,19 @@ void DF_DrawStrafeHUD(centity_t	*cent)
         DF_DrawMovementKeys(cent);
     }
 
-    if ((cg_speedometer.integer & SPEEDOMETER_ENABLE)) {
+    if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)) {
         speedometerXPos = cg_speedometerX.value;
         jumpsXPos = cg_speedometerJumpsX.value;
+		//Offset the speedometer
+		if (cgs.newHud) {
+			switch (cg_hudFiles.integer)
+			{
+				case 0: speedometerXPos -= 8; break;
+				case 1: speedometerXPos -= 56; break;
+				case 2: speedometerXPos -= 42; break;
+				default: break;
+			}
+		}
         DF_DrawSpeedometer();
 
         if (((cg_speedometer.integer & SPEEDOMETER_ACCELMETER) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)))
@@ -308,7 +318,9 @@ void DF_DrawStrafeHUD(centity_t	*cent)
         else if (lineWidth > 5)
             lineWidth = 5;
 
-        DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f, (0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f, lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
+        DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f,
+					(0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f,
+					lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
     }
 }
 
@@ -537,15 +549,17 @@ void DF_SetFrameTime(){
 
 //sets the current speed for the cgaz struct
 void DF_SetCurrentSpeed(centity_t *cent) {
+	vec_t * velocity;
 	if (cg.predictedPlayerState.m_iVehicleNum) {
 		centity_t *vehCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
-
-		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		velocity = (cent->currentState.clientNum == cg.clientNum ?
+				vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 	else {
-		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		velocity = (cent->currentState.clientNum == cg.clientNum ?
+				cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 }
 
@@ -569,12 +583,12 @@ void DF_SetVelocityAngles()
 void DF_SetStrafeHelper(){
     float lineWidth;
     int sensitivity = cg_strafeHelperPrecision.integer;
-    const int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
-    const vec4_t twoKeyColor = { 1, 1, 1, 0.75f };
-    const vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f };
-    const vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f };
-    const vec4_t rearColor = { 0.75f, 0,1, 0.75f };
-    const vec4_t activeColor = {0, 1, 0, 0.75f};
+    int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+    vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
+    vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
+    vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
+    vec4_t rearColor = { 0.75f, 0,1, 0.75f };
+    vec4_t activeColor = { 0, 1, 0, 1.0f };
 
     //set the default colors
     Vector4Copy(twoKeyColor, state.strafeHelper.twoKeyColor);
@@ -912,8 +926,8 @@ void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max){
         } else if (moveDir == KEY_AS || moveDir == KEY_SD) {
             memcpy(inLine->color, state.strafeHelper.rearColor, sizeof(vec4_t));
         }
-    }
-    inLine->color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
+		inLine->color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
+	}
 }
 
 /* Strafehelper Value Calculators */
@@ -1015,6 +1029,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     return wishspeed;
 }
 
+/*
 //takes a user command and returns the emulated command scale as a float
  float DF_GetCmdScale( usercmd_t cmd) {
     int		max;
@@ -1042,7 +1057,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     scale = (float)state.cgaz.currentSpeed * (float)max / ( 127.0f * total );
 
     return scale;
-}
+} */
 
 /* Strafehelper Style Distributor */
 
