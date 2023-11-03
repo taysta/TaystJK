@@ -12,8 +12,8 @@ export HIGH_RESOLUTION_CAPABLE="false"
 # For parallel make on multicore boxes...
 export NCPU=`sysctl -n hw.ncpu`
 
-export ARM64_BUILD_FOLDER="build-arm64"
-export ARM64_LIBS_FOLDER="libs-arm64"
+export ARM64_BUILD_FOLDER="macos-arm64"
+export ARM64_LIBS_FOLDER="macos-libs-arm64"
 
-export X86_64_BUILD_FOLDER="build-x86_64"
-export X86_64_LIBS_FOLDER="libs-x86_64"
+export X86_64_BUILD_FOLDER="macos-x86_64"
+export X86_64_LIBS_FOLDER="macos-libs-x86_64"
