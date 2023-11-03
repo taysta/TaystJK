@@ -541,11 +541,11 @@ void DF_SetCurrentSpeed(centity_t *cent) {
 		centity_t *vehCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
 		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 	else {
 		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 }
 
