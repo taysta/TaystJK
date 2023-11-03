@@ -10,6 +10,7 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## Maintainers
 * [tayst](https://github.com/taysta)
+* [Alereon](https://github.com/taysta)
 
 ## Upstream Contributors 
 
