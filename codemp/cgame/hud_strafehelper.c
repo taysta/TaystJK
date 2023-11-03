@@ -1795,7 +1795,6 @@ japro - Draw the movement keys
     usercmd_t cmd = { 0 };
     playerState_t* ps = NULL;
     int moveDir;
-    float xOffset, yOffset;
     float w, h, x, y;
 
     if (!cg.snap)
@@ -1845,8 +1844,8 @@ japro - Draw the movement keys
         x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f;
         y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 3) {
-        w = 8 * cg_movementKeysSize.value * cgs.widthRatioCoef;
-        h = 8 * cg_movementKeysSize.value;
+        w = 6 * cg_movementKeysSize.value * cgs.widthRatioCoef;
+        h = 6 * cg_movementKeysSize.value;
         x = 0.5f * SCREEN_WIDTH - w * 1.5f;
         y = 0.5f * SCREEN_HEIGHT - h * 1.5f;
     } else if(cg_movementKeys.integer == 4) {
@@ -1854,31 +1853,9 @@ japro - Draw the movement keys
         h = 12 * cg_movementKeysSize.value;
         x = 0.5f * SCREEN_WIDTH + cg_movementKeysX.value - w * 1.5f;
         y = 0.9f * SCREEN_HEIGHT + cg_movementKeysY.value - h * 1.5f;
-    }
-
-    xOffset = yOffset = 0;
-    if (cgs.newHud && cg_movementKeys.integer != 2) {
-        switch (cg_hudFiles.integer)
-        {
-            default:										break;
-            case 1: xOffset += 51; /*516*/					break;
-            case 2: xOffset += 26; /*492*/ yOffset -= 3;	break;
-            case 3: xOffset -= 18; /*447*/					break;
-        }
-
-        if (cgs.newHud) {
-            if (!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL ||
-                (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) {
-                yOffset += 12; //445
-            } else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
-                xOffset -= cg_hudFiles.integer != 1 ? 12 : 23; //452 : //442
-                yOffset -= 14; //420
-            }
-        }
-
-        x += xOffset*cgs.widthRatioCoef;
-        y += yOffset;
-    }
+    } else {
+		return;
+	}
 
     //draw the keys
     if (cg_movementKeys.integer == 3 || cg_movementKeys.integer == 4) { //new movement keys style
