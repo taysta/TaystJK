@@ -1026,6 +1026,7 @@ typedef struct chatBoxItem_s
 struct cosmeticItem_s
 {
 	char name[MAX_COSMETIC_LENGTH];
+	qhandle_t handle;
 	int xOffset;
 	int yOffset;
 	int zOffset;
@@ -2641,6 +2642,7 @@ void CG_DrawOldTourneyScoreboard( void );
 //
 qboolean CG_ConsoleCommand( void );
 void CG_InitConsoleCommands( void );
+cosmeticItem_t *CG_CosmeticForName(const char *name, cosmeticItem_t *cosmetics, int amount);
 
 //
 // cg_servercmds.c
