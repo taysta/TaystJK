@@ -1381,7 +1381,7 @@ static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 void CG_StylePlayer_f(void)
 {
 	if (trap->Cmd_Argc() == 1) {
-		int i = 0;
+		int i = 0, id = 0;
         dynTable_init();
         dynTable_addHeader("num", ALIGN_LEFT);
         dynTable_addHeader("Enabled", ALIGN_CENTER);
@@ -1393,7 +1393,7 @@ void CG_StylePlayer_f(void)
 			if (cgs.serverMod == SVMOD_JAPRO && !japroPlayerStyles[i])
 				continue;
 
-            dynTable_addCell(va("%d", i));
+			dynTable_addCell(va("%d", id++));
             dynTable_addCell(va("%c", cg_stylePlayer.integer & (1 << i) ? 'X' : ' '));
             dynTable_addCell(va("%s", playerStyles[i].string));
 		}

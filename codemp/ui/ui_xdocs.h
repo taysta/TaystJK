@@ -250,10 +250,10 @@ XDOCS_CVAR_DEF("cg_drawScore", "Displays your score in the lower right",
 
 XDOCS_CVAR_DEF("cg_drawScores", "Displays the team scores",
 "This does not apply to the simple HUD." NL
-SETTING("0", "Scores are hidden") NL
-SETTING("1", "Team scores are drawn in the top right") NL
-SETTING("2", "Team scores are drawn in the top right with color") NL
-SETTING("3", "Large team scores")
+	SETTING("0", "Scores are hidden") NL
+	SETTING("1", "Team scores are drawn in the top right") NL
+	SETTING("2", "Team scores are drawn in the top right with color") NL
+	SETTING("3", "Large team scores")
 )
 
 XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",
@@ -371,31 +371,23 @@ XDOCS_CVAR_DEF("cg_raceSounds", "Play sound when race is started",
 )
 
 XDOCS_CVAR_DEF("cg_duelSounds", "Enables/disables announcer/center print at the start of private duels",
-			   SETTING("0", "Do not announce the start of duel") NL
-			   SETTING("1", "Announce and center print \"BEGIN\" (baseJKA behavior)") NL
-			   SETTING("2", "Announce, but do not center print") NL
-			   SETTING("3", "Center print, but do not announce")
+	SETTING("0", "Do not announce the start of duel") NL
+	SETTING("1", "Announce and center print \"BEGIN\" (baseJKA behavior)") NL
+	SETTING("2", "Announce, but do not center print") NL
+	SETTING("3", "Center print, but do not announce")
 )
 
 XDOCS_CVAR_DEF("cg_duelMusic", "Enables special in-game music for private duels",
-			SETTING("0", "Use map music while in private duels") NL
-			SETTING("1", "Play music track for private duels (baseJKA behavior)")
+	SETTING("0", "Use map music while in private duels") NL
+	SETTING("1", "Play music track for private duels (baseJKA behavior)")
 )
 
-XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have cosmetics on non-japro servers",
-    SETTING("1", "Santa Hat") NL
-    SETTING("2", "Jack'o Lantern") NL
-    SETTING("3", "Baseball Cap") NL
-    SETTING("4", "Indiana Jones") NL
-    SETTING("5", "Propeller Hat") NL
-    SETTING("6", "Sombrero") NL
-    SETTING("7", "Top Hat") NL
-    SETTING("8", "Mask")
-
-
+XDOCS_CVAR_DEF("cg_forceCosmetics", "Forces all players to have your cosmetics on non-japro servers",
+    SETTING("0", "Disable") NL
+    SETTING("1", "Enable")
 )
+
 //Visuals
-
 XDOCS_CVAR_DEF("cg_remaps", "Show or hide serverside remaps",
 	"This requires a vid_restart." NL
 	SETTING("0", "Don't show remaps") NL
@@ -425,7 +417,6 @@ XDOCS_CVAR_DEF("cg_blood", "Show blood when shot by guns",
 	SETTING("1", "Only show blood") NL
 	SETTING("2", "Show blood and gibs")
 )
-
 
 XDOCS_CVAR_DEF("cg_thirdPersonFlagAlpha", "Custom transparency of the CTF flag",""
 )
@@ -491,15 +482,15 @@ XDOCS_CVAR_DEF("g_gametype", "Gametype that the server is currently on",
 )
 
 XDOCS_CVAR_DEF("cg_killfeed", "Draw a killfeed on the HUD",
-SETTING("0", "Disable the HUD killfeed") NL
-SETTING("1", "Draw killfeed HUD") NL
-SETTING("2", "Draw killfeed HUD + console death messages")
+	SETTING("0", "Disable the HUD killfeed") NL
+	SETTING("1", "Draw killfeed HUD") NL
+	SETTING("2", "Draw killfeed HUD + console death messages")
 )
 
 XDOCS_CVAR_DEF("cg_killfeedAlignment", "Align the killfeed",
-SETTING("0", "Align items to the right") NL
-SETTING("1", "Align items to the left") NL
-SETTING("2", "Align items to the center")
+	SETTING("0", "Align items to the right") NL
+	SETTING("1", "Align items to the left") NL
+	SETTING("2", "Align items to the center")
 )
 
 XDOCS_CVAR_DEF("cg_killfeedX", "Offset the killfeed's horizontal position from its current position",""

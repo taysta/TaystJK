@@ -13026,12 +13026,12 @@ stillDoSaber:
 		{
 			qtime_t time = { 0 };
 			trap->RealTime(&time);
-
+			//the months follow array indexing (0 = january, 11 = december)
 			if ((time.tm_mon == 10 && time.tm_mday > 21) || time.tm_mon == 11 || (time.tm_mon == 0 && time.tm_mday < 8)) { //Christmas
 				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_SANTAHAT;
 				if (!hat) hat = CG_CosmeticForName("santahat", localCosmetics.hats, localCosmetics.totalHats);
 			}
-			else if (time.tm_mon == 9 && time.tm_mday == 2) { //Halloween
+			else if (time.tm_mon == 9 && time.tm_mday == 31) { //Halloween
 				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_PUMKIN;
 				if (!hat) hat = CG_CosmeticForName("pumpkin", localCosmetics.hats, localCosmetics.totalHats);
 			}
