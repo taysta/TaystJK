@@ -14,6 +14,7 @@ SET "BuildMPRend2=ON"
 SET "BuildDiscordRichPresence=ON"
 SET "BuildTests=OFF"
 SET "INSTALL_PATH="
+SET "AdditionalCMakeOptions="
 
 :: Check if CMake is installed
 where cmake >nul 2>&1
@@ -115,10 +116,11 @@ echo [9] Build EXPERIMENTAL MP rend2 renderer - !BuildMPRend2!
 echo [A] Build with Discord Rich Presence - !BuildDiscordRichPresence!
 echo [B] Build automatic unit tests (requires Boost) - !BuildTests!
 echo [C] Set custom install path - [!INSTALL_PATH!]
-echo [D] Done
-echo [E] Quit
+echo [D] Add custom CMake options - [!AdditionalCMakeOptions!]
+echo [E] Done
+echo [F] Quit
 echo.
-set /p CONFIG_CHOICE="Select an option to toggle or configure (1-9, A-C) or D when done, E to exit: "
+set /p CONFIG_CHOICE="Select an option to toggle or configure (1-9, A-E) or F when done, F to exit: "
 
 IF "!CONFIG_CHOICE!"=="1" CALL :TOGGLE_OPTION BuildPortableVersion
 IF "!CONFIG_CHOICE!"=="2" CALL :TOGGLE_OPTION BuildMPEngine
@@ -137,8 +139,13 @@ IF /I "!CONFIG_CHOICE!"=="C" (
     if "!INSTALL_PATH!"=="" SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
     echo.
 )
-IF /I "!CONFIG_CHOICE!"=="D" GOTO CONFIG_DONE
-IF /I "!CONFIG_CHOICE!"=="E" exit /b
+IF /I "!CONFIG_CHOICE!"=="D" (
+    echo Enter additional CMake options or leave empty for none:
+    set /p AdditionalCMakeOptions="Custom CMake options: "
+    echo.
+)
+IF /I "!CONFIG_CHOICE!"=="E" GOTO CONFIG_DONE
+IF /I "!CONFIG_CHOICE!"=="F" exit /b
 GOTO CONFIG_MENU
 
 :CONFIG_DONE
@@ -156,6 +163,10 @@ SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DBuildTests=!BuildTests!"
 
 IF NOT "!INSTALL_PATH!"=="" (
     SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DCMAKE_INSTALL_PREFIX=!INSTALL_PATH!"
+)
+
+IF NOT "!AdditionalCMakeOptions!"=="" (
+    SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! !AdditionalCMakeOptions!"
 )
 
 :: Generate the build folder name using the selected Visual Studio and Architecture
