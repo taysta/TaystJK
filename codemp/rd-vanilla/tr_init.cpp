@@ -1129,27 +1129,35 @@ Doesn't print the pacifier message if there is a second arg
 void R_ScreenShotTGA_f (void) {
 	char checkname[MAX_OSPATH] = {0};
 	qboolean silent = qfalse;
+	char* arg1 = ri.Cmd_Argv(1);
+	char* filename = NULL;
 
-	if ( !strcmp( ri.Cmd_Argv(1), "levelshot" ) ) {
+	if ( !strcmp( arg1, "levelshot" ) ) {
 		R_LevelShot();
 		return;
 	}
 
-	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
+	if ( !strcmp( arg1, "silent" ) ) {
 		silent = qtrue;
-
-	if ( ri.Cmd_Argc() == 2 && !silent ) {
-		// explicit filename
-		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.tga", ri.Cmd_Argv( 1 ) );
+		if (ri.Cmd_Argc() >= 3) {
+			filename = ri.Cmd_Argv(2);
+		}
+	} else if (ri.Cmd_Argc() == 2) {
+		filename = arg1;
 	}
-	else {
-		// timestamp the file
-		R_ScreenshotFilename( checkname, sizeof( checkname ), ".tga" );
 
+	if (filename != NULL) {
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.tga", filename);
 		if ( ri.FS_FileExists( checkname ) ) {
-			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't create a file\n");
+			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't write screenshot, a screenshot with this name already exists\n" );
 			return;
- 		}
+		}
+	} else {
+		R_ScreenshotFilename( checkname, sizeof( checkname ), ".tga" );
+		if ( ri.FS_FileExists( checkname ) ) {
+			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't create a file\n" );
+			return;
+		}
 	}
 
 	R_TakeScreenshot( 0, 0, glConfig.vidWidth, glConfig.vidHeight, checkname );
@@ -1173,58 +1181,76 @@ Doesn't print the pacifier message if there is a second arg
 void R_ScreenShotPNG_f (void) {
 	char checkname[MAX_OSPATH] = {0};
 	qboolean silent = qfalse;
+	char* arg1 = ri.Cmd_Argv(1);
+	char* filename = NULL;
 
-	if ( !strcmp( ri.Cmd_Argv(1), "levelshot" ) ) {
+	if ( !strcmp( arg1, "levelshot" ) ) {
 		R_LevelShot();
 		return;
 	}
 
-	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
+	if ( !strcmp( arg1, "silent" ) ) {
 		silent = qtrue;
-
-	if ( ri.Cmd_Argc() == 2 && !silent ) {
-		// explicit filename
-		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.png", ri.Cmd_Argv( 1 ) );
+		if (ri.Cmd_Argc() >= 3) {
+			filename = ri.Cmd_Argv(2);
+		}
+	} else if (ri.Cmd_Argc() == 2) {
+		filename = arg1;
 	}
-	else {
-		// timestamp the file
-		R_ScreenshotFilename( checkname, sizeof( checkname ), ".png" );
 
+	if (filename != NULL) {
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.png", filename);
 		if ( ri.FS_FileExists( checkname ) ) {
-			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't create a file\n");
+			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't write screenshot, a screenshot with this name already exists\n" );
 			return;
- 		}
+		}
+	} else {
+		R_ScreenshotFilename( checkname, sizeof( checkname ), ".png" );
+		if ( ri.FS_FileExists( checkname ) ) {
+			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't create a file\n" );
+			return;
+		}
 	}
 
-	R_TakeScreenshotPNG( 0, 0, glConfig.vidWidth, glConfig.vidHeight, checkname );
+	R_TakeScreenshotPNG(0, 0, glConfig.vidWidth, glConfig.vidHeight, checkname);
 
-	if ( !silent )
+	if (!silent) {
 		ri.Printf( PRINT_ALL, "[skipnotify]Wrote %s\n", checkname );
+	}
 }
 
 void R_ScreenShot_f (void) {
 	char checkname[MAX_OSPATH] = {0};
 	qboolean silent = qfalse;
+	char* arg1 = ri.Cmd_Argv(1);
+	char* filename = NULL;
 
-	if ( !strcmp( ri.Cmd_Argv(1), "levelshot" ) ) {
+	if ( !strcmp( arg1, "levelshot" ) ) {
 		R_LevelShot();
 		return;
 	}
-	if ( !strcmp( ri.Cmd_Argv(1), "silent" ) )
+
+	if ( !strcmp( arg1, "silent" ) ) {
 		silent = qtrue;
-
-	if ( ri.Cmd_Argc() == 2 && !silent ) {
-		// explicit filename
-		Com_sprintf( checkname, sizeof( checkname ), "screenshots/%s.jpg", ri.Cmd_Argv( 1 ) );
+		if (ri.Cmd_Argc() >= 3) {
+			filename = ri.Cmd_Argv(2);
+		}
+	} else if (ri.Cmd_Argc() == 2) {
+		filename = arg1;
 	}
-	else {
-		// timestamp the file
-		R_ScreenshotFilename( checkname, sizeof( checkname ), ".jpg" );
 
+	if (filename != NULL) {
+		Com_sprintf(checkname, sizeof(checkname), "screenshots/%s.jpg", filename);
+		if ( ri.FS_FileExists( checkname ) ) {
+			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't write screenshot, a screenshot with this name already exists\n" );
+			return;
+		}
+	} else {
+		R_ScreenshotFilename( checkname, sizeof( checkname ), ".jpg" );
 		if ( ri.FS_FileExists( checkname ) ) {
 			ri.Printf( PRINT_ALL, "ScreenShot: Couldn't create a file\n" );
 			return;
- 		}
+		}
 	}
 
 	R_TakeScreenshotJPEG( 0, 0, glConfig.vidWidth, glConfig.vidHeight, checkname );
