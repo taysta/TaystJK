@@ -196,8 +196,8 @@ exit /b
 :TOGGLE_OPTION
 SET "optionName=%1"
 IF "!%optionName%!"=="ON" (
-    SET "%optionName%=OFF"
+    SET "!optionName!=OFF"
 ) ELSE (
-    SET "%optionName%=ON"
+    SET "!optionName!=ON"
 )
 GOTO CONFIG_MENU
