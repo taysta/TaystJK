@@ -4789,8 +4789,8 @@ static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
 	{
 		return;
 	}
-	
-	if (ci->breathPuffTime > cg.time) {
+
+	if (cent->breathPuffTime > cg.time) {
 		return;
 	}
 
@@ -4798,13 +4798,13 @@ static void CG_BreathPuffs( centity_t *cent, vec3_t angles, vec3_t origin )
 	// TODO: It'd be nice if they breath faster when they're more damaged or when running...
 	if (trap->S_GetVoiceVolume(cent->currentState.number) > 0)
 	{//make breath when talking
-		ci->breathPuffTime = cg.time + 300; // every 200 ms
-		ci->breathTime = cg.time + 150;
+		cent->breathPuffTime = cg.time + 300; // every 200 ms
+		cent->breathTime = cg.time + 150;
 	}
 	else
 	{
-		ci->breathPuffTime = cg.time + 3000; // every 3 seconds.
-		ci->breathTime = cg.time + 1500;
+		cent->breathPuffTime = cg.time + 3000; // every 3 seconds.
+		cent->breathTime = cg.time + 1500;
 	}
 
 	if (cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING)
@@ -5034,19 +5034,17 @@ static void CG_G2PlayerAngles( centity_t *cent, matrix3_t legs, vec3_t legsAngle
 			VectorCopy(cent->lerpAngles, lookAngles);
 		}
 
-		if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.eType == ET_PLAYER && !(cent->currentState.eFlags & EF_DEAD))
+		if (!(cg_stylePlayer.integer & JAPRO_STYLE_DISABLEBREATHING) && cent->currentState.eType == ET_PLAYER && !(cent->currentState.eFlags & EF_DEAD) && !cent->currentState.otherEntityNum2)
 		{
 			CG_BreathPuffs(cent, cent->lerpAngles, cent->currentState.origin);
 
 			if (cent->currentState.torsoAnim < BOTH_ATTACK1 || cent->currentState.torsoAnim > BOTH_ROLL_STAB ||
 				(cent->currentState.torsoAnim >= BOTH_SABERFAST_STANCE && cent->currentState.torsoAnim <= BOTH_SABERSTAFF_STANCE))
 			{ //not attacking
-				if ((ci->breathTime - cg.time) < 0) {
-					cent->lerpAngles[PITCH] += (float)(ci->breathTime - cg.time) * 0.0025f;
-				}
-				else {
-					cent->lerpAngles[PITCH] -= (float)(ci->breathTime - cg.time) * 0.0025f;
-				}
+				if (cent->breathTime - cg.time < 0)
+					cent->lerpAngles[PITCH] += (float)(cent->breathTime - cg.time) * 0.0025f;
+				else
+					cent->lerpAngles[PITCH] -= (float)(cent->breathTime - cg.time) * 0.0025f;
 			}
 		}
 
@@ -6191,15 +6189,48 @@ static void CG_DoSaberLight( saberInfo_t *saber, int cnum, int bnum )//rgb
 	}
 }
 
+static void CG_AddSaberIgnitionFlareEffect(const vec3_t origin, float radius, const vec3_t rgbColor, int rfx, qhandle_t shader, float scale, float whiteOutScale) {
+	refEntity_t saber;
+	memset(&saber, 0, sizeof(saber));
+	float clampedValue;
+
+	vec3_t modifiableRGB;
+	VectorCopy(rgbColor, modifiableRGB);
+	VectorScale(modifiableRGB, 255.0f, modifiableRGB);
+
+	// Add main ignition flare
+	saber.renderfx = rfx;
+	saber.radius = radius * scale;
+	VectorCopy(origin, saber.origin);
+	saber.reType = RT_SPRITE;
+	saber.customShader = shader;
+
+	for (int i = 0; i < 3; i++) {
+		clampedValue = modifiableRGB[i] < 0.0f ? 0.0f : (modifiableRGB[i] > 255.0f ? 255.0f : modifiableRGB[i]);
+		saber.shaderRGBA[i] = (byte)clampedValue; // Explicit cast to byte after clamping
+	}
+
+	saber.shaderRGBA[3] = 255;
+	trap->R_AddRefEntityToScene(&saber);
+
+	// Add white flash in the middle
+	if (whiteOutScale > 0.0f) {
+		saber.radius *= whiteOutScale;
+		for (int i = 0; i <= 3; i++) {
+			saber.shaderRGBA[i] = 255;
+		}
+		trap->R_AddRefEntityToScene(&saber);
+	}
+}
+
 void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float radius, saber_colors_t color, int rfx, qboolean doLight, int cnum, int bnum )//rgb
 {
 	vec3_t		mid, rgb;//rgb
 	qhandle_t	blade = 0, glow = 0;
 	refEntity_t saber, sbak;//rgb
-	float radiusmult;
-	float radiusRange;
-	float radiusStart;
-	float pulse;//rgb
+	float radiusmult, radiusRange, radiusStart;
+	float saberRadius = 0.0f;
+	float pulse = 0.0f;//rgb
 	int i;//rgb
 
 	if ( length < 0.5f )
@@ -6314,8 +6345,14 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 	radiusRange = radius * 0.075f;
 	radiusStart = radius-radiusRange;
 
-	saber.radius = (radiusStart + Q_flrand(-1.0f, 1.0f) * radiusRange)*radiusmult;
-	//saber.radius = (2.8f + Q_flrand(-1.0f, 1.0f) * 0.2f)*radiusmult;
+	saberRadius = (radiusStart + Q_flrand(-1.0f, 1.0f) * radiusRange)*radiusmult;
+
+	VectorScale( rgb, 255.0f, rgb );
+	if (cg_saberIgnitionFlare.integer && length <= (lengthMax * 0.25f)) {
+		CG_AddSaberIgnitionFlareEffect(origin, saberRadius, rgb, rfx, cgs.media.saberIgnitionFlare, 1.5f, 0.25f);
+	}
+
+	saber.radius = saberRadius;
 
 	VectorCopy( origin, saber.origin );
 	VectorCopy( dir, saber.axis[0] );
@@ -6534,6 +6571,14 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 
 	effectradius = ((radius * 1.6f * v1) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
 	coreradius = ((radius * 0.4f * v2) + Q_flrand(-1.0f, 1.0f) * 0.1f)*radiusmult;
+
+	//float ignite_len, ignite_radius;
+	//ignite_len = lengthMax * 0.25f;
+	//ignite_radius = effectradius * effectradius * 1.5f;
+	//ignite_radius -= blade_len;
+	float ignite_len = lengthMax * 0.25f, ignite_radius  = (effectradius * effectradius * 1.5f)-blade_len;
+	//Com_Printf("effectradius %f ignite_radius %f\n", effectradius, ignite_radius);
+
 	effectradius *= cg_shaderSaberGlow.value;
 	coreradius *= pulse + cg_shaderSaberCore.value;
 
@@ -6541,6 +6586,10 @@ void CG_DoSFXSaber( vec3_t blade_muz, vec3_t blade_tip, vec3_t trail_tip, vec3_t
 		rfx |= RF_FORCEPOST;
 
 	VectorScale( rgb, 255.0f, rgb );
+	//saber ignition flare
+	if ( cg_saberIgnitionFlare.integer && blade_len <= ignite_len ) {
+		CG_AddSaberIgnitionFlareEffect(blade_muz, ignite_radius, rgb, rfx, cgs.media.saberIgnitionFlare, 1.0f, 0.25f);
+	}
 
 	saber.renderfx = rfx;
 	if ( blade_len - ((effectradius*AngleScale) / 2) > 0 ) {
@@ -10225,7 +10274,7 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 }
 //[/Kameleon]
 
-
+extern qboolean BG_InSlopeAnim( int anim );
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
 void CG_Player( centity_t *cent ) {
 	clientInfo_t	*ci;
@@ -11168,12 +11217,31 @@ void CG_Player( centity_t *cent ) {
 			cent->currentState.torsoAnim = BOTH_ATTACK2;
 		}
 		else if (cent->currentState.weapon == WP_CONCUSSION) {
+
 			if (cent->currentState.legsAnim == BOTH_ATTACK2)
 				cent->currentState.legsAnim = BOTH_ATTACK3;
 			if (cent->currentState.torsoAnim == BOTH_ATTACK2)
 				cent->currentState.torsoAnim = BOTH_ATTACK3;
 		}
 	}
+
+	if (cg_stylePlayer.integer & JAPRO_STYLE_ALTERNATEPOSE)
+	{ //jk2 standing animation, do this only with saber off & not in a slope anim
+		if (cent->currentState.weapon == WP_SABER && !BG_InSlopeAnim(cent->currentState.legsAnim)) {
+			if (cent->currentState.saberHolstered == 2 || cent->currentState.saberInFlight) {
+				if (cent->currentState.torsoAnim == BOTH_STAND1)
+					cent->currentState.torsoAnim = BOTH_STAND9;
+				else if (cent->currentState.torsoAnim == BOTH_STAND1IDLE1)
+					cent->currentState.torsoAnim = BOTH_STAND9IDLE1;
+
+				if (cent->currentState.legsAnim == BOTH_STAND1 && cent->currentState.torsoAnim != BOTH_CONSOLE1)
+					cent->currentState.legsAnim = BOTH_STAND9;
+				else if (cent->currentState.legsAnim == BOTH_STAND1IDLE1)
+					cent->currentState.legsAnim = BOTH_STAND9IDLE1;
+			}
+		}
+	}
+
 
 	CG_G2PlayerAngles( cent, legs.axis, rootAngles );
 	CG_G2PlayerHeadAnims( cent );

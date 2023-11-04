@@ -148,6 +148,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
 #define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
 #define JAPRO_STYLE_SEASONALCOSMETICS	(1<<20)
+#define JAPRO_STYLE_ALTERNATEPOSE		(1<<21)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -380,8 +381,6 @@ typedef struct clientInfo_s {
 
 	int				medkitUsageTime;
 
-	int				breathPuffTime;
-
 	// when clientinfo is changed, the loading of models/skins/sounds
 	// can be deferred until you are dead, to prevent hitches in
 	// gameplay
@@ -464,7 +463,6 @@ typedef struct clientInfo_s {
 #endif
 
 	int			deaths; //counted locally client-side, incase the server doesn't send this information already
-	int			breathTime; //can maybe just use breathPuffTime?
 } clientInfo_t;
 
 //rww - cheap looping sound struct
@@ -618,6 +616,9 @@ typedef struct centity_s {
 	vec3_t			lastOrigin; //strafetrail
 	int				lastStrafeTrailTime;
 #endif
+	int			breathTime; //can maybe just use breathPuffTime?
+	int			breathPuffTime; //can maybe just use breathPuffTime?
+
 } centity_t;
 
 
@@ -1605,6 +1606,9 @@ typedef struct cgMedia_s {
 	qhandle_t	ShaderSaberBladeRGB;
 	qhandle_t	ShaderSaberEnd;
 	qhandle_t	ShaderSaberEndRGB;
+
+	//rp
+	qhandle_t saberIgnitionFlare;
 
 #define _SHITTYLINEFX 1
 #if _SHITTYLINEFX
