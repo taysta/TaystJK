@@ -42,18 +42,23 @@ echo.
 IF "%VS_CHOICE%"=="1" (
     SET "VS_VERSION=Visual Studio 14 2015"
     SET "VS_FOLDER=msvc14"
+    echo You have selected Visual Studio 2015 ^(msvc14^).
 ) ELSE IF "%VS_CHOICE%"=="2" (
     SET "VS_VERSION=Visual Studio 15 2017"
     SET "VS_FOLDER=msvc15"
+    echo You have selected Visual Studio 2017 ^(msvc15^).
 ) ELSE IF "%VS_CHOICE%"=="3" (
     SET "VS_VERSION=Visual Studio 16 2019"
     SET "VS_FOLDER=msvc16"
+    echo You have selected Visual Studio 2019 ^(msvc16^).
 ) ELSE (
     SET "VS_VERSION=Visual Studio 17 2022"
     SET "VS_FOLDER=msvc17"
+    echo You have selected Visual Studio 2022 ^(msvc17^).
 )
 
 :: Prompt user for architecture with default
+echo.
 echo Please select the target architecture:
 echo [1] 32-bit (x86)
 echo [2] 64-bit (x64)
@@ -65,12 +70,14 @@ if /i "%ARCH_CHOICE%"=="EXIT" (
 )
 echo.
 
-IF "%ARCH_CHOICE%"=="1" (
-    SET "ARCH=Win32"
-    SET "ARCH_FOLDER=x86"
-) ELSE (
+IF "%ARCH_CHOICE%"=="2" (
     SET "ARCH=x64"
     SET "ARCH_FOLDER=x64"
+    echo You have selected 64-bit ^(x64^).
+) ELSE (
+    SET "ARCH=Win32"
+    SET "ARCH_FOLDER=x86"
+    echo You have selected 32-bit ^(x86^).
 )
 
 :: Configuration options prompt
@@ -87,7 +94,7 @@ echo.
 REM Set default installation path for both standard and advanced users
 SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
 
-IF /I "!ADVANCED_CONFIG!"=="C" (
+IF /I "%ADVANCED_CONFIG%"=="C" (
     GOTO CONFIG_MENU
 ) ELSE (
     GOTO CONFIG_DONE
@@ -127,6 +134,7 @@ IF /I "!CONFIG_CHOICE!"=="B" CALL :TOGGLE_OPTION BuildTests
 IF /I "!CONFIG_CHOICE!"=="C" (
     echo Enter custom install path or leave empty for default:
     set /p INSTALL_PATH="Custom install path: "
+    if "!INSTALL_PATH!"=="" SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
     echo.
 )
 IF /I "!CONFIG_CHOICE!"=="D" GOTO CONFIG_DONE
@@ -146,13 +154,12 @@ SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DBuildMPRend2=!BuildMPRend2!"
 SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DBuildDiscordRichPresence=!BuildDiscordRichPresence!"
 SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DBuildTests=!BuildTests!"
 
-IF NOT "%INSTALL_PATH%"=="" (
-    SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH%"
+IF NOT "!INSTALL_PATH!"=="" (
+    SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DCMAKE_INSTALL_PREFIX=!INSTALL_PATH!"
 )
 
 :: Generate the build folder name using the selected Visual Studio and Architecture
 SET "BUILD_FOLDER=%VS_FOLDER%_%ARCH_FOLDER%"
-
 
 :: Display the selected install path
 echo Install path: !INSTALL_PATH!
@@ -182,4 +189,4 @@ IF "!%optionName%!"=="ON" (
 ) ELSE (
     SET "%optionName%=ON"
 )
-GOTO :EOF
+GOTO CONFIG_MENU
