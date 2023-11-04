@@ -26,14 +26,17 @@ if %ERRORLEVEL% NEQ 0 (
 echo Found CMake!
 
 :: Prompt user for Visual Studio version with default
-echo Please select the Visual Studio version or press Enter for the default [Visual Studio 2022 (msvc17)]:
+echo Please select the Visual Studio version:
 echo [1] Visual Studio 2015 (msvc14)
 echo [2] Visual Studio 2017 (msvc15)
 echo [3] Visual Studio 2019 (msvc16)
 echo [4] Visual Studio 2022 (msvc17)
 echo.
 
-set /p VS_CHOICE="Enter your choice (1-4) or press Enter for default: " || SET "VS_CHOICE=4"
+set /p VS_CHOICE="Enter your choice (1-4), or press Enter for the default [Visual Studio 2022 (msvc17)], or type 'EXIT' to quit: "
+if /i "%VS_CHOICE%"=="EXIT" (
+    exit /b
+)
 echo.
 
 IF "%VS_CHOICE%"=="1" (
@@ -51,12 +54,15 @@ IF "%VS_CHOICE%"=="1" (
 )
 
 :: Prompt user for architecture with default
-echo Please select the target architecture or press Enter for the default [32-bit (x86)]:
+echo Please select the target architecture:
 echo [1] 32-bit (x86)
 echo [2] 64-bit (x64)
 echo.
 
-set /p ARCH_CHOICE="Enter your choice (1-2) or press Enter for default: " || SET "ARCH_CHOICE=1"
+set /p ARCH_CHOICE="Enter your choice (1-2), or press Enter for the default [32-bit (x86)], or type 'EXIT' to quit: "
+if /i "%ARCH_CHOICE%"=="EXIT" (
+    exit /b
+)
 echo.
 
 IF "%ARCH_CHOICE%"=="1" (
@@ -70,15 +76,18 @@ IF "%ARCH_CHOICE%"=="1" (
 :: Configuration options prompt
 :CONFIG_OPTIONS
 echo.
-echo Configuration will proceed with default build options.
-echo Advanced users can enter 'ADVANCED' to configure options.
-set /p ADVANCED_CONFIG="Enter ADVANCED to configure cmake build options or press Enter to continue: "
+echo Configuration will proceed with default cmake build options.
+echo Advanced users can enter 'C' to configure options.
+set /p ADVANCED_CONFIG="Press Enter to continue with the default options, or type 'C' to configure cmake build options, or type 'EXIT' to quit: "
+if /i "%ADVANCED_CONFIG%"=="EXIT" (
+    exit /b
+)
 echo.
 
 REM Set default installation path for both standard and advanced users
 SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
 
-IF /I "!ADVANCED_CONFIG!"=="ADVANCED" (
+IF /I "!ADVANCED_CONFIG!"=="C" (
     GOTO CONFIG_MENU
 ) ELSE (
     GOTO CONFIG_DONE
@@ -100,7 +109,7 @@ echo [A] Build with Discord Rich Presence - !BuildDiscordRichPresence!
 echo [B] Build automatic unit tests (requires Boost) - !BuildTests!
 echo [C] Set custom install path - [!INSTALL_PATH!]
 echo [D] Done
-echo [E] Exit without changes
+echo [E] Quit
 echo.
 set /p CONFIG_CHOICE="Select an option to toggle or configure (1-9, A-C) or D when done, E to exit: "
 
@@ -141,18 +150,13 @@ IF NOT "%INSTALL_PATH%"=="" (
     SET "CMAKE_OPTIONS=!CMAKE_OPTIONS! -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH%"
 )
 
-:: Display the selected install path
-echo Selected install path: !INSTALL_PATH!
-echo.
-
 :: Generate the build folder name using the selected Visual Studio and Architecture
 SET "BUILD_FOLDER=%VS_FOLDER%_%ARCH_FOLDER%"
 
-:: If advanced configuration is not selected, continue with the default install path
-IF "%ADVANCED_CONFIG%" NEQ "ADVANCED" (
-    echo Continuing with default installation path.
-    echo.
-)
+
+:: Display the selected install path
+echo Install path: !INSTALL_PATH!
+echo.
 
 :: Before configuring a new build, clear previous CMake configuration files if they exist.
 IF EXIST "%BUILD_FOLDER%\CMakeCache.txt" DEL /F /Q "%BUILD_FOLDER%\CMakeCache.txt"
