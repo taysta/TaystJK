@@ -188,6 +188,7 @@ cmake -G "%VS_VERSION%" -A %ARCH% !CMAKE_OPTIONS! -B "%BUILD_FOLDER%" -S ".." ||
     exit /b
 )
 
+echo.
 echo CMake project configured successfully in folder "%BUILD_FOLDER%".
 pause
 exit /b
