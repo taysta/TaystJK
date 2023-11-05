@@ -93,7 +93,7 @@ if /i "%ADVANCED_CONFIG%"=="EXIT" (
 echo.
 
 REM Set default installation path for both standard and advanced users
-SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
+SET "INSTALL_PATH=install-%VS_FOLDER%_%ARCH_FOLDER%"
 
 IF /I "%ADVANCED_CONFIG%"=="C" (
     GOTO CONFIG_MENU
@@ -136,7 +136,7 @@ IF /I "!CONFIG_CHOICE!"=="B" CALL :TOGGLE_OPTION BuildTests
 IF /I "!CONFIG_CHOICE!"=="C" (
     echo Enter custom install path or leave empty for default:
     set /p INSTALL_PATH="Custom install path: "
-    if "!INSTALL_PATH!"=="" SET "INSTALL_PATH=..\install-%VS_FOLDER%_%ARCH_FOLDER%"
+    if "!INSTALL_PATH!"=="" SET "INSTALL_PATH=install-%VS_FOLDER%_%ARCH_FOLDER%"
     echo.
 )
 IF /I "!CONFIG_CHOICE!"=="D" (
