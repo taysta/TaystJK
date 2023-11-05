@@ -73,6 +73,9 @@ void HUD_DrawObituary(void) {
     obituary_t *p;
     qhandle_t deathIcon;
 
+	if (!cg.snap)
+		return;
+
     HUD_PurgeObituary();
 
     // Set up the killfeed
@@ -113,15 +116,18 @@ void HUD_DrawObituary(void) {
             Vector4Copy(neutralColor, victimColor);
             Vector4Copy(neutralColor, killerColor);
             // Get the killer's team color
-            if (cgs.clientinfo[p->killer].team == TEAM_BLUE) {
-                Vector4Copy(blueTeam, killerColor);
-            } else if (cgs.clientinfo[p->killer].team == TEAM_RED) {
-                Vector4Copy(redTeam, killerColor);
-            }
-            // Check if it's the local player
-            if (p->killer == cg.snap->ps.clientNum) {
-                Vector4Copy(playerColor, killerColor);
-            }
+			if(p->killer != ENTITYNUM_WORLD) {
+				if (cgs.clientinfo[p->killer].team == TEAM_BLUE) {
+					Vector4Copy(blueTeam, killerColor);
+				} else if (cgs.clientinfo[p->killer].team == TEAM_RED) {
+					Vector4Copy(redTeam, killerColor);
+				}
+				// Check if it's the local player
+				if (p->killer == cg.snap->ps.clientNum) {
+					Vector4Copy(playerColor, killerColor);
+				}
+			}
+
             // Get the victim's team color
             if (cgs.clientinfo[p->victim].team == TEAM_BLUE) {
                 Vector4Copy(blueTeam, victimColor);
@@ -155,7 +161,7 @@ void HUD_DrawObituary(void) {
         victimColor[3] = fminf(0.25f * color[3], victimColor[3]);
         wepColor[3] = color[3];
         //Get the sizes of everything
-        if(((p->killer && p->victim) && (p->killer == p->victim)) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
+        if((p->killer == p->victim) || (p->killer == ENTITYNUM_WORLD)) { //is it a suicide
             suicide = qtrue;
             victimTextWidth = CG_Text_Width(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);
             victimTextHeight = (float)CG_Text_Height(cgs.clientinfo[p->victim].name, textScale, FONT_MEDIUM);
