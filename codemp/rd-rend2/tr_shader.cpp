@@ -5044,7 +5044,7 @@ static void ScanAndLoadShaderFiles( void )
 	}
 	Com_Printf("Total shader override files: %d\n", numOShaderFiles);
 	// build single large buffer
-	s_shaderText = (char *)ri.Hunk_Alloc( sum + (numShaderFiles+numOShaderFiles)*2, h_low );
+	s_shaderText = (char *)ri.Hunk_Alloc( sum + numShaderFiles + numOShaderFiles + 1, h_low );
 	s_shaderText[ 0 ] = '\0';
 	textEnd = s_shaderText;
 
