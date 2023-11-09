@@ -954,6 +954,8 @@ void Con_DrawSolidConsole( float frac ) {
 			(lines-(con.charHeight*2+con.charHeight/2)) + padding, JK_VERSION[x] );
 	}
 
+	// draw the input prompt, user text, and cursor if desired
+	Con_DrawInput ();
 
 	// Draw time and date
 	time(&rawtime);
@@ -967,9 +969,6 @@ void Con_DrawSolidConsole( float frac ) {
 	for (x = 0; x<i; x++) {
 		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2) + padding, ts[x]);
 	}
-
-	// draw the input prompt, user text, and cursor if desired
-	Con_DrawInput ();
 
 	// draw the text
 	con.vislines = lines;
