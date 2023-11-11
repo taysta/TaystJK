@@ -614,9 +614,9 @@ typedef struct centity_s {
 	int				vChatTime;
 	vec3_t			lastOrigin; //strafetrail
 	int				lastStrafeTrailTime;
-#endif
 	int			breathTime; //can maybe just use breathPuffTime?
 	int			breathPuffTime; //can maybe just use breathPuffTime?
+	qboolean doLerp;
 
 } centity_t;
 

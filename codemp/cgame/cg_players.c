@@ -2333,14 +2333,6 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 			}
 		}
 	}
-    ci->useAlternateStandAnim = qfalse;
-    newInfo.useAlternateStandAnim = qfalse;
-
-    if (!Q_stricmpn(v, "kyle", 4) || !Q_stricmpn(v, "desann", 6)) // || (!Q_stricmpn(v, "tavion", 6) && Q_stricmpn(v, "tavion_new", 10)))
-    {
-        ci->useAlternateStandAnim = qtrue;
-        newInfo.useAlternateStandAnim = qtrue;
-    }
 
 	//Now that the model and skin are validated, we can load custom offsets for cosmetics if needed.
 	if ((newInfo.hat && newInfo.hat != ci->hat) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
