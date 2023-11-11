@@ -451,7 +451,7 @@ static void CG_DrawZoomMask( void )
 			cx = (cgs.screenWidth / 2) + sin( (fi+90.0f)/57.296f ) * 190;
 			cy = (cgs.screenHeight / 2) + cos( (fi+90.0f)/57.296f ) * 190;
 
-			CG_DrawRotatePic2( xOffset+cx*cgs.widthRatioCoef, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick );
+			CG_DrawRotatePic2( xOffset+cx, cy, 12, 24, 90 - fi, cgs.media.disruptorInsertTick );
 		}
 
 		if ( cg.predictedPlayerState.weaponstate == WEAPON_CHARGING_ALT )
@@ -466,7 +466,7 @@ static void CG_DrawZoomMask( void )
 				max = 1.0f;
 			}
 
-			trap->R_DrawStretchPic(xOffset+257*cgs.widthRatioCoef, 435, (134*max)*cgs.widthRatioCoef, 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
+			trap->R_DrawStretchPic(xOffset+257, 435, (134*max), 34, 0, 0, max, 1, cgs.media.disruptorChargeShader);
 		}
 //		trap->R_SetColor( colorTable[CT_WHITE] );
 //		CG_DrawPic( 0, 0, 640, 480, cgs.media.disruptorMask );
