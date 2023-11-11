@@ -78,6 +78,8 @@ cvar_t *com_affinity;
 cvar_t *com_priority;
 #endif
 
+cvar_t	*com_timestamps;
+
 // com_speeds times
 int		time_game;
 int		time_frontend;		// renderer frontend time
@@ -139,9 +141,10 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 
 	std::recursive_mutex printfLock;
 
-	static qboolean opening_qconsole = qfalse;
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
+	static qboolean opening_qconsole = qfalse;
+	const char *p;
 
 	va_start (argptr,fmt);
 	Q_vsnprintf (msg, sizeof(msg), fmt, argptr);
@@ -163,40 +166,67 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 	CL_ConsolePrint( msg );
 #endif
 
-	// echo to dedicated console and early console
-	Sys_Print( msg );
+	p = msg;
+	while (*p) {
+		static qboolean	newLine = qtrue;
+		char			line[MAXPRINTMSG];
+		size_t			lineLen;
 
-	// logfile
-	if ( com_logfile && com_logfile->integer ) {
-    // TTimo: only open the qconsole.log if the filesystem is in an initialized state
-    //   also, avoid recursing in the qconsole.log opening (i.e. if fs_debug is on)
-		if ( !logfile && FS_Initialized() && !opening_qconsole ) {
-			struct tm *newtime;
-			time_t aclock;
+		if (newLine && com_timestamps && com_timestamps->integer) {
+			time_t t = time( NULL );
+			struct tm *tms = localtime( &t );
+			Com_sprintf(line, sizeof(line), "%04i-%02i-%02i %02i:%02i:%02i ",
+				1900 + tms->tm_year, 1 + tms->tm_mon, tms->tm_mday, tms->tm_hour, tms->tm_min, tms->tm_sec);
+			lineLen = strlen(line);
+			newLine = qfalse;
+		} else {
+			if (const char *s = strchr(p, '\n')) {
+				lineLen = (size_t)(s - p + 1);
+				newLine = qtrue;
+			} else {
+				lineLen = strlen(p);
+			}
 
-			opening_qconsole = qtrue;
+			Com_Memcpy(line, p, lineLen);
+			line[lineLen] = '\0';
+			p += lineLen;
+		}
 
-			time( &aclock );
-			newtime = localtime( &aclock );
+		// echo to dedicated console and early console
+		Sys_Print( line );
 
-			logfile = FS_FOpenFileWrite( "qconsole.log" );
+		// logfile
+		if ( com_logfile && com_logfile->integer ) {
+		// TTimo: only open the qconsole.log if the filesystem is in an initialized state
+		//   also, avoid recursing in the qconsole.log opening (i.e. if fs_debug is on)
+			if ( !logfile && FS_Initialized() && !opening_qconsole ) {
+				struct tm *newtime;
+				time_t aclock;
 
-			if ( logfile ) {
-				Com_Printf( "logfile opened on %s\n", asctime( newtime ) );
-				if ( com_logfile->integer > 1 ) {
-					// force it to not buffer so we get valid
-					// data even if we are crashing
-					FS_ForceFlush(logfile);
+				opening_qconsole = qtrue;
+
+				time( &aclock );
+				newtime = localtime( &aclock );
+
+				logfile = FS_FOpenFileWrite( "qconsole.log" );
+
+				if ( logfile ) {
+					Com_Printf( "logfile opened on %s\n", asctime( newtime ) );
+					if ( com_logfile->integer > 1 ) {
+						// force it to not buffer so we get valid
+						// data even if we are crashing
+						FS_ForceFlush(logfile);
+					}
+				}
+				else {
+					Com_Printf( "Opening qconsole.log failed!\n" );
+					Cvar_SetValue( "logfile", 0 );
 				}
 			}
-			else {
-				Com_Printf( "Opening qconsole.log failed!\n" );
-				Cvar_SetValue( "logfile", 0 );
+			opening_qconsole = qfalse;
+			if ( logfile && FS_Initialized()) {
+				FS_Write(line, strlen(line), logfile);
 			}
-		}
-		opening_qconsole = qfalse;
-		if ( logfile && FS_Initialized()) {
-			FS_Write(msg, strlen(msg), logfile);
 		}
 	}
 
@@ -1465,6 +1495,8 @@ void Com_Init( char *commandLine ) {
 
 		com_bootlogo = Cvar_Get( "com_bootlogo", "0", CVAR_ARCHIVE_ND, "Show intro movies" );
 
+		com_timestamps = Cvar_Get( "com_timestamps", "1", CVAR_ARCHIVE_ND, "Show timestamps in terminal and qconsole.log" );
+
 		com_version = Cvar_Get ("version", JK_VERSION " " PLATFORM_STRING " " SOURCE_DATE, CVAR_ROM | CVAR_SERVERINFO );
 
 		SE_Init();
@@ -1967,7 +1999,7 @@ static void FindMatches( const char *s ) {
 		perfectMatch = qtrue;
 		return;
 	}
-	
+
 	if (strlen(shortestMatch) > strlen(s))
 		perfectMatch = qfalse;
 

@@ -663,7 +663,7 @@ void Con_Init (void) {
 	con_height = Cvar_Get ("con_height", "0.5", CVAR_ARCHIVE_ND, "Adjust the height of the console");
 
 	con_scale = Cvar_Get ("con_scale", "1", CVAR_ARCHIVE_ND, "Scale console font");
-	con_timestamps = Cvar_Get ("con_timestamps", "0", CVAR_ARCHIVE_ND, "Display timestamps infront of console lines");
+	con_timestamps = Cvar_Get ("con_timestamps", "2", CVAR_ARCHIVE_ND, "Display timestamps infront of console lines");
 
 	Field_Clear( &g_consoleField );
 	g_consoleField.widthInChars = DEFAULT_CONSOLE_WIDTH;
@@ -929,7 +929,8 @@ void Con_DrawNotify (void)
 		if (time > con_notifytime->value*1000)
 			continue;
 		text = con.text + (i % con.totallines)*con.rowwidth;
-		if (!con_timestamps->integer)
+
+		if (con_timestamps->integer != 1)
 			text += CON_TIMESTAMP_LEN;
 
 		if (cl.snap.ps.pm_type != PM_INTERMISSION && Key_GetCatcher( ) & (KEYCATCH_UI | KEYCATCH_CGAME) ) {
