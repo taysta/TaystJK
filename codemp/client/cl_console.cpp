@@ -906,7 +906,7 @@ void Con_DrawNotify (void)
 	currentColor = 7;
 	re->SetColor( g_color_table[currentColor] );
 
-	static int iFontIndex = re->RegisterFont("ocr_a");
+	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
 	int iPixelHeightToAdvance = 0;
 	if (re->Language_IsAsian())
@@ -1121,7 +1121,7 @@ void Con_DrawSolidConsole( float frac ) {
 	currentColor = 7;
 	re->SetColor( g_color_table[currentColor] );
 
-	static int iFontIndex = re->RegisterFont("ocr_a");
+	int iFontIndex = cls.consoleFont;
 	float fFontScale = 1.0f;
 	int iPixelHeightToAdvance = con.charHeight;
 	if (re->Language_IsAsian())

@@ -356,6 +356,7 @@ typedef struct clientStatic_s {
 	qhandle_t	charSetShader;
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
+	int			consoleFont;
 
 	// Cursor
 	qboolean	cursorActive;
