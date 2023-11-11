@@ -147,9 +147,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
 #define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
 #define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
-#define JAPRO_STYLE_ENABLE_ALTERNATEPOSE	(1<<20)
-#define JAPRO_STYLE_FORCE_ALTERNATEPOSE		(1<<21)
-#define JAPRO_STYLE_SEASONALCOSMETICS       (1<<22)
+#define JAPRO_STYLE_SEASONALCOSMETICS	(1<<20)
+#define JAPRO_STYLE_ALTERNATEPOSE		(1<<21)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -462,7 +461,6 @@ typedef struct clientInfo_s {
 #endif
 
 	int			deaths; //counted locally client-side, incase the server doesn't send this information already
-	qboolean	useAlternateStandAnim;
 } clientInfo_t;
 
 //rww - cheap looping sound struct
@@ -616,11 +614,10 @@ typedef struct centity_s {
 	int				vChatTime;
 	vec3_t			lastOrigin; //strafetrail
 	int				lastStrafeTrailTime;
+#endif
+	int			breathTime; //can maybe just use breathPuffTime?
+	int			breathPuffTime; //can maybe just use breathPuffTime?
 
-	int				breathPuffTime;
-	int				breathTime; //can maybe just use breathPuffTime from ci?
-
-	qboolean		doLerp; // for entity position smoothing
 } centity_t;
 
 
@@ -1029,6 +1026,7 @@ typedef struct chatBoxItem_s
 struct cosmeticItem_s
 {
 	char name[MAX_COSMETIC_LENGTH];
+	qhandle_t handle;
 	int xOffset;
 	int yOffset;
 	int zOffset;
@@ -2661,6 +2659,7 @@ void CG_DrawOldTourneyScoreboard( void );
 //
 qboolean CG_ConsoleCommand( void );
 void CG_InitConsoleCommands( void );
+cosmeticItem_t *CG_CosmeticForName(const char *name, cosmeticItem_t *cosmetics, int amount);
 
 //
 // cg_servercmds.c

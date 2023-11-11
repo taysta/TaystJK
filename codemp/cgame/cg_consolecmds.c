@@ -1567,10 +1567,10 @@ static qboolean japroPlayerStyles[] = {
 	qtrue,//Color respawn bubbles by team
 	qtrue,//Hide player cosmetics
 	qtrue,//Disable breathing effects
-	qtrue,//Old JA+ style grapple line
-	qtrue,//Disable alternate standing pose
-	qtrue,//Force alternate standing pose on all characters
-	qtrue//Seasonal cosmetics
+	qfalse,//Old JA+ style grapple line
+    qtrue,//New FFA respawn bubble
+	qtrue,//Seasonal cosmetics
+	qtrue//Alternate Standing Animation
 };
 
 //JA+ Specific = amaltdim ?
@@ -1595,9 +1595,9 @@ static qboolean japlusPlayerStyles[] = {
 	qfalse,//Hide player cosmetics
 	qtrue,//Disable breathing effects
 	qtrue,//Old JA+ style grapple line
-	qtrue,//Disable alternate standing pose
-	qtrue,//Force alternate standing pose on all characters
-	qtrue//Seasonal cosmetics
+    qtrue,//New FFA respawn bubble
+	qtrue,//Seasonal cosmetics
+	qtrue//Alternate Standing Animation
 };
 
 static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
@@ -1620,16 +1620,16 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Hide player cosmetics" },//16
 	{ "Disable breathing effects" },//17
 	{ "Old JA+ style grapple line" },//18
-	{ "Enable alternate stand pose on some characters" },//19
-	{ "Force alternate stand pose on all characters" },//20
-	{ "Seasonal Cosmetics"},//21
+    { "New FFA respawn bubble" }, //19
+	{ "Seasonal Cosmetics" }, //20
+	{ "Alternate Standing Animation" } //21
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
 void CG_StylePlayer_f(void)
 {
 	if (trap->Cmd_Argc() == 1) {
-		int i = 0;
+		int i = 0, id = 0;
         dynTable_init();
         dynTable_addHeader("num", ALIGN_LEFT);
         dynTable_addHeader("Enabled", ALIGN_CENTER);
@@ -1641,7 +1641,7 @@ void CG_StylePlayer_f(void)
 			if (cgs.serverMod == SVMOD_JAPRO && !japroPlayerStyles[i])
 				continue;
 
-            dynTable_addCell(va("%d", i));
+			dynTable_addCell(va("%d", id++));
             dynTable_addCell(va("%c", cg_stylePlayer.integer & (1 << i) ? 'X' : ' '));
             dynTable_addCell(va("%s", playerStyles[i].string));
 		}
@@ -1941,6 +1941,25 @@ static void CG_Cosmetics_JaPRO(void)
             Com_Printf("%s %s^7\n", cosmetics[index].string, ((cp_cosmetics.integer & (1 << index))
 			? "^2Enabled" : "^1Disabled"));
 	}
+}
+
+cosmeticItem_t *CG_CosmeticForName(const char *name, cosmeticItem_t *cosmetics, int amount)
+{
+	int i ;
+
+	if (!name || !name[0])
+	{
+		return NULL;
+	}
+
+	for (i = 0; i < amount; i++)
+	{
+		if (!Q_stricmp(cosmetics[i].name, name))
+		{
+			return &cosmetics[i];
+		}
+	}
+	return NULL;
 }
 
 static void CG_Cosmetics(void)

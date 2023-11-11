@@ -951,21 +951,13 @@ void Con_DrawSolidConsole( float frac ) {
 	re->SetColor( console_color );
 	re->DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader );
 
-#if 0
 	i = strlen( JK_VERSION );
 
 	for (x=0 ; x<i ; x++) {
 		SCR_DrawSmallChar( cls.glconfig.vidWidth - ( i - x + 1 ) * con.charWidth,
 			(lines-(con.charHeight*2+con.charHeight/2)) + padding, JK_VERSION[x] );
 	}
-#else
-	i = strlen(version);
 
-	for (x = 0; x < i; x++) {
-		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x + 1) * con.charWidth,
-			(lines - (con.charHeight * 2 + con.charHeight / 2)) + padding, version[x]);
-	}
-#endif
 
 	// Draw time and date
 	time(&rawtime);
@@ -979,6 +971,9 @@ void Con_DrawSolidConsole( float frac ) {
 	for (x = 0; x<i; x++) {
 		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2) + padding, ts[x]);
 	}
+
+	// draw the input prompt, user text, and cursor if desired
+	Con_DrawInput ();
 
 	// draw the text
 	con.vislines = lines;
@@ -1066,9 +1061,6 @@ void Con_DrawSolidConsole( float frac ) {
 			}
 		}
 	}
-
-	// draw the input prompt, user text, and cursor if desired
-	Con_DrawInput ();
 
 	re->SetColor( NULL );
 }

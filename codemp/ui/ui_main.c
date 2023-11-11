@@ -12841,8 +12841,6 @@ static void UI_CvarHelp(const char *cvarName, qboolean enter, char *helpBuffer, 
 		Com_sprintf(helpBuffer, helpBufferSize, "%s", xDocs->descriptionShort);
 	if (VALIDSTRING(xDocs->execText) && strlen(xDocs->execText)) {
 		trap->Cmd_ExecuteText(EXEC_NOW, va("%s\n", xDocs->execText));
-		//trap->Cmd_ExecuteText(EXEC_APPEND, xDocs->execText);
-		//trap->Cmd_ExecuteText(EXEC_APPEND, "\n");
 	}
 }
 

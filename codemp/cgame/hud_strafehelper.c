@@ -250,9 +250,19 @@ void DF_DrawStrafeHUD(centity_t	*cent)
         DF_DrawMovementKeys(cent);
     }
 
-    if ((cg_speedometer.integer & SPEEDOMETER_ENABLE)) {
+    if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)) {
         speedometerXPos = cg_speedometerX.value;
         jumpsXPos = cg_speedometerJumpsX.value;
+		//Offset the speedometer
+		if (cgs.newHud) {
+			switch (cg_hudFiles.integer)
+			{
+				case 0: speedometerXPos -= 8; break;
+				case 1: speedometerXPos -= 56; break;
+				case 2: speedometerXPos -= 42; break;
+				default: break;
+			}
+		}
         DF_DrawSpeedometer();
 
         if (((cg_speedometer.integer & SPEEDOMETER_ACCELMETER) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)))
@@ -308,7 +318,9 @@ void DF_DrawStrafeHUD(centity_t	*cent)
         else if (lineWidth > 5)
             lineWidth = 5;
 
-        DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f, (0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f, lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
+        DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f,
+					(0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f,
+					lineWidth, hcolor, hcolor[3], 0); //640x480, 320x240
     }
 }
 
@@ -537,15 +549,17 @@ void DF_SetFrameTime(){
 
 //sets the current speed for the cgaz struct
 void DF_SetCurrentSpeed(centity_t *cent) {
+	vec_t * velocity;
 	if (cg.predictedPlayerState.m_iVehicleNum) {
 		centity_t *vehCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
-
-		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		velocity = (cent->currentState.clientNum == cg.clientNum ?
+				vehCent->playerState->velocity : vehCent->currentState.pos.trDelta);
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 	else {
-		const vec_t * const velocity = (cent->currentState.clientNum == cg.clientNum ? cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
-		cg.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
+		velocity = (cent->currentState.clientNum == cg.clientNum ?
+				cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
+		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
 }
 
@@ -569,12 +583,12 @@ void DF_SetVelocityAngles()
 void DF_SetStrafeHelper(){
     float lineWidth;
     int sensitivity = cg_strafeHelperPrecision.integer;
-    const int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
-    const vec4_t twoKeyColor = { 1, 1, 1, 0.75f };
-    const vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f };
-    const vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f };
-    const vec4_t rearColor = { 0.75f, 0,1, 0.75f };
-    const vec4_t activeColor = {0, 1, 0, 0.75f};
+    int LINE_HEIGHT = (int)((float)SCREEN_HEIGHT * 0.5f - 10.0f); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+    vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
+    vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
+    vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
+    vec4_t rearColor = { 0.75f, 0,1, 0.75f };
+    vec4_t activeColor = { 0, 1, 0, 1.0f };
 
     //set the default colors
     Vector4Copy(twoKeyColor, state.strafeHelper.twoKeyColor);
@@ -912,8 +926,8 @@ void DF_SetLineColor(dfsline* inLine, int moveDir, qboolean max){
         } else if (moveDir == KEY_AS || moveDir == KEY_SD) {
             memcpy(inLine->color, state.strafeHelper.rearColor, sizeof(vec4_t));
         }
-    }
-    inLine->color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
+		inLine->color[3] = cg_strafeHelperInactiveAlpha.value / 255.0f;
+	}
 }
 
 /* Strafehelper Value Calculators */
@@ -1015,6 +1029,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     return wishspeed;
 }
 
+/*
 //takes a user command and returns the emulated command scale as a float
  float DF_GetCmdScale( usercmd_t cmd) {
     int		max;
@@ -1042,7 +1057,7 @@ float CGAZ_Opt(qboolean onGround, float accelerate, float currentSpeed, float wi
     scale = (float)state.cgaz.currentSpeed * (float)max / ( 127.0f * total );
 
     return scale;
-}
+} */
 
 /* Strafehelper Style Distributor */
 
@@ -1780,7 +1795,6 @@ japro - Draw the movement keys
     usercmd_t cmd = { 0 };
     playerState_t* ps = NULL;
     int moveDir;
-    float xOffset, yOffset;
     float w, h, x, y;
 
     if (!cg.snap)
@@ -1830,8 +1844,8 @@ japro - Draw the movement keys
         x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f;
         y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value- h * 1.0f;
     } else if(cg_movementKeys.integer == 3) {
-        w = 8 * cg_movementKeysSize.value * cgs.widthRatioCoef;
-        h = 8 * cg_movementKeysSize.value;
+        w = 6 * cg_movementKeysSize.value * cgs.widthRatioCoef;
+        h = 6 * cg_movementKeysSize.value;
         x = 0.5f * SCREEN_WIDTH - w * 1.5f;
         y = 0.5f * SCREEN_HEIGHT - h * 1.5f;
     } else if(cg_movementKeys.integer == 4) {
@@ -1839,31 +1853,9 @@ japro - Draw the movement keys
         h = 12 * cg_movementKeysSize.value;
         x = 0.5f * SCREEN_WIDTH + cg_movementKeysX.value - w * 1.5f;
         y = 0.9f * SCREEN_HEIGHT + cg_movementKeysY.value - h * 1.5f;
-    }
-
-    xOffset = yOffset = 0;
-    if (cgs.newHud && cg_movementKeys.integer != 2) {
-        switch (cg_hudFiles.integer)
-        {
-            default:										break;
-            case 1: xOffset += 51; /*516*/					break;
-            case 2: xOffset += 26; /*492*/ yOffset -= 3;	break;
-            case 3: xOffset -= 18; /*447*/					break;
-        }
-
-        if (cgs.newHud) {
-            if (!cg_drawScore.integer || cgs.gametype == GT_POWERDUEL ||
-                (cgs.serverMod == SVMOD_JAPRO && ps->stats[STAT_RACEMODE])) {
-                yOffset += 12; //445
-            } else if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
-                xOffset -= cg_hudFiles.integer != 1 ? 12 : 23; //452 : //442
-                yOffset -= 14; //420
-            }
-        }
-
-        x += xOffset*cgs.widthRatioCoef;
-        y += yOffset;
-    }
+    } else {
+		return;
+	}
 
     //draw the keys
     if (cg_movementKeys.integer == 3 || cg_movementKeys.integer == 4) { //new movement keys style
