@@ -46,7 +46,7 @@ extern "C" __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 Sys_Basename
 ==============
 */
-const char *Sys_Basename( char *path )
+const char *Sys_Basename( const char *path )
 {
 	static char base[ MAX_OSPATH ] = { 0 };
 	int length;
@@ -76,7 +76,7 @@ const char *Sys_Basename( char *path )
 Sys_Dirname
 ==============
 */
-const char *Sys_Dirname( char *path )
+const char *Sys_Dirname( const char *path )
 {
 	static char dir[ MAX_OSPATH ] = { 0 };
 	int length;
