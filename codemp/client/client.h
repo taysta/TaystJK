@@ -239,6 +239,10 @@ typedef struct clientConnection_s {
 	int			downloadSize;	// how many bytes we got
 	char		downloadList[MAX_INFO_STRING]; // list of paks we need to download
 	qboolean	downloadRestart;	// if true, we need to do another FS_Restart because we downloaded a pak
+	qboolean	downloadMenuActive;
+	qboolean	downloadWaitingOnUser;
+	qboolean	downloadFinished;
+	int			downloadTime;
 
 	// demo information
 	char		demoName[MAX_STRING_CHARS];
@@ -352,6 +356,17 @@ typedef struct clientStatic_s {
 	qhandle_t	charSetShader;
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
+
+	// Cursor
+	qboolean	cursorActive;
+	qhandle_t	cursorShader;
+	int			cursorX;
+	int			cursorY;
+
+	// Engine menu
+	int			menuFont;
+
+	//EternalJK
 	float		widthRatioCoef;
 
 	struct { //chatlogging
@@ -524,6 +539,10 @@ qboolean CL_CheckPaused(void);
 extern int		cl_nameModifiedTime;
 extern int		cl_unfocusedTime;
 extern qboolean cl_afkName;
+
+void CL_DrawEngineMenus( void );
+void CL_UpdateCursorPosition( int dx, int dy );
+void CL_CursorButton( int key );
 
 //
 // cl_input
