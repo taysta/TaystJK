@@ -3680,6 +3680,7 @@ NOTE TTimo: the reordering that happens here is not reflected in the cvars (\cva
   this can lead to misleading situations, see https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=540
 ================
 */
+static void FS_Restart_f(void);
 static void FS_ReorderPurePaks()
 {
 	searchpath_t *s;
@@ -4296,7 +4297,6 @@ Called only at inital startup, not when the filesystem
 is resetting due to a game change
 ================
 */
-static void FS_Restart_f(void);
 void FS_InitFilesystem( void ) {
 	// allow command line parms to override our defaults
 	// we have to specially handle this, because normal command
