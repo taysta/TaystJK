@@ -107,6 +107,10 @@ if(MakeApplicationBundles AND BuildMPEngine)
 		DESTINATION "${JKAInstallDir}/${MPEngine}.app/Contents/MacOS/EternalJK"
 		COMPONENT ${JKAMPCoreComponent})
 elseif(WIN32)
+	install(TARGETS ${MPUI}
+		RUNTIME
+		DESTINATION "${JKAInstallDir}/EternalJK"
+		COMPONENT ${JKAMPCoreComponent})
 else()
 	install(TARGETS ${MPUI}
 		LIBRARY

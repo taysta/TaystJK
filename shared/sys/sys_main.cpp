@@ -40,6 +40,7 @@ cvar_t *com_unfocused;
 cvar_t *com_maxfps;
 cvar_t *com_maxfpsMinimized;
 cvar_t *com_maxfpsUnfocused;
+cvar_t *com_unpackLibraries;
 
 /*
 =================
@@ -172,6 +173,8 @@ void Sys_Init( void ) {
 #endif
 	com_maxfpsUnfocused = Cvar_Get( "com_maxfpsUnfocused", "0", CVAR_ARCHIVE_ND );
 	com_maxfpsMinimized = Cvar_Get( "com_maxfpsMinimized", "50", CVAR_ARCHIVE_ND );
+
+	com_unpackLibraries = Cvar_Get( "com_unpackLibraries", "0", CVAR_INIT|CVAR_PROTECTED );
 }
 
 static void NORETURN Sys_Exit( int ex ) {
@@ -442,7 +445,7 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			Com_Printf( "%s(%s) failed: \"%s\"\n", callerName, fn, Sys_LibraryError() );
 		}
 	}
-		
+
 	if ( searchFlags & SEARCH_PATH_ROOT )
 	{
 		for ( size_t i = 0; i < numPaths; i++ )
@@ -481,22 +484,24 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 	if ( !libHandle )
 #endif
 	{
-		UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
-		if (!unpackResult.succeeded)
-		{
-			if (Sys_DLLNeedsUnpacking())
+		if ( com_unpackLibraries->integer ) {
+			UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
+			if ( !unpackResult.succeeded )
 			{
-				FreeUnpackDLLResult(&unpackResult);
-				Com_DPrintf("Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename);
-				return NULL;
+				if ( Sys_DLLNeedsUnpacking() )
+				{
+					FreeUnpackDLLResult(&unpackResult);
+					Com_DPrintf( "Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename );
+					return NULL;
+				}
 			}
-		}
-		else
-		{
-			libHandle = Sys_LoadLibrary(unpackResult.tempDLLPath);
-		}
+			else
+			{
+				libHandle = Sys_LoadLibrary(unpackResult.tempDLLPath);
+			}
 
-		FreeUnpackDLLResult(&unpackResult);
+			FreeUnpackDLLResult(&unpackResult);
+		}
 
 		if ( !libHandle )
 		{
@@ -561,22 +566,24 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 	if ( !libHandle )
 #endif
 	{
-		UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
-		if (!unpackResult.succeeded)
-		{
-			if (Sys_DLLNeedsUnpacking())
+		if ( com_unpackLibraries->integer ) {
+			UnpackDLLResult unpackResult = Sys_UnpackDLL(filename);
+			if ( !unpackResult.succeeded )
 			{
-				FreeUnpackDLLResult(&unpackResult);
-				Com_DPrintf("Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename);
-				return NULL;
+				if ( Sys_DLLNeedsUnpacking() )
+				{
+					FreeUnpackDLLResult(&unpackResult);
+					Com_DPrintf( "Sys_LoadLegacyGameDll: Failed to unpack %s from PK3.\n", filename );
+					return NULL;
+				}
 			}
-		}
-		else
-		{
-			libHandle = Sys_LoadLibrary(unpackResult.tempDLLPath);
-		}
+			else
+			{
+				libHandle = Sys_LoadLibrary(unpackResult.tempDLLPath);
+			}
 
-		FreeUnpackDLLResult(&unpackResult);
+			FreeUnpackDLLResult(&unpackResult);
+		}
 
 		if ( !libHandle )
 		{
@@ -695,7 +702,7 @@ int main ( int argc, char* argv[] )
 	int		i;
 	char	commandLine[ MAX_STRING_CHARS ] = { 0 };
 
-	Sys_PlatformInit();
+	Sys_PlatformInit( argc, argv );
 #if defined(_DEBUG) && !defined(DEDICATED) && defined(WIN32)
 	CON_CreateConsoleWindow();
 #endif
@@ -740,8 +747,6 @@ int main ( int argc, char* argv[] )
 	Com_Printf( "SDL Version Compiled: %d.%d.%d\n", compiled.major, compiled.minor, compiled.patch );
 	Com_Printf( "SDL Version Linked: %d.%d.%d\n", linked.major, linked.minor, linked.patch );
 #endif
-
-	NET_Init();
 
 	// main game loop
 	while (1)

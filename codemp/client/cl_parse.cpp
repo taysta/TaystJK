@@ -453,8 +453,8 @@ void CL_SystemInfoChanged( void ) {
 	}
 
 	// check pure server string
-	s = Info_ValueForKey( systemInfo, "sv_paks" );
-	t = Info_ValueForKey( systemInfo, "sv_pakNames" );
+	//s = Info_ValueForKey( systemInfo, "sv_paks" );
+	//t = Info_ValueForKey( systemInfo, "sv_pakNames" );
 	//FS_PureServerSetLoadedPaks( s, t );
 
 	s = Info_ValueForKey( systemInfo, "sv_referencedPaks" );
@@ -487,9 +487,6 @@ void CL_SystemInfoChanged( void ) {
 			if (!strlen(value) || !FS_FilenameCompare(value, "OpenJK"))
 				Q_strncpyz(value, BASEGAME, sizeof(BASEGAME));
 
-			if (cls.state < CA_ACTIVE && Cvar_VariableIntegerValue("fs_globalcfg")) {
-				Cbuf_ExecuteText(EXEC_APPEND, va("execq %s.cfg\n", value));
-			}
 
 			if (!FS_FilenameCompare(value, BASEGAME))
 			{
