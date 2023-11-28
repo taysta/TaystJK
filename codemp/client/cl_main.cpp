@@ -112,6 +112,8 @@ cvar_t  *cl_lanForcePackets;
 
 cvar_t	*cl_drawRecording;
 
+cvar_t	*cl_filterGames;
+
 //EternalJK
 cvar_t	*cl_ratioFix;
 
@@ -528,7 +530,7 @@ static void CL_CompleteDemoName( char *args, int argNum )
 		//need to check for both extensions @ the same time somehow
 		Com_sprintf(demoExtensionLegacy, sizeof(demoExtensionLegacy), ".dm_%d", PROTOCOL_LEGACY);
 		Field_CompleteFilename("demos", demoExtensionLegacy, qfalse , qtrue);
-		
+
 		Com_sprintf(demoExtension, sizeof(demoExtension), ".dm_%d", PROTOCOL_VERSION);
 		Field_CompleteFilename("demos", demoExtension, qfalse, qtrue);
 	}
@@ -1719,7 +1721,7 @@ void CL_CheckForResend( void ) {
 			Info_SetValueForKey(info, "protocol", va("%i", PROTOCOL_LEGACY));
 
 		Com_DPrintf("^3set protocol %s\n", Info_ValueForKey(info, "protocol"));
-			
+
 		Info_SetValueForKey( info, "qport", va("%i", port ) );
 		Info_SetValueForKey( info, "challenge", va("%i", clc.challenge ) );
 
@@ -2502,7 +2504,7 @@ void CL_Frame ( int msec ) {
 			CL_DiscordInitialize();
 			cls.discordInitialized = qtrue;
 		}
-	
+
 		if ( cls.realtime >= cls.discordUpdateTime && cls.discordInitialized )
 		{
 			CL_DiscordUpdatePresence();
@@ -2767,7 +2769,7 @@ void CL_InitRef( void ) {
 	ri.PD_Store = PD_Store;
 	ri.PD_Load = PD_Load;
 
-	// Vulkan 
+	// Vulkan
 	ri.VK_IsMinimized = WIN_VK_IsMinimized;
 	ri.VK_GetInstanceProcAddress = WIN_VK_GetInstanceProcAddress;
 	ri.VK_createSurfaceImpl = WIN_VK_createSurfaceImpl;
@@ -2966,7 +2968,7 @@ static void CL_ColorString_f(void) {
 		char arg[8] = { 0 };
 		int index;
 		const uint32_t mask = (1 << 10) - 1;
-		
+
 		Cmd_ArgvBuffer(1, arg, sizeof(arg));
 		index = atoi(arg);
 
@@ -3037,7 +3039,7 @@ void CL_RandomizeColors(const char *in, char *out) {
 	int i, random, j = 0, store = 0;
 	const char *p = in;
 	char *s = out, c;
-	
+
 	while ((c = *p++)) {
 		if (c == '^' && *p != '\0' && *p >= '0' && *p <= '9') {
 			*s++ = c;
@@ -3320,6 +3322,8 @@ void CL_Init( void ) {
 	// ~ and `, as keys and characters
 	cl_consoleKeys = Cvar_Get( "cl_consoleKeys", "~ ` 0x7e 0x60 0xb2", CVAR_ARCHIVE, "Which keys are used to toggle the console");
 	cl_consoleUseScanCode = Cvar_Get( "cl_consoleUseScanCode", "1", CVAR_ARCHIVE, "Use native console key detection" );
+
+	cl_filterGames = Cvar_Get( "cl_filterGames", "MBII MBIIOpenBeta", CVAR_ARCHIVE_ND, "List of fs_game to filter (space separated)" );
 
 	// userinfo
 	cl_name = Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
@@ -3639,6 +3643,23 @@ void CL_ServerInfoPacket( netadr_t from, msg_t *msg ) {
 	// if this is an MB2 server, ignore it
 	if (!Q_stricmp(Info_ValueForKey(infoString, "game"), "mbii") && Q_stricmp(Cvar_VariableString("fs_game"), "mbii")) {
 		return;
+	}
+
+	if ( cl_filterGames && cl_filterGames->string && cl_filterGames->string[0] ) {
+		const char *gameFolder = Info_ValueForKey( infoString, "game" );
+
+		// If no game folder was specified the server is using base. Use the BASEGAME string so we can filter for it.
+		if ( !gameFolder[0] ) gameFolder = BASEGAME;
+
+		// NOTE: As the command tokenization doesn't support nested quotes we can't filter fs_game with spaces using
+		//       this approach, but fs_game with spaces cause other issues as well, like downloads not working and at
+		//       the time of writing this no public servers actually use an fs_game with spaces...
+		Cmd_TokenizeString( cl_filterGames->string );
+		for ( i = 0; i < Cmd_Argc(); i++ ) {
+			if ( !Q_stricmp(Cmd_Argv(i), gameFolder) && Q_stricmp(Cmd_Argv(i), FS_GetCurrentGameDir(false)) ) {
+				return;
+			}
+		}
 	}
 
 	// iterate servers waiting for ping response
