@@ -112,6 +112,8 @@ cvar_t  *cl_lanForcePackets;
 
 cvar_t	*cl_drawRecording;
 
+cvar_t	*cl_filterGames;
+
 //EternalJK
 cvar_t	*cl_ratioFix;
 
@@ -3365,6 +3367,7 @@ void CL_Init( void ) {
 	cl_downloadName = Cvar_Get( "cl_downloadName", "", CVAR_INTERNAL );
 	cl_downloadPrompt = Cvar_Get( "cl_downloadPrompt", "1", CVAR_ARCHIVE, "Confirm pk3 downloads from the server" );
 	cl_downloadOverlay = Cvar_Get( "cl_downloadOverlay", "1", CVAR_ARCHIVE, "Draw download info overlay" );
+	cl_filterGames = Cvar_Get( "cl_filterGames", "MBII MBIIOpenBeta", CVAR_ARCHIVE_ND, "List of fs_game to filter (space separated)" );
 
 	// userinfo
 	cl_name = Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
@@ -3684,6 +3687,23 @@ void CL_ServerInfoPacket( netadr_t from, msg_t *msg ) {
 	// if this is an MB2 server, ignore it
 	if (!Q_stricmp(Info_ValueForKey(infoString, "game"), "mbii") && Q_stricmp(Cvar_VariableString("fs_game"), "mbii")) {
 		return;
+	}
+
+	if ( cl_filterGames && cl_filterGames->string && cl_filterGames->string[0] ) {
+		const char *gameFolder = Info_ValueForKey( infoString, "game" );
+
+		// If no game folder was specified the server is using base. Use the BASEGAME string so we can filter for it.
+		if ( !gameFolder[0] ) gameFolder = BASEGAME;
+
+		// NOTE: As the command tokenization doesn't support nested quotes we can't filter fs_game with spaces using
+		//       this approach, but fs_game with spaces cause other issues as well, like downloads not working and at
+		//       the time of writing this no public servers actually use an fs_game with spaces...
+		Cmd_TokenizeString( cl_filterGames->string );
+		for ( i = 0; i < Cmd_Argc(); i++ ) {
+			if ( !Q_stricmp(Cmd_Argv(i), gameFolder) && Q_stricmp(Cmd_Argv(i), FS_GetCurrentGameDir(false)) ) {
+				return;
+			}
+		}
 	}
 
 	// iterate servers waiting for ping response
