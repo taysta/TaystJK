@@ -741,55 +741,19 @@ if(BuildMPDed)
 	target_link_libraries(${MPDed} ${MPDedLibraries})
 endif(BuildMPDed)
 
-set(GameLibsBuilt)
-if(BuildMPGame)
-	set(GameLibsBuilt ${GameLibsBuilt} ${MPGame})
-endif()
-
-if(BuildMPCGame)
-	set(GameLibsBuilt ${GameLibsBuilt} ${MPCGame})
-endif()
-
-if(BuildMPUI)
-	set(GameLibsBuilt ${GameLibsBuilt} ${MPUI})
-endif()
-
 include(InstallZIP)
-if(WIN32)
-set(GameLibFullPaths)
-	if(MSVC)
-		foreach(GameLib ${GameLibsBuilt})
-			set(GameLibFullPaths
-				${GameLibFullPaths}
-				${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${GameLib}${CMAKE_SHARED_LIBRARY_SUFFIX})
-		endforeach(GameLib)
-	else()
-		foreach(GameLib ${GameLibsBuilt})
-			set(GameLibFullPaths
-				${GameLibFullPaths}
-				${CMAKE_BINARY_DIR}/${GameLib}${CMAKE_SHARED_LIBRARY_SUFFIX})
-		endforeach(GameLib)
-	endif()
-	add_zip_command(${BinsPk3}
-		FILES ${GameLibFullPaths}
-		DEPENDS "${GameLibsBuilt}")
-	add_custom_target(Bins
-		ALL
-		DEPENDS ${BinsPk3})
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BinsPk3}
-		DESTINATION "${JKAInstallDir}/EternalJK"
-		COMPONENT ${JKAMPCoreComponent})
-endif()
 
 add_zip_command(japro-assets.pk3
 	FILES ${CMAKE_SOURCE_DIR}/assets/japro/*)
+
 add_custom_target(Assets
 	ALL
 	DEPENDS japro-assets.pk3)
+
 install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3
-	DESTINATION "${JKAInstallDir}/EternalJK"
-	COMPONENT ${JKAMPCoreComponent})
+		DESTINATION "${JKAInstallDir}/EternalJK"
+		COMPONENT ${JKAMPCoreComponent})
 
 install(FILES
 		${CMAKE_SOURCE_DIR}/assets/settings/cosmetics/example.cosmetic
