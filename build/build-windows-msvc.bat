@@ -2,7 +2,7 @@
 SETLOCAL EnableDelayedExpansion
 
 :: Initialize configuration options with default values
-SET "BuildPortableVersion=OFF"
+SET "BuildPortableVersion=ON"
 SET "BuildMPEngine=ON"
 SET "BuildMPRdVanilla=ON"
 SET "BuildMPRdVulkan=ON"
