@@ -370,6 +370,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 	if ( r_textureMode->modified ) {
 		vk_texture_mode( r_textureMode->string, qfalse );
 		r_textureMode->modified = qfalse;
+		vk_update_post_process_pipelines();
 	}
 
 	//
@@ -381,6 +382,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 		r_dither->modified = qfalse;
 
 		R_SetColorMappings();
+		vk_update_post_process_pipelines();
 	}
 
 	if ( cl_ratioFix->modified ) {
