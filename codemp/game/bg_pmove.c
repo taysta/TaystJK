@@ -12295,7 +12295,9 @@ void PmoveSingle (pmove_t *pmove) {
 	else if (BG_InGrappleMove(pm->ps->torsoAnim))
 	{
 		stiffenedUp = qtrue;
+#ifdef _GAME
 		if (!(g_tweakForce.integer & FT_BUFFMELEE) || (BG_InGrappleMove(pm->ps->torsoAnim) == 3))
+#endif
 			PM_SetPMViewAngle(pm->ps, pm->ps->viewangles, &pm->cmd);
 	}
 	else if ( pm->ps->saberMove == LS_STABDOWN_DUAL ||

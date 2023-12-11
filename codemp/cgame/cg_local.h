@@ -94,6 +94,118 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	WAVE_AMPLITUDE	1
 #define	WAVE_FREQUENCY	0.4
 
+//[JAPRO - Clientside - All - Define cinfo bits - Start]
+#define JAPLUS_CINFO_FLIPKICK			(1<<0)	//Allow player flipkicking
+#define JAPLUS_CINFO_FIXROLL1			(1<<1)	//Grip whilst rolling (even fixroll 0 is not basejka, because of how backwards roll is activated)
+#define JAPLUS_CINFO_FIXROLL2			(1<<2)	//Grip whilst rolling + chainable rolls
+#define JAPLUS_CINFO_FIXROLL3			(1<<3)	//Long roll + breakable
+#define JAPLUS_CINFO_YELLOWDFA			(1<<4)	//improve yellow dfa
+#define JAPLUS_CINFO_HEADSLIDE			(1<<5)	//jp_slideonplayer set
+#define JAPLUS_CINFO_SPATTACKS			(1<<6)	//allow sp attacks
+#define JAPLUS_CINFO_NEWDFA				(1<<7)	//new close range dfa
+#define JAPLUS_CINFO_MODELSCALE			(1<<8)	//allow modelscale
+#define JAPLUS_CINFO_DMGSPEEDSCALE		(1<<9)	//allow damage speed scale for modelscale
+#define JAPLUS_CINFO_MACROSCAN1			(1<<10)	//macroscan 1
+#define JAPLUS_CINFO_MACROSCAN2			(1<<11)	//macroscan 2
+#define JAPLUS_CINFO_JK2DFA				(1<<12)	//jk2 dfa
+#define JAPLUS_CINFO_NOKATA				(1<<13)	//no kata
+#define JAPLUS_CINFO_NO_AUTO_REPLIER	(1<<14)	//no auto replier
+#define JAPLUS_CINFO_GLA_ANIMS			(1<<15)	//new gla anims
+#define JAPLUS_CINFO_LEDGEGRAB			(1<<16)	//Ledgegrab allowed
+#define JAPLUS_CINFO_ALTDIM				(1<<17)	//Any jp_altdim is set
+
+#define RESTRICT_SB					(1<<0)	//remove hackbots
+#define RESTRICT_COSBY				(1<<1)	//remove hackbots
+#define RESTRICT_LEAD				(1<<2)	//remove lead indicator
+#define RESTRICT_WH					(1<<3)	//remove brightskin wh
+#define RESTRICT_YAW				(1<<4)	//enforce yawspeed cap
+#define RESTRICT_PLUGIN				(1<<5)	//force plugin for racers
+#define RESTRICT_PLAYERLABELS		(1<<6)	//
+#define RESTRICT_FLIPKICKBIND		(1<<7)	//
+#define RESTRICT_STRAFETRAIL		(1<<8)	//force plugin for racers
+#define RESTRICT_DO					(1<<9)	//force plugin for racers
+#define RESTRICT_ANGLE				(1<<10)	//force plugin for racers
+
+//Style playermodel stuff
+#define JAPRO_STYLE_FULLBRIGHT			(1<<0)
+#define JAPRO_STYLE_SHELL				(1<<1)
+#define JAPRO_STYLE_HIDEDUELERS1		(1<<2)
+#define JAPRO_STYLE_HIDERACERS1			(1<<3) //hide racer if we ffa
+#define JAPRO_STYLE_HIDERACERS2			(1<<4) //hide ffa if we racer
+#define JAPRO_STYLE_HIDERACERS3			(1<<5) //hide racers if we racer
+#define JAPRO_STYLE_RACERVFXDISABLE		(1<<6) //show fellow racers normally
+#define JAPRO_STYLE_NONRACERVFXDISABLE	(1<<7) //show racers normally
+#define JAPRO_STYLE_VFXDUELERS			(1<<8)
+#define JAPRO_STYLE_VFXALTDIM			(1<<9) //ja+
+#define JAPRO_STYLE_HIDENONDUELERS		(1<<10) //base
+#define JAPRO_STYLE_HIDEYSALSHELL		(1<<11)
+#define	JAPRO_STYLE_PLAYERLOD			(1<<12)
+#define JAPRO_STYLE_NOBODIES			(1<<13)
+#define JAPRO_STYLE_NOFADESFX			(1<<14)
+#define JAPRO_STYLE_COLOREDSPAWNBUBBLE	(1<<15)
+#define JAPRO_STYLE_HIDECOSMETICS		(1<<16)
+#define JAPRO_STYLE_DISABLEBREATHING	(1<<17)
+#define JAPRO_STYLE_OLDGRAPPLELINE		(1<<18)
+#define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
+#define JAPRO_STYLE_SEASONALCOSMETICS	(1<<20)
+#define JAPRO_STYLE_ALTERNATEPOSE		(1<<21)
+
+//japro ignore race fx
+#define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
+#define BODY_FADE_TIME					(60000)
+
+#define JAPRO_CHATLOG_ENABLE		(1<<0)
+#define JAPRO_CHATLOG_SYNC			(1<<1)
+#define JAPRO_CHATLOG_OLDTIMESTAMP	(1<<2)
+#define JAPRO_CHATLOG_PRINT			(1<<3)
+#define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
+
+//Cosmetics
+#define	JAPRO_COSMETIC_SANTAHAT	(1<<0)
+#define	JAPRO_COSMETIC_PUMKIN	(1<<1)
+#define	JAPRO_COSMETIC_CAP		(1<<2)
+#define	JAPRO_COSMETIC_FEDORA	(1<<3)
+#define	JAPRO_COSMETIC_CRINGE	(1<<4)
+#define	JAPRO_COSMETIC_SOMBRERO	(1<<5)
+#define	JAPRO_COSMETIC_TOPHAT	(1<<6)
+#define	JAPRO_COSMETIC_MASK	    (1<<7)
+#define	JAPRO_COSMETIC_GRADCAP  (1<<8)
+#define	JAPRO_COSMETIC_GOOSE	(1<<9)
+#define	JAPRO_COSMETIC_FEDORA2  (1<<10)
+#define	JAPRO_COSMETIC_FEDORA3   (1<<11)
+#define	JAPRO_COSMETIC_FEDORA4   (1<<12)
+#define	JAPRO_COSMETIC_HEADCRAB  (1<<13)
+#define	JAPRO_COSMETIC_VADERCAPE  (1<<14)
+#define	JAPRO_COSMETIC_YODACAPE  (1<<15)
+#define	JAPRO_COSMETIC_HORNS	  (1<<16)
+#define	JAPRO_COSMETIC_METALHELM  (1<<17)
+#define	JAPRO_COSMETIC_AFRO		(1<<18)
+#define	JAPRO_COSMETIC_AK47		(1<<19)
+#define	JAPRO_COSMETIC_BUCKET	(1<<20)
+#define	JAPRO_COSMETIC_CROWBAR	(1<<21)
+#define	JAPRO_COSMETIC_CROWN	(1<<22)
+#define	JAPRO_COSMETIC_ROYALCAPE	(1<<23)
+#define	JAPRO_COSMETIC_BEARD	(1<<24)
+#define	JAPRO_COSMETIC_GROGUCAPE	(1<<25)
+#define	JAPRO_COSMETIC_PLAGUEMASK	(1<<26)
+#define	JAPRO_COSMETIC_GLASSES	(1<<27)
+#define	JAPRO_COSMETIC_MARIO		(1<<28)
+#define	JAPRO_COSMETIC_RPG		(1<<29)
+#define	JAPRO_COSMETIC_PREDATOR		(1<<30)
+#define	JAPRO_COSMETIC_SAIYAN		(1<<31)
+
+typedef struct cosmeticItem_s cosmeticItem_t;
+
+typedef enum //server mod enum
+{
+	SVMOD_BASEJKA,
+	SVMOD_BASEENHANCED,
+	SVMOD_OJKALT,
+	SVMOD_JAPLUS,
+	SVMOD_JAPRO,
+} serverMod_t;
+
+
 typedef enum {
 	FOOTSTEP_STONEWALK,
 	FOOTSTEP_STONERUN,
@@ -217,7 +329,6 @@ typedef struct playerEntity_s {
 #define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
 #define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
 #define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
-
 
 typedef struct clientInfo_s {
 	qboolean		infoValid;

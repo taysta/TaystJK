@@ -2284,7 +2284,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 	}
 
 	if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-		missile = CreateMissileNew( start, fwd, ((vel + 100*(i)) * g_projectileVelocityScale.value), 1500 + random() * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
+		missile = CreateMissileNew( start, fwd, ((vel + 100*(i)) * g_projectileVelocityScale.value), 1500 +  Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
 	else 
 		missile = CreateMissileNew( start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue );
 	
