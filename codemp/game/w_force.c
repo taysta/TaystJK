@@ -656,6 +656,9 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 		if ((forcePower == FP_SPEED) || (forcePower == FP_RAGE))
 			return qfalse;
 	}
+	if (self->client->sess.raceMode && (forcePower == FP_SPEED)) {
+		drain = 75;
+	}
 
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
 	{ //we're probably going to deactivate it..
@@ -1154,7 +1157,10 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 
 	self->client->ps.fd.forcePowerDebounce[forcePower] = 0;
 
-	if ((int)forcePower == FP_SPEED && overrideAmt)
+	if ((int)forcePower == FP_SPEED && self->client->sess.raceMode) {
+		BG_ForcePowerDrain(&self->client->ps, forcePower, 75);
+	}
+	else if ((int)forcePower == FP_SPEED && overrideAmt)
 	{
 		BG_ForcePowerDrain( &self->client->ps, forcePower, overrideAmt*0.025 );
 	}
@@ -1511,7 +1517,7 @@ void ForceGrip( gentity_t *self )
 		!g_entities[tr.entityNum].client->ps.fd.forceGripCripple &&
 		g_entities[tr.entityNum].client->ps.fd.forceGripBeingGripped < level.time &&
 		ForcePowerUsableOn(self, &g_entities[tr.entityNum], FP_GRIP) &&
-		(g_friendlyFire.integer || !OnSameTeam(self, &g_entities[tr.entityNum])) ) //don't grip someone who's still crippled
+		(g_friendlyFire.value|| !OnSameTeam(self, &g_entities[tr.entityNum])) ) //don't grip someone who's still crippled
 	{
 		if (g_entities[tr.entityNum].s.number < MAX_CLIENTS && g_entities[tr.entityNum].client->ps.m_iVehicleNum)
 		{ //a player on a vehicle
@@ -1703,7 +1709,12 @@ void ForceRage( gentity_t *self )
 
 	if (self->client->ps.fd.forceRageRecoveryTime >= level.time)
 	{
-		return;
+		if (self->client->sess.raceMode && !self->client->pers.stats.startTime) {
+			//remove rage recovery timer if they are in racemode and havn't started course yet?
+		}
+		else {
+			return;
+		}
 	}
 
 	if (self->health < 10)
@@ -1927,7 +1938,7 @@ void ForceShootLightning( gentity_t *self )
 				continue;
 			if ( traceEnt->health <= 0 )//no torturing corpses
 				continue;
-			if ( !g_friendlyFire.integer && OnSameTeam(self, traceEnt))
+			if ( !g_friendlyFire.value && OnSameTeam(self, traceEnt))
 				continue;
 			//this is all to see if we need to start a saber attack, if it's in flight, this doesn't matter
 			// find the distance from the edge of the bounding box
@@ -2040,7 +2051,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 
 	if ( traceEnt && traceEnt->takedamage )
 	{
-		if ( traceEnt->client && (!OnSameTeam(self, traceEnt) || g_friendlyFire.integer) && /*self->client->ps.fd.forceDrainTime < level.time &&*/ traceEnt->client->ps.fd.forcePower )
+		if ( traceEnt->client && (!OnSameTeam(self, traceEnt) || g_friendlyFire.value) && /*self->client->ps.fd.forceDrainTime < level.time &&*/ (traceEnt->client->ps.fd.forcePower || traceEnt->client->sess.raceMode) )
 		{//an enemy or object
 			if (!traceEnt->client && traceEnt->s.eType == ET_NPC)
 			{ //g2animent
@@ -2062,6 +2073,8 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				else if (self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_2)
 				{
 					dmg = 3;
+					if (self->client->sess.raceMode)
+						dmg = -4;
 				}
 				else if (self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_3)
 				{
@@ -2108,6 +2121,8 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 					traceEnt->client->ps.fd.forcePower = 0;
 					dmg2 = 0;
 				}
+				else if (traceEnt->client->ps.fd.forcePower > 100) //racemode
+					traceEnt->client->ps.fd.forcePower = 100;
 
 				if (g_gametype.integer >= GT_TEAM) {
 					if (self->client->sess.sessionTeam == traceEnt->client->sess.sessionTeam) 
@@ -2180,6 +2195,10 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 					tent->s.eventParm = DirToByte(dir);
 					tent->s.owner = traceEnt->s.number;
 
+					if (OnSameTeam(traceEnt, self)) {
+						tent->s.teamowner = 1; //so client can render friendly fire drains differently?
+					}
+
 					traceEnt->client->forcePowerSoundDebounce = level.time + 400;
 				}
 			}
@@ -2247,7 +2266,7 @@ int ForceShootDrain( gentity_t *self )
 				continue;
 			if ( !traceEnt->client->ps.fd.forcePower )
 				continue;
-			if (OnSameTeam(self, traceEnt) && !g_friendlyFire.integer)
+			if (OnSameTeam(self, traceEnt) && !g_friendlyFire.value)
 				continue;
 			//this is all to see if we need to start a saber attack, if it's in flight, this doesn't matter
 			// find the distance from the edge of the bounding box
@@ -3414,7 +3433,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 			continue;
 		if (ent == self)
 			continue;
-		if (ent->client && OnSameTeam(ent, self) && !g_friendlyFire.integer)//JAPRO - Allow push/pull teammates when friendlyfire is on
+		if (ent->client && OnSameTeam(ent, self) && !g_friendlyFire.value)//JAPRO - Allow push/pull teammates when friendlyfire is on
 		{
 			continue;
 		}
@@ -3778,13 +3797,25 @@ void ForceThrow( gentity_t *self, qboolean pull )
 					//fullbody push effect
 					push_list[x]->client->pushEffectTime = level.time + 600;
 
-					if (((g_tweakForce.integer & FT_PULLSTRENGTH) || push_list[x]->client->sess.raceMode) && pull) {
-						push_list[x]->client->ps.velocity[0] += pushDir[0]*pushPowerMod; //FT_WEAKPULL?
-						push_list[x]->client->ps.velocity[1] += pushDir[1]*pushPowerMod;
+					if (push_list[x]->client->sess.raceMode) { //push and pull.. OP?
+						if (pull) {
+							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod;
+							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
+						}
+						else {
+							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod * 0.75f;
+							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod * 0.75f;
+						}
 					}
 					else {
-						push_list[x]->client->ps.velocity[0] = pushDir[0]*pushPowerMod;
-						push_list[x]->client->ps.velocity[1] = pushDir[1]*pushPowerMod;
+						if ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull) {
+							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod; //FT_WEAKPULL?
+							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
+						}
+						else {
+							push_list[x]->client->ps.velocity[0] = pushDir[0] * pushPowerMod;
+							push_list[x]->client->ps.velocity[1] = pushDir[1] * pushPowerMod;
+						}
 					}
 
 					if ((int)push_list[x]->client->ps.velocity[2] == 0)
@@ -3798,7 +3829,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 					}
 					else
 					{
-						if (((g_tweakForce.integer & FT_PULLSTRENGTH) || push_list[x]->client->sess.raceMode) && pull)
+						if ((g_tweakForce.integer & FT_PULLSTRENGTH) && (push_list[x]->client->sess.raceMode || pull))
 							push_list[x]->client->ps.velocity[2] += pushDir[2]*pushPowerMod;
 						else
 							push_list[x]->client->ps.velocity[2] = pushDir[2]*pushPowerMod;
@@ -4159,8 +4190,13 @@ void DoGripAction(gentity_t *self, forcePowers_t forcePower)
 
 	if (VectorLength(a) > MAX_GRIP_DISTANCE)
 	{
-		WP_ForcePowerStop(self, forcePower);
-		return;
+		if (self && self->client->sess.movementStyle == MV_COOP_JKA) {
+			//dont break grips due to distance in coop
+		}
+		else {
+			WP_ForcePowerStop(self, forcePower);
+			return;
+		}
 	}
 
 	if ( !InFront( gripEnt->client->ps.origin, self->client->ps.origin, self->client->ps.viewangles, 0.9f ) &&
@@ -4170,7 +4206,7 @@ void DoGripAction(gentity_t *self, forcePowers_t forcePower)
 		return;
 	}
 
-	if (!(g_tweakForce.integer & FT_JK2GRIP) && tr.fraction != 1.0f && tr.entityNum != gripEnt->s.number)
+	if (!(g_tweakForce.integer & FT_JK2GRIP) && !gripEnt->client->sess.raceMode && tr.fraction != 1.0f && tr.entityNum != gripEnt->s.number)
 	{
 		WP_ForcePowerStop(self, forcePower);
 		return;
@@ -4306,13 +4342,24 @@ void DoGripAction(gentity_t *self, forcePowers_t forcePower)
 			}
 			else
 			{
-				VectorNormalize(nvel);
-				gripEnt->client->ps.velocity[0] = nvel[0]*700;
-				gripEnt->client->ps.velocity[1] = nvel[1]*700;
-				gripEnt->client->ps.velocity[2] = nvel[2]*700;
+				if (gripEnt->client->sess.movementStyle == MV_COOP_JKA) {
+					VectorNormalize(nvel);
+					gripEnt->client->ps.velocity[0] = nvel[0] * 1600;
+					gripEnt->client->ps.velocity[1] = nvel[1] * 1600;
+					gripEnt->client->ps.velocity[2] = nvel[2] * 1600;
+				}
+				else {
+					VectorNormalize(nvel);
+					gripEnt->client->ps.velocity[0] = nvel[0] * 700;
+					gripEnt->client->ps.velocity[1] = nvel[1] * 700;
+					gripEnt->client->ps.velocity[2] = nvel[2] * 700;
+				}
 			}
 
-			gripEnt->client->ps.forceGripMoveInterval = level.time + 300; //only update velocity every 300ms, so as to avoid heavy bandwidth usage
+			if (gripEnt->client->sess.movementStyle == MV_COOP_JKA)
+				gripEnt->client->ps.forceGripMoveInterval = level.time + 50; //only update velocity every 300ms, so as to avoid heavy bandwidth usage
+			else
+				gripEnt->client->ps.forceGripMoveInterval = level.time + 300; //only update velocity every 300ms, so as to avoid heavy bandwidth usage
 		}
 
 		if ((level.time - gripEnt->client->ps.fd.forceGripStarted) > 3000 && !self->client->ps.fd.forceGripDamageDebounceTime)
@@ -4428,10 +4475,20 @@ static void WP_UpdateMindtrickEnts(gentity_t *self)
 			}
 			else if ((level.time - self->client->dangerTime) < g_TimeSinceLastFrame*4)
 			{ //Untrick this entity if the tricker (self) fires while in his fov
-				if (trap->InPVS(ent->client->ps.origin, self->client->ps.origin) &&
-					OrgVisible(ent->client->ps.origin, self->client->ps.origin, ent->s.number))
+				if (trap->InPVS(ent->client->ps.origin, self->client->ps.origin) && OrgVisible(ent->client->ps.origin, self->client->ps.origin, ent->s.number))
 				{
-					RemoveTrickedEnt(&self->client->ps.fd, i);
+					if (g_tweakForce.integer & FT_BUFFMINDTRICK) {
+						vec3_t a, tto;
+
+						VectorCopy(self->client->ps.origin, tto);
+						tto[2] += self->client->ps.viewheight;
+						VectorSubtract(ent->client->ps.origin, tto, a);
+						vectoangles(a, a);
+						if (InFieldOfVision(self->client->ps.viewangles, 60, a))
+							RemoveTrickedEnt(&self->client->ps.fd, i);
+					}
+					else
+						RemoveTrickedEnt(&self->client->ps.fd, i);
 				}
 			}
 			else if (BG_HasYsalamiri(level.gametype, &ent->client->ps))

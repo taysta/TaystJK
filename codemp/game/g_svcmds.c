@@ -588,6 +588,10 @@ void Svcmd_ResetScores_f (void) {
 			ent->client->pers.stats.teamEnergizeGiven = 0;
 			ent->client->pers.stats.enemyDrainDamage = 0;
 			ent->client->pers.stats.teamDrainDamage = 0;
+			ent->client->accuracy_shots = 0;
+			ent->client->accuracy_hits = 0;
+
+			ent->client->ps.fd.suicides = 0;
 			//Cmd_ForceChange_f(ent);
 			//WP_InitForcePowers( ent );
 		}
@@ -626,10 +630,10 @@ static void RemoveCTFFlags(void) {
 void SetGametypeFuncSolids( void );
 void G_CacheGametype( void );
 qboolean G_CallSpawn( gentity_t *ent );
-void Svcmd_ChangeGametype_f (void) {
+void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting.\n" in the server code this will always trigger a full map reload.. when map restarts 
 	char	input[16];
-	int		gametype, i;
-	gclient_t	*cl;
+	int		gametype, i, red = 0;
+	gentity_t* ent;
 
 	if ( trap->Argc() != 2 ) {
 		trap->Print("Usage: gametype <#>\n");
@@ -678,14 +682,18 @@ void Svcmd_ChangeGametype_f (void) {
 		RemoveCTFFlags();
 	}
 
-	for (i=0;  i<level.numPlayingClients; i++) { //Move people to the proper team if changing from team to non team gametype etc
-		cl = &level.clients[level.sortedClients[i]];
-
-		if (level.gametype < GT_TEAM && (cl->sess.sessionTeam == TEAM_RED || cl->sess.sessionTeam == TEAM_BLUE)) {
-			cl->sess.sessionTeam = TEAM_FREE;
-		}
-		else if (level.gametype >= GT_TEAM && !g_raceMode.integer && cl->sess.sessionTeam == TEAM_FREE) {
-			cl->sess.sessionTeam = TEAM_SPECTATOR;
+	for (i = 0; i < MAX_CLIENTS; i++) {//Build a list of clients.. sv_maxclients? w/e
+		ent = &g_entities[i];
+		if (!ent->client || !ent->inuse)
+			continue;
+		if (level.gametype < GT_TEAM && (ent->client->sess.sessionTeam == TEAM_RED) || (ent->client->sess.sessionTeam == TEAM_BLUE))
+			SetTeam(ent, "f", qtrue);
+		if (level.gametype >= GT_TEAM && (ent->client->sess.sessionTeam == TEAM_FREE) && !ent->client->sess.raceMode) {
+			if (red)
+				SetTeam(ent, "red", qtrue);
+			else
+				SetTeam(ent, "blue", qtrue);
+			red = !red;
 		}
 	}
 
@@ -693,7 +701,6 @@ void Svcmd_ChangeGametype_f (void) {
 
 	//Spawn / clear ctf flags?  
 	//who knows what needs to be done for siege.. forget it.
-
 }
 
 void Svcmd_AmKick_f(void) {
@@ -851,7 +858,7 @@ static bitInfo_T weaponTweaks[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{"Fix dropped mine ammo count"},//25
 	{"JK2 Style Alt Tripmine"},//26
 	{"Projectile Sniper"},//27
-	{"No Spread"},//28
+	{"Tribes tweaks"},//28
 	{"Slow sniper fire rate"},//29
 	{"Make rockets solid for their owners"},//30
 	{"Lower max damage for pistol alt fire"}//31
@@ -983,7 +990,9 @@ static bitInfo_T forceTweaks[] = {
 	{"Weak force pull"},//16
 	{"Nerfed weapon pull distance"},//17
 	{"Force resistance while firing/charging weapon"},//18
-	{"Stop rage from affecting firerate of weapons"}//19
+	{"Stop rage from affecting firerate of weapons"},//19
+	{"Don't break mindtrick on attack unless trickee is looking at you"},//19
+	{"Stronger / different Melee attack"}//19
 };
 static const int MAX_FORCE_TWEAKS = ARRAY_LEN( forceTweaks );
 
@@ -1173,7 +1182,10 @@ static bitInfo_T startingItems[] = { // MAX_STARTING_ITEMS tweaks (13)
 	{"Ammo Dispenser"},//9
 	{"E-WEB"},//10
 	{"Cloak"},//11
-	{"Ability to toggle /jetpack"}//11
+	{"Ability to toggle /jetpack"},//12
+	{"Start with armor in duel gametype"},//13
+	{"Start with full armor in FFA"},//13
+	{"Start with full health after each kill"}//13
 };
 static const int MAX_STARTING_ITEMS = ARRAY_LEN( startingItems );
 

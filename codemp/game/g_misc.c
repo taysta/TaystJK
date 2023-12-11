@@ -197,7 +197,7 @@ void DeletePlayerProjectiles(gentity_t *ent);
 #if _GRAPPLE
 void Weapon_HookFree (gentity_t *ent);
 #endif
-void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean keepVel ) {
+void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, int speed) {
 	gentity_t	*tent;
 	qboolean	isNPC = qfalse;
 	qboolean	noAngles;
@@ -233,8 +233,8 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean k
 	// spit the player out
 	if ( !noAngles ) {
 		AngleVectors( angles, player->client->ps.velocity, NULL, NULL );
-		if (keepVel)
-			VectorScale( player->client->ps.velocity, pm->xyspeed, player->client->ps.velocity );
+		if (speed)
+			VectorScale( player->client->ps.velocity, speed, player->client->ps.velocity );
 		else
 			VectorScale( player->client->ps.velocity, 400, player->client->ps.velocity );
 		player->client->ps.pm_time = 160;		// hold time
@@ -249,7 +249,7 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean k
 	G_ResetTrail( player );//unlagged
 
 	// kill anything at the destination
-	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
+	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR && !player->client->sess.raceMode) {
 		G_KillBox (player);
 	}
 
@@ -270,8 +270,17 @@ void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean k
 	if (player->client->sess.raceMode) {
 		//player->client->ps.powerups[PW_YSALAMIRI] = 0; //Fuck
 		player->client->ps.powerups[PW_FORCE_BOON] = 0;
-		if (player->client->sess.movementStyle == MV_RJQ3 || player->client->sess.movementStyle == MV_RJCPM) //Get rid of their rockets when they tele/noclip..?
+		if (player->client->sess.movementStyle == MV_RJQ3 || player->client->sess.movementStyle == MV_RJCPM || player->client->sess.movementStyle == MV_TRIBES) //Get rid of their rockets when they tele/noclip..?
 			DeletePlayerProjectiles(player);
+		if (player->client->sess.movementStyle == MV_COOP_JKA && player->client->ps.duelInProgress) { //clean this up..
+			gentity_t* gripEnt;
+			WP_ForcePowerStop(player, FP_GRIP);
+
+			gripEnt = &g_entities[player->client->ps.duelIndex];
+			if (gripEnt && gripEnt->client) {
+				WP_ForcePowerStop(gripEnt, FP_GRIP);
+			}
+		}
 	}
 }
 
@@ -305,6 +314,10 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 	if (!toMark || !(player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES))
 		ResetPlayerTimers(player, qtrue);
 	player->client->ps.fd.forceJumpZStart = -65536; //maybe this will fix that annoying overbounce tele shit
+
+	if (toMark && (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES)) {
+		player->client->midRunTeleCount++;
+	}
 
 	if (droptofloor) {
 		trace_t tr;
@@ -357,7 +370,7 @@ void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean
 	G_ResetTrail( player );//unlagged
 
 	// kill anything at the destination
-	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR ) {
+	if ( player->client->sess.sessionTeam != TEAM_SPECTATOR && !player->client->sess.raceMode) {
 		G_KillBox (player);
 	}
 

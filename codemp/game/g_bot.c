@@ -976,6 +976,13 @@ static void G_AddBot( const char *name, float skill, const char *team, int delay
 	Info_SetValueForKey( userinfo, key, s );
 
 	// initialize the bot settings
+	if (level.gametype >= GT_TEAM) {
+		if (bot_team.integer == 1)
+			team = "blue";
+		else if (bot_team.integer > 1)
+			team = "red";
+	}
+
 	if ( !team || !*team ) {
 		if ( level.gametype >= GT_TEAM ) {
 			if ( PickTeam( clientNum ) == TEAM_RED )

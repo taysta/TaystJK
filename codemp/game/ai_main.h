@@ -277,6 +277,7 @@ typedef struct bot_state_s
 	int					meleeStrafeDir;
 	float				meleeStrafeDisable;
 
+	int					ChargeTime;
 	int					altChargeTime;
 
 	float				escapeDirTime;

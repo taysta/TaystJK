@@ -2255,7 +2255,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 		}
 	}
 
-    Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
+	Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
 }
 
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?
@@ -2936,7 +2936,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	te->s.eventParm = clientNum;
 
 	if (firstTime)
-		ent->client->sess.movementStyle = 1;//default to JKA style 
+		ent->client->sess.movementStyle = MV_JKA;//default to JKA style
 
 	// for statistics
 //	client->areabits = areabits;
@@ -2980,23 +2980,33 @@ void ClientBegin( int clientNum, qboolean allowTeamReset ) {
 			int preSess;
 
 			//SetTeam(ent, "");
-			ent->client->sess.sessionTeam = PickTeam(-1);
-			trap->GetUserinfo(clientNum, userinfo, MAX_INFO_STRING);
-
-			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
-			{
-				ent->client->sess.sessionTeam = TEAM_RED;
-			}
-
-			if (ent->client->sess.sessionTeam == TEAM_RED)
-			{
-				team = "Red";
-			}
-			else
-			{
+			if (bot_team.integer == 1) {
+				ent->client->sess.sessionTeam = TEAM_BLUE;
 				team = "Blue";
 			}
+			else if (bot_team.integer > 1)
+			{
+				ent->client->sess.sessionTeam = TEAM_RED;
+				team = "Red";
+			}
+			else {
+				ent->client->sess.sessionTeam = PickTeam(-1);
 
+				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+				{
+					ent->client->sess.sessionTeam = TEAM_RED;
+				}
+
+				if (ent->client->sess.sessionTeam == TEAM_RED)
+				{
+					team = "Red";
+				}
+				else
+				{
+					team = "Blue";
+				}
+			}
+			trap->GetUserinfo(clientNum, userinfo, MAX_INFO_STRING);
 			Info_SetValueForKey( userinfo, "team", team );
 
 			trap->SetUserinfo( clientNum, userinfo );
@@ -3537,12 +3547,188 @@ void GiveClientItems(gclient_t *client) {
 	}
 }
 
+void Svcmd_ResetScores_f(void);
+void PrintStats(int client);
+void G_GiveGunGameWeapon(gclient_t* client) {
+	int score;
+	qboolean finishedGG = qfalse;
+	if (level.gametype == GT_TEAM || level.gametype == GT_CTF) {
+		score = level.teamScores[client->ps.persistant[PERS_TEAM]] - client->ps.fd.suicides;
+	}
+	else {
+		score = client->pers.stats.kills - client->ps.fd.suicides;
+	}
+	//set other ammo to 0, force change to wep?
+	client->ps.stats[STAT_WEAPONS] = 0;
+	client->forcedFireMode = 0;
+	client->ps.fd.forcePowersKnown &= ~(1 << FP_SABERTHROW);
+	//client->ps.fd.forcePowerLevel[FP_SABERTHROW] = FORCE_LEVEL_0;
+
+	//how is it less than 0 on end? should be kills = 0, suicides = 0.  is one not getting reset?
+	if (score <= 0) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_CONCUSSION);
+		client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+		client->ps.weapon = WP_CONCUSSION;
+		client->forcedFireMode = 1;
+	}
+	else if (score == 1) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_ROCKET_LAUNCHER);
+		client->ps.ammo[AMMO_ROCKETS] = 999;
+		client->ps.weapon = WP_ROCKET_LAUNCHER;
+		client->forcedFireMode = 1;
+	}
+	else if (score == 2) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_ROCKET_LAUNCHER);
+		client->ps.ammo[AMMO_ROCKETS] = 999;
+		client->ps.weapon = WP_ROCKET_LAUNCHER;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 3) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_BLASTER);
+		client->ps.ammo[AMMO_BLASTER] = 999;
+		client->ps.weapon = WP_BLASTER;
+	}
+	else if (score == 4) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_REPEATER);
+		client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+		client->ps.weapon = WP_REPEATER;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 5) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_REPEATER);
+		client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+		client->ps.weapon = WP_REPEATER;
+		client->forcedFireMode = 1;
+	}
+	else if (score == 6) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_FLECHETTE);
+		client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+		client->ps.weapon = WP_FLECHETTE;
+	}
+	else if (score == 7) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_CONCUSSION);
+		client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+		client->ps.weapon = WP_CONCUSSION;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 8) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_STUN_BATON);
+		client->ps.weapon = WP_STUN_BATON;
+	}
+	else if (score == 9) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_DISRUPTOR);
+		client->ps.ammo[AMMO_POWERCELL] = 999;
+		client->ps.weapon = WP_DISRUPTOR;
+	}
+	else if (score == 10) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_BOWCASTER);
+		client->ps.ammo[AMMO_POWERCELL] = 999;
+		client->ps.weapon = WP_BOWCASTER;
+	}
+	else if (score == 11) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_DEMP2);
+		client->ps.ammo[AMMO_POWERCELL] = 999;
+		client->ps.weapon = WP_DEMP2;
+		client->forcedFireMode = 1;
+	}
+	else if (score == 12) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_DEMP2);
+		client->ps.ammo[AMMO_POWERCELL] = 999;
+		client->ps.weapon = WP_DEMP2;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 13) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_THERMAL);
+		client->ps.ammo[AMMO_THERMAL] = 999;
+		client->ps.weapon = WP_THERMAL;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 14) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_BRYAR_OLD);
+		client->ps.ammo[AMMO_BLASTER] = 999;
+		client->ps.weapon = WP_BRYAR_OLD;
+	}
+	else if (score == 15) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_BRYAR_PISTOL);
+		client->ps.ammo[AMMO_BLASTER] = 999;
+		client->ps.weapon = WP_BRYAR_PISTOL;
+	}
+	else if (score == 16) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_THERMAL);
+		client->ps.ammo[AMMO_THERMAL] = 999;
+		client->ps.weapon = WP_THERMAL;
+		client->forcedFireMode = 1;
+	}
+	else if (score == 17) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
+		client->ps.weapon = WP_SABER;
+		client->ps.fd.forcePowersKnown |= (1 << FP_SABERTHROW);
+		client->ps.fd.forcePowerLevel[FP_SABERTHROW] = FORCE_LEVEL_3;
+		client->forcedFireMode = 2;
+	}
+	else if (score == 18) {
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
+		client->ps.weapon = WP_SABER;
+		client->forcedFireMode = 1;
+	}
+	else if (score >= 19) { //if (meansOfDeath == MOD_SABER || (meansOfDeath == WP_MELEE && attacker->client->pers.stats.kills >= 12)) {
+		finishedGG = qtrue;
+	}
+
+	if (finishedGG) {
+		int i;
+		gentity_t* other;
+
+		if (level.gametype == GT_TEAM || level.gametype == GT_CTF) {
+			trap->SendServerCommand(-1, va("print \"%s team (%s)^3 won the gungame\n\"", TeamName(client->ps.persistant[PERS_TEAM]), client->pers.netname));
+			trap->SendServerCommand(-1, va("cp \"%s team (%s)^3 won the gungame\n\n\n\n\n\n\n\n\n\n\n\n\"", TeamName(client->ps.persistant[PERS_TEAM]), client->pers.netname));
+		}
+		else {
+			trap->SendServerCommand(-1, va("print \"%s^3 won the gungame\n\"", client->pers.netname));
+			trap->SendServerCommand(-1, va("cp \"%s^3 won the gungame\n\n\n\n\n\n\n\n\n\n\n\n\"", client->pers.netname));
+		}
+		PrintStats(-1);//JAPRO STATS
+		for (i = 0; i < level.numConnectedClients; i++) { //Kill every1? or every1 but me? or just reset weps?
+			other = &g_entities[level.sortedClients[i]];
+			if (other->inuse && other->client && !other->client->sess.raceMode) {
+				other->client->ps.stats[STAT_WEAPONS] = (1 << WP_CONCUSSION);
+				other->client->ps.ammo[AMMO_METAL_BOLTS] = 999;
+				other->client->ps.weapon = WP_CONCUSSION;
+				other->client->forcedFireMode = 1;
+				other->client->ps.zoomMode = 0;
+			}
+		}
+		Svcmd_ResetScores_f();
+	}
+	else if (level.gametype == GT_TEAM || level.gametype == GT_CTF) { //Update our teams guns
+		int i, j;
+		gentity_t* other;
+		for (i = 0; i < level.numConnectedClients; i++) {
+			other = &g_entities[level.sortedClients[i]];
+			if (other->inuse && other->client && !other->client->sess.raceMode && (other->client->ps.persistant[PERS_TEAM] == client->ps.persistant[PERS_TEAM])) {
+				other->client->ps.stats[STAT_WEAPONS] = client->ps.stats[STAT_WEAPONS];
+				for (j = AMMO_BLASTER; j < AMMO_MAX; j++)//w/e
+					other->client->ps.ammo[j] = client->ps.ammo[j];
+				other->client->ps.weapon = client->ps.weapon;
+				other->client->forcedFireMode = client->forcedFireMode;
+				other->client->ps.zoomMode = 0;
+
+				if (client->ps.fd.forcePowersKnown & (1<<FP_SABERTHROW))
+					other->client->ps.fd.forcePowersKnown |= (1 << FP_SABERTHROW);
+				else
+					other->client->ps.fd.forcePowersKnown &= ~(1 << FP_SABERTHROW);
+
+				other->client->ps.fd.forcePowerLevel[FP_SABERTHROW] = client->ps.fd.forcePowerLevel[FP_SABERTHROW];
+			}
+		}
+	}
+	client->ps.zoomMode = 0;
+}
+
 void GiveClientWeapons(gclient_t *client) {
 
-	if (client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
-		client->ps.stats[STAT_WEAPONS] = (1 << WP_SABER);
-	else
-		client->ps.stats[STAT_WEAPONS] = 0;
+
+	client->ps.stats[STAT_WEAPONS] = 0;
 
 	client->ps.ammo[AMMO_BLASTER] = 0;
 	client->ps.ammo[AMMO_POWERCELL] = 0;
@@ -3553,70 +3739,50 @@ void GiveClientWeapons(gclient_t *client) {
 	client->ps.ammo[AMMO_THERMAL] = 0;
 
 	//I guess this could be cleaned up a ton, but that trusts the user to not put a retarded value for g_startingWeapons ?
+	if (g_gunGame.integer) {
+		G_GiveGunGameWeapon(client);
+	}
+	else {
+		int i;
 
-				if (g_startingWeapons.integer & (1 << WP_STUN_BATON))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_STUN_BATON);
-				if (g_startingWeapons.integer & (1 << WP_MELEE))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_MELEE);
-				if (g_startingWeapons.integer & (1 << WP_BRYAR_PISTOL))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_BRYAR_PISTOL);
-				if (g_startingWeapons.integer & (1 << WP_BLASTER))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_BLASTER);
-				if (g_startingWeapons.integer & (1 << WP_DISRUPTOR))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_DISRUPTOR);
-				if (g_startingWeapons.integer & (1 << WP_BOWCASTER))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_BOWCASTER);
-				if (g_startingWeapons.integer & (1 << WP_REPEATER))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_REPEATER);
-				if (g_startingWeapons.integer & (1 << WP_DEMP2))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_DEMP2);
-				if (g_startingWeapons.integer & (1 << WP_FLECHETTE))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_FLECHETTE);
-				if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_ROCKET_LAUNCHER);
-				if (g_startingWeapons.integer & (1 << WP_CONCUSSION))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_CONCUSSION);
-				if (g_startingWeapons.integer & (1 << WP_THERMAL))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_THERMAL);
-				if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_TRIP_MINE);
-				if (g_startingWeapons.integer & (1 << WP_DET_PACK))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_DET_PACK);
-				if (g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
-					client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_BRYAR_OLD);
+		for (i = WP_STUN_BATON; i <= WP_BRYAR_OLD; i++) {
+			if (g_startingWeapons.integer & (1 << i))
+				client->ps.stats[STAT_WEAPONS] |= (1 << i);
+		}
 
-				if (!(g_startingWeapons.integer & (1 << 0))) { //oh right, startingWeapons bit 1 gives more ammo
-					if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
-						client->ps.ammo[AMMO_BLASTER] = 300;
-					if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
-						client->ps.ammo[AMMO_POWERCELL] = 200;
-					if (g_startingWeapons.integer & (1 << WP_REPEATER) || g_startingWeapons.integer & (1 << WP_FLECHETTE) || g_startingWeapons.integer & (1 << WP_CONCUSSION))
-						client->ps.ammo[AMMO_METAL_BOLTS] = 200;
-					if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
-						client->ps.ammo[AMMO_ROCKETS] = 2;
-					if (g_startingWeapons.integer & (1 << WP_DET_PACK))
-						client->ps.ammo[AMMO_DETPACK] = 1;
-					if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
-						client->ps.ammo[AMMO_TRIPMINE] = 1;
-					if (g_startingWeapons.integer & (1 << WP_THERMAL))
-						client->ps.ammo[AMMO_THERMAL] = 1;
-				}
-				else {
-					if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
-						client->ps.ammo[AMMO_BLASTER] = 600;
-					if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
-						client->ps.ammo[AMMO_POWERCELL] = 600;
-					if (g_startingWeapons.integer & (1 << WP_REPEATER) || g_startingWeapons.integer & (1 << WP_FLECHETTE) || g_startingWeapons.integer & (1 << WP_CONCUSSION))
-						client->ps.ammo[AMMO_METAL_BOLTS] = 600;
-					if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
-						client->ps.ammo[AMMO_ROCKETS] = 25;
-					if (g_startingWeapons.integer & (1 << WP_DET_PACK))
-						client->ps.ammo[AMMO_DETPACK] = 10;
-					if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
-						client->ps.ammo[AMMO_TRIPMINE] = 10;
-					if (g_startingWeapons.integer & (1 << WP_THERMAL))
-						client->ps.ammo[AMMO_THERMAL] = 10;
-				}
+		if (!(g_startingWeapons.integer & (1 << 0))) { //oh right, startingWeapons bit 1 gives more ammo
+			if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
+				client->ps.ammo[AMMO_BLASTER] = 300;
+			if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
+				client->ps.ammo[AMMO_POWERCELL] = 200;
+			if (g_startingWeapons.integer & (1 << WP_REPEATER) || g_startingWeapons.integer & (1 << WP_FLECHETTE) || g_startingWeapons.integer & (1 << WP_CONCUSSION))
+				client->ps.ammo[AMMO_METAL_BOLTS] = 200;
+			if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
+				client->ps.ammo[AMMO_ROCKETS] = 2;
+			if (g_startingWeapons.integer & (1 << WP_DET_PACK))
+				client->ps.ammo[AMMO_DETPACK] = 1;
+			if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
+				client->ps.ammo[AMMO_TRIPMINE] = 1;
+			if (g_startingWeapons.integer & (1 << WP_THERMAL))
+				client->ps.ammo[AMMO_THERMAL] = 1;
+		}
+		else {
+			if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
+				client->ps.ammo[AMMO_BLASTER] = 600;
+			if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
+				client->ps.ammo[AMMO_POWERCELL] = 600;
+			if (g_startingWeapons.integer & (1 << WP_REPEATER) || g_startingWeapons.integer & (1 << WP_FLECHETTE) || g_startingWeapons.integer & (1 << WP_CONCUSSION))
+				client->ps.ammo[AMMO_METAL_BOLTS] = 600;
+			if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
+				client->ps.ammo[AMMO_ROCKETS] = 25;
+			if (g_startingWeapons.integer & (1 << WP_DET_PACK))
+				client->ps.ammo[AMMO_DETPACK] = 10;
+			if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
+				client->ps.ammo[AMMO_TRIPMINE] = 10;
+			if (g_startingWeapons.integer & (1 << WP_THERMAL))
+				client->ps.ammo[AMMO_THERMAL] = 10;
+		}
+	}
 }
 
 /*
@@ -4247,6 +4413,8 @@ void ClientSpawn(gentity_t *ent) {
 
 	if (client->sess.raceMode) {
 		ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] = 100;
+		if (client->sess.movementStyle == MV_COOP_JKA)
+			client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
 	}
 	// health will count down towards max_health
 	else if (level.gametype == GT_SIEGE &&
@@ -4297,12 +4465,19 @@ void ClientSpawn(gentity_t *ent) {
 	}
 	else if ( level.gametype == GT_DUEL || level.gametype == GT_POWERDUEL )
 	{//no armor in duel
-		client->ps.stats[STAT_ARMOR] = 0;
+		int startArmor = 0;
+		if (g_startingItems.integer & (1 << (HI_NUM_HOLDABLE+1))) {
+			if (g_duelStartArmor.integer > 0)
+				startArmor = g_duelStartArmor.integer;
+		}
+		client->ps.stats[STAT_ARMOR] = startArmor;
 	}
 	else
-	{
-		client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;
-		//Clan Arena starting armor/hp here?
+	{//Clan Arena starting armor/hp here
+		if (g_startingItems.integer & (1 << (HI_NUM_HOLDABLE + 2)))//sad
+			client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH];
+		else
+			client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;
 	}
 
 	G_SetOrigin( ent, spawn_origin );

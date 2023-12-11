@@ -214,10 +214,12 @@ XCVAR_DEF( g_teamEnergizeScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_tweakWeapons,				"0",			CVU_TweakWeapons,	CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_startingWeapons,			"8",		CVU_StartingWeapons,	CVAR_ARCHIVE,									qtrue ) //Start with saber only default, fall back to melee if no saberattack
 XCVAR_DEF( g_weaponDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_splashDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_projectileVelocityScale,	"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_selfDamageScale,			"0.5",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_projectileInheritance,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fullInheritance,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
+XCVAR_DEF( g_gunGame,					"0",			CVU_GunGame,		CVAR_ARCHIVE,									qtrue )
 
 //JAPRO MOVEMENT
 XCVAR_DEF( g_flipKick,					"0",			CVU_Flipkick,		CVAR_ARCHIVE,									qtrue )
@@ -332,6 +334,7 @@ XCVAR_DEF( bot_strafeOffset,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_newBotAI,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_newBotAITarget,			"-1",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( bot_maxbots,					"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( bot_team,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 
 //testing
 
