@@ -1877,7 +1877,7 @@ int PassStandardEnemyChecks(bot_state_t *bs, gentity_t *en)
 		vec3_t vs;
 		float vLen = 0;
 
-		if (!g_friendlyFire.integer)
+		if (!g_friendlyFire.value)
 		{ //can't harm non-JM in JM mode if FF is off
 			return 0;
 		}
@@ -2168,7 +2168,7 @@ int PassLovedOneCheck(bot_state_t *bs, gentity_t *ent)
 qboolean G_ThereIsAMaster(void);
 
 //standard check to find a new enemy.
-int ScanForEnemies(bot_state_t *bs)
+int ScanForEnemies(bot_state_t* bs)
 {
 	vec3_t a;
 	float distcheck;
@@ -2177,7 +2177,6 @@ int ScanForEnemies(bot_state_t *bs)
 	int i;
 	float hasEnemyDist = 0;
 	qboolean noAttackNonJM = qfalse;
-	float ourHealth = g_entities[bs->client].health;
 
 	closest = 999999;
 	i = 0;
@@ -2185,59 +2184,23 @@ int ScanForEnemies(bot_state_t *bs)
 
 	if (bs->currentEnemy)
 	{ //only switch to a new enemy if he's significantly closer
-		if (g_newBotAI.integer)
-			hasEnemyDist = 0;
-		else
-			hasEnemyDist = bs->frame_Enemy_Len;
-	}
-
-	if (bs->currentEnemy && bs->currentEnemy->client &&
-		bs->currentEnemy->client->ps.isJediMaster)
-	{ //The Jedi Master must die.
-		return -1;
-	}
-
-	if (level.gametype == GT_JEDIMASTER)
-	{
-		if (G_ThereIsAMaster() && !bs->cur_ps.isJediMaster)
-		{ //if friendly fire is on in jedi master we can attack people that bug us
-			if (!g_friendlyFire.integer)
-			{
-				noAttackNonJM = qtrue;
-			}
-			else
-			{
-				closest = 128; //only get mad at people if they get close enough to you to anger you, or hurt you
-			}
-		}
+		hasEnemyDist = bs->frame_Enemy_Len;
 	}
 
 	while (i <= MAX_CLIENTS)
 	{
-		if (i != bs->client && g_entities[i].client && !OnSameTeam(&g_entities[bs->client], &g_entities[i]) && PassStandardEnemyChecks(bs, &g_entities[i])
-			&& BotPVSCheck(g_entities[i].client->ps.origin, bs->eye) && PassLovedOneCheck(bs, &g_entities[i]))
+		if (i != bs->client && g_entities[i].client && !OnSameTeam(&g_entities[bs->client], &g_entities[i]) && PassStandardEnemyChecks(bs, &g_entities[i]) && BotPVSCheck(g_entities[i].client->ps.origin, bs->eye) && PassLovedOneCheck(bs, &g_entities[i]))
 		{
 			VectorSubtract(g_entities[i].client->ps.origin, bs->eye, a);
-			if (g_newBotAI.integer) {
-				float normalizedHealth = 0.25 + (g_entities[i].health - 1)*(1 - 0.25)/(100-1); //Range .25 to 1
-
-				normalizedHealth += (100 - ourHealth) * 0.005; //Bring normalizedhealth closer to 1 the lower HP we ourselves are?, up to +0.5? 
-				if (normalizedHealth > 1)
-					normalizedHealth = 1;
-
-				distcheck = VectorLength(a) * normalizedHealth;
-			}
-			else
-				distcheck = VectorLength(a);
+			distcheck = VectorLength(a);
 			vectoangles(a, a);
-
-			if (g_entities[i].client->ps.isJediMaster)
-			{ //make us think the Jedi Master is close so we'll attack him above all
-				distcheck = 1;
-			}
-
-			if (distcheck < closest &&
-				(g_newBotAI.integer || (((InFieldOfVision(bs->viewangles, 90, a) && !BotMindTricked(bs->client, i)) || BotCanHear(bs, &g_entities[i], distcheck)) && OrgVisible(bs->eye, g_entities[i].client->ps.origin, -1))))
+			/*
+						if (g_entities[i].client->ps.isJediMaster)
+						{ //make us think the Jedi Master is close so we'll attack him above all
+							distcheck = 1;
+						}
+			*/
+			if (distcheck < closest && ((InFieldOfVision(bs->viewangles, 90, a) && !BotMindTricked(bs->client, i)) || BotCanHear(bs, &g_entities[i], distcheck)) && OrgVisible(bs->eye, g_entities[i].client->ps.origin, -1))
 			{
 				if (BotMindTricked(bs->client, i))
 				{
@@ -2245,7 +2208,7 @@ int ScanForEnemies(bot_state_t *bs)
 					{
 						if (!hasEnemyDist || distcheck < (hasEnemyDist - 128))
 						{ //if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
-							if (!noAttackNonJM || g_entities[i].client->ps.isJediMaster)
+							if (!noAttackNonJM)	//|| g_entities[i].client->ps.isJediMaster)
 							{
 								closest = distcheck;
 								bestindex = i;
@@ -2257,7 +2220,7 @@ int ScanForEnemies(bot_state_t *bs)
 				{
 					if (!hasEnemyDist || distcheck < (hasEnemyDist - 128))
 					{ //if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
-						if (!noAttackNonJM || g_entities[i].client->ps.isJediMaster)
+						if (!noAttackNonJM)	//|| g_entities[i].client->ps.isJediMaster)
 						{
 							closest = distcheck;
 							bestindex = i;
@@ -4649,6 +4612,7 @@ float BotWeaponCanLead(bot_state_t *bs)
 	switch ( bs->cur_ps.weapon )
 	{
 	case WP_BRYAR_PISTOL:
+	case WP_BRYAR_OLD:
 		return 0.5f;
 	case WP_BLASTER:
 		return 0.35f;
@@ -4662,6 +4626,11 @@ float BotWeaponCanLead(bot_state_t *bs)
 		return 0.35f;
 	case WP_ROCKET_LAUNCHER:
 		return 0.9f;
+	case WP_CONCUSSION:
+		if (bs->doAltAttack)
+			return 0.03f;
+		else
+			return 0.2f;
 	case WP_FLECHETTE:
 		return 0.3f;
 	case WP_DISRUPTOR:
@@ -4674,159 +4643,143 @@ float BotWeaponCanLead(bot_state_t *bs)
 	}
 }
 
+float G_NewBotAIGetProjectileSpeed(int weapon, qboolean altFire) {
+	float projectileSpeed = 0;
+
+	if (weapon == WP_BRYAR_OLD || weapon == WP_BRYAR_PISTOL || (weapon == WP_REPEATER && !altFire))
+		projectileSpeed = 1600;
+	else if (weapon == WP_BLASTER && (g_tweakWeapons.integer & WT_TRIBES))
+		projectileSpeed = 10440;
+	else if (weapon == WP_BLASTER)
+		projectileSpeed = 2300;
+	else if (weapon == WP_DISRUPTOR && (g_tweakWeapons.integer & WT_PROJ_SNIPER))
+		projectileSpeed = 9000;
+	else if (weapon == WP_BOWCASTER)
+		projectileSpeed = 1300;
+	else if (weapon == WP_DEMP2 && !altFire) {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			projectileSpeed = 2200;
+		else
+			projectileSpeed = 1800;
+	}
+	else if (weapon == WP_REPEATER && altFire) {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			projectileSpeed = 1400;
+		else
+			projectileSpeed = 1100;
+	}
+	else if (weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_STAKE_GUN))
+		projectileSpeed = 3000;
+	else if ((weapon == WP_FLECHETTE) && altFire)
+		projectileSpeed = 1150;
+	else if (weapon == WP_FLECHETTE && !altFire)
+		projectileSpeed = 3500;
+	else if (weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && altFire)
+		projectileSpeed = 1400;
+	else if (weapon == WP_ROCKET_LAUNCHER && !altFire) {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			projectileSpeed = 2040;
+		else
+			projectileSpeed = 900;
+	}
+	else if (weapon == WP_ROCKET_LAUNCHER && altFire)
+		projectileSpeed = 450;
+	else if (weapon == WP_CONCUSSION && !altFire && (g_tweakWeapons.integer & WT_TRIBES))
+		projectileSpeed = 2275;
+	else if (weapon == WP_CONCUSSION && !altFire)
+		projectileSpeed = 3000;
+	else if (weapon == WP_THERMAL)
+		projectileSpeed = 900;
+
+	return projectileSpeed * g_projectileVelocityScale.value;
+}
+
+/*
+trace between us and this new point, if there is something there, see how far away it is, and if its close enough to splash damage us dont fire, or just dont fire at all? - or switch to demp2 alt if it would dmg them
+if no LOS, aim at someone else if LOS.. ?
+*/
 //offset the desired view angles with aim leading in mind
-float G_GetAnimPoint(gentity_t *self);
-void BotAimLeading(bot_state_t *bs, vec3_t headlevel, float leadAmount)
-{
-	int x;
-	vec3_t predictedSpot;
-	vec3_t movementVector;
-	vec3_t a, ang;
-	float vtotal;
+void G_NewBotAIAimLeading(bot_state_t* bs, vec3_t headlevel) {
+	vec3_t predictedSpot, a, ang;
+	float eta = 0, projectileDrop = 0;
+	float projectileSpeed;
 
 	if (!bs->currentEnemy || !bs->currentEnemy->client)
 		return;
 
-	if (!g_newBotAI.integer && !bs->frame_Enemy_Len)
-		return;
+	projectileSpeed = G_NewBotAIGetProjectileSpeed(bs->cur_ps.weapon, bs->doAltAttack);
 
-	vtotal = 0;
-
-	if (bs->currentEnemy->client->ps.velocity[0] < 0)
-		vtotal += -bs->currentEnemy->client->ps.velocity[0];
-	else
-		vtotal += bs->currentEnemy->client->ps.velocity[0];
-
-	if (bs->currentEnemy->client->ps.velocity[1] < 0)
-		vtotal += -bs->currentEnemy->client->ps.velocity[1];
-	else
-		vtotal += bs->currentEnemy->client->ps.velocity[1];
-
-	if (bs->currentEnemy->client->ps.velocity[2] < 0)
-		vtotal += -bs->currentEnemy->client->ps.velocity[2];
-	else
-		vtotal += bs->currentEnemy->client->ps.velocity[2];
-
-	//trap->Print("Leadin target with a velocity total of %f\n", vtotal);
-
-	VectorCopy(bs->currentEnemy->client->ps.velocity, movementVector);
-	VectorNormalize(movementVector);
-	x = bs->frame_Enemy_Len*leadAmount; //hardly calculated with an exact science, but it works
-
-	if (vtotal > 400)
-		vtotal = 400;
-
-	if (vtotal)
-		x = (bs->frame_Enemy_Len*0.9)*leadAmount*(vtotal*0.0012); //hardly calculated with an exact science, but it works
-	else
-		x = (bs->frame_Enemy_Len*0.9)*leadAmount; //hardly calculated with an exact science, but it works
-
-	predictedSpot[0] = headlevel[0] + (movementVector[0]*x);
-	predictedSpot[1] = headlevel[1] + (movementVector[1]*x);
-	predictedSpot[2] = headlevel[2] + (movementVector[2]*x);
-
-	if (g_newBotAI.integer) {
-		if ((bs->cur_ps.weapon == WP_REPEATER) && bs->doAltAttack) { //Aim higher for the orbs
-			const float eta = (bs->frame_Enemy_Len/(1100 * g_projectileVelocityScale.value)); //REPEATER_ALT_VELOCITY = 1100
-			const float drop = (0.5)*(800)*(eta*eta);
-			predictedSpot[2] += drop;
-		}
-		else if ((bs->cur_ps.weapon == WP_DISRUPTOR) && (g_tweakWeapons.integer & WT_PROJ_SNIPER)) { //Aim higher for the orbs
-			const float eta = (bs->frame_Enemy_Len/(10000 * g_projectileVelocityScale.value)); //REPEATER_ALT_VELOCITY = 1100
-			const float drop = (0.5)*(800)*(eta*eta);
-			predictedSpot[2] += drop;
+	if (projectileSpeed) { //this should be done after playr movement
+		if (g_projectileInheritance.value) { //todo still have to teach brodie full inheritence projectiles
+			vec3_t botforward;
+			AngleVectors(bs->viewangles, botforward, NULL, NULL);
+			projectileSpeed += DotProduct(botforward, g_entities[bs->client].client->ps.velocity)*g_projectileInheritance.value;
 		}
 
-#if 0
-		else if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE && g_entities[bs->client].client->ps.saberMove != LS_READY) { //poke/wiggle
-			//1 - Aim so that tip of saber is closest to enemy
-			//2 - Wiggle back and forth/up down
-
-
-			/*
-			vec3_t saberEnd, saberAngs;
-			VectorCopy(g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberEnd); //Vector of the tip of the saber 
-			VectorSubtract(saberEnd, bs->origin, saberEnd);//This might be backwards, but its the vector of saber tip relative to us
-		
-			vectoangles(saberEnd, saberAngs); //Turn saber tip into angles
-
-			saberAngs[YAW] -= 150;
-
-			saberAngs[PITCH] += 25;//who knows!
-
-			saberAngs[YAW] = AngleSubtract(saberAngs[YAW], bs->viewangles[YAW]);
-			saberAngs[PITCH] = AngleSubtract(saberAngs[PITCH], bs->viewangles[PITCH]);
-
-			bs->ideal_viewangles[YAW] -= saberAngs[YAW]; //Offset our ideal angles by this to keep saber tip always pointed at enemy?
-			bs->ideal_viewangles[PITCH] -= saberAngs[PITCH] * 0.5;
-		
-		*/
-			
-			//Poke time!
-			/*
-			if (level.time % 200 > 100)  {
-				if (bs->aimOffsetAmtYaw > 0) {
-					bs->aimOffsetAmtYaw = -10;
-				}
-				else {
-					bs->aimOffsetAmtYaw = 10;
-				}
-			}
-			*/
-
-
-			//Get our saber tip location.
-			//Get enemy location.
-			//Get difference.
-			//Add difference to desired aim location?
-			//vec3_t saberDiff;
-			//VectorSubtract(g_entities[bs->client].client->saber[0].blade[0].trail.tip, bs->currentEnemy->client->ps.origin, saberDiff);
-			//VectorAdd(saberDiff, predictedSpot, predictedSpot);
-
-			/*U
-			if (g_entities[bs->client].client->ps.saberMove == LS_R_T2B) {
-				if (G_GetAnimPoint(&g_entities[bs->client]) >= 0.9f) { //Start
-					predictedSpot[2] -= 400;	
-				}
-				else { //End
-					predictedSpot[2] += 400;
-				}
-			}
-			*/
-
-			/*
-			if (level.time % 200 > 100)  {
-				predictedSpot[2] += 16;
-			}
-			else {
-				predictedSpot[2] -= 16;
-			}
-
-			if (level.time % 50 > 25)  {
-				predictedSpot[0] += 8;
-			}
-			else {
-				predictedSpot[0] -= 8;
-			}
-
-			if (level.time % 100 > 50)  {
-				predictedSpot[1] += 8;
-			}
-			else {
-				predictedSpot[1] -= 8;
-			}
-			*/
-			
-
-
+		eta = (bs->frame_Enemy_Len / projectileSpeed); //TODO: Adjust if its a curved projectile arc
+		VectorMA(headlevel, eta, bs->currentEnemy->client->ps.velocity, predictedSpot); //Multiple vel by eta, and add it to their origin to get predicted spot
+		if (((bs->cur_ps.weapon == WP_REPEATER) && bs->doAltAttack) ||
+			((bs->cur_ps.weapon == WP_DISRUPTOR) && (g_tweakWeapons.integer & WT_PROJ_SNIPER)) ||
+			((bs->cur_ps.weapon == WP_ROCKET_LAUNCHER) && bs->doAltAttack && (g_tweakWeapons.integer & WT_ROCKET_MORTAR)) ||
+			((bs->cur_ps.weapon == WP_ROCKET_LAUNCHER) && !bs->doAltAttack && (g_tweakWeapons.integer & WT_TRIBES)) ||
+			((bs->cur_ps.weapon == WP_FLECHETTE) && (g_tweakWeapons.integer & WT_STAKE_GUN)) ||
+			((bs->cur_ps.weapon == WP_FLECHETTE) && !(g_tweakWeapons.integer & WT_STAKE_GUN) && bs->doAltAttack) ||
+			(bs->cur_ps.weapon == WP_THERMAL) ||
+			(g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY)) {
+			projectileDrop = (0.5) * (800) * (eta * eta); //If weapon has gravity, compensate to aim higher
+			predictedSpot[2] += projectileDrop;
 		}
+		if (bs->currentEnemy->client->ps.groundEntityNum == ENTITYNUM_NONE) { //In Air
+			if (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_LEVITATION) && bs->currentEnemy->client->ps.velocity[2] > JUMP_VELOCITY - 10) { //If person is forcejumping up... assume they will keep forcejumping.. until end of jump?
+				const float diff = (predictedSpot[2] - bs->cur_ps.fd.forceJumpZStart);
+				if (diff > forceJumpHeight[bs->currentEnemy->client->ps.fd.forcePowerLevel[FP_LEVITATION]]) { //We predict they will be higher than they can possibly jump to, so correct
+					predictedSpot[2] -= (diff - forceJumpHeight[bs->currentEnemy->client->ps.fd.forcePowerLevel[FP_LEVITATION]]);
+				}
+			}
+			else if (bs->currentEnemy->client->ps.eFlags & EF_JETPACK_ACTIVE) { //dont predict drops if they are jetting?
+			}
+			else {
+				vec3_t predictedSpotGrav;
+				trace_t tr;
+				float playerDrop = (0.5f) * g_gravity.integer * (eta * eta);
 
-#endif
+				predictedSpotGrav[0] = predictedSpot[0];
+				predictedSpotGrav[1] = predictedSpot[1];
+				predictedSpotGrav[2] = predictedSpot[2] - playerDrop;
+
+				JP_Trace(&tr, headlevel, 0, 0, predictedSpotGrav, ENTITYNUM_NONE, MASK_SOLID, qfalse, 0, 0); //eh? do this if any eta tbh.. not just if jumping
+				VectorCopy(tr.endpos, predictedSpot);
+
+				//G_CheckGroundPound(bs, eta, tr.fraction * eta); //return if so?
+
+				//now trace from us to pos and see if its a los, if not don't fire? or...,.,.,.,.,
+				//def never fire if within selfkill range
+				//y headlevel dont work?
+			}
+		}
+	}
+	else { //Hitscan, maybe tweak this so it leads a tiny bit for netcode
+		vec3_t dir;
+		VectorCopy(bs->currentEnemy->client->ps.velocity, dir);
+		VectorNormalize(dir);
+		VectorMA(headlevel, 4, dir, predictedSpot); //Lead them by 4u in their direction of motion?
+
+		if ((bs->cur_ps.weapon == WP_DEMP2) && bs->doAltAttack && ((bs->currentEnemy->client->ps.groundEntityNum != ENTITYNUM_NONE) || bs->currentEnemy->client->ps.velocity[2] < 0)) { //stupid demp2 delay compensate, only if they are not in air, or in air and moving down
+			trace_t tr;
+			vec3_t predictedSpotGround;
+
+			VectorMA(headlevel, 0.5f, bs->currentEnemy->client->ps.velocity, predictedSpot); //Lead them by 500ms
+			predictedSpotGround[0] = predictedSpot[0];
+			predictedSpotGround[1] = predictedSpot[1];
+			predictedSpotGround[2] = predictedSpot[2] - 1024;
+			JP_Trace(&tr, headlevel, 0, 0, predictedSpotGround, ENTITYNUM_NONE, MASK_SOLID, qfalse, 0, 0); //aim at ground below them
+			VectorCopy(tr.endpos, predictedSpot);
+
+			//G_CheckGroundPound(bs, 0.2f, tr.fraction * 0.2f); //return if so?
+		}
 	}
 
-
-	if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE && 
-	g_entities[bs->client].client->ps.saberMove != LS_READY) { //Poke
+	if (bs->cur_ps.weapon == WP_SABER && bs->cur_ps.saberMove >= 4) { //Poke
 		vec3_t saberDiff;
 		VectorSubtract(bs->currentEnemy->client->ps.origin, g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberDiff);
 		VectorAdd(saberDiff, predictedSpot, predictedSpot);
@@ -4837,53 +4790,127 @@ void BotAimLeading(bot_state_t *bs, vec3_t headlevel, float leadAmount)
 	vectoangles(a, ang);
 	VectorCopy(ang, bs->goalAngles);
 
-
-	if (bs->cur_ps.weapon == WP_SABER && g_entities[bs->client].client->ps.saberMove != LS_NONE && 
-		g_entities[bs->client].client->ps.saberMove != LS_READY) { //Poke and Wiggle
-
-
-			/*
-		vec3_t saberEnd, saberAngs;
-		VectorCopy(g_entities[bs->client].client->saber[0].blade[0].trail.tip, saberEnd); //Vector of the tip of the saber 
-		VectorSubtract(saberEnd, bs->origin, saberEnd);//This might be backwards, but its the vector of saber tip relative to us
-		
-		vectoangles(saberEnd, saberAngs); //Turn saber tip into angles
-
-		saberAngs[YAW] -= 150;
-
-		saberAngs[PITCH] += 25;//who knows!
-
-		saberAngs[YAW] = AngleSubtract(saberAngs[YAW], bs->viewangles[YAW]);
-		saberAngs[PITCH] = AngleSubtract(saberAngs[PITCH], bs->viewangles[PITCH]);
-
-		bs->goalAngles[YAW] -= saberAngs[YAW]; //Offset our ideal angles by this to keep saber tip always pointed at enemy?
-		bs->goalAngles[PITCH] -= saberAngs[PITCH] * 0.5;
-		*/
-
-
-
-		
-
-		if (level.time % 100 > 50)  {
-			bs->goalAngles[YAW] += 3.0f;	
+	if (bs->cur_ps.weapon == WP_SABER && bs->cur_ps.saberMove >= 4) { //Poke and Wiggle
+		if (level.time % 100 > 50) {
+			bs->goalAngles[YAW] += 3.0f;
 		}
 		else {
-			bs->goalAngles[YAW] -= 3.0f;	
+			bs->goalAngles[YAW] -= 3.0f;
 		}
 
-		if (level.time % 200 > 100)  {
-			bs->goalAngles[PITCH] += 6.0f;	
+		if (level.time % 200 > 100) {
+			bs->goalAngles[PITCH] += 6.0f;
 		}
 		else {
-			bs->goalAngles[PITCH] -= 6.0f;	
+			bs->goalAngles[PITCH] -= 6.0f;
 		}
-		
+
+		if (bs->cur_ps.saberMove == LS_A_T2B) {
+			if (bs->cur_ps.torsoTimer > 400) { //aim lower at start of red swing
+				bs->goalAngles[PITCH] += 45;
+			}
+			else if (bs->cur_ps.torsoTimer < 300) {
+				bs->goalAngles[PITCH] -= 45.0f;
+			}
+		}
+		else if (bs->cur_ps.saberMove == LS_S_R2L) {//Start of yellow horizontal
+			bs->goalAngles[YAW] += 45;
+		}
+		else if (bs->cur_ps.saberMove == LS_A_R2L) {//yellow horizontal
+			if (level.time % 200 > 100)
+				bs->goalAngles[YAW] += 20;
+			else
+				bs->goalAngles[YAW] += 20;
+
+		}
+		else if (bs->cur_ps.saberMove == LS_R_R2L) {//end of yellow horizontal
+			//bs->goalAngles[YAW] -= 30;
+		}
 
 		bs->goalAngles[YAW] = AngleNormalize360(bs->goalAngles[YAW]);
 		bs->goalAngles[PITCH] = AngleNormalize360(bs->goalAngles[PITCH]);
 	}
+}
 
 
+//offset the desired view angles with aim leading in mind
+void BotAimLeading(bot_state_t* bs, vec3_t headlevel, float leadAmount)
+{
+	int x;
+	vec3_t predictedSpot;
+	vec3_t movementVector;
+	vec3_t a, ang;
+	float vtotal;
+
+	if (!bs->currentEnemy ||
+		!bs->currentEnemy->client)
+	{
+		return;
+	}
+
+	if (!bs->frame_Enemy_Len)
+	{
+		return;
+	}
+
+	vtotal = 0;
+
+	if (bs->currentEnemy->client->ps.velocity[0] < 0)
+	{
+		vtotal += -bs->currentEnemy->client->ps.velocity[0];
+	}
+	else
+	{
+		vtotal += bs->currentEnemy->client->ps.velocity[0];
+	}
+
+	if (bs->currentEnemy->client->ps.velocity[1] < 0)
+	{
+		vtotal += -bs->currentEnemy->client->ps.velocity[1];
+	}
+	else
+	{
+		vtotal += bs->currentEnemy->client->ps.velocity[1];
+	}
+
+	if (bs->currentEnemy->client->ps.velocity[2] < 0)
+	{
+		vtotal += -bs->currentEnemy->client->ps.velocity[2];
+	}
+	else
+	{
+		vtotal += bs->currentEnemy->client->ps.velocity[2];
+	}
+
+	//G_Printf("Leadin target with a velocity total of %f\n", vtotal);
+
+	VectorCopy(bs->currentEnemy->client->ps.velocity, movementVector);
+
+	VectorNormalize(movementVector);
+
+	x = bs->frame_Enemy_Len * leadAmount; //hardly calculated with an exact science, but it works
+
+	if (vtotal > 400)
+	{
+		vtotal = 400;
+	}
+
+	if (vtotal)
+	{
+		x = (bs->frame_Enemy_Len * 0.9) * leadAmount * (vtotal * 0.0012); //hardly calculated with an exact science, but it works
+	}
+	else
+	{
+		x = (bs->frame_Enemy_Len * 0.9) * leadAmount; //hardly calculated with an exact science, but it works
+	}
+
+	predictedSpot[0] = headlevel[0] + (movementVector[0] * x);
+	predictedSpot[1] = headlevel[1] + (movementVector[1] * x);
+	predictedSpot[2] = headlevel[2] + (movementVector[2] * x);
+
+	VectorSubtract(predictedSpot, bs->eye, a);
+	vectoangles(a, ang);
+	VectorCopy(ang, bs->goalAngles);
 }
 
 //wobble our aim around based on our sk1llz
@@ -6206,7 +6233,7 @@ void NewBotAI_GetStrafeAim(bot_state_t *bs)
 
 	optimalAngle = acos((double) ((baseSpeed - (baseSpeed * frameTime)) / currentSpeed)) * (180.0f/M_PI) - 45.0f; 
 
-	optimalAngle += bot_strafeOffset.value; //Ayy
+	optimalAngle += 1.0f + bot_strafeOffset.value; //Ayy
 
 	if (optimalAngle < 0 || optimalAngle > 360)
 		optimalAngle = 0;
@@ -6235,17 +6262,17 @@ void NewBotAI_GetStrafeAim(bot_state_t *bs)
 void NewBotAI_GetAim(bot_state_t *bs)
 {
 	vec3_t headlevel;
-	float bLeadAmount = 0;
 	int i = 0;
 	int closestSaber = 0, saberDistance = 9999999, dist, saberOwner;
 	vec3_t saberDiff;
 	gentity_t *saber;
 
+	bs->hitSpotted = qfalse;
+
 	if (bs->runningLikeASissy) {
 		NewBotAI_GetStrafeAim(bs);
 		return;
 	}
-
 
 	/*
 		trType_t	trType;
@@ -6256,32 +6283,39 @@ void NewBotAI_GetAim(bot_state_t *bs)
 	*/
 
 	//Well we should loop through every client and see if they are saberthrowing.  Then get the closest saber to us and aim at that if its close enough.
-	while (i <= MAX_CLIENTS)
-	{
-		if (i != bs->client && g_entities[i].client && g_entities[i].client->ps.saberInFlight && !OnSameTeam(&g_entities[bs->client], &g_entities[i]) && PassStandardEnemyChecks(bs, &g_entities[i])
-			&& PassLovedOneCheck(bs, &g_entities[i]))
+	if (!g_entities[bs->client].client->ps.saberInFlight) {
+		while (i <= MAX_CLIENTS)
 		{
-			saber = &g_entities[g_entities[i].client->ps.saberEntityNum];
-			
-			VectorSubtract(bs->cur_ps.origin, saber->s.pos.trBase, saberDiff);
-			dist = VectorLengthSquared(saberDiff);
+			if (i != bs->client && g_entities[i].client && g_entities[i].client->ps.saberInFlight && !OnSameTeam(&g_entities[bs->client], &g_entities[i]) && PassStandardEnemyChecks(bs, &g_entities[i])
+				&& PassLovedOneCheck(bs, &g_entities[i]))
+			{
+				saber = &g_entities[g_entities[i].client->ps.saberEntityNum];
 
-			if (dist < saberDistance && saber->s.pos.trTime) {
-				saberOwner = i;
-				closestSaber = g_entities[i].client->ps.saberEntityNum;
-				saberDistance = dist;
+				VectorSubtract(bs->cur_ps.origin, saber->s.pos.trBase, saberDiff);
+				dist = VectorLengthSquared(saberDiff);
+
+				if (dist < saberDistance && saber->s.pos.trTime) {
+					saberOwner = i;
+					closestSaber = g_entities[i].client->ps.saberEntityNum;
+					saberDistance = dist;
+				}
 			}
-
+			i++;
 		}
-		i++;
 	}
 
 	//Saber is inrange , AND  nearest target is far enough away OR thrower is nearest target(?
 	if (saberDistance < 200*200 && (bs->frame_Enemy_Len > 200 || bs->currentEnemy->client->ps.clientNum == saberOwner)) { //Dont aim at it if theres a diff enemy in saber range?
+		vec3_t a, ang;
 		saber = &g_entities[closestSaber];
 
-		VectorCopy(saber->s.pos.trBase, headlevel);
-		BotAimLeading(bs, headlevel, bLeadAmount);
+		//VectorCopy(saber->s.pos.trBase, headlevel);
+		//BotAimLeading(bs, headlevel, bLeadAmount);
+
+		VectorSubtract(saber->s.pos.trBase, bs->eye, a);
+		vectoangles(a, ang);
+		VectorCopy(ang, bs->goalAngles);
+		bs->hitSpotted = qtrue;
 	}
 
 	/*
@@ -6302,10 +6336,10 @@ void NewBotAI_GetAim(bot_state_t *bs)
 		VectorCopy(bs->currentEnemy->client->ps.origin, headlevel);
 
 		if (bs->currentEnemy->client)
-			headlevel[2] += bs->currentEnemy->client->ps.viewheight - 24;//aim at chest?
-
-		bLeadAmount = BotWeaponCanLead(bs);
-		BotAimLeading(bs, headlevel, bLeadAmount);
+			headlevel[2] += bs->currentEnemy->client->ps.viewheight - 16;//aim at chest?
+		if (bs->cur_ps.saberInFlight)
+			headlevel[2] += 24; //aim a bit higher for saberthrow
+		G_NewBotAIAimLeading(bs, headlevel);
 	}
 
 	VectorCopy(bs->goalAngles, bs->ideal_viewangles);
@@ -6370,24 +6404,138 @@ int NewBotAI_GetTimeToInRange(bot_state_t *bs, int range, int maxTime) {
 	return timeToInRange; //If this is less than maxTime, we will be in range!
 
 }
+qboolean BG_SaberInAttack(int move);
+qboolean BG_InKnockDown(int anim);
+int NewBotAI_GetAbsorb(bot_state_t* bs) {
+	const int ourForce = bs->cur_ps.fd.forcePower;
+
+	if (g_forcePowerDisable.integer & (1 << FP_ABSORB))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_ABSORB)))
+		return 0;
+	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))
+		return 0;
+	if (ourForce < 12)
+		return 0;
+	if (!bs->frame_Enemy_Vis) //Only absorb if LOS
+		return 0;
+	if (bs->frame_Enemy_Len > MAX_DRAIN_DISTANCE)
+		return 0;
+
+	if (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_LIGHTNING)) //check if they are being hit though. not if enemy is using it?
+		return 100;
+
+	if (bs->cur_ps.weapon > WP_BRYAR_PISTOL && (bs->frame_Enemy_Len < 200)) { //Protect our guns
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
+		return 75; //eh?
+	}
+
+	if (bs->currentEnemy->client->ps.fd.forcePower >= 20 && g_entities[bs->client].health < 30) {//PK range? and he can be pulled? and low
+		if (bs->frame_Enemy_Len > 50) { //no point in absorbing if we are touching them anyway
+			if (bs->frame_Enemy_Len < 256 && (bs->cur_ps.groundEntityNum == ENTITYNUM_NONE || BG_SaberInAttack(bs->cur_ps.saberMove) || BG_InKnockDown(bs->cur_ps.legsAnim)))//can actually be pulled towards a kick so stop that
+				return ourForce * 0.5f - 10;
+		}
+	}
+
+	return 0;
+}
+
+int NewBotAI_GetProtect(bot_state_t* bs) {
+	const int ourForce = bs->cur_ps.fd.forcePower;
+	const int totalhealth = g_entities[bs->client].health + bs->currentEnemy->client->ps.stats[STAT_ARMOR];
+	//Only toggle protect on if we are about to get damaged..
+
+	if (g_forcePowerDisable.integer & (1 << FP_PROTECT))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_PROTECT)))
+		return 0;
+	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_PROTECT))
+		return 0;
+	if (ourForce < 12)
+		return 0;
+
+	if (bs->hitSpotted && totalhealth > 6 && (BG_SaberInAttack(bs->cur_ps.saberMove) || BG_InKnockDown(bs->cur_ps.legsAnim))) { //About to be saberthrowed and we can survive it and we can't block it
+		if (totalhealth > 35) { //we could survive it anyway
+			return (ourForce - 15);
+		}
+		return 100;
+	}
+
+	if (bs->frame_Enemy_Len < 120 && BG_SaberInAttack(bs->currentEnemy->client->ps.saberMove)) { //better way to check if we are about to take damage?
+		vec3_t diff;
+
+		VectorSubtract(bs->cur_ps.origin, bs->currentEnemy->client->saber[0].blade[0].trail.tip, diff);
+		if (VectorLengthSquared(diff) > (48 * 48)) //out of range
+			return (ourForce * 0.5f) - 10;
+	}
+
+	//Get nearest gun.. if (bs->currentEnemy->client->ps.weapon != WP_SABER)?  trace nearby projectiles? or is that not quick enough reaction time
+	//Weigh differently if we already have absorb ?
+	return 0;
+}
 
 void NewBotAI_Getup(bot_state_t *bs)
 {
+	qboolean useTheForce = qfalse;
+
 	trap->EA_Jump(bs->client);
 
-	if ((NewBotAI_GetDist(bs) < 200) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)) {
+	if ((bs->cur_ps.fd.forceGripBeingGripped > level.time) && bs->cur_ps.velocity[2] < -100) { //in grip and going down, a splat?
+		if (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PROTECT)) {
+			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
+			useTheForce = qtrue;
+		}
+		if (bs->cur_ps.fd.forcePowersKnown & (1 << FP_RAGE)) {
+			level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE;
+			useTheForce = qtrue;
+		}
+	}
+
+	if (!useTheForce && NewBotAI_GetAbsorb(bs)) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
+		useTheForce = qtrue;
+	}
+	if (!useTheForce && NewBotAI_GetProtect(bs)) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
+		useTheForce = qtrue;
+	}
+
+	if (!useTheForce && (bs->frame_Enemy_Len < 200) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)) {
 		if (!(g_forcePowerDisable.integer & (1 << FP_PUSH)) && bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH)) {
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
-			trap->EA_ForcePower(bs->client);
+			useTheForce = qtrue;
 		}
+	}
+
+	if (useTheForce) {
+		trap->EA_ForcePower(bs->client);
 	}
 }
 
 void NewBotAI_Flipkick(bot_state_t *bs)
 {
+	qboolean enemySwing = qfalse;
+	if (bs->currentEnemy && bs->currentEnemy->client && bs->currentEnemy->client->ps.weapon == WP_SABER && bs->cur_ps.torsoTimer) {
+		enemySwing = qtrue;
+	}
+
+	if (bs->currentEnemy && bs->currentEnemy->client && bs->cur_ps.saberMove == LS_A_T2B && (bs->currentEnemy->client->ps.saberMove != LS_READY || bs->currentEnemy->client->ps.weapon != WP_SABER || bs->currentEnemy->client->ps.fd.saberAnimLevel != SS_STRONG) && bs->frame_Enemy_Len < 180 && !enemySwing) {//In range and they can't block it
+		if (bs->cur_ps.torsoTimer < 350 && bs->cur_ps.torsoTimer > 100 && bs->frame_Enemy_Len < 130) {
+			return;
+		}
+	}
+
 	if (bs->cur_ps.groundEntityNum == ENTITYNUM_NONE - 1 || bs->cur_ps.fd.forceJumpZStart < 16) {//idk
 		trap->EA_MoveForward(bs->client);
 		trap->EA_Jump(bs->client);
+	}
+
+	//if red swing and during the good part of anim and they are in range of saber dont kick them.. yet
+	if (bs->currentEnemy && bs->currentEnemy->client && bs->cur_ps.saberMove == LS_A_T2B && (bs->currentEnemy->client->ps.saberMove != LS_READY || bs->currentEnemy->client->ps.weapon != WP_SABER || bs->currentEnemy->client->ps.fd.saberAnimLevel != SS_STRONG) && bs->frame_Enemy_Len < 180 && !enemySwing) {//In range and they can't block it
+		if (bs->cur_ps.torsoTimer < 250 && bs->cur_ps.torsoTimer > 100 && bs->frame_Enemy_Len < 110) {
+			trap->EA_Crouch(bs->client);
+			return;
+		}
 	}
 
 	else if (((bs->origin[2] - bs->cur_ps.fd.forceJumpZStart) > 24) && ((bs->origin[2] - bs->cur_ps.fd.forceJumpZStart) < 48))
@@ -6404,9 +6552,14 @@ void NewBotAI_ReactToBeingGripped(bot_state_t *bs) //Test this more, does it pus
 
 	VectorSubtract(bs->currentEnemy->client->ps.origin, bs->eye, a_fo);
 	vectoangles(a_fo, a_fo);
-
 	
-	if (!(g_forcePowerDisable.integer & (1 << FP_PULL)) && !(g_forcePowerDisable.integer & (1 << FP_PUSH)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PULL)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH))) {//Can push or pull
+	if (!(g_forcePowerDisable.integer & (1 << FP_ABSORB)) && bs->cur_ps.fd.forcePowersKnown & (1 << FP_ABSORB)) {//Can pull and not push
+		if (bs->cur_ps.fd.forcePower >= 12) {
+			level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
+			useTheForce = qtrue;
+		}
+	}
+	else if (!(g_forcePowerDisable.integer & (1 << FP_PULL)) && !(g_forcePowerDisable.integer & (1 << FP_PUSH)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PULL)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH))) {//Can push or pull
 		if (bs->cur_ps.fd.forcePower >= 20 && InFieldOfVision(bs->viewangles, 50, a_fo)) {
 			if (g_entities[bs->client].health < 30) {
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
@@ -6454,36 +6607,52 @@ void NewBotAI_Gripkick(bot_state_t *bs)
 	//float heightDiff = bs->cur_ps.origin[2] - bs->currentEnemy->client->ps.origin[2]; //We are above them by this much
 	int gripTime = level.time - bs->currentEnemy->client->ps.fd.forceGripStarted; //Milliseconds we have been gripping them
 
-	if (gripTime < 1000) { //[0-1] second in the grip (Aim down until in range, kick)
-		bs->ideal_viewangles[PITCH] = 60; //60?
-		trap->EA_MoveForward(bs->client);
+	if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) { //Splat and enough time? - how to see if they are splattable and were not gripped during midair. forcejumpzheight ?
+		float heightdiff = bs->currentEnemy->client->ps.origin[2] - bs->eye[2]; //Them minus ours,  they are 500, we are 300. height diff is 200.
 
-	} 
-	else if (gripTime < 2000) { //[1-2] seconds in the grip (Aim up, spin)
-		bs->ideal_viewangles[PITCH] = -80; //-80
-
-		if (level.time % 10000 > 5000) {
-			trap->EA_MoveRight(bs->client);
-			bs->ideal_viewangles[YAW] += 80; //80?
+		if (heightdiff < 110) {
+			bs->ideal_viewangles[PITCH] = -90; //60?
 		}
 		else {
-			trap->EA_MoveLeft(bs->client);
-			bs->ideal_viewangles[YAW] -= 80;//80?
+			bs->ideal_viewangles[PITCH] = 90; //-80
 		}
+		if (bs->currentEnemy->client->ps.velocity[2] < -400) {//going fast enough to die, let go
+			return;
+		}
+		//not a good splat, has to predict based on their momentum
 	}
-	else if (gripTime < 2200) { //[2-2.2] seconds in the grip (Aim at center for a split second, so they dont get stuck on our head)
-		bs->ideal_viewangles[PITCH] = 0;
-	}
-	else if (gripTime < 4000) { //[2.2-4] seconds in the grip (Aim down until in range, kick)
-		bs->ideal_viewangles[PITCH] = -70; //-70?
-		trap->EA_MoveForward(bs->client);
-	}
+	else {
+		if (gripTime < 1000) { //[0-1] second in the grip (Aim down until in range, kick)
+			bs->ideal_viewangles[PITCH] = 60; //60?
+			trap->EA_MoveForward(bs->client);
 
-	if ((bs->cur_ps.groundEntityNum == ENTITYNUM_NONE - 1)  && NewBotAI_GetTimeToInRange(bs, 40, 100) < 100) { //Start a kick if we are in range and on ground
-		NewBotAI_Flipkick(bs);
-	}
-	else if (bs->cur_ps.groundEntityNum != ENTITYNUM_NONE - 1) { //Always try to flipkick while we are in air
-		NewBotAI_Flipkick(bs);
+		}
+		else if (gripTime < 2000) { //[1-2] seconds in the grip (Aim up, spin)
+			bs->ideal_viewangles[PITCH] = -80; //-80
+
+			if (level.time % 10000 > 5000) {
+				trap->EA_MoveRight(bs->client);
+				bs->ideal_viewangles[YAW] += 80; //80?
+			}
+			else {
+				trap->EA_MoveLeft(bs->client);
+				bs->ideal_viewangles[YAW] -= 80;//80?
+			}
+		}
+		else if (gripTime < 2200) { //[2-2.2] seconds in the grip (Aim at center for a split second, so they dont get stuck on our head)
+			bs->ideal_viewangles[PITCH] = 0;
+		}
+		else if (gripTime < 4000) { //[2.2-4] seconds in the grip (Aim down until in range, kick)
+			bs->ideal_viewangles[PITCH] = -70; //-70?
+			trap->EA_MoveForward(bs->client);
+		}
+
+		if ((bs->cur_ps.groundEntityNum == ENTITYNUM_NONE - 1) && NewBotAI_GetTimeToInRange(bs, 40, 100) < 100) { //Start a kick if we are in range and on ground
+			NewBotAI_Flipkick(bs);
+		}
+		else if (bs->cur_ps.groundEntityNum != ENTITYNUM_NONE - 1) { //Always try to flipkick while we are in air
+			NewBotAI_Flipkick(bs);
+		}
 	}
 
 	bs->ideal_viewangles[YAW] = AngleNormalize360(bs->ideal_viewangles[YAW]); //Normalize the angles
@@ -6498,7 +6667,7 @@ void NewBotAI_Draining(bot_state_t *bs)
 	//useTheForce = qtrue;
 	//}
 
-	if (((g_entities[bs->client].health) < 100 && !(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) && OrgVisible(bs->eye, bs->currentEnemy->client->ps.origin, bs->client)))
+	if (((g_entities[bs->client].health) < 100 && bs->currentEnemy->client->ps.fd.forcePower && !(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) && OrgVisible(bs->eye, bs->currentEnemy->client->ps.origin, bs->client)))
 		trap->EA_ForcePower(bs->client);
 }
 
@@ -6508,23 +6677,43 @@ void NewBotAI_Speeding(bot_state_t *bs)
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_SPEED;
 		trap->EA_ForcePower(bs->client);
 	}
-	if (bs->currentEnemy->client->ps.weapon >= WP_BLASTER && NewBotAI_GetDist(bs) < 200) { //Pull their weapon
-		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-		trap->EA_ForcePower(bs->client);
-	}
 }
 
 void NewBotAI_Raging(bot_state_t *bs)
 {
-	if (bs->currentEnemy->client->ps.weapon >= WP_BLASTER && NewBotAI_GetDist(bs) < 200) { //Pull their weapon
-		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
+	if ((bs->frame_Enemy_Len > 256 && bs->cur_ps.weapon == WP_SABER) || !bs->frame_Enemy_Vis) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE;
 		trap->EA_ForcePower(bs->client);
 	}
 }
 
 void NewBotAI_Protecting(bot_state_t *bs)
 {
-	if ((g_entities[bs->client].health) > 90 || NewBotAI_GetDist(bs) > MAX_DRAIN_DISTANCE) {
+	qboolean stopProtecting = qfalse;
+
+	//Don't protect if they are out of range
+	if (!bs->frame_Enemy_Vis)
+		stopProtecting = qtrue;
+	else if (bs->frame_Enemy_Len > 512) {
+		if (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB)) {
+			if ((bs->cur_ps.fd.forcePower < 30))
+				stopProtecting = qtrue;
+		}
+		else {
+			if ((bs->cur_ps.fd.forcePower < 40))
+				stopProtecting = qtrue;
+		}
+	}
+
+	if (!bs->currentEnemy->client->ps.saberEntityNum) { //They have a dropped saber = no regen
+		if (bs->currentEnemy->client->ps.fd.forcePower < 35)
+			stopProtecting = qtrue;
+	}
+
+	if (bs->frame_Enemy_Len > 1024)
+		stopProtecting = qtrue;
+
+	if (stopProtecting) {
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
 		trap->EA_ForcePower(bs->client);
 	}
@@ -6532,13 +6721,28 @@ void NewBotAI_Protecting(bot_state_t *bs)
 
 void NewBotAI_Absorbing(bot_state_t *bs)
 {
-	if (NewBotAI_GetDist(bs) > MAX_DRAIN_DISTANCE || ((bs->currentEnemy->client->ps.fd.forcePower < 20) && (!(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN))))) {
+	qboolean stopAbsorbing = qfalse;
+	if (!bs->frame_Enemy_Vis)
+		stopAbsorbing = qtrue;
+	else if (NewBotAI_GetDist(bs) > MAX_DRAIN_DISTANCE || ((bs->currentEnemy->client->ps.fd.forcePower < 20) && (!(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN))))) {
 		if ((bs->cur_ps.fd.forceGripBeingGripped < level.time)) //Not being gripped
-		{
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
-			trap->EA_ForcePower(bs->client);
-		}
+			stopAbsorbing = qtrue;
 	}
+
+	if (!bs->currentEnemy->client->ps.saberEntityNum) { //They have a dropped saber = no regen
+		if (bs->currentEnemy->client->ps.fd.forcePower < 35)
+			stopAbsorbing = qtrue;
+	}
+
+	if (stopAbsorbing) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
+		trap->EA_ForcePower(bs->client);
+	}
+}
+
+void NewBotAI_SaberThrowing(bot_state_t* bs)
+{
+	trap->EA_Alt_Attack(bs->client);
 }
 
 float BS_GroundDistance(bot_state_t *bs)
@@ -6574,7 +6778,8 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 	const int /*hisHealth = bs->currentEnemy->health,*/ distance = bs->frame_Enemy_Len;
 	int hisWeapon = WP_SABER;
 	int bestWeapon = bs->cur_ps.weapon;
-	
+	const int forcedFireMode = level.clients[bs->client].forcedFireMode;
+
 	bs->doAltAttack = 0;
 
 	if (bs->currentEnemy->client)
@@ -6586,23 +6791,47 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 		if (distance > 1300) {
 			if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
-			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2)) {
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
 				bestWeapon = WP_DEMP2;
 				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
 			}
 			else if (BotWeaponSelectable(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
 			}
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_ROCKET_LAUNCHER;
+				bs->doAltAttack = 1;
+			}
+			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
 			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
 				bestWeapon = WP_BRYAR_PISTOL;
 				bs->doAltAttack = 1;
-				bs->altChargeTime = 1500;
+				bs->altChargeTime = 1200;
 			}
-			else
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
 				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+				bestWeapon = WP_BRYAR_PISTOL;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 1200;
+			}
 		}
 		else if (distance > 350 && distance < 1100) { //Have some padding between distance tiers so we dont weaponswitch spam
-			if (distance < 900 && BotWeaponSelectableAltFire(bs, WP_REPEATER)) {
+			if (distance < 900 && BotWeaponSelectableAltFire(bs, WP_REPEATER) && forcedFireMode != 1) {
 				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
@@ -6615,16 +6844,35 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_BLASTER;
 				bs->doAltAttack = 1;
 			}
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectableAltFire(bs, WP_BOWCASTER)) {
 				bestWeapon = WP_BOWCASTER;
 				bs->doAltAttack = 1;
 			}
-			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+			else if (distance > 600 && BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (distance > 700 && BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
 				bestWeapon = WP_BRYAR_PISTOL;
 				bs->doAltAttack = 1;
-				bs->altChargeTime = 1500;
+				bs->altChargeTime = 1200;
 			}
-			else bestWeapon = WP_SABER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
 		}
 		else if (distance < 200) {
 			if (BotWeaponSelectableAltFire(bs, WP_FLECHETTE)) {
@@ -6632,13 +6880,13 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				if (!(g_tweakWeapons.integer & WT_STAKE_GUN))
 					bs->doAltAttack = 1;
 			}
-			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER))
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && forcedFireMode != 2)
 				bestWeapon = WP_ROCKET_LAUNCHER;
 			else if (BotWeaponSelectableAltFire(bs, WP_REPEATER)) {
 				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
-			else if (BotWeaponSelectable(bs, WP_CONCUSSION))
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 2)
 				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) {
 				bestWeapon = WP_STUN_BATON;
@@ -6648,27 +6896,54 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_BLASTER;
 				bs->doAltAttack = 1;
 			}
-			else bestWeapon = WP_SABER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
 		}
 	}
-
 
 	else if (hisWeapon == WP_ROCKET_LAUNCHER || hisWeapon == WP_REPEATER || hisWeapon == WP_CONCUSSION || hisWeapon == WP_FLECHETTE) { //Likely going to splash damage us, so dont bother trying to block with saber
 		if (distance > 1024) {
 			if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
-			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2)) {
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
 				bestWeapon = WP_DEMP2;
 				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
 			}
 			else if (BotWeaponSelectable(bs, WP_BLASTER))
 				bestWeapon = WP_BLASTER;
-			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_CONCUSSION;
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_ROCKET_LAUNCHER;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
 				bestWeapon = WP_BRYAR_PISTOL;
 				bs->doAltAttack = 1;
-				bs->altChargeTime = 1500;
+				bs->altChargeTime = 1200;
 			}
-			else
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
 				bestWeapon = WP_SABER;
 		}
 		else if (distance > 350 && distance < 900) { //Have some padding between distance tiers so we dont weaponswitch spam
@@ -6676,26 +6951,45 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_BLASTER;
 				bs->doAltAttack = 1;
 			}
-			else if (BotWeaponSelectable(bs, WP_REPEATER))
+			else if (BotWeaponSelectable(bs, WP_REPEATER) && forcedFireMode != 2)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
 			else if (distance < 768 && BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
 				bestWeapon = WP_STUN_BATON;
 			}
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectableAltFire(bs, WP_BOWCASTER)) {
 				bestWeapon = WP_BOWCASTER;
 				bs->doAltAttack = 1;
 			}
-			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
 				bestWeapon = WP_BRYAR_PISTOL;
 				bs->doAltAttack = 1;
-				bs->altChargeTime = 1500;
+				bs->altChargeTime = 1200;
 			}
-			else bestWeapon = WP_SABER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+				bestWeapon = WP_SABER;
 		}
 		else if (distance < 200) { //Most DPS!
-			if (BotWeaponSelectable(bs, WP_REPEATER))
+			if (BotWeaponSelectable(bs, WP_REPEATER) && forcedFireMode != 2)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectableAltFire(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
@@ -6705,7 +6999,7 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_FLECHETTE;
 			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER))
 				bestWeapon = WP_ROCKET_LAUNCHER;
-			else if (BotWeaponSelectable(bs, WP_CONCUSSION))
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 2)
 				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
@@ -6717,7 +7011,27 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_STUN_BATON;
 				bs->doAltAttack = 1;
 			}
-			else bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+				bestWeapon = WP_BRYAR_PISTOL;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 1200;
+			}
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+				bestWeapon = WP_SABER;
 		}
 	}
 
@@ -6728,25 +7042,76 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_DISRUPTOR;
 			else if (BotWeaponSelectable(bs, WP_BLASTER))
 				bestWeapon = WP_BLASTER;
-			else
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_CONCUSSION;
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_ROCKET_LAUNCHER;
+				bs->doAltAttack = 1;
+			}
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & WP_SABER)
 				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+				bestWeapon = WP_BRYAR_PISTOL;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 1200;
+			}
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
 		}
 		else if (distance > 350 && distance < 900) { //Have some padding between distance tiers so we dont weaponswitch spam
 			if (BotWeaponSelectableAltFire(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
 				bs->doAltAttack = 1;
 			}
-			else if (BotWeaponSelectable(bs, WP_REPEATER))
+			else if (BotWeaponSelectable(bs, WP_REPEATER) && forcedFireMode != 2)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
 			else if (BotWeaponSelectableAltFire(bs, WP_STUN_BATON) && (g_tweakWeapons.integer & WT_STUN_LG) && !(g_tweakWeapons.integer & WT_STUN_HEAL)) {
 				bestWeapon = WP_STUN_BATON;
 			}
-			else bestWeapon = WP_SABER;
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
+				bestWeapon = WP_CONCUSSION;
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & WP_SABER)
+				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+				bestWeapon = WP_BRYAR_PISTOL;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 1200;
+			}
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
 		}
 		else if (distance < 200) {
-			if (BotWeaponSelectable(bs, WP_REPEATER))
+			if (BotWeaponSelectable(bs, WP_REPEATER) && forcedFireMode != 2)
 				bestWeapon = WP_REPEATER;
 			else if (BotWeaponSelectableAltFire(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
@@ -6754,9 +7119,9 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 			}
 			else if (BotWeaponSelectable(bs, WP_FLECHETTE))
 				bestWeapon = WP_FLECHETTE;
-			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER))
+			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && forcedFireMode != 2)
 				bestWeapon = WP_ROCKET_LAUNCHER;
-			else if (BotWeaponSelectable(bs, WP_CONCUSSION))
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 2)
 				bestWeapon = WP_CONCUSSION;
 			else if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 				bestWeapon = WP_DISRUPTOR;
@@ -6767,9 +7132,49 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_STUN_BATON;
 				bs->doAltAttack = 1;
 			}
-			else bestWeapon = WP_SABER;
+			else if (bs->cur_ps.stats[STAT_WEAPONS] & WP_SABER)
+				bestWeapon = WP_SABER;
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
+				bestWeapon = WP_BRYAR_OLD;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 800;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_PISTOL)) {
+				bestWeapon = WP_BRYAR_PISTOL;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 1200;
+			}
+			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && forcedFireMode != 1) {
+				bestWeapon = WP_CONCUSSION;
+				bs->doAltAttack = 1;
+			}
+			else if (BotWeaponSelectableAltFire(bs, WP_DEMP2) && forcedFireMode != 1) {
+				bestWeapon = WP_DEMP2;
+				bs->doAltAttack = 1;
+				bs->altChargeTime = 2100;
+			}
 		}
 	}
+
+	if (bestWeapon == WP_THERMAL) {
+		//bs->doAltAttack = 1;
+		bs->altChargeTime = 1250;
+		bs->ChargeTime = 1250;
+	}
+	else if (bestWeapon == WP_BOWCASTER) {
+		bs->doAltAttack = 1;
+	}
+
+	if (bs->currentEnemy->client && bs->currentEnemy->client->ps.weapon == WP_DEMP2) //dont charge if they can cancel it
+		bs->altChargeTime = 50;
+
+	if (forcedFireMode == 1)
+		bs->doAltAttack = 0;
+	else if (forcedFireMode == 2)
+		bs->doAltAttack = 1;
+
+	//todo- weapon table.
+
 	return bestWeapon;
 }
 
@@ -6783,10 +7188,30 @@ int NewBotAI_GetAltCharge(bot_state_t *bs)
 		return 0;
 
 	if ((bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (level.time - bs->cur_ps.weaponChargeTime) > bs->altChargeTime)
-		return 0;//release charge.. was 2 ?
+		return 2;//release charge.. was 2 ?
+	if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT)
+		return 3;
 
 	return 1;
 }
+
+int NewBotAI_GetCharge(bot_state_t* bs)
+{
+	int weap;
+
+	weap = bs->cur_ps.weapon;
+
+	if (bs->cur_ps.ammo[weaponData[weap].ammoIndex] < weaponData[weap].energyPerShot && weap != WP_STUN_BATON)
+		return 0;
+
+	if ((bs->cur_ps.weaponstate == WEAPON_CHARGING) && (level.time - bs->cur_ps.weaponChargeTime) > bs->ChargeTime)
+		return 2;//release charge.. was 2 ?
+	if (bs->cur_ps.weaponstate != WEAPON_CHARGING)
+		return 3;
+
+	return 1;
+}
+
 
 void NewBotAI_GetAttack(bot_state_t *bs)
 {
@@ -6798,45 +7223,145 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 
 	if (bs->runningLikeASissy) //Dont attack when chasing them with strafe i guess
 		return;
+	if (bs->isCamper && (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT) && (bs->cur_ps.weaponstate != WEAPON_CHARGING)) {//don't attack if waiting for them to land to groundpound - modify this so we don't cancel a charge
+		return;
+	}
+
+	if (bs->currentEnemy->client->invulnerableTimer && (bs->currentEnemy->client->invulnerableTimer > level.time)) {//don't attack them if they can't take dmg
+		return;
+	}
 
 	if (bs->cur_ps.weapon == WP_SABER) {//Fullforce saber attacks
-		g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_STRONG;
+		if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE) { //Yellow sweep
 
-		//todo - skip if we are already during a swing 
-		if ((g_entities[bs->client].client->ps.saberMove == LS_NONE || g_entities[bs->client].client->ps.saberMove == LS_READY) && NewBotAI_GetTimeToInRange(bs, 75, 600) < 600) {
-			if (g_entities[bs->client].health > 70) {
-				if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) || 
-					 ((bs->cur_ps.fd.forcePower < 60) || ((bs->frame_Enemy_Len < 70) && (bs->currentEnemy->client->ps.origin[2] - bs->cur_ps.origin[2]) > 50 ))) {
+			if (BG_SaberInAttack(bs->cur_ps.saberMove)) {
+				if (g_entities[bs->client].client->ps.fd.saberAnimLevel == SS_MEDIUM)
+					Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
+			}
+			else if (g_entities[bs->client].client->ps.fd.saberAnimLevel == SS_STAFF)
+				Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
+				//g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_MEDIUM; //SS_STAFF
+				//Cmd_SaberAttackCycle_f(&g_entities[bs->client]);
+			//else
+				//g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_STAFF; //SS_STAFF
+			//g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_MEDIUM; //SS_STAFF
+
+			if (bs->hitSpotted) //don't start a swing if a saberthrow is near us?
+				return;
+
+			if (g_gunGame.integer && g_entities[bs->client].client->forcedFireMode == 2) {
+				trap->EA_Alt_Attack(bs->client);
+				return;
+			}
+
+			if ((g_entities[bs->client].client->ps.saberMove == LS_NONE || g_entities[bs->client].client->ps.saberMove == LS_READY) && bs->frame_Enemy_Len < 256 && ((NewBotAI_GetTimeToInRange(bs, 75, 800) < 800) || bs->frame_Enemy_Len < 128)) {
+				if (g_entities[bs->client].health > 40) {
+					//See if they can't saberthrow?
+					//Com_Printf("Their torso time is %i\n", bs->currentEnemy->client->ps.torsoTimer);
+					//if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) || ((bs->frame_Enemy_Len < 70) && (bs->currentEnemy->client->ps.origin[2] - bs->cur_ps.origin[2]) > 50)) {
+						trap->EA_Attack(bs->client);
+						return;
+					//}
+				}
+			}
+
+		}
+#if 0
+		if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE) { //Yellow sweep
+			g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_MEDIUM;
+			if (bs->cur_ps.torsoTimer) {
+				if (bs->cur_ps.torsoTimer < 200) {
+					if (bs->cur_ps.saberMove == LS_A_L2R) {//Right
+						trap->EA_MoveLeft(bs->client);
+					}
+					else if (bs->cur_ps.saberMove == LS_A_R2L) {//Left
+						trap->EA_MoveRight(bs->client);
+					}
+					if (g_entities[bs->client].client->pers.cmd.forwardmove) {
+						trap->EA_MoveBack(bs->client);
+					}
+					if (bs->cur_ps.movementDir == 6 || bs->cur_ps.movementDir == 2)
 						trap->EA_Attack(bs->client);
 				}
 			}
-		}
-
-		/*
-		if (((speed >= 0) && ((bs->frame_Enemy_Len / speed) < 1.2f)) || (bs->frame_Enemy_Len < 64)) {
-			if (g_entities[bs->client].health > 60) {
-				if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) || bs->cur_ps.fd.forcePower < 40)
-					trap->EA_Attack(bs->client);
+			else {//Start it w/ a right swing i guess
+				trap->EA_MoveLeft(bs->client);
+				if (g_entities[bs->client].client->pers.cmd.forwardmove) {
+					trap->EA_MoveBack(bs->client);
+				}
+				trap->EA_Attack(bs->client);
 			}
+			//proble we have to stop moving forward, or just hold S?
+			//Get movement dir, if W, add S during start of swing
+			//Get swing anim, if left, do right. if right, do left.
+			//get swing anim point, if less than 50ms left, hold key and attack.  otherwise dont
 		}
-		*/
+#endif
+		else {
+			g_entities[bs->client].client->ps.fd.saberAnimLevel = SS_STRONG;
 
+			if (bs->hitSpotted) //don't start a swing if a saberthrow is near us?
+				return;
+
+			if (g_gunGame.integer && g_entities[bs->client].client->forcedFireMode == 2) {
+				trap->EA_Alt_Attack(bs->client);
+				return;
+			}
+
+			//todo - skip if we are already during a swing
+			if ((g_entities[bs->client].client->ps.saberMove == LS_NONE || g_entities[bs->client].client->ps.saberMove == LS_READY) && NewBotAI_GetTimeToInRange(bs, 75, 600) < 600) {
+				if (g_entities[bs->client].health > 70) {
+					if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) ||
+						((bs->cur_ps.fd.forcePower < 60) || ((bs->frame_Enemy_Len < 70) && (bs->currentEnemy->client->ps.origin[2] - bs->cur_ps.origin[2]) > 50))) {
+						trap->EA_Attack(bs->client);
+						return;
+					}
+				}
+			}
+
+			/*
+			if (((speed >= 0) && ((bs->frame_Enemy_Len / speed) < 1.2f)) || (bs->frame_Enemy_Len < 64)) {
+				if (g_entities[bs->client].health > 60) {
+					if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) || bs->cur_ps.fd.forcePower < 40)
+						trap->EA_Attack(bs->client);
+				}
+			}
+			*/
+		}
 
 
 
 		return;
 	}
 	
-	if (!bs->frame_Enemy_Vis && (bs->cur_ps.weapon != WP_DEMP2)) //Dont waste ammo if we cant see them..?
+	if (!bs->frame_Enemy_Vis && (bs->cur_ps.weapon != WP_DEMP2)) { //Dont waste ammo if we cant see them..?
 		return;
-
-	if ((bs->cur_ps.weapon == weapon) && bs->doAltAttack && NewBotAI_GetAltCharge(bs)) {//Ehhh..
-		if (weapon == WP_STUN_BATON && bs->frame_Enemy_Len > 240 && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) //Weird case for stun baton since low range and low firerate, dont bother until they are in range
-			return;
-		trap->EA_Alt_Attack(bs->client);
 	}
-	else if (bs->cur_ps.weapon == weapon) //we are using desired weapon
-		trap->EA_Attack(bs->client);
+
+	if (!bs->isCamper && (bs->cur_ps.weapon == weapon)) {
+		if (bs->doAltAttack) {
+			const int altCharge = NewBotAI_GetAltCharge(bs);
+			if (weapon == WP_STUN_BATON && bs->frame_Enemy_Len > 240 && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)) { //Weird case for stun baton since low range and low firerate, dont bother until they are in range
+			}
+			else if (altCharge == 1) {
+				trap->EA_Alt_Attack(bs->client);
+			}
+			else if (altCharge == 3) {
+				if (level.framenum % 2)
+					trap->EA_Alt_Attack(bs->client);
+			}
+		}
+		else {
+			const int charge = NewBotAI_GetCharge(bs);
+			if (charge == 1) { //0 is no ammo, 1 charging, 2 is release charge, 3 is not charging
+				trap->EA_Attack(bs->client);
+			}
+			else if (charge == 3) {
+				if (level.framenum % 2)
+					trap->EA_Attack(bs->client);
+			}
+		}
+	}
 }
 
 void NewBotAI_GetGroundDodge(bot_state_t *bs) {
@@ -6912,8 +7437,30 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 	else if (hisWeapon > WP_SABER && bs->cur_ps.weapon > WP_SABER) { //gun battle..
 		bs->runningLikeASissy = 0;
 
-		if (hisWeapon == WP_REPEATER || hisWeapon == WP_ROCKET_LAUNCHER || hisWeapon == WP_CONCUSSION) { //Splash dmg, jump
-			NewBotAI_Flipkick(bs);
+		if (hisWeapon == WP_REPEATER || hisWeapon == WP_ROCKET_LAUNCHER || hisWeapon == WP_CONCUSSION || (hisWeapon == WP_DEMP2 && bs->currentEnemy->client->forcedFireMode == 2)) { //Splash dmg, jump
+			//see if they have jetpack and do movement for that
+			//If we have a jetpack, and enough fuel, activate it
+			//once its active, hold it
+			if (bs->cur_ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)) {
+				if (g_tweakJetpack.integer) {
+					if (bs->cur_ps.groundEntityNum != ENTITYNUM_NONE) { //On ground
+						if (bs->cur_ps.jetpackFuel > 90) {
+							trap->EA_Jump(bs->client);
+							bs->runningToEscapeThreat = level.time;
+						}
+					}
+					else { //In Air
+						if (bs->runningToEscapeThreat < level.time - 200)
+							trap->EA_Jump(bs->client);
+					}
+				}
+				else {
+					trap->EA_Jump(bs->client);
+				}
+			}
+			else if (bs->cur_ps.fd.forcePower > 30) {
+				trap->EA_Jump(bs->client);
+			}
 			NewBotAI_GetGroundDodge(bs);
 			trap->EA_MoveForward(bs->client);
 		}
@@ -6939,15 +7486,17 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 
 		if (bs->currentEnemy->client->ps.legsAnim == BOTH_GETUP_BROLL_B && bs->frame_Enemy_Len < 100) {//Dodge a getup?
 			trap->EA_Crouch(bs->client);
-			trap->EA_MoveForward(bs->client);
+			if (bs->cur_ps.viewheight < 48) //only move forward if they are crouched
+				trap->EA_MoveForward(bs->client);
 			crouch = qtrue;
 		}
 		else if ( bs->currentEnemy->client->ps.legsAnim == BOTH_GETUP_BROLL_F && bs->frame_Enemy_Len < 150) {
 			trap->EA_Crouch(bs->client);
-			trap->EA_MoveForward(bs->client);
+			if (bs->cur_ps.viewheight < 48) //only move forward if they are crouched
+				trap->EA_MoveForward(bs->client);
 			crouch = qtrue;
 		}
-		else if ((g_entities[bs->client].health < 25 || (g_entities[bs->client].health < 50 && bs->cur_ps.fd.forcePower < 30)) && (bs->frame_Enemy_Len < 450)) {
+		else if ((g_entities[bs->client].health < 25 || (g_entities[bs->client].health < 50 && bs->cur_ps.fd.forcePower < 30) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) && (bs->frame_Enemy_Len < 450)) {
 			qboolean wallRun = qfalse;
 			//Running routine, we should add a wallrun search to this.
 
@@ -7023,9 +7572,24 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 					trap->EA_MoveRight(bs->client);
 			}
 		}
-		else
+		else if (bs->frame_Enemy_Len > 80) {
+			float dot;
+			dot = DotProduct(bs->cur_ps.velocity, bs->currentEnemy->client->ps.velocity);
+			//see if they are running away
+			//dot product of our vel and theirs, if its high, bhop to them? or push/pull stun them
+			if (dot > 50000) { //Running away nicely
+				if (bs->cur_ps.groundEntityNum == ENTITYNUM_NONE) {
+					if (level.time % 1000 > 500)
+						trap->EA_MoveRight(bs->client);
+					else
+						trap->EA_MoveLeft(bs->client);
+				}
+				NewBotAI_Flipkick(bs);
+			}
 			trap->EA_MoveForward(bs->client);//Always move forward i guess	
-
+		}
+		else
+			trap->EA_MoveForward(bs->client);
 
 		if (!crouch && ((bs->cur_ps.groundEntityNum != ENTITYNUM_NONE - 1) || (bs->currentEnemy->client->ps.saberInFlight && saber->s.pos.trTime) || (NewBotAI_GetTimeToInRange(bs, 60, 100) < 100))) { //Jump if they will be in range of flipkick or they are trying to saberthrow
 			if ((bs->cur_ps.groundEntityNum != ENTITYNUM_NONE - 1) && bs->currentEnemy->client->ps.saberInFlight && bs->frame_Enemy_Len > 250 && (BS_GroundDistance(bs) > 20)) {
@@ -7052,9 +7616,6 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 		}
 	}
 }
-
-qboolean BG_InKnockDown( int anim );
-
 
 qboolean BG_InRoll3(int anim)
 {
@@ -7126,24 +7687,34 @@ int NewBotAI_GetPull(bot_state_t *bs) {
 		weight *= 0.2f; //dont pull red vert swings into us unless we its really important
 
 	if (bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT)
-		weight *= 0.5f; //Dont cancel a charge unless its important
+		weight *= 0.1f; //Dont cancel a charge unless its important
+
+	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB)) //less weight if we don't regen fp..
+		weight *= 0.5f;
+	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_PROTECT))
+		weight *= 0.5f;
 
 	if (bs->frame_Enemy_Len < 200 && ourForce >= 20) { //Pulling their weapon should be top priority always
-		if (bs->currentEnemy->client->ps.weapon > WP_BLASTER)
+		if (bs->currentEnemy->client->ps.weapon >= WP_BLASTER)
 			return 100;
 	}
 
-	if (NewBotAI_IsEnemyPullable(bs)) {
+	if (NewBotAI_IsEnemyPullable(bs) && (bs->cur_ps.weapon == WP_SABER || bs->cur_ps.weapon == WP_MELEE) && g_flipKick.integer) {
 		if (hisHealth <= 20 && bs->frame_Enemy_Len < 250) {//Check for the insta kill, this should be better maybe... on ground pullablable should be a diff range than in air pullable
 			//Com_Printf("pullable 2\n");
-			return 10;
+			return 100;
 		}
 		if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) {
 			//Com_Printf("pullable 3\n");
 			return (weight * 2);
 		}
 		//Com_Printf("pullable 1\n");
-		return (weight);
+		if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE) {
+			if (bs->frame_Enemy_Len < 250 && ourForce > 32)
+				return (weight);
+		}
+		else
+			return (weight);
 	}
 	else { //When should we pull stun?
 		//Lets say they should be on the same plane roughly..
@@ -7176,9 +7747,12 @@ int NewBotAI_GetPush(bot_state_t *bs) {
 		return 0;
 	if (ourForce < 20)
 		return 0;
+	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_PROTECT)) //we can tank the dmg..
+		return 0;
 
 	if (NewBotAI_IsEnemyPullable(bs) && (ourHealth < 25) && (bs->frame_Enemy_Len < 160) && (bs->currentEnemy->client->ps.weapon == WP_SABER)) {
-		return 100; //Only time we should push atm is to get them off us.. to prevent the flipkick
+		if (bs->currentEnemy->client->ps.groundEntityNum == ENTITYNUM_NONE)		//improve this, only if they are coming at us or in air?
+			return 100; //Only time we should push atm is to get them off us.. to prevent the flipkick
 	}
 
 	return 0;
@@ -7202,9 +7776,8 @@ int NewBotAI_GetDrain(bot_state_t *bs) {
 		return 0;
 	if (hisForce == 0)
 		return 0;
-
-	if (bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT)
-		weight *= 0.9f; //Dont cancel a charge unless its important
+	if (bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT && bs->cur_ps.weaponChargeTime > 700) //don't drain if we are at a charge
+		return 0;
 
 	if (bs->currentEnemy->client->ps.saberInFlight) { //They are saberthrowing
 		if (ourHealth > 40) {//We can take the hit
@@ -7263,12 +7836,70 @@ int NewBotAI_GetGrip(bot_state_t *bs) {
 	return 0;
 }
 
+int NewBotAI_GetTeamEnergize(bot_state_t* bs) {
+	int i, weight = 0, force;
+	vec3_t diff;
+
+	if (g_forcePowerDisable.integer & (1 << FP_TEAM_FORCE))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_TEAM_FORCE)))
+		return 0;
+	if (g_gametype.integer < GT_TEAM)
+		return 0;
+
+	g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_TEAM_FORCE] = 3;//hack
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (i == bs->client)
+			continue;
+		if (!&g_entities[i] || !g_entities[i].client || !g_entities[i].inuse || g_entities[i].health <= 0)
+			continue;
+		if (g_entities[i].client->ps.fd.forcePower > bs->cur_ps.fd.forcePower)
+			continue;
+		if (g_entities[i].health > g_entities[bs->client].health)
+			continue;
+
+		VectorSubtract(bs->cur_ps.origin, g_entities[i].client->ps.origin, diff);
+		if (VectorLengthSquared(diff) > 512 * 512) //out of range
+			continue;
+
+		force = 100 - g_entities[i].client->ps.fd.forcePower;
+
+		weight += force * 0.5f; //bots together strong
+	}
+	return weight;
+}
+
+int NewBotAI_GetSaberthrow(bot_state_t* bs) {
+
+	//Check if we should saberthrow I guess.
+	if (bs->cur_ps.weapon == WP_SABER && /*(bs->cur_ps.fd.forcePowersKnown & (1 << FP_SABERTHROW)*/ bs->frame_Enemy_Len < 400) {
+		if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) {
+			g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_SABERTHROW] = 3;
+			g_entities[bs->client].client->ps.fd.forcePowersKnown |= (1 << FP_SABERTHROW);
+
+			if (bs->cur_ps.fd.forcePower > 40 && (bs->currentEnemy->health + bs->currentEnemy->client->ps.stats[STAT_ARMOR]) <= 50) {
+				trap->EA_Alt_Attack(bs->client);
+				return 100;
+			}
+			/*
+			else if ((((bs->cur_ps.fd.forcePower > bs->currentEnemy->client->ps.fd.forcePower) && bs->cur_ps.fd.forcePower > 40) || (bs->cur_ps.fd.forcePower > 70)) && g_entities[bs->client].health > 75 && bs->currentEnemy->health < 70) {
+				trap->EA_Alt_Attack(bs->client);
+				Com_Printf("Throwing 2\n");
+				return;
+			}
+			*/
+		}
+	}
+	return 0;
+}
+
 void NewBotAI_GetDSForcepower(bot_state_t *bs)
 {
 	vec3_t a_fo;
 	qboolean useTheForce = qfalse;
-	int pushWeight, pullWeight, drainWeight, gripWeight;
-	// int doNothingWeight;
+	int pushWeight, pullWeight, drainWeight, gripWeight;//, doNothingWeight;
+	int minWeight = 0;
 
 	VectorSubtract(bs->currentEnemy->client->ps.origin, bs->eye, a_fo);
 	vectoangles(a_fo, a_fo);
@@ -7277,27 +7908,27 @@ void NewBotAI_GetDSForcepower(bot_state_t *bs)
 	pushWeight = NewBotAI_GetPush(bs);
 	drainWeight = NewBotAI_GetDrain(bs);
 	gripWeight = NewBotAI_GetGrip(bs);
-	// doNothingWeight = NewBotAI_GetWait(bs);
+	//doNothingWeight = NewBotAI_GetWait(bs);
 
-	if (pushWeight > pullWeight && pushWeight > drainWeight && pushWeight > gripWeight && pushWeight > 0) {
+	if (pushWeight > pullWeight && pushWeight > drainWeight && pushWeight > gripWeight && pushWeight > minWeight) {
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
 		useTheForce = qtrue;
 
 		//trap->Print("Pushing -- Pull: %i, Push: %i, Drain: %i, Grip: %i\n", pullWeight, pushWeight, drainWeight, gripWeight);
 	}
-	else if (pullWeight > pushWeight && pullWeight > drainWeight && pullWeight > gripWeight && pullWeight > 0) {
+	else if (pullWeight > pushWeight && pullWeight > drainWeight && pullWeight > gripWeight && pullWeight > minWeight) {
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
 		useTheForce = qtrue;
 
 		//trap->Print("Pulling -- Pull: %i, Push: %i, Drain: %i, Grip: %i\n", pullWeight, pushWeight, drainWeight, gripWeight);
 	}
-	else if (drainWeight > pushWeight && drainWeight > pullWeight && drainWeight > gripWeight && drainWeight > 0) {
+	else if (drainWeight > pushWeight && drainWeight > pullWeight && drainWeight > gripWeight && drainWeight > minWeight) {
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_DRAIN;
 		useTheForce = qtrue;
 
 		//trap->Print("Draining -- Pull: %i, Push: %i, Drain: %i, Grip: %i\n", pullWeight, pushWeight, drainWeight, gripWeight);
 	}
-	else if (gripWeight > pushWeight && gripWeight > pullWeight && gripWeight > drainWeight && gripWeight > 0) {
+	else if (gripWeight > pushWeight && gripWeight > pullWeight && gripWeight > drainWeight && gripWeight > minWeight) {
 		level.clients[bs->client].ps.fd.forcePowerSelected = FP_GRIP;
 		useTheForce = qtrue;
 
@@ -7315,141 +7946,150 @@ void NewBotAI_GetDSForcepower(bot_state_t *bs)
 
 	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_RAGE)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_RAGE))) {
 		if (((bs->cur_ps.weapon > WP_BRYAR_PISTOL) || (bs->cur_ps.weapon == WP_STUN_BATON)) && (bs->cur_ps.fd.forcePower > 50) && bs->frame_Enemy_Len < 768 && bs->frame_Enemy_Vis) { //Need line of sight
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE;
-			useTheForce = qtrue;
+			if (!(g_tweakForce.integer & FT_NORAGEFIRERATE) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_RAGE))) { //only rage if rage isnt nerfed or if our current enemy is using it
+				level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE;
+				useTheForce = qtrue;
+			}
 		}
 	}
 
-	if (!useTheForce && level.gametype >= GT_TEAM && !(g_forcePowerDisable.integer & (1 << FP_TEAM_FORCE)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_TEAM_FORCE))) {
-		if (g_entities[bs->client].health > 80 && (bs->cur_ps.fd.forcePower > 70)) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_TEAM_FORCE;
-			useTheForce = qtrue;
-		}
+	if (!useTheForce && NewBotAI_GetTeamEnergize(bs) > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_TEAM_FORCE;
+		useTheForce = qtrue;
 	}
 
-	if (!(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && Q_flrand(0.0f, 1.0f) > 0.5)
-		useTheForce = qfalse; //Sad hack not sure why?
+	if (NewBotAI_GetSaberthrow(bs) > minWeight) {
+		trap->EA_Alt_Attack(bs->client);
+	}
 
-	if (useTheForce && (level.framenum % 2))
+	if (useTheForce && (level.framenum % 2) && (!bs->currentEnemy->client->invulnerableTimer || (bs->currentEnemy->client->invulnerableTimer <= level.time)))
 		trap->EA_ForcePower(bs->client);
+}
+
+int NewBotAI_GetHeal(bot_state_t* bs) {
+	const int ourForce = bs->cur_ps.fd.forcePower;
+	const int ourHealth = g_entities[bs->client].health;
+	int diff = ((ourForce - ourHealth) + 101) * 0.5f; //Range is 0-100?
+
+	if (g_forcePowerDisable.integer & (1 << FP_HEAL))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_HEAL)))
+		return 0;
+	//Higher diff is, higher weight to heal?
+
+	if (ourHealth >= 100)
+		return 0;
+	if (ourForce < 50)
+		return 0;
+	return diff;
+}
+
+int NewBotAI_GetTeamHeal(bot_state_t *bs) {
+	int i, weight = 0, health;
+	vec3_t diff;
+
+	if (g_forcePowerDisable.integer & (1 << FP_TEAM_HEAL))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_TEAM_HEAL)))
+		return 0;
+	if (g_gametype.integer < GT_TEAM)
+		return 0;
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (i == bs->client)
+			continue;
+		if (!&g_entities[i] || !g_entities[i].client || !g_entities[i].inuse || g_entities[i].health <= 0)
+			continue;
+		if (g_entities[i].client->sess.sessionTeam != g_entities[bs->client].client->sess.sessionTeam)
+			continue;
+		if (g_entities[i].client->ps.fd.forcePower > bs->cur_ps.fd.forcePower)
+			continue;
+		if (g_entities[i].health > g_entities[bs->client].health)
+			continue;
+
+		VectorSubtract(bs->cur_ps.origin, g_entities[i].client->ps.origin, diff);
+		if (VectorLengthSquared(diff) > 512 * 512) //out of range
+			continue;
+
+		health = g_entities[i].health;
+		if (health > 100 || health <= 0)
+			health = 100;
+		weight += health * 0.5f; //bots together strong
+	}
+	return weight;
 }
 
 void NewBotAI_GetLSForcepower(bot_state_t *bs)
 {
 	vec3_t a_fo;
 	qboolean useTheForce = qfalse;
+	int pullWeight, pushWeight, absorbWeight, protectWeight, healWeight;
+	int minWeight = 0;
 
 	VectorSubtract(bs->currentEnemy->client->ps.origin, bs->eye, a_fo);
 	vectoangles(a_fo, a_fo);
 
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_PUSH)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH)) && (bs->frame_Enemy_Len < 640) && (bs->cur_ps.fd.forcePower > 20) && bs->frame_Enemy_Vis) {
-		if (!(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) {
-			if ((g_entities[bs->client].health < 25) && (bs->frame_Enemy_Len < 192) && (bs->cur_ps.groundEntityNum != ENTITYNUM_NONE - 1)) {
-				if (!bs->currentEnemy->client->ps.saberInFlight) {
-					level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
-					useTheForce = qtrue;
-				}
-			}
-		}	
+	pullWeight = NewBotAI_GetPull(bs);
+	pushWeight = NewBotAI_GetPush(bs);
+	absorbWeight = NewBotAI_GetAbsorb(bs); //why doesn't he absorb when he should
+	protectWeight = NewBotAI_GetProtect(bs);
+	healWeight = NewBotAI_GetHeal(bs);
+	//get weights
+
+	if (pushWeight > pullWeight && pushWeight > absorbWeight && pushWeight > protectWeight && pushWeight > healWeight && pushWeight > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
+		useTheForce = qtrue;
+		//trap->Print("Push - Weights -- Pull: %i, Push: %i, Absorb: %i, Protect: %i, Heal %i\n", pullWeight, pushWeight, absorbWeight, protectWeight, healWeight);
+	}
+	else if (pullWeight > pushWeight && pullWeight > absorbWeight && pullWeight > protectWeight && pullWeight > healWeight && pullWeight > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
+		useTheForce = qtrue;
+		//trap->Print("Pull - Weights -- Pull: %i, Push: %i, Absorb: %i, Protect: %i, Heal %i\n", pullWeight, pushWeight, absorbWeight, protectWeight, healWeight);
+	}
+	else if (absorbWeight > pushWeight && absorbWeight > pullWeight && absorbWeight > protectWeight && absorbWeight > healWeight && absorbWeight > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
+		useTheForce = qtrue;
+		//trap->Print("Absorb - Weights -- Pull: %i, Push: %i, Absorb: %i, Protect: %i, Heal %i\n", pullWeight, pushWeight, absorbWeight, protectWeight, healWeight);
+	}
+	else if (protectWeight > pushWeight && protectWeight > pullWeight && protectWeight > absorbWeight && protectWeight > healWeight && protectWeight > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
+		useTheForce = qtrue;
+		//trap->Print("Protect - Weights -- Pull: %i, Push: %i, Absorb: %i, Protect: %i, Heal %i\n", pullWeight, pushWeight, absorbWeight, protectWeight, healWeight);
+	}
+	else if (healWeight > protectWeight && healWeight > pushWeight && healWeight > pullWeight && healWeight > absorbWeight && healWeight > minWeight) {
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
+		useTheForce = qtrue;
+		//trap->Print("Heal - Weights -- Pull: %i, Push: %i, Absorb: %i, Protect: %i, Heal %i\n", pullWeight, pushWeight, absorbWeight, protectWeight, healWeight);
 	}
 
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_PULL)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_PULL)) && (bs->frame_Enemy_Len < 640) && bs->frame_Enemy_Vis) {
-		if (!(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB))) {
-			if (bs->currentEnemy->client->ps.weapon >= WP_BLASTER && bs->frame_Enemy_Len < 200) { //Pull their weapon
-				level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-				useTheForce = qtrue;
-			}
-			else if (g_entities[bs->client].health > 70) { // General case
-				if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) {
-					level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-					useTheForce = qtrue;
-				}
-				if (!(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (!(bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_LEVITATION)) && ((bs->currentEnemy->client->ps.groundEntityNum != ENTITYNUM_NONE - 1) || (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN))))) {
-					level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-					useTheForce = qtrue;
-				}
-				else if (!(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && (bs->currentEnemy->client->ps.saberMove > 1) && bs->currentEnemy->client->ps.fd.saberAnimLevel != SS_STRONG) {
-					level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-					useTheForce = qtrue;
-				}
-			}
-			else if ((g_entities[bs->client].health > 50) && (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim))) {//Special case
-				level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-				useTheForce = qtrue;
-			}
-			else if (!(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT) && bs->currentEnemy->health < 40 && (bs->frame_Enemy_Len > 90) && ((BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) || (bs->currentEnemy->client->ps.groundEntityNum != ENTITYNUM_NONE - 1) || (bs->currentEnemy->client->ps.fd.forcePower < 20))) {
-				level.clients[bs->client].ps.fd.forcePowerSelected = FP_PULL;
-				useTheForce = qtrue;
-			}
-		}
-	}
-
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_HEAL)) && ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_HEAL)) //level.clients[bs->client].ps.fd.forcePower
-		&& g_entities[bs->client].health < 100))
-	{
-		if (bs->cur_ps.fd.forcePower > 99) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
-			useTheForce = qtrue;
-		}
-		if ((bs->cur_ps.fd.forcePower > 70) && (g_entities[bs->client].health < 75)) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
-			useTheForce = qtrue;
-		}
-		else if ((g_entities[bs->client].health < 40) && (bs->cur_ps.fd.forcePower > 50)) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_HEAL;
-			useTheForce = qtrue;
-		}
-	}
-
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_ABSORB)) && ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_ABSORB))) && (bs->cur_ps.fd.forcePower > 9)) //level.clients[bs->client].ps.fd.forcePower
-	{
-		if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_DRAIN)) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
-			useTheForce = qtrue;
-		}
-		else if ((bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_GRIP)) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
-			useTheForce = qtrue;
-		}
-		else if (bs->cur_ps.weapon > WP_BRYAR_PISTOL && (bs->frame_Enemy_Len < 200)) { //Protect our guns
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_ABSORB;
-			useTheForce = qtrue;
-		}
-	}
-
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_PROTECT)) && ((bs->cur_ps.fd.forcePowersKnown & (1 << FP_PROTECT))) && (bs->cur_ps.fd.forcePower > 20)) //level.clients[bs->client].ps.fd.forcePower
-	{				
-		if ((g_entities[bs->client].health < 60) && (bs->cur_ps.fd.forcePower > 75) && (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
-			useTheForce = qtrue;
-		}
-		else if ((bs->cur_ps.fd.forcePower > 25) && (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB)) && bs->currentEnemy->client->ps.weapon > WP_SABER) { //Use protect more in gun battles
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PROTECT;
-			useTheForce = qtrue;
-		}
-	}
-
-	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_SPEED)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_SPEED)) && (bs->frame_Enemy_Len > 90)) {
-		if (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) {
-			if (g_entities[bs->client].health > 80 && (bs->cur_ps.fd.forcePower > 70)) {
+	if (!useTheForce && !(g_forcePowerDisable.integer & (1 << FP_SPEED)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_SPEED)) && (bs->frame_Enemy_Len > 90) && (bs->frame_Enemy_Len < 384) && bs->frame_Enemy_Vis) {
+		//if (bs->currentEnemy->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) {
+		if (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB)) {
+			if (g_entities[bs->client].health >= 100 && bs->cur_ps.stats[STAT_ARMOR] >= 25 && (bs->cur_ps.fd.forcePower > 85)) {
 				level.clients[bs->client].ps.fd.forcePowerSelected = FP_SPEED;
 				useTheForce = qtrue;
 			}
 		}
 	}
+	//Speed, team heal,
 
-	if (!useTheForce && level.gametype >= GT_TEAM && !(g_forcePowerDisable.integer & (1 << FP_TEAM_HEAL)) && (bs->cur_ps.fd.forcePowersKnown & (1 << FP_TEAM_HEAL))) {
-		if (g_entities[bs->client].health > 75 && (bs->cur_ps.fd.forcePower > 70)) {
-			level.clients[bs->client].ps.fd.forcePowerSelected = FP_TEAM_HEAL;
-			useTheForce = qtrue;
-		}
+	if (!useTheForce && NewBotAI_GetTeamHeal(bs) > minWeight) { //make this use the weight
+		level.clients[bs->client].ps.fd.forcePowerSelected = FP_TEAM_HEAL; //ideally loop through in range people and see if they need it
+		useTheForce = qtrue;
 	}
 
-	if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && rand() > 0.5)
-		useTheForce = qfalse;
+	//Check if we should saberthrow I guess.
+	if (NewBotAI_GetSaberthrow(bs) > minWeight) {
+		trap->EA_Alt_Attack(bs->client);
+		return;
+	}
 
-	if (useTheForce) {
+	//if (bs->cur_ps.weaponstate != WEAPON_CHARGING_ALT && (level.clients[bs->client].ps.fd.forcePowerSelected == FP_PULL) && random() > 0.5)
+		//useTheForce = qfalse;
+
+	if (useTheForce && (level.framenum % 2) && (!bs->currentEnemy->client->invulnerableTimer || (bs->currentEnemy->client->invulnerableTimer <= level.time))) {
 		trap->EA_ForcePower(bs->client);
+		//Com_Printf("Using force\n");
 	}
 }
 
@@ -7485,8 +8125,13 @@ void NewBotAI_DSvDS(bot_state_t *bs)
 		NewBotAI_Raging(bs);
 	}
 
+	if (bs->cur_ps.saberInFlight) {
+		NewBotAI_SaberThrowing(bs);
+	}
+
 	NewBotAI_GetMovement(bs);
-	NewBotAI_GetDSForcepower(bs);
+	if (g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839)
+		NewBotAI_GetDSForcepower(bs);
 	NewBotAI_GetAttack(bs);
 }
 
@@ -7505,7 +8150,7 @@ void NewBotAI_DSvLS(bot_state_t *bs)
 	}
 
 	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_DRAIN)) {
-		NewBotAI_Draining(bs);
+		NewBotAI_Draining(bs);//y return? y not getmovement?
 		return;
 	}
 
@@ -7514,7 +8159,8 @@ void NewBotAI_DSvLS(bot_state_t *bs)
 	}
 
 	NewBotAI_GetMovement(bs);
-	NewBotAI_GetDSForcepower(bs);
+	if (g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839)
+		NewBotAI_GetDSForcepower(bs);
 	NewBotAI_GetAttack(bs);
 }
 
@@ -7526,23 +8172,30 @@ void NewBotAI_LSvDS(bot_state_t *bs)
 		NewBotAI_Getup(bs);
 		return;
 	}
-
+	if (bs->cur_ps.fd.forceGripBeingGripped > level.time) {
+		NewBotAI_ReactToBeingGripped(bs);
+		return;
+	}
 	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_SPEED))
 		NewBotAI_Speeding(bs);
 	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_PROTECT))
 		NewBotAI_Protecting(bs);
 	if (bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))
 		NewBotAI_Absorbing(bs);
-	
+	if (bs->cur_ps.saberInFlight) {
+		NewBotAI_SaberThrowing(bs);
+	}
+
 	NewBotAI_GetMovement(bs);
-	NewBotAI_GetLSForcepower(bs);
+	if (g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839)
+		NewBotAI_GetLSForcepower(bs);
 	NewBotAI_GetAttack(bs);
 }
 
 void NewBotAI_LSvLS(bot_state_t *bs)
 {
 	NewBotAI_GetAim(bs);
-	
+
 	if (bs->cur_ps.forceHandExtend == HANDEXTEND_KNOCKDOWN) {
 		NewBotAI_Getup(bs);
 		return;
@@ -7556,7 +8209,8 @@ void NewBotAI_LSvLS(bot_state_t *bs)
 		NewBotAI_Absorbing(bs);
 
 	NewBotAI_GetMovement(bs);
-	NewBotAI_GetLSForcepower(bs);
+	if (g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839)
+		NewBotAI_GetLSForcepower(bs);
 	NewBotAI_GetAttack(bs);
 }
 
@@ -7566,7 +8220,7 @@ void NewBotAI_NF(bot_state_t *bs)
 	const float speed = NewBotAI_GetSpeedTowardsEnemy(bs);
 
 	NewBotAI_GetAim(bs);
-	
+
 	if (bs->cur_ps.forceHandExtend == HANDEXTEND_KNOCKDOWN) {
 		NewBotAI_Getup(bs);
 		return;
@@ -7726,7 +8380,7 @@ void NewBotAI_StrafeJump(bot_state_t *bs, float distance)
 	}
 }
 
-void DoAloneStuff(bot_state_t *bs, float thinktime) {
+void NewBotAI_DoAloneStuff(bot_state_t *bs, float thinktime) {
 	qboolean useTheForce = qfalse;
 	int numEnts, i, radiusEnts[256];
 	vec3_t mins = {-1024, -1024, -256}, maxs = {1024, 1024, 256}, waypoint, temp;
@@ -7757,7 +8411,7 @@ void DoAloneStuff(bot_state_t *bs, float thinktime) {
 	}
 
 	else if (bs->cur_ps.fd.forceSide == FORCE_DARKSIDE) {
-		if (bs->cur_ps.fd.forcePowersActive & (1 << FP_RAGE)) { 
+		if (bs->cur_ps.fd.forcePowersActive & (1 << FP_RAGE)) {
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_RAGE; //Turn off rage
 			useTheForce = qtrue;
 		}
@@ -7845,7 +8499,9 @@ void DoAloneStuff(bot_state_t *bs, float thinktime) {
 	}
 
 	if (!destination) {
-		StandardBotAI(bs, thinktime);
+		//StandardBotAI(bs, thinktime);
+		trap->EA_MoveForward(bs->client);
+		bs->ideal_viewangles[YAW] += Q_irand(-2,4);
 		return;
 	}
 
@@ -7876,13 +8532,104 @@ void DoAloneStuff(bot_state_t *bs, float thinktime) {
 	//Run to it..
 }
 
-#define _ADVANCEDBOTSHIT 0
+int NewBotAI_ScanForEnemies(bot_state_t* bs) {
+	vec3_t a;
+	float distcheck;
+	float closest;
+	int bestindex;
+	int i;
+	float hasEnemyDist = 0;
+	qboolean noAttackNonJM = qfalse;
+	int ourHealth = g_entities[bs->client].health;
+
+	closest = 999999;
+	i = 0;
+	bestindex = -1;
+
+	if (bs->currentEnemy) { //only switch to a new enemy if he's significantly closer
+		hasEnemyDist = 0;
+	}
+
+	if (bs->currentEnemy && bs->currentEnemy->client && bs->currentEnemy->client->ps.isJediMaster) { //The Jedi Master must die.
+		return -1;
+	}
+
+	if (level.gametype == GT_JEDIMASTER) {
+		if (G_ThereIsAMaster() && !bs->cur_ps.isJediMaster) { //if friendly fire is on in jedi master we can attack people that bug us
+			if (!g_friendlyFire.value) {
+				noAttackNonJM = qtrue;
+			}
+			else {
+				closest = 128; //only get mad at people if they get close enough to you to anger you, or hurt you
+			}
+		}
+	}
+
+	//for (i = 0; i < level.numConnectedClients; i++) { //Go through each client, see if they are "afk", if everyone is afk, fuck this then.
+	for (i = 0; i < MAX_CLIENTS; i++) { //Go through each client, see if they are "afk", if everyone is afk, fuck this then.
+		//gentity_t* ent = &g_entities[level.sortedClients[i]];
+		gentity_t* ent = &g_entities[i];
+
+		if (ent && ent->inuse && PassStandardEnemyChecks(bs, ent) && BotPVSCheck(ent->client->ps.origin, bs->eye) && PassLovedOneCheck(bs, ent)) {
+			float normalizedHealth = 0.25 + (ent->health - 1) * (1 - 0.25) / (100 - 1); //Range .25 to 1
+			if (ent->client->ps.fd.forceGripEntityNum == bs->cur_ps.clientNum) { //always aim at whos gripping us
+				bestindex = i;
+				break;
+			}
+
+			VectorSubtract(ent->client->ps.origin, bs->eye, a);
+
+			normalizedHealth += (100 - ourHealth) * 0.005; //Bring normalizedhealth closer to 1 the lower HP we ourselves are?, up to +0.5?
+			if (normalizedHealth > 1)
+				normalizedHealth = 1;
+
+			//See if we have a LOS to them.  If not, scale the distcheck way up.. expensive?
+
+			distcheck = VectorLength(a) * normalizedHealth;
+			vectoangles(a, a);
+
+			if (ent->client->ps.isJediMaster) { //make us think the Jedi Master is close so we'll attack him above all
+				distcheck = 1;
+			}
+
+			if (distcheck < closest) {
+				if (BotMindTricked(bs->client, i)) {
+					if (distcheck < 256 || (level.time - ent->client->dangerTime) < 100) {
+						if (!hasEnemyDist || distcheck < (hasEnemyDist - 128)) { //if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
+							if (!noAttackNonJM || ent->client->ps.isJediMaster) {
+								closest = distcheck;
+								bestindex = i;
+							}
+						}
+					}
+				}
+				else {
+					if (!hasEnemyDist || distcheck < (hasEnemyDist - 128)) {//if we have an enemy, only switch to closer if he is 128+ closer to avoid flipping out
+						if (!noAttackNonJM || ent->client->ps.isJediMaster) {
+							closest = distcheck;
+							bestindex = i;
+						}
+					}
+				}
+			}
+		}
+	}
+	return bestindex;
+}
+
+#define _ADVANCEDBOTSHIT 1
 
 void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 {
 	int closestID = -1;
 	int i;
 	qboolean someonesHere = qfalse;
+	vec3_t headlevel;
+
+	bs->isCamper = 0; //reset this
+
+	if (bs->cur_ps.stats[STAT_RACEMODE])
+		return;
 
 	for (i=0; i<level.numConnectedClients; i++) { //Go through each client, see if they are "afk", if everyone is afk, fuck this then.
 		gentity_t *ent = &g_entities[level.sortedClients[i]];
@@ -7910,7 +8657,7 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 		return;
 
 	if (g_newBotAITarget.integer < 0)
-		closestID = ScanForEnemies(bs); //This has been modified to take health into account, and ignore FOV, mindtrick, etc, when newBotAI is being used.
+		closestID = NewBotAI_ScanForEnemies(bs); //This has been modified to take health into account, and ignore FOV, mindtrick, etc, when newBotAI is being used.
 	else {
 		gclient_t	*cl;
 		closestID = g_newBotAITarget.integer;
@@ -7919,38 +8666,56 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 			closestID = -1;
 
 		cl = &level.clients[closestID];
-		if (cl->pers.connected == CON_DISCONNECTED)//Or in spectate? or?
+		if (!cl || cl->pers.connected != CON_CONNECTED)//Or in spectate? or?
 			closestID = -1;
 	}
-	
-	if (closestID == -1 || bs->cur_ps.stats[STAT_RACEMODE] ) {//Its just us, or they are too far away.
+
+	if (closestID == -1) {//Its just us, or they are too far away.
 #if _ADVANCEDBOTSHIT
-		DoAloneStuff(bs, thinktime);
+		NewBotAI_DoAloneStuff(bs, thinktime);
 #else
-		StandardBotAI(bs, thinktime);
+		//StandardBotAI(bs, thinktime);
 #endif
 		return;
 	}
 
-	bs->currentEnemy = &g_entities[closestID];
-	bs->enemySeenTime = level.time + ENEMY_FORGET_MS;
+	bs->frame_Enemy_Vis = 0;
+	VectorCopy(g_entities[closestID].client->ps.origin, headlevel);
+	headlevel[2] += g_entities[closestID].client->ps.viewheight - 24;
 
-	bs->frame_Enemy_Len = NewBotAI_GetDist(bs);
-	{
-		vec3_t headlevel;
-		VectorCopy(bs->currentEnemy->client->ps.origin, headlevel);
-		headlevel[2] += bs->currentEnemy->client->ps.viewheight - 24;
-		if (OrgVisible(bs->eye, bs->currentEnemy->client->ps.origin, bs->client))
-			bs->frame_Enemy_Vis = 1;
-		else
-			bs->frame_Enemy_Vis = 0;
+	if ((bs->cur_ps.weapon == WP_DEMP2 && g_entities[bs->client].client->forcedFireMode != 1) || (g_newBotAITarget.integer >= 0) || OrgVisible(bs->eye, g_entities[closestID].client->ps.origin, bs->client)) { //We can see or dmg our closest enemy
+		bs->currentEnemy = &g_entities[closestID];
+		bs->frame_Enemy_Vis = 1;
+		bs->lastVisibleEnemyIndex = level.time;
 	}
+	else { //we can't see our closest enemy, use last attacker
+		const int attacker = g_entities[bs->client].client->ps.persistant[PERS_ATTACKER];
+		if (PassStandardEnemyChecks(bs, &g_entities[attacker])) {
+			bs->currentEnemy = &g_entities[attacker];
+
+			VectorCopy(bs->currentEnemy->client->ps.origin, headlevel);
+			headlevel[2] += bs->currentEnemy->client->ps.viewheight - 24;
+			if (OrgVisible(bs->eye, headlevel, bs->client))
+				bs->frame_Enemy_Vis = 1;
+			bs->lastVisibleEnemyIndex = level.time;
+		}
+		else {
+			bs->currentEnemy = &g_entities[closestID];
+			if (bs->lastVisibleEnemyIndex < level.time - 10000) { //let him keep going for target for 10s before abandoning
+				NewBotAI_DoAloneStuff(bs, thinktime);
+				return;
+			}
+		}
+	}
+
+	bs->enemySeenTime = level.time + ENEMY_FORGET_MS;
+	bs->frame_Enemy_Len = NewBotAI_GetDist(bs);
 
 	if (!bs->frame_Enemy_Vis && bs->frame_Enemy_Len > 8096) {
 #if _ADVANCEDBOTSHIT
-		DoAloneStuff(bs, thinktime);
+		NewBotAI_DoAloneStuff(bs, thinktime);
 #else
-		StandardBotAI(bs, thinktime);
+		//StandardBotAI(bs, thinktime);
 #endif
 		return;
 	}
@@ -7962,7 +8727,7 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 	}
 	*/
 
-	if ((g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839) || g_flipKick.integer) {
+	if ((g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839) || (g_flipKick.integer) || (bs->cur_ps.weapon != WP_SABER)) {
 		if (bs->currentEnemy->client->ps.fd.forceSide == FORCE_LIGHTSIDE) { // They are LS.
 			if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE)
 				NewBotAI_LSvLS(bs);

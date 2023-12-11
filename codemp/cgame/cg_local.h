@@ -154,6 +154,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
 #define BODY_FADE_TIME					(60000)
 
+#define JAPRO_CHATLOG_ENABLE		(1<<0)
+#define JAPRO_CHATLOG_SYNC			(1<<1)
+#define JAPRO_CHATLOG_OLDTIMESTAMP	(1<<2)
+#define JAPRO_CHATLOG_PRINT			(1<<3)
+#define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
+
 //Cosmetics
 #define	JAPRO_COSMETIC_SANTAHAT	(1<<0)
 #define	JAPRO_COSMETIC_PUMKIN	(1<<1)
@@ -188,20 +194,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	JAPRO_COSMETIC_PREDATOR		(1<<30)
 #define	JAPRO_COSMETIC_SAIYAN		(1<<31)
 
-//#define JAPRO_CINFO_UNLAGGEDPUSHPULL (1<<19)	//push pull unlagged
-
-//JAPRO - Serverside + clientside , restrictions 
-#define JAPRO_RESTRICT_BHOP			(1<<0)
-#define JAPRO_RESTRICT_CROUCHJUMP	(1<<1)
-#define JAPRO_RESTRICT_DOUBLEJUMP	(1<<2)
-//[JAPRO - Clientside - All - Define cinfo bits - End]
-
-#define JAPRO_CHATLOG_ENABLE		(1<<0)
-#define JAPRO_CHATLOG_SYNC			(1<<1)
-#define JAPRO_CHATLOG_OLDTIMESTAMP	(1<<2)
-#define JAPRO_CHATLOG_PRINT			(1<<3)
-#define JAPRO_CHATLOG_CENTERPRINT	(1<<3)
-
 typedef struct cosmeticItem_s cosmeticItem_t;
 
 typedef enum //server mod enum
@@ -212,6 +204,7 @@ typedef enum //server mod enum
 	SVMOD_JAPLUS,
 	SVMOD_JAPRO,
 } serverMod_t;
+
 
 typedef enum {
 	FOOTSTEP_STONEWALK,
@@ -325,7 +318,7 @@ typedef struct playerEntity_s {
 
 //Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
 //The remaining 2 bytes are to support the actual saber colors, since EternalJK supports up to 12 colors, we need to reserve 2 bytes for the color.
-#define MAX_COSMETIC_LENGTH 14 
+#define MAX_COSMETIC_LENGTH 14
 
 #define COSMETIC_HATS_PATH "models/cosmetics/hats/"
 #define COSMETIC_HATS_PATH_LENGTH strlen(COSMETIC_HATS_PATH)
@@ -336,7 +329,6 @@ typedef struct playerEntity_s {
 #define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
 #define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
 #define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
-
 
 typedef struct clientInfo_s {
 	qboolean		infoValid;
@@ -863,7 +855,7 @@ typedef struct strafeTrailRef_s {
 		} fragment;
 	} data;
 
-	refEntity_t		refEntity;	
+	refEntity_t		refEntity;
 } strafeTrailRef_t;
 
 typedef struct strafeTrail_s {
@@ -1073,14 +1065,14 @@ typedef struct dynColumnInfo_s
 	tableAlignment_t alignment;
 }dynColumnInfo_t;
 
-struct dynCell_s 
+struct dynCell_s
 {
 	char		*content;		// The amount of columns each row should have.
 	int 			len;		//Mark row as being used if the cells of the row are filled with content.
 	dynCell_t *next;
 };
 
-struct dynRow_s 
+struct dynRow_s
 {
 	dynCell_t		*cell;		// The amount of columns each row should have.
 	dynRow_t *next;
@@ -1815,11 +1807,11 @@ typedef struct cgMedia_s {
 	sfxHandle_t oneFragSound;
 
 //JAPRO - Clientside - Hitsounds Start
-	sfxHandle_t hitSound; 
-	sfxHandle_t hitSound2; 
-	sfxHandle_t hitSound3; 
-	sfxHandle_t hitSound4; 
-	sfxHandle_t hitTeamSound; 
+	sfxHandle_t hitSound;
+	sfxHandle_t hitSound2;
+	sfxHandle_t hitSound3;
+	sfxHandle_t hitSound4;
+	sfxHandle_t hitTeamSound;
 //JAPRO - Clientside - Hitsounds End
 
 #ifdef JK2AWARDS
@@ -2256,7 +2248,7 @@ typedef struct cgs_s {
 	clientInfo_t	clientinfo[MAX_CLIENTS];
 
 	float cursorX;
-	float cursorY; 
+	float cursorY;
 	qboolean eventHandling;
 	qboolean mouseCaptured;
 	qboolean sizingHud;

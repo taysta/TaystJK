@@ -215,7 +215,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define	WT_FIX_MINEAMMO			(1<<24)
 #define	WT_JK2_STYLE_ALT_TRIPMINE	(1<<25)
 #define	WT_PROJ_SNIPER			(1<<26)
-#define	WT_NO_SPREAD			(1<<27)
+#define	WT_TRIBES			(1<<27)
 #define WT_SLOW_SNIPER			(1<<28)
 #define WT_SOLID_ROCKET			(1<<29)
 #define WT_NERFED_PISTOL		(1<<30)
@@ -260,13 +260,15 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define FT_NERFED_WEAPPULL	  (1<<16)
 #define FT_WEAPON_PULLRESIST  (1<<17)
 #define FT_NORAGEFIRERATE	  (1<<18)
+#define FT_BUFFMINDTRICK	  (1<<19)
+#define FT_BUFFMELEE		  (1<<20) //not really a forcetweak but no room in weapon tweaks!
 
 //Saber tweaks
 #define	ST_NO_MP_SABERLERP		(1<<0)
 #define ST_JK2_DMGSYSTEM		(1<<1)
 #define ST_REDUCE_SABERBLOCK	(1<<2)
 #define	ST_REDUCE_SABERDROP		(1<<3)
-#define ST_ALLOW_ROLLCANCEL		(1<<4) //CLIENT
+#define ST_ALLOW_ROLLCANCEL		(1<<4) //CLIENT - also remove backwards run slowdown like jk2
 #define ST_NO_REDCHAIN			(1<<5)
 #define ST_FIXED_SABERSWITCH	(1<<6)
 #define ST_EASYBACKSLASH		(1<<7)
@@ -300,6 +302,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define RESTRICT_FLAG_CROUCHJUMP (1<<6)
 #define RESTRICT_FLAG_DOUBLEJUMP (1<<7)
 #define RESTRICT_FLAG_ALLOWTELES (1<<8)
+#define RESTRICT_FLAG_RESET (1<<9)
 
 //JAPRO - Serverside - Unlagged bitvalues
 #define UNLAGGED_PROJ_NUDGE	(1<<0)
@@ -361,6 +364,8 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define JAPRO_ACCOUNTFLAG_NORACE		(1<<25)
 #define JAPRO_ACCOUNTFLAG_NODUEL		(1<<26)
 #define JAPRO_ACCOUNTFLAG_ALLCOSMETICS	(1<<27)
+#define JAPRO_ACCOUNTFLAG_ENTITY		(1<<28)
+#define JAPRO_ACCOUNTFLAG_DATABASE		(1<<29)
 
 #define JAPRO_ACCOUNTTEAMFLAG_OWNER		(1<<0)
 #define JAPRO_ACCOUNTTEAMFLAG_PENDING	(1<<1)
@@ -752,7 +757,7 @@ typedef struct {//JAPRO - Serverside - Stats
 	int	displacementFlagSamples;
 
 	int	startTime;//For timers that are not flags
-	//int	coopFinished;//For coop tracking ugh
+	int	coopStarted;//For coop tracking ugh
 	int	startLevelTime;//For timers that are not flags
 	float displacement;
 	int	displacementSamples;
@@ -1182,7 +1187,7 @@ struct gclient_s {
 	//int			lastStartTime; //for autodemo floodprotect
 	int			lastInStartTrigger;
 	int			kothDebounce;
-	int	        gravityGunTime;
+	short		forcedFireMode;
 	//int			numStakes;
 
 #if _GRAPPLE
@@ -1194,6 +1199,9 @@ struct gclient_s {
 	int			lastSpotTime;
 	int			lastSpottedTime;
 	short		savedJumpLevel;//rabbit
+
+	int			midRunTeleMarkCount;
+	int			midRunTeleCount;
 
 	vec3_t		lastVelocity;
 
@@ -1746,7 +1754,7 @@ int	TAG_GetAngles( const char *owner, const char *name, vec3_t angles );
 int TAG_GetRadius( const char *owner, const char *name );
 int TAG_GetFlags( const char *owner, const char *name );
 
-void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean keepVel );
+void TeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, int speed);
 void AmTeleportPlayer( gentity_t *player, vec3_t origin, vec3_t angles, qboolean droptofloor, qboolean race, qboolean toMark );
 
 //

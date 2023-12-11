@@ -187,8 +187,7 @@ typedef enum {
 #define BG_NUM_TOGGLEABLE_SURFACES 31
 
 #define MAX_CUSTOM_SIEGE_SOUNDS 30
-
-#define MAX_CUSTOM_VGS_SOUNDS 138
+#define MAX_CUSTOM_VGS_SOUNDS 138//vgs
 
 extern const char *bg_customSiegeSoundNames[MAX_CUSTOM_SIEGE_SOUNDS];
 extern const char *bg_customVGSSoundNames[MAX_CUSTOM_VGS_SOUNDS];
@@ -493,7 +492,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define JAPRO_CINFO_ROLLCANCEL				(1<<27)	//option for only bhop mode
 #define JAPRO_CINFO_NOREDCHAIN				(1<<28)	//jk2 1.02 rollcancel move
 #define JAPRO_CINFO_PROJSNIPER				(1<<29)	//option for only bhop mode
-#define	JAPRO_CINFO_JAPLUSGRAPPLE			(1<<30) //Oh f only 30 cuz its signed?
+#define JAPRO_CINFO_JAPLUSGRAPPLE			(1<<30) //Oh f only 30 cuz its signed?
 
 //jcinfo2 stuff
 #define JAPRO_CINFO2_RACEMODE				(1<<0) //UI
@@ -566,7 +565,9 @@ typedef enum //movementstyle enum
 #if _COOP
 	MV_COOP_JKA,
 #endif
-	MV_NUMSTYLES,
+	MV_OCPM,
+	MV_TRIBES,
+	MV_NUMSTYLES
 } movementStyle_e;
 
 // pmove->pm_flags

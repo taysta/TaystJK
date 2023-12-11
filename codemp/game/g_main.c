@@ -2074,13 +2074,13 @@ void PrintStats(int client) {
 	qboolean	showAccuracy = qtrue, showTeamPowers = qtrue, showDrain = qtrue;
 	gclient_t	*cl;
 
-	if (gametype != GT_CTF && gametype != GT_TEAM)
-		return;
-	if ((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8))
+	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
+		//return;
+	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer)
 		showAccuracy = qfalse;
-	if ((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE))) //TE and TH are disabled
+	if ((((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE)))) || g_gunGame.integer) //TE and TH are disabled
 		showTeamPowers = qfalse;
-	if ((g_forcePowerDisable.integer & (1<<FP_DRAIN)) || !g_friendlyFire.integer) //Team Drain is disabled
+	if ((((g_forcePowerDisable.integer & (1<<FP_DRAIN)) || !g_friendlyFire.value)) || g_gunGame.integer) //Team Drain is disabled
 		showDrain = qfalse;
 
 	Q_strncpyz(msg, "\n"S_COLOR_CYAN, sizeof(msg));
@@ -2093,7 +2093,7 @@ void PrintStats(int client) {
 	Q_strncpyz(lDmgTaken, va("Dmg Taken%s", whitespace), sizeof(lDmgTaken));
 	Q_strncpyz(lDmgNet, va("Net Dmg%s", whitespace), sizeof(lDmgNet));
 	Q_strncpyz(lDmgPerDeath, va("Dmg/Death%s", whitespace), sizeof(lDmgPerDeath));
-	if (level.gametype == GT_TEAM && g_friendlyFire.integer)
+	if (level.gametype == GT_TEAM && g_friendlyFire.value)
 		Q_strncpyz(lTK, va("Team Dmg%s", whitespace), sizeof(lTK)); //Should be just "Team Dmg"
 	if (level.gametype == GT_CTF || level.gametype == GT_CTY) {
 		Q_strncpyz(lCaptures, va("Caps%s", whitespace), sizeof(lCaptures));
@@ -2118,7 +2118,7 @@ void PrintStats(int client) {
 	Q_strcat(msg, sizeof(msg), lDmgTaken);
 	Q_strcat(msg, sizeof(msg), lDmgNet);
 	Q_strcat(msg, sizeof(msg), lDmgPerDeath);
-	if (level.gametype == GT_TEAM)
+	if (level.gametype == GT_TEAM && g_friendlyFire.value)
 		Q_strcat (msg, sizeof(msg), lTK);
 	if (level.gametype == GT_CTF || level.gametype == GT_CTY) {
 		Q_strcat(msg, sizeof(msg), lCaptures);
@@ -2182,7 +2182,7 @@ void PrintStats(int client) {
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgPerDeath), int_to_string(dmgPerDeath, numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);	
-			if (level.gametype == GT_TEAM && g_friendlyFire.integer) {
+			if (level.gametype == GT_TEAM && g_friendlyFire.value) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lTK), int_to_string(cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			}
@@ -2235,6 +2235,7 @@ can see the last frag.
 =================
 */
 qboolean g_endPDuel = qfalse;
+void Svcmd_ResetScores_f(void);
 void CheckExitRules( void ) {
  	int			i;
 	gclient_t	*cl;
@@ -2285,8 +2286,31 @@ void CheckExitRules( void ) {
 		//int time = (g_singlePlayer.integer) ? SP_INTERMISSION_DELAY_TIME : INTERMISSION_DELAY_TIME;
 		int time = INTERMISSION_DELAY_TIME;
 		if ( level.time - level.intermissionQueued >= time ) {
+			qboolean racer = qfalse;
+
 			level.intermissionQueued = 0;
-			BeginIntermission();
+
+			if (g_raceMode.integer) {
+				for (i = 0; i < level.maxclients; i++) {
+					if (g_entities[i].inuse && g_entities[i].client && g_entities[i].client->sess.raceMode && (g_entities[i].client->sess.sessionTeam != TEAM_SPECTATOR)) {
+						racer = qtrue;
+						break;
+					}
+				}
+			}
+
+			if (racer) { //only do this if someoen is in racemode?
+				PrintStats(-1);//JAPRO STATS
+				for (i = 0; i < level.maxclients; i++) {
+					if (!g_entities[i].inuse || !g_entities[i].client || g_entities[i].client->sess.raceMode || (g_entities[i].client->sess.sessionTeam == TEAM_SPECTATOR))
+						continue;
+					ClientRespawn(&g_entities[i]);	// respawn if dead... respawn if alive too?
+				}
+				Svcmd_ResetScores_f();
+			}
+			else {
+				BeginIntermission();
+			}
 		}
 		return;
 	}
@@ -3843,7 +3867,10 @@ void G_RunFrame( int levelTime ) {
 			{ //using jetpack, drain fuel
 				if (ent->client->jetPackDebReduce < level.time)
 				{
-					ent->client->ps.jetpackFuel -= 6;
+					if (g_tweakJetpack.integer == 2)
+						ent->client->ps.jetpackFuel -= 2;
+					else
+						ent->client->ps.jetpackFuel -= 6;
 					
 					if (ent->client->ps.jetpackFuel <= 0)
 					{ //turn it off
@@ -3853,7 +3880,7 @@ void G_RunFrame( int levelTime ) {
 					ent->client->jetPackDebReduce = level.time + JETPACK_DEFUEL_RATE;//Defuel rate
 				}
 			}
-			else if (ent->client->ps.jetpackFuel < 100 && ent->client->jetPackDebReduce < level.time - 250) //Add delay until it starts regen
+			else if (ent->client->ps.jetpackFuel < 100 && ent->client->jetPackDebReduce < level.time - 500) //Add delay until it starts regen
 			{ //recharge jetpack
 				if (ent->client->jetPackDebRecharge < level.time)
 				{

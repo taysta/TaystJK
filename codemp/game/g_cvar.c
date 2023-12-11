@@ -414,6 +414,21 @@ void CVU_StartingItems( void ) {
 	}
 }
 
+void CVU_GunGame(void) {
+	int i;
+	gentity_t* ent;
+
+	for (i = 0; i < level.numConnectedClients; i++) { //For each player, call removeweapons, and addweapons.
+		ent = &g_entities[level.sortedClients[i]];
+		if (ent->inuse && ent->client && !ent->client->sess.raceMode) {
+			//RemoveItemsFromPlayer(ent);
+			//Problem here is that thers no g_itemDisable cmd, so we have to parse all the other item individual disable cmds...
+			//Maybe just let them keep their old items until they die, oh well.
+			GiveClientWeapons(ent->client);
+		}
+	}
+}
+
 qboolean G_CallSpawn( gentity_t *ent );
 void CVU_Rabbit( void ) {
 	if (g_rabbit.integer) { //

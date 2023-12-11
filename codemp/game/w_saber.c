@@ -123,7 +123,7 @@ qboolean G_CanBeEnemy( gentity_t *self, gentity_t *enemy )
 	if (level.gametype < GT_TEAM)
 		return qtrue;
 
-	if ( g_friendlyFire.integer )
+	if ( g_friendlyFire.value)
 		return qtrue;
 
 	if ( OnSameTeam( self, enemy ) )
@@ -3837,8 +3837,13 @@ static float saberHitFraction = 1.0f;
 //This is a large function. I feel sort of bad inlining it. But it does get called tons of times per frame.
 qboolean BG_SuperBreakWinAnim( int anim );
 
+#define JK2_DMGSYSTEM(ent) ((qboolean)(g_tweakSaber.integer & ST_JK2_DMGSYSTEM) || (ent->client && ent->client->sess.raceMode))
 static QINLINE int SaberSPStyle(gentity_t *self)
 {
+	if (JK2_DMGSYSTEM(self)) {
+		return 0;
+	}
+
 	if (self->client && self->client->ps.duelInProgress) {
 		if (dueltypes[self->client->ps.clientNum] == 0)
 			return g_saberDuelSPDamage.integer; //NF duel gives us this
@@ -3886,6 +3891,8 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 	qboolean otherUnblockable = qfalse;
 	qboolean tryDeflectAgain = qfalse;
 
+	const qboolean jk2Damage = JK2_DMGSYSTEM(self);
+
 	gentity_t *otherOwner;
 
 	if (BG_SabersOff( &self->client->ps ))
@@ -3903,7 +3910,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 		VectorClear(saberTrMins);
 		VectorClear(saberTrMaxs);
 	}
-	else if (d_saberGhoul2Collision.integer)
+	else if (d_saberGhoul2Collision.integer && !jk2Damage)
 	{
 		if ( SaberSPStyle(self) )
 		{//SP-size saber damage traces
@@ -4285,25 +4292,25 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			else if (self->client->ps.fd.saberAnimLevel == SS_STRONG)//Red Style 
 			{
 				if (self->client->ps.saberMove == LS_A_T2B) { //Red Vert
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 100*g_redDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 30*g_redDamageScale.value, 70*g_redDamageScale.value, 0.65f);
 				}
 				else if (self->client->ps.saberMove == LS_A_BACK) {//Red Backslash
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 120*g_backslashDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 30*g_backslashDamageScale.value, 0.5f);
 				}
 				else if (self->client->ps.saberMove == LS_A_BACK_CR) { //Red DBS
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 140*g_backslashDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 40*g_backslashDamageScale.value, 0.5f);
 				}
 				else if (self->client->ps.saberMove == LS_A_JUMP_T__B_) {//Red DFA
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 120*g_redDFADamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 70*g_redDFADamageScale.value, 0.65f);
@@ -4311,7 +4318,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				else if (self->client->ps.saberMove == LS_A3_SPECIAL)
 					dmg = 20*g_redDamageScale.value;
 				else {//Regular swing
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 100*g_redDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 30*g_redDamageScale.value, 85*g_redDamageScale.value, 0.65f);
@@ -4320,19 +4327,19 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			else if (self->client->ps.fd.saberAnimLevel == SS_MEDIUM)//Yellow Style
 			{
 				if (self->client->ps.saberMove == LS_A_FLIP_STAB || self->client->ps.saberMove == LS_A_FLIP_SLASH) { //Yellow DFA and something else?
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 60*g_yellowDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 50*g_yellowDamageScale.value, 0.5f);
 				}
 				else if (self->client->ps.saberMove == LS_A_BACK) { //Yellow Backslash
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 140*g_backslashDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 30*g_backslashDamageScale.value, 0.5f);
 				}
 				else if (self->client->ps.saberMove == LS_A_BACK_CR) {//Yellow DBS
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 140*g_backslashDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 40*g_backslashDamageScale.value, 0.5f);
@@ -4354,7 +4361,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				else if (self->client->ps.saberMove >= LS_KICK_F_AIR && self->client->ps.saberMove <= LS_KICK_L_AIR)
 					dmg = 55;
 				else if (self->client->ps.saberMove == LS_A_T2B) {//now what is this
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 60*g_yellowDamageScale.value;
 					else
 						dmg = 30*g_yellowDamageScale.value;
@@ -4362,7 +4369,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				else if (self->client->ps.saberMove == LS_A2_SPECIAL)
 					dmg = 20*g_yellowDamageScale.value;
 				else {//Normal yellow swing
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 60*g_yellowDamageScale.value;
 					else
 						dmg = 40*g_yellowDamageScale.value;
@@ -4371,13 +4378,13 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 			else if (self->client->ps.fd.saberAnimLevel == SS_FAST)//Blue Style
 			{
 				if (self->client->ps.saberMove == LS_A_LUNGE) {//Blue Lunge
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 40*g_blueDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 20*g_blueDamageScale.value, 40*g_blueDamageScale.value, 0.3f);
 				}
 				else if (self->client->ps.saberMove == LS_A_BACKSTAB) { //Blue Backstab
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 25*g_blueDamageScale.value;
 					else
 						dmg = G_GetAttackDamage(self, 2, 25*g_blueDamageScale.value, 0.5f);
@@ -4395,7 +4402,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				else if (self->client->ps.saberMove == LS_A2_SPECIAL)
 					dmg = 20*g_blueDamageScale.value;
 				else {//Normal blue swing
-					if (g_tweakSaber.integer & ST_JK2_DMGSYSTEM)
+					if (jk2Damage)
 						dmg = 20*g_blueDamageScale.value;
 					else
 						dmg = 10*g_blueDamageScale.value;//was 35
@@ -4460,7 +4467,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 		unblockable = qtrue;
 		self->client->ps.saberBlocked = 0;
 
-		if (!SaberSPStyle(self) && !inBackAttack && !(g_tweakSaber.integer & ST_JK2_DMGSYSTEM))
+		if (!SaberSPStyle(self) && !inBackAttack && !jk2Damage)
 		{
 			if (self->client->ps.saberMove == LS_A_JUMP_T__B_)
 			{ //do extra damage for special unblockables
@@ -4709,7 +4716,7 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 
 		didHit = qtrue;
 
-		if ( !SaberSPStyle(self)//let's trying making blocks have to be blocked by a saber
+		if (!SaberSPStyle(self)//let's trying making blocks have to be blocked by a saber
 			&& g_entities[tr.entityNum].client
 			&& !unblockable
 			&& WP_SaberCanBlock(&g_entities[tr.entityNum], tr.endpos, 0, MOD_SABER, qfalse, attackStr))
@@ -4850,7 +4857,21 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				}
 			}
 
-			WP_SaberDamageAdd( tr.entityNum, dir, tr.endpos, dmg, doDismemberment, knockbackFlags );
+			if (jk2Damage && dmg > SABER_NONATTACK_DAMAGE)
+			{ //clear out any damage flags that would prevent saber knockback
+				knockbackFlags &= ~(DAMAGE_NO_KNOCKBACK|DAMAGE_SABER_KNOCKBACK1|DAMAGE_SABER_KNOCKBACK2|DAMAGE_SABER_KNOCKBACK1|DAMAGE_SABER_KNOCKBACK2_B2);
+				knockbackFlags |= (DAMAGE_NO_DAMAGE|DAMAGE_NO_DISMEMBER);
+				if (self->client->ps.saberAttackWound < level.time && g_entities[tr.entityNum].inuse)
+				{
+					//apply the damage immediately, this will call G_Damage for us (this matches 1.02's setup)
+					G_Damage(&g_entities[tr.entityNum], self, self, dir, tr.endpos, dmg, knockbackFlags, MOD_SABER);
+					self->client->ps.saberAttackWound = level.time + 100;
+				}
+				//now set no knockback flag so it doesn't add up when damage is applied again later
+				knockbackFlags |= DAMAGE_NO_KNOCKBACK;
+			}
+
+			WP_SaberDamageAdd(tr.entityNum, dir, tr.endpos, dmg, doDismemberment, knockbackFlags);
 
 			if (g_entities[tr.entityNum].client)
 			{
@@ -5243,7 +5264,7 @@ blockStuff:
 			}
 		}
 
-		if (d_saberGhoul2Collision.integer && !didDefense && dmg <= SABER_NONATTACK_DAMAGE && !otherUnblockable) //with perpoly, it looks pretty weird to have clash flares coming off the guy's face and whatnot
+		if ((d_saberGhoul2Collision.integer && !jk2Damage) && !didDefense && dmg <= SABER_NONATTACK_DAMAGE && !otherUnblockable) //with perpoly, it looks pretty weird to have clash flares coming off the guy's face and whatnot
 		{
 			if (!PM_SaberInParry(otherOwner->client->ps.saberMove) &&
 				!PM_SaberInBrokenParry(otherOwner->client->ps.saberMove) &&
@@ -8197,6 +8218,8 @@ static void G_GrabSomeMofos(gentity_t *self)
 	vec3_t pos;
 	vec3_t grabMins, grabMaxs;
 	trace_t trace;
+	qboolean hit = qfalse;
+	float range = 4.0f;
 
 	if (!self->ghoul2 || ri->handRBolt == -1)
 	{ //no good
@@ -8208,14 +8231,78 @@ static void G_GrabSomeMofos(gentity_t *self)
 		level.time, NULL, self->modelScale);
 	BG_GiveMeVectorFromMatrix(&boltMatrix, ORIGIN, pos);
 
-	VectorSet(grabMins, -4.0f, -4.0f, -4.0f);
-	VectorSet(grabMaxs, 4.0f, 4.0f, 4.0f);
+	if (g_tweakForce.integer & FT_BUFFMELEE)
+		range = 14;
+
+	VectorSet(grabMins, -range, -range, -range);
+	VectorSet(grabMaxs, range, range, range);
+
+	if (g_tweakForce.integer & FT_BUFFMELEE)
+	{
+		int	entityList[MAX_GENTITIES];
+		int numListedEntities;
+		int e;
+		gentity_t* ent;
+
+		VectorAdd(pos, grabMins, grabMins);
+		VectorAdd(pos, grabMaxs, grabMaxs);
+
+		numListedEntities = trap->EntitiesInBox(grabMins, grabMaxs, entityList, MAX_GENTITIES);
+
+		for (e = 0; e < numListedEntities; e++) {
+			ent = &g_entities[entityList[e]];
+
+			if (!ent)
+				continue;
+			if (ent == self)
+				continue;
+			if (!ent->inuse)
+				continue;
+			if (!ent->takedamage)
+				continue;
+			if (ent->health <= 0)//no torturing corpses
+				continue;
+			if (!ent->client)
+				continue;
+			if (ent->client->ps.forceHandExtend == HANDEXTEND_KNOCKDOWN)
+				continue;
+
+			//JP_Trace(&trace, self->client->ps.origin, 0, 0, ent->s.origin, self->s.number, MASK_SHOT, qfalse, G2TRFLAG_DOGHOULTRACE | G2TRFLAG_GETSURFINDEX | G2TRFLAG_THICK | G2TRFLAG_HITCORPSES, g_g2TraceLod.integer);
+			JP_Trace(&trace, self->client->ps.origin, 0, 0, ent->client->ps.origin, self->s.number, MASK_SHOT, qfalse, 0, 0);
+			//G_TestLine(self->client->ps.origin, ent->client->ps.origin, 0x0000ff, 5000);
+			if (trace.entityNum != ent->s.number) {
+				//Com_Printf("Client found and not hit them:%im, us:%i\n", ent->s.number, trace.entityNum);
+			}
+			else { //Do a trace from us to ent, see if it makes it all the way.  if so break out and do the mvoe on him.
+				//Check if aiming at then
+				vec3_t a_fo;
+				VectorSubtract(ent->client->ps.origin, self->client->ps.origin, a_fo);
+				vectoangles(a_fo, a_fo);
+
+				if (InFieldOfVision(self->client->ps.viewangles, 50, a_fo)) //eyelevel?
+				{
+
+					hit = qtrue;
+					//Com_Printf("Client found and hit them:%im, us:%i\n", ent->s.number, trace.entityNum);
+					break;
+				}
+			}
+		}
+	}
+	else {
+		JP_Trace(&trace, self->client->ps.origin, grabMins, grabMaxs, pos, self->s.number, MASK_SHOT, qfalse, G2TRFLAG_DOGHOULTRACE | G2TRFLAG_GETSURFINDEX | G2TRFLAG_THICK | G2TRFLAG_HITCORPSES, g_g2TraceLod.integer);
+	}
+
+
+	//This should probably be done differently
+	//Get entities in box range, then loop through and trace to each one seeing if we can grab them, if so break
 
 	//trace from my origin to my hand, if we hit anyone then get 'em
-	JP_Trace( &trace, self->client->ps.origin, grabMins, grabMaxs, pos, self->s.number, MASK_SHOT, qfalse, G2TRFLAG_DOGHOULTRACE|G2TRFLAG_GETSURFINDEX|G2TRFLAG_THICK|G2TRFLAG_HITCORPSES, g_g2TraceLod.integer );
+	//because this is mask_shot not contents_body it can get blocked if its high range and it hits a wall or something instead of player.
+	//but if its contents_body and high range then you can grab people through walls ..
+	//JP_Trace( &trace, self->client->ps.origin, grabMins, grabMaxs, pos, self->s.number, MASK_SHOT, qfalse, G2TRFLAG_DOGHOULTRACE|G2TRFLAG_GETSURFINDEX|G2TRFLAG_THICK|G2TRFLAG_HITCORPSES, g_g2TraceLod.integer );
 
-	if (trace.fraction != 1.0f &&
-		trace.entityNum < ENTITYNUM_WORLD)
+	if ((!(g_tweakForce.integer & FT_BUFFMELEE) && (trace.fraction != 1.0f && trace.entityNum < ENTITYNUM_WORLD)) || ((g_tweakForce.integer & FT_BUFFMELEE) && hit))
 	{
 		gentity_t *grabbed = &g_entities[trace.entityNum];
 
@@ -8229,7 +8316,7 @@ static void G_GrabSomeMofos(gentity_t *self)
 			int tortureAnim = -1;
 			int correspondingAnim = -1;
 
-			if (self->client->pers.cmd.forwardmove > 0)
+			if ((self->client->pers.cmd.forwardmove > 0) || (g_tweakForce.integer & FT_BUFFMELEE)) //This is the only non broken/OP one so... 
 			{ //punch grab
 				tortureAnim = BOTH_KYLE_PA_1;
 				correspondingAnim = BOTH_PLAYER_PA_1;
@@ -8358,7 +8445,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 		self->client->saberCycleQueue = 0;
 	}
 
-	if (self && self->inuse && self->client && (self->client->sess.raceMode || self->client->pers.amfreeze)) {
+	if (self && self->inuse && self->client && ((self->client->sess.raceMode && !self->client->ps.duelInProgress) || self->client->pers.amfreeze)) {
 		return;
 	}
 
@@ -8388,7 +8475,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 			!BG_InGrappleMove(self->client->ps.torsoAnim) || !BG_InGrappleMove(self->client->ps.legsAnim) ||
 			!self->client->grappleState || !grappler->client->grappleState ||
 			grappler->health < 1 || self->health < 1 ||
-			!G_PrettyCloseIGuess(self->client->ps.origin[2], grappler->client->ps.origin[2], 4.0f))
+			!G_PrettyCloseIGuess(self->client->ps.origin[2], grappler->client->ps.origin[2], 4.0f)) //This is why they have to be on same level
 		{
 			self->client->grappleState = 0;
 			if ((BG_InGrappleMove(self->client->ps.torsoAnim) && self->client->ps.torsoTimer > 100) ||
@@ -8449,7 +8536,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 					if (!trace.startsolid && !trace.allsolid && trace.fraction == 1.0f)
 					{ //go there
 						G_SetOrigin(self, idealSpot);
-						VectorCopy(idealSpot, self->client->ps.origin);
+						VectorCopy(idealSpot, self->client->ps.origin); //problem
 					}
 				}
 				else if (self->client->grappleState >= 1)
@@ -8539,7 +8626,7 @@ void WP_SaberPositionUpdate( gentity_t *self, usercmd_t *ucmd )
 								if (grappler->health > 0)
 								{ //if still alive knock them down
 									grappler->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
-									grappler->client->ps.forceHandExtendTime = level.time + 1300;
+									grappler->client->ps.forceHandExtendTime = level.time + 1300; //why not always kd them?
 								}
 							}
 						}
@@ -9540,6 +9627,9 @@ static int G_SaberPierceLevelForStance( int stance ) {
 		break;
 	}
 	return 0;
+
+	//Current:
+	//New:    Strong > Desann > Staff > Tavion > Yellow > Duals > Blue   ??
 }
 
 static QINLINE qboolean WP_SaberCanBlockSwing(int ourStr, int attackStr) //If this returns false, we dont block the saber during our swing? (default true)

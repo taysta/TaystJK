@@ -674,7 +674,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 	VectorCopy (pm->ps->velocity, endVelocity);
 
 	if ( gravity ) {
-		endVelocity[2] -= pm->ps->gravity * pml.frametime;
+		endVelocity[2] -= pm->ps->gravity * pml.frametime; //This is what gives lowfps extra ramp, we should subtract 1 frames worth of grav elsewhere when we do the ramp speed calc
 		pm->ps->velocity[2] = ( pm->ps->velocity[2] + endVelocity[2] ) * 0.5;
 		primal_velocity[2] = endVelocity[2];
 		if ( pml.groundPlane ) {
@@ -813,8 +813,8 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
 
 #if _GAME
-			//Ignore racemode? what if somehow there is no playerstate? crash?
-			if (trace.entityNum < MAX_CLIENTS && g_fixPlayerCollision.integer && g_entities[trace.entityNum].client && (g_entities[trace.entityNum].client->ps.velocity[0] || g_entities[trace.entityNum].client->ps.velocity[1])) {
+			//Always in coop? what if somehow there is no playerstate? crash?
+			if (trace.entityNum < MAX_CLIENTS && (pm->ps->stats[STAT_RACEMODE] || g_fixPlayerCollision.integer) && g_entities[trace.entityNum].client && (g_entities[trace.entityNum].client->ps.velocity[0] || g_entities[trace.entityNum].client->ps.velocity[1])) {
 				if (clipVelocity[0] != pm->ps->velocity[0])
 					clipVelocity[0] = g_entities[trace.entityNum].client->ps.velocity[0] * 0.95f;
 				if (clipVelocity[1] != pm->ps->velocity[1])
@@ -826,7 +826,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 					endClipVelocity[1] = g_entities[trace.entityNum].client->ps.velocity[1] * 0.95f;
 			}
 #else
-			if (trace.entityNum < MAX_CLIENTS && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo2 & JAPRO_CINFO2_FIXPLAYERCOLLISION) && cg_entities[trace.entityNum].playerState && (cg_entities[trace.entityNum].playerState->velocity[0] || cg_entities[trace.entityNum].playerState->velocity[1])) {
+			if (trace.entityNum < MAX_CLIENTS && cgs.serverMod == SVMOD_JAPRO && (pm->ps->stats[STAT_RACEMODE] || (cgs.jcinfo2 & JAPRO_CINFO2_FIXPLAYERCOLLISION)) && cg_entities[trace.entityNum].playerState && (cg_entities[trace.entityNum].playerState->velocity[0] || cg_entities[trace.entityNum].playerState->velocity[1])) {
 				//Com_Printf("Predicting! %.2f %.2f\n", cg_entities[trace.entityNum].playerState->velocity[0], cg_entities[trace.entityNum].playerState->velocity[1]); //this executes but why does it not look like its predicting ingame
 				if (clipVelocity[0] != pm->ps->velocity[0])
 					clipVelocity[0] = cg_entities[trace.entityNum].playerState->velocity[0] * 0.95f;
@@ -924,7 +924,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 	int NEW_STEPSIZE = STEPSIZE;
 	const int moveStyle = PM_GetMovePhysics();
 
-	if (moveStyle == MV_CPM || moveStyle == MV_Q3 || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
+	if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
 		if (pm->ps->velocity[2] > 0 && pm->cmd.upmove > 0) {
 			int jumpHeight = pm->ps->origin[2] - pm->ps->fd.forceJumpZStart;
 
@@ -1095,6 +1095,12 @@ void PM_StepSlideMove( qboolean gravity ) {
 			if (pm->stepSlideFix)
 			{
 				if (trace.fraction < 1.0) {
+
+					//I think we want to take away 1 frames worth of gravity at this point.  thats will fix the lowfps having more landing speed. lets just do siege to test. this is apparent with pmove_float or racemode
+					if (pm->ps->stats[STAT_RACEMODE]) {
+						pm->ps->velocity[2] += pm->ps->gravity * pml.frametime * 0.6f; //probably over corrects in most cases
+					}
+
 					if (moveStyle == MV_WSW || moveStyle == MV_SLICK) { //Make Warsow Rampjump not slow down your XY speed
 						vec3_t oldVel, clipped_velocity, newVel;
 						float oldSpeed, newSpeed;

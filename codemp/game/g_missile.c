@@ -810,7 +810,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			}
 
 			//damage falloff option, assumes bullet lifetime is 10,000 (default)
-			if ((g_tweakWeapons.integer & WT_NO_SPREAD) &&
+			if ((g_tweakWeapons.integer & WT_TRIBES) &&
 				((ent->s.weapon == WP_BLASTER && (ent->s.eFlags & EF_ALT_FIRING)) ||
 				(ent->s.weapon == WP_REPEATER && !(ent->s.eFlags & EF_ALT_FIRING))	
 				))
@@ -950,6 +950,39 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			if ( other->client ) {
 				//G_AddEvent( nent, EV_MISSILE_HIT, DirToByte( trace->plane.normal ) );							//Event
 
+				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
+					if (!other->client || OnSameTeam(ent->parent, other)) {
+						Weapon_HookFree(ent);	// don't work
+						return;
+					}
+					/*
+					if (!ent->s.hasLookTarget) {
+						Com_Printf("111\n");
+						vec3_t enemyVel, hookVel;
+						float dot;
+
+						VectorCopy(ent->s.pos.trDelta, hookVel);
+						VectorCopy(other->s.pos.trDelta, enemyVel);
+						VectorNormalize(hookVel);
+						VectorNormalize(enemyVel);
+						dot = DotProduct(hookVel, enemyVel);
+						//Com_Printf("Dot2 is %.2f\n", dot);
+						if (dot <= 0) {
+							Weapon_HookFree(ent);	// don't work
+							return;
+						}
+					}
+					else {
+						//Time expire? proximity expire? speed expire?
+					}
+					*/
+					ent->s.time2 += FRAMETIME;
+					if (ent->s.time2 > 2000) {
+						Weapon_HookFree(ent);	// don't work
+						return;
+					}
+				}
+
 				if (!ent->s.hasLookTarget) {
 					G_PlayEffectID( G_EffectIndex("tusken/hit"), trace->endpos, trace->plane.normal );
 				}
@@ -965,8 +998,14 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				SnapVectorTowards( v, ent->s.pos.trBase );	// save net bandwidth
 				ent->s.otherEntityNum = ent->enemy->s.clientNum;
 				other->s.otherEntityNum = ent->parent->s.clientNum;
+
+				ent->parent->s.lookTarget = ent->enemy->s.clientNum;
 			} else {
 				if ( !strcmp(other->classname, "func_rotating") || !strcmp(other->classname, "func_pendulum") ) {
+					Weapon_HookFree(ent);	// don't work
+					return;
+				}
+				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
 					Weapon_HookFree(ent);	// don't work
 					return;
 				}
@@ -980,6 +1019,10 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				ent->s.hasLookTarget = qtrue;
 			}
 		} else {
+			if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
+				Weapon_HookFree(ent);	// don't work
+				return;
+			}
 			VectorCopy(trace->endpos, v);
 			//G_AddEvent( nent, EV_MISSILE_MISS, 0);//DirToByte( trace->plane.normal ) );						//Event
 			if (!ent->s.hasLookTarget) {
@@ -1264,7 +1307,7 @@ passthrough:
 
 #if _GRAPPLE//_GRAPPLE
 void StandardSetBodyAnim(gentity_t *self, int anim, int flags, int body);
-gentity_t *fire_grapple (gentity_t *self, vec3_t start, vec3_t dir) {
+gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	float vel = 2400.0f;
 	float inheritance = 0.5f;
 	int lifetime = 1000;
@@ -1272,12 +1315,19 @@ gentity_t *fire_grapple (gentity_t *self, vec3_t start, vec3_t dir) {
 	//gentity_t *missile;
 
 	if (!self->client->sess.raceMode) {
-		inheritance = g_hookInheritance.value;
-		vel = g_hookSpeed.integer;
-		lifetime = 30000;
+		if (self->client->sess.movementStyle == MV_TRIBES) {
+			inheritance = 0;
+			vel = 5000;
+			lifetime = 250;
+		}
+		else {
+			inheritance = g_hookInheritance.value;
+			vel = g_hookSpeed.integer;
+			lifetime = 30000;
+		}
 	}
 
-	VectorNormalize (dir);
+	VectorNormalize(dir);
 
 	vel = vel + DotProduct(dir, self->client->ps.velocity)*inheritance; //Inheritence scale - Hardcode this in racemode
 
@@ -1308,22 +1358,27 @@ gentity_t *fire_grapple (gentity_t *self, vec3_t start, vec3_t dir) {
 
 	//hook->target_ent = NULL; // ???
 
-	VectorCopy( start, hook->s.pos.trBase );
+	VectorCopy(start, hook->s.pos.trBase);
 
-	if ( self->client->pers.haste )
-		VectorScale( dir, vel * 1.3, hook->s.pos.trDelta );
-	else 
-		VectorScale( dir, vel, hook->s.pos.trDelta );
+	if (self->client->pers.haste)
+		VectorScale(dir, vel * 1.3, hook->s.pos.trDelta);
+	else
+		VectorScale(dir, vel, hook->s.pos.trDelta);
 
-	SnapVector( hook->s.pos.trDelta );			// save net bandwidth
-	VectorCopy (start, hook->r.currentOrigin);
+	SnapVector(hook->s.pos.trDelta);			// save net bandwidth
+	VectorCopy(start, hook->r.currentOrigin);
 
 	self->client->hook = hook;
 
 	//hm.
-	G_Sound( self, CHAN_AUTO, G_SoundIndex( "sound/weapons/melee/swing2.wav" ) );
-	StandardSetBodyAnim(self, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD|SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+	G_Sound(self, CHAN_AUTO, G_SoundIndex("sound/weapons/melee/swing2.wav"));
+	StandardSetBodyAnim(self, BOTH_FORCEPUSH, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
 	//G_AddEvent( hook, EV_FIRE_WEAPON, 0 );
+
+	if (self->client->sess.movementStyle == MV_TRIBES) {
+		VectorSet(hook->r.mins, -16, -16, -16);
+		VectorSet(hook->r.maxs, 16, 16, 16);
+	}
 
 	return hook;
 }
