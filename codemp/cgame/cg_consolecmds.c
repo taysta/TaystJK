@@ -1586,7 +1586,7 @@ static void CG_Cosmetics_JaPRO(void)
 		for (i = 0; i < MAX_COSMETICS; i++) {
 			if ((cp_cosmetics.integer & (1 << i))) {
 				found = qfalse;
-				if (cosmeticUnlocks[0].mapname && cosmeticUnlocks[0].mapname[0]) { //terrible
+				if (cosmeticUnlocks[0].mapname[0]) { //terrible
 					for (j = 0; j < MAX_COSMETIC_UNLOCKS; j++) {
 						if (display == cosmeticUnlocks[j].bitvalue) {
 							IntegerToRaceName(cosmeticUnlocks[j].style, styleString, sizeof(styleString));
@@ -1613,7 +1613,7 @@ static void CG_Cosmetics_JaPRO(void)
 			}
 			else {
 				found = qfalse;
-				if (cosmeticUnlocks[0].mapname && cosmeticUnlocks[0].mapname[0]) { //terrible
+				if (cosmeticUnlocks[0].mapname[0]) { //terrible
 					for (j = 0; j < MAX_COSMETIC_UNLOCKS; j++) {
 						if (display == cosmeticUnlocks[j].bitvalue) {
 							IntegerToRaceName(cosmeticUnlocks[j].style, styleString, sizeof(styleString));

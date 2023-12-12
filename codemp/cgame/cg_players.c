@@ -1182,12 +1182,12 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 	char		*customDefaultModel = DEFAULT_MODEL;
 
 	if ( !cg_defaultModelRandom.integer ) {
-		if ( cg_defaultModel.string )
+		if ( cg_defaultModel.value )
 			customDefaultModel = cg_defaultModel.string;
 
 		if ( ci->gender == GENDER_FEMALE ) {
 			fallbackModel = DEFAULT_MODEL_FEMALE;
-			if ( cg_defaultFemaleModel.string )
+			if ( cg_defaultFemaleModel.value )
 				customDefaultModel = cg_defaultFemaleModel.string;
 			else
 				customDefaultModel = DEFAULT_MODEL_FEMALE;

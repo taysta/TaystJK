@@ -5828,7 +5828,7 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 	}
 
 	// track shots taken for accuracy tracking.  Grapple is not a weapon and gauntet is just not tracked
-	if( ent->s.weapon != WP_SABER && (ent->s.weapon != WP_STUN_BATON || ((g_tweakWeapons.integer && WT_STUN_LG) || (g_tweakWeapons.integer && WT_STUN_SHOCKLANCE))) && ent->s.weapon != WP_MELEE ) 
+	if( ent->s.weapon != WP_SABER && (ent->s.weapon != WP_STUN_BATON || ((g_tweakWeapons.integer & WT_STUN_LG) || (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE))) && ent->s.weapon != WP_MELEE )
 	{
 		if( ent->s.weapon == WP_FLECHETTE ) {
 			ent->client->accuracy_shots += FLECHETTE_SHOTS;
