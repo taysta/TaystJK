@@ -1387,10 +1387,6 @@ void CG_DrawWeaponSelect( void ) {
         }
         trap->R_SetColor(colorTable[CT_WHITE]);
 
-        if (!CG_WeaponCheck(i))
-        {
-            trap->R_SetColor(colorTable[CT_WHITE]);
-        }
 		if (!CG_WeaponCheck(cg.weaponSelect))
 		{
 			CG_DrawPic( x-(bigIconSize/2 * cgs.widthRatioCoef), (y-((bigIconSize-smallIconSize)/2))+10+yOffset, bigIconSize * cgs.widthRatioCoef, bigIconSize, cgs.media.weaponIcons_NA[cg.weaponSelect] ); //JAPRO - Clientside - Ratio fix
