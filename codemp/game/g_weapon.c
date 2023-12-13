@@ -2980,7 +2980,7 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	float vel = TD_VELOCITY;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		vel = TD_VELOCITY * g_projectileVelocityScale.value;
+		vel = 1800 * g_projectileVelocityScale.value;
 	}
 
 	VectorCopy( forward, dir );

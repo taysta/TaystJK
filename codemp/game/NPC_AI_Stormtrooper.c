@@ -553,6 +553,9 @@ qboolean NPC_CheckEnemyStealth( gentity_t *target )
 
 	maxViewDist			= MAX_VIEW_DIST;
 
+	if (g_npcspskill.integer > 5)
+		maxViewDist = 8192; //sad hack
+
 	if ( NPCS.NPCInfo->stats.visrange > maxViewDist )
 	{//FIXME: should we always just set maxViewDist to this?
 		maxViewDist = NPCS.NPCInfo->stats.visrange;
