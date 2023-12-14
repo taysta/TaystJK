@@ -38,7 +38,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define VERSION_STRING_DOTTED XSTRING(VERSION_MAJOR_RELEASE) "." XSTRING(VERSION_MINOR_RELEASE) "." XSTRING(VERSION_EXTERNAL_BUILD) "." XSTRING(VERSION_INTERNAL_BUILD) // "a.b.c.d"
 
 #if defined(_DEBUG)
-	#define	JK_VERSION		"(debug)EternalJK: " GIT_TAG
+	#define	JK_VERSION		"(debug)EternalJK: " GIT_TAG"-"GIT_HASH
 	#define JK_VERSION_OLD	"(debug)JAmp: v" VERSION_STRING_DOTTED
 #elif defined (TOURNAMENT_CLIENT)
 	#define JK_VERSION		"EternalJK: Tournament Client" GIT_TAG

@@ -330,19 +330,36 @@ find_package(Git QUIET)
 if (NOT GIT_FOUND)
 	message(WARNING "Git not found!")
 	set(GIT_TAG vUNKNOWN)
+	set(GIT_HASH vUNKNOWN)
 else()
 	#Get git tag
 	execute_process(
-		COMMAND "git" "describe" "--tag"
+		COMMAND "git" "describe" "--tags" "--abbrev=0"
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		OUTPUT_VARIABLE GIT_TAG
 		RESULT_VARIABLE GIT_TAG_ERROR
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 	if(GIT_TAG_ERROR AND NOT GIT_TAG_ERROR EQUAL 0)
 		message(WARNING "Unable to determine Git tag")
 		set(GIT_TAG vUNKNOWN)
 	else()
 		message(STATUS "Git tag is ${GIT_TAG}")
+	endif()
+
+	#Get Git commit short hash
+	execute_process(
+		COMMAND "git" "rev-parse" "--short" "HEAD"
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_HASH
+		RESULT_VARIABLE GIT_HASH_ERROR
+		OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+	if(GIT_HASH_ERROR AND NOT GIT_HASH_ERROR EQUAL 0)
+		message(WARNING "Unable to determine Git hash")
+		set(GIT_HASH vUNKNOWN)
+	else()
+		message(STATUS "Git hash is ${GIT_HASH}")
 	endif()
 endif()
 
