@@ -322,10 +322,7 @@ else()
 	message(STATUS "SOURCE_DATE_EPOCH is set ($ENV{SOURCE_DATE_EPOCH}): SOURCE_DATE set to \"${SOURCE_DATE}\"")
 endif()
 
-# Current Git tag/version
-# ideally we would separate the hash suffix into its own variable, but sed is not available everywhere
-
-# Check for Git on the system
+#Check for Git on the system
 find_package(Git QUIET)
 if (NOT GIT_FOUND)
 	message(WARNING "Git not found!")

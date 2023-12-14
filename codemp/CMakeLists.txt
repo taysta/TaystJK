@@ -23,6 +23,16 @@ endif(NOT InOpenJK)
 
 set(MPSharedDefines ${SharedDefines})
 
+if (GIT_FOUND)
+	if (WIN32)
+		add_custom_target(GET_GIT_TAG_AND_HASH
+		COMMAND cmd /c "${CMAKE_SOURCE_DIR}/scripts/header/update_header.bat" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
+	elseif(UNIX OR APPLE)
+		add_custom_target(GET_GIT_TAG_AND_HASH
+		COMMAND "${CMAKE_SOURCE_DIR}/scripts/header/update_header.sh" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
+	endif()
+endif()	
+
 #    Add Game Project
 if(BuildMPGame)
 	add_subdirectory("${MPDir}/game")
@@ -47,7 +57,6 @@ endif(BuildMPRdVanilla)
 if(BuildMPRdVulkan)
 	add_subdirectory("${MPDir}/rd-vulkan")
 endif(BuildMPRdVulkan)
-
 
 #	Add rend2 JKA Renderer Project
 if(BuildMPRend2)
@@ -647,6 +656,10 @@ if(BuildMPEngine)
 	set_target_properties(${MPEngine} PROPERTIES INCLUDE_DIRECTORIES "${MPEngineIncludeDirectories}")
 	set_target_properties(${MPEngine} PROPERTIES PROJECT_LABEL "MP Client")
 	target_link_libraries(${MPEngine} ${MPEngineLibraries})
+
+	if (GIT_FOUND)
+		add_dependencies(${MPEngine} GET_GIT_TAG_AND_HASH)
+	endif()
 endif(BuildMPEngine)
 
 #        Dedicated Server (Engine) (jampded.exe)
@@ -739,6 +752,10 @@ if(BuildMPDed)
 	set_target_properties(${MPDed} PROPERTIES INCLUDE_DIRECTORIES "${MPDedIncludeDirectories}")
 	set_target_properties(${MPDed} PROPERTIES PROJECT_LABEL "MP Dedicated Server")
 	target_link_libraries(${MPDed} ${MPDedLibraries})
+
+	if (GIT_FOUND)
+		add_dependencies(${MPDed} GET_GIT_TAG_AND_HASH)
+	endif()
 endif(BuildMPDed)
 
 include(InstallZIP)

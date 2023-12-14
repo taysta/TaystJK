@@ -180,7 +180,12 @@ set_property(TARGET ${MPCGame} APPEND PROPERTY COMPILE_OPTIONS ${OPENJK_VISIBILI
 
 set_target_properties(${MPCGame} PROPERTIES INCLUDE_DIRECTORIES "${MPCGameIncludeDirectories}")
 set_target_properties(${MPCGame} PROPERTIES PROJECT_LABEL "MP Client Game Library")
+
 # no libraries used
 if(MPCGameLibraries)
 	target_link_libraries(${MPCGame} ${MPCGameLibraries})
+	
+	if (GIT_FOUND)
+		add_dependencies(${MPCGame} GET_GIT_TAG_AND_HASH)
+	endif()
 endif(MPCGameLibraries)
