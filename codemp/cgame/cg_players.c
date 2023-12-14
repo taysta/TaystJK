@@ -13040,7 +13040,7 @@ stillDoSaber:
 			if (cg.snap->ps.duelInProgress) { //We are dueling
 											  //Uhh.. dont draw anyone differently since they are invis i guess and us/opponent look normal
 			}
-			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA) {// We are racing
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA) {// We are racing
 				if ((!cent->currentState.bolt1 && !(cg_stylePlayer.integer & JAPRO_STYLE_NONRACERVFXDISABLE)) //they're in FFA or they're another racer
 				|| !(cg_stylePlayer.integer & JAPRO_STYLE_RACERVFXDISABLE))
 				{

@@ -3485,7 +3485,7 @@ void ClientThink_real( gentity_t *ent ) {
 	{
 		qboolean forceSingle = qfalse;
 		qboolean changeStyle = qfalse;
-		if ((g_saberDisable.integer || (client->sess.raceMode && client->sess.movementStyle >= MV_COOP_JKA))
+		if ((g_saberDisable.integer || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
 			&& ent->s.weapon == WP_SABER && ent->s.eType == ET_PLAYER && client->sess.sessionTeam != TEAM_SPECTATOR) {
 			//trap->Print("AnimLevel: %i, DrawLevel: %i, Baselevel: %i\n", ent->client->ps.fd.saberAnimLevel, ent->client->ps.fd.saberDrawAnimLevel, ent->client->ps.fd.saberAnimLevelBase);
 
@@ -3516,7 +3516,7 @@ void ClientThink_real( gentity_t *ent ) {
 					forceSingle = qtrue;
 			}
 
-			if ((((g_saberDisable.integer & SABERSTYLE_STAFF) && (g_saberDisable.integer & SABERSTYLE_DUAL)) || (client->sess.raceMode && client->sess.movementStyle >= MV_COOP_JKA))
+			if ((((g_saberDisable.integer & SABERSTYLE_STAFF) && (g_saberDisable.integer & SABERSTYLE_DUAL)) || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
 				&& (Q_stricmp(client->pers.saber1, "kyle") || Q_stricmp(client->pers.saber2, "none")))
 			{//No staff or dual.. force single kyle saber if not already.
 				client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_STRONG;

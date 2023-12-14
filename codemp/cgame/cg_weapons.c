@@ -2250,7 +2250,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		return;
 	}
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA && ent->weapon != WP_ROCKET_LAUNCHER)
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA && ent->weapon != WP_ROCKET_LAUNCHER)
 		return;
 
 	weap = &cg_weapons[ ent->weapon ];
