@@ -717,7 +717,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 	int			t_count = 0, pick;
 	gentity_t	*t = NULL;
 
-	//trap->Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number );
+	//Com_Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number );
 	G_ActivateBehavior(self,BSET_USE);
 
 	if(self->spawnflags & 1)
@@ -766,7 +766,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 
 		if (t == self)
 		{
-//				trap->Printf ("WARNING: Entity used itself.\n");
+				//Com_Printf("WARNING: Entity used itself.\n");
 		}
 		else if(t_count == pick)
 		{

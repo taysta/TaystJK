@@ -378,10 +378,13 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	else if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && owner->client) {
 		int amount = owner->client->ps.ping * 0.9;
 
-		if (amount > 135)
-			amount = 135;
-		else if (amount < 0) //dunno
+		if (amount > g_unlaggedProjectileTolerance.integer)
+			amount = g_unlaggedProjectileTolerance.integer;
+
+		if (amount < 0) //dunno
 			amount = 0;
+		else if (amount > 1000) //dunno
+			amount = 1000;
 
 		missile->s.pos.trTime = level.time - amount; //fixmer;
 	}

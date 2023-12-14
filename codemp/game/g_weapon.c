@@ -765,7 +765,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	float vel = 9000;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		vel = 36000;
+		vel = 32000;
 
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
@@ -798,7 +798,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		VectorSet(missile->r.mins, -2, -2, -2);
 	}
 
-	VectorMA( muzzle, -6, vright, muzzle );
+	VectorMA( muzzle, -6, vright, muzzle );//note
 		
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
@@ -1815,7 +1815,12 @@ static void WP_FlechetteMainFire( gentity_t *ent, int seed )
 		VectorSet( missile->r.maxs, FLECHETTE_SIZE, FLECHETTE_SIZE, FLECHETTE_SIZE );
 		VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-		missile->damage = FLECHETTE_DAMAGE;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile->damage = 11 * g_weaponDamageScale.value;
+		}
+		else {
+			missile->damage = FLECHETTE_DAMAGE;
+		}
 		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 		missile->methodOfDeath = MOD_FLECHETTE;
 		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
@@ -2359,8 +2364,10 @@ static void WP_FlechetteAltFire( gentity_t *self, int seed )
 		VectorCopy( angs, dir );
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Remove Flechette Alt Randomness - Start]
-		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-			dir[PITCH] -= 10;
+		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
+			if (!(g_tweakWeapons.integer & WT_TRIBES))
+				dir[PITCH] -= 10;
+		}
 		else {
 			if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 				dir[PITCH] -= Q_random(&seed) * 4 + 8; // make it fly upwards
