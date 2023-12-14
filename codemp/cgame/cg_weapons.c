@@ -2136,7 +2136,7 @@ void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
 	muzzlePoint[2] += cg.predictedPlayerState.viewheight;
 
 	if (!(cp_pluginDisable.integer & JAPRO_PLUGIN_CENTERMUZZLE) && !cg.predictedPlayerState.stats[STAT_RACEMODE]) { //Not center muzzle
-			float y = 0, z = 0;
+			int y = 0, z = 0;
 			switch (weapon)
 			{
 			case WP_STUN_BATON:
@@ -2156,7 +2156,7 @@ void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
 				z = -6;
 				break;
 			case WP_REPEATER:
-				y = 4.5f;
+				y = 4;
 				z = -6;
 				break;
 			case WP_ROCKET_LAUNCHER:

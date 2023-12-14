@@ -4967,7 +4967,7 @@ void CalcMuzzlePoint ( gentity_t *ent, const vec3_t inForward, const vec3_t inRi
 				muzzleOffPoint[2] += 6;
 				break;
 			case WP_REPEATER:
-				muzzleOffPoint[1] -= 4.5;
+				muzzleOffPoint[1] -= 4;
 				muzzleOffPoint[2] += 6;
 				break;
 			case WP_ROCKET_LAUNCHER:
