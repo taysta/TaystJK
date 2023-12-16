@@ -193,6 +193,12 @@ void RocketDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 //We should really organize weapon data into tables or parse from the ext data so we have accurate info for this,
 float WP_SpeedOfMissileForWeapon( int wp, qboolean alt_fire )
 {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (wp = WP_CONCUSSION)
+			return 2000 * g_projectileVelocityScale.integer;
+		if (wp = WP_BLASTER)
+			return 10440 * g_projectileVelocityScale.integer;
+	}
 	return 500;
 }
 
@@ -444,7 +450,11 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 
 	if (ent->s.eType == ET_NPC)
 	{ //animent
-		damage = 10;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
+			damage = 9 * g_weaponDamageScale.value;
+		}
+		else damage = 10;
 	}
 	else if (ent->client && ent->client->sess.movementStyle == MV_COOP_JKA) {//JAPRO - Serverside - Allow plasmaclimbing plasmagun
 		velocity = 2000;
