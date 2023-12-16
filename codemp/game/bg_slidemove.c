@@ -825,6 +825,22 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				if (endClipVelocity[1] != pm->ps->velocity[1])
 					endClipVelocity[1] = g_entities[trace.entityNum].client->ps.velocity[1] * 0.95f;
 			}
+			//
+			if (trace.entityNum < MAX_CLIENTS && g_entities[trace.entityNum].client && g_entities[trace.entityNum].client->sess.movementStyle == MV_TRIBES && g_entities[trace.entityNum].client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) {//Hit a tribes player using protect
+				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well???
+				vec3_t diffVelocity;
+				int damage;
+				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
+				damage = VectorLength(diffVelocity);
+				if (damage > 300) {
+					if (damage > 1000)
+						damage = 1000;
+					damage -= 300;
+					damage *= 0.1f;
+					G_Damage(pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
+				}
+				//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);
+			}
 #else
 			if (trace.entityNum < MAX_CLIENTS && cgs.serverMod == SVMOD_JAPRO && (pm->ps->stats[STAT_RACEMODE] || (cgs.jcinfo2 & JAPRO_CINFO2_FIXPLAYERCOLLISION)) && cg_entities[trace.entityNum].playerState && (cg_entities[trace.entityNum].playerState->velocity[0] || cg_entities[trace.entityNum].playerState->velocity[1])) {
 				//Com_Printf("Predicting! %.2f %.2f\n", cg_entities[trace.entityNum].playerState->velocity[0], cg_entities[trace.entityNum].playerState->velocity[1]); //this executes but why does it not look like its predicting ingame
