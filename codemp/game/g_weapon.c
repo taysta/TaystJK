@@ -5077,6 +5077,7 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 	else if ( vehWeapon->bIsProjectile )
 	{//projectile entity
 		vec3_t		mins, maxs;
+		vec3_t newDir;
 
 		VectorSet( maxs, vehWeapon->fWidth/2.0f,vehWeapon->fWidth/2.0f,vehWeapon->fHeight/2.0f );
 		VectorScale( maxs, -1, mins );
@@ -5086,7 +5087,9 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 
 		//FIXME: CUSTOM MODEL?
 		//QUERY: alt_fire true or not?  Does it matter?
-		missile = CreateMissileNew( start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qfalse, qfalse );
+		missile = CreateMissileNew( start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qtrue, qfalse ); //Forced inheritance here? loda fixme unlagged
+	
+
 
 		missile->classname = "vehicle_proj";
 

@@ -1140,6 +1140,32 @@ void PM_StepSlideMove( qboolean gravity ) {
 						if (newSpeed > oldSpeed)
 							VectorCopy(clipped_velocity, pm->ps->velocity);
 					}
+					/*
+					//literally just have to not PM_Crashland in tribes skii?
+					else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
+						//Get our change in Z vel and do some extra forgiveness?
+						float oldSpeed = VectorLength(pm->ps->velocity), lost;
+
+						PM_ClipVelocity(pm->ps->velocity, trace.plane.normal, pm->ps->velocity, OVERCLIP);
+						//How do we do this without redoing all the slope calculation.  The T3 way is to look at the magnitute of what we lost, and then just re-add it to the current vel.  But that gives us too much if its a nice smooth skii...
+						//Question is, how can we determine if we should have been clipped here or not.  
+
+						lost = VectorLength(pm->ps->velocity) / oldSpeed;
+						//400, 600   = 
+
+						if (lost < 0.9f) { //We lost more than 10pct of our speed.  Give it all back?
+							float regain = 1.0f - lost;
+							Com_Printf("Lost %.2f speed, regaining %.2f speed, %.2f percent\n", (oldSpeed - VectorLength(pm->ps->velocity)), ((oldSpeed - VectorLength(pm->ps->velocity)) * regain), regain);
+							VectorScale(pm->ps->velocity, 1.0f + regain, pm->ps->velocity);
+						}
+
+						//Look at pre speed 
+						//Do the velocity clip
+						//Look at post speed.  If we lost too much, add it back.
+
+						//Com_Printf("Lost %.2f z speed\n", pm->ps->velocity[2] - preZ);
+					}
+					*/
 					else {
 						PM_ClipVelocity( pm->ps->velocity, trace.plane.normal, pm->ps->velocity, OVERCLIP );
 					}

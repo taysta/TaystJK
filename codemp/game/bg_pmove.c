@@ -1229,7 +1229,7 @@ static void PM_Friction( void ) {
 	{
 		// apply ground friction
 		if ( pm->waterlevel <= 1 ) {
-			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_WALKING))) ) { //Slick style here potentially
+			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_DASH))) ) { //Slick style here potentially
 				//do this unless its (slick and walking) or unless its (tribes and not walking)
 																																																					  // if getting knocked back, no friction
 				if ( ! (pm->ps->pm_flags & PMF_TIME_KNOCKBACK) ) { //GB?
@@ -1430,7 +1430,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 			//don't factor upmove into scaling speed
 	const int moveStyle = PM_GetMovePhysics();
 
-	if (moveStyle == MV_OCPM) {
+	if (moveStyle == MV_OCPM || moveStyle == MV_TRIBES) {
 		umove = cmd->upmove;
 	}
 #if _SPPHYSICS
@@ -3786,7 +3786,8 @@ static void PM_AirMove( void ) {
 		}
 		wishvel[2] = 0;
 
-        VectorScale(wishvel, 1.75f, wishvel);
+
+		VectorScale(wishvel, 1.75f, wishvel);
 	}
 	else
 	{
@@ -3802,6 +3803,10 @@ static void PM_AirMove( void ) {
 	wishspeed *= scale;
 
 	accelerate = pm_airaccelerate;
+	//MV_TRIBES nerf
+	if (moveStyle == MV_TRIBES) {
+		accelerate = 0.5f;
+	}
 
 #if _SPPHYSICS
 	if (moveStyle == MV_SP) {
@@ -4375,6 +4380,9 @@ static void PM_WalkMove( void ) {
 	else if (moveStyle == MV_SLICK) {
 		realaccelerate = 30.0f;
 	}
+	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
+		realaccelerate = 2.0f;
+	}
 
 	PM_Friction ();
 
@@ -4505,7 +4513,7 @@ static void PM_WalkMove( void ) {
 	//Com_Printf("velocity = %1.1f %1.1f %1.1f\n", pm->ps->velocity[0], pm->ps->velocity[1], pm->ps->velocity[2]);
 	//Com_Printf("velocity1 = %1.1f\n", VectorLength(pm->ps->velocity));
 
-	if (((pml.groundTrace.surfaceFlags & SURF_SLICK) || (moveStyle == MV_SLICK) || (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_WALKING)) || pm->ps->pm_flags & PMF_TIME_KNOCKBACK) { //AH!!!
+	if (((pml.groundTrace.surfaceFlags & SURF_SLICK) || (moveStyle == MV_SLICK) || (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH)) || pm->ps->pm_flags & PMF_TIME_KNOCKBACK) { //AH!!!
 #ifdef _GAME
 		if ((g_fixSlidePhysics.integer == 1) && (pm->ps->clientNum >= MAX_CLIENTS)) { //Fix slide physics for NPCS (inbasejka, npcs will accel to ~340 on slick surfaces for no reason)
 		}
@@ -4842,6 +4850,8 @@ static void PM_CrashLand( void ) {
 	float		a, b, c, den;
 	qboolean	didRoll = qfalse;
 	const int moveStyle = PM_GetMovePhysics();
+
+	//MV_TRIBES TWEAKS NEEDED
 
 	// calculate the exact velocity on landing
 	dist = pm->ps->origin[2] - pml.previous_origin[2];
@@ -5448,8 +5458,13 @@ static void PM_GroundTrace( void ) {
 			//}
 #endif
 		}
-		
-		PM_CrashLand();
+
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) {
+			//Probably should stillcrashland and do some effects but not the speedloss
+		}
+		else {
+			PM_CrashLand();
+		}
 
 #ifdef _GAME
 		if (pm->ps->clientNum < MAX_CLIENTS &&
@@ -6825,6 +6840,16 @@ static void PM_Footsteps( void ) {
 		{ //let it finish first
 			bobmove = 0.2f;
 		}
+		else if ((pm->cmd.buttons & BUTTON_DASH) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//tribes skii //loda fixme this aint working
+			if (pm->cmd.rightmove > 0)
+				desiredAnim = BOTH_HOP_R;
+			else if (pm->cmd.rightmove < 0)
+				desiredAnim = BOTH_HOP_L;
+			else if (pm->cmd.forwardmove > 0)
+				desiredAnim = BOTH_HOP_F;
+			else if (pm->cmd.forwardmove < 0)
+				desiredAnim = BOTH_HOP_B;
+		}
 		else if ( !( pm->cmd.buttons & BUTTON_WALKING ) )
 		{//running
 			bobmove = 0.4f;	// faster speeds bob faster
@@ -7112,16 +7137,6 @@ static void PM_Footsteps( void ) {
 				}
 #endif
 			}
-		}
-		else if ((pm->cmd.buttons & BUTTON_WALKING) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES){//tribes skii
-			if (pm->cmd.rightmove > 0)
-				desiredAnim = BOTH_HOP_R;
-			else if (pm->cmd.rightmove < 0)
-				desiredAnim = BOTH_HOP_L;
-			else if (pm->cmd.forwardmove > 0)
-				desiredAnim = BOTH_HOP_F;
-			else if (pm->cmd.forwardmove < 0)
-				desiredAnim = BOTH_HOP_B;
 		}
 		else
 		{
@@ -12806,6 +12821,12 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 			//Com_Printf("Setting jetpack\n");
 		}
+		else if (pm->cmd.upmove && (pm->cmd.buttons & BUTTON_DASH) && BG_CanJetpack(pm->ps)) { //Special skiing option for going up terrain
+			if (!(pm->ps->eFlags & EF_JETPACK_ACTIVE)) {
+				pm->ps->stats[STAT_JUMPTIME] = 500;
+				pm->ps->eFlags |= EF_JETPACK_ACTIVE;
+			}
+		}
 		//Downjet?
 	}
 
@@ -12824,11 +12845,14 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->gravity *= 0.25f;
 		}
 	}
+	/*
 	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
 	{
 		savedGravity = pm->ps->gravity;
 		pm->ps->gravity *= 0.01f; //0.05 in FM3
+		//dont fuck with gravity in jetpack just use stronger thrust?
 	}
+	*/
 	else if (gPMDoSlowFall)
 	{
 		savedGravity = pm->ps->gravity;
@@ -12941,19 +12965,80 @@ void PmoveSingle (pmove_t *pmove) {
 		//FM3 is -6 if falling slower than 1200 and holding crouch (downjet)
 		//Jetpack gets shut off when close to ground in FM3 (<16)
 		//Jetpack upspeed is capped at 324, fallspeed is capped at -1200
+		//Grav should still affect jetters??
 		const int MAX_FALL_SPEED = -1200;
-		const int MAX_JETPACK_VEL_UP = 324;
+		const int MAX_JETPACK_VEL_UP = 2000;
 		float gDist2 = gDist;
+		float scale = PM_CmdScale(&pm->cmd);
+
+		//Com_Printf("Scale is %.2f\n", scale);
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
-			pm->ps->velocity[2] += 18.0f;
+			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
+			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
+			pm->ps->velocity[2] += 800.0f * pml.frametime * scale;//was 18 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
 		else if (pm->cmd.upmove < 0 && pm->ps->velocity[2] > MAX_FALL_SPEED) { //**?? max fall speed
-			pm->ps->velocity[2] -= 12.0f;
+			pm->ps->velocity[2] -= 400.0f * pml.frametime * scale;//was 12 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}
+
+		if (pm->cmd.rightmove || pm->cmd.forwardmove) {
+			//vec3_t forward;
+			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
+
+
+			
+			{ //use the proper way for siege
+
+				vec3_t		wishVelocity;
+				vec3_t		pushDir;
+				float		pushLen;
+				float		canPush;
+				vec3_t wishvel, wishdir;
+				float wishspeed;
+				int i;
+				float accel = 0.01f;
+				scale /= pm->ps->speed;
+				scale *= 20000; //MAX
+
+				//problem, outside of jet they can still slow down their speed with air control ?
+				//problem, still going too high up with wasd.  need custom cmd scale?
+
+				if (!scale) {
+					wishvel[0] = 0;
+					wishvel[1] = 0;
+					wishvel[2] = 2048 * (pm->cmd.upmove / 127.0f); //pm->ps->speed
+				}
+				else {
+					for (i = 0; i<3; i++) {
+						wishvel[i] = scale * pml.forward[i] * pm->cmd.forwardmove + scale * pml.right[i] * pm->cmd.rightmove;
+					}
+
+					wishvel[2] += scale * pm->cmd.upmove;
+				}
+
+				VectorCopy(wishvel, wishdir);
+				wishspeed = VectorNormalize(wishdir);
+
+
+				VectorScale(wishdir, wishspeed, wishVelocity);
+				VectorSubtract(wishVelocity, pm->ps->velocity, pushDir);
+				pushLen = VectorNormalize(pushDir);
+
+				canPush = accel*pml.frametime*wishspeed;
+				if (canPush > pushLen) {
+					canPush = pushLen;
+				}
+
+				VectorMA(pm->ps->velocity, canPush, pushDir, pm->ps->velocity);
+			}
+			//Get forward dir
+			//Apply thrust vectoring based on scale
+		}
+
 
 		/*
 		if (pm->ps->velocity[2] < MAX_FALL_SPEED) {
