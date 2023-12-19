@@ -4498,7 +4498,17 @@ static void PM_WalkMove( void ) {
 		accelerate = realaccelerate;
 	}
 
-	PM_Accelerate (wishdir, wishspeed, accelerate);
+	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
+		float oldVel = VectorLength(pm->ps->velocity);
+		PM_Accelerate(wishdir, wishspeed, accelerate);
+		if (oldVel > (pm->ps->speed * 1.44f)) {
+			float diff = oldVel / VectorLength(pm->ps->velocity);
+			VectorScale(pm->ps->velocity, diff, pm->ps->velocity);
+		}
+	}
+	else {
+		PM_Accelerate(wishdir, wishspeed, accelerate);
+	}
 	/*
 	if (pm->ps->clientNum >= MAX_CLIENTS)
 	{
