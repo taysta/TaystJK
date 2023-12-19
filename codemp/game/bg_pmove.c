@@ -1229,7 +1229,7 @@ static void PM_Friction( void ) {
 	{
 		// apply ground friction
 		if ( pm->waterlevel <= 1 ) {
-			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_DASH))) ) { //Slick style here potentially
+			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_DASH)) && (moveStyle != MV_TRIBES || pm->ps->clientNum < MAX_CLIENTS || (pm->cmd.buttons & BUTTON_WALKING))) ) { //Slick style here potentially
 				//do this unless its (slick and walking) or unless its (tribes and not walking)
 																																																					  // if getting knocked back, no friction
 				if ( ! (pm->ps->pm_flags & PMF_TIME_KNOCKBACK) ) { //GB?
@@ -4513,7 +4513,7 @@ static void PM_WalkMove( void ) {
 	//Com_Printf("velocity = %1.1f %1.1f %1.1f\n", pm->ps->velocity[0], pm->ps->velocity[1], pm->ps->velocity[2]);
 	//Com_Printf("velocity1 = %1.1f\n", VectorLength(pm->ps->velocity));
 
-	if (((pml.groundTrace.surfaceFlags & SURF_SLICK) || (moveStyle == MV_SLICK) || (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH)) || pm->ps->pm_flags & PMF_TIME_KNOCKBACK) { //AH!!!
+	if (((pml.groundTrace.surfaceFlags & SURF_SLICK) || (moveStyle == MV_SLICK) || (moveStyle == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && pm->cmd.buttons & BUTTON_WALKING))) || pm->ps->pm_flags & PMF_TIME_KNOCKBACK)) { //AH!!!
 #ifdef _GAME
 		if ((g_fixSlidePhysics.integer == 1) && (pm->ps->clientNum >= MAX_CLIENTS)) { //Fix slide physics for NPCS (inbasejka, npcs will accel to ~340 on slick surfaces for no reason)
 		}
@@ -5459,7 +5459,7 @@ static void PM_GroundTrace( void ) {
 #endif
 		}
 
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) {
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm_entSelf->s.eType == ET_NPC && (pm->cmd.buttons & BUTTON_WALKING)))) {
 			//Probably should stillcrashland and do some effects but not the speedloss
 		}
 		else {
@@ -12976,11 +12976,11 @@ void PmoveSingle (pmove_t *pmove) {
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
-			pm->ps->velocity[2] += 800.0f * pml.frametime * scale;//was 18 with no grav
+			pm->ps->velocity[2] += 700.0f * pml.frametime * scale;//was 18 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
 		else if (pm->cmd.upmove < 0 && pm->ps->velocity[2] > MAX_FALL_SPEED) { //**?? max fall speed
-			pm->ps->velocity[2] -= 400.0f * pml.frametime * scale;//was 12 with no grav
+			pm->ps->velocity[2] -= 325.0f * pml.frametime * scale;//was 12 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}

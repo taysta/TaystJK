@@ -3869,8 +3869,10 @@ void G_RunFrame( int levelTime ) {
 				{
 					if (g_tweakJetpack.integer == 2)
 						ent->client->ps.jetpackFuel -= 2;
-					else
+					else {
 						ent->client->ps.jetpackFuel -= 5;
+						//Special case for down jet here?
+					}
 					
 					if (ent->client->ps.jetpackFuel <= 0)
 					{ //turn it off
