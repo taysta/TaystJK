@@ -12968,7 +12968,7 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 		}
 	}
-	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
+	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack  //Loda todo - rewrite this to let us do mv_jetpack and mv_tribes keeping them seperate?
 	{
 		//Redo this NEWJETPACK2
 		//FM3 is +18 if going up slower than 324 and holding jump
@@ -12995,7 +12995,7 @@ void PmoveSingle (pmove_t *pmove) {
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}
 
-		if (pm->cmd.rightmove || pm->cmd.forwardmove) {
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.rightmove || pm->cmd.forwardmove)) {
 			//vec3_t forward;
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
 
