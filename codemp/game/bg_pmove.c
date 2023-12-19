@@ -4381,7 +4381,7 @@ static void PM_WalkMove( void ) {
 		realaccelerate = 30.0f;
 	}
 	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
-		realaccelerate = 2.0f;
+		realaccelerate = 3.0f;
 	}
 
 	PM_Friction ();
@@ -12976,11 +12976,11 @@ void PmoveSingle (pmove_t *pmove) {
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
-			pm->ps->velocity[2] += 700.0f * pml.frametime * scale;//was 18 with no grav
+			pm->ps->velocity[2] += 650.0f * pml.frametime * scale;//was 18 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
 		else if (pm->cmd.upmove < 0 && pm->ps->velocity[2] > MAX_FALL_SPEED) { //**?? max fall speed
-			pm->ps->velocity[2] -= 325.0f * pml.frametime * scale;//was 12 with no grav
+			pm->ps->velocity[2] -= 300.0f * pml.frametime * scale;//was 12 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}
@@ -13000,7 +13000,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.01f;
+				float accel = 0.013f;
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 

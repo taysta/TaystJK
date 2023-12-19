@@ -827,7 +827,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			}
 			//
 			if (trace.entityNum < MAX_CLIENTS && g_entities[trace.entityNum].client && g_entities[trace.entityNum].client->sess.movementStyle == MV_TRIBES && g_entities[trace.entityNum].client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) {//Hit a tribes player using protect
-				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well???
+				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well??? superheavy
 				vec3_t diffVelocity;
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);

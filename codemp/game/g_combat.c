@@ -5031,7 +5031,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	//Higher self knockback for tribes
 	if (attacker && targ == attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
-		knockback *= 2.5f;
+		knockback *= 1.75f;
 	}
 
 	// figure momentum add, even if the damage won't be taken
