@@ -1351,7 +1351,7 @@ void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	if (addspeed <= 0)// If not adding any, done.
 		return;
 
-	accelspeed = accel * wishspeed * pml.frametime * 1.4f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+	accelspeed = accel * wishspeed * pml.frametime * 1.65f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -1378,7 +1378,7 @@ void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	if (addspeed <= 0)// If not adding any, done.
 		return;
 
-	accelspeed = accel * wishspeed * pml.frametime * 0.4f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+	accelspeed = accel * wishspeed * pml.frametime * 0.5f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -3891,7 +3891,7 @@ static void PM_AirMove( void ) {
 	if (moveStyle == MV_QW) {
 		PM_AirAccelerate(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
 	} else if (moveStyle == MV_TRIBES) {
-		PM_AirAccelerateTribes(wishdir, wishspeed, 0.2f);//pm_qw_airaccel
+		PM_AirAccelerateTribes(wishdir, wishspeed, 0.32f);//pm_qw_airaccel
 	} else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
 		float		accel;
 		float		wishspeed2;
@@ -4558,7 +4558,7 @@ static void PM_WalkMove( void ) {
 	}
 
 	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
-		accelerate = 3.4f;
+		accelerate = 5.0f;
 		PM_GroundAccelerateTribes(wishdir, wishspeed, accelerate);
 		/*
 		//I should reference PM_AirAccelerate here instead of PM_Accelerate maybe.
@@ -13071,7 +13071,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.022f;
+				float accel = 0.020f;
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 
