@@ -5077,7 +5077,7 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 	else if ( vehWeapon->bIsProjectile )
 	{//projectile entity
 		vec3_t		mins, maxs;
-		vec3_t newDir;
+		// vec3_t newDir;
 
 		VectorSet( maxs, vehWeapon->fWidth/2.0f,vehWeapon->fWidth/2.0f,vehWeapon->fHeight/2.0f );
 		VectorScale( maxs, -1, mins );

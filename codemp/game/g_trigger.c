@@ -1849,7 +1849,7 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 
 		if (trigger->objective > 0) {  //Bitvalue of the checkpoint
-			int i, val;
+			// int i, val;
 			player->client->pers.stats.checkpoints |= trigger->objective;
 			/*
 			for (i = 0; i++; i < 32) {
