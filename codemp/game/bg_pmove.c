@@ -1343,8 +1343,19 @@ void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 		return;
 
-	if (wishspd > 30)
-		wishspd = 30;
+	Com_Printf("wishspd %.2f\n", wishspd);
+
+	//if (wishspd > 300)
+		//wishspd = 300;
+
+	//Scale friction by falling speed?
+	//fabs(pm->ps->velocity[2])
+	/*
+	float zSpeed = fabs(pm->ps->velocity[2]);
+	if (zSpeed > 500) {
+	friction *= sZpeed/500.0f;
+	}
+	*/
 
 	currentspeed = DotProduct(pm->ps->velocity, wishdir);
 	addspeed = wishspd - currentspeed;// See how much to add
