@@ -1309,7 +1309,7 @@ static void PM_Friction( void ) {
 void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 {
         int		i;
-        float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 4.0f;
                 
 		if (pm->ps->pm_type == PM_DEAD)
 			return;
@@ -1331,6 +1331,60 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
         
         for (i=0 ; i<3 ; i++)// Adjust pmove vel.
                pm->ps->velocity[i] += accelspeed*wishdir[i];        
+}
+
+void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
+{
+	int		i;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+
+	if (pm->ps->pm_type == PM_DEAD)
+		return;
+	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
+		return;
+
+	if (wishspd > 30)
+		wishspd = 30;
+
+	currentspeed = DotProduct(pm->ps->velocity, wishdir);
+	addspeed = wishspd - currentspeed;// See how much to add
+	if (addspeed <= 0)// If not adding any, done.
+		return;
+
+	accelspeed = accel * wishspeed * pml.frametime * 1.4f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+
+	if (accelspeed > addspeed) // Cap it
+		accelspeed = addspeed;
+
+	for (i = 0; i<3; i++)// Adjust pmove vel.
+		pm->ps->velocity[i] += accelspeed*wishdir[i];
+}
+
+void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
+{
+	int		i;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+
+	if (pm->ps->pm_type == PM_DEAD)
+		return;
+	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
+		return;
+
+	if (wishspd > 30)
+		wishspd = 30;
+
+	currentspeed = DotProduct(pm->ps->velocity, wishdir);
+	addspeed = wishspd - currentspeed;// See how much to add
+	if (addspeed <= 0)// If not adding any, done.
+		return;
+
+	accelspeed = accel * wishspeed * pml.frametime * 0.5f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+
+	if (accelspeed > addspeed) // Cap it
+		accelspeed = addspeed;
+
+	for (i = 0; i<3; i++)// Adjust pmove vel.
+		pm->ps->velocity[i] += accelspeed*wishdir[i];
 }
 
 /*
@@ -3811,10 +3865,6 @@ static void PM_AirMove( void ) {
 	wishspeed *= scale;
 
 	accelerate = pm_airaccelerate;
-	//MV_TRIBES nerf
-	if (moveStyle == MV_TRIBES) {
-		accelerate = 0.5f;
-	}
 
 #if _SPPHYSICS
 	if (moveStyle == MV_SP) {
@@ -3840,6 +3890,8 @@ static void PM_AirMove( void ) {
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW)
 		PM_AirAccelerate(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
+	else if (moveStyle == MV_TRIBES)
+		PM_AirAccelerateTribes(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
 	else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
 	{
 		float		accel;
@@ -4389,7 +4441,7 @@ static void PM_WalkMove( void ) {
 		realaccelerate = 30.0f;
 	}
 	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
-		realaccelerate = 3.0f;
+		realaccelerate = 2.5f;
 	}
 
 	PM_Friction ();
@@ -4507,12 +4559,16 @@ static void PM_WalkMove( void ) {
 	}
 
 	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
+		PM_GroundAccelerateTribes(wishdir, wishspeed, accelerate);
+		/*
+		//I should reference PM_AirAccelerate here instead of PM_Accelerate maybe.
 		float oldVel = VectorLength(pm->ps->velocity);
 		PM_Accelerate(wishdir, wishspeed, accelerate);
 		if (oldVel > (pm->ps->speed * 1.44f)) {
 			float diff = oldVel / VectorLength(pm->ps->velocity);
 			VectorScale(pm->ps->velocity, diff, pm->ps->velocity);
 		}
+		*/
 	}
 	else {
 		PM_Accelerate(wishdir, wishspeed, accelerate);
@@ -12987,8 +13043,6 @@ void PmoveSingle (pmove_t *pmove) {
 		const int MAX_JETPACK_VEL_UP = 2000;
 		float gDist2 = gDist;
 		float scale = PM_CmdScale(&pm->cmd);
-
-		//Com_Printf("Scale is %.2f\n", scale);
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
