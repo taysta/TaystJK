@@ -5093,7 +5093,7 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 		else {
 			missile = CreateMissileNew(start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qtrue, qfalse);
 		}
-	
+
 		missile->classname = "vehicle_proj";
 
 		missile->s.genericenemyindex = ent->s.number+MAX_GENTITIES;

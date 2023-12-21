@@ -13007,7 +13007,7 @@ void PmoveSingle (pmove_t *pmove) {
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
 
 
-			
+
 			{ //use the proper way for siege
 
 				vec3_t		wishVelocity;
