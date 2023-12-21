@@ -788,6 +788,7 @@ void ResetPlayerTimers(gentity_t *ent, qboolean print)
 {
 	ResetSpecificPlayerTimers(ent, print);
 	ent->client->ps.fd.forcePower = 100; //Reset their force back to full i guess!
+	ent->client->ps.jetpackFuel = 100;
 
 	if (ent->client->ps.duelInProgress && ent->client->ps.duelIndex != ENTITYNUM_NONE) {
 		gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];

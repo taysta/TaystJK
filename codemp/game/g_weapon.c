@@ -4727,7 +4727,7 @@ static void WP_FireLightningGun( gentity_t *ent )
 static void WP_FireShockLance( gentity_t *ent )
 //---------------------------------------------------------
 {
-	int			damage = 55 * g_weaponDamageScale.value;
+	int			damage = 55 * 3 * g_weaponDamageScale.value;
 	qboolean	render_impact = qtrue;
 	vec3_t		start, end;
 	trace_t		tr;
@@ -4789,7 +4789,7 @@ static void WP_FireShockLance( gentity_t *ent )
 				ent->client->accuracy_hits++;
 			} 
 
-			G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NORMAL, MOD_TURBLAST ); //I guess keep this as turblast since MOD_STUN is used for healgun .. and we dont want shocklance to heal :\
+			G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NORMAL, MOD_DEMP2); //I guess keep this as turblast since MOD_STUN is used for healgun .. and we dont want shocklance to heal :\
 			
 			tent = G_TempEntity( tr.endpos, EV_MISSILE_HIT );
 			tent->s.eventParm = DirToByte( tr.plane.normal );
