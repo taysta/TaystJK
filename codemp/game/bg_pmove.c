@@ -1288,6 +1288,14 @@ static void PM_Friction( void ) {
 	}
 #endif
 
+	//MV_tRIBES air drag
+#if 0
+	if (pm->ps->pm_type != PM_SPECTATOR && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		if (speed > pm->ps->speed * 1.44f)
+			drop = speed*g_flagDrag.value*0.1*pml.frametime;
+	}
+#endif
+
 	// scale the velocity
 	newspeed = speed - drop;
 	if (newspeed < 0) {
@@ -12855,14 +12863,13 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->gravity *= 0.25f;
 		}
 	}
-	/*
 	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
 	{
 		savedGravity = pm->ps->gravity;
-		pm->ps->gravity *= 0.01f; //0.05 in FM3
+		//pm->ps->gravity *= 0.01f; //0.05 in FM3
 		//dont fuck with gravity in jetpack just use stronger thrust?
 	}
-	*/
+
 	else if (gPMDoSlowFall)
 	{
 		savedGravity = pm->ps->gravity;
@@ -13000,7 +13007,7 @@ void PmoveSingle (pmove_t *pmove) {
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
 
 
-			
+
 			{ //use the proper way for siege
 
 				vec3_t		wishVelocity;
@@ -13451,10 +13458,10 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 
 #if _GRAPPLE
-#if _GAME
 			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				PM_GrappleMoveTribes();
 			}
+#if _GAME
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && ((g_allowGrapple.integer == 1) || pm->ps->stats[STAT_RACEMODE])) {
 				PM_GrappleMoveTarzan();
 			}
@@ -13462,9 +13469,9 @@ void PmoveSingle (pmove_t *pmove) {
 				PM_GrappleMove();
 			}
 #else
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || pm->ps->stats[STAT_RACEMODE]))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || pm->ps->stats[STAT_RACEMODE]))
 				PM_GrappleMoveTarzan();
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE)))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE)))
 				PM_GrappleMove();
 #endif
 
@@ -13586,11 +13593,7 @@ void PmoveSingle (pmove_t *pmove) {
 		}
 	}
 	
- 	if (pm->ps->pm_type == PM_JETPACK || gPMDoSlowFall )
-	{
-		pm->ps->gravity = savedGravity;
-	}
-	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
+ 	if (pm->ps->pm_type == PM_JETPACK || gPMDoSlowFall || BG_IsNewJetpacking(pm->ps))
 	{
 		pm->ps->gravity = savedGravity;
 	}

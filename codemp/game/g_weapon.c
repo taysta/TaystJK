@@ -5087,9 +5087,12 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 
 		//FIXME: CUSTOM MODEL?
 		//QUERY: alt_fire true or not?  Does it matter?
-		missile = CreateMissileNew( start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qtrue, qfalse ); //Forced inheritance here? loda fixme unlagged
-	
-
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile = CreateMissileNew(start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, 2, qfalse); //Forced inheritance here? loda fixme unlagged
+		}
+		else {
+			missile = CreateMissileNew(start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qtrue, qfalse);
+		}
 
 		missile->classname = "vehicle_proj";
 
