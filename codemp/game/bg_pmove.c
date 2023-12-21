@@ -12863,7 +12863,6 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->gravity *= 0.25f;
 		}
 	}
-
 	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
 	{
 		savedGravity = pm->ps->gravity;
