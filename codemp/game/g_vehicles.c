@@ -654,6 +654,9 @@ qboolean Eject( Vehicle_t *pVeh, bgEntity_t *pEnt, qboolean forceEject )
 
 	parent = (gentity_t *)pVeh->m_pParentEntity;
 
+	if (ent->client && ent->client->sess.movementStyle == MV_TRIBES)
+		pVeh->m_EjectDir = VEH_EJECT_TOP;
+
 	//Try ejecting in every direction
 	if ( pVeh->m_EjectDir < VEH_EJECT_LEFT )
 	{
@@ -846,7 +849,9 @@ getItOutOfMe:
 
 	if (ent->client->sess.movementStyle = MV_TRIBES) {
 		//VectorClear(ent->client->ps.velocity);
-		VectorCopy(parent->s.pos.trDelta, ent->client->ps.velocity);
+		VectorScale(parent->s.pos.trDelta, 0.5f, ent->client->ps.velocity);
+		//Shrike grab
+		//50pct ? Eject from where?
 	}
 
 	// Make sure entity is facing the direction it got off at.
