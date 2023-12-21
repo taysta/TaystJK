@@ -1,5 +1,6 @@
 #cmakedefine SOURCE_DATE "@SOURCE_DATE@"
 #cmakedefine GIT_TAG "@GIT_TAG@"
+#cmakedefine GIT_HASH "@GIT_HASH@"
 #cmakedefine BUILD_PORTABLE
 
 #if !defined(SOURCE_DATE)

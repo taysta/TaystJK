@@ -322,19 +322,43 @@ else()
 	message(STATUS "SOURCE_DATE_EPOCH is set ($ENV{SOURCE_DATE_EPOCH}): SOURCE_DATE set to \"${SOURCE_DATE}\"")
 endif()
 
-# Current Git tag/version
-# ideally we would separate the hash suffix into its own variable, but sed is not available everywhere
-execute_process(
-	COMMAND "git" "describe" "--tag"
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	OUTPUT_VARIABLE GIT_TAG
-	RESULT_VARIABLE GIT_TAG_ERROR
-	OUTPUT_STRIP_TRAILING_WHITESPACE)
-if(GIT_TAG_ERROR AND NOT GIT_TAG_ERROR EQUAL 0)
-	message(WARNING "Unable to determine Git tag")
+#Check for Git on the system
+find_package(Git QUIET)
+if (NOT GIT_FOUND)
+	message(WARNING "Git not found!")
 	set(GIT_TAG vUNKNOWN)
+	set(GIT_HASH vUNKNOWN)
+else()
+	#Get git tag
+	execute_process(
+		COMMAND "git" "describe" "--tags" "--abbrev=0"
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_TAG
+		RESULT_VARIABLE GIT_TAG_ERROR
+		OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+	if(GIT_TAG_ERROR AND NOT GIT_TAG_ERROR EQUAL 0)
+		message(WARNING "Unable to determine Git tag")
+		set(GIT_TAG vUNKNOWN)
+	else()
+		message(STATUS "Git tag is ${GIT_TAG}")
+	endif()
+
+	#Get Git commit short hash
+	execute_process(
+		COMMAND "git" "rev-parse" "--short" "HEAD"
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE GIT_HASH
+		RESULT_VARIABLE GIT_HASH_ERROR
+		OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+	if(GIT_HASH_ERROR AND NOT GIT_HASH_ERROR EQUAL 0)
+		message(WARNING "Unable to determine Git hash")
+		set(GIT_HASH vUNKNOWN)
+	else()
+		message(STATUS "Git hash is ${GIT_HASH}")
+	endif()
 endif()
-message(STATUS "Git tag is ${GIT_TAG}")
 
 configure_file(shared/qcommon/q_version.h.in shared/qcommon/q_version.h @ONLY)
 

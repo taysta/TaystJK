@@ -245,4 +245,8 @@ set_target_properties(${MPGame} PROPERTIES PROJECT_LABEL "MP Game Library")
 # no libraries used
 if(MPGameLibraries)
 	target_link_libraries(${MPGame} ${MPGameLibraries})
+
+	if (GIT_FOUND)
+		add_dependencies(${MPGame} GET_GIT_TAG_AND_HASH)
+	endif()
 endif(MPGameLibraries)
