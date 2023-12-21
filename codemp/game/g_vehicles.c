@@ -844,6 +844,11 @@ getItOutOfMe:
 		ent->client->ps.velocity[2] += JUMP_VELOCITY;
 	}*/
 
+	if (ent->client->sess.movementStyle = MV_TRIBES) {
+		//VectorClear(ent->client->ps.velocity);
+		VectorCopy(parent->s.pos.trDelta, ent->client->ps.velocity);
+	}
+
 	// Make sure entity is facing the direction it got off at.
 
 	//if was using vehicle weapon, remove it and switch to normal weapon when hop out...
