@@ -583,7 +583,7 @@ void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 	CG_CheckPlayerstateEvents( ps, ops );
 
 	if (cgs.serverMod == SVMOD_JAPRO && ps->duelInProgress) { 
-		if (ps->stats[STAT_RACEMODE] && ps->stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)
+		if (ps->stats[STAT_RACEMODE] && ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
 		{//hack to update our dueltype in co-op incase we vid_restarted
 			cg_dueltypes[ps->clientNum] = 20;
 			cg_dueltypes[ps->duelIndex] = 20;

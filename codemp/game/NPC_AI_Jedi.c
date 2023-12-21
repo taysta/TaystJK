@@ -6307,10 +6307,14 @@ void NPC_BSJedi_Default( void )
 		{
 			if ( NPCS.NPC->enemy->enemy != NPCS.NPC && NPCS.NPC->health == NPCS.NPC->client->pers.maxHealth && DistanceSquared( NPCS.NPC->r.currentOrigin, NPCS.NPC->enemy->r.currentOrigin )>(800*800) )
 			{
-				NPCS.NPCInfo->scriptFlags |= SCF_ALT_FIRE;
-				Boba_ChangeWeapon( WP_DISRUPTOR );
-				NPC_BSSniper_Default();
-				return;
+				if (g_tweakWeapons.integer & WT_TRIBES) {
+				}
+				else {
+					NPCS.NPCInfo->scriptFlags |= SCF_ALT_FIRE;
+					Boba_ChangeWeapon(WP_DISRUPTOR);
+					NPC_BSSniper_Default();
+					return;
+				}
 			}
 		}
 		Jedi_Attack();

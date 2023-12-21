@@ -345,7 +345,7 @@ gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life,
 
 //[JAPRO - Serverside - Weapons - Add missile inheritance function - Start]
 //-----------------------------------------------------------------------------
-gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire, qboolean inheritance, qboolean unlagged)
+gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire, int inheritance, qboolean unlagged)
 //-----------------------------------------------------------------------------
 {
 	gentity_t	*missile;
@@ -378,10 +378,13 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	else if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && owner->client) {
 		int amount = owner->client->ps.ping * 0.9;
 
-		if (amount > 135)
-			amount = 135;
-		else if (amount < 0) //dunno
+		if (amount > g_unlaggedProjectileTolerance.integer)
+			amount = g_unlaggedProjectileTolerance.integer;
+
+		if (amount < 0) //dunno
 			amount = 0;
+		else if (amount > 1000) //dunno
+			amount = 1000;
 
 		missile->s.pos.trTime = level.time - amount; //fixmer;
 	}
@@ -395,7 +398,10 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	VectorCopy( org, missile->s.pos.trBase );
 
 	if (inheritance && owner->client) {
-		if (g_fullInheritance.integer) {
+		if (inheritance == 2) { //Forced
+			VectorMA(newDir, 1.0f / vel, owner->client->ps.velocity, newDir);
+		}
+		else if (g_fullInheritance.integer) {
 			VectorMA(newDir, g_projectileInheritance.value/vel, owner->client->ps.velocity, newDir);
 		}
 		else {

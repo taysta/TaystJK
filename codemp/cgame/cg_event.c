@@ -1719,7 +1719,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				if (cg_duelSounds.integer != 2) CG_CenterPrint( CG_GetStringEdString("MP_SVGAME", "BEGIN_DUEL"), 120, GIANTCHAR_WIDTH*2 );				
 				if (cg_duelSounds.integer != 3) trap->S_StartLocalSound( cgs.media.countFightSound, CHAN_ANNOUNCER );
 			}
-			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA)
+			else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
 			{ //co-op partner accepted our request
 				cg_dueltypes[es->number] = es->eventParm;
 			}
@@ -2775,7 +2775,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_MAIN_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_MAIN_SHOT");
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
@@ -2813,7 +2813,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_DISRUPTOR_SNIPER_SHOT:
 		DEBUGNAME("EV_DISRUPTOR_SNIPER_SHOT");
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
@@ -3277,7 +3277,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	//
 	case EV_CONC_ALT_IMPACT:
 		DEBUGNAME("EV_CONC_ALT_IMPACT");
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2))
@@ -3316,7 +3316,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_HIT:
 		DEBUGNAME("EV_MISSILE_HIT");
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2)) {
@@ -3354,7 +3354,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS:
 		DEBUGNAME("EV_MISSILE_MISS");
-		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA) {
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
 			(cgs.serverMod != SVMOD_JAPRO || cg_dueltypes[cg.predictedPlayerState.clientNum] == 1 || cg_dueltypes[cg.predictedPlayerState.clientNum] == 2)) {

@@ -81,7 +81,7 @@ qboolean CG_NoUseableForce(void)
 	int i = FP_HEAL;
 
 	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] &&
-		cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_SPEED)
+		(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA) && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_SPEED))
 		return qtrue;
 
 	if (cg.predictedPlayerState.stats[STAT_HEALTH] <= 0)
@@ -3324,7 +3324,7 @@ void CG_NextForcePower_f( void )
 	int current;
 	usercmd_t cmd;
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA)
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTeleMark");
@@ -3370,7 +3370,7 @@ void CG_PrevForcePower_f( void )
 	int current;
 	usercmd_t cmd;
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
+	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA)
 	{
 		cg.itemSelect = HI_BINOCULARS; //so +useforce will zoom with binoculars
 		trap->SendClientCommand("amTele");

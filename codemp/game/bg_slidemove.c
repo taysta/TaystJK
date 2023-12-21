@@ -825,6 +825,29 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				if (endClipVelocity[1] != pm->ps->velocity[1])
 					endClipVelocity[1] = g_entities[trace.entityNum].client->ps.velocity[1] * 0.95f;
 			}
+			//
+			if (trace.entityNum < MAX_CLIENTS && g_entities[trace.entityNum].client && g_entities[trace.entityNum].client->sess.movementStyle == MV_TRIBES && g_entities[trace.entityNum].client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) {//Hit a tribes player using protect
+				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well??? superheavy
+				vec3_t diffVelocity;
+				int damage;
+				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
+				damage = VectorLength(diffVelocity);
+				if (damage > 300) {
+					if (damage > 1000)
+						damage = 1000;
+					damage -= 300;
+					damage *= 0.1f;
+					damage *= 0.5f;//Fixme why this detects twice?  Debounce?
+
+					if (Q_irand(0, 1))
+						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));
+					else
+						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam2.mp3"));
+
+					G_Damage((gentity_t *)pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
+					//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);
+				}
+			}
 #else
 			if (trace.entityNum < MAX_CLIENTS && cgs.serverMod == SVMOD_JAPRO && (pm->ps->stats[STAT_RACEMODE] || (cgs.jcinfo2 & JAPRO_CINFO2_FIXPLAYERCOLLISION)) && cg_entities[trace.entityNum].playerState && (cg_entities[trace.entityNum].playerState->velocity[0] || cg_entities[trace.entityNum].playerState->velocity[1])) {
 				//Com_Printf("Predicting! %.2f %.2f\n", cg_entities[trace.entityNum].playerState->velocity[0], cg_entities[trace.entityNum].playerState->velocity[1]); //this executes but why does it not look like its predicting ingame
@@ -1117,6 +1140,32 @@ void PM_StepSlideMove( qboolean gravity ) {
 						if (newSpeed > oldSpeed)
 							VectorCopy(clipped_velocity, pm->ps->velocity);
 					}
+					/*
+					//literally just have to not PM_Crashland in tribes skii?
+					else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
+						//Get our change in Z vel and do some extra forgiveness?
+						float oldSpeed = VectorLength(pm->ps->velocity), lost;
+
+						PM_ClipVelocity(pm->ps->velocity, trace.plane.normal, pm->ps->velocity, OVERCLIP);
+						//How do we do this without redoing all the slope calculation.  The T3 way is to look at the magnitute of what we lost, and then just re-add it to the current vel.  But that gives us too much if its a nice smooth skii...
+						//Question is, how can we determine if we should have been clipped here or not.  
+
+						lost = VectorLength(pm->ps->velocity) / oldSpeed;
+						//400, 600   = 
+
+						if (lost < 0.9f) { //We lost more than 10pct of our speed.  Give it all back?
+							float regain = 1.0f - lost;
+							Com_Printf("Lost %.2f speed, regaining %.2f speed, %.2f percent\n", (oldSpeed - VectorLength(pm->ps->velocity)), ((oldSpeed - VectorLength(pm->ps->velocity)) * regain), regain);
+							VectorScale(pm->ps->velocity, 1.0f + regain, pm->ps->velocity);
+						}
+
+						//Look at pre speed 
+						//Do the velocity clip
+						//Look at post speed.  If we lost too much, add it back.
+
+						//Com_Printf("Lost %.2f z speed\n", pm->ps->velocity[2] - preZ);
+					}
+					*/
 					else {
 						PM_ClipVelocity( pm->ps->velocity, trace.plane.normal, pm->ps->velocity, OVERCLIP );
 					}

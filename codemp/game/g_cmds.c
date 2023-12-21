@@ -6039,7 +6039,7 @@ static void Cmd_Spot_f(gentity_t *ent) {
 			continue;
 		if (hit == ent)
 			continue;
-		if (hit->client->sess.sessionTeam == ent->client->sess.sessionTeam) //Only spot enemies
+		if (hit->client->sess.sessionTeam == ent->client->sess.sessionTeam && (g_allowSpotting.integer != 2)) //Only spot enemies
 			continue;
 		if (hit->client->lastSpottedTime > level.time - 3000)
 			continue;

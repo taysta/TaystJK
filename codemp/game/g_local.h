@@ -611,6 +611,7 @@ struct gentity_s {
 
 	int			noise_index;
 	int			awesomenoise_index;//japro
+	int			courseID;
 
 	// timing variables
 	float		wait;
@@ -774,6 +775,8 @@ typedef struct {//JAPRO - Serverside - Stats
 
 	int kothTime;
 	short lowestHP;
+	int checkpoints;
+	int courseID;
 } stats_t;
 
 // client data that stays across multiple respawns, but is cleared
@@ -1699,7 +1702,7 @@ void G_ReflectMissile( gentity_t *ent, gentity_t *missile, vec3_t forward );
 void G_RunMissile( gentity_t *ent );
 
 //gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire);
-gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire, qboolean inheritance, qboolean unlagged);
+gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire, int inheritance, qboolean unlagged);
 void G_BounceProjectile( vec3_t start, vec3_t impact, vec3_t dir, vec3_t endout );
 void G_ExplodeMissile( gentity_t *ent );
 

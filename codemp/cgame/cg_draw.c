@@ -9326,12 +9326,6 @@ static void CG_DrawIntermission( void ) {
 
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize)
 { //should be changed to return const char *
-	qboolean coop = (style >= MV_COOP_JKA ? qtrue : qfalse);
-
-	if (coop && styleStringSize >= 64) {
-		style -= (MV_COOP_JKA - 1);
-	}
-
 	switch (style)
 	{
 		case MV_SIEGE:		Q_strncpyz(styleString, "siege",styleStringSize);		break;
@@ -9349,10 +9343,12 @@ void IntegerToRaceName(int style, char *styleString, size_t styleStringSize)
 		case MV_SP:			Q_strncpyz(styleString, "sp", styleStringSize);			break;
 		case MV_SLICK:		Q_strncpyz(styleString, "slick", styleStringSize);		break;
 		case MV_BOTCPM:		Q_strncpyz(styleString, "botcpm", styleStringSize);		break;
+		case MV_OCPM:		Q_strncpyz(styleString, "ocpm", styleStringSize);		break;
+		case MV_TRIBES:		Q_strncpyz(styleString, "tribes", styleStringSize);		break;
 		default:			Q_strncpyz(styleString, "ERROR", styleStringSize);		return;
 	}
 
-	if (coop)
+	if (style == MV_COOP_JKA)
 	{
 		if (cg.predictedPlayerState.duelInProgress) {//lets draw our partner's name too
 			clientInfo_t *partner = &cgs.clientinfo[cg.predictedPlayerState.duelIndex];

@@ -2023,7 +2023,7 @@ static void CG_Item( centity_t *cent ) {
 	*/
 
 	if (cgs.serverMod == SVMOD_JAPRO) {
-		if ((cg.predictedPlayerState.duelInProgress || cg.predictedPlayerState.stats[STAT_RACEMODE]) && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA)
+		if ((cg.predictedPlayerState.duelInProgress || cg.predictedPlayerState.stats[STAT_RACEMODE]) && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA)
 			return;
 	}
 	else if (cg.predictedPlayerState.duelInProgress) {
@@ -3520,7 +3520,7 @@ void CG_CalcEntityLerpPositions( centity_t *cent ) {
 
 	// if this player does not want to see extrapolated players
 	//if ( !cg_smoothClients.integer ) {
-	if ( !cg_smoothClients.integer || (cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] < MV_COOP_JKA) ) {
+	if ( !cg_smoothClients.integer || (cg.snap->ps.stats[STAT_RACEMODE] && cg.snap->ps.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA) ) {
 		// make sure the clients use TR_INTERPOLATE
 		if ( cent->currentState.number < MAX_CLIENTS ) {
 			cent->currentState.pos.trType = TR_INTERPOLATE;
@@ -4238,7 +4238,7 @@ qboolean CG_DuelCull( centity_t *cent )
 			return qtrue;
 	}
 	else if (ps->stats[STAT_RACEMODE]) { // We are in race mode// race mode
-		if (ps->stats[STAT_MOVEMENTSTYLE] >= MV_COOP_JKA && ps->duelInProgress)
+		if (ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA && ps->duelInProgress)
 		{ //co-op race mode
 			if (cent->currentState.number == ps->clientNum || cent->currentState.number == ps->duelIndex)
 			{// do Nothing

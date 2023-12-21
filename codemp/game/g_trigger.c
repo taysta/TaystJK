@@ -1215,10 +1215,10 @@ void Use_target_push( gentity_t *self, gentity_t *other, gentity_t *activator ) 
 	}
 }
 
-qboolean ValidRaceSettings(int restrictions, gentity_t *player)
+qboolean ValidRaceSettings(gentity_t *trigger, gentity_t *player)
 { //How 2 check if cvars were valid the whole time of run.. and before? since you can get a headstart with higher g_speed before hitting start timer? :S
 	//Make most of this hardcoded into racemode..? speed, knockback, debugmelee, stepslidefix, gravity
-	int style;
+	int style, restrictions = trigger->spawnflags;
 	if (!player->client)
 		return qfalse;
 	if (!player->client->ps.stats[STAT_RACEMODE])
@@ -1298,6 +1298,18 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 		return qfalse;
 	if ((player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && !(restrictions & (1 << 6))) //spawnflags 64 on end trigger is allow_teles
 		return qfalse;
+
+	//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
+	//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
+	if (restrictions & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints
+		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+		return qfalse;
+	}
+	if (restrictions & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
+		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+		return qfalse;
+	}
+
 
 	return qtrue;
 }
@@ -1505,6 +1517,8 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 	player->client->pers.stats.topSpeed = 0;
 	player->client->pers.stats.displacement = 0;
 	player->client->pers.stats.displacementSamples = 0;
+	player->client->pers.stats.checkpoints = 0;
+	player->client->pers.stats.courseID = trigger->courseID;
 
 	if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //Reset their telemark on map start if this is the case
 		player->client->pers.telemarkOrigin[0] = 0;
@@ -1634,7 +1648,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		char styleStr[32] = { 0 }, timeStr[32] = { 0 }, playerName[MAX_NETNAME] = { 0 };
 		char c[4] = S_COLOR_RED;
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
-		int average, restrictions = 0;
+		int average;
 		qboolean valid = qfalse;
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
@@ -1644,9 +1658,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		if (trigger->noise_index) //Still play this always? Or handle this later..
 			G_Sound(player, CHAN_AUTO, trigger->noise_index);
-		if (trigger->spawnflags)//Get the restrictions for the specific course (only allow jump1, or jump2, etc..)
-			restrictions = trigger->spawnflags;
-		if (ValidRaceSettings(restrictions, player)) {
+		if (ValidRaceSettings(trigger, player)) {
 			valid = qtrue;
 			if (player->client->pers.userName && player->client->pers.userName[0])
 				Q_strncpyz(c, S_COLOR_CYAN, sizeof(c));
@@ -1793,10 +1805,11 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 	if  (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE && player->client->ps.pm_type != PM_JETPACK)
 		return;
 	if (player->client->pers.stats.startTime && trigger && trigger->spawnflags & 2) { //Instead of a checkpoint, make it reset their time (they went out of bounds or something)
+		if (player->client->pers.stats.startTime)
+			trap->SendServerCommand( player-g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?
 		player->client->pers.stats.startTime = 0;
 		if (player->client->sess.raceMode)
 			player->client->ps.duelTime = 0;
-		trap->SendServerCommand( player-g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?`
 		return;
 	}
 
@@ -1834,6 +1847,20 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			trap->SendServerCommand(player - g_entities, va("print \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 		else if (player->client->pers.showChatCP)
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+
+		if (trigger->objective > 0) {  //Bitvalue of the checkpoint
+			// int i, val;
+			player->client->pers.stats.checkpoints |= trigger->objective;
+			/*
+			for (i = 0; i++; i < 32) {
+				val = (1 << i);
+				if (val = trigger->objective) {
+					break;
+				}
+			}
+			*/
+			trap->SendServerCommand(player - g_entities, va("chat \"^5Required checkpoint %i reached\"", trigger->objective));//Adapt this for the type of message client wants to receive (chat, console, center)  Get the # not teh bitvalue fixme																									 //Print a warning if they skipped a checkpoint? Loop through previous or just the one previous?
+		}
 
 		if (player->client->sess.movementStyle == MV_COOP_JKA && player->client->ps.duelInProgress && player->client->pers.stats.coopStarted)
 		{ //send checkpoint to coop partner
@@ -2125,6 +2152,12 @@ void SP_trigger_timer_start( gentity_t *self )
 		else
 			self->noise_index = 0;
 	}
+	if (G_SpawnString("courseid", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->courseID = atoi(s);
+		else
+			self->courseID = 0;
+	}
 
 	self->touch = TimerStart;
 	trap->LinkEntity ((sharedEntity_t *)self);
@@ -2140,6 +2173,12 @@ void SP_trigger_timer_checkpoint( gentity_t *self )
 			self->noise_index = G_SoundIndex(s);
 		else
 			self->noise_index = 0;
+	}
+	if (G_SpawnString("objective", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->objective = atoi(s);
+		else
+			self->objective = 0;
 	}
 	self->touch = TimerCheckpoint;
 	trap->LinkEntity ((sharedEntity_t *)self);
@@ -2161,6 +2200,18 @@ void SP_trigger_timer_stop( gentity_t *self )
 			self->awesomenoise_index = G_SoundIndex(s);
 		else
 			self->awesomenoise_index = 0;
+	}
+	if (G_SpawnString("objective", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->objective = atoi(s);
+		else
+			self->objective = 0;
+	}
+	if (G_SpawnString("courseid", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->courseID = atoi(s);
+		else
+			self->courseID = 0;
 	}
 
 	//For every stop trigger, increment numCourses and put its name in array

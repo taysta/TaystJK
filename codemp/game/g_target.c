@@ -132,7 +132,17 @@ void SP_target_delay( gentity_t *ent ) {
 The activator is given this many points.
 */
 void Use_Target_Score (gentity_t *ent, gentity_t *other, gentity_t *activator) {
-	AddScore( activator, ent->r.currentOrigin, ent->count );
+	if (ent->spawnflags & 1) {
+		if (level.gametype >= GT_TEAM)
+			AddTeamScore(ent->s.pos.trBase, TEAM_BLUE, ent->count, qtrue);
+	}
+	else if (ent->spawnflags & 2) {
+		if (level.gametype >= GT_TEAM)
+			AddTeamScore(ent->s.pos.trBase, TEAM_RED, ent->count, qtrue);
+	}
+	else {
+		AddScore(activator, ent->r.currentOrigin, ent->count);
+	}
 }
 
 void SP_target_score( gentity_t *ent ) {
@@ -717,7 +727,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 	int			t_count = 0, pick;
 	gentity_t	*t = NULL;
 
-	//trap->Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number );
+	//Com_Printf("target_random %s used by %s (entnum %d)\n", self->targetname, activator->targetname, activator->s.number );
 	G_ActivateBehavior(self,BSET_USE);
 
 	if(self->spawnflags & 1)
@@ -766,7 +776,7 @@ void target_random_use(gentity_t *self, gentity_t *other, gentity_t *activator)
 
 		if (t == self)
 		{
-//				trap->Printf ("WARNING: Entity used itself.\n");
+				//Com_Printf("WARNING: Entity used itself.\n");
 		}
 		else if(t_count == pick)
 		{
