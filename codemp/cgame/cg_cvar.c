@@ -131,6 +131,74 @@ static void CG_StrafeHelperActiveColorChange(void) {
 	//Com_Printf("New color is %f, %f, %f, %f\n", cg.strafeHelperActiveColor[0], cg.strafeHelperActiveColor[1], cg.strafeHelperActiveColor[2], cg.strafeHelperActiveColor[3]);
 }
 
+static void CG_SnapHUDColorChange(void) {
+	int i;
+	if (sscanf(cg_snapHudRgba1.string, "%f %f %f %f", &cg.snapHudRgba1[0], &cg.snapHudRgba1[1], &cg.snapHudRgba1[2], &cg.snapHudRgba1[3]) != 4) {
+		cg.snapHudRgba1[0] = 127;
+		cg.snapHudRgba1[1] = 179;
+		cg.snapHudRgba1[2] = 230;
+		cg.snapHudRgba1[3] = 179;
+	}
+
+	if (sscanf(cg_snapHudRgba2.string, "%f %f %f %f", &cg.snapHudRgba2[0], &cg.snapHudRgba2[1], &cg.snapHudRgba2[2], &cg.snapHudRgba2[3]) != 4) {
+		cg.snapHudRgba2[0] = 127;
+		cg.snapHudRgba2[1] = 127;
+		cg.snapHudRgba2[2] = 127;
+		cg.snapHudRgba2[3] = 38;
+	}
+
+	for (i = 0; i < 4; i++) {
+		if (cg.snapHudRgba1[i] < 0)
+			cg.snapHudRgba1[i] = 0;
+		else if (cg.snapHudRgba1[i] > 255)
+			cg.snapHudRgba1[i] = 255;
+	}
+
+	for (i = 0; i < 4; i++) {
+		if (cg.snapHudRgba2[i] < 0)
+			cg.snapHudRgba2[i] = 0;
+		else if (cg.snapHudRgba2[i] > 255)
+			cg.snapHudRgba2[i] = 255;
+	}
+
+	cg.snapHudRgba1[0] /= 255.0f;
+	cg.snapHudRgba1[1] /= 255.0f;
+	cg.snapHudRgba1[2] /= 255.0f;
+	cg.snapHudRgba1[3] /= 255.0f;
+
+	cg.snapHudRgba2[0] /= 255.0f;
+	cg.snapHudRgba2[1] /= 255.0f;
+	cg.snapHudRgba2[2] /= 255.0f;
+	cg.snapHudRgba2[3] /= 255.0f;
+}
+
+static void CG_PitchHUDColorChange(void) {
+	int i;
+	if (sscanf(cg_pitchHudRgba.string, "%f %f %f %f", &cg.pitchHudRgba[0], &cg.pitchHudRgba[1], &cg.pitchHudRgba[2], &cg.pitchHudRgba[3]) != 4) {
+		cg.pitchHudRgba[0] = 204;
+		cg.pitchHudRgba[1] = 204;
+		cg.pitchHudRgba[2] = 204;
+		cg.pitchHudRgba[3] = 204;
+	}
+
+	for (i = 0; i < 4; i++) {
+		if (cg.pitchHudRgba[i] < 0)
+			cg.pitchHudRgba[i] = 0;
+		else if (cg.pitchHudRgba[i] > 255)
+			cg.pitchHudRgba[i] = 255;
+	}
+
+	cg.pitchHudRgba[0] /= 255.0f;
+	cg.pitchHudRgba[1] /= 255.0f;
+	cg.pitchHudRgba[2] /= 255.0f;
+	cg.pitchHudRgba[3] /= 255.0f;
+
+	cg.pitchHudRgba[0] /= 255.0f;
+	cg.pitchHudRgba[1] /= 255.0f;
+	cg.pitchHudRgba[2] /= 255.0f;
+	cg.pitchHudRgba[3] /= 255.0f;
+}
+
 #ifdef WIN32
 #include "windows.h"
 #define PATCH(addr, value, type) { type patch = value; MemoryPatch((void *)addr, (void *)&patch, sizeof(type)); }

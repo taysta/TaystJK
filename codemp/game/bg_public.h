@@ -1954,45 +1954,55 @@ extern const char *gametypeStringShort[GT_MAX_GAME_TYPE];
 const char *BG_GetGametypeString( int gametype );
 int BG_GetGametypeForString( const char *gametype );
 
-extern	const	float	pm_stopspeed;
-extern	const	float	pm_duckScale;
-extern	const	float	pm_swimScale;
-extern	const	float	pm_wadeScale;
+int PM_GetMovePhysics(); //japro movement styles
 
-extern	const	float	pm_accelerate;
-extern	const	float	pm_airaccelerate;
-extern	const	float	pm_wateraccelerate;
-extern	const	float	pm_flyaccelerate;
+// movement parameters
+extern	const float	pm_stopspeed;
+extern	const float	pm_duckScale;
+extern	const float	pm_swimScale;
+extern	const float	pm_wadeScale;
 
-extern  const   float	pm_spectatorfriction;
-extern	const	float	pm_friction;
-extern	const	float	pm_waterfriction;
-extern	const	float	pm_flightfriction;
+extern	const float	pm_vehicleaccelerate;
+extern	const float	pm_accelerate;
+extern	const float	pm_airaccelerate;
+extern	const float	pm_wateraccelerate;
+extern	const float	pm_flyaccelerate;
 
-//japro/dfmania movement parameters start
+extern	const float pm_sp_accelerate;
+extern	const float pm_sp_airaccelerate;
+extern	const float pm_sp_airDecelRate;
 
-extern  const   float   pm_sp_accelerate;
-extern  const   float   pm_sp_airaccelerate;
-extern  const   float   pm_sp_airDecelRate;
+extern	const float	pm_friction;
+extern	const float	pm_waterfriction;
+extern	const float	pm_flightfriction;
+extern	const float	pm_spectatorfriction;
 
-extern	const	float	pm_vq3_duckScale;
+//japro/dfmania movement parameters
+extern	const float pm_vq3_duckScale;
+extern	const float pm_vq3_friction;
 
-extern	const	float	pm_cpm_accelerate;
-extern	const	float	pm_cpm_airaccelerate;
-extern	const	float	pm_cpm_airstopaccelerate;
-extern	const	float	pm_cpm_airstrafeaccelerate;
-extern	const	float	pm_cpm_airstrafewishspeed;
-extern	const	float	pm_cpm_aircontrol;
-extern	const	float	pm_cpm_friction;
+extern	const float	pm_cpm_accelerate;
+extern	const float	pm_cpm_airaccelerate;
+extern	const float	pm_cpm_airstopaccelerate;
+extern	const float	pm_cpm_airstrafeaccelerate;
+extern	const float	pm_cpm_airstrafewishspeed;
+extern	const float	pm_cpm_aircontrol;
 
-extern	const	float	pm_wsw_accelerate;
-extern	const	float	pm_wsw_duckScale;
+extern	const float pm_wsw_accelerate;
+extern	const float pm_wsw_duckScale;
 
-extern	const	float	pm_slick_accelerate;
-extern	const	float	pm_slick_airstrafeaccelerate;
-extern  const   float 	pm_slick_friction;
+extern	const float pm_slick_accelerate;
+extern	const float	pm_slick_airstrafeaccelerate;
+extern	const float	pm_slick_friction;
 
-extern	const	float	pm_qw_airaccelerate;
-extern	const	float	pm_qw_friction;
+extern	const float	pm_jetpack_airaccelerate;
 
-extern	const	float	pm_jetpack_airaccelerate;
+extern	const float pm_qw_airaccelerate;
+extern	const float pm_qw_friction;
+extern	const float	pm_qw_airstrafewishspeed;
+
+extern	const float pm_tribes_accelerate;
+extern	const float pm_tribes_airaccelerate;
+extern	const float pm_tribes_groundfriction;
+extern	const float pm_tribes_airfriction;
+extern	const float	pm_tribes_groundstrafewishspeed;
