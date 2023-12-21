@@ -598,15 +598,22 @@
 ## Map entity changes  
 ### df_trigger_finish  
 #### Spawnflags  
-JUMP1_ONLY JUMP2_ONLY JUMP3_ONLY ALLOW_HASTE ALLOW_JETPACK FFA_ONLY  
+JUMP1_ONLY JUMP2_ONLY JUMP3_ONLY ALLOW_HASTE ALLOW_JETPACK FFA_ONLY ALLOW_MIDMAP_TELES REQUIRE_CHECKPOINTS REQUIRE_SPECIFIC_STARTTRIGGER
 #### Keys  
 noise - sound it makes  
 awesomenoise - sound it makes when time is below 'speed' key (only in jka style)  
 speed - max time in ms to play awesomenoise  
 target  
+uniqueid - ID of the trigger to match it to a start trigger (used with REQUIRE_SPECIFIC_STARTTRIGGER spawnflag)
+objective - required checkpoint bitmask (used with REQUIRE_CHECKPOINTS)
 
 ### df_trigger_checkpoint
 noise - sound it makes  
+objective - checkpoint #
+
+### df_trigger_start
+noise - sound it makes  
+uniqueid - ID of the trigger to match it to a finish trigger
 
 ### trigger_newpush   
 #### Spawnflags  

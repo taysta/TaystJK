@@ -193,6 +193,12 @@ void RocketDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 //We should really organize weapon data into tables or parse from the ext data so we have accurate info for this,
 float WP_SpeedOfMissileForWeapon( int wp, qboolean alt_fire )
 {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (wp = WP_CONCUSSION)
+			return 2000 * g_projectileVelocityScale.integer;
+		if (wp = WP_BLASTER)
+			return 10440 * g_projectileVelocityScale.integer;
+	}
 	return 500;
 }
 
@@ -444,7 +450,11 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 
 	if (ent->s.eType == ET_NPC)
 	{ //animent
-		damage = 10;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
+			damage = 9 * g_weaponDamageScale.value;
+		}
+		else damage = 10;
 	}
 	else if (ent->client && ent->client->sess.movementStyle == MV_COOP_JKA) {//JAPRO - Serverside - Allow plasmaclimbing plasmagun
 		velocity = 2000;
@@ -765,7 +775,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	float vel = 9000;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		vel = 36000;
+		vel = 32000;
 
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
@@ -798,7 +808,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		VectorSet(missile->r.mins, -2, -2, -2);
 	}
 
-	VectorMA( muzzle, -6, vright, muzzle );
+	VectorMA( muzzle, -6, vright, muzzle );//note
 		
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
@@ -1815,7 +1825,12 @@ static void WP_FlechetteMainFire( gentity_t *ent, int seed )
 		VectorSet( missile->r.maxs, FLECHETTE_SIZE, FLECHETTE_SIZE, FLECHETTE_SIZE );
 		VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-		missile->damage = FLECHETTE_DAMAGE;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile->damage = 11 * g_weaponDamageScale.value;
+		}
+		else {
+			missile->damage = FLECHETTE_DAMAGE;
+		}
 		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 		missile->methodOfDeath = MOD_FLECHETTE;
 		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
@@ -2359,8 +2374,10 @@ static void WP_FlechetteAltFire( gentity_t *self, int seed )
 		VectorCopy( angs, dir );
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Remove Flechette Alt Randomness - Start]
-		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-			dir[PITCH] -= 10;
+		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
+			if (!(g_tweakWeapons.integer & WT_TRIBES))
+				dir[PITCH] -= 10;
+		}
 		else {
 			if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 				dir[PITCH] -= Q_random(&seed) * 4 + 8; // make it fly upwards
@@ -5060,6 +5077,7 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 	else if ( vehWeapon->bIsProjectile )
 	{//projectile entity
 		vec3_t		mins, maxs;
+		// vec3_t newDir;
 
 		VectorSet( maxs, vehWeapon->fWidth/2.0f,vehWeapon->fWidth/2.0f,vehWeapon->fHeight/2.0f );
 		VectorScale( maxs, -1, mins );
@@ -5069,7 +5087,9 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 
 		//FIXME: CUSTOM MODEL?
 		//QUERY: alt_fire true or not?  Does it matter?
-		missile = CreateMissileNew( start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qfalse, qfalse );
+		missile = CreateMissileNew( start, dir, vehWeapon->fSpeed, 10000, ent, qfalse, qtrue, qfalse ); //Forced inheritance here? loda fixme unlagged
+	
+
 
 		missile->classname = "vehicle_proj";
 

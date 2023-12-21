@@ -5029,6 +5029,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		knockback = 0;
 	}
 
+	//Higher self knockback for tribes
+	if (attacker && targ == attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
+		knockback *= 1.75f;
+	}
+
 	// figure momentum add, even if the damage won't be taken
 	if ( knockback && targ->client ) {
 		vec3_t	kvel;
@@ -5367,7 +5372,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	// always give half damage if hurting self... but not in siege.  Heavy weapons need a counter.
 	// calculated after knockback, so rocket jumping works
 	if ( targ == attacker && !(dflags & DAMAGE_NO_SELF_PROTECTION)) {
-		if (targ && targ->client && ((targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJQ3) || (targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJCPM) || (targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) || (targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_JETPACK)))//fuck this?
+		if (targ && targ->client && ((targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJQ3) || (targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJCPM) || (targ->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_JETPACK)))//fuck this?
 			damage = 1;
 		if ( level.gametype == GT_SIEGE )
 			damage *= 1.5;
