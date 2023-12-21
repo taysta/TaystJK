@@ -1288,6 +1288,14 @@ static void PM_Friction( void ) {
 	}
 #endif
 
+	//MV_tRIBES air drag
+#if 0
+	if (pm->ps->pm_type != PM_SPECTATOR && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		if (speed > pm->ps->speed * 1.44f)
+			drop = speed*g_flagDrag.value*0.1*pml.frametime;
+	}
+#endif
+
 	// scale the velocity
 	newspeed = speed - drop;
 	if (newspeed < 0) {
@@ -13451,10 +13459,10 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 
 #if _GRAPPLE
-#if _GAME
 			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				PM_GrappleMoveTribes();
 			}
+#if _GAME
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && ((g_allowGrapple.integer == 1) || pm->ps->stats[STAT_RACEMODE])) {
 				PM_GrappleMoveTarzan();
 			}
