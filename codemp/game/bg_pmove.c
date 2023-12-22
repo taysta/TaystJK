@@ -1333,10 +1333,11 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
                pm->ps->velocity[i] += accelspeed*wishdir[i];        
 }
 
-void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
+void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
 {
 	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.65f, accel = 0.32f;
+	// friction = 1.65f, accel = 0.32f;
 
 	if (pm->ps->pm_type == PM_DEAD)
 		return;
@@ -1349,9 +1350,9 @@ void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	//Scale friction by falling speed?
 	//fabs(pm->ps->velocity[2])
 	/*
-	float zSpeed = fabs(pm->ps->velocity[2]);
-	if (zSpeed > 500) {
-	friction *= sZpeed/500.0f;
+	if (pm->ps->velocity[2] < -800) {
+		Com_Printf("zSpeed Modifier %.2f\n", pm->ps->velocity[2] / 800.0f);
+		friction *= pm->ps->velocity[2] / 800.0f;
 	}
 	*/
 
@@ -1360,7 +1361,7 @@ void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	if (addspeed <= 0)// If not adding any, done.
 		return;
 
-	accelspeed = accel * wishspeed * pml.frametime * 1.65f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+	accelspeed = accel * wishspeed * pml.frametime * friction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -3899,9 +3900,10 @@ static void PM_AirMove( void ) {
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW) {
 		PM_AirAccelerate(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
-	} else if (moveStyle == MV_TRIBES) {
-		PM_AirAccelerateTribes(wishdir, wishspeed, 0.32f);//pm_qw_airaccel
-	} else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
+	else if (moveStyle == MV_TRIBES)
+		PM_AirAccelerateTribes(wishdir, wishspeed);//pm_qw_airaccel
+	else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
+	{
 		float		accel;
 		float		wishspeed2;
 
