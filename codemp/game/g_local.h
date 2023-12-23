@@ -654,6 +654,14 @@ struct gentity_s {
 	// OpenJK add
 	int			useDebounceTime;	// for cultist_destroyer
 	qboolean	isLogical;		// Determines if this ent is logical or not
+
+	// JaPRO:
+	// Mark this is a fake item used for clientside prediction of triggers
+	// We use ET_ITEM to communicate trigger_newpush and potentially future stuff for client prediction
+	// With this we can check on game side that this is a real item.
+	// Why ET_ITEM? Only ET_ITEM, ET_TELEPORT_TRIGGER and ET_PUSH_TRIGGER are used for the client prediction array.
+	// ET_TELEPORT_TRIGGER and ET_PUSH_TRIGGER have unavoidable side effects on vanilla clients (push overwriting playerstate and TELEPORT sets hyperspace variable)
+	qboolean	isFakeItemTrigger;
 };
 
 #define DAMAGEREDIRECT_HEAD		1

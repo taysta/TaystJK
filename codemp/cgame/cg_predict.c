@@ -751,6 +751,8 @@ static void CG_TouchTriggerPrediction( void ) {
 	clipHandle_t cmodel;
 	centity_t	*cent;
 	qboolean	spectator;
+	qboolean	entityIsFakeItemTrigger;
+	int triggerModelIndex;
 
 	// dead clients don't activate triggers
 	if ( cg.predictedPlayerState.stats[STAT_HEALTH] <= 0 ) {
@@ -767,7 +769,9 @@ static void CG_TouchTriggerPrediction( void ) {
 		cent = cg_triggerEntities[ i ];
 		ent = &cent->currentState;
 
-		if ( ent->eType == ET_ITEM && !spectator ) {
+		entityIsFakeItemTrigger = cgs.serverMod == SVMOD_JAPRO && ent->eType == ET_ITEM && ent->modelindex == 0 && ent->trickedentindex > 0;
+
+		if ( ent->eType == ET_ITEM && !spectator && !entityIsFakeItemTrigger) {
 			CG_TouchItem( cent );
 			continue;
 		}
@@ -776,7 +780,9 @@ static void CG_TouchTriggerPrediction( void ) {
 			continue;
 		}
 
-		cmodel = trap->CM_InlineModel( ent->modelindex );
+		triggerModelIndex = entityIsFakeItemTrigger ? ent->time2 : ent->modelindex;
+
+		cmodel = trap->CM_InlineModel( triggerModelIndex );
 		if ( !cmodel ) {
 			continue;
 		}
@@ -791,6 +797,8 @@ static void CG_TouchTriggerPrediction( void ) {
 			cg.hyperspace = qtrue;
 		} else if ( ent->eType == ET_PUSH_TRIGGER ) {
 			BG_TouchJumpPad( &cg.predictedPlayerState, ent );
+		} else if (entityIsFakeItemTrigger && ent->trickedentindex == 1) { // trigger_newpush
+			BG_TouchTriggerNewPush(ent, &cg.predictedPlayerState, qfalse, cg.predictedPlayerState.stats[STAT_RACEMODE], &cg.lastBounceTime, cg.time, cgs.fixSlidePhysics, cg.lastVelocity );
 		}
 	}
 

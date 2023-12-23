@@ -1963,7 +1963,7 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	if (trigger->spawnflags & RESTRICT_FLAG_YSAL) {//Give Ysal
 		if (player->client->ps.powerups[PW_YSALAMIRI] <= 0)
 			G_Sound(player, CHAN_AUTO, G_SoundIndex("sound/player/boon.mp3"));
-		player->client->ps.powerups[PW_YSALAMIRI] = 2147483648 - 1;// Q3_INFINITE;
+		player->client->ps.powerups[PW_YSALAMIRI] = INT_MAX;
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_CROUCHJUMP) {//hl style crouch jump
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_CROUCHJUMP;
@@ -2037,10 +2037,9 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 }
 
 void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
-	float scale;
-
 	if (!player->client)
 		return;
+
 	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE)
 		return;
 
@@ -2053,68 +2052,10 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			return;
 	}
 
-	if (player->client->sess.raceMode) {
-		if (trigger->spawnflags & 32 && player->client->ps.groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers
-			if (trigger->speed == 0 && player->client->ps.velocity[0] > player->client->ps.speed + 20) {
-				player->client->ps.velocity[0] = player->client->ps.speed + 20;
-			}
-			else if (trigger->speed == 90 && player->client->ps.velocity[1] > player->client->ps.speed + 20) {
-				player->client->ps.velocity[1] = player->client->ps.speed + 20;
-			}
-			else if (trigger->speed == 180 && player->client->ps.velocity[0] < -player->client->ps.speed - 20) {
-				player->client->ps.velocity[0] = -player->client->ps.speed - 20;
-			}
-			else if (trigger->speed == 270 && player->client->ps.velocity[1] < -player->client->ps.speed - 20) {
-				player->client->ps.velocity[1] = -player->client->ps.speed - 20;
-			}
-			else if (trigger->speed == -3) {
-				vec3_t xyspeed;
-				float hspeed, cut;
+	BG_TouchTriggerNewPush(&trigger->s,&player->client->ps, player->s.eType == ET_NPC, player->client->sess.raceMode, &player->client->lastBounceTime,level.time,g_fixSlidePhysics.integer, player->client->lastVelocity);
 
-				xyspeed[0] = player->client->ps.velocity[0];
-				xyspeed[1] = player->client->ps.velocity[1];
-				xyspeed[2] = 0;
-
-				hspeed = VectorLength(xyspeed);
-				if (hspeed > player->client->ps.speed) {
-					cut = player->client->ps.speed / hspeed;
-
-					player->client->ps.velocity[0] *= cut;
-					player->client->ps.velocity[1] *= cut;
-				}
-			}
-			return;
-		}
-		if ((trigger->spawnflags & 64) && (player->client->ps.velocity[0] || player->client->ps.velocity[1])) { //block dash redirects
-			player->client->ps.stats[STAT_WJTIME] = 500;
-			player->client->ps.stats[STAT_DASHTIME] = 500;
-		}
-		else if (trigger->spawnflags & 128) { //unblock dash redirects
-			player->client->ps.stats[STAT_WJTIME] = 0;
-			player->client->ps.stats[STAT_DASHTIME] = 0;
-		}
-	}
-
-	if (player->client->lastBounceTime > level.time - 500)
-		return;
-
-	scale = trigger->speed ? trigger->speed : 2.0f; //Check for bounds? scale can be negative, that means "bounce".
-	player->client->lastBounceTime = level.time;
-
-	if (trigger->noise_index) 
+	if (trigger->noise_index)
 		G_Sound(player, CHAN_AUTO, trigger->noise_index);
-
-	if (trigger->spawnflags & 1) {
-		if ((!g_fixSlidePhysics.integer && abs(player->client->lastVelocity[0]) > 350) || (g_fixSlidePhysics.integer && abs(player->client->lastVelocity[0]) > 90))
-			player->client->ps.velocity[0] = player->client->lastVelocity[0] * scale;//XVel Relative Scale
-	}
-	if (trigger->spawnflags & 2) {
-		if ((!g_fixSlidePhysics.integer && abs(player->client->lastVelocity[1]) > 350) || (g_fixSlidePhysics.integer && abs(player->client->lastVelocity[1]) > 90))
-			player->client->ps.velocity[1] = player->client->lastVelocity[1] * scale;//YVel Relative Scale
-	}
-	if (trigger->spawnflags & 4) {
-		player->client->ps.velocity[2] = player->client->lastVelocity[2] * scale;//ZVel Relative Scale
-	}
 }
 
 /*QUAKED target_push (.5 .5 .5) (-8 -8 -8) (8 8 8) bouncepad CONSTANT
@@ -2253,6 +2194,23 @@ void SP_trigger_newpush(gentity_t *self)//JAPRO Newpush
 		else
 			self->noise_index = 0;
 	}
+
+	// Stuff for clientside prediction:
+	// We use ET_ITEM to communicate trigger_newpush and potentially future stuff for client prediction
+	// With this we can check on game side that this is a real item.
+	// Why ET_ITEM? Only ET_ITEM, ET_TELEPORT_TRIGGER and ET_PUSH_TRIGGER are used for the client prediction array.
+	// ET_TELEPORT_TRIGGER and ET_PUSH_TRIGGER have unavoidable side effects on vanilla clients (push overwriting playerstate and TELEPORT sets hyperspace variable)
+	// This is the best way to send it over while having vanilla clients ignore it.
+	self->r.svFlags &= ~SVF_NOCLIENT;
+	self->isFakeItemTrigger = qtrue;
+	self->s.eType = ET_ITEM;
+	self->s.time2 = self->s.modelindex; // InitTrigger initializes modelindex so we know the map entity. Remember this value.
+	self->s.modelindex = 0; // Now make cgame ignore this "item"
+	self->s.eFlags |= EF_NODRAW; // Make cgame ignore this "item"
+	self->s.trickedentindex = 1; // We will use this as a form of "type" of trigger. 1= trigger_newpush. That way we can expand this in the future without breaking clients.
+	self->s.constantLight = self->spawnflags; // We store the spawnFlags off into constantLight (32 bit integer, should be able to hold big bitmasks)
+	self->s.speed = self->speed; // Speed one we can save in speed, ez.
+
 
 	self->touch = NewPush;
 	trap->LinkEntity ((sharedEntity_t *)self);

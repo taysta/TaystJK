@@ -1882,6 +1882,7 @@ void	BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t resu
 
 void	BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps );
 
+void	BG_TouchTriggerNewPush(entityState_t* trigger, playerState_t* player, qboolean playerIsNPC, qboolean playerIsInRaceMode, int* lastBounceTime, int levelTime, int g_fixSlidePhysics_value, vec3_t playerLastVelocity);
 void	BG_TouchJumpPad( playerState_t *ps, entityState_t *jumppad );
 
 void	BG_PlayerStateToEntityState( playerState_t *ps, entityState_t *s, qboolean snap );

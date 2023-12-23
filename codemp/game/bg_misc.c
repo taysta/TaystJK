@@ -2760,6 +2760,93 @@ void BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerSta
 	ps->eventSequence++;
 }
 
+
+
+/*
+========================
+BG_TouchTriggerNewPush
+========================
+*/
+void BG_TouchTriggerNewPush(entityState_t* trigger, playerState_t* player,  qboolean playerIsNPC, qboolean playerIsInRaceMode, int* lastBounceTime, int levelTime, int g_fixSlidePhysics_value, vec3_t playerLastVelocity) {
+	float scale;
+
+	int spawnFlags = trigger->constantLight;
+
+	if (player->pm_type != PM_NORMAL && player->pm_type != PM_FLOAT && player->pm_type != PM_FREEZE)
+		return;
+
+	if (spawnFlags & 8) {//PLAYERONLY
+		if (playerIsNPC)
+			return;
+	}
+	else if (spawnFlags & 16) {//NPCONLY
+		if (!playerIsNPC)
+			return;
+	}
+
+	if (playerIsInRaceMode) {
+		if (spawnFlags & 32 && player->groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers 
+			if (trigger->speed == 0 && player->velocity[0] > player->speed + 20) {
+				player->velocity[0] = player->speed + 20;
+			}
+			else if (trigger->speed == 90 && player->velocity[1] > player->speed + 20) {
+				player->velocity[1] = player->speed + 20;
+			}
+			else if (trigger->speed == 180 && player->velocity[0] < -player->speed - 20) {
+				player->velocity[0] = -player->speed - 20;
+			}
+			else if (trigger->speed == 270 && player->velocity[1] < -player->speed - 20) {
+				player->velocity[1] = -player->speed - 20;
+			}
+			else if (trigger->speed == -3) {
+				vec3_t xyspeed;
+				float hspeed, cut;
+
+				xyspeed[0] = player->velocity[0];
+				xyspeed[1] = player->velocity[1];
+				xyspeed[2] = 0;
+
+				hspeed = VectorLength(xyspeed);
+				if (hspeed > player->speed) {
+					cut = player->speed / hspeed;
+
+					player->velocity[0] *= cut;
+					player->velocity[1] *= cut;
+				}
+			}
+			return;
+		}
+		if ((spawnFlags & 64) && (player->velocity[0] || player->velocity[1])) { //block dash redirects
+			player->stats[STAT_WJTIME] = 500;
+			player->stats[STAT_DASHTIME] = 500;
+		}
+		else if (spawnFlags & 128) { //unblock dash redirects
+			player->stats[STAT_WJTIME] = 0;
+			player->stats[STAT_DASHTIME] = 0;
+		}
+	}
+
+	if (*lastBounceTime > levelTime) // Mainly for cgame if server resets serverTime or such.
+		*lastBounceTime = levelTime;
+	else if (*lastBounceTime > levelTime - 500)
+		return;
+
+	(trigger->speed) ? (scale = trigger->speed) : (scale = 2.0f); //Check for bounds? scale can be negative, that means "bounce".
+	*lastBounceTime = levelTime;
+
+	if (spawnFlags & 1) {
+		if ((!g_fixSlidePhysics_value && fabsf(playerLastVelocity[0]) > 350) || (g_fixSlidePhysics_value && fabsf(playerLastVelocity[0]) > 90))
+			player->velocity[0] = playerLastVelocity[0] * scale;//XVel Relative Scale
+	}
+	if (spawnFlags & 2) {
+		if ((!g_fixSlidePhysics_value && fabsf(playerLastVelocity[1]) > 350) || (g_fixSlidePhysics_value && fabsf(playerLastVelocity[1]) > 90))
+			player->velocity[1] = playerLastVelocity[1] * scale;//YVel Relative Scale
+	}
+	if (spawnFlags & 4) {
+		player->velocity[2] = playerLastVelocity[2] * scale;//ZVel Relative Scale
+	}
+}
+
 /*
 ========================
 BG_TouchJumpPad

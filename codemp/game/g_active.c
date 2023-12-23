@@ -1418,6 +1418,7 @@ void	G_TouchTriggers( gentity_t *ent ) {
 	gentity_t	*hit;
 	trace_t		trace;
 	vec3_t		mins, maxs;
+	qboolean	entityContact;
 	static vec3_t	range = { 40, 40, 52 };
 
 	if ( !ent->client ) {
@@ -1460,12 +1461,23 @@ void	G_TouchTriggers( gentity_t *ent ) {
 
 		// use seperate code for determining if an item is picked up
 		// so you don't have to actually contact its bounding box
-		if ( hit->s.eType == ET_ITEM ) {
+		if ( hit->s.eType == ET_ITEM && !hit->isFakeItemTrigger ) {
 			if ( !BG_PlayerTouchesItem( &ent->client->ps, &hit->s, level.time ) ) {
 				continue;
 			}
 		} else {
-			if ( !trap->EntityContact( mins, maxs, (sharedEntity_t *)hit, qfalse ) ) {
+			if (hit->isFakeItemTrigger) { 
+				// Ugly workaround for clientside trigger_newpush (and maybe others in the future) prediction. Fake item triggers need modelindex to be 0 so the client skips them.
+				// But trap->EntityContact is an engine function that absolutely needs modelindex to be set correctly in the entityState...
+				// So we just fix it for this one trap call.
+				hit->s.modelindex = hit->s.time2;
+				entityContact = trap->EntityContact(mins, maxs, (sharedEntity_t*)hit, qfalse);
+				hit->s.modelindex = 0;
+			}
+			else {
+				entityContact = trap->EntityContact(mins, maxs, (sharedEntity_t*)hit, qfalse);
+			}
+			if ( !entityContact) {
 				continue;
 			}
 		}
