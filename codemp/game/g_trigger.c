@@ -2037,12 +2037,25 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 }
 
 void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
-	float scale;
-
 	if (!player->client)
 		return;
+
+	if (player->client->ps.pm_type != PM_NORMAL && player->client->ps.pm_type != PM_FLOAT && player->client->ps.pm_type != PM_FREEZE)
+		return;
+
+	if (trigger->spawnflags & 8) {//PLAYERONLY
+		if (player->s.eType == ET_NPC)
+			return;
+	}
+	else if (trigger->spawnflags & 16) {//NPCONLY
+		if (player->NPC == NULL)
+			return;
+	}
+
 	BG_TouchTriggerNewPush(&trigger->s,&player->client->ps, player->s.eType == ET_NPC, player->client->sess.raceMode, &player->client->lastBounceTime,level.time,g_fixSlidePhysics.integer, player->client->lastVelocity);
 
+	if (trigger->noise_index)
+		G_Sound(player, CHAN_AUTO, trigger->noise_index);
 }
 
 /*QUAKED target_push (.5 .5 .5) (-8 -8 -8) (8 8 8) bouncepad CONSTANT
@@ -2197,7 +2210,6 @@ void SP_trigger_newpush(gentity_t *self)//JAPRO Newpush
 	self->s.trickedentindex = 1; // We will use this as a form of "type" of trigger. 1= trigger_newpush. That way we can expand this in the future without breaking clients.
 	self->s.constantLight = self->spawnflags; // We store the spawnFlags off into constantLight (32 bit integer, should be able to hold big bitmasks)
 	self->s.speed = self->speed; // Speed one we can save in speed, ez.
-	self->s.trickedentindex2 = self->noise_index; // Only doing this in game now but maybe predict clientside someday? Is 16 bit integer, should be fine.
 
 
 	self->touch = NewPush;

@@ -2834,17 +2834,12 @@ void BG_TouchTriggerNewPush(entityState_t* trigger, playerState_t* player,  qboo
 	(trigger->speed) ? (scale = trigger->speed) : (scale = 2.0f); //Check for bounds? scale can be negative, that means "bounce".
 	*lastBounceTime = levelTime;
 
-#if _GAME
-	if (trigger->trickedentindex2)
-		G_Sound(player, CHAN_AUTO, trigger->trickedentindex2);
-#endif
-
 	if (spawnFlags & 1) {
-		if ((!g_fixSlidePhysics_value && abs(playerLastVelocity[0]) > 350) || (g_fixSlidePhysics_value && abs(playerLastVelocity) > 90))
+		if ((!g_fixSlidePhysics_value && fabsf(playerLastVelocity[0]) > 350) || (g_fixSlidePhysics_value && fabsf(playerLastVelocity[0]) > 90))
 			player->velocity[0] = playerLastVelocity[0] * scale;//XVel Relative Scale
 	}
 	if (spawnFlags & 2) {
-		if ((!g_fixSlidePhysics_value && abs(playerLastVelocity[1]) > 350) || (g_fixSlidePhysics_value && abs(playerLastVelocity) > 90))
+		if ((!g_fixSlidePhysics_value && fabsf(playerLastVelocity[1]) > 350) || (g_fixSlidePhysics_value && fabsf(playerLastVelocity[1]) > 90))
 			player->velocity[1] = playerLastVelocity[1] * scale;//YVel Relative Scale
 	}
 	if (spawnFlags & 4) {
