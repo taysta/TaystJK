@@ -1215,12 +1215,24 @@ void Use_target_push( gentity_t *self, gentity_t *other, gentity_t *activator ) 
 	}
 }
 
-qboolean ValidRaceSettings(gentity_t *trigger, gentity_t *player)
+int ValidRaceSettings(gentity_t *trigger, gentity_t *player)
 { //How 2 check if cvars were valid the whole time of run.. and before? since you can get a headstart with higher g_speed before hitting start timer? :S
 	//Make most of this hardcoded into racemode..? speed, knockback, debugmelee, stepslidefix, gravity
 	int style, restrictions = trigger->spawnflags;
 	if (!player->client)
 		return qfalse;
+
+	//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
+	//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
+	if (restrictions & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints
+		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+		return -1;
+	}
+	if (restrictions & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
+		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+		return -1;
+	}
+
 	if (!player->client->ps.stats[STAT_RACEMODE])
 		return qfalse;
 
@@ -1265,7 +1277,6 @@ qboolean ValidRaceSettings(gentity_t *trigger, gentity_t *player)
 		}
 	}
 
-
 	if (player->client->pers.haste && !(restrictions & (1 << 3)))
 		return qfalse; //IF client has haste, and the course does not allow haste, dont count it.
 	if ((style != MV_JETPACK) && (player->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)) && !(restrictions & (1 << 4))) //kinda deprecated.. maybe just never allow jetpack?
@@ -1298,18 +1309,6 @@ qboolean ValidRaceSettings(gentity_t *trigger, gentity_t *player)
 		return qfalse;
 	if ((player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) && !(restrictions & (1 << 6))) //spawnflags 64 on end trigger is allow_teles
 		return qfalse;
-
-	//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
-	//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
-	if (restrictions & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints
-		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
-		return qfalse;
-	}
-	if (restrictions & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
-		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
-		return qfalse;
-	}
-
 
 	return qtrue;
 }
@@ -1650,6 +1649,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
 		int average;
 		qboolean valid = qfalse;
+		int validRace = ValidRaceSettings(trigger, player);
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
 		const int lessTime = InterpolateTouchTime(player, trigger);
@@ -1658,12 +1658,16 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		if (trigger->noise_index) //Still play this always? Or handle this later..
 			G_Sound(player, CHAN_AUTO, trigger->noise_index);
-		if (ValidRaceSettings(trigger, player)) {
+		if (validRace == 1) {
 			valid = qtrue;
 			if (player->client->pers.userName && player->client->pers.userName[0])
 				Q_strncpyz(c, S_COLOR_CYAN, sizeof(c));
 			else
 				Q_strncpyz(c, S_COLOR_GREEN, sizeof(c));
+		}
+		else if (validRace == -1) {
+			//Not our trigger, or not enough checkpoints yet. let them keep going!
+			return;
 		}
 
 		if (diffLag > 0) {//Should this be more trusting..?.. -20? -30?
