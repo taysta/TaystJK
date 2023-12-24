@@ -1215,23 +1215,12 @@ void Use_target_push( gentity_t *self, gentity_t *other, gentity_t *activator ) 
 	}
 }
 
-int ValidRaceSettings(gentity_t *trigger, gentity_t *player)
+qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 { //How 2 check if cvars were valid the whole time of run.. and before? since you can get a headstart with higher g_speed before hitting start timer? :S
 	//Make most of this hardcoded into racemode..? speed, knockback, debugmelee, stepslidefix, gravity
-	int style, restrictions = trigger->spawnflags;
+	int style;
 	if (!player->client)
 		return qfalse;
-
-	//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
-	//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
-	if (restrictions & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints
-		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
-		return -1;
-	}
-	if (restrictions & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
-		trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
-		return -1;
-	}
 
 	if (!player->client->ps.stats[STAT_RACEMODE])
 		return qfalse;
@@ -1636,7 +1625,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			return;
 	}
 
-	multi_trigger(trigger, player);
+	
 
 	if (!player->client->pers.stats.startTime)
 		return;
@@ -1649,25 +1638,35 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
 		int average;
 		qboolean valid = qfalse;
-		int validRace = ValidRaceSettings(trigger, player);
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
 		const int lessTime = InterpolateTouchTime(player, trigger);
 		qboolean coopFinished = qfalse;
 		gentity_t* duelAgainst;
 
+		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
+		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
+		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.  
+			if (time > 1000)//sad hack to avoid spamming people who just start run(trigger on opposite side of start)
+				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+			return;
+		}
+		if (trigger->spawnflags & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
+			if (time > 1000)
+				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
+			return;
+		}
+
+		multi_trigger(trigger, player);
+
 		if (trigger->noise_index) //Still play this always? Or handle this later..
 			G_Sound(player, CHAN_AUTO, trigger->noise_index);
-		if (validRace == 1) {
+		if (ValidRaceSettings(trigger->spawnflags, player)) {
 			valid = qtrue;
 			if (player->client->pers.userName && player->client->pers.userName[0])
 				Q_strncpyz(c, S_COLOR_CYAN, sizeof(c));
 			else
 				Q_strncpyz(c, S_COLOR_GREEN, sizeof(c));
-		}
-		else if (validRace == -1) {
-			//Not our trigger, or not enough checkpoints yet. let them keep going!
-			return;
 		}
 
 		if (diffLag > 0) {//Should this be more trusting..?.. -20? -30?

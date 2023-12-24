@@ -1336,7 +1336,7 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
 {
 	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.65f, accel = 0.32f;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.9f, accel = 0.20f;
 	// friction = 1.65f, accel = 0.32f;
 
 	if (pm->ps->pm_type == PM_DEAD)
@@ -13057,11 +13057,23 @@ void PmoveSingle (pmove_t *pmove) {
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
-			pm->ps->velocity[2] += 600.0f * pml.frametime * scale;//was 18 with no grav
+			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
+				float hackscale = 250.0f / pm->ps->velocity[2];
+				if (hackscale > 1.25f)
+					hackscale = 1.25f;
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+			}
+			else if (pm->ps->velocity[2] < 0) {
+				float hackscale = 1.25f;
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+			}
+			else {
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;//was 18 with no grav
+			}
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
 		else if (pm->cmd.upmove < 0 && pm->ps->velocity[2] > MAX_FALL_SPEED) { //**?? max fall speed
-			pm->ps->velocity[2] -= 300.0f * pml.frametime * scale;//was 12 with no grav
+			pm->ps->velocity[2] -= 150.0f * pml.frametime * scale;//was 12 with no grav
 			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
 		}
@@ -13081,7 +13093,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.020f;
+				float accel = 0.007f;
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 
