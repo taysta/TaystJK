@@ -342,10 +342,10 @@ FILE*		missingFiles = NULL;
 #endif
 
 static void FS_ResetFileHandleData( fileHandleData_t *f ) {
+	assert(f->writerThread == nullptr);
 	f->handleFiles = {};
 	f->handleSync = qfalse;
 	f->handleAsync = qfalse;
-	assert(f->writerThread == nullptr);
 	f->writerThread = nullptr;
 	f->writes.clear();
 	f->closed = qfalse;
@@ -1078,6 +1078,9 @@ void FS_FCloseAio( int handle ) {
 	fsh[f].writerThread->join();
 	delete fsh[f].writerThread;
 	fsh[f].writerThread = nullptr;
+	if (fs_debug->integer) {
+		Com_Printf("FS_FCloseAio: %s closed.\n", fsh[f].name);
+	}
 	FS_ResetFileHandleData( &fsh[f] );
 }
 
@@ -1115,6 +1118,9 @@ void FS_FCloseFile( fileHandle_t f ) {
 	// we didn't find it as a pak, so close it as a unique file
 	if (fsh[f].handleFiles.file.o) {
 		if ( fsh[f].handleAsync ) {
+			if (fs_debug->integer) {
+				Com_Printf("FS_FCloseFile: Requesting async close of %s.\n", fsh[f].name);
+			}
 			// queue the file to be closed after all pending operations are completed.
 			{
 				std::lock_guard<std::mutex> l( fsh[f].writeLock );
@@ -1123,8 +1129,13 @@ void FS_FCloseFile( fileHandle_t f ) {
 			fsh[f].cv.notify_one();
 			return;
 		} else {
+			if (fs_debug->integer) {
+				Com_Printf("FS_FCloseFile: Sync closing %s.\n", fsh[f].name);
+			}
 			fclose (fsh[f].handleFiles.file.o);
 		}
+	} else if (fs_debug->integer) {
+		Com_Printf("FS_FCloseFile: fsh[f].handleFiles.file.o is NULL (%s).\n", fsh[f].name);
 	}
 	FS_ResetFileHandleData( &fsh[f] );
 }
@@ -1133,6 +1144,9 @@ extern void Com_PushEvent( sysEvent_t *event );
 void FS_AsyncWriterThread( fileHandle_t h ) {
 	fileHandleData_t *f = &fsh[h];
 	if ( !FS_CreatePath( f->ospath ) ) {
+		if (fs_debug->integer) {
+			Com_Printf("FS_AsyncWriterThread: Opening %s.\n", f->name);
+		}
 		f->handleFiles.file.o = fopen( f->ospath, "wb" );
 	}
 	if ( f->handleFiles.file.o == nullptr ) {
