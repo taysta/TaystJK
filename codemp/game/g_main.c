@@ -3870,7 +3870,7 @@ void G_RunFrame( int levelTime ) {
 					if (g_tweakJetpack.integer == 2 && !ent->client->sess.raceMode && ent->client->sess.movementStyle != MV_TRIBES)
 						ent->client->ps.jetpackFuel -= 2;
 					else {
-						ent->client->ps.jetpackFuel -= 5;
+						ent->client->ps.jetpackFuel -= 4;
 						//Special case for down jet here?
 					}
 					
