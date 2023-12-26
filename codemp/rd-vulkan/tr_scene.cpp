@@ -681,10 +681,12 @@ void RE_RenderScene( const refdef_t *fd ) {
 
 	RE_RenderWorldEffects();
 
-	if (tr.refdef.rdflags & RDF_AUTOMAP)
+#ifdef RDF_AUTOMAP
+	if ( tr.refdef.rdflags & RDF_AUTOMAP )
 	{
 		RE_RenderAutoMap();
 	}
+#endif
 }
 
 #if 0 //rwwFIXMEFIXME: Disable this before release!!!!!! I am just trying to find a crash bug.

@@ -88,7 +88,11 @@ static void R_SetupEntityLightingGrid( trRefEntity_t *ent ) {
 	float			totalFactor;
 	unsigned short	*startGridPos;
 
+#ifdef RF_FULLBRIGHT
 	if (r_fullbright->integer || r_ambientScale->integer == -1 || (ent->e.renderfx & RF_FULLBRIGHT))
+#else
+	if (r_fullbright->integer || r_ambientScale->integer == -1)
+#endif
 	{
 		ent->ambientLight[0] = ent->ambientLight[1] = ent->ambientLight[2] = 255.0;
 		ent->directedLight[0] = ent->directedLight[1] = ent->directedLight[2] = 255.0;
