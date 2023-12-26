@@ -2296,13 +2296,14 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2000;
+		missile = CreateMissileNew( start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
 	}
 
-	if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-		missile = CreateMissileNew( start, fwd, ((vel + 100*(i)) * g_projectileVelocityScale.value), 1500 +  Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
-	else 
+	else  if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
+		missile = CreateMissileNew( start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value), 1500 +  Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
+	else
 		missile = CreateMissileNew( start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue );
-	
+
 	missile->think = WP_flechette_alt_blow;
 
 	missile->activator = self;
@@ -2369,13 +2370,17 @@ static void WP_FlechetteAltFire( gentity_t *self, int seed )
 
 	WP_TraceSetStart( self, start, vec3_origin, vec3_origin );//make sure our start point isn't on the other side of a wall
 
-	for ( i = 0; i < 2; i++ )
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		VectorCopy(angs, dir);
+		AngleVectors(dir, fwd, NULL, NULL);
+		WP_CreateFlechetteBouncyThing(start, fwd, self, 1);
+	}
+	else for ( i = 0; i < 2; i++ )
 	{
 		VectorCopy( angs, dir );
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Remove Flechette Alt Randomness - Start]
 		if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
-			if (!(g_tweakWeapons.integer & WT_TRIBES))
 				dir[PITCH] -= 10;
 		}
 		else {
@@ -2977,12 +2982,12 @@ void thermalThinkStandard(gentity_t *ent)
 		return;
 	}
 
-	if ((g_tweakWeapons.integer & WT_IMPACT_NITRON) && ent->bounceCount == 1) {
+	if (((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)) && ent->bounceCount == 1) {
 		VectorClear(ent->s.pos.trDelta);
 		ent->s.pos.trType = TR_STATIONARY;
 	}
 
-	if (!(g_tweakWeapons.integer & WT_IMPACT_NITRON))
+	if (!(g_tweakWeapons.integer & WT_IMPACT_NITRON) && !(g_tweakWeapons.integer & WT_TRIBES))
 		G_RunObject(ent);
 	ent->nextthink = level.time;
 }
@@ -3019,7 +3024,11 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 
 	W_TraceSetStart( ent, start, bolt->r.mins, bolt->r.maxs );//make sure our start point isn't on the other side of a wall
 
-	if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		chargeAmount = 1.0f;
+		altFire = qtrue;
+	}
+	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
 		chargeAmount = 1.0f;
 		altFire = qfalse;
 	}
@@ -3068,6 +3077,11 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
+	else if (g_tweakWeapons.integer & WT_TRIBES) {
+		bolt->damage = 60 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
+		bolt->splashRadius = 96;//128
+	}
 	else {
 		bolt->damage = TD_DAMAGE;
 		bolt->splashDamage = TD_SPLASH_DAM;
@@ -3091,7 +3105,7 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	VectorCopy( start, bolt->pos2 );
 
 	bolt->bounceCount = -5;
-	if (g_tweakWeapons.integer & WT_IMPACT_NITRON)
+	if ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES))
 		bolt->bounceCount = 2;
 
 	return bolt;
@@ -4102,6 +4116,8 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	//VectorMA( ent->client->ps.velocity, -200, forward, ent->client->ps.velocity );
 	if (!ent->client->sess.raceMode)
 		shove = -400 * g_selfDamageScale.value;
+	else if (ent->client->sess.movementStyle == MV_TRIBES)
+		return;
 
 	if (shove) {
 		if (ent->client->pers.backwardsRocket && ent->client->sess.raceMode) {
@@ -4388,7 +4404,7 @@ static void WP_FireConcussion( gentity_t *ent )
 	float	vel = CONC_VELOCITY;
 	gentity_t *missile;
 
-	if (g_tweakWeapons.integer & WT_TRIBES) {
+	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
 		vel = 2275 * g_projectileVelocityScale.value;
 	}
 

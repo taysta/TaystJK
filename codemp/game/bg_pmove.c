@@ -9496,10 +9496,12 @@ if (pm->ps->duelInProgress)
 					addTime = 1500;
 				else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && !pm->ps->stats[STAT_RACEMODE])
 					addTime = 3000;
-				else if (pm->ps->weapon == WP_THERMAL && (g_tweakWeapons.integer & WT_IMPACT_NITRON))
+				else if (pm->ps->weapon == WP_THERMAL && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
 					addTime = 1500;
 				else if (pm->ps->weapon == WP_BLASTER && pm->ps->stats[STAT_RACEMODE])
 					addTime = 100;
+				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
+					addTime = 800;
 				else
 #endif
 					addTime = weaponData[pm->ps->weapon].altFireTime;
@@ -9513,8 +9515,10 @@ if (pm->ps->duelInProgress)
 				addTime = 1500;
 			else if (pm->ps->weapon == WP_STUN_BATON && g_tweakWeapons.integer & WT_STUN_LG)
 				addTime = 50;
-			else if (pm->ps->weapon == WP_THERMAL && (g_tweakWeapons.integer & WT_IMPACT_NITRON))
+			else if (pm->ps->weapon == WP_THERMAL && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
 				addTime = 1500;
+			else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1200;
 			else
 #endif
 			addTime = weaponData[pm->ps->weapon].fireTime;

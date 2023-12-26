@@ -3856,9 +3856,9 @@ void ClientThink_real( gentity_t *ent ) {
 				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 100;
 		}
 		else if (movementStyle == MV_TRIBES) {
-			ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_MELEE) + (1 << WP_ROCKET_LAUNCHER);
+			ent->client->ps.stats[STAT_WEAPONS] = (1 << WP_MELEE) + (1 << WP_CONCUSSION);
 			if (!ent->client->pers.stats.startTime)
-				ent->client->ps.ammo[AMMO_ROCKETS] = 2; //Dont drop their ammo before the course starts? qol
+				ent->client->ps.ammo[AMMO_METAL_BOLTS] = 120; //Dont drop their ammo before the course starts? qol
 			if (ent->health > 0)
 				ent->client->ps.stats[STAT_ARMOR] = ent->client->ps.stats[STAT_HEALTH] = ent->health = 100;
 		}

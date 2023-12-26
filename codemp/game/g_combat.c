@@ -5380,7 +5380,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			damage *= g_selfDamageScale.value;
 	}
 
-	if (g_tweakWeapons.integer & WT_IMPACT_NITRON && (/*mod == MOD_THERMAL ||*/ mod == MOD_THERMAL_SPLASH)) {
+	if ((g_tweakWeapons.integer & WT_IMPACT_NITRON && (/*mod == MOD_THERMAL ||*/ mod == MOD_THERMAL_SPLASH)) || (g_tweakWeapons.integer & WT_TRIBES && (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH))) {
 		if (targ && targ->client) {
 			if (targ->client->ps.powerups[PW_REDFLAG])
 			{

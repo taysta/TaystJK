@@ -397,11 +397,15 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	SnapVector(org);
 	VectorCopy( org, missile->s.pos.trBase );
 
+	if (owner->client->sess.raceMode) {
+		inheritance = 0;
+	}
+
 	if (inheritance && owner->client) {
 		if (inheritance == 2) { //Forced
 			VectorMA(newDir, 1.0f / vel, owner->client->ps.velocity, newDir);
 		}
-		else if (g_fullInheritance.integer) {
+		else if (g_fullInheritance.integer && !owner->client->sess.raceMode) {
 			VectorMA(newDir, g_projectileInheritance.value/vel, owner->client->ps.velocity, newDir);
 		}
 		else {
