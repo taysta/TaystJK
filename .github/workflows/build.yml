@@ -91,7 +91,7 @@ jobs:
 
   ubuntu:
     name: Ubuntu ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -119,9 +119,12 @@ jobs:
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
             sudo apt-get -y install aptitude
-            sudo apt-get -y install gcc-multilib g++-multilib ninja-build
-            sudo apt-get -y install --allow-downgrades libpcre2-8-0:i386 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
+            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 gcc-multilib g++-multilib ninja-build libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
             sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
+            # Use the following for ubuntu 22.04 builds
+            # sudo apt-get -y install gcc-multilib g++-multilib ninja-build
+            # sudo apt-get -y install --allow-downgrades libpcre2-8-0:i386 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
+            # sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
           else
             sudo apt-get -qq update
             sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
