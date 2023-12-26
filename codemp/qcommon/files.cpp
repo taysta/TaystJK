@@ -446,6 +446,7 @@ static fileHandle_t FS_HandleForFile(void) {
 	return 0;
 }
 
+
 static FILE	*FS_FileForHandle( fileHandle_t f ) {
 	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
 		Com_Error( ERR_DROP, "FS_FileForHandle: out of range" );
@@ -1072,6 +1073,16 @@ void FS_Rename( const char *from, const char *to ) {
 
 void FS_FCloseAio( int handle ) {
 	fileHandle_t f = (fileHandle_t) handle;
+	if (!fsh[f].closed || !fsh[f].handleAsync) {
+		if (fs_debug->integer) {
+			// This can happen if we were forced to sync close a file, for example 
+			// if we started to record a demo and a demo with the same path was still not fully closed.
+			// This can happen presumably due to random hiccups/latencies in the IO process or threading or whatever.
+			// We don't really need to worry about this.
+			Com_Printf("FS_FCloseAio: NOTE: File is not async or not closed: handle %i (%s)\n",f, fsh[f].name ? fsh[f].name : "");
+		}
+		return;
+	}
 	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
 		Com_Error( ERR_FATAL, "FCloseAio called with invalid handle %d\n", f );
 	}
@@ -1140,6 +1151,23 @@ void FS_FCloseFile( fileHandle_t f ) {
 	FS_ResetFileHandleData( &fsh[f] );
 }
 
+// Sometimes an async file may not yet be fully closed due to hiccups/latencies/threading issues or whatever.
+// When we know that this might happen (like when knowingly overwriting the same file over and over),
+// we should call this before re-opening the file to guarantee that it will actually be closed before we reopen it, 
+// which would cause a chain of other catastrophic events 
+void FS_AsyncAssureFileClosed(const char* ospath) {
+	int		i;
+
+	for (i = 1; i < MAX_FILE_HANDLES; i++) {
+		if (fsh[i].handleAsync == qtrue && fsh[i].closed == qtrue && !Q_stricmp(ospath,fsh[i].ospath)) {
+			if (fs_debug->integer) {
+				Com_Printf("FS_AsyncAssureFileClosed: Forcing sync close of handle %i (%s).\n",i, fsh[i].name);
+			}
+			FS_FCloseAio(i);
+		}
+	}
+}
+
 extern void Com_PushEvent( sysEvent_t *event );
 void FS_AsyncWriterThread( fileHandle_t h ) {
 	fileHandleData_t *f = &fsh[h];
@@ -1176,9 +1204,16 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 	Com_PushEvent( &event );
 }
 
+// Call with safe==qtrue to make sure the file isn't open in another async file handle anymore
 fileHandle_t FS_FOpenFileWriteAsync( const char *filename, qboolean safe ) {
+	const char* ospath = FS_BuildOSPath(fs_homepath->string, fs_gamedir, filename);
+
+	if (safe) {
+		FS_AsyncAssureFileClosed(ospath);
+	}
+
 	fileHandle_t f = FS_HandleForFile();
-	Q_strncpyz(fsh[f].ospath, FS_BuildOSPath( fs_homepath->string, fs_gamedir, filename ), MAX_OSPATH );
+	Q_strncpyz(fsh[f].ospath, ospath, MAX_OSPATH );
 
 	if ( fs_debug->integer ) {
 		Com_Printf( "FS_FOpenFileWriteAsync: %s\n", fsh[f].ospath );
