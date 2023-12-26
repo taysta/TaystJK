@@ -2296,14 +2296,16 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2000;
-		missile = CreateMissileNew( start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
+		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
 	}
-
-	else  if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-		missile = CreateMissileNew( start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value), 1500 +  Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
-	else
-		missile = CreateMissileNew( start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue );
-
+	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
+		missile = CreateMissileNew(start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value),
+								   1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue); //mean of 1050
+	}
+	else {
+		missile = CreateMissileNew(start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700,
+								   1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
+	}
 	missile->think = WP_flechette_alt_blow;
 
 	missile->activator = self;
@@ -3073,6 +3075,11 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashRadius = 192;
 	}
 	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
+		bolt->damage = 60 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
+		bolt->splashRadius = 96;//128
+	}
+	else if (g_tweakWeapons.integer & WT_TRIBES) {
 		bolt->damage = 60 * g_weaponDamageScale.integer;
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
