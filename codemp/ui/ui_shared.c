@@ -5033,7 +5033,17 @@ static const char *g_bindCommands[] = {
 	"flipkick",
 	"kill",
 	"spot",
-	"weaplast"
+	"weaplast",
+	"slot 1",
+	"slot 10",
+	"slot 2",
+	"slot 3",
+	"slot 4",
+	"slot 5",
+	"slot 6",
+	"slot 7",
+	"slot 8",
+	"slot 9"
 };
 
 #define g_bindCount ARRAY_LEN(g_bindCommands)

@@ -96,6 +96,7 @@ set(MPCGameCgameFiles
 	"${MPDir}/cgame/hud_obituary.c"
 	"${MPDir}/cgame/hud_shared.c"
 	"${MPDir}/cgame/hud_strafehelper.c"
+	"${MPDir}/cgame/hud_tribes.c"
 	"${MPDir}/cgame/animtable.h"
 	"${MPDir}/cgame/cg_local.h"
 	"${MPDir}/cgame/cg_public.h"
@@ -103,7 +104,8 @@ set(MPCGameCgameFiles
 	"${MPDir}/cgame/fx_local.h"
 	"${MPDir}/cgame/hud_local.h"
 	"${MPDir}/cgame/hud_strafehelper.h"
-	)
+	"${MPDir}/cgame/hud_tribes.h"
+)
 source_group("cgame" FILES ${MPCGameCgameFiles})
 set(MPCGameFiles ${MPCGameFiles} ${MPCGameCgameFiles})
 

@@ -24,6 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // cg_weapons.c -- events and effects dealing with weapons
 #include "cg_local.h"
 #include "fx_local.h"
+#include "hud_tribes.h"
 
 extern vec4_t	bluehudtint;
 extern vec4_t	redhudtint;
@@ -1598,6 +1599,7 @@ void CG_NextWeapon_f( void ) {
 	}
 }
 
+
 /*
 ===============
 CG_PrevWeapon_f
@@ -1663,6 +1665,7 @@ void CG_PrevWeapon_f( void ) {
 		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 	}
 }
+
 
 /*
 ===============
@@ -1950,6 +1953,161 @@ void CG_WeaponClean_f( void ) {
 }
 
 
+//Version of the above which uses available weapons and fills them into slots
+void CG_WeaponSlot_f( void ) {
+
+	if ( !cg.snap ) {
+		return;
+	}
+
+	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
+		return;
+	}
+
+	if (cg.snap->ps.emplacedIndex)
+	{
+		return;
+	}
+
+	int num = atoi( CG_Argv( 1 ) );
+
+	if ( num < 1 || num > 10 ) {
+		return;
+	}
+
+	int weaponsInInventory = 0;
+	int selectedWeapon = 0;
+
+	for (int i = 0; i < sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]); i++) {
+		int weapon = weaponCycleOrder[i];
+		if (IsWeaponSelectable(weapon)) {
+			weaponsInInventory++;
+
+			if (weaponsInInventory == num) {
+				selectedWeapon = weapon;
+				break;
+			}
+		}
+	}
+
+	if (selectedWeapon == 0) {
+		return;
+	}
+
+	num = selectedWeapon;
+
+	if (!CG_WeaponSelectable(num))
+	{
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+
+	if (cg.weaponSelect != num)
+	{
+		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+	}
+
+	cg.weaponSelect = num;
+}
+
+
+int FindCurrentSlot(int currentWeapon) {
+    for (int i = 0; i < sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]); i++) {
+        if (weaponCycleOrder[i] == currentWeapon) {
+            return i; // Return the index of the current weapon
+        }
+    }
+    return -1; // Return -1 if the current weapon is not found
+}
+
+
+void CG_NextWeaponSlot_f(void) {
+	if ((!cg.snap) || (cg.snap->ps.pm_flags & PMF_FOLLOW) ||
+		(cg.predictedPlayerState.pm_type == PM_SPECTATOR) ||
+		(cg.snap->ps.emplacedIndex)) {
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+	int currentWeaponIndex = -1;
+	int arraySize = sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]);
+
+	// Find the index of the current weapon
+	for (int i = 0; i < arraySize; ++i) {
+		if (weaponCycleOrder[i] == cg.weaponSelect) {
+			currentWeaponIndex = i;
+			break;
+		}
+	}
+
+	// Check if current weapon was found
+	if (currentWeaponIndex == -1) {
+		return; // Current weapon not found in the order
+	}
+
+    int currentSlot = FindCurrentSlot(cg.weaponSelect);
+    if (currentSlot == -1) {
+        return; // Current weapon not found in the order
+    }
+
+    int nextSlot = (currentSlot + 1) % arraySize; // Wrap around to the beginning of the array if necessary
+
+    // Iterate to find the first selectable weapon in the next slot
+    for (int i = nextSlot; i != currentSlot; i = (i + 1) % arraySize) {
+        int weapon = weaponCycleOrder[i];
+        if (CG_WeaponSelectable(weapon)) {
+            cg.weaponSelect = weapon;
+            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+            break;
+        }
+    }
+}
+
+
+
+void CG_PrevWeaponSlot_f(void) {
+	if ((!cg.snap) || (cg.snap->ps.pm_flags & PMF_FOLLOW) ||
+		(cg.predictedPlayerState.pm_type == PM_SPECTATOR) ||
+		(cg.snap->ps.emplacedIndex)) {
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+	int currentWeaponIndex = -1;
+	int arraySize = sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]);
+
+	// Find the index of the current weapon
+	for (int i = 0; i < arraySize; ++i) {
+		if (weaponCycleOrder[i] == cg.weaponSelect) {
+			currentWeaponIndex = i;
+			break;
+		}
+	}
+
+	// Check if current weapon was found
+	if (currentWeaponIndex == -1) {
+		return; // Current weapon not found in the order
+	}
+
+    int currentSlot = FindCurrentSlot(cg.weaponSelect);
+    if (currentSlot == -1) {
+        return; // Current weapon not found in the order
+    }
+
+    int prevSlot = (currentSlot - 1 + arraySize) % arraySize; // Wrap around to the end of the array if necessary
+
+    // Iterate to find the first selectable weapon in the previous slot
+    for (int i = prevSlot; i != currentSlot; i = (i - 1 + arraySize) % arraySize) {
+        int weapon = weaponCycleOrder[i];
+        if (CG_WeaponSelectable(weapon)) {
+            cg.weaponSelect = weapon;
+            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+            break;
+        }
+    }
+}
+
 
 /*
 ===================
@@ -1986,7 +2144,6 @@ void CG_OutOfAmmoChange( int oldWeapon )
 
 	trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 }
-
 
 
 /*

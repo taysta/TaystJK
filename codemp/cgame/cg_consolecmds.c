@@ -1377,7 +1377,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Old JA+ style grapple line" },//18
     { "New FFA respawn bubble" }, //19
 	{ "Seasonal Cosmetics" }, //20
-	{ "Alternate Standing Animation" } //21
+	{ "Alternate Standing Animation" }, //21
+	{ "Tribes Clientside (Requires assets)" } //22
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -2421,6 +2422,9 @@ static consoleCommand_t	commands[] = {
 	{ "viewpos",					CG_Viewpos_f },
 	{ "weapnext",					CG_NextWeapon_f },
 	{ "weapon",						CG_Weapon_f },
+	{ "slot",						CG_WeaponSlot_f },
+	{ "slotnext",					CG_PrevWeaponSlot_f },
+	{ "slotprev",					CG_NextWeaponSlot_f },
 	{ "weaponclean",				CG_WeaponClean_f },
 	{ "weapprev",					CG_PrevWeapon_f },
 	{ "showPlayerId",				CG_ClientList_f },
