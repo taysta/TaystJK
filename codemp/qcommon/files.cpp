@@ -1115,6 +1115,7 @@ There are three cases handled:
 ===========
 */
 void FS_FCloseFile( fileHandle_t f ) {
+	qboolean handleWasNull = qfalse;
 	FS_AssertInitialised();
 
 	if (fsh[f].zipFile == qtrue) {
@@ -1124,13 +1125,29 @@ void FS_FCloseFile( fileHandle_t f ) {
 		}
 		FS_ResetFileHandleData( &fsh[f] );
 		return;
+	} 
+	
+	if (!fsh[f].handleFiles.file.o) {
+		handleWasNull = qtrue;
+		if (fs_debug->integer) {
+			Com_Printf("FS_FCloseFile: fsh[f].handleFiles.file.o is NULL (%s).\n", fsh[f].name);
+		}
 	}
 
 	// we didn't find it as a pak, so close it as a unique file
-	if (fsh[f].handleFiles.file.o) {
+	if (!handleWasNull || fsh[f].handleAsync) { 
+		// || fsh[f].handleAsync because we cannot merely check that file.io is not NULL, since 
+		// a race condition (although it is rare, happening maybe once every few hours at worst) 
+		// can result in it being NULL due to fopen() inside the writer thread
+		// not yet having returned the proper FILE* value. 
 		if ( fsh[f].handleAsync ) {
 			if (fs_debug->integer) {
-				Com_Printf("FS_FCloseFile: Requesting async close of %s.\n", fsh[f].name);
+				if (handleWasNull) {
+					Com_Printf("FS_FCloseFile: Requesting async close of %s (handle was NULL, fopen not yet returned?).\n", fsh[f].name);
+				}
+				else {
+					Com_Printf("FS_FCloseFile: Requesting async close of %s.\n", fsh[f].name);
+				}
 			}
 			// queue the file to be closed after all pending operations are completed.
 			{
@@ -1145,8 +1162,6 @@ void FS_FCloseFile( fileHandle_t f ) {
 			}
 			fclose (fsh[f].handleFiles.file.o);
 		}
-	} else if (fs_debug->integer) {
-		Com_Printf("FS_FCloseFile: fsh[f].handleFiles.file.o is NULL (%s).\n", fsh[f].name);
 	}
 	FS_ResetFileHandleData( &fsh[f] );
 }
@@ -1170,6 +1185,7 @@ void FS_AsyncAssureFileClosed(const char* ospath) {
 
 extern void Com_PushEvent( sysEvent_t *event );
 void FS_AsyncWriterThread( fileHandle_t h ) {
+	qboolean fileOpenFailed = qfalse;
 	fileHandleData_t *f = &fsh[h];
 	if ( !FS_CreatePath( f->ospath ) ) {
 		if (fs_debug->integer) {
@@ -1179,7 +1195,9 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 	}
 	if ( f->handleFiles.file.o == nullptr ) {
 		Com_Printf( "Warning: failed to open file %s\n", f->name );
-		return;
+		fileOpenFailed = qtrue;
+		//return;
+		// Don't return here, it's likely to cause issues.
 	}
 	while ( qtrue ) {
 		std::vector<byte> write;
@@ -1194,9 +1212,21 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 			write = std::move(f->writes.front());
 			f->writes.pop_front();
 		}
-		fwrite( &write[0], 1, write.size(), f->handleFiles.file.o );
+		if (!fileOpenFailed) {
+			// This is pretty cringe but lest we want to fopen() synchronously and potentially hang
+			// gameplay, the demo writing code kinda just has to assume that fopen() was successful.
+			// So we have to kinda go through the motions here and pretend that everything is ok
+			// so that once the demo is "closing" we can clean up properly 
+			// and not cause a crash somehow.
+			// It's sad in that the game will assume the demo recording is working when it isn't.
+			// On the flipside, I'm not aware of this actually happening ever, so it's more of a hypothetical
+			// to begin with.
+			fwrite( &write[0], 1, write.size(), f->handleFiles.file.o );
+		}
 	}
-	fclose( f->handleFiles.file.o );
+	if (!fileOpenFailed) {
+		fclose(f->handleFiles.file.o);
+	}
 	sysEvent_t event;
 	Com_Memset( &event, 0, sizeof( event ) );
 	event.evType = SE_AIO_FCLOSE;
