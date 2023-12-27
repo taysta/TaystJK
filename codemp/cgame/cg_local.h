@@ -150,6 +150,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
 #define JAPRO_STYLE_SEASONALCOSMETICS	(1<<20)
 #define JAPRO_STYLE_ALTERNATEPOSE		(1<<21)
+#define JAPRO_STYLE_TRIBES				(1<<22)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -610,7 +611,7 @@ typedef struct centity_s {
 #endif
 	int			breathTime; //can maybe just use breathPuffTime?
 	int			breathPuffTime; //can maybe just use breathPuffTime?
-
+	qboolean 	drawingIFF;
 } centity_t;
 
 
@@ -2522,6 +2523,9 @@ void CG_GetClientWeaponMuzzleBoltPoint(int clIndex, vec3_t to);
 void CG_NextWeapon_f( void );
 void CG_PrevWeapon_f( void );
 void CG_Weapon_f( void );
+void CG_WeaponSlot_f( void );
+void CG_NextWeaponSlot_f( void );
+void CG_PrevWeaponSlot_f( void );
 void CG_WeaponClean_f( void );
 
 void CG_RegisterWeapon( int weaponNum);

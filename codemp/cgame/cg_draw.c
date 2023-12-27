@@ -25,6 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // active (after loading) gameplay
 #include "cg_local.h"
 #include "hud_strafehelper.h"
+#include "hud_tribes.h"
 
 #include "game/bg_saga.h"
 
@@ -33,13 +34,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
 extern float CG_RadiusForCent( centity_t *cent );
-qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
 qboolean CG_CalcMuzzlePoint( int entityNum, vec3_t muzzle );
 static void CG_DrawSiegeTimer(int timeRemaining, qboolean isMyTeam);
 static void CG_DrawSiegeDeathTimer( int timeRemaining );
 static void CG_LeadIndicator( void );
 static void CG_PlayerLabels( void );
-static void CG_TribesLabels( void );
 
 static void CG_DrawTrajectoryLine(void);
 
@@ -1980,6 +1979,9 @@ void CG_DrawHUD(centity_t	*cent)
 		CG_LeadIndicator();
 	if (cg_drawTrajectory.integer)
 		CG_DrawTrajectoryLine();
+
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+		CG_DrawHudTribes();
 
 	if (!cg_drawHud.integer)
 		return;
@@ -11023,9 +11025,11 @@ static void CG_Draw2D( void ) {
 		CG_DrawActivePowers();
 	}
 
-	if (cg.snap->ps.jetpackFuel < 100)
-	{ //draw it as long as it isn't full
-        CG_DrawJetpackFuel();
+	if(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES || cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+	{
+
+	} else if (cg.snap->ps.jetpackFuel < 100){
+		CG_DrawJetpackFuel();
 	}
 	if (cg.snap->ps.cloakFuel < 100)
 	{ //draw it as long as it isn't full
@@ -11097,7 +11101,11 @@ static void CG_Draw2D( void ) {
 				CG_DrawInvenSelect();
 				break;
 			case 2:
-				CG_DrawWeaponSelect();
+				if(cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES){
+
+				} else {
+					CG_DrawWeaponSelect();
+				}
 				break;
 			case 3:
 				CG_DrawForceSelect();
@@ -11600,115 +11608,6 @@ static void CG_LeadIndicator(void)
 		}
 }
 
-//draw the health bar based on current "health" and maxhealth
-void CG_DrawTribesHealthBar(centity_t* cent, float chX, float chY, float chW, float chH)
-{
-	vec4_t aColor;
-	vec4_t cColor;
-
-	float x = chX + ((chW / 2) - (50.0f / 2)) * cgs.widthRatioCoef;
-	float y = (chY + chH) + 8.0f;
-	float percent;
-
-	if (cent->currentState.maxhealth)
-		percent = ((float)cent->currentState.health / (float)cent->currentState.maxhealth) * 50.0f * cgs.widthRatioCoef;
-	else
-		percent = 49.0f * cgs.widthRatioCoef;
-
-	if (percent <= 0)
-	{
-		return;
-	}
-
-	//color of the bar
-	if (!cent->currentState.teamowner || cgs.gametype < GT_TEAM)
-	{ //not owned by a team or teamplay
-		aColor[0] = 1.0f;
-		aColor[1] = 1.0f;
-		aColor[2] = 0.0f;
-		aColor[3] = 0.4f;
-	}
-	else if (cent->currentState.teamowner == cg.predictedPlayerState.persistant[PERS_TEAM])
-	{ //owned by my team
-		aColor[0] = 0.0f;
-		aColor[1] = 1.0f;
-		aColor[2] = 0.0f;
-		aColor[3] = 0.4f;
-	}
-	else
-	{ //hostile
-		aColor[0] = 1.0f;
-		aColor[1] = 0.0f;
-		aColor[2] = 0.0f;
-		aColor[3] = 0.4f;
-	}
-
-	//color of greyed out "missing health"
-	cColor[0] = 0.5f;
-	cColor[1] = 0.5f;
-	cColor[2] = 0.5f;
-	cColor[3] = 0.4f;
-
-	//draw the background (black)
-	CG_DrawRect(x, y, 50.0f * cgs.widthRatioCoef, 5.0f, 1.0f, colorTable[CT_BLACK]);
-
-	//now draw the part to show how much health there is in the color specified
-	CG_FillRect(x + 1.0f * cgs.widthRatioCoef, y + 1.0f, percent - 1.0f * cgs.widthRatioCoef, 5.0f - 2.0f, aColor); //-2.0 instead of -1.0. regular healthbar function has border overlap so fix it
-
-	//then draw the other part greyed out
-	CG_FillRect(x + percent, y + 1.0f, (50.0f - 1.0f) * cgs.widthRatioCoef - percent, 5.0f - 1.0f, cColor);
-}
-
-static void CG_TribesLabels(void)
-{ //Todo, set a flag in cg_players and base this off that so we don't have to calculate all this?
-	int i;
-
-	for (i = 0; i < MAX_CLIENTS; i++) {
-		vec3_t		pos;
-		float		x, y;
-		trace_t		trace;
-		centity_t* cent = &cg_entities[i];
-		vec3_t		diff;
-
-		if (!cent || !cent->currentValid)
-			continue;
-		if (i == cg.clientNum)
-			continue;
-		if (i == cg.snap->ps.clientNum)
-			continue;
-		if (cent->currentState.eFlags & EF_DEAD)
-			continue;
-		if (cent->currentState.eType != ET_PLAYER)
-			continue;
-		if (!cgs.clientinfo[i].infoValid)
-			continue;
-		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)
-			continue;
-		if (CG_IsMindTricked(cent->currentState.trickedentindex,
-							 cent->currentState.trickedentindex2,
-							 cent->currentState.trickedentindex3,
-							 cent->currentState.trickedentindex4,
-							 cg.snap->ps.clientNum))
-			continue;
-
-		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
-		if (VectorLength(diff) >= 5000) //Make sure distance is less than... 3000 ?
-			continue;
-
-		CG_Trace(&trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID | CONTENTS_BODY);
-		if (trace.entityNum == ENTITYNUM_WORLD)
-			continue;
-
-		VectorCopy(cent->lerpOrigin, pos);
-		pos[2] += 64;
-
-		if (!CG_WorldCoordToScreenCoord(pos, &x, &y)) //off-screen, don't draw it
-			continue;
-
-		CG_DrawTribesHealthBar(cent, x, y - 16, 1, 1);
-	}
-}
-
 static void CG_PlayerLabels(void)
 {
 	int i;
@@ -11757,8 +11656,8 @@ static void CG_PlayerLabels(void)
 
 		if (!CG_WorldCoordToScreenCoord(pos, &x, &y)) //off-screen, don't draw it
 			continue;
-	
-		CG_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], cg_drawPlayerNamesScale.value);	
+
+		CG_DrawScaledProportionalString(x, y, cgs.clientinfo[i].name, UI_CENTER, colorTable[CT_WHITE], cg_drawPlayerNamesScale.value);
 
 		if (cg_drawPlayerNames.integer > 1 && cent->currentState.maxhealth)
 			CG_DrawHealthBar(cent, x, y-16, 1, 1);

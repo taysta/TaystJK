@@ -26,6 +26,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "ghoul2/G2.h"
 #include "game/bg_saga.h"
 #include "cJSON.h"
+#include "hud_tribes.h"
 
 extern int			cgSiegeTeam1PlShader;
 extern int			cgSiegeTeam2PlShader;
@@ -10289,36 +10290,6 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 }
 //[/Kameleon]
 
-
-
-static void CG_TribesIFF(centity_t* cent, qhandle_t shader, float size) {
-	int				rf;
-	refEntity_t		ent;
-	float offset = size * 2.5f;
-	if (offset < 42)
-		offset = 42;
-
-	if (cent->currentState.number == cg.snap->ps.clientNum && !cg.renderingThirdPerson) {
-		rf = RF_THIRD_PERSON;		// only show in mirrors
-	}
-	else {
-		rf = 0;
-	}
-
-	memset(&ent, 0, sizeof(ent));
-	VectorCopy(cent->lerpOrigin, ent.origin);
-	ent.origin[2] += offset;
-	ent.reType = RT_SPRITE;
-	ent.customShader = shader;
-	ent.radius = size;
-	ent.renderfx = rf;
-	ent.shaderRGBA[0] = 255;
-	ent.shaderRGBA[1] = 255;
-	ent.shaderRGBA[2] = 255;
-	ent.shaderRGBA[3] = 255;
-	trap->R_AddRefEntityToScene(&ent);
-}
-
 extern qboolean BG_InSlopeAnim( int anim );
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
 void CG_Player( centity_t *cent ) {
@@ -11021,25 +10992,24 @@ void CG_Player( centity_t *cent ) {
 
 	team = ci->team;
 
+	//JAPRO TRIBES IFFS - START
+
+	cent->drawingIFF = qfalse;
 	if (cent->currentState.number != cg.snap->ps.clientNum && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cent->currentState.eFlags & EF_DEAD) && (cent->currentState.bolt1 != 2)) {
 		float dist = Distance(cg.snap->ps.origin, cent->currentState.pos.trBase);
-		//float size = 4 + (dist * 0.0000006f);
 		float size = 4 + (dist * 0.008f);
-		//float x, y;
-
 		if (cg.snap->ps.persistant[PERS_TEAM] == team && cgs.gametype >= GT_TEAM) {//Friend
 			CG_TribesIFF(cent, cgs.media.teamBlueShader, size);
-			//if (CG_WorldCoordToScreenCoord(cent->currentState.pos.trBase, &x, &y)) //off-screen, don't draw it
-			//CG_DrawTribesHealthBar(cent, x, y - 16, 1, 1);
+			cent->drawingIFF = qtrue;
 		}
 		else {//Enemy
 			if (dist < 7500) {
 				CG_TribesIFF(cent, cgs.media.teamRedShader, size);
-				//if (CG_WorldCoordToScreenCoord(cent->currentState.pos.trBase, &x, &y)) //off-screen, don't draw it
-				//CG_DrawTribesHealthBar(cent, x, y - 16, 1, 1);
+				cent->drawingIFF = qtrue;
 			}
 		}
 	}
+	//JAPRO TRIBES IFFS - END
 	else if (cgs.gametype >= GT_TEAM && cg_drawFriend.integer &&
 		cent->currentState.number != cg.snap->ps.clientNum &&
 		cent->currentState.eType != ET_NPC)

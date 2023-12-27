@@ -183,10 +183,17 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponInfo->firingSound			= NULL_SOUND;
 		weaponInfo->chargeSound			= NULL_SOUND;
 		weaponInfo->muzzleEffect		= trap->FX_RegisterEffect( "concussion/muzzle_flash" );
-		weaponInfo->missileModel		= NULL_HANDLE;
-		weaponInfo->missileSound		= NULL_SOUND;
-		weaponInfo->missileDlight		= 0;
-		//weaponInfo->missileDlightColor= {0,0,0};
+		if(cg_stylePlayer.integer & JAPRO_STYLE_TRIBES) {
+			weaponInfo->missileModel 	= trap->R_RegisterModel("models/weapons2/concussion/disc.md3");
+			weaponInfo->missileSound 	= trap->S_RegisterSound("sound/weapons/rocket/missleloop.wav");
+			weaponInfo->missileDlight 	= 125;
+			VectorSet(weaponInfo->missileDlightColor, 0.2f, 0.5f, 1.0f);
+		} else {
+			weaponInfo->missileModel 	= NULL_HANDLE;
+			weaponInfo->missileSound 	= NULL_SOUND;
+			weaponInfo->missileDlight 	= 0;
+			//weaponInfo->missileDlightColor= {0,0,0};
+		}
 		weaponInfo->missileHitSound		= NULL_SOUND;
 		weaponInfo->missileTrailFunc	= FX_ConcussionProjectileThink;
 
