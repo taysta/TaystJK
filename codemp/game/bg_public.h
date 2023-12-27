@@ -499,6 +499,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define JAPRO_CINFO2_REGISTRATION			(1<<1) //UI
 #define JAPRO_CINFO2_SABERSWITCH			(1<<2) //UI
 #define	JAPRO_CINFO2_FIXPLAYERCOLLISION		(1<<3)
+#define	JAPRO_CINFO2_WTTRIBES				(1<<4)
 
 //JAPRO - Serverside + clientside restrictions
 #define JAPRO_RESTRICT_BHOP					(1<<0)
