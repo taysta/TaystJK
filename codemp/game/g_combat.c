@@ -4942,7 +4942,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			targ->client->ps.jetpackFuel = 0;
 		if (targ->client->ps.fd.forcePower < 0)
 			targ->client->ps.fd.forcePower = 0;
-		VectorScale(targ->client->ps.velocity, damage * 0.01f * 0.15f, targ->client->ps.velocity);
+		VectorScale(targ->client->ps.velocity, cut, targ->client->ps.velocity);
 	}
 
 	//JAPRO - check for same frame dmg fix here?
