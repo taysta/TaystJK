@@ -2787,7 +2787,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		ent->client->ps.rocketLockTime = 0;
 		ent->client->ps.rocketTargetTime = 0;
 	}
-	else if (altFire && (g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && !ent->client->sess.raceMode)
+	else if (altFire && (g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && ent->client && !ent->client->sess.raceMode)
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
@@ -2806,7 +2806,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		VectorSet( missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE );
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-	if (g_tweakWeapons.integer & WT_TRIBES)
+	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
 		missile->s.pos.trType = TR_GRAVITY;
 
 	missile->damage = damage;
