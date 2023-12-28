@@ -2197,11 +2197,27 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 		}
 		else if (g_tweakWeapons.integer & WT_TRIBES)
 		{
-			Add_Ammo(other, AMMO_BLASTER, 600);
-			Add_Ammo(other, AMMO_POWERCELL, 500);
-			Add_Ammo(other, AMMO_METAL_BOLTS, 900);
-			Add_Ammo(other, AMMO_ROCKETS, 20);
-			Add_Ammo(other, AMMO_THERMAL, 1);
+			if (other && other->client) { //need to do this in a better way. also need to give ammo for any startingweapons ?
+				other->client->ps.ammo[AMMO_BLASTER] = 600;
+				other->client->ps.ammo[AMMO_POWERCELL] = 600;
+				other->client->ps.ammo[AMMO_METAL_BOLTS] = 900;
+				other->client->ps.ammo[AMMO_ROCKETS] = 20;
+				other->client->ps.ammo[AMMO_THERMAL] = 2;
+				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
+
+				if (other->health < 100) {
+					other->health += 50;
+					if (other->health > 100)
+						other->health = 100;
+					other->client->ps.stats[STAT_HEALTH] = other->health;
+				}
+				if (other->client->ps.stats[STAT_ARMOR] < 100) {
+					other->client->ps.stats[STAT_ARMOR] += 50;
+					if (other->client->ps.stats[STAT_ARMOR] > 100)
+						other->client->ps.stats[STAT_ARMOR] = 100;
+				}
+			}
+
 		}
 		else
 		{

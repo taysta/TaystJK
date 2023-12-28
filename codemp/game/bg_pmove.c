@@ -9498,6 +9498,8 @@ if (pm->ps->duelInProgress)
 					addTime = 100;
 				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
 					addTime = 800;
+				else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
+					addTime = 1800;
 				else
 #endif
 					addTime = weaponData[pm->ps->weapon].altFireTime;
@@ -13093,7 +13095,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.009f; //server should use pmove_float!
+				float accel = 0.009f; //server should use pmove_float
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 

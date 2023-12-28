@@ -3750,7 +3750,23 @@ void GiveClientWeapons(gclient_t *client) {
 				client->ps.stats[STAT_WEAPONS] |= (1 << i);
 		}
 
-		if (!(g_startingWeapons.integer & (1 << 0))) { //oh right, startingWeapons bit 1 gives more ammo
+		if (g_tweakWeapons.integer & WT_TRIBES) { //oh right, startingWeapons bit 1 gives more ammo
+			if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
+				client->ps.ammo[AMMO_BLASTER] = 600;
+			if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
+				client->ps.ammo[AMMO_POWERCELL] = 500;
+			if (g_startingWeapons.integer & (1 << WP_REPEATER) || g_startingWeapons.integer & (1 << WP_FLECHETTE) || g_startingWeapons.integer & (1 << WP_CONCUSSION))
+				client->ps.ammo[AMMO_METAL_BOLTS] = 900;
+			if (g_startingWeapons.integer & (1 << WP_ROCKET_LAUNCHER))
+				client->ps.ammo[AMMO_ROCKETS] = 20;
+			if (g_startingWeapons.integer & (1 << WP_DET_PACK))
+				client->ps.ammo[AMMO_DETPACK] = 1;
+			if (g_startingWeapons.integer & (1 << WP_TRIP_MINE))
+				client->ps.ammo[AMMO_TRIPMINE] = 2;
+			if (g_startingWeapons.integer & (1 << WP_THERMAL))
+				client->ps.ammo[AMMO_THERMAL] = 2;
+		}
+		else if (!(g_startingWeapons.integer & (1 << 0))) { //oh right, startingWeapons bit 1 gives more ammo
 			if (g_startingWeapons.integer & (1 << WP_BLASTER) || g_startingWeapons.integer & (1 << WP_BRYAR_OLD))
 				client->ps.ammo[AMMO_BLASTER] = 300;
 			if (g_startingWeapons.integer & (1 << WP_DISRUPTOR) || g_startingWeapons.integer & (1 << WP_BOWCASTER) || g_startingWeapons.integer & (1 << WP_DEMP2))
