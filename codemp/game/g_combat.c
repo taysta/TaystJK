@@ -4929,6 +4929,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
+	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
+	{
+		targ->client->ps.jetpackFuel -= damage * 2;
+		if (targ->client->ps.jetpackFuel < 0)
+			targ->client->ps.jetpackFuel = 0;
+	}
+
 	//JAPRO - check for same frame dmg fix here?
 	//Melee, or saber, or hitscan.  If attackers health is below 0, and attackers attacker is our target.. (:S), and attackers health is lower than targets, forget the dmg.
 	//just ignore who the attackers attacker was i guess. dont think ive ever seen a same-frame kill involving 3 people

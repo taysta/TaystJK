@@ -610,7 +610,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	vec3_t		start, end;
 	trace_t		tr;
 	gentity_t	*traceEnt, *tent;
-	int			shotRange = 16384;
+	int			shotRange = 32768;
 	int			ignore, traces;
 	qboolean ghoul2 = qfalse;
 
@@ -622,6 +622,9 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	if (d_projectileGhoul2Collision.integer) {
 		ghoul2 = qtrue;
 	}
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage = DISRUPTOR_MAIN_DAMAGE - 5;
 
 	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
 
@@ -838,14 +841,16 @@ void WP_DisruptorAltFire( gentity_t *ent )
 	//vec3_t		muzzle2;
 	trace_t		tr;
 	gentity_t	*traceEnt, *tent;
-	float		shotRange = 8192.0f;
+	float		shotRange = 32768;
 	int			i;
 	int			count, maxCount = 60;
 	int			traces = DISRUPTOR_ALT_TRACES;
 	qboolean	fullCharge = qfalse;
 	qboolean	ghoul2 = qfalse;
 
-	if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage = DISRUPTOR_ALT_DAMAGE - 50;//50
+	else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
 		damage = DISRUPTOR_ALT_DAMAGE-40;//60
 	else
 		damage = DISRUPTOR_ALT_DAMAGE-30;//70
@@ -4413,6 +4418,7 @@ static void WP_FireConcussion( gentity_t *ent )
 
 	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
 		vel = 2275 * g_projectileVelocityScale.value;
+		damage = 90;
 	}
 
 	//hold us still for a bit
