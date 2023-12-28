@@ -4931,12 +4931,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
-		float cut = 1 - ((damage * 0.003f));
+		float cut = 1 - ((damage * 0.0025f));
 		if (cut > 1)
 			cut = 1;
 		else if (cut < 0)
 			cut = 0;
-		targ->client->ps.jetpackFuel -= damage * 2;
+		targ->client->ps.jetpackFuel -= damage;
 		targ->client->ps.fd.forcePower -= damage * 2;
 		if (targ->client->ps.jetpackFuel < 0)
 			targ->client->ps.jetpackFuel = 0;
