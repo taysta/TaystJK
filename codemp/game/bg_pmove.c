@@ -13093,7 +13093,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.007f;
+				float accel = 0.009f; //server should use pmove_float!
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 
