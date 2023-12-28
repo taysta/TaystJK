@@ -847,16 +847,7 @@ void WP_DisruptorAltFire(gentity_t *ent)
 	int			traces = DISRUPTOR_ALT_TRACES;
 	qboolean	fullCharge = qfalse;
 	qboolean	ghoul2 = qfalse;
-	float chargeUnit = DISRUPTOR_CHARGE_UNIT;
 
-	if (g_tweakWeapons.integer & WT_TRIBES) {
-		chargeUnit = 150.0f;
-		damage = DISRUPTOR_ALT_DAMAGE - 75;//30
-	}
-	else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
-		damage = DISRUPTOR_ALT_DAMAGE-40;//60
-	else
-		damage = DISRUPTOR_ALT_DAMAGE-30;//70
 
 	if (d_projectileGhoul2Collision.integer)
 		ghoul2 = qtrue;
@@ -868,7 +859,7 @@ void WP_DisruptorAltFire(gentity_t *ent)
 		VectorCopy( ent->client->ps.origin, start );
 		start[2] += ent->client->ps.viewheight;//By eyes
 
-		count = ( level.time - ent->client->ps.weaponChargeTime ) / chargeUnit;
+		count = ( level.time - ent->client->ps.weaponChargeTime ) / DISRUPTOR_CHARGE_UNIT;
 		if ( level.gametype == GT_SIEGE )
 		{//maybe a full alt-charge should be a *bit* more dangerous in Siege mode?
 			//maxCount = ceil((200.0f-(float)damage)/2.0f);//cap at 200 damage total
@@ -879,6 +870,14 @@ void WP_DisruptorAltFire(gentity_t *ent)
 		{
 			maxCount = 40;
 		}
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			damage = DISRUPTOR_ALT_DAMAGE - 75;//30
+			maxCount = 35;
+		}
+		else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
+			damage = DISRUPTOR_ALT_DAMAGE - 40;//60
+		else
+			damage = DISRUPTOR_ALT_DAMAGE - 30;//70
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Sniper Max Scope Dmg - End]
 	}
 	else
@@ -886,7 +885,7 @@ void WP_DisruptorAltFire(gentity_t *ent)
 		VectorCopy( ent->r.currentOrigin, start );
 		start[2] += 24;
 
-		count = ( 100 ) / chargeUnit;
+		count = ( 100 ) / DISRUPTOR_CHARGE_UNIT;
 	}
 
 	count *= 2;
