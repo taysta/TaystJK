@@ -850,8 +850,8 @@ void WP_DisruptorAltFire(gentity_t *ent)
 	float chargeUnit = DISRUPTOR_CHARGE_UNIT;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		chargeUnit = 100.0f;
-		damage = DISRUPTOR_ALT_DAMAGE - 85;//30
+		chargeUnit = 150.0f;
+		damage = DISRUPTOR_ALT_DAMAGE - 75;//30
 	}
 	else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
 		damage = DISRUPTOR_ALT_DAMAGE-40;//60
