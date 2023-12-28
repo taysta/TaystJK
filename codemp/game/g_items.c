@@ -2195,6 +2195,14 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				Add_Ammo(other, AMMO_TRIPMINE, 2);
 			}
 		}
+		else if (g_tweakWeapons.integer & WT_TRIBES)
+		{
+			Add_Ammo(other, AMMO_BLASTER, 600);
+			Add_Ammo(other, AMMO_POWERCELL, 500);
+			Add_Ammo(other, AMMO_METAL_BOLTS, 900);
+			Add_Ammo(other, AMMO_ROCKETS, 20);
+			Add_Ammo(other, AMMO_THERMAL, 1);
+		}
 		else
 		{
 			Add_Ammo(other, AMMO_BLASTER, 50);
