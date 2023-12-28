@@ -849,7 +849,7 @@ void WP_DisruptorAltFire( gentity_t *ent )
 	qboolean	ghoul2 = qfalse;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		damage = DISRUPTOR_ALT_DAMAGE - 50;//50
+		damage = DISRUPTOR_ALT_DAMAGE - 75;//30
 	else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
 		damage = DISRUPTOR_ALT_DAMAGE-40;//60
 	else
