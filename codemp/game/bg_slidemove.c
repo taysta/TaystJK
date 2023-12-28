@@ -462,27 +462,40 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 			{ //don't damage the vehicle from terrain that doesn't want to damage vehicles
 				if (pSelfVeh->m_pVehicleInfo->type == VH_FIGHTER)
 				{ //increase the damage...
-					float mult = (pSelfVeh->m_vOrientation[PITCH]*0.1f);
-					if (mult < 1.0f)
+#if _GAME
+					if (g_newVehicleDamageScale.value > 0.0f) {
+						//New vehicle impact damage calculation.  It would make the most sense to base this off of velocity lost in ClipVelocity but I guess we are doing it here?
+						vec3_t	moveDir;
+						float	impactDot;
+						VectorCopy(pm->ps->velocity, moveDir);
+						VectorNormalize(moveDir);
+						impactDot = DotProduct(moveDir, trace->plane.normal);
+						magnitude *= -impactDot * 6 * g_newVehicleDamageScale.value;
+					}
+					else 
+#endif
 					{
-						mult = 1.0f;
-					}
-					if (hitEnt->inuse && hitEnt->takedamage)
-					{ //if the other guy takes damage, don't hurt us a lot for ramming him
-						//unless it's a vehicle, then we get 1.5 times damage
-						if (hitEnt->s.eType == ET_NPC &&
-							hitEnt->s.NPC_class == CLASS_VEHICLE &&
-							hitEnt->m_pVehicle)
+						float mult = (pSelfVeh->m_vOrientation[PITCH] * 0.1f); //Ths might be the dumbest way to calculate damage multiplier ever.  todo: server cvar to fix vehicles
+						if (mult < 1.0f)
 						{
-							mult = 1.5f;
+							mult = 1.0f;
 						}
-						else
-						{
-							mult = 0.5f;
+						if (hitEnt->inuse && hitEnt->takedamage)
+						{ //if the other guy takes damage, don't hurt us a lot for ramming him
+							//unless it's a vehicle, then we get 1.5 times damage
+							if (hitEnt->s.eType == ET_NPC &&
+								hitEnt->s.NPC_class == CLASS_VEHICLE &&
+								hitEnt->m_pVehicle)
+							{
+								mult = 1.5f;
+							}
+							else
+							{
+								mult = 0.5f;
+							}
 						}
+						magnitude *= mult;
 					}
-
-					magnitude *= mult;
 				}
 				pSelfVeh->m_iLastImpactDmg = magnitude;
 				//FIXME: what about proper death credit to the guy who shot you down?

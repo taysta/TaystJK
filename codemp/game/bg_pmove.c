@@ -1502,7 +1502,7 @@ static float PM_CmdScale( usercmd_t *cmd ) {
 			//don't factor upmove into scaling speed
 	const int moveStyle = PM_GetMovePhysics();
 
-	if (moveStyle == MV_OCPM || moveStyle == MV_TRIBES) {
+	if (moveStyle == MV_OCPM || moveStyle == MV_TRIBES || moveStyle == MV_JETPACK) {
 		umove = cmd->upmove;
 	}
 #if _SPPHYSICS

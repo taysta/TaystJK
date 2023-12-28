@@ -610,7 +610,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	vec3_t		start, end;
 	trace_t		tr;
 	gentity_t	*traceEnt, *tent;
-	int			shotRange = 16384;
+	int			shotRange = 32768;
 	int			ignore, traces;
 	qboolean ghoul2 = qfalse;
 
@@ -622,6 +622,9 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	if (d_projectileGhoul2Collision.integer) {
 		ghoul2 = qtrue;
 	}
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage = DISRUPTOR_MAIN_DAMAGE - 5;
 
 	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
 
@@ -829,7 +832,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 }
 
 //---------------------------------------------------------
-void WP_DisruptorAltFire( gentity_t *ent )
+void WP_DisruptorAltFire(gentity_t *ent)
 //---------------------------------------------------------
 {
 	int			damage = 0, skip;
@@ -838,17 +841,13 @@ void WP_DisruptorAltFire( gentity_t *ent )
 	//vec3_t		muzzle2;
 	trace_t		tr;
 	gentity_t	*traceEnt, *tent;
-	float		shotRange = 8192.0f;
+	float		shotRange = 32768;
 	int			i;
 	int			count, maxCount = 60;
 	int			traces = DISRUPTOR_ALT_TRACES;
 	qboolean	fullCharge = qfalse;
 	qboolean	ghoul2 = qfalse;
 
-	if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
-		damage = DISRUPTOR_ALT_DAMAGE-40;//60
-	else
-		damage = DISRUPTOR_ALT_DAMAGE-30;//70
 
 	if (d_projectileGhoul2Collision.integer)
 		ghoul2 = qtrue;
@@ -871,6 +870,14 @@ void WP_DisruptorAltFire( gentity_t *ent )
 		{
 			maxCount = 40;
 		}
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			damage = DISRUPTOR_ALT_DAMAGE - 75;//30
+			maxCount = 35;
+		}
+		else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
+			damage = DISRUPTOR_ALT_DAMAGE - 40;//60
+		else
+			damage = DISRUPTOR_ALT_DAMAGE - 30;//70
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Sniper Max Scope Dmg - End]
 	}
 	else
@@ -2296,14 +2303,16 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2000;
-		missile = CreateMissileNew( start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
+		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
 	}
-
-	else  if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
-		missile = CreateMissileNew( start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value), 1500 +  Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue ); //mean of 1050
-	else
-		missile = CreateMissileNew( start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue );
-
+	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
+		missile = CreateMissileNew(start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value),
+								   1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue); //mean of 1050
+	}
+	else {
+		missile = CreateMissileNew(start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700,
+								   1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
+	}
 	missile->think = WP_flechette_alt_blow;
 
 	missile->activator = self;
@@ -3073,6 +3082,11 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashRadius = 192;
 	}
 	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
+		bolt->damage = 60 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
+		bolt->splashRadius = 96;//128
+	}
+	else if (g_tweakWeapons.integer & WT_TRIBES) {
 		bolt->damage = 60 * g_weaponDamageScale.integer;
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
@@ -4406,6 +4420,7 @@ static void WP_FireConcussion( gentity_t *ent )
 
 	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
 		vel = 2275 * g_projectileVelocityScale.value;
+		damage = 90;
 	}
 
 	//hold us still for a bit
