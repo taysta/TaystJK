@@ -2005,10 +2005,14 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 	{
 		case WP_BLASTER:
 			if (altFire) {
+				float spread = 1.6f, r;
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-				float r = Q_random(&seed) * 1.6f;
-				*spreadY = r * sin(theta);
-				*spreadX = r * cos(theta);
+
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					spread = 0.1f;
+				r = Q_random(&seed) * spread;
+				*spreadY = r * sinf(theta);
+				*spreadX = r * cosf(theta);
 			}
 			return;
 		case WP_BOWCASTER:
@@ -2019,8 +2023,8 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 			if (!altFire) {
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 				float r = Q_random(&seed) * 1.4f;
-				*spreadY = r * sin(theta);
-				*spreadX = r * cos(theta);
+				*spreadY = r * sinf(theta);
+				*spreadX = r * cosf(theta);
 			}
 			return;
 		case WP_DEMP2:
@@ -2038,11 +2042,18 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 	switch (weapon)
 	{
 		case WP_BLASTER:
-			missileSpeed = 2300;
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+				missileSpeed = 10440;
+			else
+				missileSpeed = 2300;
 			break;
 		case WP_DISRUPTOR:
-			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
-				missileSpeed = 10000;
+			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER) {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					missileSpeed = 32000;
+				else
+					missileSpeed = 9000;
+			}
 			break;
 		case WP_BOWCASTER:
 			missileSpeed = 1300;//ruh roh, multiple shots, charge count, etc?
@@ -2062,26 +2073,45 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 				missileSpeed = 1800;
 			break;
 		case WP_FLECHETTE: // are bouncy things missiles?
-			if (altFire)
-				missileSpeed = 1050;
+			if (altFire) {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					missileSpeed = 2000;
+				else
+					missileSpeed = 1050;
+			}
 			else
 				missileSpeed = 3500;
 			break;
 		case WP_ROCKET_LAUNCHER:
-			if (altFire)
-				missileSpeed = 450;
-			else
-				missileSpeed = 900;
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+				if (altFire)
+					missileSpeed = 1400;
+				else
+					missileSpeed = 2040;
+			}
+			else {
+				if (altFire)
+					missileSpeed = 450;
+				else
+					missileSpeed = 900;
+			}
 			break;
 		case WP_THERMAL:
-			missileSpeed = 550;
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) //Also impact nitron but not networked?
+				missileSpeed = 1800;
+			else
+				missileSpeed = 550;
 			break;
 		case WP_TRIP_MINE:
 			missileSpeed = 550;
 			break;
 		case WP_CONCUSSION:
-			if (!altFire)
-				missileSpeed = 3000;
+			if (!altFire) {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					missileSpeed = 2275;
+				else
+					missileSpeed = 3000;
+			}
 			break;
 		default:
 			break;
@@ -2095,6 +2125,7 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 	switch (weapon)
 	{
 		case WP_BLASTER:
+			break;
 		case WP_DISRUPTOR:
 			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
 				gravity = qtrue;
@@ -2113,6 +2144,9 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 				gravity = qtrue;
 			break;
 		case WP_ROCKET_LAUNCHER:
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+				gravity = qtrue;
+			}
 			break;
 		case WP_THERMAL:
 		case WP_TRIP_MINE:
@@ -2136,9 +2170,9 @@ void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
 	muzzlePoint[2] += cg.predictedPlayerState.viewheight;
 
 	if (!(cp_pluginDisable.integer & JAPRO_PLUGIN_CENTERMUZZLE) && !cg.predictedPlayerState.stats[STAT_RACEMODE]) { //Not center muzzle
-			int y = 0, z = 0;
-			switch (weapon)
-			{
+		int y = 0, z = 0;
+		switch (weapon)
+		{
 			case WP_STUN_BATON:
 			case WP_DISRUPTOR:
 				break;
@@ -2171,10 +2205,63 @@ void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
 				break;
 			default:
 				break;
-			}
+		}
 
 		VectorMA( muzzlePoint, y, right, muzzlePoint ); //-5
 		VectorMA( muzzlePoint, z, up, muzzlePoint ); //-7
+	}
+}
+
+
+
+void CG_AddMissile(localEntity_t *le) {
+	vec3_t	currentPos;
+	int		weapon;
+	qboolean altFire;
+
+	if (le->leFlags % 2) {
+		weapon = (le->leFlags - 1) / 2;
+		altFire = qtrue;
+	}
+	else {
+		weapon = (le->leFlags / 2);
+		altFire = qfalse;
+	}
+
+	BG_EvaluateTrajectory(&le->pos, cg.time, currentPos); //Is muzzlepoint accurate?
+	//Com_Printf("Weapon is %i and altfire is %i, flags was %i\n", weapon, altFire, le->leFlags);
+
+	switch (weapon) {
+		default:
+			return;
+		case WP_BRYAR_PISTOL:
+		case WP_BRYAR_OLD:
+			trap->FX_PlayEffectID(cgs.effects.bryarShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_BLASTER:
+			trap->FX_PlayEffectID(cgs.effects.blasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_BOWCASTER:
+			trap->FX_PlayEffectID(cgs.effects.bowcasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_REPEATER:
+			if (altFire)
+				trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			else
+				trap->FX_PlayEffectID(cgs.effects.repeaterProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_FLECHETTE:
+			if (altFire)
+				trap->FX_PlayEffectID(cgs.effects.flechetteAltShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			else
+				trap->FX_PlayEffectID(cgs.effects.flechetteShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_ROCKET_LAUNCHER:
+			trap->FX_PlayEffectID(cgs.effects.rocketShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_CONCUSSION:
+			trap->FX_PlayEffectID(cgs.effects.concussionShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
 	}
 }
 
@@ -2187,22 +2274,20 @@ static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlag
 	float spreadX = 0, spreadY = 0;
 	int timenudge = cl_timeNudge.integer;
 
-	//weapon = &cg_weapons[weap];
-
 	gravity = CG_GetBulletGravity(weap, altFire);
 	missileSpeed = CG_GetBulletSpeed(weap, altFire);
 	CG_GetBulletSpread(weap, altFire, seed, &spreadX, &spreadY);
 
 	AngleVectors( cg.predictedPlayerState.viewangles, forward, NULL, NULL );
 	//(longTrail) ? VectorMA(muzzlePoint, 90, forward, muzzlePoint) : VectorMA(muzzlePoint, 32, forward, muzzlePoint); // sad hack
-	
+
 	CG_GetMuzzlePoint(weap, muzzlePoint);
 
 	if (spreadX || spreadY) { //ah, this should be before muzzlepoint? stuff,, or it should use the same ,. nvm idk
 		vectoangles( forward, angs );
 		angs[PITCH] += spreadY;
 		angs[YAW] += spreadX;
-		AngleVectors( angs, forward, NULL, NULL );
+		AngleVectors( angs, forward, NULL, NULL ); //do something here?
 	}
 
 	if (timenudge > 160)
@@ -2215,16 +2300,14 @@ static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlag
 	le->leType = LE_MISSILE;
 	le->startTime = cg.time; // to stop bullet from being created inside or behind us?
 	le->pos.trTime = cg.time;//idk if this is needed
-	(altFire) ? (le->leFlags |= EF_ALT_FIRING) : (le->leFlags = 0); // idk if i need = 0 here
+	le->leFlags = (weap * 2) + altFire;
 	(cgs.svfps) ? (offset = 1000 / cgs.svfps) : (offset = 50);
 	(cg.snap) ? (le->endTime = cg.time + cg.snap->ping + offset + timenudge) : (le->endTime = cg.time + offset + timenudge);
 	(gravity) ? (le->pos.trType = TR_GRAVITY) : (le->pos.trType = TR_LINEAR);
 	VectorCopy( muzzlePoint, le->pos.trBase );
 	VectorScale( forward, missileSpeed, le->pos.trDelta ); // missile speed
 
-	//vectoangles( forward, le->angles.trBase ); //why doesnt this affect its angle ??
-	//VectorCopy(forward, le->angles.trBase);
-
+	//Com_Printf("Setting weapon %i and altfire %i, gravity %i, flags is %i\n", weap, altFire, gravity, le->leFlags);
 }
 
 /*
