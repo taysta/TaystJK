@@ -478,7 +478,9 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	else if ( !other->takedamage &&
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		( ent->flags & ( FL_BOUNCE | FL_BOUNCE_HALF ) ) ) { //only on the first bounce vv
-		if (!(g_tweakWeapons.integer & WT_ROCKET_MORTAR && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 1000))//give this mortar a 1 second 'fuse' until its armed
+		if ((!(g_tweakWeapons.integer & WT_ROCKET_MORTAR && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 1000)) && 
+			!(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_FLECHETTE && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 500))
+			//give this mortar a 1 second 'fuse' until its armed
 		{
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
