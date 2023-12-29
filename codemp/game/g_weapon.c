@@ -4454,7 +4454,12 @@ static void WP_FireConcussion( gentity_t *ent )
 	missile->splashMethodOfDeath = MOD_CONC;
 
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
-	missile->splashDamage = CONC_SPLASH_DAMAGE;
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->splashDamage = 90;
+	}
+	else {
+		missile->splashDamage = CONC_SPLASH_DAMAGE;
+	}
 	missile->splashRadius = CONC_SPLASH_RADIUS;
 
 	// we don't want it to ever bounce

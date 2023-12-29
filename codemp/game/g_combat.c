@@ -5052,9 +5052,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		knockback = 0;
 	}
 
-	//Higher self knockback for tribes
+	//Higher self knockback for tribes, discjump disc jump
 	if (attacker && targ == attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
-		knockback *= 1.25f;
+		knockback *= 1.4f;
 	}
 
 	// figure momentum add, even if the damage won't be taken
@@ -5830,7 +5830,6 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			if (targ->client->ps.fd.forcePower)
 			{
 				int maxtake = take;
-
 				//G_Sound(targ, CHAN_AUTO, protectHitSound);
 				if (targ->client->forcePowerSoundDebounce < level.time)
 				{
@@ -5838,7 +5837,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 					targ->client->forcePowerSoundDebounce = level.time + 400;
 				}
 
-				if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
+				if (g_tweakWeapons.integer & WT_TRIBES) {
+					famt = 0.5f;
+					hamt = 0.90f;
+					if (maxtake > 400)
+					{
+						maxtake = 400;
+					}
+				}
+				else if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
 				{
 					famt = 1;
 					hamt = 0.40f;
