@@ -886,75 +886,54 @@ void CG_AddLine( localEntity_t *le )
 	trap->R_AddRefEntityToScene( re );
 }
 
-/*
-==================
-CG_AddMissile
-==================
-*/
-static void CG_AddMissile( localEntity_t *le ) { //cg_simulatedprojectiles
-	vec3_t		currentPos, muzzlePointApprox;
-	centity_t	*missile = &cg_entities[cg.predictedPlayerState.clientNum]; // this should be a free entity? not sure how to find what the next available free entity is
-	trace_t		trace;
+void CG_AddMissile(localEntity_t *le) {
+	vec3_t	currentPos;
+	int		weapon;
+	qboolean altFire;
 
-	BG_EvaluateTrajectory( &le->pos, cg.time, currentPos ); // idk what empty is? its the 'result',, never used?
-			
-	missile->currentState.eType = ET_MISSILE;
-
-	(le->leFlags & EF_ALT_FIRING) ? (missile->currentState.eFlags |= EF_ALT_FIRING) : (missile->currentState.eFlags = 0);
-
-	missile->currentState.pos.trType = le->pos.trType;
-	missile->currentState.pos.trTime =  le->pos.trTime;//idk, maybe i want something like r_znear but only applies to our own projectiles?ghhhhh
-	missile->currentState.pos.trDuration = le->pos.trDuration;
-	missile->currentState.apos.trType = TR_STATIONARY;
-
-	VectorCopy( currentPos, missile->currentState.pos.trBase );
-	VectorCopy( le->pos.trDelta, missile->currentState.pos.trDelta );
-
-	//VectorCopy( le->angles.trBase, missile->currentState.apos.trBase ); //This sets the right angle of the missile?
-	//VectorCopy( le->angles.trBase, missile->currentState.angles ); //This sets the right angle of the missile?
-	//VectorCopy( le->angles.trBase, missile->currentState.angles2 ); //This sets the right angle of the missile?
-
-	VectorCopy( cg.predictedPlayerState.origin, muzzlePointApprox );
-	muzzlePointApprox[2] += cg.predictedPlayerState.viewheight;
-
-	if (pm && pm->ps && pm->ps->stats[STAT_RACEMODE] && cg.snap) {
-		CG_Trace( &trace, currentPos, NULL, NULL, currentPos, -1, CONTENTS_SOLID );
-		if (trace.startsolid) {
-			le->endTime = cg.time; //Kill the missile.
-			//Predict its explosion save launch vel?
-			if (cg_predictKnockback.integer)
-			{
-				vec3_t dir = {0};
-				int knockback, damage, distance;
-
-				VectorSubtract(cg.predictedPlayerState.origin, missile->currentState.pos.trBase, dir);
-				distance = VectorLength(dir);
-
-				if (distance < 160) {
-					damage = 100.0f * 0.5f * (1.0f - (distance / 160.0f)); //Rocket damage * Self damage scale * (Max splash dist / dist)
-
-					if (cg_predictKnockback.integer > 1)
-						Com_Printf("Missile hit! Predicted distance: %i Predicted damage: %i\n", distance, damage);
-
-					VectorNormalize(dir);
-
-					knockback = damage;
-					if (knockback > 200)
-						knockback = 200;
-					VectorScale (dir, 1000 * (float)knockback / 200, cg.predictedRocketJumpImpulse); //Now whats dir
-					cg.predictKnockback = qtrue;
-					//VectorAdd(cg.predictedRocketJumpImpulse, pm->ps->velocity, cg.predictedRocketJumpImpulse);
-					//cg.predictedRocketJumpTime = cg.time; //disregard timenudge?
-					//cg.predictedRocketJumpExpireTime = cg.time + cg.snap->ping + cl_timeNudge.integer; //disregard timenudge?
-					//VectorCopy(cg.predictedPlayerState.velocity, cg.predictedRocketJumpOriginalVel);
-				}
-			}
-		}
+	if (le->leFlags % 2) {
+		weapon = (le->leFlags - 1) / 2;
+		altFire = qtrue;
+	}
+	else {
+		weapon = (le->leFlags / 2);
+		altFire = qfalse;
 	}
 
-	if (Distance(muzzlePointApprox, currentPos) > cg_simulatedProjectiles.integer) {
-		CG_ManualEntityRender(missile);
-		//Com_Printf("Drawing missile at position: %.2f %.2f %.2f\n", missile->currentState.pos.trBase[0], missile->currentState.pos.trBase[1], missile->currentState.pos.trBase[2]);
+	BG_EvaluateTrajectory(&le->pos, cg.time, currentPos); //Is muzzlepoint accurate?
+	//Com_Printf("Weapon is %i and altfire is %i, flags was %i\n", weapon, altFire, le->leFlags);
+
+	switch (weapon) {
+		default:
+			return;
+		case WP_BRYAR_PISTOL:
+		case WP_BRYAR_OLD:
+			trap->FX_PlayEffectID(cgs.effects.bryarShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_BLASTER:
+			trap->FX_PlayEffectID(cgs.effects.blasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_BOWCASTER:
+			trap->FX_PlayEffectID(cgs.effects.bowcasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_REPEATER:
+			if (altFire)
+				trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			else
+				trap->FX_PlayEffectID(cgs.effects.repeaterProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_FLECHETTE:
+			if (altFire)
+				trap->FX_PlayEffectID(cgs.effects.flechetteAltShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			else
+				trap->FX_PlayEffectID(cgs.effects.flechetteShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_ROCKET_LAUNCHER:
+			trap->FX_PlayEffectID(cgs.effects.rocketShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
+		case WP_CONCUSSION:
+			trap->FX_PlayEffectID(cgs.effects.concussionShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
 	}
 }
 

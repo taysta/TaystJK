@@ -2212,59 +2212,6 @@ void CG_GetMuzzlePoint(int weapon, vec3_t muzzlePoint) {
 	}
 }
 
-
-
-void CG_AddMissile(localEntity_t *le) {
-	vec3_t	currentPos;
-	int		weapon;
-	qboolean altFire;
-
-	if (le->leFlags % 2) {
-		weapon = (le->leFlags - 1) / 2;
-		altFire = qtrue;
-	}
-	else {
-		weapon = (le->leFlags / 2);
-		altFire = qfalse;
-	}
-
-	BG_EvaluateTrajectory(&le->pos, cg.time, currentPos); //Is muzzlepoint accurate?
-	//Com_Printf("Weapon is %i and altfire is %i, flags was %i\n", weapon, altFire, le->leFlags);
-
-	switch (weapon) {
-		default:
-			return;
-		case WP_BRYAR_PISTOL:
-		case WP_BRYAR_OLD:
-			trap->FX_PlayEffectID(cgs.effects.bryarShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_BLASTER:
-			trap->FX_PlayEffectID(cgs.effects.blasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_BOWCASTER:
-			trap->FX_PlayEffectID(cgs.effects.bowcasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_REPEATER:
-			if (altFire)
-				trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			else
-				trap->FX_PlayEffectID(cgs.effects.repeaterProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_FLECHETTE:
-			if (altFire)
-				trap->FX_PlayEffectID(cgs.effects.flechetteAltShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			else
-				trap->FX_PlayEffectID(cgs.effects.flechetteShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_ROCKET_LAUNCHER:
-			trap->FX_PlayEffectID(cgs.effects.rocketShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-		case WP_CONCUSSION:
-			trap->FX_PlayEffectID(cgs.effects.concussionShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
-			break;
-	}
-}
-
 static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlaggedprojectiles, cg_SimulatedProjectiles
 { // does this call cg_addmissile every frame? it should only call it once every snapshot frame? (for each bullet)?
 	localEntity_t	*le;
