@@ -2303,11 +2303,8 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2000;
-		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 3000 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue);
-	}
-	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
-		missile = CreateMissileNew(start, fwd, ((vel + 100 * (i)) * g_projectileVelocityScale.value),
-								   1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue, qtrue, qtrue); //mean of 1050
+		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 4000, self, qtrue, qtrue, qtrue);
+		missile->setTime = level.time;
 	}
 	else {
 		missile = CreateMissileNew(start, fwd, (700 * g_projectileVelocityScale.value) + Q_flrand(0.0f, 1.0f) * 700,
@@ -2787,7 +2784,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		ent->client->ps.rocketLockTime = 0;
 		ent->client->ps.rocketTargetTime = 0;
 	}
-	else if (altFire && (g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && !ent->client->sess.raceMode)
+	else if (altFire && (g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && ent->client && !ent->client->sess.raceMode)
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
@@ -2806,7 +2803,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		VectorSet( missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE );
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-	if (g_tweakWeapons.integer & WT_TRIBES)
+	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
 		missile->s.pos.trType = TR_GRAVITY;
 
 	missile->damage = damage;
@@ -2846,7 +2843,7 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 //------------------------------------------------------------------------------
 {
 	gentity_t	*missile;
-	float velocity = 1400 * g_projectileVelocityScale.value;
+	float velocity = 1600 * g_projectileVelocityScale.value;
 	int lifetime = 3500, damage = 140 * g_weaponDamageScale.value, splashdamage = 140 * g_splashDamageScale.value, splashradius = 384;
 
 	missile = CreateMissileNew( start, fwd, velocity, lifetime, self, qtrue, qtrue, qtrue );
@@ -4115,12 +4112,13 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	qboolean	hitDodged = qfalse;
 	vec3_t shot_mins, shot_maxs;
 	int			i;
-	int   shove = -200; //this seems like a dumb idea though?
+	int   shove = -400 * g_selfDamageScale.value;; //this seems like a dumb idea though?
 	qboolean	ghoul2 = qfalse;
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
 	if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
 		damage *= 2.0f;
+
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - End]
 
 	if (d_projectileGhoul2Collision.integer)
@@ -4128,10 +4126,11 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 
 	//Shove us backwards for half a second
 	//VectorMA( ent->client->ps.velocity, -200, forward, ent->client->ps.velocity );
-	if (!ent->client->sess.raceMode)
-		shove = -400 * g_selfDamageScale.value;
-	else if (ent->client->sess.movementStyle == MV_TRIBES)
+	if (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)
 		return;
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		shove = 0;
 
 	if (shove) {
 		if (ent->client->pers.backwardsRocket && ent->client->sess.raceMode) {
@@ -4455,7 +4454,12 @@ static void WP_FireConcussion( gentity_t *ent )
 	missile->splashMethodOfDeath = MOD_CONC;
 
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
-	missile->splashDamage = CONC_SPLASH_DAMAGE;
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->splashDamage = 90;
+	}
+	else {
+		missile->splashDamage = CONC_SPLASH_DAMAGE;
+	}
 	missile->splashRadius = CONC_SPLASH_RADIUS;
 
 	// we don't want it to ever bounce

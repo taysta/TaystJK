@@ -258,6 +258,7 @@ void CG_ParseServerinfo( void ) {
 		else if (!Q_stricmpn(gamename, "japro", 5)) {
 			cgs.serverMod = SVMOD_JAPRO;
 			cgs.cinfo = atoi(Info_ValueForKey(info, "jcinfo"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
+			cgs.jcinfo2 = atoi(Info_ValueForKey(info, "jcinfo2"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo2 from japro servers]
 			cgs.jcinfo = cgs.cinfo;
 			cgs.hookpull = atoi(Info_ValueForKey(info, "g_hookStrength"));//[JAPRO - Clientside - All - Add gamename variable to get jcinfo from japro servers]
 			trap->Cvar_Set("cjp_client", "1.4JAPRO");

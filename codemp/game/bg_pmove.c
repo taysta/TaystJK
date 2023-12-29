@@ -3308,13 +3308,13 @@ static qboolean PM_CheckJump( void )
 	{
 		return qfalse;
 	}
-	if ( pm->cmd.upmove > 0 )
+	if (pm->cmd.upmove > 0)
 	{//no special jumps
 		if (moveStyle == MV_QW || moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
 		{
 			vec3_t hVel;
 			float added, xyspeed, realjumpvelocity = JUMP_VELOCITY;
-			
+
 			if (moveStyle == MV_WSW)
 				realjumpvelocity = 280.0f;
 			else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
@@ -3348,7 +3348,7 @@ static qboolean PM_CheckJump( void )
 #if 0
 			{
 				gentity_t *gent = (gentity_t *)pm_entSelf;
-				trap->SendServerCommand(gent-g_entities, va("chat \"XYSPEED: %.2f, ZSPEED: %.2f, ADDED: %.2f, JUMPTIME: %i\n\"", xyspeed, pm->ps->velocity[2], added, pm->ps->stats[STAT_JUMPTIME]));
+				trap->SendServerCommand(gent - g_entities, va("chat \"XYSPEED: %.2f, ZSPEED: %.2f, ADDED: %.2f, JUMPTIME: %i\n\"", xyspeed, pm->ps->velocity[2], added, pm->ps->stats[STAT_JUMPTIME]));
 			}
 #endif
 
@@ -3356,8 +3356,13 @@ static qboolean PM_CheckJump( void )
 			pm->ps->stats[STAT_LASTJUMPSPEED] = pm->ps->velocity[2];
 
 		}
-		else
+		else if (moveStyle == MV_TRIBES) {
+			pm->ps->velocity[2] = 275;
+			pm->ps->stats[STAT_JUMPTIME] = 401;
+		}
+		else {
 			pm->ps->velocity[2] = JUMP_VELOCITY;
+		}
 	}
 
 	//Jumping
@@ -9498,6 +9503,8 @@ if (pm->ps->duelInProgress)
 					addTime = 100;
 				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
 					addTime = 800;
+				else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
+					addTime = 1800;
 				else
 #endif
 					addTime = weaponData[pm->ps->weapon].altFireTime;
@@ -12891,7 +12898,7 @@ void PmoveSingle (pmove_t *pmove) {
 		if (!pm->cmd.upmove || pm->ps->jetpackFuel == 0) { //Hold to use (spacebar) newjetpack new jetpack
 			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
-		else if (pm->ps->pm_type == PM_NORMAL && pm->cmd.upmove && pm->ps->groundEntityNum == ENTITYNUM_NONE && !(pmove->ps->pm_flags & PMF_JUMP_HELD) && BG_CanJetpack(pm->ps)) { //Pressing jump, while in air
+		else if (pm->ps->pm_type == PM_NORMAL && pm->cmd.upmove && pm->ps->groundEntityNum == ENTITYNUM_NONE && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && !(pmove->ps->pm_flags & PMF_JUMP_HELD) && BG_CanJetpack(pm->ps)) { //Pressing jump, while in air
 			//Also dont let them jetpack if going down from a bhop?
 			gDist = PM_GroundDistance();
 
@@ -12905,7 +12912,20 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 			//Com_Printf("Setting jetpack\n");
 		}
-		else if (pm->cmd.upmove && (pm->cmd.buttons & BUTTON_DASH) && BG_CanJetpack(pm->ps)) { //Special skiing option for going up terrain
+		else if (pm->ps->pm_type == PM_NORMAL && pm->cmd.upmove && pm->ps->groundEntityNum == ENTITYNUM_NONE && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && BG_CanJetpack(pm->ps)) { //Pressing jump, while in air																																											   //Also dont let them jetpack if going down from a bhop?
+			gDist = PM_GroundDistance();
+
+			if (/*pm->ps->velocity[2] > 0 ||*/pm->ps->stats[STAT_JUMPTIME] < 300 || gDist > JETPACK_HOVER_HEIGHT) {
+				if (!(pm->ps->eFlags & EF_JETPACK_ACTIVE)) {
+					pm->ps->stats[STAT_JUMPTIME] = 500;
+					pm->ps->eFlags |= EF_JETPACK_ACTIVE;
+				}
+				//If we were not just active, and now we are, set jumptime.
+
+			}
+			//Com_Printf("Setting jetpack\n");
+		}
+		else if (pm->cmd.upmove && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH) && BG_CanJetpack(pm->ps)) { //Special skiing option for going up terrain
 			if (!(pm->ps->eFlags & EF_JETPACK_ACTIVE)) {
 				pm->ps->stats[STAT_JUMPTIME] = 500;
 				pm->ps->eFlags |= EF_JETPACK_ACTIVE;
@@ -13093,7 +13113,7 @@ void PmoveSingle (pmove_t *pmove) {
 				vec3_t wishvel, wishdir;
 				float wishspeed;
 				int i;
-				float accel = 0.007f;
+				float accel = 0.009f; //server should use pmove_float
 				scale /= pm->ps->speed;
 				scale *= 20000; //MAX
 

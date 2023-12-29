@@ -690,6 +690,13 @@ void TossClientItems( gentity_t *self ) {
 			}
 		}
 	}
+
+
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Tribes tweak has ppl drop ammo on death
+		ItemUse_UseDisp(self, HI_AMMODISP);
+		G_AddEvent(self, EV_USE_ITEM0 + HI_AMMODISP, 0);
+	}
+
 }
 
 
@@ -4929,15 +4936,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
-	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
+	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
-		float cut = 1 - ((damage * 0.003f));
+		float cut = 1 - ((damage * 0.0025f));
 		if (cut > 1)
 			cut = 1;
 		else if (cut < 0)
 			cut = 0;
-		targ->client->ps.jetpackFuel -= damage * 2;
-		targ->client->ps.fd.forcePower -= damage * 2;
+		targ->client->ps.jetpackFuel -= damage * 1.2f;
+		targ->client->ps.fd.forcePower -= damage * 1.5f;;
 		if (targ->client->ps.jetpackFuel < 0)
 			targ->client->ps.jetpackFuel = 0;
 		if (targ->client->ps.fd.forcePower < 0)
@@ -5045,9 +5052,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		knockback = 0;
 	}
 
-	//Higher self knockback for tribes
+	//Higher self knockback for tribes, discjump disc jump
 	if (attacker && targ == attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
-		knockback *= 1.25f;
+		knockback *= 1.4f;
 	}
 
 	// figure momentum add, even if the damage won't be taken
@@ -5823,7 +5830,6 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			if (targ->client->ps.fd.forcePower)
 			{
 				int maxtake = take;
-
 				//G_Sound(targ, CHAN_AUTO, protectHitSound);
 				if (targ->client->forcePowerSoundDebounce < level.time)
 				{
@@ -5831,7 +5837,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 					targ->client->forcePowerSoundDebounce = level.time + 400;
 				}
 
-				if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
+				if (g_tweakWeapons.integer & WT_TRIBES) {
+					famt = 0.5f;
+					hamt = 0.90f;
+					if (maxtake > 400)
+					{
+						maxtake = 400;
+					}
+				}
+				else if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
 				{
 					famt = 1;
 					hamt = 0.40f;
