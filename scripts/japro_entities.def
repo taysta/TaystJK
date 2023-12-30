@@ -1,6 +1,6 @@
 /*QUAKED df_trigger_start (.1 .5 .1) ? 
 noise - sound it makes.
-uniqueid - ID of the trigger to match it to a finish trigger
+courseid - ID of the trigger to match it to a finish trigger
 target
 
 Starts the timer.
@@ -10,7 +10,7 @@ Starts the timer.
 noise - sound it makes.
 awesomenoise - sound it makes when time is below 'speed' key (only in jka style).
 speed - max time in ms to play awesomenoise.
-uniqueid - ID of the trigger to match it to a start trigger (used with REQUIRE_SPECIFIC_STARTTRIGGER spawnflag) objective - required checkpoint bitmask (used with REQUIRE_CHECKPOINTS)
+courseid - ID of the trigger to match it to a start trigger (used with REQUIRE_SPECIFIC_STARTTRIGGER spawnflag) objective - required checkpoint bitmask (used with REQUIRE_CHECKPOINTS)
 objective - checkpoint #'s (bitmask)
 target
 
@@ -20,6 +20,7 @@ Stops the timer.
 /*QUAKED df_trigger_checkpoint (.1 .5 .1) ? UNUSED RESET_PLAYER_TIMER
 noise - sound it makes.
 objective - checkpoint #
+courseid - ID of the trigger to match it to a finish trigger
 
 Prints current time.
 */
