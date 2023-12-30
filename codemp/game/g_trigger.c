@@ -1844,25 +1844,34 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, max ^3%i^5, average ^3%i^5 ups\"", (float)time * 0.001f, player->client->pers.stats.topSpeed, average));
 			*/
 
-		if (player->client->pers.showCenterCP)
-			trap->SendServerCommand( player-g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-		if (player->client->pers.showConsoleCP)
-			trap->SendServerCommand(player - g_entities, va("print \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-		else if (player->client->pers.showChatCP)
-			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-
-		if (trigger->objective > 0) {  //Bitvalue of the checkpoint
-			// int i, val;
+		if (trigger->objective > 0 && (player->client->pers.stats.checkpoints & trigger->objective)) {
+			//do nothing if we already touched the mandatory checkpoint?
+		}
+		else if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
+			int i, val;
 			player->client->pers.stats.checkpoints |= trigger->objective;
-			/*
-			for (i = 0; i++; i < 32) {
+
+			for (i = 0; i<32; i++) {
 				val = (1 << i);
-				if (val = trigger->objective) {
+				if (val == trigger->objective) {
 					break;
 				}
 			}
-			*/
-			trap->SendServerCommand(player - g_entities, va("chat \"^5Required checkpoint %i reached\"", trigger->objective));//Adapt this for the type of message client wants to receive (chat, console, center)  Get the # not teh bitvalue fixme																									 //Print a warning if they skipped a checkpoint? Loop through previous or just the one previous?
+
+			if (player->client->pers.showCenterCP)
+				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			if (player->client->pers.showConsoleCP)
+				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			else if (player->client->pers.showChatCP)
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+		}
+		else {
+			if (player->client->pers.showCenterCP)
+				trap->SendServerCommand(player - g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			if (player->client->pers.showConsoleCP)
+				trap->SendServerCommand(player - g_entities, va("print \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			else if (player->client->pers.showChatCP)
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 		}
 
 		if (player->client->sess.movementStyle == MV_COOP_JKA && player->client->ps.duelInProgress && player->client->pers.stats.coopStarted)

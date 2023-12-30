@@ -376,6 +376,8 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 		missile->s.pos.trTime = level.time - MISSILE_PRESTEP_TIME;//this be why rocketjump fucks up at high speed
 	}
 	else if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && owner->client) {
+		//int prestep = 1000 / sv_fps.integer;
+		//int amount = (owner->client->ps.ping + prestep) * 0.5f;
 		int amount = owner->client->ps.ping * 0.9;
 
 		if (amount > g_unlaggedProjectileTolerance.integer)
