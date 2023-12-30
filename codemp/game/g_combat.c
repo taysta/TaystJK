@@ -5746,13 +5746,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if (!attacker->client->pers.noDamageNumbers) {
 			if (g_damageNumbers.integer == 1 || g_damageNumbers.integer == 5 || g_damageNumbers.integer == 6) {
 				if (targ->client->ps.clientNum >= MAX_CLIENTS)
-					trap->SendServerCommand(attacker - g_entities, va("print \"^3%i ^7damage given to (%s^7)\n\"", take + asave, targ->NPC_targetname));
+					trap->SendServerCommand(attacker - g_entities, va("print \"^3%i ^7damage given to (%s^7)\n\"", take + asave, targ->targetname));
 				else
 					trap->SendServerCommand(attacker - g_entities, va("print \"^3%i ^7damage given to (%s^7)\n\"", take + asave, targ->client->pers.netname));
 			}
 			if (g_damageNumbers.integer == 8) {
 				if (targ->client->ps.clientNum >= MAX_CLIENTS)
-					trap->SendServerCommand(-1, va("print \"^3%s ^7did ^3%i ^7damage given to (%s^7)\n\"", attacker->client->pers.netname, take + asave, targ->NPC_targetname));
+					trap->SendServerCommand(-1, va("print \"^3%s ^7did ^3%i ^7damage given to (%s^7)\n\"", attacker->client->pers.netname, take + asave, targ->targetname));
 				else
 					trap->SendServerCommand(-1, va("print \"^3%s ^7did ^3%i ^7damage given to (%s^7)\n\"", attacker->client->pers.netname, take + asave, targ->client->pers.netname));
 			}
