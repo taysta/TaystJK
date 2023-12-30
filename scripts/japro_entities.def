@@ -24,9 +24,9 @@ objective - checkpoint #
 Prints current time.
 */
 
-/*QUAKED trigger_newpush (.1 .5 .1) ? XVEL YVEL ZVEL PLAYERONLY NPCONLY
+/*QUAKED trigger_newpush (.1 .5 .1) ? XVEL YVEL ZVEL PLAYERONLY NPCONLY ANTILOOP BLOCK_DASH_REDIRECTS UNBLOCK_DASH_REDIRECTS
 noise - sound it makes.
-speed - scale to use
+speed - scale to use (if anitloop is set use values 0, 90, 180, or 270 to restrict player speed in that angle).  Or use -3 to restrict all angles.
 
 Sets activators velocity
 */
