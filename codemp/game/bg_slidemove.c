@@ -1071,7 +1071,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 	down[2] -= stepSize;
 	pm->trace (&trace, pm->ps->origin, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 
-	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) //This causes deadstops on slidey slopes
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS
 			&& trace.plane.normal[2] < MIN_WALK_NORMAL )

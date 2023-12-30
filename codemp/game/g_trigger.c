@@ -1849,6 +1849,12 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		}
 		else if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
 			int i, val;
+
+			if (trigger->spawnflags & 4) { //Spawnflags 4 on checkpoint unsets the objective #
+				player->client->pers.stats.checkpoints &= ~trigger->objective;
+				return; //Todo, notify the client or?
+			}
+			else
 			player->client->pers.stats.checkpoints |= trigger->objective;
 
 			for (i = 0; i<32; i++) {
