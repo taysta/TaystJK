@@ -659,6 +659,9 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 	if (self->client->sess.raceMode && (forcePower == FP_SPEED)) {
 		drain = 75;
 	}
+	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PROTECT)) {
+		drain = 75;
+	}
 	//Tribes protect? wt_tribes
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
 	{ //we're probably going to deactivate it..
