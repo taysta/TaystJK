@@ -845,7 +845,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
 				damage = VectorLength(diffVelocity);
-				if (damage > 300) {
+				if (damage > 300 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
 					if (damage > 1000)
 						damage = 1000;
 					damage -= 300;
@@ -859,6 +859,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 
 					G_Damage((gentity_t *)pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
 					//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);
+					g_entities[trace.entityNum].client->lastKickTime = level.time + 500;
 				}
 			}
 #else

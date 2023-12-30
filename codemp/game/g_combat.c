@@ -5053,8 +5053,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 
 	//Higher self knockback for tribes, discjump disc jump
-	if (attacker && targ == attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
-		knockback *= 1.4f;
+	if (attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
+		if (targ == attacker)
+			knockback *= 1.4f;
+		if (mod = MOD_THERMAL || MOD_THERMAL_SPLASH)
+			knockback *= 2.0f;
 	}
 
 	// figure momentum add, even if the damage won't be taken
