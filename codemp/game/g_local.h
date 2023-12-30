@@ -1458,7 +1458,7 @@ typedef struct level_locals_s {
 #endif
 	fileHandle_t	playerLog;
 
-	char		courseName[32][32];//japro defrag
+	char		courseName[64][32];//japro defrag
 	int			numCourses;
 	int			numRealVotingClients; //fixed vote checking
 
