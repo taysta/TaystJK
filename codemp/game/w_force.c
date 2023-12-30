@@ -1645,8 +1645,11 @@ void ForceProtect( gentity_t *self )
 //JAPRO - Serverside - Allow force combos - End
 
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
-
-	WP_ForcePowerStart( self, FP_PROTECT, 0 );
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		WP_ForcePowerStart(self, FP_PROTECT, 75);
+	}
+	else
+		WP_ForcePowerStart( self, FP_PROTECT, 0 );
 	G_PreDefSound(self->client->ps.origin, PDSOUND_PROTECT);
 	G_Sound( self, TRACK_CHANNEL_3, protectLoopSound );
 }

@@ -1859,11 +1859,11 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			}
 
 			if (player->client->pers.showCenterCP)
-				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 			if (player->client->pers.showConsoleCP)
-				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 			else if (player->client->pers.showChatCP)
-				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", i, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 		}
 		else {
 			if (player->client->pers.showCenterCP)
