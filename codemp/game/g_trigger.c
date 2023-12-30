@@ -2192,6 +2192,13 @@ void SP_trigger_timer_checkpoint( gentity_t *self )
 		else
 			self->objective = 0;
 	}
+	if (G_SpawnString("courseid", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->courseID = atoi(s);
+		else
+			self->courseID = 0;
+	}
+
 	self->touch = TimerCheckpoint;
 	trap->LinkEntity ((sharedEntity_t *)self);
 }
