@@ -850,7 +850,6 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 						damage = 1000;
 					damage -= 300;
 					damage *= 0.1f;
-					damage *= 0.5f;//Fixme why this detects twice?  Debounce?
 
 					if (Q_irand(0, 1))
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));

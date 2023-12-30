@@ -5056,8 +5056,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	if (attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
 		if (targ == attacker)
 			knockback *= 1.4f;
-		if (mod = MOD_THERMAL || MOD_THERMAL_SPLASH)
-			knockback *= 2.0f;
+		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
+			knockback *= 4; //guess this just does nothing
+		}
 	}
 
 	// figure momentum add, even if the damage won't be taken
