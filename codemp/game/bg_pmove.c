@@ -3980,6 +3980,7 @@ static void PM_DodgeMove(int forward, int right)
 	VectorNormalize( dodgedir );
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		pm->ps->jetpackFuel -= 25;
 		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
 #ifdef _GAME
@@ -4036,7 +4037,7 @@ static void PM_CheckDash(void)
 		return;
 	}
 	
-	if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
+	if (moveStyle == MV_TRIBES && ((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 313600) && pm->ps->jetpackFuel < 25) {
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
