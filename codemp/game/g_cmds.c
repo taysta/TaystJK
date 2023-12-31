@@ -783,7 +783,6 @@ static QINLINE void ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 		trap->SendServerCommand(ent - g_entities, "cp \"Timer reset!\n\n\n\n\n\n\n\n\n\n\n\n\"");
 }
 
-
 void ResetPlayerTimers(gentity_t *ent, qboolean print)
 {
 	ResetSpecificPlayerTimers(ent, print);
@@ -801,20 +800,6 @@ void ResetPlayerTimers(gentity_t *ent, qboolean print)
 		}
 	}
 }
-
-
-/*
-void ResetPlayerTimers(gentity_t *ent, qboolean print)
-{
-	ResetSpecificPlayerTimers(ent, print);
-
-	if (ent->client->ps.duelInProgress && ent->client->ps.duelIndex != ENTITYNUM_NONE) {
-		gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];
-		if (duelAgainst && duelAgainst->client)
-			ResetSpecificPlayerTimers(duelAgainst, print);
-	}
-}
-*/
 
 /*
 ==================

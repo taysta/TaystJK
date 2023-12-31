@@ -7332,7 +7332,7 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 
 		return;
 	}
-	
+
 	if (!bs->frame_Enemy_Vis && (bs->cur_ps.weapon != WP_DEMP2)) { //Dont waste ammo if we cant see them..?
 		return;
 	}
