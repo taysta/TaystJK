@@ -2737,7 +2737,9 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	else if (q3style) {
 		missile = CreateMissileNew( muzzle, forward, vel, 15000, ent, altFire, qfalse, qfalse );
 	}
-	else 
+	else if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER)//No inheritance for redeemer thats op
+		missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, altFire, qfalse, qtrue);
+	else
 		missile = CreateMissileNew( muzzle, forward, vel, 10000, ent, altFire, qtrue, qtrue );
 
 //[JAPRO - Serverside - Weapons - Add inheritance to rocket]
