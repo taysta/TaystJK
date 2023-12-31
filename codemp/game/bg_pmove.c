@@ -4033,6 +4033,7 @@ static void PM_CheckDash(void)
 	if (pm->ps->weaponTime > 0)
 		return;
 	if (moveStyle != MV_WSW && moveStyle != MV_TRIBES) {
+		return;
 	}
 	
 	if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
