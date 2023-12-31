@@ -1625,8 +1625,6 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			return;
 	}
 
-
-
 	if (!player->client->pers.stats.startTime)
 		return;
 	if (!player->client->pers.stats.coopStarted)
