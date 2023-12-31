@@ -9517,8 +9517,6 @@ if (pm->ps->duelInProgress)
 					addTime = 100;
 				else if (pm->ps->weapon == WP_BLASTER && (g_tweakWeapons.integer & WT_TRIBES))
 					addTime = 100;
-				else if (pm->ps->weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES))
-					addTime = 200;
 				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
 					addTime = 800;
 				else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9542,6 +9540,8 @@ if (pm->ps->duelInProgress)
 				addTime = 1200;
 			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 1050;
+			else if (pm->ps->weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 200;
 			else
 #endif
 			addTime = weaponData[pm->ps->weapon].fireTime;
