@@ -846,7 +846,7 @@ static bitInfo_T weaponTweaks[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{"Projectile gravity"},//13
 	{"Allow center muzzle"},//14
 	{"Pseudo random weapon spread"},//15
-	{"Rocket alt fire mortar"},//16
+	{"UNUSED"},//16
 	{"Rocket alt fire redeemer"},//17
 	{"Infinite ammo"},//18
 	{"Stun baton heal gun"},//19

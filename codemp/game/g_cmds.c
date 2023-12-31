@@ -8331,8 +8331,8 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 			Q_strcat(buf, sizeof(buf), "   ^5Allowed center muzzlepoint setting\n");
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 			Q_strcat(buf, sizeof(buf), "   ^5Pseudo random weapon spread\n");
-		if (g_tweakWeapons.integer & WT_ROCKET_MORTAR)
-			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with mortar\n");
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			Q_strcat(buf, sizeof(buf), "   ^5Tribes inspired weapon tweaks\n");
 		else if (g_tweakWeapons.integer & WT_ROCKET_REDEEMER)
 			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with redeemer\n");
 		if (g_tweakWeapons.integer & WT_ALLOW_GUNROLL)

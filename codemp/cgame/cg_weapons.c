@@ -2063,10 +2063,18 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 			missileSpeed = 1600;
 			break;
 		case WP_REPEATER:
-			if (altFire)
-				missileSpeed = 1100;
-			else
-				missileSpeed = 1600;
+			if (altFire) {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					missileSpeed = 2000;
+				else
+					missileSpeed = 1100;
+			}
+			else {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					missileSpeed = 10440;
+				else
+					missileSpeed = 1600;
+			}
 			break;
 		case WP_DEMP2:
 			if (!altFire)
@@ -2084,10 +2092,7 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 			break;
 		case WP_ROCKET_LAUNCHER:
 			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
-				if (altFire)
-					missileSpeed = 1400;
-				else
-					missileSpeed = 2040;
+				missileSpeed = 2040;
 			}
 			else {
 				if (altFire)
@@ -2144,9 +2149,7 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 				gravity = qtrue;
 			break;
 		case WP_ROCKET_LAUNCHER:
-			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
-				gravity = qtrue;
-			}
+			gravity = qfalse;
 			break;
 		case WP_THERMAL:
 		case WP_TRIP_MINE:
@@ -2453,6 +2456,14 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
             } else
                 FX_DisruptorMainShot(muzzlePoint, trace.endpos);
 		}
+		else if (ent->weapon == WP_CONCUSSION && altFire)
+		{
+			VectorMA(muzzlePoint, 16384, forward, endPoint);
+			CG_Trace(&trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID);
+			VectorMA(muzzlePoint, 4, right, muzzlePoint);
+			VectorMA(muzzlePoint, -1, up, muzzlePoint);
+			FX_ConcAltShot(muzzlePoint, trace.endpos);
+		}
 		else if (ent->weapon == WP_STUN_BATON)
 		{
 			if (altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
@@ -2493,7 +2504,15 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 
 	//why not eventparm, memes
 	if (cg_simulatedProjectiles.integer && (cent->currentState.number == cg.predictedPlayerState.clientNum) && cgs.serverMod == SVMOD_JAPRO && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ)) {//sad hack for 1st person only for now..
-			CG_LocalMissile(cent, ent->weapon, altFire);//at this point we know its a bullet? or a saber? or vehicle attack? 
+		if (ent->weapon == WP_DISRUPTOR && !(cgs.jcinfo & JAPRO_CINFO_PROJSNIPER))
+			return;
+		if (ent->weapon == WP_CONCUSSION && altFire)
+			return;
+		if (ent->weapon == WP_STUN_BATON)
+			return;
+		if (ent->weapon == WP_DEMP2 && altFire)
+			return;
+		CG_LocalMissile(cent, ent->weapon, altFire);//at this point we know its a bullet? or a saber? or vehicle attack?
 	}
 
 //unlagged - attack prediction #1
