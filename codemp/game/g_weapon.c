@@ -2580,9 +2580,9 @@ void rocketThink( gentity_t *ent )
 		traceFrom[2] += g_entities[ent->r.ownerNum].client->ps.viewheight;
 
 		VectorCopy(traceFrom, traceTo);
-		traceTo[0] += fwd[0]*4096;
-		traceTo[1] += fwd[1]*4096;
-		traceTo[2] += fwd[2]*4096;
+		traceTo[0] += fwd[0]*16384;
+		traceTo[1] += fwd[1]*16384;
+		traceTo[2] += fwd[2]*16384;
 
 		VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);
 
@@ -2602,7 +2602,7 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ent->speed + 1.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			VectorScale(dir, 2040 * 0.75, ent->s.pos.trDelta );
+			VectorScale(dir, 2040 * 0.5, ent->s.pos.trDelta );
 		else
 			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
 		ent->s.pos.trTime = level.time;
