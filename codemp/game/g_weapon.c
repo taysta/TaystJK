@@ -1418,47 +1418,6 @@ static void WP_RepeaterAltFire( gentity_t *ent )
 	missile->bounceCount = 8;
 }
 
-//---------------------------------------------------------
-static void WP_FireRepeater( gentity_t *ent, qboolean altFire, int seed )
-//---------------------------------------------------------
-{
-	vec3_t	dir, angs;
-
-	vectoangles( forward, angs );
-
-	if ( altFire )
-	{
-		WP_RepeaterAltFire( ent );
-	}
-	else
-	{
-		// add some slop to the alt-fire direction
-		if (g_tweakWeapons.integer & WT_TRIBES) {
-			angs[PITCH]	+= Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
-			angs[YAW]       += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
-		}
-		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
-			//angs[PITCH] += Q_crandom(&seed) * REPEATER_SPREAD;
-			//angs[YAW]	+= Q_crandom(&seed) * REPEATER_SPREAD;
-
-			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-			float r = Q_random(&seed) * REPEATER_SPREAD;
-
-			angs[PITCH] += r * sin(theta);
-			angs[YAW] += r * cos(theta);
-		}
-		else {
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
-			angs[YAW]	+= Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
-		}
-
-		AngleVectors( angs, dir, NULL, NULL );
-
-		WP_RepeaterMainFire( ent, dir );
-	}
-}
-
-
 /*
 ======================================================================
 
@@ -2449,8 +2408,10 @@ void rocketThink( gentity_t *ent )
 	vec3_t	org;
 	float dot, dot2, dis;
 	int i;
-	float vel = (ent->spawnflags&1)?ent->speed:ROCKET_VELOCITY;
+	float vel = (ent->spawnflags&1)?ent->speed:ROCKET_VELOCITY* g_projectileVelocityScale.integer;
 	qboolean redeemerAllowed = qtrue;
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		vel = 2040 * g_projectileVelocityScale.integer;
 
 	if (!g_entities[ent->r.ownerNum].client || g_entities[ent->r.ownerNum].client->sess.raceMode)
 		redeemerAllowed = qfalse;
@@ -2640,7 +2601,10 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
 		//ent->speed = ent->speed + 1.0f;
 
-		VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta );
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			VectorScale(dir, 2040 * 0.75, ent->s.pos.trDelta );
+		else
+			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
 		ent->s.pos.trTime = level.time;
 
 	}
@@ -2736,7 +2700,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		}
 	}
 
-	if ( altFire )
+	if ( altFire && !(g_tweakWeapons.integer & WT_TRIBES))
 		vel *= 0.5f;
 
 	if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER && !ent->client->sess.raceMode)
@@ -2916,6 +2880,51 @@ static void WP_FireMortar( gentity_t *self )
 
 	WP_CreateMortar( start, fwd, self );
 }
+
+
+//---------------------------------------------------------
+static void WP_FireRepeater(gentity_t *ent, qboolean altFire, int seed)
+//---------------------------------------------------------
+{
+	vec3_t	dir, angs;
+
+	vectoangles(forward, angs);
+
+	if (altFire)
+	{
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			WP_FireMortar(ent);
+		else
+			WP_RepeaterAltFire(ent);
+	}
+	else
+	{
+		// add some slop to the alt-fire direction
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
+		}
+		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
+			//angs[PITCH] += Q_crandom(&seed) * REPEATER_SPREAD;
+			//angs[YAW]	+= Q_crandom(&seed) * REPEATER_SPREAD;
+
+			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+			float r = Q_random(&seed) * REPEATER_SPREAD;
+
+			angs[PITCH] += r * sin(theta);
+			angs[YAW] += r * cos(theta);
+		}
+		else {
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+		}
+
+		AngleVectors(angs, dir, NULL, NULL);
+
+		WP_RepeaterMainFire(ent, dir);
+	}
+}
+
 
 
 /*
@@ -6031,9 +6040,6 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_ROCKET_LAUNCHER:
-			if (g_tweakWeapons.integer & WT_ROCKET_MORTAR && altFire && ent->client && !ent->client->sess.raceMode)//JAPRO - Mortar
-				WP_FireMortar(ent);
-			else
 				WP_FireRocket( ent, altFire );
 			break;
 

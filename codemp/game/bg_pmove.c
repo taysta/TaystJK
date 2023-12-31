@@ -7815,8 +7815,8 @@ static qboolean PM_DoChargedWeapons( qboolean vehicleRocketLock, bgEntity_t *veh
 				&& pm->ps->ammo[weaponData[pm->ps->weapon].ammoIndex] >= weaponData[pm->ps->weapon].altEnergyPerShot )
 			{
 #ifdef _GAME
-				if (!(g_tweakWeapons.integer & WT_ROCKET_MORTAR) || pm->ps->stats[STAT_RACEMODE]) {
-					PM_RocketLock(2048,qfalse);
+				if (pm->ps->stats[STAT_RACEMODE]) {
+					PM_RocketLock(2048, qfalse);
 					charging = qtrue;
 				}
 				altFire = qtrue;
@@ -9438,8 +9438,8 @@ if (pm->ps->duelInProgress)
 		else {
 			if (g_tweakWeapons.integer & WT_INFINITE_AMMO)
 				amount = 0;
-			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR))
-				amount = 1;//JAPRO mortar meh
+			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_TRIBES))
+				amount = 1;
 			else if (pm->ps->weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_STAKE_GUN)
 				amount = 0;//Detonating stakes shouldnt take ammo
 		}
@@ -9509,7 +9509,9 @@ if (pm->ps->duelInProgress)
 #ifdef _GAME
 				if (pm->ps->weapon == WP_STUN_BATON && g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)
 					addTime = 1500;
-				else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && !pm->ps->stats[STAT_RACEMODE])
+				else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
+					addTime = 3000;
+				else if (pm->ps->weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
 					addTime = 2500;
 				else if (pm->ps->weapon == WP_THERMAL && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
 					addTime = 1500;
