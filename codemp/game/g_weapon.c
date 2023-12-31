@@ -2563,7 +2563,7 @@ void rocketThink( gentity_t *ent )
 		VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
 		ent->s.pos.trTime = level.time;
 	}
-	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed)
+	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
 		vec3_t fwd, traceFrom, traceTo, dir;
 		trace_t tr;
