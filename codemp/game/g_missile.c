@@ -190,7 +190,7 @@ void G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 		if (ent->s.weapon == WP_REPEATER && g_tweakWeapons.integer & WT_ROCKET_MORTAR)
 			VectorScale( ent->s.pos.trDelta, 0.4f, ent->s.pos.trDelta );
 		else if(ent->s.weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_TRIBES)
-			VectorScale(ent->s.pos.trDelta, 0.3f, ent->s.pos.trDelta);
+			VectorScale(ent->s.pos.trDelta, 0.4f, ent->s.pos.trDelta);
 		else
 			VectorScale( ent->s.pos.trDelta, 0.65f, ent->s.pos.trDelta );
 		// check for stop
