@@ -9516,7 +9516,7 @@ if (pm->ps->duelInProgress)
 				else if (pm->ps->weapon == WP_BLASTER && pm->ps->stats[STAT_RACEMODE])
 					addTime = 100;
 				else if (pm->ps->weapon == WP_BLASTER && (g_tweakWeapons.integer & WT_TRIBES))
-					addTime = 100;
+					addTime = 125;
 				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
 					addTime = 800;
 				else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
