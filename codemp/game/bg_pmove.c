@@ -4032,9 +4032,10 @@ static void PM_CheckDash(void)
 	}
 	if (pm->ps->weaponTime > 0)
 		return;
-	if (moveStyle == MV_WSW) {
+	if (moveStyle != MV_WSW && moveStyle != MV_TRIBES) {
 	}
-	else if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
+	
+	if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
