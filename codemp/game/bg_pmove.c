@@ -4037,7 +4037,7 @@ static void PM_CheckDash(void)
 		return;
 	}
 	
-	if (moveStyle == MV_TRIBES && ((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 313600) && pm->ps->jetpackFuel < 25) {
+	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > 225625) || (pm->ps->jetpackFuel < 25))) {
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
