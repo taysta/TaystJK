@@ -3980,7 +3980,7 @@ static void PM_DodgeMove(int forward, int right)
 	VectorNormalize( dodgedir );
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		DODGE_SPEED = pm->ps->speed * 1.5f;
+		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
 #ifdef _GAME
 		G_PlayEffect(EFFECT_LANDING_SAND, pm->ps->origin, dodgedir);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
@@ -4043,7 +4043,7 @@ static void PM_CheckDash(void)
 		return;
 
 	if (moveStyle == MV_TRIBES)
-		pm->ps->stats[STAT_DASHTIME] = 1200;
+		pm->ps->stats[STAT_DASHTIME] = 1050;
 	else
 		pm->ps->stats[STAT_DASHTIME] = DASH_DELAY;
 
