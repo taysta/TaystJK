@@ -2567,6 +2567,7 @@ void rocketThink( gentity_t *ent )
 	{
 		vec3_t fwd, traceFrom, traceTo, dir;
 		trace_t tr;
+		float dist, currentVel;
 
 		if (!g_entities[ent->r.ownerNum].client)
 			return;
@@ -2589,20 +2590,37 @@ void rocketThink( gentity_t *ent )
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
 		VectorSubtract(tr.endpos, ent->r.currentOrigin, dir);
+		dist = VectorLengthSquared(dir);
+		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		if (VectorLength(dir) < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+		if (dist < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
 			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
 		}
+
+		if ((g_tweakWeapons.integer & WT_TRIBES) && dist < 64*64) {
+			//If its close blow it up.
+			ent->think = G_ExplodeMissile;
+		}
+		else if (dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
+			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
+			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
+		}
+
+		//Speed it up slowly?
 
 		VectorNormalize(dir);
 
 		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
 		//ent->speed = ent->speed + 1.0f;
 
-		if (g_tweakWeapons.integer & WT_TRIBES)
-			VectorScale(dir, 2040 * 0.5, ent->s.pos.trDelta );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (currentVel > 1400)
+				currentVel = 1400;
+			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
+		}
 		else
 			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
 		ent->s.pos.trTime = level.time;
@@ -2700,11 +2718,15 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		}
 	}
 
-	if ( altFire && !(g_tweakWeapons.integer & WT_TRIBES))
-		vel *= 0.5f;
+	if (altFire) {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			vel = 100;
+		else
+			vel *= 0.5f;
+	}
 
 	if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER && !ent->client->sess.raceMode)
-		damage *= 2;
+		damage *= 1.75f;
 
 	if (q3style && ent->client->pers.backwardsRocket) {
 		vectoangles( forward, temp );
