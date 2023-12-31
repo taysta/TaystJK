@@ -17,7 +17,7 @@ target
 Stops the timer.
 */
 
-/*QUAKED df_trigger_checkpoint (.1 .5 .1) ? UNUSED RESET_PLAYER_TIMER
+/*QUAKED df_trigger_checkpoint (.1 .5 .1) ? UNUSED RESET_PLAYER_TIMER UNSET_CHECKPOINT
 noise - sound it makes.
 objective - checkpoint #
 courseid - ID of the trigger to match it to a finish trigger

@@ -2843,7 +2843,7 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 //------------------------------------------------------------------------------
 {
 	gentity_t	*missile;
-	float velocity = 1600 * g_projectileVelocityScale.value;
+	float velocity = 2000 * g_projectileVelocityScale.value;
 	int lifetime = 3500, damage = 140 * g_weaponDamageScale.value, splashdamage = 140 * g_splashDamageScale.value, splashradius = 384;
 
 	missile = CreateMissileNew( start, fwd, velocity, lifetime, self, qtrue, qtrue, qtrue );

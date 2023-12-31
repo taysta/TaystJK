@@ -1855,8 +1855,8 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 				return; //Todo, notify the client or?
 			}
 			else
-			player->client->pers.stats.checkpoints |= trigger->objective;
-
+				player->client->pers.stats.checkpoints |= trigger->objective;
+			
 			for (i = 0; i<32; i++) {
 				val = (1 << i);
 				if (val == trigger->objective) {

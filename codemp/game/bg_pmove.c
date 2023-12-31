@@ -3972,8 +3972,13 @@ static void PM_AirMove( void ) {
 static void PM_DodgeMove(int forward, int right)
 {
 	vec3_t dodgedir;
-	const int DODGE_SPEED = pm->ps->speed * 1.25f;
-	static const int DODGE_JUMP_SPEED = 180;
+	int DODGE_SPEED = pm->ps->speed * 1.25f;
+	int DODGE_JUMP_SPEED = 180;
+
+	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		DODGE_SPEED = pm->ps->speed * 1.5f;
+		DODGE_JUMP_SPEED = 0;
+	}
 
 	VectorMA( vec3_origin, right, pml.right, dodgedir );
 	VectorMA( dodgedir, forward, pml.forward, dodgedir );
@@ -4014,6 +4019,7 @@ static void PM_DashMove(void)
 static void PM_CheckDash(void)
 {
 	static const int DASH_DELAY = 800;
+	int moveStyle = PM_GetMovePhysics();
 
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE)
 		return;
@@ -4025,17 +4031,22 @@ static void PM_CheckDash(void)
 	if (pm->ps->weaponTime > 0)
 		return;
 
-	if (PM_GetMovePhysics() != MV_WSW)
-		return;
+	if (moveStyle == MV_WSW || moveStyle == MV_TRIBES) {
+
+	}
+	else return;
 
 	if (pm->ps->stats[STAT_DASHTIME] > 0)
 		return;
 
-	pm->ps->stats[STAT_DASHTIME] = DASH_DELAY;
+	if (moveStyle == MV_TRIBES)
+		pm->ps->stats[STAT_DASHTIME] = 1200;
+	else
+		pm->ps->stats[STAT_DASHTIME] = DASH_DELAY;
 
 	//PM_AddEvent( EV_FALL );
 
-	if (pm->cmd.buttons & BUTTON_WALKING) { //Dodge move
+	if (pm->cmd.buttons & BUTTON_WALKING || moveStyle == MV_TRIBES) { //Dodge move
 		if (pm->cmd.forwardmove > 0) {//W
 			if (pm->cmd.rightmove > 0) //D
 				PM_DodgeMove(1, 1);
