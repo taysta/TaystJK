@@ -4025,21 +4025,19 @@ static void PM_CheckDash(void)
 	static const int DASH_DELAY = 800;
 	int moveStyle = PM_GetMovePhysics();
 
-	if (pm->ps->groundEntityNum == ENTITYNUM_NONE)
+	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 1.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
 		return;
 
 	if (pm->ps->stats[STAT_HEALTH] <= 0) {
 		return;
 	}
-
 	if (pm->ps->weaponTime > 0)
 		return;
-
 	if (moveStyle == MV_WSW) {
 	}
-	else if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]* pm->ps->velocity[1]) > pm->ps->speed * 1.5f) {
+	else if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
+		return;
 	}
-	else return;
 
 	if (pm->ps->stats[STAT_DASHTIME] > 0)
 		return;
@@ -4060,7 +4058,7 @@ static void PM_CheckDash(void)
 			else 
 				PM_DodgeMove(1, 0);
 		}
-		else if (pm->cmd.forwardmove < 0) {//S
+		else if (pm->cmd.forwardmove < 0 && moveStyle != MV_TRIBES) {//S
 			if (pm->cmd.rightmove > 0) //D
 				PM_DodgeMove(-1, 1);
 			else if (pm->cmd.rightmove < 0) //A
@@ -4068,7 +4066,7 @@ static void PM_CheckDash(void)
 			else
 				PM_DodgeMove(-1, 0);
 		}
-		else {
+		else if (moveStyle != MV_TRIBES) {
 			if (pm->cmd.rightmove > 0) //D
 				PM_DodgeMove(0, 1);
 			else if (pm->cmd.rightmove < 0) //A
