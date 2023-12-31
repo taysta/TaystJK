@@ -507,6 +507,9 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 	if (g_gunGame.integer)
 		return;
 
+	if (g_gunGame.integer)
+		return;
+
 	if ((g_rabbit.integer == 2) && (weapon == WP_DISRUPTOR))//rabbit, only cuz of snipers idk?
 		return;
 

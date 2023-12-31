@@ -1310,12 +1310,12 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 {
         int		i;
 		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 4.0f;
-                
+
 		if (pm->ps->pm_type == PM_DEAD)
 			return;
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 			return;
-        
+
         if (wishspd > 30)
                 wishspd = 30;
 
@@ -1325,12 +1325,12 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
                 return;
 
         accelspeed = accel * wishspeed * pml.frametime * 4.0f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
-        
+
         if (accelspeed > addspeed) // Cap it
                 accelspeed = addspeed;
-        
+
         for (i=0 ; i<3 ; i++)// Adjust pmove vel.
-               pm->ps->velocity[i] += accelspeed*wishdir[i];        
+               pm->ps->velocity[i] += accelspeed*wishdir[i];
 }
 
 void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)

@@ -812,7 +812,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	}
 
 	VectorMA( muzzle, -6, vright, muzzle );//note
-		
+
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
 

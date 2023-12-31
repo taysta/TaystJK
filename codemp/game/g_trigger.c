@@ -1625,7 +1625,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			return;
 	}
 
-	
+
 
 	if (!player->client->pers.stats.startTime)
 		return;
@@ -1646,7 +1646,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
 		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
-		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.  
+		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.
 			if (time > 1000)//sad hack to avoid spamming people who just start run(trigger on opposite side of start)
 				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
 			return;
@@ -1856,7 +1856,7 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			}
 			else
 				player->client->pers.stats.checkpoints |= trigger->objective;
-			
+
 			for (i = 0; i<32; i++) {
 				val = (1 << i);
 				if (val == trigger->objective) {
@@ -2066,6 +2066,51 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 		if (player->NPC == NULL)
 			return;
 	}
+
+	if (player->client->sess.raceMode) {
+		if (trigger->spawnflags & 32 && player->client->ps.groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers
+			if (trigger->speed == 0 && player->client->ps.velocity[0] > player->client->ps.speed + 20) {
+				player->client->ps.velocity[0] = player->client->ps.speed + 20;
+			}
+			else if (trigger->speed == 90 && player->client->ps.velocity[1] > player->client->ps.speed + 20) {
+				player->client->ps.velocity[1] = player->client->ps.speed + 20;
+			}
+			else if (trigger->speed == 180 && player->client->ps.velocity[0] < -player->client->ps.speed - 20) {
+				player->client->ps.velocity[0] = -player->client->ps.speed - 20;
+			}
+			else if (trigger->speed == 270 && player->client->ps.velocity[1] < -player->client->ps.speed - 20) {
+				player->client->ps.velocity[1] = -player->client->ps.speed - 20;
+			}
+			else if (trigger->speed == -3) {
+				vec3_t xyspeed;
+				float hspeed, cut;
+
+				xyspeed[0] = player->client->ps.velocity[0];
+				xyspeed[1] = player->client->ps.velocity[1];
+				xyspeed[2] = 0;
+
+				hspeed = VectorLength(xyspeed);
+				if (hspeed > player->client->ps.speed) {
+					cut = player->client->ps.speed / hspeed;
+
+					player->client->ps.velocity[0] *= cut;
+					player->client->ps.velocity[1] *= cut;
+				}
+			}
+			return;
+		}
+		if ((trigger->spawnflags & 64) && (player->client->ps.velocity[0] || player->client->ps.velocity[1])) { //block dash redirects
+			player->client->ps.stats[STAT_WJTIME] = 500;
+			player->client->ps.stats[STAT_DASHTIME] = 500;
+		}
+		else if (trigger->spawnflags & 128) { //unblock dash redirects
+			player->client->ps.stats[STAT_WJTIME] = 0;
+			player->client->ps.stats[STAT_DASHTIME] = 0;
+		}
+	}
+
+	if (player->client->lastBounceTime > level.time - 500)
+		return;
 
 	if (player->client->sess.raceMode) {
 		if (trigger->spawnflags & 32 && player->client->ps.groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers
