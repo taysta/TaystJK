@@ -452,7 +452,7 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 	{ //animent
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-			damage = 9 * g_weaponDamageScale.value;
+			damage = 6 * g_weaponDamageScale.value;
 		}
 		else damage = 10;
 	}
@@ -564,8 +564,8 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 	{
 		// add some slop to the alt-fire direction
 		if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client && ent->client->sess.movementStyle == MV_COOP_JKA)) {
-			angs[PITCH]	+= Q_flrand(1.0f, 1.0f) * 0.1f;
-			angs[YAW]       += Q_flrand(1.0f, 1.0f) * 0.1f;
+			angs[PITCH]	+= Q_flrand(1.0f, 1.0f) * 0.15f;
+			angs[YAW]       += Q_flrand(1.0f, 1.0f) * 0.15f;
 		}
 		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 		{
@@ -1348,7 +1348,8 @@ static void WP_RepeaterMainFire( gentity_t *ent, vec3_t dir )
 //[JAPRO - Serverside - Weapons - Add inheritance to repeater main fire]
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		vel = 2200 * g_projectileVelocityScale.value;
+		vel = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
+		damage = 12 * g_weaponDamageScale.value;
 	}
 
 	missile = CreateMissileNew( muzzle, dir, vel, 10000, ent, qfalse, qtrue, qtrue );
@@ -1433,8 +1434,8 @@ static void WP_FireRepeater( gentity_t *ent, qboolean altFire, int seed )
 	{
 		// add some slop to the alt-fire direction
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			angs[PITCH]	+= Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.1;
-			angs[YAW]       += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.1;
+			angs[PITCH]	+= Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
+			angs[YAW]       += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
 		}
 		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 			//angs[PITCH] += Q_crandom(&seed) * REPEATER_SPREAD;
