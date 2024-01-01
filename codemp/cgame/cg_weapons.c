@@ -2009,7 +2009,7 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 
 				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-					spread = 0.1f;
+					spread = 0.15f;
 				r = Q_random(&seed) * spread;
 				*spreadY = r * sinf(theta);
 				*spreadX = r * cosf(theta);
@@ -2021,8 +2021,12 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 			return;
 		case WP_REPEATER:
 			if (!altFire) {
+				float spread = 1.4f, r;
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-				float r = Q_random(&seed) * 1.4f;
+
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					spread = 0.15f;
+				r = Q_random(&seed) * spread;
 				*spreadY = r * sinf(theta);
 				*spreadX = r * cosf(theta);
 			}
