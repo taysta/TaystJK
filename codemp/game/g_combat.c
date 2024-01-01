@@ -681,6 +681,10 @@ void TossClientItems( gentity_t *self ) {
 					continue;
 				}
 				drop = Drop_Item( self, item, angle );
+				if (g_fixFlagSuicide.integer && g_allowFlagThrow.integer && item->giType == IT_TEAM) {
+					drop->r.contents = CONTENTS_TRIGGER | CONTENTS_CORPSE;
+				}
+
 				// decide how many seconds it has left
 				drop->count = ( self->client->ps.powerups[ i ] - level.time ) / 1000;
 				if ( drop->count < 1 ) {
@@ -6064,7 +6068,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 		if (targ->maxHealth)
 		{ //if this is non-zero this guy should be updated his s.health to send to the client
-			G_ScaleNetHealth(targ);
+			G_ScaleNetHealth(targ); //WT_TRIBES rework
 		}
 
 		if ( targ->health <= 0 ) {
@@ -6266,7 +6270,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 
 		if (ent == ignore)
 			continue;
-		if (!ent->takedamage)
+		if (!ent->takedamage && !g_allowFlagThrow.integer)
 			continue;
 
 		// find the distance from the edge of the bounding box
@@ -6290,7 +6294,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 
 		points = damage * ( 1.0 - dist / radius );
 
-		if( CanDamage (ent, origin) ) {
+		if( CanDamage (ent, origin)) {
 			if( LogAccuracyHit( ent, attacker ) ) {
 				hitClient = qtrue;
 			}
@@ -6298,18 +6302,27 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			// push the center of mass higher than the origin so players
 			// get knocked into the air more
 			dir[2] += 24;
-			if (attacker && attacker->inuse && attacker->client &&
+			if (ent->takedamage && attacker->inuse && attacker->client &&
 				attacker->s.eType == ET_NPC && attacker->s.NPC_class == CLASS_VEHICLE &&
 				attacker->m_pVehicle && attacker->m_pVehicle->m_pPilot)
 			{ //say my pilot did it.
 				G_Damage (ent, NULL, (gentity_t *)attacker->m_pVehicle->m_pPilot, dir, origin, (int)points, DAMAGE_RADIUS, mod);
 			}
-			else
+			else if (ent->s.eType == ET_ITEM && ent->r.contents & CONTENTS_CORPSE)
+			{
+				vec3_t kvel;
+				VectorScale(dir, g_knockback.value * (float)damage/20000.0f, kvel);
+				ent->s.pos.trType = TR_GRAVITY;
+				ent->s.pos.trTime = level.time;
+				VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);
+				VectorAdd(ent->s.pos.trDelta, kvel, ent->s.pos.trDelta);
+			}
+			else if (ent->takedamage)
 			{
 				G_Damage (ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod);
 			}
 
-			if (ent && ent->client && roastPeople && missile &&
+			if (ent && ent->takedamage && ent->client && roastPeople && missile &&
 				!VectorCompare(ent->r.currentOrigin, missile->r.currentOrigin))
 			{ //the thing calling this function can create burn marks on people, so create an event to do so
 				gentity_t *evEnt = G_TempEntity(ent->r.currentOrigin, EV_GHOUL2_MARK);

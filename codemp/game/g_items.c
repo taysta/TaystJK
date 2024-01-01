@@ -2853,7 +2853,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle ) {
 
 	AngleVectors( angles, velocity, NULL, NULL );
 
-	if (g_allowFlagThrow.integer && item->giType == IT_TEAM)
+	if (g_allowFlagThrow.integer && item->giType == IT_TEAM) //flag inheritance
 	{
 		velocity[0] += 0.25 * ent->client->ps.velocity[0];
 		velocity[1] += 0.25 * ent->client->ps.velocity[1];

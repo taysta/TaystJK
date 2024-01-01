@@ -779,7 +779,10 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.7f, other->s.pos.trDelta );
+			if (g_tweakWeapons.integer & WT_TRIBES)
+				VectorScale( velocity, 1.6f, other->s.pos.trDelta );
+			else
+				VectorScale(velocity, 0.5f, other->s.pos.trDelta);
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER && (ent->s.eFlags & EF_ALT_FIRING))
@@ -787,7 +790,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 2.5f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.6f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER)
@@ -795,15 +798,23 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.9f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.7f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
+		}
+		else if (ent->s.weapon == WP_CONCUSSION)
+		{
+			other->s.pos.trType = TR_GRAVITY;
+			other->s.pos.trTime = level.time;
+			BG_EvaluateTrajectoryDelta(&ent->s.pos, level.time, velocity);
+			VectorScale(velocity, 0.6f, other->s.pos.trDelta);
+			VectorCopy(other->r.currentOrigin, other->s.pos.trBase);
 		}
 		else if (ent->s.weapon == WP_THERMAL)
 		{
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.9f, other->s.pos.trDelta ); //tweak?
+			VectorScale( velocity, 0.7f, other->s.pos.trDelta ); //tweak?
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 	}
@@ -1100,9 +1111,8 @@ killProj:
 	ent->takedamage = qfalse;
 	// splash damage (doesn't apply to person directly hit)
 	if ( ent->splashDamage ) {
-		if( G_RadiusDamage( trace->endpos, ent->parent, ent->splashDamage, ent->splashRadius,
-			other, ent, ent->splashMethodOfDeath ) ) {
-			if( !hitClient
+		if( G_RadiusDamage( trace->endpos, ent->parent, ent->splashDamage, ent->splashRadius, other, ent, ent->splashMethodOfDeath ) ) {
+			if( !hitClient 
 				&& g_entities[ent->r.ownerNum].client ) {
 				g_entities[ent->r.ownerNum].client->accuracy_hits++;
 			}
