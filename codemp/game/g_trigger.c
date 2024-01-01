@@ -1227,7 +1227,7 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 
 	style = player->client->sess.movementStyle;
 
-	if (style == MV_OCPM || style == MV_TRIBES)
+	if (style == MV_OCPM)
 		return qfalse;//temp
 
 	if (player->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NORACE)
