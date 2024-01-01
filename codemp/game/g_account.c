@@ -5069,6 +5069,8 @@ int SeasonToInteger(char *season) {
 		return 4;
 	if (!Q_stricmp(season, "s5"))
 		return 5;
+	if (!Q_stricmp(season, "s6"))
+		return 5;
 	return -1;
 }
 
