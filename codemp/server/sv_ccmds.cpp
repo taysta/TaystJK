@@ -1803,7 +1803,7 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 				// Check if value is number
 				bool isNumber = true;
 				for (int i = 0; i < it->second.size(); i++) {
-					if (!(it->second[i] >= '0' && it->second[i] <= '9' || it->second[i] == '.')) { // Allow floating point numbers too
+					if (!((it->second[i] >= '0' && it->second[i] <= '9') || (it->second[i] == '.'))) { // Allow floating point numbers too
 						isNumber = false;
 						break;
 					}
@@ -2197,7 +2197,7 @@ static void SV_DemoMeta_f(void) {
 		return;
 	}
 	for (i = 0; i < len; i++) {
-		if (!(key[i] > 'a' && key[i] < 'z' || key[i] > 'A' && key[i] < 'Z')) {
+		if (!((key[i] > 'a' && key[i] < 'z') || (key[i] > 'A' && key[i] < 'Z'))) {
 			Com_Printf("Metadata key must only contain a-z (lower or upper case)\n");
 			return;
 		}
