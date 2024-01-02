@@ -7613,15 +7613,14 @@ void Cmd_Race_f(gentity_t *ent)
 			ent->s.weapon = WP_SABER; //Dont drop our weapon
 			Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
 
+			ent->client->sess.raceMode = qfalse;//Set it false here cuz we are flipping it next
 			if (ent->client->sess.sessionTeam != TEAM_FREE) {
-				ent->client->sess.raceMode = qtrue;
 				SetTeam(ent, "race", qfalse);
 			}
 			else {
-				ent->client->sess.raceMode = qfalse;
 				SetTeam(ent, "spec", qfalse);
 			}
-			return;//duno..
+			//return;//duno..
 		}
 		else {
 			trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed in this gametype!\n\"");

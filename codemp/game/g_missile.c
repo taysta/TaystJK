@@ -780,9 +780,9 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
 			if (g_tweakWeapons.integer & WT_TRIBES)
-				VectorScale( velocity, 1.6f, other->s.pos.trDelta );
+				VectorScale( velocity, 1.5f, other->s.pos.trDelta );
 			else
-				VectorScale(velocity, 0.5f, other->s.pos.trDelta);
+				VectorScale(velocity, 0.4f, other->s.pos.trDelta);
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER && (ent->s.eFlags & EF_ALT_FIRING))
@@ -790,7 +790,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.6f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.5f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER)
@@ -798,7 +798,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.7f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.6f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_CONCUSSION)
@@ -806,7 +806,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta(&ent->s.pos, level.time, velocity);
-			VectorScale(velocity, 0.6f, other->s.pos.trDelta);
+			VectorScale(velocity, 0.5f, other->s.pos.trDelta);
 			VectorCopy(other->r.currentOrigin, other->s.pos.trBase);
 		}
 		else if (ent->s.weapon == WP_THERMAL)
@@ -814,7 +814,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.7f, other->s.pos.trDelta ); //tweak?
+			VectorScale( velocity, 0.6f, other->s.pos.trDelta ); //tweak?
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 	}
