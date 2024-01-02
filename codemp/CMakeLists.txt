@@ -386,7 +386,7 @@ if(BuildMPEngine)
 		set(MPEngineLibraries ${MPEngineLibraries} ${OPENGL_LIBRARIES})
 
 		if(BuildDiscordRichPresence)
-			if (APPLE)
+			if (APPLE AND NOT Architecture MATCHES "arm64")
 				set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 				set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 				set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a)
