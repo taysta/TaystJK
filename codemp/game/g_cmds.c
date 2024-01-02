@@ -5733,7 +5733,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	}
 	if (g_allowSaberSwitch.integer)
 		Q_strcat(buf, sizeof(buf), "saber ");
-	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_rabbit.integer))
+	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_neutralFlag.integer))
 		Q_strcat(buf, sizeof(buf), "throwFlag ");
 	if (g_allowTargetLaser.integer)
 		Q_strcat(buf, sizeof(buf), "+button15 (target laser) ");
@@ -8330,7 +8330,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	}
 
 	//CTF changes
-	if (level.gametype == GT_CTF || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)) {// CTF Settings
+	if (level.gametype == GT_CTF || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer)) {// CTF Settings
 		Q_strncpyz(buf, " ^3CTF Changes:\n", sizeof(buf));
 		if (g_flagDrag.value)
 			Q_strcat(buf, sizeof(buf), va("   ^5Flag Drag: ^2%.3f\n", g_flagDrag.value));
@@ -8467,7 +8467,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 void Cmd_Throwflag_f( gentity_t *ent ) {
 	if (level.gametype == GT_CTF) {
 	}
-	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer) {
+	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer) {
 	}
 	else return;
 

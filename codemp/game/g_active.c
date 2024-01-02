@@ -1788,7 +1788,7 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 	{
 		client->timeResidualBig -= 5000;
 
-		if ((g_rabbit.integer == 3) && client->ps.powerups[PW_NEUTRALFLAG]) {
+		if ((g_neutralFlag.integer == 3) && client->ps.powerups[PW_NEUTRALFLAG]) {
 			AddScore( ent, ent->r.currentOrigin, 1 );
 		}
 	}
@@ -3775,16 +3775,14 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 	client->ps.stats[STAT_MOVEMENTSTYLE] = client->sess.movementStyle;
 
-	if (g_rabbit.integer && !client->ps.stats[STAT_RACEMODE]) {
-		if (client->ps.powerups[PW_NEUTRALFLAG]) {
-			if (client->ps.fd.forcePowerLevel[FP_LEVITATION] > 1) {
-				client->savedJumpLevel = client->ps.fd.forcePowerLevel[FP_LEVITATION];
-				client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
-			}
+	if ((g_neutralFlag.integer < 4) && client->ps.powerups[PW_NEUTRALFLAG]) {
+		if (client->ps.fd.forcePowerLevel[FP_LEVITATION] > 1) {
+			client->savedJumpLevel = client->ps.fd.forcePowerLevel[FP_LEVITATION];
+			client->ps.fd.forcePowerLevel[FP_LEVITATION] = 1;
 		}
-		else if (client->savedJumpLevel) {
-			client->ps.fd.forcePowerLevel[FP_LEVITATION] = client->savedJumpLevel;
-		}
+	}
+	else if (client->savedJumpLevel) {
+		client->ps.fd.forcePowerLevel[FP_LEVITATION] = client->savedJumpLevel;
 	}
 	if (client->ps.stats[STAT_RACEMODE]) {
 			client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] = 3; //make sure its allowed on server? or?

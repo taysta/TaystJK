@@ -59,7 +59,7 @@ A bmodel that just sits there, doing nothing.  Can be used for conditional walls
 "linear" set to 1 and it will move linearly rather than with acceleration (default is 0)
 */
 
-/*QUAKED trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE x x MULTIPLE2 NO_RACEMODE NOT_IN_CTF
+/*QUAKED trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE x x MULTIPLE2 NO_RACEMODE NOT_IN_CTF NEUTRALFLAG_BASE
 CLIENTONLY - only a player can trigger this by touch
 FACING - Won't fire unless triggering ent's view angles are within 45 degrees of trigger's angles (in addition to any other conditions)
 USE_BUTTON - Won't fire unless player is in it and pressing use button (in addition to any other conditions)

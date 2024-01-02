@@ -507,7 +507,7 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 	if (g_gunGame.integer)
 		return;
 
-	if ((g_rabbit.integer == 2) && (weapon == WP_DISRUPTOR))//rabbit, only cuz of snipers idk?
+	if ((g_neutralFlag.integer == 2) && (weapon == WP_DISRUPTOR))//rabbit, only cuz of snipers idk?
 		return;
 
 	if ((g_startingWeapons.integer & (1 << weapon)) && (g_forcePowerDisable.integer & (1 << FP_PULL)) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))//Dont toss weapon if thers no possible use for it
@@ -636,7 +636,7 @@ void TossClientItems( gentity_t *self ) {
 			weapon = WP_NONE;
 		}
 	}
-	if (weapon == WP_DISRUPTOR && (g_rabbit.integer == 2)) {
+	if (weapon == WP_DISRUPTOR && (g_neutralFlag.integer == 2)) {
 		weapon = WP_NONE;
 	}
 
@@ -672,7 +672,7 @@ void TossClientItems( gentity_t *self ) {
 	}
 
 	// drop all the powerups if not in teamplay
-	if ( (level.gametype != GT_TEAM || g_rabbit.integer) && level.gametype != GT_SIEGE ) {
+	if ( (level.gametype != GT_TEAM || g_neutralFlag.integer) && level.gametype != GT_SIEGE ) {
 		angle = 45;
 		for ( i = 1 ; i < PW_NUM_POWERUPS ; i++ ) {
 			if ( self->client->ps.powerups[ i ] > level.time ) {
@@ -2727,7 +2727,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 						}
 					}
 				}
-				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)//rabbit points
+				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4)//rabbit points
 				{
 					int carrier_bonus, killed_carrier, killed_other;
 					if (level.gametype == GT_TEAM) {
@@ -4741,7 +4741,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	if (g_godChat.integer && level.gametype == GT_FFA && attacker && attacker->client && (attacker->client->ps.eFlags & EF_TALK))//Japro - dont allow people to chat and still do damage with godchat (should this be after the 3s period instead?)
 		return;
 
-	if ((level.gametype == GT_FFA) && !g_friendlyFire.value && g_rabbit.integer) {
+	if ((level.gametype == GT_FFA) && !g_friendlyFire.value && g_neutralFlag.integer < 4) {
 		if (attacker && attacker->client && !attacker->client->ps.duelInProgress && !attacker->client->ps.powerups[PW_NEUTRALFLAG] && targ && targ->client && !targ->client->ps.duelInProgress && !targ->client->sess.raceMode && !targ->client->ps.powerups[PW_NEUTRALFLAG])
 			return;
 	}

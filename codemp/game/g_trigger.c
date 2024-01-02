@@ -204,6 +204,10 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 			return;
 	}
 
+	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client) {
+		Team_TouchOneFlagBase(ent, activator, ent->team);
+	}
+
 	if (level.gametype == GT_SIEGE && ent->genericValue1)
 	{
 		haltTrigger = qtrue;
@@ -425,7 +429,7 @@ void Touch_Multi( gentity_t *self, gentity_t *other, trace_t *trace )
 		return;
 //JAPRO - Serverside - Allow/disallow use button/trigger for duelers - End
 
-	if ((self->spawnflags & 4) && (other->client->ps.powerups[PW_NEUTRALFLAG] && g_rabbit.integer))
+	if ((self->spawnflags & 4) && (other->client->ps.powerups[PW_NEUTRALFLAG] && g_neutralFlag.integer < 4)) //What is this?
 		return;
 
 	if ( self->spawnflags & 1 )
@@ -614,7 +618,7 @@ void trigger_cleared_fire (gentity_t *self)
 	}
 }
 
-/*QUAKED trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE
+/*QUAKED	trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE
 CLIENTONLY - only a player can trigger this by touch
 FACING - Won't fire unless triggering ent's view angles are within 45 degrees of trigger's angles (in addition to any other conditions)
 USE_BUTTON - Won't fire unless player is in it and pressing use button (in addition to any other conditions)

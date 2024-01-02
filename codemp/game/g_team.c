@@ -571,12 +571,18 @@ gentity_t *Team_ResetFlag( int team ) {
 }
 
 void Team_ResetFlags( void ) {
-	if(level.gametype == GT_CTF || level.gametype == GT_CTY)
+	if(level.gametype == GT_CTF)
 	{
 		Team_ResetFlag( TEAM_RED );
 		Team_ResetFlag( TEAM_BLUE );
+		if (g_neutralFlag.integer >= 4)
+			Team_ResetFlag(TEAM_FREE);
 	}
-	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)
+	else if (level.gametype == GT_CTY) {
+		Team_ResetFlag(TEAM_RED);
+		Team_ResetFlag(TEAM_BLUE);
+	}
+	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4)
 		Team_ResetFlag( TEAM_FREE );
 }
 
@@ -598,7 +604,7 @@ void Team_ReturnFlagSound( gentity_t *ent, int team ) {
 	te->r.svFlags |= SVF_BROADCAST;
 }
 
-void Team_TakeFlagSound( gentity_t *ent, int team ) {
+void Team_TakeFlagSound( gentity_t *ent, int team, int playerteam) {
 	gentity_t	*te;
 
 	if (ent == NULL) {
@@ -627,11 +633,23 @@ void Team_TakeFlagSound( gentity_t *ent, int team ) {
 	}
 
 	te = G_TempEntity( ent->s.pos.trBase, EV_GLOBAL_TEAM_SOUND );
-	if( team == TEAM_BLUE ) {
-		te->s.eventParm = GTS_RED_TAKEN;
+	if ((level.gametype == GT_CTF || level.gametype == GT_TEAM) && g_neutralFlag.integer >= 4)
+	{
+		if (playerteam == TEAM_BLUE) {
+			te->s.eventParm = GTS_BLUE_TAKEN;
+		}
+		else {
+			te->s.eventParm = GTS_RED_TAKEN;
+		}
 	}
-	else {
-		te->s.eventParm = GTS_BLUE_TAKEN;
+	else
+	{
+		if (team == TEAM_BLUE) {
+			te->s.eventParm = GTS_RED_TAKEN;
+		}
+		else {
+			te->s.eventParm = GTS_BLUE_TAKEN;
+		}
 	}
 	te->r.svFlags |= SVF_BROADCAST;
 }
@@ -702,6 +720,72 @@ void Team_DroppedFlagThink(gentity_t *ent) {
 	Team_ReturnFlagSound( Team_ResetFlag( team ), team );
 	// Reset Flag will delete this entity
 }
+void G_AddSimpleStat(char *username, int type);
+int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
+	// the flag is at home base.  if the player has the enemy
+	// flag, he's just won!
+
+
+	//We need to respawn the flag that we have on our back to midfield
+
+	gclient_t	*cl = other->client;
+	if (!cl->ps.powerups[PW_NEUTRALFLAG]) {
+		return 0; // We don't have the flag
+	}
+
+
+	cl->ps.powerups[PW_NEUTRALFLAG] = 0;
+
+	teamgame.last_flag_capture = level.time;
+	teamgame.last_capture_team = team;
+
+	// Increase the team's score
+	AddTeamScore(ent->s.pos.trBase, other->client->sess.sessionTeam, 1, qtrue);
+	//	Team_ForceGesture(other->client->sess.sessionTeam);
+	//rww - don't really want to do this now. Mainly because performing a gesture disables your upper torso animations until it's done and you can't fire
+
+	other->client->pers.teamState.captures++;
+	other->client->rewardTime = level.time + REWARD_SPRITE_TIME;
+	other->client->ps.persistant[PERS_CAPTURES]++;
+	if (other->client->pers.userName && other->client->pers.userName[0])
+	G_AddSimpleStat(other->client->pers.userName, 4);
+
+	// other gets another 10 frag bonus
+	if (g_fixCTFScores.integer)
+		AddScore(other, ent->r.currentOrigin, 60);
+	else
+		AddScore(other, ent->r.currentOrigin, CTF_CAPTURE_BONUS);
+
+	if (cl->pers.stats.startTimeFlag) {//JAPRO SHITTY FLAG TIMER
+		const float time = (level.time - cl->pers.stats.startTimeFlag) / 1000.0f;
+		//int average = floorf(cl->pers.stats.displacementFlag / time) + 0.5f;
+		int average;
+		if (cl->pers.stats.displacementFlagSamples)
+			average = floorf(((cl->pers.stats.displacementFlag * sv_fps.value) / cl->pers.stats.displacementFlagSamples) + 0.5f);
+		else
+			average = cl->pers.stats.topSpeedFlag;
+
+		trap->SendServerCommand(-1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average));
+		cl->pers.stats.startTimeFlag = 0;
+		cl->pers.stats.topSpeedFlag = 0;
+		cl->pers.stats.displacementFlag = 0;
+		cl->pers.stats.displacementFlagSamples = 0;
+	}
+	else
+	PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG);
+
+	#if _DEBUGCTFCRASH
+	G_SecurityLogPrintf("Team_TouchOurFlag function reached point z, Enemy Flag is %i\n", enemy_flag);
+	#endif
+
+	Team_CaptureFlagSound(ent, team);
+
+	Team_ResetFlags();
+
+	CalculateRanks();
+
+	return 0;
+}
 
 
 /*
@@ -718,7 +802,6 @@ static vec3_t	minFlagRange = { 50, 36, 36 };
 static vec3_t	maxFlagRange = { 44, 36, 36 };
 
 int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team );
-void G_AddSimpleStat(char *username, int type);
 
 #define _DEBUGCTFCRASH 0//Its been years so give up on trying to debug this if it even happens anymore
 int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
@@ -986,17 +1069,18 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 	//	other->client->pers.netname, TeamName(team));
 	if (level.gametype != GT_CTF) { //changed this from team == team_free
 		trap->SendServerCommand( -1, va("print \"%s^7 is now the rabbit!\n\"", other->client->pers.netname ));
-		if (g_rabbit.integer == 2) {
+		if (g_neutralFlag.integer == 2) {
 			other->client->ps.stats[STAT_WEAPONS] = (1 << WP_DISRUPTOR);
 			other->client->ps.ammo[AMMO_POWERCELL] = 300;
 		}
-		else if (g_rabbit.integer == 3) {
+		else if (g_neutralFlag.integer == 3) {
 			other->client->timeResidualBig = 0; //Reset this so we dont get any points until 5s after picking up the flag. (5000 - 0) = 5s
 		}
 	}
-	else 
+	else {
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
-
+		Com_Printf("Message\n");
+	}
 	if (team == TEAM_RED)
 		cl->ps.powerups[PW_REDFLAG] = INT_MAX; // flags never expire
 	else if (team == TEAM_BLUE)
@@ -1009,7 +1093,13 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 		cl->pers.stats.topSpeedFlag = 0;
 		cl->pers.stats.displacementFlag = 0;
 	}
-	else 
+	else if (level.gametype == GT_CTF && g_neutralFlag.integer >= 4 && !(ent->r.contents & CONTENTS_CORPSE))
+	{
+		cl->pers.stats.startTimeFlag = level.time;
+		cl->pers.stats.topSpeedFlag = 0;
+		cl->pers.stats.displacementFlag = 0;
+	}
+	else
 		cl->pers.stats.startTimeFlag = 0;
 
 	if (g_fixCTFScores.integer) {
@@ -1018,14 +1108,14 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			AddScore(other, ent->r.currentOrigin, 5);
 		}
 	}
-	else if (!g_allowFlagThrow.integer && (g_rabbit.integer != 2)) {
+	else if (!g_allowFlagThrow.integer && (g_neutralFlag.integer != 2)) {
 		AddScore(other, ent->r.currentOrigin, CTF_FLAG_BONUS);
 	}
 
 	Team_SetFlagStatus( team, FLAG_TAKEN );
 
 	cl->pers.teamState.flagsince = level.time;
-	Team_TakeFlagSound( ent, team );
+	Team_TakeFlagSound( ent, team, cl->sess.sessionTeam);
 
 #if _DEBUGCTFCRASH
 	G_SecurityLogPrintf("Team_TouchEnemyFlag returned at emd, team %i, ourflag %i\n", team, ourFlag);
@@ -1054,8 +1144,11 @@ int Pickup_Team( gentity_t *ent, gentity_t *other ) {
 	}
 	// GT_CTF
 	if( team == cl->sess.sessionTeam) {
-		if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer) {
+		if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4) {
 			return Team_TouchEnemyFlag( ent, other, team );
+		}
+		else if ((level.gametype == GT_CTF) && g_neutralFlag.integer >= 4) {
+			return Team_TouchEnemyFlag(ent, other, team);
 		}
 		else {
 			return Team_TouchOurFlag( ent, other, team );

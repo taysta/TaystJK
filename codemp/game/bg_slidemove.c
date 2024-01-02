@@ -826,7 +826,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 					offset = bot_strafeOffset.value;
 					Com_Printf("Overwriting overclip!\n");
 				}
-				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, bot_strafeOffset.value); //Loda this is causing deadstops on vertical seams.  1.5f?
+				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, offset); //Loda this is causing deadstops on vertical seams.  1.5f?
 			}
 			else 
 				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, OVERCLIP);

@@ -282,6 +282,33 @@ static void RemoveRabbit(void) {
 	}
 }
 
+static void RemoveRedBlueFlags(void) {
+	int i;
+	gclient_t	*cl;
+	gentity_t	*ent;
+	qboolean flagsRemoved = 0;
+
+	Team_ReturnFlag(TEAM_RED);
+	Team_ReturnFlag(TEAM_BLUE);
+
+	for (i = 0; i<level.numPlayingClients; i++) {
+		cl = &level.clients[level.sortedClients[i]];
+
+		cl->ps.powerups[PW_REDFLAG] = 0;
+		cl->ps.powerups[PW_BLUEFLAG] = 0;
+	}
+
+	for (i = 0; i < level.num_entities; i++) {
+		ent = &g_entities[i];
+		if (ent->inuse && (ent->s.eType == ET_ITEM) && ((ent->item->giTag == PW_REDFLAG) || (ent->item->giTag == PW_BLUEFLAG)) && (ent->item->giType == IT_TEAM)) {
+			G_FreeEntity(ent);
+			flagsRemoved++;
+		}
+		if (flagsRemoved > 1)
+			return;
+	}
+}
+
 qboolean G_FreeAmmoEntity( gitem_t *item );
 static void RemoveWeaponsFromMap(void) {
 	int i;
@@ -434,12 +461,20 @@ void CVU_GunGame(void) {
 
 qboolean G_CallSpawn( gentity_t *ent );
 void CVU_Rabbit( void ) {
-	if (g_rabbit.integer) { //
+	//1 = Normal rabbit
+	//2 = Sniper Rabbit
+	//3 = Rabbit where you gain points for holding it
+	//4 = one flag CTF (our base to score)
+	//5 = one flag CTF (their base to score)
+	//if (g_neutralFlag.integer) { //
 		gentity_t	*ent;
 
-		RemoveRabbit(); //Delete the current flag first
-
-		if (level.neutralFlag && (level.gametype == GT_FFA || level.gametype == GT_TEAM)) {
+		if ((g_neutralFlag.integer != 1 && g_neutralFlag.integer != 2 && g_neutralFlag.integer != 3) && (level.gametype == GT_FFA || level.gametype == GT_TEAM)) {
+			RemoveRabbit();
+		}
+		else if (((g_neutralFlag.integer == 1 || g_neutralFlag.integer == 2 || g_neutralFlag.integer == 3) && (level.gametype == GT_FFA || level.gametype == GT_TEAM))) {
+			//Remove and spawn neutral flag
+			RemoveRabbit(); //Delete the current flag first
 			ent = G_Spawn(qtrue);
 
 			ent->classname = "team_CTF_neutralflag";
@@ -448,10 +483,43 @@ void CVU_Rabbit( void ) {
 			if (!G_CallSpawn(ent))
 				G_FreeEntity( ent );
 		}
-	}
-	else {
-		RemoveRabbit();
-	}
+		else if (((g_neutralFlag.integer == 4 || g_neutralFlag.integer == 5) && (level.gametype == GT_CTF))) { //One Flag CTF
+			//Remove and spawn neutral flag.  Remove CTF flags
+
+			RemoveRabbit(); //Delete the current flag first
+			RemoveRedBlueFlags();
+
+			ent = G_Spawn(qtrue);
+			ent->classname = "team_CTF_neutralflag";
+			VectorCopy(level.neutralFlagOrigin, ent->s.origin);
+
+			if (!G_CallSpawn(ent))
+				G_FreeEntity(ent);
+		}
+		else if (((g_neutralFlag.integer != 4 && g_neutralFlag.integer != 5) && (level.gametype == GT_CTF))) { //turned off neutral flag in CTF gametype
+			//Remove neutral flag.  Remove and add CTF flags.
+			RemoveRabbit(); //Delete the current flag first
+			RemoveRedBlueFlags();
+
+			ent = G_Spawn(qtrue);
+			ent->classname = "team_CTF_redflag";
+			VectorCopy(level.redFlagOrigin, ent->s.origin);
+
+			if (!G_CallSpawn(ent))
+				G_FreeEntity(ent);
+
+			ent = G_Spawn(qtrue);
+			ent->classname = "team_CTF_blueflag";
+			VectorCopy(level.blueFlagOrigin, ent->s.origin);
+
+			if (!G_CallSpawn(ent))
+				G_FreeEntity(ent);
+		}
+
+	//}
+	//else {
+		//RemoveRabbit();
+	//}
 }
 
 static void CVU_RaceMode(void) {
