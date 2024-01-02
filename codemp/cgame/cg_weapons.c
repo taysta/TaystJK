@@ -1173,7 +1173,7 @@ void CG_DrawWeaponSelect( void ) {
 //	int				height;
 	int		        yOffset = 0;
 	qboolean        drewConc = qfalse;
-    char            ammoStr[4];
+    char            ammoStr[MAX_QPATH]= {0};
 
 	if (cg.predictedPlayerState.emplacedIndex)
 	{ //can't cycle when on a weapon
