@@ -3381,6 +3381,42 @@ int BG_GetTime(void)
 	return level.time;
 }
 
+void OneFlagCTFChecKTimers() {
+	if (level.gametype != GT_CTF)
+		return;
+	if (g_neutralFlag.integer < 4)
+		return;
+
+	if (level.time > level.flagCapturingDebounce) {
+		if (level.redCapturing) {
+			if (level.redCaptureTime > 0)
+				trap->SendServerCommand(-1, va("cp \"^1Red team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (10000 - level.redCaptureTime) * 0.001f)); //Debounce this print? Or find a better way to visualize it (sound as well?)
+			level.redCaptureTime += 250;
+		}
+		else
+			level.redCaptureTime -= 250;
+
+		if (level.blueCapturing) {
+			if (level.blueCaptureTime > 0)
+				trap->SendServerCommand(-1, va("cp \"^4Blue team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (10000 - level.blueCaptureTime) * 0.001f));
+			level.blueCaptureTime += 250;
+		}
+		else
+			level.blueCaptureTime -= 250;
+
+		if (level.redCaptureTime < 0)
+			level.redCaptureTime = 0;
+		if (level.blueCaptureTime < 0)
+			level.blueCaptureTime = 0;
+
+
+		level.redCapturing = qfalse;
+		level.blueCapturing = qfalse;
+
+		level.flagCapturingDebounce = level.time + 250;
+	}
+}
+
 /*
 ================
 G_RunFrame
@@ -4086,6 +4122,8 @@ void G_RunFrame( int levelTime ) {
 #endif
 
 	SiegeCheckTimers();
+
+	OneFlagCTFChecKTimers();
 
 #ifdef _G_FRAME_PERFANAL
 	trap->PrecisionTimer_Start(&timer_ROFF);

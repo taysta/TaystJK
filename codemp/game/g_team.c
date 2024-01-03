@@ -733,18 +733,6 @@ int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
 		return 0; // We don't have the flag
 	}
 
-	if (level.gametype == GT_CTF) {
-		if (g_neutralFlag.integer == 4) {
-			if (cl->sess.sessionTeam != team)
-				return 0;
-		}
-		else if (g_neutralFlag.integer == 5) {
-			if (cl->sess.sessionTeam == team)
-				return 0;
-		}
-	}
-
-
 	cl->ps.powerups[PW_NEUTRALFLAG] = 0;
 
 	teamgame.last_flag_capture = level.time;
@@ -1090,7 +1078,6 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 	}
 	else {
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
-		Com_Printf("Message\n");
 	}
 	if (team == TEAM_RED)
 		cl->ps.powerups[PW_REDFLAG] = INT_MAX; // flags never expire

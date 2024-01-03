@@ -206,7 +206,28 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 	}
 
 	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client) {
-		Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
+		if (activator->client->ps.powerups[PW_NEUTRALFLAG]) {
+
+			if (g_neutralFlag.integer == 4 && activator->client->sess.sessionTeam != ent->alliedTeam)
+				return;
+			if (g_neutralFlag.integer == 5 && activator->client->sess.sessionTeam == ent->alliedTeam)
+				return;
+
+			if (activator->client->sess.sessionTeam == TEAM_RED) {
+				level.redCapturing = qtrue;
+			}
+			else if (activator->client->sess.sessionTeam == TEAM_BLUE) {
+				level.blueCapturing = qtrue;
+			}
+			if (level.blueCaptureTime > 10000) {
+				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);//red?
+				level.blueCaptureTime = 0;
+			}
+			if (level.redCaptureTime > 10000) {
+				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
+				level.redCaptureTime = 0;
+			}
+		}
 	}
 
 	if (level.gametype == GT_SIEGE && ent->genericValue1)
