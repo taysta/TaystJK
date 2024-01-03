@@ -2159,7 +2159,10 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			player->client->ps.velocity[1] = player->client->lastVelocity[1] * scale;//YVel Relative Scale
 	}
 	if (trigger->spawnflags & 4) {
-		player->client->ps.velocity[2] = player->client->lastVelocity[2] * scale;//ZVel Relative Scale
+		if (trigger->spawnflags & 256)
+			player->client->ps.velocity[2] = scale;//ZVel absolute
+		else
+			player->client->ps.velocity[2] = player->client->lastVelocity[2] * scale;//ZVel Relative Scale
 	}
 }
 
