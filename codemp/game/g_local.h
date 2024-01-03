@@ -1474,6 +1474,11 @@ typedef struct level_locals_s {
 #endif
 
 	int			kothTime; //JAPRO KOTH
+	int			redCaptureTime;//1flagctf
+	int			blueCaptureTime;//1flagctf
+	qboolean	redCapturing;//1flagctf
+	qboolean	blueCapturing;//1flagctf
+	int			flagCapturingDebounce;
 
 	//int			lastVoteFailTime;
 //JAPRO - Serverside - Amlockteam - End

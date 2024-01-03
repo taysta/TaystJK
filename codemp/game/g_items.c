@@ -2771,9 +2771,12 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 	VectorCopy( velocity, dropped->s.pos.trDelta );
 
 	dropped->flags |= FL_BOUNCE_HALF;
-	if (((level.gametype == GT_CTF || level.gametype == GT_CTY) || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)) && item->giType == IT_TEAM) { // Special case for CTF flags
+	if (((level.gametype == GT_CTF || level.gametype == GT_CTY) || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4)) && item->giType == IT_TEAM) { // Special case for CTF flags
 		dropped->think = Team_DroppedFlagThink;
-		dropped->nextthink = level.time + 30000;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			dropped->nextthink = level.time + 45000; //MV_TRIBES todo
+		else
+			dropped->nextthink = level.time + 30000;
 		Team_CheckDroppedItem( dropped );
 
 		//rww - so bots know
@@ -2853,7 +2856,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle ) {
 
 	AngleVectors( angles, velocity, NULL, NULL );
 
-	if (g_allowFlagThrow.integer && item->giType == IT_TEAM)
+	if (g_allowFlagThrow.integer && item->giType == IT_TEAM) //flag inheritance
 	{
 		velocity[0] += 0.25 * ent->client->ps.velocity[0];
 		velocity[1] += 0.25 * ent->client->ps.velocity[1];
@@ -3051,8 +3054,16 @@ void FinishSpawningItem( gentity_t *ent ) {
 		if (ent->item->giTag == PW_NEUTRALFLAG) {//always remove neutralflag unless in ffa
 			VectorCopy(ent->s.origin, level.neutralFlagOrigin);
 			level.neutralFlag = qtrue;
-			if (!g_rabbit.integer || (level.gametype != GT_FFA && level.gametype != GT_TEAM)) {
-				G_FreeEntity( ent );
+			if (!g_neutralFlag.integer) {
+				G_FreeEntity(ent);
+				return;
+			}
+			if (g_neutralFlag.integer < 4 && level.gametype == GT_CTF) {
+				G_FreeEntity(ent);
+				return;
+			}
+			if (g_neutralFlag.integer >= 4 && level.gametype != GT_CTF) {
+				G_FreeEntity(ent);
 				return;
 			}
 		}
@@ -3063,12 +3074,20 @@ void FinishSpawningItem( gentity_t *ent ) {
 				G_FreeEntity( ent );
 				return;
 			}
+			if (level.gametype == GT_CTF && g_neutralFlag.integer >= 4) {
+				G_FreeEntity(ent);
+				return;
+			}
 		}
 		else if (ent->item->giTag == PW_BLUEFLAG) {
 			VectorCopy(ent->s.origin, level.blueFlagOrigin);
 			level.blueFlag = qtrue;
 			if (level.gametype != GT_CTF &&	level.gametype != GT_CTY) {
 				G_FreeEntity( ent );
+				return;
+			}
+			if (level.gametype == GT_CTF && g_neutralFlag.integer >= 4) {
+				G_FreeEntity(ent);
 				return;
 			}
 		}
