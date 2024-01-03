@@ -10402,7 +10402,7 @@ void BG_AdjustClientSpeed(playerState_t *ps, usercmd_t *cmd, int svTime)
 #else
 		if (!(cgs.jcinfo & JAPRO_CINFO_ROLLCANCEL) || pm->ps->stats[STAT_RACEMODE])
 #endif
-			if (ps->stats[STAT_MOVEMENTSTYLE] != MV_OCPM)
+			if (ps->stats[STAT_MOVEMENTSTYLE] != MV_OCPM && ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
 				ps->speed *= 0.75f; //JK2 1.02 doesn't have this? does q3 / wsw?
 	}
 
