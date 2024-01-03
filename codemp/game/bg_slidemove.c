@@ -822,10 +822,12 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			// slide along the plane
 			if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_OCPM) {
 				float offset = OVERCLIP;
+#ifdef _GAME
 				if (bot_strafeOffset.value) {
 					offset = bot_strafeOffset.value;
 					Com_Printf("Overwriting overclip!\n");
 				}
+#endif
 				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, offset); //Loda this is causing deadstops on vertical seams.  1.5f?
 			}
 			else 
