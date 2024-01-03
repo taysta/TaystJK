@@ -219,11 +219,11 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 			else if (activator->client->sess.sessionTeam == TEAM_BLUE) {
 				level.blueCapturing = qtrue;
 			}
-			if (level.blueCaptureTime > 10000) {
+			if (level.blueCaptureTime > g_neutralFlagTimer.integer) {
 				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);//red?
 				level.blueCaptureTime = 0;
 			}
-			if (level.redCaptureTime > 10000) {
+			if (level.redCaptureTime > g_neutralFlagTimer.integer) {
 				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
 				level.redCaptureTime = 0;
 			}
@@ -1825,6 +1825,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 }
 
 void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
+	int mandatoryCheckpoint = 0;
 	if (!player->client)
 		return;
 	if (player->client->sess.sessionTeam != TEAM_FREE)
@@ -1842,6 +1843,28 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		if (player->client->sess.raceMode)
 			player->client->ps.duelTime = 0;
 		return;
+	}
+	if (!(trigger->spawnflags & 4) && trigger->objective > 0 && ((player->client->pers.stats.checkpoints & trigger->objective) == trigger->objective)) {
+		return;
+	}
+
+	if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
+		int i, val;
+
+		if (trigger->spawnflags & 4) { //Spawnflags 4 on checkpoint unsets the objective #
+			player->client->pers.stats.checkpoints &= ~trigger->objective;
+			return; //Todo, notify the client or?
+		}
+		else
+			player->client->pers.stats.checkpoints |= trigger->objective;
+
+		for (i = 0; i < 32; i++) {
+			val = (1 << i);
+			if (val == trigger->objective) {
+				mandatoryCheckpoint = i + 1;
+				break;
+			}
+		}
 	}
 
 	if (player->client->pers.stats.startTime && (level.time - player->client->pers.stats.lastCheckpointTime > 1000)) { //make this more accurate with interp? or dosnt really matter ...
@@ -1872,32 +1895,13 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, max ^3%i^5, average ^3%i^5 ups\"", (float)time * 0.001f, player->client->pers.stats.topSpeed, average));
 			*/
 
-		if (trigger->objective > 0 && (player->client->pers.stats.checkpoints & trigger->objective)) {
-			//do nothing if we already touched the mandatory checkpoint?
-		}
-		else if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
-			int i, val;
-
-			if (trigger->spawnflags & 4) { //Spawnflags 4 on checkpoint unsets the objective #
-				player->client->pers.stats.checkpoints &= ~trigger->objective;
-				return; //Todo, notify the client or?
-			}
-			else
-				player->client->pers.stats.checkpoints |= trigger->objective;
-
-			for (i = 0; i<32; i++) {
-				val = (1 << i);
-				if (val == trigger->objective) {
-					break;
-				}
-			}
-
+		if (mandatoryCheckpoint) {  //Bitvalue of the checkpoint Todo, need to print times
 			if (player->client->pers.showCenterCP)
-				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 			if (player->client->pers.showConsoleCP)
-				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 			else if (player->client->pers.showChatCP)
-				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", i+1, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 		}
 		else {
 			if (player->client->pers.showCenterCP)
