@@ -2663,7 +2663,7 @@ void CG_GrappleTrail( centity_t *ent ) {
 		enemy = &cg_entities[ es->clientNum ];
 
 		if (enemy->ghoul2) {
-			VectorSet(G2Angles, 0, pm->ps->viewangles[YAW], 0);
+			VectorSet(G2Angles, 0, cg.refdef.viewangles[YAW], 0);
 
 			trap->G2API_GetBoltMatrix( enemy->ghoul2, 0, 1,	&boltMatrix, G2Angles, enemy->currentState.pos.trBase, enemy->currentState.apos.trTime, NULL, enemy->modelScale );
 			handPos[0] = boltMatrix.matrix[0][3];

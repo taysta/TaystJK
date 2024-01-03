@@ -96,6 +96,7 @@ qboolean DF_HasAutoJump();
 #define SPEEDOMETER_JUMPSCOLORS1    (1<<12)
 #define SPEEDOMETER_JUMPSCOLORS2    (1<<13)
 #define SPEEDOMETER_SPEEDGRAPHOLD   (1<<14)
+#define SPEEDOMETER_XYZ   			(1<<15)
 
 //Miscellaneous
 #define SPEEDOMETER_NUM_SAMPLES 500
@@ -148,6 +149,7 @@ typedef struct {
     float           frametime;
     float           wishspeed;
     float           currentspeed;
+	float			currentspeedXYZ;
     vec3_t          velocityAngles;
     vec3_t          wishDir;
     float           currentSpeed;

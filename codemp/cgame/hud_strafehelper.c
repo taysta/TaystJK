@@ -561,6 +561,7 @@ void DF_SetCurrentSpeed(centity_t *cent) {
 				cg.predictedPlayerState.velocity : cent->currentState.pos.trDelta);
 		state.cgaz.currentSpeed = sqrtf(velocity[0] * velocity[0] + velocity[1] * velocity[1]); // is this right?
 	}
+	state.cgaz.currentspeedXYZ = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1] + state.velocity[2] * state.velocity[2]); // is this right?
 }
 
 //sets the velocity angle for the cgaz struct
@@ -1600,15 +1601,20 @@ japro - Draw the speedometer
     const char* accelStr, * accelStr2, * accelStr3;
     char speedStr[32] = { 0 }, speedStr2[32] = { 0 }, speedStr3[32] = { 0 };
     vec4_t colorSpeed = { 1, 1, 1, 1 };
-    const float currentSpeed = state.cgaz.currentSpeed;
+    float currentSpeed, accel;
     static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
-    const float accel = currentSpeed - lastSpeed;
     float total, avgAccel, groundSpeedColor, groundSpeedsColor, currentSpeedColor;
     int t, i;
     static unsigned int index;
     static int lastupdate, jumpsCounter = 0;
     static qboolean clearOnNextJump = qfalse;
 
+	if(cg_speedometer.integer & SPEEDOMETER_XYZ)
+		currentSpeed = state.cgaz.currentspeedXYZ;
+	else
+		currentSpeed = state.cgaz.currentSpeed;
+
+	accel = currentSpeed - lastSpeed;
     lastSpeed = currentSpeed;
 
     if (currentSpeed > state.cgaz.wishspeed && !(cg_speedometer.integer & SPEEDOMETER_COLORS))
@@ -1663,13 +1669,13 @@ japro - Draw the speedometer
     }
     else if (cg_speedometer.integer & SPEEDOMETER_KPH)
     {
-        Com_sprintf(speedStr2, sizeof(speedStr2), "   %.1f", currentSpeed * 0.05);
+        Com_sprintf(speedStr2, sizeof(speedStr2), "   %.1f", currentSpeed * 0.1028699967);
         CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr2, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }
     else if (cg_speedometer.integer & SPEEDOMETER_MPH)
     {
-        Com_sprintf(speedStr3, sizeof(speedStr3), "   %.1f", currentSpeed * 0.03106855);
+        Com_sprintf(speedStr3, sizeof(speedStr3), "   %.1f", currentSpeed * 0.06392043271);
         CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorWhite, accelStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
         CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorSpeed, speedStr3, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
     }

@@ -1470,7 +1470,8 @@ static bitInfo_T speedometerSettings[] = { // MAX_WEAPON_TWEAKS tweaks (24)
     { "Disable speedometer colors"},//11
     { "Array Colors 1" },//12
     { "Array Colors 2" },//13
-    { "Old Speedgraph" }//14
+    { "Old Speedgraph" },//14
+	{ "XYZ Speed" }//15
 };
 static const int MAX_SPEEDOMETER_SETTINGS = ARRAY_LEN(speedometerSettings);
 

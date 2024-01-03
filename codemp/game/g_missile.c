@@ -187,8 +187,10 @@ void G_BounceMissile( gentity_t *ent, trace_t *trace ) {
 	}
 	else if ( ent->flags & FL_BOUNCE_HALF )
 	{
-		if (ent->s.weapon == WP_REPEATER && g_tweakWeapons.integer & WT_ROCKET_MORTAR)
+		if (ent->s.weapon == WP_REPEATER && g_tweakWeapons.integer & WT_TRIBES)
 			VectorScale( ent->s.pos.trDelta, 0.4f, ent->s.pos.trDelta );
+		else if(ent->s.weapon == WP_FLECHETTE && g_tweakWeapons.integer & WT_TRIBES)
+			VectorScale(ent->s.pos.trDelta, 0.4f, ent->s.pos.trDelta);
 		else
 			VectorScale( ent->s.pos.trDelta, 0.65f, ent->s.pos.trDelta );
 		// check for stop
@@ -376,6 +378,8 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 		missile->s.pos.trTime = level.time - MISSILE_PRESTEP_TIME;//this be why rocketjump fucks up at high speed
 	}
 	else if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && owner->client) {
+		//int prestep = 1000 / sv_fps.integer;
+		//int amount = (owner->client->ps.ping + prestep) * 0.5f;
 		int amount = owner->client->ps.ping * 0.9;
 
 		if (amount > g_unlaggedProjectileTolerance.integer)
@@ -469,7 +473,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	if ( other->takedamage &&
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		( ent->flags & ( FL_BOUNCE | FL_BOUNCE_HALF ) ) &&
-		(g_tweakWeapons.integer & WT_ROCKET_MORTAR && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime > level.time - 300)) 
+		(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime > level.time - 300)) 
 	{ //if its a direct hit and first 500ms of mortar, bounce off player.
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
@@ -478,7 +482,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	else if ( !other->takedamage &&
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		( ent->flags & ( FL_BOUNCE | FL_BOUNCE_HALF ) ) ) { //only on the first bounce vv
-		if ((!(g_tweakWeapons.integer & WT_ROCKET_MORTAR && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 1000)) && 
+		if ((!(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 1000)) && 
 			!(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_FLECHETTE && ent->bounceCount == 50 && ent->setTime && ent->setTime < level.time - 500))
 			//give this mortar a 1 second 'fuse' until its armed
 		{
@@ -775,7 +779,10 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.7f, other->s.pos.trDelta );
+			if (g_tweakWeapons.integer & WT_TRIBES)
+				VectorScale( velocity, 1.5f, other->s.pos.trDelta );
+			else
+				VectorScale(velocity, 0.4f, other->s.pos.trDelta);
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER && (ent->s.eFlags & EF_ALT_FIRING))
@@ -783,7 +790,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 2.5f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.5f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER)
@@ -791,15 +798,23 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.9f, other->s.pos.trDelta );
+			VectorScale( velocity, 0.6f, other->s.pos.trDelta );
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
+		}
+		else if (ent->s.weapon == WP_CONCUSSION)
+		{
+			other->s.pos.trType = TR_GRAVITY;
+			other->s.pos.trTime = level.time;
+			BG_EvaluateTrajectoryDelta(&ent->s.pos, level.time, velocity);
+			VectorScale(velocity, 0.5f, other->s.pos.trDelta);
+			VectorCopy(other->r.currentOrigin, other->s.pos.trBase);
 		}
 		else if (ent->s.weapon == WP_THERMAL)
 		{
 			other->s.pos.trType = TR_GRAVITY;
 			other->s.pos.trTime = level.time;
 			BG_EvaluateTrajectoryDelta( &ent->s.pos, level.time, velocity );
-			VectorScale( velocity, 0.9f, other->s.pos.trDelta ); //tweak?
+			VectorScale( velocity, 0.6f, other->s.pos.trDelta ); //tweak?
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
 	}
@@ -1096,9 +1111,8 @@ killProj:
 	ent->takedamage = qfalse;
 	// splash damage (doesn't apply to person directly hit)
 	if ( ent->splashDamage ) {
-		if( G_RadiusDamage( trace->endpos, ent->parent, ent->splashDamage, ent->splashRadius,
-			other, ent, ent->splashMethodOfDeath ) ) {
-			if( !hitClient
+		if( G_RadiusDamage( trace->endpos, ent->parent, ent->splashDamage, ent->splashRadius, other, ent, ent->splashMethodOfDeath ) ) {
+			if( !hitClient 
 				&& g_entities[ent->r.ownerNum].client ) {
 				g_entities[ent->r.ownerNum].client->accuracy_hits++;
 			}
@@ -1364,7 +1378,25 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	hook->s.owner = self->s.number;
 
 	hook->s.pos.trType = TR_LINEAR;
-	hook->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;
+
+	if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && self->client) {
+		//int amount = (owner->client->ps.ping + (1000 / sv_fps.integer)) * 0.5f;
+		int amount = self->client->ps.ping * 0.9;
+
+		if (amount > g_unlaggedProjectileTolerance.integer)
+			amount = g_unlaggedProjectileTolerance.integer;
+
+		if (amount < 0) //dunno
+			amount = 0;
+		else if (amount > 1000) //dunno
+			amount = 1000;
+
+		hook->s.pos.trTime = level.time - amount; //fixmer;
+	}
+	else {
+		hook->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;
+	}
+
 	hook->s.otherEntityNum = -1;
 	hook->s.groundEntityNum = -1;
 

@@ -158,6 +158,7 @@ qboolean G_NameInTriggerClassList(char *list, char *str)
 	return qfalse;
 }
 
+int Team_TouchOneFlagBase(gentity_t *ent, gentity_t *other, int team);
 extern qboolean gSiegeRoundBegun;
 void SiegeItemRemoveOwner(gentity_t *ent, gentity_t *carrier);
 void multi_trigger( gentity_t *ent, gentity_t *activator )
@@ -202,6 +203,31 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 	if (ent->spawnflags & 4096) {
 		if (activator && activator->client && activator->client->sess.raceMode)
 			return;
+	}
+
+	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client) {
+		if (activator->client->ps.powerups[PW_NEUTRALFLAG]) {
+
+			if (g_neutralFlag.integer == 4 && activator->client->sess.sessionTeam != ent->alliedTeam)
+				return;
+			if (g_neutralFlag.integer == 5 && activator->client->sess.sessionTeam == ent->alliedTeam)
+				return;
+
+			if (activator->client->sess.sessionTeam == TEAM_RED) {
+				level.redCapturing = qtrue;
+			}
+			else if (activator->client->sess.sessionTeam == TEAM_BLUE) {
+				level.blueCapturing = qtrue;
+			}
+			if (level.blueCaptureTime > g_neutralFlagTimer.integer) {
+				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);//red?
+				level.blueCaptureTime = 0;
+			}
+			if (level.redCaptureTime > g_neutralFlagTimer.integer) {
+				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
+				level.redCaptureTime = 0;
+			}
+		}
 	}
 
 	if (level.gametype == GT_SIEGE && ent->genericValue1)
@@ -406,7 +432,11 @@ void Touch_Multi( gentity_t *self, gentity_t *other, trace_t *trace )
 	{
 		if ( other->client->sess.sessionTeam != self->alliedTeam )
 		{
-			return;
+			if (level.gametype == GT_CTF && g_neutralFlag.integer == 5) {
+			}
+			else {
+				return;
+			}
 		}
 	}
 
@@ -425,7 +455,7 @@ void Touch_Multi( gentity_t *self, gentity_t *other, trace_t *trace )
 		return;
 //JAPRO - Serverside - Allow/disallow use button/trigger for duelers - End
 
-	if ((self->spawnflags & 4) && (other->client->ps.powerups[PW_NEUTRALFLAG] && g_rabbit.integer))
+	if ((self->spawnflags & 4) && (other->client->ps.powerups[PW_NEUTRALFLAG] && g_neutralFlag.integer < 4)) //What is this?
 		return;
 
 	if ( self->spawnflags & 1 )
@@ -614,7 +644,7 @@ void trigger_cleared_fire (gentity_t *self)
 	}
 }
 
-/*QUAKED trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE
+/*QUAKED	trigger_multiple (.1 .5 .1) ? CLIENTONLY FACING USE_BUTTON FIRE_BUTTON NPCONLY x x INACTIVE MULTIPLE
 CLIENTONLY - only a player can trigger this by touch
 FACING - Won't fire unless triggering ent's view angles are within 45 degrees of trigger's angles (in addition to any other conditions)
 USE_BUTTON - Won't fire unless player is in it and pressing use button (in addition to any other conditions)
@@ -1227,7 +1257,7 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 
 	style = player->client->sess.movementStyle;
 
-	if (style == MV_OCPM || style == MV_TRIBES)
+	if (style == MV_OCPM)
 		return qfalse;//temp
 
 	if (player->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NORACE)
@@ -1235,7 +1265,7 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 	if ((style == MV_RJQ3 || style == MV_RJCPM || style == MV_TRIBES) && g_knockback.value != 1000.0f)
 		return qfalse;
 
-	if (style != MV_CPM && style != MV_OCPM && style != MV_Q3 && style != MV_WSW && style != MV_RJQ3 && style != MV_RJCPM && style != MV_JETPACK && style != MV_SWOOP && style != MV_JETPACK && style != MV_SLICK && style != MV_BOTCPM && style != MV_COOP_JKA) { //Ignore forcejump restrictions if in onlybhop movement modes
+	if (style != MV_CPM && style != MV_OCPM && style != MV_Q3 && style != MV_WSW && style != MV_RJQ3 && style != MV_RJCPM && style != MV_JETPACK && style != MV_SWOOP && style != MV_JETPACK && style != MV_SLICK && style != MV_BOTCPM && style != MV_COOP_JKA && style != MV_TRIBES) { //Ignore forcejump restrictions if in onlybhop movement modes
 		if (restrictions & (1 << 0)) {//flags 1 = restrict to jump1
 			if (player->client->ps.fd.forcePowerLevel[FP_LEVITATION] != 1 || player->client->ps.powerups[PW_YSALAMIRI] > 0) {
 				trap->SendServerCommand( player-g_entities, "cp \"^3Warning: this course requires force jump level 1!\n\n\n\n\n\n\n\n\n\n\"");
@@ -1268,7 +1298,7 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 
 	if (player->client->pers.haste && !(restrictions & (1 << 3)))
 		return qfalse; //IF client has haste, and the course does not allow haste, dont count it.
-	if ((style != MV_JETPACK) && (player->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)) && !(restrictions & (1 << 4))) //kinda deprecated.. maybe just never allow jetpack?
+	if (((style != MV_JETPACK) && (style != MV_TRIBES)) && (player->client->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)) && !(restrictions & (1 << 4))) //kinda deprecated.. maybe just never allow jetpack?
 		return qfalse; //IF client has jetpack, and the course does not allow jetpack, dont count it.
 	if (style == MV_SWOOP && !player->client->ps.m_iVehicleNum)
 		return qfalse;
@@ -1625,8 +1655,6 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			return;
 	}
 
-	
-
 	if (!player->client->pers.stats.startTime)
 		return;
 	if (!player->client->pers.stats.coopStarted)
@@ -1646,7 +1674,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
 		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
-		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.  
+		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.
 			if (time > 1000)//sad hack to avoid spamming people who just start run(trigger on opposite side of start)
 				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
 			return;
@@ -1797,6 +1825,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 }
 
 void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
+	int mandatoryCheckpoint = 0;
 	if (!player->client)
 		return;
 	if (player->client->sess.sessionTeam != TEAM_FREE)
@@ -1814,6 +1843,28 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		if (player->client->sess.raceMode)
 			player->client->ps.duelTime = 0;
 		return;
+	}
+	if (!(trigger->spawnflags & 4) && trigger->objective > 0 && ((player->client->pers.stats.checkpoints & trigger->objective) == trigger->objective)) {
+		return;
+	}
+
+	if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
+		int i, val;
+
+		if (trigger->spawnflags & 4) { //Spawnflags 4 on checkpoint unsets the objective #
+			player->client->pers.stats.checkpoints &= ~trigger->objective;
+			return; //Todo, notify the client or?
+		}
+		else
+			player->client->pers.stats.checkpoints |= trigger->objective;
+
+		for (i = 0; i < 32; i++) {
+			val = (1 << i);
+			if (val == trigger->objective) {
+				mandatoryCheckpoint = i + 1;
+				break;
+			}
+		}
 	}
 
 	if (player->client->pers.stats.startTime && (level.time - player->client->pers.stats.lastCheckpointTime > 1000)) { //make this more accurate with interp? or dosnt really matter ...
@@ -1844,25 +1895,21 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, max ^3%i^5, average ^3%i^5 ups\"", (float)time * 0.001f, player->client->pers.stats.topSpeed, average));
 			*/
 
-		if (player->client->pers.showCenterCP)
-			trap->SendServerCommand( player-g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-		if (player->client->pers.showConsoleCP)
-			trap->SendServerCommand(player - g_entities, va("print \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-		else if (player->client->pers.showChatCP)
-			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
-
-		if (trigger->objective > 0) {  //Bitvalue of the checkpoint
-			// int i, val;
-			player->client->pers.stats.checkpoints |= trigger->objective;
-			/*
-			for (i = 0; i++; i < 32) {
-				val = (1 << i);
-				if (val = trigger->objective) {
-					break;
-				}
-			}
-			*/
-			trap->SendServerCommand(player - g_entities, va("chat \"^5Required checkpoint %i reached\"", trigger->objective));//Adapt this for the type of message client wants to receive (chat, console, center)  Get the # not teh bitvalue fixme																									 //Print a warning if they skipped a checkpoint? Loop through previous or just the one previous?
+		if (mandatoryCheckpoint) {  //Bitvalue of the checkpoint Todo, need to print times
+			if (player->client->pers.showCenterCP)
+				trap->SendServerCommand(player - g_entities, va("cp \"^5Required Checkpoint %i:\n^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			if (player->client->pers.showConsoleCP)
+				trap->SendServerCommand(player - g_entities, va("print \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			else if (player->client->pers.showChatCP)
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Required Checkpoint %i: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", mandatoryCheckpoint, (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+		}
+		else {
+			if (player->client->pers.showCenterCP)
+				trap->SendServerCommand(player - g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u, max ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			if (player->client->pers.showConsoleCP)
+				trap->SendServerCommand(player - g_entities, va("print \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\n\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
+			else if (player->client->pers.showChatCP)
+				trap->SendServerCommand(player - g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, avg ^3%i^5, max ^3%i^5 ups\"", (float)time * 0.001f, average, (int)(player->client->pers.stats.topSpeed + 0.5f)));
 		}
 
 		if (player->client->sess.movementStyle == MV_COOP_JKA && player->client->ps.duelInProgress && player->client->pers.stats.coopStarted)
@@ -2183,6 +2230,13 @@ void SP_trigger_timer_checkpoint( gentity_t *self )
 		else
 			self->objective = 0;
 	}
+	if (G_SpawnString("courseid", "", &s)) { //why is this actually needed
+		if (s && s[0])
+			self->courseID = atoi(s);
+		else
+			self->courseID = 0;
+	}
+
 	self->touch = TimerCheckpoint;
 	trap->LinkEntity ((sharedEntity_t *)self);
 }

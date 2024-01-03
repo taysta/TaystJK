@@ -203,7 +203,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define WT_PROJECTILE_GRAVITY	(1<<12)
 #define WT_CENTER_MUZZLEPOINT	(1<<13)
 #define WT_PSEUDORANDOM_FIRE	(1<<14)
-#define WT_ROCKET_MORTAR		(1<<15)
+//#define WT_ROCKET_MORTAR		(1<<15)
 #define WT_ROCKET_REDEEMER		(1<<16)
 #define WT_INFINITE_AMMO		(1<<17)
 #define WT_STUN_HEAL			(1<<18)
@@ -1458,7 +1458,7 @@ typedef struct level_locals_s {
 #endif
 	fileHandle_t	playerLog;
 
-	char		courseName[32][32];//japro defrag
+	char		courseName[64][32];//japro defrag
 	int			numCourses;
 	int			numRealVotingClients; //fixed vote checking
 
@@ -1474,6 +1474,11 @@ typedef struct level_locals_s {
 #endif
 
 	int			kothTime; //JAPRO KOTH
+	int			redCaptureTime;//1flagctf
+	int			blueCaptureTime;//1flagctf
+	qboolean	redCapturing;//1flagctf
+	qboolean	blueCapturing;//1flagctf
+	int			flagCapturingDebounce;
 
 	//int			lastVoteFailTime;
 //JAPRO - Serverside - Amlockteam - End

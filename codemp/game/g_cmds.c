@@ -783,7 +783,6 @@ static QINLINE void ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 		trap->SendServerCommand(ent - g_entities, "cp \"Timer reset!\n\n\n\n\n\n\n\n\n\n\n\n\"");
 }
 
-
 void ResetPlayerTimers(gentity_t *ent, qboolean print)
 {
 	ResetSpecificPlayerTimers(ent, print);
@@ -801,20 +800,6 @@ void ResetPlayerTimers(gentity_t *ent, qboolean print)
 		}
 	}
 }
-
-
-/*
-void ResetPlayerTimers(gentity_t *ent, qboolean print)
-{
-	ResetSpecificPlayerTimers(ent, print);
-
-	if (ent->client->ps.duelInProgress && ent->client->ps.duelIndex != ENTITYNUM_NONE) {
-		gentity_t* duelAgainst = &g_entities[ent->client->ps.duelIndex];
-		if (duelAgainst && duelAgainst->client)
-			ResetSpecificPlayerTimers(duelAgainst, print);
-	}
-}
-*/
 
 /*
 ==================
@@ -5748,7 +5733,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 	}
 	if (g_allowSaberSwitch.integer)
 		Q_strcat(buf, sizeof(buf), "saber ");
-	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_rabbit.integer))
+	if (g_allowFlagThrow.integer && ((level.gametype == GT_CTF) || g_neutralFlag.integer))
 		Q_strcat(buf, sizeof(buf), "throwFlag ");
 	if (g_allowTargetLaser.integer)
 		Q_strcat(buf, sizeof(buf), "+button15 (target laser) ");
@@ -6693,7 +6678,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 		return;
 
 	if (trap->Argc() != 2) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, ocpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, or coop>.\n\"" );
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, ocpm, q3, pjk, wsw, rjq3, rjcpm, swoop, jetpack, speed, sp, slick, botcpm, coop, ocpm, or tribes>.\n\"" );
 		return;
 	}
 
@@ -7628,15 +7613,14 @@ void Cmd_Race_f(gentity_t *ent)
 			ent->s.weapon = WP_SABER; //Dont drop our weapon
 			Cmd_ForceChanged_f(ent);//Make sure their jump level is valid.. if leaving racemode :S
 
+			ent->client->sess.raceMode = qfalse;//Set it false here cuz we are flipping it next
 			if (ent->client->sess.sessionTeam != TEAM_FREE) {
-				ent->client->sess.raceMode = qtrue;
 				SetTeam(ent, "race", qfalse);
 			}
 			else {
-				ent->client->sess.raceMode = qfalse;
 				SetTeam(ent, "spec", qfalse);
 			}
-			return;//duno..
+			//return;//duno..
 		}
 		else {
 			trap->SendServerCommand(ent-g_entities, "print \"^5This command is not allowed in this gametype!\n\"");
@@ -8331,8 +8315,8 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 			Q_strcat(buf, sizeof(buf), "   ^5Allowed center muzzlepoint setting\n");
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 			Q_strcat(buf, sizeof(buf), "   ^5Pseudo random weapon spread\n");
-		if (g_tweakWeapons.integer & WT_ROCKET_MORTAR)
-			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with mortar\n");
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			Q_strcat(buf, sizeof(buf), "   ^5Tribes inspired weapon tweaks\n");
 		else if (g_tweakWeapons.integer & WT_ROCKET_REDEEMER)
 			Q_strcat(buf, sizeof(buf), "   ^5Rocket launcher alt fire is replaced with redeemer\n");
 		if (g_tweakWeapons.integer & WT_ALLOW_GUNROLL)
@@ -8345,7 +8329,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 	}
 
 	//CTF changes
-	if (level.gametype == GT_CTF || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer)) {// CTF Settings
+	if (level.gametype == GT_CTF || ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer)) {// CTF Settings
 		Q_strncpyz(buf, " ^3CTF Changes:\n", sizeof(buf));
 		if (g_flagDrag.value)
 			Q_strcat(buf, sizeof(buf), va("   ^5Flag Drag: ^2%.3f\n", g_flagDrag.value));
@@ -8482,7 +8466,7 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 void Cmd_Throwflag_f( gentity_t *ent ) {
 	if (level.gametype == GT_CTF) {
 	}
-	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_rabbit.integer) {
+	else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer) {
 	}
 	else return;
 

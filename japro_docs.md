@@ -604,16 +604,17 @@ noise - sound it makes
 awesomenoise - sound it makes when time is below 'speed' key (only in jka style)  
 speed - max time in ms to play awesomenoise  
 target  
-uniqueid - ID of the trigger to match it to a start trigger (used with REQUIRE_SPECIFIC_STARTTRIGGER spawnflag)
+courseid - ID of the trigger to match it to a start trigger (used with REQUIRE_SPECIFIC_STARTTRIGGER spawnflag)
 objective - required checkpoint bitmask (used with REQUIRE_CHECKPOINTS)
 
 ### df_trigger_checkpoint
 noise - sound it makes  
 objective - checkpoint #
+courseid - ID of the trigger to match it to a finish trigger (optional?)
 
 ### df_trigger_start
 noise - sound it makes  
-uniqueid - ID of the trigger to match it to a finish trigger
+courseid - ID of the trigger to match it to a finish trigger
 
 ### trigger_newpush   
 #### Spawnflags  

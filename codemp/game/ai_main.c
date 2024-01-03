@@ -4674,8 +4674,8 @@ float G_NewBotAIGetProjectileSpeed(int weapon, qboolean altFire) {
 		projectileSpeed = 1150;
 	else if (weapon == WP_FLECHETTE && !altFire)
 		projectileSpeed = 3500;
-	else if (weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && altFire)
-		projectileSpeed = 1400;
+	else if (weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES) && altFire)
+		projectileSpeed = 2000;
 	else if (weapon == WP_ROCKET_LAUNCHER && !altFire) {
 		if (g_tweakWeapons.integer & WT_TRIBES)
 			projectileSpeed = 2040;
@@ -4720,7 +4720,6 @@ void G_NewBotAIAimLeading(bot_state_t* bs, vec3_t headlevel) {
 		VectorMA(headlevel, eta, bs->currentEnemy->client->ps.velocity, predictedSpot); //Multiple vel by eta, and add it to their origin to get predicted spot
 		if (((bs->cur_ps.weapon == WP_REPEATER) && bs->doAltAttack) ||
 			((bs->cur_ps.weapon == WP_DISRUPTOR) && (g_tweakWeapons.integer & WT_PROJ_SNIPER)) ||
-			((bs->cur_ps.weapon == WP_ROCKET_LAUNCHER) && bs->doAltAttack && (g_tweakWeapons.integer & WT_ROCKET_MORTAR)) ||
 			((bs->cur_ps.weapon == WP_ROCKET_LAUNCHER) && !bs->doAltAttack && (g_tweakWeapons.integer & WT_TRIBES)) ||
 			((bs->cur_ps.weapon == WP_FLECHETTE) && (g_tweakWeapons.integer & WT_STAKE_GUN)) ||
 			((bs->cur_ps.weapon == WP_FLECHETTE) && !(g_tweakWeapons.integer & WT_STAKE_GUN) && bs->doAltAttack) ||
@@ -6803,8 +6802,8 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 			else if (BotWeaponSelectable(bs, WP_BLASTER)) {
 				bestWeapon = WP_BLASTER;
 			}
-			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
-				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_REPEATER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
 			else if (distance > 500 && BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
@@ -6925,8 +6924,8 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_ROCKET_LAUNCHER;
 			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
 				bestWeapon = WP_CONCUSSION;
-			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
-				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_REPEATER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
 			else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD)) {
@@ -7046,8 +7045,8 @@ int NewBotAI_GetWeapon(bot_state_t *bs)
 				bestWeapon = WP_ROCKET_LAUNCHER;
 			else if (BotWeaponSelectable(bs, WP_CONCUSSION) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))
 				bestWeapon = WP_CONCUSSION;
-			else if (BotWeaponSelectable(bs, WP_ROCKET_LAUNCHER) && (g_tweakWeapons.integer & WT_ROCKET_MORTAR) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
-				bestWeapon = WP_ROCKET_LAUNCHER;
+			else if (BotWeaponSelectable(bs, WP_REPEATER) && (g_tweakWeapons.integer & WT_TRIBES) && (g_tweakWeapons.integer & WT_INFINITE_AMMO) && forcedFireMode != 1) {
+				bestWeapon = WP_REPEATER;
 				bs->doAltAttack = 1;
 			}
 			else if (bs->cur_ps.stats[STAT_WEAPONS] & WP_SABER)
@@ -7333,7 +7332,7 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 
 		return;
 	}
-	
+
 	if (!bs->frame_Enemy_Vis && (bs->cur_ps.weapon != WP_DEMP2)) { //Dont waste ammo if we cant see them..?
 		return;
 	}

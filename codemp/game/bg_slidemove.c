@@ -820,8 +820,18 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 
 
 			// slide along the plane
-			PM_ClipVelocity (pm->ps->velocity, planes[i], clipVelocity, OVERCLIP );
-
+			if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_OCPM) {
+				float offset = OVERCLIP;
+#ifdef _GAME
+				if (bot_strafeOffset.value) {
+					offset = bot_strafeOffset.value;
+					Com_Printf("Overwriting overclip!\n");
+				}
+#endif
+				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, offset); //Loda this is causing deadstops on vertical seams.  1.5f?
+			}
+			else 
+				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, OVERCLIP);
 			// slide along the plane
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
 
@@ -845,12 +855,11 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
 				damage = VectorLength(diffVelocity);
-				if (damage > 300) {
+				if (damage > 300 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
 					if (damage > 1000)
 						damage = 1000;
 					damage -= 300;
 					damage *= 0.1f;
-					damage *= 0.5f;//Fixme why this detects twice?  Debounce?
 
 					if (Q_irand(0, 1))
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));
@@ -859,6 +868,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 
 					G_Damage((gentity_t *)pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
 					//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);
+					g_entities[trace.entityNum].client->lastKickTime = level.time + 500;
 				}
 			}
 #else
@@ -1071,7 +1081,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 	down[2] -= stepSize;
 	pm->trace (&trace, pm->ps->origin, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 
-	if ( pm->stepSlideFix )
+	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) //This causes deadstops on slidey slopes
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS
 			&& trace.plane.normal[2] < MIN_WALK_NORMAL )

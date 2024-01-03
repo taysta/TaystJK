@@ -1336,11 +1336,8 @@ void SV_RebuildRaceRanks_f(void) {
 
 }
 
-static int G_GetSeason(void) {
-
-	//We want 4 month seasons?
-
-	return 5;
+static QINLINE int G_GetSeason(void) {
+	return 6;
 }
 
 static void G_UpdateOurLocalRun(sqlite3 * db, int seasonOldRank_self, int seasonNewRank_self, int globalOldRank_self, int globalNewRank_self, int style_self, char *username_self, char *coursename_self, 
@@ -5072,6 +5069,8 @@ int SeasonToInteger(char *season) {
 		return 4;
 	if (!Q_stricmp(season, "s5"))
 		return 5;
+	if (!Q_stricmp(season, "s6"))
+		return 6;
 	return -1;
 }
 
