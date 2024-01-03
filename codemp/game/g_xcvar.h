@@ -183,7 +183,6 @@ XCVAR_DEF( g_fixFlagSuicide,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_allowFlagThrow,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixCTFScores,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixFlagHitbox,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_fixExplosiveHitboxes,		"1",			NULL,				CVAR_ARCHIVE,									qtrue ) //fixes hitboxes on placed explosives (tripmines/detpacks)
 XCVAR_DEF( g_neutralFlag,				"0",			CVU_Rabbit,			CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_neutralFlagTimer,			"10000",		NULL,				CVAR_ARCHIVE,									qtrue)
 
