@@ -2099,6 +2099,13 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			return;
 	}
 
+	if (trigger->genericValue1) {
+		//Bitmask that covers allowed movementstyles.  If the movementstyle is not here, don't activate the jumppad for that player.
+		if (trigger->genericValue1 & player->client->sess.movementStyle) {
+		}
+		else return;
+	}
+
 	if (player->client->sess.raceMode) {
 		if (trigger->spawnflags & 32 && player->client->ps.groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers
 			if (trigger->speed == 0 && player->client->ps.velocity[0] > player->client->ps.speed + 20) {
@@ -2309,6 +2316,8 @@ void SP_trigger_newpush(gentity_t *self)//JAPRO Newpush
 		else
 			self->noise_index = 0;
 	}
+
+	G_SpawnInt("allowedstyle", "0", &self->genericValue1);
 
 	self->touch = NewPush;
 	trap->LinkEntity ((sharedEntity_t *)self);
