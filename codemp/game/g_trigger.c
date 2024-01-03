@@ -158,6 +158,7 @@ qboolean G_NameInTriggerClassList(char *list, char *str)
 	return qfalse;
 }
 
+int Team_TouchOneFlagBase(gentity_t *ent, gentity_t *other, int team);
 extern qboolean gSiegeRoundBegun;
 void SiegeItemRemoveOwner(gentity_t *ent, gentity_t *carrier);
 void multi_trigger( gentity_t *ent, gentity_t *activator )
@@ -205,7 +206,7 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 	}
 
 	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client) {
-		Team_TouchOneFlagBase(ent, activator, ent->team);
+		Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
 	}
 
 	if (level.gametype == GT_SIEGE && ent->genericValue1)
@@ -410,7 +411,11 @@ void Touch_Multi( gentity_t *self, gentity_t *other, trace_t *trace )
 	{
 		if ( other->client->sess.sessionTeam != self->alliedTeam )
 		{
-			return;
+			if (level.gametype == GT_CTF && g_neutralFlag.integer == 5) {
+			}
+			else {
+				return;
+			}
 		}
 	}
 
