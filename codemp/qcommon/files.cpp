@@ -342,10 +342,10 @@ FILE*		missingFiles = NULL;
 #endif
 
 static void FS_ResetFileHandleData( fileHandleData_t *f ) {
+	assert(f->writerThread == nullptr);
 	f->handleFiles = {};
 	f->handleSync = qfalse;
 	f->handleAsync = qfalse;
-	assert(f->writerThread == nullptr);
 	f->writerThread = nullptr;
 	f->writes.clear();
 	f->closed = qfalse;
@@ -445,6 +445,7 @@ static fileHandle_t FS_HandleForFile(void) {
 	Com_Error( ERR_DROP, "FS_HandleForFile: none free" );
 	return 0;
 }
+
 
 static FILE	*FS_FileForHandle( fileHandle_t f ) {
 	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
@@ -1072,12 +1073,25 @@ void FS_Rename( const char *from, const char *to ) {
 
 void FS_FCloseAio( int handle ) {
 	fileHandle_t f = (fileHandle_t) handle;
+	if (!fsh[f].closed || !fsh[f].handleAsync) {
+		if (fs_debug->integer) {
+			// This can happen if we were forced to sync close a file, for example 
+			// if we started to record a demo and a demo with the same path was still not fully closed.
+			// This can happen presumably due to random hiccups/latencies in the IO process or threading or whatever.
+			// We don't really need to worry about this.
+			Com_Printf("FS_FCloseAio: NOTE: File is not async or not closed: handle %i (%s)\n",f, fsh[f].name ? fsh[f].name : "");
+		}
+		return;
+	}
 	if ( f < 1 || f >= MAX_FILE_HANDLES ) {
 		Com_Error( ERR_FATAL, "FCloseAio called with invalid handle %d\n", f );
 	}
 	fsh[f].writerThread->join();
 	delete fsh[f].writerThread;
 	fsh[f].writerThread = nullptr;
+	if (fs_debug->integer) {
+		Com_Printf("FS_FCloseAio: %s closed.\n", fsh[f].name);
+	}
 	FS_ResetFileHandleData( &fsh[f] );
 }
 
@@ -1101,6 +1115,7 @@ There are three cases handled:
 ===========
 */
 void FS_FCloseFile( fileHandle_t f ) {
+	qboolean handleWasNull = qfalse;
 	FS_AssertInitialised();
 
 	if (fsh[f].zipFile == qtrue) {
@@ -1110,11 +1125,30 @@ void FS_FCloseFile( fileHandle_t f ) {
 		}
 		FS_ResetFileHandleData( &fsh[f] );
 		return;
+	} 
+	
+	if (!fsh[f].handleFiles.file.o) {
+		handleWasNull = qtrue;
+		if (fs_debug->integer) {
+			Com_Printf("FS_FCloseFile: fsh[f].handleFiles.file.o is NULL (%s).\n", fsh[f].name);
+		}
 	}
 
 	// we didn't find it as a pak, so close it as a unique file
-	if (fsh[f].handleFiles.file.o) {
+	if (!handleWasNull || fsh[f].handleAsync) { 
+		// || fsh[f].handleAsync because we cannot merely check that file.io is not NULL, since 
+		// a race condition (although it is rare, happening maybe once every few hours at worst) 
+		// can result in it being NULL due to fopen() inside the writer thread
+		// not yet having returned the proper FILE* value. 
 		if ( fsh[f].handleAsync ) {
+			if (fs_debug->integer) {
+				if (handleWasNull) {
+					Com_Printf("FS_FCloseFile: Requesting async close of %s (handle was NULL, fopen not yet returned?).\n", fsh[f].name);
+				}
+				else {
+					Com_Printf("FS_FCloseFile: Requesting async close of %s.\n", fsh[f].name);
+				}
+			}
 			// queue the file to be closed after all pending operations are completed.
 			{
 				std::lock_guard<std::mutex> l( fsh[f].writeLock );
@@ -1123,21 +1157,47 @@ void FS_FCloseFile( fileHandle_t f ) {
 			fsh[f].cv.notify_one();
 			return;
 		} else {
+			if (fs_debug->integer) {
+				Com_Printf("FS_FCloseFile: Sync closing %s.\n", fsh[f].name);
+			}
 			fclose (fsh[f].handleFiles.file.o);
 		}
 	}
 	FS_ResetFileHandleData( &fsh[f] );
 }
 
+// Sometimes an async file may not yet be fully closed due to hiccups/latencies/threading issues or whatever.
+// When we know that this might happen (like when knowingly overwriting the same file over and over),
+// we should call this before re-opening the file to guarantee that it will actually be closed before we reopen it, 
+// which would cause a chain of other catastrophic events 
+void FS_AsyncAssureFileClosed(const char* ospath) {
+	int		i;
+
+	for (i = 1; i < MAX_FILE_HANDLES; i++) {
+		if (fsh[i].handleAsync == qtrue && fsh[i].closed == qtrue && !Q_stricmp(ospath,fsh[i].ospath)) {
+			if (fs_debug->integer) {
+				Com_Printf("FS_AsyncAssureFileClosed: Forcing sync close of handle %i (%s).\n",i, fsh[i].name);
+			}
+			FS_FCloseAio(i);
+		}
+	}
+}
+
 extern void Com_PushEvent( sysEvent_t *event );
 void FS_AsyncWriterThread( fileHandle_t h ) {
+	qboolean fileOpenFailed = qfalse;
 	fileHandleData_t *f = &fsh[h];
 	if ( !FS_CreatePath( f->ospath ) ) {
+		if (fs_debug->integer) {
+			Com_Printf("FS_AsyncWriterThread: Opening %s.\n", f->name);
+		}
 		f->handleFiles.file.o = fopen( f->ospath, "wb" );
 	}
 	if ( f->handleFiles.file.o == nullptr ) {
 		Com_Printf( "Warning: failed to open file %s\n", f->name );
-		return;
+		fileOpenFailed = qtrue;
+		//return;
+		// Don't return here, it's likely to cause issues.
 	}
 	while ( qtrue ) {
 		std::vector<byte> write;
@@ -1152,9 +1212,21 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 			write = std::move(f->writes.front());
 			f->writes.pop_front();
 		}
-		fwrite( &write[0], 1, write.size(), f->handleFiles.file.o );
+		if (!fileOpenFailed) {
+			// This is pretty cringe but lest we want to fopen() synchronously and potentially hang
+			// gameplay, the demo writing code kinda just has to assume that fopen() was successful.
+			// So we have to kinda go through the motions here and pretend that everything is ok
+			// so that once the demo is "closing" we can clean up properly 
+			// and not cause a crash somehow.
+			// It's sad in that the game will assume the demo recording is working when it isn't.
+			// On the flipside, I'm not aware of this actually happening ever, so it's more of a hypothetical
+			// to begin with.
+			fwrite( &write[0], 1, write.size(), f->handleFiles.file.o );
+		}
 	}
-	fclose( f->handleFiles.file.o );
+	if (!fileOpenFailed) {
+		fclose(f->handleFiles.file.o);
+	}
 	sysEvent_t event;
 	Com_Memset( &event, 0, sizeof( event ) );
 	event.evType = SE_AIO_FCLOSE;
@@ -1162,9 +1234,16 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 	Com_PushEvent( &event );
 }
 
+// Call with safe==qtrue to make sure the file isn't open in another async file handle anymore
 fileHandle_t FS_FOpenFileWriteAsync( const char *filename, qboolean safe ) {
+	const char* ospath = FS_BuildOSPath(fs_homepath->string, fs_gamedir, filename);
+
+	if (safe) {
+		FS_AsyncAssureFileClosed(ospath);
+	}
+
 	fileHandle_t f = FS_HandleForFile();
-	Q_strncpyz(fsh[f].ospath, FS_BuildOSPath( fs_homepath->string, fs_gamedir, filename ), MAX_OSPATH );
+	Q_strncpyz(fsh[f].ospath, ospath, MAX_OSPATH );
 
 	if ( fs_debug->integer ) {
 		Com_Printf( "FS_FOpenFileWriteAsync: %s\n", fsh[f].ospath );

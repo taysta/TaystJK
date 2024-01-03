@@ -1779,7 +1779,7 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 	if (com_developer->integer) {
 		Com_Printf("recording to %s.\n", name);
 	}
-	cl->demo.demofile = FS_FOpenFileWriteAsync( name );
+	cl->demo.demofile = FS_FOpenFileWriteAsync( name, qtrue );
 	if ( !cl->demo.demofile ) {
 		Com_Printf ("ERROR: couldn't open.\n");
 		return;
