@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "keycodes.h"
 #include "game/bg_public.h"
 #include "ui_shared.h"
+#include "qcommon/q_version.h"
 
 // ui_cvar.c
 #define XCVAR_PROTO

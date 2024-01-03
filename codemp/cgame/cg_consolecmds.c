@@ -550,7 +550,7 @@ static void CG_Login_f(void)
 
 static void CG_ModVersion_f(void)
 {
-	trap->Print("^5Your client version of the mod was compiled on %s at %s\n", __DATE__, __TIME__);//ass
+	trap->Print("^5Your cgame version of the mod was compiled on %s at %s (%s-%s)\n", __DATE__, __TIME__, GIT_TAG, GIT_HASH);//ass
 	trap->SendConsoleCommand("ui_modversion\n");
 	if (cgs.serverMod == SVMOD_JAPRO) {
 		trap->SendClientCommand( "modversion" );

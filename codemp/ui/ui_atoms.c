@@ -51,7 +51,7 @@ char *UI_Cvar_VariableString( const char *name ) {
 }
 
 static void UI_Modversion_f(void) {
-	trap->Print("^5Your ui version of the mod was compiled on %s at %s\n", __DATE__, __TIME__);
+	trap->Print("^5Your ui version of the mod was compiled on %s at %s (%s-%s)\n", __DATE__, __TIME__, GIT_TAG, GIT_HASH);
 }
 
 qboolean cgameLoaded() {
