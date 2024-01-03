@@ -2009,7 +2009,7 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 
 				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-					spread = 0.1f;
+					spread = 0.15f;
 				r = Q_random(&seed) * spread;
 				*spreadY = r * sinf(theta);
 				*spreadX = r * cosf(theta);
@@ -2021,8 +2021,12 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 			return;
 		case WP_REPEATER:
 			if (!altFire) {
+				float spread = 1.4f, r;
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-				float r = Q_random(&seed) * 1.4f;
+
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					spread = 0.15f;
+				r = Q_random(&seed) * spread;
 				*spreadY = r * sinf(theta);
 				*spreadX = r * cosf(theta);
 			}
@@ -2456,13 +2460,25 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
             } else
                 FX_DisruptorMainShot(muzzlePoint, trace.endpos);
 		}
-		else if (ent->weapon == WP_CONCUSSION && altFire)
+		else if (cg_simulatedHitscan.integer && ent->weapon == WP_CONCUSSION && altFire)
 		{
+			vec3_t ringspot;
+			float shotDist;
 			VectorMA(muzzlePoint, 16384, forward, endPoint);
 			CG_Trace(&trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID);
 			VectorMA(muzzlePoint, 4, right, muzzlePoint);
 			VectorMA(muzzlePoint, -1, up, muzzlePoint);
+
 			FX_ConcAltShot(muzzlePoint, trace.endpos);
+			FX_DisruptorAltMiss(trace.endpos, trace.plane.normal);
+			CG_MissileHitWall(WP_CONCUSSION, cg.predictedPlayerState.clientNum, trace.endpos, trace.plane.normal, IMPACTSOUND_DEFAULT, qtrue, 0);
+
+			shotDist = 16384 * trace.fraction; //:)
+
+			for (float dist = 0.0f; dist < shotDist; dist += 64.0f) {
+				VectorMA(muzzlePoint, dist, forward, ringspot);
+				trap->FX_PlayEffectID(cgs.effects.mConcussionAltRing, ringspot, forward, -1, -1, qfalse);
+			}
 		}
 		else if (ent->weapon == WP_STUN_BATON)
 		{

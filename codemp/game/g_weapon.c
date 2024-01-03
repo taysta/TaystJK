@@ -2563,10 +2563,11 @@ void rocketThink( gentity_t *ent )
 		VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
 		ent->s.pos.trTime = level.time;
 	}
-	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed)
+	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
 		vec3_t fwd, traceFrom, traceTo, dir;
 		trace_t tr;
+		float dist, currentVel;
 
 		if (!g_entities[ent->r.ownerNum].client)
 			return;
@@ -2589,20 +2590,37 @@ void rocketThink( gentity_t *ent )
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
 		VectorSubtract(tr.endpos, ent->r.currentOrigin, dir);
+		dist = VectorLengthSquared(dir);
+		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		if (VectorLength(dir) < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+		if (dist < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
 			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
 		}
+
+		if ((g_tweakWeapons.integer & WT_TRIBES) && dist < 64*64) {
+			//If its close blow it up.
+			ent->think = G_ExplodeMissile;
+		}
+		else if (dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
+			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
+			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
+		}
+
+		//Speed it up slowly?
 
 		VectorNormalize(dir);
 
 		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
 		//ent->speed = ent->speed + 1.0f;
 
-		if (g_tweakWeapons.integer & WT_TRIBES)
-			VectorScale(dir, 2040 * 0.5, ent->s.pos.trDelta );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (currentVel > 1400)
+				currentVel = 1400;
+			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
+		}
 		else
 			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
 		ent->s.pos.trTime = level.time;
@@ -2700,11 +2718,15 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		}
 	}
 
-	if ( altFire && !(g_tweakWeapons.integer & WT_TRIBES))
-		vel *= 0.5f;
+	if (altFire) {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			vel = 100;
+		else
+			vel *= 0.5f;
+	}
 
 	if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER && !ent->client->sess.raceMode)
-		damage *= 2;
+		damage *= 1.75f;
 
 	if (q3style && ent->client->pers.backwardsRocket) {
 		vectoangles( forward, temp );
@@ -2715,7 +2737,9 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	else if (q3style) {
 		missile = CreateMissileNew( muzzle, forward, vel, 15000, ent, altFire, qfalse, qfalse );
 	}
-	else 
+	else if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER)//No inheritance for redeemer thats op
+		missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, altFire, qfalse, qtrue);
+	else
 		missile = CreateMissileNew( muzzle, forward, vel, 10000, ent, altFire, qtrue, qtrue );
 
 //[JAPRO - Serverside - Weapons - Add inheritance to rocket]
@@ -4126,7 +4150,9 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	qboolean	ghoul2 = qfalse;
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
-	if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage *= 1.75f;
+	else if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
 		damage *= 2.0f;
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - End]

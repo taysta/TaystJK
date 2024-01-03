@@ -3980,7 +3980,8 @@ static void PM_DodgeMove(int forward, int right)
 	VectorNormalize( dodgedir );
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		DODGE_SPEED = pm->ps->speed * 1.5f;
+		pm->ps->jetpackFuel -= 25;
+		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
 #ifdef _GAME
 		G_PlayEffect(EFFECT_LANDING_SAND, pm->ps->origin, dodgedir);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
@@ -4025,25 +4026,25 @@ static void PM_CheckDash(void)
 	static const int DASH_DELAY = 800;
 	int moveStyle = PM_GetMovePhysics();
 
-	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 1.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
+	if (pm->ps->stats[STAT_DASHTIME] > 0)
 		return;
-
 	if (pm->ps->stats[STAT_HEALTH] <= 0) {
 		return;
 	}
 	if (pm->ps->weaponTime > 0)
 		return;
-	if (moveStyle == MV_WSW) {
-	}
-	else if (moveStyle == MV_TRIBES && (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) > 230400) {//480
+	if (moveStyle != MV_WSW && moveStyle != MV_TRIBES) {
 		return;
 	}
-
-	if (pm->ps->stats[STAT_DASHTIME] > 0)
+	
+	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > 225625) || (pm->ps->jetpackFuel < 25))) {
+		return;
+	}
+	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
 		return;
 
 	if (moveStyle == MV_TRIBES)
-		pm->ps->stats[STAT_DASHTIME] = 1200;
+		pm->ps->stats[STAT_DASHTIME] = 1050;
 	else
 		pm->ps->stats[STAT_DASHTIME] = DASH_DELAY;
 
@@ -4051,9 +4052,9 @@ static void PM_CheckDash(void)
 
 	if (pm->cmd.buttons & BUTTON_WALKING || moveStyle == MV_TRIBES) { //Dodge move
 		if (pm->cmd.forwardmove > 0) {//W
-			if (pm->cmd.rightmove > 0) //D
+			if (pm->cmd.rightmove > 0 && moveStyle != MV_TRIBES) //D
 				PM_DodgeMove(1, 1);
-			else if (pm->cmd.rightmove < 0) //A
+			else if (pm->cmd.rightmove < 0 && moveStyle != MV_TRIBES) //A
 				PM_DodgeMove(1, -1);
 			else 
 				PM_DodgeMove(1, 0);
@@ -9494,63 +9495,150 @@ if (pm->ps->duelInProgress)
 		}
 	}
 
-	if (pm->ps->stats[STAT_RACEMODE] && ((pm->ps->weapon == WP_DISRUPTOR) || (pm->ps->weapon == WP_STUN_BATON)) && !pm->ps->duelInProgress) {
-		addTime = 600;
-	}
-	else {
-		if ( pm->cmd.buttons & BUTTON_ALT_ATTACK ) 	{
-			if (pm->ps->weapon == WP_DISRUPTOR && pm->ps->zoomMode != 1) {
-				PM_AddEvent( EV_FIRE_WEAPON );
-				addTime = weaponData[pm->ps->weapon].fireTime;
-			}
-			else {
-				if (pm->ps->weapon != WP_MELEE || !pm->ps->m_iVehicleNum)
-					PM_AddEvent( EV_ALT_FIRE );
-#ifdef _GAME
-				if (pm->ps->weapon == WP_STUN_BATON && g_tweakWeapons.integer & WT_STUN_SHOCKLANCE)
-					addTime = 1500;
-				else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
-					addTime = 3000;
-				else if (pm->ps->weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
-					addTime = 2500;
-				else if (pm->ps->weapon == WP_THERMAL && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
-					addTime = 1500;
-				else if (pm->ps->weapon == WP_BLASTER && pm->ps->stats[STAT_RACEMODE])
-					addTime = 100;
-				else if (pm->ps->weapon == WP_BLASTER && (g_tweakWeapons.integer & WT_TRIBES))
-					addTime = 125;
-				else if (pm->ps->weapon == WP_FLECHETTE && (g_tweakWeapons.integer & WT_TRIBES))
-					addTime = 800;
-				else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
-					addTime = 1800;
-				else
-#endif
-					addTime = weaponData[pm->ps->weapon].altFireTime;
-			}
+	if (pm->cmd.buttons & BUTTON_ALT_ATTACK) {
+		if (pm->ps->weapon == WP_DISRUPTOR && pm->ps->zoomMode != 1) {
+			PM_AddEvent(EV_FIRE_WEAPON);
+			addTime = weaponData[pm->ps->weapon].fireTime;
 		}
 		else {
-			if (pm->ps->weapon != WP_MELEE || !pm->ps->m_iVehicleNum)
-				PM_AddEvent( EV_FIRE_WEAPON );
-#ifdef _GAME
-			if (pm->ps->weapon == WP_DISRUPTOR && g_tweakWeapons.integer & WT_SLOW_SNIPER)//Sad hack to make instagib more playable
-				addTime = 1500;
-			else if (pm->ps->weapon == WP_STUN_BATON && g_tweakWeapons.integer & WT_STUN_LG)
-				addTime = 50;
-			else if (pm->ps->weapon == WP_THERMAL && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
-				addTime = 1500;
-			else if (pm->ps->weapon == WP_CONCUSSION && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 1200;
-			else if (pm->ps->weapon == WP_ROCKET_LAUNCHER && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 1050;
-			else if (pm->ps->weapon == WP_REPEATER && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 200;
-			else
-#endif
-			addTime = weaponData[pm->ps->weapon].fireTime;
-			if ( pm->gametype == GT_SIEGE && pm->ps->weapon == WP_DET_PACK )
-				addTime *= 2;
+			if (pm->ps->weapon != WP_MELEE || !pm->ps->m_iVehicleNum) { //do not fire melee events at all when on vehicle
+				PM_AddEvent(EV_ALT_FIRE);
+			}
+			addTime = weaponData[pm->ps->weapon].altFireTime;
 		}
 	}
+	else {
+		if (pm->ps->weapon != WP_MELEE || !pm->ps->m_iVehicleNum) { //do not fire melee events at all when on vehicle
+			PM_AddEvent(EV_FIRE_WEAPON);
+		}
+		addTime = weaponData[pm->ps->weapon].fireTime;
+	}
+
+	//Override firetimes
+#if _GAME
+	switch (pm->ps->weapon) {
+		case WP_STUN_BATON:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
+				addTime = 600;
+			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE))
+				addTime = 1500;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_LG))
+				addTime = 50;
+			break;
+		case WP_BRYAR_PISTOL:
+			break;
+		case WP_BLASTER:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE])
+				addTime = 100;
+			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 125;
+			break;
+		case WP_DISRUPTOR:
+			if (pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
+				addTime = 600;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && g_tweakWeapons.integer & WT_SLOW_SNIPER)//Sad hack to make instagib more playable
+				addTime = 1500;
+			break;
+		case WP_BOWCASTER:
+			break;
+		case WP_REPEATER:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 3000;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 200;
+			break;
+		case WP_DEMP2:
+			break;
+		case WP_FLECHETTE:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+			addTime = 800;
+			break;
+		case WP_ROCKET_LAUNCHER:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 3500;
+			if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1050;
+			break;
+		case WP_THERMAL:
+			if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1500;
+			break;
+		case WP_DET_PACK:
+			if (pm->gametype == GT_SIEGE)
+				addTime *= 2;
+			break;
+		case WP_CONCUSSION:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1800;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1200;
+			break;
+		default:
+			break;
+	}
+#else
+	switch (pm->ps->weapon) {
+	case WP_STUN_BATON:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
+			addTime = 600;
+		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE))
+			addTime = 1500;
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_LG))
+			addTime = 50;
+		break;
+	case WP_BRYAR_PISTOL:
+		break;
+	case WP_BLASTER:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE])
+			addTime = 100;
+		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 125;
+		break;
+	case WP_DISRUPTOR:
+		if (pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
+			addTime = 600;
+		//else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && g_tweakWeapons.integer & WT_SLOW_SNIPER)//Sad hack to make instagib more playable
+		//	addTime = 1500;
+		break;
+	case WP_BOWCASTER:
+		break;
+	case WP_REPEATER:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 3000;
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 200;
+		break;
+	case WP_DEMP2:
+		break;
+	case WP_FLECHETTE:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 800;
+		break;
+	case WP_ROCKET_LAUNCHER:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 3500;
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1050;
+		break;
+	case WP_THERMAL:
+		if (!pm->ps->stats[STAT_RACEMODE] && /*(g_tweakWeapons.integer & WT_IMPACT_NITRON) ||*/ (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1500;
+		break;
+	case WP_DET_PACK:
+		if (pm->gametype == GT_SIEGE)
+			addTime *= 2;
+		break;
+	case WP_CONCUSSION:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1800;
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1200;
+		break;
+	default:
+		break;
+	}
+#endif
+
 
 #if _GAME
 	if (!(g_tweakForce.integer & FT_NORAGEFIRERATE) || pm->ps->weapon == WP_MELEE || pm->ps->weapon == WP_SABER) {

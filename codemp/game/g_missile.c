@@ -1368,7 +1368,25 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	hook->s.owner = self->s.number;
 
 	hook->s.pos.trType = TR_LINEAR;
-	hook->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;
+
+	if (g_unlagged.integer & UNLAGGED_PROJ_NUDGE && self->client) {
+		//int amount = (owner->client->ps.ping + (1000 / sv_fps.integer)) * 0.5f;
+		int amount = self->client->ps.ping * 0.9;
+
+		if (amount > g_unlaggedProjectileTolerance.integer)
+			amount = g_unlaggedProjectileTolerance.integer;
+
+		if (amount < 0) //dunno
+			amount = 0;
+		else if (amount > 1000) //dunno
+			amount = 1000;
+
+		hook->s.pos.trTime = level.time - amount; //fixmer;
+	}
+	else {
+		hook->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;
+	}
+
 	hook->s.otherEntityNum = -1;
 	hook->s.groundEntityNum = -1;
 
