@@ -3394,11 +3394,23 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 	}
 
 	// check for stop
-	if ( trace->plane.normal[2] > 0 && ent->s.pos.trDelta[2] < 40 ) {
-		trace->endpos[2] += 1.0;	// make sure it is off ground
-		SnapVector( trace->endpos );
-		G_SetOrigin( ent, trace->endpos );
-		ent->s.groundEntityNum = trace->entityNum;
+    if (trace->plane.normal[2] > 0 && ent->s.pos.trDelta[2] < 40) {
+        trace->endpos[2] += 1.0;	// make sure it is off ground
+        SnapVector(trace->endpos);
+        G_SetOrigin(ent, trace->endpos);
+        ent->s.groundEntityNum = trace->entityNum;
+
+        // check if flag is falling to death, to avoid overboarding
+        if ( ent->item && ent->item->giType == IT_TEAM) {
+                vec3_t		origin;
+                trace_t		tr;    
+                BG_EvaluateTrajectory(&ent->s.pos, level.time, origin);
+				JP_Trace(&tr, ent->r.currentOrigin, ent->r.mins, ent->r.maxs, origin, ent->r.ownerNum, CONTENTS_TRIGGER, qfalse, 0, 0);
+				//Emergent gameplay is to bounce the flag in a pit so it never stops moving and won't return until timer makes it return :?
+                if ( (tr.startsolid || tr.fraction != 1) && g_entities[tr.entityNum].damage == -1 ) {
+                    ent->nextthink = level.time;
+                }    
+        }
 		return;
 	}
 
