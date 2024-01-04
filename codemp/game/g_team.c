@@ -317,9 +317,15 @@ void Team_SetFlagStatus( int team, flagStatus_t status ) {
 		char st[4];
 
 		if( level.gametype == GT_CTF || level.gametype == GT_CTY ) {
-			st[0] = ctfFlagStatusRemap[teamgame.redStatus];
-			st[1] = ctfFlagStatusRemap[teamgame.blueStatus];
-			st[2] = 0;
+			if (g_neutralFlag.integer >= 4) {
+				st[0] = ctfFlagStatusRemap[teamgame.flagStatus];
+				st[1] = 0;
+			}
+			else {
+				st[0] = ctfFlagStatusRemap[teamgame.redStatus];
+				st[1] = ctfFlagStatusRemap[teamgame.blueStatus];
+				st[2] = 0;
+			}
 		}
 
 		trap->SetConfigstring( CS_FLAGSTATUS, st );
