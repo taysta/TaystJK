@@ -317,10 +317,8 @@ void Team_SetFlagStatus( int team, flagStatus_t status ) {
 		char st[4];
 
 		if( level.gametype == GT_CTF || level.gametype == GT_CTY ) {
-			if (g_neutralFlag.integer >= 4) {
-				st[0] = ctfFlagStatusRemap[teamgame.flagStatus];
-				st[1] = 0;
-				return;//IDK, bugged
+			if (g_neutralFlag.integer) {
+				return;//IDK, bugged,  Fix this?,  It sends a weird configstring to clients when used with neutralflag?
 			}
 			else {
 				st[0] = ctfFlagStatusRemap[teamgame.redStatus];
