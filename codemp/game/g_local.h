@@ -30,6 +30,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "bg_public.h"
 #include "bg_vehicles.h"
 #include "g_public.h"
+#include "qcommon/q_version.h"
 
 typedef struct gentity_s gentity_t;
 typedef struct gclient_s gclient_t;
