@@ -2611,6 +2611,18 @@ void rocketThink( gentity_t *ent )
 
 		//Speed it up slowly?
 
+		if ((g_tweakWeapons.integer & WT_TRIBES) && dist < 64*64) {
+			//If its close blow it up.
+			ent->think = G_ExplodeMissile;
+		}
+		else if (dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+			dir[0] += crandom() * 10;
+			dir[1] += crandom() * 10;
+			dir[2] += crandom() * 10;
+		}
+
+		//Speed it up slowly?
+
 		VectorNormalize(dir);
 
 		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
@@ -3113,11 +3125,6 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashRadius = 192;
 	}
 	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
-		bolt->damage = 60 * g_weaponDamageScale.integer;
-		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
-		bolt->splashRadius = 96;//128
-	}
-	else if (g_tweakWeapons.integer & WT_TRIBES) {
 		bolt->damage = 60 * g_weaponDamageScale.integer;
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128

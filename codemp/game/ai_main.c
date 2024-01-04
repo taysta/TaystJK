@@ -7329,7 +7329,6 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 		}
 
 
-
 		return;
 	}
 
@@ -7832,6 +7831,64 @@ int NewBotAI_GetGrip(bot_state_t *bs) {
 	if ((bs->currentEnemy->client->ps.saberMove > 1) && (bs->currentEnemy->client->ps.fd.saberAnimLevel == SS_STRONG && !(bs->cur_ps.weaponstate == WEAPON_CHARGING_ALT)))
 		return (ourHealth - hisForce);
 
+	return 0;
+}
+
+int NewBotAI_GetTeamEnergize(bot_state_t* bs) {
+	int i, weight = 0, force;
+	vec3_t diff;
+
+	if (g_forcePowerDisable.integer & (1 << FP_TEAM_FORCE))
+		return 0;
+	if (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_TEAM_FORCE)))
+		return 0;
+	if (g_gametype.integer < GT_TEAM)
+		return 0;
+
+	g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_TEAM_FORCE] = 3;//hack
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (i == bs->client)
+			continue;
+		if (!&g_entities[i] || !g_entities[i].client || !g_entities[i].inuse || g_entities[i].health <= 0)
+			continue;
+		if (g_entities[i].client->ps.fd.forcePower > bs->cur_ps.fd.forcePower)
+			continue;
+		if (g_entities[i].health > g_entities[bs->client].health)
+			continue;
+
+		VectorSubtract(bs->cur_ps.origin, g_entities[i].client->ps.origin, diff);
+		if (VectorLengthSquared(diff) > 512 * 512) //out of range
+			continue;
+
+		force = 100 - g_entities[i].client->ps.fd.forcePower;
+
+		weight += force * 0.5f; //bots together strong
+	}
+	return weight;
+}
+
+int NewBotAI_GetSaberthrow(bot_state_t* bs) {
+
+	//Check if we should saberthrow I guess.
+	if (bs->cur_ps.weapon == WP_SABER && /*(bs->cur_ps.fd.forcePowersKnown & (1 << FP_SABERTHROW)*/ bs->frame_Enemy_Len < 400) {
+		if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) {
+			g_entities[bs->client].client->ps.fd.forcePowerLevel[FP_SABERTHROW] = 3;
+			g_entities[bs->client].client->ps.fd.forcePowersKnown |= (1 << FP_SABERTHROW);
+
+			if (bs->cur_ps.fd.forcePower > 40 && (bs->currentEnemy->health + bs->currentEnemy->client->ps.stats[STAT_ARMOR]) <= 50) {
+				trap->EA_Alt_Attack(bs->client);
+				return 100;
+			}
+			/*
+			else if ((((bs->cur_ps.fd.forcePower > bs->currentEnemy->client->ps.fd.forcePower) && bs->cur_ps.fd.forcePower > 40) || (bs->cur_ps.fd.forcePower > 70)) && g_entities[bs->client].health > 75 && bs->currentEnemy->health < 70) {
+				trap->EA_Alt_Attack(bs->client);
+				Com_Printf("Throwing 2\n");
+				return;
+			}
+			*/
+		}
+	}
 	return 0;
 }
 

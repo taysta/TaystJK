@@ -1296,6 +1296,14 @@ static void PM_Friction( void ) {
 	}
 #endif
 
+	//MV_tRIBES air drag
+#if 0
+	if (pm->ps->pm_type != PM_SPECTATOR && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		if (speed > pm->ps->speed * 1.44f)
+			drop = speed*g_flagDrag.value*0.1*pml.frametime;
+	}
+#endif
+
 	// scale the velocity
 	newspeed = speed - drop;
 	if (newspeed < 0) {
@@ -4036,7 +4044,7 @@ static void PM_CheckDash(void)
 	if (moveStyle != MV_WSW && moveStyle != MV_TRIBES) {
 		return;
 	}
-	
+
 	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > 225625) || (pm->ps->jetpackFuel < 25))) {
 		return;
 	}
@@ -4378,12 +4386,6 @@ static void PM_GrappleMoveTribes(void) {
 	vlen = VectorLength(vel);
 	VectorNormalize(vel);
 
-
-
-
-
-
-
 	VectorCopy(bgEnt->s.pos.trDelta, enemyVel);
 	VectorNormalize(enemyVel);
 
@@ -4395,7 +4397,6 @@ static void PM_GrappleMoveTribes(void) {
 
 	if (pullSpeed < 100)
 		pullSpeed = 100;
-
 
 	if (vlen < (pullSpeed / 2))
 		PM_Accelerate(vel, 2 * vlen, vlen * (pullStrength2 / (float)pullSpeed));
@@ -4410,7 +4411,6 @@ static void PM_GrappleMoveTribes(void) {
 	pml.groundPlane = qfalse;
 
 	PM_GetGrappleAnim();
-}
 #endif
 
 /*
