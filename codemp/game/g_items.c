@@ -2803,7 +2803,10 @@ gentity_t *LaunchItem( gitem_t *item, vec3_t origin, vec3_t velocity ) {
 //JAPRO - Serverside - Flagthrow - Physics bounce - Start
 	if (g_allowFlagThrow.integer && item->giType == IT_TEAM)
 	{
-		dropped->physicsBounce = 0.6f;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			dropped->physicsBounce = 0.5f;
+		else
+			dropped->physicsBounce = 0.6f;
 	}
 //JAPRO - Serverside - Flagthrow - Physics bounce - End
 
