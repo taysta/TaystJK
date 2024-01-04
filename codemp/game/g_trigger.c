@@ -2101,7 +2101,7 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 
 	if (trigger->genericValue1) {
 		//Bitmask that covers allowed movementstyles.  If the movementstyle is not here, don't activate the jumppad for that player.
-		if (trigger->genericValue1 & player->client->sess.movementStyle) {
+		if (trigger->genericValue1 & (1 << player->client->sess.movementStyle)) {
 		}
 		else return;
 	}

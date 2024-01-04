@@ -6308,10 +6308,11 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			{ //say my pilot did it.
 				G_Damage (ent, NULL, (gentity_t *)attacker->m_pVehicle->m_pPilot, dir, origin, (int)points, DAMAGE_RADIUS, mod);
 			}
-			else if (ent->s.eType == ET_ITEM && ent->r.contents & CONTENTS_CORPSE)
+			else if (ent->s.eType == ET_ITEM && ent->r.contents & CONTENTS_CORPSE) //Flag knockback splashdamage
 			{
 				vec3_t kvel;
-				VectorScale(dir, g_knockback.value * (float)damage/20000.0f, kvel);
+				VectorNormalize(dir);
+				VectorScale(dir, g_knockback.value * (float)points/150.0f, kvel);
 				ent->s.pos.trType = TR_GRAVITY;
 				ent->s.pos.trTime = level.time;
 				VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);

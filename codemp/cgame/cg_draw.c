@@ -11134,7 +11134,7 @@ static void CG_Draw2D( void ) {
 		if (cg_autoKillWhenFalling.integer && cgs.clientinfo[cg.clientNum].team != TEAM_SPECTATOR) {
 			if (cg.lastAutoKillTime < (cg.time - 500))
 				trap->SendConsoleCommand("kill\n");
-			trap->SendConsoleCommand("+attack;waitf 2;-attack\n");
+			trap->SendConsoleCommand("+attack;wait 2;-attack\n");
 			cg.lastAutoKillTime = cg.time;
 		}
 
