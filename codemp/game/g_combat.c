@@ -621,9 +621,6 @@ void TossClientItems( gentity_t *self ) {
 	if (g_gunGame.integer)
 		return;
 
-	if (g_gunGame.integer)
-		return;
-
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
 

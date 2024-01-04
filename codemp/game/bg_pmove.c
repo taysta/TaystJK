@@ -1296,14 +1296,6 @@ static void PM_Friction( void ) {
 	}
 #endif
 
-	//MV_tRIBES air drag
-#if 0
-	if (pm->ps->pm_type != PM_SPECTATOR && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		if (speed > pm->ps->speed * 1.44f)
-			drop = speed*g_flagDrag.value*0.1*pml.frametime;
-	}
-#endif
-
 	// scale the velocity
 	newspeed = speed - drop;
 	if (newspeed < 0) {
@@ -4411,6 +4403,7 @@ static void PM_GrappleMoveTribes(void) {
 	pml.groundPlane = qfalse;
 
 	PM_GetGrappleAnim();
+}
 #endif
 
 /*
