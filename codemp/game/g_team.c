@@ -320,6 +320,7 @@ void Team_SetFlagStatus( int team, flagStatus_t status ) {
 			if (g_neutralFlag.integer >= 4) {
 				st[0] = ctfFlagStatusRemap[teamgame.flagStatus];
 				st[1] = 0;
+				return;//IDK, bugged
 			}
 			else {
 				st[0] = ctfFlagStatusRemap[teamgame.redStatus];
