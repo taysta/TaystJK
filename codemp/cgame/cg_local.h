@@ -206,7 +206,6 @@ typedef enum //server mod enum
 	SVMOD_JAPRO,
 } serverMod_t;
 
-
 typedef enum {
 	FOOTSTEP_STONEWALK,
 	FOOTSTEP_STONERUN,

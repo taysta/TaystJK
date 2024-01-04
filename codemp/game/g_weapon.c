@@ -3122,11 +3122,6 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
-	else if (g_tweakWeapons.integer & WT_TRIBES) {
-		bolt->damage = 60 * g_weaponDamageScale.integer;
-		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
-		bolt->splashRadius = 96;//128
-	}
 	else {
 		bolt->damage = TD_DAMAGE;
 		bolt->splashDamage = TD_SPLASH_DAM;

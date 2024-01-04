@@ -7328,8 +7328,6 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 			*/
 		}
 
-
-
 		return;
 	}
 
