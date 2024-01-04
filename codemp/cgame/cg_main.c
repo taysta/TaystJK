@@ -1400,7 +1400,7 @@ static void CG_RegisterGraphics( void ) {
 		trap->R_RegisterShaderNoMip("gfx/2d/net.tga");
 	}
 
-	if ( cgs.serverMod == SVMOD_JAPRO && ( cgs.gametype == GT_FFA || cgs.gametype == GT_TEAM ) )//loda
+	if ( cgs.serverMod == SVMOD_JAPRO && ( cgs.gametype == GT_FFA || cgs.gametype == GT_TEAM || cgs.gametype == GT_CTF) )//loda
 	{
 		cgs.media.neutralFlagModel = trap->R_RegisterModel( "models/flags/n_flag.md3" );
 	}
