@@ -282,29 +282,37 @@ void CreateShield(gentity_t *ent)
 	qboolean	xaxis;
 	int			paramData = 0;
 //	static int	shieldID;
+	int shieldheight = MAX_SHIELD_HEIGHT, shieldhalfthickness = SHIELD_HALFTHICKNESS, shieldhalfwidth = MAX_SHIELD_HALFWIDTH, shieldhealth = SHIELD_HEALTH;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		shieldheight = 102;
+		shieldhalfthickness = 4;
+		shieldhalfwidth = 76;
+		shieldhealth = 150;
+	}
 
 	// trace upward to find height of shield
 	VectorCopy(ent->r.currentOrigin, end);
-	end[2] += MAX_SHIELD_HEIGHT;
+	end[2] += shieldheight;
 	JP_Trace (&tr, ent->r.currentOrigin, NULL, NULL, end, ent->s.number, MASK_SHOT, qfalse, 0, 0 );
-	height = (int)(MAX_SHIELD_HEIGHT * tr.fraction);
+	height = (int)(shieldheight * tr.fraction);
 
 	// use angles to find the proper axis along which to align the shield
-	VectorSet(mins, -SHIELD_HALFTHICKNESS, -SHIELD_HALFTHICKNESS, 0);
-	VectorSet(maxs, SHIELD_HALFTHICKNESS, SHIELD_HALFTHICKNESS, height);
+	VectorSet(mins, -shieldhalfthickness, -shieldhalfthickness, 0);
+	VectorSet(maxs, shieldhalfthickness, shieldhalfthickness, height);
 	VectorCopy(ent->r.currentOrigin, posTraceEnd);
 	VectorCopy(ent->r.currentOrigin, negTraceEnd);
 
 	if ((int)(ent->s.angles[YAW]) == 0) // shield runs along y-axis
 	{
-		posTraceEnd[1]+=MAX_SHIELD_HALFWIDTH;
-		negTraceEnd[1]-=MAX_SHIELD_HALFWIDTH;
+		posTraceEnd[1]+= shieldhalfwidth;
+		negTraceEnd[1]-= shieldhalfwidth;
 		xaxis = qfalse;
 	}
 	else  // shield runs along x-axis
 	{
-		posTraceEnd[0]+=MAX_SHIELD_HALFWIDTH;
-		negTraceEnd[0]-=MAX_SHIELD_HALFWIDTH;
+		posTraceEnd[0]+= shieldhalfwidth;
+		negTraceEnd[0]-= shieldhalfwidth;
 		xaxis = qtrue;
 	}
 
@@ -313,10 +321,10 @@ void CreateShield(gentity_t *ent)
 	VectorCopy(ent->r.currentOrigin, start);
 	start[2] += (height>>1);
 	JP_Trace (&tr, start, 0, 0, posTraceEnd, ent->s.number, MASK_SHOT, qfalse, 0, 0 );
-	posWidth = MAX_SHIELD_HALFWIDTH * tr.fraction;
+	posWidth = shieldhalfwidth * tr.fraction;
 	// negative trace
 	JP_Trace (&tr, start, 0, 0, negTraceEnd, ent->s.number, MASK_SHOT, qfalse, 0, 0 );
-	negWidth = MAX_SHIELD_HALFWIDTH * tr.fraction;
+	negWidth = shieldhalfwidth * tr.fraction;
 
 	// kef -- monkey with dimensions and place origin in center
 	halfWidth = (posWidth + negWidth)>>1;
@@ -333,13 +341,13 @@ void CreateShield(gentity_t *ent)
 	// set entity's mins and maxs to new values, make it solid, and link it
 	if (xaxis)
 	{
-		VectorSet(ent->r.mins, -halfWidth, -SHIELD_HALFTHICKNESS, -(height>>1));
-		VectorSet(ent->r.maxs, halfWidth, SHIELD_HALFTHICKNESS, height>>1);
+		VectorSet(ent->r.mins, -halfWidth, -shieldhalfthickness, -(height>>1));
+		VectorSet(ent->r.maxs, halfWidth, shieldhalfthickness, height>>1);
 	}
 	else
 	{
-		VectorSet(ent->r.mins, -SHIELD_HALFTHICKNESS, -halfWidth, -(height>>1));
-		VectorSet(ent->r.maxs, SHIELD_HALFTHICKNESS, halfWidth, height);
+		VectorSet(ent->r.mins, -shieldhalfthickness, -halfWidth, -(height>>1));
+		VectorSet(ent->r.maxs, shieldhalfthickness, halfWidth, height);
 	}
 	ent->clipmask = MASK_SHOT;
 
@@ -359,7 +367,7 @@ void CreateShield(gentity_t *ent)
 	}
 	else
 	{
-		ent->health = ceil((float)(SHIELD_HEALTH*1));
+		ent->health = ceil((float)(shieldhealth *1));
 	}
 
 	ent->s.time = ent->health;//???
@@ -561,7 +569,10 @@ void pas_fire( gentity_t *ent )
 	myOrg[1] += fwd[1]*16;
 	myOrg[2] += fwd[2]*16;
 
-	WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 2300, MOD_SENTRY, ent );
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 5220, MOD_SENTRY, ent );
+	else 
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 2300, MOD_SENTRY, ent);
 
 	G_RunObject(ent);
 }
@@ -574,7 +585,8 @@ static qboolean pas_find_enemies( gentity_t *self )
 {
 	qboolean	found = qfalse;
 	int			count, i;
-	float		bestDist = TURRET_RADIUS*TURRET_RADIUS;
+	float		radius = TURRET_RADIUS;
+	float		bestDist = radius*radius;
 	float		enemyDist;
 	vec3_t		enemyDir, org, org2;
 	gentity_t	*entity_list[MAX_GENTITIES], *target;
@@ -588,6 +600,11 @@ static qboolean pas_find_enemies( gentity_t *self )
 			G_Sound(self, CHAN_BODY, G_SoundIndex( "sound/chars/turret/ping.wav" ));
 			self->painDebounceTime = level.time + 1000;
 		}
+	}
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		radius = 2048;
+		bestDist = 2048 * 2048;
 	}
 
 	VectorCopy(self->s.pos.trBase, org2);
@@ -743,6 +760,9 @@ void pas_think( gentity_t *ent )
 	int			i = 0;
 	qboolean	clTrapped = qfalse;
 	vec3_t		testMins, testMaxs;
+	int lifetime = TURRET_LIFETIME;
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		lifetime = 600000;
 
 	testMins[0] = ent->r.currentOrigin[0] + ent->r.mins[0]+4;
 	testMins[1] = ent->r.currentOrigin[1] + ent->r.mins[1]+4;
@@ -807,7 +827,7 @@ void pas_think( gentity_t *ent )
 		return;
 	}
 
-	if ((ent->genericValue8+TURRET_LIFETIME) < level.time)
+	if ((ent->genericValue8+ lifetime) < level.time)
 	{
 		G_Sound( ent, CHAN_BODY, G_SoundIndex( "sound/chars/turret/shutdown.wav" ));
 		ent->s.bolt2 = ENTITYNUM_NONE;
@@ -1674,25 +1694,63 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 	VectorMA(p, -16.0f, d, bPoint);
 
 	//create the missile
-	missile = CreateMissileNew( bPoint, d, 1200.0f, 10000, owner, qfalse, qfalse, qfalse );
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		vec3_t angs;
+		vectoangles(d, angs);
 
-	missile->classname = "generic_proj";
-	missile->s.weapon = WP_TURRET;
+		// add some slop
+		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
+			int seed = owner->client->pers.cmd.serverTime % 10000;
+			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+			float r = Q_random(&seed) * 1.75f;
 
-	missile->damage = EWEB_MISSILE_DAMAGE;
-	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
-	missile->methodOfDeath = MOD_TURBLAST;
-	missile->clipmask = (MASK_SHOT|CONTENTS_LIGHTSABER);
+			angs[PITCH] += r * sin(theta);
+			angs[YAW] += r * cos(theta);
+		}
+		else {
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * 1.75f;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 1.75f;
+		}
+		AngleVectors(angs, d, NULL, NULL);
+		missile = CreateMissileNew(bPoint, d, 5220, 10000, owner, qfalse, qfalse, qfalse);
 
-	//ignore the e-web entity
-	missile->passThroughNum = eweb->s.number+1;
+		missile->classname = "flech_proj";
+		missile->s.weapon = WP_FLECHETTE;
 
-	//times it can bounce before it dies
-	missile->bounceCount = 8;
+		missile->damage = 25;
+		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+		missile->methodOfDeath = MOD_BLASTER;
+		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 
-	//play the muzzle flash
-	vectoangles(d, d);
-	G_PlayEffectID(G_EffectIndex("turret/muzzle_flash.efx"), p, d);
+		// we don't want it to bounce forever
+		missile->bounceCount = 8;
+
+		vectoangles(d, d);
+		G_PlayEffectID(G_EffectIndex("turret/muzzle_flash.efx"), p, d);
+	}
+	else {
+		missile = CreateMissileNew(bPoint, d, 1200.0f, 10000, owner, qfalse, qfalse, qfalse);
+
+		missile->classname = "generic_proj";
+		missile->s.weapon = WP_TURRET;
+
+		missile->damage = EWEB_MISSILE_DAMAGE;
+		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+		missile->methodOfDeath = MOD_TURBLAST;
+		missile->clipmask = (MASK_SHOT | CONTENTS_LIGHTSABER);
+
+		//ignore the e-web entity
+		missile->passThroughNum = eweb->s.number + 1;
+
+		//times it can bounce before it dies
+		missile->bounceCount = 8;
+
+		//play the muzzle flash
+		vectoangles(d, d);
+		G_PlayEffectID(G_EffectIndex("turret/muzzle_flash.efx"), p, d);
+	}
+
+
 }
 
 //lock the owner into place relative to the cannon pos
@@ -2605,6 +2663,8 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		predict = qtrue;
 		break;
 	case IT_ARMOR:
+		if (other->client->pers.tribesClass == 1)
+			break;
 		respawn = Pickup_Armor(ent, other);
 //		predict = qfalse;
 		predict = qtrue;

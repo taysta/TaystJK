@@ -4279,6 +4279,14 @@ void ClientThink_real( gentity_t *ent ) {
 		else if (g_gunGame.integer && !client->sess.raceMode && !client->ps.stats[STAT_RACEMODE] && client->ps.weapon == WP_SABER && client->forcedFireMode != 2)
 			client->ps.speed *= 1.28f;
 
+		if (!client->ps.stats[STAT_RACEMODE] && g_tweakWeapons.integer & WT_TRIBES) {
+			if (client->pers.tribesClass == 2) {//Heavy
+				client->ps.speed *= 0.75f;
+				client->ps.iModelScale = 125;
+				VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
+			}
+		}
+
 		//Check for a siege class speed multiplier
 		if (level.gametype == GT_SIEGE &&
 			client->siegeClass != -1)

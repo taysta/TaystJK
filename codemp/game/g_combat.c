@@ -513,6 +513,9 @@ void TossClientWeapon(gentity_t *self, vec3_t direction, float speed)
 	if ((g_startingWeapons.integer & (1 << weapon)) && (g_forcePowerDisable.integer & (1 << FP_PULL)) && (g_tweakWeapons.integer & WT_INFINITE_AMMO))//Dont toss weapon if thers no possible use for it
 		return;
 
+	if (self->client && self->client->pers.tribesClass)
+		return;//No weapon pickups in tribes class system ?
+
 
 	if (weapon <= WP_BRYAR_PISTOL)
 	{ //can't have this
