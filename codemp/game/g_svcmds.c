@@ -686,7 +686,7 @@ void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting
 		ent = &g_entities[i];
 		if (!ent->client || !ent->inuse)
 			continue;
-		if (level.gametype < GT_TEAM && (ent->client->sess.sessionTeam == TEAM_RED) || (ent->client->sess.sessionTeam == TEAM_BLUE))
+		if ((level.gametype < GT_TEAM) && ((ent->client->sess.sessionTeam == TEAM_RED) || (ent->client->sess.sessionTeam == TEAM_BLUE)))
 			SetTeam(ent, "f", qtrue);
 		if (level.gametype >= GT_TEAM && (ent->client->sess.sessionTeam == TEAM_FREE) && !ent->client->sess.raceMode) {
 			if (red)
@@ -882,7 +882,7 @@ void Svcmd_ToggleTweakWeapons_f( void ) {
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = ((1 << MAX_WEAPON_TWEAKS) - 1); //overflow?
+		const uint32_t mask = (1 << MAX_WEAPON_TWEAKS); //overflow?
 
 		trap->Argv( 1, arg, sizeof(arg) );
 		index = atoi( arg );

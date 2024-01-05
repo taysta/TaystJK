@@ -1274,7 +1274,7 @@ int NPC_FindNearestEnemy( gentity_t *ent )
 	int			nearestEntID = -1;
 	float		nearestDist = (float)WORLD_SIZE*(float)WORLD_SIZE;
 	float		distance;
-	int			numEnts, numChecks = 0;
+	int			numEnts; //, numChecks = 0;
 	int			i;
 
 	//Setup the bbox to search in
@@ -1298,7 +1298,7 @@ int NPC_FindNearestEnemy( gentity_t *ent )
 		if ( NPC_ValidEnemy( radEnt ) == qfalse )
 			continue;
 
-		numChecks++;
+		//numChecks++;
 		//Must be visible
 		if ( NPC_TargetVisible( radEnt ) == qfalse )
 			continue;

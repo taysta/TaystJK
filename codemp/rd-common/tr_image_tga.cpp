@@ -147,15 +147,15 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 	// bits 4-5 = pixel order/dir
 	// bits 6-7 scan line interleave (00b=none,01b=2way interleave,10b=4way)
 	//
-	int iYStart,iXStart,iYStep,iXStep;
+	int iYStart, iYStep; //iXStart,iXStep;
 
 	switch(pHeader->byScanLineOrder & 0x30)
 	{
 		default:	// default case stops the compiler complaining about using uninitialised vars
 		case 0x00:					//	left to right, bottom to top
 
-			iXStart = 0;
-			iXStep  = 1;
+			//iXStart = 0;
+			//iXStep  = 1;
 
 			iYStart = pHeader->wImageHeight-1;
 			iYStep  = -1;
@@ -164,8 +164,8 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 		case 0x10:					//  right to left, bottom to top
 
-			iXStart = pHeader->wImageWidth-1;
-			iXStep  = -1;
+			//iXStart = pHeader->wImageWidth-1;
+			//iXStep  = -1;
 
 			iYStart = pHeader->wImageHeight-1;
 			iYStep	= -1;
@@ -174,8 +174,8 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 		case 0x20:					//  left to right, top to bottom
 
-			iXStart = 0;
-			iXStep  = 1;
+			//iXStart = 0;
+			//iXStep  = 1;
 
 			iYStart = 0;
 			iYStep  = 1;
@@ -184,8 +184,8 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 
 		case 0x30:					//  right to left, top to bottom
 
-			iXStart = pHeader->wImageWidth-1;
-			iXStep  = -1;
+			//iXStart = pHeader->wImageWidth-1;
+			//iXStep  = -1;
 
 			iYStart = 0;
 			iYStep  = 1;
@@ -218,7 +218,7 @@ void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 		for (int y=iYStart, iYCount=0; iYCount<pHeader->wImageHeight; y+=iYStep, iYCount++)
 		{
 			pOut = pRGBA + y * pHeader->wImageWidth *4;
-			for (int x=iXStart, iXCount=0; iXCount<pHeader->wImageWidth; x+=iXStep, iXCount++)
+			for (int iXCount=0; iXCount<pHeader->wImageWidth; iXCount++)
 			{
 				switch (pHeader->byImagePlanes)
 				{

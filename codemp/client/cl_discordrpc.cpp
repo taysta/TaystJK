@@ -483,12 +483,12 @@ void CL_DiscordUpdatePresence(void)
 	{ //send join information blank since it won't do anything in this case
 		discordPresence.partyId = PartyID(); // Server-IP zum abgleichen discordchat - send join request in discord chat
 		if (cl_discordRichPresence->integer > 1) {
-			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : NULL;
-			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : NULL;
+			discordPresence.partySize = cls.state == CA_ACTIVE ? 1 : 0;
+			discordPresence.partyMax = cls.state == CA_ACTIVE ? ((cl.discord.maxPlayers - cl.discord.playerCount) + discordPresence.partySize) : 0;
 		}
 		else {
-			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : NULL;
-			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : NULL;
+			discordPresence.partySize = cls.state >= CA_LOADING ? cl.discord.playerCount : 0;
+			discordPresence.partyMax = cls.state >= CA_LOADING ? cl.discord.maxPlayers : 0;
 		}
 		discordPresence.joinSecret = joinSecret(); // Server-IP zum discordJoin ausf�hren - serverip for discordjoin to execute
 	}
