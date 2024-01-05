@@ -1049,6 +1049,7 @@ static void stbi__vertical_flip(void *image, int w, int h, int bytes_per_pixel)
 	}
 }
 
+/*
 static void stbi__vertical_flip_slices(void *image, int w, int h, int z, int bytes_per_pixel)
 {
 	int slice;
@@ -1059,7 +1060,7 @@ static void stbi__vertical_flip_slices(void *image, int w, int h, int z, int byt
 		stbi__vertical_flip(bytes, w, h, bytes_per_pixel);
 		bytes += slice_size;
 	}
-}
+} */
 
 static unsigned char *stbi__load_and_postprocess_8bit(stbi__context *s, int *x, int *y, int *comp, int req_comp)
 {
@@ -1406,6 +1407,7 @@ stbi_inline static int stbi__at_eof(stbi__context *s)
 	return s->img_buffer >= s->img_buffer_end;
 }
 
+/*
 static void stbi__skip(stbi__context *s, int n)
 {
 	if (n < 0) {
@@ -1421,7 +1423,7 @@ static void stbi__skip(stbi__context *s, int n)
 		}
 	}
 	s->img_buffer += n;
-}
+}*/
 
 static int stbi__getn(stbi__context *s, stbi_uc *buffer, int n)
 {
@@ -1448,17 +1450,18 @@ static int stbi__getn(stbi__context *s, stbi_uc *buffer, int n)
 		return 0;
 }
 
+/*
 static int stbi__get16be(stbi__context *s)
 {
 	int z = stbi__get8(s);
 	return (z << 8) + stbi__get8(s);
-}
-
+}*/
+/*
 static stbi__uint32 stbi__get32be(stbi__context *s)
 {
 	stbi__uint32 z = stbi__get16be(s);
 	return (z << 16) + stbi__get16be(s);
-}
+}*/
 
 #if defined(STBI_NO_BMP) && defined(STBI_NO_TGA) && defined(STBI_NO_GIF)
 // nothing
@@ -1491,6 +1494,8 @@ static stbi__uint32 stbi__get32le(stbi__context *s)
 //
 //  assume data buffer is malloced, so malloc a new one and free that one
 //  only failure mode is malloc failing
+
+/*
 
 static stbi_uc stbi__compute_y(int r, int g, int b)
 {
@@ -1589,7 +1594,7 @@ static stbi__uint16 *stbi__convert_format16(stbi__uint16 *data, int img_n, int r
 	STBI_FREE(data);
 	return good;
 }
-
+ */
 #ifndef STBI_NO_LINEAR
 static float   *stbi__ldr_to_hdr(stbi_uc *data, int x, int y, int comp)
 {

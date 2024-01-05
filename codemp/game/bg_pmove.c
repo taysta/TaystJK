@@ -1312,7 +1312,7 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 {
         int		i;
 		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
-                
+
 		if (pm->ps->pm_type == PM_DEAD)
 			return;
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
@@ -3337,7 +3337,7 @@ static qboolean PM_CheckJump( void )
 			if (added > 0) {
 				if (moveStyle == MV_QW || moveStyle == MV_PJK)
 					pm->ps->velocity[2] += (added * 0.75f); //Forcejump rampjump initial upspeed
-				else if ((moveStyle == MV_WSW))
+				else if (moveStyle == MV_WSW)
 					pm->ps->velocity[2] += (added * 0.75f);//Make rampjump weaker for wsw since no speedloss
 				else
 					pm->ps->velocity[2] += (added * 1.25f); //Make rampjump stronger for cpm/q3/slick
@@ -4066,7 +4066,7 @@ static void PM_ThrustMove(void)
 	if (pm->ps->stats[STAT_WJTIME] > 500) { //500 to 0
 		float strength;
 		float basespeed = pm->ps->basespeed;
-		float dot = DotProduct(pml.forward, pm->ps->velocity); //-1 to 1.  -1 should be strongest 1 sh ould be weakest.  
+		float dot = DotProduct(pml.forward, pm->ps->velocity); //-1 to 1.  -1 should be strongest 1 sh ould be weakest.
 
 		if (dot < 0)
 			dot = 0;
@@ -4077,7 +4077,7 @@ static void PM_ThrustMove(void)
 
 		//Com_Printf("Strength modifier is %.2f because dot is %.2f and speed is %.2f\n", strength, dot, basespeed);
 		//Modify strength based on current vel length.  Faster we are going, less it boosts.  but define "we are going" as the vel length times the dotproduct of vel and forward.  Lower cap at 0 instead of -1.
-		
+
 		if (strength > 3)
 			strength = 3;
 		else if (strength < 0.4)
@@ -4108,7 +4108,7 @@ static void PM_BlinkMove(void) //Just blink for now
 	//Todo - fix the trace behaviour where if it hits a plane it just stops at that spot.  Should slide along for the rest of the stepsize?  this makes it really hard to use this if you are on the ground and aimed even 1 degree down
 	//Todo, rewrite so only checks if button is used.  Also way to pick a special (force profile?). Also rewrite so this calls individual special functions.
 
-	//Maybe there is a better way to do this performance-wise.  Or a way to redesign the traces so that instead of doign 1 every frame, it does 1 every time the trace stepsize > 100 or something.  
+	//Maybe there is a better way to do this performance-wise.  Or a way to redesign the traces so that instead of doign 1 every frame, it does 1 every time the trace stepsize > 100 or something.
 	//E.g. adding the blink stepsize each frame and only doing a trace when it hits the limit, then resetting the counter.
 	//Doing time*time means the traces at start/finish are very small
 
@@ -9743,7 +9743,7 @@ if (pm->ps->duelInProgress)
 				addTime = 1050;
 			break;
 		case WP_THERMAL:
-			if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES))
+			if (!(pm->ps->stats[STAT_RACEMODE]) && ((g_tweakWeapons.integer & WT_IMPACT_NITRON) || (g_tweakWeapons.integer & WT_TRIBES)))
 				addTime = 1500;
 			break;
 		case WP_DET_PACK:
@@ -12566,10 +12566,11 @@ void PM_MoveForKata(usercmd_t *ucmd)
 	}
 }
 
+/*
 static QINLINE float bg_roundfloat(float n)
 {
 	return (n < 0.0f) ? ceilf(n - 0.5f) : floorf(n + 0.5f);
-}
+}*/
 
 void PmoveSingle (pmove_t *pmove) {
 	qboolean stiffenedUp = qfalse;

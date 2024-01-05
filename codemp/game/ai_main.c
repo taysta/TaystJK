@@ -6499,7 +6499,7 @@ void NewBotAI_Getup(bot_state_t *bs)
 		useTheForce = qtrue;
 	}
 
-	if (!useTheForce && (bs->frame_Enemy_Len < 200) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)) {
+	if ((!useTheForce && (bs->frame_Enemy_Len < 200)) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)) {
 		if (!(g_forcePowerDisable.integer & (1 << FP_PUSH)) && bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH)) {
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
 			useTheForce = qtrue;
@@ -7493,7 +7493,7 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 				trap->EA_MoveForward(bs->client);
 			crouch = qtrue;
 		}
-		else if ((g_entities[bs->client].health < 25 || (g_entities[bs->client].health < 50 && bs->cur_ps.fd.forcePower < 30) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) && (bs->frame_Enemy_Len < 450)) {
+		else if ((g_entities[bs->client].health < 25 || ((g_entities[bs->client].health < 50 && bs->cur_ps.fd.forcePower < 30) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB)))) && (bs->frame_Enemy_Len < 450)) {
 			qboolean wallRun = qfalse;
 			//Running routine, we should add a wallrun search to this.
 
@@ -7657,8 +7657,8 @@ qboolean NewBotAI_IsEnemyPullable(bot_state_t *bs) {
 
 int NewBotAI_GetPull(bot_state_t *bs) {
 	const int ourHealth = g_entities[bs->client].health, hisHealth = bs->currentEnemy->health, ourForce = bs->cur_ps.fd.forcePower;
-	int weight = ourHealth - hisHealth;
-
+	int healthDiff = ourHealth - hisHealth;
+    float weight = (float)healthDiff;
 	if (g_forcePowerDisable.integer & (1 << FP_PULL))
 		return 0;
 	if  (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_PULL)))
@@ -7678,7 +7678,7 @@ int NewBotAI_GetPull(bot_state_t *bs) {
 		weight = 1;
 
 	if (bs->currentEnemy->client->ps.saberInFlight)
-		weight = 0.1f;
+		weight = 0.1;
 
 	if ((bs->currentEnemy->client->ps.saberMove > 1) && bs->currentEnemy->client->ps.fd.saberAnimLevel != SS_STRONG)
 		weight *= 0.2f; //dont pull red vert swings into us unless we its really important

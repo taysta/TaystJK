@@ -51,7 +51,7 @@ void R_DrawElementsVBO( int numIndexes, glIndex_t firstIndex, glIndex_t minIndex
 	GL_DrawIndexed(GL_TRIANGLES, numIndexes, GL_INDEX_TYPE, offset, 1, 0);
 }
 
-
+/*
 static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDrawMinIndex, glIndex_t *multiDrawMaxIndex, 
 	GLsizei *multiDrawNumIndexes, glIndex_t **multiDrawFirstIndex)
 {
@@ -60,7 +60,7 @@ static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDra
 			multiDrawNumIndexes,
 			multiDrawFirstIndex,
 			multiDrawPrimitives);
-}
+} */
 
 
 /*
@@ -828,9 +828,8 @@ static UniformBlockBinding GetBonesBlockUniformBinding(
 static UniformBlockBinding GetShaderInstanceBlockUniformBinding(
 	const trRefEntity_t *refEntity, const shader_t *shader)
 {
-	const GLuint currentFrameUbo = backEndData->currentFrame->ubo;
-	UniformBlockBinding binding = {};
-	binding.ubo = tr.shaderInstanceUbo;
+    UniformBlockBinding binding = {};
+    binding.ubo = tr.shaderInstanceUbo;
 	binding.block = UNIFORM_BLOCK_SHADER_INSTANCE;
 
 	if (shader->ShaderInstanceUboOffset == -1)
@@ -1525,7 +1524,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 				vertColor[3] = 0.0f;
 			}
 
-			if (backEnd.currentEntity->e.hModel != NULL)
+			if (backEnd.currentEntity->e.hModel != 0)
 			{
 				model_t *model = R_GetModelByHandle(backEnd.currentEntity->e.hModel);
 				if (model->type != MOD_BRUSH)

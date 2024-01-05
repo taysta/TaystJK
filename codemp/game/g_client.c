@@ -2845,7 +2845,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	}
 
 	//Com_Printf("CLIENTCONNECT: IP: %s, OLD SLOT IP: %s\n", tmpIP, level.clients[clientNum].sess.IP);
-	if (!isBot && !level.clients[clientNum].sess.IP[0] || !CompareIPs(tmpIP, level.clients[clientNum].sess.IP)) { //New Client, remove ignore if it was there
+	if ((!isBot && !level.clients[clientNum].sess.IP[0]) || !CompareIPs(tmpIP, level.clients[clientNum].sess.IP)) { //New Client, remove ignore if it was there
 		ClientRemoveIgnore(clientNum);//JAPRO IGNORE, move this to clientConnect, and only do it if IP does not match previous slot
 	}
 
@@ -4181,17 +4181,17 @@ void ClientSpawn(gentity_t *ent) {
 	{
 		//maxHealth = Com_Clampi( 1, 100, atoi( Info_ValueForKey( userinfo, "handicap" ) ) );
 		if (client->pers.tribesClass == 3) {
-			maxHealth = maxHealth = 1000;
+			maxHealth = 1000;
 			client->ps.iModelScale = 125;
 			VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
 			VectorScale(ent->r.mins, 1.25f, ent->r.mins);
 			VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
 		}
 		else if (client->pers.tribesClass == 2 || (g_tribesMode.integer == 2)) {
-			maxHealth = maxHealth = 700;
+			maxHealth = 700;
 		}
 		else if (client->pers.tribesClass == 1) {
-			maxHealth = maxHealth = 500;
+			maxHealth = 500;
 			client->ps.iModelScale = 94;
 			VectorSet(ent->modelScale, 0.92f, 0.94f, 0.94f);
 			VectorScale(ent->r.mins, 0.94f, ent->r.mins);
@@ -4386,7 +4386,7 @@ void ClientSpawn(gentity_t *ent) {
 			client->ps.stats[STAT_WEAPONS] |= (1 << WP_MELEE);
 		}
 
-		if (client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER) && (!g_tweakWeapons.integer & WT_TRIBES))
+		if (client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER) && !(g_tweakWeapons.integer & WT_TRIBES))
 		{
 			client->ps.weapon = WP_SABER;
 		}
@@ -4859,16 +4859,16 @@ void ClientDisconnect( int clientNum ) {
 	if (ent->client->ps.duelInProgress) {
 		gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
 
-		if (ent->client->pers.lastUserName && ent->client->pers.lastUserName[0] && duelAgainst->client && duelAgainst->client->pers.lastUserName && duelAgainst->client->pers.lastUserName[0]) {
+		if (ent->client->pers.lastUserName[0] && duelAgainst->client && duelAgainst->client->pers.lastUserName[0]) {
 			//Trying to dodge the duel, no no no
 			if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
 				G_AddDuel(duelAgainst->client->pers.lastUserName, ent->client->pers.lastUserName, duelAgainst->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], duelAgainst->client->ps.stats[STAT_HEALTH], duelAgainst->client->ps.stats[STAT_ARMOR]);
 		}
 	}
 
-	if (ent->client->pers.userName && ent->client->pers.userName[0]) {
+	if (ent->client->pers.userName[0]) {
 		if (ent->client->sess.raceMode && !ent->client->pers.practice && ent->client->pers.stats.startTime) {
-			ent->client->pers.stats.racetime += (trap->Milliseconds() - ent->client->pers.stats.startTime)*0.001f - ent->client->afkDuration*0.001f;
+			ent->client->pers.stats.racetime += (trap->Milliseconds() - (float)ent->client->pers.stats.startTime)*0.001f - ent->client->afkDuration*0.001f;
 			ent->client->afkDuration = 0;
 		}
 		if (ent->client->pers.stats.racetime > 120.0f) {

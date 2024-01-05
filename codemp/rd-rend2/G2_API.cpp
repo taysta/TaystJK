@@ -650,7 +650,7 @@ void RestoreGhoul2InfoArray()
 			return;
 		}
 
-		size_t read = singleton->Deserialize ((const char *)data, size);
+		//size_t read = singleton->Deserialize ((const char *)data, size);
 		Z_Free ((void *)data);
 
 		assert (read == size);
@@ -661,7 +661,7 @@ void SaveGhoul2InfoArray()
 {
 	size_t size = singleton->GetSerializedSize();
 	void *data = Z_Malloc (size, TAG_GHOUL2);
-	size_t written = singleton->Serialize ((char *)data);
+	//size_t written = singleton->Serialize ((char *)data);
 
 	assert (written == size);
 

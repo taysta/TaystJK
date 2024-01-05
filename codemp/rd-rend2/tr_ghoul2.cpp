@@ -3169,7 +3169,7 @@ void R_AddGhoulSurfaces( trRefEntity_t *ent, int entityNum )
 		return;
 	}
 
-	int currentTime = G2API_GetTime(tr.refdef.time);
+	//int currentTime = G2API_GetTime(tr.refdef.time);
 
 	// cull the entire model if merged bounding box of both frames is outside
 	// the view frustum.

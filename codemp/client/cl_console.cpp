@@ -524,7 +524,7 @@ void Cmd_CompleteTxtName( char *args, int argNum ) {
 Con_Init
 ================
 */
-static char version[MAX_STRING_CHARS] = { 0 };
+//static char version[MAX_STRING_CHARS] = { 0 };
 void Con_Init (void) {
 	int		i;
 
@@ -908,7 +908,7 @@ void Con_DrawSolidConsole( float frac ) {
 	time_t			rawtime;
 	qboolean		AM = qtrue;
 	char			ts[24];
-	const int		padding = (int) (0.5f + (con_scale && con_scale->value > 0.0f) ? 2*con_scale->value : 2.0f);
+	const int		padding = (int)(0.5f + ((con_scale->value > 0.0f) ? (2.0f * con_scale->value) : 2.0f));
 
 	lines = (int) (cls.glconfig.vidHeight * frac);
 	if (lines <= 0)

@@ -2110,7 +2110,7 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
 
 static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboolean net) {
 	int map = (net) ? ui_currentNetMap.integer : ui_currentMap.integer;
-	qhandle_t levelShot;
+	qhandle_t levelShot = 0;
 	if (map < 0 || map > uiInfo.mapCount) {
 		if (net) {
 			trap->Cvar_Set("ui_currentNetMap", "0");
@@ -2129,7 +2129,7 @@ static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboole
 	if (uiInfo.mapList[map].levelShot > 0) {
 		levelShot = uiInfo.mapList[map].levelShot;
 	}
-	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
 		levelShot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 
@@ -2404,11 +2404,11 @@ static void UI_DrawNetSource(rectDef_t *rect, float scale, vec4_t color, int tex
 }
 
 static void UI_DrawNetMapPreview(rectDef_t *rect, float scale, vec4_t color) {
-	qhandle_t previewImage;
+	qhandle_t previewImage = 0;
 	if (uiInfo.serverStatus.currentServerPreview > 0) {
 		previewImage = uiInfo.serverStatus.currentServerPreview;
 	}
-	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
 		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 	
@@ -8905,7 +8905,7 @@ static int UI_HeadCountByColor(void) {
 		{
 			skinName = uiInfo.q3HeadNames[i];
 			while (*skinName != '/') {
-				*skinName++;
+				//*skinName++;
 			}
 			if (*skinName == '\0' || !strlen(skinName))
 				skinName = uiInfo.q3HeadNames[i];
@@ -9801,7 +9801,7 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 		{ //ugly mess below
 			skinName = uiInfo.q3HeadNames[i];
 			while (*skinName != '/') {
-				*skinName++;
+				//*skinName++;
 			}
 			if (*skinName == '\0' || !strlen(skinName))
 				skinName = uiInfo.q3HeadNames[i];

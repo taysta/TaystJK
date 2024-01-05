@@ -658,8 +658,7 @@ int CBlockStream::Open( char *buffer, long size )
 		id_header[i] = GetChar();
 	}
 
-	version = GetFloat();
-	version = LittleFloat(version);
+	version = LittleFloat(GetFloat());
 
 	//Check for valid header
 	if ( strcmp( id_header, IBI_HEADER_ID ) )

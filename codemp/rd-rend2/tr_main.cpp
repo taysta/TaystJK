@@ -1547,10 +1547,10 @@ qboolean R_MirrorViewBySurface (msurface_t *surface, int entityNum) {
 		newParms.flags |= VPF_NOVIEWMODEL;
 
 	// Calculate window coordinates of this surface to get tight fitting scissor rectangle
-	int viewportWidth = oldParms.viewportWidth;
-	int viewportHeight = oldParms.viewportHeight;
-	float viewportCenterX = oldParms.viewportX + 0.5f * viewportWidth;
-	float viewportCenterY = oldParms.viewportY + 0.5f * viewportHeight;
+	//int viewportWidth = oldParms.viewportWidth;
+	//int viewportHeight = oldParms.viewportHeight;
+	// float viewportCenterX = oldParms.viewportX + 0.5f * viewportWidth;
+	// float viewportCenterY = oldParms.viewportY + 0.5f * viewportHeight;
 
 	/*int minRectX = INT_MAX;
 	int minRectY = INT_MAX;
@@ -2404,7 +2404,7 @@ void R_SetupPshadowMaps(trRefdef_t *refdef)
 void R_RenderCubemapSide(int cubemapIndex, int cubemapSide, bool bounce)
 {
 	refdef_t refdef = {};
-	float oldColorScale = tr.refdef.colorScale;
+	//float oldColorScale = tr.refdef.colorScale;
 
 	VectorCopy(tr.cubemaps[cubemapIndex].origin, refdef.vieworg);
 	refdef.fov_x = 90;

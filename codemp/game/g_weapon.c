@@ -194,9 +194,9 @@ void RocketDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 float WP_SpeedOfMissileForWeapon( int wp, qboolean alt_fire )
 {
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		if (wp = WP_CONCUSSION)
+		if (wp == WP_CONCUSSION)
 			return 2000 * g_projectileVelocityScale.integer;
-		if (wp = WP_BLASTER)
+		if (wp == WP_BLASTER)
 			return 10440 * g_projectileVelocityScale.integer;
 	}
 	return 500;
@@ -844,7 +844,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	else {
 		if (g_tweakWeapons.integer & WT_TRIBES)
 			damage = 15 * g_weaponDamageScale.value;
-		else 
+		else
 			damage = 30 * g_weaponDamageScale.value;
 		missile->s.generic1 = 2;//always make the bullet a little bigger
 		missile->s.eFlags |= EF_ALT_FIRING; //have client render it right

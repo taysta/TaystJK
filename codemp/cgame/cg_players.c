@@ -7979,7 +7979,7 @@ CheckTrail:
 		// SFX Saber trail
 		saberTrail->duration = 0;
 
-		if (!saberTrail->base || !saberTrail->tip || !saberTrail->dualbase || !saberTrail->dualtip || !saberTrail->lastTime || !saberTrail->inAction) {
+		if (!saberTrail->lastTime || !saberTrail->inAction) {
 			VectorCopy(org_, saberTrail->base);
 			VectorMA(end, -1.5f, axis_[0], saberTrail->tip);
 			VectorCopy(saberTrail->base, saberTrail->dualbase);
@@ -10100,7 +10100,7 @@ void CG_CheckThirdPersonAlpha( centity_t *cent, refEntity_t *legs )
 //[Kameleon] - Nerevar's Santa Hat feature. call somewhere in cg_players@void CG_Player
 void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, qhandle_t hatModel, refEntity_t parent, int position)
 {
-    int newBolt;
+    int newBolt = 0;
     mdxaBone_t matrix;
     vec3_t boltOrg, bAngles;
     refEntity_t re;
@@ -10186,7 +10186,7 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
 
 static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameModels, cosmeticItem_t *cosmetic, refEntity_t parent, int position)
 {
-	int newBolt;
+	int newBolt = 0;
 	mdxaBone_t matrix;
 	vec3_t boltOrg, bAngles;
 	refEntity_t re;

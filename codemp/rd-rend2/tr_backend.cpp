@@ -95,7 +95,7 @@ void GL_SelectTexture( int unit )
 void GL_BindToTMU( image_t *image, int tmu )
 {
 	int		texnum;
-	int     oldtmu = glState.currenttmu;
+	//int     oldtmu = glState.currenttmu;
 
 	if (!image)
 		texnum = 0;
@@ -1196,7 +1196,7 @@ static void RB_SubmitDrawSurfsForDepthFill(
 	shader_t *oldShader = nullptr;
 	int oldEntityNum = -1;
 	int oldSort = -1;
-	int oldDepthRange = 0;
+	//int oldDepthRange = 0;
 	CBoneCache *oldBoneCache = nullptr;
 
 	drawSurf_t *drawSurf = drawSurfs;
@@ -1284,7 +1284,7 @@ static void RB_SubmitDrawSurfs(
 	int oldEntityNum = -1;
 	int oldSort = -1;
 	int oldFogNum = -1;
-	int oldDepthRange = 0;
+	//int oldDepthRange = 0;
 	int oldDlighted = 0;
 	int oldPostRender = 0;
 	int oldCubemapIndex = -1;

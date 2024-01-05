@@ -3553,7 +3553,7 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 
 		//float *texCoords = tess.texCoords[0][baseVertex];
 		float* texCoords = tess.texCoords[0][baseVertex];
-		int hack = baseVertex;
+		//int hack = baseVertex;
 		//rww - since the array is arranged as such we cannot increment
 		//the relative memory position to get where we want. Maybe this
 		//is why sof2 has the texCoords array reversed. In any case, I

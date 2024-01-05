@@ -228,7 +228,7 @@ static void CL_UpdateDiscordServerInfo(const char *info)
 
 static void CL_ParsePlayerInfo(int start, int end)
 {
-	int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
+	int clientCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0, botCount = 0;
 	int i = start;
 
 	while (i < end)

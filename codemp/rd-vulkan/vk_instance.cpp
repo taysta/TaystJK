@@ -718,9 +718,9 @@ void vk_init_library( void )
 	uint32_t device_count;
 	int device_index, i;
 	VkResult res;
-	qboolean deviceCountRetried = qfalse;
+//	qboolean deviceCountRetried = qfalse;
 
-__initStart:
+//__initStart:
 	Com_Memset(&vk, 0, sizeof(vk));
 
 	qvkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)ri.VK_GetInstanceProcAddress();
