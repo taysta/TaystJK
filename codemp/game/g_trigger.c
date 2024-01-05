@@ -1674,13 +1674,13 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
 		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
-		if (trigger->spawnflags & (1 << 7) && trigger->objective && trigger->objective != player->client->pers.stats.checkpoints) {//spawnflags 128 is required checkpoints.
-			if (time > 1000)//sad hack to avoid spamming people who just start run(trigger on opposite side of start)
+		if (trigger->spawnflags & (1 << 7) && (trigger->objective & player->client->pers.stats.checkpoints) != trigger->objective) {//spawnflags 128 is required checkpoints.
+			if (time > 2000)//sad hack to avoid spamming people who just start run(trigger on opposite side of start)
 				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are missing some required checkpoints!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
 			return;
 		}
 		if (trigger->spawnflags & (1 << 8) && trigger->courseID && trigger->courseID != player->client->pers.stats.courseID) {//spawnflags 256 is require specific start trigger
-			if (time > 1000)
+			if (time > 2000)
 				trap->SendServerCommand(player - g_entities, "cp \"^3Warning: you are on the wrong course!\n\n\n\n\n\n\n\n\n\n\""); //Print the checkpoint(s) its missing?
 			return;
 		}
