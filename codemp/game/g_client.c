@@ -2485,11 +2485,20 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	//WT_TRIBES
 
 	if (!client->sess.raceMode && g_tribesClass.integer) {
-		if (!Q_stricmp("pl_hazardtrooper", model)) {
-			client->pers.tribesClass = 2;
+		if (!Q_strncmp("pl_hazardtrooper", model, 16)) {
+			//Com_Printf("Detetcting hazardtrooper\n");
+			if (client->pers.tribesClass != 2) {
+				G_Kill(ent);
+				client->pers.tribesClass = 2;
+			}
 		}
-		else
-			client->pers.tribesClass = 1; //Set this here then apply it on respawn?
+		else {
+			//Com_Printf("Detetcting medium \n");
+			if (client->pers.tribesClass != 1) {
+				G_Kill(ent);
+				client->pers.tribesClass = 1;
+			}
+		}
 	}
 
 	client->ps.customRGBA[0] = (value=Info_ValueForKey( userinfo, "char_color_red" ))	? Com_Clampi( 0, 255, atoi( value ) ) : 255;
@@ -4147,8 +4156,14 @@ void ClientSpawn(gentity_t *ent) {
 
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
-	client->ps.crouchheight = CROUCH_MAXS_2;
-	client->ps.standheight = DEFAULT_MAXS_2;
+	if (client->pers.tribesClass == 2) {
+		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f;
+		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f;
+	}
+	else {
+		client->ps.standheight = DEFAULT_MAXS_2;
+		client->ps.crouchheight = CROUCH_MAXS_2;
+	}
 
 	client->ps.clientNum = index;
 	//give default weapons

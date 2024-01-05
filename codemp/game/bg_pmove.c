@@ -5826,11 +5826,21 @@ static void PM_CheckDuck (void)
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS)
 		{
-			pm->mins[0] = -15;
-			pm->mins[1] = -15;
+			if ((pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) && (pm->ps->standheight == DEFAULT_MAXS_2 * 1.25f))
+			{
+				pm->mins[0] = -15 * 1.25f;
+				pm->mins[1] = -15 * 1.25f;
 
-			pm->maxs[0] = 15;
-			pm->maxs[1] = 15;
+				pm->maxs[0] = 15 * 1.25f;
+				pm->maxs[1] = 15 * 1.25f;
+			}
+			else {
+				pm->mins[0] = -15;
+				pm->mins[1] = -15;
+
+				pm->maxs[0] = 15;
+				pm->maxs[1] = 15;
+			}
 		}
 
 		if ( PM_CheckDualForwardJumpDuck() )
