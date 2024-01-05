@@ -2258,6 +2258,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 	Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
 }
 
+void G_Kill(gentity_t *ent);
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?
 	gentity_t	*ent = g_entities + clientNum;
 	gclient_t	*client = ent->client;
@@ -2499,6 +2500,9 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 				client->pers.tribesClass = 1;
 			}
 		}
+	}
+	else if (client->pers.tribesClass) {
+		client->pers.tribesClass = 0;
 	}
 
 	client->ps.customRGBA[0] = (value=Info_ValueForKey( userinfo, "char_color_red" ))	? Com_Clampi( 0, 255, atoi( value ) ) : 255;
@@ -4157,8 +4161,8 @@ void ClientSpawn(gentity_t *ent) {
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
 	if (client->pers.tribesClass == 2) {
-		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f;
-		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f;
+		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f * 0.95f; //this model has no neck
+		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f * 0.95f;
 	}
 	else {
 		client->ps.standheight = DEFAULT_MAXS_2;

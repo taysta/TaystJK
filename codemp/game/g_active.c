@@ -4279,13 +4279,20 @@ void ClientThink_real( gentity_t *ent ) {
 		else if (g_gunGame.integer && !client->sess.raceMode && !client->ps.stats[STAT_RACEMODE] && client->ps.weapon == WP_SABER && client->forcedFireMode != 2)
 			client->ps.speed *= 1.28f;
 
-		if (!client->ps.stats[STAT_RACEMODE] && client->pers.tribesClass == 2) {
-			client->ps.speed *= 0.78125f;
-			client->ps.iModelScale = 125;
-			VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
-			VectorScale(ent->r.mins, 1.25f, ent->r.mins);
-			VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
-			//Com_Printf("Box is [%.0f %.0f %.0f] [%.0f %.0f %.0f] for %s\n", ent->r.mins[0], ent->r.mins[1], ent->r.mins[2], ent->r.maxs[0], ent->r.maxs[1], ent->r.maxs[2], ent->client->pers.netname);
+		if (!client->ps.stats[STAT_RACEMODE]) {
+			if (!g_tribesClass.integer)
+				client->pers.tribesClass = 0;
+			else if (!client->pers.tribesClass)
+				client->pers.tribesClass = 1;
+
+			if (client->pers.tribesClass == 2) {
+				client->ps.speed *= 0.78125f;
+				client->ps.iModelScale = 125;
+				VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
+				VectorScale(ent->r.mins, 1.25f, ent->r.mins);
+				VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
+				//Com_Printf("Box is [%.0f %.0f %.0f] [%.0f %.0f %.0f] for %s\n", ent->r.mins[0], ent->r.mins[1], ent->r.mins[2], ent->r.maxs[0], ent->r.maxs[1], ent->r.maxs[2], ent->client->pers.netname);
+			}
 		}
 
 		//Check for a siege class speed multiplier
