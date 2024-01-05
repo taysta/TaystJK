@@ -2486,7 +2486,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	//WT_TRIBES
 
 	if (!client->sess.raceMode && g_tribesClass.integer) {
-		if (!Q_strncmp("pl_hazardtrooper", model, 16)) {
+		if (!Q_strncmp("tribesheavy", model, 16)) {
 			//Com_Printf("Detetcting hazardtrooper\n");
 			if (client->pers.tribesClass != 2) {
 				G_Kill(ent);
