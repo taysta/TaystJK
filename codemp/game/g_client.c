@@ -2484,8 +2484,12 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 
 	//WT_TRIBES
 
-	if (g_tribesClass.integer) {
-		client->pers.tribesClass = g_tribesClass.integer;
+	if (!client->sess.raceMode && g_tribesClass.integer) {
+		if (!Q_stricmp("pl_hazardtrooper", model)) {
+			client->pers.tribesClass = 2;
+		}
+		else
+			client->pers.tribesClass = 1; //Set this here then apply it on respawn?
 	}
 
 	client->ps.customRGBA[0] = (value=Info_ValueForKey( userinfo, "char_color_red" ))	? Com_Clampi( 0, 255, atoi( value ) ) : 255;
@@ -4088,10 +4092,6 @@ void ClientSpawn(gentity_t *ent) {
 	client->accuracy_hits = accuracy_hits;
 	client->accuracy_shots = accuracy_shots;
 	client->lastkilled_client = -1;
-
-	if (g_tribesClass.integer) {
-		client->pers.tribesClass = g_tribesClass.integer;
-	}
 
 	for ( i=0; i<MAX_PERSISTANT; i++ )
 		client->ps.persistant[i] = persistant[i];
