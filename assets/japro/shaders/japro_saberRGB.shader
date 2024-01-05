@@ -187,16 +187,6 @@ gfx/effects/sabers/RGBtrail3 {
 	}
 }
 
-gfx/effects/sabers/RGBglow4 {
-	nopicmip
-	notc
-	cull twosided
-	{
-		map gfx/effects/sabers/RGBglow4
-		blendFunc GL_ONE GL_ONE
-		rgbGen vertex
-	}
-}
 
 gfx/effects/sabers/RGBtrail4 {
 	nopicmip
