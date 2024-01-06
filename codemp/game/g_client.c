@@ -3545,7 +3545,7 @@ void GiveClientItems(gclient_t *client) {
 		//Give tribes loadout.
 		if (client->pers.tribesClass == 1) {
 			//Medium
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_SENTRY_GUN));
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_EWEB));
 		}
 		else if (client->pers.tribesClass == 2) {
 			//Heavy
