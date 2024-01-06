@@ -9546,7 +9546,7 @@ if (pm->ps->duelInProgress)
 			break;
 		case WP_REPEATER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 3000;
+				addTime = 2500;
 			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 200;
 			break;

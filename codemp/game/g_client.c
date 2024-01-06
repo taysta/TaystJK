@@ -2486,7 +2486,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	//WT_TRIBES
 
 	if (!client->sess.raceMode && g_tribesClass.integer) {
-		if (!Q_strncmp("tribesheavy", model, 16)) {
+		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
 			//Com_Printf("Detetcting hazardtrooper\n");
 			if (client->pers.tribesClass != 2) {
 				G_Kill(ent);
@@ -3545,7 +3545,7 @@ void GiveClientItems(gclient_t *client) {
 		//Give tribes loadout.
 		if (client->pers.tribesClass == 1) {
 			//Medium
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK));
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_SENTRY_GUN));
 		}
 		else if (client->pers.tribesClass == 2) {
 			//Heavy
