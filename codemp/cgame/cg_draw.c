@@ -39,6 +39,7 @@ static void CG_DrawSiegeTimer(int timeRemaining, qboolean isMyTeam);
 static void CG_DrawSiegeDeathTimer( int timeRemaining );
 static void CG_LeadIndicator( void );
 static void CG_PlayerLabels( void );
+static void CG_TribesLabels( void );
 
 static void CG_DrawTrajectoryLine(void);
 
@@ -11363,8 +11364,12 @@ static void CG_Draw2D( void ) {
 	// always draw chat
 	CG_ChatBox_DrawStrings();
 
-	if (cg_drawPlayerNames.integer)//JAPRO
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+		CG_TribesLabels();
+	}
+	else if (cg_drawPlayerNames.integer)//JAPRO
 		CG_PlayerLabels();
+
 }
 
 qboolean CG_CullPointAndRadius( const vec3_t pt, float radius);
@@ -11588,6 +11593,115 @@ static void CG_LeadIndicator(void)
 				}
 			}
 		}
+}
+
+//draw the health bar based on current "health" and maxhealth
+void CG_DrawTribesHealthBar(centity_t* cent, float chX, float chY, float chW, float chH)
+{
+	vec4_t aColor;
+	vec4_t cColor;
+
+	float x = chX + ((chW / 2) - (50.0f / 2)) * cgs.widthRatioCoef;
+	float y = (chY + chH) + 8.0f;
+	float percent;
+
+	if (cent->currentState.maxhealth)
+		percent = ((float)cent->currentState.health / (float)cent->currentState.maxhealth) * 50.0f * cgs.widthRatioCoef;
+	else
+		percent = 49.0f * cgs.widthRatioCoef;
+
+	if (percent <= 0)
+	{
+		return;
+	}
+
+	//color of the bar
+	if (!cent->currentState.teamowner || cgs.gametype < GT_TEAM)
+	{ //not owned by a team or teamplay
+		aColor[0] = 1.0f;
+		aColor[1] = 1.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+	else if (cent->currentState.teamowner == cg.predictedPlayerState.persistant[PERS_TEAM])
+	{ //owned by my team
+		aColor[0] = 0.0f;
+		aColor[1] = 1.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+	else
+	{ //hostile
+		aColor[0] = 1.0f;
+		aColor[1] = 0.0f;
+		aColor[2] = 0.0f;
+		aColor[3] = 0.4f;
+	}
+
+	//color of greyed out "missing health"
+	cColor[0] = 0.5f;
+	cColor[1] = 0.5f;
+	cColor[2] = 0.5f;
+	cColor[3] = 0.4f;
+
+	//draw the background (black)
+	CG_DrawRect(x, y, 50.0f * cgs.widthRatioCoef, 5.0f, 1.0f, colorTable[CT_BLACK]);
+
+	//now draw the part to show how much health there is in the color specified
+	CG_FillRect(x + 1.0f * cgs.widthRatioCoef, y + 1.0f, percent - 1.0f * cgs.widthRatioCoef, 5.0f - 2.0f, aColor); //-2.0 instead of -1.0. regular healthbar function has border overlap so fix it
+
+	//then draw the other part greyed out
+	CG_FillRect(x + percent, y + 1.0f, (50.0f - 1.0f) * cgs.widthRatioCoef - percent, 5.0f - 1.0f, cColor);
+}
+
+static void CG_TribesLabels(void)
+{ //Todo, set a flag in cg_players and base this off that so we don't have to calculate all this?
+	int i;
+
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		vec3_t		pos;
+		float		x, y;
+		trace_t		trace;
+		centity_t* cent = &cg_entities[i];
+		vec3_t		diff;
+
+		if (!cent || !cent->currentValid)
+			continue;
+		if (i == cg.clientNum)
+			continue;
+		if (i == cg.snap->ps.clientNum)
+			continue;
+		if (cent->currentState.eFlags & EF_DEAD)
+			continue;
+		if (cent->currentState.eType != ET_PLAYER)
+			continue;
+		if (!cgs.clientinfo[i].infoValid)
+			continue;
+		if (cgs.clientinfo[i].team == TEAM_SPECTATOR)
+			continue;
+		if (CG_IsMindTricked(cent->currentState.trickedentindex,
+							 cent->currentState.trickedentindex2,
+							 cent->currentState.trickedentindex3,
+							 cent->currentState.trickedentindex4,
+							 cg.snap->ps.clientNum))
+			continue;
+
+		VectorSubtract(cent->lerpOrigin, cg.predictedPlayerState.origin, diff);
+		if (VectorLength(diff) >= 5000) //Make sure distance is less than... 3000 ?
+			continue;
+
+		CG_Trace(&trace, cg.predictedPlayerState.origin, NULL, NULL, cent->lerpOrigin, cg.clientNum, CONTENTS_SOLID | CONTENTS_BODY);
+		if (trace.entityNum == ENTITYNUM_WORLD)
+			continue;
+
+		VectorCopy(cent->lerpOrigin, pos);
+		pos[2] += 64;
+
+		if (!CG_WorldCoordToScreenCoord(pos, &x, &y)) //off-screen, don't draw it
+			continue;
+
+		CG_DrawTribesHealthBar(cent, x, y - 16, 1, 1);
+	}
 }
 
 static void CG_PlayerLabels(void)
