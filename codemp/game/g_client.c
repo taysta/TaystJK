@@ -2489,14 +2489,16 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
 			//Com_Printf("Detetcting hazardtrooper\n");
 			if (client->pers.tribesClass != 2) {
-				G_Kill(ent);
+				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
 				client->pers.tribesClass = 2;
 			}
 		}
 		else {
 			//Com_Printf("Detetcting medium \n");
 			if (client->pers.tribesClass != 1) {
-				G_Kill(ent);
+				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
 				client->pers.tribesClass = 1;
 			}
 		}
