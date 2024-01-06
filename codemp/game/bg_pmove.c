@@ -4036,8 +4036,8 @@ static void PM_CheckDash(void)
 	if (moveStyle != MV_WSW && moveStyle != MV_TRIBES) {
 		return;
 	}
-
-	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > 225625) || (pm->ps->jetpackFuel < 25))) {
+	
+	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->jetpackFuel < 25))) {
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
@@ -5826,11 +5826,21 @@ static void PM_CheckDuck (void)
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS)
 		{
-			pm->mins[0] = -15;
-			pm->mins[1] = -15;
+			if ((pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) && (pm->ps->standheight == DEFAULT_MAXS_2 * 1.25f))
+			{
+				pm->mins[0] = -15 * 1.25f;
+				pm->mins[1] = -15 * 1.25f;
 
-			pm->maxs[0] = 15;
-			pm->maxs[1] = 15;
+				pm->maxs[0] = 15 * 1.25f;
+				pm->maxs[1] = 15 * 1.25f;
+			}
+			else {
+				pm->mins[0] = -15;
+				pm->mins[1] = -15;
+
+				pm->maxs[0] = 15;
+				pm->maxs[1] = 15;
+			}
 		}
 
 		if ( PM_CheckDualForwardJumpDuck() )
@@ -9536,7 +9546,7 @@ if (pm->ps->duelInProgress)
 			break;
 		case WP_REPEATER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 3000;
+				addTime = 2500;
 			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 200;
 			break;

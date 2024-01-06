@@ -1184,8 +1184,8 @@ static bitInfo_T startingItems[] = { // MAX_STARTING_ITEMS tweaks (13)
 	{"Cloak"},//11
 	{"Ability to toggle /jetpack"},//12
 	{"Start with armor in duel gametype"},//13
-	{"Start with full armor in FFA"},//13
-	{"Start with full health after each kill"}//13
+	{"Start with full armor in FFA"},//14
+	{"Start with full health after each kill"}//15
 };
 static const int MAX_STARTING_ITEMS = ARRAY_LEN( startingItems );
 

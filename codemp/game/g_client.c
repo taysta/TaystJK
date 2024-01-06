@@ -2258,6 +2258,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 	Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
 }
 
+void G_Kill(gentity_t *ent);
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?
 	gentity_t	*ent = g_entities + clientNum;
 	gclient_t	*client = ent->client;
@@ -2480,6 +2481,28 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	if ( d_perPlayerGhoul2.integer&& Q_stricmp( model, client->modelname ) ) {
 		Q_strncpyz( client->modelname, model, sizeof( client->modelname ) );
 		modelChanged = qtrue;
+	}
+
+	//WT_TRIBES
+
+	if (!client->sess.raceMode && g_tribesClass.integer) {
+		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
+			//Com_Printf("Detetcting hazardtrooper\n");
+			if (client->pers.tribesClass != 2) {
+				G_Kill(ent);
+				client->pers.tribesClass = 2;
+			}
+		}
+		else {
+			//Com_Printf("Detetcting medium \n");
+			if (client->pers.tribesClass != 1) {
+				G_Kill(ent);
+				client->pers.tribesClass = 1;
+			}
+		}
+	}
+	else if (client->pers.tribesClass) {
+		client->pers.tribesClass = 0;
 	}
 
 	client->ps.customRGBA[0] = (value=Info_ValueForKey( userinfo, "char_color_red" ))	? Com_Clampi( 0, 255, atoi( value ) ) : 255;
@@ -3519,28 +3542,39 @@ void GiveClientItems(gclient_t *client) {
 
 	//dont trust uses g_startingItems input, so do this. could loop it.
 	if (!client->sess.raceMode) {
-		if (g_startingItems.integer & (1 << HI_SEEKER))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_SEEKER);
-		if (g_startingItems.integer & (1 << HI_SHIELD))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_SHIELD);
-		if (g_startingItems.integer & (1 << HI_MEDPAC))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_MEDPAC);
-		if (g_startingItems.integer & (1 << HI_MEDPAC_BIG))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_MEDPAC_BIG);
-		if (g_startingItems.integer & (1 << HI_BINOCULARS))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_BINOCULARS);
-		if (g_startingItems.integer & (1 << HI_SENTRY_GUN))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_SENTRY_GUN);
-		if (g_startingItems.integer & (1 << HI_JETPACK))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_JETPACK);
-		if (g_startingItems.integer & (1 << HI_AMMODISP))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_AMMODISP);
-		if (g_startingItems.integer & (1 << HI_EWEB))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_EWEB);
-		if (g_startingItems.integer & (1 << HI_CLOAK))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_CLOAK);
-		if (g_startingItems.integer & (1 << HI_HEALTHDISP))
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ( 1 << HI_HEALTHDISP);
+		//Give tribes loadout.
+		if (client->pers.tribesClass == 1) {
+			//Medium
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_SENTRY_GUN));
+		}
+		else if (client->pers.tribesClass == 2) {
+			//Heavy
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SHIELD) + (1 << HI_JETPACK));
+		}
+		else {
+			if (g_startingItems.integer & (1 << HI_SEEKER))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SEEKER);
+			if (g_startingItems.integer & (1 << HI_SHIELD))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
+			if (g_startingItems.integer & (1 << HI_MEDPAC))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_MEDPAC);
+			if (g_startingItems.integer & (1 << HI_MEDPAC_BIG))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_MEDPAC_BIG);
+			if (g_startingItems.integer & (1 << HI_BINOCULARS))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_BINOCULARS);
+			if (g_startingItems.integer & (1 << HI_SENTRY_GUN))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
+			if (g_startingItems.integer & (1 << HI_JETPACK))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_JETPACK);
+			if (g_startingItems.integer & (1 << HI_AMMODISP))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_AMMODISP);
+			if (g_startingItems.integer & (1 << HI_EWEB))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
+			if (g_startingItems.integer & (1 << HI_CLOAK))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_CLOAK);
+			if (g_startingItems.integer & (1 << HI_HEALTHDISP))
+				client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_HEALTHDISP);
+		}
 	}
 	else {
 		client->ps.stats[STAT_HOLDABLE_ITEMS] = ( 1 << HI_BINOCULARS);
@@ -3741,6 +3775,22 @@ void GiveClientWeapons(gclient_t *client) {
 	//I guess this could be cleaned up a ton, but that trusts the user to not put a retarded value for g_startingWeapons ?
 	if (g_gunGame.integer) {
 		G_GiveGunGameWeapon(client);
+	}
+		//Give tribes loadout.
+	else if (client->pers.tribesClass == 1) {
+			//Medium
+			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BLASTER) + (1 << WP_FLECHETTE) + (1 << WP_CONCUSSION) + (1 << WP_THERMAL));
+			client->ps.ammo[AMMO_BLASTER] = 500;
+			client->ps.ammo[AMMO_METAL_BOLTS] = 900;
+			client->ps.ammo[AMMO_THERMAL] = 2;
+	}
+	else if (client->pers.tribesClass == 2) {
+		//Heavy
+		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE));
+		client->ps.ammo[AMMO_POWERCELL] = 600;
+		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
+		client->ps.ammo[AMMO_ROCKETS] = 25;
+		client->ps.ammo[AMMO_TRIPMINE] = 2;
 	}
 	else {
 		int i;
@@ -4110,8 +4160,14 @@ void ClientSpawn(gentity_t *ent) {
 
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
-	client->ps.crouchheight = CROUCH_MAXS_2;
-	client->ps.standheight = DEFAULT_MAXS_2;
+	if (client->pers.tribesClass == 2) {
+		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f * 0.95f; //this model has no neck
+		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f * 0.95f;
+	}
+	else {
+		client->ps.standheight = DEFAULT_MAXS_2;
+		client->ps.crouchheight = CROUCH_MAXS_2;
+	}
 
 	client->ps.clientNum = index;
 	//give default weapons
@@ -4490,7 +4546,15 @@ void ClientSpawn(gentity_t *ent) {
 	}
 	else
 	{//Clan Arena starting armor/hp here
-		if (g_startingItems.integer & (1 << (HI_NUM_HOLDABLE + 2)))//sad
+		if (client->pers.tribesClass == 1) {//med
+			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+			client->ps.stats[STAT_ARMOR] = 0;
+		}
+		else if (client->pers.tribesClass == 2) {//heavy
+			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+			client->ps.stats[STAT_ARMOR] = 100;
+		}
+		else if (g_startingItems.integer & (1 << (HI_NUM_HOLDABLE + 2)))//sad
 			client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH];
 		else
 			client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;

@@ -365,6 +365,9 @@ XCVAR_DEF( g_eloKValue2,					"25",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_eloKValue3,					"25",			NULL,				CVAR_ARCHIVE,									qtrue )
 #endif
 
+//Testing tribes classes
+XCVAR_DEF(g_tribesClass, "0", NULL, CVAR_ARCHIVE, qtrue)//WT_tRIBES
+
 #define _NEWRACERANKING 1
 #define _STATLOG 0
 #define _TESTBSP 0

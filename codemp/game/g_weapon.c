@@ -452,7 +452,7 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 	{ //animent
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-			damage = 6 * g_weaponDamageScale.value;
+			damage = 4 * g_weaponDamageScale.value;
 		}
 		else damage = 10;
 	}
@@ -563,25 +563,30 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 	if ( altFire )
 	{
 		// add some slop to the alt-fire direction
-		if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client && ent->client->sess.movementStyle == MV_COOP_JKA)) {
-			angs[PITCH]	+= Q_flrand(1.0f, 1.0f) * 0.15f;
-			angs[YAW]       += Q_flrand(1.0f, 1.0f) * 0.15f;
-		}
-		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
+		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 		{
-			//angs[PITCH] += Q_crandom(&seed) * BLASTER_SPREAD;
-			//angs[YAW]       += Q_crandom(&seed) * BLASTER_SPREAD;
-
 			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 			float r = Q_random(&seed) * BLASTER_SPREAD;
 
-			angs[PITCH] += r * sin(theta); //r should be squared? r*r
-			angs[YAW] += r * cos(theta);
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				angs[PITCH] += r*0.15f * sin(theta); //r should be squared? r*r
+				angs[YAW] += r*0.15f * cos(theta);
+			}
+			else {
+				angs[PITCH] += r * sin(theta);
+				angs[YAW] += r * cos(theta);
+			}
 		}
 		else
 		{
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
+			}
+			else {
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
+			}
 		}
 	}
 
@@ -624,7 +629,7 @@ static void WP_DisruptorMainFire( gentity_t *ent )
 	}
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		damage = DISRUPTOR_MAIN_DAMAGE - 5;
+		damage = DISRUPTOR_MAIN_DAMAGE - 15;
 
 	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
 
@@ -871,8 +876,8 @@ void WP_DisruptorAltFire(gentity_t *ent)
 			maxCount = 40;
 		}
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			damage = DISRUPTOR_ALT_DAMAGE - 75;//30
-			maxCount = 35;
+			damage = DISRUPTOR_ALT_DAMAGE - 85;//30
+			maxCount = 30;
 		}
 		else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
 			damage = DISRUPTOR_ALT_DAMAGE - 40;//60
@@ -1349,7 +1354,7 @@ static void WP_RepeaterMainFire( gentity_t *ent, vec3_t dir )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-		damage = 11 * g_weaponDamageScale.value;
+		damage = 8 * g_weaponDamageScale.value;
 	}
 
 	missile = CreateMissileNew( muzzle, dir, vel, 10000, ent, qfalse, qtrue, qtrue );
@@ -1793,7 +1798,7 @@ static void WP_FlechetteMainFire( gentity_t *ent, int seed )
 		VectorScale( missile->r.maxs, -1, missile->r.mins );
 
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			missile->damage = 11 * g_weaponDamageScale.value;
+			missile->damage = 8 * g_weaponDamageScale.value;
 		}
 		else {
 			missile->damage = FLECHETTE_DAMAGE;
@@ -2712,8 +2717,8 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 			vel = 900;
 		}
 		else if (g_tweakWeapons.integer & WT_TRIBES) {
-			damage = 90 * g_weaponDamageScale.value;
-			splashDamage = 90 * g_splashDamageScale.value;
+			damage = 75 * g_weaponDamageScale.value;
+			splashDamage = 75 * g_splashDamageScale.value;
 			vel = 2040 * g_projectileVelocityScale.value;
 		}
 	}
@@ -2924,23 +2929,28 @@ static void WP_FireRepeater(gentity_t *ent, qboolean altFire, int seed)
 	else
 	{
 		// add some slop to the alt-fire direction
-		if (g_tweakWeapons.integer & WT_TRIBES) {
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15;
-		}
-		else if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
-			//angs[PITCH] += Q_crandom(&seed) * REPEATER_SPREAD;
-			//angs[YAW]	+= Q_crandom(&seed) * REPEATER_SPREAD;
-
+		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 			float r = Q_random(&seed) * REPEATER_SPREAD;
 
-			angs[PITCH] += r * sin(theta);
-			angs[YAW] += r * cos(theta);
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				angs[PITCH] += r*0.15f * sin(theta);
+				angs[YAW] += r *0.15f * cos(theta);
+			}
+			else {
+				angs[PITCH] += r * sin(theta);
+				angs[YAW] += r * cos(theta);
+			}
 		}
 		else {
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD * 0.15f;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD * 0.15f;
+			}
+			else {
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+			}
 		}
 
 		AngleVectors(angs, dir, NULL, NULL);
@@ -3112,12 +3122,12 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 		bolt->splashDamage = 140;
 		bolt->splashRadius = 192;
 	}
-	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
-		bolt->damage = 60 * g_weaponDamageScale.integer;
+	else if (g_tweakWeapons.integer & WT_TRIBES) {
+		bolt->damage = 40 * g_weaponDamageScale.integer;
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
-	else if (g_tweakWeapons.integer & WT_TRIBES) {
+	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
 		bolt->damage = 60 * g_weaponDamageScale.integer;
 		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
 		bolt->splashRadius = 96;//128
@@ -4142,7 +4152,7 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		damage *= 1.75f;
+		damage *= 1.2f;	
 	else if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
 		damage *= 2.0f;
 
@@ -4446,7 +4456,7 @@ static void WP_FireConcussion( gentity_t *ent )
 
 	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
 		vel = 2275 * g_projectileVelocityScale.value;
-		damage = 90;
+		damage = 75;
 	}
 
 	//hold us still for a bit
@@ -4482,7 +4492,7 @@ static void WP_FireConcussion( gentity_t *ent )
 
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		missile->splashDamage = 90;
+		missile->splashDamage = 75;
 	}
 	else {
 		missile->splashDamage = CONC_SPLASH_DAMAGE;
