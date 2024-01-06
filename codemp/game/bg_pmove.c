@@ -6947,7 +6947,8 @@ static void PM_Footsteps( void ) {
 		{ //let it finish first
 			bobmove = 0.2f;
 		}
-		else if ((pm->cmd.buttons & BUTTON_DASH) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//tribes skii //loda fixme this aint working
+		else if ((pm->cmd.buttons & BUTTON_DASH) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//tribes ski
+			bobmove = 0.4f;
 			if (pm->cmd.rightmove > 0)
 				desiredAnim = BOTH_HOP_R;
 			else if (pm->cmd.rightmove < 0)
