@@ -2269,7 +2269,7 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 						other->health = 100;
 					other->client->ps.stats[STAT_HEALTH] = other->health;
 				}
-				if (other->client->ps.stats[STAT_ARMOR] < 100) {
+				if (other->client->ps.stats[STAT_ARMOR] < 100 && other->client->pers.tribesClass != 1) {
 					other->client->ps.stats[STAT_ARMOR] += 50;
 					if (other->client->ps.stats[STAT_ARMOR] > 100)
 						other->client->ps.stats[STAT_ARMOR] = 100;

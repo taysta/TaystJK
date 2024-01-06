@@ -4152,7 +4152,7 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		damage *= 1.4f;
+		damage *= 1.3f;	
 	else if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
 		damage *= 2.0f;
 
