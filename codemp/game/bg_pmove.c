@@ -13186,7 +13186,7 @@ void PmoveSingle (pmove_t *pmove) {
 		const int MAX_FALL_SPEED = -1200;
 		const int MAX_JETPACK_VEL_UP = 2000;
 		float gDist2 = gDist;
-		float scale = PM_CmdScale(&pm->cmd);
+		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
@@ -13195,14 +13195,18 @@ void PmoveSingle (pmove_t *pmove) {
 				float hackscale = 250.0f / pm->ps->velocity[2];
 				if (hackscale > 1.25f)
 					hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				float hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
+			}
+			else if (pm->ps->velocity[2] > 1500) {
+				float hackscale = 1500.0f / pm->ps->velocity[2];
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Weaken upjet if we are going up extremely fast already
 			}
 			else {
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;
 			}
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
@@ -13229,6 +13233,7 @@ void PmoveSingle (pmove_t *pmove) {
 				int i;
 				float accel = 0.009f; //server should use pmove_float
 				scale /= pm->ps->speed;
+				scale *= pm->ps->speed / 320.0f;
 				scale *= 20000; //MAX
 
 				//problem, outside of jet they can still slow down their speed with air control ?

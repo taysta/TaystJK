@@ -3910,7 +3910,7 @@ void G_RunFrame( int levelTime ) {
 						ent->client->ps.jetpackFuel -= 2;
 					else {
 						if (ent->client->pers.tribesClass == 2) //Heavy
-							ent->client->ps.jetpackFuel -= 5;
+							ent->client->ps.jetpackFuel -= 7;
 						else
 							ent->client->ps.jetpackFuel -= 4;
 						//Special case for down jet here?
