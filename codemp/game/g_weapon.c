@@ -2646,7 +2646,10 @@ void rocketThink( gentity_t *ent )
 		dist = VectorLengthSquared(dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64) || (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER))) {
+		if (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER)
+			ent->think = G_ExplodeMissile;
+
+		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64)) {
 			//If its close blow it up.
 			//ent->think = G_ExplodeMissile;
 		//}
