@@ -1702,7 +1702,7 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 			int seed = owner->client->pers.cmd.serverTime % 10000;
 			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-			float r = Q_random(&seed) * 2.75f * bot_strafeOffset.value;
+			float r = Q_random(&seed) * 2.75f;
 
 			angs[PITCH] += r * sin(theta);
 			angs[YAW] += r * cos(theta);
@@ -1712,14 +1712,14 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 2.75f;
 		}
 		AngleVectors(angs, d, NULL, NULL);
-		missile = CreateMissileNew(bPoint, d, 10440*g_projectileVelocityScale.value, 10000, owner, qfalse, qfalse, qfalse);
+		missile = CreateMissileNew(bPoint, d, 20880*g_projectileVelocityScale.value, 10000, owner, qfalse, qfalse, qfalse);
 
 		missile->classname = "flech_proj";
 		missile->s.weapon = WP_FLECHETTE;
 
-		missile->damage = 25 * g_weaponDamageScale.value;
+		missile->damage = 20 * g_weaponDamageScale.value;
 		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
-		missile->methodOfDeath = MOD_BLASTER;
+		missile->methodOfDeath = MOD_TURBLAST;
 		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 
 		// we don't want it to bounce forever
@@ -1829,7 +1829,7 @@ void EWebUpdateBoneAngles(gentity_t *owner, gentity_t *eweb)
 	float incr;
 	float turnCap = 4.0f; //max degrees we can turn per update
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		turnCap = 6;
+		turnCap = 8;
 	
 	VectorClear(yAng);
 	ideal = AngleSubtract(owner->client->ps.viewangles[YAW], eweb->s.angles[YAW]);

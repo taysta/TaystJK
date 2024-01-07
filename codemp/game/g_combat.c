@@ -4937,6 +4937,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			case MOD_CONC_ALT:
 				damage *= 1;
 				break;
+			case MOD_TURBLAST:
+				if (g_tweakWeapons.integer & WT_TRIBES)
+				damage *= 5;
 			default:
 				break;
 		}
@@ -6304,7 +6307,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			// push the center of mass higher than the origin so players
 			// get knocked into the air more
 			dir[2] += 24;
-			if (ent->takedamage && attacker->inuse && attacker->client &&
+			if (ent->takedamage && attacker && attacker->inuse && attacker->client &&
 				attacker->s.eType == ET_NPC && attacker->s.NPC_class == CLASS_VEHICLE &&
 				attacker->m_pVehicle && attacker->m_pVehicle->m_pPilot)
 			{ //say my pilot did it.
