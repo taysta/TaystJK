@@ -2570,8 +2570,9 @@ void rocketThink( gentity_t *ent )
 	}
 	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
-		vec3_t fwd, traceFrom, traceTo, dir;
+		vec3_t fwd, traceFrom, traceTo, dir, destination;
 		trace_t tr;
+		qboolean found = qfalse;
 		float dist, currentVel;
 
 		if (!g_entities[ent->r.ownerNum].client)
@@ -2592,23 +2593,66 @@ void rocketThink( gentity_t *ent )
 
 		VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);
 
+		VectorMA(traceFrom, 24, fwd, traceFrom);//I think this is pushing the trace out of our player but i don't understand why it still has a faraway endpos even if it hits our player at the start..
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
-		VectorSubtract(tr.endpos, ent->r.currentOrigin, dir);
+		if (tr.entityNum >= MAX_CLIENTS) //WORLD?
+		{
+			int i;
+			float	  dist;
+			vec3_t	  angles;
+			trace_t		ptrace;
+			for (i = 0; i < level.numConnectedClients; i++) {
+				gentity_t *person = &g_entities[level.sortedClients[i]];
+
+				if (!person || !person->client)
+					continue;
+				if (person == &g_entities[ent->r.ownerNum])
+					continue;
+				if (person->client->sess.sessionTeam == TEAM_SPECTATOR)
+					continue;
+				if (person->client->sess.sessionTeam != TEAM_FREE && person->client->sess.sessionTeam == g_entities[ent->r.ownerNum].client->sess.sessionTeam)
+					continue;
+
+				//VectorSubtract( ent->client->ps.origin, self->client->ps.origin, angles ); //Changed because only r.curentOrigin is unlagged
+				VectorSubtract(person->r.currentOrigin, g_entities[ent->r.ownerNum].client->ps.origin, angles);
+				vectoangles(angles, angles);
+
+				//Com_Printf("Checking potential player\n");
+
+				if (!InFieldOfVision(g_entities[ent->r.ownerNum].client->ps.viewangles, 4, angles)) // Not in our FOV
+					continue;
+
+				//Com_Printf("Found potential player\n");
+
+				//JP_Trace( &tr, self->client->ps.origin, NULL, NULL, ent->client->ps.origin, self->s.number, MASK_SOLID, qfalse, 0, 0 );
+				JP_Trace(&ptrace, g_entities[ent->r.ownerNum].client->ps.origin, NULL, NULL, person->r.currentOrigin, ent->r.ownerNum, MASK_SOLID, qfalse, 0, 0);
+				if (ptrace.fraction != 1.0) //if not line of sight
+					continue;
+
+				// Return the first guy that fits the requirements
+				VectorCopy(ptrace.endpos, destination);
+				//Com_Printf("^2Line of sight confirmed, tracking\n", person->client->pers.netname);
+				found = qtrue;
+				break;
+			}
+			if (!found)
+				VectorCopy(tr.endpos, destination);
+		}
+		else {
+			//Aimed at a dude perfectly so use that
+			VectorCopy(tr.endpos, destination);
+		}
+
+		VectorSubtract(destination, ent->r.currentOrigin, dir);
 		dist = VectorLengthSquared(dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		if (dist < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
-		}
-
-		if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64) || (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER))) {
+		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64) || (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER))) {
 			//If its close blow it up.
-			ent->think = G_ExplodeMissile;
-		}
-		else if (dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+			//ent->think = G_ExplodeMissile;
+		//}
+		/*else*/ if (!(g_tweakWeapons.integer & WT_TRIBES) && dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
 			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
 			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
@@ -2731,7 +2775,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	}
 
 	if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER && !ent->client->sess.raceMode)
-		damage *= 1.75f;
+		damage *= 1.25f;
 
 	if (q3style && ent->client->pers.backwardsRocket) {
 		vectoangles( forward, temp );
@@ -2782,7 +2826,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
-		missile->nextthink = level.time + 50;//More responsive redeemer
+		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;//More responsive redeemer
 	}
 
 	missile->classname = "rocket_proj";
