@@ -2564,12 +2564,15 @@ void rocketThink( gentity_t *ent )
 		VectorCopy( newdir, ent->movedir );
 		SnapVector( ent->s.pos.trDelta );			// save net bandwidth
 		VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
+		ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
 		ent->s.pos.trTime = level.time;
 	}
 	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
 		vec3_t fwd, traceFrom, traceTo, dir, destination;
 		trace_t tr;
+		int speedCap = 1200;
+		vec3_t newDir;
 		qboolean found = qfalse;
 		float dist, currentVel;
 
@@ -2594,7 +2597,7 @@ void rocketThink( gentity_t *ent )
 		VectorMA(traceFrom, 24, fwd, traceFrom);//I think this is pushing the trace out of our player but i don't understand why it still has a faraway endpos even if it hits our player at the start..
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
-		if (tr.entityNum >= MAX_CLIENTS) //WORLD?
+		if (tr.entityNum >= MAX_CLIENTS)
 		{
 			int i;
 			float	  dist;
@@ -2612,24 +2615,18 @@ void rocketThink( gentity_t *ent )
 				if (person->client->sess.sessionTeam != TEAM_FREE && person->client->sess.sessionTeam == g_entities[ent->r.ownerNum].client->sess.sessionTeam)
 					continue;
 
-				//VectorSubtract( ent->client->ps.origin, self->client->ps.origin, angles ); //Changed because only r.curentOrigin is unlagged
 				VectorSubtract(person->r.currentOrigin, g_entities[ent->r.ownerNum].client->ps.origin, angles);
 				vectoangles(angles, angles);
-
-				//Com_Printf("Checking potential player\n");
 
 				if (!InFieldOfVision(g_entities[ent->r.ownerNum].client->ps.viewangles, 4, angles)) // Not in our FOV
 					continue;
 
-				//Com_Printf("Found potential player\n");
-
-				//JP_Trace( &tr, self->client->ps.origin, NULL, NULL, ent->client->ps.origin, self->s.number, MASK_SOLID, qfalse, 0, 0 );
 				JP_Trace(&ptrace, g_entities[ent->r.ownerNum].client->ps.origin, NULL, NULL, person->r.currentOrigin, ent->r.ownerNum, MASK_SOLID, qfalse, 0, 0);
 				if (ptrace.fraction != 1.0) //if not line of sight
 					continue;
 
-				// Return the first guy that fits the requirements
 				VectorCopy(ptrace.endpos, destination);
+				destination[2] += 24;
 				//Com_Printf("^2Line of sight confirmed, tracking\n", person->client->pers.netname);
 				found = qtrue;
 				break;
@@ -2637,10 +2634,10 @@ void rocketThink( gentity_t *ent )
 			if (!found)
 				VectorCopy(tr.endpos, destination);
 		}
-		else {
-			//Aimed at a dude perfectly so use that
+		else { //Aimed at a dude perfectly so use that
 			VectorCopy(tr.endpos, destination);
 		}
+
 
 		VectorSubtract(destination, ent->r.currentOrigin, dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
@@ -2652,39 +2649,32 @@ void rocketThink( gentity_t *ent )
 			//If its close blow it up.
 			//ent->think = G_ExplodeMissile;
 		//}
-		/*else*/
-		if (!(g_tweakWeapons.integer & WT_TRIBES)) {
-			dist = VectorLengthSquared(dir);
-			if (dist < 128 * 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-				dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-				dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-				dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
-			}
-		}
+		/*else*/ 
+		dist = VectorLengthSquared(dir);
 
-		//Speed it up slowly?
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			speedCap = 1800;
+		if (currentVel > speedCap)
+			currentVel = speedCap;
+		if (dist > 128 * 128)
+			dir[2] += 40; //Target above their head until we get close, helps with enemies walking on terrain
 
+		//Goal is to limit the change in direction of the rocket to 20 degrees or so per tick
+		//Vectornormalize current dir (dir) and "wishdir" (newDir)
+		//Convert to angles and get the diff.  Cap the diff.  Convert the diff back to vector and apply.
+		//Is there a better way to do this with dot or crossproduct?  Do we have to convert to angles? Is that just to avoid wraparound (e.g. anglesubtract math?)
+#if 1
 		VectorNormalize(dir);
+		VectorMA(ent->s.pos.trDelta, currentVel * 0.4f, dir, newDir);
+		VectorNormalize(newDir);
 
-		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
-		//ent->speed = ent->speed + 1.0f;
-
-		if (1) {
-			//Goal is to limit the change in direction of the rocket to 20 degrees or so per tick
-				//Vectornormalize current dir (dir) and "wishdir" (newDir)
-				//Convert to angles and get the diff.  Cap the diff.  Convert the diff back to vector and apply.
-				//Is there a better way to do this with dot or crossproduct?  Do we have to convert to angles? Is that just to avoid wraparound (e.g. anglesubtract math?)
+#else
+		{
 			vec3_t newDir, dirAngs, newDirAngs;
 			float xAng, yAng;
 			float turnCap = 10.0f;
-			int speedCap = 1200;
-
-			if (g_tweakWeapons.integer & WT_TRIBES)
-				speedCap = 1800;
-
+			VectorNormalize(dir);
 			VectorCopy(ent->s.pos.trDelta, newDir);
-			VectorNormalize(newDir);
-
 			vectoangles(dir, dirAngs);
 			vectoangles(newDir, newDirAngs);
 
@@ -2702,17 +2692,16 @@ void rocketThink( gentity_t *ent )
 				newDirAngs[1] -= turnCap;
 
 			AngleVectors(newDirAngs, newDir, NULL, NULL);
-
-			if (currentVel > speedCap)
-				currentVel = speedCap;
-
-			VectorScale(newDir, currentVel * 1.0025f, ent->s.pos.trDelta);
-		}
-		ent->s.pos.trTime = level.time;
-
 	}
-	ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
-	return;
+#endif
+		VectorScale(newDir, currentVel * 1.025f, ent->s.pos.trDelta);
+
+		ent->s.pos.trTime = level.time;
+		if (dist > 128 * 128)
+			ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		else
+			ent->nextthink = level.time + 25;
+	}
 }
 
 extern void G_ExplodeMissile( gentity_t *ent );
