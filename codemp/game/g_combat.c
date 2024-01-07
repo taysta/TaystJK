@@ -4953,10 +4953,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			cut = 1;
 		else if (cut < 0)
 			cut = 0;
-		targ->client->ps.jetpackFuel -= damage * 1.2f;
-		targ->client->ps.fd.forcePower -= damage * 1.5f;;
-		if (targ->client->ps.jetpackFuel < 0)
-			targ->client->ps.jetpackFuel = 0;
+		targ->client->ps.fd.forcePower -= damage * 1.25f;;
 		if (targ->client->ps.fd.forcePower < 0)
 			targ->client->ps.fd.forcePower = 0;
 		VectorScale(targ->client->ps.velocity, cut, targ->client->ps.velocity);

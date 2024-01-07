@@ -2415,8 +2415,6 @@ void rocketThink( gentity_t *ent )
 	int i;
 	float vel = (ent->spawnflags&1)?ent->speed:ROCKET_VELOCITY* g_projectileVelocityScale.integer;
 	qboolean redeemerAllowed = qtrue;
-	if (g_tweakWeapons.integer & WT_TRIBES)
-		vel = 2040 * g_projectileVelocityScale.integer;
 
 	if (!g_entities[ent->r.ownerNum].client || g_entities[ent->r.ownerNum].client->sess.raceMode)
 		redeemerAllowed = qfalse;
@@ -2666,8 +2664,8 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ent->speed + 1.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 2000)
-				currentVel = 2000;
+			if (currentVel > 1800)
+				currentVel = 1800;
 			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
 		}
 		else
@@ -2769,7 +2767,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 
 	if (altFire) {
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			vel = 100;
+			vel = 200;
 		else
 			vel *= 0.5f;
 	}
@@ -2837,8 +2835,14 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		VectorSet( missile->r.maxs, 1, 1, 1 ); //Can this be smaller?
 		missile->raceModeShooter = qtrue;
 	}
-	else
-		VectorSet( missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE );
+	else {
+		if ((g_tweakWeapons.integer & WT_TRIBES) && altFire) {
+			VectorSet(missile->r.maxs, ROCKET_SIZE*2, ROCKET_SIZE*2, ROCKET_SIZE*2);
+		}
+		else {
+			VectorSet(missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE);
+		}
+	}
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
 	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
@@ -2861,6 +2865,12 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		missile->health = 10;
 		missile->takedamage = qtrue;
 		missile->r.contents = MASK_SHOT;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile->health = 3;
+		}
+		else {
+			missile->health = 10;
+		}
 	}
 	missile->die = RocketDie;
 //===testing being able to shoot rockets out of the air==================================
