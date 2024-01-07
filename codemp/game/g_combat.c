@@ -2729,7 +2729,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 						}
 					}
 				}
-				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4)//rabbit points
+				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer && g_neutralFlag.integer < 4)//rabbit points
 				{
 					int carrier_bonus, killed_carrier, killed_other;
 					if (level.gametype == GT_TEAM) {

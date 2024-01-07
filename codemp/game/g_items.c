@@ -1423,7 +1423,8 @@ void ItemUse_UseDisp(gentity_t *ent, int type)
 	if (ent->client->ps.weaponTime > 0 ||
 		ent->client->ps.forceHandExtend != HANDEXTEND_NONE)
 	{ //busy doing something else
-		return;
+		if (!(g_tweakWeapons.integer & WT_TRIBES))
+			return;
 	}
 
 	ent->client->tossableItemDebounce = level.time + TOSS_DEBOUNCE_TIME;
