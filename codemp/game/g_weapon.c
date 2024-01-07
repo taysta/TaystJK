@@ -2669,7 +2669,7 @@ void rocketThink( gentity_t *ent )
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			if (currentVel > 1800)
 				currentVel = 1800;
-			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
+			VectorScale(dir, currentVel * (1 + (0.025f * 5.0f)), ent->s.pos.trDelta);
 		}
 		else
 			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
@@ -2677,7 +2677,10 @@ void rocketThink( gentity_t *ent )
 
 	}
 
-	ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
+	if (g_tweakWeapons.integer & WT_TRIBES) //instead of this i should make it so it can't change angle more than like 20 degrees in a tick
+		ent->nextthink = level.time + 500;
+	else
+		ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
 	return;
 }
 
@@ -2770,7 +2773,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 
 	if (altFire) {
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			vel = 200;
+			vel = 125;
 		else
 			vel *= 0.5f;
 	}
@@ -2848,7 +2851,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	}
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
+	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode && !altFire)
 		missile->s.pos.trType = TR_GRAVITY;
 
 	missile->damage = damage;

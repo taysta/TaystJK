@@ -3285,7 +3285,7 @@ void ClearRegisteredItems( void ) {
 	RegisterItem( BG_FindItemForWeapon( WP_MELEE ) );
 	RegisterItem( BG_FindItemForWeapon( WP_SABER ) );
 
-	if (level.gametype == GT_SIEGE)
+	if (level.gametype == GT_SIEGE || (g_tweakWeapons.integer & WT_TRIBES))
 	{ //kind of cheesy, maybe check if siege class with disp's is gonna be on this map too
 		G_PrecacheDispensers();
 	}
