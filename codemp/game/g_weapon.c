@@ -2643,7 +2643,6 @@ void rocketThink( gentity_t *ent )
 		}
 
 		VectorSubtract(destination, ent->r.currentOrigin, dir);
-		dist = VectorLengthSquared(dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
 
 		if (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER)
@@ -2653,10 +2652,14 @@ void rocketThink( gentity_t *ent )
 			//If its close blow it up.
 			//ent->think = G_ExplodeMissile;
 		//}
-		/*else*/ if (!(g_tweakWeapons.integer & WT_TRIBES) && dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
+		/*else*/
+		if (!(g_tweakWeapons.integer & WT_TRIBES)) {
+			dist = VectorLengthSquared(dir);
+			if (dist < 128 * 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
+				dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
+				dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
+				dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
+			}
 		}
 
 		//Speed it up slowly?
@@ -2666,21 +2669,49 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
 		//ent->speed = ent->speed + 1.0f;
 
-		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 1800)
-				currentVel = 1800;
-			VectorScale(dir, currentVel * (1 + (0.025f * 5.0f)), ent->s.pos.trDelta);
+		if (1) {
+			//Goal is to limit the change in direction of the rocket to 20 degrees or so per tick
+				//Vectornormalize current dir (dir) and "wishdir" (newDir)
+				//Convert to angles and get the diff.  Cap the diff.  Convert the diff back to vector and apply.
+				//Is there a better way to do this with dot or crossproduct?  Do we have to convert to angles? Is that just to avoid wraparound (e.g. anglesubtract math?)
+			vec3_t newDir, dirAngs, newDirAngs;
+			float xAng, yAng;
+			float turnCap = 10.0f;
+			int speedCap = 1200;
+
+			if (g_tweakWeapons.integer & WT_TRIBES)
+				speedCap = 1800;
+
+			VectorCopy(ent->s.pos.trDelta, newDir);
+			VectorNormalize(newDir);
+
+			vectoangles(dir, dirAngs);
+			vectoangles(newDir, newDirAngs);
+
+			xAng = AngleSubtract(dirAngs[0], newDirAngs[0]);
+			yAng = AngleSubtract(dirAngs[1], newDirAngs[1]);
+			//Com_Printf("X ang is %.2f and Y ang is %.2f\n", xAng, yAng);
+
+			if (xAng > 20)
+				newDirAngs[0] += turnCap;
+			else if (xAng < -turnCap)
+				newDirAngs[0] -= turnCap;
+			if (yAng > turnCap)
+				newDirAngs[1] += turnCap;
+			else if (yAng < -turnCap)
+				newDirAngs[1] -= turnCap;
+
+			AngleVectors(newDirAngs, newDir, NULL, NULL);
+
+			if (currentVel > speedCap)
+				currentVel = speedCap;
+
+			VectorScale(newDir, currentVel * 1.0025f, ent->s.pos.trDelta);
 		}
-		else
-			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
 		ent->s.pos.trTime = level.time;
 
 	}
-
-	if (g_tweakWeapons.integer & WT_TRIBES) //instead of this i should make it so it can't change angle more than like 20 degrees in a tick
-		ent->nextthink = level.time + 500;
-	else
-		ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
+	ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
 	return;
 }
 
