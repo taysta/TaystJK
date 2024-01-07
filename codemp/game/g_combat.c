@@ -627,7 +627,7 @@ void TossClientItems( gentity_t *self ) {
 	if (g_tweakWeapons.integer & WT_TRIBES) { //Tribes tweak has ppl drop ammo on death
 		ItemUse_UseDisp(self, HI_AMMODISP);
 		G_AddEvent(self, EV_USE_ITEM0 + HI_AMMODISP, 0);
-		return;
+		weapon = WP_NONE;
 	}
 
 	// drop the weapon if not a gauntlet or machinegun
