@@ -1702,22 +1702,22 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 			int seed = owner->client->pers.cmd.serverTime % 10000;
 			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-			float r = Q_random(&seed) * 1.75f;
+			float r = Q_random(&seed) * 2.75f * bot_strafeOffset.value;
 
 			angs[PITCH] += r * sin(theta);
 			angs[YAW] += r * cos(theta);
 		}
 		else {
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * 1.75f;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 1.75f;
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * 2.75f;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 2.75f;
 		}
 		AngleVectors(angs, d, NULL, NULL);
-		missile = CreateMissileNew(bPoint, d, 5220, 10000, owner, qfalse, qfalse, qfalse);
+		missile = CreateMissileNew(bPoint, d, 10440*g_projectileVelocityScale.value, 10000, owner, qfalse, qfalse, qfalse);
 
 		missile->classname = "flech_proj";
 		missile->s.weapon = WP_FLECHETTE;
 
-		missile->damage = 25;
+		missile->damage = 25 * g_weaponDamageScale.value;
 		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 		missile->methodOfDeath = MOD_BLASTER;
 		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
@@ -1827,8 +1827,10 @@ void EWebUpdateBoneAngles(gentity_t *owner, gentity_t *eweb)
 	vec3_t yAng;
 	float ideal;
 	float incr;
-	const float turnCap = 4.0f; //max degrees we can turn per update
-
+	float turnCap = 4.0f; //max degrees we can turn per update
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		turnCap = 6;
+	
 	VectorClear(yAng);
 	ideal = AngleSubtract(owner->client->ps.viewangles[YAW], eweb->s.angles[YAW]);
 	incr = AngleSubtract(ideal, eweb->angle);
@@ -2928,7 +2930,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle ) {
 	else
 	{
 		VectorScale( velocity, 150, velocity );
-		velocity[2] += 200 + Q_flrand(-1.0f, 1.0f) * 50;	
+		velocity[2] += 200 + Q_flrand(-1.0f, 1.0f) * 50;
 	}
 	
 	return LaunchItem( item, ent->s.pos.trBase, velocity );
