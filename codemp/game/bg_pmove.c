@@ -376,7 +376,9 @@ qboolean BG_CanJetpack(playerState_t *ps)
 	//Need a debouncer
 	if (!(ps->stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)))
 		return qfalse;
-	if (ps->jetpackFuel < 10)
+	if (ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
+		return qfalse;
+	if (ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
 		return qfalse;
 	if (BG_SaberInSpecial(ps->saberMove))
 		return qfalse;
@@ -3980,7 +3982,7 @@ static void PM_DodgeMove(int forward, int right)
 	VectorNormalize( dodgedir );
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		pm->ps->jetpackFuel -= 25;
+		pm->ps->fd.forcePower -= 25;//validate?
 		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
 #ifdef _GAME
@@ -4037,7 +4039,7 @@ static void PM_CheckDash(void)
 		return;
 	}
 	
-	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->jetpackFuel < 25))) {
+	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->fd.forcePower < 25))) {
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
@@ -13009,7 +13011,7 @@ void PmoveSingle (pmove_t *pmove) {
 #else
 	if (!pm_entSelf->m_pVehicle && (cgs.jcinfo & JAPRO_CINFO_JETPACK || pm->ps->stats[STAT_RACEMODE])) {
 #endif
-		if (!pm->cmd.upmove || pm->ps->jetpackFuel == 0) { //Hold to use (spacebar) newjetpack new jetpack
+		if (!pm->cmd.upmove || (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && pm->ps->jetpackFuel == 0) || ((pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) && (pm->ps->fd.forcePower == 0))) { //Hold to use (spacebar) newjetpack new jetpack
 			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
 		else if (pm->ps->pm_type == PM_NORMAL && pm->cmd.upmove && pm->ps->groundEntityNum == ENTITYNUM_NONE && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && !(pmove->ps->pm_flags & PMF_JUMP_HELD) && BG_CanJetpack(pm->ps)) { //Pressing jump, while in air
