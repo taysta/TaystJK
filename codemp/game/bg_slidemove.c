@@ -523,7 +523,10 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 				{ //probably a humanoid, or something
 					if (pSelfVeh->m_pVehicleInfo->type == VH_FIGHTER)
 					{ //player die good.. if me fighter
-						pmult = 2000.0f;
+						if (g_tweakWeapons.integer & WT_TRIBES)
+							pmult = 10.0f;
+						else
+							pmult = 2000.0f;
 					}
 					else
 					{

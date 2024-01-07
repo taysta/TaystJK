@@ -2277,10 +2277,10 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 					if (other->client->ps.stats[STAT_ARMOR] > 100)
 						other->client->ps.stats[STAT_ARMOR] = 100;
 				}
-				if (other->client->ps.jetpackFuel < 100) {
-					other->client->ps.jetpackFuel += 50;
-					if (other->client->ps.jetpackFuel > 100)
-						other->client->ps.jetpackFuel = 100;
+				if (other->client->ps.fd.forcePower < 100) {
+					other->client->ps.fd.forcePower += 50;
+					if (other->client->ps.fd.forcePower > 100)
+						other->client->ps.fd.forcePower = 100;
 				}
 			}
 
