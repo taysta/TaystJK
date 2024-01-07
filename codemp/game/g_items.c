@@ -2262,7 +2262,7 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_BLASTER] = 600;
 				other->client->ps.ammo[AMMO_POWERCELL] = 600;
 				other->client->ps.ammo[AMMO_METAL_BOLTS] = 900;
-				other->client->ps.ammo[AMMO_ROCKETS] = 20;
+				other->client->ps.ammo[AMMO_ROCKETS] = 30;
 				other->client->ps.ammo[AMMO_THERMAL] = 2;
 				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 

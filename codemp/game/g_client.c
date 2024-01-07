@@ -3791,7 +3791,7 @@ void GiveClientWeapons(gclient_t *client) {
 		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE));
 		client->ps.ammo[AMMO_POWERCELL] = 600;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
-		client->ps.ammo[AMMO_ROCKETS] = 25;
+		client->ps.ammo[AMMO_ROCKETS] = 30;
 		client->ps.ammo[AMMO_TRIPMINE] = 2;
 	}
 	else {
