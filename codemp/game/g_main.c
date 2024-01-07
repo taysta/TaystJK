@@ -3910,7 +3910,7 @@ void G_RunFrame( int levelTime ) {
 						ent->client->ps.jetpackFuel -= 2;
 					else {
 						if (ent->client->pers.tribesClass == 2) //Heavy
-							ent->client->ps.jetpackFuel -= 5;
+							ent->client->ps.jetpackFuel -= 7;
 						else
 							ent->client->ps.jetpackFuel -= 4;
 						//Special case for down jet here?
@@ -3928,7 +3928,10 @@ void G_RunFrame( int levelTime ) {
 			{ //recharge jetpack
 				if (ent->client->jetPackDebRecharge < level.time)
 				{
-					ent->client->ps.jetpackFuel += 3;
+					if (g_tweakWeapons.integer & WT_TRIBES)
+						ent->client->ps.jetpackFuel += 4;
+					else
+						ent->client->ps.jetpackFuel += 3;
 					ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;//Refuel rate
 				}
 			}

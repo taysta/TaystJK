@@ -344,15 +344,19 @@ static void CG_DrawZoomMask( void )
 		// Using a magic number to convert the zoom level to a rotation amount that correlates more or less with the zoom artwork.
 		level *= 103.0f;
 
-		// Draw target mask
-        if( cg_crossHairScope.integer == 0)
-        {
-            trap->R_SetColor(colorTable[CT_BLACK]);
-            trap->R_DrawStretchPic(0, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0, cgs.media.whiteShader);
-            trap->R_DrawStretchPic(SCREEN_WIDTH - xOffset, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0, cgs.media.whiteShader);
-            trap->R_SetColor( colorTable[CT_WHITE] );
-            CG_DrawPic( xOffset, 0, SCREEN_WIDTH*cgs.widthRatioCoef, SCREEN_HEIGHT, cgs.media.disruptorMask );
-        }
+		if(cg_crossHairScope.integer == 0) {
+			trap->R_SetColor(colorTable[CT_BLACK]);
+			trap->R_DrawStretchPic(0, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0, cgs.media.whiteShader);
+			trap->R_DrawStretchPic(SCREEN_WIDTH - xOffset, 0, xOffset, SCREEN_HEIGHT, 0, 0, 0, 0,
+								   cgs.media.whiteShader);
+			trap->R_SetColor( colorTable[CT_WHITE] );
+			CG_DrawPic( xOffset, 0, SCREEN_WIDTH*cgs.widthRatioCoef, SCREEN_HEIGHT, cgs.media.disruptorMask );
+		} else if (cg_crossHairScope.integer == 2) {
+			// Draw target mask
+			trap->R_SetColor( colorTable[CT_WHITE] );
+			CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cgs.media.disruptorMask );
+		}
+
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
 		{
@@ -7427,7 +7431,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 		return;
 	}
 
-	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crossHairScope.integer == 0 )
+	if ( cg.predictedPlayerState.zoomMode != 0 && cg_crossHairScope.integer != 1 )
 	{//not while scoped
 		return;
 	}

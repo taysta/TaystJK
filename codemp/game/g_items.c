@@ -1423,7 +1423,8 @@ void ItemUse_UseDisp(gentity_t *ent, int type)
 	if (ent->client->ps.weaponTime > 0 ||
 		ent->client->ps.forceHandExtend != HANDEXTEND_NONE)
 	{ //busy doing something else
-		return;
+		if (!(g_tweakWeapons.integer & WT_TRIBES))
+			return;
 	}
 
 	ent->client->tossableItemDebounce = level.time + TOSS_DEBOUNCE_TIME;
@@ -1702,24 +1703,24 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
 			int seed = owner->client->pers.cmd.serverTime % 10000;
 			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
-			float r = Q_random(&seed) * 1.75f;
+			float r = Q_random(&seed) * 2.75f;
 
 			angs[PITCH] += r * sin(theta);
 			angs[YAW] += r * cos(theta);
 		}
 		else {
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * 1.75f;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 1.75f;
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * 2.75f;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * 2.75f;
 		}
 		AngleVectors(angs, d, NULL, NULL);
-		missile = CreateMissileNew(bPoint, d, 5220, 10000, owner, qfalse, qfalse, qfalse);
+		missile = CreateMissileNew(bPoint, d, 20880*g_projectileVelocityScale.value, 10000, owner, qfalse, qfalse, qfalse);
 
 		missile->classname = "flech_proj";
 		missile->s.weapon = WP_FLECHETTE;
 
-		missile->damage = 25;
+		missile->damage = 20 * g_weaponDamageScale.value;
 		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
-		missile->methodOfDeath = MOD_BLASTER;
+		missile->methodOfDeath = MOD_TURBLAST;
 		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 
 		// we don't want it to bounce forever
@@ -1827,8 +1828,10 @@ void EWebUpdateBoneAngles(gentity_t *owner, gentity_t *eweb)
 	vec3_t yAng;
 	float ideal;
 	float incr;
-	const float turnCap = 4.0f; //max degrees we can turn per update
-
+	float turnCap = 4.0f; //max degrees we can turn per update
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		turnCap = 8;
+	
 	VectorClear(yAng);
 	ideal = AngleSubtract(owner->client->ps.viewangles[YAW], eweb->s.angles[YAW]);
 	incr = AngleSubtract(ideal, eweb->angle);
@@ -2259,7 +2262,7 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_BLASTER] = 600;
 				other->client->ps.ammo[AMMO_POWERCELL] = 600;
 				other->client->ps.ammo[AMMO_METAL_BOLTS] = 900;
-				other->client->ps.ammo[AMMO_ROCKETS] = 20;
+				other->client->ps.ammo[AMMO_ROCKETS] = 30;
 				other->client->ps.ammo[AMMO_THERMAL] = 2;
 				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 
@@ -2273,6 +2276,11 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 					other->client->ps.stats[STAT_ARMOR] += 50;
 					if (other->client->ps.stats[STAT_ARMOR] > 100)
 						other->client->ps.stats[STAT_ARMOR] = 100;
+				}
+				if (other->client->ps.jetpackFuel < 100) {
+					other->client->ps.jetpackFuel += 50;
+					if (other->client->ps.jetpackFuel > 100)
+						other->client->ps.jetpackFuel = 100;
 				}
 			}
 
@@ -2928,7 +2936,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle ) {
 	else
 	{
 		VectorScale( velocity, 150, velocity );
-		velocity[2] += 200 + Q_flrand(-1.0f, 1.0f) * 50;	
+		velocity[2] += 200 + Q_flrand(-1.0f, 1.0f) * 50;
 	}
 	
 	return LaunchItem( item, ent->s.pos.trBase, velocity );

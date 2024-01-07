@@ -2267,7 +2267,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 	float vel = 1000;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		vel = 2000;
+		vel = 2400;
 		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 4000, self, qtrue, qtrue, qtrue);
 		missile->setTime = level.time;
 	}
@@ -2622,8 +2622,8 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ent->speed + 1.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 1400)
-				currentVel = 1400;
+			if (currentVel > 2000)
+				currentVel = 2000;
 			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
 		}
 		else
@@ -2719,7 +2719,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		else if (g_tweakWeapons.integer & WT_TRIBES) {
 			damage = 75 * g_weaponDamageScale.value;
 			splashDamage = 75 * g_splashDamageScale.value;
-			vel = 2040 * g_projectileVelocityScale.value;
+			vel = 3040 * g_projectileVelocityScale.value;
 		}
 	}
 
@@ -2782,7 +2782,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
-		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		missile->nextthink = level.time + 50;//More responsive redeemer
 	}
 
 	missile->classname = "rocket_proj";
@@ -2837,7 +2837,7 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 //------------------------------------------------------------------------------
 {
 	gentity_t	*missile;
-	float velocity = 2000 * g_projectileVelocityScale.value;
+	float velocity = 2366 * g_projectileVelocityScale.value;
 	int lifetime = 3500, damage = 140 * g_weaponDamageScale.value, splashdamage = 140 * g_splashDamageScale.value, splashradius = 384;
 
 	missile = CreateMissileNew( start, fwd, velocity, lifetime, self, qtrue, qtrue, qtrue );
@@ -3589,6 +3589,11 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->parent = owner;
 	laserTrap->activator = owner;
 	laserTrap->r.ownerNum = owner->s.number;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		laserTrap->splashDamage = 70;
+		laserTrap->damage = 70;
+	}
 
 	if (g_tweakWeapons.integer & WT_EXPLOSIVE_HITBOX) {
 		VectorSet(laserTrap->r.mins, -LT_SIZE, -LT_SIZE, 0);
@@ -4455,7 +4460,7 @@ static void WP_FireConcussion( gentity_t *ent )
 	gentity_t *missile;
 
 	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
-		vel = 2275 * g_projectileVelocityScale.value;
+		vel = 3040 * g_projectileVelocityScale.value;
 		damage = 75;
 	}
 

@@ -2489,14 +2489,16 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
 			//Com_Printf("Detetcting hazardtrooper\n");
 			if (client->pers.tribesClass != 2) {
-				G_Kill(ent);
+				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
 				client->pers.tribesClass = 2;
 			}
 		}
 		else {
 			//Com_Printf("Detetcting medium \n");
 			if (client->pers.tribesClass != 1) {
-				G_Kill(ent);
+				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
 				client->pers.tribesClass = 1;
 			}
 		}
@@ -3545,7 +3547,7 @@ void GiveClientItems(gclient_t *client) {
 		//Give tribes loadout.
 		if (client->pers.tribesClass == 1) {
 			//Medium
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_SENTRY_GUN));
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_EWEB));
 		}
 		else if (client->pers.tribesClass == 2) {
 			//Heavy
@@ -3789,7 +3791,7 @@ void GiveClientWeapons(gclient_t *client) {
 		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE));
 		client->ps.ammo[AMMO_POWERCELL] = 600;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
-		client->ps.ammo[AMMO_ROCKETS] = 25;
+		client->ps.ammo[AMMO_ROCKETS] = 30;
 		client->ps.ammo[AMMO_TRIPMINE] = 2;
 	}
 	else {
@@ -4318,12 +4320,20 @@ void ClientSpawn(gentity_t *ent) {
 		}
 		else if (client->sess.sessionTeam != TEAM_SPECTATOR)//huh, stop this weird scope in spec, Loda fixme, this should be a fix to the scope itself
 		{
-			int weap;
+			if (client->pers.tribesClass == 1) {
+				client->ps.weapon = WP_CONCUSSION;
+			}
+			else if (client->pers.tribesClass == 2) {
+				client->ps.weapon = WP_ROCKET_LAUNCHER;
+			}
+			else {
+				int weap;
 
-			for (weap = 16; weap >= 1; weap--) {//From 16 downto 1
-				if (client->ps.stats[STAT_WEAPONS] & (1 << weap)) {//We have it
-					client->ps.weapon = weap;//Set their weapon to the highest one they have, if saber not enabled.
-					break;
+				for (weap = 16; weap >= 1; weap--) {//From 16 downto 1
+					if (client->ps.stats[STAT_WEAPONS] & (1 << weap)) {//We have it
+						client->ps.weapon = weap;//Set their weapon to the highest one they have, if saber not enabled.
+						break;
+					}
 				}
 			}
 		}
