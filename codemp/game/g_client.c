@@ -2484,10 +2484,9 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	}
 
 	//WT_TRIBES
-
-	if (!client->sess.raceMode && g_tribesClass.integer) {
+	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
-			//Com_Printf("Detetcting hazardtrooper\n");
+			//Com_Printf("Detetcting heavy\n");
 			if (client->pers.tribesClass != 2) {
 				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
 					G_Kill(ent);
