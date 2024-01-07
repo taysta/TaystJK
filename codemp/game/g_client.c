@@ -4320,12 +4320,20 @@ void ClientSpawn(gentity_t *ent) {
 		}
 		else if (client->sess.sessionTeam != TEAM_SPECTATOR)//huh, stop this weird scope in spec, Loda fixme, this should be a fix to the scope itself
 		{
-			int weap;
+			if (client->pers.tribesClass == 1) {
+				client->ps.weapon = WP_CONCUSSION;
+			}
+			else if (client->pers.tribesClass == 2) {
+				client->ps.weapon = WP_ROCKET_LAUNCHER;
+			}
+			else {
+				int weap;
 
-			for (weap = 16; weap >= 1; weap--) {//From 16 downto 1
-				if (client->ps.stats[STAT_WEAPONS] & (1 << weap)) {//We have it
-					client->ps.weapon = weap;//Set their weapon to the highest one they have, if saber not enabled.
-					break;
+				for (weap = 16; weap >= 1; weap--) {//From 16 downto 1
+					if (client->ps.stats[STAT_WEAPONS] & (1 << weap)) {//We have it
+						client->ps.weapon = weap;//Set their weapon to the highest one they have, if saber not enabled.
+						break;
+					}
 				}
 			}
 		}

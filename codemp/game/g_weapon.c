@@ -2622,8 +2622,8 @@ void rocketThink( gentity_t *ent )
 		//ent->speed = ent->speed + 1.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 1400)
-				currentVel = 1400;
+			if (currentVel > 2000)
+				currentVel = 2000;
 			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
 		}
 		else
@@ -2782,7 +2782,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
-		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		missile->nextthink = level.time + 50;//More responsive redeemer
 	}
 
 	missile->classname = "rocket_proj";
@@ -3589,6 +3589,11 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->parent = owner;
 	laserTrap->activator = owner;
 	laserTrap->r.ownerNum = owner->s.number;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		laserTrap->splashDamage = 70;
+		laserTrap->damage = 70;
+	}
 
 	if (g_tweakWeapons.integer & WT_EXPLOSIVE_HITBOX) {
 		VectorSet(laserTrap->r.mins, -LT_SIZE, -LT_SIZE, 0);
