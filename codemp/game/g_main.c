@@ -3928,7 +3928,10 @@ void G_RunFrame( int levelTime ) {
 			{ //recharge jetpack
 				if (ent->client->jetPackDebRecharge < level.time)
 				{
-					ent->client->ps.jetpackFuel += 3;
+					if (g_tweakWeapons.integer & WT_TRIBES)
+						ent->client->ps.jetpackFuel += 4;
+					else
+						ent->client->ps.jetpackFuel += 3;
 					ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;//Refuel rate
 				}
 			}
