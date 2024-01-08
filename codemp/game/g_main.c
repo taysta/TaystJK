@@ -2076,7 +2076,7 @@ void PrintStats(int client) {
 
 	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
 		//return;
-	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer)
+	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer && !g_tribesClass.integer)
 		showAccuracy = qfalse;
 	if ((((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE)))) || g_gunGame.integer) //TE and TH are disabled
 		showTeamPowers = qfalse;

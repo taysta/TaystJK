@@ -662,6 +662,9 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PROTECT)) {
 		drain = 50;
 	}
+	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PUSH)) {
+		drain = 95;
+	}
 	//Tribes protect? wt_tribes
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
 	{ //we're probably going to deactivate it..
@@ -3208,6 +3211,8 @@ void ForceThrow( gentity_t *self, qboolean pull )
 
 	if (powerUse == FP_PULL && g_tweakForce.integer & FT_WEAKPULL)
 		WP_ForcePowerStart( self, powerUse, 60 );
+	else if (powerUse == FP_PUSH && g_tweakWeapons.integer & WT_TRIBES)
+		WP_ForcePowerStart(self, powerUse, 95);
 	else
 		WP_ForcePowerStart( self, powerUse, 0 );
 
@@ -3274,8 +3279,15 @@ void ForceThrow( gentity_t *self, qboolean pull )
 	}
 	else
 	{
-		powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];
-		pushPower = 256*self->client->ps.fd.forcePowerLevel[FP_PUSH];
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			powerLevel = FORCE_LEVEL_2;
+			pushPower = 256 * FORCE_LEVEL_2;
+			Com_Printf("As expected\n");
+		}
+		else {
+			powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];
+			pushPower = 256 * self->client->ps.fd.forcePowerLevel[FP_PUSH];
+		}
 	}
 
 	if (!powerLevel)
@@ -5868,6 +5880,9 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 					debounce = Q_max(g_forceRegenTime.integer * (0.6 + (.3 * (float)self->client->sess.wins / (float)duel_fraglimit.integer)), 1);
 				else
 					debounce = Q_max(g_forceRegenTime.integer*0.7, 1);
+			}
+			else if (self->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+				debounce = 40;//Hardcoded regentime of 40ms for tribes jetpack
 			}
 			else if (self->client->ps.stats[STAT_RACEMODE]) {
 				debounce = 25;//Hardcoded regentime of 25ms for racers.. idk.. 25 is lowest you can go without horribly broken cartwheel climb
