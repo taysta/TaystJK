@@ -5971,6 +5971,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
+	if (targ && targ->client && !take && asave && g_tweakWeapons.integer & WT_TRIBES) {
+		G_ScaleNetHealth(targ); //WT_TRIBES rework
+	}
+
 	// do the damage
 	if (take)
 	{

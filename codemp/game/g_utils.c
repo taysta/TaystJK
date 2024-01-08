@@ -1247,7 +1247,22 @@ gentity_t *G_SoundTempEntityPrivate( vec3_t origin, int event, int channel, int 
 void G_ScaleNetHealth(gentity_t *self)
 {
 	int maxHealth = self->maxHealth;
+	
+	if (g_tweakWeapons.integer & WT_TRIBES && maxHealth < 1000) {
+		if (self->client && self->client->pers.tribesClass == 2)
+			self->s.maxhealth = maxHealth + 100;//100 armor?
+		else
+			self->s.maxhealth = maxHealth;//100 armor?
 
+		self->s.health = self->health + self->client->ps.stats[STAT_ARMOR]; //Add armor as well.  Should tribes even have this
+
+		if (self->s.health < 0)
+		{ //don't let it wrap around
+			self->s.health = 0;
+		}
+		return;
+	}
+	
     if (maxHealth < 1000)
 	{ //it's good then
 		self->s.maxhealth = maxHealth;
@@ -1275,8 +1290,6 @@ void G_ScaleNetHealth(gentity_t *self)
 		self->s.health = 1;
 	}
 }
-
-
 
 /*
 ==============================================================================

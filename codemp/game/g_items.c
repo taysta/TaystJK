@@ -603,8 +603,8 @@ static qboolean pas_find_enemies( gentity_t *self )
 	}
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		radius = 2048;
-		bestDist = 2048 * 2048;
+		radius = 3200;
+		bestDist = 3200*3200;
 	}
 
 	VectorCopy(self->s.pos.trBase, org2);
