@@ -560,6 +560,13 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 
 	vectoangles( forward, angs );
 
+	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
+		if (ent->client->ps.jetpackFuel > 0)
+			ent->client->ps.jetpackFuel -= 5;
+		if (ent->client->ps.jetpackFuel < 0)
+			ent->client->ps.jetpackFuel = 0;
+	}
+
 	if ( altFire )
 	{
 		// add some slop to the alt-fire direction

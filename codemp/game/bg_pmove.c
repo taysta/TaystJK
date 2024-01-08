@@ -8928,6 +8928,16 @@ if (pm->ps->duelInProgress)
 	}
 	*/
 
+#if _GAME
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Chaingun overheat
+#else
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+#endif
+		if (pm->ps->weapon == WP_BLASTER && !pm->ps->jetpackFuel)
+			return;
+	}
+
+
 	if (killAfterItem)
 	{
 		return;
