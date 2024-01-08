@@ -3826,7 +3826,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 						}
 					}
 					else {
-						if ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull) {
+						if (((g_tweakWeapons.integer & WT_TRIBES) && !pull) || ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull)) {
 							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod; //FT_WEAKPULL?
 							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
 						}
