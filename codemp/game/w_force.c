@@ -5848,7 +5848,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 
 	if ( (!self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN)) && //whats up with fp_drain being mentioned here
 		((self->client->sess.movementStyle != MV_TRIBES) || !(self->client->ps.eFlags & EF_JETPACK_ACTIVE)) &&
-		((self->client->sess.movementStyle != MV_TRIBES) || (self->client->jetPackDebReduce < level.time)) &&
+		((self->client->sess.movementStyle != MV_TRIBES) || (self->client->jetPackDebReduce < level.time)) && //Extra time here?
 			!self->client->ps.saberInFlight && (self->client->ps.stats[STAT_MOVEMENTSTYLE] != MV_SPEED) && (self->client->ps.weapon != WP_SABER || !BG_SaberInSpecial(self->client->ps.saberMove)) )
 	{//when not using the force, regenerate at 1 point per half second
 		int overrideAmt = 0, debounce = Q_max(g_forceRegenTime.integer, 1), holo = 0;

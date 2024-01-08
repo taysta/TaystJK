@@ -3428,7 +3428,7 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 		return qfalse;
 	if (BG_InSpecialJump(ent->client->ps.legsAnim))
 		return qfalse;	
-	if (ent->client->pers.tribesClass == 2)
+	if (ent->client->sess.movementStyle == MV_TRIBES && ent->client->ps.fd.forcePower < 40)
 		return qfalse;
 	return qtrue;
 }
