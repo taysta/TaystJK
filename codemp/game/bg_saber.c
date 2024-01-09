@@ -2761,7 +2761,11 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			}
 			else if (PM_CanBackstab() && !BG_SaberInSpecialAttack(pm->ps->torsoAnim))
 			{ //BACKSTAB (attack varies by level)
-				if (pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF)
+#if _GAME
+				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (g_tweakWeapons.integer & WT_TRIBES))
+#else
+				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (cgs.jcinfo2 & JAPRO_JCINFO2_WTTRIBES))
+#endif
 				{//medium and higher attacks
 					if ( (pm->ps->pm_flags&PMF_DUCKED) || pm->cmd.upmove < 0 )
 					{
