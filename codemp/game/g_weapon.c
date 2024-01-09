@@ -2607,7 +2607,6 @@ void rocketThink( gentity_t *ent )
 		if (tr.entityNum >= MAX_CLIENTS)
 		{
 			int i;
-			float	  dist;
 			vec3_t	  angles;
 			trace_t		ptrace;
 			for (i = 0; i < level.numConnectedClients; i++) {

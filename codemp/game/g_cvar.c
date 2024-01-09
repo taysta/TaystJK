@@ -535,6 +535,7 @@ static void CVU_ShowHealth(void) {
 	}
 }
 
+void G_Kill(gentity_t *ent);
 static void CVU_TribesClass(void) {
 	int i;
 	char model[MAX_QPATH] = { 0 }, userinfo[MAX_INFO_STRING] = { 0 };

@@ -2764,7 +2764,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 #if _GAME
 				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (g_tweakWeapons.integer & WT_TRIBES))
 #else
-				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (cgs.jcinfo2 & JAPRO_JCINFO2_WTTRIBES))
+				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 #endif
 				{//medium and higher attacks
 					if ( (pm->ps->pm_flags&PMF_DUCKED) || pm->cmd.upmove < 0 )
