@@ -2567,7 +2567,7 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		return;
 	}
 
-	if (g_tribesClass.integer && !other->client->pers.tribesClass) {
+	if (other->client->pers.tribesClass) {
 		if (ent->item->giType == IT_ARMOR)
 			return;
 	}
