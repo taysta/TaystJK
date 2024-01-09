@@ -274,7 +274,7 @@ XCVAR_DEF(g_unlaggedProjectileTolerance,"135",			CVU_Unlagged,		CVAR_ARCHIVE,			
 XCVAR_DEF( g_allowSaberSwitch,			"0",			CVU_SaberSwitch,	CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_allowTeamSuicide,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_godChat,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
-XCVAR_DEF( g_showHealth,				"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qtrue )
+XCVAR_DEF( g_showHealth,				"0",			CVU_ShowHealth,	CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_damageNumbers,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_fixKillCredit,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_stopHealthESP,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
@@ -366,7 +366,7 @@ XCVAR_DEF( g_eloKValue3,					"25",			NULL,				CVAR_ARCHIVE,									qtrue )
 #endif
 
 //Testing tribes classes
-XCVAR_DEF(g_tribesClass, "0", NULL, CVAR_ARCHIVE, qtrue)//WT_tRIBES
+XCVAR_DEF(g_tribesClass,					"0",			CVU_TribesClass,	CVAR_ARCHIVE,								qtrue)//WT_tRIBES
 
 #define _NEWRACERANKING 1
 #define _STATLOG 0

@@ -3428,7 +3428,7 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 		return qfalse;
 	if (BG_InSpecialJump(ent->client->ps.legsAnim))
 		return qfalse;	
-	if (ent->client->pers.tribesClass == 2)
+	if (ent->client->sess.movementStyle == MV_TRIBES && ent->client->ps.fd.forcePower < 40)
 		return qfalse;
 	return qtrue;
 }
@@ -3487,11 +3487,30 @@ void ClientThink_real( gentity_t *ent ) {
 	{
 		qboolean forceSingle = qfalse;
 		qboolean changeStyle = qfalse;
-		if ((g_saberDisable.integer || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
+		if ((g_saberDisable.integer || (!client->sess.raceMode && g_tweakWeapons.integer & MV_TRIBES) || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
 			&& ent->s.weapon == WP_SABER && ent->s.eType == ET_PLAYER && client->sess.sessionTeam != TEAM_SPECTATOR) {
 			//trap->Print("AnimLevel: %i, DrawLevel: %i, Baselevel: %i\n", ent->client->ps.fd.saberAnimLevel, ent->client->ps.fd.saberDrawAnimLevel, ent->client->ps.fd.saberAnimLevelBase);
-
-			if (g_saberDisable.integer & SABERSTYLE_DESANN) { //Force Desann
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				if (client->pers.tribesClass == 2) {
+					if (client->ps.fd.saberAnimLevel == SS_DUAL || client->ps.fd.saberAnimLevel == SS_STAFF) {
+						forceSingle = qtrue;
+					}
+					else if (client->ps.fd.saberAnimLevel != SS_DESANN) {
+						changeStyle = qtrue;
+						client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_DESANN;
+					}
+				}
+				else {
+					if (client->ps.fd.saberAnimLevel == SS_DUAL || client->ps.fd.saberAnimLevel == SS_STAFF) {
+						forceSingle = qtrue;
+					}
+					else if (client->ps.fd.saberAnimLevel != SS_TAVION) {
+						changeStyle = qtrue;
+						client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_TAVION;
+					}
+				}
+			}
+			else if (g_saberDisable.integer & SABERSTYLE_DESANN) { //Force Desann
 				client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_DESANN;
 			}
 			else if (g_saberDisable.integer & SABERSTYLE_TAVION) { //Force Tavion

@@ -2425,10 +2425,9 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			overrideJumpLeftAttackMove = (saberMoveName_t)saber1->jumpAtkLeftMove;
 		}
 
-		if (saber1	&& (saber1->saberFlags&SFL_NO_CARTWHEELS))
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 			allowCartwheels = qfalse;
-		else if (saber2 && (saber2->saberFlags&SFL_NO_CARTWHEELS))//no reason not to use else if, no point in setting it twice
-			allowCartwheels = qfalse;
+		}
 		else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
@@ -2437,6 +2436,10 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
 		}
+		else if (saber1	&& (saber1->saberFlags&SFL_NO_CARTWHEELS))
+			allowCartwheels = qfalse;
+		else if (saber2 && (saber2->saberFlags&SFL_NO_CARTWHEELS))//no reason not to use else if, no point in setting it twice
+			allowCartwheels = qfalse;
 
 #ifdef _GAME
 		{
@@ -2758,7 +2761,11 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			}
 			else if (PM_CanBackstab() && !BG_SaberInSpecialAttack(pm->ps->torsoAnim))
 			{ //BACKSTAB (attack varies by level)
-				if (pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF)
+#if _GAME
+				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (g_tweakWeapons.integer & WT_TRIBES))
+#else
+				if ((pm->ps->fd.saberAnimLevel >= FORCE_LEVEL_2 && pm->ps->fd.saberAnimLevel != SS_STAFF) || (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+#endif
 				{//medium and higher attacks
 					if ( (pm->ps->pm_flags&PMF_DUCKED) || pm->cmd.upmove < 0 )
 					{

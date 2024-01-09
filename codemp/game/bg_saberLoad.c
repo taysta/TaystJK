@@ -675,10 +675,15 @@ static void Saber_ParseSaberLength( saberInfo_t *saber, const char **p ) {
 	int i=0;
 	float f;
 
-	if ( COM_ParseFloat( p, &f ) )
+	if (COM_ParseFloat(p, &f))
 		return;
 
-	if ( f < 4.0f )
+#if _GAME
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		f = 56.0f;
+	else
+#endif
+	if (f < 4.0f)
 		f = 4.0f;
 
 	for ( i=0; i<MAX_BLADES; i++ )

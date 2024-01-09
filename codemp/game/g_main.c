@@ -347,7 +347,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	else
 		trap->Print( "WARNING: Couldn't open logfile: "PLAYER_LOG"\n" );
 
-	
 	G_LogWeaponInit();
 
 	G_CacheGametype();
@@ -2076,7 +2075,7 @@ void PrintStats(int client) {
 
 	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
 		//return;
-	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer)
+	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer && !g_tribesClass.integer)
 		showAccuracy = qfalse;
 	if ((((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE)))) || g_gunGame.integer) //TE and TH are disabled
 		showTeamPowers = qfalse;
@@ -3964,6 +3963,19 @@ void G_RunFrame( int levelTime ) {
 					}
 				}
 				*/
+				if (ent->client->overheatDebReduce < level.time) //Always refill overheat
+				{
+					if (ent->client->ps.jetpackFuel < 100) {
+						float recharge = VectorLength(ent->client->ps.velocity) / (ent->client->ps.speed);
+						if (recharge < 1)
+							recharge = 1;
+						ent->client->ps.jetpackFuel += 2 * recharge;
+					}
+					if (ent->client->ps.jetpackFuel > 100)
+						ent->client->ps.jetpackFuel = 100;
+
+					ent->client->overheatDebReduce = level.time + 200;
+				}
 			}
 			else if (ent->client->sess.raceMode || g_tweakJetpack.integer) {//Tweaked jetpack
 				if (ent->client->ps.eFlags & EF_JETPACK_ACTIVE) {

@@ -603,8 +603,8 @@ static qboolean pas_find_enemies( gentity_t *self )
 	}
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		radius = 2048;
-		bestDist = 2048 * 2048;
+		radius = 3200;
+		bestDist = 3200*3200;
 	}
 
 	VectorCopy(self->s.pos.trBase, org2);
@@ -1750,8 +1750,6 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 		vectoangles(d, d);
 		G_PlayEffectID(G_EffectIndex("turret/muzzle_flash.efx"), p, d);
 	}
-
-
 }
 
 //lock the owner into place relative to the cannon pos
@@ -2569,6 +2567,10 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		return;
 	}
 
+	if (other->client->pers.tribesClass) {
+		if (ent->item->giType == IT_ARMOR)
+			return;
+	}
 
 	if (other->client->NPC_class == CLASS_ATST ||
 		other->client->NPC_class == CLASS_GONK ||
@@ -2671,8 +2673,6 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		predict = qtrue;
 		break;
 	case IT_ARMOR:
-		if (other->client->pers.tribesClass == 1)
-			break;
 		respawn = Pickup_Armor(ent, other);
 //		predict = qfalse;
 		predict = qtrue;
@@ -3285,7 +3285,7 @@ void ClearRegisteredItems( void ) {
 	RegisterItem( BG_FindItemForWeapon( WP_MELEE ) );
 	RegisterItem( BG_FindItemForWeapon( WP_SABER ) );
 
-	if (level.gametype == GT_SIEGE)
+	if (level.gametype == GT_SIEGE || (g_tweakWeapons.integer & WT_TRIBES))
 	{ //kind of cheesy, maybe check if siege class with disp's is gonna be on this map too
 		G_PrecacheDispensers();
 	}

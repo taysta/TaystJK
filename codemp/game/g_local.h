@@ -1073,6 +1073,7 @@ struct gclient_s {
 	int			jetPackToggleTime;
 	int			jetPackDebRecharge;
 	int			jetPackDebReduce;
+	int			overheatDebReduce;
 
 	int			cloakToggleTime;
 	int			cloakDebRecharge;

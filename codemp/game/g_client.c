@@ -2484,10 +2484,9 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	}
 
 	//WT_TRIBES
-
-	if (!client->sess.raceMode && g_tribesClass.integer) {
+	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
-			//Com_Printf("Detetcting hazardtrooper\n");
+			//Com_Printf("Detetcting heavy\n");
 			if (client->pers.tribesClass != 2) {
 				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
 					G_Kill(ent);
@@ -3781,14 +3780,14 @@ void GiveClientWeapons(gclient_t *client) {
 		//Give tribes loadout.
 	else if (client->pers.tribesClass == 1) {
 			//Medium
-			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BLASTER) + (1 << WP_FLECHETTE) + (1 << WP_CONCUSSION) + (1 << WP_THERMAL));
+			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BLASTER) + (1 << WP_FLECHETTE) + (1 << WP_CONCUSSION) + (1 << WP_THERMAL) + (1 << WP_STUN_BATON) + (1 << WP_SABER));
 			client->ps.ammo[AMMO_BLASTER] = 500;
 			client->ps.ammo[AMMO_METAL_BOLTS] = 900;
 			client->ps.ammo[AMMO_THERMAL] = 2;
 	}
 	else if (client->pers.tribesClass == 2) {
 		//Heavy
-		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE));
+		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE) + (1 << WP_STUN_BATON) + (1 << WP_SABER));
 		client->ps.ammo[AMMO_POWERCELL] = 600;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
 		client->ps.ammo[AMMO_ROCKETS] = 30;

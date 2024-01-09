@@ -560,6 +560,13 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 
 	vectoangles( forward, angs );
 
+	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
+		if (ent->client->ps.jetpackFuel > 0)
+			ent->client->ps.jetpackFuel -= 5;
+		if (ent->client->ps.jetpackFuel < 0)
+			ent->client->ps.jetpackFuel = 0;
+	}
+
 	if ( altFire )
 	{
 		// add some slop to the alt-fire direction
@@ -2415,8 +2422,6 @@ void rocketThink( gentity_t *ent )
 	int i;
 	float vel = (ent->spawnflags&1)?ent->speed:ROCKET_VELOCITY* g_projectileVelocityScale.integer;
 	qboolean redeemerAllowed = qtrue;
-	if (g_tweakWeapons.integer & WT_TRIBES)
-		vel = 2040 * g_projectileVelocityScale.integer;
 
 	if (!g_entities[ent->r.ownerNum].client || g_entities[ent->r.ownerNum].client->sess.raceMode)
 		redeemerAllowed = qfalse;
@@ -2566,12 +2571,15 @@ void rocketThink( gentity_t *ent )
 		VectorCopy( newdir, ent->movedir );
 		SnapVector( ent->s.pos.trDelta );			// save net bandwidth
 		VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
+		ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
 		ent->s.pos.trTime = level.time;
 	}
 	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
 		vec3_t fwd, traceFrom, traceTo, dir, destination;
 		trace_t tr;
+		int speedCap = 1200;
+		vec3_t newDir;
 		qboolean found = qfalse;
 		float dist, currentVel;
 
@@ -2596,10 +2604,9 @@ void rocketThink( gentity_t *ent )
 		VectorMA(traceFrom, 24, fwd, traceFrom);//I think this is pushing the trace out of our player but i don't understand why it still has a faraway endpos even if it hits our player at the start..
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
-		if (tr.entityNum >= MAX_CLIENTS) //WORLD?
+		if (tr.entityNum >= MAX_CLIENTS)
 		{
 			int i;
-			float	  dist;
 			vec3_t	  angles;
 			trace_t		ptrace;
 			for (i = 0; i < level.numConnectedClients; i++) {
@@ -2614,24 +2621,18 @@ void rocketThink( gentity_t *ent )
 				if (person->client->sess.sessionTeam != TEAM_FREE && person->client->sess.sessionTeam == g_entities[ent->r.ownerNum].client->sess.sessionTeam)
 					continue;
 
-				//VectorSubtract( ent->client->ps.origin, self->client->ps.origin, angles ); //Changed because only r.curentOrigin is unlagged
 				VectorSubtract(person->r.currentOrigin, g_entities[ent->r.ownerNum].client->ps.origin, angles);
 				vectoangles(angles, angles);
-
-				//Com_Printf("Checking potential player\n");
 
 				if (!InFieldOfVision(g_entities[ent->r.ownerNum].client->ps.viewangles, 4, angles)) // Not in our FOV
 					continue;
 
-				//Com_Printf("Found potential player\n");
-
-				//JP_Trace( &tr, self->client->ps.origin, NULL, NULL, ent->client->ps.origin, self->s.number, MASK_SOLID, qfalse, 0, 0 );
 				JP_Trace(&ptrace, g_entities[ent->r.ownerNum].client->ps.origin, NULL, NULL, person->r.currentOrigin, ent->r.ownerNum, MASK_SOLID, qfalse, 0, 0);
 				if (ptrace.fraction != 1.0) //if not line of sight
 					continue;
 
-				// Return the first guy that fits the requirements
 				VectorCopy(ptrace.endpos, destination);
+				destination[2] += 24;
 				//Com_Printf("^2Line of sight confirmed, tracking\n", person->client->pers.netname);
 				found = qtrue;
 				break;
@@ -2639,45 +2640,74 @@ void rocketThink( gentity_t *ent )
 			if (!found)
 				VectorCopy(tr.endpos, destination);
 		}
-		else {
-			//Aimed at a dude perfectly so use that
+		else { //Aimed at a dude perfectly so use that
 			VectorCopy(tr.endpos, destination);
 		}
 
+
 		VectorSubtract(destination, ent->r.currentOrigin, dir);
-		dist = VectorLengthSquared(dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64) || (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER))) {
+		if (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER)
+			ent->think = G_ExplodeMissile;
+
+		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64)) {
 			//If its close blow it up.
 			//ent->think = G_ExplodeMissile;
 		//}
-		/*else*/ if (!(g_tweakWeapons.integer & WT_TRIBES) && dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
-		}
+		/*else*/ 
+		dist = VectorLengthSquared(dir);
 
-		//Speed it up slowly?
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			speedCap = 1800;
+		if (currentVel > speedCap)
+			currentVel = speedCap;
+		if (dist > 128 * 128)
+			dir[2] += 40; //Target above their head until we get close, helps with enemies walking on terrain
 
+		//Goal is to limit the change in direction of the rocket to 20 degrees or so per tick
+		//Vectornormalize current dir (dir) and "wishdir" (newDir)
+		//Convert to angles and get the diff.  Cap the diff.  Convert the diff back to vector and apply.
+		//Is there a better way to do this with dot or crossproduct?  Do we have to convert to angles? Is that just to avoid wraparound (e.g. anglesubtract math?)
+#if 1
 		VectorNormalize(dir);
+		VectorMA(ent->s.pos.trDelta, currentVel * 0.4f, dir, newDir);
+		VectorNormalize(newDir);
 
-		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
-		//ent->speed = ent->speed + 1.0f;
+#else
+		{
+			vec3_t newDir, dirAngs, newDirAngs;
+			float xAng, yAng;
+			float turnCap = 10.0f;
+			VectorNormalize(dir);
+			VectorCopy(ent->s.pos.trDelta, newDir);
+			vectoangles(dir, dirAngs);
+			vectoangles(newDir, newDirAngs);
 
-		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 2000)
-				currentVel = 2000;
-			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
-		}
-		else
-			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
-		ent->s.pos.trTime = level.time;
+			xAng = AngleSubtract(dirAngs[0], newDirAngs[0]);
+			yAng = AngleSubtract(dirAngs[1], newDirAngs[1]);
+			//Com_Printf("X ang is %.2f and Y ang is %.2f\n", xAng, yAng);
 
+			if (xAng > 20)
+				newDirAngs[0] += turnCap;
+			else if (xAng < -turnCap)
+				newDirAngs[0] -= turnCap;
+			if (yAng > turnCap)
+				newDirAngs[1] += turnCap;
+			else if (yAng < -turnCap)
+				newDirAngs[1] -= turnCap;
+
+			AngleVectors(newDirAngs, newDir, NULL, NULL);
 	}
+#endif
+		VectorScale(newDir, currentVel * 1.025f, ent->s.pos.trDelta);
 
-	ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
-	return;
+		ent->s.pos.trTime = level.time;
+		if (dist > 128 * 128)
+			ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		else
+			ent->nextthink = level.time + 25;
+	}
 }
 
 extern void G_ExplodeMissile( gentity_t *ent );
@@ -2769,7 +2799,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 
 	if (altFire) {
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			vel = 100;
+			vel = 125;
 		else
 			vel *= 0.5f;
 	}
@@ -2837,11 +2867,17 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		VectorSet( missile->r.maxs, 1, 1, 1 ); //Can this be smaller?
 		missile->raceModeShooter = qtrue;
 	}
-	else
-		VectorSet( missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE );
+	else {
+		if ((g_tweakWeapons.integer & WT_TRIBES) && altFire) {
+			VectorSet(missile->r.maxs, ROCKET_SIZE*2, ROCKET_SIZE*2, ROCKET_SIZE*2);
+		}
+		else {
+			VectorSet(missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE);
+		}
+	}
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
+	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode && !altFire)
 		missile->s.pos.trType = TR_GRAVITY;
 
 	missile->damage = damage;
@@ -2861,6 +2897,12 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		missile->health = 10;
 		missile->takedamage = qtrue;
 		missile->r.contents = MASK_SHOT;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile->health = 3;
+		}
+		else {
+			missile->health = 10;
+		}
 	}
 	missile->die = RocketDie;
 //===testing being able to shoot rockets out of the air==================================

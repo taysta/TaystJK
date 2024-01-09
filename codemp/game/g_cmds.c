@@ -5962,8 +5962,8 @@ static void Cmd_Jetpack_f(gentity_t *ent)
 void PrintStats(int client);
 static void Cmd_PrintStats_f(gentity_t *ent)
 {
-	if (level.gametype != GT_CTF && level.gametype != GT_TEAM && !g_gunGame.integer) {
-		trap->SendServerCommand( ent-g_entities, "print \"Command only allowed in TFFA or CTF or Gun Game. (printStats).\n\"" );
+	if (level.gametype != GT_CTF && level.gametype != GT_TEAM && !g_gunGame.integer && !fraglimit.integer) {
+		trap->SendServerCommand( ent-g_entities, "print \"Command only allowed in TFFA, CTF, Gun Game, or when there is a fraglimit. (printStats).\n\"" );
 		return;
 	}
 	//Uhh.. any restrictions on this? idk.. floodprotect?
