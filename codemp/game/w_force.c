@@ -3281,10 +3281,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 	{
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			powerLevel = FORCE_LEVEL_2;
-			if (bot_strafeOffset.value)
-				pushPower = 256 * FORCE_LEVEL_2 * bot_strafeOffset.value;
-			else
-				pushPower = 256 * FORCE_LEVEL_2;
+			pushPower = 256 * FORCE_LEVEL_2;
 		}
 		else {
 			powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];
@@ -3595,7 +3592,12 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				}
 			}
 
-			pushPower = 256*modPowerLevel;
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				pushPower = 256 * FORCE_LEVEL_2 * bot_strafeOffset.value;
+			}
+			else {
+				pushPower = 256 * modPowerLevel;
+			}
 
 			if (push_list[x]->client)
 			{
