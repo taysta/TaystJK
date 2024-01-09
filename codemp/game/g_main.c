@@ -347,7 +347,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	else
 		trap->Print( "WARNING: Couldn't open logfile: "PLAYER_LOG"\n" );
 
-	
 	G_LogWeaponInit();
 
 	G_CacheGametype();

@@ -3282,7 +3282,6 @@ void ForceThrow( gentity_t *self, qboolean pull )
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			powerLevel = FORCE_LEVEL_2;
 			pushPower = 256 * FORCE_LEVEL_2;
-			Com_Printf("As expected\n");
 		}
 		else {
 			powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];

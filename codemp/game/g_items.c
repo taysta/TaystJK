@@ -1750,8 +1750,6 @@ void EWebFire(gentity_t *owner, gentity_t *eweb)
 		vectoangles(d, d);
 		G_PlayEffectID(G_EffectIndex("turret/muzzle_flash.efx"), p, d);
 	}
-
-
 }
 
 //lock the owner into place relative to the cannon pos
@@ -2569,6 +2567,10 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		return;
 	}
 
+	if (g_tribesClass.integer && !other->client->pers.tribesClass) {
+		if (ent->item->giType == IT_ARMOR)
+			return;
+	}
 
 	if (other->client->NPC_class == CLASS_ATST ||
 		other->client->NPC_class == CLASS_GONK ||
@@ -2671,8 +2673,6 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		predict = qtrue;
 		break;
 	case IT_ARMOR:
-		if (other->client->pers.tribesClass == 1)
-			break;
 		respawn = Pickup_Armor(ent, other);
 //		predict = qfalse;
 		predict = qtrue;
