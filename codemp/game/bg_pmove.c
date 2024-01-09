@@ -9567,6 +9567,8 @@ if (pm->ps->duelInProgress)
 				addTime = 200;
 			break;
 		case WP_DEMP2:
+			if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 750;
 			break;
 		case WP_FLECHETTE:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9628,6 +9630,8 @@ if (pm->ps->duelInProgress)
 			addTime = 200;
 		break;
 	case WP_DEMP2:
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 750;
 		break;
 	case WP_FLECHETTE:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))

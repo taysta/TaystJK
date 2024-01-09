@@ -1441,9 +1441,16 @@ DEMP2
 static void WP_DEMP2_MainFire( gentity_t *ent )
 {
 	int	damage	= DEMP2_DAMAGE;
-
+	int vel = DEMP2_VELOCITY;
 	//[JAPRO - Serverside - Weapons - Add inheritance to demp2 primary fire]
-	gentity_t *missile = CreateMissileNew( muzzle, forward, DEMP2_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
+	gentity_t *missile;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		vel = 2240 * g_projectileVelocityScale.value;
+		damage = 70;
+	}
+
+	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
 
 	missile->classname = "demp2_proj";
 	missile->s.weapon = WP_DEMP2;
