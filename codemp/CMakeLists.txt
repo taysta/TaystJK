@@ -431,8 +431,8 @@ if(BuildMPEngine)
 		else()
 			set(MPEngineLibraries
 				${MPEngineLibraries}
-				${OpenJKLibDir}/SDL2/lib/x64/SDL2main.lib
-				${OpenJKLibDir}/SDL2/lib/x64/SDL2.lib
+				${OpenJKLibDir}/SDL2/lib/x64/SDL2main.x86_64.lib
+				${OpenJKLibDir}/SDL2/lib/x64/SDL2.x86_64.lib
 				)
 		endif()
 
@@ -612,7 +612,7 @@ if(BuildMPEngine)
 					)
 			else()
 				set(MPEngineExtraInstallFiles
-					${OpenJKLibDir}/SDL2/bin/x64/SDL2.dll
+					${OpenJKLibDir}/SDL2/bin/x64/SDL2.x86_64.dll
 					)
 			endif()
 		endif()
