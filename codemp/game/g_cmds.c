@@ -7644,10 +7644,23 @@ void Cmd_Race_f(gentity_t *ent)
 	}
 
 	if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+		char model[MAX_QPATH] = { 0 }, userinfo[MAX_INFO_STRING] = { 0 };
 		//Delete all their projectiles / saved stuff
 		RemoveLaserTraps(ent);
 		RemoveDetpacks(ent);
 		DeletePlayerProjectiles(ent);
+
+		trap->GetUserinfo(ent - g_entities, userinfo, sizeof(userinfo));
+		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
+
+		if (!ent->client->sess.raceMode) {
+			if (g_tribesClass.integer) {
+				DetectTribesClass(ent, model);
+			}
+			else if (ent->client->pers.tribesClass) {
+				ent->client->pers.tribesClass = 0;
+			}
+		}
 
 		G_Kill( ent ); //stop abuse
 		ent->client->ps.persistant[PERS_SCORE] = 0;

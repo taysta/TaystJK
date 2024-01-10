@@ -4320,7 +4320,7 @@ void ClientThink_real( gentity_t *ent ) {
 				VectorScale(ent->r.mins, 1.25f, ent->r.mins);
 				VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
 			}
-		}
+		} //Tribesclass = 0 else?
 
 		//Check for a siege class speed multiplier
 		if (level.gametype == GT_SIEGE &&

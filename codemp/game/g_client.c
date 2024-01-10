@@ -2258,7 +2258,43 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 	Q_strncpyz(cosmeticString, va("%i", cosmetics), cosmeticStringSize);
 }
 
+
 void G_Kill(gentity_t *ent);
+void DetectTribesClass(gentity_t *ent, const char *model) {
+	//WT_TRIBES
+	if (!ent || !ent->client)
+		return;
+	if (g_tribesClass.integer && (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE))) {
+		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
+			//Com_Printf("Detetcting heavy\n");
+			if (ent->client->pers.tribesClass != 3) {
+				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
+				ent->client->pers.tribesClass = 3;
+				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes heavy class\n\""));
+			}
+		}
+		else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+			//Com_Printf("Detetcting heavy\n");
+			if (ent->client->pers.tribesClass != 1) {
+				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
+				ent->client->pers.tribesClass = 1;
+				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes light class\n\""));
+			}
+		}
+		else {
+			//Com_Printf("Detetcting medium \n");
+			if (ent->client->pers.tribesClass != 2) {
+				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
+				ent->client->pers.tribesClass = 2;
+				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes medium class\n\""));
+			}
+		}
+	}
+}
+
 qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as an INT can just be max_qpath instead of max_info_string and help performance  a bit..?
 	gentity_t	*ent = g_entities + clientNum;
 	gclient_t	*client = ent->client;
@@ -2485,30 +2521,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 
 	//WT_TRIBES
 	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
-		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
-			//Com_Printf("Detetcting heavy\n");
-			if (client->pers.tribesClass != 3) {
-				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				client->pers.tribesClass = 3;
-			}
-		}
-		else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
-			//Com_Printf("Detetcting heavy\n");
-			if (client->pers.tribesClass != 1) {
-				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				client->pers.tribesClass = 1;
-			}
-		}
-		else {
-			//Com_Printf("Detetcting medium \n");
-			if (client->pers.tribesClass != 2) {
-				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				client->pers.tribesClass = 2;
-			}
-		}
+		DetectTribesClass(ent, model);
 	}
 	else if (client->pers.tribesClass) {
 		client->pers.tribesClass = 0;
@@ -4177,13 +4190,27 @@ void ClientSpawn(gentity_t *ent) {
 	ent->watertype = 0;
 	ent->flags = 0;
 
+	if (g_raceMode.integer == 1 && level.gametype == GT_FFA)
+		client->sess.raceMode = qtrue;
+	else if (g_raceMode.integer && (level.gametype == GT_TEAM || level.gametype == GT_CTF) && client->sess.sessionTeam == TEAM_FREE)
+		client->sess.raceMode = qtrue;
+	if (client->sess.sessionTeam != TEAM_FREE && client->sess.sessionTeam != TEAM_SPECTATOR)
+		client->sess.raceMode = qfalse;
+	else if (!g_raceMode.integer)
+		client->sess.raceMode = qfalse;
+
+	if (client->sess.raceMode)
+		client->ps.stats[STAT_RACEMODE] = 1;
+	else
+		client->ps.stats[STAT_RACEMODE] = 0;
+
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
-	if (client->pers.tribesClass == 3) {
+	if (!client->sess.raceMode && client->pers.tribesClass == 3) {
 		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f; //this model has no neck //revert this?
 		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f;
 	}
-	else if (client->pers.tribesClass == 1) {
+	else if (!client->sess.raceMode && client->pers.tribesClass == 1) {
 		client->ps.standheight = DEFAULT_MAXS_2 * 0.94f;
 		client->ps.crouchheight = CROUCH_MAXS_2 * 0.94f;
 	}
@@ -4204,20 +4231,6 @@ void ClientSpawn(gentity_t *ent) {
 	{
 		wDisable = g_weaponDisable.integer;
 	}
-
-	if (g_raceMode.integer == 1 && level.gametype == GT_FFA)
-		client->sess.raceMode = qtrue;
-	else if (g_raceMode.integer && (level.gametype == GT_TEAM || level.gametype == GT_CTF) && client->sess.sessionTeam == TEAM_FREE)
-		client->sess.raceMode = qtrue;
-	if (client->sess.sessionTeam != TEAM_FREE && client->sess.sessionTeam != TEAM_SPECTATOR)
-		client->sess.raceMode = qfalse;
-	else if (!g_raceMode.integer) 
-		client->sess.raceMode = qfalse;
-
-	if (client->sess.raceMode) 
-		client->ps.stats[STAT_RACEMODE] = 1;
-	else
-		client->ps.stats[STAT_RACEMODE] = 0;
 
 	client->savedJumpLevel = 0;//rabbit
 
