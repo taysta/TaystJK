@@ -1215,7 +1215,7 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	}
 	else
 	{
-		count = (level.time - ent->client->ps.weaponChargeTime) / BOWCASTER_CHARGE_UNIT;
+		count = (level.time - ent->client->ps.weaponChargeTime) / 250.0f;//200
 	}
 
 	if (count < 1)
