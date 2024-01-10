@@ -530,6 +530,8 @@ static void CVU_ShowHealth(void) {
 			continue;
 		if (!g_entities[i].client)
 			continue;
+		if (g_entities[i].client->sess.raceMode)
+			continue;
 		g_entities[i].maxHealth = g_entities[i].s.maxhealth = g_entities[i].s.health = health;
 		//Com_Printf("Setting max health for him %s %i\n", g_entities[i].client->pers.netname, health);
 	}
@@ -556,20 +558,25 @@ static void CVU_TribesClass(void) {
 		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
 	
 		if (g_tribesClass.integer) {
-			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
-				//Com_Printf("Detetcting heavy\n");
+			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
+				if (ent->client->pers.tribesClass != 3) {
+					if (ent->health > 0)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 3;
+				}
+			}
+			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+				if (ent->client->pers.tribesClass != 1) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 1;
+				}
+			}
+			else {
 				if (ent->client->pers.tribesClass != 2) {
 					if (ent->health > 0)
 						G_Kill(ent);
 					ent->client->pers.tribesClass = 2;
-				}
-			}
-			else {
-				//Com_Printf("Detetcting medium \n");
-				if (ent->client->pers.tribesClass != 1) {
-					if (ent->health > 0)
-						G_Kill(ent);
-					ent->client->pers.tribesClass = 1;
 				}
 			}
 		}

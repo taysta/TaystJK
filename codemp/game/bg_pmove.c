@@ -8936,7 +8936,7 @@ if (pm->ps->duelInProgress)
 #else
 	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->weapon == WP_BLASTER && !pm->ps->jetpackFuel)
+		if (pm->ps->clientNum < MAX_CLIENTS && pm->ps->weapon == WP_BLASTER && !pm->ps->jetpackFuel)
 			return;
 	}
 
@@ -9559,6 +9559,10 @@ if (pm->ps->duelInProgress)
 				addTime = 1500;
 			break;
 		case WP_BOWCASTER:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1050;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1050;
 			break;
 		case WP_REPEATER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9567,6 +9571,8 @@ if (pm->ps->duelInProgress)
 				addTime = 200;
 			break;
 		case WP_DEMP2:
+			if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 750;
 			break;
 		case WP_FLECHETTE:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9620,6 +9626,10 @@ if (pm->ps->duelInProgress)
 		//	addTime = 1500;
 		break;
 	case WP_BOWCASTER:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1050;
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1050;
 		break;
 	case WP_REPEATER:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
@@ -9628,6 +9638,8 @@ if (pm->ps->duelInProgress)
 			addTime = 200;
 		break;
 	case WP_DEMP2:
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 750;
 		break;
 	case WP_FLECHETTE:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))

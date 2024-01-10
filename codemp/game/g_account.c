@@ -5907,6 +5907,173 @@ void Cmd_DFHardest_f(gentity_t *ent) {
 
 }
 
+void Cmd_DFCompare_f(gentity_t *ent) {
+	int style = -1, page = -1, start = 0, input, i, season = -1;
+	char inputString[16], inputStyleString[16], myUsername[16], theirUsername[16];
+	const int args = trap->Argc();
+
+	if (!ent->client->pers.userName || !ent->client->pers.userName[0]) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be logged in to use this command.\n\"");
+		return;
+	}
+	Q_strncpyz(myUsername, ent->client->pers.userName, sizeof(myUsername));
+
+	if (args < 2 || args > 5) {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /rCompare <username> <style (optional)> <current season (optional - example: s) <page (optional)>.  This displays the courses that the specified user has defeated you on.\n\"");
+		return;
+	}
+
+	//Make 1st arg be username I guess.
+	trap->Argv(1, theirUsername, sizeof(theirUsername));
+	Q_strlwr(theirUsername);
+	Q_CleanStr(theirUsername);
+
+	for (i = 2; i < args; i++) {
+		trap->Argv(i, inputString, sizeof(inputString));
+		if (style == -1) {
+			input = RaceNameToInteger(inputString);
+			if (input != -1) {
+				style = input;
+				continue;
+			}
+		}
+		if (season == -1) {
+			input = SeasonToInteger(inputString);
+			if (input != -1) {
+				season = input;
+				continue;
+			}
+		}
+		if (page == -1) {
+			input = atoi(inputString);
+			if (input > 0) {
+				page = input;
+				continue;
+			}
+		}
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /rCompare <username> <style (optional)> <current season (optional - example: s) <page (optional)>.  This displays the courses that the specified user has defeated you on.\n\"");
+		return; //Arg doesnt match any expected values so error.
+	}
+
+	if (style == -1) {
+		Q_strncpyz(inputStyleString, "all styles", sizeof(inputStyleString));
+	}
+	else {
+		IntegerToRaceName(style, inputStyleString, sizeof(inputStyleString));
+		Q_strcat(inputStyleString, sizeof(inputStyleString), " style");
+	}
+
+	if (page < 1)
+		page = 1;
+	if (page > 1000)
+		page = 1000;
+	start = (page - 1) * 10;
+
+	//Com_Printf("Username 1 is %s, Username 2 is %s, Style is %i, season is %i, page is %i\n", myUsername, theirUsername, style, season, page);
+	//return;
+
+/*
+//Example query to see which courses source has beat kane on
+SELECT username, coursename, style, season, MIN(duration_ms) FROM
+(SELECT username, coursename, style, season, duration_ms FROM LocalRUN WHERE username = "kane"
+UNION ALL
+SELECT username, coursename, style, season, duration_ms FROM LocalRUN WHERE username = "source")
+WHERE username = "source"
+GROUP BY coursename, style, season
+*/
+
+	//select a.*,b.* FROM LocalRun a INNER JOIN LocalRun b ON a.coursename=b.coursename AND a.style=b.style WHERE a.duration_ms < b.duration_ms AND a.username = 'loda' AND b.username = 'kane'
+
+	{
+		sqlite3 * db;
+		char * sql;
+		sqlite3_stmt * stmt;
+		int row = 1;
+		char styleStr[16] = { 0 }, msg[128] = { 0 };
+		int s;
+
+		CALL_SQLITE(open(LOCAL_DB_PATH, &db));
+
+		//Problem - these queries return races if the other person has not even done that race.  The query is just bad in general..
+		if (season == -1) {
+			if (style == -1) { //All seasons, all styles
+				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s:\n    ^5Coursename                     Style\n\"", theirUsername, inputStyleString));
+				sql = "SELECT a.coursename, a.style FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.rank != 0 AND b.rank != 0 ORDER BY a.entries DESC LIMIT ?,10";
+					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_int(stmt, 3, start));
+			}
+			else {//All seasons, specific style
+				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s:\n    ^5Coursename\n\"", theirUsername, inputStyleString));
+				sql = "SELECT a.coursename FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.rank != 0 AND b.rank != 0 AND a.style = ? AND b.style = ? ORDER BY a.entries DESC LIMIT ?,10";
+					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_int(stmt, 3, style));
+					CALL_SQLITE(bind_int(stmt, 4, style));
+					CALL_SQLITE(bind_int(stmt, 5, start));
+			}
+		}
+		else {
+			if (style == -1) {//Specific season, all styles
+				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s season %i:\n    ^5Coursename                     Style\n\"", theirUsername, inputStyleString, season));
+				sql = "SELECT a.coursename, a.style FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.season = ? AND b.season = ? ORDER BY a.entries DESC LIMIT ?,10";
+					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_int(stmt, 3, season));
+					CALL_SQLITE(bind_int(stmt, 4, season));
+					CALL_SQLITE(bind_int(stmt, 5, start));
+			}
+			else {//Speific season, specific style
+				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s season %i:\n    ^5Coursename\n\"", theirUsername, inputStyleString, season));
+				sql = "SELECT a.coursename FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND A.style = ? AND b.style = ? AND a.season = ? AND b.season = ? ORDER BY a.entries DESC LIMIT ?,10";
+				CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+				CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
+				CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
+				CALL_SQLITE(bind_int(stmt, 3, style));
+				CALL_SQLITE(bind_int(stmt, 4, season));
+				CALL_SQLITE(bind_int(stmt, 5, style));
+				CALL_SQLITE(bind_int(stmt, 6, season));
+				CALL_SQLITE(bind_int(stmt, 7, start));
+			}
+		}
+
+		while (1) {
+			s = sqlite3_step(stmt);
+			if (s == SQLITE_ROW) {
+				char *tmpMsg = NULL;
+
+				if (style == -1) {
+					IntegerToRaceName(sqlite3_column_int(stmt, 1), styleStr, sizeof(styleStr));
+					tmpMsg = va("^5%2i^3: ^3%-30s ^3%s\n", start + row, sqlite3_column_text(stmt, 0), styleStr); //Print username, inputstyle, coursename, returned style
+				}
+				else
+					tmpMsg = va("^5%2i^3: ^3%s\n", start + row, sqlite3_column_text(stmt, 0)); //Print username, inputstyle, coursename
+		
+				if (strlen(msg) + strlen(tmpMsg) >= sizeof(msg)) {
+					trap->SendServerCommand(ent - g_entities, va("print \"%s\"", msg));
+					msg[0] = '\0';
+				}
+				Q_strcat(msg, sizeof(msg), tmpMsg);
+				row++;
+			}
+			else if (s == SQLITE_DONE)
+				break;
+			else {
+				G_ErrorPrint("ERROR: SQL Select Failed (Cmd_DFCompare_f)", s);
+				break;
+			}
+		}
+		trap->SendServerCommand(ent - g_entities, va("print \"%s\"", msg));
+
+		CALL_SQLITE(finalize(stmt));
+		CALL_SQLITE(close(db));
+	}
+
+
+}
 void Cmd_DFRecent_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i;
 	char inputString[16], inputStyleString[16];

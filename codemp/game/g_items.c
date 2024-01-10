@@ -2270,10 +2270,15 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 						other->health = 100;
 					other->client->ps.stats[STAT_HEALTH] = other->health;
 				}
-				if (other->client->ps.stats[STAT_ARMOR] < 100 && other->client->pers.tribesClass != 1) {
+				if (other->client->ps.stats[STAT_ARMOR] < 100 && other->client->pers.tribesClass == 3) {
 					other->client->ps.stats[STAT_ARMOR] += 50;
 					if (other->client->ps.stats[STAT_ARMOR] > 100)
 						other->client->ps.stats[STAT_ARMOR] = 100;
+				}
+				else if (other->client->ps.stats[STAT_ARMOR] < 25 && other->client->pers.tribesClass == 2) {
+					other->client->ps.stats[STAT_ARMOR] += 25;
+					if (other->client->ps.stats[STAT_ARMOR] > 25)
+						other->client->ps.stats[STAT_ARMOR] = 25;
 				}
 				if (other->client->ps.fd.forcePower < 100) {
 					other->client->ps.fd.forcePower += 50;
@@ -2567,9 +2572,13 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 		return;
 	}
 
-	if (other->client->pers.tribesClass) {
-		if (ent->item->giType == IT_ARMOR)
+	if (ent->item->giType == IT_ARMOR) { //This should really be predicted as well but tribesclass is not predicted rn..
+		if (other->client->pers.tribesClass == 1)
 			return;
+		if (other->client->pers.tribesClass == 2) {
+			if (other->client->ps.stats[STAT_ARMOR] >= 25)
+				return;
+		}
 	}
 
 	if (other->client->NPC_class == CLASS_ATST ||
