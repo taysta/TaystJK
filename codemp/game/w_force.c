@@ -740,7 +740,12 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 
 	if ( !(self->client->ps.fd.forcePowersKnown & ( 1 << forcePower )) )
 	{//don't know this power
-		return qfalse;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			}
+			else return qfalse;
+		}
+		else return qfalse;
 	}
 
 	if ( (self->client->ps.fd.forcePowersActive & ( 1 << forcePower )) )
@@ -758,7 +763,12 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 
 	if (!self->client->ps.fd.forcePowerLevel[forcePower])
 	{
-		return qfalse;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			}
+			else return qfalse;
+		}
+		else return qfalse;
 	}
 
 	if ( g_debugMelee.integer )

@@ -2485,7 +2485,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 
 	//WT_TRIBES
 	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
-		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
+		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
 			//Com_Printf("Detetcting heavy\n");
 			if (client->pers.tribesClass != 3) {
 				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)

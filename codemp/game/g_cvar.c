@@ -558,7 +558,7 @@ static void CVU_TribesClass(void) {
 		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
 	
 		if (g_tribesClass.integer) {
-			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
+			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
 				if (ent->client->pers.tribesClass != 3) {
 					if (ent->health > 0)
 						G_Kill(ent);
