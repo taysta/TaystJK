@@ -25,7 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qcommon/cm_public.h"
 
 #ifdef DEDICATED
-std::vector<bufferedMessageContainer_t> demoPreRecordBuffer[MAX_CLIENTS];
+std::vector<std::shared_ptr<bufferedMessageContainer_t>> demoPreRecordBuffer[MAX_CLIENTS];
 std::map<std::string,std::string> demoMetaData[MAX_CLIENTS];
 #endif
 
@@ -821,7 +821,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		demoPreRecordBufferIt lastEvilPackage;
 		qboolean evilPackagesFound = qfalse;
 		for (demoPreRecordBufferIt it = demoPreRecordBuffer[client - svs.clients].begin(); it != demoPreRecordBuffer[client - svs.clients].end(); it++) {
-			if (it->msgNum > client->netchan.outgoingSequence || it->time > sv.time) {
+			if (it->get()->msgNum > client->netchan.outgoingSequence || it->get()->time > sv.time) {
 				lastEvilPackage = it;
 				evilPackagesFound = qtrue;
 			}
@@ -838,14 +838,16 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		}
 
 		// Now put the current messsage in the buffer.
-		static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
-		Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
-		MSG_ToBuffered(msg,&bmt.msg);
-		bmt.msgNum = client->netchan.outgoingSequence;
-		bmt.lastClientCommand = client->lastClientCommand;
-		bmt.time = sv.time;
-		bmt.isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
-		demoPreRecordBuffer[client - svs.clients].push_back(bmt);
+		std::shared_ptr<bufferedMessageContainer_t> bmtPtr = std::make_shared<bufferedMessageContainer_t>();
+		bufferedMessageContainer_t* bmt = bmtPtr.get();
+		//static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
+		Com_Memset(bmt, 0, sizeof(bufferedMessageContainer_t));
+		MSG_ToBuffered(msg,&bmt->msg);
+		bmt->msgNum = client->netchan.outgoingSequence;
+		bmt->lastClientCommand = client->lastClientCommand;
+		bmt->time = sv.time;
+		bmt->isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
+		demoPreRecordBuffer[client - svs.clients].push_back(bmtPtr);
 	}
 
 	// save the message to demo.  this must happen before sending over network as that encodes the backing databuf
@@ -861,9 +863,10 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			// Save a keyframe.
 			static byte keyframeBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
 			static msg_t		keyframeMsg;
-			static bufferedMessageContainer_t bmt;
+			std::shared_ptr<bufferedMessageContainer_t> bmtPtr = std::make_shared<bufferedMessageContainer_t>();
+			bufferedMessageContainer_t* bmt = bmtPtr.get();
 			Com_Memset(&keyframeMsg, 0, sizeof(msg_t));
-			Com_Memset(&bmt, 0, sizeof(bufferedMessageContainer_t));
+			Com_Memset(bmt, 0, sizeof(bufferedMessageContainer_t));
 
 			MSG_Init(&keyframeMsg, keyframeBufData, sizeof(keyframeBufData));
 
@@ -871,12 +874,12 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			SV_CreateClientGameStateMessage(client, &keyframeMsg);
 			client->reliableSent = tmp;
 
-			MSG_ToBuffered(&keyframeMsg, &bmt.msg);
-			bmt.msgNum = client->netchan.outgoingSequence; // Yes the keyframe duplicates the messagenum of a message. This is (part of) why we dump only one keyframe at the start of the demo and discard future keyframes
-			bmt.lastClientCommand = client->lastClientCommand;
-			bmt.time = sv.time;
-			bmt.isKeyframe = qtrue; // This is a keyframe (gamestate that will be followed by non-delta frames)
-			demoPreRecordBuffer[client - svs.clients].push_back(bmt);
+			MSG_ToBuffered(&keyframeMsg, &bmt->msg);
+			bmt->msgNum = client->netchan.outgoingSequence; // Yes the keyframe duplicates the messagenum of a message. This is (part of) why we dump only one keyframe at the start of the demo and discard future keyframes
+			bmt->lastClientCommand = client->lastClientCommand;
+			bmt->time = sv.time;
+			bmt->isKeyframe = qtrue; // This is a keyframe (gamestate that will be followed by non-delta frames)
+			demoPreRecordBuffer[client - svs.clients].push_back(bmtPtr);
 			client->demo.preRecord.minDeltaFrame = 0;
 			client->demo.preRecord.keyframeWaiting = qtrue;
 			client->demo.preRecord.lastKeyframeTime = sv.time;
@@ -889,7 +892,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		demoPreRecordBufferIt lastTooOldKeyframe;
 		qboolean lastTooOldKeyframeFound = qfalse;
 		for (demoPreRecordBufferIt it = demoPreRecordBuffer[client - svs.clients].begin(); it != demoPreRecordBuffer[client - svs.clients].end(); it++) {
-			if (it->isKeyframe && (it->time + (1000*sv_demoPreRecordTime->integer)) < sv.time) {
+			if (it->get()->isKeyframe && (it->get()->time + (1000*sv_demoPreRecordTime->integer)) < sv.time) {
 				lastTooOldKeyframe = it;
 				lastTooOldKeyframeFound = qtrue;
 			}

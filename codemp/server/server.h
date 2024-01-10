@@ -144,7 +144,7 @@ typedef struct {
 #endif
 
 #ifdef DEDICATED
-typedef std::vector<bufferedMessageContainer_t>::iterator demoPreRecordBufferIt;
+typedef std::vector<std::shared_ptr<bufferedMessageContainer_t>>::iterator demoPreRecordBufferIt;
 #endif
 
 typedef struct client_s {
