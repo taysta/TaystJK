@@ -1487,7 +1487,7 @@ static void WP_FireBowcaster( gentity_t *ent, qboolean altFire, int seed )
 		if (g_tweakWeapons.integer & WT_TRIBES)
 			WP_BoltLauncherAltFire(ent);
 		else
-			WP_BowcasterAltFire( ent, seed );
+			WP_BowcasterAltFire( ent );
 	}
 	else
 	{
