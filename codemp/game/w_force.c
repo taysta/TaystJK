@@ -660,7 +660,10 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 		drain = 75;
 	}
 	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PROTECT)) {
-		drain = 75;
+		drain = 50;
+	}
+	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PUSH)) {
+		drain = 95;
 	}
 	//Tribes protect? wt_tribes
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
@@ -737,7 +740,12 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 
 	if ( !(self->client->ps.fd.forcePowersKnown & ( 1 << forcePower )) )
 	{//don't know this power
-		return qfalse;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			}
+			else return qfalse;
+		}
+		else return qfalse;
 	}
 
 	if ( (self->client->ps.fd.forcePowersActive & ( 1 << forcePower )) )
@@ -755,7 +763,12 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 
 	if (!self->client->ps.fd.forcePowerLevel[forcePower])
 	{
-		return qfalse;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			}
+			else return qfalse;
+		}
+		else return qfalse;
 	}
 
 	if ( g_debugMelee.integer )
@@ -1646,7 +1659,7 @@ void ForceProtect( gentity_t *self )
 
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		WP_ForcePowerStart(self, FP_PROTECT, 75);
+		WP_ForcePowerStart(self, FP_PROTECT, 50);
 	}
 	else
 		WP_ForcePowerStart( self, FP_PROTECT, 0 );
@@ -3208,6 +3221,8 @@ void ForceThrow( gentity_t *self, qboolean pull )
 
 	if (powerUse == FP_PULL && g_tweakForce.integer & FT_WEAKPULL)
 		WP_ForcePowerStart( self, powerUse, 60 );
+	else if (powerUse == FP_PUSH && g_tweakWeapons.integer & WT_TRIBES)
+		WP_ForcePowerStart(self, powerUse, 95);
 	else
 		WP_ForcePowerStart( self, powerUse, 0 );
 
@@ -3274,8 +3289,14 @@ void ForceThrow( gentity_t *self, qboolean pull )
 	}
 	else
 	{
-		powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];
-		pushPower = 256*self->client->ps.fd.forcePowerLevel[FP_PUSH];
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			powerLevel = FORCE_LEVEL_2;
+			pushPower = 256 * FORCE_LEVEL_2;
+		}
+		else {
+			powerLevel = self->client->ps.fd.forcePowerLevel[FP_PUSH];
+			pushPower = 256 * self->client->ps.fd.forcePowerLevel[FP_PUSH];
+		}
 	}
 
 	if (!powerLevel)
@@ -3581,7 +3602,12 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				}
 			}
 
-			pushPower = 256*modPowerLevel;
+			if (g_tweakWeapons.integer & WT_TRIBES) {
+				pushPower = 512 * FORCE_LEVEL_2 * bot_strafeOffset.value;
+			}
+			else {
+				pushPower = 256 * modPowerLevel;
+			}
 
 			if (push_list[x]->client)
 			{
@@ -3814,7 +3840,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 						}
 					}
 					else {
-						if ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull) {
+						if (((g_tweakWeapons.integer & WT_TRIBES) && !pull) || ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull)) {
 							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod; //FT_WEAKPULL?
 							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
 						}
@@ -5835,6 +5861,8 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		self->client->force.lightningDebounce = level.time;
 
 	if ( (!self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN)) && //whats up with fp_drain being mentioned here
+		((self->client->sess.movementStyle != MV_TRIBES) || !(self->client->ps.eFlags & EF_JETPACK_ACTIVE)) &&
+		((self->client->sess.movementStyle != MV_TRIBES) || (self->client->jetPackDebReduce < level.time)) && //Extra time here?
 			!self->client->ps.saberInFlight && (self->client->ps.stats[STAT_MOVEMENTSTYLE] != MV_SPEED) && (self->client->ps.weapon != WP_SABER || !BG_SaberInSpecial(self->client->ps.saberMove)) )
 	{//when not using the force, regenerate at 1 point per half second
 		int overrideAmt = 0, debounce = Q_max(g_forceRegenTime.integer, 1), holo = 0;
@@ -5866,6 +5894,9 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 					debounce = Q_max(g_forceRegenTime.integer * (0.6 + (.3 * (float)self->client->sess.wins / (float)duel_fraglimit.integer)), 1);
 				else
 					debounce = Q_max(g_forceRegenTime.integer*0.7, 1);
+			}
+			else if (self->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+				debounce = 40;//Hardcoded regentime of 40ms for tribes jetpack
 			}
 			else if (self->client->ps.stats[STAT_RACEMODE]) {
 				debounce = 25;//Hardcoded regentime of 25ms for racers.. idk.. 25 is lowest you can go without horribly broken cartwheel climb

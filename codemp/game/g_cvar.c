@@ -125,20 +125,6 @@ static void CVU_Bhop(void) {
 }
 
 /*
-static void CVU_ShowHealth(void) {
-	int i, health = 0;
-	if (g_showHealth.integer)
-		health = 100;
-
-	for (i=0; i<MAX_CLIENTS; i++) {//Build a list of clients
-		if (!g_entities[i].inuse)
-			continue;
-		g_entities[i].maxHealth = health;
-	}
-}
-*/
-
-/*
 static void CVU_FastGrip(void) {
 	g_fastGrip.integer ?
 		(jcinfo.integer |= JAPRO_CINFO_FASTGRIP) : (jcinfo.integer &= ~JAPRO_CINFO_FASTGRIP);
@@ -532,6 +518,74 @@ static void CVU_SaberSwitch(void) {
 	g_allowSaberSwitch.integer ?
 		(jcinfo2.integer |= JAPRO_CINFO2_SABERSWITCH) : (jcinfo2.integer &= ~JAPRO_CINFO2_SABERSWITCH);
 	trap->Cvar_Set("jcinfo2", va("%i", jcinfo2.integer));
+}
+
+static void CVU_ShowHealth(void) {
+	int i, health = 0;
+	if (g_showHealth.integer)
+		health = 100;
+
+	for (i=0; i<MAX_CLIENTS; i++) {
+		if (!g_entities[i].inuse)
+			continue;
+		if (!g_entities[i].client)
+			continue;
+		if (g_entities[i].client->sess.raceMode)
+			continue;
+		g_entities[i].maxHealth = g_entities[i].s.maxhealth = g_entities[i].s.health = health;
+		//Com_Printf("Setting max health for him %s %i\n", g_entities[i].client->pers.netname, health);
+	}
+}
+
+void G_Kill(gentity_t *ent);
+static void CVU_TribesClass(void) {
+	int i;
+	char model[MAX_QPATH] = { 0 }, userinfo[MAX_INFO_STRING] = { 0 };
+	gentity_t	*ent;
+
+	for (i = 0; i<MAX_CLIENTS; i++) {
+		ent = &g_entities[i];
+		if (!ent->inuse)
+			continue;
+		if (!ent || !ent->client)
+			continue;
+		if (ent->client->sess.raceMode)
+			continue;
+		if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+			continue;
+
+		trap->GetUserinfo(i, userinfo, sizeof(userinfo));
+		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
+	
+		if (g_tribesClass.integer) {
+			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
+				if (ent->client->pers.tribesClass != 3) {
+					if (ent->health > 0)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 3;
+				}
+			}
+			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+				if (ent->client->pers.tribesClass != 1) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 1;
+				}
+			}
+			else {
+				if (ent->client->pers.tribesClass != 2) {
+					if (ent->health > 0)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 2;
+				}
+			}
+		}
+		else if (ent->client->pers.tribesClass) {
+			ent->client->pers.tribesClass = 0;
+			if (ent->health > 0)
+				G_Kill(ent);
+		}
+	}
 }
 
 static void CVU_Registration(void) {

@@ -347,7 +347,6 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	else
 		trap->Print( "WARNING: Couldn't open logfile: "PLAYER_LOG"\n" );
 
-	
 	G_LogWeaponInit();
 
 	G_CacheGametype();
@@ -2076,7 +2075,7 @@ void PrintStats(int client) {
 
 	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
 		//return;
-	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer)
+	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer && !g_tribesClass.integer)
 		showAccuracy = qfalse;
 	if ((((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE)))) || g_gunGame.integer) //TE and TH are disabled
 		showTeamPowers = qfalse;
@@ -3873,6 +3872,7 @@ void G_RunFrame( int levelTime ) {
 
 #define JETPACK_DEFUEL_RATE		200 //approx. 20 seconds of idle use from a fully charged fuel amt
 #define JETPACK_REFUEL_RATE		150 //seems fair
+#if 0
 			if (ent->client->jetPackOn)
 			{ //using jetpack, drain fuel
 				if (ent->client->jetPackDebReduce < level.time)
@@ -3910,7 +3910,7 @@ void G_RunFrame( int levelTime ) {
 						ent->client->ps.jetpackFuel -= 2;
 					else {
 						if (ent->client->pers.tribesClass == 2) //Heavy
-							ent->client->ps.jetpackFuel -= 5;
+							ent->client->ps.jetpackFuel -= 7;
 						else
 							ent->client->ps.jetpackFuel -= 4;
 						//Special case for down jet here?
@@ -3928,10 +3928,105 @@ void G_RunFrame( int levelTime ) {
 			{ //recharge jetpack
 				if (ent->client->jetPackDebRecharge < level.time)
 				{
-					ent->client->ps.jetpackFuel += 3;
+					if (g_tweakWeapons.integer & WT_TRIBES)
+						ent->client->ps.jetpackFuel += 4;
+					else
+						ent->client->ps.jetpackFuel += 3;
 					ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;//Refuel rate
 				}
 			}
+
+
+#endif
+#if 1
+			if (ent->client->sess.movementStyle == MV_TRIBES) {//Tribes jetpack
+				if (ent->client->ps.eFlags & EF_JETPACK_ACTIVE) {
+					if (ent->client->jetPackDebReduce < level.time) //ent->client->jetPackDebReduce can be negative or 0 or ?
+					{
+						if (ent->client->pers.tribesClass == 3) //Heavy
+							ent->client->ps.fd.forcePower -= 7;
+						if (ent->client->pers.tribesClass == 2) //Med
+							ent->client->ps.fd.forcePower -= 5;
+						else 
+							ent->client->ps.fd.forcePower -= 4;//Light
+
+						if (ent->client->ps.fd.forcePower <= 0) 
+							ent->client->ps.fd.forcePower = 0;
+						ent->client->jetPackDebReduce = level.time + JETPACK_DEFUEL_RATE;
+					}
+				}
+				/*
+				else { //Done elsewhere as this uses forcepoints and those already regen
+					if (ent->client->jetPackDebRecharge < level.time && (ent->client->ps.jetpackFuel < 100 && ent->client->jetPackDebReduce < level.time - 500)) {
+						if (ent->client->jetPackDebRecharge < level.time) {
+							ent->client->ps.jetpackFuel += 4;
+							ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;
+						}
+					}
+				}
+				*/
+				if (ent->client->overheatDebReduce < level.time) //Always refill overheat
+				{
+					if (ent->client->ps.jetpackFuel < 100) {
+						float recharge = VectorLength(ent->client->ps.velocity) / (ent->client->ps.speed);
+						if (recharge < 1)
+							recharge = 1;
+						ent->client->ps.jetpackFuel += 2 * recharge;
+					}
+					if (ent->client->ps.jetpackFuel > 100)
+						ent->client->ps.jetpackFuel = 100;
+
+					ent->client->overheatDebReduce = level.time + 200;
+				}
+			}
+			else if (ent->client->sess.raceMode || g_tweakJetpack.integer) {//Tweaked jetpack
+				if (ent->client->ps.eFlags & EF_JETPACK_ACTIVE) {
+					if (ent->client->jetPackDebReduce < level.time)
+					{
+						if (g_tweakJetpack.integer == 2 && !ent->client->sess.raceMode)
+							ent->client->ps.jetpackFuel -= 4;
+						else
+							ent->client->ps.jetpackFuel -= 2;
+						if (ent->client->ps.jetpackFuel <= 0)
+							ent->client->ps.jetpackFuel = 0;
+						ent->client->jetPackDebReduce = level.time + JETPACK_DEFUEL_RATE;
+					}
+				}
+				else {
+					if (ent->client->jetPackDebRecharge < level.time && (ent->client->ps.jetpackFuel < 100 && ent->client->jetPackDebReduce < level.time - 500)) {
+						ent->client->ps.jetpackFuel += 3;
+						ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;
+					}
+				}
+			}
+			else { //Base jetpack
+				if (ent->client->jetPackOn)
+				{ //using jetpack, drain fuel
+					if (ent->client->jetPackDebReduce < level.time)
+					{
+						if (ent->client->pers.cmd.upmove > 0)
+						{ //take more if they're thrusting
+							ent->client->ps.jetpackFuel -= 2;
+						}
+						else
+						{
+							ent->client->ps.jetpackFuel--;
+						}
+
+						if (ent->client->ps.jetpackFuel <= 0)
+						{ //turn it off
+							ent->client->ps.jetpackFuel = 0;
+							Jetpack_Off(ent);
+						}
+						ent->client->jetPackDebReduce = level.time + JETPACK_DEFUEL_RATE;
+					}
+				}
+				else if (ent->client->ps.jetpackFuel < 100) {
+					ent->client->ps.jetpackFuel++;
+					ent->client->jetPackDebRecharge = level.time + JETPACK_REFUEL_RATE;
+				}
+			}
+#endif
 
 #define CLOAK_DEFUEL_RATE		200 //approx. 20 seconds of idle use from a fully charged fuel amt
 #define CLOAK_REFUEL_RATE		150 //seems fair

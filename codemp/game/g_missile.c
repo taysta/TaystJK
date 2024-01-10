@@ -979,7 +979,8 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			if ( other->client ) {
 				//G_AddEvent( nent, EV_MISSILE_HIT, DirToByte( trace->plane.normal ) );							//Event
 
-				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
+#if 0
+				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
 					if (!other->client || OnSameTeam(ent->parent, other)) {
 						Weapon_HookFree(ent);	// don't work
 						return;
@@ -1011,6 +1012,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 						return;
 					}
 				}
+#endif
 
 				if (!ent->s.hasLookTarget) {
 					G_PlayEffectID( G_EffectIndex("tusken/hit"), trace->endpos, trace->plane.normal );
@@ -1034,10 +1036,12 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 					Weapon_HookFree(ent);	// don't work
 					return;
 				}
+#if 0
 				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
 					Weapon_HookFree(ent);	// don't work
 					return;
 				}
+#endif
 				ent->s.otherEntityNum = other->s.number;
 				ent->s.groundEntityNum = other->s.number;
 				VectorCopy(trace->endpos, v);
@@ -1048,10 +1052,12 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				ent->s.hasLookTarget = qtrue;
 			}
 		} else {
+#if 0
 			if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) {
 				Weapon_HookFree(ent);	// don't work
 				return;
 			}
+#endif
 			VectorCopy(trace->endpos, v);
 			//G_AddEvent( nent, EV_MISSILE_MISS, 0);//DirToByte( trace->plane.normal ) );						//Event
 			if (!ent->s.hasLookTarget) {
@@ -1093,6 +1099,14 @@ killProj:
 	} else if( trace->surfaceFlags & SURF_METALSTEPS ) {
 		G_AddEvent( ent, EV_MISSILE_MISS_METAL, DirToByte( trace->plane.normal ) );
 	} else if (ent->s.weapon != G2_MODEL_PART && !isKnockedSaber) {
+		//For some reason the client does not parse this event if its a flechette alt? So uh...
+		//With the tribes GL, for some reason if called via lasertrapexplode, v[0], v[1], v[2] are super high (basicaly the trdelta of the missile that lands on the ground) making it not render the FX properly.
+		//This is a seperate issue from the FX not even being told to render because for some reason the client has commented out that code in EV_MISSILE_MISS for the flechette alt fire.
+		//This needs to be actually fixed instead of whatever this sad hack is. "TRIBES GL"
+		if ((g_tweakWeapons.integer & WT_TRIBES) && ent->s.weapon == WP_FLECHETTE && ent->think == WP_flechette_alt_blow) {
+			vec3_t v = { 0 };
+			G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, ent->r.currentOrigin, v);
+		}
 		G_AddEvent( ent, EV_MISSILE_MISS, DirToByte( trace->plane.normal ) );
 	}
 
@@ -1344,7 +1358,7 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 
 	if (!self->client->sess.raceMode) {
 		if (self->client->sess.movementStyle == MV_TRIBES) {
-			inheritance = 0;
+			inheritance = 0; //100?
 			vel = 5000;
 			lifetime = 250;
 		}
@@ -1424,6 +1438,9 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	if (self->client->sess.movementStyle == MV_TRIBES) {
 		VectorSet(hook->r.mins, -16, -16, -16);
 		VectorSet(hook->r.maxs, 16, 16, 16);
+		self->client->ps.fd.forcePower -= 40;
+		if (self->client->ps.fd.forcePower < 0)
+			self->client->ps.fd.forcePower = 0;
 	}
 
 	return hook;

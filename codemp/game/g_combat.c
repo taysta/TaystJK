@@ -624,8 +624,15 @@ void TossClientItems( gentity_t *self ) {
 	if (g_gunGame.integer)
 		return;
 
-	// drop the weapon if not a gauntlet or machinegun
-	weapon = self->s.weapon;
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Tribes tweak has ppl drop ammo on death
+		ItemUse_UseDisp(self, HI_AMMODISP);
+		G_AddEvent(self, EV_USE_ITEM0 + HI_AMMODISP, 0);
+		weapon = WP_NONE;
+	}
+	else {
+		// drop the weapon if not a gauntlet or machinegun
+		weapon = self->s.weapon;
+	}
 
 	// make a special check to see if they are changing to a new
 	// weapon that isn't the mg or gauntlet.  Without this, a client
@@ -697,13 +704,6 @@ void TossClientItems( gentity_t *self ) {
 			}
 		}
 	}
-
-
-	if (g_tweakWeapons.integer & WT_TRIBES) { //Tribes tweak has ppl drop ammo on death
-		ItemUse_UseDisp(self, HI_AMMODISP);
-		G_AddEvent(self, EV_USE_ITEM0 + HI_AMMODISP, 0);
-	}
-
 }
 
 
@@ -2730,7 +2730,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 						}
 					}
 				}
-				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4)//rabbit points
+				else if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer && g_neutralFlag.integer < 4)//rabbit points
 				{
 					int carrier_bonus, killed_carrier, killed_other;
 					if (level.gametype == GT_TEAM) {
@@ -4938,6 +4938,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			case MOD_CONC_ALT:
 				damage *= 1;
 				break;
+			case MOD_TURBLAST:
+				if (g_tweakWeapons.integer & WT_TRIBES)
+				damage *= 5;
 			default:
 				break;
 		}
@@ -4950,10 +4953,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			cut = 1;
 		else if (cut < 0)
 			cut = 0;
-		targ->client->ps.jetpackFuel -= damage * 1.2f;
-		targ->client->ps.fd.forcePower -= damage * 1.5f;;
-		if (targ->client->ps.jetpackFuel < 0)
-			targ->client->ps.jetpackFuel = 0;
+		targ->client->ps.fd.forcePower -= damage * 1.25f;;
 		if (targ->client->ps.fd.forcePower < 0)
 			targ->client->ps.fd.forcePower = 0;
 		VectorScale(targ->client->ps.velocity, cut, targ->client->ps.velocity);
@@ -5971,6 +5971,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
+	if (targ && targ->client && !take && asave && g_tweakWeapons.integer & WT_TRIBES) {
+		G_ScaleNetHealth(targ); //WT_TRIBES rework
+	}
+
 	// do the damage
 	if (take)
 	{
@@ -6305,7 +6309,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			// push the center of mass higher than the origin so players
 			// get knocked into the air more
 			dir[2] += 24;
-			if (ent->takedamage && attacker->inuse && attacker->client &&
+			if (ent->takedamage && attacker && attacker->inuse && attacker->client &&
 				attacker->s.eType == ET_NPC && attacker->s.NPC_class == CLASS_VEHICLE &&
 				attacker->m_pVehicle && attacker->m_pVehicle->m_pPilot)
 			{ //say my pilot did it.

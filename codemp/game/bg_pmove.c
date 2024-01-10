@@ -376,7 +376,9 @@ qboolean BG_CanJetpack(playerState_t *ps)
 	//Need a debouncer
 	if (!(ps->stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)))
 		return qfalse;
-	if (ps->jetpackFuel < 10)
+	if (ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
+		return qfalse;
+	if (ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
 		return qfalse;
 	if (BG_SaberInSpecial(ps->saberMove))
 		return qfalse;
@@ -1133,7 +1135,7 @@ void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce ) {
 		change = normal[i]*backoff;
 		out[i] = in[i] - change;
 	}
-	if ( pm->stepSlideFix )
+	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS//normal player
 			&& pm->ps->groundEntityNum != ENTITYNUM_NONE//on the ground
@@ -3980,7 +3982,7 @@ static void PM_DodgeMove(int forward, int right)
 	VectorNormalize( dodgedir );
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		pm->ps->jetpackFuel -= 25;
+		pm->ps->fd.forcePower -= 25;//validate?
 		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
 #ifdef _GAME
@@ -4037,7 +4039,7 @@ static void PM_CheckDash(void)
 		return;
 	}
 	
-	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->jetpackFuel < 25))) {
+	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->fd.forcePower < 25))) {
 		return;
 	}
 	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
@@ -5394,6 +5396,9 @@ static void PM_GroundTrace( void ) {
 				minNormal = 0.5f; //Max slope steepness before it stops hovoring you up, used to be 0.65
 			}
 		}
+	}
+	else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		minNormal = 0.6f; //Let us walk up a bit steeper hills in tribes?
 	}
 
 	point[0] = pm->ps->origin[0];
@@ -8926,6 +8931,16 @@ if (pm->ps->duelInProgress)
 	}
 	*/
 
+#if _GAME
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Chaingun overheat
+#else
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+#endif
+		if (pm->ps->clientNum < MAX_CLIENTS && pm->ps->weapon == WP_BLASTER && !pm->ps->jetpackFuel)
+			return;
+	}
+
+
 	if (killAfterItem)
 	{
 		return;
@@ -9544,6 +9559,10 @@ if (pm->ps->duelInProgress)
 				addTime = 1500;
 			break;
 		case WP_BOWCASTER:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1050;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1050;
 			break;
 		case WP_REPEATER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9552,6 +9571,8 @@ if (pm->ps->duelInProgress)
 				addTime = 200;
 			break;
 		case WP_DEMP2:
+			if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 750;
 			break;
 		case WP_FLECHETTE:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
@@ -9605,6 +9626,10 @@ if (pm->ps->duelInProgress)
 		//	addTime = 1500;
 		break;
 	case WP_BOWCASTER:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1050;
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 1050;
 		break;
 	case WP_REPEATER:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
@@ -9613,6 +9638,8 @@ if (pm->ps->duelInProgress)
 			addTime = 200;
 		break;
 	case WP_DEMP2:
+		if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 750;
 		break;
 	case WP_FLECHETTE:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
@@ -13009,7 +13036,7 @@ void PmoveSingle (pmove_t *pmove) {
 #else
 	if (!pm_entSelf->m_pVehicle && (cgs.jcinfo & JAPRO_CINFO_JETPACK || pm->ps->stats[STAT_RACEMODE])) {
 #endif
-		if (!pm->cmd.upmove || pm->ps->jetpackFuel == 0) { //Hold to use (spacebar) newjetpack new jetpack
+		if (!pm->cmd.upmove || (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && pm->ps->jetpackFuel == 0) || ((pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) && (pm->ps->fd.forcePower == 0))) { //Hold to use (spacebar) newjetpack new jetpack
 			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
 		else if (pm->ps->pm_type == PM_NORMAL && pm->cmd.upmove && pm->ps->groundEntityNum == ENTITYNUM_NONE && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && !(pmove->ps->pm_flags & PMF_JUMP_HELD) && BG_CanJetpack(pm->ps)) { //Pressing jump, while in air
@@ -13186,7 +13213,7 @@ void PmoveSingle (pmove_t *pmove) {
 		const int MAX_FALL_SPEED = -1200;
 		const int MAX_JETPACK_VEL_UP = 2000;
 		float gDist2 = gDist;
-		float scale = PM_CmdScale(&pm->cmd);
+		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
@@ -13195,14 +13222,18 @@ void PmoveSingle (pmove_t *pmove) {
 				float hackscale = 250.0f / pm->ps->velocity[2];
 				if (hackscale > 1.25f)
 					hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				float hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
+			}
+			else if (pm->ps->velocity[2] > 1500) {
+				float hackscale = 1500.0f / pm->ps->velocity[2];
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Weaken upjet if we are going up extremely fast already
 			}
 			else {
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;
 			}
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
@@ -13229,6 +13260,7 @@ void PmoveSingle (pmove_t *pmove) {
 				int i;
 				float accel = 0.009f; //server should use pmove_float
 				scale /= pm->ps->speed;
+				scale *= pm->ps->speed / 320.0f;
 				scale *= 20000; //MAX
 
 				//problem, outside of jet they can still slow down their speed with air control ?

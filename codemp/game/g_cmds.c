@@ -5753,6 +5753,7 @@ void Cmd_Aminfo_f(gentity_t *ent)
 		Q_strcat(buf, sizeof(buf), "rWorst ");
 		Q_strcat(buf, sizeof(buf), "rHardest ");
 		Q_strcat(buf, sizeof(buf), "rPopular ");
+		Q_strcat(buf, sizeof(buf), "rCompare ");
 		if (g_raceMode.integer > 1)
 			Q_strcat(buf, sizeof(buf), "race ");
 		Q_strcat(buf, sizeof(buf), "jump ");
@@ -5962,8 +5963,8 @@ static void Cmd_Jetpack_f(gentity_t *ent)
 void PrintStats(int client);
 static void Cmd_PrintStats_f(gentity_t *ent)
 {
-	if (level.gametype != GT_CTF && level.gametype != GT_TEAM && !g_gunGame.integer) {
-		trap->SendServerCommand( ent-g_entities, "print \"Command only allowed in TFFA or CTF or Gun Game. (printStats).\n\"" );
+	if (level.gametype != GT_CTF && level.gametype != GT_TEAM && !g_gunGame.integer && !fraglimit.integer) {
+		trap->SendServerCommand( ent-g_entities, "print \"Command only allowed in TFFA, CTF, Gun Game, or when there is a fraglimit. (printStats).\n\"" );
 		return;
 	}
 	//Uhh.. any restrictions on this? idk.. floodprotect?
@@ -8671,6 +8672,7 @@ void Cmd_DFTop10_f( gentity_t *ent );
 void Cmd_DFTodo_f( gentity_t *ent );
 void Cmd_DFTopRank_f( gentity_t *ent );
 void Cmd_DFPopular_f( gentity_t *ent );
+void Cmd_DFCompare_f(gentity_t *ent);
 //void Cmd_DFRefresh_f(gentity_t *ent);//loda temporary
 void Cmd_ChangePassword_f( gentity_t *ent );
 void Cmd_AccountStats_f( gentity_t *ent);
@@ -8853,6 +8855,8 @@ command_t commands[] = {
 	{ "practice",			Cmd_Practice_f,				CMD_NOINTERMISSION },
 	{ "printstats",			Cmd_PrintStats_f,			CMD_NOINTERMISSION },
 	{ "race",				Cmd_Race_f,					CMD_NOINTERMISSION },
+
+	{ "rCompare",			Cmd_DFCompare_f,			CMD_NOINTERMISSION },
 
 	{ "register",			Cmd_ACRegister_f,			CMD_NOINTERMISSION },
 

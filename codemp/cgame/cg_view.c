@@ -300,6 +300,7 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 
 	{
 		float vertOffset = cg_thirdPersonVertOffset.value;
+		vertOffset += cg.predictedPlayerState.standheight - 40; //Auto up vert offset if model is bigger
 
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.pm_flags & PMF_FOLLOW && cg_specCameraMode.integer) {
 			vertOffset = cg.predictedPlayerState.persistant[PERS_CAMERA_SETTINGS];

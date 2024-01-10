@@ -560,6 +560,13 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 
 	vectoangles( forward, angs );
 
+	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
+		if (ent->client->ps.jetpackFuel > 0)
+			ent->client->ps.jetpackFuel -= 5;
+		if (ent->client->ps.jetpackFuel < 0)
+			ent->client->ps.jetpackFuel = 0;
+	}
+
 	if ( altFire )
 	{
 		// add some slop to the alt-fire direction
@@ -1158,6 +1165,32 @@ static void WP_FireDisruptor( gentity_t *ent, qboolean altFire )
 }
 
 
+static void WP_BoltLauncherAltFire(gentity_t *ent)
+{
+	float vel = vel = 3040 * g_projectileVelocityScale.value;
+
+	//Think up an alt fire?
+
+	gentity_t *missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
+
+	missile->classname = "bowcaster_proj";
+	missile->s.weapon = WP_BOWCASTER;
+
+	VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+	VectorScale(missile->r.maxs, -1, missile->r.mins);
+
+	missile->damage = 60 * g_weaponDamageScale.value;
+	missile->splashDamage = 60 * g_weaponDamageScale.value;
+	missile->splashRadius = 150;
+	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+
+	missile->methodOfDeath = MOD_BOWCASTER;
+	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
+
+	missile->bounceCount = 0;
+	missile->s.pos.trType = TR_GRAVITY;
+}
+
 /*
 ======================================================================
 
@@ -1166,17 +1199,138 @@ BOWCASTER
 ======================================================================
 */
 
-static void WP_BowcasterAltFire( gentity_t *ent )
-{
-	int	damage	= BOWCASTER_DAMAGE;
 
-	gentity_t *missile = CreateMissileNew( muzzle, forward, BOWCASTER_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
+//---------------------------------------------------------
+static void WP_BoltLauncherFire (gentity_t *ent)
+//---------------------------------------------------------
+{
+	int			damage, count, i;
+	float		vel = 3040 * g_projectileVelocityScale.value;
+	vec3_t		angs, dir;
+	gentity_t	*missile;
+
+	if (!ent->client)
+	{
+		count = 1;
+	}
+	else
+	{
+		count = (level.time - ent->client->ps.weaponChargeTime) / 250.0f;//200
+	}
+
+	if (count < 1)
+	{
+		count = 1;
+	}
+	else if (count > 5)
+	{
+		count = 5;
+	}
+
+	if (!(count & 1))
+	{
+		// if we aren't odd, knock us down a level
+		count--;
+	}
+
+	//scale the damage down based on how many are about to be fired
+	if (count <= 1)
+	{
+		damage = 60;
+	}
+	else if (count == 2)
+	{
+		damage = 40;
+	}
+	else if (count == 3)
+	{
+		damage = 35;
+	}
+	else if (count == 4)
+	{
+		damage = 30;
+	}
+	else
+	{
+		damage = 25;
+	}
+
+	damage *= g_weaponDamageScale.value;
+
+	for (i = 0; i < count; i++)
+	{
+		//vel = vel * (crandom() * 0.3f);//velocity does not need to be syncd with client //-1 to 1
+
+		vectoangles(forward, angs);
+
+		// add some slop to the alt-fire direction
+		//[JAPRO - Serverside - Weapons - Tweak weapons Remove Bowcaster Randomness - Start]
+		if (i == 1) {
+			angs[PITCH] += 1.0f;
+			angs[YAW] += 1.0f;
+			vel = 2400;
+		}
+		else if (i == 2) {
+			angs[PITCH] += 1.0f;
+			angs[YAW] -= 1.0f;
+			vel = 3600;
+		}
+		else if (i == 3) {
+			angs[PITCH] -= 1.0f;
+			angs[YAW] += 1.0f;
+			vel = 2800;
+		}
+		else if (i == 4) {
+			angs[PITCH] -= 1.0f;
+			angs[YAW] -= 1.0f;
+			vel = 3200;
+		}
+		//[JAPRO - Serverside - Weapons - Tweak weapons Remove Bowcaster Randomness - End]
+
+		AngleVectors(angs, dir, NULL, NULL);
+
+		//[JAPRO - Serverside - Weapons - Add inheritance to bowcaster primary fire - Start]
+		missile = CreateMissileNew(muzzle, dir, vel, 10000, ent, qtrue, qtrue, qtrue);
+		//[JAPRO - Serverside - Weapons - Add inheritance to bowcaster primary fire - End]
+
+		missile->classname = "bowcaster_alt_proj";
+		missile->s.weapon = WP_BOWCASTER;
+
+		VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+		VectorScale(missile->r.maxs, -1, missile->r.mins);
+
+		missile->damage = damage;
+		missile->splashDamage = damage;
+		missile->splashRadius = 128;
+		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+		missile->methodOfDeath = MOD_BOWCASTER;
+		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
+
+		// we don't want it to bounce
+		missile->bounceCount = 0;
+		missile->s.pos.trType = TR_GRAVITY;
+	}
+}
+
+/*
+======================================================================
+
+BOWCASTER
+
+======================================================================
+*/
+
+static void WP_BowcasterAltFire(gentity_t *ent)
+{
+	int	damage = BOWCASTER_DAMAGE;
+
+	gentity_t *missile = CreateMissileNew(muzzle, forward, BOWCASTER_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
 
 	missile->classname = "bowcaster_proj";
 	missile->s.weapon = WP_BOWCASTER;
 
-	VectorSet( missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
-	VectorScale( missile->r.maxs, -1, missile->r.mins );
+	VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+	VectorScale(missile->r.maxs, -1, missile->r.mins);
 
 	missile->damage = damage;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
@@ -1195,6 +1349,7 @@ static void WP_BowcasterAltFire( gentity_t *ent )
 		missile->s.pos.trType = TR_GRAVITY;
 }
 
+
 //---------------------------------------------------------
 static void WP_BowcasterMainFire( gentity_t *ent, int seed )
 //---------------------------------------------------------
@@ -1204,6 +1359,11 @@ static void WP_BowcasterMainFire( gentity_t *ent, int seed )
 	vec3_t		angs, dir;
 	gentity_t	*missile;
 	int i;
+
+	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
+		vel = 3040 * g_projectileVelocityScale.value;
+		damage = 70;
+	}
 
 	if (!ent->client)
 	{
@@ -1313,7 +1473,7 @@ static void WP_BowcasterMainFire( gentity_t *ent, int seed )
 		// we don't want it to bounce
 		missile->bounceCount = 0;
 
-		if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
+		if ((g_tweakWeapons.integer & WT_TRIBES) || (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY)) //JAPRO - Serverside - Give bullets gravity!
 			missile->s.pos.trType = TR_GRAVITY;
 	}
 }
@@ -1324,11 +1484,17 @@ static void WP_FireBowcaster( gentity_t *ent, qboolean altFire, int seed )
 {
 	if ( altFire )
 	{
-		WP_BowcasterAltFire( ent );
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			WP_BoltLauncherAltFire(ent);
+		else
+			WP_BowcasterAltFire( ent );
 	}
 	else
 	{
-		WP_BowcasterMainFire( ent, seed );
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			WP_BoltLauncherFire(ent);
+		else
+			WP_BowcasterMainFire( ent, seed );
 	}
 }
 
@@ -1434,12 +1600,24 @@ DEMP2
 static void WP_DEMP2_MainFire( gentity_t *ent )
 {
 	int	damage	= DEMP2_DAMAGE;
-
+	int vel = DEMP2_VELOCITY;
 	//[JAPRO - Serverside - Weapons - Add inheritance to demp2 primary fire]
-	gentity_t *missile = CreateMissileNew( muzzle, forward, DEMP2_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
+	gentity_t *missile;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		vel = 2240 * g_projectileVelocityScale.value;
+		damage = 60;
+	}
+
+	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
 
 	missile->classname = "demp2_proj";
 	missile->s.weapon = WP_DEMP2;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->splashDamage = 30;
+		missile->radius = 32;
+	}
 
 	VectorSet( missile->r.maxs, DEMP2_SIZE, DEMP2_SIZE, DEMP2_SIZE );
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
@@ -1649,6 +1827,9 @@ static void WP_DEMP2_AltFire( gentity_t *ent )
 	gentity_t *missile;
 
 	VectorCopy( muzzle, start );
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage = 5 * g_weaponDamageScale.value;
 
 	if (ent->client->sess.movementStyle == MV_COOP_JKA) {
 		damage = 6;
@@ -2267,7 +2448,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 	float vel = 1000;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		vel = 2000;
+		vel = 2400;
 		missile = CreateMissileNew(start, fwd, (vel * g_projectileVelocityScale.value), 4000, self, qtrue, qtrue, qtrue);
 		missile->setTime = level.time;
 	}
@@ -2415,8 +2596,6 @@ void rocketThink( gentity_t *ent )
 	int i;
 	float vel = (ent->spawnflags&1)?ent->speed:ROCKET_VELOCITY* g_projectileVelocityScale.integer;
 	qboolean redeemerAllowed = qtrue;
-	if (g_tweakWeapons.integer & WT_TRIBES)
-		vel = 2040 * g_projectileVelocityScale.integer;
 
 	if (!g_entities[ent->r.ownerNum].client || g_entities[ent->r.ownerNum].client->sess.raceMode)
 		redeemerAllowed = qfalse;
@@ -2566,12 +2745,16 @@ void rocketThink( gentity_t *ent )
 		VectorCopy( newdir, ent->movedir );
 		SnapVector( ent->s.pos.trDelta );			// save net bandwidth
 		VectorCopy( ent->r.currentOrigin, ent->s.pos.trBase );
+		ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
 		ent->s.pos.trTime = level.time;
 	}
 	else if ((g_tweakWeapons.integer & WT_ROCKET_REDEEMER) && redeemerAllowed) //Todo, make this require a lock on.  Then fix the close range hit detection.  Proximity explode maybe?
 	{
-		vec3_t fwd, traceFrom, traceTo, dir;
+		vec3_t fwd, traceFrom, traceTo, dir, destination;
 		trace_t tr;
+		int speedCap = 1200;
+		vec3_t newDir;
+		qboolean found = qfalse;
 		float dist, currentVel;
 
 		if (!g_entities[ent->r.ownerNum].client)
@@ -2592,48 +2775,113 @@ void rocketThink( gentity_t *ent )
 
 		VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);
 
+		VectorMA(traceFrom, 24, fwd, traceFrom);//I think this is pushing the trace out of our player but i don't understand why it still has a faraway endpos even if it hits our player at the start..
 		JP_Trace(&tr, traceFrom, NULL, NULL, traceTo, ent->s.number, MASK_PLAYERSOLID, qfalse, 0, 0);
 
-		VectorSubtract(tr.endpos, ent->r.currentOrigin, dir);
-		dist = VectorLengthSquared(dir);
+		if (tr.entityNum >= MAX_CLIENTS)
+		{
+			int i;
+			vec3_t	  angles;
+			trace_t		ptrace;
+			for (i = 0; i < level.numConnectedClients; i++) {
+				gentity_t *person = &g_entities[level.sortedClients[i]];
+
+				if (!person || !person->client)
+					continue;
+				if (person == &g_entities[ent->r.ownerNum])
+					continue;
+				if (person->client->sess.sessionTeam == TEAM_SPECTATOR)
+					continue;
+				if (person->client->sess.sessionTeam != TEAM_FREE && person->client->sess.sessionTeam == g_entities[ent->r.ownerNum].client->sess.sessionTeam)
+					continue;
+
+				VectorSubtract(person->r.currentOrigin, g_entities[ent->r.ownerNum].client->ps.origin, angles);
+				vectoangles(angles, angles);
+
+				if (!InFieldOfVision(g_entities[ent->r.ownerNum].client->ps.viewangles, 4, angles)) // Not in our FOV
+					continue;
+
+				JP_Trace(&ptrace, g_entities[ent->r.ownerNum].client->ps.origin, NULL, NULL, person->r.currentOrigin, ent->r.ownerNum, MASK_SOLID, qfalse, 0, 0);
+				if (ptrace.fraction != 1.0) //if not line of sight
+					continue;
+
+				VectorCopy(ptrace.endpos, destination);
+				destination[2] += 24;
+				//Com_Printf("^2Line of sight confirmed, tracking\n", person->client->pers.netname);
+				found = qtrue;
+				break;
+			}
+			if (!found)
+				VectorCopy(tr.endpos, destination);
+		}
+		else { //Aimed at a dude perfectly so use that
+			VectorCopy(tr.endpos, destination);
+		}
+
+
+		VectorSubtract(destination, ent->r.currentOrigin, dir);
 		currentVel = VectorLength(ent->s.pos.trDelta);
 
-		if (dist < 128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
-		}
-
-		if ((g_tweakWeapons.integer & WT_TRIBES) && dist < 64*64) {
-			//If its close blow it up.
+		if (g_entities[ent->r.ownerNum].client->ps.weapon != WP_ROCKET_LAUNCHER)
 			ent->think = G_ExplodeMissile;
-		}
-		else if (dist < 128*128) {//sad hack time, stop rocket from getting 'stuck' 'inside' player.
-			dir[0] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[1] += Q_flrand(-1.0f, 1.0f) * 10;
-			dir[2] += Q_flrand(-1.0f, 1.0f) * 10;
-		}
 
-		//Speed it up slowly?
+		//if ((g_tweakWeapons.integer & WT_TRIBES) && ((dist < 64*64)) {
+			//If its close blow it up.
+			//ent->think = G_ExplodeMissile;
+		//}
+		/*else*/ 
+		dist = VectorLengthSquared(dir);
 
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			speedCap = 1800;
+		if (currentVel > speedCap)
+			currentVel = speedCap;
+		if (dist > 128 * 128)
+			dir[2] += 40; //Target above their head until we get close, helps with enemies walking on terrain
+
+		//Goal is to limit the change in direction of the rocket to 20 degrees or so per tick
+		//Vectornormalize current dir (dir) and "wishdir" (newDir)
+		//Convert to angles and get the diff.  Cap the diff.  Convert the diff back to vector and apply.
+		//Is there a better way to do this with dot or crossproduct?  Do we have to convert to angles? Is that just to avoid wraparound (e.g. anglesubtract math?)
+#if 1
 		VectorNormalize(dir);
+		VectorMA(ent->s.pos.trDelta, currentVel * 0.4f, dir, newDir);
+		VectorNormalize(newDir);
 
-		//ent->speed = ROCKET_VELOCITY * 0.5 * g_projectileVelocityScale.integer;
-		//ent->speed = ent->speed + 1.0f;
+#else
+		{
+			vec3_t newDir, dirAngs, newDirAngs;
+			float xAng, yAng;
+			float turnCap = 10.0f;
+			VectorNormalize(dir);
+			VectorCopy(ent->s.pos.trDelta, newDir);
+			vectoangles(dir, dirAngs);
+			vectoangles(newDir, newDirAngs);
 
-		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (currentVel > 1400)
-				currentVel = 1400;
-			VectorScale(dir, currentVel * 1.025f, ent->s.pos.trDelta);
-		}
-		else
-			VectorScale(dir, ROCKET_VELOCITY * 0.5, ent->s.pos.trDelta);
-		ent->s.pos.trTime = level.time;
+			xAng = AngleSubtract(dirAngs[0], newDirAngs[0]);
+			yAng = AngleSubtract(dirAngs[1], newDirAngs[1]);
+			//Com_Printf("X ang is %.2f and Y ang is %.2f\n", xAng, yAng);
 
+			if (xAng > 20)
+				newDirAngs[0] += turnCap;
+			else if (xAng < -turnCap)
+				newDirAngs[0] -= turnCap;
+			if (yAng > turnCap)
+				newDirAngs[1] += turnCap;
+			else if (yAng < -turnCap)
+				newDirAngs[1] -= turnCap;
+
+			AngleVectors(newDirAngs, newDir, NULL, NULL);
 	}
+#endif
+		VectorScale(newDir, currentVel * 1.025f, ent->s.pos.trDelta);
 
-	ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;	// Nothing at all spectacular happened, continue.
-	return;
+		ent->s.pos.trTime = level.time;
+		if (dist > 128 * 128)
+			ent->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		else
+			ent->nextthink = level.time + 25;
+	}
 }
 
 extern void G_ExplodeMissile( gentity_t *ent );
@@ -2719,19 +2967,19 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		else if (g_tweakWeapons.integer & WT_TRIBES) {
 			damage = 75 * g_weaponDamageScale.value;
 			splashDamage = 75 * g_splashDamageScale.value;
-			vel = 2040 * g_projectileVelocityScale.value;
+			vel = 3040 * g_projectileVelocityScale.value;
 		}
 	}
 
 	if (altFire) {
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			vel = 100;
+			vel = 125;
 		else
 			vel *= 0.5f;
 	}
 
 	if (altFire && g_tweakWeapons.integer & WT_ROCKET_REDEEMER && !ent->client->sess.raceMode)
-		damage *= 1.75f;
+		damage *= 1.25f;
 
 	if (q3style && ent->client->pers.backwardsRocket) {
 		vectoangles( forward, temp );
@@ -2782,7 +3030,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	{
 		missile->angle = 0.5f;
 		missile->think = rocketThink;
-		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;
+		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;//More responsive redeemer
 	}
 
 	missile->classname = "rocket_proj";
@@ -2793,11 +3041,17 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		VectorSet( missile->r.maxs, 1, 1, 1 ); //Can this be smaller?
 		missile->raceModeShooter = qtrue;
 	}
-	else
-		VectorSet( missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE );
+	else {
+		if ((g_tweakWeapons.integer & WT_TRIBES) && altFire) {
+			VectorSet(missile->r.maxs, ROCKET_SIZE*2, ROCKET_SIZE*2, ROCKET_SIZE*2);
+		}
+		else {
+			VectorSet(missile->r.maxs, ROCKET_SIZE, ROCKET_SIZE, ROCKET_SIZE);
+		}
+	}
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 
-	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode)
+	if (g_tweakWeapons.integer & WT_TRIBES && ent->client && !ent->client->sess.raceMode && !altFire)
 		missile->s.pos.trType = TR_GRAVITY;
 
 	missile->damage = damage;
@@ -2817,6 +3071,12 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 		missile->health = 10;
 		missile->takedamage = qtrue;
 		missile->r.contents = MASK_SHOT;
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			missile->health = 3;
+		}
+		else {
+			missile->health = 10;
+		}
 	}
 	missile->die = RocketDie;
 //===testing being able to shoot rockets out of the air==================================
@@ -2837,7 +3097,7 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 //------------------------------------------------------------------------------
 {
 	gentity_t	*missile;
-	float velocity = 2000 * g_projectileVelocityScale.value;
+	float velocity = 2366 * g_projectileVelocityScale.value;
 	int lifetime = 3500, damage = 140 * g_weaponDamageScale.value, splashdamage = 140 * g_splashDamageScale.value, splashradius = 384;
 
 	missile = CreateMissileNew( start, fwd, velocity, lifetime, self, qtrue, qtrue, qtrue );
@@ -3589,6 +3849,11 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->parent = owner;
 	laserTrap->activator = owner;
 	laserTrap->r.ownerNum = owner->s.number;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		laserTrap->splashDamage = 70;
+		laserTrap->damage = 70;
+	}
 
 	if (g_tweakWeapons.integer & WT_EXPLOSIVE_HITBOX) {
 		VectorSet(laserTrap->r.mins, -LT_SIZE, -LT_SIZE, 0);
@@ -4455,7 +4720,7 @@ static void WP_FireConcussion( gentity_t *ent )
 	gentity_t *missile;
 
 	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
-		vel = 2275 * g_projectileVelocityScale.value;
+		vel = 3040 * g_projectileVelocityScale.value;
 		damage = 75;
 	}
 

@@ -9710,7 +9710,10 @@ int WP_SaberCanBlock(gentity_t *self, vec3_t point, int dflags, int mod, qboolea
 	if (self->client->ps.forceHandExtend != HANDEXTEND_NONE)
 		return 0;
 
-	if (self->client->ps.fd.forcePowerLevel[FP_SABER_DEFENSE] == FORCE_LEVEL_3) {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		blockFactor = 0.99f;
+	}
+	else if (self->client->ps.fd.forcePowerLevel[FP_SABER_DEFENSE] == FORCE_LEVEL_3) {
 		if (d_saberGhoul2Collision.integer) //wew, this could really affect how much swings block? (yes, its 0.05 in jk2).
 			blockFactor = 0.3f;
 		else
