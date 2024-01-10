@@ -1164,7 +1164,8 @@ static void WP_FireDisruptor( gentity_t *ent, qboolean altFire )
 	}
 }
 
-static void WP_BoltLauncherFire(gentity_t *ent)
+
+static void WP_BoltLauncherAltFire(gentity_t *ent)
 {
 	float vel = vel = 3040 * g_projectileVelocityScale.value;
 
@@ -1198,17 +1199,138 @@ BOWCASTER
 ======================================================================
 */
 
-static void WP_BowcasterAltFire( gentity_t *ent )
-{
-	int	damage	= BOWCASTER_DAMAGE;
 
-	gentity_t *missile = CreateMissileNew( muzzle, forward, BOWCASTER_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
+//---------------------------------------------------------
+static void WP_BoltLauncherFire (gentity_t *ent)
+//---------------------------------------------------------
+{
+	int			damage, count, i;
+	float		vel = 3040 * g_projectileVelocityScale.value;
+	vec3_t		angs, dir;
+	gentity_t	*missile;
+
+	if (!ent->client)
+	{
+		count = 1;
+	}
+	else
+	{
+		count = (level.time - ent->client->ps.weaponChargeTime) / BOWCASTER_CHARGE_UNIT;
+	}
+
+	if (count < 1)
+	{
+		count = 1;
+	}
+	else if (count > 5)
+	{
+		count = 5;
+	}
+
+	if (!(count & 1))
+	{
+		// if we aren't odd, knock us down a level
+		count--;
+	}
+
+	//scale the damage down based on how many are about to be fired
+	if (count <= 1)
+	{
+		damage = 50;
+	}
+	else if (count == 2)
+	{
+		damage = 45;
+	}
+	else if (count == 3)
+	{
+		damage = 40;
+	}
+	else if (count == 4)
+	{
+		damage = 35;
+	}
+	else
+	{
+		damage = 30;
+	}
+
+	damage *= g_weaponDamageScale.value;
+
+	for (i = 0; i < count; i++)
+	{
+		//vel = vel * (crandom() * 0.3f);//velocity does not need to be syncd with client //-1 to 1
+
+		vectoangles(forward, angs);
+
+		// add some slop to the alt-fire direction
+		//[JAPRO - Serverside - Weapons - Tweak weapons Remove Bowcaster Randomness - Start]
+		if (i == 1) {
+			angs[PITCH] += 1.0f;
+			angs[YAW] += 1.0f;
+			vel = 2400;
+		}
+		else if (i == 2) {
+			angs[PITCH] += 1.0f;
+			angs[YAW] -= 1.0f;
+			vel = 3600;
+		}
+		else if (i == 3) {
+			angs[PITCH] -= 1.0f;
+			angs[YAW] += 1.0f;
+			vel = 2800;
+		}
+		else if (i == 4) {
+			angs[PITCH] -= 1.0f;
+			angs[YAW] -= 1.0f;
+			vel = 3200;
+		}
+		//[JAPRO - Serverside - Weapons - Tweak weapons Remove Bowcaster Randomness - End]
+
+		AngleVectors(angs, dir, NULL, NULL);
+
+		//[JAPRO - Serverside - Weapons - Add inheritance to bowcaster primary fire - Start]
+		missile = CreateMissileNew(muzzle, dir, vel, 10000, ent, qtrue, qtrue, qtrue);
+		//[JAPRO - Serverside - Weapons - Add inheritance to bowcaster primary fire - End]
+
+		missile->classname = "bowcaster_alt_proj";
+		missile->s.weapon = WP_BOWCASTER;
+
+		VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+		VectorScale(missile->r.maxs, -1, missile->r.mins);
+
+		missile->damage = damage;
+		missile->splashDamage = damage;
+		missile->splashRadius = 128;
+		missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+		missile->methodOfDeath = MOD_BOWCASTER;
+		missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
+
+		// we don't want it to bounce
+		missile->bounceCount = 0;
+		missile->s.pos.trType = TR_GRAVITY;
+	}
+}
+
+/*
+======================================================================
+
+BOWCASTER
+
+======================================================================
+*/
+
+static void WP_BowcasterAltFire(gentity_t *ent)
+{
+	int	damage = BOWCASTER_DAMAGE;
+
+	gentity_t *missile = CreateMissileNew(muzzle, forward, BOWCASTER_VELOCITY, 10000, ent, qfalse, qtrue, qtrue);
 
 	missile->classname = "bowcaster_proj";
 	missile->s.weapon = WP_BOWCASTER;
 
-	VectorSet( missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
-	VectorScale( missile->r.maxs, -1, missile->r.mins );
+	VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+	VectorScale(missile->r.maxs, -1, missile->r.mins);
 
 	missile->damage = damage;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
@@ -1226,6 +1348,7 @@ static void WP_BowcasterAltFire( gentity_t *ent )
 	if (!ent->client->sess.raceMode && g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
 		missile->s.pos.trType = TR_GRAVITY;
 }
+
 
 //---------------------------------------------------------
 static void WP_BowcasterMainFire( gentity_t *ent, int seed )
@@ -1362,9 +1485,9 @@ static void WP_FireBowcaster( gentity_t *ent, qboolean altFire, int seed )
 	if ( altFire )
 	{
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			WP_BoltLauncherFire(ent);
+			WP_BoltLauncherAltFire(ent);
 		else
-			WP_BowcasterAltFire( ent );
+			WP_BowcasterAltFire( ent, seed );
 	}
 	else
 	{
