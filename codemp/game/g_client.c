@@ -4335,7 +4335,7 @@ void ClientSpawn(gentity_t *ent) {
 			client->ps.stats[STAT_WEAPONS] |= (1 << WP_MELEE);
 		}
 
-		if (client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER))
+		if (client->ps.stats[STAT_WEAPONS] & (1 << WP_SABER) && (!g_tweakWeapons.integer & WT_TRIBES))
 		{
 			client->ps.weapon = WP_SABER;
 		}
