@@ -1164,6 +1164,31 @@ static void WP_FireDisruptor( gentity_t *ent, qboolean altFire )
 	}
 }
 
+static void WP_BoltLauncherFire(gentity_t *ent)
+{
+	float vel = vel = 3040 * g_projectileVelocityScale.value;
+
+	//Think up an alt fire?
+
+	gentity_t *missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
+
+	missile->classname = "bowcaster_proj";
+	missile->s.weapon = WP_BOWCASTER;
+
+	VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
+	VectorScale(missile->r.maxs, -1, missile->r.mins);
+
+	missile->damage = 65 * g_weaponDamageScale.value;
+	missile->splashDamage = 65 * g_weaponDamageScale.value;
+	missile->splashRadius = 128;
+	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+
+	missile->methodOfDeath = MOD_BOWCASTER;
+	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
+
+	missile->bounceCount = 0;
+	missile->s.pos.trType = TR_GRAVITY;
+}
 
 /*
 ======================================================================
@@ -1211,6 +1236,11 @@ static void WP_BowcasterMainFire( gentity_t *ent, int seed )
 	vec3_t		angs, dir;
 	gentity_t	*missile;
 	int i;
+
+	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
+		vel = 3040 * g_projectileVelocityScale.value;
+		damage = 70;
+	}
 
 	if (!ent->client)
 	{
@@ -1320,7 +1350,7 @@ static void WP_BowcasterMainFire( gentity_t *ent, int seed )
 		// we don't want it to bounce
 		missile->bounceCount = 0;
 
-		if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
+		if ((g_tweakWeapons.integer & WT_TRIBES) || (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY)) //JAPRO - Serverside - Give bullets gravity!
 			missile->s.pos.trType = TR_GRAVITY;
 	}
 }
@@ -1331,11 +1361,17 @@ static void WP_FireBowcaster( gentity_t *ent, qboolean altFire, int seed )
 {
 	if ( altFire )
 	{
-		WP_BowcasterAltFire( ent );
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			WP_BoltLauncherFire(ent);
+		else
+			WP_BowcasterAltFire( ent );
 	}
 	else
 	{
-		WP_BowcasterMainFire( ent, seed );
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			WP_BoltLauncherFire(ent);
+		else
+			WP_BowcasterMainFire( ent, seed );
 	}
 }
 
@@ -1447,7 +1483,7 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2240 * g_projectileVelocityScale.value;
-		damage = 70;
+		damage = 60;
 	}
 
 	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
@@ -1663,6 +1699,9 @@ static void WP_DEMP2_AltFire( gentity_t *ent )
 	gentity_t *missile;
 
 	VectorCopy( muzzle, start );
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		damage = 5 * g_weaponDamageScale.value;
 
 	if (ent->client->sess.movementStyle == MV_COOP_JKA) {
 		damage = 6;

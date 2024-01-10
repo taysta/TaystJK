@@ -2487,18 +2487,26 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
 			//Com_Printf("Detetcting heavy\n");
-			if (client->pers.tribesClass != 2) {
+			if (client->pers.tribesClass != 3) {
 				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
 					G_Kill(ent);
-				client->pers.tribesClass = 2;
+				client->pers.tribesClass = 3;
 			}
 		}
-		else {
-			//Com_Printf("Detetcting medium \n");
+		else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+			//Com_Printf("Detetcting heavy\n");
 			if (client->pers.tribesClass != 1) {
 				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
 					G_Kill(ent);
 				client->pers.tribesClass = 1;
+			}
+		}
+		else {
+			//Com_Printf("Detetcting medium \n");
+			if (client->pers.tribesClass != 2) {
+				if (ent->health > 0 && client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
+				client->pers.tribesClass = 2;
 			}
 		}
 	}
@@ -3545,10 +3553,14 @@ void GiveClientItems(gclient_t *client) {
 	if (!client->sess.raceMode) {
 		//Give tribes loadout.
 		if (client->pers.tribesClass == 1) {
-			//Medium
-			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK) + (1 << HI_EWEB));
+			//Light
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SENTRY_GUN) + (1 << HI_JETPACK));
 		}
-		else if (client->pers.tribesClass == 2) {
+		if (client->pers.tribesClass == 2) {
+			//Medium
+			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_JETPACK) + (1 << HI_EWEB));
+		}
+		else if (client->pers.tribesClass == 3) {
 			//Heavy
 			client->ps.stats[STAT_HOLDABLE_ITEMS] |= ((1 << HI_SHIELD) + (1 << HI_JETPACK));
 		}
@@ -3779,15 +3791,21 @@ void GiveClientWeapons(gclient_t *client) {
 	}
 		//Give tribes loadout.
 	else if (client->pers.tribesClass == 1) {
-			//Medium
-			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BLASTER) + (1 << WP_FLECHETTE) + +(1 << WP_DEMP2) + (1 << WP_CONCUSSION) + (1 << WP_THERMAL) + (1 << WP_STUN_BATON) + (1 << WP_SABER));
-			client->ps.ammo[AMMO_BLASTER] = 500;
-			client->ps.ammo[AMMO_METAL_BOLTS] = 900;
+			//Light
+			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_BOWCASTER) + (1 << WP_THERMAL) + (1 << WP_SABER));
 			client->ps.ammo[AMMO_THERMAL] = 2;
+			client->ps.ammo[AMMO_POWERCELL] = 900;
 	}
 	else if (client->pers.tribesClass == 2) {
+		//Medium
+		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BLASTER) + (1 << WP_FLECHETTE) + (1 << WP_CONCUSSION) + (1 << WP_STUN_BATON) + (1 << WP_SABER));
+		client->ps.ammo[AMMO_POWERCELL] = 900;
+		client->ps.ammo[AMMO_BLASTER] = 500;
+		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
+	}
+	else if (client->pers.tribesClass == 3) {
 		//Heavy
-		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_REPEATER) + (1 << WP_DEMP2) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE) + (1 << WP_STUN_BATON) + (1 << WP_SABER));
+		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_REPEATER) + (1 << WP_DEMP2) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE) + (1 << WP_SABER));
 		client->ps.ammo[AMMO_POWERCELL] = 600;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
 		client->ps.ammo[AMMO_ROCKETS] = 30;
@@ -4161,9 +4179,13 @@ void ClientSpawn(gentity_t *ent) {
 
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
-	if (client->pers.tribesClass == 2) {
-		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f * 0.95f; //this model has no neck
-		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f * 0.95f;
+	if (client->pers.tribesClass == 3) {
+		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f; //this model has no neck //revert this?
+		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f;
+	}
+	else if (client->pers.tribesClass == 1) {
+		client->ps.standheight = DEFAULT_MAXS_2 * 0.94f;
+		client->ps.crouchheight = CROUCH_MAXS_2 * 0.94f;
 	}
 	else {
 		client->ps.standheight = DEFAULT_MAXS_2;
@@ -4323,6 +4345,9 @@ void ClientSpawn(gentity_t *ent) {
 				client->ps.weapon = WP_CONCUSSION;
 			}
 			else if (client->pers.tribesClass == 2) {
+				client->ps.weapon = WP_BOWCASTER;
+			}
+			else if (client->pers.tribesClass == 3) {
 				client->ps.weapon = WP_ROCKET_LAUNCHER;
 			}
 			else {
@@ -4555,11 +4580,15 @@ void ClientSpawn(gentity_t *ent) {
 	}
 	else
 	{//Clan Arena starting armor/hp here
-		if (client->pers.tribesClass == 1) {//med
+		if (client->pers.tribesClass == 1) {//light
 			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 			client->ps.stats[STAT_ARMOR] = 0;
 		}
-		else if (client->pers.tribesClass == 2) {//heavy
+		else if (client->pers.tribesClass == 2) {//med
+			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+			client->ps.stats[STAT_ARMOR] = 25;
+		}
+		else if (client->pers.tribesClass == 3) {//heavy
 			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 			client->ps.stats[STAT_ARMOR] = 100;
 		}

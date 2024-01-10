@@ -3491,7 +3491,7 @@ void ClientThink_real( gentity_t *ent ) {
 			&& ent->s.weapon == WP_SABER && ent->s.eType == ET_PLAYER && client->sess.sessionTeam != TEAM_SPECTATOR) {
 			//trap->Print("AnimLevel: %i, DrawLevel: %i, Baselevel: %i\n", ent->client->ps.fd.saberAnimLevel, ent->client->ps.fd.saberDrawAnimLevel, ent->client->ps.fd.saberAnimLevelBase);
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				if (client->pers.tribesClass == 2) {
+				if (client->pers.tribesClass == 3) {
 					if (client->ps.fd.saberAnimLevel == SS_DUAL || client->ps.fd.saberAnimLevel == SS_STAFF) {
 						forceSingle = qtrue;
 					}
@@ -4306,13 +4306,19 @@ void ClientThink_real( gentity_t *ent ) {
 			else if (!client->pers.tribesClass)
 				client->pers.tribesClass = 1;
 
-			if (client->pers.tribesClass == 2) {
+			if (client->pers.tribesClass == 1) {
+				client->ps.speed *= 1.05f;
+				client->ps.iModelScale = 94;
+				VectorSet(ent->modelScale, 0.92f, 0.94f, 0.94f);
+				VectorScale(ent->r.mins, 0.94f, ent->r.mins);
+				VectorScale(ent->r.maxs, 0.94f, ent->r.maxs);
+			}
+			if (client->pers.tribesClass == 3) {
 				client->ps.speed *= 0.78125f;
 				client->ps.iModelScale = 125;
 				VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
 				VectorScale(ent->r.mins, 1.25f, ent->r.mins);
 				VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
-				//Com_Printf("Box is [%.0f %.0f %.0f] [%.0f %.0f %.0f] for %s\n", ent->r.mins[0], ent->r.mins[1], ent->r.mins[2], ent->r.maxs[0], ent->r.maxs[1], ent->r.maxs[2], ent->client->pers.netname);
 			}
 		}
 

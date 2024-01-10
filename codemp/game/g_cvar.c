@@ -559,19 +559,24 @@ static void CVU_TribesClass(void) {
 	
 		if (g_tribesClass.integer) {
 			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11)) {
-				//Com_Printf("Detetcting heavy\n");
+				if (ent->client->pers.tribesClass != 3) {
+					if (ent->health > 0)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 3;
+				}
+			}
+			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+				if (ent->client->pers.tribesClass != 1) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 1;
+				}
+			}
+			else {
 				if (ent->client->pers.tribesClass != 2) {
 					if (ent->health > 0)
 						G_Kill(ent);
 					ent->client->pers.tribesClass = 2;
-				}
-			}
-			else {
-				//Com_Printf("Detetcting medium \n");
-				if (ent->client->pers.tribesClass != 1) {
-					if (ent->health > 0)
-						G_Kill(ent);
-					ent->client->pers.tribesClass = 1;
 				}
 			}
 		}
