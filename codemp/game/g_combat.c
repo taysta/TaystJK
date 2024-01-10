@@ -5074,6 +5074,14 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		float	mass;
 
 		mass = 200;
+		if ((g_tweakWeapons.integer & WT_TRIBES)) {
+			if (targ->client->pers.tribesClass == 1)
+				mass = 80;
+			else if (targ->client->pers.tribesClass == 3)
+				mass = 240;
+			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
+				mass *= 1.75f; //Superheavy, but also a nerf to discjumping in protect
+		}
 
 		if (mod == MOD_SABER)
 		{

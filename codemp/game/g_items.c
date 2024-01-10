@@ -2281,7 +2281,10 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 						other->client->ps.stats[STAT_ARMOR] = 25;
 				}
 				if (other->client->ps.fd.forcePower < 100) {
-					other->client->ps.fd.forcePower += 50;
+					if (other->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
+						other->client->ps.fd.forcePower += 25;//sad hack but its OP
+					else
+						other->client->ps.fd.forcePower += 50;
 					if (other->client->ps.fd.forcePower > 100)
 						other->client->ps.fd.forcePower = 100;
 				}
