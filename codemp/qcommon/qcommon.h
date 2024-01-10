@@ -175,27 +175,52 @@ void		Sys_ShowIP(void);
 * Buffered messages (structs that actually contain the data array) for buffering/prerecording
 */
 
-typedef struct {
+typedef struct bufferedMsg_s {
 	qboolean	allowoverflow;	// if false, do a Com_Error
 	qboolean	overflowed;		// set to true if the buffer size failed (with allowoverflow set)
 	qboolean	oob;			// set to true if the buffer size failed (with allowoverflow set)
-	byte	data[MAX_MSGLEN];
+	byte*	data;
 	int		maxsize;
 	int		cursize;
 	int		readcount;
 	int		bit;				// for bitwise reads and writes
+public:
+	bufferedMsg_s(msg_t* src) {		
+		allowoverflow = src->allowoverflow;
+		overflowed = src->overflowed;
+		oob = src->oob;
+		maxsize = src->maxsize;
+		cursize = src->cursize;
+		readcount = src->readcount;
+		bit = src->bit;
+		data = new byte[src->cursize];
+		Com_Memcpy(data, src->data, src->cursize);
+	}
+	~bufferedMsg_s() {
+		if (data) {
+			delete[] data;
+			data = NULL;
+		}
+	}
 } bufferedMsg_t;
 
-typedef struct {
+typedef struct bufferedMessageContainer_s {
 	bufferedMsg_t msg;
 	int msgNum; // Message number
 	int lastClientCommand; // Need this if we are writing metadata with pre-recording as it is the first thing writen in any message.
 	int time; // So we can discard very old buffered messages. Or for clientside recording, so we don't have to wait infinitely for old messages to arrive (which they never may).
 	//qboolean containsFullSnapshot; // Doesn't matter for serverside pre-Recording because we have the keyframes. Comment back in for clientside buffered recording.
 	qboolean isKeyframe; // Is a gamestate message as typical for writing at the start of demos.
+public:
+	bufferedMessageContainer_s(msg_t* src) : msg(src){
+		msgNum = 0;
+		lastClientCommand = 0;
+		time = 0;
+		//containsFullSnapshot = qfalse;
+		isKeyframe = qfalse;
+	}
 } bufferedMessageContainer_t;
 
-void MSG_ToBuffered(msg_t* src, bufferedMsg_t* dst);
 void MSG_FromBuffered(msg_t* dst, bufferedMsg_t* src);
 
 

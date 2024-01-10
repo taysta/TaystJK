@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include <ctime>
 
 #ifdef DEDICATED
-extern std::vector<std::shared_ptr<bufferedMessageContainer_t>> demoPreRecordBuffer[MAX_CLIENTS];
+extern std::vector<std::unique_ptr<bufferedMessageContainer_t>> demoPreRecordBuffer[MAX_CLIENTS];
 extern std::map<std::string, std::string> demoMetaData[MAX_CLIENTS];
 #endif
 
