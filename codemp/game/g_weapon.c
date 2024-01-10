@@ -1607,14 +1607,17 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2240 * g_projectileVelocityScale.value;
 		damage = 60;
-		missile->splashDamage = 30;
-		missile->radius = 32;
 	}
 
 	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
 
 	missile->classname = "demp2_proj";
 	missile->s.weapon = WP_DEMP2;
+
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->splashDamage = 30;
+		missile->radius = 32;
+	}
 
 	VectorSet( missile->r.maxs, DEMP2_SIZE, DEMP2_SIZE, DEMP2_SIZE );
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
