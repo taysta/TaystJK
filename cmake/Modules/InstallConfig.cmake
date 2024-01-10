@@ -76,10 +76,6 @@ if(WIN32)
 		install(FILES ${MPDir}/OpenAL32.dll ${MPDir}/EaxMan.dll
 				DESTINATION ${JKAInstallDir}
 				COMPONENT ${JKAMPClientComponent})
-
-		install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
-				DESTINATION ${JKAInstallDir}
-				COMPONENT ${JKAMPClientComponent})
 	endif()
 endif()
 
