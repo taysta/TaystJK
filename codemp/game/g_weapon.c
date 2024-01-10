@@ -1179,9 +1179,9 @@ static void WP_BoltLauncherAltFire(gentity_t *ent)
 	VectorSet(missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE);
 	VectorScale(missile->r.maxs, -1, missile->r.mins);
 
-	missile->damage = 65 * g_weaponDamageScale.value;
-	missile->splashDamage = 65 * g_weaponDamageScale.value;
-	missile->splashRadius = 128;
+	missile->damage = 60 * g_weaponDamageScale.value;
+	missile->splashDamage = 60 * g_weaponDamageScale.value;
+	missile->splashRadius = 150;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 
 	missile->methodOfDeath = MOD_BOWCASTER;
@@ -1236,23 +1236,23 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	//scale the damage down based on how many are about to be fired
 	if (count <= 1)
 	{
-		damage = 50;
+		damage = 60;
 	}
 	else if (count == 2)
 	{
-		damage = 45;
+		damage = 40;
 	}
 	else if (count == 3)
 	{
-		damage = 40;
+		damage = 35;
 	}
 	else if (count == 4)
 	{
-		damage = 35;
+		damage = 30;
 	}
 	else
 	{
-		damage = 30;
+		damage = 25;
 	}
 
 	damage *= g_weaponDamageScale.value;
@@ -1607,6 +1607,8 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2240 * g_projectileVelocityScale.value;
 		damage = 60;
+		missile->splashDamage = 30;
+		missile->radius = 32;
 	}
 
 	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
