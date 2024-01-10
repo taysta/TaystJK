@@ -319,6 +319,7 @@ extern	cvar_t	*sv_maxOOBRateIP;
 extern	cvar_t	*sv_autoWhitelist;
 #ifdef DEDICATED
 extern	cvar_t	*sv_demoPreRecord;
+extern	cvar_t	*sv_demoPreRecordBots;
 extern	cvar_t	*sv_demoPreRecordTime;
 extern	cvar_t	*sv_demoPreRecordKeyframeDistance;
 extern	cvar_t	*sv_demoWriteMeta;

@@ -838,16 +838,18 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		}
 
 		// Now put the current messsage in the buffer.
-		std::shared_ptr<bufferedMessageContainer_t> bmtPtr = std::make_shared<bufferedMessageContainer_t>();
-		bufferedMessageContainer_t* bmt = bmtPtr.get();
-		//static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
-		Com_Memset(bmt, 0, sizeof(bufferedMessageContainer_t));
-		MSG_ToBuffered(msg,&bmt->msg);
-		bmt->msgNum = client->netchan.outgoingSequence;
-		bmt->lastClientCommand = client->lastClientCommand;
-		bmt->time = sv.time;
-		bmt->isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
-		demoPreRecordBuffer[client - svs.clients].push_back(bmtPtr);
+		if(client->netchan.remoteAddress.type != NA_BOT || sv_demoPreRecordBots->integer){
+			std::shared_ptr<bufferedMessageContainer_t> bmtPtr = std::make_shared<bufferedMessageContainer_t>();
+			bufferedMessageContainer_t* bmt = bmtPtr.get();
+			//static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
+			Com_Memset(bmt, 0, sizeof(bufferedMessageContainer_t));
+			MSG_ToBuffered(msg,&bmt->msg);
+			bmt->msgNum = client->netchan.outgoingSequence;
+			bmt->lastClientCommand = client->lastClientCommand;
+			bmt->time = sv.time;
+			bmt->isKeyframe = qfalse; // In theory it might be a gamestate message, but we only call it a keyframe if we ourselves explicitly save a keyframe.
+			demoPreRecordBuffer[client - svs.clients].push_back(bmtPtr);
+		}
 	}
 
 	// save the message to demo.  this must happen before sending over network as that encodes the backing databuf
@@ -858,8 +860,9 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	}
 
 	// Check for whether a new keyframe must be written in pre recording, and if so, do it.
-	if (sv_demoPreRecord->integer) {
-		if (client->demo.preRecord.lastKeyframeTime + (1000*sv_demoPreRecordKeyframeDistance->integer) < sv.time) {
+	if (sv_demoPreRecord->integer && (client->netchan.remoteAddress.type != NA_BOT || sv_demoPreRecordBots->integer)) {
+
+		if (client->demo.preRecord.lastKeyframeTime + (1000 * sv_demoPreRecordKeyframeDistance->integer) < sv.time) {
 			// Save a keyframe.
 			static byte keyframeBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
 			static msg_t		keyframeMsg;
