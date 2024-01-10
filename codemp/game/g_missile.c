@@ -1099,6 +1099,14 @@ killProj:
 	} else if( trace->surfaceFlags & SURF_METALSTEPS ) {
 		G_AddEvent( ent, EV_MISSILE_MISS_METAL, DirToByte( trace->plane.normal ) );
 	} else if (ent->s.weapon != G2_MODEL_PART && !isKnockedSaber) {
+		//For some reason the client does not parse this event if its a flechette alt? So uh...
+		//With the tribes GL, for some reason if called via lasertrapexplode, v[0], v[1], v[2] are super high (basicaly the trdelta of the missile that lands on the ground) making it not render the FX properly.
+		//This is a seperate issue from the FX not even being told to render because for some reason the client has commented out that code in EV_MISSILE_MISS for the flechette alt fire.
+		//This needs to be actually fixed instead of whatever this sad hack is. "TRIBES GL"
+		if ((g_tweakWeapons.integer & WT_TRIBES) && ent->s.weapon == WP_FLECHETTE && ent->think == WP_flechette_alt_blow) {
+			vec3_t v = { 0 };
+			G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, ent->r.currentOrigin, v);
+		}
 		G_AddEvent( ent, EV_MISSILE_MISS, DirToByte( trace->plane.normal ) );
 	}
 
