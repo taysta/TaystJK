@@ -1215,7 +1215,7 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	}
 	else
 	{
-		count = (level.time - ent->client->ps.weaponChargeTime) / 250.0f;//200
+		count = (level.time - ent->client->ps.weaponChargeTime) / 300.0f;//200
 	}
 
 	if (count < 1)
@@ -1244,15 +1244,15 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	}
 	else if (count == 3)
 	{
-		damage = 35;
+		damage = 33;
 	}
 	else if (count == 4)
 	{
-		damage = 30;
+		damage = 28;
 	}
 	else
 	{
-		damage = 25;
+		damage = 24;
 	}
 
 	damage *= g_weaponDamageScale.value;

@@ -2583,6 +2583,9 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 				return;
 		}
 	}
+	if (ent->item->giType == IT_TEAM && other->client->ps.m_iVehicleNum && g_tweakWeapons.integer & WT_TRIBES)
+		return;//cant pick up flags in vehicles
+
 
 	if (other->client->NPC_class == CLASS_ATST ||
 		other->client->NPC_class == CLASS_GONK ||

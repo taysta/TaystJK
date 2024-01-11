@@ -785,6 +785,14 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				VectorScale(velocity, 0.4f, other->s.pos.trDelta);
 			VectorCopy( other->r.currentOrigin, other->s.pos.trBase );
 		}
+		else if (ent->s.weapon == WP_BOWCASTER && (g_tweakWeapons.integer & WT_TRIBES))
+		{
+			other->s.pos.trType = TR_GRAVITY;
+			other->s.pos.trTime = level.time;
+			BG_EvaluateTrajectoryDelta(&ent->s.pos, level.time, velocity);
+			VectorScale(velocity, 0.4f, other->s.pos.trDelta);
+			VectorCopy(other->r.currentOrigin, other->s.pos.trBase);
+		}
 		else if (ent->s.weapon == WP_ROCKET_LAUNCHER && (ent->s.eFlags & EF_ALT_FIRING))
 		{
 			other->s.pos.trType = TR_GRAVITY;
