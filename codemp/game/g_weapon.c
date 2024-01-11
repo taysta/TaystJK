@@ -1215,7 +1215,7 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	}
 	else
 	{
-		count = (level.time - ent->client->ps.weaponChargeTime) / 250.0f;//200
+		count = (level.time - ent->client->ps.weaponChargeTime) / 300.0f;//200
 	}
 
 	if (count < 1)
@@ -1244,15 +1244,15 @@ static void WP_BoltLauncherFire (gentity_t *ent)
 	}
 	else if (count == 3)
 	{
-		damage = 35;
+		damage = 33;
 	}
 	else if (count == 4)
 	{
-		damage = 30;
+		damage = 28;
 	}
 	else
 	{
-		damage = 25;
+		damage = 24;
 	}
 
 	damage *= g_weaponDamageScale.value;
@@ -3911,6 +3911,10 @@ void WP_PlaceLaserTrap( gentity_t *ent, qboolean alt_fire )
 	int			lowestTimeStamp;
 	int			removeMe;
 	int			i;
+	int			maxTrips = 9;
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		maxTrips = 2;
 
 	foundLaserTraps[0] = ENTITYNUM_NONE;
 
@@ -3933,7 +3937,7 @@ void WP_PlaceLaserTrap( gentity_t *ent, qboolean alt_fire )
 	found = NULL;
 	trapcount_org = trapcount;
 	lowestTimeStamp = level.time;
-	while ( trapcount > 9 )
+	while ( trapcount > maxTrips)
 	{
 		removeMe = -1;
 		for ( i = 0; i < trapcount_org; i++ )

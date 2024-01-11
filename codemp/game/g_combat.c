@@ -2939,6 +2939,9 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	// don't allow respawn until the death anim is done
 	// g_forcerespawn may force spawning at some later time
 	self->client->respawnTime = level.time + 1700;
+	if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
+		self->client->respawnTime += 3000;
+	//Com_Printf("Respawntime 1\n", self->client->respawnTime, level.time);
 
 	// remove powerups
 	memset( self->client->ps.powerups, 0, sizeof(self->client->ps.powerups) );
@@ -2958,6 +2961,9 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	{
 		
 		self->client->respawnTime = level.time + 1000;
+		if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
+			self->client->respawnTime += 3000;
+		//Com_Printf("Respawntime 2\n", self->client->respawnTime, level.time);
 		// gib death
 		GibEntity( self, killer );	
 		if (self->client->ourSwoopNum) {
@@ -2993,6 +2999,9 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			}
 
 			self->client->respawnTime = level.time + 1000;//((self->client->animations[anim].numFrames*40)/(50.0f / self->client->animations[anim].frameLerp))+300;
+			if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
+				self->client->respawnTime += 3000;
+			//Com_Printf("Respawntime 3\n", self->client->respawnTime, level.time);
 
 			sPMType = self->client->ps.pm_type;
 			self->client->ps.pm_type = PM_NORMAL; //don't want pm type interfering with our setanim calls.
@@ -5062,9 +5071,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	//Higher self knockback for tribes, discjump disc jump
 	if (attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
 		if (targ == attacker)
-			knockback *= 1.4f;
+			knockback *= 1.2f;
 		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
-			knockback *= 4; //guess this just does nothing
+			knockback *= 3; //guess this just does nothing
 		}
 	}
 
@@ -5074,6 +5083,14 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		float	mass;
 
 		mass = 200;
+		if ((g_tweakWeapons.integer & WT_TRIBES)) {
+			if (targ->client->pers.tribesClass == 1)
+				mass = 80;
+			else if (targ->client->pers.tribesClass == 3)
+				mass = 240;
+			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
+				mass *= 1.75f; //Superheavy, but also a nerf to discjumping in protect
+		}
 
 		if (mod == MOD_SABER)
 		{

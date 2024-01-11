@@ -2270,18 +2270,26 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 						other->health = 100;
 					other->client->ps.stats[STAT_HEALTH] = other->health;
 				}
-				if (other->client->ps.stats[STAT_ARMOR] < 100 && other->client->pers.tribesClass == 3) {
+				if (other->client->pers.tribesClass == 3) {
 					other->client->ps.stats[STAT_ARMOR] += 50;
+					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
 					if (other->client->ps.stats[STAT_ARMOR] > 100)
 						other->client->ps.stats[STAT_ARMOR] = 100;
 				}
-				else if (other->client->ps.stats[STAT_ARMOR] < 25 && other->client->pers.tribesClass == 2) {
+				else if (other->client->pers.tribesClass == 2) {
+					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
 					other->client->ps.stats[STAT_ARMOR] += 25;
 					if (other->client->ps.stats[STAT_ARMOR] > 25)
 						other->client->ps.stats[STAT_ARMOR] = 25;
 				}
+				else if (other->client->pers.tribesClass == 1) {
+					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
+				}
 				if (other->client->ps.fd.forcePower < 100) {
-					other->client->ps.fd.forcePower += 50;
+					if (other->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
+						other->client->ps.fd.forcePower += 25;//sad hack but its OP
+					else
+						other->client->ps.fd.forcePower += 50;
 					if (other->client->ps.fd.forcePower > 100)
 						other->client->ps.fd.forcePower = 100;
 				}
@@ -2580,6 +2588,9 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 				return;
 		}
 	}
+	if (ent->item->giType == IT_TEAM && other->client->ps.m_iVehicleNum && g_tweakWeapons.integer & WT_TRIBES)
+		return;//cant pick up flags in vehicles
+
 
 	if (other->client->NPC_class == CLASS_ATST ||
 		other->client->NPC_class == CLASS_GONK ||

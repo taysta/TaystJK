@@ -3603,7 +3603,11 @@ void ForceThrow( gentity_t *self, qboolean pull )
 			}
 
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				pushPower = 512 * FORCE_LEVEL_2 * bot_strafeOffset.value;
+				pushPower = 512 * FORCE_LEVEL_2;
+				if (push_list[x]->client->pers.tribesClass == 1)
+					pushPower *= 1.08f;
+				if (push_list[x]->client->pers.tribesClass == 3)
+					pushPower *= 0.75f;
 			}
 			else {
 				pushPower = 256 * modPowerLevel;

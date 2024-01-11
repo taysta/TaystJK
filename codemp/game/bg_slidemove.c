@@ -858,11 +858,11 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
 				damage = VectorLength(diffVelocity);
-				if (damage > 300 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
-					if (damage > 1000)
-						damage = 1000;
-					damage -= 300;
-					damage *= 0.1f;
+				damage *= 0.049f;
+				if (damage > 30 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
+					damage -= 30;
+					if (damage > 150)
+						damage = 150;
 
 					if (Q_irand(0, 1))
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));

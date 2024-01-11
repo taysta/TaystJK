@@ -5831,13 +5831,28 @@ static void PM_CheckDuck (void)
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS)
 		{
-			if ((pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) && (pm->ps->standheight == DEFAULT_MAXS_2 * 1.25f))
-			{
-				pm->mins[0] = -15 * 1.25f;
-				pm->mins[1] = -15 * 1.25f;
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+				if (pm->ps->standheight == (int)(DEFAULT_MAXS_2 * 1.25f)) {
+					pm->mins[0] = (int)(-15 * 1.25f);
+					pm->mins[1] = (int)(-15 * 1.25f);
 
-				pm->maxs[0] = 15 * 1.25f;
-				pm->maxs[1] = 15 * 1.25f;
+					pm->maxs[0] = (int)(15 * 1.25f);
+					pm->maxs[1] = (int)(15 * 1.25f);
+				}
+				else if (pm->ps->standheight == (int)(DEFAULT_MAXS_2 * 0.94f)) {
+					pm->mins[0] = (int)(-15 * 0.94f);
+					pm->mins[1] = (int)(-15 * 0.94f);
+
+					pm->maxs[0] = (int)(15 * 0.94f);
+					pm->maxs[1] = (int)(15 * 0.94f);
+				}
+				else {
+					pm->mins[0] = -15;
+					pm->mins[1] = -15;
+
+					pm->maxs[0] = 15;
+					pm->maxs[1] = 15;
+				}
 			}
 			else {
 				pm->mins[0] = -15;
