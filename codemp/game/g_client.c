@@ -2259,7 +2259,6 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 }
 
 
-void G_Kill(gentity_t *ent);
 void DetectTribesClass(gentity_t *ent, const char *model) {
 	//WT_TRIBES
 	if (!ent || !ent->client)
