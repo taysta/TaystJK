@@ -1135,7 +1135,7 @@ void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce ) {
 		change = normal[i]*backoff;
 		out[i] = in[i] - change;
 	}
-	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+	if ( pm->stepSlideFix /*&& pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES*/)
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS//normal player
 			&& pm->ps->groundEntityNum != ENTITYNUM_NONE//on the ground
@@ -5397,9 +5397,9 @@ static void PM_GroundTrace( void ) {
 			}
 		}
 	}
-	else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		minNormal = 0.6f; //Let us walk up a bit steeper hills in tribes?
-	}
+	//else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		//minNormal = 0.6f; //Let us walk up a bit steeper hills in tribes?
+	//}
 
 	point[0] = pm->ps->origin[0];
 	point[1] = pm->ps->origin[1];
