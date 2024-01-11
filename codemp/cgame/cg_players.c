@@ -7422,13 +7422,14 @@ void CG_AddSaberBlade( centity_t *cent, centity_t *scent, refEntity_t *saber, in
 	saberEnt = &cg_entities[cent->currentState.saberEntityNum];
 	saberLen = client->saber[saberNum].blade[bladeNum].length;
 
-	if ((cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cg.predictedPlayerState.stats[STAT_RACEMODE]))
-		saberLen = 56;
-
 	if (saberLen <= 0 && !dontDraw)
 	{ //don't bother then.
 		return;
 	}
+
+	if ((cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cg.predictedPlayerState.stats[STAT_RACEMODE]))
+		saberLen = 56;
+		//Com_Printf("SaberLen is %i\n", saberLen);
 
 	futureAngles[YAW] = angles[YAW];
 	futureAngles[PITCH] = angles[PITCH];
