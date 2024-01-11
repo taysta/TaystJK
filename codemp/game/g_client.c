@@ -4207,12 +4207,12 @@ void ClientSpawn(gentity_t *ent) {
 	VectorCopy (playerMins, ent->r.mins);
 	VectorCopy (playerMaxs, ent->r.maxs);
 	if (!client->sess.raceMode && client->pers.tribesClass == 3) {
-		client->ps.standheight = DEFAULT_MAXS_2 * 1.25f; //this model has no neck //revert this?
-		client->ps.crouchheight = CROUCH_MAXS_2 * 1.25f;
+		client->ps.standheight = (int)(DEFAULT_MAXS_2 * 1.25f); //this model has no neck //revert this?
+		client->ps.crouchheight = (int)(CROUCH_MAXS_2 * 1.25f);
 	}
 	else if (!client->sess.raceMode && client->pers.tribesClass == 1) {
-		client->ps.standheight = DEFAULT_MAXS_2 * 0.94f;
-		client->ps.crouchheight = CROUCH_MAXS_2 * 0.94f;
+		client->ps.standheight = (int)(DEFAULT_MAXS_2 * 0.94f);
+		client->ps.crouchheight = (int)(CROUCH_MAXS_2 * 0.94f);
 	}
 	else {
 		client->ps.standheight = DEFAULT_MAXS_2;
