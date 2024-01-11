@@ -1275,7 +1275,7 @@ tremulous - append a speed to the sample history for the speed graph
     float speed;
     vec3_t vel;
 
-    VectorCopy(cg.snap->ps.velocity, vel);
+    VectorCopy(cg.predictedPlayerState.velocity, vel);
 
     speed = VectorLength(vel);
 
@@ -1303,7 +1303,7 @@ tremulous - append a speed to the sample history for the speed graph
 /*
 ===================
 CG_DrawSpeedGraph
-tremulous - speedgraph initially ported by TomArrow
+tremulous
 ===================
 */
  void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor) {
