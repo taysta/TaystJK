@@ -1304,23 +1304,7 @@ void ClientRespawn(gentity_t *ent) {
 		}
 		SiegeRespawn(ent);
 	}
-	else if ((g_tweakWeapons.integer & WT_TRIBES) && (level.gametype >= GT_TEAM))
-	{
-		//Com_Printf("Diff is %i\n", ent->client->ps.last);
-		//if (ent->client->tempSpectate <= level.time - 3000) {
-
-			// Respawn time.
-			//if (ent->s.number < MAX_CLIENTS)
-			//{
-				//gentity_t *te = G_TempEntity(ent->client->ps.origin, EV_SIEGESPEC);
-				//te->s.time = g_siegeRespawnCheck;
-				//te->s.owner = ent->s.number;
-			//}
-
-			ClientSpawn(ent);
-		//}
-	}
-	else
+	else //Tribes draw a respawn timer or?
 	{
 		ClientSpawn(ent);
 	}

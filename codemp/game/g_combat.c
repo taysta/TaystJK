@@ -2939,7 +2939,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	// don't allow respawn until the death anim is done
 	// g_forcerespawn may force spawning at some later time
 	self->client->respawnTime = level.time + 1700;
-	if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_TEAM && !self->client->sess.raceMode)
+	if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
 		self->client->respawnTime += 3000;
 	//Com_Printf("Respawntime 1\n", self->client->respawnTime, level.time);
 
@@ -2961,7 +2961,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	{
 		
 		self->client->respawnTime = level.time + 1000;
-		if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_TEAM && !self->client->sess.raceMode)
+		if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
 			self->client->respawnTime += 3000;
 		//Com_Printf("Respawntime 2\n", self->client->respawnTime, level.time);
 		// gib death
@@ -2999,7 +2999,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			}
 
 			self->client->respawnTime = level.time + 1000;//((self->client->animations[anim].numFrames*40)/(50.0f / self->client->animations[anim].frameLerp))+300;
-			if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_TEAM && !self->client->sess.raceMode)
+			if ((g_tweakWeapons.integer & WT_TRIBES) && level.gametype >= GT_CTF && !self->client->sess.raceMode)
 				self->client->respawnTime += 3000;
 			//Com_Printf("Respawntime 3\n", self->client->respawnTime, level.time);
 
