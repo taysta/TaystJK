@@ -839,7 +839,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 		// Now put the current messsage in the buffer.
 		if(client->netchan.remoteAddress.type != NA_BOT || sv_demoPreRecordBots->integer){
-			std::unique_ptr<bufferedMessageContainer_t> bmtPtr = std::make_unique<bufferedMessageContainer_t>(msg);
+			std::unique_ptr<bufferedMessageContainer_t> bmtPtr(new bufferedMessageContainer_t(msg));
 			bufferedMessageContainer_t* bmt = bmtPtr.get();
 			//static bufferedMessageContainer_t bmt; // I make these static so they don't sit on the stack.
 			//Com_Memset(bmt, 0, sizeof(bufferedMessageContainer_t));
@@ -876,7 +876,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			client->reliableSent = tmp;
 
 			//MSG_ToBuffered(&keyframeMsg, &bmt->msg);
-			std::unique_ptr<bufferedMessageContainer_t> bmtPtr = std::make_unique<bufferedMessageContainer_t>(&keyframeMsg);
+			std::unique_ptr<bufferedMessageContainer_t> bmtPtr(new bufferedMessageContainer_t(&keyframeMsg));
 			bufferedMessageContainer_t* bmt = bmtPtr.get();
 			bmt->msgNum = client->netchan.outgoingSequence; // Yes the keyframe duplicates the messagenum of a message. This is (part of) why we dump only one keyframe at the start of the demo and discard future keyframes
 			bmt->lastClientCommand = client->lastClientCommand;
