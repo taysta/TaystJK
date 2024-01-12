@@ -8951,7 +8951,7 @@ if (pm->ps->duelInProgress)
 #else
 	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->clientNum < MAX_CLIENTS && pm->ps->weapon == WP_BLASTER && !pm->ps->jetpackFuel)
+		if (pm->ps->clientNum < MAX_CLIENTS && pm->ps->weapon == WP_BLASTER || pm->ps->weapon == WP_BRYAR_OLD && !pm->ps->jetpackFuel)
 			return;
 	}
 
@@ -9559,6 +9559,12 @@ if (pm->ps->duelInProgress)
 			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_LG))
 				addTime = 50;
 			break;
+		case WP_BRYAR_OLD:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 800;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 100;
+			break;
 		case WP_BRYAR_PISTOL:
 			break;
 		case WP_BLASTER:
@@ -9625,6 +9631,12 @@ if (pm->ps->duelInProgress)
 			addTime = 1500;
 		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_LG))
 			addTime = 50;
+		break;
+	case WP_BRYAR_OLD:
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 800;
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 100;
 		break;
 	case WP_BRYAR_PISTOL:
 		break;
