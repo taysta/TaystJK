@@ -2508,13 +2508,13 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - Start]
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		missile->damage = 65;
-		missile->splashDamage = 65;
+		missile->damage = 60;
+		missile->splashDamage = 60;
 		missile->splashRadius = 140;
 	}
 	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
-		missile->damage *= 0.85f;
-		missile->splashDamage *= 0.85f;
+		missile->damage = FLECHETTE_ALT_DAMAGE * 0.85f;
+		missile->splashDamage = FLECHETTE_ALT_DAMAGE * 0.85f;
 		missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
 	}
 	else {

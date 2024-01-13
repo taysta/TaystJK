@@ -2975,9 +2975,9 @@ gentity_t *Drop_Flag( gentity_t *ent, gitem_t *item, qboolean forced ) {
 
 	VectorScale( velocity, 625, velocity );
 
-	velocity[0] += 0.25 * ent->client->ps.velocity[0];
-	velocity[1] += 0.25 * ent->client->ps.velocity[1];
-	velocity[2] += 50 + 0.5 * ent->client->ps.velocity[2];
+	velocity[0] += ent->client->ps.velocity[0];
+	velocity[1] += ent->client->ps.velocity[1];
+	velocity[2] += 50 + ent->client->ps.velocity[2];
 	
 	return LaunchItem( item, ent->s.pos.trBase, velocity );
 }
@@ -3544,6 +3544,20 @@ void G_RunItem( gentity_t *ent ) {
 		// check think function
 		G_RunThink( ent );
 		return;
+	}
+
+	if (ent->item->giType == IT_TEAM) {
+		//Ok goal here is to bleed off speed exponentially until its down to like the flag throw speed or something.
+		//Idea is to keep flag inheritance at 100%, keep throws strong, but immediately start cutting their speed if they are going super fast (air drag)
+		//This still lets us perform the punt but limits effectiveness
+		//Should this be done elsewhere so it's less jerky looking for the client?
+		float speed = sqrt(ent->s.pos.trDelta[0] * ent->s.pos.trDelta[0] + ent->s.pos.trDelta[1] * ent->s.pos.trDelta[1]), cut;
+		if (speed > 800) {
+			cut = (speed*speed / (800 * 800)) * bot_strafeOffset.value; //0.5f is ok?
+			//Com_Printf("Speed is %.0f, cut is %.2f realcut2 is %.5f\n", speed, cut, 1 - (cut / speed));
+			ent->s.pos.trDelta[0] *= 1 - (cut / speed);
+			ent->s.pos.trDelta[1] *= 1 - (cut / speed);
+		}
 	}
 
 	// get current position
