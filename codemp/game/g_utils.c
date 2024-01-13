@@ -1246,7 +1246,12 @@ gentity_t *G_SoundTempEntityPrivate( vec3_t origin, int event, int channel, int 
 //scale health down below 1024 to fit in health bits
 void G_ScaleNetHealth(gentity_t *self)
 {
-	int maxHealth = self->maxHealth;
+	int maxHealth;
+
+	if (!self)
+		return;
+
+	maxHealth = self->maxHealth;
 	
 	if (g_tweakWeapons.integer & WT_TRIBES && maxHealth < 1000 && self->client) {
 		if (self->client->pers.tribesClass == 3)

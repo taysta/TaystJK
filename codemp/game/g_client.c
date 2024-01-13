@@ -3804,8 +3804,9 @@ void GiveClientWeapons(gclient_t *client) {
 		//Give tribes loadout.
 	else if (client->pers.tribesClass == 1) {
 			//Light
-			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_BOWCASTER) + (1 << WP_THERMAL) + (1 << WP_SABER));
+			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_BOWCASTER) + (1 << WP_THERMAL) + (1 << WP_SABER) + (1 << WP_BRYAR_OLD));
 			client->ps.ammo[AMMO_THERMAL] = 2;
+			client->ps.ammo[AMMO_BLASTER] = 500;
 			client->ps.ammo[AMMO_POWERCELL] = 900;
 	}
 	else if (client->pers.tribesClass == 2) {

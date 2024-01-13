@@ -524,7 +524,7 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 					if (pSelfVeh->m_pVehicleInfo->type == VH_FIGHTER)
 					{ //player die good.. if me fighter
 						if (g_tweakWeapons.integer & WT_TRIBES)
-							pmult = 10.0f;
+							pmult = 7.0f;
 						else
 							pmult = 2000.0f;
 					}
@@ -1084,24 +1084,28 @@ void PM_StepSlideMove( qboolean gravity ) {
 	down[2] -= stepSize;
 	pm->trace (&trace, pm->ps->origin, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 
-	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) //This causes deadstops on slidey slopes
+	if (pm->stepSlideFix && ((pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) || !(pm->cmd.buttons & BUTTON_DASH))) //This causes deadstops on slidey slopes.  But doint it fixes wall behaviour.  We want to do this block unless we are holding SKI in tribes.
 	{
-		if ( pm->ps->clientNum < MAX_CLIENTS
-			&& trace.plane.normal[2] < MIN_WALK_NORMAL )
-		{//normal players cannot step up slopes that are too steep to walk on!
-			vec3_t stepVec;
-			//okay, the step up ends on a slope that it too steep to step up onto,
-			//BUT:
-			//If the step looks like this:
-			//  (B)\__
-			//        \_____(A)
-			//Then it might still be okay, so we figure out the slope of the entire move
-			//from (A) to (B) and if that slope is walk-upabble, then it's okay
-			VectorSubtract( trace.endpos, down_o, stepVec );
-			VectorNormalize( stepVec );
-			if ( stepVec[2] > (1.0f-MIN_WALK_NORMAL) )
-			{
-				skipStep = qtrue;
+		if (pm->ps->clientNum < MAX_CLIENTS) {
+			float minNormal = MIN_WALK_NORMAL;
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+				minNormal = 0.6f;
+			if (trace.plane.normal[2] < minNormal)
+			{//normal players cannot step up slopes that are too steep to walk on!
+				vec3_t stepVec;
+				//okay, the step up ends on a slope that it too steep to step up onto,
+				//BUT:
+				//If the step looks like this:
+				//  (B)\__
+				//        \_____(A)
+				//Then it might still be okay, so we figure out the slope of the entire move
+				//from (A) to (B) and if that slope is walk-upabble, then it's okay
+				VectorSubtract(trace.endpos, down_o, stepVec);
+				VectorNormalize(stepVec);
+				if (stepVec[2] > (1.0f - minNormal))
+				{
+					skipStep = qtrue;
+				}
 			}
 		}
 	}

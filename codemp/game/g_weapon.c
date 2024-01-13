@@ -260,19 +260,34 @@ BRYAR PISTOL
 static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 //---------------------------------------------------------
 {
-	int damage = BRYAR_PISTOL_DAMAGE;
-	int count;
+	int damage, vel, count, charge;
+	gentity_t	*missile;
 
-	gentity_t	*missile = CreateMissileNew( muzzle, forward, BRYAR_PISTOL_VEL, 10000, ent, altFire, qtrue, qtrue );
-
+	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
+		damage = 5;
+		charge = 400;
+		vel = 10440 * g_projectileVelocityScale.value;
+		if (ent->client->ps.jetpackFuel > 0)
+			ent->client->ps.jetpackFuel -= 10;
+		if (ent->client->ps.jetpackFuel < 0)
+			ent->client->ps.jetpackFuel = 0;
+	}
+	else {
+		vel = BRYAR_PISTOL_VEL * g_projectileVelocityScale.value;
+		damage = BRYAR_PISTOL_DAMAGE * g_projectileVelocityScale.value;
+		charge = BRYAR_CHARGE_UNIT;
+	}
+	
+	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, altFire, qtrue, qtrue);
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
+
 
 	if ( altFire )
 	{
 		float boxSize = 0;
 
-		count = ( level.time - ent->client->ps.weaponChargeTime ) / BRYAR_CHARGE_UNIT;
+		count = ( level.time - ent->client->ps.weaponChargeTime ) / charge;
 
 		if ( count < 1 )
 		{
@@ -452,7 +467,7 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 	{ //animent
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-			damage = 4 * g_weaponDamageScale.value;
+			damage = 6 * g_weaponDamageScale.value;
 		}
 		else damage = 10;
 	}
@@ -1181,7 +1196,7 @@ static void WP_BoltLauncherAltFire(gentity_t *ent)
 
 	missile->damage = 60 * g_weaponDamageScale.value;
 	missile->splashDamage = 60 * g_weaponDamageScale.value;
-	missile->splashRadius = 150;
+	missile->splashRadius = 128;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 
 	missile->methodOfDeath = MOD_BOWCASTER;
@@ -1520,7 +1535,7 @@ static void WP_RepeaterMainFire( gentity_t *ent, vec3_t dir )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-		damage = 8 * g_weaponDamageScale.value;
+		damage = 9 * g_weaponDamageScale.value;
 	}
 
 	missile = CreateMissileNew( muzzle, dir, vel, 10000, ent, qfalse, qtrue, qtrue );
@@ -1601,12 +1616,14 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 {
 	int	damage	= DEMP2_DAMAGE;
 	int vel = DEMP2_VELOCITY;
+	int size = DEMP2_SIZE;
 	//[JAPRO - Serverside - Weapons - Add inheritance to demp2 primary fire]
 	gentity_t *missile;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 2240 * g_projectileVelocityScale.value;
 		damage = 60;
+		size = 5.0f;
 	}
 
 	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, qfalse, qtrue, qtrue);
@@ -1616,10 +1633,10 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		missile->splashDamage = 30;
-		missile->radius = 32;
+		missile->splashRadius = 40;
 	}
 
-	VectorSet( missile->r.maxs, DEMP2_SIZE, DEMP2_SIZE, DEMP2_SIZE );
+	VectorSet( missile->r.maxs, size, size, size);
 	VectorScale( missile->r.maxs, -1, missile->r.mins );
 	missile->damage = damage;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
@@ -2489,19 +2506,26 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	missile->bounceCount = 50;
 
-	missile->damage = FLECHETTE_ALT_DAMAGE;
-	missile->splashDamage = FLECHETTE_ALT_SPLASH_DAM;
-
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - Start]
-	if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->damage = 65;
+		missile->splashDamage = 65;
+		missile->splashRadius = 140;
+	}
+	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
 		missile->damage *= 0.85f;
 		missile->splashDamage *= 0.85f;
+		missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
+	}
+	else {
+		missile->damage = FLECHETTE_ALT_DAMAGE;
+		missile->splashDamage = FLECHETTE_ALT_SPLASH_DAM;
+		missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
 	}
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - End]
 
 	missile->dflags = 0;
-	missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
-
+	
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 
 	missile->methodOfDeath = MOD_FLECHETTE_ALT_SPLASH;
