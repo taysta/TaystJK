@@ -264,7 +264,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 	gentity_t	*missile;
 
 	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
-		damage = 4;
+		damage = 5;
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
@@ -1196,7 +1196,7 @@ static void WP_BoltLauncherAltFire(gentity_t *ent)
 
 	missile->damage = 60 * g_weaponDamageScale.value;
 	missile->splashDamage = 60 * g_weaponDamageScale.value;
-	missile->splashRadius = 150;
+	missile->splashRadius = 128;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 
 	missile->methodOfDeath = MOD_BOWCASTER;
@@ -1633,7 +1633,7 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		missile->splashDamage = 30;
-		missile->radius = 40;
+		missile->splashRadius = 40;
 	}
 
 	VectorSet( missile->r.maxs, size, size, size);
@@ -2506,19 +2506,26 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 
 	missile->bounceCount = 50;
 
-	missile->damage = FLECHETTE_ALT_DAMAGE;
-	missile->splashDamage = FLECHETTE_ALT_SPLASH_DAM;
-
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - Start]
-	if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		missile->damage = 65;
+		missile->splashDamage = 65;
+		missile->splashRadius = 140;
+	}
+	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
 		missile->damage *= 0.85f;
 		missile->splashDamage *= 0.85f;
+		missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
+	}
+	else {
+		missile->damage = FLECHETTE_ALT_DAMAGE;
+		missile->splashDamage = FLECHETTE_ALT_SPLASH_DAM;
+		missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
 	}
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - End]
 
 	missile->dflags = 0;
-	missile->splashRadius = FLECHETTE_ALT_SPLASH_RAD;
-
+	
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 
 	missile->methodOfDeath = MOD_FLECHETTE_ALT_SPLASH;

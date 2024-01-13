@@ -8951,7 +8951,7 @@ if (pm->ps->duelInProgress)
 #else
 	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->clientNum < MAX_CLIENTS && pm->ps->weapon == WP_BLASTER || pm->ps->weapon == WP_BRYAR_OLD && !pm->ps->jetpackFuel)
+		if (pm->ps->clientNum < MAX_CLIENTS && (pm->ps->weapon == WP_BLASTER || pm->ps->weapon == WP_BRYAR_OLD) && !pm->ps->jetpackFuel)
 			return;
 	}
 
