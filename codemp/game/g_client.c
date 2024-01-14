@@ -2637,7 +2637,6 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 
 	//Don't even do this in tribes mode?  We only do this on client spawn
 	if (!g_tribesMode.integer) {
-
 		// set max health
 		if (level.gametype == GT_SIEGE && client->siegeClass != -1)
 		{
