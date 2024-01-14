@@ -2040,11 +2040,15 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 	}
 }
 
+
 int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 	int missileSpeed = 0;
 
 	switch (weapon)
 	{
+		case WP_BRYAR_PISTOL:
+			missileSpeed = 1600;
+			break;
 		case WP_BLASTER:
 			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
 				missileSpeed = 10440;
@@ -2060,11 +2064,10 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 			}
 			break;
 		case WP_BOWCASTER:
-			missileSpeed = 1300;//ruh roh, multiple shots, charge count, etc?
-			break;
-		case WP_BRYAR_PISTOL:
-		case WP_BRYAR_OLD:
-			missileSpeed = 1600;
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+				missileSpeed = 3040;
+			else
+				missileSpeed = 1300;//ruh roh, multiple shots, charge count, etc?
 			break;
 		case WP_REPEATER:
 			if (altFire) {
@@ -2122,6 +2125,12 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 					missileSpeed = 3000;
 			}
 			break;
+		case WP_BRYAR_OLD:
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+				missileSpeed = 10440;
+			else
+				missileSpeed = 1600;
+			break;
 		default:
 			break;
 	}
@@ -2133,32 +2142,36 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 
 	switch (weapon)
 	{
+		case WP_BRYAR_PISTOL:
 		case WP_BLASTER:
 			break;
 		case WP_DISRUPTOR:
 			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
 				gravity = qtrue;
-		case WP_BOWCASTER:
-		case WP_BRYAR_PISTOL:
-		case WP_BRYAR_OLD:
-			break;
 		case WP_REPEATER:
 			if (altFire)
 				gravity = qtrue;
 			break;
+		case WP_BOWCASTER:
+			if (cgs.jcinfo & JAPRO_CINFO2_WTTRIBES)
+				gravity = qtrue;
 		case WP_DEMP2:
 			break;
-		case WP_FLECHETTE: // are bouncy things missiles?
+		case WP_FLECHETTE:
 			if (altFire)
 				gravity = qtrue;
 			break;
 		case WP_ROCKET_LAUNCHER:
-			gravity = qfalse;
+			if (cgs.jcinfo & JAPRO_CINFO2_WTTRIBES)
+				gravity = qtrue;
 			break;
 		case WP_THERMAL:
+			break;
 		case WP_TRIP_MINE:
 			gravity = qtrue;
 		case WP_CONCUSSION:
+			break;
+		case WP_BRYAR_OLD:
 			break;
 		default:
 			break;
