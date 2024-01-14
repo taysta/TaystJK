@@ -1253,15 +1253,17 @@ void G_ScaleNetHealth(gentity_t *self)
 
 	maxHealth = self->maxHealth;
 	
-	if (g_tweakWeapons.integer & WT_TRIBES && maxHealth < 1000 && self->client) {
-		if (self->client->pers.tribesClass == 3)
-			self->s.maxhealth = maxHealth + 100;//100 armor
-		else if (self->client->pers.tribesClass == 3)
-			self->s.maxhealth = maxHealth + 25;//25 armor
-		else
-			self->s.maxhealth = maxHealth;
+	if (g_tweakWeapons.integer & WT_TRIBES && maxHealth <= 1000 && self->client) {
 
-		self->s.health = self->health + self->client->ps.stats[STAT_ARMOR]; //Add armor as well.  Should tribes even have this
+
+		if (self->client->pers.tribesClass == 3)
+			self->s.maxhealth = 1000;// maxHealth + 100;//100 armor
+		else if (self->client->pers.tribesClass == 1)
+			self->s.maxhealth = 500;// Light.
+		else
+			self->s.maxhealth = 700;
+
+		self->s.health = self->health;
 
 		if (self->s.health < 0)
 		{ //don't let it wrap around

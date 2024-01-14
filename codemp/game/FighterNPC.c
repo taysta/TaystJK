@@ -1122,6 +1122,7 @@ void FighterYawAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *pa
 		{
 			angDif = -maxDif;
 		}
+		//pVeh->m_vOrientation[YAW] = (AngleSubtract(pVeh->m_vOrientation[YAW], (angDif*(pVeh->m_fTimeModifier*0.2f))));
 		pVeh->m_vOrientation[YAW] = AngleNormalize180(pVeh->m_vOrientation[YAW] - (angDif*(pVeh->m_fTimeModifier*0.2f)) );
 	}
 }
@@ -1187,6 +1188,7 @@ void FighterPitchAdjust(Vehicle_t *pVeh, playerState_t *riderPS, playerState_t *
 		{
 			angDif = -maxDif;
 		}
+		//pVeh->m_vOrientation[PITCH] = (AngleSubtract(pVeh->m_vOrientation[PITCH], (angDif*(pVeh->m_fTimeModifier*0.2f))));
 		pVeh->m_vOrientation[PITCH] = AngleNormalize180(pVeh->m_vOrientation[PITCH] - (angDif*(pVeh->m_fTimeModifier*0.2f)) );
 	}
 }

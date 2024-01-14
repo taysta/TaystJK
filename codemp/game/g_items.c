@@ -2264,27 +2264,25 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_THERMAL] = 2;
 				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 
-				if (other->health < 100) {
-					other->health += 50;
-					if (other->health > 100)
-						other->health = 100;
+				if (other->health < other->client->ps.stats[STAT_MAX_HEALTH]) {			
+					if (other->client->pers.tribesClass == 1) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
+					}
+					else if (other->client->pers.tribesClass == 2) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
+					}
+					else if (other->client->pers.tribesClass == 3) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
+					}
+
+					if (other->health > other->client->ps.stats[STAT_MAX_HEALTH])
+						other->health = other->client->ps.stats[STAT_MAX_HEALTH];
 					other->client->ps.stats[STAT_HEALTH] = other->health;
 				}
-				if (other->client->pers.tribesClass == 3) {
-					other->client->ps.stats[STAT_ARMOR] += 50;
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
-					if (other->client->ps.stats[STAT_ARMOR] > 100)
-						other->client->ps.stats[STAT_ARMOR] = 100;
-				}
-				else if (other->client->pers.tribesClass == 2) {
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
-					other->client->ps.stats[STAT_ARMOR] += 25;
-					if (other->client->ps.stats[STAT_ARMOR] > 25)
-						other->client->ps.stats[STAT_ARMOR] = 25;
-				}
-				else if (other->client->pers.tribesClass == 1) {
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
-				}
+
 				if (other->client->ps.fd.forcePower < 100) {
 					if (other->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
 						other->client->ps.fd.forcePower += 25;//sad hack but its OP

@@ -7654,7 +7654,7 @@ void Cmd_Race_f(gentity_t *ent)
 		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
 
 		if (!ent->client->sess.raceMode) {
-			if (g_tribesClass.integer) {
+			if (g_tribesMode.integer) {
 				DetectTribesClass(ent, model);
 			}
 			else if (ent->client->pers.tribesClass) {

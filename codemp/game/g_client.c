@@ -2263,7 +2263,7 @@ void DetectTribesClass(gentity_t *ent, const char *model) {
 	//WT_TRIBES
 	if (!ent || !ent->client)
 		return;
-	if (g_tribesClass.integer && (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE))) {
+	if ((g_tribesMode.integer == 1) && (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE))) {
 		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
 			//Com_Printf("Detetcting heavy\n");
 			if (ent->client->pers.tribesClass != 3) {
@@ -2291,6 +2291,12 @@ void DetectTribesClass(gentity_t *ent, const char *model) {
 				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes medium class\n\""));
 			}
 		}
+	}
+	else {
+		trap->SendServerCommand(ent - g_entities, va("print \"Spawning as non tribes class\n\""));
+		ent->client->pers.tribesClass = 0;
+		if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+			G_Kill(ent);
 	}
 }
 
@@ -2519,7 +2525,7 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	}
 
 	//WT_TRIBES
-	if (g_tribesClass.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
+	if (g_tribesMode.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
 		DetectTribesClass(ent, model);
 	}
 	else if (client->pers.tribesClass) {
@@ -2637,8 +2643,10 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 		health = maxHealth;
 	}
 	else
-		health = Com_Clampi( 1, 100, atoi( Info_ValueForKey( userinfo, "handicap" ) ) );
-
+	{
+		maxHealth = 100;
+		health = Com_Clampi(1, 100, atoi(Info_ValueForKey(userinfo, "handicap")));
+	}
 	client->pers.maxHealth = health;
 	if ( client->pers.maxHealth < 1 || client->pers.maxHealth > maxHealth )
 		client->pers.maxHealth = 100;
@@ -4162,9 +4170,29 @@ void ClientSpawn(gentity_t *ent) {
 	else
 	{
 		//maxHealth = Com_Clampi( 1, 100, atoi( Info_ValueForKey( userinfo, "handicap" ) ) );
-		maxHealth = 100;//i dont think we want handicap to work..?
+		if (client->pers.tribesClass == 3) {
+			maxHealth = maxHealth = 1000;
+			client->ps.iModelScale = 125;
+			VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
+			VectorScale(ent->r.mins, 1.25f, ent->r.mins);
+			VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
+		}
+		else if (client->pers.tribesClass == 2 || (g_tribesMode.integer == 2)) {
+			maxHealth = maxHealth = 700;
+		}
+		else if (client->pers.tribesClass == 1) {
+			maxHealth = maxHealth = 500;
+			client->ps.iModelScale = 94;
+			VectorSet(ent->modelScale, 0.92f, 0.94f, 0.94f);
+			VectorScale(ent->r.mins, 0.94f, ent->r.mins);
+			VectorScale(ent->r.maxs, 0.94f, ent->r.maxs);
+		}
+		else {
+			maxHealth = 100;//i dont think we want handicap to work..?
+		}
+
 		if (g_showHealth.integer && !client->sess.raceMode)
-			ent->maxHealth = 100;//JAPRO , kay...
+			ent->maxHealth = maxHealth;//JAPRO , kay...
 		else 
 			ent->maxHealth = 0;
 	}
@@ -4593,6 +4621,11 @@ void ClientSpawn(gentity_t *ent) {
 	}
 	else
 	{//Clan Arena starting armor/hp here
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
+			client->ps.stats[STAT_ARMOR] = 0;
+		}
+		/*
 		if (client->pers.tribesClass == 1) {//light
 			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 			client->ps.stats[STAT_ARMOR] = 0;
@@ -4605,6 +4638,7 @@ void ClientSpawn(gentity_t *ent) {
 			ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];
 			client->ps.stats[STAT_ARMOR] = 100;
 		}
+		*/
 		else if (g_startingItems.integer & (1 << (HI_NUM_HOLDABLE + 2)))//sad
 			client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH];
 		else

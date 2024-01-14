@@ -556,7 +556,11 @@ static void CVU_TribesClass(void) {
 		trap->GetUserinfo(i, userinfo, sizeof(userinfo));
 		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
 	
-		if (g_tribesClass.integer) {
+		if (g_tribesMode.integer == 1) {
+			if (!ent->client->pers.tribesClass) {
+				if (ent->health > 0)
+					G_Kill(ent);
+			}	
 			DetectTribesClass(ent, model);
 		}
 		else if (ent->client->pers.tribesClass) {
