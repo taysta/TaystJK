@@ -391,7 +391,7 @@ void vk_initialize( void )
 
 	// Memory alignment
 	vk.uniform_alignment = props.limits.minUniformBufferOffsetAlignment;
-	vk.uniform_item_size = PAD( sizeof(vkUniform_t), vk.uniform_alignment );
+	vk.uniform_item_size = PAD( sizeof(vkUniform_t), (size_t)vk.uniform_alignment );
 	vk.storage_alignment = MAX( props.limits.minStorageBufferOffsetAlignment, sizeof(uint32_t) ); //for flare visibility tests
 
 	// maxTextureSize must not exceed IMAGE_CHUNK_SIZE
