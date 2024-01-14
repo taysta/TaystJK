@@ -4966,7 +4966,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
-		float cut = 1 - ((damage * 0.0025f));
+		float cut;	
+		if (g_tribesMode.integer)
+			cut = 1 - ((damage * 0.0005));
+		else 
+			cut = 1 - ((damage * 0.0025f));
+
 		if (cut > 1)
 			cut = 1;
 		else if (cut < 0)
@@ -5896,10 +5901,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				if (g_tweakWeapons.integer & WT_TRIBES) {
 					famt = 0.5f;
 					hamt = 0.90f;
-					if (maxtake > 400)
-					{
-						maxtake = 400;
+					if (g_tribesMode.integer) {
+						if (maxtake > 2000)
+							maxtake = 2000;
 					}
+					else {
+						if (maxtake > 400)
+							maxtake = 400;
+					}
+
 				}
 				else if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
 				{
@@ -5934,18 +5944,26 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 				if (!targ->client->ps.powerups[PW_FORCE_BOON])
 				{
-					targ->client->ps.fd.forcePower -= maxtake*famt;
+					if (g_tribesMode.integer)
+						targ->client->ps.fd.forcePower -= maxtake*0.2f*famt;
+					else
+						targ->client->ps.fd.forcePower -= maxtake*famt;
 				}
 				else
 				{
 					targ->client->ps.fd.forcePower -= (maxtake*famt)/2;
 				}
-				subamt = (maxtake*hamt)+(take-maxtake);
+
+				subamt = (maxtake*hamt) + (take - maxtake);
 				if (targ->client->ps.fd.forcePower < 0)
 				{
-					subamt += targ->client->ps.fd.forcePower;
+					if (g_tribesMode.integer)
+						subamt += targ->client->ps.fd.forcePower * 5; 
+					else
+						subamt += targ->client->ps.fd.forcePower;
 					targ->client->ps.fd.forcePower = 0;
 				}
+
 				if (subamt)
 				{
 					take -= subamt;

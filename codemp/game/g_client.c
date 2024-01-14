@@ -2264,6 +2264,7 @@ void DetectTribesClass(gentity_t *ent, const char *model) {
 	if (!ent || !ent->client)
 		return;
 	if (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE)) {
+		Q_strlwr(model);
 		if (g_tribesMode.integer == 1) {
 			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
 				//Com_Printf("Detetcting heavy\n");
