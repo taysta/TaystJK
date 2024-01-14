@@ -2263,40 +2263,42 @@ void DetectTribesClass(gentity_t *ent, const char *model) {
 	//WT_TRIBES
 	if (!ent || !ent->client)
 		return;
-	if ((g_tribesMode.integer == 1) && (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE))) {
-		if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
-			//Com_Printf("Detetcting heavy\n");
-			if (ent->client->pers.tribesClass != 3) {
-				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				ent->client->pers.tribesClass = 3;
-				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes heavy class\n\""));
+	if (!ent->client->sess.raceMode || (level.gametype >= GT_TEAM && ent->client->sess.sessionTeam > TEAM_FREE)) {
+		if (g_tribesMode.integer == 1) {
+			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
+				//Com_Printf("Detetcting heavy\n");
+				if (ent->client->pers.tribesClass != 3) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 3;
+					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes heavy class\n\""));
+				}
 			}
-		}
-		else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
-			//Com_Printf("Detetcting heavy\n");
-			if (ent->client->pers.tribesClass != 1) {
-				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				ent->client->pers.tribesClass = 1;
-				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes light class\n\""));
+			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+				//Com_Printf("Detetcting heavy\n");
+				if (ent->client->pers.tribesClass != 1) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 1;
+					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes light class\n\""));
+				}
+			}
+			else {
+				//Com_Printf("Detetcting medium \n");
+				if (ent->client->pers.tribesClass != 2) {
+					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+						G_Kill(ent);
+					ent->client->pers.tribesClass = 2;
+					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes medium class\n\""));
+				}
 			}
 		}
 		else {
-			//Com_Printf("Detetcting medium \n");
-			if (ent->client->pers.tribesClass != 2) {
-				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-					G_Kill(ent);
-				ent->client->pers.tribesClass = 2;
-				trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes medium class\n\""));
-			}
+			trap->SendServerCommand(ent - g_entities, va("print \"Spawning as non tribes class\n\""));
+			ent->client->pers.tribesClass = 0;
+			if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+				G_Kill(ent);
 		}
-	}
-	else {
-		trap->SendServerCommand(ent - g_entities, va("print \"Spawning as non tribes class\n\""));
-		ent->client->pers.tribesClass = 0;
-		if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-			G_Kill(ent);
 	}
 }
 
