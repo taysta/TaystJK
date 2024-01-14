@@ -2579,12 +2579,8 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	}
 
 	if (ent->item->giType == IT_ARMOR) { //This should really be predicted as well but tribesclass is not predicted rn..
-		if (other->client->pers.tribesClass == 1)
+		if (other->client->pers.tribesClass || (g_tribesMode.integer == 2))
 			return;
-		if (other->client->pers.tribesClass == 2) {
-			if (other->client->ps.stats[STAT_ARMOR] >= 25)
-				return;
-		}
 	}
 	if (ent->item->giType == IT_TEAM && other->client->ps.m_iVehicleNum && g_tweakWeapons.integer & WT_TRIBES)
 		return;//cant pick up flags in vehicles

@@ -3965,7 +3965,7 @@ void G_RunFrame( int levelTime ) {
 					}
 				}
 				*/
-				if (ent->client->passiveHealthDebReduce < level.time && g_tribesMode.integer) //Passif heal
+				if (!ent->client->sess.raceMode && (ent->client->passiveHealthDebReduce < level.time) && g_tribesMode.integer) //Passif heal
 				{
 					if (ent->client->ps.stats[STAT_HEALTH] < ent->client->ps.stats[STAT_MAX_HEALTH]) {
 						//int amt = (ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower) / 421875;

@@ -4880,9 +4880,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		if (targ && attacker && targ->client && attacker->client) {
 			if (targ == attacker)
-				targ->client->passiveHealthDebReduce += 10000;
+				targ->client->passiveHealthDebReduce = level.time + 10000;
 			else if (!OnSameTeam(targ, attacker))
-				targ->client->passiveHealthDebReduce += 10000;
+				targ->client->passiveHealthDebReduce = level.time + 10000;
 		}
 	}
 
