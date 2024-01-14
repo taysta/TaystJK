@@ -2973,7 +2973,10 @@ gentity_t *Drop_Flag( gentity_t *ent, gitem_t *item, qboolean forced ) {
 
 	AngleVectors( angles, velocity, NULL, NULL );
 
-	VectorScale( velocity, 625, velocity );
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		VectorScale(velocity, 700, velocity);
+	else
+		VectorScale( velocity, 625, velocity );
 
 	velocity[0] += ent->client->ps.velocity[0];
 	velocity[1] += ent->client->ps.velocity[1];

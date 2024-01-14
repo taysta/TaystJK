@@ -3965,6 +3965,32 @@ void G_RunFrame( int levelTime ) {
 					}
 				}
 				*/
+				if (ent->client->passiveHealthDebReduce < level.time) //Passif heal
+				{
+					if (ent->client->ps.stats[STAT_HEALTH] < 100) {
+						//int amt = (ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower) / 421875;
+						int amt = 0;
+
+						if (ent->client->ps.fd.forcePower > 95)
+							amt = 3;
+						else if (ent->client->ps.fd.forcePower > 90)
+							amt = 2;
+						else if (ent->client->ps.fd.forcePower > 85)
+							amt = 1;
+
+						if (amt >= 1) {
+							ent->health += amt;
+
+							if (ent->health > ent->client->ps.stats[STAT_MAX_HEALTH])
+								ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
+
+							G_ScaleNetHealth(ent);
+							//G_Sound(ent, CHAN_ITEM, G_SoundIndex("sound/weapons/force/heal.wav"));
+							ent->client->passiveHealthDebReduce = level.time + 1000;
+						}
+					}
+				}
+
 				if (ent->client->overheatDebReduce < level.time) //Always refill overheat
 				{
 					if (ent->client->ps.jetpackFuel < 100) {
