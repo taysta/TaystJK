@@ -2635,24 +2635,30 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 		G_SetSaber( ent, 1, Info_ValueForKey( userinfo, "saber2" ), qfalse );
 	}
 
-	// set max health
-	if ( level.gametype == GT_SIEGE && client->siegeClass != -1 ) {
-		siegeClass_t *scl = &bgSiegeClasses[client->siegeClass];
+	//Don't even do this in tribes mode?  We only do this on client spawn
+	if (!g_tribesMode.integer) {
 
-		if ( scl->maxhealth )
-			maxHealth = scl->maxhealth;
+		// set max health
+		if (level.gametype == GT_SIEGE && client->siegeClass != -1)
+		{
+			siegeClass_t *scl = &bgSiegeClasses[client->siegeClass];
+			maxHealth = 100;
 
-		health = maxHealth;
+			if (scl->maxhealth)
+				maxHealth = scl->maxhealth;
+
+			health = maxHealth;
+		}
+		else
+		{
+			maxHealth = 100;
+			health = Com_Clampi(1, 100, atoi(Info_ValueForKey(userinfo, "handicap")));
+		}
+		client->pers.maxHealth = health;
+		if (client->pers.maxHealth < 1 || client->pers.maxHealth > maxHealth)
+			client->pers.maxHealth = 100;
+		client->ps.stats[STAT_MAX_HEALTH] = client->pers.maxHealth;
 	}
-	else
-	{
-		maxHealth = 100;
-		health = Com_Clampi(1, 100, atoi(Info_ValueForKey(userinfo, "handicap")));
-	}
-	client->pers.maxHealth = health;
-	if ( client->pers.maxHealth < 1 || client->pers.maxHealth > maxHealth )
-		client->pers.maxHealth = 100;
-	client->ps.stats[STAT_MAX_HEALTH] = client->pers.maxHealth;
 
 	if ( level.gametype >= GT_TEAM )
 		client->pers.teamInfo = qtrue;

@@ -5067,6 +5067,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 
 	knockback = damage;
+
+	if (g_tribesMode.integer)
+		knockback *= 0.2f;
+
 	if ( knockback > 200 ) {
 		knockback = 200;
 	}
@@ -5094,7 +5098,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		mass = 200;
 		if ((g_tweakWeapons.integer & WT_TRIBES)) {
 			if (targ->client->pers.tribesClass == 1)
-				mass = 80;
+				mass = 180;
 			else if (targ->client->pers.tribesClass == 3)
 				mass = 240;
 			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
@@ -6345,6 +6349,8 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			{
 				vec3_t kvel;
 				VectorNormalize(dir);
+				if (g_tribesMode.integer)
+					points *= 0.2f;
 				VectorScale(dir, g_knockback.value * (float)points/150.0f, kvel);
 				ent->s.pos.trType = TR_GRAVITY;
 				ent->s.pos.trTime = level.time;
