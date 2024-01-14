@@ -1903,9 +1903,6 @@ CG_ConfigString
 =================
 */
 const char *CG_ConfigString( int index ) {
-	// don't read configstrings before initialisation
-	assert( cgs.gameState.dataCount != 0 );
-
 	if ( index < 0 || index >= MAX_CONFIGSTRINGS ) {
 		trap->Error( ERR_DROP, "CG_ConfigString: bad index: %i", index );
 	}
@@ -3000,9 +2997,6 @@ Ghoul2 Insert End
 	memset( cg_weapons, 0, sizeof(cg_weapons) );
 	memset( cg_dueltypes, 0, sizeof(cg_dueltypes) );//JAPRO - Clientside - Fullforce Duels
 
-	// get the gamestate from the client system
-	trap->GetGameState( &cgs.gameState );
-
 	cg.clientNum = clientNum;
 
 	cgs.processedSnapshotNum = serverMessageNum;
@@ -3134,6 +3128,9 @@ Ghoul2 Insert End
 	cgs.screenXScale = cgs.glconfig.vidWidth / SCREEN_WIDTH;
 	cgs.screenYScale = cgs.glconfig.vidHeight / SCREEN_HEIGHT;
 	UI_Set2DRatio();
+
+	// get the gamestate from the client system
+	trap->GetGameState(&cgs.gameState);
 
 	CG_TransitionPermanent(); //rwwRMG - added
 
