@@ -3546,7 +3546,7 @@ void G_RunItem( gentity_t *ent ) {
 		return;
 	}
 
-	if (ent->item->giType == IT_TEAM) {
+	if (ent->item && ent->item->giType == IT_TEAM) {
 		//Ok goal here is to bleed off speed exponentially until its down to like the flag throw speed or something.
 		//Idea is to keep flag inheritance at 100%, keep throws strong, but immediately start cutting their speed if they are going super fast (air drag)
 		//This still lets us perform the punt but limits effectiveness
