@@ -4877,6 +4877,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 //JAPRO - Fix dueling so falling to death dosnt loop - End
 
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (targ && attacker && targ->client && attacker->client) {
+			if (targ == attacker)
+				targ->client->passiveHealthDebReduce += 10000;
+			else if (!OnSameTeam(targ, attacker))
+				targ->client->passiveHealthDebReduce += 10000;
+		}
+	}
+
 	if ( !(dflags & DAMAGE_NO_PROTECTION) )
 	{//rage overridden by no_protection
 		if (targ && targ->client && (targ->client->ps.fd.forcePowersActive & (1 << FP_RAGE)))
