@@ -13247,13 +13247,33 @@ void PmoveSingle (pmove_t *pmove) {
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
 			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
 				float hackscale = 250.0f / pm->ps->velocity[2];
+				float hackscale2 = (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1]*pm->ps->velocity[1]) / (700 * 700);
+				
+				if (hackscale2 < 1)
+					hackscale2 = 1;
+
+				hackscale /= hackscale2;
+
 				if (hackscale > 1.25f)
 					hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
+				else if (hackscale < 1)
+					hackscale = 1;
+
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				float hackscale = 1.25f;
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Strengthen upjet if we are going down or slowly up
+				float hackscale2 = (pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) / (700 * 700);
+
+				if (hackscale2 < 1)
+					hackscale2 = 1;
+
+				hackscale /= hackscale2;
+
+				if (hackscale < 1)
+					hackscale = 1;
+
+				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] > 1500) {
 				float hackscale = 1500.0f / pm->ps->velocity[2];
