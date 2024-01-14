@@ -1195,7 +1195,7 @@ static void WP_BoltLauncherAltFire(gentity_t *ent)
 	VectorScale(missile->r.maxs, -1, missile->r.mins);
 
 	missile->damage = 60 * g_weaponDamageScale.value;
-	missile->splashDamage = 60 * g_weaponDamageScale.value;
+	missile->splashDamage = 60 * g_splashDamageScale.value;
 	missile->splashRadius = 128;
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 
@@ -1632,7 +1632,7 @@ static void WP_DEMP2_MainFire( gentity_t *ent )
 	missile->s.weapon = WP_DEMP2;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		missile->splashDamage = 30 * g_weaponDamageScale.value;
+		missile->splashDamage = 30 * g_splashDamageScale.value;
 		missile->splashRadius = 40;
 	}
 
@@ -2509,7 +2509,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - Start]
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		missile->damage = 60 * g_weaponDamageScale.value;
-		missile->splashDamage = 60 * g_weaponDamageScale.value;
+		missile->splashDamage = 60 * g_splashDamageScale.value;
 		missile->splashRadius = 140;
 	}
 	else if (g_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
@@ -3255,7 +3255,7 @@ THERMAL DETONATOR
 
 #define TD_DAMAGE			70 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers //only do 70 on a direct impact
 #define TD_SPLASH_RAD		128
-#define TD_SPLASH_DAM		90 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers
+#define TD_SPLASH_DAM		90 * g_splashDamageScale.value;//JAPRO - Weapons - Scalers
 #define TD_VELOCITY			900
 #define TD_MIN_CHARGE		0.15f
 #define TD_TIME				3000//6000
@@ -3263,7 +3263,7 @@ THERMAL DETONATOR
 
 #define TD_ALT_DAMAGE		60 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers//100
 #define TD_ALT_SPLASH_RAD	128
-#define TD_ALT_SPLASH_DAM	50 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers//90
+#define TD_ALT_SPLASH_DAM	50 * g_splashDamageScale.value;//JAPRO - Weapons - Scalers//90
 #define TD_ALT_VELOCITY		600
 #define TD_ALT_MIN_CHARGE	0.15f
 #define TD_ALT_TIME			3000
@@ -3408,12 +3408,12 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	}
 	else if (g_tweakWeapons.integer & WT_TRIBES) {
 		bolt->damage = 40 * g_weaponDamageScale.integer;
-		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_splashDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
 	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
 		bolt->damage = 60 * g_weaponDamageScale.integer;
-		bolt->splashDamage = 20 * g_weaponDamageScale.integer;
+		bolt->splashDamage = 20 * g_splashDamageScale.integer;
 		bolt->splashRadius = 96;//128
 	}
 	else {
@@ -3875,7 +3875,7 @@ void CreateLaserTrap( gentity_t *laserTrap, vec3_t start, gentity_t *owner )
 	laserTrap->r.ownerNum = owner->s.number;
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		laserTrap->splashDamage = 70 * g_weaponDamageScale.value;
+		laserTrap->splashDamage = 70 * g_splashDamageScale.value;
 		laserTrap->damage = 70 * g_weaponDamageScale.value;
 	}
 
@@ -4259,7 +4259,7 @@ void drop_charge (gentity_t *self, vec3_t start, vec3_t dir)
 		bolt->health = 1;
 		bolt->takedamage = qtrue;
 		bolt->damage = 100 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers
-		bolt->splashDamage = 200 * g_weaponDamageScale.value;//JAPRO - Weapons - Scalers
+		bolt->splashDamage = 200 * g_splashDamageScale.value;//JAPRO - Weapons - Scalers
 		VectorScale(dir, 300, bolt->s.pos.trDelta );
 	}
 	bolt->s.pos.trTime = level.time;
@@ -4785,7 +4785,7 @@ static void WP_FireConcussion( gentity_t *ent )
 
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		missile->splashDamage = 75 * g_weaponDamageScale.value;
+		missile->splashDamage = 75 * g_splashDamageScale.value;
 	}
 	else {
 		missile->splashDamage = CONC_SPLASH_DAMAGE;

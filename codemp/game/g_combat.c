@@ -5092,7 +5092,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if (targ == attacker)
 			knockback *= 1.2f;
 		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
-			knockback *= 3; //guess this just does nothing
+			knockback *= 3.5f; //guess this just does nothing
 		}
 	}
 
