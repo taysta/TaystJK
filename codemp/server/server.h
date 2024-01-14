@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "game/bg_public.h"
 #include "rd-common/tr_public.h"
 #include "server/duel_cull.h"
+#include <memory>
 
 extern int DuelCull(sharedEntity_t *a, sharedEntity_t *b);
 
@@ -144,7 +145,7 @@ typedef struct {
 #endif
 
 #ifdef DEDICATED
-typedef std::vector<bufferedMessageContainer_t>::iterator demoPreRecordBufferIt;
+typedef std::vector<std::unique_ptr<bufferedMessageContainer_t>>::iterator demoPreRecordBufferIt;
 #endif
 
 typedef struct client_s {
@@ -319,6 +320,7 @@ extern	cvar_t	*sv_maxOOBRateIP;
 extern	cvar_t	*sv_autoWhitelist;
 #ifdef DEDICATED
 extern	cvar_t	*sv_demoPreRecord;
+extern	cvar_t	*sv_demoPreRecordBots;
 extern	cvar_t	*sv_demoPreRecordTime;
 extern	cvar_t	*sv_demoPreRecordKeyframeDistance;
 extern	cvar_t	*sv_demoWriteMeta;
