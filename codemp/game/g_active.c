@@ -4301,24 +4301,11 @@ void ClientThink_real( gentity_t *ent ) {
 			client->ps.speed *= 1.28f;
 
 		if (!client->ps.stats[STAT_RACEMODE]) {
-			if (!g_tribesClass.integer)
-				client->pers.tribesClass = 0;
-			else if (!client->pers.tribesClass)
-				client->pers.tribesClass = 1;
-
 			if (client->pers.tribesClass == 1) {
 				client->ps.speed *= 1.05f;
-				client->ps.iModelScale = 94;
-				VectorSet(ent->modelScale, 0.92f, 0.94f, 0.94f);
-				VectorScale(ent->r.mins, 0.94f, ent->r.mins);
-				VectorScale(ent->r.maxs, 0.94f, ent->r.maxs);
 			}
 			if (client->pers.tribesClass == 3) {
 				client->ps.speed *= 0.78125f;
-				client->ps.iModelScale = 125;
-				VectorSet(ent->modelScale, 1.25f, 1.25f, 1.25f);
-				VectorScale(ent->r.mins, 1.25f, ent->r.mins);
-				VectorScale(ent->r.maxs, 1.25f, ent->r.maxs);
 			}
 		} //Tribesclass = 0 else?
 

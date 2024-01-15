@@ -524,7 +524,7 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 					if (pSelfVeh->m_pVehicleInfo->type == VH_FIGHTER)
 					{ //player die good.. if me fighter
 						if (g_tweakWeapons.integer & WT_TRIBES)
-							pmult = 7.0f;
+							pmult = 7.0f * g_weaponDamageScale.value;
 						else
 							pmult = 2000.0f;
 					}
@@ -858,8 +858,12 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
 				damage = VectorLength(diffVelocity);
+
 				damage *= 0.049f;
 				if (damage > 30 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
+					if (g_tribesMode.integer)
+						damage *= 0.2f;
+
 					damage -= 30;
 					if (damage > 150)
 						damage = 150;
@@ -868,6 +872,9 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));
 					else
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam2.mp3"));
+
+					if (g_tribesMode.integer)
+						damage *= 5;
 
 					G_Damage((gentity_t *)pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
 					//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);

@@ -4877,12 +4877,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 //JAPRO - Fix dueling so falling to death dosnt loop - End
 
-	if (g_tweakWeapons.integer & WT_TRIBES) {
+	if (g_tribesMode.integer) {
 		if (targ && attacker && targ->client && attacker->client) {
 			if (targ == attacker)
-				targ->client->passiveHealthDebReduce += 10000;
+				targ->client->passiveHealthDebReduce = level.time + 10000;
 			else if (!OnSameTeam(targ, attacker))
-				targ->client->passiveHealthDebReduce += 10000;
+				targ->client->passiveHealthDebReduce = level.time + 10000;
 		}
 	}
 
@@ -4966,7 +4966,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
-		float cut = 1 - ((damage * 0.0025f));
+		float cut;	
+		if (g_tribesMode.integer)
+			cut = 1 - ((damage * 0.0005));
+		else 
+			cut = 1 - ((damage * 0.0025f));
+
 		if (cut > 1)
 			cut = 1;
 		else if (cut < 0)
@@ -5017,9 +5022,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 	// reduce damage by the attacker's handicap value
 	// unless they are rocket jumping
-	if ( attacker->client
-		&& attacker != targ
-		&& attacker->s.eType == ET_PLAYER
+	if ( attacker->client 
+		&& attacker != targ 
+		&& attacker->s.eType == ET_PLAYER 
+		&& !g_tribesMode.integer
 		&& level.gametype != GT_SIEGE )
 	{
 		max = attacker->client->ps.stats[STAT_MAX_HEALTH];
@@ -5067,6 +5073,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 
 	knockback = damage;
+
+	if (g_tribesMode.integer)
+		knockback *= 0.2f;
+
 	if ( knockback > 200 ) {
 		knockback = 200;
 	}
@@ -5082,7 +5092,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		if (targ == attacker)
 			knockback *= 1.2f;
 		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
-			knockback *= 3; //guess this just does nothing
+			knockback *= 3.5f; //guess this just does nothing
 		}
 	}
 
@@ -5094,7 +5104,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		mass = 200;
 		if ((g_tweakWeapons.integer & WT_TRIBES)) {
 			if (targ->client->pers.tribesClass == 1)
-				mass = 80;
+				mass = 180;
 			else if (targ->client->pers.tribesClass == 3)
 				mass = 240;
 			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
@@ -5891,10 +5901,15 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				if (g_tweakWeapons.integer & WT_TRIBES) {
 					famt = 0.5f;
 					hamt = 0.90f;
-					if (maxtake > 400)
-					{
-						maxtake = 400;
+					if (g_tribesMode.integer) {
+						if (maxtake > 2000)
+							maxtake = 2000;
 					}
+					else {
+						if (maxtake > 400)
+							maxtake = 400;
+					}
+
 				}
 				else if (targ->client->ps.fd.forcePowerLevel[FP_PROTECT] == FORCE_LEVEL_1)
 				{
@@ -5929,18 +5944,26 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 				if (!targ->client->ps.powerups[PW_FORCE_BOON])
 				{
-					targ->client->ps.fd.forcePower -= maxtake*famt;
+					if (g_tribesMode.integer)
+						targ->client->ps.fd.forcePower -= maxtake*0.2f*famt;
+					else
+						targ->client->ps.fd.forcePower -= maxtake*famt;
 				}
 				else
 				{
 					targ->client->ps.fd.forcePower -= (maxtake*famt)/2;
 				}
-				subamt = (maxtake*hamt)+(take-maxtake);
+
+				subamt = (maxtake*hamt) + (take - maxtake);
 				if (targ->client->ps.fd.forcePower < 0)
 				{
-					subamt += targ->client->ps.fd.forcePower;
+					if (g_tribesMode.integer)
+						subamt += targ->client->ps.fd.forcePower * 5; 
+					else
+						subamt += targ->client->ps.fd.forcePower;
 					targ->client->ps.fd.forcePower = 0;
 				}
+
 				if (subamt)
 				{
 					take -= subamt;
@@ -6345,6 +6368,8 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			{
 				vec3_t kvel;
 				VectorNormalize(dir);
+				if (g_tribesMode.integer)
+					points *= 0.2f;
 				VectorScale(dir, g_knockback.value * (float)points/150.0f, kvel);
 				ent->s.pos.trType = TR_GRAVITY;
 				ent->s.pos.trTime = level.time;

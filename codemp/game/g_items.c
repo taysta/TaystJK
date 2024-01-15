@@ -570,9 +570,9 @@ void pas_fire( gentity_t *ent )
 	myOrg[2] += fwd[2]*16;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 5220, MOD_SENTRY, ent );
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 5220 * g_projectileVelocityScale.value, MOD_SENTRY, ent );
 	else 
-		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 2300, MOD_SENTRY, ent);
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 2300 * g_projectileVelocityScale.value, MOD_SENTRY, ent);
 
 	G_RunObject(ent);
 }
@@ -1508,7 +1508,7 @@ void EWebDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int dam
 {
 	vec3_t fxDir;
 
-	G_RadiusDamage(self->r.currentOrigin, self, EWEB_DEATH_DMG, EWEB_DEATH_RADIUS, self, self, MOD_SUICIDE);
+	G_RadiusDamage(self->r.currentOrigin, self, EWEB_DEATH_DMG*g_splashDamageScale.value, EWEB_DEATH_RADIUS, self, self, MOD_SUICIDE);
 
 	VectorSet(fxDir, 1.0f, 0.0f, 0.0f);
 	G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, fxDir);
@@ -1828,7 +1828,7 @@ void EWebUpdateBoneAngles(gentity_t *owner, gentity_t *eweb)
 	float incr;
 	float turnCap = 4.0f; //max degrees we can turn per update
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		turnCap = 8;
+		turnCap = 24;
 	
 	VectorClear(yAng);
 	ideal = AngleSubtract(owner->client->ps.viewangles[YAW], eweb->s.angles[YAW]);
@@ -2264,27 +2264,25 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_THERMAL] = 2;
 				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 
-				if (other->health < 100) {
-					other->health += 50;
-					if (other->health > 100)
-						other->health = 100;
+				if (other->health < other->client->ps.stats[STAT_MAX_HEALTH]) {			
+					if (other->client->pers.tribesClass == 1) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
+					}
+					else if (other->client->pers.tribesClass == 2) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
+					}
+					else if (other->client->pers.tribesClass == 3) {
+						other->health += 400;
+						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
+					}
+
+					if (other->health > other->client->ps.stats[STAT_MAX_HEALTH])
+						other->health = other->client->ps.stats[STAT_MAX_HEALTH];
 					other->client->ps.stats[STAT_HEALTH] = other->health;
 				}
-				if (other->client->pers.tribesClass == 3) {
-					other->client->ps.stats[STAT_ARMOR] += 50;
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
-					if (other->client->ps.stats[STAT_ARMOR] > 100)
-						other->client->ps.stats[STAT_ARMOR] = 100;
-				}
-				else if (other->client->pers.tribesClass == 2) {
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
-					other->client->ps.stats[STAT_ARMOR] += 25;
-					if (other->client->ps.stats[STAT_ARMOR] > 25)
-						other->client->ps.stats[STAT_ARMOR] = 25;
-				}
-				else if (other->client->pers.tribesClass == 1) {
-					other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
-				}
+
 				if (other->client->ps.fd.forcePower < 100) {
 					if (other->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
 						other->client->ps.fd.forcePower += 25;//sad hack but its OP
@@ -2581,12 +2579,8 @@ void Touch_Item(gentity_t *ent, gentity_t *other, trace_t *trace) {
 	}
 
 	if (ent->item->giType == IT_ARMOR) { //This should really be predicted as well but tribesclass is not predicted rn..
-		if (other->client->pers.tribesClass == 1)
+		if (other->client->pers.tribesClass || (g_tribesMode.integer == 2))
 			return;
-		if (other->client->pers.tribesClass == 2) {
-			if (other->client->ps.stats[STAT_ARMOR] >= 25)
-				return;
-		}
 	}
 	if (ent->item->giType == IT_TEAM && other->client->ps.m_iVehicleNum && g_tweakWeapons.integer & WT_TRIBES)
 		return;//cant pick up flags in vehicles

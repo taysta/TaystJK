@@ -2791,7 +2791,7 @@ static void CG_Missile( centity_t *cent ) {
 		return;
 	}
 	else if ((cgs.serverMod == SVMOD_JAPRO && cent->currentState.weapon == WP_BRYAR_PISTOL && cent->currentState.saberInFlight) ||
-		(cgs.serverMod == SVMOD_JAPLUS && cent->currentState.weapon == WP_STUN_BATON))
+			 (cgs.serverMod == SVMOD_JAPLUS && cent->currentState.weapon == WP_STUN_BATON))
 	{
 		CG_GrappleTrail(cent);
 		return;
@@ -2896,14 +2896,22 @@ static void CG_Missile( centity_t *cent ) {
 		// add trails
 		if ( weapon->altMissileTrailFunc )
 		{
-			weapon->altMissileTrailFunc( cent, weapon );
+			if (cent->currentState.pos.trType == TR_GRAVITY) {
+				float speed = 800 * ((cg.time - s1->pos.trTime) * 0.001f);
+				cent->currentState.pos.trDelta[2] -= speed;
+				weapon->missileTrailFunc(cent, weapon);
+				cent->currentState.pos.trDelta[2] += speed;
+			}
+			else {
+				weapon->altMissileTrailFunc(cent, weapon);
+			}
 		}
 
 		// add dynamic light
 		if ( weapon->altMissileDlight )
 		{
 			trap->R_AddLightToScene(cent->lerpOrigin, weapon->altMissileDlight,
-				weapon->altMissileDlightColor[0], weapon->altMissileDlightColor[1], weapon->altMissileDlightColor[2] );
+									weapon->altMissileDlightColor[0], weapon->altMissileDlightColor[1], weapon->altMissileDlightColor[2] );
 		}
 
 		// add missile sound
@@ -2924,14 +2932,23 @@ static void CG_Missile( centity_t *cent ) {
 		// add trails
 		if ( weapon->missileTrailFunc )
 		{
-			weapon->missileTrailFunc( cent, weapon );
+			if (cent->currentState.pos.trType == TR_GRAVITY) {
+				float speed = 800 * ((cg.time - s1->pos.trTime) * 0.001f);
+				cent->currentState.pos.trDelta[2] -= speed;
+				weapon->missileTrailFunc(cent, weapon);
+				cent->currentState.pos.trDelta[2] += speed;
+			}
+			else {
+				weapon->missileTrailFunc(cent, weapon);
+			}
+			//Scale this how?
 		}
 
 		// add dynamic light
 		if ( weapon->missileDlight )
 		{
 			trap->R_AddLightToScene(cent->lerpOrigin, weapon->missileDlight,
-				weapon->missileDlightColor[0], weapon->missileDlightColor[1], weapon->missileDlightColor[2] );
+									weapon->missileDlightColor[0], weapon->missileDlightColor[1], weapon->missileDlightColor[2] );
 		}
 
 		// add missile sound
@@ -2999,8 +3016,20 @@ Ghoul2 Insert End
 	if ( s1->apos.trType != TR_INTERPOLATE )
 	{
 		// convert direction of travel into axis
-		if ( VectorNormalize2( s1->pos.trDelta, ent.axis[0] ) == 0 ) {
-			ent.axis[0][2] = 1;
+		if (s1->pos.trType == TR_GRAVITY) {
+			float speed = 800*((cg.time - s1->pos.trTime) * 0.001f);
+			vec3_t fakeDelta;
+			VectorCopy(s1->pos.trDelta, fakeDelta);
+			fakeDelta[2] -= speed;
+
+			if (VectorNormalize2(fakeDelta, ent.axis[0]) == 0) {
+				ent.axis[0][2] = 1;
+			}
+		}
+		else {
+			if (VectorNormalize2(s1->pos.trDelta, ent.axis[0]) == 0) {
+				ent.axis[0][2] = 1;
+			}
 		}
 
 		// spin as it moves

@@ -2106,6 +2106,8 @@ qboolean NPC_ParseParms( const char *NPCName, gentity_t *NPC )
 				}
 				if ( NPC->NPC )
 				{
+					if (g_tribesMode.integer)
+						n *= 5;
 					stats->health = n;
 				}
 				else if ( parsingPlayer )

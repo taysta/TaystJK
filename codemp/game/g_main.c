@@ -2075,7 +2075,7 @@ void PrintStats(int client) {
 
 	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
 		//return;
-	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer && !g_tribesClass.integer)
+	if (((g_weaponDisable.integer > (1<<WP_CONCUSSION)) && (g_startingWeapons.integer == 8)) && !g_gunGame.integer && !g_tribesMode.integer)
 		showAccuracy = qfalse;
 	if ((((g_forcePowerDisable.integer & (1<<FP_TEAM_HEAL)) && (g_forcePowerDisable.integer & (1<<FP_TEAM_FORCE)))) || g_gunGame.integer) //TE and TH are disabled
 		showTeamPowers = qfalse;
@@ -3944,7 +3944,7 @@ void G_RunFrame( int levelTime ) {
 					if (ent->client->jetPackDebReduce < level.time) //ent->client->jetPackDebReduce can be negative or 0 or ?
 					{
 						if (ent->client->pers.tribesClass == 3) //Heavy
-							ent->client->ps.fd.forcePower -= 7;
+							ent->client->ps.fd.forcePower -= 6;
 						if (ent->client->pers.tribesClass == 2) //Med
 							ent->client->ps.fd.forcePower -= 5;
 						else 
@@ -3965,9 +3965,9 @@ void G_RunFrame( int levelTime ) {
 					}
 				}
 				*/
-				if (ent->client->passiveHealthDebReduce < level.time) //Passif heal
+				if (!ent->client->sess.raceMode && (ent->client->passiveHealthDebReduce < level.time) && g_tribesMode.integer) //Passif heal
 				{
-					if (ent->client->ps.stats[STAT_HEALTH] < 100) {
+					if (ent->health > 0 && ent->health < ent->client->ps.stats[STAT_MAX_HEALTH]) {
 						//int amt = (ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower*ent->client->ps.fd.forcePower) / 421875;
 						int amt = 0;
 
@@ -3986,7 +3986,7 @@ void G_RunFrame( int levelTime ) {
 
 							G_ScaleNetHealth(ent);
 							//G_Sound(ent, CHAN_ITEM, G_SoundIndex("sound/weapons/force/heal.wav"));
-							ent->client->passiveHealthDebReduce = level.time + 1000;
+							ent->client->passiveHealthDebReduce = level.time + 200;
 						}
 					}
 				}
