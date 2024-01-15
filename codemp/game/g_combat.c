@@ -4877,13 +4877,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	}
 //JAPRO - Fix dueling so falling to death dosnt loop - End
 
-	if (g_tweakWeapons.integer & WT_TRIBES) {
+	if (g_tribesMode.integer) {
 		if (targ && attacker && targ->client && attacker->client) {
 			if (targ == attacker)
 				targ->client->passiveHealthDebReduce = level.time + 10000;
 			else if (!OnSameTeam(targ, attacker))
 				targ->client->passiveHealthDebReduce = level.time + 10000;
 		}
+		if (targ && targ->s.eType == ET_NPC && attacker && attacker->s.eType != ET_NPC) {
+			damage /= g_weaponDamageScale.value;//uhhhhh undo this for NPCS
+		}		
 	}
 
 	if ( !(dflags & DAMAGE_NO_PROTECTION) )
