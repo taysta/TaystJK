@@ -3944,7 +3944,7 @@ void G_RunFrame( int levelTime ) {
 					if (ent->client->jetPackDebReduce < level.time) //ent->client->jetPackDebReduce can be negative or 0 or ?
 					{
 						if (ent->client->pers.tribesClass == 3) //Heavy
-							ent->client->ps.fd.forcePower -= 7;
+							ent->client->ps.fd.forcePower -= 6;
 						if (ent->client->pers.tribesClass == 2) //Med
 							ent->client->ps.fd.forcePower -= 5;
 						else 

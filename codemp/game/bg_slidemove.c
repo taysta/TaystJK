@@ -524,7 +524,7 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 					if (pSelfVeh->m_pVehicleInfo->type == VH_FIGHTER)
 					{ //player die good.. if me fighter
 						if (g_tweakWeapons.integer & WT_TRIBES)
-							pmult = 7.0f;
+							pmult = 7.0f * g_weaponDamageScale.value;
 						else
 							pmult = 2000.0f;
 					}

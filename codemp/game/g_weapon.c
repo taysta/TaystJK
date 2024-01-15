@@ -519,8 +519,8 @@ void WP_FireTurboLaserMissile( gentity_t *ent, vec3_t start, vec3_t dir )
 	missile->classname = "turbo_proj";
 	missile->s.weapon = WP_TURRET;
 
-	missile->damage = ent->damage;		//FIXME: externalize
-	missile->splashDamage = ent->splashDamage;	//FIXME: externalize
+	missile->damage = ent->damage * g_weaponDamageScale.value;		//FIXME: externalize
+	missile->splashDamage = ent->splashDamage * g_splashDamageScale.value;	//FIXME: externalize
 	missile->splashRadius = ent->splashRadius;	//FIXME: externalize
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 	missile->methodOfDeath = MOD_TURBLAST; //count as a heavy weap
@@ -5462,8 +5462,8 @@ gentity_t *WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWe
 		missile->classname = "vehicle_proj";
 
 		missile->s.genericenemyindex = ent->s.number+MAX_GENTITIES;
-		missile->damage = vehWeapon->iDamage;
-		missile->splashDamage = vehWeapon->iSplashDamage;
+		missile->damage = vehWeapon->iDamage * g_weaponDamageScale.value;
+		missile->splashDamage = vehWeapon->iSplashDamage * g_splashDamageScale.value;
 		missile->splashRadius = vehWeapon->fSplashRadius;
 
 		//FIXME: externalize some of these properties?
