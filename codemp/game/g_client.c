@@ -2259,7 +2259,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 }
 
 
-void DetectTribesClass(gentity_t *ent, const char *model) {
+void DetectTribesClass(gentity_t *ent, char *model) {
 	//WT_TRIBES
 	if (!ent || !ent->client)
 		return;
