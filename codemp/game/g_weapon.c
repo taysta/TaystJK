@@ -264,7 +264,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 	gentity_t	*missile;
 
 	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
-		damage = 5;
+		damage = 6*g_weaponDamageScale.value;
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
@@ -467,7 +467,7 @@ void WP_FireBlasterMissile( gentity_t *ent, vec3_t start, vec3_t dir, qboolean a
 	{ //animent
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			velocity = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-			damage = 6 * g_weaponDamageScale.value;
+			damage = 7 * g_weaponDamageScale.value;
 		}
 		else damage = 10 * g_weaponDamageScale.value;
 	}
@@ -1535,7 +1535,7 @@ static void WP_RepeaterMainFire( gentity_t *ent, vec3_t dir )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		vel = 10440 * g_projectileVelocityScale.value;//10440 but thats too fast?
-		damage = 9 * g_weaponDamageScale.value;
+		damage = 10 * g_weaponDamageScale.value;
 	}
 
 	missile = CreateMissileNew( muzzle, dir, vel, 10000, ent, qfalse, qtrue, qtrue );
@@ -4440,7 +4440,7 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	qboolean	hitDodged = qfalse;
 	vec3_t shot_mins, shot_maxs;
 	int			i;
-	int   shove = -400 * g_selfDamageScale.value;; //this seems like a dumb idea though?
+	int   shove = -400 * g_selfDamageScale.value; //this seems like a dumb idea though?
 	qboolean	ghoul2 = qfalse;
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
@@ -4604,7 +4604,7 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 					G_Damage( traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NO_KNOCKBACK|DAMAGE_NO_HIT_LOC, MOD_CONC_ALT );
 
 					//do knockback and knockdown manually
-					if ( traceEnt->client )
+					if ( traceEnt->client && !(g_tweakWeapons.integer & WT_TRIBES))
 					{//only if we hit a client
 						vec3_t pushDir;
 						VectorCopy( forward, pushDir );

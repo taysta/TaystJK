@@ -570,9 +570,9 @@ void pas_fire( gentity_t *ent )
 	myOrg[2] += fwd[2]*16;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 5220, MOD_SENTRY, ent );
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 5220 * g_projectileVelocityScale.value, MOD_SENTRY, ent );
 	else 
-		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10, 2300, MOD_SENTRY, ent);
+		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 2300 * g_projectileVelocityScale.value, MOD_SENTRY, ent);
 
 	G_RunObject(ent);
 }
@@ -1508,7 +1508,7 @@ void EWebDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int dam
 {
 	vec3_t fxDir;
 
-	G_RadiusDamage(self->r.currentOrigin, self, EWEB_DEATH_DMG, EWEB_DEATH_RADIUS, self, self, MOD_SUICIDE);
+	G_RadiusDamage(self->r.currentOrigin, self, EWEB_DEATH_DMG*g_splashDamageScale.value, EWEB_DEATH_RADIUS, self, self, MOD_SUICIDE);
 
 	VectorSet(fxDir, 1.0f, 0.0f, 0.0f);
 	G_PlayEffect(EFFECT_EXPLOSION_DETPACK, self->r.currentOrigin, fxDir);
@@ -1828,7 +1828,7 @@ void EWebUpdateBoneAngles(gentity_t *owner, gentity_t *eweb)
 	float incr;
 	float turnCap = 4.0f; //max degrees we can turn per update
 	if (g_tweakWeapons.integer & WT_TRIBES)
-		turnCap = 8;
+		turnCap = 24;
 	
 	VectorClear(yAng);
 	ideal = AngleSubtract(owner->client->ps.viewangles[YAW], eweb->s.angles[YAW]);
