@@ -2009,11 +2009,17 @@ gentity_t *EWeb_Create(gentity_t *spawner)
 
 	if (spawner->client->ewebHealth <= 0)
 	{ //refresh the owner's e-web health if its last e-web did not exist or was killed
-		spawner->client->ewebHealth = EWEB_HEALTH;
+		if (g_tribesMode.integer)
+			spawner->client->ewebHealth = EWEB_HEALTH*5;
+		else
+			spawner->client->ewebHealth = EWEB_HEALTH;
 	}
 
 	//resume health of last deployment
-	ent->maxHealth = EWEB_HEALTH;
+	if (g_tribesMode.integer)
+		ent->maxHealth = EWEB_HEALTH * 5;
+	else
+		ent->maxHealth = EWEB_HEALTH;
 	ent->health = spawner->client->ewebHealth;
 	G_ScaleNetHealth(ent);
 

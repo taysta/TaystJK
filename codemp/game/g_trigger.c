@@ -2103,9 +2103,11 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			return;
 	}
 
-	if (trigger->genericValue1) {
+	if ((trigger->spawnflags & 512)) {
 		//Bitmask that covers allowed movementstyles.  If the movementstyle is not here, don't activate the jumppad for that player.
-		if (trigger->genericValue1 & (1 << player->client->sess.movementStyle)) {
+		if ((trigger->genericValue1 == 0 && player->client->sess.movementStyle == 0)) {
+		}
+		else if (trigger->genericValue1 && (trigger->genericValue1 & (1 << player->client->sess.movementStyle))) {
 		}
 		else return;
 	}
@@ -2440,6 +2442,14 @@ void trigger_teleporter_touch (gentity_t *self, gentity_t *other, trace_t *trace
 		return;
 	}
 
+	// Allowed styles
+	if ((self->spawnflags & 8) && other->client->sess.raceMode) {
+		if (self->genericValue1 & (1 << other->client->sess.movementStyle)) {
+		}
+		else return;
+		//But this is messed up cuz of predicted touch
+	}
+
 	dest = 	G_PickTarget( self->target );
 	if (!dest) {
 		trap->Print ("Couldn't find teleporter destination\n");
@@ -2480,6 +2490,8 @@ void SP_trigger_teleport( gentity_t *self ) {
 
 	// make sure the client precaches this sound
 	G_SoundIndex("sound/weapons/force/speed.wav");
+
+	G_SpawnInt("allowedstyle", "0", &self->genericValue1);
 
 	self->s.eType = ET_TELEPORT_TRIGGER;
 	self->touch = trigger_teleporter_touch;
