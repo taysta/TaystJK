@@ -2899,7 +2899,7 @@ static void CG_Missile( centity_t *cent ) {
 			if (cent->currentState.pos.trType == TR_GRAVITY) {
 				float speed = 800 * ((cg.time - s1->pos.trTime) * 0.001f);
 				cent->currentState.pos.trDelta[2] -= speed;
-				weapon->missileTrailFunc(cent, weapon);
+				weapon->altMissileTrailFunc(cent, weapon);
 				cent->currentState.pos.trDelta[2] += speed;
 			}
 			else {

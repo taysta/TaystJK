@@ -4354,27 +4354,21 @@ static void PM_GrappleMoveTarzan( void ) {
 
 static void PM_GrappleMoveTribes(void) {
 	vec3_t vel;
-	float vlen;
-	int pullSpeed = 800;
-	int pullStrength1 = 20;
-	int pullStrength2 = 40;
+	float vlen, dot;
+	int minPull = 200;
+	int pullSpeed = 200;
+	int pullStrength1 = 15;
+	int pullStrength2 = 20;
 
-	float dot;
 	vec3_t enemyVel;
 	bgEntity_t *bgEnt = PM_BGEntForNum(pm_entSelf->s.lookTarget);
 
-
-#if _GAME
-	if (!pm->ps->stats[STAT_RACEMODE]) {
-		pullSpeed = g_hookStrength.integer;
-		pullStrength1 = g_hookStrength1.integer;
-		pullStrength2 = g_hookStrength2.integer;
-	}
-#else
-	if (!pm->ps->stats[STAT_RACEMODE]) {
-		pullSpeed = cgs.hookpull;
-	}
-#endif
+	if (pm->ps->stats[STAT_MAX_HEALTH] == 1000)
+		minPull = 200;
+	else if (pm->ps->stats[STAT_MAX_HEALTH] == 700)
+		minPull = 250;
+	else if (pm->ps->stats[STAT_MAX_HEALTH] == 500)
+		minPull = 400;
 
 	VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, vel); //Lasthitloc gets bugged?
 	vlen = VectorLength(vel);
@@ -4389,8 +4383,8 @@ static void PM_GrappleMoveTribes(void) {
 	else
 		pullSpeed = 0;
 
-	if (pullSpeed < 100)
-		pullSpeed = 100;
+	if (pullSpeed < minPull)
+		pullSpeed = minPull;
 
 	if (vlen < (pullSpeed / 2))
 		PM_Accelerate(vel, 2 * vlen, vlen * (pullStrength2 / (float)pullSpeed));
@@ -9614,9 +9608,9 @@ if (pm->ps->duelInProgress)
 				addTime *= 2;
 			break;
 		case WP_CONCUSSION:
-			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 1800;
-			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 1200;
 			break;
 		default:
@@ -9687,9 +9681,9 @@ if (pm->ps->duelInProgress)
 			addTime *= 2;
 		break;
 	case WP_CONCUSSION:
-		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 1800;
-		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 1200;
 		break;
 	default:

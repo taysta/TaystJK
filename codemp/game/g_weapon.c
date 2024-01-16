@@ -4459,7 +4459,9 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	if (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)
 		return;
 
-	if (g_tweakWeapons.integer & WT_TRIBES)
+	if (ent->client->sess.raceMode)
+		shove = 200;
+	else if (g_tweakWeapons.integer & WT_TRIBES)
 		shove = 0;
 
 	if (shove) {
