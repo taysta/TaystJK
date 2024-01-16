@@ -3895,7 +3895,11 @@ void FS_Startup( const char *gameName ) {
 	fs_copyfiles = Cvar_Get( "fs_copyfiles", "0", CVAR_INIT );
 	fs_cdpath = Cvar_Get ("fs_cdpath", "", CVAR_INIT|CVAR_PROTECTED, "(Read Only) Location for development files" );
 	fs_basepath = Cvar_Get ("fs_basepath", Sys_DefaultInstallPath(), CVAR_INIT|CVAR_PROTECTED, "(Read Only) Location for game files" );
+#ifdef DEDICATED
+	fs_basegame = Cvar_Get ("fs_basegame", "", CVAR_INIT );
+#else
 	fs_basegame = Cvar_Get ("fs_basegame", ETERNALJKGAME, CVAR_INIT );
+#endif
 	fs_portable = Cvar_Get ("fs_portable", "1", CVAR_INIT|CVAR_PROTECTED, "Disable fs_homepath and use only one folder for all game files" );
 	homePath = Sys_DefaultHomePath();
 	if (!homePath || !homePath[0]) {
@@ -3907,8 +3911,11 @@ void FS_Startup( const char *gameName ) {
 
 	fs_dirbeforepak = Cvar_Get("fs_dirbeforepak", "0", CVAR_INIT|CVAR_PROTECTED, "Prioritize directories before paks if not pure" );
 
-	fs_forcegame = Cvar_Get ("fs_forcegame", "EternalJK", CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server)." );
-
+#ifdef DEDICATED
+	fs_forcegame = Cvar_Get ("fs_forcegame", "", CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server)." );
+#else
+	fs_forcegame = Cvar_Get("fs_forcegame", "EternalJK", CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server).");
+#endif
 	// add search path elements in reverse priority order (lowest priority first)
 	if (fs_cdpath->string[0]) {
 		FS_AddGameDirectory( fs_cdpath->string, gameName );
