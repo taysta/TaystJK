@@ -2275,7 +2275,7 @@ void DetectTribesClass(gentity_t *ent, char *model) {
 					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes heavy class\n\""));
 				}
 			}
-			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7)) {
+			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7) || !Q_strncmp("monmothma", model, 9)) {
 				//Com_Printf("Detetcting heavy\n");
 				if (ent->client->pers.tribesClass != 1) {
 					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
