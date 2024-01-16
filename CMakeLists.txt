@@ -250,6 +250,18 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+	
+	set(COMPILE_GCC_UNROLL_LOOPS OFF)
+	option(CompileWithGCCUnrollLoops "Whether to compile with the -funroll-loops gcc option. Produces larger binaries with possibly better performance." OFF)
+	if(CompileWithGCCUnrollLoops)
+		set(COMPILE_GCC_UNROLL_LOOPS ON)
+	endif()
+	
+	if(COMPILE_GCC_UNROLL_LOOPS)
+		set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -funroll-loops")
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -funroll-loops")
+	endif()
+	
 
 	# enable somewhat modern C++
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -270,8 +282,16 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mstackrealign")
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpmath=sse")
 		endif()
-
-		if(WIN32)
+		
+		set(COMPILE_WITH_STATIC_GCC_STDC OFF)
+		if(NOT WIN32)
+			option(CompileWithStaticGCCAndSTDCPP "Whether to compile with the -static-libgcc and -static-libstdc++ options on linux." OFF)
+			if(CompileWithStaticGCCAndSTDCPP)
+				set(COMPILE_WITH_STATIC_GCC_STDC ON)
+			endif()
+		endif()
+		
+		if(WIN32 OR COMPILE_WITH_STATIC_GCC_STDC)
 			# Link libgcc and libstdc++ statically
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
 			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc")
