@@ -3116,6 +3116,24 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 }
 
 
+void mortarExplode(gentity_t *self)
+{
+	self->takedamage = qfalse;
+
+	VectorNormalize(self->s.pos.trDelta);
+
+	if (self->activator)
+		G_RadiusDamage(self->r.currentOrigin, self->activator, self->splashDamage, self->splashRadius, self, self, self->methodOfDeath/*MOD_LT_SPLASH*/);
+	G_AddEvent(self, EV_MISSILE_MISS, 0);
+
+	//G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, self->s.pos.trDelta);
+
+	self->think = G_FreeEntity;
+	self->nextthink = level.time;
+}
+
+
+
 //------------------------------------------------------------------------------
 static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 //------------------------------------------------------------------------------
@@ -3126,12 +3144,12 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 
 	missile = CreateMissileNew( start, fwd, velocity, lifetime, self, qtrue, qtrue, qtrue );
 
-	missile->think = WP_flechette_alt_blow;
+	missile->think = mortarExplode;
 
 	missile->activator = self;
 
 	missile->s.weapon = WP_REPEATER;
-	missile->classname = "flech_alt";
+	missile->classname = "repeater_alt_proj";
 	missile->mass = 4;
 	missile->setTime = level.time;
 
@@ -4444,8 +4462,18 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	qboolean	ghoul2 = qfalse;
 
 //[JAPRO - Serverside - Weapons - Tweak weapons Buff Conc alt - Start]
-	if (g_tweakWeapons.integer & WT_TRIBES)
-		damage = 30 * g_weaponDamageScale.value;
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (ent->client) {
+			damage = ent->client->ps.fd.forcePower * 0.5f * g_weaponDamageScale.value;
+			ent->client->jetPackDebReduce = level.time + 300;
+			if (damage < 10)
+				damage = 10;
+			ent->client->ps.fd.forcePower = 0;
+		}
+		else {
+			damage = 30 * g_weaponDamageScale.value;
+		}
+	}
 	else if (g_tweakWeapons.integer & WT_CONC_ALT_DAM)
 		damage *= 2.0f;
 
