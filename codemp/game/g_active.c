@@ -3428,7 +3428,7 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 		return qfalse;
 	if (BG_InSpecialJump(ent->client->ps.legsAnim))
 		return qfalse;	
-	if (ent->client->sess.movementStyle == MV_TRIBES && ent->client->ps.fd.forcePower < 30)
+	if (ent->client->sess.movementStyle == MV_TRIBES && ent->client->ps.fd.forcePower < 25)
 		return qfalse;
 	return qtrue;
 }
@@ -3490,7 +3490,7 @@ void ClientThink_real( gentity_t *ent ) {
 		if ((g_saberDisable.integer || (!client->sess.raceMode && g_tweakWeapons.integer & MV_TRIBES) || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
 			&& ent->s.weapon == WP_SABER && ent->s.eType == ET_PLAYER && client->sess.sessionTeam != TEAM_SPECTATOR) {
 			//trap->Print("AnimLevel: %i, DrawLevel: %i, Baselevel: %i\n", ent->client->ps.fd.saberAnimLevel, ent->client->ps.fd.saberDrawAnimLevel, ent->client->ps.fd.saberAnimLevelBase);
-			if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (!client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
 				if (client->pers.tribesClass == 3) {
 					if (client->ps.fd.saberAnimLevel == SS_DUAL || client->ps.fd.saberAnimLevel == SS_STAFF) {
 						forceSingle = qtrue;
@@ -3510,29 +3510,29 @@ void ClientThink_real( gentity_t *ent ) {
 					}
 				}
 			}
-			else if (g_saberDisable.integer & SABERSTYLE_DESANN) { //Force Desann
+			else if (!client->sess.raceMode && g_saberDisable.integer & SABERSTYLE_DESANN) { //Force Desann
 				client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_DESANN;
 			}
-			else if (g_saberDisable.integer & SABERSTYLE_TAVION) { //Force Tavion
+			else if (!client->sess.raceMode && g_saberDisable.integer & SABERSTYLE_TAVION) { //Force Tavion
 				client->ps.fd.saberAnimLevel = client->ps.fd.saberDrawAnimLevel = client->ps.fd.saberAnimLevelBase = SS_TAVION;
 			}
-			else if (client->ps.fd.saberAnimLevel == SS_FAST) {
+			else if (!client->sess.raceMode && client->ps.fd.saberAnimLevel == SS_FAST) {
 				if (g_saberDisable.integer & SABERSTYLE_BLUE) //No blue
 					changeStyle = qtrue;
 			}
-			else if (client->ps.fd.saberAnimLevel == SS_MEDIUM) {
+			else if (!client->sess.raceMode && client->ps.fd.saberAnimLevel == SS_MEDIUM) {
 				if (g_saberDisable.integer & SABERSTYLE_YELLOW) //No yellow
 					changeStyle = qtrue;
 			}
-			else if (client->ps.fd.saberAnimLevel == SS_STRONG) {
+			else if (!client->sess.raceMode && client->ps.fd.saberAnimLevel == SS_STRONG) {
 				if (g_saberDisable.integer & SABERSTYLE_RED) //No red
 					changeStyle = qtrue;
 			}
-			else if (client->ps.fd.saberAnimLevel == SS_DUAL) {
+			else if (!client->sess.raceMode && client->ps.fd.saberAnimLevel == SS_DUAL) {
 				if (g_saberDisable.integer & SABERSTYLE_DUAL) //No duals
 					forceSingle = qtrue;
 			}
-			else if (client->ps.fd.saberAnimLevel == SS_STAFF) {
+			else if (!client->sess.raceMode && client->ps.fd.saberAnimLevel == SS_STAFF) {
 				if (g_saberDisable.integer & SABERSTYLE_STAFF) //No staff
 					forceSingle = qtrue;
 			}
