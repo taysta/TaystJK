@@ -397,7 +397,26 @@ static void CG_AddWeaponWithPowerups( refEntity_t *gun, int powerups ) {
 	}
 
 	// add powerup effects
-	trap->R_AddRefEntityToScene( gun );
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES && (cg.predictedPlayerState.jetpackFuel < 100 && (cg.predictedPlayerState.weapon == WP_BLASTER || cg.predictedPlayerState.weapon == WP_BRYAR_OLD)))
+	{ //overheat
+		float amt = (255 * (cg.predictedPlayerState.jetpackFuel * 0.01f));
+		if (amt > 255)
+			amt = 255;
+		else if (amt < 0)
+			amt = 0;
+
+		gun->shaderRGBA[0] = 255;
+		gun->shaderRGBA[1] = amt;
+		gun->shaderRGBA[2] = amt;
+		gun->renderfx |= RF_RGB_TINT;
+
+		trap->R_AddRefEntityToScene(gun);
+		gun->renderfx &= ~RF_RGB_TINT;
+		gun->shaderRGBA[0] = gun->shaderRGBA[1] = gun->shaderRGBA[2] = 0;
+	}
+	else {
+		trap->R_AddRefEntityToScene(gun);
+	}
 
 	if (cg.predictedPlayerState.electrifyTime > cg.time)
 	{ //add electrocution shell
@@ -2039,7 +2058,6 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 			return;
 	}
 }
-
 
 int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 	int missileSpeed = 0;

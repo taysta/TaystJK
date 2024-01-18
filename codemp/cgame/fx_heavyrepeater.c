@@ -151,7 +151,11 @@ void FX_RepeaterAltProjectileThink( centity_t *cent, const struct weaponInfo_s *
 	{
 		CG_DistortionOrb(cent);
 	}
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
+
+	if(cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+		trap->FX_PlayEffectID( cgs.effects.mortarProjectile, cent->lerpOrigin, forward, -1, -1, qfalse );
+	else
+		trap->FX_PlayEffectID( cgs.effects.repeaterAltProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
 }
 
 /*
@@ -162,7 +166,11 @@ FX_RepeaterAltHitWall
 
 void FX_RepeaterAltHitWall( vec3_t origin, vec3_t normal )
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+		trap->FX_PlayEffectID(cgs.effects.mortarExplosion, origin, normal, -1, -1, qfalse);
+	}
+	else
+		trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
 }
 
 /*
@@ -173,5 +181,9 @@ FX_RepeaterAltHitPlayer
 
 void FX_RepeaterAltHitPlayer( vec3_t origin, vec3_t normal, qboolean humanoid )
 {
-	trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+		trap->FX_PlayEffectID(cgs.effects.mortarExplosion, origin, normal, -1, -1, qfalse);
+	}
+	else
+		trap->FX_PlayEffectID( cgs.effects.repeaterAltWallImpactEffect, origin, normal, -1, -1, qfalse );
 }
