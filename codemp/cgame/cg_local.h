@@ -2136,6 +2136,10 @@ typedef struct cgEffects_s {
 	//breath effects
 	fxHandle_t	breath;
 	fxHandle_t	waterBreath;
+
+	//tribes effects
+	fxHandle_t mortarExplosion;
+	fxHandle_t mortarProjectile;
 } cgEffects_t;
 
 #define MAX_STATIC_MODELS 4000
