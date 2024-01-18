@@ -2296,9 +2296,10 @@ void DetectTribesClass(gentity_t *ent, char *model) {
 		}
 		else {
 			//trap->SendServerCommand(ent - g_entities, va("print \"Spawning as non tribes class\n\""));
-			ent->client->pers.tribesClass = 0;
-			if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+			if (ent->client->pers.tribesClass && ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+				ent->client->pers.tribesClass = 0;
 				G_Kill(ent);
+			}
 		}
 	}
 }

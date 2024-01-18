@@ -9609,7 +9609,7 @@ if (pm->ps->duelInProgress)
 			break;
 		case WP_CONCUSSION:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 1800;
+				addTime = 800;
 			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 1200;
 			break;
@@ -9682,7 +9682,7 @@ if (pm->ps->duelInProgress)
 		break;
 	case WP_CONCUSSION:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
-			addTime = 1800;
+			addTime = 800;
 		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 1200;
 		break;
