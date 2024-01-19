@@ -459,7 +459,6 @@ void SV_SpawnServer( char *server, qboolean killBots, ForceReload_e eForceReload
 	const char	*p;
 #ifdef DEDICATED
 	SV_StopAutoRecordDemos();
-	SV_ClearAllDemoPreRecord();
 #endif
 
 	SV_SendMapChange();
@@ -761,7 +760,7 @@ Ghoul2 Insert End
 			SV_SendClientGameState( client );
 		}
 	}
-
+	SV_ClearAllDemoPreRecord();
 	SV_BeginAutoRecordDemos();
 #endif
 }
@@ -1139,6 +1138,11 @@ Ghoul2 Insert Start
 	// free current level
 	SV_ClearServer();
 	CM_ClearMap();//jfm: add a clear here since it's commented out in clearServer.  This prevents crashing cmShaderTable on exit.
+
+#ifdef DEDICATED
+	SV_StopAutoRecordDemos();
+	SV_ClearAllDemoPreRecord();
+#endif
 
 	// free server static data
 	if ( svs.clients ) {
