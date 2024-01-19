@@ -2269,36 +2269,37 @@ void DetectTribesClass(gentity_t *ent, char *model) {
 			if (!Q_strncmp("tribesheavy", model, 16) || !Q_strncmp("reborn_twin", model, 11) || !Q_strncmp("reelo", model, 5) || !Q_strncmp("noghri", model, 6) || !Q_strncmp("rax_joris", model, 9)) {
 				//Com_Printf("Detetcting heavy\n");
 				if (ent->client->pers.tribesClass != 3) {
+					ent->client->pers.tribesClass = 3;
 					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 						G_Kill(ent);
-					ent->client->pers.tribesClass = 3;
 					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes heavy class\n\""));
 				}
 			}
 			else if (!Q_strncmp("tavion_new", model, 10) || !Q_strncmp("tavion", model, 6) || !Q_strncmp("jan", model, 3) || !Q_strncmp("alora", model, 5) || !Q_strncmp("alora2", model, 6) || !Q_strncmp("jedi_tf", model, 7) || !Q_strncmp("jedi_zf", model, 7) || !Q_strncmp("jedi_hf", model, 7) || !Q_strncmp("monmothma", model, 9)) {
 				//Com_Printf("Detetcting heavy\n");
 				if (ent->client->pers.tribesClass != 1) {
+					ent->client->pers.tribesClass = 1;
 					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 						G_Kill(ent);
-					ent->client->pers.tribesClass = 1;
 					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes light class\n\""));
 				}
 			}
 			else {
 				//Com_Printf("Detetcting medium \n");
 				if (ent->client->pers.tribesClass != 2) {
+					ent->client->pers.tribesClass = 2;
 					if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 						G_Kill(ent);
-					ent->client->pers.tribesClass = 2;
 					trap->SendServerCommand(ent - g_entities, va("print \"Spawning as Tribes medium class\n\""));
 				}
 			}
 		}
 		else {
 			//trap->SendServerCommand(ent - g_entities, va("print \"Spawning as non tribes class\n\""));
-			if (ent->client->pers.tribesClass && ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+			if (ent->client->pers.tribesClass) {
 				ent->client->pers.tribesClass = 0;
-				G_Kill(ent);
+				if (ent->health > 0 && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+					G_Kill(ent);
 			}
 		}
 	}
