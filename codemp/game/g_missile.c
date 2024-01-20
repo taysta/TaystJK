@@ -1063,7 +1063,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				ent->s.otherEntityNum = ent->enemy->s.clientNum;
 				other->s.otherEntityNum = ent->parent->s.clientNum;
 
-				ent->parent->s.lookTarget = ent->enemy->s.clientNum;
+				//ent->parent->s.lookTarget = ent->enemy->s.clientNum;
 			} else {
 				if ( !strcmp(other->classname, "func_rotating") || !strcmp(other->classname, "func_pendulum") ) {
 					Weapon_HookFree(ent);	// don't work
