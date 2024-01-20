@@ -5229,10 +5229,12 @@ void Weapon_GrapplingHook_Fire (gentity_t *ent)
 
 void Weapon_HookFree (gentity_t *ent)
 {
-	ent->parent->client->hook = NULL;
-	ent->parent->client->ps.pm_flags &= ~( PMF_GRAPPLE );
-	ent->parent->client->hookHasBeenFired = qfalse;
-	ent->parent->client->fireHeld= qfalse;
+	if (ent && ent->parent && ent->parent->client) { //Crash fix but now they are stuck without being able to grapple again until... wepchange/fire? Respawn? Grapples should probably just not bounce off sabers it makes too many fuckups
+		ent->parent->client->hook = NULL;
+		ent->parent->client->ps.pm_flags &= ~(PMF_GRAPPLE);
+		ent->parent->client->hookHasBeenFired = qfalse;
+		ent->parent->client->fireHeld = qfalse;
+	}
 	G_FreeEntity( ent );
 }
 
