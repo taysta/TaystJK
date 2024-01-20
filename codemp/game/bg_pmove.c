@@ -4353,9 +4353,8 @@ static void PM_GrappleMoveTarzan( void ) {
 }
 
 static void PM_GrappleMoveTribes(void) {
-	vec3_t vel;
 	vec3_t diff, diffNormal;
-	float oldVel, newVel, pullStrength = 7, wishSpeed = 600;
+	float oldVel, newVel, pullStrength = 7;
 
 	VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, diff);
 	VectorCopy(diff, diffNormal);
@@ -4372,36 +4371,35 @@ static void PM_GrappleMoveTribes(void) {
 		//Maybe adjust the vectorscale by how fast the enemy is moving?
 
 		oldVel = VectorLength(pm->ps->velocity);
-		PM_Accelerate(diffNormal, wishSpeed, pullStrength); //600 is WishSpeed
+		PM_Accelerate(diffNormal, 600, pullStrength); //600 is WishSpeed
 		newVel = VectorLength(pm->ps->velocity);
 
+		if (newVel > (pm->ps->speed * 1.75f))//Dont give them an advantage to grapple launching instead of dashing for gaining speed
+			VectorScale(pm->ps->velocity, oldVel / newVel, pm->ps->velocity);
 
 		//Com_Printf("^7Detecting hook is stationary\n");
-		if (newVel > (pm->ps->speed * 1.75f)) {//Dont give them an advantage to grapple launching instead of dashing for gaining speed
-			VectorScale(pm->ps->velocity, oldVel / newVel, pm->ps->velocity);
-		}
 	}
 	else {
-		float dot;
+		float dot, wishSpeed;
 		vec3_t hookVelNormal;
 
 		VectorCopy(pm->ps->hyperSpaceAngles, hookVelNormal);
 		VectorNormalize(hookVelNormal);
 		dot = DotProduct(diffNormal, hookVelNormal); //Am I moving towards my target
-		if (dot > 0)
-			wishSpeed = VectorLength(pm->ps->hyperSpaceAngles) * dot;
-		else
-			wishSpeed = 0;
+
+		wishSpeed = VectorLength(pm->ps->hyperSpaceAngles) * dot;
+
+		if (wishSpeed < 300)
+			wishSpeed = 300;
 
 		//oldVel = VectorLength(pm->ps->velocity);
 		PM_Accelerate(diffNormal, wishSpeed, pullStrength); //600 is WishSpeed
 		newVel = VectorLength(pm->ps->velocity);
 
-		if (newVel > (pm->ps->speed * 1.75f)) { //Dont give them an advantage to grapple launching instead of dashing for gaining speed
-			VectorScale(pm->ps->velocity, wishSpeed / newVel, pm->ps->velocity);
-		}
+		if (newVel > (pm->ps->speed * 1.75f))//Dont give them an advantage to grapple launching instead of dashing for gaining speed
+			VectorScale(pm->ps->velocity, wishSpeed / newVel, pm->ps->velocity); //Can this speed us up?
 
-		//Com_Printf("^3Detecting hook is moving\n");
+		//Com_Printf("^3Detecting hook is moving. Hook speed is %.0f, our speed is %.0f, dist is %.2f, dot is %.2f, wishSpeed is %.0f\n", VectorLength(pm->ps->hyperSpaceAngles), VectorLength(pm->ps->velocity), VectorLength(diff), dot, wishSpeed);
 	}
 
 	if (diff[2] > 0.5f && pml.walking) {
