@@ -1470,7 +1470,7 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	if (self->client->sess.movementStyle == MV_TRIBES) {
 		VectorSet(hook->r.mins, -16, -16, -16);
 		VectorSet(hook->r.maxs, 16, 16, 16);
-		self->client->ps.fd.forcePower -= 40;
+		self->client->ps.fd.forcePower -= 25;
 		if (self->client->ps.fd.forcePower < 0)
 			self->client->ps.fd.forcePower = 0;
 	}
