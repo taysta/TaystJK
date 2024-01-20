@@ -5238,6 +5238,12 @@ void Weapon_HookFree (gentity_t *ent)
 
 void Weapon_HookThink (gentity_t *ent)
 {
+	if (!ent || !ent->parent) {
+		Weapon_HookFree(ent);
+		Com_Printf("Clearing grapple hook?\n");
+		return;
+	}
+
 	if (DistanceSquared(ent->r.currentOrigin, ent->parent->client->ps.origin) > 2048 * 2048) {
 		Weapon_HookFree(ent);
 		return;

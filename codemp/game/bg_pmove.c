@@ -4354,11 +4354,12 @@ static void PM_GrappleMoveTarzan( void ) {
 
 static void PM_GrappleMoveTribes(void) {
 	vec3_t vel;
-	vec3_t diff;
-	float oldVel, newVel, pullStrength = 7;
+	vec3_t diff, diffNormal;
+	float oldVel, newVel, pullStrength = 7, wishSpeed = 600;
 
 	VectorSubtract(pm->ps->lastHitLoc, pm->ps->origin, diff);
-	VectorNormalize(diff);
+	VectorCopy(diff, diffNormal);
+	VectorNormalize(diffNormal);
 
 	//Should class modify wishspeed or accel strength or both?  probably accel strength.
 	if (pm->ps->stats[STAT_MAX_HEALTH] == 1000)
@@ -4366,19 +4367,46 @@ static void PM_GrappleMoveTribes(void) {
 	else if (pm->ps->stats[STAT_MAX_HEALTH] == 500)
 		pullStrength = 9;
 
-	oldVel = VectorLength(pm->ps->velocity);
-	PM_Accelerate(diff, 600, pullStrength); //600 is WishSpeed
-	newVel = VectorLength(pm->ps->velocity);
-
 	if (!VectorLengthSquared(pm->ps->hyperSpaceAngles)) {//Its on a stationary target, so don't do the chase...
 		//Todo: figure out how to stop them from just doing this to teammates
 		//Maybe adjust the vectorscale by how fast the enemy is moving?
-		if (oldVel > (pm->ps->speed * 1.75f)) //Dont give them an advantage to grapple launching instead of dashing for gaining speed
+
+		oldVel = VectorLength(pm->ps->velocity);
+		PM_Accelerate(diffNormal, wishSpeed, pullStrength); //600 is WishSpeed
+		newVel = VectorLength(pm->ps->velocity);
+
+
+		//Com_Printf("^7Detecting hook is stationary\n");
+		if (newVel > (pm->ps->speed * 1.75f)) {//Dont give them an advantage to grapple launching instead of dashing for gaining speed
 			VectorScale(pm->ps->velocity, oldVel / newVel, pm->ps->velocity);
+		}
+	}
+	else {
+		float dot;
+		vec3_t hookVelNormal;
+
+		VectorCopy(pm->ps->hyperSpaceAngles, hookVelNormal);
+		VectorNormalize(hookVelNormal);
+		dot = DotProduct(diffNormal, hookVelNormal); //Am I moving towards my target
+		if (dot > 0)
+			wishSpeed = VectorLength(pm->ps->hyperSpaceAngles) * dot;
+		else
+			wishSpeed = 0;
+
+		//oldVel = VectorLength(pm->ps->velocity);
+		PM_Accelerate(diffNormal, wishSpeed, pullStrength); //600 is WishSpeed
+		newVel = VectorLength(pm->ps->velocity);
+
+		if (newVel > (pm->ps->speed * 1.75f)) { //Dont give them an advantage to grapple launching instead of dashing for gaining speed
+			VectorScale(pm->ps->velocity, wishSpeed / newVel, pm->ps->velocity);
+		}
+
+		//Com_Printf("^3Detecting hook is moving\n");
 	}
 
-	if (vel[2] > 0.5f && pml.walking) {
+	if (diff[2] > 0.5f && pml.walking) {
 		pml.walking = qfalse;
+		//Com_Printf("^1Setting walking false\n");
 		//PM_ForceLegsAnim( BOTH_JUMP1  ); //LEGS_JUMP
 	}
 
