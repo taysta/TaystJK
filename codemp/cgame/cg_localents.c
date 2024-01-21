@@ -913,6 +913,10 @@ void CG_AddMissile(localEntity_t *le) {
 		case WP_BLASTER:
 			trap->FX_PlayEffectID(cgs.effects.blasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
 			break;
+		case WP_DISRUPTOR:
+			if (cgs.jcinfo & JAPRO_CINFO_PROJSNIPER)
+				trap->FX_PlayEffectID(cgs.effects.bryarShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			break;
 		case WP_BOWCASTER:
 			trap->FX_PlayEffectID(cgs.effects.bowcasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
 			break;
