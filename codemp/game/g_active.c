@@ -5043,7 +5043,7 @@ void ClientThink_real( gentity_t *ent ) {
 #if _GRAPPLE
 	//CHUNK 2
 	//Com_Printf("Chunk 2 start!\n");
-	if (pm && ent->client)
+	if (ent->client) //why pmove here
 	{
 		int hookFloodProtect = g_hookFloodProtect.integer;
 		if (ent->client->sess.movementStyle == MV_TRIBES) {

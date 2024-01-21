@@ -1020,7 +1020,6 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 					}
 					/*
 					if (!ent->s.hasLookTarget) {
-						Com_Printf("111\n");
 						vec3_t enemyVel, hookVel;
 						float dot;
 
@@ -1063,7 +1062,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 				ent->s.otherEntityNum = ent->enemy->s.clientNum;
 				other->s.otherEntityNum = ent->parent->s.clientNum;
 
-				ent->parent->s.lookTarget = ent->enemy->s.clientNum;
+				//ent->parent->s.lookTarget = ent->enemy->s.clientNum;
 			} else {
 				if ( !strcmp(other->classname, "func_rotating") || !strcmp(other->classname, "func_pendulum") ) {
 					Weapon_HookFree(ent);	// don't work
@@ -1471,7 +1470,7 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	if (self->client->sess.movementStyle == MV_TRIBES) {
 		VectorSet(hook->r.mins, -16, -16, -16);
 		VectorSet(hook->r.maxs, 16, 16, 16);
-		self->client->ps.fd.forcePower -= 40;
+		self->client->ps.fd.forcePower -= 25;
 		if (self->client->ps.fd.forcePower < 0)
 			self->client->ps.fd.forcePower = 0;
 	}
@@ -1479,57 +1478,5 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	return hook;
 }
 #endif
-
-
-
-/*
-//-----------------------------------------------------------------------------
-gentity_t *fire_grapple( gentity_t *self, vec3_t org, vec3_t dir )
-//-----------------------------------------------------------------------------
-{
-	gentity_t	*missile;
-
-	missile = G_Spawn(qfalse);
-	
-	missile->nextthink = level.time + 5000;
-	missile->think = G_FreeEntity;
-	missile->s.eType = ET_MISSILE;
-	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
-
-		missile->classname = "hook";
-	//missile->parent = owner;
-	//missile->r.ownerNum = owner->s.number;
-
-	//japro - do this so clients can know who the missile belongs to.. so they can hide it if its from another dimension
-	//missile->s.owner = owner->s.number;
-	//
-
-	missile->s.pos.trType = TR_LINEAR;
-	missile->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;	// NOTENOTE This is a Quake 3 addition over JK2
-	missile->target_ent = NULL;
-
-	//if (owner->client && owner->client->sess.raceMode)
-		missile->s.pos.trTime -= MISSILE_PRESTEP_TIME;//this be why rocketjump fucks up at high speed
-
-	SnapVector(org);
-	VectorCopy( org, missile->s.pos.trBase );
-	VectorScale( dir, 555, missile->s.pos.trDelta );
-	VectorCopy( org, missile->r.currentOrigin);
-	SnapVector(missile->s.pos.trDelta);
-
-	Com_Printf("ass\n");
-
-	self->client->hook = missile;
-
-	Com_Printf("Missile made\n");
-
-	return missile;
-}
-
-
-*/
-//=============================================================================
-
-
 
 

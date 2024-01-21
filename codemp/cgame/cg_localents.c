@@ -917,8 +917,12 @@ void CG_AddMissile(localEntity_t *le) {
 			trap->FX_PlayEffectID(cgs.effects.bowcasterShotEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
 			break;
 		case WP_REPEATER:
-			if (altFire)
-				trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			if (altFire) {
+				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+					trap->FX_PlayEffectID(cgs.effects.mortarProjectile, currentPos, le->angles.trBase, -1, -1, qfalse);
+				else
+					trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
+			}
 			else
 				trap->FX_PlayEffectID(cgs.effects.repeaterProjectileEffect, currentPos, le->angles.trBase, -1, -1, qfalse);
 			break;

@@ -5229,15 +5229,27 @@ void Weapon_GrapplingHook_Fire (gentity_t *ent)
 
 void Weapon_HookFree (gentity_t *ent)
 {
-	ent->parent->client->hook = NULL;
-	ent->parent->client->ps.pm_flags &= ~( PMF_GRAPPLE );
-	ent->parent->client->hookHasBeenFired = qfalse;
-	ent->parent->client->fireHeld= qfalse;
+	if (ent && ent->parent && ent->parent->client) { //Crash fix but now they are stuck without being able to grapple again until... wepchange/fire? Respawn? Grapples should probably just not bounce off sabers it makes too many fuckups
+		ent->parent->client->hook = NULL;
+		ent->parent->client->ps.pm_flags &= ~(PMF_GRAPPLE);
+		ent->parent->client->hookHasBeenFired = qfalse;
+		ent->parent->client->fireHeld = qfalse;
+	}
 	G_FreeEntity( ent );
 }
 
 void Weapon_HookThink (gentity_t *ent)
 {
+	if (!ent || !ent->parent) {
+		Weapon_HookFree(ent);
+		return;
+	}
+
+	if (DistanceSquared(ent->r.currentOrigin, ent->parent->client->ps.origin) > 2048 * 2048) {
+		Weapon_HookFree(ent);
+		return;
+	}
+
 	if ( ent->enemy ) {
 		if ( ent->enemy->client ) {
 			vec3_t v;
@@ -5247,17 +5259,18 @@ void Weapon_HookThink (gentity_t *ent)
 				return;
 			}
 
-//			VectorCopy( ent->enemy->s.pos.trDelta, ent->s.pos.trDelta );
 			v[0] = ent->enemy->r.currentOrigin[0];
 			v[1] = ent->enemy->r.currentOrigin[1];
 			v[2] = ent->enemy->r.currentOrigin[2];
 			SnapVectorTowards( v, ent->s.pos.trBase );	// save net bandwidth
 
 			G_SetOrigin( ent, v );
+			VectorCopy(ent->enemy->s.pos.trDelta, ent->s.pos.trDelta);
+			SnapVector(ent->s.pos.trDelta);
 		}
 	}
 
-	//VectorCopy( ent->r.currentOrigin, ent->parent->client->ps.hyperSpaceAngles ); //wtf- not used. should be for hook angles?
+	VectorCopy( ent->s.pos.trDelta, ent->parent->client->ps.hyperSpaceAngles ); //wtf- not used. should be for hook angles? rn its for hook vel since using looktarget to have client use that to find vel is broken cuz npcs break it (?)
 	VectorCopy( ent->r.currentOrigin, ent->parent->client->ps.lastHitLoc ); //snapvector this?
 	ent->nextthink = level.time + FRAMETIME;
 }
