@@ -4391,6 +4391,7 @@ static void PM_GrappleMoveTribes(void) {
 
 		if (wishSpeed < 300)
 			wishSpeed = 300;
+		//else give this a max so we cant tether to people going like 300kph effectively?
 
 		//oldVel = VectorLength(pm->ps->velocity);
 		PM_Accelerate(diffNormal, wishSpeed, pullStrength); //600 is WishSpeed

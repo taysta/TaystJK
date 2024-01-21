@@ -854,8 +854,8 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	//missile->flags |= FL_BOUNCE;
 	missile->bounceCount = 8;//was 3
 
-	//if (g_tweakWeapons.integer & PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
-	missile->s.pos.trType = TR_GRAVITY;
+	if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
+		missile->s.pos.trType = TR_GRAVITY;
 }
 
 //---------------------------------------------------------
