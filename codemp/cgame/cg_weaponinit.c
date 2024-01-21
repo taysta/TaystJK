@@ -391,14 +391,12 @@ void CG_RegisterWeapon( int weaponNum) {
 		weaponInfo->altMissileHitSound	= NULL_SOUND;
 		weaponInfo->altMissileTrailFunc = FX_RepeaterAltProjectileThink;
 
-		if(cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+		if(cgs.serverMod == SVMOD_JAPRO) {
 			cgs.effects.mortarProjectile = trap->FX_RegisterEffect("tribes/weapons/mortar/projectile");
 			cgs.effects.mortarExplosion = trap->FX_RegisterEffect("tribes/weapons/mortar/explosion");
-		} else {
-			cgs.effects.repeaterWallImpactEffect	= trap->FX_RegisterEffect( "repeater/wall_impact" );
-			cgs.effects.repeaterAltProjectileEffect	= trap->FX_RegisterEffect( "repeater/alt_projectile" );
 		}
-
+		cgs.effects.repeaterWallImpactEffect	= trap->FX_RegisterEffect( "repeater/wall_impact" );
+		cgs.effects.repeaterAltProjectileEffect	= trap->FX_RegisterEffect( "repeater/alt_projectile" );
 		cgs.effects.repeaterProjectileEffect	= trap->FX_RegisterEffect( "repeater/projectile" );
 		cgs.effects.repeaterAltProjectileEffect	= trap->FX_RegisterEffect( "repeater/alt_projectile" );
 		cgs.effects.repeaterFleshImpactEffect	= trap->FX_RegisterEffect( "repeater/flesh_impact" );
