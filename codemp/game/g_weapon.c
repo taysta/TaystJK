@@ -807,13 +807,16 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	if (g_tweakWeapons.integer & WT_TRIBES)
 		vel = 32000;
 
+	VectorMA( muzzle, -6, vright, muzzle );//temp fix but we should rewrite calcmuzzlepoint since this actually affects all weapons but is only really noticible with sniper
+	VectorMA(muzzle, 6, up, muzzle);
+
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
 	if (altFire) {
 		float boxSize = 0;
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
-		damage = 50;
+		damage = 40;
 
 		if (count < 1)
 			count = 1;
@@ -821,6 +824,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 			count = 30;
 
 		damage += count * 2.5f;
+		damage *= g_weaponDamageScale.value;
 
 		count = ((count - 1.0f) / (30.0f - 1.0f)) * (20.0f - 1.0f) + 1.0f;//scale count back down to the 1-5 range for bullet size
 		if (count < 2)
@@ -837,8 +841,6 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		VectorSet(missile->r.maxs, 2, 2, 2); //constant hitbox
 		VectorSet(missile->r.mins, -2, -2, -2);
 	}
-
-	VectorMA( muzzle, -6, vright, muzzle );//note
 
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
