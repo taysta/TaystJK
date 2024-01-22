@@ -2835,7 +2835,7 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 		}
 
 		Q_strncpyz(cosmeticsPtr[j].name, cosmetic, sizeof(cosmeticsPtr[j].name));
-		cosmeticsPtr[j].xOffset = cosmeticsPtr[j].xOffset = cosmeticsPtr[j].yOffset = 0;
+		cosmeticsPtr[j].xOffset = cosmeticsPtr[j].yOffset = cosmeticsPtr[j].zOffset = 0;
 		cosmeticsPtr[j].handle = trap->R_RegisterModel(va("%s%s.md3", path, cosmetic));
 		j++;
 	}
