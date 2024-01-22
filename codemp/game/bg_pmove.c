@@ -4387,7 +4387,7 @@ static void PM_GrappleMoveTribes(void) {
 		VectorNormalize(hookVelNormal);
 		dot = DotProduct(diffNormal, hookVelNormal); //Am I moving towards my target
 
-		wishSpeed = VectorLength(pm->ps->hyperSpaceAngles) * dot;
+		wishSpeed = VectorLength(pm->ps->hyperSpaceAngles) * dot * 0.9f;
 
 		if (wishSpeed < 300)
 			wishSpeed = 300;
@@ -5405,7 +5405,7 @@ static void PM_GroundTrace( void ) {
 		}
 	}
 	else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		minNormal = 0.6f; //Let us walk up a bit steeper hills in tribes?
+		minNormal = 0.5f; //Let us walk up a bit steeper hills in tribes?
 	}
 
 	point[0] = pm->ps->origin[0];
@@ -9561,9 +9561,9 @@ if (pm->ps->duelInProgress)
 		case WP_STUN_BATON:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
 				addTime = 600;
-			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE))
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE))
 				addTime = 1500;
-			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_LG))
+			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_STUN_LG))
 				addTime = 50;
 			break;
 		case WP_BRYAR_OLD:
@@ -9577,8 +9577,10 @@ if (pm->ps->duelInProgress)
 		case WP_BLASTER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE])
 				addTime = 100;
-			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 125;
+			else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 75;
 			break;
 		case WP_DISRUPTOR:
 			if (pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
@@ -9634,9 +9636,9 @@ if (pm->ps->duelInProgress)
 	case WP_STUN_BATON:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
 			addTime = 600;
-		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE))
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE))
 			addTime = 1500;
-		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_LG))
+		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo & JAPRO_CINFO_LG))
 			addTime = 50;
 		break;
 	case WP_BRYAR_OLD:
@@ -9650,8 +9652,10 @@ if (pm->ps->duelInProgress)
 	case WP_BLASTER:
 		if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE])
 			addTime = 100;
-		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+		else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
 			addTime = 125;
+		else if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES))
+			addTime = 75;
 		break;
 	case WP_DISRUPTOR:
 		if (pm->ps->stats[STAT_RACEMODE] && !pm->ps->duelInProgress)
@@ -13313,6 +13317,10 @@ void PmoveSingle (pmove_t *pmove) {
 				float wishspeed;
 				int i;
 				float accel = 0.009f; //server should use pmove_float
+				vec3_t currentVelNormal;
+				float dot;
+
+
 				scale /= pm->ps->speed;
 				scale *= pm->ps->speed / 320.0f;
 				scale *= 20000; //MAX
@@ -13335,6 +13343,18 @@ void PmoveSingle (pmove_t *pmove) {
 
 				VectorCopy(wishvel, wishdir);
 				wishspeed = VectorNormalize(wishdir);
+
+				//Ok, do a dotproduct of our current vel and our wishvel ?
+				//if its negative, give us more accel
+				//Make this a smooth cutoff though so maybe just
+				//if dot < 0,  accel *=  (-dot)+1
+				VectorCopy(pm->ps->velocity, currentVelNormal);
+				VectorNormalize(currentVelNormal);
+				dot = DotProduct(currentVelNormal, wishdir);
+				if (dot < 0) {
+					//Com_Printf("Dot is %.2f, old accel was %.2f, new accel is %.2f\n", dot, accel * 100, 100 * (accel * (((-dot) + 1) * 1.5)));
+					accel *= ((-dot) + 1) * 1.5;//1.5 further modifies the strength of "reverse lateral jetting" compared to regular lateral jetting
+				}
 
 
 				VectorScale(wishdir, wishspeed, wishVelocity);
@@ -13367,58 +13387,6 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
 		}
 
-		/*
-		if (pm->cmd.rightmove > 0)
-			PM_ContinueLegsAnim(BOTH_INAIRRIGHT1);
-		else if (pm->cmd.rightmove < 0)
-            PM_ContinueLegsAnim(BOTH_INAIRLEFT1);
-		else if (pm->cmd.forwardmove > 0)
-			PM_ContinueLegsAnim(BOTH_INAIR1);
-		else if (pm->cmd.forwardmove < 0)
-			PM_ContinueLegsAnim(BOTH_INAIRBACK1);
-		else
-			PM_ContinueLegsAnim(BOTH_INAIR1);
-		if (pm->cmd.rightmove || pm->cmd.forwardmove) {//Directional thrust vector
-			if (pm->ps->velocity[2] < -512)
-				pm->ps->velocity[2] += 8.0f;
-			else if (pm->ps->velocity[2] < -256)
-				pm->ps->velocity[2] += 6.0f;
-			else if (pm->ps->velocity[2] < -128)
-				pm->ps->velocity[2] += 5.0f;
-			else if (pm->ps->velocity[2] < -64)
-				pm->ps->velocity[2] += 4.0f;
-			else if (pm->ps->velocity[2] < 0)
-				pm->ps->velocity[2] += 3.0f;
-			else if (pm->ps->velocity[2] < 128)
-				pm->ps->velocity[2] += 2.0f;
-			else if (pm->ps->velocity[2] < 256)
-				pm->ps->velocity[2] += 1.0f;
-			else
-				pm->ps->velocity[2] += 0.5f;
-			pm->ps->eFlags |= EF_JETPACK_FLAMING;
-		}
-		else { //Strong "up jet"
-			if (pm->ps->velocity[2] < -512)
-				pm->ps->velocity[2] += 12.0f;
-			else if (pm->ps->velocity[2] < -256)
-				pm->ps->velocity[2] += 10.0f;
-			else if (pm->ps->velocity[2] < -128)
-				pm->ps->velocity[2] += 8.0f;
-			else if (pm->ps->velocity[2] < -64)
-				pm->ps->velocity[2] += 7.0f;
-			else if (pm->ps->velocity[2] < 0)
-				pm->ps->velocity[2] += 5.0f;
-			else if (pm->ps->velocity[2] < 128)
-				pm->ps->velocity[2] += 4.0f;
-			else if (pm->ps->velocity[2] < 256)
-				pm->ps->velocity[2] += 3.0f;
-			else if (pm->ps->velocity[2] < 512)
-				pm->ps->velocity[2] += 2.0f;
-			else
-				pm->ps->velocity[2] += 1.0f;
-			pm->ps->eFlags |= EF_JETPACK_FLAMING;
-		}
-		*/
 	}
 
 	if (pm->ps->clientNum >= MAX_CLIENTS &&

@@ -1012,34 +1012,9 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 			if ( other->client ) {
 				//G_AddEvent( nent, EV_MISSILE_HIT, DirToByte( trace->plane.normal ) );							//Event
 
-#if 0
+#if 1
 				if (ent->parent && ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
-					if (!other->client || OnSameTeam(ent->parent, other)) {
-						Weapon_HookFree(ent);	// don't work
-						return;
-					}
-					/*
-					if (!ent->s.hasLookTarget) {
-						vec3_t enemyVel, hookVel;
-						float dot;
-
-						VectorCopy(ent->s.pos.trDelta, hookVel);
-						VectorCopy(other->s.pos.trDelta, enemyVel);
-						VectorNormalize(hookVel);
-						VectorNormalize(enemyVel);
-						dot = DotProduct(hookVel, enemyVel);
-						//Com_Printf("Dot2 is %.2f\n", dot);
-						if (dot <= 0) {
-							Weapon_HookFree(ent);	// don't work
-							return;
-						}
-					}
-					else {
-						//Time expire? proximity expire? speed expire?
-					}
-					*/
-					ent->s.time2 += FRAMETIME;
-					if (ent->s.time2 > 2000) {
+					if (other->client && OnSameTeam(ent->parent, other)) {
 						Weapon_HookFree(ent);	// don't work
 						return;
 					}
@@ -1391,8 +1366,8 @@ gentity_t *fire_grapple(gentity_t *self, vec3_t start, vec3_t dir) {
 	if (!self->client->sess.raceMode) {
 		if (self->client->sess.movementStyle == MV_TRIBES) {
 			inheritance = 0; //100?
-			vel = 5000;
-			lifetime = 250;
+			vel = 5220;//half cg speed
+			lifetime = 300;
 		}
 		else {
 			inheritance = g_hookInheritance.value;

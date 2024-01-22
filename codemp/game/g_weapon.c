@@ -268,7 +268,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 10;
+			ent->client->ps.jetpackFuel -= 9;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 	}
@@ -582,8 +582,12 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 			ent->client->ps.jetpackFuel = 0;
 	}
 
-	if ( altFire )
+	if ( altFire || (g_tweakWeapons.integer & WT_TRIBES))
 	{
+		float slop = 0.15f;
+		if (altFire && (g_tweakWeapons.integer & WT_TRIBES)) {
+			slop = 1.0f;
+		}
 		// add some slop to the alt-fire direction
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 		{
@@ -591,8 +595,8 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 			float r = Q_random(&seed) * BLASTER_SPREAD;
 
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				angs[PITCH] += r*0.15f * sin(theta); //r should be squared? r*r
-				angs[YAW] += r*0.15f * cos(theta);
+				angs[PITCH] += r*slop * sin(theta); //r should be squared? r*r
+				angs[YAW] += r*slop * cos(theta);
 			}
 			else {
 				angs[PITCH] += r * sin(theta);
@@ -602,8 +606,8 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 		else
 		{
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * slop;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * slop;
 			}
 			else {
 				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
@@ -5247,6 +5251,16 @@ void Weapon_HookThink (gentity_t *ent)
 		return;
 	}
 
+#if 1
+	if (ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
+		if (ent->s.time2 > 4000) {
+			Weapon_HookFree(ent);	// don't work
+			return;
+		}
+		ent->s.time2 += FRAMETIME;
+	}
+#endif
+
 	if (DistanceSquared(ent->r.currentOrigin, ent->parent->client->ps.origin) > 2048 * 2048) {
 		Weapon_HookFree(ent);
 		return;
@@ -6350,9 +6364,9 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 		// fire the specific weapon
 		switch( ent->s.weapon ) {
 		case WP_STUN_BATON:
-			if (g_tweakWeapons.integer & WT_STUN_LG && !altFire)//JAPRO - Lightning Gun
+			if (g_tweakWeapons.integer & WT_STUN_LG && altFire)//JAPRO - Lightning Gun
 				WP_FireLightningGun(ent);
-			else if (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE && altFire)//JAPRO - Shocklance
+			else if (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE && !altFire)//JAPRO - Shocklance
 				WP_FireShockLance(ent);
 			else
 				WP_FireStunBaton(ent, altFire);

@@ -1092,7 +1092,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 		if (pm->ps->clientNum < MAX_CLIENTS) {
 			float minNormal = MIN_WALK_NORMAL;
 			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
-				minNormal = 0.6f;
+				minNormal = 0.5f;
 			if (trace.plane.normal[2] < minNormal)
 			{//normal players cannot step up slopes that are too steep to walk on!
 				vec3_t stepVec;
