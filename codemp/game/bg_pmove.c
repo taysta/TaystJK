@@ -4027,8 +4027,9 @@ static void PM_CheckSpecial(void) //Just blink for now
 {
 	//Todo - change bind from lightning? More restrictions? If keep as lightning, disregard actual lightning?
 	//Todo - fix the trace behaviour where if it hits a plane it just stops at that spot.  Should slide along for the rest of the stepsize?  this makes it really hard to use this if you are on the ground and aimed even 1 degree down
+	//Todo, rewrite so only checks if button is used.  Also way to pick a special (force profile?). Also rewrite so this calls individual special functions.
 	const float BLINK_DURATION = 300;
-	const float BLINK_STRENGTH = 500.0f;
+	const float BLINK_STRENGTH = 5000.0f;
 	const int FORCE_COST = 75;
 
 	if (pm->ps->stats[STAT_WJTIME] > 0) { //500 to 0
@@ -4040,7 +4041,8 @@ static void PM_CheckSpecial(void) //Just blink for now
 			time = (BLINK_DURATION - pm->ps->stats[STAT_WJTIME]) * 0.001f; //0 to 0.5
 		else //Second half of blink
 			time = (pm->ps->stats[STAT_WJTIME]) * 0.001f; //0.5 to 0
-		scale = (time * BLINK_STRENGTH) + 1;
+
+		scale = (time*time * BLINK_STRENGTH) + 1; //Time*time so this isnt linear ramping.  To make it feel smoother.
 
 		VectorMA(pm->ps->origin, scale*pml.frametime / 0.008f, pml.forward, traceto); //blink stepsize
 		pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, traceto, pm->ps->clientNum, MASK_PLAYERSOLID); //clip messes this up?
