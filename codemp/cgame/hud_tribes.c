@@ -284,7 +284,7 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 			  FONT_SMALL2);
     }
 
-	char slotCommand[MAX_QPATH]; 	//todo keybinds cvar
+	char slotCommand[MAX_QPATH];
 	Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
 
 	if (keyCodeNames[trap->Key_GetKey(slotCommand)] != NULL) {
