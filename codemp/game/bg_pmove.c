@@ -4023,6 +4023,49 @@ static void PM_DashMove(void)
 	pm->ps->stats[STAT_JUMPTIME] = 401;
 }
 
+static void PM_CheckSpecial(void) //Just blink for now
+{
+	//Todo - change bind from lightning? More restrictions? If keep as lightning, disregard actual lightning?
+	//Todo - fix the trace behaviour where if it hits a plane it just stops at that spot.  Should slide along for the rest of the stepsize?  this makes it really hard to use this if you are on the ground and aimed even 1 degree down
+	const float BLINK_DURATION = 300;
+	const float BLINK_STRENGTH = 500.0f;
+	const int FORCE_COST = 75;
+
+	if (pm->ps->stats[STAT_WJTIME] > 0) { //500 to 0
+		trace_t trace;
+		vec3_t traceto;
+		float time, scale;
+
+		if (pm->ps->stats[STAT_WJTIME] > (BLINK_DURATION*0.5f)) //First half of blink
+			time = (BLINK_DURATION - pm->ps->stats[STAT_WJTIME]) * 0.001f; //0 to 0.5
+		else //Second half of blink
+			time = (pm->ps->stats[STAT_WJTIME]) * 0.001f; //0.5 to 0
+		scale = (time * BLINK_STRENGTH) + 1;
+
+		VectorMA(pm->ps->origin, scale*pml.frametime / 0.008f, pml.forward, traceto); //blink stepsize
+		pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, traceto, pm->ps->clientNum, MASK_PLAYERSOLID); //clip messes this up?
+		if (trace.fraction == 1)
+			VectorCopy(trace.endpos, pm->ps->origin);
+
+		pm->ps->fd.forcePowersActive |= (1 << FP_RAGE);
+		//Com_Printf("WJTIME 2nd %i Scale %.2f\n", pm->ps->stats[STAT_WJTIME], scale);
+	}
+	else {
+		pm->ps->fd.forcePowersActive &= ~(1 << FP_RAGE);
+	}
+
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+		pm->ps->stats[STAT_WJTIME] = BLINK_DURATION;
+		pm->ps->fd.forcePower -= FORCE_COST;
+		if (pm->ps->fd.forcePower < 0)
+			pm->ps->fd.forcePower = 0;
+#ifdef _GAME
+		G_PlayEffect(EFFECT_LANDING_SAND, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
+		pm->ps->fd.forceRageRecoveryTime = level.time + 10000; // ?
+#endif
+	}
+}
+
 static void PM_CheckDash(void)
 {
 	static const int DASH_DELAY = 800;
@@ -13146,18 +13189,14 @@ void PmoveSingle (pmove_t *pmove) {
 		PM_CheckWallJump();
 	}
 
-#if _CGAME
-	if (cg.predictKnockback) { //Check predict rocketjump
-		VectorAdd(cg.predictedRocketJumpImpulse, pm->ps->velocity, pm->ps->velocity);
-		cg.predictKnockback = qfalse;
-
-		//same concept as PM_DashMove();
-
-		if (cg_predictKnockback.integer > 2) {
-			Com_Printf("Predicting knockback: (%.0f %.0f %.0f)\n", cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2]);
-		}
-	}
+#if _GAME
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Tribes special
+	#else
+	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
+		PM_CheckSpecial();
+	}
+
 
 	//if we're in jetpack mode then see if we should be jetting around
 	if (pm->ps->pm_type == PM_JETPACK)

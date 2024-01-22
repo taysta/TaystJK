@@ -3126,11 +3126,9 @@ void mortarExplode(gentity_t *self)
 {
 	self->takedamage = qfalse;
 
-	VectorNormalize(self->s.pos.trDelta);
-
 	if (self->activator)
 		G_RadiusDamage(self->r.currentOrigin, self->activator, self->splashDamage, self->splashRadius, self, self, self->methodOfDeath/*MOD_LT_SPLASH*/);
-	G_AddEvent(self, EV_MISSILE_MISS, 0);
+	G_AddEvent(self, EV_MISSILE_MISS, 5/*dirToByte(tr.plane.normal)*/); //Todo, use dirToByte and calculte the traceplane normal instead of "5" in this addevent.  But thermal det also needs this fix (broken in basejk.  E.g. throw a thermal on a slope and the exlpode wont be oriented to the slope).
 
 	//G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, self->s.pos.trDelta);
 
