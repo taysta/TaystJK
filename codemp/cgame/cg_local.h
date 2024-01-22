@@ -1436,7 +1436,7 @@ Ghoul2 Insert End
 		fileHandle_t	file;
 		qboolean		started;
 	} log;
-
+	qboolean 			singlefireAlt;
 } cg_t;
 
 #define CAMERA_MIN_FPS 15
@@ -2527,6 +2527,12 @@ void CG_WeaponSlot_f( void );
 void CG_NextWeaponSlot_f( void );
 void CG_PrevWeaponSlot_f( void );
 void CG_WeaponClean_f( void );
+
+void CG_ZoomDown_f( void );
+void CG_ZoomUp_f( void );
+void CG_ToggleSingleFire_f( void );
+void CG_SingleFireDown_f( void );
+void CG_SingleFireUp_f( void );
 
 void CG_RegisterWeapon( int weaponNum);
 void CG_RegisterItemVisuals( int itemNum );

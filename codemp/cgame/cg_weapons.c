@@ -2065,7 +2065,6 @@ void CG_NextWeaponSlot_f(void) {
 }
 
 
-
 void CG_PrevWeaponSlot_f(void) {
 	if ((!cg.snap) || (cg.snap->ps.pm_flags & PMF_FOLLOW) ||
 		(cg.predictedPlayerState.pm_type == PM_SPECTATOR) ||
