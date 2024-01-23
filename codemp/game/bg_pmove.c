@@ -4098,15 +4098,15 @@ static void PM_OverDriveMove(void) {
 
 static void PM_ThrustMove(void)
 {
-#ifdef _GAME
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
-		gentity_t *self = (gentity_t *)pm_entSelf;
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
 		pm->ps->stats[STAT_WJTIME] = 800;
+#ifdef _GAME
+		gentity_t *self = (gentity_t *)pm_entSelf;
 		G_PlayEffect(EFFECT_LANDING_SNOW, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
 		G_PlayEffectID(G_EffectIndex("env/powerbolt"), pm->ps->origin, pm->ps->viewangles);
 		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/speed.wav"));
-	}
 #endif
+	}
 	if (pm->ps->stats[STAT_WJTIME] > 500) { //500 to 0
 		float strength;
 		float basespeed = pm->ps->basespeed;
@@ -4155,21 +4155,21 @@ static void PM_BlinkMove(void) //Just blink for now
 	//Maybe there is a better way to do this performance-wise.  Or a way to redesign the traces so that instead of doign 1 every frame, it does 1 every time the trace stepsize > 100 or something.  
 	//E.g. adding the blink stepsize each frame and only doing a trace when it hits the limit, then resetting the counter.
 	//Doing time*time means the traces at start/finish are very small
-#ifdef _GAME
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
-		gentity_t *self = (gentity_t *)pm_entSelf;
+
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
 		pm->ps->stats[STAT_WJTIME] = BLINK_DURATION;
 		pm->ps->fd.forcePower -= FORCE_COST;
 		if (pm->ps->fd.forcePower < 0)
 			pm->ps->fd.forcePower = 0;
-		//vec3_t angle;
-		//VectorScale(pm->ps->viewangles, -1, angle);
+#ifdef _GAME
+		gentity_t *self = (gentity_t *)pm_entSelf;
 		G_PlayEffectID(G_EffectIndex("howler/sonic"), pm->ps->origin, pm->ps->viewangles);
 		G_PlayEffectID(G_EffectIndex("env/powerbolt_long"), pm->ps->origin, pm->ps->viewangles);
 		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/rage.wav"));
 		pm->ps->fd.forceRageRecoveryTime = level.time + 10000; // ?
-	}
 #endif
+	}
+
 	if (pm->ps->stats[STAT_WJTIME] > 0) { //500 to 0
 		trace_t trace;
 		vec3_t traceto;
