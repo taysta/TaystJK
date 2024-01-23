@@ -4023,6 +4023,178 @@ static void PM_DashMove(void)
 	pm->ps->stats[STAT_JUMPTIME] = 401;
 }
 
+#if 0
+static void PM_OverDriveMove(void) {
+	const int	FORCE_COST = 75;
+	const float OVERDRIVE_DURATION = 3000;
+
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_DRAIN) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+		pm->ps->stats[STAT_WJTIME] = OVERDRIVE_DURATION;
+		pm->ps->fd.forcePower -= FORCE_COST;
+		if (pm->ps->fd.forcePower < 0)
+			pm->ps->fd.forcePower = 0;
+#ifdef _GAME
+		G_PlayEffect(EFFECT_LANDING_SAND, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
+		pm->ps->fd.forceRageRecoveryTime = level.time + 1000; // ?
+#endif
+	}
+	if (pm->ps->stats[STAT_WJTIME] > 0) {
+		pm->ps->gravity = 1600;
+		pm->ps->speed *= 2.0f;
+
+
+#if _GAME
+		//Debounce this plz
+		gentity_t *ent;
+		int numSorted = level.numConnectedClients;
+		int i;
+
+		gentity_t *self = (gentity_t *)pm_entSelf;
+
+		G_ScreenShake(pm->ps->origin, NULL, 1.0f, 100, qfalse);
+		G_Sound(self , CHAN_AUTO, G_SoundIndex("sound/chars/rancor/swipehit.wav"));
+
+		for (i = 0; i < numSorted; i++) { //Probably more effecient to do this than trap->entitiesinbox
+		
+			ent = &g_entities[level.sortedClients[i]];
+
+			if (!ent->client)
+				continue;
+			if (!ent->inuse)
+				continue;
+			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+				continue;
+			if (ent->client->pers.connected == CON_CONNECTING)
+				continue;
+			if (level.sortedClients[i] == pm->ps->clientNum)
+				continue;
+
+			if (DistanceSquared(ent->client->ps.origin, pm->ps->origin) < (512 * 512)) {
+				vec3_t diff;
+				float len;
+				//If they are on the ground, Knock them off ground.
+				//Give them low grav.
+				ent->client->ps.gravity = 1; //Probably should be doing this stuff in G_Active or something.  Based on if they are in ragetime and their perk is X
+				//Is there any way to predict this.  Set the overdrivers client num as a ps flag somewhere on the client? and userint1 etc?
+				if (ent->client->ps.groundEntityNum != ENTITYNUM_NONE)
+					ent->client->ps.velocity[2] = 100;
+
+				G_Damage(ent, self, self, vec3_origin, self->r.currentOrigin, Q_irand(10, 25), DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
+				VectorSubtract(self->r.currentOrigin, ent->r.currentOrigin, diff);
+				len = VectorNormalize(diff);
+				VectorMA(ent->client->ps.velocity, 1000/len, diff, ent->client->ps.velocity);
+			}
+		}
+
+#endif
+
+	}
+	else {
+		pm->ps->gravity = 800; ///Uhhh. g_gravity ? Need to be setting this every frame if were going to be using it
+	}
+
+}
+#endif
+
+static void PM_ThrustMove(void)
+{
+#ifdef _GAME
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+		gentity_t *self = (gentity_t *)pm_entSelf;
+		pm->ps->stats[STAT_WJTIME] = 800;
+		G_PlayEffect(EFFECT_LANDING_SNOW, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
+		G_PlayEffectID(G_EffectIndex("env/powerbolt"), pm->ps->origin, pm->ps->viewangles);
+		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/speed.wav"));
+	}
+#endif
+	if (pm->ps->stats[STAT_WJTIME] > 500) { //500 to 0
+		float strength;
+		float basespeed = pm->ps->basespeed;
+		float dot = DotProduct(pml.forward, pm->ps->velocity); //-1 to 1.  -1 should be strongest 1 sh ould be weakest.  
+
+		if (dot < 0)
+			dot = 0;
+		if (basespeed > 320)
+			basespeed = 320;
+
+		strength = basespeed / (dot + 1); //basespeed sometimes shits itself?
+
+		//Com_Printf("Strength modifier is %.2f because dot is %.2f and speed is %.2f\n", strength, dot, basespeed);
+		//Modify strength based on current vel length.  Faster we are going, less it boosts.  but define "we are going" as the vel length times the dotproduct of vel and forward.  Lower cap at 0 instead of -1.
+		
+		if (strength > 3)
+			strength = 3;
+		else if (strength < 0.4)
+			strength = 0.4;
+
+		strength *= pm->ps->fd.forcePower;
+
+		VectorMA(pm->ps->velocity, 35 * strength * pml.frametime, pml.forward, pm->ps->velocity); //fall off the faster we go?
+
+		pm->ps->fd.forcePowersActive |= (1 << FP_SPEED);
+	}
+	else if (pm->ps->stats[STAT_WJTIME] > 300) { //This is messed up but it works. otherwise can't really modify fp as we go because deltatime and cant get more discrete than 1fp.
+		pm->ps->fd.forcePower = 0;
+		pm->ps->stats[STAT_WJTIME] = 0;
+	}
+	else {
+		pm->ps->fd.forcePowersActive &= ~(1 << FP_SPEED);
+	}
+}
+
+static void PM_BlinkMove(void) //Just blink for now
+{
+	const float BLINK_DURATION = 300;
+	const float BLINK_STRENGTH = 5000.0f;
+	const int	FORCE_COST = 25;
+
+	//Todo - change bind from lightning? More restrictions? If keep as lightning, disregard actual lightning?
+	//Todo - fix the trace behaviour where if it hits a plane it just stops at that spot.  Should slide along for the rest of the stepsize?  this makes it really hard to use this if you are on the ground and aimed even 1 degree down
+	//Todo, rewrite so only checks if button is used.  Also way to pick a special (force profile?). Also rewrite so this calls individual special functions.
+
+	//Maybe there is a better way to do this performance-wise.  Or a way to redesign the traces so that instead of doign 1 every frame, it does 1 every time the trace stepsize > 100 or something.  
+	//E.g. adding the blink stepsize each frame and only doing a trace when it hits the limit, then resetting the counter.
+	//Doing time*time means the traces at start/finish are very small
+#ifdef _GAME
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+		gentity_t *self = (gentity_t *)pm_entSelf;
+		pm->ps->stats[STAT_WJTIME] = BLINK_DURATION;
+		pm->ps->fd.forcePower -= FORCE_COST;
+		if (pm->ps->fd.forcePower < 0)
+			pm->ps->fd.forcePower = 0;
+		//vec3_t angle;
+		//VectorScale(pm->ps->viewangles, -1, angle);
+		G_PlayEffectID(G_EffectIndex("howler/sonic"), pm->ps->origin, pm->ps->viewangles);
+		G_PlayEffectID(G_EffectIndex("env/powerbolt_long"), pm->ps->origin, pm->ps->viewangles);
+		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/rage.wav"));
+		pm->ps->fd.forceRageRecoveryTime = level.time + 10000; // ?
+	}
+#endif
+	if (pm->ps->stats[STAT_WJTIME] > 0) { //500 to 0
+		trace_t trace;
+		vec3_t traceto;
+		float time, scale;
+
+		if (pm->ps->stats[STAT_WJTIME] > (BLINK_DURATION*0.5f)) //First half of blink
+			time = (BLINK_DURATION - pm->ps->stats[STAT_WJTIME]) * 0.001f; //0 to 0.5
+		else //Second half of blink
+			time = (pm->ps->stats[STAT_WJTIME]) * 0.001f; //0.5 to 0
+
+		scale = (time*time * BLINK_STRENGTH) + 1; //Time*time so this isnt linear ramping.  To make it feel smoother.
+
+		VectorMA(pm->ps->origin, scale*pml.frametime / 0.008f, pml.forward, traceto); //blink stepsize
+		pm->trace(&trace, pm->ps->origin, pm->mins, pm->maxs, traceto, pm->ps->clientNum, MASK_PLAYERSOLID); //clip messes this up?
+		if (trace.fraction == 1)
+			VectorCopy(trace.endpos, pm->ps->origin);
+
+		pm->ps->fd.forcePowersActive |= (1 << FP_RAGE);
+		//Com_Printf("WJTIME 2nd %i Scale %.2f\n", pm->ps->stats[STAT_WJTIME], scale);
+	}
+	else {
+		pm->ps->fd.forcePowersActive &= ~(1 << FP_RAGE);
+	}
+}
+
 static void PM_CheckDash(void)
 {
 	static const int DASH_DELAY = 800;
@@ -13146,18 +13318,18 @@ void PmoveSingle (pmove_t *pmove) {
 		PM_CheckWallJump();
 	}
 
-#if _CGAME
-	if (cg.predictKnockback) { //Check predict rocketjump
-		VectorAdd(cg.predictedRocketJumpImpulse, pm->ps->velocity, pm->ps->velocity);
-		cg.predictKnockback = qfalse;
-
-		//same concept as PM_DashMove();
-
-		if (cg_predictKnockback.integer > 2) {
-			Com_Printf("Predicting knockback: (%.0f %.0f %.0f)\n", cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2]);
-		}
-	}
+#if _GAME
+	if (!pm->ps->stats[STAT_RACEMODE] && g_tweakWeapons.integer & WT_TRIBES) { //Tribes special
+	#else
+	if (!pm->ps->stats[STAT_RACEMODE] && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
+		if (pm->ps->stats[STAT_MAX_HEALTH] == 500) //FIXME
+			PM_BlinkMove();
+		else
+			PM_ThrustMove();
+		//PM_OverDriveMove();
+	}
+
 
 	//if we're in jetpack mode then see if we should be jetting around
 	if (pm->ps->pm_type == PM_JETPACK)
