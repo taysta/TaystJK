@@ -4098,7 +4098,7 @@ static void PM_OverDriveMove(void) {
 
 static void PM_ThrustMove(void)
 {
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
 		pm->ps->stats[STAT_WJTIME] = 800;
 #ifdef _GAME
 		gentity_t *self = (gentity_t *)pm_entSelf;
@@ -4156,7 +4156,7 @@ static void PM_BlinkMove(void) //Just blink for now
 	//E.g. adding the blink stepsize each frame and only doing a trace when it hits the limit, then resetting the counter.
 	//Doing time*time means the traces at start/finish are very small
 
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
 		pm->ps->stats[STAT_WJTIME] = BLINK_DURATION;
 		pm->ps->fd.forcePower -= FORCE_COST;
 		if (pm->ps->fd.forcePower < 0)
