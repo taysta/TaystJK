@@ -684,7 +684,6 @@ typedef struct trRefdef_s {
 
 	int					num_entities;
 	trRefEntity_t		*entities;
-	trMiniRefEntity_t	*miniEntities;
 
 	int					num_dlights;
 	struct dlight_s		*dlights;
@@ -708,7 +707,7 @@ typedef struct trRefdef_s {
 //=================================================================================
 
 // skins allow models to be retextured without modifying the model file
-typedef struct skinSurface_s {
+typedef struct {
 	char		name[MAX_QPATH];
 	shader_t	*shader;
 } skinSurface_t;
@@ -1424,6 +1423,7 @@ typedef struct trGlobals_s {
 struct glconfigExt_t
 {
 	glconfig_t *glConfig;
+	qboolean 	textureFilterAnisotropicAvailable;
 	qboolean	doGammaCorrectionWithShaders;
 	qboolean	doStencilShadowsInOneDrawcall;
 	const char	*originalExtensionString;
@@ -2179,7 +2179,6 @@ extern int max_polyverts;
 extern backEndData_t *backEndData;
 
 void *R_GetCommandBuffer( int bytes );
-void RB_ExecuteRenderCommands( const void *data );
 
 void R_AddDrawSurfCmd( drawSurf_t *drawSurfs, int numDrawSurfs );
 

@@ -569,7 +569,6 @@ void RE_RenderScene( const refdef_t *fd ) {
 
 	tr.refdef.num_entities = r_numentities - r_firstSceneEntity;
 	tr.refdef.entities = &backEndData->entities[r_firstSceneEntity];
-	tr.refdef.miniEntities = &backEndData->miniEntities[r_firstSceneMiniEntity];
 
 	tr.refdef.num_dlights = r_numdlights - r_firstSceneDlight;
 	tr.refdef.dlights = &backEndData->dlights[r_firstSceneDlight];
