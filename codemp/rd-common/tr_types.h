@@ -75,16 +75,16 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define RF_FORCEPOST		0x200000 //force it to post-render -rww
 
-#define	RF_FULLBRIGHT		0x400000 //RGB brightskins
-
-#define RF_NOLOD			0x800000 //for local player
-
 // SP renderfx flags, only use in SP!
-#define	RF_CAP_FRAMES		0x1200000	// cap the model frames by the maxframes for one shot anims
-#define RF_ALPHA_FADE		0x1600000	// hacks blend mode and uses whatever the set alpha is.
-#define RF_PULSATE			0x1800000	// for things like a dropped saber, where we want to add an extra visual clue
-#define RF_G2MINLOD			0x2800000	// force Lowest lod on g2
-#define RF_MORELIGHT		0x4800000	// allways have some light (viewmodel, some items) | SP version which is different from MP
+#define	RF_CAP_FRAMES		0x400000	// cap the model frames by the maxframes for one shot anims
+#define RF_ALPHA_FADE		0x800000	// hacks blend mode and uses whatever the set alpha is.
+#define RF_PULSATE			0x1000000	// for things like a dropped saber, where we want to add an extra visual clue
+#define RF_G2MINLOD			0x2000000	// force Lowest lod on g2
+#define RF_MORELIGHT		0x4000000	// allways have some light (viewmodel, some items) | SP version which is different from MP
+
+// EternalJK renderfx flags
+#define	RF_FULLBRIGHT		0x8000000 	//RGB brightskins
+#define RF_NOLOD			0x10000000 	//for local player
 
 // refdef flags
 #define RDF_NOWORLDMODEL	1		// used for player configuration screen
