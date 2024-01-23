@@ -804,7 +804,7 @@ qboolean G_CanDisruptify(gentity_t *ent)
 void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 {
 	gentity_t* missile;
-	int	damage = 30 * g_weaponDamageScale.value;
+	int	damage;
 	float count;
 	float vel = 9000;
 
@@ -820,7 +820,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		float boxSize = 0;
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
-		damage = 40;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage = 30 * g_weaponDamageScale.value;
+		else
+			damage = 50;
 
 		if (count < 1)
 			count = 1;
@@ -837,6 +840,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		missile->s.generic1 = (int)(count + 0.5f); // The missile will then render according to the charge level.
 	}
 	else {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage = 20 * g_weaponDamageScale.value;
+		else 
+			damage = 30 * g_weaponDamageScale.value;
 		missile->s.generic1 = 2;//always make the bullet a little bigger
 		missile->s.eFlags |= EF_ALT_FIRING; //have client render it right
 	}
