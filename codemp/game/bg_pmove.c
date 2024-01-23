@@ -4098,7 +4098,7 @@ static void PM_OverDriveMove(void) {
 
 static void PM_ThrustMove(void)
 {
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_DRAIN) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
 		gentity_t *self = (gentity_t *)pm_entSelf;
 		pm->ps->stats[STAT_WJTIME] = 800;
 #ifdef _GAME
@@ -13326,8 +13326,10 @@ void PmoveSingle (pmove_t *pmove) {
 	#else
 	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		PM_BlinkMove();
-		PM_ThrustMove();
+		if (pm->ps->stats[STAT_MAX_HEALTH] == 1000) //FIXME
+			PM_BlinkMove();
+		else
+			PM_ThrustMove();
 		//PM_OverDriveMove();
 	}
 
