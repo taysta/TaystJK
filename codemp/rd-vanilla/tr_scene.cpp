@@ -233,7 +233,7 @@ void RE_AddRefEntityToScene( const refEntity_t *ent ) {
 	}
 #endif
 	// TODO: We could implement RT_LATHE and RT_CLOUDS here in MP too to check the same as in the SP renderer -> less differences
-	if ( (int)ent->reType < 0 || ent->reType >= 	RT_MAX_MP_REF_ENTITY_TYPE) {
+	if ( (int)ent->reType < 0 || ent->reType >= RT_MAX_SP_REF_ENTITY_TYPE || ent->reType == RT_MAX_MP_REF_ENTITY_TYPE ) {
 		Com_Error( ERR_DROP, "RE_AddRefEntityToScene: bad reType %i", ent->reType );
 	}
 
