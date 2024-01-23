@@ -13324,9 +13324,9 @@ void PmoveSingle (pmove_t *pmove) {
 #if _GAME
 	if (!pm->ps->stats[STAT_RACEMODE] && g_tweakWeapons.integer & WT_TRIBES) { //Tribes special
 	#else
-	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+	if (!pm->ps->stats[STAT_RACEMODE] && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->stats[STAT_MAX_HEALTH] == 1000) //FIXME
+		if (pm->ps->stats[STAT_MAX_HEALTH] == 500) //FIXME
 			PM_BlinkMove();
 		else
 			PM_ThrustMove();
