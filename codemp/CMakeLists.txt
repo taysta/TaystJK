@@ -31,7 +31,7 @@ if (GIT_FOUND)
 		add_custom_target(GET_GIT_TAG_AND_HASH
 		COMMAND "${CMAKE_SOURCE_DIR}/scripts/header/update_header.sh" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
 	endif()
-endif()	
+endif()
 
 #    Add Game Project
 if(BuildMPGame)
@@ -408,28 +408,40 @@ if(BuildMPEngine)
 		endif(BuildDiscordRichPresence)
 	endif()
 
-	# OpenAL (is optionally included for Windows)
-	if (MSVC AND NOT WIN64)
-		if(UseInternalOpenAL)
-			# There's a libs/OpenAL32.lib
-			# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
-			find_library(OpenALLibrary NAMES OpenAL32 PATHS ${OpenJKLibDir})
-			if(NOT OpenALLibrary)
-				message(FATAL_ERROR "UseInternalOpenAL enabled, but lib/OpenAL32.lib not found!")
-			endif(NOT OpenALLibrary)
-			set(MPEngineLibraries ${MPEngineLibraries} ${OpenALLibrary})
-		else(UseInternalOpenAL)
-			find_package(OpenAL REQUIRED)
-			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENAL_INCLUDE_DIR})
-			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
-		endif(UseInternalOpenAL)
-
+	if(MSVC AND NOT WIN64)
 		if(BuildDiscordRichPresence)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/discord-rpc.lib)
 		endif(BuildDiscordRichPresence)
 	endif()
+
+	# OpenAL (is optionally included for Windows)
+	if(MSVC)
+		if(UseInternalOpenAL)
+			if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+				# There's a libs/OpenAL32.lib
+				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
+				find_library(OpenALLibrary NAMES OpenAL32 PATHS ${OpenJKLibDir})
+				if(NOT OpenALLibrary)
+					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.lib not found!")
+				endif(NOT OpenALLibrary)
+			else()
+				# There's a libs/OpenAL32.x86_64.lib
+				# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
+				find_library(OpenALLibrary NAMES OpenAL32.x86_64 PATHS ${OpenJKLibDir})
+				if(NOT OpenALLibrary)
+					message(FATAL_ERROR "UseInternalOpenAL enabled, but libs/OpenAL32.x86_64.lib not found!")
+				endif(NOT OpenALLibrary)
+			endif()
+			set(MPEngineLibraries ${MPEngineLibraries} ${OpenALLibrary})
+		else(UseInternalOpenAL)
+			find_package(OpenAL REQUIRED)
+			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OPENAL_INCLUDE_DIR})
+			set(MPEngineLibraries ${MPEngineLibraries} ${OPENAL_LIBRARY})
+		endif(UseInternalOpenAL)
+	endif(MSVC)
+
 
 	if(UseInternalSDL2)
 		if(CMAKE_SIZEOF_VOID_P EQUAL 4)
