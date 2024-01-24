@@ -4030,9 +4030,9 @@ static void PM_OverDriveMove(void) {
 	float len;
 
 	//Are we the overdriver?
-	if (pm->ps->fd.forcePowersActive & (1 << FP_ABSORB)) {
-		pm->ps->speed *= 2;
-	}
+	//if (pm->ps->fd.forcePowersActive & (1 << FP_ABSORB)) {
+		//Dunno what to do clientside here
+	//}
 
 	//Check if we are being overdrive waked
 	if (pm->ps->stats[STAT_DEAD_YAW]) {

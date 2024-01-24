@@ -4307,6 +4307,9 @@ void ClientThink_real( gentity_t *ent ) {
 			if (client->pers.tribesClass == 3) {
 				client->ps.speed *= 0.78125f;
 			}
+			if (g_tweakWeapons.integer & WT_TRIBES && (ent->client->ps.fd.forcePowersActive&(1 << FP_ABSORB))) {
+				client->ps.speed *= 2.0f;
+			}
 		} //Tribesclass = 0 else?
 
 		//Check for a siege class speed multiplier
