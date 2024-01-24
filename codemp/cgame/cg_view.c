@@ -760,7 +760,11 @@ static void CG_OffsetThirdPersonView( void )
 	}
 	else if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
 	{
-		focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+			focusAngles[YAW] = 0;
+		} else {
+			focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		}
 	}
 	else
 	{
