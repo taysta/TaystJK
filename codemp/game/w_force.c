@@ -197,7 +197,8 @@ void WP_InitForcePowers( gentity_t *ent ) {
 		ent->client->ps.fd.forcePowersKnown &= ~(1<<i);
 	}
 
-	ent->client->ps.fd.forcePowerSelected = -1;
+	if (!(g_tweakWeapons.integer & WT_TRIBES) || ent->client->sess.raceMode)
+		ent->client->ps.fd.forcePowerSelected = -1;
 	ent->client->ps.fd.forceSide = 0;
 
 	// if in siege, then use the powers for this class, and skip all this nonsense.
@@ -405,16 +406,18 @@ void WP_InitForcePowers( gentity_t *ent ) {
 			lastFPKnown = i;
 	}
 
-	if ( ent->client->ps.fd.forcePowersKnown & ent->client->sess.selectedFP )
-		ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
+	if (!(g_tweakWeapons.integer & WT_TRIBES) || ent->client->sess.raceMode) {
+		if (ent->client->ps.fd.forcePowersKnown & ent->client->sess.selectedFP) {
+			ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
+		}
 
-	if ( !(ent->client->ps.fd.forcePowersKnown & (1 << ent->client->ps.fd.forcePowerSelected)) ) {
-		if ( lastFPKnown != -1 )
-			ent->client->ps.fd.forcePowerSelected = lastFPKnown;
-		else
-			ent->client->ps.fd.forcePowerSelected = 0;
+		if (!(ent->client->ps.fd.forcePowersKnown & (1 << ent->client->ps.fd.forcePowerSelected))) {
+			if (lastFPKnown != -1)
+				ent->client->ps.fd.forcePowerSelected = lastFPKnown;
+			else
+				ent->client->ps.fd.forcePowerSelected = 0;
+		}
 	}
-
 	for ( /*i=0*/; i<NUM_FORCE_POWERS; i++ )
 		ent->client->ps.fd.forcePowerBaseLevel[i] = ent->client->ps.fd.forcePowerLevel[i];
 	ent->client->ps.fd.forceUsingAdded = 0;
@@ -1640,6 +1643,9 @@ void ForceProtect( gentity_t *self )
 		(self->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) )
 	{
 		WP_ForcePowerStop( self, FP_PROTECT );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			self->client->ps.fd.forcePowerDebounce[FP_PROTECT] = level.time + 1000; //fix that?
+		}
 		return;
 	}
 
@@ -1687,6 +1693,8 @@ void ForceAbsorb( gentity_t *self )
 		(self->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) )
 	{
 		WP_ForcePowerStop( self, FP_ABSORB );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+		}
 		return;
 	}
 
@@ -1715,12 +1723,14 @@ void ForceAbsorb( gentity_t *self )
 		if (self->client->ps.fd.forcePowerDebounce[FP_ABSORB] - level.time > 0) //Bug when forcepowerdebounce is 0.... on first absorb use of thet map
 			return;
 		WP_ForcePowerStart(self, FP_ABSORB, 20); //Overdrive
-		self->client->ps.fd.forcePowerDebounce[FP_ABSORB] = level.time; //fix that?
+		//G_PreDefSound(self->client->ps.origin, PSOUND_RAGE);
+		G_Sound(self, TRACK_CHANNEL_3, rageLoopSound);
 	}
-	else
+	else {
 		WP_ForcePowerStart(self, FP_ABSORB, 0);
-	G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
-	G_Sound( self, TRACK_CHANNEL_3, absorbLoopSound );
+		G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
+		G_Sound(self, TRACK_CHANNEL_3, absorbLoopSound);
+	}
 }
 
 void ForceRage( gentity_t *self )
@@ -4930,17 +4940,7 @@ int WP_DoSpecificPower( gentity_t *self, usercmd_t *ucmd, forcePowers_t forcepow
 		break;
 	case FP_LIGHTNING:
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (self->client->ps.stats[STAT_MAX_HEALTH] == 1000) {
-				powerSucceeded = 0; //always 0 for nonhold powers
-				if (self->client->ps.fd.forceButtonNeedRelease)
-				{ //need to release before we can use nonhold powers again
-					break;
-				}
-				ForceAbsorb(self); //Overdrive
-				self->client->ps.fd.forceButtonNeedRelease = 1;
-			}
-			/*
-			if (self->client->ps.stats[STAT_MAX_HEALTH] == 1000) {
+			if (self->client->ps.fd.forcePowerSelected == 2) {
 				powerSucceeded = 0; //always 0 for nonhold powers
 				if (self->client->ps.fd.forceButtonNeedRelease)
 				{ //need to release before we can use nonhold powers again
@@ -4948,8 +4948,18 @@ int WP_DoSpecificPower( gentity_t *self, usercmd_t *ucmd, forcePowers_t forcepow
 				}
 				ForceProtect(self);
 				self->client->ps.fd.forceButtonNeedRelease = 1;
+				break;
 			}
-			*/
+			else if (self->client->ps.fd.forcePowerSelected == 5) {
+				powerSucceeded = 0; //always 0 for nonhold powers
+				if (self->client->ps.fd.forceButtonNeedRelease)
+				{ //need to release before we can use nonhold powers again
+					break;
+				}
+				ForceAbsorb(self); //Overdrive
+				self->client->ps.fd.forceButtonNeedRelease = 1;
+				break;
+			}			
 			else
 				break;
 		}

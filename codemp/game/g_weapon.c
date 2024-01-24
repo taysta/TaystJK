@@ -817,7 +817,6 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
 	if (altFire) {
-		float boxSize = 0;
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES)

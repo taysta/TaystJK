@@ -1311,8 +1311,8 @@ static void PM_Friction( void ) {
 void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 {
         int		i;
-		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 4.0f;
-
+		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+                
 		if (pm->ps->pm_type == PM_DEAD)
 			return;
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
@@ -4121,7 +4121,7 @@ static void PM_BlinkMove(void) //Just blink for now
 		gentity_t *self = (gentity_t *)pm_entSelf;
 		G_PlayEffectID(G_EffectIndex("howler/sonic"), pm->ps->origin, pm->ps->viewangles);
 		G_PlayEffectID(G_EffectIndex("env/powerbolt_long"), pm->ps->origin, pm->ps->viewangles);
-		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/rage.wav"));
+		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/teamforce.mp3"));
 		pm->ps->fd.forceRageRecoveryTime = level.time + 10000; // ?
 #endif
 	}
@@ -13279,10 +13279,10 @@ void PmoveSingle (pmove_t *pmove) {
 	#else
 	if (!pm->ps->stats[STAT_RACEMODE] && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->stats[STAT_MAX_HEALTH] == 500) //FIXME
-			PM_BlinkMove();
-		else if(pm->ps->stats[STAT_MAX_HEALTH] == 700) //FIXME
-			PM_ThrustMove();
+	if (pm->ps->fd.forcePowerSelected == 3) //FIXME
+		PM_ThrustMove();
+	else if (pm->ps->fd.forcePowerSelected == 4) //FIXME
+		PM_BlinkMove();
 		PM_OverDriveMove(); //This should just be an actual forcepower (absorb?), have it do the loop and set a ps flag on anyone in range.  then have code here to check for that flag and predict the movement on affected players?
 	}
 
@@ -13899,7 +13899,10 @@ void PmoveSingle (pmove_t *pmove) {
 	PM_SetWaterLevel();
 	if (pm->cmd.forcesel != (byte)-1 && (pm->ps->fd.forcePowersKnown & (1 << pm->cmd.forcesel)))
 	{
-		pm->ps->fd.forcePowerSelected = pm->cmd.forcesel;
+#if _GAME
+		if (!(g_tweakWeapons.integer & WT_TRIBES) || pm->ps->stats[STAT_RACEMODE])
+#endif
+			pm->ps->fd.forcePowerSelected = pm->cmd.forcesel;
 	}
 	if (pm->cmd.invensel != (byte)-1 && (pm->ps->stats[STAT_HOLDABLE_ITEMS] & (1 << pm->cmd.invensel)))
 	{
