@@ -4567,7 +4567,7 @@ static void WP_UpdateMindtrickEnts(gentity_t *self)
 }
 
 #define FORCE_DEBOUNCE_TIME 50 // sv_fps 20 = 50msec frametime, basejka balance/timing
-
+void Weapon_HookFree(gentity_t *ent);
 static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd_t *cmd )
 {
 //	extern usercmd_t	ucmd;

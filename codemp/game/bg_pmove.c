@@ -4040,8 +4040,8 @@ static void PM_OverDriveMove(void) {
 				if (bgEnt) {
 					VectorSubtract(pm->ps->origin, bgEnt->playerState->origin, diff);
 					len = VectorNormalize(diff);
-					if (len < 64)
-						len = 64;
+					if (len < 32)
+						len = 32;
 
 					VectorMA(pm->ps->velocity, 5000 / len, diff, pm->ps->velocity);
 					//Break or keep looking for other people using this? how does this behave with multiple overdrivers
