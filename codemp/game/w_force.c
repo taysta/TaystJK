@@ -666,7 +666,7 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 		drain = 95;
 	}
 	else if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_ABSORB)) {//overdrive
-		drain = 50;
+		drain = 30;
 	}
 	//Tribes protect? wt_tribes
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
@@ -1099,7 +1099,10 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 	case FP_PROTECT:
 		hearable = qtrue;
 		hearDist = 256;
-		duration = 20000; //unlimited length in tribes?
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			duration = 60000; //unlimited length in tribes?
+		else
+			duration = 20000;
 		self->client->ps.fd.forcePowersActive |= ( 1 << forcePower );
 		break;
 	case FP_ABSORB:
@@ -1711,7 +1714,7 @@ void ForceAbsorb( gentity_t *self )
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		if (self->client->ps.fd.forcePowerDebounce[FP_ABSORB] - level.time > 0) //Bug when forcepowerdebounce is 0.... on first absorb use of thet map
 			return;
-		WP_ForcePowerStart(self, FP_ABSORB, 40); //Overdrive
+		WP_ForcePowerStart(self, FP_ABSORB, 20); //Overdrive
 		self->client->ps.fd.forcePowerDebounce[FP_ABSORB] = level.time; //fix that?
 	}
 	else
@@ -4793,7 +4796,10 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 	case FP_ABSORB:
 		if (self->client->ps.fd.forcePowerDebounce[forcePower] < level.time)
 		{
-			BG_ForcePowerDrain( &self->client->ps, forcePower, 1 );
+			if (g_tweakWeapons.integer & WT_TRIBES) //Overdrive
+				BG_ForcePowerDrain(&self->client->ps, forcePower, 5);
+			else
+				BG_ForcePowerDrain(&self->client->ps, forcePower, 1);
 			if (self->client->ps.fd.forcePower < 1)
 			{
 				WP_ForcePowerStop(self, forcePower);
@@ -4803,18 +4809,19 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 		}
 		if (g_tweakWeapons.integer & WT_TRIBES) { //Overdrive
 			//Loop through numconnected clients.  Anyone in range on the other team gets their mystery bitmask field updated with our clientnum. To be used in BG_pmove.
-
-#if _GAME
 			//Debounce this plz?
 			gentity_t *ent;
 			int numSorted = level.numConnectedClients;
 			int i;
 
-			G_ScreenShake(self->client->ps.origin, NULL, 1.0f, 100, qfalse);
+			if (self->client && self->client->hook)
+				Weapon_HookFree(self->client->hook);
+
+			//G_ScreenShake(self->client->ps.origin, NULL, 1.0f, 100, qfalse); //It should screenshake. maybe rewrite this to be singleclient for the user? since range is broken in screenshake
 			//G_Sound(self, CHAN_AUTO, G_SoundIndex("sound/chars/rancor/swipehit.wav"));
 
 			for (i = 0; i < numSorted; i++) { //Probably more effecient to do this than trap->entitiesinbox
-
+				float len;
 				ent = &g_entities[level.sortedClients[i]];
 
 				if (!ent->client)
@@ -4830,19 +4837,14 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 				if (level.sortedClients[i] == self->client->ps.clientNum)
 					continue;
 
-				if (DistanceSquared(ent->client->ps.origin, self->client->ps.origin) < (512 * 512)) {
-					//vec3_t diff;
-					//float len;
-					//If they are on the ground, Knock them off ground.
-					//Give them low grav.
-					//G_Damage(ent, self, self, vec3_origin, self->client->ps.origin, 3, DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
+				len = DistanceSquared(ent->client->ps.origin, self->client->ps.origin);
+				if (len < (256 * 256)) {
+					G_Damage(ent, self, self, vec3_origin, self->client->ps.origin, len < (64*64) ? 2 : 1, DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
 					if (ent->client->ps.groundEntityNum != ENTITYNUM_NONE)
 						ent->client->ps.velocity[2] = 100;
 					ent->client->ps.stats[STAT_DEAD_YAW] = (1 << self->client->ps.clientNum);
 				}
 			}
-#endif
-
 		}
 		break;
 	default:
