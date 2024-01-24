@@ -506,7 +506,7 @@ void S_Init( void ) {
 	{
 		int i, j;
 
-		ALCdevice *ALCDevice = alcOpenDevice((ALubyte*)"DirectSound3D");
+		ALCdevice *ALCDevice = alcOpenDevice((ALCchar*)"DirectSound3D");
 		if (!ALCDevice)
 			return;
 
@@ -5354,7 +5354,7 @@ void InitEAXManager()
 	s_bEALFileLoaded = false;
 
 	// Check for EAX 4.0 support
-	s_bEAX = alIsExtensionPresent((ALubyte*)"EAX4.0");
+	s_bEAX = alIsExtensionPresent((ALCchar*)"EAX4.0");
 
 	if (s_bEAX)
 	{
@@ -5363,7 +5363,7 @@ void InitEAXManager()
 	else
 	{
 		// Support for EAXUnified (automatic translation of EAX 4.0 calls into EAX 3.0)
-		if ((alIsExtensionPresent((ALubyte*)"EAX3.0")) && (alIsExtensionPresent((ALubyte*)"EAX4.0Emulated")))
+		if ((alIsExtensionPresent((ALCchar*)"EAX3.0")) && (alIsExtensionPresent((ALCchar*)"EAX4.0Emulated")))
 		{
 			s_bEAX = AL_TRUE;
 			Com_Printf("Found EAX 4.0 EMULATION support\n");
@@ -5372,10 +5372,10 @@ void InitEAXManager()
 
 	if (s_bEAX)
 	{
-		s_eaxSet = (EAXSet)alGetProcAddress((ALubyte*)"EAXSet");
+		s_eaxSet = (EAXSet)alGetProcAddress((ALCchar*)"EAXSet");
 		if (s_eaxSet == NULL)
 			s_bEAX = false;
-		s_eaxGet = (EAXGet)alGetProcAddress((ALubyte*)"EAXGet");
+		s_eaxGet = (EAXGet)alGetProcAddress((ALCchar*)"EAXGet");
 		if (s_eaxGet == NULL)
 			s_bEAX = false;
 	}
@@ -5440,6 +5440,8 @@ void InitEAXManager()
 					return;
 				}
 			}
+		} else {
+			Com_Printf("Warning: Failed to load EaxMan.dll\n");
 		}
 	}
 
