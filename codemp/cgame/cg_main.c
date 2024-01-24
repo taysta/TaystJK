@@ -3536,7 +3536,7 @@ static void CG_AutomapInput( void ) {
 
 static void CG_FX_CameraShake( void ) {
 	TCGCameraShake *data = &cg.sharedBuffer.cameraShake;
-	if (cg_screenShake.integer)
+	if (cg_screenShake.integer && !(cg.predictedPlayerState.stats[STAT_RACEMODE]))
 		CG_DoCameraShake( data->mOrigin, data->mIntensity, data->mRadius, data->mTime );
 }
 
