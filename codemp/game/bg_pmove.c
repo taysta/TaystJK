@@ -4024,10 +4024,6 @@ static void PM_DashMove(void)
 }
 
 static void PM_OverDriveMove(void) {
-	//In tribes mode, check for who is using absorb.  If they are within 512x512 of me, pull us towards them.  Only if they are on other team.
-	vec3_t diff;
-	float len;
-
 	//Are we the overdriver?
 	//if (pm->ps->fd.forcePowersActive & (1 << FP_ABSORB)) {
 		//Dunno what to do clientside here
@@ -4036,16 +4032,19 @@ static void PM_OverDriveMove(void) {
 	//Check if we are being overdrive waked
 	if (pm->ps->stats[STAT_DEAD_YAW]) {
 		int i;
+		vec3_t diff;
+		float len;
 		for (i = 0; i < 32; i++) {
 			if ((pm->ps->stats[STAT_DEAD_YAW] & (1 << i))) { //Push away this guy
 				bgEntity_t *bgEnt = PM_BGEntForNum(i);
 				if (bgEnt) {
 					VectorSubtract(pm->ps->origin, bgEnt->playerState->origin, diff);
 					len = VectorNormalize(diff);
-					if (len < 1)
-						len = 1;
+					if (len < 32)
+						len = 32;
 
 					VectorMA(pm->ps->velocity, 5000 / len, diff, pm->ps->velocity);
+					//Break or keep looking for other people using this? how does this behave with multiple overdrivers
 				}
 			}
 		}
@@ -13383,6 +13382,8 @@ void PmoveSingle (pmove_t *pmove) {
 		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
+			float upScale = scale;
+			upScale *= pm->ps->gravity / 800;
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
 			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
@@ -13399,7 +13400,7 @@ void PmoveSingle (pmove_t *pmove) {
 				else if (hackscale < 1)
 					hackscale = 1;
 
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				float hackscale = 1.25f;
@@ -13413,14 +13414,14 @@ void PmoveSingle (pmove_t *pmove) {
 				if (hackscale < 1)
 					hackscale = 1;
 
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] > 1500) {
 				float hackscale = 1500.0f / pm->ps->velocity[2];
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Weaken upjet if we are going up extremely fast already
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//Weaken upjet if we are going up extremely fast already
 			}
 			else {
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale;
 			}
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
