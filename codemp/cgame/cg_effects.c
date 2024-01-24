@@ -673,7 +673,7 @@ void CG_ExplosionEffects( vec3_t origin, float intensity, int radius, int time )
 	intensityScale = 1 - ( dist / (float) radius );
 	realIntensity = intensity * intensityScale;
 
-	if ((cg_screenShake.integer) || (cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE) && !(cg.predictedPlayerState.stats[STAT_RACEMODE]))
+	if (cg_screenShake.integer || (cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
 		CGCam_Shake( realIntensity, time );
 }
 

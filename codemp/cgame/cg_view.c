@@ -1093,7 +1093,7 @@ static void CG_OffsetFirstPersonView( void ) {
 //JAPRO - Clientside - Remove Screenshake if allowed - Start
 	if (cgs.serverMod == SVMOD_JAPRO)
 	{
-		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE) || (cg.predictedPlayerState.stats[STAT_RACEMODE]))
+		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
 		{
 		}	
 		else if ( cg.damageTime ) {
