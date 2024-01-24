@@ -672,7 +672,7 @@ Ghoul2 Insert End
 			val = 1.0f;
 			if (ps && cent->currentState.number == ps->clientNum)
 			{
-				if (cg_screenShake.integer >= 2) // loda - this is camera shake during charge
+				if ((cg_screenShake.integer >= 2) && !(cg.predictedPlayerState.stats[STAT_RACEMODE])) // loda - this is camera shake during charge
 					CGCam_Shake( /*0.1f*/0.2f, 100 );
 			}
 		}
@@ -680,7 +680,7 @@ Ghoul2 Insert End
 		{
 			if (ps && cent->currentState.number == ps->clientNum)
 			{
-				if (cg_screenShake.integer >= 2) // loda - this is camera shake during charge
+				if ((cg_screenShake.integer >= 2) && !(cg.predictedPlayerState.stats[STAT_RACEMODE])) // loda - this is camera shake during charge
 					CGCam_Shake( val * val * /*0.3f*/0.6f, 100 );
 			}
 		}

@@ -821,7 +821,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			damage = 30 * g_weaponDamageScale.value;
+			damage = 30;
 		else
 			damage = 50;
 

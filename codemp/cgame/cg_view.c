@@ -760,7 +760,11 @@ static void CG_OffsetThirdPersonView( void )
 	}
 	else if ( cg.snap->ps.stats[STAT_HEALTH] <= 0 )
 	{
-		focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+			focusAngles[YAW] = 0;
+		} else {
+			focusAngles[YAW] = cg.snap->ps.stats[STAT_DEAD_YAW];
+		}
 	}
 	else
 	{
@@ -1089,7 +1093,7 @@ static void CG_OffsetFirstPersonView( void ) {
 //JAPRO - Clientside - Remove Screenshake if allowed - Start
 	if (cgs.serverMod == SVMOD_JAPRO)
 	{
-		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
+		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE) || (cg.predictedPlayerState.stats[STAT_RACEMODE]))
 		{
 		}	
 		else if ( cg.damageTime ) {
