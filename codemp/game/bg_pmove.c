@@ -4023,82 +4023,40 @@ static void PM_DashMove(void)
 	pm->ps->stats[STAT_JUMPTIME] = 401;
 }
 
-#if 0
 static void PM_OverDriveMove(void) {
-	const int	FORCE_COST = 75;
-	const float OVERDRIVE_DURATION = 3000;
+	//In tribes mode, check for who is using absorb.  If they are within 512x512 of me, pull us towards them.  Only if they are on other team.
+	int i;
+	vec3_t diff;
+	float len;
 
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_DRAIN) && (pm->ps->fd.forceRageRecoveryTime <= level.time)) {
-		pm->ps->stats[STAT_WJTIME] = OVERDRIVE_DURATION;
-		pm->ps->fd.forcePower -= FORCE_COST;
-		if (pm->ps->fd.forcePower < 0)
-			pm->ps->fd.forcePower = 0;
-#ifdef _GAME
-		G_PlayEffect(EFFECT_LANDING_SAND, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
-		pm->ps->fd.forceRageRecoveryTime = level.time + 1000; // ?
-#endif
+	//Are we the overdriver?
+	if (pm->ps->fd.forcePowersActive & (1 << FP_ABSORB)) {
+		pm->ps->speed *= 2;
 	}
-	if (pm->ps->stats[STAT_WJTIME] > 0) {
-		pm->ps->gravity = 1600;
-		pm->ps->speed *= 2.0f;
 
-
-#if _GAME
-		//Debounce this plz
-		gentity_t *ent;
-		int numSorted = level.numConnectedClients;
+	//Check if we are being overdrive waked
+	if (pm->ps->stats[STAT_DEAD_YAW]) {
 		int i;
+		for (i = 0; i < 32; i++) {
+			if ((pm->ps->stats[STAT_DEAD_YAW] & (1 << i))) { //Push away this guy
+				bgEntity_t *bgEnt = PM_BGEntForNum(i);
+				if (bgEnt) {
+					VectorSubtract(pm->ps->origin, bgEnt->playerState->origin, diff);
+					len = VectorNormalize(diff);
+					if (len < 1)
+						len = 1;
 
-		gentity_t *self = (gentity_t *)pm_entSelf;
-
-		G_ScreenShake(pm->ps->origin, NULL, 1.0f, 100, qfalse);
-		G_Sound(self , CHAN_AUTO, G_SoundIndex("sound/chars/rancor/swipehit.wav"));
-
-		for (i = 0; i < numSorted; i++) { //Probably more effecient to do this than trap->entitiesinbox
-		
-			ent = &g_entities[level.sortedClients[i]];
-
-			if (!ent->client)
-				continue;
-			if (!ent->inuse)
-				continue;
-			if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
-				continue;
-			if (ent->client->pers.connected == CON_CONNECTING)
-				continue;
-			if (level.sortedClients[i] == pm->ps->clientNum)
-				continue;
-
-			if (DistanceSquared(ent->client->ps.origin, pm->ps->origin) < (512 * 512)) {
-				vec3_t diff;
-				float len;
-				//If they are on the ground, Knock them off ground.
-				//Give them low grav.
-				ent->client->ps.gravity = 1; //Probably should be doing this stuff in G_Active or something.  Based on if they are in ragetime and their perk is X
-				//Is there any way to predict this.  Set the overdrivers client num as a ps flag somewhere on the client? and userint1 etc?
-				if (ent->client->ps.groundEntityNum != ENTITYNUM_NONE)
-					ent->client->ps.velocity[2] = 100;
-
-				G_Damage(ent, self, self, vec3_origin, self->r.currentOrigin, Q_irand(10, 25), DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
-				VectorSubtract(self->r.currentOrigin, ent->r.currentOrigin, diff);
-				len = VectorNormalize(diff);
-				VectorMA(ent->client->ps.velocity, 1000/len, diff, ent->client->ps.velocity);
+					VectorMA(pm->ps->velocity, 5000 / len, diff, pm->ps->velocity);
+				}
 			}
 		}
-
-#endif
-
 	}
-	else {
-		pm->ps->gravity = 800; ///Uhhh. g_gravity ? Need to be setting this every frame if were going to be using it
-	}
-
+	pm->ps->stats[STAT_DEAD_YAW] = 0;
 }
-#endif
 
 static void PM_ThrustMove(void)
 {
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING)) {
 		pm->ps->stats[STAT_WJTIME] = 800;
 #ifdef _GAME
 		gentity_t *self = (gentity_t *)pm_entSelf;
@@ -4135,7 +4093,7 @@ static void PM_ThrustMove(void)
 	}
 	else if (pm->ps->stats[STAT_WJTIME] > 300) { //This is messed up but it works. otherwise can't really modify fp as we go because deltatime and cant get more discrete than 1fp.
 		pm->ps->fd.forcePower = 0;
-		pm->ps->stats[STAT_WJTIME] = 0;
+		//pm->ps->stats[STAT_WJTIME] = 0;
 	}
 	else {
 		pm->ps->fd.forcePowersActive &= ~(1 << FP_SPEED);
@@ -13325,9 +13283,9 @@ void PmoveSingle (pmove_t *pmove) {
 #endif
 		if (pm->ps->stats[STAT_MAX_HEALTH] == 500) //FIXME
 			PM_BlinkMove();
-		else
+		else if(pm->ps->stats[STAT_MAX_HEALTH] == 700) //FIXME
 			PM_ThrustMove();
-		//PM_OverDriveMove();
+		PM_OverDriveMove(); //This should just be an actual forcepower (absorb?), have it do the loop and set a ps flag on anyone in range.  then have code here to check for that flag and predict the movement on affected players?
 	}
 
 

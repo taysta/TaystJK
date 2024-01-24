@@ -4357,6 +4357,11 @@ void ClientThink_real( gentity_t *ent ) {
 						}
 						else client->ps.gravity = 750; //Match 125fps gravity here since we are using decimal precision for Zvel now
 					}
+					else if (g_tweakWeapons.integer & WT_TRIBES) {
+						if (client->ps.stats[STAT_DEAD_YAW]) {
+							client->ps.gravity = 100;
+						}
+					}
 				}
 			}
 		}
@@ -5258,12 +5263,16 @@ void ClientThink_real( gentity_t *ent ) {
 			ForceRage(ent);
 			break;
 		case GENCMD_FORCE_PROTECT:
+			if (g_tweakWeapons.integer & WT_TRIBES) //only allow this to be done via redirect from +button_lightning in tribes
+				break;
 			if (ent->client->genCmdDebounce[GENCMD_DELAY_PROTECT] > level.time - 300)
 				break;
 			ent->client->genCmdDebounce[GENCMD_DELAY_PROTECT] = level.time;
 			ForceProtect(ent);
 			break;
 		case GENCMD_FORCE_ABSORB:
+			if (g_tweakWeapons.integer & WT_TRIBES) //only allow this to be done via redirect from +button_lightning in tribes
+				break;
 			if (ent->client->genCmdDebounce[GENCMD_DELAY_ABSORB] > level.time - 300)
 				break;
 			ent->client->genCmdDebounce[GENCMD_DELAY_ABSORB] = level.time;
