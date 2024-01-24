@@ -4025,7 +4025,6 @@ static void PM_DashMove(void)
 
 static void PM_OverDriveMove(void) {
 	//In tribes mode, check for who is using absorb.  If they are within 512x512 of me, pull us towards them.  Only if they are on other team.
-	int i;
 	vec3_t diff;
 	float len;
 

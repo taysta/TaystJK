@@ -4831,8 +4831,8 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 					continue;
 
 				if (DistanceSquared(ent->client->ps.origin, self->client->ps.origin) < (512 * 512)) {
-					vec3_t diff;
-					float len;
+					//vec3_t diff;
+					//float len;
 					//If they are on the ground, Knock them off ground.
 					//Give them low grav.
 					//G_Damage(ent, self, self, vec3_origin, self->client->ps.origin, 3, DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
