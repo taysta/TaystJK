@@ -817,11 +817,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
 	if (altFire) {
-		float boxSize = 0;
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			damage = 30;
+			damage = 20;
 		else
 			damage = 50;
 
@@ -830,7 +829,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		else if (count > 30)
 			count = 30;
 
-		damage += count * 2.5f;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage += count * 1.5f;
+		else
+			damage += count * 2.5f;
 		damage *= g_weaponDamageScale.value;
 
 		count = ((count - 1.0f) / (30.0f - 1.0f)) * (20.0f - 1.0f) + 1.0f;//scale count back down to the 1-5 range for bullet size
@@ -841,7 +843,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	}
 	else {
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			damage = 20 * g_weaponDamageScale.value;
+			damage = 15 * g_weaponDamageScale.value;
 		else 
 			damage = 30 * g_weaponDamageScale.value;
 		missile->s.generic1 = 2;//always make the bullet a little bigger

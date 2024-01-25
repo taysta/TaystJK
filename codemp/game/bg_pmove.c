@@ -1311,8 +1311,8 @@ static void PM_Friction( void ) {
 void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 {
         int		i;
-		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 4.0f;
-
+		float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
+                
 		if (pm->ps->pm_type == PM_DEAD)
 			return;
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
@@ -4024,10 +4024,6 @@ static void PM_DashMove(void)
 }
 
 static void PM_OverDriveMove(void) {
-	//In tribes mode, check for who is using absorb.  If they are within 512x512 of me, pull us towards them.  Only if they are on other team.
-	vec3_t diff;
-	float len;
-
 	//Are we the overdriver?
 	//if (pm->ps->fd.forcePowersActive & (1 << FP_ABSORB)) {
 		//Dunno what to do clientside here
@@ -4036,16 +4032,19 @@ static void PM_OverDriveMove(void) {
 	//Check if we are being overdrive waked
 	if (pm->ps->stats[STAT_DEAD_YAW]) {
 		int i;
+		vec3_t diff;
+		float len;
 		for (i = 0; i < 32; i++) {
 			if ((pm->ps->stats[STAT_DEAD_YAW] & (1 << i))) { //Push away this guy
 				bgEntity_t *bgEnt = PM_BGEntForNum(i);
 				if (bgEnt) {
 					VectorSubtract(pm->ps->origin, bgEnt->playerState->origin, diff);
 					len = VectorNormalize(diff);
-					if (len < 1)
-						len = 1;
+					if (len < 32)
+						len = 32;
 
 					VectorMA(pm->ps->velocity, 5000 / len, diff, pm->ps->velocity);
+					//Break or keep looking for other people using this? how does this behave with multiple overdrivers
 				}
 			}
 		}
@@ -4122,7 +4121,7 @@ static void PM_BlinkMove(void) //Just blink for now
 		gentity_t *self = (gentity_t *)pm_entSelf;
 		G_PlayEffectID(G_EffectIndex("howler/sonic"), pm->ps->origin, pm->ps->viewangles);
 		G_PlayEffectID(G_EffectIndex("env/powerbolt_long"), pm->ps->origin, pm->ps->viewangles);
-		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/rage.wav"));
+		G_Sound(self, CHAN_BODY, G_SoundIndex("sound/weapons/force/teamforce.mp3"));
 		pm->ps->fd.forceRageRecoveryTime = level.time + 10000; // ?
 #endif
 	}
@@ -13280,10 +13279,10 @@ void PmoveSingle (pmove_t *pmove) {
 	#else
 	if (!pm->ps->stats[STAT_RACEMODE] && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-		if (pm->ps->stats[STAT_MAX_HEALTH] == 500) //FIXME
-			PM_BlinkMove();
-		else if(pm->ps->stats[STAT_MAX_HEALTH] == 700) //FIXME
-			PM_ThrustMove();
+	if (pm->ps->fd.forcePowerSelected == 3) //FIXME
+		PM_ThrustMove();
+	else if (pm->ps->fd.forcePowerSelected == 4) //FIXME
+		PM_BlinkMove();
 		PM_OverDriveMove(); //This should just be an actual forcepower (absorb?), have it do the loop and set a ps flag on anyone in range.  then have code here to check for that flag and predict the movement on affected players?
 	}
 
@@ -13383,6 +13382,8 @@ void PmoveSingle (pmove_t *pmove) {
 		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
+			float upScale = scale;
+			upScale *= pm->ps->gravity / 800;
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
 			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
@@ -13399,7 +13400,7 @@ void PmoveSingle (pmove_t *pmove) {
 				else if (hackscale < 1)
 					hackscale = 1;
 
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				float hackscale = 1.25f;
@@ -13413,14 +13414,14 @@ void PmoveSingle (pmove_t *pmove) {
 				if (hackscale < 1)
 					hackscale = 1;
 
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//was 18 with no grav
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] > 1500) {
 				float hackscale = 1500.0f / pm->ps->velocity[2];
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale * hackscale;//Weaken upjet if we are going up extremely fast already
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//Weaken upjet if we are going up extremely fast already
 			}
 			else {
-				pm->ps->velocity[2] += 425.0f * pml.frametime * scale;
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale;
 			}
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
@@ -13898,7 +13899,10 @@ void PmoveSingle (pmove_t *pmove) {
 	PM_SetWaterLevel();
 	if (pm->cmd.forcesel != (byte)-1 && (pm->ps->fd.forcePowersKnown & (1 << pm->cmd.forcesel)))
 	{
-		pm->ps->fd.forcePowerSelected = pm->cmd.forcesel;
+#if _GAME
+		if (!(g_tweakWeapons.integer & WT_TRIBES) || pm->ps->stats[STAT_RACEMODE])
+#endif
+			pm->ps->fd.forcePowerSelected = pm->cmd.forcesel;
 	}
 	if (pm->cmd.invensel != (byte)-1 && (pm->ps->stats[STAT_HOLDABLE_ITEMS] & (1 << pm->cmd.invensel)))
 	{
