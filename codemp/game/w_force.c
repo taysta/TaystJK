@@ -406,7 +406,12 @@ void WP_InitForcePowers( gentity_t *ent ) {
 			lastFPKnown = i;
 	}
 
-	if (!(g_tweakWeapons.integer & WT_TRIBES) || ent->client->sess.raceMode) {
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !ent->client->sess.raceMode) {
+		ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
+		if (!ent->client->ps.fd.forcePowerSelected)
+			ent->client->ps.fd.forcePowerSelected = 2;
+	}
+	else {
 		if (ent->client->ps.fd.forcePowersKnown & ent->client->sess.selectedFP) {
 			ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
 		}

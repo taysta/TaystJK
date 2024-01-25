@@ -820,7 +820,7 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
 		if (g_tweakWeapons.integer & WT_TRIBES)
-			damage = 15;
+			damage = 20;
 		else
 			damage = 50;
 
@@ -829,7 +829,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		else if (count > 30)
 			count = 30;
 
-		damage += count * 2.5f;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage += count * 1.5f;
+		else
+			damage += count * 2.5f;
 		damage *= g_weaponDamageScale.value;
 
 		count = ((count - 1.0f) / (30.0f - 1.0f)) * (20.0f - 1.0f) + 1.0f;//scale count back down to the 1-5 range for bullet size
