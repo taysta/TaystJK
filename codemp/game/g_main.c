@@ -2067,7 +2067,7 @@ const char *int_to_string(int i, char *buf, size_t bufSize) {
 }
 
 void PrintStats(int client) {
-	int			i, j = 0, gametype = level.gametype;
+	int			i, j = 0;
 	char		msg[1024-128] = {0}, numbuf[16] = {0};
 	char		lKills[32], lDeaths[32], lNet[32], lDmgGiven[32], lDmgTaken[32], lDmgNet[32], lDmgPerDeath[32], lTK[32], lCaptures[32], lReturns[32], lFragCarrier[32], lAccuracy[32], lTE[32], lTH[32], lDrain[32], lName[MAX_NETNAME], whitespace[32];
 	qboolean	showAccuracy = qtrue, showTeamPowers = qtrue, showDrain = qtrue;
