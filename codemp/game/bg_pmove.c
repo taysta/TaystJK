@@ -13383,7 +13383,8 @@ void PmoveSingle (pmove_t *pmove) {
 
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			float upScale = scale;
-			upScale *= pm->ps->gravity / 800;
+			if (!pm->ps->stats[STAT_RACEMODE])
+				upScale *= pm->ps->gravity / 800.0f;
 			//Jet gets stronger the more your velocity is lower, and weaker the more your z vel is higher.  Same with WASD?
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
 			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
