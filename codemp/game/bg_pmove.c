@@ -13853,7 +13853,7 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 
 #if _GRAPPLE
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+			if ((pm->ps->pm_flags & PMF_GRAPPLE) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				PM_GrappleMoveTribes();
 			}
 #if _GAME

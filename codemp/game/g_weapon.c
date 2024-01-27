@@ -4790,7 +4790,17 @@ static void WP_FireConcussion( gentity_t *ent )
 	float	vel = CONC_VELOCITY;
 	gentity_t *missile;
 
-	if ((g_tweakWeapons.integer & WT_TRIBES) || (ent->client->sess.raceMode && ent->client->sess.movementStyle == MV_TRIBES)) {
+	if (ent->client->sess.raceMode) {
+		if (ent->client->sess.movementStyle == MV_TRIBES) {
+			vel = 3040;
+			damage = 75;
+		}
+		else {
+			vel = 3000;
+			damage = 75;
+		}
+	}
+	else if (!ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
 		vel = 3040 * g_projectileVelocityScale.value;
 		damage = 75 * g_weaponDamageScale.value;
 	}
