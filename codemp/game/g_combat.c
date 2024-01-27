@@ -712,6 +712,7 @@ void TossClientItems( gentity_t *self ) {
 LookAtKiller
 ==================
 */
+/*
 void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) {
 	vec3_t		dir;
 
@@ -726,6 +727,7 @@ void LookAtKiller( gentity_t *self, gentity_t *inflictor, gentity_t *attacker ) 
 
 	self->client->ps.stats[STAT_DEAD_YAW] = vectoyaw ( dir );
 }
+*/
 
 /*
 ==================
@@ -5109,6 +5111,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				mass = 240;
 			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))
 				mass *= 1.75f; //Superheavy, but also a nerf to discjumping in protect
+			else if ((g_tweakWeapons.integer & WT_TRIBES) && (targ->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)))
+				mass *= 2.25f; //Superheavy, but also a nerf to discjumping in protect
 		}
 
 		if (mod == MOD_SABER)

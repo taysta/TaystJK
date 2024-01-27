@@ -197,7 +197,8 @@ void WP_InitForcePowers( gentity_t *ent ) {
 		ent->client->ps.fd.forcePowersKnown &= ~(1<<i);
 	}
 
-	ent->client->ps.fd.forcePowerSelected = -1;
+	if (!(g_tweakWeapons.integer & WT_TRIBES) || ent->client->sess.raceMode)
+		ent->client->ps.fd.forcePowerSelected = -1;
 	ent->client->ps.fd.forceSide = 0;
 
 	// if in siege, then use the powers for this class, and skip all this nonsense.
@@ -405,16 +406,23 @@ void WP_InitForcePowers( gentity_t *ent ) {
 			lastFPKnown = i;
 	}
 
-	if ( ent->client->ps.fd.forcePowersKnown & ent->client->sess.selectedFP )
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !ent->client->sess.raceMode) {
 		ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
-
-	if ( !(ent->client->ps.fd.forcePowersKnown & (1 << ent->client->ps.fd.forcePowerSelected)) ) {
-		if ( lastFPKnown != -1 )
-			ent->client->ps.fd.forcePowerSelected = lastFPKnown;
-		else
-			ent->client->ps.fd.forcePowerSelected = 0;
+		if (!ent->client->ps.fd.forcePowerSelected)
+			ent->client->ps.fd.forcePowerSelected = 2;
 	}
+	else {
+		if (ent->client->ps.fd.forcePowersKnown & ent->client->sess.selectedFP) {
+			ent->client->ps.fd.forcePowerSelected = ent->client->sess.selectedFP;
+		}
 
+		if (!(ent->client->ps.fd.forcePowersKnown & (1 << ent->client->ps.fd.forcePowerSelected))) {
+			if (lastFPKnown != -1)
+				ent->client->ps.fd.forcePowerSelected = lastFPKnown;
+			else
+				ent->client->ps.fd.forcePowerSelected = 0;
+		}
+	}
 	for ( /*i=0*/; i<NUM_FORCE_POWERS; i++ )
 		ent->client->ps.fd.forcePowerBaseLevel[i] = ent->client->ps.fd.forcePowerLevel[i];
 	ent->client->ps.fd.forceUsingAdded = 0;
@@ -659,11 +667,14 @@ qboolean WP_ForcePowerAvailable( gentity_t *self, forcePowers_t forcePower, int 
 	if (self->client->sess.raceMode && (forcePower == FP_SPEED)) {
 		drain = 75;
 	}
-	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PROTECT)) {
+	else if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PROTECT)) {
 		drain = 50;
 	}
-	if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PUSH)) {
+	else if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_PUSH)) {
 		drain = 95;
+	}
+	else if ((g_tweakWeapons.integer & WT_TRIBES) && (forcePower == FP_ABSORB)) {//overdrive
+		drain = 30;
 	}
 	//Tribes protect? wt_tribes
 	if (self->client->ps.fd.forcePowersActive & (1 << forcePower))
@@ -741,7 +752,7 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 	if ( !(self->client->ps.fd.forcePowersKnown & ( 1 << forcePower )) )
 	{//don't know this power
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH || forcePower == FP_ABSORB) {
 			}
 			else return qfalse;
 		}
@@ -764,7 +775,7 @@ qboolean WP_ForcePowerUsable( gentity_t *self, forcePowers_t forcePower )
 	if (!self->client->ps.fd.forcePowerLevel[forcePower])
 	{
 		if (g_tweakWeapons.integer & WT_TRIBES) {
-			if (forcePower == FP_PROTECT || forcePower == FP_PUSH) {
+			if (forcePower == FP_PROTECT || forcePower == FP_PUSH || forcePower == FP_ABSORB) {
 			}
 			else return qfalse;
 		}
@@ -1096,7 +1107,10 @@ void WP_ForcePowerStart( gentity_t *self, forcePowers_t forcePower, int override
 	case FP_PROTECT:
 		hearable = qtrue;
 		hearDist = 256;
-		duration = 20000;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			duration = 60000; //unlimited length in tribes?
+		else
+			duration = 20000;
 		self->client->ps.fd.forcePowersActive |= ( 1 << forcePower );
 		break;
 	case FP_ABSORB:
@@ -1634,6 +1648,9 @@ void ForceProtect( gentity_t *self )
 		(self->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) )
 	{
 		WP_ForcePowerStop( self, FP_PROTECT );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			self->client->ps.fd.forcePowerDebounce[FP_PROTECT] = level.time + 1000; //fix that?
+		}
 		return;
 	}
 
@@ -1659,7 +1676,10 @@ void ForceProtect( gentity_t *self )
 
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		WP_ForcePowerStart(self, FP_PROTECT, 50);
+		if (self->client->ps.fd.forcePowerDebounce[FP_PROTECT] - level.time > 0)
+			return;
+		WP_ForcePowerStart(self, FP_PROTECT, 40);
+		self->client->ps.fd.forcePowerDebounce[FP_PROTECT] = level.time; //fix that?
 	}
 	else
 		WP_ForcePowerStart( self, FP_PROTECT, 0 );
@@ -1678,6 +1698,8 @@ void ForceAbsorb( gentity_t *self )
 		(self->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) )
 	{
 		WP_ForcePowerStop( self, FP_ABSORB );
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+		}
 		return;
 	}
 
@@ -1702,9 +1724,18 @@ void ForceAbsorb( gentity_t *self )
 
 	self->client->ps.forceAllowDeactivateTime = level.time + 1500;
 
-	WP_ForcePowerStart( self, FP_ABSORB, 0 );
-	G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
-	G_Sound( self, TRACK_CHANNEL_3, absorbLoopSound );
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (self->client->ps.fd.forcePowerDebounce[FP_ABSORB] - level.time > 0) //Bug when forcepowerdebounce is 0.... on first absorb use of thet map
+			return;
+		WP_ForcePowerStart(self, FP_ABSORB, 20); //Overdrive
+		//G_PreDefSound(self->client->ps.origin, PSOUND_RAGE);
+		G_Sound(self, TRACK_CHANNEL_3, rageLoopSound);
+	}
+	else {
+		WP_ForcePowerStart(self, FP_ABSORB, 0);
+		G_PreDefSound(self->client->ps.origin, PDSOUND_ABSORB);
+		G_Sound(self, TRACK_CHANNEL_3, absorbLoopSound);
+	}
 }
 
 void ForceRage( gentity_t *self )
@@ -4551,7 +4582,7 @@ static void WP_UpdateMindtrickEnts(gentity_t *self)
 }
 
 #define FORCE_DEBOUNCE_TIME 50 // sv_fps 20 = 50msec frametime, basejka balance/timing
-
+void Weapon_HookFree(gentity_t *ent);
 static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd_t *cmd )
 {
 //	extern usercmd_t	ucmd;
@@ -4780,13 +4811,55 @@ static void WP_ForcePowerRun( gentity_t *self, forcePowers_t forcePower, usercmd
 	case FP_ABSORB:
 		if (self->client->ps.fd.forcePowerDebounce[forcePower] < level.time)
 		{
-			BG_ForcePowerDrain( &self->client->ps, forcePower, 1 );
+			if (g_tweakWeapons.integer & WT_TRIBES) //Overdrive
+				BG_ForcePowerDrain(&self->client->ps, forcePower, 5);
+			else
+				BG_ForcePowerDrain(&self->client->ps, forcePower, 1);
 			if (self->client->ps.fd.forcePower < 1)
 			{
 				WP_ForcePowerStop(self, forcePower);
 			}
 
 			self->client->ps.fd.forcePowerDebounce[forcePower] = level.time + 600;
+		}
+		if (g_tweakWeapons.integer & WT_TRIBES) { //Overdrive
+			//Loop through numconnected clients.  Anyone in range on the other team gets their mystery bitmask field updated with our clientnum. To be used in BG_pmove.
+			//Debounce this plz?
+			gentity_t *ent;
+			int numSorted = level.numConnectedClients;
+			int i;
+
+			if (self->client && self->client->hook)
+				Weapon_HookFree(self->client->hook);
+
+			//G_ScreenShake(self->client->ps.origin, NULL, 1.0f, 100, qfalse); //It should screenshake. maybe rewrite this to be singleclient for the user? since range is broken in screenshake
+			//G_Sound(self, CHAN_AUTO, G_SoundIndex("sound/chars/rancor/swipehit.wav"));
+
+			for (i = 0; i < numSorted; i++) { //Probably more effecient to do this than trap->entitiesinbox
+				float len;
+				ent = &g_entities[level.sortedClients[i]];
+
+				if (!ent->client)
+					continue;
+				if (!ent->inuse)
+					continue;
+				if (ent->client->sess.sessionTeam == TEAM_SPECTATOR)
+					continue;
+				if (ent->client->pers.connected == CON_CONNECTING)
+					continue;
+				if (ent->client->sess.raceMode)
+					continue;
+				if (level.sortedClients[i] == self->client->ps.clientNum)
+					continue;
+
+				len = DistanceSquared(ent->client->ps.origin, self->client->ps.origin);
+				if (len < (256 * 256)) {
+					G_Damage(ent, self, self, vec3_origin, self->client->ps.origin, len < (64*64) ? 2 : 1, DAMAGE_NO_ARMOR | DAMAGE_NO_KNOCKBACK, MOD_MELEE);
+					if (ent->client->ps.groundEntityNum != ENTITYNUM_NONE)
+						ent->client->ps.velocity[2] = 100;
+					ent->client->ps.stats[STAT_DEAD_YAW] = (1 << self->client->ps.clientNum);
+				}
+			}
 		}
 		break;
 	default:
@@ -4807,7 +4880,14 @@ int WP_DoSpecificPower( gentity_t *self, usercmd_t *ucmd, forcePowers_t forcepow
 	// OVERRIDEFIXME
 	if ( !WP_ForcePowerAvailable( self, forcepower, 0 ) )
 	{
-		return 0;
+		//This is fucked up.  why did they make 2 ways of activating forcepowers
+		if ((g_tweakWeapons.integer & WT_TRIBES) &&
+			!self->client->sess.raceMode && 
+			((self->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)) || (self->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))) &&
+			forcepower == FP_LIGHTNING)
+		{
+		}
+		else return 0;
 	}
 
 	switch(forcepower)
@@ -4864,6 +4944,30 @@ int WP_DoSpecificPower( gentity_t *self, usercmd_t *ucmd, forcePowers_t forcepow
 		}
 		break;
 	case FP_LIGHTNING:
+		if (g_tweakWeapons.integer & WT_TRIBES) {
+			if (self->client->ps.fd.forcePowerSelected == 2) {
+				powerSucceeded = 0; //always 0 for nonhold powers
+				if (self->client->ps.fd.forceButtonNeedRelease)
+				{ //need to release before we can use nonhold powers again
+					break;
+				}
+				ForceProtect(self);
+				self->client->ps.fd.forceButtonNeedRelease = 1;
+				break;
+			}
+			else if (self->client->ps.fd.forcePowerSelected == 5) {
+				powerSucceeded = 0; //always 0 for nonhold powers
+				if (self->client->ps.fd.forceButtonNeedRelease)
+				{ //need to release before we can use nonhold powers again
+					break;
+				}
+				ForceAbsorb(self); //Overdrive
+				self->client->ps.fd.forceButtonNeedRelease = 1;
+				break;
+			}			
+			else
+				break;
+		}
 		ForceLightning(self);
 		break;
 	case FP_PUSH:

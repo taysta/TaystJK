@@ -7013,6 +7013,51 @@ static void Cmd_Ysal_f(gentity_t *ent)
 	}
 }
 
+int PackNameToInteger(char *style) {
+	Q_strlwr(style);
+	Q_CleanStr(style);
+
+	if (!Q_stricmp(style, "shield") || !Q_stricmp(style, "0"))
+		return 0;
+	if (!Q_stricmp(style, "thrust") || !Q_stricmp(style, "1"))
+		return 1;
+	if (!Q_stricmp(style, "blink") || !Q_stricmp(style, "2"))
+		return 2;
+	if (!Q_stricmp(style, "overdrive") || !Q_stricmp(style, "3"))
+		return 3;
+	return -1;
+}
+static void Cmd_TribesPack_f(gentity_t *ent) {
+	int pack;
+	char packStr[32];
+
+	if (!ent->client)
+		return;
+
+	Com_Printf("Pack is %i\n", ent->client->ps.fd.forcePowerSelected);
+
+	if (trap->Argc() != 2) {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /pack <shield, thrust, blink, or overdrive>\n\"");
+		return;
+	}
+
+	trap->Argv(1, packStr, sizeof(packStr));
+	pack = PackNameToInteger(packStr);
+	//Just return if newstyle = old style?
+
+	if (pack >= 0) {
+		if (ent->client->sess.sessionTeam != TEAM_SPECTATOR) {
+			if (pack+2 != ent->client->ps.fd.forcePowerSelected)
+				G_Kill(ent);
+		}
+		ent->client->ps.fd.forcePowerSelected = pack + 2;//Can't use 1 cuz of fp_levitation dedicated validation
+		trap->SendServerCommand(ent - g_entities, "print \"Pack updated!\n\"");
+	}
+	else {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /pack <shield, thrust, blink, or overdrive>\n\"");
+	}
+}
+
 static void Cmd_ToggleCrouchJump_f(gentity_t *ent)
 {
 	if (!ent->client)
@@ -7660,6 +7705,9 @@ void Cmd_Race_f(gentity_t *ent)
 			else if (ent->client->pers.tribesClass) {
 				ent->client->pers.tribesClass = 0;
 			}
+		}
+		else {
+			ent->client->pers.tribesClass = 0;
 		}
 
 		G_Kill( ent ); //stop abuse
@@ -8864,6 +8912,8 @@ command_t commands[] = {
 
 	{ "npc",				Cmd_NPC_f,					0 },//removed cheat for admin //meh let us npc kill all from spec
 	{ "nudge",				Cmd_Nudge_f,				CMD_CHEAT|CMD_NOINTERMISSION },
+
+	{ "pack",				Cmd_TribesPack_f,			CMD_NOINTERMISSION },
 
 	{ "practice",			Cmd_Practice_f,				CMD_NOINTERMISSION },
 	{ "printstats",			Cmd_PrintStats_f,			CMD_NOINTERMISSION },

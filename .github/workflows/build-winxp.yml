@@ -45,7 +45,7 @@ jobs:
           }
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3.1
+        uses: microsoft/setup-msbuild@v1.3.2
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -79,7 +79,7 @@ jobs:
           path: ${{ github.workspace }}/build/bin/JediAcademy
           if-no-files-found: error
 
-  create-latest:
+  create-winxp:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master'
     needs: [msvc-xp]
     runs-on: ubuntu-22.04
@@ -95,17 +95,18 @@ jobs:
         run: |
           7z a -r TaystJK-windowsxp-x86.zip ./TaystJK-windowsxp-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           7z a -r TaystJK-windowsxp-x86_64.zip ./TaystJK-windowsxp-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-      - name: Create latest build
-        uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
+      - name: Create latest beta build
+        uses: softprops/action-gh-release@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "winxp"
+          generate_release_notes: true
+          tag_name: "winxp"
           prerelease: false
           title: Latest Build
           files: |
             *.zip
 
-  create-release:
+  create-release-winxp:
     if: github.event_name == 'release'
     needs: [msvc-xp]
     runs-on: ubuntu-latest

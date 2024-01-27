@@ -268,7 +268,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 10;
+			ent->client->ps.jetpackFuel -= 9;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 	}
@@ -582,8 +582,12 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 			ent->client->ps.jetpackFuel = 0;
 	}
 
-	if ( altFire )
+	if ( altFire || (g_tweakWeapons.integer & WT_TRIBES))
 	{
+		float slop = 0.15f;
+		if (altFire && (g_tweakWeapons.integer & WT_TRIBES)) {
+			slop = 1.0f;
+		}
 		// add some slop to the alt-fire direction
 		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
 		{
@@ -591,8 +595,8 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 			float r = Q_random(&seed) * BLASTER_SPREAD;
 
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				angs[PITCH] += r*0.15f * sin(theta); //r should be squared? r*r
-				angs[YAW] += r*0.15f * cos(theta);
+				angs[PITCH] += r*slop * sin(theta); //r should be squared? r*r
+				angs[YAW] += r*slop * cos(theta);
 			}
 			else {
 				angs[PITCH] += r * sin(theta);
@@ -602,8 +606,8 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 		else
 		{
 			if (g_tweakWeapons.integer & WT_TRIBES) {
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * 0.15f;
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * slop;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD * slop;
 			}
 			else {
 				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_SPREAD;
@@ -800,27 +804,36 @@ qboolean G_CanDisruptify(gentity_t *ent)
 void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 {
 	gentity_t* missile;
-	int	damage = 30 * g_weaponDamageScale.value;
+	int	damage;
 	float count;
 	float vel = 9000;
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
 		vel = 32000;
 
+	VectorMA( muzzle, -6, vright, muzzle );//temp fix but we should rewrite calcmuzzlepoint since this actually affects all weapons but is only really noticible with sniper
+	VectorMA(muzzle, 6, up, muzzle);
+
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, altFire, qtrue, qtrue);
 
 	if (altFire) {
-		float boxSize = 0;
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
 
-		damage = 50;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage = 20;
+		else
+			damage = 50;
 
 		if (count < 1)
 			count = 1;
 		else if (count > 30)
 			count = 30;
 
-		damage += count * 2.5f;
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage += count * 1.5f;
+		else
+			damage += count * 2.5f;
+		damage *= g_weaponDamageScale.value;
 
 		count = ((count - 1.0f) / (30.0f - 1.0f)) * (20.0f - 1.0f) + 1.0f;//scale count back down to the 1-5 range for bullet size
 		if (count < 2)
@@ -829,6 +842,10 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		missile->s.generic1 = (int)(count + 0.5f); // The missile will then render according to the charge level.
 	}
 	else {
+		if (g_tweakWeapons.integer & WT_TRIBES)
+			damage = 15 * g_weaponDamageScale.value;
+		else 
+			damage = 30 * g_weaponDamageScale.value;
 		missile->s.generic1 = 2;//always make the bullet a little bigger
 		missile->s.eFlags |= EF_ALT_FIRING; //have client render it right
 	}
@@ -837,8 +854,6 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 		VectorSet(missile->r.maxs, 2, 2, 2); //constant hitbox
 		VectorSet(missile->r.mins, -2, -2, -2);
 	}
-
-	VectorMA( muzzle, -6, vright, muzzle );//note
 
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
@@ -854,8 +869,8 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire)
 	//missile->flags |= FL_BOUNCE;
 	missile->bounceCount = 8;//was 3
 
-	//if (g_tweakWeapons.integer & PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
-	missile->s.pos.trType = TR_GRAVITY;
+	if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
+		missile->s.pos.trType = TR_GRAVITY;
 }
 
 //---------------------------------------------------------
@@ -3120,11 +3135,9 @@ void mortarExplode(gentity_t *self)
 {
 	self->takedamage = qfalse;
 
-	VectorNormalize(self->s.pos.trDelta);
-
 	if (self->activator)
 		G_RadiusDamage(self->r.currentOrigin, self->activator, self->splashDamage, self->splashRadius, self, self, self->methodOfDeath/*MOD_LT_SPLASH*/);
-	G_AddEvent(self, EV_MISSILE_MISS, 0);
+	G_AddEvent(self, EV_MISSILE_MISS, 5/*dirToByte(tr.plane.normal)*/); //Todo, use dirToByte and calculte the traceplane normal instead of "5" in this addevent.  But thermal det also needs this fix (broken in basejk.  E.g. throw a thermal on a slope and the exlpode wont be oriented to the slope).
 
 	//G_PlayEffect(EFFECT_EXPLOSION_FLECHETTE, self->r.currentOrigin, self->s.pos.trDelta);
 
@@ -5229,15 +5242,37 @@ void Weapon_GrapplingHook_Fire (gentity_t *ent)
 
 void Weapon_HookFree (gentity_t *ent)
 {
-	ent->parent->client->hook = NULL;
-	ent->parent->client->ps.pm_flags &= ~( PMF_GRAPPLE );
-	ent->parent->client->hookHasBeenFired = qfalse;
-	ent->parent->client->fireHeld= qfalse;
+	if (ent && ent->parent && ent->parent->client) { //Crash fix but now they are stuck without being able to grapple again until... wepchange/fire? Respawn? Grapples should probably just not bounce off sabers it makes too many fuckups
+		ent->parent->client->hook = NULL;
+		ent->parent->client->ps.pm_flags &= ~(PMF_GRAPPLE);
+		ent->parent->client->hookHasBeenFired = qfalse;
+		ent->parent->client->fireHeld = qfalse;
+	}
 	G_FreeEntity( ent );
 }
 
 void Weapon_HookThink (gentity_t *ent)
 {
+	if (!ent || !ent->parent) {
+		Weapon_HookFree(ent);
+		return;
+	}
+
+#if 1
+	if (ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
+		if (ent->s.time2 > 4000) {
+			Weapon_HookFree(ent);	// don't work
+			return;
+		}
+		ent->s.time2 += FRAMETIME;
+	}
+#endif
+
+	if (DistanceSquared(ent->r.currentOrigin, ent->parent->client->ps.origin) > 2048 * 2048) {
+		Weapon_HookFree(ent);
+		return;
+	}
+
 	if ( ent->enemy ) {
 		if ( ent->enemy->client ) {
 			vec3_t v;
@@ -5247,17 +5282,18 @@ void Weapon_HookThink (gentity_t *ent)
 				return;
 			}
 
-//			VectorCopy( ent->enemy->s.pos.trDelta, ent->s.pos.trDelta );
 			v[0] = ent->enemy->r.currentOrigin[0];
 			v[1] = ent->enemy->r.currentOrigin[1];
 			v[2] = ent->enemy->r.currentOrigin[2];
 			SnapVectorTowards( v, ent->s.pos.trBase );	// save net bandwidth
 
 			G_SetOrigin( ent, v );
+			VectorCopy(ent->enemy->s.pos.trDelta, ent->s.pos.trDelta);
+			SnapVector(ent->s.pos.trDelta);
 		}
 	}
 
-	//VectorCopy( ent->r.currentOrigin, ent->parent->client->ps.hyperSpaceAngles ); //wtf- not used. should be for hook angles?
+	VectorCopy( ent->s.pos.trDelta, ent->parent->client->ps.hyperSpaceAngles ); //wtf- not used. should be for hook angles? rn its for hook vel since using looktarget to have client use that to find vel is broken cuz npcs break it (?)
 	VectorCopy( ent->r.currentOrigin, ent->parent->client->ps.lastHitLoc ); //snapvector this?
 	ent->nextthink = level.time + FRAMETIME;
 }
@@ -6335,9 +6371,9 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 		// fire the specific weapon
 		switch( ent->s.weapon ) {
 		case WP_STUN_BATON:
-			if (g_tweakWeapons.integer & WT_STUN_LG && !altFire)//JAPRO - Lightning Gun
+			if (g_tweakWeapons.integer & WT_STUN_LG && altFire)//JAPRO - Lightning Gun
 				WP_FireLightningGun(ent);
-			else if (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE && altFire)//JAPRO - Shocklance
+			else if (g_tweakWeapons.integer & WT_STUN_SHOCKLANCE && !altFire)//JAPRO - Shocklance
 				WP_FireShockLance(ent);
 			else
 				WP_FireStunBaton(ent, altFire);

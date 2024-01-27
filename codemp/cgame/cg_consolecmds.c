@@ -536,9 +536,9 @@ static void CG_ServerConfig_f(void) // this should be serverside for JAPRO.  Cli
 
 static void CG_Login_f(void)
 {
-	char username[MAX_QPATH], password[MAX_QPATH];
+	char username[MAX_TOKENLENGTH], password[MAX_TOKENLENGTH];
 
-	if (cgs.serverMod == SVMOD_JAPLUS || cgs.serverMod == SVMOD_BASEJKA) //Block this on mods that dont have /login to help avoid leaking
+	if (cgs.serverMod == SVMOD_JAPLUS) //Block this on mods that dont have /login to help avoid leaking
 		return;
 	if (cg.predictedPlayerState.pm_type == PM_INTERMISSION && cgs.serverMod != SVMOD_JAPRO && cgs.serverMod != SVMOD_BASEENHANCED && cgs.serverMod != SVMOD_OJKALT)
 		return;

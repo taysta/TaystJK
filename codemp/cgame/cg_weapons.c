@@ -2023,12 +2023,21 @@ static void CG_GetBulletSpread(int weapon, qboolean altFire, int seed, float *sp
 	switch (weapon)
 	{
 		case WP_BLASTER:
-			if (altFire) {
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 				float spread = 1.6f, r;
 				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
 
-				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-					spread = 0.15f;
+				if (!altFire)
+					spread *= 0.15f;
+
+				r = Q_random(&seed) * spread;
+				*spreadY = r * sinf(theta);
+				*spreadX = r * cosf(theta);
+			}
+			else if (altFire) {
+				float spread = 1.6f, r;
+				float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+
 				r = Q_random(&seed) * spread;
 				*spreadY = r * sinf(theta);
 				*spreadX = r * cosf(theta);
@@ -2511,9 +2520,9 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 				trap->FX_PlayEffectID(cgs.effects.mConcussionAltRing, ringspot, forward, -1, -1, qfalse);
 			}
 		}
-		else if (ent->weapon == WP_STUN_BATON)
+		else if (ent->weapon == WP_STUN_BATON && cg_simulatedHitscan.integer)
 		{
-			if (altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
+			if (!altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
 			{
 				VectorMA( muzzlePoint, 256, forward, endPoint );//loda
 
@@ -2521,7 +2530,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
 
 				// do the magic-number adjustment
-				VectorMA( muzzlePoint, 2.25, right, muzzlePoint );
+				VectorMA( muzzlePoint, 2.25f, right, muzzlePoint );
 				VectorMA( muzzlePoint, -2, up, muzzlePoint );
 				VectorMA( muzzlePoint, -3, forward, muzzlePoint ); //loda
 
@@ -2529,7 +2538,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 				//Com_Printf( "Predicted shocklance fire\n" );
 				FX_DisruptorMainShot( muzzlePoint, trace.endpos );
 			}
-			else if (!altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_LG)
+			else if (altFire && cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_LG)
 			{
 				VectorMA( muzzlePoint, 640, forward, endPoint );
 
@@ -2537,7 +2546,7 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 				CG_Trace( &trace, muzzlePoint, vec3_origin, vec3_origin, endPoint, cg.predictedPlayerState.clientNum, CONTENTS_SOLID );
 
 				// do the magic-number adjustment
-				VectorMA( muzzlePoint, 2.25, right, muzzlePoint );  //loda
+				VectorMA( muzzlePoint, 2.25f, right, muzzlePoint );  //loda
 				VectorMA( muzzlePoint, -2, up, muzzlePoint ); //loda
 				VectorMA( muzzlePoint, -3, forward, muzzlePoint ); //loda
 
@@ -2809,12 +2818,14 @@ void CG_MissileHitPlayer(int weapon, vec3_t origin, vec3_t dir, int entityNum, q
 		FX_BlasterWeaponHitPlayer( origin, dir, humanoid );
 		break;
 
-	case WP_STUN_BATON:
-		if (altFire && cgs.jcinfo & JAPRO_CINFO_SHOCKLANCE)
-			FX_BryarHitPlayer( origin, dir, humanoid );
-		else if (cgs.jcinfo & JAPRO_CINFO_LG)
-			FX_BryarHitPlayer( origin, dir, humanoid );
-		break;
+		case WP_STUN_BATON:
+			if (!altFire) {
+				if (cgs.jcinfo& JAPRO_CINFO_SHOCKLANCE)
+					FX_BryarHitPlayer(origin, dir, humanoid);
+			}
+			else if (cgs.jcinfo & JAPRO_CINFO_LG)
+				FX_BryarHitPlayer( origin, dir, humanoid );
+			break;
 
 	default:
 		break;

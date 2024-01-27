@@ -3430,6 +3430,8 @@ qboolean CanFireGrapple( gentity_t *ent ) { // Adapt for new hold-to-use jetpack
 		return qfalse;	
 	if (ent->client->sess.movementStyle == MV_TRIBES && ent->client->ps.fd.forcePower < 25)
 		return qfalse;
+	if (ent->client->sess.movementStyle == MV_TRIBES && (g_tweakWeapons.integer & WT_TRIBES) && (ent->client->ps.fd.forcePowersActive & (1 << FP_ABSORB)))
+		return qfalse;
 	return qtrue;
 }
 
@@ -4307,6 +4309,9 @@ void ClientThink_real( gentity_t *ent ) {
 			if (client->pers.tribesClass == 3) {
 				client->ps.speed *= 0.78125f;
 			}
+			if (g_tweakWeapons.integer & WT_TRIBES && (ent->client->ps.fd.forcePowersActive&(1 << FP_ABSORB))) {
+				client->ps.speed *= 1.5f;
+			}
 		} //Tribesclass = 0 else?
 
 		//Check for a siege class speed multiplier
@@ -4356,6 +4361,14 @@ void ClientThink_real( gentity_t *ent ) {
 							client->ps.gravity = 200;
 						}
 						else client->ps.gravity = 750; //Match 125fps gravity here since we are using decimal precision for Zvel now
+					}
+					else if (g_tweakWeapons.integer & WT_TRIBES) {
+						if (client->ps.stats[STAT_DEAD_YAW]) {
+							client->ps.gravity *= 0.25f;
+						}
+						if (ent->client->ps.fd.forcePowersActive&(1 << FP_ABSORB)) {
+							client->ps.gravity *= 1.5f;
+						}
 					}
 				}
 			}
@@ -5043,7 +5056,7 @@ void ClientThink_real( gentity_t *ent ) {
 #if _GRAPPLE
 	//CHUNK 2
 	//Com_Printf("Chunk 2 start!\n");
-	if (pm && ent->client)
+	if (ent->client) //why pmove here
 	{
 		int hookFloodProtect = g_hookFloodProtect.integer;
 		if (ent->client->sess.movementStyle == MV_TRIBES) {
@@ -5258,12 +5271,16 @@ void ClientThink_real( gentity_t *ent ) {
 			ForceRage(ent);
 			break;
 		case GENCMD_FORCE_PROTECT:
+			if (g_tweakWeapons.integer & WT_TRIBES) //only allow this to be done via redirect from +button_lightning in tribes
+				break;
 			if (ent->client->genCmdDebounce[GENCMD_DELAY_PROTECT] > level.time - 300)
 				break;
 			ent->client->genCmdDebounce[GENCMD_DELAY_PROTECT] = level.time;
 			ForceProtect(ent);
 			break;
 		case GENCMD_FORCE_ABSORB:
+			if (g_tweakWeapons.integer & WT_TRIBES) //only allow this to be done via redirect from +button_lightning in tribes
+				break;
 			if (ent->client->genCmdDebounce[GENCMD_DELAY_ABSORB] > level.time - 300)
 				break;
 			ent->client->genCmdDebounce[GENCMD_DELAY_ABSORB] = level.time;

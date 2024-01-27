@@ -861,9 +861,6 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 
 				damage *= 0.049f;
 				if (damage > 30 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
-					if (g_tribesMode.integer)
-						damage *= 0.2f;
-
 					damage -= 30;
 					if (damage > 150)
 						damage = 150;
@@ -874,8 +871,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam2.mp3"));
 
 					if (g_tribesMode.integer)
-						damage *= 5;
-
+						damage *= 3; //ehh
 					G_Damage((gentity_t *)pm_entSelf, &g_entities[trace.entityNum], &g_entities[trace.entityNum], NULL, pm->ps->origin, damage, 0, MOD_MELEE);//FIXME: MOD_IMPACT
 					//Com_Printf("Protector speed: %2f, Target speed %.2f, Diff speed %.2f, damage %i\n", VectorLength(g_entities[trace.entityNum].s.pos.trDelta), VectorLength(pm->ps->velocity), VectorLength(diffVelocity), damage);
 					g_entities[trace.entityNum].client->lastKickTime = level.time + 500;
@@ -1096,7 +1092,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 		if (pm->ps->clientNum < MAX_CLIENTS) {
 			float minNormal = MIN_WALK_NORMAL;
 			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
-				minNormal = 0.6f;
+				minNormal = 0.5f;
 			if (trace.plane.normal[2] < minNormal)
 			{//normal players cannot step up slopes that are too steep to walk on!
 				vec3_t stepVec;
