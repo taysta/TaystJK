@@ -862,7 +862,7 @@ void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	// Check for whether a new keyframe must be written in pre recording, and if so, do it.
 	if (sv_demoPreRecord->integer && (client->netchan.remoteAddress.type != NA_BOT || sv_demoPreRecordBots->integer)) {
 
-		if (client->demo.preRecord.lastKeyframeTime + (1000 * sv_demoPreRecordKeyframeDistance->integer) < sv.time) {
+		if (client->demo.preRecord.lastKeyframeTime + (1000 * sv_demoPreRecordKeyframeDistance->integer) < sv.time || client->demo.preRecord.lastKeyframeTime > sv.time) { // See if it's time for a new keyframe, or if the last keyframe was made before a serverTime restart.
 			// Save a keyframe.
 			static byte keyframeBufData[MAX_MSGLEN]; // I make these static so they don't sit on the stack.
 			static msg_t		keyframeMsg;
