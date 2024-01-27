@@ -6347,8 +6347,10 @@ void CG_DoSaber( vec3_t origin, vec3_t dir, float length, float lengthMax, float
 
 	saberRadius = (radiusStart + Q_flrand(-1.0f, 1.0f) * radiusRange)*radiusmult;
 
-	VectorScale( rgb, 255.0f, rgb );
 	if (cg_saberIgnitionFlare.integer && length <= (lengthMax * 0.25f)) {
+		vec3_t flareRGB;
+		VectorCopy(rgb, flareRGB);
+		VectorScale( flareRGB, 255.0f, flareRGB );
 		CG_AddSaberIgnitionFlareEffect(origin, saberRadius, rgb, rfx, cgs.media.saberIgnitionFlare, 1.5f, 0.25f);
 	}
 
