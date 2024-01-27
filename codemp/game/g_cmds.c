@@ -7341,7 +7341,7 @@ void Cmd_RaceTele_f(gentity_t *ent, qboolean useForce)
 void Cmd_WarpList_f(gentity_t *ent)
 {
 	char buf[MAX_STRING_CHARS-64] = {0};
-	int i, MAX_NUM_WARPS = 64;
+	int i, MAX_NUM_WARPS = 72;
 
 	if (!ent->client) {
 		trap->SendServerCommand( ent-g_entities, "print \"You can only use this command in racemode!\n\"" );
@@ -7352,6 +7352,7 @@ void Cmd_WarpList_f(gentity_t *ent)
 		return;
 	}
 
+/*
 	for (i = 0; i < MAX_NUM_WARPS; i++) {
 		if (!warpList[i].name[0])
 			break;
@@ -7361,11 +7362,37 @@ void Cmd_WarpList_f(gentity_t *ent)
 		trap->SendServerCommand(ent-g_entities, "print \"There are no warps on this map\n\"");
 	else
 		trap->SendServerCommand(ent-g_entities, va("print \"Warp list: \n%s\n\"", buf));
+
+*/
+
+	for (i = 0; i < MAX_NUM_WARPS; i++) {
+		char *tmpMsg = NULL;
+
+		if (!warpList[i].name[0])
+			break;
+		//Q_strcat(buf, sizeof(buf), va(" ^3%s", warpList[i].name));
+
+		//tmpMsg = va(" %s%-32s    ", ((i % 2) ? S_COLOR_GREEN : S_COLOR_YELLOW), sortedMaps[i]);
+		tmpMsg = va(" %s%s", ((i % 2) ? S_COLOR_GREEN : S_COLOR_YELLOW), warpList[i].name);
+		if (strlen(buf) + strlen(tmpMsg) >= sizeof(buf)) {
+			trap->SendServerCommand(ent - g_entities, va("print \"%s\"", buf));
+			buf[0] = '\0';
+		}
+		Q_strcat(buf, sizeof(buf), tmpMsg);
+	}
+	if (buf[0] == '\0')
+		trap->SendServerCommand(ent - g_entities, "print \"There are no warps on this map\n\"");
+	else
+		trap->SendServerCommand(ent - g_entities, va("print \"%s\n\"", buf));
+
+
+
+
 }
 
 void Cmd_Warp_f(gentity_t *ent)
 {
-	int i, warpNum = -1, MAX_NUM_WARPS = 64;
+	int i, warpNum = -1, MAX_NUM_WARPS = 72;
 	char enteredWarpName[MAX_NETNAME];
 	vec3_t	angles = {0, 0, 0}, origin = {0, 0, 0};
 
