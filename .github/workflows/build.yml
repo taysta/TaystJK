@@ -54,7 +54,7 @@ jobs:
           fetch-tags: true
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3.1
+        uses: microsoft/setup-msbuild@v1.3.2
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -258,10 +258,11 @@ jobs:
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/* TaystJK-macos-x86_64.tar.gz
 
       - name: Create latest build
-        uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
+          generate_release_notes: true
+          tag_name: "latest"
           prerelease: false
           title: Latest Build
           files: |
@@ -288,11 +289,12 @@ jobs:
           mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
 
-      - name: Create latest build
-        uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
+      - name: Create latest beta build
+        uses: softprops/action-gh-release@v1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest-beta"
+          generate_release_notes: true
+          tag_name: "latest-beta"
           prerelease: true
           title: Beta Build
           files: |

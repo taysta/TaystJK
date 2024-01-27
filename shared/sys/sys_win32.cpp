@@ -715,7 +715,7 @@ Sys_SteamInit
 
 Steam initialization is done here.
 In order for Steam to work, two things are needed:
-- steam_api.dll (not included with retail Jedi Academy or Jedi Outcast!)
+- steam_api.dll (32-bit) or steam_api64.dll (64-bit) (not included with retail Jedi Academy or Jedi Outcast!)
 - steam_appid.txt (likewise)
 steam_appid.txt is a text file containing either "6020" or "6030".
 These correspond to Jedi Academy and Jedi Outcast, respectively.
@@ -744,12 +744,21 @@ void Sys_SteamInit()
 	}
 
 	// Load the library
+#ifdef _WIN64
+	gp_steamLibrary = Sys_LoadLibrary("steam_api64" DLL_EXT);
+	if (!gp_steamLibrary)
+	{
+		Com_Printf(S_COLOR_RED "Steam integration failed: Couldn't find steam_api64" DLL_EXT "\n");
+		return;
+	}
+#else
 	gp_steamLibrary = Sys_LoadLibrary("steam_api" DLL_EXT);
 	if (!gp_steamLibrary)
 	{
 		Com_Printf(S_COLOR_RED "Steam integration failed: Couldn't find steam_api" DLL_EXT "\n");
 		return;
 	}
+#endif
 
 	// Load the functions
 	SteamAPI_Init = (SteamAPIInit_Type)Sys_LoadFunction(gp_steamLibrary, "SteamAPI_Init");
