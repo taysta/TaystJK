@@ -1299,6 +1299,13 @@ gentity_t *SelectRandomTeamSpawnPoint( int teamstate, team_t team, int siegeClas
 			continue;
 		}
 
+		//Seperate spawning for 1flag and 2flag ctf?
+		if ((spot->spawnflags & 2) && level.gametype == GT_CTF && g_neutralFlag.integer >= 4) //eh?
+			continue;
+		if ((spot->spawnflags & 1) && level.gametype == GT_CTF && !g_neutralFlag.integer)
+			continue;
+		//
+
 		spots[ count ] = spot;
 		if (++count == MAX_TEAM_SPAWN_POINTS)
 			break;

@@ -6741,6 +6741,8 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button13 for dash.\n\"");
 			else if (newStyle == MV_JETPACK)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button12 for grapple, double jump for jetpack.\n\"");
+			else if (newStyle == MV_TRIBES)
+				trap->SendServerCommand(ent - g_entities, "print \"Movement style updated. Use +button13 to ski.\n\"");
 			else if (newStyle == MV_SWOOP)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +attack for gravboost, +altattack for speedboost.\n\"");
 			else if (newStyle == MV_BOTCPM)
