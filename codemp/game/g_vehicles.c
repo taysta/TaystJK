@@ -847,7 +847,7 @@ getItOutOfMe:
 		ent->client->ps.velocity[2] += JUMP_VELOCITY;
 	}*/
 
-	if (ent->client->sess.movementStyle = MV_TRIBES) {
+	if (ent->client->sess.movementStyle == MV_TRIBES) {
 		//VectorClear(ent->client->ps.velocity);
 		VectorScale(parent->s.pos.trDelta, 0.5f, ent->client->ps.velocity);
 		//Shrike grab

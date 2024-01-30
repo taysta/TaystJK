@@ -194,9 +194,9 @@ void RocketDie(gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 float WP_SpeedOfMissileForWeapon( int wp, qboolean alt_fire )
 {
 	if (g_tweakWeapons.integer & WT_TRIBES) {
-		if (wp = WP_CONCUSSION)
+		if (wp == WP_CONCUSSION)
 			return 2000 * g_projectileVelocityScale.integer;
-		if (wp = WP_BLASTER)
+		if (wp == WP_BLASTER)
 			return 10440 * g_projectileVelocityScale.integer;
 	}
 	return 500;
@@ -4786,7 +4786,7 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 static void WP_FireConcussion( gentity_t *ent )
 {//a fast rocket-like projectile
 	vec3_t	start;
-	int		damage	= CONC_DAMAGE;
+	int		damage = CONC_DAMAGE, splashDamage = CONC_SPLASH_DAMAGE;
 	float	vel = CONC_VELOCITY;
 	gentity_t *missile;
 
@@ -4794,15 +4794,18 @@ static void WP_FireConcussion( gentity_t *ent )
 		if (ent->client->sess.movementStyle == MV_TRIBES) {
 			vel = 3040;
 			damage = 75;
+			splashDamage = 75;
 		}
 		else {
 			vel = 3000;
 			damage = 75;
+			splashDamage = 40;
 		}
 	}
 	else if (!ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
 		vel = 3040 * g_projectileVelocityScale.value;
 		damage = 75 * g_weaponDamageScale.value;
+		splashDamage = 75 * g_splashDamageScale.value;
 	}
 
 	//hold us still for a bit
@@ -4837,12 +4840,7 @@ static void WP_FireConcussion( gentity_t *ent )
 	missile->splashMethodOfDeath = MOD_CONC;
 
 	missile->clipmask = MASK_SHOT | CONTENTS_LIGHTSABER;
-	if (g_tweakWeapons.integer & WT_TRIBES) {
-		missile->splashDamage = 75 * g_splashDamageScale.value;
-	}
-	else {
-		missile->splashDamage = CONC_SPLASH_DAMAGE;
-	}
+	missile->splashDamage = splashDamage;
 	missile->splashRadius = CONC_SPLASH_RADIUS;
 
 	// we don't want it to ever bounce
