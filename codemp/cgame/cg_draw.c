@@ -11510,7 +11510,7 @@ static void CG_LeadIndicator(void)
 		{
 			int speed = 0;
 			qboolean gravity = qfalse;
-			qboolean altFire = !((pm->cmd.buttons & BUTTON_ATTACK) && !(pm->cmd.buttons & BUTTON_ALT_ATTACK));
+			qboolean altFire = (pm->cmd.buttons & BUTTON_ALT_ATTACK);
 
 			speed = CG_GetBulletSpeed(cg.snap->ps.weapon, altFire);
 			gravity = CG_GetBulletGravity(cg.snap->ps.weapon, altFire);
