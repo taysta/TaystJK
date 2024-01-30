@@ -6725,6 +6725,8 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +button13 for dash.\n\"");
 			else if (newStyle == MV_JETPACK)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +button12 for grapple, double jump for jetpack.\n\"");
+			else if (newStyle == MV_TRIBES)
+				trap->SendServerCommand(ent - g_entities, "print \"Movement style updated: time reset. Use +button13 to ski and +force_lightning for thrust pack.\n\"");
 			else if (newStyle == MV_SWOOP)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated: timer reset. Use +attack for gravboost, +altattack for speedboost.\n\"");
 			else if (newStyle == MV_BOTCPM)
@@ -6742,7 +6744,7 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 			else if (newStyle == MV_JETPACK)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +button12 for grapple, double jump for jetpack.\n\"");
 			else if (newStyle == MV_TRIBES)
-				trap->SendServerCommand(ent - g_entities, "print \"Movement style updated. Use +button13 to ski.\n\"");
+				trap->SendServerCommand(ent - g_entities, "print \"Movement style updated. Use +button13 to ski and +force_lightning for thrust pack.\n\"");
 			else if (newStyle == MV_SWOOP)
 				trap->SendServerCommand(ent-g_entities, "print \"Movement style updated. Use +attack for gravboost, +altattack for speedboost.\n\"");
 			else if (newStyle == MV_BOTCPM)
@@ -7039,7 +7041,7 @@ static void Cmd_TribesPack_f(gentity_t *ent) {
 	Com_Printf("Pack is %i\n", ent->client->ps.fd.forcePowerSelected);
 
 	if (trap->Argc() != 2) {
-		trap->SendServerCommand(ent - g_entities, "print \"Usage: /pack <shield, thrust, blink, or overdrive>\n\"");
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /pack <shield, thrust, blink, or overdrive. Bind +force_lightning to activate.>\n\"");
 		return;
 	}
 

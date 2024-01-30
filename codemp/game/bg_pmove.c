@@ -13274,6 +13274,9 @@ void PmoveSingle (pmove_t *pmove) {
 		PM_CheckWallJump();
 	}
 
+	if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+		PM_ThrustMove();
+	else
 #if _GAME
 	if (!pm->ps->stats[STAT_RACEMODE] && g_tweakWeapons.integer & WT_TRIBES) { //Tribes special
 	#else
