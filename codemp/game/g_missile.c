@@ -1191,6 +1191,28 @@ void G_RunMissile( gentity_t *ent ) {
 			passent = ent->r.ownerNum;
 		}
 	}
+
+#if 1
+	//feature to scale up hitbox as a function of lifetime
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (ent->r.maxs[2] < 48) {
+			gentity_t *shooter = &g_entities[passent];
+
+			if (shooter && shooter->client && !shooter->client->sess.raceMode) {
+				float add = 0.1f;
+				ent->r.mins[0] -= add;
+				ent->r.mins[1] -= add;
+				//ent->r.mins[2] -= add;
+				ent->r.maxs[0] += add;
+				ent->r.maxs[1] += add;
+				ent->r.maxs[2] += add;
+				//Com_Printf("Maxs now %.2f\n", ent->r.maxs[0]);
+			}
+		}
+	}
+#endif
+
+
 	// trace a line from the previous position to the current position
 	if (d_projectileGhoul2Collision.integer == 1) //JAPRO - Serverside - Weapons - New Hitbox Option
 	{

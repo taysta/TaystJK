@@ -3556,12 +3556,15 @@ void G_RunItem( gentity_t *ent ) {
 		//This still lets us perform the punt but limits effectiveness
 		//Should this be done elsewhere so it's less jerky looking for the client?
 		float speed = sqrt(ent->s.pos.trDelta[0] * ent->s.pos.trDelta[0] + ent->s.pos.trDelta[1] * ent->s.pos.trDelta[1]), cut;
-		if (speed > 800) {
-			cut = (speed*speed / (800 * 800)) * bot_strafeOffset.value; //0.5f is ok?
-			//Com_Printf("Speed is %.0f, cut is %.2f realcut2 is %.5f\n", speed, cut, 1 - (cut / speed));
-			ent->s.pos.trDelta[0] *= 1 - (cut / speed);
-			ent->s.pos.trDelta[1] *= 1 - (cut / speed);
-		}
+
+		//if (ent->s.pos.trTime + 100 < level.time) { //dont flag frag for first split second
+			if (speed > 800) {
+				cut = (speed*speed / (800 * 800)) * 0.75f; //0.5f is ok?
+				//Com_Printf("Speed is %.0f, cut is %.2f realcut2 is %.5f\n", speed, cut, 1 - (cut / speed));
+				ent->s.pos.trDelta[0] *= 1 - (cut / speed);
+				ent->s.pos.trDelta[1] *= 1 - (cut / speed);
+			}
+		//}
 	}
 
 	// get current position

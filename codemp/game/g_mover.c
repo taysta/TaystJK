@@ -981,7 +981,7 @@ void Use_BinaryMover( gentity_t *ent, gentity_t *other, gentity_t *activator )
 		strength = (height / time) * 2.0f;
 
 		activator->client->ps.velocity[0] = activator->client->ps.velocity[1] = 0; //reset our xyspeed... meh
-		if (strength > activator->client->ps.velocity[2]); //Only apply the jumppad if it would speed them up
+		if (strength > activator->client->ps.velocity[2])//Only apply the jumppad if it would speed them up
 			activator->client->ps.velocity[2] = strength;
 	
 		//trap->Print("Height: %.2f, time: %.2fstrength: %.2f\n", height, time, strength);
