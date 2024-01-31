@@ -6374,7 +6374,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 				VectorNormalize(dir);
 				if (g_tribesMode.integer)
 					points *= 0.2f;
-				VectorScale(dir, g_knockback.value * (float)points/150.0f, kvel);
+				VectorScale(dir, g_knockback.value * (float)points/120.0f, kvel);
 				ent->s.pos.trType = TR_GRAVITY;
 				ent->s.pos.trTime = level.time;
 				VectorCopy(ent->r.currentOrigin, ent->s.pos.trBase);

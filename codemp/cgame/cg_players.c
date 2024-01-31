@@ -11012,7 +11012,7 @@ void CG_Player( centity_t *cent ) {
 
 	team = ci->team;
 
-	if (cent->currentState.number != cg.snap->ps.clientNum && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cent->currentState.eFlags & EF_DEAD)) {
+	if (cent->currentState.number != cg.snap->ps.clientNum && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cent->currentState.eFlags & EF_DEAD) && (cent->currentState.bolt1 != 2)) {
 		float dist = Distance(cg.snap->ps.origin, cent->currentState.pos.trBase);
 		//float size = 4 + (dist * 0.0000006f);
 		float size = 4 + (dist * 0.008f);

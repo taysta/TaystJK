@@ -7316,7 +7316,7 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
 void G_SpawnWarpLocationsFromCfg(void) //loda fixme
 {
 	fileHandle_t f;	
-	int		fLen = 0, i, MAX_FILESIZE = 4096, MAX_NUM_WARPS = 64, args = 1, row = 0;  //use max num warps idk
+	int		fLen = 0, i, MAX_FILESIZE = 4096, MAX_NUM_WARPS = 72, args = 1, row = 0;  //use max num warps idk
 	char	filename[MAX_QPATH+4] = {0}, info[1024] = {0}, buf[4096] = {0};//eh
 	char*	pch;
 

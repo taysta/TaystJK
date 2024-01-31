@@ -2126,7 +2126,7 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 			break;
 		case WP_ROCKET_LAUNCHER:
 			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
-				missileSpeed = 2040;
+				missileSpeed = 3040;
 			}
 			else {
 				if (altFire)
@@ -2147,7 +2147,7 @@ int CG_GetBulletSpeed(int weapon, qboolean altFire) {
 		case WP_CONCUSSION:
 			if (!altFire) {
 				if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-					missileSpeed = 2275;
+					missileSpeed = 3040;
 				else
 					missileSpeed = 3000;
 			}
