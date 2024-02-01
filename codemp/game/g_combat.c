@@ -5076,7 +5076,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	knockback = damage;
 
-	if (g_tribesMode.integer && !client->sess.raceMode)
+	if (g_tribesMode.integer && client && !client->sess.raceMode)
 		knockback *= 0.2f;
 
 	if ( knockback > 200 ) {

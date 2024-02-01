@@ -13514,7 +13514,10 @@ void PmoveSingle (pmove_t *pmove) {
 
 				if (curSpeed < 320) { //Need to rework this and above to be more like t1
 					float xy_hackscale;
-					xy_hackscale = 320 / curSpeed;
+					if (curSpeed)
+						xy_hackscale = 320 / curSpeed;
+					else
+						xy_hackscale = 320;
 
 					xy_hackscale *= xy_hackscale;
 
