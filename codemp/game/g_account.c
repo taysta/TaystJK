@@ -1508,33 +1508,43 @@ static void G_UpdateOtherLocalRun(sqlite3 * db, int seasonNewRank_self, int seas
 
 }
 
-void TimeToString(int duration_ms, char *timeStr, size_t strSize, qboolean noMs) { 
+void TimeSecToString(int duration_ms, char *timeStr, size_t strSize) {
+	if (duration_ms > (60 * 60)) { //thanks, eternal
+		int hours, minutes, seconds;
+		hours = (int)((duration_ms / (1000 * 60 * 60))); //wait wut
+		minutes = (int)((duration_ms / (1000 * 60)) % 60);
+		seconds = (int)(duration_ms / 1000) % 60;
+		Com_sprintf(timeStr, strSize, "%i:%02i:%02i", hours, minutes, seconds);
+	}
+	else if (duration_ms > (60)) {
+		int minutes, seconds;
+		minutes = (int)((duration_ms / (1000 * 60)) % 60);
+		seconds = (int)(duration_ms / 1000) % 60;
+		Com_sprintf(timeStr, strSize, "%i:%02i", minutes, seconds);
+	}
+	else {
+		Q_strncpyz(timeStr, va("%.0f", ((float)duration_ms * 0.001)), strSize);
+	}
+}
+
+void TimeToString(int duration_ms, char *timeStr, size_t strSize) { 
 	if (duration_ms > (60*60*1000)) { //thanks, eternal
 		int hours, minutes, seconds, milliseconds; 
 		hours = (int)((duration_ms / (1000*60*60))); //wait wut
 		minutes = (int)((duration_ms / (1000*60)) % 60);
 		seconds = (int)(duration_ms / 1000) % 60;
 		milliseconds = duration_ms % 1000; 
-		if (noMs)
-			Com_sprintf(timeStr, strSize, "%i:%02i:%02i", hours, minutes, seconds);
-		else
-			Com_sprintf(timeStr, strSize, "%i:%02i:%02i.%03i", hours, minutes, seconds, milliseconds);
+		Com_sprintf(timeStr, strSize, "%i:%02i:%02i.%03i", hours, minutes, seconds, milliseconds);
 	}
 	else if (duration_ms > (60*1000)) {
 		int minutes, seconds, milliseconds;
 		minutes = (int)((duration_ms / (1000*60)) % 60);
 		seconds = (int)(duration_ms / 1000) % 60;
 		milliseconds = duration_ms % 1000; 
-		if (noMs)
-			Com_sprintf(timeStr, strSize, "%i:%02i", minutes, seconds);
-		else
-			Com_sprintf(timeStr, strSize, "%i:%02i.%03i", minutes, seconds, milliseconds);
+		Com_sprintf(timeStr, strSize, "%i:%02i.%03i", minutes, seconds, milliseconds);
 	}
 	else {
-		if (noMs)
-			Q_strncpyz(timeStr, va("%.0f", ((float)duration_ms * 0.001)), strSize);
-		else
-			Q_strncpyz(timeStr, va("%.3f", ((float)duration_ms * 0.001)), strSize);
+		Q_strncpyz(timeStr, va("%.3f", ((float)duration_ms * 0.001)), strSize);
 	}
 }
 
@@ -2068,7 +2078,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	
 	CALL_SQLITE(close(db));
 
-	TimeToString((int)(duration_ms), timeStr, sizeof(timeStr), qfalse);
+	TimeToString((int)(duration_ms), timeStr, sizeof(timeStr));
 	PrintRaceTime(username, cl->pers.netname, message, styleString, topspeed, average, timeStr, clientNum, season_newRank, seasonPB, global_newRank, qtrue, qtrue, season_oldRank, global_oldRank, addedScore, awesomenoise);
 	//DebugWriteToDB("G_AddRaceTime");
 }
@@ -2735,7 +2745,7 @@ void Svcmd_AccountInfo_f(void)
 		getDateTime(lastlogin, timeStr, sizeof(timeStr));
 		Q_strcat(buf, sizeof(buf), va("   ^5Last login: ^2%s\n", timeStr));
 		Q_strcat(buf, sizeof(buf), va("   ^5Last IP^3: ^2%u\n", lastip));
-		TimeToString(racetime * 1000, timeStr, sizeof(timeStr), qtrue);
+		TimeSecToString(racetime, timeStr, sizeof(timeStr));
 		Q_strcat(buf, sizeof(buf), va("   ^5Racetime: ^2%s\n", timeStr));
 
 		trap->Print("%s", buf);
@@ -4601,7 +4611,7 @@ void Cmd_AccountStats_f(gentity_t *ent) { //Should i bother to cache player stat
 				if (s == SQLITE_ROW) {
 					char *tmpMsg = NULL;
 					IntegerToRaceName(sqlite3_column_int(stmt, 1), styleStr, sizeof(styleStr));
-					TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr), qfalse);
+					TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr));
 					getDateTime(sqlite3_column_int(stmt, 5), dateStr, sizeof(dateStr));
 
 					//If rank == 0, put "Season rank: season_rank".  Else put "Rank: rank"
@@ -5597,7 +5607,7 @@ void Cmd_DFFind_f(gentity_t *ent) {
 			s = sqlite3_step(stmt);
 			if (s == SQLITE_ROW) {
 				char *tmpMsg = NULL;
-				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr), qfalse);
+				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr));
 				getDateTime(sqlite3_column_int(stmt, 4), dateStr, sizeof(dateStr));
 				if (rawtime - sqlite3_column_int(stmt, 4) < 60*60*24) { //Today
 					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s^7", dateStr);
@@ -6162,7 +6172,7 @@ void Cmd_DFRecent_f(gentity_t *ent) {
 			s = sqlite3_step(stmt);
 			if (s == SQLITE_ROW) {
 				char *tmpMsg = NULL;
-				TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr), qfalse);
+				TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr));
 				getDateTime(sqlite3_column_int(stmt, 5), dateStr, sizeof(dateStr));
 				IntegerToRaceName(sqlite3_column_int(stmt, 2), styleStr, sizeof(styleStr));
 
@@ -6381,7 +6391,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 			s = sqlite3_step(stmt);
 			if (s == SQLITE_ROW) {
 				char *tmpMsg = NULL;
-				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr), qfalse);
+				TimeToString(sqlite3_column_int(stmt, 1), timeStr, sizeof(timeStr));
 				getDateTime(sqlite3_column_int(stmt, 4), dateStr, sizeof(dateStr));
 				if (rawtime - sqlite3_column_int(stmt, 4) < 60*60*24) { //Today
 					Com_sprintf(dateStrColored, sizeof(dateStrColored), "^2%s^7", dateStr);
@@ -6771,7 +6781,7 @@ void Cmd_DFTodo_f(gentity_t *ent) {
 				IntegerToRaceName(sqlite3_column_int(stmt, 1), styleStr, sizeof(styleStr));
 				if (sqlite3_column_int(stmt, 5)) {
 					Q_strncpyz(rankStr, va("%i", sqlite3_column_int(stmt, 2)), sizeof(rankStr));
-					TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr), qfalse);
+					TimeToString(sqlite3_column_int(stmt, 4), timeStr, sizeof(timeStr));
 					getDateTime(sqlite3_column_int(stmt, 5), dateStr, sizeof(dateStr)); 
 				}
 				else {

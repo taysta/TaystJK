@@ -1632,7 +1632,7 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 
 void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise);
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
-void TimeToString(int duration_ms, char *timeStr, size_t strSize, qboolean noMS);
+void TimeToString(int duration_ms, char *timeStr, size_t strSize);
 void G_AddRaceTime(char *account, char *courseName, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise); //should this be extern?
 void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	if (!player->client)
@@ -1762,7 +1762,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 
 		IntegerToRaceName(player->client->ps.stats[STAT_MOVEMENTSTYLE], styleStr, sizeof(styleStr));
-		TimeToString((int)(time * 1000), timeStr, sizeof(timeStr), qfalse);
+		TimeToString((int)(time * 1000), timeStr, sizeof(timeStr));
 		Q_strncpyz(playerName, player->client->pers.netname, sizeof(playerName));
 		Q_StripColor(playerName);
 
