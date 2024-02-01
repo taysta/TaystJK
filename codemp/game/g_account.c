@@ -1511,19 +1511,19 @@ static void G_UpdateOtherLocalRun(sqlite3 * db, int seasonNewRank_self, int seas
 void TimeSecToString(int duration_ms, char *timeStr, size_t strSize) {
 	if (duration_ms > (60 * 60)) { //thanks, eternal
 		int hours, minutes, seconds;
-		hours = (int)((duration_ms / (1000 * 60 * 60))); //wait wut
-		minutes = (int)((duration_ms / (1000 * 60)) % 60);
-		seconds = (int)(duration_ms / 1000) % 60;
+		hours = (int)((duration_ms / (60 * 60))); //wait wut
+		minutes = (int)((duration_ms / (60)) % 60);
+		seconds = (int)(duration_ms) % 60;
 		Com_sprintf(timeStr, strSize, "%i:%02i:%02i", hours, minutes, seconds);
 	}
 	else if (duration_ms > (60)) {
 		int minutes, seconds;
-		minutes = (int)((duration_ms / (1000 * 60)) % 60);
-		seconds = (int)(duration_ms / 1000) % 60;
+		minutes = (int)((duration_ms / (60)) % 60);
+		seconds = (int)(duration_ms) % 60;
 		Com_sprintf(timeStr, strSize, "%i:%02i", minutes, seconds);
 	}
 	else {
-		Q_strncpyz(timeStr, va("%.0f", ((float)duration_ms * 0.001)), strSize);
+		Q_strncpyz(timeStr, va("%i", (duration_ms)), strSize);
 	}
 }
 
@@ -6308,6 +6308,10 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 
 	Q_strlwr(partialCourseName);
 	Q_CleanStr(partialCourseName);
+	Q_strstrip(partialCourseName, " ", "");
+	Q_strstrip(partialCourseName, "&", " ");
+
+	Com_Printf("Partial coursename is %s\n", partialCourseName);
 
 	if (!enteredCourseName) {
 		char info[1024] = {0};
@@ -6315,6 +6319,7 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 		Q_strncpyz(fullCourseName, Info_ValueForKey( info, "mapname" ), sizeof(fullCourseName));
 		Q_strlwr(fullCourseName);
 		Q_CleanStr(fullCourseName);
+		Q_strstrip(partialCourseName, " ", "");
 	}
 
 	//Com_Printf("Style %i, page %i, season %i, map %s, fullmap %s\n", style, page, season, partialCourseName, fullCourseName);
@@ -6331,12 +6336,8 @@ void Cmd_DFTop10_f(gentity_t *ent) {
 		CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
 		if (enteredCourseName) { //Course e
-			//Com_Printf("doing sql query %s %i\n", courseName, style);
-			//sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE coursename LIKE %?%";
-			//sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE instr(coursename, ?) > 0 LIMIT 1";
-			//sql = "SELECT coursename, MAX(entries) FROM LocalRun WHERE instr(coursename, ?) > 0 LIMIT 1";
-			//sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE instr(coursename, ?) > 0 ORDER BY LENGTH(coursename) ASC, entries DESC LIMIT 1";
-			sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE instr(replace(coursename, ' ', ''), ?) > 0 ORDER BY entries DESC LIMIT 1";
+			//sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE instr(replace(coursename, ' ', ''), ?) > 0 ORDER BY entries DESC LIMIT 1";
+			sql = "SELECT DISTINCT(coursename) FROM LocalRun WHERE instr(coursename, ?) > 0 ORDER BY entries DESC LIMIT 1";
 			CALL_SQLITE (prepare_v2 (db, sql, strlen (sql) + 1, & stmt, NULL));
 			CALL_SQLITE (bind_text (stmt, 1, partialCourseName, -1, SQLITE_STATIC));
 			s = sqlite3_step(stmt);
