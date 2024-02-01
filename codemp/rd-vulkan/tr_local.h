@@ -1744,7 +1744,6 @@ shader_t	*FinishShader( void );
 void		R_InitShaders( qboolean server );
 void		R_ShaderList_f( void );
 void		R_RemapShader( const char *oldShader, const char *newShader, const char *timeOffset );
-void		R_ClearShaderHashTable( void );
 void		R_CreateDefaultShadingCmds( image_t *image );
 
 //
@@ -2229,7 +2228,6 @@ void		DrawNormals( const shaderCommands_t *pInput );
 void		RB_ShowImages( image_t** const pImg, uint32_t numImages );
 
 // ...
-void		R_ClearShaderHashTable( void );
 void		R_IssueRenderCommands( qboolean runPerformanceCounters );
 void		WIN_Shutdown( void );
 

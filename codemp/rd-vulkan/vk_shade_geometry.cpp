@@ -969,7 +969,7 @@ avoidGen:
 }
 
 uint32_t vk_append_uniform( const void *uniform, size_t size, uint32_t min_offset ) {
-	const uint32_t offset = PAD(vk.cmd->vertex_buffer_offset, vk.uniform_alignment);
+	const uint32_t offset = PAD(vk.cmd->vertex_buffer_offset, (VkDeviceSize)vk.uniform_alignment);
 
 	if ( offset + min_offset > vk.geometry_buffer_size )
 		return ~0U;
