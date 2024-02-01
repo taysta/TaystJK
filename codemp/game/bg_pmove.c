@@ -13384,6 +13384,8 @@ void PmoveSingle (pmove_t *pmove) {
 		float gDist2 = gDist;
 		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
 
+		//todo - jetpack/tribes dif?
+
 		if (pm->cmd.upmove > 0 && pm->ps->velocity[2] < MAX_JETPACK_VEL_UP)	{//**??^^ unlock upward vel
 			float upScale = scale;
 			if (!pm->ps->stats[STAT_RACEMODE])
@@ -13420,8 +13422,10 @@ void PmoveSingle (pmove_t *pmove) {
 
 				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
-			else if (pm->ps->velocity[2] > 1500) {
-				float hackscale = 1500.0f / pm->ps->velocity[2];
+			else if (pm->ps->velocity[2] > 800) {
+				float hackscale = 800.0f / pm->ps->velocity[2];
+				if (hackscale < 0.5f)
+					hackscale = 0.5f;
 				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//Weaken upjet if we are going up extremely fast already
 			}
 			else {
@@ -13453,6 +13457,8 @@ void PmoveSingle (pmove_t *pmove) {
 				float accel = 0.009f; //server should use pmove_float
 				vec3_t currentVelNormal;
 				float dot;
+				vec3_t xyvel;
+				float curSpeed;
 
 
 				scale /= pm->ps->speed;
@@ -13461,6 +13467,8 @@ void PmoveSingle (pmove_t *pmove) {
 
 				//problem, outside of jet they can still slow down their speed with air control ?
 				//problem, still going too high up with wasd.  need custom cmd scale?
+
+				//Todo, need a new hackscale based on current vel to give stronger if we are going slow.  Can this be done by changin pm_accelerate or its inputs?
 
 				if (!scale) {
 					wishvel[0] = 0;
@@ -13485,10 +13493,37 @@ void PmoveSingle (pmove_t *pmove) {
 				VectorCopy(pm->ps->velocity, currentVelNormal);
 				VectorNormalize(currentVelNormal);
 				dot = DotProduct(currentVelNormal, wishdir);
+
+				xyvel[0] = pm->ps->velocity[0];
+				xyvel[1] = pm->ps->velocity[1];
+				xyvel[2] = 0;
+				curSpeed = VectorLength(xyvel);
+
+
+				//Cases
+				// Going fast and wnt to go opposite - hackscale
+				//Going slow - hackscale
+				//How to smooth the hackscale
+
+
 				if (dot < 0) {
 					//Com_Printf("Dot is %.2f, old accel was %.2f, new accel is %.2f\n", dot, accel * 100, 100 * (accel * (((-dot) + 1) * 1.5)));
 					accel *= ((-dot) + 1) * 1.5;//1.5 further modifies the strength of "reverse lateral jetting" compared to regular lateral jetting
 				}
+
+
+				if (curSpeed < 320) { //Need to rework this and above to be more like t1
+					float xy_hackscale;
+					xy_hackscale = 320 / curSpeed;
+
+					xy_hackscale *= xy_hackscale;
+
+					if (xy_hackscale > 3)
+						xy_hackscale = 3;
+					accel *= xy_hackscale;
+				}
+
+
 
 
 				VectorScale(wishdir, wishspeed, wishVelocity);
@@ -13964,6 +13999,7 @@ void PmoveSingle (pmove_t *pmove) {
 	//Walbug fix start, if getting stuck w/o noclip is even possible.  This should maybe be after round float? im not sure..
 	if ((pm->ps->persistant[PERS_TEAM] != TEAM_SPECTATOR) && pm->ps->stats[STAT_RACEMODE] && VectorCompare(pm->ps->origin, pml.previous_origin) /*&& (VectorLengthSquared(pm->ps->velocity) > VectorLengthSquared(pml.previous_velocity))*/)
 			VectorClear(pm->ps->velocity); //Their velocity is increasing while their origin is not moving (wallbug), so prevent this..
+			//VectorCopy(pml.previous_velocity, pm->ps->velocity);
 	//To fix rocket wallbug, since that gets applied elsewhere, just always reset vel if origins dont match?
 	//Wallbug fix end
 
