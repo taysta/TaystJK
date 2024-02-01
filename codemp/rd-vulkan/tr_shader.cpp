@@ -138,11 +138,6 @@ qboolean ShaderHashTableExists( void )
 	return qfalse;
 }
 
-void R_ClearShaderHashTable( void )
-{
-	memset(hashTable, 0, sizeof(hashTable));
-}
-
 void KillTheShaderHashTable( void )
 {
 	memset(shaderTextHashTable, 0, sizeof(shaderTextHashTable));
@@ -3835,7 +3830,7 @@ static qboolean EqualTCgen( int bundle, const shaderStage_t *st1, const shaderSt
 	}
 
 	if (b1->tcGen == TCGEN_VECTOR) {
-		if (memcmp(b1->tcGenVectors, b2->tcGenVectors, sizeof(b1->tcGenVectors)) != 0) {
+		if (memcmp(b1->tcGenVectors, b2->tcGenVectors, sizeof(*b1->tcGenVectors) * 2) != 0) {
 			return qfalse;
 		}
 	}

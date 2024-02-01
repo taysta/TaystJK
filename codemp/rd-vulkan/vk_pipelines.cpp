@@ -999,7 +999,10 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     rasterization_state.flags = 0;
     rasterization_state.depthClampEnable = VK_FALSE;
     rasterization_state.rasterizerDiscardEnable = VK_FALSE;
-    rasterization_state.polygonMode = ( def->state_bits & GLS_POLYMODE_LINE ) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
+	if ( def->shader_type == TYPE_DOT )
+	    rasterization_state.polygonMode = VK_POLYGON_MODE_POINT;
+	else
+	    rasterization_state.polygonMode = ( def->state_bits & GLS_POLYMODE_LINE ) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
 
     switch ( def->face_culling )
     {
