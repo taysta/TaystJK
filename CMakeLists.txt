@@ -16,7 +16,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #============================================================================
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
 set(InOpenJK ON)
@@ -112,6 +112,7 @@ else()
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
 		set(Architecture "arm64")
 		add_definitions(-DPNG_ARM_NEON_OPT=0)
+		set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OS X deployment version")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
