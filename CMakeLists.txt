@@ -257,6 +257,10 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 	# enable support for multithreading
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+	if(CMAKE_SYSTEM_NAME MATCHES "BSD")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcommon")
+	endif()
+
 	if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-comment")
