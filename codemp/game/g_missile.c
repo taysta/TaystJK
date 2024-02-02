@@ -473,10 +473,11 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	if ( other->takedamage &&
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		( ent->flags & ( FL_BOUNCE | FL_BOUNCE_HALF ) ) &&
-		(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime > level.time - 300)) 
+		((g_tweakWeapons.integer & WT_TRIBES) && ent->s.weapon == WP_REPEATER && ent->setTime && ent->setTime > level.time - 300)) 
 	{ //if its a direct hit and first 500ms of mortar, bounce off player.
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
+			ent->nextthink = level.time + 1500;
 			return;
 	}
 	else if ( !other->takedamage &&
@@ -488,6 +489,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		{
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
+			ent->nextthink = level.time + 1500;
 			return;
 		}
 	}
