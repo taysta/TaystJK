@@ -533,7 +533,7 @@ void vk_create_framebuffers()
             }
 
             VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.main[i]));
-            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], va("framebuffer - main %i"), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
+            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], "framebuffer - main", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
         }
         else {
             if (i == 0) {
