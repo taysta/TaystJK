@@ -4502,8 +4502,10 @@ static void PM_GrappleMoveTribes(void) {
 		PM_Accelerate(diffNormal, 600, pullStrength); //600 is WishSpeed
 		newVel = VectorLength(pm->ps->velocity);
 
-		if (newVel > (pm->ps->speed * 1.75f))//Dont give them an advantage to grapple launching instead of dashing for gaining speed
-			VectorScale(pm->ps->velocity, (oldVel / newVel) * 0.9f, pm->ps->velocity);
+		if (newVel > (pm->ps->speed * 1.75f)) {//Dont give them an advantage to grapple launching instead of dashing for gaining speed
+			newVel += pml.frametime * 200; //Grapple air friction
+			VectorScale(pm->ps->velocity, (oldVel / newVel), pm->ps->velocity);
+		}
 
 		//Com_Printf("^7Detecting hook is stationary\n");
 	}
