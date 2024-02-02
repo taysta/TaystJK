@@ -4043,7 +4043,7 @@ static void PM_OverDriveMove(void) {
 					if (len < 32)
 						len = 32;
 
-					VectorMA(pm->ps->velocity, 5000 / len, diff, pm->ps->velocity);
+					VectorMA(pm->ps->velocity, 6000 / len, diff, pm->ps->velocity);
 					//Break or keep looking for other people using this? how does this behave with multiple overdrivers
 				}
 			}
@@ -4054,7 +4054,7 @@ static void PM_OverDriveMove(void) {
 
 static void PM_ThrustMove(void)
 {
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && !pm->ps->powerups[PW_BLUEFLAG] && !pm->ps->powerups[PW_REDFLAG] && !pm->ps->powerups[PW_NEUTRALFLAG]) {
 		pm->ps->stats[STAT_WJTIME] = 800;
 #ifdef _GAME
 		gentity_t *self = (gentity_t *)pm_entSelf;
@@ -4101,7 +4101,7 @@ static void PM_ThrustMove(void)
 static void PM_BlinkMove(void) //Just blink for now
 {
 	const float BLINK_DURATION = 300;
-	const float BLINK_STRENGTH = 5000.0f;
+	const float BLINK_STRENGTH = 4200.0f;
 	const int	FORCE_COST = 25;
 
 	//Todo - change bind from lightning? More restrictions? If keep as lightning, disregard actual lightning?
@@ -4112,7 +4112,7 @@ static void PM_BlinkMove(void) //Just blink for now
 	//E.g. adding the blink stepsize each frame and only doing a trace when it hits the limit, then resetting the counter.
 	//Doing time*time means the traces at start/finish are very small
 
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime)) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->ps->fd.forcePower > FORCE_COST) && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && (pm->ps->fd.forceRageRecoveryTime <= pm->cmd.serverTime) && !pm->ps->powerups[PW_REDFLAG] && !pm->ps->powerups[PW_NEUTRALFLAG] && !pm->ps->powerups[PW_BLUEFLAG]) {
 		pm->ps->stats[STAT_WJTIME] = BLINK_DURATION;
 		pm->ps->fd.forcePower -= FORCE_COST;
 		if (pm->ps->fd.forcePower < 0)
@@ -4503,7 +4503,7 @@ static void PM_GrappleMoveTribes(void) {
 		newVel = VectorLength(pm->ps->velocity);
 
 		if (newVel > (pm->ps->speed * 1.75f))//Dont give them an advantage to grapple launching instead of dashing for gaining speed
-			VectorScale(pm->ps->velocity, oldVel / newVel, pm->ps->velocity);
+			VectorScale(pm->ps->velocity, (oldVel / newVel) * 0.9f, pm->ps->velocity);
 
 		//Com_Printf("^7Detecting hook is stationary\n");
 	}
