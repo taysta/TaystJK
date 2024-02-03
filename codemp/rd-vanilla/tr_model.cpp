@@ -923,7 +923,7 @@ qboolean ServerLoadMDXM( model_t *mod, void *buffer, const char *mod_name, qbool
 	lod = (mdxmLOD_t *) ( (byte *)mdxm + mdxm->ofsLODs );
 	for ( l = 0 ; l < mdxm->numLODs ; l++)
 	{
-		int	triCount = 0;
+		//int	triCount = 0;
 
 		LL(lod->ofsEnd);
 		// swap all the surfaces
@@ -940,7 +940,7 @@ qboolean ServerLoadMDXM( model_t *mod, void *buffer, const char *mod_name, qbool
 			LL(surf->ofsBoneReferences);
 			LL(surf->ofsEnd);
 
-			triCount += surf->numTriangles;
+			//triCount += surf->numTriangles;
 
 			if ( surf->numVerts > SHADER_MAX_VERTEXES ) {
 				return qfalse;

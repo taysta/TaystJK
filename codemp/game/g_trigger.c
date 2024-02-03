@@ -1695,7 +1695,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			G_Sound(player, CHAN_AUTO, trigger->noise_index);
 		if (ValidRaceSettings(trigger->spawnflags, player)) {
 			valid = qtrue;
-			if (player->client->pers.userName && player->client->pers.userName[0])
+			if (player->client->pers.userName[0])
 				Q_strncpyz(c, S_COLOR_CYAN, sizeof(c));
 			else
 				Q_strncpyz(c, S_COLOR_GREEN, sizeof(c));
@@ -2159,11 +2159,11 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 		G_Sound(player, CHAN_AUTO, trigger->noise_index);
 
 	if (trigger->spawnflags & 1) {
-		if ((!g_fixSlidePhysics.integer && abs(player->client->lastVelocity[0]) > 350) || (g_fixSlidePhysics.integer && abs(player->client->lastVelocity[0]) > 90))
+		if ((!g_fixSlidePhysics.integer && fabsf(player->client->lastVelocity[0]) > 350) || (g_fixSlidePhysics.integer && fabsf(player->client->lastVelocity[0]) > 90))
 			player->client->ps.velocity[0] = player->client->lastVelocity[0] * scale;//XVel Relative Scale
 	}
 	if (trigger->spawnflags & 2) {
-		if ((!g_fixSlidePhysics.integer && abs(player->client->lastVelocity[1]) > 350) || (g_fixSlidePhysics.integer && abs(player->client->lastVelocity[1]) > 90))
+		if ((!g_fixSlidePhysics.integer && fabsf(player->client->lastVelocity[1]) > 350) || (g_fixSlidePhysics.integer && fabsf(player->client->lastVelocity[1]) > 90))
 			player->client->ps.velocity[1] = player->client->lastVelocity[1] * scale;//YVel Relative Scale
 	}
 	if (trigger->spawnflags & 4) {

@@ -166,10 +166,10 @@ typedef struct serverStatus_s
 	qboolean retrieved;
 } serverStatus_t;
 
-serverStatus_t cl_serverStatusList[MAX_SERVERSTATUSREQUESTS] = { 0 };
+serverStatus_t cl_serverStatusList[MAX_SERVERSTATUSREQUESTS] = {{{0}}};
 int serverStatusCount = 0;
 
-IHeapAllocator *G2VertSpaceClient = 0;
+IHeapAllocator *G2VertSpaceClient = nullptr;
 
 extern void SV_BotFrame( int time );
 void CL_CheckForResend( void );

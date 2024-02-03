@@ -1647,7 +1647,7 @@ void CL_ParseBinding( int key, qboolean down, unsigned time )
 
 	// filter semicolons that aren't in quotes into magic chars, preserving semicolons that are in quotes
 	const char nonQuotedSemicolonMagicChar = '\x01';
-	bool inQuote = false;
+	//	bool inQuote = false;
 	int quotes = 0;
 	while (*p) {
 		if (*p == '"') {

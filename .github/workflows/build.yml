@@ -172,7 +172,7 @@ jobs:
 
   macos:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       fail-fast: false
       matrix:
@@ -237,9 +237,76 @@ jobs:
           path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
+  macos-m1:
+    name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64]
+        build_type: [Debug, Release]
+        portable: [Non-Portable]
+
+    steps:
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Create Build Environment
+        run: |
+          brew install zlib libjpeg libpng sdl2
+          cmake -E make_directory ${{ github.workspace }}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{ github.workspace }}/build
+        run: |
+          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
+          if [ "${{ matrix.portable }}" == "Portable" ]; then
+            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
+          else
+            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
+          fi
+          cmake $GITHUB_WORKSPACE $OPTIONS
+
+      - name: Build
+        working-directory: ${{ github.workspace }}/build
+        shell: bash
+        run: cmake --build . -j $(getconf _NPROCESSORS_ONLN)
+
+      - name: Install
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}/build
+        shell: bash
+        run: cmake --install .
+
+      - name: Create TaystJK binary archive
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}/install/JediAcademy
+        shell: bash
+        run: |
+          chmod +x eternaljk.arm64.app/Contents/MacOS/eternaljk.arm64
+          tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.build_type == 'Release' }}
+        with:
+          name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          if-no-files-found: error
+
   create-latest:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [msvc, ubuntu, macos]
+    needs: [msvc, ubuntu, macos, macos-m1]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -251,11 +318,12 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windows-x86.zip ./TaystJK-windows-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r TaystJK-windows-x86_64.zip ./TaystJK-windows-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./TaystJK-linux-x86-Release-Non-Portable/* TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/* TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/* TaystJK-macos-x86_64.tar.gz
+          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
+          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
+          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
+          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
+          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
+          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
       - name: Create latest build
         uses: softprops/action-gh-release@v1
@@ -271,7 +339,7 @@ jobs:
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
-    needs: [msvc, ubuntu, macos]
+    needs: [msvc, ubuntu, macos, macos-m1]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -283,11 +351,12 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windows-x86.zip         ./TaystJK-windows-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r TaystJK-windows-x86_64.zip         ./TaystJK-windows-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
+          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
           mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
           mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
+          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
       - name: Create latest beta build
         uses: softprops/action-gh-release@v1
@@ -329,6 +398,10 @@ jobs:
             artifact_name: TaystJK-macos-x86_64.tar.gz
             zip: false
 
+          - artifact_dir: TaystJK-macos-arm64-Release-Non-Portable
+            artifact_name: TaystJK-macos-arm64.tar.gz
+            zip: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -340,7 +413,7 @@ jobs:
       - name: Create archive
         run: |
           if [ "${{ matrix.zip }}" == "true" ]; then
-            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/*
           else
             mv ./${{ matrix.artifact_dir }}/* ${{ matrix.artifact_name }}
           fi

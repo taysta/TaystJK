@@ -747,7 +747,7 @@ static QINLINE void ResetSpecificPlayerTimers(gentity_t* ent, qboolean print) {
 			ent->client->ps.ammo[AMMO_DETPACK] = 4;
 		}
 
-		if (ent->client->pers.userName && ent->client->pers.userName[0]) {
+		if (ent->client->pers.userName[0]) {
 			if (ent->client->sess.raceMode && !ent->client->pers.practice && ent->client->pers.stats.startTime) {
 				ent->client->pers.stats.racetime += (trap->Milliseconds() - ent->client->pers.stats.startTime) * 0.001f - ent->client->afkDuration * 0.001f;
 				ent->client->afkDuration = 0;
@@ -1527,7 +1527,7 @@ void SetTeam( gentity_t *ent, char *s, qboolean forcedToJoin ) {//JAPRO - Modifi
 	if (client->ps.duelInProgress) {
 		gentity_t *duelAgainst = &g_entities[client->ps.duelIndex];
 
-		if (ent->client->pers.lastUserName && ent->client->pers.lastUserName[0] && duelAgainst->client && duelAgainst->client->pers.lastUserName && duelAgainst->client->pers.lastUserName[0]) {
+		if (ent->client->pers.lastUserName[0] && duelAgainst->client && duelAgainst->client->pers.lastUserName[0]) {
 			if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
 				G_AddDuel(duelAgainst->client->pers.lastUserName, ent->client->pers.lastUserName, duelAgainst->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], duelAgainst->client->ps.stats[STAT_HEALTH], duelAgainst->client->ps.stats[STAT_ARMOR]);
 		}

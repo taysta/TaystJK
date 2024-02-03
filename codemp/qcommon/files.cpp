@@ -1079,7 +1079,7 @@ void FS_FCloseAio( int handle ) {
 			// if we started to record a demo and a demo with the same path was still not fully closed.
 			// This can happen presumably due to random hiccups/latencies in the IO process or threading or whatever.
 			// We don't really need to worry about this.
-			Com_Printf("FS_FCloseAio: NOTE: File is not async or not closed: handle %i (%s)\n",f, fsh[f].name ? fsh[f].name : "");
+			Com_Printf("FS_FCloseAio: NOTE: File is not async or not closed: handle %i (%s)\n",f, fsh[f].name);
 		}
 		return;
 	}
@@ -3253,7 +3253,7 @@ FS_Which_f
 void FS_Which_f( void ) {
 	searchpath_t	*search;
 	char		*filename;
-	qboolean	isDLL;
+	//qboolean	isDLL;
 
 	filename = Cmd_Argv(1);
 
@@ -3274,7 +3274,7 @@ void FS_Which_f( void ) {
 		return;
 	}
 
-	isDLL = FS_IsExt(filename, ".dll", strlen(filename));
+	//isDLL = FS_IsExt(filename, ".dll", strlen(filename));
 
 	// just wants to see if file is there
 	for ( search=fs_searchpaths; search; search=search->next ) {
@@ -4617,7 +4617,7 @@ bool FS_LoadMachOBundle( const char *name )
 	unzFile dll;
 	byte* buf;
 	char    dllName[MAX_QPATH];
-	char    *tempName;
+	//char    *tempName;
 	unz_file_info   zfi;
 
 	//read zipped bundle from pk3
@@ -4631,7 +4631,7 @@ bool FS_LoadMachOBundle( const char *name )
 	//unique filename to avoid any clashes
 	Com_sprintf( dllName, sizeof(dllName), "%sXXXXXX", name );
 
-	tempName = mktemp( dllName );
+	//tempName = mktemp( dllName );
 
 	f = FS_FOpenFileWrite( dllName );
 

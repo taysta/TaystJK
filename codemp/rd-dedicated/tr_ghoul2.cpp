@@ -3420,7 +3420,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 	lod = (mdxmLOD_t *) ( (byte *)mdxm + mdxm->ofsLODs );
 	for ( l = 0 ; l < mdxm->numLODs ; l++)
 	{
-		int	triCount = 0;
+		//int	triCount = 0;
 
 		LL(lod->ofsEnd);
 		// swap all the surfaces
@@ -3437,7 +3437,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 			LL(surf->ofsBoneReferences);
 //			LL(surf->maxVertBoneWeights);
 
-			triCount += surf->numTriangles;
+			//triCount += surf->numTriangles;
 
 			if ( surf->numVerts > SHADER_MAX_VERTEXES ) {
 				Com_Error (ERR_DROP, "R_LoadMDXM: %s has more than %i verts on a surface (%i)",

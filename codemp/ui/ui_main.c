@@ -2110,7 +2110,7 @@ static void UI_DrawTeamMember(rectDef_t *rect, float scale, vec4_t color, qboole
 
 static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboolean net) {
 	int map = (net) ? ui_currentNetMap.integer : ui_currentMap.integer;
-	qhandle_t levelShot;
+	qhandle_t levelShot = 0;
 	if (map < 0 || map > uiInfo.mapCount) {
 		if (net) {
 			trap->Cvar_Set("ui_currentNetMap", "0");
@@ -2129,7 +2129,7 @@ static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboole
 	if (uiInfo.mapList[map].levelShot > 0) {
 		levelShot = uiInfo.mapList[map].levelShot;
 	}
-	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
 		levelShot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 
@@ -2404,11 +2404,11 @@ static void UI_DrawNetSource(rectDef_t *rect, float scale, vec4_t color, int tex
 }
 
 static void UI_DrawNetMapPreview(rectDef_t *rect, float scale, vec4_t color) {
-	qhandle_t previewImage;
+	qhandle_t previewImage = 0;
 	if (uiInfo.serverStatus.currentServerPreview > 0) {
 		previewImage = uiInfo.serverStatus.currentServerPreview;
 	}
-	else if (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
 		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 	
@@ -8905,7 +8905,7 @@ static int UI_HeadCountByColor(void) {
 		{
 			skinName = uiInfo.q3HeadNames[i];
 			while (*skinName != '/') {
-				*skinName++;
+				skinName++;
 			}
 			if (*skinName == '\0' || !strlen(skinName))
 				skinName = uiInfo.q3HeadNames[i];
@@ -9065,7 +9065,7 @@ static void UI_BuildServerDisplayList(int force) {
 	int i, count, maxClients, ping, game, len, passw/*, visible*/;
 	char info[MAX_STRING_CHARS];
 //	qboolean startRefresh = qtrue; TTimo: unused
-	static int numinvisible;
+	//static int numinvisible;
 	int	lanSource;
 
 	if (!(force || uiInfo.uiDC.realTime > uiInfo.serverStatus.nextDisplayRefresh)) {
@@ -9091,7 +9091,7 @@ static void UI_BuildServerDisplayList(int force) {
 	lanSource = UI_SourceForLAN();
 
 	if (force) {
-		numinvisible = 0;
+		//numinvisible = 0;
 		// clear number of displayed servers
 		uiInfo.serverStatus.numDisplayServers = 0;
 		uiInfo.serverStatus.numPlayersOnServers = 0;
@@ -9192,7 +9192,7 @@ static void UI_BuildServerDisplayList(int force) {
 			// done with this server
 			if (ping > 0) {
 				trap->LAN_MarkServerVisible(lanSource, i, qfalse);
-				numinvisible++;
+				//numinvisible++;
 			}
 		}
 	}
@@ -9362,7 +9362,7 @@ UI_BuildFindPlayerList
 ==================
 */
 static void UI_BuildFindPlayerList(qboolean force) {
-	static int numFound, numTimeOuts;
+	static int numFound; //, numTimeOuts;
 	int i, j, resend;
 	serverStatusInfo_t info;
 	char name[MAX_NAME_LENGTH+2];
@@ -9402,7 +9402,7 @@ static void UI_BuildFindPlayerList(qboolean force) {
 	//					sizeof(uiInfo.foundPlayerServerNames[uiInfo.numFoundPlayerServers-1]),
 	//						"searching %d...", uiInfo.pendingServerStatus.num);
 		numFound = 0;
-		numTimeOuts++;
+		//numTimeOuts++;
 	}
 	for (i = 0; i < MAX_SERVERSTATUSREQUESTS; i++) {
 		// if this pending server is valid
@@ -9453,7 +9453,7 @@ static void UI_BuildFindPlayerList(qboolean force) {
 		if (!uiInfo.pendingServerStatus.server[i].valid ||
 			uiInfo.pendingServerStatus.server[i].startTime < uiInfo.uiDC.realTime - ui_serverStatusTimeOut.integer) {
 			if (uiInfo.pendingServerStatus.server[i].valid) {
-				numTimeOuts++;
+				//numTimeOuts++;
 			}
 			// reset server status request for this address
 			UI_GetServerStatusInfo( uiInfo.pendingServerStatus.server[i].adrstr, NULL );
@@ -9801,7 +9801,7 @@ static const char *UI_SelectedTeamHead(int index, int *actual) {
 		{ //ugly mess below
 			skinName = uiInfo.q3HeadNames[i];
 			while (*skinName != '/') {
-				*skinName++;
+				skinName++;
 			}
 			if (*skinName == '\0' || !strlen(skinName))
 				skinName = uiInfo.q3HeadNames[i];
