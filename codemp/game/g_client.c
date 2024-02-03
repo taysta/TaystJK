@@ -2250,6 +2250,7 @@ void G_ValidateCosmetics(gclient_t *client, char *cosmeticString, size_t cosmeti
 			if ((cosmetics & (1 << cosmeticUnlocks[i].bitvalue))) { //Use .bitvalue instead of i, since some of these are "public/free" cosmetics
 				if (!(client->pers.unlocks & 1 << cosmeticUnlocks[i].bitvalue)) { //Check to see if its unlocked, if not disable.
 					cosmetics &= ~(1 << cosmeticUnlocks[i].bitvalue);
+					//Com_Printf("Player does not have cosmetic [%s %i %i] (%i) so removing it\n", cosmeticUnlocks[i].mapname, cosmeticUnlocks[i].style, cosmeticUnlocks[i].duration, cosmeticUnlocks[i].bitvalue);
 				}
 			}
 		}
