@@ -1169,6 +1169,10 @@ void G_RunMissile( gentity_t *ent ) {
 
 	// get current position
 	BG_EvaluateTrajectory( &ent->s.pos, level.time, origin );
+	if ((g_tweakWeapons.integer & WT_TRIBES) && ent->s.pos.trType == TR_GRAVITY) {
+		float deltaTime = (level.time - ent->s.pos.trTime) * 0.001;
+		ent->s.pos.trBase[2] += 5.0f * deltaTime;//Re add some Z height to the projectile to hack it having "lower gravity"
+	}
 
 
 	//If its a rocket, and older than 500ms, make it solid to the shooter.

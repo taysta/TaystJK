@@ -2561,6 +2561,14 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 		return;
 	}
 
+	if (self->spawnflags & 32)
+	{//NPCONLY
+		if (other->NPC == NULL)
+		{
+			return;
+		}
+	}
+
 	if ( !other->takedamage ) {
 		return;
 	}
