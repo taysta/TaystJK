@@ -473,10 +473,11 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	if ( other->takedamage &&
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		( ent->flags & ( FL_BOUNCE | FL_BOUNCE_HALF ) ) &&
-		(g_tweakWeapons.integer & WT_TRIBES && ent->s.weapon == WP_REPEATER && ent->bounceCount == 50 && ent->setTime && ent->setTime > level.time - 300)) 
+		((g_tweakWeapons.integer & WT_TRIBES) && ent->s.weapon == WP_REPEATER && ent->setTime && ent->setTime > level.time - 300)) 
 	{ //if its a direct hit and first 500ms of mortar, bounce off player.
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
+			ent->nextthink = level.time + 1500;
 			return;
 	}
 	else if ( !other->takedamage &&
@@ -488,6 +489,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		{
 			G_BounceMissile( ent, trace );
 			G_AddEvent( ent, EV_GRENADE_BOUNCE, 0 );
+			ent->nextthink = level.time + 1500;
 			return;
 		}
 	}
@@ -1167,6 +1169,10 @@ void G_RunMissile( gentity_t *ent ) {
 
 	// get current position
 	BG_EvaluateTrajectory( &ent->s.pos, level.time, origin );
+	if ((g_tweakWeapons.integer & WT_TRIBES) && ent->s.pos.trType == TR_GRAVITY) {
+		float deltaTime = (level.time - ent->s.pos.trTime) * 0.001;
+		ent->s.pos.trBase[2] += 5.0f * deltaTime;//Re add some Z height to the projectile to hack it having "lower gravity"
+	}
 
 
 	//If its a rocket, and older than 500ms, make it solid to the shooter.

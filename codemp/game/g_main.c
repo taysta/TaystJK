@@ -3943,11 +3943,11 @@ void G_RunFrame( int levelTime ) {
 				if (ent->client->ps.eFlags & EF_JETPACK_ACTIVE) {
 					if (ent->client->jetPackDebReduce < level.time) //ent->client->jetPackDebReduce can be negative or 0 or ?
 					{
-						if (ent->client->pers.tribesClass == 3) //Heavy
-							ent->client->ps.fd.forcePower -= 6;
-						if (ent->client->pers.tribesClass == 2) //Med
+						if (ent->client->pers.tribesClass == 3 && !ent->waterlevel) //Heavy
+							ent->client->ps.fd.forcePower -= 8;
+						else if (ent->client->pers.tribesClass == 2 && !ent->waterlevel) //Med
 							ent->client->ps.fd.forcePower -= 5;
-						else 
+						else if (!ent->waterlevel)
 							ent->client->ps.fd.forcePower -= 4;//Light
 
 						if (ent->client->ps.fd.forcePower <= 0) 
