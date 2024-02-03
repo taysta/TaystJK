@@ -125,7 +125,7 @@ static qboolean InPVS(const vec3_t p)
 	int cluster = CM_LeafCluster(leafnum);
 	int area = CM_LeafArea(leafnum);
 
-	if (g_pvsMask && (!g_pvsMask[cluster >> 3] & (1 << (cluster & 7))))
+	if (g_pvsMask && (!(g_pvsMask[cluster >> 3] & (1 << (cluster & 7)))))
 		return qfalse;
 	if (!CM_AreasConnected(g_pvsArea, area))
 		return qfalse;

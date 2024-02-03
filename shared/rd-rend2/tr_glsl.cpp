@@ -524,6 +524,7 @@ static void GLSL_LinkProgram(GLuint program)
 	}
 }
 
+#if defined (_DEBUG)
 static void GLSL_ShowProgramUniforms(GLuint program)
 {
 	int             i, count, size;
@@ -548,6 +549,7 @@ static void GLSL_ShowProgramUniforms(GLuint program)
 
 	qglUseProgram(0);
 }
+#endif
 
 static void GLSL_BindShaderInterface( shaderProgram_t *program )
 {

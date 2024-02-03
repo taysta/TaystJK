@@ -3208,7 +3208,7 @@ void G_SetTauntAnim( gentity_t *ent, int taunt )
 			}
 			if (ent->client->ps.weapon == WP_SABER) //JAPRO - Serverside - Saber bow sound fix
 			{
-				if ( ent->client->ps.saberHolstered == 1 && ent->client->saber[1].model && ent->client->saber[1].model[0] )
+				if ( ent->client->ps.saberHolstered == 1 && ent->client->saber[1].model[0] )
 				{//turn off second saber
 					G_Sound( ent, CHAN_WEAPON, ent->client->saber[1].soundOff );
 				}
@@ -4491,7 +4491,7 @@ void ClientThink_real( gentity_t *ent ) {
 							}
 						}
 					}
-					if (ent->client->pers.lastUserName && ent->client->pers.lastUserName[0] && duelAgainst->client->pers.lastUserName && duelAgainst->client->pers.lastUserName[0]) {//loda
+					if (ent->client->pers.lastUserName[0] && duelAgainst->client->pers.lastUserName[0]) {//loda
 						if (!(ent->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL) && !(duelAgainst->client->sess.accountFlags & JAPRO_ACCOUNTFLAG_NODUEL))
 							G_AddDuel(ent->client->pers.lastUserName, duelAgainst->client->pers.lastUserName, ent->client->pers.duelStartTime, dueltypes[ent->client->ps.clientNum], ent->client->ps.stats[STAT_HEALTH], ent->client->ps.stats[STAT_ARMOR]);
 					}
@@ -5450,7 +5450,7 @@ void ClientThink_real( gentity_t *ent ) {
 			{
 				int delay = 300;
 				if (g_tweakSaber.integer & ST_FASTCYCLE) {
-					if (!(ent->client->saber[0].singleBladeStyle || (ent->client->saber[1].model && ent->client->saber[1].model[0])))//Single
+					if (!(ent->client->saber[0].singleBladeStyle || (ent->client->saber[1].model[0])))//Single
 						delay = 100;
 				}
 				if (ent->client->genCmdDebounce[GENCMD_DELAY_SABERSWITCH] > level.time - delay) //Not sure what this should be.. on baseJK you can bypass any delay, though it seems clearly intended to be 300ms delay..

@@ -295,6 +295,7 @@ void R_TransformModelToClip( const vec3_t src, const float *modelMatrix, const f
 R_TransformModelToClipMVP
 ==========================
 */
+/*
 static void R_TransformModelToClipMVP( const vec3_t src, const float *mvp, vec4_t clip ) {
 	int i;
 
@@ -305,7 +306,7 @@ static void R_TransformModelToClipMVP( const vec3_t src, const float *mvp, vec4_
 			src[2] * mvp[i + 2 * 4] +
 			1 * mvp[i + 3 * 4];
 	}
-}
+}*/
 
 /*
 ==========================

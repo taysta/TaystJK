@@ -533,7 +533,7 @@ void vk_create_framebuffers()
             }
 
             VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.main[i]));
-            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], va("framebuffer - main %i"), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
+            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], "framebuffer - main", VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
         }
         else {
             if (i == 0) {
@@ -882,10 +882,10 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
                     clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
                 break;
             case RENDER_PASS_DGLOW:
-                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
-                break;
             case RENDER_PASS_REFRACTION:
                     clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
+                break;
+            default:
                 break;
         }
 #endif
@@ -915,7 +915,7 @@ static void vk_begin_screenmap_render_pass( void )
         VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED, 
         VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
         VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-        NULL, NULL);
+        0, 0);
 
     vk.renderPassIndex = RENDER_PASS_SCREENMAP;
 
@@ -1076,20 +1076,20 @@ void vk_refraction_extract( void ) {
 		0, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
 		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		NULL, NULL);
+		0, 0);
 	
 	vk_record_image_layout_transition(vk.cmd->command_buffer, srcImage,
 		VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
 		srcImageAccess, srcImageLayout,
 		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		NULL, NULL);
+		0, 0);
 }
 
 void vk_begin_post_refraction_extract_render_pass( void )
 {
-    VkViewport      viewport{};
-    VkRect2D        scissor_rect{};
+    //VkViewport      viewport{};
+    //VkRect2D        scissor_rect{};
     VkFramebuffer frameBuffer = vk.framebuffers.refraction.extract;
 
     vk.renderPassIndex = RENDER_PASS_REFRACTION;
@@ -1521,7 +1521,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             srcImageAccess, srcImageLayout,
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-            NULL, NULL);
+            0, 0);
     }
 
     vk_record_image_layout_transition(command_buffer, dstImage,
@@ -1529,7 +1529,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         0, VK_IMAGE_LAYOUT_UNDEFINED,
         VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-        NULL, NULL);
+        0, 0);
 
     // end_command_buffer( command_buffer );
 
@@ -1660,7 +1660,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
             VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
             srcImageAccess, srcImageLayout,
             VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-            NULL, NULL);
+            0, 0);
 
         vk_end_command_buffer(command_buffer);
     }

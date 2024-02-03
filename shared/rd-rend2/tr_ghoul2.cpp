@@ -3225,7 +3225,7 @@ void R_AddGhoulSurfaces( trRefEntity_t *ent, int entityNum )
 		return;
 	}
 
-	int currentTime = G2API_GetTime(tr.refdef.time);
+	//int currentTime = G2API_GetTime(tr.refdef.time);
 
 	// cull the entire model if merged bounding box of both frames is outside
 	// the view frustum.
@@ -4279,7 +4279,7 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 	lod = (mdxmLOD_t *) ( (byte *)mdxm + mdxm->ofsLODs );
 	for ( l = 0 ; l < mdxm->numLODs ; l++)
 	{
-		int	triCount = 0;
+		//int	triCount = 0;
 
 		LL(lod->ofsEnd);
 		// swap all the surfaces
@@ -4296,7 +4296,7 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 			LL(surf->ofsBoneReferences);
 //			LL(surf->maxVertBoneWeights);
 
-			triCount += surf->numTriangles;
+			//triCount += surf->numTriangles;
 										
 			if ( surf->numVerts > SHADER_MAX_VERTEXES ) {
 				Com_Error(

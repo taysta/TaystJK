@@ -239,7 +239,7 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
                 0, VK_IMAGE_LAYOUT_UNDEFINED,
                 VK_ACCESS_MEMORY_READ_BIT, vk.initSwapchainLayout,
                 VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-                NULL, NULL );
+                0, 0 );
         }
         
         vk_end_command_buffer( command_buffer );

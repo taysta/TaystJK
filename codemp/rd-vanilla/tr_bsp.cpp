@@ -172,7 +172,7 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 	byte		image[LIGHTMAP_SIZE*LIGHTMAP_SIZE*4];
 	int			i, j;
 	float maxIntensity = 0;
-	double sumIntensity = 0;
+	//double sumIntensity = 0;
 
 	if (&worldData == &s_worldData)
 	{
@@ -235,7 +235,7 @@ static	void R_LoadLightmaps( lump_t *l, const char *psMapName, world_t &worldDat
 				image[j*4+2] = out[2] * 255;
 				image[j*4+3] = 255;
 
-				sumIntensity += intensity;
+				//sumIntensity += intensity;
 			}
 		} else {
 			for ( j = 0 ; j < LIGHTMAP_SIZE * LIGHTMAP_SIZE; j++ ) {
@@ -1292,7 +1292,8 @@ void R_StitchAllPatches( world_t &worldData ) {
 			grid1->lodStitched = qtrue;
 			stitched = qtrue;
 			//
-			numstitches += R_TryStitchingPatch( i, worldData );
+			numstitches +=
+            R_TryStitchingPatch( i, worldData );
 		}
 	}
 	while (stitched);

@@ -192,7 +192,7 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 	int			imageSize;
 	int			i, j, numLightmaps = 0, textureInternalFormat = 0;
 	float maxIntensity = 0;
-	double sumIntensity = 0;
+	//double sumIntensity = 0;
 	int numColorComponents = 3;
 
 	bool hdr_capable = glRefConfig.floatLightmap && r_hdr->integer;
@@ -499,7 +499,7 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 							image[j * 4 + 2] = out[2] * 255;
 							image[j * 4 + 3] = 255;
 
-							sumIntensity += intensity;
+							//sumIntensity += intensity;
 						}
 						else
 						{
@@ -2050,7 +2050,7 @@ static void R_CreateWorldVBOs( world_t *worldData )
 	int             numIndexes;
 	glIndex_t      *indexes;
 
-    int             numSortedSurfaces, numSurfaces;
+    int             numSortedSurfaces; //, numSurfaces;
 	msurface_t   *surface, **firstSurf, **lastSurf, **currSurf;
 	msurface_t  **surfacesSorted;
 
@@ -2161,14 +2161,14 @@ static void R_CreateWorldVBOs( world_t *worldData )
 		// count verts/indexes/surfaces
 		numVerts = 0;
 		numIndexes = 0;
-		numSurfaces = 0;
+		//numSurfaces = 0;
 		for (currSurf = firstSurf; currSurf < lastSurf; currSurf++)
 		{
 			srfBspSurface_t *bspSurf = (srfBspSurface_t *) (*currSurf)->data;
 
 			numVerts += bspSurf->numVerts;
 			numIndexes += bspSurf->numIndexes;
-			numSurfaces++;
+			//numSurfaces++;
 		}
 
 		ri.Printf(PRINT_ALL, "...calculating world VBO %d ( %i verts %i tris )\n", k, numVerts, numIndexes / 3);
@@ -3304,10 +3304,10 @@ static void R_RenderAllCubemaps()
 	R_IssuePendingRenderCommands();
 	R_InitNextFrame();
 
-	GLenum cubemapFormat = GL_RGBA8;
+	//GLenum cubemapFormat = GL_RGBA8;
 	if (r_hdr->integer)
 	{
-		cubemapFormat = GL_RGBA16F;
+		//cubemapFormat = GL_RGBA16F;
 	}
 	
 	for (int k = 0; k <= r_cubeMappingBounces->integer; k++)
@@ -3333,7 +3333,7 @@ void R_LoadWeatherZones(world_t *worldData, lump_t *brushesLump, lump_t *sidesLu
 {
 	dbrush_t 	*brushes;
 	dbrushside_t	*sides;
-	int			brushesCount, sidesCount;
+	int			brushesCount; //, sidesCount;
 
 	brushes = (dbrush_t *)(fileBase + brushesLump->fileofs);
 	if (brushesLump->filelen % sizeof(*brushes)) {
@@ -3345,7 +3345,7 @@ void R_LoadWeatherZones(world_t *worldData, lump_t *brushesLump, lump_t *sidesLu
 	if (sidesLump->filelen % sizeof(*sides)) {
 		ri.Error(ERR_DROP, "LoadMap: funny lump size in %s", worldData->name);
 	}
-	sidesCount = sidesLump->filelen / sizeof(*sides);
+	//sidesCount = sidesLump->filelen / sizeof(*sides);
 
 	tr.weatherSystem->weatherBrushType = WEATHER_BRUSHES_NONE;
 
@@ -4025,7 +4025,7 @@ static void R_GenerateSurfaceSprites( const world_t *world, int worldIndex )
 	for (int i = 0; i < tr.numShaders; i++)
 	{
 		const shader_t *shader = tr.shaders[i];
-		if (shader->spriteUbo != NULL)
+		if (shader->spriteUbo != 0)
 			continue;
 
 		numSpriteStages += shader->numSurfaceSpriteStages;

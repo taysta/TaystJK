@@ -2849,9 +2849,9 @@ int CTFTakesPriority(bot_state_t *bs)
 	int enemyHasOurFlag = 0;
 	//int weHaveEnemyFlag = 0;
 	int numOnMyTeam = 0;
-	int numOnEnemyTeam = 0;
+	//int numOnEnemyTeam = 0;
 	int numAttackers = 0;
-	int numDefenders = 0;
+	//int numDefenders = 0;
 	int i = 0;
 	int idleWP;
 	int dosw = 0;
@@ -2970,7 +2970,7 @@ int CTFTakesPriority(bot_state_t *bs)
 			}
 			else
 			{
-				numOnEnemyTeam++;
+				//numOnEnemyTeam++;
 			}
 
 			if (botstates[ent->s.number])
@@ -2982,7 +2982,7 @@ int CTFTakesPriority(bot_state_t *bs)
 				}
 				else
 				{
-					numDefenders++;
+					//numDefenders++;
 				}
 			}
 			else
@@ -3962,9 +3962,9 @@ void CommanderBotCTFAI(bot_state_t *bs)
 	int enemyHasOurFlag = 0;
 	int weHaveEnemyFlag = 0;
 	int numOnMyTeam = 0;
-	int numOnEnemyTeam = 0;
+	//int numOnEnemyTeam = 0;
 	int numAttackers = 0;
-	int numDefenders = 0;
+	//int numDefenders = 0;
 
 	if (level.clients[bs->client].sess.sessionTeam == TEAM_RED)
 	{
@@ -4005,7 +4005,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 			}
 			else
 			{
-				numOnEnemyTeam++;
+				//numOnEnemyTeam++;
 			}
 
 			if (botstates[ent->s.number])
@@ -4017,7 +4017,7 @@ void CommanderBotCTFAI(bot_state_t *bs)
 				}
 				else
 				{
-					numDefenders++;
+					//numDefenders++;
 				}
 			}
 			else
@@ -4199,7 +4199,7 @@ void CommanderBotTeamplayAI(bot_state_t *bs)
 {
 	int i = 0;
 	int squadmates = 0;
-	int teammates = 0;
+	//int teammates = 0;
 	int teammate_indanger = -1;
 	int teammate_helped = 0;
 	int foundsquadleader = 0;
@@ -4234,7 +4234,7 @@ void CommanderBotTeamplayAI(bot_state_t *bs)
 
 		if (ent && ent->client && OnSameTeam(&g_entities[bs->client], ent))
 		{
-			teammates++;
+			//teammates++;
 
 			if (ent->health < worsthealth)
 			{
@@ -6499,7 +6499,7 @@ void NewBotAI_Getup(bot_state_t *bs)
 		useTheForce = qtrue;
 	}
 
-	if (!useTheForce && (bs->frame_Enemy_Len < 200) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)) {
+	if ((!useTheForce && ((bs->frame_Enemy_Len < 200) || (bs->cur_ps.fd.forceGripBeingGripped > level.time)))) {
 		if (!(g_forcePowerDisable.integer & (1 << FP_PUSH)) && bs->cur_ps.fd.forcePowersKnown & (1 << FP_PUSH)) {
 			level.clients[bs->client].ps.fd.forcePowerSelected = FP_PUSH;
 			useTheForce = qtrue;
@@ -7493,7 +7493,11 @@ void NewBotAI_GetMovement(bot_state_t *bs)
 				trap->EA_MoveForward(bs->client);
 			crouch = qtrue;
 		}
-		else if ((g_entities[bs->client].health < 25 || (g_entities[bs->client].health < 50 && bs->cur_ps.fd.forcePower < 30) && !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))) && (bs->frame_Enemy_Len < 450)) {
+		else if ((g_entities[bs->client].health < 25) ||
+				((g_entities[bs->client].health < 50)
+				&& (bs->cur_ps.fd.forcePower < 30)
+				&& !(bs->cur_ps.fd.forcePowersActive & (1 << FP_ABSORB))
+				&& (bs->frame_Enemy_Len < 450))) {
 			qboolean wallRun = qfalse;
 			//Running routine, we should add a wallrun search to this.
 
@@ -7657,8 +7661,8 @@ qboolean NewBotAI_IsEnemyPullable(bot_state_t *bs) {
 
 int NewBotAI_GetPull(bot_state_t *bs) {
 	const int ourHealth = g_entities[bs->client].health, hisHealth = bs->currentEnemy->health, ourForce = bs->cur_ps.fd.forcePower;
-	int weight = ourHealth - hisHealth;
-
+	int healthDiff = ourHealth - hisHealth;
+	float weight = (float)healthDiff;
 	if (g_forcePowerDisable.integer & (1 << FP_PULL))
 		return 0;
 	if  (!(bs->cur_ps.fd.forcePowersKnown & (1 << FP_PULL)))
@@ -7703,24 +7707,24 @@ int NewBotAI_GetPull(bot_state_t *bs) {
 		}
 		if (BG_InKnockDown(bs->currentEnemy->client->ps.legsAnim)) {
 			//Com_Printf("pullable 3\n");
-			return (weight * 2);
+			return (int)(weight * 2);
 		}
 		//Com_Printf("pullable 1\n");
 		if (bs->cur_ps.fd.forceSide == FORCE_LIGHTSIDE) {
 			if (bs->frame_Enemy_Len < 250 && ourForce > 32)
-				return (weight);
+				return (int)weight;
 		}
 		else
-			return (weight);
+			return (int)weight;
 	}
 	else { //When should we pull stun?
 		//Lets say they should be on the same plane roughly..
 		float heightDiff = bs->cur_ps.origin[2] - bs->currentEnemy->client->ps.origin[2]; //Us - them.  Positive means we are higher.
 		if (heightDiff > -20 && heightDiff < 40) {//If we are less than 20 above or less than 40 below)
 			if (bs->frame_Enemy_Len < 100 && ourForce >= 60) { //Close enough and enough force
-				weight = ourForce * 0.1f;
+				weight = (float)ourForce * 0.1f;
 				//Com_Printf("weight: %i\n", weight);
-				return (weight);
+				return (int)weight;
 			}
 		}
 

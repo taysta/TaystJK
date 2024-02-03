@@ -2126,7 +2126,7 @@ static inline void RB_BlurGlowTexture()
 	/////////////////////////////////////////////////////////
 
 	// How much to offset each texel by.
-	float fTexelWidthOffset = 0.1f, fTexelHeightOffset = 0.1f;
+	float fTexelWidthOffset = 0.1f; //, fTexelHeightOffset = 0.1f;
 
 	GLuint uiTex = tr.screenGlow;
 
@@ -2220,7 +2220,7 @@ static inline void RB_BlurGlowTexture()
 		// I might want to use an actual gaussian equation to correctly calculate the pixel coefficients and attenuates, texel
 		// offsets, gaussian amplitude and radius...
 		fTexelWidthOffset += r_DynamicGlowDelta->value;
-		fTexelHeightOffset += r_DynamicGlowDelta->value;
+		//fTexelHeightOffset += r_DynamicGlowDelta->value;
 	}
 
 	// Disable multi-texturing.

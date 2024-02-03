@@ -455,11 +455,11 @@ void G_AddDuelElo(char *winner, char *loser, int type, int duration, int winner_
 
 	if (newUserCutoff < 0)
 		newUserCutoff = 0;
-	if (provisionalCutoff < 0);
+	if (provisionalCutoff < 0)
 		provisionalCutoff = 0;
-	if (provisionalChangeBig < 0.1f);
+	if (provisionalChangeBig < 0.1f)
 		provisionalChangeBig = 0.1f;
-	if (provisionalChangeSmall < 0.1f);
+	if (provisionalChangeSmall < 0.1f)
 		provisionalChangeSmall = 0.1f;
 
 	winnerDuelCount = GetDuelCount(winner, type, end_time, db);
@@ -1801,7 +1801,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	sqlite3_stmt * stmt;
 	int s;
 	int season_oldBest, season_oldRank = 0, season_newRank = -1, global_oldBest, global_oldRank = 0, global_newRank = -1; //Changed newrank to be -1 ??
-	float addedScore;
+	float addedScore = 0.0f;
 	gclient_t	*cl;
 	const int season = G_GetSeason();
 
@@ -2328,7 +2328,7 @@ void Cmd_ChangePassword_f( gentity_t *ent ) {
 	sqlite3 * db;
     char * sql;
     sqlite3_stmt * stmt;
-    int row = 0, s;
+    int s; //row = 0, s;
 	char username[16], enteredPassword[16], newPassword[16], password[16];
 
 	if (trap->Argc() != 4) {
@@ -2365,7 +2365,7 @@ void Cmd_ChangePassword_f( gentity_t *ent ) {
         s = sqlite3_step(stmt);
         if (s == SQLITE_ROW) {
 			Q_strncpyz(password, (char*)sqlite3_column_text(stmt, 0), sizeof(password));
-            row++;
+            //row++;
         }
         else if (s == SQLITE_DONE)
             break;
@@ -2712,8 +2712,8 @@ void Svcmd_AccountInfo_f(void)
 		sqlite3 * db;
 		char * sql;
 		sqlite3_stmt * stmt;
-		int lastlogin, created, racetime;
-		unsigned int lastip;
+		int lastlogin = 0, created = 0, racetime = 0;
+		unsigned int lastip = 0;
 		int s;
 		char timeStr[64] = { 0 }, buf[MAX_STRING_CHARS - 64] = { 0 };
 
@@ -2883,7 +2883,7 @@ void Svcmd_FlagAccount_f( void ) {
 
 			for (i=0;  i<level.numPlayingClients; i++) {
 				cl = &level.clients[level.sortedClients[i]];
-				if (cl->pers.userName && cl->pers.userName[0] && !Q_stricmp(cl->pers.userName, username)) {
+				if (cl->pers.userName[0] && !Q_stricmp(cl->pers.userName, username)) {
 					if (flags & (1 << index)) 
 						cl->sess.accountFlags &= ~(1 << index);
 					else
@@ -2930,7 +2930,7 @@ void Svcmd_FlagAccount_f( void ) {
 
 			for (i=0;  i<level.numPlayingClients; i++) {
 				cl = &level.clients[level.sortedClients[i]];
-				if (cl->pers.userName && cl->pers.userName[0] && !Q_stricmp(cl->pers.userName, username)) {
+				if (cl->pers.userName[0] && !Q_stricmp(cl->pers.userName, username)) {
 					cl->sess.accountFlags = bitmask;
 					break;
 				}
@@ -2951,7 +2951,7 @@ void Svcmd_ListAdmins_f(void)
 		char * sql;
 		sqlite3_stmt * stmt;
 		int s;
-		unsigned int flags;
+		//unsigned int flags;
 		char adminString[16];
 		int row = 1;
 
@@ -2965,7 +2965,7 @@ void Svcmd_ListAdmins_f(void)
 		while (1) {
 			s = sqlite3_step(stmt);
 			if (s == SQLITE_ROW) {
-				flags = sqlite3_column_int(stmt, 1);
+				//flags = sqlite3_column_int(stmt, 1);
 				Q_strncpyz(adminString, "Admin", sizeof(adminString));
 				Com_Printf(va("^5%2i^3: ^3%-18s %s^7\n", row, (char*)sqlite3_column_text(stmt, 0), adminString));
 				row++;
@@ -3450,7 +3450,7 @@ void Cmd_ACRegister_f( gentity_t *ent ) { //Temporary, until global shit is done
 }
 
 void Cmd_ACLogout_f( gentity_t *ent ) { //If logged in, print logout msg, remove login status.
-	if (ent->client->pers.userName && ent->client->pers.userName[0]) {
+	if (ent->client->pers.userName[0]) {
 		if (ent->client->sess.raceMode && !ent->client->pers.practice && ent->client->pers.stats.startTime) {
 			ent->client->pers.stats.racetime += (trap->Milliseconds() - ent->client->pers.stats.startTime)*0.001f - ent->client->afkDuration*0.001f;
 			ent->client->afkDuration = 0;
@@ -3506,7 +3506,7 @@ void Cmd_JoinTeam_f( gentity_t *ent ) {
 		sqlite3_stmt * stmt;
 		int s;//, row = 0;
 		qboolean inviteOnly = qfalse;
-		int count;
+		int count = 0;
 
 		CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
@@ -4275,7 +4275,7 @@ void Cmd_AdminTeam_f( gentity_t *ent ) {
 		return; 
 	}
 
-	if (!ent->client->pers.userName || !ent->client->pers.userName[0]) {
+	if (!ent->client->pers.userName[0]) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be logged in to use this command.\n\"");
 		return;
 	}
@@ -5922,7 +5922,7 @@ void Cmd_DFCompare_f(gentity_t *ent) {
 	char inputString[16], inputStyleString[16], myUsername[16], theirUsername[16];
 	const int args = trap->Argc();
 
-	if (!ent->client->pers.userName || !ent->client->pers.userName[0]) {
+	if (!ent->client->pers.userName[0]) {
 		trap->SendServerCommand(ent - g_entities, "print \"You must be logged in to use this command.\n\"");
 		return;
 	}
@@ -6623,7 +6623,7 @@ void Cmd_DFTodo_f(gentity_t *ent) {
 	char styleString[16] = {0}, inputString[32], partialCourseName[40], username[16];
 	qboolean enteredCoursename = qfalse;
 
-	if (!ent->client->pers.userName || !ent->client->pers.userName[0]) {
+	if (!ent->client->pers.userName[0]) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be logged in to use this command.\n\"");
 		return;
 	}
@@ -6859,7 +6859,7 @@ void Cmd_DFPopular_f(gentity_t *ent) {
 		return; //Arg doesnt match any expected values so error.
 	}
 
-	if (enteredUsername && (!ent->client->pers.userName || !ent->client->pers.userName[0])) {
+	if (enteredUsername && (!ent->client->pers.userName[0])) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be logged in to use this command.\n\"");
 		return;
 	}

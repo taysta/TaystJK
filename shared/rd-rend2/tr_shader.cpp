@@ -3361,7 +3361,7 @@ static qboolean CollapseStagesToGLSL(void)
 		{
 			shaderStage_t *pStage = &stages[i];
 			shaderStage_t *diffuse, *lightmap;
-			qboolean parallax, tcgen, diffuselit, vertexlit;
+			qboolean tcgen, diffuselit, vertexlit; //,parallax
 
 			if (!pStage->active)
 				continue;
@@ -3375,7 +3375,7 @@ static qboolean CollapseStagesToGLSL(void)
 				continue;
 
 			diffuse  = pStage;
-			parallax = qfalse;
+			//parallax = qfalse;
 			lightmap = NULL;
 
 			// we have a diffuse map, find matching lightmap

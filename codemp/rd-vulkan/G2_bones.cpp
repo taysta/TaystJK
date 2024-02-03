@@ -2274,8 +2274,8 @@ static bool G2_RagDollSetup(CGhoul2Info &ghoul2,int frameNum,bool resetOrigin,co
 	assert(ghoul2.mFileName[0]);
 	boneInfo_v &blist = ghoul2.mBlist;
 	rag.clear();
-	int numRendered=0;
-	int numNotRendered=0;
+	//int numRendered=0;
+	//int numNotRendered=0;
 	//int pelvisAt=-1;
 	for(size_t i=0; i<blist.size(); i++)
 	{
@@ -2292,13 +2292,13 @@ static bool G2_RagDollSetup(CGhoul2Info &ghoul2,int frameNum,bool resetOrigin,co
 				if (!wasRendered)
 				{
 					bone.RagFlags|=RAG_WAS_NOT_RENDERED;
-					numNotRendered++;
+					//numNotRendered++;
 				}
 				else
 				{
 					bone.RagFlags&=~RAG_WAS_NOT_RENDERED;
 					bone.RagFlags|=RAG_WAS_EVER_RENDERED;
-					numRendered++;
+					//numRendered++;
 				}
 				if	(bone.RagFlags&RAG_PCJ_PELVIS)
 				{
@@ -4335,7 +4335,7 @@ static void G2_IKSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int frameN
 		// fixme precompute this
 		int numDep=G2_GetBoneDependents(ghoul2,bone.boneNumber,tempDependents,MAX_BONES_RAG);
 		int j;
-		int numRagDep=0;
+		//int numRagDep=0;
 		for (j=0;j<numDep;j++)
 		{
 			//fixme why do this for the special roots?
@@ -4353,7 +4353,7 @@ static void G2_IKSolve(CGhoul2Info_v &ghoul2V,int g2Index,float decay,int frameN
 			if (depBone.RagFlags & RAG_EFFECTOR)
 			{
 				// this is a dependent of me, and also a rag
-				numRagDep++;
+				//numRagDep++;
 				for (k=0;k<3;k++)
 				{
 					Multiply_3x4Matrix(&Enew[k],&Gs[k],&ragBones[depIndex]); //dest first arg

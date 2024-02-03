@@ -228,7 +228,8 @@ static void CL_UpdateDiscordServerInfo(const char *info)
 
 static void CL_ParsePlayerInfo(int start, int end)
 {
-	int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
+#if defined(DISCORD) && !defined(_DEBUG)
+    int clientCount = 0, botCount = 0, redTeam = 0, blueTeam = 0, specTeam = 0;
 	int i = start;
 
 	while (i < end)
@@ -266,13 +267,6 @@ static void CL_ParsePlayerInfo(int start, int end)
 		i++;
 	}
 
-	gCLTotalClientNum = clientCount;
-
-#ifdef _DEBUG
-	Com_DPrintf("%i clients\n", gCLTotalClientNum);
-#endif
-
-#if defined(DISCORD) && !defined(_DEBUG)
 	cl.discord.playerCount = clientCount;
 	cl.discord.redTeam = redTeam;
 	cl.discord.blueTeam = blueTeam;

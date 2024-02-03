@@ -29,6 +29,7 @@ static void* R_LocalMalloc(size_t size)
 	return Hunk_AllocateTempMemory(size);
 }
 
+/*
 static void* R_LocalReallocSized(void *ptr, size_t old_size, size_t new_size)
 {
 	void *mem = Hunk_AllocateTempMemory(new_size);
@@ -38,7 +39,8 @@ static void* R_LocalReallocSized(void *ptr, size_t old_size, size_t new_size)
 		Hunk_FreeTempMemory(ptr);
 	}
 	return mem;
-}
+}*/
+
 static void R_LocalFree(void *ptr)
 {
 	if (ptr)
