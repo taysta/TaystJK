@@ -1,33 +1,30 @@
-/*
-===========================================================================
-Copyright (C) 2000 - 2013, Raven Software, Inc.
-Copyright (C) 2001 - 2013, Activision, Inc.
-Copyright (C) 2013 - 2015, OpenJK contributors
-
-This file is part of the OpenJK source code.
-
-OpenJK is free software; you can redistribute it and/or modify it
-under the terms of the GNU General Public License version 2 as
-published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, see <http://www.gnu.org/licenses/>.
-===========================================================================
-*/
-
-// tr_image.c
 #include "tr_local.h"
 
-#include <map>
+#ifdef REND2_SP
+#include "../qcommon/sstring.h"
+#endif
+/*
+============================================================================
+
+SKINS
+
+============================================================================
+*/
+
+static char *CommaParse( char **data_p );
+//can't be dec'd here since we need it for non-dedicated builds now as well.
+
+/*
+===============
+RE_RegisterSkin
+
+===============
+*/
 
 bool gServerSkinHack = false;
 
-shader_t *R_FindServerShader( const char *name, const int *lightmapIndex, const byte *styles, qboolean mipRawImage );
+
+shader_t *R_FindServerShader( const char *name, const int *lightmapIndexes, const byte *styles, qboolean mipRawImage ) ;
 static char *CommaParse( char **data_p );
 /*
 ===============
@@ -52,9 +49,9 @@ bool RE_SplitSkins(const char *INname, char *skinhead, char *skintorso, char *sk
 		strcpy (skinlower, name);
 
 		//now get the the individual files
-
+		
 		//advance to second
-		char *p2 = strchr(p, '|');
+		char *p2 = strchr(p, '|'); 
 		assert(p2);
 		if (!p2)
 		{
@@ -80,14 +77,14 @@ bool RE_SplitSkins(const char *INname, char *skinhead, char *skintorso, char *sk
 
 		strcat (skinlower,p);
 		strcat (skinlower, ".skin");
-
+		
 		return true;
 	}
 	return false;
 }
 
 // given a name, go get the skin we want and return
-qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin)
+qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin) 
 {
 	skin_t			*skin;
 	skinSurface_t	*surf;
@@ -96,7 +93,7 @@ qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin)
 	char			surfName[MAX_QPATH];
 
 	// load and parse the skin file
-    ri.FS_ReadFile( name, (void **)&text );
+	ri.FS_ReadFile( name, (void **)&text );
 	if ( !text ) {
 #ifndef FINAL_BUILD
 		Com_Printf( "WARNING: RE_RegisterSkin( '%s' ) failed to load!\n", name );
@@ -127,10 +124,11 @@ qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin)
 		if ( !strncmp( token, "tag_", 4 ) ) {	//these aren't in there, but just in case you load an id style one...
 			continue;
 		}
-
+		
 		// parse the shader name
 		token = CommaParse( &text_p );
 
+#ifndef JK2_MODE
 		if ( !strcmp( &surfName[strlen(surfName)-4], "_off") )
 		{
 			if ( !strcmp( token ,"*off" ) )
@@ -139,10 +137,11 @@ qhandle_t RE_RegisterIndividualSkin( const char *name , qhandle_t hSkin)
 			}
 			surfName[strlen(surfName)-4] = 0;	//remove the "_off"
 		}
-		if ((int)(sizeof( skin->surfaces) / sizeof( skin->surfaces[0] )) <= skin->numSurfaces)
+#endif
+		if ( (unsigned)skin->numSurfaces >= ARRAY_LEN( skin->surfaces ) )
 		{
-			assert( (int)(sizeof( skin->surfaces) / sizeof( skin->surfaces[0] )) > skin->numSurfaces );
-			Com_Printf( "WARNING: RE_RegisterSkin( '%s' ) more than %u surfaces!\n", name, (unsigned int)ARRAY_LEN(skin->surfaces) );
+			assert( ARRAY_LEN( skin->surfaces ) > (unsigned)skin->numSurfaces );
+			Com_Printf( "WARNING: RE_RegisterSkin( '%s' ) more than %d surfaces!\n", name, ARRAY_LEN( skin->surfaces ) );
 			break;
 		}
 		surf = (skinSurface_t *) Hunk_Alloc( sizeof( *skin->surfaces[0] ), h_low );
@@ -197,23 +196,23 @@ qhandle_t RE_RegisterSkin( const char *name ) {
 		return 0;
 	}
 	tr.numSkins++;
-	skin = (struct skin_s *)Hunk_Alloc( sizeof( skin_t ), h_low );
+	skin = (skin_s *)Hunk_Alloc( sizeof( skin_t ), h_low );
 	tr.skins[hSkin] = skin;
 	Q_strncpyz( skin->name, name, sizeof( skin->name ) );
 	skin->numSurfaces = 0;
 
 	// make sure the render thread is stopped
 	R_IssuePendingRenderCommands();
-
+#ifdef JK2_MODE
 	// If not a .skin file, load as a single shader
 	if ( strcmp( name + strlen( name ) - 5, ".skin" ) ) {
-/*		skin->numSurfaces = 1;
+		skin->numSurfaces = 1;
 		skin->surfaces[0] = (skinSurface_t *)Hunk_Alloc( sizeof(skin->surfaces[0]), h_low );
 		skin->surfaces[0]->shader = R_FindShader( name, lightmapsNone, stylesDefault, qtrue );
 		return hSkin;
-*/
-	}
 
+	}
+#endif
 	char skinhead[MAX_QPATH]={0};
 	char skintorso[MAX_QPATH]={0};
 	char skinlower[MAX_QPATH]={0};
@@ -263,7 +262,7 @@ static char *CommaParse( char **data_p ) {
 
 	while ( 1 ) {
 		// skip whitespace
-		while( (c = *(const unsigned char* /*eurofix*/)data) <= ' ') {
+		while( (c = *data) <= ' ') {
 			if( !c ) {
 				break;
 			}
@@ -280,13 +279,13 @@ static char *CommaParse( char **data_p ) {
 				data++;
 		}
 		// skip /* */ comments
-		else if ( c=='/' && data[1] == '*' )
+		else if ( c=='/' && data[1] == '*' ) 
 		{
-			while ( *data && ( *data != '*' || data[1] != '/' ) )
+			while ( *data && ( *data != '*' || data[1] != '/' ) ) 
 			{
 				data++;
 			}
-			if ( *data )
+			if ( *data ) 
 			{
 				data += 2;
 			}
@@ -314,7 +313,7 @@ static char *CommaParse( char **data_p ) {
 				*data_p = ( char * ) data;
 				return com_token;
 			}
-			if (len < MAX_TOKEN_CHARS - 1)
+			if (len < MAX_TOKEN_CHARS)
 			{
 				com_token[len] = c;
 				len++;
@@ -325,7 +324,7 @@ static char *CommaParse( char **data_p ) {
 	// parse a regular word
 	do
 	{
-		if (len < MAX_TOKEN_CHARS - 1)
+		if (len < MAX_TOKEN_CHARS)
 		{
 			com_token[len] = c;
 			len++;
@@ -334,12 +333,18 @@ static char *CommaParse( char **data_p ) {
 		c = *data;
 	} while (c>32 && c != ',' );
 
+	if (len == MAX_TOKEN_CHARS)
+	{
+//		Com_Printf ("Token exceeded %i chars, discarded.\n", MAX_TOKEN_CHARS);
+		len = 0;
+	}
 	com_token[len] = 0;
 
 	*data_p = ( char * ) data;
 	return com_token;
 }
 
+#ifndef REND2_SP
 /*
 ===============
 RE_RegisterServerSkin
@@ -363,6 +368,66 @@ qhandle_t RE_RegisterServerSkin( const char *name ) {
 
 	return r;
 }
+#else
+/*
+class CStringComparator
+{
+public:
+	bool operator()(const char *s1, const char *s2) const { return(stricmp(s1, s2) < 0); }
+};
+*/
+typedef std::map<sstring_t, char * /*, CStringComparator*/ >	AnimationCFGs_t;
+AnimationCFGs_t AnimationCFGs;
+
+// I added this function for development purposes (and it's VM-safe) so we don't have problems
+//	with our use of cached models but uncached animation.cfg files (so frame sequences are out of sync
+//	if someone rebuild the model while you're ingame and you change levels)...
+//
+// Usage:  call with psDest == NULL for a size enquire (for malloc),
+//				then with NZ ptr for it to copy to your supplied buffer...
+//
+int RE_GetAnimationCFG(const char *psCFGFilename, char *psDest, int iDestSize)
+{
+	char *psText = NULL;
+
+	AnimationCFGs_t::iterator it = AnimationCFGs.find(psCFGFilename);
+	if (it != AnimationCFGs.end())
+	{
+		psText = (*it).second;
+	}
+	else
+	{
+		// not found, so load it...
+		//
+		fileHandle_t f;
+		int iLen = ri.FS_FOpenFileRead(psCFGFilename, &f, qfalse);
+		if (iLen <= 0)
+		{
+			return 0;
+		}
+
+		psText = (char *)R_Malloc(iLen + 1, TAG_ANIMATION_CFG, qfalse);
+
+		ri.FS_Read(psText, iLen, f);
+		psText[iLen] = '\0';
+		ri.FS_FCloseFile(f);
+
+		AnimationCFGs[psCFGFilename] = psText;
+	}
+
+	if (psText)	// sanity, but should always be NZ
+	{
+		if (psDest)
+		{
+			Q_strncpyz(psDest, psText, iDestSize);
+		}
+
+		return strlen(psText);
+	}
+
+	return 0;
+}
+#endif
 
 /*
 ===============
@@ -375,10 +440,10 @@ void	R_InitSkins( void ) {
 	tr.numSkins = 1;
 
 	// make the default skin have all default shaders
-	skin = tr.skins[0] = (struct skin_s *)ri.Hunk_Alloc( sizeof( skin_t ), h_low );
+	skin = tr.skins[0] = (struct skin_s *)Hunk_Alloc( sizeof( skin_t ), h_low );
 	Q_strncpyz( skin->name, "<default skin>", sizeof( skin->name )  );
 	skin->numSurfaces = 1;
-	skin->surfaces[0] = (skinSurface_t *)ri.Hunk_Alloc( sizeof( skinSurface_t ), h_low );
+	skin->surfaces[0] = (skinSurface_t *)Hunk_Alloc( sizeof( skinSurface_t ), h_low );
 	skin->surfaces[0]->shader = tr.defaultShader;
 }
 
@@ -392,4 +457,27 @@ skin_t	*R_GetSkinByHandle( qhandle_t hSkin ) {
 		return tr.skins[0];
 	}
 	return tr.skins[ hSkin ];
+}
+
+/*
+===============
+R_SkinList_f
+===============
+*/
+void	R_SkinList_f( void ) {
+	int			i, j;
+	skin_t		*skin;
+
+	Com_Printf ( "------------------\n");
+
+	for ( i = 0 ; i < tr.numSkins ; i++ ) {
+		skin = tr.skins[i];
+
+		Com_Printf ("%3i:%s\n", i, skin->name );
+		for ( j = 0 ; j < skin->numSurfaces ; j++ ) {
+			Com_Printf ("       %s = %s\n", 
+				skin->surfaces[j]->name, ((shader_t* )skin->surfaces[j]->shader)->name );
+		}
+	}
+	Com_Printf ( "------------------\n");
 }

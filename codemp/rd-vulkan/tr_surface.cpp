@@ -1913,7 +1913,7 @@ void RB_SurfaceEntity( const surfaceType_t *surfType ) {
 
 			for ( int i = 0, j = start; i < count; i++, j++ )
 			{
-				memcpy(&backEnd.currentEntity->e, &backEnd.refdef.miniEntities[j], sizeof(backEnd.refdef.miniEntities[j]));
+				backEnd.currentEntity->e = backEnd.refdef.entities[j].e;
 
 				assert(backEnd.currentEntity->e.renderfx >= 0);
 
