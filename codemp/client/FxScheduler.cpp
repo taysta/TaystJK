@@ -406,7 +406,7 @@ static const size_t numPrimitiveTypes = ARRAY_LEN( primitiveTypes );
 static char brokenEffectFilenames[][32] = {
         "atst/shot", "atst/shot_red", "atst/side_alt_shot", "atst/side_main_shot", "blaster/npcshot", "blaster/shot",
         "bryar/crackleShot", "bryar/npcshot", "emplaced/shot", "emplaced/shotnpc", "eweb/shot", "eweb/shotnpc",
-        "flechette/alt_shot", "flechette/shot", "mp/itemcone", "noghri_stick/shot", "repeater/alt_projectile",
+        "flechette/alt_shot", "flechette/shot", "noghri_stick/shot", "repeater/alt_projectile",
         "repeater/projectile", "rocket/shot", "ships/imp_blastershot", "ships/imp_torpshot", "ships/mine", "ships/reb_blastershot",
         "ships/reb_torpshot", "ships/swoop_blastershot", "turret/hoth_shot", "turret/shot", "turret/turb_shot", "tusken/shot"
 };
@@ -414,7 +414,6 @@ static char brokenEffectFilenames[][32] = {
 static int compareFilenames(const void *a, const void *b) {
     return Q_stricmp((const char *)a, (const char *)b);
 }
-
 int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 {
 	CGPGroup			*primitiveGroup;
@@ -432,12 +431,6 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 		return 0;
 	}
 
-    // hack for projectiles
-    void *isProjectile = NULL;
-    if (VALIDSTRING(file))
-    {
-        isProjectile = bsearch(file, brokenEffectFilenames, ARRAY_LEN(brokenEffectFilenames), sizeof(*brokenEffectFilenames), compareFilenames);
-    }
 	if ((pair = base->GetPairs())!=0)
 	{
 		grpName = pair->GetName();
@@ -468,10 +461,15 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 		if ( type != None )
 		{
 			CPrimitiveTemplate *prim = new CPrimitiveTemplate;
-
-            if (isProjectile)
-            {
-                prim->ParseLife("1");
+			if(Cvar_VariableIntegerValue("cl_jk2FX") == 1) { // hack for jk2 projectiles
+				void *isProjectile = NULL;
+				if (VALIDSTRING(file))
+				{
+					isProjectile = bsearch(file, brokenEffectFilenames, ARRAY_LEN(brokenEffectFilenames), sizeof(*brokenEffectFilenames), compareFilenames);
+				}
+				if(isProjectile) {
+					prim->ParseLife("1");
+				}
             }
 
 			prim->mType = type;
