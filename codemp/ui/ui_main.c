@@ -627,6 +627,7 @@ void UI_UpdateCurrentServerInfo(void) { //parses server info to contextually hid
 
 	trap->Cvar_Set("ui_isJAPro", "0");
 	trap->Cvar_Set("ui_raceMode", "0");
+	trap->Cvar_Set("ui_tribesMode", "0");
 	trap->Cvar_Set("ui_allowRegistration", "0");
 	trap->Cvar_Set("ui_allowSaberSwitch", "0");
 
@@ -651,13 +652,16 @@ void UI_UpdateCurrentServerInfo(void) { //parses server info to contextually hid
 		trap->Cvar_Set("ui_isJAPro", "1");
 
 		jcinfo2 = atoi(Info_ValueForKey(info, "jcinfo2"));
-		if (jcinfo2 & (1 << 0)) //race mode
+		if (jcinfo2 & JAPRO_CINFO2_RACEMODE) //race mode
 			trap->Cvar_Set("ui_raceMode", "1");
+
+		if (jcinfo2 & JAPRO_CINFO2_WTTRIBES) //tribes mode
+			trap->Cvar_Set("ui_tribesMode", "1");
 
 		if (jcinfo2 & (1 << 1)) //allow registration
 			trap->Cvar_Set("ui_allowRegistration", "1");
 
-		if (trap->Cvar_VariableValue("g_gametype") < GT_TEAM && jcinfo2 & (1 << 2)) //allow /saber switch cmd
+		if ((trap->Cvar_VariableValue("g_gametype") < GT_TEAM) && (jcinfo2 & JAPRO_CINFO2_SABERSWITCH)) //allow /saber switch cmd
 			trap->Cvar_Set("ui_allowSaberSwitch", "1");
 	}
 
