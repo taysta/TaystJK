@@ -1677,10 +1677,10 @@ void G_UpdateUnlocks(char *username, char *coursename, int style, int duration_m
 		unlocks = client->pers.unlocks;  	//Unlocks is existing unlocks from client. no need to update if they already have it.
 
 	for (i=0; i<MAX_COSMETIC_UNLOCKS; i++) {
-		if (!(unlocks & 1 << cosmeticUnlocks[i].bitvalue) && cosmeticUnlocks[i].style == style && !Q_stricmp(coursename, cosmeticUnlocks[i].mapname) && (!cosmeticUnlocks[i].duration || (duration_ms < cosmeticUnlocks[i].duration))) {
-			unlock = (1 << cosmeticUnlocks[i].bitvalue);
-			//Com_Printf("Unlock found %i (%i %s)\n", cosmeticUnlocks[i].bitvalue, style, coursename);
-			break;
+		if (!(unlocks & (1 << cosmeticUnlocks[i].bitvalue)) && cosmeticUnlocks[i].style == style && !Q_stricmp(coursename, cosmeticUnlocks[i].mapname) && (!cosmeticUnlocks[i].duration || (duration_ms < cosmeticUnlocks[i].duration))) {
+			unlock |= (1 << cosmeticUnlocks[i].bitvalue);
+			//Com_Printf("Unlock found [%s %i %i] %i (%i %s)\n", cosmeticUnlocks[i].mapname, cosmeticUnlocks[i].style, cosmeticUnlocks[i].duration, cosmeticUnlocks[i].bitvalue, style, coursename);
+			continue; //Ahh this should be continue, so that one course can give us multiple unlocks?
 		}
 	}
 
