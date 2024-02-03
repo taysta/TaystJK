@@ -146,8 +146,8 @@ void CG_RegisterWeapon( int weaponNum) {
 		if (weaponNum == WP_STUN_BATON && (cgs.serverMod == SVMOD_JAPRO) && cgs.jcinfo & JAPRO_CINFO_LG)
 		{
 			trap->S_RegisterSound( "sound/weapons/baton/idle.wav" );
-			weaponInfo->flashSound[0] = trap->S_RegisterSound( "sound/weapons/lightning/lg_hum.wav" );
-			weaponInfo->altFlashSound[0] = trap->S_RegisterSound( "sound/weapons/baton/fire.mp3" );
+			weaponInfo->flashSound[0] = trap->S_RegisterSound("sound/weapons/baton/fire.mp3");
+			weaponInfo->altFlashSound[0] = trap->S_RegisterSound("sound/weapons/lightning/lg_hum.wav");
 		}
 		else if (weaponNum == WP_STUN_BATON)
 		{
