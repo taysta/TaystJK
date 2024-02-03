@@ -4170,8 +4170,15 @@ static void PM_CheckDash(void)
 	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->fd.forcePower < 25))) {
 		return;
 	}
-	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
-		return;
+
+	if (moveStyle == MV_TRIBES) {
+		if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
+			return;
+	}
+	else {
+		if (pm->ps->groundEntityNum == ENTITYNUM_NONE) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
+			return;
+	}
 
 	if (moveStyle == MV_TRIBES)
 		pm->ps->stats[STAT_DASHTIME] = 1050;
