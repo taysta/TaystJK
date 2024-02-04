@@ -1261,7 +1261,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
             renderpass = vk.render_pass.dglow.blend;
             layout = vk.pipeline_layout_blend;
             samples = (VkSampleCountFlagBits)vkSamples;
-            pipeline_name = "bloom blend pipeline";
+            pipeline_name = "dglow blend pipeline";
             blend = qtrue;
             break;
         default: // gamma correction
