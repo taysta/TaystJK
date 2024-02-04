@@ -8628,6 +8628,12 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 
 }
 
+gentity_t *WP_DropThermal(gentity_t *ent);
+Cmd_ThrowNade_f(gentity_t *ent) {
+	//AngleVectors(ent->client->ps.viewangles, forward, vright, up);
+	WP_DropThermal(ent, 1);
+}
+
 void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? conditional open/close issue??
 	int			i;
 	char		msg[1024-128] = {0};
@@ -8994,6 +9000,7 @@ command_t commands[] = {
 
 	{ "thedestroyer",		Cmd_TheDestroyer_f,			CMD_CHEAT|CMD_ALIVE },
 	{ "throwflag",			Cmd_Throwflag_f,			CMD_ALIVE|CMD_NOINTERMISSION },
+	{ "thrownade",			Cmd_ThrowNade_f,			CMD_ALIVE | CMD_NOINTERMISSION },
 
 #if _ELORANKING
 	{ "top",				Cmd_DuelTop10_f,			CMD_NOINTERMISSION },
