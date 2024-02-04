@@ -218,7 +218,7 @@ typedef enum
 
 #if defined( _WIN32 )
 DEFINE_ENUM_FLAG_OPERATORS( imgFlags_t );
-#elif defined( __linux__ ) || defined( __APPLE__ )
+#elif defined( __linux__ ) || defined( __APPLE__ ) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 inline constexpr imgFlags_t operator | (imgFlags_t a, imgFlags_t b) throw() {
 	return imgFlags_t(((int)a) | ((int)b));
 }
