@@ -925,6 +925,7 @@ void		vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
 // frame
 void		vk_begin_frame( void );
 void		vk_end_frame( void );
+void		vk_present_frame( void );
 void		vk_create_framebuffers( void );
 void		vk_destroy_framebuffers( void );
 void		vk_create_sync_primitives( void );
@@ -949,11 +950,9 @@ VkCommandBuffer vk_begin_command_buffer( void );
 void		vk_end_command_buffer( VkCommandBuffer command_buffer );
 void		vk_create_command_pool( void );
 void		vk_create_command_buffer( void );
-void		vk_record_image_layout_transition( VkCommandBuffer command_buffer, VkImage image, 
-	VkImageAspectFlags image_aspect_flags, VkAccessFlags src_access_flags, 
-	VkImageLayout old_layout, VkAccessFlags dst_access_flags, VkImageLayout new_layout,
-	uint32_t src_family_index, uint32_t dst_family_index, 
-	VkPipelineStageFlags src_stage_mask, VkPipelineStageFlags dst_stage_mask );
+void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
+	VkImageAspectFlags image_aspect_flags, 
+	VkImageLayout old_layout, VkImageLayout new_layout );
 
 // memory
 uint32_t	vk_find_memory_type( uint32_t memory_type_bits, VkMemoryPropertyFlags properties );

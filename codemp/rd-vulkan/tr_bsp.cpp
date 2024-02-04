@@ -356,7 +356,7 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 						lightmapHeight,
 						1,
 						image,
-						lightmapWidth * lightmapHeight * 4 );
+						lightmapWidth * lightmapHeight * 4, qtrue );
 				else
 					tr.lightmaps[i] = R_CreateImage(
 						va("*lightmap%d", i),

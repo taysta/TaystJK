@@ -2249,7 +2249,7 @@ void		R_Add_AllocatedImage( image_t *image );
 
 void		vk_bind( image_t *image );
 void		vk_upload_image( image_t *image, byte *pic );
-void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size ) ;
+void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size, qboolean update ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );
 void		vk_create_image( image_t *image, int width, int height, int mip_levels );
 

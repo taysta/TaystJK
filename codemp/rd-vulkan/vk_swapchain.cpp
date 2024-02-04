@@ -234,12 +234,9 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         VkCommandBuffer command_buffer = vk_begin_command_buffer();
 
         for (i = 0; i < vk.swapchain_image_count; i++) {
-            vk_record_image_layout_transition( command_buffer, vk.swapchain_images[i],
-                VK_IMAGE_ASPECT_COLOR_BIT,
-                0, VK_IMAGE_LAYOUT_UNDEFINED,
-                VK_ACCESS_MEMORY_READ_BIT, vk.initSwapchainLayout,
-                VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-                NULL, NULL );
+            vk_record_image_layout_transition( command_buffer, vk.swapchain_images[i], VK_IMAGE_ASPECT_COLOR_BIT,
+                VK_IMAGE_LAYOUT_UNDEFINED,
+                vk.initSwapchainLayout );
         }
         
         vk_end_command_buffer( command_buffer );

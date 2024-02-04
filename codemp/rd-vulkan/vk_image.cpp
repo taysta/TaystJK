@@ -219,8 +219,8 @@ VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	desc.compareEnable = VK_FALSE;
 	desc.compareOp = VK_COMPARE_OP_ALWAYS;
 	desc.minLod = 0.0f;
-	desc.maxLod = maxLod;
-	desc.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+	desc.maxLod = (maxLod == vk.maxLod) ? VK_LOD_CLAMP_NONE : maxLod;
+	desc.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 	desc.unnormalizedCoordinates = VK_FALSE;
 	VK_CHECK(qvkCreateSampler(vk.device, &desc, NULL, &sampler));
 	VK_SET_OBJECT_NAME(sampler, va("image sampler %i", vk_world.num_samplers), VK_DEBUG_REPORT_OBJECT_TYPE_SAMPLER_EXT);
@@ -306,22 +306,80 @@ void vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, VkDev
 }
 
 void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
-	VkImageAspectFlags image_aspect_flags, VkAccessFlags src_access_flags, 
-	VkImageLayout old_layout, VkAccessFlags dst_access_flags, 
-	VkImageLayout new_layout, uint32_t src_family_index,
-	uint32_t dst_family_index, VkPipelineStageFlags src_stage_mask, 
-	VkPipelineStageFlags dst_stage_mask )
+	VkImageAspectFlags image_aspect_flags, 
+	VkImageLayout old_layout, VkImageLayout new_layout )
 {
 	VkImageMemoryBarrier barrier;
+	uint32_t src_stage, dst_stage;
+
+	switch ( old_layout ) {
+		case VK_IMAGE_LAYOUT_UNDEFINED:
+			src_stage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+			barrier.srcAccessMask = VK_ACCESS_NONE;
+			break;
+		case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+			src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+			src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+			src_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
+			src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.srcAccessMask = VK_ACCESS_NONE;
+			break;
+		default:
+			ri.Error( ERR_DROP, "unsupported old layout %i", old_layout );
+			src_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+			barrier.srcAccessMask = VK_ACCESS_NONE;
+			break;
+	}
+
+	switch ( new_layout ) {
+		case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+			dst_stage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+			barrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+			dst_stage = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+			barrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
+			dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.dstAccessMask = VK_ACCESS_NONE;
+			break;
+		case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+			dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+			dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+			barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+			break;
+		case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+			dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+			break;
+		default:
+			ri.Error( ERR_DROP, "unsupported new layout %i", new_layout);
+			dst_stage = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+			barrier.dstAccessMask = VK_ACCESS_NONE;
+			break;
+	}
 
 	barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
 	barrier.pNext = NULL;
-	barrier.srcAccessMask = src_access_flags;
-	barrier.dstAccessMask = dst_access_flags;
+	//barrier.srcAccessMask = src_access_flags;
+	//barrier.dstAccessMask = dst_access_flags;
 	barrier.oldLayout = old_layout;
 	barrier.newLayout = new_layout;
-	barrier.srcQueueFamilyIndex = src_family_index;
-	barrier.dstQueueFamilyIndex = dst_family_index;
+	barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+	barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
 	barrier.image = image;
 	barrier.subresourceRange.aspectMask = image_aspect_flags;
 	barrier.subresourceRange.baseMipLevel = 0;
@@ -329,13 +387,8 @@ void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image,
 	barrier.subresourceRange.baseArrayLayer = 0;
 	barrier.subresourceRange.layerCount = VK_REMAINING_ARRAY_LAYERS;
 
-	if ( src_stage_mask == NULL ) 
-		src_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 
-	if ( dst_stage_mask == NULL ) 
-		dst_stage_mask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
-
-	qvkCmdPipelineBarrier(cmdBuf, src_stage_mask, dst_stage_mask, 0, 0, NULL, 0, NULL, 1, &barrier);
+	qvkCmdPipelineBarrier(cmdBuf, src_stage, dst_stage, 0, 0, NULL, 0, NULL, 1, &barrier);
 }
 
 void vk_upload_image( image_t *image, byte *pic ) {
@@ -356,7 +409,7 @@ void vk_upload_image( image_t *image, byte *pic ) {
 	image->uploadHeight = h;
 
 	vk_create_image( image, w, h, upload_data.mip_levels );
-	vk_upload_image_data( image, 0, 0, w, h, upload_data.mip_levels, upload_data.buffer, upload_data.buffer_size );
+	vk_upload_image_data( image, 0, 0, w, h, upload_data.mip_levels, upload_data.buffer, upload_data.buffer_size, qfalse );
 
 	ri.Hunk_FreeTempMemory( upload_data.buffer );
 }
@@ -596,12 +649,12 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
 	if (vk_world.staging_buffer_memory != VK_NULL_HANDLE)
 		qvkFreeMemory(vk.device, vk_world.staging_buffer_memory, NULL);
 
-	vk_world.staging_buffer_size = size;
+	vk_world.staging_buffer_size = MAX( size, 1024 * 1024 );;
 
 	buffer_desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	buffer_desc.pNext = NULL;
 	buffer_desc.flags = 0;
-	buffer_desc.size = size;
+	buffer_desc.size = vk_world.staging_buffer_size;
 	buffer_desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 	buffer_desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	buffer_desc.queueFamilyIndexCount = 0;
@@ -694,7 +747,7 @@ static byte *vk_resample_image_data( const int target_format, byte *data, const 
 
 
 void vk_upload_image_data( image_t *image, int x, int y, int width, 
-	int height, int mipmaps, byte *pixels, int size ) 
+	int height, int mipmaps, byte *pixels, int size, qboolean update ) 
 {
 	VkCommandBuffer command_buffer;
 	VkBufferImageCopy regions[16];
@@ -762,17 +815,21 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 
 		VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_TRANSFER_READ_BIT);
 
-	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 0, 
-		VK_IMAGE_LAYOUT_UNDEFINED, VK_ACCESS_TRANSFER_WRITE_BIT, 
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		NULL, NULL);
+	if ( update ) {
+		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 
+			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+	} else {
+		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+			VK_IMAGE_LAYOUT_UNDEFINED, 
+			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+	}
 
 	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
 
-	vk_record_image_layout_transition(command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT, 
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_ACCESS_SHADER_READ_BIT, 
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED, 
-		NULL, NULL);
+	vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 
+		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
 
 	vk_end_command_buffer(command_buffer);
 
@@ -887,10 +944,12 @@ void vk_create_image( image_t *image, int width, int height, int mip_levels ) {
 
 	if ( image->handle ) {
 		qvkDestroyImage( vk.device, image->handle, NULL );
+		image->handle = VK_NULL_HANDLE;
 	}
 
 	if ( image->view ) {
 		qvkDestroyImageView( vk.device, image->view, NULL );
+		image->view = VK_NULL_HANDLE;
 	}
 	// create image
 	{
@@ -1158,12 +1217,12 @@ void RE_UploadCinematic( int cols, int rows, const byte *data, int client, qbool
 		image->height = image->uploadHeight = rows;
 
 		vk_create_image( image, cols, rows, 1 );
-		vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4 );
+		vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4, qfalse );
 
     }
     else if (dirty)
     {
-        vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4 );
+        vk_upload_image_data( image, 0, 0, cols, rows, 1, (byte*)data, cols * rows * 4, qtrue );
     }
 }
 
