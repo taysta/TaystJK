@@ -3398,7 +3398,7 @@ qboolean CanGrapple( gentity_t *ent ) {
 		return qfalse;
 	if (!g_allowGrapple.integer && !ent->client->sess.raceMode)
 		return qfalse;
-	if (ent->client->sess.raceMode && ent->client->sess.movementStyle != MV_JETPACK)
+	if (ent->client->sess.raceMode && ent->client->sess.movementStyle != MV_JETPACK && ent->client->sess.movementStyle != MV_TRIBES)
 		return qfalse;
 	if (ent->client->ps.duelInProgress)
 		return qfalse;

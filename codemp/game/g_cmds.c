@@ -8632,8 +8632,10 @@ void WP_ThrowGrenade(gentity_t *ent);
 Cmd_ThrowNade_f(gentity_t *ent) {
 	if (ent && ent->client && !ent->client->ps.weaponTime && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
 		ent->client->ps.weaponTime += 1000;
-		ent->client->ps.ammo[AMMO_THERMAL] -= 1;
+		if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+			ent->client->ps.ammo[AMMO_THERMAL] -= 1;
 		WP_ThrowGrenade(ent);
+		StandardSetBodyAnim(ent, BOTH_THERMAL_THROW, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
 	}
 }
 

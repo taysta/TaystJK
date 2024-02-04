@@ -356,6 +356,12 @@ void SaberUpdateSelf(gentity_t *ent)
 
 			G_DebugBoxLines(dbgMins, dbgMaxs, (10.0f/(float)sv_fps.integer)*100);
 		}
+		if (g_entities[ent->r.ownerNum].client->ps.saberMove > 1 && g_showJumpSpot.integer == 2) {
+			vec3_t down;
+			VectorCopy(ent->r.currentOrigin, down);
+			down[2] -= 100;
+			G_TestLine(ent->r.currentOrigin, down, 0x0000ff, 2000);
+		}
 #endif
 		if (ent->r.contents != CONTENTS_LIGHTSABER)
 		{
