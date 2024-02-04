@@ -8628,10 +8628,13 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 
 }
 
-gentity_t *WP_DropThermal(gentity_t *ent);
+void WP_ThrowGrenade(gentity_t *ent);
 Cmd_ThrowNade_f(gentity_t *ent) {
-	//AngleVectors(ent->client->ps.viewangles, forward, vright, up);
-	WP_DropThermal(ent, 1);
+	if (ent && ent->client && !ent->client->ps.weaponTime && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
+		ent->client->ps.weaponTime += 1000;
+		ent->client->ps.ammo[AMMO_THERMAL] -= 1;
+		WP_ThrowGrenade(ent);
+	}
 }
 
 void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? conditional open/close issue??

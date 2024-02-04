@@ -3476,15 +3476,12 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	return bolt;
 }
 
-gentity_t *WP_DropThermal( gentity_t *ent ) //Unused in JKA so repurpose this for tribes
+void WP_ThrowGrenade( gentity_t *ent ) //Unused in JKA so repurpose this for tribes
 {
-	if (ent && ent->client && !ent->client->ps.weaponTime && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
-		ent->client->ps.weaponTime += 1000;
-		ent->client->ps.ammo[AMMO_THERMAL] -= 1;
-
+	if (ent && ent->client) {
 		AngleVectors(ent->client->ps.viewangles, forward, vright, up);
 		CalcMuzzlePoint(ent, forward, vright, up, muzzle);
-		return (WP_FireThermalDetonator(ent, qfalse));
+		WP_FireThermalDetonator(ent, qfalse);
 	}
 }
 
