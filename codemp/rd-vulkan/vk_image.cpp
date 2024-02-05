@@ -504,11 +504,14 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 	// clamp to the current upper OpenGL limit
 	// scale both axis down equally so we don't have to
 	// deal with a half mip resampling
+	// but, allow lightmaps to be larger
 	//
-	while (scaled_width > glConfig.maxTextureSize
-		|| scaled_height > glConfig.maxTextureSize) {
-		scaled_width >>= 1;
-		scaled_height >>= 1;
+	if ( !(image->flags & IMGFLAG_LIGHTMAP) ) {
+		while (scaled_width > glConfig.maxTextureSize
+			|| scaled_height > glConfig.maxTextureSize) {
+			scaled_width >>= 1;
+			scaled_height >>= 1;
+		}
 	}
 
 	upload_data->base_level_width = scaled_width;
@@ -840,14 +843,15 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 
 static void allocate_and_bind_image_memory( VkImage image ) {
 	VkMemoryRequirements memory_requirements;
-	VkDeviceSize		alignment;
+	VkDeviceSize		alignment, size;
 	ImageChunk_t		*chunk;
 	int i;
 
 	qvkGetImageMemoryRequirements(vk.device, image, &memory_requirements);
 
-	if (memory_requirements.size > vk.image_chunk_size) {
-		ri.Error(ERR_FATAL, "Vulkan: could not allocate memory, image is too large (%ikbytes).",
+	// allow up to double the chunk size, if required
+	if ( memory_requirements.size > (vk.image_chunk_size * 2) ) {
+		Com_Error(ERR_DROP, "Vulkan: could not allocate memory, image is too large (%ikbytes).",
 			(int)(memory_requirements.size / 1024));
 	}
 
@@ -859,9 +863,10 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		// ensure that memory region has proper alignment
 		VkDeviceSize offset = PAD(vk_world.image_chunks[i].used, alignment);
 
-		if (offset + memory_requirements.size <= vk.image_chunk_size) {
+		if (offset + memory_requirements.size <= vk_world.image_chunks[i].size) {
 			chunk = &vk_world.image_chunks[i];
 			chunk->used = offset + memory_requirements.size;
+			chunk->items++;
 			break;
 		}
 	}
@@ -873,25 +878,37 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		VkResult result;
 
 		if (vk_world.num_image_chunks >= MAX_IMAGE_CHUNKS) {
-			ri.Error(ERR_DROP, "Image chunk limit has been reached");
+			Com_Error(ERR_DROP, "Image chunk limit has been reached");
 			vk_restart_swapchain( __func__ );
+		}
+
+		// default size is sufficient or create larger chunk
+		if ( memory_requirements.size <= vk.image_chunk_size )
+			size = vk.image_chunk_size;
+		else {
+			size = (vk.image_chunk_size * 2);
+
+			ri.Printf(PRINT_DEVELOPER, "Vulkan: create new large memory chunk for image with size (%ikbytes)\n", 
+				(int)(memory_requirements.size / 1024));
 		}
 
 		alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 		alloc_info.pNext = NULL;
-		alloc_info.allocationSize = vk.image_chunk_size;
+		alloc_info.allocationSize = size;
 		alloc_info.memoryTypeIndex = vk_find_memory_type(memory_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
 		result = qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory);
 		
 		if (result < 0) {
-			ri.Error(ERR_DROP, va("GPU memory heap overflow: Code %i", result));
+			Com_Error(ERR_DROP, va("GPU memory heap overflow: Code %i", result));
 			vk_restart_swapchain( __func__ );
 		}
 
 		chunk = &vk_world.image_chunks[vk_world.num_image_chunks];
 		chunk->memory = memory;
 		chunk->used = memory_requirements.size;
+		chunk->size = size;
+		chunk->items = 1;
 
 		VK_SET_OBJECT_NAME(memory, va("image memory chunk %i", vk_world.num_image_chunks), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 

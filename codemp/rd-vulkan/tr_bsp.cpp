@@ -24,7 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
-static const imgFlags_t lightmapFlags = IMGFLAG_NOLIGHTSCALE | IMGFLAG_NO_COMPRESSION | IMGFLAG_LIGHTMAP | IMGFLAG_NOSCALE;
+static const imgFlags_t lightmapFlags = IMGFLAG_NOLIGHTSCALE | IMGFLAG_NO_COMPRESSION | IMGFLAG_LIGHTMAP | IMGFLAG_NOSCALE | IMGFLAG_CLAMPTOEDGE;
 
 /*
 
@@ -232,7 +232,7 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 				NULL,
 				tr.lightmapAtlasSize[0],
 				tr.lightmapAtlasSize[1],
-				lightmapFlags | IMGFLAG_CLAMPTOEDGE
+				lightmapFlags
 				);
 		}
 	}
@@ -363,10 +363,7 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 						image,
 						lightmapWidth,
 						lightmapHeight,
-						//IMGTYPE_COLORALPHA,
-						IMGFLAG_NOLIGHTSCALE |
-						IMGFLAG_NO_COMPRESSION |
-						IMGFLAG_CLAMPTOEDGE);
+						lightmapFlags );
 			}
 
 			if ( externalLightmap )
