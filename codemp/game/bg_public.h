@@ -592,6 +592,7 @@ typedef enum //movementstyle enum
 #if _GRAPPLE
 #define PMF_GRAPPLE	32768
 #endif
+#define _SPECIFICWEAPONTIME 1
 
 #define	PMF_ALL_TIMES	(PMF_TIME_WATERJUMP|PMF_TIME_LAND|PMF_TIME_KNOCKBACK)
 

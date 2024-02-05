@@ -5271,7 +5271,7 @@ void Weapon_HookThink (gentity_t *ent)
 
 #if 1
 	if (ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
-		if (ent->s.time2 > 4000) {
+		if (ent->s.time2 > 3000) {
 			Weapon_HookFree(ent);	// don't work
 			return;
 		}

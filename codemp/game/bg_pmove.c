@@ -9109,6 +9109,15 @@ if (pm->ps->duelInProgress)
 	if ( pm->ps->weaponTime > 0 ) {
 		pm->ps->weaponTime -= pml.msec;
 	}
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] -= pml.msec;
+		}
+	}
+#endif
+#endif
 
 	if (pm->ps->isJediMaster && pm->ps->emplacedIndex)
 	{
@@ -9214,6 +9223,17 @@ if (pm->ps->duelInProgress)
 	// check for weapon change
 	// can't change if weapon is firing, but can change
 	// again if lowering or raising
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		if (pm->ps->weapon != pm->cmd.weapon) {
+			if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] <= 0)
+			PM_BeginWeaponChange(pm->cmd.weapon);
+		}
+	}
+ 	else
+#endif
+#endif
 	if ( pm->ps->weaponTime <= 0 || pm->ps->weaponstate != WEAPON_FIRING ) {
 		if ( pm->ps->weapon != pm->cmd.weapon ) {
 			PM_BeginWeaponChange( pm->cmd.weapon );
@@ -9225,6 +9245,22 @@ if (pm->ps->duelInProgress)
 		if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK && pm->ps->weapon == WP_DET_PACK && pm->ps->hasDetPackPlanted && /*!(pm->cmd.buttons & BUTTON_ATTACK) &&*/ pm->cmd.buttons & BUTTON_ALT_ATTACK) {
 		}
 		else {
+#if _GAME
+#if _SPECIFICWEAPONTIME
+			if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
+			{
+				if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+					// change weapon if time
+					//Com_Printf("Weaponstate is %i and changing is %i\n", pm->ps->weaponstate, pm->ps->weapon != pm->cmd.weapon);
+					if (pm->ps->weapon != pm->cmd.weapon) {
+						PM_FinishWeaponChange();
+					}
+					return;
+				}
+			}
+			else
+#endif
+#endif
 			return;
 		}
 	}
@@ -9861,6 +9897,15 @@ if (pm->ps->duelInProgress)
 #endif
 
 	pm->ps->weaponTime += addTime;
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] += addTime;
+	}
+#endif
+#endif
+
 }
 
 /*
