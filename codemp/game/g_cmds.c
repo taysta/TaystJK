@@ -3235,7 +3235,7 @@ void Cmd_CallVote_f( gentity_t *ent ) {
 	if ((g_tweakVote.integer & TV_MAPCHANGELOCKOUT) && !Q_stricmp(arg1, "map") && (level.gametype == GT_FFA || g_raceMode.integer) && (level.startTime > (level.time - 1000*60*10))) { //Dont let a map vote be called within 10 mins of map load if we are in ffa
 		char timeStr[32];
 		//TimeToString( (1000*60*10 - (level.time - level.startTime)) , timeStr, sizeof(timeStr), qtrue);
-		TimeSecToString((60 * 10 - (level.time - level.startTime)), timeStr, sizeof(timeStr));
+		TimeSecToString(((1000*60*10 - (level.time - level.startTime))*0.001f), timeStr, sizeof(timeStr));
 		trap->SendServerCommand( ent-g_entities, va( "print \"The server just changed to this map, please wait %s before calling a map vote.\n\"", timeStr) );
 		return;
 	}
@@ -8628,6 +8628,18 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 
 }
 
+void WP_ThrowGrenade(gentity_t *ent);
+Cmd_ThrowNade_f(gentity_t *ent) {
+	if (ent && ent->client && (ent->client->specificWeaponTime[WP_THERMAL] <= 0) && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
+		ent->client->ps.weaponTime += 1000;
+		ent->client->specificWeaponTime[WP_THERMAL] += 1000;
+		if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+			ent->client->ps.ammo[AMMO_THERMAL] -= 1;
+		WP_ThrowGrenade(ent);
+		StandardSetBodyAnim(ent, BOTH_THERMAL_THROW, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+	}
+}
+
 void Cmd_ShowNet_f( gentity_t *ent ) { //why does this crash sometimes..? conditional open/close issue??
 	int			i;
 	char		msg[1024-128] = {0};
@@ -8994,6 +9006,7 @@ command_t commands[] = {
 
 	{ "thedestroyer",		Cmd_TheDestroyer_f,			CMD_CHEAT|CMD_ALIVE },
 	{ "throwflag",			Cmd_Throwflag_f,			CMD_ALIVE|CMD_NOINTERMISSION },
+	{ "thrownade",			Cmd_ThrowNade_f,			CMD_ALIVE | CMD_NOINTERMISSION },
 
 #if _ELORANKING
 	{ "top",				Cmd_DuelTop10_f,			CMD_NOINTERMISSION },

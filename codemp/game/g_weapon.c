@@ -3476,10 +3476,13 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 	return bolt;
 }
 
-gentity_t *WP_DropThermal( gentity_t *ent )
+void WP_ThrowGrenade( gentity_t *ent ) //Unused in JKA so repurpose this for tribes
 {
-	AngleVectors( ent->client->ps.viewangles, forward, vright, up );
-	return (WP_FireThermalDetonator( ent, qfalse ));
+	if (ent && ent->client) {
+		AngleVectors(ent->client->ps.viewangles, forward, vright, up);
+		CalcMuzzlePoint(ent, forward, vright, up, muzzle);
+		WP_FireThermalDetonator(ent, qfalse);
+	}
 }
 
 
@@ -5268,7 +5271,7 @@ void Weapon_HookThink (gentity_t *ent)
 
 #if 1
 	if (ent->parent->client && ent->parent->client->sess.movementStyle == MV_TRIBES) { //Tribes grapple hook restriction
-		if (ent->s.time2 > 4000) {
+		if (ent->s.time2 > 3000) {
 			Weapon_HookFree(ent);	// don't work
 			return;
 		}

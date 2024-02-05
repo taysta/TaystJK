@@ -1135,7 +1135,7 @@ void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce ) {
 		change = normal[i]*backoff;
 		out[i] = in[i] - change;
 	}
-	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK)
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS//normal player
 			&& pm->ps->groundEntityNum != ENTITYNUM_NONE//on the ground
@@ -4170,8 +4170,15 @@ static void PM_CheckDash(void)
 	if (moveStyle == MV_TRIBES && (((pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1] *pm->ps->velocity[1]) > (pm->ps->speed * pm->ps->speed * 1.48f)) || (pm->ps->fd.forcePower < 25))) {
 		return;
 	}
-	if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
-		return;
+
+	if (moveStyle == MV_TRIBES) {
+		if (pm->ps->groundEntityNum == ENTITYNUM_NONE && (PM_GroundDistance() > 2.0f)) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
+			return;
+	}
+	else {
+		if (pm->ps->groundEntityNum == ENTITYNUM_NONE) //MV_TRIBES problem, sometimes it detects us being in the air when we are actually on ground(or like 1 unit off ground during a ski?).  Have to check ground dist instead?
+			return;
+	}
 
 	if (moveStyle == MV_TRIBES)
 		pm->ps->stats[STAT_DASHTIME] = 1050;
@@ -7692,6 +7699,18 @@ void PM_BeginWeaponChange( int weapon ) {
 	PM_AddEventWithParm( EV_CHANGE_WEAPON, weapon );
 	pm->ps->weaponstate = WEAPON_DROPPING;
 	pm->ps->weaponTime += 200;
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		int i;
+		for (i = 0; i < MAX_WEAPONS; i++) {
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 200;
+		}
+	}
+#endif
+#endif
+
 	//PM_StartTorsoAnim( TORSO_DROPWEAP1 );
 	PM_SetAnim(SETANIM_TORSO, TORSO_DROPWEAP1, SETANIM_FLAG_OVERRIDE);
 
@@ -7740,6 +7759,18 @@ void PM_FinishWeaponChange( void ) {
 #else
 		pm->ps->weaponTime += 250;
 #endif
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+		if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+			int i;
+			for (i = 0; i < MAX_WEAPONS; i++) {
+				((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 250;
+			}
+		}
+#endif
+#endif
+
 }
 
 #ifdef _GAME
@@ -9102,6 +9133,15 @@ if (pm->ps->duelInProgress)
 	if ( pm->ps->weaponTime > 0 ) {
 		pm->ps->weaponTime -= pml.msec;
 	}
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] -= pml.msec;
+		}
+	}
+#endif
+#endif
 
 	if (pm->ps->isJediMaster && pm->ps->emplacedIndex)
 	{
@@ -9207,6 +9247,17 @@ if (pm->ps->duelInProgress)
 	// check for weapon change
 	// can't change if weapon is firing, but can change
 	// again if lowering or raising
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		if (pm->ps->weapon != pm->cmd.weapon) {
+			if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] <= 0)
+			PM_BeginWeaponChange(pm->cmd.weapon);
+		}
+	}
+ 	else
+#endif
+#endif
 	if ( pm->ps->weaponTime <= 0 || pm->ps->weaponstate != WEAPON_FIRING ) {
 		if ( pm->ps->weapon != pm->cmd.weapon ) {
 			PM_BeginWeaponChange( pm->cmd.weapon );
@@ -9218,6 +9269,22 @@ if (pm->ps->duelInProgress)
 		if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK && pm->ps->weapon == WP_DET_PACK && pm->ps->hasDetPackPlanted && /*!(pm->cmd.buttons & BUTTON_ATTACK) &&*/ pm->cmd.buttons & BUTTON_ALT_ATTACK) {
 		}
 		else {
+#if _GAME
+#if _SPECIFICWEAPONTIME
+			if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
+			{
+				if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+					// change weapon if time
+					//Com_Printf("Weaponstate is %i and changing is %i\n", pm->ps->weaponstate, pm->ps->weapon != pm->cmd.weapon);
+					if (pm->ps->weapon != pm->cmd.weapon) {
+						PM_FinishWeaponChange();
+					}
+					return;
+				}
+			}
+			else
+#endif
+#endif
 			return;
 		}
 	}
@@ -9854,6 +9921,15 @@ if (pm->ps->duelInProgress)
 #endif
 
 	pm->ps->weaponTime += addTime;
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] += addTime;
+	}
+#endif
+#endif
+
 }
 
 /*

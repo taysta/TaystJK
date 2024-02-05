@@ -5092,7 +5092,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	//Higher self knockback for tribes, discjump disc jump
 	if (attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
 		//if (targ == attacker)
-			knockback *= 1.2f;
+			knockback *= 1.5f;
 		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
 			knockback *= 3.75f; //guess this just does nothing
 		}
@@ -5106,7 +5106,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		mass = 200;
 		if ((g_tweakWeapons.integer & WT_TRIBES)) {
 			if (targ->client->pers.tribesClass == 1)
-				mass = 180;
+				mass = 175;
 			else if (targ->client->pers.tribesClass == 3)
 				mass = 240;
 			if (targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT))

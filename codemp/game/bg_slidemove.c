@@ -1087,11 +1087,11 @@ void PM_StepSlideMove( qboolean gravity ) {
 	down[2] -= stepSize;
 	pm->trace (&trace, pm->ps->origin, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 
-	if (pm->stepSlideFix && ((pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) || !(pm->cmd.buttons & BUTTON_DASH))) //This causes deadstops on slidey slopes.  But doint it fixes wall behaviour.  We want to do this block unless we are holding SKI in tribes.
+	if (pm->stepSlideFix && ((pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) || !(pm->cmd.buttons & BUTTON_DASH)) && (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK)) //This causes deadstops on slidey slopes.  But doint it fixes wall behaviour.  We want to do this block unless we are holding SKI in tribes.
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS) {
 			float minNormal = MIN_WALK_NORMAL;
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
 				minNormal = 0.5f;
 			if (trace.plane.normal[2] < minNormal)
 			{//normal players cannot step up slopes that are too steep to walk on!
