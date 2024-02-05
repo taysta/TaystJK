@@ -8629,7 +8629,7 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 }
 
 void WP_ThrowGrenade(gentity_t *ent);
-Cmd_ThrowNade_f(gentity_t *ent) {
+void Cmd_ThrowNade_f(gentity_t *ent) {
 	if (ent && ent->client && (ent->client->specificWeaponTime[WP_THERMAL] <= 0) && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
 		ent->client->ps.weaponTime += 1000;
 		ent->client->specificWeaponTime[WP_THERMAL] += 1000;

@@ -491,6 +491,8 @@ typedef struct {
 struct ImageChunk_t {
 	VkDeviceMemory memory;
 	uint32_t used;
+	uint32_t size;
+	uint32_t items;
 };
 
 struct Image_Upload_Data  {
@@ -925,6 +927,7 @@ void		vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
 // frame
 void		vk_begin_frame( void );
 void		vk_end_frame( void );
+void		vk_present_frame( void );
 void		vk_create_framebuffers( void );
 void		vk_destroy_framebuffers( void );
 void		vk_create_sync_primitives( void );
@@ -949,11 +952,9 @@ VkCommandBuffer vk_begin_command_buffer( void );
 void		vk_end_command_buffer( VkCommandBuffer command_buffer );
 void		vk_create_command_pool( void );
 void		vk_create_command_buffer( void );
-void		vk_record_image_layout_transition( VkCommandBuffer command_buffer, VkImage image, 
-	VkImageAspectFlags image_aspect_flags, VkAccessFlags src_access_flags, 
-	VkImageLayout old_layout, VkAccessFlags dst_access_flags, VkImageLayout new_layout,
-	uint32_t src_family_index, uint32_t dst_family_index, 
-	VkPipelineStageFlags src_stage_mask, VkPipelineStageFlags dst_stage_mask );
+void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
+	VkImageAspectFlags image_aspect_flags, 
+	VkImageLayout old_layout, VkImageLayout new_layout );
 
 // memory
 uint32_t	vk_find_memory_type( uint32_t memory_type_bits, VkMemoryPropertyFlags properties );
@@ -999,13 +1000,10 @@ void		vk_get_pipeline_def( uint32_t pipeline, Vk_Pipeline_Def *def );
 uint32_t	vk_append_uniform( void *uniform, size_t size, uint32_t min_offset );
 
 // image process
-void		GetScaledDimension( const unsigned int width, const unsigned int height, 
-	unsigned int * const outW, unsigned int * const outH, int isPicMip );
 void		R_SetColorMappings( void );
 void		R_LightScaleTexture( byte *in, int inwidth, int inheight, qboolean only_gamma );
 void		ResampleTexture( unsigned *in, int inwidth, int inheight, unsigned *out, int outwidth, int outheight );
 void		R_BlendOverTexture( unsigned char *data, const uint32_t pixelCount, const uint32_t l );
-void		R_MipMapNormal( byte *out, byte *in, int width, int height, const qboolean swizzle );
 void		R_MipMap( byte *out, byte *in, int width, int height );
 void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHeight );
 
