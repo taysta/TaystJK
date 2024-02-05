@@ -7699,6 +7699,18 @@ void PM_BeginWeaponChange( int weapon ) {
 	PM_AddEventWithParm( EV_CHANGE_WEAPON, weapon );
 	pm->ps->weaponstate = WEAPON_DROPPING;
 	pm->ps->weaponTime += 200;
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+		int i;
+		for (i = 0; i < MAX_WEAPONS; i++) {
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 200;
+		}
+	}
+#endif
+#endif
+
 	//PM_StartTorsoAnim( TORSO_DROPWEAP1 );
 	PM_SetAnim(SETANIM_TORSO, TORSO_DROPWEAP1, SETANIM_FLAG_OVERRIDE);
 
@@ -7747,6 +7759,18 @@ void PM_FinishWeaponChange( void ) {
 #else
 		pm->ps->weaponTime += 250;
 #endif
+
+#if _GAME
+#if _SPECIFICWEAPONTIME
+		if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
+			int i;
+			for (i = 0; i < MAX_WEAPONS; i++) {
+				((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 250;
+			}
+		}
+#endif
+#endif
+
 }
 
 #ifdef _GAME
