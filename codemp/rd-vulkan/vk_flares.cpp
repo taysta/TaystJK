@@ -62,6 +62,7 @@ typedef struct flare_s {
 	int			addedFrame;
 	uint32_t	testCount;
 
+	portalView_t portalView;
 	int			frameSceneNum;
 	void		*surface;
 	int			fogNum;
@@ -114,8 +115,8 @@ static flare_t *R_SearchFlare( void *surface )
 	flare_t *f;
 
 	// see if a flare with a matching surface, scene, and view exists
-	for (f = r_activeFlares; f; f = f->next) {
-		if (f->surface == surface && f->frameSceneNum == backEnd.viewParms.frameSceneNum) {
+	for ( f = r_activeFlares; f; f = f->next ) {
+		if ( f->surface == surface && f->frameSceneNum == backEnd.viewParms.frameSceneNum && f->portalView == backEnd.viewParms.portalView ) {
 			return f;
 		}
 	}
@@ -183,6 +184,7 @@ void RB_AddFlare( void *surface, int fogNum, vec3_t point, vec3_t color, vec3_t 
 
 		f->surface = surface;
 		f->frameSceneNum = backEnd.viewParms.frameSceneNum;
+		f->portalView = backEnd.viewParms.portalView;
 		f->visible = qfalse;
 		f->fadeTime = backEnd.refdef.time - 2000;
 		f->testCount = 0;
@@ -324,14 +326,15 @@ static void RB_TestFlare( flare_t *f ) {
 		else
 			visible = qfalse;
 
-		f->testCount &= 0xFFFF;
+		f->testCount = 1;
 	}
 	else {
 		visible = qfalse;
 	}
 
 	// reset test result in storage buffer
-	Com_Memset(vk.storage.buffer_ptr + offset, 0x0, sizeof(uint32_t));
+	//Com_Memset(vk.storage.buffer_ptr + offset, 0x0, sizeof(uint32_t));
+	// *((uint32_t*)(vk.storage.buffer_ptr + offset)) = 0x00;
 
 	m = vk_ortho(backEnd.viewParms.viewportX, backEnd.viewParms.viewportX + backEnd.viewParms.viewportWidth,
 		backEnd.viewParms.viewportY, backEnd.viewParms.viewportY + backEnd.viewParms.viewportHeight, 0, 1);
@@ -462,13 +465,13 @@ void RB_RenderFlares( void ) {
 	flare_t** prev;
 	qboolean	draw;
 
-	if (!r_flares->integer)
+	if ( !r_flares->integer )
 		return;
 
-	if (vk.renderPassIndex == RENDER_PASS_SCREENMAP)
+	if ( vk.renderPassIndex == RENDER_PASS_SCREENMAP )
 		return;
 
-	if (backEnd.isHyperspace)
+	if ( backEnd.isHyperspace )
 		return;
 
 	// Reset currentEntity to world so that any previously referenced entities
@@ -481,9 +484,9 @@ void RB_RenderFlares( void ) {
 	// perform z buffer readback on each flare in this view
 	draw = qfalse;
 	prev = &r_activeFlares;
-	while ((f = *prev) != NULL) {
+	while ( ( f = *prev ) != NULL ) {
 		// throw out any flares that weren't added last frame
-		if (backEnd.viewParms.frameCount - f->addedFrame > 1) {
+		if ( backEnd.viewParms.frameCount - f->addedFrame > 0 && f->portalView == backEnd.viewParms.portalView ) {
 			*prev = f->next;
 			f->next = r_inactiveFlares;
 			r_inactiveFlares = f;
@@ -492,12 +495,12 @@ void RB_RenderFlares( void ) {
 
 		// don't draw any here that aren't from this scene / portal
 		f->drawIntensity = 0;
-		if (f->frameSceneNum == backEnd.viewParms.frameSceneNum) {
-			RB_TestFlare(f);
-			if (f->testCount == 0) {
+		if ( f->frameSceneNum == backEnd.viewParms.frameSceneNum && f->portalView == backEnd.viewParms.portalView ) {
+			RB_TestFlare( f );
+			if ( f->testCount == 0 ) {
 				// recently added, wait 1 frame for test result
 			}
-			else if (f->drawIntensity) {
+			else if ( f->drawIntensity ) {
 				draw = qtrue;
 			}
 			else {
@@ -512,15 +515,15 @@ void RB_RenderFlares( void ) {
 		prev = &f->next;
 	}
 
-	if (!draw) {
+	if ( !draw ) {
 		return;		// none visible
 	}
 
-	vk_update_mvp(NULL);
+	vk_update_mvp( NULL );
 
-	for (f = r_activeFlares; f; f = f->next) {
-		if (f->frameSceneNum == backEnd.viewParms.frameSceneNum && f->drawIntensity) {
-			RB_RenderFlare(f);
+	for ( f = r_activeFlares; f; f = f->next ) {
+		if ( f->frameSceneNum == backEnd.viewParms.frameSceneNum && f->drawIntensity && f->portalView == backEnd.viewParms.portalView ) {
+			RB_RenderFlare( f );
 		}
 	}
 }

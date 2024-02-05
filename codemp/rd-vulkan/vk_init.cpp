@@ -208,17 +208,13 @@ static void vk_render_splash( void )
 	begin_info.pInheritanceInfo = NULL;
 	VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
 
-	vk_record_image_layout_transition( vk.cmd->command_buffer, splashImage->handle,
-		VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT );
+	vk_record_image_layout_transition( vk.cmd->command_buffer, splashImage->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+		VK_IMAGE_LAYOUT_UNDEFINED,
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
 
-	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer,
-		VK_IMAGE_ASPECT_COLOR_BIT, 0, VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		VK_QUEUE_FAMILY_IGNORED, VK_QUEUE_FAMILY_IGNORED,
-		VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT );
+	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT, 
+		VK_IMAGE_LAYOUT_UNDEFINED,
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
 
 	Com_Memset( &imageBlit, 0, sizeof(imageBlit) );
 	imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -239,11 +235,9 @@ static void vk_render_splash( void )
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1,
 		&imageBlit, VK_FILTER_LINEAR );
 
-	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer,
-		VK_IMAGE_ASPECT_COLOR_BIT, VK_ACCESS_TRANSFER_WRITE_BIT,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-		vk.queue_family_index, vk.queue_family_index,
-		VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT );
+	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT,
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 
+		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR );
 
 	// we can end the command buffer now
 	VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );
