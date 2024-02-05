@@ -1135,7 +1135,7 @@ void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce ) {
 		change = normal[i]*backoff;
 		out[i] = in[i] - change;
 	}
-	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES)
+	if ( pm->stepSlideFix && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK)
 	{
 		if ( pm->ps->clientNum < MAX_CLIENTS//normal player
 			&& pm->ps->groundEntityNum != ENTITYNUM_NONE//on the ground
@@ -5709,7 +5709,10 @@ static void PM_GroundTrace( void ) {
 			//Probably should stillcrashland and do some effects but not the speedloss
 		}
 		else {
-			PM_CrashLand();
+#if 0
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK || !((gentity_t *)pm_entSelf)->client->pers.practice)
+#endif
+				PM_CrashLand();
 		}
 
 #ifdef _GAME
