@@ -5709,10 +5709,7 @@ static void PM_GroundTrace( void ) {
 			//Probably should stillcrashland and do some effects but not the speedloss
 		}
 		else {
-#if 0
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK || !((gentity_t *)pm_entSelf)->client->pers.practice)
-#endif
-				PM_CrashLand();
+			PM_CrashLand();
 		}
 
 #ifdef _GAME
