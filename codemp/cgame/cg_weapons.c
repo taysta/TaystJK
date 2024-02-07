@@ -1952,6 +1952,13 @@ void CG_WeaponClean_f( void ) {
 	cg.weaponSelect = num;
 }
 
+void CG_SetFireMode( int weaponNum ) {
+	if ((weaponNum == WP_BOWCASTER) || (weaponNum == WP_FLECHETTE)) {
+		cg.singlefireAlt = qtrue;
+	} else {
+		cg.singlefireAlt = qfalse;
+	}
+}
 
 //Version of the above which uses available weapons and fills them into slots
 void CG_WeaponSlot_f( void ) {
@@ -2009,6 +2016,7 @@ void CG_WeaponSlot_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(num);
 }
 
 
@@ -2058,7 +2066,8 @@ void CG_NextWeaponSlot_f(void) {
         int weapon = weaponCycleOrder[i];
         if (CG_WeaponSelectable(weapon)) {
             cg.weaponSelect = weapon;
-            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+			CG_SetFireMode(weapon);
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
             break;
         }
     }
@@ -2101,7 +2110,8 @@ void CG_PrevWeaponSlot_f(void) {
         int weapon = weaponCycleOrder[i];
         if (CG_WeaponSelectable(weapon)) {
             cg.weaponSelect = weapon;
-            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+			CG_SetFireMode(weapon);
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
             break;
         }
     }
