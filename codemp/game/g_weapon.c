@@ -3011,7 +3011,7 @@ static void WP_FireRocket( gentity_t *ent, qboolean altFire )
 	}
 
 	if (altFire) {
-		if (g_tweakWeapons.integer & WT_TRIBES)
+		if (!ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES))
 			vel = 125 * g_projectileVelocityScale.value;
 		else
 			vel *= 0.5f;
@@ -6437,7 +6437,7 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_ROCKET_LAUNCHER:
-				WP_FireRocket( ent, altFire );
+			WP_FireRocket( ent, altFire );
 			break;
 
 		case WP_THERMAL:
