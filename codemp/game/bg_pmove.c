@@ -1489,6 +1489,49 @@ void CPM_PM_Aircontrol (pmove_t *pm, vec3_t wishdir, float wishspeed )
 
 /*
 ============
+PM_CS_AirAccelerate
+
+Gives you acceleration in-air looking a lot like CSGO.
+============
+*/
+void PM_CS_AirAccelerate(vec3_t wishdir, float wishspeed, float accel)
+{
+	int i;
+	float addspeed, accelspeed, currentspeed;
+	float wishspd;
+
+	wishspd = wishspeed;
+
+	// Cap speed
+	if (wishspd > 30.0f)
+		wishspd = 30.0f;
+
+	// Determine veer amount
+	currentspeed = DotProduct(pm->ps->velocity, wishdir);
+
+	// See how much to add
+	addspeed = wishspd - currentspeed;
+
+	// If not adding any, done.
+	if (addspeed <= 0)
+		return;
+
+	// Determine acceleration speed after acceleration
+	accelspeed = accel * wishspeed * pml.frametime * pm_friction;
+
+	// Cap it
+	if (accelspeed > addspeed)
+		accelspeed = addspeed;
+
+	// Adjust pmove vel.
+	for (i = 0; i<3; i++)
+	{
+		pm->ps->velocity[i] += accelspeed*wishdir[i];
+	}
+}
+
+/*
+============
 PM_CmdScale
 
 Returns the scale factor to apply to cmd movements
@@ -1602,7 +1645,7 @@ qboolean PM_ForceJumpingUp(void)
 
 	moveStyle = PM_GetMovePhysics();
 
-	if (moveStyle == MV_CPM || moveStyle == MV_Q3 || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_JETPACK || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM || moveStyle == MV_OCPM || moveStyle == MV_TRIBES)
+	if (moveStyle == MV_CPM || moveStyle == MV_Q3 || moveStyle == MV_WSW || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_JETPACK || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM || moveStyle == MV_OCPM || moveStyle == MV_TRIBES || moveStyle == MV_SURF)
 		return qfalse;
 
 	if (!BG_CanUseFPNow(pm->gametype, pm->ps, pm->cmd.serverTime, FP_LEVITATION))
@@ -2198,6 +2241,8 @@ static qboolean PM_CheckJump( void )
 	{//in knockdown
 		return qfalse;
 	}
+
+	//Devy cs jump delay here?
 
 	if ( pm->ps->weapon == WP_SABER )
 	{
@@ -3362,6 +3407,9 @@ static qboolean PM_CheckJump( void )
 			pm->ps->velocity[2] = 275;
 			pm->ps->stats[STAT_JUMPTIME] = 401;
 		}
+		else if (moveStyle == MV_SURF) {
+			pm->ps->velocity[2] = 270;
+		}
 		else {
 			pm->ps->velocity[2] = JUMP_VELOCITY;
 		}
@@ -3715,6 +3763,14 @@ static void PM_AirMove( void ) {
 	fmove = pm->cmd.forwardmove;
 	smove = pm->cmd.rightmove;
 
+	if (moveStyle == MV_SURF) {
+		if (pm->cmd.forwardmove != 0 && pm->cmd.rightmove != 0)	{
+			pm->cmd.rightmove = 0;
+			pml.right[1] = 0;
+			pml.right[0] = 0;
+		}
+	}
+
 	cmd = pm->cmd;
 	scale = PM_CmdScale( &cmd );
 
@@ -3879,7 +3935,23 @@ static void PM_AirMove( void ) {
 
 	VectorCopy (wishvel, wishdir);
 	wishspeed = VectorNormalize(wishdir);
-	wishspeed *= scale;
+
+	if (moveStyle == MV_SURF) //suspect - Devy?
+	{
+		if (pm->cmd.forwardmove != 0 && pm->cmd.rightmove != 0)
+		{
+			pm->cmd.rightmove = 0;
+		}
+
+		if (wishspeed > 250.0f)
+		{
+			VectorScale(wishvel, 250.0f / wishspeed, wishvel);
+			wishspeed = 250.0f;
+		}
+	}
+	else {
+		wishspeed *= scale;
+	}
 
 	accelerate = pm_airaccelerate;
 
@@ -3909,7 +3981,11 @@ static void PM_AirMove( void ) {
 		PM_AirAccelerate(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
 	} else if (moveStyle == MV_TRIBES) {
 		PM_AirAccelerateTribes(wishdir, wishspeed);//pm_qw_airaccel
-	} else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
+	} else if (moveStyle == MV_SURF) {
+		PM_CS_AirAccelerate(wishdir, wishspeed, 10.0f);
+	}
+	else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
+	{
 		float		accel;
 		float		wishspeed2;
 
@@ -3935,6 +4011,15 @@ static void PM_AirMove( void ) {
 		PM_Accelerate (wishdir, wishspeed, accel); // change dis?
 		CPM_PM_Aircontrol (pm, wishdir, wishspeed2);
 	}
+#if 1
+	else if (moveStyle == MV_SURF)  {
+		if (wishspeed > 250)
+		{
+			wishspeed = 250;
+		}
+		PM_AirAccelerate(wishdir, wishspeed, 150);//jetpack air control
+	}
+#endif
 	/*
 	else if (pm->ps->pm_type != PM_JETPACK && BG_IsNewJetpacking(pm->ps)) //New Jetpack //newjetpack2
 	{
@@ -4611,6 +4696,9 @@ static void PM_WalkMove( void ) {
 	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
 		realaccelerate = 2.5f;
 	}
+	else if (moveStyle == MV_SURF) {
+		realaccelerate = 12.0f;
+	}
 
 	PM_Friction ();
 
@@ -4628,8 +4716,10 @@ static void PM_WalkMove( void ) {
 	pml.right[2] = 0;
 
 	// project the forward and right directions onto the ground plane
-	PM_ClipVelocity (pml.forward, pml.groundTrace.plane.normal, pml.forward, OVERCLIP );
-	PM_ClipVelocity (pml.right, pml.groundTrace.plane.normal, pml.right, OVERCLIP );
+	if (moveStyle != MV_SURF) {
+		PM_ClipVelocity(pml.forward, pml.groundTrace.plane.normal, pml.forward, OVERCLIP);
+		PM_ClipVelocity(pml.right, pml.groundTrace.plane.normal, pml.right, OVERCLIP);
+	}
 	//
 	VectorNormalize (pml.forward);
 	VectorNormalize (pml.right);
@@ -4680,6 +4770,13 @@ static void PM_WalkMove( void ) {
 		VectorCopy (wishvel, wishdir);
 		wishspeed = VectorNormalize(wishdir);
 		wishspeed *= scale;
+	}
+
+	if (moveStyle == MV_SURF) {
+		if (wishspeed != 0 && (wishspeed > 250.0f)) {
+			VectorScale(wishvel, 250.0f / wishspeed, wishvel);
+			wishspeed = 250.0f;
+		}
 	}
 
 	// clamp the speed lower if ducking
@@ -4742,6 +4839,11 @@ static void PM_WalkMove( void ) {
 	else {
 		PM_Accelerate(wishdir, wishspeed, accelerate);
 	}
+
+	if (moveStyle == MV_SURF) {
+		pm->ps->velocity[2] -= pm->ps->gravity * 0.5 *pml.frametime;
+	}
+
 	/*
 	if (pm->ps->clientNum >= MAX_CLIENTS)
 	{
@@ -4972,6 +5074,7 @@ static int PM_TryRoll( void )
 		(moveStyle == MV_RJCPM) ||
 		(moveStyle == MV_SLICK) ||
 		(moveStyle == MV_BOTCPM) ||
+		(moveStyle == MV_SURF) ||
 		!BG_CanUseFPNow(pm->gametype, pm->ps, pm->cmd.serverTime, FP_LEVITATION))
 	{ //Not using saber, or can't use jump
 		return 0;
@@ -5363,7 +5466,7 @@ static void PM_CrashLand( void ) {
 	// make sure velocity resets so we don't bounce back up again in case we miss the clear elsewhere
 	pm->ps->velocity[2] = 0;
 
-	if ((moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) && ((int)pm->ps->fd.forceJumpZStart > pm->ps->origin[2] + 1)) {
+	if ((moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM || moveStyle == MV_SURF) && ((int)pm->ps->fd.forceJumpZStart > pm->ps->origin[2] + 1)) {
 		if (1 > (sqrt(pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1])))//No xyvel
 			pm->ps->velocity[2] = -vel; //OVERBOUNCE OVER BOUNCE
 	}
