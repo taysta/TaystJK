@@ -933,7 +933,7 @@ static void CG_Amcolor_f(void)
 //JAPRO - Clientside - Amcolor - End
 
 void CG_ZoomDown_f( void ) {
-	if (cg.predictedPlayerState.weapon == WP_DISRUPTOR) { //Maybe also conditional this to see if they have singlefire bound (?)  If they are using regular jka behaviour they may still want to use +zoom with disruptor
+	if ((cg.predictedPlayerState.weapon == WP_DISRUPTOR) && (cg.singlefireAlt == qtrue)) { //Maybe also conditional this to see if they have singlefire bound (?)  If they are using regular jka behaviour they may still want to use +zoom with disruptor
 		trap->SendConsoleCommand("+altattack\n");
 	}
 	else {
@@ -947,7 +947,7 @@ void CG_ZoomDown_f( void ) {
 
 void CG_ZoomUp_f( void ) {
 
-	if (cg.predictedPlayerState.weapon == WP_DISRUPTOR) { //Maybe also conditional this to see if they have singlefire bound (?)
+	if ((cg.predictedPlayerState.weapon == WP_DISRUPTOR) && (cg.singlefireAlt == qtrue)) { //Maybe also conditional this to see if they have singlefire bound (?)
 		trap->SendConsoleCommand("-altattack\n");
 	}
 	else {
