@@ -1081,6 +1081,7 @@ void CG_LastWeapon_f(void) //loda fixme. japro
 	}
 
 	cg.weaponSelect = cg.lastWeaponSelect[1]; //Set selected to last
+	CG_SetFireMode(cg.weaponSelect);
 
 	if (cg.weaponSelect != cg.lastWeaponSelect[1])
 		trap->S_MuteSound(cg.predictedPlayerState.clientNum, CHAN_WEAPON);

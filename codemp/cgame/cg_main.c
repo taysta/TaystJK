@@ -3122,6 +3122,7 @@ Ghoul2 Insert End
 	cg.renderingThirdPerson = cg_thirdPerson.integer;
 
 	cg.weaponSelect = WP_BRYAR_PISTOL;
+	CG_SetFireMode(cg.weaponSelect);
 
 	cgs.redflag = cgs.blueflag = -1; // For compatibily, default to unset for
 	cgs.flagStatus = -1;

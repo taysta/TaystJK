@@ -1583,7 +1583,7 @@ void CG_NextWeapon_f( void ) {
 		if ( cg.weaponSelect == WP_NUM_WEAPONS ) {
 			cg.weaponSelect = 0;
 		}
-	//	if ( cg.weaponSelect == WP_STUN_BATON ) {
+		//	if ( cg.weaponSelect == WP_STUN_BATON ) {
 	//		continue;		// never cycle to gauntlet
 	//	}
 		if ( CG_WeaponSelectable( cg.weaponSelect ) ) {
@@ -1597,6 +1597,7 @@ void CG_NextWeapon_f( void ) {
 	{
 		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 	}
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -1664,6 +1665,7 @@ void CG_PrevWeapon_f( void ) {
 	{
 		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 	}
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -1820,6 +1822,7 @@ void CG_Weapon_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -1950,8 +1953,16 @@ void CG_WeaponClean_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
+void CG_SetFireMode( int weaponNum ) {
+	if ((weaponNum == WP_BOWCASTER) || (weaponNum == WP_FLECHETTE)) {
+		cg.singlefireAlt = qtrue;
+	} else {
+		cg.singlefireAlt = qfalse;
+	}
+}
 
 //Version of the above which uses available weapons and fills them into slots
 void CG_WeaponSlot_f( void ) {
@@ -2009,6 +2020,7 @@ void CG_WeaponSlot_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -2058,10 +2070,11 @@ void CG_NextWeaponSlot_f(void) {
         int weapon = weaponCycleOrder[i];
         if (CG_WeaponSelectable(weapon)) {
             cg.weaponSelect = weapon;
-            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
             break;
         }
     }
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -2100,11 +2113,13 @@ void CG_PrevWeaponSlot_f(void) {
     for (int i = prevSlot; i != currentSlot; i = (i - 1 + arraySize) % arraySize) {
         int weapon = weaponCycleOrder[i];
         if (CG_WeaponSelectable(weapon)) {
-            cg.weaponSelect = weapon;
-            trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+				cg.weaponSelect = weapon;
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
             break;
         }
     }
+	CG_SetFireMode(cg.weaponSelect);
+
 }
 
 
@@ -2140,8 +2155,8 @@ void CG_OutOfAmmoChange( int oldWeapon )
 			}
 		}
 	}
-
 	trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 

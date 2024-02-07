@@ -615,6 +615,7 @@ static void CG_ItemPickup( int itemNum ) {
 					cg.weaponSelectTime = cg.time;
 				}
 				cg.weaponSelect = bg_itemlist[itemNum].giTag;
+				CG_SetFireMode(cg.weaponSelect);
 			}
 		}
 		else if ( cg_autoSwitch.integer == 2)
@@ -627,6 +628,7 @@ static void CG_ItemPickup( int itemNum ) {
 					cg.weaponSelectTime = cg.time;
 				}
 				cg.weaponSelect = bg_itemlist[itemNum].giTag;
+				CG_SetFireMode(cg.weaponSelect);
 			}
 		}
 		/*
@@ -640,6 +642,7 @@ static void CG_ItemPickup( int itemNum ) {
 					cg.weaponSelectTime = cg.time;
 				}
 				cg.weaponSelect = bg_itemlist[itemNum].giTag;
+				CG_SetFireMode(cg.weaponSelect);
 			}
 		}
 		*/
