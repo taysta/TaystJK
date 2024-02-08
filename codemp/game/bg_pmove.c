@@ -4036,7 +4036,7 @@ static void PM_AirMove( void ) {
 	// slide along the steep plane
 	if ( pml.groundPlane )
 	{
-		if ( !(pm->ps->pm_flags&PMF_STUCK_TO_WALL) && moveStyle != MV_SURF)
+		if ( !(pm->ps->pm_flags&PMF_STUCK_TO_WALL) )
 		{//don't slide when stuck to a wall
 			if ( PM_GroundSlideOkay( pml.groundTrace.plane.normal[2] ) )
 			{
@@ -5710,7 +5710,8 @@ static void PM_GroundTrace( void ) {
 			Com_Printf("%i:steep\n", c_pmove);
 		}
 		pm->ps->groundEntityNum = ENTITYNUM_NONE;
-		pml.groundPlane = qtrue;
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SURF)
+			pml.groundPlane = qtrue;
 		pml.walking = qfalse;
 		return;
 	}
