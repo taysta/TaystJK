@@ -406,13 +406,18 @@ void CG_DrawWeaponSelectTribes(void) {
 typedef struct {
 	int icon;
 	int cost;
+	qboolean active;
+	qboolean cooldown;
 } tribesPack;
 
 tribesPack CG_TribesPack() {
 	tribesPack packOut;
+	int powerSelected = cg.predictedPlayerState.fd.forcePowerSelected;
 	int iconOut;
 	int costOut;
-	switch(cg.predictedPlayerState.fd.forcePowerSelected){
+	qboolean activeOut = qfalse;
+	qboolean coolDownOut = qfalse;
+	switch(powerSelected){
 		case 2: //shield
 			iconOut = FP_PROTECT;
 			costOut = 40;
@@ -434,8 +439,19 @@ tribesPack CG_TribesPack() {
 			costOut = 100;
 			break;
 	}
+	if ((cg.predictedPlayerState.fd.forcePowersActive & (1 << powerSelected)) &&
+		CG_IsDurationPower(powerSelected))
+	{
+		activeOut = qtrue;
+	}
+	if ((powerSelected == 4) && (cg.predictedPlayerState.fd.forceRageRecoveryTime > cg.time))
+	{
+		coolDownOut = qtrue;
+	}
 	packOut.icon = iconOut;
 	packOut.cost = costOut;
+	packOut.active = activeOut;
+	packOut.cooldown = coolDownOut;
 	return packOut;
 }
 
@@ -463,7 +479,7 @@ void CG_DrawPackTribes(void){
 	iconColor[3] = 0.8f;
 	tribesPack pack = CG_TribesPack();
 
-	if(cg.predictedPlayerState.fd.forcePowersActive & (1 << FP_PROTECT))
+	if(pack.active == qtrue)
 	{
 		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{
@@ -477,7 +493,7 @@ void CG_DrawPackTribes(void){
 			color[2] = 0.0f;
 			color[3] = 0.6f;
 		}
-	} else if (cg.predictedPlayerState.fd.forcePower < pack.cost)
+	} else if ((cg.predictedPlayerState.fd.forcePower < pack.cost) || (pack.cooldown == qtrue))
 	{
 		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{

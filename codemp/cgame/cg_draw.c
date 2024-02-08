@@ -8276,7 +8276,7 @@ static void CG_DrawHolocronIcons(void)
 	}
 }
 
-static qboolean CG_IsDurationPower(int power)
+qboolean CG_IsDurationPower(int power)
 {
 	if (power == FP_HEAL ||
 		power == FP_SPEED ||

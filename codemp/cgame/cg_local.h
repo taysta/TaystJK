@@ -2434,7 +2434,7 @@ void CG_Text_PaintChar(float x, float y, float width, float height, float scale,
 qboolean CG_YourTeamHasFlag(void);
 qboolean CG_OtherTeamHasFlag(void);
 qhandle_t CG_StatusHandle(int task);
-
+qboolean CG_IsDurationPower(int power);
 
 
 //
