@@ -4036,7 +4036,7 @@ static void PM_AirMove( void ) {
 	// slide along the steep plane
 	if ( pml.groundPlane )
 	{
-		if ( !(pm->ps->pm_flags&PMF_STUCK_TO_WALL) )
+		if ( !(pm->ps->pm_flags&PMF_STUCK_TO_WALL) && moveStyle != MV_SURF)
 		{//don't slide when stuck to a wall
 			if ( PM_GroundSlideOkay( pml.groundTrace.plane.normal[2] ) )
 			{
