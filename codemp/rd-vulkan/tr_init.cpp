@@ -178,6 +178,7 @@ cvar_t	*r_marksOnTriangleMeshes;
 
 cvar_t	*r_aspectCorrectFonts;
 cvar_t	*cl_ratioFix;
+cvar_t	*r_patchStitching;
 
 // Vulkan
 cvar_t	*r_defaultImage;
@@ -771,8 +772,9 @@ R_Register
 */
 void R_Register( void )
 {
+	r_patchStitching 					= ri.Cvar_Get("r_patchStitching", 					"1", 						CVAR_ARCHIVE, "Enable stitching of neighbouring patch surfaces" );
 	//FIXME: lol badness
-	se_language = ri.Cvar_Get("se_language", "english", CVAR_ARCHIVE | CVAR_NORESTART, "");
+	se_language 						= ri.Cvar_Get("se_language", 						"english", 					CVAR_ARCHIVE | CVAR_NORESTART, "");
 	//
 	// latched and archived variables
 	//
