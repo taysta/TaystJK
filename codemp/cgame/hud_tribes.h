@@ -360,6 +360,18 @@ void CG_TribesIFF(centity_t* cent, qhandle_t shader, float size);
 
 void CG_DrawHudTribes(void);
 
+typedef struct {
+	int 		icon;
+	int 		cost;
+	qboolean 	isActive;
+	qboolean 	isOnCooldown;
+	int 		power;
+} tribesPack;
+
+#define PACK_SHIELD 	2
+#define PACK_THRUST 	3
+#define PACK_BLINK 		4
+#define PACK_OVERDRIVE 	5
 
 #define CYCLE_FIRST_WEAPON 1
 #define CYCLE_LAST_USEABLE_WEAPON WP_NUM_WEAPONS

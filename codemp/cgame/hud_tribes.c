@@ -403,39 +403,53 @@ void CG_DrawWeaponSelectTribes(void) {
 	}
 }
 
-typedef struct {
-	int icon;
-	int cost;
-} tribesPack;
-
 tribesPack CG_TribesPack() {
 	tribesPack packOut;
+	int powerSelected = cg.predictedPlayerState.fd.forcePowerSelected;
 	int iconOut;
 	int costOut;
-	switch(cg.predictedPlayerState.fd.forcePowerSelected){
-		case 2: //shield
+	int powerOut;
+	qboolean isActiveOut = qfalse; 	//isActive
+	qboolean isOnCooldownOut = qfalse; 	//isOnCooldown
+	switch(powerSelected){
+		default:
+		case PACK_SHIELD:
+			powerOut = FP_PROTECT;
 			iconOut = FP_PROTECT;
 			costOut = 40;
 			break;
-		case 3: //thrust
+		case PACK_THRUST:
+			powerOut = FP_SPEED;
 			iconOut = FP_SPEED;
-			costOut = 10;
+			costOut = 0;
 			break;
-		case 4: //blink
+		case PACK_BLINK:
+			powerOut = FP_RAGE;
 			iconOut = FP_PUSH;
 			costOut = 25;
 			break;
-		case 5: //overdrive
+		case PACK_OVERDRIVE:
+			powerOut = FP_ABSORB;
 			iconOut = FP_RAGE;
 			costOut = 25;
 			break;
-		default:
-			iconOut = 0;
-			costOut = 100;
-			break;
 	}
+
+	if ((cg.predictedPlayerState.fd.forcePowersActive & (1 << powerOut)) && CG_IsDurationPower(powerOut))
+	{
+		isActiveOut = qtrue;
+	}
+
+	if ((powerOut == FP_RAGE) && (isActiveOut == qfalse) && (cg.predictedPlayerState.fd.forceRageRecoveryTime > cg.time))
+	{
+		isOnCooldownOut = qtrue;
+	}
+
+	packOut.power = powerOut;
 	packOut.icon = iconOut;
 	packOut.cost = costOut;
+	packOut.isActive = isActiveOut;
+	packOut.isOnCooldown = isOnCooldownOut;
 	return packOut;
 }
 
@@ -463,7 +477,7 @@ void CG_DrawPackTribes(void){
 	iconColor[3] = 0.8f;
 	tribesPack pack = CG_TribesPack();
 
-	if(cg.predictedPlayerState.fd.forcePowersActive & (1 << FP_PROTECT))
+	if(pack.isActive == qtrue)
 	{
 		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{
@@ -477,7 +491,7 @@ void CG_DrawPackTribes(void){
 			color[2] = 0.0f;
 			color[3] = 0.6f;
 		}
-	} else if (cg.predictedPlayerState.fd.forcePower < pack.cost)
+	} else if ((cg.predictedPlayerState.fd.forcePower < pack.cost) || (pack.isOnCooldown == qtrue))
 	{
 		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{
