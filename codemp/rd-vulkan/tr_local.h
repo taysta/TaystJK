@@ -661,6 +661,7 @@ extern hitMatReg_t		hitMatReg[MAX_HITMAT_ENTRIES];
 Ghoul2 Insert End
 */
 
+extern cvar_t	*r_patchStitching;
 
 // trRefdef_t holds everything that comes in refdef_t,
 // as well as the locally generated scene information
@@ -1907,7 +1908,6 @@ CURVE TESSELATION
 
 ============================================================
 */
-#define PATCH_STITCHING
 
 srfGridMesh_t	*R_SubdividePatchToGrid( int width, int height, drawVert_t points[MAX_PATCH_SIZE * MAX_PATCH_SIZE] );
 srfGridMesh_t	*R_GridInsertColumn( srfGridMesh_t *grid, int column, int row, vec3_t point, float loderror );

@@ -276,6 +276,8 @@ cvar_t *r_debugWeather;
 cvar_t	*r_aspectCorrectFonts;
 cvar_t	*cl_ratioFix;
 
+cvar_t	*r_patchStitching;
+
 extern void	RB_SetGL2D (void);
 static void R_Splash()
 {
@@ -630,8 +632,8 @@ we use statics to store a count and start writing the first screenshot/screensho
 (with FS_FileExists / FS_FOpenFileWrite calls)
 FIXME: the statics don't get a reinit between fs_game changes
 
-============================================================================== 
-*/ 
+==============================================================================
+*/
 
 /*
 ==================
@@ -688,10 +690,10 @@ static void ConvertRGBtoBGR(
 			*dst++ = pixelRGB[2];
 			*dst++ = pixelRGB[1];
 			*dst++ = temp;
-			
+
 			pixelRGB += 3;
 		}
-		
+
 		row += stride;
 	}
 }
@@ -724,11 +726,11 @@ static void R_SaveTGA(
 	ri.Hunk_FreeTempMemory(buffer);
 }
 
-/* 
-================== 
+/*
+==================
 R_SaveScreenshotTGA
-================== 
-*/  
+==================
+*/
 static void R_SaveScreenshotTGA(
 	const screenshotReadback_t *screenshotReadback, byte *pixels)
 {
@@ -741,9 +743,9 @@ static void R_SaveScreenshotTGA(
 }
 
 /*
-================== 
+==================
 R_SaveScreenshotPNG
-================== 
+==================
 */
 static void R_SaveScreenshotPNG(
 	const screenshotReadback_t *screenshotReadback, byte *pixels)
@@ -828,7 +830,7 @@ R_TakeScreenshotCmd
 */
 const void *RB_TakeScreenshotCmd( const void *data ) {
 	const screenshotCommand_t *cmd;
-	
+
 	cmd = (const screenshotCommand_t *)data;
 
 	// finish any 2D drawing if needed
@@ -838,13 +840,13 @@ const void *RB_TakeScreenshotCmd( const void *data ) {
 	const int frameNumber = backEndData->realFrameNumber;
 	gpuFrame_t *thisFrame = &backEndData->frames[frameNumber % MAX_FRAMES];
 	screenshotReadback_t *screenshot = &thisFrame->screenshotReadback;
-	
+
 	GLint packAlign;
 	qglGetIntegerv(GL_PACK_ALIGNMENT, &packAlign);
-	
+
 	const int linelen = cmd->width * 3;
 	const int strideInBytes = PAD(linelen, packAlign);
-	
+
 	qglGenBuffers(1, &screenshot->pbo);
 	qglBindBuffer(GL_PIXEL_PACK_BUFFER, screenshot->pbo);
 	qglBufferData(
@@ -862,8 +864,8 @@ const void *RB_TakeScreenshotCmd( const void *data ) {
 	screenshot->format = cmd->format;
 	Q_strncpyz(
 		screenshot->filename, cmd->fileName, sizeof(screenshot->filename));
-	
-	return (const void *)(cmd + 1);	
+
+	return (const void *)(cmd + 1);
 }
 
 /*
@@ -890,11 +892,11 @@ void R_TakeScreenshot( int x, int y, int width, int height, char *name, screensh
 	cmd->format = format;
 }
 
-/* 
-================== 
+/*
+==================
 R_ScreenshotFilename
-================== 
-*/  
+==================
+*/
 void R_ScreenshotFilename( char *buf, int bufSize, const char *ext ) {
 	time_t rawtime;
 	char timeStr[32] = {0}; // should really only reach ~19 chars
@@ -974,8 +976,8 @@ static void R_LevelShot( void ) {
 	ri.Printf( PRINT_ALL, "Wrote %s\n", checkname );
 }
 
-/* 
-================== 
+/*
+==================
 R_ScreenShotTGA_f
 
 screenshot
@@ -984,8 +986,8 @@ screenshot [levelshot]
 screenshot [filename]
 
 Doesn't print the pacifier message if there is a second arg
-================== 
-*/  
+==================
+*/
 void R_ScreenShotTGA_f (void) {
 	char checkname[MAX_OSPATH] = {0};
 	qboolean silent = qfalse;
@@ -1007,7 +1009,7 @@ void R_ScreenShotTGA_f (void) {
 		R_ScreenshotFilename( checkname, sizeof( checkname ), ".tga" );
 
 		if ( ri.FS_FileExists( checkname ) ) {
-			Com_Printf( "ScreenShot: Couldn't create a file\n"); 
+			Com_Printf( "ScreenShot: Couldn't create a file\n");
 			return;
  		}
 	}
@@ -1039,7 +1041,7 @@ void R_ScreenShotPNG_f (void) {
 		R_ScreenshotFilename( checkname, sizeof( checkname ), ".png" );
 
 		if ( ri.FS_FileExists( checkname ) ) {
-			Com_Printf( "ScreenShot: Couldn't create a file\n"); 
+			Com_Printf( "ScreenShot: Couldn't create a file\n");
 			return;
  		}
 	}
@@ -1071,7 +1073,7 @@ void R_ScreenShotJPEG_f (void) {
 		R_ScreenshotFilename( checkname, sizeof( checkname ), ".jpg" );
 
 		if ( ri.FS_FileExists( checkname ) ) {
-			Com_Printf( "ScreenShot: Couldn't create a file\n"); 
+			Com_Printf( "ScreenShot: Couldn't create a file\n");
 			return;
  		}
 	}
@@ -1102,7 +1104,7 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 		RB_EndSurface();
 
 	cmd = (const videoFrameCommand_t *)data;
-	
+
 	qglGetIntegerv(GL_PACK_ALIGNMENT, &packAlign);
 
 	linelen = cmd->width * 3;
@@ -1115,7 +1117,7 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 	avipadlen = avipadwidth - linelen;
 
 	cBuf = (byte*)(PADP(cmd->captureBuffer, packAlign));
-		
+
 	qglReadPixels(0, 0, cmd->width, cmd->height, GL_RGB,
 		GL_UNSIGNED_BYTE, cBuf);
 
@@ -1136,11 +1138,11 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 	{
 		byte *lineend, *memend;
 		byte *srcptr, *destptr;
-	
+
 		srcptr = cBuf;
 		destptr = cmd->encodeBuffer;
 		memend = srcptr + memcount;
-		
+
 		// swap R and B and remove line paddings
 		while(srcptr < memend)
 		{
@@ -1152,17 +1154,17 @@ const void *RB_TakeVideoFrameCmd( const void *data )
 				*destptr++ = srcptr[0];
 				srcptr += 3;
 			}
-			
+
 			Com_Memset(destptr, '\0', avipadlen);
 			destptr += avipadlen;
-			
+
 			srcptr += padlen;
 		}
-		
+
 		ri.CL_WriteAVIVideoFrame(cmd->encodeBuffer, avipadwidth * cmd->height);
 	}
 
-	return (const void *)(cmd + 1);	
+	return (const void *)(cmd + 1);
 }
 
 //============================================================================
@@ -1246,7 +1248,7 @@ void R_PrintLongString(const char *string) {
 GfxInfo_f
 ================
 */
-static void GfxInfo_f( void ) 
+static void GfxInfo_f( void )
 {
 	const char *enablestrings[] =
 	{
@@ -1322,7 +1324,7 @@ static void GfxInfo_f( void )
 GfxMemInfo_f
 ================
 */
-void GfxMemInfo_f( void ) 
+void GfxMemInfo_f( void )
 {
 	switch (glRefConfig.memInfo)
 	{
@@ -1452,7 +1454,7 @@ static const size_t numCommands = ARRAY_LEN( commands );
 R_Register
 ===============
 */
-void R_Register( void ) 
+void R_Register( void )
 {
 	//
 	// latched and archived variables
@@ -1534,7 +1536,7 @@ void R_Register( void )
 	r_baseNormalX = ri.Cvar_Get( "r_baseNormalX", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_baseNormalY = ri.Cvar_Get( "r_baseNormalY", "1.0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_baseParallax = ri.Cvar_Get( "r_baseParallax", "0.05", CVAR_ARCHIVE | CVAR_LATCH, "" );
-   	r_baseSpecular = ri.Cvar_Get( "r_baseSpecular", "0.04", CVAR_ARCHIVE | CVAR_LATCH, "" ); 
+   	r_baseSpecular = ri.Cvar_Get( "r_baseSpecular", "0.04", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_dlightMode = ri.Cvar_Get( "r_dlightMode", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_pshadowDist = ri.Cvar_Get( "r_pshadowDist", "128", CVAR_ARCHIVE, "" );
 	r_imageUpsample = ri.Cvar_Get( "r_imageUpsample", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
@@ -1680,6 +1682,8 @@ Ghoul2 Insert Start
 /*
 Ghoul2 Insert End
 */
+
+	r_patchStitching = ri.Cvar_Get("r_patchStitching", "1", CVAR_ARCHIVE, "Enable stitching of neighbouring patch surfaces" );
 
 	se_language = ri.Cvar_Get ( "se_language", "english", CVAR_ARCHIVE | CVAR_NORESTART, "" );
 
@@ -1943,14 +1947,14 @@ R_Init
 void R_Init( void ) {
 	byte *ptr;
 	int i;
-	
+
 	ri.Printf( PRINT_ALL, "----- R_Init -----\n" );
 
 	// clear all our internal state
 	Com_Memset( &tr, 0, sizeof( tr ) );
 	Com_Memset( &backEnd, 0, sizeof( backEnd ) );
 	Com_Memset( &tess, 0, sizeof( tess ) );
-	
+
 
 	//
 	// init function tables
@@ -2242,7 +2246,7 @@ Q_EXPORT refexport_t* QDECL GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	Com_Memset( &re, 0, sizeof( re ) );
 
 	if ( apiVersion != REF_API_VERSION ) {
-		ri.Printf(PRINT_ALL, "Mismatched REF_API_VERSION: expected %i, got %i\n", 
+		ri.Printf(PRINT_ALL, "Mismatched REF_API_VERSION: expected %i, got %i\n",
 			REF_API_VERSION, apiVersion );
 		return NULL;
 	}
