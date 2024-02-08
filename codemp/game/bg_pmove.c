@@ -3982,7 +3982,7 @@ static void PM_AirMove( void ) {
 	} else if (moveStyle == MV_TRIBES) {
 		PM_AirAccelerateTribes(wishdir, wishspeed);//pm_qw_airaccel
 	} else if (moveStyle == MV_SURF) {
-		PM_CS_AirAccelerate(wishdir, wishspeed, 10.0f);
+		PM_CS_AirAccelerate(wishdir, wishspeed, 100.0f);
 	}
 	else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
 	{
