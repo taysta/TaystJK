@@ -3402,8 +3402,6 @@ qboolean CanGrapple( gentity_t *ent ) {
 		return qfalse;
 	if (ent->client->ps.duelInProgress)
 		return qfalse;
-	if (!BG_SaberInIdle(ent->client->ps.saberMove))
-		return qfalse;
 	if (BG_InRoll(&ent->client->ps, ent->client->ps.legsAnim))
 		return qfalse;
 	if (BG_InSpecialJump(ent->client->ps.legsAnim))
@@ -4748,7 +4746,7 @@ void ClientThink_real( gentity_t *ent ) {
 
 		// sanity check, deals with falling etc;
 	if ( ent->client->hook && ent->client->hook->think == Weapon_HookThink && CanGrapple(ent)) {
-			ent->client->ps.pm_flags |= PMF_GRAPPLE;
+		ent->client->ps.pm_flags |= PMF_GRAPPLE;
 	} else {
 		//Com_Printf("Unsetting grapple pmf\n");
 		ent->client->ps.pm_flags &= ~( PMF_GRAPPLE );
