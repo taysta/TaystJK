@@ -932,20 +932,57 @@ static void CG_Amcolor_f(void)
 }
 //JAPRO - Clientside - Amcolor - End
 
-static void CG_ZoomDown_f( void ) { 
-	if ( cg.zoomed ) {
-		return;
+void CG_ZoomDown_f( void ) {
+	if ((cg.predictedPlayerState.weapon == WP_DISRUPTOR) && (cg.singlefireAlt == qtrue)) { //Maybe also conditional this to see if they have singlefire bound (?)  If they are using regular jka behaviour they may still want to use +zoom with disruptor
+		trap->SendConsoleCommand("+altattack\n");
 	}
-	cg.zoomed = qtrue;
-	cg.zoomTime = cg.time;
+	else {
+		if (cg.zoomed) {
+			return;
+		}
+		cg.zoomed = qtrue;
+		cg.zoomTime = cg.time;
+	}
 }
 
-static void CG_ZoomUp_f( void ) { 
-	if ( !cg.zoomed ) {
-		return;
+void CG_ZoomUp_f( void ) {
+
+	if ((cg.predictedPlayerState.weapon == WP_DISRUPTOR) && (cg.singlefireAlt == qtrue)) { //Maybe also conditional this to see if they have singlefire bound (?)
+		trap->SendConsoleCommand("-altattack\n");
 	}
-	cg.zoomed = qfalse;
-	cg.zoomTime = cg.time;
+	else {
+		if (!cg.zoomed) {
+			return;
+		}
+		cg.zoomed = qfalse;
+		cg.zoomTime = cg.time;
+	}
+}
+
+void CG_ToggleSingleFire_f(void) {
+	if (cg.predictedPlayerState.eFlags & EF_ALT_FIRING) { //Redirect the attack if its being held
+		trap->SendConsoleCommand("-altattack;+attack\n");
+	}
+	else if (cg.predictedPlayerState.eFlags & EF_FIRING) {
+		trap->SendConsoleCommand("-attack;+altattack\n");
+	}
+	cg.singlefireAlt = !cg.singlefireAlt;
+}
+
+void CG_SingleFireDown_f(void) {
+	if (!cg.singlefireAlt || cg.predictedPlayerState.weapon == WP_DISRUPTOR || cg.predictedPlayerState.stats[STAT_HEALTH] <= 0)
+		trap->SendConsoleCommand("+attack\n");
+	else
+		trap->SendConsoleCommand("+altattack\n");
+
+	//Todo - fix the weird behaviour where if you are zoomed and you switch to disruptor, you are still zoomed and you stay zoomed until pressing these keys
+	//Elsewhere we have to set cg.zoomed = qfalse whenever we detect we are using the disruptor ?
+}
+
+void CG_SingleFireUp_f(void) {
+	//just depress both?
+	trap->SendConsoleCommand("-attack\n");
+	trap->SendConsoleCommand("-altattack\n");
 }
 
 static void CG_Flipkick_f(void)
@@ -1377,7 +1414,8 @@ static bitInfo_T playerStyles[] = { // MAX_WEAPON_TWEAKS tweaks (24)
 	{ "Old JA+ style grapple line" },//18
     { "New FFA respawn bubble" }, //19
 	{ "Seasonal Cosmetics" }, //20
-	{ "Alternate Standing Animation" } //21
+	{ "Alternate Standing Animation" }, //21
+	{ "Tribes Clientside (Requires assets)" } //22
 };
 static const int MAX_PLAYERSTYLES = ARRAY_LEN(playerStyles);
 
@@ -2421,6 +2459,12 @@ static consoleCommand_t	commands[] = {
 	{ "viewpos",					CG_Viewpos_f },
 	{ "weapnext",					CG_NextWeapon_f },
 	{ "weapon",						CG_Weapon_f },
+	{ "selectfiremode",				CG_ToggleSingleFire_f },
+	{ "+singlefire",				CG_SingleFireDown_f },
+	{ "-singlefire",				CG_SingleFireUp_f },
+	{ "slot",						CG_WeaponSlot_f },
+	{ "slotnext",					CG_PrevWeaponSlot_f },
+	{ "slotprev",					CG_NextWeaponSlot_f },
 	{ "weaponclean",				CG_WeaponClean_f },
 	{ "weapprev",					CG_PrevWeapon_f },
 	{ "showPlayerId",				CG_ClientList_f },

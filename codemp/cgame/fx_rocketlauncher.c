@@ -40,7 +40,7 @@ void FX_RocketProjectileThink( centity_t *cent, const struct weaponInfo_s *weapo
 	}
 
 	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-		trap->FX_PlayEffectID(cgs.effects.mBlasterSmoke, cent->lerpOrigin, forward, -1, -1, qfalse);
+		trap->FX_PlayEffectID(cgs.effects.mBlackSmoke, cent->lerpOrigin, forward, -1, -1, qfalse); //mBlasterSmoke
 	else
 		trap->FX_PlayEffectID( cgs.effects.rocketShotEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
 }

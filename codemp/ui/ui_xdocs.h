@@ -283,6 +283,9 @@ XDOCS_CVAR_DEF("cg_drawVote", "Displays votecalls in the upper left",
 	SETTING("1", "Callvotes are shown")
 )
 
+XDOCS_CVAR_DEF("cl_jk2FX", "Displays jk2 style fx",""
+)
+
 //Strafehelper
 
 
