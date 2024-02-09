@@ -79,7 +79,7 @@ if(WIN32)
 						DESTINATION ${JKAInstallDir}
 						COMPONENT ${JKAMPClientComponent})
 			else()
-				install(FILES ${MPDir}/OpenAL32.x86_64.dll ${MPDir}/EaxMan.dll
+				install(FILES ${MPDir}/OpenAL32.x86_64.dll
 						DESTINATION ${JKAInstallDir}
 						COMPONENT ${JKAMPClientComponent})
 			endif()

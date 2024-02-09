@@ -5383,7 +5383,11 @@ void InitEAXManager()
 	// If we have detected EAX support, then try and load the EAX Manager DLL
 	if (s_bEAX)
 	{
+#ifdef _WIN64
+		s_hEAXManInst = LoadLibrary("EAXMan64.dll");
+#else
 		s_hEAXManInst = LoadLibrary("EAXMan.dll");
+#endif
 		if (s_hEAXManInst)
 		{
 			lpEAXManagerCreateFn = (LPEAXMANAGERCREATE)GetProcAddress(s_hEAXManInst, "EaxManagerCreate");
