@@ -1980,331 +1980,338 @@ void CG_DrawHUD(centity_t	*cent)
 	if (cg_drawTrajectory.integer)
 		CG_DrawTrajectoryLine();
 
-	if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-		CG_DrawHudTribes();
-
-	if (!cg_drawHud.integer)
-		return;
-
-	if (cg_drawScore.integer && !(cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))) {  // JAPRO - Clientside - Add cvar to show player score on HUD.
-		//scoreStr = va("Score: %i", cgs.clientinfo[cg.snap->ps.clientNum].score);
-		if (cgs.gametype == GT_DUEL && cgs.fraglimit > 0)
-		{//A duel that requires more than one kill to knock the current enemy back to the queue
-			//show current kills out of how many needed
-			if (cgs.fraglimit > 1) //show how many kills u need for round win
-				scoreStr = va("%s: %i/%i", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], cgs.fraglimit);
-			else //show round win/loss
-				scoreStr = va("%i/%i", cgs.clientinfo[cg.snap->ps.clientNum].wins, cgs.clientinfo[cg.snap->ps.clientNum].losses);
-		}
-		else if (0 && cgs.gametype < GT_TEAM)
-		{	// This is a teamless mode, draw the score bias.
-			scoreBias = cg.snap->ps.persistant[PERS_SCORE] - cgs.scores1;
-			if (scoreBias == 0)
-			{	// We are the leader!
-				if (cgs.scores2 <= 0)
-				{	// Nobody to be ahead of yet.
-					Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), "");
+	if(cg_drawHud.integer){
+		if(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+		{
+			cg.tribesHUD = qtrue;
+			CG_DrawHudTribes();
+		} else {
+			cg.tribesHUD = qfalse;
+			if (cg_drawScore.integer && !(cgs.gametype == GT_POWERDUEL || (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]))) {  // JAPRO - Clientside - Add cvar to show player score on HUD.
+				//scoreStr = va("Score: %i", cgs.clientinfo[cg.snap->ps.clientNum].score);
+				if (cgs.gametype == GT_DUEL && cgs.fraglimit > 0)
+				{//A duel that requires more than one kill to knock the current enemy back to the queue
+					//show current kills out of how many needed
+					if (cgs.fraglimit > 1) //show how many kills u need for round win
+						scoreStr = va("%s: %i/%i", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], cgs.fraglimit);
+					else //show round win/loss
+						scoreStr = va("%i/%i", cgs.clientinfo[cg.snap->ps.clientNum].wins, cgs.clientinfo[cg.snap->ps.clientNum].losses);
+				}
+				else if (0 && cgs.gametype < GT_TEAM)
+				{	// This is a teamless mode, draw the score bias.
+					scoreBias = cg.snap->ps.persistant[PERS_SCORE] - cgs.scores1;
+					if (scoreBias == 0)
+					{	// We are the leader!
+						if (cgs.scores2 <= 0)
+						{	// Nobody to be ahead of yet.
+							Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), "");
+						}
+						else
+						{
+							scoreBias = cg.snap->ps.persistant[PERS_SCORE] - cgs.scores2;
+							if (scoreBias == 0)
+							{
+								Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (Tie)");
+							}
+							else
+							{
+								Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (+%d)", scoreBias);
+							}
+						}
+					}
+					else // if (scoreBias < 0)
+					{	// We are behind!
+						Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (%d)", scoreBias);
+					}
+					scoreStr = va("%s: %i%s", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr);
 				}
 				else
+				{	// Don't draw a bias.
+					if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
+						int teamscore;
+						int teamscorebias;
+						char teamscoreStr[16];
+
+						if (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_RED) {
+							teamscore = cgs.scores1;
+							teamscorebias = cgs.scores1 - cgs.scores2;
+						}
+						else {
+							teamscore = cgs.scores2;
+							teamscorebias = cgs.scores2 - cgs.scores1;
+						}
+
+						if (teamscorebias > 0)
+							Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i (%+i)", teamscore, teamscorebias);
+						else if (teamscorebias < 0)
+							Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i  (%i)", teamscore, teamscorebias);
+						else
+							Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i      ", teamscore);
+
+						scoreStr = va("%s: %i\nTeam: %s", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], teamscoreStr);
+					}
+					else
+						scoreStr = va("%s: %i", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]);
+				}
+			}
+			else {
+				scoreStr = "";
+			}
+
+			if (cg.predictedPlayerState.pm_type != PM_SPECTATOR)
+			{
+				if (cg_hudFiles.integer == 1)
 				{
-					scoreBias = cg.snap->ps.persistant[PERS_SCORE] - cgs.scores2;
-					if (scoreBias == 0)
+					int x = 0;
+					int y = SCREEN_HEIGHT - 80;
+
+					//JAPRO - Clientside - Gradient simple hud coloring - Start
+					if (cg_hudColors.integer)
 					{
-						Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (Tie)");
+						vec4_t colorHealth = { .835f,	.015f,  .015f,  1 };
+						vec4_t colorArmor = { 0,	.613f,  .097f,  1 };
+
+						if (cg.snap->ps.stats[STAT_HEALTH] < 100)
+						{
+							colorHealth[1] = 0.215 - (cg.snap->ps.stats[STAT_HEALTH] * 0.002);
+							colorHealth[2] = 0.215 - (cg.snap->ps.stats[STAT_HEALTH] * 0.002);
+						}
+
+						if (cg.snap->ps.stats[STAT_ARMOR] < 100)
+						{
+							colorArmor[0] = 0.2 - (cg.snap->ps.stats[STAT_ARMOR] * 0.002);
+							colorArmor[2] = 0.297 - (cg.snap->ps.stats[STAT_ARMOR] * 0.002);
+						}
+
+						CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorHealth);
+						CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorArmor);
+
 					}
 					else
 					{
-						Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (+%d)", scoreBias);
+						CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_RED]);
+						CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_GREEN]);
 					}
-				}
-			}
-			else // if (scoreBias < 0)
-			{	// We are behind!
-				Com_sprintf(scoreBiasStr, sizeof(scoreBiasStr), " (%d)", scoreBias);
-			}
-			scoreStr = va("%s: %i%s", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], scoreBiasStr);
-		}
-		else
-		{	// Don't draw a bias.
-			if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
-				int teamscore;
-				int teamscorebias;
-				char teamscoreStr[16];
+					//JAPRO - Clientside - Gradient simple hud coloring - End
 
-				if (cgs.clientinfo[cg.snap->ps.clientNum].team == TEAM_RED) {
-					teamscore = cgs.scores1;
-					teamscorebias = cgs.scores1 - cgs.scores2;
+					CG_DrawSimpleForcePower(cent);
+
+					if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
+						CG_DrawScaledProportionalString(SCREEN_WIDTH - 112 * cgs.widthRatioCoef, SCREEN_HEIGHT - 34, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
+					else
+						CG_DrawScaledProportionalString(SCREEN_WIDTH - 100 * cgs.widthRatioCoef, SCREEN_HEIGHT - 20, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
+
+					if (cent->currentState.weapon == WP_SABER)
+						CG_DrawSimpleSaberStyle(cent);
+					else
+						CG_DrawSimpleAmmo(cent);
+					return;
+				}
+
+				if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
+				{	// tint the hud items based on team (JAPRO - Clientside - Tint hud in team gamemode toggle)
+					if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED && cg_tintHud.integer && cg_hudFiles.integer != 3)
+						hudTintColor = redhudtint;
+					else if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_BLUE && cg_tintHud.integer && cg_hudFiles.integer != 3)
+						hudTintColor = bluehudtint;
+					else // If we're not on a team for whatever reason, leave things as they are.
+						hudTintColor = colorTable[CT_WHITE];
+				}
+				else
+				{	// tint the hud items white (dont' tint)
+					hudTintColor = colorTable[CT_WHITE];
+				}
+
+				// Draw the left HUD
+				menuHUD = Menus_FindByName("lefthud");
+				Menu_Paint( menuHUD, qtrue );
+
+				if (cg_hudFiles.integer == 2) {
+					CG_DrawJK2HUDLeftFrame1(0, SCREEN_HEIGHT - 80);
+					CG_DrawArmorJK2(0, SCREEN_HEIGHT - 80);
+					CG_DrawHealthJK2(0, SCREEN_HEIGHT - 80);
+					CG_DrawJK2HUDLeftFrame2(0, SCREEN_HEIGHT - 80);
 				}
 				else {
-					teamscore = cgs.scores2;
-					teamscorebias = cgs.scores2 - cgs.scores1;
-				}
-
-				if (teamscorebias > 0)
-					Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i (%+i)", teamscore, teamscorebias);
-				else if (teamscorebias < 0)
-					Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i  (%i)", teamscore, teamscorebias);
-				else
-					Com_sprintf(teamscoreStr, sizeof(teamscoreStr), "%i      ", teamscore);
-
-				scoreStr = va("%s: %i\nTeam: %s", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE], teamscoreStr);
-			}
-			else
-				scoreStr = va("%s: %i", CG_GetStringEdString("MP_INGAME", "SCORE"), cg.snap->ps.persistant[PERS_SCORE]);
-		}
-	}
-	else {
-		scoreStr = "";
-	}
-
-	if (cg.predictedPlayerState.pm_type != PM_SPECTATOR)
-	{
-		if (cg_hudFiles.integer == 1)
-		{
-			int x = 0;
-			int y = SCREEN_HEIGHT - 80;
-
-			//JAPRO - Clientside - Gradient simple hud coloring - Start
-			if (cg_hudColors.integer)
-			{
-				vec4_t colorHealth = { .835f,	.015f,  .015f,  1 };
-				vec4_t colorArmor = { 0,	.613f,  .097f,  1 };
-
-				if (cg.snap->ps.stats[STAT_HEALTH] < 100)
-				{
-					colorHealth[1] = 0.215 - (cg.snap->ps.stats[STAT_HEALTH] * 0.002);
-					colorHealth[2] = 0.215 - (cg.snap->ps.stats[STAT_HEALTH] * 0.002);
-				}
-
-				if (cg.snap->ps.stats[STAT_ARMOR] < 100)
-				{
-					colorArmor[0] = 0.2 - (cg.snap->ps.stats[STAT_ARMOR] * 0.002);
-					colorArmor[2] = 0.297 - (cg.snap->ps.stats[STAT_ARMOR] * 0.002);
-				}
-
-				CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorHealth);
-				CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorArmor);
-
-			}
-			else
-			{
-				CG_DrawProportionalString((x + 16)*cgs.widthRatioCoef, y + 40, va("%i", cg.snap->ps.stats[STAT_HEALTH]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_RED]);
-				CG_DrawProportionalString((x + 18 + 14)*cgs.widthRatioCoef, y + 40 + 14, va("%i", cg.snap->ps.stats[STAT_ARMOR]), UI_SMALLFONT | UI_DROPSHADOW, colorTable[CT_HUD_GREEN]);
-			}
-			//JAPRO - Clientside - Gradient simple hud coloring - End
-
-			CG_DrawSimpleForcePower(cent);
-
-			if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
-				CG_DrawScaledProportionalString(SCREEN_WIDTH - 112 * cgs.widthRatioCoef, SCREEN_HEIGHT - 34, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
-			else
-				CG_DrawScaledProportionalString(SCREEN_WIDTH - 100 * cgs.widthRatioCoef, SCREEN_HEIGHT - 20, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
-
-			if (cent->currentState.weapon == WP_SABER)
-				CG_DrawSimpleSaberStyle(cent);
-			else
-				CG_DrawSimpleAmmo(cent);
-			return;
-		}
-
-		if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
-		{	// tint the hud items based on team
-			if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED && cg_tintHud.integer && cg_hudFiles.integer != 3)//JAPRO - Clientside - Tint hud in team gamemode toggle
-				hudTintColor = redhudtint;
-			else if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_BLUE && cg_tintHud.integer && cg_hudFiles.integer != 3)//JAPRO - Clientside - Tint hud in team gamemode toggle
-				hudTintColor = bluehudtint;
-			else // If we're not on a team for whatever reason, leave things as they are.
-				hudTintColor = colorTable[CT_WHITE];
-		}
-		else
-		{	// tint the hud items white (dont' tint)
-			hudTintColor = colorTable[CT_WHITE];
-		}
-
-		// Draw the left HUD
-		menuHUD = Menus_FindByName("lefthud");
-		Menu_Paint( menuHUD, qtrue );
-
-		if (cg_hudFiles.integer == 2) {
-			CG_DrawJK2HUDLeftFrame1(0, SCREEN_HEIGHT - 80);
-			CG_DrawArmorJK2(0, SCREEN_HEIGHT - 80);
-			CG_DrawHealthJK2(0, SCREEN_HEIGHT - 80);
-			CG_DrawJK2HUDLeftFrame2(0, SCREEN_HEIGHT - 80);
-        }
-		else {
-			if (menuHUD)
-			{
-				itemDef_t *focusItem;
-
-				// Print scanline
-				focusItem = Menu_FindItemByName(menuHUD, "scanline");
-				if (focusItem)
-				{
-					trap->R_SetColor(hudTintColor);
-					CG_DrawPic(
-						focusItem->window.rect.x * cgs.widthRatioCoef,
-						focusItem->window.rect.y,
-						focusItem->window.rect.w * cgs.widthRatioCoef,
-						focusItem->window.rect.h,
-						focusItem->window.background
-					);
-				}
-
-				// Print frame
-				focusItem = Menu_FindItemByName(menuHUD, "frame");
-				if (focusItem)
-				{
-					trap->R_SetColor(hudTintColor);
-					CG_DrawPic(
-						focusItem->window.rect.x * cgs.widthRatioCoef,
-						focusItem->window.rect.y,
-						focusItem->window.rect.w * cgs.widthRatioCoef,
-						focusItem->window.rect.h,
-						focusItem->window.background
-					);
-				}
-
-				CG_DrawArmor(menuHUD);
-				CG_DrawHealth(menuHUD);
-			}
-			else
-			{
-				//trap->Error( ERR_DROP, "CG_ChatBox_ArrayInsert: unable to locate HUD menu file ");
-			}
-            if(cg_hudFiles.integer == 4)
-            {
-                focusItem = Menu_FindItemByName(menuHUD, "health_icon");
-                if (focusItem) {
-                    trap->R_SetColor(hudTintColor);
-
-                    CG_DrawPic(
-                            focusItem->window.rect.x * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-
-                focusItem = Menu_FindItemByName(menuHUD, "armor_icon");
-                if (focusItem) {
-                    trap->R_SetColor(hudTintColor);
-
-                    CG_DrawPic(
-                            focusItem->window.rect.x * cgs.widthRatioCoef,
-                            focusItem->window.rect.y,
-                            focusItem->window.rect.w * cgs.widthRatioCoef,
-                            focusItem->window.rect.h,
-                            focusItem->window.background
-                    );
-                }
-            }
-		}
-
-		menuHUD = Menus_FindByName("righthud");
-		Menu_Paint( menuHUD, qtrue );
-
-		if (cg_hudFiles.integer == 2) {
-			CG_DrawJK2HUDRightFrame1(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
-			CG_DrawForcePowerJK2(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
-			CG_DrawAmmoJK2(cent, SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
-			CG_DrawJK2HUDRightFrame2(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
-			if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
-				CG_DrawScaledProportionalString(SCREEN_WIDTH - 125 * cgs.widthRatioCoef, SCREEN_HEIGHT - 38, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
-			else
-				CG_DrawScaledProportionalString(SCREEN_WIDTH - 124 * cgs.widthRatioCoef, SCREEN_HEIGHT - 23, scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
-        }
-
-		else {
-			if (menuHUD)
-			{
-				if (cgs.gametype != GT_POWERDUEL)
-				{
-					focusItem = Menu_FindItemByName(menuHUD, "score_line");
-					if (focusItem)
+					if (menuHUD)
 					{
-						if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
-							CG_DrawScaledProportionalString(
-								SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-								focusItem->window.rect.y - 14,
-								scoreStr,
-								UI_RIGHT | UI_DROPSHADOW,
-								focusItem->window.foreColor,
-								0.7f);
+						itemDef_t *focusItem;
+
+						// Print scanline
+						focusItem = Menu_FindItemByName(menuHUD, "scanline");
+						if (focusItem)
+						{
+							trap->R_SetColor(hudTintColor);
+							CG_DrawPic(
+									focusItem->window.rect.x * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
 						}
-						else {
-							CG_DrawScaledProportionalString(
-								SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-								focusItem->window.rect.y,
-								scoreStr,
-								UI_RIGHT|UI_DROPSHADOW,
-								focusItem->window.foreColor,
-								0.7f);
+
+						// Print frame
+						focusItem = Menu_FindItemByName(menuHUD, "frame");
+						if (focusItem)
+						{
+							trap->R_SetColor(hudTintColor);
+							CG_DrawPic(
+									focusItem->window.rect.x * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
+						}
+
+						CG_DrawArmor(menuHUD);
+						CG_DrawHealth(menuHUD);
+					}
+					else
+					{
+						//trap->Error( ERR_DROP, "CG_ChatBox_ArrayInsert: unable to locate HUD menu file ");
+					}
+					if(cg_hudFiles.integer == 4)
+					{
+						focusItem = Menu_FindItemByName(menuHUD, "health_icon");
+						if (focusItem) {
+							trap->R_SetColor(hudTintColor);
+
+							CG_DrawPic(
+									focusItem->window.rect.x * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
+						}
+
+						focusItem = Menu_FindItemByName(menuHUD, "armor_icon");
+						if (focusItem) {
+							trap->R_SetColor(hudTintColor);
+
+							CG_DrawPic(
+									focusItem->window.rect.x * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
 						}
 					}
 				}
 
-				// Print scanline
-				focusItem = Menu_FindItemByName(menuHUD, "scanline");
-				if (focusItem)
-				{
-					 trap->R_SetColor(hudTintColor);
-					CG_DrawPic(
-						SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-						focusItem->window.rect.y,
-						focusItem->window.rect.w * cgs.widthRatioCoef,
-						focusItem->window.rect.h,
-						focusItem->window.background
-					);
+				menuHUD = Menus_FindByName("righthud");
+				Menu_Paint( menuHUD, qtrue );
+
+				if (cg_hudFiles.integer == 2) {
+					CG_DrawJK2HUDRightFrame1(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
+					CG_DrawForcePowerJK2(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
+					CG_DrawAmmoJK2(cent, SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
+					CG_DrawJK2HUDRightFrame2(SCREEN_WIDTH - 80, SCREEN_HEIGHT - 80);
+					if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE)
+						CG_DrawScaledProportionalString(SCREEN_WIDTH - 125 * cgs.widthRatioCoef, SCREEN_HEIGHT - 38,
+														scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
+					else
+						CG_DrawScaledProportionalString(SCREEN_WIDTH - 124 * cgs.widthRatioCoef, SCREEN_HEIGHT - 23,
+														scoreStr, UI_RIGHT | UI_DROPSHADOW, colorTable[CT_WHITE], 0.7f);
 				}
 
-				focusItem = Menu_FindItemByName(menuHUD, "frame");
-				if (focusItem)
-				{
-					 trap->R_SetColor(hudTintColor);
-					CG_DrawPic(
-						SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-						focusItem->window.rect.y,
-						focusItem->window.rect.w * cgs.widthRatioCoef,
-						focusItem->window.rect.h,
-						focusItem->window.background
-					);
+				else {
+					if (menuHUD)
+					{
+						if (cgs.gametype != GT_POWERDUEL)
+						{
+							focusItem = Menu_FindItemByName(menuHUD, "score_line");
+							if (focusItem)
+							{
+								if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
+									CG_DrawScaledProportionalString(
+											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+											focusItem->window.rect.y - 14,
+											scoreStr,
+											UI_RIGHT | UI_DROPSHADOW,
+											focusItem->window.foreColor,
+											0.7f);
+								}
+								else {
+									CG_DrawScaledProportionalString(
+											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+											focusItem->window.rect.y,
+											scoreStr,
+											UI_RIGHT|UI_DROPSHADOW,
+											focusItem->window.foreColor,
+											0.7f);
+								}
+							}
+						}
+
+						// Print scanline
+						focusItem = Menu_FindItemByName(menuHUD, "scanline");
+						if (focusItem)
+						{
+							trap->R_SetColor(hudTintColor);
+							CG_DrawPic(
+									SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
+						}
+
+						focusItem = Menu_FindItemByName(menuHUD, "frame");
+						if (focusItem)
+						{
+							trap->R_SetColor(hudTintColor);
+							CG_DrawPic(
+									SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+									focusItem->window.rect.y,
+									focusItem->window.rect.w * cgs.widthRatioCoef,
+									focusItem->window.rect.h,
+									focusItem->window.background
+							);
+						}
+
+						CG_DrawForcePower(menuHUD);
+
+						// Draw ammo tics or saber style
+						if ( cent->currentState.weapon == WP_SABER )
+						{
+							CG_DrawSaberStyle(cent,menuHUD);
+						}
+						else
+						{
+							CG_DrawAmmo(cent,menuHUD);
+						}
+
+
+						if(cg_hudFiles.integer == 4)
+						{
+							focusItem = Menu_FindItemByName(menuHUD, "force_icon");
+							if (focusItem) {
+								trap->R_SetColor(hudTintColor);
+
+								CG_DrawPic(
+										SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
+										focusItem->window.rect.y,
+										focusItem->window.rect.w * cgs.widthRatioCoef,
+										focusItem->window.rect.h,
+										focusItem->window.background
+								);
+							}
+						}
+					}
+					else
+					{
+						//trap->Error( ERR_DROP, "CG_ChatBox_ArrayInsert: unable to locate HUD menu file ");
+					}
 				}
-
-				CG_DrawForcePower(menuHUD);
-
-				// Draw ammo tics or saber style
-				if ( cent->currentState.weapon == WP_SABER )
-				{
-					CG_DrawSaberStyle(cent,menuHUD);
-				}
-				else
-				{
-					CG_DrawAmmo(cent,menuHUD);
-				}
-
-
-                if(cg_hudFiles.integer == 4)
-                {
-                    focusItem = Menu_FindItemByName(menuHUD, "force_icon");
-                    if (focusItem) {
-                        trap->R_SetColor(hudTintColor);
-
-                        CG_DrawPic(
-                                SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-                                focusItem->window.rect.y,
-                                focusItem->window.rect.w * cgs.widthRatioCoef,
-                                focusItem->window.rect.h,
-                                focusItem->window.background
-                        );
-                    }
-                }
-			}
-			else
-			{
-				//trap->Error( ERR_DROP, "CG_ChatBox_ArrayInsert: unable to locate HUD menu file ");
 			}
 		}
+	} else {
+		return;
 	}
 }
 
@@ -6470,12 +6477,16 @@ static void CG_DrawUpperRight( void ) {
 	if (cg_drawUpperRight.integer) {
 		trap->R_SetColor(colorTable[CT_WHITE]);
 
-		if ( cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer ) {
-            if(cg_drawTeamOverlay.integer != 3 && cg_drawTeamOverlay.integer != 4)
-			    y = CG_DrawTeamOverlay( y, qtrue, qtrue );
-            else
-                y = CG_DrawTeamOverlay2( y, qtrue, qtrue );
-        }
+		if(!(cg.tribesHUD)) {
+			if (cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer) {
+				if (cg_drawTeamOverlay.integer != 3 && cg_drawTeamOverlay.integer != 4)
+					y = CG_DrawTeamOverlay(y, qtrue, qtrue);
+				else
+					y = CG_DrawTeamOverlay2(y, qtrue, qtrue);
+			}
+
+		}
+
 		if ( cg_drawSnapshot.integer ) {
 			y = CG_DrawSnapshot( y );
 		}
@@ -6483,30 +6494,38 @@ static void CG_DrawUpperRight( void ) {
 		if ( cg_drawFPS.integer ) {
 			y = CG_DrawFPS( y );
 		}
+
 		if ( cg_drawTimer.integer) {
 			y = CG_DrawTimer( y );
 		}
+
         if(cg_drawScores.integer == 3 && cg_drawTimer.integer != 7){
             CG_DrawTaystHUD("");
         }
 
-		if ( cg_drawRadar.integer && ( cgs.gametype >= GT_TEAM || cg.predictedPlayerState.m_iVehicleNum ) )
-		{//draw Radar in Siege mode or when in a vehicle of any kind
-			y = CG_DrawRadar ( y );
+		if(!(cg.tribesHUD)) {
+
+			if (cg_drawRadar.integer && (cgs.gametype >= GT_TEAM ||
+										 cg.predictedPlayerState.m_iVehicleNum)) {//draw Radar in Siege mode or when in a vehicle of any kind
+				y = CG_DrawRadar(y);
+			}
+
+			if (cg_specHud.integer)
+				y = CG_DrawMiniMap(y);
+
+			y = CG_DrawEnemyInfo(y);
 		}
-
-		if (cg_specHud.integer)
-			y = CG_DrawMiniMap ( y );
-
-		y = CG_DrawEnemyInfo ( y );
 
 		y = CG_DrawMiniScoreboard ( y );
 
-		if (cg_drawPowerUpIcons.integer) {
-			y = CG_DrawPowerupIcons(y);
-		}
+		if(!(cg.tribesHUD)) {
 
-		CG_DrawInventory(y);
+			if (cg_drawPowerUpIcons.integer) {
+				y = (float)CG_DrawPowerupIcons((int)y);
+			}
+
+			CG_DrawInventory((int)y);
+		}
 	}
 }
 
@@ -11011,25 +11030,23 @@ static void CG_Draw2D( void ) {
 
 	CG_Draw2DScreenTints();
 
-	if (cg.snap->ps.rocketLockIndex != ENTITYNUM_NONE && (cg.time - cg.snap->ps.rocketLockTime) > 0)
-	{
-		CG_DrawRocketLocking( cg.snap->ps.rocketLockIndex, cg.snap->ps.rocketLockTime );
-	}
+	if(!(cg.tribesHUD)) {
 
-	if (cg.snap->ps.holocronBits)
-	{
-		CG_DrawHolocronIcons();
-	}
-	if (cg.snap->ps.fd.forcePowersActive || cg.snap->ps.fd.forceRageRecoveryTime > cg.time)
-	{
-		CG_DrawActivePowers();
-	}
+		if (cg.snap->ps.rocketLockIndex != ENTITYNUM_NONE && (cg.time - cg.snap->ps.rocketLockTime) > 0) {
+			CG_DrawRocketLocking(cg.snap->ps.rocketLockIndex, cg.snap->ps.rocketLockTime);
+		}
 
-	if(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES || cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
-	{
+		if (cg.snap->ps.holocronBits) {
+			CG_DrawHolocronIcons();
+		}
+		if (cg.snap->ps.fd.forcePowersActive || cg.snap->ps.fd.forceRageRecoveryTime > cg.time) {
+			CG_DrawActivePowers();
+		}
 
-	} else if (cg.snap->ps.jetpackFuel < 100){
-		CG_DrawJetpackFuel();
+		if (cg.snap->ps.jetpackFuel < 100) {
+			CG_DrawJetpackFuel();
+		}
+
 	}
 	if (cg.snap->ps.cloakFuel < 100)
 	{ //draw it as long as it isn't full
@@ -11095,23 +11112,20 @@ static void CG_Draw2D( void ) {
 				drawSelect = 3;
 			}
 
-			switch(drawSelect)
-			{
-			case 1:
-				CG_DrawInvenSelect();
-				break;
-			case 2:
-				if(cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES){
-
-				} else {
-					CG_DrawWeaponSelect();
+			if(!(cg.tribesHUD)) {
+				switch (drawSelect) {
+					case 1:
+						CG_DrawInvenSelect();
+						break;
+					case 2:
+						CG_DrawWeaponSelect();
+						break;
+					case 3:
+						CG_DrawForceSelect();
+						break;
+					default:
+						break;
 				}
-				break;
-			case 3:
-				CG_DrawForceSelect();
-				break;
-			default:
-				break;
 			}
 
 			if (cg_drawStatus.integer)

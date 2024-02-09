@@ -1437,6 +1437,7 @@ Ghoul2 Insert End
 		qboolean		started;
 	} log;
 	qboolean 			singlefireAlt;
+	qboolean 			tribesHUD;
 } cg_t;
 
 #define CAMERA_MIN_FPS 15
