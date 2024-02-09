@@ -315,7 +315,6 @@ srfGridMesh_t *R_CreateSurfaceGridMesh(int width, int height,
 	grid->heightLodError = (float *)/*Hunk_Alloc*/ Z_Malloc( height * 4, TAG_GRIDMESH, qfalse );
 	memcpy( grid->heightLodError, errorTable[1], height * 4 );
 
-
 	grid->width = width;
 	grid->height = height;
 	grid->surfaceType = SF_GRID;
