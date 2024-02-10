@@ -270,6 +270,20 @@ static void CG_Obituary( entityState_t *ent ) {
         if (attacker == cg.snap->ps.clientNum) {
             char s[MAX_STRING_CHARS] = {0};
 
+			//tayst
+			{
+				centity_t* deadGuy = &cg_entities[target];
+				if (deadGuy->currentState.groundEntityNum == ENTITYNUM_NONE && (mod == MOD_ROCKET || mod == MOD_CONC || mod == MOD_BOWCASTER || mod == MOD_REPEATER_ALT)) { //middy
+					Com_Printf("Midair sound!\n");
+					trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_AUTO, cgs.media.fragSound);
+				}
+				else {
+					Com_Printf("Non Midair sound!\n");
+					trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_AUTO, cgs.media.fragSoundMidair);
+				}
+			}
+			//tayst
+
             if (cg_killMessage.integer != 2 && cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL &&
                 cgs.gametype != GT_POWERDUEL) {
                 if (cgs.gametype == GT_JEDIMASTER &&

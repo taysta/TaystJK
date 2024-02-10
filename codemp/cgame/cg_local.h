@@ -1800,6 +1800,9 @@ typedef struct cgMedia_s {
 	sfxHandle_t	privateChatSound;
 	sfxHandle_t landSound;
 	sfxHandle_t landSoundSki; //jaPRO - tribes
+	sfxHandle_t fragSound; //jaPRO - tribes
+	sfxHandle_t fragSoundMidair; //jaPRO - tribes
+
 	sfxHandle_t fallSound;
 
 	sfxHandle_t oneMinuteSound;
