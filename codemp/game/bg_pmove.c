@@ -4011,15 +4011,6 @@ static void PM_AirMove( void ) {
 		PM_Accelerate (wishdir, wishspeed, accel); // change dis?
 		CPM_PM_Aircontrol (pm, wishdir, wishspeed2);
 	}
-#if 1
-	else if (moveStyle == MV_SURF)  {
-		if (wishspeed > 250)
-		{
-			wishspeed = 250;
-		}
-		PM_AirAccelerate(wishdir, wishspeed, 150);//jetpack air control
-	}
-#endif
 	/*
 	else if (pm->ps->pm_type != PM_JETPACK && BG_IsNewJetpacking(pm->ps)) //New Jetpack //newjetpack2
 	{
@@ -5188,7 +5179,7 @@ PM_CrashLand
 Check for hard landings that generate sound events
 =================
 */
-static void PM_CrashLand( void ) {
+static void PM_CrashLand(void) {
 	float		delta;
 	float		dist;
 	float		vel, acc;
@@ -5208,12 +5199,12 @@ static void PM_CrashLand( void ) {
 	b = vel;
 	c = -dist;
 
-	den =  b * b - 4 * a * c;
-	if ( den < 0 ) {
+	den = b * b - 4 * a * c;
+	if (den < 0) {
 		pm->ps->inAirAnim = qfalse;
 		return;
 	}
-	t = (-b - sqrt( den ) ) / ( 2 * a );
+	t = (-b - sqrt(den)) / (2 * a);
 
 	delta = vel + t * acc;
 	delta = delta*delta * 0.0001;
@@ -5230,7 +5221,7 @@ static void PM_CrashLand( void ) {
 	PM_CrashLandEffect();
 #endif
 	// ducking while falling doubles damage
-	if ( pm->ps->pm_flags & PMF_DUCKED ) {
+	if (pm->ps->pm_flags & PMF_DUCKED) {
 		delta *= 2;
 	}
 
@@ -5240,7 +5231,7 @@ static void PM_CrashLand( void ) {
 		pm->ps->legsAnim == BOTH_A7_KICK_L_AIR)
 	{
 		int landAnim = -1;
-		switch ( pm->ps->legsAnim )
+		switch (pm->ps->legsAnim)
 		{
 		case BOTH_A7_KICK_F_AIR:
 			landAnim = BOTH_FORCELAND1;
@@ -5255,22 +5246,22 @@ static void PM_CrashLand( void ) {
 			landAnim = BOTH_FORCELANDLEFT1;
 			break;
 		}
-		if ( landAnim != -1 )
+		if (landAnim != -1)
 		{
-			if ( pm->ps->torsoAnim == pm->ps->legsAnim )
+			if (pm->ps->torsoAnim == pm->ps->legsAnim)
 			{
-				PM_SetAnim(SETANIM_BOTH, landAnim, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+				PM_SetAnim(SETANIM_BOTH, landAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 			}
 			else
 			{
-				PM_SetAnim(SETANIM_LEGS, landAnim, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+				PM_SetAnim(SETANIM_LEGS, landAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 			}
 		}
 	}
 	else if (pm->ps->legsAnim == BOTH_FORCEJUMPLEFT1 ||
-			pm->ps->legsAnim == BOTH_FORCEJUMPRIGHT1 ||
-			pm->ps->legsAnim == BOTH_FORCEJUMPBACK1 ||
-			pm->ps->legsAnim == BOTH_FORCEJUMP1)
+		pm->ps->legsAnim == BOTH_FORCEJUMPRIGHT1 ||
+		pm->ps->legsAnim == BOTH_FORCEJUMPBACK1 ||
+		pm->ps->legsAnim == BOTH_FORCEJUMP1)
 	{
 		int fjAnim;
 		switch (pm->ps->legsAnim)
@@ -5288,17 +5279,18 @@ static void PM_CrashLand( void ) {
 			fjAnim = BOTH_LAND1;
 			break;
 		}
-		PM_SetAnim(SETANIM_BOTH, fjAnim, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+		PM_SetAnim(SETANIM_BOTH, fjAnim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 	}
 	// decide which landing animation to use
 	else if (!BG_InRoll(pm->ps, pm->ps->legsAnim) && pm->ps->inAirAnim && !pm->ps->m_iVehicleNum)
 	{ //only play a land animation if we transitioned into an in-air animation while off the ground
 		if (!BG_SaberInSpecial(pm->ps->saberMove))
 		{
-			if ( pm->ps->pm_flags & PMF_BACKWARDS_JUMP ) {
-				PM_ForceLegsAnim( BOTH_LANDBACK1 );
-			} else {
-				PM_ForceLegsAnim( BOTH_LAND1 );
+			if (pm->ps->pm_flags & PMF_BACKWARDS_JUMP) {
+				PM_ForceLegsAnim(BOTH_LANDBACK1);
+			}
+			else {
+				PM_ForceLegsAnim(BOTH_LAND1);
 			}
 		}
 	}
@@ -5308,17 +5300,17 @@ static void PM_CrashLand( void ) {
 		//This will push us back into our weaponready stance from the land anim.
 		if (pm->ps->weapon == WP_DISRUPTOR && pm->ps->zoomMode == 1)
 		{
-			PM_StartTorsoAnim( TORSO_WEAPONREADY4 );
+			PM_StartTorsoAnim(TORSO_WEAPONREADY4);
 		}
 		else
 		{
 			if (pm->ps->weapon == WP_EMPLACED_GUN)
 			{
-				PM_StartTorsoAnim( BOTH_GUNSIT1 );
+				PM_StartTorsoAnim(BOTH_GUNSIT1);
 			}
 			else
 			{
-				PM_StartTorsoAnim( WeaponReadyAnim[pm->ps->weapon] );
+				PM_StartTorsoAnim(WeaponReadyAnim[pm->ps->weapon]);
 			}
 		}
 	}
@@ -5349,26 +5341,26 @@ static void PM_CrashLand( void ) {
 	}
 
 	// never take falling damage if completely underwater
-	if ( pm->waterlevel == 3 ) {
+	if (pm->waterlevel == 3) {
 		return;
 	}
 
 	// reduce falling damage if there is standing water
-	if ( pm->waterlevel == 2 ) {
+	if (pm->waterlevel == 2) {
 		delta *= 0.25;
 	}
-	if ( pm->waterlevel == 1 ) {
+	if (pm->waterlevel == 1) {
 		delta *= 0.5;
 	}
 
-	if ( delta < 1 ) {
+	if (delta < 1) {
 		return;
 	}
 
-	if ( pm->ps->pm_flags & PMF_DUCKED )
+	if (pm->ps->pm_flags & PMF_DUCKED)
 	{
-		if( delta >= 2 && !PM_InOnGroundAnim( pm->ps->legsAnim ) && !PM_InKnockDown( pm->ps ) && !BG_InRoll(pm->ps, pm->ps->legsAnim) &&
-			pm->ps->forceHandExtend == HANDEXTEND_NONE )
+		if (delta >= 2 && !PM_InOnGroundAnim(pm->ps->legsAnim) && !PM_InKnockDown(pm->ps) && !BG_InRoll(pm->ps, pm->ps->legsAnim) &&
+			pm->ps->forceHandExtend == HANDEXTEND_NONE)
 		{//roll!
 			int anim = PM_TryRoll();
 
@@ -5377,11 +5369,11 @@ static void PM_CrashLand( void ) {
 				anim = 0;
 				pm->ps->legsTimer = 0;
 				pm->ps->legsAnim = 0;
-				PM_SetAnim(SETANIM_BOTH,BOTH_LAND1,SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+				PM_SetAnim(SETANIM_BOTH, BOTH_LAND1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 				pm->ps->legsTimer = TIMER_LAND;
 			}
 
-			if ( anim )
+			if (anim)
 			{//absorb some impact
 				pm->ps->legsTimer = 0;
 				delta /= 3; // /= 2 just cancels out the above delta *= 2 when landing while crouched, the roll itself should absorb a little damage
@@ -5390,7 +5382,7 @@ static void PM_CrashLand( void ) {
 				{ //get out of it on torso
 					pm->ps->torsoTimer = 0;
 				}
-				PM_SetAnim(SETANIM_BOTH,anim,SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD);
+				PM_SetAnim(SETANIM_BOTH, anim, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 				didRoll = qtrue;
 			}
 		}
@@ -5398,7 +5390,7 @@ static void PM_CrashLand( void ) {
 
 	// SURF_NODAMAGE is used for bounce pads where you don't ever
 	// want to take damage or play a crunch sound
-	if ( !(pml.groundTrace.surfaceFlags & SURF_NODAMAGE) )  {
+	if (!(pml.groundTrace.surfaceFlags & SURF_NODAMAGE)) {
 		if (delta > 7)
 		{
 			int delta_send = (int)delta;
@@ -5443,28 +5435,42 @@ static void PM_CrashLand( void ) {
 
 			if (didRoll)
 			{ //Add the appropriate event..
-				PM_AddEventWithParm( EV_ROLL, delta_send );
+				PM_AddEventWithParm(EV_ROLL, delta_send);
 			}
 			else
 			{
-				PM_AddEventWithParm( EV_FALL, delta_send );
+				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+					if (delta_send > 150)
+						PM_AddEventWithParm(EV_FALL, 1);
+				}
+				else {
+					PM_AddEventWithParm(EV_FALL, delta_send);
+				}
 			}
 		}
 		else
 		{
 			if (didRoll)
 			{
-				PM_AddEventWithParm( EV_ROLL, 0 );
+				PM_AddEventWithParm(EV_ROLL, 0);
 			}
 			else
 			{
-				PM_AddEventWithParm( EV_FOOTSTEP, PM_FootstepForSurface() );
+				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+				}
+				else {
+					PM_AddEventWithParm(EV_FOOTSTEP, PM_FootstepForSurface());
+				}
 			}
 		}
 	}
 
 	// make sure velocity resets so we don't bounce back up again in case we miss the clear elsewhere
-	pm->ps->velocity[2] = 0;
+	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+	}
+	else {
+		pm->ps->velocity[2] = 0;
+	}
 
 	if ((moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM || moveStyle == MV_SURF) && ((int)pm->ps->fd.forceJumpZStart > pm->ps->origin[2] + 1)) {
 		if (1 > (sqrt(pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1])))//No xyvel
@@ -5809,12 +5815,7 @@ static void PM_GroundTrace( void ) {
 #endif
 		}
 
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
-			//Probably should stillcrashland and do some effects but not the speedloss
-		}
-		else {
-			PM_CrashLand();
-		}
+		PM_CrashLand();
 
 #ifdef _GAME
 		if (pm->ps->clientNum < MAX_CLIENTS &&
