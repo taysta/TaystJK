@@ -7815,7 +7815,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint, int chEntValid ) {
 
 	//draw a health bar directly under the crosshair if we're looking at something
 	//that takes damage
-	if (crossEnt &&	crossEnt->currentState.maxhealth && cg_drawPlayerNames.integer < 2)//loda
+	if (crossEnt && crossEnt->currentState.maxhealth && (crossEnt->currentState.bolt1 != 2) && (cg_drawPlayerNames.integer < 2))//loda
 	{
 		CG_DrawHealthBar(crossEnt, chX, chY, w, h);
 		chY += HEALTH_HEIGHT*2;
