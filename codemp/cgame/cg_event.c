@@ -946,6 +946,10 @@ void DoFall(centity_t *cent, entityState_t *es, int clientNum)
 			CG_CustomSound( cent->currentState.number, "*land1.wav" ) );
 		cent->pe.painTime = cg.time;	// don't play a pain sound right after this
 	}
+	else if (delta == 1 && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
+	{
+		trap->S_StartSound(NULL, es->number, CHAN_AUTO, cgs.media.landSoundSki);
+	}
 	else
 	{
 		trap->S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.landSound );

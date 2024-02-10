@@ -866,6 +866,7 @@ static void CG_RegisterSounds( void ) {
 		cgs.media.privateChatSound = trap->S_RegisterSound( "sound/movers/switches/button_15.mp3" );
 
 	cgs.media.landSound = trap->S_RegisterSound( "sound/player/land1.wav");
+	cgs.media.landSoundSki = trap->S_RegisterSound( "sound/player/ski_soft.wav");
 	cgs.media.fallSound = trap->S_RegisterSound( "sound/player/fallsplat.wav");
 
 	cgs.media.crackleSound = trap->S_RegisterSound( "sound/effects/energy_crackle.wav" );
