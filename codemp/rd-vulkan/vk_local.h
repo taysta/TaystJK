@@ -86,7 +86,18 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
 #define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
-#define VK_SAMPLER_LAYOUT_BEGIN			2
+#define VK_DESC_STORAGE					0
+#define VK_DESC_UNIFORM					1
+#define VK_DESC_TEXTURE0				2
+#define VK_DESC_TEXTURE1				3
+#define VK_DESC_TEXTURE2				4
+#define VK_DESC_FOG_COLLAPSE			5
+#define VK_DESC_COUNT					6
+
+#define VK_DESC_TEXTURE_BASE			VK_DESC_TEXTURE0
+#define VK_DESC_FOG_ONLY				VK_DESC_TEXTURE1
+#define VK_DESC_FOG_DLIGHT				VK_DESC_TEXTURE1
+
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
 
 #define VERTEX_BUFFER_SIZE				( 4 * 1024 * 1024 )
@@ -566,7 +577,7 @@ typedef struct vk_tess_s {
 
 	struct {
 		uint32_t		start, end;
-		VkDescriptorSet	current[7];	// 0:storage, 1:uniform, 2:color0, 3:color1, 4:color2, 5:fog
+		VkDescriptorSet	current[6];	// 0:storage, 1:uniform, 2:color0, 3:color1, 4:color2, 5:fog
 		uint32_t		offset[2];	// 0:storage, 1:uniform
 	} descriptor_set;
 	

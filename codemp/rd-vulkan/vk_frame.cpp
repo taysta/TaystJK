@@ -1178,10 +1178,10 @@ void vk_begin_frame( void )
 
     Com_Memset(&vk.cmd->scissor_rect, 0, sizeof(vk.cmd->scissor_rect));
 
-    vk_update_descriptor(2, tr.whiteImage->descriptor_set);
-    vk_update_descriptor(3, tr.whiteImage->descriptor_set);
-    if (vk.maxBoundDescriptorSets >= 6) {
-        vk_update_descriptor(4, tr.whiteImage->descriptor_set);
+    vk_update_descriptor( VK_DESC_TEXTURE0, tr.whiteImage->descriptor_set );
+    vk_update_descriptor( VK_DESC_TEXTURE1, tr.whiteImage->descriptor_set );
+    if ( vk.maxBoundDescriptorSets >= VK_DESC_COUNT ) {
+        vk_update_descriptor( VK_DESC_TEXTURE2, tr.whiteImage->descriptor_set );
     }
 
 #ifdef USE_VK_STATS
