@@ -13618,16 +13618,16 @@ void PmoveSingle (pmove_t *pmove) {
 			pm->ps->eFlags |= EF_JETPACK_FLAMING; //going up
 		}
 		else if (pm->cmd.upmove < 0 && pm->ps->velocity[2] > MAX_FALL_SPEED) { //**?? max fall speed
-			pm->ps->velocity[2] -= 150.0f * pml.frametime * scale;//was 12 with no grav
-			pm->ps->eFlags |= EF_JETPACK_FLAMING;
 			gDist2 = PM_GroundDistance(); //Have to get this since we dont do it when holding crouch normally
+			if (gDist2 >= 16) {
+				pm->ps->velocity[2] -= 150.0f * pml.frametime * scale;//was 12 with no grav
+				pm->ps->eFlags |= EF_JETPACK_FLAMING;
+			}
 		}
 
 		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.rightmove || pm->cmd.forwardmove)) {
 			//vec3_t forward;
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
-
-
 
 			{ //use the proper way for siege
 
@@ -13738,10 +13738,10 @@ void PmoveSingle (pmove_t *pmove) {
 		}
 		*/
 
-		if (gDist2 <  16 && pm->cmd.upmove < 0) {//** changed this so jetpack shuts off on ground
+		//if (gDist2 < 16 && pm->cmd.upmove < 0) {//** changed this so jetpack shuts off on ground
 			//Sad hack, this stops sliding on ground with downjet
-			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
-		}
+			//pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
+		//}
 
 	}
 
