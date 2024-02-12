@@ -92,7 +92,7 @@ void vk_create_descriptor_layout( void )
 void vk_create_pipeline_layout( void )
 {
     // Pipeline layouts
-    VkDescriptorSetLayout set_layouts[7];
+    VkDescriptorSetLayout set_layouts[6];
     VkPipelineLayoutCreateInfo desc;
     VkPushConstantRange push_range;
     
@@ -107,12 +107,11 @@ void vk_create_pipeline_layout( void )
     set_layouts[3] = vk.set_layout_sampler; // lightmap / fog-only
     set_layouts[4] = vk.set_layout_sampler; // blend
     set_layouts[5] = vk.set_layout_sampler; // collapsed fog texture
-    set_layouts[6] = vk.set_layout_sampler; // normalMap
 
     desc.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     desc.pNext = NULL;
     desc.flags = 0;
-    desc.setLayoutCount = (vk.maxBoundDescriptorSets >= 6) ? 7 : 4;
+    desc.setLayoutCount = (vk.maxBoundDescriptorSets >= VK_DESC_COUNT) ? VK_DESC_COUNT : 4;
     desc.pSetLayouts = set_layouts;
     desc.pushConstantRangeCount = 1;
     desc.pPushConstantRanges = &push_range;

@@ -555,8 +555,14 @@ __cleanup:
 		qvkDestroySurfaceKHR(vk.instance, vk.surface, NULL);
 
 #ifdef USE_VK_VALIDATION
-	if (qvkDestroyDebugReportCallbackEXT && vk.debug_callback)
-		qvkDestroyDebugReportCallbackEXT(vk.instance, vk.debug_callback, NULL);
+	#ifdef USE_DEBUG_REPORT
+		if (qvkDestroyDebugReportCallbackEXT && vk.debug_callback)
+			qvkDestroyDebugReportCallbackEXT(vk.instance, vk.debug_callback, NULL);
+	#endif
+	#ifdef USE_DEBUG_UTILS
+		if (qvkDestroyDebugUtilsMessengerEXT && vk.debug_utils_messenger)
+			qvkDestroyDebugUtilsMessengerEXT(vk.instance, vk.debug_utils_messenger, NULL);
+	#endif
 #endif
 
 	if (vk.instance != VK_NULL_HANDLE)

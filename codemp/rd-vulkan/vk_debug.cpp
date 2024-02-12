@@ -64,6 +64,7 @@ Vulkan validation layer debug callback
 ================
 */
 
+#ifdef USE_DEBUG_REPORT
 VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
 	VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT object_type,
 	uint64_t object, size_t location, int32_t message_code,
@@ -72,21 +73,65 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_callback(
 	vk_debug("debug callback: %s\n", message);
 	return VK_FALSE;
 }
+#endif
+
+#ifdef USE_DEBUG_UTILS
+VKAPI_ATTR VkBool32 VKAPI_CALL vk_debug_utils_messenger_callback (
+    VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
+    VkDebugUtilsMessageTypeFlagsEXT message_type,
+    const VkDebugUtilsMessengerCallbackDataEXT *callback_data,
+    void *user_data)
+{
+	if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
+	{
+		vk_debug("{%d} - {%s}: {%s}", callback_data->messageIdNumber, callback_data->pMessageIdName, callback_data->pMessage);
+	}
+	else if (message_severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
+	{
+		vk_debug("{%d} - {%s}: {%s}", callback_data->messageIdNumber, callback_data->pMessageIdName, callback_data->pMessage);
+	}
+	return VK_FALSE;
+
+}
+#endif
+
+#ifdef USE_DEBUG_UTILS
+void vk_create_debug_utils( VkDebugUtilsMessengerCreateInfoEXT &desc ) {
+	desc.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+	desc.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
+	desc.messageType     = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
+	desc.pfnUserCallback = vk_debug_utils_messenger_callback;
+}
+#endif
 
 void vk_create_debug_callback(void)
 {
 	Com_Printf("Create vulkan debug callback\n");
 
-	VkDebugReportCallbackCreateInfoEXT desc;
-	desc.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-	desc.pNext = NULL;
-	desc.flags = VK_DEBUG_REPORT_WARNING_BIT_EXT |
-				 VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
-				 VK_DEBUG_REPORT_ERROR_BIT_EXT;
-	desc.pfnCallback = &vk_debug_callback;
-	desc.pUserData = NULL;
+#ifdef USE_DEBUG_REPORT
+	{
+		VkDebugReportCallbackCreateInfoEXT desc;
+		desc.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+		desc.pNext = NULL;
+		desc.flags = VK_DEBUG_REPORT_WARNING_BIT_EXT |
+					 VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
+					 VK_DEBUG_REPORT_ERROR_BIT_EXT;
+		desc.pfnCallback = &vk_debug_callback;
+		desc.pUserData = NULL;
 
-	VK_CHECK(qvkCreateDebugReportCallbackEXT(vk.instance, &desc, NULL, &vk.debug_callback));
+		VK_CHECK(qvkCreateDebugReportCallbackEXT(vk.instance, &desc, NULL, &vk.debug_callback));
+	}
+#endif
+
+#ifdef USE_DEBUG_UTILS
+	{
+		VkDebugUtilsMessengerCreateInfoEXT desc;
+		Com_Memset( &desc, 0, sizeof(VkDebugUtilsMessengerCreateInfoEXT) );
+		vk_create_debug_utils( desc );
+
+		VkResult result = qvkCreateDebugUtilsMessengerEXT(vk.instance, &desc, nullptr, &vk.debug_utils_messenger);
+	}
+#endif	
 
 	return;
 }

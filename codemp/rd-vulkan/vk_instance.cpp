@@ -56,8 +56,14 @@ PFN_vkGetPhysicalDeviceSurfacePresentModesKHR	qvkGetPhysicalDeviceSurfacePresent
 PFN_vkGetPhysicalDeviceSurfaceSupportKHR		qvkGetPhysicalDeviceSurfaceSupportKHR;
 
 #ifdef USE_VK_VALIDATION
-PFN_vkCreateDebugReportCallbackEXT				qvkCreateDebugReportCallbackEXT;
-PFN_vkDestroyDebugReportCallbackEXT				qvkDestroyDebugReportCallbackEXT;
+	#ifdef USE_DEBUG_REPORT
+		PFN_vkCreateDebugReportCallbackEXT		qvkCreateDebugReportCallbackEXT;
+		PFN_vkDestroyDebugReportCallbackEXT		qvkDestroyDebugReportCallbackEXT;
+	#endif
+	#ifdef USE_DEBUG_UTILS
+		PFN_vkCreateDebugUtilsMessengerEXT		qvkCreateDebugUtilsMessengerEXT;
+		PFN_vkDestroyDebugUtilsMessengerEXT		qvkDestroyDebugUtilsMessengerEXT;
+	#endif
 #endif
 
 PFN_vkAllocateCommandBuffers					qvkAllocateCommandBuffers;
@@ -171,8 +177,14 @@ static qboolean vk_used_instance_extension( const char *ext )
         return qtrue;
 
 #ifdef USE_VK_VALIDATION
-    if (Q_stricmp(ext, VK_EXT_DEBUG_REPORT_EXTENSION_NAME) == 0)
-        return qtrue;
+	#ifdef USE_DEBUG_REPORT
+		if (Q_stricmp(ext, VK_EXT_DEBUG_REPORT_EXTENSION_NAME) == 0)
+			return qtrue;
+	#endif
+	#ifdef USE_DEBUG_UTILS
+		if (Q_stricmp(ext, VK_EXT_DEBUG_UTILS_EXTENSION_NAME) == 0)
+			return qtrue;
+	#endif
 #endif
 
     if (Q_stricmp(ext, VK_EXT_DEBUG_UTILS_EXTENSION_NAME) == 0)
@@ -282,6 +294,14 @@ static void vk_create_instance( void )
     desc.enabledLayerCount = 1;
     desc.ppEnabledLayerNames = &validation_layer_name_lunarg;
 
+#ifdef USE_DEBUG_UTILS
+	VkDebugUtilsMessengerCreateInfoEXT debug_utils_create_info;
+	Com_Memset( &debug_utils_create_info, 0, sizeof(VkDebugUtilsMessengerCreateInfoEXT) );
+	vk_create_debug_utils( debug_utils_create_info );
+
+	desc.pNext = &debug_utils_create_info;
+#endif
+
     result = qvkCreateInstance(&desc, NULL, &vk.instance);
 
     if (result == VK_ERROR_LAYER_NOT_PRESENT) {
@@ -298,6 +318,9 @@ static void vk_create_instance( void )
             // try without validation layer
             desc.enabledLayerCount = 0;
             desc.ppEnabledLayerNames = NULL;
+#ifdef USE_DEBUG_UTILS
+			desc.pNext = NULL;
+#endif
 
             result = qvkCreateInstance(&desc, NULL, &vk.instance);
         }
@@ -552,7 +575,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 	// create VkDevice
 	{
 		char *str;
-		const char *device_extension_list[4];
+		const char *device_extension_list[5];
 		uint32_t device_extension_count;
 		const char *ext, *end;
 		const float priority = 1.0;
@@ -566,6 +589,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 		qboolean dedicatedAllocation = qfalse;
 		qboolean memoryRequirements2 = qfalse;
 		qboolean debugMarker = qfalse;
+		qboolean toolingInfo = qfalse;
 		uint32_t i, len, count = 0;
 
 		VK_CHECK(qvkEnumerateDeviceExtensionProperties(physical_device, NULL, &count, NULL));
@@ -590,6 +614,9 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			}
 			else if (strcmp(ext, VK_EXT_DEBUG_MARKER_EXTENSION_NAME) == 0) {
 				debugMarker = qtrue;
+			}
+			else if (strcmp(ext, VK_EXT_TOOLING_INFO_EXTENSION_NAME) == 0) {
+				toolingInfo = qtrue;
 			}
 
 			// add this device extension to glConfig
@@ -633,6 +660,9 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			device_extension_list[device_extension_count++] = VK_EXT_DEBUG_MARKER_EXTENSION_NAME;
 			vk.debugMarkers = qtrue;
 		}
+
+		if ( toolingInfo )
+			device_extension_list[device_extension_count++] = VK_EXT_TOOLING_INFO_EXTENSION_NAME;
 
 		qvkGetPhysicalDeviceFeatures(physical_device, &device_features);
 
@@ -757,8 +787,14 @@ __initStart:
 	INIT_INSTANCE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR)
 
 #ifdef USE_VK_VALIDATION
-	INIT_INSTANCE_FUNCTION_EXT(vkCreateDebugReportCallbackEXT)
-	INIT_INSTANCE_FUNCTION_EXT(vkDestroyDebugReportCallbackEXT)
+	#ifdef USE_DEBUG_REPORT
+		INIT_INSTANCE_FUNCTION_EXT(vkCreateDebugReportCallbackEXT)
+		INIT_INSTANCE_FUNCTION_EXT(vkDestroyDebugReportCallbackEXT)
+	#endif
+	#ifdef USE_DEBUG_UTILS
+		INIT_INSTANCE_FUNCTION_EXT(vkCreateDebugUtilsMessengerEXT)
+		INIT_INSTANCE_FUNCTION_EXT(vkDestroyDebugUtilsMessengerEXT)
+	#endif
 
 	vk_create_debug_callback();
 #endif
@@ -785,8 +821,14 @@ __initStart:
 			// Clear instance with a subset of vk_shutdown
 			qvkDestroySurfaceKHR(vk.instance, vk.surface, NULL);
 #ifdef USE_VK_VALIDATION
+	#ifdef USE_DEBUG_REPORT
 			if (qvkDestroyDebugReportCallbackEXT && vk.debug_callback)
 				qvkDestroyDebugReportCallbackEXT(vk.instance, vk.debug_callback, NULL);
+	#endif
+	#ifdef USE_DEBUG_UTILS
+			if (qvkDestroyDebugUtilsMessengerEXT && vk.debug_utils_messenger)
+				qvkDestroyDebugUtilsMessengerEXT(vk.instance, vk.debug_utils_messenger, NULL);
+	#endif
 #endif
 			qvkDestroyInstance(vk.instance, NULL);
 			vk_deinit_library();
@@ -966,8 +1008,14 @@ void vk_deinit_library( void )
 	qvkGetPhysicalDeviceSurfacePresentModesKHR = NULL;
 	qvkGetPhysicalDeviceSurfaceSupportKHR = NULL;
 #ifdef USE_VK_VALIDATION
-	qvkCreateDebugReportCallbackEXT = NULL;
-	qvkDestroyDebugReportCallbackEXT = NULL;
+	#ifdef USE_DEBUG_REPORT
+		qvkCreateDebugReportCallbackEXT = NULL;
+		qvkDestroyDebugReportCallbackEXT = NULL;
+	#endif
+	#ifdef USE_DEBUG_UTILS
+		qvkCreateDebugUtilsMessengerEXT = NULL;
+		qvkDestroyDebugUtilsMessengerEXT = NULL;
+	#endif
 #endif
 	qvkAllocateCommandBuffers = NULL;
 	qvkAllocateDescriptorSets = NULL;
