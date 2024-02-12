@@ -627,7 +627,7 @@ void vk_bind_descriptor_sets( void )
 	end = vk.cmd->descriptor_set.end;
 
 	offset_count = 0;
-	if (start <= 1) { // uniform offset or storage offset
+	if ( start == VK_DESC_STORAGE || start == VK_DESC_UNIFORM ) { // uniform offset or storage offset
 		offsets[offset_count++] = vk.cmd->descriptor_set.offset[start];
 	}
 
@@ -984,10 +984,9 @@ static uint32_t vk_push_uniform( const vkUniform_t *uniform )
 {
 	const uint32_t offset = vk_append_uniform( uniform, sizeof(*uniform), vk.uniform_item_size );
 
-	vk_reset_descriptor( 1 );
-	vk_update_descriptor( 1, vk.cmd->uniform_descriptor );
-
-	vk_update_descriptor_offset( 1, offset );
+	vk_reset_descriptor( VK_DESC_UNIFORM );
+	vk_update_descriptor( VK_DESC_UNIFORM, vk.cmd->uniform_descriptor );
+	vk_update_descriptor_offset( VK_DESC_UNIFORM, offset );
 
 	return offset;
 }
@@ -1120,11 +1119,11 @@ static void RB_FogPass( void ) {
 #ifdef USE_FOG_ONLY
 	int fog_stage;
 	
-	vk_bind_pipeline(pipeline);
-	vk_set_fog_params(&uniform, &fog_stage);
-	vk_push_uniform(&uniform);
-	vk_update_descriptor(3, tr.fogImage->descriptor_set);
-	vk_draw_geometry(DEPTH_RANGE_NORMAL, qtrue);
+	vk_bind_pipeline( pipeline );
+	vk_set_fog_params( &uniform, &fog_stage );
+	vk_push_uniform( &uniform );
+	vk_update_descriptor( VK_DESC_FOG_ONLY, tr.fogImage->descriptor_set );
+	vk_draw_geometry( DEPTH_RANGE_NORMAL, qtrue );
 #else
 	const fog_t *fog;
 	int			i;
@@ -1153,7 +1152,7 @@ void vk_bind( image_t *image ) {
 
 	image->frameUsed = tr.frameCount;
 
-	vk_update_descriptor(vk.ctmu + VK_SAMPLER_LAYOUT_BEGIN, image->descriptor_set);
+	vk_update_descriptor( vk.ctmu + VK_DESC_TEXTURE_BASE, image->descriptor_set );
 }
 
 void R_BindAnimatedImage( const textureBundle_t *bundle ) {
@@ -1171,7 +1170,7 @@ void R_BindAnimatedImage( const textureBundle_t *bundle ) {
 		}
 		else {
 
-			vk_update_descriptor( vk.ctmu + VK_SAMPLER_LAYOUT_BEGIN, vk.screenMap.color_descriptor );
+			vk_update_descriptor( vk.ctmu + VK_DESC_TEXTURE_BASE, vk.screenMap.color_descriptor );
 		}
 		return;
 	}
@@ -1481,7 +1480,7 @@ void vk_lighting_pass( void )
 	abs_light = /* (pStage->stateBits & GLS_ATEST_BITS) && */ (cull == CT_TWO_SIDED) ? 1 : 0;
 
 	if (fog_stage)
-		vk_update_descriptor(3, tr.fogImage->descriptor_set);
+		vk_update_descriptor( VK_DESC_FOG_DLIGHT, tr.fogImage->descriptor_set );
 
 	if (tess.light->linear)
 		pipeline = vk.std_pipeline.dlight1_pipelines_x[cull][tess.shader->polygonOffset][fog_stage][abs_light];
@@ -1563,7 +1562,7 @@ void RB_StageIteratorGeneric( void )
 	if ( fogCollapse ) {
 		vk_set_fog_params( &uniform, &fog_stage );
 		VectorCopy( backEnd.ori.viewOrigin, uniform.eyePos );
-		vk_update_descriptor( 5, tr.fogImage->descriptor_set );
+		vk_update_descriptor( VK_DESC_FOG_COLLAPSE, tr.fogImage->descriptor_set );
 		push_uniform = qtrue;
 	}
 	else {
@@ -1708,7 +1707,7 @@ void RB_StageIteratorGeneric( void )
 		if ( is_refraction ) 
 		{
 			// bind extracted color image copy / blit
-			vk_update_descriptor( 2, vk.refraction_extract_descriptor );
+			vk_update_descriptor( VK_DESC_TEXTURE0, vk.refraction_extract_descriptor );
 
 			Com_Memset( &uniform.refraction, 0, sizeof(uniform.refraction) );
 
