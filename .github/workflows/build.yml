@@ -328,12 +328,12 @@ jobs:
       - name: Create latest build
         uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
           tag_name: "latest"
           prerelease: false
           append_body: false
-          title: Latest Build
+          name: Latest Build
           files: |
             *.zip
             *.tar.gz
@@ -360,14 +360,14 @@ jobs:
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
       - name: Create latest beta build
-        uses: softprops/action-gh-release@ 4634c16e79c963813287e889244c50009e7f0981
+        uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
           tag_name: "latest-beta"
           prerelease: true
           append_body: false
-          title: Beta Build
+          name: Beta Build
           files: |
             *.zip
             *.tar.gz
