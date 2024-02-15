@@ -1578,7 +1578,7 @@ static qboolean SV_ClientCommand( client_t *cl, msg_t *msg ) {
 				else
 					cl->lastReliableTime[3] = svs.time;
 			}
-			else if (!Q_stricmpn(s, "amTele", 6) || !Q_stricmpn(s, "amTeleMark", 10)) {
+			else if (sv_newfloodProtect->integer > 2 && (!Q_stricmpn(s, "amTele", 6) || !Q_stricmpn(s, "amTeleMark", 10))) { // If sv_newFloodProtect is 3 or higher, don't flood protect amtele/amtelemark
 				clientOk = qtrue;
 			}
 			else {
