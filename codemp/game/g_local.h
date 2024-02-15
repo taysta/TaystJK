@@ -1486,6 +1486,8 @@ typedef struct level_locals_s {
 	qboolean	redCapturing;//1flagctf
 	qboolean	blueCapturing;//1flagctf
 	int			flagCapturingDebounce;
+	int			wrNoise;
+	int			pbNoise;
 
 	//int			lastVoteFailTime;
 //JAPRO - Serverside - Amlockteam - End
