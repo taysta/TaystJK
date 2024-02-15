@@ -5920,6 +5920,7 @@ void Cmd_DFHardest_f(gentity_t *ent) {
 
 }
 
+#if 0
 void Cmd_DFCompare_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i, season = -1;
 	char inputString[16], inputStyleString[16], myUsername[16], theirUsername[16];
@@ -6087,6 +6088,8 @@ GROUP BY coursename, style, season
 
 
 }
+#endif
+
 void Cmd_DFRecent_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i;
 	char inputString[16], inputStyleString[16];
