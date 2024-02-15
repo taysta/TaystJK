@@ -1560,13 +1560,20 @@ void PrintRaceTime(char *username, char *playername, char *message, char *style,
 			//if (awesomenoise)
 				//PlayActualGlobalSound(awesomenoise); //Only for simple PB not WR i guess..
 			//else
-			PlayActualGlobalSound(G_SoundIndex("sound/chars/rosh_boss/misc/victory3"));
+			if (!level.wrNoise) {
+				level.wrNoise = G_SoundIndex("sound/chars/rosh_boss/misc/victory3"); //Maybe this should be done when df_trigger_finish is spawned cuz its still gonna hitch maybe on first wr of map? idk
+			}
+			PlayActualGlobalSound(level.wrNoise);
 		}
 		else if (global_newRank > 0) {//PB
 			if (awesomenoise)
 				PlayActualGlobalSound(awesomenoise);
-			else if (awesomenoise != -1)
-				PlayActualGlobalSound(G_SoundIndex("sound/chars/rosh/misc/taunt1"));
+			else if (awesomenoise != -1) {
+				if (!level.pbNoise) {
+					level.pbNoise = G_SoundIndex("sound/chars/rosh/misc/taunt1");
+				}
+				PlayActualGlobalSound(level.pbNoise);
+			}
 		}
 	}
 
@@ -5920,6 +5927,7 @@ void Cmd_DFHardest_f(gentity_t *ent) {
 
 }
 
+#if 0
 void Cmd_DFCompare_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i, season = -1;
 	char inputString[16], inputStyleString[16], myUsername[16], theirUsername[16];
@@ -6087,6 +6095,8 @@ GROUP BY coursename, style, season
 
 
 }
+#endif
+
 void Cmd_DFRecent_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i;
 	char inputString[16], inputStyleString[16];
