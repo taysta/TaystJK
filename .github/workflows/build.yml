@@ -325,16 +325,8 @@ jobs:
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
-      - name: Delete previous latest release
-        uses: dev-drprasad/delete-older-releases@v0.3.2
-        with:
-          keep_latest: 0
-          delete_tag_pattern: (?:^|\W)latest(?:$|\W)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create latest build
-        uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+        uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
@@ -367,17 +359,8 @@ jobs:
           mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
-      - name: Delete previous latest-beta release
-        uses: dev-drprasad/delete-older-releases@v0.3.2
-        with:
-          keep_latest: 0
-          delete_tag_pattern: (?:^|\W)latest-beta(?:$|\W)
-          delete_prerelease_only: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create latest beta build
-        uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+        uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
