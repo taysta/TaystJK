@@ -262,12 +262,12 @@ typedef struct unz_file_pos_s
 } unz_file_pos;
 
 extern int ZEXPORT unzGetFilePos(
-    unzFile file,
-    unz_file_pos* file_pos);
+        unzFile file,
+        unz_file_pos* file_pos);
 
 extern int ZEXPORT unzGoToFilePos(
-    unzFile file,
-    unz_file_pos* file_pos);
+        unzFile file,
+        unz_file_pos* file_pos);
 
 typedef struct unz64_file_pos_s
 {
@@ -276,12 +276,12 @@ typedef struct unz64_file_pos_s
 } unz64_file_pos;
 
 extern int ZEXPORT unzGetFilePos64(
-    unzFile file,
-    unz64_file_pos* file_pos);
+        unzFile file,
+        unz64_file_pos* file_pos);
 
 extern int ZEXPORT unzGoToFilePos64(
-    unzFile file,
-    const unz64_file_pos* file_pos);
+        unzFile file,
+        const unz64_file_pos* file_pos);
 
 /* ****************************************** */
 
@@ -306,7 +306,7 @@ extern int ZEXPORT unzGetCurrentFileInfo(unzFile file,
   Get Info about the current file
   if pfile_info!=NULL, the *pfile_info structure will contain some info about
         the current file
-  if szFileName!=NULL, the filemane string will be copied in szFileName
+  if szFileName!=NULL, the filename string will be copied in szFileName
             (fileNameBufferSize is the size of the buffer)
   if extraField!=NULL, the extra field information will be copied in extraField
             (extraFieldBufferSize is the size of the buffer).
