@@ -105,6 +105,7 @@ void tc_vis_init(void) {
 	add_slicks();
 }
 
+/*
 static vec3_t g_pvsLocation;
 static int g_pvsArea;
 static byte* g_pvsMask;
@@ -130,10 +131,10 @@ static qboolean InPVS(const vec3_t p)
 	if (!CM_AreasConnected(g_pvsArea, area))
 		return qfalse;
 	return qtrue;
-}
+} */
 
 void tc_vis_render(void) {
-	SetPVSLocation(re->ext.GetViewPosition());
+	//SetPVSLocation(re->ext.GetViewPosition());
 	if (triggers_draw->integer) {
 		draw(trigger_head, trigger_shader, TRIGGER_BRUSH);
 	}
@@ -419,20 +420,13 @@ static void free_vis_brushes(visBrushNode_t *brushes) {
 
 static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
 	frustum = re->ext.GetFrustum();
+	vec3_t viewPos;
+	VectorCopy(re->ext.GetViewPosition(), viewPos);
+
 	while (brush) {
-
-        //Todo, find out if this is what slows shit down. Can we change PVS optimization?
-
-		for (int i = 0; i < brush->numFaces; ++i) {
-			// ensure in same PVS
-			qboolean inPVS = qfalse;
-			for (int j = 0; j < brush->faces[i].numVerts; j++) {
-				if (InPVS(brush->faces[i].verts[j].xyz)) {
-					inPVS = qtrue;
-					break;
-				}
-			}
-			if (inPVS) {
+		//don't do pvs optimization just check distance as well this gives better performance and results since pvs is expensive and oftentimes the edges are within structural brushes making it not reliable
+		if (DistanceSquared(viewPos, brush->faces[0].verts[0].xyz) < 8192 * 8192) {
+			for (int i = 0; i < brush->numFaces; ++i) {
 				if (type == SLICK_BRUSH) { // walk slightly along normal to make more visible
 					static polyVert_t extruded[800];
 					memcpy(extruded, brush->faces[i].verts, Q_min(sizeof(polyVert_t) * 800, sizeof(polyVert_t) * brush->faces[i].numVerts));
@@ -446,7 +440,6 @@ static void draw(visBrushNode_t *brush, qhandle_t shader, visBrushType_t type) {
 					re->AddPolyToScene(shader, brush->faces[i].numVerts, brush->faces[i].verts, 1);
 				}
 			}
-			
 		}
 		brush = brush->next;
 	}
