@@ -4130,7 +4130,7 @@ static void PM_OverDriveMove(void) {
 
 static void PM_ThrustMove(void)
 {
-	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING) && !pm->ps->powerups[PW_BLUEFLAG] && !pm->ps->powerups[PW_REDFLAG] && !pm->ps->powerups[PW_NEUTRALFLAG]) {
+	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING)) {
 		pm->ps->stats[STAT_WJTIME] = 800;
 #ifdef _GAME
 		gentity_t *self = (gentity_t *)pm_entSelf;
@@ -13416,7 +13416,7 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 			//Com_Printf("Setting jetpack\n");
 		}
-		else if (pm->cmd.upmove && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH) && BG_CanJetpack(pm->ps)) { //Special skiing option for going up terrain
+		else if (pm->cmd.upmove > 0 && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH) && BG_CanJetpack(pm->ps)) { //Special skiing option for going up terrain
 			if (!(pm->ps->eFlags & EF_JETPACK_ACTIVE)) {
 				pm->ps->stats[STAT_JUMPTIME] = 500;
 				pm->ps->eFlags |= EF_JETPACK_ACTIVE;
@@ -13738,10 +13738,10 @@ void PmoveSingle (pmove_t *pmove) {
 		}
 		*/
 
-		//if (gDist2 < 16 && pm->cmd.upmove < 0) {//** changed this so jetpack shuts off on ground
+		if (gDist2 < 16 && pm->cmd.upmove < 0) {//** changed this so jetpack shuts off on ground
 			//Sad hack, this stops sliding on ground with downjet
-			//pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
-		//}
+			pm->ps->eFlags &= ~EF_JETPACK_ACTIVE;
+		}
 
 	}
 
