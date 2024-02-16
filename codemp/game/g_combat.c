@@ -5092,6 +5092,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	//Higher self knockback for tribes, discjump disc jump
 	if (attacker && attacker->client && attacker->client->sess.movementStyle == MV_TRIBES) {
 		//if (targ == attacker)
+		if (attacker->client->sess.raceMode) //temp until finalized
+			knockback *= 1.5f;
+		else
 			knockback *= 1.75f;
 		if (mod == MOD_THERMAL || mod == MOD_THERMAL_SPLASH) {
 			knockback *= 3.75f; //guess this just does nothing
