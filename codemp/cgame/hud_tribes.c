@@ -311,14 +311,9 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 			&& (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL) ) {
 			char keyStr[MAX_QPATH];
 			char modeStr[MAX_QPATH];
-			if (cg.singlefireAlt) {
-				Com_sprintf(modeStr, sizeof(modeStr), "Alternate Fire");
-				CG_DrawPic((float)posX,
-						   (float)posY - (float)CYCLE_PAD + 0.5f * (float)size - 0.5f * 12.0f,
-						   12.0f * cgs.widthRatioCoef,
-						   12.0f,
-						   cgs.media.keyAltOn2);
-			} else {
+			if ((!cg.singlefireAlt && (weapon != WP_BOWCASTER)
+			|| (cg.singlefireAlt && (weapon == WP_BOWCASTER))
+			|| (weapon == WP_THERMAL))) {
 				//primary fire text
 				Com_sprintf(modeStr, sizeof(modeStr), "Primary Fire");
 				//primary fire image
@@ -327,6 +322,13 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 						   12.0f * cgs.widthRatioCoef,
 						   12.0f,
 						   cgs.media.keyAttackOn2);
+			} else {
+				Com_sprintf(modeStr, sizeof(modeStr), "Alternate Fire");
+				CG_DrawPic((float)posX,
+						   (float)posY - (float)CYCLE_PAD + 0.5f * (float)size - 0.5f * 12.0f,
+						   12.0f * cgs.widthRatioCoef,
+						   12.0f,
+						   cgs.media.keyAltOn2);
 
 			}
 			Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(fireModeCommand)]);

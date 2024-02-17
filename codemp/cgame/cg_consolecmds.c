@@ -966,7 +966,11 @@ void CG_ToggleSingleFire_f(void) {
 	else if (cg.predictedPlayerState.eFlags & EF_FIRING) {
 		trap->SendConsoleCommand("-attack;+altattack\n");
 	}
-	cg.singlefireAlt = !cg.singlefireAlt;
+	if(cg.predictedPlayerState.weapon == WP_THERMAL){
+		cg.singlefireAlt = qfalse;
+	} else {
+		cg.singlefireAlt = !cg.singlefireAlt;
+	}
 }
 
 void CG_SingleFireDown_f(void) {
