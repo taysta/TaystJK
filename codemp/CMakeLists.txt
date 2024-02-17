@@ -63,6 +63,14 @@ if(BuildMPRend2)
 	add_subdirectory("${MPDir}/rd-rend2")
 endif(BuildMPRend2)
 
+#	Add the assets target when building modules
+if(BuildMPGame OR BuildMPCGame OR BuildMPUI)
+	add_custom_target(Assets
+		COMMAND
+		${CMAKE_COMMAND} -E tar cf "${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3" --format=zip -- .
+		WORKING_DIRECTORY  "${CMAKE_SOURCE_DIR}/assets/japro")
+endif(BuildMPGame OR BuildMPCGame OR BuildMPUI)
+
 #    Common things between Engine and Dedicated Server
 if(BuildMPEngine OR BuildMPDed)
 
@@ -759,15 +767,6 @@ if(BuildMPDed)
 		add_dependencies(${MPDed} GET_GIT_TAG_AND_HASH)
 	endif()
 endif(BuildMPDed)
-
-include(InstallZIP)
-
-add_zip_command(japro-assets.pk3
-	FILES ${CMAKE_SOURCE_DIR}/assets/japro/*)
-
-add_custom_target(Assets
-	ALL
-	DEPENDS japro-assets.pk3)
 
 install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3
