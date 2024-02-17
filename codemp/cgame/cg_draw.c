@@ -144,10 +144,12 @@ int MenuFontToHandle(int iMenuFont)
 {
 	switch (iMenuFont)
 	{
-		case FONT_SMALL:	return cgDC.Assets.qhSmallFont;
-		case FONT_SMALL2:	return cgDC.Assets.qhSmall2Font;
-		case FONT_MEDIUM:	return cgDC.Assets.qhMediumFont;
-		case FONT_LARGE:	return cgDC.Assets.qhBigFont;
+		case FONT_SMALL:	return cgDC.Assets.qhSmallFont; break;
+		case FONT_MEDIUM:	return cgDC.Assets.qhMediumFont; break;
+		case FONT_LARGE:	return cgDC.Assets.qhBigFont; break;
+		case FONT_SMALL2:	return cgDC.Assets.qhSmall2Font; break;
+		default: return cgDC.Assets.qhMediumFont; break;
+
 	}
 
 	return cgDC.Assets.qhMediumFont;
@@ -190,6 +192,7 @@ void CG_Text_Paint(float x, float y, float scale, vec4_t color, const char *text
 	case  ITEM_TEXTSTYLE_OUTLINED:			iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow ( need a color for this )
 	case  ITEM_TEXTSTYLE_OUTLINESHADOWED:	iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow ( need a color for this )
 	case  ITEM_TEXTSTYLE_SHADOWEDMORE:		iStyleOR = (int)STYLE_DROPSHADOW;break;	// JK2 drop shadow ( need a color for this )
+	default: iStyleOR = 0; break;
 	}
 
 	trap->R_Font_DrawString(	x,		// int ox
@@ -3806,6 +3809,7 @@ void CG_LimitStr( char *string, int len ) {
         *p = '\0';
 }
 
+
 /*
 ==================
 CG_DrawTaystHUD
@@ -3861,7 +3865,7 @@ static void CG_DrawTaystHUD(char* s) {
                       0.0f,
                       0,
                       ITEM_TEXTSTYLE_SHADOWED,
-                      FONT_LARGE);
+					  FONT_LARGE);
     }
 
     //draw new scores here too since they scale off the new timer's size
@@ -3916,33 +3920,143 @@ static void CG_DrawTaystHUD(char* s) {
 
 
             //draw scores
-            CG_Text_Paint(SCREEN_WIDTH / 2.0f - xOffset - CG_Text_Width(temp, 0.8f, FONT_LARGE) / 2.0f,
-                          10.0f +
-                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
+            CG_Text_Paint(0.5f * SCREEN_WIDTH - xOffset - 0.5f * CG_Text_Width(temp, 0.8f, FONT_LARGE),
+						  (float)blueBackground.y + 0.5f * (float)blueBackground.h - 0.75f * (float)CG_Text_Height(temp, 0.8f, FONT_LARGE),
                           0.8f,
                           colorWhite,
                           temp,
                           0,
                           0,
-                          ITEM_TEXTSTYLE_NORMAL,
-                          FONT_LARGE);
+                          ITEM_TEXTSTYLE_SHADOWED,
+						  FONT_LARGE);
 
-            CG_Text_Paint(SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp2, 0.8f, FONT_LARGE) / 2.0f,
-                          10.0f +
-                          (float) (CG_Text_Height(temp, 1.0f, FONT_LARGE) - CG_Text_Height(temp, 0.8f, FONT_LARGE)),
+            CG_Text_Paint(0.5f * SCREEN_WIDTH + xOffset - 0.5f * CG_Text_Width(temp2, 0.8f, FONT_LARGE),
+						  (float)redBackground.y + 0.5f * (float)redBackground.h - 0.75f * (float)CG_Text_Height(temp2, 0.8f, FONT_LARGE),
                           0.8f,
                           colorWhite,
                           temp2,
                           0,
                           0,
-                          ITEM_TEXTSTYLE_NORMAL,
-                          FONT_LARGE);
-        }
+						  ITEM_TEXTSTYLE_SHADOWED,
+						  FONT_LARGE);
+			trap->R_SetColor(NULL);
 
+			if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY) {
+				const int returnTime = (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) ? 45000 : 30000;
+
+				if (cgs.blueflag != FLAG_TAKEN) {
+					cgs.redFlagCarrier = NULL;
+				} else {
+					if(!cgs.redFlagCarrier) {
+						for (int i = 0; i <= numSortedTeamPlayers; i++) {
+							if (cgs.clientinfo[i].powerups & (1 << PW_BLUEFLAG)) {
+								cgs.redFlagCarrier = &cgs.clientinfo[i];
+								break;
+							}
+						}
+					}
+				}
+
+				if (cgs.redflag != FLAG_TAKEN) {
+					cgs.blueFlagCarrier = NULL;
+				} else {
+					if(!cgs.blueFlagCarrier) {
+						for (int i = 0; i <= numSortedTeamPlayers; i++) { //find the flag carrier
+							if (cgs.clientinfo[i].powerups & (1 << PW_REDFLAG)) {
+								cgs.blueFlagCarrier = &cgs.clientinfo[i];
+								break;
+							}
+						}
+					}
+				}
+
+				if(cgs.redflag == FLAG_DROPPED){
+					if(!cgs.redFlagTime) {
+						cgs.redFlagTime = cg.time;
+					}
+				} else {
+					cgs.redFlagTime = 0;
+				}
+
+				if(cgs.blueflag == FLAG_DROPPED){
+					if(!cgs.blueFlagTime) {
+						cgs.blueFlagTime = cg.time;
+					}
+				} else {
+					cgs.blueFlagTime = 0;
+				}
+
+				//BLUE FLAG
+				trap->R_SetColor(color1);
+				CG_DrawPic(blueBackground.x - (16 * cgs.widthRatioCoef), blueBackground.y,
+						   16 * cgs.widthRatioCoef, 16, cgs.media.whiteShader);
+
+				if(cgs.blueflag == FLAG_ATBASE) {
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(blueBackground.x - (14 * cgs.widthRatioCoef), blueBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagHomeShader);
+				} else if (cgs.blueflag == FLAG_DROPPED) {
+					char blueFlagTimeStr[8] = {0};
+					int secs = (returnTime - (cg.time - cgs.blueFlagTime)) / 1000;
+					Com_sprintf(blueFlagTimeStr, sizeof(blueFlagTimeStr), ":%02i", secs);
+					CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) - CG_Text_Width(blueFlagTimeStr, 0.6f, FONT_MEDIUM),
+								  blueBackground.y,
+								  0.6f, colorWhite, blueFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_NORMAL, FONT_MEDIUM);
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(blueBackground.x - (14 * cgs.widthRatioCoef), blueBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
+				} else if (cgs.blueflag == FLAG_TAKEN) {
+					char blueFlagStatus[256] = {0};
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(blueBackground.x - (14 * cgs.widthRatioCoef), blueBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
+					if(cgs.redFlagCarrier) {
+						Com_sprintf(blueFlagStatus, sizeof(blueFlagStatus), "%s", cgs.redFlagCarrier->name);
+						CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) -
+									  CG_Text_Width(blueFlagStatus, 0.6f, FONT_MEDIUM),
+									  blueBackground.y,
+									  0.6f, colorWhite, blueFlagStatus, 0, 0, ITEM_TEXTSTYLE_NORMAL,
+									  FONT_MEDIUM);
+					}
+				}
+
+				//RED FLAG
+				trap->R_SetColor(color2);
+				CG_DrawPic(overlayXPos, redBackground.y, 16 * cgs.widthRatioCoef,
+						   16, cgs.media.whiteShader);
+
+				if (cgs.redflag == FLAG_ATBASE) {
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(overlayXPos + (2.0f * cgs.widthRatioCoef), redBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagHomeShader);
+				} else if(cgs.redflag == FLAG_DROPPED) {
+					char redFlagTimeStr[8] = {0};
+					int secs = (returnTime - (cg.time - cgs.redFlagTime)) / 1000;
+					Com_sprintf(redFlagTimeStr, sizeof(redFlagTimeStr), ":%02i", secs);
+					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
+								  0.6f, colorWhite, redFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_NORMAL, FONT_MEDIUM);
+
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(overlayXPos + (2.0f * cgs.widthRatioCoef), redBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
+				} else if (cgs.redflag == FLAG_TAKEN) {
+					char redFlagStatus[256] = {0};
+					trap->R_SetColor(colorWhite);
+					CG_DrawPic(overlayXPos + (2.0f * cgs.widthRatioCoef), redBackground.y + 2,
+							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
+					if(cgs.blueFlagCarrier) {
+					Com_sprintf(redFlagStatus, sizeof(redFlagStatus), "%s", cgs.blueFlagCarrier->name);
+					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
+								  0.6f, colorWhite,redFlagStatus, 0, 0, ITEM_TEXTSTYLE_NORMAL,
+								  FONT_MEDIUM);
+					}
+				}
+				trap->R_SetColor(NULL);
+			}
+		}
         //duel
         else if ( cg_drawScores.integer == 3 && cgs.gametype == GT_DUEL )
         {
-
             if ( !cg.snap )
             {
                 return;
@@ -4016,8 +4130,8 @@ static void CG_DrawTaystHUD(char* s) {
                 redBackground.x = ( 320.0f );
             }
 
-            blueBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_LARGE ) ) / 2.0f + 3.0f;
-            redBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_LARGE ) ) / 2.0f + 3.0f;
+            blueBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
+            redBackground.y = background.y - ( boxHeights - background.h + ( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
 
             blueBackground.h = boxHeights;
             redBackground.h = boxHeights;
@@ -4056,7 +4170,7 @@ static void CG_DrawTaystHUD(char* s) {
                            0,
                            0,
                            ITEM_TEXTSTYLE_NORMAL,
-                           FONT_MEDIUM );
+						   FONT_LARGE );
 
             CG_Text_Paint( SCREEN_WIDTH / 2.0f + xOffset - CG_Text_Width(temp, scoreFontSize, FONT_LARGE) / 2.0f,
                            topPadding - 12.0f,
@@ -4066,7 +4180,7 @@ static void CG_DrawTaystHUD(char* s) {
                           0,
                           0,
                            ITEM_TEXTSTYLE_NORMAL,
-                           FONT_MEDIUM );
+						   FONT_LARGE );
 
             //truncate names
             if ( !Q_stricmp( nameBuf, d1->name ) )
@@ -4113,6 +4227,7 @@ static void CG_DrawTaystHUD(char* s) {
         }
     }
 }
+
 /*
 ================
 CG_DrawMiniScoreboard
@@ -11132,8 +11247,8 @@ static void CG_Draw2D( void ) {
 			{
 				//Powerups now done with upperright stuff
 				//CG_DrawPowerupIcons();
-
-				CG_DrawFlagStatus();
+				if(cg_drawScores.integer != 3)
+					CG_DrawFlagStatus();
 			}
 
 			CG_SaberClashFlare();

@@ -1619,6 +1619,10 @@ Ghoul2 Insert End
 	cgs.media.raceShader			= trap->R_RegisterShader("gfx/effects/raceShader");//japro
 	cgs.media.duelShader			= trap->R_RegisterShader("gfx/effects/duelShader");//japro
 
+	//japro ctf hud
+	cgs.media.flagHomeShader			= trap->R_RegisterShader("hud/ctf/jpflaghome");//japro
+	cgs.media.flagTakenShader			= trap->R_RegisterShader("hud/ctf/jpflagtaken");//japro
+
 	//cosmetics
 	//hats
 	cgs.media.cosmetics.afro = trap->R_RegisterModel("models/cosmetics/hats/afro.md3");
@@ -3130,6 +3134,8 @@ Ghoul2 Insert End
 
 	cgs.redflag = cgs.blueflag = -1; // For compatibily, default to unset for
 	cgs.flagStatus = -1;
+	cgs.redFlagCarrier = cgs.blueFlagCarrier = NULL;
+	cgs.redFlagTime = cgs.blueFlagTime = 0;
 	// old servers
 
 	// get the rendering configuration from the client system

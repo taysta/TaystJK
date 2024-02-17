@@ -915,6 +915,17 @@ void CG_GetCTFMessageEvent(entityState_t *es)
 		return;
 	}
 
+	if (teamIndex == TEAM_RED) {
+		if (es->eventParm == CTFMESSAGE_PLAYER_GOT_FLAG) {
+			cgs.blueFlagCarrier = ci;
+		}
+	}
+	else { //if (teamIndex == TEAM_BLUE) {
+		if (es->eventParm == CTFMESSAGE_PLAYER_GOT_FLAG) {
+			cgs.redFlagCarrier = ci;
+		}
+	}
+
 	CG_PrintCTFMessage(ci, teamName, es->eventParm);
 }
 
@@ -923,6 +934,21 @@ qboolean BG_InKnockDownOnly( int anim );
 void DoFall(centity_t *cent, entityState_t *es, int clientNum)
 {
 	int delta = es->eventParm;
+
+	if ( clientNum == cg.predictedPlayerState.clientNum )
+	{
+		// smooth landing z changes
+		cg.landChange = -delta;
+		if (cg.landChange > 32)
+		{
+			cg.landChange = 32;
+		}
+		if (cg.landChange < -32)
+		{
+			cg.landChange = -32;
+		}
+		cg.landTime = cg.time;
+	}
 
 	if (cent->currentState.eFlags & EF_DEAD)
 	{ //corpses crack into the ground ^_^

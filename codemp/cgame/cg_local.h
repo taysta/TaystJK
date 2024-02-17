@@ -1964,6 +1964,10 @@ typedef struct cgMedia_s {
 	qhandle_t	raceShader;
 	qhandle_t	duelShader;
 
+	//japro ctf hud
+	qhandle_t	flagHomeShader;
+	qhandle_t	flagTakenShader;
+
 	//japro cosmetics
 	struct {
 		qhandle_t	santaHat;
@@ -2224,6 +2228,8 @@ typedef struct cgs_s {
 
 	int				redflag, blueflag;		// flag status from configstrings
 	int				flagStatus;
+	clientInfo_t	*redFlagCarrier, *blueFlagCarrier;
+	int				redFlagTime, blueFlagTime;
 
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - Start]
 	serverMod_t	serverMod;
