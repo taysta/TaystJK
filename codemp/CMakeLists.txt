@@ -26,7 +26,7 @@ set(MPSharedDefines ${SharedDefines})
 if (GIT_FOUND)
 	if (WIN32)
 		add_custom_target(GET_GIT_TAG_AND_HASH
-		COMMAND powershell -File "${CMAKE_SOURCE_DIR}/scripts/header/update_header.ps1" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
+		COMMAND powershell -executionpolicy bypass -File "${CMAKE_SOURCE_DIR}/scripts/header/update_header.ps1" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
 	elseif(UNIX OR APPLE)
 		add_custom_target(GET_GIT_TAG_AND_HASH
 		COMMAND "${CMAKE_SOURCE_DIR}/scripts/header/update_header.sh" "${CMAKE_BINARY_DIR}/shared/qcommon/q_version.h")
