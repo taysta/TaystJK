@@ -444,7 +444,7 @@ tribesPack CG_TribesPack() {
 	{
 		isOnCooldownOut = qtrue;
 	}
-
+	packOut.pack = powerSelected;
 	packOut.power = powerOut;
 	packOut.icon = iconOut;
 	packOut.cost = costOut;
@@ -491,7 +491,10 @@ void CG_DrawPackTribes(void){
 			color[2] = 0.0f;
 			color[3] = 0.6f;
 		}
-	} else if ((cg.predictedPlayerState.fd.forcePower < pack.cost) || (pack.isOnCooldown == qtrue))
+	} else if ((cg.predictedPlayerState.fd.forcePower < pack.cost) || (pack.isOnCooldown == qtrue)
+	|| ((pack.pack == PACK_BLINK) && (cg.predictedPlayerState.powerups[PW_REDFLAG]
+									|| cg.predictedPlayerState.powerups[PW_BLUEFLAG]
+									|| cg.predictedPlayerState.powerups[PW_NEUTRALFLAG])))
 	{
 		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{

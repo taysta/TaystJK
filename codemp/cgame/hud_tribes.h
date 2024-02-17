@@ -361,6 +361,7 @@ void CG_TribesIFF(centity_t* cent, qhandle_t shader, float size);
 void CG_DrawHudTribes(void);
 
 typedef struct {
+	int 		pack;
 	int 		icon;
 	int 		cost;
 	qboolean 	isActive;
