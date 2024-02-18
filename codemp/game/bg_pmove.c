@@ -4177,7 +4177,7 @@ static void PM_ThrustMove(void)
 static void PM_BlinkMove(void) //Just blink for now
 {
 	const float BLINK_DURATION = 300;
-	const float BLINK_STRENGTH = 4200.0f;
+	const float BLINK_STRENGTH = 3500;
 	const int	FORCE_COST = 25;
 
 	//Todo - change bind from lightning? More restrictions? If keep as lightning, disregard actual lightning?
