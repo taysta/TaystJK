@@ -4001,7 +4001,7 @@ static void CG_DrawTaystHUD(char* s) {
 					Com_sprintf(blueFlagTimeStr, sizeof(blueFlagTimeStr), ":%02i", secs);
 					CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) - CG_Text_Width(blueFlagTimeStr, 0.6f, FONT_MEDIUM),
 								  blueBackground.y,
-								  0.6f, colorWhite, blueFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_NORMAL, FONT_MEDIUM);
+								  0.6f, colorWhite, blueFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
 					trap->R_SetColor(colorWhite);
 					CG_DrawPic(blueBackground.x - (14 * cgs.widthRatioCoef), blueBackground.y + 2,
 							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
@@ -4015,7 +4015,7 @@ static void CG_DrawTaystHUD(char* s) {
 						CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) -
 									  CG_Text_Width(blueFlagStatus, 0.6f, FONT_MEDIUM),
 									  blueBackground.y,
-									  0.6f, colorWhite, blueFlagStatus, 0, 0, ITEM_TEXTSTYLE_NORMAL,
+									  0.6f, colorWhite, blueFlagStatus, 0, 0, ITEM_TEXTSTYLE_SHADOWED,
 									  FONT_MEDIUM);
 					}
 				}
@@ -4034,7 +4034,7 @@ static void CG_DrawTaystHUD(char* s) {
 					int secs = (returnTime - (cg.time - cgs.redFlagTime)) / 1000;
 					Com_sprintf(redFlagTimeStr, sizeof(redFlagTimeStr), ":%02i", secs);
 					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
-								  0.6f, colorWhite, redFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_NORMAL, FONT_MEDIUM);
+								  0.6f, colorWhite, redFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
 
 					trap->R_SetColor(colorWhite);
 					CG_DrawPic(overlayXPos + (2.0f * cgs.widthRatioCoef), redBackground.y + 2,
@@ -4047,7 +4047,7 @@ static void CG_DrawTaystHUD(char* s) {
 					if(cgs.blueFlagCarrier) {
 					Com_sprintf(redFlagStatus, sizeof(redFlagStatus), "%s", cgs.blueFlagCarrier->name);
 					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
-								  0.6f, colorWhite,redFlagStatus, 0, 0, ITEM_TEXTSTYLE_NORMAL,
+								  0.6f, colorWhite,redFlagStatus, 0, 0, ITEM_TEXTSTYLE_SHADOWED,
 								  FONT_MEDIUM);
 					}
 				}
