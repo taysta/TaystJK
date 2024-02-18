@@ -4990,6 +4990,7 @@ static const char *g_bindCommands[] = {
 	"gloat",
 	"invnext",
 	"invprev",
+	"invfree",
 	"meditate",
 	"messagemode",
 	"messagemode2",

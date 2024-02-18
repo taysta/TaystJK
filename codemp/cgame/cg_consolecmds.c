@@ -2445,6 +2445,7 @@ static consoleCommand_t	commands[] = {
 	{ "forceprev",					CG_PrevForcePower_f },
 	{ "invnext",					CG_NextInventory_f },
 	{ "invprev",					CG_PrevInventory_f },
+	{ "invfree",					CG_InvUseAvailable },
 	{ "loaddeferred",				CG_LoadDeferredPlayers },
 	{ "loadhud",					CG_LoadHud_f },
 	{ "nextframe",					CG_TestModelNextFrame_f },

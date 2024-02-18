@@ -3478,6 +3478,68 @@ void CG_PrevInventory_f(void)
 	}
 }
 
+//bad, bad disgusting hack to use the first item that is selectable
+void CG_InvUseAvailable(void)
+{
+	if (cg.predictedPlayerState.pm_type == PM_SPECTATOR)
+	{
+		return;
+	}
+
+	if (cg.snap->ps.pm_flags & PMF_FOLLOW)
+	{
+		return;
+	}
+
+	for (int i = 0; i < HI_NUM_HOLDABLE; i++) {
+		if (i != HI_JETPACK && (cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i))) {
+			cg.itemSelect = i;
+			break;
+		}
+	}
+
+	if (cg.itemSelect > 0)
+	{
+		cg.snap->ps.stats[STAT_HOLDABLE_ITEM] = BG_GetItemIndexByTag(cg.itemSelect, IT_HOLDABLE);
+	}
+
+	switch(cg.itemSelect)
+	{
+		case HI_SEEKER:
+			trap->SendConsoleCommand("use_seeker");
+			break;
+		case HI_SHIELD:
+			trap->SendConsoleCommand("use_field");
+			break;
+		case HI_MEDPAC:
+			trap->SendConsoleCommand("use_bacta");
+			break;
+		case HI_MEDPAC_BIG:
+			trap->SendConsoleCommand("use_bactabig");
+			break;
+		case HI_BINOCULARS:
+			trap->SendConsoleCommand("use_electrobinoculars");
+			break;
+		case HI_SENTRY_GUN:
+			trap->SendConsoleCommand("use_sentry");
+			break;
+		case HI_HEALTHDISP:
+			trap->SendConsoleCommand("use_healthdisp");
+			break;
+		case HI_AMMODISP:
+			trap->SendConsoleCommand("use_ammodisp");
+			break;
+		case HI_EWEB:
+			trap->SendConsoleCommand("use_eweb");
+			break;
+		case HI_CLOAK:
+			trap->SendConsoleCommand("use_cloak");
+			break;
+		default:
+			break;
+	}
+}
+
 static void _CG_MouseEvent( int x, int y ) {
 	cgDC.cursorx = cgs.cursorX;
 	cgDC.cursory = cgs.cursorY;

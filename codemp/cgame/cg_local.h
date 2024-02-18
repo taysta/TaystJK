@@ -2336,6 +2336,7 @@ void CG_SetScoreSelection(void *menu);
 void CG_BuildSpectatorString(void);
 void CG_NextInventory_f(void);
 void CG_PrevInventory_f(void);
+void CG_InvUseAvailable(void);
 void CG_NextForcePower_f(void);
 void CG_PrevForcePower_f(void);
 
