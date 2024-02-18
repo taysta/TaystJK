@@ -798,13 +798,11 @@ struct EntityBlock
 	matrix_t modelMatrix;
 	vec4_t lightOrigin;
 	vec3_t ambientLight;
-	float lightRadius;
+	float entityTime;
 	vec3_t directedLight;
 	float fxVolumetricBase;
 	vec3_t modelLightDir;
 	float vertexLerp;
-	vec3_t localViewOrigin;
-	float entityTime;
 	bool operator == (const EntityBlock &other) const
 	{
 		return (
