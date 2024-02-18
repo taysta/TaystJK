@@ -253,8 +253,8 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 
 		char fireModeCommand[MAX_QPATH];
 		char fireCommand[MAX_QPATH];
-		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode", slotNumber);
-		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire", slotNumber);
+		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode");
+		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire");
 
 		if ((keyCodeNames[trap->Key_GetKey(fireModeCommand)] != NULL) && (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL)) {
 			if (cg.singlefireAlt) {
@@ -330,12 +330,12 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode", slotNumber);
 		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire", slotNumber);
 		if ((keyCodeNames[trap->Key_GetKey(fireModeCommand)] != NULL)
-			&& (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL) ) {
+			&& (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL)
+			&& (weapon != WP_THERMAL)) {
 			char keyStr[MAX_QPATH];
 			char modeStr[MAX_QPATH];
-			if ((!cg.singlefireAlt && (weapon != WP_BOWCASTER)
-			|| (cg.singlefireAlt && (weapon == WP_BOWCASTER))
-			|| (weapon == WP_THERMAL))) {
+			if ((!cg.singlefireAlt && (weapon != WP_BOWCASTER))
+			|| (cg.singlefireAlt && (weapon == WP_BOWCASTER))) {
 				//primary fire text
 				Com_sprintf(modeStr, sizeof(modeStr), "Primary Fire");
 				//primary fire image

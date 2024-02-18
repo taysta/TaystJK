@@ -18,8 +18,8 @@
 
 #define HEALTH_H			12
 #define HEALTH_W			16
-#define HEALTH_X			64
-#define HEALTH_Y			420
+#define HEALTH_X			32
+#define HEALTH_Y			445
 #define HEALTH_GAP			0.8f
 
 //abilities
@@ -378,9 +378,9 @@ typedef struct {
 #define CYCLE_LAST_USEABLE_WEAPON WP_NUM_WEAPONS
 #define CYCLE_SMALL_ICON_SIZE 30
 #define CYCLE_BIG_ICON_SIZE 40
-#define CYCLE_PAD (-8)
-#define CYCLE_X_POS 585
-#define CYCLE_Y_POS 450
+#define CYCLE_PAD (-6)
+#define CYCLE_X_POS 608
+#define CYCLE_Y_POS 475
 #define CYCLE_TEXT_SIZE 0.6f
 void CG_DrawWeaponSelectTribes();
 qboolean IsWeaponSelectable(int weapon);

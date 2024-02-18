@@ -3835,21 +3835,20 @@ static void CG_DrawTaystHUD(char* s) {
     char nameBuf[64];
     char nameBuf2[64];
 
-
     float nameFontSize = 0.5f;
     float timerFontSize = 1.0f;
     float scoreFontSize = 1.4f;
 
-    float topPadding = 15.0f;
+    float topPadding = 12.0f;
     float widthPadding = 15.0f;
-    float boxHeights = 25.0f;
+    float boxHeights = 20.0f;
     float iconHeight;
 
     w = CG_Text_Width(s, 1.0f, FONT_LARGE);
     background.x = (SCREEN_WIDTH / 2.0f - (w + 10.0f) / 2.0f);
     background.y = 0.0f + topPadding;
     background.w = w + 10.0f;
-    background.h = 22.0f;
+    background.h = boxHeights;
 
     //draw the new timer
     if(cg_drawTimer.integer == 7) {
@@ -3904,11 +3903,11 @@ static void CG_DrawTaystHUD(char* s) {
                 redBackground.x = (320.0f);
             }
 
-            blueBackground.y = 15.0f;
-            redBackground.y = 15.0f;
+            blueBackground.y = topPadding;
+            redBackground.y = topPadding;
 
-            blueBackground.h = 22.0f;
-            redBackground.h = 22.0f;
+            blueBackground.h = boxHeights;
+            redBackground.h = boxHeights;
 
             overlayXPos = redBackground.x + redBackground.w;
 
@@ -3943,7 +3942,7 @@ static void CG_DrawTaystHUD(char* s) {
 
 			if (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY) {
 				const int returnTime = (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) ? 45000 : 30000;
-
+				const float textPad = 10.0f;
 				if (cgs.blueflag != FLAG_TAKEN) {
 					cgs.redFlagCarrier = NULL;
 				} else {
@@ -3956,7 +3955,6 @@ static void CG_DrawTaystHUD(char* s) {
 						}
 					}
 				}
-
 				if (cgs.redflag != FLAG_TAKEN) {
 					cgs.blueFlagCarrier = NULL;
 				} else {
@@ -3969,7 +3967,6 @@ static void CG_DrawTaystHUD(char* s) {
 						}
 					}
 				}
-
 				if(cgs.redflag == FLAG_DROPPED){
 					if(!cgs.redFlagTime) {
 						cgs.redFlagTime = cg.time;
@@ -3999,7 +3996,7 @@ static void CG_DrawTaystHUD(char* s) {
 					char blueFlagTimeStr[8] = {0};
 					int secs = (returnTime - (cg.time - cgs.blueFlagTime)) / 1000;
 					Com_sprintf(blueFlagTimeStr, sizeof(blueFlagTimeStr), ":%02i", secs);
-					CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) - CG_Text_Width(blueFlagTimeStr, 0.6f, FONT_MEDIUM),
+					CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) - CG_Text_Width(blueFlagTimeStr, 0.6f, FONT_MEDIUM) - textPad * cgs.widthRatioCoef,
 								  blueBackground.y,
 								  0.6f, colorWhite, blueFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
 					trap->R_SetColor(colorWhite);
@@ -4013,7 +4010,7 @@ static void CG_DrawTaystHUD(char* s) {
 					if(cgs.redFlagCarrier) {
 						Com_sprintf(blueFlagStatus, sizeof(blueFlagStatus), "%s", cgs.redFlagCarrier->name);
 						CG_Text_Paint(blueBackground.x - (16 * cgs.widthRatioCoef) -
-									  CG_Text_Width(blueFlagStatus, 0.6f, FONT_MEDIUM),
+									  CG_Text_Width(blueFlagStatus, 0.6f, FONT_MEDIUM) - textPad * cgs.widthRatioCoef,
 									  blueBackground.y,
 									  0.6f, colorWhite, blueFlagStatus, 0, 0, ITEM_TEXTSTYLE_SHADOWED,
 									  FONT_MEDIUM);
@@ -4033,7 +4030,7 @@ static void CG_DrawTaystHUD(char* s) {
 					char redFlagTimeStr[8] = {0};
 					int secs = (returnTime - (cg.time - cgs.redFlagTime)) / 1000;
 					Com_sprintf(redFlagTimeStr, sizeof(redFlagTimeStr), ":%02i", secs);
-					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
+					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef + textPad * cgs.widthRatioCoef, redBackground.y,
 								  0.6f, colorWhite, redFlagTimeStr, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
 
 					trap->R_SetColor(colorWhite);
@@ -4046,7 +4043,7 @@ static void CG_DrawTaystHUD(char* s) {
 							   12 * cgs.widthRatioCoef, 12, cgs.media.flagTakenShader);
 					if(cgs.blueFlagCarrier) {
 					Com_sprintf(redFlagStatus, sizeof(redFlagStatus), "%s", cgs.blueFlagCarrier->name);
-					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef, redBackground.y,
+					CG_Text_Paint(overlayXPos + 16 * cgs.widthRatioCoef + textPad * cgs.widthRatioCoef, redBackground.y,
 								  0.6f, colorWhite,redFlagStatus, 0, 0, ITEM_TEXTSTYLE_SHADOWED,
 								  FONT_MEDIUM);
 					}
