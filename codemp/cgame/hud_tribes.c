@@ -390,8 +390,17 @@ void CG_DrawWeaponSelectTribes(void) {
 
 	int bits = cg.predictedPlayerState.stats[STAT_WEAPONS];
 	int count = CountWeapons(bits);
-	if (count <= 1) {
-		return; // If only the current weapon is available, don't draw additional slots
+	int holdableCount = 0;
+
+	// Count holdable items
+	for (int i = 0; i < HI_NUM_HOLDABLE; i++) {
+		if ((cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i)) && i != HI_NONE) {
+			holdableCount++;
+		}
+	}
+
+	if (count <= 1 && holdableCount == 0) {
+		return; // If only the current weapon is available and no holdable items, don't draw
 	}
 
 	int smallIconSize = CYCLE_SMALL_ICON_SIZE;
@@ -402,7 +411,7 @@ void CG_DrawWeaponSelectTribes(void) {
 
 	int weaponOrderSize = sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]);
 
-	// Calculate the total height required for all weapon icons
+	// Calculate the total height required for all icons (weapons + holdable items)
 	for (int i = 0; i < weaponOrderSize; i++) {
 		int weapon = weaponCycleOrder[i];
 		if ((bits & (1 << weapon)) && IsWeaponSelectable(weapon)) {
@@ -411,10 +420,13 @@ void CG_DrawWeaponSelectTribes(void) {
 		}
 	}
 
+	// Include holdable items in the total height calculation
+	totalHeight += holdableCount * (smallIconSize + pad);
+
 	// Starting y position from the bottom
 	int yStart = CYCLE_Y_POS - totalHeight;
 
-	int slotNumber = 1;  // Start from slot 1
+	int slotNumber = 1;  // Start from slot 1 for weapons
 	for (int i = 0; i < weaponOrderSize; i++) {
 		int weapon = weaponCycleOrder[i];
 		if ((bits & (1 << weapon)) && IsWeaponSelectable(weapon)) {
@@ -425,7 +437,18 @@ void CG_DrawWeaponSelectTribes(void) {
 			slotNumber++;  // Increment slot number for next weapon
 		}
 	}
+
+	// Draw holdable items
+	for (int i = 0; i < HI_NUM_HOLDABLE; i++) {
+		if (i && i != HI_JETPACK && cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i)) {
+			int xPosition = xRightMost - smallIconSize; // Align to the right
+			CG_DrawPic(xPosition, yStart, smallIconSize * cgs.widthRatioCoef, smallIconSize, cgs.media.invenIcons[i]);
+			yStart += smallIconSize + pad; // Move up for the next holdable item
+			slotNumber++;  // Increment slot number for next holdable item
+		}
+	}
 }
+
 
 tribesPack CG_TribesPack() {
 	tribesPack packOut;
