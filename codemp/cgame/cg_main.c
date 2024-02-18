@@ -2991,7 +2991,8 @@ Ghoul2 Insert End
 	CG_InitDisplayContext();
 	cgDC.Assets.qhSmallFont  = trap->R_RegisterFont("ocr_a");
 	cgDC.Assets.qhMediumFont = trap->R_RegisterFont("ergoec");
-	cgDC.Assets.qhBigFont = cgDC.Assets.qhMediumFont;
+	cgDC.Assets.qhBigFont =  trap->R_RegisterFont("anewhope");
+	cgDC.Assets.qhSmall2Font = trap->R_RegisterFont("arialnb");
 
 	memset( &cgs, 0, sizeof( cgs ) );
 	memset( cg_weapons, 0, sizeof(cg_weapons) );
