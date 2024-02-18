@@ -439,10 +439,33 @@ void CG_DrawWeaponSelectTribes(void) {
 	}
 
 	// Draw holdable items
+	qboolean first = qtrue;
 	for (int i = 0; i < HI_NUM_HOLDABLE; i++) {
 		if (i && i != HI_JETPACK && cg.snap->ps.stats[STAT_HOLDABLE_ITEMS] & (1 << i)) {
 			int xPosition = xRightMost - smallIconSize; // Align to the right
 			CG_DrawPic(xPosition, yStart, smallIconSize * cgs.widthRatioCoef, smallIconSize, cgs.media.invenIcons[i]);
+
+			if(first == qtrue) {
+				char invCommand[MAX_QPATH];
+				Com_sprintf(invCommand, sizeof(invCommand), "invfree");
+
+				if (keyCodeNames[trap->Key_GetKey(invCommand)] != NULL) {
+					char keyStr[MAX_QPATH];
+					Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(invCommand)]);
+
+					CG_Text_Paint(CYCLE_X_POS + 2.0f,
+								  (float) yStart + 0.5f * (float) smallIconSize -
+								  0.5f * (float) CG_Text_Height(keyStr, 0.5f, FONT_SMALL2),
+								  0.5f,
+								  colorWhite,
+								  keyStr,
+								  0.0f,
+								  0,
+								  3,
+								  FONT_SMALL2);
+				}
+				first = qfalse;
+			}
 			yStart += smallIconSize + pad; // Move up for the next holdable item
 			slotNumber++;  // Increment slot number for next holdable item
 		}
