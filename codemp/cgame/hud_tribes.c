@@ -249,7 +249,23 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 
     if ((weapon != WP_SABER) && (weapon != WP_MELEE) && (weapon != WP_STUN_BATON) && (weapon != WP_BRYAR_PISTOL)
 		&& cg_weaponCycleAmmo.integer) {
-        int value = cg.predictedPlayerState.ammo[weaponData[weapon].ammoIndex];
+        int value = 0;
+
+		char fireModeCommand[MAX_QPATH];
+		char fireCommand[MAX_QPATH];
+		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode", slotNumber);
+		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire", slotNumber);
+
+		if ((keyCodeNames[trap->Key_GetKey(fireModeCommand)] != NULL) && (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL)) {
+			if (cg.singlefireAlt) {
+				value = cg.predictedPlayerState.ammo[weaponData[weapon].ammoIndex] / weaponData[weapon].altEnergyPerShot;
+			} else {
+				value = cg.predictedPlayerState.ammo[weaponData[weapon].ammoIndex] / weaponData[weapon].energyPerShot;
+			}
+		} else {
+			value = cg.predictedPlayerState.ammo[weaponData[weapon].ammoIndex] / weaponData[weapon].energyPerShot;
+		}
+
         char ammoStr[MAX_QPATH];
         Com_sprintf(ammoStr, sizeof(ammoStr), "%i", value);
 
@@ -283,9 +299,15 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 			  3,
 			  FONT_SMALL2);
     }
-
 	char slotCommand[MAX_QPATH];
-	Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
+	if(weapon == WP_THERMAL){
+		Com_sprintf(slotCommand, sizeof(slotCommand), "thrownade");
+		if(keyCodeNames[trap->Key_GetKey(slotCommand)] == NULL){
+			Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
+		}
+	} else {
+		Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
+	}
 
 	if (keyCodeNames[trap->Key_GetKey(slotCommand)] != NULL) {
 		char keyStr[MAX_QPATH];
