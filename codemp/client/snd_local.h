@@ -182,7 +182,7 @@ typedef struct wavinfo_s {
 
 //====================================================================
 
-#define	MAX_CHANNELS			32
+#define	MAX_CHANNELS			96
 extern	channel_t   s_channels[MAX_CHANNELS];
 
 extern	int		s_paintedtime;
