@@ -326,14 +326,12 @@ jobs:
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
       - name: Create latest build
-        uses: softprops/action-gh-release@v1
+        uses: crowbarmaster/GH-Automatic-Releases@latest
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generate_release_notes: true
-          tag_name: "latest"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
           prerelease: false
-          append_body: false
-          name: Latest Build
+          title: Latest Build
           files: |
             *.zip
             *.tar.gz
@@ -360,14 +358,12 @@ jobs:
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
 
       - name: Create latest beta build
-        uses: softprops/action-gh-release@v1
+        uses: crowbarmaster/GH-Automatic-Releases@latest
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          generate_release_notes: true
-          tag_name: "latest-beta"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest-beta"
           prerelease: true
-          append_body: false
-          name: Beta Build
+          title: Beta Build
           files: |
             *.zip
             *.tar.gz
