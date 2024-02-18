@@ -3506,34 +3506,34 @@ void CG_InvUseAvailable(void)
 	switch(cg.itemSelect)
 	{
 		case HI_SEEKER:
-			trap->SendConsoleCommand("use_seeker");
+			trap->SendConsoleCommand("use_seeker\n");
 			break;
 		case HI_SHIELD:
-			trap->SendConsoleCommand("use_field");
+			trap->SendConsoleCommand("use_field\n");
 			break;
 		case HI_MEDPAC:
-			trap->SendConsoleCommand("use_bacta");
+			trap->SendConsoleCommand("use_bacta\n");
 			break;
 		case HI_MEDPAC_BIG:
-			trap->SendConsoleCommand("use_bactabig");
+			trap->SendConsoleCommand("use_bactabig\n");
 			break;
 		case HI_BINOCULARS:
-			trap->SendConsoleCommand("use_electrobinoculars");
+			trap->SendConsoleCommand("use_electrobinoculars\n");
 			break;
 		case HI_SENTRY_GUN:
-			trap->SendConsoleCommand("use_sentry");
+			trap->SendConsoleCommand("use_sentry\n");
 			break;
 		case HI_HEALTHDISP:
-			trap->SendConsoleCommand("use_healthdisp");
+			trap->SendConsoleCommand("use_healthdisp\n");
 			break;
 		case HI_AMMODISP:
-			trap->SendConsoleCommand("use_ammodisp");
+			trap->SendConsoleCommand("use_ammodisp\n");
 			break;
 		case HI_EWEB:
-			trap->SendConsoleCommand("use_eweb");
+			trap->SendConsoleCommand("use_eweb\n");
 			break;
 		case HI_CLOAK:
-			trap->SendConsoleCommand("use_cloak");
+			trap->SendConsoleCommand("use_cloak\n");
 			break;
 		default:
 			break;
