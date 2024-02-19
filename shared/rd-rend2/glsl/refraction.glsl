@@ -349,6 +349,7 @@ void main()
 	normal = DeformNormal( position, normal );
 #endif
 
+	vec3 wsPosition = mat3(u_ModelMatrix) * position;
 	mat4 MVP = u_viewProjectionMatrix * u_ModelMatrix;
 	gl_Position = MVP * vec4(position, 1.0);
 
