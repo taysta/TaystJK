@@ -86,19 +86,6 @@ layout(std140) uniform Entity
 
 in vec3	  var_Position[];
 
-void quad(in vec3 first, in vec3 second, in vec3 L, in mat4 MVP)
-{
-    gl_Position = MVP * vec4(first, 1.0);
-    EmitVertex();
-    gl_Position = MVP * vec4(first - L, 1.0);
-    EmitVertex();
-    gl_Position = MVP * vec4(second, 1.0);
-    EmitVertex();
-    gl_Position = MVP * vec4(second - L, 1.0);
-    EmitVertex();
-	EndPrimitive();
-}
-
 void main()
 {
 	vec3 BmA = var_Position[1].xyz - var_Position[0].xyz;
@@ -107,28 +94,63 @@ void main()
 	mat4 MVP = u_viewProjectionMatrix * u_ModelMatrix;
 
 	if (dot(cross(BmA,CmA), -u_ModelLightDir.xyz) > 0.0) {
-		vec3 L = u_ModelLightDir.xyz*u_LocalLightRadius;
+		vec3 L = u_ModelLightDir.xyz*u_LocalLightOrigin.w;
 
-		// front cap
-		gl_Position = MVP * vec4(var_Position[0].xyz, 1.0);
+		vec4 positions[6] = vec4[6](
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[0], 1.0),
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[1], 1.0),
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[2], 1.0),
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[0] - L, 1.0),
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[1] - L, 1.0),
+			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[2] - L, 1.0)
+		);
+
+		// front cap, avoids z-fighting with other shaders by NOT using the MVP, the other surfaces won't create z-fighting
+		gl_Position = positions[0];
 		EmitVertex();
-		gl_Position = MVP * vec4(var_Position[1].xyz, 1.0);
+		gl_Position = positions[1];
 		EmitVertex();
-		gl_Position = MVP * vec4(var_Position[2].xyz, 1.0);
+		gl_Position = positions[2];
 		EmitVertex();
 		EndPrimitive();
 
 		// sides
-		quad(var_Position[0], var_Position[1], L, MVP);
-		quad(var_Position[1], var_Position[2], L, MVP);
-		quad(var_Position[2], var_Position[0], L, MVP);
+		gl_Position = positions[0];
+		EmitVertex();
+		gl_Position = positions[3];
+		EmitVertex();
+		gl_Position = positions[1];
+		EmitVertex();
+		gl_Position = positions[4];
+		EmitVertex();
+		EndPrimitive();
 
+		gl_Position = positions[1];
+		EmitVertex();
+		gl_Position = positions[4];
+		EmitVertex();
+		gl_Position = positions[2];
+		EmitVertex();
+		gl_Position = positions[5];
+		EmitVertex();
+		EndPrimitive();
+
+		gl_Position = positions[2];
+		EmitVertex();
+		gl_Position = positions[5];
+		EmitVertex();
+		gl_Position = positions[0];
+		EmitVertex();
+		gl_Position = positions[3];
+		EmitVertex();
+		EndPrimitive();
+		
 		// back cap
-		gl_Position = MVP * vec4(var_Position[2].xyz - L, 1.0);
+		gl_Position = positions[5];
 		EmitVertex();
-		gl_Position = MVP * vec4(var_Position[1].xyz - L, 1.0);
+		gl_Position = positions[4];
 		EmitVertex();
-		gl_Position = MVP * vec4(var_Position[0].xyz - L, 1.0);
+		gl_Position = positions[3];
 		EmitVertex();
 		EndPrimitive();
     }
