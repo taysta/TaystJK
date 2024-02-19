@@ -4294,7 +4294,7 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 //			LL(surf->maxVertBoneWeights);
 
 			//triCount += surf->numTriangles;
-										
+
 			if ( surf->numVerts > SHADER_MAX_VERTEXES ) {
 				Com_Error(
 					ERR_DROP,
