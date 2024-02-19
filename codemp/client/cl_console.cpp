@@ -43,6 +43,7 @@ cvar_t		*con_autoclear;
 cvar_t		*con_notifywords;
 cvar_t		*con_notifyconnect;
 cvar_t		*con_notifyvote;
+cvar_t		*con_height;
 
 #define	DEFAULT_CONSOLE_WIDTH	78
 #define TIMESTAMP_LENGTH 9
@@ -452,19 +453,19 @@ void Con_CheckResize (void)
 	else
 	{
 		float scale = (con_scale && con_scale->value > 0.0f) ? con_scale->value : 1.0f;
-		
+
 		width = (cls.glconfig.vidWidth / (scale * SMALLCHAR_WIDTH)) - 2;
-		
+
 		if (width == con.linewidth)
 			return;
-		
+
 		con.charWidth = scale * SMALLCHAR_WIDTH;
 		con.charHeight = scale * SMALLCHAR_HEIGHT;
-		
+
 		g_consoleField.widthInChars = width;
 		for (i = 0; i < COMMAND_HISTORY; i++) {
 			historyEditLines[i].widthInChars = width;
-			
+
 		}
 
 		// on wide screens, we will center the text
@@ -542,6 +543,7 @@ void Con_Init (void) {
 	con_notifywords = Cvar_Get("con_notifywords", "0", CVAR_ARCHIVE, "Notifies you when defined words are mentioned");
 	con_notifyconnect = Cvar_Get("con_notifyconnect", "0", CVAR_ARCHIVE, "Notifies you when someone connects to the server");
 	con_notifyvote = Cvar_Get("con_notifyvote", "1", CVAR_ARCHIVE, "Notifies you when someone calls a vote");
+	con_height = Cvar_Get ("con_height", "0.5", CVAR_ARCHIVE_ND);
 
 	Field_Clear( &g_consoleField );
 	g_consoleField.widthInChars = DEFAULT_CONSOLE_WIDTH;
@@ -954,6 +956,8 @@ void Con_DrawSolidConsole( float frac ) {
 			(lines-(con.charHeight*2+con.charHeight/2)) + padding, JK_VERSION[x] );
 	}
 
+	// draw the input prompt, user text, and cursor if desired
+	Con_DrawInput ();
 
 	// Draw time and date
 	time(&rawtime);
@@ -967,9 +971,6 @@ void Con_DrawSolidConsole( float frac ) {
 	for (x = 0; x<i; x++) {
 		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2) + padding, ts[x]);
 	}
-
-	// draw the input prompt, user text, and cursor if desired
-	Con_DrawInput ();
 
 	// draw the text
 	con.vislines = lines;
@@ -1102,7 +1103,7 @@ Scroll it up or down
 void Con_RunConsole (void) {
 	// decide on the destination height of the console
 	if ( Key_GetCatcher( ) & KEYCATCH_CONSOLE )
-		con.finalFrac = con.tempFrac;		// visibility
+		con.finalFrac = (con_height->value != 0) ? con_height->value : con.tempFrac;
 	else
 		con.finalFrac = 0;				// none visible
 

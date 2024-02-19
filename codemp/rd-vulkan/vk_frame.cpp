@@ -1017,9 +1017,9 @@ void vk_refraction_extract( void ) {
     VkImage srcImage;
 	VkImage dstImage;
 	VkImageLayout srcImageLayout;
-	VkAccessFlagBits srcImageAccess;
+	//VkAccessFlagBits srcImageAccess;
 
-	srcImageAccess = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	//srcImageAccess = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 	srcImageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 	srcImage = vk.color_image;
 	dstImage = vk.refraction_extract_image;
