@@ -393,7 +393,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 					newThirdPersonRange = thirdPersonRange * thirdPersonRange / 176;
 				else
 					newThirdPersonRange = thirdPersonRange * thirdPersonRange / cg_zoomFov.integer;
-			} 
+			}
 			else
 			{
 				if (cg_zoomFov.integer < 1)
@@ -410,7 +410,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 			} else {
 				newThirdPersonRange = thirdPersonRange;
 			}
-		}		
+		}
 //JAPRO - Clientside - Allow for +zoom - End
 
 	if (cg.snap && cg.snap->ps.m_iVehicleNum)
@@ -1095,18 +1095,18 @@ static void CG_OffsetFirstPersonView( void ) {
 	{
 		if (!(cgs.jcinfo & JAPRO_CINFO_SCREENSHAKE))
 		{
-		}	
+		}
 		else if ( cg.damageTime ) {
 			ratio = cg.time - cg.damageTime;
-			if ( ratio < DAMAGE_DEFLECT_TIME ) 
+			if ( ratio < DAMAGE_DEFLECT_TIME )
 			{
 				ratio /= DAMAGE_DEFLECT_TIME;
 				angles[PITCH] += ratio * cg.v_dmg_pitch;
 				angles[ROLL] += ratio * cg.v_dmg_roll;
-			} else 
+			} else
 			{
 				ratio = 1.0 - ( ratio - DAMAGE_DEFLECT_TIME ) / DAMAGE_RETURN_TIME;
-				if ( ratio > 0 ) 
+				if ( ratio > 0 )
 				{
 					angles[PITCH] += ratio * cg.v_dmg_pitch;
 					angles[ROLL] += ratio * cg.v_dmg_roll;
@@ -1390,7 +1390,7 @@ static qboolean CG_CalcFov( void ) {
 					fov_x = 176;
 				else
 					fov_x = cg_zoomFov.integer;
-			} 
+			}
 			else
 			{
 				if (cg_zoomFov.integer < 1)
@@ -2536,7 +2536,7 @@ static QINLINE void CG_DoAsync( void ) {
 		//Need to decouple frames from kick i guess.
 
 		//If we are on kick 1, check to see if our cvar for it is above frames.  If so , kick and increment kickcount.
-		
+
 		//Increment
 		if (cg.numFKFrames > cg_fkDuration.integer) {
 			trap->SendConsoleCommand("-moveup\n");
@@ -3044,7 +3044,6 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	if ( !cg.hyperspace ) {
 		CG_AddPacketEntities(qfalse);            // adter calcViewValues, so predicted player state is correct
 		CG_AddMarks();
-		CG_AddLocalEntities();
 #if _NEWTRAILS
 		if (cg.drawingStrafeTrails) {
 			CG_AddAllStrafeTrails();
@@ -3064,6 +3063,11 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 	if ( cg.testModelEntity.hModel ) {
 		CG_AddTestModel();
 	}
+
+	if ( !cg.hyperspace ) {
+		CG_AddLocalEntities();
+	}
+
 	cg.refdef.time = cg.time;
 	memcpy( cg.refdef.areamask, cg.snap->areamask, sizeof( cg.refdef.areamask ) );
 
