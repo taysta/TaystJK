@@ -905,9 +905,9 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 
 	// model has only 1 LOD level, skip computations and bias
 #ifdef RF_NOLOD
-	if ( currentModel->numLods < 2 || ent->e.renderfx & RF_NOLOD )	
+	if ( currentModel->numLods < 2 || ent->e.renderfx & RF_NOLOD )
 #else
-	if ( currentModel->numLods < 2 )	
+	if ( currentModel->numLods < 2 )
 #endif
 		return(0);
 
@@ -923,7 +923,7 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 		largestScale = ent->e.modelScale[2];
 	if (!largestScale)
 		largestScale = 1;
-	
+
 #if 0
 	float radius = Q_fabs(0.75 * largestScale * ent->e.radius);
 
@@ -938,14 +938,14 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 
 		projectedRadius = width / depth;
 
-		//if (projectedRadius > 1.0f) 
+		//if (projectedRadius > 1.0f)
 		//	projectedRadius = 1.0f;
 
 		if (projectedRadius != 0) {
 			lodscale = (r_lodscale->value + r_autolodscalevalue->value);
-			if (lodscale > 20) 
+			if (lodscale > 20)
 				lodscale = 20;
-			else if (lodscale < 0) 
+			else if (lodscale < 0)
 				lodscale = 0;
 
 			flod = 1.0f - projectedRadius * lodscale;
@@ -963,12 +963,12 @@ static int G2_ComputeLOD( trRefEntity_t *ent, const model_t *currentModel, int l
 
 	// we reduce the radius to make the LOD match other model types which use
 	// the actual bound box size
-	if ( projectedRadius != 0 )	
+	if ( projectedRadius != 0 )
  	{
  		lodscale = (r_lodscale->value+r_autolodscalevalue->value);
- 		if ( lodscale > 20 ) 
+ 		if ( lodscale > 20 )
 		{
-			lodscale = 20;	 
+			lodscale = 20;
 		}
 		else if ( lodscale < 0 )
 		{
@@ -3508,9 +3508,9 @@ static inline float G2_GetVertBoneWeightNotSlow( const mdxmVertex_t *pVert, cons
 //This is a slightly mangled version of the same function from the sof2sp base.
 //It provides a pretty significant performance increase over the existing one.
 void RB_SurfaceGhoul(CRenderableSurface* surf)
-{	
+{
 	mdxmSurface_t	*surface;
-	
+
 #ifdef G2_PERFORMANCE_ANALYSIS
 	G2PerformanceTimer_RB_SurfaceGhoul.Start();
 #endif
