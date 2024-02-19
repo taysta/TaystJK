@@ -9240,10 +9240,11 @@ if (pm->ps->duelInProgress)
 	}
 #if _GAME
 #if _SPECIFICWEAPONTIME
-	if (g_tweakWeapons.integer & WT_TRIBES) {
-		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+	if (g_tweakWeapons.integer & WT_TRIBES) { //Bug where this doesnt get called if wp_saber is out? but maybe thats fine to limit nades if holding saber?
+		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0)
 			((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] -= pml.msec;
-		}
+		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[WP_THERMAL] > 0)
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[WP_THERMAL] -= pml.msec;
 	}
 #endif
 #endif
