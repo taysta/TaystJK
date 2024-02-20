@@ -143,7 +143,7 @@ void SetGametypeFuncSolids (void) {
 	for (i = 0; i < level.num_entities; i++) {
 		ent = &g_entities[i];
 		if (ent->inuse) {
-			if (ent->s.eType == ET_MOVER && ent->spawnflags & 512) {				
+			if (ent->s.eType == ET_MOVER && ent->spawnflags & 512) {
 				if (level.gametype == GT_CTF || level.gametype == GT_CTY) { //Make nonsolid/invis
 					ent->r.contents = 0;
 					ent->r.svFlags |= SVF_NOCLIENT;
@@ -153,9 +153,9 @@ void SetGametypeFuncSolids (void) {
 					ent->r.contents = CONTENTS_SOLID;
 					ent->r.svFlags &= ~SVF_NOCLIENT;
 					ent->s.eFlags &= ~EF_NODRAW;
-				}			
+				}
 			}
-			else if (ent->r.contents == CONTENTS_TRIGGER && ent->spawnflags & 8192) {		
+			else if (ent->r.contents == CONTENTS_TRIGGER && ent->spawnflags & 8192) {
 				if (level.gametype == GT_CTF || level.gametype == GT_CTY) { //Make nonsolid/invis
 					ent->flags |= FL_INACTIVE;
 				}
@@ -495,7 +495,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	if (level.gametype == GT_SIEGE)
 	{ //just get these configstrings registered now...
-		
+
 		while (i < MAX_CUSTOM_SIEGE_SOUNDS)
 		{
 			if (!bg_customSiegeSoundNames[i])
@@ -505,7 +505,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 			G_SoundIndex((char *)bg_customSiegeSoundNames[i]);
 			i++;
 		}
-		
+
 		/*
 		for (i = 0; i < MAX_CUSTOM_SIEGE_SOUNDS; i++)
 		{
@@ -527,7 +527,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 		i++;
 	}
 	*/
-	
+
 
 	if ( level.gametype == GT_JEDIMASTER ) {
 		gentity_t *ent = NULL;
@@ -2138,7 +2138,7 @@ void PrintStats(int client) {
 	//Conditional label shit here:
 	//If ctf, ungroup suicides from deaths, otherwise just count them as deaths.
 	//If TFFA and showdrains , add drainratio
-	//If TFFA and teampowers, add TE/TH 
+	//If TFFA and teampowers, add TE/TH
 	//If showaccuracy, show accuracy
 	//If CTF, show caps, returns, carrier kills
 
@@ -2157,12 +2157,12 @@ void PrintStats(int client) {
 			j++;
 			if (j%2)
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), S_COLOR_YELLOW);
-			else 
+			else
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), S_COLOR_GREEN);
 
-			if(showAccuracy && cl->accuracy_shots) 
+			if(showAccuracy && cl->accuracy_shots)
 				accuracy = 100.0f * (float)cl->accuracy_hits / (float)cl->accuracy_shots;
-			if (cl->ps.persistant[PERS_KILLED]) 
+			if (cl->ps.persistant[PERS_KILLED])
 				dmgPerDeath = cl->pers.stats.damageGiven / cl->ps.persistant[PERS_KILLED];
 			if (cl->pers.stats.enemyDrainDamage + cl->pers.stats.teamDrainDamage)
 				drainRatio = 100.0f * (float)cl->pers.stats.enemyDrainDamage / (float)(cl->pers.stats.enemyDrainDamage + cl->pers.stats.teamDrainDamage);
@@ -2180,7 +2180,7 @@ void PrintStats(int client) {
 			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgNet), int_to_string(cl->pers.stats.damageGiven - cl->pers.stats.damageTaken - cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgPerDeath), int_to_string(dmgPerDeath, numbuf, sizeof(numbuf)));
-			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);	
+			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			if (level.gametype == GT_TEAM && g_friendlyFire.value) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lTK), int_to_string(cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
@@ -2193,7 +2193,7 @@ void PrintStats(int client) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lFragCarrier), int_to_string(cl->pers.teamState.fragcarrier, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 
-			}	
+			}
 			if (showAccuracy) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lAccuracy), int_to_string(accuracy, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
@@ -2207,7 +2207,7 @@ void PrintStats(int client) {
 			if (showDrain) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDrain), int_to_string(drainRatio, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			}	
+			}
 			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "^7%-*s", strlen(lName), cl->pers.netname);
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), "\n");
@@ -3590,7 +3590,7 @@ void G_RunFrame( int levelTime ) {
 					continue;
 				if (!level.clients[j].sess.raceMode || (level.clients[j].sess.sessionTeam == TEAM_SPECTATOR)) //Not in racemode, or in spec, show the msg?
 					trap->SendServerCommand( j, va("cp \"Match has been paused.\n%.0f seconds remaining\n\"", ceilf( (level.pause.time - level.time) / 1000.0f)) );
-			}	
+			}
 			//trap->SendServerCommand( -1, va("cp \"Match has been paused.\n%.0f seconds remaining\n\"", ceilf( (level.pause.time - level.time) / 1000.0f)) );
 			lastMsgTime = level.time;
 		}
@@ -3600,13 +3600,13 @@ void G_RunFrame( int levelTime ) {
 	}
 	else if ( level.pause.state == PAUSE_UNPAUSING ) {
 		if ( lastMsgTime < level.time - 500 ) {
-			
+
 			for (j=0; j<MAX_CLIENTS; j++) {//Also print to anyone spectating them..
 				if (!g_entities[j].inuse)
 					continue;
 				if (!level.clients[j].sess.raceMode || (level.clients[j].sess.sessionTeam == TEAM_SPECTATOR)) //Not in racemode, or in spec, show the msg?
 					trap->SendServerCommand( j, va("cp \"MATCH IS UNPAUSING\nin %.0f...\n\"", ceilf( (level.pause.time - level.time) / 1000.0f)) );
-			}	
+			}
 			//trap->SendServerCommand( -1, va("cp \"MATCH IS UNPAUSING\nin %.0f...\n\"", ceilf( (level.pause.time - level.time) / 1000.0f)) );
 			lastMsgTime = level.time;
 		}
@@ -3618,7 +3618,7 @@ void G_RunFrame( int levelTime ) {
 					continue;
 				if (!level.clients[j].sess.raceMode || (level.clients[j].sess.sessionTeam == TEAM_SPECTATOR)) //Not in racemode, or in spec, show the msg?
 					trap->SendServerCommand( i, "cp \"Fight!\n\"" );
-			}	
+			}
 			//trap->SendServerCommand( -1, "cp \"Fight!\n\"" );
 		}
 	}
@@ -3915,7 +3915,7 @@ void G_RunFrame( int levelTime ) {
 							ent->client->ps.jetpackFuel -= 4;
 						//Special case for down jet here?
 					}
-					
+
 					if (ent->client->ps.jetpackFuel <= 0)
 					{ //turn it off
 						ent->client->ps.jetpackFuel = 0;
@@ -3950,7 +3950,7 @@ void G_RunFrame( int levelTime ) {
 						else if (!ent->waterlevel)
 							ent->client->ps.fd.forcePower -= 4;//Light
 
-						if (ent->client->ps.fd.forcePower <= 0) 
+						if (ent->client->ps.fd.forcePower <= 0)
 							ent->client->ps.fd.forcePower = 0;
 						ent->client->jetPackDebReduce = level.time + JETPACK_DEFUEL_RATE;
 					}
@@ -4157,8 +4157,8 @@ void G_RunFrame( int levelTime ) {
 					ent->client->pers.stats.displacement += xyspeed/sv_fps.value;
 					ent->client->pers.stats.displacementSamples++;
 					if (xyspeed > ent->client->pers.stats.topSpeed)
-						ent->client->pers.stats.topSpeed = xyspeed; //uhh, round?           
-				}	
+						ent->client->pers.stats.topSpeed = xyspeed; //uhh, round?
+				}
 				if (ent->client->ps.duelInProgress) {
 					if (!ent->client->pers.stats.lowestHP || ent->client->ps.stats[STAT_HEALTH] < ent->client->pers.stats.lowestHP)
 						ent->client->pers.stats.lowestHP = ent->client->ps.stats[STAT_HEALTH];
@@ -4201,7 +4201,7 @@ void G_RunFrame( int levelTime ) {
 	// NOW run the missiles, with all players backward-reconciled
 	// to the positions they were in exactly 50ms ago, at the end
 	// of the last server frame
-	
+
 	/*
 	if (g_unlagged.integer & UNLAGGED_PROJ_REC)
 	{
@@ -4716,7 +4716,7 @@ static void G_AddSingleBox( vec3_t mins, vec3_t maxs ) {
 		bmaxs[0] = bmaxs[1] = x;
 		bmins[2] = -zd;
 		bmaxs[2] = zu;
-		
+
 		if ( developer.integer ) {
 			Com_Printf( "Loaded box entity %d\n", ent->s.number );
 			Com_Printf( "mins   %f %f %f\norigin %f %f %f\nmaxs   %f %f %f\nsolid: %d\nbmins   %f %f %f\nbmaxs   %f %f %f\n",

@@ -83,7 +83,20 @@ static void CVU_YDFA(void) {
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
 }
 */
+static void CVU_FixSaberMoveData(void) {
+	BG_FixSaberMoveData();
 
+	char sLegacyFixes[32];
+	trap->GetConfigstring(CS_LEGACY_FIXES, sLegacyFixes, sizeof(sLegacyFixes));
+
+	uint32_t legacyFixes = strtoul(sLegacyFixes, NULL, 0);
+	if (g_fixSaberMoveData.integer) {
+		legacyFixes |= (1 << LEGACYFIX_SABERMOVEDATA);
+	} else {
+		legacyFixes &= ~(1 << LEGACYFIX_SABERMOVEDATA);
+	}
+	trap->SetConfigstring(CS_LEGACY_FIXES, va("%" PRIu32, legacyFixes));
+}
 static void CVU_Headslide(void) {
 	g_slideOnPlayer.integer ?
 		(jcinfo.integer |= JAPRO_CINFO_HEADSLIDE) : (jcinfo.integer &= ~JAPRO_CINFO_HEADSLIDE);
@@ -555,12 +568,12 @@ static void CVU_TribesClass(void) {
 
 		trap->GetUserinfo(i, userinfo, sizeof(userinfo));
 		Q_strncpyz(model, Info_ValueForKey(userinfo, "model"), sizeof(model));
-	
+
 		if (g_tribesMode.integer == 1) {
 			if (!ent->client->pers.tribesClass) {
 				if (ent->health > 0)
 					G_Kill(ent);
-			}	
+			}
 			DetectTribesClass(ent, model);
 		}
 		else if (ent->client->pers.tribesClass) {
