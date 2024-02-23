@@ -62,8 +62,8 @@ jobs:
         run: |
           mv ./TaystJK-macos-arm64-Release-Non-Portable/*  TaystJK-macos-universal2.tar.gz
 
-      - name: Create latest build
-        uses: ModeSevenIndustrialSolutions/action-automatic-releases@latest
+      - name: Create latest ub2 build
+        uses: crowbarmaster/GH-Automatic-Releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "universal2"

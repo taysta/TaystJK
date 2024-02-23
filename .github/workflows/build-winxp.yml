@@ -45,7 +45,7 @@ jobs:
           }
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3.2
+        uses: microsoft/setup-msbuild@v2
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -96,13 +96,12 @@ jobs:
           7z a -r TaystJK-windowsxp-x86.zip ./TaystJK-windowsxp-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
           7z a -r TaystJK-windowsxp-x86_64.zip ./TaystJK-windowsxp-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
       - name: Create latest beta build
-        uses: softprops/action-gh-release@v1
+        uses: crowbarmaster/GH-Automatic-Releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          generate_release_notes: true
-          tag_name: "winxp"
+          automatic_release_tag: "winxp"
           prerelease: false
-          title: Latest Build
+          title: Latest WinXP Build
           files: |
             *.zip
 

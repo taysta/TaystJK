@@ -54,7 +54,7 @@ jobs:
           fetch-tags: true
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3.2
+        uses: microsoft/setup-msbuild@v2
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
