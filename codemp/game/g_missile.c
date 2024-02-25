@@ -401,7 +401,7 @@ gentity_t *CreateMissileNew( vec3_t org, vec3_t dir, float vel, int life, gentit
 	SnapVector(org);
 	VectorCopy( org, missile->s.pos.trBase );
 
-	if (owner->client->sess.raceMode) {
+	if (owner->client && owner->client->sess.raceMode) {
 		inheritance = 0;
 	}
 
