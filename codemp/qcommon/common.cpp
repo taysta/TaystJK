@@ -1795,6 +1795,8 @@ void Com_Frame( void ) {
 		// mess with msec if needed
 		msec = Com_ModifyMsec( msec );
 
+		NET_HTTP_ProcessEvents();
+
 		//
 		// server side
 		//

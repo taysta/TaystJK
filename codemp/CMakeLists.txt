@@ -213,6 +213,10 @@ if(BuildMPEngine OR BuildMPDed)
 	list(APPEND MPEngineAndDedIncludeDirectories ${ZLIB_INCLUDE_DIR})
 	list(APPEND MPEngineAndDedLibraries          ${ZLIB_LIBRARIES})
 
+	# mongoose
+	list(APPEND MPEngineAndDedIncludeDirectories 	${MVMPDEDIncludeDirs} ${MONGOOSE_INCLUDE_DIRS})
+	list(APPEND MPEngineAndDedLibraries 			${MVMPDEDLibraries} ${MONGOOSE_LIBRARIES})
+
 	set(MPEngineAndDedCgameFiles
 		"${MPDir}/cgame/cg_public.h"
 		)
@@ -268,7 +272,8 @@ if(BuildMPEngine OR BuildMPDed)
 		"${MPDir}/qcommon/matcomp.cpp"
 		"${MPDir}/qcommon/net_chan.cpp"
 		"${MPDir}/qcommon/net_ip.cpp"
-		"${MPDir}/qcommon/persistence.cpp"
+        "${MPDir}/qcommon/net_http.cpp"
+        "${MPDir}/qcommon/persistence.cpp"
 		"${MPDir}/qcommon/q_shared.cpp"
 		"${MPDir}/qcommon/qcommon.h"
 		"${MPDir}/qcommon/qfiles.h"

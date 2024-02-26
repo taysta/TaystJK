@@ -752,6 +752,24 @@ Ghoul2 Insert End
 	}
 	*/
 
+	if (!mv_httpdownloads || mv_httpdownloads->modified || mv_httpserverport->modified) {
+		NET_HTTP_StopServer();
+	}
+
+	// here because latched
+	mv_httpdownloads = Cvar_Get("mv_httpdownloads", "0", CVAR_SERVERINFO | CVAR_ARCHIVE | CVAR_LATCH);
+	mv_httpserverport = Cvar_Get("mv_httpserverport", "0", CVAR_ARCHIVE | CVAR_LATCH);
+
+	if (mv_httpdownloads->integer) {
+		if (!Q_stricmpn(mv_httpserverport->string, "http://", strlen("http://"))) {
+			Com_Printf("HTTP Downloads: redirecting to %s\n", mv_httpserverport->string);
+		} else {
+			sv.http_port = NET_HTTP_StartServer(mv_httpserverport->integer);
+		}
+	}
+
+	SVC_LoadWhitelist();
+
 #ifdef DEDICATED
 	for ( client_t *client = svs.clients; client - svs.clients < sv_maxclients->integer; client++) {
 		// bots will not request gamestate, so it must be manually sent
@@ -1158,4 +1176,8 @@ Ghoul2 Insert Start
 	// disconnect any local clients
 	if( sv_killserver->integer != 2 )
 		CL_Disconnect( qfalse );
+
+
+	NET_HTTP_StopServer();
+	sv.http_port = 0;
 }
