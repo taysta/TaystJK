@@ -8557,19 +8557,24 @@ void BG_GetVehicleSkinName(char *skinname, int len);
 
 void CG_CacheG2AnimInfo(char *modelName)
 {
-	void *g2 = NULL;
-	char *slash;
-	char useModel[MAX_QPATH] = {0};
-	char useSkin[MAX_QPATH] = {0};
-	int animIndex;
+    void *g2 = NULL;
+    char *slash;
+    char useModel[MAX_QPATH] = {0};
+    char useSkin[MAX_QPATH] = {0};
+    int animIndex;
 
-	Q_strncpyz(useModel, modelName, sizeof( useModel ) );
-	Q_strncpyz(useSkin, modelName, sizeof( useSkin ) );
+    Q_strncpyz(useModel, modelName, sizeof( useModel ) );
+    Q_strncpyz(useSkin, modelName, sizeof( useSkin ) );
 
-	if (modelName[0] == '$')
-	{ //it's a vehicle name actually, let's precache the whole vehicle
-		BG_GetVehicleModelName(useModel, useModel, sizeof( useModel ) );
-		BG_GetVehicleSkinName(useSkin, sizeof( useSkin ) );
+    if (modelName[0] == '$')
+    { //it's a vehicle name actually, let's precache the whole vehicle
+        char* vehType = &modelName[1];
+        int iVehIndex = BG_VehicleGetIndex(vehType);
+
+        if (iVehIndex == -1) { //Pre-empt a crash and just treat it as a swoop!
+            Q_strncpyz(useModel, "$swoop_mp", sizeof(useModel));
+            Q_strncpyz(useSkin, "$swoop_mp", sizeof(useSkin));
+        }
 		if ( useSkin[0] )
 		{ //use a custom skin
 			trap->R_RegisterSkin(va("models/players/%s/model_%s.skin", useModel, useSkin));
@@ -8677,26 +8682,32 @@ extern void G_CreateFighterNPC( Vehicle_t **pVeh, const char *strType );
 extern playerState_t *cgSendPS[MAX_GENTITIES];
 void CG_G2AnimEntModelLoad(centity_t *cent)
 {
-	const char *cModelName = CG_ConfigString( CS_MODELS+cent->currentState.modelindex );
+    const char *cModelName = CG_ConfigString( CS_MODELS+cent->currentState.modelindex );
 
-	if (!cent->npcClient)
-	{ //have not init'd client yet
-		return;
-	}
+    if (!cent->npcClient)
+    { //have not init'd client yet
+        return;
+    }
 
-	if (cModelName && cModelName[0])
-	{
-		char modelName[MAX_QPATH];
-		int skinID;
-		char *slash;
+    if (cModelName && cModelName[0])
+    {
+        char modelName[MAX_QPATH];
+        int skinID;
+        char *slash;
 
-		strcpy(modelName, cModelName);
+        strcpy( modelName, cModelName );
 
-		if (cent->currentState.NPC_class == CLASS_VEHICLE && modelName[0] == '$')
-		{ //vehicles pass their veh names over as model names, then we get the model name from the veh type
-			//create a vehicle object clientside for this type
-			char *vehType = &modelName[1];
-			int iVehIndex = BG_VehicleGetIndex( vehType );
+        if ( cent->currentState.NPC_class == CLASS_VEHICLE && modelName[0] == '$' )
+        { //vehicles pass their veh names over as model names, then we get the model name from the veh type
+            //create a vehicle object clientside for this type
+            char *vehType = &modelName[1];
+            int iVehIndex = BG_VehicleGetIndex( vehType );
+
+            if ( iVehIndex == -1 ) { //Pre-empt a crash and just treat it as a swoop!
+                Q_strncpyz(modelName, "$swoop_mp", sizeof( modelName ));
+                vehType = &modelName[1];
+                iVehIndex = BG_VehicleGetIndex( vehType );
+            }
 
 			switch( g_vehicleInfo[iVehIndex].type )
 			{
