@@ -453,13 +453,39 @@ int WeaponAttackAnim[WP_NUM_WEAPONS] =
 	BOTH_THERMAL_THROW,//WP_THERMAL,
 	BOTH_ATTACK3,//BOTH_ATTACK11,//WP_TRIP_MINE,
 	BOTH_ATTACK3,//BOTH_ATTACK12,//WP_DET_PACK,
-		BOTH_ATTACK3,//WP_CONCUSSION,
+    BOTH_ATTACK3,//WP_CONCUSSION,
 	BOTH_ATTACK2,//WP_BRYAR_OLD,
 
 	//NOT VALID (e.g. should never really be used):
 	BOTH_STAND1,//WP_EMPLACED_GUN,
 	BOTH_ATTACK1//WP_TURRET,
 };
+
+void BG_FixWeaponAttackAnim(void) {
+#if defined(_GAME)
+	const qboolean doFix = !!g_fixWeaponAttackAnim.integer;
+#elif defined(_CGAME)
+	const char *cs = CG_ConfigString(CS_LEGACY_FIXES);
+	const uint32_t legacyFixes = strtoul(cs, NULL, 0);
+	const qboolean doFix = !!(legacyFixes & (1 << LEGACYFIX_WEAPONATTACKANIM));
+#elif defined(UI_BUILD)
+	const qboolean doFix = qtrue; // no chance of prediction error from UI code
+#endif
+	int *move;
+
+	for (move = WeaponAttackAnim; move - WeaponAttackAnim < ARRAY_LEN(WeaponAttackAnim); move++) {
+		const weapon_t wpIndex = (weapon_t)(move - WeaponAttackAnim);
+		if (wpIndex == WP_CONCUSSION) {
+			*move = doFix ? BOTH_ATTACK3 : BOTH_ATTACK2;
+		} else if (wpIndex == WP_BRYAR_OLD) {
+			*move = doFix ? BOTH_ATTACK2 : BOTH_STAND1;
+		} else if (wpIndex == WP_EMPLACED_GUN) {
+			*move = doFix ? BOTH_STAND1 : BOTH_ATTACK1;
+		} else if (wpIndex == WP_TURRET) {
+			*move = doFix ? BOTH_ATTACK1 : BOTH_ATTACK2; // better than UB?
+		}
+	}
+}
 
 qboolean BG_FileExists( const char *fileName ) {
 	if ( fileName && fileName[0] ) {
@@ -799,7 +825,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]
 #ifdef _GAME
-	if (g_maxSaberDefense.integer && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2, 
+	if (g_maxSaberDefense.integer && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2,
 		final_Powers[FP_SABER_DEFENSE] = g_maxSaberDefense.integer;
 #endif
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]
@@ -2021,7 +2047,7 @@ gitem_t	*BG_FindItemForWeapon( weapon_t weapon ) {
 
 #ifdef _GAME
 	//Debug this crash
-	Com_Printf("BG_FindItemForWeapon crash\n"); 
+	Com_Printf("BG_FindItemForWeapon crash\n");
 	Svcmd_GameMem_f();
 	if (it->classname)
 		Com_Printf("Last classname %s type %i, tag %i, end: %i\n", it->classname, it->giType, it->giTag, it);
@@ -2412,7 +2438,7 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 					(item->giTag == PW_NEUTRALFLAG && ent->modelindex2) ||
 					(item->giTag == PW_NEUTRALFLAG && ps->powerups[PW_NEUTRALFLAG]))
 					return qtrue;
-			} 
+			}
 		}
 		else if (gametype == GT_FFA || gametype == GT_TEAM)
 		{
@@ -2694,10 +2720,8 @@ const char *eventnames[EV_NUM_ENTITY_EVENTS] = {
 	"EV_DEATH3",
 	"EV_OBITUARY",
 
-	#ifdef BASE_COMPAT
-		"EV_POWERUP_QUAD",
-		"EV_POWERUP_BATTLESUIT",
-	#endif // BASE_COMPAT
+	"EV_POWERUP_QUAD",
+	"EV_POWERUP_BATTLESUIT",
 	//"EV_POWERUP_REGEN",
 
 	"EV_FORCE_DRAINED",

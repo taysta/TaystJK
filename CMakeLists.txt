@@ -182,11 +182,11 @@ if(WIN64)
 endif()
 
 if (APPLE)
-	set(SharedDefines "MACOS_X")
+	set(SharedDefines ${SharedDefines} "MACOS_X")
 endif()
 
 if (NOT WIN32 AND NOT APPLE)
-	set(SharedDefines "ARCH_STRING=\"${Architecture}\"")
+	set(SharedDefines ${SharedDefines} "ARCH_STRING=\"${Architecture}\"")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "BSD")

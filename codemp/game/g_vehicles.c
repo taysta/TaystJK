@@ -554,10 +554,15 @@ qboolean VEH_TryEject( Vehicle_t *pVeh,
 	// Check to see if this new position is a valid place for our entity to go.
 	VectorSet(vEntMins, -15.0f, -15.0f, DEFAULT_MINS_2);
 	VectorSet(vEntMaxs, 15.0f, 15.0f, DEFAULT_MAXS_2);
-	oldOwner = ent->r.ownerNum;
-	ent->r.ownerNum = ENTITYNUM_NONE;
-	G_VehicleTrace( &m_ExitTrace, ent->r.currentOrigin, vEntMins, vEntMaxs, vExitPos, ent->s.number, ent->clipmask );
-	ent->r.ownerNum = oldOwner;
+
+	//fix from LMD to let passengers eject
+	//oldOwner = ent->r.ownerNum;
+	oldOwner = parent->r.ownerNum;
+	//ent->r.ownerNum = ENTITYNUM_NONE;
+	parent->r.ownerNum = ent->s.number;
+	G_VehicleTrace(&m_ExitTrace, ent->r.currentOrigin, vEntMins, vEntMaxs, vExitPos, ent->s.number, ent->clipmask);
+	//ent->r.ownerNum = oldOwner;
+	parent->r.ownerNum = oldOwner;
 
 	if ( m_ExitTrace.allsolid//in solid
 		|| m_ExitTrace.startsolid)

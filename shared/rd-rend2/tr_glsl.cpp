@@ -339,7 +339,7 @@ static size_t GLSL_GetShaderHeader(
 
 	Q_strcat(dest, size,
 					 va("#define ALPHA_TEST_GT0 %d\n"
-						"#define ALPHA_TEST_LT128 %d\n" 
+						"#define ALPHA_TEST_LT128 %d\n"
 						"#define ALPHA_TEST_GE128 %d\n"
 						"#define ALPHA_TEST_GE192 %d\n",
 						ALPHA_TEST_GT0,
@@ -506,7 +506,7 @@ static size_t GLSL_LoadGPUShaderSource(
 	{
 		ri.FS_FreeFile(buffer);
 	}
-	
+
 	return result;
 }
 
@@ -728,7 +728,7 @@ bool ShaderProgramBuilder::AddShader( const GPUShaderDesc& shaderDesc, const cha
 		{
 			shaderSource.resize(shaderSource.size() * 2);
 		}
-		
+
 		++attempts;
 	}
 
@@ -828,7 +828,7 @@ void GLSL_InitUniforms(shaderProgram_t *program)
 		uniforms[i] = qglGetUniformLocation(program->program, uniformsInfo[i].name);
 		if (uniforms[i] == -1)
 			continue;
-		 
+
 		program->uniformBufferOffsets[i] = size;
 		switch(uniformsInfo[i].type)
 		{
@@ -1097,7 +1097,7 @@ void GLSL_SetUniformFloat(shaderProgram_t *program, int uniformNum, GLfloat valu
 	}
 
 	*compare = value;
-	
+
 	qglUniform1f(uniforms[uniformNum], value);
 }
 
@@ -1405,7 +1405,7 @@ static const GPUProgramDesc *LoadProgramSource(
 	const char *programName, Allocator& allocator, const GPUProgramDesc& fallback )
 {
 	const GPUProgramDesc *result = &fallback;
-	
+
 	if ( r_externalGLSL->integer )
 	{
 		char *buffer;
@@ -1555,7 +1555,7 @@ static int GLSL_LoadGPUProgramFogPass(
 		qglUseProgram(0);
 
 		GLSL_FinishGPUShader(&tr.fogShader[i]);
-		
+
 		++numPrograms;
 	}
 
@@ -1795,7 +1795,7 @@ static int GLSL_LoadGPUProgramLightAll(
 		qglUseProgram(0);
 
 		GLSL_FinishGPUShader(&tr.lightallShader[i]);
-		
+
 		++numPrograms;
 	}
 
@@ -1895,7 +1895,7 @@ static int GLSL_LoadGPUProgramPShadow(
 	qglUseProgram(0);
 
 	GLSL_FinishGPUShader(&tr.pshadowShader);
-	
+
 	return 1;
 }
 
@@ -1943,7 +1943,7 @@ static int GLSL_LoadGPUProgramDownscale4x(
 	qglUseProgram(0);
 
 	GLSL_FinishGPUShader(&tr.down4xShader);
-	
+
 	return 1;
 }
 
@@ -1965,7 +1965,7 @@ static int GLSL_LoadGPUProgramBokeh(
 	qglUseProgram(0);
 
 	GLSL_FinishGPUShader(&tr.bokehShader);
-	
+
 	return 1;
 }
 
@@ -2036,7 +2036,7 @@ static int GLSL_LoadGPUProgramCalcLuminanceLevel(
 		qglUseProgram(0);
 
 		GLSL_FinishGPUShader(&tr.calclevels4xShader[i]);
-		
+
 		++numPrograms;
 	}
 
@@ -2243,7 +2243,7 @@ static int GLSL_LoadGPUProgramSurfaceSprites(
 		if (i & SSDEF_ADDITIVE)
 			Q_strcat(extradefines, sizeof(extradefines),
 				"#define ADDITIVE_BLEND\n");
-		
+
 		shaderProgram_t *program = tr.spriteShader + i;
 		if (!GLSL_LoadGPUShader(builder, program, "surface_sprites", attribs, NO_XFB_VARS,
 				extradefines, *programDesc))
@@ -2355,7 +2355,7 @@ void GLSL_LoadGPUShaders()
 
 	Allocator allocator(512 * 1024);
 	ShaderProgramBuilder builder;
-	
+
 	int numGenShaders = 0;
 	int numLightShaders = 0;
 	int numEtcShaders = 0;
@@ -2380,8 +2380,8 @@ void GLSL_LoadGPUShaders()
 	numEtcShaders += GLSL_LoadGPUProgramSurfaceSprites(builder, allocator);
 	numEtcShaders += GLSL_LoadGPUProgramWeather(builder, allocator);
 
-	ri.Printf(PRINT_ALL, "loaded %i GLSL shaders (%i gen %i light %i etc) in %5.2f seconds\n", 
-		numGenShaders + numLightShaders + numEtcShaders, numGenShaders, numLightShaders, 
+	ri.Printf(PRINT_ALL, "loaded %i GLSL shaders (%i gen %i light %i etc) in %5.2f seconds\n",
+		numGenShaders + numLightShaders + numEtcShaders, numGenShaders, numLightShaders,
 		numEtcShaders, (ri.Milliseconds() - startTime) / 1000.0);
 }
 
@@ -2610,7 +2610,7 @@ shaderProgram_t *GLSL_GetGenericShaderProgram(int stage)
 			break;
 	}
 
-	if (tess.fogNum && 
+	if (tess.fogNum &&
 		pStage->adjustColorsForFog != ACFF_NONE &&
 		r_drawfog->integer)
 		shaderAttribs |= GENERICDEF_USE_FOG;

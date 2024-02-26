@@ -83,7 +83,7 @@ XCVAR_DEF( g_debugMove,					"0",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_debugSaberLocks,			"0",			NULL,				CVAR_CHEAT,										qfalse )
 XCVAR_DEF( g_debugServerSkel,			"0",			NULL,				CVAR_CHEAT,										qfalse )
 #ifdef _DEBUG
-XCVAR_DEF( g_disableServerG2,			"0",			NULL,					CVAR_NONE,										qtrue )
+XCVAR_DEF( g_disableServerG2,			"0",			NULL,						CVAR_NONE,										qtrue )
 #endif
 XCVAR_DEF( g_dismember,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_doWarmup,					"0",			NULL,				CVAR_NONE,										qtrue )
@@ -92,6 +92,8 @@ XCVAR_DEF( g_ff_objectives,				"0",			NULL,				CVAR_CHEAT|CVAR_NORESTART,						q
 XCVAR_DEF( g_fixSaberDisarmBonus,		"1",			NULL,					CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_fixSaberMoveData,			"1",			CVU_FixSaberMoveData,	CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_filterBan,					"1",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_fixRunWalkAnims,			"1",			CVU_FixRunWalkAnims,		CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( g_fixWeaponAttackAnim,		"1",			CVU_FixWeaponAttackAnim,	CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_forceBasedTeams,			"0",			NULL,				CVAR_SERVERINFO|CVAR_ARCHIVE|CVAR_LATCH,		qfalse )
 XCVAR_DEF( g_forceClientUpdateRate,		"250",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_forceDodge,				"1",			NULL,				CVAR_NONE,										qtrue )
@@ -130,7 +132,7 @@ XCVAR_DEF( g_saberBladeFaces,			"1",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_saberDamageScale,			"1",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDebugBox,				"0",			NULL,				CVAR_CHEAT,										qfalse )
 #ifndef FINAL_BUILD
-XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,					CVAR_CHEAT,										qfalse )
+XCVAR_DEF( g_saberDebugPrint,			"0",			NULL,						CVAR_CHEAT,										qfalse )
 #endif
 XCVAR_DEF( g_saberDmgDelay_Idle,		"350",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_saberDmgDelay_Wound,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )

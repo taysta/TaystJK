@@ -1903,6 +1903,9 @@ CG_ConfigString
 =================
 */
 const char *CG_ConfigString( int index ) {
+	// FIXME: don't read configstrings before initialisation
+	// assert( cgs.gameState.dataCount != 0 );
+
 	if ( index < 0 || index >= MAX_CONFIGSTRINGS ) {
 		trap->Error( ERR_DROP, "CG_ConfigString: bad index: %i", index );
 	}
@@ -3225,6 +3228,7 @@ Ghoul2 Insert End
 	CG_ParseEntitiesFromString();
 
 	BG_FixSaberMoveData();
+	BG_FixWeaponAttackAnim();
 }
 
 //makes sure returned string is in localized format
