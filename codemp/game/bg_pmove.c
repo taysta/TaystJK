@@ -1338,7 +1338,7 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
 {
 	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.9f, accel = 0.20f;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.9f, accel = 0.25f; //.2
 	// friction = 1.65f, accel = 0.32f;
 
 	if (pm->ps->pm_type == PM_DEAD)
@@ -1368,8 +1368,43 @@ void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
 
-	for (i = 0; i<3; i++)// Adjust pmove vel.
-		pm->ps->velocity[i] += accelspeed*wishdir[i];
+	//for (i = 0; i<3; i++)// Adjust pmove vel.
+
+
+	if (0)
+	{
+
+		vec3_t tmpVel, oldVel;
+		float oldSpeed, newSpeed;
+		VectorCopy(pm->ps->velocity, tmpVel);
+		oldVel[2] = 0;
+		VectorCopy(tmpVel, oldVel);
+
+		tmpVel[0] += accelspeed*wishdir[0];
+		tmpVel[1] += accelspeed*wishdir[1];
+
+		oldSpeed = oldVel[0] * oldVel[0] + oldVel[1] * oldVel[1];
+		newSpeed = tmpVel[0] * tmpVel[0] + tmpVel[1] * tmpVel[1];
+
+		if (newSpeed > oldSpeed) {
+			//Com_Printf("Cutting by %.2f\n", (oldSpeed / newSpeed));   //why does this fuck up jetpack speed? we need to isolate the scaling to speed just created by this not jetpack
+			//VectorScale(tmpVel, (oldSpeed / newSpeed), tmpVel);
+		}
+
+		tmpVel[2] = pm->ps->velocity[2];
+		VectorCopy(tmpVel, pm->ps->velocity);
+
+		pm->ps->velocity[2] += accelspeed*wishdir[2];
+	}
+	else {
+		for (i = 0; i < 3; i++)// Adjust pmove vel.
+			pm->ps->velocity[i] += accelspeed*wishdir[i];
+	}
+
+
+
+
+
 }
 
 void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
@@ -3915,11 +3950,20 @@ static void PM_AirMove( void ) {
 	else if (BG_IsNewJetpacking(pm->ps)) //New Jetpack
 	{ //reduced air control while not jetting
 		//REDO THIS NEWJETPACK2. FM3 scales by 2.2f (spacetrooper, genosian) or 1.75f not 0.9f.  Do we want to just adjust basespeed instead? More air control kinda crosses into grapples function
-		for ( i = 0 ; i < 2 ; i++ )
-		{
-			wishvel[i] = pml.forward[i]*fmove + pml.right[i]*smove;
+		if (0 && moveStyle == MV_TRIBES) {
+			for (i = 0; i < 2; i++)
+			{
+				wishvel[i] = 0;// pml.forward[i] * fmove + pml.right[i] * smove;
+			}
+			wishvel[2] = 0;
 		}
-		wishvel[2] = 0;
+		else {
+			for (i = 0; i < 2; i++)
+			{
+				wishvel[i] = pml.forward[i] * fmove + pml.right[i] * smove;
+			}
+			wishvel[2] = 0;
+		}
 
 
 		VectorScale(wishvel, 1.75f, wishvel);
@@ -13546,7 +13590,7 @@ void PmoveSingle (pmove_t *pmove) {
 		//Jetpack gets shut off when close to ground in FM3 (<16)
 		//Jetpack upspeed is capped at 324, fallspeed is capped at -1200
 		//Grav should still affect jetters??
-		const int MAX_FALL_SPEED = -1200;
+		const int MAX_FALL_SPEED = -4000;
 		const int MAX_JETPACK_VEL_UP = 2000;
 		float gDist2 = gDist;
 		float scale = PM_CmdScale(&pm->cmd) / pm->ps->speed * 320.0f;
@@ -13568,26 +13612,48 @@ void PmoveSingle (pmove_t *pmove) {
 
 				hackscale /= hackscale2;
 
-				if (hackscale > 1.25f)
-					hackscale = 1.25f;
+				if (hackscale > 1.4f)
+					hackscale = 1.4f;
 				else if (hackscale < 1)
 					hackscale = 1;
 
 				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 			}
 			else if (pm->ps->velocity[2] < 0) {
-				float hackscale = 1.25f;
-				float hackscale2 = (pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) / (700 * 700);
+				//This is fucked.  Start at 1.25 and get higher based on Z speed.  Don't take XY into account..?
 
-				if (hackscale2 < 1)
-					hackscale2 = 1;
+				if (1)
+				{
+					float hackscale = pm->ps->velocity[2] / -600;
 
-				hackscale /= hackscale2;
 
-				if (hackscale < 1)
-					hackscale = 1;
+					if (hackscale < 1.4f)
+						hackscale = 1.4f;
 
-				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+					if (hackscale > 4.0f)
+						hackscale = 4.0f;
+
+					//Com_Printf("Hackscale z is %.2f\n", hackscale);
+
+					pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+				}
+				else {
+
+					float hackscale = 1.25f;
+					float hackscale2 = (pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) / (700 * 700);
+
+					if (hackscale2 < 1)
+						hackscale2 = 1;
+
+					hackscale /= hackscale2;
+
+					if (hackscale < 1)
+						hackscale = 1;
+
+					//Com_Printf("Hackscale z is %.2f\n", hackscale);
+
+					pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+				}
 			}
 			else if (pm->ps->velocity[2] > 800) {
 				float hackscale = 800.0f / pm->ps->velocity[2];
@@ -13612,6 +13678,62 @@ void PmoveSingle (pmove_t *pmove) {
 			//vec3_t forward;
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
 
+			if (1) { //new shit
+				//Principles
+				//More jet xy strength the slower you are going and also more if you are going opposite
+				//air control should not let you strafe to gain speed
+				//We don't even need scale here since there is no way to XY jet without up or downjet already
+				//Get our wishdir, normalized e.g. (0.5 0.5) for going 45 degrees xy
+				//No need for [2] on wishdir, exlude that before or after math?
+				vec3_t wishvel;
+				vec3_t currentVelNormal;
+				float dot;
+				float xy_hackscale;
+				float speed;
+
+				//How fast are we going in the direction that we are trying to Jet?
+				//This simple single digit # is what we scale our hackscale on.  Negative and we upscale bigly.  Positive and we upscale the lower it is.  Past 500 or so we don't upscale (?).
+
+				wishvel[0] = pml.forward[0] * pm->cmd.forwardmove + pml.right[0] * pm->cmd.rightmove;
+				wishvel[1] = pml.forward[1] * pm->cmd.forwardmove + pml.right[1] * pm->cmd.rightmove;
+				wishvel[2] = 0;
+				VectorNormalize(wishvel);
+
+				//Com_Printf("Wishvel is [%.2f %.2f]\n", wishvel[0], wishvel[1]);
+
+				VectorCopy(pm->ps->velocity, currentVelNormal);
+				//VectorNormalize(currentVelNormal);
+				dot = DotProduct(currentVelNormal, wishvel);
+
+				//Com_Printf("Dotted vel is %.2f\n", dot);
+
+				speed = VectorLength(currentVelNormal);
+
+				if (dot < 0) {
+					xy_hackscale = 4;
+				}
+				else {
+					xy_hackscale = 800 / speed;
+				}
+
+				if (xy_hackscale < 1)
+					xy_hackscale = 1;
+				else if (xy_hackscale > 4)
+					xy_hackscale = 4;
+
+				Com_Printf("Hackscalexy is %.2f\n", xy_hackscale);
+
+				//Why does this behave so weird between 0-500 speed? so slow
+
+				VectorMA(pm->ps->velocity, xy_hackscale*pml.frametime*100, wishvel, pm->ps->velocity);
+
+
+				//Calculate our strength.  More strength based on dotproduct.
+				//And more strenght at lower speeds.
+				//First
+
+			}
+			else
 			{ //use the proper way for siege
 
 				vec3_t		wishVelocity;
