@@ -3240,60 +3240,68 @@ void PM_WeaponLightsaber(void)
 
 	if ( (pm->cmd.buttons & BUTTON_ALT_ATTACK) )
 	{ //might as well just check for a saber throw right here
-		if (pm->ps->fd.saberAnimLevel == SS_STAFF)
-		{ //kick instead of doing a throw
-			//if in a saber attack return anim, can interrupt it with a kick
-			if ( pm->ps->weaponTime > 0//can't fire yet
-				&& PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
-				//&& pm->ps->weaponTime <= 250//should be able to fire soon
-				//&& pm->ps->torsoTimer <= 250//torso almost done
-				&& pm->ps->saberBlocked == BLOCKED_NONE//not interacting with any other saber
-				&& !(pm->cmd.buttons&BUTTON_ATTACK) )//not trying to swing the saber
-			{
-				if ( (pm->cmd.forwardmove||pm->cmd.rightmove)//trying to kick in a specific direction
-					&& PM_CheckAltKickAttack() )//trying to do a kick
-				{//allow them to do the kick now!
-					int kickMove = PM_KickMoveForConditions();
-					if (kickMove != -1)
-					{
-						pm->ps->weaponTime = 0;
-						PM_SetSaberMove( kickMove );
-						return;
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+			if (pm->ps->weaponTime <= 0) {
+				PM_SetSaberMove(LS_A_BACK_CR);
+				return;
+			}
+		}
+		else {
+			if (pm->ps->fd.saberAnimLevel == SS_STAFF)
+			{ //kick instead of doing a throw
+				//if in a saber attack return anim, can interrupt it with a kick
+				if ( pm->ps->weaponTime > 0//can't fire yet
+					&& PM_SaberInReturn( pm->ps->saberMove )//in a saber return move - FIXME: what about transitions?
+					//&& pm->ps->weaponTime <= 250//should be able to fire soon
+					//&& pm->ps->torsoTimer <= 250//torso almost done
+					&& pm->ps->saberBlocked == BLOCKED_NONE//not interacting with any other saber
+					&& !(pm->cmd.buttons&BUTTON_ATTACK) )//not trying to swing the saber
+				{
+					if ( (pm->cmd.forwardmove||pm->cmd.rightmove)//trying to kick in a specific direction
+						&& PM_CheckAltKickAttack() )//trying to do a kick
+					{//allow them to do the kick now!
+						int kickMove = PM_KickMoveForConditions();
+						if (kickMove != -1)
+						{
+							pm->ps->weaponTime = 0;
+							PM_SetSaberMove( kickMove );
+							return;
+						}
 					}
 				}
 			}
-		}
-		else if ( pm->ps->weaponTime < 1&&
-				pm->ps->saberCanThrow &&
-				//pm->ps->fd.forcePower >= forcePowerNeeded[pm->ps->fd.forcePowerLevel[FP_SABERTHROW]][FP_SABERTHROW] &&
-				!BG_HasYsalamiri(pm->gametype, pm->ps) &&
-				BG_CanUseFPNow(pm->gametype, pm->ps, pm->cmd.serverTime, FP_SABERTHROW) &&
-				pm->ps->fd.forcePowerLevel[FP_SABERTHROW] > 0 &&
-				PM_SaberPowerCheck() )
-		{
-			trace_t sabTr;
-			vec3_t	fwd, minFwd, sabMins, sabMaxs;
+			else if ( pm->ps->weaponTime < 1&&
+					pm->ps->saberCanThrow &&
+					//pm->ps->fd.forcePower >= forcePowerNeeded[pm->ps->fd.forcePowerLevel[FP_SABERTHROW]][FP_SABERTHROW] &&
+					!BG_HasYsalamiri(pm->gametype, pm->ps) &&
+					BG_CanUseFPNow(pm->gametype, pm->ps, pm->cmd.serverTime, FP_SABERTHROW) &&
+					pm->ps->fd.forcePowerLevel[FP_SABERTHROW] > 0 &&
+					PM_SaberPowerCheck() )
+			{
+				trace_t sabTr;
+				vec3_t	fwd, minFwd, sabMins, sabMaxs;
 
-			VectorSet( sabMins, SABERMINS_X, SABERMINS_Y, SABERMINS_Z );
-			VectorSet( sabMaxs, SABERMAXS_X, SABERMAXS_Y, SABERMAXS_Z );
+				VectorSet( sabMins, SABERMINS_X, SABERMINS_Y, SABERMINS_Z );
+				VectorSet( sabMaxs, SABERMAXS_X, SABERMAXS_Y, SABERMAXS_Z );
 
-			AngleVectors( pm->ps->viewangles, fwd, NULL, NULL );
-			VectorMA( pm->ps->origin, SABER_MIN_THROW_DIST, fwd, minFwd );
+				AngleVectors( pm->ps->viewangles, fwd, NULL, NULL );
+				VectorMA( pm->ps->origin, SABER_MIN_THROW_DIST, fwd, minFwd );
 
-			pm->trace(&sabTr, pm->ps->origin, sabMins, sabMaxs, minFwd, pm->ps->clientNum, MASK_PLAYERSOLID);
+				pm->trace(&sabTr, pm->ps->origin, sabMins, sabMaxs, minFwd, pm->ps->clientNum, MASK_PLAYERSOLID);
 
-			if ( sabTr.allsolid || sabTr.startsolid || sabTr.fraction < 1.0f )
-			{//not enough room to throw
-			}
-			else
-			{//throw it
-				//This will get set to false again once the saber makes it back to its owner game-side
-				if (!pm->ps->saberInFlight)
-				{
-					pm->ps->fd.forcePower -= forcePowerNeeded[pm->ps->fd.forcePowerLevel[FP_SABERTHROW]][FP_SABERTHROW];
+				if ( sabTr.allsolid || sabTr.startsolid || sabTr.fraction < 1.0f )
+				{//not enough room to throw
 				}
+				else
+				{//throw it
+					//This will get set to false again once the saber makes it back to its owner game-side
+					if (!pm->ps->saberInFlight)
+					{
+						pm->ps->fd.forcePower -= forcePowerNeeded[pm->ps->fd.forcePowerLevel[FP_SABERTHROW]][FP_SABERTHROW];
+					}
 
-				pm->ps->saberInFlight = qtrue;
+					pm->ps->saberInFlight = qtrue;
+				}
 			}
 		}
 	}
