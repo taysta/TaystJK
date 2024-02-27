@@ -493,3 +493,21 @@ gfx/misc/splash
         tcMod turb 0.02 0.01 0 1
     }
 }
+
+hud/ctf/jpflaghome
+{
+	nopicmip
+	{
+		clampmap hud/ctf/flaghome.tga
+		blendFunc blend
+	}
+}
+
+hud/ctf/jpflagtaken
+{
+	nopicmip
+	{
+		clampmap hud/ctf/flagtaken.tga
+		blendFunc blend
+	}
+}

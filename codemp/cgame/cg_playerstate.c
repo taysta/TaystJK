@@ -214,6 +214,7 @@ void CG_Respawn( void ) {
 
 	// select the weapon the server says we are using
 	cg.weaponSelect = cg.snap->ps.weapon;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 /*
@@ -574,6 +575,7 @@ void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 	if (ops->weapon != ps->weapon) { //shows weapon select when spectating
 		cg.weaponSelect = ps->weapon;
 		cg.weaponSelectTime = cg.time;
+		CG_SetFireMode(cg.weaponSelect);
 	}
 
 	// check for going low on ammo

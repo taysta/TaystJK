@@ -24,6 +24,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // cg_weapons.c -- events and effects dealing with weapons
 #include "cg_local.h"
 #include "fx_local.h"
+#include "hud_tribes.h"
 
 extern vec4_t	bluehudtint;
 extern vec4_t	redhudtint;
@@ -1582,7 +1583,7 @@ void CG_NextWeapon_f( void ) {
 		if ( cg.weaponSelect == WP_NUM_WEAPONS ) {
 			cg.weaponSelect = 0;
 		}
-	//	if ( cg.weaponSelect == WP_STUN_BATON ) {
+		//	if ( cg.weaponSelect == WP_STUN_BATON ) {
 	//		continue;		// never cycle to gauntlet
 	//	}
 		if ( CG_WeaponSelectable( cg.weaponSelect ) ) {
@@ -1596,7 +1597,9 @@ void CG_NextWeapon_f( void ) {
 	{
 		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 	}
+	CG_SetFireMode(cg.weaponSelect);
 }
+
 
 /*
 ===============
@@ -1662,7 +1665,9 @@ void CG_PrevWeapon_f( void ) {
 	{
 		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
 	}
+	CG_SetFireMode(cg.weaponSelect);
 }
+
 
 /*
 ===============
@@ -1817,6 +1822,7 @@ void CG_Weapon_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
 
@@ -1947,8 +1953,174 @@ void CG_WeaponClean_f( void ) {
 	}
 
 	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
 }
 
+void CG_SetFireMode( int weaponNum ) {
+	if ((weaponNum == WP_BOWCASTER) || (weaponNum == WP_FLECHETTE)) {
+		cg.singlefireAlt = qtrue;
+	} else {
+		cg.singlefireAlt = qfalse;
+	}
+}
+
+//Version of the above which uses available weapons and fills them into slots
+void CG_WeaponSlot_f( void ) {
+
+	if ( !cg.snap ) {
+		return;
+	}
+
+	if ( cg.snap->ps.pm_flags & PMF_FOLLOW ) {
+		return;
+	}
+
+	if (cg.snap->ps.emplacedIndex)
+	{
+		return;
+	}
+
+	int num = atoi( CG_Argv( 1 ) );
+
+	if ( num < 1 || num > 10 ) {
+		return;
+	}
+
+	int weaponsInInventory = 0;
+	int selectedWeapon = 0;
+
+	for (int i = 0; i < sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]); i++) {
+		int weapon = weaponCycleOrder[i];
+		if (IsWeaponSelectable(weapon)) {
+			weaponsInInventory++;
+
+			if (weaponsInInventory == num) {
+				selectedWeapon = weapon;
+				break;
+			}
+		}
+	}
+
+	if (selectedWeapon == 0) {
+		return;
+	}
+
+	num = selectedWeapon;
+
+	if (!CG_WeaponSelectable(num))
+	{
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+
+	if (cg.weaponSelect != num)
+	{
+		trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+	}
+
+	cg.weaponSelect = num;
+	CG_SetFireMode(cg.weaponSelect);
+}
+
+
+int FindCurrentSlot(int currentWeapon) {
+    for (int i = 0; i < sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]); i++) {
+        if (weaponCycleOrder[i] == currentWeapon) {
+            return i; // Return the index of the current weapon
+        }
+    }
+    return -1; // Return -1 if the current weapon is not found
+}
+
+
+void CG_NextWeaponSlot_f(void) {
+	if ((!cg.snap) || (cg.snap->ps.pm_flags & PMF_FOLLOW) ||
+		(cg.predictedPlayerState.pm_type == PM_SPECTATOR) ||
+		(cg.snap->ps.emplacedIndex)) {
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+	int currentWeaponIndex = -1;
+	int arraySize = sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]);
+
+	// Find the index of the current weapon
+	for (int i = 0; i < arraySize; ++i) {
+		if (weaponCycleOrder[i] == cg.weaponSelect) {
+			currentWeaponIndex = i;
+			break;
+		}
+	}
+
+	// Check if current weapon was found
+	if (currentWeaponIndex == -1) {
+		return; // Current weapon not found in the order
+	}
+
+    int currentSlot = FindCurrentSlot(cg.weaponSelect);
+    if (currentSlot == -1) {
+        return; // Current weapon not found in the order
+    }
+
+    int nextSlot = (currentSlot + 1) % arraySize; // Wrap around to the beginning of the array if necessary
+
+    // Iterate to find the first selectable weapon in the next slot
+    for (int i = nextSlot; i != currentSlot; i = (i + 1) % arraySize) {
+        int weapon = weaponCycleOrder[i];
+        if (CG_WeaponSelectable(weapon)) {
+            cg.weaponSelect = weapon;
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+            break;
+        }
+    }
+	CG_SetFireMode(cg.weaponSelect);
+}
+
+
+void CG_PrevWeaponSlot_f(void) {
+	if ((!cg.snap) || (cg.snap->ps.pm_flags & PMF_FOLLOW) ||
+		(cg.predictedPlayerState.pm_type == PM_SPECTATOR) ||
+		(cg.snap->ps.emplacedIndex)) {
+		return;
+	}
+
+	cg.weaponSelectTime = cg.time;
+	int currentWeaponIndex = -1;
+	int arraySize = sizeof(weaponCycleOrder) / sizeof(weaponCycleOrder[0]);
+
+	// Find the index of the current weapon
+	for (int i = 0; i < arraySize; ++i) {
+		if (weaponCycleOrder[i] == cg.weaponSelect) {
+			currentWeaponIndex = i;
+			break;
+		}
+	}
+
+	// Check if current weapon was found
+	if (currentWeaponIndex == -1) {
+		return; // Current weapon not found in the order
+	}
+
+    int currentSlot = FindCurrentSlot(cg.weaponSelect);
+    if (currentSlot == -1) {
+        return; // Current weapon not found in the order
+    }
+
+    int prevSlot = (currentSlot - 1 + arraySize) % arraySize; // Wrap around to the end of the array if necessary
+
+    // Iterate to find the first selectable weapon in the previous slot
+    for (int i = prevSlot; i != currentSlot; i = (i - 1 + arraySize) % arraySize) {
+        int weapon = weaponCycleOrder[i];
+        if (CG_WeaponSelectable(weapon)) {
+				cg.weaponSelect = weapon;
+			trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+            break;
+        }
+    }
+	CG_SetFireMode(cg.weaponSelect);
+
+}
 
 
 /*
@@ -1983,10 +2155,9 @@ void CG_OutOfAmmoChange( int oldWeapon )
 			}
 		}
 	}
-
 	trap->S_MuteSound(cg.snap->ps.clientNum, CHAN_WEAPON);
+	CG_SetFireMode(cg.weaponSelect);
 }
-
 
 
 /*
@@ -2327,8 +2498,13 @@ void CG_FireWeapon( centity_t *cent, qboolean altFire ) {
 		return;
 	}
 
-	if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA && ent->weapon != WP_ROCKET_LAUNCHER)
+	if (((cgs.serverMod == SVMOD_JAPRO) && (cg.predictedPlayerState.stats[STAT_RACEMODE]))
+		&& !((cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA)
+			|| (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+			|| ((cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_RJQ3)
+				|| (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_RJCPM)))) {
 		return;
+	}
 
 	weap = &cg_weapons[ ent->weapon ];
 

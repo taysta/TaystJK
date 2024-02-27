@@ -150,6 +150,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define JAPRO_STYLE_NEWRESPAWN		    (1<<19)
 #define JAPRO_STYLE_SEASONALCOSMETICS	(1<<20)
 #define JAPRO_STYLE_ALTERNATEPOSE		(1<<21)
+#define JAPRO_STYLE_TRIBES				(1<<22)
 
 //japro ignore race fx
 #define RS_TIMER_START					(1<<0) //Ignore sound for start trigger
@@ -610,7 +611,7 @@ typedef struct centity_s {
 #endif
 	int			breathTime; //can maybe just use breathPuffTime?
 	int			breathPuffTime; //can maybe just use breathPuffTime?
-
+	qboolean 	drawingIFF;
 } centity_t;
 
 
@@ -1435,7 +1436,8 @@ Ghoul2 Insert End
 		fileHandle_t	file;
 		qboolean		started;
 	} log;
-
+	qboolean 			singlefireAlt;
+	qboolean 			tribesHUD;
 } cg_t;
 
 #define CAMERA_MIN_FPS 15
@@ -1797,6 +1799,10 @@ typedef struct cgMedia_s {
 	sfxHandle_t	teamChatSound;
 	sfxHandle_t	privateChatSound;
 	sfxHandle_t landSound;
+	sfxHandle_t landSoundSki; //jaPRO - tribes
+	sfxHandle_t fragSound; //jaPRO - tribes
+	sfxHandle_t fragSoundMidair; //jaPRO - tribes
+
 	sfxHandle_t fallSound;
 
 	sfxHandle_t oneMinuteSound;
@@ -1812,6 +1818,7 @@ typedef struct cgMedia_s {
 	sfxHandle_t hitSound3;
 	sfxHandle_t hitSound4;
 	sfxHandle_t hitTeamSound;
+	sfxHandle_t tribesJetSound;
 //JAPRO - Clientside - Hitsounds End
 
 #ifdef JK2AWARDS
@@ -1957,6 +1964,10 @@ typedef struct cgMedia_s {
 
 	qhandle_t	raceShader;
 	qhandle_t	duelShader;
+
+	//japro ctf hud
+	qhandle_t	flagHomeShader;
+	qhandle_t	flagTakenShader;
 
 	//japro cosmetics
 	struct {
@@ -2111,6 +2122,7 @@ typedef struct cgEffects_s {
 	fxHandle_t	mShipDestDestroyed;
 	fxHandle_t	mShipDestBurning;
 	fxHandle_t	mBobaJet;
+	fxHandle_t	mTribesJet;
 
 	//footstep effects
 	fxHandle_t footstepMud;
@@ -2218,6 +2230,8 @@ typedef struct cgs_s {
 
 	int				redflag, blueflag;		// flag status from configstrings
 	int				flagStatus;
+	clientInfo_t	*redFlagCarrier, *blueFlagCarrier;
+	int				redFlagTime, blueFlagTime;
 
 //[JAPRO - Clientside - All - Add cinfo variables to get cinfo from server japlus and japro servers - Start]
 	serverMod_t	serverMod;
@@ -2324,6 +2338,7 @@ void CG_SetScoreSelection(void *menu);
 void CG_BuildSpectatorString(void);
 void CG_NextInventory_f(void);
 void CG_PrevInventory_f(void);
+void CG_InvUseAvailable(void);
 void CG_NextForcePower_f(void);
 void CG_PrevForcePower_f(void);
 
@@ -2433,7 +2448,8 @@ void CG_Text_PaintChar(float x, float y, float width, float height, float scale,
 qboolean CG_YourTeamHasFlag(void);
 qboolean CG_OtherTeamHasFlag(void);
 qhandle_t CG_StatusHandle(int task);
-
+qboolean CG_IsDurationPower(int power);
+void CG_SetFireMode( int weaponNum );
 
 
 //
@@ -2522,7 +2538,16 @@ void CG_GetClientWeaponMuzzleBoltPoint(int clIndex, vec3_t to);
 void CG_NextWeapon_f( void );
 void CG_PrevWeapon_f( void );
 void CG_Weapon_f( void );
+void CG_WeaponSlot_f( void );
+void CG_NextWeaponSlot_f( void );
+void CG_PrevWeaponSlot_f( void );
 void CG_WeaponClean_f( void );
+
+void CG_ZoomDown_f( void );
+void CG_ZoomUp_f( void );
+void CG_ToggleSingleFire_f( void );
+void CG_SingleFireDown_f( void );
+void CG_SingleFireUp_f( void );
 
 void CG_RegisterWeapon( int weaponNum);
 void CG_RegisterItemVisuals( int itemNum );

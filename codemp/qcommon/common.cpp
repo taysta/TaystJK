@@ -77,6 +77,7 @@ cvar_t *com_affinity;
 #ifdef _WIN32
 cvar_t *com_priority;
 #endif
+cvar_t	*cl_exitCommand;
 
 cvar_t	*com_timestamps;
 
@@ -1409,7 +1410,10 @@ void Com_Init( char *commandLine ) {
         Cmd_AddCommand("mstop", Com_MStop_f, "Simulates hardware 'stop media' key");
         Cmd_AddCommand("mpause", Com_MPause_f, "Simulates hardware 'pause media' key");
 #endif
-		Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
+		cl_exitCommand = Cvar_Get("cl_exitCommand", "0", CVAR_ARCHIVE, "Enables the /exit command");
+		if (cl_exitCommand->integer == 1) {
+			Cmd_AddCommand( "exit", Com_Quit_f, "Exits the game" );
+		}
 
 #ifndef FINAL_BUILD
 		Cmd_AddCommand ("changeVectors", MSG_ReportChangeVectors_f );

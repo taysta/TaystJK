@@ -163,5 +163,6 @@ XCVAR_DEF( cg_speedometer,					"0",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( ui_headCount,					"-1",					NULL,				CVAR_ARCHIVE|CVAR_INTERNAL|CVAR_ROM )
 XCVAR_DEF( ui_showAllSkins,					"0",				CVU_UpdateModelList,	CVAR_ARCHIVE_ND )
 XCVAR_DEF( ui_sv_pure,						"0",				CVU_UpdateModelList,	CVAR_INTERNAL|CVAR_ROM|CVAR_NORESTART )
+XCVAR_DEF( cl_jk2FX,						"0",					NULL,				CVAR_LATCH )
 
 #undef XCVAR_DEF
