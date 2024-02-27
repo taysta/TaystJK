@@ -1,0 +1,27 @@
+OrientedParticle
+{
+	life				100
+
+	rgb
+	{
+		start			0.2196 0.8706 0.003922
+	}
+
+	alpha
+	{
+		end				0
+		parm			50
+		flags			linear nonlinear
+	}
+
+	size
+	{
+		start			8
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}

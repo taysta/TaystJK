@@ -1,105 +1,141 @@
 repeatDelay				300
 
-Electricity
+Particle
 {
-	flags				useModel useBBox usePhysics
-
-	spawnFlags			rgbComponentInterpolation
+	name				lightpuff
 
 	count				3 4
 
-	life				50 60
+	life				400 500
 
-	bounce				0.8 2
+	delay				0 400
 
-	origin2				500 -384 -2 524 384 2
+	origin				400 0 0
+
+	rotation			0 360
+
+	velocity			-800 0 0
 
 	rgb
 	{
-		end				1 0 0
+		start			0.4902 0 0 1 0 0
+		end				1 0 0 0.4902 0 0
+		parm			1
+		flags			linear
 	}
 
 	alpha
 	{
-		end				0 1
+		start			0
+		end				0.1
+		parm			3
 		flags			linear
 	}
 
 	size
 	{
-		start			2 5
+		start			228 292
+		end				0
+		parm			1
 		flags			linear
 	}
 
 	shaders
 	[
-		gfx/misc/rline
+		gfx/effects/snowpuff2
 	]
 }
 
 Particle
 {
-	flags				useAlpha
+	name				caustic
 
-	spawnFlags			rgbComponentInterpolation
-
-	life				30
-
-	rotation			0 360
-
-	rgb
-	{
-		start			1 0 0 1 1 1
-		end				1 0 0
-	}
-
-	size
-	{
-		start			10 18
-		flags			random
-	}
-
-	shaders
-	[
-		gfx/misc/lightningFlash
-	]
-}
-
-Electricity
-{
-	name				Copy of Unnamed Electricity 0
-
-	flags				useModel useBBox usePhysics useAlpha
-
-	spawnFlags			rgbComponentInterpolation
+	spawnFlags			evenDistribution
 
 	count				2 3
 
-	life				50 60
+	life				500 300
 
-	bounce				0.8 2
+	delay				0 300
 
-	origin2				500 -384 -2 524 384 2
+	origin				400 0 0
+
+	velocity			-800 0 0
 
 	rgb
 	{
-		start			1 0 0 1 1 1
-		end				1 0 0
+		start			1 0 0 0.4902 0 0
+		end				0.4745 0.6588 1 1 1 1
+		parm			1
+		flags			linear
 	}
 
 	alpha
 	{
-		start			0 1
+		start			0.08
+		end				0
+		parm			1
+		flags			linear
 	}
 
 	size
 	{
-		start			8 10
+		start			184 216
+		end				0 1
+		parm			1
 		flags			linear
 	}
 
 	shaders
 	[
-		gfx/misc/rline
+		gfx/effects/caustic1
+	]
+}
+
+Particle
+{
+	name				darkpuff
+
+	flags				useAlpha
+
+	count				2 3
+
+	life				400 500
+
+	delay				0 400
+
+	origin				400 0 0
+
+	rotation			0 360
+
+	velocity			-800 0 0
+
+	rgb
+	{
+		start			0.9216 0.3569 1 1 0 0
+		end				0.749 0.7922 1 0.6863 0.1686 1
+		parm			1
+		flags			linear
+	}
+
+	alpha
+	{
+		start			0
+		end				0.25
+		parm			3
+		flags			linear
+	}
+
+	size
+	{
+		start			252 268
+		end				0
+		parm			1
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/puffdark
 	]
 }

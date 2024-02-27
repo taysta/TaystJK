@@ -1,0 +1,269 @@
+models/players/fett/boba_head_revised
+{
+	q3map_nolightmap
+    {
+        map models/players/fett/boba_head_revised
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/fett/boba_head_revised
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+    {
+        map gfx/effects/chr_white_add_mild
+        blendFunc GL_ONE GL_ONE
+        detail
+        tcGen environment
+    }
+}
+
+models/players/fett/com_down
+{
+	q3map_nolightmap
+    {
+        map models/players/fett/com_down
+        rgbGen lightingDiffuse
+    }
+   {
+		map models/players/fett/scanner.jpg
+		blendfunc gl_one gl_one
+		glow
+		rgbGen wave sin 0 1 0 2.5
+	}
+	{
+        map gfx/effects/chr_white_add_mild
+        blendFunc GL_ONE GL_ONE
+       detail
+        tcGen environment
+  	 }
+	}
+
+models/players/fett/boba_head
+{
+	{
+		map models/players/fett/boba_head
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/boba_head
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+
+	
+	{
+		map models/players/fett/lights.jpg
+		blendfunc gl_one gl_one
+		glow
+		
+	}
+ 	{
+        		map models/players/fett/boba_1_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	{
+		map models/players/fett/boba_amb
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	{
+		map models/players/fett/heartmonitorglow.jpg
+		blendfunc gl_one gl_one
+		glow
+		rgbGen wave sin 0 1 0 0.5
+	}
+	}
+
+models/players/fett/boba_body
+{
+	{
+		map models/players/fett/boba_body
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/boba_body
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+	{
+        		map models/players/fett/boba_2_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	{	
+		map models/players/fett/boba_amb2
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	}
+
+	models/players/fett/esb
+{
+	{
+		map models/players/fett/esb
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/esb
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+ 	{
+        		map models/players/fett/esb_1_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	
+	{
+		map models/players/fett/lights.jpg
+		blendfunc gl_one gl_one
+		glow
+		
+	}
+	{
+		map models/players/fett/esb_amb
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	{
+		map models/players/fett/heartmonitorglow.jpg
+		blendfunc gl_one gl_one
+		glow
+		rgbGen wave sin 0 1 0 0.5
+	}
+	}
+
+models/players/fett/esb2
+{
+	{
+		map models/players/fett/esb2
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/esb2
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+	{
+        		map models/players/fett/esb2_2_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	{
+		map models/players/fett/esb_amb2
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	}
+
+	models/players/fett/jodo
+	{
+	{
+		map models/players/fett/jodo
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/jodo
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+ 	{
+        		map models/players/fett/jodo_1_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	{
+		map models/players/fett/lights.jpg
+		blendfunc gl_one gl_one
+		glow
+		
+	}
+	{
+		map models/players/fett/jodo_amb
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	{
+		map models/players/fett/heartmonitorglow.jpg
+		blendfunc gl_one gl_one
+		glow
+		rgbGen wave sin 0 1 0 0.5
+	}
+	}
+
+models/players/fett/jodo_body
+{
+	{
+		map models/players/fett/jodo_body
+		rgbGen lightingDiffuse
+
+	}
+	{
+		map models/players/fett/envmap1
+		blendfunc add
+		rgbGen lightingDiffuse
+		tcGen environment 
+	}
+	{
+		map models/players/fett/jodo_body
+		blendfunc blend
+		rgbGen lightingDiffuse
+	}
+	{
+        		map models/players/fett/jodo_2_spec
+       		 blendFunc GL_SRC_ALPHA GL_ONE
+      		  detail
+       		 alphaGen lightingSpecular
+   	 }
+	{
+		map models/players/fett/jodo_amb2
+		 blendFunc GL_DST_COLOR GL_ZERO
+       		 detail
+	}
+	}
+	
+	
+	

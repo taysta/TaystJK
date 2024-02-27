@@ -1,0 +1,14 @@
+models/players/lando_calrissianT/body
+{
+    {
+        map models/players/lando_calrissianT/body
+        rgbGen lightingDiffuse
+        //alphaFunc GE128
+    }
+    {
+        map models/players/lando_calrissianT/body_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        alphaGen lightingSpecular
+	detail
+    }
+}

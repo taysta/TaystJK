@@ -1,0 +1,105 @@
+Line
+{
+	count				2
+
+	life				100
+
+	origin2				24 0 0 30 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				1 1 0
+	}
+
+	alpha
+	{
+		start			0.5 0.6
+		end				0.35
+		flags			linear clamp
+	}
+
+	size
+	{
+		start			6.25 8.5
+		end				9
+		flags			clamp
+	}
+
+	shaders
+	[
+		gfx/effects/blasterSideFlash
+	]
+}
+
+Particle
+{
+	count				2
+
+	life				100
+
+	origin				5 0 0
+
+	rotation			0 360
+
+	velocity			0 0 0 10 0 0
+
+	rgb
+	{
+		start			0.8824 0.1176 0.1922
+	}
+
+	alpha
+	{
+		start			0.8 1
+		end				0.5
+		flags			linear
+	}
+
+	size
+	{
+		start			9 12
+		end				8
+		flags			linear wave
+	}
+
+	shaders
+	[
+		gfx/effects/blasterFrontFlash
+	]
+}
+
+Light
+{
+	life				100
+
+	rgb
+	{
+		start			1 0 0
+	}
+
+	size
+	{
+		start			75
+		end				8
+	}
+}
+
+Sound
+{
+	sounds
+	[
+		sound/vehicles/weapons/conc_missile/fire1.wav
+	]
+}
+
+CameraShake
+{
+	flags				usePhysics
+
+	life				3
+
+	bounce				3 4
+
+	radius				60
+}

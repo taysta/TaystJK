@@ -1,0 +1,113 @@
+Particle
+{
+	count				5
+
+	life				100
+
+	rgb
+	{
+		start			1 1 0 1 1 0.502
+		end				1 1 1 1 0.9843 0.9412
+		flags			linear clamp
+	}
+
+	alpha
+	{
+		start			0.5 0.6
+		end				0
+		flags			linear clamp
+	}
+
+	size
+	{
+		start			20
+		end				60 45
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/spark4
+	]
+}
+
+Particle
+{
+	count				3
+
+	life				100
+
+	rgb
+	{
+		start			1 1 0 1 1 1
+		end				1 1 0 1 0.9843 0.9412
+		flags			linear clamp
+	}
+
+	alpha
+	{
+		start			0.25 0.5
+		end				0
+		flags			linear clamp
+	}
+
+	size
+	{
+		start			25
+		end				50
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/eplosion_wave
+	]
+}
+
+Tail
+{
+	spawnFlags			rgbComponentInterpolation
+
+	count				2
+
+	life				5
+
+	origin				40 0 0
+
+	velocity			10 0 0
+
+	gravity				45
+
+	rgb
+	{
+		start			1 1 0 1 1 0.502
+		end				1 1 0 1 1 1
+		flags			linear clamp
+	}
+
+	alpha
+	{
+		start			0.5
+		end				0
+		flags			linear clamp
+	}
+
+	size
+	{
+		start			35
+		end				10
+		flags			linear
+	}
+
+	length
+	{
+		start			100
+		end				400
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/spark4
+	]
+}

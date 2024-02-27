@@ -1,0 +1,362 @@
+models/players/jan/mouth_eyes
+{
+	q3map_novertexshadows
+    {
+        map models/players/jan/mouth_eyes
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/jan/mouth_eyes_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        rgbGen lightingDiffuse
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/l_hand
+{
+    {
+        map models/players/jan/l_hand
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/l_hand_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/face
+{
+    {
+        map models/players/jan/face
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/face_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/head_rgb
+{
+    {
+        map models/players/jan/head_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/head_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/head_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/head
+{
+    {
+        map models/players/jan/head_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/head_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/head_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/accessories
+{
+	cull	twosided
+    {
+        map models/players/jan/accessories
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/accessories_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+	{
+        map models/players/jan/accessories_glow
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen identity
+    }
+}
+
+models/players/jan/accessories_alt
+{
+	cull	twosided
+    {
+        map models/players/jan/accessories_alt
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/accessories_alt
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/accessories_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+	{
+        map models/players/jan/accessories_glow
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen identity
+    }
+}
+
+models/players/jan/accessories_red
+{
+	cull	twosided
+    {
+        map models/players/jan/accessories_red
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/accessories_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+	{
+        map models/players/jan/accessories_glow_red
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen identity
+    }
+}
+
+models/players/jan/accessories_blue
+{
+	cull	twosided
+    {
+        map models/players/jan/accessories_blue
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/accessories_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+	{
+        map models/players/jan/accessories_glow_blue
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen identity
+    }
+}
+
+models/players/jan/vest
+{
+    {
+        map models/players/jan/vest
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/vest_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/vest_red
+{
+    {
+        map models/players/jan/vest_red
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/vest_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/vest_blue
+{
+    {
+        map models/players/jan/vest_blue
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/vest_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/accessories_rgb
+{
+    {
+        map models/players/jan/accessories_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/accessories_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/accessories_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/jan/vest_rgb
+{
+    {
+        map models/players/jan/vest_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/vest_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	{
+        map models/players/jan/vest_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+		glow
+        alphaGen lightingSpecular
+    }
+}
+
+
+models/players/jan/torso_rgb
+{
+    {
+        map models/players/jan/torso_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/torso_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/torso_alt
+{
+    {
+        map models/players/jan/torso_alt
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/torso_alt
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/torso_alt2
+{
+    {
+        map models/players/jan/torso_alt2
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/torso_alt2
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/torso_bw
+{
+    {
+        map models/players/jan/torso_alt
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/torso_wb
+{
+    {
+        map models/players/jan/torso_alt2
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/legs_rgb
+{
+    {
+        map models/players/jan/legs_rgb
+        rgbGen lightingDiffuseEntity
+    }
+	{
+        map models/players/jan/legs_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/legs_black
+{
+    {
+        map models/players/jan/legs_rgb
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}

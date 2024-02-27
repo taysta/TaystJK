@@ -1,0 +1,233 @@
+OrientedParticle
+{
+	flags				setShaderTime
+
+	life				350
+
+	rotation			-45
+
+	rgb
+	{
+		start			1 0 0
+	}
+
+	size
+	{
+		start			60 210
+		end				240 450
+		flags			random linear
+	}
+
+	shaders
+	[
+		gfx/exp/wookie
+	]
+}
+
+OrientedParticle
+{
+	flags				setShaderTime
+
+	count				0 1
+
+	life				350
+
+	rotation			135
+
+	size
+	{
+		start			60 210
+		end				240 450
+		flags			random linear
+	}
+
+	shaders
+	[
+		gfx/exp/wookie
+	]
+}
+
+OrientedParticle
+{
+	life				350
+
+	rgb
+	{
+		start			1 0 0
+		flags			random
+	}
+
+	alpha
+	{
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			240
+	}
+
+	shaders
+	[
+		gfx/effects/whiteGlow
+	]
+}
+
+CameraShake
+{
+	name				Shake
+
+	flags				usePhysics
+
+	life				500 800
+
+	bounce				3 4
+
+	radius				250
+}
+
+Sound
+{
+	name				Boom
+
+	sounds
+	[
+		sound/vehicles/weapons/imp_blaster/impact.mp3
+	]
+}
+
+Particle
+{
+	flags				setShaderTime useAlpha
+
+	spawnFlags			rgbComponentInterpolation
+
+	life				300 325
+
+	rotation			0 50
+
+	rgb
+	{
+		start			1 0 0
+		flags			random
+	}
+
+	alpha
+	{
+		start			0.5 0.6
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			50 60
+		end				200 300
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/wookie1
+	]
+}
+
+Particle
+{
+	name				Copy of Unnamed Particle 7
+
+	flags				setShaderTime
+
+	spawnFlags			rgbComponentInterpolation
+
+	count				2 3
+
+	life				300 325
+
+	origin				-50 -40 -50 40 40 50
+
+	rotation			0 30
+
+	rgb
+	{
+		start			1 0.502 0
+		end				0.8824 0.1176 0.1922
+	}
+
+	alpha
+	{
+		start			1 0.8
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			50 60
+		end				400
+		flags			random linear
+	}
+
+	shaders
+	[
+		gfx/effects/wookie1
+	]
+}
+
+Decal
+{
+	life				1e+004 2e+004
+
+	rotation			0 400
+
+	rgb
+	{
+		start			1 0 0
+	}
+
+	alpha
+	{
+		start			0.8 1
+	}
+
+	size
+	{
+		start			100 200
+	}
+
+	shaders
+	[
+		gfx/effects/scorch_mp
+	]
+}
+
+OrientedParticle
+{
+	count				1 2
+
+	life				2300 3000
+
+	rotation			0 180
+
+	rgb
+	{
+		start			1 0 0
+	}
+
+	alpha
+	{
+		end				0.1
+		flags			linear
+	}
+
+	size
+	{
+		start			100 150
+	}
+
+	shaders
+	[
+		gfx/effects/embers
+	]
+}

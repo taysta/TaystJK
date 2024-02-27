@@ -1,0 +1,94 @@
+ATST_vehicle
+{
+	weapon		WP_BOWCASTER
+	weapon		WP_ROCKET_LAUNCHER
+	weapon		WP_EMPLACED_GUN
+	playerModel	atst
+	playerTeam	TEAM_FREE
+	enemyTeam	TEAM_FREE
+	class		CLASS_VEHICLE
+	height		272	
+	width		80
+	health		3000
+}
+
+ATST_vehicle_snow
+{
+	weapon		WP_BOWCASTER
+	weapon		WP_ROCKET_LAUNCHER
+	weapon		WP_EMPLACED_GUN
+	playerModel	atst
+	playerTeam	TEAM_FREE
+	enemyTeam	TEAM_FREE
+	class		CLASS_VEHICLE
+	height		272	
+	width		80
+	health		3000
+}
+
+ATST_vehicle_clean
+{
+	weapon		WP_BOWCASTER
+	weapon		WP_ROCKET_LAUNCHER
+	weapon		WP_EMPLACED_GUN
+	playerModel	atst
+	playerTeam	TEAM_FREE
+	enemyTeam	TEAM_FREE
+	class		CLASS_VEHICLE
+	height		272	
+	width		80
+	health		3000
+}
+
+ATST_vehicle_mossy
+{
+	weapon		WP_BOWCASTER
+	weapon		WP_ROCKET_LAUNCHER
+	weapon		WP_EMPLACED_GUN
+	playerModel	atst
+	playerTeam	TEAM_FREE
+	enemyTeam	TEAM_FREE
+	class		CLASS_VEHICLE
+	height		272	
+	width		80
+	health		3000
+}
+
+ATST_vehicle_rusty
+{
+	weapon		WP_BOWCASTER
+	weapon		WP_ROCKET_LAUNCHER
+	weapon		WP_EMPLACED_GUN
+	playerModel	atst
+	playerTeam	TEAM_FREE
+	enemyTeam	TEAM_FREE
+	class		CLASS_VEHICLE
+	height		272	
+	width		80
+	health		3000
+}
+
+ATST_vehicle_random
+
+{
+
+weapon		WP_BOWCASTER
+
+weapon		WP_ROCKET_LAUNCHER
+
+weapon		WP_EMPLACED_GUN
+
+playerModel	atst
+
+playerTeam	TEAM_FREE
+
+enemyTeam	TEAM_FREE
+
+class		CLASS_VEHICLE
+
+height		272
+width		80
+
+health		3000
+
+}

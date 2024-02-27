@@ -1,0 +1,191 @@
+// Directed blaster deflection effect
+
+// Associate a sound with the effect
+Sound
+{
+	sounds
+	[
+		sound/weapons/explosions/cargoexplode.wav
+	]
+}
+
+// Mini-explosion made out of a couple of lines
+Line
+{
+	count 	0	0
+	life	100
+
+	origin2	12 -10 -10		18 10 10
+
+	width
+	{
+		start 	0.2 	0.5
+	}
+
+	alpha
+	{
+		start 	0.25 	1.0
+		end	0.0
+		flags	linear
+	}
+	
+	shader
+	[
+		gfx/misc/spark
+		gfx/misc/spark2
+                gfx/misc/spark4
+	]
+}
+
+// Bits that fly up and bounce off of architecture
+Tail
+{
+	count	0 	0
+	life	600	800
+
+	bounce	0.25	0.4
+
+	vel	120 -80 -80	250 80 80
+	gravity	-350	-450
+
+	size
+	{
+		start	0.3	0.4
+	}
+
+	length
+	{
+		start	4.0	10.0
+		end	0.1	1.0
+		flags 	linear
+	}
+
+	shader
+	[
+		gfx/misc/spark
+		gfx/misc/spark2
+                gfx/misc/spark4
+	]
+}
+
+Tail
+{
+	count	0 	0
+	life	250	450
+
+	radius	3
+
+	vel	125 0 0		275 0 0
+	spawnflags 	orgOnSphere 	axisFromSphere
+
+	size
+	{
+		start	0.2	0.2
+	}
+
+	length
+	{
+		start	5.0	
+		end	8.0	10.0
+		flags 	linear
+	}
+
+	alpha
+	{
+		start	1.0
+		end	0.0
+		parms	60
+		flags 	nonlinear
+	}
+
+	shader
+	[
+		gfx/misc/spark
+		gfx/misc/spark
+                gfx/misc/spark
+	]
+}
+
+Tail
+{
+	count	0 	0
+	life	700	1100
+
+	bounce	0.25	0.4
+
+	vel	-120 -80 -80	250 80 80
+	gravity	-100	-150
+
+	size
+	{
+		start	0.3	0.4
+	}
+
+	length
+	{
+		start	4.0	10.0
+		end	0.1	1.0
+		flags 	linear
+	}
+
+	shader
+	[
+		gfx/misc/spark
+		gfx/misc/spark
+                gfx/misc/spark
+	]
+}
+
+Particle
+{
+	life				0
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.5 0.5
+		end				0.5
+		flags			linear
+	}
+
+	size
+	{
+		start			5 15
+		end				5
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/whiteflare
+	]
+}
+
+Particle
+{
+	count	0	0
+	life	800	1000
+
+	vel	8 -12 -12		16 12 12
+	gravity	12	24
+
+	size
+	{
+		start 	4.0	12.0
+		end	12.0	24.0
+		flags	linear
+	}
+
+	alpha
+	{
+		start	0.2	0.4
+		end 	0.0
+		flags	linear
+	}
+
+	shader
+	[
+		gfx/misc/steam
+	]
+}

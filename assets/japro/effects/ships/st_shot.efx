@@ -1,0 +1,54 @@
+Cylinder
+{
+	flags				useAlpha
+
+	spawnFlags			orgOnCylinder axisFromSphere
+
+	count				6
+
+	life				10
+
+	radius				7
+
+	height				10 6
+
+	rgb
+	{
+		start			1 0 0
+		end				1 0 0
+		flags			random
+	}
+
+	alpha
+	{
+		start			0.5
+		end				0.5
+		flags			linear
+	}
+
+	size
+	{
+		start			10 11
+		end				17 18
+		flags			linear
+	}
+
+	size2
+	{
+		start			5
+		end				15
+		flags			linear
+	}
+
+	length
+	{
+		start			9
+		end				20
+		flags			random linear wave
+	}
+
+	shaders
+	[
+		gfx/effects/fl_blue2orange
+	]
+}

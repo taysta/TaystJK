@@ -1,0 +1,171 @@
+repeatDelay				300
+
+Cylinder
+{
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.42 0.45
+	}
+
+	size
+	{
+		start			16
+	}
+
+	size2
+	{
+		end				0
+	}
+
+	length
+	{
+		start			16
+	}
+
+	shaders
+	[
+		gfx/effects/light_cone
+	]
+}
+
+Particle
+{
+	origin				4 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.4
+	}
+
+	size
+	{
+		start			4
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}
+
+Particle
+{
+	name				Copy of Unnamed Particle 1
+
+	origin				12 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.15 0.17
+	}
+
+	size
+	{
+		start			12
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}
+
+Particle
+{
+	name				Copy of Unnamed Particle 1
+
+	origin				6 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.4
+	}
+
+	size
+	{
+		start			12
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}
+
+OrientedParticle
+{
+	origin				1 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.3 0.35
+	}
+
+	size
+	{
+		start			4
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}
+
+Particle
+{
+	name				Copy of 
+
+	origin				24 0 0
+
+	rgb
+	{
+		start			1 0 0
+		end				0.8 0 0
+	}
+
+	alpha
+	{
+		start			0.1 0.12
+	}
+
+	size
+	{
+		start			30
+	}
+
+	shaders
+	[
+		gfx/effects/whiteFlare
+	]
+}

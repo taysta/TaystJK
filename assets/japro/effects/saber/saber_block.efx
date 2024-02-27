@@ -1,0 +1,305 @@
+// Directed spark explosion effect
+
+// Exploding tails with no gravity
+Tail
+{
+	count	0 	0
+	life	200	400
+
+	radius	2
+
+	vel	175 0 0		375 0 0
+	spawnflags 	orgOnSphere 	axisFromSphere
+
+	size
+	{
+		start	0.3	0.5
+	}
+
+	length
+	{
+		start	5.0	
+		end	15.0	25.0
+		flags 	linear
+	}
+
+	alpha
+	{
+		start	1.0
+		end	0.0
+		parms	60
+		flags 	nonlinear
+	}
+
+	shaders
+	[
+		gfx/misc/spark
+	]
+}
+
+
+// Bits that fly up and bounce off of architecture
+Tail
+{
+	count	0 	0
+	life	700	1100
+
+	bounce	0.25	0.4
+
+	vel	-120 -80 -80	250 80 80
+	gravity	-350	-450
+
+	size
+	{
+		start	0.3	0.4
+	}
+
+	length
+	{
+		start	4.0	10.0
+		end	0.1	1.0
+		flags 	linear
+	}
+
+	shader
+	[
+		gfx/misc/spark
+		gfx/misc/spark2
+                gfx/misc/spark4
+	]
+}
+
+Line
+{
+	count				0 0
+
+	life				100
+
+	cullrange			1000
+
+	origin2				6 -10 -10 12 10 10
+
+	alpha
+	{
+		start			0.25 1
+		end				0
+		flags			linear
+	}
+
+	size
+	{
+		start			0.2 0.5
+	}
+
+	shaders
+	[
+		gfx/misc/spark
+		gfx/misc/spark2
+                gfx/misc/spark4
+	]
+}
+
+Tail
+{
+	count				0 0
+
+	life				700 900
+
+	cullrange			1000
+
+	intensity			0.25 0.4
+
+	velocity			150 -90 -90 300 90 80
+
+	gravity				-350 -450
+
+	size
+	{
+		start			0.3 0.4
+	}
+
+	length
+	{
+		start			4 10
+		end				0.1 1
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/spark
+		gfx/misc/spark2
+                gfx/misc/spark4
+	]
+}
+
+Particle
+{
+	life				70
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.1 0.1
+		end				0.1
+		flags			linear
+	}
+
+	size
+	{
+		start			100 95
+		end				90
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/borgeyeflare
+	]
+}
+
+Particle
+{
+	life				70
+
+        rgb
+	{
+		start			1 0.6039 0.1686 0.9765 0.3333 0.02353
+	}
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.7 0.7
+		end				0.7
+		flags			linear
+	}
+
+	size
+	{
+		start			100 95
+		end				90
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/borgeyeflare
+	]
+}
+
+Particle
+{
+	life				70
+
+        rgb
+	{
+		start	0.7 0.0 0.0 	0.8 0.2 0.2
+	}
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.2 0.2
+		end				0.2
+		flags			linear
+	}
+
+	size
+	{
+		start			65 60
+		end				55
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/borgeyeflare
+	]
+}
+
+Particle
+{
+	life				70
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.5 0.5
+		end				0.5
+		flags			linear
+	}
+
+	size
+	{
+		start			40 35
+		end				30
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/mine
+	]
+}
+
+Light
+{
+	name				Illumination
+
+	life				100
+
+	rgb
+	{
+		start			1 0.6039 0.1686 0.9765 0.3333 0.02353
+	}
+
+	size
+	{
+		start			350 150
+		flags			linear
+	}
+}
+
+Particle
+{
+	count	0	0
+	life	300	400
+
+	vel	8 -12 -12		16 12 12
+
+	size
+	{
+		start 8.0	12.0
+		end	2.0	4.0
+		flags	linear
+	}
+
+	alpha
+	{
+		start	0.2	0.4
+		end 	0.0
+		flags	linear
+	}
+
+	shader
+	[
+		gfx/misc/steam
+	]
+}
+
+// Let's call another existing effect to get some smoke!
+FxRunner
+{
+	count	0	0
+	delay	0	100
+
+	playfx
+	[
+		volumetric/smoke
+	]
+}

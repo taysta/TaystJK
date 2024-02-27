@@ -1,0 +1,198 @@
+models/players/impworker/caps
+{
+	q3map_nolightmap
+	cull	twosided
+    {
+        map textures/common/caps
+    }
+    {
+        map textures/common/caps_glow
+        blendFunc GL_ONE GL_ONE
+        rgbGen wave noise 1 0.5 0 2
+    }
+}
+
+models/players/impworker/helmet
+{
+	cull	twosided
+    {
+        map models/players/impworker/helmet
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/helmet-spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/helmet_black
+{
+	cull	twosided
+    {
+        map models/players/impworker/helmet_black
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/helmet-spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/helmet_red
+{
+	cull	twosided
+    {
+        map models/players/impworker/helmet_red
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/helmet-spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/helmet_blue
+{
+	cull	twosided
+    {
+        map models/players/impworker/helmet_blue
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/helmet-spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/boots_hips
+{
+    {
+        map models/players/impworker/boots_hips
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/boots_hips_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/holster_gun
+{
+	cull	twosided
+    {
+        map models/players/impworker/holster_gun
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/holster_gun_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/buckle
+{
+    {
+        map models/players/impworker/buckle
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/chrome
+        blendFunc GL_DST_COLOR GL_SRC_COLOR
+        detail
+        tcGen environment
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+    {
+        map models/players/impworker/buckle_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/buckle_officer
+{
+    {
+        map models/players/impworker/buckle_officer
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/chrome
+        blendFunc GL_DST_COLOR GL_SRC_COLOR
+        detail
+        tcGen environment
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+    {
+        map models/players/impworker/buckle_officer_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/hand
+{
+    {
+        map models/players/impworker/hand
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/impworker/hand_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/impworker/neck
+{
+	cull	twosided
+    {
+        map models/players/impworker/neck
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/impworker/neck_black
+{
+	cull	twosided
+    {
+        map models/players/impworker/neck_black
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/impworker/neck_red
+{
+	cull	twosided
+    {
+        map models/players/impworker/neck_red
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/impworker/neck_blue
+{
+	cull	twosided
+    {
+        map models/players/impworker/neck_blue
+        rgbGen lightingDiffuse
+    }
+}

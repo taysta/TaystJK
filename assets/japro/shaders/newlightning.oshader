@@ -1,0 +1,50 @@
+gfx/misc/purpleLine
+{
+	cull	twosided
+    {
+        map gfx/misc/purpleline
+        blendFunc GL_ONE GL_ONE
+        rgbGen vertex
+    }
+}
+
+gfx/misc/lightningFlash_purple
+{
+	cull	twosided
+    {
+        map gfx/misc/lightningflash_purple
+        blendFunc GL_ONE GL_ONE
+        rgbGen vertex
+    }
+}
+
+gfx/misc/blueLine2
+{
+	cull	twosided
+    {
+        map gfx/misc/blueLine2
+        blendFunc GL_ONE GL_ONE
+        rgbGen vertex
+    }
+}
+
+gfx/misc/purpleLine
+{
+	cull	twosided
+    {
+        map gfx/misc/purpleline
+        blendFunc GL_ONE GL_ONE
+        rgbGen vertex
+    }
+}
+
+gfx/misc/sparkblue
+{
+	cull	twosided
+    {
+        map gfx/misc/sparkblue
+        blendFunc GL_ONE GL_ONE
+        glow
+        rgbGen vertex
+    }
+}

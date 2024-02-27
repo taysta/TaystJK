@@ -21,9 +21,9 @@ torso_cap_l_arm_off,models/players/stormtrooper/caps.tga
 torso_cap_r_arm_off,models/players/stormtrooper/caps.tga
 head,models/players/reborn/acro_hood.tga
 head_face,models/players/reborn/acro_face.tga
-head_eyes_mouth,models/players/reborn/mouth_eyes.tga
+head_eyes_mouth,models/players/common/mouth_eyes2.tga
 head_cap_torso_off,models/players/stormtrooper/caps.tga
-head_eyes_mouth_off,models/players/kyle/mouth_eyes.tga
+head_eyes_mouth_off,models/players/common/mouth_eyes2.tga
 torso_cowelbase,models/players/reborn/acro_hood.tga
 hips_cap_l_leg_off,models/players/stormtrooper/caps.tga
 hips_cap_torso_off,models/players/stormtrooper/caps.tga

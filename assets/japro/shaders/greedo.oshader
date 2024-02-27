@@ -1,0 +1,9 @@
+models/players/greedo/fins
+{
+	cull	twosided
+    {
+        map models/players/greedo/fins
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        rgbGen lightingDiffuse
+    }
+}

@@ -1,0 +1,110 @@
+models/players/protocol/protocol_leg
+{
+    {
+        map models/players/protocol/protocol_leg
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/default_reflect5
+        blendFunc GL_DST_COLOR GL_ONE
+        tcGen environment
+    }
+    {
+        map models/players/protocol/protocol_leg_noshine
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/protocol_leg_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/protocol/hand_protocol
+{
+	{
+        map models/players/protocol/hand_protocol
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/default_reflect5
+        blendFunc GL_DST_COLOR GL_ONE
+        tcGen environment
+    }
+    {
+        map models/players/protocol/hand_protocol_noshine
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/hand_protocol_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/protocol/protocol_face
+{
+    {
+        map models/players/protocol/protocol_face
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/default_reflect5
+        blendFunc GL_DST_COLOR GL_ONE
+        tcGen environment
+    }
+    {
+        map models/players/protocol/protocol_face_noshine
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/protocol_face_glow
+        blendFunc GL_ONE GL_ONE
+        detail
+    }
+    {
+        map models/players/protocol/protocol_face-spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/protocol/torso_protocol
+{
+    {
+        map models/players/protocol/torso_protocol
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/default_reflect5
+        blendFunc GL_DST_COLOR GL_ONE
+        depthFunc equal
+        detail
+        tcGen environment
+    }
+    {
+        map models/players/protocol/torso_protocol_noshine
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/protocol/torso_protocol_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        detail
+        alphaGen lightingSpecular
+    }
+}

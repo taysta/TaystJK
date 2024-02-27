@@ -1,0 +1,90 @@
+// Simple muzzle flash effect
+
+Line
+{
+	life		30
+	origin2	24 0 0 	30 0 0
+
+	width
+	{
+		start 	4.0 	5.5
+		end	4.0
+		flags	linear
+	}
+
+	alpha
+	{
+		start	0.5	0.6
+		end	0.35
+		flags	linear
+	}
+
+	shader
+	[
+		gfx/effects/greenSideFlash
+	]
+}
+
+Particle
+{
+	life	30
+	origin	8 0 0
+	rotation	0	360
+
+	size
+	{
+		start 	4.0 	5.5
+		end	4.0
+		flags	linear
+	}
+
+	alpha
+	{
+		start	0.8	1.0
+		end	0.7
+		flags	linear
+	}
+
+	shader
+	[
+		gfx/effects/GREEN_FRONTFLASH
+	]
+}
+
+Light
+{
+	size
+	{
+		start 	150
+	}
+
+	rgb
+	{
+		start  0.2 1.0 0.2
+	}
+}
+
+CameraShake
+{
+	life				50
+
+	intensity			0.4
+
+	radius				60
+}
+
+sound
+{
+	sounds
+	[
+		sound/weapons/bowcaster/alt_fire.wav
+	]
+}
+
+forcefeedback
+{
+	forces
+	[
+		fffx/weapons/bowcaster/alt_fire
+	]
+}

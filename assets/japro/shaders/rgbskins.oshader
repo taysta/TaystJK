@@ -1,0 +1,2297 @@
+models/players/weequay/tint_l_leg
+{
+    {
+        map models/players/weequay/tint_l_leg
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/weequay/tint_l_leg
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/ugnaught/tint_torso
+{
+    {
+        map models/players/ugnaught/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/ugnaught/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/ugnaught/tint_legs
+{
+    {
+        map models/players/ugnaught/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/ugnaught/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tusken/tint_body
+{
+    {
+        map models/players/tusken/tint_body
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tusken/tint_body
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tusken/tint_head
+{
+    {
+        map models/players/tusken/tint_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tusken/tint_head
+        blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tavion_new/tint_torso
+{
+    {
+        map models/players/tavion_new/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tavion_new/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tavion_new/tint_legs
+{
+    {
+        map models/players/tavion_new/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tavion_new/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tavion_new/tint_arm
+{
+    {
+        map models/players/tavion_new/tint_arm
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tavion_new/tint_arm
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tavion/tint_tavion_torso
+{
+    {
+        map models/players/tavion/tint_tavion_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tavion/tint_tavion_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/tavion/tint_tavion_legs
+{
+    {
+        map models/players/tavion/tint_tavion_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/tavion/tint_tavion_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/swamptrooper/tint_torso
+{
+    {
+        map models/players/swamptrooper/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/swamptrooper/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/swamptrooper/tint_arms_legs
+{
+    {
+        map models/players/swamptrooper/tint_arms_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/swamptrooper/tint_arms_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/swamptrooper/tint_helmet
+{
+    {
+        map models/players/swamptrooper/tint_helmet
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/swamptrooper/tint_helmet
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/stormtrooper/tint_shoulder
+{
+    {
+        map models/players/stormtrooper/tint_shoulder
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/stormtrooper/tint_shoulder
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/stormpilot/tint_pilot_torso
+{
+    {
+        map models/players/stormpilot/tint_pilot_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/stormpilot/tint_pilot_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/stormpilot/tint_helmet
+{
+    {
+        map models/players/stormpilot/tint_helmet
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/stormpilot/tint_helmet
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/stormpilot/tint_lifesupport
+{
+    {
+        map models/players/stormpilot/tint_lifesupport
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/stormpilot/tint_lifesupport
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/stormpilot/tint_pilot_leg
+{
+    {
+        map models/players/stormpilot/tint_pilot_leg
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/stormpilot/tint_pilot_leg
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/snowtrooper/tint_snowtrooper_torso
+{
+    {
+        map models/players/snowtrooper/tint_snowtrooper_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/snowtrooper/tint_snowtrooper_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/snowtrooper/tint_snowtrooper_cape
+{
+    {
+        map models/players/snowtrooper/tint_snowtrooper_cape
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/snowtrooper/tint_snowtrooper_cape
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+	cull	twosided
+    {
+        map models/players/snowtrooper/tint_snowtrooper_cape
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/snowtrooper/tint_snowtrooper_legs
+{
+    {
+        map models/players/snowtrooper/tint_snowtrooper_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/snowtrooper/tint_snowtrooper_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/snowtrooper/tint_snowtrooper_armor
+{
+    {
+        map models/players/snowtrooper/tint_snowtrooper_armor
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/snowtrooper/tint_snowtrooper_armor
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/shadowtrooper/tint_basic_hand_rgb
+{
+    {
+        map models/players/shadowtrooper/tint_basic_hand_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/shadowtrooper/tint_basic_hand_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/shadowtrooper/tint_head_rgb
+{
+    {
+        map models/players/shadowtrooper/tint_head_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/shadowtrooper/tint_head_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/shadowtrooper/tint_legs_rgb
+{
+    {
+        map models/players/shadowtrooper/tint_legs_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/shadowtrooper/tint_legs_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/shadowtrooper/tint_basic_hand_rgb
+{
+    {
+        map models/players/shadowtrooper/tint_basic_hand_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/shadowtrooper/tint_basic_hand_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/shadowtrooper/tint_torso_arms_rgb
+{
+    {
+        map models/players/shadowtrooper/tint_torso_arms_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/shadowtrooper/tint_torso_arms_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/saboteur/tint_saboteur_torso
+{
+    {
+        map models/players/saboteur/tint_saboteur_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/saboteur/tint_saboteur_head
+{
+    {
+        map models/players/saboteur/tint_saboteur_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/saboteur/tint_saboteur_arms
+{
+    {
+        map models/players/saboteur/tint_saboteur_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/saboteur/tint_saboteur_legs
+{
+    {
+        map models/players/saboteur/tint_saboteur_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/saboteur/tint_saboteur_torso_lower
+{
+    {
+        map models/players/saboteur/tint_saboteur_torso_lower
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_torso_lower
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/saboteur/tint_saboteur_hands
+{
+    {
+        map models/players/saboteur/tint_saboteur_hands
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/saboteur/tint_saboteur_hands
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rosh_penin/tint_torso
+{
+    {
+        map models/players/rosh_penin/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rosh_penin/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rosh_penin/tint_legs
+{
+    {
+        map models/players/rosh_penin/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rosh_penin/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rosh_penin/tint_arms
+{
+    {
+        map models/players/rosh_penin/tint_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rosh_penin/tint_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rosh_penin/tint_flaps
+{
+    {
+        map models/players/rosh_penin/tint_flaps
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rosh_penin/tint_flaps
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/rodian/tint_l_boot
+{
+    {
+        map models/players/rodian/tint_l_boot
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rodian/tint_l_boot
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rodian/tint_l_leg
+{
+    {
+        map models/players/rodian/tint_l_leg
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rodian/tint_l_leg
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/rodian/tint_torso
+{
+    {
+        map models/players/rodian/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rodian/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rodian/tint_boots_belt_vest
+{
+    {
+        map models/players/rodian/tint_boots_belt_vest
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rodian/tint_boots_belt_vest
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+models/players/reelo/tint_torso
+{
+    {
+        map models/players/reelo/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reelo/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reelo/tint_legs
+{
+    {
+        map models/players/reelo/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reelo/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_twin/tint_torso
+{
+    {
+        map models/players/reborn_twin/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_twin/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_twin/tint_legs
+{
+    {
+        map models/players/reborn_twin/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_twin/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_twin/tint_arms
+{
+    {
+        map models/players/reborn_twin/tint_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_twin/tint_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_twin/tint_hands
+{
+    {
+        map models/players/reborn_twin/tint_hands
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_twin/tint_hands
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_twin/tint_head
+{
+    {
+        map models/players/reborn_twin/tint_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_twin/tint_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_new/tint_torso
+{
+    {
+        map models/players/reborn_new/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_new/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_new/tint_legs
+{
+    {
+        map models/players/reborn_new/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_new/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_new/tint_arms
+{
+    {
+        map models/players/reborn_new/tint_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_new/tint_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn_new/tint_head
+{
+    {
+        map models/players/reborn_new/tint_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn_new/tint_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_forc_torso
+{
+    {
+        map models/players/reborn/tint_forc_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_forc_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_forc_legs
+{
+    {
+        map models/players/reborn/tint_forc_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_forc_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_forc_flap
+{
+    {
+        map models/players/reborn/tint_forc_flap
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_forc_flap
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_forc_hood
+{
+    {
+        map models/players/reborn/tint_forc_hood
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_forc_hood
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_basic_hand
+{
+    {
+        map models/players/reborn/tint_basic_hand
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_basic_hand
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boots_hips
+{
+    {
+        map models/players/reborn/tint_boots_hips
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boots_hips
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_flap
+{
+    {
+        map models/players/reborn/tint_flap
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_flap
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_hood
+{
+    {
+        map models/players/reborn/tint_hood
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_hood
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_reborn_legs
+{
+    {
+        map models/players/reborn/tint_reborn_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_reborn_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_reborn_torso_red
+{
+    {
+        map models/players/reborn/tint_reborn_torso_red
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_reborn_torso_red
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_reborn_torso_blue
+{
+    {
+        map models/players/reborn/tint_reborn_torso_blue
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_reborn_torso_blue
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boss_legs
+{
+    {
+        map models/players/reborn/tint_boss_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boss_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boss_torso
+{
+    {
+        map models/players/reborn/tint_boss_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boss_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boss_hood
+{
+    {
+        map models/players/reborn/tint_boss_hood
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boss_hood
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boss_flap
+{
+    {
+        map models/players/reborn/tint_boss_flap
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boss_flap
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/reborn/tint_boss_torso_s
+{
+    {
+        map models/players/reborn/tint_boss_torso_s
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/reborn/tint_boss_torso_s
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/rebel/tint_rebel_torso
+{
+    {
+        map models/players/rebel/tint_rebel_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rebel/tint_rebel_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rebel/tint_rebel_legs
+{
+    {
+        map models/players/rebel/tint_rebel_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rebel/tint_rebel_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rebel/tint_accessories
+{
+    {
+        map models/players/rebel/tint_accessories
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rebel/tint_accessories
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rax_joris/tint_torso
+{
+    {
+        map models/players/rax_joris/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rax_joris/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rax_joris/tint_legs
+{
+    {
+        map models/players/rax_joris/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rax_joris/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rax_joris/tint_robe
+{
+    {
+        map models/players/rax_joris/tint_robe
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rax_joris/tint_robe
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/rax_joris/tint_arms
+{
+    {
+        map models/players/rax_joris/tint_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rax_joris/tint_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/prisoner/tint_torso
+{
+    {
+        map models/players/prisoner/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/prisoner/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/prisoner/tint_legs
+{
+    {
+        map models/players/prisoner/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/prisoner/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/prisoner/tint_boots_hips
+{
+    {
+        map models/players/prisoner/tint_boots_hips
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/prisoner/tint_boots_hips
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/noghri/tint_torso
+{
+    {
+        map models/players/noghri/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/noghri/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/noghri/tint_torso_lower
+{
+    {
+        map models/players/noghri/tint_torso_lower
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/noghri/tint_torso_lower
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/morgan/tint_morgan_torso
+{
+    {
+        map models/players/morgan/tint_morgan_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/morgan/tint_morgan_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/morgan/tint_morgan_legs
+{
+    {
+        map models/players/morgan/tint_morgan_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/morgan/tint_morgan_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/monmothma/tint_dress
+{
+    {
+        map models/players/monmothma/tint_dress
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/monmothma/tint_dress
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/luke/tint_torso
+{
+    {
+        map models/players/luke/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/luke/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/luke/tint_collar
+{
+    {
+        map models/players/luke/tint_collar
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/luke/tint_collar
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/luke/tint_legs
+{
+    {
+        map models/players/luke/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/luke/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/luke/tint_boots_hips
+{
+    {
+        map models/players/luke/tint_boots_hips
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/luke/tint_boots_hips
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/lando/tint_lando_torso
+{
+    {
+        map models/players/lando/tint_lando_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/lando/tint_lando_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/lando/tint_lando_legs
+{
+    {
+        map models/players/lando/tint_lando_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/lando/tint_lando_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/kyle/tint_kyle_torso
+{
+    {
+        map models/players/kyle/tint_kyle_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/kyle/tint_kyle_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/kyle/tint_kyle_legs
+{
+    {
+        map models/players/kyle/tint_kyle_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/kyle/tint_kyle_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/kyle/tint_kyle_extras
+{
+    {
+        map models/players/kyle/tint_kyle_extras
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/kyle/tint_kyle_extras
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jeditrainer/tint_basic_hand
+{
+    {
+        map models/players/jeditrainer/tint_basic_hand
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jeditrainer/tint_basic_hand
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jeditrainer/tint_trainer_legs
+{
+    {
+        map models/players/jeditrainer/tint_trainer_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jeditrainer/tint_trainer_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jeditrainer/tint_trainer_parts
+{
+    {
+        map models/players/jeditrainer/tint_trainer_parts
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jeditrainer/tint_trainer_parts
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jeditrainer/tint_trainer_torso
+{
+    {
+        map models/players/jeditrainer/tint_trainer_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jeditrainer/tint_trainer_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jedi/tint_torso
+{
+    {
+        map models/players/jedi/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jedi/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jedi/tint_legs
+{
+    {
+        map models/players/jedi/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jedi/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jawa/tint_jawa
+{
+    {
+        map models/players/jawa/tint_jawa
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jawa/tint_jawa
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jawa/tint_jawa_hands
+{
+    {
+        map models/players/jawa/tint_jawa_hands
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jawa/tint_jawa_hands
+        blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/tint_torso
+{
+    {
+        map models/players/jan/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jan/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/tint_legs
+{
+    {
+        map models/players/jan/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jan/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/tint_accesories
+{
+    {
+        map models/players/jan/tint_accesories
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jan/tint_accesories
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/jan/tint_vest
+{
+    {
+        map models/players/jan/tint_vest
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/jan/tint_vest
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/imperial_worker/tint_torso
+{
+    {
+        map models/players/imperial_worker/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial_worker/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/imperial_worker/tint_leg
+{
+    {
+        map models/players/imperial_worker/tint_leg
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial_worker/tint_leg
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/imperial_worker/tint_helmet_beltpac
+{
+    {
+        map models/players/imperial_worker/tint_helmet_beltpac
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial_worker/tint_helmet_beltpac
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/imperial/tint_boots_hips
+{
+    {
+        map models/players/imperial/tint_boots_hips
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial/tint_boots_hips
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/imperial/tint_officer_torso
+{
+    {
+        map models/players/imperial/tint_officer_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial/tint_officer_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/imperial/tint_officer_legs
+{
+    {
+        map models/players/imperial/tint_officer_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial/tint_officer_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/imperial/tint_head
+{
+    {
+        map models/players/imperial/tint_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/imperial/tint_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/human_merc/tint_human_merc_arms
+{
+    {
+        map models/players/human_merc/tint_human_merc_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/human_merc/tint_human_merc_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/human_merc/tint_human_merc_head
+{
+    {
+        map models/players/human_merc/tint_human_merc_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/human_merc/tint_human_merc_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/human_merc/tint_human_merc_legs
+{
+    {
+        map models/players/human_merc/tint_human_merc_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/human_merc/tint_human_merc_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/human_merc/tint_human_merc_torso
+{
+    {
+        map models/players/human_merc/tint_human_merc_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/human_merc/tint_human_merc_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/human_merc/tint_human_merc_torso_lower
+{
+    {
+        map models/players/human_merc/tint_human_merc_torso_lower
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/human_merc/tint_human_merc_torso_lower
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/gran/tint_l_arm_rgb
+{
+    {
+        map models/players/gran/tint_l_arm_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/gran/tint_l_arm_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/gran/tint_leg_rgb
+{
+    {
+        map models/players/gran/tint_leg_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/gran/tint_leg_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/gran/tint_r_arm_rgb
+{
+    {
+        map models/players/gran/tint_r_arm_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/gran/tint_r_arm_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/gran/tint_torso_rgb
+{
+    {
+        map models/players/gran/tint_torso_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/gran/tint_torso_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/galak/tint_galak_torso
+{
+    {
+        map models/players/galak/tint_galak_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/galak/tint_galak_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/galak/tint_galak_legs
+{
+    {
+        map models/players/galak/tint_galak_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/galak/tint_galak_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/galak/tint_collar
+{
+    {
+        map models/players/galak/tint_collar
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/galak/tint_collar
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/galak/tint_boots_hips
+{
+    {
+        map models/players/galak/tint_boots_hips
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/galak/tint_boots_hips
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/desann/tint_torso
+{
+    {
+        map models/players/desann/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/desann/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/desann/tint_legs
+{
+    {
+        map models/players/desann/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/desann/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/desann/tint_face
+{
+    {
+        map models/players/desann/tint_face
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/desann/tint_face
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+models/players/desann/tint_neck_mouth
+{
+    {
+        map models/players/desann/tint_neck_mouth
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/desann/tint_neck_mouth
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/cultist/tint_face
+{
+    {
+        map models/players/cultist/tint_face
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/cultist/tint_face
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/cultist/tint_head
+{
+    {
+        map models/players/cultist/tint_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/cultist/tint_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/cultist/tint_arms
+{
+    {
+        map models/players/cultist/tint_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/cultist/tint_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/cultist/tint_legs
+{
+    {
+        map models/players/cultist/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/cultist/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/cultist/tint_torso
+{
+    {
+        map models/players/cultist/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/cultist/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chiss/tint_chiss_legs
+{
+    {
+        map models/players/chiss/tint_chiss_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chiss/tint_chiss_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chiss/tint_chiss_torso
+{
+    {
+        map models/players/chiss/tint_chiss_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chiss/tint_chiss_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chiss/tint_collar
+{
+    {
+        map models/players/chiss/tint_collar
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chiss/tint_collar
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chiss/tint_mouth_eyes
+{
+    {
+        map models/players/chiss/tint_mouth_eyes
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chiss/tint_mouth_eyes
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chewbacca/tint_chewbacca_1sided
+{
+	cull	twosided
+    {
+        map models/players/chewbacca/tint_chewbacca_1sided
+        blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/chewbacca/tint_chewbacca_1sidedb
+	blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        rgbGen lightingDiffuseEntity
+    }
+}
+
+models/players/chewbacca/tint_chewbacca_2sided
+{
+	cull	twosided
+    {
+        map models/players/chewbacca/tint_chewbacca_2sided
+        blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/chewbacca/tint_chewbacca_2sidedb
+	blendFunc GL_ONE_MINUS_SRC_ALPHA GL_SRC_ALPHA
+        rgbGen lightingDiffuseEntity
+    }
+}
+
+models/players/chewbacca/tint_chewbacca_body
+{
+    {
+        map models/players/chewbacca/tint_chewbacca_body
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chewbacca/tint_chewbacca_body
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chewbacca/tint_chewbacca_head
+{
+    {
+        map models/players/chewbacca/tint_chewbacca_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chewbacca/tint_chewbacca_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/chewbacca/tint_chewbacca_sprites
+{
+    {
+        map models/players/chewbacca/tint_chewbacca_sprites
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/chewbacca/tint_chewbacca_sprites
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/boba_fett/tint_boba_body
+{
+    {
+        map models/players/boba_fett/tint_boba_body
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/boba_fett/tint_boba_body
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/boba_fett/tint_boba_head_revised
+{
+    {
+        map models/players/boba_fett/tint_boba_head_revised
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/boba_fett/tint_boba_head_revised
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/boba_fett/tint_boba_jetpack
+{
+    {
+        map models/players/boba_fett/tint_boba_jetpack
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/boba_fett/tint_boba_jetpack
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+models/players/bespin_cop/tint_torso
+{
+    {
+        map models/players/bespin_cop/tint_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/tint_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/bespin_cop/tint_legs
+{
+    {
+        map models/players/bespin_cop/tint_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/tint_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/bespin_cop/tint_cap
+{
+    {
+        map models/players/bespin_cop/tint_cap
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/tint_cap
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora2/tint_alora2_torso
+{
+    {
+        map models/players/alora2/tint_alora2_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora2/tint_alora2_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora2/tint_alora2_legs
+{
+    {
+        map models/players/alora2/tint_alora2_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora2/tint_alora2_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_torso_arms
+{
+    {
+        map models/players/alora/tint_alora2_torso_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_torso_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_torso_cuffs
+{
+    {
+        map models/players/alora/tint_alora2_torso_cuffs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_torso_cuffs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_torso_hands
+{
+    {
+        map models/players/alora/tint_alora2_torso_hands
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_torso_hands
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_tentacles
+{
+    {
+        map models/players/alora/tint_alora2_tentacles
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_tentacles
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_face
+{
+    {
+        map models/players/alora/tint_alora2_face
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_face
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_forehead
+{
+    {
+        map models/players/alora/tint_alora2_forehead
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_forehead
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora2_head
+{
+    {
+        map models/players/alora/tint_alora2_head
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora2_head
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora_torso
+{
+    {
+        map models/players/alora/tint_alora_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora_legs
+{
+    {
+        map models/players/alora/tint_alora_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/alora/tint_alora_arms
+{
+    {
+        map models/players/alora/tint_alora_arms
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/alora/tint_alora_arms
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/rebel_pilot/tint_rebel_pilot_legs
+{
+    {
+        map models/players/rebel_pilot/tint_rebel_pilot_legs
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rebel_pilot/tint_rebel_pilot_legs
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+
+models/players/rebel_pilot/tint_rebel_pilot_torso
+{
+    {
+        map models/players/rebel_pilot/tint_rebel_pilot_torso
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/rebel_pilot/tint_rebel_pilot_torso
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}

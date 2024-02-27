@@ -1,0 +1,30 @@
+repeatDelay				300
+
+Emitter
+{
+	name				Copy of parts
+
+	flags				useModel emitFx
+
+	spawnFlags			absoluteAccel
+
+	life				4000 5000
+
+	origin				0 100 0 0 150 0
+
+	angleDelta			-45 -45 -45 45 45 45
+
+	velocity			-50 50 -50 50 200 50
+
+	density				21 23
+
+	models
+	[
+		models/players/tie_interceptor/tie_int_part_wing_r.md3
+	]
+
+	emitfx
+	[
+		emitter/smoke_trail_fire
+	]
+}

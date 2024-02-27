@@ -1,0 +1,24 @@
+gfx/mp/chat_icon
+{
+	nopicmip
+	cull none
+	sort 16
+	{	
+		animmap 3 gfx/2d/chat_icon_bg.tga gfx/2d/chat_icon_bg.png
+        	blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+	}
+	{	
+		animmap 2 gfx/2d/chat_icon_0.tga gfx/2d/chat_icon_1.png gfx/2d/chat_icon_2.png gfx/2d/chat_icon_3.png 
+       		blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+	}
+}
+
+gfx/mp/vchat_icon
+{
+	nopicmip
+	cull none
+	{	
+		clampmap gfx/2d/voice_icon.png
+        	blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+	}
+}

@@ -1,0 +1,147 @@
+Sound
+{
+	cullrange			800
+
+	sounds
+	[
+		sound/weapons/blaster/reflect1.wav
+		sound/weapons/blaster/reflect2.wav
+		sound/weapons/blaster/reflect3.wav
+		sound/weapons/bowcaster/bc_ricco.wav
+	]
+}
+
+Particle
+{
+	life				80
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.3 0.3
+		end				0.3
+		flags			linear
+	}
+
+	size
+	{
+		start			55 50
+		end				45
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/borgeyeflare
+	]
+}
+
+Particle
+{
+	life				80
+
+        rgb
+	{
+		start			1 0.6039 0.1686 0.9765 0.3333 0.02353
+	}
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.9 0.9
+		end				0.9
+		flags			linear
+	}
+
+	size
+	{
+		start			55 50
+		end				45
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/borgeyeflare
+	]
+}
+
+Particle
+{
+	life				80
+
+        rgb
+	{
+		start	0.7 0.0 0.0 	0.8 0.2 0.2
+	}
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			7 7
+		end				7
+		flags			linear
+	}
+
+	size
+	{
+		start			45 40
+		end				35
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/effects/whiteglow
+	]
+}
+
+Particle
+{
+	life				80
+
+        rotation			0 0
+
+	origin				2 0 0
+
+	alpha
+	{
+		start			0.7 0.7
+		end				0.7
+		flags			linear
+	}
+
+	size
+	{
+		start			30 25
+		end				20
+		flags			linear
+	}
+
+	shaders
+	[
+		gfx/misc/mine
+                gfx/effects/whiteflare
+	]
+}
+
+Light
+{
+	name				Illumination
+
+	life				100
+
+	rgb
+	{
+		start			1 0.6039 0.1686 0.9765 0.3333 0.02353
+	}
+
+	size
+	{
+		start			350 150
+		flags			linear
+	}
+}

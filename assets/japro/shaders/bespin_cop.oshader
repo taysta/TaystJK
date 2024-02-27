@@ -1,0 +1,215 @@
+models/players/bespin_cop/mouth_eyes
+{
+	q3map_novertexshadows
+    {
+        map models/players/bespin_cop/mouth_eyes
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/mouth_eyes_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        rgbGen lightingDiffuse
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/cap
+{
+    {
+        map models/players/bespin_cop/cap
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/cap_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/cap_red
+{
+    {
+        map models/players/bespin_cop/cap_red
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/cap_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/cap_blue
+{
+    {
+        map models/players/bespin_cop/cap_blue
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/cap_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/torso
+{
+    {
+        map models/players/bespin_cop/torso
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/torso_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/torso_rgb
+{
+    {
+        map models/players/bespin_cop/torso_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/torso_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/torso_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/cap_rgb
+{
+    {
+        map models/players/bespin_cop/cap_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/cap_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/cap_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/legs_rgb
+{
+    {
+        map models/players/bespin_cop/legs_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/legs_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/bespin_cop/cap_rgb
+{
+    {
+        map models/players/bespin_cop/cap_rgb
+        rgbGen lightingDiffuseEntity
+    }
+    {
+        map models/players/bespin_cop/cap_rgb
+        blendFunc GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
+        detail
+        rgbGen lightingDiffuse
+    }
+}
+
+models/players/bespin_cop/torso_red
+{
+    {
+        map models/players/bespin_cop/torso_red
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/torso_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/torso_blue
+{
+    {
+        map models/players/bespin_cop/torso_blue
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/torso_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/boots_hips
+{
+    {
+        map models/players/bespin_cop/boots_hips
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/boots_hips_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}
+
+models/players/bespin_cop/holster
+{
+    {
+        map models/players/bespin_cop/holster
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+    {
+        map models/players/bespin_cop/holster_spec
+        blendFunc GL_SRC_ALPHA GL_ONE
+        glow
+        detail
+        alphaGen lightingSpecular
+    }
+}

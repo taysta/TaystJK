@@ -1,0 +1,78 @@
+repeatDelay				300
+
+Particle
+{
+	spawnFlags			evenDistribution
+
+	count				28
+
+	life				300
+
+	delay				0 500
+
+	origin				-2 -5 0 0 -5 0
+
+	velocity			0 300 0
+
+	rgb
+	{
+		start			1 1 0.502
+		end				1 1 0.502 1 1 1
+		flags			linear clamp
+	}
+
+	alpha
+	{
+		start			0.4
+		end				0.1
+		flags			linear
+	}
+
+	size
+	{
+		start			16 20
+		end				0 2
+		flags			linear
+	}
+
+	shaders
+	[
+		sun2
+	]
+}
+
+Particle
+{
+	spawnFlags			evenDistribution
+
+	count				20
+
+	life				300
+
+	delay				0 1000
+
+	origin				0 2 0
+
+	rgb
+	{
+		start			1 1 0 1 1 1
+	}
+
+	alpha
+	{
+		start			0.5
+		end				0.1
+	}
+
+	size
+	{
+		start			12 16
+		end				8 10
+		flags			wave
+	}
+
+	shaders
+	[
+		sun2
+	]
+}

@@ -1,0 +1,122 @@
+	
+gfx/2d/numbers/t_zero
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_zero
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_one
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_one
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+	}
+}	
+gfx/2d/numbers/t_two
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_two
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_three
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_three
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_four
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_four
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_five
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_five
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_six
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_six
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_seven
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_seven
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_eight
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_eight
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_nine
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_nine
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
+gfx/2d/numbers/t_minus
+{
+	sort	additive
+	cull	disable
+	deformVertexes move 2 -10 0 sin 1 0 0 0
+    {
+        map  gfx/2d/numbers/t_minus
+        blendFunc GL_SRC_ALPHA GL_ONE
+        rgbGen vertex
+    }
+}	
