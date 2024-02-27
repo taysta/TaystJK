@@ -37,16 +37,26 @@ cvar_t		*con_conspeed;
 cvar_t		*con_notifytime;
 cvar_t		*con_notifylines;
 cvar_t		*con_opacity; // background alpha multiplier
-cvar_t		*con_scale;
 cvar_t		*con_ratioFix; //for custom console backgrounds
 cvar_t		*con_autoclear;
 cvar_t		*con_notifywords;
 cvar_t		*con_notifyconnect;
 cvar_t		*con_notifyvote;
 cvar_t		*con_height;
+cvar_t		*con_scale;
+cvar_t		*con_timestamps;
 
 #define	DEFAULT_CONSOLE_WIDTH	78
-#define TIMESTAMP_LENGTH 9
+
+#define CON_BLANK_CHAR			' '
+#define CON_SCROLL_L_CHAR		'$'
+#define CON_SCROLL_R_CHAR		'$'
+#define CON_TIMESTAMP_LEN		11 // "[13:37:00] "
+#define CON_MIN_WIDTH			20
+
+
+static const conChar_t CON_WRAP = { { ColorIndex(COLOR_GREY), '\\' } };
+static const conChar_t CON_BLANK = { { ColorIndex(COLOR_WHITE), CON_BLANK_CHAR } };
 
 vec4_t	console_color = {0.509f, 0.609f, 0.847f, 1.0f};
 
@@ -167,7 +177,7 @@ void Con_Clear_f (void) {
 	int		i;
 
 	for ( i = 0 ; i < CON_TEXTSIZE ; i++ ) {
-		con.text[i] = (ColorIndex(COLOR_WHITE)<<8) | ' ';
+		con.text[i] = CON_BLANK;
 	}
 
 	Con_Bottom();		// go to end
@@ -175,7 +185,7 @@ void Con_Clear_f (void) {
 
 void Con_Copy(void) {
 	int l, x, i;
-	short *line;
+	conChar_t *line;
 	int bufferlen, savebufferlen;
 	char *buffer, *savebuffer;
 
@@ -184,7 +194,7 @@ void Con_Copy(void) {
 	{
 		line = con.text + (l%con.totallines)*con.linewidth;
 		for (x = 0; x<con.linewidth; x++)
-			if ((line[x] & 0xff) != ' ')
+			if (line[x].f.character != CON_BLANK_CHAR)
 				break;
 		if (x != con.linewidth)
 			break;
@@ -213,16 +223,16 @@ void Con_Copy(void) {
 		line = con.text + (l%con.totallines)*con.linewidth;
 
 		buffer[0] = '[';//this was a space
-		for (i = 0; i<TIMESTAMP_LENGTH; i++) //Add [ and ] brackets around timestamp.  0 and timestamp_length ?
-			buffer[i+1] = (char)(line[i] & 0xff);
-		buffer[TIMESTAMP_LENGTH] = ']';//this was a space
-		buffer[TIMESTAMP_LENGTH+1] = ' ';//add a new space
-		for (i = TIMESTAMP_LENGTH+1; i<con.linewidth; i++) //Add [ and ] brackets around timestamp.  0 and timestamp_length ?
-			buffer[i+1] = (char)(line[i-1] & 0xff); //i-1 instead of i, does this fuck up the end?
+		for (i = 0; i<CON_TIMESTAMP_LEN; i++) //Add [ and ] brackets around timestamp.  0 and timestamp_length ?
+			buffer[i+1] = line[i].f.character;
+		buffer[CON_TIMESTAMP_LEN] = ']';//this was a space
+		buffer[CON_TIMESTAMP_LEN+1] = CON_BLANK_CHAR;//add a new space
+		for (i = CON_TIMESTAMP_LEN+1; i<con.linewidth; i++) //Add [ and ] brackets around timestamp.  0 and timestamp_length ?
+			buffer[i+1] = line[i-1].f.character; //i-1 instead of i, does this fuck up the end?
 
 		for (x = con.linewidth - 1; x >= 0; x--)
 		{
-			if (buffer[x] == ' ')
+			if (buffer[x] == CON_BLANK_CHAR)
 				buffer[x] = 0;
 			else
 				break;
@@ -242,7 +252,7 @@ void Con_Copy(void) {
 
 void Con_CopyLink(void) {
 	int l, x, i, pointDiff;
-	short *line;
+	conChar_t *line;
 	char *buffer, n[] = "\0";
 	const char *link, *point1, *point2, *point3;
 	qboolean containsNum = qfalse, containsPoint = qfalse;
@@ -253,13 +263,13 @@ void Con_CopyLink(void) {
 	{
 		line = con.text + (l%con.totallines)*con.linewidth;
 		for (i = 0; i < con.linewidth; i++) {
-			buffer[i] = (char)(line[i] & 0xff);
+			buffer[i] = line[i].f.character;
 			if (!containsNum && Q_isanumber(&buffer[i])) containsNum = qtrue;
 			if (!containsPoint && buffer[i] == '.') containsPoint = qtrue;
 		}
 		// Clear spaces at end of buffer
 		for (x = con.linewidth - 1; x >= 0; x--) {
-			if (buffer[x] == ' ')
+			if (buffer[x] == CON_BLANK_CHAR)
 				buffer[x] = 0;
 			else
 				break;
@@ -267,10 +277,10 @@ void Con_CopyLink(void) {
 		Q_StripColor(buffer);
 		if ((link = Q_stristr(buffer, "://")) || (link = Q_stristr(buffer, "www."))) {
 			// Move link ptr back until it hits a space or first char of string
-			while (link != &buffer[0] && *(link - 1) != ' ') link--;
+			while (link != &buffer[0] && *(link - 1) != CON_BLANK_CHAR) link--;
 			for (i = 0; buffer[i] != 0; i++) {
 				buffer[i] = *link++;
-				if (*link == ' ' || *link == '"') buffer[i + 1] = 0;
+				if (*link == CON_BLANK_CHAR || *link == '"') buffer[i + 1] = 0;
 			}
 			Sys_SetClipboardData(buffer);
 			Com_Printf("^2Link ^7\"%s\" ^2Copied!\n", buffer);
@@ -310,7 +320,7 @@ void Con_CopyLink(void) {
 			if (link) {
 				for (i = 0; buffer[i] != 0; i++) {
 					buffer[i] = *link++;
-					if (*link == ' ' || *link == '"') buffer[i + 1] = 0;
+					if (*link == CON_BLANK_CHAR || *link == '"') buffer[i + 1] = 0;
 				}
 				Sys_SetClipboardData(buffer);
 				Com_Printf("^2IP ^7\"%s\" ^2Copied!\n", buffer);
@@ -333,12 +343,17 @@ Save the console contents out to a file
 */
 void Con_Dump_f (void)
 {
-	int		l, x, i;
-	short	*line;
+	char			filename[MAX_QPATH];
+	qboolean		empty;
+	int				l, i, j;
+	int				line;
+	int				lineLen;
 	fileHandle_t	f;
-	int		bufferlen;
-	char	*buffer;
-	char	filename[MAX_QPATH];
+#ifdef WIN32
+	char			buffer[CON_TIMESTAMP_LEN + MAXPRINTMSG + 2];
+#else
+	char			buffer[CON_TIMESTAMP_LEN + MAXPRINTMSG + 1];
+#endif
 
 	if (Cmd_Argc() != 2)
 	{
@@ -365,47 +380,59 @@ void Con_Dump_f (void)
 	Com_Printf ("Dumped console text to %s.\n", filename );
 
 	// skip empty lines
-	for (l = con.current - con.totallines + 1 ; l <= con.current ; l++)
+	for (l = 1, empty = qtrue ; l < con.totallines && empty ; l++)
 	{
-		line = con.text + (l%con.totallines)*con.linewidth;
-		for (x=0 ; x<con.linewidth ; x++)
-			if ((line[x] & 0xff) != ' ')
-				break;
-		if (x != con.linewidth)
-			break;
+		line = ((con.current + l) % con.totallines) * con.rowwidth;
+
+		for (j = CON_TIMESTAMP_LEN ; j < con.rowwidth - 1 ; j++)
+			if (con.text[line + j].f.character != CON_BLANK_CHAR)
+				empty = qfalse;
 	}
 
-#ifdef _WIN32
-	bufferlen = con.linewidth + 3 * sizeof ( char );
-#else
-	bufferlen = con.linewidth + 2 * sizeof ( char );
-#endif
-
-	buffer = (char *)Hunk_AllocateTempMemory( bufferlen );
-
-	// write the remaining lines
-	buffer[bufferlen-1] = 0;
-	for ( ; l <= con.current ; l++)
+	for ( ; l < con.totallines ; l++)
 	{
-		line = con.text + (l%con.totallines)*con.linewidth;
-		for(i=0; i<con.linewidth; i++)
-			buffer[i] = (char) (line[i] & 0xff);
-		for (x=con.linewidth-1 ; x>=0 ; x--)
+		lineLen = 0;
+		i = 0;
+
+		// Print timestamp
+		if (con_timestamps->integer) {
+			line = ((con.current + l) % con.totallines) * con.rowwidth;
+
+			for (i = 0; i < CON_TIMESTAMP_LEN; i++)
+				buffer[i] = con.text[line + i].f.character;
+
+			lineLen = CON_TIMESTAMP_LEN;
+		}
+
+		// Concatenate wrapped lines
+		for ( ; l < con.totallines ; l++)
 		{
-			if (buffer[x] == ' ')
-				buffer[x] = 0;
-			else
+			line = ((con.current + l) % con.totallines) * con.rowwidth;
+
+			for (j = CON_TIMESTAMP_LEN; j < con.rowwidth - 1 && i < (int)sizeof(buffer) - 1; j++, i++) {
+				buffer[i] = con.text[line + j].f.character;
+
+				if (con.text[line + j].f.character != CON_BLANK_CHAR)
+					lineLen = i + 1;
+			}
+
+			if (i == sizeof(buffer) - 1)
+				break;
+
+			if (con.text[line + j].compare != CON_WRAP.compare)
 				break;
 		}
-#ifdef _WIN32
-		Q_strcat(buffer, bufferlen, "\r\n");
+
+#ifdef WIN32 // I really don't like this inconsistency, but OpenJK has been doing this since April 2013
+		buffer[lineLen] = '\r';
+		buffer[lineLen+1] = '\n';
+		FS_Write(buffer, lineLen + 2, f);
 #else
-		Q_strcat(buffer, bufferlen, "\n");
+		buffer[lineLen] = '\n';
+		FS_Write(buffer, lineLen + 1, f);
 #endif
-		FS_Write(buffer, strlen(buffer), f);
 	}
 
-	Hunk_FreeTempMemory( buffer );
 	FS_FCloseFile( f );
 }
 
@@ -423,7 +450,132 @@ void Con_ClearNotify( void ) {
 	}
 }
 
+/*
+================
+Con_Initialize
 
+Initialize console for the first time.
+================
+*/
+void Con_Initialize(void)
+{
+	int	i;
+
+	VectorCopy4(colorWhite, con.color);
+	con.charWidth = SMALLCHAR_WIDTH;
+	con.charHeight = SMALLCHAR_HEIGHT;
+	con.linewidth = DEFAULT_CONSOLE_WIDTH;
+	con.rowwidth = CON_TIMESTAMP_LEN + con.linewidth + 1;
+	con.totallines = CON_TEXTSIZE / con.rowwidth;
+	con.current = con.totallines - 1;
+	con.display = con.current;
+	con.xadjust = 1.0f;
+	con.yadjust = 1.0f;
+	for(i=0; i<CON_TEXTSIZE; i++)
+	{
+		con.text[i] = CON_BLANK;
+	}
+
+	con.initialized = qtrue;
+}
+
+
+
+/*
+================
+Con_Resize
+
+Reformat the buffer for new row width
+================
+*/
+static void Con_Resize(int rowwidth)
+{
+	static conChar_t tbuf[CON_TEXTSIZE];
+	int		i, j;
+	int		oldrowwidth;
+	int		oldtotallines;
+
+	oldrowwidth = con.rowwidth;
+	oldtotallines = con.totallines;
+
+	con.rowwidth = rowwidth;
+	con.totallines = CON_TEXTSIZE / rowwidth;
+
+	Com_Memcpy (tbuf, con.text, sizeof(tbuf));
+	for(i=0; i<CON_TEXTSIZE; i++)
+		con.text[i] = CON_BLANK;
+
+	int oi = 0;
+	int ni = 0;
+
+	while (oi < oldtotallines)
+		{
+			conChar_t	line[MAXPRINTMSG];
+			conChar_t	timestamp[CON_TIMESTAMP_LEN];
+			int		lineLen = 0;
+			int		oldline = ((con.current + oi) % oldtotallines) * oldrowwidth;
+			int		newline = (ni % con.totallines) * con.rowwidth;
+
+			// Store timestamp
+			for (i = 0; i < CON_TIMESTAMP_LEN; i++)
+				timestamp[i] = tbuf[oldline + i];
+
+			// Store whole line concatenating on CON_WRAP
+			for (i = 0; oi < oldtotallines; oi++)
+				{
+					oldline = ((con.current + oi) % oldtotallines) * oldrowwidth;
+
+					for (j = CON_TIMESTAMP_LEN; j < oldrowwidth - 1 && i < (int)ARRAY_LEN(line); j++, i++) {
+						line[i] = tbuf[oldline + j];
+
+						if (line[i].f.character != CON_BLANK_CHAR)
+							lineLen = i + 1;
+					}
+
+					if (i == ARRAY_LEN(line))
+						break;
+
+					if (tbuf[oldline + j].compare != CON_WRAP.compare)
+						break;
+				}
+
+			oi++;
+
+			// Print stored line to a new text buffer
+			for (i = 0; ; ni++) {
+				newline = (ni % con.totallines) * con.rowwidth;
+
+				// Print timestamp at the begining of each line
+				for (j = 0; j < CON_TIMESTAMP_LEN; j++)
+					con.text[newline + j] = timestamp[j];
+
+				for (j = CON_TIMESTAMP_LEN; j < con.rowwidth - 1 && i < lineLen; j++, i++)
+					con.text[newline + j] = line[i];
+
+				if (i == lineLen) {
+					// Erase remaining chars in case newline wrapped
+					for (; j < con.rowwidth - 1; j++)
+						con.text[newline + j] = CON_BLANK;
+
+					ni++;
+					break;
+				}
+
+				con.text[newline + j] = CON_WRAP;
+			}
+		}
+
+	con.current = ni;
+
+	// Erase con.current line for next CL_ConsolePrint
+	int newline = (con.current % con.totallines) * con.rowwidth;
+	for (j = 0; j < con.rowwidth; j++)
+		con.text[newline + j] = CON_BLANK;
+
+	Con_ClearNotify ();
+
+	con.display = con.current;
+}
 
 /*
 ================
@@ -434,79 +586,44 @@ If the line width has changed, reformat the buffer.
 */
 void Con_CheckResize (void)
 {
-	int		i, j, width, oldwidth, oldtotallines, numlines, numchars;
-	short	tbuf[CON_TEXTSIZE];
+	int		charWidth, rowwidth, width;
+	float	scale;
 
-	if (cls.glconfig.vidWidth <=0.0f) // video hasn't been initialized yet
-	{
-		con.xadjust = 1;
-		con.yadjust = 1;
-		con.charWidth = SMALLCHAR_WIDTH;
-		con.charHeight = SMALLCHAR_HEIGHT;
-		con.linewidth = DEFAULT_CONSOLE_WIDTH;
-		con.totallines = CON_TEXTSIZE / con.linewidth;
-		for(i=0; i<CON_TEXTSIZE; i++)
-		{
-			con.text[i] = (ColorIndex(COLOR_WHITE)<<8) | ' ';
-		}
-	}
-	else
-	{
-		float scale = (con_scale && con_scale->value > 0.0f) ? con_scale->value : 1.0f;
+	assert(SMALLCHAR_HEIGHT >= SMALLCHAR_WIDTH);
 
-		width = (cls.glconfig.vidWidth / (scale * SMALLCHAR_WIDTH)) - 2;
+	scale = ((con_scale->value > 0.0f) ? con_scale->value : 1.0f);
+	charWidth = scale * SMALLCHAR_WIDTH;
 
-		if (width == con.linewidth)
-			return;
-
-		con.charWidth = scale * SMALLCHAR_WIDTH;
-		con.charHeight = scale * SMALLCHAR_HEIGHT;
-
-		g_consoleField.widthInChars = width;
-		for (i = 0; i < COMMAND_HISTORY; i++) {
-			historyEditLines[i].widthInChars = width;
-
-		}
-
-		// on wide screens, we will center the text
-		con.xadjust = 640.0f / cls.glconfig.vidWidth;
-		con.yadjust = 480.0f / cls.glconfig.vidHeight;
-
-		oldwidth = con.linewidth;
-		con.linewidth = width;
-		oldtotallines = con.totallines;
-		con.totallines = CON_TEXTSIZE / con.linewidth;
-		numlines = oldtotallines;
-
-		if (con.totallines < numlines)
-			numlines = con.totallines;
-
-		numchars = oldwidth;
-
-		if (con.linewidth < numchars)
-			numchars = con.linewidth;
-
-		Com_Memcpy (tbuf, con.text, CON_TEXTSIZE * sizeof(short));
-		for(i=0; i<CON_TEXTSIZE; i++)
-
-			con.text[i] = (ColorIndex(COLOR_WHITE)<<8) | ' ';
-
-
-		for (i=0 ; i<numlines ; i++)
-		{
-			for (j=0 ; j<numchars ; j++)
-			{
-				con.text[(con.totallines - 1 - i) * con.linewidth + j] =
-						tbuf[((con.current - i + oldtotallines) %
-							  oldtotallines) * oldwidth + j];
-			}
-		}
-
-		Con_ClearNotify ();
+	if (charWidth < 1) {
+		charWidth = 1;
+		scale = (float)charWidth / SMALLCHAR_WIDTH;
 	}
 
-	con.current = con.totallines - 1;
-	con.display = con.current;
+	width = (cls.glconfig.vidWidth / charWidth) - 2;
+
+	if (width < 20) {
+		width = 20;
+		charWidth = cls.glconfig.vidWidth / 22;
+		scale = (float)charWidth / SMALLCHAR_WIDTH;
+	}
+
+	if (charWidth < 1) {
+		Com_Error(ERR_FATAL, "Con_CheckResize: Window too small to draw a console");
+	}
+
+	rowwidth = width + 1 + (con_timestamps->integer ? 0 : CON_TIMESTAMP_LEN);
+
+	con.charWidth = charWidth;
+	con.charHeight = scale * SMALLCHAR_HEIGHT;
+	con.linewidth = width;
+	con.xadjust = ((float)SCREEN_WIDTH) / cls.glconfig.vidWidth;
+	con.yadjust = ((float)SCREEN_HEIGHT) / cls.glconfig.vidHeight;
+	g_consoleField.widthInChars = width - 1; // Command prompt
+
+	if (con.rowwidth != rowwidth)
+	{
+		Con_Resize(rowwidth);
+	}
 }
 
 
@@ -543,7 +660,10 @@ void Con_Init (void) {
 	con_notifywords = Cvar_Get("con_notifywords", "0", CVAR_ARCHIVE, "Notifies you when defined words are mentioned");
 	con_notifyconnect = Cvar_Get("con_notifyconnect", "0", CVAR_ARCHIVE, "Notifies you when someone connects to the server");
 	con_notifyvote = Cvar_Get("con_notifyvote", "1", CVAR_ARCHIVE, "Notifies you when someone calls a vote");
-	con_height = Cvar_Get ("con_height", "0.5", CVAR_ARCHIVE_ND);
+	con_height = Cvar_Get ("con_height", "0.5", CVAR_ARCHIVE_ND, "Adjust the height of the console");
+
+	con_scale = Cvar_Get ("con_scale", "1", CVAR_ARCHIVE_ND, "Scale console font");
+	con_timestamps = Cvar_Get ("con_timestamps", "2", CVAR_ARCHIVE_ND, "Display timestamps infront of console lines");
 
 	Field_Clear( &g_consoleField );
 	g_consoleField.widthInChars = DEFAULT_CONSOLE_WIDTH;
@@ -561,6 +681,9 @@ void Con_Init (void) {
 	Cmd_AddCommand( "clear", Con_Clear_f, "Clear console text" );
 	Cmd_AddCommand( "condump", Con_Dump_f, "Dump console text to file" );
 	Cmd_SetCommandCompletionFunc( "condump", Cmd_CompleteTxtName );
+
+	//Initialize values on first print
+	con.initialized = qfalse;
 }
 
 /*
@@ -589,30 +712,37 @@ int stampColor = COLOR_GREY;
 static void Con_Linefeed (qboolean skipnotify)
 {
 	int		i;
-	char	timetxt[TIMESTAMP_LENGTH];
-	qtime_t now;
+	int		line = (con.current % con.totallines) * con.rowwidth;
+
+	// print timestamp on the PREVIOUS line
+	{
+		time_t t = time( NULL );
+		struct tm *tms = localtime( &t );
+		char	timestamp[CON_TIMESTAMP_LEN + 1];
+		const unsigned char color = ColorIndex(COLOR_GREY);
+
+		Com_sprintf(timestamp, sizeof(timestamp), "[%02d:%02d:%02d] ",
+			tms->tm_hour, tms->tm_min, tms->tm_sec);
+
+		for ( i = 0; i < CON_TIMESTAMP_LEN; i++ ) {
+			con.text[line + i].f = { color, timestamp[i] };
+		}
+	}
 
 	// mark time for transparent overlay
 	if (con.current >= 0)
-	{
-		if (skipnotify)
-			  con.times[con.current % NUM_CON_TIMES] = 0;
-		else
-			  con.times[con.current % NUM_CON_TIMES] = cls.realtime;
-	}
+		con.times[con.current % NUM_CON_TIMES] = skipnotify ? 0 : cls.realtime;
 
-	Com_RealTime(&now);
-	Com_sprintf(timetxt, sizeof(timetxt), "%02d:%02d:%02d", now.tm_hour, now.tm_min, now.tm_sec);
-	for (i = 0; i<TIMESTAMP_LENGTH-1; i++)
-		con.text[(con.current%con.totallines)*con.linewidth + i] = (ColorIndex(stampColor) << 8) | timetxt[i];
+	con.x = 0;
 
-	con.x = TIMESTAMP_LENGTH;
 	if (con.display == con.current)
 		con.display++;
 	con.current++;
 
-	for(i=0; i<con.linewidth; i++)
-		con.text[(con.current%con.totallines)*con.linewidth+i] = (ColorIndex(COLOR_WHITE)<<8) | ' '; //Spacing between timestamp and text, and other spaces
+	line = (con.current % con.totallines) * con.rowwidth;
+
+	for ( i = 0; i < con.rowwidth; i++ )
+		con.text[line + i] = CON_BLANK;
 }
 
 /*
@@ -626,8 +756,8 @@ If no console is visible, the text will appear at the top of the game window
 */
 void CL_ConsolePrint( const char *txt) {
 	int		y;
-	int		c, l;
-	int		color;
+	char			c;
+	unsigned char	color;
 	qboolean skipnotify = qfalse;		// NERVE - SMF
 	int prev;							// NERVE - SMF
 
@@ -648,19 +778,10 @@ void CL_ConsolePrint( const char *txt) {
 	}
 
 	if (!con.initialized) {
-		con.color[0] =
-		con.color[1] =
-		con.color[2] =
-		con.color[3] = 1.0f;
-		con.linewidth = -1;
-		con.x = TIMESTAMP_LENGTH;
-		Con_CheckResize ();
-		con.initialized = qtrue;
+		Con_Initialize();
 	}
 
 	color = ColorIndex(COLOR_WHITE);
-	l = -1;
-
 	while ( (c = (unsigned char) *txt) != 0 ) {
 		if ( Q_IsColorString( (unsigned char*) txt ) ) {
 			color = ColorIndex( *(txt+1) );
@@ -668,38 +789,26 @@ void CL_ConsolePrint( const char *txt) {
 			continue;
 		}
 
-		// count word length
-		if ((l < 0 ? l = 0, true : false) || (l + 1 == con.linewidth - TIMESTAMP_LENGTH))
-			while (l < con.linewidth - TIMESTAMP_LENGTH) {
-				if ( txt[l] <= ' ') {
-					break;
-				}
-				l++;
-			}
-
-		// word wrap
-		if (l != con.linewidth - TIMESTAMP_LENGTH && con.x + l >= con.linewidth) {
-			Con_Linefeed(skipnotify);
-		}
-
 		txt++;
-		l--;
-
 		switch (c)
 		{
 		case '\n':
 			Con_Linefeed (skipnotify);
 			break;
 		case '\r':
-			con.x = TIMESTAMP_LENGTH;
+			con.x = CON_TIMESTAMP_LEN;
 			break;
 		default:	// display character and advance
 			y = con.current % con.totallines;
-			con.text[y*con.linewidth+con.x] = (short) ((color << 8) | c);
-			con.x++;
-			if (con.x >= con.linewidth) {
-				Con_Linefeed(skipnotify);
+
+			if (con.x == con.rowwidth - CON_TIMESTAMP_LEN - 1) {
+				con.text[y * con.rowwidth + CON_TIMESTAMP_LEN + con.x] = CON_WRAP;
+				Con_Linefeed( skipnotify );
+				y = con.current % con.totallines;
 			}
+
+			con.text[y * con.rowwidth + CON_TIMESTAMP_LEN + con.x].f = { color, c };
+			con.x++;
 			break;
 		}
 	}
@@ -740,8 +849,8 @@ Draw the editline after a ] prompt
 ================
 */
 void Con_DrawInput (void) {
-	int		y, x = 0;
-	char ts[TIMESTAMP_LENGTH];
+	int		y, x;
+	char ts[CON_TIMESTAMP_LEN];
 	qtime_t	now;
 
 	if ( cls.state != CA_DISCONNECTED && !(Key_GetCatcher( ) & KEYCATCH_CONSOLE ) ) {
@@ -751,20 +860,27 @@ void Con_DrawInput (void) {
 	y = con.vislines - ( con.charHeight * (re->Language_IsAsian() ? 1.5 : 2) );
 
 	Com_RealTime(&now);
-	Com_sprintf(ts, sizeof(ts), "%02d:%02d:%02d", now.tm_hour, now.tm_min, now.tm_sec);
+	Com_sprintf(ts, sizeof(ts), "[%02d:%02d:%02d]", now.tm_hour, now.tm_min, now.tm_sec);
 
-	re->SetColor(g_color_table[ColorIndex(COLOR_GREEN)]);
-	for (x = 0; x<TIMESTAMP_LENGTH-1; x++) {
+	re->SetColor(g_color_table[ColorIndex(COLOR_GREY)]);
+	for (x = 0; x<CON_TIMESTAMP_LEN-1; x++) {
 		SCR_DrawSmallChar(con.xadjust + (x + 1) * con.charWidth, y, ts[x]);
 	}
-	x = TIMESTAMP_LENGTH;
+	x = CON_TIMESTAMP_LEN;
 
 	re->SetColor( con.color );
 
-	SCR_DrawSmallChar( (int)(con.xadjust + (x+1) * con.charWidth), y, CONSOLE_PROMPT_CHAR ); //Add space?
+	Field_Draw( &g_consoleField, con.xadjust + (x+1) * con.charWidth, y, qtrue, qtrue );
 
-	Field_Draw( &g_consoleField, (int)(con.xadjust + (x+2) * con.charWidth), y,
-				SCREEN_WIDTH - 3 * con.charWidth, qtrue, qtrue );
+	re->SetColor( g_color_table[ColorIndex(COLOR_GREY)] );
+
+	if ( g_consoleField.scroll > 0 )
+		SCR_DrawSmallChar( 0, y, CON_SCROLL_L_CHAR );
+
+	int len = Q_PrintStrlen( g_consoleField.buffer );
+	int pos = Q_PrintStrLenTo( g_consoleField.buffer, g_consoleField.scroll, NULL );
+	if ( pos + g_consoleField.widthInChars < len )
+		SCR_DrawSmallChar( cls.glconfig.vidWidth - con.charWidth, y, CON_SCROLL_R_CHAR );
 }
 
 
@@ -780,7 +896,8 @@ Draws the last few lines of output transparently over the game top
 void Con_DrawNotify (void)
 {
 	int		x, v;
-	short	*text;
+	int		lineLimit = con.linewidth;
+	conChar_t		*text;
 	int		i;
 	int		time;
 	int		skip;
@@ -789,6 +906,17 @@ void Con_DrawNotify (void)
 
 	currentColor = 7;
 	re->SetColor( g_color_table[currentColor] );
+
+	int iFontIndex = cls.consoleFont;
+	float fFontScale = 1.0f;
+	int iPixelHeightToAdvance = 0;
+	if (re->Language_IsAsian())
+	{
+		fFontScale = con.charWidth * 10.0f /
+			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
+		fFontScale *= con.yadjust;
+		iPixelHeightToAdvance = 2+(1.3/con.yadjust) * re->Font_HeightPixels(iFontIndex, fFontScale);
+	}
 
 	v = 0;
 	for (i= con.current-con_notifylines->integer ; i<=con.current ; i++)
@@ -801,7 +929,12 @@ void Con_DrawNotify (void)
 		time = cls.realtime - time;
 		if (time > con_notifytime->value*1000)
 			continue;
-		text = con.text + (i % con.totallines)*con.linewidth;
+		text = con.text + (i % con.totallines)*con.rowwidth;
+		if (con_timestamps->integer == 0 || con_timestamps->integer == 2) {
+			// don't show timestamps in the notify lines
+			text += CON_TIMESTAMP_LEN;
+			lineLimit -= CON_TIMESTAMP_LEN;
+		}
 
 		if (cl.snap.ps.pm_type != PM_INTERMISSION && Key_GetCatcher( ) & (KEYCATCH_UI | KEYCATCH_CGAME) ) {
 			continue;
@@ -819,43 +952,41 @@ void Con_DrawNotify (void)
 		//
 		if (re->Language_IsAsian())
 		{
-			static int iFontIndex = re->RegisterFont("ocr_a");	// this seems naughty
-			const float fFontScale = 0.75f*con.yadjust;
-			const int iPixelHeightToAdvance =   2+(1.3/con.yadjust) * re->Font_HeightPixels(iFontIndex, fFontScale);	// for asian spacing, since we don't want glyphs to touch.
-
 			// concat the text to be printed...
 			//
-			char sTemp[4096]={0};	// ott
-			for (x = TIMESTAMP_LENGTH; x < con.linewidth ; x++)
+			char sTemp[4096];	// ott
+			sTemp[0] = '\0';
+			for (x = 0 ; x < lineLimit ; x++)
 			{
-				if ( ( (text[x]>>8)&Q_COLOR_BITS ) != currentColor ) {
-					currentColor = (text[x]>>8)&Q_COLOR_BITS;
-					strcat(sTemp,va("^%i", (text[x]>>8)&Q_COLOR_BITS) );
+				if ( text[x].f.color != currentColor ) {
+					currentColor = text[x].f.color;
+					strcat(sTemp,va("^%i", currentColor ));
 				}
-				strcat(sTemp,va("%c",text[x] & 0xFF));
+				strcat(sTemp,va("%c",text[x].f.character));
 			}
 			//
 			// and print...
 			//
-			re->Font_DrawString(cl_conXOffset->integer + con.xadjust*(con.xadjust + (1*con.charWidth/*aesthetics*/)), con.yadjust*(v), sTemp, g_color_table[currentColor], iFontIndex, -1, fFontScale);
+			re->Font_DrawString(cl_conXOffset->integer + con.xadjust * (con.xadjust + con.charWidth), con.yadjust * v, sTemp,
+				g_color_table[currentColor], iFontIndex, -1, fFontScale);
 
 			v +=  iPixelHeightToAdvance;
 		}
 		else
 		{
-			for (x = TIMESTAMP_LENGTH; x < con.linewidth ; x++) {
-				if ( ( text[x] & 0xff ) == ' ' ) {
+			for (x = 0 ; x < lineLimit ; x++) {
+				if ( text[x].f.character == ' ' ) {
 					continue;
 				}
-				if ( ( (text[x]>>8)&Q_COLOR_BITS ) != currentColor ) {
-					currentColor = (text[x]>>8)&Q_COLOR_BITS;
+				if ( text[x].f.color != currentColor ) {
+					currentColor = text[x].f.color;
 					re->SetColor( g_color_table[currentColor] );
 				}
 				if (!cl_conXOffset)
 				{
 					cl_conXOffset = Cvar_Get ("cl_conXOffset", "0", 0);
 				}
-				SCR_DrawSmallChar((int)(cl_conXOffset->integer + con.xadjust + (x + 1 - TIMESTAMP_LENGTH)*con.charWidth), v, text[x] & 0xff);
+				SCR_DrawSmallChar( (int)(cl_conXOffset->integer + (x+1)*con.charWidth), v, text[x].f.character );
 			}
 
 			v += con.charHeight;
@@ -901,16 +1032,10 @@ Draws the console with the solid background
 void Con_DrawSolidConsole( float frac ) {
 	int				i, x, y;
 	int				rows;
-	short			*text;
+	conChar_t		*text;
 	int				row;
 	int				lines;
-//	qhandle_t		conShader;
 	int				currentColor;
-	struct tm		*newtime;
-	time_t			rawtime;
-	qboolean		AM = qtrue;
-	char			ts[24];
-	const int		padding = (int)(0.5f + ((con_scale->value > 0.0f) ? (2.0f * con_scale->value) : 2.0f));
 
 	lines = (int) (cls.glconfig.vidHeight * frac);
 	if (lines <= 0)
@@ -953,12 +1078,13 @@ void Con_DrawSolidConsole( float frac ) {
 
 	for (x=0 ; x<i ; x++) {
 		SCR_DrawSmallChar( cls.glconfig.vidWidth - ( i - x + 1 ) * con.charWidth,
-			(lines-(con.charHeight*2+con.charHeight/2)) + padding, JK_VERSION[x] );
+			(lines-(con.charHeight+con.charHeight/2)), JK_VERSION[x] );
 	}
 
 	// draw the input prompt, user text, and cursor if desired
 	Con_DrawInput ();
 
+	/*
 	// Draw time and date
 	time(&rawtime);
 	newtime = localtime(&rawtime);
@@ -969,12 +1095,12 @@ void Con_DrawSolidConsole( float frac ) {
 	i = strlen(ts);
 
 	for (x = 0; x<i; x++) {
-		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2) + padding, ts[x]);
-	}
+		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2), ts[x]);
+	}*/
 
 	// draw the text
 	con.vislines = lines;
-	rows = (lines-con.charWidth)/con.charWidth;		// rows of text to draw
+	rows = (lines-con.charHeight)/con.charHeight;		// rows of text to draw
 
 	y = lines - (con.charHeight*3);
 
@@ -984,30 +1110,29 @@ void Con_DrawSolidConsole( float frac ) {
 	// draw arrows to show the buffer is backscrolled
 		re->SetColor( console_color );
 		for (x=0 ; x<con.linewidth ; x+=4)
-			SCR_DrawSmallChar( (int) (con.xadjust + (x+1)*con.charWidth), y, '^' );
+			SCR_DrawSmallChar( (x+1)*con.charWidth, y, '^' );
 		y -= con.charHeight;
 		rows--;
 	}
 
 	row = con.display;
 
-	if ( con.x == TIMESTAMP_LENGTH) {
+	if ( con.x == 0 ) {
 		row--;
 	}
 
 	currentColor = 7;
 	re->SetColor( g_color_table[currentColor] );
 
-	static int iFontIndexForAsian = 0;
-	const float fFontScaleForAsian = 0.75f*con.yadjust;
+	int iFontIndex = cls.consoleFont;
+	float fFontScale = 1.0f;
 	int iPixelHeightToAdvance = con.charHeight;
 	if (re->Language_IsAsian())
 	{
-		if (!iFontIndexForAsian)
-		{
-			iFontIndexForAsian = re->RegisterFont("ocr_a");
-		}
-		iPixelHeightToAdvance = (1.3/con.yadjust) * re->Font_HeightPixels(iFontIndexForAsian, fFontScaleForAsian);	// for asian spacing, since we don't want glyphs to touch.
+		fFontScale = con.charWidth * 10.0f /
+			re->Font_StrLenPixels("aaaaaaaaaa", iFontIndex, 1.0f);
+		fFontScale *= con.yadjust;
+		iPixelHeightToAdvance = 2+(1.3/con.yadjust) * re->Font_HeightPixels(iFontIndex, fFontScale);
 	}
 
 	for (i=0 ; i<rows ; i++, y -= iPixelHeightToAdvance, row--)
@@ -1019,7 +1144,9 @@ void Con_DrawSolidConsole( float frac ) {
 			continue;
 		}
 
-		text = con.text + (row % con.totallines)*con.linewidth;
+		text = con.text + (row % con.totallines)*con.rowwidth;
+		if (!con_timestamps->integer)
+			text += CON_TIMESTAMP_LEN;
 
 		// asian language needs to use the new font system to print glyphs...
 		//
@@ -1029,32 +1156,34 @@ void Con_DrawSolidConsole( float frac ) {
 		{
 			// concat the text to be printed...
 			//
-			char sTemp[4096]={0};	// ott
-			for (x = 0 ; x < con.linewidth ; x++)
+			char sTemp[4096];	// ott
+			sTemp[0] = '\0';
+			for (x = 0 ; x < con.linewidth + 1 ; x++)
 			{
-				if ( ( (text[x]>>8)&Q_COLOR_BITS ) != currentColor ) {
-					currentColor = (text[x]>>8)&Q_COLOR_BITS;
-					strcat(sTemp,va("^%i", (text[x]>>8)&Q_COLOR_BITS) );
+				if ( text[x].f.color != currentColor ) {
+					currentColor = text[x].f.color;
+					strcat(sTemp,va("^%i", currentColor ));
 				}
-				strcat(sTemp,va("%c",text[x] & 0xFF));
+				strcat(sTemp,va("%c",text[x].f.character));
 			}
 			//
 			// and print...
 			//
-			re->Font_DrawString(con.xadjust*(con.xadjust + (1*con.charWidth/*(aesthetics)*/)), con.yadjust*(y), sTemp, g_color_table[currentColor], iFontIndexForAsian, -1, fFontScaleForAsian);
+			re->Font_DrawString(con.xadjust*(con.xadjust + con.charWidth), con.yadjust * y, sTemp, g_color_table[currentColor],
+				iFontIndex, -1, fFontScale);
 		}
 		else
 		{
-			for (x=0 ; x<con.linewidth ; x++) {
-				if ( ( text[x] & 0xff ) == ' ' ) {
+			for (x = 0; x < con.linewidth + 1 ; x++) {
+				if ( text[x].f.character == CON_BLANK_CHAR ) {
 					continue;
 				}
 
-				if ( ( (text[x]>>8)&Q_COLOR_BITS ) != currentColor ) {
-					currentColor = (text[x]>>8)&Q_COLOR_BITS;
+				if ( text[x].f.color != currentColor ) {
+					currentColor = text[x].f.color;
 					re->SetColor( g_color_table[currentColor] );
 				}
-				SCR_DrawSmallChar(  (int) (con.xadjust + (x+1)*con.charWidth), y, text[x] & 0xff );
+				SCR_DrawSmallChar( (x+1)*con.charWidth, y, text[x].f.character );
 			}
 		}
 	}
