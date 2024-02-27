@@ -81,11 +81,11 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "OpenJK Contributors"
-            VALUE "FileDescription", "EternalJK Dedicated Server"
+            VALUE "FileDescription", "TaystJK Dedicated Server"
             VALUE "FileVersion", VERSION_STRING
             VALUE "InternalName", "JK MP Ded"
             VALUE "OriginalFilename", "OpenJKDed.exe"
-            VALUE "ProductName", "EternalJK Dedicated Server"
+            VALUE "ProductName", "TaystJK Dedicated Server"
             VALUE "ProductVersion", VERSION_STRING
         END
     END

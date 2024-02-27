@@ -420,7 +420,7 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 			if (!libDir[0])
 				continue;
 
-			fn = FS_BuildOSPath(libDir, ETERNALJKGAME, filename);
+			fn = FS_BuildOSPath(libDir, TAYSTJKGAME, filename);
 			libHandle = Sys_LoadLibrary(fn);
 			if (libHandle)
 				return libHandle;

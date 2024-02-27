@@ -219,7 +219,7 @@ static void vk_create_instance( void )
 
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pNext = NULL;
-    appInfo.pApplicationName = "EternalJK";
+    appInfo.pApplicationName = "TaystJK";
     appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
     appInfo.pEngineName = "Quake3";
     appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);

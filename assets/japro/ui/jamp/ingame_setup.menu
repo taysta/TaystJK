@@ -861,7 +861,7 @@
 			textscale 		1
 			style			WINDOW_STYLE_FILLED
 			forecolor		.615 .615 .956 1
-			cvarStrList			{  "Vanilla" , "rd-eternaljk" , "Vulkan", "rd-vulkan", "Rend2" , "rd-rend2e" }
+			cvarStrList			{  "Vanilla" , "rd-taystjk" , "Vulkan", "rd-vulkant", "Rend2" , "rd-rend2t" }
 			descText			"Change the renderer library to use."
 			cvar				"ui_cl_renderer"
 			visible				1
@@ -1640,7 +1640,7 @@
 			visible				0
 			descText			"Configure rend2 video options"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-eternaljk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
 
 			action
 			{
@@ -1676,7 +1676,7 @@
 			visible				0
 			descText			"Rend2 video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-eternaljk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
 
 			action
 			{

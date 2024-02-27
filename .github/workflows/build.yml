@@ -227,7 +227,7 @@ jobs:
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x eternaljk.x86_64.app/Contents/MacOS/eternaljk.x86_64
+          chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
@@ -294,7 +294,7 @@ jobs:
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x eternaljk.arm64.app/Contents/MacOS/eternaljk.arm64
+          chmod +x taystjk.arm64.app/Contents/MacOS/taystjk.arm64
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
