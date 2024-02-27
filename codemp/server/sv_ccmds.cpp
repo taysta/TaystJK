@@ -1792,7 +1792,7 @@ void SV_RecordDemo( client_t *cl, char *demoName ) {
 	// Save metadata message if desired
 	if (sv_demoWriteMeta->integer) {
 		ssMeta << "{";
-		ssMeta << "\"wr\":\"EternalJK_Server\""; // Writer (keyword used by other tools too to identify origin of demo)
+		ssMeta << "\"wr\":\"TaystJK_Server\""; // Writer (keyword used by other tools too to identify origin of demo)
 
 		// Go through manually set metadata and add it.
 		for (auto it = demoMetaData[cl - svs.clients].begin(); it != demoMetaData[cl - svs.clients].end(); it++) {

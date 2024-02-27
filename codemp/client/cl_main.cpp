@@ -2700,7 +2700,7 @@ static IHeapAllocator *GetG2VertSpaceServer( void ) {
 	return G2VertSpaceServer;
 }
 
-#define DEFAULT_RENDER_LIBRARY "rd-eternaljk"
+#define DEFAULT_RENDER_LIBRARY "rd-taystjk"
 
 void CL_InitRef( void ) {
 	static refimport_t ri;

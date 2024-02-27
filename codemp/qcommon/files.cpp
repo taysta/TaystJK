@@ -3898,7 +3898,7 @@ void FS_Startup( const char *gameName ) {
 #ifdef DEDICATED
 	fs_basegame = Cvar_Get ("fs_basegame", "", CVAR_INIT );
 #else
-	fs_basegame = Cvar_Get ("fs_basegame", ETERNALJKGAME, CVAR_INIT );
+	fs_basegame = Cvar_Get ("fs_basegame", TAYSTJKGAME, CVAR_INIT );
 #endif
 	fs_portable = Cvar_Get ("fs_portable", "1", CVAR_INIT|CVAR_PROTECTED, "Disable fs_homepath and use only one folder for all game files" );
 	homePath = Sys_DefaultHomePath();
@@ -3914,7 +3914,7 @@ void FS_Startup( const char *gameName ) {
 #ifdef DEDICATED
 	fs_forcegame = Cvar_Get ("fs_forcegame", "", CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server)." );
 #else
-	fs_forcegame = Cvar_Get("fs_forcegame", "EternalJK", CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server).");
+	fs_forcegame = Cvar_Get("fs_forcegame", TAYSTJKGAME, CVAR_INIT, "Folder to use for overriding of fs_game (can not be set by the server).");
 #endif
 	// add search path elements in reverse priority order (lowest priority first)
 	if (fs_cdpath->string[0]) {

@@ -21,7 +21,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment ver
 
 set(InOpenJK ON)
 
-set(ProjectName "EternalJK" CACHE STRING "Project Name")
+set(ProjectName "TaystJK" CACHE STRING "Project Name")
 project(${ProjectName})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
@@ -33,10 +33,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 #=============================================================================
 option(BuildPortableVersion "Build portable version (does not read or write files from your user/home directory" OFF)
 
-option(BuildMPEngine "Whether to create projects for the MP client (eternaljk.x86.exe)" ON)
-option(BuildMPRdVanilla "Whether to create projects for the MP default renderer (rd-eternaljk_x86.dll)" ON)
+option(BuildMPEngine "Whether to create projects for the MP client (taystjk.x86.exe)" ON)
+option(BuildMPRdVanilla "Whether to create projects for the MP default renderer (rd-taystjk_x86.dll)" ON)
 option(BuildMPRdVulkan "Whether to create projects for the MP vulkan renderer (rd-vulkan_x86.dll)" ON)
-option(BuildMPDed "Whether to create projects for the MP dedicated server (eternaljkded.exe)" ON)
+option(BuildMPDed "Whether to create projects for the MP dedicated server (taystjkded.exe)" ON)
 option(BuildMPGame "Whether to create projects for the MP server-side gamecode (jampgamex86.dll)" ON)
 option(BuildMPCGame "Whether to create projects for the MP clientside gamecode (cgamex86.dll)" ON)
 option(BuildMPUI "Whether to create projects for the MP UI code (uix86.dll)" ON)
@@ -146,11 +146,11 @@ endif()
 # Binary names
 #
 #=============================================================================
-set(MPEngine "eternaljk.${Architecture}")
-set(MPVanillaRenderer "rd-eternaljk_${Architecture}")
-set(MPVulkanRenderer "rd-vulkan_${Architecture}")
-set(MPRend2 "rd-rend2e_${Architecture}")
-set(MPDed "eternaljkded.${Architecture}")
+set(MPEngine "taystjk.${Architecture}")
+set(MPVanillaRenderer "rd-taystjk_${Architecture}")
+set(MPVulkanRenderer "rd-vulkant_${Architecture}")
+set(MPRend2 "rd-rend2t_${Architecture}")
+set(MPDed "taystjkded.${Architecture}")
 set(MPGame "jampgame${Architecture}")
 set(MPCGame "cgame${Architecture}")
 set(MPUI "ui${Architecture}")

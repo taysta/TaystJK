@@ -782,15 +782,15 @@ endif(BuildMPDed)
 
 install(FILES
 		${CMAKE_CURRENT_BINARY_DIR}/japro-assets.pk3
-		DESTINATION "${JKAInstallDir}/EternalJK"
+		DESTINATION "${JKAInstallDir}/taystjk"
 		COMPONENT ${JKAMPCoreComponent})
 
 install(FILES
 		${CMAKE_SOURCE_DIR}/assets/settings/cosmetics/example.cosmetic
-		DESTINATION "${JKAInstallDir}/EternalJK/settings/cosmetics/hats/"
+		DESTINATION "${JKAInstallDir}/taystjk/settings/cosmetics/hats/"
 		COMPONENT ${JKAMPCoreComponent})
 
 install(FILES
 		${CMAKE_SOURCE_DIR}/assets/settings/cosmetics/example.cosmetic
-		DESTINATION "${JKAInstallDir}/EternalJK/settings/cosmetics/capes/"
+		DESTINATION "${JKAInstallDir}/taystjk/settings/cosmetics/capes/"
 		COMPONENT ${JKAMPCoreComponent})
