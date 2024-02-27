@@ -880,6 +880,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.hitSound3			= trap->S_RegisterSound( "sound/effects/hitsound3.wav" );
 	cgs.media.hitSound4			= trap->S_RegisterSound( "sound/effects/hitsound4.wav" );
 	cgs.media.hitTeamSound		= trap->S_RegisterSound( "sound/effects/hitsoundteam.wav" );
+	cgs.media.tribesJetSound	= trap->S_RegisterSound( "sound/effects/thrust.wav" );
 
 	cgs.media.gibSound			= trap->S_RegisterSound( "sound/player/gibsplt1.wav" );
 	cgs.media.gibBounce1Sound	= trap->S_RegisterSound( "sound/player/gibimp1.wav" );
@@ -1295,6 +1296,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.effects.mShipDestDestroyed = trap->FX_RegisterEffect("effects/ships/dest_destroyed.efx");
 	cgs.effects.mShipDestBurning = trap->FX_RegisterEffect("effects/ships/dest_burning.efx");
 	cgs.effects.mBobaJet = trap->FX_RegisterEffect("effects/boba/jet.efx");
+	cgs.effects.mTribesJet = trap->FX_RegisterEffect("effects/tribes/jet.efx");
 
 
 	cgs.effects.itemCone = trap->FX_RegisterEffect("mp/itemcone.efx");

@@ -1818,6 +1818,7 @@ typedef struct cgMedia_s {
 	sfxHandle_t hitSound3;
 	sfxHandle_t hitSound4;
 	sfxHandle_t hitTeamSound;
+	sfxHandle_t tribesJetSound;
 //JAPRO - Clientside - Hitsounds End
 
 #ifdef JK2AWARDS
@@ -2121,6 +2122,7 @@ typedef struct cgEffects_s {
 	fxHandle_t	mShipDestDestroyed;
 	fxHandle_t	mShipDestBurning;
 	fxHandle_t	mBobaJet;
+	fxHandle_t	mTribesJet;
 
 	//footstep effects
 	fxHandle_t footstepMud;

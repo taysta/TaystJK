@@ -10622,48 +10622,68 @@ void CG_Player( centity_t *cent ) {
 			vec3_t flamePos, flameDir;
 			int n = 0;
 
-			while (n < 2)
-			{
-				//Get the position/dir of the flame bolt on the jetpack model bolted to the player
-				trap->G2API_GetBoltMatrix(cent->ghoul2, 3, n, &mat, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
-				BG_GiveMeVectorFromMatrix(&mat, ORIGIN, flamePos);
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+				vec3_t forward, right;
+				VectorCopy(cent->lerpOrigin, flamePos);
+				AngleVectors(cent->turAngles, forward, right, NULL);
+				VectorMA(flamePos, -6, forward, flamePos); //adjust based on Modelscale ?
+				flamePos[2] += 22;
 
-				if (n == 0)
+				flameDir[0] = 0; //Adjust this based on movedir?
+				flameDir[1] = 0;
+				flameDir[2] = 1;
+
+				VectorMA(flamePos, -6, right, flamePos); //adjust based on Modelscale ?
+
+				trap->FX_PlayEffectID(cgs.effects.mTribesJet, flamePos, flameDir, -1, -1, qfalse);
+
+				VectorMA(flamePos, 10, right, flamePos); //adjust based on Modelscale ?
+
+				trap->FX_PlayEffectID(cgs.effects.mTribesJet, flamePos, flameDir, -1, -1, qfalse);
+
+				trap->S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin, cgs.media.tribesJetSound);
+			} else {
+				while (n < 2)
 				{
-					BG_GiveMeVectorFromMatrix(&mat, NEGATIVE_Y, flameDir);
-					VectorMA(flamePos, -9.5f, flameDir, flamePos);
-					BG_GiveMeVectorFromMatrix(&mat, POSITIVE_X, flameDir);
-					VectorMA(flamePos, -13.5f, flameDir, flamePos);
-				}
-				else
-				{
-					BG_GiveMeVectorFromMatrix(&mat, POSITIVE_X, flameDir);
-					VectorMA(flamePos, -9.5f, flameDir, flamePos);
-					BG_GiveMeVectorFromMatrix(&mat, NEGATIVE_Y, flameDir);
-					VectorMA(flamePos, -13.5f, flameDir, flamePos);
-				}
+					//Get the position/dir of the flame bolt on the jetpack model bolted to the player
+					trap->G2API_GetBoltMatrix(cent->ghoul2, 3, n, &mat, cent->turAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale);
+					BG_GiveMeVectorFromMatrix(&mat, ORIGIN, flamePos);
 
-				if (cent->currentState.eFlags & EF_JETPACK_FLAMING)
-				{ //create effects
-					//FIXME: Just one big effect
-					//Play the effect
-					trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
-					trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
+					if (n == 0) {
+						BG_GiveMeVectorFromMatrix(&mat, NEGATIVE_Y, flameDir);
+						VectorMA(flamePos, -9.5f, flameDir, flamePos);
+						BG_GiveMeVectorFromMatrix(&mat, POSITIVE_X, flameDir);
+						VectorMA(flamePos, -13.5f, flameDir, flamePos);
+					}
+					else
+					{
+						BG_GiveMeVectorFromMatrix(&mat, POSITIVE_X, flameDir);
+						VectorMA(flamePos, -9.5f, flameDir, flamePos);
+						BG_GiveMeVectorFromMatrix(&mat, NEGATIVE_Y, flameDir);
+						VectorMA(flamePos, -13.5f, flameDir, flamePos);
+					}
 
-					//Keep the jet fire sound looping
-					trap->S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin,
-						trap->S_RegisterSound( "sound/effects/fire_lp" ) );
-				}
-				else
-				{ //just idling
-					//FIXME: Different smaller effect for idle
-					//Play the effect
-					trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
-				}
+					if (cent->currentState.eFlags & EF_JETPACK_FLAMING)
+					{ //create effects
+						//FIXME: Just one big effect
+						//Play the effect
+						trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
+						trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
 
-				n++;
+						//Keep the jet fire sound looping
+						trap->S_AddLoopingSound(cent->currentState.number, cent->lerpOrigin, vec3_origin,
+							trap->S_RegisterSound("sound/effects/fire_lp"));
+					}
+					else
+					{ //just idling
+						//FIXME: Different smaller effect for idle
+						//Play the effect
+						trap->FX_PlayEffectID(cgs.effects.mBobaJet, flamePos, flameDir, -1, -1, qfalse);
+					}
+
+					n++;
+				}
 			}
-
 			trap->S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin,
 				trap->S_RegisterSound( "sound/boba/JETHOVER" ) );
 		}
