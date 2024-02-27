@@ -12,7 +12,7 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 
 ## Upstream Repositories
 This project is maintained against the following repositories:
-* [OpenJK](https://github.com/eternalcodes/EternalJK)
+* [OpenJK](https://github.com/JACoders/OpenJK)
 * [jaPRO](https://github.com/videoP/jaPRO)
 * [EternalJK](https://github.com/eternalcodes/EternalJK)
 * [EternalJK-Vulkan](https://github.com/JKSunny/EternalJK)
