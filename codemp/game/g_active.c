@@ -3479,7 +3479,7 @@ void ClientThink_real( gentity_t *ent ) {
 	{
 		qboolean forceSingle = qfalse;
 		qboolean changeStyle = qfalse;
-		if ((g_saberDisable.integer || (!client->sess.raceMode && g_tweakWeapons.integer & MV_TRIBES) || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
+		if ((g_saberDisable.integer || (!client->sess.raceMode && g_tweakWeapons.integer & WT_TRIBES) || (client->sess.raceMode && client->sess.movementStyle == MV_COOP_JKA))
 			&& ent->s.weapon == WP_SABER && ent->s.eType == ET_PLAYER && client->sess.sessionTeam != TEAM_SPECTATOR) {
 			//trap->Print("AnimLevel: %i, DrawLevel: %i, Baselevel: %i\n", ent->client->ps.fd.saberAnimLevel, ent->client->ps.fd.saberDrawAnimLevel, ent->client->ps.fd.saberAnimLevelBase);
 			if (!client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
