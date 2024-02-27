@@ -2829,7 +2829,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break; //FF or NF Duel, no weapons so ignore this..
 
 		if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {
-			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+			if ((!cg.predictedPlayerState.stats[STAT_RACEMODE] || cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 				break;
 		}
             vec3_t start, end;
@@ -2867,7 +2867,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			break; //FF or NF Duel, no weapons so ignore this..
 
 		if (cgs.serverMod == SVMOD_JAPRO && cg_simulatedHitscan.integer && (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDHITSCAN)) {
-			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
+			if ((!cg.predictedPlayerState.stats[STAT_RACEMODE] || cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) && cent->currentState.eventParm == cg.predictedPlayerState.clientNum && cg.predictedPlayerState.persistant[PERS_TEAM] != TEAM_SPECTATOR)
 				break;
 		}
             int altTime;
