@@ -28,7 +28,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "snd_public.h"
 #include "mp3code/mp3struct.h"
 
-#if defined(_MSC_VER) && !defined(WIN64)
+#if defined(_MSC_VER)
 #define USE_OPENAL
 #endif
 
@@ -182,7 +182,7 @@ typedef struct wavinfo_s {
 
 //====================================================================
 
-#define	MAX_CHANNELS			32
+#define	MAX_CHANNELS			96
 extern	channel_t   s_channels[MAX_CHANNELS];
 
 extern	int		s_paintedtime;

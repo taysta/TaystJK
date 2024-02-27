@@ -33,3 +33,5 @@ void	SNDDMA_Shutdown(void);
 void	SNDDMA_BeginPainting (void);
 
 void	SNDDMA_Submit(void);
+
+void	SNDDMA_Activate(qboolean activate);

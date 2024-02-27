@@ -952,7 +952,7 @@ static void IN_ProcessEvents( int eventTime )
 						con_alert = qfalse;
 #endif
 						if (snd_mute_losefocus->integer)
-							SNDDMA_Activate(qfalse);
+							S_Activate(qfalse);
 						break;
 					}
 
@@ -965,7 +965,7 @@ static void IN_ProcessEvents( int eventTime )
 							cls.afkTime = cls.realtime;
 						}
 						if (snd_mute_losefocus->integer)
-							SNDDMA_Activate(qtrue);
+							S_Activate(qtrue);
 						break;
 					}
 				}
