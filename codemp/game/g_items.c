@@ -3492,8 +3492,8 @@ void G_BounceItem( gentity_t *ent, trace_t *trace ) {
 		qboolean checkStop = qfalse;
 
 
-		if (ent->item || ent->item->giType != IT_TEAM && g_allowFlagThrow.integer) {
-			if ((ent->item && ent->item->giType == IT_TEAM) && ent->s.pos.trDelta[2] > -5 && ent->s.pos.trDelta[2] < 5) { //piddling
+		if (ent->item && ent->item->giType == IT_TEAM && g_allowFlagThrow.integer) {
+			if (ent->s.pos.trDelta[2] > -5 && ent->s.pos.trDelta[2] < 25) { //piddling
 				checkStop = qtrue;
 			}
 		}
