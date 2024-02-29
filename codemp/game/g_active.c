@@ -3756,7 +3756,7 @@ void ClientThink_real( gentity_t *ent ) {
 		trap->Cvar_Set("pmove_msec", "66");
 	}
 
-	if (!isNPC && !(ent->r.svFlags & SVF_BOT) && client->sess.sessionTeam != TEAM_SPECTATOR && g_forceLogin.integer && !client->pers.userName[0]) {
+	if (!isNPC && !(ent->r.svFlags & SVF_BOT) && client->sess.sessionTeam != TEAM_SPECTATOR && g_forceLogin.integer && !client->pers.userName[0]) { //This ok here or better to have in logout function?
 		SetTeam ( ent, "spectator", qtrue );
 		trap->SendServerCommand( ent-g_entities, "print \"^1You must login to join the game\n\"");
 	}

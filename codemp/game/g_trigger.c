@@ -1630,10 +1630,10 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 
 }
 
-void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise);
+void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise, int worldrecordnoise);
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
 void TimeToString(int duration_ms, char *timeStr, size_t strSize);
-void G_AddRaceTime(char *account, char *courseName, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise); //should this be extern?
+void G_AddRaceTime(char *account, char *courseName, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise, int worldrecordnoise); //should this be extern?
 void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	if (!player->client)
 		return;
@@ -1767,13 +1767,13 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		Q_StripColor(playerName);
 
 		if (!valid) {
-			PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0);
+			PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			//How do we tell if we are the 2nd one..unless end timer does not reset for duelers
 			//
 			if (coopFinished) {
 				Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 				Q_StripColor(playerName);
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			}
 		}
 		else {
@@ -1784,17 +1784,17 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			if (p)
 				*p = 0;
 			if (player->client->pers.userName[0] && (!coopFinished || (coopFinished && duelAgainst->client->pers.userName[0]))) { //omg
-				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time * 1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index);
+				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time * 1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index);
 				if (coopFinished) {
-					G_AddRaceTime(duelAgainst->client->pers.userName, trigger->message, (int)(time * 1000), duelAgainst->client->ps.stats[STAT_MOVEMENTSTYLE], 0, 0, duelAgainst->client->ps.clientNum, trigger->awesomenoise_index);
+					G_AddRaceTime(duelAgainst->client->pers.userName, trigger->message, (int)(time * 1000), duelAgainst->client->ps.stats[STAT_MOVEMENTSTYLE], 0, 0, duelAgainst->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index);
 				}
 			}
 			else {
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				if (coopFinished) {
 					Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 					Q_StripColor(playerName);
-					PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0);
+					PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				}
 			}
 		}
@@ -2268,6 +2268,12 @@ void SP_trigger_timer_stop( gentity_t *self )
 			self->awesomenoise_index = G_SoundIndex(s);
 		else
 			self->awesomenoise_index = 0;
+	}
+	if (G_SpawnString("worldrecordnoise", "", &s)) {
+		if (s && s[0])
+			self->worldrecordnoise_index = G_SoundIndex(s);
+		else
+			self->worldrecordnoise_index = 0;
 	}
 	if (G_SpawnString("objective", "", &s)) { //why is this actually needed
 		if (s && s[0])
