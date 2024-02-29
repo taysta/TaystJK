@@ -2211,6 +2211,11 @@ void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *chatText ) 
 	//	mode = SAY_ALL;
 	//}
 
+	if (g_forceLogin.integer > 1 && !(ent->r.svFlags & SVF_BOT) && !ent->client->pers.userName[0]) {
+		trap->SendServerCommand(ent - g_entities, "print \"^1You must login to chat!\n\"");
+		return;
+	}
+
 	if (mode == SAY_TEAM) {
 		if (ent->client->sess.sayteammod == 1)//clanpass
 			mode = SAY_CLAN;

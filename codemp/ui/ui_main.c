@@ -2415,7 +2415,7 @@ static void UI_DrawNetMapPreview(rectDef_t *rect, float scale, vec4_t color) {
 	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
 		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
-	
+
 	if (!previewImage)
 		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp");
 
@@ -6320,7 +6320,7 @@ void UI_GetGeometricDetail ( void ) {
 void UI_GetVideoSetup ( void )
 {
     trap->Cvar_Register ( NULL, "ui_r_glCustom",				"4", CVAR_INTERNAL|CVAR_ARCHIVE );
-	
+
 	// Make sure the cvars are registered as read only.
 	trap->Cvar_Register ( NULL, "ui_aspectratio",				"0", CVAR_ROM|CVAR_INTERNAL );
 	trap->Cvar_Register ( NULL, "ui_resolution",				"0", CVAR_ROM|CVAR_INTERNAL );
@@ -8104,7 +8104,6 @@ static void UI_RunMenuScript(char **args)
 		{
 			UI_UpdateCharacterSkin();
 		}
-#if 0
 		else if (Q_stricmp(name, "setui_dualforcepower") == 0)
 		{
 			int forcePowerDisable = trap->Cvar_VariableValue("g_forcePowerDisable");
@@ -8139,7 +8138,7 @@ static void UI_RunMenuScript(char **args)
 		}
 		else if (Q_stricmp(name, "dualForcePowers") == 0)
 		{
-			int	dualforcePower,i, forcePowerDisable;
+			int	dualforcePower,i, forcePowerDisable=0;
 			dualforcePower = trap->Cvar_VariableValue("ui_dualforcepower");
 
 			if (dualforcePower==0)	// All force powers
@@ -8197,8 +8196,8 @@ static void UI_RunMenuScript(char **args)
 			int	weaponDisable,i;
 			const char *cvarString;
 
-			if (uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_DUEL ||
-				uiInfo.gameTypes[ui_netGameType.integer].gtEnum == GT_POWERDUEL)
+			if (uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_DUEL ||
+				uiInfo.gameTypes[ui_netGametype.integer].gtEnum == GT_POWERDUEL)
 			{
 				cvarString = "g_duelWeaponDisable";
 			}
@@ -8223,7 +8222,6 @@ static void UI_RunMenuScript(char **args)
 				trap->Cvar_Set(cvarString, va("%i",weaponDisable));
 			}
 		}
-#endif
 		// If this is siege, change all the bots to humans, because we faked it earlier
 		//  swapping humans for bots on the menu
 		else if (Q_stricmp(name, "setSiegeNoBots") == 0)
@@ -9069,7 +9067,6 @@ static void UI_BuildServerDisplayList(int force) {
 	int i, count, maxClients, ping, game, len, passw/*, visible*/;
 	char info[MAX_STRING_CHARS];
 //	qboolean startRefresh = qtrue; TTimo: unused
-	//static int numinvisible;
 	int	lanSource;
 
 	if (!(force || uiInfo.uiDC.realTime > uiInfo.serverStatus.nextDisplayRefresh)) {
@@ -9095,7 +9092,6 @@ static void UI_BuildServerDisplayList(int force) {
 	lanSource = UI_SourceForLAN();
 
 	if (force) {
-		//numinvisible = 0;
 		// clear number of displayed servers
 		uiInfo.serverStatus.numDisplayServers = 0;
 		uiInfo.serverStatus.numPlayersOnServers = 0;
@@ -9196,7 +9192,6 @@ static void UI_BuildServerDisplayList(int force) {
 			// done with this server
 			if (ping > 0) {
 				trap->LAN_MarkServerVisible(lanSource, i, qfalse);
-				//numinvisible++;
 			}
 		}
 	}
@@ -9366,7 +9361,7 @@ UI_BuildFindPlayerList
 ==================
 */
 static void UI_BuildFindPlayerList(qboolean force) {
-	static int numFound; //, numTimeOuts;
+	static int numFound;
 	int i, j, resend;
 	serverStatusInfo_t info;
 	char name[MAX_NAME_LENGTH+2];
@@ -9406,7 +9401,6 @@ static void UI_BuildFindPlayerList(qboolean force) {
 	//					sizeof(uiInfo.foundPlayerServerNames[uiInfo.numFoundPlayerServers-1]),
 	//						"searching %d...", uiInfo.pendingServerStatus.num);
 		numFound = 0;
-		//numTimeOuts++;
 	}
 	for (i = 0; i < MAX_SERVERSTATUSREQUESTS; i++) {
 		// if this pending server is valid
@@ -9457,7 +9451,7 @@ static void UI_BuildFindPlayerList(qboolean force) {
 		if (!uiInfo.pendingServerStatus.server[i].valid ||
 			uiInfo.pendingServerStatus.server[i].startTime < uiInfo.uiDC.realTime - ui_serverStatusTimeOut.integer) {
 			if (uiInfo.pendingServerStatus.server[i].valid) {
-				//numTimeOuts++;
+				// timed out
 			}
 			// reset server status request for this address
 			UI_GetServerStatusInfo( uiInfo.pendingServerStatus.server[i].adrstr, NULL );
@@ -11312,7 +11306,7 @@ void UI_BuildQ3Model_List( void )
 					char iconPath[MAX_QPATH] = {0};
 
 					Com_sprintf(iconPath, sizeof(iconPath), "models/players/%s/icon_%s", dirptr, skinname+1);
-					
+
 					uiInfo.q3HeadIcons[uiInfo.q3HeadCount] = trap->R_RegisterShaderNoMip(iconPath);
 					if (ui_showAllSkins.integer && !ui_sv_pure.integer && !uiInfo.q3HeadIcons[uiInfo.q3HeadCount])
 					{
@@ -12381,7 +12375,7 @@ static void UI_StartServerRefresh(qboolean full)
 				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("com_protocol")));
 				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("com_legacyprotocol")));
 			}
-			else { 
+			else {
 				trap->Cmd_ExecuteText(EXEC_NOW, va("globalservers %d %d full empty\n", ui_netSource.integer - 1, (int)trap->Cvar_VariableValue("protocol")));
 			}
 		}

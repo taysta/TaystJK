@@ -257,11 +257,14 @@ BRYAR PISTOL
 */
 
 //----------------------------------------------
-static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
+static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 //---------------------------------------------------------
 {
 	int damage, vel, count, charge;
 	gentity_t	*missile;
+	vec3_t dir;
+
+	VectorCopy(forward, dir);
 
 	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
 		damage = 6*g_weaponDamageScale.value;
@@ -277,8 +280,34 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire )
 		damage = BRYAR_PISTOL_DAMAGE * g_projectileVelocityScale.value;
 		charge = BRYAR_CHARGE_UNIT;
 	}
+
+
+	if (!altFire && (g_tweakWeapons.integer & WT_TRIBES))
+	{
+		float slop = 0.4f;
+		vec3_t angs;
+
+		vectoangles(forward, angs);
+
+		// add some slop to the alt-fire direction
+		if (g_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE)
+		{
+			float theta = M_PI * Q_crandom(&seed); //Lets use circular spread instead of the shitty box spread?
+			float r = Q_random(&seed);
+
+			angs[PITCH] += r*slop * sin(theta); //r should be squared? r*r
+			angs[YAW] += r*slop * cos(theta);
+		}
+		else
+		{
+			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * slop;
+			angs[YAW] += Q_flrand(-1.0f, 1.0f) * slop;
+		}
+
+		AngleVectors(angs, dir, NULL, NULL);
+	}
 	
-	missile = CreateMissileNew(muzzle, forward, vel, 10000, ent, altFire, qtrue, qtrue);
+	missile = CreateMissileNew(muzzle, dir, vel, 10000, ent, altFire, qtrue, qtrue);
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
 
@@ -6398,7 +6427,7 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_BRYAR_PISTOL:
-			WP_FireBryarPistol( ent, altFire );
+			WP_FireBryarPistol( ent, altFire, seed );
 			break;
 
 		case WP_CONCUSSION:
@@ -6409,7 +6438,7 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_BRYAR_OLD:
-			WP_FireBryarPistol( ent, altFire );
+			WP_FireBryarPistol( ent, altFire, seed );
 			break;
 
 		case WP_BLASTER:

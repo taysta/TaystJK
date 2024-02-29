@@ -4176,6 +4176,7 @@ static void PM_ThrustMove(void)
 {
 	if (!pm->ps->stats[STAT_WJTIME] && (pm->cmd.buttons & BUTTON_FORCE_LIGHTNING)) {
 		pm->ps->stats[STAT_WJTIME] = 800;
+		pm->ps->fd.forcePower = pm->ps->fd.forcePower * 0.25f;
 #ifdef _GAME
 		gentity_t *self = (gentity_t *)pm_entSelf;
 		G_PlayEffect(EFFECT_LANDING_SNOW, pm->ps->origin, pml.forward);//Should be spot on wall, and wallnormal, a better, predicted way to do this?
@@ -4205,13 +4206,11 @@ static void PM_ThrustMove(void)
 
 		strength *= pm->ps->fd.forcePower;
 
-		VectorMA(pm->ps->velocity, 35 * strength * pml.frametime, pml.forward, pm->ps->velocity); //fall off the faster we go?
+		VectorMA(pm->ps->velocity, 140 * strength * pml.frametime, pml.forward, pm->ps->velocity); //fall off the faster we go?
 
 		pm->ps->fd.forcePowersActive |= (1 << FP_SPEED);
 	}
-	else if (pm->ps->stats[STAT_WJTIME] > 300) { //This is messed up but it works. otherwise can't really modify fp as we go because deltatime and cant get more discrete than 1fp.
-		pm->ps->fd.forcePower = 0;
-		//pm->ps->stats[STAT_WJTIME] = 0;
+	else if (pm->ps->stats[STAT_WJTIME] > 300) { //cooldown
 	}
 	else {
 		pm->ps->fd.forcePowersActive &= ~(1 << FP_SPEED);
@@ -13721,7 +13720,7 @@ void PmoveSingle (pmove_t *pmove) {
 				else if (xy_hackscale > 4)
 					xy_hackscale = 4;
 
-				Com_Printf("Hackscalexy is %.2f\n", xy_hackscale);
+				//Com_Printf("Hackscalexy is %.2f\n", xy_hackscale);
 
 				//Why does this behave so weird between 0-500 speed? so slow
 
