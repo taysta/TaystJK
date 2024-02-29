@@ -10607,6 +10607,27 @@ void CG_Player( centity_t *cent ) {
 
 	CG_VehicleEffects(cent);
 
+	if (cgs.jcinfo2& JAPRO_CINFO2_WTTRIBES) { //play wind sound if we are going fast.  idk how to scale the volume so we are scaling the position of the speaker away from us (above us) to achieve that result
+		const float speed2 = VectorLengthSquared(cg.predictedPlayerState.velocity);
+		const float max_vol_speed = 3000;
+		const float min_vol_speed = 500;
+		if (speed2 > min_vol_speed * min_vol_speed) {
+			int offset;
+			if (speed2 > max_vol_speed * max_vol_speed)
+				offset = 0;
+			else
+				offset = (((((max_vol_speed * max_vol_speed) - speed2) / ((max_vol_speed * max_vol_speed) - (min_vol_speed * min_vol_speed)))) * (1500 - 0) + 0); //speaker 1500u above us is a good min volume i guess
+
+			vec3_t soundSpot;
+			//Com_Printf("Going fast %.2f, %i\n", speed2, offset);
+
+			VectorCopy(cent->lerpOrigin, soundSpot);
+			soundSpot[2] += offset;
+
+			trap->S_AddLoopingSound(cent->currentState.number, soundSpot, vec3_origin, trap->S_RegisterSound("sound/ambience/prototype/windmix1")); //find a better sound for this and cache it
+		}
+	}
+
 	if ((cent->currentState.eFlags & EF_JETPACK) && !(cent->currentState.eFlags & EF_DEAD) &&
 		cg_g2JetpackInstance)
 	{ //should have a jetpack attached
