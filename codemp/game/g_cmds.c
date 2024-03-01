@@ -2522,6 +2522,11 @@ static void Cmd_VGSCommand_f(gentity_t *ent)
 		return;
 	}
 
+	if (g_forceLogin.integer > 1 && !(ent->r.svFlags & SVF_BOT) && !ent->client->pers.userName[0]) {
+		trap->SendServerCommand(ent - g_entities, "print \"^1You must login to VGS!\n\"");
+		return;
+	}
+
 	trap->Argv(1, arg, sizeof(arg));
 
 	if (arg[0] == '*')

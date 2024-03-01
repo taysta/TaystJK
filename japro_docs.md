@@ -121,7 +121,7 @@
 	g_allowRaceTele				0//1=Allow amtele in racemode. 2=Also allow noclip.
 	g_allowRegistration			1=Allow registration. 2=also allow clan joining. 3=also allow clan creation
 	sv_pluginKey				0	
-	g_forceLogin				0//Force players to login in order to be ingame.
+	g_forceLogin				0//1=Force players to login in order to be ingame. 2=also block them from chatting until logging in.  3=also block them from renaming until logging in.
 
 
 #### Loggging/Recording 

@@ -973,6 +973,8 @@ void PlayActualGlobalSound(int soundindex) {
 	gentity_t *player;
 	int i;
 
+	//G_AddEvent(ent, EV_GLOBAL_SOUND, soundindex); //need to svf_broadcast firsT? and what ent to use ??
+
 	for (i=0; i<MAX_CLIENTS; i++) {//Build a list of clients
 		if (!g_entities[i].inuse)
 			continue;
@@ -1549,7 +1551,7 @@ void TimeToString(int duration_ms, char *timeStr, size_t strSize) {
 	}
 }
 
-void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise) {
+void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise, int worldrecordnoise) {
 	int nameColor, color;
 	char awardString[28] = {0}, messageStr[64] = {0}, nameStr[32] = {0};
 
@@ -1557,13 +1559,14 @@ void PrintRaceTime(char *username, char *playername, char *message, char *style,
 
 	if (topspeed || average) { //weird hack to not play double sound coop
 		if (global_newRank == 1) {//WR, Play the sound
-			//if (awesomenoise)
-				//PlayActualGlobalSound(awesomenoise); //Only for simple PB not WR i guess..
-			//else
-			if (!level.wrNoise) {
-				level.wrNoise = G_SoundIndex("sound/chars/rosh_boss/misc/victory3"); //Maybe this should be done when df_trigger_finish is spawned cuz its still gonna hitch maybe on first wr of map? idk
+			if (worldrecordnoise)
+				PlayActualGlobalSound(worldrecordnoise); //Only for simple PB not WR i guess..
+			else if (worldrecordnoise != -1) {
+				if (!level.wrNoise) {
+					level.wrNoise = G_SoundIndex("sound/chars/rosh_boss/misc/victory3"); //Maybe this should be done when df_trigger_finish is spawned cuz its still gonna hitch maybe on first wr of map? idk
+				}
+				PlayActualGlobalSound(level.wrNoise);
 			}
-			PlayActualGlobalSound(level.wrNoise);
 		}
 		else if (global_newRank > 0) {//PB
 			if (awesomenoise)
@@ -1800,7 +1803,7 @@ void SV_RebuildUnlocks_f(void) {
 }
 
 void StripWhitespace(char *s);
-void G_AddRaceTime(char *username, char *message, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise) {//should be short.. but have to change elsewhere? is it worth it?
+void G_AddRaceTime(char *username, char *message, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise, int worldrecordnoise) {//should be short.. but have to change elsewhere? is it worth it?
 	time_t	rawtime;
 	char	string[1024] = {0}, info[1024] = {0}, coursename[40], timeStr[32] = {0}, styleString[32] = {0};
 	qboolean seasonPB = qfalse, globalPB = qfalse;//, WR = qfalse;
@@ -2087,7 +2090,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	CALL_SQLITE(close(db));
 
 	TimeToString((int)(duration_ms), timeStr, sizeof(timeStr));
-	PrintRaceTime(username, cl->pers.netname, message, styleString, topspeed, average, timeStr, clientNum, season_newRank, seasonPB, global_newRank, qtrue, qtrue, season_oldRank, global_oldRank, addedScore, awesomenoise);
+	PrintRaceTime(username, cl->pers.netname, message, styleString, topspeed, average, timeStr, clientNum, season_newRank, seasonPB, global_newRank, qtrue, qtrue, season_oldRank, global_oldRank, addedScore, awesomenoise, worldrecordnoise);
 	//DebugWriteToDB("G_AddRaceTime");
 }
 
