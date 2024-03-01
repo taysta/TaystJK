@@ -881,6 +881,7 @@ static void CG_RegisterSounds( void ) {
 	cgs.media.hitSound4			= trap->S_RegisterSound( "sound/effects/hitsound4.wav" );
 	cgs.media.hitTeamSound		= trap->S_RegisterSound( "sound/effects/hitsoundteam.wav" );
 	cgs.media.tribesJetSound	= trap->S_RegisterSound( "sound/effects/thrust.wav" );
+	cgs.media.tribesFastSound	= trap->S_RegisterSound( "sound/ambience/prototype/windmix1" ); //find a better sound for this
 
 	cgs.media.gibSound			= trap->S_RegisterSound( "sound/player/gibsplt1.wav" );
 	cgs.media.gibBounce1Sound	= trap->S_RegisterSound( "sound/player/gibimp1.wav" );
