@@ -719,7 +719,7 @@ static void Con_Linefeed (qboolean skipnotify)
 		time_t t = time( NULL );
 		struct tm *tms = localtime( &t );
 		char	timestamp[CON_TIMESTAMP_LEN + 1];
-		const unsigned char color = ColorIndex(COLOR_GREY);
+		const unsigned char color = ColorIndex(stampColor);
 
 		Com_sprintf(timestamp, sizeof(timestamp), "[%02d:%02d:%02d] ",
 			tms->tm_hour, tms->tm_min, tms->tm_sec);
