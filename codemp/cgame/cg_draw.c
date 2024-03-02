@@ -1768,21 +1768,6 @@ void CG_DrawForcePower( menuDef_t *menuHUD )
     }
 }
 
-//JAPRO - Clientside - Ground Distance function for use in jump detection for movement keys - Start
-float PM_GroundDistance2(void)
-{
-	trace_t tr;
-	vec3_t down;
-
-	VectorCopy(cg.predictedPlayerState.origin, down);
-	down[2] -= 4096;
-	CG_Trace(&tr, cg.predictedPlayerState.origin, NULL, NULL, down, cg.predictedPlayerState.clientNum, MASK_SOLID);
-	VectorSubtract(cg.predictedPlayerState.origin, tr.endpos, down);
-
-	return VectorLength(down) - 24.0f;
-}
-//JAPRO - Clientside - Ground Distance function for use in jump detection for movement keys - End
-
 static void CG_DrawSimpleSaberStyle(const centity_t *cent)
 {
 	uint32_t	calcColor;

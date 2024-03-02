@@ -1118,15 +1118,17 @@ void CG_PredictPlayerState( void ) {
 		}
 		cg.physicsTime = cg.snap->serverTime;
 	}
-
-	//JAPRO - Clientside - Unlock Pmove bounds - Start 
+	if(((cg.physicsTime - cg.predictedPlayerState.commandTime) > 8) && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_OCPM)){
+		cg.physicsTime = cg.predictedPlayerState.commandTime + 8;
+	}
+	//JAPRO - Clientside - Unlock Pmove bounds - Start
 	if ( pmove_msec.integer < 1 ) {
 		trap->Cvar_Set("pmove_msec", "1");
 	}
 	else if (pmove_msec.integer > 66) {
 		trap->Cvar_Set("pmove_msec", "66");
 	}
-	//JAPRO - Clientside - Unlock Pmove bounds - End 
+	//JAPRO - Clientside - Unlock Pmove bounds - End
 
 	cg_pmove.pmove_fixed = pmove_fixed.integer;// | cg_pmove_fixed.integer;
 	cg_pmove.pmove_float = pmove_float.integer;

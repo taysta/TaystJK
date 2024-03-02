@@ -2364,7 +2364,6 @@ qboolean PM_InSecondaryStyle( void )
 	return qfalse;
 }
 
-int PM_GetMovePhysics(void);
 saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 {
 	saberMoveName_t newmove = LS_NONE;
