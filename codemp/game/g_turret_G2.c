@@ -1063,6 +1063,7 @@ void SP_misc_turretG2( gentity_t *base )
 			base->s.iModelScale = 1023;
 		}
 		base->modelScale[0] = base->modelScale[1] = base->modelScale[2] = base->s.iModelScale/100.0f;
+		//somehow the g2 collision model does not get updated 
 	}
 
 	G_SpawnString( "icon", "", &s );
@@ -1276,6 +1277,7 @@ void finish_spawning_turretG2( gentity_t *base )
 		float fScale = base->s.iModelScale/100.0f;
 		VectorScale(base->r.mins, fScale, base->r.mins);
 		VectorScale(base->r.maxs, fScale, base->r.maxs);
+		//somehow the g2 collision model does not get updated 
 	}
 
 	// Precache special FX and moving sounds

@@ -13709,14 +13709,14 @@ void PmoveSingle (pmove_t *pmove) {
 				speed = VectorLength(currentVelNormal);
 
 				if (dot < 0) {
-					xy_hackscale = 4;
+					xy_hackscale = 4; //-dot ? but dot is not normalized
 				}
 				else {
 					xy_hackscale = 800 / speed;
 				}
 
-				if (xy_hackscale < 1)
-					xy_hackscale = 1;
+				if (xy_hackscale < 1.2)
+					xy_hackscale = 1.2;
 				else if (xy_hackscale > 4)
 					xy_hackscale = 4;
 
