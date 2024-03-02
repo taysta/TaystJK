@@ -2667,7 +2667,7 @@ static	void R_LoadPlanes( world_t *worldData, lump_t *l ) {
 		ri.Error (ERR_DROP, "LoadMap: funny lump size in %s",worldData->name);
 	count = l->filelen / sizeof(*in);
 	out = (cplane_t *)Hunk_Alloc ( count*2*sizeof(*out), h_low);
-	
+
 	worldData->planes = out;
 	worldData->numplanes = count;
 
@@ -4025,7 +4025,7 @@ static void R_GenerateSurfaceSprites( const world_t *world, int worldIndex )
 	for (int i = 0; i < tr.numShaders; i++)
 	{
 		const shader_t *shader = tr.shaders[i];
-		if (shader->spriteUbo != 0)
+		if (shader->spriteUbo != -1)
 			continue;
 
 		numSpriteStages += shader->numSurfaceSpriteStages;
