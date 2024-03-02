@@ -10619,7 +10619,7 @@ void CG_Player( centity_t *cent ) {
 				offset = (((((max_vol_speed) - speed2) / ((max_vol_speed) - (min_vol_speed)))) * (1500 - 0) + 0); //speaker 1500u above us is a good min volume i guess
 
 			vec3_t soundSpot;
-			Com_Printf("Going fast %.2f, %i\n", speed2, offset);
+			//Com_Printf("Going fast %.2f, %i\n", speed2, offset);
 
 			VectorCopy(cent->lerpOrigin, soundSpot);
 			soundSpot[2] += offset;
