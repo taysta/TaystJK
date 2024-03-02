@@ -961,8 +961,7 @@ PM_StepSlideMove
 
 ==================
 */
-int PM_GetMovePhysics(void);
-void PM_StepSlideMove( qboolean gravity ) { 
+void PM_StepSlideMove( qboolean gravity ) {
 	vec3_t		start_o, start_v;
 	vec3_t		down_o, down_v;
 	trace_t		trace;

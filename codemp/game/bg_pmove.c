@@ -88,6 +88,7 @@ const float	pm_spectatorfriction = 5.0f;
 
 //japro/dfmania movement parameters
 const float pm_vq3_duckScale = 0.25f;
+const float pm_vq3_friction = 8.0f;
 
 const float	pm_cpm_accelerate = 15.0f;
 const float	pm_cpm_airaccelerate = 1.0f;
@@ -96,7 +97,6 @@ const float	pm_cpm_airstrafeaccelerate = 70.0f;
 const float	pm_cpm_airstrafewishspeed = 30.0f;
 
 const float	pm_cpm_aircontrol = 150.0f;
-const float pm_cpm_friction = 8.0f;
 
 const float pm_wsw_accelerate = 12.0f;
 const float pm_wsw_duckScale = 0.3125f;
@@ -104,12 +104,22 @@ const float pm_wsw_duckScale = 0.3125f;
 const float pm_slick_accelerate = 30.0f;
 const float	pm_slick_airstrafeaccelerate = 100.0f;
 const float	pm_slick_friction = 0.0f;
+
 const float	pm_jetpack_airaccelerate = 1.4f;
-
-
 
 const float pm_qw_airaccelerate = 0.7f;
 const float pm_qw_friction = 4.0f;
+const float	pm_qw_airstrafewishspeed = 30.0f;
+
+const float pm_tribes_accelerate = 2.5f;
+const float pm_tribes_airaccelerate = 0.25f;
+const float pm_tribes_groundfriction = 0.5f;
+const float pm_tribes_airfriction = 1.9f;
+const float	pm_tribes_groundstrafewishspeed = 30.0f;
+
+const float pm_surf_accelerate = 12.0f;
+const float pm_surf_airaccelerate = 100.0f;
+const float pm_surf_wishspeed = 250.0f;
 
 //japro/dfmania movement parameters
 
@@ -416,7 +426,6 @@ static QINLINE qboolean PM_IsRocketTrooper(void)
 	return qfalse;
 }
 
-int PM_GetMovePhysics(void);
 QINLINE int PM_GetMovePhysics(void)
 {
 #if _GAME
@@ -425,9 +434,9 @@ QINLINE int PM_GetMovePhysics(void)
 	else if ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || (g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_OCPM || g_movementStyle.integer == MV_TRIBES))
 		return (g_movementStyle.integer);
 	else if (g_movementStyle.integer < MV_SIEGE)
-		return 0;
+		return MV_SIEGE;
 	else if (g_movementStyle.integer >= MV_NUMSTYLES)
-		return 1;
+		return MV_JKA;
 #else
 	if (cgs.serverMod == SVMOD_JAPRO) {
 			if (!pm)
@@ -1188,7 +1197,7 @@ static void PM_Friction( void ) {
 	}
 
 	if (moveStyle == MV_CPM || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
-		realfriction = 8.0f;
+		realfriction = pm_vq3_friction;
 
 	// apply ground friction, even if on ladder
 	if (pm_flying != FLY_VEHICLE &&
@@ -1318,15 +1327,15 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 		if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 			return;
 
-        if (wishspd > 30)
-                wishspd = 30;
+        if (wishspd > pm_qw_airstrafewishspeed)
+                wishspd = pm_qw_airstrafewishspeed;
 
         currentspeed = DotProduct (pm->ps->velocity, wishdir);
         addspeed = wishspd - currentspeed;// See how much to add
         if (addspeed <= 0)// If not adding any, done.
                 return;
 
-        accelspeed = accel * wishspeed * pml.frametime * 4.0f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+        accelspeed = accel * wishspeed * pml.frametime * pm_qw_friction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
         if (accelspeed > addspeed) // Cap it
                 accelspeed = addspeed;
@@ -1338,32 +1347,20 @@ void PM_AirAccelerate (vec3_t wishdir, float wishspeed, float accel)
 void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
 {
 	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.9f, accel = 0.25f; //.2
-	// friction = 1.65f, accel = 0.32f;
+	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
 
 	if (pm->ps->pm_type == PM_DEAD)
 		return;
 	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 		return;
 
-	//if (wishspd > 300)
-		//wishspd = 300;
-
-	//Scale friction by falling speed?
-	//fabs(pm->ps->velocity[2])
-	/*
-	if (pm->ps->velocity[2] < -800) {
-		Com_Printf("zSpeed Modifier %.2f\n", pm->ps->velocity[2] / 800.0f);
-		friction *= pm->ps->velocity[2] / 800.0f;
-	}
-	*/
 
 	currentspeed = DotProduct(pm->ps->velocity, wishdir);
 	addspeed = wishspd - currentspeed;// See how much to add
 	if (addspeed <= 0)// If not adding any, done.
 		return;
 
-	accelspeed = accel * wishspeed * pml.frametime * friction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+	accelspeed = pm_tribes_airaccelerate * wishspeed * pml.frametime * pm_tribes_airfriction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -1417,15 +1414,15 @@ void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
 		return;
 
-	if (wishspd > 30)
-		wishspd = 30;
+	if (wishspd > pm_tribes_groundstrafewishspeed)
+		wishspd = pm_tribes_groundstrafewishspeed;
 
 	currentspeed = DotProduct(pm->ps->velocity, wishdir);
 	addspeed = wishspd - currentspeed;// See how much to add
 	if (addspeed <= 0)// If not adding any, done.
 		return;
 
-	accelspeed = accel * wishspeed * pml.frametime * 0.5f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
+	accelspeed = accel * wishspeed * pml.frametime * pm_tribes_groundfriction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -1507,7 +1504,7 @@ void CPM_PM_Aircontrol (pmove_t *pm, vec3_t wishdir, float wishspeed )
 
 	dot = DotProduct(pm->ps->velocity,wishdir);
 	k = 32;
-	k *= 150.0f*dot*dot*pml.frametime;//cpm_pm_aircontrol
+	k *= pm_cpm_aircontrol*dot*dot*pml.frametime;
 
 
 	if (dot > 0) {	// we can't change direction while slowing down
@@ -3987,10 +3984,10 @@ static void PM_AirMove( void ) {
 			pm->cmd.rightmove = 0;
 		}
 
-		if (wishspeed > 250.0f)
+		if (wishspeed > pm_surf_wishspeed)
 		{
-			VectorScale(wishvel, 250.0f / wishspeed, wishvel);
-			wishspeed = 250.0f;
+			VectorScale(wishvel, pm_surf_wishspeed / wishspeed, wishvel);
+			wishspeed = pm_surf_wishspeed;
 		}
 	}
 	else {
@@ -4001,12 +3998,12 @@ static void PM_AirMove( void ) {
 
 #if _SPPHYSICS
 	if (moveStyle == MV_SP) {
-		accelerate = 4.0f;
+		accelerate = pm_sp_airaccelerate;
 
 		//SP Air Decel ?
 		if ((DotProduct(pm->ps->velocity, wishdir)) < 0.0f)
 		{//Encourage deceleration away from the current velocity
-			wishspeed *= 1.35f;//pm_airDecelRate
+			wishspeed *= pm_sp_airDecelRate;//pm_airDecelRate
 		}
 	}
 #endif
@@ -4022,11 +4019,11 @@ static void PM_AirMove( void ) {
 	}
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW) {
-		PM_AirAccelerate(wishdir, wishspeed, 0.7f);//pm_qw_airaccel
+		PM_AirAccelerate(wishdir, wishspeed, pm_qw_airaccelerate);//pm_qw_airaccel
 	} else if (moveStyle == MV_TRIBES) {
 		PM_AirAccelerateTribes(wishdir, wishspeed);//pm_qw_airaccel
 	} else if (moveStyle == MV_SURF) {
-		PM_CS_AirAccelerate(wishdir, wishspeed, 100.0f);
+		PM_CS_AirAccelerate(wishdir, wishspeed, pm_surf_airaccelerate);
 	}
 	else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM)
 	{
@@ -4035,20 +4032,20 @@ static void PM_AirMove( void ) {
 
 		wishspeed2 = wishspeed;
 		if (DotProduct(pm->ps->velocity, wishdir) < 0)
-			accel = 2.5f;//cpm_pm_airstopaccelerate
+			accel = pm_cpm_airstopaccelerate;
 		else
 			accel = pm_airaccelerate;
 
 		if (pm->ps->movementDir == 2 || pm->ps->movementDir == 6) {
 			if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_PJK || moveStyle == MV_WSW || moveStyle == MV_RJCPM || moveStyle == MV_BOTCPM) {
-				if (wishspeed > 30.0f)//cpm_pm_wishspeed
-					wishspeed = 30.0f;
-				accel = 70.0f;//cpm_pm_strafeaccelerate
+				if (wishspeed > pm_cpm_airstrafewishspeed)
+					wishspeed = pm_cpm_airstrafewishspeed;
+				accel = pm_cpm_airstrafeaccelerate;
 			}
-			else if (moveStyle == MV_SLICK) {
-				if (wishspeed > 30.0f)//cpm_pm_wishspeed
-					wishspeed = 30.0f;
-				accel = 100.0f;//cpm_pm_strafeaccelerate - 100 in slick
+			if (moveStyle == MV_SLICK) {
+				if (wishspeed > pm_cpm_airstrafewishspeed)
+					wishspeed = pm_cpm_airstrafewishspeed;
+				accel = pm_slick_airstrafeaccelerate;
 			}
 		}
 
@@ -4712,26 +4709,26 @@ static void PM_WalkMove( void ) {
 	}
 
 	if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_RJCPM || moveStyle == MV_BOTCPM)
-		realaccelerate = 15.0f;
+		realaccelerate = pm_cpm_accelerate;
 	else if (moveStyle == MV_Q3 || moveStyle == MV_RJQ3)
-		realduckscale = 0.25f;
+		realduckscale = pm_vq3_duckScale;
 	else if (moveStyle == MV_WSW) {
-		realaccelerate = 12.0f;
-		realduckscale = 0.3125f;
+		realaccelerate = pm_wsw_accelerate;
+		realduckscale = pm_wsw_duckScale;
 	}
 #if _SPPHYSICS
 	else if (moveStyle == MV_SP) {
-		realaccelerate = 12.0f;
+		realaccelerate = pm_sp_accelerate;
 	}
 #endif
 	else if (moveStyle == MV_SLICK) {
-		realaccelerate = 30.0f;
+		realaccelerate = pm_slick_accelerate;
 	}
 	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
-		realaccelerate = 2.5f;
+		realaccelerate = pm_tribes_accelerate;
 	}
 	else if (moveStyle == MV_SURF) {
-		realaccelerate = 12.0f;
+		realaccelerate = pm_surf_accelerate;
 	}
 
 	PM_Friction ();
@@ -4807,9 +4804,9 @@ static void PM_WalkMove( void ) {
 	}
 
 	if (moveStyle == MV_SURF) {
-		if (wishspeed != 0 && (wishspeed > 250.0f)) {
-			VectorScale(wishvel, 250.0f / wishspeed, wishvel);
-			wishspeed = 250.0f;
+		if (wishspeed != 0 && (wishspeed > pm_surf_wishspeed)) {
+			VectorScale(wishvel, pm_surf_wishspeed / wishspeed, wishvel);
+			wishspeed = pm_surf_wishspeed;
 		}
 	}
 
@@ -4848,7 +4845,7 @@ static void PM_WalkMove( void ) {
 	{//We just ignore this with slick style since we area always slick, we dont need the flag to tell us that
 		accelerate = pm_airaccelerate; //this should be changed for QW and other stuff, but whatever, already done
 		if (moveStyle == MV_OCPM)
-			accelerate = 15.0f;
+			accelerate = pm_cpm_accelerate;
 		else
 			accelerate = pm_airaccelerate; //this should be changed for QW and other stuff, but whatever, already done
 	}
@@ -14106,11 +14103,11 @@ void PmoveSingle (pmove_t *pmove) {
                         else
                             optimalDeltaAngle = -6;
                     else {
-                        float realAccel = 1.0f;
+                        float realAccel = pm_airaccelerate;
                         if (moveStyle == MV_SP)
-                            realAccel = 4.0f;
+                            realAccel = pm_sp_airaccelerate;
                         else if (moveStyle == MV_SLICK)
-                            realAccel = 30.0f;
+                            realAccel = pm_slick_accelerate;
                         //jetpack. 1.4f ?
                         optimalDeltaAngle = (acos((double)((pm->ps->basespeed - (realAccel * pm->ps->basespeed * pml.frametime)) / realCurrentSpeed)) * (180.0f / M_PI) - 45.0f);
                         if (optimalDeltaAngle < 0 || optimalDeltaAngle > 360)
