@@ -1,0 +1,216 @@
+#include "ui/jamp/newmenu/newmenuext.h"
+#include "ui/jamp/newmenu/newmenuconfig.h"
+
+//----------------------------------------------------------------------------------------------
+//
+//	newmenu_tab5 (TAB5)
+//
+//----------------------------------------------------------------------------------------------
+{
+    menuDef
+    {
+        name                    newmenu_tab5
+        rect                    MENU_X 0 MENU_WIDTH SCREEN_HEIGHT
+        outOfBoundsClick
+        focusColor              COL_WHITE
+        descX                   DESC_TEXT_X
+        descY                   DESC_TEXT_Y
+        descScale               DESC_TEXT_SCALE
+        descColor               COL_DESC_TEXT
+        descAlignment           ITEM_ALIGN_LEFT
+
+        // Menu lifecycle.
+        onOpen
+        {
+            uiScript            getvideosetup ;
+            HIDE_PAGE_UI
+            HIDE_APPLY
+            show                MENU_CHROME_GROUP ;
+            show                options_tab_5_pages ;
+            show                newmenu_options_tab_5_page_1 ;
+            setitemrect         newmenu_selected_tab_highlight HEADER_OPTIONS_TAB_5_RECT ;
+            setitemrect         newmenu_selected_page_highlight OPTIONS_TAB_5_PAGE_1_RECT ;
+        }
+
+        onClose
+        {
+            play                "sound/interface/button1" ;
+            hide                MENU_CHROME_GROUP ;
+            HIDE_PAGE_UI
+            HIDE_APPLY
+        }
+
+        onESC
+        {
+            defer               VideoSetup NEWMENU_VIDEO_WARNING ;
+            close               newmenu_tab5 ;
+        }
+
+        // Shared menu chrome.
+        // HEADER BACKGROUND
+        ITEM_BACKGROUND(background_header,      MENU_CHROME_GROUP, 0 0 MENU_WIDTH HEADER_HEIGHT,                       COL_MENU_HEADER_BACK)
+
+        // MAIN PANEL BACKGROUND
+        ITEM_BACKGROUND(background_main_panel,  MENU_CHROME_GROUP, 0 HEADER_HEIGHT MENU_WIDTH HEADER_HEIGHT_REMAINING, COL_MENU_PANEL_BACK)
+
+        // Hover/focus helpers.
+        SELECTEDHIGHLIGHT(newmenu_selected_tab_highlight)
+        SELECTEDHIGHLIGHT(newmenu_selected_page_highlight)
+        HIGHLIGHT
+        DUMMYHIGHLIGHT
+
+        // HEADER TITLE
+        TEXT_BOX_HEADER(header_title, MENU_CHROME_GROUP, 0 0 HEADER_TITLE_WIDTH HEADER_HEIGHT_HALF, VISIBLE, HEADER_TITLE)
+
+        // EXIT MENU BUTTON
+        ITEM_EXIT_SELF(header_exit_button, MENU_CHROME_GROUP, HEADER_EXIT_ICON_X HEADER_PADDING HEADER_EXIT_ICON_SIZE HEADER_EXIT_ICON_SIZE, COL_WHITE, HEADER_EXIT_ICON_SHADER, newmenu_tab5)
+
+        // APPLY VIDEO BUTTON
+        ITEM_APPLY_CHANGES
+
+        // TOP-LEVEL MENU TABS
+        ITEM_TAB_NAV   (options_tab_1_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_1_TEXT,  HEADER_OPTIONS_TAB_1_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_1_DESC_TEXT,  newmenu_tab5,  newmenu_tab1,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_2_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_2_TEXT,  HEADER_OPTIONS_TAB_2_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_2_DESC_TEXT,  newmenu_tab5,  newmenu_tab2,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_3_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_3_TEXT,  HEADER_OPTIONS_TAB_3_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_3_DESC_TEXT,  newmenu_tab5,  newmenu_tab3,  VISIBLE)
+        ITEM_TAB_NAV   (options_tab_4_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_4_TEXT,  HEADER_OPTIONS_TAB_4_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_4_DESC_TEXT,  newmenu_tab5,  newmenu_tab4,  VISIBLE)
+        ITEM_TAB_BUTTON(options_tab_5_button,   MENU_CHROME_GROUP, HEADER_OPTIONS_TAB_5_TEXT,  HEADER_OPTIONS_TAB_5_RECT,  HEADER_OPTIONS_TAB_HALF_WIDTH,  HEADER_OPTIONS_TAB_5_DESC_TEXT,  newmenu_options_tab_5_page_1,  OPTIONS_TAB_5_PAGE_1_RECT,  options_tab_5_pages,  VISIBLE)
+
+        // Current tab page buttons.
+        ITEM_PAGE_BUTTON(options_tab_5_page_1_button,  options_tab_5_pages,  OPTIONS_TAB_5_PAGE_1_TEXT,  OPTIONS_TAB_5_PAGE_1_RECT,  OPTIONS_TAB_5_PAGE_HALF_WIDTH,  OPTIONS_TAB_5_PAGE_1_DESC_TEXT,  newmenu_options_tab_5_page_1)
+        ITEM_PAGE_BUTTON(options_tab_5_page_2_button,  options_tab_5_pages,  OPTIONS_TAB_5_PAGE_2_TEXT,  OPTIONS_TAB_5_PAGE_2_RECT,  OPTIONS_TAB_5_PAGE_HALF_WIDTH,  OPTIONS_TAB_5_PAGE_2_DESC_TEXT,  newmenu_options_tab_5_page_2)
+        ITEM_PAGE_BUTTON(options_tab_5_page_3_button,  options_tab_5_pages,  OPTIONS_TAB_5_PAGE_3_TEXT,  OPTIONS_TAB_5_PAGE_3_RECT,  OPTIONS_TAB_5_PAGE_HALF_WIDTH,  OPTIONS_TAB_5_PAGE_3_DESC_TEXT,  newmenu_options_tab_5_page_3)
+        ITEM_PAGE_BUTTON(options_tab_5_page_4_button,  options_tab_5_pages,  OPTIONS_TAB_5_PAGE_4_TEXT,  OPTIONS_TAB_5_PAGE_4_RECT,  OPTIONS_TAB_5_PAGE_HALF_WIDTH,  OPTIONS_TAB_5_PAGE_4_DESC_TEXT,  newmenu_options_tab_5_page_4)
+        ITEM_PAGE_BUTTON(options_tab_5_page_5_button,  options_tab_5_pages,  OPTIONS_TAB_5_PAGE_5_TEXT,  OPTIONS_TAB_5_PAGE_5_RECT,  OPTIONS_TAB_5_PAGE_HALF_WIDTH,  OPTIONS_TAB_5_PAGE_5_DESC_TEXT,  newmenu_options_tab_5_page_5)
+
+        // Page body rows.
+        // Page 1
+        ROW_TEXT(TAB5_PAGE1, 1, "Tab 5 Page 1 Option 1", "Tab 5 Page 1 Option 1")
+        ROW_TEXT(TAB5_PAGE1, 2, "Tab 5 Page 1 Option 2", "Tab 5 Page 1 Option 2")
+        ROW_TEXT(TAB5_PAGE1, 3, "Tab 5 Page 1 Option 3", "Tab 5 Page 1 Option 3")
+        ROW_TEXT(TAB5_PAGE1, 4, "Tab 5 Page 1 Option 4", "Tab 5 Page 1 Option 4")
+        ROW_TEXT(TAB5_PAGE1, 5, "Tab 5 Page 1 Option 5", "Tab 5 Page 1 Option 5")
+        ROW_TEXT(TAB5_PAGE1, 6, "Tab 5 Page 1 Option 6", "Tab 5 Page 1 Option 6")
+        ROW_TEXT(TAB5_PAGE1, 7, "Tab 5 Page 1 Option 7", "Tab 5 Page 1 Option 7")
+        ROW_TEXT(TAB5_PAGE1, 8, "Tab 5 Page 1 Option 8", "Tab 5 Page 1 Option 8")
+        ROW_TEXT(TAB5_PAGE1, 9, "Tab 5 Page 1 Option 9", "Tab 5 Page 1 Option 9")
+        ROW_TEXT(TAB5_PAGE1, 10, "Tab 5 Page 1 Option 10", "Tab 5 Page 1 Option 10")
+        ROW_TEXT(TAB5_PAGE1, 11, "Tab 5 Page 1 Option 11", "Tab 5 Page 1 Option 11")
+        ROW_TEXT(TAB5_PAGE1, 12, "Tab 5 Page 1 Option 12", "Tab 5 Page 1 Option 12")
+        ROW_TEXT(TAB5_PAGE1, 13, "Tab 5 Page 1 Option 13", "Tab 5 Page 1 Option 13")
+        ROW_TEXT(TAB5_PAGE1, 14, "Tab 5 Page 1 Option 14", "Tab 5 Page 1 Option 14")
+        ROW_TEXT(TAB5_PAGE1, 15, "Tab 5 Page 1 Option 15", "Tab 5 Page 1 Option 15")
+        ROW_TEXT(TAB5_PAGE1, 16, "Tab 5 Page 1 Option 16", "Tab 5 Page 1 Option 16")
+        ROW_TEXT(TAB5_PAGE1, 17, "Tab 5 Page 1 Option 17", "Tab 5 Page 1 Option 17")
+        ROW_TEXT(TAB5_PAGE1, 18, "Tab 5 Page 1 Option 18", "Tab 5 Page 1 Option 18")
+        ROW_TEXT(TAB5_PAGE1, 19, "Tab 5 Page 1 Option 19", "Tab 5 Page 1 Option 19")
+        ROW_TEXT(TAB5_PAGE1, 20, "Tab 5 Page 1 Option 20", "Tab 5 Page 1 Option 20")
+        ROW_TEXT(TAB5_PAGE1, 21, "Tab 5 Page 1 Option 21", "Tab 5 Page 1 Option 21")
+        ROW_TEXT(TAB5_PAGE1, 22, "Tab 5 Page 1 Option 22", "Tab 5 Page 1 Option 22")
+        ROW_TEXT(TAB5_PAGE1, 23, "Tab 5 Page 1 Option 23", "Tab 5 Page 1 Option 23")
+        ROW_TEXT(TAB5_PAGE1, 24, "Tab 5 Page 1 Option 24", "Tab 5 Page 1 Option 24")
+
+        // Page 2
+        ROW_TEXT(TAB5_PAGE2, 1, "Tab 5 Page 2 Option 1", "Tab 5 Page 2 Option 1")
+        ROW_TEXT(TAB5_PAGE2, 2, "Tab 5 Page 2 Option 2", "Tab 5 Page 2 Option 2")
+        ROW_TEXT(TAB5_PAGE2, 3, "Tab 5 Page 2 Option 3", "Tab 5 Page 2 Option 3")
+        ROW_TEXT(TAB5_PAGE2, 4, "Tab 5 Page 2 Option 4", "Tab 5 Page 2 Option 4")
+        ROW_TEXT(TAB5_PAGE2, 5, "Tab 5 Page 2 Option 5", "Tab 5 Page 2 Option 5")
+        ROW_TEXT(TAB5_PAGE2, 6, "Tab 5 Page 2 Option 6", "Tab 5 Page 2 Option 6")
+        ROW_TEXT(TAB5_PAGE2, 7, "Tab 5 Page 2 Option 7", "Tab 5 Page 2 Option 7")
+        ROW_TEXT(TAB5_PAGE2, 8, "Tab 5 Page 2 Option 8", "Tab 5 Page 2 Option 8")
+        ROW_TEXT(TAB5_PAGE2, 9, "Tab 5 Page 2 Option 9", "Tab 5 Page 2 Option 9")
+        ROW_TEXT(TAB5_PAGE2, 10, "Tab 5 Page 2 Option 10", "Tab 5 Page 2 Option 10")
+        ROW_TEXT(TAB5_PAGE2, 11, "Tab 5 Page 2 Option 11", "Tab 5 Page 2 Option 11")
+        ROW_TEXT(TAB5_PAGE2, 12, "Tab 5 Page 2 Option 12", "Tab 5 Page 2 Option 12")
+        ROW_TEXT(TAB5_PAGE2, 13, "Tab 5 Page 2 Option 13", "Tab 5 Page 2 Option 13")
+        ROW_TEXT(TAB5_PAGE2, 14, "Tab 5 Page 2 Option 14", "Tab 5 Page 2 Option 14")
+        ROW_TEXT(TAB5_PAGE2, 15, "Tab 5 Page 2 Option 15", "Tab 5 Page 2 Option 15")
+        ROW_TEXT(TAB5_PAGE2, 16, "Tab 5 Page 2 Option 16", "Tab 5 Page 2 Option 16")
+        ROW_TEXT(TAB5_PAGE2, 17, "Tab 5 Page 2 Option 17", "Tab 5 Page 2 Option 17")
+        ROW_TEXT(TAB5_PAGE2, 18, "Tab 5 Page 2 Option 18", "Tab 5 Page 2 Option 18")
+        ROW_TEXT(TAB5_PAGE2, 19, "Tab 5 Page 2 Option 19", "Tab 5 Page 2 Option 19")
+        ROW_TEXT(TAB5_PAGE2, 20, "Tab 5 Page 2 Option 20", "Tab 5 Page 2 Option 20")
+        ROW_TEXT(TAB5_PAGE2, 21, "Tab 5 Page 2 Option 21", "Tab 5 Page 2 Option 21")
+        ROW_TEXT(TAB5_PAGE2, 22, "Tab 5 Page 2 Option 22", "Tab 5 Page 2 Option 22")
+        ROW_TEXT(TAB5_PAGE2, 23, "Tab 5 Page 2 Option 23", "Tab 5 Page 2 Option 23")
+        ROW_TEXT(TAB5_PAGE2, 24, "Tab 5 Page 2 Option 24", "Tab 5 Page 2 Option 24")
+
+        // Page 3
+        ROW_TEXT(TAB5_PAGE3, 1, "Tab 5 Page 3 Option 1", "Tab 5 Page 3 Option 1")
+        ROW_TEXT(TAB5_PAGE3, 2, "Tab 5 Page 3 Option 2", "Tab 5 Page 3 Option 2")
+        ROW_TEXT(TAB5_PAGE3, 3, "Tab 5 Page 3 Option 3", "Tab 5 Page 3 Option 3")
+        ROW_TEXT(TAB5_PAGE3, 4, "Tab 5 Page 3 Option 4", "Tab 5 Page 3 Option 4")
+        ROW_TEXT(TAB5_PAGE3, 5, "Tab 5 Page 3 Option 5", "Tab 5 Page 3 Option 5")
+        ROW_TEXT(TAB5_PAGE3, 6, "Tab 5 Page 3 Option 6", "Tab 5 Page 3 Option 6")
+        ROW_TEXT(TAB5_PAGE3, 7, "Tab 5 Page 3 Option 7", "Tab 5 Page 3 Option 7")
+        ROW_TEXT(TAB5_PAGE3, 8, "Tab 5 Page 3 Option 8", "Tab 5 Page 3 Option 8")
+        ROW_TEXT(TAB5_PAGE3, 9, "Tab 5 Page 3 Option 9", "Tab 5 Page 3 Option 9")
+        ROW_TEXT(TAB5_PAGE3, 10, "Tab 5 Page 3 Option 10", "Tab 5 Page 3 Option 10")
+        ROW_TEXT(TAB5_PAGE3, 11, "Tab 5 Page 3 Option 11", "Tab 5 Page 3 Option 11")
+        ROW_TEXT(TAB5_PAGE3, 12, "Tab 5 Page 3 Option 12", "Tab 5 Page 3 Option 12")
+        ROW_TEXT(TAB5_PAGE3, 13, "Tab 5 Page 3 Option 13", "Tab 5 Page 3 Option 13")
+        ROW_TEXT(TAB5_PAGE3, 14, "Tab 5 Page 3 Option 14", "Tab 5 Page 3 Option 14")
+        ROW_TEXT(TAB5_PAGE3, 15, "Tab 5 Page 3 Option 15", "Tab 5 Page 3 Option 15")
+        ROW_TEXT(TAB5_PAGE3, 16, "Tab 5 Page 3 Option 16", "Tab 5 Page 3 Option 16")
+        ROW_TEXT(TAB5_PAGE3, 17, "Tab 5 Page 3 Option 17", "Tab 5 Page 3 Option 17")
+        ROW_TEXT(TAB5_PAGE3, 18, "Tab 5 Page 3 Option 18", "Tab 5 Page 3 Option 18")
+        ROW_TEXT(TAB5_PAGE3, 19, "Tab 5 Page 3 Option 19", "Tab 5 Page 3 Option 19")
+        ROW_TEXT(TAB5_PAGE3, 20, "Tab 5 Page 3 Option 20", "Tab 5 Page 3 Option 20")
+        ROW_TEXT(TAB5_PAGE3, 21, "Tab 5 Page 3 Option 21", "Tab 5 Page 3 Option 21")
+        ROW_TEXT(TAB5_PAGE3, 22, "Tab 5 Page 3 Option 22", "Tab 5 Page 3 Option 22")
+        ROW_TEXT(TAB5_PAGE3, 23, "Tab 5 Page 3 Option 23", "Tab 5 Page 3 Option 23")
+        ROW_TEXT(TAB5_PAGE3, 24, "Tab 5 Page 3 Option 24", "Tab 5 Page 3 Option 24")
+
+        // Page 4
+        ROW_TEXT(TAB5_PAGE4, 1, "Tab 5 Page 4 Option 1", "Tab 5 Page 4 Option 1")
+        ROW_TEXT(TAB5_PAGE4, 2, "Tab 5 Page 4 Option 2", "Tab 5 Page 4 Option 2")
+        ROW_TEXT(TAB5_PAGE4, 3, "Tab 5 Page 4 Option 3", "Tab 5 Page 4 Option 3")
+        ROW_TEXT(TAB5_PAGE4, 4, "Tab 5 Page 4 Option 4", "Tab 5 Page 4 Option 4")
+        ROW_TEXT(TAB5_PAGE4, 5, "Tab 5 Page 4 Option 5", "Tab 5 Page 4 Option 5")
+        ROW_TEXT(TAB5_PAGE4, 6, "Tab 5 Page 4 Option 6", "Tab 5 Page 4 Option 6")
+        ROW_TEXT(TAB5_PAGE4, 7, "Tab 5 Page 4 Option 7", "Tab 5 Page 4 Option 7")
+        ROW_TEXT(TAB5_PAGE4, 8, "Tab 5 Page 4 Option 8", "Tab 5 Page 4 Option 8")
+        ROW_TEXT(TAB5_PAGE4, 9, "Tab 5 Page 4 Option 9", "Tab 5 Page 4 Option 9")
+        ROW_TEXT(TAB5_PAGE4, 10, "Tab 5 Page 4 Option 10", "Tab 5 Page 4 Option 10")
+        ROW_TEXT(TAB5_PAGE4, 11, "Tab 5 Page 4 Option 11", "Tab 5 Page 4 Option 11")
+        ROW_TEXT(TAB5_PAGE4, 12, "Tab 5 Page 4 Option 12", "Tab 5 Page 4 Option 12")
+        ROW_TEXT(TAB5_PAGE4, 13, "Tab 5 Page 4 Option 13", "Tab 5 Page 4 Option 13")
+        ROW_TEXT(TAB5_PAGE4, 14, "Tab 5 Page 4 Option 14", "Tab 5 Page 4 Option 14")
+        ROW_TEXT(TAB5_PAGE4, 15, "Tab 5 Page 4 Option 15", "Tab 5 Page 4 Option 15")
+        ROW_TEXT(TAB5_PAGE4, 16, "Tab 5 Page 4 Option 16", "Tab 5 Page 4 Option 16")
+        ROW_TEXT(TAB5_PAGE4, 17, "Tab 5 Page 4 Option 17", "Tab 5 Page 4 Option 17")
+        ROW_TEXT(TAB5_PAGE4, 18, "Tab 5 Page 4 Option 18", "Tab 5 Page 4 Option 18")
+        ROW_TEXT(TAB5_PAGE4, 19, "Tab 5 Page 4 Option 19", "Tab 5 Page 4 Option 19")
+        ROW_TEXT(TAB5_PAGE4, 20, "Tab 5 Page 4 Option 20", "Tab 5 Page 4 Option 20")
+        ROW_TEXT(TAB5_PAGE4, 21, "Tab 5 Page 4 Option 21", "Tab 5 Page 4 Option 21")
+        ROW_TEXT(TAB5_PAGE4, 22, "Tab 5 Page 4 Option 22", "Tab 5 Page 4 Option 22")
+        ROW_TEXT(TAB5_PAGE4, 23, "Tab 5 Page 4 Option 23", "Tab 5 Page 4 Option 23")
+        ROW_TEXT(TAB5_PAGE4, 24, "Tab 5 Page 4 Option 24", "Tab 5 Page 4 Option 24")
+
+        // Page 5
+        ROW_TEXT(TAB5_PAGE5, 1, "Tab 5 Page 5 Option 1", "Tab 5 Page 5 Option 1")
+        ROW_TEXT(TAB5_PAGE5, 2, "Tab 5 Page 5 Option 2", "Tab 5 Page 5 Option 2")
+        ROW_TEXT(TAB5_PAGE5, 3, "Tab 5 Page 5 Option 3", "Tab 5 Page 5 Option 3")
+        ROW_TEXT(TAB5_PAGE5, 4, "Tab 5 Page 5 Option 4", "Tab 5 Page 5 Option 4")
+        ROW_TEXT(TAB5_PAGE5, 5, "Tab 5 Page 5 Option 5", "Tab 5 Page 5 Option 5")
+        ROW_TEXT(TAB5_PAGE5, 6, "Tab 5 Page 5 Option 6", "Tab 5 Page 5 Option 6")
+        ROW_TEXT(TAB5_PAGE5, 7, "Tab 5 Page 5 Option 7", "Tab 5 Page 5 Option 7")
+        ROW_TEXT(TAB5_PAGE5, 8, "Tab 5 Page 5 Option 8", "Tab 5 Page 5 Option 8")
+        ROW_TEXT(TAB5_PAGE5, 9, "Tab 5 Page 5 Option 9", "Tab 5 Page 5 Option 9")
+        ROW_TEXT(TAB5_PAGE5, 10, "Tab 5 Page 5 Option 10", "Tab 5 Page 5 Option 10")
+        ROW_TEXT(TAB5_PAGE5, 11, "Tab 5 Page 5 Option 11", "Tab 5 Page 5 Option 11")
+        ROW_TEXT(TAB5_PAGE5, 12, "Tab 5 Page 5 Option 12", "Tab 5 Page 5 Option 12")
+        ROW_TEXT(TAB5_PAGE5, 13, "Tab 5 Page 5 Option 13", "Tab 5 Page 5 Option 13")
+        ROW_TEXT(TAB5_PAGE5, 14, "Tab 5 Page 5 Option 14", "Tab 5 Page 5 Option 14")
+        ROW_TEXT(TAB5_PAGE5, 15, "Tab 5 Page 5 Option 15", "Tab 5 Page 5 Option 15")
+        ROW_TEXT(TAB5_PAGE5, 16, "Tab 5 Page 5 Option 16", "Tab 5 Page 5 Option 16")
+        ROW_TEXT(TAB5_PAGE5, 17, "Tab 5 Page 5 Option 17", "Tab 5 Page 5 Option 17")
+        ROW_TEXT(TAB5_PAGE5, 18, "Tab 5 Page 5 Option 18", "Tab 5 Page 5 Option 18")
+        ROW_TEXT(TAB5_PAGE5, 19, "Tab 5 Page 5 Option 19", "Tab 5 Page 5 Option 19")
+        ROW_TEXT(TAB5_PAGE5, 20, "Tab 5 Page 5 Option 20", "Tab 5 Page 5 Option 20")
+        ROW_TEXT(TAB5_PAGE5, 21, "Tab 5 Page 5 Option 21", "Tab 5 Page 5 Option 21")
+        ROW_TEXT(TAB5_PAGE5, 22, "Tab 5 Page 5 Option 22", "Tab 5 Page 5 Option 22")
+        ROW_TEXT(TAB5_PAGE5, 23, "Tab 5 Page 5 Option 23", "Tab 5 Page 5 Option 23")
+        ROW_TEXT(TAB5_PAGE5, 24, "Tab 5 Page 5 Option 24", "Tab 5 Page 5 Option 24")
+    }
+}
