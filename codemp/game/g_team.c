@@ -779,7 +779,7 @@ int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
 		cl->pers.stats.displacementFlagSamples = 0;
 	}
 	else
-	PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG);
+		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG);
 
 	#if _DEBUGCTFCRASH
 	G_SecurityLogPrintf("Team_TouchOurFlag function reached point z, Enemy Flag is %i\n", enemy_flag);
@@ -833,10 +833,53 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 		// hey, its not home.  return it by teleporting it back
 		//PrintMsg( NULL, "%s" S_COLOR_WHITE " returned the %s flag!\n",
 		//	cl->pers.netname, TeamName(team));
-		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_RETURNED_FLAG);
+		if (other->client && g_fixCTFScores.integer) {
+			float enemyDist, myDist, percent;
+			int points;
+			gentity_t *flag = NULL;
+			char		*enemyflag, *myflag;
+			if (team == TEAM_RED) {
+				enemyflag = "team_CTF_blueflag";
+				myflag = "team_CTF_redflag";
 
+			}
+			else if (team == TEAM_BLUE) {
+				enemyflag = "team_CTF_redflag";
+				myflag = "team_CTF_blueflag";
+			}
+			while ((flag = G_Find(flag, FOFS(classname), enemyflag)) != NULL) {
+				if (flag->s.origin[0] || flag->s.origin[1] || flag->s.origin[2]) { //How better to tell if this flag is at home?
+					enemyDist = Distance(flag->s.origin, ent->s.pos.trBase);
+				}
+				//Com_Printf("Found flag %s %.2f %.2f\n", classname, flag->s.origin[0], flag->s.origin[1]);
+			}
+			while ((flag = G_Find(flag, FOFS(classname), myflag)) != NULL) {
+				if (flag->s.origin[0] || flag->s.origin[1] || flag->s.origin[2]) { //How better to tell if this flag is at home?
+					myDist = Distance(flag->s.origin, ent->s.pos.trBase);
+				}
+				//Com_Printf("Found flag %s %.2f %.2f\n", classname, flag->s.origin[0], flag->s.origin[1]);
+			}
+			//Com_Printf("Touching enemy flag, it was %.0f away from our flag base.\n", points);
+			//Com_Printf("Enemy dist %.2f, My dist %.2f\n", enemyDist, myDist);
+			
+			percent = (enemyDist + myDist) ? (myDist / ((enemyDist + myDist)) * 100) : 1;
+			if (percent < 10) {
+				percent = 10;
+				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f * 5);
+				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base for ^3%i^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", points));
+			}
+			else {
+				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f * 5);
+				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3%.0f^5 percent of the way to enemy base for ^3%i^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", percent, points));
+			}
 
-		AddScore(other, ent->r.currentOrigin, CTF_RECOVERY_BONUS);
+			AddScore(other, ent->r.currentOrigin, CTF_RECOVERY_BONUS);
+		}
+		else {
+			PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_RETURNED_FLAG);
+			AddScore(other, ent->r.currentOrigin, CTF_RECOVERY_BONUS);
+		}
+
 		other->client->pers.teamState.flagrecovery++;
 		if (other->client->pers.userName[0])
 			G_AddSimpleStat(other->client->pers.userName, 5);
@@ -1117,6 +1160,9 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 	else if (!g_allowFlagThrow.integer && (g_neutralFlag.integer != 2)) {
 		AddScore(other, ent->r.currentOrigin, CTF_FLAG_BONUS);
 	}
+
+	// Increase the team's score
+	AddTeamScore(ent->s.pos.trBase, other->client->sess.sessionTeam, 1, qtrue);
 
 	Team_SetFlagStatus( team, FLAG_TAKEN );
 
