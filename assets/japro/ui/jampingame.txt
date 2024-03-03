@@ -44,5 +44,12 @@
 	loadMenu { "ui/jamp/ingame_account.menu"		}
 	loadMenu { "ui/jamp/password_request.menu"		}
 	loadMenu { "ui/jamp/ingame_vgs.menu"			}
+	// Newmenu warning: order matters here
+	loadMenu { "ui/jamp/newmenu/newmenu_tab5.menu"	}
+	loadMenu { "ui/jamp/newmenu/newmenu_tab4.menu"	}
+	loadMenu { "ui/jamp/newmenu/newmenu_tab3.menu"	}
+	loadMenu { "ui/jamp/newmenu/newmenu_tab2.menu"	}
+	loadMenu { "ui/jamp/newmenu/newmenu_tab1.menu"	}
+	loadMenu { "ui/jamp/newmenu/newmenu.menu"		}
+	loadMenu { "ui/jamp/newmenu/newmenu_popups.menu"	}
 }
-
