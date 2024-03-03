@@ -2178,7 +2178,7 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 
 			pushangle[1] = interpAngle;
 			AngleVectors(pushangle, pushdir, NULL, NULL);
-			VectorMA(player->client->ps.velocity, trigger->speed, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
+			VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
 		}
 
 	}
