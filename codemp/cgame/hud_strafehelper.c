@@ -720,10 +720,9 @@ void DF_SetVelocityAngles()
 
 //set the strafehelper user settings to the struct
 void DF_SetStrafeHelper() {
-	if( ( !state.cgaz.currentSpeed ) || (state.moveStyle == MV_SIEGE ) ) {
+	if( state.moveStyle == MV_SIEGE ) {
 		return;
 	}
-
 	float lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
 	int LINE_HEIGHT = (int)((0.5f * SCREEN_HEIGHT)); //240 is midpoint, so it should be a little higher so crosshair is always on it.

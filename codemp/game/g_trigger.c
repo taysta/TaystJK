@@ -2149,6 +2149,40 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 		}
 	}
 
+	if (trigger->spawnflags & 512 && player->waterlevel) { //water current?
+		gentity_t	*hit = NULL;
+		float dist1 = 99999, dist2 = 99999, tempdist, ang1 = -1, ang2 = -1;
+
+		while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
+			if (hit != trigger) {
+				tempdist = Distance(player->client->ps.origin, hit->s.origin);
+				if (tempdist < dist1) {
+					ang1 = hit->s.angles[1];
+					dist1 = tempdist;
+				}
+				else if (tempdist < dist2) {
+					ang2 = hit->s.angles[1];
+					dist2 = tempdist;
+				}
+			}
+		}
+
+		if (ang1 != -1 && ang2 != -1) {
+			vec3_t pushangle = { 0 };
+			vec3_t pushdir;
+			float interpAngle;
+			float perc = dist1 / (dist1 + dist2);
+
+			interpAngle = LerpAngle(ang1, ang2, perc);
+			//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
+
+			pushangle[1] = interpAngle;
+			AngleVectors(pushangle, pushdir, NULL, NULL);
+			VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
+		}
+
+	}
+
 	if (player->client->lastBounceTime > level.time - 500)
 		return;
 
