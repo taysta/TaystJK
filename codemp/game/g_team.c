@@ -1158,7 +1158,7 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 				points = 1;
 			if (speed > 2000)
 				points = 2;
-			trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 ups with max of ^3%i^5 ups and average ^3%i^5 ups for ^3%i^5 points\n\"", team == 2 ? "^1red" : "^4blue", speed, points));
+			trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 for ^3%i^5 points\n\"", team == 2 ? "^1red" : "^4blue", speed, points));
 		}
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
 	}
