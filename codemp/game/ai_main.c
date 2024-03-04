@@ -576,6 +576,8 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 
 	if (bi->actionflags & ACTION_FORCEPOWER) ucmd->buttons |= BUTTON_FORCEPOWER;
 
+	if (bi->actionflags & ACTION_SKI) ucmd->buttons |= BUTTON_DASH;
+
 	if (useTime < level.time && Q_irand(1, 10) < 5)
 	{ //for now just hit use randomly in case there's something useable around
 		ucmd->buttons |= BUTTON_USE;
@@ -8348,6 +8350,68 @@ void NewBotAI_NF(bot_state_t *bs)
 	//NewBotAI_GetAttack(bs);
 }
 
+void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
+{
+	NewBotAI_GetAim(bs);
+
+	if (bs->cur_ps.eFlags & EF_JETPACK_FLAMING || bs->cur_ps.eFlags & EF_JETPACK_ACTIVE) {
+		//if (!(bs->cur_ps.pm_flags & PMF_JUMP_HELD))
+		//{
+			//bs->jumpTime = level.time + 200;
+			//bs->jumpHoldTime = level.time + 200;
+		//}
+		//Com_Printf("2 Still going up\n");
+		trap->EA_Jump(bs->client);
+	}
+	else if (bs->cur_ps.fd.forcePower > 98) {
+		//Com_Printf("1 Going up\n");
+		//bs->jumpTime = level.time + 200;
+		//bs->jumpHoldTime = level.time + 200;
+		trap->EA_Jump(bs->client);
+	}
+	else {
+		//Com_Printf("3 Flaming? %i, Active? %i, FP: %i\n", (bs->cur_ps.eFlags & EF_JETPACK_FLAMING), bs->cur_ps.eFlags & EF_JETPACK_ACTIVE, bs->cur_ps.fd.forcePower);
+	}
+
+
+	/*
+	if (bs->jumpTime > level.time && bs->jDelay < level.time)
+	{
+	if (bs->jumpHoldTime > level.time)
+	{
+	trap->EA_Jump(bs->client);
+	if (bs->wpCurrent)
+	{
+	if ((bs->wpCurrent->origin[2] - bs->origin[2]) < 64)
+	{
+	trap->EA_MoveForward(bs->client);
+	}
+	}
+	else
+	{
+	trap->EA_MoveForward(bs->client);
+	}
+	if (g_entities[bs->client].client->ps.groundEntityNum == ENTITYNUM_NONE)
+	{
+	g_entities[bs->client].client->ps.pm_flags |= PMF_JUMP_HELD;
+	}
+	}
+	else if (!(bs->cur_ps.pm_flags & PMF_JUMP_HELD))
+	{
+	trap->EA_Jump(bs->client);
+	}
+		*/
+
+	trap->EA_Action(bs->client, ACTION_SKI);
+
+
+	StandardBotAI(bs, thinktime);
+	BotSelectWeapon(bs->client, NewBotAI_GetWeapon(bs));
+
+	//NewBotAI_GetMovement(bs);
+	//NewBotAI_GetAttack(bs);
+}
+
 void NewBotAI_StrafeJump(bot_state_t *bs, float distance)
 {
 	qboolean aimright = qfalse;
@@ -8727,6 +8791,11 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 		return;
 	}
 	*/
+
+	if (g_movementStyle.integer == MV_TRIBES && (g_startingItems.integer & (1 << HI_JETPACK))) {
+		NewBotAI_Tribes(bs, thinktime);
+		return;
+	}
 
 	if ((g_forcePowerDisable.integer != 163837 && g_forcePowerDisable.integer != 163839) || (g_flipKick.integer) || (bs->cur_ps.weapon != WP_SABER)) {
 		if (bs->currentEnemy->client->ps.fd.forceSide == FORCE_LIGHTSIDE) { // They are LS.
