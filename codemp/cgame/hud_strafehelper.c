@@ -1283,7 +1283,7 @@ float DF_GetCmdScale(usercmd_t cmd) {
 	signed char		umove = 0; //cmd->upmove;
 	//don't factor upmove into scaling speed
 
-	if (state.moveStyle & (MV_OCPM | MV_SP)) { //upmove velocity scaling add ocpm
+	if (state.moveStyle == MV_OCPM) { //upmove velocity scaling add ocpm
 		umove = state.cmd.upmove;
 	}
 	max = abs(cmd.forwardmove);
@@ -2056,7 +2056,7 @@ qboolean DF_IsSlickSurf(void) {
 	down[2] -= 128;
 	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
 
-	if ((state.groundEntityNum == ENTITYNUM_WORLD) && (tr.surfaceFlags & SURF_SLICK)
+	if (((state.groundEntityNum == ENTITYNUM_WORLD) && (tr.surfaceFlags & SURF_SLICK))
 	|| ((state.moveStyle == MV_SLICK) && !(state.cmd.buttons & BUTTON_WALKING))
 	|| ((state.moveStyle == MV_TRIBES) && (state.cmd.buttons & BUTTON_WALKING))
 	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
