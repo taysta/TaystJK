@@ -472,7 +472,7 @@ void PM_VehicleImpact(bgEntity_t *pEnt, trace_t *trace)
 						impactDot = DotProduct(moveDir, trace->plane.normal);
 						magnitude *= -impactDot * 6 * g_newVehicleDamageScale.value;
 					}
-					else 
+					else
 #endif
 					{
 						float mult = (pSelfVeh->m_vOrientation[PITCH] * 0.1f); //Ths might be the dumbest way to calculate damage multiplier ever.  todo: server cvar to fix vehicles
@@ -833,7 +833,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 #endif
 				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, offset); //Loda this is causing deadstops on vertical seams.  1.5f?
 			}
-			else 
+			else
 				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, OVERCLIP);
 			// slide along the plane
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
@@ -1180,10 +1180,10 @@ void PM_StepSlideMove( qboolean gravity ) {
 
 						PM_ClipVelocity(pm->ps->velocity, trace.plane.normal, pm->ps->velocity, OVERCLIP);
 						//How do we do this without redoing all the slope calculation.  The T3 way is to look at the magnitute of what we lost, and then just re-add it to the current vel.  But that gives us too much if its a nice smooth skii...
-						//Question is, how can we determine if we should have been clipped here or not.  
+						//Question is, how can we determine if we should have been clipped here or not.
 
 						lost = VectorLength(pm->ps->velocity) / oldSpeed;
-						//400, 600   = 
+						//400, 600   =
 
 						if (lost < 0.9f) { //We lost more than 10pct of our speed.  Give it all back?
 							float regain = 1.0f - lost;
@@ -1191,7 +1191,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 							VectorScale(pm->ps->velocity, 1.0f + regain, pm->ps->velocity);
 						}
 
-						//Look at pre speed 
+						//Look at pre speed
 						//Do the velocity clip
 						//Look at post speed.  If we lost too much, add it back.
 

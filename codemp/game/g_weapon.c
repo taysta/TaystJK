@@ -271,7 +271,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 9;
+			ent->client->ps.jetpackFuel -= 7;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 	}
@@ -306,7 +306,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 
 		AngleVectors(angs, dir, NULL, NULL);
 	}
-	
+
 	missile = CreateMissileNew(muzzle, dir, vel, 10000, ent, altFire, qtrue, qtrue);
 	missile->classname = "bryar_proj";
 	missile->s.weapon = WP_BRYAR_PISTOL;
@@ -2569,7 +2569,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Alt Flechette Dmg - End]
 
 	missile->dflags = 0;
-	
+
 	missile->r.svFlags = SVF_USE_CURRENT_ORIGIN;
 
 	missile->methodOfDeath = MOD_FLECHETTE_ALT_SPLASH;
@@ -2897,7 +2897,7 @@ void rocketThink( gentity_t *ent )
 			//If its close blow it up.
 			//ent->think = G_ExplodeMissile;
 		//}
-		/*else*/ 
+		/*else*/
 		dist = VectorLengthSquared(dir);
 
 		if (g_tweakWeapons.integer & WT_TRIBES)

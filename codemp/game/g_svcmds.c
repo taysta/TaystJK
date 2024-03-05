@@ -630,7 +630,7 @@ static void RemoveCTFFlags(void) {
 void SetGametypeFuncSolids( void );
 void G_CacheGametype( void );
 qboolean G_CallSpawn( gentity_t *ent );
-void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting.\n" in the server code this will always trigger a full map reload.. when map restarts 
+void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting.\n" in the server code this will always trigger a full map reload.. when map restarts
 	char	input[16];
 	int		gametype, i, red = 0;
 	gentity_t* ent;

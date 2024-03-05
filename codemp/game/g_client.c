@@ -1269,7 +1269,7 @@ void ClientRespawn(gentity_t *ent) {
 	}
 
 	trap->UnlinkEntity((sharedEntity_t *)ent);
-	
+
 	if (level.gametype == GT_SIEGE)
 	{
 		if (g_siegeRespawn.integer)

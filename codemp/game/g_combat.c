@@ -4968,10 +4968,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 
 	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
-		float cut;	
+		float cut;
 		if (g_tribesMode.integer)
 			cut = 1 - ((damage * 0.0005));
-		else 
+		else
 			cut = 1 - ((damage * 0.0025f));
 
 		if (cut > 1)
@@ -5963,7 +5963,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 				if (targ->client->ps.fd.forcePower < 0)
 				{
 					if (g_tribesMode.integer)
-						subamt += targ->client->ps.fd.forcePower * 5; 
+						subamt += targ->client->ps.fd.forcePower * 5;
 					else
 						subamt += targ->client->ps.fd.forcePower;
 					targ->client->ps.fd.forcePower = 0;

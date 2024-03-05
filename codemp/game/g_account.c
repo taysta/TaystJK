@@ -1530,7 +1530,7 @@ void TimeSecToString(int duration_ms, char *timeStr, size_t strSize) {
 	}
 }
 
-void TimeToString(int duration_ms, char *timeStr, size_t strSize) { 
+void TimeToString(int duration_ms, char *timeStr, size_t strSize) {
 	if (duration_ms > (60*60*1000)) { //thanks, eternal
 		int hours, minutes, seconds, milliseconds; 
 		hours = (int)((duration_ms / (1000*60*60))); //wait wut
@@ -1986,7 +1986,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 						i--;
 					}
 					lastDuration = duration;
-				}	
+				}
 				if (duration_ms < duration) { //We are faster than this time... If we dont find anything newrank stays -1
 					global_newRank = i;
 					break;
@@ -6075,7 +6075,7 @@ GROUP BY coursename, style, season
 				}
 				else
 					tmpMsg = va("^5%2i^3: ^3%s\n", start + row, sqlite3_column_text(stmt, 0)); //Print username, inputstyle, coursename
-		
+
 				if (strlen(msg) + strlen(tmpMsg) >= sizeof(msg)) {
 					trap->SendServerCommand(ent - g_entities, va("print \"%s\"", msg));
 					msg[0] = '\0';

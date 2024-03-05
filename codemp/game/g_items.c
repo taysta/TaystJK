@@ -571,7 +571,7 @@ void pas_fire( gentity_t *ent )
 
 	if (g_tweakWeapons.integer & WT_TRIBES)
 		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 5220 * g_projectileVelocityScale.value, MOD_SENTRY, ent );
-	else 
+	else
 		WP_FireTurretMissile(&g_entities[ent->genericValue3], myOrg, fwd, qfalse, 10*g_weaponDamageScale.value, 2300 * g_projectileVelocityScale.value, MOD_SENTRY, ent);
 
 	G_RunObject(ent);
@@ -2401,6 +2401,10 @@ int Pickup_Health (gentity_t *ent, gentity_t *other) {
 	}
 	other->client->ps.stats[STAT_HEALTH] = other->health;
 
+	if (g_showHealth.integer)
+		G_ScaleNetHealth(other); //WT_TRIBES rework
+
+
 	if ( ent->item->quantity == 100 ) {		// mega health respawns slow
 		return RESPAWN_MEGAHEALTH;
 	}
@@ -2417,6 +2421,9 @@ int Pickup_Armor( gentity_t *ent, gentity_t *other )
 	{
 		other->client->ps.stats[STAT_ARMOR] = other->client->ps.stats[STAT_MAX_HEALTH] * ent->item->giTag;
 	}
+
+	if (g_showHealth.integer)
+		G_ScaleNetHealth(other); //WT_TRIBES rework
 
 	return adjustRespawnTime(RESPAWN_ARMOR, ent->item->giType, ent->item->giTag);
 }
