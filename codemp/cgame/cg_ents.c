@@ -2423,7 +2423,7 @@ Ghoul2 Insert End
 				float distancescale = (((distance - 0) / (20000 - 0)) * (20 - 1) + 1); //Scale the flag based on the distance range of 0 to 20000, to range 1 to 20.
 
 				realModelScale *= distancescale;
-				Com_Printf("Distancescale is %.2f\n", realModelScale);
+				//Com_Printf("Distancescale is %.2f\n", realModelScale);
 
 				ent.modelScale[0] = realModelScale;
 				ent.modelScale[1] = realModelScale;
