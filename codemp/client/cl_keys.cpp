@@ -483,7 +483,7 @@ void Field_Draw( field_t *edit, int x, int y, qboolean showCursor, qboolean noCo
 	Field_VariableSizeDraw( edit, x, y, con.charWidth, showCursor, noColorEscape );
 }
 
-void Field_BigDraw( field_t *edit, int x, int y, int width, qboolean showCursor, qboolean noColorEscape )
+void Field_BigDraw( field_t *edit, int x, int y, qboolean showCursor, qboolean noColorEscape )
 {
 	Field_VariableSizeDraw( edit, x, y, width, showCursor, noColorEscape );
 }

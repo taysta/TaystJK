@@ -278,6 +278,8 @@ cvar_t	*cl_ratioFix;
 
 cvar_t	*r_patchStitching;
 
+cvar_t	*r_patchStitching;
+
 extern void	RB_SetGL2D (void);
 static void R_Splash()
 {

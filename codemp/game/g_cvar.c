@@ -77,6 +77,33 @@ static void CVU_Roll(void) {
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
 }
 
+static void UpdateLegacyFixesConfigstring( legacyFixes_t legacyFix, qboolean enabled ) {
+	char sLegacyFixes[32];
+	trap->GetConfigstring(CS_LEGACY_FIXES, sLegacyFixes, sizeof(sLegacyFixes));
+
+	uint32_t legacyFixes = strtoul(sLegacyFixes, NULL, 0);
+	if (enabled) {
+		legacyFixes |= (1 << legacyFix);
+	} else {
+		legacyFixes &= ~(1 << legacyFix);
+	}
+	trap->SetConfigstring(CS_LEGACY_FIXES, va("%" PRIu32, legacyFixes));
+}
+
+static void CVU_FixSaberMoveData(void) {
+	BG_FixSaberMoveData();
+	UpdateLegacyFixesConfigstring(LEGACYFIX_SABERMOVEDATA, g_fixSaberMoveData.integer);
+}
+
+static void CVU_FixRunWalkAnims(void) {
+	UpdateLegacyFixesConfigstring(LEGACYFIX_RUNWALKANIMS, g_fixRunWalkAnims.integer);
+}
+
+static void CVU_FixWeaponAttackAnim(void) {
+	BG_FixWeaponAttackAnim();
+	UpdateLegacyFixesConfigstring(LEGACYFIX_WEAPONATTACKANIM, g_fixWeaponAttackAnim.integer);
+}
+
 /*
 static void CVU_YDFA(void) {
 	g_tweakYellowDFA.integer ?
@@ -151,7 +178,6 @@ static void CVU_SpinRDFA(void) {
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
 }
 */
-
 static void CVU_TweakJetpack(void) {
 	g_tweakJetpack.integer ?
 		(jcinfo.integer |= JAPRO_CINFO_JETPACK) : (jcinfo.integer &= ~JAPRO_CINFO_JETPACK);

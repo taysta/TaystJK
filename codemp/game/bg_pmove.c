@@ -6944,7 +6944,7 @@ static qboolean BG_AreRunWalkAnimsFixed(void) {
 #elif defined(_CGAME)
 	const char *cs = CG_ConfigString(CS_LEGACY_FIXES);
 	const uint32_t legacyFixes = strtoul(cs, NULL, 0);
-	return (legacyFixes & (1 << LEGACYFIX_RUNWALKANIMS)) != 0;
+	return !!(legacyFixes & (1 << LEGACYFIX_RUNWALKANIMS));
 #endif
 }
 
