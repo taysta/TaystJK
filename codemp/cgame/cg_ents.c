@@ -2403,16 +2403,65 @@ Ghoul2 Insert End
 		trap->R_AddRefEntityToScene( &ent );
 	}
 	else
-	{	// add to refresh list  -- normal item
+	{    // add to refresh list  -- normal item
 		if (item->giType == IT_TEAM &&
 			(item->giTag == PW_REDFLAG || item->giTag == PW_BLUEFLAG || item->giTag == PW_NEUTRALFLAG))
 		{
-			ent.modelScale[0] = 0.7f;
-			ent.modelScale[1] = 0.7f;
-			ent.modelScale[2] = 0.7f;
+			float realModelScale = 1.0f;
+			ent.modelScale[0] = realModelScale * 0.7f;
+			ent.modelScale[1] = realModelScale * 0.7f;
+			ent.modelScale[2] = realModelScale * 0.7f;
 			ScaleModelAxis(&ent);
+
+			trap->R_AddRefEntityToScene(&ent);
+
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+				//Com_Printf("Pre settings %i [%2.f %.2f %.2f %.2f] %i\n", ent.renderfx, ent.shaderRGBA[0], ent.shaderRGBA[1], ent.shaderRGBA[2], ent.shaderRGBA[3], ent.customShader);
+				//ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
+				float distance = Distance(ent.origin, cg.predictedPlayerState.origin);
+
+				float distancescale = (((distance - 0) / (20000 - 0)) * (20 - 1) + 1); //Scale the flag based on the distance range of 0 to 20000, to range 1 to 20.
+
+				realModelScale *= distancescale;
+				Com_Printf("Distancescale is %.2f\n", realModelScale);
+
+				ent.modelScale[0] = realModelScale;
+				ent.modelScale[1] = realModelScale;
+				ent.modelScale[2] = realModelScale;
+				ScaleModelAxis(&ent);
+
+				ent.renderfx |= RF_RGB_TINT;
+				if (item->giTag == PW_REDFLAG) {
+					ent.shaderRGBA[0] = 255;
+					ent.shaderRGBA[1] = 0;
+					ent.shaderRGBA[2] = 0;
+				}
+				else if (item->giTag == PW_BLUEFLAG) {
+					ent.shaderRGBA[0] = 0;
+					ent.shaderRGBA[1] = 0;
+					ent.shaderRGBA[2] = 255;
+				}
+				else if (item->giTag == PW_NEUTRALFLAG) {
+					ent.shaderRGBA[0] = 255;
+					ent.shaderRGBA[1] = 255;
+					ent.shaderRGBA[2] = 255;
+				}
+				ent.shaderRGBA[3] = 255;
+				ent.customShader = cgs.media.protectShader; //Custom shader for flags with cel shader outline (thick/bright border?)
+				ent.renderfx |= RF_DEPTHHACK;
+
+				trap->R_AddRefEntityToScene(&ent);
+
+
+				//en`t.renderfx &= ~RF_RGB_TINT;
+				//ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
+				//ent.renderfx |= RF_NODEPTH;
+				//ent.customShader = cgs.media.protectShader;
+
+				//ent.renderfx &= ~RF_NODEPTH;
+				//ent.renderfx &= ~RF_NODEPTH;
+			}
 		}
-		trap->R_AddRefEntityToScene(&ent);
 	}
 
 	//rww - As far as I can see, this is useless.
