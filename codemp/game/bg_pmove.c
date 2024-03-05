@@ -1307,14 +1307,6 @@ static void PM_Friction( void ) {
 	}
 #endif
 
-	//MV_tRIBES air drag
-#if 0
-	if (pm->ps->pm_type != PM_SPECTATOR && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
-		if (speed > pm->ps->speed * 1.44f)
-			drop = speed*g_flagDrag.value*0.1*pml.frametime;
-	}
-#endif
-
 	// scale the velocity
 	newspeed = speed - drop;
 	if (newspeed < 0) {
@@ -1431,105 +1423,6 @@ void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
 		return;
 
 	accelspeed = accel * wishspeed * pml.frametime * pm_tribes_groundfriction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
-
-	if (accelspeed > addspeed) // Cap it
-		accelspeed = addspeed;
-
-	for (i = 0; i<3; i++)// Adjust pmove vel.
-		pm->ps->velocity[i] += accelspeed*wishdir[i];
-}
-
-void PM_AirAccelerateTribes(vec3_t wishdir, float wishspeed)
-{
-	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed, friction = 1.9f, accel = 0.25f; //.2
-	// friction = 1.65f, accel = 0.32f;
-
-	if (pm->ps->pm_type == PM_DEAD)
-		return;
-	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
-		return;
-
-	//if (wishspd > 300)
-		//wishspd = 300;
-
-	//Scale friction by falling speed?
-	//fabs(pm->ps->velocity[2])
-	/*
-	if (pm->ps->velocity[2] < -800) {
-		Com_Printf("zSpeed Modifier %.2f\n", pm->ps->velocity[2] / 800.0f);
-		friction *= pm->ps->velocity[2] / 800.0f;
-	}
-	*/
-
-	currentspeed = DotProduct(pm->ps->velocity, wishdir);
-	addspeed = wishspd - currentspeed;// See how much to add
-	if (addspeed <= 0)// If not adding any, done.
-		return;
-
-	accelspeed = accel * wishspeed * pml.frametime * friction;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
-
-	if (accelspeed > addspeed) // Cap it
-		accelspeed = addspeed;
-
-	//for (i = 0; i<3; i++)// Adjust pmove vel.
-
-
-	if (0)
-	{
-
-		vec3_t tmpVel, oldVel;
-		float oldSpeed, newSpeed;
-		VectorCopy(pm->ps->velocity, tmpVel);
-		oldVel[2] = 0;
-		VectorCopy(tmpVel, oldVel);
-
-		tmpVel[0] += accelspeed*wishdir[0];
-		tmpVel[1] += accelspeed*wishdir[1];
-
-		oldSpeed = oldVel[0] * oldVel[0] + oldVel[1] * oldVel[1];
-		newSpeed = tmpVel[0] * tmpVel[0] + tmpVel[1] * tmpVel[1];
-
-		if (newSpeed > oldSpeed) {
-			//Com_Printf("Cutting by %.2f\n", (oldSpeed / newSpeed));   //why does this fuck up jetpack speed? we need to isolate the scaling to speed just created by this not jetpack
-			//VectorScale(tmpVel, (oldSpeed / newSpeed), tmpVel);
-		}
-
-		tmpVel[2] = pm->ps->velocity[2];
-		VectorCopy(tmpVel, pm->ps->velocity);
-
-		pm->ps->velocity[2] += accelspeed*wishdir[2];
-	}
-	else {
-		for (i = 0; i < 3; i++)// Adjust pmove vel.
-			pm->ps->velocity[i] += accelspeed*wishdir[i];
-	}
-
-
-
-
-
-}
-
-void PM_GroundAccelerateTribes(vec3_t wishdir, float wishspeed, float accel)
-{
-	int		i;
-	float	addspeed, accelspeed, currentspeed, wishspd = wishspeed;
-
-	if (pm->ps->pm_type == PM_DEAD)
-		return;
-	if (pm->ps->pm_flags & PMF_TIME_WATERJUMP)
-		return;
-
-	if (wishspd > 30)
-		wishspd = 30;
-
-	currentspeed = DotProduct(pm->ps->velocity, wishdir);
-	addspeed = wishspd - currentspeed;// See how much to add
-	if (addspeed <= 0)// If not adding any, done.
-		return;
-
-	accelspeed = accel * wishspeed * pml.frametime * 0.5f;// QUAKECLASSIC: accelspeed = accel * wishspeed * pmove->frametime * pmove->friction;
 
 	if (accelspeed > addspeed) // Cap it
 		accelspeed = addspeed;
@@ -4836,12 +4729,6 @@ static void PM_WalkMove( void ) {
 	}
 	else if (moveStyle == MV_SURF) {
 		realaccelerate = pm_surf_accelerate;
-	}
-	else if (moveStyle == MV_TRIBES && (pm->cmd.buttons & BUTTON_DASH)) {
-		realaccelerate = 2.5f;
-	}
-	else if (moveStyle == MV_SURF) {
-		realaccelerate = 12.0f;
 	}
 
 	PM_Friction ();

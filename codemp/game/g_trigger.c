@@ -1855,9 +1855,6 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 	if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
 		int i, val;
 
-	if (trigger->objective > 0) {  //Bitvalue of the checkpoint Todo, need to print times
-		int i, val;
-
 		if (trigger->spawnflags & 4) { //Spawnflags 4 on checkpoint unsets the objective #
 			player->client->pers.stats.checkpoints &= ~trigger->objective;
 			return; //Todo, notify the client or?
@@ -2105,89 +2102,6 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 		if (player->NPC == NULL)
 			return;
 	}
-
-	if (trigger->genericValue1 && !(trigger->genericValue1 & (1 << player->client->sess.movementStyle))) {
-		return;
-	}
-
-	if (player->client->sess.raceMode) {
-		if (trigger->spawnflags & 32 && player->client->ps.groundEntityNum == ENTITYNUM_NONE) { //Spawnflags 4 deadstops them if they are traveling in this direction... sad hack to let people retroactively fix maps without barriers
-			if (trigger->speed == 0 && player->client->ps.velocity[0] > player->client->ps.speed + 20) {
-				player->client->ps.velocity[0] = player->client->ps.speed + 20;
-			}
-			else if (trigger->speed == 90 && player->client->ps.velocity[1] > player->client->ps.speed + 20) {
-				player->client->ps.velocity[1] = player->client->ps.speed + 20;
-			}
-			else if (trigger->speed == 180 && player->client->ps.velocity[0] < -player->client->ps.speed - 20) {
-				player->client->ps.velocity[0] = -player->client->ps.speed - 20;
-			}
-			else if (trigger->speed == 270 && player->client->ps.velocity[1] < -player->client->ps.speed - 20) {
-				player->client->ps.velocity[1] = -player->client->ps.speed - 20;
-			}
-			else if (trigger->speed == -3) {
-				vec3_t xyspeed;
-				float hspeed, cut;
-
-				xyspeed[0] = player->client->ps.velocity[0];
-				xyspeed[1] = player->client->ps.velocity[1];
-				xyspeed[2] = 0;
-
-				hspeed = VectorLength(xyspeed);
-				if (hspeed > player->client->ps.speed) {
-					cut = player->client->ps.speed / hspeed;
-
-					player->client->ps.velocity[0] *= cut;
-					player->client->ps.velocity[1] *= cut;
-				}
-			}
-			return;
-		}
-		if ((trigger->spawnflags & 64) && (player->client->ps.velocity[0] || player->client->ps.velocity[1])) { //block dash redirects
-			player->client->ps.stats[STAT_WJTIME] = 500;
-			player->client->ps.stats[STAT_DASHTIME] = 500;
-		}
-		else if (trigger->spawnflags & 128) { //unblock dash redirects
-			player->client->ps.stats[STAT_WJTIME] = 0;
-			player->client->ps.stats[STAT_DASHTIME] = 0;
-		}
-	}
-
-	if (trigger->spawnflags & 512 && player->waterlevel) { //water current?
-		gentity_t	*hit = NULL;
-		float dist1 = 99999, dist2 = 99999, tempdist, ang1 = -1, ang2 = -1;
-
-		while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
-			if (hit != trigger) {
-				tempdist = Distance(player->client->ps.origin, hit->s.origin);
-				if (tempdist < dist1) {
-					ang1 = hit->s.angles[1];
-					dist1 = tempdist;
-				}
-				else if (tempdist < dist2) {
-					ang2 = hit->s.angles[1];
-					dist2 = tempdist;
-				}
-			}
-		}
-
-		if (ang1 != -1 && ang2 != -1) {
-			vec3_t pushangle = { 0 };
-			vec3_t pushdir;
-			float interpAngle;
-			float perc = dist1 / (dist1 + dist2);
-
-			interpAngle = LerpAngle(ang1, ang2, perc);
-			//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
-
-			pushangle[1] = interpAngle;
-			AngleVectors(pushangle, pushdir, NULL, NULL);
-			VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
-		}
-
-	}
-
-	if (player->client->lastBounceTime > level.time - 500)
-		return;
 
 	if (trigger->genericValue1 && !(trigger->genericValue1 & (1 << player->client->sess.movementStyle))) {
 		return;
@@ -2685,14 +2599,6 @@ void hurt_touch( gentity_t *self, gentity_t *other, trace_t *trace ) {
 	if ( self->flags & FL_INACTIVE )
 	{//set by target_deactivate
 		return;
-	}
-
-	if (self->spawnflags & 32)
-	{//NPCONLY
-		if (other->NPC == NULL)
-		{
-			return;
-		}
 	}
 
 	if (self->spawnflags & 32)

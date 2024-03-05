@@ -1235,9 +1235,6 @@ int Pickup_Team( gentity_t *ent, gentity_t *other ) {
 		else if ((level.gametype == GT_CTF) && g_neutralFlag.integer >= 4) {
 			return Team_TouchEnemyFlag(ent, other, team);
 		}
-		else if ((level.gametype == GT_CTF) && g_neutralFlag.integer >= 4) {
-			return Team_TouchEnemyFlag(ent, other, team);
-		}
 		else {
 			return Team_TouchOurFlag( ent, other, team );
 		}
