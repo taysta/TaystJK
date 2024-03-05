@@ -1269,7 +1269,7 @@ void ClientRespawn(gentity_t *ent) {
 	}
 
 	trap->UnlinkEntity((sharedEntity_t *)ent);
-	
+
 	if (level.gametype == GT_SIEGE)
 	{
 		if (g_siegeRespawn.integer)
@@ -2536,6 +2536,14 @@ qboolean ClientUserinfoChanged( int clientNum ) { //I think anything treated as 
 	if ( d_perPlayerGhoul2.integer&& Q_stricmp( model, client->modelname ) ) {
 		Q_strncpyz( client->modelname, model, sizeof( client->modelname ) );
 		modelChanged = qtrue;
+	}
+
+	//WT_TRIBES
+	if (g_tribesMode.integer && (!client->sess.raceMode || (level.gametype >= GT_TEAM && client->sess.sessionTeam > TEAM_FREE))) {
+		DetectTribesClass(ent, model);
+	}
+	else if (client->pers.tribesClass) {
+		client->pers.tribesClass = 0;
 	}
 
 	//WT_TRIBES

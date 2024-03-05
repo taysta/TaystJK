@@ -6007,6 +6007,9 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 			else if (self->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				debounce = 40;//Hardcoded regentime of 40ms for tribes jetpack
 			}
+			else if (self->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+				debounce = 40;//Hardcoded regentime of 40ms for tribes jetpack
+			}
 			else if (self->client->ps.stats[STAT_RACEMODE]) {
 				debounce = 25;//Hardcoded regentime of 25ms for racers.. idk.. 25 is lowest you can go without horribly broken cartwheel climb
 			}

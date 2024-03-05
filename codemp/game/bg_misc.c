@@ -2429,6 +2429,10 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 					(item->giTag == PW_NEUTRALFLAG && ent->modelindex2) ||
 					(item->giTag == PW_NEUTRALFLAG && ps->powerups[PW_NEUTRALFLAG]))
 					return qtrue;
+				if (item->giTag == PW_NEUTRALFLAG ||
+					(item->giTag == PW_NEUTRALFLAG && ent->modelindex2) ||
+					(item->giTag == PW_NEUTRALFLAG && ps->powerups[PW_NEUTRALFLAG]))
+					return qtrue;
 			} else if (ps && ps->persistant[PERS_TEAM] == TEAM_BLUE) {
 				if (item->giTag == PW_REDFLAG ||
 					(item->giTag == PW_BLUEFLAG && ent->modelindex2) ||

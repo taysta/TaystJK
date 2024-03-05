@@ -877,7 +877,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 			}
 			//Com_Printf("Touching enemy flag, it was %.0f away from our flag base.\n", points);
 			//Com_Printf("Enemy dist %.2f, My dist %.2f\n", enemyDist, myDist);
-			
+
 			percent = (enemyDist + myDist) ? (myDist / ((enemyDist + myDist)) * 100) : 1;
 			if (percent < 10) {
 				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base for ^30^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue"));
@@ -1231,6 +1231,9 @@ int Pickup_Team( gentity_t *ent, gentity_t *other ) {
 	if( team == cl->sess.sessionTeam) {
 		if ((level.gametype == GT_FFA || level.gametype == GT_TEAM) && g_neutralFlag.integer < 4) {
 			return Team_TouchEnemyFlag( ent, other, team );
+		}
+		else if ((level.gametype == GT_CTF) && g_neutralFlag.integer >= 4) {
+			return Team_TouchEnemyFlag(ent, other, team);
 		}
 		else if ((level.gametype == GT_CTF) && g_neutralFlag.integer >= 4) {
 			return Team_TouchEnemyFlag(ent, other, team);
