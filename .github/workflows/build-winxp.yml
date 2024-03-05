@@ -1,7 +1,10 @@
 name: build-winxp
 
+# runs every 4 months
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 1 */4 *"
   release:
     types: [published]
 

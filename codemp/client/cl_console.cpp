@@ -237,7 +237,6 @@ void Con_Copy(void) {
 			else
 				break;
 		}
-
 #ifdef _WIN32
 		Q_strcat(buffer, bufferlen, "\r\n");
 #else

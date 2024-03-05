@@ -81,8 +81,6 @@ cvar_t	*cl_exitCommand;
 
 cvar_t	*com_timestamps;
 
-cvar_t	*com_timestamps;
-
 // com_speeds times
 int		time_game;
 int		time_frontend;		// renderer frontend time
