@@ -880,9 +880,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 			
 			percent = (enemyDist + myDist) ? (myDist / ((enemyDist + myDist)) * 100) : 1;
 			if (percent < 10) {
-				percent = 10;
-				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f);
-				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base for ^3%i^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", points));
+				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base for ^30^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue"));
 			}
 			else {
 				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f);
@@ -1158,7 +1156,10 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 				points = 1;
 			if (speed > 2000)
 				points = 2;
-			trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 for ^3%i^5 points\n\"", team == 2 ? "^1red" : "^4blue", speed, points));
+			if (points == 1)
+				trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 ups for ^31^5 point\n\"", team == 2 ? "^1red" : "^4blue", speed));
+			else
+				trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 ups for ^3%i^5 points\n\"", team == 2 ? "^1red" : "^4blue", speed, points));
 		}
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
 	}

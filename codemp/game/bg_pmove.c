@@ -13601,6 +13601,16 @@ void PmoveSingle (pmove_t *pmove) {
 			//Probably need to do something here to give it 2 stages.  1: Low velocity accel boost which fades away as you start getting fast.
 			if (pm->ps->velocity[2] > 0 && pm->ps->velocity[2] < 250) {
 				float hackscale = 250.0f / pm->ps->velocity[2];
+
+				if (hackscale > 1.4f)
+					hackscale = 1.4f;
+				else if (hackscale < 1)
+					hackscale = 1;
+
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+
+#if 0
+				float hackscale = 250.0f / pm->ps->velocity[2];
 				float hackscale2 = (pm->ps->velocity[0]*pm->ps->velocity[0] + pm->ps->velocity[1]*pm->ps->velocity[1]) / (700 * 700);
 
 				if (hackscale2 < 1)
@@ -13614,26 +13624,24 @@ void PmoveSingle (pmove_t *pmove) {
 					hackscale = 1;
 
 				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+#endif
 			}
 			else if (pm->ps->velocity[2] < 0) {
 				//This is fucked.  Start at 1.25 and get higher based on Z speed.  Don't take XY into account..?
+				float hackscale = pm->ps->velocity[2] / -600;
 
-				if (1)
+
+				if (hackscale < 1.4f)
+					hackscale = 1.4f;
+
+				if (hackscale > 4.0f)
+					hackscale = 4.0f;
+
+				//Com_Printf("Hackscale z is %.2f\n", hackscale);
+
+				pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
+#if 0
 				{
-					float hackscale = pm->ps->velocity[2] / -600;
-
-
-					if (hackscale < 1.4f)
-						hackscale = 1.4f;
-
-					if (hackscale > 4.0f)
-						hackscale = 4.0f;
-
-					//Com_Printf("Hackscale z is %.2f\n", hackscale);
-
-					pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
-				}
-				else {
 
 					float hackscale = 1.25f;
 					float hackscale2 = (pm->ps->velocity[0] * pm->ps->velocity[0] + pm->ps->velocity[1] * pm->ps->velocity[1]) / (700 * 700);
@@ -13650,6 +13658,7 @@ void PmoveSingle (pmove_t *pmove) {
 
 					pm->ps->velocity[2] += 425.0f * pml.frametime * upScale * hackscale;//was 18 with no grav
 				}
+#endif
 			}
 			else if (pm->ps->velocity[2] > 800) {
 				float hackscale = 800.0f / pm->ps->velocity[2];

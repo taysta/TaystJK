@@ -271,7 +271,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 9;
+			ent->client->ps.jetpackFuel -= 7;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 	}
