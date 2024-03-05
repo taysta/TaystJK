@@ -9,7 +9,7 @@ Particle
 
 	size
 	{
-		start			26 30
+		start			13 15
 	}
 
 	shaders
@@ -29,7 +29,7 @@ Particle
 
 	size
 	{
-		start			32 36
+		start			16 18
 	}
 
 	shaders
@@ -48,11 +48,52 @@ Particle
 
 	size
 	{
-		start			8 18
+		start			4 9
 	}
 
 	shaders
 	[
 		gfx/effects/shock_ball
+	]
+}
+
+Particle
+{
+	count	80
+	life	700	900
+
+	// this is really NOT a good thing to be doing because it has the potential to choke up the scheduler
+	delay	0	1500
+
+	rotation	0	360
+
+	vel		25 0 0	30 0 0
+	accel		-5 -5 -5	5 5 5
+	gravity	50	120
+	flags		usealpha
+
+
+	rgb
+	{
+		start			0 1 0
+	}
+
+	size
+	{
+		start 	1.0	3.0
+		end	7.0	9.0
+		flags	linear
+	}
+
+	alpha
+	{
+		start	0.4	0.6
+		end 	0.0
+		flags	linear
+	}
+
+	shader
+	[
+		gfx/misc/black_smoke
 	]
 }
