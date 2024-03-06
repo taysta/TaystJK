@@ -273,13 +273,16 @@ static void CG_Obituary( entityState_t *ent ) {
 			//tayst
 			{
 				centity_t* deadGuy = &cg_entities[target];
-				if (deadGuy->currentState.groundEntityNum == ENTITYNUM_NONE && (mod == MOD_ROCKET || mod == MOD_CONC || mod == MOD_BOWCASTER || mod == MOD_REPEATER_ALT)) { //middy
-					Com_Printf("Midair sound!\n");
-					trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_AUTO, cgs.media.fragSound);
-				}
-				else {
-					Com_Printf("Non Midair sound!\n");
-					trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_AUTO, cgs.media.fragSoundMidair);
+				if(cg_killSounds.integer) {
+					if (((cg_killSounds.integer > 1) && (deadGuy->currentState.groundEntityNum == ENTITYNUM_NONE)) &&
+						(mod == MOD_ROCKET || mod == MOD_CONC || mod == MOD_BOWCASTER || mod == MOD_REPEATER_ALT ||
+						 mod == MOD_SABER)) { //middy
+						//Com_Printf("Midair sound!\n");
+						trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSoundMidair);
+					} else {
+						//Com_Printf("Non Midair sound!\n");
+						trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSound);
+					}
 				}
 			}
 			//tayst

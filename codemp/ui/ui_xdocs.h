@@ -368,6 +368,12 @@ XDOCS_CVAR_DEF("cg_hitSounds", "Play a sound when you hit someone",
 	SETTING("4", "Play the hit sound from Tribes: Ascend")
 )
 
+XDOCS_CVAR_DEF("cg_killSounds", "Play a sound when you kill someone",
+	SETTING("0", "Don't play the kill sound (Base behavior)") NL
+	SETTING("1", "Play the kill sound" ) NL
+	SETTING("2", "Play the kill sound + midair kill sound" )
+)
+
 XDOCS_CVAR_DEF("cg_raceSounds", "Play sound when race is started",
 	SETTING("0", "Don't play race sound") NL
 	SETTING("1", "Play race sounds")
