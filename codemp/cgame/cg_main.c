@@ -867,8 +867,8 @@ static void CG_RegisterSounds( void ) {
 
 	cgs.media.landSound = trap->S_RegisterSound( "sound/player/land1.wav");
 	cgs.media.landSoundSki = trap->S_RegisterSound( "sound/player/ski_soft.wav");
-	cgs.media.fragSound = trap->S_RegisterSound( "sound/frag/frag.mp3");
-	cgs.media.fragSoundMidair = trap->S_RegisterSound( "sound/frag/middy.mp3");
+	cgs.media.fragSound = trap->S_RegisterSound( "sound/frag/frag.wav");
+	cgs.media.fragSoundMidair = trap->S_RegisterSound( "sound/frag/middy.wav");
 
 	cgs.media.fallSound = trap->S_RegisterSound( "sound/player/fallsplat.wav");
 

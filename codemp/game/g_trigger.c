@@ -2086,6 +2086,17 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 	}
 }
 
+void FreePersonalSpeaker(gentity_t *speaker) {
+	gentity_t *player = NULL;
+
+	player = &g_entities[speaker->r.singleClient];
+
+	if (player && player->speakerEntity)
+		player->speakerEntity = 0;
+
+	G_FreeEntity(speaker);
+}
+
 void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	float scale;
 
@@ -2149,38 +2160,80 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 		}
 	}
 
-	if (trigger->spawnflags & 512 && player->waterlevel) { //water current?
-		gentity_t	*hit = NULL;
-		float dist1 = 99999, dist2 = 99999, tempdist, ang1 = -1, ang2 = -1;
+	if (trigger->spawnflags & 512) {
+			gentity_t	*hit = NULL;
+			gentity_t *speaker = NULL;
+			float dist1 = 99999, dist2 = 99999, tempdist, ang1 = -1, ang2 = -1;
+			vec3_t pos1, pos2;
 
-		while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
-			if (hit != trigger) {
-				tempdist = Distance(player->client->ps.origin, hit->s.origin);
-				if (tempdist < dist1) {
-					ang1 = hit->s.angles[1];
-					dist1 = tempdist;
-				}
-				else if (tempdist < dist2) {
-					ang2 = hit->s.angles[1];
-					dist2 = tempdist;
+			while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
+				if (hit != trigger) {
+					tempdist = Distance(player->client->ps.origin, hit->s.origin);
+					if (tempdist < dist1) {
+						ang1 = hit->s.angles[1];
+						dist1 = tempdist;
+						VectorCopy(hit->s.origin, pos1);
+					}
+					else if (tempdist < dist2) {
+						ang2 = hit->s.angles[1];
+						dist2 = tempdist;
+						VectorCopy(hit->s.origin, pos2);
+					}
 				}
 			}
-		}
 
-		if (ang1 != -1 && ang2 != -1) {
-			vec3_t pushangle = { 0 };
-			vec3_t pushdir;
-			float interpAngle;
-			float perc = dist1 / (dist1 + dist2);
+			if (!player->speakerEntity) {
+				speaker = G_Spawn(qfalse); //Ok... dont keep spawning them every frame. Spawn one if needed and then a use field on the client to keep track of their 'speaker' and move it around with the? Deleting after 30s to get re-spawned if needed.
+				player->speakerEntity = speaker->s.number;
+				trap->LinkEntity((sharedEntity_t *)speaker);
+				//Com_Printf("Creating speaker\n");
+			}
+			else {
+				speaker = &g_entities[player->speakerEntity];
+			}
+			if (speaker) {
+				vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
+				vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
+				float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
+				float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
+				float t = dotProduct / magnitudeSquared;
 
-			interpAngle = LerpAngle(ang1, ang2, perc);
-			//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
+				// coordinates of the closest point D on AB
+				speaker->s.origin[0] = pos1[0] + t * AB[0];
+				speaker->s.origin[1] = pos1[1] + t * AB[1];
+				speaker->s.origin[2] = pos1[2] + t * AB[2];
+				VectorCopy(speaker->s.origin, speaker->s.pos.trBase);
 
-			pushangle[1] = interpAngle;
-			AngleVectors(pushangle, pushdir, NULL, NULL);
-			VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
-		}
+				//Com_Printf("Closest point is %.0f %.0f %.0f\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2]);
 
+				//Com_Printf("Playing sound\n");
+				speaker->classname = "target_speaker";
+				speaker->s.loopSound = trigger->noise_index;	// start it
+				speaker->s.loopIsSoundset = qfalse;
+				speaker->s.trickedentindex = 0;
+				speaker->r.svFlags |= SVF_SINGLECLIENT;
+				speaker->r.singleClient = player->s.number;
+
+				//remove itself after 30s, it will then re-spawn if needed
+				speaker->think = FreePersonalSpeaker;
+				speaker->nextthink = level.time + 30000;
+			}
+
+			
+
+			if (player->waterlevel && ang1 != -1 && ang2 != -1) {
+				vec3_t pushangle = { 0 };
+				vec3_t pushdir;
+				float interpAngle;
+				float perc = dist1 / (dist1 + dist2);
+
+				interpAngle = LerpAngle(ang1, ang2, perc);
+				//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
+
+				pushangle[1] = interpAngle;
+				AngleVectors(pushangle, pushdir, NULL, NULL);
+				VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
+			}
 	}
 
 	if (player->client->lastBounceTime > level.time - 500)
@@ -2189,7 +2242,7 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 	scale = trigger->speed ? trigger->speed : 2.0f; //Check for bounds? scale can be negative, that means "bounce".
 	player->client->lastBounceTime = level.time;
 
-	if (trigger->noise_index) 
+	if (trigger->noise_index && !(trigger->spawnflags & 512))
 		G_Sound(player, CHAN_AUTO, trigger->noise_index);
 
 	if (trigger->spawnflags & 1) {

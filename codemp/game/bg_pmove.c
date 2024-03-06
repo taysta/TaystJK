@@ -398,6 +398,8 @@ qboolean BG_CanJetpack(playerState_t *ps)
 		return qfalse;
 	if (BG_InKnockDown(ps->legsAnim))
 		return qfalse;
+	if (pm->waterlevel > 1)
+		return qfalse;
 	//if (ps->stats[STAT_JUMPTIME] > 0) //revert until bot jetpack behaviour is fixed
 		//return qfalse;
 	return qtrue;
@@ -3589,6 +3591,9 @@ static void PM_WaterMove( void ) {
 	if ( wishspeed > pm->ps->speed * pm_swimScale ) {
 		wishspeed = pm->ps->speed * pm_swimScale;
 	}
+
+	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+		wishspeed *= 2;
 
 	PM_Accelerate (wishdir, wishspeed, pm_wateraccelerate);
 

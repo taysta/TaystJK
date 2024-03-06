@@ -6871,7 +6871,7 @@ int NewBotAI_GetTribesWeapon(bot_state_t *bs)
 		if (BotWeaponSelectableAltFire(bs, WP_THERMAL) && (bs->currentEnemy->client->ps.powerups[PW_REDFLAG] || bs->currentEnemy->client->ps.powerups[PW_BLUEFLAG] || bs->currentEnemy->client->ps.powerups[PW_NEUTRALFLAG])) {
 			bestWeapon = WP_THERMAL;
 		}
-		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && (bs->cur_ps.weapon == WP_BLASTER != bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10)) {
+		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10)) {
 			bestWeapon = WP_BLASTER;
 			bs->doAltAttack = 1;
 		}

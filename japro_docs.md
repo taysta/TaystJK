@@ -452,6 +452,7 @@
 	cg_jumpSounds	0//same as rollsounds but for jump.
 	cg_chatSounds	1
 	cg_hitsounds	0//0-4	
+	cg_killsounds	0//0-2	
    	cg_duelMusic	1	
 
 #### Game Visuals 

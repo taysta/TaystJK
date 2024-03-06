@@ -955,7 +955,7 @@ void G_AddToDBFromFile(void) { //loda fixme, we can filter out the slower times 
 }
 #endif
 
-gentity_t *G_SoundTempEntity( vec3_t origin, int event, int channel );
+//ntity_t *G_SoundTempEntity( vec3_t origin, int event, int channel );
 #if 0
 void PlayActualGlobalSound2(char * sound) { //loda fixme, just go through each client and play it on them..?
 	gentity_t	*te;
