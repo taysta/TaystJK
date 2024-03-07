@@ -2194,6 +2194,7 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			if (speaker) {
 				vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
 				vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
+				vec3_t diff;
 				float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
 				float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
 				float t = dotProduct / magnitudeSquared;
@@ -2202,6 +2203,12 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				speaker->s.origin[0] = pos1[0] + t * AB[0];
 				speaker->s.origin[1] = pos1[1] + t * AB[1];
 				speaker->s.origin[2] = pos1[2] + t * AB[2];
+
+				//sad hack, but move the speaker so its scaled closer to us to effectively give the sound a larger range.
+				VectorSubtract(player->client->ps.origin, speaker->s.origin, diff);
+				VectorScale(diff, 0.7f, diff);
+				VectorAdd(speaker->s.origin, diff, speaker->s.origin);
+
 				VectorCopy(speaker->s.origin, speaker->s.pos.trBase);
 
 				//Com_Printf("Closest point is %.0f %.0f %.0f\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2]);
