@@ -2219,6 +2219,13 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				speaker->nextthink = level.time + 30000;
 			}
 
+			//How do I do this 3 more times.  Really just speakerentity1,2,3 and repeat it all? has to be a better way.  Do i even need to now that im moving the speaker closer to myself?
+
+			//Todo.  Spawn 3 speakers.  One at midpoint (currently done) and one at each endpoint ? Or One a set disatnce away on either side of midpoint? To give it feeling of not coming from a single point but from the whole river.
+			//Todo, find out how to make them louder or less falloff or more radius
+			//Ok, I have to also adjust the origin of the speaker to not be the center of the river (a point between A and B) but rather a point between me and the river to accomodate how quiet/little range these speakers have.  That way i can get the illusion of a loud river whos sound carries a long way.  Idk the math for this.
+			//Find actual spots.  Find distance from player to actual spots.  Compare that dist to "loudness" of river (i guess we can assume a value now but make it configurable later).  Diff the vector between player and the sound spot.  Add a scaled (based on inverse distance?) diff of that to the sound spot bringing it closer to player.
+
 			
 
 			if (player->waterlevel && ang1 != -1 && ang2 != -1) {
