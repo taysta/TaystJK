@@ -70,8 +70,9 @@ if(UseInternalLibs OR WIN32)
 endif()
 
 if(APPLE)
-  set(UseInternalJPEGDefault ON)
-  set(UseInternalPNGDefault ON)
+  set(UseInternalJPEGDefault 	ON)
+  set(UseInternalPNGDefault 	ON)
+  set(UseInternalZlibDefault   	ON)
 endif()
 
 option(UseInternalOpenAL "If set, use bundled OpenAL."  ${UseInternalOpenALDefault})
@@ -414,7 +415,7 @@ set(SharedCommonSafeFiles
 #
 #=============================================================================
 if(UseInternalJPEG)
-  add_subdirectory(lib/jpeg-9a)
+  add_subdirectory(lib/jpeg-9c)
 else()
   find_package(JPEG REQUIRED)
 endif()
