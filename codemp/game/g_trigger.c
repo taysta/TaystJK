@@ -2163,22 +2163,26 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 	if (trigger->spawnflags & 512) {
 			gentity_t	*hit = NULL;
 			gentity_t *speaker = NULL;
-			float dist1 = 99999, dist2 = 99999, tempdist, ang1 = -1, ang2 = -1;
+			float dist1 = 99999, tempdist, ang1 = -1, ang2 = -1, dist2 = 99999;
 			vec3_t pos1, pos2;
+			int sequence = 0;
 
 			while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
 				if (hit != trigger) {
-					tempdist = Distance(player->client->ps.origin, hit->s.origin);
+					tempdist = Distance(player->client->ps.origin, hit->s.origin); //Todo, see if we can distancesquared instead, but then the perc will be wrong later
 					if (tempdist < dist1) {
 						ang1 = hit->s.angles[1];
 						dist1 = tempdist;
+						sequence = hit->count;
 						VectorCopy(hit->s.origin, pos1);
 					}
+					/*
 					else if (tempdist < dist2) {
 						ang2 = hit->s.angles[1];
 						dist2 = tempdist;
 						VectorCopy(hit->s.origin, pos2);
 					}
+					*/
 				}
 			}
 
@@ -2190,21 +2194,97 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			}
 			else {
 				speaker = &g_entities[player->speakerEntity];
+				//Com_Printf("Using existing speaker\n");
+				//trap->LinkEntity((sharedEntity_t *)speaker);
 			}
 			if (speaker) {
-				vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
-				vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
-				float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
-				float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
-				float t = dotProduct / magnitudeSquared;
 
-				// coordinates of the closest point D on AB
-				speaker->s.origin[0] = pos1[0] + t * AB[0];
-				speaker->s.origin[1] = pos1[1] + t * AB[1];
-				speaker->s.origin[2] = pos1[2] + t * AB[2];
+				/*if (pm->waterlevel) {//we are in the water, make the speaker on us i guess..otherwise there are some transition issues when right next to the points.  FIXME?
+					VectorCopy(player->client->ps.origin, speaker->s.origin);
+				}
+				else*/ {
+
+					vec3_t prevLoc;
+					vec3_t nextLoc;
+					float ang2tempa, ang2tempb, tempdist2a, tempdist2b;
+					float updateDistance;
+
+					//Com_Printf("Searching for speaker adjacent to %i", sequence);
+					while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
+						if (hit->count == sequence - 1) {
+							//Com_Printf("Found prev\n");
+							VectorCopy(hit->s.origin, prevLoc);
+							ang2tempa = hit->s.angles[1];
+						}
+						else if (hit->count == sequence + 1) {
+							//Com_Printf("Found next\n");
+							VectorCopy(hit->s.origin, nextLoc);
+							ang2tempb = hit->s.angles[1];
+						}
+					}
+
+					tempdist2a = Distance(prevLoc, player->client->ps.origin);
+					tempdist2b = Distance(prevLoc, player->client->ps.origin);
+					if (tempdist2a < tempdist) { //check dist to us? or the other one?
+						//N+1 is closer than n-1, use it
+						VectorCopy(nextLoc, pos2);
+						ang2 = ang2tempa;
+						dist2 = tempdist2a;
+					}
+					else {
+						VectorCopy(prevLoc, pos2);
+						ang2 = ang2tempb;
+						dist2 = tempdist2b;
+					}
+
+
+					//Com_Printf("Prev loc is %.0f %.0f %.0f  and Next Loc is %.2f %.2f %.2f\n", prevLoc[0], prevLoc[1], prevLoc[2], nextLoc[0], nextLoc[1], nextLoc[2]);
+					vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
+					vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
+					vec3_t diff;
+					float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
+					float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
+					float t = dotProduct / magnitudeSquared;
+
+					// coordinates of the closest point D on AB
+					speaker->s.origin[0] = pos1[0] + t * AB[0];
+					speaker->s.origin[1] = pos1[1] + t * AB[1];
+					speaker->s.origin[2] = pos1[2] + t * AB[2];
+
+
+					//sad hack, but move the speaker so its scaled closer to us to effectively give the sound a larger range.
+					VectorSubtract(player->client->ps.origin, speaker->s.origin, diff);
+					VectorScale(diff, 0.7f, diff);
+					VectorAdd(speaker->s.origin, diff, speaker->s.origin);
+
+
+					updateDistance = Distance(speaker->s.origin, speaker->s.pos.trBase);
+					if (updateDistance > 8 && speaker->nextthink) { //Too abrupt of a change, smooth it, also dont do this for brand new speakers?
+						vec3_t updateDiff;
+						float updateScaler = updateDistance / 8;
+						//Com_Printf("Too big a change %.2f [%.2f x to  %.2f x]\n", updateDistance, speaker->s.origin[0], speaker->s.pos.trBase[0]);
+						VectorSubtract(speaker->s.origin, speaker->s.pos.trBase, updateDiff); //Get diff vector between current and last pos.
+
+						if (updateDistance < 256)
+							VectorScale(updateDiff, 1 / updateScaler, updateDiff); //Scale update diff down.
+						else  if (updateDistance < 512)
+							VectorScale(updateDiff, 4 / updateScaler, updateDiff); //Scale update diff down.
+						else  if (updateDistance < 1024)
+							VectorScale(updateDiff, 8 / updateScaler, updateDiff); //Scale update diff down.
+						else  if (updateDistance < 2048)
+							VectorScale(updateDiff, 16 / updateScaler, updateDiff); //Scale update diff down.
+						else  if (updateDistance < 4096)
+							VectorScale(updateDiff, 32 / updateScaler, updateDiff); //Scale update diff down.
+						//need to make this an actual formula so you can't "outrun" the smoothing
+
+						VectorAdd(speaker->s.pos.trBase, updateDiff, speaker->s.origin); //Add diff to original origin
+					}
+
+				}
+
 				VectorCopy(speaker->s.origin, speaker->s.pos.trBase);
 
-				//Com_Printf("Closest point is %.0f %.0f %.0f\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2]);
+				//Com_Printf("Speaker point point is %.0f %.0f %.0f noise is %i\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2], trigger->noise_index);
 
 				//Com_Printf("Playing sound\n");
 				speaker->classname = "target_speaker";
@@ -2219,6 +2299,13 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				speaker->nextthink = level.time + 30000;
 			}
 
+			//How do I do this 3 more times.  Really just speakerentity1,2,3 and repeat it all? has to be a better way.  Do i even need to now that im moving the speaker closer to myself?
+
+			//Todo.  Spawn 3 speakers.  One at midpoint (currently done) and one at each endpoint ? Or One a set disatnce away on either side of midpoint? To give it feeling of not coming from a single point but from the whole river.
+			//Todo, find out how to make them louder or less falloff or more radius
+			//Ok, I have to also adjust the origin of the speaker to not be the center of the river (a point between A and B) but rather a point between me and the river to accomodate how quiet/little range these speakers have.  That way i can get the illusion of a loud river whos sound carries a long way.  Idk the math for this.
+			//Find actual spots.  Find distance from player to actual spots.  Compare that dist to "loudness" of river (i guess we can assume a value now but make it configurable later).  Diff the vector between player and the sound spot.  Add a scaled (based on inverse distance?) diff of that to the sound spot bringing it closer to player.
+
 			
 
 			if (player->waterlevel && ang1 != -1 && ang2 != -1) {
@@ -2226,13 +2313,20 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				vec3_t pushdir;
 				float interpAngle;
 				float perc = dist1 / (dist1 + dist2);
+				float strength = trigger->speed;
 
 				interpAngle = LerpAngle(ang1, ang2, perc);
 				//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
 
 				pushangle[1] = interpAngle;
 				AngleVectors(pushangle, pushdir, NULL, NULL);
-				VectorMA(player->client->ps.velocity, trigger->speed * 0.021f, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
+				if (pm->waterlevel == 3)
+					strength *= 0.021;
+				else if (pm->waterlevel == 2)
+					strength *= 0.01;
+				else if (pm->waterlevel == 1)
+					strength *= 0.005;
+				VectorMA(player->client->ps.velocity, strength, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
 			}
 	}
 
