@@ -23,7 +23,7 @@
 
 #if (!defined(_WIN32)) && (!defined(WIN32)) && (!defined(__APPLE__))
 
-  // Linux needs this to support file operation on files larger then 4+GB
+// Linux needs this to support file operation on files larger then 4+GB
   // But might need better if/def to select just the platforms that needs them.
 
         #ifndef __USE_FILE_OFFSET64
@@ -56,7 +56,7 @@
 #define fseeko64 fseeko
 #endif
 #ifdef _MSC_VER
- #define fopen64 fopen
+#define fopen64 fopen
  #if (_MSC_VER >= 1400) && (!(defined(NO_MSCVER_FILE64_FUNC)))
   #define ftello64 _ftelli64
   #define fseeko64 _fseeki64
@@ -124,11 +124,11 @@ extern "C" {
 
 
 #ifndef ZCALLBACK
- #if (defined(WIN32) || defined(_WIN32) || defined (WINDOWS) || defined (_WINDOWS)) && defined(CALLBACK) && defined (USEWINDOWS_CALLBACK)
-   #define ZCALLBACK CALLBACK
- #else
-   #define ZCALLBACK
- #endif
+#if (defined(WIN32) || defined(_WIN32) || defined (WINDOWS) || defined (_WINDOWS)) && defined(CALLBACK) && defined (USEWINDOWS_CALLBACK)
+#define ZCALLBACK CALLBACK
+#else
+#define ZCALLBACK
+#endif
 #endif
 
 
@@ -144,7 +144,7 @@ typedef long     (ZCALLBACK *tell_file_func)      (voidpf opaque, voidpf stream)
 typedef long     (ZCALLBACK *seek_file_func)      (voidpf opaque, voidpf stream, uLong offset, int origin);
 
 
-/* here is the "old" 32 bits structure structure */
+/* here is the "old" 32 bits structure */
 typedef struct zlib_filefunc_def_s
 {
     open_file_func      zopen_file;

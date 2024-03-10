@@ -11,7 +11,7 @@
 */
 
 #if defined(_WIN32) && (!(defined(_CRT_SECURE_NO_WARNINGS)))
-        #define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #if defined(__APPLE__) || defined(IOAPI_NO_64) || defined(__HAIKU__) || defined(MINIZIP_FOPEN_NO_64)
@@ -151,16 +151,16 @@ static long ZCALLBACK fseek_file_func(voidpf opaque, voidpf stream, uLong offset
     (void)opaque;
     switch (origin)
     {
-    case ZLIB_FILEFUNC_SEEK_CUR :
-        fseek_origin = SEEK_CUR;
-        break;
-    case ZLIB_FILEFUNC_SEEK_END :
-        fseek_origin = SEEK_END;
-        break;
-    case ZLIB_FILEFUNC_SEEK_SET :
-        fseek_origin = SEEK_SET;
-        break;
-    default: return -1;
+        case ZLIB_FILEFUNC_SEEK_CUR :
+            fseek_origin = SEEK_CUR;
+            break;
+        case ZLIB_FILEFUNC_SEEK_END :
+            fseek_origin = SEEK_END;
+            break;
+        case ZLIB_FILEFUNC_SEEK_SET :
+            fseek_origin = SEEK_SET;
+            break;
+        default: return -1;
     }
     ret = 0;
     if (fseek((FILE *)stream, (long)offset, fseek_origin) != 0)
@@ -174,21 +174,21 @@ static long ZCALLBACK fseek64_file_func(voidpf opaque, voidpf stream, ZPOS64_T o
     (void)opaque;
     switch (origin)
     {
-    case ZLIB_FILEFUNC_SEEK_CUR :
-        fseek_origin = SEEK_CUR;
-        break;
-    case ZLIB_FILEFUNC_SEEK_END :
-        fseek_origin = SEEK_END;
-        break;
-    case ZLIB_FILEFUNC_SEEK_SET :
-        fseek_origin = SEEK_SET;
-        break;
-    default: return -1;
+        case ZLIB_FILEFUNC_SEEK_CUR :
+            fseek_origin = SEEK_CUR;
+            break;
+        case ZLIB_FILEFUNC_SEEK_END :
+            fseek_origin = SEEK_END;
+            break;
+        case ZLIB_FILEFUNC_SEEK_SET :
+            fseek_origin = SEEK_SET;
+            break;
+        default: return -1;
     }
     ret = 0;
 
     if(FSEEKO_FUNC((FILE *)stream, (z_off64_t)offset, fseek_origin) != 0)
-                        ret = -1;
+        ret = -1;
 
     return ret;
 }

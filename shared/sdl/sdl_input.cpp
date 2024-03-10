@@ -632,9 +632,6 @@ void IN_Init( void *windowData )
 	in_joystick = Cvar_Get( "in_joystick", "0", CVAR_ARCHIVE_ND|CVAR_LATCH );
 
 	// mouse variables
-#ifdef MACOS_X
-	in_mouse = Cvar_Set( "in_mouse", "2" ); //"Raw Input" does not work on mac
-#endif
 	in_mouse = Cvar_Get( "in_mouse", "1", CVAR_ARCHIVE );
 	in_nograb = Cvar_Get( "in_nograb", "0", CVAR_ARCHIVE_ND );
 	in_mouserepeat = Cvar_Get("in_mouserepeat", "0", CVAR_ARCHIVE);
