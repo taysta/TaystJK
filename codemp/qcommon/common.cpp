@@ -1506,6 +1506,7 @@ void Com_Init( char *commandLine ) {
 		SE_Init();
 
 		Sys_Init();
+		NET_HTTP_Init();
 
 		Sys_SetProcessorAffinity();
 
