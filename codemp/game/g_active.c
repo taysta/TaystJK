@@ -4346,6 +4346,9 @@ void ClientThink_real( gentity_t *ent ) {
 				else
 				{
 					client->ps.gravity = g_gravity.value;
+					if (ent->NPC && client->ps.eFlags2 & EF2_NOT_USED_1) { //props
+						client->ps.gravity *= 0.5f;
+					}
 					if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE]) {
 						if (client->ps.electrifyTime > level.time && client->sess.movementStyle == MV_COOP_JKA) {//grav gun
 							client->ps.gravity = 200;

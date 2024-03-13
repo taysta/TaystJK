@@ -4742,7 +4742,7 @@ void G_NewBotAIAimLeading(bot_state_t* bs, vec3_t headlevel) {
 			else {
 				vec3_t predictedSpotGrav;
 				trace_t tr;
-				float playerDrop = (0.5f) * g_gravity.integer * (eta * eta);
+				float playerDrop = (0.5f) * g_gravity.value * (eta * eta);
 
 				predictedSpotGrav[0] = predictedSpot[0];
 				predictedSpotGrav[1] = predictedSpot[1];

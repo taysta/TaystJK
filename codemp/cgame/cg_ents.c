@@ -2413,8 +2413,6 @@ Ghoul2 Insert End
 			ent.modelScale[2] = realModelScale * 0.7f;
 			ScaleModelAxis(&ent);
 
-			trap->R_AddRefEntityToScene(&ent);
-
 			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 				//Com_Printf("Pre settings %i [%2.f %.2f %.2f %.2f] %i\n", ent.renderfx, ent.shaderRGBA[0], ent.shaderRGBA[1], ent.shaderRGBA[2], ent.shaderRGBA[3], ent.customShader);
 				//ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
@@ -2450,9 +2448,6 @@ Ghoul2 Insert End
 				ent.customShader = cgs.media.protectShader; //Custom shader for flags with cel shader outline (thick/bright border?)
 				ent.renderfx |= RF_DEPTHHACK;
 
-				trap->R_AddRefEntityToScene(&ent);
-
-
 				//en`t.renderfx &= ~RF_RGB_TINT;
 				//ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
 				//ent.renderfx |= RF_NODEPTH;
@@ -2462,6 +2457,7 @@ Ghoul2 Insert End
 				//ent.renderfx &= ~RF_NODEPTH;
 			}
 		}
+		trap->R_AddRefEntityToScene(&ent);
 	}
 
 	//rww - As far as I can see, this is useless.

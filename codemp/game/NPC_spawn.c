@@ -1723,6 +1723,10 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 	}
 	newent->client->ps.persistant[PERS_TEAM] = newent->client->sess.sessionTeam;
 
+	if (newent->spawnflags & 16384) {
+		newent->client->ps.eFlags2 |= EF2_NOT_USED_1; //don't sink
+	}
+
 	trap->LinkEntity ((sharedEntity_t *)newent);
 
 	if(!ent->use)

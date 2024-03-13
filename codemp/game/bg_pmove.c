@@ -1242,12 +1242,17 @@ static void PM_Friction( void ) {
 	{
 		// apply ground friction
 		if ( pm->waterlevel <= 1 ) {
-			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_DASH)) && (moveStyle != MV_TRIBES || pm->ps->clientNum < MAX_CLIENTS || !(pm->cmd.buttons & BUTTON_WALKING))) ) { //Slick style here potentially
+			if (pml.walking && !(pml.groundTrace.surfaceFlags & SURF_SLICK) && ((moveStyle != MV_SLICK || (pm->cmd.buttons & BUTTON_WALKING)) && (moveStyle != MV_TRIBES || !(pm->cmd.buttons & BUTTON_DASH)) && (moveStyle != MV_TRIBES || pm->ps->clientNum < MAX_CLIENTS || (pm->ps->eFlags2 & EF2_NOT_USED_1 && !pm->waterlevel) || !(pm->cmd.buttons & BUTTON_WALKING))) ) { //Slick style here potentially
 				//do this unless its (slick and walking) or unless its (tribes and not walking)
-																																																					  // if getting knocked back, no friction
+										
+				// if getting knocked back, no friction
 				if ( ! (pm->ps->pm_flags & PMF_TIME_KNOCKBACK) ) { //GB?
 					control = speed < pm_stopspeed ? pm_stopspeed : speed;
 					drop += control*realfriction*pml.frametime;
+				}
+
+				if (moveStyle == MV_TRIBES && pm->ps->eFlags2 & EF2_NOT_USED_1 && !pm->waterlevel && pm->ps->clientNum >= MAX_CLIENTS) {//tribes props should have some friction here. speed based?
+					drop *= 0.1f;
 				}
 			}
 		}
@@ -3549,6 +3554,7 @@ static void PM_WaterMove( void ) {
 	vec3_t	wishdir;
 	float	scale;
 	float	vel;
+	float realspeed = pm->ps->speed;
 
 	if ( PM_CheckWaterJump() ) {
 		PM_WaterJumpMove();
@@ -3577,7 +3583,16 @@ static void PM_WaterMove( void ) {
 	if ( !scale ) {
 		wishvel[0] = 0;
 		wishvel[1] = 0;
-		wishvel[2] = -60;		// sink towards bottom
+		if (pm->ps->clientNum >= MAX_CLIENTS && pm->ps->eFlags2 & EF2_NOT_USED_1) { //don't sink)
+			realspeed = 100;
+			if (pm->waterlevel == 2)
+				wishvel[2] = 30;		// float towards top
+			else if (pm->waterlevel > 2)
+				wishvel[2] = 60;		// float towards top
+		}
+		else {
+			wishvel[2] = -60;		// sink towards bottom;
+		}
 	} else {
 		for (i=0 ; i<3 ; i++)
 			wishvel[i] = scale * pml.forward[i]*pm->cmd.forwardmove + scale * pml.right[i]*pm->cmd.rightmove;
@@ -3588,8 +3603,8 @@ static void PM_WaterMove( void ) {
 	VectorCopy (wishvel, wishdir);
 	wishspeed = VectorNormalize(wishdir);
 
-	if ( wishspeed > pm->ps->speed * pm_swimScale ) {
-		wishspeed = pm->ps->speed * pm_swimScale;
+	if ( wishspeed > realspeed * pm_swimScale ) {
+		wishspeed = realspeed * pm_swimScale;
 	}
 
 	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
@@ -5511,7 +5526,7 @@ static void PM_CrashLand(void) {
 	}
 
 	// make sure velocity resets so we don't bounce back up again in case we miss the clear elsewhere
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH))) {
 	}
 	else {
 		pm->ps->velocity[2] = 0;

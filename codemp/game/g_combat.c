@@ -4755,7 +4755,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	if (g_godChat.integer && level.gametype == GT_FFA && attacker && attacker->client && (attacker->client->ps.eFlags & EF_TALK))//Japro - dont allow people to chat and still do damage with godchat (should this be after the 3s period instead?)
 		return;
 
-	if ((level.gametype == GT_FFA) && !g_friendlyFire.value && g_neutralFlag.integer < 4) {
+	if ((level.gametype == GT_FFA) && !g_friendlyFire.value && (g_neutralFlag.integer && g_neutralFlag.integer < 4)) {
 		if (attacker && attacker->client && !attacker->client->ps.duelInProgress && !attacker->client->ps.powerups[PW_NEUTRALFLAG] && targ && targ->client && !targ->client->ps.duelInProgress && !targ->client->sess.raceMode && !targ->client->ps.powerups[PW_NEUTRALFLAG])
 			return;
 	}

@@ -11036,7 +11036,8 @@ void CG_Player( centity_t *cent ) {
 	//JAPRO TRIBES IFFS - START
 
 	cent->drawingIFF = qfalse;
-	if (cent->currentState.number != cg.snap->ps.clientNum && cent->currentState.NPC_class != CLASS_VEHICLE && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cent->currentState.eFlags & EF_DEAD) && (cent->currentState.bolt1 != 2)) {		float dist = Distance(cg.snap->ps.origin, cent->currentState.pos.trBase);
+	if (cent->currentState.number != cg.snap->ps.clientNum && cent->currentState.eType != ET_NPC && (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) && !(cent->currentState.eFlags & EF_DEAD) && (cent->currentState.bolt1 != 2)) {
+		float dist = Distance(cg.snap->ps.origin, cent->currentState.pos.trBase);
 		float size = 4 + (dist * 0.008f);
 		if (cg.snap->ps.persistant[PERS_TEAM] == team && cgs.gametype >= GT_TEAM) {//Friend
 			CG_TribesIFF(cent, cgs.media.teamBlueShader, size);

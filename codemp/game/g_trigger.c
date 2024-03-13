@@ -2097,6 +2097,7 @@ void FreePersonalSpeaker(gentity_t *speaker) {
 	G_FreeEntity(speaker);
 }
 
+qboolean NPC_UpdateAngles(qboolean doPitch, qboolean doYaw);
 void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	float scale;
 
@@ -2318,6 +2319,10 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				interpAngle = LerpAngle(ang1, ang2, perc);
 				//Com_Printf("Interp angle is %.2f because ang1 is %.1f and ang2 is %.2f\n", interpAngle, ang1, ang2);
 
+				if (player->s.eType == ET_NPC) {
+					strength *= 4.0f;
+				}
+
 				pushangle[1] = interpAngle;
 				AngleVectors(pushangle, pushdir, NULL, NULL);
 				if (pm->waterlevel == 3)
@@ -2327,6 +2332,12 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				else if (pm->waterlevel == 1)
 					strength *= 0.005;
 				VectorMA(player->client->ps.velocity, strength, pushdir, player->client->ps.velocity); //Todo, let target_position's determine speed instead of the trigger so we can have different speeds at different parts of river?
+
+				if (player->s.eType == ET_NPC) {
+					//This uses turnspeed
+					player->NPC->desiredYaw = vectoyaw(player->client->ps.velocity);
+					NPC_UpdateAngles(qfalse, qtrue);
+				}
 			}
 	}
 
