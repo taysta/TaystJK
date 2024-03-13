@@ -2097,7 +2097,7 @@ void FreePersonalSpeaker(gentity_t *speaker) {
 	G_FreeEntity(speaker);
 }
 
-float AngleDifference(float ang1, float ang2);
+qboolean NPC_UpdateAngles(qboolean doPitch, qboolean doYaw);
 void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	float scale;
 
