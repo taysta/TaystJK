@@ -2187,105 +2187,106 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				}
 			}
 
-			if (!player->speakerEntity) {
-				speaker = G_Spawn(qfalse); //Ok... dont keep spawning them every frame. Spawn one if needed and then a use field on the client to keep track of their 'speaker' and move it around with the? Deleting after 30s to get re-spawned if needed.
-				player->speakerEntity = speaker->s.number;
-				trap->LinkEntity((sharedEntity_t *)speaker);
-				//Com_Printf("Creating speaker\n");
-			}
-			else {
-				speaker = &g_entities[player->speakerEntity];
-				//Com_Printf("Using existing speaker\n");
-				//trap->LinkEntity((sharedEntity_t *)speaker);
-			}
-			if (speaker) {
-
-				/*if (pm->waterlevel) {//we are in the water, make the speaker on us i guess..otherwise there are some transition issues when right next to the points.  FIXME?
-					VectorCopy(player->client->ps.origin, speaker->s.origin);
+			if (player->s.number < MAX_CLIENTS) {
+				if (!player->speakerEntity) {
+					speaker = G_Spawn(qfalse); //Ok... dont keep spawning them every frame. Spawn one if needed and then a use field on the client to keep track of their 'speaker' and move it around with the? Deleting after 30s to get re-spawned if needed.
+					player->speakerEntity = speaker->s.number;
+					trap->LinkEntity((sharedEntity_t *)speaker);
+					//Com_Printf("Creating speaker\n");
 				}
-				else*/ {
-
-					vec3_t prevLoc;
-					vec3_t nextLoc;
-					float ang2tempa, ang2tempb, tempdist2a, tempdist2b;
-					float updateDistance;
-
-					//Com_Printf("Searching for speaker adjacent to %i", sequence);
-					while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
-						if (hit->count == sequence - 1) {
-							//Com_Printf("Found prev\n");
-							VectorCopy(hit->s.origin, prevLoc);
-							ang2tempa = hit->s.angles[1];
-						}
-						else if (hit->count == sequence + 1) {
-							//Com_Printf("Found next\n");
-							VectorCopy(hit->s.origin, nextLoc);
-							ang2tempb = hit->s.angles[1];
-						}
-					}
-
-					tempdist2a = Distance(prevLoc, player->client->ps.origin);
-					tempdist2b = Distance(prevLoc, player->client->ps.origin);
-					if (tempdist2a < tempdist) { //check dist to us? or the other one?
-						//N+1 is closer than n-1, use it
-						VectorCopy(nextLoc, pos2);
-						ang2 = ang2tempa;
-						dist2 = tempdist2a;
-					}
-					else {
-						VectorCopy(prevLoc, pos2);
-						ang2 = ang2tempb;
-						dist2 = tempdist2b;
-					}
-
-
-					//Com_Printf("Prev loc is %.0f %.0f %.0f  and Next Loc is %.2f %.2f %.2f\n", prevLoc[0], prevLoc[1], prevLoc[2], nextLoc[0], nextLoc[1], nextLoc[2]);
-					vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
-					vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
-					vec3_t diff;
-					float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
-					float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
-					float t = dotProduct / magnitudeSquared;
-
-					// coordinates of the closest point D on AB
-					speaker->s.origin[0] = pos1[0] + t * AB[0];
-					speaker->s.origin[1] = pos1[1] + t * AB[1];
-					speaker->s.origin[2] = pos1[2] + t * AB[2];
-
-
-					//sad hack, but move the speaker so its scaled closer to us to effectively give the sound a larger range.
-					VectorSubtract(player->client->ps.origin, speaker->s.origin, diff);
-					VectorScale(diff, 0.7f, diff);
-					VectorAdd(speaker->s.origin, diff, speaker->s.origin);
-
-
-					updateDistance = Distance(speaker->s.origin, speaker->s.pos.trBase);
-					if (updateDistance > 8 && speaker->nextthink) { //Too abrupt of a change, smooth it, also dont do this for brand new speakers?
-						vec3_t updateDiff;
-						float updateScaler = updateDistance / 8;
-						//Com_Printf("Too big a change %.2f [%.2f x to  %.2f x]\n", updateDistance, speaker->s.origin[0], speaker->s.pos.trBase[0]);
-						VectorSubtract(speaker->s.origin, speaker->s.pos.trBase, updateDiff); //Get diff vector between current and last pos.
-
-						if (updateDistance < 256)
-							VectorScale(updateDiff, 1 / updateScaler, updateDiff); //Scale update diff down.
-						else  if (updateDistance < 512)
-							VectorScale(updateDiff, 4 / updateScaler, updateDiff); //Scale update diff down.
-						else  if (updateDistance < 1024)
-							VectorScale(updateDiff, 8 / updateScaler, updateDiff); //Scale update diff down.
-						else  if (updateDistance < 2048)
-							VectorScale(updateDiff, 16 / updateScaler, updateDiff); //Scale update diff down.
-						else  if (updateDistance < 4096)
-							VectorScale(updateDiff, 32 / updateScaler, updateDiff); //Scale update diff down.
-						//need to make this an actual formula so you can't "outrun" the smoothing
-
-						VectorAdd(speaker->s.pos.trBase, updateDiff, speaker->s.origin); //Add diff to original origin
-					}
-
+				else {
+					speaker = &g_entities[player->speakerEntity];
+					//Com_Printf("Using existing speaker\n");
+					//trap->LinkEntity((sharedEntity_t *)speaker);
 				}
+				if (speaker) {
+
+					/*if (pm->waterlevel) {//we are in the water, make the speaker on us i guess..otherwise there are some transition issues when right next to the points.  FIXME?
+						VectorCopy(player->client->ps.origin, speaker->s.origin);
+					}
+					else*/ {
+
+						vec3_t prevLoc;
+						vec3_t nextLoc;
+						float ang2tempa, ang2tempb, tempdist2a, tempdist2b;
+						float updateDistance;
+
+						//Com_Printf("Searching for speaker adjacent to %i", sequence);
+						while ((hit = G_Find(hit, FOFS(targetname), trigger->target)) != NULL) {
+							if (hit->count == sequence - 1) {
+								//Com_Printf("Found prev\n");
+								VectorCopy(hit->s.origin, prevLoc);
+								ang2tempa = hit->s.angles[1];
+							}
+							else if (hit->count == sequence + 1) {
+								//Com_Printf("Found next\n");
+								VectorCopy(hit->s.origin, nextLoc);
+								ang2tempb = hit->s.angles[1];
+							}
+						}
+
+						tempdist2a = Distance(prevLoc, player->client->ps.origin);
+						tempdist2b = Distance(prevLoc, player->client->ps.origin);
+						if (tempdist2a < tempdist) { //check dist to us? or the other one?
+							//N+1 is closer than n-1, use it
+							VectorCopy(nextLoc, pos2);
+							ang2 = ang2tempa;
+							dist2 = tempdist2a;
+						}
+						else {
+							VectorCopy(prevLoc, pos2);
+							ang2 = ang2tempb;
+							dist2 = tempdist2b;
+						}
+
+
+						//Com_Printf("Prev loc is %.0f %.0f %.0f  and Next Loc is %.2f %.2f %.2f\n", prevLoc[0], prevLoc[1], prevLoc[2], nextLoc[0], nextLoc[1], nextLoc[2]);
+						vec3_t AB = { pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2] };
+						vec3_t AC = { player->client->ps.origin[0] - pos1[0], player->client->ps.origin[1] - pos1[1], player->client->ps.origin[2] - pos1[2] };
+						vec3_t diff;
+						float dotProduct = AC[0] * AB[0] + AC[1] * AB[1] + AC[2] * AB[2];//dot product of AC and AB
+						float magnitudeSquared = AB[0] * AB[0] + AB[1] * AB[1] + AB[2] * AB[2];//quared magnitude of AB
+						float t = dotProduct / magnitudeSquared;
+
+						// coordinates of the closest point D on AB
+						speaker->s.origin[0] = pos1[0] + t * AB[0];
+						speaker->s.origin[1] = pos1[1] + t * AB[1];
+						speaker->s.origin[2] = pos1[2] + t * AB[2];
+
+
+						//sad hack, but move the speaker so its scaled closer to us to effectively give the sound a larger range.
+						VectorSubtract(player->client->ps.origin, speaker->s.origin, diff);
+						VectorScale(diff, 0.7f, diff);
+						VectorAdd(speaker->s.origin, diff, speaker->s.origin);
+
+
+						updateDistance = Distance(speaker->s.origin, speaker->s.pos.trBase);
+						if (updateDistance > 8 && speaker->nextthink) { //Too abrupt of a change, smooth it, also dont do this for brand new speakers?
+							vec3_t updateDiff;
+							float updateScaler = updateDistance / 8;
+							//Com_Printf("Too big a change %.2f [%.2f x to  %.2f x]\n", updateDistance, speaker->s.origin[0], speaker->s.pos.trBase[0]);
+							VectorSubtract(speaker->s.origin, speaker->s.pos.trBase, updateDiff); //Get diff vector between current and last pos.
+
+							if (updateDistance < 256)
+								VectorScale(updateDiff, 1 / updateScaler, updateDiff); //Scale update diff down.
+							else  if (updateDistance < 512)
+								VectorScale(updateDiff, 4 / updateScaler, updateDiff); //Scale update diff down.
+							else  if (updateDistance < 1024)
+								VectorScale(updateDiff, 8 / updateScaler, updateDiff); //Scale update diff down.
+							else  if (updateDistance < 2048)
+								VectorScale(updateDiff, 16 / updateScaler, updateDiff); //Scale update diff down.
+							else  if (updateDistance < 4096)
+								VectorScale(updateDiff, 32 / updateScaler, updateDiff); //Scale update diff down.
+							//need to make this an actual formula so you can't "outrun" the smoothing
+
+							VectorAdd(speaker->s.pos.trBase, updateDiff, speaker->s.origin); //Add diff to original origin
+						}
+
+					}
 
 				VectorCopy(speaker->s.origin, speaker->s.pos.trBase);
 
-				//Com_Printf("Speaker point point is %.0f %.0f %.0f noise is %i\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2], trigger->noise_index);
+				//Com_Printf("Speaker point point is %.0f %.0f %.0f noise is %i num %i\n", speaker->s.origin[0], speaker->s.origin[1], speaker->s.origin[2], trigger->noise_index, player->s.number);
 
 				//Com_Printf("Playing sound\n");
 				speaker->classname = "target_speaker";
@@ -2293,11 +2294,13 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 				speaker->s.loopIsSoundset = qfalse;
 				speaker->s.trickedentindex = 0;
 				speaker->r.svFlags |= SVF_SINGLECLIENT;
+				speaker->r.svFlags |= SVF_BROADCAST; //For some reason not having this be SVF_BROADCAST does not let the speaker play properly (even though the previous debug print shows no isses) on certain (far away from middle?) points on map.  Even when PVS disabled. Distancecull based?  Does this combine with singleclient?
 				speaker->r.singleClient = player->s.number;
 
 				//remove itself after 30s, it will then re-spawn if needed
 				speaker->think = FreePersonalSpeaker;
 				speaker->nextthink = level.time + 30000;
+				}
 			}
 
 			//How do I do this 3 more times.  Really just speakerentity1,2,3 and repeat it all? has to be a better way.  Do i even need to now that im moving the speaker closer to myself?
