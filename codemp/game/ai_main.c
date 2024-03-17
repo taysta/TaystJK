@@ -8474,8 +8474,66 @@ void NewBotAI_NF(bot_state_t *bs)
 	//NewBotAI_GetAttack(bs);
 }
 
+void G_Kill(gentity_t *ent);
+qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
+{
+	int sequence, activeCapRoute, activeCapRouteSequence;
+
+
+	if (level.gametype != GT_CTF || !g_entities[bs->client].client || g_entities[bs->client].client->activeCapRoute)
+		return qfalse;
+
+
+	if (level.clients[bs->client].sess.sessionTeam == TEAM_RED) {
+		activeCapRoute = g_entities[bs->client].client->activeCapRoute;
+		activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
+
+		//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, redRouteList[g_entities[bs->client].client->activeCapRoute].length);
+		if (activeCapRouteSequence > redRouteList[g_entities[bs->client].client->activeCapRoute].length) {
+			G_Kill(&g_entities[bs->client]);
+			return qfalse;//route over.  self kill?
+		}
+
+		g_entities[bs->client].client->ps.origin[0] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][0];
+		g_entities[bs->client].client->ps.origin[1] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][1];
+		g_entities[bs->client].client->ps.origin[2] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][2];
+		g_entities[bs->client].client->activeCapRouteSequence++;
+	}
+	else if (level.clients[bs->client].sess.sessionTeam == TEAM_BLUE) {
+			activeCapRoute = g_entities[bs->client].client->activeCapRoute;
+			activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
+
+			//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, blueRouteList[g_entities[bs->client].client->activeCapRoute].length);
+			if (activeCapRouteSequence > blueRouteList[g_entities[bs->client].client->activeCapRoute].length) {
+				G_Kill(&g_entities[bs->client]);
+				return qfalse;//route over.  self kill?
+			}
+
+			//Com_Printf("^5Setting origin for route %i seq %i\n", activeCapRoute, activeCapRouteSequence);
+
+			g_entities[bs->client].client->ps.origin[0] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][0];
+			g_entities[bs->client].client->ps.origin[1] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][1];
+			g_entities[bs->client].client->ps.origin[2] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][2];
+			g_entities[bs->client].client->activeCapRouteSequence++;
+		}
+	else {
+		return qfalse;
+	}
+
+
+	return qtrue;
+}
+
 void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 {
+
+	//For capper bot. need to keep track of what spot we are at.
+	//How do we we store which route the bot is currently on?
+	//Bot->capRouteSequence starts at 0
+	//Set origin to the selected route[sequence]
+	//increment sequence
+
+	//Make bot abandon route if knockedback and have him fight instead?
 
 	if (bs->cur_ps.eFlags & EF_JETPACK_FLAMING || bs->cur_ps.eFlags & EF_JETPACK_ACTIVE) {
 		//if (!(bs->cur_ps.pm_flags & PMF_JUMP_HELD))
@@ -8844,6 +8902,11 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 
 	if (g_entities[bs->client].client->pers.amfreeze) //No AI if we are frozen
 		return;
+
+	if (g_movementStyle.integer == MV_TRIBES) { //&& CAPPING?
+		if (NewBotAI_CapRoute(bs, thinktime))
+			return;
+	}
 
 	if (g_newBotAITarget.integer < 0)
 		closestID = NewBotAI_ScanForEnemies(bs); //This has been modified to take health into account, and ignore FOV, mindtrick, etc, when newBotAI is being used.

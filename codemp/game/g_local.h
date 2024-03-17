@@ -265,6 +265,9 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define FT_NORAGEFIRERATE	  (1<<18)
 #define FT_BUFFMINDTRICK	  (1<<19)
 #define FT_BUFFMELEE		  (1<<20) //not really a forcetweak but no room in weapon tweaks!
+#define FT_DRAINDMGNERF		  (1<<21) 
+#define FT_FIXGRIPPEDREGEN	  (1<<22) //not really a forcetweak but no room in weapon tweaks!
+
 
 //Saber tweaks
 #define	ST_NO_MP_SABERLERP		(1<<0)
@@ -1200,6 +1203,8 @@ struct gclient_s {
 	int			kothDebounce;
 	short		forcedFireMode;
 	int			specificWeaponTime[MAX_WEAPONS];
+	short		activeCapRoute;
+	int			activeCapRouteSequence;
 	//int			numStakes;
 
 #if _GRAPPLE
@@ -1316,6 +1321,15 @@ typedef struct Warp_s {
 	short			yaw;
 } Warp_t;
 Warp_t	warpList[72];
+//japro
+
+//japro
+typedef struct Route_s {
+	int				length;
+	ivec3_t			pos[4000]; //save mem?
+} Route_t;
+Route_t	redRouteList[6];
+Route_t	blueRouteList[6];
 //japro
 
 //japro

@@ -7396,6 +7396,138 @@ void G_SpawnWarpLocationsFromCfg(void) //loda fixme
 	Com_Printf ("Loaded warp locations from %s\n", filename);
 }
 
+
+void G_SpawnCapRoutesFromCFG(void) {
+	fileHandle_t f;
+	int		fLen = 0, routeNum, numRedRoutes = 0, i = 0; //use max num warps idk
+	const int MAX_NUM_ITEMS = 100000, MAX_ROUTES_PER_TEAM = 6;
+	char	fileName[MAX_QPATH], buf[512 * 1024] = { 0 }, mapname[40], info[1024] = { 0 };//eh
+	char*	pch;
+	ivec3_t spot = { 0 };
+
+
+	//float radius;
+
+
+	trap->GetServerinfo(info, sizeof(info));
+	Q_strncpyz(mapname, Info_ValueForKey(info, "mapname"), sizeof(mapname));
+	Q_strlwr(mapname);//dat linux
+
+	for (i = 0; i < strlen(mapname); i++) {//Replace / in mapname with _ since we cant have a file named mp/duel1.cfg etc.
+		if (mapname[i] == '/')
+			mapname[i] = '_';
+	}
+
+
+	//Com_Printf("^5Mapname is %s\n", mapname);
+
+	//Loop through max # of route options
+	for (routeNum = 0; routeNum < MAX_ROUTES_PER_TEAM; routeNum++) {
+		int args = 1, row = 0;
+		Com_sprintf(fileName, sizeof(fileName), "caproutes/%s_b_%i.cfg", mapname, routeNum+1); //mapname
+		Com_Printf("^5Filename blue is %s\n", fileName);
+																			
+
+		fLen = trap->FS_Open(fileName, &f, FS_READ);
+
+		if (!f) {
+			//Com_Printf("Couldn't load path locations from %s\n", fileName); //not needed?
+			break;
+		}
+		if (fLen >= sizeof(buf)) {
+			trap->FS_Close(f);
+			Com_Printf("Couldn't load path locations from %s, file is too large\n", fileName);
+			continue;
+		}
+
+		trap->FS_Read(buf, fLen, f);
+		buf[fLen] = 0;
+		trap->FS_Close(f);
+
+
+		pch = strtok(buf, " \n\t");  //loda fixme why is this broken
+		while (pch != NULL && row < MAX_NUM_ITEMS)
+		{
+			if ((args % 3) == 1)
+				spot[0] = atoi(pch);
+			else if ((args % 3) == 2)
+				spot[1] = atoi(pch);
+			else if ((args % 3) == 0) {
+				spot[2] = atoi(pch);
+
+				blueRouteList[routeNum].pos[row][0] = spot[0];
+				blueRouteList[routeNum].pos[row][1] = spot[1];
+				blueRouteList[routeNum].pos[row][2] = spot[2];
+				//trap->Print("^5Blue Route spot added: route %i row %i [%i %i %i]\n", routeNum, row, blueRouteList[routeNum].pos[row][0], blueRouteList[routeNum].pos[row][1], blueRouteList[routeNum].pos[row][2]);
+				row++;
+			}
+			pch = strtok(NULL, " \n\t");
+			args++;
+
+			//Routes named like raindance_1_r.cfg or raindance_2_b.cfg.  6 per team max? or 12 max?  lets do 12 max
+
+			//put them in memory I guess ? If tribes mode ? (latched rquirement ? )
+		}
+		blueRouteList[routeNum].length = row;
+
+	}
+
+	numRedRoutes = routeNum;
+
+	//Loop through max # of route options
+	for (routeNum = 0; routeNum < MAX_ROUTES_PER_TEAM; routeNum++) {
+		int args = 1, row = 0;
+		Com_sprintf(fileName, sizeof(fileName), "caproutes/%s_r_%i.cfg", mapname, routeNum+1); //mapname
+
+
+		fLen = trap->FS_Open(fileName, &f, FS_READ);
+
+		if (!f) {
+			//Com_Printf("Couldn't load route path from %s\n", fileName); //not needed?
+			break;
+		}
+		if (fLen >= sizeof(buf)) {
+			trap->FS_Close(f);
+			Com_Printf("Couldn't load route path from %s, file is too large\n", fileName);
+			continue;
+		}
+
+		trap->FS_Read(buf, fLen, f);
+		buf[fLen] = 0;
+		trap->FS_Close(f);
+
+
+		pch = strtok(buf, " \n\t");  //loda fixme why is this broken
+		while (pch != NULL && row < MAX_NUM_ITEMS)
+		{
+			if ((args % 3) == 1)
+				spot[0] = atoi(pch);
+			else if ((args % 3) == 2)
+				spot[1] = atoi(pch);
+			else if ((args % 3) == 0) {
+				spot[2] = atoi(pch);
+
+				redRouteList[routeNum].pos[row][0] = spot[0];
+				redRouteList[routeNum].pos[row][1] = spot[1];
+				redRouteList[routeNum].pos[row][2] = spot[2];
+				//trap->Print("^5Red Route spot added: route %i row %i [%i %i %i]\n", routeNum, row, spot[0], spot[1], spot[2]);
+
+				row++;
+			}
+			pch = strtok(NULL, " \n\t");
+			args++;
+
+			//Routes named like raindance_1_r.cfg or raindance_2_b.cfg.  6 per team max? or 12 max?  lets do 12 max
+
+			//put them in memory I guess ? If tribes mode ? (latched rquirement ? )
+
+		}
+		redRouteList[routeNum].length = row;
+	}
+
+		Com_Printf("Loaded %i red cap routes and %i blue cap routes from files\n", numRedRoutes, routeNum);
+}
+
 #if 0
 void AddRunToWebServer(RaceRecord_t record) 
 { 

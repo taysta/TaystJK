@@ -1430,8 +1430,9 @@ SelectCTFSpawnPoint
 
 ============
 */
-gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3_t angles, qboolean isbot ) {
+gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3_t angles, qboolean isbot, gclient_t *client) {
 	gentity_t	*spot;
+	qboolean caprouteOverride = qfalse;
 
 	spot = SelectRandomTeamSpawnPoint ( teamstate, team, -1 );
 
@@ -1439,9 +1440,57 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 		return SelectSpawnPoint( vec3_origin, origin, angles, team, isbot );
 	}
 
-	VectorCopy (spot->s.origin, origin);
-	origin[2] += 9;
-	VectorCopy (spot->s.angles, angles);
+	if (isbot && g_tribesMode.integer) { //Need to do a better check for if we want to make them a capper bot, pass in isCapperBot?  client model? netname?
+		//Also need to store on the bot entity which randomPick route we decided on
+		const int MAX_ROUTES_PER_TEAM = 6;
+		//Com_Printf("^5Selecting CTF caproute spawnpoint\n");
+		int i;
+		if (team == TEAM_RED) {
+
+			int numRedRoutes = 0;
+			for (i = 0; i < MAX_ROUTES_PER_TEAM; i++) {
+				if (redRouteList[i].length > 0)
+					numRedRoutes++;
+				else break;
+			}
+			if (numRedRoutes) {
+				int randomPick = Q_irand(1, numRedRoutes) - 1;//to array #
+				origin[0] = (int)(blueRouteList[randomPick].pos[0][0]);
+				origin[1] = (int)(blueRouteList[randomPick].pos[0][1]);
+				origin[2] = (int)(blueRouteList[randomPick].pos[0][2]);
+				//Com_Printf("Setting ctf caproute spawn %i (%i %i %i)\n", randomPick, origin[0], origin[1], origin[2]);
+				caprouteOverride = qtrue;
+				if (client)
+					client->activeCapRoute = randomPick;
+			}
+
+
+		}
+		else if (team == TEAM_BLUE) {
+			int numBlueRoutes = 0;
+			for (i = 0; i < MAX_ROUTES_PER_TEAM; i++) {
+				if (blueRouteList[i].length > 0)
+					numBlueRoutes++;
+				else break;
+			}
+			if (numBlueRoutes) {
+				int randomPick = Q_irand(1, numBlueRoutes) - 1;//to array #
+				origin[0] = (int)(blueRouteList[randomPick].pos[0][0]);
+				origin[1] = (int)(blueRouteList[randomPick].pos[0][1]);
+				origin[2] = (int)(blueRouteList[randomPick].pos[0][2]);
+				//Com_Printf("^5Setting ctf caproute spawn %i (%.0f %.0f %.0f) check %i\n", randomPick, origin[0], origin[1], origin[2]);
+				caprouteOverride = qtrue;
+				if (client)
+					client->activeCapRoute = randomPick;
+			}
+		}
+	}
+	
+	if (!caprouteOverride) {
+		VectorCopy(spot->s.origin, origin);
+		origin[2] += 9;
+		VectorCopy(spot->s.angles, angles);
+	}
 
 	return spot;
 }
