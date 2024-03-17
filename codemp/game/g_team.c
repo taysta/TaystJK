@@ -1483,7 +1483,7 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				if (client)
 					client->pers.activeCapRoute = randomPick;
 
-				Com_Printf("Setting active cap route to %i\n", randomPick);
+				//Com_Printf("Setting active cap route to %i\n", randomPick);
 			}
 		}
 	}
