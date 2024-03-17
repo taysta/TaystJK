@@ -8483,7 +8483,6 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 	if (level.gametype != GT_CTF || !g_entities[bs->client].client || g_entities[bs->client].client->activeCapRoute)
 		return qfalse;
 
-
 	if (level.clients[bs->client].sess.sessionTeam == TEAM_RED) {
 		activeCapRoute = g_entities[bs->client].client->activeCapRoute;
 		activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
@@ -8520,6 +8519,23 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 		return qfalse;
 	}
 
+	trap->EA_Action(bs->client, ACTION_SKI);
+	{
+		vec3_t vel, velang;
+		vel[0] = g_entities[bs->client].client->ps.velocity[0];
+		vel[1] = g_entities[bs->client].client->ps.velocity[1];
+		if (vel[0] + vel[1]) {
+			vectoangles(vel, velang);
+
+			bs->goalAngles[YAW] = AngleNormalize360(velang[YAW]);
+			VectorCopy(bs->goalAngles, bs->ideal_viewangles);
+			//BotChangeViewAngles();
+		}
+	}
+	if (g_entities[bs->client].client->ps.velocity[2] > 0) {
+		trap->EA_Jump(bs->client); //sad hack to make it lok like they are jetting
+		trap->EA_MoveUp(bs->client); //sad hack to make it lok like they are jetting
+	}
 
 	return qtrue;
 }
