@@ -8478,41 +8478,43 @@ void G_Kill(gentity_t *ent);
 qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 {
 	int sequence, activeCapRoute, activeCapRouteSequence;
+	vec3_t newSpot = { 0 };
 
-
-	if (level.gametype != GT_CTF || !g_entities[bs->client].client || g_entities[bs->client].client->activeCapRoute)
+	if (level.gametype != GT_CTF || !g_entities[bs->client].client || !g_entities[bs->client].client->pers.activeCapRoute)
 		return qfalse;
 
 	if (level.clients[bs->client].sess.sessionTeam == TEAM_RED) {
-		activeCapRoute = g_entities[bs->client].client->activeCapRoute;
+		activeCapRoute = g_entities[bs->client].client->pers.activeCapRoute;
 		activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
 
 		//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, redRouteList[g_entities[bs->client].client->activeCapRoute].length);
-		if (activeCapRouteSequence > redRouteList[g_entities[bs->client].client->activeCapRoute].length) {
+		if (activeCapRouteSequence > redRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
+			g_entities[bs->client].client->pers.activeCapRoute = 0;
 			G_Kill(&g_entities[bs->client]);
 			return qfalse;//route over.  self kill?
 		}
 
-		g_entities[bs->client].client->ps.origin[0] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][0];
-		g_entities[bs->client].client->ps.origin[1] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][1];
-		g_entities[bs->client].client->ps.origin[2] = redRouteList[activeCapRoute].pos[activeCapRouteSequence][2];
+		newSpot[0] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][0];
+		newSpot[1] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][1];
+		newSpot[2] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][2];
 		g_entities[bs->client].client->activeCapRouteSequence++;
 	}
 	else if (level.clients[bs->client].sess.sessionTeam == TEAM_BLUE) {
-			activeCapRoute = g_entities[bs->client].client->activeCapRoute;
+			activeCapRoute = g_entities[bs->client].client->pers.activeCapRoute;
 			activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
 
 			//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, blueRouteList[g_entities[bs->client].client->activeCapRoute].length);
-			if (activeCapRouteSequence > blueRouteList[g_entities[bs->client].client->activeCapRoute].length) {
+			if (activeCapRouteSequence > blueRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
+				g_entities[bs->client].client->pers.activeCapRoute = 0;
 				G_Kill(&g_entities[bs->client]);
 				return qfalse;//route over.  self kill?
 			}
 
 			//Com_Printf("^5Setting origin for route %i seq %i\n", activeCapRoute, activeCapRouteSequence);
 
-			g_entities[bs->client].client->ps.origin[0] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][0];
-			g_entities[bs->client].client->ps.origin[1] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][1];
-			g_entities[bs->client].client->ps.origin[2] = blueRouteList[activeCapRoute].pos[activeCapRouteSequence][2];
+			newSpot[0] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][0];
+			newSpot[1] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][1];
+			newSpot[2] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][2];
 			g_entities[bs->client].client->activeCapRouteSequence++;
 		}
 	else {
@@ -8520,22 +8522,34 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 	}
 
 	trap->EA_Action(bs->client, ACTION_SKI);
-	{
-		vec3_t vel, velang;
-		vel[0] = g_entities[bs->client].client->ps.velocity[0];
-		vel[1] = g_entities[bs->client].client->ps.velocity[1];
-		if (vel[0] + vel[1]) {
-			vectoangles(vel, velang);
+	bs->ideal_viewangles[YAW] = vectoyaw(g_entities[bs->client].client->ps.velocity);
 
-			bs->goalAngles[YAW] = AngleNormalize360(velang[YAW]);
-			VectorCopy(bs->goalAngles, bs->ideal_viewangles);
-			//BotChangeViewAngles();
+	if (g_entities[bs->client].client->ps.velocity[2]) {
+		if (level.time % 1000 > 500) { //what the fuck /sad hack to make it lok like they are jetting
+			trap->EA_Jump(bs->client);
+			trap->EA_MoveUp(bs->client);
+		}
+		else {
+			trap->EA_MoveDown(bs->client); 
+			trap->EA_Crouch(bs->client);
 		}
 	}
-	if (g_entities[bs->client].client->ps.velocity[2] > 0) {
-		trap->EA_Jump(bs->client); //sad hack to make it lok like they are jetting
-		trap->EA_MoveUp(bs->client); //sad hack to make it lok like they are jetting
+
+	{
+		trace_t tr;
+		vec3_t playerMins = { -15, -15, DEFAULT_MINS_2 };
+		vec3_t playerMaxs = { 15, 15, DEFAULT_MAXS_2 };
+
+		JP_Trace(&tr, g_entities[bs->client].client->ps.origin, playerMins, playerMaxs, newSpot, bs->client, CONTENTS_BODY, qfalse, 0, 0);
+
+		if (tr.fraction != 1) { //Hit someone else
+			g_entities[bs->client].client->pers.activeCapRoute = 0;
+			return qfalse;
+		}
+
+		VectorCopy(newSpot, g_entities[bs->client].client->ps.origin);
 	}
+
 
 	return qtrue;
 }

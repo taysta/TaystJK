@@ -1157,9 +1157,9 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			if (speed > 2000)
 				points = 2;
 			if (points == 1)
-				trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 ups for ^31^5 point\n\"", team == 2 ? "^1red" : "^4blue", speed));
+				trap->SendServerCommand(-1, va("print \"%s ^5grabbed the %s^5 flag at ^3%.0f^5 ups for ^31^5 point\n\"", other->client->pers.netname, team == 2 ? "^1red" : "^4blue", speed));
 			else
-				trap->SendServerCommand(other->s.number, va("print \"You grabbed the %s^5 flag at ^3%.0f^5 ups for ^3%i^5 points\n\"", team == 2 ? "^1red" : "^4blue", speed, points));
+				trap->SendServerCommand(-1, va("print \"%s ^5grabbed the %s^5 flag at ^3%.0f^5 ups for ^3%i^5 points\n\"", other->client->pers.netname, team == 2 ? "^1red" : "^4blue", speed, points));
 		}
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
 	}
@@ -1461,7 +1461,7 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				//Com_Printf("Setting ctf caproute spawn %i (%i %i %i)\n", randomPick, origin[0], origin[1], origin[2]);
 				caprouteOverride = qtrue;
 				if (client)
-					client->activeCapRoute = randomPick;
+					client->pers.activeCapRoute = randomPick;
 			}
 
 
@@ -1474,14 +1474,16 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				else break;
 			}
 			if (numBlueRoutes) {
-				int randomPick = Q_irand(1, numBlueRoutes) - 1;//to array #
-				origin[0] = (int)(blueRouteList[randomPick].pos[0][0]);
-				origin[1] = (int)(blueRouteList[randomPick].pos[0][1]);
-				origin[2] = (int)(blueRouteList[randomPick].pos[0][2]);
+				int randomPick = Q_irand(1, numBlueRoutes);//to array #
+				origin[0] = (int)(blueRouteList[randomPick-1].pos[0][0]);
+				origin[1] = (int)(blueRouteList[randomPick-1].pos[0][1]);
+				origin[2] = (int)(blueRouteList[randomPick-1].pos[0][2]);
 				//Com_Printf("^5Setting ctf caproute spawn %i (%.0f %.0f %.0f) check %i\n", randomPick, origin[0], origin[1], origin[2]);
 				caprouteOverride = qtrue;
 				if (client)
-					client->activeCapRoute = randomPick;
+					client->pers.activeCapRoute = randomPick;
+
+				Com_Printf("Setting active cap route to %i\n", randomPick);
 			}
 		}
 	}

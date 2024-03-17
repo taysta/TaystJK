@@ -869,6 +869,7 @@ typedef struct clientPersistant_s {
 	char		demoName[MAX_QPATH];
 	unsigned int	unlocks;
 	short		tribesClass;
+	short		activeCapRoute;
 
 	stats_t		stats;
 } clientPersistant_t;
@@ -1203,7 +1204,6 @@ struct gclient_s {
 	int			kothDebounce;
 	short		forcedFireMode;
 	int			specificWeaponTime[MAX_WEAPONS];
-	short		activeCapRoute;
 	int			activeCapRouteSequence;
 	//int			numStakes;
 
