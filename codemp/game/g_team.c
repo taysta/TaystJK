@@ -1441,9 +1441,7 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 	}
 
 	if (isbot && g_tribesMode.integer) { //Need to do a better check for if we want to make them a capper bot, pass in isCapperBot?  client model? netname?
-		//Also need to store on the bot entity which randomPick route we decided on
 		const int MAX_ROUTES_PER_TEAM = 6;
-		//Com_Printf("^5Selecting CTF caproute spawnpoint\n");
 		int i;
 		if (team == TEAM_RED) {
 
@@ -1458,7 +1456,6 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				origin[0] = (int)(blueRouteList[randomPick].pos[0][0]);
 				origin[1] = (int)(blueRouteList[randomPick].pos[0][1]);
 				origin[2] = (int)(blueRouteList[randomPick].pos[0][2]);
-				//Com_Printf("Setting ctf caproute spawn %i (%i %i %i)\n", randomPick, origin[0], origin[1], origin[2]);
 				caprouteOverride = qtrue;
 				if (client)
 					client->pers.activeCapRoute = randomPick;
@@ -1478,12 +1475,9 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				origin[0] = (int)(blueRouteList[randomPick-1].pos[0][0]);
 				origin[1] = (int)(blueRouteList[randomPick-1].pos[0][1]);
 				origin[2] = (int)(blueRouteList[randomPick-1].pos[0][2]);
-				//Com_Printf("^5Setting ctf caproute spawn %i (%.0f %.0f %.0f) check %i\n", randomPick, origin[0], origin[1], origin[2]);
 				caprouteOverride = qtrue;
 				if (client)
 					client->pers.activeCapRoute = randomPick;
-
-				//Com_Printf("Setting active cap route to %i\n", randomPick);
 			}
 		}
 	}

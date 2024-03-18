@@ -6274,7 +6274,6 @@ void NewBotAI_GetAim(bot_state_t *bs)
 		NewBotAI_GetStrafeAim(bs);
 		return;
 	}
-
 	/*
 		trType_t	trType;
 	int		trTime;
@@ -6318,7 +6317,6 @@ void NewBotAI_GetAim(bot_state_t *bs)
 		VectorCopy(ang, bs->goalAngles);
 		bs->hitSpotted = qtrue;
 	}
-
 	/*
 	if (bs->cur_ps.weapon == WP_SABER && bs->currentEnemy->client->ps.saberInFlight && bs->frame_Enemy_Len > 200) { //Try to block saber in air
 		//Go through each entity, check if saber and if owner is currentenemY? if yes aim at it..?
@@ -6336,7 +6334,7 @@ void NewBotAI_GetAim(bot_state_t *bs)
 	else { //Normal aim at player
 		VectorCopy(bs->currentEnemy->client->ps.origin, headlevel);
 
-		if (bs->currentEnemy->client)
+		if (bs->currentEnemy && bs->currentEnemy->client)
 			headlevel[2] += bs->currentEnemy->client->ps.viewheight - 16;//aim at chest?
 		if (bs->cur_ps.saberInFlight)
 			headlevel[2] += 24; //aim a bit higher for saberthrow
@@ -8486,36 +8484,32 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 	if (level.clients[bs->client].sess.sessionTeam == TEAM_RED) {
 		activeCapRoute = g_entities[bs->client].client->pers.activeCapRoute;
 		activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
-
 		//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, redRouteList[g_entities[bs->client].client->activeCapRoute].length);
-		if (activeCapRouteSequence > redRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
+		if (activeCapRouteSequence >= redRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
 			g_entities[bs->client].client->pers.activeCapRoute = 0;
 			G_Kill(&g_entities[bs->client]);
 			return qfalse;//route over.  self kill?
 		}
-
 		newSpot[0] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][0];
 		newSpot[1] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][1];
 		newSpot[2] = redRouteList[activeCapRoute-1].pos[activeCapRouteSequence][2];
 		g_entities[bs->client].client->activeCapRouteSequence++;
 	}
 	else if (level.clients[bs->client].sess.sessionTeam == TEAM_BLUE) {
-			activeCapRoute = g_entities[bs->client].client->pers.activeCapRoute;
-			activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
+		activeCapRoute = g_entities[bs->client].client->pers.activeCapRoute;
+		activeCapRouteSequence = g_entities[bs->client].client->activeCapRouteSequence;
+		//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, blueRouteList[g_entities[bs->client].client->activeCapRoute].length);
+		if (activeCapRouteSequence >= blueRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
+			g_entities[bs->client].client->pers.activeCapRoute = 0;
+			G_Kill(&g_entities[bs->client]);
+			return qfalse;//route over.  self kill?
+		}
 
-			//Com_Printf("Seq %i max %i\n", activeCapRouteSequence, blueRouteList[g_entities[bs->client].client->activeCapRoute].length);
-			if (activeCapRouteSequence > blueRouteList[g_entities[bs->client].client->pers.activeCapRoute-1].length) {
-				g_entities[bs->client].client->pers.activeCapRoute = 0;
-				G_Kill(&g_entities[bs->client]);
-				return qfalse;//route over.  self kill?
-			}
-
-			//Com_Printf("^5Setting origin for route %i seq %i\n", activeCapRoute, activeCapRouteSequence);
-
-			newSpot[0] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][0];
-			newSpot[1] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][1];
-			newSpot[2] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][2];
-			g_entities[bs->client].client->activeCapRouteSequence++;
+		//Com_Printf("^5Setting origin for route %i seq %i\n", activeCapRoute, activeCapRouteSequence);
+		newSpot[0] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][0];
+		newSpot[1] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][1];
+		newSpot[2] = blueRouteList[activeCapRoute-1].pos[activeCapRouteSequence][2];
+		g_entities[bs->client].client->activeCapRouteSequence++;
 		}
 	else {
 		return qfalse;
@@ -8550,7 +8544,6 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 		VectorCopy(newSpot, g_entities[bs->client].client->ps.origin);
 	}
 
-
 	return qtrue;
 }
 
@@ -8564,7 +8557,6 @@ void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 	//increment sequence
 
 	//Make bot abandon route if knockedback and have him fight instead?
-
 	if (bs->cur_ps.eFlags & EF_JETPACK_FLAMING || bs->cur_ps.eFlags & EF_JETPACK_ACTIVE) {
 		//if (!(bs->cur_ps.pm_flags & PMF_JUMP_HELD))
 		//{
@@ -8578,12 +8570,12 @@ void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 		//Com_Printf("1 Going up\n");
 		//bs->jumpTime = level.time + 200;
 		//bs->jumpHoldTime = level.time + 200;
+
 		trap->EA_Jump(bs->client);
 	}
 	else {
 		//Com_Printf("3 Flaming? %i, Active? %i, FP: %i\n", (bs->cur_ps.eFlags & EF_JETPACK_FLAMING), bs->cur_ps.eFlags & EF_JETPACK_ACTIVE, bs->cur_ps.fd.forcePower);
 	}
-
 
 	/*
 	if (bs->jumpTime > level.time && bs->jDelay < level.time)
@@ -8615,11 +8607,9 @@ void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 
 	trap->EA_Action(bs->client, ACTION_SKI);
 
-
 	StandardBotAI(bs, thinktime);
 	NewBotAI_GetAim(bs);
 	NewBotAI_GetAttack(bs);
-
 	//NewBotAI_GetMovement(bs);
 	//NewBotAI_GetAttack(bs);
 }
@@ -8922,8 +8912,8 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 			break;
 		}
 	}
-	if (!someonesHere)
-		return;
+	//if (!someonesHere)
+		//return;
 	
 	if (g_entities[bs->client].health < 1) { //We are dead, so respawn!
 		trap->EA_Attack(bs->client);
@@ -8933,10 +8923,6 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 	if (g_entities[bs->client].client->pers.amfreeze) //No AI if we are frozen
 		return;
 
-	if (g_movementStyle.integer == MV_TRIBES) { //&& CAPPING?
-		if (NewBotAI_CapRoute(bs, thinktime))
-			return;
-	}
 
 	if (g_newBotAITarget.integer < 0)
 		closestID = NewBotAI_ScanForEnemies(bs); //This has been modified to take health into account, and ignore FOV, mindtrick, etc, when newBotAI is being used.
@@ -8950,6 +8936,17 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 		cl = &level.clients[closestID];
 		if (!cl || cl->pers.connected != CON_CONNECTED)//Or in spectate? or?
 			closestID = -1;
+	}
+
+	if (g_movementStyle.integer == MV_TRIBES) { //&& CAPPING?
+		if (closestID == -1 && (!g_entities[bs->client].client || !g_entities[bs->client].client->pers.activeCapRoute)) { //if we have no active route and no1 near, suicid
+			if ((redRouteList[0].length && g_entities[bs->client].client->sess.sessionTeam == TEAM_RED) || (blueRouteList[0].length && g_entities[bs->client].client->sess.sessionTeam == TEAM_BLUE)) { //only if the map actually has cap routes do we behave like they have cap routes
+				G_Kill(&g_entities[bs->client]);
+				return;
+			}
+		}
+		if (NewBotAI_CapRoute(bs, thinktime))
+			return;
 	}
 
 	if (closestID == -1) {//Its just us, or they are too far away.
