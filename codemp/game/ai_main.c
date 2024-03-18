@@ -7340,6 +7340,9 @@ void NewBotAI_GetAttack(bot_state_t *bs)
 	int weapon;
 	// const float speed = NewBotAI_GetSpeedTowardsEnemy(bs);
 
+	if (!bs->client || !bs->currentEnemy || !bs->currentEnemy->client)
+		return;
+
 	if (g_tweakWeapons.integer & WT_TRIBES)
 		weapon = NewBotAI_GetTribesWeapon(bs);
 	else
