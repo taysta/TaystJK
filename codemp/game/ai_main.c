@@ -8541,7 +8541,12 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 			return qfalse;
 		}
 
-		VectorCopy(newSpot, g_entities[bs->client].client->ps.origin);
+		VectorSubtract(newSpot, g_entities[bs->client].client->ps.origin, g_entities[bs->client].client->ps.velocity);
+		VectorScale(g_entities[bs->client].client->ps.velocity, 40.0f, g_entities[bs->client].client->ps.velocity);//sv_fps ?
+		//Com_Printf("Vel is %.1f\n", len);
+		//VectorClear(g_entities[bs->client].client->ps.velocity);
+
+		//VectorCopy(newSpot, g_entities[bs->client].client->ps.origin);
 	}
 
 	return qtrue;

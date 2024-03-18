@@ -1444,7 +1444,6 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 		const int MAX_ROUTES_PER_TEAM = 6;
 		int i;
 		if (team == TEAM_RED) {
-
 			int numRedRoutes = 0;
 			for (i = 0; i < MAX_ROUTES_PER_TEAM; i++) {
 				if (redRouteList[i].length > 0)
@@ -1452,10 +1451,10 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 				else break;
 			}
 			if (numRedRoutes) {
-				int randomPick = Q_irand(1, numRedRoutes) - 1;//to array #
-				origin[0] = (int)(blueRouteList[randomPick].pos[0][0]);
-				origin[1] = (int)(blueRouteList[randomPick].pos[0][1]);
-				origin[2] = (int)(blueRouteList[randomPick].pos[0][2]);
+				int randomPick = Q_irand(1, numRedRoutes);//to array #
+				origin[0] = (int)(redRouteList[randomPick-1].pos[0][0]);
+				origin[1] = (int)(redRouteList[randomPick-1].pos[0][1]);
+				origin[2] = (int)(redRouteList[randomPick-1].pos[0][2]);
 				caprouteOverride = qtrue;
 				if (client)
 					client->pers.activeCapRoute = randomPick;
