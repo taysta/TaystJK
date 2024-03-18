@@ -788,11 +788,14 @@ int Team_TouchOneFlagBase (gentity_t *ent, gentity_t *other, int team) {
 		else
 			average = cl->pers.stats.topSpeedFlag;
 
-		trap->SendServerCommand(-1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups for ^3%i^5 points\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average, points));
+		trap->SendServerCommand(-1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups (^3%i^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average, points));
 		cl->pers.stats.startTimeFlag = 0;
 		cl->pers.stats.topSpeedFlag = 0;
 		cl->pers.stats.displacementFlag = 0;
 		cl->pers.stats.displacementFlagSamples = 0;
+	}
+	else if (g_fixCTFScores.integer) {
+		trap->SendServerCommand(-1, va("print \"%s^5 has captured the %s^5 flag (+^315^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue"));
 	}
 	else
 		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG);
@@ -883,7 +886,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base (+^30^5)\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue"));
 			}
 			else {
-				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f);
+				points = (int)((CTF_RECOVERY_BONUS * percent*0.01f)+0.5f);
 				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3%.0f^5 percent of the way to enemy base (+^3%i^5)\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", percent, points));
 			}
 
@@ -995,7 +998,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 
 	// other gets another 10 frag bonus
 	if (g_fixCTFScores.integer)
-		AddScore(other, ent->r.currentOrigin, 20);
+		AddScore(other, ent->r.currentOrigin, 15);
 	else
 		AddScore(other, ent->r.currentOrigin, CTF_CAPTURE_BONUS);
 
@@ -1008,14 +1011,17 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 		else
 			average = cl->pers.stats.topSpeedFlag;
 
-		trap->SendServerCommand( -1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups (+^3%i^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average, g_fixCTFScores.integer ? 20 : CTF_CAPTURE_BONUS));
+		trap->SendServerCommand( -1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups (+^3%i^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average, g_fixCTFScores.integer ? 15 : CTF_CAPTURE_BONUS));
 		cl->pers.stats.startTimeFlag = 0;
 		cl->pers.stats.topSpeedFlag = 0;
 		cl->pers.stats.displacementFlag = 0;
 		cl->pers.stats.displacementFlagSamples = 0;
 	}
+	else if (g_fixCTFScores.integer) {
+		trap->SendServerCommand(-1, va("print \"%s^5 has captured the %s^5 flag (+^315^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue"));
+	}
 	else
-		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG); 
+		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_CAPTURED_FLAG);  //How show score for capping midfielded flag?
 
 #if _DEBUGCTFCRASH
 	G_SecurityLogPrintf("Team_TouchOurFlag function reached point d, Enemy Flag is %i\n", enemy_flag);
@@ -1160,7 +1166,7 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			if (team == TEAM_RED) {
 				if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus == FLAG_ATBASE)
 					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
-				else if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus != FLAG_ATBASE) {
+				else if (teamgame.blueStatus != FLAG_ATBASE) {
 					points += 1;
 					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
 				}
@@ -1170,7 +1176,7 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			else if (team == TEAM_BLUE) {
 				if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus == FLAG_ATBASE)
 					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
-				else if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus != FLAG_ATBASE) {
+				else if (teamgame.redStatus != FLAG_ATBASE) {
 					points += 1;
 					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
 				}

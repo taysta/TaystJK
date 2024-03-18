@@ -8913,13 +8913,13 @@ void NewBotAI(bot_state_t *bs, float thinktime) //BOT START
 			continue;
 		if (!ent->client)
 			continue;//should never happen
-		if (ent->client->lastHereTime > level.time - 60000) { //They have moved in last 60 seconds.
+		if (ent->client->lastHereTime > level.time - 120000) { //They have moved in last 120 seconds.
 			someonesHere = qtrue;
 			break;
 		}
 	}
-	//if (!someonesHere)
-		//return;
+	if (!someonesHere)
+		return;
 	
 	if (g_entities[bs->client].health < 1) { //We are dead, so respawn!
 		trap->EA_Attack(bs->client);
