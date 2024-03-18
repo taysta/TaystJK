@@ -880,11 +880,11 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 
 			percent = (enemyDist + myDist) ? (myDist / ((enemyDist + myDist)) * 100) : 1;
 			if (percent < 10) {
-				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base for ^30^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue"));
+				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3<10^5 percent of the way to enemy base (+^30^5)\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue"));
 			}
 			else {
 				points = (int)(CTF_RECOVERY_BONUS * percent*0.01f);
-				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3%.0f^5 percent of the way to enemy base for ^3%i^5 points\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", percent, points));
+				trap->SendServerCommand(-1, va("print \"%s^5 has returned the %s^5 flag ^3%.0f^5 percent of the way to enemy base (+^3%i^5)\n\"", cl->pers.netname, team == 1 ? "^1red" : "^4blue", percent, points));
 			}
 
 			AddScore(other, ent->r.currentOrigin, CTF_RECOVERY_BONUS);
@@ -995,7 +995,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 
 	// other gets another 10 frag bonus
 	if (g_fixCTFScores.integer)
-		AddScore(other, ent->r.currentOrigin, 60);
+		AddScore(other, ent->r.currentOrigin, 20);
 	else
 		AddScore(other, ent->r.currentOrigin, CTF_CAPTURE_BONUS);
 
@@ -1008,7 +1008,7 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 		else
 			average = cl->pers.stats.topSpeedFlag;
 
-		trap->SendServerCommand( -1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average));
+		trap->SendServerCommand( -1, va("print \"%s^5 has captured the %s^5 flag in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups (+^3%i^5)\n\"", cl->pers.netname, team == 2 ? "^1red" : "^4blue", time, (int)floorf(cl->pers.stats.topSpeedFlag + 0.5f), average, g_fixCTFScores.integer ? 20 : CTF_CAPTURE_BONUS));
 		cl->pers.stats.startTimeFlag = 0;
 		cl->pers.stats.topSpeedFlag = 0;
 		cl->pers.stats.displacementFlag = 0;
@@ -1156,12 +1156,34 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 				points = 1;
 			if (speed > 2000)
 				points = 2;
-			if (points == 1)
-				trap->SendServerCommand(-1, va("print \"%s ^5grabbed the %s^5 flag at ^3%.0f^5 ups for ^31^5 point\n\"", other->client->pers.netname, team == 2 ? "^1red" : "^4blue", speed));
-			else
-				trap->SendServerCommand(-1, va("print \"%s ^5grabbed the %s^5 flag at ^3%.0f^5 ups for ^3%i^5 points\n\"", other->client->pers.netname, team == 2 ? "^1red" : "^4blue", speed, points));
+
+			if (team == TEAM_RED) {
+				if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus == FLAG_ATBASE)
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				else if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus != FLAG_ATBASE) {
+					points += 1;
+					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
+				else
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag\n\"", other->client->pers.netname));
+			}
+			else if (team == TEAM_BLUE) {
+				if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus == FLAG_ATBASE)
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				else if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus != FLAG_ATBASE) {
+					points += 1;
+					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
+				else
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag\n\"", other->client->pers.netname));
+			}
+			else {
+				PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
+			}
 		}
-		PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
+		else {
+			PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
+		}
 	}
 	if (team == TEAM_RED)
 		cl->ps.powerups[PW_REDFLAG] = INT_MAX; // flags never expire
@@ -1185,8 +1207,7 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 		cl->pers.stats.startTimeFlag = 0;
 
 	if (g_fixCTFScores.integer) {
-		if ((team == TEAM_RED && teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus != FLAG_ATBASE) || 
-			(team == TEAM_BLUE && teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus != FLAG_ATBASE)) { //Flag was "egrabbed".
+		if (points) {
 			AddScore(other, ent->r.currentOrigin, points);
 		}
 	}
