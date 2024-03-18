@@ -7852,7 +7852,7 @@ void PM_BeginWeaponChange( int weapon ) {
 	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
 		int i;
 		for (i = 0; i < MAX_WEAPONS; i++) {
-			((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 200;
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] += 50;
 		}
 	}
 #endif
@@ -7902,7 +7902,7 @@ void PM_FinishWeaponChange( void ) {
 	else if (!pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_FAST_WEAPONSWITCH))
 		pm->ps->weaponTime += 25;
 	else
-		pm->ps->weaponTime += 250;
+		pm->ps->weaponTime += 50;
 #else
 		pm->ps->weaponTime += 250;
 #endif
@@ -7912,7 +7912,7 @@ void PM_FinishWeaponChange( void ) {
 		if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
 			int i;
 			for (i = 0; i < MAX_WEAPONS; i++) {
-				((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 250;
+				((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] += 100;
 			}
 		}
 #endif
@@ -9283,10 +9283,11 @@ if (pm->ps->duelInProgress)
 #if _GAME
 #if _SPECIFICWEAPONTIME
 	if (g_tweakWeapons.integer & WT_TRIBES) { //Bug where this doesnt get called if wp_saber is out? but maybe thats fine to limit nades if holding saber?
-		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0)
-			((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] -= pml.msec;
-		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[WP_THERMAL] > 0)
-			((gentity_t *)pm_entSelf)->client->specificWeaponTime[WP_THERMAL] -= pml.msec;
+		int i;
+		for (i = 0; i < MAX_WEAPONS; i++) {
+			if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] > 0)
+				((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] -= pml.msec;
+		}
 	}
 #endif
 #endif
@@ -9411,31 +9412,29 @@ if (pm->ps->duelInProgress)
 			PM_BeginWeaponChange( pm->cmd.weapon );
 		}
 	}
+	
 
-	if ( pm->ps->weaponTime > 0 ) {
+#if _SPECIFICWEAPONTIME
+	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
+	{
+		if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
+			if (pm->ps->weapon != pm->cmd.weapon) {
+				PM_FinishWeaponChange();
+			}
+			return;
+		}
+	}
+	else
+#else
+	if (pm->ps->weaponTime > 0) {
 		//This is the saddest hack we have seen yet
 		if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK && pm->ps->weapon == WP_DET_PACK && pm->ps->hasDetPackPlanted && /*!(pm->cmd.buttons & BUTTON_ATTACK) &&*/ pm->cmd.buttons & BUTTON_ALT_ATTACK) {
 		}
 		else {
-#if _GAME
-#if _SPECIFICWEAPONTIME
-			if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE])
-			{
-				if (((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] > 0) {
-					// change weapon if time
-					//Com_Printf("Weaponstate is %i and changing is %i\n", pm->ps->weaponstate, pm->ps->weapon != pm->cmd.weapon);
-					if (pm->ps->weapon != pm->cmd.weapon) {
-						PM_FinishWeaponChange();
-					}
-					return;
-				}
-			}
-			else
-#endif
-#endif
 			return;
 		}
 	}
+#endif
 
 	if (pm->ps->weapon == WP_DISRUPTOR &&
 		pm->ps->zoomMode == 1)
@@ -10072,8 +10071,13 @@ if (pm->ps->duelInProgress)
 
 #if _GAME
 #if _SPECIFICWEAPONTIME
+
 	if ((g_tweakWeapons.integer & WT_TRIBES) && !pm->ps->stats[STAT_RACEMODE]) {
-		((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] += addTime;
+		int i;
+		for (i = 0; i < MAX_WEAPONS; i++) {
+			((gentity_t *)pm_entSelf)->client->specificWeaponTime[i] = 800;
+		}
+		((gentity_t *)pm_entSelf)->client->specificWeaponTime[pm->ps->weapon] += addTime - 800;
 	}
 #endif
 #endif
