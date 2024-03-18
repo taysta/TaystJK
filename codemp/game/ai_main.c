@@ -6269,11 +6269,14 @@ void NewBotAI_GetAim(bot_state_t *bs)
 	gentity_t *saber;
 
 	bs->hitSpotted = qfalse;
-
 	if (bs->runningLikeASissy) {
 		NewBotAI_GetStrafeAim(bs);
 		return;
 	}
+
+	if (!bs->currentEnemy || !bs->currentEnemy->client)
+		return;
+
 	/*
 		trType_t	trType;
 	int		trTime;
@@ -6281,7 +6284,6 @@ void NewBotAI_GetAim(bot_state_t *bs)
 	vec3_t	trBase;
 	vec3_t	trDelta;			// velocity, etc
 	*/
-
 	//Well we should loop through every client and see if they are saberthrowing.  Then get the closest saber to us and aim at that if its close enough.
 	if (!g_entities[bs->client].client->ps.saberInFlight) {
 		while (i <= MAX_CLIENTS)
@@ -6303,7 +6305,6 @@ void NewBotAI_GetAim(bot_state_t *bs)
 			i++;
 		}
 	}
-
 	//Saber is inrange , AND  nearest target is far enough away OR thrower is nearest target(?
 	if (saberDistance < 200*200 && (bs->frame_Enemy_Len > 200 || bs->currentEnemy->client->ps.clientNum == saberOwner)) { //Dont aim at it if theres a diff enemy in saber range?
 		vec3_t a, ang;
@@ -6312,10 +6313,12 @@ void NewBotAI_GetAim(bot_state_t *bs)
 		//VectorCopy(saber->s.pos.trBase, headlevel);
 		//BotAimLeading(bs, headlevel, bLeadAmount);
 
-		VectorSubtract(saber->s.pos.trBase, bs->eye, a);
-		vectoangles(a, ang);
-		VectorCopy(ang, bs->goalAngles);
-		bs->hitSpotted = qtrue;
+		if (saber) {
+			VectorSubtract(saber->s.pos.trBase, bs->eye, a);
+			vectoangles(a, ang);
+			VectorCopy(ang, bs->goalAngles);
+			bs->hitSpotted = qtrue;
+		}
 	}
 	/*
 	if (bs->cur_ps.weapon == WP_SABER && bs->currentEnemy->client->ps.saberInFlight && bs->frame_Enemy_Len > 200) { //Try to block saber in air
@@ -6340,7 +6343,6 @@ void NewBotAI_GetAim(bot_state_t *bs)
 			headlevel[2] += 24; //aim a bit higher for saberthrow
 		G_NewBotAIAimLeading(bs, headlevel);
 	}
-
 	VectorCopy(bs->goalAngles, bs->ideal_viewangles);
 }
 
@@ -8609,7 +8611,6 @@ void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 	trap->EA_Jump(bs->client);
 	}
 		*/
-
 	trap->EA_Action(bs->client, ACTION_SKI);
 
 	StandardBotAI(bs, thinktime);
