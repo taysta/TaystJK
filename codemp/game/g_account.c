@@ -7425,7 +7425,7 @@ void G_SpawnCapRoutesFromCFG(void) {
 	for (routeNum = 0; routeNum < MAX_ROUTES_PER_TEAM; routeNum++) {
 		int args = 1, row = 0;
 		Com_sprintf(fileName, sizeof(fileName), "caproutes/%s_b_%i.cfg", mapname, routeNum+1); //mapname
-		Com_Printf("^5Filename blue is %s\n", fileName);
+		//Com_Printf("^5Filename blue is %s\n", fileName);
 																			
 
 		fLen = trap->FS_Open(fileName, &f, FS_READ);
