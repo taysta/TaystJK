@@ -2414,6 +2414,7 @@ Ghoul2 Insert End
 			ScaleModelAxis(&ent);
 
 			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+				trap->R_AddRefEntityToScene(&ent);
 				//Com_Printf("Pre settings %i [%2.f %.2f %.2f %.2f] %i\n", ent.renderfx, ent.shaderRGBA[0], ent.shaderRGBA[1], ent.shaderRGBA[2], ent.shaderRGBA[3], ent.customShader);
 				//ent.renderfx &= ~RF_FORCE_ENT_ALPHA;
 				float distance = Distance(ent.origin, cg.predictedPlayerState.origin);
