@@ -8480,7 +8480,7 @@ void NewBotAI_NF(bot_state_t *bs)
 void G_Kill(gentity_t *ent);
 qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 {
-	int sequence, activeCapRoute, activeCapRouteSequence;
+	int activeCapRoute, activeCapRouteSequence; //sequence,
 	vec3_t newSpot = { 0 };
 
 	if (level.gametype != GT_CTF || !g_entities[bs->client].client || !g_entities[bs->client].client->pers.activeCapRoute)
