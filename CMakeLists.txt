@@ -383,6 +383,7 @@ else()
 	endif()
 endif()
 
+add_subdirectory(lib/mongoose)
 configure_file(shared/qcommon/q_version.h.in shared/qcommon/q_version.h @ONLY)
 
 #=============================================================================

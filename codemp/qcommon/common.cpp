@@ -1506,6 +1506,7 @@ void Com_Init( char *commandLine ) {
 		SE_Init();
 
 		Sys_Init();
+		NET_HTTP_Init();
 
 		Sys_SetProcessorAffinity();
 
@@ -1794,6 +1795,8 @@ void Com_Frame( void ) {
 
 		// mess with msec if needed
 		msec = Com_ModifyMsec( msec );
+
+		NET_HTTP_ProcessEvents();
 
 		//
 		// server side
