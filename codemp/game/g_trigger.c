@@ -2188,16 +2188,18 @@ void NewPush(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Tim
 			}
 
 			if (1) {
-				if (!player->speakerEntity) {
-					speaker = G_Spawn(qfalse); //Ok... dont keep spawning them every frame. Spawn one if needed and then a use field on the client to keep track of their 'speaker' and move it around with the? Deleting after 30s to get re-spawned if needed.
-					player->speakerEntity = speaker->s.number;
-					trap->LinkEntity((sharedEntity_t *)speaker);
-					//Com_Printf("Creating speaker\n");
-				}
-				else {
-					speaker = &g_entities[player->speakerEntity];
-					//Com_Printf("Using existing speaker\n");
-					//trap->LinkEntity((sharedEntity_t *)speaker);
+				if (player->s.number < MAX_CLIENTS) {
+					if (!player->speakerEntity) {
+						speaker = G_Spawn(qfalse); //Ok... dont keep spawning them every frame. Spawn one if needed and then a use field on the client to keep track of their 'speaker' and move it around with the? Deleting after 30s to get re-spawned if needed.
+						player->speakerEntity = speaker->s.number;
+						trap->LinkEntity((sharedEntity_t *)speaker);
+						//Com_Printf("Creating speaker\n");
+					}
+					else {
+						speaker = &g_entities[player->speakerEntity];
+						//Com_Printf("Using existing speaker\n");
+						//trap->LinkEntity((sharedEntity_t *)speaker);
+					}
 				}
 				if (1) {
 

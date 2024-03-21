@@ -5499,10 +5499,13 @@ static void PM_CrashLand(void) {
 			}
 			else
 			{
-				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
-					if (delta_send > 150)
-						PM_AddEventWithParm(EV_FALL, 1);
+				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+					//just do no fall dmg in tribes cuz we do impact dmg elsewhere?
 				}
+				//else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+				//	if (delta_send > 150)
+				//		PM_AddEventWithParm(EV_FALL, 1);
+				//}
 				else {
 					PM_AddEventWithParm(EV_FALL, delta_send);
 				}

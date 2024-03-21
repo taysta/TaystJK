@@ -5819,7 +5819,25 @@ void ClientThink_real( gentity_t *ent ) {
 	//Com_Printf("Flags: %i, hasbeenfired: %i, fireheld: %i\n", ent->client->ps.pm_flags, ent->client->hookHasBeenFired, ent->client->fireHeld);
 #endif
 	
+	//New fall damage?
+	{
+		if (ent->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && !ent->client->ps.stats[STAT_RACEMODE] && ent->client->ps.pm_type == PM_NORMAL) {
+			//impact damage
+			vec3_t lostVel;
+			float lostSpeed;
+			VectorSubtract(ent->client->lastVelocity, ent->client->ps.velocity, lostVel);
+			lostSpeed = VectorLength(lostVel);
+			if (lostSpeed > 1200) {
+				int damage = lostSpeed * 0.1f;
+				//Com_Printf("lost Speed is %.0f damage is %i\n", lostSpeed, damage);
+				if (damage > g_maxFallDmg.integer)
+					damage = g_maxFallDmg.integer;
+				BG_AddPredictableEventToPlayerstate(EV_FALL, damage, &ent->client->ps);
+				G_Damage(ent, ent, ent, NULL, ent->client->ps.origin, damage, DAMAGE_NO_PROTECTION, MOD_FALLING);//why does this not happen from the event?
+			}
 
+		}
+	}
 	//Copy current velocity to lastvelocity
 	VectorCopy(ent->client->ps.velocity, ent->client->lastVelocity);
 

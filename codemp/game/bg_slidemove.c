@@ -853,17 +853,17 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			}
 			//
 			if (trace.entityNum < MAX_CLIENTS && g_entities[trace.entityNum].client && g_entities[trace.entityNum].client->sess.movementStyle == MV_TRIBES && g_entities[trace.entityNum].client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) {//Hit a tribes player using protect
-				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well??? superheavy
+				//Problem, this does not account for them hitting us (if we are at a standstill) but i don't think ta does this as well??? superheavy.   is this even needed if we do impact damage?
 				vec3_t diffVelocity;
 				int damage;
 				VectorSubtract(g_entities[trace.entityNum].client->ps.velocity, pm->ps->velocity, diffVelocity);
 				damage = VectorLength(diffVelocity);
 
-				damage *= 0.049f;
+				damage *= 0.04f;
 				if (damage > 30 && g_entities[trace.entityNum].client->lastKickTime < level.time) { //Debounce as well
 					damage -= 30;
-					if (damage > 150)
-						damage = 150;
+					if (damage > 100)
+						damage = 100;
 
 					if (Q_irand(0, 1))
 						G_Sound((gentity_t *)pm_entSelf, CHAN_AUTO, G_SoundIndex("sound/effects/body_slam1.mp3"));
