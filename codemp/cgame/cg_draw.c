@@ -3823,7 +3823,7 @@ float overlayXPos;
 
 static void CG_DrawTaystHUD(char* s) {
 	float xOffset = 0.0f;
-	float textWidth = CG_Text_Width(s, TIMER_FONT_SIZE, FONT_LARGE);
+	float textWidth = CG_Text_Width(s, TIMER_FONT_SIZE, FONT_MEDIUM);
 	rectDef_t background;
     background.y = TIMER_TOP_PADDING;
     background.w = textWidth + TIMER_SIDE_PADDING;
@@ -3844,7 +3844,7 @@ static void CG_DrawTaystHUD(char* s) {
                       0.0f,
                       0,
                       ITEM_TEXTSTYLE_SHADOWED,
-					  FONT_LARGE);
+					  FONT_MEDIUM);
     }
 
 	if ( cgs.gametype >= GT_TEAM )
@@ -3933,7 +3933,7 @@ void CG_DrawTeamHUD(rectDef_t background, float xOffset) {
 		trap->R_SetColor(NULL);
 	}
 
-	if ((cg_drawStatus.integer == 2) || (cgs.gametype == GT_CTF) || (cgs.gametype == GT_CTY)) {
+	if ((cg_drawStatus.integer == 2) && ((cgs.gametype == GT_CTF) || (cgs.gametype == GT_CTY))) {
 		CG_DrawCTFHUD(blueBackground, redBackground, xOffset);
 	}
 }
