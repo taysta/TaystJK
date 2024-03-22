@@ -310,7 +310,7 @@ void main()
 			float sqrLightDist = dot(L, L);
 			float NL = clamp(dot(normal, L) / sqrt(sqrLightDist), 0.0, 1.0);
 
-			var_Color.rgb *= u_DirectedLight * NL + u_AmbientLight;
+			var_Color.rgb *= mix(u_DirectedLight, u_AmbientLight, NL);
 		#endif
 	}
 	var_Color *= disintegration;
@@ -923,7 +923,7 @@ vec3 CalcDynamicLightContribution(
 	vec3 outColor = vec3(0.0);
 	vec3 position = viewOrigin - viewDir;
 
-	for ( int i = 0; i < u_NumLights; i++ )
+	for ( int i = 0; i < min(u_NumLights, MAX_DLIGHTS); i++ )
 	{
 		if ( ( u_LightMask & ( 1 << i ) ) == 0 ) {
 			continue;
