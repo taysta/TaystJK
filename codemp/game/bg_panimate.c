@@ -2191,9 +2191,9 @@ int BG_ParseAnimationEvtFile( const char *as_filename, int animFileIndex, int ev
 	if(cgs.serverMod == SVMOD_JAPRO)
 		Com_sprintf( sfilename, sizeof( sfilename ), "%sanimevents_japro.cfg", as_filename );
 	else if(cgs.serverMod == SVMOD_JAPLUS)
-		Com_sprintf( sfilename, sizeof( sfilename ), "%animevents_japlus.cfg", as_filename );
+		Com_sprintf( sfilename, sizeof( sfilename ), "%sanimevents_japlus.cfg", as_filename );
 	else
-		Com_sprintf( sfilename, sizeof( sfilename ), "%animevents.cfg", as_filename );
+		Com_sprintf( sfilename, sizeof( sfilename ), "%sanimevents.cfg", as_filename );
 
 	if (bg_animParseIncluding <= 0)
 	{ //should already be done if we're including
