@@ -571,7 +571,7 @@ rescan:
 			}
 			chat[l] = '\0';
 
-			CL_LogPrintf(cls.log.file, chat);
+			CL_LogPrintf(cls.log.file, "%s", chat);
 		}
 
 		stampColor = COLOR_WHITE;
