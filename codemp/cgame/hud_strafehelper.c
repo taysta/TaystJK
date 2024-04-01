@@ -885,21 +885,26 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 		switch (gazLine) {
 		case GAZ_MIN:
 			delta = state.cgaz.d_min;
-			break;
+			delta += state.strafeHelper.offset;
+				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
 				delta = CGAZ_Opt((state.onGround && state.cgaz.wasOnGround), state.cgaz.v, state.cgaz.vf, ((state.onGround && state.cgaz.wasOnGround) ? (fakeWishspeed * state.physics.accelerate * state.cgaz.frametime) : (fakeWishspeed * state.physics.airaccelerate * state.cgaz.frametime)), fakeWishspeed);
+				delta += state.strafeHelper.offset;
 			}
 			else {
 				delta = state.cgaz.d_opt;
+				delta += state.strafeHelper.offset;
 			}
 			break;
 		case GAZ_MAX_COS:
 			delta = state.cgaz.d_max_cos;
-			break;
+			delta += state.strafeHelper.offset;
+				break;
 		case GAZ_MAX:
 			delta = state.cgaz.d_max;
-			break;
+			delta += state.strafeHelper.offset;
+				break;
 		default:
 			break;
 		}
