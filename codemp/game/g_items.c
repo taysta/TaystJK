@@ -2270,7 +2270,7 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_THERMAL] = 2;
 				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 
-				if (other->health < other->client->ps.stats[STAT_MAX_HEALTH]) {
+				if (other->health > 0 && other->health < other->client->ps.stats[STAT_MAX_HEALTH]) {
 					other->client->passiveHealthDebReduce = level.time; //Passif regen
 					if (other->client->pers.tribesClass == 1) {
 						other->health += 250;
