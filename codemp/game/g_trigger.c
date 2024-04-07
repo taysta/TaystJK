@@ -1967,6 +1967,7 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	}
 	if (level.time - player->client->oobTime > trigger->count * 1000) {
 		//trap->SendServerCommand(player - g_entities, "cp \"^1Flag Returned!\n\n\n\n\n\n\n\n\n\n\""); //Send message?
+		trap->SendServerCommand(player - g_entities, "cp \""); //clear previous flag warning print?
 		if (player->client->ps.powerups[PW_NEUTRALFLAG]) {		// only happens in One Flag CTF
 			Team_ReturnFlag(TEAM_FREE);
 			player->client->ps.powerups[PW_NEUTRALFLAG] = 0;
@@ -1979,7 +1980,6 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 			Team_ReturnFlag(TEAM_BLUE);
 			player->client->ps.powerups[PW_BLUEFLAG] = 0;
 		}
-
 	}
 	else {
 		trap->SendServerCommand(player - g_entities, va("cp \"^3Flag returning in %.1fs\n\n\n\n\n\n\n\n\n\n\"", 0.001*(trigger->count * 1000 - (level.time - player->client->oobTime)))); //Send message?`
