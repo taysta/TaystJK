@@ -218,7 +218,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define	WT_FIX_MINEAMMO			(1<<24)
 #define	WT_JK2_STYLE_ALT_TRIPMINE	(1<<25)
 #define	WT_PROJ_SNIPER			(1<<26)
-#define	WT_TRIBES			(1<<27)
+#define	WT_TRIBES				(1<<27) //Move this into g_tribesmode surely..?
 #define WT_SLOW_SNIPER			(1<<28)
 #define WT_SOLID_ROCKET			(1<<29)
 #define WT_NERFED_PISTOL		(1<<30)
@@ -1219,6 +1219,7 @@ struct gclient_s {
 
 	int			midRunTeleMarkCount;
 	int			midRunTeleCount;
+	int			oobTime;
 
 	vec3_t		lastVelocity;
 
