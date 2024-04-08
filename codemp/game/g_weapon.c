@@ -271,9 +271,10 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 7;
+			ent->client->ps.jetpackFuel -= 8;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
+		ent->client->overheatDebReduce = level.time + 200;
 	}
 	else {
 		vel = BRYAR_PISTOL_VEL * g_projectileVelocityScale.value;
@@ -326,6 +327,8 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 		{
 			count = 5;
 		}
+
+		ent->client->ps.jetpackFuel -= count * 6;
 
 		if (count > 1)
 		{
@@ -606,9 +609,10 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 
 	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 5;
+			ent->client->ps.jetpackFuel -= 8;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
+		ent->client->overheatDebReduce = level.time + 200;
 	}
 
 	if ( altFire || (g_tweakWeapons.integer & WT_TRIBES))

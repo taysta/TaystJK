@@ -3999,7 +3999,7 @@ void G_RunFrame( int levelTime ) {
 						float recharge = VectorLength(ent->client->ps.velocity) / (ent->client->ps.speed);
 						if (recharge < 1)
 							recharge = 1;
-						ent->client->ps.jetpackFuel += 2 * recharge;
+						ent->client->ps.jetpackFuel += 6 * recharge;
 					}
 					if (ent->client->ps.jetpackFuel > 100)
 						ent->client->ps.jetpackFuel = 100;
