@@ -172,9 +172,8 @@ namespace
 		{
 			FBO_Bind(tr.weatherDepthFbo);
 
-			qglViewport(0, 0, tr.weatherDepthFbo->width, tr.weatherDepthFbo->height);
-			qglScissor(0, 0, tr.weatherDepthFbo->width, tr.weatherDepthFbo->height);
-
+			GL_SetViewportAndScissor(0, 0, tr.weatherDepthFbo->width, tr.weatherDepthFbo->height);
+	
 			if (tr.weatherSystem->weatherBrushType == WEATHER_BRUSHES_OUTSIDE) // used outside brushes
 			{
 				qglClearDepth(0.0f);
