@@ -1586,7 +1586,6 @@ typedef struct {
 	int				frameCount;			// copied from tr.frameCount
 	cplane_t		portalPlane;		// clip anything behind this if mirroring
 	int				viewportX, viewportY, viewportWidth, viewportHeight;
-	int				scissorX, scissorY, scissorWidth, scissorHeight;
 	FBO_t			*targetFbo;
 	int				targetFboLayer;
 	float			fovX, fovY;
@@ -2259,8 +2258,11 @@ typedef struct glstate_s {
 	int			currenttmu;
 	int			texEnv[2];
 	int			faceCulling;
+	bool		blend;
 	float		minDepth;
 	float		maxDepth;
+	ivec2_t		viewportOrigin;
+	ivec2_t		viewportSize;
 	uint32_t	glStateBits;
 	uint32_t		vertexAttribsState;
 	vertexAttribute_t currentVaoAttribs[ATTR_INDEX_MAX];
@@ -2929,6 +2931,7 @@ void	GL_CheckErrs( const char *file, int line );
 void	GL_State( uint32_t stateVector );
 void    GL_SetProjectionMatrix(matrix_t matrix);
 void    GL_SetModelviewMatrix(matrix_t matrix);
+void	GL_SetViewportAndScissor(int viewportX, int viewportY, int viewportWidth, int viewportHeight);
 void	GL_Cull( int cullType );
 void	GL_DepthRange( float min, float max );
 void	GL_VertexAttribPointers(size_t numAttributes,

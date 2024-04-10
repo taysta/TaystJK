@@ -1960,18 +1960,31 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 		player->client->pers.haste = qtrue;
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_FLAGS) { //Reset flags
+
+	//If there is a count, use that as timer
+	if (!player->client->oobTime) {
+		player->client->oobTime = level.time;
+	}
+	if (level.time - player->client->oobTime > trigger->count * 1000) {
+		//trap->SendServerCommand(player - g_entities, "cp \"^1Flag Returned!\n\n\n\n\n\n\n\n\n\n\""); //Send message?
+		trap->SendServerCommand(player - g_entities, "cp \""); //clear previous flag warning print?
 		if (player->client->ps.powerups[PW_NEUTRALFLAG]) {		// only happens in One Flag CTF
-			Team_ReturnFlag( TEAM_FREE );
+			Team_ReturnFlag(TEAM_FREE);
 			player->client->ps.powerups[PW_NEUTRALFLAG] = 0;
 		}
 		else if (player->client->ps.powerups[PW_REDFLAG]) {		// only happens in standard CTF
-			Team_ReturnFlag( TEAM_RED );
+			Team_ReturnFlag(TEAM_RED);
 			player->client->ps.powerups[PW_REDFLAG] = 0;
 		}
 		else if (player->client->ps.powerups[PW_BLUEFLAG]) {	// only happens in standard CTF
-			Team_ReturnFlag( TEAM_BLUE );
+			Team_ReturnFlag(TEAM_BLUE);
 			player->client->ps.powerups[PW_BLUEFLAG] = 0;
 		}
+	}
+	else {
+		trap->SendServerCommand(player - g_entities, va("cp \"^3Flag returning in %.1fs\n\n\n\n\n\n\n\n\n\n\"", 0.001*(trigger->count * 1000 - (level.time - player->client->oobTime)))); //Send message?`
+	}
+
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_JUMP) { //Change Jump Level with "count" val
 		if (trigger->count) { //Set client jump without resetting timer because someone suggested a course that uses different movementstyles for each room.
@@ -2084,6 +2097,9 @@ void Use_target_restrict_off( gentity_t *trigger, gentity_t *other, gentity_t *p
 			player->client->savedJumpLevel = 0;
 		}
 	}
+	if (player->client->oobTime)
+		trap->SendServerCommand(player - g_entities, "cp \""); //clear previous flag warning print?
+	player->client->oobTime = 0;
 }
 
 void FreePersonalSpeaker(gentity_t *speaker) {
