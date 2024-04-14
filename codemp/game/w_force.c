@@ -2116,6 +2116,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				int modPowerLevel = -1;
 				int	dmg = 0; //Q_irand( 1, 3 );
 				int dmg2 = 0;
+				int healthoverride = 0;
 
 				if (self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_1)
 				{
@@ -2123,16 +2124,22 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				}
 				else if (self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_2)
 				{
-					dmg = 3;
 					if (self->client->sess.raceMode)
 						dmg = -4;
+					else
+						dmg = 3;
 				}
 				else if (self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_3)
 				{
 #if _draintest
 					dmg = g_forceDrainDamage.integer;//4
 #else
-					dmg = 4;
+					if (g_tweakForce.integer & FT_DRAINDMGNERF) {
+						healthoverride = 4;
+						dmg = 3;
+					}
+					else
+						dmg = 4;
 #endif
 				}
 
@@ -2185,7 +2192,10 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 				if (self->client->ps.stats[STAT_HEALTH] < self->client->ps.stats[STAT_MAX_HEALTH] &&
 					self->health > 0 && self->client->ps.stats[STAT_HEALTH] > 0)
 				{
-					self->health += dmg;
+					if (healthoverride)
+						self->health += healthoverride;
+					else
+						self->health += dmg;
 					if (self->health > self->client->ps.stats[STAT_MAX_HEALTH])
 					{
 						self->health = self->client->ps.stats[STAT_MAX_HEALTH];
@@ -5969,7 +5979,9 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 	if ( !(self->client->ps.fd.forcePowersActive & (1<<FP_LIGHTNING)) )
 		self->client->force.lightningDebounce = level.time;
 
-	if ( (!self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN)) && //whats up with fp_drain being mentioned here
+	//Com_Printf("Forcepowers active %i for %s\n", self->client->ps.fd.forcePowersActive, self->client->pers.netname);
+
+	if ( (!self->client->ps.fd.forcePowersActive || self->client->ps.fd.forcePowersActive == (1 << FP_DRAIN) || (self->client->ps.fd.forceGripBeingGripped && g_tweakForce.integer & FT_FIXGRIPPEDREGEN && self->client->ps.fd.forcePowersActive == (1 << FP_LEVITATION) && self->client->pers.cmd.upmove <= 0)) && //whats up with fp_drain being mentioned here
 		((self->client->sess.movementStyle != MV_TRIBES) || !(self->client->ps.eFlags & EF_JETPACK_ACTIVE)) &&
 		((self->client->sess.movementStyle != MV_TRIBES) || ((self->client->jetPackDebReduce + 250) < level.time)) && //Extra time here?
 			!self->client->ps.saberInFlight && (self->client->ps.stats[STAT_MOVEMENTSTYLE] != MV_SPEED) && (self->client->ps.weapon != WP_SABER || !BG_SaberInSpecial(self->client->ps.saberMove)) )
