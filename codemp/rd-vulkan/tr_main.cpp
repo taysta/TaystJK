@@ -292,24 +292,6 @@ void R_TransformModelToClip( const vec3_t src, const float *modelMatrix, const f
 
 /*
 ==========================
-R_TransformModelToClipMVP
-==========================
-*/
-/*
-static void R_TransformModelToClipMVP( const vec3_t src, const float *mvp, vec4_t clip ) {
-	int i;
-
-	for (i = 0; i < 4; i++) {
-		clip[i] =
-			src[0] * mvp[i + 0 * 4] +
-			src[1] * mvp[i + 1 * 4] +
-			src[2] * mvp[i + 2 * 4] +
-			1 * mvp[i + 3 * 4];
-	}
-}*/
-
-/*
-==========================
 R_TransformClipToWindow
 
 ==========================
@@ -1050,79 +1032,6 @@ static qboolean SurfIsOffscreen( const drawSurf_t *drawSurf, vec4_t clipDest[128
 	return qfalse;
 }
 
-#if 0
-/*
-================
-R_GetModelViewBounds
-================
-*/
-static void R_GetModelViewBounds( int *mins, int *maxs )
-{
-	float			minn[2];
-	float			maxn[2];
-	float			norm[2];
-	float			mvp[16];
-	float			dist[4];
-	vec4_t			clip;
-	int				i, j;
-
-	minn[0] = minn[1] = 1.0;
-	maxn[0] = maxn[1] = -1.0;
-
-	// premultiply
-	myGlMultMatrix(tr.ori.modelMatrix, tr.viewParms.projectionMatrix, mvp);
-
-	for (i = 0; i < tess.numVertexes; i++) {
-		R_TransformModelToClipMVP(tess.xyz[i], mvp, clip);
-		if (clip[3] <= 0.0) {
-			dist[0] = DotProduct(tess.xyz[i], tr.viewParms.frustum[0].normal) - tr.viewParms.frustum[0].dist; // right
-			dist[1] = DotProduct(tess.xyz[i], tr.viewParms.frustum[1].normal) - tr.viewParms.frustum[1].dist; // left
-			dist[2] = DotProduct(tess.xyz[i], tr.viewParms.frustum[2].normal) - tr.viewParms.frustum[2].dist; // bottom
-			dist[3] = DotProduct(tess.xyz[i], tr.viewParms.frustum[3].normal) - tr.viewParms.frustum[3].dist; // top
-			if (dist[0] <= 0 && dist[1] <= 0) {
-				if (dist[0] < dist[1]) {
-					maxn[0] = 1.0f;
-				}
-				else {
-					minn[0] = -1.0f;
-				}
-			}
-			else {
-				if (dist[0] <= 0) maxn[0] = 1.0f;
-				if (dist[1] <= 0) minn[0] = -1.0f;
-			}
-			if (dist[2] <= 0 && dist[3] <= 0) {
-				if (dist[2] < dist[3])
-					minn[1] = -1.0f;
-				else
-					maxn[1] = 1.0f;
-			}
-			else {
-				if (dist[2] <= 0) minn[1] = -1.0f;
-				if (dist[3] <= 0) maxn[1] = 1.0f;
-			}
-		}
-		else {
-			for (j = 0; j < 2; j++) {
-				if (clip[j] > clip[3]) clip[j] = clip[3]; else
-					if (clip[j] < -clip[3]) clip[j] = -clip[3];
-			}
-			norm[0] = clip[0] / clip[3];
-			norm[1] = clip[1] / clip[3];
-			for (j = 0; j < 2; j++) {
-				if (norm[j] < minn[j]) minn[j] = norm[j];
-				if (norm[j] > maxn[j]) maxn[j] = norm[j];
-			}
-		}
-	}
-
-	mins[0] = (int)(-0.5 + 0.5 * (1.0 + minn[0]) * tr.viewParms.viewportWidth);
-	mins[1] = (int)(-0.5 + 0.5 * (1.0 + minn[1]) * tr.viewParms.viewportHeight);
-	maxs[0] = (int)(0.5 + 0.5 * (1.0 + maxn[0]) * tr.viewParms.viewportWidth);
-	maxs[1] = (int)(0.5 + 0.5 * (1.0 + maxn[1]) * tr.viewParms.viewportHeight);
-}
-#endif
-
 /*
 ========================
 R_MirrorViewBySurface
@@ -1171,18 +1080,6 @@ static qboolean R_MirrorViewBySurface( const drawSurf_t *drawSurf, int entityNum
 		r_numdlights += oldParms.num_dlights;
 		for (i = 0; i < oldParms.num_dlights; i++)
 			newParms.dlights[i] = oldParms.dlights[i];
-	}
-#endif
-
-#if 0
-	// causing artifacts with mirrors.
-	if (tess.numVertexes > 2 && r_fastsky->integer && vk.fastSky) {
-		int mins[2], maxs[2];
-		R_GetModelViewBounds(mins, maxs);
-		newParms.scissorX = newParms.viewportX + mins[0];
-		newParms.scissorY = newParms.viewportY + mins[1];
-		newParms.scissorWidth = maxs[0] - mins[0];
-		newParms.scissorHeight = maxs[1] - mins[1];
 	}
 #endif
 

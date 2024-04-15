@@ -747,11 +747,11 @@ void vk_init_library( void )
 	int device_index, i;
 	VkResult res;
 #ifdef _WIN32
-    qboolean deviceCountRetried = qfalse;
+	qboolean deviceCountRetried = qfalse;
 __initStart:
 #endif
 
-    Com_Memset(&vk, 0, sizeof(vk));
+	Com_Memset(&vk, 0, sizeof(vk));
 
 	qvkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)ri.VK_GetInstanceProcAddress();
 	if (qvkGetInstanceProcAddr == NULL)
