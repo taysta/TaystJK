@@ -107,12 +107,12 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 	*height = 0;
 
 	// Try loading the image with the original extension (if possible).
-	const char *extension = COM_GetExtension(shortname);
-	const ImageLoaderMap *imageLoader = FindImageLoader(extension);
-	if (imageLoader != NULL)
+	const char *extension = COM_GetExtension (shortname);
+	const ImageLoaderMap *imageLoader = FindImageLoader (extension);
+	if ( imageLoader != NULL )
 	{
-		imageLoader->loader(shortname, pic, width, height);
-		if (*pic)
+		imageLoader->loader (shortname, pic, width, height);
+		if ( *pic )
 		{
 			return;
 		}
@@ -120,24 +120,21 @@ void R_LoadImage( const char *shortname, byte **pic, int *width, int *height ) {
 
 	// Loop through all the image loaders trying to load this image.
 	char extensionlessName[MAX_QPATH];
-	COM_StripExtension(shortname, extensionlessName, sizeof(extensionlessName));
-	for (int i = 0; i < numImageLoaders; i++)
+	COM_StripExtension(shortname, extensionlessName, sizeof( extensionlessName ));
+	for ( int i = 0; i < numImageLoaders; i++ )
 	{
 		const ImageLoaderMap *tryLoader = &imageLoaders[i];
-		if (tryLoader == imageLoader)
+		if ( tryLoader == imageLoader )
 		{
 			// Already tried this one.
 			continue;
 		}
 
-		const char *name = va("%s.%s", extensionlessName, tryLoader->extension);
-
-		tryLoader->loader(name, pic, width, height);
-		if (*pic)
+		const char *name = va ("%s.%s", extensionlessName, tryLoader->extension);
+		tryLoader->loader (name, pic, width, height);
+		if ( *pic )
 		{
 			return;
 		}
 	}
-
-	return;
 }
