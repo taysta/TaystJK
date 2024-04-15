@@ -1634,13 +1634,13 @@ static	void R_LoadSurfaces( const lump_t *surfs, const lump_t *verts, const lump
 	}
 
 	if ( r_patchStitching->integer ) {
-		R_StitchAllPatches(worldData);
+		R_StitchAllPatches( worldData );
 	}
 
 	R_FixSharedVertexLodError(worldData);
 
 	if ( r_patchStitching->integer ) {
-		R_MovePatchSurfacesToHunk(worldData);
+		R_MovePatchSurfacesToHunk( worldData );
 	}
 
 	vk_debug("...loaded %d faces, %i meshes, %i trisurfs, %i flares\n", numFaces, numMeshes, numTriSurfs, numFlares );
