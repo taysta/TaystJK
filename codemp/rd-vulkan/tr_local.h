@@ -1598,6 +1598,7 @@ extern	cvar_t	*r_marksOnTriangleMeshes;
 
 extern	cvar_t	*r_aspectCorrectFonts;
 extern	cvar_t	*cl_ratioFix;
+extern cvar_t	*r_patchStitching;
 
 // Vulkan
 extern cvar_t	*r_defaultImage;
@@ -1900,7 +1901,6 @@ CURVE TESSELATION
 
 ============================================================
 */
-#define PATCH_STITCHING
 
 srfGridMesh_t	*R_SubdividePatchToGrid( int width, int height, drawVert_t points[MAX_PATCH_SIZE * MAX_PATCH_SIZE] );
 srfGridMesh_t	*R_GridInsertColumn( srfGridMesh_t *grid, int column, int row, vec3_t point, float loderror );
