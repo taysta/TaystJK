@@ -837,6 +837,15 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 				PM_ClipVelocity(pm->ps->velocity, planes[i], clipVelocity, OVERCLIP);
 			// slide along the plane
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
+#if 1
+			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && 
+				(((pml.groundTrace.surfaceFlags & MATERIAL_MASK) >= MATERIAL_SHORTGRASS && (pml.groundTrace.surfaceFlags & MATERIAL_MASK) <= MATERIAL_GRAVEL) || ((pml.groundTrace.surfaceFlags & MATERIAL_MASK) == MATERIAL_MUD) || ((pml.groundTrace.surfaceFlags & MATERIAL_MASK) == MATERIAL_ROCK)) &&
+				(planes[i][2] == 0 || planes[i][2] == 1)) {//Vertical or horizontal brush collision in tribes mode
+				//For some reason I have to use pml.groundtrace results instead of trace results because trace results dont see the surfaceflags or contents (???).  Need to add more material types for terrain detection.  Or make use of surfaceparm terrain instead in the future.
+				pm->ps->pm_time = 250;
+				//Com_Printf("^3Deadstop detection! Mitigating! Contents is %i %i %i %i\n", trace.surfaceFlags & MATERIAL_MASK, pml.groundTrace.surfaceFlags & MATERIAL_MASK, trace.contents & CONTENTS_INSIDE, pml.groundTrace.contents & CONTENTS_INSIDE);
+			}
+#endif
 
 #if _GAME
 			//Always in coop? what if somehow there is no playerstate? crash?

@@ -218,6 +218,8 @@ XCVAR_DEF( cg_strafeTrailRacersOnly,			"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailRadius,				"2",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailFPS,					"40",	NULL,					0 )
 XCVAR_DEF( cg_strafeTrailGhost,					"1",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_strafeTrailPlums,					"0",	NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_spotIconPlums,					"0",	NULL,					CVAR_ARCHIVE )
 
 XCVAR_DEF( cg_drainFX,							"1",	NULL,					CVAR_NONE )
 //Make maxpackets userinfo maybe idk
@@ -331,7 +333,7 @@ XCVAR_DEF( cg_shaderSaberGlow,					"0.625",				NULL,					CVAR_NONE )//1.25?
 XCVAR_DEF( cg_saberTeamColors,					"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_noRGBSabers,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( disco,								"0",					NULL,					CVAR_INTERNAL ) //xD
-XCVAR_DEF( cg_scorePlums,						"0",					NULL,					CVAR_ARCHIVE )
+XCVAR_DEF( cg_scorePlums,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_stereoSeparation,					"0.4",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_shadows,							"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_simpleItems,						"0",					NULL,					CVAR_ARCHIVE )

@@ -644,7 +644,7 @@ void CG_StrafeTrailLine( vec3_t start, vec3_t end, int time, int clientNum, int 
 
 	cg.drawingStrafeTrails |= (1 << clientNum);
 
-	if (cg_scorePlums.integer && (number > 0) && (number % SVFPS == 0)) {//oh this is stupid, assume sv_fps is 30 on servers that create it i guess.
+	if (cg_strafeTrailPlums.integer && (number > 0) && (number % SVFPS == 0)) {//oh this is stupid, assume sv_fps is 30 on servers that create it i guess.
 		localEntity_t	*le;
 		refEntity_t		*re;
 		vec3_t			angles;

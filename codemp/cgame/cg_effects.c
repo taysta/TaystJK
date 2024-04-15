@@ -1051,7 +1051,7 @@ void CG_SpotIcon( int client, vec3_t org ) {
 	static vec3_t lastPos;
 
 	// only visualize for the client that scored
-	if (client != cg.predictedPlayerState.clientNum || cg_scorePlums.integer == 0) {
+	if (client != cg.predictedPlayerState.clientNum || cg_spotIconPlums.integer == 0) {
 		return;
 	}
 
