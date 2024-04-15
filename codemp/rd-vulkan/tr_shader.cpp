@@ -3571,6 +3571,7 @@ pass, trying to guess which is the correct one to best aproximate
 what it is supposed to look like.
 =================
 */
+#if 0
 static void VertexLightingCollapse( void )
 {
 	int				stage;
@@ -3665,6 +3666,7 @@ static void VertexLightingCollapse( void )
 		Com_Memset(pStage, 0, sizeof(*pStage));
 	}
 }
+#endif
 
 static qboolean EqualACgen( const shaderStage_t *st1, const shaderStage_t *st2 )
 {
@@ -4426,8 +4428,7 @@ shader_t *FinishShader( void )
 			}
 
 			// this will be a copy of the vk_pipeline[0] but with faceculling disabled
-			pStage->vk_2d_pipeline = NULL;
-		
+			pStage->vk_2d_pipeline = 0;
 
 #ifdef USE_FOG_COLLAPSE
 			// single-stage, combined fog pipelines

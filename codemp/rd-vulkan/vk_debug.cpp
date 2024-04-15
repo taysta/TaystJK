@@ -51,7 +51,7 @@ void QDECL vk_debug( const char *msg, ... ) {
 	va_end(argptr);
 
 	fp = fopen("./vk_log.log", "a");
-	fprintf(fp, text);
+	fprintf(fp, "%s", text);
 	fclose(fp);
 #endif
 	return;

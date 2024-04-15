@@ -551,7 +551,7 @@ void vk_create_framebuffers()
             }
 
             VK_CHECK(qvkCreateFramebuffer(vk.device, &desc, NULL, &vk.framebuffers.main[i]));
-            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], va("framebuffer - main %i"), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
+            VK_SET_OBJECT_NAME(vk.framebuffers.main[i], va("framebuffer - main"), VK_DEBUG_REPORT_OBJECT_TYPE_FRAMEBUFFER_EXT);
         }
         else {
             if (i == 0) {
@@ -900,8 +900,6 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
                     clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
                 break;
             case RENDER_PASS_DGLOW:
-                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
-                break;
             case RENDER_PASS_REFRACTION:
                     clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
                 break;
@@ -1086,8 +1084,6 @@ void vk_refraction_extract( void ) {
 
 void vk_begin_post_refraction_extract_render_pass( void )
 {
-    VkViewport      viewport{};
-    VkRect2D        scissor_rect{};
     VkFramebuffer frameBuffer = vk.framebuffers.refraction.extract;
 
     vk.renderPassIndex = RENDER_PASS_REFRACTION;
