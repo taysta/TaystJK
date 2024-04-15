@@ -1292,7 +1292,7 @@ extern	cvar_t	*r_noServerGhoul2;
 Ghoul2 Insert End
 */
 
-extern	cvar_t	*r_patchStitching;
+extern cvar_t *r_patchStitching;
 
 //====================================================================
 
