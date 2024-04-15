@@ -543,11 +543,10 @@ typedef struct {
 } skinSurface_t;
 
 typedef struct skin_s {
-	char		name[MAX_QPATH];		// game path, including extension
-	int			numSurfaces;
+	char			name[MAX_QPATH];		// game path, including extension
+	int				numSurfaces;
 	skinSurface_t	*surfaces[128];
 } skin_t;
-
 
 typedef struct fog_s {
 	int			originalBrushNumber;

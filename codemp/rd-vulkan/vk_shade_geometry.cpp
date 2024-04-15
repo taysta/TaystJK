@@ -1663,8 +1663,6 @@ void RB_StageIteratorGeneric( void )
 				// use an excisting pipeline with the same def or create a new one.
 				def.face_culling = CT_TWO_SIDED;
 				tess.xstages[stage]->vk_2d_pipeline = vk_find_pipeline_ext(0, &def, qfalse);
-			}else{
-				Com_Printf("test me");
 			}
 
 			pipeline = pStage->vk_2d_pipeline;
