@@ -102,7 +102,7 @@ void main()
 			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[1] - L, 1.0),
 			u_viewProjectionMatrix * u_ModelMatrix * vec4(var_Position[2] - L, 1.0)
 		);
-
+		
 		// front cap, avoids z-fighting with other shaders by NOT using the MVP, the other surfaces won't create z-fighting
 		gl_Position = positions[0];
 		EmitVertex();
