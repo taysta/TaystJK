@@ -714,6 +714,11 @@ void CL_ParseDownload ( msg_t *msg ) {
 			FS_FCloseFile( clc.download );
 			clc.download = 0;
 
+			int checksum;
+			if (FS_SV_VerifyZipFile(clc.downloadTempName, &checksum)) {
+				Com_Error(ERR_DROP, "Download Error: pk3 archive corrupted");
+			}
+
 			// rename the file
 			FS_SV_Rename ( clc.downloadTempName, clc.downloadName, qfalse );
 		}
@@ -741,6 +746,11 @@ HTTP download ended
 
 void CL_EndHTTPDownload(dlHandle_t handle, qboolean success, const char *err_msg) {
 	if (success) {
+		int checksum;
+		if (FS_SV_VerifyZipFile(clc.downloadTempName, &checksum)) {
+			Com_Error(ERR_DROP, "Download Error: pk3 archive corrupted");
+		}
+
 		FS_SV_Rename(clc.downloadTempName, clc.downloadName, qfalse);
 	} else {
 		Com_Error(ERR_DROP, "Download Error: %s", err_msg);
