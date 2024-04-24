@@ -6222,7 +6222,7 @@ void UI_UpdateVideoSetup ( void )
 	trap->Cvar_Set ( "cg_shadows", UI_Cvar_VariableString ( "ui_cg_shadows" ) );
     //Rend2 menu
     trap->Cvar_Set ( "cl_renderer", UI_Cvar_VariableString ( "ui_cl_renderer" ) );
-    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2e")) {
+    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2t")) {
         trap->Cvar_Set ( "r_hdr", UI_Cvar_VariableString ( "ui_r_hdr" ) );
         trap->Cvar_Set ( "r_tonemap", UI_Cvar_VariableString ( "ui_r_tonemap" ) );
         trap->Cvar_Set ( "r_autoexposure", UI_Cvar_VariableString ( "ui_r_autoexposure" ) );
@@ -6350,7 +6350,7 @@ void UI_GetVideoSetup ( void )
     //Rend2 menu
     trap->Cvar_Register ( NULL, "ui_cl_renderer",				"0", CVAR_ROM|CVAR_INTERNAL );
     trap->Cvar_Set ( "ui_cl_renderer",                  UI_Cvar_VariableString ( "cl_renderer" ) );
-    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2e")) {
+    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2t")) {
         trap->Cvar_Register ( NULL, "ui_r_hdr",				        "0", CVAR_ROM|CVAR_INTERNAL );
         trap->Cvar_Register ( NULL, "ui_r_tonemap",				    "0", CVAR_ROM|CVAR_INTERNAL );
         trap->Cvar_Register ( NULL, "ui_r_autoexposure",			"0", CVAR_ROM|CVAR_INTERNAL );
@@ -6393,7 +6393,7 @@ void UI_GetVideoSetup ( void )
 	trap->Cvar_Set ( "ui_r_allowExtensions",			UI_Cvar_VariableString ( "r_allowExtensions" ) );
 	trap->Cvar_Set ( "ui_cg_shadows",					UI_Cvar_VariableString ( "cg_shadows" ) );
     //Rend2 menu
-    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2e")) {
+    if (!Q_stricmp(UI_Cvar_VariableString ( "ui_cl_renderer" ), "rd-rend2t")) {
         trap->Cvar_Set ( "ui_r_hdr",                        UI_Cvar_VariableString ( "r_hdr" ) );
         trap->Cvar_Set ( "ui_r_tonemap",                    UI_Cvar_VariableString ( "r_tonemap" ) );
         trap->Cvar_Set ( "ui_r_autoexposure",               UI_Cvar_VariableString ( "r_autoexposure" ) );
