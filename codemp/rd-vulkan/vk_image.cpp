@@ -900,7 +900,7 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		result = qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory);
 		
 		if (result < 0) {
-			Com_Error(ERR_DROP, va("GPU memory heap overflow: Code %i", result));
+			ri.Error(ERR_DROP, "%s", va("GPU memory heap overflow: Code %i", result));
 			vk_restart_swapchain( __func__ );
 		}
 

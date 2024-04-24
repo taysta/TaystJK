@@ -270,7 +270,7 @@ static void create_depth_attachment( uint32_t width, uint32_t height, VkSampleCo
     desc.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 
     image_aspect_flags = VK_IMAGE_ASPECT_DEPTH_BIT;
-    if (r_stencilbits->integer)
+    if ( glConfig.stencilBits > 0 )
         image_aspect_flags |= VK_IMAGE_ASPECT_STENCIL_BIT;
 
     VK_CHECK(qvkCreateImage(vk.device, &desc, NULL, image));
@@ -442,7 +442,7 @@ void vk_clear_depthstencil_attachments( qboolean clear_stencil ) {
 #endif
     attachment.clearValue.depthStencil.stencil = 0;
 
-    if ( clear_stencil && r_stencilbits->integer ) {
+    if ( clear_stencil && glConfig.stencilBits > 0 ) {
         attachment.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
     }
     else {

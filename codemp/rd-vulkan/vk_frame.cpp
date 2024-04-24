@@ -129,11 +129,11 @@ void vk_create_render_passes()
     attachments[1].samples = (VkSampleCountFlagBits)vkSamples;
     attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     //attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachments[1].stencilLoadOp = r_stencilbits->integer ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    attachments[1].stencilLoadOp = glConfig.stencilBits ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     if ( vk.bloomActive || vk.dglowActive || vk.refractionActive ) {
         attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom/dynamic-glow pass
         //attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
-        attachments[1].stencilStoreOp = r_stencilbits->integer ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        attachments[1].stencilStoreOp = glConfig.stencilBits ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
     }
     else {
         attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -903,8 +903,6 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
             case RENDER_PASS_REFRACTION:
                     clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
                 break;
-            default:
-                break;
         }
 #endif
 #ifndef USE_REVERSED_DEPTH
@@ -1017,9 +1015,7 @@ void vk_refraction_extract( void ) {
     VkImage srcImage;
 	VkImage dstImage;
 	VkImageLayout srcImageLayout;
-	//VkAccessFlagBits srcImageAccess;
 
-	//srcImageAccess = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 	srcImageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 	srcImage = vk.color_image;
 	dstImage = vk.refraction_extract_image;
@@ -1088,8 +1084,6 @@ void vk_refraction_extract( void ) {
 
 void vk_begin_post_refraction_extract_render_pass( void )
 {
-    //VkViewport      viewport{};
-    //VkRect2D        scissor_rect{};
     VkFramebuffer frameBuffer = vk.framebuffers.refraction.extract;
 
     vk.renderPassIndex = RENDER_PASS_REFRACTION;

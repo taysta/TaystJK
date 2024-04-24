@@ -372,15 +372,13 @@ static VkFormat get_depth_format( VkPhysicalDevice physical_device ) {
     VkFormat formats[2];
     uint32_t i;
 
-    if (r_stencilbits->integer > 0) {
+    if ( glConfig.stencilBits > 0 ) {
         formats[0] = glConfig.depthBits == 16 ? VK_FORMAT_D16_UNORM_S8_UINT : VK_FORMAT_D24_UNORM_S8_UINT;
         formats[1] = VK_FORMAT_D32_SFLOAT_S8_UINT;
-        glConfig.stencilBits = 8;
     }
     else {
         formats[0] = glConfig.depthBits == 16 ? VK_FORMAT_D16_UNORM : VK_FORMAT_X8_D24_UNORM_PACK32;
         formats[1] = VK_FORMAT_D32_SFLOAT;
-        glConfig.stencilBits = 0;
     }
 
     for (i = 0; i < ARRAY_LEN(formats); i++) {
@@ -749,11 +747,11 @@ void vk_init_library( void )
 	int device_index, i;
 	VkResult res;
 #ifdef _WIN32
-    qboolean deviceCountRetried = qfalse;
+	qboolean deviceCountRetried = qfalse;
 __initStart:
 #endif
 
-    Com_Memset(&vk, 0, sizeof(vk));
+	Com_Memset(&vk, 0, sizeof(vk));
 
 	qvkGetInstanceProcAddr = (PFN_vkGetInstanceProcAddr)ri.VK_GetInstanceProcAddress();
 	if (qvkGetInstanceProcAddr == NULL)

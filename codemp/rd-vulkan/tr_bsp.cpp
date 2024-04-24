@@ -160,9 +160,8 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 	int			len;
 	byte		*image;
 	int			imageSize;
-	int			i, j, numLightmaps = 0; //, textureInternalFormat = 0;
+	int			i, j, numLightmaps = 0;
 	float maxIntensity = 0;
-	//double sumIntensity = 0;
 	int numColorComponents = 3;
 
 	const int lightmapSize = DEFAULT_LIGHTMAP_SIZE;
@@ -220,8 +219,6 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 	}
 
 	tr.lightmaps = (image_t **)ri.Hunk_Alloc( tr.numLightmaps * sizeof(image_t *), h_low );
-
-	//textureInternalFormat = GL_RGBA8;
 
 	if ( tr.worldInternalLightmapping )
 	{
@@ -336,8 +333,6 @@ static void R_LoadLightmaps( lump_t *l, lump_t *surfs, world_t &worldData ) {
 							image[j * 4 + 1] = out[1] * 255;
 							image[j * 4 + 2] = out[2] * 255;
 							image[j * 4 + 3] = 255;
-
-							//sumIntensity += intensity;
 						}
 						else
 						{
@@ -1634,13 +1629,13 @@ static	void R_LoadSurfaces( const lump_t *surfs, const lump_t *verts, const lump
 	}
 
 	if ( r_patchStitching->integer ) {
-		R_StitchAllPatches(worldData);
+		R_StitchAllPatches( worldData );
 	}
 
 	R_FixSharedVertexLodError(worldData);
 
 	if ( r_patchStitching->integer ) {
-		R_MovePatchSurfacesToHunk(worldData);
+		R_MovePatchSurfacesToHunk( worldData );
 	}
 
 	vk_debug("...loaded %d faces, %i meshes, %i trisurfs, %i flares\n", numFaces, numMeshes, numTriSurfs, numFlares );

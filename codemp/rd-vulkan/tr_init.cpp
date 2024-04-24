@@ -183,7 +183,7 @@ cvar_t	*r_patchStitching;
 // Vulkan
 cvar_t	*r_defaultImage;
 cvar_t	*r_device;
-cvar_t	*r_stencilbits;
+//cvar_t	*r_stencilbits;
 cvar_t	*r_ext_multisample;
 cvar_t	*r_ext_supersample;
 cvar_t	*r_ext_alpha_to_coverage;
@@ -900,6 +900,7 @@ void R_Register( void )
 	r_marksOnTriangleMeshes				= ri.Cvar_Get( "r_marksOnTriangleMeshes",			"0",						CVAR_ARCHIVE_ND, "" );
 	r_aspectCorrectFonts				= ri.Cvar_Get( "r_aspectCorrectFonts",				"0",						CVAR_ARCHIVE, "" );
 	cl_ratioFix							= ri.Cvar_Get( "cl_ratioFix",						"1",						CVAR_ARCHIVE, "" );
+	r_patchStitching					= ri.Cvar_Get( "r_patchStitching",					"1",						CVAR_ARCHIVE, "Enable stitching of neighbouring patch surfaces" );
 	r_maxpolys							= ri.Cvar_Get( "r_maxpolys",						XSTRING( DEFAULT_MAX_POLYS ),		CVAR_NONE, "" );
 	r_maxpolyverts						= ri.Cvar_Get( "r_maxpolyverts",					XSTRING( DEFAULT_MAX_POLYVERTS ),	CVAR_NONE, "" );
 
@@ -912,7 +913,7 @@ void R_Register( void )
 	ri.Cvar_CheckRange(r_device, -2, 8, qtrue);
 	r_device->modified					= qfalse;
 
-	r_stencilbits						= ri.Cvar_Get("r_stencilbits",						"8",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
+	//r_stencilbits						= ri.Cvar_Get("r_stencilbits",						"8",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
 	r_ext_multisample					= ri.Cvar_Get("r_ext_multisample",					"0",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
 	ri.Cvar_CheckRange(r_ext_multisample, 0, 64, qtrue);
 	r_ext_supersample					= ri.Cvar_Get("r_ext_supersample",					"0",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");

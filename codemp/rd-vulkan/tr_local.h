@@ -714,11 +714,10 @@ typedef struct {
 } skinSurface_t;
 
 typedef struct skin_s {
-	char		name[MAX_QPATH];		// game path, including extension
-	int			numSurfaces;
+	char			name[MAX_QPATH];		// game path, including extension
+	int				numSurfaces;
 	skinSurface_t	*surfaces[128];
 } skin_t;
-
 
 typedef struct fog_s {
 	int				originalBrushNumber;
@@ -1606,6 +1605,7 @@ extern	cvar_t	*r_marksOnTriangleMeshes;
 
 extern	cvar_t	*r_aspectCorrectFonts;
 extern	cvar_t	*cl_ratioFix;
+extern cvar_t	*r_patchStitching;
 
 // Vulkan
 extern cvar_t	*r_defaultImage;
@@ -2166,7 +2166,6 @@ typedef struct backEndData_s {
 	dlight_t			dlights[MAX_DLIGHTS];
 #endif
 	trRefEntity_t		entities[MAX_REFENTITIES];
-	trMiniRefEntity_t	miniEntities[MAX_MINI_ENTITIES];
 	srfPoly_t			*polys;//[MAX_POLYS];
 	polyVert_t			*polyVerts;//[MAX_POLYVERTS];
 	renderCommandList_t	commands;
