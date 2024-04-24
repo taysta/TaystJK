@@ -35,12 +35,12 @@ option(BuildPortableVersion "Build portable version (does not read or write file
 
 option(BuildMPEngine "Whether to create projects for the MP client (taystjk.x86.exe)" ON)
 option(BuildMPRdVanilla "Whether to create projects for the MP default renderer (rd-taystjk_x86.dll)" ON)
-option(BuildMPRdVulkan "Whether to create projects for the MP vulkan renderer (rd-vulkan_x86.dll)" ON)
+option(BuildMPRdVulkan "Whether to create projects for the MP vulkan renderer (rd-vulkant_x86.dll)" ON)
 option(BuildMPDed "Whether to create projects for the MP dedicated server (taystjkded.exe)" ON)
 option(BuildMPGame "Whether to create projects for the MP server-side gamecode (jampgamex86.dll)" ON)
 option(BuildMPCGame "Whether to create projects for the MP clientside gamecode (cgamex86.dll)" ON)
 option(BuildMPUI "Whether to create projects for the MP UI code (uix86.dll)" ON)
-option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 renderer (rd-rend2e_x86.dll)" ON)
+option(BuildMPRend2 "Whether to create projects for the EXPERIMENTAL MP rend2 renderer (rd-rend2t_x86.dll)" ON)
 
 option(BuildDiscordRichPresence "Whether to build with Discord Rich Presence integration" ON)
 

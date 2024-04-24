@@ -46,13 +46,11 @@ layout(std140) uniform Entity
 	mat4 u_ModelMatrix;
 	vec4 u_LocalLightOrigin;
 	vec3 u_AmbientLight;
-	float u_LocalLightRadius;
+	float u_entityTime;
 	vec3 u_DirectedLight;
 	float u_FXVolumetricBase;
 	vec3 u_ModelLightDir;
 	float u_VertexLerp;
-	vec3 u_LocalViewOrigin;
-	float u_entityTime;
 };
 
 #if defined(USE_DEFORM_VERTEXES) || defined(USE_RGBAGEN)
@@ -285,7 +283,8 @@ vec2 GenTexCoords(int TCGen, vec3 position, vec3 normal, vec3 TCGenVector0, vec3
 
 		case TCGEN_ENVIRONMENT_MAPPED:
 		{
-			vec3 viewer = normalize(u_LocalViewOrigin - position);
+			vec3 localOrigin = (inverse(u_ModelMatrix) * vec4(u_ViewOrigin, 1.0)).xyz;
+			vec3 viewer = normalize(localOrigin - position);
 			vec2 ref = reflect(viewer, normal).yz;
 			tex.s = ref.x * -0.5 + 0.5;
 			tex.t = ref.y *  0.5 + 0.5;
@@ -294,7 +293,8 @@ vec2 GenTexCoords(int TCGen, vec3 position, vec3 normal, vec3 TCGenVector0, vec3
 
 		case TCGEN_ENVIRONMENT_MAPPED_SP:
 		{
-			vec3 viewer = normalize(u_LocalViewOrigin - position);
+			vec3 localOrigin = (inverse(u_ModelMatrix) * vec4(u_ViewOrigin, 1.0)).xyz;
+			vec3 viewer = normalize(localOrigin - position);
 			vec2 ref = reflect(viewer, normal).xy;
 			tex.s = ref.x * -0.5;
 			tex.t = ref.y * -0.5;
@@ -381,10 +381,12 @@ vec4 CalcColor(vec3 position, vec3 normal)
 		return color;
 	}
 
-	vec3 viewer = u_LocalViewOrigin - position;
+	vec3 localOrigin = (inverse(u_ModelMatrix) * vec4(u_ViewOrigin, 1.0)).xyz;
+	vec3 viewer = localOrigin - position;
 
 	if (u_AlphaGen == AGEN_LIGHTING_SPECULAR)
 	{
+		// TODO: Handle specular on player models and misc_model_statics correctly
 		vec3 lightDir = normalize(vec3(-960.0, 1980.0, 96.0) - position);
 		vec3 reflected = -reflect(lightDir, normal);
 
@@ -438,11 +440,11 @@ void main()
 	normal = DeformNormal( position, normal );
 #endif
 
-	mat4 MVP = u_viewProjectionMatrix * u_ModelMatrix;
-	gl_Position = MVP * vec4(position, 1.0);
+	vec4 wsPosition = u_ModelMatrix * vec4(position, 1.0);
+	gl_Position = u_viewProjectionMatrix * wsPosition;
 
 #if defined(USE_TCGEN)
-	vec2 tex = GenTexCoords(u_TCGen0, position, normal, u_TCGen0Vector0, u_TCGen0Vector1);
+	vec2 tex = GenTexCoords(u_TCGen0, position.xyz, normal, u_TCGen0Vector0, u_TCGen0Vector1);
 #else
 	vec2 tex = attr_TexCoord0.st;
 #endif
@@ -465,14 +467,14 @@ void main()
 	else
 	{
 #if defined(USE_RGBAGEN)
-		var_Color = CalcColor(position, normal);
+		var_Color = CalcColor(position.xyz, normal);
 #else
 		var_Color = u_VertColor * attr_Color + u_BaseColor;
 #endif
 	}
 
 #if defined(USE_FOG)
-	var_WSPosition = (u_ModelMatrix * vec4(position, 1.0)).xyz;
+	var_WSPosition = wsPosition.xyz;
 #endif
 }
 
@@ -509,13 +511,11 @@ layout(std140) uniform Entity
 	mat4 u_ModelMatrix;
 	vec4 u_LocalLightOrigin;
 	vec3 u_AmbientLight;
-	float u_LocalLightRadius;
+	float u_entityTime;
 	vec3 u_DirectedLight;
 	float u_FXVolumetricBase;
 	vec3 u_ModelLightDir;
 	float u_VertexLerp;
-	vec3 u_LocalViewOrigin;
-	float u_entityTime;
 };
 
 uniform sampler2D u_DiffuseMap;

@@ -1640,7 +1640,7 @@
 			visible				0
 			descText			"Configure rend2 video options"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkant" }
 
 			action
 			{
@@ -1676,7 +1676,7 @@
 			visible				0
 			descText			"Rend2 video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkant" }
 
 			action
 			{

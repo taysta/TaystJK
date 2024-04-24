@@ -1428,7 +1428,7 @@
 			visible				0
 			descText			"Advanced video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkant" }
 
 			action
 			{
@@ -1465,7 +1465,7 @@
 			visible				0
 			descText			"Advanced video settings"
 			cvarTest			"cl_renderer"
-			hideCvar			{ "rd-taystjk" , "rd-vulkan" }
+			hideCvar			{ "rd-taystjk" , "rd-vulkant" }
 
 			action
 			{
