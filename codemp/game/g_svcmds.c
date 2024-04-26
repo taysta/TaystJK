@@ -921,7 +921,8 @@ static bitInfo_T saberTweaks[] = {
 	{"Remove all backslash restrictions"},//16
 	{"Allow sabergun"},//17
 	{"Allow fast style change for single saber"},//18
-	{"New dmg calculation for SP damage"}//19
+	{"New dmg calculation for SP damage"},//19
+	{"The slow blade penetrates the sheild"}//20
 };
 static const int MAX_SABER_TWEAKS = ARRAY_LEN( saberTweaks );
 
