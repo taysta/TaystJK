@@ -4189,16 +4189,23 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				fDmg *= 2.0f;
 			}
 			if (fDmg && g_tweakSaber.integer & ST_DUNESABER) {
-				//We want to get the most powerful part of swing which I guess is the middle? The alternative is to normalize trancelength for the players own mouse movement (so it just is speed of saber tip when not moving mouse)
+				//make fast moving sabers barely do damage if at all, force ppl to counter aim
 				//Todo, exclude katas and multi swing moves
-				float traceLength = Distance(saberEnd, saberStart);
-				Com_Printf("Len is %.1f\n", traceLength);
-				if (traceLength < 1)
-					traceLength = 1;
-				dmg = G_GetAttackDamage(self, fDmg * 10 / (traceLength*traceLength*traceLength), fDmg * 40 / (traceLength*traceLength*traceLength), 0.5f);
+				float len3, traceLength = Distance(saberEnd, saberStart);
+
+				//Com_Printf("Len is %.1f\n", traceLength);
+
+				len3 = traceLength*traceLength*traceLength;
+				if (len3 > 100)
+					len3 = 100;
+				else if (len3 < 1)
+					len3 = 1;
+
+				dmg = G_GetAttackDamage(self, fDmg * 10 / (len3), fDmg * 40 / (len3), 0.5f);
 				//Com_Printf("NewDmg is %i\n", dmg);
 			}
 			else if (fDmg && g_tweakSaber.integer & ST_NEWSPSABERDMG) {
+				//take saber vel out of dmg eq
 				//We want to get the most powerful part of swing which I guess is the middle? The alternative is to normalize trancelength for the players own mouse movement (so it just is speed of saber tip when not moving mouse)
 				//Todo, exclude katas and multi swing moves
 				dmg = G_GetAttackDamage(self, fDmg*0.25, fDmg*1, 0.5f);
