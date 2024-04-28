@@ -3209,7 +3209,7 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 	missile->takedamage = qtrue;
 	missile->r.contents = MASK_SHOT; //solid?
 	missile->die = RocketDie;
-//===testing being able to shoot rockets out of the air==================================
+	//===testing being able to shoot rockets out of the air==================================
 	*/
 
 	missile->clipmask = MASK_SHOT;
