@@ -4211,6 +4211,15 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				dmg = G_GetAttackDamage(self, fDmg*0.25, fDmg*1, 0.5f);
 				//Com_Printf("NewDmg is %i\n", dmg);
 			}
+			else if (fDmg && g_tweakSaber.integer & ST_NEWSPSABERDMGCAP) {
+				float traceLength = Distance(saberEnd, saberStart);
+
+				if (traceLength > 30)
+					traceLength = 30; //cap this to a sane amount
+				dmg = ceil(fDmg*traceLength*0.1f*0.33f);
+
+				//Com_Printf("Sabermove dist is %.0f, oldmg is %i, new dmg is %i\n", traceLength, dmg, dmg2);
+			}
 			else if ( fDmg )
 			{//the longer the trace, the more damage it does
 				//FIXME: in SP, we only use the part of the trace that's actually *inside* the hit ent...
