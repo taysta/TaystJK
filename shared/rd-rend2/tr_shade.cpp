@@ -52,7 +52,7 @@ void R_DrawElementsVBO( int numIndexes, glIndex_t firstIndex, glIndex_t minIndex
 }
 
 /*
-static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDrawMinIndex, glIndex_t *multiDrawMaxIndex, 
+static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDrawMinIndex, glIndex_t *multiDrawMaxIndex,
 	GLsizei *multiDrawNumIndexes, glIndex_t **multiDrawFirstIndex)
 {
 	GL_MultiDrawIndexed(
@@ -1545,7 +1545,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 				vertColor[3] = 0.0f;
 			}
 
-			if (backEnd.currentEntity->e.hModel != 0)
+			if (backEnd.currentEntity->e.hModel != NULL_HANDLE)
 			{
 				model_t *model = R_GetModelByHandle(backEnd.currentEntity->e.hModel);
 				if (model->type != MOD_BRUSH)
