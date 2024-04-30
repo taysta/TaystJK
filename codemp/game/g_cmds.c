@@ -8357,6 +8357,14 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 		Q_strcat(buf, sizeof(buf), "   ^5Red DFA boost exploit removed\n");
 	if (g_tweakSaber.integer & ST_REDDFANOFORCE)
 		Q_strcat(buf, sizeof(buf), "   ^5Red DFA costs 0 forcepoints\n");
+	if (g_tweakSaber.integer & ST_NEWSPSABERDMG)
+		Q_strcat(buf, sizeof(buf), "   ^5No velocity damgage boost for SP damages\n");
+	else if (g_tweakSaber.integer & ST_DUNESABER)
+		Q_strcat(buf, sizeof(buf), "   ^5Negative velocity damage boost for SP damages\n");
+	else if (g_tweakSaber.integer & ST_NEWSPSABERDMGCAP)
+		Q_strcat(buf, sizeof(buf), "   ^5Limited velocity damage boost for SP damages\n");
+
+
 	trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 
 	//Gun changes
@@ -8560,6 +8568,12 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 			Q_strcat(buf, sizeof(buf), "   ^5Pull resistance when shooting/charging weapons\n");
 		if (g_tweakForce.integer & FT_NORAGEFIRERATE)
 			Q_strcat(buf, sizeof(buf), "   ^5Dark rage does not affect weapon firerate\n");
+		if (g_tweakForce.integer & FT_BUFFMINDTRICK)
+			Q_strcat(buf, sizeof(buf), "   ^5Mind trick does not break when damaging target unless they are looking at you\n");
+		if (g_tweakForce.integer & FT_DRAINDMGNERF)
+			Q_strcat(buf, sizeof(buf), "   ^5Drain takes 25% less forcepoints from target\n");
+		if (g_tweakForce.integer & FT_FIXGRIPPEDREGEN)
+			Q_strcat(buf, sizeof(buf), "   ^5Jump does not pause your regen while being gripped\n");
 
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 	}

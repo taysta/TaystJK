@@ -994,8 +994,10 @@ static bitInfo_T forceTweaks[] = {
 	{"Nerfed weapon pull distance"},//17
 	{"Force resistance while firing/charging weapon"},//18
 	{"Stop rage from affecting firerate of weapons"},//19
-	{"Don't break mindtrick on attack unless trickee is looking at you"},//19
-	{"Stronger / different Melee attack"}//19
+	{"Don't break mindtrick on attack unless trickee is looking at you"},//20
+	{"Stronger / different Melee attack"},//21
+	{ "Drain takes 25% less force from target" },//22
+	{ "Regen force while being gripped if mid jump" },//23
 };
 static const int MAX_FORCE_TWEAKS = ARRAY_LEN( forceTweaks );
 
