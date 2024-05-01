@@ -1232,14 +1232,14 @@ static void RB_SubmitDrawSurfsForDepthFill(
 		R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &cubemapIndex, &postRender);
 		assert(shader != nullptr);
 
-		if (shader->useSimpleDepthShader == qtrue)
-			shader = tr.defaultShader;
-
 		if (shader->sort != SS_OPAQUE || shader->useDistortion)
 		{
 			// Don't draw yet, let's see what's to come
 			continue;
 		}
+
+		if (shader->useSimpleDepthShader == qtrue)
+			shader = tr.defaultShader;
 
 		if (*drawSurf->surface == SF_MDX)
 		{
