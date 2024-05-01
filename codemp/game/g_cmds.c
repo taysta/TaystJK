@@ -4397,6 +4397,10 @@ void Cmd_EngageDuel_f(gentity_t *ent, int dueltype)//JAPRO - Serverside - Fullfo
 					ent->health = ent->client->ps.stats[STAT_HEALTH] = g_duelStartHealth.integer;
 					challenged->health = challenged->client->ps.stats[STAT_HEALTH] = g_duelStartHealth.integer;
 				}
+				if (g_showHealth.integer) {
+					G_ScaleNetHealth(ent);
+					G_ScaleNetHealth(challenged);
+				}
 			}
 			ent->client->ps.fd.forcePower = ent->client->ps.fd.forcePowerMax; //max force power too!
 			challenged->client->ps.fd.forcePower = challenged->client->ps.fd.forcePowerMax; //max force power too!
