@@ -173,7 +173,7 @@ namespace
 			FBO_Bind(tr.weatherDepthFbo);
 
 			GL_SetViewportAndScissor(0, 0, tr.weatherDepthFbo->width, tr.weatherDepthFbo->height);
-	
+
 			if (tr.weatherSystem->weatherBrushType == WEATHER_BRUSHES_OUTSIDE) // used outside brushes
 			{
 				qglClearDepth(0.0f);
@@ -284,7 +284,6 @@ namespace
 						// Now test if the intersected point is actually on the brush
 						for (int j = 0; j < currentWeatherBrush->numPlanes; j++)
 						{
-//							vec4_t *plane = &currentWeatherBrush->planes[j];
 							vec3_t normal = {
 								currentWeatherBrush->planes[j][0],
 								currentWeatherBrush->planes[j][1],
@@ -441,7 +440,8 @@ namespace
 
 		item.uniformData = uniformDataWriter.Finish(*backEndData->perFrameMemory);
 
-		const GLuint currentFrameUbo = backEndData->currentFrame->ubo;
+		const byte currentFrameScene = backEndData->currentFrame->currentScene;
+		const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 		const UniformBlockBinding uniformBlockBindings[] = {
 			{ currentFrameUbo, tr.sceneUboOffset, UNIFORM_BLOCK_SCENE }
 		};
@@ -1233,7 +1233,8 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 		{
 			for (int x = -1; x <= 1; ++x, ++currentIndex)
 			{
-				const GLuint currentFrameUbo = backEndData->currentFrame->ubo;
+				const byte currentFrameScene = backEndData->currentFrame->currentScene;
+				const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 				const UniformBlockBinding uniformBlockBindings[] = {
 					{ currentFrameUbo, tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
 				};

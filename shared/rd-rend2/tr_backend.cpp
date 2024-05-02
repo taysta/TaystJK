@@ -95,7 +95,6 @@ void GL_SelectTexture( int unit )
 void GL_BindToTMU( image_t *image, int tmu )
 {
 	int		texnum;
-	//int     oldtmu = glState.currenttmu;
 
 	if (!image)
 		texnum = 0;
@@ -1220,8 +1219,6 @@ static void RB_SubmitDrawSurfsForDepthFill(
 {
 	shader_t *oldShader = nullptr;
 	int oldEntityNum = -1;
-	//int oldSort = -1;
-	//int oldDepthRange = 0;
 	CBoneCache *oldBoneCache = nullptr;
 
 	drawSurf_t *drawSurf = drawSurfs;
@@ -1235,14 +1232,14 @@ static void RB_SubmitDrawSurfsForDepthFill(
 		R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &cubemapIndex, &postRender);
 		assert(shader != nullptr);
 
-		if (shader->useSimpleDepthShader == qtrue)
-			shader = tr.defaultShader;
-
 		if (shader->sort != SS_OPAQUE || shader->useDistortion)
 		{
 			// Don't draw yet, let's see what's to come
 			continue;
 		}
+
+		if (shader->useSimpleDepthShader == qtrue)
+			shader = tr.defaultShader;
 
 		if (*drawSurf->surface == SF_MDX)
 		{
@@ -1279,8 +1276,6 @@ static void RB_SubmitDrawSurfsForDepthFill(
 			oldShader = shader;
 		}
 
-		//oldSort = drawSurf->sort;
-
 		// change the modelview matrix if needed
 		if ( entityNum != oldEntityNum )
 		{
@@ -1309,7 +1304,6 @@ static void RB_SubmitDrawSurfs(
 	int oldEntityNum = -1;
 	//int oldSort = -1;
 	int oldFogNum = -1;
-	//int oldDepthRange = 0;
 	int oldDlighted = 0;
 	int oldPostRender = 0;
 	int oldCubemapIndex = -1;
@@ -2530,7 +2524,7 @@ static void ComputeDeformValues(
 
 void RB_AddShaderToShaderInstanceUBO(shader_t *shader)
 {
-	if (shader->numDeforms != 1 && !shader->portalRange)
+	if (shader->numDeforms != 1 && !shader->portalRange && !shader->timeOffset)
 	{
 		shader->ShaderInstanceUboOffset = -1;
 		return;
