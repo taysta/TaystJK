@@ -34,7 +34,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 XCVAR_DEF( capturelimit,					"0",					NULL,				CVAR_ARCHIVE|CVAR_NORESTART|CVAR_SERVERINFO ) // fixme init'd to 8 in game module
-XCVAR_DEF( cl_ratioFix,						"1",				UI_Set2DRatio,			CVAR_ARCHIVE ) //cvar name is shared in jaPRO cgame & EternalJK engine
+XCVAR_DEF( cl_ratioFix,						"1",				UI_Set2DRatio,			CVAR_ARCHIVE ) //cvar name is shared in jaPRO cgame & TaystJK engine
 XCVAR_DEF( cg_drawCrosshair,				"1",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawCrosshairNames,			"1",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_marks,						"1",					NULL,				CVAR_ARCHIVE )

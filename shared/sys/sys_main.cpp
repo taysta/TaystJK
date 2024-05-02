@@ -385,7 +385,7 @@ enum SearchPathFlag
 {
 	SEARCH_PATH_MOD		= 1 << 0,
 	SEARCH_PATH_BASE	= 1 << 1,
-	SEARCH_PATH_ETERNALJK	= 1 << 2,
+	SEARCH_PATH_TAYSTJK	= 1 << 2,
 	SEARCH_PATH_ROOT	= 1 << 3
 };
 
@@ -412,7 +412,7 @@ static void *Sys_LoadDllFromPaths( const char *filename, const char *gamedir, co
 		}
 	}
 
-	if (searchFlags & SEARCH_PATH_ETERNALJK)
+	if (searchFlags & SEARCH_PATH_TAYSTJK)
 	{
 		for (size_t i = 0; i < numPaths; i++)
 		{
@@ -530,7 +530,7 @@ void *Sys_LoadLegacyGameDll( const char *name, VMMainProc **vmMain, SystemCallPr
 				};
 				size_t numPaths = ARRAY_LEN( searchPaths );
 
-				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_ETERNALJK | SEARCH_PATH_MOD, __FUNCTION__ );
+				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_TAYSTJK | SEARCH_PATH_MOD, __FUNCTION__ );
 				if ( !libHandle )
 					return NULL;
 			}
@@ -612,7 +612,7 @@ void *Sys_LoadGameDll( const char *name, GetModuleAPIProc **moduleAPI )
 				};
 				size_t numPaths = ARRAY_LEN( searchPaths );
 
-				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_ETERNALJK | SEARCH_PATH_MOD, __FUNCTION__ );
+				libHandle = Sys_LoadDllFromPaths( filename, gamedir, searchPaths, numPaths, SEARCH_PATH_BASE | SEARCH_PATH_TAYSTJK | SEARCH_PATH_MOD, __FUNCTION__ );
 				if ( !libHandle )
 					return NULL;
 			}

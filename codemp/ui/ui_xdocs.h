@@ -70,7 +70,7 @@
 /* --------------------------------------------------- */
 /* CVARS */
 
-// EternalJK HUD cvars:
+// TaystJK HUD cvars:
 //XDOCS_CVAR_DEF("cg_", "Description",
 //"More somethings if needed." NL
 //SETTING("0", "something something probably (Base behavior)") NL
@@ -554,7 +554,7 @@ XDOCS_CVAR_DEF("cg_pitchHudRgba", "Color of the pitch HUD",""
 /* --------------------------------------------------- */
 /* COMMANDS */
 
-// EternalJK console commands:
+// TaystJK console commands:
 
 XDOCS_CMD_DEF("clientlist", "Displays a list of all connected clients and their real client numbers")
 

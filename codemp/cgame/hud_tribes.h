@@ -1,5 +1,5 @@
-#ifndef ETERNALJK_HUD_TRIBES_H
-#define ETERNALJK_HUD_TRIBES_H
+#ifndef TAYSTJK_HUD_TRIBES_H
+#define TAYSTJK_HUD_TRIBES_H
 
 //includes
 #include "cg_local.h"

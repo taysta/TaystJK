@@ -25,8 +25,8 @@ along with this program; if not, see <https://www.gnu.org/licenses/>.
 ===========================================================================
 */
 
-#ifndef ETERNALJK_HUD_STRAFEHELPER_H
-#define ETERNALJK_HUD_STRAFEHELPER_H
+#ifndef TAYSTJK_HUD_STRAFEHELPER_H
+#define TAYSTJK_HUD_STRAFEHELPER_H
 
 #include "cg_local.h"
 #include "../ui/ui_shared.h"
@@ -333,4 +333,4 @@ int maxSpeedSample;
 dfstate state;
 speedgraph_t speedgraph;
 
-#endif //ETERNALJK_HUD_STRAFEHELPER_H
+#endif //TAYSTJK_HUD_STRAFEHELPER_H

@@ -77,7 +77,7 @@
 /* --------------------------------------------------- */
 /* CVARS */
 
-// EternalJK HUD cvars:
+// TaystJK HUD cvars:
 
 //XDOCS_CVAR_DEF("cg_", "Description",
 	//"More somethings if needed." NL
@@ -345,7 +345,7 @@ XDOCS_CVAR_DEF("cg_teamChatsOnly", "Hide non-team chat messages",
 /* --------------------------------------------------- */
 /* COMMANDS */
 
-// EternalJK commands:
+// TaystJK commands:
 
 XDOCS_CMD_DEF("clientlist", "Displays a list of all connected clients and their real client numbers")
 
