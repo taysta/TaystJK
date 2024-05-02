@@ -1314,6 +1314,8 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 		return qfalse;
 	if (sv_fps.integer != 20 && sv_fps.integer != 30 && sv_fps.integer != 40)//Dosnt really make a difference.. but eh.... loda fixme
 		return qfalse;
+	//if (com_timescale.value != 1.0f) //umm..
+		//return qfalse;
 	if (sv_pluginKey.integer) {
 		if (!player->client->pers.validPlugin && player->client->pers.userName[0]) { //Meh.. only do this if they are logged in to keep the print colors working right i guess..
 			trap->SendServerCommand( player-g_entities, "cp \"^3Warning: a newer client plugin version\nis required!\n\n\n\n\n\n\n\n\n\n\""); //Since times wont be saved if they arnt logged in anyway
@@ -1968,21 +1970,23 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	if (level.time - player->client->oobTime > trigger->count * 1000) {
 		//trap->SendServerCommand(player - g_entities, "cp \"^1Flag Returned!\n\n\n\n\n\n\n\n\n\n\""); //Send message?
 		trap->SendServerCommand(player - g_entities, "cp \""); //clear previous flag warning print?
-		if (player->client->ps.powerups[PW_NEUTRALFLAG]) {		// only happens in One Flag CTF
+		if (player->client->ps.powerups[PW_NEUTRALFLAG]) {
 			Team_ReturnFlag(TEAM_FREE);
 			player->client->ps.powerups[PW_NEUTRALFLAG] = 0;
 		}
-		else if (player->client->ps.powerups[PW_REDFLAG]) {		// only happens in standard CTF
+		else if (player->client->ps.powerups[PW_REDFLAG]) {	
 			Team_ReturnFlag(TEAM_RED);
 			player->client->ps.powerups[PW_REDFLAG] = 0;
 		}
-		else if (player->client->ps.powerups[PW_BLUEFLAG]) {	// only happens in standard CTF
+		else if (player->client->ps.powerups[PW_BLUEFLAG]) {
 			Team_ReturnFlag(TEAM_BLUE);
 			player->client->ps.powerups[PW_BLUEFLAG] = 0;
 		}
 	}
 	else {
-		trap->SendServerCommand(player - g_entities, va("cp \"^3Flag returning in %.1fs\n\n\n\n\n\n\n\n\n\n\"", 0.001*(trigger->count * 1000 - (level.time - player->client->oobTime)))); //Send message?`
+		if (player->client->ps.powerups[PW_NEUTRALFLAG] || player->client->ps.powerups[PW_REDFLAG] || player->client->ps.powerups[PW_BLUEFLAG]) {
+			trap->SendServerCommand(player - g_entities, va("cp \"^3Flag returning in %.1fs\n\n\n\n\n\n\n\n\n\n\"", 0.001*(trigger->count * 1000 - (level.time - player->client->oobTime)))); //Send message?`
+		}
 	}
 
 	}

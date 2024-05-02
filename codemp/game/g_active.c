@@ -4490,6 +4490,9 @@ void ClientThink_real( gentity_t *ent ) {
 					}
 					ent->client->ps.stats[STAT_HEALTH] = ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 					ent->client->ps.stats[STAT_ARMOR] = 25;//JAPRO
+					if (g_showHealth.integer) {
+						G_ScaleNetHealth(ent);
+					}
 					if (g_spawnInvulnerability.integer) {
 						ent->client->ps.eFlags |= EF_INVULNERABLE;
 						ent->client->invulnerableTimer = level.time + g_spawnInvulnerability.integer;
