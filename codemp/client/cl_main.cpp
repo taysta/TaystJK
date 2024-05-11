@@ -1690,7 +1690,7 @@ void CL_InitDownloads(void) {
 	{
 		// autodownload is disabled on the client
 		// but it's possible that some referenced files on the server are missing
-		if (FS_ComparePaks( missingfiles, sizeof( missingfiles ), qfalse ) )
+		if ( FS_ComparePaks( missingfiles, sizeof( missingfiles ), qfalse ) )
 		{
 			// NOTE TTimo I would rather have that printed as a modal message box
 			//   but at this point while joining the game we don't know wether we will successfully join or not
@@ -1702,13 +1702,16 @@ void CL_InitDownloads(void) {
 	else if ( FS_ComparePaks( clc.downloadList, sizeof( clc.downloadList ) , qtrue ) ) {
 		const char *serverInfo = cl.gameState.stringData + cl.gameState.stringOffsets[ CS_SERVERINFO ];
 		const char *serverAllowDownloads = Info_ValueForKey( serverInfo, "sv_allowDownload" );
+		const char *serverHTTPDownloads = Info_ValueForKey( serverInfo, "sv_httpDownloads" );
 
 		Com_Printf("Need paks: %s\n", clc.downloadList );
 
-		if ( serverAllowDownloads[0] && !atoi(serverAllowDownloads) ) {
-			// The server has an "sv_allowDownload" value set, but it's 0
+		if ( (serverAllowDownloads[0] && !atoi(serverAllowDownloads)) && !atoi(serverHTTPDownloads) ) {
+			// Yes, the check is intentionally simpler for http, because:
+			//  - if a server has neither of the cvars in the serverinfo, we want to display the prompt and try to download
+			//  - if a server has only sv_allowDownload set and no sv_httpdownloads we want to base our decision on the sv_allowDownload cvar and not be thrown off by sv_httpdownloads not existing
 			Com_Printf("Skipping downloads, because the server does not allow downloads\n");
-		} else if ( *clc.downloadList && clc.httpdl[0]) {
+		} else if ( *clc.downloadList ) {
 			// if autodownloading is not enabled on the server
 			cls.state = CA_CONNECTED;
 
@@ -3736,28 +3739,6 @@ void CL_ServerInfoPacket( netadr_t from, msg_t *msg ) {
 			size_t len = strlen(clc.httpdl);
 			if (clc.httpdl[len - 1] == '/') {
 				clc.httpdl[len - 1] = 0;
-			}
-		}
-	}
-
-	// if this is an MB2 server, ignore it
-	if (!Q_stricmp(Info_ValueForKey(infoString, "game"), "mbii") && Q_stricmp(Cvar_VariableString("fs_game"), "mbii")) {
-		return;
-	}
-
-	if ( cl_filterGames && cl_filterGames->string && cl_filterGames->string[0] ) {
-		const char *gameFolder = Info_ValueForKey( infoString, "game" );
-
-		// If no game folder was specified the server is using base. Use the BASEGAME string so we can filter for it.
-		if ( !gameFolder[0] ) gameFolder = BASEGAME;
-
-		// NOTE: As the command tokenization doesn't support nested quotes we can't filter fs_game with spaces using
-		//       this approach, but fs_game with spaces cause other issues as well, like downloads not working and at
-		//       the time of writing this no public servers actually use an fs_game with spaces...
-		Cmd_TokenizeString( cl_filterGames->string );
-		for ( i = 0; i < Cmd_Argc(); i++ ) {
-			if ( !Q_stricmp(Cmd_Argv(i), gameFolder) && Q_stricmp(Cmd_Argv(i), FS_GetCurrentGameDir(false)) ) {
-				return;
 			}
 		}
 	}
