@@ -1711,7 +1711,7 @@ void CL_InitDownloads(void) {
 			//  - if a server has neither of the cvars in the serverinfo, we want to display the prompt and try to download
 			//  - if a server has only sv_allowDownload set and no sv_httpdownloads we want to base our decision on the sv_allowDownload cvar and not be thrown off by sv_httpdownloads not existing
 			Com_Printf("Skipping downloads, because the server does not allow downloads\n");
-		} else if ( *clc.downloadList && clc.httpdl[0]) {
+		} else if ( *clc.downloadList ) {
 			// if autodownloading is not enabled on the server
 			cls.state = CA_CONNECTED;
 
