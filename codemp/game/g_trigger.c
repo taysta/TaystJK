@@ -1314,8 +1314,8 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 		return qfalse;
 	if (sv_fps.integer != 20 && sv_fps.integer != 30 && sv_fps.integer != 40)//Dosnt really make a difference.. but eh.... loda fixme
 		return qfalse;
-	//if (com_timescale.value != 1.0f) //umm..
-		//return qfalse;
+	if (timescale.value != 1.0f) //umm..
+		return qfalse;
 	if (sv_pluginKey.integer) {
 		if (!player->client->pers.validPlugin && player->client->pers.userName[0]) { //Meh.. only do this if they are logged in to keep the print colors working right i guess..
 			trap->SendServerCommand( player-g_entities, "cp \"^3Warning: a newer client plugin version\nis required!\n\n\n\n\n\n\n\n\n\n\""); //Since times wont be saved if they arnt logged in anyway
