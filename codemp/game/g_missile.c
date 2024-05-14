@@ -488,7 +488,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		(ent->bounceCount > 0 || ent->bounceCount == -5) &&
 		(ent->flags & (FL_BOUNCE | FL_BOUNCE_HALF))) {
 
-		if ((g_tweakWeapons.integer & WT_TRIBES) && ent->s.weapon == WP_REPEATER || ent->s.weapon == WP_FLECHETTE) {
+		if ((g_tweakWeapons.integer & WT_TRIBES) && (ent->s.weapon == WP_REPEATER || ent->s.weapon == WP_FLECHETTE)) {
 		}
 		else {
 

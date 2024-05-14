@@ -6793,10 +6793,10 @@ int NewBotAI_GetTribesWeapon(bot_state_t *bs)
 	if (distance > 3000) {
 		if (BotWeaponSelectable(bs, WP_DISRUPTOR))
 			bestWeapon = WP_DISRUPTOR;
-		else if (BotWeaponSelectable(bs, WP_BLASTER) && (bs->cur_ps.weapon != WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10)) {
+		else if (BotWeaponSelectable(bs, WP_BLASTER) && ((bs->cur_ps.weapon != WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10))) {
 			bestWeapon = WP_BLASTER;
 		}
-		else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD) && (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel > 10)) { //logic to let us run down to 0 but nto switch to 0
+		else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD) && ((bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel > 10))) { //logic to let us run down to 0 but nto switch to 0
 			bestWeapon = WP_BRYAR_OLD;
 			bs->doAltAttack = 1;
 			bs->altChargeTime = 800;
@@ -6826,12 +6826,12 @@ int NewBotAI_GetTribesWeapon(bot_state_t *bs)
 			bestWeapon = WP_SABER;
 	}
 	else if (distance > 800 && distance < 2800) { //Have some padding between distance tiers so we dont weaponswitch spam
-		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && (bs->cur_ps.weapon != WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10)) {
+		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && ((bs->cur_ps.weapon != WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10))) {
 			bestWeapon = WP_BLASTER;
 		}
 		else if (BotWeaponSelectable(bs, WP_REPEATER) && forcedFireMode != 2)
 			bestWeapon = WP_REPEATER;
-		else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD) && (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel > 10)) {
+		else if (BotWeaponSelectableAltFire(bs, WP_BRYAR_OLD) && ((bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BRYAR_OLD && bs->cur_ps.jetpackFuel > 10))) {
 			bestWeapon = WP_BRYAR_OLD;
 			bs->doAltAttack = 1;
 			bs->altChargeTime = 800;
@@ -6871,7 +6871,7 @@ int NewBotAI_GetTribesWeapon(bot_state_t *bs)
 		if (BotWeaponSelectableAltFire(bs, WP_THERMAL) && (bs->currentEnemy->client->ps.powerups[PW_REDFLAG] || bs->currentEnemy->client->ps.powerups[PW_BLUEFLAG] || bs->currentEnemy->client->ps.powerups[PW_NEUTRALFLAG])) {
 			bestWeapon = WP_THERMAL;
 		}
-		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10)) {
+		if (BotWeaponSelectableAltFire(bs, WP_BLASTER) && ((bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel == 100) || (bs->cur_ps.weapon == WP_BLASTER && bs->cur_ps.jetpackFuel > 10))) {
 			bestWeapon = WP_BLASTER;
 			bs->doAltAttack = 1;
 		}
@@ -8559,7 +8559,6 @@ qboolean NewBotAI_CapRoute(bot_state_t *bs, float thinktime)
 
 void NewBotAI_Tribes(bot_state_t *bs, float thinktime)
 {
-
 	//For capper bot. need to keep track of what spot we are at.
 	//How do we we store which route the bot is currently on?
 	//Bot->capRouteSequence starts at 0
