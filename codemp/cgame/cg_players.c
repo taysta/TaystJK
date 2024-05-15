@@ -5284,7 +5284,7 @@ static void CG_PlayerPowerups( centity_t *cent, refEntity_t *torso ) {
 	// neutralflag
 	if ( powerups & ( 1 << PW_NEUTRALFLAG ) ) {
 		CG_PlayerFlag( cent, cgs.media.neutralFlagModel );//loda
-		trap->R_AddLightToScene( cent->lerpOrigin, 200 + (rand()&31), 1.0, 0.2f, 0.2f );
+		trap->R_AddLightToScene( cent->lerpOrigin, 200 + (rand()&31), 0.2, 1.0f, 0.2f );
 	}
 
 	// haste leaves smoke trails
