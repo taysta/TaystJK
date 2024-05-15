@@ -3382,6 +3382,8 @@ int BG_GetTime(void)
 	return level.time;
 }
 
+qboolean G_CallSpawn(gentity_t *ent);
+void Team_SetFlagStatus(int team, flagStatus_t status);
 void OneFlagCTFCapture(int team) {
 	//Remvoe team flag, add neutral flag
 	gentity_t *ent = NULL;

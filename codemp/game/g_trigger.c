@@ -158,6 +158,7 @@ qboolean G_NameInTriggerClassList(char *list, char *str)
 	return qfalse;
 }
 
+void PrintCTFMessage(int plIndex, int teamIndex, int ctfMessage);
 void Team_StartOneFlagCapture(gentity_t *player, int team);
 int Team_TouchOneFlagBase(gentity_t *ent, gentity_t *other, int team);
 extern qboolean gSiegeRoundBegun;

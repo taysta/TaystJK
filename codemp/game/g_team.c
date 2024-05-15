@@ -565,7 +565,6 @@ void Team_StartOneFlagCapture(gentity_t *player, int team) {
 	gentity_t *ent = NULL;
 	gentity_t *newEnt = NULL;
 	gitem_t		*item;
-	int flagItem;
 
 	while ((ent = G_Find(ent, FOFS(classname), "team_CTF_neutralflag")) != NULL) {
 		G_FreeEntity(ent);
@@ -589,9 +588,7 @@ void Team_StartOneFlagCapture(gentity_t *player, int team) {
 	if (!G_CallSpawn(newEnt))
 		G_FreeEntity(newEnt);
 
-	//Team_SetFlagStatus(TEAM_FREE, FLAG_ATBASE);
 	Team_SetFlagStatus(team, FLAG_ATBASE);
-
 }
 
 gentity_t *Team_ResetFlag( int team ) {
