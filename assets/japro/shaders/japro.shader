@@ -511,3 +511,15 @@ hud/ctf/jpflagtaken
 		blendFunc blend
 	}
 }
+
+models/map_objects/mp/flan
+{
+    q3map_nolightmap
+    q3map_onlyvertexlighting
+    cull    twosided
+    {
+        map models/map_objects/mp/flan
+        blendFunc GL_ONE GL_ZERO
+        rgbGen lightingDiffuse
+    }
+}
