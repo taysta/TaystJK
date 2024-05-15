@@ -3176,9 +3176,16 @@ void FinishSpawningItem( gentity_t *ent ) {
 				G_FreeEntity( ent );
 				return;
 			}
-			if (level.gametype == GT_CTF && g_neutralFlag.integer >= 4) {
+			if (level.gametype == GT_CTF && (g_neutralFlag.integer == 4 || g_neutralFlag.integer == 5)) {
 				G_FreeEntity(ent);
 				return;
+			}
+			if (level.gametype == GT_CTF && g_neutralFlag.integer == 6) {
+				//Get rid of it...only if neutralflag is at base... what am i doing
+				if (!level.redCapturing) {
+					G_FreeEntity(ent);
+					return;
+				}
 			}
 		}
 		else if (ent->item->giTag == PW_BLUEFLAG) {
@@ -3188,9 +3195,16 @@ void FinishSpawningItem( gentity_t *ent ) {
 				G_FreeEntity( ent );
 				return;
 			}
-			if (level.gametype == GT_CTF && g_neutralFlag.integer >= 4) {
+			if (level.gametype == GT_CTF && (g_neutralFlag.integer == 4 || g_neutralFlag.integer == 5)) {
 				G_FreeEntity(ent);
 				return;
+			}
+			if (level.gametype == GT_CTF && g_neutralFlag.integer == 6) {
+				//Get rid of it...only if neutralflag is at base... what am i doing
+				if (!level.blueCapturing) {
+					G_FreeEntity(ent);
+					return;
+				}
 			}
 		}
 

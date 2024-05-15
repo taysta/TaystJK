@@ -560,6 +560,37 @@ void Team_CheckHurtCarrier(gentity_t *targ, gentity_t *attacker)
 }
 
 
+qboolean G_CallSpawn(gentity_t *ent);
+void Team_StartOneFlagCapture(gentity_t *player, int team) {
+	gentity_t *ent = NULL;
+	gentity_t *newEnt = NULL;
+	gitem_t		*item;
+
+	while ((ent = G_Find(ent, FOFS(classname), "team_CTF_neutralflag")) != NULL) {
+		G_FreeEntity(ent);
+	}
+
+	item = BG_FindItemForPowerup(PW_NEUTRALFLAG);
+	player->client->ps.powerups[PW_NEUTRALFLAG] = 0;
+
+	newEnt = G_Spawn(qtrue);
+	if (team == TEAM_RED) {
+		level.redCapturing = qtrue;
+		newEnt->classname = "team_CTF_redflag";
+		VectorCopy(level.redFlagOrigin, newEnt->s.origin);
+	}
+	else if (team == TEAM_BLUE) {
+		level.blueCapturing = qtrue;
+		newEnt->classname = "team_CTF_blueflag";
+		VectorCopy(level.blueFlagOrigin, newEnt->s.origin);
+	}
+
+	if (!G_CallSpawn(newEnt))
+		G_FreeEntity(newEnt);
+
+	Team_SetFlagStatus(team, FLAG_ATBASE);
+}
+
 gentity_t *Team_ResetFlag( int team ) {
 	char *c;
 	gentity_t *ent, *rent = NULL;
@@ -1155,17 +1186,31 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 		}
 	}
 	else {
+		if (g_neutralFlag.integer == 6) {
+			if (team == TEAM_RED) {
+				level.redCapturing = qfalse;
+			}
+			else if (team == TEAM_BLUE) {
+				level.blueCapturing = qfalse;
+			}
+		}
+
 		if (g_fixCTFScores.integer) {
 			float speed = VectorLength(other->client->ps.velocity);
-			int points = 0;
-			if (speed > 1000)
-				points = 1;
 			if (speed > 2000)
 				points = 2;
+			else if (speed > 1000)
+				points = 1;
 
 			if (team == TEAM_RED) {
-				if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus == FLAG_ATBASE)
-					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				if (teamgame.blueStatus == FLAG_ATBASE && teamgame.redStatus == FLAG_ATBASE) {
+					if (g_neutralFlag.integer == 6) {
+						points += 3;
+						trap->SendServerCommand(-1, va("print \"%s ^5denied the flag at ^1red^5 base at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+					}
+					else 
+						trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
 				else if (teamgame.blueStatus != FLAG_ATBASE) {
 					points += 1;
 					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^1red^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
@@ -1174,8 +1219,14 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^1red^5 flag\n\"", other->client->pers.netname));
 			}
 			else if (team == TEAM_BLUE) {
-				if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus == FLAG_ATBASE)
-					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				if (teamgame.redStatus == FLAG_ATBASE && teamgame.blueStatus == FLAG_ATBASE) {
+					if (g_neutralFlag.integer == 6) {
+						points += 3;
+						trap->SendServerCommand(-1, va("print \"%s ^5denied the flag at ^4blue^5 base at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+					}
+					else
+						trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
 				else if (teamgame.redStatus != FLAG_ATBASE) {
 					points += 1;
 					trap->SendServerCommand(-1, va("print \"%s ^5e-grabbed the ^4blue^5 flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
@@ -1184,19 +1235,33 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the ^4blue^5 flag\n\"", other->client->pers.netname));
 			}
 			else {
-				PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
+				if (teamgame.flagStatus == FLAG_ATBASE) {
+					points += 1;
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
+				else if (teamgame.flagStatus != FLAG_ATBASE) {
+					trap->SendServerCommand(-1, va("print \"%s ^5fielded the flag at ^3%.0f^5 ups (+^3%i^5)\n\"", other->client->pers.netname, speed, points));
+				}
+				else
+					trap->SendServerCommand(-1, va("print \"%s ^5grabbed the flag\n\"", other->client->pers.netname));
 			}
 		}
 		else {
 			PrintCTFMessage(other->s.number, team, CTFMESSAGE_PLAYER_GOT_FLAG);
 		}
 	}
-	if (team == TEAM_RED)
-		cl->ps.powerups[PW_REDFLAG] = INT_MAX; // flags never expire
-	else if (team == TEAM_BLUE)
-		cl->ps.powerups[PW_BLUEFLAG] = INT_MAX; // flags never expire
-	else//Rabbit
+
+	if (level.gametype == GT_CTF && g_neutralFlag.integer == 6) {
 		cl->ps.powerups[PW_NEUTRALFLAG] = INT_MAX; // flags never expire
+	}
+	else {
+		if (team == TEAM_RED)
+			cl->ps.powerups[PW_REDFLAG] = INT_MAX; // flags never expire
+		else if (team == TEAM_BLUE)
+			cl->ps.powerups[PW_BLUEFLAG] = INT_MAX; // flags never expire
+		else//Rabbit
+			cl->ps.powerups[PW_NEUTRALFLAG] = INT_MAX; // flags never expire
+	}
 
 	if ((team == TEAM_RED && teamgame.redStatus == FLAG_ATBASE) || (team == TEAM_BLUE && teamgame.blueStatus == FLAG_ATBASE)) {//JAPRO SHITTY FLAG TIMER
 		cl->pers.stats.startTimeFlag = level.time;
