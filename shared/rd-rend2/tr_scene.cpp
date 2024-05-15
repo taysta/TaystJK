@@ -131,7 +131,7 @@ void RE_AddPolyToScene( qhandle_t hShader, int numVerts, const polyVert_t *verts
 	}
 
 	for ( j = 0; j < numPolys; j++ ) {
-		if ( (r_numpolyverts + numVerts) > max_polyverts || r_numpolys >= max_polys ) {
+		if ( (r_numpolyverts + numVerts) >= max_polyverts || r_numpolys >= max_polys ) {
 			ri.Printf(
 				PRINT_DEVELOPER,
 				S_COLOR_YELLOW "WARNING: RE_AddPolyToScene: r_max_polys or r_max_polyverts reached\n");
