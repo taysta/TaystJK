@@ -627,6 +627,7 @@ static void RemoveCTFFlags(void) {
 	}
 }
 
+void RemoveRabbit(void);
 void SetGametypeFuncSolids( void );
 void G_CacheGametype( void );
 qboolean G_CallSpawn( gentity_t *ent );
@@ -662,6 +663,7 @@ void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting
 		gentity_t	*ent;
 
 		RemoveCTFFlags(); //Delete the current flag first
+		RemoveRabbit();
 
 		if (level.redFlag) {
 			ent = G_Spawn(qtrue);
@@ -676,6 +678,14 @@ void Svcmd_ChangeGametype_f (void) { //because of "variable change -- restarting
 			VectorCopy(level.blueFlagOrigin, ent->s.origin);
 			if (!G_CallSpawn(ent))
 				G_FreeEntity( ent );
+		}
+
+		if (level.neutralFlag) {
+			ent = G_Spawn(qtrue);
+			ent->classname = "team_CTF_neutralflag";
+			VectorCopy(level.neutralFlagOrigin, ent->s.origin);
+			if (!G_CallSpawn(ent))
+				G_FreeEntity(ent);
 		}
 	}
 	else {

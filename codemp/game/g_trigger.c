@@ -158,6 +158,7 @@ qboolean G_NameInTriggerClassList(char *list, char *str)
 	return qfalse;
 }
 
+void Team_StartOneFlagCapture(gentity_t *player, int team);
 int Team_TouchOneFlagBase(gentity_t *ent, gentity_t *other, int team);
 extern qboolean gSiegeRoundBegun;
 void SiegeItemRemoveOwner(gentity_t *ent, gentity_t *carrier);
@@ -205,9 +206,8 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 			return;
 	}
 
-	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client) {
+	if (level.gametype == GT_CTF && (ent->spawnflags & 16384) && activator && activator->client && g_neutralFlag.integer < 6) {
 		if (activator->client->ps.powerups[PW_NEUTRALFLAG]) {
-
 			if (g_neutralFlag.integer == 4 && activator->client->sess.sessionTeam != ent->alliedTeam)
 				return;
 			if (g_neutralFlag.integer == 5 && activator->client->sess.sessionTeam == ent->alliedTeam)
@@ -227,6 +227,41 @@ void multi_trigger( gentity_t *ent, gentity_t *activator )
 				Team_TouchOneFlagBase(ent, activator, ent->alliedTeam);
 				level.redCaptureTime = 0;
 			}
+		}
+	}
+
+	if (level.gametype == GT_CTF && (ent->spawnflags & 32768) && activator && activator->client && g_neutralFlag.integer == 6) {
+		if (activator->client->ps.powerups[PW_NEUTRALFLAG]) {
+			if (ent->alliedTeam == TEAM_RED) {
+				Team_StartOneFlagCapture(activator, ent->alliedTeam);
+			}
+			else if (ent->alliedTeam == TEAM_BLUE) {
+				Team_StartOneFlagCapture(activator, ent->alliedTeam);
+			}
+
+			AddScore(activator, ent->r.currentOrigin, 3);
+
+			if (activator->client->pers.stats.startTimeFlag) {//JAPRO SHITTY FLAG TIMER
+				const float time = (level.time - activator->client->pers.stats.startTimeFlag) / 1000.0f;
+				//int average = floorf(cl->pers.stats.displacementFlag / time) + 0.5f;
+				int average;
+				if (activator->client->pers.stats.displacementFlagSamples)
+					average = floorf(((activator->client->pers.stats.displacementFlag * sv_fps.value) / activator->client->pers.stats.displacementFlagSamples) + 0.5f);
+				else
+					average = activator->client->pers.stats.topSpeedFlag;
+
+				trap->SendServerCommand(-1, va("print \"%s^5 has placed the flag at %s^5 base in ^3%.2f^5 seconds with max of ^3%i^5 ups and average ^3%i^5 ups (^3%i^5)\n\"", activator->client->pers.netname, ent->alliedTeam == 1 ? "^1red" : "^4blue", time, (int)floorf(activator->client->pers.stats.topSpeedFlag + 0.5f), average, 3));
+				activator->client->pers.stats.startTimeFlag = 0;
+				activator->client->pers.stats.topSpeedFlag = 0;
+				activator->client->pers.stats.displacementFlag = 0;
+				activator->client->pers.stats.displacementFlagSamples = 0;
+			}
+			else if (g_fixCTFScores.integer) {
+				trap->SendServerCommand(-1, va("print \"%s^5 has placed the flat at %s^5 base (+^33^5)\n\"", activator->client->pers.netname, ent->alliedTeam == 1 ? "^1red" : "^4blue"));
+			}
+			else
+				PrintCTFMessage(activator->s.number, ent->alliedTeam, CTFMESSAGE_PLAYER_CAPTURED_FLAG);
+
 		}
 	}
 

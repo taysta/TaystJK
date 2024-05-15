@@ -3382,42 +3382,126 @@ int BG_GetTime(void)
 	return level.time;
 }
 
-void OneFlagCTFChecKTimers() {
+void OneFlagCTFCapture(int team) {
+	//Remvoe team flag, add neutral flag
+	gentity_t *ent = NULL;
+	gentity_t *newEnt = NULL;
+	char *classname;
+
+	if (team == TEAM_RED) {
+		classname = "team_CTF_redflag";
+		level.redCapturing = qfalse;
+	}
+	else {
+		classname = "team_CTF_blueflag";
+		level.blueCapturing = qfalse;
+	}
+
+	trap->SendServerCommand(-1, "cp \"");
+	trap->SendServerCommand(-1, va("print \"^5The %s^5 team has captured the flag!\n\"", team == 1 ? "^1red" : "^4blue"));
+
+	while ((ent = G_Find(ent, FOFS(classname), classname)) != NULL) {
+		G_FreeEntity(ent);
+	}
+
+	newEnt = G_Spawn(qtrue);
+	newEnt->classname = "team_CTF_neutralflag";
+	VectorCopy(level.neutralFlagOrigin, newEnt->s.origin);
+	if (!G_CallSpawn(newEnt))
+		G_FreeEntity(newEnt);
+
+	Team_SetFlagStatus(TEAM_FREE, FLAG_ATBASE);
+
+	AddTeamScore(level.neutralFlagOrigin, team, 1, qfalse);
+	CalculateRanks();
+}
+
+void OneFlagCTFCheckTimers() {
 	if (level.gametype != GT_CTF)
 		return;
 	if (g_neutralFlag.integer < 4)
 		return;
 
-	if (level.time > level.flagCapturingDebounce) {
-		int timer = g_neutralFlagTimer.integer;
-		if (timer < 0)
-			timer = 0;
-		if (level.redCapturing) {
-			if (level.redCaptureTime > 0)
-				trap->SendServerCommand(-1, va("cp \"^1Red team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.redCaptureTime) * 0.001f)); //Debounce this print? Or find a better way to visualize it (sound as well?)
-			level.redCaptureTime += 250;
+	if (g_neutralFlag.integer == 5 || g_neutralFlag.integer == 5) {
+		if (level.time > level.flagCapturingDebounce) {
+			int timer = g_neutralFlagTimer.integer;
+			if (timer < 0)
+				timer = 0;
+			if (level.redCapturing) {
+				if (level.redCaptureTime > 0)
+					trap->SendServerCommand(-1, va("cp \"^1Red team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.redCaptureTime) * 0.001f)); //Debounce this print? Or find a better way to visualize it (sound as well?)
+				level.redCaptureTime += 250;
+			}
+			else
+				level.redCaptureTime -= 250;
+
+			if (level.blueCapturing) {
+				if (level.blueCaptureTime > 0)
+					trap->SendServerCommand(-1, va("cp \"^4Blue team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.blueCaptureTime) * 0.001f));
+				level.blueCaptureTime += 250;
+			}
+			else
+				level.blueCaptureTime -= 250;
+
+			if (level.redCaptureTime < 0)
+				level.redCaptureTime = 0;
+			if (level.blueCaptureTime < 0)
+				level.blueCaptureTime = 0;
+
+
+			level.redCapturing = qfalse;
+			level.blueCapturing = qfalse;
+
+			level.flagCapturingDebounce = level.time + 250;
 		}
-		else
-			level.redCaptureTime -= 250;
+	}
+	else if (g_neutralFlag.integer == 6) {
+		if (level.time > level.flagCapturingDebounce) {
 
-		if (level.blueCapturing) {
-			if (level.blueCaptureTime > 0)
-				trap->SendServerCommand(-1, va("cp \"^4Blue team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.blueCaptureTime) * 0.001f));
-			level.blueCaptureTime += 250;
+			int timer = g_neutralFlagTimer.integer;
+			if (timer < 0)
+				timer = 0;
+
+			if (level.redCapturing) {
+				if (level.redCaptureTime > timer) {
+					OneFlagCTFCapture(TEAM_RED);
+				}
+				else if (level.redCaptureTime > 0)
+					trap->SendServerCommand(-1, va("cp \"^1Red team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.redCaptureTime) * 0.001f)); //Debounce this print? Or find a better way to visualize it (sound as well?)
+
+
+
+				level.redCaptureTime += 250;
+			}
+			else {
+				level.redCaptureTime -= 500;
+			}
+
+			if (level.blueCapturing) {
+				if (level.blueCaptureTime > timer) {
+					OneFlagCTFCapture(TEAM_BLUE);
+				}
+				else if (level.blueCaptureTime > 0)
+					trap->SendServerCommand(-1, va("cp \"^4Blue team is capturing! %.0f\n\n\n\n\n\n\n\n\n\n\n\n\"", (timer - level.blueCaptureTime) * 0.001f));
+
+				level.blueCaptureTime += 250;
+			}
+			else {
+				level.blueCaptureTime -= 500;
+			}
+
+			if (level.redCaptureTime < 0)
+				level.redCaptureTime = 0;
+			if (level.blueCaptureTime < 0)
+				level.blueCaptureTime = 0;
+
+			level.flagCapturingDebounce = level.time + 250;
 		}
-		else
-			level.blueCaptureTime -= 250;
 
-		if (level.redCaptureTime < 0)
-			level.redCaptureTime = 0;
-		if (level.blueCaptureTime < 0)
-			level.blueCaptureTime = 0;
-
-
-		level.redCapturing = qfalse;
-		level.blueCapturing = qfalse;
-
-		level.flagCapturingDebounce = level.time + 250;
+			//loda todo real 1flag capture system.  
+			//e.g.
+			//if level.redcapturing,  inc redcapture timer.  if redcapture timer >30s or w/e, add point and get rid of red flag, print msg, re spawn neutralflag
+		//elsewhere, if red flag is taken, need to delete it and instead give person neutralflag.  then turn off redcapturing (when flag capture prints? "grabbed the red"
 	}
 }
 
@@ -4252,7 +4336,7 @@ void G_RunFrame( int levelTime ) {
 
 	SiegeCheckTimers();
 
-	OneFlagCTFChecKTimers();
+	OneFlagCTFCheckTimers();
 
 #ifdef _G_FRAME_PERFANAL
 	trap->PrecisionTimer_Start(&timer_ROFF);
