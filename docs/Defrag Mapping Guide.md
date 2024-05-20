@@ -50,6 +50,8 @@ Currently there are 19 different movement styles in jaPRO defrag.  A movement st
 Seaons:
 Furthermore, leaderboards can be broken down per season.  The current seasons typically lasts 1 year, for example season 5 was 2023.  A global leaderboard still exists which ignores seasons.
 
+On jaPRO, most defrag maps are combined into "racepacks".  A racepack typically has a spawn room with doors that lead to the individual courses.  Inside the courses, there is typically a button to go back to the main room.  These can be combined into one trigger entity to save entity space.  It's a good idea to include a CTF room in a racepack with CTF spawns and CTF flags so it can be played in the CTF gametype as well.  Same for TFFA - a small TFFA room with TFFA spawns will make the map more playable.
+
 **Mapping tips:**
 There are a few things to take into account when making a defrag map.  First is the start area.  You don't want players to be able to build up a huge amount of speed before hitting the start trigger, as this is typically seen as boring gameplay called "loop starting".  Areas before the start brush are typically very small and have a patchmesh infront of the start trigger so players cant re-trigger the start once they go past it.  There are other options (trigger_newpush) that let you dynamically cap a players speed in certain directions (to prevent "loop starting") while in the start.  
 Checkpoint triggers are popular to scatter throughout the course so players can gauge their speed throughout the run.
