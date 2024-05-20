@@ -2071,8 +2071,8 @@ const char *int_to_string(int i, char *buf, size_t bufSize) {
 void PrintStats(int client) {
 	int			i, j = 0;
 	char		msg[1024-128] = {0}, numbuf[16] = {0};
-	char		lKills[32], lDeaths[32], lNet[32], lDmgGiven[32], lDmgTaken[32], lDmgNet[32], lDmgPerDeath[32], lTK[32], lCaptures[32], lReturns[32], lFragCarrier[32], lAccuracy[32], lTE[32], lTH[32], lDrain[32], lName[MAX_NETNAME], whitespace[32];
-	qboolean	showAccuracy = qtrue, showTeamPowers = qtrue, showDrain = qtrue;
+	char		lScore[32], lTime[32], lKills[32], lDeaths[32], lNet[32], lDmgGiven[32], lDmgTaken[32], lDmgNet[32], lDmgPerDeath[32], lTK[32], lCaptures[32], lReturns[32], lFragCarrier[32], lAccuracy[32], lTE[32], lTH[32], lDrain[32], lName[MAX_NETNAME], whitespace[32];
+	qboolean	showAccuracy = qtrue, showTeamPowers = qtrue, showDrain = qtrue, showNet = qtrue;
 	gclient_t	*cl;
 
 	//if (gametype != GT_CTF && gametype != GT_TEAM && !g_gunGame.integer)
@@ -2083,17 +2083,23 @@ void PrintStats(int client) {
 		showTeamPowers = qfalse;
 	if ((((g_forcePowerDisable.integer & (1<<FP_DRAIN)) || !g_friendlyFire.value)) || g_gunGame.integer) //Team Drain is disabled
 		showDrain = qfalse;
+	if (level.gametype == GT_CTF || level.gametype == GT_CTF) //Don't show unneeded frag stats in objective gametype
+		showNet = qfalse;
 
 	Q_strncpyz(msg, "\n"S_COLOR_CYAN, sizeof(msg));
 
 	Q_strncpyz(whitespace, "   ", sizeof(whitespace));
+	Q_strncpyz(lScore, va("Score%s", whitespace), sizeof(lScore));
 	Q_strncpyz(lKills, va("Kills%s", whitespace), sizeof(lKills));
 	Q_strncpyz(lDeaths, va("Deaths%s", whitespace), sizeof(lDeaths));
-	Q_strncpyz(lNet, va("Net%s", whitespace), sizeof(lNet));
+	if (showNet)
+		Q_strncpyz(lNet, va("Net%s", whitespace), sizeof(lNet));
 	Q_strncpyz(lDmgGiven, va("Dmg Given%s", whitespace), sizeof(lDmgGiven));
 	Q_strncpyz(lDmgTaken, va("Dmg Taken%s", whitespace), sizeof(lDmgTaken));
-	Q_strncpyz(lDmgNet, va("Net Dmg%s", whitespace), sizeof(lDmgNet));
-	Q_strncpyz(lDmgPerDeath, va("Dmg/Death%s", whitespace), sizeof(lDmgPerDeath));
+	if (showNet) {
+		Q_strncpyz(lDmgNet, va("Net Dmg%s", whitespace), sizeof(lDmgNet));
+		Q_strncpyz(lDmgPerDeath, va("Dmg/Death%s", whitespace), sizeof(lDmgPerDeath));
+	}
 	if (level.gametype == GT_TEAM && g_friendlyFire.value)
 		Q_strncpyz(lTK, va("Team Dmg%s", whitespace), sizeof(lTK)); //Should be just "Team Dmg"
 	if (level.gametype == GT_CTF || level.gametype == GT_CTY) {
@@ -2110,15 +2116,20 @@ void PrintStats(int client) {
 	if (showDrain) {
 		Q_strncpyz(lDrain, va("Drain Acc%s", whitespace), sizeof(lDrain));
 	}
+	Q_strncpyz(lTime, va("Time%s", whitespace), sizeof(lTime));
 	Q_strncpyz(lName, va("Name%s\n", whitespace), sizeof(lName));
 
+	Q_strcat(msg, sizeof(msg), lScore);
 	Q_strcat(msg, sizeof(msg), lKills);
 	Q_strcat(msg, sizeof(msg), lDeaths);
-	Q_strcat(msg, sizeof(msg), lNet);
+	if (showNet)
+		Q_strcat(msg, sizeof(msg), lNet);
 	Q_strcat(msg, sizeof(msg), lDmgGiven);
 	Q_strcat(msg, sizeof(msg), lDmgTaken);
-	Q_strcat(msg, sizeof(msg), lDmgNet);
-	Q_strcat(msg, sizeof(msg), lDmgPerDeath);
+	if (showNet) {
+		Q_strcat(msg, sizeof(msg), lDmgNet);
+		Q_strcat(msg, sizeof(msg), lDmgPerDeath);
+	}
 	if (level.gametype == GT_TEAM && g_friendlyFire.value)
 		Q_strcat (msg, sizeof(msg), lTK);
 	if (level.gametype == GT_CTF || level.gametype == GT_CTY) {
@@ -2135,6 +2146,7 @@ void PrintStats(int client) {
 	if (showDrain) {
 		Q_strcat(msg, sizeof(msg), lDrain);
 	}
+	Q_strcat(msg, sizeof(msg), lTime);
 	Q_strcat(msg, sizeof(msg), lName);
 
 	//Conditional label shit here:
@@ -2157,32 +2169,38 @@ void PrintStats(int client) {
 			float accuracy = 0, dmgPerDeath = cl->pers.stats.damageGiven, drainRatio = 0;
 
 			j++;
-			if (j%2)
+			if (j % 2)
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), S_COLOR_YELLOW);
 			else
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), S_COLOR_GREEN);
 
-			if(showAccuracy && cl->accuracy_shots)
+			if (showAccuracy && cl->accuracy_shots)
 				accuracy = 100.0f * (float)cl->accuracy_hits / (float)cl->accuracy_shots;
 			if (cl->ps.persistant[PERS_KILLED])
 				dmgPerDeath = cl->pers.stats.damageGiven / cl->ps.persistant[PERS_KILLED];
 			if (cl->pers.stats.enemyDrainDamage + cl->pers.stats.teamDrainDamage)
 				drainRatio = 100.0f * (float)cl->pers.stats.enemyDrainDamage / (float)(cl->pers.stats.enemyDrainDamage + cl->pers.stats.teamDrainDamage);
 
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lKills), int_to_string((level.gametype == GT_CTF) ? cl->pers.stats.kills : cl->ps.persistant[PERS_SCORE] + cl->pers.stats.teamKills + cl->ps.fd.suicides, numbuf, sizeof(numbuf)));
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lScore), int_to_string(cl->ps.persistant[PERS_SCORE], numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDeaths), int_to_string((level.gametype == GT_CTF) ? cl->ps.persistant[PERS_KILLED] - cl->ps.fd.suicides : cl->ps.persistant[PERS_KILLED], numbuf, sizeof(numbuf)));
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lKills), int_to_string((level.gametype == GT_CTF) ? cl->pers.stats.kills : cl->ps.persistant[PERS_SCORE] + cl->pers.stats.teamKills + cl->ps.fd.suicides, numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lNet), int_to_string((level.gametype == GT_CTF) ? cl->pers.stats.kills - cl->ps.persistant[PERS_KILLED] + cl->ps.fd.suicides :cl->ps.persistant[PERS_SCORE] + cl->pers.stats.teamKills + cl->ps.fd.suicides - cl->ps.persistant[PERS_KILLED], numbuf, sizeof(numbuf)));
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDeaths), int_to_string((level.gametype == GT_CTF) ? cl->ps.persistant[PERS_KILLED] - cl->ps.fd.suicides : cl->ps.persistant[PERS_KILLED], numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgGiven), int_to_string(cl->pers.stats.damageGiven, numbuf, sizeof(numbuf)));
+			if (showNet) {
+				Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lNet), int_to_string((level.gametype == GT_CTF) ? cl->pers.stats.kills - cl->ps.persistant[PERS_KILLED] + cl->ps.fd.suicides : cl->ps.persistant[PERS_SCORE] + cl->pers.stats.teamKills + cl->ps.fd.suicides - cl->ps.persistant[PERS_KILLED], numbuf, sizeof(numbuf)));
+				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
+			}
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgGiven), int_to_string(cl->pers.stats.damageGiven, numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgTaken), int_to_string(cl->pers.stats.damageTaken, numbuf, sizeof(numbuf)));
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgTaken), int_to_string(cl->pers.stats.damageTaken, numbuf, sizeof(numbuf)));
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgNet), int_to_string(cl->pers.stats.damageGiven - cl->pers.stats.damageTaken - cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
-			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgPerDeath), int_to_string(dmgPerDeath, numbuf, sizeof(numbuf)));
-			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
+			if (showNet) {
+				Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgNet), int_to_string(cl->pers.stats.damageGiven - cl->pers.stats.damageTaken - cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
+				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
+				Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDmgPerDeath), int_to_string(dmgPerDeath, numbuf, sizeof(numbuf)));
+				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
+			}
 			if (level.gametype == GT_TEAM && g_friendlyFire.value) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lTK), int_to_string(cl->pers.stats.teamDamageGiven, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
@@ -2194,7 +2212,6 @@ void PrintStats(int client) {
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lFragCarrier), int_to_string(cl->pers.teamState.fragcarrier, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
-
 			}
 			if (showAccuracy) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lAccuracy), int_to_string(accuracy, numbuf, sizeof(numbuf)));
@@ -2210,6 +2227,8 @@ void PrintStats(int client) {
 				Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lDrain), int_to_string(drainRatio, numbuf, sizeof(numbuf)));
 				Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			}
+			Com_sprintf(partialTmpMsg2, sizeof(partialTmpMsg2), "%-*s", strlen(lTime), int_to_string((level.time - cl->pers.enterTime)/60000, numbuf, sizeof(numbuf)));
+			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			Com_sprintf (partialTmpMsg2, sizeof(partialTmpMsg2), "^7%-*s", strlen(lName), cl->pers.netname);
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), partialTmpMsg2);
 			Q_strcat(partialTmpMsg, sizeof(partialTmpMsg), "\n");
