@@ -3673,8 +3673,10 @@ void ForceThrow( gentity_t *self, qboolean pull )
 
 				if (g_tweakWeapons.integer & WT_TRIBES && OnSameTeam(self, push_list[x])) {
 					//push_list[x]->client->ps.powerups[PW_YSALAMIRI] = level.time + 1500;
-					push_list[x]->client->ps.eFlags |= EF_INVULNERABLE;
-					push_list[x]->client->invulnerableTimer = level.time + 1500;
+					if (!push_list[x]->client->ps.powerups[PW_REDFLAG] && !push_list[x]->client->ps.powerups[PW_BLUEFLAG] && !push_list[x]->client->ps.powerups[PW_NEUTRALFLAG]) {
+						push_list[x]->client->ps.eFlags |= EF_INVULNERABLE;
+						push_list[x]->client->invulnerableTimer = level.time + 1500;
+					}
 				}
 				else {
 					if ( g_debugMelee.integer )
