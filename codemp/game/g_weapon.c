@@ -271,7 +271,7 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 		charge = 400;
 		vel = 10440 * g_projectileVelocityScale.value;
 		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 8;
+			ent->client->ps.jetpackFuel -= 10;
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 		ent->client->overheatDebReduce = level.time + 200;
@@ -608,8 +608,12 @@ static void WP_FireBlaster( gentity_t *ent, qboolean altFire, int seed )
 	vectoangles( forward, angs );
 
 	if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
-		if (ent->client->ps.jetpackFuel > 0)
-			ent->client->ps.jetpackFuel -= 8;
+		if (ent->client->ps.jetpackFuel > 0) {
+			if (altFire)
+				ent->client->ps.jetpackFuel -= 12;
+			else
+				ent->client->ps.jetpackFuel -= 8;
+		}
 		if (ent->client->ps.jetpackFuel < 0)
 			ent->client->ps.jetpackFuel = 0;
 		ent->client->overheatDebReduce = level.time + 200;
@@ -941,16 +945,14 @@ void WP_DisruptorAltFire(gentity_t *ent)
 			maxCount = 200;//the previous line ALWAYS evaluated to 135 - was that on purpose?
 		}
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Sniper Max Scope Dmg - Start]
-		if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
-		{
-			maxCount = 40;
-		}
 		if (g_tweakWeapons.integer & WT_TRIBES) {
 			damage = 15 * g_weaponDamageScale.value;//30
-			maxCount = 30;
+			maxCount = 50;
 		}
-		else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM)
+		else if (g_tweakWeapons.integer & WT_DISRUPTOR_DAM) {
 			damage = DISRUPTOR_ALT_DAMAGE - 40;//60
+			maxCount = 40;
+		}
 		else
 			damage = DISRUPTOR_ALT_DAMAGE - 30;//70
 //[JAPRO - Serverside - Weapons - Tweak weapons Nerf Sniper Max Scope Dmg - End]
@@ -1809,8 +1811,7 @@ void DEMP2_AltRadiusDamage( gentity_t *ent )
 		if (gent != myOwner)
 		{
 			G_Damage( gent, myOwner, myOwner, dir, ent->r.currentOrigin, ent->damage, DAMAGE_DEATH_KNOCKBACK, ent->splashMethodOfDeath );
-			if ( gent->takedamage
-				&& gent->client )
+			if ( gent->takedamage && gent->client && !(g_tweakWeapons.integer & WT_TRIBES))
 			{
 				if ( gent->client->ps.electrifyTime < level.time )
 				{//electrocution effect
@@ -4495,6 +4496,54 @@ void WP_DropDetPack( gentity_t *ent, qboolean alt_fire )
 	}
 }
 
+void WP_FireSpinfusorAlt(gentity_t* ent)
+{
+	gentity_t* missile;
+	int	damage;
+	float vel = 32000;
+
+
+	VectorMA(muzzle, -6, vright, muzzle);//temp fix but we should rewrite calcmuzzlepoint since this actually affects all weapons but is only really noticible with sniper
+	VectorMA(muzzle, 6, up, muzzle);
+
+	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, qtrue, qtrue, qtrue);
+
+
+	if (ent->client) {
+		damage = ent->client->ps.fd.forcePower * 0.5f * g_weaponDamageScale.value;
+		ent->client->jetPackDebReduce = level.time + 300;
+		if (damage < 10)
+			damage = 10;
+		ent->client->ps.fd.forcePower = 0;
+	}
+	else {
+		damage = 30 * g_weaponDamageScale.value;
+	}
+	missile->s.generic1 = damage; // The missile will then render according to the charge level.
+
+	if (!d_projectileGhoul2Collision.integer) {
+		VectorSet(missile->r.maxs, 2, 2, 2); //constant hitbox
+		VectorSet(missile->r.mins, -2, -2, -2);
+	}
+
+	missile->classname = "bryar_proj";
+	missile->s.weapon = WP_BRYAR_PISTOL;
+
+	//VectorSet( missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
+	//VectorScale( missile->r.maxs, -1, missile->r.mins );
+
+	missile->damage = damage;
+	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+	missile->methodOfDeath = MOD_BLASTER;
+	missile->clipmask = MASK_SHOT;// | CONTENTS_LIGHTSABER;
+
+								  //missile->flags |= FL_BOUNCE;
+	missile->bounceCount = 8;//was 3
+
+	if (g_tweakWeapons.integer & WT_PROJECTILE_GRAVITY) //JAPRO - Serverside - Give bullets gravity!
+		missile->s.pos.trType = TR_GRAVITY;
+}
+
 static void WP_FireConcussionAlt( gentity_t *ent )
 {//a rail-gun-like beam
 	int			damage = CONC_ALT_DAMAGE, skip, traces = DISRUPTOR_ALT_TRACES;
@@ -6435,8 +6484,12 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_CONCUSSION:
-			if ( altFire )
-				WP_FireConcussionAlt( ent );
+			if (altFire) {
+				if (g_tweakWeapons.integer & WT_TRIBES)
+					WP_FireSpinfusorAlt(ent);
+				else
+					WP_FireConcussionAlt(ent);
+			}
 			else
 				WP_FireConcussion( ent );
 			break;

@@ -4098,7 +4098,7 @@ void G_RunFrame( int levelTime ) {
 					}
 				}
 
-				if (ent->client->overheatDebReduce < level.time) //Always refill overheat
+				if (ent->client->overheatRechargeDebReduce < level.time) //Always refill overheat
 				{
 					if (ent->client->ps.jetpackFuel < 100) {
 						float recharge = VectorLength(ent->client->ps.velocity) / (ent->client->ps.speed);
@@ -4109,7 +4109,7 @@ void G_RunFrame( int levelTime ) {
 					if (ent->client->ps.jetpackFuel > 100)
 						ent->client->ps.jetpackFuel = 100;
 
-					ent->client->overheatDebReduce = level.time + 200;
+					ent->client->overheatRechargeDebReduce = level.time + 200;
 				}
 			}
 			else if (ent->client->sess.raceMode || g_tweakJetpack.integer) {//Tweaked jetpack

@@ -1085,6 +1085,7 @@ struct gclient_s {
 	int			jetPackDebRecharge;
 	int			jetPackDebReduce;
 	int			overheatDebReduce;
+	int			overheatRechargeDebReduce;
 	int			passiveHealthDebReduce;
 
 	int			cloakToggleTime;
