@@ -3502,7 +3502,7 @@ void ForceThrow( gentity_t *self, qboolean pull )
 			continue;
 		if (ent == self)
 			continue;
-		if (ent->client && OnSameTeam(ent, self) && !g_friendlyFire.value)//JAPRO - Allow push/pull teammates when friendlyfire is on
+		if (ent->client && OnSameTeam(ent, self) && (!g_friendlyFire.value && !(g_tweakWeapons.integer & WT_TRIBES)))//JAPRO - Allow push/pull teammates when friendlyfire is on
 		{
 			continue;
 		}
@@ -3671,246 +3671,253 @@ void ForceThrow( gentity_t *self, qboolean pull )
 				float dirLen = 0;
 				const int CanCounter = CanCounterThrow(push_list[x], self, pull);
 
-				if ( g_debugMelee.integer )
-				{
-					if ( (push_list[x]->client->ps.pm_flags&PMF_STUCK_TO_WALL) )
-					{//no resistance if stuck to wall
-						//push/pull them off the wall
-						otherPushPower = 0;
-						G_LetGoOfWall( push_list[x] );
-					}
+				if (g_tweakWeapons.integer & WT_TRIBES && OnSameTeam(self, push_list[x])) {
+					//push_list[x]->client->ps.powerups[PW_YSALAMIRI] = level.time + 1500;
+					push_list[x]->client->ps.eFlags |= EF_INVULNERABLE;
+					push_list[x]->client->invulnerableTimer = level.time + 1500;
 				}
-
-				pushPowerMod = pushPower;
-
-				if (push_list[x]->client->pers.cmd.forwardmove ||
-					push_list[x]->client->pers.cmd.rightmove)
-				{ //if you are moving, you get one less level of defense
-					otherPushPower--; //LODA
-
-					if (otherPushPower < 0)
+				else {
+					if ( g_debugMelee.integer )
 					{
-						otherPushPower = 0;
+						if ( (push_list[x]->client->ps.pm_flags&PMF_STUCK_TO_WALL) )
+						{//no resistance if stuck to wall
+							//push/pull them off the wall
+							otherPushPower = 0;
+							G_LetGoOfWall( push_list[x] );
+						}
 					}
-				}
 
-				if (otherPushPower) {
-					if (CanCounter > 0)
-					{
-						if ( pull )
-						{
-							G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/pull.wav" ) );
-							push_list[x]->client->ps.forceHandExtend = HANDEXTEND_FORCEPULL;
-							push_list[x]->client->ps.forceHandExtendTime = level.time + 400;
-						}
-						else
-						{
-							G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/push.wav" ) );
-							push_list[x]->client->ps.forceHandExtend = HANDEXTEND_FORCEPUSH;
-							push_list[x]->client->ps.forceHandExtendTime = level.time + 1000;
-						}
-						push_list[x]->client->ps.powerups[PW_DISINT_4] = push_list[x]->client->ps.forceHandExtendTime + 200;
+					pushPowerMod = pushPower;
 
-						if (pull)
-						{
-							push_list[x]->client->ps.powerups[PW_PULL] = push_list[x]->client->ps.powerups[PW_DISINT_4];
-						}
-						else
-						{
-							push_list[x]->client->ps.powerups[PW_PULL] = 0;
-						}
+					if (push_list[x]->client->pers.cmd.forwardmove ||
+						push_list[x]->client->pers.cmd.rightmove)
+					{ //if you are moving, you get one less level of defense
+						otherPushPower--; //LODA
 
-						//Make a counter-throw effect
-
-						if (otherPushPower >= modPowerLevel)
+						if (otherPushPower < 0)
 						{
-							pushPowerMod = 0;
-							canPullWeapon = qfalse;
+							otherPushPower = 0;
 						}
-						else
-						{
-							int powerDif = (modPowerLevel - otherPushPower);
+					}
 
-							//Really dont know what type of person would write it this way
-							if (powerDif >= 3)
+					if (otherPushPower) {
+						if (CanCounter > 0)
+						{
+							if ( pull )
 							{
-								pushPowerMod -= pushPowerMod*0.2;
+								G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/pull.wav" ) );
+								push_list[x]->client->ps.forceHandExtend = HANDEXTEND_FORCEPULL;
+								push_list[x]->client->ps.forceHandExtendTime = level.time + 400;
 							}
-							else if (powerDif == 2)
+							else
 							{
-								pushPowerMod -= pushPowerMod*0.4;
+								G_Sound( push_list[x], CHAN_BODY, G_SoundIndex( "sound/weapons/force/push.wav" ) );
+								push_list[x]->client->ps.forceHandExtend = HANDEXTEND_FORCEPUSH;
+								push_list[x]->client->ps.forceHandExtendTime = level.time + 1000;
 							}
-							else if (powerDif == 1)
+							push_list[x]->client->ps.powerups[PW_DISINT_4] = push_list[x]->client->ps.forceHandExtendTime + 200;
+
+							if (pull)
 							{
-								pushPowerMod -= pushPowerMod*0.8;
+								push_list[x]->client->ps.powerups[PW_PULL] = push_list[x]->client->ps.powerups[PW_DISINT_4];
+							}
+							else
+							{
+								push_list[x]->client->ps.powerups[PW_PULL] = 0;
 							}
 
-							if (pushPowerMod < 0)
+							//Make a counter-throw effect
+
+							if (otherPushPower >= modPowerLevel)
 							{
 								pushPowerMod = 0;
+								canPullWeapon = qfalse;
+							}
+							else
+							{
+								int powerDif = (modPowerLevel - otherPushPower);
+
+								//Really dont know what type of person would write it this way
+								if (powerDif >= 3)
+								{
+									pushPowerMod -= pushPowerMod*0.2;
+								}
+								else if (powerDif == 2)
+								{
+									pushPowerMod -= pushPowerMod*0.4;
+								}
+								else if (powerDif == 1)
+								{
+									pushPowerMod -= pushPowerMod*0.8;
+								}
+
+								if (pushPowerMod < 0)
+								{
+									pushPowerMod = 0;
+								}
+							}
+						}
+						else if (CanCounter == -1) {
+							//What if they are already absorbing tho?
+							if (g_tweakForce.integer & FT_WEAPON_PULLRESIST) //The only reason we cant counter is because of our weapon fire/charge, so weaken the pull/push strength
+								pushPowerMod *= 0.5f;
+						}
+					}
+
+					//shove them
+					if ( pull )
+					{
+						int weaponPullDist = 256;
+						if (g_tweakForce.integer & FT_NERFED_WEAPPULL && !(push_list[x]->client->ps.fd.forcePowersActive & (1 << FP_RAGE))) //And they are not in dark rage?
+							weaponPullDist = 128;
+
+						VectorSubtract( self->client->ps.origin, thispush_org, pushDir );
+
+						if (push_list[x]->client && VectorLength(pushDir) <= weaponPullDist) //LODA
+						{
+							int randfact = 0;
+
+							if (modPowerLevel == FORCE_LEVEL_1)
+							{
+								randfact = 3;
+							}
+							else if (modPowerLevel == FORCE_LEVEL_2)
+							{
+								randfact = 7;
+							}
+							else if (modPowerLevel == FORCE_LEVEL_3)
+							{
+								randfact = 10;
+							}
+
+							if (!OnSameTeam(self, push_list[x]) && Q_irand(1, 10) <= randfact && canPullWeapon)
+							{
+								vec3_t uorg, vecnorm;
+
+								VectorCopy(self->client->ps.origin, uorg);
+								uorg[2] += 64;
+
+								VectorSubtract(uorg, thispush_org, vecnorm);
+								VectorNormalize(vecnorm);
+
+								TossClientWeapon(push_list[x], vecnorm, 500);
 							}
 						}
 					}
-					else if (CanCounter == -1) {
-						//What if they are already absorbing tho?
-						if (g_tweakForce.integer & FT_WEAPON_PULLRESIST) //The only reason we cant counter is because of our weapon fire/charge, so weaken the pull/push strength
-							pushPowerMod *= 0.5f;
-					}
-				}
-
-				//shove them
-				if ( pull )
-				{
-					int weaponPullDist = 256;
-					if (g_tweakForce.integer & FT_NERFED_WEAPPULL && !(push_list[x]->client->ps.fd.forcePowersActive & (1 << FP_RAGE))) //And they are not in dark rage?
-						weaponPullDist = 128;
-
-					VectorSubtract( self->client->ps.origin, thispush_org, pushDir );
-
-					if (push_list[x]->client && VectorLength(pushDir) <= weaponPullDist) //LODA
+					else
 					{
-						int randfact = 0;
-
-						if (modPowerLevel == FORCE_LEVEL_1)
-						{
-							randfact = 3;
-						}
-						else if (modPowerLevel == FORCE_LEVEL_2)
-						{
-							randfact = 7;
-						}
-						else if (modPowerLevel == FORCE_LEVEL_3)
-						{
-							randfact = 10;
-						}
-
-						if (!OnSameTeam(self, push_list[x]) && Q_irand(1, 10) <= randfact && canPullWeapon)
-						{
-							vec3_t uorg, vecnorm;
-
-							VectorCopy(self->client->ps.origin, uorg);
-							uorg[2] += 64;
-
-							VectorSubtract(uorg, thispush_org, vecnorm);
-							VectorNormalize(vecnorm);
-
-							TossClientWeapon(push_list[x], vecnorm, 500);
-						}
+						VectorSubtract( thispush_org, self->client->ps.origin, pushDir );
 					}
-				}
-				else
-				{
-					VectorSubtract( thispush_org, self->client->ps.origin, pushDir );
-				}
 
-				if ((modPowerLevel > otherPushPower || push_list[x]->client->ps.m_iVehicleNum) && push_list[x]->client)
-				{
-					if (modPowerLevel == FORCE_LEVEL_3 &&
-						push_list[x]->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN)
+					if ((modPowerLevel > otherPushPower || push_list[x]->client->ps.m_iVehicleNum) && push_list[x]->client)
 					{
-						dirLen = VectorLength(pushDir);
+						if (modPowerLevel == FORCE_LEVEL_3 &&
+							push_list[x]->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN)
+						{
+							dirLen = VectorLength(pushDir);
 
-						if (BG_KnockDownable(&push_list[x]->client->ps) && 
-							((!(g_tweakForce.integer & FT_JK2KNOCKDOWN) && (dirLen <= (64*((modPowerLevel - otherPushPower)-1)))) || ((g_tweakForce.integer & FT_JK2KNOCKDOWN) && (dirLen <= 128))) )  
-						{ //can only do a knockdown if fairly close
-							push_list[x]->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
-							push_list[x]->client->ps.forceHandExtendTime = level.time + 700;
-							push_list[x]->client->ps.forceDodgeAnim = 0; //this toggles between 1 and 0, when it's 1 we should play the get up anim
-							push_list[x]->client->ps.quickerGetup = qtrue;
-						}
-						else if (push_list[x]->s.number < MAX_CLIENTS && push_list[x]->client->ps.m_iVehicleNum &&
-							dirLen <= 128.0f )
-						{ //a player on a vehicle
-							gentity_t *vehEnt = &g_entities[push_list[x]->client->ps.m_iVehicleNum];
-							if (vehEnt->inuse && vehEnt->client && vehEnt->m_pVehicle)
-							{
-								if (vehEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER ||
-									vehEnt->m_pVehicle->m_pVehicleInfo->type == VH_ANIMAL)
-								{ //push the guy off
-									vehEnt->m_pVehicle->m_pVehicleInfo->Eject(vehEnt->m_pVehicle, (bgEntity_t *)push_list[x], qfalse);
+							if (BG_KnockDownable(&push_list[x]->client->ps) && 
+								((!(g_tweakForce.integer & FT_JK2KNOCKDOWN) && (dirLen <= (64*((modPowerLevel - otherPushPower)-1)))) || ((g_tweakForce.integer & FT_JK2KNOCKDOWN) && (dirLen <= 128))) )  
+							{ //can only do a knockdown if fairly close
+								push_list[x]->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
+								push_list[x]->client->ps.forceHandExtendTime = level.time + 700;
+								push_list[x]->client->ps.forceDodgeAnim = 0; //this toggles between 1 and 0, when it's 1 we should play the get up anim
+								push_list[x]->client->ps.quickerGetup = qtrue;
+							}
+							else if (push_list[x]->s.number < MAX_CLIENTS && push_list[x]->client->ps.m_iVehicleNum &&
+								dirLen <= 128.0f )
+							{ //a player on a vehicle
+								gentity_t *vehEnt = &g_entities[push_list[x]->client->ps.m_iVehicleNum];
+								if (vehEnt->inuse && vehEnt->client && vehEnt->m_pVehicle)
+								{
+									if (vehEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER ||
+										vehEnt->m_pVehicle->m_pVehicleInfo->type == VH_ANIMAL)
+									{ //push the guy off
+										vehEnt->m_pVehicle->m_pVehicleInfo->Eject(vehEnt->m_pVehicle, (bgEntity_t *)push_list[x], qfalse);
+									}
 								}
 							}
 						}
 					}
-				}
 
-				if (!dirLen)
-				{
-					dirLen = VectorLength(pushDir);
-				}
+					if (!dirLen)
+					{
+						dirLen = VectorLength(pushDir);
+					}
 
-				VectorNormalize(pushDir);
+					VectorNormalize(pushDir);
 
-				if (push_list[x]->client)
-				{
-					//escape a force grip if we're in one
-					if (self->client->ps.fd.forceGripBeingGripped > level.time)
-					{ //force the enemy to stop gripping me if I managed to push him
-						if (push_list[x]->client->ps.fd.forceGripEntityNum == self->s.number)
-						{
-							if (modPowerLevel >= push_list[x]->client->ps.fd.forcePowerLevel[FP_GRIP])
-							{ //only break the grip if our push/pull level is >= their grip level
-								WP_ForcePowerStop(push_list[x], FP_GRIP);
-								self->client->ps.fd.forceGripBeingGripped = 0;
-								push_list[x]->client->ps.fd.forceGripUseTime = level.time + 1000; //since we just broke out of it..
+					if (push_list[x]->client)
+					{
+						//escape a force grip if we're in one
+						if (self->client->ps.fd.forceGripBeingGripped > level.time)
+						{ //force the enemy to stop gripping me if I managed to push him
+							if (push_list[x]->client->ps.fd.forceGripEntityNum == self->s.number)
+							{
+								if (modPowerLevel >= push_list[x]->client->ps.fd.forcePowerLevel[FP_GRIP])
+								{ //only break the grip if our push/pull level is >= their grip level
+									WP_ForcePowerStop(push_list[x], FP_GRIP);
+									self->client->ps.fd.forceGripBeingGripped = 0;
+									push_list[x]->client->ps.fd.forceGripUseTime = level.time + 1000; //since we just broke out of it..
+								}
 							}
 						}
-					}
 
-					push_list[x]->client->ps.otherKiller = self->s.number;
-//JAPRO - Serverside - Fixkillcredit - Start
-					if (g_fixKillCredit.integer)
-						push_list[x]->client->ps.otherKillerTime = level.time + 2000;
-					else
-						push_list[x]->client->ps.otherKillerTime = level.time + 5000;
-//JAPRO - Serverside - Fixkillcredit - End
-					push_list[x]->client->ps.otherKillerDebounceTime = level.time + 100;
-
-					pushPowerMod -= (dirLen*0.7);
-					if (pushPowerMod < 16)
-					{
-						pushPowerMod = 16;
-					}
-
-					//fullbody push effect
-					push_list[x]->client->pushEffectTime = level.time + 600;
-
-					if (push_list[x]->client->sess.raceMode) { //push and pull.. OP?
-						if (pull) {
-							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod;
-							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
-						}
-						else {
-							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod * 0.75f;
-							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod * 0.75f;
-						}
-					}
-					else {
-						if (((g_tweakWeapons.integer & WT_TRIBES) && !pull) || ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull)) {
-							push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod; //FT_WEAKPULL?
-							push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
-						}
-						else {
-							push_list[x]->client->ps.velocity[0] = pushDir[0] * pushPowerMod;
-							push_list[x]->client->ps.velocity[1] = pushDir[1] * pushPowerMod;
-						}
-					}
-
-					if ((int)push_list[x]->client->ps.velocity[2] == 0)
-					{ //if not going anywhere vertically, boost them up a bit
-						push_list[x]->client->ps.velocity[2] = pushDir[2]*pushPowerMod;
-
-						if (push_list[x]->client->ps.velocity[2] < 128)
-						{
-							push_list[x]->client->ps.velocity[2] = 128;
-						}
-					}
-					else
-					{
-						if ((g_tweakForce.integer & FT_PULLSTRENGTH) && (push_list[x]->client->sess.raceMode || pull))
-							push_list[x]->client->ps.velocity[2] += pushDir[2]*pushPowerMod;
+						push_list[x]->client->ps.otherKiller = self->s.number;
+						//JAPRO - Serverside - Fixkillcredit - Start
+						if (g_fixKillCredit.integer)
+							push_list[x]->client->ps.otherKillerTime = level.time + 2000;
 						else
-							push_list[x]->client->ps.velocity[2] = pushDir[2]*pushPowerMod;
+							push_list[x]->client->ps.otherKillerTime = level.time + 5000;
+						//JAPRO - Serverside - Fixkillcredit - End
+						push_list[x]->client->ps.otherKillerDebounceTime = level.time + 100;
+
+						pushPowerMod -= (dirLen*0.7);
+						if (pushPowerMod < 16)
+						{
+							pushPowerMod = 16;
+						}
+
+						//fullbody push effect
+						push_list[x]->client->pushEffectTime = level.time + 600;
+
+						if (push_list[x]->client->sess.raceMode) { //push and pull.. OP?
+							if (pull) {
+								push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod;
+								push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
+							}
+							else {
+								push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod * 0.75f;
+								push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod * 0.75f;
+							}
+						}
+						else {
+							if (((g_tweakWeapons.integer & WT_TRIBES) && !pull) || ((g_tweakForce.integer & FT_PULLSTRENGTH) && pull)) {
+								push_list[x]->client->ps.velocity[0] += pushDir[0] * pushPowerMod; //FT_WEAKPULL?
+								push_list[x]->client->ps.velocity[1] += pushDir[1] * pushPowerMod;
+							}
+							else {
+								push_list[x]->client->ps.velocity[0] = pushDir[0] * pushPowerMod;
+								push_list[x]->client->ps.velocity[1] = pushDir[1] * pushPowerMod;
+							}
+						}
+
+						if ((int)push_list[x]->client->ps.velocity[2] == 0)
+						{ //if not going anywhere vertically, boost them up a bit
+							push_list[x]->client->ps.velocity[2] = pushDir[2] * pushPowerMod;
+
+							if (push_list[x]->client->ps.velocity[2] < 128)
+							{
+								push_list[x]->client->ps.velocity[2] = 128;
+							}
+						}
+						else
+						{
+							if ((g_tweakForce.integer & FT_PULLSTRENGTH) && (push_list[x]->client->sess.raceMode || pull))
+								push_list[x]->client->ps.velocity[2] += pushDir[2] * pushPowerMod;
+							else
+								push_list[x]->client->ps.velocity[2] = pushDir[2] * pushPowerMod;
+						}
 					}
 				}
 			}
