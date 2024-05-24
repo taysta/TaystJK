@@ -11,7 +11,7 @@ You need to link the static library also 'discord_rpc.lib'.
 
 //Author: Blackwolf
 //This is my Application ID of the Discord Developer section, feel free to use it.
-static const char* APPLICATION_ID = "1235827127321100338";
+static const char* APPLICATION_ID = "459923453139746816";
 
 typedef struct statusIcon_s {
 	char *string;
