@@ -4700,6 +4700,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 		else if (attacker && targ->client->ps.duelInProgress && (attacker->s.number == targ->client->ps.duelIndex)) {
 		}
+		else if (g_tweakWeapons.integer & WT_TRIBES) {
+		}
 		else {
 			if (targ->client->ps.electrifyTime < level.time)
 			{//electrocution effect
@@ -4966,7 +4968,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		}
 	}
 
-	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && !(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) && !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
+	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && /*!(targ->client->ps.fd.forcePowersActive & (1 << FP_PROTECT)) &&*/ !(g_tweakWeapons.integer & WT_PROJ_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES))
 	{
 		float cut;
 		if (g_tribesMode.integer)
@@ -4978,10 +4980,18 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 			cut = 1;
 		else if (cut < 0)
 			cut = 0;
-		targ->client->ps.fd.forcePower -= damage * 1.25f;;
-		if (targ->client->ps.fd.forcePower < 0)
-			targ->client->ps.fd.forcePower = 0;
+		targ->client->ps.fd.forcePower += damage * 0.5f;
+		if (targ->client->ps.fd.forcePower > 100)
+			targ->client->ps.fd.forcePower = 100;
 		VectorScale(targ->client->ps.velocity, cut, targ->client->ps.velocity);
+	}
+
+	if (targ->client->ps.electrifyTime > level.time && (g_tweakWeapons.integer & WT_TRIBES)) {
+		damage *= 1.5f;
+	}
+
+	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES)) { //Zenyatta expose shit
+		targ->client->ps.electrifyTime = level.time + 4000;
 	}
 
 	//JAPRO - check for same frame dmg fix here?
