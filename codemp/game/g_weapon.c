@@ -256,6 +256,93 @@ BRYAR PISTOL
 ======================================================================
 */
 
+//---------------------------------------------------------
+static void WP_FireColt(gentity_t *ent)
+//---------------------------------------------------------
+{
+	int			damage = 40;
+	qboolean	render_impact = qtrue;
+	vec3_t		start, end;
+	trace_t		tr;
+	gentity_t	*traceEnt, *tent;
+	float		shotRange = 32768;
+	int			ignore;
+
+	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
+
+	VectorCopy(ent->client->ps.origin, start);
+	start[2] += ent->client->ps.viewheight;//By eyes - but why???
+	VectorMA(start, shotRange, forward, end);
+	VectorMA(start, 1, vright, start);
+
+	if (g_unlagged.integer & UNLAGGED_HITSCAN)
+		G_TimeShiftAllClients(ent->client->pers.cmd.serverTime, ent, qfalse);
+
+	ignore = ent->s.number;
+
+	JP_Trace(&tr, start, NULL, NULL, end, ignore, MASK_SHOT, qfalse, 0, 0); //Never use small hitbox for shocklance
+
+	if (tr.entityNum == ENTITYNUM_NONE)
+	{
+		if (g_unlagged.integer & UNLAGGED_HITSCAN)
+			G_UnTimeShiftAllClients(ent, qfalse);
+		return;
+	}
+	//fix: shooting ourselves shouldn't be allowed
+	if (tr.entityNum == ent->s.number)
+	{
+		if (g_unlagged.integer & UNLAGGED_HITSCAN)
+			G_UnTimeShiftAllClients(ent, qfalse);
+		return;
+	}
+
+	traceEnt = &g_entities[tr.entityNum];
+
+	if (g_unlagged.integer & UNLAGGED_HITSCAN)
+		G_UnTimeShiftAllClients(ent, qfalse);
+
+	/*
+	// always render a shot beam, doing this the old way because I don't much feel like overriding the effect.
+	tent = G_TempEntity(tr.endpos, EV_DISRUPTOR_MAIN_SHOT);
+	VectorCopy(muzzle, tent->s.origin2);
+	tent->s.eventParm = ent->s.number;
+	*/
+
+	traceEnt = &g_entities[tr.entityNum];
+
+
+	if (tr.entityNum < ENTITYNUM_WORLD && traceEnt->takedamage)
+	{
+		if (traceEnt->client && LogAccuracyHit(traceEnt, ent))
+		{
+			ent->client->accuracy_hits++;
+		}
+
+		damage *= 1 - tr.fraction;
+		if (damage < 20)
+			damage = 20;
+		damage *= g_weaponDamageScale.value;
+
+		G_Damage(traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NORMAL, MOD_BRYAR_PISTOL); //I guess keep this as turblast since MOD_STUN is used for healgun .. and we dont want shocklance to heal :\
+
+		tent = G_TempEntity(tr.endpos, EV_MISSILE_HIT);
+		tent->s.eventParm = DirToByte(tr.plane.normal);
+		if (traceEnt->client)
+		{
+			tent->s.weapon = 1;
+		}
+	}
+	else
+	{
+		// Hmmm, maybe don't make any marks on things that could break
+		tent = G_TempEntity(tr.endpos, EV_DISRUPTOR_SNIPER_MISS);
+		tent->s.eventParm = DirToByte(tr.plane.normal);
+		tent->s.weapon = 1;
+	}
+
+
+}
+
 //----------------------------------------------
 static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 //---------------------------------------------------------
@@ -3425,7 +3512,6 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 
 	if (g_tweakWeapons.integer & WT_TRIBES) {
 		chargeAmount = 1.0f;
-		altFire = qtrue;
 	}
 	else if (g_tweakWeapons.integer & WT_IMPACT_NITRON) {
 		chargeAmount = 1.0f;
@@ -3509,16 +3595,6 @@ gentity_t *WP_FireThermalDetonator( gentity_t *ent, qboolean altFire )
 
 	return bolt;
 }
-
-void WP_ThrowGrenade( gentity_t *ent ) //Unused in JKA so repurpose this for tribes
-{
-	if (ent && ent->client) {
-		AngleVectors(ent->client->ps.viewangles, forward, vright, up);
-		CalcMuzzlePoint(ent, forward, vright, up, muzzle);
-		WP_FireThermalDetonator(ent, qfalse);
-	}
-}
-
 
 //---------------------------------------------------------
 qboolean WP_LobFire( gentity_t *self, vec3_t start, vec3_t target, vec3_t mins, vec3_t maxs, int clipmask,
@@ -4091,7 +4167,6 @@ void WP_PlaceLaserTrap( gentity_t *ent, qboolean alt_fire )
 	trap->LinkEntity((sharedEntity_t *)laserTrap);
 }
 
-
 /*
 ======================================================================
 
@@ -4496,11 +4571,33 @@ void WP_DropDetPack( gentity_t *ent, qboolean alt_fire )
 	}
 }
 
+void WP_ThrowGrenade(gentity_t *ent) //Unused in JKA so repurpose this for tribes
+{
+	if (ent && ent->client) {
+		AngleVectors(ent->client->ps.viewangles, forward, vright, up);
+		CalcMuzzlePoint(ent, forward, vright, up, muzzle);
+
+		if (ent->client->pers.tribesClass == 3) {
+			WP_PlaceLaserTrap(ent, qtrue);
+		}
+		else if (ent->client->pers.tribesClass == 2) {
+			if (ent->client->ps.ammo[AMMO_DETPACK] > 1)
+				WP_DropDetPack(ent, qfalse);
+			else
+				WP_DropDetPack(ent, qtrue);
+		}
+		else {
+			WP_FireThermalDetonator(ent, qtrue);
+		}
+	}
+}
+
 void WP_FireSpinfusorAlt(gentity_t* ent)
 {
 	gentity_t* missile;
-	int	damage;
-	float vel = 32000;
+	int	damage = 1000;
+	float count;
+	float vel = 1000;
 
 
 	VectorMA(muzzle, -6, vright, muzzle);//temp fix but we should rewrite calcmuzzlepoint since this actually affects all weapons but is only really noticible with sniper
@@ -4509,25 +4606,32 @@ void WP_FireSpinfusorAlt(gentity_t* ent)
 	missile = CreateMissileNew(muzzle, forward, vel * g_projectileVelocityScale.value, 10000, ent, qtrue, qtrue, qtrue);
 
 
-	if (ent->client) {
-		damage = ent->client->ps.fd.forcePower * 0.5f * g_weaponDamageScale.value;
-		ent->client->jetPackDebReduce = level.time + 300;
-		if (damage < 10)
-			damage = 10;
-		ent->client->ps.fd.forcePower = 0;
+
+	damage = ent->client->ps.fd.forcePower * 2;
+	missile->s.generic1 = damage * 0.02f; // The missile will then render according to the charge level.
+	if (damage < 100) {
+		damage = 100;
 	}
-	else {
-		damage = 30 * g_weaponDamageScale.value;
+	if (missile->s.generic1 < 2) {
+		missile->s.generic1 = 2;
 	}
-	missile->s.generic1 = damage; // The missile will then render according to the charge level.
+	damage *= g_weaponDamageScale.value;
+
+	ent->client->ps.fd.forcePower = 0;
+
+
+	Com_Printf("Generic 1 %i\n", missile->s.generic1);
 
 	if (!d_projectileGhoul2Collision.integer) {
 		VectorSet(missile->r.maxs, 2, 2, 2); //constant hitbox
 		VectorSet(missile->r.mins, -2, -2, -2);
 	}
 
-	missile->classname = "bryar_proj";
-	missile->s.weapon = WP_BRYAR_PISTOL;
+	//missile->classname = "bryar_proj";
+	//missile->s.weapon = WP_BRYAR_PISTOL;
+
+	missile->classname = "conc_proj";
+	missile->s.weapon = WP_CONCUSSION;
 
 	//VectorSet( missile->r.maxs, BOWCASTER_SIZE, BOWCASTER_SIZE, BOWCASTER_SIZE );
 	//VectorScale( missile->r.maxs, -1, missile->r.mins );
@@ -4536,6 +4640,9 @@ void WP_FireSpinfusorAlt(gentity_t* ent)
 	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
 	missile->methodOfDeath = MOD_BLASTER;
 	missile->clipmask = MASK_SHOT;// | CONTENTS_LIGHTSABER;
+
+	missile->splashDamage = damage;
+	missile->splashRadius = CONC_SPLASH_RADIUS;
 
 								  //missile->flags |= FL_BOUNCE;
 	missile->bounceCount = 8;//was 3
@@ -5128,6 +5235,16 @@ static void WP_FireLightningGun( gentity_t *ent )
 	if (d_projectileGhoul2Collision.integer)
 		ghoul2 = qtrue;
 
+	if (g_tweakWeapons.integer & WT_TRIBES) {
+		shotRange = 1024;
+
+		//damage = ent->client->ps.fd.forcePower * 0.5f * g_weaponDamageScale.value;
+		//if (damage < 10)
+			//damage = 10;
+		//ent->client->ps.fd.forcePower -= 1;
+
+	}
+
 
 	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
 
@@ -5159,6 +5276,10 @@ static void WP_FireLightningGun( gentity_t *ent )
 		if ( g_unlagged.integer & UNLAGGED_HITSCAN )
 			G_UnTimeShiftAllClients( ent, ghoul2 );
 		return;
+	}
+
+	if (ent->client && g_tweakWeapons.integer & WT_TRIBES) {
+		ent->client->jetPackDebReduce = level.time + 200;
 	}
 
 	traceEnt = &g_entities[tr.entityNum];
@@ -5235,6 +5356,9 @@ static void WP_FireShockLance( gentity_t *ent )
 	gentity_t	*traceEnt, *tent;
 	float		shotRange = 240;
 	int			ignore;
+
+	if (g_tweakWeapons.integer & WT_TRIBES)
+		shotRange = 384;
 
 	memset(&tr, 0, sizeof(tr)); //to shut the compiler up
 
@@ -6462,7 +6586,7 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 		CalcMuzzlePoint ( ent, forward, vright, up, muzzle );
 
 		// fire the specific weapon
-		switch( ent->s.weapon ) {
+		switch (ent->s.weapon) {
 		case WP_STUN_BATON:
 			if (g_tweakWeapons.integer & WT_STUN_LG && altFire)//JAPRO - Lightning Gun
 				WP_FireLightningGun(ent);
@@ -6480,7 +6604,10 @@ void FireWeapon( gentity_t *ent, qboolean altFire ) {
 			break;
 
 		case WP_BRYAR_PISTOL:
-			WP_FireBryarPistol( ent, altFire, seed );
+			if (g_tweakWeapons.integer & WT_TRIBES)
+				WP_FireColt(ent, altFire);
+			else
+				WP_FireBryarPistol( ent, altFire, seed );
 			break;
 
 		case WP_CONCUSSION:

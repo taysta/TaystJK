@@ -2267,22 +2267,23 @@ int Pickup_Ammo (gentity_t *ent, gentity_t *other)
 				other->client->ps.ammo[AMMO_POWERCELL] = 600;
 				other->client->ps.ammo[AMMO_METAL_BOLTS] = 900;
 				other->client->ps.ammo[AMMO_ROCKETS] = 30;
-				other->client->ps.ammo[AMMO_THERMAL] = 2;
-				other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 
 				if (other->health > 0 && other->health < other->client->ps.stats[STAT_MAX_HEALTH]) {
 					other->client->passiveHealthDebReduce = level.time; //Passif regen
 					if (other->client->pers.tribesClass == 1) {
 						other->health += 250;
 						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SENTRY_GUN);
+						other->client->ps.ammo[AMMO_THERMAL] = 2;
 					}
 					else if (other->client->pers.tribesClass == 2) {
 						other->health += 300;
 						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_EWEB);
+						other->client->ps.ammo[AMMO_DETPACK] = 2;
 					}
 					else if (other->client->pers.tribesClass == 3) {
 						other->health += 350;
 						other->client->ps.stats[STAT_HOLDABLE_ITEMS] |= (1 << HI_SHIELD);
+						other->client->ps.ammo[AMMO_TRIPMINE] = 2;
 					}
 
 					if (other->health > other->client->ps.stats[STAT_MAX_HEALTH])

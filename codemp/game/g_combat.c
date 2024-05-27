@@ -4986,11 +4986,11 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 		VectorScale(targ->client->ps.velocity, cut, targ->client->ps.velocity);
 	}
 
-	if (targ->client->ps.electrifyTime > level.time && (g_tweakWeapons.integer & WT_TRIBES)) {
+	if (targ && targ->client && targ->client->ps.electrifyTime > level.time && (g_tweakWeapons.integer & WT_TRIBES)) {
 		damage *= 1.5f;
 	}
 
-	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && (g_tweakWeapons.integer & WT_TRIBES)) { //Zenyatta expose shit
+	if ((mod == MOD_DISRUPTOR || mod == MOD_DISRUPTOR_SNIPER) && targ && targ->client && (g_tweakWeapons.integer & WT_TRIBES)) { //Zenyatta expose shit
 		targ->client->ps.electrifyTime = level.time + 4000;
 	}
 

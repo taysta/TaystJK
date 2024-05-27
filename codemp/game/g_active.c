@@ -4363,6 +4363,9 @@ void ClientThink_real( gentity_t *ent ) {
 							client->ps.gravity *= 1.5f;
 						}
 					}
+					if (client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_SUPERJUMP) {
+						client->ps.gravity *= 1.75f;
+					}
 				}
 			}
 		}

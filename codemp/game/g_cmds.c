@@ -8658,13 +8658,40 @@ void Cmd_Throwflag_f( gentity_t *ent ) {
 
 void WP_ThrowGrenade(gentity_t *ent);
 void Cmd_ThrowNade_f(gentity_t *ent) {
-	if (ent && ent->client && (ent->client->specificWeaponTime[WP_THERMAL] <= 0) && (ent->client->ps.ammo[AMMO_THERMAL] > 0) && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
-		ent->client->ps.weaponTime += 1000;
-		ent->client->specificWeaponTime[WP_THERMAL] += 1000;
-		if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
-			ent->client->ps.ammo[AMMO_THERMAL] -= 1;
-		WP_ThrowGrenade(ent);
-		StandardSetBodyAnim(ent, BOTH_THERMAL_THROW, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+	if (ent && ent->client && !ent->client->sess.raceMode && (g_tweakWeapons.integer & WT_TRIBES)) {
+		if (ent->client->pers.tribesClass == 3) {
+			if (ent->client->ps.ammo[AMMO_TRIPMINE] > 0) {
+				WP_ThrowGrenade(ent);
+				StandardSetBodyAnim(ent, BOTH_MELEE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+				ent->client->specificWeaponTime[WP_TRIP_MINE] += 1000;
+				ent->client->ps.weaponTime += 1000;
+				if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+					ent->client->ps.ammo[AMMO_TRIPMINE] -= 1;
+			}
+		}
+		else if (ent->client->pers.tribesClass == 2) {
+			if (ent->client->ps.ammo[AMMO_DETPACK] > 0) {
+				WP_ThrowGrenade(ent);
+				if (ent->client->ps.ammo[AMMO_DETPACK] > 0)
+					StandardSetBodyAnim(ent, BOTH_MELEE1, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+				else
+					StandardSetBodyAnim(ent, BOTH_MELEE2, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+				ent->client->specificWeaponTime[WP_DET_PACK] += 1000;
+				ent->client->ps.weaponTime += 1000;
+				if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+					ent->client->ps.ammo[AMMO_DETPACK] -= 1;
+			}
+		}
+		else {
+			if (ent->client->ps.ammo[AMMO_THERMAL] > 0) {
+				WP_ThrowGrenade(ent);
+				StandardSetBodyAnim(ent, BOTH_THERMAL_THROW, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD | SETANIM_FLAG_HOLDLESS, SETANIM_TORSO);
+				ent->client->specificWeaponTime[WP_THERMAL] += 1000;
+				ent->client->ps.weaponTime += 1000;
+				if (!(g_tweakWeapons.integer & WT_INFINITE_AMMO))
+					ent->client->ps.ammo[AMMO_THERMAL] -= 1;
+			}
+		}
 	}
 }
 
