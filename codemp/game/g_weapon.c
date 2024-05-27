@@ -260,7 +260,7 @@ BRYAR PISTOL
 static void WP_FireColt(gentity_t *ent, qboolean altFire)
 //---------------------------------------------------------
 {
-	int			damage = 40;
+	int			damage = 35;
 	qboolean	render_impact = qtrue;
 	vec3_t		start, end;
 	trace_t		tr;
@@ -313,15 +313,19 @@ static void WP_FireColt(gentity_t *ent, qboolean altFire)
 
 	if (tr.entityNum < ENTITYNUM_WORLD && traceEnt->takedamage)
 	{
+		int distance = tr.fraction * shotRange;
+
+		if (distance < 5000)
+			damage = -0.004 * distance + 35;
+		else
+			damage = 15;
+
+		damage *= g_weaponDamageScale.value;
+
 		if (traceEnt->client && LogAccuracyHit(traceEnt, ent))
 		{
 			ent->client->accuracy_hits++;
 		}
-
-		damage *= 1 - tr.fraction;
-		if (damage < 20)
-			damage = 20;
-		damage *= g_weaponDamageScale.value;
 
 		G_Damage(traceEnt, ent, ent, forward, tr.endpos, damage, DAMAGE_NORMAL, MOD_BRYAR_PISTOL); //I guess keep this as turblast since MOD_STUN is used for healgun .. and we dont want shocklance to heal :\
 
