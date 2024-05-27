@@ -257,7 +257,7 @@ BRYAR PISTOL
 */
 
 //---------------------------------------------------------
-static void WP_FireColt(gentity_t *ent)
+static void WP_FireColt(gentity_t *ent, qboolean altFire)
 //---------------------------------------------------------
 {
 	int			damage = 40;
