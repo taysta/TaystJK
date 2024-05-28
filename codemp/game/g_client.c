@@ -3831,7 +3831,7 @@ void GiveClientWeapons(gclient_t *client) {
 		//Give tribes loadout.
 	else if (client->pers.tribesClass == 1) {
 			//Light
-			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_BOWCASTER) + (1 << WP_THERMAL) + (1 << WP_SABER) + (1 << WP_BRYAR_OLD));
+			client->ps.stats[STAT_WEAPONS] |= ((1 << WP_DISRUPTOR) + (1 << WP_BOWCASTER) + (1 << WP_SABER) + (1 << WP_BRYAR_OLD));
 			client->ps.ammo[AMMO_THERMAL] = 2;
 			client->ps.ammo[AMMO_BLASTER] = 500;
 			client->ps.ammo[AMMO_POWERCELL] = 900;
@@ -3842,10 +3842,12 @@ void GiveClientWeapons(gclient_t *client) {
 		client->ps.ammo[AMMO_POWERCELL] = 900;
 		client->ps.ammo[AMMO_BLASTER] = 500;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
+		client->ps.ammo[AMMO_DETPACK] = 2;
 	}
 	else if (client->pers.tribesClass == 3) {
 		//Heavy
-		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_REPEATER) + (1 << WP_DEMP2) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_TRIP_MINE) + (1 << WP_SABER));
+		client->ps.stats[STAT_WEAPONS] |= ((1 << WP_BRYAR_PISTOL) + (1 << WP_REPEATER) + (1 << WP_DEMP2) + (1 << WP_ROCKET_LAUNCHER) + (1 << WP_SABER));
+		client->ps.ammo[AMMO_BLASTER] = 200;
 		client->ps.ammo[AMMO_POWERCELL] = 600;
 		client->ps.ammo[AMMO_METAL_BOLTS] = 800;
 		client->ps.ammo[AMMO_ROCKETS] = 30;

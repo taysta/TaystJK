@@ -177,6 +177,9 @@ void CG_RegisterWeapon( int weaponNum) {
 		break;
 
 	case WP_CONCUSSION:
+		if (cgs.serverMod == SVMOD_JAPRO) {
+			cgs.effects.repeaterAltProjectileEffect = trap->FX_RegisterEffect("repeater/alt_projectile");//load this cuz spinfusor uses it in tribes mode
+		}
 		weaponInfo->selectSound			= trap->S_RegisterSound("sound/weapons/concussion/select.wav");
 
 		weaponInfo->flashSound[0]		= trap->S_RegisterSound("sound/weapons/concussion/fire");

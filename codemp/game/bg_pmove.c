@@ -3452,6 +3452,10 @@ static qboolean PM_CheckJump( void )
 		else {
 			pm->ps->velocity[2] = JUMP_VELOCITY;
 		}
+
+		if (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_SUPERJUMP) {
+			pm->ps->velocity[2] *= 3.0f;
+		}
 	}
 
 	//Jumping
@@ -9921,6 +9925,10 @@ if (pm->ps->duelInProgress)
 				addTime = 100;
 			break;
 		case WP_BRYAR_PISTOL:
+			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1000;
+			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
+				addTime = 1000;
 			break;
 		case WP_BLASTER:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && pm->ps->stats[STAT_RACEMODE])
@@ -9972,7 +9980,7 @@ if (pm->ps->duelInProgress)
 			break;
 		case WP_CONCUSSION:
 			if ((pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
-				addTime = 800;
+				addTime = 1400;
 			else if (!(pm->cmd.buttons & BUTTON_ALT_ATTACK) && !pm->ps->stats[STAT_RACEMODE] && (g_tweakWeapons.integer & WT_TRIBES))
 				addTime = 1200;
 			break;

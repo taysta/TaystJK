@@ -509,6 +509,7 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define JAPRO_RESTRICT_CROUCHJUMP			(1<<1)
 #define JAPRO_RESTRICT_DOUBLEJUMP			(1<<2)
 #define JAPRO_RESTRICT_ALLOWTELES			(1<<3)
+#define JAPRO_RESTRICT_SUPERJUMP			(1<<4)
 
 //ja+ cp_plugindisable stuff
 #define JAPRO_PLUGIN_NEWDRAINEFX			(1<<0)
