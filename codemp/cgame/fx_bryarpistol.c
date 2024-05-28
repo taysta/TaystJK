@@ -230,7 +230,18 @@ void FX_ConcussionProjectileThink(  centity_t *cent, const struct weaponInfo_s *
 		forward[2] = 1.0f;
 	}
 
-	trap->FX_PlayEffectID( cgs.effects.concussionShotEffect, cent->lerpOrigin, forward, -1, -1, qfalse );
+	if (cent->currentState.generic1 && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
+		int t;
+		// see if we have some sort of extra charge going on
+		for (t = 1; t < cent->currentState.generic1; t++)
+		{
+			// just add ourselves over, and over, and over when we are charged
+			trap->FX_PlayEffectID(cgs.effects.repeaterAltProjectileEffect, cent->lerpOrigin, forward, -1, -1, qfalse);
+		}
+	}
+	else {
+		trap->FX_PlayEffectID(cgs.effects.concussionShotEffect, cent->lerpOrigin, forward, -1, -1, qfalse);
+	}
 }
 
 /*

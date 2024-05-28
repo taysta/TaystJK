@@ -4600,7 +4600,7 @@ void WP_FireSpinfusorAlt(gentity_t* ent)
 {
 	gentity_t* missile;
 	int	damage = 1000;
-	float count;
+	//float count;
 	float vel = 1000;
 
 
