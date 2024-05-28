@@ -2286,7 +2286,7 @@ int ForceShootDrain( gentity_t *self )
 		center[2] += self->client->ps.viewheight - 16;
 	}
 
-	if ( self->client->ps.fd.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2 )
+	if ((self->client->ps.fd.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2) && !(g_tweakForce.integer & FT_FIXLINEDRAIN))
 	{//arc
 		vec3_t	mins, maxs, dir, ent_org, size, v;
 		float	radius = MAX_DRAIN_DISTANCE, dot, dist, cof;
@@ -2409,7 +2409,10 @@ int ForceShootDrain( gentity_t *self )
 		gotOneOrMore = 1;
 	}
 
-	self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
+	if ((g_tweakForce.integer & FT_FIXLINEDRAIN) && self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_3)
+		self->client->ps.activeForcePass = FORCE_LEVEL_2 + FORCE_LEVEL_3;
+	else
+		self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
 
 	BG_ForcePowerDrain( &self->client->ps, FP_DRAIN, 5 ); //used to be 1, but this did, too, anger the God of Balance.
 

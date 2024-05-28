@@ -8578,6 +8578,8 @@ void Cmd_ServerConfig_f(gentity_t *ent) //loda fixme fix indenting on this, make
 			Q_strcat(buf, sizeof(buf), "   ^5Drain takes 25% less forcepoints from target\n");
 		if (g_tweakForce.integer & FT_FIXGRIPPEDREGEN)
 			Q_strcat(buf, sizeof(buf), "   ^5Jump does not pause your regen while being gripped\n");
+		if (g_tweakForce.integer & FT_FIXLINEDRAIN)
+			Q_strcat(buf, sizeof(buf), "   ^5Drain level 3 is a line\n");
 
 		trap->SendServerCommand(ent-g_entities, va("print \"%s\"", buf));
 	}
