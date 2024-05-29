@@ -2267,6 +2267,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 	}
 }
 
+void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 int ForceShootDrain( gentity_t *self )
 {
 	trace_t	tr;
@@ -2415,6 +2416,75 @@ int ForceShootDrain( gentity_t *self )
 		traceEnt = &g_entities[tr.entityNum];
 		ForceDrainDamage( self, traceEnt, forward, tr.endpos );
 		gotOneOrMore = 1;
+
+		if (traceEnt && traceEnt->client && (g_tweakForce.integer & FT_FIXLINEDRAIN)) { //drain chain
+			int i, numListedEntities, e;
+			vec3_t mins, maxs;
+			float	radius = 96;
+			int		iEntityList[MAX_GENTITIES];
+			gentity_t	*entityList[MAX_GENTITIES];
+			gentity_t	*traceEnt2;
+			vec3_t dir;
+
+			for (i = 0; i < 3; i++) {
+				mins[i] = traceEnt->client->ps.origin[i] - radius;
+				maxs[i] = traceEnt->client->ps.origin[i] + radius;
+			}
+			numListedEntities = trap->EntitiesInBox(mins, maxs, iEntityList, MAX_GENTITIES);
+
+			i = 0;
+			while (i < numListedEntities)
+			{
+				entityList[i] = &g_entities[iEntityList[i]];
+
+				i++;
+			}
+
+			for (e = 0; e < numListedEntities; e++)
+			{
+				traceEnt2 = entityList[e];
+
+				if (!traceEnt2)
+					continue;
+				if (traceEnt2 == self)
+					continue;
+				if (!traceEnt2->inuse)
+					continue;
+				if (!traceEnt2->takedamage)
+					continue;
+				if (traceEnt2->health <= 0)//no torturing corpses
+					continue;
+				if (!traceEnt2->client)
+					continue;
+				if (!traceEnt2->client->ps.fd.forcePower)
+					continue;
+				if (OnSameTeam(self, traceEnt2) && !g_friendlyFire.value)
+					continue;
+				if (traceEnt2 == self)
+					continue;
+
+				//Now check and see if we can actually hit it
+				JP_Trace(&tr, traceEnt->client->ps.origin, vec3_origin, vec3_origin, traceEnt2->client->ps.origin, traceEnt->s.number, MASK_SHOT, qfalse, 0, 0);
+				if (tr.fraction < 1.0f && tr.entityNum != traceEnt2->s.number)
+				{//must have clear LOS
+					continue;
+				}
+
+				if (traceEnt->s.number == traceEnt2->s.number) {//The 2nd chain is the 1st chain??
+					continue; // WTF?
+				}
+
+				// ok, we are within the radius, add us to the incoming list
+				VectorSubtract(traceEnt2->client->ps.origin, traceEnt->client->ps.origin, dir);
+				VectorNormalize(dir);
+				ForceDrainDamage(self, traceEnt2, dir, traceEnt2->client->ps.origin);
+
+				G_TestLine(traceEnt->client->ps.origin, traceEnt2->client->ps.origin, 0x00000ff, 500);
+
+				//How to do Effect here?
+			}
+		}
+
 	}
 
 	if ((g_tweakForce.integer & FT_FIXLINEDRAIN) && self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_3)
