@@ -2396,11 +2396,19 @@ int ForceShootDrain( gentity_t *self )
 	}
 	else
 	{//trace-line
-		VectorMA( center, 2048, forward, end );
+		if (g_tweakForce.integer & FT_FIXLINEDRAIN) {
+			vec3_t mins = { -6, -6, -6 }, maxs = { 6, 6, 6 };
+			VectorMA(center, MAX_DRAIN_DISTANCE, forward, end);
+			JP_Trace(&tr, center, mins, maxs, end, self->s.number, MASK_SHOT, qfalse, 0, 0);
+		}
+		else {
+			VectorMA(center, 2048, forward, end);
+			JP_Trace(&tr, center, vec3_origin, vec3_origin, end, self->s.number, MASK_SHOT, qfalse, 0, 0);
+		}
 		
-		JP_Trace( &tr, center, vec3_origin, vec3_origin, end, self->s.number, MASK_SHOT, qfalse, 0, 0 );
 		if ( tr.entityNum == ENTITYNUM_NONE || tr.fraction == 1.0 || tr.allsolid || tr.startsolid || !g_entities[tr.entityNum].client || !g_entities[tr.entityNum].inuse )
 		{
+			self->client->ps.activeForcePass = 0; //Reset this visual
 			return 0;
 		}
 
