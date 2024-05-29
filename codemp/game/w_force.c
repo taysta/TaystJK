@@ -2409,7 +2409,11 @@ int ForceShootDrain( gentity_t *self )
 		
 		if ( tr.entityNum == ENTITYNUM_NONE || tr.fraction == 1.0 || tr.allsolid || tr.startsolid || !g_entities[tr.entityNum].client || !g_entities[tr.entityNum].inuse )
 		{
-			self->client->ps.activeForcePass = 0; //Reset this visual
+			if (g_tweakForce.integer & FT_FIXLINEDRAIN) {
+				self->client->ps.fd.forcePowerRegenDebounceTime = level.time + 200;
+				self->client->ps.activeForcePass = 0; //Reset this visual
+				//cost force?
+			}
 			return 0;
 		}
 
