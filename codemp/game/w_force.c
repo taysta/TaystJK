@@ -2424,11 +2424,13 @@ int ForceShootDrain( gentity_t *self )
 		if (traceEnt && traceEnt->client && (g_tweakForce.integer & FT_FIXLINEDRAIN)) { //drain chain
 			int i, numListedEntities, e;
 			vec3_t mins, maxs;
-			float	radius = 96;
+			float	radius = 128;
 			int		iEntityList[MAX_GENTITIES];
 			gentity_t	*entityList[MAX_GENTITIES];
 			gentity_t	*traceEnt2;
 			vec3_t dir;
+			gentity_t	*tent; //effect
+			vec3_t startFX, endFX;
 
 			for (i = 0; i < 3; i++) {
 				mins[i] = traceEnt->client->ps.origin[i] - radius;
@@ -2466,9 +2468,16 @@ int ForceShootDrain( gentity_t *self )
 					continue;
 				if (traceEnt2 == self)
 					continue;
+				if (traceEnt2->client->sess.raceMode)
+					continue;
 
 				//Now check and see if we can actually hit it
-				JP_Trace(&tr, traceEnt->client->ps.origin, vec3_origin, vec3_origin, traceEnt2->client->ps.origin, traceEnt->s.number, MASK_SHOT, qfalse, 0, 0);
+				VectorCopy(traceEnt->client->ps.origin, startFX);
+				startFX[2] += 20;
+				VectorCopy(traceEnt2->client->ps.origin, endFX);
+				endFX[2] += 20;
+
+				JP_Trace(&tr, startFX, vec3_origin, vec3_origin, endFX, traceEnt->s.number, MASK_SHOT, qfalse, 0, 0);
 				if (tr.fraction < 1.0f && tr.entityNum != traceEnt2->s.number)
 				{//must have clear LOS
 					continue;
@@ -2479,13 +2488,13 @@ int ForceShootDrain( gentity_t *self )
 				}
 
 				// ok, we are within the radius, add us to the incoming list
-				VectorSubtract(traceEnt2->client->ps.origin, traceEnt->client->ps.origin, dir);
+				VectorSubtract(endFX, startFX, dir);
 				VectorNormalize(dir);
-				ForceDrainDamage(self, traceEnt2, dir, traceEnt2->client->ps.origin);
+				ForceDrainDamage(self, traceEnt2, dir, endFX);
 
-				G_TestLine(traceEnt->client->ps.origin, traceEnt2->client->ps.origin, 0x00000ff, 500);
-
-				//How to do Effect here?
+				tent = G_TempEntity(startFX, EV_DISRUPTOR_MAIN_SHOT);
+				VectorCopy(endFX, tent->s.origin2);
+				tent->s.eventParm = traceEnt->s.number;
 			}
 		}
 
