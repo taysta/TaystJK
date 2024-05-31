@@ -11737,7 +11737,10 @@ skipTrail:
 		{//line
 			//trap->FX_PlayEffectID( cgs.effects.forceLightning, efOrg, fxDir );
 			//trap->FX_PlayEntityEffectID(cgs.effects.forceDrain, efOrg, axis, cent->boltInfo, cent->currentState.number, -1, -1);
-			trap->FX_PlayEntityEffectID(cgs.effects.forceDrain, efOrg, axis, -1, -1, -1, -1);
+			if (cg_drainFX.integer == 1)
+				trap->FX_PlayEntityEffectID(cgs.effects.forceDrain, efOrg, axis, -1, -1, -1, -1);
+			else if (cg_drainFX.integer == 2)
+				trap->FX_PlayEntityEffectID(cgs.effects.forceDrainJaPRO, efOrg, axis, -1, -1, -1, -1);
 		}
 
 		/*

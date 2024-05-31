@@ -2267,6 +2267,7 @@ void ForceDrainDamage( gentity_t *self, gentity_t *traceEnt, vec3_t dir, vec3_t 
 	}
 }
 
+void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 int ForceShootDrain( gentity_t *self )
 {
 	trace_t	tr;
@@ -2286,7 +2287,7 @@ int ForceShootDrain( gentity_t *self )
 		center[2] += self->client->ps.viewheight - 16;
 	}
 
-	if ( self->client->ps.fd.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2 )
+	if ((self->client->ps.fd.forcePowerLevel[FP_DRAIN] > FORCE_LEVEL_2) && !(g_tweakForce.integer & FT_FIXLINEDRAIN))
 	{//arc
 		vec3_t	mins, maxs, dir, ent_org, size, v;
 		float	radius = MAX_DRAIN_DISTANCE, dot, dist, cof;
@@ -2396,20 +2397,113 @@ int ForceShootDrain( gentity_t *self )
 	}
 	else
 	{//trace-line
-		VectorMA( center, 2048, forward, end );
+		if (g_tweakForce.integer & FT_FIXLINEDRAIN) {
+			vec3_t mins = { -6, -6, -6 }, maxs = { 6, 6, 6 };
+			VectorMA(center, MAX_DRAIN_DISTANCE, forward, end);
+			JP_Trace(&tr, center, mins, maxs, end, self->s.number, MASK_SHOT, qfalse, 0, 0);
+		}
+		else {
+			VectorMA(center, 2048, forward, end);
+			JP_Trace(&tr, center, vec3_origin, vec3_origin, end, self->s.number, MASK_SHOT, qfalse, 0, 0);
+		}
 		
-		JP_Trace( &tr, center, vec3_origin, vec3_origin, end, self->s.number, MASK_SHOT, qfalse, 0, 0 );
 		if ( tr.entityNum == ENTITYNUM_NONE || tr.fraction == 1.0 || tr.allsolid || tr.startsolid || !g_entities[tr.entityNum].client || !g_entities[tr.entityNum].inuse )
 		{
+			if (g_tweakForce.integer & FT_FIXLINEDRAIN) {
+				self->client->ps.fd.forcePowerRegenDebounceTime = level.time + 200;
+				self->client->ps.activeForcePass = 0; //Reset this visual
+				//cost force?
+			}
 			return 0;
 		}
 
 		traceEnt = &g_entities[tr.entityNum];
 		ForceDrainDamage( self, traceEnt, forward, tr.endpos );
 		gotOneOrMore = 1;
+
+		if (traceEnt && traceEnt->client && (g_tweakForce.integer & FT_FIXLINEDRAIN)) { //drain chain
+			int i, numListedEntities, e;
+			vec3_t mins, maxs;
+			float	radius = 128;
+			int		iEntityList[MAX_GENTITIES];
+			gentity_t	*entityList[MAX_GENTITIES];
+			gentity_t	*traceEnt2;
+			vec3_t dir;
+			gentity_t	*tent; //effect
+			vec3_t startFX, endFX;
+
+			for (i = 0; i < 3; i++) {
+				mins[i] = traceEnt->client->ps.origin[i] - radius;
+				maxs[i] = traceEnt->client->ps.origin[i] + radius;
+			}
+			numListedEntities = trap->EntitiesInBox(mins, maxs, iEntityList, MAX_GENTITIES);
+
+			i = 0;
+			while (i < numListedEntities)
+			{
+				entityList[i] = &g_entities[iEntityList[i]];
+
+				i++;
+			}
+
+			for (e = 0; e < numListedEntities; e++)
+			{
+				traceEnt2 = entityList[e];
+
+				if (!traceEnt2)
+					continue;
+				if (traceEnt2 == self)
+					continue;
+				if (!traceEnt2->inuse)
+					continue;
+				if (!traceEnt2->takedamage)
+					continue;
+				if (traceEnt2->health <= 0)//no torturing corpses
+					continue;
+				if (!traceEnt2->client)
+					continue;
+				if (!traceEnt2->client->ps.fd.forcePower)
+					continue;
+				if (OnSameTeam(self, traceEnt2) && !g_friendlyFire.value)
+					continue;
+				if (traceEnt2 == self)
+					continue;
+				if (traceEnt2->client->sess.raceMode)
+					continue;
+
+				//Now check and see if we can actually hit it
+				VectorCopy(traceEnt->client->ps.origin, startFX);
+				startFX[2] += 20;
+				VectorCopy(traceEnt2->client->ps.origin, endFX);
+				endFX[2] += 20;
+
+				JP_Trace(&tr, startFX, vec3_origin, vec3_origin, endFX, traceEnt->s.number, MASK_SHOT, qfalse, 0, 0);
+				if (tr.fraction < 1.0f && tr.entityNum != traceEnt2->s.number)
+				{//must have clear LOS
+					continue;
+				}
+
+				if (traceEnt->s.number == traceEnt2->s.number) {//The 2nd chain is the 1st chain??
+					continue; // WTF?
+				}
+
+				// ok, we are within the radius, add us to the incoming list
+				VectorSubtract(endFX, startFX, dir);
+				VectorNormalize(dir);
+				ForceDrainDamage(self, traceEnt2, dir, endFX);
+
+				tent = G_TempEntity(startFX, EV_DISRUPTOR_MAIN_SHOT);
+				VectorCopy(endFX, tent->s.origin2);
+				tent->s.eventParm = traceEnt->s.number;
+			}
+		}
+
 	}
 
-	self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
+	if ((g_tweakForce.integer & FT_FIXLINEDRAIN) && self->client->ps.fd.forcePowerLevel[FP_DRAIN] == FORCE_LEVEL_3)
+		self->client->ps.activeForcePass = FORCE_LEVEL_2 + FORCE_LEVEL_3;
+	else
+		self->client->ps.activeForcePass = self->client->ps.fd.forcePowerLevel[FP_DRAIN] + FORCE_LEVEL_3;
 
 	BG_ForcePowerDrain( &self->client->ps, FP_DRAIN, 5 ); //used to be 1, but this did, too, anger the God of Balance.
 

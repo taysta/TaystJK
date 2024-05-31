@@ -267,7 +267,7 @@ extern int dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels y is th
 #define FT_BUFFMELEE		  (1<<20) //not really a forcetweak but no room in weapon tweaks!
 #define FT_DRAINDMGNERF		  (1<<21) //drain takes 3 instead of 4fp from enemy
 #define FT_FIXGRIPPEDREGEN	  (1<<22) //lets you regen during a jump if you are caught and not holding jump (?)
-
+#define FT_FIXLINEDRAIN		  (1<<23) //lets you regen during a jump if you are caught and not holding jump (?)
 
 //Saber tweaks
 #define	ST_NO_MP_SABERLERP		(1<<0)

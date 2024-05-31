@@ -1008,6 +1008,7 @@ static bitInfo_T forceTweaks[] = {
 	{"Stronger / different Melee attack"},//21
 	{ "Drain takes 25% less force from target" },//22
 	{ "Regen force while being gripped if mid jump" },//23
+	{ "Drain level 3 is a line" },//23
 };
 static const int MAX_FORCE_TWEAKS = ARRAY_LEN( forceTweaks );
 

@@ -1317,6 +1317,7 @@ static void CG_RegisterGraphics( void ) {
 	cgs.effects.forceLightning		= trap->FX_RegisterEffect( "effects/force/lightning.efx" );
 	cgs.effects.forceLightningWide	= trap->FX_RegisterEffect( "effects/force/lightningwide.efx" );
 	cgs.effects.forceDrain		= trap->FX_RegisterEffect( "effects/mp/drain.efx" );
+	cgs.effects.forceDrainJaPRO = trap->FX_RegisterEffect("effects/mp/drain_japro.efx");
 	cgs.effects.forceDrainWide	= trap->FX_RegisterEffect( "effects/mp/drainwide.efx" );
 	cgs.effects.forceDrainWideJaPRO	= trap->FX_RegisterEffect( "effects/mp/drainwide_japro.efx" );
 
