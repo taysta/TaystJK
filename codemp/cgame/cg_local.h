@@ -2086,6 +2086,7 @@ typedef struct cgEffects_s {
 	fxHandle_t forceLightningWide;
 
 	fxHandle_t forceDrain;
+	fxHandle_t forceDrainJaPRO;
 	fxHandle_t forceDrainWide;
 	fxHandle_t forceDrainWideJaPRO;//japro
 	fxHandle_t forceDrained;
