@@ -593,7 +593,7 @@ void CL_KillDownload();
 
 //====================================================================
 
-void	CL_ServerInfoPacket( netadr_t from, msg_t *msg );
+void	CL_ServerInfoPacket( const netadr_t *from, msg_t *msg );
 void	CL_LocalServers_f( void );
 void	CL_GlobalServers_f( void );
 void	CL_FavoriteServers_f( void );
