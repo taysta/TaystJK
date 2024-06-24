@@ -4208,8 +4208,27 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 				//take saber vel out of dmg eq
 				//We want to get the most powerful part of swing which I guess is the middle? The alternative is to normalize trancelength for the players own mouse movement (so it just is speed of saber tip when not moving mouse)
 				//Todo, exclude katas and multi swing moves
-				dmg = G_GetAttackDamage(self, fDmg*0.25, fDmg*1, 0.5f);
-				//Com_Printf("NewDmg is %i\n", dmg);
+
+				//Loda - Japro - Add SP DMG modifiers here ST_SPDMGTWEAKS or w/e.  Probably nerf slower moving red swings e.g. vert? Buff blue/duals? To compensate for vel dmg removal
+				if (BG_SaberInSpecial(self->client->ps.saberMove)) { //Special moves
+					if (self->client->ps.saberMove == LS_A_LUNGE)//Lunge
+						dmg = fDmg * 0.4f;
+					else if (self->client->ps.saberMove == LS_ROLL_STAB)//All styles rollstab
+						dmg = fDmg *= 0.5f;
+					else if (self->client->ps.saberMove == LS_JUMPATTACK_STAFF_RIGHT)//Forward staff dfa
+						dmg = fDmg *= 0.5f;
+					else
+						dmg = fDmg * 0.7f;
+				}
+				else {
+					if (self->client->ps.saberInFlight)
+						dmg = fDmg *= 0.9f;
+					else if (self->client->ps.saberMove == LS_A_T2B) //Red Vert
+						dmg = G_GetAttackDamage(self, fDmg*0.25, fDmg * 0.5f, 0.5f);
+					else
+						dmg = G_GetAttackDamage(self, fDmg*0.25, fDmg * 0.7f, 0.5f);
+				}
+				//com_Printf("NewDmg is %i\n", dmg);
 			}
 			else if (fDmg && g_tweakSaber.integer & ST_NEWSPSABERDMGCAP) {
 				float traceLength = Distance(saberEnd, saberStart);

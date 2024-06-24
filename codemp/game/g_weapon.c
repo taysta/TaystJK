@@ -419,7 +419,9 @@ static void WP_FireBryarPistol( gentity_t *ent, qboolean altFire, int seed )
 			count = 5;
 		}
 
-		ent->client->ps.jetpackFuel -= count * 6;
+		if (ent && ent->client && g_tweakWeapons.integer & WT_TRIBES) { //Chaingun Overheat mechanic
+			ent->client->ps.jetpackFuel -= count * 6;
+		}
 
 		if (count > 1)
 		{
@@ -1743,6 +1745,9 @@ static void WP_RepeaterAltFire( gentity_t *ent )
 
 	// we don't want it to bounce forever
 	missile->bounceCount = 8;
+
+	if (ent && ent->client)
+		missile->s.teamowner = ent->client->sess.sessionTeam;
 }
 
 /*
@@ -3328,6 +3333,11 @@ static void WP_CreateMortar( vec3_t start, vec3_t fwd, gentity_t *self)
 	missile->splashMethodOfDeath = MOD_FLECHETTE_ALT_SPLASH;
 
 	VectorCopy( start, missile->pos2 );
+
+	if (self && self->client) {
+		missile->s.teamowner = self->client->sess.sessionTeam;
+		missile->s.owner = self->s.number;
+	}
 }
 
 //---------------------------------------------------------
