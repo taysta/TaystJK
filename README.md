@@ -28,10 +28,11 @@ OpenJK is licensed under GPLv2 as free software. You are free to use, modify and
 ## Fork branching explained
 
 ### **Master branch**
-Native implemention of the Vulkan renderer module.
+Native implemention of the Vulkan renderer module. 
 > **NOTE:** upstream repository ***EternalJK** is discontinued and is replaced with **[TaystJK](https://github.com/taysta/TaystJK)** - includes Vulkan*
 
 
+[![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3Aall)
 [![master-release](https://img.shields.io/badge/Download-This_Release-brightgreen.svg)](https://github.com/JKSunny/EternalJK/releases/tag/latest/)
 [![taystjk-release](https://img.shields.io/badge/Download-TaystJK_Release-cyan.svg)](https://github.com/taysta/TaystJK/releases/)
 
@@ -41,6 +42,7 @@ Native implemention of the Vulkan renderer module.
 Based on master, with addition of features like instanced MD3 and Ghoul2 model caching on the gpu.
 > **cvar r_vbo:** Cache static surfaces: 0 - off 1 - world 2 - world + models
 
+[![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3Abeta)
 [![beta-release](https://img.shields.io/badge/Download-Beta-ef7b3c.svg)](https://github.com/JKSunny/EternalJK/releases/tag/latest-beta/)
 [![beta-comparision-video](https://img.shields.io/badge/See-Comparison_video-yellow.svg)](https://www.youtube.com/watch?v=kZs6kEVgMok)
 
@@ -61,6 +63,7 @@ by introducing the [<kbd>.mtr</kbd>](https://jkhub.org/tutorials/rend2/new-shade
 
 > **NOTE** Release unavailable! [build binaries](https://github.com/JACoders/OpenJK/wiki/Compilation-guide) yourself from source
 
+[![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3APBR)
 [![rend2-what-is](https://img.shields.io/badge/What_is-Rend2-yellow.svg)](https://jkhub.org/forums/topic/7468-rend2-a-modern-renderer/)
 [![rend2-showcase](https://img.shields.io/badge/See-Bespin_Reborn-yellow.svg)](https://jkhub.org/files/file/4164-bespin-duel-reborn/)
 [![rend2-pbr-retexture](https://img.shields.io/badge/See-PBR_Retexture-yellow.svg)](https://jkhub.org/files/file/4240-jedi-academy-pbr-retexture)
@@ -77,6 +80,7 @@ A collapsed shader preview and basic editor (WIP), profiler plus a few more bits
 
 > **NOTE** Release unavailable! [build binaries](https://github.com/JACoders/OpenJK/wiki/Compilation-guide) yourself from source - *Initially for personal use only, but here we are*
 
+[![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3A%22PBR+Inspector%22)
 [![pbr-inspector-video](https://img.shields.io/badge/See-Feature_video-yellow.svg)](https://www.youtube.com/watch?v=FhEhfIeFK0U&t=10s)
 
 ---
