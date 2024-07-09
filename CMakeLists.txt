@@ -62,18 +62,18 @@ set(UseInternalPNGDefault    OFF)
 set(UseInternalJPEGDefault   OFF)
 set(UseInternalSDL2Default   OFF)
 
-if(WIN32)
-  set(UseInternalOpenALDefault ON)
-  set(UseInternalZlibDefault   ON)
-  set(UseInternalPNGDefault    ON)
-  set(UseInternalJPEGDefault   ON)
-  set(UseInternalSDL2Default   ON)
-endif()
-
-if(APPLE)
-  set(UseInternalJPEGDefault   ON)
-  set(UseInternalOpenALDefault ON)
-  set(UseInternalPNGDefault    ON)
+if(UseInternalLibs OR WIN32 OR APPLE)
+  if(WIN32)
+    set(UseInternalOpenALDefault ON)
+    set(UseInternalZlibDefault   ON)
+    set(UseInternalPNGDefault    ON)
+    set(UseInternalJPEGDefault   ON)
+    set(UseInternalSDL2Default   ON)
+  else()
+    set(UseInternalJPEGDefault ON)
+    set(UseInternalPNGDefault  ON)
+    set(UseInternalZlibDefault ON)
+  endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "BSD")
@@ -92,7 +92,7 @@ if(APPLE)
 endif()
 
 # Custom CMake Modules needed
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/CMakeModules")
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 Include(CheckTypeSize)
 check_type_size("void*" CMAKE_SIZEOF_VOID_P)
@@ -112,7 +112,10 @@ if(WIN32)
 	endif()
 else()
 	set(X86 OFF)
-	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
+	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
+		set(Architecture "arm64")
+		add_definitions(-DPNG_ARM_NEON_OPT=0)
+	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
 		set(X86 ON)
@@ -195,9 +198,17 @@ if(MSVC)
 	set(SharedDefines ${SharedDefines} "_SCL_SECURE_NO_WARNINGS")
 	set(SharedDefines ${SharedDefines} "_CRT_NONSTDC_NO_DEPRECATE")
 
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /EHsc /arch:SSE2")
+	# Warnings
+	# 4244 = conversion' conversion from 'type1' to 'type2', possible loss of data
+	# 4996 = 'function': was declared deprecated
+	# 4267 = 'var' : conversion from 'size_t' to 'type', possible loss of data
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4244 /wd4996 /wd4267")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244 /wd4996 /wd4267")
 
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:SSE2")
+	if (Architecture STREQUAL "x86")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /arch:SSE2")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:SSE2")
+	endif()
 	
 	# Configure MSVC Runtime
 	include(MSVCRuntime)
@@ -341,7 +352,7 @@ set(SharedCommonSafeFiles
 
 
 if(UseInternalJPEG)
-  add_subdirectory(lib/jpeg-9a)
+  add_subdirectory(lib/jpeg-9c)
 else()
   find_package(JPEG REQUIRED)
 endif()
