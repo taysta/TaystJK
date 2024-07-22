@@ -33,7 +33,7 @@ Our aims are to:
 
 To install TaystJK, you will first need Jedi Academy installed. If you don't already own the game you can buy it from online stores such as [Steam](https://store.steampowered.com/app/6020/), [Amazon](https://www.amazon.com/Star-Wars-Jedi-Knight-Academy-Pc/dp/B0000A2MCN) or [GOG](https://www.gog.com/game/star_wars_jedi_knight_jedi_academy).
 
-Download the [latest build](https://github.com/JACoders/TaystJK/releases/tag/latest) for your operating system.
+Download the [latest build](https://github.com/taysta/TaystJK/releases/tag/latest) for your operating system.
 
 Installing and running TaystJK:
 
