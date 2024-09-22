@@ -1889,6 +1889,8 @@ void vk_alloc_persistent_pipelines( void )
 #endif // USE_PMLIGHT
     }
 
+	// flare visibility test dot
+	if ( vk.fragmentStores )
     {
         Com_Memset(&def, 0, sizeof(def));
         def.face_culling = CT_TWO_SIDED;

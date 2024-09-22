@@ -689,7 +689,8 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			vk.shaderStorageImageMultisample = qtrue;
 		}
 
-		if (device_features.fragmentStoresAndAtomics) {
+		if ( device_features.fragmentStoresAndAtomics && device_features.vertexPipelineStoresAndAtomics ) {
+			features.vertexPipelineStoresAndAtomics = VK_TRUE;
 			features.fragmentStoresAndAtomics = VK_TRUE;
 			vk.fragmentStores = qtrue;
 		}
