@@ -444,7 +444,11 @@ static rserr_t GLimp_SetMode(glconfig_t *glConfig, const windowDesc_t *windowDes
 
 	if( fullscreen )
 	{
+#ifdef MACOS_X
+        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+#else
 		flags |= SDL_WINDOW_FULLSCREEN;
+#endif
 		glConfig->isFullscreen = qtrue;
 	}
 	else
