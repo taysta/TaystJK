@@ -207,6 +207,16 @@ void CVU_TweakForce(void) {
 	(g_tweakForce.integer & FT_FASTGRIP) ?
 		(jcinfo.integer |= JAPRO_CINFO_FASTGRIP) : (jcinfo.integer &= ~JAPRO_CINFO_FASTGRIP);
 	trap->Cvar_Set("jcinfo", va("%i", jcinfo.integer));
+
+	//have to do this on startup somehow?
+	if (g_tweakForce.integer & FT_FIXLINEDRAIN) {
+		AddRemap("gfx/effects/redLine", "gfx/effects/drainedadd", level.time * 0.001f);
+		trap->SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
+	}
+	else {
+		AddRemap("gfx/effects/drainedadd", "gfx/effects/redLine", level.time * 0.001f);
+		trap->SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
+	}
 }
 
 static void CVU_LegDangle(void) {
