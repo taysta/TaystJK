@@ -6,10 +6,11 @@
 This fork is <u>centered</u> around improving the rendering backend, specifically focusing on adding the [Vulkan API](https://www.vulkan.org).\
 Other forks or mods can incorporate the latest updates from this repository.
 
-> **NOTE:** Changes to other areas of the codebase are kept at a minimum. \
-Game logic remains untouched, except for integrating SDL2 vulkan headers and refapi, and relocating some structures from tr_types.h to the various renderers tr_local.h \
-[<kbd>View list of modified files</kbd>](https://github.com/eternalcodes/EternalJK/pull/116/files)
+> **NOTE:** Game logic remains untouched, required changes are to include SDL2 vulkan headers and refapi. \
+>  also relocating some structures from common tr_types.h to renderer module tr_local.h <u>[*90d4de9*](https://github.com/JKSunny/EternalJK/commit/90d4de970491dccf13077aad40fcc89846e6be05)</u>, <u>[*a9b7248*](https://github.com/JKSunny/EternalJK/commit/a9b72482162f64042ed3213df65f594b2aad2781)</u>
 
+> Its increasingly difficult to maintain a clear [<kbd> list of modified files</kbd>](https://github.com/eternalcodes/EternalJK/pull/116/files), because there have been no upstream commits since 2021. \
+**engine related:* <u>[*eb18020*](https://github.com/JKSunny/EternalJK/commit/eb18020e44aba4726295c480ba2db3c6bd775fdd)</u>, <u>[*3ae2bbd*](https://github.com/JKSunny/EternalJK/commit/3ae2bbda774703b74d361272d13f8a056ee55149)</u>, <u>[*4eee7ab*](https://github.com/JKSunny/EternalJK/commit/4eee7ab042f7ec362c1f2623b8fbef0c85189382)</u>
 
 Support Initially started by porting to [Quake-III-Arena-Kenny-Edition](https://github.com/kennyalive/Quake-III-Arena-Kenny-Edition).<br />
 After that, I found [vkQuake3](https://github.com/suijingfeng/vkQuake3/tree/master/code), hence the file structure.
@@ -42,8 +43,6 @@ Native implemention of the Vulkan renderer module.
 Based on master, with addition of features like instanced MD3 and Ghoul2 model caching on the gpu.
 > **cvar r_vbo:** Cache static surfaces: 0 - off 1 - world 2 - world + models
 
-> **NOTE:** x64 builds lack mergable ghoul2 surfaces when r_vbo 2
-
 [![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3Abeta)
 [![beta-release](https://img.shields.io/badge/Download-Beta-ef7b3c.svg)](https://github.com/JKSunny/EternalJK/releases/tag/latest-beta/)
 [![beta-comparision-video](https://img.shields.io/badge/See-Comparison_video-yellow.svg)](https://www.youtube.com/watch?v=kZs6kEVgMok)
@@ -63,8 +62,6 @@ by introducing the [<kbd>.mtr</kbd>](https://jkhub.org/tutorials/rend2/new-shade
 
 > **NOTE** Incompatible with master or beta branch! cvar r_fbo and r_vbo are enabled hard-coded.
 
-> **NOTE:** x64 builds lack mergable ghoul2 surfaces when r_vbo 2
-
 > **NOTE** Release unavailable! [build binaries](https://github.com/JACoders/OpenJK/wiki/Compilation-guide) yourself from source
 
 [![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3APBR)
@@ -77,15 +74,15 @@ by introducing the [<kbd>.mtr</kbd>](https://jkhub.org/tutorials/rend2/new-shade
 ### **PBR Inspector branch**
 Combines **PBR** and **ImGui** branch. \
 Began as a local codebase to inspect/debug the PBR material system implementation. \
-Like well-known *game engine editors*, a basic GUI is added, renders the game in a viewport and allows inspecting the various PBR layers \
-A collapsed shader preview and basic editor (WIP), profiler plus a few more bits an bobs.
+A basic GUI is added, renders the game in a viewport and allows displaying various PBR layers \
+Other features: View collapsed shader, text/node based shader editor, profiler and a few more bits an bobs.
 
 *Started entity inspector, but this has been commented out.*
 
 > **NOTE** Release unavailable! [build binaries](https://github.com/JACoders/OpenJK/wiki/Compilation-guide) yourself from source - *Initially for personal use only, but here we are*
 
 [![master-todo](https://img.shields.io/badge/todo-list-grey.svg)](https://github.com/users/JKSunny/projects/1/views/1?filterQuery=branch%3A%22PBR+Inspector%22)
-[![pbr-inspector-video](https://img.shields.io/badge/See-Feature_video-yellow.svg)](https://www.youtube.com/watch?v=FhEhfIeFK0U&t=10s)
+[![pbr-inspector-devlogs](https://img.shields.io/badge/See-Devlog_videos-yellow.svg)](https://www.youtube.com/playlist?list=PLK0BIdk-GT_erDdqgLrzhGbpeIXZVRHL0)
 
 ---
 
