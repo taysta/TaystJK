@@ -44,8 +44,6 @@ typedef unsigned int glIndex_t;
 #define MAX_STATES_PER_SHADER 32
 #define MAX_STATE_NAME 32
 
-extern glconfig_t	glConfig;
-
 typedef enum
 {
 	DLIGHT_VERTICAL	= 0,
@@ -1275,6 +1273,9 @@ extern	cvar_t	*r_noServerGhoul2;
 /*
 Ghoul2 Insert End
 */
+
+extern	cvar_t	*r_patchStitching;
+
 //====================================================================
 
 void R_SwapBuffers( int );
@@ -1598,8 +1599,6 @@ CURVE TESSELATION
 ============================================================
 */
 
-#define PATCH_STITCHING
-
 srfGridMesh_t *R_SubdividePatchToGrid( int width, int height,
 								drawVert_t points[MAX_PATCH_SIZE*MAX_PATCH_SIZE] );
 
@@ -1766,7 +1765,7 @@ RENDERER BACK END COMMAND QUEUE
 =============================================================
 */
 
-#define	MAX_RENDER_COMMANDS	0x40000
+#define	MAX_RENDER_COMMANDS	0x80000
 
 typedef struct renderCommandList_s {
 	byte	cmds[MAX_RENDER_COMMANDS];
@@ -1869,7 +1868,6 @@ extern	int		max_polyverts;
 extern	backEndData_t	*backEndData;
 
 
-void *R_GetCommandBuffer( int bytes );
 void RB_ExecuteRenderCommands( const void *data );
 
 void R_IssuePendingRenderCommands( void );
