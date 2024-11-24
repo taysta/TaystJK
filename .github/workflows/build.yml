@@ -70,7 +70,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: OpenJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          name: JAEnhanced-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ github.workspace }}/build/bin/JediAcademy
           if-no-files-found: error
 
@@ -128,17 +128,17 @@ jobs:
         shell: bash
         run: cmake --install .
 
-      - name: Create OpenJK binary archive
+      - name: Create JAEnhanced binary archive
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
-        run: tar -czvf OpenJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
+        run: tar -czvf JAEnhanced-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: OpenJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{github.workspace}}/install/JediAcademy/OpenJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          name: JAEnhanced-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{github.workspace}}/install/JediAcademy/JAEnhanced-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
   macos:
@@ -187,19 +187,19 @@ jobs:
         shell: bash
         run: cmake --install .
 
-      - name: Create OpenJK binary archive
+      - name: Create JAEnhanced binary archive
         if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x openjk.${{ matrix.arch }}.app/Contents/MacOS/openjk.${{ matrix.arch }}
-          tar -czvf openjk-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
+          chmod +x ja_enhanced.${{ matrix.arch }}.app/Contents/MacOS/ja_enhanced.${{ matrix.arch }}
+          tar -czvf JAEnhanced-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: OpenJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/install/JediAcademy/openjk-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          name: JAEnhanced-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
+          path: ${{ github.workspace }}/install/JediAcademy/JAEnhanced-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
   create-latest:
@@ -216,12 +216,12 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r OpenJK-windows-x86.zip ./OpenJK-windows-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r OpenJK-windows-x86_64.zip ./OpenJK-windows-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          mv ./OpenJK-linux-x86-Release-Non-Portable/* OpenJK-linux-x86.tar.gz
-          mv ./OpenJK-linux-x86_64-Release-Non-Portable/* OpenJK-linux-x86_64.tar.gz
-          mv ./OpenJK-macos-x86_64-Release-Non-Portable/* OpenJK-macos-x86_64.tar.gz
-          mv ./OpenJK-macos-arm64-Release-Non-Portable/* OpenJK-macos-arm64.tar.gz
+          7z a -r JAEnhanced-windows-x86.zip ./JAEnhanced-windows-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r JAEnhanced-windows-x86_64.zip ./JAEnhanced-windows-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          mv ./JAEnhanced-linux-x86-Release-Non-Portable/* JAEnhanced-linux-x86.tar.gz
+          mv ./JAEnhanced-linux-x86_64-Release-Non-Portable/* JAEnhanced-linux-x86_64.tar.gz
+          mv ./JAEnhanced-macos-x86_64-Release-Non-Portable/* JAEnhanced-macos-x86_64.tar.gz
+          mv ./JAEnhanced-macos-arm64-Release-Non-Portable/* JAEnhanced-macos-arm64.tar.gz
 
       - name: Create latest build
         uses: marvinpinto/action-automatic-releases@latest
@@ -242,28 +242,28 @@ jobs:
     strategy:
       matrix:
         include:
-          - artifact_dir: OpenJK-windows-x86-Release-Non-Portable/JediAcademy
-            artifact_name: OpenJK-windows-x86.zip
+          - artifact_dir: JAEnhanced-windows-x86-Release-Non-Portable/JediAcademy
+            artifact_name: JAEnhanced-windows-x86.zip
             zip: true
 
-          - artifact_dir: OpenJK-windows-x86_64-Release-Non-Portable/JediAcademy
-            artifact_name: OpenJK-windows-x86_64.zip
+          - artifact_dir: JAEnhanced-windows-x86_64-Release-Non-Portable/JediAcademy
+            artifact_name: JAEnhanced-windows-x86_64.zip
             zip: true
 
-          - artifact_dir: OpenJK-linux-x86-Release-Non-Portable
-            artifact_name: OpenJK-linux-x86.tar.gz
+          - artifact_dir: JAEnhanced-linux-x86-Release-Non-Portable
+            artifact_name: JAEnhanced-linux-x86.tar.gz
             zip: false
 
-          - artifact_dir: OpenJK-linux-x86_64-Release-Non-Portable
-            artifact_name: OpenJK-linux-x86_64.tar.gz
+          - artifact_dir: JAEnhanced-linux-x86_64-Release-Non-Portable
+            artifact_name: JAEnhanced-linux-x86_64.tar.gz
             zip: false
 
-          - artifact_dir: OpenJK-macos-x86_64-Release-Non-Portable
-            artifact_name: OpenJK-macos-x86_64.tar.gz
+          - artifact_dir: JAEnhanced-macos-x86_64-Release-Non-Portable
+            artifact_name: JAEnhanced-macos-x86_64.tar.gz
             zip: false
 
-          - artifact_dir: OpenJK-macos-arm64-Release-Non-Portable
-            artifact_name: OpenJK-macos-arm64.tar.gz
+          - artifact_dir: JAEnhanced-macos-arm64-Release-Non-Portable
+            artifact_name: JAEnhanced-macos-arm64.tar.gz
             zip: false
 
     steps:
