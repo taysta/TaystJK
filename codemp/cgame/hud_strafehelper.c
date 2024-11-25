@@ -2196,10 +2196,10 @@ void DF_RaceTimer(void)
 		if (cg_raceTimer.integer > 1 || cg_raceStart.integer) {
 			if (time > 0) {
 				if (!cg.startSpeed)
-					cg.startSpeed = (int)(state.speedometer.speed);
+					cg.startSpeed = (int)(state.cgaz.v);
 				if (state.cgaz.v > (float)cg.maxSpeed)
-					cg.maxSpeed = (int)(state.speedometer.speed);
-				cg.displacement += (int)state.speedometer.speed;
+					cg.maxSpeed = (int)(state.cgaz.v);
+				cg.displacement += (int)state.cgaz.v;
 				cg.displacementSamples++;
 			}
 		}
