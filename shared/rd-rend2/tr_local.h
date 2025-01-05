@@ -1436,6 +1436,8 @@ typedef enum
 	UNIFORM_RANDOMOFFSET,
 	UNIFORM_CHUNK_PARTICLES,
 
+	UNIFORM_BLOOMSTRENGTH,
+
 	UNIFORM_COUNT
 } uniform_t;
 
@@ -2541,6 +2543,7 @@ typedef struct trGlobals_s {
 	shaderProgram_t tonemapShader[2];
 	shaderProgram_t calclevels4xShader[2];
 	shaderProgram_t ssaoShader;
+	shaderProgram_t highpassShader;
 	shaderProgram_t depthBlurShader[2];
 	shaderProgram_t testcubeShader;
 	shaderProgram_t prefilterEnvMapShader;
@@ -2848,6 +2851,7 @@ extern cvar_t	*r_dynamicGlowIntensity;
 extern cvar_t	*r_dynamicGlowSoft;
 extern cvar_t	*r_dynamicGlowWidth;
 extern cvar_t	*r_dynamicGlowHeight;
+extern cvar_t	*r_dynamicGlowBloom;
 
 extern cvar_t	*r_debugContext;
 extern cvar_t	*r_debugWeather;
