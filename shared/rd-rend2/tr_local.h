@@ -464,6 +464,7 @@ typedef struct VBO_s
 	uint32_t		offsets[ATTR_INDEX_MAX];
 	uint32_t		strides[ATTR_INDEX_MAX];
 	uint32_t		sizes[ATTR_INDEX_MAX];
+	uint32_t		stepRates[ATTR_INDEX_MAX];
 } VBO_t;
 
 typedef struct IBO_s
@@ -2244,6 +2245,8 @@ void		R_Modellist_f (void);
 #define	MAX_DRAWSURFS			0x10000
 #define	DRAWSURF_MASK			(MAX_DRAWSURFS-1)
 
+#define MAX_INSTANCES			256
+
 extern	int gl_filter_min, gl_filter_max;
 
 /*
@@ -3291,6 +3294,7 @@ struct VertexArraysProperties
 	int strides[ATTR_INDEX_MAX];
 	int streamStrides[ATTR_INDEX_MAX];
 	void *streams[ATTR_INDEX_MAX];
+	int stepRates[ATTR_INDEX_MAX];
 };
 
 uint32_t R_VboPackTangent(vec4_t v);

@@ -2725,7 +2725,7 @@ void GL_VertexArraysToAttribs(
 		attrib.normalize = attributes[attributeIndex].normalize;
 		attrib.stride = vertexArrays->strides[attributeIndex];
 		attrib.offset = vertexArrays->offsets[attributeIndex];
-		attrib.stepRate = 0;
+		attrib.stepRate = vertexArrays->stepRates[attributeIndex];
 	}
 }
 
