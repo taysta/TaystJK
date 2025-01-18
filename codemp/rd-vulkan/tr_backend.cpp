@@ -1127,9 +1127,7 @@ void RB_ExecuteRenderCommands( const void *data ) {
 		case RC_END_OF_LIST:
 		default:
 			// stop rendering
-			if (vk.frame_count) {
-				vk_end_frame();
-			}
+			vk_end_frame();
 			t2 = ri.Milliseconds()*ri.Cvar_VariableValue( "timescale" );
 			backEnd.pc.msec = t2 - t1;
 			return;

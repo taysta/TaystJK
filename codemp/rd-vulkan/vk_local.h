@@ -82,7 +82,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #define MAX_VK_SAMPLERS					32
 #define MAX_VK_PIPELINES				( 1024 + 128 )
+#ifndef _DEBUG
 #define USE_DEDICATED_ALLOCATION
+#endif
 // depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
 #define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
@@ -545,6 +547,7 @@ typedef struct {
 	VkBuffer		staging_buffer;
 	VkDeviceMemory	staging_buffer_memory;
 	VkDeviceSize	staging_buffer_size;
+	VkDeviceSize	staging_buffer_offset;
 	byte			*staging_buffer_ptr; // pointer to mapped staging buffer
 
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
@@ -1035,10 +1038,11 @@ void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHei
 void		vk_texture_mode( const char *string, const qboolean init );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
+#if 0
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 
 	VkDeviceSize size, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access );
-
+#endif
 // post-processing
 void		vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues );
 

@@ -286,7 +286,7 @@ static qboolean RawImage_HasAlpha( const byte *scan, const int numPixels )
 
 	return qfalse;
 }
-
+#if 0
 void vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, VkDeviceSize size,
 	VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access ) {
@@ -304,7 +304,7 @@ void vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, VkDev
 
 	qvkCmdPipelineBarrier(cb, src_stages, dst_stages, 0, 0, NULL, 1, &barrier, 0, NULL);
 }
-
+#endif
 void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
 	VkImageAspectFlags image_aspect_flags, 
 	VkImageLayout old_layout, VkImageLayout new_layout )
@@ -636,14 +636,36 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 		ri.Hunk_FreeTempMemory(compressed_buffer);
 }
 
-static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
+static VkCommandBuffer staging_command_buffer = VK_NULL_HANDLE;
+
+void vk_flush_staging_command_buffer( void )
+{
+	if ( staging_command_buffer != VK_NULL_HANDLE )
+	{
+		vk_end_command_buffer( staging_command_buffer );
+		staging_command_buffer = VK_NULL_HANDLE;
+	}
+	//if ( vk_world.staging_buffer_offset != 0 ) // TODO: use it instead of command buffer check?
+	// {
+		//
+	// }
+	vk_world.staging_buffer_offset = 0;
+}
+
+static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
+{
 	VkBufferCreateInfo buffer_desc;
 	VkMemoryRequirements memory_requirements;
 	VkMemoryAllocateInfo alloc_info;
 	uint32_t memory_type;
 	void *data;
 
-	if (vk_world.staging_buffer_size >= size)
+	if ( vk_world.staging_buffer_size - vk_world.staging_buffer_offset >= size )
+		return;
+
+	vk_flush_staging_command_buffer();
+
+	if ( vk_world.staging_buffer_size - vk_world.staging_buffer_offset >= size )
 		return;
 
 	if (vk_world.staging_buffer != VK_NULL_HANDLE)
@@ -664,7 +686,7 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
 	buffer_desc.pQueueFamilyIndices = NULL;
 	VK_CHECK(qvkCreateBuffer(vk.device, &buffer_desc, NULL, &vk_world.staging_buffer));
 
-	qvkGetBufferMemoryRequirements(vk.device, vk_world.staging_buffer, &memory_requirements);
+	qvkGetBufferMemoryRequirements( vk.device, vk_world.staging_buffer, &memory_requirements );
 
 	memory_type = vk_find_memory_type(memory_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -678,6 +700,7 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size ) {
 
 	VK_CHECK(qvkMapMemory(vk.device, vk_world.staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
 	vk_world.staging_buffer_ptr = (byte*)data;
+	vk_world.staging_buffer_offset = 0;
 
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer, "staging buffer", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer_memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
@@ -752,11 +775,11 @@ static byte *vk_resample_image_data( const int target_format, byte *data, const 
 void vk_upload_image_data( image_t *image, int x, int y, int width, 
 	int height, int mipmaps, byte *pixels, int size, qboolean update ) 
 {
-	VkCommandBuffer command_buffer;
+	//VkCommandBuffer command_buffer;
 	VkBufferImageCopy regions[16];
 	VkBufferImageCopy region;
 	byte *buf;
-	int bpp, mip_level_size;
+	int bpp, mip_level_size, i;
 	qboolean compressed = qfalse;
 
 	int num_regions = 0;
@@ -809,32 +832,32 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		if (height < 1) height = 1;
 	}
 
-	vk_ensure_staging_buffer_allocation (buffer_size );
-	Com_Memcpy( vk_world.staging_buffer_ptr, buf, buffer_size );
-
-	command_buffer = vk_begin_command_buffer();
-
-	vk_record_buffer_memory_barrier(command_buffer, vk_world.staging_buffer, VK_WHOLE_SIZE, 
-		VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 
-		VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_TRANSFER_READ_BIT);
+	vk_ensure_staging_buffer_allocation ( buffer_size );
+	if ( staging_command_buffer == VK_NULL_HANDLE )	{
+		staging_command_buffer = vk_begin_command_buffer();
+	}
+	for ( i = 0; i < num_regions; i++ ) {
+		regions[i].bufferOffset += vk_world.staging_buffer_offset;
+	}
+	Com_Memcpy( vk_world.staging_buffer_ptr + vk_world.staging_buffer_offset, buf, buffer_size );
+	vk_world.staging_buffer_offset += buffer_size;
+	//staging_command_buffer = begin_command_buffer();
+	//record_buffer_memory_barrier( staging_command_buffer, vk_world.staging_buffer, VK_WHOLE_SIZE, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_TRANSFER_READ_BIT );
 
 	if ( update ) {
-		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
-			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		vk_record_image_layout_transition( staging_command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
 	} else {
-		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
-			VK_IMAGE_LAYOUT_UNDEFINED, 
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		vk_record_image_layout_transition( staging_command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
 	}
 
-	qvkCmdCopyBufferToImage(command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions);
+	qvkCmdCopyBufferToImage( staging_command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions );
 
-	vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+	vk_record_image_layout_transition( staging_command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
 
-	vk_end_command_buffer(command_buffer);
+	// flush_staging_command_buffer(); // uncomment for old single-image sync behavior
 
 	if ( buf != pixels ) {
 		ri.Hunk_FreeTempMemory( buf );

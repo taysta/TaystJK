@@ -194,6 +194,8 @@ static void vk_render_splash( void )
 		return;
 	}
 
+	vk_flush_staging_command_buffer();
+
 	VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
 	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
