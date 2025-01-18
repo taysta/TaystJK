@@ -196,10 +196,10 @@ static void vk_render_splash( void )
 
 	vk_flush_staging_command_buffer();
 
-	VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
-	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
+	//VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
+	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
-	qvkAcquireNextImageKHR( vk.device, vk.swapchain, UINT64_MAX, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
+	qvkAcquireNextImageKHR( vk.device, vk.swapchain, 1 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
 	imageBuffer = vk.swapchain_images[vk.swapchain_image_index];
 
 	// begin the command buffer
@@ -255,7 +255,7 @@ static void vk_render_splash( void )
 	submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
 	submit_info.signalSemaphoreCount = 1;
 	submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
-	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence ) );
+	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, VK_NULL_HANDLE ) );
 
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;
@@ -266,7 +266,7 @@ static void vk_render_splash( void )
 	present_info.pImageIndices = &vk.swapchain_image_index;
 	present_info.pResults = NULL;
 	qvkQueuePresentKHR( vk.queue, &present_info );
-	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
+	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 	return;
 }
 
