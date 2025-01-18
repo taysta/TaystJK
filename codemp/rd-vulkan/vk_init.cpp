@@ -266,7 +266,7 @@ static void vk_render_splash( void )
 	present_info.pImageIndices = &vk.swapchain_image_index;
 	present_info.pResults = NULL;
 	qvkQueuePresentKHR( vk.queue, &present_info );
-
+	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 	return;
 }
 
