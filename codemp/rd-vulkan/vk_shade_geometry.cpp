@@ -1632,18 +1632,8 @@ void RB_StageIteratorGeneric( void )
 
 				R_BindAnimatedImage(&pStage->bundle[i]);
 
-				if (tess_flags & (TESS_ST0 << i)) {
+				if (tess_flags & (TESS_ST0 << i))
 					ComputeTexCoords(i, &pStage->bundle[i]);
-
-					/*if (!Q_stricmp(tess.shader->name, "textures/borrowed2/pad_ext_2"))
-					{
-						Com_Printf("stage %d bundle %d lm style: %d img: %s",
-							stage,
-							i,
-							(int)pStage->lightmapStyle[i],
-							pStage->bundle[i].image[0]->imgName);
-					}*/
-				}
 
 				if (tess_flags & (TESS_RGBA0 << i))
 					ComputeColors(i, tess.svars.colors[i], pStage, forceRGBGen);
