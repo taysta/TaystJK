@@ -505,7 +505,7 @@ typedef struct shaderStage_s {
 	bool			isDetail;
 
 	byte			index;						// index of stage
-	byte			lightmapStyle;
+	byte			lightmapStyle[2];
 
 	textureBundle_t	bundle[NUM_TEXTURE_BUNDLES];
 
