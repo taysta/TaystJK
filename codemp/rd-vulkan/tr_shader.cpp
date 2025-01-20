@@ -3411,15 +3411,26 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 	{
 		if (st0->mtEnv)
 			st0->bundle[2] = st1->bundle[0]; // add to third bundle
-		else
+		else {
 			st0->bundle[1] = st1->bundle[0];
+			//st0->lightmapStyle[1] = st1->lightmapStyle[0];
+		}
 	}
 
+	// use +cl blend shader for multi-lightmap stage
+	if (st0->bundle[0].isLightmap && st1->bundle[0].isLightmap)
+	{
+		mtEnv = GL_BLEND_ADD;
+		//mtEnv = GL_BLEND_DST_COLOR_SRC_ALPHA;
+	}
+	//else {
 	// preserve lightmap style
 	if (st1->lightmapStyle)
 	{
-		st0->lightmapStyle = st1->lightmapStyle;
+		//memmove(st0->lightmapStyle, st1->lightmapStyle, sizeof(st1->lightmapStyle[0]) * 2);
+		st0->lightmapStyle[1] = st1->lightmapStyle[0];
 	}
+	//}
 
 	if (st0->mtEnv)
 	{
@@ -3931,7 +3942,7 @@ shader_t *FinishShader( void )
 		}
 
 		for( i = 0; i <= numStyles; i++ )
-			stages[lmStage+i].lightmapStyle = shader.styles[i];
+			stages[lmStage+i].lightmapStyle[0] = shader.styles[i];
 	}
 
 	//

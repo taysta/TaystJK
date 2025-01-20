@@ -716,6 +716,9 @@ void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, 
 		killGen = qtrue;
 	}
 
+	if ( pStage->bundle[0].rgbGen == CGEN_LIGHTMAPSTYLE )
+		forceRGBGen = CGEN_LIGHTMAPSTYLE;
+
 	//
 	// rgbGen
 	//
@@ -855,7 +858,7 @@ void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, 
 	case CGEN_LIGHTMAPSTYLE:
 		for (i = 0; i < tess.numVertexes; i++)
 		{
-			*(int *)dest[i] = *(int *)styleColors[pStage->lightmapStyle];
+			*(int *)dest[i] = *(int *)styleColors[pStage->lightmapStyle[b%2]]; 
 		}
 		break;
 	}
@@ -1629,8 +1632,18 @@ void RB_StageIteratorGeneric( void )
 
 				R_BindAnimatedImage(&pStage->bundle[i]);
 
-				if (tess_flags & (TESS_ST0 << i))
+				if (tess_flags & (TESS_ST0 << i)) {
 					ComputeTexCoords(i, &pStage->bundle[i]);
+
+					/*if (!Q_stricmp(tess.shader->name, "textures/borrowed2/pad_ext_2"))
+					{
+						Com_Printf("stage %d bundle %d lm style: %d img: %s",
+							stage,
+							i,
+							(int)pStage->lightmapStyle[i],
+							pStage->bundle[i].image[0]->imgName);
+					}*/
+				}
 
 				if (tess_flags & (TESS_RGBA0 << i))
 					ComputeColors(i, tess.svars.colors[i], pStage, forceRGBGen);
