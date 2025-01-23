@@ -2503,7 +2503,6 @@ typedef struct trGlobals_s {
 	image_t					*fixedLevelsImage;
 	image_t					*sunShadowArrayImage;
 	image_t					*pointShadowArrayImage;
-	image_t                 *screenShadowImage;
 	image_t                 *screenSsaoImage;
 	image_t					*hdrDepthImage;
 	image_t                 *renderCubeImage;
@@ -2528,7 +2527,6 @@ typedef struct trGlobals_s {
 	FBO_t					*calcLevelsFbo;
 	FBO_t					*targetLevelsFbo;
 	FBO_t					*sunShadowFbo[3];
-	FBO_t					*screenShadowFbo;
 	FBO_t					*screenSsaoFbo;
 	FBO_t					*hdrDepthFbo;
 	FBO_t                   *renderCubeFbo[6];
