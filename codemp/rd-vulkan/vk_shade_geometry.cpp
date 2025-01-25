@@ -1635,7 +1635,7 @@ void RB_StageIteratorGeneric( void )
 				if (tess_flags & (TESS_ST0 << i))
 					ComputeTexCoords(i, &pStage->bundle[i]);
 
-				if (tess_flags & (TESS_RGBA0 << i))
+				if ((tess_flags & (TESS_RGBA0 << i)) || forceRGBGen)
 					ComputeColors(i, tess.svars.colors[i], pStage, forceRGBGen);
 			}
 		}
@@ -1682,6 +1682,15 @@ void RB_StageIteratorGeneric( void )
 			if ( tess.shader == tr.distortionShader )
 				def.state_bits = GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA | GLS_DEPTHMASK_TRUE;
 			
+			//want to use RGBGen from ent
+			// "forceRGBGen override" requires +cl glsl shader, substitute if identity shader is set.
+			if ( forceRGBGen && !(tess_flags & TESS_RGBA0) )
+			{
+				tess_flags |= TESS_RGBA0;
+				def.shader_type = !pStage->mtEnv ? TYPE_SINGLE_TEXTURE : 
+					( (def.shader_type >= TYPE_MULTI_TEXTURE_MUL2_IDENTITY) ? TYPE_MULTI_TEXTURE_MUL2 : TYPE_MULTI_TEXTURE_ADD2);
+			}
+
 			if ( is_refraction ) 
 			{
 				def.shader_type = TYPE_REFRACTION;
