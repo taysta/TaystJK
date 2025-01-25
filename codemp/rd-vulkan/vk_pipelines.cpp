@@ -508,7 +508,7 @@ static void set_shader_stage_desc( VkPipelineShaderStageCreateInfo *desc, VkShad
     desc->pSpecializationInfo = NULL;
 }
 
-VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPassIndex )
+VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPassIndex, uint32_t def_index )
 {
     VkPipeline  pipeline;
     VkShaderModule *vs_module = NULL;
@@ -1048,7 +1048,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     multisample_state.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
     multisample_state.pNext = NULL;
     multisample_state.flags = 0;
-    multisample_state.rasterizationSamples = (vk.renderPassIndex == RENDER_PASS_SCREENMAP) ? (VkSampleCountFlagBits)vk.screenMapSamples : (VkSampleCountFlagBits)vkSamples;
+    multisample_state.rasterizationSamples = (renderPassIndex == RENDER_PASS_SCREENMAP) ? (VkSampleCountFlagBits)vk.screenMapSamples : (VkSampleCountFlagBits)vkSamples;
     multisample_state.sampleShadingEnable = VK_FALSE;
     multisample_state.minSampleShading = 1.0f;
     multisample_state.pSampleMask = NULL;
@@ -1183,7 +1183,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     create_info.basePipelineIndex = -1;
 
     VK_CHECK( qvkCreateGraphicsPipelines( vk.device, vk.pipelineCache, 1, &create_info, NULL, &pipeline ) );
-    //VK_SET_OBJECT_NAME(&pipeline, va("Pipeline: %d", vk.pipeline_create_count), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT);
+    VK_SET_OBJECT_NAME( pipeline, va( "pipeline def#%i, pass#%i", def_index, renderPassIndex ), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
     vk.pipeline_create_count++;
 
     return pipeline;
@@ -1716,9 +1716,11 @@ uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
 VkPipeline vk_gen_pipeline( uint32_t index ) {
     if (index < vk.pipelines_count) {
         VK_Pipeline_t* pipeline = vk.pipelines + index;
-        if (pipeline->handle[vk.renderPassIndex] == VK_NULL_HANDLE)
-            pipeline->handle[vk.renderPassIndex] = vk_create_pipeline(&pipeline->def, vk.renderPassIndex);
-        return pipeline->handle[vk.renderPassIndex];
+		const renderPass_t pass = vk.renderPassIndex;
+		if ( pipeline->handle[ pass ] == VK_NULL_HANDLE ) {
+			pipeline->handle[ pass ] = vk_create_pipeline( &pipeline->def, pass, index );
+		}
+		return pipeline->handle[ pass ];
     }
     else {
         return VK_NULL_HANDLE;

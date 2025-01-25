@@ -194,8 +194,6 @@ static void vk_render_splash( void )
 		return;
 	}
 
-	vk_flush_staging_command_buffer();
-
 	//VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
 	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
@@ -212,11 +210,13 @@ static void vk_render_splash( void )
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, splashImage->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
 		VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		0, 0 );
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT, 
 		VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		0, 0 );
 
 	Com_Memset( &imageBlit, 0, sizeof(imageBlit) );
 	imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -239,7 +239,8 @@ static void vk_render_splash( void )
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 
-		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR );
+		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+		0, 0 );
 
 	// we can end the command buffer now
 	VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );

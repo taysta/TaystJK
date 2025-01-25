@@ -236,10 +236,10 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         for (i = 0; i < vk.swapchain_image_count; i++) {
             vk_record_image_layout_transition( command_buffer, vk.swapchain_images[i], VK_IMAGE_ASPECT_COLOR_BIT,
                 VK_IMAGE_LAYOUT_UNDEFINED,
-                vk.initSwapchainLayout );
+                vk.initSwapchainLayout, 0, 0 );
         }
         
-        vk_end_command_buffer( command_buffer );
+        vk_end_command_buffer( command_buffer, __func__ );
     }
 }
 

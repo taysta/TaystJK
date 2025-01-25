@@ -81,7 +81,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MIN_SWAPCHAIN_IMAGES_MAILBOX	3
 
 #define MAX_VK_SAMPLERS					32
-#define MAX_VK_PIPELINES				( 1024 + 128 )
+#define MAX_VK_PIPELINES				((1024 + 128)*2)
 #ifndef _DEBUG
 #define USE_DEDICATED_ALLOCATION
 #endif
@@ -425,8 +425,8 @@ typedef enum {
 } Vk_Depth_Range;
 
 typedef enum {
-	RENDER_PASS_SCREENMAP = 0,
-	RENDER_PASS_MAIN,
+	RENDER_PASS_MAIN = 0,
+	RENDER_PASS_SCREENMAP,
 	RENDER_PASS_POST_BLEND,
 	RENDER_PASS_DGLOW,
 	RENDER_PASS_REFRACTION,
@@ -547,7 +547,6 @@ typedef struct {
 	VkBuffer		staging_buffer;
 	VkDeviceMemory	staging_buffer_memory;
 	VkDeviceSize	staging_buffer_size;
-	VkDeviceSize	staging_buffer_offset;
 	byte			*staging_buffer_ptr; // pointer to mapped staging buffer
 
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
@@ -911,6 +910,8 @@ typedef struct {
 	uint32_t image_chunk_size;
 	uint32_t maxBoundDescriptorSets;
 	
+	VkFence aux_fence;
+
 	struct {
 		VkDescriptorSet *descriptor;
 		uint32_t descriptor_size;
@@ -976,12 +977,12 @@ void		vk_destroy_shader_modules( void );
 
 // command
 VkCommandBuffer vk_begin_command_buffer( void );
-void		vk_end_command_buffer( VkCommandBuffer command_buffer );
+void		vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location );
 void		vk_create_command_pool( void );
 void		vk_create_command_buffer( void );
 void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
 	VkImageAspectFlags image_aspect_flags, 
-	VkImageLayout old_layout, VkImageLayout new_layout );
+	VkImageLayout old_layout, VkImageLayout new_layout, uint32_t src_stage_override, uint32_t dst_stage_override );
 
 // memory
 uint32_t	vk_find_memory_type( uint32_t memory_type_bits, VkMemoryPropertyFlags properties );
@@ -1040,7 +1041,7 @@ VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 #if 0
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 
-	VkDeviceSize size, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
+	VkDeviceSize size, VkDeviceSize offset, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access );
 #endif
 // post-processing

@@ -57,6 +57,12 @@ void vk_create_sync_primitives( void )
         VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished, "rendering_finished semaphore", VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
         VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished_fence, "rendering_finished fence", VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT );
     }
+
+	fence_desc.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	fence_desc.pNext = NULL;
+	fence_desc.flags = 0;
+	VK_CHECK( qvkCreateFence( vk.device, &fence_desc, NULL, &vk.aux_fence ) );
+	VK_SET_OBJECT_NAME( vk.aux_fence, "aux fence", VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT );
 }
 
 void vk_destroy_sync_primitives( void )
@@ -70,7 +76,9 @@ void vk_destroy_sync_primitives( void )
         qvkDestroySemaphore(vk.device, vk.tess[i].rendering_finished, NULL);
         qvkDestroyFence(vk.device, vk.tess[i].rendering_finished_fence, NULL);
         vk.tess[i].waitForFence = qfalse;
-    }  
+    } 
+
+    qvkDestroyFence( vk.device, vk.aux_fence, NULL );
 }
 
 void vk_create_render_passes()
@@ -1025,11 +1033,13 @@ void vk_refraction_extract( void ) {
 
     vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		srcImageLayout,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		0, 0 );
 	
 	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		0, 0 );
 
 	if ( REFRACTION_EXTRACT_SCALE > 1 ) {
 		VkImageBlit region;
@@ -1078,11 +1088,13 @@ void vk_refraction_extract( void ) {
 	// restore previous layouts
 	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		0, 0 );
 	
 	vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		srcImageLayout );
+		srcImageLayout,
+		0, 0 );
 }
 
 void vk_begin_post_refraction_extract_render_pass( void )
@@ -1103,8 +1115,6 @@ void vk_begin_frame( void )
 	VkCommandBufferBeginInfo begin_info;
 	//VkFramebuffer frameBuffer;
 	VkResult res;
-
-	vk_flush_staging_command_buffer(); // finish any pending texture uploads
 
 	if ( vk.frame_count++ ) // might happen during stereo rendering
 		return;
@@ -1148,6 +1158,20 @@ void vk_begin_frame( void )
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
     begin_info.pInheritanceInfo = VK_NULL_HANDLE;
     VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
+
+	// Ensure visibility of geometry buffers writes.
+	//record_buffer_memory_barrier( vk.cmd->command_buffer, vk.cmd->vertex_buffer, vk.geometry_buffer_size, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT );
+
+#if 0
+	// add explicit layout transition dependency
+	if ( vk.fboActive ) {
+		record_image_layout_transition( vk.cmd->command_buffer, vk.color_image, VK_IMAGE_ASPECT_COLOR_BIT,
+			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 0, 0 );
+	} else {
+		record_image_layout_transition( vk.cmd->command_buffer, vk.swapchain_images[ vk.swapchain_image_index ], VK_IMAGE_ASPECT_COLOR_BIT,
+			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 0, 0 );
+	}
+#endif
 
 #ifdef USE_VK_STATS
     if (vk.cmd->vertex_buffer_offset > vk.stats.vertex_buffer_max) {
@@ -1247,6 +1271,8 @@ void vk_release_resources( void ) {
 
     for (i = 0; i < vk_world.num_image_chunks; i++)
         qvkFreeMemory(vk.device, vk_world.image_chunks[i].memory, NULL);
+
+    vk_clean_staging_buffer();
 
     if (vk_world.staging_buffer != VK_NULL_HANDLE)
         qvkDestroyBuffer(vk.device, vk_world.staging_buffer, NULL);
@@ -1381,6 +1407,7 @@ void vk_end_frame( void )
     // presentation may take undefined time to complete, we can't measure it in a reliable way
     backEnd.pc.msec = ri.Milliseconds() - backEnd.pc.msec;
 
+    vk.renderPassIndex = RENDER_PASS_MAIN;
     // vk_present_frame();
 }
 
@@ -1388,10 +1415,6 @@ void vk_present_frame( void )
 {
 	VkPresentInfoKHR present_info;
 	VkResult res;
-
-	// pickup next command buffer for rendering
-	vk.cmd_index++;
-	vk.cmd_index %= NUM_COMMAND_BUFFERS;
 
 	if ( ri.VK_IsMinimized() )
 		return;
@@ -1425,6 +1448,11 @@ void vk_present_frame( void )
 			// or we don't
 			ri.Error( ERR_FATAL, "vkQueuePresentKHR returned %s", vk_result_string( res ) );
 	}
+
+	// pickup next command buffer for rendering
+	vk.cmd_index++;
+	vk.cmd_index %= NUM_COMMAND_BUFFERS;
+	vk.cmd = &vk.tess[ vk.cmd_index ];
 }
 
 static qboolean is_bgr( VkFormat format ) {
@@ -1541,12 +1569,13 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
     if (srcImageLayout != VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL) {
         vk_record_image_layout_transition( command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
             srcImageLayout,
-            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+            0, 0);
     }
 
     vk_record_image_layout_transition( command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
         VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, 0 );
 
     // end_command_buffer( command_buffer );
 
@@ -1591,7 +1620,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         qvkCmdCopyImage(command_buffer, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
     }
 
-    vk_end_command_buffer(command_buffer);
+    vk_end_command_buffer( command_buffer, __func__ );
 
     // Copy data from destination image to memory buffer.
     subresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -1674,8 +1703,8 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
 
         vk_record_image_layout_transition( command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
             VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-            srcImageLayout );
+            srcImageLayout, 0, 0 );
 
-        vk_end_command_buffer(command_buffer);
+        vk_end_command_buffer( command_buffer, "restore layout" );
     }
 }

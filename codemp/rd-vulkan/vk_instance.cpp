@@ -537,6 +537,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 	VkPhysicalDeviceTimelineSemaphoreFeatures timeline_semaphore;
 	VkPhysicalDeviceVulkanMemoryModelFeatures memory_model;
 	VkPhysicalDeviceBufferDeviceAddressFeatures devaddr_features;
+	VkPhysicalDevice8BitStorageFeatures storage_8bit_features;
 #endif
 
 	ri.Printf(PRINT_ALL, "selected physical device: %i\n\n", device_index);
@@ -601,6 +602,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 		qboolean timelineSemaphore = qfalse;
 		qboolean memoryModel = qfalse;
 		qboolean devAddrFeat = qfalse;
+		qboolean storage8bit = qfalse;
 		const void** pNextPtr;
 #endif
 		uint32_t i, len, count = 0;
@@ -637,6 +639,8 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 				memoryModel = qtrue;
 			} else if ( strcmp( ext, VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME ) == 0 ) {
 				devAddrFeat = qtrue;
+			} else if ( strcmp( ext, VK_KHR_8BIT_STORAGE_EXTENSION_NAME ) == 0 ) {
+				storage8bit = qtrue;
 #endif
 			}
 
@@ -695,6 +699,9 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 		}
 		if ( devAddrFeat ) {
 			device_extension_list[ device_extension_count++ ] = VK_KHR_BUFFER_DEVICE_ADDRESS_EXTENSION_NAME;
+		}
+		if ( storage8bit ) {
+			device_extension_list[ device_extension_count++ ] = VK_KHR_8BIT_STORAGE_EXTENSION_NAME;
 		}
 #endif // _DEBUG
 
@@ -778,7 +785,16 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 			devaddr_features.bufferDeviceAddress = VK_TRUE;
 			devaddr_features.bufferDeviceAddressCaptureReplay = VK_FALSE;
 			devaddr_features.bufferDeviceAddressMultiDevice = VK_FALSE;
-			//pNextPtr = &devaddr_features.pNext;
+			pNextPtr = (const void **)&devaddr_features.pNext;
+		}
+		if ( storage8bit ) {
+			*pNextPtr = &storage_8bit_features;
+			storage_8bit_features.pNext = NULL;
+			storage_8bit_features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_8BIT_STORAGE_FEATURES;
+			storage_8bit_features.storageBuffer8BitAccess = VK_TRUE;
+			storage_8bit_features.storagePushConstant8 = VK_FALSE;
+			storage_8bit_features.uniformAndStorageBuffer8BitAccess = VK_TRUE;
+			pNextPtr = (const void **)&storage_8bit_features.pNext;
 		}
 #endif
 

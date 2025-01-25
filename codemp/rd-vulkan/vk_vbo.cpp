@@ -956,7 +956,7 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	copyRegion[0].size = vbo_size;
 	qvkCmdCopyBuffer(command_buffer, staging_vertex_buffer, vk.vbo.vertex_buffer, 1, &copyRegion[0]);
 
-	vk_end_command_buffer(command_buffer);
+	vk_end_command_buffer( command_buffer, __func__ );
 
 	qvkDestroyBuffer(vk.device, staging_vertex_buffer, NULL);
 	qvkFreeMemory(vk.device, staging_buffer_memory, NULL);
