@@ -97,6 +97,7 @@ void vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location
     submit_info.signalSemaphoreCount = 0;
     submit_info.pSignalSemaphores = NULL;
 
+#if 0
 	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.aux_fence ) );
 	// 2 seconds should be more than enough to finish the job in normal conditions:
 	res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 2 * 1000000000ULL );
@@ -104,6 +105,10 @@ void vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location
 		ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), location );
 	}
 	qvkResetFences( vk.device, 1, &vk.aux_fence );
+#else
+    VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, VK_NULL_HANDLE ) );
+	VK_CHECK( qvkQueueWaitIdle( vk.queue ) );
+#endif
 
     qvkFreeCommandBuffers(vk.device, vk.command_pool, 1, cmdbuf);
 }
