@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: JAEnhanced-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
@@ -134,7 +134,7 @@ jobs:
         shell: bash
         run: tar -czvf JAEnhanced-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: JAEnhanced-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
@@ -195,7 +195,7 @@ jobs:
           chmod +x ja_enhanced.${{ matrix.arch }}.app/Contents/MacOS/ja_enhanced.${{ matrix.arch }}
           tar -czvf JAEnhanced-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: JAEnhanced-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
