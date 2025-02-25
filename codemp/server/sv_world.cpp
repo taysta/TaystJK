@@ -608,7 +608,7 @@ static void SV_ClipMoveToEntities( moveclip_t *clip ) {
 			continue;
 		}
 
-		if (DuelCull(SV_GentityNum(clip->passEntityNum), touch)) {
+		if (DuelCull(SV_GentityMapperNum(clip->passEntityNum), touch)) {
 			continue;
 		}
 

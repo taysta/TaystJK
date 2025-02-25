@@ -480,7 +480,7 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 		}
 
 #ifdef DEDICATED
-		if (!skipDuelCull && DuelCull(SV_GentityNum(frame->ps.clientNum), ent) == 1) {
+		if (!skipDuelCull && DuelCull(SV_GentityMapperNum(frame->ps.clientNum), ent) == 1) {
 			continue;
 		}
 #endif
@@ -729,7 +729,7 @@ static void SV_BuildClientSnapshot( client_t *client ) {
 		state = &svs.snapshotEntities[svs.nextSnapshotEntities % svs.numSnapshotEntities];
 		*state = *ent->s;
 #ifdef DEDICATED
-		if (!client->jpPlugin && DuelCull(client->gentity, ent)) {
+		if (!client->jpPlugin && DuelCull(client->gentityMapper, ent)) {
 			state->solid = 0;
 		}
 #endif

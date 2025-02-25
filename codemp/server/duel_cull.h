@@ -2,4 +2,4 @@
 
 #include "server.h"
 
-int DuelCull(sharedEntity_t *a, sharedEntity_t *b);
+int DuelCull(sharedEntityMapper_t *a, sharedEntityMapper_t *b);

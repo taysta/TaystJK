@@ -31,7 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "server/duel_cull.h"
 #include <memory>
 
-extern int DuelCull(sharedEntity_t *a, sharedEntity_t *b);
+extern int DuelCull(sharedEntityMapper_t *a, sharedEntityMapper_t *b);
 
 //=============================================================================
 
