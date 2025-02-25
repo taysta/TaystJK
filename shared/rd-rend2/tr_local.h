@@ -995,6 +995,11 @@ typedef struct {
 	float	depthForOpaque;
 } fogParms_t;
 
+typedef enum {
+	DEPTHPREPASS_ALPHATESTED,
+	DEPTHPREPASS_SIMPLE,
+	DEPTHPREPASS_SKIP
+} depthPrepass_t;
 
 typedef struct shader_s {
 	char		name[MAX_QPATH];		// game path, including extension
@@ -1048,7 +1053,7 @@ typedef struct shader_s {
 
 	void		(*optimalStageIteratorFunc)( void );
 	qboolean	isHDRLit;
-	qboolean	useSimpleDepthShader;
+	depthPrepass_t	depthPrepass;
 	qboolean	useDistortion;
 
 	float clampTime;                                  // time this shader is clamped to
