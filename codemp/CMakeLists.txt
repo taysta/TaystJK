@@ -287,6 +287,8 @@ if(BuildMPEngine OR BuildMPDed)
 		"${MPDir}/qcommon/tags.h"
 		"${MPDir}/qcommon/timing.h"
 		"${MPDir}/qcommon/vm.cpp"
+		"${MPDir}/qcommon/vm_local.h"
+		"${MPDir}/qcommon/vm_interpreted.cpp"
 		"${MPDir}/qcommon/z_memman_pc.cpp"
 
 		${SharedCommonFiles}
@@ -297,6 +299,23 @@ if(BuildMPEngine OR BuildMPDed)
 			set_source_files_properties(${MPDir}/qcommon/cm_polylib.cpp PROPERTIES COMPILE_FLAGS /arch:IA32)
 		endif()
 	endif(MSVC)
+
+
+	if(X86)
+		set(MPEngineAndDedCommonFiles ${MPEngineAndDedCommonFiles}
+			"${MPDir}/qcommon/vm_x86.cpp"
+		)
+	elseif(ARM32)
+		set(MPEngineAndDedCommonFiles ${MPEngineAndDedCommonFiles}
+			"${MPDir}/qcommon/vm_arm.cpp"
+		)
+	endif()
+
+	if(MSVC)
+		set(MPEngineAndDedCommonFiles ${MPEngineAndDedCommonFiles}
+			"${MPDir}/win32/q3asm.asm"
+		)
+	endif()
 
 	if(WIN32)
 		set(MPEngineAndDedCommonFiles ${MPEngineAndDedCommonFiles})

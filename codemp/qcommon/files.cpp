@@ -369,6 +369,71 @@ const char *get_filename_ext(const char *filename) {
 	return dot + 1;
 }
 
+// We don't want VMs to be able to access the following file extensions
+static char *invalidExtensions[] = {
+	"dll",
+	"exe",
+	"bat",
+	"cmd",
+	"dylib",
+	"so",
+	"qvm",
+	"pk3",
+};
+static int invalidExtensionsAmount = sizeof(invalidExtensions) / sizeof(invalidExtensions[0]);
+
+qboolean FS_IsInvalidExtension( const char *ext ) {
+	int i;
+
+	// Compare against the list of forbidden extensions
+	for ( i = 0; i < invalidExtensionsAmount; i++ ) {
+		if ( !Q_stricmp(ext, invalidExtensions[i]) )
+			return qtrue;
+	}
+
+	// Additional check we don't currently need, but if support for another platform is added and the list above is not
+	// updated we catch it with this check.
+	if ( !Q_stricmp(va(".%s", ext), DLL_EXT) )
+		return qtrue;
+
+	return qfalse;
+}
+
+// Invalid characters. Originally intended to be OS-specific, but considering that VMs run on different systems it's
+// probably not a bad idea to share the same behavior on all systems.
+qboolean FS_ContainsInvalidCharacters( const char *filename ) {
+	static char *invalidCharacters = "<>:\"|?*";
+	char *ptr = invalidCharacters;
+
+	while ( *ptr ) {
+		if ( strchr(filename, *ptr) )
+			return qtrue;
+		ptr++;
+	}
+
+	return qfalse;
+}
+
+qboolean FS_IsInvalidWriteOSPath(const char *ospath) {
+	const char *resolved;
+	const char *realPath;
+
+	// Resolve paths
+	resolved = Sys_ResolvePath( ospath );
+	if ( !strlen(resolved) ) return qtrue;
+	realPath = Sys_RealPath( resolved );
+	if ( !strlen(realPath) ) return qtrue;
+
+	// Check all three, the original input, the resolved and the real path, in case there is a symlink
+	// NOTE: Checking the ospath shouldn't be required, because we resolved the path, but let's check it anyway.
+	if ( FS_IsInvalidExtension(get_filename_ext(ospath)) || FS_IsInvalidExtension(get_filename_ext(resolved)) || FS_IsInvalidExtension(get_filename_ext(realPath)) ) {
+		Com_Printf( "FS_IsInvalidWriteOSPath: blocked writing binary file \"%s\" (%s) [%s].\n", ospath, resolved, realPath );
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
 /*
 ==============
 FS_Initialized
@@ -644,11 +709,10 @@ ERR_FATAL if trying to maniuplate a file with the platform library, or pk3 exten
 */
 static void FS_CheckFilenameIsMutable( const char *filename, const char *function )
 {
-	// Check if the filename ends with the library, or pk3 extension
-	if( COM_CompareExtension( filename, DLL_EXT )
-		|| COM_CompareExtension( filename, ".pk3" ) )
+	// Call FS_InvalidWriteOSPath from JK2MV, because it handles symlinks and some Windows specific tricks to bypass these checks.
+	if ( FS_IsInvalidWriteOSPath(filename) )
 	{
-		Com_Error( ERR_FATAL, "%s: Not allowed to manipulate '%s' due "
+		Com_Error( ERR_DROP, "%s: Not allowed to manipulate '%s' due "
 			"to %s extension", function, filename, COM_GetExtension( filename ) );
 	}
 }
@@ -664,6 +728,11 @@ void FS_CopyFile( char *fromOSPath, char *toOSPath ) {
 	FILE	*f;
 	int		len;
 	byte	*buf;
+
+	if ( FS_ContainsInvalidCharacters(toOSPath) ) {
+		Com_Printf( "FS_CopyFile: invalid filename (%s)\n", toOSPath );
+		return;
+	}
 
 	FS_CheckFilenameIsMutable( fromOSPath, __func__ );
 
@@ -1089,7 +1158,7 @@ void FS_FCloseAio( int handle ) {
 	fileHandle_t f = (fileHandle_t) handle;
 	if (!fsh[f].closed || !fsh[f].handleAsync) {
 		if (fs_debug->integer) {
-			// This can happen if we were forced to sync close a file, for example 
+			// This can happen if we were forced to sync close a file, for example
 			// if we started to record a demo and a demo with the same path was still not fully closed.
 			// This can happen presumably due to random hiccups/latencies in the IO process or threading or whatever.
 			// We don't really need to worry about this.
@@ -1139,8 +1208,8 @@ void FS_FCloseFile( fileHandle_t f ) {
 		}
 		FS_ResetFileHandleData( &fsh[f] );
 		return;
-	} 
-	
+	}
+
 	if (!fsh[f].handleFiles.file.o) {
 		handleWasNull = qtrue;
 		if (fs_debug->integer) {
@@ -1149,11 +1218,11 @@ void FS_FCloseFile( fileHandle_t f ) {
 	}
 
 	// we didn't find it as a pak, so close it as a unique file
-	if (!handleWasNull || fsh[f].handleAsync) { 
-		// || fsh[f].handleAsync because we cannot merely check that file.io is not NULL, since 
-		// a race condition (although it is rare, happening maybe once every few hours at worst) 
+	if (!handleWasNull || fsh[f].handleAsync) {
+		// || fsh[f].handleAsync because we cannot merely check that file.io is not NULL, since
+		// a race condition (although it is rare, happening maybe once every few hours at worst)
 		// can result in it being NULL due to fopen() inside the writer thread
-		// not yet having returned the proper FILE* value. 
+		// not yet having returned the proper FILE* value.
 		if ( fsh[f].handleAsync ) {
 			if (fs_debug->integer) {
 				if (handleWasNull) {
@@ -1182,8 +1251,8 @@ void FS_FCloseFile( fileHandle_t f ) {
 
 // Sometimes an async file may not yet be fully closed due to hiccups/latencies/threading issues or whatever.
 // When we know that this might happen (like when knowingly overwriting the same file over and over),
-// we should call this before re-opening the file to guarantee that it will actually be closed before we reopen it, 
-// which would cause a chain of other catastrophic events 
+// we should call this before re-opening the file to guarantee that it will actually be closed before we reopen it,
+// which would cause a chain of other catastrophic events
 void FS_AsyncAssureFileClosed(const char* ospath) {
 	int		i;
 
@@ -1230,7 +1299,7 @@ void FS_AsyncWriterThread( fileHandle_t h ) {
 			// This is pretty cringe but lest we want to fopen() synchronously and potentially hang
 			// gameplay, the demo writing code kinda just has to assume that fopen() was successful.
 			// So we have to kinda go through the motions here and pretend that everything is ok
-			// so that once the demo is "closing" we can clean up properly 
+			// so that once the demo is "closing" we can clean up properly
 			// and not cause a crash somehow.
 			// It's sad in that the game will assume the demo recording is working when it isn't.
 			// On the flipside, I'm not aware of this actually happening ever, so it's more of a hypothetical
@@ -4539,6 +4608,13 @@ int		FS_FOpenFileByMode( const char *qpath, fileHandle_t *f, fsMode_t mode ) {
 	qboolean	sync;
 
 	sync = qfalse;
+
+	// Only check the unresolved path for invalid characters, the os probably knows what it's doing
+	if ( FS_ContainsInvalidCharacters(qpath) ) {
+		Com_Printf( "FS_FOpenFileByMode: invalid filename (%s)\n", qpath );
+		*f = 0;
+		return -1;
+	}
 
 	switch( mode ) {
 	case FS_READ:
