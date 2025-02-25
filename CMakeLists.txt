@@ -198,6 +198,9 @@ endif()
 
 if (APPLE)
 	set(SharedDefines ${SharedDefines} "MACOS_X")
+	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
+		set(SharedDefines ${SharedDefines} "NO_VM_COMPILED")
+	endif()
 endif()
 
 if (NOT WIN32 AND NOT APPLE)
