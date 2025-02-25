@@ -2482,6 +2482,7 @@ typedef struct {
 	backEndCounters_t	pc;
 	trRefEntity_t	*currentEntity;
 	qboolean	skyRenderedThisView;	// flag for drawing sun
+	byte		skyNumber;
 
 	qboolean	projection2D;	// if qtrue, drawstretchpic doesn't need to change modes
 	float		color2D[4];
