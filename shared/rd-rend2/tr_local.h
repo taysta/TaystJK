@@ -2689,6 +2689,7 @@ typedef struct trGlobals_s {
 	viewParms_t				viewParms;
 	viewParms_t				cachedViewParms[3 + MAX_DLIGHTS * 6 + 3 + MAX_DRAWN_PSHADOWS];
 	int						numCachedViewParms;
+	qboolean				portalRenderedThisFrame;
 
 	viewParms_t				skyPortalParms;
 	byte					skyPortalAreaMask[MAX_MAP_AREA_BYTES];
