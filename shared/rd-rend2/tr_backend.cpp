@@ -958,7 +958,6 @@ SamplerBindingsWriter& SamplerBindingsWriter::AddAnimatedImage( textureBundle_t 
 {
 	int index;
 
-#ifdef REND2_SP
 	if ((r_fullbright->integer
 		|| tr.refdef.doLAGoggles
 		|| tr.refdef.doFullbright)
@@ -966,7 +965,6 @@ SamplerBindingsWriter& SamplerBindingsWriter::AddAnimatedImage( textureBundle_t 
 	{
 		return AddStaticImage(tr.whiteImage, unit);
 	}
-#endif
 
 	if ( bundle->isVideoMap )
 	{
@@ -2452,7 +2450,6 @@ static void RB_UpdateFogsConstants(gpuFrame_t *frame)
 		
 		fogData->hasPlane = fog->hasSurface;
 	}
-#ifdef REND2_SP
 	if (tr.refdef.doLAGoggles && fogsBlock.numFogs+1 <= MAX_GPU_FOGS)
 	{
 		FogsBlock::Fog *fogData = fogsBlock.fogs + fogsBlock.numFogs;
@@ -2473,7 +2470,6 @@ static void RB_UpdateFogsConstants(gpuFrame_t *frame)
 		fogData->hasPlane = 0;
 		fogsBlock.numFogs++;
 	}
-#endif
 	tr.fogsUboOffset = RB_AppendConstantsData(
 		frame, &fogsBlock, sizeof(fogsBlock));
 }
