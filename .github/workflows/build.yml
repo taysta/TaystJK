@@ -57,7 +57,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin"
+          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin -DDWINDOWS_IGNORE_PACKING_MISMATCH "
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DBuildPortableVersion=ON"
           else
