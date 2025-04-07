@@ -46,12 +46,11 @@ void vk_create_sync_primitives( void )
         fence_desc.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fence_desc.pNext = NULL;
 		//fence_desc.flags = VK_FENCE_CREATE_SIGNALED_BIT; // so it can be used to start rendering
-		fence_desc.flags = 0; // so it can be used to start rendering
+		fence_desc.flags = VK_FENCE_CREATE_SIGNALED_BIT; // so it can be used to start rendering
         VK_CHECK( qvkCreateFence( vk.device, &fence_desc, NULL, &vk.tess[i].rendering_finished_fence ) );
 
         vk_debug("Created sync primitives \n");
-		//vk.tess[i].waitForFence = qtrue;
-		vk.tess[i].waitForFence = qfalse;
+		vk.tess[i].waitForFence = qtrue;
 
         VK_SET_OBJECT_NAME( vk.tess[i].image_acquired, va("image_acquired semaphore %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
         VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished, "rendering_finished semaphore", VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
@@ -932,6 +931,11 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
     }
 
     qvkCmdBeginRenderPass( vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE );
+
+    // break mirrors combined with saber dglow. descriptors are not restored?
+    // investigation required. (anyway, id like to implement depth-prepass, which would streamline dglow pass with main pass)
+	//vk.cmd->last_pipeline = VK_NULL_HANDLE;
+	vk.cmd->depth_range = DEPTH_RANGE_COUNT;
 }
 
 static void vk_begin_screenmap_render_pass( void )
@@ -1113,7 +1117,6 @@ void vk_begin_post_refraction_extract_render_pass( void )
 void vk_begin_frame( void )
 {
 	VkCommandBufferBeginInfo begin_info;
-	//VkFramebuffer frameBuffer;
 	VkResult res;
 
 	if ( vk.frame_count++ ) // might happen during stereo rendering
@@ -1134,24 +1137,24 @@ void vk_begin_frame( void )
 			}
 		}
 		VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
-	}
-
-	if ( !ri.VK_IsMinimized() ) {
-		res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
-		// when running via RDP: "Application has already acquired the maximum number of images (0x2)"
-		// probably caused by "device lost" errors
-		if ( res < 0 ) {
-			if ( res == VK_ERROR_OUT_OF_DATE_KHR ) {
-				// swapchain re-creation needed
-				vk_restart_swapchain( __func__ );
-			} else {
-				ri.Error( ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string( res ) );
-			}
-		}
-	} else {
-		vk.swapchain_image_index++;
-		vk.swapchain_image_index %= vk.swapchain_image_count;
-	}
+	
+	    if ( !ri.VK_IsMinimized() ) {
+		    res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
+		    // when running via RDP: "Application has already acquired the maximum number of images (0x2)"
+		    // probably caused by "device lost" errors
+		    if ( res < 0 ) {
+			    if ( res == VK_ERROR_OUT_OF_DATE_KHR ) {
+				    // swapchain re-creation needed
+				    vk_restart_swapchain( __func__ );
+			    } else {
+				    ri.Error( ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string( res ) );
+			    }
+		    }
+	    } else {
+		    vk.swapchain_image_index++;
+		    vk.swapchain_image_index %= vk.swapchain_image_count;
+	    }
+    }
 
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     begin_info.pNext = VK_NULL_HANDLE;
@@ -1184,6 +1187,7 @@ void vk_begin_frame( void )
 #endif
 
     vk.cmd->last_pipeline = VK_NULL_HANDLE;
+
     backEnd.screenMapDone = qfalse;
 
     if (vk_find_screenmap_drawsurfs()) {
@@ -1205,12 +1209,6 @@ void vk_begin_frame( void )
     //vk.cmd->descriptor_set.end = 0;
 
     Com_Memset(&vk.cmd->scissor_rect, 0, sizeof(vk.cmd->scissor_rect));
-
-    vk_update_descriptor( VK_DESC_TEXTURE0, tr.whiteImage->descriptor_set );
-    vk_update_descriptor( VK_DESC_TEXTURE1, tr.whiteImage->descriptor_set );
-    if ( vk.maxBoundDescriptorSets >= VK_DESC_COUNT ) {
-        vk_update_descriptor( VK_DESC_TEXTURE2, tr.whiteImage->descriptor_set );
-    }
 
 #ifdef USE_VK_STATS
     // other stats
@@ -1236,11 +1234,6 @@ void vk_release_geometry_buffers( void )
     vk.geometry_buffer_memory = VK_NULL_HANDLE;
 }
 
-void vk_wait_idle( void )
-{
-    VK_CHECK(qvkDeviceWaitIdle(vk.device));
-}
-
 static void vk_resize_geometry_buffer( void )
 {
     uint32_t i;
@@ -1262,6 +1255,16 @@ static void vk_resize_geometry_buffer( void )
         vk_update_uniform_descriptor(vk.tess[i].uniform_descriptor, vk.tess[i].vertex_buffer);
 
     ri.Printf(PRINT_DEVELOPER, "...geometry buffer resized to %iK\n", (int)(vk.geometry_buffer_size / 1024));
+}
+
+void vk_wait_idle( void )
+{
+    VK_CHECK(qvkDeviceWaitIdle(vk.device));
+}
+
+void vk_queue_wait_idle( void )
+{
+	VK_CHECK( qvkQueueWaitIdle( vk.queue ) );
 }
 
 void vk_release_resources( void ) {
@@ -1408,7 +1411,6 @@ void vk_end_frame( void )
     backEnd.pc.msec = ri.Milliseconds() - backEnd.pc.msec;
 
     vk.renderPassIndex = RENDER_PASS_MAIN;
-    // vk_present_frame();
 }
 
 void vk_present_frame( void )
@@ -1419,8 +1421,10 @@ void vk_present_frame( void )
 	if ( ri.VK_IsMinimized() )
 		return;
 
-	if ( !vk.cmd->waitForFence )
+	if ( !vk.cmd->waitForFence ) {
+		// nothing has been submitted this frame due to geometry buffer overflow?
 		return;
+	}
 
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;

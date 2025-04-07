@@ -163,6 +163,13 @@ void vk_bind_index_buffer( VkBuffer buffer, uint32_t offset )
 	vk.cmd->curr_index_offset = offset;
 }
 
+#ifdef USE_VBO
+void vk_draw_indexed( uint32_t indexCount, uint32_t firstIndex )
+{
+	qvkCmdDrawIndexed( vk.cmd->command_buffer, indexCount, 1, firstIndex, 0, 0 );
+}
+#endif
+
 void vk_bind_index( void )
 {
 #ifdef USE_VBO
@@ -618,7 +625,7 @@ void vk_update_descriptor_offset( int index, uint32_t offset )
 void vk_bind_descriptor_sets( void ) 
 {
 	uint32_t offsets[2], offset_count;
-	uint32_t start, end, count;
+	uint32_t start, end, count, i;
 
 	start = vk.cmd->descriptor_set.start;
 	if (start == ~0U)
@@ -627,11 +634,18 @@ void vk_bind_descriptor_sets( void )
 	end = vk.cmd->descriptor_set.end;
 
 	offset_count = 0;
-	if ( start == VK_DESC_STORAGE || start == VK_DESC_UNIFORM ) { // uniform offset or storage offset
+	if ( /*start == VK_DESC_STORAGE ||*/ start == VK_DESC_UNIFORM ) { // uniform offset or storage offset
 		offsets[offset_count++] = vk.cmd->descriptor_set.offset[start];
 	}
 
 	count = end - start + 1;
+
+	// fill NULL descriptor gaps
+	for ( i = start + 1; i < end; i++ ) {
+		if ( vk.cmd->descriptor_set.current[i] == VK_NULL_HANDLE ) {
+			vk.cmd->descriptor_set.current[i] = tr.whiteImage->descriptor_set;
+		}
+	}
 
 	qvkCmdBindDescriptorSets(vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 		vk.pipeline_layout, start, count, vk.cmd->descriptor_set.current + start, offset_count, offsets);
@@ -653,48 +667,69 @@ void vk_bind_pipeline( uint32_t pipeline ) {
 	vk_world.dirty_depth_attachment |= (vk.pipelines[pipeline].def.state_bits & GLS_DEPTHMASK_TRUE);
 }
 
-void vk_draw_geometry( Vk_Depth_Range depRg, qboolean indexed )
+static void vk_update_depth_range( Vk_Depth_Range depth_range )
 {
+	if ( vk.cmd->depth_range == depth_range )
+		return;
+
+	// configure pipeline's dynamic state
 	VkViewport viewport;
 	VkRect2D scissor_rect;
 
+	vk.cmd->depth_range = depth_range;
+
+	get_scissor_rect( &scissor_rect );
+
+	if ( memcmp( &vk.cmd->scissor_rect, &scissor_rect, sizeof( scissor_rect ) ) != 0 ) {
+		qvkCmdSetScissor( vk.cmd->command_buffer, 0, 1, &scissor_rect );
+		vk.cmd->scissor_rect = scissor_rect;
+	}
+
+	get_viewport( &viewport, depth_range);
+	qvkCmdSetViewport( vk.cmd->command_buffer, 0, 1, &viewport );
+}
+
+void vk_draw_geometry( Vk_Depth_Range depth_range, qboolean indexed )
+{
 	// geometry buffer overflow happened this frame
-	if (vk.geometry_buffer_size_new)
+	if ( vk.geometry_buffer_size_new )
 		return;
 
 	vk_bind_descriptor_sets();
 
 	// configure pipeline's dynamic state
-	if (vk.cmd->depth_range != depRg) {
-		vk.cmd->depth_range = depRg;
+	vk_update_depth_range( depth_range );
 
-		get_scissor_rect(&scissor_rect);
-
-		if (memcmp(&vk.cmd->scissor_rect, &scissor_rect, sizeof(scissor_rect)) != 0) {
-			qvkCmdSetScissor(vk.cmd->command_buffer, 0, 1, &scissor_rect);
-			vk.cmd->scissor_rect = scissor_rect;
-		}
-
-		get_viewport(&viewport, depRg);
-		qvkCmdSetViewport(vk.cmd->command_buffer, 0, 1, &viewport);
-	}
-
-	if (tess.shader->polygonOffset) {
-		qvkCmdSetDepthBias(vk.cmd->command_buffer, r_offsetUnits->value, 0.0f, r_offsetFactor->value);
+	if ( tess.shader->polygonOffset ) {
+		qvkCmdSetDepthBias( vk.cmd->command_buffer, r_offsetUnits->value, 0.0f, r_offsetFactor->value );
 	}
 
 	// issue draw call(s)
 #ifdef USE_VBO
-	if (tess.vboIndex)
+	if ( tess.vboIndex )
 		VBO_RenderIBOItems();
 	else
 #endif
 	{
-		if (indexed)
-			qvkCmdDrawIndexed(vk.cmd->command_buffer, vk.cmd->num_indexes, 1, 0, 0, 0);
+		if ( indexed )
+			qvkCmdDrawIndexed( vk.cmd->command_buffer, vk.cmd->num_indexes, 1, 0, 0, 0 );
 		else
-			qvkCmdDraw(vk.cmd->command_buffer, tess.numVertexes, 1, 0, 0);
+			qvkCmdDraw( vk.cmd->command_buffer, tess.numVertexes, 1, 0, 0 );
 	}
+}
+
+void vk_draw_dot( uint32_t storage_offset )
+{
+	// geometry buffer overflow happened this frame
+	if ( vk.geometry_buffer_size_new )
+		return;
+
+	qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_storage, VK_DESC_STORAGE, 1, &vk.storage.descriptor, 1, &storage_offset );
+
+	// configure pipeline's dynamic state
+	vk_update_depth_range( DEPTH_RANGE_NORMAL );
+
+	qvkCmdDraw( vk.cmd->command_buffer, tess.numVertexes, 1, 0, 0 );
 }
 
 void ComputeColors( const int b, color4ub_t *dest, const shaderStage_t *pStage, int forceRGBGen )

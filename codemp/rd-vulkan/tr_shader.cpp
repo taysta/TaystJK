@@ -3339,6 +3339,11 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 
 	mtEnv = collapse[i].multitextureEnv;
 
+	// GL_ADD is a separate extension
+	if ( mtEnv == GL_ADD && !glConfig.textureEnvAddAvailable ) {
+		return 0;
+	}
+
 	if (mtEnv == GL_ADD && st0->bundle[0].rgbGen != CGEN_IDENTITY) {
 		mtEnv = GL_ADD_NONIDENTITY;
 	}

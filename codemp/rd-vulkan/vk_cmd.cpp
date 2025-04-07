@@ -99,8 +99,8 @@ void vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location
 
 #if 0
 	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.aux_fence ) );
-	// 2 seconds should be more than enough to finish the job in normal conditions:
-	res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 2 * 1000000000ULL );
+	// 5 seconds should be more than enough to finish the job in normal conditions:
+	res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
 	if ( res != VK_SUCCESS ) {
 		ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), location );
 	}

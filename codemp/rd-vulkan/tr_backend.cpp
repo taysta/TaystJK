@@ -158,6 +158,15 @@ to actually render the visible surfaces for this view
 */
 static void RB_BeginDrawingView( void ) {
 
+	// sync with gl if needed
+	if ( r_finish->integer == 1 && !glState.finishCalled ) {
+		vk_queue_wait_idle();
+
+		glState.finishCalled = qtrue;
+	} else if ( r_finish->integer == 0 ) {
+		glState.finishCalled = qtrue;
+	}
+
 	// we will need to change the projection matrix before drawing
 	// 2D images again
 	backEnd.projection2D = qfalse;
@@ -964,8 +973,9 @@ const void	*RB_DrawBuffer( const void *data ) {
 	// force depth range and viewport/scissor updates
 	vk.cmd->depth_range = DEPTH_RANGE_COUNT;
 
-	if (r_clear->integer) {
+	if ( r_clear->integer && vk.clearAttachment ) {
 		const vec4_t color = { 1, 0, 0.5, 1 };
+
 		backEnd.projection2D = qtrue; // to ensure we have viewport that occupies entire window
 		vk_clear_color_attachments( color );
 		backEnd.projection2D = qfalse;
@@ -997,6 +1007,10 @@ const void	*RB_SwapBuffers( const void *data ) {
 	tr.needScreenMap = 0;
 
 	vk_end_frame();
+
+	if ( backEnd.doneSurfaces && !glState.finishCalled ) {
+		vk_queue_wait_idle();
+	}
 
 	if (backEnd.screenshotMask && vk.cmd->waitForFence) {
 		if (backEnd.screenshotMask & SCREENSHOT_TGA && backEnd.screenshotTGA[0]) {

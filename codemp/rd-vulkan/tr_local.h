@@ -39,6 +39,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MAX_TEXTURE_SIZE		2048 // must be less or equal to 32768
 #define MAX_TEXTURE_UNITS		8
 
+#define USE_BUFFER_CLEAR		/* clear attachments on render pass begin */
+
 #include "qcommon/qfiles.h"
 #include "rd-common/tr_public.h"
 #include "rd-common/tr_common.h"

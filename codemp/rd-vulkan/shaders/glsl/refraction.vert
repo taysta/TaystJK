@@ -18,7 +18,7 @@ struct tcGen_t {
 	int		type;
 };
 
-layout(set = 1, binding = 0) uniform UBO {
+layout(set = 0, binding = 0) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;

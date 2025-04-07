@@ -68,9 +68,9 @@ textureMode_t *GetTextureMode( const char *name )
 
 void vk_texture_mode( const char *string, const qboolean init ) {
 	const textureMode_t *mode;
-	image_t	*img;
-	uint32_t		i;
-	
+	image_t		*img;
+	uint32_t	i;
+
 	mode = GetTextureMode( string );
 
 	if ( mode == NULL ) {
@@ -403,10 +403,6 @@ void vk_upload_image( image_t *image, byte *pic ) {
 
 	w = upload_data.base_level_width;
 	h = upload_data.base_level_height;
-
-	image->handle = VK_NULL_HANDLE;
-	image->view = VK_NULL_HANDLE;
-	image->descriptor_set = VK_NULL_HANDLE;
 
 	image->uploadWidth = w;
 	image->uploadHeight = h;
@@ -1146,6 +1142,10 @@ image_t *R_CreateImage( const char *name, byte *pic, int width, int height, imgF
 	if (r_smartpicmip && r_smartpicmip->integer && Q_stricmpn(name, "textures/", 9)) {
 		image->flags &= ~(IMGFLAG_PICMIP);
 	}
+
+	image->handle = VK_NULL_HANDLE;
+	image->view = VK_NULL_HANDLE;
+	image->descriptor_set = VK_NULL_HANDLE;
 
     vk_upload_image( image, pic );
 	

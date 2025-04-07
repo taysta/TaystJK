@@ -409,6 +409,12 @@ void vk_initialize( void )
 		glConfig.maxActiveTextures = MAX_TEXTURE_UNITS;
 
 	vk.maxBoundDescriptorSets = props.limits.maxBoundDescriptorSets;
+
+	if ( r_ext_texture_env_add->integer != 0 )
+		glConfig.textureEnvAddAvailable = qtrue;
+	else
+		glConfig.textureEnvAddAvailable = qfalse;
+
 	vk.maxAnisotropy = props.limits.maxSamplerAnisotropy;
 	vk.maxLod = 1 + Q_log2( glConfig.maxTextureSize );
 
@@ -534,6 +540,7 @@ void vk_shutdown( void )
 	qvkDestroyDescriptorSetLayout(vk.device, vk.set_layout_storage, NULL);
 
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout, NULL);
+	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_storage, NULL);
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_post_process, NULL);
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_blend, NULL);
 
