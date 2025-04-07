@@ -826,7 +826,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]
 #ifdef _GAME
-	if (g_maxSaberDefense.integer && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2,
+	if (g_maxSaberDefense.integer > -1 && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2,
 		final_Powers[FP_SABER_DEFENSE] = g_maxSaberDefense.integer;
 #endif
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]
