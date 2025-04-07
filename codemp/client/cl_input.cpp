@@ -1800,7 +1800,7 @@ static const cmdList_t inputCmds[] =
 	{ "force_throw", "Use push force power", IN_GenCMD20, NULL },
 	{ "use_jetpack", "Use jetpack item", IN_GenCMD21, NULL },
 	{ "use_bactabig", "Use big bacta item", IN_GenCMD22, NULL },
-	{ "1", "Use health dispenser item", IN_GenCMD23, NULL },
+	{ "use_healthdisp", "Use health dispenser item", IN_GenCMD23, NULL },
 	{ "use_ammodisp", "Use ammo dispenser item", IN_GenCMD24, NULL },
 	{ "use_eweb", "Use e-web item", IN_GenCMD25, NULL },
 	{ "use_cloak", "Use cloaking item", IN_GenCMD26, NULL },
