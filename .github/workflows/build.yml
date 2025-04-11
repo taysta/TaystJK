@@ -1,425 +1,93 @@
-name: build
-
 on:
   workflow_dispatch:
   push:
     branches:
-      - master
-      - beta
+      - cross-compile
     paths-ignore:
       - "**.md"
       - ".gitignore"
       - "docs/*"
-  pull_request:
-    branches:
-      - master
-      - beta
-    paths-ignore:
-      - "**.md"
-      - ".gitignore"
-      - "docs/*"
-  release:
-    types: [published]
 
 jobs:
-  msvc:
-    name: Windows ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
-    runs-on: windows-2022
-    strategy:
-      matrix:
-        arch: [x86, x86_64]
-        build_type: [Debug, Release]
-        portable: [Portable, Non-Portable]
-        exclude:
-          - build_type: Debug
-            portable: Portable
-        include:
-          - arch: x86
-            platform: Win32
-          - arch: x86_64
-            platform: x64
-
-    steps:
-      - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{ github.workspace }}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin"
-          if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DBuildPortableVersion=ON"
-          else
-            OPTIONS+=" -DBuildPortableVersion=OFF"
-          fi
-          cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} $OPTIONS
-
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --build . --config ${{ matrix.build_type }} -j $NUMBER_OF_PROCESSORS
-
-      - name: Install
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --install . --config ${{ matrix.build_type }}
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ matrix.build_type == 'Release' }}
-        with:
-          name: TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/build/bin/JediAcademy
-          if-no-files-found: error
-
-  ubuntu:
-    name: Ubuntu ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
-    runs-on: ubuntu-20.04
+  linux-to-macos-arm:
+    name: Linux to macOS arm64 ${{ matrix.build_type }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86, x86_64]
-        build_type: [Debug, Release]
+        build_type: [Release]
         portable: [Non-Portable]
 
     steps:
       - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
-          ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
+      - name: Setup osxcross
+        uses: Timmmm/setup-osxcross@v2
         with:
-          fetch-depth: 0
-          fetch-tags: true
+          osx-version: "12.3"
+
+      - name: Set environment variables
+        run: |
+          echo "OSXCROSS_ROOT=/home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target" >> $GITHUB_ENV
+          echo "LIBZ_SYS_STATIC=1" >> $GITHUB_ENV
+          echo "CC=/home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/bin/o64-clang" >> $GITHUB_ENV
+          echo "CXX=/home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/bin/o64-clang++" >> $GITHUB_ENV
+
+      - name: Download SDL2 Framework for macOS
+        run: |
+          mkdir -p sdl2_macos
+          cd sdl2_macos
+          wget https://github.com/libsdl-org/SDL/releases/download/release-2.28.5/SDL2-2.28.5.dmg
+          7z x SDL2-2.28.5.dmg
+          find . -name "SDL2.framework" -type d
+          sudo mkdir -p /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/
+          sudo cp -R $(find . -name "SDL2.framework" -type d) /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/
 
       - name: Create Build Environment
         run: |
-          if [ ${{ matrix.arch }} == "x86" ]; then
-            sudo dpkg --add-architecture i386
-            sudo apt-get -qq update
-            sudo apt-get -y install aptitude
-            sudo apt-get -y install --allow-downgrades libpcre2-8-0=10.34-7 gcc-multilib g++-multilib ninja-build libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
-            sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
-            # Use the following for ubuntu 22.04 builds
-            # sudo apt-get -y install gcc-multilib g++-multilib ninja-build
-            # sudo apt-get -y install --allow-downgrades libpcre2-8-0:i386 libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386
-            # sudo aptitude -y install libglib2.0-dev:i386 libsdl2-dev:i386
-          else
-            sudo apt-get -qq update
-            sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
-          fi
           cmake -E make_directory ${{ github.workspace }}/build
+          sudo apt-get update
+          sudo apt-get install -y libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
 
       - name: Configure CMake
-        shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
-          if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
-          else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
-          fi
-          if [ ${{ matrix.arch }} == "x86" ]; then
-            OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake"
-          fi
-          cmake $GITHUB_WORKSPACE $OPTIONS
+          SDK_PATH=$(${OSXCROSS_ROOT}/bin/xcrun --sdk macosx --show-sdk-path)
+          cmake $GITHUB_WORKSPACE \
+            -DCMAKE_SYSTEM_NAME=Darwin \
+            -DCMAKE_SYSTEM_PROCESSOR=arm64 \
+            -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_OSX_SYSROOT=${SDK_PATH} \
+            -DCMAKE_FRAMEWORK_PATH=${SDK_PATH}/System/Library/Frameworks \
+            -DOPENGL_FOUND=TRUE \
+            -DOPENGL_gl_LIBRARY="-framework OpenGL" \
+            -DOPENGL_INCLUDE_DIR="${SDK_PATH}/System/Library/Frameworks/OpenGL.framework/Headers" \
+            -DSDL2_FOUND=TRUE \
+            -DSDL2_LIBRARY="-framework SDL2" \
+            -DSDL2_INCLUDE_DIR="${SDK_PATH}/Library/Frameworks/SDL2.framework/Headers" \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install \
+            -DUseInternalLibs=ON \
+            -DBuildPortableVersion=${{ matrix.portable == 'Portable' && 'ON' || 'OFF' }}
 
       - name: Build
         working-directory: ${{ github.workspace }}/build
-        shell: bash
         run: cmake --build . -j $(nproc)
 
       - name: Install
-        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/build
-        shell: bash
         run: cmake --install .
 
       - name: Create binary archive
-        if: ${{ matrix.build_type == 'Release' }}
         working-directory: ${{ github.workspace }}/install/JediAcademy
-        shell: bash
-        run: tar -czvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz  *
+        run: |
+          tar -czvf TaystJK-macos-arm64-${{ matrix.build_type }}-${{ matrix.portable }}-cross.tar.gz *
 
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.build_type == 'Release' }}
         with:
-          name: TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{github.workspace}}/install/JediAcademy/TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          name: TaystJK-macos-arm64-${{ matrix.build_type }}-${{ matrix.portable }}-cross
+          path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-arm64-${{ matrix.build_type }}-${{ matrix.portable }}-cross.tar.gz
           if-no-files-found: error
-
-  macos:
-    name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-13
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x86_64]
-        build_type: [Debug, Release]
-        portable: [Non-Portable]
-
-    steps:
-      - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-
-      - name: Create Build Environment
-        run: |
-          brew install sdl2
-          cmake -E make_directory ${{ github.workspace }}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
-          if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
-          else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
-          fi
-          cmake $GITHUB_WORKSPACE $OPTIONS
-
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --build . -j $(getconf _NPROCESSORS_ONLN)
-
-      - name: Install
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --install .
-
-      - name: Create TaystJK binary archive
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}/install/JediAcademy
-        shell: bash
-        run: |
-          chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
-          tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ matrix.build_type == 'Release' }}
-        with:
-          name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
-          if-no-files-found: error
-
-  macos-m1:
-    name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-14
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [arm64]
-        build_type: [Debug, Release]
-        portable: [Non-Portable]
-
-    steps:
-      - uses: actions/checkout@v4
-        if: github.event_name == 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - uses: actions/checkout@v4
-        if: github.event_name != 'pull_request'
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-
-      - name: Create Build Environment
-        run: |
-          brew install sdl2
-          cmake -E make_directory ${{ github.workspace }}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{ github.workspace }}/build
-        run: |
-          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
-          if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
-          else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
-          fi
-          cmake $GITHUB_WORKSPACE $OPTIONS
-
-      - name: Build
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --build . -j $(getconf _NPROCESSORS_ONLN)
-
-      - name: Install
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}/build
-        shell: bash
-        run: cmake --install .
-
-      - name: Create TaystJK binary archive
-        if: ${{ matrix.build_type == 'Release' }}
-        working-directory: ${{ github.workspace }}/install/JediAcademy
-        shell: bash
-        run: |
-          chmod +x taystjk.arm64.app/Contents/MacOS/taystjk.arm64
-          tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ matrix.build_type == 'Release' }}
-        with:
-          name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
-          if-no-files-found: error
-
-  create-latest:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [msvc, ubuntu, macos, macos-m1]
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create binary archives
-        run: |
-          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
-
-      - name: Create latest build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: Latest Build
-          files: |
-            *.zip
-            *.tar.gz
-
-  create-prerelease:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
-    needs: [msvc, ubuntu, macos, macos-m1]
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create binary archives
-        run: |
-          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
-
-      - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest-beta"
-          prerelease: true
-          title: Beta Build
-          files: |
-            *.zip
-            *.tar.gz
-
-  create-release:
-    if: github.event_name == 'release'
-    needs: [msvc, ubuntu, macos]
-    runs-on: ubuntu-22.04
-
-    strategy:
-      matrix:
-        include:
-          - artifact_dir: TaystJK-windows-x86-Release-Non-Portable/JediAcademy/
-            artifact_name: TaystJK-windows-x86.zip
-            zip: true
-
-          - artifact_dir: TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/
-            artifact_name: TaystJK-windows-x86_64.zip
-            zip: true
-
-          - artifact_dir: TaystJK-linux-x86-Release-Non-Portable
-            artifact_name: TaystJK-linux-x86.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-linux-x86_64-Release-Non-Portable
-            artifact_name: TaystJK-linux-x86_64.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-macos-x86_64-Release-Non-Portable
-            artifact_name: TaystJK-macos-x86_64.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-macos-arm64-Release-Non-Portable
-            artifact_name: TaystJK-macos-arm64.tar.gz
-            zip: false
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create archive
-        run: |
-          if [ "${{ matrix.zip }}" == "true" ]; then
-            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/*
-          else
-            mv ./${{ matrix.artifact_dir }}/* ${{ matrix.artifact_name }}
-          fi
-
-      - name: Upload archives
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file: ${{ matrix.artifact_name }}
