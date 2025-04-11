@@ -4479,6 +4479,19 @@ shader_t *FinishShader( void )
 			if (stages[i].bundle[n].image[0] != NULL) {
 				lastStage[n] = &stages[i];
 			}
+			// collapsed multi-stage shaders during glow pass: 
+			// blackimage texture is used on a non-glow bundle and ComputeTexCoords(), ComputeColors() are skipped.
+			// TESS_ST0 or TESS_RGBA0 are removed on a glow bundle in the next stage 
+			// when tc and rgb are equal to the non-glow bundle in the previous stage, it will use stale tc and/or rgb data.
+			// Most noticable shader: textures/rooftop/building_ext3 in t2_rogue (green buildings)
+			// 
+			// note: leaving flags here also affects the main render pass, that is undesired behaivior
+			// moved to vk_shade_geometry: RB_StageIteratorGeneric()
+#if 0
+			if ( !stages[i].bundle[n].glow && stages[i + 1].bundle[n].glow ) {
+				continue;
+			}
+#endif
 			if ( EqualTCgen( n, lastStage[ n ], &stages[ i+1 ] ) && (lastStage[n]->tessFlags & (TESS_ST0 << n) ) ) {
 				stages[i + 1].tessFlags &= ~(TESS_ST0 << n);
 			}

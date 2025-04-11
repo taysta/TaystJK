@@ -1658,11 +1658,21 @@ void RB_StageIteratorGeneric( void )
 			if (pStage->bundle[i].image[0] != NULL) {
 				vk_select_texture(i);
 
-				// use blackimage for non glow stages during a glowPass
-				if ( backEnd.isGlowPass && !pStage->bundle[i].glow ) {
-					vk_bind( tr.blackImage );
-					Com_Memset( tess.svars.colors[i], 0xff, tess.numVertexes * 4 );
-					continue;
+				if ( backEnd.isGlowPass ) 
+				{
+					// use blackimage for non glow bundles during a glowPass
+					if ( !pStage->bundle[i].glow ) 
+					{
+						vk_bind( tr.blackImage );
+						Com_Memset( tess.svars.colors[i], 0xff, tess.numVertexes * 4 );
+						continue;
+					}
+
+					// edge case: ensure tessflags bits are set, could be optimized out if equalTC or equalRGB in
+					// tr_shader: try to avoid redundant per-stage computations.
+					// could result in stale tc or rgb data.
+					if ( stage && !tess.xstages[stage -1]->bundle[i].glow && !(tess_flags & TESS_ENV) )
+						tess_flags |= TESS_RGBA0 | TESS_ST0;
 				}
 
 				R_BindAnimatedImage(&pStage->bundle[i]);
