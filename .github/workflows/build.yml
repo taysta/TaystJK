@@ -24,10 +24,26 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Cache osxcross
+        id: cache-osxcross
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross
+          key: osxcross-macos12.3-arm64-${{ runner.os }}
+
       - name: Setup osxcross
         uses: Timmmm/setup-osxcross@v2
         with:
           osx-version: "12.3"
+        if: steps.cache-osxcross.outputs.cache-hit != 'true'
+
+      - name: Save osxcross to cache
+        if: steps.cache-osxcross.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross
+          key: osxcross-macos12.3-arm64-${{ runner.os }}
+
 
       - name: Set environment variables
         run: |
@@ -36,7 +52,15 @@ jobs:
           echo "CC=/home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/bin/o64-clang" >> $GITHUB_ENV
           echo "CXX=/home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/bin/o64-clang++" >> $GITHUB_ENV
 
+      - name: Cache SDL2 Framework
+        id: cache-sdl2
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/SDL2.framework
+          key: sdl2-framework-2.28.5-${{ runner.os }}
+
       - name: Download SDL2 Framework for macOS
+        if: steps.cache-sdl2.outputs.cache-hit != 'true'
         run: |
           mkdir -p sdl2_macos
           cd sdl2_macos
@@ -45,6 +69,13 @@ jobs:
           find . -name "SDL2.framework" -type d
           sudo mkdir -p /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/
           sudo cp -R $(find . -name "SDL2.framework" -type d) /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/
+
+      - name: Save SDL2 to cache
+        if: steps.cache-sdl2.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/work/_actions/Timmmm/setup-osxcross/v2/osxcross/target/SDK/MacOSX12.3.sdk/Library/Frameworks/SDL2.framework
+          key: sdl2-framework-2.28.5-${{ runner.os }}
 
       - name: Create Build Environment
         run: |
