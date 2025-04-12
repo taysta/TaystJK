@@ -81,7 +81,7 @@ void vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location
 {
     VkSubmitInfo submit_info;
     VkCommandBuffer cmdbuf[1];
-    VkResult res;
+    // VkResult res;
 
     cmdbuf[0] = command_buffer;
 
