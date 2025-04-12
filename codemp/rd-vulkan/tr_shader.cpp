@@ -3427,6 +3427,11 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 
 	mtEnv = collapse[i].multitextureEnv;
 
+	// GL_ADD is a separate extension
+	if ( mtEnv == GL_ADD && !glConfig.textureEnvAddAvailable ) {
+		return 0;
+	}
+
 	if (mtEnv == GL_ADD && st0->bundle[0].rgbGen != CGEN_IDENTITY) {
 		mtEnv = GL_ADD_NONIDENTITY;
 	}
@@ -3503,10 +3508,16 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 			st0->bundle[1] = st1->bundle[0];
 	}
 
+	// use +cl blend shader for multi-lightmap stage
+	if (st0->bundle[0].isLightmap && st1->bundle[0].isLightmap)
+	{
+		mtEnv = GL_BLEND_ADD;
+	}
+
 	// preserve lightmap style
 	if (st1->lightmapStyle)
 	{
-		st0->lightmapStyle = st1->lightmapStyle;
+		st0->lightmapStyle[1] = st1->lightmapStyle[0];
 	}
 
 	if (st0->mtEnv)
@@ -4019,7 +4030,7 @@ shader_t *FinishShader( void )
 		}
 
 		for( i = 0; i <= numStyles; i++ )
-			stages[lmStage+i].lightmapStyle = shader.styles[i];
+			stages[lmStage+i].lightmapStyle[0] = shader.styles[i];
 	}
 
 	//
@@ -4556,6 +4567,19 @@ shader_t *FinishShader( void )
 			if (stages[i].bundle[n].image[0] != NULL) {
 				lastStage[n] = &stages[i];
 			}
+			// collapsed multi-stage shaders during glow pass: 
+			// blackimage texture is used on a non-glow bundle and ComputeTexCoords(), ComputeColors() are skipped.
+			// TESS_ST0 or TESS_RGBA0 are removed on a glow bundle in the next stage 
+			// when tc and rgb are equal to the non-glow bundle in the previous stage, it will use stale tc and/or rgb data.
+			// Most noticable shader: textures/rooftop/building_ext3 in t2_rogue (green buildings)
+			// 
+			// note: leaving flags here also affects the main render pass, that is undesired behaivior
+			// moved to vk_shade_geometry: RB_StageIteratorGeneric()
+#if 0
+			if ( !stages[i].bundle[n].glow && stages[i + 1].bundle[n].glow ) {
+				continue;
+			}
+#endif
 			if ( EqualTCgen( n, lastStage[ n ], &stages[ i+1 ] ) && (lastStage[n]->tessFlags & (TESS_ST0 << n) ) ) {
 				stages[i + 1].tessFlags &= ~(TESS_ST0 << n);
 			}

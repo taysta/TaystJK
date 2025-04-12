@@ -100,13 +100,12 @@ void vk_create_pipeline_layout( void )
     push_range.offset = 0;
     push_range.size = 64; // 16 mvp floats + 16
 
-    // Main pipeline layout
-    set_layouts[0] = vk.set_layout_storage; // storage for testing flare visibility
-    set_layouts[1] = vk.set_layout_uniform; // fog/dlight parameters
-    set_layouts[2] = vk.set_layout_sampler; // diffuse
-    set_layouts[3] = vk.set_layout_sampler; // lightmap / fog-only
-    set_layouts[4] = vk.set_layout_sampler; // blend
-    set_layouts[5] = vk.set_layout_sampler; // collapsed fog texture
+    // standard pipelines
+    set_layouts[0] = vk.set_layout_uniform; // fog/dlight parameters
+    set_layouts[1] = vk.set_layout_sampler; // diffuse
+    set_layouts[2] = vk.set_layout_sampler; // lightmap / fog-only
+    set_layouts[3] = vk.set_layout_sampler; // blend
+    set_layouts[4] = vk.set_layout_sampler; // collapsed fog texture
 
     desc.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     desc.pNext = NULL;
@@ -119,7 +118,8 @@ void vk_create_pipeline_layout( void )
     VK_SET_OBJECT_NAME(vk.pipeline_layout, "pipeline layout - main", VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_LAYOUT_EXT);
 
     // flare test pipeline
-   /* set_layouts[0] = vk.set_layout; // dynamic storage buffer
+    set_layouts[0] = vk.set_layout_storage; // dynamic storage buffer
+
     desc.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     desc.pNext = NULL;
     desc.flags = 0;
@@ -127,7 +127,8 @@ void vk_create_pipeline_layout( void )
     desc.pSetLayouts = set_layouts;
     desc.pushConstantRangeCount = 1;
     desc.pPushConstantRanges = &push_range;
-    VK_CHECK(qvkCreatePipelineLayout(vk.device, &desc, NULL, &vk.pipeline_layout_storage));*/
+
+    VK_CHECK( qvkCreatePipelineLayout( vk.device, &desc, NULL, &vk.pipeline_layout_storage ) );
 
     // post-processing pipeline
     set_layouts[0] = vk.set_layout_sampler; // sampler
@@ -508,7 +509,7 @@ static void set_shader_stage_desc( VkPipelineShaderStageCreateInfo *desc, VkShad
     desc->pSpecializationInfo = NULL;
 }
 
-VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPassIndex )
+VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPassIndex, uint32_t def_index )
 {
     VkPipeline  pipeline;
     VkShaderModule *vs_module = NULL;
@@ -1048,7 +1049,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     multisample_state.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
     multisample_state.pNext = NULL;
     multisample_state.flags = 0;
-    multisample_state.rasterizationSamples = (vk.renderPassIndex == RENDER_PASS_SCREENMAP) ? (VkSampleCountFlagBits)vk.screenMapSamples : (VkSampleCountFlagBits)vkSamples;
+    multisample_state.rasterizationSamples = (renderPassIndex == RENDER_PASS_SCREENMAP) ? (VkSampleCountFlagBits)vk.screenMapSamples : (VkSampleCountFlagBits)vkSamples;
     multisample_state.sampleShadingEnable = VK_FALSE;
     multisample_state.minSampleShading = 1.0f;
     multisample_state.pSampleMask = NULL;
@@ -1169,7 +1170,11 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     create_info.pDepthStencilState = &depth_stencil_state;
     create_info.pColorBlendState = &blend_state;
     create_info.pDynamicState = &dynamic_state;
-    create_info.layout = vk.pipeline_layout;
+
+	if ( def->shader_type == TYPE_DOT )
+		create_info.layout = vk.pipeline_layout_storage;
+	else
+		create_info.layout = vk.pipeline_layout;
 
     if ( renderPassIndex == RENDER_PASS_SCREENMAP )
         create_info.renderPass = vk.render_pass.screenmap;
@@ -1183,7 +1188,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     create_info.basePipelineIndex = -1;
 
     VK_CHECK( qvkCreateGraphicsPipelines( vk.device, vk.pipelineCache, 1, &create_info, NULL, &pipeline ) );
-    //VK_SET_OBJECT_NAME(&pipeline, va("Pipeline: %d", vk.pipeline_create_count), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT);
+    VK_SET_OBJECT_NAME( pipeline, va( "pipeline def#%i, pass#%i", def_index, renderPassIndex ), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
     vk.pipeline_create_count++;
 
     return pipeline;
@@ -1695,7 +1700,7 @@ static void vk_create_blur_pipeline( char *name, int program_index, uint32_t ind
     VK_SET_OBJECT_NAME( *pipeline, va( "%s %s blur pipeline %i", name, horizontal_pass ? "horizontal" : "vertical", index / 2 + 1 ), VK_DEBUG_REPORT_OBJECT_TYPE_PIPELINE_EXT );
 }
 
-uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
+static uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
     VK_Pipeline_t* pipeline;
 
     if (vk.pipelines_count >= MAX_VK_PIPELINES) {
@@ -1716,9 +1721,11 @@ uint32_t vk_alloc_pipeline( const Vk_Pipeline_Def *def ) {
 VkPipeline vk_gen_pipeline( uint32_t index ) {
     if (index < vk.pipelines_count) {
         VK_Pipeline_t* pipeline = vk.pipelines + index;
-        if (pipeline->handle[vk.renderPassIndex] == VK_NULL_HANDLE)
-            pipeline->handle[vk.renderPassIndex] = vk_create_pipeline(&pipeline->def, vk.renderPassIndex);
-        return pipeline->handle[vk.renderPassIndex];
+		const renderPass_t pass = vk.renderPassIndex;
+		if ( pipeline->handle[ pass ] == VK_NULL_HANDLE ) {
+			pipeline->handle[ pass ] = vk_create_pipeline( &pipeline->def, pass, index );
+		}
+		return pipeline->handle[ pass ];
     }
     else {
         return VK_NULL_HANDLE;
@@ -1835,8 +1842,11 @@ void vk_alloc_persistent_pipelines( void )
         //    GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE | GLS_DEPTHFUNC_EQUAL			// additive
         //};
         qboolean polygon_offset[2] = { qfalse, qtrue };
-        int i, j, k, l;
- 
+        int i, j, k;
+#ifdef USE_PMLIGHT
+		int l;
+#endif
+
         Com_Memset(&def, 0, sizeof(def));
         def.shader_type = TYPE_SINGLE_TEXTURE;
         def.mirror = qfalse;

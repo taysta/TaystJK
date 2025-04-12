@@ -825,7 +825,7 @@ void VBO_RenderIBOItems(void)
 
 		for (i = 0; i < vbo->ibo_items_count; i++)
 		{
-			qvkCmdDrawIndexed(vk.cmd->command_buffer, vbo->ibo_items[i].length, 1, vbo->ibo_items[i].offset, 0, 0);
+			vk_draw_indexed( vbo->ibo_items[i].length, vbo->ibo_items[i].offset );
 		}
 	}
 
@@ -834,7 +834,7 @@ void VBO_RenderIBOItems(void)
 	{
 		vk_bind_index_buffer(vk.cmd->vertex_buffer, vbo->soft_buffer_offset);
 
-		qvkCmdDrawIndexed(vk.cmd->command_buffer, vbo->soft_buffer_indexes, 1, 0, 0, 0);
+		vk_draw_indexed( vbo->soft_buffer_indexes, 0 );
 	}
 }
 
@@ -956,7 +956,7 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	copyRegion[0].size = vbo_size;
 	qvkCmdCopyBuffer(command_buffer, staging_vertex_buffer, vk.vbo.vertex_buffer, 1, &copyRegion[0]);
 
-	vk_end_command_buffer(command_buffer);
+	vk_end_command_buffer( command_buffer, __func__ );
 
 	qvkDestroyBuffer(vk.device, staging_vertex_buffer, NULL);
 	qvkFreeMemory(vk.device, staging_buffer_memory, NULL);

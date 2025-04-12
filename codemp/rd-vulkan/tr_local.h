@@ -39,6 +39,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MAX_TEXTURE_SIZE		2048 // must be less or equal to 32768
 #define MAX_TEXTURE_UNITS		8
 
+#define USE_BUFFER_CLEAR		/* clear attachments on render pass begin */
+
 #include "qcommon/qfiles.h"
 #include "rd-common/tr_public.h"
 #include "rd-common/tr_common.h"
@@ -505,7 +507,7 @@ typedef struct shaderStage_s {
 	bool			isDetail;
 
 	byte			index;						// index of stage
-	byte			lightmapStyle;
+	byte			lightmapStyle[2];
 
 	textureBundle_t	bundle[NUM_TEXTURE_BUNDLES];
 
@@ -1417,7 +1419,7 @@ typedef struct trGlobals_s {
 	int						lastRenderCommand;
 	int						numFogs; // read before parsing shaders
 
-	vec4_t					*fastskyColor;
+	vec4_t					clearColor;
 } trGlobals_t;
 
 struct glconfigExt_t
@@ -2257,6 +2259,7 @@ void		vk_upload_image( image_t *image, byte *pic );
 void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size, qboolean update ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );
 void		vk_create_image( image_t *image, int width, int height, int mip_levels );
+void		vk_clean_staging_buffer( void );
 
 static QINLINE unsigned int log2pad(unsigned int v, int roundup)
 {
