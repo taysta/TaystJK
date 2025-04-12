@@ -11748,13 +11748,13 @@ void UI_Init( qboolean inGameLoad ) {
 
 	String_Init();
 
+	AssetCache();
+
 	UI_BuildPlayerModel_List(inGameLoad);
 	UI_BuildQ3Model_List();
 
 	uiInfo.uiDC.cursor	= trap->R_RegisterShaderNoMip( "menu/art/3_cursor2" );
 	uiInfo.uiDC.whiteShader = trap->R_RegisterShaderNoMip( "white" );
-
-	AssetCache();
 
 	uiInfo.teamCount = 0;
 	uiInfo.characterCount = 0;
