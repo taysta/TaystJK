@@ -1100,7 +1100,7 @@ void R_Init( void ) {
 	R_InitImages();	
 
 	vk_create_pipelines();	// Vulkan
-	vk_set_fastsky_color();
+	vk_set_clearcolor();
 
 	R_InitShaders(qfalse);
 	R_InitSkins();

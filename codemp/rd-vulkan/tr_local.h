@@ -1418,7 +1418,7 @@ typedef struct trGlobals_s {
 	int						lastRenderCommand;
 	int						numFogs; // read before parsing shaders
 
-	vec4_t					*fastskyColor;
+	vec4_t					clearColor;
 } trGlobals_t;
 
 struct glconfigExt_t

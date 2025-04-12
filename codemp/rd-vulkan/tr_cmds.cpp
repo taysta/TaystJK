@@ -397,7 +397,7 @@ void RE_BeginFrame( stereoFrame_t stereoFrame ) {
 #else
 	if ( r_fastsky->modified ) {
 #endif
-		vk_set_fastsky_color();
+		vk_set_clearcolor();
 		r_fastsky->modified = qfalse;
 	}
 
