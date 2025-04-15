@@ -131,6 +131,9 @@ FBO_t          *FBO_Create(const char *name, int width, int height)
 
 	qglGenFramebuffers(1, &fbo->frameBuffer);
 
+	FBO_Bind(fbo);
+	if (glRefConfig.annotateResources) qglObjectLabel(GL_FRAMEBUFFER, fbo->frameBuffer, -1, name);
+
 	return fbo;
 }
 
@@ -142,6 +145,7 @@ void FBO_CreateBuffer(FBO_t *fbo, int format, int index, int multisample)
 
 	switch(format)
 	{
+		case GL_RG16F:
 		case GL_RGB:
 		case GL_RGBA:
 		case GL_RGB8:
@@ -210,6 +214,8 @@ void FBO_CreateBuffer(FBO_t *fbo, int format, int index, int multisample)
 		else
 			qglFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, *pRenderBuffer);
 	}
+
+	if (glRefConfig.annotateResources) qglObjectLabel(GL_RENDERBUFFER, *pRenderBuffer, -1, va("%s_%i_MS%i", fbo->name, index, multisample));
 }
 
 
@@ -470,7 +476,7 @@ void FBO_Init(void)
 		for ( int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++ )
 		{
 			tr.glowFboScaled[i] = FBO_Create(
-				va("*glowScaled%d", i), tr.glowImageScaled[i]->width,
+				va("_glowScaled%d", i), tr.glowImageScaled[i]->width,
 				tr.glowImageScaled[i]->height);
 
 			FBO_Bind (tr.glowFboScaled[i]);
@@ -479,6 +485,93 @@ void FBO_Init(void)
 
 			R_CheckFBO (tr.glowFboScaled[i]);
 		}
+	}
+
+	if (tr.velocityImage != nullptr)
+	{
+		if (multisample)
+		{
+			tr.depthVelocityFbo = FBO_Create(
+				"_velocity", tr.renderDepthImage->width,
+				tr.renderDepthImage->height);
+
+			FBO_Bind(tr.depthVelocityFbo);
+			FBO_CreateBuffer(tr.depthVelocityFbo, GL_RG16F, 0, multisample);
+			qglFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, tr.renderFbo->packedDepthStencilBuffer);
+			qglFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, tr.renderFbo->packedDepthStencilBuffer);
+			FBO_SetupDrawBuffers();
+
+			R_CheckFBO(tr.depthVelocityFbo);
+
+			tr.msaaResolveVelocityFbo = FBO_Create(
+				"_msaaVelocityResolve", tr.renderDepthImage->width,
+				tr.renderDepthImage->height);
+
+			FBO_Bind(tr.msaaResolveVelocityFbo);
+			FBO_AttachTextureImage(tr.velocityImage, 0);
+			FBO_SetupDrawBuffers();
+
+			R_CheckFBO(tr.msaaResolveVelocityFbo);
+		}
+		else
+		{
+			tr.depthVelocityFbo = FBO_Create(
+				"_velocity", tr.renderDepthImage->width,
+				tr.renderDepthImage->height);
+
+			FBO_Bind(tr.depthVelocityFbo);
+			FBO_AttachTextureImage(tr.velocityImage, 0);
+			R_AttachFBOTexturePackedDepthStencil(tr.renderDepthImage->texnum);
+			FBO_SetupDrawBuffers();
+
+			R_CheckFBO(tr.depthVelocityFbo);
+		}
+	}
+
+	if (r_smaa->integer)
+	{
+		tr.smaaEdgeFbo = FBO_Create(
+			"_smaaEdge", tr.smaaEdgeImage->width,
+			tr.smaaEdgeImage->height);
+		FBO_Bind(tr.smaaEdgeFbo);
+		FBO_AttachTextureImage(tr.smaaEdgeImage, 0);
+		FBO_SetupDrawBuffers();
+		R_CheckFBO(tr.smaaEdgeFbo);
+
+		tr.smaaBlendFbo = FBO_Create(
+			"_smaaBlend", tr.smaaBlendImage->width,
+			tr.smaaBlendImage->height);
+		FBO_Bind(tr.smaaBlendFbo);
+		FBO_AttachTextureImage(tr.smaaBlendImage, 0);
+		FBO_SetupDrawBuffers();
+		R_CheckFBO(tr.smaaBlendFbo);
+	}
+
+	if (r_smaa->integer == 2)
+	{
+		tr.smaaResolveFbo = FBO_Create(
+			"_smaaResolve", tr.smaaResolveImage->width,
+			tr.smaaResolveImage->height);
+		FBO_Bind(tr.smaaResolveFbo);
+		FBO_AttachTextureImage(tr.smaaResolveImage, 0);
+		FBO_SetupDrawBuffers();
+		R_CheckFBO(tr.smaaResolveFbo);
+
+		tr.temporalResolveFbo = FBO_Create(
+			"_temporalResolve", tr.temporalResolveImage->width,
+			tr.temporalResolveImage->height);
+		FBO_Bind(tr.temporalResolveFbo);
+		FBO_AttachTextureImage(tr.temporalResolveImage, 0);
+		FBO_SetupDrawBuffers();
+		R_CheckFBO(tr.temporalResolveFbo);
+
+		tr.historyFbo = FBO_Create(
+			"_history", tr.historyImage->width,
+			tr.historyImage->height);
+		FBO_Bind(tr.historyFbo);
+		FBO_AttachTextureImage(tr.historyImage, 0);
+		FBO_SetupDrawBuffers();
+		R_CheckFBO(tr.historyFbo);
 	}
 
 	if (r_drawSunRays->integer)
@@ -543,16 +636,6 @@ void FBO_Init(void)
 
 			R_CheckFBO(tr.sunShadowFbo[i]);
 		}
-
-		tr.screenShadowFbo = FBO_Create(
-			"_screenshadow", tr.screenShadowImage->width,
-			tr.screenShadowImage->height);
-
-		FBO_Bind(tr.screenShadowFbo);
-		FBO_AttachTextureImage(tr.screenShadowImage, 0);
-		FBO_SetupDrawBuffers();
-
-		R_CheckFBO(tr.screenShadowFbo);
 	}
 
 	for (i = 0; i < 2; i++)
@@ -732,6 +815,27 @@ void R_FBOList_f(void)
 	ri.Printf(PRINT_ALL, " %i FBOs\n", tr.numFBOs);
 }
 
+void FBO_FastBlitFromTexture(struct image_s *src, FBO_t *dst, vec4i_t dstBox, vec4_t inColor, int blend)
+{
+	if (!src)
+		return;
+
+	FBO_Bind(dst);
+	if (dstBox)
+		GL_SetViewportAndScissor(dstBox[0], dstBox[1], dstBox[2], dstBox[3]);
+	else
+		GL_SetViewportAndScissor(0, 0, dst->width, dst->height);
+	GL_Cull(CT_TWO_SIDED);
+	GL_State(GLS_DEPTHTEST_DISABLE | blend);
+	GLSL_BindProgram(&tr.textureColorShader[TEXCOLORDEF_SCREEN_TRIANGLE]);
+	GL_BindToTMU(src, TB_COLORMAP);
+	if (inColor)
+		GLSL_SetUniformVec4(&tr.textureColorShader[TEXCOLORDEF_SCREEN_TRIANGLE], UNIFORM_COLOR, inColor);
+	else
+		GLSL_SetUniformVec4(&tr.textureColorShader[TEXCOLORDEF_SCREEN_TRIANGLE], UNIFORM_COLOR, colorWhite);
+	RB_InstantTriangle();
+}
+
 void FBO_BlitFromTexture(struct image_s *src, vec4i_t inSrcBox, vec2_t inSrcTexScale, FBO_t *dst, vec4i_t inDstBox, struct shaderProgram_s *shaderProgram, vec4_t inColor, int blend)
 {
 	vec4i_t dstBox, srcBox;
@@ -803,7 +907,7 @@ void FBO_BlitFromTexture(struct image_s *src, vec4i_t inSrcBox, vec2_t inSrcTexS
 
 	if (!shaderProgram)
 	{
-		shaderProgram = &tr.textureColorShader;
+		shaderProgram = &tr.textureColorShader[TEXCOLORDEF_USE_VERTICES];
 	}
 
 	FBO_Bind(dst);

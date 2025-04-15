@@ -38,6 +38,18 @@ layout(std140) uniform SurfaceSprite
 	float u_FxAlphaEnd;
 };
 
+#if defined(VELOCITY_PASS)
+layout(std140) uniform TemporalInfo
+{
+	mat4 u_previousViewProjectionMatrix;
+	vec2 u_currentJitter;
+	vec2 u_previousJitter;
+	float u_previousFrameTime;
+};
+out vec4 var_Position;
+out vec4 var_prevPosition;
+#endif
+
 out vec2 var_TexCoords;
 out float var_Alpha;
 out vec3 var_Color;
@@ -50,26 +62,21 @@ out float var_Effectpos;
 out vec3 var_WSPosition;
 #endif
 
-void main()
+vec3 CalculateVertexOffset( in int vertex_id, in float sprite_time, in float fadeScale)
 {
-	vec3 V = u_ViewOrigin - attr_Position.xyz;
-
 	float width = attr_Position2.x;
 	float height = attr_Position2.y;
 	vec2 skew = attr_Position2.zw;
-
-	float distanceToCamera = length(V);
-	float fadeScale = smoothstep(u_FadeStartDistance, u_FadeEndDistance,
-						distanceToCamera);
+	
 	width += u_FadeScale * fadeScale * width;
 
 #if defined(FX_SPRITE)
-	float sprite_time = u_frameTime * 1000.0;
 	var_Effectpos = fract((sprite_time+10000.0*attr_Position.w) / u_FxDuration);
 	width += var_Effectpos * width * u_FxGrow.x;
 	height += var_Effectpos * height * u_FxGrow.y;
 #endif
 
+#if !defined(FACE_FLATTENED)
 	float halfWidth = width * 0.5;
 	vec3 offsets[] = vec3[](
 #if defined(FACE_UP)
@@ -80,10 +87,69 @@ void main()
 #else
 		vec3( halfWidth, 0.0, 0.0),
 		vec3( halfWidth, 0.0, height),
-		vec3(-halfWidth, 0.0, height),
+		vec3(-halfWidth, 0.2, height), // Offset this upper vertex to make sprite visable from above
 		vec3(-halfWidth, 0.0, 0.0)
 #endif
 	);
+#else
+	float offsetValue = mix(width, height, attr_Position.w);
+	vec3 offsets[] = vec3[](
+		vec3( offsetValue, 0.0, 0.0),
+		vec3( offsetValue, 0.0, height),
+		vec3(-offsetValue, 0.2, height), // Offset this upper vertex to make sprite visable from above
+		vec3(-offsetValue, 0.0, 0.0)
+	);
+#endif
+
+	vec3 offset = offsets[vertex_id];
+
+#if defined(FACE_CAMERA)
+	offset = (offset.x * normalize(u_ViewLeft)) + (offset.z * normalize(u_ViewUp));
+#elif defined(FACE_FLATTENED)
+	// Make this sprite face in some direction
+	vec3 fwdVec = cross(attr_Normal, vec3(0.0, 0.0, 1.0));
+	offset.xy = (offset.x * attr_Normal.xy) + (offset.y * width * fwdVec.xy);
+#elif !defined(FACE_UP)
+	// Make this sprite face in some direction in direction of the camera
+	vec3 lftVec = normalize(u_ViewLeft);
+	vec3 fwdVec = cross(lftVec, vec3(0.0, 0.0, 1.0));
+	offset.xy = (offset.x * normalize(attr_Normal.xy + 2.0 * lftVec.xy)) + (offset.y * width * fwdVec.xy);
+#endif
+
+#if !defined(FACE_UP) && !defined(FX_SPRITE)
+	float isLowerVertex = float(offset.z == 0.0);
+	offset.xy += mix(skew, vec2(0.0), isLowerVertex);
+	float angle = (attr_Position.x + attr_Position.y) * 0.02 + (sprite_time * 0.0015);
+	float windsway = mix(height* u_WindIdle * 0.075, 0.0, isLowerVertex);
+	offset.xy += vec2(cos(angle), sin(angle)) * windsway;
+#endif
+	return offset;
+}
+
+void main()
+{
+	vec3 V = u_ViewOrigin - attr_Position.xyz;
+	float distanceToCamera = length(V);
+	float fadeScale = smoothstep(u_FadeStartDistance, u_FadeEndDistance,
+						distanceToCamera);
+
+	float sprite_time = u_frameTime * 1000.0;
+	int vertex_id = gl_VertexID % 4;
+	vec3 offset = CalculateVertexOffset(vertex_id, sprite_time, fadeScale);
+
+	vec4 worldPos = vec4(attr_Position.xyz + offset, 1.0);
+	gl_Position = u_viewProjectionMatrix * worldPos;
+#if defined(USE_FOG)
+	var_WSPosition = worldPos.xyz;
+#endif
+
+#if defined(VELOCITY_PASS)
+	var_Position = gl_Position;
+	sprite_time = u_previousFrameTime * 1000.0;
+	offset = CalculateVertexOffset(vertex_id, sprite_time, fadeScale);
+	worldPos = vec4(attr_Position.xyz + offset, 1.0);
+	var_prevPosition = u_previousViewProjectionMatrix * worldPos;
+#endif
 
 	const vec2 texcoords[] = vec2[](
 		vec2(1.0, 1.0),
@@ -91,43 +157,26 @@ void main()
 		vec2(0.0, 0.0),
 		vec2(0.0, 1.0)
 	);
-
-	vec3 offset = offsets[gl_VertexID % 4];
-
-
-#if defined(FACE_CAMERA)
-	vec2 toCamera = normalize(V.xy);
-	offset.xy = offset.x*vec2(toCamera.y, -toCamera.x);
-#elif defined(FACE_FLATTENED)
-	// Make this sprite face in some direction
-	offset.xy = offset.x * attr_Normal.xy;
-#elif !defined(FACE_UP)
-	// Make this sprite face in some direction in direction of the camera
-	vec2 toCamera = normalize(V.xy);
-	offset.xy = offset.x * (attr_Normal.xy + 3.0 * vec2(toCamera.y, -toCamera.x)) * 0.25;
-#endif
-
-#if !defined(FACE_UP) && !defined(FX_SPRITE)
-	float isLowerVertex = float(offset.z == 0.0);
-	offset.xy += mix(skew, vec2(0.0), isLowerVertex);
-	float sprite_time = u_frameTime * 1000.0;
-	float angle = (attr_Position.x + attr_Position.y) * 0.02 + (sprite_time * 0.0015);
-	float windsway = mix(height* u_WindIdle * 0.075, 0.0, isLowerVertex);
-	offset.xy += vec2(cos(angle), sin(angle)) * windsway;
-#endif
-
-	vec4 worldPos = vec4(attr_Position.xyz + offset, 1.0);
-	gl_Position = u_viewProjectionMatrix * worldPos;
-	var_TexCoords = texcoords[gl_VertexID % 4];
+	var_TexCoords = texcoords[vertex_id];
 	var_Color = attr_Color;
 	var_Alpha = 1.0 - fadeScale;
-	#if defined(USE_FOG)
-	var_WSPosition = worldPos.xyz;
-	#endif
+
 }
 
 /*[Fragment]*/
 uniform sampler2D u_DiffuseMap;
+
+#if defined(VELOCITY_PASS)
+layout(std140) uniform TemporalInfo
+{
+	mat4 u_previousViewProjectionMatrix;
+	vec2 u_currentJitter;
+	vec2 u_previousJitter;
+	float u_previousFrameTime;
+};
+in vec4 var_Position;
+in vec4 var_prevPosition;
+#endif
 
 in vec2 var_TexCoords;
 in vec3 var_Color;
@@ -181,6 +230,13 @@ layout(std140) uniform Fogs
 
 uniform int u_FogIndex;
 uniform vec4 u_FogColorMask;
+
+#if defined(USE_VOLUMETRIC_FOG)
+uniform sampler3D u_VolumetricLightMap;
+
+uniform vec3 u_LightGridOrigin;
+uniform vec3 u_LightGridCellInverseSize;
+#endif
 #endif
 
 #if defined(USE_ALPHA_TEST)
@@ -188,10 +244,40 @@ uniform int u_AlphaTestType;
 #endif
 
 out vec4 out_Color;
+#if !defined(VELOCITY_PASS)
 out vec4 out_Glow;
+#endif
 
 #if defined(USE_FOG)
-float CalcFog(in vec3 viewOrigin, in vec3 position, in Fog fog)
+#if defined(USE_VOLUMETRIC_FOG)
+vec3 CalcVolumetricFogColor(in vec3 startPosition, in vec3 endPosition, in Fog fog)
+{
+	ivec3 gridSize = textureSize(u_VolumetricLightMap, 0);
+	vec3 invGridSize = u_LightGridCellInverseSize / vec3(gridSize);
+	
+	const int steps = r_volumetricFogSamples;
+	vec3 step = (endPosition - startPosition) / steps;
+	float z = fog.depthToOpaque * length(step);
+
+	vec3 position = startPosition;
+	float transmittance  = 1.0;
+	vec3 color = vec3(0.0);
+	for (int i = 0; i < steps; i++)
+	{
+		float currentTransmittance = exp(-z);
+		float currentOpacity = 1.0 - currentTransmittance;
+
+		vec3 gridCell = (position - u_LightGridOrigin) * invGridSize;
+		color += texture(u_VolumetricLightMap, gridCell).rgb * transmittance * currentOpacity;
+		transmittance *= currentTransmittance;
+		
+		position += step;
+	}
+	return color;
+}
+#endif
+
+vec4 CalcFog(in vec3 viewOrigin, in vec3 position, in Fog fog)
 {
 	bool inFog = dot(viewOrigin, fog.plane.xyz) - fog.plane.w >= 0.0 || !fog.hasPlane;
 
@@ -208,7 +294,7 @@ float CalcFog(in vec3 viewOrigin, in vec3 position, in Fog fog)
 
 	bool intersects = (t > 0.0 && t <= 1.0);
 	if (inFog == intersects)
-		return 0.0;
+		return vec4(0.0);
 
 	float distToVertexFromViewOrigin = length(V);
 	float distToIntersectionFromViewOrigin = t * distToVertexFromViewOrigin;
@@ -217,7 +303,14 @@ float CalcFog(in vec3 viewOrigin, in vec3 position, in Fog fog)
 	float distThroughFog = mix(distOutsideFog, distToVertexFromViewOrigin, inFog);
 
 	float z = fog.depthToOpaque * distThroughFog;
-	return 1.0 - clamp(exp(-(z * z)), 0.0, 1.0);
+#if defined(USE_VOLUMETRIC_FOG)
+	vec3 startPosition = mix((V * t) + viewOrigin, viewOrigin, vec3(inFog));
+	vec3 endPosition = (normalize(V) * distThroughFog) + startPosition;
+	vec3 color = CalcVolumetricFogColor(startPosition, endPosition, fog);
+	return vec4(color * fog.color.rgb, 1.0 - clamp(exp(-z), 0.0, 1.0));
+#else
+	return vec4(fog.color.rgb, 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
+#endif
 }
 #endif
 
@@ -277,15 +370,24 @@ void main()
 		if (out_Color.a < 0.75)
 			discard;
 	}
+	else if (u_AlphaTestType == ALPHA_TEST_E255)
+	{
+		if (out_Color.a < 1.00)
+			discard;
+	}
 #endif
 
 #if defined(USE_FOG)
 	Fog fog = u_Fogs[u_FogIndex];
-	float fogFactor = CalcFog(u_ViewOrigin, var_WSPosition, fog);
+	vec4 fogColorOpacity = CalcFog(u_ViewOrigin, var_WSPosition, fog);
 #if defined(ADDITIVE_BLEND)
-	out_Color.rgb *= fog.color.rgb * (1.0 - fogFactor);
+	out_Color.rgb *= fogColorOpacity.rgb * (1.0 - fogColorOpacity.a);
 #else
-	out_Color.rgb = mix(out_Color.rgb, fog.color.rgb, fogFactor);
+#if defined(USE_VOLUMETRIC_FOG)
+	out_Color.rgb = out_Color.rgb * (1.0-fogColorOpacity.a) + fogColorOpacity.rgb;
+#else
+	out_Color.rgb = mix(out_Color.rgb, fogColorOpacity.rgb, fogColorOpacity.a);
+#endif
 #endif
 #endif
 
@@ -293,5 +395,17 @@ void main()
 	out_Color.rgb *= out_Color.a;
 #endif
 
+#if defined(VELOCITY_PASS)
+	vec2 currentPos = (var_Position.xy / var_Position.w) * 0.5 + 0.5;
+	vec2 prevPos = (var_prevPosition.xy / var_prevPosition.w) * 0.5 + 0.5;
+	vec2 motionVector = currentPos - prevPos;
+
+	motionVector -= u_currentJitter / r_FBufScale.xy;
+	motionVector -= u_previousJitter / r_FBufScale.xy;
+
+	out_Color = vec4(motionVector, 0.0, 1.0);
+#else
 	out_Glow = vec4(0.0);
+#endif
+	
 }

@@ -81,7 +81,7 @@ static GLenum GetGLBufferUsage ( vboUsage_t usage )
 R_CreateVBO
 ============
 */
-VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage)
+VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage, const char *debugName)
 {
 	VBO_t          *vbo;
 
@@ -100,6 +100,7 @@ VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage)
 	tr.numVBOs++;
 
 	qglBindBuffer(GL_ARRAY_BUFFER, vbo->vertexesVBO);
+	if (glRefConfig.annotateResources) qglObjectLabel(GL_BUFFER, vbo->vertexesVBO, -1, va("%s_VBO", debugName));
 	if ( glRefConfig.immutableBuffers )
 	{
 		GLbitfield creationFlags = 0;
@@ -130,7 +131,7 @@ VBO_t *R_CreateVBO(byte * vertexes, int vertexesSize, vboUsage_t usage)
 R_CreateIBO
 ============
 */
-IBO_t *R_CreateIBO(byte * indexes, int indexesSize, vboUsage_t usage)
+IBO_t *R_CreateIBO(byte * indexes, int indexesSize, vboUsage_t usage, const char *debugName)
 {
 	IBO_t          *ibo;
 
@@ -147,6 +148,7 @@ IBO_t *R_CreateIBO(byte * indexes, int indexesSize, vboUsage_t usage)
 	tr.numIBOs++;
 
 	qglBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo->indexesVBO);
+	if (glRefConfig.annotateResources) qglObjectLabel(GL_BUFFER, ibo->indexesVBO, -1, va("%s_IBO", debugName));
 	if ( glRefConfig.immutableBuffers )
 	{
 		GLbitfield creationFlags = 0;
@@ -199,8 +201,6 @@ void R_BindVBO(VBO_t * vbo)
 		glState.vertexAttribsInterpolation = 0;
 		glState.vertexAttribsOldFrame = 0;
 		glState.vertexAttribsNewFrame = 0;
-		glState.vertexAttribsTexCoordOffset[0] = 0;
-		glState.vertexAttribsTexCoordOffset[1] = 1;
 		glState.vertexAnimation = qfalse;
 		glState.skeletalAnimation = qfalse;
 
@@ -294,6 +294,7 @@ void R_InitGPUBuffers(void)
 
 	qglBindBuffer(GL_UNIFORM_BUFFER, tr.shaderInstanceUbo);
 	glState.currentGlobalUBO = tr.shaderInstanceUbo;
+	if (glRefConfig.annotateResources) qglObjectLabel(GL_BUFFER, tr.shaderInstanceUbo, -1, "ShaderInstanceUBO");
 	qglBufferData(
 		GL_UNIFORM_BUFFER,
 		MAX_SHADERS * alignedBlockSize,
@@ -406,6 +407,7 @@ void AddVertexArray(
 	size_t size,
 	int stride,
 	int offset,
+	int stepRate,
 	void *stream,
 	int streamStride)
 {
@@ -415,7 +417,8 @@ void AddVertexArray(
 	properties->sizes[attributeIndex]                           = size;
 	properties->strides[attributeIndex]                         = stride;
 	properties->streams[attributeIndex]                         = stream;
-	properties->streamStrides[attributeIndex]					= streamStride;
+	properties->streamStrides[attributeIndex]                   = streamStride;
+	properties->stepRates[attributeIndex]                       = stepRate;
 
 	properties->numVertexArrays++;
 }
@@ -446,6 +449,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.xyz[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.xyz,
 				sizeof(tess.xyz[0]));
 
@@ -456,6 +460,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][0],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -466,6 +471,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][1]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][1],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -476,6 +482,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][2]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][2],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 ;
@@ -487,6 +494,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][3]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][3],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -498,6 +506,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.texCoords[0][4]) * 2,
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.texCoords[0][4],
 				sizeof(tess.texCoords[0][0]) * NUM_TESS_TEXCOORDS);
 
@@ -508,6 +517,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.normal[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.normal,
 				sizeof(tess.normal[0]));
 
@@ -518,6 +528,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.tangent[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.tangent,
 				sizeof(tess.tangent[0]));
 
@@ -528,6 +539,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.vertexColors[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.vertexColors,
 				sizeof(tess.vertexColors[0]));
 
@@ -538,6 +550,7 @@ void CalculateVertexArraysProperties(uint32_t attributes, VertexArraysProperties
 				sizeof(tess.lightdir[0]),
 				0,
 				properties->vertexDataSize,
+				0,
 				tess.lightdir,
 				sizeof(tess.lightdir[0]));
 	}
@@ -565,6 +578,7 @@ void CalculateVertexArraysFromVBO(
 				vbo->sizes[i],
 				vbo->strides[i],
 				vbo->offsets[i],
+				vbo->stepRates[i],
 				NULL,
 				0);
 	}
@@ -681,34 +695,47 @@ void RB_UpdateVBOs(unsigned int attribBits)
 }
 
 #ifdef _G2_GORE
-void RB_UpdateGoreVBO(srfG2GoreSurface_t *goreSurface)
+void RB_UpdateGoreVertexData(gpuFrame_t *currentFrame, srfG2GoreSurface_t *goreSurface, bool updateFirstVertAndIndex)
 {
-	goreSurface->firstVert = tr.goreVBOCurrentIndex;
-	goreSurface->firstIndex = tr.goreIBOCurrentIndex;
+	if (updateFirstVertAndIndex)
+	{
+		goreSurface->firstVert = currentFrame->goreVBOCurrentIndex;
+		goreSurface->firstIndex = currentFrame->goreIBOCurrentIndex;
 
-	if (tr.goreVBOCurrentIndex + goreSurface->numVerts >= (MAX_GORE_RECORDS * MAX_GORE_VERTS * MAX_FRAMES))
-		tr.goreVBOCurrentIndex = 0;
+		if (currentFrame->goreVBOCurrentIndex + goreSurface->numVerts >= (MAX_GORE_RECORDS * MAX_GORE_VERTS))
+			currentFrame->goreVBOCurrentIndex = 0;
+	}
 
-	R_BindVBO(tr.goreVBO);
+	R_BindVBO(currentFrame->goreVBO);
 	qglBufferSubData(
 		GL_ARRAY_BUFFER,
-		sizeof(g2GoreVert_t) * tr.goreVBOCurrentIndex,
+		sizeof(g2GoreVert_t) * goreSurface->firstVert,
 		sizeof(g2GoreVert_t) * goreSurface->numVerts,
 		goreSurface->verts
 	);
-	tr.goreVBOCurrentIndex += goreSurface->numVerts;
 
-	if (tr.goreIBOCurrentIndex + goreSurface->numIndexes >= (MAX_GORE_RECORDS * MAX_GORE_INDECIES * MAX_FRAMES))
-		tr.goreIBOCurrentIndex = 0;
+	if (updateFirstVertAndIndex)
+	{
+		currentFrame->goreVBOCurrentIndex += goreSurface->numVerts;
 
-	R_BindIBO(tr.goreIBO);
+		if (currentFrame->goreIBOCurrentIndex + goreSurface->numIndexes >= (MAX_GORE_RECORDS * MAX_GORE_INDECIES))
+			currentFrame->goreIBOCurrentIndex = 0;
+	}
+
+	R_BindIBO(currentFrame->goreIBO);
 	qglBufferSubData(
 		GL_ELEMENT_ARRAY_BUFFER,
-		sizeof(glIndex_t) * tr.goreIBOCurrentIndex,
+		sizeof(glIndex_t) * goreSurface->firstIndex,
 		sizeof(glIndex_t) * goreSurface->numIndexes,
 		goreSurface->indexes
 	);
-	tr.goreIBOCurrentIndex += goreSurface->numIndexes;
+
+	if (updateFirstVertAndIndex)
+	{
+		currentFrame->goreIBOCurrentIndex += goreSurface->numIndexes;
+	}
+
+	goreSurface->cachedInFrame[backEndData->realFrameNumber % MAX_FRAMES] = true;
 }
 #endif
 

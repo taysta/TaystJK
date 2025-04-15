@@ -327,7 +327,7 @@ void RE_BeginScene(const refdef_t *fd)
 
 	tr.refdef.time = fd->time;
 	tr.refdef.rdflags = fd->rdflags;
-	tr.refdef.frameTime = fd->time - tr.refdef.lastTime;
+	tr.refdef.frameTime = MIN(fd->time - tr.refdef.lastTime, 50.f);
 
 	// copy the areamask data over and note if it has changed, which
 	// will force a reset of the visible leafs even if the view hasn't moved
@@ -489,10 +489,10 @@ void RE_BeginScene(const refdef_t *fd)
 		// Don't update constants yet. Store everything and render everything next scene
 		return;
 	}
-	else
+	else if (backEndData->currentFrame->currentScene == 0)
 	{
-		// pasted this from SP
 		// cdr - only change last time for the real render, not the portal
+		// nor other scenes to be rendered like ui scenes
 		tr.refdef.lastTime = fd->time;
 	}
 
@@ -503,10 +503,13 @@ void RE_BeginScene(const refdef_t *fd)
 	// each scene / view.
 	tr.frameSceneNum++;
 	tr.sceneCount++;
+	tr.portalRenderedThisFrame = qfalse;
 
 	//ri.Printf(PRINT_ALL, "RE_BeginScene Frame: %i, skyportal: %i, entities: %i\n", backEndData->realFrameNumber, int(tr.world->skyboxportal && (tr.refdef.rdflags & RDF_SKYBOXPORTAL)), tr.refdef.num_entities);
 	R_GatherFrameViews(&tr.refdef);
 	RB_UpdateConstants(&tr.refdef);
+
+	R_PushDebugGroup(AL_SCENE, va("Scene_%i", backEndData->currentFrame->currentScene));
 }
 
 void RE_EndScene()
@@ -518,10 +521,8 @@ void RE_EndScene()
 	r_firstScenePoly = r_numpolys;
 	tr.skyPortalEntities = 0;
 	tr.numCachedViewParms = 0;
-#ifdef REND2_SP
 	tr.refdef.doLAGoggles = false;
 	tr.refdef.doFullbright = false;
-#endif
 	backEndData->currentFrame->currentScene++;
 	if (backEndData->currentFrame->currentScene > MAX_SCENES)
 	{
@@ -596,6 +597,17 @@ void RE_RenderScene( const refdef_t *fd )
 	// Render all the passes
 	for (int i = 0; i < tr.numCachedViewParms; i++)
 	{
+		const char *viewParmTypeNames[VPT_ALL] = {
+			"Skyportal View",
+			"Sunshadow Cascade",
+			"Player Shadowmap",
+			"Pointlight Shadow",
+			"Portal View",
+			"Main View"};
+		R_PushDebugGroup(AL_VIEW, va(
+			"%s_%i",
+			viewParmTypeNames[tr.cachedViewParms[i].viewParmType],
+			i));
 		qhandle_t timer = R_BeginTimedBlockCmd(va("Render Pass %i", i));
 		tr.refdef.numDrawSurfs = 0;
 		R_RenderView(&tr.cachedViewParms[i]);
@@ -605,6 +617,7 @@ void RE_RenderScene( const refdef_t *fd )
 
 	if(!( fd->rdflags & RDF_NOWORLDMODEL ))
 	{
+		R_PushDebugGroup(AL_VIEW, "Post processing");
 		qhandle_t timer = R_BeginTimedBlockCmd( "Post processing" );
 		R_AddPostProcessCmd();
 		R_EndTimedBlockCmd( timer );
@@ -613,6 +626,7 @@ void RE_RenderScene( const refdef_t *fd )
 	R_IssuePendingRenderCommands();
 
 	RE_EndScene();
+	R_PushDebugGroup(AL_VIEW, "2D Pass");
 
 	tr.frontEndMsec += ri.Milliseconds() - startTime;
 }

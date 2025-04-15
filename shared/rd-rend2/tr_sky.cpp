@@ -453,6 +453,8 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 		UNIFORM_DIFFUSETEXOFFTURB, 0.0f, 0.0f, 0.0f, 0.0f);
 	uniformDataWriter.SetUniformVec4(
 		UNIFORM_ENABLETEXTURES, 0.0f, 0.0f, 0.0f, 0.0f);
+	uniformDataWriter.SetUniformInt(
+		UNIFORM_ALPHA_TEST_TYPE, ALPHA_TEST_NONE);
 
 	samplerBindingsWriter.AddStaticImage(image, TB_DIFFUSEMAP);
 
@@ -464,6 +466,7 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	};
 
 	DrawItem item = {};
+	item.renderState.stateBits = tr.portalRenderedThisFrame ? 0 : GLS_DEPTHTEST_DISABLE;
 	item.renderState.cullType = CT_TWO_SIDED;
 	item.renderState.depthRange = RB_GetDepthRange(backEnd.currentEntity, tess.shader);
 	item.program = sp;
@@ -481,7 +484,7 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	RB_FillDrawCommand(item.draw, GL_TRIANGLES, 1, &tess);
 	item.draw.params.indexed.numIndices -= tess.firstIndex;
 
-	uint32_t key = RB_CreateSortKey(item, 0, SS_ENVIRONMENT);
+	uint32_t key = RB_CreateSkySortKey(item, 0, backEnd.skyNumber, SS_ENVIRONMENT);
 	RB_AddDrawItem(backEndData->currentPass, key, item);
 
 	RB_CommitInternalBufferData();
@@ -866,6 +869,7 @@ void RB_StageIteratorSky( void ) {
 
 	// note that sky was drawn so we will draw a sun later
 	backEnd.skyRenderedThisView = qtrue;
+	backEnd.skyNumber++;
 }
 
 

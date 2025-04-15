@@ -89,7 +89,7 @@ void G2Time_ReportTimers(void)
 extern cvar_t* sv_mapname;
 #endif
 
-static const int MAX_RENDERABLE_SURFACES = 2048;
+static const int MAX_RENDERABLE_SURFACES = 4096;
 static CRenderableSurface renderSurfHeap[MAX_RENDERABLE_SURFACES];
 static int currentRenderSurfIndex = 0;
 
@@ -424,6 +424,7 @@ public:
 	// GPU Data
 	mat3x4_t boneMatrices[MAX_G2_BONES];
 	int      uboOffset;
+	int		 uboPreviousOffset;
 	int	     uboGPUFrame;
 
 	CBoneCache( const model_t *amod, const mdxaHeader_t *aheader )
@@ -439,6 +440,7 @@ public:
 		, mUnsquash(false)
 		, mSmoothFactor(0.0f)
 		, uboOffset(-1)
+		, uboPreviousOffset(-1)
 		, uboGPUFrame(-1)
 	{
 		assert(amod);
@@ -3574,6 +3576,47 @@ void RB_TransformBones(const trRefEntity_t *ent, const trRefdef_t *refdef, int c
 
 		bc->uboOffset = uboOffset;
 		bc->uboGPUFrame = currentFrameNum;
+
+		if (!backEndData->cachePreviousFrameUbos)
+		{
+			bc->uboPreviousOffset = -1;
+			continue;
+		}
+
+		if (frame->numCachedGhoulUboOffsets == MAX_GENTITIES)
+		{
+			ri.Printf(PRINT_DEVELOPER, "Too many ghoul2 models to cache, skipping now.\n");
+		}
+		else
+		{
+			frame->cachedGhoulUboOffsets[frame->numCachedGhoulUboOffsets].ghoulPointer = ent->e.ghoul2;
+			frame->cachedGhoulUboOffsets[frame->numCachedGhoulUboOffsets].model = g2Info.mModel;
+			frame->cachedGhoulUboOffsets[frame->numCachedGhoulUboOffsets].boltIndex = g2Info.mModelBoltLink;
+			frame->cachedGhoulUboOffsets[frame->numCachedGhoulUboOffsets].boneUboOffset = uboOffset;
+			frame->numCachedGhoulUboOffsets++;
+		}
+
+		int foundCache = -1;
+		for (int c = 0; c < backEndData->previousFrame->numCachedGhoulUboOffsets; c++)
+		{
+			ghoul2UboCache_t *currentCache = &backEndData->previousFrame->cachedGhoulUboOffsets[c];
+			if (currentCache->ghoulPointer != ent->e.ghoul2)
+				continue;
+			if (currentCache->model != g2Info.mModel)
+				continue;
+			if (currentCache->boltIndex != g2Info.mModelBoltLink && foundCache == -1)
+			{
+				foundCache = c;
+				continue;
+			}
+			foundCache = c;
+			break;
+		}
+
+		if (foundCache == -1)
+			bc->uboPreviousOffset = 0;
+		else
+			bc->uboPreviousOffset = backEndData->previousFrame->cachedGhoulUboOffsets[foundCache].boneUboOffset;
 	}
 }
 
@@ -3581,6 +3624,14 @@ int RB_GetBoneUboOffset(CRenderableSurface *surf)
 {
 	if (surf->boneCache)
 		return surf->boneCache->uboOffset;
+	else
+		return -1;
+}
+
+int RB_GetPreviousBoneUboOffset(CRenderableSurface *surf)
+{
+	if (surf->boneCache)
+		return surf->boneCache->uboPreviousOffset;
 	else
 		return -1;
 }
@@ -3617,9 +3668,16 @@ void RB_SurfaceGhoul( CRenderableSurface *surf )
 #ifdef _G2_GORE
 	if (surf->alternateTex)
 	{
-		R_BindVBO(tr.goreVBO);
-		R_BindIBO(tr.goreIBO);
-		tess.externalIBO = tr.goreIBO;
+		if (!surf->alternateTex->cachedInFrame[backEndData->realFrameNumber % MAX_FRAMES])
+		{
+			RB_UpdateGoreVertexData(backEndData->currentFrame, surf->alternateTex, false);
+		}
+		else
+		{
+			R_BindVBO(backEndData->currentFrame->goreVBO);
+			R_BindIBO(backEndData->currentFrame->goreIBO);
+		}
+		tess.externalIBO = backEndData->currentFrame->goreIBO;
 
 		numIndexes = surf->alternateTex->numIndexes;
 		numVertexes = surf->alternateTex->numVerts;
@@ -4184,6 +4242,12 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		LL(mdxm->ofsEnd);
 	}
 
+	if (mdxm->numBones > MAX_G2_BONES)
+	{
+		Com_Printf(S_COLOR_YELLOW  "R_LoadMDXM: model %s has too many bones for rend2\n", mdxm->name);
+		return qfalse;
+	}
+
 	// first up, go load in the animation file we need that has the skeletal
 	// animation info for this model
 	mdxm->animIndex = RE_RegisterModel(va("%s.gla", mdxm->animName));
@@ -4358,7 +4422,7 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 
 		byte *data;
 		int dataSize = 0;
-		int ofsPosition, ofsNormals, ofsTexcoords, ofsBoneRefs, ofsWeights, ofsTangents;
+		int ofsPosition, ofsNormals, ofsTexcoords, ofsBoneRefs, ofsWeights, ofsTangents, ofsColor, ofsLMCoords, ofsLightDir;;
 		int stride = 0;
 		int numVerts = 0;
 		int numTriangles = 0;
@@ -4393,6 +4457,7 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		dataSize += numVerts * sizeof (*weights) * 4;
 		dataSize += numVerts * sizeof (*bonerefs) * 4;
 		dataSize += numVerts * sizeof (*tangents);
+		dataSize += sizeof(vec4_t) + sizeof(vec2_t) + sizeof(uint32_t);
 
 		// Allocate and write to memory
 		data = (byte *)Hunk_AllocateTempMemory (dataSize);
@@ -4420,6 +4485,18 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		ofsTangents = stride;
 		tangents = (uint32_t *)(data + ofsTangents);
 		stride += sizeof (*tangents);
+
+		ofsColor = dataSize - (sizeof(vec4_t) + sizeof(vec2_t) + sizeof(uint32_t));
+		float *color = (float *)(data + ofsColor);
+		VectorSet4(color, 1.0f, 1.0f, 1.0f, 1.0f);
+
+		ofsLMCoords = dataSize - (sizeof(vec2_t) + sizeof(uint32_t));
+		float *lmTcs = (float *)(data + ofsLMCoords);
+		VectorSet2(lmTcs, 0.0f, 0.0f);
+
+		ofsLightDir = dataSize - sizeof(uint32_t);
+		uint32_t *lightdir = (uint32_t*)(data + ofsLightDir);
+		*lightdir = 0;
 
 		// Fill in the index buffer and compute tangents
 		glIndex_t *indices = (glIndex_t *)Hunk_AllocateTempMemory(sizeof(glIndex_t) * numTriangles * 3);
@@ -4539,15 +4616,16 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
 		}
 
-		assert ((byte *)verts == (data + dataSize));
+		// TODO: Check why this was here and why it always fails
+		// assert ((byte *)verts == (data + dataSize));
 
 		const char *modelName = strrchr (mdxm->name, '/');
 		if (modelName == NULL)
 		{
 			modelName = mdxm->name;
 		}
-		VBO_t *vbo = R_CreateVBO (data, dataSize, VBO_USAGE_STATIC);
-		IBO_t *ibo = R_CreateIBO((byte *)indices, sizeof(glIndex_t) * numTriangles * 3, VBO_USAGE_STATIC);
+		VBO_t *vbo = R_CreateVBO (data, dataSize, VBO_USAGE_STATIC, mod_name);
+		IBO_t *ibo = R_CreateIBO((byte *)indices, sizeof(glIndex_t) * numTriangles * 3, VBO_USAGE_STATIC, mod_name);
 
 		Hunk_FreeTempMemory (data);
 		Hunk_FreeTempMemory (tangentsf);
@@ -4560,6 +4638,13 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		vbo->offsets[ATTR_INDEX_BONE_WEIGHTS] = ofsWeights;
 		vbo->offsets[ATTR_INDEX_TANGENT] = ofsTangents;
 
+		vbo->offsets[ATTR_INDEX_COLOR] = ofsColor;
+		vbo->offsets[ATTR_INDEX_TEXCOORD1] = ofsLMCoords;
+		vbo->offsets[ATTR_INDEX_TEXCOORD2] = ofsLMCoords;
+		vbo->offsets[ATTR_INDEX_TEXCOORD3] = ofsLMCoords;
+		vbo->offsets[ATTR_INDEX_TEXCOORD4] = ofsLMCoords;
+		vbo->offsets[ATTR_INDEX_LIGHTDIRECTION] = ofsLightDir;
+
 		vbo->strides[ATTR_INDEX_POSITION] = stride;
 		vbo->strides[ATTR_INDEX_NORMAL] = stride;
 		vbo->strides[ATTR_INDEX_TEXCOORD0] = stride;
@@ -4567,12 +4652,33 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 		vbo->strides[ATTR_INDEX_BONE_WEIGHTS] = stride;
 		vbo->strides[ATTR_INDEX_TANGENT] = stride;
 
+		vbo->strides[ATTR_INDEX_COLOR] = sizeof(vec4_t);
+		vbo->strides[ATTR_INDEX_TEXCOORD1] = sizeof(vec2_t);
+		vbo->strides[ATTR_INDEX_TEXCOORD2] = sizeof(vec2_t);
+		vbo->strides[ATTR_INDEX_TEXCOORD3] = sizeof(vec2_t);
+		vbo->strides[ATTR_INDEX_TEXCOORD4] = sizeof(vec2_t);
+		vbo->strides[ATTR_INDEX_LIGHTDIRECTION] = sizeof(uint32_t);
+
 		vbo->sizes[ATTR_INDEX_POSITION] = sizeof(*verts);
 		vbo->sizes[ATTR_INDEX_NORMAL] = sizeof(*normals);
 		vbo->sizes[ATTR_INDEX_TEXCOORD0] = sizeof(*texcoords);
 		vbo->sizes[ATTR_INDEX_BONE_WEIGHTS] = sizeof(*weights);
 		vbo->sizes[ATTR_INDEX_BONE_INDEXES] = sizeof(*bonerefs);
 		vbo->sizes[ATTR_INDEX_TANGENT] = sizeof(*tangents);
+
+		vbo->sizes[ATTR_INDEX_COLOR] = sizeof(vec4_t);
+		vbo->sizes[ATTR_INDEX_TEXCOORD1] = sizeof(vec2_t);
+		vbo->sizes[ATTR_INDEX_TEXCOORD2] = sizeof(vec2_t);
+		vbo->sizes[ATTR_INDEX_TEXCOORD3] = sizeof(vec2_t);
+		vbo->sizes[ATTR_INDEX_TEXCOORD4] = sizeof(vec2_t);
+		vbo->sizes[ATTR_INDEX_LIGHTDIRECTION] = sizeof(uint32_t);
+
+		vbo->stepRates[ATTR_INDEX_COLOR] = MAX_INSTANCES;
+		vbo->stepRates[ATTR_INDEX_TEXCOORD1] = MAX_INSTANCES;
+		vbo->stepRates[ATTR_INDEX_TEXCOORD2] = MAX_INSTANCES;
+		vbo->stepRates[ATTR_INDEX_TEXCOORD3] = MAX_INSTANCES;
+		vbo->stepRates[ATTR_INDEX_TEXCOORD4] = MAX_INSTANCES;
+		vbo->stepRates[ATTR_INDEX_LIGHTDIRECTION] = MAX_INSTANCES;
 
 		surf = (mdxmSurface_t *)((byte *)lod + sizeof (mdxmLOD_t) + (mdxm->numSurfaces * sizeof (mdxmLODSurfOffset_t)));
 

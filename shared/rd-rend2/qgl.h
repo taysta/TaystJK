@@ -416,6 +416,7 @@ extern PFNGLISBUFFERPROC qglIsBuffer;
 // Texturing
 extern PFNGLACTIVETEXTUREPROC qglActiveTexture;
 extern PFNGLTEXIMAGE3DPROC qglTexImage3D;
+extern PFNGLTEXSUBIMAGE3DPROC qglTexSubImage3D;
 
 // Shader objects
 extern PFNGLCREATESHADERPROC qglCreateShader;
@@ -570,6 +571,7 @@ extern PFNGLGETQUERYOBJECTUIVPROC qglGetQueryObjectuiv;
 
 // GL state
 extern PFNGLGETSTRINGIPROC qglGetStringi;
+extern PFNGLCOLORMASKIPROC qglColorMaski;
 
 // Sync objects and fences
 extern PFNGLFENCESYNCPROC qglFenceSync;
@@ -614,3 +616,9 @@ extern PFNGLGETDEBUGMESSAGELOGARBPROC qglGetDebugMessageLogARB;
 extern PFNGLQUERYCOUNTERPROC qglQueryCounter;
 extern PFNGLGETQUERYOBJECTI64VPROC qglGetQueryObjecti64v;
 extern PFNGLGETQUERYOBJECTUI64VPROC qglGetQueryObjectui64v;
+
+// GL_KHR_debug
+extern PFNGLPUSHDEBUGGROUPPROC qglPushDebugGroupKHR;
+extern PFNGLPOPDEBUGGROUPPROC qglPopDebugGroupKHR;
+extern PFNGLOBJECTLABELPROC qglObjectLabel;
+extern PFNGLOBJECTPTRLABELPROC qglObjectPtrLabel;
