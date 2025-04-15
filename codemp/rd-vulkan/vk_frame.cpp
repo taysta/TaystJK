@@ -954,7 +954,7 @@ static void vk_begin_screenmap_render_pass( void )
 
 void vk_begin_main_render_pass( void )
 {
-    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
+    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.cmd->swapchain_image_index];
 
     vk.renderPassIndex = RENDER_PASS_MAIN;
 
@@ -967,7 +967,7 @@ void vk_begin_main_render_pass( void )
 
 void vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues )
 {
-    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.swapchain_image_index];
+    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.cmd->swapchain_image_index];
 
     vk.renderPassIndex = RENDER_PASS_POST_BLEND;
 
@@ -1137,24 +1137,22 @@ void vk_begin_frame( void )
 			}
 		}
 		VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
-
-	    if ( !ri.VK_IsMinimized() ) {
-		    res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
-		    // when running via RDP: "Application has already acquired the maximum number of images (0x2)"
-		    // probably caused by "device lost" errors
-		    if ( res < 0 ) {
-			    if ( res == VK_ERROR_OUT_OF_DATE_KHR ) {
-				    // swapchain re-creation needed
-				    vk_restart_swapchain( __func__ );
-			    } else {
-				    ri.Error( ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string( res ) );
-			    }
-		    }
-	    } else {
-		    vk.swapchain_image_index++;
-		    vk.swapchain_image_index %= vk.swapchain_image_count;
-	    }
     }
+
+	if ( !ri.VK_IsMinimized() && !vk.cmd->swapchain_image_acquired ) {
+		res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.cmd->swapchain_image_index );
+		// when running via RDP: "Application has already acquired the maximum number of images (0x2)"
+		// probably caused by "device lost" errors
+		if ( res < 0 ) {
+			if ( res == VK_ERROR_OUT_OF_DATE_KHR ) {
+				// swapchain re-creation needed
+				vk_restart_swapchain( __func__ );
+			} else {
+				ri.Error( ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string( res ) );
+			}
+		}
+        vk.cmd->swapchain_image_acquired = qtrue;
+	}
 
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     begin_info.pNext = VK_NULL_HANDLE;
@@ -1369,7 +1367,7 @@ void vk_end_frame( void )
                 vk.renderHeight = gls.windowHeight;
                 vk.renderScaleX = vk.renderScaleY = 1.0;
 
-                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.swapchain_image_index], qfalse, vk.renderWidth, vk.renderHeight );
+                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.cmd->swapchain_image_index], qfalse, vk.renderWidth, vk.renderHeight );
                 qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.gamma_pipeline );
                 //qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.dglow_image_descriptor[0], 0, NULL );
                 qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL );
@@ -1418,7 +1416,7 @@ void vk_present_frame( void )
 	VkPresentInfoKHR present_info;
 	VkResult res;
 
-	if ( ri.VK_IsMinimized() )
+	if ( ri.VK_IsMinimized() || !vk.cmd->swapchain_image_acquired )
 		return;
 
 	if ( !vk.cmd->waitForFence ) {
@@ -1432,8 +1430,10 @@ void vk_present_frame( void )
 	present_info.pWaitSemaphores = &vk.cmd->rendering_finished;
 	present_info.swapchainCount = 1;
 	present_info.pSwapchains = &vk.swapchain;
-	present_info.pImageIndices = &vk.swapchain_image_index;
+	present_info.pImageIndices = &vk.cmd->swapchain_image_index;
 	present_info.pResults = NULL;
+
+    vk.cmd->swapchain_image_acquired = qfalse;
 
 	res = qvkQueuePresentKHR( vk.queue, &present_info );
 	switch ( res ) {
@@ -1508,7 +1508,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
     }
     else {
         srcImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        srcImage = vk.swapchain_images[vk.swapchain_image_index];
+        srcImage = vk.swapchain_images[vk.cmd->swapchain_image_index];
     }
 
     Com_Memset(&desc, 0, sizeof(desc));

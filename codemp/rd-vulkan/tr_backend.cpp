@@ -276,9 +276,9 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		if ( shader != oldShader || fogNum != oldFogNum || dlighted != oldDlighted
 			|| ( entityNum != oldEntityNum && !shader->entityMergable ) ) 
 		{	
-			if (oldShader != NULL) {
+			//if (oldShader != NULL) {
 				RB_EndSurface();
-			}
+			//}
 #ifdef USE_PMLIGHT
 #define INSERT_POINT SS_FOG
 			if (backEnd.refdef.numLitSurfs && oldShaderSort < INSERT_POINT && shader->sort >= INSERT_POINT) {

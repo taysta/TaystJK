@@ -197,8 +197,8 @@ static void vk_render_splash( void )
 	//VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
 	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
-	qvkAcquireNextImageKHR( vk.device, vk.swapchain, 1 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
-	imageBuffer = vk.swapchain_images[vk.swapchain_image_index];
+	qvkAcquireNextImageKHR( vk.device, vk.swapchain, 1 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.cmd->swapchain_image_index );
+	imageBuffer = vk.swapchain_images[vk.cmd->swapchain_image_index];
 
 	// begin the command buffer
 	Com_Memset( &begin_info, 0, sizeof(begin_info) );
@@ -264,7 +264,7 @@ static void vk_render_splash( void )
 	present_info.pWaitSemaphores = &vk.cmd->rendering_finished;
 	present_info.swapchainCount = 1;
 	present_info.pSwapchains = &vk.swapchain;
-	present_info.pImageIndices = &vk.swapchain_image_index;
+	present_info.pImageIndices = &vk.cmd->swapchain_image_index;
 	present_info.pResults = NULL;
 	qvkQueuePresentKHR( vk.queue, &present_info );
 	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );

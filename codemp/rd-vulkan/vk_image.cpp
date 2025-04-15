@@ -596,7 +596,7 @@ void vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Dat
 	miplevel = 0;
 
 	if (mipmap) {
-		while (scaled_width > 1 || scaled_height > 1) {
+		while (scaled_width > 1 && scaled_height > 1) {
 
 			R_MipMap((byte*)scaled_buffer, (byte*)scaled_buffer, scaled_width, scaled_height);
 
@@ -663,7 +663,8 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 
 	vk_clean_staging_buffer();
 
-	vk_world.staging_buffer_size = MAX( size, 2 * 1024 * 1024 );;
+	vk_world.staging_buffer_size = MAX( size, STAGING_BUFFER_SIZE  );
+	vk_world.staging_buffer_size = PAD( vk_world.staging_buffer_size, 1024 * 1024 );
 
 	buffer_desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	buffer_desc.pNext = NULL;
@@ -1238,6 +1239,7 @@ void RE_UploadCinematic( int cols, int rows, const byte *data, int client, qbool
     if ( !tr.scratchImage[client] ) {
 		tr.scratchImage[client] = R_CreateImage(va("*scratch%i", client), (byte*)data, cols, rows, 
 			IMGFLAG_CLAMPTOEDGE | IMGFLAG_RGB | IMGFLAG_NOSCALE | IMGFLAG_NO_COMPRESSION);
+		return;
     }
 
     image = tr.scratchImage[client];
