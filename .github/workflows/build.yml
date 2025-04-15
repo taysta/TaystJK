@@ -56,6 +56,9 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
 
@@ -113,6 +116,9 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: |
           if [ ${{ matrix.arch }} == "x86" ]; then
@@ -135,6 +141,7 @@ jobs:
           else
             OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
           fi
+          OPTIONS+="-DUseInternalJPEG=ON"
           if [ ${{ matrix.arch }} == "x86" ]; then
             OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake"
           fi
@@ -187,6 +194,9 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
 
       - name: Create Build Environment
         run: |
@@ -254,6 +264,9 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
 
       - name: Create Build Environment
         run: |
