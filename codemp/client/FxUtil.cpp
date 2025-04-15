@@ -116,7 +116,8 @@ int	FX_Init( refdef_t* refdef )
 	//JAPRO ENGINE
 	fx_physics = Cvar_Get("fx_physics", "2", CVAR_ARCHIVE,
 		"Controls physics applied to FX system particles - 0: Disable all FX physics - 1: use non-expensive physics only - 2: Use flags in the fx file (Default behavior) - 3: Force expensive physics on all particles");
-
+	fx_jk2 = Cvar_Get("fx_jk2", "0", CVAR_ARCHIVE,
+		"Displays jk2 style projectile fx - 0: Disabled - 1: Enabled");
 	theFxHelper.ReInit(refdef);
 
 	return true;

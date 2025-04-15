@@ -34,6 +34,7 @@ extern cvar_t	*fx_freeze;
 extern cvar_t	*fx_countScale;
 extern cvar_t	*fx_nearCull;
 extern cvar_t	*fx_physics;//JAPRO ENGINE
+extern cvar_t	*fx_jk2;
 
 class SFxHelper
 {

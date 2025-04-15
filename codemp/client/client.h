@@ -378,7 +378,7 @@ typedef struct clientStatic_s {
 	} log;
 } clientStatic_t;
 
-#define	CON_TEXTSIZE	0x30000 //was 32768
+#define	CON_TEXTSIZE	0x40000 //was 32768
 #define	NUM_CON_TIMES	64
 
 typedef union {
