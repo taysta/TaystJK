@@ -77,10 +77,11 @@ VkCommandBuffer vk_begin_command_buffer( void )
     return command_buffer;
 }
 
-void vk_end_command_buffer( VkCommandBuffer command_buffer )
+void vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location )
 {
     VkSubmitInfo submit_info;
     VkCommandBuffer cmdbuf[1];
+    // VkResult res;
 
     cmdbuf[0] = command_buffer;
 
@@ -96,8 +97,18 @@ void vk_end_command_buffer( VkCommandBuffer command_buffer )
     submit_info.signalSemaphoreCount = 0;
     submit_info.pSignalSemaphores = NULL;
 
-    VK_CHECK(qvkQueueSubmit(vk.queue, 1, &submit_info, VK_NULL_HANDLE));
-    VK_CHECK(qvkQueueWaitIdle(vk.queue));
+#if 0
+	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.aux_fence ) );
+	// 5 seconds should be more than enough to finish the job in normal conditions:
+	res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
+	if ( res != VK_SUCCESS ) {
+		ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), location );
+	}
+	qvkResetFences( vk.device, 1, &vk.aux_fence );
+#else
+    VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, VK_NULL_HANDLE ) );
+	VK_CHECK( qvkQueueWaitIdle( vk.queue ) );
+#endif
 
     qvkFreeCommandBuffers(vk.device, vk.command_pool, 1, cmdbuf);
 }

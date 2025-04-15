@@ -33,27 +33,35 @@ void vk_create_sync_primitives( void )
     desc.pNext = NULL;
     desc.flags = 0;
 
-    for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
+    for ( i = 0; i < NUM_COMMAND_BUFFERS; i++ )
+    {
         desc.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
         desc.pNext = NULL;
         desc.flags = 0;
 
         // swapchain image acquired
-        VK_CHECK(qvkCreateSemaphore(vk.device, &desc, NULL, &vk.tess[i].image_acquired));
-        VK_CHECK(qvkCreateSemaphore(vk.device, &desc, NULL, &vk.tess[i].rendering_finished));
+        VK_CHECK( qvkCreateSemaphore( vk.device, &desc, NULL, &vk.tess[i].image_acquired ) );
+        VK_CHECK( qvkCreateSemaphore( vk.device, &desc, NULL, &vk.tess[i].rendering_finished ) );
 
         fence_desc.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fence_desc.pNext = NULL;
-        fence_desc.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        VK_CHECK(qvkCreateFence(vk.device, &fence_desc, NULL, &vk.tess[i].rendering_finished_fence));
+		//fence_desc.flags = VK_FENCE_CREATE_SIGNALED_BIT; // so it can be used to start rendering
+		fence_desc.flags = VK_FENCE_CREATE_SIGNALED_BIT; // so it can be used to start rendering
+        VK_CHECK( qvkCreateFence( vk.device, &fence_desc, NULL, &vk.tess[i].rendering_finished_fence ) );
 
         vk_debug("Created sync primitives \n");
-        vk.tess[i].waitForFence = qtrue;
+		vk.tess[i].waitForFence = qtrue;
 
-        VK_SET_OBJECT_NAME(vk.tess[i].image_acquired, va("image_acquired semaphore %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT);
-        VK_SET_OBJECT_NAME(vk.tess[i].rendering_finished, "rendering_finished semaphore", VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT);
-        VK_SET_OBJECT_NAME(vk.tess[i].rendering_finished_fence, "rendering_finished fence", VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT);
+        VK_SET_OBJECT_NAME( vk.tess[i].image_acquired, va("image_acquired semaphore %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
+        VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished, "rendering_finished semaphore", VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
+        VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished_fence, "rendering_finished fence", VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT );
     }
+
+	fence_desc.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	fence_desc.pNext = NULL;
+	fence_desc.flags = 0;
+	VK_CHECK( qvkCreateFence( vk.device, &fence_desc, NULL, &vk.aux_fence ) );
+	VK_SET_OBJECT_NAME( vk.aux_fence, "aux fence", VK_DEBUG_REPORT_OBJECT_TYPE_FENCE_EXT );
 }
 
 void vk_destroy_sync_primitives( void )
@@ -67,7 +75,9 @@ void vk_destroy_sync_primitives( void )
         qvkDestroySemaphore(vk.device, vk.tess[i].rendering_finished, NULL);
         qvkDestroyFence(vk.device, vk.tess[i].rendering_finished_fence, NULL);
         vk.tess[i].waitForFence = qfalse;
-    }  
+    }
+
+    qvkDestroyFence( vk.device, vk.aux_fence, NULL );
 }
 
 void vk_create_render_passes()
@@ -897,7 +907,7 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
 #ifdef USE_BUFFER_CLEAR
         switch( vk.renderPassIndex ){
             case RENDER_PASS_MAIN:
-                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.75f, 0.75f, 0.75f, 1.0f } };
+                    Com_Memcpy( clear_values[(int)(vk.msaaActive ? 2 : 0)].color.float32, tr.clearColor, sizeof(vec4_t) );
                 break;
             case RENDER_PASS_DGLOW:
             case RENDER_PASS_REFRACTION:
@@ -921,6 +931,11 @@ static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBu
     }
 
     qvkCmdBeginRenderPass( vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE );
+
+    // break mirrors combined with saber dglow. descriptors are not restored?
+    // investigation required. (anyway, id like to implement depth-prepass, which would streamline dglow pass with main pass)
+	//vk.cmd->last_pipeline = VK_NULL_HANDLE;
+	vk.cmd->depth_range = DEPTH_RANGE_COUNT;
 }
 
 static void vk_begin_screenmap_render_pass( void )
@@ -1022,11 +1037,13 @@ void vk_refraction_extract( void ) {
 
     vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		srcImageLayout,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		0, 0 );
 	
 	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		0, 0 );
 
 	if ( REFRACTION_EXTRACT_SCALE > 1 ) {
 		VkImageBlit region;
@@ -1075,11 +1092,13 @@ void vk_refraction_extract( void ) {
 	// restore previous layouts
 	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		0, 0 );
 	
 	vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		srcImageLayout );
+		srcImageLayout,
+		0, 0 );
 }
 
 void vk_begin_post_refraction_extract_render_pass( void )
@@ -1097,49 +1116,65 @@ void vk_begin_post_refraction_extract_render_pass( void )
 
 void vk_begin_frame( void )
 {
-    VkCommandBufferBeginInfo begin_info;
-    VkResult result;
+	VkCommandBufferBeginInfo begin_info;
+	VkResult res;
 
-    if ( vk.frame_count++ ) // might happen during stereo rendering
-        return;
+	if ( vk.frame_count++ ) // might happen during stereo rendering
+		return;
 
-    if ( vk.cmd->waitForFence ) {
+	vk.cmd = &vk.tess[ vk.cmd_index ];
 
-        vk.cmd = &vk.tess[vk.cmd_index++];
-        vk.cmd_index %= NUM_COMMAND_BUFFERS;
-
-        vk.cmd->waitForFence = qfalse;
-		result = qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_FALSE, 1e10 );
-		if ( result != VK_SUCCESS ) {
-			if ( result == VK_ERROR_DEVICE_LOST ) {
+	if ( vk.cmd->waitForFence ) {
+		vk.cmd->waitForFence = qfalse;
+		res = qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_FALSE, 1e10 );
+		if ( res != VK_SUCCESS ) {
+			if ( res == VK_ERROR_DEVICE_LOST ) {
 				// silently discard previous command buffer
-				ri.Printf( PRINT_WARNING, "Vulkan: %s returned %s", "vkWaitForfences", vk_result_string( result ) );
-			} else {
-				ri.Error( ERR_FATAL, "Vulkan: %s returned %s", "vkWaitForfences", vk_result_string( result ) );
+				ri.Printf( PRINT_WARNING, "Vulkan: %s returned %s", "vkWaitForFences", vk_result_string( res ) );
+			}
+			else {
+				ri.Error( ERR_FATAL, "Vulkan: %s returned %s", "vkWaitForFences", vk_result_string( res ) );
 			}
 		}
+		VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
-        if ( !ri.VK_IsMinimized() ) {
-            result = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000LLU, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
-            if ( result < 0 ) {
-                switch ( result ) {
-                case VK_ERROR_OUT_OF_DATE_KHR: vk_restart_swapchain(__func__); break;
-                default: ri.Error(ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string(result)); break;
-                }
-            }
-        } else {
-             vk.swapchain_image_index++;
-             vk.swapchain_image_index %= vk.swapchain_image_count;
-        }
+	    if ( !ri.VK_IsMinimized() ) {
+		    res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
+		    // when running via RDP: "Application has already acquired the maximum number of images (0x2)"
+		    // probably caused by "device lost" errors
+		    if ( res < 0 ) {
+			    if ( res == VK_ERROR_OUT_OF_DATE_KHR ) {
+				    // swapchain re-creation needed
+				    vk_restart_swapchain( __func__ );
+			    } else {
+				    ri.Error( ERR_FATAL, "vkAcquireNextImageKHR returned %s", vk_result_string( res ) );
+			    }
+		    }
+	    } else {
+		    vk.swapchain_image_index++;
+		    vk.swapchain_image_index %= vk.swapchain_image_count;
+	    }
     }
-
-    VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     begin_info.pNext = VK_NULL_HANDLE;
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
     begin_info.pInheritanceInfo = VK_NULL_HANDLE;
     VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
+
+	// Ensure visibility of geometry buffers writes.
+	//record_buffer_memory_barrier( vk.cmd->command_buffer, vk.cmd->vertex_buffer, vk.geometry_buffer_size, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT );
+
+#if 0
+	// add explicit layout transition dependency
+	if ( vk.fboActive ) {
+		record_image_layout_transition( vk.cmd->command_buffer, vk.color_image, VK_IMAGE_ASPECT_COLOR_BIT,
+			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 0, 0 );
+	} else {
+		record_image_layout_transition( vk.cmd->command_buffer, vk.swapchain_images[ vk.swapchain_image_index ], VK_IMAGE_ASPECT_COLOR_BIT,
+			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 0, 0 );
+	}
+#endif
 
 #ifdef USE_VK_STATS
     if (vk.cmd->vertex_buffer_offset > vk.stats.vertex_buffer_max) {
@@ -1152,6 +1187,7 @@ void vk_begin_frame( void )
 #endif
 
     vk.cmd->last_pipeline = VK_NULL_HANDLE;
+
     backEnd.screenMapDone = qfalse;
 
     if (vk_find_screenmap_drawsurfs()) {
@@ -1161,8 +1197,10 @@ void vk_begin_frame( void )
         vk_begin_main_render_pass();
     }
 
+	// dynamic vertex buffer layout
     vk.cmd->vertex_buffer_offset = 0;
-    Com_Memset(vk.cmd->buf_offset, 0, sizeof(vk.cmd->buf_offset));
+    Com_Memset( vk.cmd->buf_offset, 0, sizeof( vk.cmd->buf_offset ) );
+    Com_Memset( vk.cmd->vbo_offset, 0, sizeof( vk.cmd->vbo_offset ) );
     vk.cmd->curr_index_buffer = VK_NULL_HANDLE;
     vk.cmd->curr_index_offset = 0;
 
@@ -1171,12 +1209,6 @@ void vk_begin_frame( void )
     //vk.cmd->descriptor_set.end = 0;
 
     Com_Memset(&vk.cmd->scissor_rect, 0, sizeof(vk.cmd->scissor_rect));
-
-    vk_update_descriptor( VK_DESC_TEXTURE0, tr.whiteImage->descriptor_set );
-    vk_update_descriptor( VK_DESC_TEXTURE1, tr.whiteImage->descriptor_set );
-    if ( vk.maxBoundDescriptorSets >= VK_DESC_COUNT ) {
-        vk_update_descriptor( VK_DESC_TEXTURE2, tr.whiteImage->descriptor_set );
-    }
 
 #ifdef USE_VK_STATS
     // other stats
@@ -1202,11 +1234,6 @@ void vk_release_geometry_buffers( void )
     vk.geometry_buffer_memory = VK_NULL_HANDLE;
 }
 
-void vk_wait_idle( void )
-{
-    VK_CHECK(qvkDeviceWaitIdle(vk.device));
-}
-
 static void vk_resize_geometry_buffer( void )
 {
     uint32_t i;
@@ -1230,6 +1257,16 @@ static void vk_resize_geometry_buffer( void )
     ri.Printf(PRINT_DEVELOPER, "...geometry buffer resized to %iK\n", (int)(vk.geometry_buffer_size / 1024));
 }
 
+void vk_wait_idle( void )
+{
+    VK_CHECK(qvkDeviceWaitIdle(vk.device));
+}
+
+void vk_queue_wait_idle( void )
+{
+	VK_CHECK( qvkQueueWaitIdle( vk.queue ) );
+}
+
 void vk_release_resources( void ) {
     uint32_t i, j;
 
@@ -1237,6 +1274,8 @@ void vk_release_resources( void ) {
 
     for (i = 0; i < vk_world.num_image_chunks; i++)
         qvkFreeMemory(vk.device, vk_world.image_chunks[i].memory, NULL);
+
+    vk_clean_staging_buffer();
 
     if (vk_world.staging_buffer != VK_NULL_HANDLE)
         qvkDestroyBuffer(vk.device, vk_world.staging_buffer, NULL);
@@ -1299,6 +1338,8 @@ void vk_end_frame( void )
     if ( vk.geometry_buffer_size_new )
     {
         vk_resize_geometry_buffer();
+		// issue: one frame may be lost during video recording
+		// solution: re-record all commands again? (might be complicated though)
         return;
     }
 
@@ -1369,7 +1410,7 @@ void vk_end_frame( void )
     // presentation may take undefined time to complete, we can't measure it in a reliable way
     backEnd.pc.msec = ri.Milliseconds() - backEnd.pc.msec;
 
-    // vk_present_frame();
+    vk.renderPassIndex = RENDER_PASS_MAIN;
 }
 
 void vk_present_frame( void )
@@ -1380,8 +1421,10 @@ void vk_present_frame( void )
 	if ( ri.VK_IsMinimized() )
 		return;
 
-	if ( !vk.cmd->waitForFence )
+	if ( !vk.cmd->waitForFence ) {
+		// nothing has been submitted this frame due to geometry buffer overflow?
 		return;
+	}
 
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;
@@ -1409,6 +1452,11 @@ void vk_present_frame( void )
 			// or we don't
 			ri.Error( ERR_FATAL, "vkQueuePresentKHR returned %s", vk_result_string( res ) );
 	}
+
+	// pickup next command buffer for rendering
+	vk.cmd_index++;
+	vk.cmd_index %= NUM_COMMAND_BUFFERS;
+	vk.cmd = &vk.tess[ vk.cmd_index ];
 }
 
 static qboolean is_bgr( VkFormat format ) {
@@ -1525,12 +1573,13 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
     if (srcImageLayout != VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL) {
         vk_record_image_layout_transition( command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
             srcImageLayout,
-            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+            VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+            0, 0);
     }
 
     vk_record_image_layout_transition( command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
         VK_IMAGE_LAYOUT_UNDEFINED,
-        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, 0 );
 
     // end_command_buffer( command_buffer );
 
@@ -1575,7 +1624,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         qvkCmdCopyImage(command_buffer, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
     }
 
-    vk_end_command_buffer(command_buffer);
+    vk_end_command_buffer( command_buffer, __func__ );
 
     // Copy data from destination image to memory buffer.
     subresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -1658,8 +1707,8 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
 
         vk_record_image_layout_transition( command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
             VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-            srcImageLayout );
+            srcImageLayout, 0, 0 );
 
-        vk_end_command_buffer(command_buffer);
+        vk_end_command_buffer( command_buffer, "restore layout" );
     }
 }

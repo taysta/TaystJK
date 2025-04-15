@@ -36,7 +36,8 @@ qboolean vk_begin_dglow_blur( void )
 	vk_record_image_layout_transition( vk.cmd->command_buffer, vk.dglow_image[0],
 		VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		0, 0 );
 
 	for ( i = 0; i < VK_NUM_BLUR_PASSES * 2; i += 2 ) {
 
@@ -50,7 +51,8 @@ qboolean vk_begin_dglow_blur( void )
 		vk_record_image_layout_transition( vk.cmd->command_buffer, vk.dglow_image[i],
 			VK_IMAGE_ASPECT_COLOR_BIT,
 			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+			0, 0 );
 
 		// vectical blur
 		vk_begin_dglow_blur_render_pass( i + 1 );
@@ -62,7 +64,8 @@ qboolean vk_begin_dglow_blur( void )
 		vk_record_image_layout_transition( vk.cmd->command_buffer, vk.dglow_image[i + 1],
 			VK_IMAGE_ASPECT_COLOR_BIT,
 			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL );
+			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+			0, 0 );
 	}
 
 	vk_begin_post_blend_render_pass( vk.render_pass.dglow.blend, qtrue );

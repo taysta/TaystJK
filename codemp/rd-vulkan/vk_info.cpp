@@ -424,6 +424,9 @@ static void VarInfo( void )
 
     if ( r_vertexLight->integer )
         ri.Printf( PRINT_ALL, "HACK: using vertex lightmap approximation\n" );
+
+	if ( r_finish->integer )
+		ri.Printf( PRINT_ALL, "Forcing glFinish\n" );
 }
 
 /*

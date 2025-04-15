@@ -66,7 +66,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 //#define USE_REVERSED_DEPTH
-#define USE_BUFFER_CLEAR
+
 //#define USE_VANILLA_SHADOWFINISH
 #define USE_VK_STATS
 
@@ -81,18 +81,20 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define MIN_SWAPCHAIN_IMAGES_MAILBOX	3
 
 #define MAX_VK_SAMPLERS					32
-#define MAX_VK_PIPELINES				( 1024 + 128 )
+#define MAX_VK_PIPELINES				((1024 + 128)*2)
+#ifndef _DEBUG
 #define USE_DEDICATED_ALLOCATION
+#endif
 // depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
 #define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
 #define VK_DESC_STORAGE					0
-#define VK_DESC_UNIFORM					1
-#define VK_DESC_TEXTURE0				2
-#define VK_DESC_TEXTURE1				3
-#define VK_DESC_TEXTURE2				4
-#define VK_DESC_FOG_COLLAPSE			5
-#define VK_DESC_COUNT					6
+#define VK_DESC_UNIFORM					0
+#define VK_DESC_TEXTURE0				1
+#define VK_DESC_TEXTURE1				2
+#define VK_DESC_TEXTURE2				3
+#define VK_DESC_FOG_COLLAPSE			4
+#define VK_DESC_COUNT					5
 
 #define VK_DESC_TEXTURE_BASE			VK_DESC_TEXTURE0
 #define VK_DESC_FOG_ONLY				VK_DESC_TEXTURE1
@@ -423,8 +425,8 @@ typedef enum {
 } Vk_Depth_Range;
 
 typedef enum {
-	RENDER_PASS_SCREENMAP = 0,
-	RENDER_PASS_MAIN,
+	RENDER_PASS_MAIN = 0,
+	RENDER_PASS_SCREENMAP,
 	RENDER_PASS_POST_BLEND,
 	RENDER_PASS_DGLOW,
 	RENDER_PASS_REFRACTION,
@@ -577,8 +579,8 @@ typedef struct vk_tess_s {
 
 	struct {
 		uint32_t		start, end;
-		VkDescriptorSet	current[6];	// 0:storage, 1:uniform, 2:color0, 3:color1, 4:color2, 5:fog
-		uint32_t		offset[2];	// 0:storage, 1:uniform
+		VkDescriptorSet	current[5];	// 0::uniform, 1:color0, 2:color1, 3:color2, 4:fog
+		uint32_t		offset[1];	// 0:uniform
 	} descriptor_set;
 	
 	uint32_t			num_indexes; // value from most recent vk_bind_index() call
@@ -740,14 +742,13 @@ typedef struct {
 	VkDeviceSize		geometry_buffer_size_new;
 
 	VkDescriptorPool		descriptor_pool;
-	VkDescriptorSetLayout	set_layout_sampler;
-	VkDescriptorSetLayout	set_layout_uniform;
-	VkDescriptorSetLayout	set_layout;
-	VkDescriptorSetLayout	set_layout_storage;
+	VkDescriptorSetLayout	set_layout_sampler;		// combined image sampler
+	VkDescriptorSetLayout	set_layout_uniform;		// dynamic uniform buffer
+	VkDescriptorSetLayout	set_layout_storage;		// feedback buffer
 
 	// pipeline(s)
-	VkPipelineLayout pipeline_layout;
-	VkPipelineLayout pipeline_layout_storage;
+	VkPipelineLayout pipeline_layout;				// default shaders
+	VkPipelineLayout pipeline_layout_storage;		// flare test shader layout
 	VkPipelineLayout pipeline_layout_post_process;	// post-processing
 	VkPipelineLayout pipeline_layout_blend;			// post-processing
 
@@ -862,7 +863,7 @@ typedef struct {
 	qboolean dedicatedAllocation;
 	qboolean debugMarkers;
 	qboolean wideLines;
-	qboolean fastSky;		// requires VK_IMAGE_USAGE_TRANSFER_DST_BIT
+	qboolean clearAttachment;		// requires VK_IMAGE_USAGE_TRANSFER_DST_BIT
 	qboolean fboActive;
 	qboolean blitEnabled;
 
@@ -908,6 +909,8 @@ typedef struct {
 	uint32_t image_chunk_size;
 	uint32_t maxBoundDescriptorSets;
 	
+	VkFence aux_fence;
+
 	struct {
 		VkDescriptorSet *descriptor;
 		uint32_t descriptor_size;
@@ -920,7 +923,7 @@ extern Vk_World		vk_world;		// this data is cleared during ref re-init
 
 // ...
 qboolean	vk_surface_format_color_depth( VkFormat format, int* r, int* g, int* b );
-void		vk_set_fastsky_color( void );
+void		vk_set_clearcolor( void );
 void		vk_create_window( void );
 void		vk_initialize( void );
 void		vk_shutdown( void );
@@ -957,6 +960,8 @@ void		vk_destroy_framebuffers( void );
 void		vk_create_sync_primitives( void );
 void		vk_destroy_sync_primitives( void );
 void		vk_release_geometry_buffers( void );
+void		vk_wait_idle( void );
+void		vk_queue_wait_idle( void );
 void		vk_release_resources( void );
 void		vk_read_pixels( byte *buffer, uint32_t width, uint32_t height );
 
@@ -973,12 +978,12 @@ void		vk_destroy_shader_modules( void );
 
 // command
 VkCommandBuffer vk_begin_command_buffer( void );
-void		vk_end_command_buffer( VkCommandBuffer command_buffer );
+void		vk_end_command_buffer( VkCommandBuffer command_buffer, const char *location );
 void		vk_create_command_pool( void );
 void		vk_create_command_buffer( void );
 void vk_record_image_layout_transition( VkCommandBuffer cmdBuf, VkImage image, 
 	VkImageAspectFlags image_aspect_flags, 
-	VkImageLayout old_layout, VkImageLayout new_layout );
+	VkImageLayout old_layout, VkImageLayout new_layout, uint32_t src_stage_override, uint32_t dst_stage_override );
 
 // memory
 uint32_t	vk_find_memory_type( uint32_t memory_type_bits, VkMemoryPropertyFlags properties );
@@ -995,16 +1000,20 @@ void		vk_clear_depthstencil_attachments( qboolean clear_stencil );
 void		vk_set_2d( void );
 void		vk_set_depthrange( const Vk_Depth_Range depthRange );
 void		vk_update_mvp( const float *m );
-void		vk_wait_idle( void );
+
 void		vk_create_render_passes( void );
 void		vk_destroy_render_passes( void );
 void		vk_select_texture( const int index );
 uint32_t	vk_tess_index( uint32_t numIndexes, const void *src );
+#ifdef USE_VBO
+void		vk_draw_indexed( uint32_t indexCount, uint32_t firstIndex );
+#endif
 void		vk_bind_index_buffer( VkBuffer buffer, uint32_t offset );
 void		vk_bind_index( void );
 void		vk_bind_index_ext( const int numIndexes, const uint32_t *indexes );
 void		vk_bind_pipeline( uint32_t pipeline );
-void		vk_draw_geometry( Vk_Depth_Range depRg, qboolean indexed );
+void		vk_draw_geometry( Vk_Depth_Range depth_range, qboolean indexed );
+void		vk_draw_dot( uint32_t storage_offset );
 void		vk_bind_geometry( uint32_t flags );
 void		vk_bind_lighting( int stage, int bundle );
 void		vk_reset_descriptor( int index);
@@ -1035,10 +1044,11 @@ void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHei
 void		vk_texture_mode( const char *string, const qboolean init );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
+#if 0
 void		vk_record_buffer_memory_barrier( VkCommandBuffer cb, VkBuffer buffer, 
-	VkDeviceSize size, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
+	VkDeviceSize size, VkDeviceSize offset, VkPipelineStageFlags src_stages, VkPipelineStageFlags dst_stages, 
 	VkAccessFlags src_access, VkAccessFlags dst_access );
-
+#endif
 // post-processing
 void		vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues );
 

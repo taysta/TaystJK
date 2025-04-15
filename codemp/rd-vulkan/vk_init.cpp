@@ -194,10 +194,10 @@ static void vk_render_splash( void )
 		return;
 	}
 
-	VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
-	VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
+	//VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
+	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
-	qvkAcquireNextImageKHR( vk.device, vk.swapchain, UINT64_MAX, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
+	qvkAcquireNextImageKHR( vk.device, vk.swapchain, 1 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.swapchain_image_index );
 	imageBuffer = vk.swapchain_images[vk.swapchain_image_index];
 
 	// begin the command buffer
@@ -210,11 +210,13 @@ static void vk_render_splash( void )
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, splashImage->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
 		VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+		0, 0 );
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT, 
 		VK_IMAGE_LAYOUT_UNDEFINED,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL );
+		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		0, 0 );
 
 	Com_Memset( &imageBlit, 0, sizeof(imageBlit) );
 	imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -237,7 +239,8 @@ static void vk_render_splash( void )
 
 	vk_record_image_layout_transition( vk.cmd->command_buffer, imageBuffer, VK_IMAGE_ASPECT_COLOR_BIT,
 		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 
-		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR );
+		VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+		0, 0 );
 
 	// we can end the command buffer now
 	VK_CHECK( qvkEndCommandBuffer( vk.cmd->command_buffer ) );
@@ -253,7 +256,7 @@ static void vk_render_splash( void )
 	submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
 	submit_info.signalSemaphoreCount = 1;
 	submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
-	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.cmd->rendering_finished_fence ) );
+	VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, VK_NULL_HANDLE ) );
 
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;
@@ -264,32 +267,46 @@ static void vk_render_splash( void )
 	present_info.pImageIndices = &vk.swapchain_image_index;
 	present_info.pResults = NULL;
 	qvkQueuePresentKHR( vk.queue, &present_info );
-
+	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 	return;
 }
 
-void vk_set_fastsky_color( void ) {
-	vec4_t *out;
+void vk_set_clearcolor( void ) {
+	vec4_t clr = { 0.75, 0.75, 0.75, 1.0 };
 
-	switch( r_fastsky->integer ){
-		case 1: out = &colorBlack; break;
-		case 2: out = &colorRed; break;
-		case 3: out = &colorGreen; break;
-		case 4: out = &colorBlue; break;
-		case 5: out = &colorYellow; break;
-		case 6: out = &colorOrange; break;
-		case 7: out = &colorMagenta; break;
-		case 8: out = &colorCyan; break;
-		case 9: out = &colorWhite; break;
-		case 10: out = &colorLtGrey; break;
-		case 11: out = &colorMdGrey; break;
-		case 12: out = &colorDkGrey; break;
-		case 13: out = &colorLtBlue; break;
-		case 14: out = &colorDkBlue; break;
-		default: out = &colorBlack;
+	if ( r_fastsky->integer ) 
+	{
+		vec4_t *out;
+
+		switch( r_fastsky->integer ){
+			case 1: out = &colorBlack; break;
+			case 2: out = &colorRed; break;
+			case 3: out = &colorGreen; break;
+			case 4: out = &colorBlue; break;
+			case 5: out = &colorYellow; break;
+			case 6: out = &colorOrange; break;
+			case 7: out = &colorMagenta; break;
+			case 8: out = &colorCyan; break;
+			case 9: out = &colorWhite; break;
+			case 10: out = &colorLtGrey; break;
+			case 11: out = &colorMdGrey; break;
+			case 12: out = &colorDkGrey; break;
+			case 13: out = &colorLtBlue; break;
+			case 14: out = &colorDkBlue; break;
+			default: out = &colorBlack;
+		}
+
+		Com_Memcpy(  tr.clearColor, *out, sizeof( vec4_t ) );
+		return;
 	}
 
-	tr.fastskyColor = out;
+	if ( tr.world && tr.world->globalFog != -1 ) 
+	{
+		const fog_t	*fog = &tr.world->fogs[tr.world->globalFog];
+		Com_Memcpy(clr, (float*)fog->color, sizeof(vec3_t));
+	}
+
+	Com_Memcpy( tr.clearColor, clr, sizeof( vec4_t ) );
 }
 
 void vk_create_window( void ) {
@@ -406,6 +423,12 @@ void vk_initialize( void )
 		glConfig.maxActiveTextures = MAX_TEXTURE_UNITS;
 
 	vk.maxBoundDescriptorSets = props.limits.maxBoundDescriptorSets;
+
+	if ( r_ext_texture_env_add->integer != 0 )
+		glConfig.textureEnvAddAvailable = qtrue;
+	else
+		glConfig.textureEnvAddAvailable = qfalse;
+
 	vk.maxAnisotropy = props.limits.maxSamplerAnisotropy;
 	vk.maxLod = 1 + Q_log2( glConfig.maxTextureSize );
 
@@ -531,6 +554,7 @@ void vk_shutdown( void )
 	qvkDestroyDescriptorSetLayout(vk.device, vk.set_layout_storage, NULL);
 
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout, NULL);
+	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_storage, NULL);
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_post_process, NULL);
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_blend, NULL);
 
