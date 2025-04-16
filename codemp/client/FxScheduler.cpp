@@ -461,7 +461,7 @@ int CFxScheduler::ParseEffect( const char *file, CGPGroup *base )
 		if ( type != None )
 		{
 			CPrimitiveTemplate *prim = new CPrimitiveTemplate;
-			if(fx_jk2->integer == 1) { // hack for jk2 projectiles
+			if(fx_jk2 && fx_jk2->integer == 1) { // hack for jk2 projectiles
 				void *isProjectile = NULL;
 				if (VALIDSTRING(file))
 				{
