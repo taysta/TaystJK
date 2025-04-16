@@ -810,10 +810,11 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 		if (fpDisabled & (1 << FP_LEVITATION))
 			final_Powers[FP_LEVITATION] = 1;
 //[JAPRO - Serverside - Saber - Fix Block/attack Level defaulting to highest - Start]
+// tayst - Reverted these back to 3 as it was causing issues with custom gamers wanting to fight bots with saber only
 		if (fpDisabled & (1 << FP_SABER_OFFENSE))
-			final_Powers[FP_SABER_OFFENSE] = 1;
+			final_Powers[FP_SABER_OFFENSE] = 3;
 		if (fpDisabled & (1 << FP_SABER_DEFENSE))
-			final_Powers[FP_SABER_DEFENSE] = 0; //should this be 0..
+			final_Powers[FP_SABER_DEFENSE] = 3;
 //[JAPRO - Serverside - Saber - Fix Block/attack Level defaulting to highest - End]
 	}
 
@@ -825,7 +826,7 @@ qboolean BG_LegalizedForcePowers(char *powerOut, size_t powerOutSize, int maxRan
 
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]
 #ifdef _GAME
-	if (g_maxSaberDefense.integer && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2,
+	if (g_maxSaberDefense.integer > -1 && (final_Powers[FP_SABER_DEFENSE] > g_maxSaberDefense.integer))//my block is middle[2], forced max is 2,
 		final_Powers[FP_SABER_DEFENSE] = g_maxSaberDefense.integer;
 #endif
 //[JAPRO - Serverside - Saber - Allow server to cap block level - End]

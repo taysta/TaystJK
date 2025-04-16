@@ -12,7 +12,7 @@
 #### Saber
 	g_tweakSaber			0	//Configured with /tweakSaber command.
 	g_backslashDamageScale	1	
-	g_maxSaberDefense		0	
+	g_maxSaberDefense		-1	// -1 disables, 0/1/2/3 enables and clamps level
 	g_saberTouchDmg			0	//Configure saber touch damage for MP dmgs. Can be >1 for more touch damage.
 	g_fixGroundStab			0	//1=Groundstabs damage players on ground. 2=Groundstabs damage players on ground but with reduced damage.
 	g_saberDuelSPDamage		1	//Toggle use of SP style damage in saber duels.

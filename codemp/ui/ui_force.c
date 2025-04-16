@@ -311,7 +311,7 @@ void UpdateForceUsed()
 	menuDef_t *menu;
 
 	// Currently we don't make a distinction between those that wish to play Jedi of lower than maximum skill.
-	uiForceRank = uiMaxRank;
+	//uiForceRank = uiMaxRank;
 
 	uiForceUsed = 0;
 	if (uiMaxRank <= MAX_FORCE_RANK)
@@ -1000,6 +1000,8 @@ qboolean UI_ForceMaxRank_HandleKey(int flags, float *special, int key, int num, 
 
 	// The update force used will remove overallocated powers automatically.
 	UpdateForceUsed();
+
+	uiForceRank = num;
 
 	gTouchedForce = qtrue;
 
