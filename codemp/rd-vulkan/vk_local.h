@@ -103,6 +103,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
 
 #define VERTEX_BUFFER_SIZE				( 4 * 1024 * 1024 )
+#define STAGING_BUFFER_SIZE				( 2 * 1024 * 1024 )
 #define VERTEX_CHUNK_SIZE				( 768 * 1024)
 
 #define XYZ_SIZE						( 4 * VERTEX_CHUNK_SIZE )
@@ -562,6 +563,8 @@ typedef struct vk_tess_s {
 	VkCommandBuffer		command_buffer;
 
 	VkSemaphore			image_acquired;
+	uint32_t			swapchain_image_index;
+	qboolean			swapchain_image_acquired;
 	VkSemaphore			rendering_finished;
 	VkFence				rendering_finished_fence;
 	qboolean			waitForFence;
@@ -622,7 +625,7 @@ typedef struct {
 
 	VkSwapchainKHR	swapchain;
 	uint32_t		swapchain_image_count;
-	uint32_t		swapchain_image_index;
+	//uint32_t		swapchain_image_index;
 	VkImage			swapchain_images[MAX_SWAPCHAIN_IMAGES];
 	VkImageView		swapchain_image_views[MAX_SWAPCHAIN_IMAGES];
 

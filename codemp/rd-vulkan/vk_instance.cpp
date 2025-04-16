@@ -583,7 +583,7 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 	// create VkDevice
 	{
 		char *str;
-		const char *device_extension_list[8];
+		const char *device_extension_list[9];
 		uint32_t device_extension_count;
 		const char *ext, *end;
 		const float priority = 1.0;
