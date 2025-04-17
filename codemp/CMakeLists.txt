@@ -48,6 +48,17 @@ if(BuildMPUI)
 	add_subdirectory("${MPDir}/ui")
 endif(BuildMPUI)
 
+if(UseInternalJPEG AND UseTurboJPEG)
+	ExternalProject_Get_Property(libjpeg-turbo BINARY_DIR SOURCE_DIR)
+	set(JPEG_INCLUDE_DIR "${SOURCE_DIR}")
+	set(JPEG_CONFIG_DIR "${BINARY_DIR}")
+	if(WIN32)
+		set(JPEG_LIBRARIES "${BINARY_DIR}/${CMAKE_BUILD_TYPE}/jpeg-static.lib")
+	else()
+		set(JPEG_LIBRARIES "${BINARY_DIR}/libjpeg.a")
+	endif()
+endif()
+
 #	 Add Vanilla JKA Renderer Project
 if(BuildMPRdVanilla)
 	add_subdirectory("${MPDir}/rd-vanilla")
@@ -688,6 +699,21 @@ if(BuildMPEngine)
 	if (GIT_FOUND)
 		add_dependencies(${MPEngine} GET_GIT_TAG_AND_HASH)
 	endif()
+
+	if(UseInternalJPEG AND UseTurboJPEG)
+		if(BuildMPRdVanilla)
+			add_dependencies(${MPVanillaRenderer} libjpeg-turbo)
+		endif()
+
+		if(BuildMPRdVulkan)
+			add_dependencies(${MPVulkanRenderer} libjpeg-turbo)
+		endif()
+
+		if(BuildMPRend2)
+			add_dependencies(${MPRend2} libjpeg-turbo)
+		endif()
+	endif()
+
 endif(BuildMPEngine)
 
 #        Dedicated Server (Engine) (jampded.exe)

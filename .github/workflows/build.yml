@@ -56,6 +56,9 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
 
@@ -65,9 +68,9 @@ jobs:
         run: |
           OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=bin"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DBuildPortableVersion=ON"
+            OPTIONS+=" -DUseTurboJPEG=ON -DBuildPortableVersion=ON"
           else
-            OPTIONS+=" -DBuildPortableVersion=OFF"
+            OPTIONS+=" -DUseTurboJPEG=ON -DBuildPortableVersion=OFF"
           fi
           cmake $GITHUB_WORKSPACE -A ${{ matrix.platform }} $OPTIONS
 
@@ -113,6 +116,9 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: |
           if [ ${{ matrix.arch }} == "x86" ]; then
@@ -131,9 +137,9 @@ jobs:
         run: |
           OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
+            OPTIONS+=" -DUseInternalLibs=ON -DUseTurboJPEG=ON -DBuildPortableVersion=ON"
           else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
+            OPTIONS+=" -DUseInternalLibs=OFF -DUseTurboJPEG=ON -DBuildPortableVersion=OFF"
           fi
           if [ ${{ matrix.arch }} == "x86" ]; then
             OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake"
@@ -188,6 +194,9 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: |
           brew install sdl2
@@ -199,9 +208,9 @@ jobs:
         run: |
           OPTIONS="-DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
+            OPTIONS+=" -DUseInternalLibs=ON -DUseTurboJPEG=ON -DBuildPortableVersion=ON"
           else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
+            OPTIONS+=" -DUseInternalLibs=OFF -DUseTurboJPEG=ON -DBuildPortableVersion=OFF"
           fi
           cmake $GITHUB_WORKSPACE $OPTIONS
 
@@ -255,6 +264,9 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Setup NASM
+        uses: ilammy/setup-nasm@v1
+
       - name: Create Build Environment
         run: |
           brew install sdl2
@@ -266,9 +278,9 @@ jobs:
         run: |
           OPTIONS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
-            OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
+            OPTIONS+=" -DUseInternalLibs=ON -DUseTurboJPEG=ON -DBuildPortableVersion=ON"
           else
-            OPTIONS+=" -DUseInternalLibs=OFF -DBuildPortableVersion=OFF"
+            OPTIONS+=" -DUseInternalLibs=OFF -DUseTurboJPEG=ON -DBuildPortableVersion=OFF"
           fi
           cmake $GITHUB_WORKSPACE $OPTIONS
 
