@@ -36,6 +36,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cl_uiapi.h"
 #include "cl_lan.h"
 #include "snd_local.h"
+#include "qcommon/cm_local.h"
 #include "sys/sys_loadlib.h"
 
 cvar_t *cl_name;
@@ -178,6 +179,12 @@ void CL_ShowIP_f(void);
 void CL_ServerStatus_f(void);
 void CL_ServerStatusResponse( const netadr_t *from, msg_t *msg );
 static void CL_ShutdownRef( qboolean restarting );
+
+
+extern void CM_TraceTW(trace_t *results, traceWork_t *tw_out,
+							  const vec3_t start, const vec3_t end,
+							  const vec3_t mins, const vec3_t maxs,
+							  clipHandle_t model, int brushmask, int capsule);
 
 /*
 =======================================================================
@@ -2958,6 +2965,33 @@ void CL_Video_f( void )
 	CL_OpenAVIForWriting( filename );
 }
 
+static void CL_ShaderTrace_f(void)
+{
+	if (cls.state != CA_ACTIVE) return;
+	
+	vec3_t start, forward, end;
+	trace_t tr;
+	traceWork_t tw;
+
+	VectorCopy(cl.snap.ps.origin, start);
+	AngleVectors(cl.viewangles, forward, NULL, NULL);
+	VectorMA(start, 8192, forward, end);
+
+	CM_TraceTW(&tr, &tw, start, end, NULL, NULL, 0, MASK_SOLID, qfalse);
+
+	if (tr.fraction < 1.0f && tw.leadside)
+	{
+		CCMShader *shader = &cmg.shaders[tw.leadside->shaderNum];
+		CL_AddReliableCommand(va("say ^2[ShaderTrace]^7: ^6%s", shader->shader), qfalse);
+	}
+	else
+	{
+		Com_Printf("^1[ShaderTrace]^7 No surface hit.\n");
+	}
+}
+
+
+
 /*
 ===============
 CL_StopVideo_f
@@ -3491,6 +3525,7 @@ void CL_Init( void ) {
 	Cmd_AddCommand ("userinfo", CL_Clientinfo_f);
 	Cmd_AddCommand ("video", CL_Video_f, "Record demo to avi" );
 	Cmd_AddCommand ("stopvideo", CL_StopVideo_f, "Stop avi recording" );
+	Cmd_AddCommand("shadertrace", CL_ShaderTrace_f, "Returns the shader you're aiming at");
 
 	Cmd_AddCommand("afk", CL_Afk_f, "Rename to or from afk");
 	Cmd_AddCommand("colorstring", CL_ColorString_f, "Color say text");
