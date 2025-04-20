@@ -1456,6 +1456,9 @@ void CM_Trace( trace_t *trace, const vec3_t start, const vec3_t end,
         assert(trace->allsolid ||
                trace->fraction == 1.0 ||
                VectorLengthSquared(trace->plane.normal) > 0.9999);
+
+	if (tw_out) *tw_out = tw;
+
 }
 
 /*
