@@ -1730,6 +1730,7 @@ float		R_SumOfUsedImages( qboolean bUseFormat );
 void		R_InitSkins( void );
 skin_t		*R_GetSkinByHandle( qhandle_t hSkin );
 const void	*RB_TakeVideoFrameCmd( const void *data );
+float		R_ClampDenorm( float v );
 void		RE_HunkClearCrap( void );
 
 //
