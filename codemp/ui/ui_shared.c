@@ -1477,6 +1477,7 @@ void Menus_CloseAll()
 	int i;
 
 	g_waitingForKey = qfalse;
+	DC->setCVar( "com_waitingForKey", "0" );
 
 	for (i = 0; i < menuCount; i++)
 	{
@@ -4385,6 +4386,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 				Item_RunScript(&it, menu->onESC);
 			}
 			g_waitingForKey = qfalse;
+			DC->setCVar( "com_waitingForKey", "0" );
 			break;
 		case A_TAB:
 		case A_KP_2:
@@ -4444,6 +4446,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down) {
 					it.parent = menu;
 					Item_RunScript(&it, menu->onESC);
 					g_waitingForKey = qfalse;
+					DC->setCVar( "com_waitingForKey", "0" );
 					break;
 				}
 				else {
@@ -5280,6 +5283,7 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 		if (down) {
 			g_waitingForKey = qtrue;
 			g_bindItem = item;
+			DC->setCVar( "com_waitingForKey", "1" );
 		}
 		return qtrue;
 	}
@@ -5287,6 +5291,7 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 		if ( down ) {
 			g_waitingForKey = qtrue;
 			g_bindItem = item;
+			DC->setCVar( "com_waitingForKey", "1" );
 		}
 		return qtrue;
 	}
@@ -5302,6 +5307,7 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 		switch ( key ) {
 			case A_ESCAPE:
 				g_waitingForKey = qfalse;
+				DC->setCVar( "com_waitingForKey", "0" );
 				return qtrue;
 
 			case A_BACKSPACE:
@@ -5319,6 +5325,7 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 				}
 				Controls_SetConfig();
 				g_waitingForKey = qfalse;
+				DC->setCVar( "com_waitingForKey", "0" );
 				g_bindItem = NULL;
 				return qtrue;
 
@@ -5369,6 +5376,7 @@ qboolean Item_Bind_HandleKey(itemDef_t *item, int key, qboolean down) {
 
 	Controls_SetConfig();
 	g_waitingForKey = qfalse;
+	DC->setCVar( "com_waitingForKey", "0" );
 
 	return qtrue;
 }

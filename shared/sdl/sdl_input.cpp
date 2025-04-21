@@ -198,7 +198,9 @@ static bool IN_NumLockEnabled( void )
 
 static void IN_TranslateNumpad( SDL_Keysym *keysym, fakeAscii_t *key )
 {
-	if ( IN_NumLockEnabled() && Key_GetCatcher() )
+	com_waitingForKey = Cvar_Get( "com_waitingForKey", "0", CVAR_ROM );
+
+	if ( IN_NumLockEnabled() && Key_GetCatcher() && !com_waitingForKey->integer )
 	{
 		switch ( keysym->sym )
 		{
