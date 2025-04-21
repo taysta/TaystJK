@@ -647,8 +647,91 @@ void vk_clean_staging_buffer( void )
 		qvkFreeMemory( vk.device, vk_world.staging_buffer_memory, NULL );
 		vk_world.staging_buffer_memory = VK_NULL_HANDLE;
 	}
+
+	vk_world.staging_buffer_ptr = NULL;
 	vk_world.staging_buffer_size = 0;
+#ifdef USE_UPLOAD_QUEUE
+	vk_world.staging_buffer_offset = 0;
+#endif
 }
+
+#ifdef USE_UPLOAD_QUEUE
+static void vk_wait_staging_buffer( void )
+{
+	if ( vk.aux_fence_wait )
+	{
+		VkResult res;
+		res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
+		if ( res != VK_SUCCESS ) {
+			ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), __func__ );
+		}
+		qvkResetFences( vk.device, 1, &vk.aux_fence );
+		vk.aux_fence_wait = qfalse;
+		VK_CHECK( qvkResetCommandBuffer( vk.staging_command_buffer, 0 ) );
+	}
+}
+
+
+void vk_submit_staging_buffer( qboolean final )
+{
+	const VkPipelineStageFlags wait_dst_stage_mask = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+	VkSemaphore waits;
+	VkSubmitInfo submit_info;
+	VkResult res;
+
+	if ( vk_world.staging_buffer_offset == 0 ) {
+		return;
+	}
+
+	//ri.Printf( PRINT_WARNING, S_COLOR_CYAN ">>> flush %i bytes (final=%i)<<<\n", (int)vk_world.staging_buffer_offset, final );
+
+	vk_world.staging_buffer_offset = 0;
+
+	VK_CHECK( qvkEndCommandBuffer( vk.staging_command_buffer ) );
+
+	submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	submit_info.pNext = NULL;
+
+	if ( vk.rendering_finished != VK_NULL_HANDLE ) {
+		// first call after previous queue submission?
+		waits = vk.rendering_finished;
+		vk.rendering_finished = VK_NULL_HANDLE;
+		submit_info.waitSemaphoreCount = 1;
+		submit_info.pWaitSemaphores = &waits;
+		submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
+	} else {
+		submit_info.waitSemaphoreCount = 0;
+		submit_info.pWaitSemaphores = NULL;
+		submit_info.pWaitDstStageMask = NULL;
+	}
+
+	submit_info.commandBufferCount = 1;
+	submit_info.pCommandBuffers = &vk.staging_command_buffer;
+
+	if ( vk.image_uploaded != VK_NULL_HANDLE ) {
+		ri.Error( ERR_FATAL, "Vulkan: incorrect state during image upload" );
+	}
+	if ( final ) {
+		// final submission before recording
+		submit_info.signalSemaphoreCount = 1;
+		submit_info.pSignalSemaphores = &vk.image_uploaded2;
+		vk.image_uploaded = vk.image_uploaded2;
+		VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.aux_fence ) );
+		vk.aux_fence_wait = qtrue;
+	} else {
+		// if submission before another upload then do explicit wait
+		submit_info.signalSemaphoreCount = 0;
+		submit_info.pSignalSemaphores = NULL;
+		VK_CHECK( qvkQueueSubmit( vk.queue, 1, &submit_info, vk.aux_fence ) );
+		res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
+		if ( res != VK_SUCCESS ) {
+			ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), __func__ );
+		}
+		qvkResetFences( vk.device, 1, &vk.aux_fence );
+		VK_CHECK( qvkResetCommandBuffer( vk.staging_command_buffer, 0 ) );
+	}
+}
+#endif // USE_UPLOAD_QUEUE
 
 static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 {
@@ -658,8 +741,21 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 	uint32_t memory_type;
 	void *data;
 
-	if ( vk_world.staging_buffer_size >= size )
+#ifdef USE_UPLOAD_QUEUE
+	if ( vk_world.staging_buffer_size - vk_world.staging_buffer_offset >= size ) {
 		return;
+	}
+
+	vk_submit_staging_buffer( qfalse );
+
+	if ( vk_world.staging_buffer_size /* - vk_world.staging_buffer_offset */ >= size ) {
+		return;
+	}
+#else
+	if ( vk_world.staging_buffer_size >= size ) {
+		return;
+	}
+#endif
 
 	vk_clean_staging_buffer();
 
@@ -690,7 +786,9 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 
 	VK_CHECK(qvkMapMemory(vk.device, vk_world.staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
 	vk_world.staging_buffer_ptr = (byte*)data;
-
+#ifdef USE_UPLOAD_QUEUE
+	vk_world.staging_buffer_offset = 0;
+#endif
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer, "staging buffer", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
 	VK_SET_OBJECT_NAME(vk_world.staging_buffer_memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 }
@@ -772,6 +870,9 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 	byte *buf;
 	int bpp, mip_level_size;
 	qboolean compressed = qfalse;
+#ifdef USE_UPLOAD_QUEUE
+	int i;
+#endif
 
 	int num_regions = 0;
 	int buffer_size = 0;
@@ -829,11 +930,36 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		if (height < 1) height = 1;
 	}
 
-	vk_ensure_staging_buffer_allocation ( buffer_size );
+#ifdef USE_UPLOAD_QUEUE
+	vk_wait_staging_buffer();
+
+	vk_ensure_staging_buffer_allocation( buffer_size );
+
+	for ( i = 0; i < num_regions; i++ ) {
+		regions[i].bufferOffset += vk_world.staging_buffer_offset;
+	}
+
+	Com_Memcpy( vk_world.staging_buffer_ptr + vk_world.staging_buffer_offset, buf, buffer_size );
+
+	if ( vk_world.staging_buffer_offset == 0 ) {
+		VkCommandBufferBeginInfo begin_info;
+		begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		begin_info.pNext = NULL;
+		begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+		begin_info.pInheritanceInfo = NULL;
+		VK_CHECK( qvkBeginCommandBuffer( vk.staging_command_buffer, &begin_info ) );
+	}
+	//ri.Printf( PRINT_WARNING, "batch @%6i + %i %s \n", (int)vk_world.staging_buffer_offset, (int)buffer_size, image->imgName );
+	vk_world.staging_buffer_offset += buffer_size;
+
+	command_buffer = vk.staging_command_buffer;
+#else
+	vk_ensure_staging_buffer_allocation( buffer_size );
 
 	Com_Memcpy( vk_world.staging_buffer_ptr, buf, buffer_size );
 
 	command_buffer = vk_begin_command_buffer();
+#endif
 
 	if ( update ) {
 		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT,
@@ -847,7 +973,9 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 
 	vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 0, 0 );
 
+#ifndef USE_UPLOAD_QUEUE
 	vk_end_command_buffer( command_buffer, __func__ );
+#endif
 
 	if ( buf != pixels ) {
 		ri.Hunk_FreeTempMemory( buf );

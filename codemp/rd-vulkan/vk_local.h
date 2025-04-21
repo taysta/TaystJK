@@ -66,6 +66,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 //#define USE_REVERSED_DEPTH
+#define USE_UPLOAD_QUEUE
 
 //#define USE_VANILLA_SHADOWFINISH
 #define USE_VK_STATS
@@ -549,6 +550,9 @@ typedef struct {
 	VkDeviceMemory	staging_buffer_memory;
 	VkDeviceSize	staging_buffer_size;
 	byte			*staging_buffer_ptr; // pointer to mapped staging buffer
+#ifdef USE_UPLOAD_QUEUE
+	VkDeviceSize staging_buffer_offset;
+#endif
 
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
 	// with vmCmdClearAttachment (dirty_depth_attachment != 0), or it have just been
@@ -566,6 +570,9 @@ typedef struct vk_tess_s {
 	uint32_t			swapchain_image_index;
 	qboolean			swapchain_image_acquired;
 	VkSemaphore			rendering_finished;
+#ifdef USE_UPLOAD_QUEUE
+	VkSemaphore			rendering_finished2;
+#endif
 	VkFence				rendering_finished_fence;
 	qboolean			waitForFence;
 	
@@ -633,6 +640,9 @@ typedef struct {
 	uint32_t		image_memory_count;
 
 	VkCommandPool	command_pool;
+#ifdef USE_UPLOAD_QUEUE
+	VkCommandBuffer	staging_command_buffer;
+#endif
 
 	VkDescriptorSet	color_descriptor;
 	VkDescriptorSet bloom_image_descriptor[1 + VK_NUM_BLUR_PASSES * 2];
@@ -671,9 +681,6 @@ typedef struct {
 		VkImage			color_image;
 		VkImageView		color_image_view;
 	} screenMap;
-
-	vk_tess_t tess[NUM_COMMAND_BUFFERS], *cmd;
-	int cmd_index;
 
 	// render passes
 	struct {
@@ -726,6 +733,26 @@ typedef struct {
 			VkFramebuffer extract;
 		} dglow;
 	} framebuffers;
+
+#ifdef USE_UPLOAD_QUEUE
+	VkSemaphore rendering_finished;	// reference to vk.cmd->rendering_finished2
+	VkSemaphore image_uploaded2;
+	VkSemaphore image_uploaded;		// reference to vk.image_uploaded2
+#endif
+
+	vk_tess_t tess[NUM_COMMAND_BUFFERS], *cmd;
+	int cmd_index;
+
+	struct {
+		VkBuffer		buffer;
+		byte			*buffer_ptr;
+		VkDeviceMemory	memory;
+		VkDescriptorSet	descriptor;
+	} storage;
+
+	uint32_t uniform_item_size;
+	uint32_t uniform_alignment;
+	uint32_t storage_alignment;
 
 	struct {
 		VkBuffer		vertex_buffer;
@@ -809,18 +836,7 @@ typedef struct {
 	uint32_t	pipelines_count;
 	uint32_t	pipelines_world_base;
 	int32_t		pipeline_create_count;
-	
-	struct {
-		VkBuffer		buffer;
-		byte			*buffer_ptr;
-		VkDeviceMemory	memory;
-		VkDescriptorSet	descriptor;
-	} storage;
 
-	uint32_t storage_alignment;
-	uint32_t uniform_alignment;
-
-	uint32_t uniform_item_size;
 	
 	// shader modules.
 	struct {
@@ -912,7 +928,10 @@ typedef struct {
 	uint32_t image_chunk_size;
 	uint32_t maxBoundDescriptorSets;
 	
+#ifdef USE_UPLOAD_QUEUE
 	VkFence aux_fence;
+	qboolean aux_fence_wait;
+#endif
 
 	struct {
 		VkDescriptorSet *descriptor;

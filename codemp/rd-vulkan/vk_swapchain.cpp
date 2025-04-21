@@ -35,6 +35,12 @@ void vk_restart_swapchain( const char *funcname )
         qvkResetCommandBuffer( vk.tess[i].command_buffer, 0 );
     }
 
+#ifdef USE_UPLOAD_QUEUE
+	if ( vk.staging_command_buffer != VK_NULL_HANDLE ) {
+		qvkResetCommandBuffer( vk.staging_command_buffer, 0 );
+	}
+#endif
+
     vk_destroy_pipelines(qfalse);
     vk_destroy_framebuffers();
     vk_destroy_render_passes();
