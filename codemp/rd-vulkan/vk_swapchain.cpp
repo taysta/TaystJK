@@ -36,9 +36,8 @@ void vk_restart_swapchain( const char *funcname )
     }
 
 #ifdef USE_UPLOAD_QUEUE
-	if ( vk.staging_command_buffer != VK_NULL_HANDLE ) {
-		qvkResetCommandBuffer( vk.staging_command_buffer, 0 );
-	}
+	qvkResetCommandBuffer( vk.staging_command_buffer, 0 );
+
 #endif
 
     vk_destroy_pipelines(qfalse);
@@ -70,6 +69,7 @@ static const char *vk_pmode_to_str( VkPresentModeKHR mode )
         case VK_PRESENT_MODE_MAILBOX_KHR:       return "MAILBOX";
         case VK_PRESENT_MODE_FIFO_KHR:          return "FIFO";
         case VK_PRESENT_MODE_FIFO_RELAXED_KHR:  return "FIFO_RELAXED";
+        case VK_PRESENT_MODE_FIFO_LATEST_READY_EXT: return "FIFO_LATEST_READY";
         default: sprintf(buf, "mode#%x", mode); return buf;
     };
 }
