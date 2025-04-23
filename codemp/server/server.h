@@ -227,6 +227,7 @@ typedef enum {
 	SVMOD_MBII,
 	SVMOD_OPENJK,
 	SVMOD_JAPRO,
+	SVMOD_LMD,
 } servermod_t;
 
 // this structure will be cleared only when the game dll changes
