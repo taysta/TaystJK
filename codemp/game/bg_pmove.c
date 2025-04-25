@@ -10498,15 +10498,24 @@ if (pm->ps->duelInProgress)
 			}
 		}
 #endif
-		else {
+#if _CGAME
+		if (cgs.serverMod != SVMOD_LMD) {
+#endif
 			pm->cmd.weapon = WP_SABER;
 			pm->ps->weapon = WP_SABER;
+#if _CGAME
 		}
+#endif
 
-		if (pm->ps->isJediMaster || pm->ps->trueJedi)
-		{
+#if _CGAME
+	if (cgs.serverMod != SVMOD_LMD) {
+#endif
+		if (pm->ps->isJediMaster || pm->ps->trueJedi) {
 			pm->ps->stats[STAT_WEAPONS] = (1 << WP_SABER);
 		}
+#if _CGAME
+	}
+#endif
 	}
 
 	amount = weaponData[pm->ps->weapon].energyPerShot;
