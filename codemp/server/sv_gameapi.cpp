@@ -2831,6 +2831,10 @@ void SV_InitGame( qboolean restart ) {
 			else if (!Q_stricmpn(gamename, "OpenJK", 6)) {
 				svs.servermod = SVMOD_OPENJK;
 			}
+			else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
+			{
+				svs.servermod = SVMOD_LMD;
+			}
 			else {
 				Com_DPrintf(S_COLOR_YELLOW "Unsupported mod detected (%s) - some server engine features will be unavailable\n", gamename);
 			}

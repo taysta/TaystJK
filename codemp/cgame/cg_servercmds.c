@@ -278,6 +278,10 @@ void CG_ParseServerinfo( void ) {
 		{
 			cgs.serverMod = SVMOD_BASEJKA;
 		}
+		else if (!Q_stricmp(gamename, "^5L^7ugormod ^5v3") || !Q_stricmp(gamename, "Lugormod"))
+		{
+			cgs.serverMod = SVMOD_LMD;
+		}
 	}
 
 	//multiversion "support"
