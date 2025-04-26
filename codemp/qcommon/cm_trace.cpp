@@ -1209,6 +1209,8 @@ void CM_CalcExtents(const vec3_t start, const vec3_t end, const traceWork_t *tw,
 //======================================================================
 
 
+		
+
 /*
 ==================
 CM_Trace
@@ -1216,7 +1218,7 @@ CM_Trace
 */
 void CM_Trace( trace_t *trace, const vec3_t start, const vec3_t end,
 						  const vec3_t mins, const vec3_t maxs,
-						  clipHandle_t model, const vec3_t origin, int brushmask, int capsule, sphere_t *sphere ) {
+						  clipHandle_t model, const vec3_t origin, int brushmask, int capsule, sphere_t *sphere, traceWork_t *tw_out = NULL ) {
 	int			i;
 	traceWork_t	tw;
 	vec3_t		offset;
@@ -1454,6 +1456,9 @@ void CM_Trace( trace_t *trace, const vec3_t start, const vec3_t end,
         assert(trace->allsolid ||
                trace->fraction == 1.0 ||
                VectorLengthSquared(trace->plane.normal) > 0.9999);
+
+	if (tw_out) *tw_out = tw;
+
 }
 
 /*
@@ -1467,6 +1472,15 @@ void CM_BoxTrace( trace_t *results, const vec3_t start, const vec3_t end,
 	CM_Trace( results, start, end, mins, maxs, model, vec3_origin, brushmask, capsule, NULL );
 }
 
+void CM_TraceTW(trace_t *results, traceWork_t *tw_out,
+					  const vec3_t start, const vec3_t end,
+					  const vec3_t mins, const vec3_t maxs,
+					  clipHandle_t model, int brushmask, int capsule)
+{
+	CM_Trace(results, start, end, mins, maxs, model, vec3_origin, brushmask, capsule, NULL, tw_out);
+}
+
+		
 /*
 ==================
 CM_TransformedBoxTrace
