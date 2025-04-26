@@ -42,6 +42,8 @@ cvar_t *com_maxfpsMinimized;
 cvar_t *com_maxfpsUnfocused;
 cvar_t *com_unpackLibraries;
 
+cvar_t *com_waitingForKey; // Waiting to bind a new key in the UI
+
 /*
 =================
 Sys_SetBinaryPath
@@ -175,6 +177,8 @@ void Sys_Init( void ) {
 	com_maxfpsMinimized = Cvar_Get( "com_maxfpsMinimized", "50", CVAR_ARCHIVE_ND );
 
 	com_unpackLibraries = Cvar_Get( "com_unpackLibraries", "0", CVAR_INIT|CVAR_PROTECTED );
+
+	com_waitingForKey = Cvar_Get( "com_waitingForKey", "0", CVAR_ROM );
 }
 
 static void NORETURN Sys_Exit( int ex ) {
