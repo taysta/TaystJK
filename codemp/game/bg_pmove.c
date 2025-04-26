@@ -1702,9 +1702,7 @@ qboolean PM_ForceJumpingUp(void)
 	if ( pm->ps->groundEntityNum == ENTITYNUM_NONE && //in air
 		(pm->ps->pm_flags & PMF_JUMP_HELD) && //jumped
 		pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_0 && //force-jump capable
-		(pm->ps->velocity[2] > 0 
-		|| pm->ps->fd.forcePowerLevel[FP_LEVITATION] == FORCE_LEVEL_5)
-		)//going up
+		(pm->ps->velocity[2] > 0 || pm->ps->fd.forcePowerLevel[FP_LEVITATION] == FORCE_LEVEL_5) )//going up
 	{
 		return qtrue;
 	}
@@ -4929,13 +4927,9 @@ static void PM_AirMove( void ) {
 	{
 #if METROID_JUMP
 #if _CGAME
-		if (cgs.serverMod == SVMOD_LMD)
-#endif
-		{
+		if (cgs.serverMod == SVMOD_LMD) {
 			PM_CheckJumpLugormod();
-		}
-#if _CGAME
-		else
+		} else
 #endif
 		{
 			PM_CheckJump();
@@ -5858,25 +5852,19 @@ static void PM_WalkMove( void ) {
 		qboolean jumped = qfalse;
 
 #if _CGAME
-		if (cgs.serverMod == SVMOD_LMD)
-		{
+		if (cgs.serverMod == SVMOD_LMD) {
 			jumped = PM_CheckJumpLugormod();
-		}
-		else
+		} else
 #endif
 		{
 			jumped = PM_CheckJump();
 		}
 
-		if (jumped)
-		{
+		if (jumped) {
 			// jumped away
-			if (pm->waterlevel > 1)
-			{
+			if ( pm->waterlevel > 1 ) {
 				PM_WaterMove();
-			}
-			else
-			{
+			} else {
 				PM_AirMove();
 			}
 			return;
@@ -10498,24 +10486,24 @@ if (pm->ps->duelInProgress)
 			}
 		}
 #endif
+		else {
 #if _CGAME
-		if (cgs.serverMod != SVMOD_LMD) {
+			if (cgs.serverMod != SVMOD_LMD) {
 #endif
-			pm->cmd.weapon = WP_SABER;
-			pm->ps->weapon = WP_SABER;
+				pm->cmd.weapon = WP_SABER;
+				pm->ps->weapon = WP_SABER;
 #if _CGAME
+			}
+#endif
 		}
-#endif
 
+		if (pm->ps->isJediMaster || pm->ps->trueJedi)
+		{
 #if _CGAME
-	if (cgs.serverMod != SVMOD_LMD) {
+			if (cgs.serverMod != SVMOD_LMD)
 #endif
-		if (pm->ps->isJediMaster || pm->ps->trueJedi) {
-			pm->ps->stats[STAT_WEAPONS] = (1 << WP_SABER);
+				pm->ps->stats[STAT_WEAPONS] = (1 << WP_SABER);
 		}
-#if _CGAME
-	}
-#endif
 	}
 
 	amount = weaponData[pm->ps->weapon].energyPerShot;
