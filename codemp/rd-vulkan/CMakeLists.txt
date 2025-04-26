@@ -142,6 +142,9 @@ set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererCommonSafeF
 
 # Transparently use either bundled or system libjpeg.
 list(APPEND MPVulkanRendererIncludeDirectories ${JPEG_INCLUDE_DIR})
+if(UseInternalJPEG AND UseTurboJPEG)
+	list(APPEND MPVulkanRendererIncludeDirectories ${JPEG_CONFIG_DIR})
+endif()
 list(APPEND MPVulkanRendererLibraries          ${JPEG_LIBRARIES})
 
 # Transparently use either bundled or system libpng.  Order is important --

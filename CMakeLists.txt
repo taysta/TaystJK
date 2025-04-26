@@ -17,6 +17,7 @@
 #============================================================================
 
 cmake_minimum_required(VERSION 3.10)
+include(ExternalProject)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
 set(InOpenJK ON)
@@ -80,6 +81,11 @@ option(UseInternalZlib   "If set, use bundled zlib."    ${UseInternalZlibDefault
 option(UseInternalPNG    "If set, use bundled libpng."  ${UseInternalPNGDefault})
 option(UseInternalJPEG   "If set, use bundled libjpeg." ${UseInternalJPEGDefault})
 option(UseInternalSDL2   "If set, use bundled SDL2."    ${UseInternalSDL2Default})
+
+if(UseInternalJPEG)
+	set(UseTurboJPEGDefault   	 OFF)
+	option(UseTurboJPEG "If set, use libjpeg-turbo." ${UseTurboJPEGDefault})
+endif()
 
 # This option won't appear on non-Apple platforms.
 if(APPLE)
@@ -415,9 +421,35 @@ set(SharedCommonSafeFiles
 #
 #=============================================================================
 if(UseInternalJPEG)
-  add_subdirectory(lib/jpeg-9c)
+	if(UseTurboJPEG)
+		find_program(CMAKE_ASM_NASM_COMPILER NAMES nasm)
+		if(CMAKE_ASM_NASM_COMPILER)
+			message(STATUS "Found NASM assembler: ${CMAKE_ASM_NASM_COMPILER}")
+			set(WITH_SIMD 1)
+		else()
+			message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
+			set(WITH_SIMD 0)
+		endif()
+
+		# Configure the ExternalProject for libjpeg-turbo
+		ExternalProject_Add(libjpeg-turbo
+				GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
+				GIT_TAG 3.0.0
+				BUILD_COMMAND ${CMAKE_COMMAND} --build . --target jpeg-static --config ${CMAKE_BUILD_TYPE}
+				INSTALL_COMMAND ""
+				CMAKE_ARGS
+				-DCMAKE_ASM_NASM_COMPILER=${CMAKE_ASM_NASM_COMPILER}
+				-DWITH_SIMD=${WITH_SIMD}
+				-DENABLE_SHARED=0
+				-DWITH_ARITH_DEC=0
+				-DWITH_ARITH_ENC=0
+				-DWITH_TURBOJPEG=0
+				-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+	else()
+		add_subdirectory(lib/jpeg-9c)
+	endif()
 else()
-  find_package(JPEG REQUIRED)
+	find_package(JPEG REQUIRED)
 endif()
 
 if(UseInternalZlib)
