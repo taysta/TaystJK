@@ -2232,14 +2232,6 @@ void PM_GrabWallForJump( int anim )
 
 static qboolean PM_CheckJumpLugormod( void ) 
 {
-	// lumaya: lmd sends extra force level bits here
-	if (pm->ps->stats[STAT_RACEMODE] & (1 << FP_LEVITATION)) {
-		pm->ps->fd.forcePowerLevel[FP_LEVITATION] = 4;
-	}
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] & (1 << FP_LEVITATION)) {
-		pm->ps->fd.forcePowerLevel[FP_LEVITATION] = 5;
-	}
-
 	qboolean allowFlips = qtrue;
 
 	if (pm->ps->clientNum >= MAX_CLIENTS)
@@ -10498,6 +10490,8 @@ if (pm->ps->duelInProgress)
 			}
 		}
 #endif
+		else
+		{
 #if _CGAME
 		if (cgs.serverMod != SVMOD_LMD) {
 #endif
@@ -10506,6 +10500,7 @@ if (pm->ps->duelInProgress)
 #if _CGAME
 		}
 #endif
+		}
 
 #if _CGAME
 	if (cgs.serverMod != SVMOD_LMD) {
@@ -15597,6 +15592,25 @@ void Pmove (pmove_t *pmove) {
 	} else {
 		scaleh = 1.0f;
 	}
+#if _CGAME
+	if (cgs.serverMod == SVMOD_LMD) { // Lugormod
+#endif
+		for (int i = 0; i < 8; i++) {
+			// 11 = STAT_EXTRA_FORCE_BITS in Lugormod (not STAT_RACEMODE)
+			if (pmove->ps->stats[11] & (1 << i)) {
+				pmove->ps->fd.forcePowerLevel[i] |= 4;
+			}
+		}
+
+		for (int i = 8; i < 16; i++) {
+			// 12 = STAT_EXTRA_FORCE_BITS2 in Lugormod (not STAT_RESTRICTIONS)
+			if (pmove->ps->stats[12] & (1 << (i - 8))) {
+				pmove->ps->fd.forcePowerLevel[i] |= 4;
+			}
+		}
+#if _CGAME
+	}
+#endif
 
 	if (pmove->ps->fallingToDeath)
 	{
