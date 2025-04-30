@@ -858,8 +858,9 @@ void CG_DrawArmor( menuDef_t *menuHUD )
     }
 
 	focusItem = Menu_FindItemByName(menuHUD, "armoramount");
-	if (focusItem && cg_hudFiles.integer != 4)
-	{
+    if(focusItem) {
+        if (cg_hudFiles.integer != 4)
+        {
             // Print armor amount
             trap->R_SetColor(focusItem->window.foreColor);
 
@@ -876,8 +877,8 @@ void CG_DrawArmor( menuDef_t *menuHUD )
             Com_sprintf(numString, sizeof(numString), "%i", ps->stats[STAT_ARMOR]);
             CG_Text_Paint(focusItem->window.rect.x * cgs.widthRatioCoef, focusItem->window.rect.y, 1.0f, colorWhite, numString, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
             CG_Text_Paint(focusItem->window.rect.x * cgs.widthRatioCoef + CG_Text_Width(numString, 1.0f, FONT_MEDIUM), focusItem->window.rect.y + CG_Text_Height(numString, 1.0f, FONT_MEDIUM) - CG_Text_Height(numString, 0.6f, FONT_MEDIUM), 0.6f, colorWhite, " /100", 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM);
+        }
     }
-
 
 	// If armor is low, flash a graphic to warn the player
 	if (ps->stats[STAT_ARMOR])	// Is there armor? Draw the HUD Armor TIC
