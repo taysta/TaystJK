@@ -398,7 +398,7 @@ jobs:
           mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
 
       - name: Create latest build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
+        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
@@ -431,7 +431,7 @@ jobs:
           mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
 
       - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
+        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest-beta"
