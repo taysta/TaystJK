@@ -3705,12 +3705,12 @@ void dynTable_addHeader(const char *headerName, tableAlignment_t mode)
 
 	if (dynTable.columnInfo == NULL)
 	{
-		dynTable.columnInfo = dynTable_malloc(sizeof(columnInfo_t));
+		dynTable.columnInfo = dynTable_malloc(sizeof(dynColumnInfo_t));
 	}
 	else
 	{
 		dynColumnInfo_t *newColumnInfo;
-		newColumnInfo = realloc(dynTable.columnInfo, sizeof(columnInfo_t) * (currentColumn + 1));
+		newColumnInfo = realloc(dynTable.columnInfo, sizeof(dynColumnInfo_t) * (currentColumn + 1));
 		if (newColumnInfo == NULL)
 		{
 			trap->Error(ERR_DROP, "Failed to reallocate memory for table column info.");

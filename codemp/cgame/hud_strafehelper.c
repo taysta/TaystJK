@@ -1224,7 +1224,7 @@ float DF_GetWishspeed(usercmd_t inCmd) {
 	fmove = inCmd.forwardmove;
 	smove = inCmd.rightmove;
 
-	if (state.moveStyle & (MV_OCPM | MV_SP))
+    if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP)
 		scale = DF_GetCmdScale(inCmd); // for OCPM/ fixed SP
 
 	AngleVectors(state.viewAngles, forward, right, up);
