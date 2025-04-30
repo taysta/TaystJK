@@ -494,9 +494,7 @@ jobs:
           fi
 
       - name: Upload archives
-        uses: svenstaro/upload-release-action@v2
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          path: ${{ matrix.artifact_name }}
           overwrite: true
-          file: ${{ matrix.artifact_name }}
