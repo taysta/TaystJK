@@ -115,6 +115,7 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             OPTIONS+=" -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake"
           fi
+          OPTIONS+=" -DUseInternalJPEG=ON"
           cmake $GITHUB_WORKSPACE $OPTIONS
 
       - name: Build
