@@ -203,9 +203,9 @@ typedef enum //server mod enum
 	SVMOD_BASEJKA,
 	SVMOD_BASEENHANCED,
 	SVMOD_OJKALT,
+    SVMOD_LMD,
 	SVMOD_JAPLUS,
 	SVMOD_JAPRO,
-	SVMOD_LMD,
 } serverMod_t;
 
 typedef enum {
