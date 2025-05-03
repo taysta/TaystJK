@@ -164,7 +164,7 @@ jobs:
           path: ${{github.workspace}}/install/JediAcademy/TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
-  macos:
+  macos-x86_64:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
     runs-on: macos-13
     strategy:
@@ -221,10 +221,10 @@ jobs:
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
-          chmod +x taystjkded.x86_64
-          codesign --force --deep --sign - taystjk.x86_64.app 
-          codesign --force --deep --sign - taystjkded.x86_64
+          chmod +x taystjk.${{ matrix.arch }}.app/Contents/MacOS/taystjk.${{ matrix.arch }}
+          chmod +x taystjkded.${{ matrix.arch }}
+          codesign --force --deep --sign - taystjk.${{ matrix.arch }}.app 
+          codesign --force --deep --sign - taystjkded.${{ matrix.arch }}
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
@@ -234,7 +234,7 @@ jobs:
           path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
           if-no-files-found: error
 
-  macos-m1:
+  macos-arm64:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
     runs-on: macos-14
     strategy:
@@ -267,7 +267,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/build
         run: |
-          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_SYSTEM_PROCESSOR=arm64 -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
+          OPTIONS="-DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install"
           if [ "${{ matrix.portable }}" == "Portable" ]; then
             OPTIONS+=" -DUseInternalLibs=ON -DBuildPortableVersion=ON"
           else
@@ -291,10 +291,10 @@ jobs:
         working-directory: ${{ github.workspace }}/install/JediAcademy
         shell: bash
         run: |
-          chmod +x taystjk.arm64.app/Contents/MacOS/taystjk.arm64
-          chmod +x taystjkded.arm64
-          codesign --force --deep --sign - taystjk.arm64.app 
-          codesign --force --deep --sign - taystjkded.arm64
+          chmod +x taystjk.${{ matrix.arch }}.app/Contents/MacOS/taystjk.${{ matrix.arch }}
+          chmod +x taystjkded.${{ matrix.arch }}
+          codesign --force --deep --sign - taystjk.${{ matrix.arch }}.app 
+          codesign --force --deep --sign - taystjkded.${{ matrix.arch }}
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
@@ -306,7 +306,7 @@ jobs:
 
   macos-universal2:
     name: macOS universal2 Binary
-    needs: [macos, macos-m1]
+    needs: [macos-x86_64, macos-arm64]
     runs-on: macos-13
 
     steps:
@@ -377,7 +377,7 @@ jobs:
 
   create-latest:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [msvc, ubuntu, macos, macos-m1, macos-universal2]
+    needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -410,7 +410,7 @@ jobs:
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
-    needs: [msvc, ubuntu, macos, macos-m1, macos-universal2]
+    needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -443,7 +443,7 @@ jobs:
 
   create-release:
     if: github.event_name == 'release'
-    needs: [msvc, ubuntu, macos]
+    needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
 
     strategy:
