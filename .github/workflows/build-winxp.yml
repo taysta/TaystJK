@@ -25,6 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Install Windows XP Support for Visual Studio
         run: |
@@ -48,7 +51,28 @@ jobs:
           }
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        shell: pwsh
+        run: |
+          $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsPath = & $vsWhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          
+          if ($vsPath) {
+            Write-Host "Found Visual Studio at: $vsPath"
+          
+            $msBuildPath = Get-ChildItem -Path "$vsPath\MSBuild\Current\Bin\MSBuild.exe" -ErrorAction SilentlyContinue |
+                           Select-Object -First 1 -ExpandProperty Directory
+          
+            if ($msBuildPath) {
+              Write-Host "Found MSBuild at: $msBuildPath"
+              echo "$msBuildPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          
+              $env:PATH = "$msBuildPath;$env:PATH"
+            } else {
+              throw "MSBuild not found in VS installation"
+            }
+          } else {
+            throw "Visual Studio installation not found"
+          }
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -64,6 +88,7 @@ jobs:
             OPTIONS+=" -DBuildPortableVersion=OFF"
           fi
           cmake $GITHUB_WORKSPACE -T v141_xp -A ${{ matrix.platform }} $OPTIONS
+
       - name: Build
         working-directory: ${{ github.workspace }}/build
         shell: bash
@@ -75,74 +100,108 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
+      - name: Create Archive
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}/build/bin/JediAcademy
+        shell: bash
+        run: |
+          7z a -r TaystJK-windowsxp-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.zip *
+
       - uses: actions/upload-artifact@v4
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: TaystJK-windowsxp-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/build/bin/JediAcademy
+          path: ${{ github.workspace }}/build/bin/JediAcademy/TaystJK-windowsxp-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.zip
           if-no-files-found: error
 
   create-winxp:
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/master'
     needs: [msvc-xp]
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windowsxp-x86.zip     ./TaystJK-windowsxp-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windowsxp-x86_64.zip  ./TaystJK-windowsxp-x86_64-Release-Non-Portable/*
+          mv ./artifacts/TaystJK-windowsxp-x86-Release-Non-Portable/* ./TaystJK-windowsxp-x86.zip
+          mv ./artifacts/TaystJK-windowsxp-x86_64-Release-Non-Portable/* ./TaystJK-windowsxp-x86_64.zip
 
-      - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "winxp"
-          prerelease: false
-          title: Latest WinXP Build
-          files: |
+      - name: Create latest XP build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_RELEASE_COMMIT=$(gh api repos/${{ github.repository }}/releases/tags/winxp --jq '.target_commitish' 2>/dev/null || echo "")
+          gh release delete winxp --cleanup-tag --yes || true
+          
+          RELEASE_BODY="## Commits"
+          
+          if [ -n "$LATEST_RELEASE_COMMIT" ]; then
+            COMMITS=$(git log $LATEST_RELEASE_COMMIT..HEAD --pretty=format:"%h|%s|%an")
+          else
+            COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
+          fi
+          
+          while IFS='|' read -r hash subject author; do
+            if [[ $subject =~ ^Merge\ pull\ request\ \#([0-9]+) ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            elif [[ $subject =~ \(#([0-9]+)\)$ ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              subject=$(echo "$subject" | sed 's/ (#[0-9]\+)$//')
+              PR_LINK=" [#${PR_NUM}](https://github.com/${{ github.repository }}/pull/${PR_NUM})"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)${PR_LINK}"
+            else
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            fi
+          done <<< "$COMMITS"
+          
+          gh release create winxp \
+            --title "Latest WinXP Build" \
+            --notes "$RELEASE_BODY" \
+            --target ${{ github.sha }} \
             *.zip
 
   create-release-winxp:
     if: github.event_name == 'release'
     needs: [msvc-xp]
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        include:
-          - artifact_dir: TaystJK-windowsxp-x86.zip
-            artifact_name: TaystJK-windowsxp-x86.zip
-            zip: true
-
-          - artifact_dir: TaystJK-windowsxp-x86_64.zip
-            artifact_name: TaystJK-windowsxp-x86_64.zip
-            zip: true
-
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-
-      - name: Create archive
-        run: |
-          if [ "${{ matrix.zip }}" == "true" ]; then
-            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          else
-            mv ./${{ matrix.artifact_dir }}/* ${{ matrix.artifact_name }}
-          fi
+        with:
+          path: artifacts
 
       - name: Upload archives
-        uses: actions/upload-artifact@v4
-        with:
-          path: ${{ matrix.artifact_name }}
-          overwrite: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for artifact_dir in artifacts/*; do
+            if [ -d "$artifact_dir" ]; then
+              for file in "$artifact_dir"/*; do
+                if [ -f "$file" ]; then
+                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  gh release upload "${{ github.event.release.tag_name }}" \
+                    "$file" \
+                    --clobber \
+                    --name "$filename"
+                fi
+              done
+            fi
+          done
