@@ -377,7 +377,7 @@ jobs:
 
   create-latest:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [msvc, ubuntu, macos, macos-m1]
+    needs: [msvc, ubuntu, macos, macos-m1, macos-universal2]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -410,7 +410,7 @@ jobs:
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
-    needs: [msvc, ubuntu, macos, macos-m1]
+    needs: [msvc, ubuntu, macos, macos-m1, macos-universal2]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4

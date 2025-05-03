@@ -83,7 +83,7 @@ jobs:
           if-no-files-found: error
 
   create-winxp:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/master'
     needs: [msvc-xp]
     runs-on: ubuntu-22.04
     steps:
@@ -96,10 +96,11 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windowsxp-x86.zip ./TaystJK-windowsxp-x86-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
-          7z a -r TaystJK-windowsxp-x86_64.zip ./TaystJK-windowsxp-x86_64-Release-Non-Portable/* '-x!msvcp*.*' '-x!vcruntime*.*' '-x!concrt*.*'
+          7z a -r TaystJK-windowsxp-x86.zip     ./TaystJK-windowsxp-x86-Release-Non-Portable/*
+          7z a -r TaystJK-windowsxp-x86_64.zip  ./TaystJK-windowsxp-x86_64-Release-Non-Portable/*
+
       - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
+        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "winxp"
@@ -141,9 +142,7 @@ jobs:
           fi
 
       - name: Upload archives
-        uses: svenstaro/upload-release-action@v2
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          path: ${{ matrix.artifact_name }}
           overwrite: true
-          file: ${{ matrix.artifact_name }}
