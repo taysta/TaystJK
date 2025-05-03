@@ -222,6 +222,9 @@ jobs:
         shell: bash
         run: |
           chmod +x taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64
+          chmod +x taystjkded.x86_64
+          codesign --force --deep --sign - taystjk.x86_64.app 
+          codesign --force --deep --sign - taystjkded.x86_64
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
@@ -289,6 +292,9 @@ jobs:
         shell: bash
         run: |
           chmod +x taystjk.arm64.app/Contents/MacOS/taystjk.arm64
+          chmod +x taystjkded.arm64
+          codesign --force --deep --sign - taystjk.arm64.app 
+          codesign --force --deep --sign - taystjkded.arm64
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
       - uses: actions/upload-artifact@v4
@@ -296,6 +302,77 @@ jobs:
         with:
           name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
           path: ${{ github.workspace }}/install/JediAcademy/TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz
+          if-no-files-found: error
+
+  macos-universal2:
+    name: macOS universal2 Binary
+    needs: [macos, macos-m1]
+    runs-on: macos-13
+
+    steps:
+      - name: Download x86_64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: TaystJK-macos-x86_64-Release-Non-Portable
+          path: x86_64-build
+
+      - name: Download arm64 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: TaystJK-macos-arm64-Release-Non-Portable
+          path: arm64-build
+
+      - name: Extract archives
+        run: |
+          mkdir -p x86_64-extracted
+          mkdir -p arm64-extracted
+          tar -xzf x86_64-build/TaystJK-macos-x86_64-Release-Non-Portable.tar.gz -C x86_64-extracted
+          tar -xzf arm64-build/TaystJK-macos-arm64-Release-Non-Portable.tar.gz -C arm64-extracted
+
+      - name: Create Universal 2 Binary
+        run: |
+          mkdir -p universal2-app/JediAcademy/taystjk.app/Contents/{MacOS/taystjk,Resources,Frameworks}
+          mkdir -p universal2-app/JediAcademy/taystjk/
+
+          cp -R x86_64-extracted/taystjk.x86_64.app/Contents/Info.plist   universal2-app/JediAcademy/taystjk.app/Contents/
+          cp -R x86_64-extracted/taystjk.x86_64.app/Contents/PkgInfo      universal2-app/JediAcademy/taystjk.app/Contents/ 2>/dev/null || true
+          cp -R x86_64-extracted/taystjk.x86_64.app/Contents/Resources/*  universal2-app/JediAcademy/taystjk.app/Contents/Resources/
+          cp -R x86_64-extracted/taystjk/*                                universal2-app/JediAcademy/taystjk/
+
+          sed -i '' 's/x86_64/ub2/g' universal2-app/JediAcademy/taystjk.app/Contents/Info.plist
+
+          lipo -create -output "universal2-app/JediAcademy/taystjk.app/Contents/MacOS/taystjk.ub2" \
+            x86_64-extracted/taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64 \
+            arm64-extracted/taystjk.arm64.app/Contents/MacOS/taystjk.arm64
+
+          lipo -create -output universal2-app/JediAcademy/taystjkded \
+            x86_64-extracted/taystjkded.x86_64 \
+            arm64-extracted/taystjkded.arm64
+
+          lipo -create -output universal2-app/JediAcademy/taystjk.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
+            x86_64-extracted/taystjk.x86_64.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
+            arm64-extracted/taystjk.arm64.app/Contents/Frameworks/libSDL2-2.0.0.dylib
+
+          cp -v x86_64-extracted/taystjk.x86_64.app/Contents/MacOS/rd-*_x86_64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/
+          cp -v arm64-extracted/taystjk.arm64.app/Contents/MacOS/rd-*_arm64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/
+
+          cp -v x86_64-extracted/taystjk.x86_64.app/Contents/MacOS/taystjk/*x86_64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/taystjk/
+          cp -v arm64-extracted/taystjk.arm64.app/Contents/MacOS/taystjk/*arm64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/taystjk/
+
+      - name: Create TaystJK binary archive
+        working-directory: ${{ github.workspace }}/universal2-app/JediAcademy/
+        shell: bash
+        run: |
+          chmod +x taystjk.app/Contents/MacOS/taystjk.ub2
+          chmod +x taystjkded
+          codesign --force --deep --sign - taystjk.app 
+          codesign --force --deep --sign - taystjkded
+          tar -czvf TaystJK-macos-universal2-Release-Non-Portable.tar.gz *
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TaystJK-macos-universal2-Release-Non-Portable
+          path: universal2-app/JediAcademy/TaystJK-macos-universal2-Release-Non-Portable.tar.gz
           if-no-files-found: error
 
   create-latest:
@@ -312,15 +389,16 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
+          7z a -r TaystJK-windows-x86.zip                       ./TaystJK-windows-x86-Release-Non-Portable/*
+          7z a -r TaystJK-windows-x86_64.zip                    ./TaystJK-windows-x86_64-Release-Non-Portable/*
+          mv ./TaystJK-linux-x86-Release-Non-Portable/*         ./TaystJK-linux-x86.tar.gz
+          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*      ./TaystJK-linux-x86_64.tar.gz
+          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*      ./TaystJK-macos-x86_64.tar.gz
+          mv ./TaystJK-macos-arm64-Release-Non-Portable/*       ./TaystJK-macos-arm64.tar.gz
+          mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
 
       - name: Create latest build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
+        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest"
@@ -344,15 +422,16 @@ jobs:
 
       - name: Create binary archives
         run: |
-          7z a -r TaystJK-windows-x86.zip                   ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*     ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*  ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*  ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*   ./TaystJK-macos-arm64.tar.gz
+          7z a -r TaystJK-windows-x86.zip                       ./TaystJK-windows-x86-Release-Non-Portable/*
+          7z a -r TaystJK-windows-x86_64.zip                    ./TaystJK-windows-x86_64-Release-Non-Portable/*
+          mv ./TaystJK-linux-x86-Release-Non-Portable/*         ./TaystJK-linux-x86.tar.gz
+          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*      ./TaystJK-linux-x86_64.tar.gz
+          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*      ./TaystJK-macos-x86_64.tar.gz
+          mv ./TaystJK-macos-arm64-Release-Non-Portable/*       ./TaystJK-macos-arm64.tar.gz
+          mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
 
       - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@latest
+        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: "latest-beta"
@@ -394,6 +473,10 @@ jobs:
             artifact_name: TaystJK-macos-arm64.tar.gz
             zip: false
 
+          - artifact_dir: TaystJK-macos-universal2-Release-Non-Portable
+            artifact_name: TaystJK-macos-universal2.tar.gz
+            zip: false
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -411,9 +494,7 @@ jobs:
           fi
 
       - name: Upload archives
-        uses: svenstaro/upload-release-action@v2
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          path: ${{ matrix.artifact_name }}
           overwrite: true
-          file: ${{ matrix.artifact_name }}
