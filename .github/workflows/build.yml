@@ -40,21 +40,42 @@ jobs:
             platform: x64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name == 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        shell: pwsh
+        run: |
+          $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vsPath = & $vsWhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          
+          if ($vsPath) {
+            Write-Host "Found Visual Studio at: $vsPath"
+          
+            $msBuildPath = Get-ChildItem -Path "$vsPath\MSBuild\Current\Bin\MSBuild.exe" -ErrorAction SilentlyContinue |
+                           Select-Object -First 1 -ExpandProperty Directory
+          
+            if ($msBuildPath) {
+              Write-Host "Found MSBuild at: $msBuildPath"
+              echo "$msBuildPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          
+              $env:PATH = "$msBuildPath;$env:PATH"
+            } else {
+              throw "MSBuild not found in VS installation"
+            }
+          } else {
+            throw "Visual Studio installation not found"
+          }
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{ github.workspace }}/build
@@ -82,11 +103,18 @@ jobs:
         shell: bash
         run: cmake --install . --config ${{ matrix.build_type }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Create Archive
+        if: ${{ matrix.build_type == 'Release' }}
+        working-directory: ${{ github.workspace }}/build/bin/JediAcademy
+        shell: bash
+        run: |
+          7z a -r TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.zip *
+
+      - uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47 # v4.6.2
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
-          path: ${{ github.workspace }}/build/bin/JediAcademy
+          path: ${{ github.workspace }}/build/bin/JediAcademy/TaystJK-windows-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.zip
           if-no-files-found: error
 
   ubuntu:
@@ -100,14 +128,14 @@ jobs:
         portable: [Non-Portable]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name == 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
@@ -157,7 +185,7 @@ jobs:
         shell: bash
         run: tar -czvf TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz  *
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47 # v4.6.2
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: TaystJK-linux-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
@@ -175,14 +203,14 @@ jobs:
         portable: [Non-Portable]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name == 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
@@ -227,7 +255,7 @@ jobs:
           codesign --force --deep --sign - taystjkded.${{ matrix.arch }}
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47 # v4.6.2
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
@@ -245,14 +273,14 @@ jobs:
         portable: [Non-Portable]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name == 'pull_request'
         with:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         if: github.event_name != 'pull_request'
         with:
           fetch-depth: 0
@@ -297,7 +325,7 @@ jobs:
           codesign --force --deep --sign - taystjkded.${{ matrix.arch }}
           tar -czvf TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}.tar.gz *
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47 # v4.6.2
         if: ${{ matrix.build_type == 'Release' }}
         with:
           name: TaystJK-macos-${{ matrix.arch }}-${{ matrix.build_type }}-${{ matrix.portable }}
@@ -311,13 +339,13 @@ jobs:
 
     steps:
       - name: Download x86_64 artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: TaystJK-macos-x86_64-Release-Non-Portable
           path: x86_64-build
 
       - name: Download arm64 artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: TaystJK-macos-arm64-Release-Non-Portable
           path: arm64-build
@@ -369,7 +397,7 @@ jobs:
           codesign --force --deep --sign - taystjkded
           tar -czvf TaystJK-macos-universal2-Release-Non-Portable.tar.gz *
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@6027e3dd177782cd8ab9af838c04fd81a07f1d47 # v4.6.2
         with:
           name: TaystJK-macos-universal2-Release-Non-Portable
           path: universal2-app/JediAcademy/TaystJK-macos-universal2-Release-Non-Portable.tar.gz
@@ -379,122 +407,164 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create binary archives
-        run: |
-          7z a -r TaystJK-windows-x86.zip                       ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                    ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*         ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*      ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*      ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*       ./TaystJK-macos-arm64.tar.gz
-          mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: artifacts
 
       - name: Create latest build
-        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: Latest Build
-          files: |
-            *.zip
-            *.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_RELEASE_COMMIT=$(gh api repos/${{ github.repository }}/releases/tags/latest --jq '.target_commitish' 2>/dev/null || echo "")
+          gh release delete latest --cleanup-tag --yes || true
+          
+          RELEASE_BODY="## Commits"
+          
+          if [ -n "$LATEST_RELEASE_COMMIT" ]; then
+            COMMITS=$(git log $LATEST_RELEASE_COMMIT..HEAD --pretty=format:"%h|%s|%an")
+          else
+            COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
+          fi
+          
+          while IFS='|' read -r hash subject author; do
+            if [[ $subject =~ ^Merge\ pull\ request\ \#([0-9]+) ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            elif [[ $subject =~ \(#([0-9]+)\)$ ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              subject=$(echo "$subject" | sed 's/ (#[0-9]\+)$//')
+              PR_LINK=" [#${PR_NUM}](https://github.com/${{ github.repository }}/pull/${PR_NUM})"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)${PR_LINK}"
+            else
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            fi
+          done <<< "$COMMITS"
+          
+          RELEASE_FILES=""
+          for artifact_dir in artifacts/*; do
+            if [ -d "$artifact_dir" ]; then
+              for file in "$artifact_dir"/*; do
+                if [ -f "$file" ]; then
+                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  cp "$file" "$filename"
+                  RELEASE_FILES="$RELEASE_FILES $filename"
+                fi
+              done
+            fi
+          done
+          
+          gh release create latest \
+            --title "Latest Build" \
+            --notes "$RELEASE_BODY" \
+            --target ${{ github.sha }} \
+            $RELEASE_FILES
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
     needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create binary archives
-        run: |
-          7z a -r TaystJK-windows-x86.zip                       ./TaystJK-windows-x86-Release-Non-Portable/*
-          7z a -r TaystJK-windows-x86_64.zip                    ./TaystJK-windows-x86_64-Release-Non-Portable/*
-          mv ./TaystJK-linux-x86-Release-Non-Portable/*         ./TaystJK-linux-x86.tar.gz
-          mv ./TaystJK-linux-x86_64-Release-Non-Portable/*      ./TaystJK-linux-x86_64.tar.gz
-          mv ./TaystJK-macos-x86_64-Release-Non-Portable/*      ./TaystJK-macos-x86_64.tar.gz
-          mv ./TaystJK-macos-arm64-Release-Non-Portable/*       ./TaystJK-macos-arm64.tar.gz
-          mv ./TaystJK-macos-universal2-Release-Non-Portable/*  ./TaystJK-macos-universal2.tar.gz
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: artifacts
 
       - name: Create latest beta build
-        uses: crowbarmaster/GH-Automatic-Releases@a92588ee071f23d7901a9febcd245debe2343098
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: "latest-beta"
-          prerelease: true
-          title: Beta Build
-          files: |
-            *.zip
-            *.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LATEST_BETA_COMMIT=$(gh api repos/${{ github.repository }}/releases/tags/latest-beta --jq '.target_commitish' 2>/dev/null || echo "")
+          gh release delete latest-beta --cleanup-tag --yes || true
+          
+          RELEASE_BODY="## Commits"
+          
+          if [ -n "$LATEST_BETA_COMMIT" ]; then
+            COMMITS=$(git log $LATEST_BETA_COMMIT..HEAD --pretty=format:"%h|%s|%an")
+          else
+            COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
+          fi
+          
+          while IFS='|' read -r hash subject author; do
+            if [[ $subject =~ ^Merge\ pull\ request\ \#([0-9]+) ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            elif [[ $subject =~ \(#([0-9]+)\)$ ]]; then
+              PR_NUM="${BASH_REMATCH[1]}"
+              subject=$(echo "$subject" | sed 's/ (#[0-9]\+)$//')
+              PR_LINK=" [#${PR_NUM}](https://github.com/${{ github.repository }}/pull/${PR_NUM})"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)${PR_LINK}"
+            else
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+            fi
+          done <<< "$COMMITS"
+          
+          RELEASE_FILES=""
+          for artifact_dir in artifacts/*; do
+            if [ -d "$artifact_dir" ]; then
+              for file in "$artifact_dir"/*; do
+                if [ -f "$file" ]; then
+                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  cp "$file" "$filename"
+                  RELEASE_FILES="$RELEASE_FILES $filename"
+                fi
+              done
+            fi
+          done
+          
+          gh release create latest-beta \
+            --title "Beta Build" \
+            --notes "$RELEASE_BODY" \
+            --target ${{ github.sha }} \
+            --prerelease \
+            $RELEASE_FILES
 
   create-release:
     if: github.event_name == 'release'
     needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
     runs-on: ubuntu-22.04
-
-    strategy:
-      matrix:
-        include:
-          - artifact_dir: TaystJK-windows-x86-Release-Non-Portable/JediAcademy/
-            artifact_name: TaystJK-windows-x86.zip
-            zip: true
-
-          - artifact_dir: TaystJK-windows-x86_64-Release-Non-Portable/JediAcademy/
-            artifact_name: TaystJK-windows-x86_64.zip
-            zip: true
-
-          - artifact_dir: TaystJK-linux-x86-Release-Non-Portable
-            artifact_name: TaystJK-linux-x86.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-linux-x86_64-Release-Non-Portable
-            artifact_name: TaystJK-linux-x86_64.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-macos-x86_64-Release-Non-Portable
-            artifact_name: TaystJK-macos-x86_64.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-macos-arm64-Release-Non-Portable
-            artifact_name: TaystJK-macos-arm64.tar.gz
-            zip: false
-
-          - artifact_dir: TaystJK-macos-universal2-Release-Non-Portable
-            artifact_name: TaystJK-macos-universal2.tar.gz
-            zip: false
-
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Create archive
-        run: |
-          if [ "${{ matrix.zip }}" == "true" ]; then
-            7z a -r ${{ matrix.artifact_name }} ./${{ matrix.artifact_dir }}/*
-          else
-            mv ./${{ matrix.artifact_dir }}/* ${{ matrix.artifact_name }}
-          fi
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          path: artifacts
 
       - name: Upload archives
-        uses: actions/upload-artifact@v4
-        with:
-          path: ${{ matrix.artifact_name }}
-          overwrite: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for artifact_dir in artifacts/*; do
+            if [ -d "$artifact_dir" ]; then
+              for file in "$artifact_dir"/*; do
+                if [ -f "$file" ]; then
+                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  gh release upload "${{ github.event.release.tag_name }}" \
+                    "$file" \
+                    --clobber \
+                    --name "$filename"
+                fi
+              done
+            fi
+          done
