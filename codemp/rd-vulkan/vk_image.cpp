@@ -933,6 +933,10 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 #ifdef USE_UPLOAD_QUEUE
 	vk_wait_staging_buffer();
 
+	if ( compressed ) {
+		vk_world.staging_buffer_offset = PAD(vk_world.staging_buffer_offset, 16);
+	}
+
 	vk_ensure_staging_buffer_allocation( buffer_size );
 
 	for ( i = 0; i < num_regions; i++ ) {
