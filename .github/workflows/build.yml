@@ -494,7 +494,7 @@ jobs:
           
           RELEASE_BODY="## Commits"
           
-          if [ -n "$LATEST_BETA_COMMIT" ]; then
+          if [ -n "$LATEST_BETA_COMMIT" ] && git rev-parse --quiet --verify "$LATEST_BETA_COMMIT^{commit}" >/dev/null; then
             COMMITS=$(git log $LATEST_BETA_COMMIT..HEAD --pretty=format:"%h|%s|%an")
           else
             COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
