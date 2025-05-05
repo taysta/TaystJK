@@ -470,7 +470,7 @@ jobs:
 
   create-prerelease:
     if: github.event_name == 'push' && github.ref == 'refs/heads/beta'
-    needs: [msvc, ubuntu, macos-x86_64, macos-arm64, macos-universal2]
+    needs: [msvc, ubuntu, macos-x86_64, macos-arm64]
     runs-on: ubuntu-22.04
     permissions:
       contents: write
