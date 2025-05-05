@@ -455,6 +455,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   cp "$file" "$filename"
                   RELEASE_FILES="$RELEASE_FILES $filename"
                 fi
@@ -520,6 +521,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   cp "$file" "$filename"
                   RELEASE_FILES="$RELEASE_FILES $filename"
                 fi
@@ -560,6 +562,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   gh release upload "${{ github.event.release.tag_name }}" \
                     "$file" \
                     --clobber \
