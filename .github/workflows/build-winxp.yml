@@ -16,7 +16,7 @@ jobs:
       matrix:
         arch: [x86, x86_64]
         build_type: [Release]
-        portable: [Non-Portable]
+        portable: [Portable]
         include:
           - arch: x86
             platform: Win32
@@ -133,8 +133,8 @@ jobs:
 
       - name: Create binary archives
         run: |
-          mv ./artifacts/TaystJK-windowsxp-x86-Release-Non-Portable/* ./TaystJK-windowsxp-x86.zip
-          mv ./artifacts/TaystJK-windowsxp-x86_64-Release-Non-Portable/* ./TaystJK-windowsxp-x86_64.zip
+          mv ./artifacts/TaystJK-windowsxp-x86-Release-Portable/* ./TaystJK-windowsxp-x86.zip
+          mv ./artifacts/TaystJK-windowsxp-x86_64-Release-Portable/* ./TaystJK-windowsxp-x86_64.zip
 
       - name: Create latest XP build
         env:
@@ -170,7 +170,7 @@ jobs:
             if [ -d "$artifact_dir" ]; then
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
-                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed -e 's/-Release-Non-Portable//' -e 's/-Release-Portable//')
                   cp "$file" "$filename"
                   RELEASE_FILES="$RELEASE_FILES $filename"
                 fi
@@ -209,7 +209,7 @@ jobs:
             if [ -d "$artifact_dir" ]; then
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
-                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed -e 's/-Release-Non-Portable//' -e 's/-Release-Portable//')
                   gh release upload "${{ github.event.release.tag_name }}" \
                     "$file" \
                     --clobber \
