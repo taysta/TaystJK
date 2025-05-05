@@ -455,6 +455,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   cp "$file" "$filename"
                   RELEASE_FILES="$RELEASE_FILES $filename"
                 fi
@@ -494,7 +495,7 @@ jobs:
           
           RELEASE_BODY="## Commits"
           
-          if [ -n "$LATEST_BETA_COMMIT" ]; then
+          if [ -n "$LATEST_BETA_COMMIT" ] && git rev-parse --quiet --verify "$LATEST_BETA_COMMIT^{commit}" >/dev/null; then
             COMMITS=$(git log $LATEST_BETA_COMMIT..HEAD --pretty=format:"%h|%s|%an")
           else
             COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
@@ -520,6 +521,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   cp "$file" "$filename"
                   RELEASE_FILES="$RELEASE_FILES $filename"
                 fi
@@ -560,6 +562,7 @@ jobs:
               for file in "$artifact_dir"/*; do
                 if [ -f "$file" ]; then
                   filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  filename=$(basename "$file" | sed 's/-Release-Portable//')
                   gh release upload "${{ github.event.release.tag_name }}" \
                     "$file" \
                     --clobber \
