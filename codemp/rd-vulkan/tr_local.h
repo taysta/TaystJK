@@ -1730,6 +1730,7 @@ float		R_SumOfUsedImages( qboolean bUseFormat );
 void		R_InitSkins( void );
 skin_t		*R_GetSkinByHandle( qhandle_t hSkin );
 const void	*RB_TakeVideoFrameCmd( const void *data );
+float		R_ClampDenorm( float v );
 void		RE_HunkClearCrap( void );
 
 //
@@ -2255,6 +2256,7 @@ char		*GenerateImageMappingName( const char *name );
 void		R_Add_AllocatedImage( image_t *image );
 
 void		vk_bind( image_t *image );
+void		vk_submit_staging_buffer( qboolean final );
 void		vk_upload_image( image_t *image, byte *pic );
 void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size, qboolean update ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );

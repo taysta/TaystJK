@@ -1143,6 +1143,8 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 		vk_release_resources();
 	}
 
+	//vk_release_resources(); not merged yet (https://github.com/ec-/Quake3e/commit/d31b84ebf2ab702686e98dff40b7673473026b30)
+
 	if (destroyWindow) {
 		vk_shutdown();
 

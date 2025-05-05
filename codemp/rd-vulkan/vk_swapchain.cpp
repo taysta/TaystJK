@@ -35,6 +35,11 @@ void vk_restart_swapchain( const char *funcname )
         qvkResetCommandBuffer( vk.tess[i].command_buffer, 0 );
     }
 
+#ifdef USE_UPLOAD_QUEUE
+	qvkResetCommandBuffer( vk.staging_command_buffer, 0 );
+
+#endif
+
     vk_destroy_pipelines(qfalse);
     vk_destroy_framebuffers();
     vk_destroy_render_passes();
@@ -64,6 +69,7 @@ static const char *vk_pmode_to_str( VkPresentModeKHR mode )
         case VK_PRESENT_MODE_MAILBOX_KHR:       return "MAILBOX";
         case VK_PRESENT_MODE_FIFO_KHR:          return "FIFO";
         case VK_PRESENT_MODE_FIFO_RELAXED_KHR:  return "FIFO_RELAXED";
+        case VK_PRESENT_MODE_FIFO_LATEST_READY_EXT: return "FIFO_LATEST_READY";
         default: sprintf(buf, "mode#%x", mode); return buf;
     };
 }
