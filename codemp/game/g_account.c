@@ -7255,7 +7255,7 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
 		trap->Cvar_VariableStringBuffer("fs_basegame", fs_game, sizeof(fs_game));
 
 		if (!VALIDSTRING(fs_game)) {
-			Q_strncpyz(fs_game, "japro", sizeof(fs_game)); //fall back to this i guess
+			Q_strncpyz(fs_game, TAYSTJKGAME, sizeof(fs_game)); //fall back to this i guess
 		}
 	}
 
