@@ -165,11 +165,24 @@ jobs:
             fi
           done <<< "$COMMITS"
           
+          RELEASE_FILES=""
+          for artifact_dir in artifacts/*; do
+            if [ -d "$artifact_dir" ]; then
+              for file in "$artifact_dir"/*; do
+                if [ -f "$file" ]; then
+                  filename=$(basename "$file" | sed 's/-Release-Non-Portable//')
+                  cp "$file" "$filename"
+                  RELEASE_FILES="$RELEASE_FILES $filename"
+                fi
+              done
+            fi
+          done
+          
           gh release create winxp \
             --title "Latest WinXP Build" \
             --notes "$RELEASE_BODY" \
             --target ${{ github.sha }} \
-            *.zip
+            $RELEASE_FILES
 
   create-release-winxp:
     if: github.event_name == 'release'
