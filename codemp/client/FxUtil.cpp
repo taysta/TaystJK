@@ -243,19 +243,19 @@ void FX_Add( bool portal )
 // all effects are being stopped.
 //-------------------------
 extern bool gEffectsInPortal;	//from FXScheduler.cpp so i don't have to pass it in on EVERY FX_ADD*
-void FX_AddPrimitive( CEffect **pEffect, int killTime )
+void FX_AddPrimitive( CEffect *pEffect, int killTime )
 {
 	SEffectList *item = FX_GetValidEffect();
 
-	item->mEffect = *pEffect;
+	item->mEffect = pEffect;
 	item->mKillTime = theFxHelper.mTime + killTime;
 	item->mPortal = gEffectsInPortal;	//global set in AddScheduledEffects
 
 	activeFx++;
 
 	// Stash these in the primitive so it has easy access to the vals
-	(*pEffect)->SetTimeStart( theFxHelper.mTime );
-	(*pEffect)->SetTimeEnd( theFxHelper.mTime + killTime );
+	pEffect->SetTimeStart( theFxHelper.mTime );
+	pEffect->SetTimeEnd( theFxHelper.mTime + killTime );
 }
 
 //-------------------------
@@ -348,7 +348,7 @@ CParticle *FX_AddParticle( vec3_t org, vec3_t vel, vec3_t accel, float size1, fl
 
 		fx->Init();
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -435,7 +435,7 @@ CLine *FX_AddLine( vec3_t start, vec3_t end, float size1, float size2, float siz
 
 		fx->SetSTScale( 1.0f, 1.0f );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -522,7 +522,7 @@ CElectricity *FX_AddElectricity( vec3_t start, vec3_t end, float size1, float si
 
 		fx->SetSTScale( 1.0f, 1.0f );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 		// in the editor, fx may now be NULL?
 		if ( fx )
 		{
@@ -634,7 +634,7 @@ CTail *FX_AddTail( vec3_t org, vec3_t vel, vec3_t accel,
 		fx->SetDeathFxID( deathID );
 		fx->SetImpactFxID( impactID );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -750,7 +750,7 @@ CCylinder *FX_AddCylinder( vec3_t start, vec3_t normal,
 		fx->SetShader( shader );
 		fx->SetFlags( flags );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -848,7 +848,7 @@ CEmitter *FX_AddEmitter( vec3_t org, vec3_t vel, vec3_t accel,
 		fx->SetLastOrg( org );
 		fx->SetLastVel( vel );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -914,7 +914,7 @@ CLight *FX_AddLight( vec3_t org, float size1, float size2, float sizeParm,
 
 		fx->SetFlags( flags );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -1012,7 +1012,7 @@ COrientedParticle *FX_AddOrientedParticle( vec3_t org, vec3_t norm, vec3_t vel, 
 		fx->SetDeathFxID( deathID );
 		fx->SetImpactFxID( impactID );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -1085,7 +1085,7 @@ CPoly *FX_AddPoly( vec3_t *verts, vec2_t *st, int numVerts,
 		// Now that we've set our data up, let's process it into a useful format
 		fx->PolyInit();
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -1168,7 +1168,7 @@ CFlash *FX_AddFlash( vec3_t origin,
 
 		fx->Init();
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
@@ -1245,7 +1245,7 @@ CBezier *FX_AddBezier( vec3_t start, vec3_t end,
 
 		fx->SetSTScale( 1.0f, 1.0f );
 
-		FX_AddPrimitive( (CEffect**)&fx, killTime );
+		FX_AddPrimitive( fx, killTime );
 	}
 
 	return fx;
