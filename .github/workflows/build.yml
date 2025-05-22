@@ -146,10 +146,10 @@ jobs:
           if [ ${{ matrix.arch }} == "x86" ]; then
             sudo dpkg --add-architecture i386
             sudo apt-get -qq update
-            sudo apt-get -y install libpcre2-8-0:i386 gcc-multilib g++-multilib ninja-build libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386 libglib2.0-dev:i386 libsdl2-dev:i386
+            sudo apt-get -y install libpcre2-8-0:i386 gcc-multilib g++-multilib ninja-build libjpeg-dev:i386 libpng-dev:i386 libcurl4-openssl-dev:i386 libglib2.0-dev:i386 libsdl2-dev:i386 libopenal-dev:i386
           else
             sudo apt-get -qq update
-            sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
+            sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev libopenal-dev
           fi
           cmake -E make_directory ${{ github.workspace }}/build
 
