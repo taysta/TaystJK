@@ -131,11 +131,6 @@ jobs:
         with:
           path: artifacts
 
-      - name: Create binary archives
-        run: |
-          mv ./artifacts/TaystJK-windowsxp-x86-Release-Portable/* ./TaystJK-windowsxp-x86.zip
-          mv ./artifacts/TaystJK-windowsxp-x86_64-Release-Portable/* ./TaystJK-windowsxp-x86_64.zip
-
       - name: Create latest XP build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
