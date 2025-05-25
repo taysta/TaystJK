@@ -392,15 +392,13 @@ static void VBO_AddStageTxCoords(vbo_t *vbo, const int stage, const shaderComman
 	memcpy(vbo->vbo_buffer + offs, input->svars.texcoordPtr[bundle], size);
 }
 
-void VBO_PushData(int itemIndex, shaderCommands_t *input)
+void VBO_PushData( int itemIndex, shaderCommands_t *input)
 {
 	const shaderStage_t *pStage;
 	vbo_t *vbo = &world_vbo;
 	vbo_item_t *vi = vbo->items + itemIndex;
 	int i;
-
 	VBO_AddGeometry(vbo, vi, input);
-
 	for (i = 0; i < MAX_VBO_STAGES; i++)
 	{
 		pStage = input->xstages[i];
@@ -439,7 +437,6 @@ void VBO_PushData(int itemIndex, shaderCommands_t *input)
 			VBO_AddStageTxCoords(vbo, i, input, 2);
 		}
 	}
-
 	input->shader->curVertexes += input->numVertexes;
 	input->shader->curIndexes += input->numIndexes;
 
@@ -966,4 +963,4 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 
 	return qtrue;
 }
-#endif 
+#endif

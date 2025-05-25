@@ -1259,6 +1259,7 @@ void R_BindAnimatedImage( const textureBundle_t *bundle ) {
 	vk_bind( bundle->image[index] );
 }
 
+
 void ComputeTexCoords( const int b, const textureBundle_t *bundle ) {
 	int	i;
 	int tm;
@@ -1315,6 +1316,7 @@ void ComputeTexCoords( const int b, const textureBundle_t *bundle ) {
 	// alter texture coordinates
 	//
 	for (tm = 0; tm < bundle->numTexMods; tm++) {
+
 		switch (bundle->texMods[tm].type)
 		{
 		case TMOD_NONE:
@@ -1470,7 +1472,7 @@ static void vk_compute_tex_coords( const textureBundle_t *bundle, vktcMod_t *tcM
 	vk_compute_tex_mods( bundle, tcMod->matrix, tcMod->offTurb ); 
 
 	tcGen->type = bundle->tcGen;
-
+	
 	if ( bundle->tcGen == TCGEN_VECTOR )
 	{
 		VectorCopy( bundle->tcGenVectors[0], tcGen->vector0 );

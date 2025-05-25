@@ -202,15 +202,14 @@ typedef enum {
 	TYPE_SINGLE_TEXTURE_LIGHTING_LINEAR,
 
 	TYPE_SINGLE_TEXTURE_DF,
-	
 
 	TYPE_GENERIC_BEGIN, // start of non-env/env shader pairs
 	TYPE_SINGLE_TEXTURE = TYPE_GENERIC_BEGIN,
 	TYPE_SINGLE_TEXTURE_ENV,
-	
+
 	TYPE_SINGLE_TEXTURE_IDENTITY,
 	TYPE_SINGLE_TEXTURE_IDENTITY_ENV,
-	
+
 	TYPE_SINGLE_TEXTURE_FIXED_COLOR,
 	TYPE_SINGLE_TEXTURE_FIXED_COLOR_ENV,
 
@@ -446,12 +445,11 @@ typedef struct {
 	Vk_Shadow_Phase			shadow_phase;
 	Vk_Primitive_Topology	primitives;
 
-	
 	int line_width;
 	int fog_stage; // off, fog-in / fog-out
 	int abs_light;
 	int allow_discard;
-	int	acff; // none, rgb, rgba, alpha
+	int acff; // none, rgb, rgba, alpha
 	struct {
 		byte rgb;
 		byte alpha;

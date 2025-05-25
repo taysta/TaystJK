@@ -1395,7 +1395,6 @@ void RB_SurfaceMesh( md3Surface_t *surface ) {
 	}
 
 	tess.numVertexes += surface->numVerts;
-
 }
 
 /*
@@ -1690,7 +1689,7 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 					// estimate and flush
 #ifdef USE_VBO
 					if (cv->vboItemIndex) {
-						VBO_PushData(cv->vboItemIndex, &tess);
+						VBO_PushData( cv->vboItemIndex, &tess );
 						tess.numIndexes = 0;
 						tess.numVertexes = 0;
 					}

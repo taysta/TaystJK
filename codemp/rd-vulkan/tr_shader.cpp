@@ -1749,6 +1749,7 @@ static qboolean ParseStage(shaderStage_t *stage, const char **text)
 		else if (Q_stricmp(token, "glow") == 0)
 		{
 			stage->glow = stage->bundle[0].glow = true;
+
 			continue;
 		}
 		//
@@ -3330,7 +3331,7 @@ typedef struct {
 	int		multitextureBlend;
 } collapse_t;
 
-static collapse_t	collapse[] = {
+static const collapse_t collapse[] = {
 	{ 0, GLS_DSTBLEND_SRC_COLOR | GLS_SRCBLEND_ZERO,
 		GL_MODULATE, 0 },
 
@@ -3470,7 +3471,7 @@ static int CollapseMultitexture( unsigned int st0bits, shaderStage_t *st0, shade
 	if ( !r_DynamicGlowAllStages->integer 
 		&& firstStage && !st0->mtEnv && !nonIdenticalColors && !st0->glow && st1->glow )
 	{
-			st1->glow = st1->bundle[0].glow = false;
+		st1->glow = st1->bundle[0].glow = false;
 	}
 
 	if (nonIdenticalColors)
@@ -4202,9 +4203,8 @@ shader_t *FinishShader( void )
 	// look for multitexture potential
 	//
 	//if (r_ext_multitexture->integer) {
-
 	for (i = 0; i < stage - 1; i++) {
-		stage -= CollapseMultitexture(stages[i + 0].stateBits, &stages[i + 0], &stages[i + 1], stage - i, ( i == 0 ? qtrue: qfalse ) );
+		stage -= CollapseMultitexture( stages[i + 0].stateBits, &stages[i + 0], &stages[i + 1], stage - i, ( i == 0 ? qtrue: qfalse ) );
 	}
 	//}
 
@@ -4482,7 +4482,6 @@ shader_t *FinishShader( void )
 							}
 						}
 					}
-					break;
 				}
 			} // switch mtEnv3 / mtEnv
 
@@ -4511,6 +4510,7 @@ shader_t *FinishShader( void )
 			if (pStage->ss && pStage->ss->surfaceSpriteType) {
 				def.face_culling = CT_TWO_SIDED;
 			}
+
 
 			def.mirror = qfalse;
 			pStage->vk_pipeline[0] = vk_find_pipeline_ext(0, &def, qtrue);

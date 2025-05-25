@@ -212,7 +212,7 @@ static void vk_push_vertex_input_binding_attribute( const Vk_Pipeline_Def *def )
             vk_push_attr( 2, 2, VK_FORMAT_R32G32_SFLOAT );
             break;
 
-        case TYPE_SINGLE_TEXTURE:
+        case TYPE_SINGLE_TEXTURE: 
             vk_push_bind( 0, sizeof( vec4_t ) );					// xyz array
             vk_push_bind( 1, sizeof( color4ub_t ) );				// color array
             vk_push_bind( 2, sizeof( vec2_t ) );					// st0 array
@@ -526,7 +526,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     VkPipelineDynamicStateCreateInfo dynamic_state;
     VkDynamicState dynamic_state_array[3] = { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR, VK_DYNAMIC_STATE_DEPTH_BIAS };
     VkGraphicsPipelineCreateInfo create_info;
-    //int32_t vert_spec_data[1]; // clipping (def->clipping_plane). NULL
+    //int32_t vert_spec_data[1]; // clipping (def->clipping_plane). NULL  
     //VkSpecializationInfo vert_spec_info;
     struct FragSpecData {
         int32_t alpha_test_func; 
@@ -746,7 +746,6 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
 
     //Com_Memset( vert_spec_data, 0, sizeof(vert_spec_data) ); // clipping
     Com_Memset( &frag_spec_data, 0, sizeof(FragSpecData) );   
-    //vert_spec_data[0] = def->clipping_plane ? 1 : 0; // used by vertex shader.
 
     // fragment shader specialization data
     atest_bits = state_bits & GLS_ATEST_BITS;
