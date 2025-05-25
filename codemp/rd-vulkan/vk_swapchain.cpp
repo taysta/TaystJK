@@ -236,6 +236,15 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         VK_SET_OBJECT_NAME( vk.swapchain_image_views[i], va( "swapchain image %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_IMAGE_VIEW_EXT );
     }
 
+	for ( i = 0; i < vk.swapchain_image_count; i++ ) {
+		VkSemaphoreCreateInfo s;
+		s.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+		s.pNext = NULL;
+		s.flags = 0;
+		VK_CHECK( qvkCreateSemaphore( vk.device, &s, NULL, &vk.swapchain_rendering_finished[i] ) );
+		VK_SET_OBJECT_NAME( vk.swapchain_rendering_finished[i], va( "swapchain_rendering_finished semaphore %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
+	}
+
     if ( vk.initSwapchainLayout != VK_IMAGE_LAYOUT_UNDEFINED ) {
         VkCommandBuffer command_buffer = vk_begin_command_buffer();
 
@@ -257,6 +266,10 @@ void vk_destroy_swapchain ( void ) {
             qvkDestroyImageView( vk.device, vk.swapchain_image_views[i], NULL );
             vk.swapchain_image_views[i] = VK_NULL_HANDLE;
         }
+		if ( vk.swapchain_rendering_finished[i] != VK_NULL_HANDLE ) {
+			qvkDestroySemaphore( vk.device, vk.swapchain_rendering_finished[i], NULL );
+			vk.swapchain_rendering_finished[i] = VK_NULL_HANDLE;
+		}
     }
 
     qvkDestroySwapchainKHR( vk.device, vk.swapchain, NULL );

@@ -567,7 +567,6 @@ typedef struct vk_tess_s {
 	VkSemaphore			image_acquired;
 	uint32_t			swapchain_image_index;
 	qboolean			swapchain_image_acquired;
-	VkSemaphore			rendering_finished;
 #ifdef USE_UPLOAD_QUEUE
 	VkSemaphore			rendering_finished2;
 #endif
@@ -633,6 +632,7 @@ typedef struct {
 	//uint32_t		swapchain_image_index;
 	VkImage			swapchain_images[MAX_SWAPCHAIN_IMAGES];
 	VkImageView		swapchain_image_views[MAX_SWAPCHAIN_IMAGES];
+	VkSemaphore		swapchain_rendering_finished[MAX_SWAPCHAIN_IMAGES];
 
 	VkDeviceMemory	image_memory[MAX_ATTACHMENTS_IN_POOL];
 	uint32_t		image_memory_count;
