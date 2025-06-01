@@ -493,7 +493,8 @@ typedef struct textureBundle_s {
 
 	qboolean		isLightmap;
 	qboolean		isVideoMap;
-	qboolean		isScreenMap;
+	unsigned int 	isScreenMap : 1;
+	unsigned int 	dlight : 1;
 
 	int				videoMapHandle;
 	bool			glow;
