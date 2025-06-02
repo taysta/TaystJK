@@ -839,17 +839,17 @@ typedef struct {
 	// shader modules.
 	struct {
 		struct {
-			VkShaderModule gen[1][3][2][2][2]; // tx[0,1,2], cl[0,1] env0[0,1] fog[0,1]
-			VkShaderModule ident1[2][2][2]; // tx[0,1], env0[0,1] fog[0,1]
-			VkShaderModule fixed[2][2][2];  // tx[0,1], env0[0,1] fog[0,1]
+			VkShaderModule gen[1][3][2][2][2]; // vbo[0](beta), tx[0,1,2], cl[0,1] env0[0,1] fog[0,1]
+			VkShaderModule ident1[1][2][2][2]; // vbo[0](beta), tx[0,1], env0[0,1] fog[0,1]
+			VkShaderModule fixed[1][2][2][2];  // vbo[0](beta), tx[0,1], env0[0,1] fog[0,1]
 			VkShaderModule light[2]; // fog[0,1]
 		}	vert;
 
 		struct {
 			VkShaderModule gen0_df;
-			VkShaderModule gen[1][3][2][2]; // tx[0,1,2] cl[0,1] fog[0,1]
-			VkShaderModule ident1[2][2]; // tx[0,1], fog[0,1]
-			VkShaderModule fixed[2][2];  // tx[0,1], fog[0,1]
+			VkShaderModule gen[1][3][2][2]; // vbo[0](beta), tx[0,1,2] cl[0,1] fog[0,1]
+			VkShaderModule ident1[1][2][2]; // vbo[0](beta), tx[0,1], fog[0,1]
+			VkShaderModule fixed[1][2][2];  // vbo[0](beta), tx[0,1], fog[0,1]
 			VkShaderModule light[2][2]; // linear[0,1] fog[0,1]
 		}	frag;
 

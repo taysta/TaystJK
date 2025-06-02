@@ -547,7 +547,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     unsigned int atest_bits;
     unsigned int state_bits = def->state_bits;
 
-    const int sh = 0;   // shading_mode, wip features
+    const int vbo = 0;   // vbo, wip features
 
     switch ( def->shader_type ) {
         case TYPE_REFRACTION:
@@ -566,63 +566,63 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
 
         case TYPE_SINGLE_TEXTURE_DF:
             state_bits |= GLS_DEPTHMASK_TRUE;
-            vs_module = &vk.shaders.vert.ident1[0][0][0];
+            vs_module = &vk.shaders.vert.ident1[vbo][0][0][0];
             fs_module = &vk.shaders.frag.gen0_df;
             break;
 
 		case TYPE_SINGLE_TEXTURE_FIXED_COLOR:
-			vs_module = &vk.shaders.vert.fixed[0][0][0];
-			fs_module = &vk.shaders.frag.fixed[0][0];
+			vs_module = &vk.shaders.vert.fixed[vbo][0][0][0];
+			fs_module = &vk.shaders.frag.fixed[vbo][0][0];
 			break;
 
 		case TYPE_SINGLE_TEXTURE_FIXED_COLOR_ENV:
-			vs_module = &vk.shaders.vert.fixed[0][1][0];
-			fs_module = &vk.shaders.frag.fixed[0][0];
+			vs_module = &vk.shaders.vert.fixed[vbo][0][1][0];
+			fs_module = &vk.shaders.frag.fixed[vbo][0][0];
 			break;
 
         case TYPE_SINGLE_TEXTURE:
-            vs_module = &vk.shaders.vert.gen[sh][0][0][0][0];
-            fs_module = &vk.shaders.frag.gen[sh][0][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][0][0][0][0];
+            fs_module = &vk.shaders.frag.gen[vbo][0][0][0];
             break;
 
         case TYPE_SINGLE_TEXTURE_ENV:
-            vs_module = &vk.shaders.vert.gen[sh][0][0][1][0];
-            fs_module = &vk.shaders.frag.gen[sh][0][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][0][0][1][0];
+            fs_module = &vk.shaders.frag.gen[vbo][0][0][0];
             break;
 
 
 		case TYPE_SINGLE_TEXTURE_IDENTITY:
-			vs_module = &vk.shaders.vert.ident1[0][0][0];
-			fs_module = &vk.shaders.frag.ident1[0][0];
+			vs_module = &vk.shaders.vert.ident1[vbo][0][0][0];
+			fs_module = &vk.shaders.frag.ident1[vbo][0][0];
 			break;
 
 		case TYPE_SINGLE_TEXTURE_IDENTITY_ENV:
-			vs_module = &vk.shaders.vert.ident1[0][1][0];
-			fs_module = &vk.shaders.frag.ident1[0][0];
+			vs_module = &vk.shaders.vert.ident1[vbo][0][1][0];
+			fs_module = &vk.shaders.frag.ident1[vbo][0][0];
 			break;
 
 		case TYPE_MULTI_TEXTURE_ADD2_IDENTITY:
 		case TYPE_MULTI_TEXTURE_MUL2_IDENTITY:
-			vs_module = &vk.shaders.vert.ident1[1][0][0];
-			fs_module = &vk.shaders.frag.ident1[1][0];
+			vs_module = &vk.shaders.vert.ident1[vbo][1][0][0];
+			fs_module = &vk.shaders.frag.ident1[vbo][1][0];
 			break;
 
 		case TYPE_MULTI_TEXTURE_ADD2_IDENTITY_ENV:
 		case TYPE_MULTI_TEXTURE_MUL2_IDENTITY_ENV:
-			vs_module = &vk.shaders.vert.ident1[1][1][0];
-			fs_module = &vk.shaders.frag.ident1[1][0];
+			vs_module = &vk.shaders.vert.ident1[vbo][1][1][0];
+			fs_module = &vk.shaders.frag.ident1[vbo][1][0];
 			break;
 
 		case TYPE_MULTI_TEXTURE_ADD2_FIXED_COLOR:
 		case TYPE_MULTI_TEXTURE_MUL2_FIXED_COLOR:
-			vs_module = &vk.shaders.vert.fixed[1][0][0];
-			fs_module = &vk.shaders.frag.fixed[1][0];
+			vs_module = &vk.shaders.vert.fixed[vbo][1][0][0];
+			fs_module = &vk.shaders.frag.fixed[vbo][1][0];
 			break;
 
 		case TYPE_MULTI_TEXTURE_ADD2_FIXED_COLOR_ENV:
 		case TYPE_MULTI_TEXTURE_MUL2_FIXED_COLOR_ENV:
-			vs_module = &vk.shaders.vert.fixed[1][1][0];
-			fs_module = &vk.shaders.frag.fixed[1][0];
+			vs_module = &vk.shaders.vert.fixed[vbo][1][1][0];
+			fs_module = &vk.shaders.frag.fixed[vbo][1][0];
 			break;
 
 
@@ -630,29 +630,29 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         case TYPE_MULTI_TEXTURE_MUL2:
         case TYPE_MULTI_TEXTURE_ADD2_1_1:
         case TYPE_MULTI_TEXTURE_ADD2:
-            vs_module = &vk.shaders.vert.gen[sh][1][0][0][0];
-            fs_module = &vk.shaders.frag.gen[sh][1][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][1][0][0][0];
+            fs_module = &vk.shaders.frag.gen[vbo][1][0][0];
             break;
 
         case TYPE_MULTI_TEXTURE_MUL2_ENV:
         case TYPE_MULTI_TEXTURE_ADD2_1_1_ENV:
         case TYPE_MULTI_TEXTURE_ADD2_ENV:
-            vs_module = &vk.shaders.vert.gen[sh][1][0][1][0];
-            fs_module = &vk.shaders.frag.gen[sh][1][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][1][0][1][0];
+            fs_module = &vk.shaders.frag.gen[vbo][1][0][0];
             break;
 
         case TYPE_MULTI_TEXTURE_MUL3:
         case TYPE_MULTI_TEXTURE_ADD3_1_1:
         case TYPE_MULTI_TEXTURE_ADD3:
-            vs_module = &vk.shaders.vert.gen[sh][2][0][0][0];
-            fs_module = &vk.shaders.frag.gen[sh][2][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][2][0][0][0];
+            fs_module = &vk.shaders.frag.gen[vbo][2][0][0];
             break;
 
         case TYPE_MULTI_TEXTURE_MUL3_ENV:
         case TYPE_MULTI_TEXTURE_ADD3_1_1_ENV:
         case TYPE_MULTI_TEXTURE_ADD3_ENV:
-            vs_module = &vk.shaders.vert.gen[sh][2][0][1][0];
-            fs_module = &vk.shaders.frag.gen[sh][2][0][0];
+            vs_module = &vk.shaders.vert.gen[vbo][2][0][1][0];
+            fs_module = &vk.shaders.frag.gen[vbo][2][0][0];
             break;
 
         case TYPE_BLEND2_ADD:
@@ -662,8 +662,8 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         case TYPE_BLEND2_MIX_ALPHA:
         case TYPE_BLEND2_MIX_ONE_MINUS_ALPHA:
         case TYPE_BLEND2_DST_COLOR_SRC_ALPHA:
-            vs_module = &vk.shaders.vert.gen[sh][1][1][0][0];
-            fs_module = &vk.shaders.frag.gen[sh][1][1][0];
+            vs_module = &vk.shaders.vert.gen[vbo][1][1][0][0];
+            fs_module = &vk.shaders.frag.gen[vbo][1][1][0];
             break;
 
         case TYPE_BLEND2_ADD_ENV:
@@ -673,8 +673,8 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         case TYPE_BLEND2_MIX_ALPHA_ENV:
         case TYPE_BLEND2_MIX_ONE_MINUS_ALPHA_ENV:
         case TYPE_BLEND2_DST_COLOR_SRC_ALPHA_ENV:
-            vs_module = &vk.shaders.vert.gen[sh][1][1][1][0];
-            fs_module = &vk.shaders.frag.gen[sh][1][1][0];
+            vs_module = &vk.shaders.vert.gen[vbo][1][1][1][0];
+            fs_module = &vk.shaders.frag.gen[vbo][1][1][0];
             break;
 
         case TYPE_BLEND3_ADD:
@@ -684,8 +684,8 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         case TYPE_BLEND3_MIX_ALPHA:
         case TYPE_BLEND3_MIX_ONE_MINUS_ALPHA:
         case TYPE_BLEND3_DST_COLOR_SRC_ALPHA:
-            vs_module = &vk.shaders.vert.gen[sh][2][1][0][0];
-            fs_module = &vk.shaders.frag.gen[sh][2][1][0];
+            vs_module = &vk.shaders.vert.gen[vbo][2][1][0][0];
+            fs_module = &vk.shaders.frag.gen[vbo][2][1][0];
             break;
 
         case TYPE_BLEND3_ADD_ENV:
@@ -695,8 +695,8 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         case TYPE_BLEND3_MIX_ALPHA_ENV:
         case TYPE_BLEND3_MIX_ONE_MINUS_ALPHA_ENV:
         case TYPE_BLEND3_DST_COLOR_SRC_ALPHA_ENV:
-            vs_module = &vk.shaders.vert.gen[sh][2][1][1][0];
-            fs_module = &vk.shaders.frag.gen[sh][2][1][0];
+            vs_module = &vk.shaders.vert.gen[vbo][2][1][1][0];
+            fs_module = &vk.shaders.frag.gen[vbo][2][1][0];
             break;
 
         case TYPE_COLOR_WHITE:
