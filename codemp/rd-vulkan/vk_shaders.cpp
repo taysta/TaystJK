@@ -52,20 +52,26 @@ static VkShaderModule SHADER_MODULE( const uint8_t *bytes, const int count ) {
 
 #include "shaders/spirv/shader_binding.c"
 
-static void vk_test_shaders( void )
+#ifdef _DEBUG
+static void vk_test_generated_shaders( void )
 {
-    int i, j, k, l, m;
+    int i, j, k, l, m, cl;
 
-    for (i = 0; i < 1; i++) {
-        for (j = 0; j < 3; j++) {
-            for (k = 0; k < 2; k++) {
-                for (l = 0; l < 2; l++) {
-                    assert (vk.shaders.frag.gen[i][j][k][l] != VK_NULL_HANDLE);
+    for ( i = 0; i < 1; i++ ) {             // vbo
+        for ( j = 0; j < 3; j++ ) {         // tx
+            for ( l = 0; l < 2; l++ ) {     // env
 
-                    for (m = 0; m < 2; m++) {
-                       assert(vk.shaders.vert.gen[i][j][k][l][m] != VK_NULL_HANDLE);
-                    }
-                }
+                assert (vk.shaders.frag.gen[i][j][0][l] != VK_NULL_HANDLE);
+                for ( m = 0; m < 2; m++ )   // fog
+                    assert(vk.shaders.vert.gen[i][j][0][l][m] != VK_NULL_HANDLE);
+                
+                // only tx1 && tx2 require cl
+                if ( j == 0 ) 
+                    continue;    
+               
+                assert (vk.shaders.frag.gen[i][j][1][l] != VK_NULL_HANDLE);
+                for ( m = 0; m < 2; m++ )   // fog
+                    assert(vk.shaders.vert.gen[i][j][1][l][m] != VK_NULL_HANDLE);
             }
         }
     }
@@ -86,12 +92,12 @@ static void vk_test_shaders( void )
 		}
 	}
 }
+#endif
 
 void vk_create_shader_modules( void )
 {
     vk_bind_generated_shaders();
-    vk_test_shaders();
-
+    
     // specialized depth-fragment shader
     vk.shaders.frag.gen0_df = SHADER_MODULE(frag_tx0_df);
     VK_SET_OBJECT_NAME(vk.shaders.frag.gen0_df, "single-texture df fragment module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
@@ -109,7 +115,9 @@ void vk_create_shader_modules( void )
     VK_SET_OBJECT_NAME(vk.shaders.frag.light[0][1], "light fog fragment module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
     VK_SET_OBJECT_NAME(vk.shaders.frag.light[1][0], "linear light fragment module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
     VK_SET_OBJECT_NAME(vk.shaders.frag.light[1][1], "linear light fog fragment module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
-
+#ifdef _DEBUG
+    vk_test_generated_shaders();
+#endif
     vk.shaders.refraction_fs = SHADER_MODULE(refraction_frag_spv);
     vk.shaders.refraction_vs = SHADER_MODULE(refraction_vert_spv);
     VK_SET_OBJECT_NAME(vk.shaders.refraction_fs, "refraction vertex module", VK_DEBUG_REPORT_OBJECT_TYPE_SHADER_MODULE_EXT);
