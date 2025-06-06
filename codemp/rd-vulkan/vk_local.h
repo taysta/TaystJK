@@ -534,23 +534,9 @@ extern unsigned char s_gammatable_linear[256];
 // Vk_World contains vulkan resources/state requested by the game code.
 // It is reinitialized on a map change.
 typedef struct {
-	// resources.
-	int				num_samplers;
-	VkSampler		samplers[MAX_VK_SAMPLERS];
-	Vk_Sampler_Def	sampler_defs[MAX_VK_SAMPLERS];
-
 	// memory allocations.
 	int				num_image_chunks;
 	ImageChunk_t	image_chunks[MAX_IMAGE_CHUNKS];
-
-	// host visible memory used to copy image data to device local memory.
-	VkBuffer		staging_buffer;
-	VkDeviceMemory	staging_buffer_memory;
-	VkDeviceSize	staging_buffer_size;
-	byte			*staging_buffer_ptr; // pointer to mapped staging buffer
-#ifdef USE_UPLOAD_QUEUE
-	VkDeviceSize staging_buffer_offset;
-#endif
 
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
 	// with vmCmdClearAttachment (dirty_depth_attachment != 0), or it have just been
@@ -931,6 +917,24 @@ typedef struct {
 	qboolean aux_fence_wait;
 #endif
 
+	struct staging_buffer_s {
+		VkBuffer handle;
+		VkDeviceMemory memory;
+		VkDeviceSize size;
+		byte *ptr; // pointer to mapped staging buffer
+#ifdef USE_UPLOAD_QUEUE
+		VkDeviceSize offset;
+#endif
+	} staging_buffer;
+
+	struct samplers_s {
+		int count;
+		Vk_Sampler_Def def[MAX_VK_SAMPLERS];
+		VkSampler handle[MAX_VK_SAMPLERS];
+		int filter_min;
+		int filter_max;
+	} samplers;
+
 	struct {
 		VkDescriptorSet *descriptor;
 		uint32_t descriptor_size;
@@ -1062,6 +1066,7 @@ void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHei
 
 // image
 void		vk_texture_mode( const char *string, const qboolean init );
+void		vk_destroy_samplers( void );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 #if 0

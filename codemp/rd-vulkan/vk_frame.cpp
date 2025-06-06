@@ -1239,6 +1239,7 @@ _retry:
     Com_Memset( vk.cmd->vbo_offset, 0, sizeof( vk.cmd->vbo_offset ) );
     vk.cmd->curr_index_buffer = VK_NULL_HANDLE;
     vk.cmd->curr_index_offset = 0;
+    vk.cmd->num_indexes = 0;
 
     Com_Memset(&vk.cmd->descriptor_set, 0, sizeof(vk.cmd->descriptor_set));
     vk.cmd->descriptor_set.start = ~0U;
@@ -1313,14 +1314,13 @@ void vk_release_resources( void ) {
 
     vk_clean_staging_buffer();
 
-    if (vk_world.staging_buffer != VK_NULL_HANDLE)
-        qvkDestroyBuffer(vk.device, vk_world.staging_buffer, NULL);
+    if (vk.staging_buffer.handle != VK_NULL_HANDLE)
+        qvkDestroyBuffer(vk.device, vk.staging_buffer.handle, NULL);
 
-    if (vk_world.staging_buffer_memory != VK_NULL_HANDLE)
-        qvkFreeMemory(vk.device, vk_world.staging_buffer_memory, NULL);
+    if (vk.staging_buffer.memory != VK_NULL_HANDLE)
+        qvkFreeMemory(vk.device, vk.staging_buffer.memory, NULL);
 
-    for (i = 0; i < vk_world.num_samplers; i++)
-        qvkDestroySampler(vk.device, vk_world.samplers[i], NULL);
+    // vk_destroy_samplers();
 
     for (i = vk.pipelines_world_base; i < vk.pipelines_count; i++) {
         for (j = 0; j < RENDER_PASS_COUNT; j++) {
@@ -1340,12 +1340,14 @@ void vk_release_resources( void ) {
         // if we allocated more than 2 image chunks - use doubled default size
         vk.image_chunk_size = (IMAGE_CHUNK_SIZE * 2);
     }
+#if 0 // do not reduce chunk size
     else if (vk_world.num_image_chunks == 1) {
         // otherwise set to default if used less than a half
         if (vk_world.image_chunks[0].used < (IMAGE_CHUNK_SIZE - (IMAGE_CHUNK_SIZE / 10))) {
             vk.image_chunk_size = IMAGE_CHUNK_SIZE;
         }
     }
+#endif
 
     Com_Memset(&vk_world, 0, sizeof(vk_world));
 

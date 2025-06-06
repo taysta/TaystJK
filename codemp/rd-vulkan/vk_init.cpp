@@ -494,6 +494,12 @@ void vk_initialize( void )
 	if ( vk.screenMapHeight < 4 )
 		vk.screenMapHeight = 4;
 
+	// do early texture mode setup to avoid redundant descriptor updates in GL_SetDefaultState()
+	vk.samplers.filter_min = -1;
+	vk.samplers.filter_max = -1;
+	vk_texture_mode( r_textureMode->string, qtrue );
+	r_textureMode->modified = qfalse;
+
 	vk_create_sync_primitives();
 	vk_create_command_pool();
 	vk_create_command_buffer();
@@ -516,11 +522,14 @@ void vk_initialize( void )
 	vk.initSwapchainLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
 	vk_create_swapchain( vk.physical_device, vk.device, vk.surface, vk.present_format, &vk.swapchain );
-	vk_texture_mode( r_textureMode->string, qtrue );
+	//vk_texture_mode( r_textureMode->string, qtrue );
 	vk_render_splash();
 	vk_create_attachments();
 	vk_create_render_passes();
 	vk_create_framebuffers();
+
+	// preallocate staging buffer?
+	//vk_ensure_staging_buffer_allocation( vk.defaults.staging_buffer_size );
 
 	vk.active = qtrue;
 }
@@ -562,9 +571,14 @@ void vk_shutdown( void )
 	vk_release_vbo();
 #endif
 
+	vk_clean_staging_buffer();
+
 	vk_release_geometry_buffers();
+
+	vk_destroy_samplers();
+
     vk_destroy_sync_primitives();
-    
+   
 	// storage buffer
 	qvkDestroyBuffer(vk.device, vk.storage.buffer, NULL);
 	qvkFreeMemory(vk.device, vk.storage.memory, NULL);

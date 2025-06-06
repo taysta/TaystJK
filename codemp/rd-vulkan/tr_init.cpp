@@ -1131,17 +1131,18 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 	R_ShutdownFonts();
 
 	// contains vulkan resources/state, reinitialized on a map change.
-	if (tr.registered) {
+	//if (tr.registered) {
 
 		if (destroyWindow){
-			vk_delete_textures();
+			//vk_delete_textures();
 
 			if (restarting)
 				SaveGhoul2InfoArray();
 		}
 
+		vk_delete_textures();
 		vk_release_resources();
-	}
+	//}
 
 	//vk_release_resources(); not merged yet (https://github.com/ec-/Quake3e/commit/d31b84ebf2ab702686e98dff40b7673473026b30)
 

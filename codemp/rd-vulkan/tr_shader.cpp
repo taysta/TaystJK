@@ -3618,7 +3618,7 @@ static void FindLightingStage( const int stage ) {
 		return;
 	}
 
-	selected = -1;
+	selected = -2;
 	lightmap = -2;
 	for ( i = 0; i < stage; i++ ) {
 		const shaderStage_t *st = &stages[i];
@@ -3628,7 +3628,7 @@ static void FindLightingStage( const int stage ) {
 		}
 		if ( b->isLightmap ) {
 			// 1. prefer stages near lightmap
-			if ( selected >= 0 ) {
+			if ( selected == i - 1 ) {
 				break;
 			}
 			lightmap = i;
@@ -3654,6 +3654,12 @@ static void FindLightingStage( const int stage ) {
 			if ( ( st->stateBits & GLS_BLEND_BITS ) == ( GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_SRC_COLOR ) ) {
 				if ( ( stages[selected].stateBits & GLS_BLEND_BITS ) == ( GLS_SRCBLEND_ONE | GLS_DSTBLEND_SRC_ALPHA ) ) {
 					continue;
+				}
+			}
+			// 6. special case for q3w8 bounce_red_v/bounce_blue_v
+			if ( ( st->stateBits == ( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE ) ) ) {
+				if ( stages[selected].stateBits == ( GLS_DEPTHMASK_TRUE | GLS_ATEST_GE_80 ) ) {
+					break;
 				}
 			}
 		}
