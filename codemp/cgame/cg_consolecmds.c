@@ -991,6 +991,7 @@ void CG_SingleFireUp_f(void) {
 
 static void CG_Flipkick_f(void)
 {
+#ifdef FACEIT_FLIPKICK
 	if (cgs.restricts & RESTRICT_FLIPKICKBIND)
 		return;
 
@@ -1005,10 +1006,12 @@ static void CG_Flipkick_f(void)
 	//Get frametime or com_maxfps ?
 	//Do however many taps super fast until they are at max jump kick height?
 	//trap->SendConsoleCommand("+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup;wait 2;+moveup;wait 2;-moveup\n");
+#endif
 }
 
 static void CG_Lowjump_f(void)
 {
+#ifdef FACEIT_LOWJUMP
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+moveup;wait 2;-moveup\n");
 		return;
@@ -1017,10 +1020,12 @@ static void CG_Lowjump_f(void)
 	trap->SendConsoleCommand("+moveup\n");
 	Q_strncpyz(cg.doVstr, "-moveup\n", sizeof(cg.doVstr));
 	cg.doVstrTime = cg.time;
+#endif
 }
 
 static void CG_NorollDown_f(void)
 {
+#ifdef FACEIT_DUCK
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || (cgs.restricts & RESTRICT_DO)) {
 		trap->SendConsoleCommand("+speed;wait 2;-moveup;+movedown;-speed\n");
 		return;
@@ -1029,10 +1034,12 @@ static void CG_NorollDown_f(void)
 	trap->SendConsoleCommand("+speed;-moveup\n");
 	Q_strncpyz(cg.doVstr, "+movedown;-speed\n", sizeof(cg.doVstr));
 	cg.doVstrTime = cg.time;
+#endif
 }
 
 static void CG_NorollUp_f(void)
 {
+#ifdef FACEIT_DUCK
 	if ((cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) || cgs.restricts & RESTRICT_DO) {
 		trap->SendConsoleCommand("-movedown\n");
 		return;
@@ -1040,6 +1047,7 @@ static void CG_NorollUp_f(void)
 
 	Q_strncpyz(cg.doVstr, "-movedown;-speed\n", sizeof(cg.doVstr)); //?
 	cg.doVstrTime = cg.time;
+#endif
 }
 
 static void CG_GrappleDown_f(void) {
@@ -2498,10 +2506,16 @@ static consoleCommand_t	commands[] = {
 	{ "login",						CG_Login_f },
 
 	{ "strafeHelper",				CG_StrafeHelper_f },
+#ifdef FACEIT_FLIPKICK
 	{ "flipkick",					CG_Flipkick_f },
+#endif
+#ifdef FACEIT_LOWJUMP
 	{ "lowjump",					CG_Lowjump_f },
+#endif
+#ifdef FACEIT_DUCK
 	{ "+duck",						CG_NorollDown_f },
 	{ "-duck",						CG_NorollUp_f },
+#endif
 	{ "+grapple",					CG_GrappleDown_f },
 	{ "-grapple",					CG_GrappleUp_f },
 	{ "plugin",						CG_PluginDisable_f },
