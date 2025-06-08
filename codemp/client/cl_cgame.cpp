@@ -990,10 +990,10 @@ void CL_SetCGameTime( void ) {
 			tn = 900;
 		}
 #else
-		if (tn<-2000) {//JAPRO ENGINE
-			tn = -2000;
-		} else if (tn>2000) {
-			tn = 2000;
+		if (tn<FACEIT_MIN_TN) {//JAPRO ENGINE
+			tn = FACEIT_MIN_TN;
+		} else if (tn>FACEIT_MAX_TN) {
+			tn = FACEIT_MAX_TN;
 		}
 #endif
 

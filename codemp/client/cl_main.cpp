@@ -3409,8 +3409,8 @@ void CL_Init( void ) {
 
 	// userinfo
 	cl_name = Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
-	Cvar_Get ("rate", "25000", CVAR_USERINFO | CVAR_ARCHIVE, "Data rate" );
-	Cvar_Get ("snaps", "40", CVAR_USERINFO | CVAR_ARCHIVE, "Client snapshots per second" );
+	Cvar_Get ("rate", "90000", CVAR_USERINFO | CVAR_ARCHIVE, "Data rate" );
+	Cvar_Get ("snaps", "60", CVAR_USERINFO | CVAR_ARCHIVE, "Client snapshots per second" );
 	Cvar_Get ("model", DEFAULT_MODEL"/default", CVAR_USERINFO | CVAR_ARCHIVE, "Player model" );
 	Cvar_Get ("forcepowers", "7-1-032330000000001333", CVAR_USERINFO | CVAR_ARCHIVE, "Player forcepowers" );
 //	Cvar_Get ("g_redTeam", DEFAULT_REDTEAM_NAME, CVAR_SERVERINFO | CVAR_ARCHIVE);

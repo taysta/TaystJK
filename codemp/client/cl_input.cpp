@@ -1524,12 +1524,35 @@ qboolean CL_ReadyToSendPacket( void ) {
 		return qtrue;
 	}
 
+    // check for exceeding timenudge
+    if ( cl_timeNudge->integer < FACEIT_MIN_TN ) {
+        Cvar_SetValue( "cl_timeNudge", FACEIT_MIN_TN );
+    } else if ( cl_timeNudge->integer > FACEIT_MAX_TN ) {
+        Cvar_SetValue( "cl_timeNudge", FACEIT_MAX_TN );
+    }
+
+    // check for exceeding rate
+    int clRate = Cvar_VariableIntegerValue( "rate" );
+    if ( clRate < FACEIT_MIN_RATE ) {
+        Cvar_SetValue("rate", FACEIT_MIN_RATE);
+    } else if ( clRate > FACEIT_MAX_RATE) {
+        Cvar_SetValue("rate", FACEIT_MAX_RATE);
+    }
+
+    //check for exceeding snaps
+    int clSnaps = Cvar_VariableIntegerValue( "snaps" );
+    if ( clSnaps < FACEIT_MIN_SNAPS ) {
+        Cvar_SetValue("snaps", FACEIT_MIN_SNAPS);
+    } else if ( clSnaps > FACEIT_MAX_SNAPS) {
+        Cvar_SetValue("snaps", FACEIT_MAX_SNAPS);
+    }
+
 	// check for exceeding cl_maxpackets
-	if ( cl_maxpackets->integer < 15 ) {
-		Cvar_Set( "cl_maxpackets", "15" );
+	if ( cl_maxpackets->integer < FACEIT_MIN_PACKETS ) {
+		Cvar_SetValue( "cl_maxpackets", FACEIT_MIN_PACKETS );
 	}
-	else if ( cl_maxpackets->integer > 1000 ) {
-		Cvar_Set( "cl_maxpackets", "1000" );
+	else if ( cl_maxpackets->integer > FACEIT_MAX_PACKETS ) {
+		Cvar_SetValue( "cl_maxpackets", FACEIT_MAX_PACKETS );
 	}
 	oldPacketNum = (clc.netchan.outgoingSequence - 1) & PACKET_MASK;
 	delta = cls.realtime -  cl.outPackets[ oldPacketNum ].p_realtime;
