@@ -48,6 +48,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qcommon/q_color.h"
 #include "qcommon/q_string.h"
 #include "qcommon/disablewarnings.h"
+#include "qcommon/q_faceit.h"
 
 #include "game/teams.h" //npc team stuff
 
