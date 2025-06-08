@@ -884,9 +884,13 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 	if (cg_fovViewmodel.integer)
 	{
-		if (cg_fovAspectAdjust.integer) { //Aspect adjust us.
+#ifdef FACEIT_FOVASPECTADJUST
+        cgFov = atan(tan(desiredFov*M_PI / 360.0f) * baseAspect*aspect)*360.0f / M_PI;
+#else
+        if (cg_fovAspectAdjust.integer) { //Aspect adjust us.
 			cgFov = atan(tan(desiredFov*M_PI / 360.0f) * baseAspect*aspect)*360.0f / M_PI;
 		}
+#endif
 		if (!cg.zoomed) {
 			fracDistFOV = tanf(cg.refdef.fov_x * (M_PI / 180) * 0.5f);
 			fracWeapFOV = (1.0f / fracDistFOV) * tanf(cgFov * (M_PI / 180) * 0.5f);

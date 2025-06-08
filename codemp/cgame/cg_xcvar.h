@@ -294,7 +294,9 @@ XCVAR_DEF( cg_deferPlayers,						"1",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_errorDecay,						"100",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_footsteps,						"3",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_fov,								"90",					NULL,					CVAR_ARCHIVE )
+#ifndef FACEIT_FOVASPECTADJUST
 XCVAR_DEF( cg_fovAspectAdjust,					"1",					NULL,					CVAR_ARCHIVE ) //fixed skyportal issue
+#endif
 XCVAR_DEF( cg_fovViewmodel,						"80",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_fovViewmodelAdjust,				"1",					NULL,					CVAR_ARCHIVE ) // shifts viewmodels down above cg_fov 90
 XCVAR_DEF( cg_headTurn,							"1",					NULL,					CVAR_NONE )
