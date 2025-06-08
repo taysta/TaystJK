@@ -436,6 +436,12 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 		newThirdPersonRange = 120.0f;
 	}
 
+    if (newThirdPersonRange < FACEIT_MIN_TPR) {
+        newThirdPersonRange = FACEIT_MIN_TPR;
+    } else if (newThirdPersonRange > FACEIT_MAX_TPR) {
+        newThirdPersonRange = FACEIT_MAX_TPR;
+    }
+
 	VectorMA(cam.target.ideal, -(newThirdPersonRange), cam.fwd, cam.loc.ideal);
 }
 
@@ -1299,13 +1305,13 @@ static qboolean CG_CalcFov( void ) {
 	int		inwater;
 	float	cgFov = cg_fov.value;
 
-	if (cgFov < 1)
+	if (cgFov < FACEIT_MIN_FOV)
 	{
-		cgFov = 1;
+		cgFov = FACEIT_MIN_FOV;
 	}
-	if (cgFov > 140)//JAPRO - Clientside - Raise FOV Limit
+	if (cgFov > FACEIT_MAX_FOV)//JAPRO - Clientside - Raise FOV Limit
 	{
-		cgFov = 140;
+		cgFov = FACEIT_MAX_FOV;
 	}
 
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {

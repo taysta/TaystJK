@@ -824,10 +824,10 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	const float aspect = (float)cgs.glconfig.vidWidth / (float)cgs.glconfig.vidHeight;
 	const float desiredFov = cgFov;
 
-	if (cgFov < 1)
-		cgFov = 1;
-	else if (cgFov > 140)//JAPRO - Clientside - Raise FOV Limit
-		cgFov = 140;
+	if (cgFov < FACEIT_MIN_FOV)
+		cgFov = FACEIT_MIN_FOV;
+	else if (cgFov > FACEIT_MAX_FOV)//JAPRO - Clientside - Raise FOV Limit
+		cgFov = FACEIT_MAX_FOV;
 
 	if ( ps->persistant[PERS_TEAM] == TEAM_SPECTATOR ) {
 		return;
