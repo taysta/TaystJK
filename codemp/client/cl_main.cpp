@@ -98,9 +98,9 @@ cvar_t	*cl_framerate;
 // ja_guid is a persistent "cookie" that allows servers to track players across game sessions
 cvar_t	*cl_enableGuid;
 cvar_t	*cl_guidServerUniq;
-
+#ifndef FACEIT_IDRIVE
 cvar_t	*cl_idrive; //JAPRO ENGINE
-
+#endif
 cvar_t	*protocolswitch;
 
 cvar_t	*cl_autolodscale;

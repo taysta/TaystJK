@@ -456,7 +456,9 @@ extern	cvar_t	*m_forward;
 extern	cvar_t	*m_side;
 extern	cvar_t	*m_filter;
 
+#ifndef FACEIT_IDRIVE
 extern	cvar_t	*cl_idrive;//JAPRO ENGINE
+#endif
 extern	cvar_t	*cl_commandsize;//JAPRO ENGINE
 
 extern	cvar_t	*cl_timedemo;

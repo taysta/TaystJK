@@ -491,8 +491,10 @@ float CL_KeyState( kbutton_t *key ) {
 		} else {
 			msec += com_frameTime - key->downtime;
 		}
+#ifndef FACEIT_IDRIVE
 		if (!cl_idrive->integer)
 			key->downtime = com_frameTime;//Loda - Not sure what the fuck this is doing here, downtime is supposed to store time of when the key was initially pressed, not the most recent time its been held down..
+#endif
 	}
 
 #if 0
@@ -901,6 +903,7 @@ void CL_KeyMove( usercmd_t *cmd ) {
 	if (in_strafe.active) {
 		s1 = CL_KeyState(&in_right);
 		s2 = CL_KeyState(&in_left);
+#ifndef FACEIT_IDRIVE
 		if (cl_idrive->integer && cl_idrive->integer != 2) {
 			if (s1 && s2) {
 				if (in_right.downtime > in_left.downtime)
@@ -909,12 +912,14 @@ void CL_KeyMove( usercmd_t *cmd ) {
 					s1 = 0;
 			}
 		}
+#endif
 		side += movespeed * s1;
 		side -= movespeed * s2;
 	}
 
 	s1 = CL_KeyState(&in_moveright);
 	s2 = CL_KeyState(&in_moveleft);
+#ifndef FACEIT_IDRIVE
 	if (cl_idrive->integer && cl_idrive->integer != 2) {
 		if (s1 && s2) {
 			if (in_moveright.downtime > in_moveleft.downtime)
@@ -923,11 +928,13 @@ void CL_KeyMove( usercmd_t *cmd ) {
 				s1 = 0;
 		}
 	}
+#endif
 	side += movespeed * s1;
 	side -= movespeed * s2;
 
 	s1 = CL_KeyState (&in_up);
 	s2 = CL_KeyState (&in_down);
+#ifndef FACEIT_IDRIVE
 	if (cl_idrive->integer || cl_idrive->integer == 2) {
 		if (s1 && s2) {
 			if (in_up.downtime > in_down.downtime)
@@ -936,11 +943,13 @@ void CL_KeyMove( usercmd_t *cmd ) {
 				s1 = 0;
 		}
 	}
+#endif
 	up += movespeed * s1;
 	up -= movespeed * s2;
 
 	s1 = CL_KeyState (&in_forward);
 	s2 = CL_KeyState (&in_back);
+#ifndef FACEIT_IDRIVE
 	if (cl_idrive->integer && cl_idrive->integer != 2) {
 		if (s1 && s2) {
 			if (in_forward.downtime > in_back.downtime)
@@ -949,6 +958,7 @@ void CL_KeyMove( usercmd_t *cmd ) {
 				s1 = 0;
 		}
 	}
+#endif
 	forward += movespeed * s1;
 	forward -= movespeed * s2;		
 
@@ -1826,8 +1836,9 @@ void CL_InitInput( void ) {
 
 	cl_nodelta = Cvar_Get ("cl_nodelta", "0", 0);
 	cl_debugMove = Cvar_Get ("cl_debugMove", "0", 0);
-
+#ifndef FACEIT_IDRIVE
 	cl_idrive = Cvar_Get ("cl_idrive", "0", CVAR_ARCHIVE);//JAPRO ENGINE
+#endif
 }
 
 /*
