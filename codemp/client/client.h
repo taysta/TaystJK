@@ -459,8 +459,9 @@ extern	cvar_t	*m_filter;
 #ifndef FACEIT_IDRIVE
 extern	cvar_t	*cl_idrive;//JAPRO ENGINE
 #endif
+#ifndef FACEIT_COMMANDSIZE
 extern	cvar_t	*cl_commandsize;//JAPRO ENGINE
-
+#endif
 extern	cvar_t	*cl_timedemo;
 extern	cvar_t	*cl_aviFrameRate;
 extern	cvar_t	*cl_aviMotionJpeg;

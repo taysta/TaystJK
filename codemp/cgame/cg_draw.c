@@ -6817,8 +6817,11 @@ static void CG_DrawDisconnect( void ) {
 	usercmd_t	cmd;
 	const char		*s;
 	int			w;  // bk010215 - FIXME char message[1024];
+#ifdef FACEIT_COMMANDSIZE
+    const int REAL_CMD_BACKUP = CMD_BACKUP;
+#else
 	const int REAL_CMD_BACKUP = (cl_commandsize.integer >= 4 && cl_commandsize.integer <= 512 ) ? (cl_commandsize.integer) : (CMD_BACKUP);
-
+#endif
 	if (cgs.localServer || cg.demoPlayback)
 		return;
 

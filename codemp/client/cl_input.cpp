@@ -1452,9 +1452,11 @@ Create a new usercmd_t structure for this frame
 */
 void CL_CreateNewCommands( void ) {
 	int			cmdNum;
-
-	const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
-
+#ifdef FACEIT_COMMANDSIZE
+    const int REAL_CMD_MASK = CMD_MASK;//Loda - FPS UNLOCK ENGINE
+#else
+    const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
+#endif
 	// no need to create usercmds until we have a gamestate
 	if ( cls.state < CA_PRIMED )
 		return;
@@ -1640,8 +1642,11 @@ void CL_WritePacket( void ) {
 		Com_Printf("MAX_PACKET_USERCMDS\n");
 	}
 	if ( count >= 1 ) {
-		const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
-
+#ifdef FACEIT_COMMANDSIZE
+        const int REAL_CMD_MASK = CMD_MASK;//Loda - FPS UNLOCK ENGINE
+#else
+        const int REAL_CMD_MASK = (cl_commandsize->integer >= 4 && cl_commandsize->integer <= 512) ? (cl_commandsize->integer - 1) : (CMD_MASK);//Loda - FPS UNLOCK ENGINE
+#endif
 		if ( cl_showSend->integer ) {
 			Com_Printf( "(%i)", count );
 		}

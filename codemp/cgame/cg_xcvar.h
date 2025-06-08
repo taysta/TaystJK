@@ -209,9 +209,9 @@ XCVAR_DEF( cg_centerSize,						"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_fkDuration,						"50",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_fkFirstJumpDuration,				"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_fkSecondJumpDelay,				"0",	NULL,					CVAR_ARCHIVE )
-
-XCVAR_DEF( cl_commandsize,						"64",	NULL,					CVAR_ARCHIVE )
-
+#ifndef FACEIT_COMMANDSIZE
+XCVAR_DEF( cl_commandsize,						"512",	NULL,					CVAR_ARCHIVE )
+#endif
 XCVAR_DEF( cg_strafeTrailPlayers,				"0",	NULL,					0 )
 XCVAR_DEF( cg_strafeTrailLife,					"5",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailRacersOnly,			"0",	NULL,					CVAR_ARCHIVE )

@@ -69,7 +69,9 @@ cvar_t	*sv_paused;
 cvar_t	*com_cameraMode;
 cvar_t  *com_homepath;
 cvar_t	*com_renderfps;
+#ifndef FACEIT_COMMANDSIZE
 cvar_t	*cl_commandsize;//Loda - FPS UNLOCK ENGINE
+#endif
 #ifndef _WIN32
 cvar_t	*com_ansiColor = NULL;
 #endif
@@ -1485,6 +1487,9 @@ void Com_Init( char *commandLine ) {
 
 		com_renderfps = Cvar_Get("com_renderfps", "0", CVAR_ARCHIVE_ND);
 		cl_commandsize = Cvar_Get("cl_commandsize", "64", CVAR_ARCHIVE_ND);//Loda - FPS UNLOCK ENGINE
+#ifndef FACEIT_COMMANDSIZE
+		cl_commandsize = Cvar_Get("cl_commandsize", "256", CVAR_ARCHIVE_ND);//Loda - FPS UNLOCK ENGINE
+#endif
 #ifndef _WIN32
 		com_ansiColor = Cvar_Get( "com_ansiColor", "1", CVAR_ARCHIVE_ND );
 #endif

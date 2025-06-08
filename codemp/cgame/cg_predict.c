@@ -995,8 +995,11 @@ void CG_PredictPlayerState( void ) {
 	usercmd_t	latestCmd;
 	centity_t *pEnt;
 	clientInfo_t *ci;
-	const int REAL_CMD_BACKUP = (cl_commandsize.integer >= 4 && cl_commandsize.integer <= 512 ) ? (cl_commandsize.integer) : (CMD_BACKUP); //Loda - FPS UNLOCK client modcode
-
+#ifdef FACEIT_COMMANDSIZE
+    const int REAL_CMD_BACKUP = CMD_BACKUP; //Loda - FPS UNLOCK client modcode
+#else
+    const int REAL_CMD_BACKUP = (cl_commandsize.integer >= 4 && cl_commandsize.integer <= 512 ) ? (cl_commandsize.integer) : (CMD_BACKUP); //Loda - FPS UNLOCK client modcode
+#endif
 	cg.hyperspace = qfalse;	// will be set if touching a trigger_teleport
 
 	// if this is the first frame we must guarantee
