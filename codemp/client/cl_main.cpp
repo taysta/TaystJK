@@ -2473,12 +2473,15 @@ void CL_Frame ( int msec ) {
 	if ( !com_cl_running->integer ) {
 		return;
 	}
-
+#ifdef FACEIT_RENDERFPS
+    render = qtrue;
+    cls.lastDrawTime = cls.realtime;
+#else
 	if ((com_renderfps->integer <= 0) || ((cls.realtime >= cls.lastDrawTime + (1000 / com_renderfps->integer)))) {
 		render = qtrue;
 		cls.lastDrawTime = cls.realtime;
 	}
-
+#endif
 	SE_CheckForLanguageUpdates();	// will take zero time to execute unless language changes, then will reload strings.
 									//	of course this still doesn't work for menus...
 

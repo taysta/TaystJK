@@ -383,13 +383,14 @@ void SCR_DrawDemoRecording( void ) {
 	char	string[1024];
 	int		pos, xpos, ypos;
 
+#ifndef FACEIT_RENDERFPS
 	if (com_renderfps->integer > 0) //Draw render FPS - Sad hack sortof
 	{
 		char	string2[32];
 		Com_sprintf(string2, sizeof(string2), "%i", 1000 / cls.frametime);
 		SCR_DrawStringExt2(SCREEN_WIDTH - 128 - strlen(string2), 2.0f, 8.0f*cls.widthRatioCoef, 8.0f, string2, g_color_table[7], qtrue, qfalse);
 	}
-
+#endif
 	if ( !clc.demorecording ) {
 		return;
 	}

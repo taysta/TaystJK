@@ -884,7 +884,9 @@ extern	cvar_t	*com_G2Report;
 extern	cvar_t	*com_affinity;
 extern	cvar_t	*com_busyWait;
 
+#ifndef FACEIT_RENDERFPS
 extern	cvar_t	*com_renderfps;
+#endif
 
 // both client and server must agree to pause
 extern	cvar_t	*cl_paused;
