@@ -388,6 +388,7 @@ static void vk_initTextureCompression( void )
 void vk_initialize( void )
 {
 	VkPhysicalDeviceProperties props;
+	uint32_t i;
 
 	vk_init_library();
 
@@ -404,6 +405,49 @@ void vk_initialize( void )
 	vk.uniform_alignment = props.limits.minUniformBufferOffsetAlignment;
 	vk.uniform_item_size = PAD( sizeof(vkUniform_t), (size_t)vk.uniform_alignment );
 	vk.storage_alignment = MAX( props.limits.minStorageBufferOffsetAlignment, sizeof(uint32_t) ); //for flare visibility tests
+
+	vk.defaults.geometry_size = VERTEX_BUFFER_SIZE;
+	vk.defaults.staging_size = STAGING_BUFFER_SIZE;
+
+	// get memory size & defaults
+	{
+		VkPhysicalDeviceMemoryProperties props;
+		VkDeviceSize maxDedicatedSize = 0;
+		VkDeviceSize maxBARSize = 0;
+		qvkGetPhysicalDeviceMemoryProperties( vk.physical_device, &props );
+		for ( i = 0; i < props.memoryTypeCount; i++ ) {
+			if ( props.memoryTypes[i].propertyFlags == VK_MEMORY_HEAP_DEVICE_LOCAL_BIT ) {
+				maxDedicatedSize = props.memoryHeaps[props.memoryTypes[i].heapIndex].size;
+			}
+			else if ( props.memoryTypes[i].propertyFlags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT ) {
+				if ( maxDedicatedSize == 0 || props.memoryHeaps[props.memoryTypes[i].heapIndex].size > maxDedicatedSize ) {
+					maxDedicatedSize = props.memoryHeaps[props.memoryTypes[i].heapIndex].size;
+				}
+			}
+			if ( props.memoryTypes[i].propertyFlags == (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) ) {
+				maxBARSize = props.memoryHeaps[props.memoryTypes[i].heapIndex].size;
+			}
+			else if ( (props.memoryTypes[i].propertyFlags & (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)) == (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) ) {
+				if ( maxBARSize == 0 ) {
+					maxBARSize = props.memoryHeaps[props.memoryTypes[i].heapIndex].size;
+				}
+			}
+		}
+
+		if ( maxDedicatedSize != 0 ) {
+			ri.Printf( PRINT_ALL, "...device memory size: %iMB\n", (int)((maxDedicatedSize + (1024 * 1024) - 1) / (1024 * 1024)) );
+		}
+		if ( maxBARSize != 0 ) {
+			if ( maxBARSize >= 128 * 1024 * 1024 ) {
+				// user larger buffers to avoid potential reallocations
+				vk.defaults.geometry_size = VERTEX_BUFFER_SIZE_HI;
+				vk.defaults.staging_size = STAGING_BUFFER_SIZE_HI;
+			}
+#ifdef _DEBUG
+			ri.Printf( PRINT_ALL, "...BAR memory size: %iMB\n", (int)((maxBARSize + (1024 * 1024) - 1) / (1024 * 1024)) );
+#endif
+		}
+	}
 
 	// maxTextureSize must not exceed IMAGE_CHUNK_SIZE
 	glConfig.maxTextureSize = MIN( props.limits.maxImageDimension2D, log2pad( sqrtf( IMAGE_CHUNK_SIZE / 4 ), 0 ) );
@@ -506,7 +550,7 @@ void vk_initialize( void )
 	vk_create_descriptor_layout();
 	vk_create_pipeline_layout();
 
-	vk.geometry_buffer_size_new = VERTEX_BUFFER_SIZE;
+	vk.geometry_buffer_size_new = vk.defaults.geometry_size;
 	vk_create_vertex_buffer( vk.geometry_buffer_size_new );
 	vk_create_storage_buffer( MAX_FLARES * vk.storage_alignment );
 	vk_create_shader_modules();
@@ -529,7 +573,9 @@ void vk_initialize( void )
 	vk_create_framebuffers();
 
 	// preallocate staging buffer?
-	//vk_ensure_staging_buffer_allocation( vk.defaults.staging_buffer_size );
+	if ( vk.defaults.staging_size == STAGING_BUFFER_SIZE_HI ) {
+		vk_alloc_staging_buffer( vk.defaults.staging_size );
+	}
 
 	vk.active = qtrue;
 }

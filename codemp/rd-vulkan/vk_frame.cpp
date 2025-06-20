@@ -1153,7 +1153,7 @@ void vk_begin_frame( void )
 		return;
 
 #ifdef USE_UPLOAD_QUEUE
-	vk_submit_staging_buffer( qtrue );
+	vk_flush_staging_buffer( qtrue );
 #endif
 
 	vk.cmd = &vk.tess[ vk.cmd_index ];
