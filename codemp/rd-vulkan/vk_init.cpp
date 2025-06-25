@@ -197,6 +197,10 @@ static void vk_render_splash( void )
 	//VK_CHECK( qvkWaitForFences( vk.device, 1, &vk.cmd->rendering_finished_fence, VK_TRUE, 1e10 ) );
 	//VK_CHECK( qvkResetFences( vk.device, 1, &vk.cmd->rendering_finished_fence ) );
 
+#ifdef USE_UPLOAD_QUEUE
+	vk_flush_staging_buffer( qfalse );
+#endif
+
 	qvkAcquireNextImageKHR( vk.device, vk.swapchain, 1 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.cmd->swapchain_image_index );
 	imageBuffer = vk.swapchain_images[vk.cmd->swapchain_image_index];
 
