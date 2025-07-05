@@ -1922,7 +1922,6 @@ static void R_PreLoadFogs( const lump_t *l ) {
 	}
 }
 
-
 /*
 =================
 R_LoadFogs

@@ -46,7 +46,6 @@ void vk_create_sync_primitives( void )
 
         // swapchain image acquired
         VK_CHECK( qvkCreateSemaphore( vk.device, &desc, NULL, &vk.tess[i].image_acquired ) );
-        VK_CHECK( qvkCreateSemaphore( vk.device, &desc, NULL, &vk.tess[i].rendering_finished ) );
 #ifdef USE_UPLOAD_QUEUE
 		// second semaphore to synchronize additional tasks (e.g. image upload)
 		VK_CHECK( qvkCreateSemaphore( vk.device, &desc, NULL, &vk.tess[i].rendering_finished2 ) );
@@ -61,8 +60,7 @@ void vk_create_sync_primitives( void )
 		//vk.tess[i].waitForFence = qtrue;
         vk.tess[i].waitForFence = qfalse;
 
-        VK_SET_OBJECT_NAME( vk.tess[i].image_acquired, va("image_acquired semaphore %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
-        VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished, "rendering_finished semaphore", VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );     
+        VK_SET_OBJECT_NAME( vk.tess[i].image_acquired, va("image_acquired semaphore %i", i), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );  
 #ifdef USE_UPLOAD_QUEUE
 		VK_SET_OBJECT_NAME( vk.tess[i].rendering_finished2, va( "rendering_finished2 semaphore %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
 #endif
@@ -95,7 +93,6 @@ void vk_destroy_sync_primitives( void )
 
     for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
         qvkDestroySemaphore(vk.device, vk.tess[i].image_acquired, NULL);
-        qvkDestroySemaphore(vk.device, vk.tess[i].rendering_finished, NULL);
 #ifdef USE_UPLOAD_QUEUE
 		qvkDestroySemaphore( vk.device, vk.tess[i].rendering_finished2, NULL );
 #endif
@@ -542,6 +539,7 @@ void vk_create_render_passes()
 #else
         attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 #endif
+        attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         attachments[2].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         attachments[2].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         attachments[2].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
@@ -1155,7 +1153,7 @@ void vk_begin_frame( void )
 		return;
 
 #ifdef USE_UPLOAD_QUEUE
-	vk_submit_staging_buffer( qtrue );
+	vk_flush_staging_buffer( qtrue );
 #endif
 
 	vk.cmd = &vk.tess[ vk.cmd_index ];
@@ -1193,7 +1191,7 @@ _retry:
 		}
         vk.cmd->swapchain_image_acquired = qtrue;
 	}
-
+    
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     begin_info.pNext = VK_NULL_HANDLE;
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
@@ -1241,6 +1239,7 @@ _retry:
     Com_Memset( vk.cmd->vbo_offset, 0, sizeof( vk.cmd->vbo_offset ) );
     vk.cmd->curr_index_buffer = VK_NULL_HANDLE;
     vk.cmd->curr_index_offset = 0;
+    vk.cmd->num_indexes = 0;
 
     Com_Memset(&vk.cmd->descriptor_set, 0, sizeof(vk.cmd->descriptor_set));
     vk.cmd->descriptor_set.start = ~0U;
@@ -1315,14 +1314,13 @@ void vk_release_resources( void ) {
 
     vk_clean_staging_buffer();
 
-    if (vk_world.staging_buffer != VK_NULL_HANDLE)
-        qvkDestroyBuffer(vk.device, vk_world.staging_buffer, NULL);
+    if (vk.staging_buffer.handle != VK_NULL_HANDLE)
+        qvkDestroyBuffer(vk.device, vk.staging_buffer.handle, NULL);
 
-    if (vk_world.staging_buffer_memory != VK_NULL_HANDLE)
-        qvkFreeMemory(vk.device, vk_world.staging_buffer_memory, NULL);
+    if (vk.staging_buffer.memory != VK_NULL_HANDLE)
+        qvkFreeMemory(vk.device, vk.staging_buffer.memory, NULL);
 
-    for (i = 0; i < vk_world.num_samplers; i++)
-        qvkDestroySampler(vk.device, vk_world.samplers[i], NULL);
+    // vk_destroy_samplers();
 
     for (i = vk.pipelines_world_base; i < vk.pipelines_count; i++) {
         for (j = 0; j < RENDER_PASS_COUNT; j++) {
@@ -1342,12 +1340,14 @@ void vk_release_resources( void ) {
         // if we allocated more than 2 image chunks - use doubled default size
         vk.image_chunk_size = (IMAGE_CHUNK_SIZE * 2);
     }
+#if 0 // do not reduce chunk size
     else if (vk_world.num_image_chunks == 1) {
         // otherwise set to default if used less than a half
         if (vk_world.image_chunks[0].used < (IMAGE_CHUNK_SIZE - (IMAGE_CHUNK_SIZE / 10))) {
             vk.image_chunk_size = IMAGE_CHUNK_SIZE;
         }
     }
+#endif
 
     Com_Memset(&vk_world, 0, sizeof(vk_world));
 
@@ -1440,7 +1440,7 @@ void vk_end_frame( void )
 			submit_info.waitSemaphoreCount = 2;
 			submit_info.pWaitSemaphores = &waits[0];
 			submit_info.pWaitDstStageMask = &wait_dst_stage_mask[0];
-			signals[0] = vk.cmd->rendering_finished;
+			signals[0] = vk.swapchain_rendering_finished[ vk.cmd->swapchain_image_index ];
 			signals[1] = vk.cmd->rendering_finished2;
 			submit_info.signalSemaphoreCount = 2;
 			submit_info.pSignalSemaphores = &signals[0];
@@ -1453,7 +1453,7 @@ void vk_end_frame( void )
 			submit_info.waitSemaphoreCount = 2;
 			submit_info.pWaitSemaphores = &waits[0];
 			submit_info.pWaitDstStageMask = &wait_dst_stage_mask[0];
-			signals[0] = vk.cmd->rendering_finished;
+			signals[0] = vk.swapchain_rendering_finished[ vk.cmd->swapchain_image_index ];
 			signals[1] = vk.cmd->rendering_finished2;
 			submit_info.signalSemaphoreCount = 2;
 			submit_info.pSignalSemaphores = &signals[0];
@@ -1464,14 +1464,14 @@ void vk_end_frame( void )
 			submit_info.pWaitSemaphores = &vk.cmd->image_acquired;
 			submit_info.pWaitDstStageMask = &wait_dst_stage_mask[0];
 			submit_info.signalSemaphoreCount = 1;
-			submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
+			submit_info.pSignalSemaphores = &vk.swapchain_rendering_finished[ vk.cmd->swapchain_image_index ];
 		}
 #else
 		submit_info.waitSemaphoreCount = 1;
 		submit_info.pWaitSemaphores = &vk.cmd->image_acquired;
 		submit_info.pWaitDstStageMask = &wait_dst_stage_mask;
 		submit_info.signalSemaphoreCount = 1;
-		submit_info.pSignalSemaphores = &vk.cmd->rendering_finished;
+		submit_info.pSignalSemaphores = &vk.swapchain_rendering_finished[ vk.cmd->swapchain_image_index ];
 #endif
     }
     else {
@@ -1507,7 +1507,7 @@ void vk_present_frame( void )
 	present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	present_info.pNext = NULL;
 	present_info.waitSemaphoreCount = 1;
-	present_info.pWaitSemaphores = &vk.cmd->rendering_finished;
+	present_info.pWaitSemaphores = &vk.swapchain_rendering_finished[ vk.cmd->swapchain_image_index ];
 	present_info.swapchainCount = 1;
 	present_info.pSwapchains = &vk.swapchain;
 	present_info.pImageIndices = &vk.cmd->swapchain_image_index;

@@ -392,15 +392,13 @@ static void VBO_AddStageTxCoords(vbo_t *vbo, const int stage, const shaderComman
 	memcpy(vbo->vbo_buffer + offs, input->svars.texcoordPtr[bundle], size);
 }
 
-void VBO_PushData(int itemIndex, shaderCommands_t *input)
+void VBO_PushData( int itemIndex, shaderCommands_t *input)
 {
 	const shaderStage_t *pStage;
 	vbo_t *vbo = &world_vbo;
 	vbo_item_t *vi = vbo->items + itemIndex;
 	int i;
-
 	VBO_AddGeometry(vbo, vi, input);
-
 	for (i = 0; i < MAX_VBO_STAGES; i++)
 	{
 		pStage = input->xstages[i];
@@ -439,7 +437,6 @@ void VBO_PushData(int itemIndex, shaderCommands_t *input)
 			VBO_AddStageTxCoords(vbo, i, input, 2);
 		}
 	}
-
 	input->shader->curVertexes += input->numVertexes;
 	input->shader->curIndexes += input->numIndexes;
 
@@ -893,11 +890,9 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	VkDeviceSize vertex_buffer_offset;
 	VkDeviceSize allocationSize;
 	uint32_t memory_type_bits;
-	VkBuffer staging_vertex_buffer;
-	VkDeviceMemory staging_buffer_memory;
 	VkCommandBuffer command_buffer;
 	VkBufferCopy copyRegion[1];
-	void *data;
+	VkDeviceSize uploadDone;
 
 	vk_release_vbo();
 
@@ -912,11 +907,6 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
 	VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &vk.vbo.vertex_buffer));
-
-	// staging buffer
-	desc.size = vbo_size;
-	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-	VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &staging_vertex_buffer));
 
 	// memory requirements
 	qvkGetBufferMemoryRequirements(vk.device, vk.vbo.vertex_buffer, &vb_mem_reqs);
@@ -933,37 +923,27 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 
 	// staging buffers
 
-	// memory requirements
-	qvkGetBufferMemoryRequirements(vk.device, staging_vertex_buffer, &vb_mem_reqs);
-	vertex_buffer_offset = 0;
-	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
-	memory_type_bits = vb_mem_reqs.memoryTypeBits;
-
-	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-	alloc_info.pNext = NULL;
-	alloc_info.allocationSize = allocationSize;
-	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &staging_buffer_memory));
-	qvkBindBufferMemory(vk.device, staging_vertex_buffer, staging_buffer_memory, vertex_buffer_offset);
-
-	VK_CHECK(qvkMapMemory(vk.device, staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
-	memcpy((byte*)data + vertex_buffer_offset, vbo_data, vbo_size);
-	qvkUnmapMemory(vk.device, staging_buffer_memory);
-
-	command_buffer = vk_begin_command_buffer();
-	copyRegion[0].srcOffset = 0;
-	copyRegion[0].dstOffset = 0;
-	copyRegion[0].size = vbo_size;
-	qvkCmdCopyBuffer(command_buffer, staging_vertex_buffer, vk.vbo.vertex_buffer, 1, &copyRegion[0]);
-
-	vk_end_command_buffer( command_buffer, __func__ );
-
-	qvkDestroyBuffer(vk.device, staging_vertex_buffer, NULL);
-	qvkFreeMemory(vk.device, staging_buffer_memory, NULL);
+	// utilize existing staging bufferAdd commentMore actions
+	vk_flush_staging_buffer( qfalse );
+	uploadDone = 0;
+	while ( uploadDone < vbo_size ) {
+		VkDeviceSize uploadSize = vk.staging_buffer.size;
+		if ( uploadDone + uploadSize > vbo_size ) {
+			uploadSize = vbo_size - uploadDone;
+		}
+		memcpy(vk.staging_buffer.ptr + 0, vbo_data + uploadDone, uploadSize);
+		command_buffer = vk_begin_command_buffer();
+		copyRegion[0].srcOffset = 0;
+		copyRegion[0].dstOffset = uploadDone;
+		copyRegion[0].size = uploadSize;
+		qvkCmdCopyBuffer( command_buffer, vk.staging_buffer.handle, vk.vbo.vertex_buffer, 1, &copyRegion[0] );
+		vk_end_command_buffer( command_buffer, __func__ );
+		uploadDone += uploadSize;
+	}
 
 	VK_SET_OBJECT_NAME(vk.vbo.vertex_buffer, "static VBO", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
 	VK_SET_OBJECT_NAME(vk.vbo.buffer_memory, "static VBO memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 
 	return qtrue;
 }
-#endif 
+#endif

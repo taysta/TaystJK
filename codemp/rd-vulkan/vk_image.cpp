@@ -86,8 +86,17 @@ void vk_texture_mode( const char *string, const qboolean init ) {
 		return;
 	}
 
+	if ( gl_filter_min == vk.samplers.filter_min && gl_filter_max == vk.samplers.filter_max ) {
+		return;
+	}
+
 	vk_wait_idle();
-	for ( i = 0 ; i < tr.numImages ; i++ ) {
+	vk_destroy_samplers();
+
+	vk.samplers.filter_min = gl_filter_min;
+	vk.samplers.filter_max = gl_filter_max;
+	vk_update_attachment_descriptors();
+	for ( i = 0; i < tr.numImages; i++ ) {
 		img = tr.images[i];
 		if ( img->flags & IMGFLAG_MIPMAP ) {
 			vk_update_descriptor_set( img, qtrue );
@@ -120,6 +129,19 @@ size_t cstrlen( const char *str )
     return (s - str);
 }
 
+void vk_destroy_samplers( void )
+{
+	int i;
+
+	for ( i = 0; i < vk.samplers.count; i++ ) {
+		qvkDestroySampler( vk.device, vk.samplers.handle[i], NULL );
+		memset( &vk.samplers.def[i], 0x0, sizeof( vk.samplers.def[i] ) );
+		vk.samplers.handle[i] = VK_NULL_HANDLE;
+	}
+
+	vk.samplers.count = 0;
+}
+
 VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	VkSamplerAddressMode address_mode;
 	VkSamplerCreateInfo desc;
@@ -131,16 +153,16 @@ VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	int i;
 
 	// Look for sampler among existing samplers.
-	for ( i = 0; i < vk_world.num_samplers; i++ ) {
-		const Vk_Sampler_Def *cur_def = &vk_world.sampler_defs[i];
+	for ( i = 0; i < vk.samplers.count; i++ ) {
+		const Vk_Sampler_Def *cur_def = &vk.samplers.def[i];
 		if( memcmp( cur_def, def, sizeof( *def ) ) == 0 )
 		{
-			return vk_world.samplers[i];
+			return vk.samplers.handle[i];
 		}
 	}
 
 	// Create new sampler.
-	if (vk_world.num_samplers >= MAX_VK_SAMPLERS) {
+	if (vk.samplers.count >= MAX_VK_SAMPLERS) {
 		ri.Error(ERR_DROP, "vk_find_sampler: MAX_VK_SAMPLERS hit\n");
 	}
 
@@ -223,11 +245,11 @@ VkSampler vk_find_sampler( const Vk_Sampler_Def *def ) {
 	desc.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
 	desc.unnormalizedCoordinates = VK_FALSE;
 	VK_CHECK(qvkCreateSampler(vk.device, &desc, NULL, &sampler));
-	VK_SET_OBJECT_NAME(sampler, va("image sampler %i", vk_world.num_samplers), VK_DEBUG_REPORT_OBJECT_TYPE_SAMPLER_EXT);
+	VK_SET_OBJECT_NAME(sampler, va("image sampler %i", vk.samplers.count), VK_DEBUG_REPORT_OBJECT_TYPE_SAMPLER_EXT);
 
-	vk_world.sampler_defs[vk_world.num_samplers] = *def;
-	vk_world.samplers[vk_world.num_samplers] = sampler;
-	vk_world.num_samplers++;
+	vk.samplers.def[vk.samplers.count] = *def;
+	vk.samplers.handle[vk.samplers.count] = sampler;
+	vk.samplers.count++;
 
 	return sampler;
 }
@@ -639,53 +661,56 @@ static VkCommandBuffer staging_command_buffer = VK_NULL_HANDLE;
 
 void vk_clean_staging_buffer( void )
 {
-	if ( vk_world.staging_buffer != VK_NULL_HANDLE ) {
-		qvkDestroyBuffer( vk.device, vk_world.staging_buffer, NULL );
-		vk_world.staging_buffer = VK_NULL_HANDLE;
+	if ( vk.staging_buffer.handle != VK_NULL_HANDLE ) {
+		qvkDestroyBuffer( vk.device, vk.staging_buffer.handle, NULL );
+		vk.staging_buffer.handle = VK_NULL_HANDLE;
 	}
-	if ( vk_world.staging_buffer_memory != VK_NULL_HANDLE ) {
-		qvkFreeMemory( vk.device, vk_world.staging_buffer_memory, NULL );
-		vk_world.staging_buffer_memory = VK_NULL_HANDLE;
+	if ( vk.staging_buffer.memory != VK_NULL_HANDLE ) {
+		qvkFreeMemory( vk.device, vk.staging_buffer.memory, NULL );
+		vk.staging_buffer.memory = VK_NULL_HANDLE;
 	}
 
-	vk_world.staging_buffer_ptr = NULL;
-	vk_world.staging_buffer_size = 0;
+	vk.staging_buffer.ptr = NULL;
+	vk.staging_buffer.size = 0;
 #ifdef USE_UPLOAD_QUEUE
-	vk_world.staging_buffer_offset = 0;
+	vk.staging_buffer.offset = 0;
 #endif
 }
 
 #ifdef USE_UPLOAD_QUEUE
-static void vk_wait_staging_buffer( void )
+static qboolean vk_wait_staging_buffer( void )
 {
-	if ( vk.aux_fence_wait )
-	{
-		VkResult res;
-		res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
+	if ( vk.aux_fence_wait ) {
+		VkResult res = qvkWaitForFences( vk.device, 1, &vk.aux_fence, VK_TRUE, 5 * 1000000000ULL );
+
 		if ( res != VK_SUCCESS ) {
 			ri.Error( ERR_FATAL, "vkWaitForFences() failed with %s at %s", vk_result_string( res ), __func__ );
 		}
 		qvkResetFences( vk.device, 1, &vk.aux_fence );
-		vk.aux_fence_wait = qfalse;
 		VK_CHECK( qvkResetCommandBuffer( vk.staging_command_buffer, 0 ) );
+		vk.staging_buffer.offset = 0; // FIXME: is this correct?
+		vk.aux_fence_wait = qfalse;
+		return qtrue;
+	} else {
+		return qfalse;
 	}
 }
 
 
-void vk_submit_staging_buffer( qboolean final )
+void vk_flush_staging_buffer( qboolean final )
 {
 	const VkPipelineStageFlags wait_dst_stage_mask = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
 	VkSemaphore waits;
 	VkSubmitInfo submit_info;
 	VkResult res;
 
-	if ( vk_world.staging_buffer_offset == 0 ) {
+	if ( vk.staging_buffer.offset == 0 ) {
 		return;
 	}
 
-	//ri.Printf( PRINT_WARNING, S_COLOR_CYAN ">>> flush %i bytes (final=%i)<<<\n", (int)vk_world.staging_buffer_offset, final );
+	//ri.Printf( PRINT_WARNING, S_COLOR_CYAN ">>> flush %i bytes (final=%i)<<<\n", (int)vk.staging_buffer.offset, final );
 
-	vk_world.staging_buffer_offset = 0;
+	vk.staging_buffer.offset = 0;
 
 	VK_CHECK( qvkEndCommandBuffer( vk.staging_command_buffer ) );
 
@@ -733,7 +758,7 @@ void vk_submit_staging_buffer( qboolean final )
 }
 #endif // USE_UPLOAD_QUEUE
 
-static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
+void vk_alloc_staging_buffer( VkDeviceSize size )
 {
 	VkBufferCreateInfo buffer_desc;
 	VkMemoryRequirements memory_requirements;
@@ -741,38 +766,22 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 	uint32_t memory_type;
 	void *data;
 
-#ifdef USE_UPLOAD_QUEUE
-	if ( vk_world.staging_buffer_size - vk_world.staging_buffer_offset >= size ) {
-		return;
-	}
-
-	vk_submit_staging_buffer( qfalse );
-
-	if ( vk_world.staging_buffer_size /* - vk_world.staging_buffer_offset */ >= size ) {
-		return;
-	}
-#else
-	if ( vk_world.staging_buffer_size >= size ) {
-		return;
-	}
-#endif
-
 	vk_clean_staging_buffer();
 
-	vk_world.staging_buffer_size = MAX( size, STAGING_BUFFER_SIZE  );
-	vk_world.staging_buffer_size = PAD( vk_world.staging_buffer_size, 1024 * 1024 );
+	vk.staging_buffer.size = MAX( size, STAGING_BUFFER_SIZE  );
+	vk.staging_buffer.size = PAD( vk.staging_buffer.size, 1024 * 1024 );
 
 	buffer_desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	buffer_desc.pNext = NULL;
 	buffer_desc.flags = 0;
-	buffer_desc.size = vk_world.staging_buffer_size;
+	buffer_desc.size = vk.staging_buffer.size;
 	buffer_desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 	buffer_desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	buffer_desc.queueFamilyIndexCount = 0;
 	buffer_desc.pQueueFamilyIndices = NULL;
-	VK_CHECK(qvkCreateBuffer(vk.device, &buffer_desc, NULL, &vk_world.staging_buffer));
+	VK_CHECK(qvkCreateBuffer(vk.device, &buffer_desc, NULL, &vk.staging_buffer.handle));
 
-	qvkGetBufferMemoryRequirements( vk.device, vk_world.staging_buffer, &memory_requirements );
+	qvkGetBufferMemoryRequirements( vk.device, vk.staging_buffer.handle, &memory_requirements );
 
 	memory_type = vk_find_memory_type(memory_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -781,16 +790,16 @@ static void vk_ensure_staging_buffer_allocation( VkDeviceSize size )
 	alloc_info.allocationSize = memory_requirements.size;
 	alloc_info.memoryTypeIndex = memory_type;
 
-	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk_world.staging_buffer_memory));
-	VK_CHECK(qvkBindBufferMemory(vk.device, vk_world.staging_buffer, vk_world.staging_buffer_memory, 0));
+	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk.staging_buffer.memory));
+	VK_CHECK(qvkBindBufferMemory(vk.device, vk.staging_buffer.handle, vk.staging_buffer.memory, 0));
 
-	VK_CHECK(qvkMapMemory(vk.device, vk_world.staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
-	vk_world.staging_buffer_ptr = (byte*)data;
+	VK_CHECK(qvkMapMemory(vk.device, vk.staging_buffer.memory, 0, VK_WHOLE_SIZE, 0, &data));
+	vk.staging_buffer.ptr = (byte*)data;
 #ifdef USE_UPLOAD_QUEUE
-	vk_world.staging_buffer_offset = 0;
+	vk.staging_buffer.offset = 0;
 #endif
-	VK_SET_OBJECT_NAME(vk_world.staging_buffer, "staging buffer", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
-	VK_SET_OBJECT_NAME(vk_world.staging_buffer_memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
+	VK_SET_OBJECT_NAME(vk.staging_buffer.handle, "staging buffer", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
+	VK_SET_OBJECT_NAME(vk.staging_buffer.memory, "staging buffer memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
 }
 
 static byte *vk_resample_image_data( const int target_format, byte *data, const int data_size, int *bytes_per_pixel ) {
@@ -868,11 +877,8 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 	VkBufferImageCopy region;
 
 	byte *buf;
-	int bpp, mip_level_size;
+	int n, mip_level_size;
 	qboolean compressed = qfalse;
-#ifdef USE_UPLOAD_QUEUE
-	int i;
-#endif
 
 	int num_regions = 0;
 	int buffer_size = 0;
@@ -882,7 +888,7 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		buf = pixels;
 	}
 	else {
-		buf = vk_resample_image_data( image->internalFormat, pixels, size, &bpp );
+		buf = vk_resample_image_data( image->internalFormat, pixels, size, &n /*bpp*/ );
 	}
 
 	//if ( batch_by_format != image->internalFormat )
@@ -913,7 +919,7 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		if ( compressed )
 			mip_level_size = rygCompressedSize(width, height);
 		else
-			mip_level_size = width * height * bpp;
+			mip_level_size = width * height * n;
 
 		buffer_size += mip_level_size;
 
@@ -931,21 +937,31 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 	}
 
 #ifdef USE_UPLOAD_QUEUE
-	vk_wait_staging_buffer();
+	if ( vk_wait_staging_buffer() ) {
+		// wait for vkQueueSubmit() completion before new upload
+	}
 
 	if ( compressed ) {
-		vk_world.staging_buffer_offset = PAD(vk_world.staging_buffer_offset, 16);
+		vk.staging_buffer.offset = PAD(vk.staging_buffer.offset, 16);
 	}
 
-	vk_ensure_staging_buffer_allocation( buffer_size );
-
-	for ( i = 0; i < num_regions; i++ ) {
-		regions[i].bufferOffset += vk_world.staging_buffer_offset;
+	if ( vk.staging_buffer.size - vk.staging_buffer.offset < buffer_size ) {
+		// try to flush staging buffer and reset offset
+		vk_flush_staging_buffer( qfalse );
 	}
 
-	Com_Memcpy( vk_world.staging_buffer_ptr + vk_world.staging_buffer_offset, buf, buffer_size );
+	if ( vk.staging_buffer.size /* - vk_world.staging_buffer_offset */ < buffer_size ) {
+		// if still not enough - reallocate staging buffer
+		vk_alloc_staging_buffer( buffer_size );
+	}
 
-	if ( vk_world.staging_buffer_offset == 0 ) {
+	for ( n = 0; n < num_regions; n++ ) {
+		regions[n].bufferOffset += vk.staging_buffer.offset;
+	}
+
+	Com_Memcpy( vk.staging_buffer.ptr + vk.staging_buffer.offset, buf, buffer_size );
+
+	if ( vk.staging_buffer.offset == 0 ) {
 		VkCommandBufferBeginInfo begin_info;
 		begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 		begin_info.pNext = NULL;
@@ -953,32 +969,41 @@ void vk_upload_image_data( image_t *image, int x, int y, int width,
 		begin_info.pInheritanceInfo = NULL;
 		VK_CHECK( qvkBeginCommandBuffer( vk.staging_command_buffer, &begin_info ) );
 	}
-	//ri.Printf( PRINT_WARNING, "batch @%6i + %i %s \n", (int)vk_world.staging_buffer_offset, (int)buffer_size, image->imgName );
-	vk_world.staging_buffer_offset += buffer_size;
+
+	//ri.Printf( PRINT_WARNING, "batch @%6i + %i %s \n", (int)vk.staging_buffer.offset, (int)buffer_size, image->imgName );
+	vk.staging_buffer.offset += buffer_size;
 
 	command_buffer = vk.staging_command_buffer;
-#else
-	vk_ensure_staging_buffer_allocation( buffer_size );
-
-	Com_Memcpy( vk_world.staging_buffer_ptr, buf, buffer_size );
-
-	command_buffer = vk_begin_command_buffer();
-#endif
 
 	if ( update ) {
-		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT,
+		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
 			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, 0 );
 	} else {
-		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT,
+		vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, 
 			VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_PIPELINE_STAGE_HOST_BIT, 0 );
 	}
 
-	qvkCmdCopyBufferToImage( command_buffer, vk_world.staging_buffer, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions );
+	qvkCmdCopyBufferToImage( command_buffer, vk.staging_buffer.handle, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions );
 
+	// final transition after upload comleted
 	vk_record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 0, 0 );
+#else
+	if ( vk_world.staging_buffer_size < buffer_size ) {
+		vk_alloc_staging_buffer( buffer_size );
+	}
 
-#ifndef USE_UPLOAD_QUEUE
-	vk_end_command_buffer( command_buffer, __func__ );
+	Com_Memcpy( vk_world.staging_buffer_ptr, buf, buffer_size );
+
+	command_buffer = begin_command_buffer();
+	// record_buffer_memory_barrier( command_buffer, vk_world.staging_buffer, VK_WHOLE_SIZE, 0, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_TRANSFER_READ_BIT );
+	if ( update ) {
+		record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 0, 0 );
+	} else {
+		record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_PIPELINE_STAGE_HOST_BIT, 0 );
+	}
+	qvkCmdCopyBufferToImage( command_buffer, vk.staging_buffer.handle, image->handle, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, num_regions, regions );
+	record_image_layout_transition( command_buffer, image->handle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 0, 0 );
+	end_command_buffer( command_buffer, __func__ );
 #endif
 
 	if ( buf != pixels ) {
@@ -1200,14 +1225,16 @@ static void vk_destroy_image_resources( VkImage *image, VkImageView *imageView )
 
 
 void vk_delete_textures( void ) {
-
-	image_t *img;
 	int i;
 
 	vk_wait_idle();
 
+	if ( tr.numImages == 0 ) {
+		return;
+	}
+
 	for (i = 0; i < tr.numImages; i++) {
-		img = tr.images[i];
+		image_t *img = tr.images[i];
 		vk_destroy_image_resources( &img->handle, &img->view );
 
 		// img->descriptor will be released with pool reset

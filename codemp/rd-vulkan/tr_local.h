@@ -493,7 +493,8 @@ typedef struct textureBundle_s {
 
 	qboolean		isLightmap;
 	qboolean		isVideoMap;
-	qboolean		isScreenMap;
+	unsigned int 	isScreenMap : 1;
+	unsigned int 	dlight : 1;
 
 	int				videoMapHandle;
 	bool			glow;
@@ -2256,7 +2257,8 @@ char		*GenerateImageMappingName( const char *name );
 void		R_Add_AllocatedImage( image_t *image );
 
 void		vk_bind( image_t *image );
-void		vk_submit_staging_buffer( qboolean final );
+void		vk_flush_staging_buffer( qboolean final );
+void		vk_alloc_staging_buffer( VkDeviceSize size );
 void		vk_upload_image( image_t *image, byte *pic );
 void		vk_upload_image_data( image_t *image, int x, int y, int width, int height, int mipmaps, byte *pixels, int size, qboolean update ) ;
 void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Data *upload_data );

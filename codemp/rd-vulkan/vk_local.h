@@ -103,8 +103,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
 
-#define VERTEX_BUFFER_SIZE				( 4 * 1024 * 1024 )
-#define STAGING_BUFFER_SIZE				( 2 * 1024 * 1024 )
+#define VERTEX_BUFFER_SIZE				( 4 * 1024 * 1024 )		/* by default */
+#define VERTEX_BUFFER_SIZE_HI			( 8 * 1024 * 1024 )
+
+#define STAGING_BUFFER_SIZE				( 2 * 1024 * 1024 )		/* by default */
+#define STAGING_BUFFER_SIZE_HI			( 24 * 1024 * 1024 )	/* enough for max.texture size upload with all mip levels at */
+
 #define VERTEX_CHUNK_SIZE				( 768 * 1024)
 
 #define XYZ_SIZE						( 4 * VERTEX_CHUNK_SIZE )
@@ -202,15 +206,14 @@ typedef enum {
 	TYPE_SINGLE_TEXTURE_LIGHTING_LINEAR,
 
 	TYPE_SINGLE_TEXTURE_DF,
-	
 
 	TYPE_GENERIC_BEGIN, // start of non-env/env shader pairs
 	TYPE_SINGLE_TEXTURE = TYPE_GENERIC_BEGIN,
 	TYPE_SINGLE_TEXTURE_ENV,
-	
+
 	TYPE_SINGLE_TEXTURE_IDENTITY,
 	TYPE_SINGLE_TEXTURE_IDENTITY_ENV,
-	
+
 	TYPE_SINGLE_TEXTURE_FIXED_COLOR,
 	TYPE_SINGLE_TEXTURE_FIXED_COLOR_ENV,
 
@@ -446,12 +449,11 @@ typedef struct {
 	Vk_Shadow_Phase			shadow_phase;
 	Vk_Primitive_Topology	primitives;
 
-	
 	int line_width;
 	int fog_stage; // off, fog-in / fog-out
 	int abs_light;
 	int allow_discard;
-	int	acff; // none, rgb, rgba, alpha
+	int acff; // none, rgb, rgba, alpha
 	struct {
 		byte rgb;
 		byte alpha;
@@ -536,23 +538,9 @@ extern unsigned char s_gammatable_linear[256];
 // Vk_World contains vulkan resources/state requested by the game code.
 // It is reinitialized on a map change.
 typedef struct {
-	// resources.
-	int				num_samplers;
-	VkSampler		samplers[MAX_VK_SAMPLERS];
-	Vk_Sampler_Def	sampler_defs[MAX_VK_SAMPLERS];
-
 	// memory allocations.
 	int				num_image_chunks;
 	ImageChunk_t	image_chunks[MAX_IMAGE_CHUNKS];
-
-	// host visible memory used to copy image data to device local memory.
-	VkBuffer		staging_buffer;
-	VkDeviceMemory	staging_buffer_memory;
-	VkDeviceSize	staging_buffer_size;
-	byte			*staging_buffer_ptr; // pointer to mapped staging buffer
-#ifdef USE_UPLOAD_QUEUE
-	VkDeviceSize staging_buffer_offset;
-#endif
 
 	// This flag is used to decide whether framebuffer's depth attachment should be cleared
 	// with vmCmdClearAttachment (dirty_depth_attachment != 0), or it have just been
@@ -569,7 +557,6 @@ typedef struct vk_tess_s {
 	VkSemaphore			image_acquired;
 	uint32_t			swapchain_image_index;
 	qboolean			swapchain_image_acquired;
-	VkSemaphore			rendering_finished;
 #ifdef USE_UPLOAD_QUEUE
 	VkSemaphore			rendering_finished2;
 #endif
@@ -635,6 +622,7 @@ typedef struct {
 	//uint32_t		swapchain_image_index;
 	VkImage			swapchain_images[MAX_SWAPCHAIN_IMAGES];
 	VkImageView		swapchain_image_views[MAX_SWAPCHAIN_IMAGES];
+	VkSemaphore		swapchain_rendering_finished[MAX_SWAPCHAIN_IMAGES];
 
 	VkDeviceMemory	image_memory[MAX_ATTACHMENTS_IN_POOL];
 	uint32_t		image_memory_count;
@@ -841,17 +829,17 @@ typedef struct {
 	// shader modules.
 	struct {
 		struct {
-			VkShaderModule gen[1][3][2][2][2]; // tx[0,1,2], cl[0,1] env0[0,1] fog[0,1]
-			VkShaderModule ident1[2][2][2]; // tx[0,1], env0[0,1] fog[0,1]
-			VkShaderModule fixed[2][2][2];  // tx[0,1], env0[0,1] fog[0,1]
+			VkShaderModule gen[1][3][2][2][2]; // vbo[0](beta), tx[0,1,2], cl[0,1] env0[0,1] fog[0,1]
+			VkShaderModule ident1[1][2][2][2]; // vbo[0](beta), tx[0,1], env0[0,1] fog[0,1]
+			VkShaderModule fixed[1][2][2][2];  // vbo[0](beta), tx[0,1], env0[0,1] fog[0,1]
 			VkShaderModule light[2]; // fog[0,1]
 		}	vert;
 
 		struct {
 			VkShaderModule gen0_df;
-			VkShaderModule gen[1][3][2][2]; // tx[0,1,2] cl[0,1] fog[0,1]
-			VkShaderModule ident1[2][2]; // tx[0,1], fog[0,1]
-			VkShaderModule fixed[2][2];  // tx[0,1], fog[0,1]
+			VkShaderModule gen[1][3][2][2]; // vbo[0](beta), tx[0,1,2] cl[0,1] fog[0,1]
+			VkShaderModule ident1[1][2][2]; // vbo[0](beta), tx[0,1], fog[0,1]
+			VkShaderModule fixed[1][2][2];  // vbo[0](beta), tx[0,1], fog[0,1]
 			VkShaderModule light[2][2]; // linear[0,1] fog[0,1]
 		}	frag;
 
@@ -932,6 +920,29 @@ typedef struct {
 	VkFence aux_fence;
 	qboolean aux_fence_wait;
 #endif
+
+	struct staging_buffer_s {
+		VkBuffer handle;
+		VkDeviceMemory memory;
+		VkDeviceSize size;
+		byte *ptr; // pointer to mapped staging buffer
+#ifdef USE_UPLOAD_QUEUE
+		VkDeviceSize offset;
+#endif
+	} staging_buffer;
+
+	struct samplers_s {
+		int count;
+		Vk_Sampler_Def def[MAX_VK_SAMPLERS];
+		VkSampler handle[MAX_VK_SAMPLERS];
+		int filter_min;
+		int filter_max;
+	} samplers;
+
+	struct defaults_t {
+		VkDeviceSize staging_size;
+		VkDeviceSize geometry_size;
+	} defaults;
 
 	struct {
 		VkDescriptorSet *descriptor;
@@ -1064,6 +1075,7 @@ void		R_MipMap2( unsigned* const out, unsigned* const in, int inWidth, int inHei
 
 // image
 void		vk_texture_mode( const char *string, const qboolean init );
+void		vk_destroy_samplers( void );
 VkSampler	vk_find_sampler( const Vk_Sampler_Def *def );
 void		vk_delete_textures( void );
 #if 0
