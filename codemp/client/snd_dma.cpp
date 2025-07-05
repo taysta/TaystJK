@@ -276,7 +276,6 @@ typedef struct REVERBDATA_s {
 	float flDist;
 } REVERBDATA, *LPREVERBDATA;
 
-#ifdef USE_EAX
 typedef struct FXSLOTINFO_s {
 	GUID	FXSlotGuid;
 	ALint	lEnvID;
@@ -338,7 +337,6 @@ const GUID EAX_PrimaryFXSlotID = { 0xf317866d, 0x924c, 0x450c, { 0x86, 0x1b, 0xe
 
 const GUID EAX_REVERB_EFFECT = { 0xcf95c8f, 0xa3cc, 0x4849, { 0xb0, 0xb6, 0x83, 0x2e, 0xcc, 0x18, 0x22, 0xdf} };
 
-#endif
 /**************************************************************************************************\
 *
 *	End of Open AL Specific
@@ -399,12 +397,10 @@ void S_SoundInfo_f(void) {
 #ifdef USE_OPENAL
 		if (s_UseOpenAL)
 		{
-#ifdef USE_EAX
 			Com_Printf("EAX 4.0 %s supported\n",s_bEAX?"is":"not");
 			Com_Printf("Eal file %s loaded\n",s_bEALFileLoaded?"is":"not");
 			Com_Printf("s_EnvironmentID = %d\n",s_EnvironmentID);
 			Com_Printf("s_bInWater = %s\n",s_bInWater?"true":"false");
-#endif
 		}
 		else
 		{
@@ -542,9 +538,7 @@ void S_Init( void ) {
 		alListenerfv(AL_VELOCITY,listenerVel);
 		alListenerfv(AL_ORIENTATION,listenerOri);
 
-#ifdef USE_EAX
 		InitEAXManager();
-#endif
 
 		memset(s_channels, 0, sizeof(s_channels));
 
@@ -567,7 +561,7 @@ void S_Init( void ) {
 
 			// Sources / Channels are not sending to any Slots (other than the Listener / Primary FX Slot)
 			s_channels[i].lSlotID = -1;
-#ifdef USE_EAX
+
 			if (s_bEAX)
 			{
 				// Remove the RoomAuto flag from each Source (to remove Reverb Engine Statistical
@@ -580,7 +574,7 @@ void S_Init( void ) {
 				s_eaxSet(&EAXPROPERTYID_EAX40_Source, EAXSOURCE_FLAGS,
 							s_channels[i].alSource, &ulFlags, sizeof(ulFlags));
 			}
-#endif
+
 			s_numChannels++;
 		}
 
@@ -627,9 +621,7 @@ void S_Init( void ) {
 		// for this level
 
 		const char *mapname = Cvar_VariableString( "mapname" );
-#ifdef USE_EAX
 		EALFileInit(mapname);
-#endif
 
 	}
 	else
@@ -727,9 +719,9 @@ void S_Shutdown( void )
 		alcDestroyContext(ALCContext);
 		// Close device
 		alcCloseDevice(ALCDevice);
-#ifdef USE_EAX
+
 		ReleaseEAXManager();
-#endif
+
 		s_numChannels = 0;
 
 	}
@@ -951,7 +943,6 @@ void S_BeginRegistration( void )
 	s_soundMuted = qfalse;		// we can play again
 
 #ifdef USE_OPENAL
-#ifdef USE_EAX
 	// Find name of level so we can load in the appropriate EAL file
 	if (s_UseOpenAL)
 	{
@@ -963,7 +954,6 @@ void S_BeginRegistration( void )
 			s_FXSlotInfo[i].lEnvID = -1;
 		}
 	}
-#endif
 #endif
 
 	if (s_numSfx == 0) {
@@ -983,7 +973,6 @@ void S_BeginRegistration( void )
 }
 
 #ifdef USE_OPENAL
-#ifdef USE_EAX
 void EALFileInit(const char *level)
 {
 	// If an EAL File is already unloaded, remove it
@@ -1028,7 +1017,7 @@ void EALFileInit(const char *level)
 	}
 }
 #endif
-#endif
+
 /*
 ==================
 S_RegisterSound
@@ -2413,9 +2402,8 @@ void S_UpdateEntityPosition( int entityNum, const vec3_t origin )
 					pos[1] = origin[2];
 					pos[2] = -origin[1];
 					alSourcefv(s_channels[i].alSource, AL_POSITION, pos);
-#ifdef USE_EAX
+
 					UpdateEAXBuffer(ch);
-#endif
 				}
 
 /*				pos[0] = origin[0];
@@ -2571,10 +2559,8 @@ Change the volumes of all the playing sounds for changes in their positions
 void S_Respatialize( int entityNum, const vec3_t head, matrix3_t axis, int inwater )
 {
 #ifdef USE_OPENAL
-#ifdef USE_EAX
 	EAXOCCLUSIONPROPERTIES eaxOCProp;
 	EAXACTIVEFXSLOTS eaxActiveSlots;
-#endif
 #endif
 	int			i;
 	channel_t	*ch;
@@ -2599,7 +2585,7 @@ void S_Respatialize( int entityNum, const vec3_t head, matrix3_t axis, int inwat
 		listener_ori[4] = axis[2][2];
 		listener_ori[5] = -axis[2][1];
 		alListenerfv(AL_ORIENTATION, listener_ori);
-#ifdef USE_EAX
+
 		// Update EAX effects here
 		if (s_bEALFileLoaded)
 		{
@@ -2674,7 +2660,6 @@ void S_Respatialize( int entityNum, const vec3_t head, matrix3_t axis, int inwat
 	}
 	else
 	{
-#endif
 #endif
 		listener_number = entityNum;
 		VectorCopy(head, listener_origin);
@@ -3017,10 +3002,10 @@ void S_Update_(void) {
 					alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.f);
 				}
 			}
-#ifdef USE_EAX
+
 			if (s_bEALFileLoaded)
 				UpdateEAXBuffer(ch);
-#endif
+
 			int nBytesDecoded = 0;
 			int nTotalBytesDecoded = 0;
 			int nBuffersToAdd = 0;
@@ -3100,10 +3085,9 @@ void S_Update_(void) {
 				{
 					if (ch->thesfx->lipSyncData)
 					{
-#ifdef USE_EAX
 						// Record start time for Lip-syncing
 						s_channels[source].iStartTime = timeGetTime();
-#endif
+
 						// Prepare lipsync value(s)
 						s_entityWavVol[ ch->entnum ] = ch->thesfx->lipSyncData[0];
 					}
@@ -3135,9 +3119,8 @@ void S_Update_(void) {
 					if (ch->thesfx->lipSyncData)
 					{
 						// Record start time for Lip-syncing
-#ifdef USE_EAX
 						s_channels[source].iStartTime = timeGetTime();
-#endif
+
 						// Prepare lipsync value(s)
 						s_entityWavVol[ ch->entnum ] = ch->thesfx->lipSyncData[0];
 					}
@@ -3451,10 +3434,10 @@ void UpdateLoopingSounds()
 
 					ch->master_vol = loop->volume;
 					alSourcef(s_channels[i].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.f);
-#ifdef USE_EAX
+
 					if (s_bEALFileLoaded)
 						UpdateEAXBuffer(ch);
-#endif
+
 					ch->bProcessed = true;
 					loop->bProcessed = true;
 					break;
@@ -3525,10 +3508,10 @@ void UpdateLoopingSounds()
 			alSourcef(s_channels[source].alSource, AL_REFERENCE_DISTANCE, DEFAULT_REF_DISTANCE);
 			alSourcef(s_channels[source].alSource, AL_GAIN, ((float)(ch->master_vol) * s_volume->value) / 255.0f);
 			alSourcei(s_channels[source].alSource, AL_SOURCE_RELATIVE, ch->fixed_origin ? AL_TRUE : AL_FALSE);
-#ifdef USE_EAX
+
 			if (s_bEALFileLoaded)
 				UpdateEAXBuffer(ch);
-#endif
+
 			alGetError();
 			alSourcePlay(s_channels[source].alSource);
 			if (alGetError() == AL_NO_ERROR)
@@ -5359,7 +5342,6 @@ qboolean SND_RegisterAudio_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLev
 	return bAtLeastOneSoundDropped;
 }
 
-#ifdef USE_EAX
 #ifdef USE_OPENAL
 /****************************************************************************************************\
 *
@@ -6410,5 +6392,4 @@ float CalcDistance(EMPOINT A, EMPOINT B)
 {
 	return (float)sqrt(sqr(A.fX - B.fX)+sqr(A.fY - B.fY) + sqr(A.fZ - B.fZ));
 }
-#endif
 #endif
