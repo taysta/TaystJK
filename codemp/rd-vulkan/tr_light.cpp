@@ -386,9 +386,11 @@ void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent ) {
 
 	// transform the direction to local space
 	VectorNormalize( lightDir );
-	ent->lightDir[0] = DotProduct( lightDir, ent->e.axis[0] );
-	ent->lightDir[1] = DotProduct( lightDir, ent->e.axis[1] );
-	ent->lightDir[2] = DotProduct( lightDir, ent->e.axis[2] );
+	VectorCopy(lightDir, ent->lightDir);
+
+	ent->modelLightDir[0] = DotProduct( lightDir, ent->e.axis[0] );
+	ent->modelLightDir[1] = DotProduct( lightDir, ent->e.axis[1] );
+	ent->modelLightDir[2] = DotProduct( lightDir, ent->e.axis[2] );
 
 #ifdef USE_PMLIGHT
 	if (r_shadows->integer == 2 && r_dlightMode->integer == 2) {

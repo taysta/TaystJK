@@ -206,8 +206,8 @@ static void compile_and_convert_template_shaders( void )
     const char* mode_flags[]       = { "-DUSE_CLX_IDENT", "-DUSE_FIXED_COLOR", };
     const char* mode_ids[]         = { "ident1", "fixed" };
 
-    const char* vbo_flags[]         = { "", };
-    const char* vbo_ids[]           = { "cpu_" };
+    const char* vbo_flags[]         = { "", "-DUSE_VBO_GHOUL2", "-DUSE_VBO_MDV" };
+    const char* vbo_ids[]           = { "", "ghoul2_", "mdv_" };
 
     const char* tx_flags[]          = { "", "-DUSE_TX1", "-DUSE_TX2" };
     const char* tx_ids[]            = { "tx0", "tx1", "tx2" };
@@ -220,6 +220,10 @@ static void compile_and_convert_template_shaders( void )
 
     const char* fog_flags[]         = { "", "-DUSE_FOG" };
     const char* fog_ids[]           = { "", "_fog" };
+
+    // fog only
+    const char* fog_only_flags[]    = { "-DUSE_FOG_LINEAR", "-DUSE_FOG_EXP" };
+    const char* fog_only_ids[]      = { "linear", "exp" };
 
     // single-texture fragment, depth-fragment
     create_shader_task("gen_frag.tmpl", "frag", "frag_tx0_df", NULL, "-DUSE_CLX_IDENT -DUSE_ATEST -DUSE_DF");
@@ -236,15 +240,33 @@ static void compile_and_convert_template_shaders( void )
 
     std::string underscore = "";
 
+    // fog-only shaders
+    for ( i = 0; i < ARRAY_LEN(vbo_flags); ++i ) { // vbo
+        for ( j = 0; j < ARRAY_LEN(fog_only_flags); ++j ) { // fog only mode
+            defines = join_flags({ vbo_flags[i], fog_only_flags[j] });
+            name    = "vert_fog_only_" + std::string(vbo_ids[i]) + fog_only_ids[j];
+            ids     = join_indexes("vk.shaders.vert.fog", { i, j });
+
+            create_shader_task("fog_vert.tmpl", "vert", name.c_str(), ids.c_str(), defines.c_str()); 
+        }
+    }
+
+    for ( i = 0; i < ARRAY_LEN(fog_only_flags); ++i ) { // vbo
+        defines = join_flags({ fog_only_flags[i] });
+        name    = "frag_fog_only_" + std::string(fog_only_ids[i]);
+        ids     = join_indexes("vk.shaders.frag.fog", { i });
+        create_shader_task("fog_frag.tmpl", "frag", name.c_str(), ids.c_str(), defines.c_str());
+    }
+
     // ident / fixed vertex shaders
     for ( i = 0; i < ARRAY_LEN(vbo_flags); ++i ) { // vbo
         for ( j = 0; j < (ARRAY_LEN(tx_flags) - 1); ++j ) { // tx [0,1 only]
             for ( m = 0; m < ARRAY_LEN(mode_flags); ++m ) { // mode (ident / fixed)
                 for ( k = 0; k < ARRAY_LEN(env_flags); ++k ) { // env
                     for ( l = 0; l < ARRAY_LEN(fog_flags); ++l ) { // fog
-                        std::string defines = join_flags({ vbo_flags[i], tx_flags[j], mode_flags[m], env_flags[k], fog_flags[l] });
-                        std::string name    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + "_" + mode_ids[m] + env_ids[k] + fog_ids[l];
-                        std::string ids     = join_indexes("vk.shaders.vert." + std::string(mode_ids[m]), { i, j, k, l });
+                        defines = join_flags({ vbo_flags[i], tx_flags[j], mode_flags[m], env_flags[k], fog_flags[l] });
+                        name    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + "_" + mode_ids[m] + env_ids[k] + fog_ids[l];
+                        ids     = join_indexes("vk.shaders.vert." + std::string(mode_ids[m]), { i, j, k, l });
 
                         create_shader_task("gen_vert.tmpl", "vert", name.c_str(), ids.c_str(), defines.c_str());
                     }
@@ -276,20 +298,25 @@ static void compile_and_convert_template_shaders( void )
 
     // generic vertex shaders
     for ( i = 0; i < ARRAY_LEN(vbo_flags); ++i ) { // vbo
+        defines = join_flags({ vbo_flags[i] });
+        name    = "refraction_" + std::string(vbo_ids[i]);
+        ids     = join_indexes("vk.shaders.refraction_vs", { i });
+        create_shader_task("refraction.tmpl", "vert", name.c_str(), ids.c_str(), defines.c_str());
+
         for ( j = 0; j < ARRAY_LEN(tx_flags); ++j ) { // tx
             for ( k = 0; k < ARRAY_LEN(env_flags); ++k ) { // env
                 for ( l = 0; l < ARRAY_LEN(fog_flags); ++l ) { // fog
-                    std::string defines = join_flags({ vbo_flags[i], tx_flags[j], env_flags[k], fog_flags[l] });
-                    std::string name    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + env_ids[k] + fog_ids[l];
-                    std::string ids     = join_indexes("vk.shaders.vert.gen", { i, j, 0, k, l });
+                    defines = join_flags({ vbo_flags[i], tx_flags[j], env_flags[k], fog_flags[l] });
+                    name    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + env_ids[k] + fog_ids[l];
+                    ids     = join_indexes("vk.shaders.vert.gen", { i, j, 0, k, l });
 
                     create_shader_task("gen_vert.tmpl", "vert", name.c_str(), ids.c_str(), defines.c_str());
 
                     if ( j != 0 ) // tx
                     { 
-                        std::string defines_cl = join_flags({ vbo_flags[i], tx_flags[j], cl_flags[j], env_flags[k], fog_flags[l] });
-                        std::string name_cl    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + "_" + cl_ids[j] + env_ids[k] + fog_ids[l];
-                        std::string ids_cl     = join_indexes("vk.shaders.vert.gen", { i, j, 1, k, l });
+                        defines_cl = join_flags({ vbo_flags[i], tx_flags[j], cl_flags[j], env_flags[k], fog_flags[l] });
+                        name_cl    = "vert_" + std::string(vbo_ids[i]) + tx_ids[j] + "_" + cl_ids[j] + env_ids[k] + fog_ids[l];
+                        ids_cl     = join_indexes("vk.shaders.vert.gen", { i, j, 1, k, l });
 
                         create_shader_task("gen_vert.tmpl", "vert", name_cl.c_str(), ids_cl.c_str(), defines_cl.c_str());
                     }

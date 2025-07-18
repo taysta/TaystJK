@@ -144,7 +144,7 @@ void RB_ShadowTessEnd(void) {
 		VectorCopy(backEnd.currentEntity->shadowLightDir, entLight);
 	else
 #endif
-		VectorCopy(backEnd.currentEntity->lightDir, entLight);
+		VectorCopy(backEnd.currentEntity->modelLightDir, entLight);
 
 	entLight[2] = 0.0f;
 	VectorNormalize(entLight);
@@ -169,7 +169,7 @@ void RB_ShadowTessEnd(void) {
 		VectorCopy(backEnd.currentEntity->shadowLightDir, lightDir);
 	else
 #endif
-		VectorCopy(backEnd.currentEntity->lightDir, lightDir);
+		VectorCopy(backEnd.currentEntity->modelLightDir, lightDir);
 
 	// clamp projection by height
 	if (lightDir[2] > 0.1) {
@@ -339,7 +339,7 @@ void RB_ProjectionShadowDeform(void)
 		VectorCopy(backEnd.currentEntity->shadowLightDir, lightDir);
 	else
 #endif
-		VectorCopy(backEnd.currentEntity->lightDir, lightDir);
+		VectorCopy(backEnd.currentEntity->modelLightDir, lightDir);
 
 	d = DotProduct(lightDir, ground);
 	// don't let the shadows get too long or go negative

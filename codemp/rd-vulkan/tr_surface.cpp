@@ -393,7 +393,7 @@ void RB_SurfaceTriangles( const srfTriangles_t *srf ) {
 	if (tess.allowVBO && srf->vboItemIndex) {
 
 		// transition to vbo render list
-		if (tess.vboIndex == 0) {
+		if (tess.vbo_world_index == 0) {
 			RB_EndSurface();
 			RB_BeginSurface(tess.shader, tess.fogNum);
 			// set some dummy parameters for RB_EndSurface
@@ -402,7 +402,8 @@ void RB_SurfaceTriangles( const srfTriangles_t *srf ) {
 			VBO_ClearQueue();
 		}
 		tess.surfType = SF_TRIANGLES;
-		tess.vboIndex = srf->vboItemIndex;
+		tess.vbo_world_index = srf->vboItemIndex;
+
 		VBO_QueueItem(srf->vboItemIndex);
 		return; // no need to tesselate anything
 	}
@@ -1247,7 +1248,8 @@ static void VectorArrayNormalize( vec4_t *normals, unsigned int count )
 /*
 ** LerpMeshVertexes
 */
-static void LerpMeshVertexes ( md3Surface_t *surf, float backlerp )
+#if 0
+static void LerpMeshVertexes_ ( md3Surface_t *surf, float backlerp )
 {
 	short	*oldXyz, *newXyz, *oldNormals, *newNormals;
 	float	*outXyz, *outNormal;
@@ -1343,18 +1345,199 @@ static void LerpMeshVertexes ( md3Surface_t *surf, float backlerp )
     	VectorArrayNormalize((vec4_t *)tess.normal[tess.numVertexes], numVerts);
    	}
 }
+#endif
+
+static void VectorLerp( vec3_t a, vec3_t b, float lerp, vec3_t c)
+{
+	c[0] = a[0] * (1.0f - lerp) + b[0] * lerp;
+	c[1] = a[1] * (1.0f - lerp) + b[1] * lerp;
+	c[2] = a[2] * (1.0f - lerp) + b[2] * lerp;
+}
+
+static void LerpMeshVertexes_scalar(mdvSurface_t *surf, float backlerp)
+{
+#if 0
+	short	*oldXyz, *newXyz, *oldNormals, *newNormals;
+	float	*outXyz, *outNormal;
+	float	oldXyzScale, newXyzScale;
+	float	oldNormalScale, newNormalScale;
+	int		vertNum;
+	unsigned lat, lng;
+	int		numVerts;
+
+	outXyz = tess.xyz[tess.numVertexes];
+	outNormal = tess.normal[tess.numVertexes];
+
+	newXyz = (short *)((byte *)surf + surf->ofsXyzNormals)
+		+ (backEnd.currentEntity->e.frame * surf->numVerts * 4);
+	newNormals = newXyz + 3;
+
+	newXyzScale = MD3_XYZ_SCALE * (1.0 - backlerp);
+	newNormalScale = 1.0 - backlerp;
+
+	numVerts = surf->numVerts;
+
+	if ( backlerp == 0 ) {
+		//
+		// just copy the vertexes
+		//
+		for (vertNum=0 ; vertNum < numVerts ; vertNum++,
+			newXyz += 4, newNormals += 4,
+			outXyz += 4, outNormal += 4)
+		{
+
+			outXyz[0] = newXyz[0] * newXyzScale;
+			outXyz[1] = newXyz[1] * newXyzScale;
+			outXyz[2] = newXyz[2] * newXyzScale;
+
+			lat = ( newNormals[0] >> 8 ) & 0xff;
+			lng = ( newNormals[0] & 0xff );
+			lat *= (FUNCTABLE_SIZE/256);
+			lng *= (FUNCTABLE_SIZE/256);
+
+			// decode X as cos( lat ) * sin( long )
+			// decode Y as sin( lat ) * sin( long )
+			// decode Z as cos( long )
+
+			outNormal[0] = tr.sinTable[(lat+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK] * tr.sinTable[lng];
+			outNormal[1] = tr.sinTable[lat] * tr.sinTable[lng];
+			outNormal[2] = tr.sinTable[(lng+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK];
+		}
+	} else {
+		//
+		// interpolate and copy the vertex and normal
+		//
+		oldXyz = (short *)((byte *)surf + surf->ofsXyzNormals)
+			+ (backEnd.currentEntity->e.oldframe * surf->numVerts * 4);
+		oldNormals = oldXyz + 3;
+
+		oldXyzScale = MD3_XYZ_SCALE * backlerp;
+		oldNormalScale = backlerp;
+
+		for (vertNum=0 ; vertNum < numVerts ; vertNum++,
+			oldXyz += 4, newXyz += 4, oldNormals += 4, newNormals += 4,
+			outXyz += 4, outNormal += 4)
+		{
+			vec3_t uncompressedOldNormal, uncompressedNewNormal;
+
+			// interpolate the xyz
+			outXyz[0] = oldXyz[0] * oldXyzScale + newXyz[0] * newXyzScale;
+			outXyz[1] = oldXyz[1] * oldXyzScale + newXyz[1] * newXyzScale;
+			outXyz[2] = oldXyz[2] * oldXyzScale + newXyz[2] * newXyzScale;
+
+			// FIXME: interpolate lat/long instead?
+			lat = ( newNormals[0] >> 8 ) & 0xff;
+			lng = ( newNormals[0] & 0xff );
+			lat *= 4;
+			lng *= 4;
+			uncompressedNewNormal[0] = tr.sinTable[(lat+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK] * tr.sinTable[lng];
+			uncompressedNewNormal[1] = tr.sinTable[lat] * tr.sinTable[lng];
+			uncompressedNewNormal[2] = tr.sinTable[(lng+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK];
+
+			lat = ( oldNormals[0] >> 8 ) & 0xff;
+			lng = ( oldNormals[0] & 0xff );
+			lat *= 4;
+			lng *= 4;
+
+			uncompressedOldNormal[0] = tr.sinTable[(lat+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK] * tr.sinTable[lng];
+			uncompressedOldNormal[1] = tr.sinTable[lat] * tr.sinTable[lng];
+			uncompressedOldNormal[2] = tr.sinTable[(lng+(FUNCTABLE_SIZE/4))&FUNCTABLE_MASK];
+
+			outNormal[0] = uncompressedOldNormal[0] * oldNormalScale + uncompressedNewNormal[0] * newNormalScale;
+			outNormal[1] = uncompressedOldNormal[1] * oldNormalScale + uncompressedNewNormal[1] * newNormalScale;
+			outNormal[2] = uncompressedOldNormal[2] * oldNormalScale + uncompressedNewNormal[2] * newNormalScale;
+
+//			VectorNormalize (outNormal);
+		}
+		VectorArrayNormalize((vec4_t *)tess.normal[tess.numVertexes], numVerts);
+		}
+#endif
+	float *outXyz;
+	float *outNormal;
+	mdvVertex_t *newVerts;
+	int		vertNum;
+
+	newVerts = surf->verts + backEnd.currentEntity->e.frame * surf->numVerts;
+
+	outXyz =    tess.xyz[tess.numVertexes];
+	outNormal = tess.normal[tess.numVertexes];
+
+	if (backlerp == 0)
+	{
+		//
+		// just copy the vertexes
+		//
+
+		for (vertNum=0 ; vertNum < surf->numVerts ; vertNum++)
+		{
+			//vec3_t normal;
+
+			VectorCopy(newVerts->xyz,    outXyz);
+
+			VectorCopy(newVerts->normal, outNormal);
+			//VectorCopy(newVerts->normal, normal);
+			//*outNormal = R_VboPackNormal(normal);
+
+			newVerts++;
+			outXyz += 4;
+			outNormal +=4;
+		}
+	}
+	else
+	{
+		//
+		// interpolate and copy the vertex and normal
+		//
+
+		mdvVertex_t *oldVerts;
+
+		oldVerts = surf->verts + backEnd.currentEntity->e.oldframe * surf->numVerts;
+
+		for (vertNum=0 ; vertNum < surf->numVerts ; vertNum++)
+		{
+			//vec3_t normal;
+
+			VectorLerp(newVerts->xyz,    oldVerts->xyz,    backlerp, outXyz);
+			VectorLerp(newVerts->normal, oldVerts->normal, backlerp, outNormal);
+			VectorNormalize(outNormal);
+
+
+			//VectorLerp(newVerts->normal, oldVerts->normal, backlerp, normal);
+			//VectorNormalize(normal);
+			//*outNormal = R_VboPackNormal(normal);
+
+			newVerts++;
+			oldVerts++;
+			outXyz += 4;
+			outNormal += 4;
+		}
+	}
+
+}
+
+static void LerpMeshVertexes(mdvSurface_t *surf, float backlerp)
+{
+#if 0
+#if idppc_altivec
+	if (com_altivec->integer) {
+		// must be in a seperate function or G3 systems will crash.
+		LerpMeshVertexes_altivec( surf, backlerp );
+		return;
+	}
+#endif // idppc_altivec
+#endif
+	LerpMeshVertexes_scalar( surf, backlerp );
+}
 
 /*
 =============
 RB_SurfaceMesh
 =============
 */
-void RB_SurfaceMesh( md3Surface_t *surface ) {
-	int				j;
+void RB_SurfaceMesh( mdvSurface_t *surface ) {
+	uint32_t		j;
 	float			backlerp;
-	int				*triangles;
-	float			*texCoords;
-	int				indexes;
+	mdvSt_t			*texCoords;
 	int				Bob, Doug;
 	int				numVerts;
 
@@ -1366,31 +1549,26 @@ void RB_SurfaceMesh( md3Surface_t *surface ) {
 
 #ifdef USE_VBO
 	VBO_Flush();
+	tess.surfType = SF_MDV;
 #endif
 
-	RB_CHECKOVERFLOW( surface->numVerts, surface->numTriangles*3 );
-
-#ifdef USE_VBO
-	tess.surfType = SF_MD3;
-#endif
+	RB_CHECKOVERFLOW( surface->numVerts, surface->numIndexes );
 
 	LerpMeshVertexes (surface, backlerp);
 
-	triangles = (int *) ((byte *)surface + surface->ofsTriangles);
-	indexes = surface->numTriangles * 3;
 	Bob = tess.numIndexes;
 	Doug = tess.numVertexes;
-	for (j = 0 ; j < indexes ; j++) {
-		tess.indexes[Bob + j] = Doug + triangles[j];
+	for (j = 0 ; j < surface->numIndexes ; j++) {
+		tess.indexes[Bob + j] = Doug + surface->indexes[j];
 	}
-	tess.numIndexes += indexes;
+	tess.numIndexes += surface->numIndexes;
 
-	texCoords = (float *) ((byte *)surface + surface->ofsSt);
+	texCoords = surface->st;
 
 	numVerts = surface->numVerts;
 	for ( j = 0; j < numVerts; j++ ) {
-		tess.texCoords[0][Doug + j][0] = texCoords[j*2+0];
-		tess.texCoords[0][Doug + j][1] = texCoords[j*2+1];
+		tess.texCoords[0][Doug + j][0] = texCoords[j].st[0];
+		tess.texCoords[0][Doug + j][1] = texCoords[j].st[1];
 		// FIXME: fill in lightmapST for completeness?
 	}
 
@@ -1416,7 +1594,7 @@ void RB_SurfaceFace( srfSurfaceFace_t *surf ) {
 #ifdef USE_VBO
 	if (tess.allowVBO && surf->vboItemIndex) {
 		// transition to vbo render list
-		if (tess.vboIndex == 0) {
+		if (tess.vbo_world_index == 0) {
 			RB_EndSurface();
 			RB_BeginSurface(tess.shader, tess.fogNum);
 			// set some dummy parameters for RB_EndSurface
@@ -1425,7 +1603,8 @@ void RB_SurfaceFace( srfSurfaceFace_t *surf ) {
 			VBO_ClearQueue();
 		}
 		tess.surfType = SF_FACE;
-		tess.vboIndex = surf->vboItemIndex;
+		tess.vbo_world_index = surf->vboItemIndex;
+
 		VBO_QueueItem(surf->vboItemIndex);
 		return; // no need to tesselate anything
 	}
@@ -1615,7 +1794,7 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 #ifdef USE_VBO
 	if (tess.allowVBO && cv->vboItemIndex) {
 		// transition to vbo render list
-		if (tess.vboIndex == 0) {
+		if (tess.vbo_world_index == 0) {
 			RB_EndSurface();
 			RB_BeginSurface(tess.shader, tess.fogNum);
 			// set some dummy parameters for RB_EndSurface
@@ -1624,7 +1803,8 @@ void RB_SurfaceGrid( srfGridMesh_t *cv ) {
 			VBO_ClearQueue();
 		}
 		tess.surfType = SF_GRID;
-		tess.vboIndex = cv->vboItemIndex;
+		tess.vbo_world_index = cv->vboItemIndex;
+
 		VBO_QueueItem(cv->vboItemIndex);
 		return; // no need to tesselate anything
 	}
@@ -1952,7 +2132,7 @@ static bool RB_TestZFlare( vec3_t point) {
 
 	// if the point is off the screen, don't bother adding it
 	// calculate screen coordinates and depth
-	R_TransformModelToClip( point, backEnd.ori.modelMatrix,
+	R_TransformModelToClip( point, backEnd.ori.modelViewMatrix,
 		backEnd.viewParms.projectionMatrix, eye, clip );
 
 	// check to see if the point is completely off screen
@@ -2063,6 +2243,98 @@ void RB_SurfaceDisplayList( srfDisplayList_t *surf ) {
 void RB_SurfaceSkip( void *surf ) {
 }
 
+#ifdef USE_VBO_MDV
+void RB_SurfaceVBOMDVMesh( srfVBOMDVMesh_t *surf )
+{
+	if ( !surf->vbo || !surf->ibo )
+		return;
+
+	tess.surfType = surf->surfaceType;
+	tess.vbo_model_index = surf->vbo->index;
+
+	int i, mergeForward, mergeBack;
+	GLvoid *firstIndexOffset, *lastIndexOffset;
+
+	// merge this into any existing multidraw primitives
+	mergeForward = -1;
+	mergeBack = -1;
+	firstIndexOffset = BUFFER_OFFSET( surf->indexOffset );
+	lastIndexOffset = BUFFER_OFFSET( surf->numIndexes );
+
+	//if (r_mergeMultidraws->integer)
+	{
+		i = 0;
+
+		//if (r_mergeMultidraws->integer == 1)
+		{
+			// lazy merge, only check the last primitive
+			if (tess.multiDrawPrimitives)
+			{
+				i = tess.multiDrawPrimitives - 1;
+			}
+		}
+
+		for (; i < tess.multiDrawPrimitives; i++)
+		{
+			if (tess.multiDrawLastIndex[i] == firstIndexOffset)
+			{
+				mergeBack = i;
+			}
+
+			if (lastIndexOffset == tess.multiDrawFirstIndex[i])
+			{
+				mergeForward = i;
+			}
+		}
+	}
+
+	if (mergeBack != -1 && mergeForward == -1)
+	{
+		tess.multiDrawNumIndexes[mergeBack] += surf->numIndexes;
+		tess.multiDrawLastIndex[mergeBack] = tess.multiDrawFirstIndex[mergeBack] + tess.multiDrawNumIndexes[mergeBack];
+		tess.multiDrawMinIndex[mergeBack] = MIN(tess.multiDrawMinIndex[mergeBack], surf->minIndex);
+		tess.multiDrawMaxIndex[mergeBack] = MAX(tess.multiDrawMaxIndex[mergeBack], surf->maxIndex);
+		//backEnd.pc.c_multidrawsMerged++;
+	}
+	else if (mergeBack == -1 && mergeForward != -1)
+	{
+		tess.multiDrawNumIndexes[mergeForward] += surf->numIndexes;
+		tess.multiDrawFirstIndex[mergeForward] = (glIndex_t *)firstIndexOffset;
+		tess.multiDrawLastIndex[mergeForward] = tess.multiDrawFirstIndex[mergeForward] + tess.multiDrawNumIndexes[mergeForward];
+		tess.multiDrawMinIndex[mergeForward] = MIN(tess.multiDrawMinIndex[mergeForward], surf->minIndex);
+		tess.multiDrawMaxIndex[mergeForward] = MAX(tess.multiDrawMaxIndex[mergeForward], surf->maxIndex);
+		//backEnd.pc.c_multidrawsMerged++;
+	}
+	else if (mergeBack != -1 && mergeForward != -1)
+	{
+		tess.multiDrawNumIndexes[mergeBack] += surf->numIndexes + tess.multiDrawNumIndexes[mergeForward];
+		tess.multiDrawLastIndex[mergeBack] = tess.multiDrawFirstIndex[mergeBack] + tess.multiDrawNumIndexes[mergeBack];
+		tess.multiDrawMinIndex[mergeBack] = MIN(tess.multiDrawMinIndex[mergeBack], MIN(tess.multiDrawMinIndex[mergeForward], surf->minIndex));
+		tess.multiDrawMaxIndex[mergeBack] = MAX(tess.multiDrawMaxIndex[mergeBack], MAX(tess.multiDrawMaxIndex[mergeForward], surf->maxIndex));
+		tess.multiDrawPrimitives--;
+
+		if (mergeForward != tess.multiDrawPrimitives)
+		{
+			tess.multiDrawNumIndexes[mergeForward] = tess.multiDrawNumIndexes[tess.multiDrawPrimitives];
+			tess.multiDrawFirstIndex[mergeForward] = tess.multiDrawFirstIndex[tess.multiDrawPrimitives];
+		}
+		//backEnd.pc.c_multidrawsMerged += 2;
+	}
+	else if (mergeBack == -1 && mergeForward == -1)
+	{
+		tess.multiDrawNumIndexes[tess.multiDrawPrimitives] = surf->numIndexes;
+		tess.multiDrawFirstIndex[tess.multiDrawPrimitives] = (glIndex_t *)firstIndexOffset;
+		tess.multiDrawLastIndex[tess.multiDrawPrimitives] = (glIndex_t *)lastIndexOffset;
+		tess.multiDrawMinIndex[tess.multiDrawPrimitives] = surf->minIndex;
+		tess.multiDrawMaxIndex[tess.multiDrawPrimitives] = surf->maxIndex;
+		tess.multiDrawPrimitives++;
+	}
+
+	tess.numIndexes = surf->numIndexes;
+	tess.numVertexes = surf->numVerts;
+}
+#endif
+
 void (*rb_surfaceTable[SF_NUM_SURFACE_TYPES])( void *) = {
 	(void(*)(void*))RB_SurfaceBad,			// SF_BAD,
 	(void(*)(void*))RB_SurfaceSkip,			// SF_SKIP,
@@ -2070,15 +2342,11 @@ void (*rb_surfaceTable[SF_NUM_SURFACE_TYPES])( void *) = {
 	(void(*)(void*))RB_SurfaceGrid,			// SF_GRID,
 	(void(*)(void*))RB_SurfaceTriangles,	// SF_TRIANGLES,
 	(void(*)(void*))RB_SurfacePolychain,	// SF_POLY,
-	(void(*)(void*))RB_SurfaceMesh,			// SF_MD3,
-/*
-Ghoul2 Insert Start
-*/
+	(void(*)(void*))RB_SurfaceMesh,			// SF_MDV
 	(void(*)(void*))RB_SurfaceGhoul,		// SF_MDX,
-/*
-Ghoul2 Insert End
-*/
 	(void(*)(void*))RB_SurfaceFlare,		// SF_FLARE,
 	(void(*)(void*))RB_SurfaceEntity,		// SF_ENTITY
-	(void(*)(void*))RB_SurfaceDisplayList	// SF_DISPLAY_LIST
+#ifdef USE_VBO_MDV
+	(void(*)(void*))RB_SurfaceVBOMDVMesh	// SF_VBO_MDVMESH
+#endif
 };

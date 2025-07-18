@@ -50,6 +50,8 @@ void QDECL vk_debug( const char *msg, ... ) {
 	Q_vsnprintf(text, sizeof(text), msg, argptr);
 	va_end(argptr);
 
+	Com_Printf( S_COLOR_CYAN "%s\n", text );
+
 	fp = fopen("./vk_log.log", "a");
 	fprintf(fp, "%s", text);
 	fclose(fp);
@@ -184,7 +186,7 @@ void DrawTris( const shaderCommands_t *pInput){
 	//memset(pInput->svars.colors, 255, pInput->numVertexes * 4);
 
 #ifdef USE_VBO
-	if (tess.vboIndex) {
+	if (tess.vbo_world_index) {
 #ifdef USE_PMLIGHT
 		if (tess.dlightPass)
 			pipeline = backEnd.viewParms.portalView == PV_MIRROR ? vk.std_pipeline.tris_mirror_debug_red_pipeline : vk.std_pipeline.tris_debug_red_pipeline;
@@ -217,7 +219,7 @@ void DrawNormals( const shaderCommands_t *input)
 	int		i;
 
 #ifdef USE_VBO	
-	if ( tess.vboIndex )
+	if ( tess.vbo_world_index )
 		return; // must be handled specially
 #endif
 
@@ -367,7 +369,7 @@ R_DebugPolygon
 */
 static void transform_to_eye_space( const vec3_t v, vec3_t v_eye )
 {
-	const float *m = backEnd.viewParms.world.modelMatrix;
+	const float *m = backEnd.viewParms.world.modelViewMatrix;
 	v_eye[0] = m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12];
 	v_eye[1] = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
 	v_eye[2] = m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14];

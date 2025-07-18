@@ -593,6 +593,40 @@ static void Autosprite2Deform( void ) {
 	}
 }
 
+#ifdef USE_VBO_GHOUL2
+qboolean ShaderRequiresCPUDeforms( const shader_t *shader ) {
+
+	// only do this for ghoul2
+	if( tess.vbo_model_index && tess.surfType == SF_MDX  ){
+
+		if ( shader->numDeforms > 1 )
+			return qtrue;
+
+		if ( shader->numDeforms == 1 ) {
+			// only support the first one
+			deformStage_t *ds = tess.shader->deforms[ 0 ];
+
+			switch ( ds->deformation ) {
+				case DEFORM_NONE:
+				case DEFORM_NORMALS:
+				case DEFORM_WAVE:
+				case DEFORM_BULGE:
+				case DEFORM_MOVE:
+				case DEFORM_PROJECTION_SHADOW:
+					return qfalse;
+				default:
+					return qtrue;
+			}
+		}
+
+		assert( shader->numDeforms == 0 );
+
+		return qfalse;
+	}
+
+	return qtrue;
+}
+#endif
 
 /*
 =====================
@@ -788,6 +822,37 @@ void RB_CalcWaveAlpha( const waveForm_t *wf, unsigned char *dstColors )
 }
 
 /*
+** RB_CalcWaveColorSingle
+*/
+float RB_CalcWaveColorSingle( const waveForm_t *wf )
+{
+	float glow;
+
+	if ( wf->func == GF_NOISE ) {
+		glow = wf->base + R_NoiseGet4f( 0, 0, 0, ( tess.shaderTime + wf->phase ) * wf->frequency ) * wf->amplitude;
+	} else {
+		glow = EvalWaveForm( wf ) * tr.identityLight;
+	}
+	
+	if ( glow < 0 ) {
+		glow = 0;
+	}
+	else if ( glow > 1 ) {
+		glow = 1;
+	}
+
+	return glow;
+}
+
+/*
+** RB_CalcWaveAlphaSingle
+*/
+float RB_CalcWaveAlphaSingle( const waveForm_t *wf )
+{
+	return EvalWaveFormClamped( wf );
+}
+
+/*
 ** RB_CalcModulateColorsByFog
 */
 void RB_CalcModulateColorsByFog( unsigned char *colors ) {
@@ -877,9 +942,9 @@ void RB_CalcFogTexCoords( float *st ) {
 
 	// all fogging distance is based on world Z units
 	VectorSubtract( backEnd.ori.origin, backEnd.viewParms.ori.origin, localVec );
-	fogDistanceVector[0] = -backEnd.ori.modelMatrix[2];
-	fogDistanceVector[1] = -backEnd.ori.modelMatrix[6];
-	fogDistanceVector[2] = -backEnd.ori.modelMatrix[10];
+	fogDistanceVector[0] = -backEnd.ori.modelViewMatrix[2];
+	fogDistanceVector[1] = -backEnd.ori.modelViewMatrix[6];
+	fogDistanceVector[2] = -backEnd.ori.modelViewMatrix[10];
 	fogDistanceVector[3] = DotProduct( localVec, backEnd.viewParms.ori.axis[0] );
 
 	// scale the fog vectors based on the fog's thickness
@@ -1103,7 +1168,7 @@ void RB_CalcSpecularAlpha( unsigned char *alphas ) {
 		if (backEnd.currentEntity &&
 			(backEnd.currentEntity->e.hModel||backEnd.currentEntity->e.ghoul2) )	//this is a model so we can use world lights instead fake light
 		{
-			VectorCopy (backEnd.currentEntity->lightDir, lightDir);
+			VectorCopy (backEnd.currentEntity->modelLightDir, lightDir);
 		} else {
 			VectorSubtract( lightOrigin, v, lightDir );
 			VectorNormalizeFast( lightDir );
@@ -1158,7 +1223,7 @@ void RB_CalcDiffuseColor( unsigned char *colors )
 	ambientLightInt = ent->ambientLightInt;
 	VectorCopy( ent->ambientLight, ambientLight );
 	VectorCopy( ent->directedLight, directedLight );
-	VectorCopy( ent->lightDir, lightDir );
+	VectorCopy( ent->modelLightDir, lightDir );
 
 	v = tess.xyz[0];
 	normal = tess.normal[0];
@@ -1218,7 +1283,7 @@ void RB_CalcDiffuseEntityColor( unsigned char *colors )
 	ent = backEnd.currentEntity;
 	VectorCopy( ent->ambientLight, ambientLight );
 	VectorCopy( ent->directedLight, directedLight );
-	VectorCopy( ent->lightDir, lightDir );
+	VectorCopy( ent->modelLightDir, lightDir );
 
 	r = backEnd.currentEntity->e.shaderRGBA[0]/255.0f;
 	g = backEnd.currentEntity->e.shaderRGBA[1]/255.0f;
