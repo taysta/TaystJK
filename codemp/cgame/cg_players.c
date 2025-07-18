@@ -1317,7 +1317,6 @@ void CG_LoadClientInfo( clientInfo_t *ci ) {
 				}
 
 				if (cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {//validate team color
-					BG_ValidateSkinForTeam(newModelName, newSkinName, ci->team, ci->colorOverride);
 					BG_ValidateSkinForTeam(newModelName, ci->skinName, ci->team, ci->colorOverride);
 					newSkinName = ci->skinName;
 				}
