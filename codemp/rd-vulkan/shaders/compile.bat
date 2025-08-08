@@ -81,7 +81,11 @@ set "mode_id[1]=fixed"
 
 :: prepare beta feature
 set "vbo[0]="
-set "vbo_id[0]=cpu_"
+set "vbo[1]=-DUSE_VBO_GHOUL2"
+set "vbo[2]=-DUSE_VBO_MDV"
+set "vbo_id[0]="
+set "vbo_id[1]=ghoul2_"
+set "vbo_id[2]=mdv_"
 
 :: global
 set "tx[0]="
@@ -121,7 +125,7 @@ SETLOCAL EnableDelayedExpansion
 ::rem compile identity and fixed shader variations from templates
 ::
 @rem vertex shader
-for /L %%i in ( 0,1,0 ) do (                    @rem vbo, wip features 
+for /L %%i in ( 0,1,2 ) do (                    @rem vbo, ( 0:none 1:ghoul2 2:mdv/md3 ) 
     for /L %%j in ( 0,1,1 ) do (                @rem tx   
         for /L %%k in ( 0,1,1 ) do (            @rem mode
             for /L %%m in ( 0,1,1 ) do (        @rem +fog
@@ -134,7 +138,7 @@ for /L %%i in ( 0,1,0 ) do (                    @rem vbo, wip features
 )
 
 @rem fragment shader
-for /L %%i in ( 0,1,0 ) do (               @rem vbo, wip features
+for /L %%i in ( 0,1,2 ) do (               @rem vbo, ( 0:none 1:ghoul2 2:mdv/md3 )
     for /L %%j in ( 0,1,1) do (            @rem tx 
         for /L %%k in ( 0,1,1 ) do (       @rem mode
             for /L %%l in ( 0,1,1 ) do (   @rem +fog
@@ -148,7 +152,9 @@ for /L %%i in ( 0,1,0 ) do (               @rem vbo, wip features
 ::rem compile generic shader variations from templates
 ::
 @rem vertex shader
-for /L %%i in ( 0,1,0 ) do (                @rem vbo, wip features 
+for /L %%i in ( 0,1,2 ) do (                @rem vbo, ( 0:none 1:ghoul2 2:mdv/md3 )
+    call :compile_refraction_vertex_shader %%i
+
     for /L %%j in ( 0,1,2 ) do (            @rem tx   
         for /L %%k in ( 0,1,1 ) do (        @rem +env
             for /L %%m in ( 0,1,1 ) do (    @rem +fog
@@ -159,7 +165,7 @@ for /L %%i in ( 0,1,0 ) do (                @rem vbo, wip features
 )
 
 @rem fragment shader
-for /L %%i in ( 0,1,0 ) do (                @rem vbo, wip features
+for /L %%i in ( 0,1,2 ) do (                @rem vbo, ( 0:none 1:ghoul2 2:mdv/md3 )
     for /L %%j in ( 0,1,2 ) do (            @rem tx 
         for /L %%k in ( 0,1,1 ) do (        @rem +fog
             call :compile_fragment_shader %%i, %%j, %%k
@@ -172,6 +178,13 @@ del /Q "%tmpf%"
 "%bs%" %outfb% "}"
 
 pause
+
+:compile_refraction_vertex_shader
+    "%cl%" -S vert -V -o "%tmpf%" %glsl%refraction.tmpl !vbo[%1]!
+    "%bh%" "%tmpf%" %outf% refraction_!vbo_id[%1]!
+        "%bs%" %outfb% "    vk.shaders.refraction_vs[%1] = SHADER_MODULE( refraction_!vbo_id[%1]! );"
+	    "%bs%" %outfb% "    vk_set_shader_name( vk.shaders.refraction_vs[%1], ""refraction_!vbo_id[%1]!"" );"
+exit /B
 
 @rem compile identity and fixed shader variations from templates
 :compile_vertex_shader_ident_fixed

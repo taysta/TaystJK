@@ -406,8 +406,14 @@ void vk_initialize( void )
 	vk.cmd = &vk.tess[vk.cmd_index];
 
 	// Memory alignment
-	vk.uniform_alignment = props.limits.minUniformBufferOffsetAlignment;
-	vk.uniform_item_size = PAD( sizeof(vkUniform_t), (size_t)vk.uniform_alignment );
+	vk.uniform_alignment		= props.limits.minUniformBufferOffsetAlignment;
+	vk.uniform_item_size		= PAD( sizeof(vkUniform_t),			(size_t)vk.uniform_alignment );
+	vk.uniform_camera_item_size	= PAD( sizeof(vkUniformCamera_t),	(size_t)vk.uniform_alignment );
+	vk.uniform_entity_item_size = PAD( sizeof(vkUniformEntity_t),	(size_t)vk.uniform_alignment );
+	vk.uniform_bones_item_size	= PAD( sizeof(vkUniformBones_t),	(size_t)vk.uniform_alignment );
+	vk.uniform_global_item_size	= PAD( sizeof(vkUniformGlobal_t),	(size_t)vk.uniform_alignment );
+	vk.uniform_fogs_item_size	= PAD( sizeof(vkUniformFog_t),		(size_t)vk.uniform_alignment );
+
 	vk.storage_alignment = MAX( props.limits.minStorageBufferOffsetAlignment, sizeof(uint32_t) ); //for flare visibility tests
 
 	vk.defaults.geometry_size = VERTEX_BUFFER_SIZE;
@@ -497,6 +503,16 @@ void vk_initialize( void )
 	if ( r_fbo->integer )
 		vk.fboActive = qtrue;		
 
+#ifdef USE_VBO
+	if ( r_vbo->integer )
+		vk.vboWorldActive = qtrue;
+
+	if ( r_vbo_models->integer ) {
+		vk.vboGhoul2Active = qtrue;
+		vk.vboMdvActive = qtrue;
+	}
+#endif
+
 	//if (r_ext_multisample->integer && !r_ext_supersample->integer)
 	if ( r_ext_multisample->integer )
 		vk.msaaActive = qtrue;
@@ -527,6 +543,9 @@ void vk_initialize( void )
 	if ( vk.fboActive && glConfig.maxActiveTextures >= 4 && r_DynamicGlow->integer )
 		vk.dglowActive = qtrue;
 
+	// "Hardware" fog mode
+	vk.hw_fog = r_drawfog->integer == 2 ? 1 : 0;
+
 	// Refraction
 	if ( vk.fboActive && glConfig.maxActiveTextures >= 4 )
 		vk.refractionActive = qtrue;
@@ -555,7 +574,9 @@ void vk_initialize( void )
 	vk_create_pipeline_layout();
 
 	vk.geometry_buffer_size_new = vk.defaults.geometry_size;
+	vk.indirect_buffer_size_new = sizeof(VkDrawIndexedIndirectCommand) * 1024 * 1024;
 	vk_create_vertex_buffer( vk.geometry_buffer_size_new );
+	vk_create_indirect_buffer( vk.indirect_buffer_size_new );
 	vk_create_storage_buffer( MAX_FLARES * vk.storage_alignment );
 	vk_create_shader_modules();
 
@@ -618,7 +639,8 @@ void vk_shutdown( void )
 	qvkDestroyPipelineLayout(vk.device, vk.pipeline_layout_blend, NULL);
 
 #ifdef USE_VBO	
-	vk_release_vbo();
+	vk_release_world_vbo();
+	vk_release_model_vbo();
 #endif
 
 	vk_clean_staging_buffer();

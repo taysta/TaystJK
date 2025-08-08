@@ -1355,7 +1355,7 @@ void RB_RenderWorldEffects(void)
 	float				tmp[16];
 
 	Com_Memcpy(tmp, vk_world.modelview_transform, 64);
-	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelMatrix, 64);
+	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelViewMatrix, 64);
 	vk_update_mvp(NULL);
 
 	// Calculate Elapsed Time For Scale Purposes

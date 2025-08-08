@@ -207,6 +207,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	drawSurf_t		*drawSurf;
 	unsigned int	oldSort;
 	float			oldShaderSort, originalTime;
+	CBoneCache		*oldBoneCache = nullptr;
 
 #ifdef USE_VANILLA_SHADOWFINISH
 	qboolean		didShadowPass;
@@ -237,12 +238,6 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 
 	for (i = 0, drawSurf = drawSurfs; i < numDrawSurfs; i++, drawSurf++)
 	{
-		if (drawSurf->sort == oldSort && backEnd.refractionFill == shader->useDistortion ) {
-			// fast path, same as previous sort
-			rb_surfaceTable[*drawSurf->surface](drawSurf->surface);
-			continue;
-		}
-		
 		R_DecomposeSort(drawSurf->sort, &entityNum, &shader, &fogNum, &dlighted);
 
 		if (vk.renderPassIndex == RENDER_PASS_SCREENMAP && entityNum != REFENTITYNUM_WORLD && backEnd.refdef.entities[entityNum].e.renderfx & RF_DEPTHHACK) {
@@ -260,6 +255,23 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			entityNum = oldEntityNum;
 			fogNum = oldFogNum;
 			dlighted = oldDlighted;
+			continue;
+		}
+
+		if ( vk.vboGhoul2Active && *drawSurf->surface == SF_MDX )
+		{
+			if ( ((CRenderableSurface*)drawSurf->surface)->boneCache != oldBoneCache )
+			{
+				RB_EndSurface();
+				RB_BeginSurface( shader, fogNum );
+				oldBoneCache = ((CRenderableSurface*)drawSurf->surface)->boneCache;
+				vk.cmd->bones_ubo_offset = RB_GetBoneUboOffset((CRenderableSurface*)drawSurf->surface);
+			}
+		}
+
+		if (drawSurf->sort == oldSort && backEnd.refractionFill == shader->useDistortion ) {
+			// fast path, same as previous sort
+			rb_surfaceTable[*drawSurf->surface](drawSurf->surface);
 			continue;
 		}
 
@@ -345,7 +357,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			vk_set_depthrange( depthRange );
 
 			if ( push_constant ) {
-				Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
+				Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelViewMatrix, 64);
 				vk_update_mvp(NULL);
 			}
 
@@ -376,7 +388,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	backEnd.refdef.floatTime = originalTime;
 
 	// go back to the world modelview matrix
-	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelMatrix, 64);
+	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelViewMatrix, 64);
 	//vk_update_mvp();
 	vk_set_depthrange(DEPTH_RANGE_NORMAL);
 
@@ -513,7 +525,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 
 			vk_set_depthrange( depthRange );
 
-			Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelMatrix, 64);
+			Com_Memcpy(vk_world.modelview_transform, backEnd.ori.modelViewMatrix, 64);
 			vk_update_mvp(NULL);
 
 			oldEntityNum = entityNum;
@@ -531,7 +543,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 	backEnd.refdef.floatTime = originalTime;
 
 	// go back to the world modelview matrix
-	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelMatrix, 64);
+	Com_Memcpy(vk_world.modelview_transform, backEnd.viewParms.world.modelViewMatrix, 64);
 	//vk_update_mvp();
 
 	vk_set_depthrange(DEPTH_RANGE_NORMAL);
@@ -575,7 +587,7 @@ void RE_StretchRaw ( int x, int y, int w, int h, int cols, int rows, const byte 
 		Com_Error(ERR_DROP, "Draw_StretchRaw: size not a power of 2: %i by %i", cols, rows);
 	}
 
-	RE_UploadCinematic( cols, rows, (byte*)data, client, dirty ); 
+	RE_UploadCinematic( cols, rows, (byte*)data, client, dirty );
 
 	if (r_speeds->integer) {
 		end = ri.Milliseconds() * ri.Cvar_VariableValue("timescale");
@@ -615,7 +627,7 @@ const void *RB_StretchPic ( const void *data ) {
 	shader_t *shader;
 
 	cmd = (const stretchPicCommand_t *)data;
-	
+
 	shader = cmd->shader;
 	if ( shader != tess.shader ) {
 		if ( tess.numIndexes ) {
@@ -861,6 +873,155 @@ static void RB_LightingPass( void )
 }
 #endif
 
+static void vk_update_camera_constants( const trRefdef_t *refdef, const viewParms_t *viewParms ) 
+{
+	// set
+	vkUniformCamera_t uniform = {};
+
+	Com_Memcpy( uniform.viewOrigin, refdef->vieworg, sizeof( vec3_t) );
+	uniform.viewOrigin[3] = 0.0f;
+
+	/*
+	const float* p = viewParms->projectionMatrix;
+	float proj[16];
+	Com_Memcpy(proj, p, 64);
+
+	proj[5] = -p[5];
+	//myGlMultMatrix(vk_world.modelview_transform, proj, uniform.mvp);
+	myGlMultMatrix(viewParms->world.modelViewMatrix, proj, uniform.mvp);
+	*/
+
+	vk.cmd->camera_ubo_offset = vk_append_uniform( &uniform, sizeof(uniform), vk.uniform_camera_item_size );
+}
+
+static void vk_update_entity_light_constants( vkUniformEntity_t &uniform, const trRefEntity_t *refEntity ) 
+{
+	static const float normalizeFactor = 1.0f / 255.0f;
+
+	VectorScale(refEntity->ambientLight, normalizeFactor, uniform.ambientLight);
+	VectorScale(refEntity->directedLight, normalizeFactor, uniform.directedLight);
+	VectorCopy(refEntity->lightDir, uniform.lightOrigin);
+
+	uniform.lightOrigin[3] = 0.0f;
+}
+
+static void vk_update_entity_matrix_constants( vkUniformEntity_t &uniform, const trRefEntity_t *refEntity ) 
+{
+	orientationr_t ori;
+
+	// backend ref cant be right
+	/*if ( refEntity == &tr.worldEntity ) {
+		ori = backEnd.viewParms.world;
+		Matrix16Identity( uniform.modelMatrix );
+	}else{
+		R_RotateForEntity( refEntity, &backEnd.viewParms, &ori );
+		Matrix16Copy( ori.modelMatrix, uniform.modelMatrix );
+	}*/
+
+	R_RotateForEntity(refEntity, &backEnd.viewParms, &ori);
+	Matrix16Copy(ori.modelMatrix, uniform.modelMatrix);
+	VectorCopy(ori.viewOrigin, uniform.localViewOrigin);
+
+	Com_Memcpy( &uniform.localViewOrigin, ori.viewOrigin, sizeof( vec3_t) );
+	uniform.localViewOrigin[3] = 0.0f;
+}
+
+static void vk_update_entity_constants( const trRefdef_t *refdef ) {
+	uint32_t i;
+	Com_Memset( vk.cmd->entity_ubo_offset, 0, sizeof(vk.cmd->entity_ubo_offset) );
+
+	for ( i = 0; i < refdef->num_entities; i++ ) {
+		trRefEntity_t *ent = &refdef->entities[i];
+
+		R_SetupEntityLighting( refdef, ent );
+
+		vkUniformEntity_t uniform = {};
+		vk_update_entity_light_constants( uniform, ent );
+		vk_update_entity_matrix_constants( uniform, ent );
+
+		vk.cmd->entity_ubo_offset[i] = vk_append_uniform( &uniform, sizeof(uniform), vk.uniform_entity_item_size );
+	}
+
+	const trRefEntity_t *ent = &tr.worldEntity;
+	vkUniformEntity_t uniform = {};
+	vk_update_entity_light_constants( uniform, ent );
+	vk_update_entity_matrix_constants( uniform, ent );
+
+	vk.cmd->entity_ubo_offset[REFENTITYNUM_WORLD] = vk_append_uniform( &uniform, sizeof(uniform), vk.uniform_entity_item_size );
+}
+
+static void vk_update_ghoul2_constants( const trRefdef_t *refdef ) {
+	uint32_t i;
+
+	if ( !vk.vboGhoul2Active )
+		return;
+
+	for ( i = 0; i < refdef->num_entities; i++ )
+	{
+		const trRefEntity_t *ent = &refdef->entities[i];
+		if (ent->e.reType != RT_MODEL)
+			continue;
+
+		model_t *model = R_GetModelByHandle(ent->e.hModel);
+		if (!model)
+			continue;
+
+		switch (model->type)
+		{
+		case MOD_MDXM:
+		case MOD_BAD:
+		{
+			// Transform Bones and upload them
+			RB_TransformBones( ent, refdef );
+		}
+		break;
+
+		default:
+			break;
+		}
+	}
+
+}
+
+static void vk_update_fog_constants(const trRefdef_t* refdef)
+{
+	uint32_t i;
+	size_t size;
+	vkUniformFog_t uniform = {};
+
+	uniform.num_fogs = tr.world ? ( tr.world->numfogs - 1 ) : 0;
+
+	size = sizeof(vec4_t);
+
+	for ( i = 0; i < uniform.num_fogs; ++i )
+	{
+		const fog_t *fog = tr.world->fogs + i + 1;
+		vkUniformFogEntry_t *fogData = uniform.fogs + i;
+
+		VectorCopy4( fog->surface, fogData->plane );
+		VectorCopy4( fog->color, fogData->color );
+		fogData->depthToOpaque = sqrtf(-logf(1.0f / 255.0f)) / fog->parms.depthForOpaque;
+		fogData->hasPlane = fog->hasSurface;
+	}
+
+	size += (i * sizeof(vkUniformFogEntry_t));
+
+	vk.cmd->fogs_ubo_offset = vk_append_uniform( &uniform, size, vk.uniform_fogs_item_size );
+}
+
+static void RB_UpdateUniformConstants( const trRefdef_t *refdef, const viewParms_t *viewParms ) 
+{
+	vk_update_camera_constants( refdef, viewParms );
+
+	if ( vk.vboGhoul2Active ) 
+	{
+		vk_update_entity_constants( refdef );
+		vk_update_ghoul2_constants( refdef );
+	}
+
+	vk_update_fog_constants( refdef );
+}
+
 /*
 =============
 RB_DrawSurfs
@@ -885,6 +1046,8 @@ const void	*RB_DrawSurfs( const void *data ) {
 #ifdef USE_VBO
 	VBO_UnBind();
 #endif
+
+	RB_UpdateUniformConstants( &backEnd.refdef, &backEnd.viewParms );
 
 	// clear the z buffer, set the modelview, etc
 	RB_BeginDrawingView();

@@ -1176,7 +1176,7 @@ void vk_begin_frame( void )
 	if ( !ri.VK_IsMinimized() && !vk.cmd->swapchain_image_acquired ) {
 		qboolean retry = qfalse;
 _retry:
-		res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.cmd->swapchain_image_index );
+        res = qvkAcquireNextImageKHR( vk.device, vk.swapchain, 5 * 1000000000ULL, vk.cmd->image_acquired, VK_NULL_HANDLE, &vk.cmd->swapchain_image_index );
 		// when running via RDP: "Application has already acquired the maximum number of images (0x2)"
 		// probably caused by "device lost" errors
 		if ( res < 0 ) {
@@ -1235,6 +1235,7 @@ _retry:
 
 	// dynamic vertex buffer layout
     vk.cmd->vertex_buffer_offset = 0;
+    vk.cmd->indirect_buffer_offset = 0;
     Com_Memset( vk.cmd->buf_offset, 0, sizeof( vk.cmd->buf_offset ) );
     Com_Memset( vk.cmd->vbo_offset, 0, sizeof( vk.cmd->vbo_offset ) );
     vk.cmd->curr_index_buffer = VK_NULL_HANDLE;
@@ -1354,6 +1355,7 @@ void vk_release_resources( void ) {
     // Reset geometry buffers offsets
     for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
         vk.tess[i].vertex_buffer_offset = 0;
+        vk.tess[i].indirect_buffer_offset = 0;
     }
 
     Com_Memset(vk.cmd->buf_offset, 0, sizeof(vk.cmd->buf_offset));

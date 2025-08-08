@@ -23,6 +23,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
+#ifdef _G2_GORE
+#include "G2_gore_r2.h"
+#endif
+
 #ifdef USE_VBO
 
 /*
@@ -447,7 +451,7 @@ void VBO_PushData( int itemIndex, shaderCommands_t *input)
 
 void VBO_UnBind(void)
 {
-	tess.vboIndex = 0;
+	tess.vbo_world_index = 0;
 }
 
 static int surfSortFunc(const void *a, const void *b)
@@ -466,6 +470,958 @@ static void initItem(vbo_item_t *item)
 	item->soft_offset = -1;
 }
 
+#ifdef USE_VBO_GHOUL2
+
+static inline float G2_GetVertBoneWeightNotSlow( const mdxmVertex_t *vert, const int index )
+{
+	int weight = vert->BoneWeightings[index];
+	weight |= ( vert->uiNmWeightsAndBoneIndexes >> ( iG2_BONEWEIGHT_TOPBITS_SHIFT + ( index * 2 ) ) ) & iG2_BONEWEIGHT_TOPBITS_AND;
+
+	return fG2_BONEWEIGHT_RECIPROCAL_MULT * weight;
+}
+
+static void vk_release_model_vbo( uint32_t index )
+{
+	if ( !tr.vbos[index] )
+		return;
+
+	if ( tr.vbos[index]->buffer )
+		qvkDestroyBuffer( vk.device, tr.vbos[index]->buffer, NULL );
+	
+	if ( tr.vbos[index]->memory )
+		qvkFreeMemory( vk.device, tr.vbos[index]->memory, NULL );
+
+	if ( tr.vbos[index]->staging.buffer )
+		qvkDestroyBuffer( vk.device, tr.vbos[index]->staging.buffer, NULL );
+
+	if ( tr.vbos[index]->staging.memory )
+		qvkFreeMemory( vk.device, tr.vbos[index]->staging.memory, NULL );
+
+
+	tr.vbos[index]->memory = VK_NULL_HANDLE;
+	tr.vbos[index]->buffer = VK_NULL_HANDLE;
+	tr.vbos[index]->staging.memory = VK_NULL_HANDLE;
+	tr.vbos[index]->staging.buffer = VK_NULL_HANDLE;
+}
+
+static void vk_release_model_ibo( uint32_t index )
+{
+	if ( !tr.ibos[index] )
+		return;
+
+	if ( tr.ibos[index]->buffer )
+		qvkDestroyBuffer( vk.device, tr.ibos[index]->buffer, NULL );
+	
+	if ( tr.ibos[index]->memory )
+		qvkFreeMemory( vk.device, tr.ibos[index]->memory, NULL );
+
+	if ( tr.ibos[index]->staging.buffer )
+		qvkDestroyBuffer( vk.device, tr.ibos[index]->staging.buffer, NULL );
+
+	if ( tr.ibos[index]->staging.memory )
+		qvkFreeMemory( vk.device, tr.ibos[index]->staging.memory, NULL );
+
+	tr.ibos[index]->memory = VK_NULL_HANDLE;
+	tr.ibos[index]->buffer = VK_NULL_HANDLE;
+	tr.ibos[index]->staging.memory = VK_NULL_HANDLE;
+	tr.ibos[index]->staging.buffer = VK_NULL_HANDLE;
+}
+
+void vk_release_model_vbo( void ) {
+	uint32_t i;
+
+	for ( i = 0 ; i < tr.numVBOs; i++ ) {
+		vk_release_model_vbo( i );
+		vk_release_model_ibo( i );
+	}
+
+	tr.numVBOs = 0;
+	tr.numIBOs = 0;
+}
+
+IBO_t *R_CreateIBO( const char *name, const byte *vbo_data, int vbo_size )
+{
+	VkMemoryRequirements vb_mem_reqs;
+	VkMemoryAllocateInfo alloc_info;
+	VkBufferCreateInfo desc;
+	VkDeviceSize vertex_buffer_offset;
+	VkDeviceSize allocationSize;
+	uint32_t memory_type_bits;
+	VkBuffer staging_vertex_buffer;
+	VkDeviceMemory staging_buffer_memory;
+	VkCommandBuffer command_buffer;
+	VkBufferCopy copyRegion[1];
+	void *data;
+
+	IBO_t          *ibo;
+
+	if ( tr.numIBOs == MAX_VBOS ) {
+		ri.Error( ERR_DROP, "R_CreateVBO: MAX_VBOS hit");
+
+	}
+	vk_release_model_ibo( tr.numIBOs );
+
+	ibo = tr.ibos[tr.numIBOs] = (IBO_t *)ri.Hunk_Alloc(sizeof(*ibo), h_low);
+
+	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	desc.pNext = NULL;
+	desc.flags = 0;
+	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	desc.queueFamilyIndexCount = 0;
+	desc.pQueueFamilyIndices = NULL;
+
+	// device-local buffer
+	desc.size = vbo_size;
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &tr.ibos[tr.numIBOs]->buffer ) );
+	
+	// staging buffer
+	desc.size = vbo_size;
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+	VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &staging_vertex_buffer));
+
+	// memory requirements
+	qvkGetBufferMemoryRequirements( vk.device, tr.ibos[tr.numIBOs]->buffer, &vb_mem_reqs );
+	vertex_buffer_offset = 0;
+	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
+	memory_type_bits = vb_mem_reqs.memoryTypeBits;
+
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = allocationSize;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+	VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &tr.ibos[tr.numIBOs]->memory));
+	qvkBindBufferMemory( vk.device, tr.ibos[tr.numIBOs]->buffer, tr.ibos[tr.numIBOs]->memory, vertex_buffer_offset );
+	// staging buffers
+
+	// memory requirements
+	qvkGetBufferMemoryRequirements(vk.device, staging_vertex_buffer, &vb_mem_reqs);
+	vertex_buffer_offset = 0;
+	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
+	memory_type_bits = vb_mem_reqs.memoryTypeBits;
+
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = allocationSize;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &staging_buffer_memory));
+	qvkBindBufferMemory(vk.device, staging_vertex_buffer, staging_buffer_memory, vertex_buffer_offset);
+
+	VK_CHECK(qvkMapMemory(vk.device, staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
+	memcpy((byte*)data + vertex_buffer_offset, vbo_data, vbo_size);
+	qvkUnmapMemory(vk.device, staging_buffer_memory);
+
+	command_buffer = vk_begin_command_buffer();
+	copyRegion[0].srcOffset = 0;
+	copyRegion[0].dstOffset = 0;
+	copyRegion[0].size = vbo_size;
+	qvkCmdCopyBuffer( command_buffer, staging_vertex_buffer, tr.ibos[tr.numIBOs]->buffer, 1, &copyRegion[0] );
+	vk_end_command_buffer( command_buffer, __func__ );
+
+	qvkDestroyBuffer(vk.device, staging_vertex_buffer, NULL);
+	qvkFreeMemory(vk.device, staging_buffer_memory, NULL);
+
+	VK_SET_OBJECT_NAME( tr.ibos[tr.numIBOs]->buffer, va( "static IBO[2] %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( tr.ibos[tr.numIBOs]->memory, va( "static IBO[2] memory %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+
+	tr.numIBOs++;
+
+	ibo->size = vbo_size;
+	return ibo;
+}
+
+VBO_t *R_CreateVBO( const char *name, const byte *vbo_data, int vbo_size )
+{
+	VkMemoryRequirements vb_mem_reqs;
+	VkMemoryAllocateInfo alloc_info;
+	VkBufferCreateInfo desc;
+	VkDeviceSize vertex_buffer_offset;
+	VkDeviceSize allocationSize;
+	uint32_t memory_type_bits;
+	VkBuffer staging_vertex_buffer;
+	VkDeviceMemory staging_buffer_memory;
+	VkCommandBuffer command_buffer;
+	VkBufferCopy copyRegion[1];
+	void *data;
+
+	VBO_t          *vbo;
+
+	if ( tr.numVBOs == MAX_VBOS ) {
+		ri.Error( ERR_DROP, "R_CreateVBO: MAX_VBOS hit");
+
+	}
+
+	vk_release_model_vbo( tr.numVBOs );
+
+	vbo = tr.vbos[tr.numVBOs] = (VBO_t *)ri.Hunk_Alloc(sizeof(*vbo), h_low);
+
+	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	desc.pNext = NULL;
+	desc.flags = 0;
+	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	desc.queueFamilyIndexCount = 0;
+	desc.pQueueFamilyIndices = NULL;
+
+	// device-local buffer
+	desc.size = vbo_size;
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &tr.vbos[tr.numVBOs]->buffer ) );
+	
+	// staging buffer
+	desc.size = vbo_size;
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+	VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &staging_vertex_buffer));
+
+	// memory requirements
+	qvkGetBufferMemoryRequirements( vk.device, tr.vbos[tr.numVBOs]->buffer, &vb_mem_reqs );
+	vertex_buffer_offset = 0;
+	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
+	memory_type_bits = vb_mem_reqs.memoryTypeBits;
+
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = allocationSize;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+	VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &tr.vbos[tr.numVBOs]->memory));
+	qvkBindBufferMemory( vk.device, tr.vbos[tr.numVBOs]->buffer, tr.vbos[tr.numVBOs]->memory, vertex_buffer_offset );
+	// staging buffers
+
+	// memory requirements
+	qvkGetBufferMemoryRequirements(vk.device, staging_vertex_buffer, &vb_mem_reqs);
+	vertex_buffer_offset = 0;
+	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
+	memory_type_bits = vb_mem_reqs.memoryTypeBits;
+
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = allocationSize;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &staging_buffer_memory));
+	qvkBindBufferMemory(vk.device, staging_vertex_buffer, staging_buffer_memory, vertex_buffer_offset);
+
+	VK_CHECK(qvkMapMemory(vk.device, staging_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
+	memcpy((byte*)data + vertex_buffer_offset, vbo_data, vbo_size);
+	qvkUnmapMemory(vk.device, staging_buffer_memory);
+
+	command_buffer = vk_begin_command_buffer();
+	copyRegion[0].srcOffset = 0;
+	copyRegion[0].dstOffset = 0;
+	copyRegion[0].size = vbo_size;
+	qvkCmdCopyBuffer( command_buffer, staging_vertex_buffer, tr.vbos[tr.numVBOs]->buffer, 1, &copyRegion[0] );
+	vk_end_command_buffer( command_buffer, __func__ );
+
+	qvkDestroyBuffer(vk.device, staging_vertex_buffer, NULL);
+	qvkFreeMemory(vk.device, staging_buffer_memory, NULL);
+
+	VK_SET_OBJECT_NAME( tr.vbos[tr.numVBOs]->buffer, va( "static VBO[2] %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( tr.vbos[tr.numVBOs]->memory, va( "static VBO[2] memory %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+
+	vbo->index = tr.numVBOs++;
+	vbo->index++;
+	vbo->size = vbo_size;
+	return vbo;
+}
+
+
+// ~sunny, could be merged with R_CreateVBO using VBO_USAGE_STATIC, VBO_USAGE_DYNAMIC
+VBO_t *R_CreateDynamicVBO( const char *name, int size )
+{
+	VkBufferCreateInfo desc;
+	VkMemoryRequirements vb_mem_reqs;
+	VkMemoryAllocateInfo alloc_info;
+	VkDeviceSize buffer_offset = 0;
+
+	VBO_t *vbo;
+
+	if ( tr.numVBOs == MAX_VBOS ) {
+		ri.Error( ERR_DROP, "R_CreateDynamicVBO: MAX_VBOS hit" );
+	}
+
+	vk_release_model_vbo( tr.numVBOs );
+	vbo = tr.vbos[tr.numVBOs] = (VBO_t *)ri.Hunk_Alloc(sizeof(*vbo), h_low);
+
+	// Create device-local vertex buffer
+	Com_Memset(&desc, 0, sizeof(desc));
+	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	desc.pNext = NULL;
+	desc.flags = 0;
+	desc.size = size;
+	desc.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vbo->buffer ) );
+	qvkGetBufferMemoryRequirements( vk.device, vbo->buffer, &vb_mem_reqs );
+
+	Com_Memset( &alloc_info, 0, sizeof(alloc_info) );
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = vb_mem_reqs.size;
+	alloc_info.memoryTypeIndex = vk_find_memory_type( vb_mem_reqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT );
+
+	VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &vbo->memory ) );
+	VK_CHECK( qvkBindBufferMemory( vk.device, vbo->buffer, vbo->memory, buffer_offset ) );
+
+	// Create host-visible staging buffer
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vbo->staging.buffer ) );
+
+	qvkGetBufferMemoryRequirements( vk.device, vbo->staging.buffer, &vb_mem_reqs );
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = vb_mem_reqs.size;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(
+		vb_mem_reqs.memoryTypeBits,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+	VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &vbo->staging.memory ) );
+	VK_CHECK( qvkBindBufferMemory( vk.device, vbo->staging.buffer, vbo->staging.memory, buffer_offset ) );
+
+	// Map the staging buffer
+	void *mapped;
+	VK_CHECK( qvkMapMemory( vk.device, vbo->staging.memory, 0, size, 0, &mapped ) );
+	vbo->mapped = mapped;
+
+	vbo->size = size;
+	vbo->index = tr.numVBOs++;
+	vbo->index++;
+
+	VK_SET_OBJECT_NAME( vbo->buffer, va("dynamic VBO %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( vbo->memory, va("dynamic VBO memory %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+	VK_SET_OBJECT_NAME( vbo->staging.buffer, va("staging VBO %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( vbo->staging.memory, va("staging VBO memory %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+
+	return vbo;
+}
+
+// ~sunny, could be merged with R_CreateIBO using VBO_USAGE_STATIC, VBO_USAGE_DYNAMIC
+IBO_t *R_CreateDynamicIBO( const char *name, int size )
+{
+	VkBufferCreateInfo desc;
+	VkMemoryRequirements mem_reqs;
+	VkMemoryAllocateInfo alloc_info;
+	VkDeviceSize buffer_offset = 0;
+
+	IBO_t *ibo;
+
+	if ( tr.numIBOs == MAX_VBOS ) {
+		ri.Error( ERR_DROP, "R_CreateDynamicIBO: MAX_IBOS hit" );
+	}
+
+	vk_release_model_ibo(tr.numIBOs);
+
+	ibo = tr.ibos[tr.numIBOs] = (IBO_t *)ri.Hunk_Alloc(sizeof(*ibo), h_low);
+
+	// --- Device-local buffer (for GPU use)
+	Com_Memset( &desc, 0, sizeof(desc) );
+	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	desc.pNext = NULL;
+	desc.flags = 0;
+	desc.size = size;
+	desc.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &ibo->buffer ) );
+	qvkGetBufferMemoryRequirements( vk.device, ibo->buffer, &mem_reqs );
+
+	Com_Memset( &alloc_info, 0, sizeof(alloc_info) );
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = mem_reqs.size;
+	alloc_info.memoryTypeIndex = vk_find_memory_type( mem_reqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT );
+
+	VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &ibo->memory ) );
+	VK_CHECK( qvkBindBufferMemory( vk.device, ibo->buffer, ibo->memory, buffer_offset ) );
+
+	// --- Staging buffer (host-visible, persistently mapped)
+	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &ibo->staging.buffer ) );
+
+	qvkGetBufferMemoryRequirements( vk.device, ibo->staging.buffer, &mem_reqs );
+	alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	alloc_info.pNext = NULL;
+	alloc_info.allocationSize = mem_reqs.size;
+	alloc_info.memoryTypeIndex = vk_find_memory_type(
+		mem_reqs.memoryTypeBits,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+	VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &ibo->staging.memory ) );
+	VK_CHECK( qvkBindBufferMemory( vk.device, ibo->staging.buffer, ibo->staging.memory, buffer_offset ) );
+
+	// Persistent mapping
+	void *mapped;
+	VK_CHECK( qvkMapMemory( vk.device, ibo->staging.memory, 0, size, 0, &mapped ) );
+	ibo->mapped = mapped;
+
+	ibo->size = size;
+	tr.numIBOs++;
+
+	VK_SET_OBJECT_NAME( ibo->buffer, va("dynamic IBO %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( ibo->memory, va("dynamic IBO memory %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+	VK_SET_OBJECT_NAME( ibo->staging.buffer, va("staging IBO %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( ibo->staging.memory, va("staging IBO memory %s", name), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
+
+	return ibo;
+}
+
+void R_UpdateDynamicBuffer(VkBuffer dstBuffer, VkBuffer srcBuffer, VkDeviceSize offset, VkDeviceSize size)
+{
+	VkCommandBuffer cmd = vk_begin_command_buffer();
+
+	VkBufferCopy region;
+	region.srcOffset = offset;
+	region.dstOffset = offset;
+	region.size      = size;
+
+	qvkCmdCopyBuffer( cmd, srcBuffer, dstBuffer, 1, &region );
+
+	vk_end_command_buffer( cmd, __func__ );
+}
+
+typedef struct mdxm_attributes_s {
+	vec4_t	*verts;
+	vec4_t	*normals;
+	vec2_t	*texcoords;
+	byte	*weights;
+	byte	*bonerefs;
+	vec4_t	*tangents;
+} mdxm_attributes_t;
+
+typedef struct mdv_attributes_s {
+	vec4_t *verts;
+	vec4_t *normals;
+	vec2_t *texcoords;
+	vec4_t *tangents;
+} mdv_attributes_t;
+
+// in vulkan, pipelines like fog are created before a model is loaded
+// therefor the stride is undefined in vk_push_bind() during creation
+// use these methods to calculate the strides beforehand.
+// apply attribute type changes from R_BuildMDXM or R_BuildMD3 here as well
+int get_mdxm_stride( void ) {
+	int stride = 0;
+
+	if ( vk.ghoul2_vbo_stride )
+		return vk.ghoul2_vbo_stride;
+
+	const mdxm_attributes_t attr = {};
+
+	stride += sizeof (*attr.verts);
+	stride += sizeof (*attr.normals);
+	stride += sizeof (*attr.texcoords);
+	stride += sizeof (*attr.bonerefs) * 4;
+	stride += sizeof (*attr.weights) * 4;
+	stride += sizeof (*attr.tangents);
+	
+	vk.ghoul2_vbo_stride = stride;
+
+	return stride;
+}
+
+int get_mdv_stride( void ) {
+	int stride = 0;
+
+	if ( vk.mdv_vbo_stride )
+		return vk.mdv_vbo_stride;
+
+	const mdv_attributes_t attr = {};
+
+	stride += sizeof(*attr.verts);
+	stride += sizeof(*attr.normals);
+	stride += sizeof(*attr.texcoords);
+	stride += sizeof(*attr.tangents);
+	
+	vk.mdv_vbo_stride = stride;
+
+	return stride;
+}
+
+
+void R_BuildMDXM( model_t *mod, mdxmHeader_t *mdxm )
+{
+	if( !vk.vboGhoul2Active )
+		return;
+
+	mdxmVBOModel_t		*vboModel;
+	mdxmSurface_t		*surf;
+	mdxmLOD_t			*lod;
+	uint32_t			i, n, k, w;
+
+	lod = (mdxmLOD_t *)( (byte *)mdxm + mdxm->ofsLODs );
+	mod->data.glm->vboModels = (mdxmVBOModel_t *)ri.Hunk_Alloc( sizeof (mdxmVBOModel_t) * mdxm->numLODs, h_low );
+
+	for ( i = 0; i < mdxm->numLODs; i++ )
+	{
+		vboModel = &mod->data.glm->vboModels[i];
+		mdxmVBOMesh_t *vboMeshes;
+
+		vboModel->numVBOMeshes = mdxm->numSurfaces;
+		vboModel->vboMeshes = (mdxmVBOMesh_t *)ri.Hunk_Alloc( sizeof (mdxmVBOMesh_t) * (mdxm->numSurfaces ), h_low );
+		vboMeshes = vboModel->vboMeshes;
+		
+		surf = (mdxmSurface_t *)( (byte *)lod + sizeof (mdxmLOD_t) + ( mdxm->numSurfaces * sizeof (mdxmLODSurfOffset_t) ) );		
+		
+		mdxm_attributes_t attr = {};
+
+		byte *data;
+		int dataSize = 0;
+		int ofsPosition, ofsNormals, ofsTexcoords, ofsBoneRefs, ofsWeights, ofsTangents;
+		int stride = 0;
+		int numVerts = 0;
+		int numTriangles = 0;
+
+		// +1 to add total vertex count
+		int *baseVertexes = (int *)ri.Hunk_AllocateTempMemory (sizeof (int) * (mdxm->numSurfaces + 1));
+		int *indexOffsets = (int *)ri.Hunk_AllocateTempMemory (sizeof (int) * mdxm->numSurfaces);
+
+
+		// Calculate the required size of the vertex buffer.
+		for ( n = 0; n < mdxm->numSurfaces; n++ )
+		{
+			baseVertexes[n] = numVerts;
+			indexOffsets[n] = numTriangles * 3;
+
+			numVerts += surf->numVerts;
+			numTriangles += surf->numTriangles;
+
+			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
+		}
+
+		baseVertexes[mdxm->numSurfaces] = numVerts;
+
+		dataSize += numVerts * sizeof (*attr.verts);
+		dataSize += numVerts * sizeof (*attr.normals);
+		dataSize += numVerts * sizeof (*attr.texcoords);
+		dataSize += numVerts * sizeof (*attr.weights) * 4;
+		dataSize += numVerts * sizeof (*attr.bonerefs) * 4;
+		dataSize += numVerts * sizeof (*attr.tangents);
+
+		//dataSize = PAD(dataSize, 32);
+
+		// Allocate and write to memory
+		data = (byte *)ri.Hunk_AllocateTempMemory (dataSize);
+
+		ofsPosition = stride;
+		attr.verts = (vec4_t *)(data + ofsPosition);
+		stride += sizeof (*attr.verts);
+
+		ofsNormals = stride;
+		attr.normals = (vec4_t *)(data + ofsNormals);
+		stride += sizeof (*attr.normals);
+
+		ofsTexcoords = stride;
+		attr.texcoords = (vec2_t *)(data + ofsTexcoords);
+		stride += sizeof (*attr.texcoords);
+
+		ofsBoneRefs = stride;
+		attr.bonerefs = data + ofsBoneRefs;
+		stride += sizeof (*attr.bonerefs) * 4;
+
+		ofsWeights = stride;
+		attr.weights = data + ofsWeights;
+		stride += sizeof (*attr.weights) * 4;
+
+		ofsTangents = stride;
+		attr.tangents = (vec4_t *)(data + ofsTangents);
+		stride += sizeof (*attr.tangents);
+
+		// Fill in the index buffer and compute tangents
+		uint32_t *indices = (uint32_t *)ri.Hunk_AllocateTempMemory(sizeof(uint32_t) * numTriangles * 3);
+		uint32_t *index = indices;
+		vec4_t *tangentsf = (vec4_t *)ri.Hunk_AllocateTempMemory(sizeof(vec4_t) * numVerts);
+
+		surf = (mdxmSurface_t *)((byte *)lod + sizeof(mdxmLOD_t) + (mdxm->numSurfaces * sizeof(mdxmLODSurfOffset_t)));
+
+		for ( n = 0; n < mdxm->numSurfaces; n++ )
+		{
+			mdxmTriangle_t *t = (mdxmTriangle_t *)((byte *)surf + surf->ofsTriangles);
+
+			for ( k = 0; k < surf->numTriangles; k++, index += 3 )
+			{
+				index[0] = t[k].indexes[0] + baseVertexes[n];
+				assert( index[0] >= 0 && index[0] < numVerts );
+
+				index[1] = t[k].indexes[1] + baseVertexes[n];
+				assert( index[1] >= 0 && index[1] < numVerts );
+
+				index[2] = t[k].indexes[2] + baseVertexes[n];
+				assert( index[2] >= 0 && index[2] < numVerts );
+			}
+
+			// Build tangent space
+			//VBO_CalculateTangentsMDXM( surf, tangentsf + baseVertexes[n] );
+
+			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
+		}
+
+		assert( index == (indices + numTriangles * 3) );
+
+		surf = (mdxmSurface_t *)((byte *)lod + sizeof (mdxmLOD_t) + (mdxm->numSurfaces * sizeof (mdxmLODSurfOffset_t)));
+
+		for ( n = 0; n < mdxm->numSurfaces; n++ )
+		{
+			// Positions and normals
+			mdxmVertex_t *v = (mdxmVertex_t *)((byte *)surf + surf->ofsVerts);
+			int *boneRef = (int *)((byte *)surf + surf->ofsBoneReferences);
+
+			for ( k = 0; k < surf->numVerts; k++ )
+			{
+				VectorCopy( v[k].vertCoords, *attr.verts );
+				VectorCopy( v[k].normal, *attr.normals );
+
+				attr.verts = (vec4_t *)((byte *)attr.verts + stride);
+				attr.normals = (vec4_t *)((byte *)attr.normals + stride);
+			}
+
+			// Weights
+			for ( k = 0; k < surf->numVerts; k++ )
+			{
+				int numWeights = G2_GetVertWeights(&v[k]);
+				int lastWeight = 255;
+				int lastInfluence = numWeights - 1;
+				for ( w = 0; w < lastInfluence; w++ )
+				{
+					float weight = G2_GetVertBoneWeightNotSlow( &v[k], w );
+					int packedIndex = G2_GetVertBoneIndex( &v[k], w );
+
+					attr.weights[w] = (byte)(weight * 255.0f);		
+					attr.bonerefs[w] = boneRef[packedIndex];
+
+					lastWeight -= attr.weights[w];
+				}
+
+				assert(lastWeight > 0);
+
+				// Ensure that all the weights add up to 1.0
+				attr.weights[lastInfluence] = lastWeight;
+				int packedIndex = G2_GetVertBoneIndex(&v[k], lastInfluence);
+				attr.bonerefs[lastInfluence] = boneRef[packedIndex];
+
+				// Fill in the rest of the info with zeroes.
+				for ( w = numWeights; w < 4; w++ )
+				{
+					attr.weights[w] = 0;
+					attr.bonerefs[w] = 0;
+				}
+
+				attr.weights += stride;
+				attr.bonerefs += stride;
+			}
+
+			// Texture coordinates
+			mdxmVertexTexCoord_t *tc = (mdxmVertexTexCoord_t *)(v + surf->numVerts);
+			for ( k = 0; k < surf->numVerts; k++ )
+			{
+				(*attr.texcoords)[0] = tc[k].texCoords[0];
+				(*attr.texcoords)[1] = tc[k].texCoords[1];
+
+				attr.texcoords = (vec2_t *)((byte *)attr.texcoords + stride);
+			}
+
+			for ( k = 0; k < surf->numVerts; k++ )
+			{
+				VectorCopy4( (float*)(tangentsf + baseVertexes[n] + k), *attr.tangents );
+				attr.tangents = (vec4_t *)((byte *)attr.tangents + stride);
+			}
+
+			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
+		}
+
+		assert ((byte *)attr.verts == (data + dataSize));
+
+		const char *modelName = strrchr( mdxm->name, '/' );
+		if ( modelName == NULL )
+			modelName = mdxm->name;
+
+		VBO_t *vbo = R_CreateVBO( modelName, data, dataSize );
+		IBO_t *ibo = R_CreateIBO( modelName, (byte *)indices, sizeof(uint32_t) * numTriangles * 3 );
+
+		ri.Hunk_FreeTempMemory ( data );
+		ri.Hunk_FreeTempMemory ( tangentsf );
+		ri.Hunk_FreeTempMemory ( indices );
+
+		vbo->offsets[0] = ofsPosition;
+		vbo->offsets[5] = ofsNormals;
+		vbo->offsets[2] = ofsTexcoords;
+		vbo->offsets[8] = ofsBoneRefs;
+		vbo->offsets[9] = ofsWeights;
+		//vbo->offsets[8] = ofsTangents;
+
+		surf = (mdxmSurface_t *)((byte *)lod + sizeof (mdxmLOD_t) + (mdxm->numSurfaces * sizeof (mdxmLODSurfOffset_t)));
+
+		for ( n = 0; n < mdxm->numSurfaces; n++ )
+		{
+			vboMeshes[n].vbo = vbo;
+			vboMeshes[n].ibo = ibo;
+
+			vboMeshes[n].indexOffset = indexOffsets[n];
+			vboMeshes[n].minIndex = baseVertexes[n];
+			vboMeshes[n].maxIndex = baseVertexes[n + 1] - 1;
+			vboMeshes[n].numVertexes = surf->numVerts;
+			vboMeshes[n].numIndexes = surf->numTriangles * 3;
+
+			surf = (mdxmSurface_t *)((byte *)surf + surf->ofsEnd);
+		}
+
+		vboModel->vbo = vbo;
+		vboModel->ibo = ibo;
+
+		ri.Hunk_FreeTempMemory ( indexOffsets );
+		ri.Hunk_FreeTempMemory ( baseVertexes );
+
+		// find the next LOD
+		lod = (mdxmLOD_t *)( (byte *)lod + lod->ofsEnd );
+	}
+
+	return;
+}
+#endif
+
+void R_BuildMD3( model_t *mod, mdvModel_t *mdvModel ) 
+{
+	mdvVertex_t    *v;
+	mdvSt_t        *st;
+	mdvSurface_t   *surf;
+	srfVBOMDVMesh_t *vboSurf;
+
+	uint32_t		i, j, k;
+
+	mdvModel->numVBOSurfaces = mdvModel->numSurfaces;
+	mdvModel->vboSurfaces = (srfVBOMDVMesh_t *)ri.Hunk_Alloc(sizeof(*mdvModel->vboSurfaces) * mdvModel->numSurfaces, h_low);
+
+	if ( !mdvModel->numSurfaces )
+		return;
+
+	vboSurf = mdvModel->vboSurfaces;
+	surf = mdvModel->surfaces;
+
+	mdv_attributes_t attr = {};
+
+	byte *data;
+	int dataSize = 0;
+	int ofsPosition, ofsNormals, ofsTexcoords, ofsTangents;
+	int stride = 0;
+	int numVerts = 0;
+	int numIndexes = 0;
+
+	// +1 to add total vertex count
+	int *baseVertexes = (int *)ri.Hunk_AllocateTempMemory(sizeof(int) * (mdvModel->numSurfaces + 1));
+	int *indexOffsets = (int *)ri.Hunk_AllocateTempMemory(sizeof(int) * mdvModel->numSurfaces);
+
+	// Calculate the required size of the vertex buffer.
+	for (int n = 0; n < mdvModel->numSurfaces; n++, surf++)
+	{
+		baseVertexes[n] = numVerts;
+		indexOffsets[n] = numIndexes;
+
+		numVerts += surf->numVerts;
+		numIndexes += surf->numIndexes;
+	}
+	baseVertexes[mdvModel->numSurfaces] = numVerts;
+
+	dataSize += numVerts * sizeof(*attr.verts);
+	dataSize += numVerts * sizeof(*attr.normals);
+	dataSize += numVerts * sizeof(*attr.texcoords);
+	dataSize += numVerts * sizeof(*attr.tangents);
+
+	// Allocate and write to memory
+	data = (byte *)ri.Hunk_AllocateTempMemory(dataSize);
+
+	ofsPosition = stride;
+	attr.verts = (vec4_t *)(data + ofsPosition);
+	stride += sizeof(*attr.verts);
+
+	ofsNormals = stride;
+	attr.normals = (vec4_t *)(data + ofsNormals);
+	stride += sizeof(*attr.normals);
+
+	ofsTexcoords = stride;
+	attr.texcoords = (vec2_t *)(data + ofsTexcoords);
+	stride += sizeof(*attr.texcoords);
+
+	ofsTangents = stride;
+	attr.tangents = (vec4_t *)(data + ofsTangents);
+	stride += sizeof(*attr.tangents);
+
+	// Fill in the index buffer and compute tangents
+	glIndex_t *indices = (glIndex_t *)ri.Hunk_AllocateTempMemory(sizeof(glIndex_t) * numIndexes);
+	glIndex_t *index = indices;
+
+	surf = mdvModel->surfaces;
+	for (i = 0; i < mdvModel->numSurfaces; i++, surf++)
+	{
+		vec4_t *tangentsf = (vec4_t *)ri.Hunk_AllocateTempMemory(sizeof(vec4_t) * surf->numVerts);
+		//VBO_CalculateTangentsMD3( surf, tangentsf + 0 );
+
+		for ( k = 0; k < surf->numIndexes; k++)
+		{
+			*index = surf->indexes[k] + baseVertexes[i];
+			assert(*index >= 0 && *index < numVerts);
+			index++;
+		}
+
+		v = surf->verts;
+		for ( j = 0; j < surf->numVerts; j++, v++ )
+		{
+			VectorCopy(v->xyz, *attr.verts);
+			VectorCopy(v->normal, *attr.normals);
+			VectorCopy4( (float*)(tangentsf + j), *attr.tangents );
+
+			//*normals = R_VboPackNormal(v->normal);
+			//*tangents = tangentsf[j];
+
+			attr.verts = (vec4_t *)((byte *)attr.verts + stride);
+			attr.normals = (vec4_t *)((byte *)attr.normals + stride);
+			attr.tangents = (vec4_t *)((byte *)attr.tangents + stride);
+		}
+		ri.Hunk_FreeTempMemory(tangentsf);
+
+		st = surf->st;
+		for ( j = 0; j < surf->numVerts; j++, st++ ) 
+		{
+			(*attr.texcoords)[0] = st->st[0];
+			(*attr.texcoords)[1] = st->st[1];
+
+			attr.texcoords = (vec2_t *)((byte *)attr.texcoords + stride);
+		}
+	}
+
+	assert((byte *)attr.verts == (data + dataSize));
+
+	VBO_t *vbo = R_CreateVBO( mod->name, data, dataSize );
+	IBO_t *ibo = R_CreateIBO( mod->name, (byte *)indices, sizeof(glIndex_t) * numIndexes );
+
+	ri.Hunk_FreeTempMemory(data);
+	ri.Hunk_FreeTempMemory(indices);
+
+	vbo->offsets[0] = ofsPosition;
+	vbo->offsets[5] = ofsNormals;
+	vbo->offsets[2] = ofsTexcoords;
+	vbo->offsets[8] = ofsTangents;
+
+	surf = mdvModel->surfaces;
+	for ( i = 0; i < mdvModel->numSurfaces; i++, surf++, vboSurf++ )
+	{
+		vboSurf->surfaceType = SF_VBO_MDVMESH;
+		vboSurf->mdvModel = mdvModel;
+		vboSurf->mdvSurface = surf;
+		vboSurf->vbo = vbo;
+		vboSurf->ibo = ibo;
+
+		vboSurf->indexOffset = indexOffsets[i];
+		vboSurf->minIndex = baseVertexes[i];
+		vboSurf->maxIndex = baseVertexes[i + 1] - 1;
+		vboSurf->numVerts = surf->numVerts;
+		vboSurf->numIndexes = surf->numIndexes;
+	}
+
+	ri.Hunk_FreeTempMemory(indexOffsets);
+	ri.Hunk_FreeTempMemory(baseVertexes);
+}
+
+#ifdef _G2_GORE
+
+#define GORE_VERTEX_SIZE	2 * 1024 * 1024
+#define GORE_INDEX_SIZE		2 * 1024 * 1024
+
+#define MAX_GORE_VERTICES	GORE_VERTEX_SIZE / sizeof(g2GoreVert_t)
+#define MAX_GORE_INDIDCES	GORE_INDEX_SIZE / sizeof(glIndex_t)
+
+void R_CreateGoreVBO( void )
+{
+	mdxm_attributes_t attr = {};
+
+	byte *data;
+	int dataSize = 0;
+	int ofsPosition, ofsNormals, ofsTexcoords, ofsBoneRefs, ofsWeights, ofsTangents;
+	int stride = 0;
+
+	tr.goreVBO = R_CreateDynamicVBO( "Gore VBO", GORE_VERTEX_SIZE );
+
+	dataSize += sizeof (*attr.verts);
+	dataSize += sizeof (*attr.normals);
+	dataSize += sizeof (*attr.texcoords);
+	dataSize += sizeof (*attr.weights) * 4;
+	dataSize += sizeof (*attr.bonerefs) * 4;
+	dataSize += sizeof (*attr.tangents);
+
+	data = (byte *)ri.Hunk_AllocateTempMemory (dataSize);
+
+	ofsPosition = stride;
+	attr.verts = (vec4_t *)(data + ofsPosition);
+	stride += sizeof (*attr.verts);
+
+	ofsNormals = stride;
+	attr.normals = (vec4_t *)(data + ofsNormals);
+	stride += sizeof (*attr.normals);
+
+	ofsTexcoords = stride;
+	attr.texcoords = (vec2_t *)(data + ofsTexcoords);
+	stride += sizeof (*attr.texcoords);
+
+	ofsBoneRefs = stride;
+	attr.bonerefs = data + ofsBoneRefs;
+	stride += sizeof (*attr.bonerefs) * 4;
+
+	ofsWeights = stride;
+	attr.weights = data + ofsWeights;
+	stride += sizeof (*attr.weights) * 4;
+
+	ofsTangents = stride;
+	attr.tangents = (vec4_t *)(data + ofsTangents);
+	stride += sizeof (*attr.tangents);
+
+	ri.Hunk_FreeTempMemory ( data );
+
+	tr.goreVBO->offsets[0] = ofsPosition;
+	tr.goreVBO->offsets[5] = ofsNormals;
+	tr.goreVBO->offsets[2] = ofsTexcoords;
+	tr.goreVBO->offsets[8] = ofsBoneRefs;
+	tr.goreVBO->offsets[9] = ofsWeights;
+	//tr.goreVBO->offsets[8] = ofsTangents;
+
+	tr.goreIBO = R_CreateDynamicIBO( "Gore IBO", GORE_INDEX_SIZE );
+
+	tr.goreIBOCurrentIndex = 0;
+	tr.goreVBOCurrentIndex = 0;
+}
+
+
+void R_UpdateGoreVBO( srfG2GoreSurface_t *goreSurface )
+{
+	if ( !goreSurface || !goreSurface->verts || !goreSurface->indexes ) {
+		ri.Error(ERR_DROP, "RB_UpdateGoreVBO: NULL surface or data");
+	}
+
+	const int num_vertexes = goreSurface->numVerts;
+	const int num_indexes = goreSurface->numIndexes;
+
+	if ( tr.goreVBOCurrentIndex + num_vertexes >= MAX_GORE_VERTICES )
+		tr.goreVBOCurrentIndex = 0;
+
+	if ( tr.goreIBOCurrentIndex + num_indexes >= MAX_GORE_INDIDCES )
+		tr.goreIBOCurrentIndex = 0;
+
+	const int vbo_offset = tr.goreVBOCurrentIndex * sizeof(g2GoreVert_t);
+	const int ibo_offset = tr.goreIBOCurrentIndex * sizeof(glIndex_t);
+
+	size_t vbo_size = sizeof(g2GoreVert_t) * num_vertexes;
+	size_t ibo_size = sizeof(glIndex_t) * num_indexes;
+
+	Com_Memcpy((byte *)tr.goreVBO->mapped + vbo_offset, goreSurface->verts, vbo_size);
+	Com_Memcpy((byte *)tr.goreIBO->mapped + ibo_offset, goreSurface->indexes, ibo_size);
+
+	// Upload to GPU
+	R_UpdateDynamicBuffer(tr.goreVBO->buffer, tr.goreVBO->staging.buffer, vbo_offset, vbo_size);
+	R_UpdateDynamicBuffer(tr.goreIBO->buffer, tr.goreIBO->staging.buffer, ibo_offset, ibo_size);
+
+	goreSurface->firstVert  = tr.goreVBOCurrentIndex;
+	goreSurface->firstIndex = tr.goreIBOCurrentIndex;
+
+	tr.goreVBOCurrentIndex += num_vertexes;
+	tr.goreIBOCurrentIndex += num_indexes;
+}
+#endif // _G2_GORE
+
 void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 {
 	vbo_t *vbo = &world_vbo;
@@ -482,7 +1438,7 @@ void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 	int numStaticIndexes = 0;
 	int numStaticVertexes = 0;
 
-	if (!r_vbo->integer)
+	if ( !vk.vboWorldActive )
 		return;
 
 	if (glConfig.maxActiveTextures < 3) {
@@ -491,6 +1447,8 @@ void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 	}
 
 	VBO_Cleanup();
+	
+	Com_Memset( vbo, 0, sizeof( *vbo ) );
 
 	vbo_size = 0;
 
@@ -633,7 +1591,7 @@ void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 		// tesselate
 		rb_surfaceTable[*sf->data](sf->data); // VBO_PushData() may be called multiple times there
 		// setup colors and texture coordinates
-		VBO_PushData(i + 1, &tess);
+		VBO_PushData( i + 1, &tess);
 		if (grid->surfaceType == SF_GRID) {
 			vbo_item_t *vi = vbo->items + i + 1;
 			if (vi->num_vertexes != grid->vboExpectVertices || vi->num_indexes != grid->vboExpectIndices) {
@@ -647,7 +1605,7 @@ void R_BuildWorldVBO(msurface_t *surf, int surfCount)
 	ri.Hunk_FreeTempMemory(surfList);
 
 	//__fail:
-	vk_alloc_vbo(vbo->vbo_buffer, vbo->vbo_size);
+	vk_alloc_vbo( "world", vbo->vbo_buffer, vbo->vbo_size );
 
 	//if ( err == GL_OUT_OF_MEMORY )
 	//	ri.Printf( PRINT_WARNING, "%s: out of memory\n", __func__ );
@@ -686,9 +1644,9 @@ void VBO_Cleanup(void)
 {
 	int i;
 
-	memset(&world_vbo, 0, sizeof(world_vbo));
+	memset( &world_vbo, 0, sizeof(vbo_t) );
 
-	for (i = 0; i < tr.numShaders; i++)
+	for ( i = 0; i < tr.numShaders; i++ )
 	{
 		tr.shaders[i]->isStaticShader = qfalse;
 		tr.shaders[i]->iboOffset = -1;
@@ -740,7 +1698,7 @@ static void qsort_int(int *a, const int n) {
 
 static int run_length(const int *a, int from, int to, int *count)
 {
-	vbo_t *vbo = &world_vbo;
+	vbo_t *vbo = &world_vbo;;
 	int i, n, cnt;
 	for (cnt = 0, n = 1, i = from; i < to; i++, n++)
 	{
@@ -754,7 +1712,7 @@ static int run_length(const int *a, int from, int to, int *count)
 
 void VBO_QueueItem(int itemIndex)
 {
-	vbo_t *vbo = &world_vbo;
+	vbo_t *vbo = &world_vbo;;
 
 	if (vbo->items_queue_count < vbo->items_count)
 	{
@@ -775,12 +1733,12 @@ void VBO_ClearQueue(void)
 
 void VBO_Flush(void)
 {
-	if (tess.vboIndex)
-	{
-		RB_EndSurface();
-		tess.vboIndex = 0;
-		RB_BeginSurface(tess.shader, tess.fogNum);
-	}
+	if (!tess.vbo_world_index)
+		return;
+
+	RB_EndSurface();
+	tess.vbo_world_index = 0;
+	RB_BeginSurface(tess.shader, tess.fogNum);
 }
 
 static void VBO_AddItemDataToSoftBuffer(int itemIndex)
@@ -801,7 +1759,7 @@ static void VBO_AddItemDataToSoftBuffer(int itemIndex)
 
 static void VBO_AddItemRangeToIBOBuffer(int offset, int length)
 {
-	vbo_t *vbo = &world_vbo;
+	vbo_t *vbo = &world_vbo;;
 	ibo_item_t *it;
 
 	it = vbo->ibo_items + vbo->ibo_items_count++;
@@ -871,18 +1829,19 @@ void VBO_PrepareQueues(void)
 	}
 }
 
-void vk_release_vbo(void)
+
+void vk_release_world_vbo( void )
 {
-	if (vk.vbo.vertex_buffer)
-		qvkDestroyBuffer(vk.device, vk.vbo.vertex_buffer, NULL);
+	if ( vk.vbo.vertex_buffer )
+		qvkDestroyBuffer( vk.device, vk.vbo.vertex_buffer, NULL );
 	vk.vbo.vertex_buffer = VK_NULL_HANDLE;
 
-	if (vk.vbo.buffer_memory)
-		qvkFreeMemory(vk.device, vk.vbo.buffer_memory, NULL);
+	if ( vk.vbo.buffer_memory )
+		qvkFreeMemory( vk.device, vk.vbo.buffer_memory, NULL );
 	vk.vbo.buffer_memory = VK_NULL_HANDLE;
 }
 
-qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
+qboolean vk_alloc_vbo( const char *name, const byte *vbo_data, int vbo_size )
 {
 	VkMemoryRequirements vb_mem_reqs;
 	VkMemoryAllocateInfo alloc_info;
@@ -894,7 +1853,7 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	VkBufferCopy copyRegion[1];
 	VkDeviceSize uploadDone;
 
-	vk_release_vbo();
+	vk_release_world_vbo();
 
 	desc.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 	desc.pNext = NULL;
@@ -906,10 +1865,10 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	// device-local buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-	VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &vk.vbo.vertex_buffer));
+	VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vk.vbo.vertex_buffer ) );
 
 	// memory requirements
-	qvkGetBufferMemoryRequirements(vk.device, vk.vbo.vertex_buffer, &vb_mem_reqs);
+	qvkGetBufferMemoryRequirements( vk.device, vk.vbo.vertex_buffer, &vb_mem_reqs );
 	vertex_buffer_offset = 0;
 	allocationSize = vertex_buffer_offset + vb_mem_reqs.size;
 	memory_type_bits = vb_mem_reqs.memoryTypeBits;
@@ -918,8 +1877,8 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk.vbo.buffer_memory));
-	qvkBindBufferMemory(vk.device, vk.vbo.vertex_buffer, vk.vbo.buffer_memory, vertex_buffer_offset);
+	VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &vk.vbo.buffer_memory));
+	qvkBindBufferMemory( vk.device, vk.vbo.vertex_buffer, vk.vbo.buffer_memory, vertex_buffer_offset );
 
 	// staging buffers
 
@@ -941,8 +1900,8 @@ qboolean vk_alloc_vbo(const byte *vbo_data, int vbo_size)
 		uploadDone += uploadSize;
 	}
 
-	VK_SET_OBJECT_NAME(vk.vbo.vertex_buffer, "static VBO", VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT);
-	VK_SET_OBJECT_NAME(vk.vbo.buffer_memory, "static VBO memory", VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT);
+	VK_SET_OBJECT_NAME( vk.vbo.vertex_buffer, va( "static VBO %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_BUFFER_EXT );
+	VK_SET_OBJECT_NAME( vk.vbo.buffer_memory, va( "static VBO memory %s", name ), VK_DEBUG_REPORT_OBJECT_TYPE_DEVICE_MEMORY_EXT );
 
 	return qtrue;
 }

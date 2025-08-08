@@ -25,6 +25,14 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define TR_LOCAL_H
 
 #define USE_VBO					// store static world geometry in VBO
+
+#ifdef USE_VBO
+	#define MAX_VBOS      4096
+
+	#define USE_VBO_GHOUL2
+	#define USE_VBO_MDV	
+#endif
+
 #define USE_FOG_ONLY
 #define USE_FOG_COLLAPSE		// not compatible with legacy dlights
 #if defined ( USE_VBO ) && !defined( USE_FOG_ONLY )
@@ -109,6 +117,8 @@ typedef enum {
 #define GL_COMPRESSED_RGB_S3TC_DXT1_EXT		0x83F0
 #define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT	0x83F3
 
+typedef void GLvoid;
+typedef int GLsizei;
 typedef unsigned int glIndex_t;
 
 #define LL(x) x=LittleLong(x)
@@ -177,7 +187,8 @@ typedef struct trRefEntity_s {
 
 	float		axisLength;		// compensate for non-normalized axis
 	qboolean	lightingCalculated;
-	vec3_t		lightDir;		// normalized direction towards light
+	vec3_t		lightDir;			// normalized direction towards light, original
+	vec3_t		modelLightDir;  // normalized direction towards light, in model space
 	vec3_t		ambientLight;	// color normalized to 0-255
 	int			ambientLightInt;	// 32 bit rgba packed
 	vec3_t		directedLight;
@@ -193,6 +204,7 @@ typedef struct orientationr_s {
 	vec3_t		origin;			// in world coordinates
 	matrix3_t	axis;		// orientation in world
 	vec3_t		viewOrigin;		// viewParms->or.origin in local coordinates
+	float		modelViewMatrix[16];
 	float		modelMatrix[16];
 } orientationr_t;
 
@@ -262,6 +274,37 @@ typedef struct image_s {
 	VkSamplerAddressMode	wrapClampMode;	
 } image_t;
 
+typedef struct VBO_s
+{	
+	int				index;
+
+	VkBuffer		buffer;
+	VkDeviceMemory	memory;
+
+	uint32_t		offsets[12];
+
+	int				size;
+	void			*mapped;
+	struct {
+		VkBuffer		buffer;
+		VkDeviceMemory	memory;
+	} staging;
+} VBO_t;
+
+typedef struct IBO_s
+{
+	VkBuffer		buffer;
+	VkDeviceMemory	memory;
+
+	int				size;
+	void			*mapped;
+
+	struct {
+		VkBuffer		buffer;
+		VkDeviceMemory	memory;
+	} staging;	
+} IBO_t;
+
 //===============================================================================
 
 typedef enum {
@@ -320,6 +363,7 @@ typedef enum {
 	DEFORM_WAVE,
 	DEFORM_NORMALS,
 	DEFORM_BULGE,
+	DEFORM_BULGE_UNIFORM,
 	DEFORM_MOVE,
 	DEFORM_PROJECTION_SHADOW,
 	DEFORM_AUTOSPRITE,
@@ -331,7 +375,8 @@ typedef enum {
 	DEFORM_TEXT4,
 	DEFORM_TEXT5,
 	DEFORM_TEXT6,
-	DEFORM_TEXT7
+	DEFORM_TEXT7,
+	DEFORM_DISINTEGRATION
 } deform_t;
 
 typedef enum {
@@ -365,6 +410,8 @@ typedef enum {
 	CGEN_FOG,				// standard fog
 	CGEN_CONST,				// fixed color
 	CGEN_LIGHTMAPSTYLE,
+	CGEN_DISINTEGRATION_1,
+	CGEN_DISINTEGRATION_2
 } colorGen_t;
 
 typedef enum {
@@ -497,7 +544,7 @@ typedef struct textureBundle_s {
 	unsigned int 	dlight : 1;
 
 	int				videoMapHandle;
-	bool			glow;
+	bool glow;
 } textureBundle_t;
 
 
@@ -525,6 +572,7 @@ typedef struct shaderStage_s {
 
 	// Whether this object emits a glow or not.
 	bool			glow;
+
 
 	uint32_t		vk_pipeline[2];
 	uint32_t		vk_2d_pipeline;
@@ -784,27 +832,21 @@ SURFACES
 ==============================================================================
 */
 // any changes in surfaceType must be mirrored in rb_surfaceTable[]
-typedef enum {
+typedef enum surfaceType_e {
 	SF_BAD,
 	SF_SKIP,				// ignore
 	SF_FACE,
 	SF_GRID,
 	SF_TRIANGLES,
 	SF_POLY,
-	SF_MD3,
-/*
-Ghoul2 Insert Start
-*/
+	SF_MDV,
 	SF_MDX,
-/*
-Ghoul2 Insert End
-*/
 	SF_FLARE,
 	SF_ENTITY,				// beams, rails, lightning, etc that can be determined by entity
-	SF_DISPLAY_LIST,
+	SF_VBO_MDVMESH,
 
 	SF_NUM_SURFACE_TYPES,
-	SF_MAX = 0xffffffff			// ensures that sizeof( surfaceType_t ) == sizeof( int )
+	SF_MAX = 0x7fffffff				// ensures that sizeof( surfaceType_t ) == sizeof( int )
 } surfaceType_t;
 
 typedef struct drawSurf_s {
@@ -853,6 +895,37 @@ typedef struct srfFlare_s {
 #define	VERTEX_COLOR		( 5 + ( MAXLIGHTMAPS * 2 ) )
 #define	VERTEX_FINAL_COLOR	( 5 + ( MAXLIGHTMAPS * 3 ) )
 
+
+#ifdef _G2_GORE
+typedef struct
+{
+	vec4_t		verts;
+	vec4_t		normals;
+	vec2_t		texcoords;
+	byte		bonerefs[4];
+	byte		weights[4];
+	vec4_t		tangents;
+} g2GoreVert_t;
+
+typedef struct srfG2GoreSurface_s
+{
+	surfaceType_t   surfaceType;
+
+	// indexes
+	int             numIndexes;
+	glIndex_t      *indexes;
+
+	// vertexes
+	int             numVerts;
+	g2GoreVert_t    *verts;
+
+	// BSP VBO offsets
+	int             firstVert;
+	int             firstIndex;
+
+} srfG2GoreSurface_t;
+
+#endif
 typedef struct srfGridMesh_s {
 	surfaceType_t	surfaceType;
 
@@ -1039,6 +1112,132 @@ typedef struct world_s {
 
 //======================================================================
 
+/*
+==============================================================================
+MDV MODELS - meta format for vertex animation models like .md2, .md3, .mdc
+==============================================================================
+*/
+typedef struct
+{
+	float           bounds[2][3];
+	float           localOrigin[3];
+	float           radius;
+} mdvFrame_t;
+
+typedef struct
+{
+	float           origin[3];
+	float           axis[3][3];
+} mdvTag_t;
+
+typedef struct
+{
+	char            name[MAX_QPATH];	// tag name
+} mdvTagName_t;
+
+typedef struct
+{
+	vec3_t          xyz;
+	vec3_t          normal;
+	vec3_t          tangent;
+	vec3_t          bitangent;
+} mdvVertex_t;
+
+typedef struct
+{
+	float           st[2];
+} mdvSt_t;
+
+typedef struct mdvSurface_s
+{
+	surfaceType_t   surfaceType;
+
+	char            name[MAX_QPATH];	// polyset name
+
+	int             numShaderIndexes;
+	int				*shaderIndexes;
+
+	int             numVerts;
+	mdvVertex_t    *verts;
+	mdvSt_t        *st;
+
+	int             numIndexes;
+	glIndex_t      *indexes;
+
+	struct mdvModel_s *model;
+} mdvSurface_t;
+
+typedef struct srfVBOMDVMesh_s
+{
+	surfaceType_t   surfaceType;
+
+	struct mdvModel_s *mdvModel;
+	struct mdvSurface_s *mdvSurface;
+
+	// backEnd stats
+	int				indexOffset;
+	int             numIndexes;
+	int             numVerts;
+	glIndex_t       minIndex;
+	glIndex_t       maxIndex;
+
+	// static render data
+	VBO_t          *vbo;
+	IBO_t          *ibo;
+} srfVBOMDVMesh_t;
+
+typedef struct mdvModel_s
+{
+	int             numFrames;
+	mdvFrame_t     *frames;
+
+	int             numTags;
+	mdvTag_t       *tags;
+	mdvTagName_t   *tagNames;
+
+	int             numSurfaces;
+	mdvSurface_t   *surfaces;
+
+	int             numVBOSurfaces;
+	srfVBOMDVMesh_t  *vboSurfaces;
+
+	int             numSkins;
+} mdvModel_t;
+
+#ifdef USE_VBO_GHOUL2
+typedef struct mdxmVBOMesh_s
+{
+	surfaceType_t surfaceType;
+
+	int indexOffset;
+	int minIndex;
+	int maxIndex;
+	int numIndexes;
+	int numVertexes;
+
+	VBO_t *vbo;
+	IBO_t *ibo;
+} mdxmVBOMesh_t;
+
+typedef struct mdxmVBOModel_s
+{
+	int numVBOMeshes;
+	mdxmVBOMesh_t *vboMeshes;
+
+	VBO_t *vbo;
+	IBO_t *ibo;
+} mdxmVBOModel_t;
+#endif
+
+typedef struct mdxmData_s
+{
+	mdxmHeader_t	*header;
+#ifdef USE_VBO_GHOUL2
+	mdxmVBOModel_t	*vboModels;
+#endif
+} mdxmData_t;
+
+
 typedef enum {
 	MOD_BAD,
 	MOD_BRUSH,
@@ -1060,16 +1259,15 @@ typedef struct model_s {
 	int			index;				// model = tr.models[model->mod_index]
 
 	int			dataSize;			// just for listing purposes
-	bmodel_t	*bmodel;			// only if type == MOD_BRUSH
-	md3Header_t	*md3[MD3_MAX_LODS];	// only if type == MOD_MESH
-/*
-Ghoul2 Insert Start
-*/
-	mdxmHeader_t *mdxm;				// only if type == MOD_GL2M which is a GHOUL II Mesh file NOT a GHOUL II animation file
-	mdxaHeader_t *mdxa;				// only if type == MOD_GL2A which is a GHOUL II Animation file
-/*
-Ghoul2 Insert End
-*/
+
+	struct // union presents issues with glm world models like weapons ..
+	{
+		bmodel_t		*bmodel;			// type == MOD_BRUSH
+		mdvModel_t		*mdv[MD3_MAX_LODS];	// type == MOD_MESH
+		mdxmData_t		*glm;				// type == MOD_MDXM which is a GHOUL II Mesh file NOT a GHOUL II animation file
+		mdxaHeader_t	*gla;				// type == MOD_MDXA which is a GHOUL II Animation file
+	} data;
+
 	unsigned char	numLods;
 	bool			bspInstance;			// model is a bsp instance
 } model_t;
@@ -1387,6 +1585,20 @@ typedef struct trGlobals_s {
 	world_t					bspModels[MAX_SUB_BSP];
 	int						numBSPModels;
 
+	int						numVBOs;
+	VBO_t					*vbos[4069];
+
+	int						numIBOs;
+	IBO_t					*ibos[4069];
+
+#ifdef _G2_GORE
+	VBO_t					*goreVBO;
+	int						*goreVBOIndex;
+	int						goreVBOCurrentIndex;
+	IBO_t					*goreIBO;
+	int						goreIBOCurrentIndex;
+#endif
+
 	// shader indexes from other modules will be looked up in tr.shaders[]
 	// shader indexes from drawsurfs will be looked up in sortedShaders[]
 	// lower indexed sortedShaders must be rendered first (opaque surfaces before translucent)
@@ -1641,6 +1853,7 @@ extern cvar_t	*r_roundImagesDown;
 extern cvar_t	*r_nomip;				// apply picmip only on worldspawn textures
 #ifdef USE_VBO
 extern cvar_t	*r_vbo;
+extern cvar_t	*r_vbo_models;
 #endif
 
 /*
@@ -1779,7 +1992,8 @@ typedef struct stageVars
     vec2_t      *texcoordPtr[NUM_TEXTURE_BUNDLES];
 } stageVars_t;
 
-#define	NUM_TEX_COORDS		( MAXLIGHTMAPS + 1 )
+#define	NUM_TEX_COORDS				( MAXLIGHTMAPS + 1 )
+#define MAX_MULTIDRAW_PRIMITIVES	16384
 
 struct shaderCommands_s
 {
@@ -1794,9 +2008,11 @@ struct shaderCommands_s
 
 #ifdef USE_VBO
 	surfaceType_t	surfType;
-	int				vboIndex;
+	int				vbo_world_index; // world item index
+	int				vbo_model_index; // ghoul2/mdv item index
 	int				vboStage;
 	qboolean		allowVBO;
+	
 #endif
 
 	shader_t		*shader;
@@ -1804,6 +2020,16 @@ struct shaderCommands_s
 	int				fogNum;
 	int				numIndexes;
 	int				numVertexes;
+
+	glIndex_t	minIndex;
+	glIndex_t	maxIndex;
+
+	int			multiDrawPrimitives;
+	GLsizei		multiDrawNumIndexes[MAX_MULTIDRAW_PRIMITIVES];
+	glIndex_t	*multiDrawFirstIndex[MAX_MULTIDRAW_PRIMITIVES];
+	glIndex_t	*multiDrawLastIndex[MAX_MULTIDRAW_PRIMITIVES];
+	glIndex_t	multiDrawMinIndex[MAX_MULTIDRAW_PRIMITIVES];
+	glIndex_t	multiDrawMaxIndex[MAX_MULTIDRAW_PRIMITIVES];
 
 #ifdef USE_PMLIGHT
 	const dlight_t	*light;
@@ -1972,9 +2198,13 @@ public:
 	const int		ident;				// ident of this surface - required so the materials renderer knows what sort of surface this refers to
 #endif
 	CBoneCache 		*boneCache;
+#ifdef USE_VBO_GHOUL2
+	mdxmVBOMesh_t	*vboMesh;
+#endif
 	mdxmSurface_t	*surfaceData;		// pointer to surface data loaded into file - only used by client renderer DO NOT USE IN GAME SIDE - if there is a vid restart this will be out of wack on the game
 #ifdef _G2_GORE
-	float			*alternateTex;		// alternate texture coordinates.
+	///float			*alternateTex;		// alternate texture coordinates.
+	void *alternateTex;		// alternate texture coordinates.
 	void			*goreChain;
 
 	float			scale;
@@ -1988,8 +2218,13 @@ public:
 		ident			= src.ident;
 		boneCache		= src.boneCache;
 		surfaceData		= src.surfaceData;
+#ifdef _G2_GORE
 		alternateTex	= src.alternateTex;
 		goreChain		= src.goreChain;
+#endif
+#ifdef USE_VBO_GHOUL2
+		vboMesh			= src.vboMesh;
+#endif
 		return *this;
 	}
 #endif
@@ -1997,6 +2232,9 @@ public:
 CRenderableSurface():
 	ident( SF_MDX ),
 	boneCache( nullptr ),
+#ifdef USE_VBO_GHOUL2
+	vboMesh( nullptr ),
+#endif
 #ifdef _G2_GORE
 	surfaceData( nullptr ),
 	alternateTex( nullptr ),
@@ -2012,8 +2250,13 @@ CRenderableSurface():
 		ident			= SF_MDX;
 		boneCache		= nullptr;
 		surfaceData		= nullptr;
+#ifdef _G2_GORE
 		alternateTex	= nullptr;
 		goreChain		= nullptr;
+#endif
+#ifdef USE_VBO_GHOUL2
+		vboMesh			= nullptr;
+#endif
 	}
 #endif
 };
@@ -2027,10 +2270,12 @@ Ghoul2 Insert End
 =============================================================
 =============================================================
 */
-void	R_TransformModelToClip( const vec3_t src, const float *modelMatrix, const float *projectionMatrix,
+void	R_TransformModelToClip( const vec3_t src, const float *modelViewMatrix, const float *projectionMatrix,
 							vec4_t eye, vec4_t dst );
 void	R_TransformClipToWindow( const vec4_t clip, const viewParms_t *view, vec4_t normalized, vec4_t window );
-
+#ifdef USE_VBO_GHOUL2
+qboolean ShaderRequiresCPUDeforms( const shader_t *shader );
+#endif
 void	RB_DeformTessGeometry( void );
 void	RB_CalcEnvironmentTexCoords( float *dstTexCoords );
 void	RB_CalcFogTexCoords( float *dstTexCoords );
@@ -2045,6 +2290,8 @@ void	RB_CalcModulateAlphasByFog( unsigned char *dstColors );
 void	RB_CalcModulateRGBAsByFog( unsigned char *dstColors );
 void	RB_CalcWaveAlpha( const waveForm_t *wf, unsigned char *dstColors );
 void	RB_CalcWaveColor( const waveForm_t *wf, unsigned char *dstColors );
+float	RB_CalcWaveColorSingle( const waveForm_t *wf );
+float	RB_CalcWaveAlphaSingle( const waveForm_t *wf );
 void	RB_CalcAlphaFromEntity( unsigned char *dstColors );
 void	RB_CalcAlphaFromOneMinusEntity( unsigned char *dstColors );
 void	RB_CalcColorFromEntity( unsigned char *dstColors );
@@ -2265,6 +2512,10 @@ void		vk_generate_image_upload_data( image_t *image, byte *data, Image_Upload_Da
 void		vk_create_image( image_t *image, int width, int height, int mip_levels );
 void		vk_clean_staging_buffer( void );
 
+// ghoul2
+void		RB_TransformBones( const trRefEntity_t *ent, const trRefdef_t *refdef );
+int			RB_GetBoneUboOffset( CRenderableSurface *surf );
+
 static QINLINE unsigned int log2pad(unsigned int v, int roundup)
 {
 	unsigned int x = 1;
@@ -2286,6 +2537,12 @@ void		ComputeTexCoords( const int b, const textureBundle_t *bundle );
 #ifdef USE_VBO
 // VBO functions
 extern void R_BuildWorldVBO( msurface_t *surf, int surfCount );
+extern void R_BuildMDXM( model_t *mod, mdxmHeader_t *mdxm );
+extern void R_BuildMD3( model_t *mod, mdvModel_t *mdvModel );
+#ifdef _G2_GORE
+extern void R_CreateGoreVBO( void );
+extern void R_UpdateGoreVBO( srfG2GoreSurface_t *goreSurface );
+#endif
 
 extern void VBO_PushData( int itemIndex, shaderCommands_t *input );
 extern void VBO_UnBind( void );
