@@ -16,7 +16,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 #============================================================================
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 
 set(InOpenJK ON)
@@ -427,7 +427,15 @@ set(SharedCommonSafeFiles
 #
 #=============================================================================
 if(UseInternalJPEG)
-  add_subdirectory(lib/jpeg-9c)
+	find_program(CMAKE_ASM_NASM_COMPILER NAMES nasm)
+	if(CMAKE_ASM_NASM_COMPILER)
+		message(STATUS "Found NASM assembler: ${CMAKE_ASM_NASM_COMPILER}")
+		set(WITH_SIMD 1)
+	else()
+		message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
+		set(WITH_SIMD 0)
+	endif()
+  add_subdirectory(lib/libjpeg-turbo)
 else()
   find_package(JPEG REQUIRED)
 endif()
