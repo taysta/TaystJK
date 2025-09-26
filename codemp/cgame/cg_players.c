@@ -6025,12 +6025,12 @@ static QINLINE int ClampSaberColor(int color) {
 	if (color == SABER_BLACK)
 		return (PLUGIN_NO_BLACKSABERS || cg_noRGBSabers.integer) ? SABER_ORANGE : SABER_BLACK;
 
-	if (color > SABER_PURPLE && (cg_noRGBSabers.integer || cgs.serverMod < SVMOD_JAPLUS)) {
+	if (color > SABER_PURPLE && (cg_noRGBSabers.integer || ((cgs.serverMod < SVMOD_JAPLUS) && !(cgs.taystJKinfo & TAYSTJK_INFO_RGBSABERS)))) {
 		if (disco.integer)
 			color = Q_irand(0, 5);
-		else if (color >= SABER_RGB && cg_noRGBSabers.integer > 1 && cgs.serverMod >= SVMOD_JAPLUS)
+		else if (color >= SABER_RGB && cg_noRGBSabers.integer > 1 && ((cgs.serverMod >= SVMOD_JAPLUS) || (cgs.taystJKinfo & TAYSTJK_INFO_RGBSABERS)))
 			color = SABER_RGB;
-		else if (color > SABER_PURPLE && (cg_noRGBSabers.integer || cgs.serverMod < SVMOD_JAPLUS))
+		else if (color > SABER_PURPLE && (cg_noRGBSabers.integer || ((cgs.serverMod < SVMOD_JAPLUS) && !(cgs.taystJKinfo & TAYSTJK_INFO_RGBSABERS))))
 			color -= SABER_RGB; //roll over to a normal base color?
 	}
 

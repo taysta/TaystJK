@@ -546,6 +546,9 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define JAPRO_PLUGIN_CENTERMUZZLE			(1<<27)
 #define JAPRO_PLUGIN_CONSOLECP				(1<<28)
 
+//taystjk feature flags
+#define TAYSTJK_INFO_RGBSABERS              (1<<0)
+
 #define _SPPHYSICS 1
 #define _COOP 1
 typedef enum //movementstyle enum
