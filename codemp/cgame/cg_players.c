@@ -6017,7 +6017,7 @@ static QINLINE void ParseRGBSaber( char *str, vec3_t c ) {
 	}
 }
 
-#define PLUGIN_NO_BLACKSABERS ((cgs.serverMod < SVMOD_JAPLUS || !(cp_pluginDisable.integer & JAPRO_PLUGIN_BLACKSABERSDISABLE)))
+#define PLUGIN_NO_BLACKSABERS (((cgs.serverMod < SVMOD_JAPLUS) && !(cgs.taystJKinfo & TAYSTJK_INFO_BLACKSABERS)) || (cp_pluginDisable.integer & JAPRO_PLUGIN_BLACKSABERSDISABLE))
 static QINLINE int ClampSaberColor(int color) {
 	if (color >= NUM_SABER_COLORS)
 		color = color % NUM_SABER_COLORS; //cap it to highest 'valid' color?
