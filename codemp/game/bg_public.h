@@ -462,6 +462,10 @@ extern int forceMasteryPoints[NUM_FORCE_MASTERY_LEVELS];
 
 extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 
+//taystjk feature flags
+#define TAYSTJK_INFO_RGBSABERS              (1<<0)
+#define TAYSTJK_INFO_BLACKSABERS            (1<<1)
+
 // pmove->pm_flags
 #define	PMF_DUCKED			1
 #define	PMF_JUMP_HELD		2

@@ -164,6 +164,14 @@ void G_CacheMapname( const vmCvar_t *mapname )
 	Com_sprintf( level.rawmapname, sizeof( level.rawmapname ), "maps/%s", mapname->string );
 }
 
+void G_SetTaystJKFlags( void)
+{
+    int taystJKFeatures = 0;
+    taystJKFeatures |= TAYSTJK_INFO_RGBSABERS;
+    taystJKFeatures |= TAYSTJK_INFO_BLACKSABERS;
+    trap->Cvar_Set("taystJKinfo", va("%d", taystJKFeatures));
+}
+
 /*
 ============
 G_InitGame
@@ -210,6 +218,8 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_RegisterCvars();
 
 	G_ProcessIPBans();
+
+    G_SetTaystJKFlags();
 
 	G_InitMemory();
 
