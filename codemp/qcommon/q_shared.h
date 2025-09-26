@@ -356,6 +356,7 @@ typedef enum
 	SABER_PURPLE,
 	NUM_SABER_COLORS
 } saber_colors_t;
+#define SABER_BLACK 11
 
 typedef enum
 {
