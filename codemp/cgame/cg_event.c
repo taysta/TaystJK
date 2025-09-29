@@ -153,191 +153,194 @@ static void CG_Obituary( entityState_t *ent ) {
     if(cg_killfeed.integer){
         CG_AddObituary( attacker, target, mod );
     }
-    if (cg_killfeed.integer != 1){
-        // check for single client messages
+
+    // check for single client messages
+    switch (mod) {
+        case MOD_SUICIDE:
+        case MOD_FALLING:
+        case MOD_CRUSH:
+        case MOD_WATER:
+        case MOD_SLIME:
+        case MOD_LAVA:
+        case MOD_TRIGGER_HURT:
+            message = "DIED_GENERIC";
+            break;
+        case MOD_TARGET_LASER:
+            message = "DIED_LASER";
+            break;
+        default:
+            message = NULL;
+            break;
+    }
+
+    // Attacker killed themselves.  Ridicule them for it.
+    if (attacker == target) {
+        gender = targetInfo->gender;
         switch (mod) {
-            case MOD_SUICIDE:
-            case MOD_FALLING:
-            case MOD_CRUSH:
-            case MOD_WATER:
-            case MOD_SLIME:
-            case MOD_LAVA:
-            case MOD_TRIGGER_HURT:
-                message = "DIED_GENERIC";
+            case MOD_BRYAR_PISTOL:
+            case MOD_BRYAR_PISTOL_ALT:
+            case MOD_BLASTER:
+            case MOD_TURBLAST:
+            case MOD_DISRUPTOR:
+            case MOD_DISRUPTOR_SPLASH:
+            case MOD_DISRUPTOR_SNIPER:
+            case MOD_BOWCASTER:
+            case MOD_REPEATER:
+            case MOD_REPEATER_ALT:
+            case MOD_FLECHETTE:
+                if (gender == GENDER_FEMALE)
+                    message = "SUICIDE_SHOT_FEMALE";
+                else if (gender == GENDER_NEUTER)
+                    message = "SUICIDE_SHOT_GENDERLESS";
+                else
+                    message = "SUICIDE_SHOT_MALE";
                 break;
-            case MOD_TARGET_LASER:
-                message = "DIED_LASER";
+            case MOD_REPEATER_ALT_SPLASH:
+            case MOD_FLECHETTE_ALT_SPLASH:
+            case MOD_ROCKET:
+            case MOD_ROCKET_SPLASH:
+            case MOD_ROCKET_HOMING:
+            case MOD_ROCKET_HOMING_SPLASH:
+            case MOD_THERMAL:
+            case MOD_THERMAL_SPLASH:
+            case MOD_TRIP_MINE_SPLASH:
+            case MOD_TIMED_MINE_SPLASH:
+            case MOD_DET_PACK_SPLASH:
+            case MOD_VEHICLE:
+            case MOD_CONC:
+            case MOD_CONC_ALT:
+                if (gender == GENDER_FEMALE)
+                    message = "SUICIDE_EXPLOSIVES_FEMALE";
+                else if (gender == GENDER_NEUTER)
+                    message = "SUICIDE_EXPLOSIVES_GENDERLESS";
+                else
+                    message = "SUICIDE_EXPLOSIVES_MALE";
+                break;
+            case MOD_DEMP2:
+                if (gender == GENDER_FEMALE)
+                    message = "SUICIDE_ELECTROCUTED_FEMALE";
+                else if (gender == GENDER_NEUTER)
+                    message = "SUICIDE_ELECTROCUTED_GENDERLESS";
+                else
+                    message = "SUICIDE_ELECTROCUTED_MALE";
+                break;
+            case MOD_FALLING:
+                if (gender == GENDER_FEMALE)
+                    message = "SUICIDE_FALLDEATH_FEMALE";
+                else if (gender == GENDER_NEUTER)
+                    message = "SUICIDE_FALLDEATH_GENDERLESS";
+                else
+                    message = "SUICIDE_FALLDEATH_MALE";
                 break;
             default:
-                message = NULL;
-                break;
-        }
-
-        // Attacker killed themselves.  Ridicule them for it.
-        if (attacker == target) {
-            gender = targetInfo->gender;
-            switch (mod) {
-                case MOD_BRYAR_PISTOL:
-                case MOD_BRYAR_PISTOL_ALT:
-                case MOD_BLASTER:
-                case MOD_TURBLAST:
-                case MOD_DISRUPTOR:
-                case MOD_DISRUPTOR_SPLASH:
-                case MOD_DISRUPTOR_SNIPER:
-                case MOD_BOWCASTER:
-                case MOD_REPEATER:
-                case MOD_REPEATER_ALT:
-                case MOD_FLECHETTE:
-                    if (gender == GENDER_FEMALE)
-                        message = "SUICIDE_SHOT_FEMALE";
-                    else if (gender == GENDER_NEUTER)
-                        message = "SUICIDE_SHOT_GENDERLESS";
-                    else
-                        message = "SUICIDE_SHOT_MALE";
-                    break;
-                case MOD_REPEATER_ALT_SPLASH:
-                case MOD_FLECHETTE_ALT_SPLASH:
-                case MOD_ROCKET:
-                case MOD_ROCKET_SPLASH:
-                case MOD_ROCKET_HOMING:
-                case MOD_ROCKET_HOMING_SPLASH:
-                case MOD_THERMAL:
-                case MOD_THERMAL_SPLASH:
-                case MOD_TRIP_MINE_SPLASH:
-                case MOD_TIMED_MINE_SPLASH:
-                case MOD_DET_PACK_SPLASH:
-                case MOD_VEHICLE:
-                case MOD_CONC:
-                case MOD_CONC_ALT:
-                    if (gender == GENDER_FEMALE)
-                        message = "SUICIDE_EXPLOSIVES_FEMALE";
-                    else if (gender == GENDER_NEUTER)
-                        message = "SUICIDE_EXPLOSIVES_GENDERLESS";
-                    else
-                        message = "SUICIDE_EXPLOSIVES_MALE";
-                    break;
-                case MOD_DEMP2:
-                    if (gender == GENDER_FEMALE)
-                        message = "SUICIDE_ELECTROCUTED_FEMALE";
-                    else if (gender == GENDER_NEUTER)
-                        message = "SUICIDE_ELECTROCUTED_GENDERLESS";
-                    else
-                        message = "SUICIDE_ELECTROCUTED_MALE";
-                    break;
-                case MOD_FALLING:
-                    if (gender == GENDER_FEMALE)
-                        message = "SUICIDE_FALLDEATH_FEMALE";
-                    else if (gender == GENDER_NEUTER)
-                        message = "SUICIDE_FALLDEATH_GENDERLESS";
-                    else
-                        message = "SUICIDE_FALLDEATH_MALE";
-                    break;
-                default:
-                    if (gender == GENDER_FEMALE)
-                        message = "SUICIDE_GENERICDEATH_FEMALE";
-                    else if (gender == GENDER_NEUTER)
-                        message = "SUICIDE_GENERICDEATH_GENDERLESS";
-                    else
-                        message = "SUICIDE_GENERICDEATH_MALE";
-                    break;
-            }
-        }
-
-        if (target != attacker && target < MAX_CLIENTS && attacker < MAX_CLIENTS) {
-            goto clientkilled;
-        }
-
-        if (message) {
-            gender = targetInfo->gender;
-
-            if (!message[0]) {
                 if (gender == GENDER_FEMALE)
                     message = "SUICIDE_GENERICDEATH_FEMALE";
                 else if (gender == GENDER_NEUTER)
                     message = "SUICIDE_GENERICDEATH_GENDERLESS";
                 else
                     message = "SUICIDE_GENERICDEATH_MALE";
-            }
-            message = (char *) CG_GetStringEdString("MP_INGAME", message);
-
-            trap->Print("%s %s\n", targetName, message);
-            return;
+                break;
         }
+    }
 
-        clientkilled:
+    if (target != attacker && target < MAX_CLIENTS && attacker < MAX_CLIENTS) {
+        goto clientkilled;
+    }
 
-        // check for kill messages from the current clientNum
-        if (attacker == cg.snap->ps.clientNum) {
-            char s[MAX_STRING_CHARS] = {0};
+    if (message && cg_killfeed.integer != 1) {
+        gender = targetInfo->gender;
 
-			//tayst
-			{
-				centity_t* deadGuy = &cg_entities[target];
-				if(cg_killSounds.integer) {
-					if (((cg_killSounds.integer > 1) && (deadGuy->currentState.groundEntityNum == ENTITYNUM_NONE)) &&
-						(mod == MOD_ROCKET || mod == MOD_CONC || mod == MOD_BOWCASTER || mod == MOD_REPEATER_ALT ||
-						 mod == MOD_SABER)) { //middy
-						//Com_Printf("Midair sound!\n");
-						trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSoundMidair);
-					} else {
-						//Com_Printf("Non Midair sound!\n");
-						trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSound);
-					}
-				}
-			}
-			//tayst
+        if (!message[0]) {
+            if (gender == GENDER_FEMALE)
+                message = "SUICIDE_GENERICDEATH_FEMALE";
+            else if (gender == GENDER_NEUTER)
+                message = "SUICIDE_GENERICDEATH_GENDERLESS";
+            else
+                message = "SUICIDE_GENERICDEATH_MALE";
+        }
+        message = (char *) CG_GetStringEdString("MP_INGAME", message);
 
-            if (cg_killMessage.integer != 2 && cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL &&
-                cgs.gametype != GT_POWERDUEL) {
-                if (cgs.gametype == GT_JEDIMASTER &&
-                    attacker < MAX_CLIENTS &&
-                    !ent->isJediMaster &&
-                    !cg.snap->ps.isJediMaster &&
-                    CG_ThereIsAMaster()) {
-                    char part1[512];
-                    char part2[512];
-                    trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", part1, sizeof(part1));
-                    trap->SE_GetStringTextString("MP_INGAME_JMKILLED_NOTJM", part2, sizeof(part2));
-                    Com_sprintf(s, sizeof(s), "%s %s\n%s\n", part1, targetName, part2);
-                } else if (cgs.gametype == GT_JEDIMASTER &&
-                           attacker < MAX_CLIENTS &&
-                           !ent->isJediMaster &&
-                           !cg.snap->ps.isJediMaster) { //no JM, saber must be out
-                    char part1[512];
-                    trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", part1, sizeof(part1));
-                    /*
-                    kmsg1 = "for 0 points.\nGo for the saber!";
-                    strcpy(part2, kmsg1);
+        trap->Print("%s %s\n", targetName, message);
+        return;
+    }
 
-                    Com_sprintf(s, sizeof(s), "%s %s %s\n", part1, targetName, part2);
-                    */
-                    Com_sprintf(s, sizeof(s), "%s %s\n", part1, targetName);
-                } else if (cgs.gametype == GT_POWERDUEL) {
-                    Q_strncpyz(s, "", sizeof(s));
+    clientkilled:
+
+    // check for kill messages from the current clientNum
+    if (attacker == cg.snap->ps.clientNum) {
+        char s[MAX_STRING_CHARS] = {0};
+
+        //tayst
+        {
+            centity_t* deadGuy = &cg_entities[target];
+            if(cg_killSounds.integer) {
+                if (((cg_killSounds.integer > 1) && (deadGuy->currentState.groundEntityNum == ENTITYNUM_NONE)) &&
+                    (mod == MOD_ROCKET || mod == MOD_CONC || mod == MOD_BOWCASTER || mod == MOD_REPEATER_ALT ||
+                        mod == MOD_SABER)) { //middy
+                    //Com_Printf("Midair sound!\n");
+                    trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSoundMidair);
                 } else {
-                    char sPlaceWith[256];
-                    char sKilledStr[256];
-                    trap->SE_GetStringTextString("MP_INGAME_PLACE_WITH", sPlaceWith, sizeof(sPlaceWith));
-                    trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
-
-                    Com_sprintf(s, sizeof(s), "%s %s\n%s %s %i.", sKilledStr, targetName,
-                                CG_PlaceString(cg.snap->ps.persistant[PERS_RANK] + 1),
-                                sPlaceWith,
-                                cg.snap->ps.persistant[PERS_SCORE]);
+                    //Com_Printf("Non Midair sound!\n");
+                    trap->S_StartSound(NULL, cg.snap->ps.clientNum, CHAN_LOCAL_SOUND, cgs.media.fragSound);
                 }
-            } else {
-                char sKilledStr[256];
-                trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
-                Com_sprintf(s, sizeof(s), "%s %s", sKilledStr, targetName);
             }
+        }
+        //tayst
 
-            if (cg_killMessage.integer == 1 ||
-                cg_killMessage.integer == 2)//JAPRO - Clientside - Toggle Kill award message
-                CG_CenterPrintMultiKill(s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH);
-            else if (cg_killMessage.integer > 2)//JAPRO - Clientside - Toggle Kill award message
-                CG_CenterPrintMultiKill(s, SCREEN_HEIGHT * 0.10, BIGCHAR_WIDTH);
+        if (cg_killMessage.integer != 2 && cgs.gametype < GT_TEAM && cgs.gametype != GT_DUEL &&
+            cgs.gametype != GT_POWERDUEL) {
+            if (cgs.gametype == GT_JEDIMASTER &&
+                attacker < MAX_CLIENTS &&
+                !ent->isJediMaster &&
+                !cg.snap->ps.isJediMaster &&
+                CG_ThereIsAMaster()) {
+                char part1[512];
+                char part2[512];
+                trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", part1, sizeof(part1));
+                trap->SE_GetStringTextString("MP_INGAME_JMKILLED_NOTJM", part2, sizeof(part2));
+                Com_sprintf(s, sizeof(s), "%s %s\n%s\n", part1, targetName, part2);
+            } else if (cgs.gametype == GT_JEDIMASTER &&
+                        attacker < MAX_CLIENTS &&
+                        !ent->isJediMaster &&
+                        !cg.snap->ps.isJediMaster) { //no JM, saber must be out
+                char part1[512];
+                trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", part1, sizeof(part1));
+                /*
+                kmsg1 = "for 0 points.\nGo for the saber!";
+                strcpy(part2, kmsg1);
+
+                Com_sprintf(s, sizeof(s), "%s %s %s\n", part1, targetName, part2);
+                */
+                Com_sprintf(s, sizeof(s), "%s %s\n", part1, targetName);
+            } else if (cgs.gametype == GT_POWERDUEL) {
+                Q_strncpyz(s, "", sizeof(s));
+            } else {
+                char sPlaceWith[256];
+                char sKilledStr[256];
+                trap->SE_GetStringTextString("MP_INGAME_PLACE_WITH", sPlaceWith, sizeof(sPlaceWith));
+                trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
+
+                Com_sprintf(s, sizeof(s), "%s %s\n%s %s %i.", sKilledStr, targetName,
+                            CG_PlaceString(cg.snap->ps.persistant[PERS_RANK] + 1),
+                            sPlaceWith,
+                            cg.snap->ps.persistant[PERS_SCORE]);
+            }
+        } else {
+            char sKilledStr[256];
+            trap->SE_GetStringTextString("MP_INGAME_KILLED_MESSAGE", sKilledStr, sizeof(sKilledStr));
+            Com_sprintf(s, sizeof(s), "%s %s", sKilledStr, targetName);
         }
 
+        if (cg_killMessage.integer == 1 ||
+            cg_killMessage.integer == 2)//JAPRO - Clientside - Toggle Kill award message
+            CG_CenterPrintMultiKill(s, SCREEN_HEIGHT * 0.30, BIGCHAR_WIDTH);
+        else if (cg_killMessage.integer > 2)//JAPRO - Clientside - Toggle Kill award message
+            CG_CenterPrintMultiKill(s, SCREEN_HEIGHT * 0.10, BIGCHAR_WIDTH);
+    }
+
+
+
+    if (cg_killfeed.integer != 1) {
         // check for double client messages
         if (!attackerInfo || !attackerInfo->infoValid) {
             attacker = ENTITYNUM_WORLD;
