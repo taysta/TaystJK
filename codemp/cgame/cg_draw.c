@@ -6259,6 +6259,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     for (i = 0; i < count; i++) {
         ci = cgs.clientinfo + sortedTeamPlayers[i];
         if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
+			if (cg_drawTeamOverlay.integer == 4 && cg.clientNum == sortedTeamPlayers[i]) {
+				continue;
+			}
             plyrs++;
             len = CG_DrawStrlen(ci->name);
             if (len > pwidth)
@@ -6291,30 +6294,26 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     else
         ret_y = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
 
-    if(count > 4)
+    if(plyrs > 4)
         ret_y = ret_y * 2 + 15.0f;
 
+	int renderIndex = 0;
     for (i = 0; i < count; i++)
     {
         ci = cgs.clientinfo + sortedTeamPlayers[i];
         if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM])
         {
-            if (cg_drawTeamOverlay.integer == 4)
+            if (cg_drawTeamOverlay.integer == 4 && cg.clientNum == sortedTeamPlayers[i])
             {
-                char nameBuf[64];
-                trap->Cvar_VariableStringBuffer("name", nameBuf, sizeof(nameBuf));
-
-                if (!Q_stricmp(nameBuf, ci->name))
-                    continue;
-                //Com_Printf("ours: %s, his: %s\n", nameBuf, ci->name);
+				continue;
             }
-            if(i < 4)
+
+            if (renderIndex < 4) {
+				g = renderIndex;
+				background.y = 0.0f;
+			} else if(renderIndex < 8)
             {
-                g = i;
-                background.y = 0.0f;
-            }else if(i < 8)
-            {
-                g = i - 4;
+                g = renderIndex - 4;
                 background.y = TINYCHAR_HEIGHT + background.h;
             }
             background.w = ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
@@ -6495,7 +6494,8 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                     }
                 }
             }
-        }
+			renderIndex++;
+		}
     }
     return ret_y;
 }
