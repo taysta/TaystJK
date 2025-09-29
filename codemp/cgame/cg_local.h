@@ -2245,6 +2245,7 @@ typedef struct cgs_s {
 	int			cinfo;
 	int			jcinfo;
 	int			jcinfo2;
+	int         taystJKinfo;
 	qboolean	pluginSet;
 	qboolean	legacyProtocol; //for compatibility with 1.00 servers
 	int			restricts;//make this a short?

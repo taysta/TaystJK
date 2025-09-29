@@ -243,6 +243,7 @@ void CG_ParseServerinfo( void ) {
 	cgs.pluginSet = qfalse;
 	cgs.legacyProtocol = qfalse;
 	cgs.restricts = 0;
+	cgs.taystJKinfo =  atoi(Info_ValueForKey(info, "taystJKinfo")); // taystjk feature flags
 
 	gamename = Info_ValueForKey(info, "gamename");
 	if (gamename) {
