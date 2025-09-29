@@ -129,10 +129,10 @@ XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above y
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",
 	SETTING("0", "The team overlay is not drawn") NL
-	SETTING("1", "The team overlay is drawn")
-    SETTING("2", "The team overlay is drawn, excluding the local client")
-    SETTING("3", "The new team overlay is drawn")
-    SETTING("4", "The team overlay is drawn, excluding the local client")
+	SETTING("1", "The team overlay is drawn") NL
+    SETTING("2", "The team overlay is drawn, excluding the local client") NL
+    SETTING("3", "The new team overlay is drawn") NL
+    SETTING("4", "The new team overlay is drawn, excluding the local client")
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlayX", "Horizontal location of the team overlay",
