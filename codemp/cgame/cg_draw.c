@@ -6038,6 +6038,11 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	for (i = 0; i < count; i++) {
 		ci = cgs.clientinfo + sortedTeamPlayers[i];
 		if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
+
+			if (cg_drawTeamOverlay.integer == 2 && cg.clientNum == sortedTeamPlayers[i]) {
+				continue;
+			}
+
 			plyrs++;
 			len = CG_DrawStrlen(ci->name);
 			if (len > pwidth)
@@ -6046,8 +6051,8 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	}
 
 	if (!plyrs) {
-        return y;
-    }
+		return y;
+	}
 
     if (pwidth > TEAM_OVERLAY_MAXNAME_WIDTH) {
         pwidth = TEAM_OVERLAY_MAXNAME_WIDTH;
@@ -6112,13 +6117,8 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		ci = cgs.clientinfo + sortedTeamPlayers[i];
 		if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
 
-			if (cg_drawTeamOverlay.integer == 2) {
-				char nameBuf[64];
-				trap->Cvar_VariableStringBuffer("name", nameBuf, sizeof(nameBuf));
-
-				if (!Q_stricmp(nameBuf, ci->name))
-					continue;
-					//Com_Printf("ours: %s, his: %s\n", nameBuf, ci->name);
+			if (cg_drawTeamOverlay.integer == 2 && cg.clientNum == sortedTeamPlayers[i]) {
+				continue;
 			}
 
 			hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
