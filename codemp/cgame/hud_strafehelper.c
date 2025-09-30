@@ -1127,6 +1127,9 @@ float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
 
 	argument = (s / v);
 
+    if (argument < -1.0f) argument = -1.0f;
+    if (argument > 1.0f) argument = 1.0f;
+
 	minDelta = acosf(argument);
 
 	// Convert from radians to degrees
@@ -1147,6 +1150,9 @@ float CGAZ_Opt(qboolean onGround, float v, float vf, float a, float s) {
 	if (vf == 0) return 0;
 
 	argument = (s - a) / vf;
+
+    if (argument < -1.0f) argument = -1.0f;
+    if (argument > 1.0f) argument = 1.0f;
 
 	optDelta = acosf(argument);
 
@@ -1170,6 +1176,9 @@ float CGAZ_Max_Cos(qboolean onGround, float v, float vf, float a, float s) {
 		if (a == 0) return 0;
 
 		argument = (v - vf) / a;
+
+        if (argument < -1.0f) argument = -1.0f;
+        if (argument > 1.0f) argument = 1.0f;
 
 		maxCosDelta = acosf(argument);
 	} else {
@@ -1199,6 +1208,9 @@ float CGAZ_Max(qboolean onGround, float v, float vf, float a, float s) {
 	} else {
 		argument = -(a / (2 * v));
 	}
+
+	if (argument < -1.0f) argument = -1.0f;
+	if (argument > 1.0f) argument = 1.0f;
 
 	maxDelta = acosf(argument);
 
