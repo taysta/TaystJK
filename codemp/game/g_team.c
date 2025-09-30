@@ -564,13 +564,13 @@ qboolean G_CallSpawn(gentity_t *ent);
 void Team_StartOneFlagCapture(gentity_t *player, int team) {
 	gentity_t *ent = NULL;
 	gentity_t *newEnt = NULL;
-	gitem_t		*item;
+//	gitem_t		*item;
 
 	while ((ent = G_Find(ent, FOFS(classname), "team_CTF_neutralflag")) != NULL) {
 		G_FreeEntity(ent);
 	}
 
-	item = BG_FindItemForPowerup(PW_NEUTRALFLAG);
+//	item = BG_FindItemForPowerup(PW_NEUTRALFLAG);
 	player->client->ps.powerups[PW_NEUTRALFLAG] = 0;
 
 	newEnt = G_Spawn(qtrue);

@@ -2226,9 +2226,8 @@ void PM_GrabWallForJump( int anim )
 	pm->ps->pm_flags |= PMF_STUCK_TO_WALL;
 }
 
-
-
-static qboolean PM_CheckJumpLugormod( void ) 
+#if _CGAME
+static qboolean PM_CheckJumpLugormod( void )
 {
 	qboolean allowFlips = qtrue;
 
@@ -3331,6 +3330,7 @@ static qboolean PM_CheckJumpLugormod( void )
 
 	return qtrue;
 }
+#endif
 
 /*
 =============

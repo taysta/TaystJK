@@ -255,7 +255,6 @@ void DF_DrawStrafeHUD(centity_t* cent)
 			( cg_strafeHelper.integer & SHELPER_UPDATED ) ||
 			( cg_strafeHelper.integer & SHELPER_CGAZ ) ||
 			( cg_strafeHelper.integer & SHELPER_WSW ) ||
-			( cg_strafeHelper.integer & SHELPER_CGAZ ) ||
 			( cg_strafeHelper.integer & SHELPER_ACCELMETER) ||
 			( cg_strafeHelper.integer & SHELPER_WEZE ) ||
 			( cg_strafeHelper.integer & SHELPER_ACCELZONES ) )
@@ -357,12 +356,12 @@ void DF_DrawStrafeHUD(centity_t* cent)
 
 //main strafehelper function, sets states and then calls drawstrafeline function for each keypress
 void DF_StrafeHelper() {
-	dfsline line = { 0 }, rearLine,
-		minLine, rearMinLine = { 0 },
-		maxLine, rearMaxLine = { 0 },
-		maxCosLine, rearMaxCosLine = { 0 },
-		activeLine, rearActiveLine = { 0 },
-		centerLine, rearCenterLine;
+	dfsline line = { 0 }, rearLine = { 0 },
+		minLine = { 0 }, rearMinLine = { 0 },
+		maxLine = { 0 }, rearMaxLine = { 0 },
+		maxCosLine = { 0 }, rearMaxCosLine = { 0 },
+		activeLine = { 0 }, rearActiveLine = { 0 },
+		centerLine = { 0 }, rearCenterLine = { 0 };
 	float activeMin, rearActiveMin, activeOpt, rearActiveOpt, activeMaxCos, rearActiveMaxCos;
 	int i;
 	qboolean checkForW = state.m_iVehicleNum ?
@@ -725,7 +724,7 @@ void DF_SetStrafeHelper() {
 	}
 	float lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
-	int LINE_HEIGHT = (int)((0.5f * SCREEN_HEIGHT)); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+	int LINE_HEIGHT = (int)(0.5f * SCREEN_HEIGHT); //240 is midpoint, so it should be a little higher so crosshair is always on it.
 	vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
 	vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
 	vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
@@ -881,7 +880,7 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 
 	//Now we get the angle offset by the key press
 	if (moveDir != KEY_CENTER) { //center has a fixed location
-		//which angle are we gettting
+		//which angle are we getting
 		switch (gazLine) {
 		case GAZ_MIN:
 			delta = state.cgaz.d_min;
@@ -1108,25 +1107,26 @@ float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
 	float minDelta;
 	float argument;
 
-#if 0
 	if (onGround == qtrue) {
 		// Ensure the expression inside the sqrt is non-negative, and  vf is not zero to avoid division by zero
-		float expr = (s * s - v * v + vf * vf);
+		if (vf == 0) return 0;
 
-		if ((expr < 0) || (vf == 0)) return 0;
+		float expr = s * s - v * v + vf * vf;
 
-		argument = ((sqrtf(expr)) / vf);
-	} else {
+		// Ensure v is not zero to avoid division by zero
+		if (expr < 0) return 0;
+
+        argument = sqrtf(expr) / vf;
+
+    } else {
 		// Ensure v is not zero to avoid division by zero
 		if (v == 0) return 0;
 
 		argument = (s / v);
 	}
-#endif
-	// Ensure v is not zero to avoid division by zero
-	if (v == 0) return 0;
 
-	argument = (s / v);
+    if (argument < -1.0f) argument = -1.0f;
+    if (argument > 1.0f) argument = 1.0f;
 
 	minDelta = acosf(argument);
 
@@ -1148,6 +1148,9 @@ float CGAZ_Opt(qboolean onGround, float v, float vf, float a, float s) {
 	if (vf == 0) return 0;
 
 	argument = (s - a) / vf;
+
+    if (argument < -1.0f) argument = -1.0f;
+    if (argument > 1.0f) argument = 1.0f;
 
 	optDelta = acosf(argument);
 
@@ -1171,6 +1174,9 @@ float CGAZ_Max_Cos(qboolean onGround, float v, float vf, float a, float s) {
 		if (a == 0) return 0;
 
 		argument = (v - vf) / a;
+
+        if (argument < -1.0f) argument = -1.0f;
+        if (argument > 1.0f) argument = 1.0f;
 
 		maxCosDelta = acosf(argument);
 	} else {
@@ -1200,6 +1206,9 @@ float CGAZ_Max(qboolean onGround, float v, float vf, float a, float s) {
 	} else {
 		argument = -(a / (2 * v));
 	}
+
+	if (argument < -1.0f) argument = -1.0f;
+	if (argument > 1.0f) argument = 1.0f;
 
 	maxDelta = acosf(argument);
 
@@ -1319,16 +1328,16 @@ void DF_DrawStrafeLine(dfsline line) {
 		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
 		if (cutoff > SCREEN_HEIGHT)
 			cutoff = SCREEN_HEIGHT;
-		if (cutoff < state.strafeHelper.LINE_HEIGHT + 10)
-			cutoff = state.strafeHelper.LINE_HEIGHT + 10;
+		if (cutoff < state.strafeHelper.LINE_HEIGHT)
+			cutoff = state.strafeHelper.LINE_HEIGHT;
 
 		if (CG_WorldCoordToScreenCoord(state.viewOrg, &startx, &starty))
 			DF_DrawLine(startx - state.strafeHelper.lineWidth / 2.0f, starty, line.x, line.y, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_UPDATED) { //draw the updated style here
-		int cutoff = (int)SCREEN_HEIGHT - cg_strafeHelperCutoff.integer;
-		int heightIn = state.strafeHelper.LINE_HEIGHT;
+		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer;
+		int heightIn = state.strafeHelper.LINE_HEIGHT - 10;
 
 		if (cg_strafeHelper.integer & SHELPER_TINY) {
 			cutoff = state.strafeHelper.LINE_HEIGHT + 5;
@@ -1337,18 +1346,18 @@ void DF_DrawStrafeLine(dfsline line) {
 		else if (cutoff < state.strafeHelper.LINE_HEIGHT + 10) {
 			cutoff = state.strafeHelper.LINE_HEIGHT + 10;
 		}
-		else if ((float)cutoff > SCREEN_HEIGHT) {
-			cutoff = SCREEN_WIDTH;
+		else if (cutoff > SCREEN_HEIGHT) {
+			cutoff = SCREEN_HEIGHT;
 		}
 		DF_DrawLine((0.5f * SCREEN_WIDTH), SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_CGAZ) { //draw the cgaz style strafehelper
-		if (cg_strafeHelperCutoff.integer > 256) {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) - 5.0f, line.x, (0.5f * SCREEN_HEIGHT) + 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
+		if (cg_strafeHelperCutoff.integer > state.strafeHelper.LINE_HEIGHT) {
+			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 5.0f, line.x, (0.5f * SCREEN_HEIGHT) - 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
 		}
 		else {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) - 20.0f + cg_strafeHelperCutoff.value / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) + 20.0f - cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
+			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 20.0f - cg_strafeHelperCutoff.value / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) - 20.0f + cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
 		}
 	}
 
@@ -2077,7 +2086,6 @@ japro - Draw the movement keys
 ===================
 */
 void DF_DrawMovementKeys() {
-	usercmd_t cmd = { 0 };
 	float w, h, x, y;
 
 	//set positions based on which setting is used
@@ -2129,7 +2137,7 @@ void DF_DrawMovementKeys() {
 			CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn2);
 	}
 	else if (cg_movementKeys.integer == 1 || cg_movementKeys.integer == 2) { //original movement keys style
-		if (cmd.upmove < 0)
+		if (state.cmd.upmove < 0)
 			CG_DrawPic(w * 2 + x, y, w, h, cgs.media.keyCrouchOnShader);
 		else
 			CG_DrawPic(w * 2 + x, y, w, h, cgs.media.keyCrouchOffShader);
