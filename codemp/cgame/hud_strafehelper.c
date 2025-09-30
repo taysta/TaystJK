@@ -255,7 +255,6 @@ void DF_DrawStrafeHUD(centity_t* cent)
 			( cg_strafeHelper.integer & SHELPER_UPDATED ) ||
 			( cg_strafeHelper.integer & SHELPER_CGAZ ) ||
 			( cg_strafeHelper.integer & SHELPER_WSW ) ||
-			( cg_strafeHelper.integer & SHELPER_CGAZ ) ||
 			( cg_strafeHelper.integer & SHELPER_ACCELMETER) ||
 			( cg_strafeHelper.integer & SHELPER_WEZE ) ||
 			( cg_strafeHelper.integer & SHELPER_ACCELZONES ) )
