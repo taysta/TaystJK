@@ -1107,25 +1107,23 @@ float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
 	float minDelta;
 	float argument;
 
-#if 0
 	if (onGround == qtrue) {
 		// Ensure the expression inside the sqrt is non-negative, and  vf is not zero to avoid division by zero
-		float expr = (s * s - v * v + vf * vf);
+		if (vf == 0) return 0;
 
-		if ((expr < 0) || (vf == 0)) return 0;
+		float expr = s * s - v * v + vf * vf;
 
-		argument = ((sqrtf(expr)) / vf);
-	} else {
+		// Ensure v is not zero to avoid division by zero
+		if (expr < 0) return 0;
+
+        argument = sqrtf(expr) / vf;
+
+    } else {
 		// Ensure v is not zero to avoid division by zero
 		if (v == 0) return 0;
 
 		argument = (s / v);
 	}
-#endif
-	// Ensure v is not zero to avoid division by zero
-	if (v == 0) return 0;
-
-	argument = (s / v);
 
     if (argument < -1.0f) argument = -1.0f;
     if (argument > 1.0f) argument = 1.0f;
