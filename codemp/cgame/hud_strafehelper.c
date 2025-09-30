@@ -1338,7 +1338,7 @@ void DF_DrawStrafeLine(dfsline line) {
 			cutoff = state.strafeHelper.LINE_HEIGHT + 10;
 		}
 		else if ((float)cutoff > SCREEN_HEIGHT) {
-			cutoff = SCREEN_WIDTH;
+			cutoff = SCREEN_HEIGHT;
 		}
 		DF_DrawLine((0.5f * SCREEN_WIDTH), SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
@@ -2077,7 +2077,6 @@ japro - Draw the movement keys
 ===================
 */
 void DF_DrawMovementKeys() {
-	usercmd_t cmd = { 0 };
 	float w, h, x, y;
 
 	//set positions based on which setting is used
@@ -2129,7 +2128,7 @@ void DF_DrawMovementKeys() {
 			CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn2);
 	}
 	else if (cg_movementKeys.integer == 1 || cg_movementKeys.integer == 2) { //original movement keys style
-		if (cmd.upmove < 0)
+		if (state.cmd.upmove < 0)
 			CG_DrawPic(w * 2 + x, y, w, h, cgs.media.keyCrouchOnShader);
 		else
 			CG_DrawPic(w * 2 + x, y, w, h, cgs.media.keyCrouchOffShader);
