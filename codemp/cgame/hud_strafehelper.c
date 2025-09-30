@@ -356,12 +356,12 @@ void DF_DrawStrafeHUD(centity_t* cent)
 
 //main strafehelper function, sets states and then calls drawstrafeline function for each keypress
 void DF_StrafeHelper() {
-	dfsline line = { 0 }, rearLine,
-		minLine, rearMinLine = { 0 },
-		maxLine, rearMaxLine = { 0 },
-		maxCosLine, rearMaxCosLine = { 0 },
-		activeLine, rearActiveLine = { 0 },
-		centerLine, rearCenterLine;
+	dfsline line = { 0 }, rearLine = { 0 },
+		minLine = { 0 }, rearMinLine = { 0 },
+		maxLine = { 0 }, rearMaxLine = { 0 },
+		maxCosLine = { 0 }, rearMaxCosLine = { 0 },
+		activeLine = { 0 }, rearActiveLine = { 0 },
+		centerLine = { 0 }, rearCenterLine = { 0 };
 	float activeMin, rearActiveMin, activeOpt, rearActiveOpt, activeMaxCos, rearActiveMaxCos;
 	int i;
 	qboolean checkForW = state.m_iVehicleNum ?
@@ -724,7 +724,7 @@ void DF_SetStrafeHelper() {
 	}
 	float lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
-	int LINE_HEIGHT = (int)((0.5f * SCREEN_HEIGHT)); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+	int LINE_HEIGHT = (int)(0.5f * SCREEN_HEIGHT); //240 is midpoint, so it should be a little higher so crosshair is always on it.
 	vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
 	vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
 	vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
@@ -880,7 +880,7 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 
 	//Now we get the angle offset by the key press
 	if (moveDir != KEY_CENTER) { //center has a fixed location
-		//which angle are we gettting
+		//which angle are we getting
 		switch (gazLine) {
 		case GAZ_MIN:
 			delta = state.cgaz.d_min;
@@ -1328,16 +1328,16 @@ void DF_DrawStrafeLine(dfsline line) {
 		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer; //Should be between 480 and LINE_HEIGHT
 		if (cutoff > SCREEN_HEIGHT)
 			cutoff = SCREEN_HEIGHT;
-		if (cutoff < state.strafeHelper.LINE_HEIGHT + 10)
-			cutoff = state.strafeHelper.LINE_HEIGHT + 10;
+		if (cutoff < state.strafeHelper.LINE_HEIGHT)
+			cutoff = state.strafeHelper.LINE_HEIGHT;
 
 		if (CG_WorldCoordToScreenCoord(state.viewOrg, &startx, &starty))
 			DF_DrawLine(startx - state.strafeHelper.lineWidth / 2.0f, starty, line.x, line.y, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_UPDATED) { //draw the updated style here
-		int cutoff = (int)SCREEN_HEIGHT - cg_strafeHelperCutoff.integer;
-		int heightIn = state.strafeHelper.LINE_HEIGHT;
+		int cutoff = SCREEN_HEIGHT - cg_strafeHelperCutoff.integer;
+		int heightIn = state.strafeHelper.LINE_HEIGHT - 10;
 
 		if (cg_strafeHelper.integer & SHELPER_TINY) {
 			cutoff = state.strafeHelper.LINE_HEIGHT + 5;
@@ -1346,18 +1346,18 @@ void DF_DrawStrafeLine(dfsline line) {
 		else if (cutoff < state.strafeHelper.LINE_HEIGHT + 10) {
 			cutoff = state.strafeHelper.LINE_HEIGHT + 10;
 		}
-		else if ((float)cutoff > SCREEN_HEIGHT) {
+		else if (cutoff > SCREEN_HEIGHT) {
 			cutoff = SCREEN_HEIGHT;
 		}
 		DF_DrawLine((0.5f * SCREEN_WIDTH), SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_CGAZ) { //draw the cgaz style strafehelper
-		if (cg_strafeHelperCutoff.integer > 256) {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) - 5.0f, line.x, (0.5f * SCREEN_HEIGHT) + 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
+		if (cg_strafeHelperCutoff.integer > state.strafeHelper.LINE_HEIGHT) {
+			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 5.0f, line.x, (0.5f * SCREEN_HEIGHT) - 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
 		}
 		else {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) - 20.0f + cg_strafeHelperCutoff.value / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) + 20.0f - cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
+			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 20.0f - cg_strafeHelperCutoff.value / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) - 20.0f + cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
 		}
 	}
 
