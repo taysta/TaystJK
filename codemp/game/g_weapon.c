@@ -261,7 +261,7 @@ static void WP_FireColt(gentity_t *ent, qboolean altFire)
 //---------------------------------------------------------
 {
 	int			damage = 35;
-	qboolean	render_impact = qtrue;
+//	qboolean	render_impact = qtrue;
 	vec3_t		start, end;
 	trace_t		tr;
 	gentity_t	*traceEnt, *tent;

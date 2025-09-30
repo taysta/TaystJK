@@ -6778,14 +6778,14 @@ float NewBotAI_GetSpeedTowardsEnemy(bot_state_t *bs)
 int NewBotAI_GetTribesWeapon(bot_state_t *bs)
 {
 	const int /*hisHealth = bs->currentEnemy->health,*/ distance = bs->frame_Enemy_Len;
-	int hisWeapon = WP_SABER;
+//	int hisWeapon = WP_SABER;
 	int bestWeapon = bs->cur_ps.weapon;
 	const int forcedFireMode = level.clients[bs->client].forcedFireMode;
 
 	bs->doAltAttack = 0;
 
-	if (bs->currentEnemy->client)
-		hisWeapon = bs->currentEnemy->client->ps.weapon;
+//	if (bs->currentEnemy->client)
+//		hisWeapon = bs->currentEnemy->client->ps.weapon;
 
 	//Dependant on distance from enemy, enemys health, enemys weapon, and our health?
 
