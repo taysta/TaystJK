@@ -502,6 +502,8 @@ extern cvar_t	*cl_logChat;
 extern cvar_t	*cl_discordRichPresence;
 #endif
 
+extern	cvar_t	*cl_reconnectArgs;
+
 //=================================================
 
 //
