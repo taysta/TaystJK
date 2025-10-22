@@ -4587,7 +4587,7 @@ shader_t *R_FindShader( const char *name, const int *lightmapIndexes, const byte
 		flags |= IMGFLAG_CLAMPTOEDGE;
 	}
 
-	image = R_FindImageFile( name, IMGTYPE_COLORALPHA, flags );
+	image = R_FindImageFile( strippedName, IMGTYPE_COLORALPHA, flags );
 	if ( !image ) {
 		ri.Printf( PRINT_DEVELOPER, "Couldn't find image file for shader %s\n", name );
 		shader.defaultShader = qtrue;
@@ -5331,8 +5331,10 @@ static void CreateExternalShaders( void ) {
 	tr.flareShader = R_FindShader( "gfx/misc/flare", lightmapsNone, stylesDefault, qtrue );
 
 	tr.sunShader = R_FindShader( "sun", lightmapsNone, stylesDefault, qtrue );
+	tr.sunShader->isSky = qtrue;
 
 	tr.sunFlareShader = R_FindShader( "gfx/2d/sunflare", lightmapsNone, stylesDefault, qtrue);
+	tr.sunFlareShader->isSky = qtrue;
 
 	// HACK: if sunflare is missing, make one using the flare image or dlight image
 	if (tr.sunFlareShader->defaultShader)
