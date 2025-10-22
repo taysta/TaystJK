@@ -4079,14 +4079,14 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 	clientInfo_t *d1;
 	clientInfo_t *d2;
 	rectDef_t redBackground, blueBackground;
-	char temp[4];
-	char temp2[4];
+	char temp[8];
+	char temp2[8];
 	char nameBuf[64];
 	char nameBuf2[64];
 
 	float widthPadding = 15.0f;
 	float iconHeight;
-	char biggest[4];
+	char biggest[8];
 	vec4_t color0 = {0.0f, 0.0f, 0.0f, 0.7f};
 	vec4_t color1 = {0.02f, 0.4f, 0.65f, 0.7f};
 	vec4_t color2 = {0.65f, 0.01f, 0.02f, 0.7f};
@@ -4113,22 +4113,10 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 	}
 
 	//select duelists
+	d1 = &cgs.clientinfo[cgs.duelist1];
+	d2 = &cgs.clientinfo[cgs.duelist2];
 
-	d1 = &cgs.clientinfo[cg.snap->ps.clientNum];
-	d2 = 0;
-
-	if ((cg.snap->ps.clientNum == cgs.duelist1) || (cg.snap->ps.clientNum == cgs.duelist2))
-	{
-		d2 = &cgs.clientinfo[cgs.duelist2];
-	}
-	else if (cg.snap->ps.clientNum == cgs.duelist3)
-	{
-		d2 = &cgs.clientinfo[cgs.duelist1];
-	}
-
-	if(d1 == NULL || d2 == NULL)
-		return;
-
+	//get scores
 	Q_strncpyz(temp2, d1->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d1->score)), sizeof(temp2));
 	Q_strncpyz(temp, d2->score == SCORE_NOT_PRESENT ? "-" : (va("%i", d2->score)), sizeof(temp));
 
@@ -4138,14 +4126,14 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 		blueBackground.w = CG_Text_Width( temp2, DUEL_SCORE_FONT_SIZE, FONT_LARGE ) + widthPadding;
 		redBackground.w = CG_Text_Width( temp2, DUEL_SCORE_FONT_SIZE, FONT_LARGE ) + widthPadding;
 		xOffset += blueBackground.w / 2.0f;
-		strcpy(biggest, temp2);
+		Q_strncpyz(biggest, temp2, sizeof(biggest));
 	}
 	else
 	{
 		blueBackground.w = CG_Text_Width( temp, DUEL_SCORE_FONT_SIZE, FONT_LARGE ) + widthPadding;
 		redBackground.w = CG_Text_Width( temp, DUEL_SCORE_FONT_SIZE, FONT_LARGE ) + widthPadding;
 		xOffset += redBackground.w / 2.0f;
-		strcpy(biggest, temp);
+		Q_strncpyz(biggest, temp, sizeof(biggest));
 	}
 
 	//x positions are based on the middle timer being on or not
@@ -4213,19 +4201,11 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 				   ITEM_TEXTSTYLE_NORMAL,
 				   FONT_LARGE );
 
-	//truncate names
-	if ( !Q_stricmp( nameBuf, d1->name ) )
-	{
-		return;
-	}
+	//draw names
 	sprintf( nameBuf, "%s", d1->name );
 	CG_LimitStr( nameBuf, 18 );
 	Q_StripColor(nameBuf);
 
-	if ( !Q_stricmp( nameBuf2, d2->name ) )
-	{
-		return;
-	}
 	sprintf( nameBuf2, "%s", d2->name );
 	CG_LimitStr( nameBuf2, 18 );
 	Q_StripColor(nameBuf2);
