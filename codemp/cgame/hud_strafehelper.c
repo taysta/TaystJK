@@ -1683,14 +1683,11 @@ void DF_DrawJumpHeight() {
 	const vec_t* const velocity = state.velocity;
 	char jumpHeightStr[32] = { 0 };
 
-	if (!pm || !pm->ps)
+	if (cg.predictedPlayerState.fd.forceJumpZStart == -65536) //Coming back from a tele or w/e
 		return;
 
-	if (pm->ps->fd.forceJumpZStart == -65536) //Coming back from a tele
-		return;
-
-	if (pm->ps->fd.forceJumpZStart && (cg.lastZSpeed > 0) && (velocity[2] <= 0)) {//If we were going up, and we are now going down, print our height.
-		cg.lastJumpHeight = pm->ps->origin[2] - pm->ps->fd.forceJumpZStart;
+	if (cg.predictedPlayerState.fd.forceJumpZStart && (cg.lastZSpeed > 0) && (velocity[2] <= 0)) {//If we were going up, and we are now going down, print our height.
+		cg.lastJumpHeight = cg.predictedPlayerState.origin[2] - cg.predictedPlayerState.fd.forceJumpZStart;
 		cg.lastJumpHeightTime = cg.time;
 	}
 
