@@ -2431,7 +2431,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
 		}
-		else if (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) {
+		else if (cgs.serverMod == SVMOD_JAPRO && pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) {
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
 		}
