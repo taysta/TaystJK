@@ -780,11 +780,11 @@ void CG_Do_f(void) //loda fixme
 	}
 
 	if ((cg.clientNum == cg.predictedPlayerState.clientNum) || !cg.snap) {
-		if (cg.predictedPlayerState.stats[STAT_RACEMODE])
+		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE])
 			return;
 	}
 	else {
-		if (cg.snap->ps.stats[STAT_RACEMODE])
+		if (cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE])
 			return;
 	}
 
