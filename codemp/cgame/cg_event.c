@@ -3025,7 +3025,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		DEBUGNAME("EV_SCREENSHAKE");
 
 		//Only happens from rancor and map shit.. just ignore if in duel?
-		if(cg.snap && cg.snap->ps.stats[STAT_RACEMODE]) {
+		if(cg.snap && cgs.serverMod == SVMOD_JAPRO && cg.snap->ps.stats[STAT_RACEMODE]) {
 			break;
 		}
 
