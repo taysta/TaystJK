@@ -759,7 +759,8 @@ static void CG_AddStrafeTrails(void) {
 				i))
 				continue;
 
-			if (cg_strafeTrailRacersOnly.integer && (!player->playerState->stats[STAT_RACEMODE] || !player->playerState->duelTime))
+			if (cg_strafeTrailRacersOnly.integer &&
+				(!(cgs.serverMod == SVMOD_JAPRO && player->playerState->stats[STAT_RACEMODE]) || !player->playerState->duelTime))
 			{
 				continue;
 			}
