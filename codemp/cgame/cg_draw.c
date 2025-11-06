@@ -11078,7 +11078,7 @@ static void CG_AutoDemoRaceRecord(void)
 		return;
 	if (!cg.snap)
 		return;
-	if (!cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (cgs.serverMod != SVMOD_JAPRO || !cg.predictedPlayerState.stats[STAT_RACEMODE])
 		return;
 
 	if (cg.predictedPlayerState.duelTime - cg.lastStartTime > 2000) //Only start a new demo if we havnt started a new one in the last two seconds.
