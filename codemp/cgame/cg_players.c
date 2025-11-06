@@ -10762,7 +10762,7 @@ void CG_Player( centity_t *cent ) {
 						return;
 			}
 		}
-		else if (cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
+		else if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
 			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && cent->currentState.bolt1 == 1) // this entity is dueling, don't draw
 					return;
 			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3) && cent->currentState.bolt1 == 2) // this entity is racing, don't draw
