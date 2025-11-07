@@ -728,6 +728,12 @@ typedef enum {
 	STAT_WJTIME
 } statIndex_t;
 
+// qboolean IsRacemode(playerState_t* ps); // Macro
+#ifdef _CGAME
+#define IsRacemode(ps) (cgs.serverMod == SVMOD_JAPRO && (ps)->stats[STAT_RACEMODE])
+#else
+#define IsRacemode(ps) ((qboolean)(ps)->stats[STAT_RACEMODE])
+#endif
 
 // playerState_t->persistant[] indexes
 // these fields are the only part of playerState_t that isn't

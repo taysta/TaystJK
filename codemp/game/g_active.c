@@ -3762,14 +3762,14 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 
 	if (!isNPC && client->sess.sessionTeam == TEAM_FREE && !g_raceMode.integer) {
-		if (client->ps.stats[STAT_RACEMODE] || level.gametype >= GT_TEAM) {
+		if (IsRacemode(&client->ps) || level.gametype >= GT_TEAM) {
 			SetTeam ( ent, "spectator", qtrue );
 			client->sess.raceMode = qfalse;
 			client->ps.stats[STAT_RACEMODE] = qfalse;
 		}
 	}
 	
-	if (client->ps.stats[STAT_RACEMODE]) {//Is this really needed..
+	if (IsRacemode(&client->ps)) {//Is this really needed..
 		if (client->ps.stats[STAT_MOVEMENTSTYLE] == MV_OCPM) {
 			ucmd->serverTime = ((ucmd->serverTime + 7) / 8) * 8;
 		}
@@ -3783,7 +3783,11 @@ void ClientThink_real( gentity_t *ent ) {
 	else if (pmove_fixed.integer || client->pers.pmoveFixed)
 		ucmd->serverTime = ((ucmd->serverTime + pmove_msec.integer-1) / pmove_msec.integer) * pmove_msec.integer;
 
-	if ((client->sess.sessionTeam != TEAM_SPECTATOR) && !client->ps.stats[STAT_RACEMODE] && ((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW) || g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK || g_movementStyle.integer == MV_TRIBES)) { //Ok,, this should be like every frame, right??
+	if ((client->sess.sessionTeam != TEAM_SPECTATOR) && !IsRacemode(&client->ps) &&
+		((g_movementStyle.integer >= MV_SIEGE && g_movementStyle.integer <= MV_WSW)
+			|| g_movementStyle.integer == MV_SP || g_movementStyle.integer == MV_SLICK
+			|| g_movementStyle.integer == MV_TRIBES))
+	{ //Ok,, this should be like every frame, right??
 		client->sess.movementStyle = g_movementStyle.integer;
 	}
 	client->ps.stats[STAT_MOVEMENTSTYLE] = client->sess.movementStyle;
@@ -3797,7 +3801,7 @@ void ClientThink_real( gentity_t *ent ) {
 	else if (client->savedJumpLevel) {
 		client->ps.fd.forcePowerLevel[FP_LEVITATION] = client->savedJumpLevel;
 	}
-	if (client->ps.stats[STAT_RACEMODE]) {
+	if (IsRacemode(&client->ps)) {
 			client->ps.fd.forcePowerLevel[FP_SABER_OFFENSE] = 3; //make sure its allowed on server? or?
 	}
 
@@ -4271,7 +4275,7 @@ void ClientThink_real( gentity_t *ent ) {
 		// set speed
 
 		client->ps.speed = g_speed.value;
-		if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE])
+		if (client->sess.raceMode || IsRacemode(&client->ps))
 			client->ps.speed = 250.0f;
 		if (client->ps.stats[STAT_MOVEMENTSTYLE] == MV_QW || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_CPM || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_OCPM  || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_Q3 || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_WSW || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJQ3 || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_RJCPM || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_BOTCPM || client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//qw is 320 too
 			if (client->sess.movementStyle == MV_QW || client->sess.movementStyle == MV_CPM || client->sess.movementStyle == MV_OCPM || client->sess.movementStyle == MV_Q3 || client->sess.movementStyle == MV_WSW || client->sess.movementStyle == MV_RJQ3 || client->sess.movementStyle == MV_RJCPM || client->sess.movementStyle == MV_BOTCPM || client->sess.movementStyle == MV_TRIBES) {  //loda double check idk...
@@ -4289,10 +4293,10 @@ void ClientThink_real( gentity_t *ent ) {
 			if (client->ps.fd.forceHealTime > level.time) //lightning bolted
 				client->ps.speed *= 1.28f;
 		}
-		else if (g_gunGame.integer && !client->sess.raceMode && !client->ps.stats[STAT_RACEMODE] && client->ps.weapon == WP_SABER && client->forcedFireMode != 2)
+		else if (g_gunGame.integer && !client->sess.raceMode && !IsRacemode(&client->ps) && client->ps.weapon == WP_SABER && client->forcedFireMode != 2)
 			client->ps.speed *= 1.28f;
 
-		if (!client->ps.stats[STAT_RACEMODE]) {
+		if (!IsRacemode(&client->ps)) {
 			if (client->pers.tribesClass == 1) {
 				client->ps.speed *= 1.05f;
 			}
@@ -4349,7 +4353,7 @@ void ClientThink_real( gentity_t *ent ) {
 					if (ent->NPC && client->ps.eFlags2 & EF2_NOT_USED_1) { //props
 						client->ps.gravity *= 0.5f;
 					}
-					if (client->sess.raceMode || client->ps.stats[STAT_RACEMODE]) {
+					if (client->sess.raceMode || IsRacemode(&client->ps)) {
 						if (client->ps.electrifyTime > level.time && client->sess.movementStyle == MV_COOP_JKA) {//grav gun
 							client->ps.gravity = 200;
 						}
@@ -5827,7 +5831,7 @@ void ClientThink_real( gentity_t *ent ) {
 	
 	//New fall damage?
 	{
-		if (ent->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && !ent->client->ps.stats[STAT_RACEMODE] && ent->client->ps.pm_type == PM_NORMAL) {
+		if (ent->client->ps.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && !IsRacemode(&ent->client->ps) && ent->client->ps.pm_type == PM_NORMAL) {
 			//impact damage
 			vec3_t lostVel;
 			float lostSpeed;

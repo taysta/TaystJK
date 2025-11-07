@@ -754,7 +754,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			if (pEnt && pEnt->s.eType == ET_NPC && pEnt->s.NPC_class == CLASS_VEHICLE &&
 				pEnt->m_pVehicle)
 			{ //do vehicle impact stuff then
-				if (!pEnt->playerState->stats[STAT_RACEMODE])
+				if (!IsRacemode(pEnt->playerState))
 					PM_VehicleImpact(pEnt, &trace);
 			}
 		}
@@ -823,7 +823,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 
 
 			// slide along the plane
-			if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_OCPM) {
+			if (IsRacemode(pm->ps) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_OCPM) {
 				float offset = OVERCLIP;
 #ifdef _GAME
 				if (bot_strafeOffset.value) {
@@ -1166,7 +1166,7 @@ void PM_StepSlideMove( qboolean gravity ) {
 				if (trace.fraction < 1.0) {
 
 					//I think we want to take away 1 frames worth of gravity at this point.  thats will fix the lowfps having more landing speed. lets just do siege to test. this is apparent with pmove_float or racemode
-					if (pm->ps->stats[STAT_RACEMODE]) {
+					if (IsRacemode(pm->ps)) {
 						pm->ps->velocity[2] += pm->ps->gravity * pml.frametime * 0.6f; //probably over corrects in most cases
 					}
 

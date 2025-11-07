@@ -6124,7 +6124,7 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 				if (self->client->ps.electrifyTime > level.time)
 					debounce = 30;//Faster regen in electrify?
 			}
-			else if (self->client->ps.stats[STAT_RACEMODE]) {
+			else if (IsRacemode(&self->client->ps)) {
 				debounce = 25;//Hardcoded regentime of 25ms for racers.. idk.. 25 is lowest you can go without horribly broken cartwheel climb
 			}
 			else if (self->client->ps.duelInProgress) {

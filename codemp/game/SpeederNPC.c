@@ -178,7 +178,7 @@ static void ProcessMoveCommands( Vehicle_t *pVeh )
 		)
 	{
 		if ((pVeh->m_pPilot->playerState &&
-			  pVeh->m_pPilot->playerState->stats[STAT_RACEMODE] &&
+			  IsRacemode(pVeh->m_pPilot->playerState) &&
 			  pVeh->m_pPilot->playerState->stats[STAT_MOVEMENTSTYLE] == MV_SWOOP &&
 			  (pVeh->m_pPilot->playerState->weapon == WP_MELEE ||
 			  (pVeh->m_pPilot->playerState->weapon == WP_SABER && BG_SabersOff( pVeh->m_pPilot->playerState ) ))) )

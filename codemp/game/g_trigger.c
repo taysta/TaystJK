@@ -1288,7 +1288,7 @@ qboolean ValidRaceSettings(int restrictions, gentity_t *player)
 	if (!player->client)
 		return qfalse;
 
-	if (!player->client->ps.stats[STAT_RACEMODE])
+	if (!IsRacemode(&player->client->ps))
 		return qfalse;
 
 	style = player->client->sess.movementStyle;
@@ -1688,7 +1688,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			player->client->pers.stats.startTime = 0;
 			player->client->pers.stats.topSpeed = 0;
 			player->client->pers.stats.displacement = 0;
-			if (player->client->ps.stats[STAT_RACEMODE])
+			if (IsRacemode(&player->client->ps))
 				player->client->ps.duelTime = 0;
 			return;
 	}

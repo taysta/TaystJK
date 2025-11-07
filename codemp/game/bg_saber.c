@@ -107,7 +107,7 @@ void BG_ForcePowerDrain( playerState_t *ps, forcePowers_t forcePower, int overri
 		{
 			if (ps->fd.forcePowerLevel[FP_LEVITATION])
 			{ //don't divide by 0!
-				if (ps->stats[STAT_RACEMODE])
+				if (IsRacemode(ps))
 					jumpDrain /= 3;
 				else
 					jumpDrain /= ps->fd.forcePowerLevel[FP_LEVITATION];
@@ -2431,7 +2431,11 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
 		}
+#ifdef _CGAME
 		else if (cgs.serverMod == SVMOD_JAPRO && pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) {
+#else
+		else if (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_BHOP) {
+#endif
 			allowCartwheels = qfalse;
 			noSpecials = qtrue;
 		}
@@ -2990,7 +2994,7 @@ int bg_parryDebounce[NUM_FORCE_POWER_LEVELS] =
 
 qboolean PM_SaberPowerCheck(void)
 {
-	if (pm->ps->stats[STAT_RACEMODE])//No saberthrow in racemode, idk why this is controlled by the checks in w_force.c
+	if (IsRacemode(pm->ps))//No saberthrow in racemode, idk why this is controlled by the checks in w_force.c
 		return qfalse;
 	if (pm->ps->saberInFlight)
 	{ //so we don't keep doing stupid force out thing while guiding saber.
@@ -3049,7 +3053,7 @@ void PM_WeaponLightsaber(void)
 
 	qboolean checkOnlyWeap = qfalse;
 
-	if (pm->ps->stats[STAT_RACEMODE] && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK && pm->ps->pm_type == PM_JETPACK ) {
+	if (IsRacemode(pm->ps) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK && pm->ps->pm_type == PM_JETPACK ) {
 		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
 		pm->cmd.buttons &= ~BUTTON_ATTACK;
 	}
