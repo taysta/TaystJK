@@ -11351,20 +11351,23 @@ static void PM_DropTimers( void ) {
 		}
 	}
 
-	if (pm->ps->stats[STAT_DASHTIME] > pml.msec)//JAPRO dodge/dash/wj
-		pm->ps->stats[STAT_DASHTIME] -= pml.msec;
-	else if (pm->ps->stats[STAT_DASHTIME] > 0)
-		pm->ps->stats[STAT_DASHTIME] = 0;
+	if (IsJaPRO())
+	{
+		if (pm->ps->stats[STAT_DASHTIME] > pml.msec)//JAPRO dodge/dash/wj
+			pm->ps->stats[STAT_DASHTIME] -= pml.msec;
+		else if (pm->ps->stats[STAT_DASHTIME] > 0)
+			pm->ps->stats[STAT_DASHTIME] = 0;
 
-	if (pm->ps->stats[STAT_WJTIME] > pml.msec)//JAPRO dodge/dash/wj
-		pm->ps->stats[STAT_WJTIME] -= pml.msec;
-	else if (pm->ps->stats[STAT_WJTIME] > 0)
-		pm->ps->stats[STAT_WJTIME] = 0;
+		if (pm->ps->stats[STAT_WJTIME] > pml.msec)//JAPRO dodge/dash/wj
+			pm->ps->stats[STAT_WJTIME] -= pml.msec;
+		else if (pm->ps->stats[STAT_WJTIME] > 0)
+			pm->ps->stats[STAT_WJTIME] = 0;
 
-	if (pm->ps->stats[STAT_JUMPTIME] > pml.msec)
-		pm->ps->stats[STAT_JUMPTIME] -= pml.msec;
-	else if (pm->ps->stats[STAT_JUMPTIME] > 0)
-		pm->ps->stats[STAT_JUMPTIME] = 0;
+		if (pm->ps->stats[STAT_JUMPTIME] > pml.msec)
+			pm->ps->stats[STAT_JUMPTIME] -= pml.msec;
+		else if (pm->ps->stats[STAT_JUMPTIME] > 0)
+			pm->ps->stats[STAT_JUMPTIME] = 0;
+	}
 
 #ifdef _GAME
 	if (g_tweakSaber.integer & ST_FIXED_SABERSWITCH) {
