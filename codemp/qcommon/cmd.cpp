@@ -1150,6 +1150,11 @@ static void Cmd_List_f (void)
 
 static void Cmd_PrintHelp_f( void )
 {
+	// Forward the "help" command to cgame, if possible
+	if ( com_cl_running && com_cl_running->integer && CL_GameCommand() ) {
+		return;
+	}
+
 	if ( Cmd_Argc() != 2 )
 	{
 		Com_Printf( "usage: help <command or alias>\n" );

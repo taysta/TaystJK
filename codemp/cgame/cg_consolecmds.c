@@ -534,6 +534,14 @@ static void CG_ServerConfig_f(void) // this should be serverside for JAPRO.  Cli
 }
 //JAPRO - Clientside - Serversettings? - End
 
+static void CG_Help_f(void)
+{
+	char arg[MAX_TOKENLENGTH];
+
+	trap->Cmd_Argv(1, arg, sizeof(arg));
+	trap->SendClientCommand(va("help %s", arg));
+}
+
 static void CG_Login_f(void)
 {
 	char username[MAX_TOKENLENGTH], password[MAX_TOKENLENGTH];
@@ -2495,6 +2503,7 @@ static consoleCommand_t	commands[] = {
 	{ "followBlueFlag",				CG_FollowBlueFlag_f },
 	{ "followFastest",				CG_FollowFastest_f },
 
+	{ "help",						CG_Help_f },
 	{ "login",						CG_Login_f },
 
 	{ "strafeHelper",				CG_StrafeHelper_f },
@@ -2549,6 +2558,11 @@ qboolean CG_ConsoleCommand( void ) {
 
 	if ( !command || !command->func )
 		return qfalse;
+
+	if ( !Q_stricmp( command->cmd, "help" ) && cgs.serverMod != SVMOD_LMD ) {
+		// If not Lugormod, don't override the "help" command from the engine
+		return qfalse;
+	}
 
 	command->func();
 	return qtrue;
@@ -2725,7 +2739,13 @@ void CG_InitConsoleCommands( void ) {
 	size_t i;
 
 	for ( i = 0; i < numCommands; i++ )
+	{
+		if ( !Q_stricmp( "help", commands[i].cmd ) && cgs.serverMod != SVMOD_LMD ) {
+			// If not Lugormod, the "help" command comes from the engine
+			continue;
+		}
 		trap->AddCommand( commands[i].cmd );
+	}
 
 	//
 	// the game server will interpret these commands, which will be automatically
