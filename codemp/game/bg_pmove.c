@@ -4566,7 +4566,7 @@ static qboolean PM_CheckJump( void )
 			pm->ps->velocity[2] = JUMP_VELOCITY;
 		}
 
-		if (pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_SUPERJUMP) {
+		if (IsJaPRO() && pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_SUPERJUMP) {
 			pm->ps->velocity[2] *= 3.0f;
 		}
 	}
@@ -7370,7 +7370,12 @@ static void PM_CheckDuck (void)
 		{	// duck
 
 			//half-life/jasp crouch climb thing
-			if (pm->ps->groundEntityNum == ENTITYNUM_NONE && ((pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP) || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SP || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SURF)) {
+			if (pm->ps->groundEntityNum == ENTITYNUM_NONE
+				&& (
+					(IsJaPRO() && pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP)
+					|| pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SP || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SURF
+				)
+			) {
 				trace_t sptrace;
 				pm->maxs[2] = pm->ps->crouchheight;
 				pm->ps->viewheight = pm->ps->crouchheight + STANDARD_VIEWHEIGHT_OFFSET; //CROUCH_VIEWHEIGHT
@@ -7392,7 +7397,9 @@ static void PM_CheckDuck (void)
 		{	// stand up if possible
 			if (pm->ps->pm_flags & PMF_DUCKED)
 			{
-				if ((pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP) || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SP || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SURF) {
+				if ((IsJaPRO() && pm->ps->stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_CROUCHJUMP)
+					|| pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SP || pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_SURF
+				) {
 					trace_t sptrace;
 					if (pm->ps->groundEntityNum == ENTITYNUM_NONE && PM_GroundDistance() >= (oldHeight - pm->maxs[2]) && pm->ps->velocity[2] >= 0) {
 						pm->maxs[2] = pm->ps->standheight;
