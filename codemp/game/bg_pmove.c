@@ -393,9 +393,9 @@ qboolean BG_CanJetpack(playerState_t *ps)
 	//Need a debouncer
 	if (!(ps->stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)))
 		return qfalse;
-	if (IsJaPRO() && ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
+	if (ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
 		return qfalse;
-	if (IsJaPRO() && ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
+	if (ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
 		return qfalse;
 	if (BG_SaberInSpecial(ps->saberMove))
 		return qfalse;
