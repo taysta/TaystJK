@@ -839,7 +839,7 @@ qboolean	PM_SlideMove( qboolean gravity ) {
 			PM_ClipVelocity (endVelocity, planes[i], endClipVelocity, OVERCLIP );
 #if 1
 			//Com_Printf("^2Collision detection! Contents is %i %i %i %i\n", trace.surfaceFlags & MATERIAL_MASK, pml.groundTrace.surfaceFlags & MATERIAL_MASK, trace.contents & CONTENTS_INSIDE, pml.groundTrace.contents & CONTENTS_INSIDE);
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && 
+			if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES &&
 				(((pml.groundTrace.surfaceFlags & MATERIAL_MASK) >= MATERIAL_SHORTGRASS && (pml.groundTrace.surfaceFlags & MATERIAL_MASK) <= MATERIAL_GRAVEL) || ((pml.groundTrace.surfaceFlags & MATERIAL_MASK) == MATERIAL_MUD)) &&
 				(planes[i][2] == 0 || planes[i][2] == 1)) {//Vertical or horizontal brush collision in tribes mode
 				//For some reason I have to use pml.groundtrace results instead of trace results because trace results dont see the surfaceflags or contents (???).  Need to add more material types for terrain detection.  Or make use of surfaceparm terrain instead in the future.
@@ -1100,11 +1100,14 @@ void PM_StepSlideMove( qboolean gravity ) {
 	down[2] -= stepSize;
 	pm->trace (&trace, pm->ps->origin, pm->mins, pm->maxs, down, pm->ps->clientNum, pm->tracemask);
 
-	if (pm->stepSlideFix && ((pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) || !(pm->cmd.buttons & BUTTON_DASH)) && (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK)) //This causes deadstops on slidey slopes.  But doint it fixes wall behaviour.  We want to do this block unless we are holding SKI in tribes.
+	if (pm->stepSlideFix
+		&& ((pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES) || !(pm->cmd.buttons & BUTTON_DASH) || !IsJaPRO())
+		&& (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SLICK || !IsJaPRO())
+	) //This causes deadstops on slidey slopes.  But doint it fixes wall behaviour.  We want to do this block unless we are holding SKI in tribes.
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS) {
 			float minNormal = MIN_WALK_NORMAL;
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+			if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
 				minNormal = 0.5f;
 			if (trace.plane.normal[2] < minNormal)
 			{//normal players cannot step up slopes that are too steep to walk on!

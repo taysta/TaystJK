@@ -393,9 +393,9 @@ qboolean BG_CanJetpack(playerState_t *ps)
 	//Need a debouncer
 	if (!(ps->stats[STAT_HOLDABLE_ITEMS] & (1 << HI_JETPACK)))
 		return qfalse;
-	if (ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
+	if (IsJaPRO() && ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ps->fd.forcePower < 10)
 		return qfalse;
-	if (ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
+	if (IsJaPRO() && ps->stats[STAT_MOVEMENTSTYLE] != MV_TRIBES && ps->jetpackFuel < 10)
 		return qfalse;
 	if (BG_SaberInSpecial(ps->saberMove))
 		return qfalse;
@@ -2161,7 +2161,7 @@ qboolean PM_AdjustAngleForWallJump( playerState_t *ps, usercmd_t *ucmd, qboolean
 			//push off of it!
 			ps->pm_flags &= ~PMF_STUCK_TO_WALL;
 			ps->velocity[0] = ps->velocity[1] = 0;
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK)
+			if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_JETPACK)
 				VectorScale(checkDir, -JUMP_OFF_WALL_SPEED*2.5f, ps->velocity);
 			else
 				VectorScale( checkDir, -JUMP_OFF_WALL_SPEED, ps->velocity );
@@ -4724,7 +4724,7 @@ static void PM_WaterMove( void ) {
 		wishspeed = realspeed * pm_swimScale;
 	}
 
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+	if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
 		wishspeed *= 2;
 
 	PM_Accelerate (wishdir, wishspeed, pm_wateraccelerate);
@@ -5242,7 +5242,7 @@ static void PM_DodgeMove(int forward, int right)
 	VectorMA( dodgedir, forward, pml.forward, dodgedir );
 	VectorNormalize( dodgedir );
 
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+	if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 		pm->ps->fd.forcePower -= 25;//validate?
 		DODGE_SPEED = pm->ps->speed * 1.75f;
 		DODGE_JUMP_SPEED = 0;
@@ -6636,7 +6636,7 @@ static void PM_CrashLand(void) {
 			}
 			else
 			{
-				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+				if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 					//just do no fall dmg in tribes cuz we do impact dmg elsewhere?
 				}
 				//else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
@@ -6656,7 +6656,13 @@ static void PM_CrashLand(void) {
 			}
 			else
 			{
-				if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH) || (pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING)))) {
+				if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES &&
+					(
+						(pm->cmd.buttons & BUTTON_DASH) ||
+						(pm->ps->clientNum >= MAX_CLIENTS && (pm->cmd.buttons & BUTTON_WALKING))
+					))
+				{
+
 				}
 				else {
 					PM_AddEventWithParm(EV_FOOTSTEP, PM_FootstepForSurface());
@@ -6666,7 +6672,7 @@ static void PM_CrashLand(void) {
 	}
 
 	// make sure velocity resets so we don't bounce back up again in case we miss the clear elsewhere
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH))) {
+	if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && ((pm->cmd.buttons & BUTTON_DASH))) {
 	}
 	else {
 		pm->ps->velocity[2] = 0;
@@ -6850,7 +6856,7 @@ static void PM_GroundTrace( void ) {
 			}
 		}
 	}
-	else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+	else if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 		minNormal = 0.5f; //Let us walk up a bit steeper hills in tribes?
 	}
 
@@ -6917,7 +6923,7 @@ static void PM_GroundTrace( void ) {
 			Com_Printf("%i:steep\n", c_pmove);
 		}
 		pm->ps->groundEntityNum = ENTITYNUM_NONE;
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SURF)
+		if (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_SURF || !IsJaPRO())
 			pml.groundPlane = qtrue;
 		pml.walking = qfalse;
 		return;
@@ -7281,7 +7287,7 @@ static void PM_CheckDuck (void)
 	{
 		if (pm->ps->clientNum < MAX_CLIENTS)
 		{
-			if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+			if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				if (pm->ps->standheight == (int)(DEFAULT_MAXS_2 * 1.25f)) {
 					pm->mins[0] = (int)(-15 * 1.25f);
 					pm->mins[1] = (int)(-15 * 1.25f);
@@ -8423,7 +8429,7 @@ static void PM_Footsteps( void ) {
 		{ //let it finish first
 			bobmove = 0.2f;
 		}
-		else if ((pm->cmd.buttons & BUTTON_DASH) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//tribes ski
+		else if (IsJaPRO() && (pm->cmd.buttons & BUTTON_DASH) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {//tribes ski
 			bobmove = 0.4f;
 			if (pm->cmd.rightmove > 0)
 				desiredAnim = BOTH_HOP_R;
@@ -14318,12 +14324,12 @@ void PmoveSingle (pmove_t *pmove) {
 		pm->cmd.upmove = 0;
 	}
 
-	if (pm->ps->fd.forceGripCripple && pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA)
+	if (pm->ps->fd.forceGripCripple && (pm->ps->stats[STAT_MOVEMENTSTYLE] != MV_COOP_JKA || !IsJaPRO()))
 	{ //don't let attack or alt attack if being gripped I guess
 		pm->cmd.buttons &= ~BUTTON_ATTACK;
 		pm->cmd.buttons &= ~BUTTON_ALT_ATTACK;
 	}
-	else if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA && pm->ps->electrifyTime > pm->cmd.serverTime)
+	else if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA && pm->ps->electrifyTime > pm->cmd.serverTime)
 	{
 		//pm->cmd.buttons &= ~BUTTON_ATTACK;
 		if (pm->ps->weapon == WP_BLASTER)
@@ -14864,7 +14870,7 @@ void PmoveSingle (pmove_t *pmove) {
 			}
 		}
 
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.rightmove || pm->cmd.forwardmove)) {
+		if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES && (pm->cmd.rightmove || pm->cmd.forwardmove)) {
 			//vec3_t forward;
 			//AngleVectors(pm->ps->viewangles, forward, NULL, NULL);
 
@@ -15373,7 +15379,7 @@ void PmoveSingle (pmove_t *pmove) {
 		{
 
 #if _GRAPPLE
-			if ((pm->ps->pm_flags & PMF_GRAPPLE) && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+			if ((pm->ps->pm_flags & PMF_GRAPPLE) && IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 				PM_GrappleMoveTribes();
 			}
 #if _GAME

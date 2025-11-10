@@ -1970,7 +1970,7 @@ void CG_DrawHUD(centity_t	*cent)
 		CG_DrawTrajectoryLine();
 
 	if(cg_drawHud.integer){
-		if(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+		if(IsJaPRO() && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
 		{
 			cg.tribesHUD = qtrue;
 			CG_DrawHudTribes();

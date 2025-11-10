@@ -10606,7 +10606,7 @@ void CG_Player( centity_t *cent ) {
 
 	CG_VehicleEffects(cent);
 
-	if (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) { //play wind sound if we are going fast.  idk how to scale the volume so we are scaling the position of the speaker away from us (above us) to achieve that result
+	if (IsJaPRO() && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) { //play wind sound if we are going fast.  idk how to scale the volume so we are scaling the position of the speaker away from us (above us) to achieve that result
 		const float speed2 = VectorLengthSquared(cg.predictedPlayerState.velocity);
 		const float max_vol_speed = 3000*3000;
 		const float min_vol_speed = 500*500;

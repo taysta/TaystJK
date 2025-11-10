@@ -1818,7 +1818,7 @@ int PM_SaberBackflipAttackMove( void )
 		return LS_A_T2B;//LS_NONE;
 	}
 
-	if (pm->ps->stats[STAT_MOVEMENTSTYLE] == 6) //not in wsw, do this here since we cant disable everything in wsw cuz wsw needs carts i guess?
+	if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == 6) //not in wsw, do this here since we cant disable everything in wsw cuz wsw needs carts i guess?
 		return LS_A_T2B;
 
 	//just do it
@@ -2424,7 +2424,7 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 			overrideJumpLeftAttackMove = (saberMoveName_t)saber1->jumpAtkLeftMove;
 		}
 
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 			allowCartwheels = qfalse;
 		}
 		else if (moveStyle == MV_CPM || moveStyle == MV_OCPM || moveStyle == MV_Q3 || moveStyle == MV_RJQ3 || moveStyle == MV_RJCPM || moveStyle == MV_SLICK || moveStyle == MV_BOTCPM) {
@@ -3239,7 +3239,7 @@ void PM_WeaponLightsaber(void)
 
 	if ( (pm->cmd.buttons & BUTTON_ALT_ATTACK) )
 	{ //might as well just check for a saber throw right here
-		if (pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
+		if (IsJaPRO() && pm->ps->stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) {
 			if (pm->ps->weaponTime <= 0) {
 				PM_SetSaberMove(LS_A_BACK_CR);
 				return;
