@@ -6042,7 +6042,12 @@ static QINLINE int ClampSaberColor(int color) {
 
 static void CG_RGBForSaberColor( saber_colors_t color, vec3_t rgb, int cnum, int bnum ) //rgb
 {
-	clientInfo_t *ci = &cgs.clientinfo[cnum];
+	clientInfo_t *ci = NULL;
+	if (cnum >= MAX_CLIENTS) {
+		ci = cg_entities[cnum].npcClient;
+	} else {
+		ci = &cgs.clientinfo[cnum];
+	}
 #if NEW_SABER_PARMS
 	if (ci->saber[bnum].useCustomRGBColor)
 		color = SABER_RGB;
