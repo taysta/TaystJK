@@ -449,11 +449,19 @@ void CG_CheckLocalSounds( playerState_t *ps, playerState_t *ops ) {
 			if (ps->persistant[PERS_PLAYEREVENTS] != ops->persistant[PERS_PLAYEREVENTS]) {
 				if ((ps->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_DENIEDREWARD) !=
 					(ops->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_DENIEDREWARD)) {
-					trap->S_StartLocalSound( cgs.media.deniedSound, CHAN_ANNOUNCER );
+					if (cg_drawRewards.integer == 1) {
+						trap->S_StartLocalSound( cgs.media.deniedSound, CHAN_ANNOUNCER );
+					} else if (cg_drawRewards.integer == 2) {
+						trap->S_StartLocalSound( cgs.media.deniedSoundQ3, CHAN_ANNOUNCER );
+					}
 				}
 				else if ((ps->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_GAUNTLETREWARD) !=
 					(ops->persistant[PERS_PLAYEREVENTS] & PLAYEREVENT_GAUNTLETREWARD)) {
-					trap->S_StartLocalSound( cgs.media.humiliationSound, CHAN_ANNOUNCER );
+					if (cg_drawRewards.integer == 1) {
+						trap->S_StartLocalSound( cgs.media.humiliationSound, CHAN_ANNOUNCER );
+					} else if (cg_drawRewards.integer == 2) {
+						trap->S_StartLocalSound( cgs.media.humiliationSoundQ3, CHAN_ANNOUNCER );
+					}
 				}
 				reward = qtrue;
 			}
