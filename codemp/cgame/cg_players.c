@@ -12238,7 +12238,11 @@ skipTrail:
 
 	if (cent->currentState.eFlags & EF_INVULNERABLE)
 	{
-		if ((cg_stylePlayer.integer & JAPRO_STYLE_COLOREDSPAWNBUBBLE) && cgs.gametype >= GT_TEAM && cgs.gametype != GT_CTY) {
+		if (
+			(cg_stylePlayer.integer & JAPRO_STYLE_COLOREDSPAWNBUBBLE)
+			&& cgs.gametype >= GT_TEAM && cgs.gametype != GT_CTY
+			&& cent->currentState.number < MAX_CLIENTS
+		) {
 			if (cgs.clientinfo[cent->currentState.number].team == TEAM_RED)
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.2f, cgs.media.ysaliredShader);
 			else
