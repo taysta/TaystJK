@@ -179,7 +179,7 @@ static void vk_render_splash( void )
 
 	ratio = ( (float)( SCREEN_WIDTH * glConfig.vidHeight ) / (float)( SCREEN_HEIGHT * glConfig.vidWidth ) );
 
-	if ( cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f ){
+	if ( cl_ratioFix->integer && ratio <= 0.76f ){
 		splashImage = R_FindImageFile("menu/splash_16_9", IMGFLAG_CLAMPTOEDGE);
 
 		if ( !splashImage ){

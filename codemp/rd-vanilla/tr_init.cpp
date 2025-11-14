@@ -292,7 +292,7 @@ void R_Splash()
 	image_t *pImage = NULL;
 	float ratio = (float)(SCREEN_WIDTH * glConfig.vidHeight) / (float)(SCREEN_HEIGHT * glConfig.vidWidth);
 
-	if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f)
+	if (cl_ratioFix->integer && ratio <= 0.76f)
 		pImage = R_FindImageFile("menu/splash_16_9", qfalse, qfalse, qfalse, GL_CLAMP);
 
 	if (!pImage)
