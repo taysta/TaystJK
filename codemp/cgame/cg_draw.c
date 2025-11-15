@@ -1970,7 +1970,7 @@ void CG_DrawHUD(centity_t	*cent)
 		CG_DrawTrajectoryLine();
 
 	if(cg_drawHud.integer){
-		if(cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
+		if(IsJaPRO() && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES)
 		{
 			cg.tribesHUD = qtrue;
 			CG_DrawHudTribes();
@@ -11078,7 +11078,7 @@ static void CG_AutoDemoRaceRecord(void)
 		return;
 	if (!cg.snap)
 		return;
-	if (!cg.predictedPlayerState.stats[STAT_RACEMODE])
+	if (!IsRacemode(&cg.predictedPlayerState))
 		return;
 
 	if (cg.predictedPlayerState.duelTime - cg.lastStartTime > 2000) //Only start a new demo if we havnt started a new one in the last two seconds.

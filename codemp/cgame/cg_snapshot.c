@@ -550,7 +550,7 @@ static void CG_CheckClientCheckpoints(void) {
 
 	if (!cg.snap)
 		return;
-	if (!cg.snap->ps.stats[STAT_RACEMODE] || !cg.snap->ps.duelTime)
+	if (!IsRacemode(&cg.snap->ps) || !cg.snap->ps.duelTime)
 		return;
 
 	for (i=0; i<MAX_CLIENT_CHECKPOINTS; i++) { //optimize this..?
@@ -759,7 +759,7 @@ static void CG_AddStrafeTrails(void) {
 				i))
 				continue;
 
-			if (cg_strafeTrailRacersOnly.integer && (!player->playerState->stats[STAT_RACEMODE] || !player->playerState->duelTime))
+			if (cg_strafeTrailRacersOnly.integer && (!IsRacemode(player->playerState) || !player->playerState->duelTime))
 			{
 				continue;
 			}

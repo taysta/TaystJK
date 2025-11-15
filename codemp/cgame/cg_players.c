@@ -5282,7 +5282,9 @@ static void CG_PlayerPowerups( centity_t *cent, refEntity_t *torso ) {
 
 	// neutralflag
 	if ( powerups & ( 1 << PW_NEUTRALFLAG ) ) {
-		CG_PlayerFlag( cent, cgs.media.neutralFlagModel );//loda
+		if ( cgs.media.neutralFlagModel ) {
+			CG_PlayerFlag( cent, cgs.media.neutralFlagModel );//loda
+		}
 		trap->R_AddLightToScene( cent->lerpOrigin, 200 + (rand()&31), 0.2, 1.0f, 0.2f );
 	}
 
@@ -10606,7 +10608,7 @@ void CG_Player( centity_t *cent ) {
 
 	CG_VehicleEffects(cent);
 
-	if (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) { //play wind sound if we are going fast.  idk how to scale the volume so we are scaling the position of the speaker away from us (above us) to achieve that result
+	if (IsJaPRO() && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_TRIBES) { //play wind sound if we are going fast.  idk how to scale the volume so we are scaling the position of the speaker away from us (above us) to achieve that result
 		const float speed2 = VectorLengthSquared(cg.predictedPlayerState.velocity);
 		const float max_vol_speed = 3000*3000;
 		const float min_vol_speed = 500*500;
@@ -10762,7 +10764,7 @@ void CG_Player( centity_t *cent ) {
 						return;
 			}
 		}
-		else if (cg.predictedPlayerState.stats[STAT_RACEMODE]) { //We are racing
+		else if (IsRacemode(&cg.predictedPlayerState)) { //We are racing
 			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDEDUELERS1) && cent->currentState.bolt1 == 1) // this entity is dueling, don't draw
 					return;
 			if ((cg_stylePlayer.integer & JAPRO_STYLE_HIDERACERS3) && cent->currentState.bolt1 == 2) // this entity is racing, don't draw
@@ -12207,8 +12209,11 @@ skipTrail:
 		}
 		else
 		{
-			if (!cg.predictedPlayerState.stats[STAT_RACEMODE] && !(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL && cent->currentState.number == cg.predictedPlayerState.clientNum))
+			if (!IsRacemode(&cg.predictedPlayerState) &&
+				!(cg_stylePlayer.integer & JAPRO_STYLE_HIDEYSALSHELL && cent->currentState.number == cg.predictedPlayerState.clientNum))
+			{
 				CG_DrawPlayerSphere(cent, cent->lerpOrigin, 1.4f, cgs.media.ysalimariShader);
+			}
 		}
 	}
 	

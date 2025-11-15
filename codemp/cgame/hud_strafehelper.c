@@ -566,7 +566,7 @@ int DF_SetPlayerState(centity_t* cent)
 		VectorCopy(cg.predictedPlayerState.origin, state.viewOrg);
 		VectorCopy(cg.predictedPlayerState.viewangles, state.viewAngles);
 	}
-	state.racemode = (qboolean)cg.predictedPlayerState.stats[STAT_RACEMODE];
+	state.racemode = IsRacemode(&cg.predictedPlayerState);
 	state.speed = cg.predictedPlayerState.speed;
 	state.commandTime = cg.predictedPlayerState.commandTime;
 	state.pm_type = cg.predictedPlayerState.pm_type;

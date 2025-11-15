@@ -1118,7 +1118,9 @@ void CG_PredictPlayerState( void ) {
 		}
 		cg.physicsTime = cg.snap->serverTime;
 	}
-	if(((cg.physicsTime - cg.predictedPlayerState.commandTime) > 8) && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_OCPM)){
+	if(((cg.physicsTime - cg.predictedPlayerState.commandTime) > 8)
+		&& IsJaPRO() && (cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_OCPM)
+	) {
 		cg.physicsTime = cg.predictedPlayerState.commandTime + 8;
 	}
 	//JAPRO - Clientside - Unlock Pmove bounds - Start
