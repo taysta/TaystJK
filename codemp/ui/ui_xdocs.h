@@ -544,6 +544,8 @@ XDOCS_CVAR_DEF("cg_pitchHudWidth", "Horizontal width",""
 XDOCS_CVAR_DEF("cg_pitchHudRgba", "Color of the pitch HUD",""
 )
 
+XDOCS_CVAR_DEF("cg_vehicleRange", "Offset vehicle camera ranges (useful for ultrawide monitors)",""
+)
 //Work from above this line
 
 // ...

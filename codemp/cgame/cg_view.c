@@ -420,6 +420,9 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
 			newThirdPersonRange = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+            if (cg_vehicleRange.value) {
+                newThirdPersonRange += cg_vehicleRange.value;
+            }
 			if ( veh->playerState->hackingTime )
 			{
 				newThirdPersonRange += fabs(((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * 100.0f;
