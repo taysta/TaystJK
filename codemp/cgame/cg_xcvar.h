@@ -356,6 +356,7 @@ XCVAR_DEF( cg_thirdPersonSpecialCam,			"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_thirdPersonCameraDamp,			"0.3",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonTargetDamp,			"0.5",	CG_ClearThirdPersonDamp,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_thirdPersonCrosshairCenter,		"0",					NULL,					CVAR_NONE ) //1 is old third person static crosshair behavior
+XCVAR_DEF( cg_vehicleRange,						"0",					NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_timescaleFadeEnd,					"1",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_timescaleFadeSpeed,				"0",					NULL,					CVAR_NONE )
 XCVAR_DEF( cg_viewsize,							"100",					NULL,					CVAR_INTERNAL ) //inherited bloat
