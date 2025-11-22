@@ -133,7 +133,8 @@ void CG_DrawInformation( void ) {
 	const char	*sysInfo;
 	float		y;
 	int			value, valueNOFP;
-	qhandle_t	levelshot;
+	qhandle_t	levelshot = 0;
+	qboolean	isWidescreenLevelshot = qfalse; // 16:9
 	char		buf[1024];
 	int			iPropHeight = 18;	// I know, this is total crap, but as a post release asian-hack....  -Ste
 
@@ -141,15 +142,34 @@ void CG_DrawInformation( void ) {
 	sysInfo = CG_ConfigString( CS_SYSTEMINFO );
 
 	s = Info_ValueForKey( info, "mapname" );
-	levelshot = trap->R_RegisterShaderNoMip( va( "levelshots/%s", s ) );
+
 	trap->R_SetColor( NULL );
 
-	if (levelshot && cgs.widthRatioCoef < 1.0f) {
+	if (cgs.widthRatioCoef <= 0.76f) {
+		levelshot = trap->R_RegisterShaderNoMip(va( "levelshots_16_9/%s", s ));
+		if (levelshot) {
+			isWidescreenLevelshot = qtrue;
+		}
+	}
+
+	if (!levelshot) {
+		levelshot = trap->R_RegisterShaderNoMip( va( "levelshots/%s", s ) );
+	}
+
+	if (levelshot && isWidescreenLevelshot) {
+		CG_DrawPic(
+			0,
+			0 - (SCREEN_HEIGHT * (0.75f / cgs.widthRatioCoef) - SCREEN_HEIGHT) / 2,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT * (0.75f / cgs.widthRatioCoef),
+			levelshot
+		);
+	} else if (levelshot && cgs.widthRatioCoef < 1.0f) {
 		CG_DrawPic(0, 0 - (SCREEN_HEIGHT*(1 / cgs.widthRatioCoef) - SCREEN_HEIGHT) / 2, SCREEN_WIDTH, SCREEN_HEIGHT*(1 / cgs.widthRatioCoef), levelshot);
 	}
 	else {
 
-		if (!levelshot && cgs.widthRatioCoef >= 0.74f && cgs.widthRatioCoef <= 0.76f)
+		if (!levelshot && cgs.widthRatioCoef <= 0.76f)
 			levelshot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 
 		if ( !levelshot )

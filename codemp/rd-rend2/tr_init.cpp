@@ -303,7 +303,7 @@ static void R_Splash()
 	GL_Cull(CT_TWO_SIDED);
 
 	image_t *pImage = R_FindImageFile( "menu/splash", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
-    if (cl_ratioFix->integer && ratio >= 0.74f && ratio <= 0.76f)
+    if (cl_ratioFix->integer && ratio <= 0.76f)
         pImage = R_FindImageFile("menu/splash_16_9", IMGTYPE_COLORALPHA, IMGFLAG_NONE);
 	if (pImage )
 		GL_Bind( pImage );
