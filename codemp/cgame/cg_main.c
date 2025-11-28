@@ -2882,7 +2882,8 @@ Method that registers all the avaialable emojis
 static void CG_LoadEmojis(void) {
 	int	emojiExtFNLen, fileCnt, i, inserted = 0;
 	char *holdChar;
-	char emojiExtensionListBuf[2048], emoji[MAX_EMOJI_LENGTH + 4] = { 0 };
+	char emojiExtensionListBuf[8192]; //2048 (2kb) was only enough for ~146 emojis, increase to 8192 (8kb), should leave plenty of headroom
+    char emoji[MAX_EMOJI_LENGTH + 4] = { 0 };
 
 	//get a list of all the available png files in the emoji folder
 	fileCnt = trap->FS_GetFileList("gfx/emoji", ".png", emojiExtensionListBuf, sizeof(emojiExtensionListBuf));
