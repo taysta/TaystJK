@@ -2450,12 +2450,12 @@ saberMoveName_t PM_SaberAttackForMovement(saberMoveName_t curmove)
 				}
 			}
 
-			if (client && client->pers.noCartwheel) {
+			if (client && client->pers.noCartwheel && !pm->ps->stats[STAT_RACEMODE]) {
 				allowCartwheels = qfalse;
 			}
 		}
 #else
-		if (cgs.serverMod == SVMOD_JAPRO && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOCART)) {
+		if (cgs.serverMod == SVMOD_JAPRO && (cp_pluginDisable.integer & JAPRO_PLUGIN_NOCART) && !pm->ps->stats[STAT_RACEMODE]) {
 			allowCartwheels = qfalse;
 		}
 #endif
