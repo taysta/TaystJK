@@ -2295,8 +2295,9 @@ void Cmd_ACLogin_f( gentity_t *ent ) { //loda fixme show lastip ? or use lastip 
 				ResetPlayerTimers(ent, qtrue);
 				//trap->SendServerCommand(ent - g_entities, "print \"Login sucessful. Time reset.\n\"");
 			}
-			else
+			else {
 				//trap->SendServerCommand(ent - g_entities, "print \"Login sucessful.\n\"");
+			}
 
 			if (!ip) //meh
 				ip = lastip;
