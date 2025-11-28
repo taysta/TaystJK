@@ -5,6 +5,7 @@ Key: [-] removed, [+] added, [\*] modified
 
 ## Tayst's Fork
 
+* [+] Added support for widescreen levelshots. 16:9 levelshots are loaded from `levelshots_16_9/<map_name>` (if available).
 * [*] Add attack/altattack inputs to `cg_movementKeys`
 * [+] Add console/chat field support for [shift+]ctrl+backspace/del/left/right shortcuts
 * [+] New team overlay `cg_drawTeamOverlay 3`, use `cg_drawTeamOverlay 4` to ignore local client  

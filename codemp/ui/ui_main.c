@@ -2127,13 +2127,21 @@ static void UI_DrawMapPreview(rectDef_t *rect, float scale, vec4_t color, qboole
 	}
 
 	if (uiInfo.mapList[map].levelShot == -1) {
-		uiInfo.mapList[map].levelShot = trap->R_RegisterShaderNoMip(uiInfo.mapList[map].imageName);
+		if (uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+			uiInfo.mapList[map].levelShot = trap->R_RegisterShaderNoMip(
+				va("levelshots_16_9/%s", uiInfo.mapList[map].mapLoadName)
+			);
+		}
+
+		if (uiInfo.mapList[map].levelShot <= 0) {
+			uiInfo.mapList[map].levelShot = trap->R_RegisterShaderNoMip(uiInfo.mapList[map].imageName);
+		}
 	}
 
 	if (uiInfo.mapList[map].levelShot > 0) {
 		levelShot = uiInfo.mapList[map].levelShot;
 	}
-	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
+	else if (uiInfo.uiDC.widthRatioCoef <= 0.76f) {
 		levelShot = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 
@@ -2411,8 +2419,7 @@ static void UI_DrawNetMapPreview(rectDef_t *rect, float scale, vec4_t color) {
 	qhandle_t previewImage = 0;
 	if (uiInfo.serverStatus.currentServerPreview > 0) {
 		previewImage = uiInfo.serverStatus.currentServerPreview;
-	}
-	else if ((uiInfo.uiDC.widthRatioCoef >= 0.74f) && (uiInfo.uiDC.widthRatioCoef <= 0.76f)) {
+	} else if (uiInfo.uiDC.widthRatioCoef <= 0.76f) {
 		previewImage = trap->R_RegisterShaderNoMip("menu/art/unknownmap_mp_16_9");
 	}
 
@@ -2461,7 +2468,17 @@ static void UI_DrawTierMap(rectDef_t *rect, int index) {
 	}
 
 	if (uiInfo.tierList[i].mapHandles[index] == -1) {
-		uiInfo.tierList[i].mapHandles[index] = trap->R_RegisterShaderNoMip(va("levelshots/%s", uiInfo.tierList[i].maps[index]));
+		if (uiInfo.uiDC.widthRatioCoef <= 0.76f) {
+			uiInfo.tierList[i].mapHandles[index] = trap->R_RegisterShaderNoMip(
+				va("levelshots_16_9/%s", uiInfo.tierList[i].maps[index])
+			);
+		}
+
+		if (uiInfo.tierList[i].mapHandles[index] <= 0) {
+			uiInfo.tierList[i].mapHandles[index] = trap->R_RegisterShaderNoMip(
+				va("levelshots/%s", uiInfo.tierList[i].maps[index])
+			);
+		}
 	}
 
 	UI_DrawHandlePic( rect->x, rect->y, rect->w, rect->h, uiInfo.tierList[i].mapHandles[index]);
@@ -12175,7 +12192,7 @@ void UI_DrawConnectScreen( qboolean overlay ) {
 
 	char sStringEdTemp[256];
 
-	menuDef_t *menu = (uiInfo.uiDC.widthRatioCoef >= 0.74f && uiInfo.uiDC.widthRatioCoef <= 0.76f) ? Menus_FindByName("Connect_16_9") : Menus_FindByName("Connect");
+	menuDef_t *menu = (uiInfo.uiDC.widthRatioCoef <= 0.76f) ? Menus_FindByName("Connect_16_9") : Menus_FindByName("Connect");
 
 	if (!menu)
 		menu = Menus_FindByName("Connect");
