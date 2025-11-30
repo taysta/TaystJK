@@ -923,7 +923,7 @@ void RE_WorldEffectCommand(const char *command)
 
 		tr.weatherSystem->weatherSlots[WEATHER_SPACEDUST].velocityOrientationScale = 0.0f;
 
-		
+
 
 		VectorSet4(tr.weatherSystem->weatherSlots[WEATHER_SPACEDUST].color, 0.75f, 0.75f, 0.75f, 0.75f);
 		VectorScale(
@@ -1177,13 +1177,8 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 		{
 			for (int x = -1; x <= 1; ++x, ++currentIndex)
 			{
-				chunkIndex  = (int(centerZoneOffsetX + numMinZonesX) + x + 1) % 3;
-				chunkIndex += (int(centerZoneOffsetY + numMinZonesY) + y + 1) % 3 * 3;
-
-				if (chunkIndex < 0) {
-					chunkIndex += 9;
-				}
-
+				chunkIndex  = ((int(centerZoneOffsetX + numMinZonesX) + x + 1) % 3 + 3) % 3;
+				chunkIndex += (((int(centerZoneOffsetY + numMinZonesY) + y + 1) % 3 + 3) % 3) * 3;
 				VectorSet2(
 					zoneOffsets[chunkIndex],
 					x,
