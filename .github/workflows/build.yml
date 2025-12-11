@@ -194,7 +194,7 @@ jobs:
 
   macos-x86_64:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-13
+    runs-on: macos-15-intel
     strategy:
       fail-fast: false
       matrix:
@@ -264,7 +264,7 @@ jobs:
 
   macos-arm64:
     name: macOS ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable}})
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
@@ -335,7 +335,7 @@ jobs:
   macos-universal2:
     name: macOS universal2 Binary
     needs: [macos-x86_64, macos-arm64]
-    runs-on: macos-13
+    runs-on: macos-15
 
     steps:
       - name: Download x86_64 artifact
