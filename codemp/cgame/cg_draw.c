@@ -9094,7 +9094,7 @@ static void CG_ScanForCrosshairEntity( void ) {
 		}
 	}
 
-	if ( cg_drawCrosshairNames.value > 0 && trace.entityNum >= MAX_CLIENTS ) {
+	if ( trace.entityNum >= MAX_CLIENTS ) {
 		return;
 	}
 
@@ -9109,6 +9109,46 @@ static void CG_ScanForCrosshairEntity( void ) {
 	cg.crosshairClientTime = cg.time;
 }
 
+void CG_SanitizeString( char *in, char *out )
+{
+	int i = 0;
+	int r = 0;
+
+	while (in[i])
+	{
+		if (i >= 128-1)
+		{ //the ui truncates the name here..
+			break;
+		}
+
+		if (in[i] == '^')
+		{
+			if (in[i+1] >= 48 && //'0'
+				in[i+1] <= 57) //'9'
+			{ //only skip it if there's a number after it for the color
+				i += 2;
+				continue;
+			}
+			else
+			{ //just skip the ^
+				i++;
+				continue;
+			}
+		}
+
+		if (in[i] < 32)
+		{
+			i++;
+			continue;
+		}
+
+		out[r] = in[i];
+		r++;
+		i++;
+	}
+	out[r] = 0;
+}
+
 /*
 =====================
 CG_DrawCrosshairNames
@@ -9118,6 +9158,7 @@ static void CG_DrawCrosshairNames( void ) {
 	float		*color;
 	vec4_t		tcolor;
 	char		*name;
+	char		sanitized[1024];
 	int			baseColor;
 	qboolean	isVeh = qfalse;
 	int			fadeTime;
@@ -9129,6 +9170,9 @@ static void CG_DrawCrosshairNames( void ) {
 	// scan the known entities to see if the crosshair is sighted on one
 	CG_ScanForCrosshairEntity();
 
+ 	if ( !cg_drawCrosshairNames.integer ) {
+		return;
+	}
 	//rww - still do the trace, our dynamic crosshair depends on it
 
 	if (cg.crosshairClientNum < ENTITYNUM_WORLD)
@@ -9156,10 +9200,12 @@ static void CG_DrawCrosshairNames( void ) {
 		return;
 	}
 
-	if (cg_drawCrosshairNames.value < 0)
-		fadeTime = 1000;
-	else
-		fadeTime = (cg_drawCrosshairNames.value * 1000);
+	//only draw when crosshair is on target
+	if ((cg_drawCrosshairNames.value < 0) && (cg.crosshairClientTime != cg.time)) {
+		return;
+	}
+
+	fadeTime = (cg_drawCrosshairNames.value < 0) ? 1000 : (int)(cg_drawCrosshairNames.value * 1000.0f);
 	if (fadeTime == 0)
 		return;
 
@@ -9172,7 +9218,36 @@ static void CG_DrawCrosshairNames( void ) {
 
 	name = cgs.clientinfo[ cg.crosshairClientNum ].name;
 
-	baseColor = CT_WHITE;
+	if ( cg_drawCrosshairNamesColours.integer == 0 ) {
+		if ( cgs.gametype >= GT_TEAM )
+		{
+			//oriented based on which team we're on
+			if ( cgs.clientinfo[cg.crosshairClientNum].team == cg.predictedPlayerState.persistant[PERS_TEAM] )
+			{
+				baseColor = CT_GREEN;
+			}
+			else
+			{
+				baseColor = CT_RED;
+			}
+		}
+		else
+		{
+			//baseColor = CT_WHITE;
+			if ( cgs.gametype == GT_POWERDUEL &&
+				cgs.clientinfo[cg.snap->ps.clientNum].team != TEAM_SPECTATOR &&
+				cgs.clientinfo[cg.crosshairClientNum].duelTeam == cgs.clientinfo[cg.predictedPlayerState.clientNum].duelTeam )
+			{ //on the same duel team in powerduel, so he's a friend
+				baseColor = CT_GREEN;
+			}
+			else
+			{
+				baseColor = CT_RED; //just make it red in nonteam modes since everyone is hostile and crosshair will be red on them too
+			}
+		}
+	} else {
+		baseColor = CT_WHITE;
+	}
 
 	if (cg.snap->ps.duelInProgress) {
 		if (cg.crosshairClientNum != cg.snap->ps.duelIndex)
@@ -9193,18 +9268,35 @@ static void CG_DrawCrosshairNames( void ) {
 	tcolor[0] = colorTable[baseColor][0];
 	tcolor[1] = colorTable[baseColor][1];
 	tcolor[2] = colorTable[baseColor][2];
-	tcolor[3] = color[3]*1.0f;
+
+	float opacity = cg_drawCrosshairNamesOpacity.value;
+	if (opacity < 0) opacity = 0;
+	if (opacity > 1) opacity = 1;
+
+	tcolor[3] = color[3] * opacity;
+
+	if ( cg_drawCrosshairNamesColours.integer == 0) {
+		CG_SanitizeString(name, sanitized);
+	}
 
 	if (!isVeh)
 	{
 		//JAPRO - Clientside - Colored crosshair names - Start
-		CG_DrawProportionalString( (SCREEN_WIDTH / 2), 170, name, UI_CENTER, tcolor );
+		if ( cg_drawCrosshairNamesColours.integer == 0 ) {
+			CG_DrawProportionalString( (SCREEN_WIDTH / 2), 170, sanitized, UI_CENTER, tcolor );
+		} else {
+			CG_DrawProportionalString( (SCREEN_WIDTH / 2), 170, name, UI_CENTER, tcolor );
+		}
 		//JAPRO - Clientside - Colored crosshair names - End
 	}
 	else
 	{
 		char str[MAX_STRING_CHARS];
-		Com_sprintf( str, MAX_STRING_CHARS, "%s ^7(pilot)", name );
+		if ( cg_drawCrosshairNamesColours.integer == 0) {
+			Com_sprintf( str, MAX_STRING_CHARS, "%s ^7(pilot)", sanitized );
+		} else {
+			Com_sprintf( str, MAX_STRING_CHARS, "%s ^7(pilot)", name );
+		}
 		CG_DrawProportionalString( (SCREEN_WIDTH / 2), 170, str, UI_CENTER, tcolor );
 	}
 
