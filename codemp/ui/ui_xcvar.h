@@ -37,6 +37,8 @@ XCVAR_DEF( capturelimit,					"0",					NULL,				CVAR_ARCHIVE|CVAR_NORESTART|CVAR_
 XCVAR_DEF( cl_ratioFix,						"1",				UI_Set2DRatio,			CVAR_ARCHIVE ) //cvar name is shared in jaPRO cgame & TaystJK engine
 XCVAR_DEF( cg_drawCrosshair,				"1",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_drawCrosshairNames,			"1",					NULL,				CVAR_ARCHIVE )
+XCVAR_DEF( cg_drawCrosshairNamesOpacity,	"1",					NULL,				CVAR_ARCHIVE )
+XCVAR_DEF( cg_drawCrosshairNamesColours,	"1",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_marks,						"1",					NULL,				CVAR_ARCHIVE )
 XCVAR_DEF( cg_selectedPlayer,				"0",					NULL,				CVAR_ARCHIVE|CVAR_INTERNAL )
 XCVAR_DEF( cg_selectedPlayerName,			"",						NULL,				CVAR_ARCHIVE|CVAR_INTERNAL )

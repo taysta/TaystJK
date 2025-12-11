@@ -546,6 +546,21 @@ XDOCS_CVAR_DEF("cg_pitchHudRgba", "Color of the pitch HUD",""
 
 XDOCS_CVAR_DEF("cg_vehicleRange", "Offset vehicle camera ranges (useful for ultrawide monitors)",""
 )
+
+XDOCS_CVAR_DEF("cg_drawCrosshairNames", "Draw target name under the crosshair (fade time in seconds)",""
+	SETTING("-1", "Disable fading") NL
+	SETTING("1", "Fade after 1 second") NL
+	SETTING("2", "Fade after 2 seconds") NL
+)
+
+XDOCS_CVAR_DEF("cg_drawCrosshairNamesOpacity", "Opacity of the crosshair name (0-1)",""
+)
+
+XDOCS_CVAR_DEF("cg_drawCrosshairNamesColours", "Coloring style of crosshair names",
+	SETTING("0", "Show enemy/ally colors (EternalJK Style)") NL
+	SETTING("1", "Show color codes in names")
+)
+
 //Work from above this line
 
 // ...
