@@ -2979,7 +2979,11 @@ static void CL_ShaderTraceInternal_f(void)
 	vec3_t start, forward, end, angles;
 	trace_t tr;
 	traceWork_t tw;
+	const int maxIterations = 32;
+	int iteration = 0;
+	float totalDistance = 0.0f;
 	const float maxTraceDistance = 8192.0f;
+	const float penetrateDistance = 0.125f;
 
 	// Parse camera position from cgame
 	start[0] = atof(Cmd_Argv(1));
@@ -2993,18 +2997,51 @@ static void CL_ShaderTraceInternal_f(void)
 	AngleVectors(angles, forward, NULL, NULL);
 	VectorMA(start, maxTraceDistance, forward, end);
 
-	CM_TraceTW(&tr, &tw, start, end, NULL, NULL, 0, MASK_SOLID, qfalse);
+	while (iteration < maxIterations)
+	{
+		// Trace against world geometry
+		CM_TraceTW(&tr, &tw, start, end, NULL, NULL, 0, MASK_SOLID, qfalse);
+		totalDistance += tr.fraction * Distance(start, end);
 
-	if (tr.fraction < 1.0f && tw.leadside && tw.leadside->shaderNum >= 0 && tw.leadside->shaderNum < cmg.numShaders)
-	{
-		CCMShader *shader = &cmg.shaders[tw.leadside->shaderNum];
-		Com_Printf("^2[ShaderTrace]^7: ^6%s\n", shader->shader);
+		if (totalDistance > maxTraceDistance)
+		{
+			Com_Printf("^1[ShaderTrace]^7 Max trace distance exceeded.\n");
+			return;
+		}
+
+		if (tr.fraction < 1.0f && tw.leadside && tw.leadside->shaderNum >= 0 && tw.leadside->shaderNum < cmg.numShaders) {
+			CCMShader *shader = &cmg.shaders[tw.leadside->shaderNum];
+
+			// Filter system shaders
+			if ((shader->contentFlags & CONTENTS_PLAYERCLIP) ||
+					(shader->surfaceFlags & SURF_NODRAW) ||
+					(strstr(shader->shader, "/system/")) ||
+					!(Q_stricmp(shader->shader, "noshader")))
+			{
+				// Continue tracing past this surface
+				vec3_t newStart;
+				VectorMA(tr.endpos, penetrateDistance, forward, newStart);
+				VectorCopy(newStart, start);
+
+				float remainingDistance = maxTraceDistance - totalDistance;
+				VectorMA(start, remainingDistance, forward, end);
+
+				iteration++;
+				continue;
+			}
+
+			// Found a visible shader
+			Com_Printf("^2[ShaderTrace]^7 ^6%s\n", shader->shader);
+			return;
+		}
+		else
+		{
+			Com_Printf("^3[ShaderTrace]^7 Unable to trace surface.\n");
+			return;
+		}
 	}
-	else
-	{
-		Com_Printf("^3[ShaderTrace]^7 Hit surface with invalid shader data.\n");
-		return;
-	}
+
+	Com_Printf("^3[ShaderTrace]^7 Max iterations reached.\n");
 }
 
 /*
