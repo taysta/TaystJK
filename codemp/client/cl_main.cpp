@@ -2965,32 +2965,47 @@ void CL_Video_f( void )
 	CL_OpenAVIForWriting( filename );
 }
 
-static void CL_ShaderTrace_f(void)
+static void CL_ShaderTraceInternal_f(void)
 {
 	if (cls.state != CA_ACTIVE) return;
-	
-	vec3_t start, forward, end;
+
+	if (Cmd_Argc() < 7)
+	{
+		Com_Printf("^1[ShaderTrace]^7 Usage: shadertrace_internal <x> <y> <z> <pitch> <yaw> <roll>\n");
+		Com_Printf("^3[ShaderTrace]^7 This is an internal command. Use 'shadertrace' instead.\n");
+		return;
+	}
+
+	vec3_t start, forward, end, angles;
 	trace_t tr;
 	traceWork_t tw;
+	const float maxTraceDistance = 8192.0f;
 
-	VectorCopy(cl.snap.ps.origin, start);
-	AngleVectors(cl.viewangles, forward, NULL, NULL);
-	VectorMA(start, 8192, forward, end);
+	// Parse camera position from cgame
+	start[0] = atof(Cmd_Argv(1));
+	start[1] = atof(Cmd_Argv(2));
+	start[2] = atof(Cmd_Argv(3));
+
+	angles[0] = atof(Cmd_Argv(4));
+	angles[1] = atof(Cmd_Argv(5));
+	angles[2] = atof(Cmd_Argv(6));
+
+	AngleVectors(angles, forward, NULL, NULL);
+	VectorMA(start, maxTraceDistance, forward, end);
 
 	CM_TraceTW(&tr, &tw, start, end, NULL, NULL, 0, MASK_SOLID, qfalse);
 
-	if (tr.fraction < 1.0f && tw.leadside)
+	if (tr.fraction < 1.0f && tw.leadside && tw.leadside->shaderNum >= 0 && tw.leadside->shaderNum < cmg.numShaders)
 	{
 		CCMShader *shader = &cmg.shaders[tw.leadside->shaderNum];
-		CL_AddReliableCommand(va("say ^2[ShaderTrace]^7: ^6%s", shader->shader), qfalse);
+		Com_Printf("^2[ShaderTrace]^7: ^6%s\n", shader->shader);
 	}
 	else
 	{
-		Com_Printf("^1[ShaderTrace]^7 No surface hit.\n");
+		Com_Printf("^3[ShaderTrace]^7 Hit surface with invalid shader data.\n");
+		return;
 	}
 }
-
-
 
 /*
 ===============
@@ -3525,8 +3540,7 @@ void CL_Init( void ) {
 	Cmd_AddCommand ("userinfo", CL_Clientinfo_f);
 	Cmd_AddCommand ("video", CL_Video_f, "Record demo to avi" );
 	Cmd_AddCommand ("stopvideo", CL_StopVideo_f, "Stop avi recording" );
-	Cmd_AddCommand("shadertrace", CL_ShaderTrace_f, "Returns the shader you're aiming at");
-
+	Cmd_AddCommand ("shadertrace_internal", CL_ShaderTraceInternal_f, "Internal: Shader trace from camera position");
 	Cmd_AddCommand("afk", CL_Afk_f, "Rename to or from afk");
 	Cmd_AddCommand("colorstring", CL_ColorString_f, "Color say text");
 	Cmd_AddCommand("colorname", CL_ColorName_f, "Color name");

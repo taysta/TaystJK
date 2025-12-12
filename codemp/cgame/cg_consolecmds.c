@@ -2308,6 +2308,28 @@ static void CG_AddStrafeTrail_f(void)
 
 }
 
+/*
+=================
+CG_ShaderTrace_f
+
+Calculate camera position and send to client for shader trace
+=================
+*/
+static void CG_ShaderTrace_f(void)
+{
+	vec3_t vieworg;
+	vec3_t viewangles;
+
+	// Get actual camera position and angles from refdef
+	VectorCopy(cg.refdef.vieworg, vieworg);
+	VectorCopy(cg.refdef.viewangles, viewangles);
+
+	// Send to client command with camera position and angles
+	trap->SendConsoleCommand(va("shadertrace_internal %.2f %.2f %.2f %.2f %.2f %.2f\n",
+								vieworg[0], vieworg[1], vieworg[2],
+								viewangles[0], viewangles[1], viewangles[2]));
+}
+
 void CG_Say_f( void ) {
 	char msg[MAX_SAY_TEXT] = {0};
 //    char speeds[MAX_SAY_TEXT] = {0};
@@ -2485,6 +2507,7 @@ static consoleCommand_t	commands[] = {
 	{ "cameraSettings",				CG_ShowSpecCamera_f },
 	{ "ignoreVGS",					CG_IgnoreVGS_f },
 	{ "serverconfig",				CG_ServerConfig_f },
+	{ "shadertrace",				CG_ShaderTrace_f },
 	{ "autoLogin",					CG_Autologin_f },
 	{ "+zoom",						CG_ZoomDown_f },
 	{ "-zoom",						CG_ZoomUp_f },
