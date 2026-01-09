@@ -879,7 +879,7 @@ static void vk_update_camera_constants( const trRefdef_t *refdef, const viewParm
 	vkUniformCamera_t uniform = {};
 
 	Com_Memcpy( uniform.viewOrigin, refdef->vieworg, sizeof( vec3_t) );
-	uniform.viewOrigin[3] = 0.0f;
+	uniform.viewOrigin[3] = refdef->floatTime;
 
 	/*
 	const float* p = viewParms->projectionMatrix;
@@ -993,7 +993,7 @@ static void vk_update_fog_constants(const trRefdef_t* refdef)
 
 	size = sizeof(vec4_t);
 
-	for ( i = 0; i < uniform.num_fogs; ++i )
+	for ( i = 0; i < MIN(uniform.num_fogs, 16); ++i )
 	{
 		const fog_t *fog = tr.world->fogs + i + 1;
 		vkUniformFogEntry_t *fogData = uniform.fogs + i;

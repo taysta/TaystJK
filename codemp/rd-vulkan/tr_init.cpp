@@ -856,7 +856,7 @@ void R_Register( void )
 	r_debugLight						= ri.Cvar_Get( "r_debuglight",						"0",						CVAR_TEMP, "" );
 	r_debugSort							= ri.Cvar_Get( "r_debugSort",						"0",						CVAR_CHEAT, "" );
 	r_dlightStyle						= ri.Cvar_Get( "r_dlightStyle",						"1",						CVAR_TEMP, "" );
-	r_surfaceSprites					= ri.Cvar_Get( "r_surfaceSprites",					"1",						CVAR_ARCHIVE_ND, "" );
+	r_surfaceSprites					= ri.Cvar_Get( "r_surfaceSprites",					"1",						CVAR_ARCHIVE_ND | CVAR_LATCH, "" );
 	r_surfaceWeather					= ri.Cvar_Get( "r_surfaceWeather",					"0",						CVAR_TEMP, "" );
 	r_windSpeed							= ri.Cvar_Get( "r_windSpeed",						"0",						CVAR_NONE, "" );
 	r_windAngle							= ri.Cvar_Get( "r_windAngle",						"0",						CVAR_NONE, "" );
@@ -959,7 +959,7 @@ void R_Register( void )
 	ri.Cvar_CheckRange(r_nomip, 0, 1, qtrue);
 #ifdef USE_VBO
 	r_vbo								= ri.Cvar_Get("r_vbo",								"0",						CVAR_ARCHIVE | CVAR_LATCH, "Cache static world surfaces");
-	r_vbo_models						= ri.Cvar_Get("r_vbo_models",						"1",						CVAR_ARCHIVE | CVAR_LATCH, "Cache ghoul2 and md3 model surfaces");
+	r_vbo_models						= ri.Cvar_Get("r_vbo_models",						"0",						CVAR_ARCHIVE | CVAR_LATCH, "Cache ghoul2 and md3 model surfaces");
 #endif
 	r_renderWidth						= ri.Cvar_Get("r_renderWidth",						"800",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
 	r_renderHeight						= ri.Cvar_Get("r_renderHeight",						"600",						CVAR_ARCHIVE_ND | CVAR_LATCH, "");
