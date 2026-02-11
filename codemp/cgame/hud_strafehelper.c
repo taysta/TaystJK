@@ -584,11 +584,11 @@ int DF_SetPlayerState(centity_t* cent)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
 	state.cmd = DF_DirToCmd(state.moveDir);
-	if (cg.snap->ps.pm_flags & PMF_JUMP_HELD) {
-		state.cmd.upmove = 127;
-	}
+	state.cmd.upmove = 0;
+	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK);
+
 	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || (cg.snap->ps.pm_flags & PMF_JUMP_HELD))
-		state.cmd.upmove = 1;
+		state.cmd.upmove = 127;
 	else if ((cg.snap->ps.pm_flags & PMF_DUCKED) || CG_InRollAnim(cent))
 		state.cmd.upmove = -1;
 	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9)
@@ -822,7 +822,8 @@ usercmd_t DF_DirToCmd(int moveDir) {
 		outCmd.rightmove = 127;
 		break;
 	default:
-		break;
+		outCmd.forwardmove = 0;
+		outCmd.rightmove = 0;
 	}
 	return outCmd;
 }
