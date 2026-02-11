@@ -236,14 +236,12 @@ qboolean DF_CenterOnly() {
 }
 
 qboolean showSnapHud() {
-	if (((cgs.serverMod == SVMOD_JAPRO) && (state.moveStyle == MV_OCPM))
-		|| ((cgs.serverMod == SVMOD_JAPRO) && (!state.racemode))
-		|| (cgs.serverMod != SVMOD_JAPRO)) {
+	if ((cgs.serverMod == SVMOD_JAPRO && state.moveStyle == MV_OCPM)
+		|| (cgs.serverMod == SVMOD_JAPRO && !state.racemode)
+		|| cgs.serverMod != SVMOD_JAPRO) {
 		return qtrue;
 	}
-	else {
-		return qfalse;
-	}
+	return qfalse;
 }
 
 /* Draw HUD */
@@ -251,13 +249,13 @@ void DF_DrawStrafeHUD(centity_t* cent)
 {
 	//set the playerstate
 	if (DF_SetPlayerState(cent) == 1) {
-		if( ( cg_strafeHelper.integer & SHELPER_ORIGINAL ) ||
-			( cg_strafeHelper.integer & SHELPER_UPDATED ) ||
-			( cg_strafeHelper.integer & SHELPER_CGAZ ) ||
-			( cg_strafeHelper.integer & SHELPER_WSW ) ||
-			( cg_strafeHelper.integer & SHELPER_ACCELMETER) ||
-			( cg_strafeHelper.integer & SHELPER_WEZE ) ||
-			( cg_strafeHelper.integer & SHELPER_ACCELZONES ) )
+		if( cg_strafeHelper.integer & SHELPER_ORIGINAL ||
+			cg_strafeHelper.integer & SHELPER_UPDATED ||
+			cg_strafeHelper.integer & SHELPER_CGAZ ||
+			cg_strafeHelper.integer & SHELPER_WSW ||
+			cg_strafeHelper.integer & SHELPER_ACCELMETER ||
+			cg_strafeHelper.integer & SHELPER_WEZE ||
+			cg_strafeHelper.integer & SHELPER_ACCELZONES )
 		{
 			DF_StrafeHelper();
 		}
@@ -278,11 +276,11 @@ void DF_DrawStrafeHUD(centity_t* cent)
 		DF_DrawMovementKeys();
 	}
 
-	if ((cg_speedometer.integer & SPEEDOMETER_ENABLE) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)) {
+	if (cg_speedometer.integer & SPEEDOMETER_ENABLE || cg_strafeHelper.integer & SHELPER_ACCELMETER) {
 		DF_SetSpeedometer();
 		DF_DrawSpeedometer();
 
-		if (((cg_speedometer.integer & SPEEDOMETER_ACCELMETER) || (cg_strafeHelper.integer & SHELPER_ACCELMETER)))
+		if (cg_speedometer.integer & SPEEDOMETER_ACCELMETER || cg_strafeHelper.integer & SHELPER_ACCELMETER)
 			DF_DrawAccelMeter();
 		if (cg_speedometer.integer & SPEEDOMETER_JUMPHEIGHT)
 			DF_DrawJumpHeight();
@@ -292,18 +290,18 @@ void DF_DrawStrafeHUD(centity_t* cent)
 			DF_DrawVerticalSpeed();
 		if (cg_speedometer.integer & SPEEDOMETER_YAWSPEED)
 			DF_DrawYawSpeed();
-		if ((cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH)) {
+		if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPH) {
 			rectDef_c speedgraphRect;
-			vec4_t foreColor = { 0.0f, 0.8f, 1.0f, 0.8f };
+			const vec4_t foreColor = { 0.0f, 0.8f, 1.0f, 0.8f };
 			vec4_t backColor = { 0.0f, 0.8f, 1.0f, 0.0f };
-			speedgraphRect.x = (SCREEN_WIDTH * 0.5f - (150.0f / 2.0f));
+			speedgraphRect.x = SCREEN_WIDTH * 0.5f - 150.0f / 2.0f;
 			speedgraphRect.y = SCREEN_HEIGHT - 22 - 2;
 			speedgraphRect.w = 150.0f;
 			speedgraphRect.h = 22.0f;
 			DF_GraphAddSpeed();
 			DF_DrawSpeedGraph(&speedgraphRect, foreColor, backColor);
 		}
-		if ((cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPHOLD))
+		if (cg_speedometer.integer & SPEEDOMETER_SPEEDGRAPHOLD)
 			DF_DrawSpeedGraphOld();
 	}
 
@@ -314,7 +312,6 @@ void DF_DrawStrafeHUD(centity_t* cent)
 
 	if (cg_strafeHelper.integer & SHELPER_CROSSHAIR) {
 		vec4_t hcolor;
-		float lineWidth;
 
 		if (!cg.crosshairColor[0] && !cg.crosshairColor[1] && !cg.crosshairColor[2]) { //default to white
 			hcolor[0] = 1.0f;
@@ -329,14 +326,14 @@ void DF_DrawStrafeHUD(centity_t* cent)
 			hcolor[3] = cg.crosshairColor[3];
 		}
 
-		lineWidth = cg_strafeHelperLineWidth.value;
+		float lineWidth = cg_strafeHelperLineWidth.value;
 		if (lineWidth < 0.25f)
 			lineWidth = 0.25f;
 		else if (lineWidth > 5)
 			lineWidth = 5;
 
-		DF_DrawLine((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) + 5.0f,
-			(0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT) - 5.0f,
+		DF_DrawLine(0.5f * SCREEN_WIDTH, 0.5f * SCREEN_HEIGHT + 5.0f,
+			0.5f * SCREEN_WIDTH, 0.5f * SCREEN_HEIGHT - 5.0f,
 			lineWidth, hcolor, 0); //640x480, 320x240
 	}
 
@@ -356,14 +353,6 @@ void DF_DrawStrafeHUD(centity_t* cent)
 
 //main strafehelper function, sets states and then calls drawstrafeline function for each keypress
 void DF_StrafeHelper() {
-	dfsline line = { 0 }, rearLine = { 0 },
-		minLine = { 0 }, rearMinLine = { 0 },
-		maxLine = { 0 }, rearMaxLine = { 0 },
-		maxCosLine = { 0 }, rearMaxCosLine = { 0 },
-		activeLine = { 0 }, rearActiveLine = { 0 },
-		centerLine = { 0 }, rearCenterLine = { 0 };
-	float activeMin, rearActiveMin, activeOpt, rearActiveOpt, activeMaxCos, rearActiveMaxCos;
-	int i;
 	qboolean checkForW = state.m_iVehicleNum ?
 			(qboolean)state.moveDir == KEY_W :
 			(qboolean)(state.moveDir == KEY_W || state.moveDir == KEY_WA || state.moveDir == KEY_DW);
@@ -371,12 +360,14 @@ void DF_StrafeHelper() {
 	DF_SetStrafeHelper(); //state.strafehelper.
 
 
-	if((DF_CenterOnly() == qtrue) || (state.physics.hasAirControl)) {
+	if(DF_CenterOnly() == qtrue || state.physics.hasAirControl) {
+		dfsline centerLine;
 		centerLine = DF_GetLine(KEY_CENTER, qfalse, GAZ_CENTER, qfalse);
 		if (centerLine.onScreen) {
 			DF_DrawStrafeLine(centerLine);
 		}
 		if(state.strafeHelper.rear) {
+			dfsline rearCenterLine;
 			rearCenterLine = DF_GetLine(KEY_CENTER, qtrue, GAZ_CENTER, qfalse);
 			if (rearCenterLine.onScreen) {
 				DF_DrawStrafeLine(rearCenterLine);
@@ -385,8 +376,12 @@ void DF_StrafeHelper() {
 	}
 
 	//get the other active gaz lines
-	if (!(state.cmd.forwardmove == 0 && state.cmd.rightmove == 0) && (DF_CenterOnly() == qfalse)) //only do this if keys are pressed
+	if (!(state.cmd.forwardmove == 0 && state.cmd.rightmove == 0) && DF_CenterOnly() == qfalse) //only do this if keys are pressed
 	{
+		int i;
+		dfsline line, rearLine, minLine, rearMinLine, maxLine, rearMaxLine, maxCosLine, rearMaxCosLine, activeLine, rearActiveLine;
+
+		float activeMin = 0, rearActiveMin = 0, activeOpt = 0, rearActiveOpt = 0, activeMaxCos = 0, rearActiveMaxCos = 0;
 		//active min angle
 		minLine = DF_GetLine(state.moveDir, qfalse, GAZ_MIN, qfalse);
 		if (minLine.onScreen && minLine.active) {
@@ -509,7 +504,7 @@ void DF_StrafeHelper() {
 
 			//draw the alternate active opt line
 			if ((state.strafeHelper.rear || checkForW)
-				&& (rearMaxLine.onScreen && rearMaxLine.active)) {
+				&& rearMaxLine.onScreen && rearMaxLine.active) {
 				DF_DrawStrafeLine(rearMaxLine);
 			}
 		}
@@ -521,7 +516,7 @@ void DF_StrafeHelper() {
 
 		//draw the alternate active opt line
 		if ((state.strafeHelper.rear || checkForW)
-			&& (rearActiveLine.onScreen && rearActiveLine.active)) {
+			&& rearActiveLine.onScreen && rearActiveLine.active) {
 			DF_DrawStrafeLine(rearActiveLine);
 		}
 	}
@@ -584,16 +579,16 @@ int DF_SetPlayerState(centity_t* cent)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
 	state.cmd = DF_DirToCmd(state.moveDir);
-	if (cg.snap->ps.pm_flags & PMF_JUMP_HELD) {
+	state.cmd.upmove = 0;
+	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK);
+
+	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || cg.snap->ps.pm_flags & PMF_JUMP_HELD)
 		state.cmd.upmove = 127;
-	}
-	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || (cg.snap->ps.pm_flags & PMF_JUMP_HELD))
-		state.cmd.upmove = 1;
-	else if ((cg.snap->ps.pm_flags & PMF_DUCKED) || CG_InRollAnim(cent))
+	else if (cg.snap->ps.pm_flags & PMF_DUCKED || CG_InRollAnim(cent))
 		state.cmd.upmove = -1;
 	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9)
 		state.moveDir = -1;
-	if ((cent->currentState.eFlags & EF_FIRING) && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
+	if (cent->currentState.eFlags & EF_FIRING && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
 		state.cmd.buttons |= BUTTON_ATTACK;
 		state.cmd.buttons &= ~BUTTON_ALT_ATTACK;
 	}
@@ -620,7 +615,6 @@ void DF_SetPhysics() {
 	state.physics.wateraccelerate = pm_wateraccelerate;
 	state.physics.flightfriction = pm_flightfriction;
 	state.physics.friction = DF_GetFriction();
-	state.physics.airaccelerate = DF_GetAirAccelerate();
 	state.physics.airstopaccelerate = DF_GetAirStopAccelerate();
 	state.physics.airstrafewishspeed = DF_GetAirStrafeWishspeed();
 	state.physics.airstrafeaccelerate = DF_GetAirStrafeAccelerate();
@@ -637,8 +631,8 @@ void DF_SetCGAZ() {
 
 	state.cgaz.s = DF_GetWishspeed(state.cmd);
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-	state.cgaz.vf = (state.onGround && state.cgaz.wasOnGround && !state.onSlick) ? (state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime)) : state.cgaz.v;
-	state.cgaz.a = (state.onGround && state.cgaz.wasOnGround && !state.onSlick) ? (state.cgaz.s * state.physics.accelerate * state.cgaz.frametime) : (state.cgaz.s * state.physics.airaccelerate * state.cgaz.frametime);
+	state.cgaz.vf = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
+	state.cgaz.a = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.s * state.physics.accelerate * state.cgaz.frametime : state.cgaz.s * state.physics.airaccelerate * state.cgaz.frametime;
 
 	state.cgaz.d_min = CGAZ_Min(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
 	state.cgaz.d_opt = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
@@ -690,13 +684,13 @@ void DF_SetSpeedometer() {
 void DF_SetFrameTime() {
 	float frameTime;
 	if (cg_strafeHelper_FPS.value < 1) {
-		frameTime = ((float)cg.frametime/1000);
+		frameTime = (float)cg.frametime/1000;
 	}
 	else if (cg_strafeHelper_FPS.value > 1000) {
-		frameTime = (1.0f / 1000);
+		frameTime = 1.0f / 1000;
 	}
 	else {
-		frameTime = (1.0f / cg_strafeHelper_FPS.value);
+		frameTime = 1.0f / cg_strafeHelper_FPS.value;
 	}
 	state.cgaz.frametime = frameTime;
 }
@@ -722,14 +716,13 @@ void DF_SetStrafeHelper() {
 	if( state.moveStyle == MV_SIEGE ) {
 		return;
 	}
-	float lineWidth;
 	int sensitivity = cg_strafeHelperPrecision.integer;
-	int LINE_HEIGHT = (int)(0.5f * SCREEN_HEIGHT); //240 is midpoint, so it should be a little higher so crosshair is always on it.
-	vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
-	vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
-	vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
-	vec4_t rearColor = { 0.75f, 0,1, 0.75f };
-	vec4_t activeColor = { 0, 1, 0, 1.0f };
+	const int LINE_HEIGHT = (int)(0.5f * SCREEN_HEIGHT); //240 is midpoint, so it should be a little higher so crosshair is always on it.
+	const vec4_t twoKeyColor = { 1, 1, 1, 0.75f }; //WA,WD,SA,SD
+	const vec4_t oneKeyColor = { 0.5f, 1, 1, 0.75f }; //A, D
+	const vec4_t oneKeyColorAlt = { 1, 0.75f, 0.0f, 0.75f }; //W, S, Center
+	const vec4_t rearColor = { 0.75f, 0,1, 0.75f };
+	const vec4_t activeColor = { 0, 1, 0, 1.0f };
 
 	//set the default colors
 	Vector4Copy(twoKeyColor, state.strafeHelper.twoKeyColor);
@@ -749,7 +742,7 @@ void DF_SetStrafeHelper() {
 	state.strafeHelper.sensitivity = sensitivity;
 
 	//set the line width
-	lineWidth = cg_strafeHelperLineWidth.value;
+	float lineWidth = cg_strafeHelperLineWidth.value;
 	if (lineWidth < 0.25f)
 		lineWidth = 0.25f;
 	else if (lineWidth > 5)
@@ -785,7 +778,7 @@ void DF_SetStrafeHelper() {
 }
 
 //Take a moveDir and returns a cmd
-usercmd_t DF_DirToCmd(int moveDir) {
+usercmd_t DF_DirToCmd(const int moveDir) {
 	usercmd_t outCmd;
 	memcpy(&outCmd, &state.cmd, sizeof(usercmd_t));
 	switch (moveDir) {
@@ -822,26 +815,26 @@ usercmd_t DF_DirToCmd(int moveDir) {
 		outCmd.rightmove = 127;
 		break;
 	default:
-		break;
+		outCmd.forwardmove = 0;
+		outCmd.rightmove = 0;
 	}
 	return outCmd;
 }
 
 //get the line struct - big function but no point simplifying it past this state
-dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
+dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qboolean fake) {
 	dfsline lineOut = {0}; //the line we will be returning
 	qboolean active = qfalse, draw = qfalse;
-	float fakeWishspeed;
-	float delta, angle = 0;
+	float angle = 0;
 
 	//make a fake usercmd for the line we are going to get
 	usercmd_t fakeCmd = DF_DirToCmd(moveDir);
 	fakeCmd.upmove = state.cmd.upmove; //get the real upmove value
-	fakeWishspeed = DF_GetWishspeed(fakeCmd); //get the wishspeed for the fake cmd
+	const float fakeWishspeed = DF_GetWishspeed(fakeCmd); //get the wishspeed for the fake cmd
 	//check if the fake command matches the real command, if it does, the line is active (currently pressed)
 
 	if (moveDir != KEY_CENTER) {
-		if ((state.cmd.rightmove == fakeCmd.rightmove) && (state.cmd.forwardmove == fakeCmd.forwardmove)) {
+		if (state.cmd.rightmove == fakeCmd.rightmove && state.cmd.forwardmove == fakeCmd.forwardmove) {
 			active = qtrue;
 		} else {
 			active = qfalse;
@@ -855,10 +848,10 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 	}
 
 	//Here we do some checks that determine the moveDir line should be drawn
-	if(((DF_CenterOnly() == qtrue) && (moveDir == KEY_CENTER))
-	|| ((DF_CenterOnly() == qfalse) && (moveDir != KEY_CENTER))
-	|| ((state.strafeHelper.rear) && (moveDir == KEY_S))
-	|| (state.physics.hasAirControl))
+	if(DF_CenterOnly() == qtrue && moveDir == KEY_CENTER
+	|| DF_CenterOnly() == qfalse && moveDir != KEY_CENTER
+	|| state.strafeHelper.rear && moveDir == KEY_S
+	|| state.physics.hasAirControl)
 	{
 		draw = qtrue;
 	}
@@ -879,7 +872,9 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 	}
 
 	//Now we get the angle offset by the key press
-	if (moveDir != KEY_CENTER) { //center has a fixed location
+	if (moveDir != KEY_CENTER) {
+		float delta = 0;
+		//center has a fixed location
 		//which angle are we getting
 		switch (gazLine) {
 		case GAZ_MIN:
@@ -888,7 +883,7 @@ dfsline DF_GetLine(int moveDir, qboolean rear, int gazLine, qboolean fake) {
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				delta = CGAZ_Opt((state.onGround && state.cgaz.wasOnGround), state.cgaz.v, state.cgaz.vf, ((state.onGround && state.cgaz.wasOnGround) ? (fakeWishspeed * state.physics.accelerate * state.cgaz.frametime) : (fakeWishspeed * state.physics.airaccelerate * state.cgaz.frametime)), fakeWishspeed);
+				delta = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.onGround && state.cgaz.wasOnGround ? fakeWishspeed * state.physics.accelerate * state.cgaz.frametime : fakeWishspeed * state.physics.airaccelerate * state.cgaz.frametime, fakeWishspeed);
 				delta += state.strafeHelper.offset;
 			}
 			else {
@@ -1060,7 +1055,7 @@ void DF_SetAngleToX(dfsline* inLine) {
 }
 
 //set the color of the line
-void DF_SetLineColor(dfsline* inLine, int moveDir, int gazLine) {
+void DF_SetLineColor(dfsline* inLine, const int moveDir, const int gazLine) {
 	vec4_t color = { 1, 1, 1, 0.75f };
 	//get the default line color
 	Vector4Copy(color, inLine->color);
@@ -1103,15 +1098,14 @@ void DF_SetLineColor(dfsline* inLine, int moveDir, int gazLine) {
 }
 
 // Calculates the minimum CGAZ angle
-float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
-	float minDelta;
+float CGAZ_Min(const qboolean onGround, const float v, const float vf, float a, const float s) {
 	float argument;
 
 	if (onGround == qtrue) {
 		// Ensure the expression inside the sqrt is non-negative, and  vf is not zero to avoid division by zero
 		if (vf == 0) return 0;
 
-		float expr = s * s - v * v + vf * vf;
+		const float expr = s * s - v * v + vf * vf;
 
 		// Ensure v is not zero to avoid division by zero
 		if (expr < 0) return 0;
@@ -1122,13 +1116,13 @@ float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
 		// Ensure v is not zero to avoid division by zero
 		if (v == 0) return 0;
 
-		argument = (s / v);
+		argument = s / v;
 	}
 
     if (argument < -1.0f) argument = -1.0f;
     if (argument > 1.0f) argument = 1.0f;
 
-	minDelta = acosf(argument);
+	float minDelta = acosf(argument);
 
 	// Convert from radians to degrees
 	minDelta = minDelta * (180.0f / M_PI) - 45.0f;
@@ -1140,19 +1134,16 @@ float CGAZ_Min(qboolean onGround, float v, float vf, float a, float s) {
 }
 
 // Calculates the optimum CGAZ angle
-float CGAZ_Opt(qboolean onGround, float v, float vf, float a, float s) {
-	float optDelta;
-	float argument;
-
+float CGAZ_Opt(qboolean onGround, float v, const float vf, const float a, const float s) {
 	// Ensure vf is not zero to avoid division by zero
 	if (vf == 0) return 0;
 
-	argument = (s - a) / vf;
+	float argument = (s - a) / vf;
 
     if (argument < -1.0f) argument = -1.0f;
     if (argument > 1.0f) argument = 1.0f;
 
-	optDelta = acosf(argument);
+	float optDelta = acosf(argument);
 
 	// Convert from radians to degrees
 	optDelta = optDelta * (180.0f / M_PI) - 45.0f;
@@ -1165,15 +1156,14 @@ float CGAZ_Opt(qboolean onGround, float v, float vf, float a, float s) {
 }
 
 // Calculates the maximum CGAZ angle cosine value (turn angle)
-float CGAZ_Max_Cos(qboolean onGround, float v, float vf, float a, float s) {
+float CGAZ_Max_Cos(const qboolean onGround, const float v, const float vf, const float a, float s) {
 	float maxCosDelta;
-	float argument;
 
 	if (onGround == qtrue) {
 		// Ensure 'a' is not zero to avoid division by zero and undefined behavior
 		if (a == 0) return 0;
 
-		argument = (v - vf) / a;
+		float argument = (v - vf) / a;
 
         if (argument < -1.0f) argument = -1.0f;
         if (argument > 1.0f) argument = 1.0f;
@@ -1194,12 +1184,11 @@ float CGAZ_Max_Cos(qboolean onGround, float v, float vf, float a, float s) {
 }
 
 // Calculates the maximum CGAZ angle (no more speed gain for current velocity direction)
-float CGAZ_Max(qboolean onGround, float v, float vf, float a, float s) {
-	float maxDelta;
+float CGAZ_Max(const qboolean onGround, const float v, const float vf, const float a, float s) {
 	float argument;
 
 	// Ensure 'vf' and 'v' are not zero to avoid division by zero and undefined behavior
-	if ((2 * a * vf) == 0 || (2 * v) == 0) return 0;
+	if (2 * a * vf == 0 || 2 * v == 0) return 0;
 
 	if (onGround == qtrue) {
 		argument = (v * v - vf * vf - a * a) / (2 * a * vf);
@@ -1210,7 +1199,7 @@ float CGAZ_Max(qboolean onGround, float v, float vf, float a, float s) {
 	if (argument < -1.0f) argument = -1.0f;
 	if (argument > 1.0f) argument = 1.0f;
 
-	maxDelta = acosf(argument);
+	float maxDelta = acosf(argument);
 
 	// Convert from radians to degrees
 	maxDelta = maxDelta * (180.0f / M_PI) - 45.0f;
@@ -1222,16 +1211,13 @@ float CGAZ_Max(qboolean onGround, float v, float vf, float a, float s) {
 }
 
 //takes a user commmand and returns the emulated wishspeed as a float
-float DF_GetWishspeed(usercmd_t inCmd) {
-	int         i;
+float DF_GetWishspeed(const usercmd_t inCmd) {
 	vec3_t		wishvel;
-	float		fmove, smove;
 	vec3_t		forward, right, up;
-	float		wishspeed;
-	float		scale;
+	float		scale = 0.0f;
 
-	fmove = inCmd.forwardmove;
-	smove = inCmd.rightmove;
+	const float fmove = inCmd.forwardmove;
+	const float smove = inCmd.rightmove;
 
     if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP)
 		scale = DF_GetCmdScale(inCmd); // for OCPM/ fixed SP
@@ -1243,11 +1229,11 @@ float DF_GetWishspeed(usercmd_t inCmd) {
 	VectorNormalize(forward);
 	VectorNormalize(right);
 
-	for (i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++) {
 		wishvel[i] = forward[i] * fmove + right[i] * smove;
 	}
 	wishvel[2] = 0; //wishdir
-	wishspeed = VectorNormalize(wishvel);
+	float wishspeed = VectorNormalize(wishvel);
 	if (state.moveStyle == MV_OCPM)
 		wishspeed *= scale; // for OCPM/ fixed SP
 
@@ -1270,7 +1256,7 @@ float DF_GetWishspeed(usercmd_t inCmd) {
 		wishspeed = state.speed; //this seems more accurate than using scale?
 		//air control has a different wishspeed when using A or D only in the air
 		if (!(state.onGround && state.cgaz.wasOnGround) && state.physics.hasAirControl &&
-			(wishspeed > state.physics.airstrafewishspeed) && (fmove == 0 && smove != 0)) {
+			wishspeed > state.physics.airstrafewishspeed && fmove == 0 && smove != 0) {
 			wishspeed = state.physics.airstrafewishspeed;
 		}
 	}
@@ -1290,17 +1276,14 @@ float DF_GetWishspeed(usercmd_t inCmd) {
 }
 
 //takes a user command and returns the emulated command scale as a float
-float DF_GetCmdScale(usercmd_t cmd) {
-	int		max;
-	float	total;
-	float	scale;
+float DF_GetCmdScale(const usercmd_t cmd) {
 	signed char		umove = 0; //cmd->upmove;
 	//don't factor upmove into scaling speed
 
 	if (state.moveStyle == MV_OCPM) { //upmove velocity scaling add ocpm
 		umove = state.cmd.upmove;
 	}
-	max = abs(cmd.forwardmove);
+	int max = abs(cmd.forwardmove);
 	if (abs(cmd.rightmove) > max) {
 		max = abs(cmd.rightmove);
 	}
@@ -1308,12 +1291,12 @@ float DF_GetCmdScale(usercmd_t cmd) {
 		max = abs(umove);
 	}
 	if (!max) {
-		scale = 0;
+		return 0;
 	}
 
-	total = (float)sqrt(cmd.forwardmove * cmd.forwardmove
-		+ cmd.rightmove * cmd.rightmove + umove * umove);
-	scale = (float)state.cgaz.v * (float)max / (127.0f * total);
+	const float total = sqrtf((float)cmd.forwardmove * (float)cmd.forwardmove
+	                           + (float)cmd.rightmove * (float)cmd.rightmove + (float)umove * (float)umove);
+	const float scale = state.cgaz.v * (float) max / (127.0f * total);
 
 	return scale;
 }
@@ -1349,21 +1332,21 @@ void DF_DrawStrafeLine(dfsline line) {
 		else if (cutoff > SCREEN_HEIGHT) {
 			cutoff = SCREEN_HEIGHT;
 		}
-		DF_DrawLine((0.5f * SCREEN_WIDTH), SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, (float)cutoff);
+		DF_DrawLine(0.5f * SCREEN_WIDTH, SCREEN_HEIGHT, line.x, (float)heightIn, state.strafeHelper.lineWidth, line.color, (float)cutoff);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_CGAZ) { //draw the cgaz style strafehelper
 		if (cg_strafeHelperCutoff.integer > state.strafeHelper.LINE_HEIGHT) {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 5.0f, line.x, (0.5f * SCREEN_HEIGHT) - 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
+			DF_DrawLine(line.x, 0.5f * SCREEN_HEIGHT + 5.0f, line.x, 0.5f * SCREEN_HEIGHT - 5.0f, state.strafeHelper.lineWidth, line.color, 0); //maximum cutoff
 		}
 		else {
-			DF_DrawLine(line.x, (0.5f * SCREEN_HEIGHT) + 20.0f - cg_strafeHelperCutoff.value / 16.0f, line.x, (0.5f * SCREEN_HEIGHT) - 20.0f + cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
+			DF_DrawLine(line.x, 0.5f * SCREEN_HEIGHT + 20.0f - cg_strafeHelperCutoff.value / 16.0f, line.x, 0.5f * SCREEN_HEIGHT - 20.0f + cg_strafeHelperCutoff.value / 16.0f, state.strafeHelper.lineWidth, line.color, 0); //default/custom cutoff
 		}
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_WSW && line.active) { //draw the wsw style strafehelper, not sure how to deal with multiple lines for W only so we don't draw any, the proper way is to tell which line we are closest to aiming at and display the strafehelper for that
-		float width = (float)(-4.444 * AngleSubtract(state.viewAngles[YAW], line.angs[YAW]));
-		CG_FillRect((0.5f * SCREEN_WIDTH), (0.5f * SCREEN_HEIGHT), width, 12, colorTable[CT_RED]);
+		const float width = -4.444f * AngleSubtract(state.viewAngles[YAW], line.angs[YAW]);
+		CG_FillRect(0.5f * SCREEN_WIDTH, 0.5f * SCREEN_HEIGHT, width, 12, colorTable[CT_RED]);
 	}
 
 	if (cg_strafeHelper.integer & SHELPER_WEZE && line.active) { //call the weze style strafehelper function
@@ -1378,9 +1361,8 @@ void DF_DrawStrafeLine(dfsline line) {
 /* Drawing Functions */
 
 //draws a line on the screen
-void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t color, float ycutoff) {
-	float stepx, stepy, length = sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	int i;
+void DF_DrawLine(float x1, float y1, float x2, const float y2, const float size, vec4_t color, float ycutoff) {
+	float length = sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 
 	if (length < 1)
 		length = 1;
@@ -1391,12 +1373,12 @@ void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t colo
 
 	x1 -= 0.5f * size;
 	x2 -= 0.5f * size;
-	stepx = (x2 - x1) / (length / size);
-	stepy = (y2 - y1) / (length / size);
+	const float stepx = (x2 - x1) / (length / size);
+	const float stepy = (y2 - y1) / (length / size);
 
 	trap->R_SetColor(color);
 
-	for (i = 0; i <= (int)(length / size); i++) {
+	for (int i = 0; i <= (int)(length / size); i++) {
 		if (x1 < SCREEN_WIDTH && y1 < SCREEN_HEIGHT && y1 < ycutoff)
 			CG_DrawPic(x1, y1, size, size, cgs.media.whiteShader);
 		x1 += stepx;
@@ -1406,40 +1388,35 @@ void DF_DrawLine(float x1, float y1, float x2, float y2, float size, vec4_t colo
 }
 
 //draws the weze strafehelper
-void DF_DrawStrafehelperWeze(int moveDir) {
-	float length;
-	float diff;
-	float midx;
-	float midy;
+void DF_DrawStrafehelperWeze(const int moveDir) {
 	vec3_t velocity_copy;
 	vec3_t viewangle_copy;
 	vec3_t velocity_angle;
-	float optiangle, g_speed, accel;
 
-	midx = 0.5f * SCREEN_WIDTH;
-	midy = 0.5f * SCREEN_HEIGHT;
+	const float midx = 0.5f * SCREEN_WIDTH;
+	const float midy = 0.5f * SCREEN_HEIGHT;
 	VectorCopy(state.velocity, velocity_copy);
 	velocity_copy[2] = 0;
 	VectorCopy(state.viewAngles, viewangle_copy);
 	viewangle_copy[PITCH] = 0;
-	length = VectorNormalize(velocity_copy);
-	usercmd_t cmd = DF_DirToCmd(moveDir);
+	float length = VectorNormalize(velocity_copy);
+	const usercmd_t cmd = DF_DirToCmd(moveDir);
 
-	g_speed = state.speed;
-	accel = g_speed;
+	const float g_speed = state.speed;
+	float accel = g_speed;
 	accel *= state.cgaz.frametime;
 	accel /= 1000;
-	optiangle = (g_speed - accel) / length;
-	if ((optiangle <= 1) && (optiangle >= -1))
+	float optiangle = (g_speed - accel) / length;
+	if (optiangle <= 1 && optiangle >= -1)
 		optiangle = acosf(optiangle);
 	else
 		optiangle = 0;
 	length /= 5;
-	if (length > (0.5f * SCREEN_HEIGHT))
-		length = (float)(0.5f * SCREEN_HEIGHT);
+	if (length > 0.5f * SCREEN_HEIGHT)
+		length = 0.5f * SCREEN_HEIGHT;
 	vectoangles(velocity_copy, velocity_angle);
-	diff = AngleSubtract(viewangle_copy[YAW], velocity_angle[YAW]);
-	diff = diff / 180 * M_PI;
+	float diff = AngleSubtract(viewangle_copy[YAW], velocity_angle[YAW]);
+	diff = diff / 180.0f * M_PI;
 
 	DF_DrawLine(midx, midy, midx + length * sinf(diff), midy - length * cosf(diff), 1, colorRed, 0);
 	DF_DrawLine(midx, midy, midx + (float)cmd.rightmove, midy - (float)cmd.forwardmove, 1, colorCyan, 0);
@@ -1448,15 +1425,13 @@ void DF_DrawStrafehelperWeze(int moveDir) {
 }
 
 //plays the strafehelper sounds
-void DF_StrafeHelperSound(float difference) {
+void DF_StrafeHelperSound(const float difference) {
 	if (difference > -40.0f && difference < 10.0f) //Under aiming by a bit, but still good
 		trap->S_StartLocalSound(cgs.media.hitSound4, CHAN_LOCAL_SOUND);
 }
 
 //sets the color of the triangles based on accel - code repeated from speedometer
 void DF_SetAccelColor() {
-	int t, i;
-	float total, avgAccel;
 	const float currentSpeed = state.cgaz.v;
 	static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
 	const float accel = currentSpeed - lastSpeed;
@@ -1465,7 +1440,7 @@ void DF_SetAccelColor() {
 	vec4_t color = { 0,0,0,0 };
 
 	lastSpeed = currentSpeed;
-	t = trap->Milliseconds();
+	const int t = trap->Milliseconds();
 
 	if (t - lastupdate > 5)	//don't sample faster than this
 	{
@@ -1474,15 +1449,15 @@ void DF_SetAccelColor() {
 		index++;
 	}
 
-	total = 0;
-	for (i = 0; i < ACCEL_SAMPLES; i++) {
+	float total = 0;
+	for (int i = 0; i < ACCEL_SAMPLES; i++) {
 		total += previousAccels[i];
 	}
 	if (!total) {
 		total = 1;
 	}
 
-	avgAccel = total / (float)ACCEL_SAMPLES - 0.0625f;//fucking why does it offset by this number
+	const float avgAccel = total / (float) ACCEL_SAMPLES - 0.0625f;//fucking why does it offset by this number
 
 	if (avgAccel > 0.0f) //good accel = green
 	{
@@ -1510,24 +1485,24 @@ void DF_SetAccelColor() {
 }
 
 //draws the acceleration zone triangle
-void DF_DrawTriangle(float start, float end) {
+void DF_DrawTriangle(const float start, const float end) {
 	if (start <= SCREEN_WIDTH && start >= 0 && end <= SCREEN_WIDTH && end >= 0) {
 		DF_SetAccelColor();
-		CG_DrawPic(end, (0.5f * SCREEN_HEIGHT) - 4.0f, (start - end), 8.0f, cgs.media.leftTriangle);
+		CG_DrawPic(end, 0.5f * SCREEN_HEIGHT - 4.0f, start - end, 8.0f, cgs.media.leftTriangle);
 		trap->R_SetColor(NULL); //set the color back to null
 	}
 }
 
-void DF_DrawZone(float start, float end) {
+void DF_DrawZone(const float start, const float end) {
 	if (start <= SCREEN_WIDTH && start >= 0 && end <= SCREEN_WIDTH && end >= 0) {
 		DF_SetAccelColor();
-		CG_DrawPic(end, (0.5f * SCREEN_HEIGHT) - 4.0f, (start - end), 8.0f, cgs.media.solidWhite);
+		CG_DrawPic(end, 0.5f * SCREEN_HEIGHT - 4.0f, start - end, 8.0f, cgs.media.solidWhite);
 		trap->R_SetColor(NULL); //set the color back to null
 	}
 }
 
 void CG_AddSpeedGraphFrameInfo(void) {  //CG_DrawSpeedGraph
-	speedgraph.frameSamples[speedgraph.frameCount & (SPEED_SAMPLES - 1)] = (int)state.cgaz.v;
+	speedgraph.frameSamples[speedgraph.frameCount & SPEED_SAMPLES - 1] = (int)state.cgaz.v;
 	speedgraph.frameCount++;
 }
 
@@ -1540,7 +1515,6 @@ tremulous - append a speed to the sample history for the speed graph
 ===================
 */
 void DF_GraphAddSpeed(void) {
-	float speed;
 	vec3_t vel;
 
 	if(!oldestSpeedSample){
@@ -1553,7 +1527,7 @@ void DF_GraphAddSpeed(void) {
 
 	VectorCopy(state.velocity, vel);
 
-	speed = VectorLength(vel);
+	const float speed = VectorLength(vel);
 
 	if (speed > speedSamples[maxSpeedSample])
 	{
@@ -1583,16 +1557,12 @@ CG_DrawSpeedGraph
 tremulous
 ===================
 */
-void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor) {
-	int i;
-	float val, max, top;
+void DF_DrawSpeedGraph(const rectDef_c* rect, const vec4_t foreColor, const vec4_t backColor) {
 	// color of graph is interpolated between these values
-	const vec3_t slow = { 0.0f, 0.0f, 1.0f };
-	const vec3_t medium = { 0.0f, 1.0f, 0.0f };
 	const vec3_t fast = { 1.0f, 0.0f, 0.0f };
 	vec4_t color;
 
-	max = speedSamples[maxSpeedSample];
+	float max = speedSamples[maxSpeedSample];
 	if (max < SPEEDOMETER_MIN_RANGE)
 		max = SPEEDOMETER_MIN_RANGE;
 
@@ -1601,9 +1571,11 @@ void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor
 
 	Vector4Copy(foreColor, color);
 
-	for (i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
+	for (int i = 1; i < SPEEDOMETER_NUM_SAMPLES; i++)
 	{
-		val = speedSamples[(oldestSpeedSample + i) % SPEEDOMETER_NUM_SAMPLES];
+		const vec3_t medium = { 0.0f, 1.0f, 0.0f };
+		const vec3_t slow = { 0.0f, 0.0f, 1.0f };
+		const float val = speedSamples[(oldestSpeedSample + i) % SPEEDOMETER_NUM_SAMPLES];
 		if (val < SPEED_MED)
 			VectorLerp(val / SPEED_MED, slow, medium, color);
 		else if (val < SPEED_FAST)
@@ -1612,23 +1584,20 @@ void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor
 		else
 			VectorCopy(fast, color);
 		trap->R_SetColor(color);
-		top = rect->y + (1 - val / max) * rect->h;
-		CG_DrawPic((rect->x + ((float)i / (float)SPEEDOMETER_NUM_SAMPLES) * rect->w), top,
-			(rect->w / (float)SPEEDOMETER_NUM_SAMPLES), val * rect->h / max,
+		const float top = rect->y + (1 - val / max) * rect->h;
+		CG_DrawPic(rect->x + (float)i / (float)SPEEDOMETER_NUM_SAMPLES * rect->w, top,
+			rect->w / (float)SPEEDOMETER_NUM_SAMPLES, val * rect->h / max,
 			cgs.media.whiteShader);
 	}
 	trap->R_SetColor(NULL);
 }
 
 void DF_DrawSpeedGraphOld(void) {
-	int		a, i, aw;
-	float	x, y, v;
-	float	ax, ay, ah, range; // mid, range;
+	float ah; // mid, range;
 	//	int		color;
-	float	vscale;
 
-	x = SCREEN_WIDTH - (float)cg_lagometerX.integer * cgs.widthRatioCoef;
-	y = SCREEN_HEIGHT - cg_lagometerY.integer - 56;
+	float x = SCREEN_WIDTH - (float) cg_lagometerX.integer * cgs.widthRatioCoef;
+	float y = SCREEN_HEIGHT - cg_lagometerY.integer - 56;
 
 	if (cg_hudFiles.integer == 0) {
 		y -= 16;
@@ -1647,21 +1616,21 @@ void DF_DrawSpeedGraphOld(void) {
 
 	x -= 1.0f * cgs.widthRatioCoef;
 
-	ax = x;
-	ay = y;
-	aw = 48;
+	const float ax = x;
+	const float ay = y;
+	const int aw = 48;
 	if (cg_lagometer.integer != 1 && cg_lagometer.integer != 2)
 		ah = 48 * 3;
 	else
 		ah = 48;
 
 	// draw the speed graph
-	range = ah;
-	vscale = range / (3000);
+	const float range = ah;
+	const float vscale = range / 3000;
 
-	for (a = 0; a < aw; a++) {
-		i = (speedgraph.frameCount - 1 - a) & (SPEED_SAMPLES - 1);
-		v = (float)speedgraph.frameSamples[i];
+	for (int a = 0; a < aw; a++) {
+		 const int i = speedgraph.frameCount - 1 - a & SPEED_SAMPLES - 1;
+		float v = (float) speedgraph.frameSamples[i];
 		if (v > 0) {
 			trap->R_SetColor(g_color_table[ColorIndex(COLOR_GREEN)]);
 			v = v * vscale;
@@ -1686,12 +1655,12 @@ void DF_DrawJumpHeight() {
 	if (cg.predictedPlayerState.fd.forceJumpZStart == -65536) //Coming back from a tele or w/e
 		return;
 
-	if (cg.predictedPlayerState.fd.forceJumpZStart && (cg.lastZSpeed > 0) && (velocity[2] <= 0)) {//If we were going up, and we are now going down, print our height.
+	if (cg.predictedPlayerState.fd.forceJumpZStart && cg.lastZSpeed > 0 && velocity[2] <= 0) {//If we were going up, and we are now going down, print our height.
 		cg.lastJumpHeight = cg.predictedPlayerState.origin[2] - cg.predictedPlayerState.fd.forceJumpZStart;
 		cg.lastJumpHeightTime = cg.time;
 	}
 
-	if ((cg.lastJumpHeightTime > cg.time - 1500) && (cg.lastJumpHeight > 0.0f)) {
+	if (cg.lastJumpHeightTime > cg.time - 1500 && cg.lastJumpHeight > 0.0f) {
 		Com_sprintf(jumpHeightStr, sizeof(jumpHeightStr), "%.1f", cg.lastJumpHeight);
 		CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpHeightStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
 	}
@@ -1720,7 +1689,7 @@ void DF_DrawJumpDistance(void) {
 		VectorCopy(state.viewOrg, cg.lastGroundPosition);
 	}
 
-	if ((cg.lastJumpDistanceTime > cg.time - 1500) && (cg.lastJumpDistance > 0.0f)) {
+	if (cg.lastJumpDistanceTime > cg.time - 1500 && cg.lastJumpDistance > 0.0f) {
 		Com_sprintf(jumpDistanceStr, sizeof(jumpDistanceStr), "%.1f", cg.lastJumpDistance);
 		CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, (float)cg_speedometerY.integer, cg_speedometerSize.value, colorTable[CT_WHITE], jumpDistanceStr, 0.0f, 0, ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
 	}
@@ -1753,16 +1722,15 @@ void DF_DrawYawSpeed(void) {
 	static unsigned short previousYaws[YAW_FRAMES];
 	static unsigned short index;
 	static int    lastupdate; //previous, lastupdate;
-	int        t, i, yaw, total;
 	//    unsigned short frameTime;
 	//    const int        xOffset = 0;
 
 	const float diff = AngleSubtract(state.viewAngles[YAW], cg.lastYawSpeed);
-	float yawspeed = (diff / state.cgaz.frametime);
+	float yawspeed = diff / state.cgaz.frametime;
 	if (yawspeed < 0)
 		yawspeed = -yawspeed;
 
-	t = trap->Milliseconds();
+	const int t = trap->Milliseconds();
 	//    frameTime = t - previous;
 	//    previous = t;
 	if (t - lastupdate > 20)    //don't sample faster than this
@@ -1772,14 +1740,14 @@ void DF_DrawYawSpeed(void) {
 		index++;
 	}
 
-	total = 0;
-	for (i = 0; i < YAW_FRAMES; i++) {
+	int total = 0;
+	for (int i = 0; i < YAW_FRAMES; i++) {
 		total += previousYaws[i];
 	}
 	if (!total) {
 		total = 1;
 	}
-	yaw = (int)((float)total / (float)YAW_FRAMES);
+	const int yaw = (int) ((float) total / (float) YAW_FRAMES);
 
 	if (yaw) {
 		char yawStr[64] = { 0 };
@@ -1806,13 +1774,11 @@ japro - Draw acceleration meter
 void DF_DrawAccelMeter(void) {
 	const float optimalAccel = state.speed * state.cgaz.frametime;
 	const float potentialSpeed = sqrtf(cg.previousSpeed * cg.previousSpeed - optimalAccel * optimalAccel + 2 * (state.cgaz.s * optimalAccel));
-	float actualAccel, total, percentAccel, x;
 	const float accel = state.cgaz.v - cg.previousSpeed;
-	int i;
 	static float previousTimes[PERCENT_SAMPLES];
 	static unsigned int index;
 
-	x = speedometerXPos;
+	float x = speedometerXPos;
 
 	if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)
 		x -= 88;
@@ -1826,28 +1792,28 @@ void DF_DrawAccelMeter(void) {
 		0.5f,
 		colorTable[CT_BLACK]);
 
-	actualAccel = accel;
+	float actualAccel = accel;
 	if (actualAccel < 0)
 		actualAccel = 0.001f;
-	else if (actualAccel > (potentialSpeed - state.cgaz.v)) //idk how
+	else if (actualAccel > potentialSpeed - state.cgaz.v) //idk how
 		actualAccel = (potentialSpeed - state.cgaz.v) * 0.99f;
 
 	previousTimes[index % PERCENT_SAMPLES] = actualAccel / (potentialSpeed - state.cgaz.v);
 	index++;
 
-	total = 0;
-	for (i = 0; i < PERCENT_SAMPLES; i++) {
+	float total = 0;
+	for (int i = 0; i < PERCENT_SAMPLES; i++) {
 		total += previousTimes[i];
 	}
 	if (!total) {
 		total = 1;
 	}
-	percentAccel = total / (float)PERCENT_SAMPLES;
+	const float percentAccel = total / (float) PERCENT_SAMPLES;
 
 	if (percentAccel && state.cgaz.v) {
 		CG_FillRect((x + 0.25f) * cgs.widthRatioCoef,
 			cg_speedometerY.value - 9.9f,
-			(36 * percentAccel) * cgs.widthRatioCoef,
+			36 * percentAccel * cgs.widthRatioCoef,
 			12,
 			colorTable[CT_RED]);
 	}
@@ -1864,26 +1830,24 @@ japro - Draw the speedometer
     const char* accelStr, * accelStr2, * accelStr3;
     char speedStr[32] = { 0 }, speedStr2[32] = { 0 }, speedStr3[32] = { 0 };
     vec4_t colorSpeed = { 1, 1, 1, 1 };
-    const float currentSpeed = state.cgaz.currentSpeed;
-	float accel;
-    static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
-    float total, avgAccel, groundSpeedColor, groundSpeedsColor, currentSpeedColor;
-    int t, i;
+	const float currentSpeed = state.speedometer.speed;
+	static float lastSpeed = 0, previousAccels[ACCEL_SAMPLES];
+    int i;
     static unsigned int index;
     static int lastupdate, jumpsCounter = 0;
     static qboolean clearOnNextJump = qfalse;
 
-	accel = currentSpeed - lastSpeed;
+	const float accel = currentSpeed - lastSpeed;
     lastSpeed = currentSpeed;
 
 	if (currentSpeed > state.cgaz.s && !(cg_speedometer.integer & SPEEDOMETER_COLORS))
 	{
-		currentSpeedColor = 1 / ((currentSpeed / state.cgaz.s) * (currentSpeed / state.cgaz.s));
+		const float currentSpeedColor = 1 / (currentSpeed / state.cgaz.s * (currentSpeed / state.cgaz.s));
 		colorSpeed[1] = currentSpeedColor;
 		colorSpeed[2] = currentSpeedColor;
 	}
 
-	t = trap->Milliseconds();
+	const int t = trap->Milliseconds();
 
 	if (t - lastupdate > 5)	//don't sample faster than this
 	{
@@ -1892,14 +1856,14 @@ japro - Draw the speedometer
 		index++;
 	}
 
-	total = 0;
+	float total = 0;
 	for (i = 0; i < ACCEL_SAMPLES; i++) {
 		total += previousAccels[i];
 	}
 	if (!total) {
 		total = 1;
 	}
-	avgAccel = total / (float)ACCEL_SAMPLES - 0.0625f;//fucking why does it offset by this number
+	const float avgAccel = total / (float) ACCEL_SAMPLES - 0.0625f;//fucking why does it offset by this number
 
 	if (avgAccel > 0.0f)
 	{
@@ -1940,7 +1904,7 @@ japro - Draw the speedometer
 	}
 	speedometerXPos += 52;
 
-	if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && (cg_speedometer.integer & SPEEDOMETER_JUMPS))) {
+	if (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED || (cg_speedometer.integer && cg_speedometer.integer & SPEEDOMETER_JUMPS)) {
 		char speedStr4[32] = { 0 };
 		char speedsStr4[32] = { 0 };
 
@@ -1970,18 +1934,18 @@ japro - Draw the speedometer
 				state.pm_time <= 0 && state.cgaz.v < state.cgaz.s) || state.cgaz.v == 0) {
 				clearOnNextJump = qtrue;
 			}
-			if (cg_speedometerJumps.value &&
-				(jumpsCounter < cg_speedometerJumps.integer)) { //if we are in the first n jumps
+			if (cg_speedometerJumps.value && jumpsCounter < cg_speedometerJumps.integer) {
+				//if we are in the first n jumps
 				for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
-					groundSpeedsColor = 1 / ((cg.lastGroundSpeeds[i] / state.cgaz.s) * (cg.lastGroundSpeeds[i] / state.cgaz.s));
+					const float groundSpeedsColor = 1 / (cg.lastGroundSpeeds[i] / state.cgaz.s * (cg.lastGroundSpeeds[i] / state.cgaz.s));
 					Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
 					if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS1) { //color the string
 						colorGroundSpeeds[1] = groundSpeedsColor;
 						colorGroundSpeeds[2] = groundSpeedsColor;
 					}
 					else if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS2) {
-						if ((jumpsCounter > 0 && (cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1])) ||
-							(i == 0 && (cg.lastGroundSpeeds[0] > firstSpeed))) {
+						if ((jumpsCounter > 0 && cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]) ||
+							(i == 0 && cg.lastGroundSpeeds[0] > firstSpeed)) {
 							colorGroundSpeeds[0] = groundSpeedsColor;
 							colorGroundSpeeds[1] = 1;
 							colorGroundSpeeds[2] = groundSpeedsColor;
@@ -1993,7 +1957,7 @@ japro - Draw the speedometer
 						}
 					}
 					if (strcmp(speedsStr4, "0") != 0) {
-						CG_Text_Paint((jumpsXPos * cgs.widthRatioCoef), cg_speedometerJumpsY.value,
+						CG_Text_Paint(jumpsXPos * cgs.widthRatioCoef, cg_speedometerJumpsY.value,
 							cg_speedometerSize.value, colorGroundSpeeds, speedsStr4, 0.0f, 0,
 							ITEM_ALIGN_RIGHT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE); //print the jump
 						jumpsXPos += 52; //shift x
@@ -2010,8 +1974,8 @@ japro - Draw the speedometer
 			}
 		}
 
-		groundSpeedColor = 1 / ((cg.lastGroundSpeed / state.cgaz.s) * (cg.lastGroundSpeed / state.cgaz.s));
-		if (cg_jumpGoal.value && (cg_jumpGoal.value <= cg.lastGroundSpeed) && jumpsCounter == 1) {
+		const float groundSpeedColor = 1 / (cg.lastGroundSpeed / state.cgaz.s * cg.lastGroundSpeed / state.cgaz.s);
+		if (cg_jumpGoal.value && cg_jumpGoal.value <= cg.lastGroundSpeed && jumpsCounter == 1) {
 			colorGroundSpeed[0] = groundSpeedColor;
 			colorGroundSpeed[1] = 1;
 			colorGroundSpeed[2] = groundSpeedColor;
@@ -2022,7 +1986,7 @@ japro - Draw the speedometer
 			colorGroundSpeed[2] = groundSpeedColor;
 		}
 
-		if ((cg.lastGroundTime > cg.time - 1500) && (cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED)) {
+		if (cg.lastGroundTime > cg.time - 1500 && cg_speedometer.integer & SPEEDOMETER_GROUNDSPEED) {
 			if (cg.lastGroundSpeed) {
 				Com_sprintf(speedStr4, sizeof(speedStr4), "%.0f", cg.lastGroundSpeed);
 				CG_Text_Paint(speedometerXPos * cgs.widthRatioCoef, cg_speedometerY.value, cg_speedometerSize.value, colorGroundSpeed, speedStr4, 0.0f, 0, ITEM_ALIGN_LEFT | ITEM_TEXTSTYLE_OUTLINED, FONT_NONE);
@@ -2067,10 +2031,10 @@ qboolean DF_IsSlickSurf(void) {
 	down[2] -= 128;
 	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
 
-	if (((state.groundEntityNum == ENTITYNUM_WORLD) && (tr.surfaceFlags & SURF_SLICK))
-	|| ((state.moveStyle == MV_SLICK) && !(state.cmd.buttons & BUTTON_WALKING))
-	|| ((state.moveStyle == MV_TRIBES) && (state.cmd.buttons & BUTTON_WALKING))
-	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
+	if (state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK
+	|| state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING)
+	|| state.moveStyle == MV_TRIBES && state.cmd.buttons & BUTTON_WALKING
+	|| cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK)
 		onSlick = qtrue;
 
 	return onSlick;
@@ -2186,10 +2150,10 @@ void DF_RaceTimer(void)
 		char startStr[48] = { 0 };
 		vec4_t colorStartSpeed = { 1, 1, 1, 1 };
 
-		const int time = (cg.time - state.duelTime);
-		const int minutes = (time / 1000) / 60;
-		const int seconds = (time / 1000) % 60;
-		const int milliseconds = (time % 1000);
+		const int time = cg.time - state.duelTime;
+		const int minutes = time / 1000 / 60;
+		const int seconds = time / 1000 % 60;
+		const int milliseconds = time % 1000;
 
 		if (time < cg.lastRaceTime) {
 			cg.startSpeed = 0;
@@ -2201,9 +2165,9 @@ void DF_RaceTimer(void)
 		if (cg_raceTimer.integer > 1 || cg_raceStart.integer) {
 			if (time > 0) {
 				if (!cg.startSpeed)
-					cg.startSpeed = (int)(state.cgaz.v);
+					cg.startSpeed = (int)state.cgaz.v;
 				if (state.cgaz.v > (float)cg.maxSpeed)
-					cg.maxSpeed = (int)(state.cgaz.v);
+					cg.maxSpeed = (int)state.cgaz.v;
 				cg.displacement += (int)state.cgaz.v;
 				cg.displacementSamples++;
 			}
@@ -2230,8 +2194,8 @@ void DF_RaceTimer(void)
 		}
 		if (cg_raceStart.integer)
 		{
-			if (cg_startGoal.value && (cg_startGoal.value <= (float)cg.startSpeed)) {
-				float startColor = 1 / (((float)cg.startSpeed / state.cgaz.s) * ((float)cg.startSpeed / state.cgaz.s));
+			if (cg_startGoal.value && cg_startGoal.value <= (float)cg.startSpeed) {
+				const float startColor = 1 / ((float)cg.startSpeed / state.cgaz.s * ((float)cg.startSpeed / state.cgaz.s));
 				colorStartSpeed[0] = startColor;
 				colorStartSpeed[1] = 1;
 				colorStartSpeed[2] = startColor;
@@ -2247,19 +2211,15 @@ void DF_DrawShowPos(void)
 	static char showPosString[128];
 	static char showPitchString[8];
 	vec4_t colorPitch = { 0, 0, 0, 1 };
-	float vel;
-	float pitchAngle;
-	float pitchColor;
-	float pitchRange;
-	pitchAngle = fabsf(state.viewAngles[PITCH] + cg_pitchHelperOffset.value);
+	float pitchAngle = fabsf(state.viewAngles[PITCH] + cg_pitchHelperOffset.value);
 	if (pitchAngle > 90) {
 		pitchAngle = 90;
 	}
-	pitchRange = cg_pitchHelperRange.value / 2;
-	if (cg_pitchHelper.value && (pitchAngle < pitchRange)) {
-		pitchColor = pitchAngle / pitchRange;
+	const float pitchRange = cg_pitchHelperRange.value / 2;
+	if (cg_pitchHelper.value && pitchAngle < pitchRange) {
+		float pitchColor = pitchAngle / pitchRange;
 		colorPitch[0] = pitchColor;
-		pitchColor = 1.0f - (pitchAngle / pitchRange) / 2.0f;
+		pitchColor = 1.0f - pitchAngle / pitchRange / 2.0f;
 		colorPitch[1] = pitchColor;
 	}
 	else if (cg_pitchHelper.value) {
@@ -2275,7 +2235,7 @@ void DF_DrawShowPos(void)
 	if (!cg_showpos.integer)
 		return;
 
-	vel = sqrtf(state.cgaz.v * state.cgaz.v + state.velocity[2] * state.velocity[2]);
+	const float vel = sqrtf(state.cgaz.v * state.cgaz.v + state.velocity[2] * state.velocity[2]);
 
 	Com_sprintf(showPosString, sizeof(showPosString), "pos:   %.2f   %.2f   %.2f\nang:   %.2f   %.2f\nvel:     %.2f",
 		(float)state.viewOrg[0], (float)state.viewOrg[1], (float)state.viewOrg[2], (float)state.viewAngles[PITCH], (float)state.viewAngles[YAW], vel);
@@ -2291,13 +2251,13 @@ void DF_DrawShowPos(void)
 DF_FillAngleYaw
 =================
 */
-void DF_FillAngleYaw(float start, float end, float viewangle, float y, float height, const float* color) {
-	float x, width, fovscale;
-	vec2_t cgamefov = { cg.refdef.fov_x, cg.refdef.fov_y };
+void DF_FillAngleYaw(const float start, const float end, const float viewangle, const float y, const float height, const float* color) {
+	const vec2_t cgamefov = { cg.refdef.fov_x, cg.refdef.fov_y };
 
-	fovscale = tanf(DEG2RAD(cgamefov[0] / 2));
-	x = (0.5f * SCREEN_WIDTH) + tanf(DEG2RAD(viewangle + start)) / fovscale * (0.5f * SCREEN_WIDTH);
-	width = fabsf(SCREEN_WIDTH * (tanf(DEG2RAD(viewangle + end)) - tanf(DEG2RAD(viewangle + start))) / (fovscale * 2)) + 1;
+	const float fovscale = tanf(DEG2RAD(cgamefov[0] / 2));
+	const float x = 0.5f * SCREEN_WIDTH + tanf(DEG2RAD(viewangle + start)) / fovscale * (0.5f * SCREEN_WIDTH);
+	const float width = fabsf(SCREEN_WIDTH * (tanf(DEG2RAD(viewangle + end)) - tanf(DEG2RAD(viewangle + start))) / (
+		                    fovscale * 2)) + 1;
 
 	trap->R_SetColor(color);
 	trap->R_DrawStretchPic(x, y, width, height, 0, 0, 0, 0, cgs.media.whiteShader);
@@ -2308,19 +2268,20 @@ static int QDECL sortzones(const void* a, const void* b) {
 	return (int)(*(float*)a - *(float*)b);
 }
 
-void DF_UpdateSnapHudSettings(float speed, int fps, qboolean pro) {
-	float step;
+void DF_UpdateSnapHudSettings(float speed, const int fps, const qboolean pro) {
 	state.snappinghud.promode = pro;
 	state.snappinghud.fps = fps;
 	state.snappinghud.speed = speed;
-	speed /= state.snappinghud.fps;
+	speed /= (float)state.snappinghud.fps;
 	state.snappinghud.count = 0;
 
-	for (step = floor(speed + 0.5) - 0.5; step > 0 && state.snappinghud.count < SNAPHUD_MAXZONES - 2; step--) {
-		state.snappinghud.zones[state.snappinghud.count] = RAD2DEG(acos(step / speed));
+	float step = floorf(speed + 0.5f) - 0.5f;
+	while (step > 0 && state.snappinghud.count < SNAPHUD_MAXZONES - 2) {
+		state.snappinghud.zones[state.snappinghud.count] = RAD2DEG(acosf(step / speed));
 		state.snappinghud.count++;
-		state.snappinghud.zones[state.snappinghud.count] = RAD2DEG(asin(step / speed));
+		state.snappinghud.zones[state.snappinghud.count] = RAD2DEG(asinf(step / speed));
 		state.snappinghud.count++;
+		step -= 1.0f;
 	}
 
 	qsort(state.snappinghud.zones, state.snappinghud.count, sizeof(state.snappinghud.zones[0]), sortzones);
@@ -2334,11 +2295,8 @@ DF_DrawSnapHud
 */
 void DF_DrawSnapHud(void)
 {
-	int i;
-	float y, h;
 	vec2_t va;
 	vec4_t	color[3];
-	float speed;
 	int fps;
 	int colorid = 0;
 	qboolean pro = qfalse;
@@ -2347,8 +2305,8 @@ void DF_DrawSnapHud(void)
 	state.snappinghud.m[0] = state.cmd.forwardmove;
 	state.snappinghud.m[1] = state.cmd.rightmove;
 
-	speed = cg_snapHudSpeed.integer ? cg_snapHudSpeed.integer : state.cgaz.s;
-	if ((cgs.serverMod == SVMOD_JAPRO) && (state.moveStyle == MV_OCPM)) {
+	const float speed = cg_snapHudSpeed.value ? cg_snapHudSpeed.value : state.cgaz.s;
+	if (cgs.serverMod == SVMOD_JAPRO && state.moveStyle == MV_OCPM) {
 		fps = 125;
 	}
 	else {
@@ -2363,8 +2321,8 @@ void DF_DrawSnapHud(void)
 		DF_UpdateSnapHudSettings(speed, fps, pro);
 	}
 
-	y = cg_snapHudY.value;
-	h = cg_snapHudHeight.value;
+	const float y = cg_snapHudY.value;
+	const float h = cg_snapHudHeight.value;
 
 	switch (cg_snapHudAuto.integer) {
 	case 0:
@@ -2386,6 +2344,8 @@ void DF_DrawSnapHud(void)
 			va[YAW] += cg_snapHudDef.value;
 		}
 		break;
+	default:
+		return;
 	}
 
 	color[1][0] = cg.snapHudRgba2[0];
@@ -2398,7 +2358,7 @@ void DF_DrawSnapHud(void)
 	color[0][2] = cg.snapHudRgba1[2];
 	color[0][3] = cg.snapHudRgba1[3];
 
-	for (i = 0; i < state.snappinghud.count; i++) {
+	for (int i = 0; i < state.snappinghud.count; i++) {
 		DF_FillAngleYaw(state.snappinghud.zones[i], state.snappinghud.zones[i + 1], va[YAW], y, h, color[colorid]);
 		DF_FillAngleYaw(state.snappinghud.zones[i] + 90, state.snappinghud.zones[i + 1] + 90, va[YAW], y, h, color[colorid]);
 		colorid ^= 1;
@@ -2412,16 +2372,15 @@ void DF_DrawSnapHud(void)
 DF_MarkAnglePitch
 ==============
 */
-void DF_MarkAnglePitch(float angle, float height, float viewangle, float x, float width, const float* color) {
-	float y, fovscale;
-	vec2_t cgamefov = { cg.refdef.fov_x, cg.refdef.fov_y };
+void DF_MarkAnglePitch(const float angle, const float height, const float viewangle, const float x, const float width, const float* color) {
+	const vec2_t cgamefov = { cg.refdef.fov_x, cg.refdef.fov_y };
 
 	if (-state.viewAngles[PITCH] + angle > cgamefov[1] / 2 + 5) return;
-	fovscale = tanf(DEG2RAD(cgamefov[1] / 2));
-	y = (0.5f * SCREEN_HEIGHT) + tanf(DEG2RAD(viewangle + angle)) / fovscale * (0.5f * SCREEN_HEIGHT);
+	const float fovscale = tanf(DEG2RAD(cgamefov[1] / 2));
+	const float y = 0.5f * SCREEN_HEIGHT + tanf(DEG2RAD(viewangle + angle)) / fovscale * (0.5f * SCREEN_HEIGHT);
 
 	trap->R_SetColor(color);
-	trap->R_DrawStretchPic(x - (0.5f * width), y - (0.5f * height), width, height, 0, 0, 0, 0, cgs.media.whiteShader);
+	trap->R_DrawStretchPic(x - 0.5f * width, y - 0.5f * height, width, height, 0, 0, 0, 0, cgs.media.whiteShader);
 	trap->R_SetColor(NULL);
 }
 
@@ -2430,16 +2389,15 @@ void DF_MarkAnglePitch(float angle, float height, float viewangle, float x, floa
 DF_DrawPitchHud
 ==============
 */
-void DF_DrawPitchHud(float pitch) {
+void DF_DrawPitchHud(const float pitch) {
 	vec4_t	color;
-	float angle;
 
 	color[0] = cg.pitchHudRgba[0];
 	color[1] = cg.pitchHudRgba[1];
 	color[2] = cg.pitchHudRgba[2];
 	color[3] = cg.pitchHudRgba[3];
 
-	angle = cg_pitchHudAngle.value;
+	const float angle = cg_pitchHudAngle.value;
 
 	DF_MarkAnglePitch(angle, cg_pitchHudThickness.value, -pitch, cg_pitchHudX.value, cg_pitchHudWidth.value, color);
 }

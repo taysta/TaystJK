@@ -304,7 +304,7 @@ void DF_DrawZone(float start, float end);
 
 /* Speedometer Functions */
 void DF_GraphAddSpeed();
-void DF_DrawSpeedGraph(rectDef_c* rect, const vec4_t foreColor, vec4_t backColor);
+void DF_DrawSpeedGraph(const rectDef_c* rect, const vec4_t foreColor, const vec4_t backColor);
 void DF_DrawSpeedGraphOld();
 void DF_DrawJumpHeight();
 void DF_DrawJumpDistance();
