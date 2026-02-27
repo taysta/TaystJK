@@ -692,6 +692,9 @@ void DF_SetFrameTime() {
 	else {
 		frameTime = 1.0f / cg_strafeHelper_FPS.value;
 	}
+	if (frameTime <= 0.0f) {
+		frameTime = 0.001f; //1ms floor, equivalent to 1000fps cap
+	}
 	state.cgaz.frametime = frameTime;
 }
 
