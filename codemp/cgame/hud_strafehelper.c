@@ -1927,7 +1927,7 @@ japro - Draw the speedometer
 					jumpsCounter = 0;
 					clearOnNextJump = qfalse;
 				}
-				cg.lastGroundSpeeds[++jumpsCounter] = cg.lastGroundSpeed; //add last ground speed to the array
+				cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
 			}
 		}
 
