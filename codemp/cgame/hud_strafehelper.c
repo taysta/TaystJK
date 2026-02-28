@@ -354,7 +354,7 @@ void DF_DrawStrafeHUD(centity_t* cent)
 //main strafehelper function, sets states and then calls drawstrafeline function for each keypress
 void DF_StrafeHelper() {
 	qboolean checkForW = state.m_iVehicleNum ?
-			(qboolean)state.moveDir == KEY_W :
+			(qboolean)(state.moveDir == KEY_W) :
 			(qboolean)(state.moveDir == KEY_W || state.moveDir == KEY_WA || state.moveDir == KEY_DW);
 	//set strafehelper settings struct
 	DF_SetStrafeHelper(); //state.strafehelper.
@@ -529,7 +529,7 @@ int DF_SetPlayerState(centity_t* cent)
 {
 	state.moveStyle = DF_GetMovePhysics();
 	state.m_iVehicleNum = cg.predictedPlayerState.m_iVehicleNum;
-	state.onGround = (qboolean)cent->currentState.groundEntityNum == ENTITYNUM_WORLD;
+	state.onGround = (qboolean)(cent->currentState.groundEntityNum == ENTITYNUM_WORLD);
 	state.groundEntityNum = cent->currentState.groundEntityNum;
 
 	if(state.m_iVehicleNum) {
@@ -692,6 +692,9 @@ void DF_SetFrameTime() {
 	else {
 		frameTime = 1.0f / cg_strafeHelper_FPS.value;
 	}
+	if (frameTime <= 0.0f) {
+		frameTime = 0.001f; //1ms floor, equivalent to 1000fps cap
+	}
 	state.cgaz.frametime = frameTime;
 }
 
@@ -848,10 +851,10 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 	}
 
 	//Here we do some checks that determine the moveDir line should be drawn
-	if(DF_CenterOnly() == qtrue && moveDir == KEY_CENTER
-	|| DF_CenterOnly() == qfalse && moveDir != KEY_CENTER
-	|| state.strafeHelper.rear && moveDir == KEY_S
-	|| state.physics.hasAirControl)
+	if((DF_CenterOnly() == qtrue && moveDir == KEY_CENTER)
+	|| (DF_CenterOnly() == qfalse && moveDir != KEY_CENTER)
+	|| (state.strafeHelper.rear && moveDir == KEY_S)
+	|| (state.physics.hasAirControl))
 	{
 		draw = qtrue;
 	}
@@ -1405,7 +1408,6 @@ void DF_DrawStrafehelperWeze(const int moveDir) {
 	const float g_speed = state.speed;
 	float accel = g_speed;
 	accel *= state.cgaz.frametime;
-	accel /= 1000;
 	float optiangle = (g_speed - accel) / length;
 	if (optiangle <= 1 && optiangle >= -1)
 		optiangle = acosf(optiangle);
@@ -1502,7 +1504,7 @@ void DF_DrawZone(const float start, const float end) {
 }
 
 void CG_AddSpeedGraphFrameInfo(void) {  //CG_DrawSpeedGraph
-	speedgraph.frameSamples[speedgraph.frameCount & SPEED_SAMPLES - 1] = (int)state.cgaz.v;
+	speedgraph.frameSamples[speedgraph.frameCount & (SPEED_SAMPLES - 1)] = (int)state.cgaz.v;
 	speedgraph.frameCount++;
 }
 
@@ -1629,7 +1631,7 @@ void DF_DrawSpeedGraphOld(void) {
 	const float vscale = range / 3000;
 
 	for (int a = 0; a < aw; a++) {
-		 const int i = speedgraph.frameCount - 1 - a & SPEED_SAMPLES - 1;
+		 const int i = (speedgraph.frameCount - 1 - a) & (SPEED_SAMPLES - 1);
 		float v = (float) speedgraph.frameSamples[i];
 		if (v > 0) {
 			trap->R_SetColor(g_color_table[ColorIndex(COLOR_GREEN)]);
@@ -1925,7 +1927,7 @@ japro - Draw the speedometer
 					jumpsCounter = 0;
 					clearOnNextJump = qfalse;
 				}
-				cg.lastGroundSpeeds[++jumpsCounter] = cg.lastGroundSpeed; //add last ground speed to the array
+				cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
 			}
 		}
 
@@ -2031,10 +2033,10 @@ qboolean DF_IsSlickSurf(void) {
 	down[2] -= 128;
 	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
 
-	if (state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK
-	|| state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING)
-	|| state.moveStyle == MV_TRIBES && state.cmd.buttons & BUTTON_WALKING
-	|| cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK)
+	if ((state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK)
+	|| (state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING))
+	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_WALKING))
+	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
 		onSlick = qtrue;
 
 	return onSlick;
