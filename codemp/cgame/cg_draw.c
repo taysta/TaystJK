@@ -3860,7 +3860,11 @@ static void CG_DrawTaystHUD(char* s) {
 
 void CG_DrawTeamHUD(rectDef_t background, float xOffset) {
 	rectDef_t redBackground, blueBackground;
-	if(cg_drawScores.integer == 3) {
+	const qboolean drawScores = cg_drawScores.integer == 3;
+	const qboolean drawCTF = (cg_drawStatus.integer == 2 || cg_drawStatus.integer == 3) &&
+							 (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY);
+
+	if (drawScores) {
 		char temp[4];
 		char temp2[4];
 
@@ -3894,12 +3898,8 @@ void CG_DrawTeamHUD(rectDef_t background, float xOffset) {
 			redBackground.x = (SCREEN_WIDTH / 2.0f);
 		}
 
-		blueBackground.y = background.y;
-		redBackground.y = background.y;
-
-		blueBackground.h = background.h;
-		redBackground.h = background.h;
-
+		blueBackground.y = redBackground.y = background.y;
+		blueBackground.h = redBackground.h = background.h;
 		overlayXPos = redBackground.x + redBackground.w;
 
 		//draw boxes
@@ -3932,9 +3932,21 @@ void CG_DrawTeamHUD(rectDef_t background, float xOffset) {
 					  ITEM_TEXTSTYLE_SHADOWED,
 					  FONT_LARGE);
 		trap->R_SetColor(NULL);
+	} else if (drawCTF) {
+		if (cg_drawTimer.integer == 7) {
+			blueBackground.x = background.x;
+			redBackground.x  = background.x + background.w;
+			overlayXPos      = redBackground.x;
+		} else {
+			blueBackground.x = SCREEN_WIDTH / 2.0f;
+			redBackground.x  = SCREEN_WIDTH / 2.0f;
+			overlayXPos      = SCREEN_WIDTH / 2.0f;
+		}
+		blueBackground.y = redBackground.y = background.y;
+		blueBackground.h = redBackground.h = background.h;
 	}
 
-	if ((cg_drawStatus.integer == 2) && ((cgs.gametype == GT_CTF) || (cgs.gametype == GT_CTY))) {
+	if (drawCTF) {
 		CG_DrawCTFHUD(blueBackground, redBackground, xOffset);
 	}
 }
@@ -3947,7 +3959,7 @@ void CG_UpdateFlagStatus( ) {
 	else
 	{
 		if (!cgs.redFlagCarrier) {
-			for (int i = 0; i <= numSortedTeamPlayers; i++) {
+			for (int i = 0; i < numSortedTeamPlayers; i++) {
 				if (cgs.clientinfo[i].powerups & (1 << PW_BLUEFLAG)) {
 					cgs.redFlagCarrier = &cgs.clientinfo[i];
 					break;
@@ -3965,7 +3977,7 @@ void CG_UpdateFlagStatus( ) {
 	{
 		if (!cgs.blueFlagCarrier)
 		{
-			for (int i = 0; i <= numSortedTeamPlayers; i++)
+			for (int i = 0; i < numSortedTeamPlayers; i++)
 			{ //find the flag carrier
 				if (cgs.clientinfo[i].powerups & (1 << PW_REDFLAG))
 				{
@@ -6623,7 +6635,7 @@ static void CG_DrawUpperRight( void ) {
 			y = CG_DrawTimer( y );
 		}
 
-        if(cg_drawScores.integer == 3 && cg_drawTimer.integer != 7){
+        if((cg_drawScores.integer == 3 || ((cg_drawStatus.integer == 2 || cg_drawStatus.integer == 3) && (cgs.gametype == GT_CTF || cgs.gametype == GT_CTY))) && cg_drawTimer.integer != 7){
             CG_DrawTaystHUD("");
         }
 
@@ -11344,12 +11356,11 @@ static void CG_Draw2D( void ) {
 				}
 			}
 
-			if (cg_drawStatus.integer)
+			if (cg_drawStatus.integer == 1 || cg_drawStatus.integer == 3)
 			{
 				//Powerups now done with upperright stuff
 				//CG_DrawPowerupIcons();
-				if(cg_drawScores.integer != 3)
-					CG_DrawFlagStatus();
+				CG_DrawFlagStatus();
 			}
 
 			CG_SaberClashFlare();

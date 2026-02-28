@@ -256,6 +256,13 @@ XDOCS_CVAR_DEF("cg_drawScores", "Displays the team scores",
 	SETTING("3", "Large team scores")
 )
 
+XDOCS_CVAR_DEF("cg_drawStatus", "Controls whether the main HUD status elements are drawn",
+	SETTING("0", "HUD disabled; no status elements are drawn") NL
+	SETTING("1", "Draws the main HUD (health, armor, ammo, force power), the weapon/force/inventory selection panel, and the default CTF flag status indicators") NL
+	SETTING("2", "Same as 1, but replaces the CTF flag status with a new style") NL
+	SETTING("3", "Same as 1, but draws both the default and new style CTF flag status indicators")
+)
+
 XDOCS_CVAR_DEF("cg_drawTimer", "Draw the match timer",
 	SETTING("0", "Big text") NL
 	SETTING("1", "Small text 1") NL
