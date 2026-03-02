@@ -861,7 +861,7 @@ qboolean Language_UsesSpaces(void)
 //
 static const char *FontDatPath( const char *_fontName ) {
 	static char fontName[MAX_QPATH];
-	sprintf( fontName,"fonts/%s.fontdat",COM_SkipPath(const_cast<char*>(_fontName)) );	// COM_SkipPath should take a const char *, but it's just possible people use it as a char * I guess, so I have to hack around like this <groan>
+	Com_sprintf( fontName,sizeof(fontName), "fonts/%s.fontdat",COM_SkipPath(const_cast<char*>(_fontName)) );	// COM_SkipPath should take a const char *, but it's just possible people use it as a char * I guess, so I have to hack around like this <groan>
 	return fontName;
 }
 CFontInfo::CFontInfo(const char *_fontName)
@@ -962,11 +962,11 @@ CFontInfo::CFontInfo(const char *_fontName)
 			{
 				char sTemp[MAX_QPATH];
 
-				sprintf(sTemp,"fonts/%s.tga", g_SBCSOverrideLanguages[i].m_psName );
+				Com_sprintf(sTemp, sizeof(sTemp), "fonts/%s.tga", g_SBCSOverrideLanguages[i].m_psName );
 				ri.FS_FOpenFileRead( sTemp, &f, qfalse );
 				if (f) ri.FS_FCloseFile( f );
 
-				sprintf(sTemp,"fonts/%s.fontdat", g_SBCSOverrideLanguages[i].m_psName );
+				Com_sprintf(sTemp, sizeof(sTemp), "fonts/%s.fontdat", g_SBCSOverrideLanguages[i].m_psName );
 				ri.FS_FOpenFileRead( sTemp, &f, qfalse );
 				if (f) ri.FS_FCloseFile( f );
 			}

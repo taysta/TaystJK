@@ -331,7 +331,7 @@ void R_CheckMP3s( const char *psDir )
 		for (i=2;i<numdirs;i++)
 		{
 			char	sDirName[MAX_QPATH];
-			sprintf(sDirName, "%s\\%s", psDir, dirFiles[i]);
+			Com_sprintf(sDirName, sizeof(sDirName), "%s\\%s", psDir, dirFiles[i]);
 			R_CheckMP3s(sDirName);
 		}
 	}
@@ -340,7 +340,7 @@ void R_CheckMP3s( const char *psDir )
 	for(i=0; i<numSysFiles; i++)
 	{
 		char	sFilename[MAX_QPATH];
-		sprintf(sFilename,"%s\\%s", psDir, sysFiles[i]);
+		Com_sprintf(sFilename, sizeof(sFilename),"%s\\%s", psDir, sysFiles[i]);
 
 		Com_Printf("%sFound file: %s",!i?"\n":"",sFilename);
 

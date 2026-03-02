@@ -3554,10 +3554,10 @@ public:
 		: ident(SF_MDX)
 		, boneCache(nullptr)
 		, vboMesh(nullptr)
-		, surfaceData(nullptr)
+		, genShadows(qfalse)
 		, dlightBits(0)
 		, pshadowBits(0)
-		, genShadows(qfalse)
+		, surfaceData(nullptr)
 #ifdef _G2_GORE
 		, alternateTex(nullptr)
 		, goreChain(nullptr)
