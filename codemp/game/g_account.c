@@ -11,7 +11,7 @@
 #include "curl/easy.h"
 #endif
 
-static char LOCAL_DB_PATH[MAX_QPATH];
+static char LOCAL_DB_PATH[MAX_OSPATH];
 //#define GLOBAL_DB_PATH sv_globalDBPath.string
 //#define MAX_TMP_RACELOG_SIZE 80 * 1024
 
@@ -7249,8 +7249,9 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
     sqlite3_stmt * stmt;
 	int s;
 
-	//ok build DB file path from fs_game ?
+	//ok build DB file path from fs_game and fs_homepath
 	char fs_game[MAX_QPATH];
+	char fs_homepath[MAX_OSPATH];
 	trap->Cvar_VariableStringBuffer("fs_game", fs_game, sizeof(fs_game));
 	if (!VALIDSTRING(fs_game)) {
 		trap->Cvar_VariableStringBuffer("fs_basegame", fs_game, sizeof(fs_game));
@@ -7260,7 +7261,12 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
 		}
 	}
 
-	Com_sprintf(LOCAL_DB_PATH, sizeof(LOCAL_DB_PATH), "%s/data.db", fs_game);
+	trap->Cvar_VariableStringBuffer("fs_homepath", fs_homepath, sizeof(fs_homepath));
+	if (VALIDSTRING(fs_homepath)) {
+		Com_sprintf(LOCAL_DB_PATH, sizeof(LOCAL_DB_PATH), "%s/%s/data.db", fs_homepath, fs_game);
+	} else {
+		Com_sprintf(LOCAL_DB_PATH, sizeof(LOCAL_DB_PATH), "%s/data.db", fs_game);
+	}
 
 	CALL_SQLITE (open (LOCAL_DB_PATH, & db));
 
