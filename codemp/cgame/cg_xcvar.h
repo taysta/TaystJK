@@ -221,7 +221,7 @@ XCVAR_DEF( cg_strafeTrailGhost,					"1",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_strafeTrailPlums,					"0",	NULL,					CVAR_ARCHIVE )
 XCVAR_DEF( cg_spotIconPlums,					"0",	NULL,					CVAR_ARCHIVE )
 
-XCVAR_DEF( cg_drainFX,							"1",	NULL,					CVAR_NONE )
+XCVAR_DEF( cg_drainFX,							"2",	NULL,					CVAR_NONE )
 //Make maxpackets userinfo maybe idk
 
 #if 1

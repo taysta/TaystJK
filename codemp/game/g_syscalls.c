@@ -214,8 +214,8 @@ static QINLINE void EndHack(int entityNum) { //Should be inline?
 		int i;
 		for (i = 0; i < level.num_entities; i++) {
 			if (i != entityNum && i != level.clients[entityNum].ps.duelIndex) {
-				if (g_entities[i].inuse && 
-					((g_entities[i].s.eType == ET_PLAYER || g_entities[i].s.eType == ET_NPC) || 
+				if (g_entities[i].inuse &&
+					((g_entities[i].s.eType == ET_PLAYER || g_entities[i].s.eType == ET_NPC) ||
 					(((dueltypes[level.clients[entityNum].ps.clientNum] <= 1) && (g_entities[i].s.eType == ET_GENERAL)) && (!Q_stricmp(g_entities[i].classname, "laserTrap") || !Q_stricmp(g_entities[i].classname, "detpack"))))) {
 					g_entities[i].r.ownerNum = saved[i];
 				}
@@ -226,10 +226,11 @@ static QINLINE void EndHack(int entityNum) { //Should be inline?
 		int i;
 		for (i = 0; i < level.num_entities; i++) {
 			if (i != entityNum) {
-				if ((g_entities[i].inuse && (g_entities[i].s.eType == ET_PLAYER)) ||
-                    (g_entities[i].inuse && (g_entities[i].s.eType == ET_NPC)) ||
-                    ((g_entities[i].s.eType == ET_MOVER) && (!Q_stricmp(g_entities[i].classname, "func_door") || !Q_stricmp(g_entities[i].classname, "func_plat"))) ||
-                    ((g_entities[i].s.eType == ET_GENERAL) && (!Q_stricmp(g_entities[i].classname, "laserTrap") || !Q_stricmp(g_entities[i].classname, "detpack"))))
+				if (g_entities[i].inuse &&
+					((g_entities[i].s.eType == ET_PLAYER) ||
+					(g_entities[i].s.eType == ET_NPC) ||
+					((g_entities[i].s.eType == ET_MOVER) && (!Q_stricmp(g_entities[i].classname, "func_door") || !Q_stricmp(g_entities[i].classname, "func_plat"))) ||
+					((g_entities[i].s.eType == ET_GENERAL) && (!Q_stricmp(g_entities[i].classname, "laserTrap") || !Q_stricmp(g_entities[i].classname, "detpack")))))
 				{
 					g_entities[i].r.ownerNum = saved[i];
 				}

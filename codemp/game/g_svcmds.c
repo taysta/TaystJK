@@ -892,7 +892,7 @@ void Svcmd_ToggleTweakWeapons_f( void ) {
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = (1 << MAX_WEAPON_TWEAKS); //overflow?
+		const uint32_t mask = (1 << MAX_WEAPON_TWEAKS) - 1; //overflow?
 
 		trap->Argv( 1, arg, sizeof(arg) );
 		index = atoi( arg );
