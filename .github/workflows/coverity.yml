@@ -1,0 +1,46 @@
+name: coverity
+
+on:
+  workflow_dispatch:
+
+jobs:
+  coverity:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2 # v4.2.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y libjpeg-dev libpng-dev zlib1g-dev libsdl2-dev
+
+      - name: Download Coverity tools
+        run: |
+          wget -q https://scan.coverity.com/download/linux64 \
+            --post-data "token=${{ secrets.COVERITY_TOKEN }}&project=taysta%2FTaystJK" \
+            -O coverity_tool.tar.gz
+          tar -xzf coverity_tool.tar.gz
+          echo "$(ls -d $PWD/cov-analysis-linux64-*)/bin" >> $GITHUB_PATH
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DBuildPortableVersion=ON
+
+      - name: Build with Coverity
+        run: cov-build --dir cov-int cmake --build build -j $(nproc)
+
+      - name: Check capture rate
+        run: tail -5 cov-int/build-log.txt
+
+      - name: Submit
+        run: |
+          tar -czf cov-int.tar.gz cov-int/
+          curl --form token=${{ secrets.COVERITY_TOKEN }} \
+               --form email=${{ secrets.COVERITY_EMAIL }} \
+               --form file=@cov-int.tar.gz \
+               --form version="$(git rev-parse --short HEAD)" \
+               --form description="$(git log -1 --pretty=%s)" \
+               https://scan.coverity.com/builds?project=taysta%2FTaystJK
