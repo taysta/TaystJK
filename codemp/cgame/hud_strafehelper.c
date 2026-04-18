@@ -2098,6 +2098,8 @@ void DF_DrawMovementKeys() {
 			CG_DrawPic(x, 2 * h + y, w, h, cgs.media.keyAttackOn2);
 		if (state.cmd.buttons & BUTTON_ALT_ATTACK)
 			CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn2);
+		if (state.cmd.buttons & BUTTON_WALKING)
+			CG_DrawPic(x - w, 2 * h + y, w, h, cgs.media.keyWalkOn2);
 	}
 	else if (cg_movementKeys.integer == 1 || cg_movementKeys.integer == 2) { //original movement keys style
 		if (state.cmd.upmove < 0)
@@ -2134,6 +2136,10 @@ void DF_DrawMovementKeys() {
 			else
 				CG_DrawPic(w * 3 + x, h + y, w, h, cgs.media.keyAltOff);
 		}
+		if (state.cmd.buttons & BUTTON_WALKING)
+			CG_DrawPic(x - w, 2 * h + y, w, h, cgs.media.keyWalkOn);
+		///else
+		//	CG_DrawPic(x - w, 2 * h + y, w, h, cgs.media.keyWalkOff);
 	}
 }
 
