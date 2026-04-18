@@ -101,6 +101,9 @@ XDOCS_CVAR_DEF("cg_movementKeysY", "Vertical location of the movement keys",""
 XDOCS_CVAR_DEF("cg_movementKeysSize", "Scale of the movement keys",""
 )
 
+XDOCS_CVAR_DEF("cg_movementKeysWalk", "Display walk movement key input",""
+)
+
 XDOCS_CVAR_BITVALUE_DEF("cg_speedometer", "Configure with the /speedometer command", "speedometer")
 
 XDOCS_CVAR_DEF("cg_speedometerX", "Horizontal location of the speedometer",""

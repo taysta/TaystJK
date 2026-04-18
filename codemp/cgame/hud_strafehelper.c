@@ -575,12 +575,28 @@ int DF_SetPlayerState(centity_t* cent)
 	return 1;
 }
 
+static qboolean CG_IsWalkingAnim(int anim) {
+	switch (anim) {
+		case BOTH_WALK1:
+		case BOTH_WALK2:
+		case BOTH_WALK_STAFF:
+		case BOTH_WALKBACK_STAFF:
+		case BOTH_WALK_DUAL:
+		case BOTH_WALKBACK_DUAL:
+		case BOTH_WALKBACK1:
+		case BOTH_WALKBACK2:
+			return qtrue;
+		default:
+			return qfalse;
+	}
+}
+
 //sets cmd for a non-predicted client (spectator/demo playback)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
 	state.cmd = DF_DirToCmd(state.moveDir);
 	state.cmd.upmove = 0;
-	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK);
+	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK | BUTTON_WALKING);
 
 	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || cg.snap->ps.pm_flags & PMF_JUMP_HELD)
 		state.cmd.upmove = 127;
@@ -595,6 +611,9 @@ void DF_SetClientCmd(centity_t* cent) {
 	else if (cent->currentState.eFlags & EF_ALT_FIRING) {
 		state.cmd.buttons |= BUTTON_ALT_ATTACK;
 		state.cmd.buttons &= ~BUTTON_ATTACK;
+	}
+	if (CG_IsWalkingAnim(cent->currentState.legsAnim)) {
+		state.cmd.buttons |= BUTTON_WALKING;
 	}
 }
 
@@ -2055,13 +2074,13 @@ void DF_DrawMovementKeys() {
 	if (cg_movementKeys.integer == 1) {
 		w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
 		h = 16 * cg_movementKeysSize.value;
-		x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 1.5f;
+		x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * (cg_movementKeysWalk.integer ? 1.0f : 1.5f);
 		y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value - h * 1.0f;
 	}
 	else if (cg_movementKeys.integer == 2) {
 		w = 16 * cg_movementKeysSize.value * cgs.widthRatioCoef;
 		h = 16 * cg_movementKeysSize.value;
-		x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * 2.0f;
+		x = SCREEN_WIDTH * 0.5f + cg_movementKeysX.value - w * (cg_movementKeysWalk.integer ? 1.5f : 2.0f);
 		y = SCREEN_HEIGHT * 0.9f + cg_movementKeysY.value - h * 1.0f;
 	}
 	else if (cg_movementKeys.integer == 3) {
@@ -2098,6 +2117,10 @@ void DF_DrawMovementKeys() {
 			CG_DrawPic(x, 2 * h + y, w, h, cgs.media.keyAttackOn2);
 		if (state.cmd.buttons & BUTTON_ALT_ATTACK)
 			CG_DrawPic(w * 2 + x, 2 * h + y, w, h, cgs.media.keyAltOn2);
+		if (cg_movementKeysWalk.integer) {
+			if (state.cmd.buttons & BUTTON_WALKING)
+				CG_DrawPic(x - w, 2 * h + y, w, h, cgs.media.keyWalkOn2);
+		}
 	}
 	else if (cg_movementKeys.integer == 1 || cg_movementKeys.integer == 2) { //original movement keys style
 		if (state.cmd.upmove < 0)
@@ -2133,6 +2156,12 @@ void DF_DrawMovementKeys() {
 				CG_DrawPic(w * 3 + x, h + y, w, h, cgs.media.keyAltOn);
 			else
 				CG_DrawPic(w * 3 + x, h + y, w, h, cgs.media.keyAltOff);
+		}
+		if (cg_movementKeysWalk.integer) {
+			if (state.cmd.buttons & BUTTON_WALKING)
+				CG_DrawPic(x - w, h + y, w, h, cgs.media.keyWalkOn);
+			else
+				CG_DrawPic(x - w, h + y, w, h, cgs.media.keyWalkOff);
 		}
 	}
 }
