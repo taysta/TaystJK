@@ -493,6 +493,9 @@ extern cvar_t	*cl_afkPrefix;
 extern cvar_t	*cl_afkTime;
 extern cvar_t	*cl_afkTimeUnfocused;
 
+extern	cvar_t	*cl_chatBubbleUnfocused;
+extern	cvar_t	*cl_chatBubbleSelf;
+
 extern cvar_t	*cl_logChat;
 
 #if defined(DISCORD) && !defined(_DEBUG)
