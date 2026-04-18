@@ -596,7 +596,7 @@ void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
 	state.cmd = DF_DirToCmd(state.moveDir);
 	state.cmd.upmove = 0;
-	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK);
+	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK | BUTTON_WALKING);
 
 	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || cg.snap->ps.pm_flags & PMF_JUMP_HELD)
 		state.cmd.upmove = 127;
