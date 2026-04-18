@@ -410,7 +410,7 @@ void Q_StripDigits(const char* input, char* output, int len, int mode)
 
 	memset(output, 0, len);
 
-	while (*input && i < len)
+	while (*input && i < (len - 1))
 	{
 		if (mode == REMOVE_DIGITS_ALL)
 		{
