@@ -575,6 +575,22 @@ int DF_SetPlayerState(centity_t* cent)
 	return 1;
 }
 
+static qboolean CG_IsWalkingAnim(int anim) {
+	switch (anim) {
+		case BOTH_WALK1:
+		case BOTH_WALK2:
+		case BOTH_WALK_STAFF:
+		case BOTH_WALKBACK_STAFF:
+		case BOTH_WALK_DUAL:
+		case BOTH_WALKBACK_DUAL:
+		case BOTH_WALKBACK1:
+		case BOTH_WALKBACK2:
+			return qtrue;
+		default:
+			return qfalse;
+	}
+}
+
 //sets cmd for a non-predicted client (spectator/demo playback)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
@@ -595,6 +611,9 @@ void DF_SetClientCmd(centity_t* cent) {
 	else if (cent->currentState.eFlags & EF_ALT_FIRING) {
 		state.cmd.buttons |= BUTTON_ALT_ATTACK;
 		state.cmd.buttons &= ~BUTTON_ATTACK;
+	}
+	if (CG_IsWalkingAnim(cent->currentState.legsAnim)) {
+		state.cmd.buttons |= BUTTON_WALKING;
 	}
 }
 
