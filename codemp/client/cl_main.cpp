@@ -130,6 +130,9 @@ cvar_t  *cl_afkPrefix;
 cvar_t	*cl_afkTime;
 cvar_t	*cl_afkTimeUnfocused;
 
+cvar_t	*cl_chatBubbleUnfocused;
+cvar_t	*cl_chatBubbleSelf;
+
 cvar_t	*cl_logChat;
 
 #if defined(DISCORD) && !defined(_DEBUG)

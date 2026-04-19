@@ -1261,8 +1261,10 @@ void CL_CmdButtons( usercmd_t *cmd ) {
 		}
 	}
 
-	if ( Key_GetCatcher( ) || com_unfocused->integer || com_minimized->integer ) {
-		cmd->buttons |= BUTTON_TALK;
+	if ( Key_GetCatcher() || ((com_unfocused->integer || com_minimized->integer) && cl_chatBubbleUnfocused->integer) ) {
+		if ( cl_chatBubbleSelf->integer ) {
+			cmd->buttons |= BUTTON_TALK;
+		}
 	}
 
 	// allow the game to know if any key at all is
@@ -1828,6 +1830,9 @@ void CL_InitInput( void ) {
 	cl_debugMove = Cvar_Get ("cl_debugMove", "0", 0);
 
 	cl_idrive = Cvar_Get ("cl_idrive", "0", CVAR_ARCHIVE);//JAPRO ENGINE
+
+	cl_chatBubbleUnfocused  = Cvar_Get ("cl_chatBubbleUnfocused", "1", CVAR_ARCHIVE);
+	cl_chatBubbleSelf  = Cvar_Get ("cl_chatBubbleSelf", "1", CVAR_ARCHIVE);
 }
 
 /*
