@@ -255,7 +255,7 @@ typedef struct serverStatusInfo_s {
 	char address[MAX_ADDRESSLENGTH];
 	char *lines[MAX_SERVERSTATUS_LINES][4];
 	char text[MAX_SERVERSTATUS_TEXT];
-	char pings[MAX_CLIENTS * 3];
+	char pings[MAX_SERVERSTATUS_LINES * 3];
 	int numLines;
 } serverStatusInfo_t;
 
