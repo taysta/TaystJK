@@ -268,6 +268,9 @@ static int GetFlipkick(playerState_t *ps) {
 		if (cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & JAPLUS_CINFO_FLIPKICK))
 			return 1;
 
+		if (cgs.taystJKinfo & TAYSTJK_INFO_FLIPKICK)
+			return 1;
+
 		return 0;
 #endif
 }

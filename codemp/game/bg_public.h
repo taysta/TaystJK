@@ -549,6 +549,8 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 //taystjk feature flags
 #define TAYSTJK_INFO_RGBSABERS              (1<<0)
 #define TAYSTJK_INFO_BLACKSABERS            (1<<1)
+#define TAYSTJK_INFO_FLIPKICK	            (1<<2)
+
 
 #define _SPPHYSICS 1
 #define _COOP 1
