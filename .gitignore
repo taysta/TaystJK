@@ -195,3 +195,4 @@ compile_commands.json
 #############
 [Bb]uild*/
 cmake-build-*
+codemp/rd-vulkan/shaders/tools/compile_threaded.exe
