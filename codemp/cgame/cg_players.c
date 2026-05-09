@@ -10161,8 +10161,6 @@ void CG_DrawCosmeticOnPlayer(centity_t* cent, int time, qhandle_t* gameModels, q
     	BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Y, re.axis[1]); //right
     	BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, re.axis[2]); //up/down
 
-    	VectorMA(boltOrg, 0, re.axis[1], boltOrg);
-    	VectorMA(boltOrg, 0, re.axis[1], boltOrg);
     	VectorMA(boltOrg, -2, re.axis[2], boltOrg);
 
 		//rotational transitions
@@ -10252,8 +10250,6 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 		BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Y, re.axis[1]); //right
 		BG_GiveMeVectorFromMatrix(&matrix, POSITIVE_Z, re.axis[2]); //up/down
 
-		VectorMA(boltOrg, 0, re.axis[1], boltOrg);
-		VectorMA(boltOrg, 0, re.axis[1], boltOrg);
 		VectorMA(boltOrg, -2, re.axis[2], boltOrg);
 
 		boltOrg[0] += cosmetic->xOffset;
