@@ -1842,7 +1842,7 @@ static void CG_Cosmetics(void)
 				{
 					dynTable_addCell(va("%i", i));
 					dynTable_addCell(cosItems[i].name);
-					if (!Q_stricmp(cosItems[i].name, ciCosItem->name))
+					if (ciCosItem && !Q_stricmp(cosItems[i].name, ciCosItem->name))
 					{
 						dynTable_addCell("X");
 					}
