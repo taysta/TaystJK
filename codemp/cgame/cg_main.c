@@ -2855,7 +2855,12 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 		j++;
 	}
 
-	if (j < fileCnt)
+	if (j == 0)
+	{
+		free(cosmeticsPtr);
+		cosmeticsPtr = NULL;
+	}
+	else if (j < fileCnt)
 	{
 		cosmeticItem_t *temp = realloc(cosmeticsPtr, j * sizeof(*cosmeticsPtr));
 		if (!temp) trap->Error(ERR_DROP, S_COLOR_RED"ERROR: Failed to reallocate memory for cosmetics.\n");
