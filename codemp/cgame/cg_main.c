@@ -2802,6 +2802,7 @@ forceTicPos_t ammoTicPos[] =
 static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics, cosmeticItem_t **storePtr) 
 {
 	int fileCnt, i, j, fileLen;
+	qhandle_t handle;
 	char cosmeticFiles[MAX_QPATH * 256]; //lets support 256 cosmetics for every category for now.
 	char cosmetic[MAX_QPATH];
 	cosmeticItem_t *cosmeticsPtr;
@@ -2849,9 +2850,17 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 			continue;
 		}
 
+		handle = trap->R_RegisterModel(va("%s%s.md3", path, cosmetic));
+		
+		if (!handle)
+		{
+			Com_Printf(S_COLOR_YELLOW"WARNING: Failed to register cosmetic [%s], skipping...\n", cosmetic);
+			continue;
+		}
+
 		Q_strncpyz(cosmeticsPtr[j].name, cosmetic, sizeof(cosmeticsPtr[j].name));
 		cosmeticsPtr[j].xOffset = cosmeticsPtr[j].yOffset = cosmeticsPtr[j].zOffset = 0;
-		cosmeticsPtr[j].handle = trap->R_RegisterModel(va("%s%s.md3", path, cosmetic));
+		cosmeticsPtr[j].handle = handle;
 		j++;
 	}
 

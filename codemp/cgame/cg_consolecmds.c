@@ -1793,14 +1793,14 @@ static void CG_Cosmetics(void)
 			{
 				totalCosmetics = localCosmetics.totalHats;
 				cosItems = localCosmetics.hats;
-				ciCosItem = cgs.clientinfo[cg.clientNum].hat;
+				ciCosItem = &cgs.clientinfo[cg.clientNum].hat;
 				cvar = "color1";
 			}
 			else if (!Q_stricmp("Capes", arg))
 			{
 				totalCosmetics = localCosmetics.totalCapes;
 				cosItems = localCosmetics.capes;
-				ciCosItem = cgs.clientinfo[cg.clientNum].cape;
+				ciCosItem = &cgs.clientinfo[cg.clientNum].cape;
 				cvar = "color2";
 			}
 			else if (!Q_stricmp("Clear", arg))
@@ -1842,7 +1842,7 @@ static void CG_Cosmetics(void)
 				{
 					dynTable_addCell(va("%i", i));
 					dynTable_addCell(cosItems[i].name);
-					if (ciCosItem && !Q_stricmp(cosItems[i].name, ciCosItem->name))
+					if (ciCosItem->handle && !Q_stricmp(cosItems[i].name, ciCosItem->name))
 					{
 						dynTable_addCell("X");
 					}
@@ -1881,7 +1881,7 @@ static void CG_Cosmetics(void)
 
 				trap->Cvar_VariableStringBuffer(cvar, cvarValue, sizeof(cvarValue));
 
-				if (ciCosItem != item)
+				if (!ciCosItem->handle || Q_stricmp(ciCosItem->name, item->name))
 				{
 					Com_sprintf(cvarValue, sizeof(cvarValue), "%d%s", atoi(cvarValue), item->name);
 					trap->Cvar_Set(cvar, cvarValue);

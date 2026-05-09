@@ -1756,7 +1756,7 @@ static void CG_SetDeferredClientInfo( clientInfo_t *ci ) {
 	CG_LoadClientInfo( ci );
 }
 
-void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmeticItem_t **ciCosmetic, cosmeticItem_t *localCosmetics, int totalCosmetics)
+void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmeticItem_t *ciCosmetic, cosmeticItem_t *localCosmetics, int totalCosmetics)
 {
 	fileHandle_t file;
 	char path[MAX_QPATH];
@@ -1764,16 +1764,16 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 	int i;
 	cosmeticItem_t *item = NULL;
 
+	memset(ciCosmetic, 0, sizeof(*ciCosmetic));
+
 	if (!Q_stricmp(cosName, "none")) //No hat.
 	{
-		*ciCosmetic = NULL;
 		return;
 	}
 
 	if (strlen(cosName) > (MAX_COSMETIC_LENGTH - 1))
 	{
 		Com_Printf(S_COLOR_YELLOW"WARNING: illegal cosmetic detected, skipping: [%s].\n", cosName);
-		*ciCosmetic = NULL;
 		return;
 	}
 
@@ -1788,7 +1788,6 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 
 	if (!item) //Cosmetic is not found.
 	{
-		item = NULL;
 		return;
 	}
 
@@ -1796,19 +1795,15 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 	Com_sprintf(path, sizeof(path), "%s%s.md3", cosmeticPath, item->name);
 	fileSize = trap->FS_Open(path, &file, FS_READ);
 
-	if (fileSize <= 0) // File Doesnt exist.
+	if (fileSize > 0) // File exists.
 	{
-		*ciCosmetic = NULL;
-	}
-	else
-	{
-		*ciCosmetic = item;
+		memcpy(ciCosmetic, item, sizeof(*ciCosmetic));
 	}
 
 	trap->FS_Close(file);
 }
 #define VALID_COSMETIC_OFFSETS(x, y, z) (cJSON_IsNumber(x) && cJSON_IsNumber(y) && cJSON_IsNumber(z))
-static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, cosmeticItem_t **cosmetic, const char *model, const char *skin)
+static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, cosmeticItem_t *cosmetic, const char *model, const char *skin)
 {
 	char fullPath[MAX_QPATH];
 	char *cosmeticName;
@@ -1816,9 +1811,9 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 	int fileSize, i;
 	qboolean modelFallback = qfalse; //Let's set the default value to false.
 
-	if (*cosmetic == NULL) return;
+	if (!cosmetic || !cosmetic->handle) return;
 
-	cosmeticName = (*cosmetic)->name;
+	cosmeticName = cosmetic->name;
 
 	if (pathLen + strlen(cosmeticName) + strlen("cosmetic") + 1 >= MAX_QPATH)
 	{
@@ -1831,7 +1826,7 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 
 	if (fileSize <= 0) //File doesn't exist.
 	{
-		(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+		cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 		trap->FS_Close(file);
 	}
 	else
@@ -1858,7 +1853,7 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 		if (!json)
 		{
 			Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), failed to parse JSON.\n", cosmeticName);
-			(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+			cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 			free(buff);
 			return;
 		}
@@ -1899,7 +1894,7 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 			}
 			else
 			{
-				(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+				cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 				cJSON_Delete(json);
 				free(buff);
 				return;
@@ -1958,14 +1953,14 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 					zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
 
 					if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-						(*cosmetic)->xOffset = xOffset->valueint;
-						(*cosmetic)->yOffset = yOffset->valueint;
-						(*cosmetic)->zOffset = zOffset->valueint;
+						cosmetic->xOffset = xOffset->valueint;
+						cosmetic->yOffset = yOffset->valueint;
+						cosmetic->zOffset = zOffset->valueint;
 					}
 					else
 					{
 						Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
-						(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+						cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 					}
 				}
 				else //No wildcard found, check if we should fallback to the model's offsets or not.
@@ -1977,19 +1972,19 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 						zOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "zOffset");
 
 						if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-							(*cosmetic)->xOffset = xOffset->valueint;
-							(*cosmetic)->yOffset = yOffset->valueint;
-							(*cosmetic)->zOffset = zOffset->valueint;
+							cosmetic->xOffset = xOffset->valueint;
+							cosmetic->yOffset = yOffset->valueint;
+							cosmetic->zOffset = zOffset->valueint;
 						}
 						else
 						{
 							Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the model (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonModel->string);
-							(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+							cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 						}
 					}
 					else
 					{
-						(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+						cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 					}
 				}
 			}
@@ -2000,14 +1995,14 @@ static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, 
 				zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
 
 				if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-					(*cosmetic)->xOffset = xOffset->valueint;
-					(*cosmetic)->yOffset = yOffset->valueint;
-					(*cosmetic)->zOffset = zOffset->valueint;
+					cosmetic->xOffset = xOffset->valueint;
+					cosmetic->yOffset = yOffset->valueint;
+					cosmetic->zOffset = zOffset->valueint;
 				}
 				else
 				{
 					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
-					(*cosmetic)->xOffset = (*cosmetic)->yOffset = (*cosmetic)->zOffset = 0;
+					cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
 				}
 			}
 		}
@@ -2092,16 +2087,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		if (ci->hat)
+		if (ci->hat.handle && !Q_stricmp(ci->hat.name, cosmeticStr))
 		{
-			if (Q_stricmp(ci->hat->name, cosmeticStr))
-			{
-				CG_validateCosmetic(COSMETIC_HATS_PATH, cosmeticStr, &newInfo.hat, localCosmetics.hats, localCosmetics.totalHats);
-			}
-			else
-			{
-				newInfo.hat = ci->hat;
-			}
+			newInfo.hat = ci->hat;
 		}
 		else
 		{
@@ -2110,7 +2098,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 	else
 	{
-		newInfo.hat = NULL;
+		memset(&newInfo.hat, 0, sizeof(newInfo.hat));
 	}
 
 	v = Info_ValueForKey( configstring, "c2" );
@@ -2122,16 +2110,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	Q_StripDigits(v, cosmeticStr, sizeof(cosmeticStr), REMOVE_DIGITS_INITIAL);
 	if (*cosmeticStr)
 	{
-		if (ci->cape)
+		if (ci->cape.handle && !Q_stricmp(ci->cape.name, cosmeticStr))
 		{
-			if (Q_stricmp(ci->cape->name, cosmeticStr))
-			{
-				CG_validateCosmetic(COSMETIC_CAPES_PATH, cosmeticStr, &newInfo.cape, localCosmetics.capes, localCosmetics.totalCapes);
-			}
-			else
-			{
-				newInfo.cape = ci->cape;
-			}
+			newInfo.cape = ci->cape;
 		}
 		else
 		{
@@ -2140,7 +2121,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 	else
 	{
-		newInfo.cape = NULL;
+		memset(&newInfo.cape, 0, sizeof(newInfo.cape));
 	}
 
 	// bot skill
@@ -2192,9 +2173,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor1 == SABER_RGB ) {
-		if (newInfo.hat)
+		if (newInfo.hat.handle)
 		{
-			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hat->name));
+			trap->Cvar_Set("color1", va("%i%s", SABER_RGB, newInfo.hat.name));
 		}
 		else
 		{
@@ -2214,9 +2195,9 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	g = (full >> 8) & 255;
 	b = full >> 16;
 	if ( cg.clientNum == clientNum && newInfo.icolor2 == SABER_RGB ) {
-		if (newInfo.cape)
+		if (newInfo.cape.handle)
 		{
-			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.cape->name));
+			trap->Cvar_Set("color2", va("%i%s", SABER_RGB, newInfo.cape.name));
 		}
 		else
 		{
@@ -2318,11 +2299,21 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 
 	//Now that the model and skin are validated, we can load custom offsets for cosmetics if needed.
-	if ((newInfo.hat && newInfo.hat != ci->hat) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.hat) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.hat))
-	CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,&newInfo.hat, newInfo.modelName, newInfo.skinName);
+	if (newInfo.hat.handle &&
+		(Q_stricmp(newInfo.hat.name, ci->hat.name) ||
+		 Q_stricmp(newInfo.modelName, ci->modelName) ||
+		 Q_stricmp(newInfo.skinName, ci->skinName)))
+	{
+		CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH, &newInfo.hat, newInfo.modelName, newInfo.skinName);
+	}
 
-	if ((newInfo.cape && newInfo.cape != ci->cape) || (Q_stricmp(newInfo.modelName, ci->modelName) && newInfo.cape) || (Q_stricmp(newInfo.skinName, ci->skinName) && newInfo.cape))
-	CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
+	if (newInfo.cape.handle &&
+		(Q_stricmp(newInfo.cape.name, ci->cape.name) ||
+		 Q_stricmp(newInfo.modelName, ci->modelName) ||
+		 Q_stricmp(newInfo.skinName, ci->skinName)))
+	{
+		CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
+	}
 
 	if (cgs.gametype == GT_SIEGE)
 	{ //entries only sent in siege mode
@@ -10207,7 +10198,7 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 	vec3_t boltOrg, bAngles;
 	refEntity_t re;
 
-	if (!cosmetic)
+	if (!cosmetic || !cosmetic->handle)
 	{
 		return;
 	}
@@ -13178,8 +13169,9 @@ stillDoSaber:
 	//Cosmetics
 	if (!(cg_stylePlayer.integer & JAPRO_STYLE_HIDECOSMETICS))
 	{
-		cosmeticItem_t *hat = cg_forceCosmetics.integer ? cgs.clientinfo[cg.clientNum].hat : ci->hat;
-		cosmeticItem_t *cape = cg_forceCosmetics.integer ? cgs.clientinfo[cg.clientNum].cape : ci->cape;
+		clientInfo_t *src = cg_forceCosmetics.integer ? &cgs.clientinfo[cg.clientNum] : ci;
+		cosmeticItem_t *hat = src->hat.handle ? &src->hat : NULL;
+		cosmeticItem_t *cape = src->cape.handle ? &src->cape : NULL;
 
 		if ((cg_stylePlayer.integer & JAPRO_STYLE_SEASONALCOSMETICS))
 		{

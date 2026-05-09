@@ -332,6 +332,15 @@ typedef struct playerEntity_s {
 #define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
 #define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
 
+struct cosmeticItem_s
+{
+	char name[MAX_COSMETIC_LENGTH];
+	qhandle_t handle;
+	int xOffset;
+	int yOffset;
+	int zOffset;
+};
+
 typedef struct clientInfo_s {
 	qboolean		infoValid;
 
@@ -448,8 +457,8 @@ typedef struct clientInfo_s {
 	vec3_t		rgb1, rgb2;//rgb sabers, use different ones for strafetrails. oh no.
 
 	unsigned int	cosmetics;
-	cosmeticItem_t	*hat;
-	cosmeticItem_t	*cape;
+	cosmeticItem_t	hat;
+	cosmeticItem_t	cape;
 
 #define _STRAFETRAILS 0
 #if _STRAFETRAILS
@@ -1017,15 +1026,6 @@ typedef struct chatBoxItem_s
 	int				lines;
 	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];
 } chatBoxItem_t;
-
-struct cosmeticItem_s
-{
-	char name[MAX_COSMETIC_LENGTH];
-	qhandle_t handle;
-	int xOffset;
-	int yOffset;
-	int zOffset;
-};
 
 typedef struct cosmetics_s
 {
