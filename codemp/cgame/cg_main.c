@@ -2824,7 +2824,7 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 
 		if ((pathLen + fileLen) > (MAX_QPATH - 1))
 		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] path exceeded max length of %d, skipping...\n", MAX_QPATH - 1);
+			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] path exceeded max length of %d, skipping...\n", ptr, MAX_QPATH - 1);
 			continue;
 		}
 
