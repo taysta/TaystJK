@@ -1770,7 +1770,7 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 		return;
 	}
 
-	if (strlen(cosName) > MAX_COSMETIC_LENGTH)
+	if (strlen(cosName) > (MAX_COSMETIC_LENGTH - 1))
 	{
 		Com_Printf(S_COLOR_YELLOW"WARNING: illegal cosmetic detected, skipping: [%s].\n", cosName);
 		*ciCosmetic = NULL;
