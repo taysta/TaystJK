@@ -2838,12 +2838,6 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 			continue;
 		}
 
-		if (Q_isanumber(cosmetic))
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename contains only digits, skipping...\n", cosmetic);
-			continue;
-		}
-
 		if (isdigit(cosmetic[0]))
 		{
 			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename starts with a digit, skipping...\n", cosmetic);
@@ -2851,7 +2845,7 @@ static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics,
 		}
 
 		handle = trap->R_RegisterModel(va("%s%s.md3", path, cosmetic));
-		
+
 		if (!handle)
 		{
 			Com_Printf(S_COLOR_YELLOW"WARNING: Failed to register cosmetic [%s], skipping...\n", cosmetic);
