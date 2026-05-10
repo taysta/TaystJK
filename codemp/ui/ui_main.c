@@ -11737,7 +11737,7 @@ static void UI_BoltCosmeticOnItem( itemDef_t *item, cosmeticItem_t *cosmetic,
 	if ( !cosmetic || !cosmetic->handle || !item->ghoul2 )
 		return;
 
-	newBolt = trap->G2API_AddBolt( item->ghoul2, 0, (char *)boneName );
+	newBolt = trap->G2API_AddBolt( item->ghoul2, 0, boneName );
 	if ( newBolt == -1 )
 		return;
 
@@ -11875,8 +11875,6 @@ static void UI_PreviewApplyCharacter( const char *model, const char *headSkin,
 
 	item = (itemDef_t *)Menu_FindItemByName( menu, "character" );
 	if ( !item ) return;
-
-	ItemParse_model_g2anim_go( item, "BOTH_STAND1" );
 
 	Com_sprintf( modelPath, sizeof(modelPath), "models/players/%s/model.glm", model );
 	ItemParse_asset_model_go( item, modelPath, &animLen );
