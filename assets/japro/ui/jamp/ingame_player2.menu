@@ -787,7 +787,7 @@
 		}
 		
 		// BACK button 
-		itemDef 
+		itemDef
 		{
 			name				backmenu_button
 			text				@MENUS_BACK
@@ -804,22 +804,71 @@
 			forecolor			1 .682 0 1
 			visible				1
 
-			mouseEnter 
-			{ 
+			mouseEnter
+			{
 				show			backButton
 			}
-			mouseExit 
-			{ 
+			mouseExit
+			{
 				hide			backButton
 			}
-			  	  
-			action 
-			{ 
-				play			"sound/interface/esc.wav" ; 
+
+			action
+			{
+				play			"sound/interface/esc.wav" ;
 				close			ingame_player2 ;
 				open			ingame_player ;
 			}
 
+		}
+
+//---------------------------------------------
+//	COSMETICS BUTTON
+//---------------------------------------------
+		itemDef
+		{
+			name				cosmeticsButton
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				160 345 110 32
+			background			"gfx/menus/menu_buttonback"
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef
+		{
+			name				cosmeticsmenu_button
+			text				"Cosmetics"
+			descText			"Browse and equip hats and capes"
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				160 345 110 32
+			font				2
+			textscale			.9
+			textalign			ITEM_ALIGN_CENTER
+			textstyle			3
+			textalignx			55
+			textaligny			2
+			forecolor			1 .682 0 1
+			visible				1
+
+			mouseEnter
+			{
+				show			cosmeticsButton
+			}
+			mouseExit
+			{
+				hide			cosmeticsButton
+			}
+
+			action
+			{
+				play			"sound/interface/button1.wav"
+				close			ingame_player2
+				open			ingame_player_cosmetics
+			}
 		}
 		
 //---------------------------------------------

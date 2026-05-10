@@ -1,0 +1,372 @@
+//-----------------------------------
+// Player Cosmetics
+//-----------------------------------
+{
+	menuDef
+	{
+		name					"ingame_player_cosmetics"
+		visible					0
+		fullscreen				0
+		outOfBoundsClick
+		rect					105 40 430 425
+		focusColor				1 1 1 1
+		style					1
+		border					1
+		descX					320
+		descY					450
+		descScale				1
+		descColor				1 .682 0 .8
+		descAlignment			ITEM_ALIGN_CENTER
+		onOpen
+		{
+			uiScript			"getcharcvars"
+			uiScript			"beginCosmeticPreview"
+			hide				highlights
+		}
+		onClose
+		{
+			hide				highlights
+		}
+
+// Window backdrop
+		itemDef
+		{
+			name				background_pic
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 430 425
+			background			"gfx/menus/menu_box_ingame"
+			forecolor			1 1 1 1
+			visible				1
+			decoration
+		}
+
+// Title
+		itemDef
+		{
+			name				cosmeticstitle
+			style				WINDOW_STYLE_SHADER
+			background			"gfx/menus/menu_blendbox"
+			text				"Cosmetics"
+			rect				35 5 360 28
+			textalign			ITEM_ALIGN_CENTER
+			textalignx			180
+			textaligny			2
+			outlinecolor		1 .5 .5 .5
+			backcolor			0 0 0 0
+			font				3
+			textscale			0.9
+			forecolor			.549 .854 1 1
+			border				0
+			bordercolor			0 0 0 0
+			visible				1
+		}
+
+//----------------------------------------
+// Player preview
+//----------------------------------------
+		itemDef
+		{
+			name				character
+			group				models
+			type				ITEM_TYPE_MODEL
+			rect				270 84 200 225
+			model_g2anim		"BOTH_STAND1"
+			model_angle			180
+			model_g2mins		-30 -15 -14
+			model_g2maxs		20 15 30
+			model_rotation		50
+			model_fovx			50
+			model_fovy			50
+			isCharacter			1
+			visible				1
+			decoration
+		}
+
+//----------------------------------------
+// CATEGORY label
+//----------------------------------------
+		itemDef
+		{
+			name				category
+			group				none
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				15 48 180 24
+			forecolor			.549 .854 1 1
+			text				"Category"
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			0
+			textaligny			-1
+			font				3
+			textscale			1
+			visible				1
+			decoration
+		}
+
+//----------------------------------------
+// HATS tab button
+//----------------------------------------
+		itemDef
+		{
+			name				hatsbut_glow
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				15 80 90 16
+			background			"gfx/menus/menu_buttonback"
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+
+		itemDef
+		{
+			name				hatsbut
+			group				none
+			text				"Hats"
+			descText			"Browse hats"
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				15 80 90 16
+			font				2
+			textscale			.9
+			textaligny			-5
+			textalign			ITEM_ALIGN_LEFT
+			textstyle			0
+			textalignx			0
+			backcolor			0 0 0 0
+			forecolor			1 .682 0 1
+			visible				1
+
+			mouseEnter
+			{
+				show			hatsbut_glow
+			}
+			mouseExit
+			{
+				hide			hatsbut_glow
+			}
+			action
+			{
+				play			"sound/interface/button1.wav"
+				show			hats
+				hide			capes
+			}
+		}
+
+//----------------------------------------
+// CAPES tab button
+//----------------------------------------
+		itemDef
+		{
+			name				capesbut_glow
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				111 80 90 16
+			background			"gfx/menus/menu_buttonback"
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+
+		itemDef
+		{
+			name				capesbut
+			group				none
+			text				"Capes"
+			descText			"Browse capes"
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				111 80 90 16
+			font				2
+			textscale			.9
+			textaligny			-5
+			textalign			ITEM_ALIGN_LEFT
+			textstyle			0
+			textalignx			0
+			backcolor			0 0 0 0
+			forecolor			1 .682 0 1
+			visible				1
+
+			mouseEnter
+			{
+				show			capesbut_glow
+			}
+			mouseExit
+			{
+				hide			capesbut_glow
+			}
+			action
+			{
+				play			"sound/interface/button1.wav"
+				show			capes
+				hide			hats
+			}
+		}
+
+//----------------------------------------
+// HATS listbox
+//----------------------------------------
+		itemDef
+		{
+			name				hatslistbox
+			group				hats
+			rect				15 110 240 200
+			type				ITEM_TYPE_LISTBOX
+			style				WINDOW_STYLE_FILLED
+			elementwidth		200
+			elementheight		17
+			font				2
+			textscale			.75
+			elementtype			LISTBOX_TEXT
+			feeder				FEEDER_COSMETIC_HATS
+			textstyle			6
+			textalign			3
+			textaligny			2
+			border				1
+			bordercolor			.5 .5 .5 1
+			forecolor			.615 .615 .956 1
+			backcolor			0 0 .5 .25
+			outlinecolor		.25 .464 .578 .5
+			descText			"Click to equip"
+			visible				1
+			columns				1 2 200 250
+			action
+			{
+				play			"sound/interface/button1.wav"
+			}
+		}
+
+//----------------------------------------
+// CAPES listbox
+//----------------------------------------
+		itemDef
+		{
+			name				capeslistbox
+			group				capes
+			rect				15 110 240 200
+			type				ITEM_TYPE_LISTBOX
+			style				WINDOW_STYLE_FILLED
+			elementwidth		200
+			elementheight		17
+			font				2
+			textscale			.75
+			elementtype			LISTBOX_TEXT
+			feeder				FEEDER_COSMETIC_CAPES
+			textstyle			6
+			textalign			3
+			textaligny			2
+			border				1
+			bordercolor			.5 .5 .5 1
+			forecolor			.615 .615 .956 1
+			backcolor			0 0 .5 .25
+			outlinecolor		.25 .464 .578 .5
+			descText			"Click to equip"
+			visible				0
+			columns				1 2 200 250
+			action
+			{
+				play			"sound/interface/button1.wav"
+			}
+		}
+
+//----------------------------------------
+// BACK button
+//----------------------------------------
+		itemDef
+		{
+			name				backButton
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				30 370 110 32
+			background			"gfx/menus/menu_buttonback"
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef
+		{
+			name				backmenu_button
+			text				@MENUS_BACK
+			descText			"Discard changes and return"
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				30 370 110 32
+			font				2
+			textscale			.9
+			textalign			ITEM_ALIGN_CENTER
+			textstyle			3
+			textalignx			55
+			textaligny			2
+			forecolor			1 .682 0 1
+			visible				1
+
+			mouseEnter
+			{
+				show			backButton
+			}
+			mouseExit
+			{
+				hide			backButton
+			}
+
+			action
+			{
+				play			"sound/interface/esc.wav"
+				close			ingame_player_cosmetics
+				open			ingame_player2
+			}
+		}
+
+//----------------------------------------
+// APPLY button
+//----------------------------------------
+		itemDef
+		{
+			name				applyButton
+			group				highlights
+			style				WINDOW_STYLE_SHADER
+			rect				290 370 110 32
+			background			"gfx/menus/menu_buttonback"
+			forecolor			1 1 1 1
+			decoration
+			visible				0
+		}
+
+		itemDef
+		{
+			name				applymenu_button
+			text				@MENUS_APPLY
+			descText			"Equip selected cosmetics"
+			type				ITEM_TYPE_BUTTON
+			style				WINDOW_STYLE_EMPTY
+			rect				290 370 110 32
+			font				2
+			textscale			.9
+			textalign			ITEM_ALIGN_CENTER
+			textstyle			3
+			textalignx			55
+			textaligny			2
+			forecolor			1 .682 0 1
+			visible				1
+
+			mouseEnter
+			{
+				show			applyButton
+			}
+			mouseExit
+			{
+				hide			applyButton
+			}
+
+			action
+			{
+				play			"sound/interface/button1.wav"
+				uiScript		"applyCosmetics"
+				close			ingame_player_cosmetics
+				open			ingame_player2
+			}
+		}
+	}
+}

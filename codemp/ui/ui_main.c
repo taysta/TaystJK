@@ -249,6 +249,17 @@ animation_t	uiHumanoidAnimations[MAX_TOTALANIMATIONS]; //humanoid animations are
 bgLoadedAnim_t bgAllAnims[MAX_ANIM_FILES];
 int uiNumAllAnims = 1; //start off at 0, because 0 will always be assigned to humanoid.
 
+typedef struct cosmeticsPreview_s
+{
+	cosmetics_t  cosmetics;
+	int          selectedHatId;
+	int          selectedCapeId;
+	char         model[MAX_QPATH];
+	char         skin[MAX_QPATH];
+} cosmeticsPreview_t;
+
+static cosmeticsPreview_t uiCosmetics = { { NULL, NULL, 0, 0 }, -1, -1, { 0 }, { 0 } };
+
 animation_t *UI_AnimsetAlloc(void)
 {
 	assert (uiNumAllAnims < MAX_ANIM_FILES);
@@ -1125,6 +1136,7 @@ void UI_Shutdown( void ) {
 	trap->LAN_SaveCachedServers();
 	UI_CleanupGhoul2();
 	UI_FreeAllSpecies();
+	BG_FreeCosmetics( &uiCosmetics.cosmetics );
 }
 
 char *defaultMenu = NULL;
@@ -8121,6 +8133,14 @@ static void UI_RunMenuScript(char **args)
 		{
 			UI_UpdateCharacterSkin();
 		}
+		else if (Q_stricmp(name, "beginCosmeticPreview") == 0)
+		{
+			UI_BeginCosmeticPreview();
+		}
+		else if (Q_stricmp(name, "applyCosmetics") == 0)
+		{
+			UI_ApplyCosmetics();
+		}
 		else if (Q_stricmp(name, "setui_dualforcepower") == 0)
 		{
 			int forcePowerDisable = trap->Cvar_VariableValue("g_forcePowerDisable");
@@ -9702,6 +9722,12 @@ static int UI_FeederCount(float feederID)
 		case FEEDER_COLORCHOICES:
 			return uiInfo.playerSpecies[uiInfo.playerSpeciesIndex].ColorCount;
 
+		case FEEDER_COSMETIC_HATS:
+			return uiCosmetics.cosmetics.totalHats;
+
+		case FEEDER_COSMETIC_CAPES:
+			return uiCosmetics.cosmetics.totalCapes;
+
 		case FEEDER_SIEGE_BASE_CLASS:
 			team = (int)trap->Cvar_VariableValue("ui_team");
 			baseClass = (int)trap->Cvar_VariableValue("ui_siege_class");
@@ -9914,6 +9940,18 @@ static const char *UI_FeederItemText(float feederID, int index, int column,
 		//char *saberProperName=0;
 		UI_SaberProperNameForSaber( saberStaffHiltInfo[index], info );
 		return info;
+	}
+	else if (feederID == FEEDER_COSMETIC_HATS)
+	{
+		if (index >= 0 && index < uiCosmetics.cosmetics.totalHats)
+			return uiCosmetics.cosmetics.hats[index].name;
+		return "";
+	}
+	else if (feederID == FEEDER_COSMETIC_CAPES)
+	{
+		if (index >= 0 && index < uiCosmetics.cosmetics.totalCapes)
+			return uiCosmetics.cosmetics.capes[index].name;
+		return "";
 	}
 	else if (feederID == FEEDER_Q3HEADS) {
 		int actual;
@@ -10516,6 +10554,14 @@ qboolean UI_FeederSelection(float feederFloat, int index, itemDef_t *item)
 				trap->Cvar_Set("char_color_blue", "255");
 			}
 		}
+	}
+	else if (feederID == FEEDER_COSMETIC_HATS)
+	{
+		UI_ToggleCosmetic(COSMETIC_CATEGORY_HAT, index);
+	}
+	else if (feederID == FEEDER_COSMETIC_CAPES)
+	{
+		UI_ToggleCosmetic(COSMETIC_CATEGORY_CAPE, index);
 	}
 	else if (feederID == FEEDER_MOVES)
 	{
@@ -11657,6 +11703,344 @@ static qhandle_t UI_RegisterShaderNoMip( const char *name ) {
 	return trap->R_RegisterShaderNoMip( name );
 }
 
+static qboolean UI_CosmeticPreviewActive( void )
+{
+	menuDef_t *m = Menus_FindByName( "ingame_player_cosmetics" );
+	return ( m && (m->window.flags & WINDOW_VISIBLE) ) ? qtrue : qfalse;
+}
+
+static void UI_PreviewRefreshOffsets( cosmeticItem_t *hat, cosmeticItem_t *cape,
+                                      const char *model, const char *skin )
+{
+	if ( !Q_stricmp( uiCosmetics.model, model ) && !Q_stricmp( uiCosmetics.skin, skin ) )
+		return;
+
+	Q_strncpyz( uiCosmetics.model, model, sizeof(uiCosmetics.model) );
+	Q_strncpyz( uiCosmetics.skin,  skin,  sizeof(uiCosmetics.skin) );
+
+	if ( hat )
+		BG_LoadCustomCosmeticOffsets( COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,
+		                              hat, model, skin );
+	if ( cape )
+		BG_LoadCustomCosmeticOffsets( COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH,
+		                              cape, model, skin );
+}
+
+static void UI_BoltCosmeticOnItem( itemDef_t *item, cosmeticItem_t *cosmetic,
+                                   const char *boneName, vec3_t origin, vec3_t angles )
+{
+	int newBolt;
+	mdxaBone_t matrix;
+	vec3_t boltOrg;
+	refEntity_t re;
+
+	if ( !cosmetic || !cosmetic->handle || !item->ghoul2 )
+		return;
+
+	newBolt = trap->G2API_AddBolt( item->ghoul2, 0, (char *)boneName );
+	if ( newBolt == -1 )
+		return;
+
+	trap->G2API_GetBoltMatrix( item->ghoul2, 0, newBolt, &matrix, angles, origin,
+	                          uiInfo.uiDC.realTime, NULL, vec3_origin );
+
+	memset( &re, 0, sizeof(re) );
+
+	BG_GiveMeVectorFromMatrix( &matrix, ORIGIN,     boltOrg );
+	BG_GiveMeVectorFromMatrix( &matrix, POSITIVE_X, re.axis[0] );
+	BG_GiveMeVectorFromMatrix( &matrix, POSITIVE_Y, re.axis[1] );
+	BG_GiveMeVectorFromMatrix( &matrix, POSITIVE_Z, re.axis[2] );
+
+	VectorMA( boltOrg, -2, re.axis[2], boltOrg );
+
+	boltOrg[0] += cosmetic->xOffset;
+	boltOrg[1] += cosmetic->yOffset;
+	boltOrg[2] += cosmetic->zOffset;
+
+	re.hModel = cosmetic->handle;
+	VectorCopy( boltOrg, re.origin );
+	VectorCopy( boltOrg, re.lightingOrigin );
+	re.renderfx = RF_LIGHTING_ORIGIN | RF_NOSHADOW | RF_NOLOD;
+
+	trap->R_AddRefEntityToScene( &re );
+}
+
+void UI_DrawCosmeticsForChar( itemDef_t *item, vec3_t origin, vec3_t angles )
+{
+	cosmeticItem_t *hat  = NULL;
+	cosmeticItem_t *cape = NULL;
+	char modelName[MAX_QPATH];
+	char *skinName;
+	char *p;
+
+	if ( !item || !item->ghoul2 ) return;
+
+	if ( UI_CosmeticPreviewActive() )
+	{
+		// Cosmetics menu is open: render the pending selection.
+		if ( uiCosmetics.selectedHatId >= 0 && uiCosmetics.selectedHatId < uiCosmetics.cosmetics.totalHats )
+			hat = &uiCosmetics.cosmetics.hats[uiCosmetics.selectedHatId];
+		if ( uiCosmetics.selectedCapeId >= 0 && uiCosmetics.selectedCapeId < uiCosmetics.cosmetics.totalCapes )
+			cape = &uiCosmetics.cosmetics.capes[uiCosmetics.selectedCapeId];
+
+		Q_strncpyz( modelName, uiCosmetics.model, sizeof(modelName) );
+		skinName = uiCosmetics.skin;
+	}
+	else
+	{
+		char color[MAX_QPATH];
+		char hatName[MAX_COSMETIC_LENGTH];
+		char capeName[MAX_COSMETIC_LENGTH];
+
+		trap->Cvar_VariableStringBuffer( "color1", color, sizeof(color) );
+		Q_StripDigits( color, hatName, sizeof(hatName), REMOVE_DIGITS_INITIAL );
+		if ( hatName[0] )
+			hat = BG_FindCosmeticByName( hatName, uiCosmetics.cosmetics.hats, uiCosmetics.cosmetics.totalHats );
+
+		trap->Cvar_VariableStringBuffer( "color2", color, sizeof(color) );
+		Q_StripDigits( color, capeName, sizeof(capeName), REMOVE_DIGITS_INITIAL );
+		if ( capeName[0] )
+			cape = BG_FindCosmeticByName( capeName, uiCosmetics.cosmetics.capes, uiCosmetics.cosmetics.totalCapes );
+
+		Q_strncpyz( modelName, UI_Cvar_VariableString( "ui_char_model" ), sizeof(modelName) );
+		p = strrchr( modelName, '/' );
+		if ( p )
+		{
+			*p = '\0';
+			skinName = p + 1;
+			p = strchr( skinName, '|' );
+			if ( p ) *p = '\0';
+		}
+		else
+		{
+			skinName = "default";
+		}
+	}
+
+	UI_PreviewRefreshOffsets( hat, cape, modelName, skinName );
+
+	UI_BoltCosmeticOnItem( item, hat,  "*head_top", origin, angles );
+	UI_BoltCosmeticOnItem( item, cape, "*back",     origin, angles );
+}
+
+static int UI_FindEquippedId( const char *cvarName, cosmeticItem_t *items, int count )
+{
+	char color[MAX_QPATH];
+	char name[MAX_COSMETIC_LENGTH];
+	int i;
+
+	trap->Cvar_VariableStringBuffer( cvarName, color, sizeof(color) );
+	Q_StripDigits( color, name, sizeof(name), REMOVE_DIGITS_INITIAL );
+	if ( !name[0] ) return -1;
+
+	for ( i = 0; i < count; i++ )
+	{
+		if ( !Q_stricmp( items[i].name, name ) )
+			return i;
+	}
+	return -1;
+}
+
+static void UI_SetCosmeticListCursor( int feederID, int index )
+{
+	menuDef_t *menu = Menus_FindByName( "ingame_player_cosmetics" );
+	int i;
+
+	if ( !menu ) return;
+
+	for ( i = 0; i < menu->itemCount; i++ )
+	{
+		itemDef_t *item = menu->items[i];
+		if ( item->special == feederID )
+		{
+			listBoxDef_t *listPtr = item->typeData.listbox;
+			item->cursorPos = index;
+			if ( listPtr && index >= 0 ) {
+				listPtr->cursorPos = index;
+			}
+
+			return;
+		}
+	}
+}
+
+static void UI_PreviewApplyCharacter( const char *model, const char *headSkin,
+                                      const char *torsoSkin, const char *legSkin,
+                                      qboolean multipart )
+{
+	menuDef_t *menu = Menus_FindByName( "ingame_player_cosmetics" );
+	itemDef_t *item;
+	char modelPath[MAX_QPATH];
+	char skinPath[MAX_QPATH];
+	int  animLen = 0;
+
+	if ( !menu ) return;
+
+	item = (itemDef_t *)Menu_FindItemByName( menu, "character" );
+	if ( !item ) return;
+
+	ItemParse_model_g2anim_go( item, "BOTH_STAND1" );
+
+	Com_sprintf( modelPath, sizeof(modelPath), "models/players/%s/model.glm", model );
+	ItemParse_asset_model_go( item, modelPath, &animLen );
+
+	if ( multipart )
+	{
+		Com_sprintf( skinPath, sizeof(skinPath), "models/players/%s/|%s|%s|%s",
+		             model, headSkin, torsoSkin, legSkin );
+	}
+	else
+	{
+		Com_sprintf( skinPath, sizeof(skinPath), "models/players/%s/model_%s.skin",
+		             model, headSkin );
+	}
+	ItemParse_model_g2skin_go( item, skinPath );
+}
+
+static void UI_PreviewSyncCharacter( void )
+{
+	char model[MAX_QPATH];
+	char *skinSep;
+	char *pipe;
+
+	trap->Cvar_VariableStringBuffer( "model", model, sizeof(model) );
+
+	pipe = strchr( model, '|' );
+	if ( pipe )
+	{
+		char *p1 = pipe + 1;
+		char *p2 = strchr( p1, '|' );
+		const char *headSkin  = "head_a1";
+		const char *torsoSkin = "torso_a1";
+		const char *legSkin   = "lower_a1";
+
+		*pipe = '\0';
+		skinSep = strrchr( model, '/' );
+		if ( skinSep )
+		{
+			*skinSep = '\0';
+			headSkin = skinSep + 1;
+		}
+
+		if ( p2 )
+		{
+			*p2 = '\0';
+			torsoSkin = p1;
+			legSkin   = p2 + 1;
+		}
+		else if ( p1[0] )
+		{
+			torsoSkin = p1;
+		}
+
+		Q_strncpyz( uiCosmetics.model, model,    sizeof(uiCosmetics.model) );
+		Q_strncpyz( uiCosmetics.skin,  headSkin, sizeof(uiCosmetics.skin) );
+
+		UI_PreviewApplyCharacter( model, headSkin, torsoSkin, legSkin, qtrue );
+	}
+	else
+	{
+		char skinName[MAX_QPATH];
+
+		skinSep = strrchr( model, '/' );
+		if ( skinSep )
+		{
+			Q_strncpyz( skinName, skinSep + 1, sizeof(skinName) );
+			*skinSep = '\0';
+		}
+		else
+		{
+			Q_strncpyz( skinName, "default", sizeof(skinName) );
+		}
+
+		Q_strncpyz( uiCosmetics.model, model,    sizeof(uiCosmetics.model) );
+		Q_strncpyz( uiCosmetics.skin,  skinName, sizeof(uiCosmetics.skin) );
+
+		UI_PreviewApplyCharacter( model, skinName, skinName, skinName, qfalse );
+	}
+}
+
+void UI_BeginCosmeticPreview( void )
+{
+	UI_PreviewSyncCharacter();
+
+	uiCosmetics.selectedHatId  = UI_FindEquippedId( "color1", uiCosmetics.cosmetics.hats,  uiCosmetics.cosmetics.totalHats );
+	uiCosmetics.selectedCapeId = UI_FindEquippedId( "color2", uiCosmetics.cosmetics.capes, uiCosmetics.cosmetics.totalCapes );
+
+	if ( uiCosmetics.selectedHatId >= 0 )
+		BG_LoadCustomCosmeticOffsets( COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH,
+		                              &uiCosmetics.cosmetics.hats[uiCosmetics.selectedHatId],
+		                              uiCosmetics.model, uiCosmetics.skin );
+	if ( uiCosmetics.selectedCapeId >= 0 )
+		BG_LoadCustomCosmeticOffsets( COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH,
+		                              &uiCosmetics.cosmetics.capes[uiCosmetics.selectedCapeId],
+		                              uiCosmetics.model, uiCosmetics.skin );
+
+	UI_SetCosmeticListCursor( FEEDER_COSMETIC_HATS,  uiCosmetics.selectedHatId );
+	UI_SetCosmeticListCursor( FEEDER_COSMETIC_CAPES, uiCosmetics.selectedCapeId );
+}
+
+void UI_ToggleCosmetic( cosmeticCategory_t category, int index )
+{
+	int *current;
+	int total;
+	int feederID;
+	cosmeticItem_t *items;
+	const char *settingsPath;
+	int settingsPathLen;
+
+	if ( category == COSMETIC_CATEGORY_HAT )
+	{
+		current         = &uiCosmetics.selectedHatId;
+		total           = uiCosmetics.cosmetics.totalHats;
+		feederID        = FEEDER_COSMETIC_HATS;
+		items           = uiCosmetics.cosmetics.hats;
+		settingsPath    = COSMETIC_HATS_SETTINGS_PATH;
+		settingsPathLen = COSMETIC_HATS_SETTINGS_PATH_LENGTH;
+	}
+	else
+	{
+		current         = &uiCosmetics.selectedCapeId;
+		total           = uiCosmetics.cosmetics.totalCapes;
+		feederID        = FEEDER_COSMETIC_CAPES;
+		items           = uiCosmetics.cosmetics.capes;
+		settingsPath    = COSMETIC_CAPES_SETTINGS_PATH;
+		settingsPathLen = COSMETIC_CAPES_SETTINGS_PATH_LENGTH;
+	}
+
+	if ( index < 0 || index >= total )
+		return;
+
+	*current = (*current == index) ? -1 : index;
+
+	if ( *current >= 0 )
+		BG_LoadCustomCosmeticOffsets( settingsPath, settingsPathLen,
+		                              &items[*current],
+		                              uiCosmetics.model, uiCosmetics.skin );
+
+	UI_SetCosmeticListCursor( feederID, *current );
+}
+
+void UI_ApplyCosmetics( void )
+{
+	char color[MAX_QPATH];
+	int colorVal;
+
+	trap->Cvar_VariableStringBuffer( "color1", color, sizeof(color) );
+	colorVal = atoi( color );
+	if ( uiCosmetics.selectedHatId >= 0 && uiCosmetics.selectedHatId < uiCosmetics.cosmetics.totalHats )
+		trap->Cvar_Set( "color1", va( "%d%s", colorVal, uiCosmetics.cosmetics.hats[uiCosmetics.selectedHatId].name ) );
+	else
+		trap->Cvar_Set( "color1", va( "%d", colorVal ) );
+
+	trap->Cvar_VariableStringBuffer( "color2", color, sizeof(color) );
+	colorVal = atoi( color );
+	if ( uiCosmetics.selectedCapeId >= 0 && uiCosmetics.selectedCapeId < uiCosmetics.cosmetics.totalCapes )
+		trap->Cvar_Set( "color2", va( "%d%s", colorVal, uiCosmetics.cosmetics.capes[uiCosmetics.selectedCapeId].name ) );
+	else
+		trap->Cvar_Set( "color2", va( "%d", colorVal ) );
+}
+
 /*
 =================
 UI_Init
@@ -11769,6 +12153,8 @@ void UI_Init( qboolean inGameLoad ) {
 
 	UI_BuildPlayerModel_List(inGameLoad);
 	UI_BuildQ3Model_List();
+
+	BG_LoadCosmetics( &uiCosmetics.cosmetics );
 
 	uiInfo.uiDC.cursor	= trap->R_RegisterShaderNoMip( "menu/art/3_cursor2" );
 	uiInfo.uiDC.whiteShader = trap->R_RegisterShaderNoMip( "white" );

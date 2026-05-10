@@ -154,9 +154,7 @@ typedef struct playerInfo_s {
 #define MAX_SCROLLTEXT_SIZE		4096
 #define MAX_SCROLLTEXT_LINES	64
 
-//Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
-//The remaining 2 bytes are to support the actual saber colors, since TaystJK supports up to 12 colors, we need to reserve 2 bytes for the color.
-#define MAX_COSMETIC_LENGTH 14 
+#include "game/bg_cosmetics.h"
 
 typedef struct aliasInfo_s {
 	const char *name;
@@ -404,6 +402,16 @@ qboolean	UI_ConsoleCommand( int realTime );
 void		UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader );
 void		UI_FillRect( float x, float y, float width, float height, const float *color );
 char		*UI_Cvar_VariableString( const char *var_name );
+
+typedef enum {
+	COSMETIC_CATEGORY_HAT,
+	COSMETIC_CATEGORY_CAPE,
+} cosmeticCategory_t;
+
+void	UI_BeginCosmeticPreview( void );
+void	UI_ApplyCosmetics( void );
+void	UI_ToggleCosmetic( cosmeticCategory_t category, int index );
+void	UI_DrawCosmeticsForChar( itemDef_t *item, vec3_t origin, vec3_t angles );
 
 
 //

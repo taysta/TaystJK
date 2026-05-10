@@ -390,6 +390,8 @@ int					cg_numpermanents = 0;
 weaponInfo_t		cg_weapons[MAX_WEAPONS];
 itemInfo_t			cg_items[MAX_ITEMS];
 
+cosmetics_t			localCosmetics;
+
 int CG_CrosshairPlayer( void ) {
 	if ( cg.time > (cg.crosshairClientTime + 1000) )
 		return -1;
@@ -2799,87 +2801,6 @@ forceTicPos_t ammoTicPos[] =
 	{69 ,34 ,-10 ,10 ,"gfx/hud/ammo_tick7",0}
 };
 
-static void CG_LoadCosmetics(const char *path, int pathLen, int *totalCosmetics, cosmeticItem_t **storePtr) 
-{
-	int fileCnt, i, j, fileLen;
-	qhandle_t handle;
-	char cosmeticFiles[MAX_QPATH * 256]; //lets support 256 cosmetics for every category for now.
-	char cosmetic[MAX_QPATH];
-	cosmeticItem_t *cosmeticsPtr;
-	char *ptr;
-
-	fileCnt = trap->FS_GetFileList(path, ".md3", cosmeticFiles, sizeof(cosmeticFiles));
-
-	if (!fileCnt) return;
-
-	cosmeticsPtr = malloc(fileCnt * sizeof(*cosmeticsPtr));
-	if (!cosmeticsPtr) trap->Error(ERR_DROP, S_COLOR_RED"ERROR: Failed to allocate memory for cosmetics.\n");
-
-	ptr = cosmeticFiles;
-	j = 0;
-
-	for (i = 0; i < fileCnt; i++, ptr += fileLen + 1)
-	{
-		memset(cosmetic, 0, MAX_QPATH);
-		fileLen = strlen(ptr);
-
-		if ((pathLen + fileLen) > (MAX_QPATH - 1))
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] path exceeded max length of %d, skipping...\n", ptr, MAX_QPATH - 1);
-			continue;
-		}
-
-		Q_strncpyz(cosmetic, ptr, sizeof(cosmetic));
-		COM_StripExtension(cosmetic, cosmetic, sizeof(cosmetic));
-
-		if (strlen(cosmetic) > (MAX_COSMETIC_LENGTH - 1))
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename exceeded max length of %d, skipping...\n", cosmetic, MAX_COSMETIC_LENGTH - 1);
-			continue;
-		}
-
-		if (isdigit(cosmetic[0]))
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Cosmetic [%s] filename starts with a digit, skipping...\n", cosmetic);
-			continue;
-		}
-
-		handle = trap->R_RegisterModel(va("%s%s.md3", path, cosmetic));
-
-		if (!handle)
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Failed to register cosmetic [%s], skipping...\n", cosmetic);
-			continue;
-		}
-
-		Q_strncpyz(cosmeticsPtr[j].name, cosmetic, sizeof(cosmeticsPtr[j].name));
-		cosmeticsPtr[j].xOffset = cosmeticsPtr[j].yOffset = cosmeticsPtr[j].zOffset = 0;
-		cosmeticsPtr[j].handle = handle;
-		j++;
-	}
-
-	if (j == 0)
-	{
-		free(cosmeticsPtr);
-		cosmeticsPtr = NULL;
-	}
-	else if (j < fileCnt)
-	{
-		cosmeticItem_t *temp = realloc(cosmeticsPtr, j * sizeof(*cosmeticsPtr));
-		if (!temp) trap->Error(ERR_DROP, S_COLOR_RED"ERROR: Failed to reallocate memory for cosmetics.\n");
-		cosmeticsPtr = temp;
-	}
-
-	*storePtr = cosmeticsPtr;
-	*totalCosmetics = j;
-}
-
-static void CG_FreeCosmetics(void)
-{
-	if (localCosmetics.hats) free(localCosmetics.hats);
-	if (localCosmetics.capes) free(localCosmetics.capes);
-}
-
 /*
 =================
 CG_LoadEmojis
@@ -2999,9 +2920,7 @@ Ghoul2 Insert End
 	CG_LoadEmojis();
 
 	//Load cosmetics
-	CG_LoadCosmetics(COSMETIC_HATS_PATH, COSMETIC_HATS_PATH_LENGTH, &localCosmetics.totalHats, &localCosmetics.hats);
-	CG_LoadCosmetics(COSMETIC_CAPES_PATH, COSMETIC_CAPES_PATH_LENGTH, &localCosmetics.totalCapes, &localCosmetics.capes);
-
+	BG_LoadCosmetics(&localCosmetics);
 
 	//Load sabers.cfg data
 	WP_SaberLoadParms();
@@ -3337,7 +3256,7 @@ void CG_Shutdown( void )
 		CG_LogPrintf( cg.log.file, "End log\n----------------------------------------------------------------\n\n" );
 	CG_CloseLog( &cg.log.file);
 
-	CG_FreeCosmetics();
+	BG_FreeCosmetics(&localCosmetics);
 }
 
 /*

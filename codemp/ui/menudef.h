@@ -132,6 +132,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define FEEDER_SABER_SINGLE_INFO			0x2b			// saber single
 #define FEEDER_SABER_STAFF_INFO				0x2c			// saber staff
 
+#define FEEDER_COSMETIC_HATS				0x2d			// list of locally available hat cosmetics
+#define FEEDER_COSMETIC_CAPES				0x2e			// list of locally available cape cosmetics
+
 
 // Xbox specific, hope no one minds
 #define FEEDER_XBL_ACCOUNTS					0xA0			// list of available XBL accounts

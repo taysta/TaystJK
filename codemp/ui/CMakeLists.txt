@@ -33,12 +33,14 @@ endif(WIN32)
 set(MPUIDefines ${MPSharedDefines} "UI_BUILD")
 
 set(MPUIGameFiles
+	"${MPDir}/game/bg_cosmetics.c"
 	"${MPDir}/game/bg_misc.c"
 	"${MPDir}/game/bg_saberLoad.c"
 	"${MPDir}/game/bg_saga.c"
 	"${MPDir}/game/bg_vehicleLoad.c"
 	"${MPDir}/game/bg_weapons.c"
 	"${MPDir}/game/anims.h"
+	"${MPDir}/game/bg_cosmetics.h"
 	"${MPDir}/game/bg_local.h"
 	"${MPDir}/game/bg_public.h"
 	"${MPDir}/game/bg_saga.h"
@@ -93,6 +95,9 @@ set(MPUIRendererFiles
 	)
 source_group("rd-common" FILES ${MPUIRendererFiles})
 set(MPUIFiles ${MPUIFiles} ${MPUIRendererFiles})
+
+list(APPEND MPUIIncludeDirectories ${CJSON_INCLUDE_DIRS})
+list(APPEND MPUILibraries          ${CJSON_LIBRARIES})
 
 add_library(${MPUI} SHARED ${MPUIFiles})
 

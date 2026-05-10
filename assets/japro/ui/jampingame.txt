@@ -20,6 +20,7 @@
 	loadMenu { "ui/jamp/ingame.menu"			}
 	loadMenu { "ui/jamp/ingame_player.menu"			}
 	loadMenu { "ui/jamp/ingame_player2.menu"		}
+	loadMenu { "ui/jamp/ingame_player_cosmetics.menu"	}
 	loadMenu { "ui/jamp/ingame_playerforce.menu"		}
 
 	loadMenu { "ui/jamp/ingame_saber.menu"			}

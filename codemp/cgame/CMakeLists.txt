@@ -33,6 +33,7 @@ endif(WIN32)
 set(MPCGameDefines ${MPSharedDefines} "_CGAME" )
 set(MPCGameGameFiles
 	"${MPDir}/game/AnimalNPC.c"
+	"${MPDir}/game/bg_cosmetics.c"
 	"${MPDir}/game/bg_g2_utils.c"
 	"${MPDir}/game/bg_misc.c"
 	"${MPDir}/game/bg_panimate.c"
@@ -47,6 +48,7 @@ set(MPCGameGameFiles
 	"${MPDir}/game/SpeederNPC.c"
 	"${MPDir}/game/WalkerNPC.c"
 	"${MPDir}/game/anims.h"
+	"${MPDir}/game/bg_cosmetics.h"
 	"${MPDir}/game/bg_local.h"
 	"${MPDir}/game/bg_public.h"
 	"${MPDir}/game/bg_saga.h"

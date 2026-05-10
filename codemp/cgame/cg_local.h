@@ -29,6 +29,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "game/bg_public.h"
 #include "cg_public.h"
 #include "qcommon/q_version.h"
+#include "game/bg_cosmetics.h"
 
 
 // The entire cgame module is unloaded and reloaded on each level change,
@@ -196,8 +197,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define	JAPRO_COSMETIC_PREDATOR		(1<<30)
 #define	JAPRO_COSMETIC_SAIYAN		(1<<31)
 
-typedef struct cosmeticItem_s cosmeticItem_t;
-
 typedef enum //server mod enum
 {
 	SVMOD_BASEJKA,
@@ -317,29 +316,6 @@ typedef struct playerEntity_s {
 #define DEFAULT_FEMALE_SOUNDPATH "chars/mp_generic_female/misc"//"chars/tavion/misc"
 
 #define DEFAULT_MALE_SOUNDPATH "chars/mp_generic_male/misc"//"chars/kyle/misc"
-
-//Let's use 14 bytes because OpenJK and JA++ game modules both use 16 bytes buffer for color1, so if we support up to 16 only, we can pretty much use this on any server.
-//The remaining 2 bytes are to support the actual saber colors, since TaystJK supports up to 12 colors, we need to reserve 2 bytes for the color.
-#define MAX_COSMETIC_LENGTH 14
-
-#define COSMETIC_HATS_PATH "models/cosmetics/hats/"
-#define COSMETIC_HATS_PATH_LENGTH strlen(COSMETIC_HATS_PATH)
-#define COSMETIC_HATS_SETTINGS_PATH "settings/cosmetics/hats/"
-#define COSMETIC_HATS_SETTINGS_PATH_LENGTH strlen(COSMETIC_HATS_SETTINGS_PATH)
-
-#define COSMETIC_CAPES_PATH "models/cosmetics/capes/"
-#define COSMETIC_CAPES_PATH_LENGTH strlen(COSMETIC_CAPES_PATH)
-#define COSMETIC_CAPES_SETTINGS_PATH "settings/cosmetics/capes/"
-#define COSMETIC_CAPES_SETTINGS_PATH_LENGTH strlen(COSMETIC_CAPES_SETTINGS_PATH)
-
-struct cosmeticItem_s
-{
-	char name[MAX_COSMETIC_LENGTH];
-	qhandle_t handle;
-	int xOffset;
-	int yOffset;
-	int zOffset;
-};
 
 typedef struct clientInfo_s {
 	qboolean		infoValid;
@@ -1027,15 +1003,7 @@ typedef struct chatBoxItem_s
 	chatBoxEmoji_t emoji[MAX_CHATBOX_ITEM_EMOJIS];
 } chatBoxItem_t;
 
-typedef struct cosmetics_s
-{
-	cosmeticItem_t *hats;
-	cosmeticItem_t *capes;
-	int totalHats;
-	int totalCapes;
-} cosmetics_t;
-
-cosmetics_t localCosmetics;
+extern cosmetics_t localCosmetics;
 
 #define	MAX_CLIENT_SPEEDPOINTS		32
 typedef struct clientSpeedpoint_s
@@ -2675,7 +2643,6 @@ void CG_DrawOldTourneyScoreboard( void );
 //
 qboolean CG_ConsoleCommand( void );
 void CG_InitConsoleCommands( void );
-cosmeticItem_t *CG_CosmeticForName(const char *name, cosmeticItem_t *cosmetics, int amount);
 
 //
 // cg_servercmds.c

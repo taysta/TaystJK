@@ -25,7 +25,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cg_local.h"
 #include "ghoul2/G2.h"
 #include "game/bg_saga.h"
-#include "cJSON.h"
 #include "hud_tribes.h"
 
 extern int			cgSiegeTeam1PlShader;
@@ -1802,214 +1801,6 @@ void CG_validateCosmetic(const char *cosmeticPath, const char *cosName, cosmetic
 
 	trap->FS_Close(file);
 }
-#define VALID_COSMETIC_OFFSETS(x, y, z) (cJSON_IsNumber(x) && cJSON_IsNumber(y) && cJSON_IsNumber(z))
-static void CG_LoadCustomCosmeticOffsets(const char *settingsPath, int pathLen, cosmeticItem_t *cosmetic, const char *model, const char *skin)
-{
-	char fullPath[MAX_QPATH];
-	char *cosmeticName;
-	fileHandle_t file;
-	int fileSize, i;
-	qboolean modelFallback = qfalse; //Let's set the default value to false.
-
-	if (!cosmetic || !cosmetic->handle) return;
-
-	cosmeticName = cosmetic->name;
-
-	if (pathLen + strlen(cosmeticName) + strlen("cosmetic") + 1 >= MAX_QPATH)
-	{
-		Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), path too long.\n", cosmeticName);
-		return;
-	}
-
-	Com_sprintf(fullPath, sizeof(fullPath),"%s%s.cosmetic", settingsPath, cosmeticName);
-	fileSize = trap->FS_Open(fullPath, &file, FS_READ);
-
-	if (fileSize <= 0) //File doesn't exist.
-	{
-		cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-		trap->FS_Close(file);
-	}
-	else
-	{
-		char *buff = malloc((fileSize + 1) * sizeof(char));
-		cJSON *json;
-		cJSON *jsonModel;
-		cJSON *jsonSkin;
-		cJSON *jsonModelFallback;
-		cJSON *xOffset, *yOffset, *zOffset;
-
-		if (!buff)
-		{
-			trap->FS_Close(file);
-			trap->Error(ERR_DROP,S_COLOR_RED"ERROR: Failed to allocate memory of cosmetic offsets.\n");
-		}
-
-		trap->FS_Read(buff, fileSize, file);
-		buff[fileSize] = '\0';
-		trap->FS_Close(file);
-
-		json = cJSON_Parse(buff);
-
-		if (!json)
-		{
-			Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), failed to parse JSON.\n", cosmeticName);
-			cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-			free(buff);
-			return;
-		}
-
-		jsonModel = cJSON_GetObjectItemCaseSensitive(json, va("%s",model));
-
-		if (!jsonModel) // No custom offsets for the exact model have been been found, lets look for wildcard names.
-		{
-			char* ptr;
-			int longestLen = 0;
-			int skinLen = strlen(model);
-			int len;
-			int index = -1;
-
-			for (i = 0; i < cJSON_GetArraySize(json); i++)
-			{
-				cJSON* temp = cJSON_GetArrayItem(json, i);
-
-				if (!cJSON_IsObject(temp)) continue;
-				ptr = strchr(temp->string, '*');
-				if (!ptr) continue;
-				len = ptr - temp->string;
-
-				if (len <= skinLen && !strncmp(temp->string, model, len))
-				{
-					if (len > longestLen)
-					{
-						longestLen = len;
-						index = i;
-					}
-				}
-			}
-
-			if (index > -1) //We found a wildcard model.
-			{
-				jsonModel = cJSON_GetArrayItem(json, index);
-				goto foundValidModel;
-			}
-			else
-			{
-				cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-				cJSON_Delete(json);
-				free(buff);
-				return;
-			}
-		}
-		else
-		{
-			foundValidModel:
-			jsonModelFallback = cJSON_GetObjectItem(jsonModel, "modelFallback");
-			if (cJSON_IsBool(jsonModelFallback))
-			{
-				if (cJSON_IsTrue(jsonModelFallback)) {
-					modelFallback = qtrue;
-				}
-				else
-				{
-					modelFallback = qfalse;
-				}
-			}
-
-			jsonSkin = cJSON_GetObjectItemCaseSensitive(jsonModel, va("%s", skin));
-
-			if (!jsonSkin) // No custom offsets for the exact skin have been been found, lets look for wildcard names.
-			{	
-				char *ptr;
-				int longestLen = 0;
-				int skinLen = strlen(skin);
-				int len;
-				int index = -1;
-
-				for (i = 0; i < cJSON_GetArraySize(jsonModel); i++)
-				{
-					cJSON *temp = cJSON_GetArrayItem(jsonModel, i);
-
-					if (!cJSON_IsObject(temp)) continue;
-					ptr = strchr(temp->string, '*');
-					if (!ptr) continue;
-					len = ptr - temp->string;
-
-					if (len <= skinLen && !strncmp(temp->string, skin, len))
-					{
-						if (len > longestLen)
-						{
-							longestLen = len;
-							index = i;
-						}
-					}
-				}
-
-				if (index > -1) //We found a wildcard skin.
-				{
-					jsonSkin = cJSON_GetArrayItem(jsonModel, index);
-
-					xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
-					yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
-					zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
-
-					if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-						cosmetic->xOffset = xOffset->valueint;
-						cosmetic->yOffset = yOffset->valueint;
-						cosmetic->zOffset = zOffset->valueint;
-					}
-					else
-					{
-						Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
-						cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-					}
-				}
-				else //No wildcard found, check if we should fallback to the model's offsets or not.
-				{
-					if (modelFallback)
-					{
-						xOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "xOffset");
-						yOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "yOffset");
-						zOffset = cJSON_GetObjectItemCaseSensitive(jsonModel, "zOffset");
-
-						if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-							cosmetic->xOffset = xOffset->valueint;
-							cosmetic->yOffset = yOffset->valueint;
-							cosmetic->zOffset = zOffset->valueint;
-						}
-						else
-						{
-							Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s), the model (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonModel->string);
-							cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-						}
-					}
-					else
-					{
-						cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-					}
-				}
-			}
-			else
-			{
-				xOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "xOffset");
-				yOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "yOffset");
-				zOffset = cJSON_GetObjectItemCaseSensitive(jsonSkin, "zOffset");
-
-				if (VALID_COSMETIC_OFFSETS(xOffset, yOffset, zOffset)) {
-					cosmetic->xOffset = xOffset->valueint;
-					cosmetic->yOffset = yOffset->valueint;
-					cosmetic->zOffset = zOffset->valueint;
-				}
-				else
-				{
-					Com_Printf(S_COLOR_YELLOW"WARNING: Skipping custom offsets for cosmetic (%s),the skin (%s) JSON object does not contain valid offset values.\n", cosmeticName, jsonSkin->string);
-					cosmetic->xOffset = cosmetic->yOffset = cosmetic->zOffset = 0;
-				}
-			}
-		}
-		cJSON_Delete(json);
-		free(buff);
-	}
-}
 
 
 /*
@@ -2304,7 +2095,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		 Q_stricmp(newInfo.modelName, ci->modelName) ||
 		 Q_stricmp(newInfo.skinName, ci->skinName)))
 	{
-		CG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH, &newInfo.hat, newInfo.modelName, newInfo.skinName);
+		BG_LoadCustomCosmeticOffsets(COSMETIC_HATS_SETTINGS_PATH, COSMETIC_HATS_SETTINGS_PATH_LENGTH, &newInfo.hat, newInfo.modelName, newInfo.skinName);
 	}
 
 	if (newInfo.cape.handle &&
@@ -2312,7 +2103,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 		 Q_stricmp(newInfo.modelName, ci->modelName) ||
 		 Q_stricmp(newInfo.skinName, ci->skinName)))
 	{
-		CG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
+		BG_LoadCustomCosmeticOffsets(COSMETIC_CAPES_SETTINGS_PATH, COSMETIC_CAPES_SETTINGS_PATH_LENGTH, &newInfo.cape, newInfo.modelName, newInfo.skinName);
 	}
 
 	if (cgs.gametype == GT_SIEGE)
@@ -13176,11 +12967,11 @@ stillDoSaber:
 			//the months follow array indexing (0 = january, 11 = december)
 			if ((time.tm_mon == 10 && time.tm_mday > 21) || time.tm_mon == 11 || (time.tm_mon == 0 && time.tm_mday < 8)) { //Christmas
 				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_SANTAHAT;
-				if (!hat) hat = CG_CosmeticForName("santahat", localCosmetics.hats, localCosmetics.totalHats);
+				if (!hat) hat = BG_FindCosmeticByName("santahat", localCosmetics.hats, localCosmetics.totalHats);
 			}
 			else if (time.tm_mon == 9 && time.tm_mday == 31) { //Halloween
 				if (!ci->cosmetics) ci->cosmetics |= JAPRO_COSMETIC_PUMKIN;
-				if (!hat) hat = CG_CosmeticForName("pumpkin", localCosmetics.hats, localCosmetics.totalHats);
+				if (!hat) hat = BG_FindCosmeticByName("pumpkin", localCosmetics.hats, localCosmetics.totalHats);
 			}
 		}
 

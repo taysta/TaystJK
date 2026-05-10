@@ -5585,6 +5585,8 @@ void Item_Model_Paint(itemDef_t *item)
 			ent.shaderRGBA[2] = ui_char_color_blue.integer;
 			ent.shaderRGBA[3] = 255;
 //			UI_TalkingHead(item);
+
+			UI_DrawCosmeticsForChar( item, origin, angles );
 		}
 		if ( item->flags&ITF_ISANYSABER )
 		{//UGH, draw the saber blade!
