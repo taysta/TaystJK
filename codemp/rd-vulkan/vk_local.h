@@ -67,7 +67,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 //#define USE_REVERSED_DEPTH
-#define USE_UPLOAD_QUEUE
+//#define USE_UPLOAD_QUEUE
 
 //#define USE_VANILLA_SHADOWFINISH
 #define USE_VK_STATS
