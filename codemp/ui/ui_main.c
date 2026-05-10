@@ -11769,28 +11769,25 @@ void UI_DrawCosmeticsForChar( itemDef_t *item, vec3_t origin, vec3_t angles )
 {
 	cosmeticItem_t *hat  = NULL;
 	cosmeticItem_t *cape = NULL;
-	char modelName[MAX_QPATH];
-	char *skinName;
-	char *p;
 
 	if ( !item || !item->ghoul2 ) return;
 
 	if ( UI_CosmeticPreviewActive() )
 	{
-		// Cosmetics menu is open: render the pending selection.
+		// Cosmetics menu is open: render the pending selection. 
 		if ( uiCosmetics.selectedHatId >= 0 && uiCosmetics.selectedHatId < uiCosmetics.cosmetics.totalHats )
 			hat = &uiCosmetics.cosmetics.hats[uiCosmetics.selectedHatId];
 		if ( uiCosmetics.selectedCapeId >= 0 && uiCosmetics.selectedCapeId < uiCosmetics.cosmetics.totalCapes )
 			cape = &uiCosmetics.cosmetics.capes[uiCosmetics.selectedCapeId];
-
-		Q_strncpyz( modelName, uiCosmetics.model, sizeof(modelName) );
-		skinName = uiCosmetics.skin;
 	}
 	else
 	{
 		char color[MAX_QPATH];
 		char hatName[MAX_COSMETIC_LENGTH];
 		char capeName[MAX_COSMETIC_LENGTH];
+		char modelName[MAX_QPATH];
+		char *skinName;
+		char *p;
 
 		trap->Cvar_VariableStringBuffer( "color1", color, sizeof(color) );
 		Q_StripDigits( color, hatName, sizeof(hatName), REMOVE_DIGITS_INITIAL );
@@ -11815,9 +11812,9 @@ void UI_DrawCosmeticsForChar( itemDef_t *item, vec3_t origin, vec3_t angles )
 		{
 			skinName = "default";
 		}
-	}
 
-	UI_PreviewRefreshOffsets( hat, cape, modelName, skinName );
+		UI_PreviewRefreshOffsets( hat, cape, modelName, skinName );
+	}
 
 	UI_BoltCosmeticOnItem( item, hat,  "*head_top", origin, angles );
 	UI_BoltCosmeticOnItem( item, cape, "*back",     origin, angles );
