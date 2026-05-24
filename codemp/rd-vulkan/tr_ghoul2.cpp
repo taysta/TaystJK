@@ -32,6 +32,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #include "qcommon/disablewarnings.h"
+#include "tr_cache.h"
 
 #define	LL(x) x=LittleLong(x)
 #define	LS(x) x=LittleShort(x)
@@ -110,6 +111,7 @@ static CRenderableSurface *AllocGhoul2RenderableSurface( void )
 {
 	if ( currentRenderSurfIndex >= MAX_RENDERABLE_SURFACES )
 	{
+		ResetGhoul2RenderableSurfaceHeap();
 		ri.Error( ERR_DROP, "AllocRenderableSurface: Reached maximum number of Ghoul2 renderable surfaces (%d)", MAX_RENDERABLE_SURFACES );
 		return NULL;
 	}
@@ -2546,21 +2548,30 @@ void RenderSurfaces(CRenderSurface &RS) //also ended up just ripping right from 
 					if (!tex ||											 // it is gone, lets get rid of it
 						(kcur->second.mDeleteTime && curTime>=kcur->second.mDeleteTime)) // out of time
 					{
+#if 0
 						if (tex)
 						{
 							(*tex).~R2GoreTextureCoordinates();	 // ~sunny, hmm
 							//I don't know what's going on here, it should call the destructor for
 							//this when it erases the record but sometimes it doesn't. -rww
 						}
-
+#endif
 						RS.gore_set->mGoreRecords.erase(kcur);
 					}
-					else if (tex->tex[RS.lod])
+					else if (tex->tex[RS.lod] || tex->tex_vbo[RS.lod])
 					{
 						CRenderableSurface *newSurf2 = AllocGhoul2RenderableSurface();
 						*newSurf2=*newSurf;
 						newSurf2->goreChain=0;
-						newSurf2->alternateTex = (void*)tex->tex[RS.lod];
+
+						newSurf2->alternateTex = nullptr;
+						newSurf2->goreVBO = nullptr;
+
+						if (tex->tex_vbo[RS.lod])
+							newSurf2->goreVBO = tex->tex_vbo[RS.lod];
+						else
+							newSurf2->alternateTex = tex->tex[RS.lod];
+
 						newSurf2->scale=1.0f;
 						newSurf2->fade=1.0f;
 						newSurf2->impactTime=1.0f;	// done with
@@ -3671,18 +3682,18 @@ void RB_SurfaceGhoul(CRenderableSurface* surf)
 	tess.surfType = SF_MDX;
 
 #ifdef _G2_GORE
-	if ( surf->alternateTex && tr.goreVBO != NULL )
+	if ( surf->goreVBO && tr.goreVBO != NULL )
 	{
 		tess.vbo_model = tr.goreVBO;
 		tess.ibo_model = tr.goreIBO;
 
-		auto *alternateTex = (srfG2GoreSurface_t*)surf->alternateTex;
+		srfG2GoreSurface_t* goreVBO = (srfG2GoreSurface_t*)surf->goreVBO;
 
-		numIndexes	= alternateTex->numIndexes;
-		numVertexes = alternateTex->numVerts;
-		minIndex	= alternateTex->firstVert;
-		maxIndex	= alternateTex->firstVert + alternateTex->numVerts;
-		indexOffset = alternateTex->firstIndex;
+		numIndexes	= goreVBO->numIndexes;
+		numVertexes = goreVBO->numVerts;
+		minIndex	= goreVBO->firstVert;
+		maxIndex	= goreVBO->firstVert + goreVBO->numVerts;
+		indexOffset = goreVBO->firstIndex;
 	}
 	else
 #endif
@@ -4452,7 +4463,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 	mod->dataSize += size;
 
 	qboolean bAlreadyFound = qfalse;
-	mdxm = (mdxmHeader_t*)RE_RegisterModels_Malloc(size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLM);
+	mdxm = (mdxmHeader_t*)CModelCache->Allocate(size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLM);
 	mod->data.glm = (mdxmData_t *)ri.Hunk_Alloc (sizeof (mdxmData_t), h_low);
 	mod->data.glm->header = mdxm;
 
@@ -4544,7 +4555,7 @@ qboolean R_LoadMDXM( model_t *mod, void *buffer, const char *mod_name, qboolean 
 			surfInfo->shaderIndex = sh->index;
 		}
 
-		RE_RegisterModels_StoreShaderRequest(mod_name, &surfInfo->shader[0], &surfInfo->shaderIndex);
+		CModelCache->StoreShaderRequest(mod_name, &surfInfo->shader[0], &surfInfo->shaderIndex);
 
 #ifdef Q3_BIG_ENDIAN
 		// swap the surface offset
@@ -4916,14 +4927,9 @@ qboolean R_LoadMDXA( model_t *mod, void *buffer, const char *mod_name, qboolean 
 	size += (childNumber*(CHILD_PADDING*8)); //Allocate us some extra space so we can shift memory down.
 #endif //CREATE_LIMB_HIERARCHY
 
-	mdxa = mod->data.gla = (mdxaHeader_t*) //Hunk_Alloc( size );
-										RE_RegisterModels_Malloc(size,
-										#ifdef CREATE_LIMB_HIERARCHY
-											NULL,	// I think this'll work, can't really test on PC
-										#else
-											buffer,
-										#endif
-										mod_name, &bAlreadyFound, TAG_MODEL_GLA);
+	mdxa = (mdxaHeader_t *)CModelCache->Allocate(
+		size, buffer, mod_name, &bAlreadyFound, TAG_MODEL_GLA);
+	mod->data.gla = mdxa;
 
 	assert(bAlreadyCached == bAlreadyFound);	// I should probably eliminate 'bAlreadyFound', but wtf?
 

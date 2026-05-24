@@ -137,21 +137,28 @@ void vk_push_surface_sprites_cmd( const vk_ss_group_def_t *def, int firstInstanc
 // 
 static void vk_destroy_surface_sprites_ssbo( vk_storage_buffer_t *buffer )
 {
+	if ( buffer->memory && buffer->buffer_ptr )
+		qvkUnmapMemory( vk.device, buffer->memory );
+
 	if ( buffer->buffer )
-		qvkDestroyBuffer( vk.device, buffer->buffer, NULL );
+		VK_DESTROY_BUFFER( vk.device, buffer->buffer );
 
 	if ( buffer->memory )
-		qvkFreeMemory( vk.device, buffer->memory, NULL );
+		VK_FREE_MEMORY( vk.device, buffer->memory );
+
+	if ( buffer->descriptor )
+		qvkFreeDescriptorSets(vk.device, vk.descriptor_pool, 1, &buffer->descriptor);
+
+	Com_Memset( buffer, 0, sizeof( *buffer ) );
 }
 
 static void vk_destroy_surface_sprites_ssbos( void )
 {
 	uint32_t i;
+	const uint32_t max_ssbos = (MAX_SUB_BSP + 1);
 
-	for ( i = 0; i < vk.surface_sprites_ssbo_count; i++ ) 
+	for ( i = 0; i < max_ssbos; i++ ) 
 		vk_destroy_surface_sprites_ssbo( &vk.surface_sprites_ssbo[i] );
-
-	vk.surface_sprites_ssbo_count = 0;
 }
 
 static void vk_create_surface_sprites_ssbo_descriptor( vk_storage_buffer_t *buffer, int index )
@@ -649,7 +656,7 @@ static spriteStage_t* vk_build_surface_sprite_stage( const int index, msurface_t
 	// create shader for this stage
 	uint32_t hash = 0;
 	for ( i = 0; bundle->image[i]; ++i )
-		hash = UpdateHash( bundle->image[i++]->imgName, hash );
+		hash = UpdateHash( bundle->image[i++]->imgName, hash ); // ~sunny, i++ twice?
 
 	sprite_stage->shader = R_CreateShaderFromTextureBundle( va("*ss_%d_%08x\n", index, hash), bundle, stage->stateBits );
 	sprite_stage->shader->cullType = shader->cullType;
@@ -749,6 +756,7 @@ void R_BuildSurfaceSpritesVBO( const world_t &worldData, int index )
 			continue;
 
 		surf->surface_sprites.num_stages = shader->surface_sprites.num_stages;
+		// ~sunny, is this freed later?
 		surf->surface_sprites.stage = (spriteStage_t *)ri.Hunk_Alloc( sizeof(spriteStage_t) * surf->surface_sprites.num_stages, h_low );
 		
 		uint32_t sprite_index = 0;

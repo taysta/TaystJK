@@ -23,6 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // tr_map.c
 
 #include "tr_local.h"
+#include "tr_cache.h"
 
 static const imgFlags_t lightmapFlags = IMGFLAG_NOLIGHTSCALE | IMGFLAG_NO_COMPRESSION | IMGFLAG_LIGHTMAP | IMGFLAG_NOSCALE | IMGFLAG_CLAMPTOEDGE;
 
@@ -1736,14 +1737,9 @@ static	void R_LoadSubmodels( const lump_t *l, world_t &worldData, int index ) {
 			out->bounds[0][j] = LittleFloat (in->mins[j]);
 			out->bounds[1][j] = LittleFloat (in->maxs[j]);
 		}
-/*
-Ghoul2 Insert Start
-*/
 
-		RE_InsertModelIntoHash(model->name, model);
-/*
-Ghoul2 Insert End
-*/
+		CModelCache->InsertModelHandle(model->name, model->index);
+
 		out->firstSurface = worldData.surfaces + LittleLong( in->firstSurface );
 		out->numSurfaces = LittleLong( in->numSurfaces );
 	}

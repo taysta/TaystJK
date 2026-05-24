@@ -42,6 +42,8 @@ set(MPVulkanRendererFiles
 	"${MPDir}/rd-vulkan/G2_surfaces.cpp"
 	"${MPDir}/rd-vulkan/tr_backend.cpp"
 	"${MPDir}/rd-vulkan/tr_bsp.cpp"
+	"${MPDir}/rd-vulkan/tr_cache.h"
+	"${MPDir}/rd-vulkan/tr_cache.cpp"
 	"${MPDir}/rd-vulkan/tr_cmds.cpp"
 	"${MPDir}/rd-vulkan/tr_curve.cpp"
 	"${MPDir}/rd-vulkan/tr_decals.cpp"
