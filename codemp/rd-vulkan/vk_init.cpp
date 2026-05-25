@@ -673,7 +673,7 @@ __cleanup:
 	if (vk.device != VK_NULL_HANDLE) {
 #ifdef USE_VK_OBJECT_TRACKER
 		vk_dump_tracked_objects();
-#endif
+#endif // USE_VK_OBJECT_TRACKER
 		qvkDestroyDevice(vk.device, NULL);
 	}
 	if (vk.surface != VK_NULL_HANDLE)

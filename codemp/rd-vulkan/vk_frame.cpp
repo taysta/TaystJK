@@ -1670,7 +1670,6 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         invalidate_ptr = qtrue;
     }
 
-    //VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &memory ) );
     VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &memory, "read pixels");
     VK_CHECK( qvkBindImageMemory( vk.device, dstImage, memory, 0 ) );
 

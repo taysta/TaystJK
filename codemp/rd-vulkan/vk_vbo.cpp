@@ -573,13 +573,11 @@ IBO_t *R_CreateIBO( const char *name, const byte *vbo_data, int vbo_size )
 	// device-local buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &tr.ibos[tr.numIBOs]->buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &tr.ibos[tr.numIBOs]->buffer, "ibo device-local buffer");
 
 	// staging buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-	//VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &staging_vertex_buffer));
 	VK_CREATE_BUFFER(vk.device, &desc, &staging_vertex_buffer, "ibo staging vertex");
 
 	// memory requirements
@@ -592,7 +590,6 @@ IBO_t *R_CreateIBO( const char *name, const byte *vbo_data, int vbo_size )
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	//VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &tr.ibos[tr.numIBOs]->memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &tr.ibos[tr.numIBOs]->memory, "ibo device-local memory" );
 	qvkBindBufferMemory( vk.device, tr.ibos[tr.numIBOs]->buffer, tr.ibos[tr.numIBOs]->memory, vertex_buffer_offset );
 	// staging buffers
@@ -607,7 +604,6 @@ IBO_t *R_CreateIBO( const char *name, const byte *vbo_data, int vbo_size )
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	//VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &staging_buffer_memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &staging_buffer_memory, "ibo staging vertex" );
 	qvkBindBufferMemory(vk.device, staging_vertex_buffer, staging_buffer_memory, vertex_buffer_offset);
 
@@ -669,13 +665,11 @@ VBO_t *R_CreateVBO( const char *name, const byte *vbo_data, int vbo_size )
 	// device-local buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &tr.vbos[tr.numVBOs]->buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &tr.vbos[tr.numVBOs]->buffer, "vbo device local");
 
 	// staging buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-	//VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &staging_vertex_buffer));
 	VK_CREATE_BUFFER(vk.device, &desc, &staging_vertex_buffer, "vbo staging vertex");
 
 	// memory requirements
@@ -688,7 +682,6 @@ VBO_t *R_CreateVBO( const char *name, const byte *vbo_data, int vbo_size )
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	//VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &tr.vbos[tr.numVBOs]->memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &tr.vbos[tr.numVBOs]->memory, "vbo device-local memory" );
 	qvkBindBufferMemory( vk.device, tr.vbos[tr.numVBOs]->buffer, tr.vbos[tr.numVBOs]->memory, vertex_buffer_offset );
 	// staging buffers
@@ -703,7 +696,6 @@ VBO_t *R_CreateVBO( const char *name, const byte *vbo_data, int vbo_size )
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	//VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &staging_buffer_memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &staging_buffer_memory, "vbo staging vertex" );
 	qvkBindBufferMemory(vk.device, staging_vertex_buffer, staging_buffer_memory, vertex_buffer_offset);
 
@@ -757,7 +749,6 @@ VBO_t *R_CreateDynamicVBO( const char *name, int size )
 	desc.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
 	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vbo->buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &vbo->buffer, "dynamic vbo buffer");
 
 	qvkGetBufferMemoryRequirements( vk.device, vbo->buffer, &vb_mem_reqs );
@@ -768,13 +759,11 @@ VBO_t *R_CreateDynamicVBO( const char *name, int size )
 	alloc_info.allocationSize = vb_mem_reqs.size;
 	alloc_info.memoryTypeIndex = vk_find_memory_type( vb_mem_reqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT );
 
-	//VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &vbo->memory ) );
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vbo->memory, "dynamic vbo memory" );
 	VK_CHECK( qvkBindBufferMemory( vk.device, vbo->buffer, vbo->memory, buffer_offset ) );
 
 	// Create host-visible staging buffer
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vbo->staging.buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &vbo->staging.buffer, "dynamic vbo staging buffer");
 
 	qvkGetBufferMemoryRequirements( vk.device, vbo->staging.buffer, &vb_mem_reqs );
@@ -785,7 +774,6 @@ VBO_t *R_CreateDynamicVBO( const char *name, int size )
 		vb_mem_reqs.memoryTypeBits,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-	//VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &vbo->staging.memory ) );
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vbo->staging.memory, "dynamic vbo staging memory" );
 	VK_CHECK( qvkBindBufferMemory( vk.device, vbo->staging.buffer, vbo->staging.memory, buffer_offset ) );
 
@@ -833,7 +821,6 @@ IBO_t *R_CreateDynamicIBO( const char *name, int size )
 	desc.usage = VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
 	desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &ibo->buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &ibo->buffer, "dynamic ibo buffer");
 	qvkGetBufferMemoryRequirements( vk.device, ibo->buffer, &mem_reqs );
 
@@ -843,13 +830,11 @@ IBO_t *R_CreateDynamicIBO( const char *name, int size )
 	alloc_info.allocationSize = mem_reqs.size;
 	alloc_info.memoryTypeIndex = vk_find_memory_type( mem_reqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT );
 
-	//VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &ibo->memory ) );
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &ibo->memory, "dynamic ibo memory" );
 	VK_CHECK( qvkBindBufferMemory( vk.device, ibo->buffer, ibo->memory, buffer_offset ) );
 
 	// --- Staging buffer (host-visible, persistently mapped)
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &ibo->staging.buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &ibo->staging.buffer, "dynamic ibo staging buffer");
 
 	qvkGetBufferMemoryRequirements( vk.device, ibo->staging.buffer, &mem_reqs );
@@ -860,7 +845,6 @@ IBO_t *R_CreateDynamicIBO( const char *name, int size )
 		mem_reqs.memoryTypeBits,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-	//VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &ibo->staging.memory ) );
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &ibo->staging.memory, "dynamic ibo staging memory" );
 	VK_CHECK( qvkBindBufferMemory( vk.device, ibo->staging.buffer, ibo->staging.memory, buffer_offset ) );
 
@@ -1903,7 +1887,6 @@ qboolean vk_alloc_vbo( const char *name, const byte *vbo_data, int vbo_size )
 	// device-local buffer
 	desc.size = vbo_size;
 	desc.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &vk.vbo.vertex_buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &vk.vbo.vertex_buffer, va("vbo vertex buffer: %s", name) );
 
 	// memory requirements
@@ -1916,7 +1899,6 @@ qboolean vk_alloc_vbo( const char *name, const byte *vbo_data, int vbo_size )
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = allocationSize;
 	alloc_info.memoryTypeIndex = vk_find_memory_type(memory_type_bits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	//VK_CHECK(qvkAllocateMemory( vk.device, &alloc_info, NULL, &vk.vbo.buffer_memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vk.vbo.buffer_memory, va("vbo vertex memory: %s", name) );
 	qvkBindBufferMemory( vk.device, vk.vbo.vertex_buffer, vk.vbo.buffer_memory, vertex_buffer_offset );
 

@@ -906,7 +906,6 @@ void vk_alloc_staging_buffer( VkDeviceSize size )
 	buffer_desc.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	buffer_desc.queueFamilyIndexCount = 0;
 	buffer_desc.pQueueFamilyIndices = NULL;
-	//VK_CHECK(qvkCreateBuffer(vk.device, &buffer_desc, NULL, &vk.staging_buffer.handle));
 	VK_CREATE_BUFFER(vk.device, &buffer_desc, &vk.staging_buffer.handle, "main staging buffer" );
 
 	qvkGetBufferMemoryRequirements( vk.device, vk.staging_buffer.handle, &memory_requirements );
@@ -918,7 +917,6 @@ void vk_alloc_staging_buffer( VkDeviceSize size )
 	alloc_info.allocationSize = memory_requirements.size;
 	alloc_info.memoryTypeIndex = memory_type;
 
-	//VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk.staging_buffer.memory));
     VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vk.staging_buffer.memory, "main staging memory");
 	VK_CHECK(qvkBindBufferMemory(vk.device, vk.staging_buffer.handle, vk.staging_buffer.memory, 0));
 
@@ -1197,7 +1195,6 @@ static void allocate_and_bind_image_memory( VkImage image ) {
 		alloc_info.allocationSize = size;
 		alloc_info.memoryTypeIndex = vk_find_memory_type(memory_requirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-		//result = qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory);
 		result = VK_ALLOCATE_MEMORY(vk.device, &alloc_info, &memory, "imag memory" );
 		
 		if (result < 0) {

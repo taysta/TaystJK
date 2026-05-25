@@ -118,7 +118,6 @@ static void vk_alloc_attachment_memory( void )
     }
 
     // allocate and bind memory
-    //VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &memory ) );
     VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &memory, "attachment memory");
 
     vk.image_memory[vk.image_memory_count++] = memory;

@@ -483,7 +483,6 @@ void vk_create_storage_buffer( vk_storage_buffer_t *out, uint32_t size, const ch
 	desc.size = size;
 	desc.usage = VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
 
-	//VK_CHECK( qvkCreateBuffer( vk.device, &desc, NULL, &out->buffer ) );
 	VK_CREATE_BUFFER(vk.device, &desc, &out->buffer, va( "%s buffer", name ));
 
 	qvkGetBufferMemoryRequirements( vk.device, out->buffer, &memory_requirements );
@@ -495,7 +494,6 @@ void vk_create_storage_buffer( vk_storage_buffer_t *out, uint32_t size, const ch
 	alloc_info.pNext = NULL;
 	alloc_info.allocationSize = memory_requirements.size;
 	alloc_info.memoryTypeIndex = memory_type;
-	//VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &out->memory) );
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &out->memory, va( "%s memory", name ) );
 
 	VK_CHECK( qvkMapMemory( vk.device, out->memory, 0, VK_WHOLE_SIZE, 0, (void**)&out->buffer_ptr) );
@@ -686,7 +684,6 @@ void vk_create_indirect_buffer( VkDeviceSize size )
 	for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
 		desc.size = size;
 		desc.usage = VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
-		//VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &vk.tess[i].indirect_buffer));
 		VK_CREATE_BUFFER(vk.device, &desc, &vk.tess[i].indirect_buffer, "indirect_buffer");
 
 		qvkGetBufferMemoryRequirements(vk.device, vk.tess[i].indirect_buffer, &vb_memory_requirements);
@@ -701,7 +698,6 @@ void vk_create_indirect_buffer( VkDeviceSize size )
 
 	vk_debug("Allocate device memory for Indirect Buffer: %ld bytes. \n", alloc_info.allocationSize);
 
-	//VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk.indirect_buffer_memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vk.indirect_buffer_memory, "indirect_memory" );
 	VK_CHECK(qvkMapMemory(vk.device, vk.indirect_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
 
@@ -749,7 +745,6 @@ void vk_create_vertex_buffer( VkDeviceSize size )
 	for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
 		desc.size = size;
 		desc.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-		//VK_CHECK(qvkCreateBuffer(vk.device, &desc, NULL, &vk.tess[i].vertex_buffer));
 		VK_CREATE_BUFFER(vk.device, &desc, &vk.tess[i].vertex_buffer, "vertex_buffer");
 
 		qvkGetBufferMemoryRequirements(vk.device, vk.tess[i].vertex_buffer, &vb_memory_requirements);
@@ -764,7 +759,6 @@ void vk_create_vertex_buffer( VkDeviceSize size )
 
 	vk_debug("Allocate device memory for Vertex Buffer: %ld bytes. \n", alloc_info.allocationSize);
 
-	//VK_CHECK(qvkAllocateMemory(vk.device, &alloc_info, NULL, &vk.geometry_buffer_memory));
 	VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &vk.geometry_buffer_memory, "vertex_memory" );
 	VK_CHECK(qvkMapMemory(vk.device, vk.geometry_buffer_memory, 0, VK_WHOLE_SIZE, 0, &data));
 

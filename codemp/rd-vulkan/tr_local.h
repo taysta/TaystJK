@@ -2025,19 +2025,6 @@ qhandle_t	RE_RegisterServerModel( const char *name );
 qhandle_t	RE_RegisterModel( const char *name );
 qhandle_t	RE_RegisterSkin( const char *name );
 
-
-
-//void		RE_RegisterMedia_LevelLoadBegin( const char *psMapName, ForceReload_e eForceReload );
-//void		RE_RegisterMedia_LevelLoadEnd( void );
-//int			RE_RegisterMedia_GetLevel( void );
-//qboolean	RE_RegisterModels_LevelLoadEnd( qboolean bDeleteEverythingNotUsedThisLevel = qfalse );
-//void*		RE_RegisterModels_Malloc( int iSize, void *pvDiskBufferIfJustLoaded, const char *psModelFileName, qboolean *pqbAlreadyFound, memtag_t eTag );
-//void		RE_RegisterModels_StoreShaderRequest( const char *psModelFileName, const char *psShaderName, int *piShaderIndexPoke );
-//void		RE_RegisterModels_Info_f( void );
-//qboolean	RE_RegisterImages_LevelLoadEnd( void );
-
-
-
 qboolean	R_GetEntityToken( char *buffer, int size );
 
 model_t		*R_AllocModel( void );
