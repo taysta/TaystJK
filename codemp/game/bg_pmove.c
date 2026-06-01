@@ -268,6 +268,9 @@ static int GetFlipkick(playerState_t *ps) {
 		if (cgs.serverMod == SVMOD_JAPLUS && (cgs.cinfo & JAPLUS_CINFO_FLIPKICK))
 			return 1;
 
+		if (cgs.taystJKinfo & TAYSTJK_INFO_FLIPKICK)
+			return 1;
+
 		return 0;
 #endif
 }
@@ -307,11 +310,11 @@ static int GetFixRoll(playerState_t *ps) {
 			}
 		}
 
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL3) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL3))
+		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL3) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL3) || (cgs.taystJKinfo & TAYSTJK_INFO_FIXROLL_3))
 			return 3;
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL2) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL2) || cgs.legacyProtocol)
+		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL2) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL2) || (cgs.taystJKinfo & TAYSTJK_INFO_FIXROLL_2) || cgs.legacyProtocol)
 			return 2;
-		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL1) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL1))
+		if ((cgs.serverMod == SVMOD_JAPLUS && cgs.cinfo & JAPLUS_CINFO_FIXROLL1) || (cgs.serverMod == SVMOD_JAPRO && cgs.jcinfo & JAPRO_CINFO_FIXROLL1) || (cgs.taystJKinfo & TAYSTJK_INFO_FIXROLL_1))
 			return 1;
 
 		return 0;
@@ -15395,7 +15398,7 @@ void PmoveSingle (pmove_t *pmove) {
 #else
 			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && cgs.serverMod != SVMOD_JAPLUS && (!(cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || IsRacemode(pm->ps)))
 				PM_GrappleMoveTarzan();
-			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE)))
+			else if ((pm->ps->pm_flags & PMF_GRAPPLE) && !(pm->ps->pm_flags & PMF_DUCKED) && (cgs.serverMod == SVMOD_JAPLUS || (cgs.jcinfo & JAPRO_CINFO_JAPLUSGRAPPLE) || cgs.taystJKinfo & TAYSTJK_INFO_GRAPPLE))
 				PM_GrappleMove();
 #endif
 
