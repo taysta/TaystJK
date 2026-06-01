@@ -45,6 +45,7 @@ cvar_t		*con_notifyvote;
 cvar_t		*con_height;
 cvar_t		*con_scale;
 cvar_t		*con_timestamps;
+cvar_t		*con_datetime;
 
 #define	DEFAULT_CONSOLE_WIDTH	78
 
@@ -664,6 +665,7 @@ void Con_Init (void) {
 
 	con_scale = Cvar_Get ("con_scale", "1", CVAR_ARCHIVE_ND, "Scale console font");
 	con_timestamps = Cvar_Get ("con_timestamps", "2", CVAR_ARCHIVE_ND, "Display timestamps infront of console lines");
+	con_datetime = Cvar_Get ("con_datetime", "0", CVAR_ARCHIVE_ND, "Display human readable date/time in console");
 
 	Field_Clear( &g_consoleField );
 	g_consoleField.widthInChars = DEFAULT_CONSOLE_WIDTH;
@@ -1037,6 +1039,7 @@ void Con_DrawSolidConsole( float frac ) {
 	int				lines;
 	int				currentColor;
 
+
 	lines = (int) (cls.glconfig.vidHeight * frac);
 	if (lines <= 0)
 		return;
@@ -1084,19 +1087,25 @@ void Con_DrawSolidConsole( float frac ) {
 	// draw the input prompt, user text, and cursor if desired
 	Con_DrawInput ();
 
-	/*
-	// Draw time and date
-	time(&rawtime);
-	newtime = localtime(&rawtime);
-	if (newtime->tm_hour >= 12) AM = qfalse;
-	if (newtime->tm_hour > 12) newtime->tm_hour -= 12;
-	if (newtime->tm_hour == 0) newtime->tm_hour = 12;
-	Com_sprintf(ts, sizeof(ts), "%.19s %s ", asctime(newtime), AM ? "AM" : "PM" );
-	i = strlen(ts);
+	if (con_datetime->integer) {
+		struct tm		*newtime;
+		time_t			rawtime;
+		qboolean		AM = qtrue;
+		char			ts[24];
 
-	for (x = 0; x<i; x++) {
-		SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - (con.charHeight + con.charHeight / 2), ts[x]);
-	}*/
+		// Draw time and date
+		time(&rawtime);
+		newtime = localtime(&rawtime);
+		if (newtime->tm_hour >= 12) AM = qfalse;
+		if (newtime->tm_hour > 12) newtime->tm_hour -= 12;
+		if (newtime->tm_hour == 0) newtime->tm_hour = 12;
+		Com_sprintf(ts, sizeof(ts), "%.19s %s ", asctime(newtime), AM ? "AM" : "PM" );
+		i = strlen(ts);
+
+		for (x = 0; x<i; x++) {
+			SCR_DrawSmallChar(cls.glconfig.vidWidth - (i - x) * con.charWidth, lines - 3 * (con.charHeight + con.charHeight / 2), ts[x]);
+		}
+	}
 
 	// draw the text
 	con.vislines = lines;
