@@ -477,6 +477,13 @@ void vk_info_f( void ) {
     if ( vbo_models_mode )
         ri.Printf( PRINT_ALL, ", num buffers: %i \n", tr.numVBOs );
 #endif
+#ifdef USE_UPLOAD_QUEUE
+    const int use_staging_queue = 1;
+#else
+    const int use_staging_queue = 0;
+#endif
+    ri.Printf( PRINT_ALL, "\n Use texture staging upload queue: %s\n", yesno[use_staging_queue] );
+
 #else
     ri.Printf(PRINT_ALL, "vk_info statistics are not enabled in this build.\n");
 #endif

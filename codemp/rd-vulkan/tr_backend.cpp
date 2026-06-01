@@ -1153,7 +1153,7 @@ const void	*RB_SwapBuffers( const void *data ) {
 
 	// texture swapping test
 	if ( r_showImages->integer ) {
-		RB_ShowImages(tr.images, tr.numImages);
+		RB_ShowImages(tr.images.items, tr.images.count);
 	}
 
 	cmd = (const swapBuffersCommand_t *)data;

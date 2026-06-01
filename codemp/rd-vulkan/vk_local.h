@@ -52,6 +52,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #if defined (_DEBUG)
 #if defined (_WIN32)
 #define USE_VK_VALIDATION
+//#define USE_VK_OBJECT_TRACKER
 #define USE_DEBUG_REPORT
 //#define USE_DEBUG_UTILS
 #endif
@@ -861,7 +862,6 @@ typedef struct {
 #ifdef USE_VBO_SS
 	vk_storage_buffer_t surface_sprites_ssbo[MAX_SUB_BSP + 1];
 	uint32_t			surface_sprites_ssbo_item_size;
-	uint32_t			surface_sprites_ssbo_count;
 #endif
 
 	// statistics
@@ -1128,6 +1128,7 @@ void		vk_destroy_framebuffers( void );
 void		vk_create_sync_primitives( void );
 void		vk_destroy_sync_primitives( void );
 void		vk_release_geometry_buffers( void );
+void		vk_release_indirect_buffers( void );
 void		vk_wait_idle( void );
 void		vk_queue_wait_idle( void );
 void		vk_release_resources( void );
@@ -1268,3 +1269,28 @@ void		R_DebugGraphics( void );
 	void	vk_create_debug_utils( VkDebugUtilsMessengerCreateInfoEXT &desc );
 #endif
 #endif
+
+#ifdef USE_VK_OBJECT_TRACKER
+	void		vk_dump_tracked_objects( void );
+
+	void		vk_create_tracked_buffer( VkDevice device, const VkBufferCreateInfo* createInfo, VkBuffer* outBuffer, const char* debugName, const char* file, int line, const char* function );
+	void		vk_destroy_tracked_buffer( VkDevice device, VkBuffer buffer );
+
+	VkResult	vk_allocate_tracked_memory( VkDevice device, const VkMemoryAllocateInfo* allocInfo, VkDeviceMemory* outMemory, const char* debugName, const char* file, int line, const char* function );
+	void		vk_allocate_tracked_memory_checked( VkDevice device, const VkMemoryAllocateInfo* allocInfo, VkDeviceMemory* outMemory, const char* debugName, const char* file, int line, const char* function );
+	void		vk_free_tracked_memory( VkDevice device, VkDeviceMemory memory );
+	
+	#define VK_CREATE_BUFFER( device, info, outBuffer, name )				vk_create_tracked_buffer( device, info, outBuffer, name, __FILE__, __LINE__, __func__ )
+	#define	VK_DESTROY_BUFFER( device, buffer )								vk_destroy_tracked_buffer( device, buffer )
+
+	#define	VK_ALLOCATE_MEMORY( device, info, outMemory, name )				vk_allocate_tracked_memory( device, info, outMemory, name, __FILE__, __LINE__, __func__ )
+	#define	VK_ALLOCATE_MEMORY_CHECK( device, info, outMemory, name )		vk_allocate_tracked_memory_checked( device, info, outMemory, name, __FILE__, __LINE__, __func__ )
+
+	#define	VK_FREE_MEMORY( device, memory )								vk_free_tracked_memory( device, memory )
+#else
+	#define VK_CREATE_BUFFER(device, info, outBuffer, name)				VK_CHECK( qvkCreateBuffer( device, info, NULL, outBuffer ) )
+	#define VK_DESTROY_BUFFER(device, buffer)							qvkDestroyBuffer( device, buffer, NULL )
+	#define VK_ALLOCATE_MEMORY(device, info, outMemory, name)			qvkAllocateMemory( device, info, NULL, outMemory )
+	#define VK_ALLOCATE_MEMORY_CHECK(device, info, outMemory, name)		VK_CHECK( qvkAllocateMemory( device, info, NULL, outMemory ) )
+	#define VK_FREE_MEMORY(device, memory)								qvkFreeMemory( device, memory, NULL )
+#endif // USE_VK_OBJECT_TRACKER

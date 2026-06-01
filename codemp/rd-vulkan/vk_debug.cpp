@@ -23,6 +23,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "tr_local.h"
 
+#ifdef USE_VK_OBJECT_TRACKER
+#include <unordered_map>
+#include <string>
+#include <mutex>
+#endif // USE_VK_OBJECT_TRACKER
+
 void vk_set_object_name( uint64_t obj, const char *objName, VkDebugReportObjectTypeEXT objType ) {
 	if ( qvkDebugMarkerSetObjectNameEXT && obj ) {
 		VkDebugMarkerObjectNameInfoEXT info;
@@ -257,8 +263,8 @@ void RB_ShowImages ( image_t** const pImg, uint32_t numImages )
 	const vec4_t black = { 0, 0, 0, 1 };
 	vk_clear_color_attachments( black );
 
-	for (i = 0; i < tr.numImages; i++) {
-		image_t *image = tr.images[i];
+	for (i = 0; i < tr.images.count; i++) {
+		image_t *image = tr.images.items[i];
 
 		w = glConfig.vidWidth / 20;
 		h = glConfig.vidHeight / 15;
@@ -462,3 +468,154 @@ void R_DebugGraphics( void ) {
 
 	ri.CM_DrawDebugSurface(R_DebugPolygon);
 }
+
+/*
+====================
+VulkanObjectTracker
+====================
+*/
+#ifdef USE_VK_OBJECT_TRACKER
+class VulkanObjectTracker
+{
+public:
+    static VulkanObjectTracker& Get()
+    {
+        static VulkanObjectTracker instance;
+        return instance;
+    }
+
+    void Register( uint64_t handle, VkObjectType type, const char* name, const char* file, int line, const char* function )
+    {
+        std::lock_guard<std::mutex> lock( mMutex );
+
+        ObjectInfo info;
+        info.type = type;
+        info.name = name ? name : "Unnamed";
+        info.file = file;
+        info.line = line;
+        info.function = function;
+
+        mObjects[handle] = info;
+    }
+
+    void Unregister( uint64_t handle )
+    {
+        std::lock_guard<std::mutex> lock( mMutex );
+
+        mObjects.erase( handle );
+    }
+
+	void DumpLeaks() const
+	{
+		std::lock_guard<std::mutex> lock( mMutex );
+
+		ri.Printf( PRINT_ALL, "========== Vulkan Object Leaks ==========\n" );
+
+		if ( mObjects.empty() )
+		{
+			ri.Printf( PRINT_ALL, "No Vulkan object leaks detected\n" );
+			ri.Printf( PRINT_ALL, "=========================================\n" );
+			return;
+		}
+
+		int leakCount = 0;
+
+		for ( const auto& pair : mObjects )
+		{
+			uint64_t handle = pair.first;
+			const ObjectInfo& info = pair.second;
+
+			ri.Printf( PRINT_ALL, "\nLeak %i\n", leakCount );
+			ri.Printf( PRINT_ALL, "Handle   : 0x%llx\n", (unsigned long long)handle );
+			ri.Printf( PRINT_ALL, "Type     : %s\n", ObjectTypeToString( info.type ) );
+			ri.Printf( PRINT_ALL, "Name     : %s\n", info.name.c_str() );
+			ri.Printf( PRINT_ALL, "File     : %s\n", info.file.c_str() );
+			ri.Printf( PRINT_ALL, "Line     : %i\n", info.line );
+			ri.Printf( PRINT_ALL, "Function : %s\n", info.function.c_str() );
+
+			leakCount++;
+		}
+
+		ri.Printf( PRINT_ALL, "\n%i Vulkan object leak(s)\n", leakCount );
+		ri.Printf( PRINT_ALL, "=========================================\n" );
+	}
+
+private:
+    struct ObjectInfo
+    {
+        VkObjectType	type;
+        std::string		name;
+        std::string		file;
+        std::string		function;
+        int				line = 0;
+    };
+
+    const char* ObjectTypeToString( VkObjectType type ) const
+    {
+        switch ( type )
+        {
+			case VK_OBJECT_TYPE_BUFFER:			return "Buffer";
+			case VK_OBJECT_TYPE_DEVICE_MEMORY:	return "DeviceMemory";
+			case VK_OBJECT_TYPE_IMAGE:			return "Image";
+			case VK_OBJECT_TYPE_IMAGE_VIEW:		return "ImageView";
+			case VK_OBJECT_TYPE_SAMPLER:		return "Sampler";
+			case VK_OBJECT_TYPE_PIPELINE:		return "Pipeline";
+			default:							return "Unknown";
+        }
+    }
+
+    mutable std::mutex							mMutex;
+    std::unordered_map<uint64_t, ObjectInfo>	mObjects;
+};
+
+void vk_dump_tracked_objects( void )
+{
+	VulkanObjectTracker::Get().DumpLeaks();
+}
+
+// buffer
+void vk_create_tracked_buffer( VkDevice device, const VkBufferCreateInfo* createInfo, VkBuffer* outBuffer, const char* debugName, const char* file, int line, const char* function )
+{
+    VK_CHECK( qvkCreateBuffer( device, createInfo, NULL, outBuffer ) );
+
+	VulkanObjectTracker::Get().Register( (uint64_t)(*outBuffer), VK_OBJECT_TYPE_BUFFER, debugName, file, line, function );
+}
+
+void vk_destroy_tracked_buffer( VkDevice device, VkBuffer buffer )
+{
+    if ( buffer == VK_NULL_HANDLE )
+        return;
+
+    VulkanObjectTracker::Get().Unregister( (uint64_t)buffer );
+
+    qvkDestroyBuffer( device, buffer, NULL );
+}
+
+// memory
+VkResult vk_allocate_tracked_memory( VkDevice device, const VkMemoryAllocateInfo* allocInfo, VkDeviceMemory* outMemory, const char* debugName, const char* file, int line, const char* function )
+{
+    VkResult result = qvkAllocateMemory( device, allocInfo, NULL, outMemory );
+
+    if ( result == VK_SUCCESS )
+        VulkanObjectTracker::Get().Register( (uint64_t)(*outMemory), VK_OBJECT_TYPE_DEVICE_MEMORY, debugName, file, line, function );
+
+    return result;
+}
+
+void vk_allocate_tracked_memory_checked( VkDevice device, const VkMemoryAllocateInfo* allocInfo, VkDeviceMemory* outMemory, const char* debugName, const char* file, int line, const char* function )
+{
+    VK_CHECK( qvkAllocateMemory( device, allocInfo, NULL, outMemory ) );
+
+    VulkanObjectTracker::Get().Register( (uint64_t)(*outMemory), VK_OBJECT_TYPE_DEVICE_MEMORY, debugName, file, line, function );
+}
+
+void vk_free_tracked_memory( VkDevice device, VkDeviceMemory memory )
+{
+    if ( memory == VK_NULL_HANDLE )
+        return;
+
+    VulkanObjectTracker::Get().Unregister( (uint64_t)memory );
+
+    qvkFreeMemory( device, memory, NULL );
+}
+#endif // USE_VK_OBJECT_TRACKER

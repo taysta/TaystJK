@@ -127,7 +127,7 @@ float R_SumOfUsedImages( qboolean bUseFormat )
 {
 	int	total = 0;
 	image_t *pImage;
-
+#if 0
 					  R_Images_StartIteration();
 	while ( (pImage = R_Images_GetNextIteration()) != NULL)
 	{
@@ -143,7 +143,7 @@ float R_SumOfUsedImages( qboolean bUseFormat )
 			}
 		}
 	}
-
+#endif
 	return total;
 }
 
@@ -158,7 +158,7 @@ void R_ImageList_f( void ) {
 
 	ri.Printf( PRINT_ALL, "\n -n- --w-- --h-- type  -size- mipmap --name-------\n" );
 
-	for ( i = 0; i < tr.numImages; i++ )
+	for ( i = 0; i < tr.images.count; i++ )
 	{
 		const char *yesno[] = {"no ", "yes"};
 		const char *format = "???? ";
@@ -166,7 +166,7 @@ void R_ImageList_f( void ) {
 		int estSize;
 		int displaySize;
 
-		image = tr.images[ i ];
+		image = tr.images.items[i];
 		estSize = image->uploadHeight * image->uploadWidth;
 
 		switch ( image->internalFormat )
@@ -227,254 +227,8 @@ void R_ImageList_f( void ) {
 
 	ri.Printf( PRINT_ALL, " -----------------------\n" );
 	ri.Printf( PRINT_ALL, " approx %i kbytes\n", (estTotalSize + 1023) / 1024 );
-	ri.Printf( PRINT_ALL, " %i total images\n\n", tr.numImages );
+	ri.Printf( PRINT_ALL, " %i total images\n\n", tr.images.count );
 }
-
-//=======================================================================
-
-class CStringComparator
-{
-public:
-	bool operator()(const char *s1, const char *s2) const { return(strcmp(s1, s2) < 0); }
-};
-
-typedef std::map <const char *, image_t *, CStringComparator> AllocatedImages_t;
-AllocatedImages_t AllocatedImages;
-AllocatedImages_t::iterator itAllocatedImages;
-int giTextureBindNum = 1024;	// will be set to this anyway at runtime, but wtf?
-
-void R_Add_AllocatedImage( image_t *image) {
-	AllocatedImages[image->imgName] = image;
-}
-// return = number of images in the list, for those interested
-//
-int R_Images_StartIteration( void )
-{
-	itAllocatedImages = AllocatedImages.begin();
-	return AllocatedImages.size();
-}
-
-image_t *R_Images_GetNextIteration( void )
-{
-	if (itAllocatedImages == AllocatedImages.end())
-		return NULL;
-
-	image_t *pImage = (*itAllocatedImages).second;
-	++itAllocatedImages;
-	return pImage;
-}
-
-// clean up anything to do with an image_t struct, but caller will have to clear the internal to an image_t struct ready for either struct free() or overwrite...
-//
-// (avoid using ri->xxxx stuff here in case running on dedicated)
-//
-static void R_Images_DeleteImageContents( image_t *pImage )
-{
-	assert(pImage);	// should never be called with NULL
-	if (pImage)
-	{
-		Z_Free(pImage);
-	}
-}
-
-// special function used in conjunction with "devmapbsp"...
-//
-// (avoid using ri->xxxx stuff here in case running on dedicated)
-//
-void R_Images_DeleteLightMaps( void )
-{
-	for (AllocatedImages_t::iterator itImage = AllocatedImages.begin(); itImage != AllocatedImages.end(); /* empty */)
-	{
-		image_t *pImage = (*itImage).second;
-
-		if (pImage->imgName[0] == '*' && strstr(pImage->imgName,"lightmap"))	// loose check, but should be ok
-		{
-			R_Images_DeleteImageContents(pImage);
-
-			AllocatedImages.erase(itImage++);
-		}
-		else
-		{
-			++itImage;
-		}
-	}
-}
-
-// special function currently only called by Dissolve code...
-//
-void R_Images_DeleteImage( image_t *pImage )
-{
-	// Even though we supply the image handle, we need to get the corresponding iterator entry...
-	//
-	AllocatedImages_t::iterator itImage = AllocatedImages.find(pImage->imgName);
-	if (itImage != AllocatedImages.end())
-	{
-		R_Images_DeleteImageContents(pImage);
-		AllocatedImages.erase(itImage);
-	}
-	else
-	{
-		assert(0);
-	}
-}
-
-// called only at app startup, vid_restart, app-exit
-//
-void R_Images_Clear( void )
-{
-	image_t *pImage;
-	//	int iNumImages =
-					  R_Images_StartIteration();
-	while ( (pImage = R_Images_GetNextIteration()) != NULL)
-	{
-		R_Images_DeleteImageContents(pImage);
-	}
-
-	AllocatedImages.clear();
-
-	giTextureBindNum = 1024;
-}
-
-void RE_RegisterImages_Info_f( void )
-{
-	image_t *pImage	= NULL;
-	int iImage		= 0;
-	int iTexels		= 0;
-
-	int iNumImages	= R_Images_StartIteration();
-	while ( (pImage	= R_Images_GetNextIteration()) != NULL)
-	{
-		ri.Printf (PRINT_ALL, "%d: (%4dx%4dy) \"%s\"",iImage, pImage->width, pImage->height, pImage->imgName);
-		ri.Printf (PRINT_ALL, ", levused %d",pImage->iLastLevelUsedOn);
-		ri.Printf (PRINT_ALL, "\n");
-
-		iTexels += pImage->width * pImage->height;
-		iImage++;
-	}
-	ri.Printf (PRINT_ALL, "%d Images. %d (%.2fMB) texels total, (not including mipmaps)\n",iNumImages, iTexels, (float)iTexels / 1024.0f / 1024.0f);
-	ri.Printf (PRINT_ALL, "RE_RegisterMedia_GetLevel(): %d",RE_RegisterMedia_GetLevel());
-}
-
-// currently, this just goes through all the images and dumps any not referenced on this level...
-//
-qboolean RE_RegisterImages_LevelLoadEnd( void )
-{
-	vk_debug("RE_RegisterImages_LevelLoadEnd():\n");
-
-//	int iNumImages = AllocatedImages.size();	// more for curiosity, really.
-
-	qboolean imageDeleted = qfalse;
-	for (AllocatedImages_t::iterator itImage = AllocatedImages.begin(); itImage != AllocatedImages.end(); /* blank */)
-	{
-		qboolean bEraseOccured = qfalse;
-
-		image_t *pImage = (*itImage).second;
-
-		// don't un-register system shaders (*fog, *dlight, *white, *default), but DO de-register lightmaps ("*<mapname>/lightmap%d")
-		if (pImage->imgName[0] != '*' || strchr(pImage->imgName,'/'))
-		{
-			// image used on this level?
-			//
-			if ( pImage->iLastLevelUsedOn != RE_RegisterMedia_GetLevel() )
-			{
-				// nope, so dump it...
-				//
-				vk_debug("Dumping image \"%s\"\n",pImage->imgName);
-
-				R_Images_DeleteImageContents(pImage);
-
-				AllocatedImages.erase(itImage++);
-				bEraseOccured = qtrue;
-				imageDeleted = qtrue;
-			}
-		}
-
-		if ( !bEraseOccured )
-		{
-			++itImage;
-		}
-	}
-
-	vk_debug("RE_RegisterImages_LevelLoadEnd(): Ok\n");
-
-	return imageDeleted;
-}
-
-image_t *noLoadImage( const char *name, imgFlags_t flags ) {
-	if (!name) {
-		return NULL;
-	}
-
-	char* pName = GenerateImageMappingName(name);
-
-	//
-	// see if the image is already loaded
-	//
-	AllocatedImages_t::iterator itAllocatedImage = AllocatedImages.find(pName);
-	if (itAllocatedImage != AllocatedImages.end())
-	{
-		image_t* pImage = (*itAllocatedImage).second;
-
-		// the white image can be used with any set of parms, but other mismatches are errors...
-		//
-		if (strcmp(name, "*white")) {
-			if (pImage->flags != flags) {
-				ri.Printf(PRINT_DEVELOPER, "WARNING: reused image %s with mixed flags (%i vs %i)\n", name, pImage->flags, flags);
-			}
-		}
-
-		pImage->iLastLevelUsedOn = RE_RegisterMedia_GetLevel();
-
-		return pImage;
-	}
-
-	return NULL;
-}
-
-#if 0
-// returns image_t struct if we already have this, else NULL. No disk-open performed
-//	(important for creating default images).
-//
-// This is called by both R_FindImageFile and anything that creates default images...
-//
-static image_t *R_FindImageFile_NoLoad( const char *name, qboolean mipmap, qboolean allowPicmip, qboolean allowTC, int glWrapClampMode )
-{
-	if (!name) {
-		return NULL;
-	}
-
-	char *pName = GenerateImageMappingName(name);
-
-	//
-	// see if the image is already loaded
-	//
-	AllocatedImages_t::iterator itAllocatedImage = AllocatedImages.find(pName);
-	if (itAllocatedImage != AllocatedImages.end())
-	{
-		image_t *pImage = (*itAllocatedImage).second;
-
-		// the white image can be used with any set of parms, but other mismatches are errors...
-		//
-		if ( strcmp( pName, "*white" ) ) {
-			if ( pImage->mipmap != !!mipmap ) {
-				vk_debug("WARNING: reused image %s with mixed mipmap parm\n", pName );
-			}
-			if ( pImage->allowPicmip != !!allowPicmip ) {
-				vk_debug("WARNING: reused image %s with mixed allowPicmip parm\n", pName );
-			}
-			if ( pImage->wrapClampMode != glWrapClampMode ) {
-				vk_debug("WARNING: reused image %s with mixed glWrapClampMode parm\n", pName );
-			}
-		}
-
-		pImage->iLastLevelUsedOn = RE_RegisterMedia_GetLevel();
-
-		return pImage;
-	}
-
-	return NULL;
-}
-#endif
 
 /*
 =================

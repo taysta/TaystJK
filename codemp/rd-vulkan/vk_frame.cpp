@@ -1261,16 +1261,29 @@ void vk_end_render_pass( void )
     qvkCmdEndRenderPass(vk.cmd->command_buffer);
 }
 
+void vk_release_indirect_buffers( void )
+{
+    uint32_t i;
+
+    for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
+        VK_DESTROY_BUFFER(vk.device, vk.tess[i].indirect_buffer);
+        vk.tess[i].indirect_buffer = VK_NULL_HANDLE;
+    }
+
+    VK_FREE_MEMORY(vk.device, vk.indirect_buffer_memory);
+    vk.indirect_buffer_memory = VK_NULL_HANDLE;
+}
+
 void vk_release_geometry_buffers( void )
 {
     uint32_t i;
 
     for (i = 0; i < NUM_COMMAND_BUFFERS; i++) {
-        qvkDestroyBuffer(vk.device, vk.tess[i].vertex_buffer, NULL);
+        VK_DESTROY_BUFFER(vk.device, vk.tess[i].vertex_buffer);
         vk.tess[i].vertex_buffer = VK_NULL_HANDLE;
     }
 
-    qvkFreeMemory(vk.device, vk.geometry_buffer_memory, NULL);
+    VK_FREE_MEMORY(vk.device, vk.geometry_buffer_memory);
     vk.geometry_buffer_memory = VK_NULL_HANDLE;
 }
 
@@ -1313,20 +1326,23 @@ void vk_release_resources( void ) {
     vk_wait_idle();
 
     for (i = 0; i < vk_world.num_image_chunks; i++)
-        qvkFreeMemory(vk.device, vk_world.image_chunks[i].memory, NULL);
+        VK_FREE_MEMORY(vk.device, vk_world.image_chunks[i].memory);
 
     vk_clean_staging_buffer();
 
     if (vk.staging_buffer.handle != VK_NULL_HANDLE)
-        qvkDestroyBuffer(vk.device, vk.staging_buffer.handle, NULL);
+        VK_DESTROY_BUFFER(vk.device, vk.staging_buffer.handle);
 
     if (vk.staging_buffer.memory != VK_NULL_HANDLE)
-        qvkFreeMemory(vk.device, vk.staging_buffer.memory, NULL);
+        VK_FREE_MEMORY(vk.device, vk.staging_buffer.memory);
 
 #ifdef USE_VBO_SS
     vk_clean_surface_sprites();
 #endif
-
+#ifdef USE_VBO
+	vk_release_world_vbo();
+	vk_release_model_vbo();
+#endif
     // vk_destroy_samplers();
 
     for (i = vk.pipelines_world_base; i < vk.pipelines_count; i++) {
@@ -1654,7 +1670,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
         invalidate_ptr = qtrue;
     }
 
-    VK_CHECK( qvkAllocateMemory( vk.device, &alloc_info, NULL, &memory ) );
+    VK_ALLOCATE_MEMORY_CHECK(vk.device, &alloc_info, &memory, "read pixels");
     VK_CHECK( qvkBindImageMemory( vk.device, dstImage, memory, 0 ) );
 
     command_buffer = vk_begin_command_buffer();
@@ -1788,7 +1804,7 @@ void vk_read_pixels( byte *buffer, uint32_t width, uint32_t height )
     }
 
     qvkDestroyImage( vk.device, dstImage, VK_NULL_HANDLE );
-    qvkFreeMemory( vk.device, memory, VK_NULL_HANDLE );
+    VK_FREE_MEMORY( vk.device, memory );
 
     // restore previous layout
     if ( srcImageLayout != VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL ) {
