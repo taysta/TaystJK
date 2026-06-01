@@ -152,7 +152,7 @@ clientStatic_t		cls;
 
 netadr_t rcon_address;
 
-char cl_reconnectArgs[MAX_OSPATH] = {0};
+cvar_t	*cl_reconnectArgs;
 
 // Structure containing functions exported from refresh DLL
 refexport_t	*re = NULL;
@@ -1121,11 +1121,11 @@ CL_Reconnect_f
 ================
 */
 void CL_Reconnect_f( void ) {
-	if ( !strlen( cl_reconnectArgs ) ) {
+	if ( !strlen( cl_reconnectArgs->string ) ) {
 		return;
 	}
 	Cvar_Set("ui_singlePlayerActive", "0");
-	Cbuf_AddText( va("connect %s\n", cl_reconnectArgs ) );
+	Cbuf_AddText( va("connect %s\n", cl_reconnectArgs->string ) );
 }
 
 /*
@@ -1144,7 +1144,7 @@ void CL_Connect_f( void ) {
 	}
 
 	// save arguments for reconnect
-	Q_strncpyz( cl_reconnectArgs, Cmd_Args(), sizeof( cl_reconnectArgs ) );
+	Cvar_Set("cl_reconnectArgs", Cmd_Args());
 
 	Cvar_Set("ui_singlePlayerActive", "0");
 
@@ -3409,6 +3409,8 @@ void CL_Init( void ) {
 	cl_filterGames = Cvar_Get( "cl_filterGames", "MBII MBIIOpenBeta", CVAR_ARCHIVE_ND, "List of fs_game to filter (space separated)" );
 
 	cl_downloadProtocol = Cvar_Get("cl_downloadProtocol", "", CVAR_INTERNAL, "Select the download protocol to use");
+
+	cl_reconnectArgs = Cvar_Get( "cl_reconnectArgs", "", CVAR_ARCHIVE, "Arguments provided when last connecting to a server" );
 
 	// userinfo
 	cl_name = Cvar_Get ("name", "Padawan", CVAR_USERINFO | CVAR_ARCHIVE_ND, "Player name" );
