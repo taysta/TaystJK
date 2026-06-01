@@ -2351,7 +2351,7 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 				gravity = qtrue;
 			break;
 		case WP_BOWCASTER:
-			if (cgs.jcinfo & JAPRO_CINFO2_WTTRIBES)
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
 				gravity = qtrue;
 		case WP_DEMP2:
 			break;
@@ -2360,7 +2360,7 @@ qboolean CG_GetBulletGravity(int weapon, qboolean altFire) {
 				gravity = qtrue;
 			break;
 		case WP_ROCKET_LAUNCHER:
-			if (cgs.jcinfo & JAPRO_CINFO2_WTTRIBES)
+			if (cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES)
 				gravity = qtrue;
 			break;
 		case WP_THERMAL:
