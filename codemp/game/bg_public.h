@@ -554,7 +554,6 @@ extern int bgForcePowerCost[NUM_FORCE_POWERS][NUM_FORCE_POWER_LEVELS];
 #define TAYSTJK_INFO_FIXROLL_1	            (1<<4) // enable rolling while using force grip (1.0.0)
 #define TAYSTJK_INFO_FIXROLL_2	            (1<<5) // enable rolling while using force grip + chaining rolls
 #define TAYSTJK_INFO_FIXROLL_3	            (1<<6) // jk2 roll
-#define TAYSTJK_INFO_HEADSLIDE				(1<<7)
 
 #define _SPPHYSICS 1
 #define _COOP 1
