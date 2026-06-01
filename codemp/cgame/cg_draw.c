@@ -2217,8 +2217,8 @@ void CG_DrawHUD(centity_t	*cent)
 							{
 								if (cg_drawScore.integer > 1 && cgs.gametype >= GT_TEAM && cgs.gametype != GT_SIEGE) {
 									CG_DrawScaledProportionalString(
-											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-											focusItem->window.rect.y - 14,
+											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x - cg_drawScoreX.value) * cgs.widthRatioCoef,
+											focusItem->window.rect.y - cg_drawScoreY.value - 14,
 											scoreStr,
 											UI_RIGHT | UI_DROPSHADOW,
 											focusItem->window.foreColor,
@@ -2226,8 +2226,8 @@ void CG_DrawHUD(centity_t	*cent)
 								}
 								else {
 									CG_DrawScaledProportionalString(
-											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x) * cgs.widthRatioCoef,
-											focusItem->window.rect.y,
+											SCREEN_WIDTH - (SCREEN_WIDTH - focusItem->window.rect.x - cg_drawScoreX.value) * cgs.widthRatioCoef,
+											focusItem->window.rect.y - cg_drawScoreY.value,
 											scoreStr,
 											UI_RIGHT|UI_DROPSHADOW,
 											focusItem->window.foreColor,
