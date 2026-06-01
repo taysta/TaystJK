@@ -248,6 +248,12 @@ XDOCS_CVAR_DEF("cg_drawScore", "Displays your score in the lower right",
 	SETTING("2", "Score, team score, and bias is drawn")
 )
 
+XDOCS_CVAR_DEF("cg_drawScoreX", "Offset cg_drawScore horizontally", ""
+)
+
+XDOCS_CVAR_DEF("cg_drawScoreY", "Offset cg_drawScore vertically", ""
+)
+
 XDOCS_CVAR_DEF("cg_drawScores", "Displays the team scores",
 "This does not apply to the simple HUD." NL
 	SETTING("0", "Scores are hidden") NL
