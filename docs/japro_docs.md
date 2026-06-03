@@ -11,6 +11,7 @@
 
 #### Saber
 	g_tweakSaber			0	//Configured with /tweakSaber command.
+	g_reducesaberblock		0	//Percent chance to deny a valid MP saber block/clash. 0=off, 100=always.
 	g_backslashDamageScale	1	
 	g_maxSaberDefense		-1	// -1 disables, 0/1/2/3 enables and clamps level
 	g_saberTouchDmg			0	//Configure saber touch damage for MP dmgs. Can be >1 for more touch damage.

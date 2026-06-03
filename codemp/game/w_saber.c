@@ -4996,6 +4996,11 @@ static QINLINE qboolean CheckSaberDamage(gentity_t *self, int rSaberNum, int rBl
 					return qfalse;
 				}
 			}
+
+			if (!SaberSPStyle(self) && g_reducesaberblock.integer > 0 && Q_irand(1, 100) <= g_reducesaberblock.integer)
+			{
+				return qfalse;
+			}
 		}
 
 		if (OnSameTeam(self, otherOwner) &&
