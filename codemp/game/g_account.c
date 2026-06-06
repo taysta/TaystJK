@@ -1755,8 +1755,10 @@ void G_SpawnCosmeticUnlocks(void) {
 			cosmeticUnlocks[row].style = atoi(pch);
 		else if ((args % 4) == 0) {
 			cosmeticUnlocks[row].duration = atoi(pch);
-			//trap->Print("Cosmetic unlock added: %i, %s, %i, %i\n", cosmeticUnlocks[row].bitvalue, cosmeticUnlocks[row].mapname, cosmeticUnlocks[row].style, cosmeticUnlocks[row].duration);
-			row++;
+			if (cosmeticUnlocks[row].bitvalue < 32) {
+				//trap->Print("Cosmetic unlock added: %i, %s, %i, %i\n", cosmeticUnlocks[row].bitvalue, cosmeticUnlocks[row].mapname, cosmeticUnlocks[row].style, cosmeticUnlocks[row].duration);
+				row++;
+			}
 		}
 		pch = strtok (NULL, ";\n\t");
 		args++;
