@@ -9021,7 +9021,7 @@ command_t commands[] = {
 	{ "printstats",			Cmd_PrintStats_f,			CMD_NOINTERMISSION },
 	{ "race",				Cmd_Race_f,					CMD_NOINTERMISSION },
 
-	//{ "rCompare",			Cmd_DFCompare_f,			CMD_NOINTERMISSION },
+	{ "rCompare",			Cmd_DFCompare_f,			CMD_NOINTERMISSION },
 
 	{ "register",			Cmd_ACRegister_f,			CMD_NOINTERMISSION },
 

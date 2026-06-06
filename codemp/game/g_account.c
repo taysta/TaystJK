@@ -1032,6 +1032,7 @@ void IntegerToRaceName(int style, char *styleString, size_t styleStringSize) {
 		case 16: Q_strncpyz(styleString, "ocpm", styleStringSize); break;
 		case 17: Q_strncpyz(styleString, "tribes", styleStringSize); break;
 		case 18: Q_strncpyz(styleString, "surf", styleStringSize); break;
+		case 19: Q_strncpyz(styleString, "flow", styleStringSize); break;
 		default: Q_strncpyz(styleString, "ERROR", styleStringSize); break;
 	}
 }
@@ -5074,6 +5075,8 @@ int RaceNameToInteger(char *style) {
 		return 17;
 	if (!Q_stricmp(style, "surf"))
 		return 18;
+	if (!Q_stricmp(style, "flow"))
+		return 19;
 	return -1;
 }
 
@@ -5931,7 +5934,6 @@ void Cmd_DFHardest_f(gentity_t *ent) {
 
 }
 
-#if 0
 void Cmd_DFCompare_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i, season = -1;
 	char inputString[16], inputStyleString[16], myUsername[16], theirUsername[16];
@@ -6023,7 +6025,7 @@ GROUP BY coursename, style, season
 		if (season == -1) {
 			if (style == -1) { //All seasons, all styles
 				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s:\n    ^5Coursename                     Style\n\"", theirUsername, inputStyleString));
-				sql = "SELECT a.coursename, a.style FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.rank != 0 AND b.rank != 0 ORDER BY a.entries DESC LIMIT ?,10";
+				sql = "SELECT a.coursename, a.style FROM LocalRun a WHERE a.username = ? AND a.rank != 0 AND EXISTS (SELECT 1 FROM LocalRun b WHERE b.username = ? AND b.coursename = a.coursename AND b.style = a.style AND b.duration_ms > a.duration_ms AND b.rank != 0) ORDER BY a.entries DESC LIMIT ?,10";
 					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
 					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
 					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
@@ -6031,37 +6033,33 @@ GROUP BY coursename, style, season
 			}
 			else {//All seasons, specific style
 				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s:\n    ^5Coursename\n\"", theirUsername, inputStyleString));
-				sql = "SELECT a.coursename FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.rank != 0 AND b.rank != 0 AND a.style = ? AND b.style = ? ORDER BY a.entries DESC LIMIT ?,10";
+				sql = "SELECT a.coursename FROM LocalRun a WHERE a.username = ? AND a.style = ? AND a.rank != 0 AND EXISTS (SELECT 1 FROM LocalRun b WHERE b.username = ? AND b.coursename = a.coursename AND b.style = a.style AND b.duration_ms > a.duration_ms AND b.rank != 0) ORDER BY a.entries DESC LIMIT ?,10";
 					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
 					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
-					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
-					CALL_SQLITE(bind_int(stmt, 3, style));
-					CALL_SQLITE(bind_int(stmt, 4, style));
-					CALL_SQLITE(bind_int(stmt, 5, start));
+					CALL_SQLITE(bind_int(stmt, 2, style));
+					CALL_SQLITE(bind_text(stmt, 3, myUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_int(stmt, 4, start));
 			}
 		}
 		else {
 			if (style == -1) {//Specific season, all styles
 				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s season %i:\n    ^5Coursename                     Style\n\"", theirUsername, inputStyleString, season));
-				sql = "SELECT a.coursename, a.style FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND a.season = ? AND b.season = ? ORDER BY a.entries DESC LIMIT ?,10";
+				sql = "SELECT a.coursename, a.style FROM LocalRun a WHERE a.username = ? AND a.season = ? AND EXISTS (SELECT 1 FROM LocalRun b WHERE b.username = ? AND b.coursename = a.coursename AND b.style = a.style AND b.season = a.season AND b.duration_ms > a.duration_ms) ORDER BY a.entries DESC LIMIT ?,10";
 					CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
 					CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
-					CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
-					CALL_SQLITE(bind_int(stmt, 3, season));
-					CALL_SQLITE(bind_int(stmt, 4, season));
-					CALL_SQLITE(bind_int(stmt, 5, start));
+					CALL_SQLITE(bind_int(stmt, 2, season));
+					CALL_SQLITE(bind_text(stmt, 3, myUsername, -1, SQLITE_STATIC));
+					CALL_SQLITE(bind_int(stmt, 4, start));
 			}
 			else {//Speific season, specific style
 				trap->SendServerCommand(ent - g_entities, va("print \"Results for player %s %s season %i:\n    ^5Coursename\n\"", theirUsername, inputStyleString, season));
-				sql = "SELECT a.coursename FROM LocalRun a INNER JOIN LocalRun b ON a.coursename = b.coursename AND a.style = b.style WHERE a.duration_ms < b.duration_ms AND a.username = ? AND b.username = ? AND A.style = ? AND b.style = ? AND a.season = ? AND b.season = ? ORDER BY a.entries DESC LIMIT ?,10";
+				sql = "SELECT a.coursename FROM LocalRun a WHERE a.username = ? AND a.style = ? AND a.season = ? AND EXISTS (SELECT 1 FROM LocalRun b WHERE b.username = ? AND b.coursename = a.coursename AND b.style = a.style AND b.season = a.season AND b.duration_ms > a.duration_ms) ORDER BY a.entries DESC LIMIT ?,10";
 				CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
 				CALL_SQLITE(bind_text(stmt, 1, theirUsername, -1, SQLITE_STATIC));
-				CALL_SQLITE(bind_text(stmt, 2, myUsername, -1, SQLITE_STATIC));
-				CALL_SQLITE(bind_int(stmt, 3, style));
-				CALL_SQLITE(bind_int(stmt, 4, season));
-				CALL_SQLITE(bind_int(stmt, 5, style));
-				CALL_SQLITE(bind_int(stmt, 6, season));
-				CALL_SQLITE(bind_int(stmt, 7, start));
+				CALL_SQLITE(bind_int(stmt, 2, style));
+				CALL_SQLITE(bind_int(stmt, 3, season));
+				CALL_SQLITE(bind_text(stmt, 4, myUsername, -1, SQLITE_STATIC));
+				CALL_SQLITE(bind_int(stmt, 5, start));
 			}
 		}
 
@@ -6099,7 +6097,6 @@ GROUP BY coursename, style, season
 
 
 }
-#endif
 
 void Cmd_DFRecent_f(gentity_t *ent) {
 	int style = -1, page = -1, start = 0, input, i;
@@ -7335,6 +7332,41 @@ void InitGameAccountStuff( void ) { //Called every mapload , move the create tab
 	CALL_SQLITE_EXPECT (step (stmt), DONE);
 	CALL_SQLITE (finalize(stmt));
 #endif
+
+	sql = "CREATE INDEX IF NOT EXISTS idx_localrun_username ON LocalRun(username)";
+	CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+	s = sqlite3_step(stmt);
+	if (s != SQLITE_DONE)
+		G_ErrorPrint("ERROR: SQL Create Failed (InitGameAccountStuff idx_localrun_username)", s);
+	CALL_SQLITE(finalize(stmt));
+
+	sql = "CREATE INDEX IF NOT EXISTS idx_localrun_coursename ON LocalRun(coursename)";
+	CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+	s = sqlite3_step(stmt);
+	if (s != SQLITE_DONE)
+		G_ErrorPrint("ERROR: SQL Create Failed (InitGameAccountStuff idx_localrun_coursename)", s);
+	CALL_SQLITE(finalize(stmt));
+
+	sql = "CREATE INDEX IF NOT EXISTS idx_localrun_course_style ON LocalRun(coursename, style)";
+	CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+	s = sqlite3_step(stmt);
+	if (s != SQLITE_DONE)
+		G_ErrorPrint("ERROR: SQL Create Failed (InitGameAccountStuff idx_localrun_course_style)", s);
+	CALL_SQLITE(finalize(stmt));
+
+	sql = "CREATE INDEX IF NOT EXISTS idx_localrun_lastupdate ON LocalRun(last_update)";
+	CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+	s = sqlite3_step(stmt);
+	if (s != SQLITE_DONE)
+		G_ErrorPrint("ERROR: SQL Create Failed (InitGameAccountStuff idx_localrun_lastupdate)", s);
+	CALL_SQLITE(finalize(stmt));
+
+	sql = "CREATE INDEX IF NOT EXISTS idx_localrun_user_course_style ON LocalRun(username, coursename, style)";
+	CALL_SQLITE(prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL));
+	s = sqlite3_step(stmt);
+	if (s != SQLITE_DONE)
+		G_ErrorPrint("ERROR: SQL Create Failed (InitGameAccountStuff idx_localrun_user_course_style)", s);
+	CALL_SQLITE(finalize(stmt));
 
 	CALL_SQLITE (close(db));
 
