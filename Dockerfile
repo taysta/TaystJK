@@ -1,5 +1,8 @@
 # Builder image
-FROM ubuntu:18.04 as builder
+FROM ubuntu:22.04 AS builder
+
+ARG TAYSTJK_REF=unknown
+ARG TAYSTJK_COMMIT=unknown
 
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
@@ -8,51 +11,66 @@ RUN dpkg --add-architecture i386 &&\
 	rm -rf /var/lib/apt/lists/*
 
 # Copy sources
-COPY . /usr/src/openjk
+COPY . /usr/src/taystjk
 
 # Build i386 arch
-RUN mkdir /usr/src/openjk/build.i386 &&\
-	cd /usr/src/openjk/build.i386 &&\
-	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Modules/Toolchains/linux-i686.cmake \
+RUN mkdir /usr/src/taystjk/build.i386 &&\
+	cd /usr/src/taystjk/build.i386 &&\
+	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake \
 		-DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF \
-		-DBuildSPEngine=OFF -DBuildSPGame=OFF -DBuildSPRdVanilla=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
-	make &&\
-	make install
+	cmake --build . -j $(nproc) &&\
+	cmake --install .
 
 # Build x86_64 arch
-RUN mkdir /usr/src/openjk/build.x86_64 &&\
-	cd /usr/src/openjk/build.x86_64 &&\
+RUN mkdir /usr/src/taystjk/build.x86_64 &&\
+	cd /usr/src/taystjk/build.x86_64 &&\
 	cmake -DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF \
-		-DBuildSPEngine=OFF -DBuildSPGame=OFF -DBuildSPRdVanilla=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
-	make &&\
-	make install
+	cmake --build . -j $(nproc) &&\
+	cmake --install .
 
 
 # Server image
-FROM ubuntu:18.04
+FROM ubuntu:22.04
+
+ARG TAYSTJK_REF=unknown
+ARG TAYSTJK_COMMIT=unknown
+
+LABEL org.opencontainers.image.title="TaystJK"
+LABEL org.opencontainers.image.description="TaystJK dedicated server"
+LABEL org.opencontainers.image.licenses="GPL-2.0-only"
+LABEL io.tayst.taystjk.upstream.ref="${TAYSTJK_REF}"
+LABEL io.tayst.taystjk.upstream.commit="${TAYSTJK_COMMIT}"
 
 # Install utilities and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
 	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends socat libstdc++6 libstdc++6:i386 zlib1g zlib1g:i386 &&\
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* &&\
+	useradd --create-home --home-dir /home/container --shell /bin/bash container
 
 # Copy binaries and scripts
-RUN mkdir -p /opt/openjk/cdpath/base /opt/openjk/basepath /opt/openjk/homepath
-COPY --from=builder /opt/JediAcademy/openjkded.* /opt/openjk/
-COPY --from=builder /opt/JediAcademy/base/ /opt/openjk/cdpath/base/
-COPY --from=builder /opt/JediAcademy/OpenJK/ /opt/openjk/cdpath/OpenJK/
-COPY scripts/docker/*.sh /opt/openjk/
-COPY scripts/docker/server.cfg /opt/openjk/cdpath/base/
-COPY scripts/docker/server.cfg /opt/openjk/cdpath/OpenJK/
-RUN chmod +x /opt/openjk/openjkded.* /opt/openjk/*.sh
+RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/basepath /opt/taystjk/homepath
+COPY --from=builder /opt/JediAcademy/taystjkded.* /opt/taystjk/
+COPY --from=builder /opt/JediAcademy/base/ /opt/taystjk/cdpath/base/
+COPY --from=builder /opt/JediAcademy/TaystJK/ /opt/taystjk/cdpath/TaystJK/
+COPY scripts/docker/*.sh /opt/taystjk/
+COPY scripts/docker/server.cfg /opt/taystjk/cdpath/base/
+COPY scripts/docker/server.cfg /opt/taystjk/cdpath/TaystJK/
+RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh
+
+# Write metadata
+RUN printf '%s\n' "${TAYSTJK_COMMIT}" > /opt/taystjk/.upstream-commit \
+	&& printf '%s\n' "${TAYSTJK_REF}" > /opt/taystjk/.upstream-ref
 
 # Execution
-ENV OJK_OPTS="+exec server.cfg"
+ENV TJK_OPTS="+exec server.cfg"
 EXPOSE 29070/udp
-HEALTHCHECK --interval=10s --timeout=9s --retries=6 CMD ["/opt/openjk/healthcheck.sh"]
-CMD ["/opt/openjk/run.sh"]
+EXPOSE 18200/tcp
+HEALTHCHECK --interval=10s --timeout=9s --retries=6 CMD ["/opt/taystjk/healthcheck.sh"]
+USER container
+ENV USER=container HOME=/home/container
+CMD ["/opt/taystjk/run.sh"]

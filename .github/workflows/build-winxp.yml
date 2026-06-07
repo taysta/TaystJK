@@ -11,8 +11,9 @@ on:
 jobs:
   msvc-xp:
     name: WinXP ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
+      fail-fast: false
       matrix:
         arch: [x86, x86_64]
         build_type: [Release]
@@ -136,20 +137,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           LATEST_RELEASE_COMMIT=$(gh api repos/${{ github.repository }}/releases/tags/winxp --jq '.target_commitish' 2>/dev/null || echo "")
-          gh release delete winxp --cleanup-tag --yes || true
-          
+          gh release delete winxp --cleanup-tag --yes 2>/dev/null || true
+
           RELEASE_BODY="## Commits"
-          
-          if [ -n "$LATEST_RELEASE_COMMIT" ]; then
+
+          if [ -n "$LATEST_RELEASE_COMMIT" ] && git rev-parse --quiet --verify "$LATEST_RELEASE_COMMIT^{commit}" >/dev/null; then
             COMMITS=$(git log $LATEST_RELEASE_COMMIT..HEAD --pretty=format:"%h|%s|%an")
           else
             COMMITS=$(git log -3 --pretty=format:"%h|%s|%an")
           fi
-          
+
           while IFS='|' read -r hash subject author; do
             if [[ $subject =~ ^Merge\ pull\ request\ \#([0-9]+) ]]; then
               PR_NUM="${BASH_REMATCH[1]}"
-              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
+              PR_LINK=" [#${PR_NUM}](https://github.com/${{ github.repository }}/pull/${PR_NUM})"
+              RELEASE_BODY+=$'\n'"- $hash: $subject ($author)${PR_LINK}"
             elif [[ $subject =~ \(#([0-9]+)\)$ ]]; then
               PR_NUM="${BASH_REMATCH[1]}"
               subject=$(echo "$subject" | sed 's/ (#[0-9]\+)$//')
@@ -159,7 +161,7 @@ jobs:
               RELEASE_BODY+=$'\n'"- $hash: $subject ($author)"
             fi
           done <<< "$COMMITS"
-          
+
           RELEASE_FILES=""
           for artifact_dir in artifacts/*; do
             if [ -d "$artifact_dir" ]; then
@@ -172,7 +174,7 @@ jobs:
               done
             fi
           done
-          
+
           gh release create winxp \
             --title "Latest WinXP Build" \
             --notes "$RELEASE_BODY" \
@@ -182,7 +184,7 @@ jobs:
   create-release-winxp:
     if: github.event_name == 'release'
     needs: [msvc-xp]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:

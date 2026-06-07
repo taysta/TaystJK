@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# OpenJK server utility functions.
+# TaystJK server utility functions.
 #
 
 # Send and receive UDP datagrams
@@ -58,7 +58,7 @@ function rcon
 {
 	local COMMAND="$*"
 	local CONFIG
-	for CONFIG in "$OJK_HOMEPATH/$OJK_MOD/server.cfg" "$OJK_BASEPATH/$OJK_MOD/server.cfg" "$OJK_CDPATH/$OJK_MOD/server.cfg"; do
+	for CONFIG in "$TJK_HOMEPATH/$TJK_MOD/server.cfg" "$TJK_BASEPATH/$TJK_MOD/server.cfg" "$TJK_CDPATH/$TJK_MOD/server.cfg"; do
 		local RCON_PASSWORD=`parseconfig "$CONFIG" rconpassword`
 		if [ -n "$RCON_PASSWORD" ]; then
 			sendrecv "rcon $RCON_PASSWORD $COMMAND"

@@ -1,33 +1,33 @@
 #!/bin/bash -ex
 #
-# OpenJK server run script.
+# TaystJK server run script.
 #
 
 # Set variables
-OJK_DIR="/opt/openjk"
-OJK_MOD="${OJK_MOD:-base}"
-OJK_ARCH="${OJK_ARCH:-i386}"
-OJK_CDPATH="$OJK_DIR/cdpath"
-OJK_BASEPATH="$OJK_DIR/basepath"
-OJK_HOMEPATH="$OJK_DIR/homepath"
-OJK_OPTS="+set dedicated 2 +set net_port 29070 +set fs_cdpath $OJK_CDPATH +set fs_basepath $OJK_BASEPATH +set fs_homepath $OJK_HOMEPATH +set fs_game $OJK_MOD $OJK_OPTS"
-OJK_BIN="$OJK_DIR/openjkded.$OJK_ARCH"
-OJK_LOG="$OJK_HOMEPATH/$OJK_MOD/openjk_server.log"
+TJK_DIR="/opt/taystjk"
+TJK_MOD="${TJK_MOD:-base}"
+TJK_ARCH="${TJK_ARCH:-i386}"
+TJK_CDPATH="$TJK_DIR/cdpath"
+TJK_BASEPATH="$TJK_DIR/basepath"
+TJK_HOMEPATH="$TJK_DIR/homepath"
+TJK_OPTS="+set dedicated 2 +set net_port 29070 +set fs_cdpath $TJK_CDPATH +set fs_basepath $TJK_BASEPATH +set fs_homepath $TJK_HOMEPATH +set fs_game $TJK_MOD $TJK_OPTS"
+TJK_BIN="$TJK_DIR/taystjkded.$TJK_ARCH"
+TJK_LOG="$TJK_HOMEPATH/$TJK_MOD/taystjk_server.log"
 
 # Load functions
-. "$OJK_DIR/functions.sh"
+. "$TJK_DIR/functions.sh"
 
 # Remove nav files
-find "$OJK_DIR" -name '*.nav' -delete
+find "$TJK_DIR" -name '*.nav' -delete
 
 # Register signal handler
 trap 'rcon quit' SIGTERM
 
-# Launch OpenJK
-mkdir -p `dirname "$OJK_LOG"`
-export HOME="$OJK_HOMEPATH"
+# Launch TaystJK
+mkdir -p `dirname "$TJK_LOG"`
+export HOME="$TJK_HOMEPATH"
 umask 0002
-$OJK_BIN $OJK_OPTS 2>&1 | tee -a "$OJK_LOG" &
+$TJK_BIN $TJK_OPTS 2>&1 | tee -a "$TJK_LOG" &
 
 # Wait for it while listening to signals
 wait $!

@@ -1,14 +1,14 @@
 #!/bin/bash
 #
-# OpenJK server health check script.
+# TaystJK server health check script.
 #
 
 # Set variables
-OJK_DIR="/opt/openjk"
+TJK_DIR="/opt/taystjk"
 RET=0
 
 # Load functions
-. "$OJK_DIR/functions.sh"
+. "$TJK_DIR/functions.sh"
 
 # Check server status
 INFO=`getinfo`
