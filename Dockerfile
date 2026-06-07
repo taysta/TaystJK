@@ -15,8 +15,7 @@ RUN mkdir /usr/src/taystjk/build.i386 &&\
 	cd /usr/src/taystjk/build.i386 &&\
 	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake \
 		-DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF \
-		-DBuildSPEngine=OFF -DBuildSPGame=OFF -DBuildSPRdVanilla=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
 	make &&\
 	make install
@@ -25,8 +24,7 @@ RUN mkdir /usr/src/taystjk/build.i386 &&\
 RUN mkdir /usr/src/taystjk/build.x86_64 &&\
 	cd /usr/src/taystjk/build.x86_64 &&\
 	cmake -DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF \
-		-DBuildSPEngine=OFF -DBuildSPGame=OFF -DBuildSPRdVanilla=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
 	make &&\
 	make install
