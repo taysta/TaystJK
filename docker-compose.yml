@@ -14,13 +14,12 @@
 #
 # Server configuration:
 #   A default server.cfg is included in the image.
-#   To override it, create server.cfg in the directory matching TJK_MOD:
-#     TJK_MOD=base    -> ./base/server.cfg
-#     TJK_MOD=taystjk -> ./taystjk/server.cfg
+#   To override it, place your server.cfg in the homepath directory:
+#     ./homepath/taystjk/server.cfg
 #
 # Custom PK3s:
 #   Base JKA maps/assets go in ./base.
-#   TaystJK-specific PK3s/configs/overrides go in ./taystjk.
+#   TaystJK-specific PK3s go in ./homepath/taystjk.
 
 services:
   taystjk:
@@ -31,7 +30,6 @@ services:
       - "18200:18200/tcp"
     volumes:
       - ./base:/opt/taystjk/cdpath/base
-      - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
       - TJK_MOD=taystjk
@@ -51,7 +49,6 @@ services:
       - "18200:18200/tcp"
     volumes:
       - ./base:/opt/taystjk/cdpath/base
-      - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
       - TJK_MOD=taystjk

@@ -7,7 +7,7 @@ ARG TAYSTJK_COMMIT=unknown
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
-	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake zlib1g-dev zlib1g-dev:i386 &&\
+	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake git zlib1g-dev zlib1g-dev:i386 &&\
 	rm -rf /var/lib/apt/lists/*
 
 # Copy sources
@@ -53,14 +53,13 @@ RUN dpkg --add-architecture i386 &&\
 	useradd --create-home --home-dir /home/container --shell /bin/bash container
 
 # Copy binaries and scripts
-RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/cdpath/taystjk /opt/taystjk/basepath /opt/taystjk/homepath
+RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/cdpath/taystjk /opt/taystjk/basepath/taystjk /opt/taystjk/homepath
 COPY --from=builder /opt/JediAcademy/taystjkded.* /opt/taystjk/
 COPY --from=builder /opt/JediAcademy/taystjk/ /opt/taystjk/cdpath/taystjk/
 COPY scripts/docker/*.sh /opt/taystjk/
-COPY scripts/docker/server.cfg /opt/taystjk/cdpath/base/server.cfg
-COPY scripts/docker/server.cfg /opt/taystjk/cdpath/taystjk/server.cfg
+COPY scripts/docker/server.cfg /opt/taystjk/basepath/taystjk/server.cfg
 RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh \
-    && chown -R container:container /opt/taystjk \
+    && chown -R container:container /opt/taystjk
 
 # Write metadata
 RUN printf '%s\n' "${TAYSTJK_COMMIT}" > /opt/taystjk/.upstream-commit \
