@@ -4,7 +4,7 @@
 #   docker compose --profile build up
 #
 # Pull from registry:
-#   docker compose up
+#   docker compose --profile registry up
 
 services:
   taystjk:
