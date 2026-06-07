@@ -53,12 +53,12 @@ RUN dpkg --add-architecture i386 &&\
 	useradd --create-home --home-dir /home/container --shell /bin/bash container
 
 # Copy binaries and scripts
-RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/basepath /opt/taystjk/homepath
+RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/cdpath/taystjk /opt/taystjk/basepath /opt/taystjk/homepath
 COPY --from=builder /opt/JediAcademy/taystjkded.* /opt/taystjk/
-COPY --from=builder /opt/JediAcademy/TaystJK/ /opt/taystjk/cdpath/TaystJK/
+COPY --from=builder /opt/JediAcademy/taystjk/ /opt/taystjk/cdpath/taystjk/
 COPY scripts/docker/*.sh /opt/taystjk/
 COPY scripts/docker/server.cfg /opt/taystjk/cdpath/base/server.cfg
-COPY scripts/docker/server.cfg /opt/taystjk/cdpath/TaystJK/server.cfg
+COPY scripts/docker/server.cfg /opt/taystjk/cdpath/taystjk/server.cfg
 RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh
 
 # Write metadata

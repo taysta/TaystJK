@@ -14,10 +14,10 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
-      - ./TaystJK:/opt/taystjk/cdpath/TaystJK
+      - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
-      - TJK_MOD=TaystJK
+      - TJK_MOD=taystjk
       - TJK_ARCH=x86_64
     restart: unless-stopped
 
@@ -33,9 +33,9 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
-      - ./TaystJK:/opt/taystjk/cdpath/TaystJK
+      - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
-      - TJK_MOD=TaystJK
+      - TJK_MOD=taystjk
       - TJK_ARCH=x86_64
     restart: unless-stopped
