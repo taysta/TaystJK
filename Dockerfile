@@ -17,8 +17,8 @@ RUN mkdir /usr/src/taystjk/build.i386 &&\
 		-DCMAKE_INSTALL_PREFIX=/opt \
 		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
-	make &&\
-	make install
+	cmake --build . -j $(nproc) &&\
+	cmake --install .
 
 # Build x86_64 arch
 RUN mkdir /usr/src/taystjk/build.x86_64 &&\
@@ -26,8 +26,8 @@ RUN mkdir /usr/src/taystjk/build.x86_64 &&\
 	cmake -DCMAKE_INSTALL_PREFIX=/opt \
 		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
 		.. &&\
-	make &&\
-	make install
+	cmake --build . -j $(nproc) &&\
+	cmake --install .
 
 
 # Server image
