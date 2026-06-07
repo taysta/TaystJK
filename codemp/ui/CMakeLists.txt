@@ -128,9 +128,10 @@ set_target_properties(${MPUI} PROPERTIES PROJECT_LABEL "MP UI Library")
 # no libraries used
 if(MPUILibraries)
 	target_link_libraries(${MPUI} ${MPUILibraries})
-	
-	if (GIT_FOUND)
-		add_dependencies(${MPUI} GET_GIT_TAG_AND_HASH)
-	endif()
-	add_dependencies(${MPUI} Assets)
 endif(MPUILibraries)
+
+if (GIT_FOUND)
+	add_dependencies(${MPUI} GET_GIT_TAG_AND_HASH)
+endif(GIT_FOUND)
+
+add_dependencies(${MPUI} Assets)
