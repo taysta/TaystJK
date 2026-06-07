@@ -14,6 +14,7 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
+      - ./base:/opt/taystjk/cdpath/base
       - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
@@ -33,6 +34,7 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
+      - ./base:/opt/taystjk/cdpath/base
       - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:

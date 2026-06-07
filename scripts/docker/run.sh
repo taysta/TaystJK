@@ -5,8 +5,8 @@
 
 # Set variables
 TJK_DIR="/opt/taystjk"
-TJK_MOD="${TJK_MOD:-TaystJK}"
-TJK_ARCH="${TJK_ARCH:-i386}"
+TJK_MOD="${TJK_MOD:-taystjk}"
+TJK_ARCH="${TJK_ARCH:-x86_64}"
 TJK_CDPATH="$TJK_DIR/cdpath"
 TJK_BASEPATH="$TJK_DIR/basepath"
 TJK_HOMEPATH="$TJK_DIR/homepath"
@@ -23,11 +23,20 @@ find "$TJK_DIR" -name '*.nav' -delete
 # Register signal handler
 trap 'rcon quit' SIGTERM
 
+# Validate Jedi Academy assets
+for pk3 in assets0.pk3 assets1.pk3 assets2.pk3 assets3.pk3; do
+    if [ ! -f "$TJK_CDPATH/base/$pk3" ]; then
+        echo "Missing required Jedi Academy asset: $TJK_CDPATH/base/$pk3"
+        echo "Mount your Jedi Academy base assets into $TJK_CDPATH/base"
+        exit 1
+    fi
+done
+
 # Launch TaystJK
-mkdir -p `dirname "$TJK_LOG"`
+mkdir -p "$(dirname "$TJK_LOG")"
 export HOME="$TJK_HOMEPATH"
 umask 0002
-$TJK_BIN $TJK_OPTS 2>&1 | tee -a "$TJK_LOG" &
+"$TJK_BIN" $TJK_OPTS 2>&1 | tee -a "$TJK_LOG" &
 
 # Wait for it while listening to signals
 wait $!
