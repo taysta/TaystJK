@@ -52,5 +52,6 @@ RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh
 # Execution
 ENV TJK_OPTS="+exec server.cfg"
 EXPOSE 29070/udp
+EXPOSE 18200/tcp
 HEALTHCHECK --interval=10s --timeout=9s --retries=6 CMD ["/opt/taystjk/healthcheck.sh"]
 CMD ["/opt/taystjk/run.sh"]
