@@ -7,7 +7,7 @@ ARG TAYSTJK_COMMIT=unknown
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
-	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake zlib1g-dev zlib1g-dev:i386 &&\
+	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake git zlib1g-dev zlib1g-dev:i386 &&\
 	rm -rf /var/lib/apt/lists/*
 
 # Copy sources
