@@ -33,7 +33,7 @@ RUN mkdir /usr/src/taystjk/build.x86_64 &&\
 
 
 # Server image
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 # Install utilities and libraries
 RUN dpkg --add-architecture i386 &&\
