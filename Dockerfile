@@ -1,6 +1,9 @@
 # Builder image
 FROM ubuntu:22.04 as builder
 
+ARG TAYSTJK_REF=unknown
+ARG TAYSTJK_COMMIT=unknown
+
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
@@ -33,6 +36,15 @@ RUN mkdir /usr/src/taystjk/build.x86_64 &&\
 # Server image
 FROM ubuntu:22.04
 
+ARG TAYSTJK_REF=unknown
+ARG TAYSTJK_COMMIT=unknown
+
+LABEL org.opencontainers.image.title="TaystJK"
+LABEL org.opencontainers.image.description="TaystJK dedicated server"
+LABEL org.opencontainers.image.licenses="GPL-2.0-only"
+LABEL io.tayst.taystjk.upstream.ref="${TAYSTJK_REF}"
+LABEL io.tayst.taystjk.upstream.commit="${TAYSTJK_COMMIT}"
+
 # Install utilities and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
@@ -48,6 +60,10 @@ COPY scripts/docker/*.sh /opt/taystjk/
 COPY scripts/docker/server.cfg /opt/taystjk/cdpath/base/
 COPY scripts/docker/server.cfg /opt/taystjk/cdpath/TaystJK/
 RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh
+
+# Write metadata
+RUN printf '%s\n' "${TAYSTJK_COMMIT}" > /opt/taystjk/.upstream-commit \
+	&& printf '%s\n' "${TAYSTJK_REF}" > /opt/taystjk/.upstream-ref
 
 # Execution
 ENV TJK_OPTS="+exec server.cfg"
