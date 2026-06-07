@@ -368,7 +368,8 @@ jobs:
           cp -R x86_64-extracted/taystjk.x86_64.app/Contents/Resources/*  universal2-app/JediAcademy/taystjk.app/Contents/Resources/
           cp -R x86_64-extracted/taystjk/*                                universal2-app/JediAcademy/taystjk/
 
-          sed -i '' 's/x86_64/ub2/g' universal2-app/JediAcademy/taystjk.app/Contents/Info.plist
+          plutil -replace CFBundleExecutable -string "taystjk.ub2" universal2-app/JediAcademy/taystjk.app/Contents/Info.plist
+          plutil -replace LSArchitecturePriority -json '["arm64","x86_64"]' universal2-app/JediAcademy/taystjk.app/Contents/Info.plist
 
           lipo -create -output "universal2-app/JediAcademy/taystjk.app/Contents/MacOS/taystjk.ub2" \
             x86_64-extracted/taystjk.x86_64.app/Contents/MacOS/taystjk.x86_64 \
