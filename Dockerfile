@@ -1,5 +1,5 @@
 # Builder image
-FROM ubuntu:22.04 as builder
+FROM ubuntu:22.04 AS builder
 
 ARG TAYSTJK_REF=unknown
 ARG TAYSTJK_COMMIT=unknown
