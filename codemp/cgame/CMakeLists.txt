@@ -186,9 +186,10 @@ set_target_properties(${MPCGame} PROPERTIES PROJECT_LABEL "MP Client Game Librar
 # no libraries used
 if(MPCGameLibraries)
 	target_link_libraries(${MPCGame} ${MPCGameLibraries})
-	
-	if (GIT_FOUND)
-		add_dependencies(${MPCGame} GET_GIT_TAG_AND_HASH)
-	endif()
-	add_dependencies(${MPCGame} Assets)
 endif(MPCGameLibraries)
+
+if (GIT_FOUND)
+	add_dependencies(${MPCGame} GET_GIT_TAG_AND_HASH)
+endif(GIT_FOUND)
+
+add_dependencies(${MPCGame} Assets)
