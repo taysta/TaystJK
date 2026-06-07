@@ -13,7 +13,7 @@ COPY . /usr/src/taystjk
 # Build i386 arch
 RUN mkdir /usr/src/taystjk/build.i386 &&\
 	cd /usr/src/taystjk/build.i386 &&\
-	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Modules/Toolchains/linux-i686.cmake \
+	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake \
 		-DCMAKE_INSTALL_PREFIX=/opt \
 		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF \
 		-DBuildSPEngine=OFF -DBuildSPGame=OFF -DBuildSPRdVanilla=OFF -DBuildMPRend2=OFF \
