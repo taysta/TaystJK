@@ -1,0 +1,41 @@
+# TaystJK dedicated server
+#
+# Build from source:
+#   docker compose --profile build up
+#
+# Pull from registry:
+#   docker compose up
+
+services:
+  taystjk:
+    image: ghcr.io/taysta/taystjk:latest
+    profiles: ["registry"]
+    ports:
+      - "29070:29070/udp"
+      - "18200:18200/tcp"
+    volumes:
+      - ./TaystJK:/opt/taystjk/cdpath/TaystJK
+      - ./homepath:/opt/taystjk/homepath
+    environment:
+      - TJK_MOD=TaystJK
+      - TJK_ARCH=x86_64
+    restart: unless-stopped
+
+  taystjk-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TAYSTJK_REF: master
+        TAYSTJK_COMMIT: unknown
+    profiles: ["build"]
+    ports:
+      - "29070:29070/udp"
+      - "18200:18200/tcp"
+    volumes:
+      - ./TaystJK:/opt/taystjk/cdpath/TaystJK
+      - ./homepath:/opt/taystjk/homepath
+    environment:
+      - TJK_MOD=TaystJK
+      - TJK_ARCH=x86_64
+    restart: unless-stopped
