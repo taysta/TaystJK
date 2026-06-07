@@ -26,6 +26,7 @@ jobs:
     name: Windows ${{ matrix.arch }} ${{ matrix.build_type }} (${{ matrix.portable }})
     runs-on: windows-2022
     strategy:
+      fail-fast: false
       matrix:
         arch: [x86, x86_64]
         build_type: [Debug, Release]
