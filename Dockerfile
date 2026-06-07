@@ -7,7 +7,7 @@ ARG TAYSTJK_COMMIT=unknown
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
-	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake libjpeg-dev libjpeg-dev:i386 libpng-dev libpng-dev:i386 zlib1g-dev zlib1g-dev:i386 &&\
+	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends build-essential gcc-multilib g++-multilib cmake zlib1g-dev zlib1g-dev:i386 &&\
 	rm -rf /var/lib/apt/lists/*
 
 # Copy sources
@@ -18,7 +18,7 @@ RUN mkdir /usr/src/taystjk/build.i386 &&\
 	cd /usr/src/taystjk/build.i386 &&\
 	cmake -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchains/linux-i686.cmake \
 		-DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF -DBuildMPRdVulkan=OFF \
 		.. &&\
 	cmake --build . -j $(nproc) &&\
 	cmake --install .
@@ -27,7 +27,7 @@ RUN mkdir /usr/src/taystjk/build.i386 &&\
 RUN mkdir /usr/src/taystjk/build.x86_64 &&\
 	cd /usr/src/taystjk/build.x86_64 &&\
 	cmake -DCMAKE_INSTALL_PREFIX=/opt \
-		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF \
+		-DBuildMPCGame=OFF -DBuildMPEngine=OFF -DBuildMPRdVanilla=OFF -DBuildMPUI=OFF -DBuildMPRend2=OFF -DBuildMPRdVulkan=OFF \
 		.. &&\
 	cmake --build . -j $(nproc) &&\
 	cmake --install .
