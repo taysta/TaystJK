@@ -59,7 +59,8 @@ COPY --from=builder /opt/JediAcademy/taystjk/ /opt/taystjk/cdpath/taystjk/
 COPY scripts/docker/*.sh /opt/taystjk/
 COPY scripts/docker/server.cfg /opt/taystjk/cdpath/base/server.cfg
 COPY scripts/docker/server.cfg /opt/taystjk/cdpath/taystjk/server.cfg
-RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh
+RUN chmod +x /opt/taystjk/taystjkded.* /opt/taystjk/*.sh \
+    && chown -R container:container /opt/taystjk \
 
 # Write metadata
 RUN printf '%s\n' "${TAYSTJK_COMMIT}" > /opt/taystjk/.upstream-commit \
