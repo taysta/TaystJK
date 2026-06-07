@@ -49,7 +49,8 @@ LABEL io.tayst.taystjk.upstream.commit="${TAYSTJK_COMMIT}"
 RUN dpkg --add-architecture i386 &&\
 	apt-get -q update &&\
 	DEBIAN_FRONTEND="noninteractive" apt-get -q install -y -o Dpkg::Options::="--force-confnew" --no-install-recommends socat libstdc++6 libstdc++6:i386 zlib1g zlib1g:i386 &&\
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* &&\
+	useradd --create-home --home-dir /home/container --shell /bin/bash container
 
 # Copy binaries and scripts
 RUN mkdir -p /opt/taystjk/cdpath/base /opt/taystjk/basepath /opt/taystjk/homepath
@@ -70,4 +71,6 @@ ENV TJK_OPTS="+exec server.cfg"
 EXPOSE 29070/udp
 EXPOSE 18200/tcp
 HEALTHCHECK --interval=10s --timeout=9s --retries=6 CMD ["/opt/taystjk/healthcheck.sh"]
+USER container
+ENV USER=container HOME=/home/container
 CMD ["/opt/taystjk/run.sh"]
