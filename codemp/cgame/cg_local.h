@@ -1547,6 +1547,8 @@ typedef struct cgMedia_s {
     qhandle_t   keyAttackOff;
     qhandle_t   keyAltOn;
     qhandle_t   keyAltOff;
+	qhandle_t   keyWalkOn;
+	qhandle_t   keyWalkOff;
     qhandle_t	keyCrouchOnShader2;
     qhandle_t	keyJumpOnShader2;
     qhandle_t	keyBackOnShader2;
@@ -1555,6 +1557,7 @@ typedef struct cgMedia_s {
     qhandle_t	keyRightOnShader2;
     qhandle_t   keyAttackOn2;
     qhandle_t   keyAltOn2;
+	qhandle_t   keyWalkOn2;
     qhandle_t   leftTriangle;
     qhandle_t   rightTriangle;
 

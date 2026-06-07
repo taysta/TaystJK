@@ -1585,6 +1585,8 @@ Ghoul2 Insert End
     cgs.media.keyAttackOff		    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_off" );
     cgs.media.keyAltOn	    	    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_on" );
     cgs.media.keyAltOff		        = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_off" );
+	cgs.media.keyWalkOn		        = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/walk_on" );
+	cgs.media.keyWalkOff		    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/walk_off" );
 
     //Accel hud triangles
     cgs.media.leftTriangle		    = trap->R_RegisterShaderNoMip ( "gfx/hud/arrow_left" );
@@ -1599,6 +1601,7 @@ Ghoul2 Insert End
     cgs.media.keyRightOnShader2		= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/right_on2" );
     cgs.media.keyAttackOn2	    	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/attack_on2" );
     cgs.media.keyAltOn2	    	    = trap->R_RegisterShaderNoMip ( "gfx/hud/keys/alt_on2" );
+	cgs.media.keyWalkOn2	    	= trap->R_RegisterShaderNoMip ( "gfx/hud/keys/walk_on2" );
 
 	//Movement Keys - End
 
