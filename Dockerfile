@@ -1,5 +1,5 @@
 # Builder image
-FROM ubuntu:18.04 as builder
+FROM ubuntu:22.04 as builder
 
 # Install build tools and libraries
 RUN dpkg --add-architecture i386 &&\
