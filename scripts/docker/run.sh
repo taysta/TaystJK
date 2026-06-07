@@ -5,7 +5,7 @@
 
 # Set variables
 TJK_DIR="/opt/taystjk"
-TJK_MOD="${TJK_MOD:-base}"
+TJK_MOD="${TJK_MOD:-TaystJK}"
 TJK_ARCH="${TJK_ARCH:-i386}"
 TJK_CDPATH="$TJK_DIR/cdpath"
 TJK_BASEPATH="$TJK_DIR/basepath"
