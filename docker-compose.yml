@@ -4,7 +4,23 @@
 #   docker compose --profile build up
 #
 # Pull from registry:
-#   docker compose up
+#   docker compose --profile registry up
+#
+# Requirements:
+#   Copy your retail Jedi Academy base assets into ./base:
+#     ./base/assets0.pk3
+#     ./base/assets1.pk3
+#     ...
+#
+# Server configuration:
+#   A default server.cfg is included in the image.
+#   To override it, create server.cfg in the directory matching TJK_MOD:
+#     TJK_MOD=base    -> ./base/server.cfg
+#     TJK_MOD=taystjk -> ./taystjk/server.cfg
+#
+# Custom PK3s:
+#   Base JKA maps/assets go in ./base.
+#   TaystJK-specific PK3s/configs/overrides go in ./taystjk.
 
 services:
   taystjk:
@@ -14,6 +30,7 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
+      - ./base:/opt/taystjk/cdpath/base
       - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
@@ -33,6 +50,7 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
+      - ./base:/opt/taystjk/cdpath/base
       - ./taystjk:/opt/taystjk/cdpath/taystjk
       - ./homepath:/opt/taystjk/homepath
     environment:
