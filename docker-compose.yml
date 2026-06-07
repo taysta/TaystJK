@@ -1,10 +1,10 @@
 # TaystJK dedicated server
 #
+# Pull from registry:
+#   docker compose pull && docker compose up
+#
 # Build from source:
 #   docker compose --profile build up
-#
-# Pull from registry:
-#   docker compose --profile registry up
 #
 # Requirements:
 #   Copy your retail Jedi Academy base assets into ./base:
