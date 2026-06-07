@@ -24,7 +24,6 @@
 services:
   taystjk:
     image: ghcr.io/taysta/taystjk:latest
-    profiles: ["registry"]
     ports:
       - "29070:29070/udp"
       - "18200:18200/tcp"
