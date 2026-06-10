@@ -1328,6 +1328,15 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 			wishspeed = state.physics.airstrafewishspeed;
 		}
 	}
+
+	if (state.cgaz.groundMove && inCmd.upmove < 0) {
+		const float duckWishspeed = state.speed * state.physics.duckscale;
+
+		if (wishspeed > duckWishspeed) {
+			wishspeed = duckWishspeed;
+		}
+	}
+
 	//SP only applies the scale when on the ground and also encourages deceleration away from current velocity
 	if (state.moveStyle == MV_SP) {
 		if (DotProduct(state.velocity, wishvel) < 0.0f) {
@@ -1335,7 +1344,7 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 		}
 	}
 
-	if (state.moveStyle == MV_QW && !(state.cgaz.groundMove)) {
+	if (state.moveStyle == MV_QW && !state.cgaz.groundMove) {
 		if (wishspeed > pm_qw_airstrafewishspeed) {
 			wishspeed = pm_qw_airstrafewishspeed;
 		}
