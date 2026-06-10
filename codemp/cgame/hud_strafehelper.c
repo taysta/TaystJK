@@ -47,7 +47,6 @@ int DF_GetMovePhysics() {
 float DF_GetAccelerate() {
 	float accelerate;
 	switch (state.moveStyle) {
-		case MV_PJK:
 		case MV_CPM:
 		case MV_OCPM:
 		case MV_RJCPM:
@@ -63,6 +62,7 @@ float DF_GetAccelerate() {
 		case MV_SP:
 			accelerate = pm_sp_accelerate;
 			break;
+		case MV_PJK:
 		default:
 			accelerate = pm_accelerate;
 	}
