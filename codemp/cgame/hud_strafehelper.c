@@ -2100,7 +2100,7 @@ qboolean DF_IsSlickSurf(void) {
 
 	if ((state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK)
 	|| (state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING))
-	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_WALKING))
+	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_DASH))
 	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
 		onSlick = qtrue;
 
