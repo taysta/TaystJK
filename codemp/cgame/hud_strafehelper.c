@@ -1914,7 +1914,11 @@ void DF_DrawYawSpeed(void) {
 	//    const int        xOffset = 0;
 
 	const float diff = AngleSubtract(state.viewAngles[YAW], cg.lastYawSpeed);
-	float yawspeed = diff / state.cgaz.frametime;
+	float frametime = (float)cg.frametime / 1000.0f;
+	if (frametime <= 0.0f) {
+		frametime = 0.001f;
+	}
+	float yawspeed = diff / frametime;
 	if (yawspeed < 0)
 		yawspeed = -yawspeed;
 
