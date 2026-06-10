@@ -238,6 +238,20 @@ qboolean DF_CenterOnly() {
 	return centerOnly;
 }
 
+static float DF_GetWishspeedInternal(const usercmd_t inCmd, const qboolean uncapped);
+
+//is the player currently in a knockback state
+static qboolean DF_IsKnockback(void) {
+	return (qboolean)((cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK) != 0);
+}
+
+//is the player skiing along the ground in tribes
+static qboolean DF_TribesGroundSki(void) {
+	return (qboolean)(state.moveStyle == MV_TRIBES
+		&& (state.cmd.buttons & BUTTON_DASH)
+		&& state.cgaz.groundMove);
+}
+
 static float DF_GetAirAccelForCmd(const usercmd_t cmd) {
 	float accel = state.physics.airaccelerate;
 	vec3_t wishvel, forward, right, up;
@@ -288,6 +302,9 @@ static float DF_GetAccelWishspeed(const usercmd_t inCmd) {
 			return 127.0f;
 		}
 	}
+	else if (DF_TribesGroundSki()) {
+		return DF_GetWishspeedInternal(inCmd, qtrue);
+	}
 
 	return DF_GetWishspeed(inCmd);
 }
@@ -310,11 +327,36 @@ static qboolean DF_UseGroundAccel(void) {
 		return qfalse;
 	}
 
+	if (DF_IsKnockback()) {
+		return (qboolean)(state.moveStyle == MV_OCPM);
+	}
+
 	if (state.moveStyle == MV_OCPM) {
 		return qtrue;
 	}
 
+	if (state.moveStyle == MV_SLICK) {
+		return qtrue;
+	}
+
 	return state.cgaz.frictionFrame;
+}
+
+//selects the acceleration constant
+static float DF_GetAccel(const usercmd_t cmd) {
+	if (!state.cgaz.groundMove) {
+		return DF_GetAirAccelForCmd(cmd);
+	}
+
+	if (DF_TribesGroundSki()) {
+		return pm_tribes_groundaccelerate * pm_tribes_groundfriction;
+	}
+
+	if (DF_UseGroundAccel()) {
+		return state.physics.accelerate;
+	}
+
+	return pm_airaccelerate;
 }
 
 qboolean showSnapHud() {
@@ -747,7 +789,7 @@ void DF_SetCGAZ() {
 		state.cgaz.vf = state.cgaz.v;
 	}
 
-	const float accel = DF_UseGroundAccel() ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
+	const float accel = DF_GetAccel(state.cmd);
 	state.cgaz.a = DF_GetAccelWishspeed(state.cmd) * accel * state.cgaz.frametime;
 
 	state.cgaz.d_min = CGAZ_Min(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
@@ -1004,7 +1046,7 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				const float fakeAccel = DF_UseGroundAccel() ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
+				const float fakeAccel = DF_GetAccel(fakeCmd);
 
 				delta = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf,fakeAccelWishspeed * fakeAccel * state.cgaz.frametime, fakeWishspeed);
 				delta += state.strafeHelper.offset;
@@ -1335,6 +1377,10 @@ float CGAZ_Max(const qboolean onGround, const float v, const float vf, const flo
 
 //takes a user commmand and returns the emulated wishspeed as a float
 float DF_GetWishspeed(const usercmd_t inCmd) {
+	return DF_GetWishspeedInternal(inCmd, qfalse);
+}
+
+static float DF_GetWishspeedInternal(const usercmd_t inCmd, const qboolean uncapped) {
 	vec3_t		wishvel;
 	vec3_t		forward, right, up;
 
@@ -1409,6 +1455,11 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 			wishspeed = pm_qw_airstrafewishspeed;
 		}
 	}
+
+	if (!uncapped && DF_TribesGroundSki() && wishspeed > 30.0f) {
+		wishspeed = 30.0f;
+	}
+
 	return wishspeed;
 }
 
