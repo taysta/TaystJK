@@ -2022,6 +2022,7 @@ extern	const float	pm_qw_airstrafewishspeed;
 
 extern	const float pm_tribes_accelerate;
 extern	const float pm_tribes_airaccelerate;
+extern	const float pm_tribes_groundaccelerate;
 extern	const float pm_tribes_groundfriction;
 extern	const float pm_tribes_airfriction;
 extern	const float	pm_tribes_groundstrafewishspeed;
