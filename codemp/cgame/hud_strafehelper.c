@@ -582,7 +582,7 @@ int DF_SetPlayerState(centity_t* cent)
 {
 	state.moveStyle = DF_GetMovePhysics();
 	state.m_iVehicleNum = cg.predictedPlayerState.m_iVehicleNum;
-	state.onGround = (qboolean)(cent->currentState.groundEntityNum == ENTITYNUM_WORLD);
+	state.onGround = (qboolean)(cent->currentState.groundEntityNum != ENTITYNUM_NONE);
 	state.groundEntityNum = cent->currentState.groundEntityNum;
 
 	if(state.m_iVehicleNum) {
@@ -2125,7 +2125,7 @@ qboolean DF_IsSlickSurf(void) {
 	down[2] -= 128;
 	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
 
-	if ((state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK)
+	if ((state.groundEntityNum != ENTITYNUM_NONE && tr.surfaceFlags & SURF_SLICK)
 	|| (state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING))
 	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_DASH))
 	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
