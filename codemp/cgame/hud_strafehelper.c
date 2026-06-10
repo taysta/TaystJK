@@ -704,7 +704,17 @@ void DF_SetCGAZ() {
 
 	state.cgaz.s = DF_GetWishspeed(state.cmd);
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-	state.cgaz.vf = state.cgaz.frictionFrame ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
+
+	if (state.cgaz.frictionFrame) {
+		const float control = state.cgaz.v < state.physics.stopspeed ? state.physics.stopspeed : state.cgaz.v;
+		float vf = state.cgaz.v - control * state.physics.friction * state.cgaz.frametime;
+		if (vf < 0) {
+			vf = 0;
+		}
+		state.cgaz.vf = vf;
+	} else {
+		state.cgaz.vf = state.cgaz.v;
+	}
 
 	const float accel = DF_UseGroundAccel() ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
 	state.cgaz.a = DF_GetAccelWishspeed(state.cmd) * accel * state.cgaz.frametime;
