@@ -718,6 +718,9 @@ static qboolean CG_IsWalkingAnim(int anim) {
 //sets cmd for a non-predicted client (spectator/demo playback)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
+	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9) {
+		state.moveDir = -1;
+	}
 	state.cmd = DF_DirToCmd(state.moveDir);
 	state.cmd.upmove = 0;
 	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK | BUTTON_WALKING);
@@ -726,8 +729,6 @@ void DF_SetClientCmd(centity_t* cent) {
 		state.cmd.upmove = 127;
 	else if (cg.snap->ps.pm_flags & PMF_DUCKED || CG_InRollAnim(cent))
 		state.cmd.upmove = -1;
-	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9)
-		state.moveDir = -1;
 	if (cent->currentState.eFlags & EF_FIRING && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
 		state.cmd.buttons |= BUTTON_ATTACK;
 		state.cmd.buttons &= ~BUTTON_ALT_ATTACK;
