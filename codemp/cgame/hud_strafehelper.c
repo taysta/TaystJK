@@ -276,6 +276,18 @@ static float DF_GetAccelWishspeed(const usercmd_t inCmd) {
 	return DF_GetWishspeed(inCmd);
 }
 
+static qboolean DF_UseGroundAccel(void) {
+	if (!state.cgaz.groundMove) {
+		return qfalse;
+	}
+
+	if (state.moveStyle == MV_OCPM) {
+		return qtrue;
+	}
+
+	return state.cgaz.frictionFrame;
+}
+
 qboolean showSnapHud() {
 	if ((cgs.serverMod == SVMOD_JAPRO && state.moveStyle == MV_OCPM)
 		|| (cgs.serverMod == SVMOD_JAPRO && !state.racemode)
@@ -696,7 +708,7 @@ void DF_SetCGAZ() {
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
 	state.cgaz.vf = state.cgaz.frictionFrame ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
 
-	float accel = state.cgaz.frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
+	const float accel = DF_UseGroundAccel() ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
 	state.cgaz.a = DF_GetAccelWishspeed(state.cmd) * accel * state.cgaz.frametime;
 
 	state.cgaz.d_min = CGAZ_Min(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
@@ -953,7 +965,7 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				const float fakeAccel = state.cgaz.frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
+				const float fakeAccel = DF_UseGroundAccel() ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
 
 				delta = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf,fakeAccelWishspeed * fakeAccel * state.cgaz.frametime, fakeWishspeed);
 				delta += state.strafeHelper.offset;
