@@ -163,7 +163,6 @@ float DF_GetAirStrafeWishspeed() {
 float DF_GetFriction() {
 	float friction;
 	switch (state.moveStyle) {
-		case MV_Q3:
 		case MV_CPM:
 		case MV_OCPM:
 		case MV_WSW:
@@ -178,6 +177,7 @@ float DF_GetFriction() {
 		case MV_QW:
 			friction = pm_qw_friction;
 			break;
+		case MV_Q3:
 		default:
 			friction = pm_friction;
 	}
