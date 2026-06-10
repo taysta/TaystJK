@@ -234,6 +234,36 @@ qboolean DF_CenterOnly() {
 	return centerOnly;
 }
 
+static float DF_GetAirAccelForCmd(const usercmd_t cmd) {
+	vec3_t wishvel, forward, right, up;
+
+	if (!state.physics.hasAirControl) {
+		return state.physics.airaccelerate;
+	}
+
+	if (cmd.forwardmove == 0 && cmd.rightmove != 0) {
+		return state.physics.airstrafeaccelerate;
+	}
+
+	AngleVectors(state.viewAngles, forward, right, up);
+	forward[2] = 0;
+	right[2] = 0;
+	VectorNormalize(forward);
+	VectorNormalize(right);
+
+	wishvel[0] = forward[0] * cmd.forwardmove + right[0] * cmd.rightmove;
+	wishvel[1] = forward[1] * cmd.forwardmove + right[1] * cmd.rightmove;
+	wishvel[2] = 0;
+
+	if (VectorNormalize(wishvel) > 0.0f
+		&& DotProduct(state.velocity, wishvel) < 0.0f
+		&& state.physics.airstopaccelerate > 0.0f) {
+		return state.physics.airstopaccelerate;
+		}
+
+	return state.physics.airaccelerate;
+}
+
 qboolean showSnapHud() {
 	if ((cgs.serverMod == SVMOD_JAPRO && state.moveStyle == MV_OCPM)
 		|| (cgs.serverMod == SVMOD_JAPRO && !state.racemode)
@@ -650,7 +680,9 @@ void DF_SetCGAZ() {
 	state.cgaz.s = DF_GetWishspeed(state.cmd);
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
 	state.cgaz.vf = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
-	state.cgaz.a = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.s * state.physics.accelerate * state.cgaz.frametime : state.cgaz.s * state.physics.airaccelerate * state.cgaz.frametime;
+
+	const float accel = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
+	state.cgaz.a = state.cgaz.s * accel * state.cgaz.frametime;
 
 	state.cgaz.d_min = CGAZ_Min(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
 	state.cgaz.d_opt = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
@@ -904,7 +936,10 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				delta = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.onGround && state.cgaz.wasOnGround ? fakeWishspeed * state.physics.accelerate * state.cgaz.frametime : fakeWishspeed * state.physics.airaccelerate * state.cgaz.frametime, fakeWishspeed);
+				const qboolean frictionFrame = state.onGround && state.cgaz.wasOnGround && !state.onSlick;
+				const float fakeAccel = frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
+
+				delta = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf,fakeWishspeed * fakeAccel * state.cgaz.frametime,fakeWishspeed);
 				delta += state.strafeHelper.offset;
 			}
 			else {
