@@ -2103,6 +2103,14 @@ japro - Draw the speedometer
 		vec4_t colorGroundSpeed = { 1, 1, 1, 1 };
 		vec4_t colorGroundSpeeds = { 1, 1, 1, 1 };
 
+		int jumpsLimit = cg_speedometerJumps.integer;
+		if (jumpsLimit < 0) {
+			jumpsLimit = 0;
+		}
+		else if (jumpsLimit > (int)ARRAY_LEN(cg.lastGroundSpeeds) - 1) {
+			jumpsLimit = (int)ARRAY_LEN(cg.lastGroundSpeeds) - 1; //don't let the cvar index past the array
+		}
+
 		if (state.groundEntityNum != ENTITYNUM_NONE || state.velocity[2] < 0) { //On ground or Moving down
 			cg.firstTimeInAir = qfalse;
 		}
@@ -2117,7 +2125,9 @@ japro - Draw the speedometer
 					jumpsCounter = 0;
 					clearOnNextJump = qfalse;
 				}
-				cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
+				if (jumpsCounter < (int)ARRAY_LEN(cg.lastGroundSpeeds)) {
+					cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
+				}
 			}
 		}
 
@@ -2126,9 +2136,9 @@ japro - Draw the speedometer
 				state.pm_time <= 0 && state.cgaz.v < state.cgaz.s) || state.cgaz.v == 0) {
 				clearOnNextJump = qtrue;
 			}
-			if (cg_speedometerJumps.value && jumpsCounter < cg_speedometerJumps.integer) {
+			if (cg_speedometerJumps.value && jumpsCounter < jumpsLimit) {
 				//if we are in the first n jumps
-				for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
+				for (i = 0; i <= jumpsLimit; i++) { //print the jumps
 					const float groundSpeedsColor = 1 / (cg.lastGroundSpeeds[i] / state.cgaz.s * (cg.lastGroundSpeeds[i] / state.cgaz.s));
 					Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
 					if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS1) { //color the string
@@ -2136,7 +2146,7 @@ japro - Draw the speedometer
 						colorGroundSpeeds[2] = groundSpeedsColor;
 					}
 					else if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS2) {
-						if ((jumpsCounter > 0 && cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]) ||
+						if ((i > 0 && cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]) ||
 							(i == 0 && cg.lastGroundSpeeds[0] > firstSpeed)) {
 							colorGroundSpeeds[0] = groundSpeedsColor;
 							colorGroundSpeeds[1] = 1;
@@ -2157,12 +2167,15 @@ japro - Draw the speedometer
 				}
 			}
 			else if (cg_speedometerJumps.value &&
-				jumpsCounter == cg_speedometerJumps.integer) { //we out of the first n jumps
+				jumpsCounter >= jumpsLimit) { //we out of the first n jumps
 				firstSpeed = cg.lastGroundSpeeds[0];
-				for (i = 0; i <= cg_speedometerJumps.integer; i++) { //shuffle jumps array down
+				for (i = 0; i < jumpsLimit; i++) { //shuffle jumps array down
 					cg.lastGroundSpeeds[i] = cg.lastGroundSpeeds[i + 1];
 				}
-				jumpsCounter--;  //reduce jump counter
+				cg.lastGroundSpeeds[jumpsLimit] = 0; //vacate the end slot
+				if (jumpsCounter > 0) {
+					jumpsCounter--;  //reduce jump counter
+				}
 			}
 		}
 
