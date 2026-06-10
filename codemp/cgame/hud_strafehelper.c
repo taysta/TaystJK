@@ -841,20 +841,19 @@ void DF_SetSpeedometer() {
 
 //sets the frametime for the cgaz struct
 void DF_SetFrameTime() {
-	float frameTime;
-	if (cg_strafeHelper_FPS.value < 1) {
-		frameTime = (float)cg.frametime/1000;
+	float fps = cg_strafeHelper_FPS.value;
+
+	if (fps < 1.0f) {
+		fps = (float)com_maxFPS.integer;
 	}
-	else if (cg_strafeHelper_FPS.value > 1000) {
-		frameTime = 1.0f / 1000;
+	if (fps < 1.0f) {
+		fps = 125.0f;
 	}
-	else {
-		frameTime = 1.0f / cg_strafeHelper_FPS.value;
+	else if (fps > 1000.0f) {
+		fps = 1000.0f;
 	}
-	if (frameTime <= 0.0f) {
-		frameTime = 0.001f; //1ms floor, equivalent to 1000fps cap
-	}
-	state.cgaz.frametime = frameTime;
+
+	state.cgaz.frametime = 1.0f / fps;
 }
 
 //sets the velocity angle for the cgaz struct
