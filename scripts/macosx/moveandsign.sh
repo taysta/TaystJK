@@ -5,6 +5,7 @@
 TAYST_DIR=~/Library/Application\ Support/TaystJK
 JEDI_DIR=~/Library/Application\ Support/Steam/steamapps/common/Jedi\ Academy/JediAcademy
 TAYST_APP=$TAYST_DIR/taystjk.arm64.app
+TAYST_DED=$TAYST_DIR/taystjkded.arm64
 
 # Check TaystJK destination directory exists
 if [ ! -d "$TAYST_DIR" ]; then
@@ -26,8 +27,10 @@ mv "$JEDI_DIR"/* "$TAYST_DIR"
 
 # Remove quarantine attribute
 xattr -r -d com.apple.quarantine "$TAYST_APP"
+xattr -r -d com.apple.quarantine "$TAYST_DED"
 
-# Sign the application
+# Sign the application bundle and dedicated server binary
 codesign --force --deep --sign - "$TAYST_APP"
+codesign --force --sign - "$TAYST_DED"
 
 echo "TaystJK setup completed successfully!"
