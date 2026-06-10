@@ -235,33 +235,45 @@ qboolean DF_CenterOnly() {
 }
 
 static float DF_GetAirAccelForCmd(const usercmd_t cmd) {
+	float accel = state.physics.airaccelerate;
 	vec3_t wishvel, forward, right, up;
 
-	if (!state.physics.hasAirControl) {
-		return state.physics.airaccelerate;
-	}
-
-	if (cmd.forwardmove == 0 && cmd.rightmove != 0) {
-		return state.physics.airstrafeaccelerate;
-	}
-
-	AngleVectors(state.viewAngles, forward, right, up);
-	forward[2] = 0;
-	right[2] = 0;
-	VectorNormalize(forward);
-	VectorNormalize(right);
-
-	wishvel[0] = forward[0] * cmd.forwardmove + right[0] * cmd.rightmove;
-	wishvel[1] = forward[1] * cmd.forwardmove + right[1] * cmd.rightmove;
-	wishvel[2] = 0;
-
-	if (VectorNormalize(wishvel) > 0.0f
-		&& DotProduct(state.velocity, wishvel) < 0.0f
-		&& state.physics.airstopaccelerate > 0.0f) {
-		return state.physics.airstopaccelerate;
+	if (state.physics.hasAirControl) {
+		if (cmd.forwardmove == 0 && cmd.rightmove != 0) {
+			accel = state.physics.airstrafeaccelerate;
 		}
+		else {
+			AngleVectors(state.viewAngles, forward, right, up);
+			forward[2] = 0;
+			right[2] = 0;
+			VectorNormalize(forward);
+			VectorNormalize(right);
 
-	return state.physics.airaccelerate;
+			wishvel[0] = forward[0] * cmd.forwardmove + right[0] * cmd.rightmove;
+			wishvel[1] = forward[1] * cmd.forwardmove + right[1] * cmd.rightmove;
+			wishvel[2] = 0;
+
+			if (VectorNormalize(wishvel) > 0.0f
+				&& DotProduct(state.velocity, wishvel) < 0.0f
+				&& state.physics.airstopaccelerate > 0.0f) {
+				accel = state.physics.airstopaccelerate;
+				}
+		}
+	}
+
+	if (state.moveStyle == MV_QW) {
+		accel *= pm_qw_friction;
+	}
+
+	return accel;
+}
+
+static float DF_GetAccelWishspeed(const usercmd_t inCmd) {
+	if (state.moveStyle == MV_QW && !(state.cgaz.groundMove)) {
+		return state.speed; // uncapped wishspeed multiplier for QW air accel
+	}
+
+	return DF_GetWishspeed(inCmd);
 }
 
 qboolean showSnapHud() {
@@ -675,19 +687,22 @@ void DF_SetCGAZ() {
 	DF_SetFrameTime();
 	DF_SetVelocityAngles();
 
+	state.cgaz.groundMove = state.onGround && state.cgaz.wasOnGround;
+	state.cgaz.frictionFrame = state.cgaz.groundMove && !state.onSlick;
+
 	state.cgaz.vxyz = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1] + state.velocity[2] * state.velocity[2]);
 
 	state.cgaz.s = DF_GetWishspeed(state.cmd);
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-	state.cgaz.vf = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
+	state.cgaz.vf = state.cgaz.frictionFrame ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
 
-	const float accel = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
-	state.cgaz.a = state.cgaz.s * accel * state.cgaz.frametime;
+	float accel = state.cgaz.frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(state.cmd);
+	state.cgaz.a = DF_GetAccelWishspeed(state.cmd) * accel * state.cgaz.frametime;
 
-	state.cgaz.d_min = CGAZ_Min(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_opt = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_max_cos = CGAZ_Max_Cos(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_max = CGAZ_Max(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_min = CGAZ_Min(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_opt = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_max_cos = CGAZ_Max_Cos(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_max = CGAZ_Max(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
 }
 
 void DF_SetSpeedometer() {
@@ -884,6 +899,8 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 	usercmd_t fakeCmd = DF_DirToCmd(moveDir);
 	fakeCmd.upmove = state.cmd.upmove; //get the real upmove value
 	const float fakeWishspeed = DF_GetWishspeed(fakeCmd); //get the wishspeed for the fake cmd
+	const float fakeAccelWishspeed = DF_GetAccelWishspeed(fakeCmd); //get the accelwishspeed for the fake cmd
+
 	//check if the fake command matches the real command, if it does, the line is active (currently pressed)
 
 	if (moveDir != KEY_CENTER) {
@@ -936,10 +953,9 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				const qboolean frictionFrame = state.onGround && state.cgaz.wasOnGround && !state.onSlick;
-				const float fakeAccel = frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
+				const float fakeAccel = state.cgaz.frictionFrame ? state.physics.accelerate : DF_GetAirAccelForCmd(fakeCmd);
 
-				delta = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf,fakeWishspeed * fakeAccel * state.cgaz.frametime,fakeWishspeed);
+				delta = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf,fakeAccelWishspeed * fakeAccel * state.cgaz.frametime, fakeWishspeed);
 				delta += state.strafeHelper.offset;
 			}
 			else {
@@ -1311,7 +1327,7 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 	if (state.moveStyle != MV_SP) {
 		wishspeed = state.speed; //this seems more accurate than using scale?
 		//air control has a different wishspeed when using A or D only in the air
-		if (!(state.onGround && state.cgaz.wasOnGround) && state.physics.hasAirControl &&
+		if (!state.cgaz.groundMove && state.physics.hasAirControl &&
 			wishspeed > state.physics.airstrafewishspeed && fmove == 0 && smove != 0) {
 			wishspeed = state.physics.airstrafewishspeed;
 		}
@@ -1323,7 +1339,7 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 		}
 	}
 
-	if (state.moveStyle == MV_QW) {
+	if (state.moveStyle == MV_QW && !(state.cgaz.groundMove)) {
 		if (wishspeed > pm_qw_airstrafewishspeed) {
 			wishspeed = pm_qw_airstrafewishspeed;
 		}

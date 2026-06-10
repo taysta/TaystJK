@@ -156,6 +156,8 @@ typedef struct {
 	vec3_t          velocityAngles;
 	float           currentSpeed;
 	qboolean        wasOnGround;
+	qboolean		groundMove;
+	qboolean		frictionFrame;
 
 	float 			v;
 	float			vxyz;
