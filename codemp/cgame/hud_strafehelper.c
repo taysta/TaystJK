@@ -165,16 +165,14 @@ float DF_GetFriction() {
 	float friction;
 	switch (state.moveStyle) {
 		case MV_CPM:
-		case MV_OCPM:
 		case MV_WSW:
-		case MV_RJQ3:
 		case MV_RJCPM:
 		case MV_BOTCPM:
+		case MV_SLICK:
 			friction = pm_vq3_friction;
 			break;
-		case MV_SLICK:
-			friction = pm_slick_friction;
-			break;
+		case MV_OCPM:
+		case MV_RJQ3:
 		case MV_QW:
 		case MV_Q3:
 		default:
@@ -1314,7 +1312,7 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 	}
 	wishvel[2] = 0; //wishdir
 	float wishspeed = VectorNormalize(wishvel);
-	if (state.moveStyle == MV_OCPM) // || state.moveStyle == MV_SP) // we would do this for fixed sp
+	if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP)
 		wishspeed *= DF_GetCmdScale(inCmd);
 
 	if (state.pm_type == PM_JETPACK) {
@@ -1356,9 +1354,9 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 		}
 	}
 
-	if (state.moveStyle == MV_QW && !state.cgaz.groundMove) {
-		if (wishspeed > pm_qw_airstrafewishspeed) {
-			wishspeed = pm_qw_airstrafewishspeed;
+	if (state.moveStyle == MV_SP && !state.cgaz.groundMove) {
+		if (DotProduct(state.velocity, wishvel) < 0.0f) {
+			wishspeed *= state.physics.airdecelrate;
 		}
 	}
 	return wishspeed;
@@ -1369,8 +1367,8 @@ float DF_GetCmdScale(const usercmd_t cmd) {
 	signed char		umove = 0; //cmd->upmove;
 	//don't factor upmove into scaling speed
 
-	if (state.moveStyle == MV_OCPM) { //upmove velocity scaling add ocpm
-		umove = state.cmd.upmove;
+	if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP) { // velocity upmove scaling
+		umove = cmd.upmove;
 	}
 	int max = abs(cmd.forwardmove);
 	if (abs(cmd.rightmove) > max) {
