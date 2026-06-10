@@ -62,6 +62,9 @@ float DF_GetAccelerate() {
 		case MV_SP:
 			accelerate = pm_sp_accelerate;
 			break;
+		case MV_SURF:
+			accelerate = pm_surf_accelerate;
+			break;
 		case MV_PJK:
 		default:
 			accelerate = pm_accelerate;
