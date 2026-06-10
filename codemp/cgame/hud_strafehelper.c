@@ -2094,12 +2094,18 @@ japro - Ground Distance function for use in jump detection for movement keys
 */
 float DF_GetGroundDistance(void) {
 	trace_t tr;
-	vec3_t down;
+	vec3_t start, down;
 
-	VectorCopy(state.viewOrg, down);
+	VectorCopy(state.viewOrg, start);
+
+	if (!cg.renderingThirdPerson && !(cg_strafeHelper.integer & SHELPER_ORIGINAL)) {
+		start[2] -= cg.predictedPlayerState.viewheight;
+	}
+
+	VectorCopy(start, down);
 	down[2] -= 4096;
-	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
-	VectorSubtract(state.viewOrg, tr.endpos, down);
+	CG_Trace(&tr, start, NULL, NULL, down, state.clientnum, MASK_SOLID);
+	VectorSubtract(start, tr.endpos, down);
 
 	return VectorLength(down) - 24.0f;
 }
