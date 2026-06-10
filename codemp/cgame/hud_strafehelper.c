@@ -178,8 +178,6 @@ float DF_GetFriction() {
 			friction = pm_slick_friction;
 			break;
 		case MV_QW:
-			friction = pm_qw_friction;
-			break;
 		case MV_Q3:
 		default:
 			friction = pm_friction;
