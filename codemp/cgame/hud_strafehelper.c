@@ -91,6 +91,12 @@ float DF_GetAirAccelerate() {
 		case MV_QW:
 			airAccelerate = pm_qw_airaccelerate;
 			break;
+		case MV_SURF:
+			airAccelerate = pm_surf_airaccelerate;
+			break;
+		case MV_TRIBES:
+			airAccelerate = pm_tribes_airaccelerate;
+			break;
 		case MV_JETPACK:
 		default:
 			airAccelerate = pm_airaccelerate;
@@ -262,16 +268,41 @@ static float DF_GetAirAccelForCmd(const usercmd_t cmd) {
 	if (state.moveStyle == MV_QW) {
 		accel *= pm_qw_friction;
 	}
+	else if (state.moveStyle == MV_SURF) {
+		accel *= pm_friction;
+	}
+	else if (state.moveStyle == MV_TRIBES) {
+		accel *= pm_tribes_airfriction;
+	}
 
 	return accel;
 }
 
 static float DF_GetAccelWishspeed(const usercmd_t inCmd) {
-	if (state.moveStyle == MV_QW && !(state.cgaz.groundMove)) {
-		return state.speed; // uncapped wishspeed multiplier for QW air accel
+	if (!state.cgaz.groundMove) {
+		if (state.moveStyle == MV_QW) {
+			return state.speed; // uncapped wishspeed multiplier
+		}
+		if (state.moveStyle == MV_SURF) {
+			//PM_CS_AirAccelerate's accelspeed term uses the raw cmd magnitude
+			return 127.0f;
+		}
 	}
 
 	return DF_GetWishspeed(inCmd);
+}
+
+//styles where PM_CmdScale must be emulated
+static qboolean DF_StyleUsesCmdScale(void) {
+	switch (state.moveStyle) {
+		case MV_OCPM:
+		case MV_SP:
+		case MV_TRIBES:
+		case MV_JETPACK:
+			return qtrue;
+		default:
+			return qfalse;
+	}
 }
 
 static qboolean DF_UseGroundAccel(void) {
