@@ -85,15 +85,13 @@ float DF_GetAirAccelerate() {
 		case MV_BOTCPM:
 			airAccelerate = pm_cpm_airaccelerate;
 			break;
-		case MV_JETPACK:
-			airAccelerate = pm_jetpack_airaccelerate;
-			break;
 		case MV_SP:
 			airAccelerate = pm_sp_airaccelerate;
 			break;
 		case MV_QW:
 			airAccelerate = pm_qw_airaccelerate;
 			break;
+		case MV_JETPACK:
 		default:
 			airAccelerate = pm_airaccelerate;
 	}
