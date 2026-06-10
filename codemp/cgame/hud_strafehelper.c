@@ -1286,13 +1286,9 @@ float CGAZ_Max(const qboolean onGround, const float v, const float vf, const flo
 float DF_GetWishspeed(const usercmd_t inCmd) {
 	vec3_t		wishvel;
 	vec3_t		forward, right, up;
-	float		scale = 0.0f;
 
 	const float fmove = inCmd.forwardmove;
 	const float smove = inCmd.rightmove;
-
-    if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP)
-		scale = DF_GetCmdScale(inCmd); // for OCPM/ fixed SP
 
 	AngleVectors(state.viewAngles, forward, right, up);
 	// project moves down to flat plane
@@ -1306,8 +1302,8 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 	}
 	wishvel[2] = 0; //wishdir
 	float wishspeed = VectorNormalize(wishvel);
-	if (state.moveStyle == MV_OCPM)
-		wishspeed *= scale; // for OCPM/ fixed SP
+	if (state.moveStyle == MV_OCPM) // || state.moveStyle == MV_SP) // we would do this for fixed sp
+		wishspeed *= DF_GetCmdScale(inCmd);
 
 	if (state.pm_type == PM_JETPACK) {
 		if (inCmd.upmove <= 0)
@@ -1324,7 +1320,7 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 		}
 	}
 
-	if (state.moveStyle != MV_SP) {
+	if (state.moveStyle != MV_SP && state.moveStyle != MV_OCPM) {
 		wishspeed = state.speed; //this seems more accurate than using scale?
 		//air control has a different wishspeed when using A or D only in the air
 		if (!state.cgaz.groundMove && state.physics.hasAirControl &&
@@ -1363,12 +1359,12 @@ float DF_GetCmdScale(const usercmd_t cmd) {
 		max = abs(umove);
 	}
 	if (!max) {
-		return 0;
+		return 0.0f;
 	}
 
 	const float total = sqrtf((float)cmd.forwardmove * (float)cmd.forwardmove
 	                           + (float)cmd.rightmove * (float)cmd.rightmove + (float)umove * (float)umove);
-	const float scale = state.cgaz.v * (float) max / (127.0f * total);
+	const float scale = state.speed * (float)max / (127.0f * total);
 
 	return scale;
 }
