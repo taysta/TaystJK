@@ -359,6 +359,18 @@ static float DF_GetAccel(const usercmd_t cmd) {
 	return pm_airaccelerate;
 }
 
+static qboolean DF_JumpClearsUpmove(void) {
+	switch (state.moveStyle) {
+		case MV_SP:
+		case MV_OCPM:
+			return qtrue;
+		case MV_TRIBES:
+			return (qboolean)!(cg.predictedPlayerState.eFlags & EF_JETPACK_ACTIVE);
+		default:
+			return qfalse;
+	}
+}
+
 qboolean showSnapHud() {
 	if ((cgs.serverMod == SVMOD_JAPRO && state.moveStyle == MV_OCPM)
 		|| (cgs.serverMod == SVMOD_JAPRO && !state.racemode)
@@ -1470,6 +1482,7 @@ float DF_GetCmdScale(const usercmd_t cmd) {
 
 	if (DF_StyleUsesCmdScale()) { //upmove velocity scaling
 		umove = cmd.upmove;
+		if (umove > 0 && DF_JumpClearsUpmove()) umove = 0;
 	}
 	int max = abs(cmd.forwardmove);
 	if (abs(cmd.rightmove) > max) {
