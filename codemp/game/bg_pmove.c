@@ -113,6 +113,7 @@ const float	pm_qw_airstrafewishspeed = 30.0f;
 
 const float pm_tribes_accelerate = 2.5f;
 const float pm_tribes_airaccelerate = 0.25f;
+const float pm_tribes_groundaccelerate = 5.0f;
 const float pm_tribes_groundfriction = 0.5f;
 const float pm_tribes_airfriction = 1.9f;
 const float	pm_tribes_groundstrafewishspeed = 30.0f;
@@ -6013,7 +6014,7 @@ static void PM_WalkMove( void ) {
 	}
 
 	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
-		accelerate = 5.0f;
+		accelerate = pm_tribes_groundaccelerate;
 		PM_GroundAccelerateTribes(wishdir, wishspeed, accelerate);
 		/*
 		//I should reference PM_AirAccelerate here instead of PM_Accelerate maybe.

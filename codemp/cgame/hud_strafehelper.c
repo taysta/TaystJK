@@ -47,7 +47,6 @@ int DF_GetMovePhysics() {
 float DF_GetAccelerate() {
 	float accelerate;
 	switch (state.moveStyle) {
-		case MV_PJK:
 		case MV_CPM:
 		case MV_OCPM:
 		case MV_RJCPM:
@@ -63,6 +62,10 @@ float DF_GetAccelerate() {
 		case MV_SP:
 			accelerate = pm_sp_accelerate;
 			break;
+		case MV_SURF:
+			accelerate = pm_surf_accelerate;
+			break;
+		case MV_PJK:
 		default:
 			accelerate = pm_accelerate;
 	}
@@ -82,15 +85,19 @@ float DF_GetAirAccelerate() {
 		case MV_BOTCPM:
 			airAccelerate = pm_cpm_airaccelerate;
 			break;
-		case MV_JETPACK:
-			airAccelerate = pm_jetpack_airaccelerate;
-			break;
 		case MV_SP:
 			airAccelerate = pm_sp_airaccelerate;
 			break;
 		case MV_QW:
 			airAccelerate = pm_qw_airaccelerate;
 			break;
+		case MV_SURF:
+			airAccelerate = pm_surf_airaccelerate;
+			break;
+		case MV_TRIBES:
+			airAccelerate = pm_tribes_airaccelerate;
+			break;
+		case MV_JETPACK:
 		default:
 			airAccelerate = pm_airaccelerate;
 	}
@@ -163,21 +170,17 @@ float DF_GetAirStrafeWishspeed() {
 float DF_GetFriction() {
 	float friction;
 	switch (state.moveStyle) {
-		case MV_Q3:
 		case MV_CPM:
-		case MV_OCPM:
 		case MV_WSW:
-		case MV_RJQ3:
 		case MV_RJCPM:
 		case MV_BOTCPM:
+		case MV_SLICK:
 			friction = pm_vq3_friction;
 			break;
-		case MV_SLICK:
-			friction = pm_slick_friction;
-			break;
+		case MV_OCPM:
+		case MV_RJQ3:
 		case MV_QW:
-			friction = pm_qw_friction;
-			break;
+		case MV_Q3:
 		default:
 			friction = pm_friction;
 	}
@@ -233,6 +236,139 @@ qboolean DF_CenterOnly() {
 			centerOnly = qfalse;
 	}
 	return centerOnly;
+}
+
+static float DF_GetWishspeedInternal(const usercmd_t inCmd, const qboolean uncapped);
+
+//is the player currently in a knockback state
+static qboolean DF_IsKnockback(void) {
+	return (qboolean)((cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK) != 0);
+}
+
+//is the player skiing along the ground in tribes
+static qboolean DF_TribesGroundSki(void) {
+	return (qboolean)(state.moveStyle == MV_TRIBES
+		&& (state.cmd.buttons & BUTTON_DASH)
+		&& state.cgaz.groundMove);
+}
+
+static float DF_GetAirAccelForCmd(const usercmd_t cmd) {
+	float accel = state.physics.airaccelerate;
+	vec3_t wishvel, forward, right, up;
+
+	if (state.physics.hasAirControl) {
+		if (cmd.forwardmove == 0 && cmd.rightmove != 0) {
+			accel = state.physics.airstrafeaccelerate;
+		}
+		else {
+			AngleVectors(state.viewAngles, forward, right, up);
+			forward[2] = 0;
+			right[2] = 0;
+			VectorNormalize(forward);
+			VectorNormalize(right);
+
+			wishvel[0] = forward[0] * cmd.forwardmove + right[0] * cmd.rightmove;
+			wishvel[1] = forward[1] * cmd.forwardmove + right[1] * cmd.rightmove;
+			wishvel[2] = 0;
+
+			if (VectorNormalize(wishvel) > 0.0f
+				&& DotProduct(state.velocity, wishvel) < 0.0f
+				&& state.physics.airstopaccelerate > 0.0f) {
+				accel = state.physics.airstopaccelerate;
+				}
+		}
+	}
+
+	if (state.moveStyle == MV_QW) {
+		accel *= pm_qw_friction;
+	}
+	else if (state.moveStyle == MV_SURF) {
+		accel *= pm_friction;
+	}
+	else if (state.moveStyle == MV_TRIBES) {
+		accel *= pm_tribes_airfriction;
+	}
+
+	return accel;
+}
+
+static float DF_GetAccelWishspeed(const usercmd_t inCmd) {
+	if (!state.cgaz.groundMove) {
+		if (state.moveStyle == MV_QW) {
+			return state.speed; // uncapped wishspeed multiplier
+		}
+		if (state.moveStyle == MV_SURF) {
+			//PM_CS_AirAccelerate's accelspeed term uses the raw cmd magnitude
+			return 127.0f;
+		}
+	}
+	else if (DF_TribesGroundSki()) {
+		return DF_GetWishspeedInternal(inCmd, qtrue);
+	}
+
+	return DF_GetWishspeed(inCmd);
+}
+
+//styles where PM_CmdScale must be emulated
+static qboolean DF_StyleUsesCmdScale(void) {
+	switch (state.moveStyle) {
+		case MV_OCPM:
+		case MV_SP:
+		case MV_TRIBES:
+		case MV_JETPACK:
+			return qtrue;
+		default:
+			return qfalse;
+	}
+}
+
+static qboolean DF_UseGroundAccel(void) {
+	if (!state.cgaz.groundMove) {
+		return qfalse;
+	}
+
+	if (DF_IsKnockback()) {
+		return (qboolean)(state.moveStyle == MV_OCPM);
+	}
+
+	if (state.moveStyle == MV_OCPM) {
+		return qtrue;
+	}
+
+	if (state.moveStyle == MV_SLICK) {
+		return qtrue;
+	}
+
+	return state.cgaz.frictionFrame;
+}
+
+//selects the acceleration constant
+static float DF_GetAccel(const usercmd_t cmd) {
+	if (!state.cgaz.groundMove) {
+		return DF_GetAirAccelForCmd(cmd);
+	}
+
+	if (DF_TribesGroundSki()) {
+		return pm_tribes_groundaccelerate * pm_tribes_groundfriction;
+	}
+
+	if (DF_UseGroundAccel()) {
+		return state.physics.accelerate;
+	}
+
+	return pm_airaccelerate;
+}
+
+static qboolean DF_JumpClearsUpmove(void) {
+	switch (state.moveStyle) {
+		case MV_SP:
+		case MV_OCPM:
+			return qtrue;
+		case MV_TRIBES:
+			return (qboolean)!(cg.predictedPlayerState.eFlags & EF_JETPACK_ACTIVE);
+		default:
+			return qfalse;
+	}
 }
 
 qboolean showSnapHud() {
@@ -529,7 +665,7 @@ int DF_SetPlayerState(centity_t* cent)
 {
 	state.moveStyle = DF_GetMovePhysics();
 	state.m_iVehicleNum = cg.predictedPlayerState.m_iVehicleNum;
-	state.onGround = (qboolean)(cent->currentState.groundEntityNum == ENTITYNUM_WORLD);
+	state.onGround = (qboolean)(cent->currentState.groundEntityNum != ENTITYNUM_NONE);
 	state.groundEntityNum = cent->currentState.groundEntityNum;
 
 	if(state.m_iVehicleNum) {
@@ -594,16 +730,17 @@ static qboolean CG_IsWalkingAnim(int anim) {
 //sets cmd for a non-predicted client (spectator/demo playback)
 void DF_SetClientCmd(centity_t* cent) {
 	state.moveDir = cg.snap->ps.movementDir;
+	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9) {
+		state.moveDir = -1;
+	}
 	state.cmd = DF_DirToCmd(state.moveDir);
 	state.cmd.upmove = 0;
-	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK | BUTTON_WALKING);
+	state.cmd.buttons &= ~(BUTTON_ATTACK | BUTTON_ALT_ATTACK | BUTTON_WALKING | BUTTON_DASH);
 
 	if ((DF_GetGroundDistance() > 1 && state.velocity[2] > 8 && state.velocity[2] > cg.lastZSpeed && !cg.snap->ps.fd.forceGripCripple) || cg.snap->ps.pm_flags & PMF_JUMP_HELD)
 		state.cmd.upmove = 127;
 	else if (cg.snap->ps.pm_flags & PMF_DUCKED || CG_InRollAnim(cent))
 		state.cmd.upmove = -1;
-	if (sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]) < 9)
-		state.moveDir = -1;
 	if (cent->currentState.eFlags & EF_FIRING && !(cent->currentState.eFlags & EF_ALT_FIRING)) {
 		state.cmd.buttons |= BUTTON_ATTACK;
 		state.cmd.buttons &= ~BUTTON_ALT_ATTACK;
@@ -646,17 +783,32 @@ void DF_SetCGAZ() {
 	DF_SetFrameTime();
 	DF_SetVelocityAngles();
 
+	state.cgaz.groundMove = state.onGround && state.cgaz.wasOnGround;
+	state.cgaz.frictionFrame = state.cgaz.groundMove && !state.onSlick;
+
 	state.cgaz.vxyz = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1] + state.velocity[2] * state.velocity[2]);
 
 	state.cgaz.s = DF_GetWishspeed(state.cmd);
 	state.cgaz.v = sqrtf(state.velocity[0] * state.velocity[0] + state.velocity[1] * state.velocity[1]);
-	state.cgaz.vf = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.v * (1 - state.physics.friction * state.cgaz.frametime) : state.cgaz.v;
-	state.cgaz.a = state.onGround && state.cgaz.wasOnGround && !state.onSlick ? state.cgaz.s * state.physics.accelerate * state.cgaz.frametime : state.cgaz.s * state.physics.airaccelerate * state.cgaz.frametime;
 
-	state.cgaz.d_min = CGAZ_Min(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_opt = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_max_cos = CGAZ_Max_Cos(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
-	state.cgaz.d_max = CGAZ_Max(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	if (state.cgaz.frictionFrame) {
+		const float control = state.cgaz.v < state.physics.stopspeed ? state.physics.stopspeed : state.cgaz.v;
+		float vf = state.cgaz.v - control * state.physics.friction * state.cgaz.frametime;
+		if (vf < 0) {
+			vf = 0;
+		}
+		state.cgaz.vf = vf;
+	} else {
+		state.cgaz.vf = state.cgaz.v;
+	}
+
+	const float accel = DF_GetAccel(state.cmd);
+	state.cgaz.a = DF_GetAccelWishspeed(state.cmd) * accel * state.cgaz.frametime;
+
+	state.cgaz.d_min = CGAZ_Min(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_opt = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_max_cos = CGAZ_Max_Cos(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
+	state.cgaz.d_max = CGAZ_Max(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf, state.cgaz.a, state.cgaz.s);
 }
 
 void DF_SetSpeedometer() {
@@ -701,20 +853,19 @@ void DF_SetSpeedometer() {
 
 //sets the frametime for the cgaz struct
 void DF_SetFrameTime() {
-	float frameTime;
-	if (cg_strafeHelper_FPS.value < 1) {
-		frameTime = (float)cg.frametime/1000;
+	float fps = cg_strafeHelper_FPS.value;
+
+	if (fps < 1.0f) {
+		fps = (float)com_maxFPS.integer;
 	}
-	else if (cg_strafeHelper_FPS.value > 1000) {
-		frameTime = 1.0f / 1000;
+	if (fps < 1.0f) {
+		fps = 125.0f;
 	}
-	else {
-		frameTime = 1.0f / cg_strafeHelper_FPS.value;
+	else if (fps > 1000.0f) {
+		fps = 1000.0f;
 	}
-	if (frameTime <= 0.0f) {
-		frameTime = 0.001f; //1ms floor, equivalent to 1000fps cap
-	}
-	state.cgaz.frametime = frameTime;
+
+	state.cgaz.frametime = 1.0f / fps;
 }
 
 //sets the velocity angle for the cgaz struct
@@ -853,6 +1004,8 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 	usercmd_t fakeCmd = DF_DirToCmd(moveDir);
 	fakeCmd.upmove = state.cmd.upmove; //get the real upmove value
 	const float fakeWishspeed = DF_GetWishspeed(fakeCmd); //get the wishspeed for the fake cmd
+	const float fakeAccelWishspeed = DF_GetAccelWishspeed(fakeCmd); //get the accelwishspeed for the fake cmd
+
 	//check if the fake command matches the real command, if it does, the line is active (currently pressed)
 
 	if (moveDir != KEY_CENTER) {
@@ -905,7 +1058,9 @@ dfsline DF_GetLine(int moveDir, const qboolean rear, const int gazLine, const qb
 				break;
 		case GAZ_OPT:
 			if (fake == qtrue) {
-				delta = CGAZ_Opt(state.onGround && state.cgaz.wasOnGround, state.cgaz.v, state.cgaz.vf, state.onGround && state.cgaz.wasOnGround ? fakeWishspeed * state.physics.accelerate * state.cgaz.frametime : fakeWishspeed * state.physics.airaccelerate * state.cgaz.frametime, fakeWishspeed);
+				const float fakeAccel = DF_GetAccel(fakeCmd);
+
+				delta = CGAZ_Opt(state.cgaz.groundMove, state.cgaz.v, state.cgaz.vf,fakeAccelWishspeed * fakeAccel * state.cgaz.frametime, fakeWishspeed);
 				delta += state.strafeHelper.offset;
 			}
 			else {
@@ -1234,15 +1389,15 @@ float CGAZ_Max(const qboolean onGround, const float v, const float vf, const flo
 
 //takes a user commmand and returns the emulated wishspeed as a float
 float DF_GetWishspeed(const usercmd_t inCmd) {
+	return DF_GetWishspeedInternal(inCmd, qfalse);
+}
+
+static float DF_GetWishspeedInternal(const usercmd_t inCmd, const qboolean uncapped) {
 	vec3_t		wishvel;
 	vec3_t		forward, right, up;
-	float		scale = 0.0f;
 
 	const float fmove = inCmd.forwardmove;
 	const float smove = inCmd.rightmove;
-
-    if (state.moveStyle == MV_OCPM || state.moveStyle == MV_SP)
-		scale = DF_GetCmdScale(inCmd); // for OCPM/ fixed SP
 
 	AngleVectors(state.viewAngles, forward, right, up);
 	// project moves down to flat plane
@@ -1256,8 +1411,26 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 	}
 	wishvel[2] = 0; //wishdir
 	float wishspeed = VectorNormalize(wishvel);
-	if (state.moveStyle == MV_OCPM)
-		wishspeed *= scale; // for OCPM/ fixed SP
+	if (DF_StyleUsesCmdScale())
+		wishspeed *= DF_GetCmdScale(inCmd);
+	else
+		wishspeed = state.speed; //magnitude * PM_CmdScale always cancels to ps->speed for full presses
+
+	//air control styles cap wishspeed when using A or D only in the air (includes OCPM)
+	if (!state.cgaz.groundMove && state.physics.hasAirControl &&
+		wishspeed > state.physics.airstrafewishspeed && fmove == 0 && smove != 0) {
+		wishspeed = state.physics.airstrafewishspeed;
+	}
+
+	if (state.moveStyle == MV_SURF) {
+		if (!state.cgaz.groundMove) {
+			//PM_AirMove never cmd-scales surf, and PM_CS_AirAccelerate caps the addspeed threshold at 30
+			wishspeed = 30.0f;
+		}
+		else if (wishspeed > pm_surf_wishspeed) {
+			wishspeed = pm_surf_wishspeed; //PM_WalkMove cap
+		}
+	}
 
 	if (state.pm_type == PM_JETPACK) {
 		if (inCmd.upmove <= 0)
@@ -1274,26 +1447,31 @@ float DF_GetWishspeed(const usercmd_t inCmd) {
 		}
 	}
 
-	if (state.moveStyle != MV_SP) {
-		wishspeed = state.speed; //this seems more accurate than using scale?
-		//air control has a different wishspeed when using A or D only in the air
-		if (!(state.onGround && state.cgaz.wasOnGround) && state.physics.hasAirControl &&
-			wishspeed > state.physics.airstrafewishspeed && fmove == 0 && smove != 0) {
-			wishspeed = state.physics.airstrafewishspeed;
+	if (state.cgaz.groundMove && inCmd.upmove < 0) {
+		const float duckWishspeed = state.speed * state.physics.duckscale;
+
+		if (wishspeed > duckWishspeed) {
+			wishspeed = duckWishspeed;
 		}
 	}
-	//SP only applies the scale when on the ground and also encourages deceleration away from current velocity
-	if (state.moveStyle == MV_SP) {
+
+	//SP encourages deceleration away from current velocity, air only (PM_AirMove)
+	if (state.moveStyle == MV_SP && !state.cgaz.groundMove) {
 		if (DotProduct(state.velocity, wishvel) < 0.0f) {
 			wishspeed *= state.physics.airdecelrate;
 		}
 	}
 
-	if (state.moveStyle == MV_QW) {
+	if (state.moveStyle == MV_QW && !state.cgaz.groundMove) {
 		if (wishspeed > pm_qw_airstrafewishspeed) {
 			wishspeed = pm_qw_airstrafewishspeed;
 		}
 	}
+
+	if (!uncapped && DF_TribesGroundSki() && wishspeed > 30.0f) {
+		wishspeed = 30.0f;
+	}
+
 	return wishspeed;
 }
 
@@ -1302,8 +1480,9 @@ float DF_GetCmdScale(const usercmd_t cmd) {
 	signed char		umove = 0; //cmd->upmove;
 	//don't factor upmove into scaling speed
 
-	if (state.moveStyle == MV_OCPM) { //upmove velocity scaling add ocpm
-		umove = state.cmd.upmove;
+	if (DF_StyleUsesCmdScale()) { //upmove velocity scaling
+		umove = cmd.upmove;
+		if (umove > 0 && DF_JumpClearsUpmove()) umove = 0;
 	}
 	int max = abs(cmd.forwardmove);
 	if (abs(cmd.rightmove) > max) {
@@ -1313,12 +1492,12 @@ float DF_GetCmdScale(const usercmd_t cmd) {
 		max = abs(umove);
 	}
 	if (!max) {
-		return 0;
+		return 0.0f;
 	}
 
 	const float total = sqrtf((float)cmd.forwardmove * (float)cmd.forwardmove
 	                           + (float)cmd.rightmove * (float)cmd.rightmove + (float)umove * (float)umove);
-	const float scale = state.cgaz.v * (float) max / (127.0f * total);
+	const float scale = state.speed * (float)max / (127.0f * total);
 
 	return scale;
 }
@@ -1747,7 +1926,11 @@ void DF_DrawYawSpeed(void) {
 	//    const int        xOffset = 0;
 
 	const float diff = AngleSubtract(state.viewAngles[YAW], cg.lastYawSpeed);
-	float yawspeed = diff / state.cgaz.frametime;
+	float frametime = (float)cg.frametime / 1000.0f;
+	if (frametime <= 0.0f) {
+		frametime = 0.001f;
+	}
+	float yawspeed = diff / frametime;
 	if (yawspeed < 0)
 		yawspeed = -yawspeed;
 
@@ -1932,6 +2115,14 @@ japro - Draw the speedometer
 		vec4_t colorGroundSpeed = { 1, 1, 1, 1 };
 		vec4_t colorGroundSpeeds = { 1, 1, 1, 1 };
 
+		int jumpsLimit = cg_speedometerJumps.integer;
+		if (jumpsLimit < 0) {
+			jumpsLimit = 0;
+		}
+		else if (jumpsLimit > (int)ARRAY_LEN(cg.lastGroundSpeeds) - 1) {
+			jumpsLimit = (int)ARRAY_LEN(cg.lastGroundSpeeds) - 1; //don't let the cvar index past the array
+		}
+
 		if (state.groundEntityNum != ENTITYNUM_NONE || state.velocity[2] < 0) { //On ground or Moving down
 			cg.firstTimeInAir = qfalse;
 		}
@@ -1946,7 +2137,9 @@ japro - Draw the speedometer
 					jumpsCounter = 0;
 					clearOnNextJump = qfalse;
 				}
-				cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
+				if (jumpsCounter < (int)ARRAY_LEN(cg.lastGroundSpeeds)) {
+					cg.lastGroundSpeeds[jumpsCounter++] = cg.lastGroundSpeed; //add last ground speed to the array
+				}
 			}
 		}
 
@@ -1955,9 +2148,9 @@ japro - Draw the speedometer
 				state.pm_time <= 0 && state.cgaz.v < state.cgaz.s) || state.cgaz.v == 0) {
 				clearOnNextJump = qtrue;
 			}
-			if (cg_speedometerJumps.value && jumpsCounter < cg_speedometerJumps.integer) {
+			if (cg_speedometerJumps.value && jumpsCounter < jumpsLimit) {
 				//if we are in the first n jumps
-				for (i = 0; i <= cg_speedometerJumps.integer; i++) { //print the jumps
+				for (i = 0; i <= jumpsLimit; i++) { //print the jumps
 					const float groundSpeedsColor = 1 / (cg.lastGroundSpeeds[i] / state.cgaz.s * (cg.lastGroundSpeeds[i] / state.cgaz.s));
 					Com_sprintf(speedsStr4, sizeof(speedsStr4), "%.0f", cg.lastGroundSpeeds[i]); //create the string
 					if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS1) { //color the string
@@ -1965,7 +2158,7 @@ japro - Draw the speedometer
 						colorGroundSpeeds[2] = groundSpeedsColor;
 					}
 					else if (cg_speedometer.integer & SPEEDOMETER_JUMPSCOLORS2) {
-						if ((jumpsCounter > 0 && cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]) ||
+						if ((i > 0 && cg.lastGroundSpeeds[i] > cg.lastGroundSpeeds[i - 1]) ||
 							(i == 0 && cg.lastGroundSpeeds[0] > firstSpeed)) {
 							colorGroundSpeeds[0] = groundSpeedsColor;
 							colorGroundSpeeds[1] = 1;
@@ -1986,12 +2179,15 @@ japro - Draw the speedometer
 				}
 			}
 			else if (cg_speedometerJumps.value &&
-				jumpsCounter == cg_speedometerJumps.integer) { //we out of the first n jumps
+				jumpsCounter >= jumpsLimit) { //we out of the first n jumps
 				firstSpeed = cg.lastGroundSpeeds[0];
-				for (i = 0; i <= cg_speedometerJumps.integer; i++) { //shuffle jumps array down
+				for (i = 0; i < jumpsLimit; i++) { //shuffle jumps array down
 					cg.lastGroundSpeeds[i] = cg.lastGroundSpeeds[i + 1];
 				}
-				jumpsCounter--;  //reduce jump counter
+				cg.lastGroundSpeeds[jumpsLimit] = 0; //vacate the end slot
+				if (jumpsCounter > 0) {
+					jumpsCounter--;  //reduce jump counter
+				}
 			}
 		}
 
@@ -2027,12 +2223,18 @@ japro - Ground Distance function for use in jump detection for movement keys
 */
 float DF_GetGroundDistance(void) {
 	trace_t tr;
-	vec3_t down;
+	vec3_t start, down;
 
-	VectorCopy(state.viewOrg, down);
+	VectorCopy(state.viewOrg, start);
+
+	if (!cg.renderingThirdPerson && !(cg_strafeHelper.integer & SHELPER_ORIGINAL)) {
+		start[2] -= cg.predictedPlayerState.viewheight;
+	}
+
+	VectorCopy(start, down);
 	down[2] -= 4096;
-	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
-	VectorSubtract(state.viewOrg, tr.endpos, down);
+	CG_Trace(&tr, start, NULL, NULL, down, state.clientnum, MASK_SOLID);
+	VectorSubtract(start, tr.endpos, down);
 
 	return VectorLength(down) - 24.0f;
 }
@@ -2052,9 +2254,9 @@ qboolean DF_IsSlickSurf(void) {
 	down[2] -= 128;
 	CG_Trace(&tr, state.viewOrg, NULL, NULL, down, state.clientnum, MASK_SOLID);
 
-	if ((state.groundEntityNum == ENTITYNUM_WORLD && tr.surfaceFlags & SURF_SLICK)
+	if ((state.groundEntityNum != ENTITYNUM_NONE && tr.surfaceFlags & SURF_SLICK)
 	|| (state.moveStyle == MV_SLICK && !(state.cmd.buttons & BUTTON_WALKING))
-	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_WALKING))
+	|| (state.moveStyle == MV_TRIBES && (state.cmd.buttons & BUTTON_DASH))
 	|| (cg.predictedPlayerState.pm_flags & PMF_TIME_KNOCKBACK))
 		onSlick = qtrue;
 
