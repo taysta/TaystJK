@@ -3971,10 +3971,12 @@ static void CG_UpdateNPCBoneAvailability( centity_t *cent ) {
 	if ( cent->currentState.NPC_class == CLASS_VEHICLE )
 	{
 		cent->noLumbar = qtrue;
+		cent->noFace = qtrue;
 		return;
 	}
 
 	cent->noLumbar = qfalse;
+	cent->noFace = qfalse;
 
 	if ( !cent->ghoul2 )
 	{
@@ -3984,6 +3986,11 @@ static void CG_UpdateNPCBoneAvailability( centity_t *cent ) {
 	if ( trap->G2API_AddBolt( cent->ghoul2, 0, "lower_lumbar" ) == -1 )
 	{
 		cent->noLumbar = qtrue;
+	}
+
+	if ( trap->G2API_AddBolt( cent->ghoul2, 0, "face" ) == -1 )
+	{
+		cent->noFace = qtrue;
 	}
 }
 
