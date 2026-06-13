@@ -3962,6 +3962,30 @@ static void CG_ClearLerpFrame( centity_t *cent, clientInfo_t *ci, lerpFrame_t *l
 	}
 }
 
+static void CG_UpdateNPCBoneAvailability( centity_t *cent ) {
+	if ( cent->currentState.eType != ET_NPC )
+	{
+		return;
+	}
+
+	if ( cent->currentState.NPC_class == CLASS_VEHICLE )
+	{
+		cent->noLumbar = qtrue;
+		return;
+	}
+
+	cent->noLumbar = qfalse;
+
+	if ( !cent->ghoul2 )
+	{
+		return;
+	}
+
+	if ( trap->G2API_AddBolt( cent->ghoul2, 0, "lower_lumbar" ) == -1 )
+	{
+		cent->noLumbar = qtrue;
+	}
+}
 
 /*
 ===============
@@ -8921,24 +8945,7 @@ void CG_G2AnimEntModelLoad(centity_t *cent)
 				trap->G2API_AddBolt(cent->ghoul2, 0, "Motion");
 			}
 
-			// If this is a not vehicle...
-			if ( cent->currentState.NPC_class != CLASS_VEHICLE )
-			{
-				if (trap->G2API_AddBolt(cent->ghoul2, 0, "lower_lumbar") == -1)
-				{ //check now to see if we have this bone for setting anims and such
-					cent->noLumbar = qtrue;
-				}
-
-				if (trap->G2API_AddBolt(cent->ghoul2, 0, "face") == -1)
-				{ //check now to see if we have this bone for setting anims and such
-					cent->noFace = qtrue;
-				}
-			}
-			else
-			{
-				cent->noLumbar = qtrue;
-				cent->noFace = qtrue;
-			}
+			CG_UpdateNPCBoneAvailability( cent );
 
 			if (cent->localAnimIndex != -1)
 			{
@@ -13754,6 +13761,7 @@ void CG_ResetPlayerEntity( centity_t *cent )
 		//already set.
 		cent->npcLocalSurfOff = 0;
 		cent->npcLocalSurfOn = 0;
+		CG_UpdateNPCBoneAvailability( cent );
 	}
 	else
 	{
@@ -13824,6 +13832,7 @@ void CG_ResetPlayerEntity( centity_t *cent )
 
 			cent->localAnimIndex = CG_G2SkelForModel(cent->ghoul2);
 			cent->eventAnimIndex = CG_G2EvIndexForModel(cent->ghoul2, cent->localAnimIndex);
+			CG_UpdateNPCBoneAvailability( cent );
 
 			//CG_CopyG2WeaponInstance(cent->currentState.weapon, ci->ghoul2Model);
 			//cent->weapon = cent->currentState.weapon;
