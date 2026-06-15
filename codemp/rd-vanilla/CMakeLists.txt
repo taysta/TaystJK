@@ -112,6 +112,9 @@ set(MPVanillaRendererFiles ${MPVanillaRendererFiles} ${MPVanillaRendererCommonSa
 
 # Transparently use either bundled or system libjpeg.
 list(APPEND MPVanillaRendererIncludeDirectories ${JPEG_INCLUDE_DIR})
+if(UseInternalJPEG AND UseTurboJPEG)
+	list(APPEND MPVanillaRendererIncludeDirectories ${JPEG_CONFIG_DIR})
+endif()
 list(APPEND MPVanillaRendererLibraries          ${JPEG_LIBRARIES})
 
 # Transparently use either bundled or system libpng.  Order is important --
