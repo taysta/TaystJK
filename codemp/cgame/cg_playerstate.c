@@ -580,7 +580,7 @@ void CG_TransitionPlayerState( playerState_t *ps, playerState_t *ops ) {
 		CG_CheckLocalSounds( ps, ops );
 	}
 
-	if (ops->weapon != ps->weapon) { //shows weapon select when spectating
+	if (ops->weapon != ps->weapon && (ps->pm_flags & PMF_FOLLOW || ps->persistant[PERS_TEAM] == TEAM_SPECTATOR)) { //shows weapon select when spectating
 		cg.weaponSelect = ps->weapon;
 		cg.weaponSelectTime = cg.time;
 		CG_SetFireMode(cg.weaponSelect);
