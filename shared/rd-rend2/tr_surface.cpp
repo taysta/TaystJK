@@ -2439,7 +2439,7 @@ static void RB_SurfaceEntity( surfaceType_t *surfType ) {
 	case RT_ENT_CHAIN:
 		break;
 	default:
-		tess.shader->entityMergable = qtrue;
+		tess.entityMergable = true;
 		break;
 	}
 }
