@@ -213,6 +213,14 @@ int WeaponIcon(int i) {
     return cgs.media.weaponIcons[i];
 }
 
+static const char *KeyNameForBind(const char *bind) {
+	int key = trap->Key_GetKey(bind);
+	if (key < 0 || key >= MAX_KEYS) {
+		return NULL;
+	}
+	return keyCodeNames[key];
+}
+
 void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 	vec4_t onColor, offColor, noAmmoColor;
 
@@ -259,7 +267,7 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode");
 		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire");
 
-		if ((keyCodeNames[trap->Key_GetKey(fireModeCommand)] != NULL) && (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL)) {
+		if ((KeyNameForBind(fireModeCommand) != NULL) && (KeyNameForBind(fireCommand) != NULL)) {
 			if (cg.singlefireAlt) {
 				value = cg.predictedPlayerState.ammo[weaponData[weapon].ammoIndex] / weaponData[weapon].altEnergyPerShot;
 			} else {
@@ -305,16 +313,16 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 	char slotCommand[MAX_QPATH];
 	if(weapon == WP_THERMAL){
 		Com_sprintf(slotCommand, sizeof(slotCommand), "thrownade");
-		if(keyCodeNames[trap->Key_GetKey(slotCommand)] == NULL){
+		if(KeyNameForBind(slotCommand) == NULL){
 			Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
 		}
 	} else {
 		Com_sprintf(slotCommand, sizeof(slotCommand), "slot %d", slotNumber);
 	}
 
-	if (keyCodeNames[trap->Key_GetKey(slotCommand)] != NULL) {
+	if (KeyNameForBind(slotCommand) != NULL) {
 		char keyStr[MAX_QPATH];
-		Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(slotCommand)]);
+		Com_sprintf(keyStr, sizeof(keyStr), "%s", KeyNameForBind(slotCommand));
 
 		CG_Text_Paint(CYCLE_X_POS + 2.0f,
 					  (float)posY + 0.5f * (float)size - 0.5f * (float)CG_Text_Height(keyStr, 0.5f, FONT_SMALL2),
@@ -332,8 +340,8 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 		char fireCommand[MAX_QPATH];
 		Com_sprintf(fireModeCommand, sizeof(fireModeCommand), "selectfiremode", slotNumber);
 		Com_sprintf(fireCommand, sizeof(fireCommand), "+singlefire", slotNumber);
-		if ((keyCodeNames[trap->Key_GetKey(fireModeCommand)] != NULL)
-			&& (keyCodeNames[trap->Key_GetKey(fireCommand)] != NULL)
+		if ((KeyNameForBind(fireModeCommand) != NULL)
+			&& (KeyNameForBind(fireCommand) != NULL)
 			&& (weapon != WP_THERMAL)) {
 			char keyStr[MAX_QPATH];
 			char modeStr[MAX_QPATH];
@@ -356,7 +364,7 @@ void DrawWeaponIcon(int weapon, int posX, int posY, int size, int slotNumber) {
 						   cgs.media.keyAltOn2);
 
 			}
-			Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(fireModeCommand)]);
+			Com_sprintf(keyStr, sizeof(keyStr), "%s", KeyNameForBind(fireModeCommand));
 
 			//keybind text
 			CG_Text_Paint((float)posX - CG_Text_Width(keyStr, 0.4f, FONT_SMALL2),
@@ -452,9 +460,9 @@ void CG_DrawWeaponSelectTribes(void) {
 				char invCommand[MAX_QPATH];
 				Com_sprintf(invCommand, sizeof(invCommand), "invfree");
 
-				if (keyCodeNames[trap->Key_GetKey(invCommand)] != NULL) {
+				if (KeyNameForBind(invCommand) != NULL) {
 					char keyStr[MAX_QPATH];
-					Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(invCommand)]);
+					Com_sprintf(keyStr, sizeof(keyStr), "%s", KeyNameForBind(invCommand));
 
 					CG_Text_Paint(CYCLE_X_POS + 2.0f,
 								  (float) yStart + 0.5f * (float) smallIconSize -
@@ -552,7 +560,7 @@ void CG_DrawPackTribes(void){
 
 	if(pack.isActive == qtrue)
 	{
-		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
+		if((KeyNameForBind(packBind) != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{
 			color[0] = 0.0f;
 			color[1] = 0.5f;
@@ -569,7 +577,7 @@ void CG_DrawPackTribes(void){
 									|| cg.predictedPlayerState.powerups[PW_BLUEFLAG]
 									|| cg.predictedPlayerState.powerups[PW_NEUTRALFLAG])))
 	{
-		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
+		if((KeyNameForBind(packBind) != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind))))
 		{
 			color[0] = 0.5f;
 			color[1] = 0.0f;
@@ -582,7 +590,7 @@ void CG_DrawPackTribes(void){
 			color[3] = 0.6f;
 		}
 	} else {
-		if((keyCodeNames[trap->Key_GetKey(packBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind)))) {
+		if((KeyNameForBind(packBind) != NULL) && (trap->Key_IsDown(trap->Key_GetKey(packBind)))) {
 			color[0] = 0.3f;
 			color[1] = 0.3f;
 			color[2] = 0.3f;
@@ -609,9 +617,9 @@ void CG_DrawPackTribes(void){
 	trap->R_SetColor(NULL);
 
 	//bind
-	if (keyCodeNames[trap->Key_GetKey(packBind)] != NULL) {
+	if (KeyNameForBind(packBind) != NULL) {
 		char keyStr[MAX_QPATH];
-		Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(packBind)]);
+		Com_sprintf(keyStr, sizeof(keyStr), "%s", KeyNameForBind(packBind));
 
 		CG_Text_Paint(x - (0.5f * (boxSize * cgs.widthRatioCoef))
 		- (0.5f * CG_Text_Width(keyStr, 0.5f, FONT_SMALL2) * cgs.widthRatioCoef) - centerOffset,
@@ -627,7 +635,7 @@ void CG_DrawPackTribes(void){
 
 	//grapple
 	if(cg.predictedPlayerState.fd.forcePower < COST_GRAPPLE_TRIBES){
-		if((keyCodeNames[trap->Key_GetKey(grappleBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(grappleBind)))){
+		if((KeyNameForBind(grappleBind) != NULL) && (trap->Key_IsDown(trap->Key_GetKey(grappleBind)))){
 			color[0] = 0.5f;
 			color[1] = 0.0f;
 			color[2] = 0.0f;
@@ -639,7 +647,7 @@ void CG_DrawPackTribes(void){
 			color[3] = 0.6f;
 		}
 	} else {
-		if((keyCodeNames[trap->Key_GetKey(grappleBind)] != NULL) && (trap->Key_IsDown(trap->Key_GetKey(grappleBind)))){
+		if((KeyNameForBind(grappleBind) != NULL) && (trap->Key_IsDown(trap->Key_GetKey(grappleBind)))){
 			color[0] = 0.3f;
 			color[1] = 0.3f;
 			color[2] = 0.3f;
@@ -664,9 +672,9 @@ void CG_DrawPackTribes(void){
 	trap->R_SetColor(NULL);
 
 	//bind
-	if (keyCodeNames[trap->Key_GetKey(grappleBind)] != NULL) {
+	if (KeyNameForBind(grappleBind) != NULL) {
 		char keyStr[MAX_QPATH];
-		Com_sprintf(keyStr, sizeof(keyStr), "%s", keyCodeNames[trap->Key_GetKey(grappleBind)]);
+		Com_sprintf(keyStr, sizeof(keyStr), "%s", KeyNameForBind(grappleBind));
 
 		CG_Text_Paint(x + (0.5f *
 		(boxSize * cgs.widthRatioCoef - CG_Text_Width(keyStr, 0.5f, FONT_SMALL2) * cgs.widthRatioCoef)) + centerOffset,
