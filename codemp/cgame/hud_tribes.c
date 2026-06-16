@@ -186,6 +186,9 @@ qboolean WeaponCheck(int weap) {
 }
 
 qboolean IsWeaponSelectable(int weapon) {
+    if (weapon <= WP_NONE || weapon >= WP_NUM_WEAPONS) {
+        return qfalse;
+    }
     return (cg.predictedPlayerState.stats[STAT_WEAPONS] & (1 << weapon)) ? qtrue : qfalse;
 }
 

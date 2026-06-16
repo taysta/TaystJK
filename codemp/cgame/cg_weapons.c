@@ -2007,7 +2007,7 @@ void CG_WeaponSlot_f( void ) {
 
 	num = selectedWeapon;
 
-	if (!CG_WeaponSelectable(num))
+	if (!IsWeaponSelectable(num))
 	{
 		return;
 	}
