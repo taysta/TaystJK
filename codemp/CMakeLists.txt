@@ -607,7 +607,6 @@ if(BuildMPEngine)
 
 	if(WIN32)
 		set(MPEngineWin32Files
-			"${MPDir}/win32/icon.ico"
 			"${MPDir}/win32/resource.h"
 			"${MPDir}/win32/openjk.rc"
 			"${SharedDir}/sys/win_manifest.manifest"
@@ -635,9 +634,9 @@ if(BuildMPEngine)
 	if(MakeApplicationBundles)
 		set(MACOSX_BUNDLE_BUNDLE_NAME ${MPEngine})
 		set(MACOSX_BUNDLE_DISPLAY_NAME ${MPEngine})
-		set(MACOSX_BUNDLE_ICON_FILE OpenJK.icns)
-		set_source_files_properties(${MPDir}/macosx/OpenJK.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-		set(MPEngineFiles ${MPEngineFiles} ${MPDir}/macosx/OpenJK.icns)
+		set(MACOSX_BUNDLE_ICON_FILE TaystJK.icns)
+		set_source_files_properties(${MPDir}/macosx/TaystJK.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+		set(MPEngineFiles ${MPEngineFiles} ${MPDir}/macosx/TaystJK.icns)
 		set_source_files_properties(${MPDir}/macosx/English.lproj/InfoPlist.strings PROPERTIES MACOSX_PACKAGE_LOCATION Resources/English.lproj)
 		set(MPEngineFiles ${MPEngineFiles} ${MPDir}/macosx/English.lproj/InfoPlist.strings)
 	endif(MakeApplicationBundles)
