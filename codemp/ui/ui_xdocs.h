@@ -577,6 +577,16 @@ XDOCS_CVAR_DEF("cg_drawCrosshairNamesColours", "Coloring style of crosshair name
 	SETTING("1", "Show color codes in names")
 )
 
+XDOCS_CVAR_DEF("cg_predictKnockback", "Predict self-inflicted rocket-jump knockback clientside (racemode only). Use with cg_simulatedProjectiles 1.",
+	"Launches you immediately on a self-rocket instead of waiting ~ping for the server to apply it. Values above 1 enable developer console logging." NL
+	SETTING("0", "Knockback is not predicted (default)") NL
+	SETTING("1", "Predict and apply rocket-jump knockback") NL
+	SETTING("2", "Verbose trajectory/timing logging (fire, detect, render, clear, actual)") NL
+	SETTING("3", "Maximum logging; adds forward-trace detection and per-command injection") NL
+	SETTING("4", "Damage/distance logging only (trajectory spam suppressed)") NL
+	SETTING("5", "Impulse/injection logging; adds per-command injection trace")
+)
+
 //Work from above this line
 
 // ...

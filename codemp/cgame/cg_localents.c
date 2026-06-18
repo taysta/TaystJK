@@ -886,6 +886,45 @@ void CG_AddLine( localEntity_t *le )
 	trap->R_AddRefEntityToScene( re );
 }
 
+static float CG_PredictKnockbackRadiusDistance( const vec3_t explosionOrigin, const playerState_t *ps, vec3_t edgeDelta )
+{
+	vec3_t mins, maxs, absmin, absmax;
+	int i;
+
+	VectorSet( mins, -15.0f, -15.0f, DEFAULT_MINS_2 );
+	VectorSet( maxs, 15.0f, 15.0f, ( ps->pm_flags & PMF_DUCKED ) ? ps->crouchheight : ps->standheight );
+	VectorAdd( ps->origin, mins, absmin );
+	VectorAdd( ps->origin, maxs, absmax );
+
+	for ( i = 0; i < 3; i++ ) {
+		if ( explosionOrigin[i] < absmin[i] ) {
+			edgeDelta[i] = absmin[i] - explosionOrigin[i];
+		}
+		else if ( explosionOrigin[i] > absmax[i] ) {
+			edgeDelta[i] = explosionOrigin[i] - absmax[i];
+		}
+		else {
+			edgeDelta[i] = 0.0f;
+		}
+	}
+
+	return VectorLength( edgeDelta );
+}
+
+static void CG_PredictKnockbackSnapVectorTowards( vec3_t v, const vec3_t to )
+{
+	int i;
+
+	for ( i = 0; i < 3; i++ ) {
+		if ( to[i] <= v[i] ) {
+			v[i] = floorf( v[i] );
+		}
+		else {
+			v[i] = ceilf( v[i] );
+		}
+	}
+}
+
 void CG_AddMissile(localEntity_t *le) {
 	vec3_t	currentPos;
 	int		weapon;
@@ -902,6 +941,148 @@ void CG_AddMissile(localEntity_t *le) {
 
 	BG_EvaluateTrajectory(&le->pos, cg.time, currentPos); //Is muzzlepoint accurate?
 	//Com_Printf("Weapon is %i and altfire is %i, flags was %i\n", weapon, altFire, le->leFlags);
+
+	if (cg_predictKnockback.integer >= 3 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+		Com_Printf("^3[predictKnockback] ^7CG_AddMissile: weapon=%i altFire=%i racemode=%i\n",
+			weapon, altFire, cg.predictedPlayerState.stats[STAT_RACEMODE]);
+
+	if (cg_predictKnockback.integer && weapon == WP_ROCKET_LAUNCHER && !altFire &&
+		cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.snap)
+	{
+		trace_t trace;
+		trajectory_t pkPos;
+		vec3_t nextPos, missileMins, missileMaxs;
+
+		pkPos = le->pos;
+		SnapVector(pkPos.trBase);
+		SnapVector(pkPos.trDelta);
+		BG_EvaluateTrajectory(&pkPos, cg.time + 150, nextPos);
+		VectorSet(missileMins, -1.0f, -1.0f, -1.0f);
+		VectorSet(missileMaxs, 1.0f, 1.0f, 1.0f);
+		// Trace from the MUZZLE (trBase), not from currentPos (the prestepped position at cg.time).
+		// The server detonates by tracing muzzle->prestep on its first missile frame, so it stops at
+		// the first solid out of the barrel. Our local missile is already prestepped ~45u downrange by
+		// cg.time, so for a point-blank wall (closer than the prestep) currentPos starts INSIDE the wall
+		// and the impact reads ~the prestep distance too deep. Tracing from trBase mirrors the server
+		// and yields the true first-hit. Flight path is TR_LINEAR (straight), so this is exact; for
+		// floor/long shots the muzzle->currentPos segment is clear air, giving the identical endpos.
+		CG_Trace(&trace, pkPos.trBase, missileMins, missileMaxs, nextPos, -1, CONTENTS_SOLID);
+		if (cg_predictKnockback.integer >= 3 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+			Com_Printf("^3[predictKnockback] ^7Trace (%.0f %.0f %.0f)->(%.0f %.0f %.0f) fraction=%.2f\n",
+				pkPos.trBase[0], pkPos.trBase[1], pkPos.trBase[2],
+				nextPos[0], nextPos[1], nextPos[2], trace.fraction);
+		if (trace.fraction < 1.0f && !cg.predictKnockback) {
+			// Only process first detection — LE may be recreated by simulated projectile system
+			// until server confirms explosion, causing stale hits to overwrite the real impulse
+			VectorCopy(trace.endpos, currentPos);
+			CG_PredictKnockbackSnapVectorTowards(currentPos, pkPos.trBase);
+			VectorCopy(currentPos, cg.predictKnockbackPredictedImpact); // TEMP debug: predicted impact, compared vs server EV_MISSILE_MISS
+			vec3_t dir;
+			vec3_t edgeDelta;
+			float distance;
+			float originDistance;
+			float points;
+			int damage, knockback;
+
+			le->endTime = cg.time;
+
+			VectorSubtract(cg.predictedPlayerState.origin, currentPos, dir);
+			originDistance = VectorLength(dir);
+			distance = CG_PredictKnockbackRadiusDistance(currentPos, &cg.predictedPlayerState, edgeDelta);
+
+			points = distance < 160.0f ? 100.0f * (1.0f - (distance / 160.0f)) : 0.0f;
+			damage = (int)points;
+			knockback = damage;
+			if (knockback > 200)
+				knockback = 200;
+
+			if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+				Com_Printf("^3[predictKnockback] ^7Missile hit solid. Adjusted distance: %.0f\n", distance);
+
+			if (distance < 160.0f) {
+				// No self-damage scale — server applies knockback before halving self-damage
+				// Match G_RadiusDamage exactly: bias the knockback direction upward by 24 before
+				// normalizing ("push center of mass higher so players get knocked into the air more").
+				// This shrinks the relative horizontal component so it matches the server, which is
+				// what caused the horizontal position snap at the prediction handoff.
+				dir[2] += 24.0f;
+				VectorNormalize(dir);
+				VectorScale(dir, 1000.0f * (float)knockback / 200.0f, cg.predictedRocketJumpImpulse);
+				if (cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5)
+					Com_Printf("^6[pk-DMG]^7 originDist=%.2f bboxDist=%.3f edgeDelta=(%.3f %.3f %.3f) points=%.2f dmg=%i kb=%i predImpulse=(%.1f %.1f %.1f) impact=(%.0f %.0f %.0f) player=(%.0f %.0f %.0f)\n",
+						originDistance, distance,
+						edgeDelta[0], edgeDelta[1], edgeDelta[2],
+						points, damage, knockback,
+						cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2],
+						currentPos[0], currentPos[1], currentPos[2],
+						cg.predictedPlayerState.origin[0], cg.predictedPlayerState.origin[1], cg.predictedPlayerState.origin[2]);
+				cg.predictKnockback = qtrue;
+				cg.predictKnockbackExploded = qfalse; // fresh rocket: ignore any prior explosion event
+				// Mirror the server's post-knockback no-friction window (G_Damage): pm_time = knockback*2,
+				// clamped to [50,200]. Applied at injection so the predicted slide isn't bled off by
+				// ground friction the same frame — that under-push was the "too little force" feel.
+				cg.predictKnockbackPmTime = knockback * 2;
+				if (cg.predictKnockbackPmTime < 50)  cg.predictKnockbackPmTime = 50;
+				if (cg.predictKnockbackPmTime > 200) cg.predictKnockbackPmTime = 200;
+				// Explosion time in the SERVER's clock = firing command serverTime (stamped into trDuration
+				// at creation) + flight time elapsed (render-time since the missile was spawned). Because the
+				// firing serverTime is server-clock and the flight time is a physical duration, this matches
+				// when the SERVER detonates regardless of cl_timeNudge / interpolation. We inject at the
+				// command matching this time, so our deterministic replay applies the impulse onto the same
+				// velocity the server had — eliminating the trajectory-point mismatch during fast movement.
+				{
+						float pkSpeed = VectorLength(pkPos.trDelta);
+						int pkFlightMs = (pkSpeed > 1.0f) ? (int)(Distance(pkPos.trBase, currentPos) / pkSpeed * 1000.0f) : 0;
+						int pkPrestep = le->startTime - (int)le->pos.trTime; // server back-dates trTime by this
+						// Server detonates its prestepped missile at fireServerTime + fullFlight - prestep.
+						cg.predictKnockbackServerTime = (int)le->pos.trDuration + pkFlightMs - pkPrestep;
+						// Point-blank clamp: when flight < prestep (wall within the prestep distance) the
+						// formula goes negative-relative-to-fire, but the server can't detonate before the
+						// missile is created — it fires on the first missile frame at ~the fire serverTime.
+						if (cg.predictKnockbackServerTime < (int)le->pos.trDuration)
+							cg.predictKnockbackServerTime = (int)le->pos.trDuration;
+					}
+				// Seed "last frame's base velocity". Each prediction frame we compare the authoritative
+				// base velocity to this and stop predicting the instant it jumps by ~the impulse in one
+				// step — that single-frame jump is the server applying the real knockback. Immune to
+				// snapshot/nextSnap ordering, render lag, cl_timeNudge, and the player's own velocity.
+				VectorCopy(cg.snap->ps.velocity, cg.predictKnockbackBaseVel);
+				VectorCopy(cg.snap->ps.velocity, cg.predictKnockbackLastBaseVel);
+				cg.predictKnockbackLastBaseCommandTime = cg.snap->ps.commandTime;
+				cg.predictKnockbackHasLastBaseVel = qtrue;
+				VectorCopy(cg.predictedPlayerState.origin, cg.predictKnockbackDebugPlayerOrigin);
+				cg.predictKnockbackDebugKnockback = knockback;
+				cg.predictKnockbackDebugLastInjectCommandTime = 0;
+				VectorClear(cg.predictKnockbackDebugLastInjectPreVel);
+				VectorClear(cg.predictKnockbackDebugLastInjectPostVel);
+				cg.pkDebugFrames = 40; // TEMP: keep logging through the whole event incl. post-clear
+
+				if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+					Com_Printf("^6[pk-DETECT]^7 dmg=%i kb=%i impulse=(%.0f %.0f %.0f) explT=%i (fireT=%i flightMs=%i prestep=%i) latestCmdT=%i baseVel=(%.0f %.0f %.0f) predVel=(%.0f %.0f %.0f) | snap{t=%i cmdT=%i} next{t=%i cmdT=%i} cg.time=%i\n",
+						damage, knockback,
+						cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2],
+						cg.predictKnockbackServerTime,
+						(int)le->pos.trDuration,
+						(VectorLength(pkPos.trDelta) > 1.0f) ? (int)(Distance(pkPos.trBase, currentPos) / VectorLength(pkPos.trDelta) * 1000.0f) : 0,
+						le->startTime - (int)le->pos.trTime,
+						cg.predictedPlayerState.commandTime,
+						cg.predictKnockbackBaseVel[0], cg.predictKnockbackBaseVel[1], cg.predictKnockbackBaseVel[2],
+						cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
+						cg.snap->serverTime, cg.snap->ps.commandTime,
+						cg.nextSnap ? cg.nextSnap->serverTime : -1, cg.nextSnap ? cg.nextSnap->ps.commandTime : -1,
+						cg.time);
+			}
+			else if (cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5) {
+				Com_Printf("^6[pk-DMG]^7 originDist=%.2f bboxDist=%.3f edgeDelta=(%.3f %.3f %.3f) points=%.2f dmg=%i kb=%i predImpulse=(0.0 0.0 0.0) impact=(%.0f %.0f %.0f) player=(%.0f %.0f %.0f)\n",
+					originDistance, distance,
+					edgeDelta[0], edgeDelta[1], edgeDelta[2],
+					points, damage, knockback,
+					currentPos[0], currentPos[1], currentPos[2],
+					cg.predictedPlayerState.origin[0], cg.predictedPlayerState.origin[1], cg.predictedPlayerState.origin[2]);
+			}
+			return;
+		}
+	}
 
 	switch (weapon) {
 		default:
