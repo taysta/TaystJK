@@ -1596,18 +1596,18 @@ void R_Register( void )
 	//
 	// temporary latched variables that can only change over a restart
 	//
-	r_fullbright = ri.Cvar_Get ("r_fullbright", "0", CVAR_LATCH|CVAR_CHEAT, "" );
-	r_mapOverBrightBits = ri.Cvar_Get ("r_mapOverBrightBits", "0", CVAR_LATCH, "" );
+	r_fullbright = ri.Cvar_Get ("r_fullbright", "0", CVAR_ARCHIVE_ND | CVAR_LATCH, "" );
+	r_mapOverBrightBits = ri.Cvar_Get ("r_mapOverBrightBits", "0", CVAR_ARCHIVE_ND|CVAR_LATCH, "" );
 	r_intensity = ri.Cvar_Get ("r_intensity", "1", CVAR_LATCH, "" );
 	r_singleShader = ri.Cvar_Get ("r_singleShader", "0", CVAR_CHEAT | CVAR_LATCH, "" );
 
 	//
 	// archived variables that can change at any time
 	//
-	r_lodCurveError = ri.Cvar_Get( "r_lodCurveError", "250", CVAR_ARCHIVE|CVAR_CHEAT, "" );
+	r_lodCurveError = ri.Cvar_Get( "r_lodCurveError", "250", CVAR_ARCHIVE_ND, "" );
 	r_lodbias = ri.Cvar_Get( "r_lodbias", "0", CVAR_ARCHIVE, "" );
 	r_flares = ri.Cvar_Get ("r_flares", "0", CVAR_ARCHIVE, "" );
-	r_znear = ri.Cvar_Get( "r_znear", "4", CVAR_CHEAT, "" );
+	r_znear = ri.Cvar_Get( "r_znear", "4", CVAR_ARCHIVE_ND, "" );
 	ri.Cvar_CheckRange( r_znear, 0.001f, 200, qfalse );
 	r_autolodscalevalue	= ri.Cvar_Get( "r_autolodscalevalue", "0", CVAR_ROM, "" );
 	r_zproj = ri.Cvar_Get( "r_zproj", "64", CVAR_ARCHIVE, "" );
@@ -1618,15 +1618,15 @@ void R_Register( void )
 	r_drawSun = ri.Cvar_Get( "r_drawSun", "0", CVAR_ARCHIVE, "" );
 	r_dynamiclight = ri.Cvar_Get( "r_dynamiclight", "1", CVAR_ARCHIVE, "" );
 	r_finish = ri.Cvar_Get ("r_finish", "0", CVAR_ARCHIVE, "");
-	r_textureMode = ri.Cvar_Get( "r_textureMode", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE, "" );
+	r_textureMode = ri.Cvar_Get( "r_textureMode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE, "" );
 	r_markcount = ri.Cvar_Get( "r_markcount", "100", CVAR_ARCHIVE, "" );
 	r_gamma = ri.Cvar_Get( "r_gamma", "1", CVAR_ARCHIVE, "" );
 	r_facePlaneCull = ri.Cvar_Get ("r_facePlaneCull", "1", CVAR_ARCHIVE, "" );
 
 	r_parallaxMapping = ri.Cvar_Get("r_parallaxMapping", "0", CVAR_ARCHIVE, "Disable/enable parallax mapping");
 
-	r_ambientScale = ri.Cvar_Get( "r_ambientScale", "0.6", CVAR_CHEAT, "" );
-	r_directedScale = ri.Cvar_Get( "r_directedScale", "1", CVAR_CHEAT, "" );
+	r_ambientScale = ri.Cvar_Get( "r_ambientScale", "0.6", CVAR_NONE, "" );
+	r_directedScale = ri.Cvar_Get( "r_directedScale", "1", CVAR_NONE, "" );
 
 	r_anaglyphMode = ri.Cvar_Get("r_anaglyphMode", "0", CVAR_ARCHIVE, "");
 	r_mergeMultidraws = ri.Cvar_Get("r_mergeMultidraws", "1", CVAR_ARCHIVE, "");
@@ -1647,16 +1647,16 @@ void R_Register( void )
 
 	r_nocurves = ri.Cvar_Get ("r_nocurves", "0", CVAR_CHEAT, "" );
 	r_drawworld = ri.Cvar_Get ("r_drawworld", "1", CVAR_CHEAT, "" );
-	r_drawfog = ri.Cvar_Get("r_drawfog", "2", CVAR_CHEAT, "");
-	r_lightmap = ri.Cvar_Get ("r_lightmap", "0", 0, "" );
+	r_drawfog = ri.Cvar_Get("r_drawfog", "2", CVAR_ARCHIVE_ND, "");
+	r_lightmap = ri.Cvar_Get ("r_lightmap", "0", CVAR_ARCHIVE_ND, "" );
     r_distanceCull = ri.Cvar_Get( "r_distanceCull", "0", CVAR_ARCHIVE_ND, "" );
 
     r_portalOnly = ri.Cvar_Get ("r_portalOnly", "0", CVAR_CHEAT, "" );
 
 	r_skipBackEnd = ri.Cvar_Get ("r_skipBackEnd", "0", CVAR_CHEAT, "");
 
-	r_measureOverdraw = ri.Cvar_Get( "r_measureOverdraw", "0", CVAR_CHEAT, "" );
-	r_lodscale = ri.Cvar_Get( "r_lodscale", "5", CVAR_CHEAT, "" );
+	r_measureOverdraw = ri.Cvar_Get( "r_measureOverdraw", "0", CVAR_NONE, "" );
+	r_lodscale = ri.Cvar_Get( "r_lodscale", "5", CVAR_ARCHIVE_ND, "" );
 	r_norefresh = ri.Cvar_Get ("r_norefresh", "0", CVAR_CHEAT, "");
 	r_drawentities = ri.Cvar_Get ("r_drawentities", "1", CVAR_CHEAT, "" );
 	r_ignore = ri.Cvar_Get( "r_ignore", "1", CVAR_CHEAT, "" );
@@ -1668,7 +1668,7 @@ void R_Register( void )
 	r_logFile = ri.Cvar_Get( "r_logFile", "0", CVAR_CHEAT, "" );
 	r_debugSurface = ri.Cvar_Get ("r_debugSurface", "0", CVAR_CHEAT, "");
 	r_nobind = ri.Cvar_Get ("r_nobind", "0", CVAR_CHEAT, "");
-	r_showtris = ri.Cvar_Get ("r_showtris", "0", CVAR_CHEAT, "");
+	r_showtris = ri.Cvar_Get ("r_showtris", "0", CVAR_NONE, "");
 	r_showsky = ri.Cvar_Get ("r_showsky", "0", CVAR_CHEAT, "");
 	r_shownormals = ri.Cvar_Get ("r_shownormals", "0", CVAR_CHEAT, "");
 	r_clear = ri.Cvar_Get ("r_clear", "0", CVAR_CHEAT, "");
@@ -1680,7 +1680,7 @@ void R_Register( void )
 
 	r_drawBuffer = ri.Cvar_Get( "r_drawBuffer", "GL_BACK", CVAR_CHEAT, "" );
 	r_lockpvs = ri.Cvar_Get ("r_lockpvs", "0", CVAR_CHEAT, "");
-	r_noportals = ri.Cvar_Get ("r_noportals", "0", CVAR_CHEAT, "");
+	r_noportals = ri.Cvar_Get ("r_noportals", "0", CVAR_NONE, "");
 	r_shadows = ri.Cvar_Get( "cg_shadows", "1", 0, "" );
 
 	r_marksOnTriangleMeshes = ri.Cvar_Get("r_marksOnTriangleMeshes", "0", CVAR_ARCHIVE, "");
