@@ -1412,6 +1412,20 @@ Ghoul2 Insert End
 	//vec3_t			predictedRocketJumpOriginalVel;
 	vec3_t				predictedRocketJumpImpulse;
 	qboolean			predictKnockback;
+	int					predictKnockbackServerTime;	// explosion time; impulse injected at the matching replay command
+	vec3_t				predictKnockbackBaseVel;	// snapshot velocity at detection; used to detect when the server applies the real knockback
+	vec3_t				predictKnockbackLastBaseVel; // last authoritative base velocity before the server knockback reaches the snapshot base
+	int					predictKnockbackLastBaseCommandTime;
+	qboolean			predictKnockbackHasLastBaseVel;
+	qboolean			predictKnockbackExploded;	// set by EV_MISSILE_MISS for our own rocket — the authoritative "stop predicting" signal
+	int					predictKnockbackPmTime;		// mirrors server's PMF_TIME_KNOCKBACK window (knockback*2, clamped 50..200) so friction doesn't eat the slide
+	int					pkDebugFrames;				// TEMP debug: frames left to keep logging after a knockback (covers post-clear)
+	vec3_t				predictKnockbackPredictedImpact; // TEMP debug: our predicted explosion point, compared vs server's EV_MISSILE_MISS
+	vec3_t				predictKnockbackDebugPlayerOrigin;
+	int					predictKnockbackDebugKnockback;
+	int					predictKnockbackDebugLastInjectCommandTime;
+	vec3_t				predictKnockbackDebugLastInjectPreVel;
+	vec3_t				predictKnockbackDebugLastInjectPostVel;
 
 	float				lastXpos;
 	float				lastYpos;

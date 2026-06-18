@@ -2464,13 +2464,35 @@ static void CG_LocalMissile(centity_t *cent, int weap, qboolean altFire) //unlag
 	le = CG_AllocLocalEntity();
 	le->leType = LE_MISSILE;
 	le->startTime = cg.time; // to stop bullet from being created inside or behind us?
-	le->pos.trTime = cg.time;//idk if this is needed
+	// Mirror the server's missile prestep/nudge (CreateMissileNew in g_missile.c) so the simulated
+	// projectile flies in lockstep with the server's authoritative one and hands off seamlessly.
+	// prestep is recoverable later as (startTime - pos.trTime).
+	{
+		int prestep = 0;
+		if (cg.predictedPlayerState.stats[STAT_RACEMODE])
+			prestep = 50; // MISSILE_PRESTEP_TIME (racemode: fixed prestep)
+		else if (cgs.jcinfo & JAPRO_CINFO_UNLAGGEDPROJ) {
+			prestep = (int)((cg.snap ? cg.snap->ping : 0) * 0.9f);
+			if (prestep > 135) prestep = 135; // g_unlaggedProjectileTolerance default
+			if (prestep < 0) prestep = 0;
+		}
+		le->pos.trTime = cg.time - prestep;
+	}
+	// Stamp the firing command's serverTime (server clock) onto the missile. trDuration is unused for
+	// TR_LINEAR/TR_GRAVITY, so we borrow it to carry this. Used by cg_predictKnockback to compute the
+	// server-clock explosion time.
+	le->pos.trDuration = cg.predictedPlayerState.commandTime;
 	le->leFlags = (weap * 2) + altFire;
 	(cgs.svfps) ? (offset = 1000 / cgs.svfps) : (offset = 50);
 	(cg.snap) ? (le->endTime = cg.time + cg.snap->ping + offset + timenudge) : (le->endTime = cg.time + offset + timenudge);
 	(gravity) ? (le->pos.trType = TR_GRAVITY) : (le->pos.trType = TR_LINEAR);
 	VectorCopy( muzzlePoint, le->pos.trBase );
 	VectorScale( forward, missileSpeed, le->pos.trDelta ); // missile speed
+
+	if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5 && weap == WP_ROCKET_LAUNCHER && !altFire)
+		Com_Printf("^2[pk-FIRE]^7 rocket created: cg.time=%i fireCmdT=%i prestep=%i muzzle=(%.0f %.0f %.0f) speed=%i\n",
+			cg.time, cg.predictedPlayerState.commandTime, cg.time - (int)le->pos.trTime,
+			muzzlePoint[0], muzzlePoint[1], muzzlePoint[2], missileSpeed);
 
 	//Com_Printf("Setting weapon %i and altfire %i, gravity %i, flags is %i\n", weap, altFire, gravity, le->leFlags);
 }

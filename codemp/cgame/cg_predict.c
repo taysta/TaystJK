@@ -991,6 +991,7 @@ void CG_PredictPlayerState( void ) {
 	playerState_t	oldPlayerState;
 	playerState_t	oldVehicleState;
 	qboolean	moved;
+	qboolean	knockbackAppliedThisPass;
 	usercmd_t	oldestCmd;
 	usercmd_t	latestCmd;
 	centity_t *pEnt;
@@ -1169,8 +1170,69 @@ void CG_PredictPlayerState( void ) {
 		cg.predictedVehicleState.commandTime = cg.predictedPlayerState.commandTime;
 	}
 
+	// Stop predicting once the server's authoritative knockback is in the snapshot base, otherwise
+	// re-injecting it during replay would double it. Two jump-immune triggers replace the old
+	// single-step velocity-jump heuristic (which false-fired on the player's own jump — a vertical
+	// rocket-jump and a bunny-hop look identical in the velocity stream):
+	//   1) predictKnockbackExploded — our rocket's EV_MISSILE_MISS arrived. Authoritative; also catches
+	//      an explosion that happened earlier than our predicted explT.
+	//   2) base commandTime >= explT — the base snapshot has run the explosion command, so its velocity
+	//      already carries the real knockback. explT lives in command-time (cmd.serverTime) units, so we
+	//      MUST compare against the base's commandTime, NOT its serverTime (those clocks differ by ~ping;
+	//      the logs show the server velocity jumps exactly when snapshot commandTime reaches explT). This
+	//      runs before the replay below, so the common case has no one-frame double-apply at the handoff.
+	if (cg.predictKnockback) {
+		qboolean baseReachedExplT = (cg.predictedPlayerState.commandTime >= cg.predictKnockbackServerTime);
+		qboolean cleared = (cg.predictKnockbackExploded || baseReachedExplT);
+
+		if (cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5) {
+			cleared = baseReachedExplT;
+		}
+
+		if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5) {
+			Com_Printf("^5[pk-chk]^7 base=%s baseCmdT=%i baseVel=(%.0f %.0f %.0f) exploded=%i explT=%i | snap{t=%i cmdT=%i vel=(%.0f %.0f %.0f)} next{t=%i cmdT=%i vel=(%.0f %.0f %.0f)} cg.time=%i\n",
+				(cg.nextSnap && !cg.nextFrameTeleport && !cg.thisFrameTeleport) ? "NEXT" : "snap",
+				cg.predictedPlayerState.commandTime,
+				cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
+				cg.predictKnockbackExploded, cg.predictKnockbackServerTime,
+				cg.snap->serverTime, cg.snap->ps.commandTime,
+				cg.snap->ps.velocity[0], cg.snap->ps.velocity[1], cg.snap->ps.velocity[2],
+				cg.nextSnap ? cg.nextSnap->serverTime : -1, cg.nextSnap ? cg.nextSnap->ps.commandTime : -1,
+				cg.nextSnap ? cg.nextSnap->ps.velocity[0] : 0, cg.nextSnap ? cg.nextSnap->ps.velocity[1] : 0, cg.nextSnap ? cg.nextSnap->ps.velocity[2] : 0,
+				cg.time);
+		}
+
+		if (cleared) {
+			if (cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5) {
+				vec3_t actualImpulse, impulseDelta;
+				int postExplT;
+
+				VectorSubtract(cg.predictedPlayerState.velocity, cg.predictKnockbackLastBaseVel, actualImpulse);
+				VectorSubtract(actualImpulse, cg.predictedRocketJumpImpulse, impulseDelta);
+				postExplT = cg.predictedPlayerState.commandTime - cg.predictKnockbackServerTime;
+				Com_Printf("^6[pk-IMP]^7 reason=%s baseCmdT=%i prevBaseCmdT=%i postExplT=%i predImpulse=(%.1f %.1f %.1f) actualImpulse=(%.1f %.1f %.1f) delta=(%.1f %.1f %.1f) prevBaseVel=(%.1f %.1f %.1f) baseVel=(%.1f %.1f %.1f)\n",
+					cg.predictKnockbackExploded && !baseReachedExplT ? "explEvent" : "reachedExplT",
+					cg.predictedPlayerState.commandTime, cg.predictKnockbackLastBaseCommandTime, postExplT,
+					cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2],
+					actualImpulse[0], actualImpulse[1], actualImpulse[2],
+					impulseDelta[0], impulseDelta[1], impulseDelta[2],
+					cg.predictKnockbackLastBaseVel[0], cg.predictKnockbackLastBaseVel[1], cg.predictKnockbackLastBaseVel[2],
+					cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2]);
+			}
+			if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+				Com_Printf("^1[pk-CLEAR]^7 reason=%s baseCmdT=%i explT=%i snapVel=(%.0f %.0f %.0f)\n",
+					cg.predictKnockbackExploded && !baseReachedExplT ? "explEvent" : "reachedExplT",
+					cg.predictedPlayerState.commandTime, cg.predictKnockbackServerTime,
+					cg.snap->ps.velocity[0], cg.snap->ps.velocity[1], cg.snap->ps.velocity[2]);
+			cg.predictKnockback = qfalse;
+			cg.predictKnockbackExploded = qfalse;
+			cg.predictKnockbackHasLastBaseVel = qfalse;
+		}
+	}
+
 	// run cmds
 	moved = qfalse;
+	knockbackAppliedThisPass = qfalse;
 	for ( cmdNum = current - REAL_CMD_BACKUP + 1 ; cmdNum <= current ; cmdNum++ ) {
 		// get the command
 		trap->GetUserCmd( cmdNum, &cg_pmove.cmd );
@@ -1350,6 +1412,70 @@ void CG_PredictPlayerState( void ) {
 			}
 		}
 
+		// Knockback prediction: inject the impulse exactly once, at the first replayed command
+		// at/after the explosion time. Pmove then replays all subsequent commands with real
+		// physics (gravity, air control), so the arc advances naturally and smoothly as more
+		// commands accumulate each frame — just like a normal predicted jump.
+		if (cg.predictKnockback && !knockbackAppliedThisPass &&
+			cg_pmove.cmd.serverTime >= cg.predictKnockbackServerTime)
+		{
+			vec3_t pkPreInjectVel, pkPostInjectVel, pkPostVelDelta;
+			qboolean skipDuplicateInject = qfalse;
+
+			VectorCopy(cg.predictedPlayerState.velocity, pkPreInjectVel);
+			VectorSubtract(pkPreInjectVel, cg.predictKnockbackDebugLastInjectPostVel, pkPostVelDelta);
+			if (cg.predictKnockbackDebugLastInjectCommandTime == cg_pmove.cmd.serverTime &&
+				VectorLengthSquared(pkPostVelDelta) < (128.0f * 128.0f)) {
+				skipDuplicateInject = qtrue;
+			}
+
+			if (cg_predictKnockback.integer > 2 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+				Com_Printf("^2[pk-inject]^7 at cmd %i (serverTime %i, explT %i): vel %.0f %.0f %.0f -> ",
+					cmdNum, cg_pmove.cmd.serverTime, cg.predictKnockbackServerTime,
+					cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2]);
+
+			if (!skipDuplicateInject) {
+				VectorAdd(cg.predictedPlayerState.velocity, cg.predictedRocketJumpImpulse, cg.predictedPlayerState.velocity);
+				// Mirror G_Damage: open the same no-friction/air-control window the server does, so ground
+				// friction in the replay below doesn't immediately bleed off the slide (under-push feel).
+				if (!cg.predictedPlayerState.pm_time) {
+					cg.predictedPlayerState.pm_time = cg.predictKnockbackPmTime;
+					cg.predictedPlayerState.pm_flags |= PMF_TIME_KNOCKBACK;
+				}
+			}
+			VectorCopy(cg.predictedPlayerState.velocity, pkPostInjectVel);
+
+			if (cg_predictKnockback.integer == 5) {
+				vec3_t pkPreVelDelta;
+
+				VectorSubtract(pkPreInjectVel, cg.predictKnockbackDebugLastInjectPreVel, pkPreVelDelta);
+				if (cg.predictKnockbackDebugLastInjectCommandTime != cg_pmove.cmd.serverTime ||
+					VectorLengthSquared(pkPreVelDelta) > 1.0f) {
+					Com_Printf("^6[pk-INJ]^7 %scmd=%i cmdT=%i explT=%i lateBy=%i preVel=(%.1f %.1f %.1f) impulse=(%.1f %.1f %.1f) postVel=(%.1f %.1f %.1f) pmTime=%i pmFlags=%i ground=%i\n",
+						skipDuplicateInject ? "SKIP " : "",
+						cmdNum, cg_pmove.cmd.serverTime, cg.predictKnockbackServerTime,
+						cg_pmove.cmd.serverTime - cg.predictKnockbackServerTime,
+						pkPreInjectVel[0], pkPreInjectVel[1], pkPreInjectVel[2],
+						cg.predictedRocketJumpImpulse[0], cg.predictedRocketJumpImpulse[1], cg.predictedRocketJumpImpulse[2],
+						cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
+						cg.predictedPlayerState.pm_time, cg.predictedPlayerState.pm_flags, cg.predictedPlayerState.groundEntityNum);
+					cg.predictKnockbackDebugLastInjectCommandTime = cg_pmove.cmd.serverTime;
+					VectorCopy(pkPreInjectVel, cg.predictKnockbackDebugLastInjectPreVel);
+					VectorCopy(pkPostInjectVel, cg.predictKnockbackDebugLastInjectPostVel);
+				}
+			}
+			else if (!skipDuplicateInject) {
+				cg.predictKnockbackDebugLastInjectCommandTime = cg_pmove.cmd.serverTime;
+				VectorCopy(pkPreInjectVel, cg.predictKnockbackDebugLastInjectPreVel);
+				VectorCopy(pkPostInjectVel, cg.predictKnockbackDebugLastInjectPostVel);
+			}
+			knockbackAppliedThisPass = qtrue;
+			if (cg_predictKnockback.integer > 2 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5)
+				Com_Printf("%.0f %.0f %.0f  (cmdWindow %i..%i)\n",
+					cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
+					current - REAL_CMD_BACKUP + 1, current);
+		}
+
 		Pmove (&cg_pmove);
 
 		if (CG_Piloting(cg.predictedPlayerState.m_iVehicleNum) &&
@@ -1464,6 +1590,16 @@ void CG_PredictPlayerState( void ) {
 
 		// check for predictable events that changed from previous predictions
 		//CG_CheckChangedPredictableEvents(&cg.predictedPlayerState);
+	}
+
+	// TEMP debug: keep logging the final rendered state for a window after the knockback,
+	// including post-clear frames, so the position handoff (jerk) is visible.
+	if (cg.pkDebugFrames > 0 && cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5) {
+		Com_Printf("^3[pk-RENDER]^7 origin=(%.0f %.0f %.0f) vel=(%.0f %.0f %.0f) ground=%i injected=%i predicting=%i (dbgF %i)\n",
+			cg.predictedPlayerState.origin[0], cg.predictedPlayerState.origin[1], cg.predictedPlayerState.origin[2],
+			cg.predictedPlayerState.velocity[0], cg.predictedPlayerState.velocity[1], cg.predictedPlayerState.velocity[2],
+			cg.predictedPlayerState.groundEntityNum, knockbackAppliedThisPass, cg.predictKnockback, cg.pkDebugFrames);
+		cg.pkDebugFrames--;
 	}
 
 	if ( cg_showMiss.integer > 1 ) {

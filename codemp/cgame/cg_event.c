@@ -3410,6 +3410,38 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS:
 		DEBUGNAME("EV_MISSILE_MISS");
+		// TEMP debug: server's authoritative rocket explosion for OUR rocket. Compare predicted impact
+		// location & timing (step 1 & 2) against the server's actual values.
+		if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5 && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum) {
+			Com_Printf("^4[pk-ACTUAL]^7 server explosion pos=(%.0f %.0f %.0f) | predicted pos=(%.0f %.0f %.0f) impactDelta=%.0f | actualTime{cg.time=%i snapCmdT=%i} predictedExplT=%i\n",
+				position[0], position[1], position[2],
+				cg.predictKnockbackPredictedImpact[0], cg.predictKnockbackPredictedImpact[1], cg.predictKnockbackPredictedImpact[2],
+				Distance(position, cg.predictKnockbackPredictedImpact),
+				cg.time, cg.snap ? cg.snap->ps.commandTime : -1, cg.predictKnockbackServerTime);
+		}
+		else if ((cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5) && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum) {
+			vec3_t impactDelta, actualHitDir, actualHitImpulse, hitImpulseDelta;
+
+			VectorSubtract(position, cg.predictKnockbackPredictedImpact, impactDelta);
+			VectorSubtract(cg.predictKnockbackDebugPlayerOrigin, position, actualHitDir);
+			actualHitDir[2] += 24.0f;
+			VectorNormalize(actualHitDir);
+			VectorScale(actualHitDir, 1000.0f * (float)cg.predictKnockbackDebugKnockback / 200.0f, actualHitImpulse);
+			VectorSubtract(actualHitImpulse, cg.predictedRocketJumpImpulse, hitImpulseDelta);
+			Com_Printf("^6[pk-HIT]^7 actualImpact=(%.1f %.1f %.1f) predictedImpact=(%.1f %.1f %.1f) delta=(%.1f %.1f %.1f) deltaLen=%.2f hitImpulse=(%.1f %.1f %.1f) hitImpulseDelta=(%.1f %.1f %.1f) actualTime{cg.time=%i snapCmdT=%i} predictedExplT=%i\n",
+				position[0], position[1], position[2],
+				cg.predictKnockbackPredictedImpact[0], cg.predictKnockbackPredictedImpact[1], cg.predictKnockbackPredictedImpact[2],
+				impactDelta[0], impactDelta[1], impactDelta[2], VectorLength(impactDelta),
+				actualHitImpulse[0], actualHitImpulse[1], actualHitImpulse[2],
+				hitImpulseDelta[0], hitImpulseDelta[1], hitImpulseDelta[2],
+				cg.time, cg.snap ? cg.snap->ps.commandTime : -1, cg.predictKnockbackServerTime);
+		}
+		// Authoritative "stop predicting" signal for cg_predictKnockback: our own rocket has exploded
+		// server-side, so its knockback is now in the snapshot stream. Unambiguous — unlike the old
+		// velocity-jump heuristic, this can never be confused with the player's own jump.
+		if (cg_predictKnockback.integer && cg.predictKnockback && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum)
+			cg.predictKnockbackExploded = qtrue;
+
 		if (cgs.serverMod == SVMOD_JAPRO && cg.predictedPlayerState.stats[STAT_RACEMODE] && cg.predictedPlayerState.stats[STAT_MOVEMENTSTYLE] == MV_COOP_JKA) {
 		}
 		else if (cg.predictedPlayerState.duelInProgress &&
@@ -3458,6 +3490,33 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_MISSILE_MISS_METAL:
 		DEBUGNAME("EV_MISSILE_MISS_METAL");
+		if (cg_predictKnockback.integer > 1 && cg_predictKnockback.integer != 4 && cg_predictKnockback.integer != 5 && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum) {
+			Com_Printf("^4[pk-ACTUAL]^7 (metal) server explosion pos=(%.0f %.0f %.0f) | predicted pos=(%.0f %.0f %.0f) impactDelta=%.0f | actualTime{cg.time=%i snapCmdT=%i} predictedExplT=%i\n",
+				position[0], position[1], position[2],
+				cg.predictKnockbackPredictedImpact[0], cg.predictKnockbackPredictedImpact[1], cg.predictKnockbackPredictedImpact[2],
+				Distance(position, cg.predictKnockbackPredictedImpact),
+				cg.time, cg.snap ? cg.snap->ps.commandTime : -1, cg.predictKnockbackServerTime);
+		}
+		else if ((cg_predictKnockback.integer == 4 || cg_predictKnockback.integer == 5) && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum) {
+			vec3_t impactDelta, actualHitDir, actualHitImpulse, hitImpulseDelta;
+
+			VectorSubtract(position, cg.predictKnockbackPredictedImpact, impactDelta);
+			VectorSubtract(cg.predictKnockbackDebugPlayerOrigin, position, actualHitDir);
+			actualHitDir[2] += 24.0f;
+			VectorNormalize(actualHitDir);
+			VectorScale(actualHitDir, 1000.0f * (float)cg.predictKnockbackDebugKnockback / 200.0f, actualHitImpulse);
+			VectorSubtract(actualHitImpulse, cg.predictedRocketJumpImpulse, hitImpulseDelta);
+			Com_Printf("^6[pk-HIT]^7 metal actualImpact=(%.1f %.1f %.1f) predictedImpact=(%.1f %.1f %.1f) delta=(%.1f %.1f %.1f) deltaLen=%.2f hitImpulse=(%.1f %.1f %.1f) hitImpulseDelta=(%.1f %.1f %.1f) actualTime{cg.time=%i snapCmdT=%i} predictedExplT=%i\n",
+				position[0], position[1], position[2],
+				cg.predictKnockbackPredictedImpact[0], cg.predictKnockbackPredictedImpact[1], cg.predictKnockbackPredictedImpact[2],
+				impactDelta[0], impactDelta[1], impactDelta[2], VectorLength(impactDelta),
+				actualHitImpulse[0], actualHitImpulse[1], actualHitImpulse[2],
+				hitImpulseDelta[0], hitImpulseDelta[1], hitImpulseDelta[2],
+				cg.time, cg.snap ? cg.snap->ps.commandTime : -1, cg.predictKnockbackServerTime);
+		}
+		// Authoritative stop signal (see EV_MISSILE_MISS) — rocket impacting metal still means it exploded.
+		if (cg_predictKnockback.integer && cg.predictKnockback && es->weapon == WP_ROCKET_LAUNCHER && es->owner == cg.predictedPlayerState.clientNum)
+			cg.predictKnockbackExploded = qtrue;
 		if (cg.snap && cg.snap->ps.duelInProgress && ((cg_dueltypes[cg.snap->ps.clientNum] == 1) | (cg_dueltypes[cg.snap->ps.clientNum] == 2))) { //FF or NF Duel, no weapons so ignore this..
 			break;
 		}
