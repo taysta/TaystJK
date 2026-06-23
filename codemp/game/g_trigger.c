@@ -1435,6 +1435,7 @@ static QINLINE int GetTimeMS() {
 
 //void G_SoundPrivate( gentity_t *ent, int channel, int soundIndex );
 void G_UpdatePlaytime(int null, char *username, int seconds );
+static void G_ClearRunCheckpoints(gclient_t *client);
 void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	int lessTime;
 
@@ -1575,6 +1576,7 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 	player->client->pers.stats.displacementSamples = 0;
 	player->client->pers.stats.checkpoints = 0;
 	player->client->pers.stats.courseID = trigger->courseID;
+	G_ClearRunCheckpoints(player->client);
 
 	if (player->client->ps.stats[STAT_RESTRICTIONS] & JAPRO_RESTRICT_ALLOWTELES) { //Reset their telemark on map start if this is the case
 		player->client->pers.telemarkOrigin[0] = 0;
@@ -1671,7 +1673,31 @@ void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO 
 void PrintRaceTime(char *username, char *playername, char *message, char *style, int topspeed, int average, char *timeStr, int clientNum, int season_newRank, qboolean spb, int global_newRank, qboolean loggedin, qboolean valid, int season_oldRank, int global_oldRank, float addedScore, int awesomenoise, int worldrecordnoise);
 void IntegerToRaceName(int style, char *styleString, size_t styleStringSize);
 void TimeToString(int duration_ms, char *timeStr, size_t strSize);
-void G_AddRaceTime(char *account, char *courseName, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise, int worldrecordnoise); //should this be extern?
+void G_AddRaceTime(char *account, char *courseName, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise, int worldrecordnoise, char *checkpoints); //should this be extern?
+
+static void G_ClearRunCheckpoints(gclient_t *client) {
+	client->pers.stats.checkpointCount = 0;
+	client->pers.stats.checkpointTimes[0] = 0;
+}
+
+static void G_AppendRunCheckpoint(gclient_t *client, int time, int topspeed, int average) {
+	char checkpoint[48];
+
+	if (client->pers.stats.checkpointCount >= MAX_RUN_CHECKPOINTS)
+		return;
+
+	Com_sprintf(checkpoint, sizeof(checkpoint), "%s%i:%i:%i", client->pers.stats.checkpointCount ? "," : "", time, topspeed, average);
+	if (strlen(client->pers.stats.checkpointTimes) + strlen(checkpoint) >= sizeof(client->pers.stats.checkpointTimes))
+		return;
+
+	Q_strcat(client->pers.stats.checkpointTimes, sizeof(client->pers.stats.checkpointTimes), checkpoint);
+	client->pers.stats.checkpointCount++;
+}
+
+static qboolean G_CheckpointAppliesToRun(gentity_t *trigger, gclient_t *client) {
+	return (!trigger->courseID || !client->pers.stats.courseID || trigger->courseID == client->pers.stats.courseID);
+}
+
 void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	if (!player->client)
 		return;
@@ -1688,6 +1714,7 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			player->client->pers.stats.startTime = 0;
 			player->client->pers.stats.topSpeed = 0;
 			player->client->pers.stats.displacement = 0;
+			G_ClearRunCheckpoints(player->client);
 			if (player->client->ps.stats[STAT_RACEMODE])
 				player->client->ps.duelTime = 0;
 			return;
@@ -1822,9 +1849,9 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			if (p)
 				*p = 0;
 			if (player->client->pers.userName[0] && (!coopFinished || (coopFinished && duelAgainst->client->pers.userName[0]))) { //omg
-				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time * 1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index);
+				G_AddRaceTime(player->client->pers.userName, trigger->message, (int)(time * 1000), player->client->ps.stats[STAT_MOVEMENTSTYLE], (int)(player->client->pers.stats.topSpeed + 0.5f), average, player->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index, player->client->pers.stats.checkpointTimes);
 				if (coopFinished) {
-					G_AddRaceTime(duelAgainst->client->pers.userName, trigger->message, (int)(time * 1000), duelAgainst->client->ps.stats[STAT_MOVEMENTSTYLE], 0, 0, duelAgainst->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index);
+					G_AddRaceTime(duelAgainst->client->pers.userName, trigger->message, (int)(time * 1000), duelAgainst->client->ps.stats[STAT_MOVEMENTSTYLE], 0, 0, duelAgainst->client->ps.clientNum, trigger->awesomenoise_index, trigger->worldrecordnoise_index, player->client->pers.stats.checkpointTimes);
 				}
 			}
 			else {
@@ -1844,11 +1871,13 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 			player->client->pers.stats.startTime = 0;
 			player->client->pers.stats.topSpeed = 0;
 			player->client->pers.stats.displacement = 0;
+			G_ClearRunCheckpoints(player->client);
 			if (coopFinished) {
 				duelAgainst->client->pers.stats.startLevelTime = 0;
 				duelAgainst->client->pers.stats.startTime = 0;
 				duelAgainst->client->pers.stats.topSpeed = 0;
 				duelAgainst->client->pers.stats.displacement = 0;
+				G_ClearRunCheckpoints(duelAgainst->client);
 				//player->client->pers.stats.coopFinished = qfalse;
 				//duelAgainst->client->pers.stats.coopFinished = qfalse;
 			}
@@ -1882,8 +1911,12 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		if (player->client->pers.stats.startTime)
 			trap->SendServerCommand( player-g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?
 		player->client->pers.stats.startTime = 0;
+		G_ClearRunCheckpoints(player->client);
 		if (player->client->sess.raceMode)
 			player->client->ps.duelTime = 0;
+		return;
+	}
+	if (!G_CheckpointAppliesToRun(trigger, player->client)) {
 		return;
 	}
 	if (!(trigger->spawnflags & 4) && trigger->objective > 0 && ((player->client->pers.stats.checkpoints & trigger->objective) == trigger->objective)) {
@@ -1929,6 +1962,8 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 
 		if (time < 1)
 			time = 1;
+
+		G_AppendRunCheckpoint(player->client, time, (int)(player->client->pers.stats.topSpeed + 0.5f), average);
 
 		/*
 		if (trigger && trigger->spawnflags & 1)//Minimalist print loda fixme get rid of target shit 

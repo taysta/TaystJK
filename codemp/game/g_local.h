@@ -756,6 +756,8 @@ typedef struct clientSession_s {
 //
 #define MAX_NETNAME			36
 #define	MAX_VOTE_COUNT		3
+#define MAX_RUN_CHECKPOINTS	32
+#define MAX_RUN_CHECKPOINT_STRING 1024
 
 typedef struct {//JAPRO - Serverside - Stats
 	int kills;
@@ -790,6 +792,8 @@ typedef struct {//JAPRO - Serverside - Stats
 	short lowestHP;
 	int checkpoints;
 	int courseID;
+	int checkpointCount;
+	char checkpointTimes[MAX_RUN_CHECKPOINT_STRING];
 } stats_t;
 
 // client data that stays across multiple respawns, but is cleared
