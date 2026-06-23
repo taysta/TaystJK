@@ -17,6 +17,8 @@
         // Hand off to the default tab
         onOpen
         {
+            close               ingame ;
+            close				ingame_setup ;
             close               ingame_newmenu ;
             open                newmenu_tab1 ;
         }
