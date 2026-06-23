@@ -887,7 +887,8 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 			float enemyDist, myDist, percent;
 			int points;
 			gentity_t *flag = NULL;
-			char		*enemyflag, *myflag;
+			char *enemyflag = NULL;
+			char *myflag = NULL;
 			if (team == TEAM_RED) {
 				enemyflag = "team_CTF_blueflag";
 				myflag = "team_CTF_redflag";

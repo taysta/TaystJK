@@ -6289,7 +6289,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     if(plyrs > 4)
         ret_y = ret_y * 2 + 15.0f;
 
-	int renderIndex = 0;
+    int renderIndex = 0;
     for (i = 0; i < count; i++)
     {
         ci = cgs.clientinfo + sortedTeamPlayers[i];
