@@ -601,15 +601,28 @@ void RB_UpdateVBOs(unsigned int attribBits)
 
 	backEnd.pc.c_dynamicVboDraws++;
 
-	// update the default VBO
-	if (tess.numVertexes > 0 && tess.numVertexes <= SHADER_MAX_VERTEXES)
-	{
-		VBO_t *frameVbo = currentFrame->dynamicVbo;
-		GLbitfield mapFlags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
-		VertexArraysProperties vertexArrays = {};
-		CalculateVertexArraysProperties(attribBits, &vertexArrays);
+	VertexArraysProperties vertexArrays = {};
+	CalculateVertexArraysProperties(attribBits, &vertexArrays);
+	int numVertexes = (tess.numVertexes > 0 && tess.numVertexes <= SHADER_MAX_VERTEXES) ? tess.numVertexes : 0;
+	size_t totalVertexDataSize = numVertexes * vertexArrays.vertexDataSize;
+	int numIndexes = (tess.numIndexes > 0 && tess.numIndexes <= SHADER_MAX_INDEXES) ? tess.numIndexes : 0;
+	int totalIndexDataSize = numIndexes * sizeof(tess.indexes[0]);
+	VBO_t *frameVbo = currentFrame->dynamicVbo;
+	IBO_t *frameIbo = currentFrame->dynamicIbo;
 
-		size_t totalVertexDataSize = tess.numVertexes * vertexArrays.vertexDataSize;
+	// Exceeding dynamic surface buffer, do a full frame sync
+	if (( (currentFrame->dynamicVboWriteOffset + totalVertexDataSize) > frameVbo->vertexesSize ) ||
+		( (currentFrame->dynamicIboWriteOffset + totalIndexDataSize) > frameIbo->indexesSize ))
+	{
+		R_NewFrameSync();
+		RE_BeginFrame(tr.refdef.stereoFrame);
+	}
+	
+	// update the default VBO
+	if ( numVertexes )
+	{
+		GLbitfield mapFlags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
+		
 		backEnd.pc.c_dynamicVboTotalSize += totalVertexDataSize;
 
 		if ( (currentFrame->dynamicVboWriteOffset + totalVertexDataSize) > frameVbo->vertexesSize )
@@ -657,12 +670,10 @@ void RB_UpdateVBOs(unsigned int attribBits)
 	}
 
 	// update the default IBO
-	if(tess.numIndexes > 0 && tess.numIndexes <= SHADER_MAX_INDEXES)
+	if ( numIndexes )
 	{
-		IBO_t *frameIbo = currentFrame->dynamicIbo;
 		GLbitfield mapFlags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
-		int totalIndexDataSize = tess.numIndexes * sizeof(tess.indexes[0]);
-
+		
 		R_BindIBO(frameIbo);
 
 		if ( (currentFrame->dynamicIboWriteOffset + totalIndexDataSize) > frameIbo->indexesSize )
