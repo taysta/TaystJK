@@ -929,46 +929,6 @@ itemDef \
 #define ITEM_BODY_TEXT_BOX_EX(itemName, itemGroup, rowY, itemText, itemDesc, itemExtra) \
     TEXT_BOX_BODY_EX(itemName, itemGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, itemText, itemDesc, itemExtra)
 
-#define ITEM_BODY_MULTI_EX(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowChoices, rowExtra, rowAction) \
-    TEXT_BOX_BODY_EX(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc, rowExtra) \
-    itemDef \
-    { \
-        type                ITEM_TYPE_MULTI \
-        cvar                rowCvar \
-        cvarStrList         rowChoices \
-        ITEM_BODY_CONTROL_EX_IMPL(rowName, rowGroup, BODY_CONTROL_X rowY BODY_COLUMN_W BODY_ROW_H, rowDesc, rowExtra, rowAction) \
-    }
-
-#define ITEM_BODY_MULTI(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowChoices, rowAction) \
-    TEXT_BOX_BODY(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc) \
-    itemDef \
-    { \
-        type                ITEM_TYPE_MULTI \
-        cvar                rowCvar \
-        cvarStrList         rowChoices \
-        ITEM_BODY_CONTROL_IMPL(rowName, rowGroup, BODY_CONTROL_X rowY BODY_COLUMN_W BODY_ROW_H, rowDesc, rowAction) \
-    }
-
-#define ITEM_BODY_MULTIFL_EX(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowChoices, rowExtra, rowAction) \
-    TEXT_BOX_BODY_EX(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc, rowExtra) \
-    itemDef \
-    { \
-        type                ITEM_TYPE_MULTI \
-        cvar                rowCvar \
-        cvarFloatList       rowChoices \
-        ITEM_BODY_CONTROL_EX_IMPL(rowName, rowGroup, BODY_CONTROL_X rowY BODY_COLUMN_W BODY_ROW_H, rowDesc, rowExtra, rowAction) \
-    }
-
-#define ITEM_BODY_MULTIFL(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowChoices, rowAction) \
-    TEXT_BOX_BODY(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc) \
-    itemDef \
-    { \
-        type                ITEM_TYPE_MULTI \
-        cvar                rowCvar \
-        cvarFloatList       rowChoices \
-        ITEM_BODY_CONTROL_IMPL(rowName, rowGroup, BODY_CONTROL_X rowY BODY_COLUMN_W BODY_ROW_H, rowDesc, rowAction) \
-    }
-
 #define ITEM_BODY_MULTI_FEEDER_EX(rowName, rowGroup, rowY, rowText, rowDesc, rowCvar, rowFeeder, rowExtra, rowAction) \
     TEXT_BOX_BODY_EX(rowName##_label, rowGroup, BODY_LABEL_X rowY BODY_COLUMN_W BODY_ROW_H, INVISIBLE, rowText, rowDesc, rowExtra) \
     itemDef \
