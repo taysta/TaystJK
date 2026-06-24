@@ -2095,7 +2095,7 @@ static const void *RB_PrefilterEnvMap(const void *data) {
 	R_LightForPoint(cmd->cubemap->origin, ambientLight, directLight, direction);
 	VectorScale(directLight, 1.0f / 255.0f, directLight);
 	const vec3_t lumaVec = { 0.2126f, 0.7152f, 0.0722f };
-	float maxLuma = DotProduct(directLight, lumaVec);
+	float maxLuma = MAX(0.0001f, DotProduct(directLight, lumaVec));
 
 	for (int level = 0; level <= CUBE_MAP_ROUGHNESS_MIPS; level++)
 	{
