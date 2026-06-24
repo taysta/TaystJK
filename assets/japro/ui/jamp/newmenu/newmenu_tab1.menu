@@ -217,108 +217,500 @@
         ROW_TEXT(TAB1_PAGE1, 23, "23", "23")
         ROW_TEXT(TAB1_PAGE1, 24, "24", "24")
 
-        // Page 2
-        ROW_TEXT(TAB1_PAGE2, 1, "Tab 1 Page 2 Option 1", "Tab 1 Page 2 Option 1")
-        ROW_TEXT(TAB1_PAGE2, 2, "Tab 1 Page 2 Option 2", "Tab 1 Page 2 Option 2")
-        ROW_TEXT(TAB1_PAGE2, 3, "Tab 1 Page 2 Option 3", "Tab 1 Page 2 Option 3")
-        ROW_TEXT(TAB1_PAGE2, 4, "Tab 1 Page 2 Option 4", "Tab 1 Page 2 Option 4")
-        ROW_TEXT(TAB1_PAGE2, 5, "Tab 1 Page 2 Option 5", "Tab 1 Page 2 Option 5")
-        ROW_TEXT(TAB1_PAGE2, 6, "Tab 1 Page 2 Option 6", "Tab 1 Page 2 Option 6")
-        ROW_TEXT(TAB1_PAGE2, 7, "Tab 1 Page 2 Option 7", "Tab 1 Page 2 Option 7")
-        ROW_TEXT(TAB1_PAGE2, 8, "Tab 1 Page 2 Option 8", "Tab 1 Page 2 Option 8")
-        ROW_TEXT(TAB1_PAGE2, 9, "Tab 1 Page 2 Option 9", "Tab 1 Page 2 Option 9")
-        ROW_TEXT(TAB1_PAGE2, 10, "Tab 1 Page 2 Option 10", "Tab 1 Page 2 Option 10")
-        ROW_TEXT(TAB1_PAGE2, 11, "Tab 1 Page 2 Option 11", "Tab 1 Page 2 Option 11")
-        ROW_TEXT(TAB1_PAGE2, 12, "Tab 1 Page 2 Option 12", "Tab 1 Page 2 Option 12")
-        ROW_TEXT(TAB1_PAGE2, 13, "Tab 1 Page 2 Option 13", "Tab 1 Page 2 Option 13")
-        ROW_TEXT(TAB1_PAGE2, 14, "Tab 1 Page 2 Option 14", "Tab 1 Page 2 Option 14")
-        ROW_TEXT(TAB1_PAGE2, 15, "Tab 1 Page 2 Option 15", "Tab 1 Page 2 Option 15")
-        ROW_TEXT(TAB1_PAGE2, 16, "Tab 1 Page 2 Option 16", "Tab 1 Page 2 Option 16")
-        ROW_TEXT(TAB1_PAGE2, 17, "Tab 1 Page 2 Option 17", "Tab 1 Page 2 Option 17")
-        ROW_TEXT(TAB1_PAGE2, 18, "Tab 1 Page 2 Option 18", "Tab 1 Page 2 Option 18")
-        ROW_TEXT(TAB1_PAGE2, 19, "Tab 1 Page 2 Option 19", "Tab 1 Page 2 Option 19")
-        ROW_TEXT(TAB1_PAGE2, 20, "Tab 1 Page 2 Option 20", "Tab 1 Page 2 Option 20")
-        ROW_TEXT(TAB1_PAGE2, 21, "Tab 1 Page 2 Option 21", "Tab 1 Page 2 Option 21")
-        ROW_TEXT(TAB1_PAGE2, 22, "Tab 1 Page 2 Option 22", "Tab 1 Page 2 Option 22")
-        ROW_TEXT(TAB1_PAGE2, 23, "Tab 1 Page 2 Option 23", "Tab 1 Page 2 Option 23")
-        ROW_TEXT(TAB1_PAGE2, 24, "Tab 1 Page 2 Option 24", "Tab 1 Page 2 Option 24")
+        // Page 2 - _EX row API / conditional fragments
+        ROW_TEXT_EX(TAB1_PAGE2, 1, "Text EX", "ROW_TEXT_EX", ROW_COND_SHOW("ui_fake_show", { 1 }))
+        ROW_SECTION_EX(TAB1_PAGE2, 2, "Section EX", "ROW_SECTION_EX", ROW_COND_HIDE("ui_fake_hide", { 1 }))
 
-        // Page 3
-        ROW_TEXT(TAB1_PAGE3, 1, "Tab 1 Page 3 Option 1", "Tab 1 Page 3 Option 1")
-        ROW_TEXT(TAB1_PAGE3, 2, "Tab 1 Page 3 Option 2", "Tab 1 Page 3 Option 2")
-        ROW_TEXT(TAB1_PAGE3, 3, "Tab 1 Page 3 Option 3", "Tab 1 Page 3 Option 3")
-        ROW_TEXT(TAB1_PAGE3, 4, "Tab 1 Page 3 Option 4", "Tab 1 Page 3 Option 4")
-        ROW_TEXT(TAB1_PAGE3, 5, "Tab 1 Page 3 Option 5", "Tab 1 Page 3 Option 5")
-        ROW_TEXT(TAB1_PAGE3, 6, "Tab 1 Page 3 Option 6", "Tab 1 Page 3 Option 6")
-        ROW_TEXT(TAB1_PAGE3, 7, "Tab 1 Page 3 Option 7", "Tab 1 Page 3 Option 7")
-        ROW_TEXT(TAB1_PAGE3, 8, "Tab 1 Page 3 Option 8", "Tab 1 Page 3 Option 8")
-        ROW_TEXT(TAB1_PAGE3, 9, "Tab 1 Page 3 Option 9", "Tab 1 Page 3 Option 9")
-        ROW_TEXT(TAB1_PAGE3, 10, "Tab 1 Page 3 Option 10", "Tab 1 Page 3 Option 10")
-        ROW_TEXT(TAB1_PAGE3, 11, "Tab 1 Page 3 Option 11", "Tab 1 Page 3 Option 11")
-        ROW_TEXT(TAB1_PAGE3, 12, "Tab 1 Page 3 Option 12", "Tab 1 Page 3 Option 12")
-        ROW_TEXT(TAB1_PAGE3, 13, "Tab 1 Page 3 Option 13", "Tab 1 Page 3 Option 13")
-        ROW_TEXT(TAB1_PAGE3, 14, "Tab 1 Page 3 Option 14", "Tab 1 Page 3 Option 14")
-        ROW_TEXT(TAB1_PAGE3, 15, "Tab 1 Page 3 Option 15", "Tab 1 Page 3 Option 15")
-        ROW_TEXT(TAB1_PAGE3, 16, "Tab 1 Page 3 Option 16", "Tab 1 Page 3 Option 16")
-        ROW_TEXT(TAB1_PAGE3, 17, "Tab 1 Page 3 Option 17", "Tab 1 Page 3 Option 17")
-        ROW_TEXT(TAB1_PAGE3, 18, "Tab 1 Page 3 Option 18", "Tab 1 Page 3 Option 18")
-        ROW_TEXT(TAB1_PAGE3, 19, "Tab 1 Page 3 Option 19", "Tab 1 Page 3 Option 19")
-        ROW_TEXT(TAB1_PAGE3, 20, "Tab 1 Page 3 Option 20", "Tab 1 Page 3 Option 20")
-        ROW_TEXT(TAB1_PAGE3, 21, "Tab 1 Page 3 Option 21", "Tab 1 Page 3 Option 21")
-        ROW_TEXT(TAB1_PAGE3, 22, "Tab 1 Page 3 Option 22", "Tab 1 Page 3 Option 22")
-        ROW_TEXT(TAB1_PAGE3, 23, "Tab 1 Page 3 Option 23", "Tab 1 Page 3 Option 23")
-        ROW_TEXT(TAB1_PAGE3, 24, "Tab 1 Page 3 Option 24", "Tab 1 Page 3 Option 24")
+        ROW_MULTI_EX(TAB1_PAGE2, 3,
+            "Multi EX",
+            "ROW_MULTI_EX",
+            "ui_fake_multi_ex",
+            { "Alpha" "a" "Beta" "b" "Gamma" "c" },
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
 
-        // Page 4
-        ROW_TEXT(TAB1_PAGE4, 1, "Tab 1 Page 4 Option 1", "Tab 1 Page 4 Option 1")
-        ROW_TEXT(TAB1_PAGE4, 2, "Tab 1 Page 4 Option 2", "Tab 1 Page 4 Option 2")
-        ROW_TEXT(TAB1_PAGE4, 3, "Tab 1 Page 4 Option 3", "Tab 1 Page 4 Option 3")
-        ROW_TEXT(TAB1_PAGE4, 4, "Tab 1 Page 4 Option 4", "Tab 1 Page 4 Option 4")
-        ROW_TEXT(TAB1_PAGE4, 5, "Tab 1 Page 4 Option 5", "Tab 1 Page 4 Option 5")
-        ROW_TEXT(TAB1_PAGE4, 6, "Tab 1 Page 4 Option 6", "Tab 1 Page 4 Option 6")
-        ROW_TEXT(TAB1_PAGE4, 7, "Tab 1 Page 4 Option 7", "Tab 1 Page 4 Option 7")
-        ROW_TEXT(TAB1_PAGE4, 8, "Tab 1 Page 4 Option 8", "Tab 1 Page 4 Option 8")
-        ROW_TEXT(TAB1_PAGE4, 9, "Tab 1 Page 4 Option 9", "Tab 1 Page 4 Option 9")
-        ROW_TEXT(TAB1_PAGE4, 10, "Tab 1 Page 4 Option 10", "Tab 1 Page 4 Option 10")
-        ROW_TEXT(TAB1_PAGE4, 11, "Tab 1 Page 4 Option 11", "Tab 1 Page 4 Option 11")
-        ROW_TEXT(TAB1_PAGE4, 12, "Tab 1 Page 4 Option 12", "Tab 1 Page 4 Option 12")
-        ROW_TEXT(TAB1_PAGE4, 13, "Tab 1 Page 4 Option 13", "Tab 1 Page 4 Option 13")
-        ROW_TEXT(TAB1_PAGE4, 14, "Tab 1 Page 4 Option 14", "Tab 1 Page 4 Option 14")
-        ROW_TEXT(TAB1_PAGE4, 15, "Tab 1 Page 4 Option 15", "Tab 1 Page 4 Option 15")
-        ROW_TEXT(TAB1_PAGE4, 16, "Tab 1 Page 4 Option 16", "Tab 1 Page 4 Option 16")
-        ROW_TEXT(TAB1_PAGE4, 17, "Tab 1 Page 4 Option 17", "Tab 1 Page 4 Option 17")
-        ROW_TEXT(TAB1_PAGE4, 18, "Tab 1 Page 4 Option 18", "Tab 1 Page 4 Option 18")
-        ROW_TEXT(TAB1_PAGE4, 19, "Tab 1 Page 4 Option 19", "Tab 1 Page 4 Option 19")
-        ROW_TEXT(TAB1_PAGE4, 20, "Tab 1 Page 4 Option 20", "Tab 1 Page 4 Option 20")
-        ROW_TEXT(TAB1_PAGE4, 21, "Tab 1 Page 4 Option 21", "Tab 1 Page 4 Option 21")
-        ROW_TEXT(TAB1_PAGE4, 22, "Tab 1 Page 4 Option 22", "Tab 1 Page 4 Option 22")
-        ROW_TEXT(TAB1_PAGE4, 23, "Tab 1 Page 4 Option 23", "Tab 1 Page 4 Option 23")
-        ROW_TEXT(TAB1_PAGE4, 24, "Tab 1 Page 4 Option 24", "Tab 1 Page 4 Option 24")
+        ROW_MULTIFL_EX(TAB1_PAGE2, 4,
+            "Multi Float EX",
+            "ROW_MULTIFL_EX",
+            "ui_fake_multifl_ex",
+            { "Low" 0 "Mid" 1 "High" 2 },
+            ROW_COND_DISABLE("ui_fake_disable", { 1 }),
+            ACT_NONE)
 
-        // Page 5
-        ROW_TEXT(TAB1_PAGE5, 1, "Tab 1 Page 5 Option 1", "Tab 1 Page 5 Option 1")
-        ROW_TEXT(TAB1_PAGE5, 2, "Tab 1 Page 5 Option 2", "Tab 1 Page 5 Option 2")
-        ROW_TEXT(TAB1_PAGE5, 3, "Tab 1 Page 5 Option 3", "Tab 1 Page 5 Option 3")
-        ROW_TEXT(TAB1_PAGE5, 4, "Tab 1 Page 5 Option 4", "Tab 1 Page 5 Option 4")
-        ROW_TEXT(TAB1_PAGE5, 5, "Tab 1 Page 5 Option 5", "Tab 1 Page 5 Option 5")
-        ROW_TEXT(TAB1_PAGE5, 6, "Tab 1 Page 5 Option 6", "Tab 1 Page 5 Option 6")
-        ROW_TEXT(TAB1_PAGE5, 7, "Tab 1 Page 5 Option 7", "Tab 1 Page 5 Option 7")
-        ROW_TEXT(TAB1_PAGE5, 8, "Tab 1 Page 5 Option 8", "Tab 1 Page 5 Option 8")
-        ROW_TEXT(TAB1_PAGE5, 9, "Tab 1 Page 5 Option 9", "Tab 1 Page 5 Option 9")
-        ROW_TEXT(TAB1_PAGE5, 10, "Tab 1 Page 5 Option 10", "Tab 1 Page 5 Option 10")
-        ROW_TEXT(TAB1_PAGE5, 11, "Tab 1 Page 5 Option 11", "Tab 1 Page 5 Option 11")
-        ROW_TEXT(TAB1_PAGE5, 12, "Tab 1 Page 5 Option 12", "Tab 1 Page 5 Option 12")
-        ROW_TEXT(TAB1_PAGE5, 13, "Tab 1 Page 5 Option 13", "Tab 1 Page 5 Option 13")
-        ROW_TEXT(TAB1_PAGE5, 14, "Tab 1 Page 5 Option 14", "Tab 1 Page 5 Option 14")
-        ROW_TEXT(TAB1_PAGE5, 15, "Tab 1 Page 5 Option 15", "Tab 1 Page 5 Option 15")
-        ROW_TEXT(TAB1_PAGE5, 16, "Tab 1 Page 5 Option 16", "Tab 1 Page 5 Option 16")
-        ROW_TEXT(TAB1_PAGE5, 17, "Tab 1 Page 5 Option 17", "Tab 1 Page 5 Option 17")
-        ROW_TEXT(TAB1_PAGE5, 18, "Tab 1 Page 5 Option 18", "Tab 1 Page 5 Option 18")
-        ROW_TEXT(TAB1_PAGE5, 19, "Tab 1 Page 5 Option 19", "Tab 1 Page 5 Option 19")
-        ROW_TEXT(TAB1_PAGE5, 20, "Tab 1 Page 5 Option 20", "Tab 1 Page 5 Option 20")
-        ROW_TEXT(TAB1_PAGE5, 21, "Tab 1 Page 5 Option 21", "Tab 1 Page 5 Option 21")
-        ROW_TEXT(TAB1_PAGE5, 22, "Tab 1 Page 5 Option 22", "Tab 1 Page 5 Option 22")
-        ROW_TEXT(TAB1_PAGE5, 23, "Tab 1 Page 5 Option 23", "Tab 1 Page 5 Option 23")
-        ROW_TEXT(TAB1_PAGE5, 24, "Tab 1 Page 5 Option 24", "Tab 1 Page 5 Option 24")
+        ROW_MULTI_FEEDER_EX(TAB1_PAGE2, 5,
+            "Feeder EX",
+            "ROW_MULTI_FEEDER_EX",
+            "ui_language",
+            40,
+            ROW_COND_SHOW("ui_fake_show", { 1 }),
+            ACT_NONE)
+
+        ROW_NUMERIC_EX(TAB1_PAGE2, 6,
+            "Numeric EX",
+            "ROW_NUMERIC_EX",
+            "cg_fov",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_SLIDERFL_EX(TAB1_PAGE2, 7,
+            "Slider Float EX",
+            "ROW_SLIDERFL_EX",
+            "ui_r_gamma",
+            1.0,
+            0.5,
+            3.0,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_DIRTY)
+
+        ROW_SLIDERINT_EX(TAB1_PAGE2, 8,
+            "Slider Int EX",
+            "ROW_SLIDERINT_EX",
+            "ui_fake_sliderint_ex",
+            50,
+            0,
+            100,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_CHECKBOX_EX(TAB1_PAGE2, 9,
+            "Checkbox EX",
+            "ROW_CHECKBOX_EX",
+            "cg_strafeHelper",
+            4,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_YESNO_EX(TAB1_PAGE2, 10,
+            "Yes/No EX",
+            "ROW_YESNO_EX",
+            "cg_drawFPS",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_EDITFIELD_EX(TAB1_PAGE2, 11,
+            "Editfield EX",
+            "ROW_EDITFIELD_EX",
+            "name",
+            MAX_CHARS,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_BIND_EX(TAB1_PAGE2, 12,
+            "Bind EX",
+            "ROW_BIND_EX",
+            "+scores",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ROW_ACTION_EX(TAB1_PAGE2, 13,
+            "Action EX",
+            "ROW_ACTION_EX",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            setcvar ui_newmenu_action_ex_test 1 ;)
+
+        ROW_TEXT2(TAB1_PAGE2, 15,
+            "Text2",
+            "Second line",
+            "ROW_TEXT2")
+
+        ROW_SECTION2(TAB1_PAGE2, 17,
+            "Section2",
+            "Second line",
+            "ROW_SECTION2")
+
+        ROW_TEXT2Y(TAB1_PAGE2, 19,
+            "Text2Y",
+            "Custom Y",
+            8,
+            "ROW_TEXT2Y")
+
+        ROW_SECTION2Y(TAB1_PAGE2, 21,
+            "Section2Y",
+            "Custom Y",
+            8,
+            "ROW_SECTION2Y")
+
+        ROW_CMD(TAB1_PAGE2, 23,
+            "Exec",
+            "ROW_CMD",
+            "echo ROW_CMD_PAGE2")
+
+        ROW_BUTTON(TAB1_PAGE2, 24,
+            "Button",
+            "ROW_BUTTON",
+            setcvar ui_newmenu_button_test 1 ;)
+
+
+        // Page 3 - standalone ITEM_* widget API
+        ITEM_SHADER(tab1_page3_shader, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_1_Y BODY_FULL_W BODY_ROW_H,
+            "white",
+            INVISIBLE)
+
+        ITEM_SHADER_EX(tab1_page3_shader_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_2_Y BODY_FULL_W BODY_ROW_H,
+            "white",
+            INVISIBLE,
+            descText "ITEM_SHADER_EX" ;)
+
+        ITEM_IMAGE(tab1_page3_image, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_3_Y BODY_FULL_W BODY_ROW_H,
+            "white",
+            INVISIBLE)
+
+        ITEM_IMAGE_EX(tab1_page3_image_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_4_Y BODY_FULL_W BODY_ROW_H,
+            "white",
+            INVISIBLE,
+            descText "ITEM_IMAGE_EX" ;)
+
+        ITEM_IMAGE_COLOR(tab1_page3_image_color, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_5_Y BODY_FULL_W BODY_ROW_H,
+            "white",
+            COL_TEXT_PRIMARY,
+            INVISIBLE)
+
+        ITEM_OWNERDRAW(tab1_page3_ownerdraw, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_6_Y BODY_FULL_W BODY_ROW_H,
+            0,
+            INVISIBLE)
+
+        ITEM_OWNERDRAW_EX(tab1_page3_ownerdraw_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_7_Y BODY_FULL_W BODY_ROW_H,
+            0,
+            INVISIBLE,
+            descText "ITEM_OWNERDRAW_EX" ;)
+
+        ITEM_LISTBOX_TEXT(tab1_page3_listbox, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_8_Y BODY_FULL_W BODY_ROW_H2,
+            40,
+            BODY_ROW_H,
+            INVISIBLE)
+
+        ITEM_LISTBOX_TEXT_EX(tab1_page3_listbox_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_10_Y BODY_FULL_W BODY_ROW_H2,
+            40,
+            BODY_ROW_H,
+            INVISIBLE,
+            descText "ITEM_LISTBOX_TEXT_EX" ;)
+
+        ITEM_MODEL(tab1_page3_model, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_12_Y BODY_FULL_W BODY_ROW_H2,
+            "models/players/kyle/model.glm",
+            INVISIBLE)
+
+        ITEM_MODEL_EX(tab1_page3_model_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_14_Y BODY_FULL_W BODY_ROW_H2,
+            "models/players/kyle/model.glm",
+            INVISIBLE,
+            asset_shader "models/players/kyle/model_default.skin" ;)
+
+        ITEM_TEXTSCROLL(tab1_page3_textscroll, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H2,
+            40,
+            INVISIBLE)
+
+        ITEM_TEXTSCROLL_EX(tab1_page3_textscroll_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_18_Y BODY_FULL_W BODY_ROW_H2,
+            40,
+            INVISIBLE,
+            descText "ITEM_TEXTSCROLL_EX" ;)
+
+        TEXT_BOX_BODY(tab1_page3_text_box_body, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_20_Y BODY_FULL_W BODY_ROW_H,
+            INVISIBLE,
+            "TEXT_BOX_BODY",
+            "Standalone text body helper")
+
+        TEXT_BOX_BODY2(tab1_page3_text_box_body2, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_21_Y BODY_FULL_W BODY_ROW_H2,
+            INVISIBLE,
+            "TEXT_BOX_BODY2",
+            "Second line",
+            "Standalone two-line body helper")
+
+        TEXT_BOX_BODY_EX(tab1_page3_text_box_body_ex, TAB1_PAGE3,
+            BODY_FULL_X BODY_ROW_23_Y BODY_FULL_W BODY_ROW_H,
+            INVISIBLE,
+            "TEXT_BOX_BODY_EX",
+            "Standalone EX body helper",
+            ROW_COND_SHOW("ui_fake_show", { 1 }))
+
+
+        // Page 4 - direct ITEM_BODY_* helpers
+        ITEM_BODY_TEXT_BOX(tab1_page4_text_box, TAB1_PAGE4,
+            BODY_ROW_1_Y,
+            "ITEM_BODY_TEXT_BOX",
+            "Direct body text helper")
+
+        ITEM_BODY_TEXT_BOX_EX(tab1_page4_text_box_ex, TAB1_PAGE4,
+            BODY_ROW_2_Y,
+            "ITEM_BODY_TEXT_BOX_EX",
+            "Direct body text EX helper",
+            ROW_COND_SHOW("ui_fake_show", { 1 }))
+
+        ITEM_BODY_MULTI_FEEDER(tab1_page4_multi_feeder, TAB1_PAGE4,
+            BODY_ROW_3_Y,
+            "ITEM_BODY_MULTI_FEEDER",
+            "Direct feeder helper",
+            "ui_language",
+            40,
+            ACT_NONE)
+
+        ITEM_BODY_MULTI_FEEDER_EX(tab1_page4_multi_feeder_ex, TAB1_PAGE4,
+            BODY_ROW_4_Y,
+            "ITEM_BODY_MULTI_FEEDER_EX",
+            "Direct feeder EX helper",
+            "ui_language",
+            40,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_NUMERIC(tab1_page4_numeric, TAB1_PAGE4,
+            BODY_ROW_5_Y,
+            "ITEM_BODY_NUMERIC",
+            "Direct numeric helper",
+            "cg_fov",
+            ACT_NONE)
+
+        ITEM_BODY_NUMERIC_EX(tab1_page4_numeric_ex, TAB1_PAGE4,
+            BODY_ROW_6_Y,
+            "ITEM_BODY_NUMERIC_EX",
+            "Direct numeric EX helper",
+            "cg_fov",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_SLIDERFL(tab1_page4_sliderfl, TAB1_PAGE4,
+            BODY_ROW_7_Y,
+            "ITEM_BODY_SLIDERFL",
+            "Direct float slider helper",
+            "ui_r_gamma",
+            1.0,
+            0.5,
+            3.0,
+            ACT_DIRTY)
+
+        ITEM_BODY_SLIDERFL_EX(tab1_page4_sliderfl_ex, TAB1_PAGE4,
+            BODY_ROW_8_Y,
+            "ITEM_BODY_SLIDERFL_EX",
+            "Direct float slider EX helper",
+            "ui_r_gamma",
+            1.0,
+            0.5,
+            3.0,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_DIRTY)
+
+        ITEM_BODY_SLIDERINT(tab1_page4_sliderint, TAB1_PAGE4,
+            BODY_ROW_9_Y,
+            "ITEM_BODY_SLIDERINT",
+            "Direct int slider helper",
+            "ui_fake_sliderint_direct",
+            50,
+            0,
+            100,
+            ACT_NONE)
+
+        ITEM_BODY_SLIDERINT_EX(tab1_page4_sliderint_ex, TAB1_PAGE4,
+            BODY_ROW_10_Y,
+            "ITEM_BODY_SLIDERINT_EX",
+            "Direct int slider EX helper",
+            "ui_fake_sliderint_direct_ex",
+            50,
+            0,
+            100,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_CHECKBOX(tab1_page4_checkbox, TAB1_PAGE4,
+            BODY_ROW_11_Y,
+            "ITEM_BODY_CHECKBOX",
+            "Direct checkbox helper",
+            "cg_strafeHelper",
+            4,
+            ACT_NONE)
+
+        ITEM_BODY_CHECKBOX_EX(tab1_page4_checkbox_ex, TAB1_PAGE4,
+            BODY_ROW_12_Y,
+            "ITEM_BODY_CHECKBOX_EX",
+            "Direct checkbox EX helper",
+            "cg_strafeHelper",
+            4,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_YESNO(tab1_page4_yesno, TAB1_PAGE4,
+            BODY_ROW_13_Y,
+            "ITEM_BODY_YESNO",
+            "Direct yes/no helper",
+            "cg_drawFPS",
+            ACT_NONE)
+
+        ITEM_BODY_YESNO_EX(tab1_page4_yesno_ex, TAB1_PAGE4,
+            BODY_ROW_14_Y,
+            "ITEM_BODY_YESNO_EX",
+            "Direct yes/no EX helper",
+            "cg_drawFPS",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_EDITFIELD(tab1_page4_editfield, TAB1_PAGE4,
+            BODY_ROW_15_Y,
+            "ITEM_BODY_EDITFIELD",
+            "Direct editfield helper",
+            "name",
+            MAX_CHARS,
+            ACT_NONE)
+
+        ITEM_BODY_EDITFIELD_EX(tab1_page4_editfield_ex, TAB1_PAGE4,
+            BODY_ROW_16_Y,
+            "ITEM_BODY_EDITFIELD_EX",
+            "Direct editfield EX helper",
+            "name",
+            MAX_CHARS,
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_BIND(tab1_page4_bind, TAB1_PAGE4,
+            BODY_ROW_17_Y,
+            "ITEM_BODY_BIND",
+            "Direct bind helper",
+            "+scores",
+            ACT_NONE)
+
+        ITEM_BODY_BIND_EX(tab1_page4_bind_ex, TAB1_PAGE4,
+            BODY_ROW_18_Y,
+            "ITEM_BODY_BIND_EX",
+            "Direct bind EX helper",
+            "+scores",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            ACT_NONE)
+
+        ITEM_BODY_ACTION(tab1_page4_action, TAB1_PAGE4,
+            BODY_ROW_19_Y,
+            "ITEM_BODY_ACTION",
+            "Direct action helper",
+            setcvar ui_newmenu_direct_action_test 1 ;)
+
+        ITEM_BODY_ACTION_EX(tab1_page4_action_ex, TAB1_PAGE4,
+            BODY_ROW_20_Y,
+            "ITEM_BODY_ACTION_EX",
+            "Direct action EX helper",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            setcvar ui_newmenu_direct_action_ex_test 1 ;)
+
+        ITEM_BODY_CMD(tab1_page4_cmd, TAB1_PAGE4,
+            BODY_ROW_21_Y,
+            "ITEM_BODY_CMD",
+            "Direct command helper",
+            "echo ITEM_BODY_CMD")
+
+        ITEM_BODY_BUTTON(tab1_page4_button, TAB1_PAGE4,
+            BODY_ROW_22_Y,
+            "ITEM_BODY_BUTTON",
+            "Direct button alias helper",
+            setcvar ui_newmenu_direct_button_test 1 ;)
+
+        ROW_YESNO(TAB1_PAGE4, 23,
+            "Dirty Alias",
+            "ACT_DIRTY",
+            "cg_simpleItems",
+            ACT_DIRTY)
+
+        ROW_YESNO(TAB1_PAGE4, 24,
+            "Restart Alias",
+            "ACT_RESTART",
+            "r_fullscreen",
+            ACT_RESTART)
+
+
+        // Page 5 - actions, aliases, and edge cases
+        ROW_ACTION(TAB1_PAGE5, 1,
+            "ACT_NONE",
+            "Empty action fragment",
+            ACT_NONE)
+
+        ROW_ACTION(TAB1_PAGE5, 2,
+            "ACT_DIRTY",
+            "Marks video dirty",
+            ACT_DIRTY)
+
+        ROW_ACTION(TAB1_PAGE5, 3,
+            "ACT_RESTART",
+            "Marks vid_restart required",
+            ACT_RESTART)
+
+        ROW_ACTION(TAB1_PAGE5, 4,
+            "ACT_OPEN",
+            "Open restart popup",
+            ACT_OPEN(NEWMENU_VIDEO_RESTART))
+
+        ROW_ACTION(TAB1_PAGE5, 5,
+            "ACT_CLOSE",
+            "Close this menu",
+            ACT_CLOSE(newmenu_tab1))
+
+        ROW_CMD(TAB1_PAGE5, 6,
+            "ACT_CMD Equivalent",
+            "Use ROW_CMD for exec commands",
+            "echo ROW_CMD_PAGE5")
+
+        ITEM_BODY_GENERIC(tab1_page5_generic, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_7_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_GENERIC")
+
+        ITEM_BODY_D(tab1_page5_dirty, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_8_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_D")
+
+        ITEM_BODY_DR(tab1_page5_restart, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_9_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_DR")
+
+        ITEM_BODY_ACTION_IMPL(tab1_page5_action_impl, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_10_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_ACTION_IMPL",
+            setcvar ui_newmenu_action_impl_test 1 ;)
+
+        ITEM_BODY_CMD_IMPL(tab1_page5_cmd_impl, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_11_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_CMD_IMPL",
+            "echo ITEM_BODY_CMD_IMPL")
+
+        ITEM_BODY_GENERIC_COND(tab1_page5_generic_cond, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_12_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_GENERIC_COND",
+            ROW_COND_SHOW("ui_fake_show", { 1 }))
+
+        ITEM_BODY_D_COND(tab1_page5_dirty_cond, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_13_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_D_COND",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }))
+
+        ITEM_BODY_DR_COND(tab1_page5_restart_cond, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_14_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_DR_COND",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }))
+
+        ITEM_BODY_ACTION_COND_IMPL(tab1_page5_action_cond_impl, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_15_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_ACTION_COND_IMPL",
+            ROW_COND_ENABLE("ui_fake_enable", { 1 }),
+            setcvar ui_newmenu_action_cond_impl_test 1 ;)
+
+        ITEM_BODY_BUTTON_IMPL(tab1_page5_button_impl, TAB1_PAGE5,
+            BODY_FULL_X BODY_ROW_16_Y BODY_FULL_W BODY_ROW_H,
+            "ITEM_BODY_BUTTON_IMPL",
+            setcvar ui_newmenu_button_impl_test 1 ;)
+
+        ROW_TEXT(TAB1_PAGE5, 17, "ROW_CHOICES_1", "Kept documented only")
+        ROW_TEXT(TAB1_PAGE5, 18, "ROW_CHOICES_2", "Do not pass nested helpers through row macros")
+        ROW_TEXT(TAB1_PAGE5, 19, "ROW_CHOICES_3", "Use literal brace lists instead")
+        ROW_TEXT(TAB1_PAGE5, 20, "ROW_CHOICES_4", "Parser strips nested parentheses")
+        ROW_TEXT(TAB1_PAGE5, 21, "ROW_CHOICES_5", "Covered by comment / direct expansion rule")
+        ROW_TEXT(TAB1_PAGE5, 22, "ROW_CHOICES_6", "Covered by comment / direct expansion rule")
+        ROW_TEXT(TAB1_PAGE5, 23, "ROW_CHOICES_7", "Covered by comment / direct expansion rule")
+        ROW_TEXT(TAB1_PAGE5, 24, "ROW_CHOICES_8", "Covered by comment / direct expansion rule")
     }
 }
