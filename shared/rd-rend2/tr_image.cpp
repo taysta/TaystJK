@@ -1687,35 +1687,6 @@ static void RawImage_ScaleToPower2( byte **data, int *inout_width, int *inout_he
 		height = scaled_height;
 	}
 
-	//
-	// perform optional picmip operation
-	//
-	if ( picmip ) {
-		scaled_width >>= r_picmip->integer;
-		scaled_height >>= r_picmip->integer;
-	}
-
-	//
-	// clamp to minimum size
-	//
-	if (scaled_width < 1) {
-		scaled_width = 1;
-	}
-	if (scaled_height < 1) {
-		scaled_height = 1;
-	}
-
-	//
-	// clamp to the current upper OpenGL limit
-	// scale both axis down equally so we don't have to
-	// deal with a half mip resampling
-	//
-	while ( scaled_width > glConfig.maxTextureSize
-		|| scaled_height > glConfig.maxTextureSize ) {
-		scaled_width >>= 1;
-		scaled_height >>= 1;
-	}
-
 	*inout_width         = width;
 	*inout_height        = height;
 	*inout_scaled_width  = scaled_width;
@@ -2112,6 +2083,35 @@ static void Upload32( byte *data, int width, int height, imgType_t type, int fla
 		RawImage_ScaleToPower2(&data, &width, &height, &scaled_width, &scaled_height, type, flags, &resampledBuffer);
 	}
 
+	//
+	// perform optional picmip operation
+	//
+	if ( flags & IMGFLAG_PICMIP ) {
+		scaled_width >>= r_picmip->integer;
+		scaled_height >>= r_picmip->integer;
+	}
+
+	//
+	// clamp to minimum size
+	//
+	if (scaled_width < 1) {
+		scaled_width = 1;
+	}
+	if (scaled_height < 1) {
+		scaled_height = 1;
+	}
+
+	//
+	// clamp to the current upper OpenGL limit
+	// scale both axis down equally so we don't have to
+	// deal with a half mip resampling
+	//
+	while ( scaled_width > glConfig.maxTextureSize
+		|| scaled_height > glConfig.maxTextureSize ) {
+		scaled_width >>= 1;
+		scaled_height >>= 1;
+	}
+
 	scaledBuffer = (byte *)Hunk_AllocateTempMemory( sizeof( unsigned ) * scaled_width * scaled_height );
 
 	//
@@ -2175,7 +2175,7 @@ static void Upload32( byte *data, int width, int height, imgType_t type, int fla
 		}
 		Com_Memcpy (scaledBuffer, data, width*height*4);
 	}
-	else if ( !r_simpleMipMaps->integer )
+	else if ( !r_simpleMipMaps->integer || (r_picmip->integer && (flags & IMGFLAG_PICMIP)) )
 	{
 		// use the normal mip-mapping function to go down from here
 		while ( width > scaled_width || height > scaled_height ) {
