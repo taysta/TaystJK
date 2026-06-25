@@ -8822,6 +8822,8 @@ static void Item_TextScroll_BuildLines ( itemDef_t* item )
 	//
 	textScrollDef_t* scrollPtr = item->typeData.textscroll;
 	const char *psText = item->text;	// for copy/paste ease
+	if ( !scrollPtr || !psText )
+		return;
 	int iBoxWidth = item->window.rect.w - SCROLLBAR_SIZE - 10;
 
 	// this could probably be simplified now, but it was converted from something else I didn't originally write,
