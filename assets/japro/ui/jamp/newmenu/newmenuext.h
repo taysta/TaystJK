@@ -352,7 +352,9 @@ itemDef \
 
 // Conditional visibility/enabling fragments.
 // OpenJK supports exactly one show/hide/enable/disable condition per item.
-// These fragments are intended to be spliced into custom itemDefs when needed.
+// Low-level direct-use helpers only. Do not pass ROW_COND_*(...) through *_EX itemExtra
+// arguments; the botlib macro parser strips nested parentheses before the helper can expand.
+// For *_EX helpers, pass the raw fragment instead: cvarTest foo showCvar { 1 }
 #define ROW_COND_SHOW(testCvar, values) \
     cvarTest        testCvar \
     showCvar        values
@@ -391,6 +393,7 @@ itemDef \
 // These are intentionally ITEM_* helpers, not ROW_* helpers: listboxes, ownerdraws,
 // models, shader images, and text scrolls are full widgets/containers rather than
 // label+control body rows.
+// Textscroll is static text/cvar-driven in the engine; feeders belong to listbox/multi items.
 #define ITEM_SHADER(itemName, itemGroup, itemRect, itemShader, itemVisible) \
     itemDef \
     { \
@@ -543,7 +546,16 @@ itemDef \
         itemExtra \
     }
 
-#define ITEM_TEXTSCROLL(itemName, itemGroup, itemRect, itemFeeder, itemVisible) \
+#define ITEM_TEXTSCROLL_COMMON(itemText, itemMaxLineChars, itemLineHeight) \
+        text            itemText \
+        maxLineChars    itemMaxLineChars \
+        lineHeight      itemLineHeight
+
+#define ITEM_TEXTSCROLL_CVAR_COMMON(itemCvar, itemText, itemMaxLineChars, itemLineHeight) \
+        cvar            itemCvar \
+        ITEM_TEXTSCROLL_COMMON(itemText, itemMaxLineChars, itemLineHeight)
+
+#define ITEM_TEXTSCROLL(itemName, itemGroup, itemRect, itemText, itemMaxLineChars, itemLineHeight, itemVisible) \
     itemDef \
     { \
         name            itemName \
@@ -551,7 +563,7 @@ itemDef \
         rect            itemRect \
         type            ITEM_TYPE_TEXTSCROLL \
         style           WINDOW_STYLE_FILLED \
-        feeder          itemFeeder \
+        ITEM_TEXTSCROLL_COMMON(itemText, itemMaxLineChars, itemLineHeight) \
         font            BODY_FONT \
         textscale       BODY_FONT_SIZE \
         forecolor       COL_TEXT_PRIMARY \
@@ -561,7 +573,7 @@ itemDef \
         visible         itemVisible \
     }
 
-#define ITEM_TEXTSCROLL_EX(itemName, itemGroup, itemRect, itemFeeder, itemVisible, itemExtra) \
+#define ITEM_TEXTSCROLL_EX(itemName, itemGroup, itemRect, itemText, itemMaxLineChars, itemLineHeight, itemVisible, itemExtra) \
     itemDef \
     { \
         name            itemName \
@@ -569,7 +581,44 @@ itemDef \
         rect            itemRect \
         type            ITEM_TYPE_TEXTSCROLL \
         style           WINDOW_STYLE_FILLED \
-        feeder          itemFeeder \
+        ITEM_TEXTSCROLL_COMMON(itemText, itemMaxLineChars, itemLineHeight) \
+        font            BODY_FONT \
+        textscale       BODY_FONT_SIZE \
+        forecolor       COL_TEXT_PRIMARY \
+        backcolor       COL_ROW_CONTROL_BACK \
+        border          1 \
+        bordercolor     COL_ROW_CONTROL_BORDER \
+        visible         itemVisible \
+        itemExtra \
+    }
+
+#define ITEM_TEXTSCROLL_CVAR(itemName, itemGroup, itemRect, itemCvar, itemText, itemMaxLineChars, itemLineHeight, itemVisible) \
+    itemDef \
+    { \
+        name            itemName \
+        group           itemGroup \
+        rect            itemRect \
+        type            ITEM_TYPE_TEXTSCROLL \
+        style           WINDOW_STYLE_FILLED \
+        ITEM_TEXTSCROLL_CVAR_COMMON(itemCvar, itemText, itemMaxLineChars, itemLineHeight) \
+        font            BODY_FONT \
+        textscale       BODY_FONT_SIZE \
+        forecolor       COL_TEXT_PRIMARY \
+        backcolor       COL_ROW_CONTROL_BACK \
+        border          1 \
+        bordercolor     COL_ROW_CONTROL_BORDER \
+        visible         itemVisible \
+    }
+
+#define ITEM_TEXTSCROLL_CVAR_EX(itemName, itemGroup, itemRect, itemCvar, itemText, itemMaxLineChars, itemLineHeight, itemVisible, itemExtra) \
+    itemDef \
+    { \
+        name            itemName \
+        group           itemGroup \
+        rect            itemRect \
+        type            ITEM_TYPE_TEXTSCROLL \
+        style           WINDOW_STYLE_FILLED \
+        ITEM_TEXTSCROLL_CVAR_COMMON(itemCvar, itemText, itemMaxLineChars, itemLineHeight) \
         font            BODY_FONT \
         textscale       BODY_FONT_SIZE \
         forecolor       COL_TEXT_PRIMARY \
@@ -581,20 +630,7 @@ itemDef \
     }
 
 // Header and menu chrome items.
-#define ITEM_EXIT(itemName, itemGroup, itemRect, itemColor, itemShader) \
-    itemDef { \
-        ITEM_COMMON(itemName, itemGroup, itemRect, WINDOW_STYLE_SHADER, itemColor, NOBORDER, INVISIBLE) \
-        type            ITEM_TYPE_BUTTON \
-        background      itemShader \
-        MAKE_INTERACTIVE(itemRect) \
-        action \
-        { \
-            defer VideoSetup NEWMENU_VIDEO_WARNING ; \
-            close ingame_newmenu ; \
-        } \
-    }
-
-#define ITEM_EXIT_SELF(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu) \
+#define ITEM_EXIT(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu) \
     itemDef { \
         ITEM_COMMON(itemName, itemGroup, itemRect, WINDOW_STYLE_SHADER, itemColor, NOBORDER, INVISIBLE) \
         type            ITEM_TYPE_BUTTON \
@@ -606,6 +642,9 @@ itemDef \
             close currentMenu ; \
         } \
     }
+
+#define ITEM_EXIT_SELF(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu) \
+    ITEM_EXIT(itemName, itemGroup, itemRect, itemColor, itemShader, currentMenu)
 
 #define ITEM_APPLY_CHANGES \
     itemDef \
@@ -913,8 +952,9 @@ itemDef \
 //   botlib macro parser strips nested parentheses.
 //
 // Conditional/extras model:
-// - *_EX variants splice rowExtra into both label and control itemDefs.
-// - Use ROW_COND_SHOW/HIDE/ENABLE/DISABLE as rowExtra.
+// - *_EX variants splice raw rowExtra fragments into both label and control itemDefs.
+// - Do not pass ROW_COND_*(...) as rowExtra; pass cvarTest foo showCvar { 1 } directly.
+// - Use ROW_COND_SHOW/HIDE/ENABLE/DISABLE only directly inside raw itemDefs.
 // - OpenJK supports one cvar condition kind per item.
 
 #define TEXT_BOX_BODY_EX(itemName, itemGroup, itemRect, itemVisible, itemText, itemDesc, itemExtra) \
