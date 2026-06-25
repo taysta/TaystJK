@@ -1,0 +1,26 @@
+#include "ui/jamp/newmenu/newmenuext.h"
+#include "ui/jamp/newmenu/newmenuconfig.h"
+
+//----------------------------------------------------------------------------------------------
+//
+//	newmenu entrypoint
+//
+//----------------------------------------------------------------------------------------------
+{
+    // Entrypoint
+    menuDef
+    {
+        name                    "ingame_newmenu"
+        rect                    MENU_X 0 MENU_WIDTH SCREEN_HEIGHT
+        visible                 0
+
+        // Hand off to the default tab
+        onOpen
+        {
+            close               ingame ;
+            close				ingame_setup ;
+            close               ingame_newmenu ;
+            open                newmenu_tab1 ;
+        }
+    }
+}
