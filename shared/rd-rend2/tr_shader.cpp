@@ -3526,7 +3526,8 @@ static qboolean CollapseStagesToGLSL(void)
 		// Move diffuse after the lightmap stages now.
 		if (stages[1].active &&
 			stages[1].bundle[0].isLightmap &&
-			stages[0].active)
+			stages[0].active &&
+			shader.numDeforms != 1)
 		{
 			int blendBits = stages[1].stateBits & (GLS_DSTBLEND_BITS | GLS_SRCBLEND_BITS);
 
@@ -3536,7 +3537,7 @@ static qboolean CollapseStagesToGLSL(void)
 				for (i = 1; i < MAX_SHADER_STAGES; i++)
 				{
 					if (!stages[i+1].active)
-						continue;
+						break;
 
 					if (stages[i+1].bundle[0].tcGen < TCGEN_LIGHTMAP1 ||
 						stages[i+1].bundle[0].tcGen > TCGEN_LIGHTMAP3 ||
