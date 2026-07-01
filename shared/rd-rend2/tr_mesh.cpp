@@ -348,7 +348,7 @@ void R_AddMD3Surfaces( trRefEntity_t *ent, int entityNum ) {
 	int				cull;
 	int				lod;
 	int				fogNum;
-	int             cubemapIndex;
+	int             cubemapIndex, dlightBits;
 	qboolean		personalModel;
 
 	// don't add third_person objects if not in a portal
@@ -398,9 +398,13 @@ void R_AddMD3Surfaces( trRefEntity_t *ent, int entityNum ) {
 	//
 	fogNum = R_ComputeFogNum( model, ent );
 
-	cubemapIndex = R_CubemapForPoint(ent->e.origin);
-	// FIX ME: not tested! Animated models might be handled incorrecly
-	int dlightBits = R_DLightsForPoint(ent->e.origin, model->frames[ent->e.frame].radius);
+	vec3_t origin;
+	R_LocalPointToWorld(model->frames[ent->e.frame].localOrigin, origin);
+	float maxScale = MAX(1.f, MAX(ent->e.modelScale[0], MAX(ent->e.modelScale[1], ent->e.modelScale[2])));
+
+	cubemapIndex = R_CubemapForPoint(origin);
+	
+	dlightBits = R_DLightsForPoint(origin, model->frames[ent->e.frame].radius * maxScale);
 
 	//
 	// draw all surfaces
