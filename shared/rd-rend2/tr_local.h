@@ -2636,9 +2636,9 @@ typedef struct trGlobals_s {
 
 	weatherSystem_t			*weatherSystem;
 
-	//
 	// GPU shader programs
-	//
+	// Make sure splashScreenShader is the first shaderProgram_t or edit
+	// R_ClearTr to make sure shaderPrograms are cached correctly
 	shaderProgram_t splashScreenShader;
 	shaderProgram_t genericShader[GENERICDEF_COUNT];
 	shaderProgram_t refractionShader[REFRACTIONDEF_COUNT];
@@ -2666,6 +2666,8 @@ typedef struct trGlobals_s {
 	shaderProgram_t smaaBlendShader;
 	shaderProgram_t smaaResolveShader;
 	shaderProgram_t smaaTemporalResolveShader;
+	// Make sure staticUbo is right behind all shaderProgram_t or edit 
+	// R_ClearTr to make sure shaderPrograms are cached correctly
 
 	GLuint staticUbo;
 	GLuint spriteUbos[MAX_SUB_BSP + 1];
