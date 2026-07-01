@@ -3526,6 +3526,7 @@ static qboolean CollapseStagesToGLSL(void)
 		// Move diffuse after the lightmap stages now.
 		if (stages[1].active &&
 			stages[1].bundle[0].isLightmap &&
+			(stages[1].stateBits & (GLS_DEPTHFUNC_BITS)) != GLS_DEPTHFUNC_EQUAL &&
 			stages[0].active &&
 			shader.numDeforms != 1)
 		{
