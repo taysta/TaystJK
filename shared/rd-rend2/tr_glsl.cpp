@@ -1886,18 +1886,18 @@ static int GLSL_LoadGPUProgramLightAll(
 				Q_strcat(extradefines, sizeof(extradefines), "#define USE_SPECULARMAP\n");
 				if (i & LIGHTDEF_USE_SPEC_GLOSS)
 				{
-					Q_strcat(name, sizeof(name), "_SPECGLOSS");
+					Q_strcat(name, sizeof(name), "_SG");
 					Q_strcat(extradefines, sizeof(extradefines), "#define USE_SPECGLOSS\n");
 				}
 				else
 				{
-					Q_strcat(name, sizeof(name), "_METALROUGH");
+					Q_strcat(name, sizeof(name), "_MR");
 				}
 			}
 
 			if (r_cubeMapping->integer)
 			{
-				Q_strcat(name, sizeof(name), "_CUBE");
+				Q_strcat(name, sizeof(name), "_ENV");
 				Q_strcat(extradefines, sizeof(extradefines), "#define USE_CUBEMAP\n");
 			}
 		}
