@@ -2175,7 +2175,7 @@ static void Upload32( byte *data, int width, int height, imgType_t type, int fla
 		}
 		Com_Memcpy (scaledBuffer, data, width*height*4);
 	}
-	else if ( !r_simpleMipMaps->integer || (r_picmip->integer && (flags & IMGFLAG_PICMIP)) )
+	else
 	{
 		// use the normal mip-mapping function to go down from here
 		while ( width > scaled_width || height > scaled_height ) {
