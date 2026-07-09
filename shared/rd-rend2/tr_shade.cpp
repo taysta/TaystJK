@@ -1784,6 +1784,31 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 			uniformDataWriter.SetUniformVec4(UNIFORM_LIGHTORIGIN, center);
 		}
 
+		// Elevation helper: colors surfaces by how they relate to the player's jump-start height.
+		// Jump Z and reachable apex Z are fed by cgame (>= 999999 means disabled). Only lightall reads
+		// this; entities flagged RF_NOELEVATIONHELPER (own player model) and the viewmodel are skipped.
+		if (r_elevationHelper->integer && tr.world && r_elevationHelperZ->value < 999999.0f
+			&& !(backEnd.currentEntity->e.renderfx & (RF_NOELEVATIONHELPER | RF_FIRST_PERSON)))
+		{
+			const float threshold = r_elevationHelperZ->value - 25.0f;	// jump line, aligned with the floor under the origin
+			const float apexRaw = r_elevationHelperApexZ->value;
+			float apex = (apexRaw < 999999.0f) ? (apexRaw - 25.0f) : threshold;	// no above-zone if unknown
+			if (apex < threshold)
+				apex = threshold;
+
+			vec4_t elevationHelper;
+			elevationHelper[0] = threshold;
+			elevationHelper[1] = apex;
+			elevationHelper[2] = 64.0f;	// below-gradient range: distance the green->red sweep spans before red/pink depth bands take over
+			elevationHelper[3] = 0.3f;	// tint strength (also the enable flag)
+			uniformDataWriter.SetUniformVec4(UNIFORM_ELEVATIONHELPER, elevationHelper);
+		}
+		else
+		{
+			vec4_t elevationHelper = { 0.0f, 0.0f, 0.0f, 0.0f };
+			uniformDataWriter.SetUniformVec4(UNIFORM_ELEVATIONHELPER, elevationHelper);
+		}
+
 		if (forceRefraction)
 		{
 			vec4_t color;

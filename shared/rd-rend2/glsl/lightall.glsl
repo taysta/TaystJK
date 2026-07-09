@@ -464,6 +464,11 @@ uniform vec4 u_CubeMapInfo;
 uniform int u_AlphaTestType;
 #endif
 
+// Elevation helper: colors surfaces by how they relate to the player's jump-start height.
+// x = threshold Z (world, the jump line), y = reachable apex Z, z = below-gradient range,
+// w = tint strength (also the enable flag: 0 = off)
+uniform vec4 u_ElevationHelper;
+
 in vec4 var_TexCoords;
 in vec4 var_Color;
 
@@ -1263,4 +1268,53 @@ void main()
 
 	out_Color.a = diffuse.a;
 	out_Glow = mix(vec4(0.0, 0.0, 0.0, out_Color.a), out_Color, u_EnableTextures.x);
+
+	if (u_ElevationHelper.w > 0.0)
+	{
+	#if defined(PER_PIXEL_LIGHTING)
+		vec3 jumpWorldPos = u_ViewOrigin - var_ViewDir.xyz;
+	#else
+		vec3 jumpWorldPos = var_Position;
+	#endif
+		float jumpWorldZ = jumpWorldPos.z;
+		// derive the true facet slope from world-position derivatives, so bad/smoothed vertex normals
+		// can't mislabel walls as floors (or vice versa). abs(.z) = how horizontal; 0.71 ~= realMinNormal.
+		float jumpSlope = abs(normalize(cross(dFdx(jumpWorldPos), dFdy(jumpWorldPos))).z);
+		float jumpStrength = u_ElevationHelper.w;
+
+		// only color surfaces flat enough to actually land on; skip steep slopes, walls and ceilings.
+		if (jumpSlope >= 0.71 && jumpWorldZ < u_ElevationHelper.x)
+		{
+			// below the jump line: safe to land here (keeps velocity). Green at the edge (highest,
+			// ideal) fading through yellow to red over u_ElevationHelper.z units. Past that, the depth keeps
+			// reading via alternating red/pink 16-unit bands.
+			float depth = u_ElevationHelper.x - jumpWorldZ;
+			vec3 col;
+			if (depth <= u_ElevationHelper.z)
+			{
+				float t = depth / u_ElevationHelper.z;
+				col = vec3(clamp(t * 2.0, 0.0, 1.0), clamp((1.0 - t) * 2.0, 0.0, 1.0), 0.0);
+			}
+			else
+			{
+				float bandIndex = floor((depth - u_ElevationHelper.z) / 16.0);
+				col = (mod(bandIndex, 2.0) < 0.5) ? vec3(1.0, 0.0, 0.0) : vec3(1.0, 0.45, 0.75);
+			}
+			out_Color.rgb = mix(out_Color.rgb, col, jumpStrength);
+		}
+		else
+		{
+			// above the line but still reachable: the penalty fallback zone. Start at the actual jump
+			// height (threshold is the launch floor, +25 lifts it back to the jump origin) so surfaces at
+			// your current height aren't colored. Dim/cool so it's clearly "above me", brightening toward
+			// cyan near the apex = the highest spot you can still reach.
+			float aboveStart = u_ElevationHelper.x + 1.0;
+			if (jumpSlope >= 0.71 && jumpWorldZ > aboveStart && jumpWorldZ <= u_ElevationHelper.y)
+			{
+				float u = clamp((jumpWorldZ - aboveStart) / max(u_ElevationHelper.y - aboveStart, 1.0), 0.0, 1.0);
+				vec3 col = mix(vec3(0.0, 0.0, 0.35), vec3(0.0, 0.7, 0.9), u);
+				out_Color.rgb = mix(out_Color.rgb, col, jumpStrength * 0.85);
+			}
+		}
+	}
 }

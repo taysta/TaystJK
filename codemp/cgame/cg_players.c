@@ -10954,6 +10954,7 @@ void CG_Player( centity_t *cent ) {
 	// get the player model information
 	renderfx = 0;
 	if ( cent->currentState.number == cg.snap->ps.clientNum) {
+		renderfx |= RF_NOELEVATIONHELPER;				// don't tint our own model with the elevation helper
 		if (!cg.renderingThirdPerson) {
 #if 0 //fpls stuff
 			if (!cg_fpls.integer && cent->currentState.weapon != WP_SABER)
@@ -10961,7 +10962,7 @@ void CG_Player( centity_t *cent ) {
 			if (cent->currentState.weapon != WP_SABER && cent->currentState.weapon != WP_MELEE) //fix so it works with melee
 #endif
 			{
-				renderfx = RF_THIRD_PERSON;			// only draw in mirrors
+				renderfx |= RF_THIRD_PERSON;			// only draw in mirrors
 			}
 		} else {
 			if (com_cameraMode.integer) {

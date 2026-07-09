@@ -3129,6 +3129,38 @@ void CG_DrawActiveFrame( int serverTime, stereoFrame_t stereoView, qboolean demo
 		}
 	}
 
+	// feed the elevation helper renderer effect: while airborne, pass the jump-start Z and the
+	// reachable apex Z (jump start + max jump height for the current force-jump level) so rend2 can
+	// color surfaces below the line and the reachable fallback zone above it. forceJumpZStart is 0
+	// when grounded and -65536 after a teleport; use a large sentinel (>=999999) to disable otherwise.
+	{
+		char elevationHelperEnabled[8];
+
+		trap->Cvar_VariableStringBuffer( "r_elevationHelper", elevationHelperEnabled, sizeof( elevationHelperEnabled ) );
+		if ( atoi( elevationHelperEnabled ) )
+		{
+			extern float forceJumpHeightMax[];	// codemp/game/bg_pmove.c, [NUM_FORCE_POWER_LEVELS]
+			const playerState_t *jsPs = &cg.predictedPlayerState;
+			float jumpZ = jsPs->fd.forceJumpZStart;
+
+			if ( jsPs->groundEntityNum == ENTITYNUM_NONE && jumpZ != 0.0f && jumpZ > -65000.0f )
+			{
+				int jl = jsPs->fd.forcePowerLevel[FP_LEVITATION];
+				if ( jl < 0 )
+					jl = 0;
+				else if ( jl >= NUM_FORCE_POWER_LEVELS )
+					jl = NUM_FORCE_POWER_LEVELS - 1;
+				trap->Cvar_Set( "r_elevationHelperZ", va( "%.1f", jumpZ ) );
+				trap->Cvar_Set( "r_elevationHelperApexZ", va( "%.1f", jumpZ + forceJumpHeightMax[jl] ) );
+			}
+			else
+			{
+				trap->Cvar_Set( "r_elevationHelperZ", "1000000" );
+				trap->Cvar_Set( "r_elevationHelperApexZ", "1000000" );
+			}
+		}
+	}
+
 	// actually issue the rendering calls
 	CG_DrawActive( stereoView );
 
