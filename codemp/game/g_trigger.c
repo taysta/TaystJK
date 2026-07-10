@@ -2128,10 +2128,8 @@ void Use_target_restrict_on(gentity_t *trigger, gentity_t *other, gentity_t *pla
 	}
 
 	if (player->client->pers.stats.startTime && trigger->spawnflags & RESTRICT_FLAG_RESET) {
-		player->client->pers.stats.startTime = 0;
-		if (player->client->sess.raceMode)
-			player->client->ps.duelTime = 0;
-		trap->SendServerCommand(player - g_entities, "cp \"Timer reset\n\n\n\n\n\n\n\n\n\n\""); //Send message?`
+		//Have this call ResetPlayerTimers instead?
+		ResetPlayerTimers(player, qtrue);
 	}
 	if (trigger->spawnflags & RESTRICT_FLAG_SUPERJUMP) {
 		player->client->ps.stats[STAT_RESTRICTIONS] |= JAPRO_RESTRICT_SUPERJUMP;
