@@ -27,6 +27,127 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 typedef struct Vehicle_s Vehicle_t;
 typedef struct bgEntity_s bgEntity_t;
 
+// --- Podracer physics tuning (bg_podracerPhysics, VH_SPEEDER) -----------------------
+// The speed curve follows SWE1R's accelThrust -> speed asymptote. For prediction safety,
+// PodRacer_ProcessMoveCommands derives accelThrust from ps->speed each frame, advances it,
+// and writes back ps->speed instead of making Vehicle_t accel state authoritative.
+// Lower POD_STAT_ACCELERATION reaches the asymptote faster. 2.8 gives a hard launch, then
+// very small gains near the normal-drive soft top.
+#define POD_STAT_ACCELERATION	2.8f
+// Normal-drive asymptote in final map units. This is the Racer-style maxSpeed value, not a
+// stock JA hard cap. Boost can still use turboSpeed above it.
+#define POD_SOFT_TOP_SPEED	3800.0f
+// Brake decel interval (PodRacer_DecelFactor) when braking (+speed or reverse), ep1 air-brake.
+// SMALLER = firmer brake. 30 => gentler than the first pass (was 15, too strong). Overrides
+// throttle and cancels boost.
+#define POD_BRAKE_INTERVAL	30.0f
+// Coast decel interval (PodRacer_DecelFactor). LARGER = slower coast = more momentum kept when
+// you let off the throttle. 120 => speed halves in ~2.5s and mostly bleeds over ~8s (a glide).
+// The .veh decelIdle (10) would decay ~96% in 1s - far too abrupt. RAISE for an icier coast.
+#define POD_COAST_INTERVAL	120.0f
+// World/map scale. swoop.veh speeds are authored for the stock 1x map; this project's test
+// map is x4, so final speed is multiplied. DoImpact divides collision magnitude back by this
+// so a crash does the same damage it would at stock scale (velocity inflation is undone).
+#define POD_MAP_SCALE		4.0f
+// SWE1R-style turn-rate control. Steering input sets a target turn rate; the current turn
+// rate eases toward it, then yaw integrates from that rate. Forward throttle damps turning.
+#define POD_MAX_TURN_RATE	120.0f
+#define POD_TURN_RESPONSE	90.0f
+#define POD_TURN_STEER_SCALE	1.25f
+#define POD_THROTTLE_TURN_DAMP	0.4f
+// JK input bridge: mouse/view yaw does not directly rotate the pod; yaw error becomes the
+// Racer steering axis. At +/-POD_MOUSE_STEER_RANGE degrees of look-ahead, steering is full.
+#define POD_MOUSE_STEER_RANGE	45.0f
+#define POD_MOUSE_STEER_DEADZONE	1.5f
+// SWE1R traction. antiSkid close to 1.0 means velocity follows the nose strongly.
+// Drift drops traction immediately, then release recovers over POD_DRIFT_TRACTION_RELEASE_TIME.
+#define POD_ANTI_SKID		0.86f
+#define POD_SLIDE_COAST_TARGET	0.8f
+// Separate drift input. +moveup is drift for pod physics; +use remains available for exit.
+#define POD_DRIFT_MIN_SPEED	900.0f
+#define POD_DRIFT_SLIDE_TARGET	0.18f
+#define POD_DRIFT_TRACTION_RELEASE_TIME	0.5f
+#define POD_DRIFT_TURN_RATE_SCALE	2.5f
+#define POD_DRIFT_TURN_RESPONSE_SCALE	2.0f
+#define POD_DRIFT_ACCEL_SCALE	0.0f
+#define POD_DRIFT_TURNLOAD_BONUS	0.25f
+#define POD_DRIFT_BLEED_RATE	132.0f
+// Drift keeps most entry speed, but hard drift turns still pay part of the normal turn scrub.
+#define POD_DRIFT_SCRUB_SCALE	0.3f
+// Intentional JK divergence: when the pod is already at high speed and at a steering/slip
+// limit, suppress velocity magnitude so max-speed carving cannot accelerate for free.
+#define POD_TURN_LOAD_START	0.55f
+#define POD_TURN_LOAD_SCRUB	0.28f
+// Intentional JK divergence: forward throttle weakens under steering load, and maximum
+// load bleeds scalar speed instead of letting a full-throttle carve keep charging.
+#define POD_TURN_ACCEL_DAMP_START	0.25f
+#define POD_TURN_ACCEL_MIN_SCALE	0.25f
+#define POD_TURN_BLEED_START	0.75f
+#define POD_TURN_BLEED_INTERVAL	90.0f
+// Manual roll authority (PM_SetVehicleAngles): degrees of bank at full A/D (rightmove) input,
+// added on top of the auto turn-tilt (ep1 manual_tilt). Raised for a more extreme lean. -TaystJK
+#define POD_MANUAL_ROLL		65.0f
+// Pod roll cap (PM_SetVehicleAngles) - overrides the .veh rollLimit (45) so pods bank more
+// extremely. Also used as the reference for roll-based turn bonus / speed penalty.
+#define POD_ROLL_LIMIT		65.0f
+// Turning against the current bank is possible, but inefficient. Roll and turn-rate signs
+// match when the pod is banked opposite the requested carve.
+#define POD_WRONG_ROLL_START	0.15f
+#define POD_WRONG_ROLL_TURN_MIN_SCALE	0.12f
+#define POD_WRONG_ROLL_RESPONSE_MIN_SCALE	0.25f
+#define POD_WRONG_ROLL_TURNLOAD_BONUS	0.8f
+// Correct bank assists steering. At full matching roll, target turn rate reaches this multiplier.
+#define POD_RIGHT_ROLL_TURN_SCALE	2.0f
+// How fast the pod eases into/out of its bank, per second (ProcessOrientCommands).
+// Apply is 75% of the previous 12; release is 50% of the previous 12.
+#define POD_BANK_EASE_IN	9.0f
+#define POD_BANK_EASE_OUT	6.0f
+// How fast horizontal velocity magnitude converges to ps->speed each second (PM_PodRacerTraction).
+// 10 => reaches ~95% of target in ~0.3s. LOWER for softer speed changes.
+#define POD_MAG_CONVERGE	10.0f
+// Hover ride-height multiplier (PM_HoverTrace). swoop.veh hoverHeight (30) leaves the box bottom
+// (origin + DEFAULT_MINS_2 = -24) only ~6 units above ground, so small bumps clip it and kill
+// speed. 1.75 => hoverHeight 30->52.5 (box bottom ~28.5 units up), still below the old 2x.
+#define POD_HOVER_HEIGHT_SCALE	1.75f
+// Hover lift multiplier. Slightly above stock, but below the earlier bouncy 2x spring.
+#define POD_HOVER_FORCE_SCALE	1.15f
+// Pod-specific gravity. Stock swoop.veh is 800; pods are floatier but should still fall cleanly.
+#define POD_GRAVITY		500
+// Vertical damping only, applied in PM_Friction for pod speeders. Horizontal speed is owned by the
+// pod speed model; z damping replaces the all-axis stock friction that used to absorb bounce.
+#define POD_VERTICAL_DAMPING	4.0f
+// Pod-specific slope threshold. This is normal.z, not degrees: 0.6 is about a 53 degree slope.
+#define POD_MAX_SLOPE		0.6f
+// PM_HoverTrace also has an x/y steep-wall guard; this is the side component that matches z=0.6.
+#define POD_MAX_SLOPE_SIDE_NORMAL	0.8f
+// Accel/cornering authority by hover proximity. In open air the pod has less bite; close to the
+// ground it can put power down and carve harder.
+#define POD_AIR_ACCEL_SCALE	0.35f
+#define POD_HOVER_ACCEL_SCALE	0.8f
+#define POD_CLOSE_ACCEL_SCALE	1.15f
+#define POD_AIR_GRIP_SCALE	0.45f
+#define POD_HOVER_GRIP_SCALE	1.3f
+#define POD_CLOSE_GRIP_SCALE	1.6f
+// How much of the pod's model bank the CAMERA leans with (CG_OffsetThirdPersonView). 1.0 =
+// camera matches the model roll fully; lower = subtler camera lean than the model. Blended in
+// smoothly to avoid jerk. 0 disables camera banking (model still banks). -TaystJK
+#define POD_CAM_BANK		0.6f
+// Wall-riding (PM_VehicleImpact): minimum bank (degrees, toward the wall) required to ride a
+// wall instead of crashing into it. Below this you just bump/scrub as normal; lean past it
+// (via a hard turn or manual A/D roll) and you glide along the wall keeping speed. -TaystJK
+#define POD_WALLRIDE_MINROLL	15.0f
+// Extra crash penalty when you hit the wall on the OPPOSITE side from your lean (rolled right,
+// smacked the left wall). magnitude *= (1 + this * leanFrac). 1.0 => up to 2x damage at full
+// lean the wrong way - rewards committing your roll toward the wall you mean to ride. -TaystJK
+#define POD_WALLRIDE_PENALTY	1.0f
+// Impact damage grace (PM_VehicleImpact). After the map-scale divide, this much impact
+// "magnitude" is subtracted before any crash damage - so light scrapes and glancing bumps
+// do NOTHING and only genuine high-speed crashes hurt. RAISE to make the pod more forgiving.
+#define POD_IMPACT_TOLERANCE	2000.0f
+// Stock speeders nearly zero scalar speed on brush impact by multiplying by frametime. Pods
+// keep most scalar speed on the softened impact path; true crashes still get damage/turn effects.
+#define POD_IMPACT_SPEED_KEEP	0.85f
+
 typedef enum
 {
 	VH_NONE = 0,	//0 just in case anyone confuses VH_NONE and VEHICLE_NONE below
@@ -650,6 +771,13 @@ typedef struct Vehicle_s
 	// the last time this vehicle fired a turbo burst
 	int			m_iTurboTime;
 	int			m_iGravTime;
+
+	// SWE1R-style podracer physics state (used when bg_podracerPhysics is set, VH_SPEEDER only)
+	float		m_fPodAccel;	// acceleration ramp factor (SWE1R AccelerationFactor)
+	float		m_fPodBoost;	// boost ramp factor (SWE1R BoostFactor)
+	float		m_fPodTraction;	// current slide/traction blend factor, restored by cgame prediction cache
+	float		m_fPodTurnRate;	// current yaw turn rate, degrees/sec
+	float		m_fPodTargetTurnRate;	// target yaw turn rate from steering input
 
 	//how long it should drop like a rock for after freed from SUSPEND
 	int			m_iDropTime;

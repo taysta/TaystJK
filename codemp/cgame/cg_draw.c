@@ -11502,6 +11502,129 @@ static void CG_AutoDemoRaceRecord(void)
 	cg.lastStartTime = cg.predictedPlayerState.duelTime;
 }
 
+// Debug overlay for the SWE1R podracer physics. Proves the code path is live and shows
+// the live tuning state. Toggle with cg_drawPodPhysics 1 (also requires bg_podracerPhysics).
+// The "BUILD" line is a version stamp: if you don't see it in game, you are running a DLL
+// that predates this code. -TaystJK
+extern vmCvar_t bg_podracerPhysics;
+static void CG_DrawPodPhysicsDebug( void )
+{
+	centity_t		*vehCent;
+	Vehicle_t		*pVeh;
+	playerState_t	*rider = &cg.predictedPlayerState;
+	playerState_t	*vps;	// vehicle's own predicted playerState (holds the real speed/velocity)
+	vec3_t			velH;
+	float			horizSpeed, x, y;
+	vec4_t			col = { 0.2f, 1.0f, 0.4f, 1.0f };
+	char			line[128];
+
+	if ( !cg_drawPodPhysics.integer )
+		return;
+
+	if ( !rider->m_iVehicleNum )
+	{	// not in a vehicle - still stamp the build so you know the code loaded
+		CG_Text_Paint( 20.0f, 200.0f, 0.7f, col, "POD DEBUG: build " __DATE__ " " __TIME__ " (not in vehicle)", 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM );
+		return;
+	}
+
+	vehCent = &cg_entities[rider->m_iVehicleNum];
+	if ( !vehCent->m_pVehicle || !vehCent->m_pVehicle->m_pVehicleInfo )
+		return;
+	pVeh = vehCent->m_pVehicle;
+	vps = &cg.predictedVehicleState;
+
+	velH[0] = vps->velocity[0];
+	velH[1] = vps->velocity[1];
+	velH[2] = 0.0f;
+	horizSpeed = VectorLength( velH );
+
+	x = 20.0f;
+	y = 180.0f;
+
+	Com_sprintf( line, sizeof(line), "POD DEBUG  build %s %s", __DATE__, __TIME__ );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	Com_sprintf( line, sizeof(line), "bg_podracerPhysics = %i   type=%s", bg_podracerPhysics.integer,
+		pVeh->m_pVehicleInfo->type == VH_SPEEDER ? "VH_SPEEDER" : "OTHER" );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	Com_sprintf( line, sizeof(line), "ps->speed   = %.1f   (horiz vel = %.1f)", vps->speed, horizSpeed );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	{	// speed as % of the soft top - shows the accel curve climbing/tapering
+		float topSpeed = pVeh->m_pVehicleInfo->speedMax * POD_MAP_SCALE;
+		float pct;
+		if ( topSpeed < POD_SOFT_TOP_SPEED ) topSpeed = POD_SOFT_TOP_SPEED;
+		pct = ( topSpeed > 1.0f ) ? ( 100.0f * vps->speed / topSpeed ) : 0.0f;
+		Com_sprintf( line, sizeof(line), "speed %% of soft top = %.0f%%   (boosting=%s)", pct,
+			( vps->eFlags & EF_JETPACK_ACTIVE ) ? "YES" : "no" );
+		CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+	}
+
+	Com_sprintf( line, sizeof(line), "accelFactor = %.3f   boost=%s", pVeh->m_fPodAccel,
+		pVeh->m_fPodBoost > 0.0f ? "ON" : "off" );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	{
+		float grip = POD_ANTI_SKID * ( pVeh->m_pVehicleInfo->traction / 12.0f ) * pVeh->m_fPodTraction;
+		if ( grip > 0.995f ) grip = 0.995f;
+		Com_sprintf( line, sizeof(line), "slide2 = %.3f   approx grip = %.3f   fwdmove = %i",
+			pVeh->m_fPodTraction, grip, pVeh->m_ucmd.forwardmove );
+		CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+	}
+
+	{
+		float yawError = AngleSubtract( rider->viewangles[YAW], pVeh->m_vOrientation[YAW] );
+		Com_sprintf( line, sizeof(line), "mouse yawErr = %+.1f deg   turnRate = %+.1f / target %+.1f",
+			yawError, pVeh->m_fPodTurnRate, pVeh->m_fPodTargetTurnRate );
+	}
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	// nose/velocity alignment - shows the straightaway-vs-corner speed scrub in action
+	{
+		vec3_t fwd;
+		float align = 0.0f;
+		AngleVectors( pVeh->m_vOrientation, fwd, NULL, NULL );
+		if ( horizSpeed > 1.0f )
+			align = (velH[0] * fwd[0] + velH[1] * fwd[1]) / horizSpeed;
+		Com_sprintf( line, sizeof(line), "align(nose.vel) = %.2f   (1=straight 0=hard turn)", align );
+		CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+	}
+
+	Com_sprintf( line, sizeof(line), "bank roll = %+.1f deg   (rollLimit %.0f)", pVeh->m_vOrientation[ROLL], pVeh->m_pVehicleInfo->rollLimit );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	{	// input state: brake (+speed/reverse), drift (+moveup), manual roll (A/D)
+		qboolean brk = ( pVeh->m_ucmd.forwardmove < 0 || (pVeh->m_ucmd.buttons & BUTTON_WALKING) ) ? qtrue : qfalse;
+		qboolean drift = ( pVeh->m_ucmd.upmove > 0 && horizSpeed >= POD_DRIFT_MIN_SPEED ) ? qtrue : qfalse;
+		Com_sprintf( line, sizeof(line), "brake=%s  drift(+moveup)=%s  roll(A/D)=%+d",
+			brk ? "ON" : "off", drift ? "ON" : "off", pVeh->m_ucmd.rightmove );
+		CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+	}
+
+	Com_sprintf( line, sizeof(line), "speedMax=%.0f turbo=%.0f accel=%.0f traction=%.0f", pVeh->m_pVehicleInfo->speedMax,
+		pVeh->m_pVehicleInfo->turboSpeed, pVeh->m_pVehicleInfo->acceleration, pVeh->m_pVehicleInfo->traction );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	// hover: authored ride height, the pod-scaled effective height, and vertical velocity
+	Com_sprintf( line, sizeof(line), "hoverH=%.0f (eff %.0f)  hoverStr=%.0f  velZ=%+.0f",
+		pVeh->m_pVehicleInfo->hoverHeight, pVeh->m_pVehicleInfo->hoverHeight * POD_HOVER_HEIGHT_SCALE,
+		pVeh->m_pVehicleInfo->hoverStrength, vps->velocity[2] );
+	CG_Text_Paint( x, y, 0.7f, col, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+
+	// PREDICTION ERROR: predicted vehicle speed vs the last authoritative snapshot speed.
+	// If this jumps around while driving steadily, prediction is diverging (= the jerk). It
+	// should sit near 0 with the Vehicle_t-rewind fix. Drawn red when large so it's obvious.
+	{
+		float snapSpeed = cg.snap ? cg.snap->vps.speed : 0.0f;
+		float predErr = vps->speed - snapSpeed;
+		vec4_t ec = { 0.4f, 1.0f, 0.4f, 1.0f };
+		if ( predErr > 150.0f || predErr < -150.0f ) { ec[0] = 1.0f; ec[1] = 0.3f; ec[2] = 0.3f; }
+		Com_sprintf( line, sizeof(line), "PREDICT ERR speed = %+.1f  (snap %.0f)  <- watch for jerk", predErr, snapSpeed );
+		CG_Text_Paint( x, y, 0.7f, ec, line, 0, 0, ITEM_TEXTSTYLE_SHADOWED, FONT_MEDIUM ); y += 18.0f;
+	}
+}
+
 static void CG_Draw2D( void ) {
 	float			inTime = cg.invenSelectTime+WEAPON_SELECT_TIME;
 	float			wpTime = cg.weaponSelectTime+WEAPON_SELECT_TIME;
@@ -11726,6 +11849,7 @@ static void CG_Draw2D( void ) {
 
 	CG_DrawLagometer();
 
+	CG_DrawPodPhysicsDebug();
 
 	if (!cl_paused.integer) {
 		CG_DrawBracketedEntities();

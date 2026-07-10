@@ -37,6 +37,7 @@ void G_VehUpdateShields( gentity_t *targ );
 #endif
 
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
+extern vmCvar_t bg_podracerPhysics;
 
 void Vehicle_SetAnim(gentity_t *ent,int setAnimParts,int anim,int setAnimFlags, int iBlend)
 {
@@ -1667,12 +1668,14 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 {
 	gentity_t *parent;
 	gentity_t *rider;
+	qboolean podPhysicsSpeeder;
 
 	if ( pVeh->m_iBoarding != 0 && pVeh->m_iDieTime==0)
 		return qtrue;
 
 	parent = (gentity_t *)pVeh->m_pParentEntity;
 	rider = (gentity_t *)pRider;
+	podPhysicsSpeeder = ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER ) ? qtrue : qfalse;
 	//MG FIXME !! Single player needs update!
 	if ( rider && rider->client
 		&& parent && parent->client )
@@ -1682,7 +1685,7 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 		rider->client->ps.rocketTargetTime = parent->client->ps.rocketTargetTime;
 	}
 	// Regular exit.
-	if ( pUmcd->buttons & BUTTON_USE && pVeh->m_pVehicleInfo->type!=VH_SPEEDER)
+	if ( pUmcd->buttons & BUTTON_USE && ( pVeh->m_pVehicleInfo->type != VH_SPEEDER || podPhysicsSpeeder ) )
 	{
 		if ( pVeh->m_pVehicleInfo->type == VH_WALKER )
 		{//just get the fuck out
@@ -1778,7 +1781,7 @@ static qboolean UpdateRider( Vehicle_t *pVeh, bgEntity_t *pRider, usercmd_t *pUm
 		&& pVeh->m_pVehicleInfo->type != VH_WALKER  )
 	{
 		// Jump off.
-		if ( pUmcd->upmove > 0 )
+		if ( pUmcd->upmove > 0 && !podPhysicsSpeeder )
 		{
 
 			if ( pVeh->m_pVehicleInfo->Eject( pVeh, pRider, qfalse ) )

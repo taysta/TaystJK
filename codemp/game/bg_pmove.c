@@ -58,6 +58,8 @@ extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 pmove_t		*pm;
 pml_t		pml;
 
+extern	vmCvar_t	bg_podracerPhysics;	// SWE1R pod physics gate (registered in g/cg_xcvar.h)
+
 bgEntity_t *pm_entSelf = NULL;
 bgEntity_t *pm_entVeh = NULL;
 
@@ -703,6 +705,7 @@ static void PM_SetVehicleAngles( vec3_t normal )
 	//float	curVehicleBankingSpeed;
 	vehicleBankingSpeed = (pVeh->m_pVehicleInfo->bankingSpeed*32.0f)*pml.frametime;//0.25f
 
+
 	if ( vehicleBankingSpeed <= 0
 		|| ( pVeh->m_pVehicleInfo->pitchLimit == 0 && pVeh->m_pVehicleInfo->rollLimit == 0 ) )
 	{//don't bother, this vehicle doesn't bank
@@ -745,11 +748,25 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		//FIXME: take center of gravity into account
 		vAngles[PITCH] = pm->ps->viewangles[PITCH]*0.5f + pitchBias;
 		//don't bank so fast when in the air
-		vehicleBankingSpeed *= (0.125f*pml.frametime);
+		// NOTE: for pods do NOT crush the banking speed here - a hovering pod is frequently in
+		// this "air" branch, and *0.125*frametime makes vehicleBankingSpeed ~0 so the roll never
+		// eases in (this was "bank roll always 0"). Pods keep their (scaled) banking speed. -TaystJK
+		if ( !( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER ) )
+		{
+			vehicleBankingSpeed *= (0.125f*pml.frametime);
+		}
 	}
 	//NOTE: if angles are flat and we're moving through air (not on ground),
 	//		then pitch/bank?
-	if ( pVeh->m_pVehicleInfo->rollLimit > 0 )
+	if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		// PODRACER BANKING is handled in ProcessOrientCommands (SpeederNPC.c), NOT here. This
+		// function is buried in hover/pmove state and the roll it wrote was being lost ("bank
+		// roll always 0"). ProcessOrientCommands runs every vehicle update and owns m_vOrientation,
+		// so roll set there sticks. We leave vAngles[ROLL] at 0 here and skip the roll ease-in
+		// for pods in the apply loop below so we don't fight ProcessOrientCommands. -TaystJK
+	}
+	else if ( pVeh->m_pVehicleInfo->rollLimit > 0 )
 	{
 		//roll when banking
 		vec3_t	velocity;
@@ -793,13 +810,22 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		}
 	}
 
-	if ( vAngles[ROLL] > pVeh->m_pVehicleInfo->rollLimit )
 	{
-		vAngles[ROLL] = pVeh->m_pVehicleInfo->rollLimit;
-	}
-	else if ( vAngles[ROLL] < -pVeh->m_pVehicleInfo->rollLimit )
-	{
-		vAngles[ROLL] = -pVeh->m_pVehicleInfo->rollLimit;
+		// pods roll more extremely than the .veh rollLimit (45) allows
+		float rollCap = pVeh->m_pVehicleInfo->rollLimit;
+		if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER
+			&& POD_ROLL_LIMIT > rollCap )
+		{
+			rollCap = POD_ROLL_LIMIT;
+		}
+		if ( vAngles[ROLL] > rollCap )
+		{
+			vAngles[ROLL] = rollCap;
+		}
+		else if ( vAngles[ROLL] < -rollCap )
+		{
+			vAngles[ROLL] = -rollCap;
+		}
 	}
 
 	//do it
@@ -807,6 +833,10 @@ static void PM_SetVehicleAngles( vec3_t normal )
 	{
 		if ( i == YAW )
 		{//yawing done elsewhere
+			continue;
+		}
+		if ( i == ROLL && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+		{//pod roll is owned by ProcessOrientCommands - don't ease it back to 0 here
 			continue;
 		}
 		//bank faster the higher the difference is
@@ -900,6 +930,13 @@ void PM_HoverTrace( void )
 	hoverHeight = pVeh->m_pVehicleInfo->hoverHeight;
 	trace = &pml.groundTrace;
 
+	// Pod physics: the swoop.veh hoverHeight (30) leaves the box bottom only ~6 units above
+	// ground. Raise ride height enough to clear small bumps without making the pod float too high.
+	if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		hoverHeight *= POD_HOVER_HEIGHT_SCALE;
+	}
+
 	pml.groundPlane = qfalse;
 
 	//relativeWaterLevel = (pm->ps->waterheight - (pm->ps->origin[2]+pm->mins[2]));
@@ -969,6 +1006,11 @@ void PM_HoverTrace( void )
 			//Before, any slope that you could climb up, you could also hovor boost up..?
 			//now you can only hovor boost up slopes that you could already climb before? and you can now climb steeper slopes than before?
 		}
+		if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+		{
+			minNormal = POD_MAX_SLOPE;
+			realMinNormal = POD_MAX_SLOPE_SIDE_NORMAL;
+		}
 
 		point[0] = pm->ps->origin[0];
 		point[1] = pm->ps->origin[1];
@@ -1001,6 +1043,11 @@ void PM_HoverTrace( void )
 			if ( trace->fraction < 1.0f )
 			{//push up off ground
 				float hoverForce = pVeh->m_pVehicleInfo->hoverStrength;
+				// Keep pod lift close to stock; too much spring force launches off bumps.
+				if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+				{
+					hoverForce *= POD_HOVER_FORCE_SCALE;
+				}
 				if ( trace->fraction > 0.5f )
 				{
 					pm->ps->velocity[2] += (1.0f-trace->fraction)*hoverForce*pVeh->m_fTimeModifier;
@@ -1213,7 +1260,28 @@ static void PM_Friction( void ) {
 		realfriction = pm_vq3_friction;
 
 	// apply ground friction, even if on ladder
-	if (pm_flying != FLY_VEHICLE &&
+	// Pod physics owns its own speed model (coast/brake are handled in
+	// PodRacer_ProcessMoveCommands); the stock vehicle ground friction here fights the target
+	// speed and was capping top speed well below speedMax*mapScale. Skip it for pod speeders.
+	if ( bg_podracerPhysics.integer && pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
+		&& pEnt->m_pVehicle && pEnt->m_pVehicle->m_pVehicleInfo
+		&& pEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		// Pod speed is horizontal-only and owned by PodRacer_ProcessMoveCommands /
+		// PM_PodRacerTraction. Keep stock friction off x/y. Only damp upward z energy so
+		// hover bumps stop bouncing; damping falling z creates a very low terminal velocity.
+		if ( vel[2] > 0.0f )
+		{
+			float zDamp = 1.0f - POD_VERTICAL_DAMPING * pml.frametime;
+			if ( zDamp < 0.0f )
+			{
+				zDamp = 0.0f;
+			}
+			vel[2] *= zDamp;
+		}
+		return;
+	}
+	else if (pm_flying != FLY_VEHICLE &&
 		pEnt &&
 		pEnt->s.NPC_class == CLASS_VEHICLE &&
 		pEnt->m_pVehicle &&
@@ -4762,6 +4830,265 @@ static void PM_WaterMove( void ) {
 	PM_SlideMove( qfalse );
 }
 
+static float PM_PodGroundProximityScale( float airScale, float hoverScale, float closeScale )
+{
+	float proximity;
+
+	if ( !pml.groundPlane || pml.groundTrace.fraction >= 1.0f )
+	{
+		return airScale;
+	}
+
+	proximity = 1.0f - pml.groundTrace.fraction;
+	if ( proximity < 0.0f ) proximity = 0.0f;
+	if ( proximity > 1.0f ) proximity = 1.0f;
+
+	return hoverScale + ( closeScale - hoverScale ) * proximity;
+}
+
+/*
+===================
+PM_PodRacerTraction
+
+SWE1R-style traction/grip for pod-physics speeders (ported from swe1r-decomp
+CalculateTraction 478A70). Replaces the stock PM_Accelerate for these vehicles:
+instead of nudging velocity toward moveDir*speed, it blends the CURRENT velocity
+direction toward the forward vector by the slide factor, then renormalises to the
+target speed magnitude. Low slide factor = drifty (velocity keeps its heading);
+high = grippy (snaps to the nose). Operates on the horizontal plane only; vertical
+(hover) velocity is left untouched. The slide factor is derived from the current
+command instead of being authoritative Vehicle_t state; otherwise cgame prediction
+can replay from a different hidden slide value than the server had at the snapshot.
+-TaystJK
+===================
+*/
+static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspeed )
+{
+	vec3_t	fwd, vel, desired, blend, dir;
+	float	curSpeed, slide, targetSlide;
+	float	grip, skid, keepDesired, proximityGrip;
+	float	rawAlign, align, slipLoad, steerLoad, turnLoad, wrongRollLoad, load;
+	float	targetMag, newMag, accelRate, speedFrac, topSpeed;
+	qboolean drifting;
+
+	// forward heading on the flat plane (wishdir is moveDir here)
+	VectorCopy( wishdir, fwd );
+	fwd[2] = 0.0f;
+	if ( VectorNormalize( fwd ) < 0.001f )
+	{	// no heading - fall back to stock behaviour
+		PM_Accelerate( wishdir, wishspeed, pVeh->m_pVehicleInfo->traction );
+		return;
+	}
+
+	// current horizontal velocity + its magnitude
+	vel[0] = pm->ps->velocity[0];
+	vel[1] = pm->ps->velocity[1];
+	vel[2] = 0.0f;
+	curSpeed = VectorLength( vel );
+
+	drifting = ( pVeh->m_ucmd.upmove > 0 && curSpeed >= POD_DRIFT_MIN_SPEED ) ? qtrue : qfalse;
+
+	// SWE1R slide2: 1.0 under power, 0.8 off-throttle, lower while deliberately drifting.
+	targetSlide = 1.0f;
+	if ( pVeh->m_ucmd.forwardmove <= 0 )
+	{
+		targetSlide = POD_SLIDE_COAST_TARGET;
+	}
+	if ( drifting )
+	{
+		targetSlide = POD_DRIFT_SLIDE_TARGET;
+	}
+
+	slide = pVeh->m_fPodTraction;
+	if ( slide <= 0.0f || slide > 1.0f )
+	{
+		slide = targetSlide;
+	}
+	if ( targetSlide < slide )
+	{
+		slide = targetSlide;
+	}
+	else if ( targetSlide > slide )
+	{
+		float recoverStep = pml.frametime * ( 1.0f - POD_DRIFT_SLIDE_TARGET ) / POD_DRIFT_TRACTION_RELEASE_TIME;
+		if ( recoverStep < 0.0f )
+		{
+			recoverStep = 0.0f;
+		}
+		slide += recoverStep;
+		if ( slide > targetSlide )
+		{
+			slide = targetSlide;
+		}
+	}
+	pVeh->m_fPodTraction = slide;
+	if ( slide < 0.0f ) slide = 0.0f;
+	if ( slide > 1.0f ) slide = 1.0f;
+
+	proximityGrip = PM_PodGroundProximityScale( POD_AIR_GRIP_SCALE, POD_HOVER_GRIP_SCALE, POD_CLOSE_GRIP_SCALE );
+	grip = POD_ANTI_SKID * ( pVeh->m_pVehicleInfo->traction / 12.0f ) * slide * proximityGrip;
+	if ( grip < 0.0f ) grip = 0.0f;
+	if ( grip > 0.995f ) grip = 0.995f;
+
+	// SWE1R: traction is the amount of old velocity kept. Higher antiSkid means less skid.
+	skid = ( 1.0f - grip * grip ) * 0.99666601f;
+	if ( skid < 0.0f ) skid = 0.0f;
+	if ( skid > 1.0f ) skid = 1.0f;
+	keepDesired = 1.0f - skid;
+
+	rawAlign = 1.0f;
+	if ( curSpeed > 1.0f )
+	{
+		rawAlign = (vel[0] / curSpeed) * fwd[0] + (vel[1] / curSpeed) * fwd[1];
+	}
+	align = rawAlign;
+	if ( align < 0.0f ) align = 0.0f;
+	if ( align > 1.0f ) align = 1.0f;
+
+	topSpeed = pVeh->m_pVehicleInfo->speedMax * POD_MAP_SCALE;
+	if ( topSpeed < POD_SOFT_TOP_SPEED ) topSpeed = POD_SOFT_TOP_SPEED;
+	speedFrac = ( topSpeed > 1.0f ) ? ( curSpeed / topSpeed ) : 0.0f;
+	if ( speedFrac > 1.0f ) speedFrac = 1.0f;
+	if ( speedFrac < 0.0f ) speedFrac = 0.0f;
+
+	slipLoad = 1.0f - align;
+	steerLoad = ( POD_MAX_TURN_RATE > 0.0f ) ? fabs( pVeh->m_fPodTargetTurnRate ) / POD_MAX_TURN_RATE : 0.0f;
+	if ( steerLoad > 1.0f ) steerLoad = 1.0f;
+	turnLoad = ( POD_MAX_TURN_RATE > 0.0f ) ? fabs( pVeh->m_fPodTurnRate ) / POD_MAX_TURN_RATE : 0.0f;
+	if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	if ( steerLoad > turnLoad ) turnLoad = steerLoad;
+	wrongRollLoad = 0.0f;
+	if ( pVeh->m_fPodTargetTurnRate != 0.0f && ( pVeh->m_vOrientation[ROLL] * pVeh->m_fPodTargetTurnRate ) > 0.0f )
+	{
+		float rollCap = ( POD_ROLL_LIMIT > 0.0f ) ? POD_ROLL_LIMIT : pVeh->m_pVehicleInfo->rollLimit;
+		if ( rollCap < 1.0f )
+		{
+			rollCap = 1.0f;
+		}
+		wrongRollLoad = fabs( pVeh->m_vOrientation[ROLL] ) / rollCap;
+		if ( wrongRollLoad <= POD_WRONG_ROLL_START )
+		{
+			wrongRollLoad = 0.0f;
+		}
+		else
+		{
+			wrongRollLoad = ( wrongRollLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+			if ( wrongRollLoad > 1.0f ) wrongRollLoad = 1.0f;
+		}
+	}
+	if ( pVeh->m_fPodTargetTurnRate != 0.0f )
+	{
+		float manual = pVeh->m_ucmd.rightmove / 127.0f;
+		manual = ( manual < -1.0f ) ? -1.0f : ( manual > 1.0f ) ? 1.0f : manual;
+		if ( ( manual * pVeh->m_fPodTargetTurnRate ) > 0.0f )
+		{
+			float manualLoad = fabs( manual );
+			if ( manualLoad <= POD_WRONG_ROLL_START )
+			{
+				manualLoad = 0.0f;
+			}
+			else
+			{
+				manualLoad = ( manualLoad - POD_WRONG_ROLL_START ) / ( 1.0f - POD_WRONG_ROLL_START );
+				if ( manualLoad > 1.0f ) manualLoad = 1.0f;
+			}
+			if ( manualLoad > wrongRollLoad )
+			{
+				wrongRollLoad = manualLoad;
+			}
+		}
+	}
+	if ( wrongRollLoad > 0.0f )
+	{
+		turnLoad += wrongRollLoad * POD_WRONG_ROLL_TURNLOAD_BONUS;
+		if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	}
+	if ( drifting )
+	{
+		turnLoad += POD_DRIFT_TURNLOAD_BONUS;
+		if ( turnLoad > 1.0f ) turnLoad = 1.0f;
+	}
+	load = ( slipLoad > turnLoad ) ? slipLoad : turnLoad;
+
+	targetMag = fabs( wishspeed );
+	if ( !drifting && load > POD_TURN_LOAD_START )
+	{
+		float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+		float scrub;
+		if ( excess > 1.0f ) excess = 1.0f;
+		scrub = POD_TURN_LOAD_SCRUB * excess * speedFrac;
+		if ( scrub > 0.75f ) scrub = 0.75f;
+		targetMag *= ( 1.0f - scrub );
+	}
+	if ( !drifting && rawAlign < 0.0f && targetMag > fabs( wishspeed ) * 0.45f )
+	{
+		targetMag = fabs( wishspeed ) * 0.45f;
+	}
+	if ( drifting )
+	{
+		targetMag = curSpeed;
+		if ( load > POD_TURN_LOAD_START )
+		{
+			float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+			float scrub;
+			if ( excess > 1.0f ) excess = 1.0f;
+			scrub = POD_TURN_LOAD_SCRUB * POD_DRIFT_SCRUB_SCALE * excess * speedFrac;
+			if ( scrub > 0.75f ) scrub = 0.75f;
+			targetMag *= ( 1.0f - scrub );
+		}
+	}
+
+	accelRate = POD_MAG_CONVERGE * pml.frametime;
+	if ( accelRate > 1.0f ) accelRate = 1.0f;
+	if ( targetMag > curSpeed )
+	{
+		accelRate *= PM_PodGroundProximityScale( POD_AIR_ACCEL_SCALE, POD_HOVER_ACCEL_SCALE, POD_CLOSE_ACCEL_SCALE );
+		if ( drifting )
+		{
+			accelRate *= POD_DRIFT_ACCEL_SCALE;
+		}
+		if ( accelRate > 1.0f ) accelRate = 1.0f;
+	}
+	newMag = curSpeed + ( targetMag - curSpeed ) * accelRate;
+	if ( drifting && load > POD_TURN_LOAD_START )
+	{
+		float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
+		if ( excess > 1.0f ) excess = 1.0f;
+		newMag -= POD_DRIFT_BLEED_RATE * excess * speedFrac * pml.frametime;
+	}
+	if ( newMag < 0.0f ) newMag = 0.0f;
+	if ( drifting )
+	{
+		pm->ps->speed = newMag;
+	}
+
+	// Remove the component that points opposite the desired travel direction, matching SWE1R's
+	// anti-spinout pre-pass before blending current velocity with desired velocity.
+	if ( !drifting && curSpeed > 0.001f )
+	{
+		float backDot = DotProduct( vel, fwd );
+		if ( backDot < 0.0f )
+		{
+			vel[0] += fwd[0] * -backDot;
+			vel[1] += fwd[1] * -backDot;
+		}
+	}
+
+	VectorScale( fwd, targetMag, desired );
+	blend[0] = desired[0] * keepDesired + vel[0] * skid;
+	blend[1] = desired[1] * keepDesired + vel[1] * skid;
+	blend[2] = 0.0f;
+
+	VectorCopy( blend, dir );
+	if ( VectorNormalize( dir ) < 0.001f )
+	{
+		VectorCopy( fwd, dir );
+	}
+
+	pm->ps->velocity[0] = dir[0] * newMag;
+	pm->ps->velocity[1] = dir[1] * newMag;
+}
+
 /*
 ===================
 PM_FlyVehicleMove
@@ -4967,6 +5294,10 @@ static void PM_AirMove( void ) {
 
 	fmove = pm->cmd.forwardmove;
 	smove = pm->cmd.rightmove;
+	if ( pVeh && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		smove = 0.0f;
+	}
 
 	if (moveStyle == MV_SURF) {
 		if (pm->cmd.forwardmove != 0 && pm->cmd.rightmove != 0)	{
@@ -4977,6 +5308,10 @@ static void PM_AirMove( void ) {
 	}
 
 	cmd = pm->cmd;
+	if ( pVeh && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		cmd.rightmove = 0;
+	}
 	scale = PM_CmdScale( &cmd );
 
 	// set the movementDir so clients can rotate the legs for strafing
@@ -5189,6 +5524,14 @@ static void PM_AirMove( void ) {
 		{//on a slope of some kind, shouldn't have much control and should slide a lot
 			accelerate *= 0.5f;
 		}
+
+		// Pod-physics: replace the stock accelerate with the SWE1R traction/grip blend
+		// (drift/skid). Skip the normal accelerate chain below.
+		if ( bg_podracerPhysics.integer )
+		{
+			PM_PodRacerTraction( pVeh, wishdir, wishspeed );
+			goto podTractionDone;
+		}
 	}
 	// not on ground, so little effect on velocity
 	if (moveStyle == MV_QW) {
@@ -5236,6 +5579,7 @@ static void PM_AirMove( void ) {
 		PM_Accelerate(wishdir, wishspeed, accelerate);
 	}
 
+podTractionDone:
 	// we may have a ground plane that is very steep, even
 	// though we don't have a groundentity
 	// slide along the steep plane
@@ -6905,10 +7249,17 @@ static void PM_GroundTrace( void ) {
 	{
 		bgEntity_t *pEnt = pm_entSelf;
 
-		if (pEnt && pEnt->s.NPC_class == CLASS_VEHICLE)
+		if (pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
+			&& pEnt->m_pVehicle
+			&& pEnt->m_pVehicle->m_pVehicleInfo)
 		{
 			minNormal = pEnt->m_pVehicle->m_pVehicleInfo->maxSlope;
-			if (IsRacemode(pm->ps)) {//Its a vehicle in racemode, RACESWOOP
+			if ( bg_podracerPhysics.integer
+				&& pEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+			{
+				minNormal = POD_MAX_SLOPE;
+			}
+			else if (IsRacemode(pm->ps)) {//Its a vehicle in racemode, RACESWOOP
 				minNormal = 0.5f; //Max slope steepness before it stops hovoring you up, used to be 0.65
 			}
 		}

@@ -30,10 +30,100 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 static	pmove_t		cg_pmove;
 
+extern vmCvar_t bg_podracerPhysics;
+
+#define CG_POD_TURN_CACHE_SIZE 512
+
+typedef struct cgPodTurnPredictState_s
+{
+	qboolean	valid;
+	int			vehicleNum;
+	int			commandTime;
+	float		turnRate;
+	float		traction;
+} cgPodTurnPredictState_t;
+
+static cgPodTurnPredictState_t cg_podTurnCache[CG_POD_TURN_CACHE_SIZE];
+static int cg_podTurnCacheHead;
+
 static	int			cg_numSolidEntities;
 static	centity_t	*cg_solidEntities[MAX_ENTITIES_IN_SNAPSHOT];
 static	int			cg_numTriggerEntities;
 static	centity_t	*cg_triggerEntities[MAX_ENTITIES_IN_SNAPSHOT];
+
+static qboolean CG_PodTurnPredictionApplies( const centity_t *veh )
+{
+	return ( bg_podracerPhysics.integer
+		&& veh
+		&& veh->m_pVehicle
+		&& veh->m_pVehicle->m_pVehicleInfo
+		&& veh->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER ) ? qtrue : qfalse;
+}
+
+static void CG_ClearPodTurnPredictionCache( void )
+{
+	memset( cg_podTurnCache, 0, sizeof( cg_podTurnCache ) );
+	cg_podTurnCacheHead = 0;
+}
+
+static void CG_StorePodTurnPredictionState( int vehicleNum, int commandTime, Vehicle_t *pVeh )
+{
+	int i;
+	cgPodTurnPredictState_t *state;
+
+	if ( !pVeh || vehicleNum <= 0 || commandTime <= 0 )
+	{
+		return;
+	}
+
+	for ( i = 0; i < CG_POD_TURN_CACHE_SIZE; i++ )
+	{
+		state = &cg_podTurnCache[i];
+		if ( state->valid && state->vehicleNum == vehicleNum && state->commandTime == commandTime )
+		{
+			state->turnRate = pVeh->m_fPodTurnRate;
+			state->traction = pVeh->m_fPodTraction;
+			return;
+		}
+	}
+
+	state = &cg_podTurnCache[cg_podTurnCacheHead];
+	cg_podTurnCacheHead = ( cg_podTurnCacheHead + 1 ) % CG_POD_TURN_CACHE_SIZE;
+	state->valid = qtrue;
+	state->vehicleNum = vehicleNum;
+	state->commandTime = commandTime;
+	state->turnRate = pVeh->m_fPodTurnRate;
+	state->traction = pVeh->m_fPodTraction;
+}
+
+static qboolean CG_RestorePodTurnPredictionState( int vehicleNum, int commandTime, Vehicle_t *pVeh )
+{
+	int i;
+
+	if ( !pVeh || vehicleNum <= 0 || commandTime <= 0 )
+	{
+		return qfalse;
+	}
+
+	for ( i = 0; i < CG_POD_TURN_CACHE_SIZE; i++ )
+	{
+		cgPodTurnPredictState_t *state = &cg_podTurnCache[i];
+		if ( state->valid && state->vehicleNum == vehicleNum && state->commandTime == commandTime )
+		{
+			pVeh->m_fPodTurnRate = state->turnRate;
+			pVeh->m_fPodTraction = state->traction;
+			pVeh->m_fPodTargetTurnRate = 0.0f;
+			return qtrue;
+		}
+	}
+
+	// Snapshot rewind has no hidden pod state yet. Do not carry the current rendered
+	// turn rate back into the snapshot base; that is the transition jerk we are avoiding.
+	pVeh->m_fPodTurnRate = 0.0f;
+	pVeh->m_fPodTraction = 1.0f;
+	pVeh->m_fPodTargetTurnRate = 0.0f;
+	return qfalse;
+}
 
 //is this client piloting this veh?
 static QINLINE qboolean CG_Piloting(int vehNum)
@@ -1101,6 +1191,7 @@ void CG_PredictPlayerState( void ) {
 	// other error condition
 	if ( !cg.validPPS ) {
 		cg.validPPS = qtrue;
+		CG_ClearPodTurnPredictionCache();
 		cg.predictedPlayerState = cg.snap->ps;
 		if (CG_Piloting(cg.snap->ps.m_iVehicleNum))
 		{
@@ -1258,12 +1349,19 @@ void CG_PredictPlayerState( void ) {
 
 	if (CG_Piloting(cg.predictedPlayerState.m_iVehicleNum))
 	{
+		centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+
 		cg_entities[cg.predictedPlayerState.clientNum].playerState = &cg.predictedPlayerState;
-		cg_entities[cg.predictedPlayerState.m_iVehicleNum].playerState = &cg.predictedVehicleState;
+		veh->playerState = &cg.predictedVehicleState;
 
 		//use the player command time, because we are running with the player cmds (this is even the case
 		//on the server)
 		cg.predictedVehicleState.commandTime = cg.predictedPlayerState.commandTime;
+		if ( CG_PodTurnPredictionApplies( veh ) )
+		{
+			CG_RestorePodTurnPredictionState( cg.predictedPlayerState.m_iVehicleNum,
+				cg.predictedVehicleState.commandTime, veh->m_pVehicle );
+		}
 	}
 
 	// Stop predicting once the server's authoritative knockback is in the snapshot base, otherwise
@@ -1665,6 +1763,11 @@ void CG_PredictPlayerState( void ) {
 				veh->m_pVehicle->m_iBoarding = cg.predictedVehicleState.vehBoarding;
 
 				Pmove(&cg_vehPmove);
+				if ( CG_PodTurnPredictionApplies( veh ) )
+				{
+					CG_StorePodTurnPredictionState( cg.predictedPlayerState.m_iVehicleNum,
+						cg.predictedVehicleState.commandTime, veh->m_pVehicle );
+				}
 				/*
 				if ( !cg_paused.integer )
 				{

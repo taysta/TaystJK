@@ -720,6 +720,8 @@ CG_OffsetThirdPersonView
 ===============
 */
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
+extern vmCvar_t bg_podracerPhysics;
+static float cgPodCamRoll = 0.0f;	// smoothed camera bank for pod vehicles (see below)
 static void CG_OffsetThirdPersonView( void )
 {
 	vec3_t	target, location, diff;
@@ -918,16 +920,27 @@ static void CG_OffsetThirdPersonView( void )
 	{//must be hitting something, need some value to calc angles, so use cam forward
 		VectorCopy( cam.fwd, diff );
 	}
-	/*if ( 0 && cg.predictedPlayerState.m_iVehicleNum //in a vehicle
-		&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
-	{//FIXME: this causes camera jerkiness, need to blend the roll?
-		float sav_Roll = cg.refdef.viewangles[ROLL];
-		vectoangles(diff, cg.refdef.viewangles);
-		cg.refdef.viewangles[ROLL] = sav_Roll;
-	}
-	else*/
 	{
 		vectoangles(diff, cg.refdef.viewangles);
+	}
+
+	// PODRACER: lean the camera into the turn with the pod (vectoangles above zeroed ROLL).
+	// We blend toward the vehicle's banked m_vOrientation[ROLL] rather than snapping to it -
+	// snapping is what made the original attempt (disabled above) jerky. Gated on pod physics.
+	if ( bg_podracerPhysics.integer && cg.predictedPlayerState.m_iVehicleNum )
+	{
+		centity_t *podCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
+		if ( podCent->m_pVehicle && podCent->m_pVehicle->m_pVehicleInfo
+			&& podCent->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+		{
+			float targetRoll = podCent->m_pVehicle->m_vOrientation[ROLL] * POD_CAM_BANK;
+			// frame-rate independent smoothing toward the target roll
+			float lerp = cg.frametime * 0.008f;
+			if ( lerp > 1.0f ) lerp = 1.0f;
+			if ( lerp < 0.0f ) lerp = 0.0f;
+			cgPodCamRoll += ( targetRoll - cgPodCamRoll ) * lerp;
+			cg.refdef.viewangles[ROLL] = cgPodCamRoll;
+		}
 	}
 
 	// Temp: just move the camera to the side a bit
