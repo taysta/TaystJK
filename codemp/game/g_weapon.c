@@ -5980,7 +5980,7 @@ void G_VehMuzzleFireFX( gentity_t *ent, gentity_t *broadcaster, int muzzlesFired
 
 void G_EstimateCamPos( vec3_t viewAngles, vec3_t cameraFocusLoc, float viewheight, float thirdPersonRange,
 					  float thirdPersonHorzOffset, float vertOffset, float pitchOffset,
-					  int ignoreEntNum, vec3_t camPos )
+					  int ignoreEntNum, qboolean unrestrictedPitch, vec3_t camPos )
 {
 	int			MASK_CAMERACLIP = (MASK_SOLID|CONTENTS_PLAYERCLIP);
 	float		CAMERA_SIZE = 4;
@@ -5999,7 +5999,7 @@ void G_EstimateCamPos( vec3_t viewAngles, vec3_t cameraFocusLoc, float viewheigh
 
 	VectorCopy( viewAngles, cameraFocusAngles );
 	cameraFocusAngles[PITCH] += pitchOffset;
-	if ( !bg_fighterAltControl.integer )
+	if ( bg_fighterAltControl.integer != 1 && !unrestrictedPitch )
 	{//clamp view pitch
 		cameraFocusAngles[PITCH] = AngleNormalize180( cameraFocusAngles[PITCH] );
 		if (cameraFocusAngles[PITCH] > 80.0)
@@ -6105,15 +6105,18 @@ void WP_GetVehicleCamPos( gentity_t *ent, gentity_t *pilot, vec3_t camPos )
 		}
 	}
 
+	//shrike ships loop/invert, so don't clamp the estimated cam pitch (matches BG_UnrestrainedPitchRoll)
+	qboolean unrestrictedPitch = BG_ShrikePhysics( ent->m_pVehicle );
+
 	//Control Scheme 3 Method:
 	G_EstimateCamPos( ent->client->ps.viewangles, pilot->client->ps.origin, pilot->client->ps.viewheight, thirdPersonRange,
 		thirdPersonHorzOffset, vertOffset, pitchOffset,
-		pilot->s.number, camPos );
+		pilot->s.number, unrestrictedPitch, camPos );
 	/*
 	//Control Scheme 2 Method:
 	G_EstimateCamPos( ent->m_pVehicle->m_vOrientation, ent->r.currentOrigin, pilot->client->ps.viewheight, thirdPersonRange,
 		thirdPersonHorzOffset, vertOffset, pitchOffset,
-		pilot->s.number, camPos );
+		pilot->s.number, unrestrictedPitch, camPos );
 	*/
 }
 

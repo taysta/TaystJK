@@ -1,0 +1,130 @@
+//Tribes 2 Shrike flight physics testbed on the TIE fighter model. -TaystJK
+//Spawn with: npc spawn vehicle shrike
+//The shrike* values below are ScoutFlyer-style tuning converted to JKA units.
+//Linear distances, speeds and forces are in JKA units; angular steering values
+//remain radians/rad-sec style tuning.
+shrike
+{
+name			shrike
+type			VH_FIGHTER
+numHands		2
+hideRider		1
+killRiderOnDeath 1
+lookYaw			45
+length			240
+width			320
+height			320
+g2radius		320
+centerOfGravity	"-0.222 0 0"
+
+//stock speed stats only drive fallback behavior (out-of-control, empty ship, HUD scale)
+speedMax		4000
+turboSpeed		4000
+turboDuration	2000
+turboRecharge	6000
+speedMin		0
+acceleration	25
+decelIdle		12
+accelIdle		20
+speedIdle		1200
+throttleSticks	1
+strafePerc		0.1125
+bankingSpeed	0.5
+rollLimit		45
+pitchLimit		80
+braking			30
+mouseYaw		0.003
+mousePitch		0.003
+turningSpeed	6
+turnWhenStopped	0
+traction		18
+friction		0.75
+speedDependantTurning	1
+maxSlope		0.65
+mass			500
+
+//===TRIBES 2 SHRIKE PHYSICS==============================================
+shrikePhysics				1
+shrikeMass					150		//rigid body mass
+shrikeMinDrag				30		//linear drag; with maxForwardSpeed this sets top speed
+shrikeRotationalDrag		900		//angular drag (dampens nose drift after you stop steering)
+shrikeMaxAutoSpeed			600		//autostabilizer kicks in below this speed
+shrikeAutoAngularForce		400		//auto-level torque
+shrikeAutoLinearForce		300		//auto-stop damping when hovering
+shrikeAutoInputDamping		0.95	//steering damping at low speed
+shrikeMaxSteeringAngle		5		//steering wheel bound (radians)
+shrikeHorizontalSurfaceForce 0.15	//center "wing" bite for climbing/diving/turning
+shrikeVerticalSurfaceForce	0.1		//side-slip damping (lower = MORE slide)
+shrikeManeuveringForce		120000	//WASD jet thrust
+shrikeSteeringForce			1200	//mouse steering torque
+shrikeSteeringRollForce		400		//bank-into-turn torque
+shrikeRollForce				0.1		//auto-roll righting after roll/invert
+shrikeHoverHeight			200		//ride height at rest
+shrikeMaxForwardSpeed		4000	//forward thrust cutoff
+shrikeJetForce				80000	//afterburner thrust (jump key)
+shrikeVertThrustMultiple	3.0		//afterburner multiplier when boosting straight up
+//========================================================================
+
+armor 		1000
+malfunctionArmorLevel	400
+health_front	250
+health_back		250
+health_right	500
+health_left		500
+toughness 		75.0
+model			tie_fighter
+riderAnim		BOTH_VS_IDLE
+radarIcon		"gfx/menus/radar/tieF"
+dmgIndicFrame	"gfx/menus/radar/circle_base_frame_imp"
+dmgIndicShield	"gfx/menus/radar/circle_base_shield"
+dmgIndicBackground "gfx/menus/radar/circle_base"
+icon_front		"gfx/menus/radar/TF_front"
+icon_back		"gfx/menus/radar/TF_back"
+icon_right		"gfx/menus/radar/TF_right"
+icon_left		"gfx/menus/radar/TF_left"
+crosshairShader	"gfx/menus/radar/TF_reticle"
+soundOn 		"sound/vehicles/tie/on.wav"
+soundLoop 		"sound/vehicles/tie/loop.wav"
+soundOff 		"sound/vehicles/tie/off.wav"
+soundFlyBy 		"sound/vehicles/tie/flyby.wav"
+soundFlyBy2 		"sound/vehicles/tie/flyby2.wav"
+soundHyper		"sound/vehicles/common/hyperstartimp.wav"
+soundTurbo 		"sound/vehicles/tie/flyby.wav"
+exhaustFX		"ships/tiefighter_exhaust"
+turboFX			"ships/tiefighter_exhaust_turbo"
+impactFX		"ships/scrape_sparks"
+explodeFX		"ships/TF_explosion"
+dmgFX			"ships/heavydmg"
+injureFX		"ships/lightdmg"
+noseFX		"ships/TF_nose"
+lwingFX		"ships/TF_lwing"
+rwingFX		"ships/TF_rwing"
+flammable		1
+hoverHeight		80
+hoverStrength	10
+explosionRadius 400
+explosionDamage 1000
+
+surfDestruction	1
+
+landingHeight	300
+
+weap1			imp_laser
+weap1Delay		50
+
+weap1AmmoMax	30
+weap1AmmoRechargeMS	250
+
+weapMuzzle1		imp_laser
+weapMuzzle2		imp_laser
+
+weap1Link		1
+
+cameraOverride		1
+cameraRange			500
+cameraVertOffset	20
+//safe to tune now (applied around ship axes for shrike physics); 0 matches T2's camera
+cameraPitchOffset	0
+cameraFOV			100
+cameraAlpha			0
+}

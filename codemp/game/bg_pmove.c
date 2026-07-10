@@ -4778,6 +4778,16 @@ static void PM_FlyVehicleMove( void )
 	float	zVel;
 	float	fmove = 0.0f, smove = 0.0f;
 
+	if ( pm_entSelf && pm_entSelf->m_pVehicle
+		&& BG_ShrikePhysicsActive( pm_entSelf->m_pVehicle, pm->ps, pm->cmd.serverTime )
+		&& pm->ps->gravity == 0	//piloted (BG_FighterUpdate zeroes gravity); empty ships use the stock path
+		&& !( pm->ps->hyperSpaceTime && (pm->cmd.serverTime - pm->ps->hyperSpaceTime) < HYPERSPACE_TIME ) )
+	{//Tribes 2 physics: velocity was fully simulated in FighterShrikeMoveCommands,
+	 //including gravity and drag — just collide and slide
+		PM_StepSlideMove( qfalse );
+		return;
+	}
+
 	// We don't use these here because we pre-calculate the movedir in the vehicle update anyways, and if
 	// you leave this, you get strange motion during boarding (the player can move the vehicle).
 	//fmove = pm->cmd.forwardmove;
@@ -11488,12 +11498,12 @@ static void PM_DropTimers( void ) {
 extern	vmCvar_t	bg_fighterAltControl;
 qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh )
 {
-	if ( bg_fighterAltControl.integer
-		&& ps->clientNum < MAX_CLIENTS //real client
+	if ( ps->clientNum < MAX_CLIENTS //real client
 		&& ps->m_iVehicleNum//in a vehicle
 		&& pVeh //valid vehicle data pointer
 		&& pVeh->m_pVehicleInfo//valid vehicle info
-		&& pVeh->m_pVehicleInfo->type == VH_FIGHTER )//fighter
+		&& pVeh->m_pVehicleInfo->type == VH_FIGHTER //fighter
+		&& ( bg_fighterAltControl.integer || BG_ShrikePhysics( pVeh ) ) )//shrike mode needs loops/inverted flight (via cvar or per-veh flag)
 		//FIXME: specify per vehicle instead of assuming true for all fighters
 		//FIXME: map/server setting?
 	{//can roll and pitch without limitation!
@@ -11511,6 +11521,30 @@ This can be used as another entry point when only the viewangles
 are being updated isntead of a full move
 ================
 */
+static void PM_ShrikeViewFwdToAnglesStable( const vec3_t viewFwd, const vec3_t prevAngles, vec3_t outAngles )
+{
+	float xyLen = sqrtf( viewFwd[0] * viewFwd[0] + viewFwd[1] * viewFwd[1] );
+	float pitch = -atan2f( viewFwd[2], xyLen ) * ( 180.0f / M_PI );
+	float liveYaw = atan2f( viewFwd[1], viewFwd[0] ) * ( 180.0f / M_PI );
+	float yawTrust = xyLen * 10.0f;
+
+	yawTrust *= yawTrust;
+	if ( yawTrust > 1.0f )
+	{
+		yawTrust = 1.0f;
+	}
+
+	if ( fabsf( AngleSubtract( liveYaw, prevAngles[YAW] ) ) > 90.0f )
+	{
+		pitch = AngleNormalize180( -180.0f - pitch );
+		liveYaw = AngleNormalize180( liveYaw + 180.0f );
+	}
+
+	outAngles[PITCH] = pitch;
+	outAngles[YAW] = AngleNormalize180( prevAngles[YAW] + yawTrust * AngleSubtract( liveYaw, prevAngles[YAW] ) );
+	outAngles[ROLL] = 0.0f;
+}
+
 void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 	short		temp;
 	int		i;
@@ -11521,6 +11555,79 @@ void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 
 	if ( ps->pm_type != PM_SPECTATOR && ps->stats[STAT_HEALTH] <= 0 ) {
 		return;		// no view changes at all
+	}
+
+	if ( pm_entVeh && pm_entVeh->m_pVehicle && pm_entVeh->playerState
+		&& BG_ShrikePhysics( pm_entVeh->m_pVehicle )
+		&& BG_UnrestrainedPitchRoll( ps, pm_entVeh->m_pVehicle ) )
+	{//Tribes 2 steering: the camera is bolted to the hull, so the mouse moves the
+	 //steering cursor in SHIP frame. Apply this command's pitch/yaw delta as exact
+	 //rotations around the ship's right/up axes — correct at ANY attitude, including
+	 //pointed straight up (v3-v5 rotated the component deltas by the ship's Euler
+	 //ROLL value instead, which is meaningless near vertical and scrambled the
+	 //input there) — then clamp the cursor to the on-screen steering cone.
+		float rawPitch, rawYaw, dP, dY;
+		float fx, fy, fz, sYaw, sPitch, steerLen, cp;
+		float maxDeflect = pm_entVeh->m_pVehicle->m_pVehicleInfo->shrikeMaxSteeringAngle;
+		vec3_t shipFwd, shipRight, shipUp, viewFwd, tmp, newAngles;
+
+		if ( maxDeflect > SHRIKE_STEERING_CONE )
+		{//same cone as the torque normalization; must stay on screen (see bg_vehicles.h)
+			maxDeflect = SHRIKE_STEERING_CONE;
+		}
+
+		//dP/dY reduce to this command's raw mouse movement: delta_angles are
+		//re-anchored to the stored viewangles every command, so the stored Euler
+		//representation cancels out of the subtraction
+		temp = cmd->angles[PITCH] + ps->delta_angles[PITCH];
+		rawPitch = SHORT2ANGLE( temp );
+		temp = cmd->angles[YAW] + ps->delta_angles[YAW];
+		rawYaw = SHORT2ANGLE( temp );
+		dP = AngleSubtract( rawPitch, ps->viewangles[PITCH] );
+		dY = AngleSubtract( rawYaw, ps->viewangles[YAW] );
+
+		AngleVectors( pm_entVeh->playerState->vehOrientation, shipFwd, shipRight, shipUp );
+		AngleVectors( ps->viewangles, viewFwd, NULL, NULL );
+
+		//mouse up (negative quake pitch) rotates the cursor screen-up around the
+		//ship's right axis; mouse left (positive yaw) screen-left around ship up
+		RotatePointAroundVector( tmp, shipRight, viewFwd, -dP );
+		VectorCopy( tmp, viewFwd );
+		RotatePointAroundVector( tmp, shipUp, viewFwd, dY );
+		VectorCopy( tmp, viewFwd );
+
+		//decompose against the ship and clamp into the visible steering cone
+		fy = DotProduct( viewFwd, shipFwd );
+		fx = DotProduct( viewFwd, shipRight );
+		fz = DotProduct( viewFwd, shipUp );
+		sYaw = atan2f( fx, fy );
+		sPitch = atan2f( fz, sqrtf( fx*fx + fy*fy ) );
+		steerLen = sqrtf( sYaw * sYaw + sPitch * sPitch );
+		if ( steerLen > maxDeflect && steerLen > 0.0f )
+		{//Clamp the cursor as one screen-space deflection. Clamping each axis
+		 //independently let fast diagonal pulls exceed the visible cone.
+			float s = maxDeflect / steerLen;
+			sYaw *= s;
+			sPitch *= s;
+		}
+		cp = cosf( sPitch );
+		VectorScale( shipFwd, cp * cosf( sYaw ), viewFwd );
+		VectorMA( viewFwd, cp * sinf( sYaw ), shipRight, viewFwd );
+		VectorMA( viewFwd, sinf( sPitch ), shipUp, viewFwd );
+
+		//Store the equivalent pitch/yaw branch closest to the previous command.
+		//A raw vectoangles branch flip at straight up turns the next command into
+		//a fake 180-degree yaw input before the re-anchor can cancel it.
+		PM_ShrikeViewFwdToAnglesStable( viewFwd, ps->viewangles, newAngles );
+		ps->viewangles[PITCH] = newAngles[PITCH];
+		ps->viewangles[YAW] = newAngles[YAW];
+		ps->viewangles[ROLL] = 0.0f;
+
+		//re-anchor delta_angles so the next command's mouse delta is measured from here
+		ps->delta_angles[PITCH] = ANGLE2SHORT( ps->viewangles[PITCH] ) - cmd->angles[PITCH];
+		ps->delta_angles[YAW] = ANGLE2SHORT( ps->viewangles[YAW] ) - cmd->angles[YAW];
+		ps->delta_angles[ROLL] = ANGLE2SHORT( 0 ) - cmd->angles[ROLL];
+		return;
 	}
 
 	// circularly clamp the angles with deltas
@@ -11575,6 +11682,14 @@ void PM_UpdateViewAngles( playerState_t *ps, const usercmd_t *cmd ) {
 
 			}
 			*/
+		}
+		else if ( pm_entSelf && pm_entSelf->s.NPC_class == CLASS_VEHICLE
+			&& pm_entSelf->m_pVehicle
+			&& BG_ShrikePhysics( pm_entSelf->m_pVehicle ) )
+		{//the shrike-physics fighter itself: its viewangles mirror the ship orientation,
+		 //which pitches through vertical during loops — clamping them here would freeze
+		 //the (ship-locked) camera at ±90 while the ship keeps rotating, making the
+		 //view snap 180 and controls feel inverted once over the top
 		}
 #endif // VEH_CONTROL_SCHEME_4
 		else
@@ -15429,7 +15544,11 @@ void PmoveSingle (pmove_t *pmove) {
 					PM_SetPMViewAngle(self->playerState, vRollAng, &pm->cmd);
 
 					// Setup the move direction.
-					if ( veh->m_pVehicle->m_pVehicleInfo->type == VH_FIGHTER )
+					if ( BG_ShrikePhysics( veh->m_pVehicle ) )
+					{//Tribes 2 physics doesn't use moveDir for movement: it carries
+					 //world-space angular velocity, so don't stomp it here
+					}
+					else if ( veh->m_pVehicle->m_pVehicleInfo->type == VH_FIGHTER )
 					{
 						AngleVectors( veh->m_pVehicle->m_vOrientation, veh->playerState->moveDir, NULL, NULL );
 					}

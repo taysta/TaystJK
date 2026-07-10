@@ -1235,7 +1235,6 @@ static void CG_OffsetFighterView( void )
 	centity_t *veh = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
 
 	AngleVectors( cg.refdef.viewangles, vehFwd, vehRight, vehUp );
-
 	if ( veh->m_pVehicle &&
 		veh->m_pVehicle->m_pVehicleInfo->cameraOverride )
 	{ //override the horizontal offset with what the vehicle wants it to be
@@ -1263,8 +1262,33 @@ static void CG_OffsetFighterView( void )
 	}
 
 	// Set camera viewing direction.
-	cg.refdef.viewangles[YAW] += yawOffset;
-	cg.refdef.viewangles[PITCH] += pitchOffset;
+	if ( veh->m_pVehicle && BG_ShrikePhysics( veh->m_pVehicle ) )
+	{//Tribes 2 physics: apply the offsets as rotations around the ship's local axes.
+	 //Adding to raw Euler components tilts the camera the wrong way (and pops) when
+	 //the orientation representation flips (roll ~180) as the ship loops past vertical.
+		vec3_t fwd, right, tmp;
+
+		VectorCopy( vehFwd, fwd );
+		VectorCopy( vehRight, right );
+		if ( pitchOffset )
+		{//quake pitch+ looks down; RotatePointAroundVector is right-handed (nose-up around the right axis)
+			RotatePointAroundVector( tmp, vehRight, fwd, -pitchOffset );
+			VectorCopy( tmp, fwd );
+		}
+		if ( yawOffset )
+		{
+			RotatePointAroundVector( tmp, vehUp, fwd, yawOffset );
+			VectorCopy( tmp, fwd );
+			RotatePointAroundVector( tmp, vehUp, right, yawOffset );
+			VectorCopy( tmp, right );
+		}
+		BG_ShrikeAxisToAngles( fwd, right, cg.refdef.viewangles );
+	}
+	else
+	{
+		cg.refdef.viewangles[YAW] += yawOffset;
+		cg.refdef.viewangles[PITCH] += pitchOffset;
+	}
 
 	//Now bring the cam back from that pos and angles at range
 	AngleVectors( cg.refdef.viewangles, backDir, NULL, NULL );
@@ -1770,7 +1794,18 @@ static int CG_CalcViewValues( void ) {
 		if ( cg.predictedPlayerState.m_iVehicleNum //in a vehicle
 			&& BG_UnrestrainedPitchRoll( &cg.predictedPlayerState, cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )//can roll/pitch without restriction
 		{//use the vehicle's viewangles to render view!
-			VectorCopy( cg.predictedVehicleState.viewangles, cg.refdef.viewangles );
+			if ( cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle
+				&& BG_ShrikePhysics( cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )
+			{//Tribes 2 physics: render straight from the simulated ship orientation.
+			 //The vehicle's viewangles are rebuilt from cmd.angles + delta_angles in its
+			 //own pmove, which picks up one command's worth of raw mouse delta and
+			 //jitters the ship-locked camera.
+				VectorCopy( cg.predictedVehicleState.vehOrientation, cg.refdef.viewangles );
+			}
+			else
+			{
+				VectorCopy( cg.predictedVehicleState.viewangles, cg.refdef.viewangles );
+			}
 		}
 #endif// VEH_CONTROL_SCHEME_4
 		else

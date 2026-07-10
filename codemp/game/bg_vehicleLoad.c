@@ -548,6 +548,27 @@ vehField_t vehicleFields[] =
 	{"cameraFOV", VFOFS(cameraFOV), VF_FLOAT},			//third person camera FOV, default is 80
 	{"cameraAlpha", VFOFS(cameraAlpha), VF_FLOAT},		//fade out the vehicle to this alpha (0.1-1.0f) if it's in the way of the crosshair
 	{"cameraPitchDependantVertOffset", VFOFS(cameraPitchDependantVertOffset), VF_BOOL},		//use the hacky AT-ST pitch dependant vertical offset
+
+	//Tribes 2 "Shrike" flying vehicle physics -TaystJK
+	{"shrikePhysics", VFOFS(shrikePhysics), VF_BOOL},					//use the T2 force-based flight model (VH_FIGHTER only)
+	{"shrikeMass", VFOFS(shrikeMass), VF_FLOAT},						//rigid body mass
+	{"shrikeMinDrag", VFOFS(shrikeMinDrag), VF_FLOAT},					//linear drag on velocity
+	{"shrikeRotationalDrag", VFOFS(shrikeRotationalDrag), VF_FLOAT},	//drag on angular momentum
+	{"shrikeManeuveringForce", VFOFS(shrikeManeuveringForce), VF_FLOAT},//WASD thruster force
+	{"shrikeHorizontalSurfaceForce", VFOFS(shrikeHorizontalSurfaceForce), VF_FLOAT},//damps sideways velocity
+	{"shrikeVerticalSurfaceForce", VFOFS(shrikeVerticalSurfaceForce), VF_FLOAT},	//damps velocity along ship's up axis
+	{"shrikeSteeringForce", VFOFS(shrikeSteeringForce), VF_FLOAT},		//pitch/yaw steering torque
+	{"shrikeSteeringRollForce", VFOFS(shrikeSteeringRollForce), VF_FLOAT},//bank-into-turn roll torque
+	{"shrikeRollForce", VFOFS(shrikeRollForce), VF_FLOAT},				//roll torque from lateral velocity
+	{"shrikeAutoAngularForce", VFOFS(shrikeAutoAngularForce), VF_FLOAT},//auto-level torque
+	{"shrikeAutoLinearForce", VFOFS(shrikeAutoLinearForce), VF_FLOAT},	//low-speed auto-stop damping
+	{"shrikeAutoInputDamping", VFOFS(shrikeAutoInputDamping), VF_FLOAT},//steering damping below maxAutoSpeed
+	{"shrikeMaxAutoSpeed", VFOFS(shrikeMaxAutoSpeed), VF_FLOAT},		//speed below which auto-stop fades in
+	{"shrikeJetForce", VFOFS(shrikeJetForce), VF_FLOAT},				//afterburner force
+	{"shrikeVertThrustMultiple", VFOFS(shrikeVertThrustMultiple), VF_FLOAT},//jetForce multiplier when jetting up
+	{"shrikeHoverHeight", VFOFS(shrikeHoverHeight), VF_FLOAT},			//hover ride height (JKA units)
+	{"shrikeMaxSteeringAngle", VFOFS(shrikeMaxSteeringAngle), VF_FLOAT},//max steering deflection (radians)
+	{"shrikeMaxForwardSpeed", VFOFS(shrikeMaxForwardSpeed), VF_FLOAT},	//forward thrust cutoff speed
 //===TURRETS===========================================================================
 	//Turret 1
 	{"turret1Weap", VFOFS(turret[0].iWeapon), VF_WEAPON},
@@ -762,6 +783,28 @@ void BG_VehicleClampData( vehicleInfo_t *vehicle )
 	{
 		vehicle->maxPassengers = 0;
 	}
+
+	//Tribes 2 shrike physics: backfill any unset tuning values with JKA-scaled
+	//ScoutFlyer values so the model works on stock fighters when force-enabled by
+	//cvar. -TaystJK
+	if ( vehicle->shrikeMass <= 0.0f )				vehicle->shrikeMass = 150.0f;
+	if ( vehicle->shrikeMinDrag <= 0.0f )			vehicle->shrikeMinDrag = 30.0f;
+	if ( vehicle->shrikeRotationalDrag <= 0.0f )	vehicle->shrikeRotationalDrag = 900.0f;
+	if ( vehicle->shrikeManeuveringForce <= 0.0f )	vehicle->shrikeManeuveringForce = 120000.0f;
+	if ( vehicle->shrikeHorizontalSurfaceForce <= 0.0f ) vehicle->shrikeHorizontalSurfaceForce = 0.15f;
+	if ( vehicle->shrikeVerticalSurfaceForce <= 0.0f )	vehicle->shrikeVerticalSurfaceForce = 0.1f;
+	if ( vehicle->shrikeSteeringForce <= 0.0f )		vehicle->shrikeSteeringForce = 1200.0f;
+	if ( vehicle->shrikeSteeringRollForce <= 0.0f )	vehicle->shrikeSteeringRollForce = 400.0f;
+	if ( vehicle->shrikeRollForce <= 0.0f )			vehicle->shrikeRollForce = 0.1f;
+	if ( vehicle->shrikeAutoAngularForce <= 0.0f )	vehicle->shrikeAutoAngularForce = 400.0f;
+	if ( vehicle->shrikeAutoLinearForce <= 0.0f )	vehicle->shrikeAutoLinearForce = 300.0f;
+	if ( vehicle->shrikeAutoInputDamping <= 0.0f )	vehicle->shrikeAutoInputDamping = 0.95f;
+	if ( vehicle->shrikeMaxAutoSpeed <= 0.0f )		vehicle->shrikeMaxAutoSpeed = 600.0f;
+	if ( vehicle->shrikeJetForce <= 0.0f )			vehicle->shrikeJetForce = 80000.0f;
+	if ( vehicle->shrikeVertThrustMultiple <= 0.0f )vehicle->shrikeVertThrustMultiple = 3.0f;
+	if ( vehicle->shrikeHoverHeight <= 0.0f )		vehicle->shrikeHoverHeight = 200.0f;
+	if ( vehicle->shrikeMaxSteeringAngle <= 0.0f )	vehicle->shrikeMaxSteeringAngle = 5.0f;
+	if ( vehicle->shrikeMaxForwardSpeed <= 0.0f )	vehicle->shrikeMaxForwardSpeed = 4000.0f;
 }
 
 static qboolean BG_ParseVehicleParm( vehicleInfo_t *vehicle, const char *parmName, char *pValue )

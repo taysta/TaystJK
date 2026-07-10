@@ -316,6 +316,11 @@ qboolean Board( Vehicle_t *pVeh, bgEntity_t *pEnt )
 		if ( !pVeh->m_pPilot )
 		{ //become the pilot, if there isn't one now
 			pVeh->m_pVehicleInfo->SetPilot( pVeh, (bgEntity_t *)ent );
+			if ( BG_ShrikePhysics( pVeh ) && parent->client )
+			{//moveDir carries world-space angular velocity in shrike mode: clear the
+			 //stale direction vector the stock code left in it so we don't spawn spinning
+				VectorClear( parent->client->ps.moveDir );
+			}
 		}
 		// If we're not yet full...
 		else if ( pVeh->m_iNumPassengers < pVeh->m_pVehicleInfo->maxPassengers )
@@ -1599,7 +1604,11 @@ maintainSelfDuringBoarding:
 
 
 	// Setup the move direction.
-	if ( pVeh->m_pVehicleInfo->type == VH_FIGHTER )
+	if ( BG_ShrikePhysics( pVeh ) )
+	{//Tribes 2 physics doesn't use moveDir for movement: it carries world-space
+	 //angular velocity, so don't stomp it here
+	}
+	else if ( pVeh->m_pVehicleInfo->type == VH_FIGHTER )
 	{
 		AngleVectors( pVeh->m_vOrientation, parent->client->ps.moveDir, NULL, NULL );
 	}

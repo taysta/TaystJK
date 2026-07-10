@@ -284,6 +284,28 @@ typedef struct vehicleInfo_s {
 
 	//NOTE: some info on what vehicle weapon to use?  Like ATST or TIE bomber or TIE fighter or X-Wing...?
 
+	//Tribes 2 "Shrike" flying vehicle physics (port of Torque FlyingVehicle::updateForces) -TaystJK
+	//Linear distances, speeds and forces are stored in JKA units. Angular values are radians/rad-sec terms.
+	qboolean	shrikePhysics;				//use the T2 force-based flight model instead of the normal fighter throttle model (VH_FIGHTER only)
+	float		shrikeMass;					//rigid body mass; independent of the integer impact "mass" above
+	float		shrikeMinDrag;				//linear drag on velocity (T2 VehicleData::minDrag); maxSpeed = maneuveringForce/minDrag
+	float		shrikeRotationalDrag;		//drag on angular momentum (phase 2 torque steering)
+	float		shrikeManeuveringForce;		//WASD lateral/forward thruster force
+	float		shrikeHorizontalSurfaceForce;//damps velocity along the ship's right axis (makes it carve)
+	float		shrikeVerticalSurfaceForce;	//damps velocity along the ship's up axis
+	float		shrikeSteeringForce;		//pitch/yaw torque per unit of steering deflection (phase 2)
+	float		shrikeSteeringRollForce;	//roll torque coupled to yaw steering — banks into turns (phase 2)
+	float		shrikeRollForce;			//roll torque coupled to lateral velocity (phase 2)
+	float		shrikeAutoAngularForce;		//auto-level torque (phase 2)
+	float		shrikeAutoLinearForce;		//low-speed auto-stop damping on lateral/forward velocity
+	float		shrikeAutoInputDamping;		//steering input damping below maxAutoSpeed (phase 2)
+	float		shrikeMaxAutoSpeed;			//speed below which auto-stop/auto-level fades in
+	float		shrikeJetForce;				//afterburner force (also feeds the hover ground-spring)
+	float		shrikeVertThrustMultiple;	//multiplier on jetForce when jetting straight up
+	float		shrikeHoverHeight;			//hover ride height in JKA units
+	float		shrikeMaxSteeringAngle;		//max steering deflection in radians (phase 2)
+	float		shrikeMaxForwardSpeed;		//forward thrust cuts out above this speed
+
 //===VEH_PARM_MAX========================================================================
 //*** IMPORTANT!!! *** vehFields table correponds to this structure!
 
@@ -369,6 +391,22 @@ typedef struct vehicleInfo_s {
 	qboolean (*Inhabited)( Vehicle_t *pVeh );
 } vehicleInfo_t;
 
+
+//Tribes 2 shrike physics (FighterNPC.c) -TaystJK
+//Bump the tag whenever shrike code changes: the canary prints/HUD show it, so a stale
+//game or cgame DLL is immediately visible in testing (bg code builds into BOTH).
+#define SHRIKE_BUILD_TAG "v19"
+//Max steering-cursor deflection from the nose (radians), shared by the torque
+//normalization (FighterNPC.c) and the view clamp (bg_pmove.c) so full torque is
+//reached exactly at the clamp. Must stay within the screen (FOV/2 ~ 45 deg):
+//T2's cursor is screen-space and can never leave the screen — when ours could
+//(v4 allowed 69 deg), aiming "up" wound the invisible cursor past the zenith and
+//down the back, and the ship correctly chased it by yawing around and diving,
+//which read as "it flips 180 and fights me" (see SHRIKE/test3.dm_26 analysis).
+#define SHRIKE_STEERING_CONE 0.7f
+qboolean BG_ShrikePhysics( Vehicle_t *pVeh );
+qboolean BG_ShrikePhysicsActive( Vehicle_t *pVeh, playerState_t *parentPS, int curTime );
+void BG_ShrikeAxisToAngles( const vec3_t fwd, const vec3_t right, vec3_t angles );
 
 #define	VFOFS(x) offsetof(vehicleInfo_t, x)
 

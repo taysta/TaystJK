@@ -573,15 +573,61 @@ static void CG_InterpolatePlayerState( qboolean grabAngles ) {
 	cg.predictedTimeFrac = f * (next->ps.commandTime - prev->ps.commandTime);
 }
 
+static void CG_LerpShrikeOrientation( const vec3_t from, const vec3_t to, float frac, vec3_t out )
+{
+	vec3_t fromFwd, fromRight;
+	vec3_t toFwd, toRight;
+	vec3_t fwd, right, up;
+	int i;
+
+	AngleVectors( from, fromFwd, fromRight, NULL );
+	AngleVectors( to, toFwd, toRight, NULL );
+	for ( i = 0; i < 3; i++ )
+	{
+		fwd[i] = fromFwd[i] + frac * ( toFwd[i] - fromFwd[i] );
+		right[i] = fromRight[i] + frac * ( toRight[i] - fromRight[i] );
+	}
+	if ( VectorNormalize( fwd ) <= 0.0f )
+	{
+		VectorCopy( fromFwd, fwd );
+	}
+	VectorMA( right, -DotProduct( right, fwd ), fwd, right );
+	if ( VectorNormalize( right ) <= 0.0f )
+	{
+		VectorCopy( fromRight, right );
+		VectorMA( right, -DotProduct( right, fwd ), fwd, right );
+		VectorNormalize( right );
+	}
+	CrossProduct( right, fwd, up );
+	VectorNormalize( up );
+	CrossProduct( fwd, up, right );
+	VectorNormalize( right );
+
+	out[PITCH] = LerpAngle( from[PITCH], to[PITCH], frac );
+	out[YAW] = LerpAngle( from[YAW], to[YAW], frac );
+	out[ROLL] = LerpAngle( from[ROLL], to[ROLL], frac );
+	BG_ShrikeAxisToAngles( fwd, right, out );
+	out[PITCH] = AngleNormalize180( out[PITCH] );
+	out[YAW] = AngleNormalize180( out[YAW] );
+	out[ROLL] = AngleNormalize180( out[ROLL] );
+}
+
 static void CG_InterpolateVehiclePlayerState( qboolean grabAngles ) {
 	float			f;
 	int				i;
 	playerState_t	*out;
 	snapshot_t		*prev, *next;
+	qboolean		shrikeVehicle = qfalse;
 
 	out = &cg.predictedVehicleState;
 	prev = cg.snap;
 	next = cg.nextSnap;
+	if ( cg.predictedPlayerState.m_iVehicleNum
+		&& cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle
+		&& BG_ShrikePhysics( cg_entities[cg.predictedPlayerState.m_iVehicleNum].m_pVehicle ) )
+	{
+		shrikeVehicle = qtrue;
+	}
 
 	*out = cg.snap->vps;
 
@@ -619,8 +665,16 @@ static void CG_InterpolateVehiclePlayerState( qboolean grabAngles ) {
 			out->viewangles[i] = LerpAngle(
 				prev->vps.viewangles[i], next->vps.viewangles[i], f );
 		}
+		out->vehOrientation[i] = LerpAngle(
+			prev->vps.vehOrientation[i], next->vps.vehOrientation[i], f );
 		out->velocity[i] = prev->vps.velocity[i] +
 			f * (next->vps.velocity[i] - prev->vps.velocity[i] );
+	}
+
+	if ( shrikeVehicle )
+	{
+		CG_LerpShrikeOrientation( prev->vps.vehOrientation, next->vps.vehOrientation, f, out->vehOrientation );
+		VectorCopy( out->vehOrientation, out->viewangles );
 	}
 
 }
