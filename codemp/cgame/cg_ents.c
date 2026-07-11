@@ -287,6 +287,86 @@ void CG_S_UpdateLoopingSounds(int entityNum)
 
 /*
 ==================
+CG_PodEngineLoopVelocity
+
+Sweep the ridden pod's engine-loop pitch with speed by exploiting the doppler
+path in the engine's S_AddLoopingSound:
+
+    dopplerScale = DistSq(listener, origin+velocity) / (DistSq(listener, origin) * 100)
+
+and dopplerScale is the mixer's sample-cursor step, i.e. a pitch multiplier.
+The velocity passed for a looping sound is used for nothing else by the
+software mixer, so a fake velocity that places origin+velocity at
+10*sqrt(pitch) times the listener distance plays the loop resampled at that
+pitch. Solved for velocity: v = dir_away * (10*sqrt(pitch) - 1) * dist.
+
+Degrades safely everywhere: engines without the doppler block (2003 jamp)
+ignore loop velocity entirely, s_doppler 0 disables it, and dopplerScale <= 1
+turns doppler off - which also means only pitch UP works, so the loop WAV
+must be authored at idle pitch (the varipitch layer is).
+
+The engine evaluates the formula against the listener origin from the LAST
+S_Respatialize call (this frame's respatialize runs after the entity loop
+sounds are added), so the math uses the cached value from cg_view.c rather
+than the current vieworg.
+==================
+*/
+static vec3_t cg_podPitchListener = { 0.0f, 0.0f, 0.0f };
+
+void CG_PodPitchListenerUpdate( const vec3_t vieworg )
+{
+	VectorCopy( vieworg, cg_podPitchListener );
+}
+
+static void CG_PodEngineLoopVelocity( centity_t *cent, vec3_t velOut )
+{
+	Vehicle_t	*pVeh;
+	playerState_t *vps;
+	float		maxPitch, pitch, ratio, topSpeed, dist;
+	vec3_t		dir;
+
+	VectorClear( velOut );
+
+	maxPitch = cg_podEnginePitch.value;
+	if ( maxPitch <= 1.0f )
+		return;
+	if ( maxPitch > 5.0f )
+		maxPitch = 5.0f;	// engine clamps dopplerScale at MAX_DOPPLER_SCALE (5) anyway
+
+	if ( !cg.predictedPlayerState.m_iVehicleNum ||
+		cent->currentState.number != cg.predictedPlayerState.m_iVehicleNum )
+		return;
+
+	pVeh = cent->m_pVehicle;
+	if ( !pVeh || !pVeh->m_pVehicleInfo || !BG_PodRacerPhysics( pVeh ) )
+		return;
+
+	vps = &cg.predictedVehicleState;
+	topSpeed = pVeh->m_pVehicleInfo->speedMax * POD_MAP_SCALE;	// same top the audio bands use
+	if ( topSpeed < 1.0f )
+		return;
+
+	ratio = fabs( vps->speed ) / topSpeed;
+	if ( ratio > 1.25f )
+		ratio = 1.25f;	// boost can push well past speedMax; keep the scream bounded
+
+	pitch = 1.0f + (maxPitch - 1.0f) * ratio;
+	if ( pitch <= 1.01f )
+		return;	// dopplerScale <= 1 disables doppler; skip the math near idle
+
+	VectorSubtract( cent->lerpOrigin, cg_podPitchListener, dir );
+	dist = VectorNormalize( dir );
+	if ( dist < 1.0f )
+	{	// listener effectively at the pod origin; push the phantom point straight up
+		VectorSet( dir, 0.0f, 0.0f, 1.0f );
+		dist = 1.0f;
+	}
+
+	VectorScale( dir, (10.0f * sqrtf( pitch ) - 1.0f) * dist, velOut );
+}
+
+/*
+==================
 CG_EntityEffects
 
 Add continuous entity effects, like local entity emission and lighting
@@ -339,7 +419,10 @@ static void CG_EntityEffects( centity_t *cent ) {
 					realSoundIndex );
 			}
 			else if (cent->currentState.eType != ET_SPEAKER) {
-				trap->S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, realSoundIndex );
+				vec3_t loopVelocity;
+
+				CG_PodEngineLoopVelocity( cent, loopVelocity );	// stays zero unless this is the ridden pod's engine loop
+				trap->S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, loopVelocity, realSoundIndex );
 			} else {
 				trap->S_AddLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, realSoundIndex );
 			//	trap->S_AddRealLoopingSound( cent->currentState.number, cent->lerpOrigin, vec3_origin, realSoundIndex );
