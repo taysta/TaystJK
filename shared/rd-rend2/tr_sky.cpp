@@ -441,7 +441,7 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	Allocator& frameAllocator = *backEndData->perFrameMemory;
 
 	shaderProgram_t *sp = &tr.lightallShader[0];
-	float colorScale = backEnd.refdef.colorScale;
+	float colorScale = backEnd.refdef.colorScale * tr.identityLight;
 	uniformDataWriter.Start(sp);
 	uniformDataWriter.SetUniformVec4(
 		UNIFORM_BASECOLOR, colorScale, colorScale, colorScale, 1.0f);

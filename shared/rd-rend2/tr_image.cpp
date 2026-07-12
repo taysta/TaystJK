@@ -3706,7 +3706,7 @@ void R_SetColorMappings( void ) {
 		} else {
 			inf = 255 * pow ( i/255.0f, 1.0f / g ) + 0.5f;
 		}
-		inf <<= tr.overbrightBits;
+		// inf <<= tr.overbrightBits;
 		if (inf < 0) {
 			inf = 0;
 		}
