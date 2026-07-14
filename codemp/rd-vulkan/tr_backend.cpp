@@ -203,7 +203,7 @@ RB_RenderDrawSurfList
 */
 void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	shader_t		*shader, *oldShader;
-	int				i, fogNum, oldFogNum, entityNum, oldEntityNum, dlighted, oldDlighted;
+	int				i, fogNum, oldFogNum, entityNum, oldEntityNum, dlighted, oldDlighted, reType, oldReType;
 	Vk_Depth_Range	depthRange;
 	drawSurf_t		*drawSurf;
 	unsigned int	oldSort;
@@ -230,6 +230,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 	depthRange				= DEPTH_RANGE_NORMAL;
 	oldFogNum				= -1;
 	oldDlighted				= qfalse;
+	oldReType				= -1;
 	qboolean				push_constant;
 #ifdef USE_VANILLA_SHADOWFINISH
 	didShadowPass			= qfalse;
@@ -285,9 +286,11 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 
 		push_constant = qfalse;
 
+		reType = (entityNum == REFENTITYNUM_WORLD) ? -1 : backEnd.refdef.entities[entityNum].e.reType;
+
 		//if (((oldSort ^ drawSurf->sort) & ~QSORT_REFENTITYNUM_MASK) || !shader->entityMergable) {
 		if ( shader != oldShader || fogNum != oldFogNum || dlighted != oldDlighted
-			|| ( entityNum != oldEntityNum && !shader->entityMergable ) )
+			|| ( entityNum != oldEntityNum && ( !tess.entityMergable || reType != oldReType ) ) )
 		{
 			//if (oldShader != NULL) {
 				RB_EndSurface();
@@ -313,6 +316,7 @@ void RB_RenderDrawSurfList( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 			oldShader = shader;
 			oldFogNum = fogNum;
 			oldDlighted = dlighted;
+			oldReType = reType;
 
 			push_constant = qtrue;
 		}
@@ -473,7 +477,7 @@ static void RB_RenderLitSurfList( dlight_t *dl ) {
 		// change the tess parameters if needed
 		// a "entityMergable" shader is a shader that can have surfaces from seperate
 		// entities merged into a single batch, like smoke and blood puff sprites
-		if (((oldSort ^ litSurf->sort) & ~QSORT_REFENTITYNUM_MASK) || !shader->entityMergable) {
+		if (((oldSort ^ litSurf->sort) & ~QSORT_REFENTITYNUM_MASK) || !tess.entityMergable) {
 			if (oldShader != NULL) {
 				RB_EndSurface();
 			}
