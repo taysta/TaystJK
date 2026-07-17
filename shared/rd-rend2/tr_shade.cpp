@@ -1867,6 +1867,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 			samplerBindingsWriter.AddStaticImage(srcFbo->colorImage[0], TB_COLORMAP);
 			samplerBindingsWriter.AddStaticImage(tr.renderDepthImage, TB_SHADOWMAP);
 			qboolean autoExposure = (qboolean)(r_autoExposure->integer || r_forceAutoExposure->integer);
+			uniformDataWriter.SetUniformFloat(UNIFORM_CHROMATICABERRATIONDELTA, r_refractionChromaticAberration->value);
 
 			if (autoExposure)
 				samplerBindingsWriter.AddStaticImage(tr.calcLevelsImage, TB_LEVELSMAP);

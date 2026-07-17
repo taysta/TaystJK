@@ -99,6 +99,7 @@ static uniformInfo_t uniformsInfo[] =
 	{ "u_Color",     GLSL_VEC4, 1 },
 	{ "u_BaseColor", GLSL_VEC4, 1 },
 	{ "u_VertColor", GLSL_VEC4, 1 },
+	{ "u_chromaticAberrationDelta", GLSL_FLOAT, 1 },
 
 	{ "u_DlightInfo",     GLSL_VEC4, 1 },
 	{ "u_LightForward",   GLSL_VEC3, 1 },

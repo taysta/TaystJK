@@ -173,6 +173,7 @@ cvar_t  *r_shadowCascadeZNear;
 cvar_t  *r_shadowCascadeZFar;
 cvar_t  *r_shadowCascadeZBias;
 cvar_t	*r_ignoreDstAlpha;
+cvar_t	*r_refractionChromaticAberration;
 
 cvar_t	*r_smartpicmip;
 cvar_t	*r_ignoreGLErrors;
@@ -1592,6 +1593,8 @@ void R_Register( void )
 	r_shadowCascadeZFar = ri.Cvar_Get( "r_shadowCascadeZFar", "3072", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_shadowCascadeZBias = ri.Cvar_Get( "r_shadowCascadeZBias", "-320", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_ignoreDstAlpha = ri.Cvar_Get( "r_ignoreDstAlpha", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
+	r_refractionChromaticAberration = ri.Cvar_Get( "r_refractionChromaticAberration", "0.05", CVAR_ARCHIVE, "" );
+	ri.Cvar_CheckRange(r_refractionChromaticAberration, 0.f, 0.3f, qfalse);
 
 	//
 	// temporary latched variables that can only change over a restart
