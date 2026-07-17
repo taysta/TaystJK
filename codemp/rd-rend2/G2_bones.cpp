@@ -59,11 +59,11 @@ int G2_Add_Bone (const model_t *mod, boneInfo_v &blist, const char *boneName)
 	int x;
 	mdxaSkel_t			*skel;
 	mdxaSkelOffsets_t	*offsets;
-	boneInfo_t			tempBone;
+	boneInfo_t			tempBone = {};
 	mdxaHeader_t *mdxa = mod->data.gla;
 
 	//rww - RAGDOLL_BEGIN
-	memset(&tempBone, 0, sizeof(tempBone));
+	//memset(&tempBone, 0, sizeof(tempBone));
 	//rww - RAGDOLL_END
 
    	offsets = (mdxaSkelOffsets_t *)((byte *)mdxa + sizeof(mdxaHeader_t));
@@ -961,8 +961,8 @@ qboolean G2_Pause_Bone_Anim(CGhoul2Info *ghlInfo, boneInfo_v &blist, const char 
 		// are we pausing or un pausing?
 		if (blist[index].pauseTime)
 		{
-			int		startFrame, endFrame, flags;
-			float	currentFrame, animSpeed;
+			int		startFrame = 0, endFrame = 0, flags = 0;
+			float	currentFrame = 0.f, animSpeed = 0.f;
 
 			// figure out what frame we are on now
 			G2_Get_Bone_Anim(ghlInfo, blist, boneName, blist[index].pauseTime, &currentFrame, &startFrame, &endFrame, &flags, &animSpeed, NULL, 0);

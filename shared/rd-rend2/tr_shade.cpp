@@ -51,7 +51,7 @@ void R_DrawElementsVBO( int numIndexes, glIndex_t firstIndex, glIndex_t minIndex
 	GL_DrawIndexed(GL_TRIANGLES, numIndexes, GL_INDEX_TYPE, offset, 1, 0);
 }
 
-/*
+#if 0
 static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDrawMinIndex, glIndex_t *multiDrawMaxIndex,
 	GLsizei *multiDrawNumIndexes, glIndex_t **multiDrawFirstIndex)
 {
@@ -60,8 +60,8 @@ static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDra
 			multiDrawNumIndexes,
 			multiDrawFirstIndex,
 			multiDrawPrimitives);
-} */
-
+}
+#endif
 
 /*
 =============================================================
@@ -832,17 +832,16 @@ static UniformBlockBinding GetEntityBlockUniformBinding(
 		binding.ubo = currentFrameUbo;
 		if (!refEntity || refEntity == &tr.worldEntity)
 		{
-			binding.offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			long offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			binding.offset = offset == -1 ? 0 : offset;
 		}
 		else
 		{
 			const int refEntityNum = refEntity - backEnd.refdef.entities;
-			binding.offset = tr.entityUboOffsets[refEntityNum];
+			long offset = tr.entityUboOffsets[refEntityNum];
+			binding.offset = offset == -1 ? 0 : offset;
 		}
 	}
-
-	if (binding.offset == -1)
-		binding.offset = 0;
 
 	return binding;
 }
@@ -871,17 +870,16 @@ static UniformBlockBinding GetPreviousEntityBlockUniformBinding(
 		if (!refEntity || refEntity == &tr.worldEntity)
 		{
 			binding.ubo = backEndData->currentFrame->ubo[currentFrameScene];
-			binding.offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			long offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			binding.offset = offset == -1 ? 0 :offset;
 		}
 		else
 		{
 			const int refEntityNum = refEntity - backEnd.refdef.entities;
-			binding.offset = tr.previousEntityUboOffsets[refEntityNum];
+			long offset = tr.previousEntityUboOffsets[refEntityNum];
+			binding.offset = offset == -1 ? 0 :offset;
 		}
 	}
-
-	if (binding.offset == -1)
-		binding.offset = 0;
 
 	return binding;
 }
@@ -897,9 +895,6 @@ static UniformBlockBinding GetBonesBlockUniformBinding()
 	if (glState.skeletalAnimation)
 		binding.offset = tr.animationBoneUboOffset;
 	else
-		binding.offset = 0;
-
-	if (binding.offset == -1)
 		binding.offset = 0;
 
 	return binding;
@@ -918,17 +913,14 @@ static UniformBlockBinding GetPreviousBonesBlockUniformBinding()
 	else
 		binding.offset = 0;
 
-	if (binding.offset == -1)
-		binding.offset = 0;
-
 	return binding;
 }
 
 static UniformBlockBinding GetShaderInstanceBlockUniformBinding(
 	const trRefEntity_t *refEntity, const shader_t *shader)
 {
-	const byte currentFrameScene = backEndData->currentFrame->currentScene;
-	const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
+	//const byte currentFrameScene = backEndData->currentFrame->currentScene;
+	//const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 	UniformBlockBinding binding = {};
 	binding.ubo = tr.shaderInstanceUbo;
 	binding.block = UNIFORM_BLOCK_SHADER_INSTANCE;
@@ -1721,12 +1713,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 			}
 		}
 
-		//float volumetricBaseValue = -1.0f;
-		if ( backEnd.currentEntity->e.renderfx & RF_VOLUMETRIC )
-		{
-			//volumetricBaseValue = backEnd.currentEntity->e.shaderRGBA[0] / 255.0f;
-		}
-		else
+		if ( !(backEnd.currentEntity->e.renderfx & RF_VOLUMETRIC) )
 		{
 			vec4_t baseColor;
 			vec4_t vertColor;

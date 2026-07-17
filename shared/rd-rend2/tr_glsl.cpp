@@ -620,7 +620,7 @@ static void GLSL_BindShaderInterface( shaderProgram_t *program )
 		}
 	}
 
-	for ( int outputIndex = 0; outputIndex < ARRAY_LEN(shaderOutputNames); ++outputIndex )
+	for ( size_t outputIndex = 0; outputIndex < ARRAY_LEN(shaderOutputNames); ++outputIndex )
 	{
 		qglBindFragDataLocation(program->program, outputIndex, shaderOutputNames[outputIndex]);
 	}
@@ -831,7 +831,7 @@ static bool GLSL_LoadGPUShader(
 	const GPUProgramDesc& programDesc)
 {
 	builder.Start(name, attribs, xfbVariables);
-	for ( int i = 0; i < programDesc.numShaders; ++i )
+	for ( size_t i = 0; i < programDesc.numShaders; ++i )
 	{
 		const GPUShaderDesc& shaderDesc = programDesc.shaders[i];
 		if ( !builder.AddShader(shaderDesc, extra) )

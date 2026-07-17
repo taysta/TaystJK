@@ -342,6 +342,7 @@ void DeformText( const char *text ) {
 	}
 }
 
+#if 0
 /*
 ==================
 GlobalVectorToLocal
@@ -352,6 +353,7 @@ static void GlobalVectorToLocal( const vec3_t in, vec3_t out ) {
 	out[1] = DotProduct( in, backEnd.ori.axis[1] );
 	out[2] = DotProduct( in, backEnd.ori.axis[2] );
 }
+#endif
 
 /*
 =====================
@@ -518,8 +520,8 @@ static void Autosprite2Deform( void ) {
 			// we need to see which direction this edge
 			// is used to determine direction of projection
 			for ( k = 0 ; k < 5 ; k++ ) {
-				if ( tess.indexes[ indexes + k ] == i + edgeVerts[nums[j]][0]
-					&& tess.indexes[ indexes + k + 1 ] == i + edgeVerts[nums[j]][1] ) {
+				if ( tess.indexes[ indexes + k ] == (unsigned)(i + edgeVerts[nums[j]][0])
+					&& tess.indexes[ indexes + k + 1 ] == (unsigned)(i + edgeVerts[nums[j]][1]) ) {
 					break;
 				}
 			}
@@ -557,6 +559,7 @@ void RB_DeformTessGeometry( void ) {
 
 		switch ( ds->deformation ) {
         case DEFORM_NONE:
+		case DEFORM_DISINTEGRATION:
             break;
 		case DEFORM_NORMALS:
 			RB_CalcDeformNormals( ds );
@@ -565,6 +568,7 @@ void RB_DeformTessGeometry( void ) {
 			RB_CalcDeformVertexes( ds );
 			break;
 		case DEFORM_BULGE:
+		case DEFORM_BULGE_UNIFORM:
 			RB_CalcBulgeVertexes( ds );
 			break;
 		case DEFORM_MOVE:

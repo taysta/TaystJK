@@ -402,7 +402,7 @@ void GL_VertexAttribPointers(
 	assert(attributes != nullptr || numAttributes == 0);
 
 	uint32_t newAttribs = 0;
-	for ( int i = 0; i < numAttributes; i++ )
+	for ( size_t i = 0; i < numAttributes; i++ )
 	{
 		vertexAttribute_t& attrib = attributes[i];
 		vertexAttribute_t& currentAttrib = glState.currentVaoAttribs[attrib.index];

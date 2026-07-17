@@ -473,7 +473,7 @@ void FBO_Init(void)
 
 	// glow buffers
 	{
-		for ( int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++ )
+		for ( size_t i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++ )
 		{
 			tr.glowFboScaled[i] = FBO_Create(
 				va("_glowScaled%d", i), tr.glowImageScaled[i]->width,

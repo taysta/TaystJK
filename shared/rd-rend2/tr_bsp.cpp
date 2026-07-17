@@ -185,14 +185,13 @@ R_LoadLightmaps
 #define	DEFAULT_LIGHTMAP_SIZE	128
 #define MAX_LIGHTMAP_PAGES 2
 static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
-	byte		*buf, *buf_p;
+	byte		*buf = NULL, *buf_p = NULL;
 	dsurface_t  *surf;
 	int			len;
 	byte		*image;
 	int			imageSize;
 	int			i, j, numLightmaps = 0, textureInternalFormat = 0;
 	float maxIntensity = 0;
-	//double sumIntensity = 0;
 	int numColorComponents = 3;
 
 	bool hdr_capable = glRefConfig.floatLightmap && r_hdr->integer;
@@ -205,7 +204,7 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 	// test for external lightmaps
 	if (!len) {
 		for (i = 0, surf = (dsurface_t *)(fileBase + surfs->fileofs);
-			i < surfs->filelen / sizeof(dsurface_t);
+			(unsigned)i < surfs->filelen / sizeof(dsurface_t);
 			i++, surf++) {
 			for (int j = 0; j < MAXLIGHTMAPS; j++)
 			{
@@ -254,7 +253,7 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 		tr.worldInternalDeluxeMapping = qtrue;
 		// Check that none of the deluxe maps are referenced by any of the map surfaces.
 		for (i = 0, surf = (dsurface_t *)(fileBase + surfs->fileofs);
-			tr.worldDeluxeMapping && i < surfs->filelen / sizeof(dsurface_t);
+			tr.worldDeluxeMapping && (unsigned)i < surfs->filelen / sizeof(dsurface_t);
 			i++, surf++) {
 			for (int j = 0; j < MAXLIGHTMAPS; j++)
 			{
@@ -498,8 +497,6 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 							image[j * 4 + 1] = out[1] * 255;
 							image[j * 4 + 2] = out[2] * 255;
 							image[j * 4 + 3] = 255;
-
-							//sumIntensity += intensity;
 						}
 						else
 						{
@@ -950,7 +947,7 @@ static void ParseFace( const world_t *worldData, dsurface_t *ds, drawVert_t *ver
 		{
 			tri[j] = LittleLong(indexes[i + j]);
 
-			if(tri[j] >= numVerts)
+			if(tri[j] >= (unsigned)numVerts)
 			{
 				ri.Error(ERR_DROP, "Bad index in face surface");
 			}
@@ -1229,7 +1226,7 @@ static void ParseTriSurf( const world_t *worldData, dsurface_t *ds, drawVert_t *
 		{
 			tri[j] = LittleLong(indexes[i + j]);
 
-			if(tri[j] >= numVerts)
+			if(tri[j] >= (unsigned)numVerts)
 			{
 				ri.Error(ERR_DROP, "Bad index in face surface");
 			}
@@ -2050,7 +2047,7 @@ static void R_CreateWorldVBOs( world_t *worldData )
 	int             numIndexes;
 	glIndex_t      *indexes;
 
-    int             numSortedSurfaces; //, numSurfaces;
+    int             numSortedSurfaces;
 	msurface_t   *surface, **firstSurf, **lastSurf, **currSurf;
 	msurface_t  **surfacesSorted;
 
@@ -2161,14 +2158,12 @@ static void R_CreateWorldVBOs( world_t *worldData )
 		// count verts/indexes/surfaces
 		numVerts = 0;
 		numIndexes = 0;
-		//numSurfaces = 0;
 		for (currSurf = firstSurf; currSurf < lastSurf; currSurf++)
 		{
 			srfBspSurface_t *bspSurf = (srfBspSurface_t *) (*currSurf)->data;
 
 			numVerts += bspSurf->numVerts;
 			numIndexes += bspSurf->numIndexes;
-			//numSurfaces++;
 		}
 
 		ri.Printf(PRINT_ALL, "...calculating world VBO %d ( %i verts %i tris )\n", k, numVerts, numIndexes / 3);
@@ -2337,7 +2332,7 @@ static	void R_LoadSurfaces( world_t *worldData, lump_t *surfs, lump_t *verts, lu
 		if (hdrVertColors)
 		{
 			//ri.Printf(PRINT_ALL, "Found!\n");
-			if (size != sizeof(float) * 3 * verts->filelen / sizeof(*dv))
+			if ((unsigned)size != sizeof(float) * 3 * verts->filelen / sizeof(*dv))
 				ri.Error(ERR_DROP, "Bad size for %s (%i, expected %i)!", filename, size, (int)((sizeof(float)) * 3 * verts->filelen / sizeof(*dv)));
 		}
 	}
@@ -2350,9 +2345,9 @@ static	void R_LoadSurfaces( world_t *worldData, lump_t *surfs, lump_t *verts, lu
 
 	if (tangentSpace)
 	{
-		assert(size == (verts->filelen / sizeof(*dv)) * sizeof(float) * 4);
+		assert((size_t)size == (verts->filelen / sizeof(*dv)) * sizeof(float) * 4);
 
-		if (size != sizeof(tangentSpace[0]) * verts->filelen / sizeof(*dv))
+		if ((unsigned)size != sizeof(tangentSpace[0]) * verts->filelen / sizeof(*dv))
 			ri.Error(ERR_DROP, "Bad size for %s (%i, expected %i)!", filename, size, (int)(sizeof(float) * 4 * verts->filelen / sizeof(*dv)));
 	}
 
@@ -2744,14 +2739,14 @@ static	void R_LoadFogs( world_t *worldData, lump_t *l, lump_t *brushesLump, lump
 		}
 		else
 		{
-			if ( (unsigned)out->originalBrushNumber >= brushesCount ) {
+			if ( (unsigned)out->originalBrushNumber >= (unsigned)brushesCount ) {
 				ri.Error( ERR_DROP, "fog brushNumber out of range" );
 			}
 			brush = brushes + out->originalBrushNumber;
 
 			firstSide = LittleLong( brush->firstSide );
 
-				if ( (unsigned)firstSide > sidesCount - 6 ) {
+				if ( (unsigned)firstSide > (unsigned)sidesCount - 6 ) {
 				ri.Error( ERR_DROP, "fog brush sideNumber out of range" );
 			}
 
@@ -2874,7 +2869,7 @@ void R_LoadLightGrid( world_t *worldData, lump_t *l ) {
 
 		if (hdrLightGrid)
 		{
-			if (size != sizeof(float) * 6 * worldData->lightGridBounds[0] * worldData->lightGridBounds[1] * worldData->lightGridBounds[2])
+			if ((unsigned)size != sizeof(float) * 6 * worldData->lightGridBounds[0] * worldData->lightGridBounds[1] * worldData->lightGridBounds[2])
 			{
 				ri.Error(ERR_DROP, "Bad size for %s (%i, expected %i)!", filename, size, (int)(sizeof(float)) * 6 * worldData->lightGridBounds[0] * worldData->lightGridBounds[1] * worldData->lightGridBounds[2]);
 			}
@@ -4218,8 +4213,8 @@ static void R_BuildLightGridTexture(world_t *world)
 	// For volumetric fog, we don't need directionality, so just merge ambient and direct contributions
 	// I tried using the directionality with phase function and it looked bad. Created like visable noodles in the air.
 	// Potentiall add the seperated 3d images for other things, but currently there's no need.
-	byte *lightBase;
-	uint16_t *lightHDRBase;
+	byte *lightBase = NULL;
+	uint16_t *lightHDRBase = NULL;
 	if (world->hdrLightGrid)
 	{
 		lightHDRBase = (uint16_t *)Z_Malloc(world->numGridArrayElements * sizeof(uint16_t) * 4, TAG_TEMP_WORKSPACE, qtrue);
@@ -4231,8 +4226,8 @@ static void R_BuildLightGridTexture(world_t *world)
 
 	if (world->lightGridData)
 	{
-		uint16_t *lightHDR;
-		byte *light;
+		uint16_t *lightHDR = NULL;
+		byte *light = NULL;
 		if (world->hdrLightGrid)
 		{
 			lightHDR = lightHDRBase;
@@ -4368,7 +4363,7 @@ world_t *R_LoadBSP(const char *name, int *bspIndex)
 	}
 
 	// swap all the lumps
-	for (int i = 0; i < sizeof(dheader_t) / 4; ++i)
+	for (unsigned i = 0; i < sizeof(dheader_t) / 4; ++i)
 	{
 		((int *)header)[i] = LittleLong ( ((int *)header)[i]);
 	}

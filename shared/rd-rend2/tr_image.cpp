@@ -3498,7 +3498,7 @@ void R_CreateBuiltinImages( void ) {
 
 	int glowImageWidth = width;
 	int glowImageHeight = height;
-	for (int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++)
+	for (size_t i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++)
 	{
 		tr.glowImageScaled[i] = R_CreateImage(
 			va("*glowScaled%d", i), NULL, glowImageWidth, glowImageHeight,

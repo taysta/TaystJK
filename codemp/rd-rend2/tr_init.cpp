@@ -490,7 +490,7 @@ static const char *GetGLExtensionsString()
 	}
 
 	*p = '\0';
-	assert((p - extensionString) == extensionStringLen);
+	assert((size_t)(p - extensionString) == extensionStringLen);
 
 	return extensionString;
 }

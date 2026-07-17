@@ -32,7 +32,7 @@ static float identityMatrix[12] = {
 	0, 0, 1, 0
 };
 
-static qboolean IQM_CheckRange( iqmHeader_t *header, int offset,
+static qboolean IQM_CheckRange( iqmHeader_t *header, uint32_t offset,
 				int count,int size ) {
 	// return true if the range specified by offset, count and size
 	// doesn't fit into the file
@@ -133,7 +133,7 @@ R_LoadIQM
 Load an IQM model and compute the joint matrices for every frame.
 =================
 */
-qboolean R_LoadIQM( model_t *mod, void *buffer, int filesize, const char *mod_name ) {
+qboolean R_LoadIQM( model_t *mod, void *buffer, size_t filesize, const char *mod_name ) {
 	iqmHeader_t		*header;
 	iqmVertexArray_t	*vertexarray;
 	iqmTriangle_t		*triangle;
@@ -143,7 +143,7 @@ qboolean R_LoadIQM( model_t *mod, void *buffer, int filesize, const char *mod_na
 	iqmBounds_t		*bounds;
 	unsigned short		*framedata;
 	char			*str;
-	int			i, j;
+	uint32_t		i, j;
 	float			jointInvMats[IQM_MAX_JOINTS * 12];
 	float			*mat, *matInv;
 	size_t			size, joint_names;
@@ -216,8 +216,8 @@ qboolean R_LoadIQM( model_t *mod, void *buffer, int filesize, const char *mod_na
 	}
 	vertexarray = (iqmVertexArray_t *)((byte *)header + header->ofs_vertexarrays);
 	for( i = 0; i < header->num_vertexarrays; i++, vertexarray++ ) {
-		int	n, *intPtr;
-
+		int	*intPtr;
+		uint32_t n;
 		if( vertexarray->size <= 0 || vertexarray->size > 4 ) {
 			return qfalse;
 		}
@@ -394,7 +394,7 @@ qboolean R_LoadIQM( model_t *mod, void *buffer, int filesize, const char *mod_na
 
 			if( joint->parent < -1 ||
 				joint->parent >= (int)header->num_joints ||
-				joint->name >= (int)header->num_text ) {
+				joint->name >= header->num_text ) {
 				return qfalse;
 			}
 			joint_names += strlen( (char *)header + header->ofs_text +
@@ -635,7 +635,7 @@ qboolean R_LoadIQM( model_t *mod, void *buffer, int filesize, const char *mod_na
 	// copy vertexarrays and indexes
 	vertexarray = (iqmVertexArray_t *)((byte *)header + header->ofs_vertexarrays);
 	for( i = 0; i < header->num_vertexarrays; i++, vertexarray++ ) {
-		int	n;
+		uint32_t	n;
 
 		// total number of values
 		n = header->num_vertexes * vertexarray->size;

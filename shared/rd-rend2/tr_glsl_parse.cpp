@@ -151,7 +151,7 @@ GPUProgramDesc ParseProgramSource( Allocator& allocator, const char *text )
 	theProgram.shaders = ojkAllocArray<GPUShaderDesc>(allocator, theProgram.numShaders);
 
 	int shaderIndex = 0;
-	for ( int shaderType = 0;
+	for ( size_t shaderType = 0;
 			shaderType < theProgram.numShaders;
 			++shaderType )
 	{

@@ -23,13 +23,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "tr_local.h"
+#define STBI_ONLY_HDR
 
-static void* R_LocalMalloc(size_t size)
-{
-	return Hunk_AllocateTempMemory(size);
-}
-
-/*
+#ifndef STBI_ONLY_HDR
 static void* R_LocalReallocSized(void *ptr, size_t old_size, size_t new_size)
 {
 	void *mem = Hunk_AllocateTempMemory(new_size);
@@ -39,7 +35,16 @@ static void* R_LocalReallocSized(void *ptr, size_t old_size, size_t new_size)
 		Hunk_FreeTempMemory(ptr);
 	}
 	return mem;
-}*/
+}
+#define STBI_REALLOC_SIZED R_LocalReallocSized
+#else
+#define STBI_REALLOC_SIZED "Not used with HDR only loading"
+#endif
+
+static void* R_LocalMalloc(size_t size)
+{
+	return Hunk_AllocateTempMemory(size);
+}
 
 static void R_LocalFree(void *ptr)
 {
@@ -48,13 +53,11 @@ static void R_LocalFree(void *ptr)
 }
 
 #define STBI_MALLOC R_LocalMalloc
-#define STBI_REALLOC_SIZED R_LocalReallocSized
 #define STBI_FREE R_LocalFree
 
 #define STB_IMAGE_IMPLEMENTATION
-
 #define STBI_TEMP_ON_STACK
-#define STBI_ONLY_HDR
+
 #include <stb_image.h>
 
 #define IMG_BYTE 0

@@ -75,7 +75,7 @@ namespace
 	{
 		std::vector<rainVertex_t> rainVertices(maxParticleCount * CHUNK_COUNT);
 
-		for ( int i = 0; i < rainVertices.size(); ++i )
+		for ( size_t i = 0; i < rainVertices.size(); ++i )
 		{
 			rainVertex_t& vertex = rainVertices[i];
 			vertex.position[0] = Q_flrand(-HALF_CHUNK_EXTENDS, HALF_CHUNK_EXTENDS);
@@ -471,7 +471,7 @@ namespace
 		const byte currentFrameScene = backEndData->currentFrame->currentScene;
 		const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 		const UniformBlockBinding uniformBlockBindings[] = {
-			{ currentFrameUbo, tr.sceneUboOffset, UNIFORM_BLOCK_SCENE }
+			{ currentFrameUbo, (size_t)tr.sceneUboOffset, UNIFORM_BLOCK_SCENE }
 		};
 		DrawItemSetUniformBlockBindings(
 			item, uniformBlockBindings, frameAllocator);
@@ -1257,7 +1257,7 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 				const byte currentFrameScene = backEndData->currentFrame->currentScene;
 				const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 				const UniformBlockBinding uniformBlockBindings[] = {
-					{ currentFrameUbo, tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
+					{ currentFrameUbo, (size_t)tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
 				};
 				DrawItemSetUniformBlockBindings(
 					item, uniformBlockBindings, frameAllocator);
