@@ -2588,7 +2588,7 @@ static void ComputeDeformValues(
 			deformParams0[0] = 0.0f;
 			deformParams0[1] = ds->bulgeHeight; // amplitude
 			deformParams0[2] = ds->bulgeWidth;  // phase
-			deformParams0[3] = ds->bulgeSpeed;  // frequency
+			deformParams0[3] = ds->bulgeSpeed * 0.1f;  // frequency
 			deformParams1[0] = 0.0f;
 			deformParams1[1] = 0.0f;
 			deformParams1[2] = 0.0f;
