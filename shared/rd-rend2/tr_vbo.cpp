@@ -764,7 +764,8 @@ void RB_UpdateGoreVertexData(gpuFrame_t *currentFrame, srfG2GoreSurface_t *goreS
 		currentFrame->goreIBOCurrentIndex += goreSurface->numIndexes;
 	}
 
-	goreSurface->cachedInFrame[backEndData->realFrameNumber % MAX_FRAMES] = true;
+	if (!updateFirstVertAndIndex)
+		goreSurface->cachedInFrame[backEndData->realFrameNumber % MAX_FRAMES] = true;
 }
 #endif
 
