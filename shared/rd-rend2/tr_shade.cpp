@@ -717,11 +717,6 @@ static UniformBlockBinding GetCameraBlockUniformBinding(
 		binding.ubo = tr.staticUbo;
 		binding.offset = tr.camera2DUboOffset;
 	}
-	else if (refEntity == &backEnd.entityFlare)
-	{
-		binding.ubo = tr.staticUbo;
-		binding.offset = tr.cameraFlareUboOffset;
-	}
 	else
 	{
 		binding.ubo = currentFrameUbo;
@@ -1664,6 +1659,14 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 				}
 #endif
 			}
+
+			if ( backEnd.currentEntity == &backEnd.entityFlare )
+			{
+				// Disable depth test for flares, looks better and makes more sense
+				// slightly diverges from vanilla like that
+				stateBits |= GLS_DEPTHTEST_DISABLE;
+			}
+
 #ifdef REND2_SP
 			if (backEnd.currentEntity->e.renderfx & RF_ALPHA_FADE)
 			{
@@ -1785,6 +1788,19 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 
 		if (backEnd.currentEntity->e.renderfx & (RF_DISINTEGRATE1 | RF_DISINTEGRATE2))
 			uniformDataWriter.SetUniformVec4(UNIFORM_DISINTEGRATION, disintegrationInfo);
+
+		if ( backEnd.currentEntity == &backEnd.entityFlare )
+		{
+			samplerBindingsWriter.AddStaticImage(tr.renderDepthImage, TB_SHADOWMAP);
+			vec4_t center;
+			VectorAdd(center, tess.xyz[0], center);
+			VectorAdd(center, tess.xyz[1], center);
+			VectorAdd(center, tess.xyz[2], center);
+			VectorAdd(center, tess.xyz[3], center);
+			VectorScale(center, 1.f / 4.f, center);
+			center[3] = 1.f;
+			uniformDataWriter.SetUniformVec4(UNIFORM_LIGHTORIGIN, center);
+		}
 
 		if (forceRefraction)
 		{

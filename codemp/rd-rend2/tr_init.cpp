@@ -1955,22 +1955,6 @@ static void R_InitStaticConstants()
 		GL_UNIFORM_BUFFER, tr.entityFlareUboOffset, sizeof(entityFlareBlock), &entityFlareBlock);
 	alignedBlockSize += (sizeof(EntityBlock) + alignment) & ~alignment;
 
-	// Setup static flare camera data
-	CameraBlock flareCameraBlock = {};
-	Matrix16Ortho(
-		0.0f,
-		glConfig.vidWidth,
-		glConfig.vidHeight,
-		0.0f,
-		-99999.0f,
-		99999.0f,
-		flareCameraBlock.viewProjectionMatrix);
-
-	tr.cameraFlareUboOffset = alignedBlockSize;
-	qglBufferSubData(
-		GL_UNIFORM_BUFFER, tr.cameraFlareUboOffset, sizeof(flareCameraBlock), &flareCameraBlock);
-	alignedBlockSize += (sizeof(CameraBlock) + alignment) & ~alignment;
-
 	// Setup default light block
 	LightsBlock lightsBlock = {};
 	lightsBlock.numLights = 0;

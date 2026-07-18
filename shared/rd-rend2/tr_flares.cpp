@@ -236,7 +236,9 @@ void RB_AddDlightFlares( void ) {
 		else
 			j = 0;
 
-		RB_AddFlare( (void *)l, j, l->origin, l->color, NULL );
+		vec3_t normal;
+		VectorCopy(backEnd.viewParms.ori.axis[0], normal);
+		RB_AddFlare( nullptr, j, l->origin, l->color, normal );
 	}
 }
 
@@ -250,70 +252,6 @@ FLARE BACK END
 
 /*
 ==================
-RB_TestFlare
-==================
-*/
-void RB_TestFlare( flare_t *f ) {
-	float			depth;
-	qboolean		visible;
-	float			fade;
-	float			screenZ;
-	FBO_t           *oldFbo;
-
-	backEnd.pc.c_flareTests++;
-
-	// if we're doing multisample rendering, read from the correct FBO
-	oldFbo = glState.currentFBO;
-	if (tr.msaaResolveFbo)
-	{
-		FBO_Bind(tr.msaaResolveFbo);
-	}
-
-	// read back the z buffer contents, which is bad
-	// TODO: Don't use glReadPixels
-	qglReadPixels( f->windowX, f->windowY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth );
-
-	// if we're doing multisample rendering, switch to the old FBO
-	if (tr.msaaResolveFbo)
-	{
-		FBO_Bind(oldFbo);
-	}
-
-	screenZ = backEnd.viewParms.projectionMatrix[14] /
-		( ( 2*depth - 1 ) * backEnd.viewParms.projectionMatrix[11] - backEnd.viewParms.projectionMatrix[10] );
-
-	visible = (qboolean)(( -f->eyeZ - -screenZ ) < 24);
-
-	if ( visible ) {
-		if ( !f->visible ) {
-			f->visible = qtrue;
-			f->fadeTime = backEnd.refdef.time - 1;
-		}
-		fade = ( ( backEnd.refdef.time - f->fadeTime ) / 500.0f );
-	} else {
-		// Dont fade out when flare is occluded. Will result in the ability to see
-		// flares through surfaces on high movement speeds
-		/*if ( f->visible ) {
-			f->visible = qfalse;
-			f->fadeTime = backEnd.refdef.time - 1;
-		}
-		fade = 1.0f - ( ( backEnd.refdef.time - f->fadeTime ) / 1000.0f ) * r_flareFade->value;*/
-		fade = 0.0f;
-	}
-
-	if ( fade < 0 ) {
-		fade = 0;
-	}
-	if ( fade > 1 ) {
-		fade = 1;
-	}
-
-	f->drawIntensity = fade;
-}
-
-
-/*
-==================
 RB_RenderFlare
 ==================
 */
@@ -324,8 +262,14 @@ void RB_RenderFlare( flare_t *f ) {
 
 	srfFlare_t *flare = (srfFlare_t *)f->surface;
 
-	backEnd.currentEntity = &tr.worldEntity;
-	shader_t *shader = (flare->shader->remappedShader) ? flare->shader->remappedShader : flare->shader;
+	backEnd.currentEntity = &backEnd.entityFlare;
+
+	shader_t *shader;
+	if (flare == nullptr)
+		shader = tr.flareShader;
+	else
+		shader = (flare->shader->remappedShader) ? flare->shader->remappedShader : flare->shader;
+	
 	RB_BeginSurface( shader, f->fogNum, 0 );
 
 	vec3_t		dir;
@@ -423,8 +367,7 @@ void RB_RenderFlares (void) {
 		f->drawIntensity = 0;
 		if ( f->frameSceneNum == backEnd.viewParms.frameSceneNum
 			&& f->inPortal == backEnd.viewParms.isPortal ) {
-			RB_TestFlare( f );
-			if ( f->drawIntensity ) {
+			if ( true ) { // draw all flares, testing happens in shaders
 				draw = qtrue;
 			} else {
 				// this flare has completely faded out, so remove it from the chain
@@ -444,8 +387,7 @@ void RB_RenderFlares (void) {
 
 	for ( f = r_activeFlares ; f ; f = f->next ) {
 		if ( f->frameSceneNum == backEnd.viewParms.frameSceneNum
-			&& f->inPortal == backEnd.viewParms.isPortal
-			&& f->drawIntensity ) {
+			&& f->inPortal == backEnd.viewParms.isPortal ) {
 			RB_RenderFlare( f );
 		}
 	}

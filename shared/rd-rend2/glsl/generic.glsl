@@ -93,6 +93,11 @@ uniform int u_AlphaGen;
 uniform vec4 u_Disintegration; // origin, threshhold
 #endif
 
+#if defined(USE_FLARE_TEST)
+uniform sampler2D u_ScreenDepthMap;
+uniform vec4 u_LightOrigin;
+#endif
+
 out vec2 var_DiffuseTex;
 out vec4 var_Color;
 #if defined(USE_FOG)
@@ -472,6 +477,13 @@ void main()
 		var_Color = u_VertColor * attr_Color + u_BaseColor;
 #endif
 	}
+	
+#if defined(USE_FLARE_TEST)
+	vec4 samplePosition = u_viewProjectionMatrix * u_LightOrigin;
+	vec3 depthPosition = samplePosition.xyz / samplePosition.w * 0.5 + 0.5;
+	float depthSample = texture(u_ScreenDepthMap, depthPosition.xy).r;
+	gl_Position *= float(depthPosition.z < depthSample);
+#endif
 
 #if defined(USE_FOG)
 	var_WSPosition = wsPosition.xyz;

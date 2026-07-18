@@ -1251,12 +1251,13 @@ enum
 	GENERICDEF_USE_FOG             		= 0x0004,
 	GENERICDEF_USE_RGBAGEN         		= 0x0008,
 	GENERICDEF_USE_SKELETAL_ANIMATION	= 0x0010,
+	GENERICDEF_USE_FLARE_TEST			= 0x0020,
 	// GENERICDEF_USE_ALPHA_TEST			= 0x0040,
 #ifdef REND2_SP_MD3
 	GENERICDEF_USE_VERTEX_ANIMATION		= 0x0080,
 	GENERICDEF_ALL						= 0x00FF,
 #else
-	GENERICDEF_ALL						= 0x001F,
+	GENERICDEF_ALL						= 0x003F,
 #endif // REND2_SP
 
 	GENERICDEF_COUNT                	= GENERICDEF_ALL + 1,
@@ -2666,7 +2667,6 @@ typedef struct trGlobals_s {
 	size_t entity2DUboOffset;
 	size_t camera2DUboOffset;
 	size_t entityFlareUboOffset;
-	size_t cameraFlareUboOffset;
 	size_t defaultLightsUboOffset;
 	size_t defaultSceneUboOffset;
 	size_t defaultFogsUboOffset;

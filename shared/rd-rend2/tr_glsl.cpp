@@ -1503,6 +1503,13 @@ static int GLSL_LoadGPUProgramGeneric(
 			Q_strcat(extradefines, sizeof(extradefines), "#define USE_RGBAGEN\n");
 		}
 
+		if (i & GENERICDEF_USE_FLARE_TEST)
+		{
+			Q_strcat(name, sizeof(name), "_FLARE");
+			Q_strcat(extradefines, sizeof(extradefines), "#define USE_FLARE_TEST\n");
+
+		}
+
 		/*if (i & GENERICDEF_USE_ALPHA_TEST)
 			Q_strcat(extradefines, sizeof(extradefines), "#define USE_ALPHA_TEST\n");*/
 
@@ -1518,6 +1525,7 @@ static int GLSL_LoadGPUProgramGeneric(
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_DIFFUSEMAP, TB_DIFFUSEMAP);
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_LIGHTMAP,   TB_LIGHTMAP);
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_VOLUMETRICLIGHTMAP, 2);
+		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_SCREENDEPTHMAP, TB_SHADOWMAP);
 		qglUseProgram(0);
 
 		GLSL_FinishGPUShader(&tr.genericShader[i]);
@@ -3055,6 +3063,11 @@ shaderProgram_t *GLSL_GetGenericShaderProgram(int stage)
 	if (pStage->bundle[0].numTexMods)
 	{
 		shaderAttribs |= GENERICDEF_USE_TCGEN_AND_TCMOD;
+	}
+
+	if (backEnd.currentEntity == &backEnd.entityFlare)
+	{
+		shaderAttribs |= GENERICDEF_USE_FLARE_TEST;
 	}
 
 	/*if (pStage->glow)
