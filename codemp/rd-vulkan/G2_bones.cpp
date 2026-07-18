@@ -81,11 +81,11 @@ int G2_Add_Bone (const model_t *mod, boneInfo_v &blist, const char *boneName)
 	int x;
 	mdxaSkel_t			*skel;
 	mdxaSkelOffsets_t	*offsets;
-	boneInfo_t			tempBone = {};
+	boneInfo_t			tempBone;
 	mdxaHeader_t *mdxa = mod->data.gla;
 
 	//rww - RAGDOLL_BEGIN
-	//memset(&tempBone, 0, sizeof(tempBone));
+	memset(&tempBone, 0, sizeof(tempBone));
 	//rww - RAGDOLL_END
 
    	offsets = (mdxaSkelOffsets_t *)((byte *)mdxa + sizeof(mdxaHeader_t));
