@@ -1665,6 +1665,8 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 				// Disable depth test for flares, looks better and makes more sense
 				// slightly diverges from vanilla like that
 				stateBits |= GLS_DEPTHTEST_DISABLE;
+				// also remove all depth writes on flares
+				stateBits &= ~GLS_DEPTHMASK_TRUE;
 			}
 
 #ifdef REND2_SP
