@@ -1268,7 +1268,6 @@ void RB_SurfaceWeather( srfWeather_t *surf )
 					UNIFORM_ZONEOFFSET,
 					(centerZoneOffsetX + x) * CHUNK_EXTENDS,
 					(centerZoneOffsetY + y) * CHUNK_EXTENDS);
-				uniformDataWriter.SetUniformFloat(UNIFORM_TIME, backEnd.refdef.frameTime);
 				uniformDataWriter.SetUniformVec4(UNIFORM_COLOR, weatherObject->color);
 				uniformDataWriter.SetUniformVec4(UNIFORM_VIEWINFO, viewInfo);
 				uniformDataWriter.SetUniformMatrix4x4(UNIFORM_SHADOWMVP, tr.weatherSystem->weatherMVP);

@@ -101,36 +101,25 @@ static uniformInfo_t uniformsInfo[] =
 	{ "u_VertColor", GLSL_VEC4, 1 },
 	{ "u_chromaticAberrationDelta", GLSL_FLOAT, 1 },
 
-	{ "u_DlightInfo",     GLSL_VEC4, 1 },
 	{ "u_LightForward",   GLSL_VEC3, 1 },
 	{ "u_LightUp",        GLSL_VEC3, 1 },
 	{ "u_LightRight",     GLSL_VEC3, 1 },
 	{ "u_LightOrigin",    GLSL_VEC4, 1 },
-	{ "u_ModelLightDir",  GLSL_VEC3, 1 },
 	{ "u_LightRadius",    GLSL_FLOAT, 1 },
-	{ "u_AmbientLight",   GLSL_VEC3, 1 },
-	{ "u_DirectedLight",  GLSL_VEC3, 1 },
 	{ "u_Disintegration", GLSL_VEC4, 1 },
 	{ "u_LightMask",    GLSL_INT, 1 },
 	{ "u_FogIndex",    GLSL_INT, 1 },
 
 	{ "u_FogColorMask", GLSL_VEC4, 1 },
 
-	{ "u_ModelMatrix",               GLSL_MAT4x4, 1 },
 	{ "u_ModelViewProjectionMatrix", GLSL_MAT4x4, 1 },
 
-	{ "u_Time",          GLSL_FLOAT, 1 },
 	{ "u_VertexLerp" ,   GLSL_FLOAT, 1 },
 	{ "u_NormalScale",   GLSL_VEC4, 1 },
 	{ "u_SpecularScale", GLSL_VEC4, 1 },
 	{ "u_ParallaxBias",  GLSL_FLOAT, 1 },
 
 	{ "u_ViewInfo",				GLSL_VEC4, 1 },
-	{ "u_ViewOrigin",			GLSL_VEC3, 1 },
-	{ "u_LocalViewOrigin",		GLSL_VEC3, 1 },
-	{ "u_ViewForward",			GLSL_VEC3, 1 },
-	{ "u_ViewLeft",				GLSL_VEC3, 1 },
-	{ "u_ViewUp",				GLSL_VEC3, 1 },
 
 	{ "u_InvTexRes",           GLSL_VEC2, 1 },
 	{ "u_AutoExposureMinMax",  GLSL_VEC2, 1 },
@@ -140,7 +129,6 @@ static uniformInfo_t uniformsInfo[] =
 
 	{ "u_AlphaTestType",		GLSL_INT, 1 },
 
-	{ "u_FXVolumetricBase",		GLSL_FLOAT, 1 },
 	{ "u_MapZExtents",			GLSL_VEC2, 1 },
 	{ "u_ZoneOffset",			GLSL_VEC2, 9 },
 	{ "u_EnvForce",				GLSL_VEC3, 1 },
