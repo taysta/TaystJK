@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sqlite3.h"
+#include "g_dynbsp.h"
 
 #define _USE_CURL 0
 
@@ -1863,6 +1864,8 @@ void StripWhitespace(char *s);
 void G_AddRaceTime(char *username, char *message, int duration_ms, int style, int topspeed, int average, int clientNum, int awesomenoise, int worldrecordnoise, char *checkpoints) {//should be short.. but have to change elsewhere? is it worth it?
 	time_t	rawtime;
 	char	string[1024] = {0}, info[1024] = {0}, coursename[40], timeStr[32] = {0}, styleString[32] = {0};
+	char	runtimePrintMessage[MAX_QPATH] = {0};
+	char	*printMessage = message;
 	qboolean seasonPB = qfalse, globalPB = qfalse;//, WR = qfalse;
 	sqlite3 * db;
 	char * sql;
@@ -1871,6 +1874,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	int season_oldBest, season_oldRank = 0, season_newRank = -1, global_oldBest, global_oldRank = 0, global_newRank = -1; //Changed newrank to be -1 ??
 	float addedScore = 0.0f;
 	gclient_t	*cl;
+	const char	*runtimeMapName;
 	const int season = G_GetSeason();
 
 	cl = &level.clients[clientNum];
@@ -1879,9 +1883,17 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	localtime(&rawtime);
 
 	trap->GetServerinfo(info, sizeof(info));
-	Q_strncpyz(coursename, Info_ValueForKey(info, "mapname"), sizeof(coursename));
+	runtimeMapName = (clientNum >= 0 && clientNum < MAX_CLIENTS) ? G_RuntimeWarpClientMapName(clientNum) : "";
+	if (runtimeMapName[0])
+		Q_strncpyz(coursename, runtimeMapName, sizeof(coursename));
+	else
+		Q_strncpyz(coursename, Info_ValueForKey(info, "mapname"), sizeof(coursename));
+	if ((!printMessage || !printMessage[0]) && runtimeMapName[0]) {
+		Q_strncpyz(runtimePrintMessage, runtimeMapName, sizeof(runtimePrintMessage));
+		printMessage = runtimePrintMessage;
+	}
 
-	if (message) {// [0]?
+	if (message && message[0]) {
 		Q_strlwr(message);
 		Q_CleanStr(message);
 		Q_strcat(coursename, sizeof(coursename), va(" (%s)", message));
@@ -2147,7 +2159,7 @@ void G_AddRaceTime(char *username, char *message, int duration_ms, int style, in
 	CALL_SQLITE(close(db));
 
 	TimeToString((int)(duration_ms), timeStr, sizeof(timeStr));
-	PrintRaceTime(username, cl->pers.netname, message, styleString, topspeed, average, timeStr, clientNum, season_newRank, seasonPB, global_newRank, qtrue, qtrue, season_oldRank, global_oldRank, addedScore, awesomenoise, worldrecordnoise);
+	PrintRaceTime(username, cl->pers.netname, printMessage, styleString, topspeed, average, timeStr, clientNum, season_newRank, seasonPB, global_newRank, qtrue, qtrue, season_oldRank, global_oldRank, addedScore, awesomenoise, worldrecordnoise);
 	//DebugWriteToDB("G_AddRaceTime");
 }
 
@@ -4799,32 +4811,20 @@ void Cmd_AccountStats_f(gentity_t *ent) { //Should i bother to cache player stat
 //If found, update it
 //If not found, add a new row at next empty spot
 //A new function will read the array on mapchange, and do the querys updates
-void G_AddSimpleStat(gentity_t *self, gentity_t *other, int type) {
-//Useless feature
+void G_AddSimpleStatForUsername(const char *username, int type) {
+	//Useless feature
 #if _STATLOG
 	int row;
 	char userName[16];
 
 	if (sv_cheats.integer) //Dont record stats if cheats were enabled
 		return;
-	if (!self)
+	if (!username)
 		return;
-	if (!other)
-		return;
-	if (!self->client)
-		return;
-	if (!other->client)
-		return;
-	if (!self->client->pers.userName[0])
-		return;
-	if (!other->client->pers.userName[0])
-		return;
-	if (self->client->sess.raceMode)
-		return;
-	if (other->client->sess.raceMode) //EH?
+	if (!username[0])
 		return;
 
-	Q_strncpyz(userName, self->client->pers.userName, sizeof(userName));
+	Q_strncpyz(userName, username, sizeof(userName));
 
 	for (row = 0; row < 256; row++) { //size of UserStats ?
 		if (!UserStats[row].username || !UserStats[row].username[0])
@@ -4858,6 +4858,23 @@ void G_AddSimpleStat(gentity_t *self, gentity_t *other, int type) {
 		UserStats[row].returns++;
 
 #endif
+}
+
+void G_AddSimpleStat(gentity_t *self, gentity_t *other, int type) {
+	if (!self)
+		return;
+	if (!other)
+		return;
+	if (!self->client)
+		return;
+	if (!other->client)
+		return;
+	if (self->client->sess.raceMode)
+		return;
+	if (other->client->sess.raceMode) //EH?
+		return;
+
+	G_AddSimpleStatForUsername(self->client->pers.userName, type);
 }
 
 void G_AddSimpleStatsToFile() { //For each item in array.. do an update query?  Called on shutdown game.
@@ -7104,6 +7121,37 @@ void Cmd_DFRefresh_f(gentity_t *ent) {
 #endif
 
 int JP_ClientNumberFromString(gentity_t *to, const char *s);
+
+static void G_RuntimeWhoisRoomName( int clientNum, char *buffer, int bufferSize )
+{
+	int roomIndex;
+
+	if ( !buffer || bufferSize < 1 )
+	{
+		return;
+	}
+
+	Q_strncpyz( buffer, "^7main^7", bufferSize );
+
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS )
+	{
+		return;
+	}
+
+	roomIndex = level.runtimeWarpUsage.clientRoomIndex[clientNum];
+	if ( roomIndex >= 0 && roomIndex < MAX_RUNTIME_BSP_INSTANCES
+		&& level.runtimeWarpUsage.rooms[roomIndex].mapName[0] )
+	{
+		Com_sprintf( buffer, bufferSize, "^7%s^7", level.runtimeWarpUsage.rooms[roomIndex].mapName );
+		return;
+	}
+
+	if ( level.runtimeWarpUsage.clientMapNames[clientNum][0] )
+	{
+		Com_sprintf( buffer, bufferSize, "^7%s^7", level.runtimeWarpUsage.clientMapNames[clientNum] );
+	}
+}
+
 void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? conditional open/close issue??
 	int			i;
 	char		msg[1024-128] = {0};
@@ -7146,21 +7194,21 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 
 	if (whois && seeip) {
 		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
 		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Room                            Nickname\n\"");
 	}
 	else if (whois) {
 		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
 		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Room                            Nickname\n\"");
 	}
 	else {
 		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Race  Style    Jump  Hidden  Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Race  Style    Jump  Hidden  Room                            Nickname\n\"");
 		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Nickname\n\"");
+			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Room                            Nickname\n\"");
 	}
 
 	for (i=0; i<MAX_CLIENTS; i++) {//Build a list of clients
@@ -7178,6 +7226,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 			char strRace[32] = {0};
 			char strHidden[32] = {0};
 			char strStyle[32] = {0};
+			char strRoom[MAX_QPATH + 8] = {0};
 			char jumpLevel[32] = {0};
 			char *p = NULL;
 
@@ -7188,6 +7237,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 			Q_strncpyz(strName, cl->pers.netname, sizeof(strName));
 			Com_sprintf(strUser, sizeof(strUser), "^7%s^7", cl->pers.userName);
 			Q_strncpyz(strIP, cl->sess.IP, sizeof(strIP));
+			G_RuntimeWhoisRoomName( i, strRoom, sizeof( strRoom ) );
 
 			if (cl->sess.sessionTeam != TEAM_SPECTATOR)
 				Q_strncpyz(jumpLevel, va("%i", cl->ps.fd.forcePowerLevel[FP_LEVITATION]), sizeof(jumpLevel));
@@ -7259,23 +7309,23 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 				if (seeip) {
 					//Admin prints
 					if (g_raceMode.integer)
-						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strName);
+						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
 					else
-						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strName);
+						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRoom, strName);
 				}
 				else {
 					//Admin prints
 					if (g_raceMode.integer)
-						tmpMsg = va( "%-2s%-24s%-12s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strName);
+						tmpMsg = va( "%-2s%-24s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
 					else
-						tmpMsg = va( "%-2s%-24s%-12s%-12s%s\n", strNum, strUser, strPlugin, strAdmin, strName);
+						tmpMsg = va( "%-2s%-24s%-12s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRoom, strName);
 				}
 			}
 			else {//Not admin
 				if (g_raceMode.integer)
-					tmpMsg = va( "%-2s%-24s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strPlugin, strRace, strStyle, jumpLevel, strHidden, strName);
+					tmpMsg = va( "%-2s%-24s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
 				else
-					tmpMsg = va( "%-2s%-24s%-12s%s\n", strNum, strUser, strPlugin, strName);
+					tmpMsg = va( "%-2s%-24s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRoom, strName);
 			}
 			
 			if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {

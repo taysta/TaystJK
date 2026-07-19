@@ -31,6 +31,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 #include "g_local.h"
 #include "bg_saga.h"
+#include "g_dynbsp.h"
 
 #define SIEGEITEM_STARTOFFRADAR 8
 
@@ -826,6 +827,7 @@ void SetTeamQuick(gentity_t *ent, int team, qboolean doBegin)
 	{
 		ent->client->sess.spectatorState = SPECTATOR_FREE;
 		Info_SetValueForKey(userinfo, "team", "s");
+		G_RuntimeWarpClearClientActiveMap( ent->s.number );
 	}
 	else
 	{

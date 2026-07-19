@@ -22,12 +22,77 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "server.h"
+#include "server/sv_dynbsp.h"
+#include "server/sv_dimension.h"
 #include "qcommon/cm_public.h"
 
 #ifdef DEDICATED
 std::vector<std::unique_ptr<bufferedMessageContainer_t>> demoPreRecordBuffer[MAX_CLIENTS];
 std::map<std::string,std::string> demoMetaData[MAX_CLIENTS];
 #endif
+
+static qboolean SV_SnapshotEventIsolationPurpose( sharedEntity_t *ent, svIsolationPurpose_t *purpose ) {
+	int eventNum;
+
+	if ( !ent || ent->s.eType < ET_EVENTS || !purpose ) {
+		return qfalse;
+	}
+
+	eventNum = ( ent->s.eType - ET_EVENTS ) & ~EV_EVENT_BITS;
+	switch ( eventNum ) {
+	case EV_GENERAL_SOUND:
+	case EV_ENTITY_SOUND:
+	case EV_BMODEL_SOUND:
+	case EV_PREDEFSOUND:
+		*purpose = SVISO_SOUND;
+		return qtrue;
+	case EV_GLOBAL_SOUND:
+	case EV_GLOBAL_TEAM_SOUND:
+	case EV_VOICECMD_SOUND:
+	case EV_MUTE_SOUND:
+		return qfalse;
+	default:
+		*purpose = SVISO_EVENT;
+		return qtrue;
+	}
+}
+
+static qboolean SV_SnapshotEventAlwaysGlobal( sharedEntity_t *ent ) {
+	int eventNum;
+
+	if ( !ent || ent->s.eType < ET_EVENTS ) {
+		return qfalse;
+	}
+
+	eventNum = ( ent->s.eType - ET_EVENTS ) & ~EV_EVENT_BITS;
+	switch ( eventNum ) {
+	case EV_VOICECMD_SOUND:
+	case EV_OBITUARY:
+		return qtrue;
+	default:
+		return qfalse;
+	}
+}
+
+static void SV_TranslateClientMapEntityState( client_t *client, sharedEntity_t *ent, entityState_t *state ) {
+	int bspIndex;
+	int modelBase;
+
+	if ( !client || !ent || !state || !client->runtimeMapName[0] || !ent->r.bmodel ) {
+		return;
+	}
+
+	bspIndex = SV_DynBSPClientBSPIndex( client );
+	if ( bspIndex < 0 ) {
+		return;
+	}
+
+	modelBase = CM_SubBSPModelIndex( bspIndex );
+	if ( modelBase >= 0 && state->modelindex >= modelBase ) {
+		state->modelindex -= modelBase;
+	}
+	state->solid = SOLID_BMODEL;
+}
 
 /*
 =============================================================================
@@ -410,9 +475,9 @@ float g_svCullDist = -1.0f;
 #define MAX_LANDING_EFFECTS_PER_SNAPSHOT 16
 static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *frame,
 #ifndef DEDICATED
-									snapshotEntityNumbers_t *eNums, qboolean portal )
+									snapshotEntityNumbers_t *eNums, qboolean portal, int viewerClientNum )
 #else
-									snapshotEntityNumbers_t *eNums, qboolean portal, qboolean skipDuelCull )
+									snapshotEntityNumbers_t *eNums, qboolean portal, qboolean skipDuelCull, int viewerClientNum )
 #endif
 {
 	int		e, i;
@@ -426,6 +491,16 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 	vec3_t	difference;
 	float	length, radius;
 	int		effectCount = 0;
+	sharedEntity_t *clientBSPInstance = NULL;
+	int		clientRuntimeBSPInstance = -1;
+	int		clientSubBSPIndex = -1;
+	int		clientSubArea = -1;
+	int		clientSubCluster = -1;
+	byte	*clientSubPVS = NULL;
+	vec3_t	clientSubOrigin;
+	int		clientMapBSPIndex;
+	playerState_t *viewerPs;
+	svDimensionView_t viewerView;
 
 	// during an error shutdown message we may need to transmit
 	// the shutdown message after the server has shutdown, so
@@ -434,25 +509,64 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 		return;
 	}
 
-	leafnum = CM_PointLeafnum (origin);
-	clientarea = CM_LeafArea (leafnum);
-	clientcluster = CM_LeafCluster (leafnum);
+	VectorClear( clientSubOrigin );
+	viewerPs = SV_GameClientNum( viewerClientNum );
+	SV_BeginClientViewDimension( &svs.clients[viewerClientNum], &viewerView );
+	clientMapBSPIndex = SV_DynBSPClientBSPIndex( &svs.clients[viewerClientNum] );
+	if ( clientMapBSPIndex >= 0 ) {
+		clientBSPInstance = SV_DynBSPInstanceForMap( svs.clients[viewerClientNum].runtimeMapName );
+		if ( clientBSPInstance ) {
+			clientRuntimeBSPInstance = SV_RuntimeBSPInstanceForGentity( clientBSPInstance );
+		}
 
-	// calculate the visible areas
-	frame->areabytes = CM_WriteAreaBits( frame->areabits, clientarea );
+		leafnum = CM_PointLeafnumForBSP( clientMapBSPIndex, origin );
+		clientarea = CM_LeafAreaForBSP( clientMapBSPIndex, leafnum );
+		clientcluster = CM_LeafClusterForBSP( clientMapBSPIndex, leafnum );
+		frame->areabytes = CM_WriteAreaBitsForBSP( clientMapBSPIndex, frame->areabits, clientarea );
+		clientpvs = CM_ClusterPVSForBSP( clientMapBSPIndex, clientcluster );
+	}
+	else {
+		const char *spectatorMapName = svs.clients[viewerClientNum].spectatorRuntimeMapName;
 
-	clientpvs = CM_ClusterPVS (clientcluster);
+		if ( viewerPs && spectatorMapName[0]
+			&& ( ( viewerPs->pm_flags & PMF_FOLLOW )
+				|| viewerPs->pm_type == PM_SPECTATOR
+				|| viewerPs->persistant[PERS_TEAM] == TEAM_SPECTATOR ) ) {
+			clientBSPInstance = SV_DynBSPInstanceForMap( spectatorMapName );
+			if ( clientBSPInstance ) {
+				clientSubBSPIndex = CM_FindSubBSP( clientBSPInstance->s.modelindex );
+				if ( clientSubBSPIndex >= 0 ) {
+					clientRuntimeBSPInstance = SV_RuntimeBSPInstanceForGentity( clientBSPInstance );
+					VectorSubtract( origin, clientBSPInstance->r.currentOrigin, clientSubOrigin );
+					leafnum = CM_PointLeafnumForBSP( clientSubBSPIndex, clientSubOrigin );
+					clientSubArea = CM_LeafAreaForBSP( clientSubBSPIndex, leafnum );
+					clientSubCluster = CM_LeafClusterForBSP( clientSubBSPIndex, leafnum );
+					clientSubPVS = CM_ClusterPVSForBSP( clientSubBSPIndex, clientSubCluster );
+				}
+			}
+		}
 
+		leafnum = CM_PointLeafnum (origin);
+		clientarea = CM_LeafArea (leafnum);
+		clientcluster = CM_LeafCluster (leafnum);
+
+		// calculate the visible areas
+		frame->areabytes = CM_WriteAreaBits( frame->areabits, clientarea );
+
+		clientpvs = CM_ClusterPVS (clientcluster);
+	}
 	for ( e = 0 ; e < sv.num_entities ; e++ ) {
 		ent = SV_GentityNum(e);
 
 		// never send entities that aren't linked in
 		if ( !ent->r.linked ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-unlinked" );
 			continue;
 		}
 
 		if (ent->s.eFlags & EF_PERMANENT)
 		{	// he's permanent, so don't send him down!
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-EF_PERMANENT" );
 			continue;
 		}
 
@@ -463,24 +577,71 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 
 		// entities can be flagged to explicitly not be sent to the client
 		if ( ent->r.svFlags & SVF_NOCLIENT ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-SVF_NOCLIENT" );
 			continue;
 		}
 
 		// entities can be flagged to be sent to only one client
 		if ( ent->r.svFlags & SVF_SINGLECLIENT ) {
 			if ( ent->r.singleClient != frame->ps.clientNum ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-SVF_SINGLECLIENT" );
 				continue;
 			}
 		}
 		// entities can be flagged to be sent to everyone but one client
 		if ( ent->r.svFlags & SVF_NOTSINGLECLIENT ) {
 			if ( ent->r.singleClient == frame->ps.clientNum ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-SVF_NOTSINGLECLIENT" );
 				continue;
 			}
 		}
 
+		svEnt = SV_SvEntityForGentity( ent );
+
+		// don't double add an entity through portals
+		if ( svEnt->snapshotCounter == sv.snapshotCounter ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-already-added" );
+			continue;
+		}
+
+		// entities can request not to be sent to certain clients (NOTE: always send to ourselves)
+		if ( e != frame->ps.clientNum && (ent->r.svFlags & SVF_BROADCASTCLIENTS)
+			&& !(ent->r.broadcastClients[frame->ps.clientNum/32] & (1 << (frame->ps.clientNum % 32))) )
+		{
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-broadcastclients" );
+			continue;
+		}
+
+		if ( svEnt->runtimeBSPInstance >= 0
+			&& !( clientMapBSPIndex >= 0 && clientRuntimeBSPInstance >= 0
+				&& svEnt->runtimeBSPInstance == clientRuntimeBSPInstance )
+			&& svs.clients[viewerClientNum].loadedBSPModelsGeneration != sv.bspModelsGeneration ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-runtime-bsp-client-unloaded" );
+			continue;
+		}
+
+		if ( SV_DimensionIsolationEnabled() ) {
+			if ( !SV_SnapshotEventAlwaysGlobal( ent ) ) {
+				svIsolationPurpose_t eventPurpose;
 #ifdef DEDICATED
-		if (!skipDuelCull && DuelCull(SV_GentityNum(frame->ps.clientNum), ent) == 1) {
+				qboolean applyCull = !skipDuelCull ? qtrue : qfalse;
+#else
+				qboolean applyCull = qtrue;
+#endif
+
+				if ( applyCull && !SV_ViewCanInteract( &viewerView, ent, SVISO_SNAPSHOT ) ) {
+					SV_DynBSPSnapshotDebug( ent, e, frame, "skip-dimension-snapshot" );
+					continue;
+				}
+				if ( applyCull && SV_SnapshotEventIsolationPurpose( ent, &eventPurpose )
+					&& !SV_ViewCanInteract( &viewerView, ent, eventPurpose ) ) {
+					SV_DynBSPSnapshotDebug( ent, e, frame, eventPurpose == SVISO_SOUND ? "skip-dimension-sound" : "skip-dimension-event" );
+					continue;
+				}
+			}
+		}
+#ifdef DEDICATED
+		else if ( !skipDuelCull && DuelCull( SV_GentityNum( frame->ps.clientNum ), ent ) == 1 ) {
 			continue;
 		}
 #endif
@@ -504,29 +665,23 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 			}
 		}
 
-		svEnt = SV_SvEntityForGentity( ent );
-
-		// don't double add an entity through portals
-		if ( svEnt->snapshotCounter == sv.snapshotCounter ) {
+		if ( clientMapBSPIndex >= 0 && svEnt->runtimeBSPInstance >= 0 && SV_DynBSPIsInstanceEntity( ent ) ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-clientMap-holder" );
 			continue;
 		}
 
-		// entities can request not to be sent to certain clients (NOTE: always send to ourselves)
-		if ( e != frame->ps.clientNum && (ent->r.svFlags & SVF_BROADCASTCLIENTS)
-			&& !(ent->r.broadcastClients[frame->ps.clientNum/32] & (1 << (frame->ps.clientNum % 32))) )
-		{
-			continue;
-		}
 		// broadcast entities are always sent, and so is the main player so we don't see noclip weirdness
 		if ( (ent->r.svFlags & SVF_BROADCAST) || e == frame->ps.clientNum
 			|| (ent->r.broadcastClients[frame->ps.clientNum/32] & (1 << (frame->ps.clientNum % 32))) )
 		{
+			SV_DynBSPSnapshotDebug( ent, e, frame, "add-broadcast-or-player" );
 			SV_AddEntToSnapshot( svEnt, ent, eNums );
 			continue;
 		}
 
 		if (ent->s.isPortalEnt)
 		{ //rww - portal entities are always sent as well
+			SV_DynBSPSnapshotDebug( ent, e, frame, "add-portal-ent" );
 			SV_AddEntToSnapshot( svEnt, ent, eNums );
 			continue;
 		}
@@ -543,12 +698,66 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 		}
 #endif
 
+		if ( clientMapBSPIndex >= 0 ) {
+			if ( clientRuntimeBSPInstance >= 0
+				&& svEnt->runtimeBSPInstance >= 0
+				&& svEnt->runtimeBSPInstance != clientRuntimeBSPInstance ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-clientMap-instance" );
+				continue;
+			}
+
+			if ( !CM_AreasConnectedForBSP( clientMapBSPIndex, clientarea, svEnt->areanum ) ) {
+				if ( !CM_AreasConnectedForBSP( clientMapBSPIndex, clientarea, svEnt->areanum2 ) ) {
+					SV_DynBSPSnapshotDebug( ent, e, frame, "skip-clientMap-area" );
+					continue;
+				}
+			}
+
+			if ( !svEnt->numClusters ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-clientMap-no-clusters" );
+				continue;
+			}
+
+			if ( !SV_DynBSPEntityVisibleInPVS( svEnt, clientpvs ) ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-clientMap-pvs" );
+				continue;
+			}
+		}
+		else if ( svEnt->runtimeBSPInstance >= 0 ) {
+			if ( svEnt->runtimeBSPInstance != clientRuntimeBSPInstance || clientSubBSPIndex < 0 || !clientSubPVS ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-runtime-bsp-instance" );
+				continue;
+			}
+
+			if ( !CM_AreasConnectedForBSP( clientSubBSPIndex, clientSubArea, svEnt->areanum ) ) {
+				if ( !CM_AreasConnectedForBSP( clientSubBSPIndex, clientSubArea, svEnt->areanum2 ) ) {
+					SV_DynBSPSnapshotDebug( ent, e, frame, "skip-runtime-bsp-area" );
+					continue;
+				}
+			}
+
+			if ( !svEnt->numClusters ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-runtime-bsp-no-clusters" );
+				continue;
+			}
+
+			if ( !SV_DynBSPEntityVisibleInPVS( svEnt, clientSubPVS ) ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, svEnt->lastCluster ? "skip-runtime-bsp-pvs-overflow" : "skip-runtime-bsp-pvs" );
+				continue;
+			}
+		}
+		else if ( clientRuntimeBSPInstance >= 0 ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-parent-map-from-runtime-bsp" );
+			continue;
+		}
+		else {
 		// ignore if not touching a PV leaf
 		// check area
 		if ( !CM_AreasConnected( clientarea, svEnt->areanum ) ) {
 			// doors can legally straddle two areas, so
 			// we may need to check another one
 			if ( !CM_AreasConnected( clientarea, svEnt->areanum2 ) ) {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-area" );
 				continue;		// blocked by a door
 			}
 		}
@@ -557,6 +766,7 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 
 		// check individual leafs
 		if ( !svEnt->numClusters ) {
+			SV_DynBSPSnapshotDebug( ent, e, frame, "skip-no-clusters" );
 			continue;
 		}
 		l = 0;
@@ -577,11 +787,14 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 					}
 				}
 				if ( l == svEnt->lastCluster ) {
+					SV_DynBSPSnapshotDebug( ent, e, frame, "skip-pvs-overflow" );
 					continue;	// not visible
 				}
 			} else {
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-pvs" );
 				continue;
 			}
+		}
 		}
 
 		if (g_svCullDist != -1.0f)
@@ -596,11 +809,13 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 			radius = VectorLength(difference);
 			if (length-radius >= g_svCullDist)
 			{ //then don't add it
+				SV_DynBSPSnapshotDebug( ent, e, frame, "skip-distance" );
 				continue;
 			}
 		}
 
 		// add it
+		SV_DynBSPSnapshotDebug( ent, e, frame, "add-visible" );
 		SV_AddEntToSnapshot( svEnt, ent, eNums );
 
 		// if its a portal entity, add everything visible from its camera position
@@ -613,9 +828,9 @@ static void SV_AddEntitiesVisibleFromPoint( vec3_t origin, clientSnapshot_t *fra
 				}
 			}
 #ifndef DEDICATED
-			SV_AddEntitiesVisibleFromPoint( ent->s.origin2, frame, eNums, qtrue );
+			SV_AddEntitiesVisibleFromPoint( ent->s.origin2, frame, eNums, qtrue, viewerClientNum );
 #else
-			SV_AddEntitiesVisibleFromPoint( ent->s.origin2, frame, eNums, qtrue, skipDuelCull );
+			SV_AddEntitiesVisibleFromPoint( ent->s.origin2, frame, eNums, qtrue, skipDuelCull, viewerClientNum );
 #endif
 		}
 	}
@@ -665,6 +880,7 @@ static void SV_BuildClientSnapshot( client_t *client ) {
 	// grab the current playerState_t
 	ps = SV_GameClientNum( client - svs.clients );
 	frame->ps = *ps;
+	SV_DynBSPSpectatorProjectPlayerState( client, &frame->ps );
 #ifdef _ONEBIT_COMBO
 	frame->pDeltaOneBit = &ps->deltaOneBits;
 	frame->pDeltaNumBit = &ps->deltaNumBits;
@@ -698,15 +914,15 @@ static void SV_BuildClientSnapshot( client_t *client ) {
 
 
 	// find the client's viewpoint
-	VectorCopy( ps->origin, org );
-	org[2] += ps->viewheight;
+	VectorCopy( frame->ps.origin, org );
+	org[2] += frame->ps.viewheight;
 
 	// add all the entities directly visible to the eye, which
 	// may include portal entities that merge other viewpoints
 #ifndef DEDICATED
-	SV_AddEntitiesVisibleFromPoint( org, frame, &entityNumbers, qfalse );
+	SV_AddEntitiesVisibleFromPoint( org, frame, &entityNumbers, qfalse, client - svs.clients );
 #else
-	SV_AddEntitiesVisibleFromPoint( org, frame, &entityNumbers, qfalse, client->disableDuelCull );
+	SV_AddEntitiesVisibleFromPoint( org, frame, &entityNumbers, qfalse, client->disableDuelCull, client - svs.clients );
 #endif
 
 	// if there were portals visible, there may be out of order entities
@@ -723,14 +939,28 @@ static void SV_BuildClientSnapshot( client_t *client ) {
 	}
 
 	// copy the entity states out
+	svDimensionView_t clientView;
+	SV_BeginClientViewDimension( client, &clientView );
 	frame->num_entities = 0;
 	frame->first_entity = svs.nextSnapshotEntities;
 	for ( i = 0 ; i < entityNumbers.numSnapshotEntities ; i++ ) {
 		ent = SV_GentityNum(entityNumbers.snapshotEntities[i]);
 		state = &svs.snapshotEntities[svs.nextSnapshotEntities % svs.numSnapshotEntities];
 		*state = ent->s;
+		SV_TranslateClientMapEntityState( client, ent, state );
+		if ( SV_DimensionIsolationEnabled() ) {
 #ifdef DEDICATED
-		if (!client->jpPlugin && DuelCull(client->gentity, ent)) {
+			if ( !client->jpPlugin && !ent->r.bmodel && !SV_ViewCanInteract( &clientView, ent, SVISO_TRACE ) ) {
+				state->solid = 0;
+			}
+#else
+			if ( !ent->r.bmodel && !SV_ViewCanInteract( &clientView, ent, SVISO_TRACE ) ) {
+				state->solid = 0;
+			}
+#endif
+		}
+#ifdef DEDICATED
+		else if ( !client->jpPlugin && DuelCull( client->gentity, ent ) ) {
 			state->solid = 0;
 		}
 #endif
@@ -969,6 +1199,19 @@ extern cvar_t	*fs_gamedirvar;
 void SV_SendClientSnapshot( client_t *client ) {
 	byte		msg_buf[MAX_MSGLEN];
 	msg_t		msg;
+
+	if ( SV_DynBSPClientNeedsGameState( client ) ) {
+		clientState_t oldState = client->state;
+
+		SV_DynBSPPrepareClientGameState( client );
+		client->state = CS_CONNECTED;
+		SV_SendClientGameState( client );
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG server lazy gamestate sent client=%i name='%s' oldState=%i newState=%i gamestateMessageNum=%i\n",
+				(int)( client - svs.clients ), client->name, oldState, client->state, client->gamestateMessageNum );
+		}
+		return;
+	}
 
 	if (!client->sentGamedir)
 	{ //rww - if this is the case then make sure there is an svc_setgame sent before this snap

@@ -77,6 +77,7 @@ XCVAR_DEF( g_banIPs,					"",				NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_charRestrictRGB,			"1",			NULL,				CVAR_ARCHIVE,									qfalse )
 XCVAR_DEF( g_duelWeaponDisable,			"1",			NULL,				CVAR_SERVERINFO|CVAR_ARCHIVE|CVAR_LATCH,		qtrue )
 XCVAR_DEF( g_debugAlloc,				"0",			NULL,				CVAR_NONE,										qfalse )
+XCVAR_DEF( g_debugBSPInstances,		"1",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_debugDamage,				"0",			NULL,				CVAR_NONE,										qfalse )
 XCVAR_DEF( g_debugMelee,				"0",			NULL,				CVAR_SERVERINFO,								qtrue )
 XCVAR_DEF( g_debugMove,					"0",			NULL,				CVAR_NONE,										qfalse )
@@ -109,6 +110,7 @@ XCVAR_DEF( g_gametype,					"0",			NULL,				CVAR_SERVERINFO|CVAR_LATCH,						qfal
 XCVAR_DEF( g_gravity,					"800",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_inactivity,				"0",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_jediVmerc,					"0",			NULL,				CVAR_SERVERINFO|CVAR_LATCH|CVAR_ARCHIVE,		qtrue )
+XCVAR_DEF( g_engineDimensions,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_knockback,					"1000",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_locationBasedDamage,		"1",			NULL,				CVAR_NONE,										qtrue )
 XCVAR_DEF( g_log,						"games.log",	NULL,				CVAR_ARCHIVE,									qfalse )
@@ -307,6 +309,7 @@ XCVAR_DEF( g_lagIcon,					"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_allowSamePlayerNames,		"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( sv_maxTeamSize,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_tweakVote,					"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qtrue )//latch cuz of calculateRanks? not sure man
+XCVAR_DEF( g_rwarpMapPolicy,			"1",			NULL,				CVAR_ARCHIVE,									qfalse )//latch cuz of calculateRanks? not sure man
 XCVAR_DEF( g_allowSpotting,				"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_allowTargetLaser,			"0",			NULL,				CVAR_ARCHIVE,									qtrue )
 XCVAR_DEF( g_voteTimeout,				"180",			NULL,				CVAR_ARCHIVE,									qfalse )//Time in seconds to lockout callvote after a failed vote

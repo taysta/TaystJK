@@ -23,6 +23,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "g_local.h"
 #include "bg_saga.h"
+#include "g_dynbsp.h"
 
 void ResetPlayerTimers(gentity_t *ent, qboolean print);//extern ?
 
@@ -68,7 +69,14 @@ void multi_trigger_run( gentity_t *ent )
 
 	if ( ent->soundSet && ent->soundSet[0] )
 	{
-		trap->SetConfigstring( CS_GLOBAL_AMBIENT_SET, ent->soundSet );
+		if ( ent->runtimeBSPInstance >= 0 )
+		{
+			G_DynBSPSetRuntimeAmbient( ent->runtimeBSPInstance, ent->soundSet );
+		}
+		else
+		{
+			trap->SetConfigstring( CS_GLOBAL_AMBIENT_SET, ent->soundSet );
+		}
 	}
 
 	if (ent->genericValue4)
@@ -1436,7 +1444,8 @@ static QINLINE int GetTimeMS() {
 }
 
 //void G_SoundPrivate( gentity_t *ent, int channel, int soundIndex );
-void G_UpdatePlaytime(int null, char *username, int seconds );
+struct sqlite3;
+void G_UpdatePlaytime(struct sqlite3 *db, char *username, int seconds );
 static void G_ClearRunCheckpoints(gclient_t *client);
 void TimerStart(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO Timers
 	int lessTime;
@@ -1729,6 +1738,8 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 
 	if (1) {
 		char styleStr[32] = { 0 }, timeStr[32] = { 0 }, playerName[MAX_NETNAME] = { 0 };
+		char runtimePrintMessage[MAX_QPATH] = { 0 };
+		char *printMessage = trigger->message;
 		char c[4] = S_COLOR_RED;
 		float time = GetTimeMS() - player->client->pers.stats.startTime;
 		int average;
@@ -1736,8 +1747,14 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		const int endLag = GetTimeMS() - level.frameStartTime + level.time - player->client->pers.cmd.serverTime;
 		const int diffLag = player->client->pers.startLag - endLag;
 		const int lessTime = InterpolateTouchTime(player, trigger);
+		const char *runtimeMapName = G_RuntimeWarpClientMapName(player->client->ps.clientNum);
 		qboolean coopFinished = qfalse;
 		gentity_t* duelAgainst;
+
+		if ((!printMessage || !printMessage[0]) && runtimeMapName[0]) {
+			Q_strncpyz(runtimePrintMessage, runtimeMapName, sizeof(runtimePrintMessage));
+			printMessage = runtimePrintMessage;
+		}
 
 		//Com_Printf("Flag: %i, Objective %i, player objectives %i\n", restrictions, trigger->objective, player->client->pers.stats.checkpoints);
 		//If player has MORe checkpoints than the end trigger requires, that also fails.  Fix this?
@@ -1834,13 +1851,13 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 		Q_StripColor(playerName);
 
 		if (!valid) {
-			PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
+			PrintRaceTime(NULL, playerName, printMessage, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			//How do we tell if we are the 2nd one..unless end timer does not reset for duelers
 			//
 			if (coopFinished) {
 				Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 				Q_StripColor(playerName);
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, printMessage, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qfalse, 0, 0, 0, 0, 0);
 			}
 		}
 		else {
@@ -1857,11 +1874,11 @@ void TimerStop(gentity_t *trigger, gentity_t *player, trace_t *trace) {//JAPRO T
 				}
 			}
 			else {
-				PrintRaceTime(NULL, playerName, trigger->message, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
+				PrintRaceTime(NULL, playerName, printMessage, styleStr, (int)(player->client->pers.stats.topSpeed + 0.5f), average, timeStr, player->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				if (coopFinished) {
 					Q_strncpyz(playerName, duelAgainst->client->pers.netname, sizeof(playerName));
 					Q_StripColor(playerName);
-					PrintRaceTime(NULL, playerName, trigger->message, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
+					PrintRaceTime(NULL, playerName, printMessage, styleStr, 0, 0, timeStr, duelAgainst->client->ps.clientNum, qfalse, qfalse, qfalse, qfalse, qtrue, 0, 0, 0, 0, 0);
 				}
 			}
 		}

@@ -32,6 +32,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "qcommon/timing.h"
 #include "NPCNav/navigator.h"
 #include "sv_gameapi.h"
+#include "server/sv_dynbsp.h"
 
 // these functions must be used instead of pointer arithmetic, because
 // the game allocates gentities with private information after the server shared part
@@ -80,6 +81,38 @@ sharedEntity_t *SV_GEntityForSvEntity( svEntity_t *svEnt ) {
 	return SV_GentityNum( num );
 }
 
+int SV_RuntimeBSPInstanceForGentity( sharedEntity_t *gEnt ) {
+	svEntity_t *svEnt;
+
+	if ( !gEnt ) {
+		return -1;
+	}
+
+	svEnt = SV_SvEntityForGentity( gEnt );
+	return svEnt ? svEnt->runtimeBSPInstance : -1;
+}
+
+void SV_SetRuntimeBSPInstanceForGentity( sharedEntity_t *gEnt, int runtimeBSPInstance ) {
+	svEntity_t *svEnt;
+
+	if ( !gEnt ) {
+		return;
+	}
+
+	svEnt = SV_SvEntityForGentity( gEnt );
+	if ( svEnt ) {
+		svEnt->runtimeBSPInstance = runtimeBSPInstance;
+	}
+}
+
+void SV_SetRuntimeBSPInstanceForEntityNum( int entityNum, int runtimeBSPInstance ) {
+	if ( entityNum < 0 || entityNum >= sv.num_entities ) {
+		return;
+	}
+
+	sv.svEntities[entityNum].runtimeBSPInstance = runtimeBSPInstance;
+}
+
 /*
 =================
 SV_inPVS
@@ -93,6 +126,42 @@ qboolean SV_inPVS (const vec3_t p1, const vec3_t p2)
 	int		cluster;
 	int		area1, area2;
 	byte	*mask;
+	sharedEntity_t *runtime1;
+	sharedEntity_t *runtime2;
+
+	runtime1 = SV_DynBSPInstanceForPoint( p1 );
+	runtime2 = SV_DynBSPInstanceForPoint( p2 );
+	if ( runtime1 || runtime2 ) {
+		int bspIndex;
+		vec3_t local1;
+		vec3_t local2;
+
+		if ( !runtime1 || runtime1 != runtime2 ) {
+			return qfalse;
+		}
+
+		bspIndex = CM_FindSubBSP( runtime1->s.modelindex );
+		if ( bspIndex < 0 ) {
+			return qfalse;
+		}
+
+		SV_DynBSPWorldToLocalPoint( runtime1, p1, local1 );
+		SV_DynBSPWorldToLocalPoint( runtime1, p2, local2 );
+
+		leafnum = CM_PointLeafnumForBSP( bspIndex, local1 );
+		cluster = CM_LeafClusterForBSP( bspIndex, leafnum );
+		area1 = CM_LeafAreaForBSP( bspIndex, leafnum );
+		mask = CM_ClusterPVSForBSP( bspIndex, cluster );
+
+		leafnum = CM_PointLeafnumForBSP( bspIndex, local2 );
+		cluster = CM_LeafClusterForBSP( bspIndex, leafnum );
+		area2 = CM_LeafAreaForBSP( bspIndex, leafnum );
+		if ( mask && (!(mask[cluster>>3] & (1<<(cluster&7)) ) ) )
+			return qfalse;
+		if (!CM_AreasConnectedForBSP (bspIndex, area1, area2))
+			return qfalse;		// a door blocks sight
+		return qtrue;
+	}
 
 	leafnum = CM_PointLeafnum (p1);
 	cluster = CM_LeafCluster (leafnum);

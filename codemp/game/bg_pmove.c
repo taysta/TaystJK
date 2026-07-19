@@ -1299,7 +1299,9 @@ static void PM_Friction( void ) {
 		// Pod speed is horizontal-only and owned by PodRacer_ProcessMoveCommands /
 		// PM_PodRacerTraction. Keep stock friction off x/y. Only damp upward z energy so
 		// hover bumps stop bouncing; damping falling z creates a very low terminal velocity.
-		if ( vel[2] > 0.0f )
+		// Ground pod vehicles (hoverHeight 0, e.g. the wheelchair) have no hover spring
+		// to bounce them - keep their jump arcs ballistic, no upward damping.
+		if ( pEnt->m_pVehicle->m_pVehicleInfo->hoverHeight > 0 && vel[2] > 0.0f )
 		{
 			float zDamp = 1.0f - POD_VERTICAL_DAMPING * pml.frametime;
 			if ( zDamp < 0.0f )

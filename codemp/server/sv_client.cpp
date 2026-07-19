@@ -25,6 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // sv_client.c -- server code for dealing with clients
 
 #include "server.h"
+#include "server/sv_dynbsp.h"
 #include "qcommon/stringed_ingame.h"
 
 #ifdef USE_INTERNAL_ZLIB
@@ -143,6 +144,9 @@ void SV_DirectConnect( const netadr_t *from ) {
 	char		*denied;
 	int			count;
 	char		*ip;
+	char		reconnectRuntimeMap[MAX_QPATH] = "";
+	int			reconnectRuntimeBSPIndex = -1;
+	qboolean	reconnectRuntimeMapActive = qfalse;
 
 	Com_DPrintf ("SVC_DirectConnect ()\n");
 
@@ -228,10 +232,26 @@ void SV_DirectConnect( const netadr_t *from ) {
 			|| from->port == cl->netchan.remoteAddress.port ) ) {
 			Com_Printf ("%s:reconnect\n", NET_AdrToString (from));
 			newcl = cl;
+			if ( newcl->runtimeMapName[0] ) {
+				Q_strncpyz( reconnectRuntimeMap, newcl->runtimeMapName, sizeof( reconnectRuntimeMap ) );
+				reconnectRuntimeBSPIndex = newcl->runtimeMapBSPIndex;
+				reconnectRuntimeMapActive = qtrue;
+			}
+			if ( SV_DynBSPDebugEnabled() ) {
+				Com_Printf( "BSPDEBUG reconnect reuse begin client=%i name='%s' state=%i serverMap='%s' runtimeMap='%s' runtimeServerId=%i baseServerId=%i loadedGen=%i sendGen=%i\n",
+					i, newcl->name, newcl->state, sv_mapname->string, newcl->runtimeMapName,
+					newcl->runtimeMapServerId, sv.serverId,
+					newcl->loadedBSPModelsGeneration, newcl->sendBSPModelsGeneration );
+			}
 			// VVFIXME - both SOF2 and Wolf remove this call, claiming it blows away the user's info
 			// disconnect the client from the game first so any flags the
 			// player might have are dropped
 			GVM_ClientDisconnect( newcl - svs.clients );
+			if ( SV_DynBSPDebugEnabled() ) {
+				Com_Printf( "BSPDEBUG reconnect reuse after-disconnect client=%i name='%s' state=%i runtimeMap='%s' loadedGen=%i sendGen=%i\n",
+					i, newcl->name, newcl->state, newcl->runtimeMapName,
+					newcl->loadedBSPModelsGeneration, newcl->sendBSPModelsGeneration );
+			}
 			//
 			goto gotnewcl;
 		}
@@ -351,9 +371,28 @@ gotnewcl:
 	// notice that it is from a different serverid and that the
 	// gamestate message was not just sent, forcing a retransmit
 	newcl->gamestateMessageNum = -1;
+	newcl->loadedBSPModelsGeneration = -1;
+	newcl->sendBSPModelsGeneration = -1;
+
+	if ( reconnectRuntimeMapActive && reconnectRuntimeBSPIndex >= 0 ) {
+		SV_DynBSPSetClientMap( newcl, reconnectRuntimeMap, reconnectRuntimeBSPIndex );
+		newcl->loadedBSPModelsGeneration = -1;
+		newcl->sendBSPModelsGeneration = -1;
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG directconnect restore runtime client=%i name='%s' map='%s' runtimeBSP=%i runtimeServerId=%i sendGen=%i currentGen=%i\n",
+				clientNum, newcl->name, newcl->runtimeMapName, newcl->runtimeMapBSPIndex,
+				newcl->runtimeMapServerId, newcl->sendBSPModelsGeneration, sv.bspModelsGeneration );
+		}
+	}
 
 	newcl->lastUserInfoChange = 0; //reset the delay
 	newcl->lastUserInfoCount = 0; //reset the count
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG directconnect clean client=%i name='%s' state=%i serverMap='%s' runtimeMap='%s' runtimeBSP=%i loadedGen=%i sendGen=%i currentGen=%i\n",
+			clientNum, newcl->name, newcl->state, sv_mapname->string,
+			newcl->runtimeMapName, newcl->runtimeMapBSPIndex,
+			newcl->loadedBSPModelsGeneration, newcl->sendBSPModelsGeneration, sv.bspModelsGeneration );
+	}
 
 	// if this was the first client on the server, or the last client
 	// the server can hold, send a heartbeat to the master.
@@ -454,6 +493,26 @@ void SV_DropClient( client_t *drop, const char *reason ) {
 void SV_CreateClientGameStateMessage( client_t *client, msg_t *msg ) {
 	int			start;
 	entityState_t	*base, nullstate;
+	playerState_t	*ps;
+	int			followTarget = -1;
+	const char	*followTargetMap = "";
+	int			sentConfigstrings = 0;
+	int			sentBSPModelConfigstrings = 0;
+	int			sentRuntimeMetaConfigstrings = 0;
+	int			skippedBSPModelConfigstrings = 0;
+	int			skippedRuntimeMetaConfigstrings = 0;
+	int			firstRuntimeConfigstring = -1;
+	int			sentBaselines = 0;
+	char		sentMapname[MAX_QPATH] = "";
+	char		sentServerid[64] = "";
+
+	ps = SV_GameClientNum( client - svs.clients );
+	if ( ps && ( ps->pm_flags & PMF_FOLLOW )
+		&& ps->clientNum >= 0
+		&& ps->clientNum < sv_maxclients->integer ) {
+		followTarget = ps->clientNum;
+		followTargetMap = svs.clients[followTarget].runtimeMapName;
+	}
 
 	// NOTE, MRE: all server->client messages now acknowledge
 	// let the client know which reliable clientCommands we have received
@@ -471,10 +530,60 @@ void SV_CreateClientGameStateMessage( client_t *client, msg_t *msg ) {
 
 	// write the configstrings
 	for ( start = 0 ; start < MAX_CONFIGSTRINGS ; start++ ) {
-		if (sv.configstrings[start][0]) {
+		const char *configstring;
+		char configstringBuffer[BIG_INFO_STRING];
+		const qboolean bspModelConfigstring = start >= CS_BSP_MODELS && start < CS_BSP_MODELS + MAX_SUB_BSP ? qtrue : qfalse;
+		const qboolean runtimeMetaConfigstring = start >= CS_RUNTIME_BSP_META && start < CS_RUNTIME_BSP_META + MAX_RUNTIME_BSP_INSTANCES ? qtrue : qfalse;
+
+		if ( !SV_DynBSPShouldSendConfigstring( client, start ) ) {
+			if ( bspModelConfigstring ) {
+				skippedBSPModelConfigstrings++;
+			}
+			if ( runtimeMetaConfigstring ) {
+				skippedRuntimeMetaConfigstrings++;
+			}
+			if ( SV_DynBSPDebugEnabled() && ( bspModelConfigstring || runtimeMetaConfigstring ) && sv.configstrings[start][0] ) {
+				Com_Printf( "BSPDEBUG gamestate configstring skip client=%li name='%s' index=%i kind=%s value='%s' runtimeMap='%s' spectatorMap='%s' followTarget=%i followTargetMap='%s' loadedGen=%i sendGen=%i currentGen=%i\n",
+					(long)( client - svs.clients ), client->name, start,
+					bspModelConfigstring ? "bspModel" : "runtimeMeta",
+					sv.configstrings[start], client->runtimeMapName, client->spectatorRuntimeMapName,
+					followTarget, followTargetMap,
+					client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration );
+			}
+			continue;
+		}
+		configstring = SV_DynBSPClientConfigstring( client, start, configstringBuffer, sizeof( configstringBuffer ) );
+		if (configstring[0]) {
 			MSG_WriteByte( msg, svc_configstring );
 			MSG_WriteShort( msg, start );
-			MSG_WriteBigString( msg, sv.configstrings[start] );
+			MSG_WriteBigString( msg, configstring );
+			sentConfigstrings++;
+			if ( start == CS_SERVERINFO ) {
+				Q_strncpyz( sentMapname, Info_ValueForKey( configstring, "mapname" ), sizeof( sentMapname ) );
+			}
+			if ( start == CS_SYSTEMINFO ) {
+				Q_strncpyz( sentServerid, Info_ValueForKey( configstring, "sv_serverid" ), sizeof( sentServerid ) );
+			}
+			if ( bspModelConfigstring ) {
+				sentBSPModelConfigstrings++;
+				if ( firstRuntimeConfigstring < 0 ) {
+					firstRuntimeConfigstring = start;
+				}
+			}
+			if ( runtimeMetaConfigstring ) {
+				sentRuntimeMetaConfigstrings++;
+				if ( firstRuntimeConfigstring < 0 ) {
+					firstRuntimeConfigstring = start;
+				}
+			}
+			if ( SV_DynBSPDebugEnabled() && ( bspModelConfigstring || runtimeMetaConfigstring ) ) {
+				Com_Printf( "BSPDEBUG gamestate configstring send client=%li name='%s' index=%i kind=%s value='%s' runtimeMap='%s' spectatorMap='%s' followTarget=%i followTargetMap='%s' loadedGen=%i sendGen=%i currentGen=%i\n",
+					(long)( client - svs.clients ), client->name, start,
+					bspModelConfigstring ? "bspModel" : "runtimeMeta",
+					configstring, client->runtimeMapName, client->spectatorRuntimeMapName,
+					followTarget, followTargetMap,
+					client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration );
+			}
 		}
 	}
 
@@ -487,6 +596,7 @@ void SV_CreateClientGameStateMessage( client_t *client, msg_t *msg ) {
 		}
 		MSG_WriteByte( msg, svc_baseline );
 		MSG_WriteDeltaEntity( msg, &nullstate, base, qtrue );
+		sentBaselines++;
 	}
 
 	MSG_WriteByte( msg, svc_EOF );
@@ -498,6 +608,17 @@ void SV_CreateClientGameStateMessage( client_t *client, msg_t *msg ) {
 
 	// For old RMG system.
 	MSG_WriteShort ( msg, 0 );
+
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG gamestate configstrings client=%li name='%s' state=%i serverMap='%s' runtimeMap='%s' spectatorMap='%s' followTarget=%i followTargetMap='%s' sent=%i bspModels=%i runtimeMeta=%i skippedBspModels=%i skippedRuntimeMeta=%i firstRuntimeCS=%i mapname='%s' sv_serverid='%s' serverId=%i clientServerId=%i loadedGen=%i sendGen=%i currentGen=%i baselines=%i size=%i\n",
+			(long)( client - svs.clients ), client->name, client->state, sv_mapname->string, client->runtimeMapName,
+			client->spectatorRuntimeMapName, followTarget, followTargetMap,
+			sentConfigstrings, sentBSPModelConfigstrings, sentRuntimeMetaConfigstrings,
+			skippedBSPModelConfigstrings, skippedRuntimeMetaConfigstrings, firstRuntimeConfigstring,
+			sentMapname, sentServerid, sv.serverId, SV_DynBSPClientServerId( client ),
+			client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration,
+			sentBaselines, msg->cursize );
+	}
 }
 
 /*
@@ -516,6 +637,14 @@ void SV_SendClientGameState( client_t *client ) {
 	byte		msgBuffer[MAX_MSGLEN];
 
 	MSG_Init( &msg, msgBuffer, sizeof( msgBuffer ) );
+
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG gamestate begin client=%li name='%s' state=%i map='%s' serverId=%i runtimeServerId=%i outgoing=%i reliableSeq=%i reliableSent=%i\n",
+			(long)( client - svs.clients ), client->name, client->state,
+			client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+			sv.serverId, SV_DynBSPClientServerId( client ), client->netchan.outgoingSequence,
+			client->reliableSequence, client->reliableSent );
+	}
 
 	// MW - my attempt to fix illegible server message errors caused by
 	// packet fragmentation of initial snapshot.
@@ -540,10 +669,22 @@ void SV_SendClientGameState( client_t *client ) {
 	// gamestate message was not just sent, forcing a retransmit
 	client->gamestateMessageNum = client->netchan.outgoingSequence;
 
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG gamestate create begin client=%li state=%i gamestateMessageNum=%i\n",
+			(long)( client - svs.clients ), client->state, client->gamestateMessageNum );
+	}
 	SV_CreateClientGameStateMessage( client, &msg );
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG gamestate create done client=%li size=%i state=%i reliableSent=%i\n",
+			(long)( client - svs.clients ), msg.cursize, client->state, client->reliableSent );
+	}
 
 	// deliver this to the client
 	SV_SendMessageToClient( &msg, client );
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG gamestate send done client=%li state=%i outgoing=%i gamestateMessageNum=%i\n",
+			(long)( client - svs.clients ), client->state, client->netchan.outgoingSequence, client->gamestateMessageNum );
+	}
 }
 
 
@@ -553,6 +694,13 @@ void SV_SendClientMapChange( client_t *client )
 	byte		msgBuffer[MAX_MSGLEN];
 
 	MSG_Init( &msg, msgBuffer, sizeof( msgBuffer ) );
+
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG mapchange begin client=%li name='%s' state=%i map='%s' outgoing=%i lastClientCommand=%i\n",
+			(long)( client - svs.clients ), client->name, client->state,
+			client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+			client->netchan.outgoingSequence, client->lastClientCommand );
+	}
 
 	// NOTE, MRE: all server->client messages now acknowledge
 	// let the client know which reliable clientCommands we have received
@@ -569,6 +717,10 @@ void SV_SendClientMapChange( client_t *client )
 
 	// deliver this to the client
 	SV_SendMessageToClient( &msg, client );
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG mapchange send done client=%li state=%i outgoing=%i size=%i\n",
+			(long)( client - svs.clients ), client->state, client->netchan.outgoingSequence, msg.cursize );
+	}
 }
 
 /*
@@ -579,9 +731,18 @@ SV_ClientEnterWorld
 void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 	int		clientNum;
 	sharedEntity_t *ent;
+	qboolean runtimeMapReload;
 
 	Com_DPrintf( "Going from CS_PRIMED to CS_ACTIVE for %s\n", client->name );
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG enterworld begin client=%li name='%s' state=%i map='%s' gamestateMessageNum=%i messageAck=%i cmd=%i\n",
+			(long)( client - svs.clients ), client->name, client->state,
+			client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string,
+			client->gamestateMessageNum, client->messageAcknowledge, cmd ? cmd->serverTime : -1 );
+	}
 	client->state = CS_ACTIVE;
+	runtimeMapReload = client->skipClientBeginForRuntimeMap;
+	SV_DynBSPClientEnteredWorld( client );
 
 	if (sv_autoWhitelist->integer) {
 		SVC_WhitelistAdr( &client->netchan.remoteAddress );
@@ -589,13 +750,25 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 
 	// resend all configstrings using the cs commands since these are
 	// no longer sent when the client is CS_PRIMED
-	SV_UpdateConfigstrings( client );
+	if ( !runtimeMapReload ) {
+		SV_UpdateConfigstrings( client );
+	}
+	else {
+		memset( client->csUpdated, 0, sizeof( client->csUpdated ) );
+	}
 
 	// set up the entity for the client
 	clientNum = client - svs.clients;
 	ent = SV_GentityNum( clientNum );
 	ent->s.number = clientNum;
 	client->gentity = ent;
+	if ( client->runtimeMapName[0] ) {
+		sharedEntity_t *holder = SV_DynBSPInstanceForMap( client->runtimeMapName );
+		SV_SetRuntimeBSPInstanceForGentity( ent, holder ? SV_RuntimeBSPInstanceForGentity( holder ) : -1 );
+	}
+	else {
+		SV_SetRuntimeBSPInstanceForGentity( ent, -1 );
+	}
 
 	client->lastUserInfoChange = 0; //reset the delay
 	client->lastUserInfoCount = 0; //reset the count
@@ -608,8 +781,23 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 	else
 		memset(&client->lastUsercmd, '\0', sizeof(client->lastUsercmd));
 
-	// call the game begin function
-	GVM_ClientBegin( client - svs.clients );
+	if ( runtimeMapReload ) {
+		client->skipClientBeginForRuntimeMap = qfalse;
+		if ( SV_DynBSPDebugEnabled() ) {
+			Com_Printf( "BSPDEBUG enterworld skipped game ClientBegin for runtime map client=%li name='%s' map='%s'\n",
+				(long)( client - svs.clients ), client->name,
+				client->runtimeMapName[0] ? client->runtimeMapName : sv_mapname->string );
+		}
+	}
+	else {
+		// call the game begin function
+		GVM_ClientBegin( client - svs.clients );
+	}
+	if ( SV_DynBSPDebugEnabled() ) {
+		Com_Printf( "BSPDEBUG enterworld done client=%li name='%s' state=%i loadedGen=%i sendGen=%i currentGen=%i\n",
+			(long)( client - svs.clients ), client->name, client->state,
+			client->loadedBSPModelsGeneration, client->sendBSPModelsGeneration, sv.bspModelsGeneration );
+	}
 
 #ifdef DEDICATED
 	if (sv_autoDemo->integer == 1) { //Bots dont trigger this so whatever
@@ -1815,10 +2003,12 @@ Parse a client packet
 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) {
 	int			c;
 	int			serverId;
+	int			expectedServerId;
 
 	MSG_Bitstream(msg);
 
 	serverId = MSG_ReadLong( msg );
+	expectedServerId = SV_DynBSPClientServerId( cl );
 	cl->messageAcknowledge = MSG_ReadLong( msg );
 
 	if (cl->messageAcknowledge < 0) {
@@ -1852,8 +2042,8 @@ void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) {
 	// don't drop as long as previous command was a nextdl, after a dl is done, downloadName is set back to ""
 	// but we still need to read the next message to move to next download or send gamestate
 	// I don't like this hack though, it must have been working fine at some point, suspecting the fix is somewhere else
-	if ( serverId != sv.serverId && !*cl->downloadName && !strstr(cl->lastClientCommandString, "nextdl") ) {
-		if ( serverId >= sv.restartedServerId && serverId < sv.serverId ) { // TTimo - use a comparison here to catch multiple map_restart
+	if ( serverId != expectedServerId && !*cl->downloadName && !strstr(cl->lastClientCommandString, "nextdl") ) {
+		if ( serverId >= sv.restartedServerId && serverId < expectedServerId ) { // TTimo - use a comparison here to catch multiple map_restart
 			// they just haven't caught the map_restart yet
 			Com_DPrintf("%s : ignoring pre map_restart / outdated client message\n", cl->name);
 			return;
@@ -1870,7 +2060,7 @@ void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) {
 
 	// this client has acknowledged the new gamestate so it's
 	// safe to start sending it the real time again
-	if( cl->oldServerTime && serverId == sv.serverId ) {
+	if( cl->oldServerTime && serverId == expectedServerId ) {
 		Com_DPrintf( "%s acknowledged gamestate\n", cl->name );
 		cl->oldServerTime = 0;
 	}

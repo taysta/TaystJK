@@ -22,6 +22,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "g_local.h"
+#include "g_dynbsp.h"
 
 //==========================================================
 
@@ -1020,6 +1021,350 @@ void SP_target_level_change( gentity_t *self )
 
 	G_SetOrigin( self, self->s.origin );
 	self->use = target_level_change_use;
+}
+
+static qboolean target_runtimewarp_has_map( gentity_t *self )
+{
+	return ( self && self->message && self->message[0] ) ? qtrue : qfalse;
+}
+
+static int target_runtimewarp_pack_light( const vec3_t color, float light )
+{
+	int r = color[0] * 255.0f;
+	int g = color[1] * 255.0f;
+	int b = color[2] * 255.0f;
+	int i = light / 4.0f;
+
+	if ( r < 0 ) { r = 0; } else if ( r > 255 ) { r = 255; }
+	if ( g < 0 ) { g = 0; } else if ( g > 255 ) { g = 255; }
+	if ( b < 0 ) { b = 0; } else if ( b > 255 ) { b = 255; }
+	if ( i < 0 ) { i = 0; } else if ( i > 255 ) { i = 255; }
+
+	return r | ( g << 8 ) | ( b << 16 ) | ( i << 24 );
+}
+
+static qboolean target_runtimewarp_map_occupied( gentity_t *self )
+{
+	if ( !target_runtimewarp_has_map( self ) )
+	{
+		return qfalse;
+	}
+
+	return G_RuntimeWarpMapOccupied( self->message );
+}
+
+static void target_runtimewarp_light_think( gentity_t *self )
+{
+	if ( !self )
+	{
+		return;
+	}
+
+	if ( !target_runtimewarp_has_map( self ) )
+	{
+		self->s.constantLight = 0;
+		self->nextthink = 0;
+		return;
+	}
+
+	self->s.constantLight = target_runtimewarp_map_occupied( self ) ? self->genericValue2 : self->genericValue1;
+	self->nextthink = level.time + 500;
+}
+
+static void target_runtimewarp_light_idle( gentity_t *self )
+{
+	if ( !self )
+	{
+		return;
+	}
+
+	if ( !target_runtimewarp_has_map( self ) )
+	{
+		self->s.constantLight = 0;
+		self->nextthink = 0;
+		return;
+	}
+
+	self->think = target_runtimewarp_light_think;
+	self->nextthink = level.time + 100;
+	target_runtimewarp_light_think( self );
+}
+
+static void target_runtimewarp_apply_shader( gentity_t *self )
+{
+	const char *newShader;
+
+	if ( !self || !self->targetShaderName || !self->targetShaderName[0] )
+	{
+		return;
+	}
+
+	if ( !target_runtimewarp_has_map( self ) )
+	{
+		return;
+	}
+
+	newShader = va( "levelshots/%s", self->message );
+	AddRemap( self->targetShaderName, newShader, level.time * 0.001f );
+	trap->SetConfigstring( CS_SHADERSTATE, BuildShaderStateConfig() );
+}
+
+static void target_runtimewarp_assign( gentity_t *self, const char *mapName )
+{
+	if ( !self || !mapName )
+	{
+		return;
+	}
+
+	self->message = G_NewString( mapName );
+	target_runtimewarp_apply_shader( self );
+	target_runtimewarp_light_idle( self );
+}
+
+static qboolean target_runtimewarp_better_free_slot( gentity_t *candidate, gentity_t *best )
+{
+	if ( !candidate )
+	{
+		return qfalse;
+	}
+	if ( !best )
+	{
+		return qtrue;
+	}
+
+	if ( candidate->genericValue3 > 0 && best->genericValue3 <= 0 )
+	{
+		return qtrue;
+	}
+	if ( candidate->genericValue3 <= 0 && best->genericValue3 > 0 )
+	{
+		return qfalse;
+	}
+	if ( candidate->genericValue3 > 0 && best->genericValue3 > 0
+		&& candidate->genericValue3 != best->genericValue3 )
+	{
+		return candidate->genericValue3 < best->genericValue3 ? qtrue : qfalse;
+	}
+
+	return candidate->s.number < best->s.number ? qtrue : qfalse;
+}
+
+qboolean G_RuntimeWarpCanAssign( const char *mapName )
+{
+	gentity_t *slot = NULL;
+
+	if ( !mapName || !mapName[0] )
+	{
+		return qfalse;
+	}
+
+	while ( ( slot = G_Find( slot, FOFS( classname ), "target_runtimewarp" ) ) != NULL )
+	{
+		if ( target_runtimewarp_has_map( slot ) && !Q_stricmp( slot->message, mapName ) )
+		{
+			return qtrue;
+		}
+		if ( !target_runtimewarp_has_map( slot ) )
+		{
+			return qtrue;
+		}
+	}
+
+	return qfalse;
+}
+
+int G_RuntimeWarpClearTargets( void )
+{
+	gentity_t *slot = NULL;
+	int count = 0;
+	qboolean shaderChanged = qfalse;
+
+	while ( ( slot = G_Find( slot, FOFS( classname ), "target_runtimewarp" ) ) != NULL )
+	{
+		if ( slot->message && slot->message[0] )
+		{
+			count++;
+		}
+
+		slot->message = G_NewString( "" );
+		slot->s.constantLight = 0;
+		slot->think = NULL;
+		slot->nextthink = 0;
+		slot->timestamp = 0;
+		slot->painDebounceTime = 0;
+
+		if ( slot->targetShaderName && slot->targetShaderName[0] )
+		{
+			AddRemap( slot->targetShaderName, slot->targetShaderName, level.time * 0.001f );
+			shaderChanged = qtrue;
+		}
+	}
+
+	if ( shaderChanged )
+	{
+		trap->SetConfigstring( CS_SHADERSTATE, BuildShaderStateConfig() );
+	}
+
+	return count;
+}
+
+qboolean G_RuntimeWarpAssignFirst( const char *mapName, gentity_t *requester )
+{
+	gentity_t *slot = NULL;
+	gentity_t *bestSlot = NULL;
+
+	if ( !mapName || !mapName[0] )
+	{
+		return qfalse;
+	}
+
+	while ( ( slot = G_Find( slot, FOFS( classname ), "target_runtimewarp" ) ) != NULL )
+	{
+		if ( target_runtimewarp_has_map( slot ) && !Q_stricmp( slot->message, mapName ) )
+		{
+			if ( requester && requester->client )
+			{
+				trap->SendServerCommand( requester->s.number, va( "print \"Runtime warp slot already assigned to %s.\n\"", mapName ) );
+			}
+			return qtrue;
+		}
+	}
+
+	slot = NULL;
+	while ( ( slot = G_Find( slot, FOFS( classname ), "target_runtimewarp" ) ) != NULL )
+	{
+		if ( target_runtimewarp_has_map( slot ) )
+		{
+			continue;
+		}
+
+		if ( target_runtimewarp_better_free_slot( slot, bestSlot ) )
+		{
+			bestSlot = slot;
+		}
+	}
+
+	if ( bestSlot )
+	{
+		target_runtimewarp_assign( bestSlot, mapName );
+		if ( requester && requester->client )
+		{
+			trap->SendServerCommand( requester->s.number, va( "print \"Runtime warp slot %i assigned to %s.\n\"",
+				bestSlot->genericValue3, mapName ) );
+		}
+		return qtrue;
+	}
+
+	if ( requester && requester->client )
+	{
+		trap->SendServerCommand( requester->s.number, "print \"No unused target_runtimewarp slots are available.\n\"" );
+	}
+	return qfalse;
+}
+
+void target_runtimewarp_use(gentity_t *self, gentity_t *other, gentity_t *activator)
+{
+	G_ActivateBehavior(self,BSET_USE);
+
+	if ( !activator || !activator->client ) {
+		return;
+	}
+
+	activator->client->runtimeWarpTarget = self;
+	activator->client->runtimeWarpTouchTime = level.time + 250;
+
+	if ( !target_runtimewarp_has_map( self ) ) {
+		if ( self->painDebounceTime < level.time ) {
+			trap->SendServerCommand( activator->s.number, "cp \"No map assigned to this door\nType /rwarp <mapname> to load a map\"" );
+			self->painDebounceTime = level.time + 1000;
+		}
+		return;
+	}
+
+	if ( !(activator->client->pers.cmd.buttons & BUTTON_USE) ) {
+		if ( self->painDebounceTime < level.time ) {
+			char players[MAX_STRING_CHARS];
+			char message[MAX_STRING_CHARS];
+
+			if ( G_RuntimeWarpBuildOccupantList( self->message, players, sizeof( players ) ) > 0 ) {
+				Com_sprintf( message, sizeof( message ), "%s\nPlayers:\n%s", self->message, players );
+			}
+			else {
+				Com_sprintf( message, sizeof( message ), "%s\n", self->message );
+			}
+			trap->SendServerCommand( activator->s.number, va( "cp \"%s\"", message ) );
+			self->painDebounceTime = level.time + 1000;
+		}
+		return;
+	}
+
+	if ( self->timestamp > level.time ) {
+		return;
+	}
+	self->timestamp = level.time + 1000;
+
+	if ( !G_RuntimeRoomEnsureMap( self->message, vec3_origin, activator->s.number ) ) {
+		trap->SendServerCommand( activator->s.number, va( "print \"Failed to load runtime map %s.\n\"", self->message ) );
+		return;
+	}
+
+	if ( !G_SetClientMap( activator->s.number, self->message ) ) {
+		trap->SendServerCommand( activator->s.number, va( "print \"Failed to enter map %s\n\"", self->message ) );
+	}
+	else {
+		G_RuntimeWarpSetClientMap( activator->s.number, self->message );
+		target_runtimewarp_light_think( self );
+	}
+}
+
+/*QUAKED target_runtimewarp (1 0 0) (-4 -4 -4) (4 4 4)
+Runtime map slot used by trigger_multiple doors.
+"mapname" - Optional initial map name.
+"slot" - Optional numeric slot. If targetshadername is unset, uses textures/japro/door<slot>.
+"targetshadername" - Door shader to remap to levelshots/<mapname> when assigned.
+"light" - Optional dynamic light radius/intensity for assigned slot, default 150. Use 0 to disable.
+"color" - Optional assigned-slot light color, default white.
+"activelight" - Optional dynamic light radius/intensity while occupied, default light.
+"activecolor" - Optional occupied light color, default green.
+*/
+void SP_target_runtimewarp( gentity_t *self )
+{
+	char *s;
+	int slot;
+	float light;
+	float activeLight;
+	vec3_t color;
+	vec3_t activeColor;
+
+	G_SpawnString( "mapname", "", &s );
+	self->message = G_NewString(s);
+
+	G_SpawnInt( "slot", "0", &slot );
+	self->genericValue3 = slot;
+	if ( slot > 0 && ( !self->targetShaderName || !self->targetShaderName[0] ) )
+	{
+		self->targetShaderName = G_NewString( va( "textures/japro/door%i", slot ) );
+	}
+
+	G_SpawnFloat( "light", "150", &light );
+	if ( !G_SpawnFloat( "activelight", "", &activeLight ) )
+	{
+		activeLight = light;
+	}
+	G_SpawnVector( "color", "1 1 1", color );
+	G_SpawnVector( "activecolor", "0 1 0", activeColor );
+	self->genericValue1 = target_runtimewarp_pack_light( color, light );
+	self->genericValue2 = target_runtimewarp_pack_light( activeColor, activeLight );
+
+	G_SetOrigin( self, self->s.origin );
+	self->s.eType = ET_GENERAL;
+	self->s.eFlags |= EF_NODRAW;
+	self->r.contents = 0;
+	self->use = target_runtimewarp_use;
+	trap->LinkEntity( (sharedEntity_t *)self );
+
+	target_runtimewarp_apply_shader( self );
+	target_runtimewarp_light_idle( self );
 }
 
 void target_play_music_use(gentity_t *self, gentity_t *other, gentity_t *activator)

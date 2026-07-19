@@ -4700,6 +4700,18 @@ int gPainMOD = 0;
 int gPainHitLoc = -1;
 vec3_t gPainPoint;
 
+static qboolean G_DamageDimensionAllows( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker ) {
+	gentity_t *source = NULL;
+
+	if ( attacker && attacker->inuse && attacker->s.number != ENTITYNUM_WORLD ) {
+		source = attacker;
+	} else if ( inflictor && inflictor->inuse && inflictor->s.number != ENTITYNUM_WORLD ) {
+		source = inflictor;
+	}
+
+	return G_DimensionCanInteract( source, targ, SVISO_DAMAGE );
+}
+
 void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_t dir, vec3_t point, int damage, int dflags, int mod ) {
 	gclient_t	*client;
 	int			take, asave, max, subamt = 0, knockback;
@@ -4711,6 +4723,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, vec3_
 	if (targ && targ->damageRedirect)
 	{
 		G_Damage(&g_entities[targ->damageRedirectTo], inflictor, attacker, dir, point, damage, dflags, mod);
+		return;
+	}
+
+	if ( !G_DamageDimensionAllows( targ, inflictor, attacker ) ) {
 		return;
 	}
 
@@ -6362,6 +6378,8 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 		if (ent == ignore)
 			continue;
 		if (!ent->takedamage && !g_allowFlagThrow.integer)
+			continue;
+		if ( !G_DimensionCanInteract( attacker ? attacker : missile, ent, SVISO_DAMAGE ) )
 			continue;
 
 		// find the distance from the edge of the bounding box

@@ -1408,6 +1408,7 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 	}
 
 	newent->fullName = ent->fullName;
+	G_SetRuntimeBSPInstance( newent, ent->runtimeBSPInstance );
 
 	newent->NPC = New_NPC_t(newent->s.number);
 	if ( newent->NPC == NULL )
@@ -1431,6 +1432,7 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent )
 
 	newent->NPC->tempGoal->classname = "NPC_goal";
 	newent->NPC->tempGoal->parent = newent;
+	G_SetRuntimeBSPInstance( newent->NPC->tempGoal, ent->runtimeBSPInstance );
 	newent->NPC->tempGoal->r.svFlags |= SVF_NOCLIENT;
 
 	if ( newent->client == NULL )
@@ -3997,14 +3999,15 @@ gentity_t *NPC_SpawnType( gentity_t *ent, char *npc_type, char *targetname, qboo
 	AngleVectors(ent->client->ps.viewangles, forward, NULL, NULL);
 	VectorNormalize(forward);
 	VectorMA(ent->r.currentOrigin, 64, forward, end);
-	trap->Trace(&trace, ent->r.currentOrigin, NULL, NULL, end, 0, MASK_SOLID, qfalse, 0, 0);
+	trap->Trace(&trace, ent->r.currentOrigin, NULL, NULL, end, ent->s.number, MASK_SOLID, qfalse, 0, 0);
 	VectorCopy(trace.endpos, end);
 	end[2] -= 24;
-	trap->Trace(&trace, trace.endpos, NULL, NULL, end, 0, MASK_SOLID, qfalse, 0, 0);
+	trap->Trace(&trace, trace.endpos, NULL, NULL, end, ent->s.number, MASK_SOLID, qfalse, 0, 0);
 	VectorCopy(trace.endpos, end);
 	end[2] += 24;
 	G_SetOrigin(NPCspawner, end);
 	VectorCopy(NPCspawner->r.currentOrigin, NPCspawner->s.origin);
+	G_SetRuntimeBSPInstance( NPCspawner, ent->runtimeBSPInstance );
 	//set the yaw so that they face away from player
 	NPCspawner->s.angles[1] = ent->client->ps.viewangles[1];
 

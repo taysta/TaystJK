@@ -25,6 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // this file holds commands that can be executed by the server console, but not remote clients
 
 #include "g_local.h"
+#include "g_dynbsp.h"
 
 /*
 ==============================================================================
@@ -811,6 +812,16 @@ static void SV_Pause_f( void ) {
 		level.pause.state = PAUSE_UNPAUSING;
 		level.pause.time = level.time + g_unpauseTime.integer * 1000;
 	}
+}
+
+static void Svcmd_LoadBSP_f( void )
+{
+	G_DynBSP_LoadCommand();
+}
+
+static void Svcmd_ClearBSPs_f( void )
+{
+	G_DynBSP_ClearCommand();
 }
 
 char *ConcatArgs( int start );
@@ -1674,6 +1685,7 @@ svcmd_t svcmds[] = {
 	{ "clanjoin",					Svcmd_ClanJoin_f,					qfalse },
 	{ "clankick",					Svcmd_ClanKick_f,					qfalse },
 
+	{ "clearBSPs",					Svcmd_ClearBSPs_f,					qfalse },
 	{ "clearIP",					Svcmd_ClearIP_f,					qfalse },
 	{ "DBInfo",						Svcmd_DBInfo_f,						qfalse },
 	{ "deleteAccount",				Svcmd_DeleteAccount_f,				qfalse },
@@ -1688,6 +1700,8 @@ svcmd_t svcmds[] = {
 	{ "listAdmins",					Svcmd_ListAdmins_f,					qfalse },
 
 	{ "listip",						Svcmd_ListIP_f,						qfalse },
+
+	{ "loadBSP",					Svcmd_LoadBSP_f,					qfalse },
 
 	{ "migrateCheckpoints",			SV_MigrateCheckpoints_f,			qfalse },
 
