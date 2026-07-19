@@ -290,6 +290,14 @@ vec4 CalcColor(vec3 position, vec3 normal)
 		color.a *= color.a;
 		color.a *= color.a;
 	}
+	else if (u_AlphaGen == AGEN_LIGHTING_SPECULAR_STATIC)
+	{
+		vec3 reflected = -reflect(u_ModelLightDir, normal);
+
+		color.a = clamp(dot(reflected, normalize(viewer)), 0.0, 1.0);
+		color.a *= color.a;
+		color.a *= color.a;
+	}
 	else if (u_AlphaGen == AGEN_PORTAL)
 	{
 		color.a = clamp(length(viewer) / u_PortalRange, 0.0, 1.0);

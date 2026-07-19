@@ -336,9 +336,11 @@ static size_t GLSL_GetShaderHeader(
 					 va("#ifndef alphaGen_t\n"
 						"#define alphaGen_t\n"
 						"#define AGEN_LIGHTING_SPECULAR %i\n"
+						"#define AGEN_LIGHTING_SPECULAR_STATIC %i\n"
 						"#define AGEN_PORTAL %i\n"
 						"#endif\n",
 						AGEN_LIGHTING_SPECULAR,
+						AGEN_LIGHTING_SPECULAR_STATIC,
 						AGEN_PORTAL));
 
 	Q_strcat(dest, size,
