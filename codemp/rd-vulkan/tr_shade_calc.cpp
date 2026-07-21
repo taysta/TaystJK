@@ -1212,7 +1212,7 @@ void RB_CalcSpecularAlpha( unsigned char *alphas ) {
 void RB_CalcDiffuseColor( unsigned char *colors )
 {
 	int				i, j;
-	float			*v, *normal;
+	float			*normal;
 	float			incoming;
 	trRefEntity_t	*ent;
 	int				ambientLightInt;
@@ -1227,11 +1227,10 @@ void RB_CalcDiffuseColor( unsigned char *colors )
 	VectorCopy( ent->directedLight, directedLight );
 	VectorCopy( ent->modelLightDir, lightDir );
 
-	v = tess.xyz[0];
 	normal = tess.normal[0];
 
 	numVertexes = tess.numVertexes;
-	for (i = 0 ; i < numVertexes ; i++, v += 4, normal += 4) {
+	for (i = 0 ; i < numVertexes ; i++, normal += 4) {
 		incoming = DotProduct (normal, lightDir);
 		if ( incoming <= 0 ) {
 			*(int *)&colors[i*4] = ambientLightInt;
