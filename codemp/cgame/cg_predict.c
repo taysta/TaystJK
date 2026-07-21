@@ -30,8 +30,6 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 static	pmove_t		cg_pmove;
 
-extern vmCvar_t bg_podracerPhysics;
-
 #define CG_POD_TURN_CACHE_SIZE 512
 
 typedef struct cgPodTurnPredictState_s
@@ -41,6 +39,15 @@ typedef struct cgPodTurnPredictState_s
 	int			commandTime;
 	float		turnRate;
 	float		traction;
+	float		surfaceSpeedMultiplier;
+	float		surfaceSkidModifier;
+	float		surfaceFastBonus;
+	qboolean	surfaceSpeedApplied;
+	int			driftActiveTime;	// BG_PodRacerDrifting flood-protection timestamp
+	int			brakeActiveTime;	// BG_PodRacerBraking flood-protection timestamp
+	int			rollActiveTime;		// BG_PodRacerManualRoll flood-protection timestamp
+	int			rollDir;			// direction of that roll engagement (-1/0/+1)
+	int			impactTime;		// pod collision speed-scrub cooldown
 } cgPodTurnPredictState_t;
 
 static cgPodTurnPredictState_t cg_podTurnCache[CG_POD_TURN_CACHE_SIZE];
@@ -53,11 +60,9 @@ static	centity_t	*cg_triggerEntities[MAX_ENTITIES_IN_SNAPSHOT];
 
 static qboolean CG_PodTurnPredictionApplies( const centity_t *veh )
 {
-	return ( bg_podracerPhysics.integer
-		&& veh
+	return ( veh
 		&& veh->m_pVehicle
-		&& veh->m_pVehicle->m_pVehicleInfo
-		&& veh->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER ) ? qtrue : qfalse;
+		&& BG_PodRacerPhysics( veh->m_pVehicle ) ) ? qtrue : qfalse;
 }
 
 static void CG_ClearPodTurnPredictionCache( void )
@@ -83,6 +88,15 @@ static void CG_StorePodTurnPredictionState( int vehicleNum, int commandTime, Veh
 		{
 			state->turnRate = pVeh->m_fPodTurnRate;
 			state->traction = pVeh->m_fPodTraction;
+			state->surfaceSpeedMultiplier = pVeh->m_fPodSurfaceSpeedMultiplier;
+			state->surfaceSkidModifier = pVeh->m_fPodSurfaceSkidModifier;
+			state->surfaceFastBonus = pVeh->m_fPodSurfaceFastBonus;
+			state->surfaceSpeedApplied = pVeh->m_bPodSurfaceSpeedApplied;
+			state->driftActiveTime = pVeh->m_iPodDriftActiveTime;
+			state->brakeActiveTime = pVeh->m_iPodBrakeActiveTime;
+			state->rollActiveTime = pVeh->m_iPodRollActiveTime;
+			state->rollDir = pVeh->m_iPodRollDir;
+			state->impactTime = pVeh->m_iPodImpactTime;
 			return;
 		}
 	}
@@ -94,6 +108,15 @@ static void CG_StorePodTurnPredictionState( int vehicleNum, int commandTime, Veh
 	state->commandTime = commandTime;
 	state->turnRate = pVeh->m_fPodTurnRate;
 	state->traction = pVeh->m_fPodTraction;
+	state->surfaceSpeedMultiplier = pVeh->m_fPodSurfaceSpeedMultiplier;
+	state->surfaceSkidModifier = pVeh->m_fPodSurfaceSkidModifier;
+	state->surfaceFastBonus = pVeh->m_fPodSurfaceFastBonus;
+	state->surfaceSpeedApplied = pVeh->m_bPodSurfaceSpeedApplied;
+	state->driftActiveTime = pVeh->m_iPodDriftActiveTime;
+	state->brakeActiveTime = pVeh->m_iPodBrakeActiveTime;
+	state->rollActiveTime = pVeh->m_iPodRollActiveTime;
+	state->rollDir = pVeh->m_iPodRollDir;
+	state->impactTime = pVeh->m_iPodImpactTime;
 }
 
 static qboolean CG_RestorePodTurnPredictionState( int vehicleNum, int commandTime, Vehicle_t *pVeh )
@@ -112,7 +135,16 @@ static qboolean CG_RestorePodTurnPredictionState( int vehicleNum, int commandTim
 		{
 			pVeh->m_fPodTurnRate = state->turnRate;
 			pVeh->m_fPodTraction = state->traction;
+			pVeh->m_fPodSurfaceSpeedMultiplier = state->surfaceSpeedMultiplier;
+			pVeh->m_fPodSurfaceSkidModifier = state->surfaceSkidModifier;
+			pVeh->m_fPodSurfaceFastBonus = state->surfaceFastBonus;
+			pVeh->m_bPodSurfaceSpeedApplied = state->surfaceSpeedApplied;
 			pVeh->m_fPodTargetTurnRate = 0.0f;
+			pVeh->m_iPodDriftActiveTime = state->driftActiveTime;
+			pVeh->m_iPodBrakeActiveTime = state->brakeActiveTime;
+			pVeh->m_iPodRollActiveTime = state->rollActiveTime;
+			pVeh->m_iPodRollDir = state->rollDir;
+			pVeh->m_iPodImpactTime = state->impactTime;
 			return qtrue;
 		}
 	}
@@ -121,7 +153,16 @@ static qboolean CG_RestorePodTurnPredictionState( int vehicleNum, int commandTim
 	// turn rate back into the snapshot base; that is the transition jerk we are avoiding.
 	pVeh->m_fPodTurnRate = 0.0f;
 	pVeh->m_fPodTraction = 1.0f;
+	pVeh->m_fPodSurfaceSpeedMultiplier = 1.0f;
+	pVeh->m_fPodSurfaceSkidModifier = 1.0f;
+	pVeh->m_fPodSurfaceFastBonus = 0.0f;
+	pVeh->m_bPodSurfaceSpeedApplied = qfalse;
 	pVeh->m_fPodTargetTurnRate = 0.0f;
+	pVeh->m_iPodDriftActiveTime = 0;
+	pVeh->m_iPodBrakeActiveTime = 0;
+	pVeh->m_iPodRollActiveTime = 0;
+	pVeh->m_iPodRollDir = 0;
+	pVeh->m_iPodImpactTime = 0;
 	return qfalse;
 }
 
@@ -316,7 +357,7 @@ CG_ClipMoveToEntities
 
 ====================
 */
-extern void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t mins, vec3_t maxs,
+extern void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, int scalePercent, vec3_t origin, vec3_t mins, vec3_t maxs,
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask)); // bg_pmove.c
 static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end,
@@ -430,7 +471,8 @@ static void CG_ClipMoveToEntities ( const vec3_t start, const vec3_t mins, const
 			{ //try to dynamically adjust his bbox dynamically, if possible
 				float *old = cent->m_pVehicle->m_vOrientation;
 				cent->m_pVehicle->m_vOrientation = &cent->lerpAngles[0];
-				BG_VehicleAdjustBBoxForOrientation(cent->m_pVehicle, cent->lerpOrigin, bmins, bmaxs,
+				BG_VehicleAdjustBBoxForOrientation(cent->m_pVehicle, cent->currentState.iModelScale,
+											cent->lerpOrigin, bmins, bmaxs,
 											cent->currentState.number, MASK_PLAYERSOLID, NULL);
 				cent->m_pVehicle->m_vOrientation = old;
 			}
@@ -1366,11 +1408,11 @@ void CG_PredictPlayerState( void ) {
 
 	// Stop predicting once the server's authoritative knockback is in the snapshot base, otherwise
 	// re-injecting it during replay would double it. Two jump-immune triggers replace the old
-	// single-step velocity-jump heuristic (which false-fired on the player's own jump — a vertical
+	// single-step velocity-jump heuristic (which false-fired on the player's own jump ï¿½ a vertical
 	// rocket-jump and a bunny-hop look identical in the velocity stream):
-	//   1) predictKnockbackExploded — our rocket's EV_MISSILE_MISS arrived. Authoritative; also catches
+	//   1) predictKnockbackExploded ï¿½ our rocket's EV_MISSILE_MISS arrived. Authoritative; also catches
 	//      an explosion that happened earlier than our predicted explT.
-	//   2) base commandTime >= explT — the base snapshot has run the explosion command, so its velocity
+	//   2) base commandTime >= explT ï¿½ the base snapshot has run the explosion command, so its velocity
 	//      already carries the real knockback. explT lives in command-time (cmd.serverTime) units, so we
 	//      MUST compare against the base's commandTime, NOT its serverTime (those clocks differ by ~ping;
 	//      the logs show the server velocity jumps exactly when snapshot commandTime reaches explT). This
@@ -1609,7 +1651,7 @@ void CG_PredictPlayerState( void ) {
 		// Knockback prediction: inject the impulse exactly once, at the first replayed command
 		// at/after the explosion time. Pmove then replays all subsequent commands with real
 		// physics (gravity, air control), so the arc advances naturally and smoothly as more
-		// commands accumulate each frame — just like a normal predicted jump.
+		// commands accumulate each frame ï¿½ just like a normal predicted jump.
 		if (cg.predictKnockback && !knockbackAppliedThisPass &&
 			cg_pmove.cmd.serverTime >= cg.predictKnockbackServerTime)
 		{
@@ -1683,6 +1725,13 @@ void CG_PredictPlayerState( void ) {
 
 			if (veh->m_pVehicle)
 			{ //make sure pointer is set up to go to our predicted state
+				// The vehicle entity is the authoritative source for its replicated
+				// per-instance scale.  Keep it in the predicted playerState before
+				// Pmove so its dynamic hull is calculated at the same size as server.
+				if ( !cg.predictedVehicleState.iModelScale && veh->currentState.iModelScale )
+				{
+					cg.predictedVehicleState.iModelScale = veh->currentState.iModelScale;
+				}
 				veh->m_pVehicle->m_vOrientation = &cg.predictedVehicleState.vehOrientation[0];
 
 				//keep this updated based on what the playerstate says
@@ -1724,7 +1773,7 @@ void CG_PredictPlayerState( void ) {
 				//I think this was actually wrong.. just copy-pasted from id code. Oh well.
 				x = (veh->currentState.solid)&255;
 				zd = (veh->currentState.solid>>8)&255;
-				zu = (veh->currentState.solid>>15)&255;
+				zu = (veh->currentState.solid>>16)&255;
 
 				zu -= 32; //I don't quite get the reason for this.
 				zd = -zd;
@@ -1735,7 +1784,11 @@ void CG_PredictPlayerState( void ) {
 				cg_vehPmove.mins[2] = zd;
 				cg_vehPmove.maxs[2] = zu;
 
-				VectorCopy(veh->modelScale, cg_vehPmove.modelScale);
+				{
+					const float vehicleScale = BG_VehicleInstanceScale( veh->m_pVehicle,
+						cg.predictedVehicleState.iModelScale );
+					VectorSet( cg_vehPmove.modelScale, vehicleScale, vehicleScale, vehicleScale );
+				}
 
 				if (!cg_vehPmoveSet)
 				{ //do all the one-time things

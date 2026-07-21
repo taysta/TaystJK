@@ -278,6 +278,8 @@ CG_CalcTargetThirdPersonViewLocation
 */
 static void CG_CalcIdealThirdPersonViewTarget(void)
 {
+	float viewHeight = cg.predictedPlayerState.viewheight;
+
 	// Initialize IdealTarget
 	if (gCGHasFallVector)
 	{
@@ -290,7 +292,15 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 
 	// Add in the new viewheight
 	//cam.focus[2] += cg.snap->ps.viewheight; //36 = standing, 12 = crouching.
-	cam.focus[2] += cg.predictedPlayerState.viewheight;//Proper prediction
+	if ( cg.snap && cg.snap->ps.m_iVehicleNum )
+	{
+		centity_t *veh = &cg_entities[cg.snap->ps.m_iVehicleNum];
+		if ( veh->m_pVehicle && veh->m_pVehicle->m_pVehicleInfo )
+		{
+			viewHeight *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
+		}
+	}
+	cam.focus[2] += viewHeight;//Vehicle rider height follows the replicated vehicle scale
 
 	// Add in a vertical offset from the viewpoint, which puts the actual target above the head, regardless of angle.
 //	VectorMA(cam.focus, thirdPersonVertOffset, cameraup, cam.target.ideal);
@@ -345,6 +355,7 @@ static void CG_CalcIdealThirdPersonViewTarget(void)
 				{
 					vertOffset = veh->m_pVehicle->m_pVehicleInfo->cameraVertOffset;
 				}
+				vertOffset *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
 			}
 			else if ( veh->m_pVehicle
 				&& veh->m_pVehicle->m_pVehicleInfo
@@ -420,6 +431,7 @@ static void CG_CalcIdealThirdPersonViewLocation(void)
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
 			newThirdPersonRange = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+			newThirdPersonRange *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
             if (cg_vehicleRange.value) {
                 newThirdPersonRange += cg_vehicleRange.value;
             }
@@ -720,7 +732,6 @@ CG_OffsetThirdPersonView
 ===============
 */
 extern qboolean BG_UnrestrainedPitchRoll( playerState_t *ps, Vehicle_t *pVeh );
-extern vmCvar_t bg_podracerPhysics;
 static float cgPodCamRoll = 0.0f;	// smoothed camera bank for pod vehicles (see below)
 static void CG_OffsetThirdPersonView( void )
 {
@@ -736,6 +747,7 @@ static void CG_OffsetThirdPersonView( void )
 			veh->m_pVehicle->m_pVehicleInfo->cameraOverride)
 		{ //override the range with what the vehicle wants it to be
 			thirdPersonHorzOffset = veh->m_pVehicle->m_pVehicleInfo->cameraHorzOffset;
+			thirdPersonHorzOffset *= BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
 			if ( veh->playerState->hackingTime )
 			{
 				thirdPersonHorzOffset += (((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * -80.0f;
@@ -927,11 +939,10 @@ static void CG_OffsetThirdPersonView( void )
 	// PODRACER: lean the camera into the turn with the pod (vectoangles above zeroed ROLL).
 	// We blend toward the vehicle's banked m_vOrientation[ROLL] rather than snapping to it -
 	// snapping is what made the original attempt (disabled above) jerky. Gated on pod physics.
-	if ( bg_podracerPhysics.integer && cg.predictedPlayerState.m_iVehicleNum )
+	if ( cg.predictedPlayerState.m_iVehicleNum )
 	{
 		centity_t *podCent = &cg_entities[cg.predictedPlayerState.m_iVehicleNum];
-		if ( podCent->m_pVehicle && podCent->m_pVehicle->m_pVehicleInfo
-			&& podCent->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+		if ( BG_PodRacerPhysics( podCent->m_pVehicle ) )
 		{
 			float targetRoll = podCent->m_pVehicle->m_vOrientation[ROLL] * POD_CAM_BANK;
 			// frame-rate independent smoothing toward the target roll
@@ -1251,11 +1262,17 @@ static void CG_OffsetFighterView( void )
 	if ( veh->m_pVehicle &&
 		veh->m_pVehicle->m_pVehicleInfo->cameraOverride )
 	{ //override the horizontal offset with what the vehicle wants it to be
+		const float vehicleScale = BG_VehicleInstanceScale( veh->m_pVehicle,
+			veh->currentState.iModelScale );
+
 		horzOffset = veh->m_pVehicle->m_pVehicleInfo->cameraHorzOffset;
 		vertOffset = veh->m_pVehicle->m_pVehicleInfo->cameraVertOffset;
 		//NOTE: no yaw offset?
 		pitchOffset = veh->m_pVehicle->m_pVehicleInfo->cameraPitchOffset;
 		range = veh->m_pVehicle->m_pVehicleInfo->cameraRange;
+		horzOffset *= vehicleScale;
+		vertOffset *= vehicleScale;
+		range *= vehicleScale;
 		if ( veh->playerState->hackingTime )
 		{
 			horzOffset += (((float)veh->playerState->hackingTime)/MAX_STRAFE_TIME) * -80.0f;

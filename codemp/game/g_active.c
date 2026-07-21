@@ -1215,7 +1215,17 @@ void G_SetClientSound( gentity_t *ent ) {
 		ent->client->ps.loopSound = level.snd_fry;
 		ent->s.loopIsSoundset = qfalse;
 	} else if (ent->client) {
-		ent->client->ps.loopSound = 0;
+		qboolean podRider = qfalse;
+		if ( ent->client->ps.m_iVehicleNum > 0 && ent->client->ps.m_iVehicleNum < ENTITYNUM_WORLD )
+		{
+			podRider = BG_PodRacerPhysics( g_entities[ent->client->ps.m_iVehicleNum].m_pVehicle );
+		}
+		if ( !podRider )
+		{	// pod audio: a mounted rider carries the layered roll/binder loop set by
+			// G_UpdatePodracerAudio, which owns setting AND clearing it while mounted.
+			// Dismounting drops m_iVehicleNum, so stale loops still clear here.
+			ent->client->ps.loopSound = 0;
+		}
 		ent->s.loopIsSoundset = qfalse;
 	} else {
 		ent->s.loopSound = 0;

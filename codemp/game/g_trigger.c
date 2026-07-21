@@ -24,6 +24,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "g_local.h"
 #include "bg_saga.h"
 
+void ResetPlayerTimers(gentity_t *ent, qboolean print);//extern ?
+
 int gTrigFallSound;
 
 void InitTrigger( gentity_t *self ) {

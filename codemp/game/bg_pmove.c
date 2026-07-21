@@ -58,8 +58,6 @@ extern void G_TestLine(vec3_t start, vec3_t end, int color, int time);
 pmove_t		*pm;
 pml_t		pml;
 
-extern	vmCvar_t	bg_podracerPhysics;	// SWE1R pod physics gate (registered in g/cg_xcvar.h)
-
 bgEntity_t *pm_entSelf = NULL;
 bgEntity_t *pm_entVeh = NULL;
 
@@ -751,14 +749,14 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		// NOTE: for pods do NOT crush the banking speed here - a hovering pod is frequently in
 		// this "air" branch, and *0.125*frametime makes vehicleBankingSpeed ~0 so the roll never
 		// eases in (this was "bank roll always 0"). Pods keep their (scaled) banking speed. -TaystJK
-		if ( !( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER ) )
+		if ( !BG_PodRacerPhysics( pVeh ) )
 		{
 			vehicleBankingSpeed *= (0.125f*pml.frametime);
 		}
 	}
 	//NOTE: if angles are flat and we're moving through air (not on ground),
 	//		then pitch/bank?
-	if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	if ( BG_PodRacerPhysics( pVeh ) )
 	{
 		// PODRACER BANKING is handled in ProcessOrientCommands (SpeederNPC.c), NOT here. This
 		// function is buried in hover/pmove state and the roll it wrote was being lost ("bank
@@ -813,7 +811,7 @@ static void PM_SetVehicleAngles( vec3_t normal )
 	{
 		// pods roll more extremely than the .veh rollLimit (45) allows
 		float rollCap = pVeh->m_pVehicleInfo->rollLimit;
-		if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER
+		if ( BG_PodRacerPhysics( pVeh )
 			&& POD_ROLL_LIMIT > rollCap )
 		{
 			rollCap = POD_ROLL_LIMIT;
@@ -835,7 +833,7 @@ static void PM_SetVehicleAngles( vec3_t normal )
 		{//yawing done elsewhere
 			continue;
 		}
-		if ( i == ROLL && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+		if ( i == ROLL && BG_PodRacerPhysics( pVeh ) )
 		{//pod roll is owned by ProcessOrientCommands - don't ease it back to 0 here
 			continue;
 		}
@@ -932,9 +930,13 @@ void PM_HoverTrace( void )
 
 	// Pod physics: the swoop.veh hoverHeight (30) leaves the box bottom only ~6 units above
 	// ground. Raise ride height enough to clear small bumps without making the pod float too high.
-	if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	if ( BG_PodRacerPhysics( pVeh ) )
 	{
-		hoverHeight *= POD_HOVER_HEIGHT_SCALE;
+		hoverHeight *= POD_HOVER_HEIGHT_SCALE * BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
+	}
+	else
+	{
+		hoverHeight *= BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
 	}
 
 	pml.groundPlane = qfalse;
@@ -952,6 +954,20 @@ void PM_HoverTrace( void )
 			if ( relativeWaterLevel > floatHeight )
 			{//too low, should rise up
 				pm->ps->velocity[2] += (relativeWaterLevel - floatHeight) * pVeh->m_fTimeModifier;
+			}
+			if ( BG_PodRacerPhysics( pVeh ) && pm->waterlevel >= 2
+				&& (pm->watertype & CONTENTS_WATER) )
+			{
+				// The stock buoyancy calculation only knows the 1-3 waterlevel samples,
+				// not the actual depth.  On a scaled pod that can yield no lift at all.
+				// Nudge a submerged pod back to the surface, where the normal hover
+				// spring takes over.  It is deliberately weaker than the surface spring.
+				float recoveryLift = pVeh->m_pVehicleInfo->hoverStrength
+					* POD_HOVER_FORCE_SCALE * 0.5f;
+				if ( pm->ps->velocity[2] < 160.0f )
+				{
+					pm->ps->velocity[2] += recoveryLift * pVeh->m_fTimeModifier;
+				}
 			}
 		}
 		//if ( pm->ps->waterheight < pm->ps->origin[2]+pm->maxs[2] )
@@ -1006,7 +1022,7 @@ void PM_HoverTrace( void )
 			//Before, any slope that you could climb up, you could also hovor boost up..?
 			//now you can only hovor boost up slopes that you could already climb before? and you can now climb steeper slopes than before?
 		}
-		if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+		if ( BG_PodRacerPhysics( pVeh ) )
 		{
 			minNormal = POD_MAX_SLOPE;
 			realMinNormal = POD_MAX_SLOPE_SIDE_NORMAL;
@@ -1026,6 +1042,11 @@ void PM_HoverTrace( void )
 		{//sit on water
 			traceContents |= (CONTENTS_WATER|CONTENTS_SLIME|CONTENTS_LAVA);
 		}
+		else if ( BG_PodRacerPhysics( pVeh ) )
+		{
+			// Pods hover at the water surface, but retain their normal buoyancy once submerged.
+			traceContents |= CONTENTS_WATER;
+		}
 		pm->trace( trace, pm->ps->origin, pm->mins, pm->maxs, point, pm->ps->clientNum, traceContents );
 		if ((trace->plane.normal[0] > realMinNormal || trace->plane.normal[0] < -realMinNormal ||
 			trace->plane.normal[1] > realMinNormal || trace->plane.normal[1] < -realMinNormal) && (!pVeh->m_iGravTime || curTime >= pVeh->m_iGravTime))
@@ -1042,9 +1063,10 @@ void PM_HoverTrace( void )
 		{//not a steep slope, so push us up
 			if ( trace->fraction < 1.0f )
 			{//push up off ground
-				float hoverForce = pVeh->m_pVehicleInfo->hoverStrength;
+				float hoverForce = pVeh->m_pVehicleInfo->hoverStrength
+					* BG_VehicleInstanceScale( pVeh, pm->ps->iModelScale );
 				// Keep pod lift close to stock; too much spring force launches off bumps.
-				if ( bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+				if ( BG_PodRacerPhysics( pVeh ) )
 				{
 					hoverForce *= POD_HOVER_FORCE_SCALE;
 				}
@@ -1122,6 +1144,14 @@ void PM_HoverTrace( void )
 				pVeh->m_vAngularVelocity = 0.0f;
 			}
 		}
+	}
+	// ProcessMoveCommands runs after this initial hover trace, so publish the
+	// exact contacted pod surface for the speed model and traction pass. A pod
+	// only receives these effects while it is in its hover-contact range.
+	if ( BG_PodRacerPhysics( pVeh ) )
+	{
+		pVeh->m_ulPodSurfaceFlags = pml.groundPlane ?
+			( (uint32_t)pml.groundTrace.surfaceFlags & SURF_POD_MASK ) : 0;
 	}
 	PM_GroundTraceMissed();
 }
@@ -1263,9 +1293,8 @@ static void PM_Friction( void ) {
 	// Pod physics owns its own speed model (coast/brake are handled in
 	// PodRacer_ProcessMoveCommands); the stock vehicle ground friction here fights the target
 	// speed and was capping top speed well below speedMax*mapScale. Skip it for pod speeders.
-	if ( bg_podracerPhysics.integer && pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
-		&& pEnt->m_pVehicle && pEnt->m_pVehicle->m_pVehicleInfo
-		&& pEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+	if ( pEnt && pEnt->s.NPC_class == CLASS_VEHICLE
+		&& BG_PodRacerPhysics( pEnt->m_pVehicle ) )
 	{
 		// Pod speed is horizontal-only and owned by PodRacer_ProcessMoveCommands /
 		// PM_PodRacerTraction. Keep stock friction off x/y. Only damp upward z energy so
@@ -4869,6 +4898,7 @@ static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspee
 	float	grip, skid, keepDesired, proximityGrip;
 	float	rawAlign, align, slipLoad, steerLoad, turnLoad, wrongRollLoad, load;
 	float	targetMag, newMag, accelRate, speedFrac, topSpeed;
+	float	maxTurnRate = BG_PodRacerMaxTurnRate( pVeh->m_pVehicleInfo );
 	qboolean drifting;
 
 	// forward heading on the flat plane (wishdir is moveDir here)
@@ -4886,7 +4916,7 @@ static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspee
 	vel[2] = 0.0f;
 	curSpeed = VectorLength( vel );
 
-	drifting = ( pVeh->m_ucmd.upmove > 0 && curSpeed >= POD_DRIFT_MIN_SPEED ) ? qtrue : qfalse;
+	drifting = BG_PodRacerDrifting( pVeh, curSpeed );
 
 	// SWE1R slide2: 1.0 under power, 0.8 off-throttle, lower while deliberately drifting.
 	targetSlide = 1.0f;
@@ -4927,6 +4957,12 @@ static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspee
 
 	proximityGrip = PM_PodGroundProximityScale( POD_AIR_GRIP_SCALE, POD_HOVER_GRIP_SCALE, POD_CLOSE_GRIP_SCALE );
 	grip = POD_ANTI_SKID * ( pVeh->m_pVehicleInfo->traction / 12.0f ) * slide * proximityGrip;
+	if ( pVeh->m_ulPodSurfaceFlags & SURF_POD_SLIP )
+	{
+		// SWE1R's slip surface reduces the anti-skid/grip term to 20%,
+		// with the transition already smoothed by ProcessMoveCommands.
+		grip *= pVeh->m_fPodSurfaceSkidModifier;
+	}
 	if ( grip < 0.0f ) grip = 0.0f;
 	if ( grip > 0.995f ) grip = 0.995f;
 
@@ -4945,16 +4981,15 @@ static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspee
 	if ( align < 0.0f ) align = 0.0f;
 	if ( align > 1.0f ) align = 1.0f;
 
-	topSpeed = pVeh->m_pVehicleInfo->speedMax * POD_MAP_SCALE;
-	if ( topSpeed < POD_SOFT_TOP_SPEED ) topSpeed = POD_SOFT_TOP_SPEED;
+	topSpeed = BG_PodRacerTopSpeedForVehicle( pVeh, pm->ps->iModelScale );
 	speedFrac = ( topSpeed > 1.0f ) ? ( curSpeed / topSpeed ) : 0.0f;
 	if ( speedFrac > 1.0f ) speedFrac = 1.0f;
 	if ( speedFrac < 0.0f ) speedFrac = 0.0f;
 
 	slipLoad = 1.0f - align;
-	steerLoad = ( POD_MAX_TURN_RATE > 0.0f ) ? fabs( pVeh->m_fPodTargetTurnRate ) / POD_MAX_TURN_RATE : 0.0f;
+	steerLoad = ( maxTurnRate > 0.0f ) ? fabs( pVeh->m_fPodTargetTurnRate ) / maxTurnRate : 0.0f;
 	if ( steerLoad > 1.0f ) steerLoad = 1.0f;
-	turnLoad = ( POD_MAX_TURN_RATE > 0.0f ) ? fabs( pVeh->m_fPodTurnRate ) / POD_MAX_TURN_RATE : 0.0f;
+	turnLoad = ( maxTurnRate > 0.0f ) ? fabs( pVeh->m_fPodTurnRate ) / maxTurnRate : 0.0f;
 	if ( turnLoad > 1.0f ) turnLoad = 1.0f;
 	if ( steerLoad > turnLoad ) turnLoad = steerLoad;
 	wrongRollLoad = 0.0f;
@@ -5054,7 +5089,7 @@ static void PM_PodRacerTraction( Vehicle_t *pVeh, vec3_t wishdir, float wishspee
 	{
 		float excess = ( load - POD_TURN_LOAD_START ) / ( 1.0f - POD_TURN_LOAD_START );
 		if ( excess > 1.0f ) excess = 1.0f;
-		newMag -= POD_DRIFT_BLEED_RATE * excess * speedFrac * pml.frametime;
+		newMag -= BG_PodRacerDriftBleedRateForVehicle( pVeh, pm->ps->iModelScale ) * excess * speedFrac * pml.frametime;
 	}
 	if ( newMag < 0.0f ) newMag = 0.0f;
 	if ( drifting )
@@ -5294,7 +5329,7 @@ static void PM_AirMove( void ) {
 
 	fmove = pm->cmd.forwardmove;
 	smove = pm->cmd.rightmove;
-	if ( pVeh && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	if ( BG_PodRacerPhysics( pVeh ) )
 	{
 		smove = 0.0f;
 	}
@@ -5308,7 +5343,7 @@ static void PM_AirMove( void ) {
 	}
 
 	cmd = pm->cmd;
-	if ( pVeh && bg_podracerPhysics.integer && pVeh->m_pVehicleInfo->type == VH_SPEEDER )
+	if ( BG_PodRacerPhysics( pVeh ) )
 	{
 		cmd.rightmove = 0;
 	}
@@ -5527,7 +5562,7 @@ static void PM_AirMove( void ) {
 
 		// Pod-physics: replace the stock accelerate with the SWE1R traction/grip blend
 		// (drift/skid). Skip the normal accelerate chain below.
-		if ( bg_podracerPhysics.integer )
+		if ( BG_PodRacerPhysics( pVeh ) )
 		{
 			PM_PodRacerTraction( pVeh, wishdir, wishspeed );
 			goto podTractionDone;
@@ -6410,7 +6445,18 @@ static void PM_WalkMove( void ) {
 		accelerate = realaccelerate;
 	}
 
-	if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
+	// Pod-physics ground vehicle (hoverHeight 0, e.g. the wheelchair): grounded frames
+	// run PM_WalkMove instead of PM_AirMove, so route speed through the SWE1R
+	// traction/grip blend here too - the stock accelerate chain fights the pod speed
+	// model. (Hovering pods never ground, so they only ever hit the PM_AirMove hook.)
+	if ( pm_entSelf && pm_entSelf->s.NPC_class == CLASS_VEHICLE
+		&& pm_entSelf->m_pVehicle
+		&& pm_entSelf->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER
+		&& BG_PodRacerPhysics( pm_entSelf->m_pVehicle ) )
+	{
+		PM_PodRacerTraction( pm_entSelf->m_pVehicle, wishdir, wishspeed );
+	}
+	else if (moveStyle == MV_TRIBES && pm->cmd.buttons & BUTTON_DASH) { //Truly a terrible way to do this but let us use the old way of accel because it lets us change direction as we expect at speed, but past a point don't let us gain any magnitute of speed from it, just the turns
 		accelerate = pm_tribes_groundaccelerate;
 		PM_GroundAccelerateTribes(wishdir, wishspeed, accelerate);
 		/*
@@ -7254,8 +7300,7 @@ static void PM_GroundTrace( void ) {
 			&& pEnt->m_pVehicle->m_pVehicleInfo)
 		{
 			minNormal = pEnt->m_pVehicle->m_pVehicleInfo->maxSlope;
-			if ( bg_podracerPhysics.integer
-				&& pEnt->m_pVehicle->m_pVehicleInfo->type == VH_SPEEDER )
+			if ( BG_PodRacerPhysics( pEnt->m_pVehicle ) )
 			{
 				minNormal = POD_MAX_SLOPE;
 			}
@@ -14359,10 +14404,15 @@ void PM_VehFaceHyperspacePoint(bgEntity_t *veh)
 
 #endif //VEH_CONTROL_SCHEME_4
 
-void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t mins, vec3_t maxs,
+void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, int scalePercent, vec3_t origin, vec3_t mins, vec3_t maxs,
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask))
 {
+	float modelScale;
+	float length;
+	float width;
+	float height;
+
 	if ( !veh
 		|| !veh->m_pVehicleInfo->length
 		|| !veh->m_pVehicleInfo->width
@@ -14371,12 +14421,17 @@ void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t m
 	{
 		return;
 	}
-	else if ( veh->m_pVehicleInfo->type != VH_FIGHTER
+	modelScale = BG_VehicleInstanceScale( veh, scalePercent );
+	length = veh->m_pVehicleInfo->length * modelScale;
+	width = veh->m_pVehicleInfo->width * modelScale;
+	height = veh->m_pVehicleInfo->height * modelScale;
+
+	if ( veh->m_pVehicleInfo->type != VH_FIGHTER
 		//&& veh->m_pVehicleInfo->type != VH_SPEEDER
 		&& veh->m_pVehicleInfo->type != VH_FLIER )
 	{//only those types of vehicles have dynamic bboxes, the rest just use a static bbox
-		VectorSet( maxs, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->width/2.0f, veh->m_pVehicleInfo->height+DEFAULT_MINS_2 );
-		VectorSet( mins, veh->m_pVehicleInfo->width/-2.0f, veh->m_pVehicleInfo->width/-2.0f, DEFAULT_MINS_2 );
+		VectorSet( maxs, width/2.0f, width/2.0f, (veh->m_pVehicleInfo->height+DEFAULT_MINS_2)*modelScale );
+		VectorSet( mins, width/-2.0f, width/-2.0f, DEFAULT_MINS_2*modelScale );
 		return;
 	}
 	else
@@ -14387,21 +14442,21 @@ void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t m
 		trace_t		trace;
 
 		AnglesToAxis( veh->m_vOrientation, axis );
-		VectorMA( origin, veh->m_pVehicleInfo->length/2.0f, axis[0], point[0] );
-		VectorMA( origin, -veh->m_pVehicleInfo->length/2.0f, axis[0], point[1] );
+		VectorMA( origin, length/2.0f, axis[0], point[0] );
+		VectorMA( origin, -length/2.0f, axis[0], point[1] );
 		//extrapolate each side up and down
-		VectorMA( point[0], veh->m_pVehicleInfo->height/2.0f, axis[2], point[0] );
-		VectorMA( point[0], -veh->m_pVehicleInfo->height, axis[2], point[2] );
-		VectorMA( point[1], veh->m_pVehicleInfo->height/2.0f, axis[2], point[1] );
-		VectorMA( point[1], -veh->m_pVehicleInfo->height, axis[2], point[3] );
+		VectorMA( point[0], height/2.0f, axis[2], point[0] );
+		VectorMA( point[0], -height, axis[2], point[2] );
+		VectorMA( point[1], height/2.0f, axis[2], point[1] );
+		VectorMA( point[1], -height, axis[2], point[3] );
 
-		VectorMA( origin, veh->m_pVehicleInfo->width/2.0f, axis[1], point[4] );
-		VectorMA( origin, -veh->m_pVehicleInfo->width/2.0f, axis[1], point[5] );
+		VectorMA( origin, width/2.0f, axis[1], point[4] );
+		VectorMA( origin, -width/2.0f, axis[1], point[5] );
 		//extrapolate each side up and down
-		VectorMA( point[4], veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
-		VectorMA( point[4], -veh->m_pVehicleInfo->height, axis[2], point[6] );
-		VectorMA( point[5], veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
-		VectorMA( point[5], -veh->m_pVehicleInfo->height, axis[2], point[7] );
+		VectorMA( point[4], height/2.0f, axis[2], point[4] );
+		VectorMA( point[4], -height, axis[2], point[6] );
+		VectorMA( point[5], height/2.0f, axis[2], point[5] );
+		VectorMA( point[5], -height, axis[2], point[7] );
 		/*
 		VectorMA( origin, veh->m_pVehicleInfo->height/2.0f, axis[2], point[4] );
 		VectorMA( origin, -veh->m_pVehicleInfo->height/2.0f, axis[2], point[5] );
@@ -15714,7 +15769,8 @@ void PmoveSingle (pmove_t *pmove) {
 	if (pm->ps->clientNum >= MAX_CLIENTS &&
 		pm_entSelf && pm_entSelf->m_pVehicle)
 	{ //Now update our mins/maxs to match our m_vOrientation based on our length, width & height
-		BG_VehicleAdjustBBoxForOrientation( pm_entSelf->m_pVehicle, pm->ps->origin, pm->mins, pm->maxs, pm->ps->clientNum, pm->tracemask, pm->trace );
+		BG_VehicleAdjustBBoxForOrientation( pm_entSelf->m_pVehicle, pm->ps->iModelScale,
+			pm->ps->origin, pm->mins, pm->maxs, pm->ps->clientNum, pm->tracemask, pm->trace );
 	}
 
 	// set groundentity

@@ -27,13 +27,16 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 typedef struct Vehicle_s Vehicle_t;
 typedef struct bgEntity_s bgEntity_t;
 
-// --- Podracer physics tuning (bg_podracerPhysics, VH_SPEEDER) -----------------------
+// --- Podracer physics tuning (.veh podracerPhysics, VH_SPEEDER) ---------------------
 // The speed curve follows SWE1R's accelThrust -> speed asymptote. For prediction safety,
 // PodRacer_ProcessMoveCommands derives accelThrust from ps->speed each frame, advances it,
 // and writes back ps->speed instead of making Vehicle_t accel state authoritative.
 // Lower POD_STAT_ACCELERATION reaches the asymptote faster. 2.8 gives a hard launch, then
 // very small gains near the normal-drive soft top.
 #define POD_STAT_ACCELERATION	2.8f
+#define POD_FIN_DEFAULT_COUNT		3
+#define POD_FIN_MAX_PER_ENGINE	12
+#define POD_FIN_DEFAULT_BLOOM_DEG	18.0f
 // Normal-drive asymptote in final map units. This is the Racer-style maxSpeed value, not a
 // stock JA hard cap. Boost can still use turboSpeed above it.
 #define POD_SOFT_TOP_SPEED	3800.0f
@@ -64,14 +67,36 @@ typedef struct bgEntity_s bgEntity_t;
 #define POD_ANTI_SKID		0.86f
 #define POD_SLIDE_COAST_TARGET	0.8f
 // Separate drift input. +moveup is drift for pod physics; +use remains available for exit.
-#define POD_DRIFT_MIN_SPEED	900.0f
+// Drift unlocks at a FRACTION of the vehicle's own top speed, so the gate self-calibrates
+// for every pod regardless of authored speedMax, .veh scale, instance scale, or map scale.
+// 0.25 matches the original swoop-pod feel (900 threshold / 3600 top).
+#define POD_DRIFT_MIN_SPEED_FRAC	0.25f
+#define POD_LEGACY_DRIFT_MIN_SPEED	900.0f
+// Drift flood protection. After drift disengages, the input cannot re-arm until
+// POD_DRIFT_COOLDOWN_MS have passed since it was last active. POD_DRIFT_CONTINUE_MS is the
+// frame-gap tolerance that distinguishes "still held" from "released, pressed again" using
+// only the m_iPodDriftActiveTime timestamp (prediction-replay safe, like m_iTurboTime).
+// CONTINUE is only frame-gap tolerance: commands arrive every client frame (~7-16ms), so
+// 50ms distinguishes "still held" from "released and re-pressed" down to very fast taps.
+#define POD_DRIFT_CONTINUE_MS	50
+#define POD_DRIFT_COOLDOWN_MS	400
+// Brake and manual-roll flood protection: same command-time scheme as drift, but gentler
+// (brake especially - it is a safety control, so only rapid spam is filtered).
+#define POD_BRAKE_CONTINUE_MS	50
+#define POD_BRAKE_COOLDOWN_MS	200
+#define POD_ROLL_CONTINUE_MS	50
+#define POD_ROLL_COOLDOWN_MS	250
+// |rightmove| must exceed this before A/D counts as manual roll (also the audio edge).
+#define POD_ROLL_INPUT_DEADZONE	20
 #define POD_DRIFT_SLIDE_TARGET	0.18f
 #define POD_DRIFT_TRACTION_RELEASE_TIME	0.5f
 #define POD_DRIFT_TURN_RATE_SCALE	2.5f
 #define POD_DRIFT_TURN_RESPONSE_SCALE	2.0f
 #define POD_DRIFT_ACCEL_SCALE	0.0f
 #define POD_DRIFT_TURNLOAD_BONUS	0.25f
-#define POD_DRIFT_BLEED_RATE	132.0f
+// Bleed is also a fraction of top speed per second (132 bleed / 3600 top originally).
+#define POD_DRIFT_BLEED_FRAC	0.0367f
+#define POD_LEGACY_DRIFT_BLEED_RATE	132.0f
 // Drift keeps most entry speed, but hard drift turns still pay part of the normal turn scrub.
 #define POD_DRIFT_SCRUB_SCALE	0.3f
 // Intentional JK divergence: when the pod is already at high speed and at a steering/slip
@@ -84,6 +109,12 @@ typedef struct bgEntity_s bgEntity_t;
 #define POD_TURN_ACCEL_MIN_SCALE	0.25f
 #define POD_TURN_BLEED_START	0.75f
 #define POD_TURN_BLEED_INTERVAL	90.0f
+// Near the active speed ceiling, every turn costs some speed. Turn strength is squared so
+// shallow corrections remain cheap while sustained steering becomes progressively less
+// efficient. A quick 90-degree carve therefore pays hard briefly instead of paying a
+// smaller penalty throughout a long, lazy arc.
+#define POD_HIGH_SPEED_TURN_BLEED_START	0.82f
+#define POD_HIGH_SPEED_TURN_BLEED_INTERVAL	120.0f
 // Manual roll authority (PM_SetVehicleAngles): degrees of bank at full A/D (rightmove) input,
 // added on top of the auto turn-tilt (ep1 manual_tilt). Raised for a more extreme lean. -TaystJK
 #define POD_MANUAL_ROLL		65.0f
@@ -111,8 +142,6 @@ typedef struct bgEntity_s bgEntity_t;
 #define POD_HOVER_HEIGHT_SCALE	1.75f
 // Hover lift multiplier. Slightly above stock, but below the earlier bouncy 2x spring.
 #define POD_HOVER_FORCE_SCALE	1.15f
-// Pod-specific gravity. Stock swoop.veh is 800; pods are floatier but should still fall cleanly.
-#define POD_GRAVITY		500
 // Vertical damping only, applied in PM_Friction for pod speeders. Horizontal speed is owned by the
 // pod speed model; z damping replaces the all-axis stock friction that used to absorb bounce.
 #define POD_VERTICAL_DAMPING	4.0f
@@ -141,12 +170,20 @@ typedef struct bgEntity_s bgEntity_t;
 // lean the wrong way - rewards committing your roll toward the wall you mean to ride. -TaystJK
 #define POD_WALLRIDE_PENALTY	1.0f
 // Impact damage grace (PM_VehicleImpact). After the map-scale divide, this much impact
-// "magnitude" is subtracted before any crash damage - so light scrapes and glancing bumps
-// do NOTHING and only genuine high-speed crashes hurt. RAISE to make the pod more forgiving.
-#define POD_IMPACT_TOLERANCE	2000.0f
-// Stock speeders nearly zero scalar speed on brush impact by multiplying by frametime. Pods
-// keep most scalar speed on the softened impact path; true crashes still get damage/turn effects.
-#define POD_IMPACT_SPEED_KEEP	0.85f
+// "magnitude" is subtracted before any crash damage. It is calibrated against normal
+// (into-wall) velocity, not total speed, so glancing contact stays harmless but a real
+// crash can still hurt. RAISE to make the pod more forgiving.
+#define POD_IMPACT_TOLERANCE	10000.0f
+#define POD_LEGACY_IMPACT_TOLERANCE	2000.0f
+// Non-wallride wall impacts get their own speed scrub. This is deliberately independent of
+// the damage tolerance above: a solid bump should cost some race time without requiring a
+// damaging collision. The loss ramps from MIN at MIN_FRACTION of top speed to MAX at
+// FULL_FRACTION; both use the velocity component directed into the wall.
+#define POD_IMPACT_SCRUB_MIN_FRACTION	0.12f
+#define POD_IMPACT_SCRUB_FULL_FRACTION	0.75f
+#define POD_IMPACT_SCRUB_MIN_LOSS		0.08f
+#define POD_IMPACT_SCRUB_MAX_LOSS		0.40f
+#define POD_IMPACT_SCRUB_COOLDOWN_MS	200
 
 typedef enum
 {
@@ -346,8 +383,26 @@ typedef struct vehicleInfo_s {
 	int			soundShift2;	//sound to play when accelerating
 	int			soundShift3;	//sound to play when decelerating
 	int			soundShift4;	//sound to play when decelerating
+	int			podSoundLoop;	//podracer engine loop, mid speed band (podracerPhysics only)
+	int			podSoundLoopLow;	//podracer engine loop below the low/mid band split
+	int			podSoundLoopHigh;	//podracer engine loop above the mid/high band split
+	int			podSoundLoopBoost;	//podracer engine loop while boosting
+	int			podSoundLoopReverse;	//podracer engine loop while backing up (needs speedMin < 0)
+	int			podSoundBoost;	//podracer boost activation
+	int			podSoundShift1;
+	int			podSoundShift2;
+	int			podSoundShift3;
+	int			podSoundShift4;
+	int			podSoundShift5;
+	int			podSoundBrakeOn;
+	int			podSoundBrakeOff;
+	int			podSoundSlideStart;
+	int			podSoundSlideStop;
+	int			podSoundRollStart;	//one-shot when manual roll (A/D) engages; ep1 binder activate
+	int			podSoundRollLoop;	//loop layered on the pilot entity while manual roll is held
 
 	int			iExhaustFX;		//exhaust effect, played from "*exhaust" bolt(s)
+	qhandle_t		iBinderShader;	//podracer energy-binder shader, stretched between "*binder_l" and "*binder_r"
 	int			iTurboFX;		//turbo exhaust effect, played from "*exhaust" bolt(s) when ship is in "turbo" mode
 	int			iTurboStartFX;	//turbo begin effect, played from "*exhaust" bolts when "turbo" mode begins
 	int			iTrailFX;		//trail effect, played from "*trail" bolt(s)
@@ -402,6 +457,15 @@ typedef struct vehicleInfo_s {
 	float		cameraFOV;		//third person camera FOV, default is 80
 	float		cameraAlpha;	//fade out the vehicle to this alpha (0.1-1.0f) if it's in the way of the crosshair
 	qboolean	cameraPitchDependantVertOffset;//use the hacky AT-ST pitch dependant vertical offset
+	qboolean	podracerPhysics;//use SWE1R-style physics for this speeder; global cvar remains an override
+	float		scale;					//uniform vehicle scale; the default instance scale for this vehicle type
+	// Procedural pod control surfaces. Fin names follow fin_l0..N / fin_r0..N; a side
+	// count of -1 inherits podFinCount, and 0 deliberately disables that side.
+	int			podFinCount;
+	int			podFinCountLeft;
+	int			podFinCountRight;
+	float		podFinBloomDeg;
+	float		podBankScale;	//scales the pod lean roll (turn + manual); 0 = never banks, default 1
 
 	//NOTE: some info on what vehicle weapon to use?  Like ATST or TIE bomber or TIE fighter or X-Wing...?
 
@@ -512,6 +576,82 @@ typedef struct vehicleInfo_s {
 	qboolean (*Inhabited)( Vehicle_t *pVeh );
 } vehicleInfo_t;
 
+// Pod roster files are authored in the original 25x source coordinate scope.
+// Their scale converts every linear value into the current map's coordinate scope.
+// Legacy/global pod physics keeps the previous stock-speeder behavior.
+static QINLINE float BG_PodRacerVehicleScale( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->podracerPhysics && vInfo->scale > 0.0f ) ? vInfo->scale : 1.0f;
+}
+
+static QINLINE float BG_PodRacerTopSpeed( const vehicleInfo_t *vInfo )
+{
+	float speed = vInfo ? vInfo->speedMax * POD_MAP_SCALE : POD_SOFT_TOP_SPEED;
+	if ( vInfo && vInfo->podracerPhysics )
+	{
+		return speed * BG_PodRacerVehicleScale( vInfo );
+	}
+	return ( speed < POD_SOFT_TOP_SPEED ) ? POD_SOFT_TOP_SPEED : speed;
+}
+
+static QINLINE float BG_PodRacerBoostSpeed( const vehicleInfo_t *vInfo )
+{
+	float speed = vInfo ? vInfo->turboSpeed * POD_MAP_SCALE * BG_PodRacerVehicleScale( vInfo ) : 0.0f;
+	float topSpeed = BG_PodRacerTopSpeed( vInfo );
+	return ( speed < topSpeed ) ? topSpeed : speed;
+}
+
+static QINLINE float BG_PodRacerMinSpeed( const vehicleInfo_t *vInfo )
+{
+	return vInfo ? vInfo->speedMin * POD_MAP_SCALE * BG_PodRacerVehicleScale( vInfo ) : 0.0f;
+}
+
+static QINLINE float BG_PodRacerDriftMinSpeed( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_DRIFT_MIN_SPEED_FRAC * BG_PodRacerTopSpeed( vInfo ) : POD_LEGACY_DRIFT_MIN_SPEED;
+}
+
+static QINLINE float BG_PodRacerDriftBleedRate( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_DRIFT_BLEED_FRAC * BG_PodRacerTopSpeed( vInfo ) : POD_LEGACY_DRIFT_BLEED_RATE;
+}
+
+static QINLINE float BG_PodRacerImpactTolerance( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_IMPACT_TOLERANCE * BG_PodRacerVehicleScale( vInfo ) : POD_LEGACY_IMPACT_TOLERANCE;
+}
+
+// Generated Episode I Racer .veh files encode raw pod behavior through existing
+// JKA fields. These bridges recover the original stat semantics while retaining
+// fallbacks for ordinary speeders authored before the pod roster existed.
+static QINLINE float BG_PodRacerAccelerationStat( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->acceleration > 0.0f ) ? 60.0f / vInfo->acceleration : POD_STAT_ACCELERATION;
+}
+
+static QINLINE float BG_PodRacerBrakeInterval( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->braking > 0.0f ) ? 300.0f / vInfo->braking : POD_BRAKE_INTERVAL;
+}
+
+static QINLINE float BG_PodRacerCoastInterval( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->decelIdle > 0.0f ) ? 600.0f / vInfo->decelIdle : POD_COAST_INTERVAL;
+}
+
+static QINLINE float BG_PodRacerMaxTurnRate( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->turningSpeed > 0.0f ) ? vInfo->turningSpeed * 20.0f : POD_MAX_TURN_RATE;
+}
+
+static QINLINE float BG_PodRacerTurnResponse( const vehicleInfo_t *vInfo )
+{
+	return ( vInfo && vInfo->bankingSpeed > 0.0f ) ? vInfo->bankingSpeed * 300.0f : POD_TURN_RESPONSE;
+}
+
 
 //Tribes 2 shrike physics (FighterNPC.c) -TaystJK
 //Bump the tag whenever shrike code changes: the canary prints/HUD show it, so a stale
@@ -528,10 +668,20 @@ typedef struct vehicleInfo_s {
 qboolean BG_ShrikePhysics( Vehicle_t *pVeh );
 qboolean BG_ShrikePhysicsActive( Vehicle_t *pVeh, playerState_t *parentPS, int curTime );
 void BG_ShrikeAxisToAngles( const vec3_t fwd, const vec3_t right, vec3_t angles );
+qboolean BG_PodRacerPhysics( Vehicle_t *pVeh );
+
+// Pod input state shared by the speed model, traction, orientation and audio.
+// All flood-protected on m_ucmd.serverTime so the client predicts the cooldowns identically
+// to the server; the m_iPod*ActiveTime timestamps are saved per-command by the cgame pod
+// prediction cache and restored on snapshot rewind. Only PodRacer_ProcessMoveCommands
+// advances the timestamps; every other caller just reads.
+qboolean BG_PodRacerDrifting( Vehicle_t *pVeh, float speed );
+qboolean BG_PodRacerBraking( Vehicle_t *pVeh );
+float BG_PodRacerManualRoll( Vehicle_t *pVeh );	// gated A/D input, -1..1; 0.0 while deadzoned or flood-protected
 
 #define	VFOFS(x) offsetof(vehicleInfo_t, x)
 
-#define MAX_VEHICLES	32	//sigh... no more than 64 individual vehicles
+#define MAX_VEHICLES	64	//room for stock, SWE1R, and Racer Revenge vehicle definitions
 #define VEHICLE_BASE	0
 #define VEHICLE_NONE	-1
 
@@ -772,12 +922,60 @@ typedef struct Vehicle_s
 	int			m_iTurboTime;
 	int			m_iGravTime;
 
-	// SWE1R-style podracer physics state (used when bg_podracerPhysics is set, VH_SPEEDER only)
+	// SWE1R-style podracer physics state (global or per-vehicle gate, VH_SPEEDER only)
 	float		m_fPodAccel;	// acceleration ramp factor (SWE1R AccelerationFactor)
 	float		m_fPodBoost;	// boost ramp factor (SWE1R BoostFactor)
 	float		m_fPodTraction;	// current slide/traction blend factor, restored by cgame prediction cache
+	// Smoothed contact-surface state. The surface bits come from the hover trace;
+	// the numeric values are kept per vehicle so client prediction can replay them.
+	float		m_fPodSurfaceSpeedMultiplier;
+	float		m_fPodSurfaceSkidModifier;
+	float		m_fPodSurfaceFastBonus;
+	uint32_t	m_ulPodSurfaceFlags;
+	qboolean	m_bPodSurfaceSpeedApplied;
+	int			m_iPodLavaDamageTime;
+	int			m_iPodImpactTime;	// earliest command time at which another speed scrub may occur
 	float		m_fPodTurnRate;	// current yaw turn rate, degrees/sec
 	float		m_fPodTargetTurnRate;	// target yaw turn rate from steering input
+	int			m_iPodDriftActiveTime;	// last command time drift was active (BG_PodRacerDrifting flood protection)
+	int			m_iPodBrakeActiveTime;	// last command time brake was active (BG_PodRacerBraking flood protection)
+	int			m_iPodRollActiveTime;	// last command time manual roll was active (BG_PodRacerManualRoll flood protection)
+	int			m_iPodRollDir;		// direction of that roll (-1/+1); an A<->D flip is a new engagement, not continuation
+	int			m_iPodAudioGear;	// presentation-only gear band for shift sounds
+	qboolean	m_bPodAudioBraking;	// previous airbrake state for sound edges
+	qboolean	m_bPodAudioSliding;	// previous drift state for sound edges
+	qboolean	m_bPodAudioBoosting;	// previous boost state for sound edges
+	qboolean	m_bPodAudioRolling;	// previous manual-roll state for sound edges
+	int			m_iPodAudioLoopBand;	// current engine-loop band: 0 low, 1 mid, 2 high, 3 boost
+	qboolean	m_bPodAudioReversing;	// reverse-loop hysteresis state
+	int			m_iPodAudioSlideDebounce;	// earliest time the next slide start/stop sound may play
+	int			m_iPodAudioRollDebounce;	// earliest time the next roll one-shot may play
+
+	// cgame-only engine-sway/binder state (lives here like m_iExhaustTag; unused on server)
+	int			m_iPodBinderTag[2];	// cached *binder_l/*binder_r bolts, -1 if the model lacks them
+	int			m_iPodSwayBones;	// engine_l/engine_r bones: 0 untested, 1 present, -1 absent
+	float		m_fPodSwayLastYaw;	// previous lerpAngles yaw, for remote-pod turn-rate estimation
+	float		m_fPodSwayYawRate;	// filtered yaw rate estimate, degrees/sec
+	float		m_fPodSwayLastSpeed;	// previous speed, for the acceleration estimate
+	float		m_fPodSwayNoseUp;	// smoothed engine nose-up amount, degrees (SWE1R fn_46DCD0 is 0-12)
+	int			m_iPodSwayLastTime;	// cg.time of the last sway update
+	// cgame-only control-surface flap state (engine fins + cabin airbrakes)
+	int			m_iPodFlapBones;	// fin_l/fin_r/airbrake_l/airbrake_r bones: 0 untested, 1 present, -1 absent
+	int			m_iPodFlapLastTime;	// cg.time of the last flap update (own dt; NOT shared with sway)
+	float		m_fPodFinAngle;		// smoothed engine-fin deflection, degrees (differential; signed by turn dir)
+	float		m_fPodAirbrakeOpen;	// smoothed cabin-airbrake open fraction, 0..1
+	// spring-damper states for the lever bones (engine_arm_l/r translate the engines,
+	// cockpit swings the cabin about a pivot at the engine midpoint); degrees of lever
+	int			m_iPodArmBones;		// engine_arm/cockpit bones: 0 untested, 1 present, -1 absent
+	float		m_fPodArmLat;		// engines' lateral spring position + velocity
+	float		m_fPodArmLatVel;
+	float		m_fPodArmVert;		// engines' vertical spring position + velocity
+	float		m_fPodArmVertVel;
+	float		m_fPodCockpitLag;	// cockpit trailing-yaw spring position + velocity
+	float		m_fPodCockpitLagVel;
+	float		m_fPodArmSurge;		// engines' fore/aft surge spring position + velocity
+	float		m_fPodArmSurgeVel;
+	float		m_fPodSwayAccelFrac;	// frame's filtered accel estimate, exported from the nose-up block for the surge target
 
 	//how long it should drop like a rock for after freed from SUSPEND
 	int			m_iDropTime;
@@ -803,3 +1001,69 @@ typedef struct Vehicle_s
 #endif
 
 extern int BG_VehicleGetIndex( const char *vehicleName );
+
+// The .veh value is the default for a vehicle type.  A spawned vehicle can
+// override it through iModelScale, which is carried by both playerState
+// (prediction) and entityState (other clients).  Zero remains the engine's
+// identity sentinel.
+static QINLINE float BG_VehicleInstanceScale( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+
+	if ( vInfo && scalePercent > 0 && scalePercent <= 1023 )
+	{
+		return scalePercent / 100.0f;
+	}
+	return ( vInfo && vInfo->scale > 0.0f ) ? vInfo->scale : 1.0f;
+}
+
+static QINLINE float BG_PodRacerInstanceScale( const Vehicle_t *pVeh, int scalePercent )
+{
+	return BG_VehicleInstanceScale( pVeh, scalePercent );
+}
+
+static QINLINE float BG_PodRacerTopSpeedForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	float speed = vInfo ? vInfo->speedMax * POD_MAP_SCALE : POD_SOFT_TOP_SPEED;
+	if ( vInfo && vInfo->podracerPhysics )
+	{
+		return speed * BG_PodRacerInstanceScale( pVeh, scalePercent );
+	}
+	return ( speed < POD_SOFT_TOP_SPEED ) ? POD_SOFT_TOP_SPEED : speed;
+}
+
+static QINLINE float BG_PodRacerBoostSpeedForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	float speed = vInfo ? vInfo->turboSpeed * POD_MAP_SCALE * BG_PodRacerInstanceScale( pVeh, scalePercent ) : 0.0f;
+	float topSpeed = BG_PodRacerTopSpeedForVehicle( pVeh, scalePercent );
+	return ( speed < topSpeed ) ? topSpeed : speed;
+}
+
+static QINLINE float BG_PodRacerMinSpeedForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	return vInfo ? vInfo->speedMin * POD_MAP_SCALE * BG_PodRacerInstanceScale( pVeh, scalePercent ) : 0.0f;
+}
+
+static QINLINE float BG_PodRacerDriftMinSpeedForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_DRIFT_MIN_SPEED_FRAC * BG_PodRacerTopSpeedForVehicle( pVeh, scalePercent ) : POD_LEGACY_DRIFT_MIN_SPEED;
+}
+
+static QINLINE float BG_PodRacerDriftBleedRateForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_DRIFT_BLEED_FRAC * BG_PodRacerTopSpeedForVehicle( pVeh, scalePercent ) : POD_LEGACY_DRIFT_BLEED_RATE;
+}
+
+static QINLINE float BG_PodRacerImpactToleranceForVehicle( const Vehicle_t *pVeh, int scalePercent )
+{
+	const vehicleInfo_t *vInfo = pVeh ? pVeh->m_pVehicleInfo : NULL;
+	return ( vInfo && vInfo->podracerPhysics ) ?
+		POD_IMPACT_TOLERANCE * BG_PodRacerInstanceScale( pVeh, scalePercent ) : POD_LEGACY_IMPACT_TOLERANCE;
+}

@@ -8837,6 +8837,10 @@ void CG_G2AnimEntModelLoad(centity_t *cent)
 					cent->m_pVehicle->m_iExhaustTag[i] = trap->G2API_AddBolt( cent->ghoul2, 0, strTemp );
 				}
 
+				// Podracer energy-binder emitter tags (rigged pod models only; -1 when absent).
+				cent->m_pVehicle->m_iPodBinderTag[0] = trap->G2API_AddBolt( cent->ghoul2, 0, "*binder_l" );
+				cent->m_pVehicle->m_iPodBinderTag[1] = trap->G2API_AddBolt( cent->ghoul2, 0, "*binder_r" );
+
 				// Setup the Muzzles.
 				for ( i = 0; i < MAX_VEHICLE_MUZZLES; i++ )
 				{
@@ -9134,7 +9138,7 @@ qboolean CG_VehicleShouldDrawShields( centity_t *vehCent )
 
 /*
 extern	vmCvar_t		cg_showVehBounds;
-extern void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, vec3_t origin, vec3_t mins, vec3_t maxs,
+extern void BG_VehicleAdjustBBoxForOrientation( Vehicle_t *veh, int scalePercent, vec3_t origin, vec3_t mins, vec3_t maxs,
 										int clientNum, int tracemask,
 										void (*localTrace)(trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentMask)); // bg_pmove.c
 */
@@ -9273,7 +9277,8 @@ void CG_G2Animated( centity_t *cent )
 			float *old = cent->m_pVehicle->m_vOrientation;
 			cent->m_pVehicle->m_vOrientation = &cent->lerpAngles[0];
 
-			BG_VehicleAdjustBBoxForOrientation( cent->m_pVehicle, cent->lerpOrigin, bmins, bmaxs,
+			BG_VehicleAdjustBBoxForOrientation( cent->m_pVehicle, cent->currentState.iModelScale,
+										cent->lerpOrigin, bmins, bmaxs,
 										cent->currentState.number, MASK_PLAYERSOLID, NULL );
 			cent->m_pVehicle->m_vOrientation = old;
 
@@ -9699,6 +9704,474 @@ static void CG_VehicleHeatEffect( vec3_t org, centity_t *cent )
 static int lastFlyBySound[MAX_GENTITIES] = {0};
 #define	FLYBYSOUNDTIME 2000
 int	cg_lastHyperSpaceEffectTime = 0;
+
+// Fraction of the pod's chassis bank the engines keep (0 = stay level with the
+// world, 1 = bank fully with the ship).  Low values read like the engines resisting
+// the roll on their struts and keep the inner engine clear of the ground in turns.
+#define POD_ENGINE_ROLL_FOLLOW 0.4f
+
+// Fore/aft engine surge: engines lunge forward on throttle, pull back on decel/brake.
+// Subtle & springy — small arc throw, loose damping so it lunges then rings back once.
+// Driven by the same filtered accel estimate as the nose-up pitch (m_fPodSwayAccelFrac).
+#define POD_SURGE_THROW_DEG		6.0f	// peak arm rotation at full accel
+#define POD_SURGE_OMEGA			11.0f	// spring stiffness
+#define POD_SURGE_ZETA			0.40f	// damping ratio (<1 = slight overshoot / ring-back)
+#define POD_SURGE_SLOT			2		// confirmed engine_surge_* fore/aft channel
+#define POD_SURGE_SIGN			1.0f	// confirmed forward-on-accel direction
+#define POD_SURGE_STRENGTH		0.5f	// confirmed visual strength
+
+// Engine counter-orbit, hardcoded to the in-game tuned result (confirmed by eye via the
+// since-removed MEASURE engine dZ debug HUD, both bank directions, NO cos-fade).  These
+// were live tuning cvars (cg_podOrbit*) during development; the confirmed values are baked
+// below.  To re-open tuning, turn these back into cvar reads in CG_PodEngineSway.
+//   POD_ENGINE_ORBIT_LEVER : correction strength.  20 raw base * tuned gain 4 = 80.
+//   POD_ORBIT_SLOT         : bone angle slot.  2 = vertical lift (0 was yaw-into-ground).
+//   POD_ORBIT_SIGN         : global/left-arm sign.  -1 because the arms are mirror-posed.
+//   POD_ORBIT_RIGHT_SIGN   : right-arm sign relative to left.  -1 = opposite = mirror cancel.
+#define POD_ENGINE_ORBIT_LEVER 80.0f
+#define POD_ORBIT_SLOT         2
+#define POD_ORBIT_SIGN         (-1.0f)
+#define POD_ORBIT_RIGHT_SIGN   (-1.0f)
+
+// Control-surface flaps (engine fins + cabin airbrakes). Engine-fin count and peak throw
+// live in the vehicle's .veh definition; cvars remain live multipliers for visual tuning.
+#define POD_AIRBRAKE_MAX_DEG	40.0f	// peak cabin-airbrake panel swing when braking
+#define POD_FIN_EASE_MS			90.0f	// fin ease time constant (both directions)
+#define POD_AIRBRAKE_OPEN_MS	150.0f	// airbrake snap-open time constant
+#define POD_AIRBRAKE_CLOSE_MS	250.0f	// airbrake slower-close time constant
+
+// Damped spring integrator for the podracer lever bones (semi-implicit Euler;
+// dt is clamped by the caller so omega*dt stays well inside the stable region).
+static void CG_PodSpring( float *pos, float *vel, float target, float omega, float zeta, float dt )
+{
+	*vel += ( ( target - *pos ) * omega * omega - 2.0f * zeta * omega * ( *vel ) ) * dt;
+	*pos += *vel * dt;
+}
+
+static int CG_PodFinCount( const vehicleInfo_t *vInfo, qboolean left )
+{
+	int count = left ? vInfo->podFinCountLeft : vInfo->podFinCountRight;
+
+	if ( count < 0 )
+	{
+		count = vInfo->podFinCount;
+	}
+	if ( count < 0 )
+	{
+		count = 0;
+	}
+	else if ( count > POD_FIN_MAX_PER_ENGINE )
+	{
+		count = POD_FIN_MAX_PER_ENGINE;
+	}
+	return count;
+}
+
+/*
+===================
+CG_PodEngineSway
+
+Procedural engine sway for rigged podracer models (engine_l/engine_r bones), layered
+over whatever keyframe animation the server picked (BONE_ANGLES_POSTMULT stacks on the
+animated pose).  Purely cosmetic: the server traces the unposed skeleton.
+
+For the pod we're riding, the predicted turn rate is available directly; for other
+pods it's estimated from the smoothed yaw delta of the interpolated angles.
+===================
+*/
+static void CG_PodEngineSway( centity_t *cent, Vehicle_t *pVehNPC )
+{
+	vehicleInfo_t *vInfo = pVehNPC->m_pVehicleInfo;
+	vec3_t angles;
+	float turnFrac, speedFrac, speedNow, maxSpeed, lean, steer, wobble, phase;
+	float stress, shudder, shudPhase;
+	const float scale = 1.0f;	// former cg_podEngineSway tuning cvar, baked at its default
+	qboolean localPod = ( cent->currentState.clientNum == cg.predictedPlayerState.m_iVehicleNum ) ? qtrue : qfalse;
+	int dt;
+
+	if ( pVehNPC->m_iPodSwayBones < 0 || !cent->ghoul2 )
+	{
+		return;
+	}
+	if ( !BG_PodRacerPhysics( pVehNPC ) )
+	{
+		return;
+	}
+
+	dt = cg.time - pVehNPC->m_iPodSwayLastTime;
+	maxSpeed = BG_PodRacerTopSpeedForVehicle( pVehNPC, cent->currentState.iModelScale );
+	speedNow = localPod ? (float)cg.predictedVehicleState.speed : (float)cent->currentState.speed;
+
+	// turn rate: prediction for our own pod, filtered yaw delta for everyone else's
+	if ( localPod )
+	{
+		pVehNPC->m_fPodSwayYawRate = pVehNPC->m_fPodTurnRate;
+	}
+	else if ( dt > 0 && dt < 500 )
+	{
+		float inst = AngleSubtract( cent->lerpAngles[YAW], pVehNPC->m_fPodSwayLastYaw ) * 1000.0f / dt;
+		float blend = dt / 120.0f;
+		if ( blend > 1.0f )
+		{
+			blend = 1.0f;
+		}
+		pVehNPC->m_fPodSwayYawRate += ( inst - pVehNPC->m_fPodSwayYawRate ) * blend;
+	}
+
+	turnFrac = pVehNPC->m_fPodSwayYawRate / BG_PodRacerMaxTurnRate( vInfo );
+	if ( turnFrac > 1.0f ) turnFrac = 1.0f;
+	else if ( turnFrac < -1.0f ) turnFrac = -1.0f;
+
+	speedFrac = fabs( speedNow ) / maxSpeed;
+	if ( speedFrac > 1.0f ) speedFrac = 1.0f;
+
+	// Engine nose-up (SWE1R fn_46DCD0: 0-12 deg from pitch input and tilt angle).
+	// Driven from a slow-filtered acceleration estimate so remote pods work off the
+	// networked speed too; full nose-up at "0 to top speed in 4 seconds" accel,
+	// hard turns add a little (the tilt-angle term), decel dips slightly below rest.
+	if ( dt > 0 && dt < 500 )
+	{
+		float inst = ( speedNow - pVehNPC->m_fPodSwayLastSpeed ) * 1000.0f / dt;
+		float accelFrac = inst / ( maxSpeed * 0.25f );
+		float target;
+		float blend = dt / 250.0f;
+
+		if ( accelFrac > 1.0f ) accelFrac = 1.0f;
+		else if ( accelFrac < -0.4f ) accelFrac = -0.4f;
+		pVehNPC->m_fPodSwayAccelFrac = accelFrac;
+		target = accelFrac * 7.0f + fabs( turnFrac ) * 1.5f;
+		if ( blend > 1.0f )
+		{
+			blend = 1.0f;
+		}
+		pVehNPC->m_fPodSwayNoseUp += ( target - pVehNPC->m_fPodSwayNoseUp ) * blend;
+	}
+	pVehNPC->m_fPodSwayLastYaw = cent->lerpAngles[YAW];
+	pVehNPC->m_fPodSwayLastSpeed = speedNow;
+	pVehNPC->m_iPodSwayLastTime = cg.time;
+
+	// The whole pod already banks 70 deg into turns (PodRacer_ProcessOrientCommands,
+	// matching SWE1R's CalculateTiltFromTurn cap); per-engine roll is just seasoning,
+	// but the steering yaw is the readable part of a turn, so it gets more travel.
+	lean = turnFrac * 3.0f * scale;
+	steer = turnFrac * 20.0f * scale;
+
+	// Two idle-motion components: a slow float that is nearly invisible parked and
+	// grows with the square of speed, and a faster non-harmonic shudder (two
+	// incommensurate frequencies) that ramps with speed and with how hard the pod
+	// is working (accel + turn load), so top speed reads as strain, not bobbing.
+	stress = fabs( pVehNPC->m_fPodSwayNoseUp ) / 7.0f + fabs( turnFrac ) * 0.5f;
+	if ( stress > 1.0f ) stress = 1.0f;
+	wobble = ( 0.15f + 1.6f * speedFrac * speedFrac ) * scale;
+	shudder = ( 0.08f + 0.5f * speedFrac + 0.7f * stress ) * scale;
+	phase = cg.time * 0.004f;
+	shudPhase = cg.time * 0.043f;
+
+	// BONE_ANGLES_POSTMULT conjugates through each bone's base pose, so the same slot
+	// can act around a different model-space axis on differently oriented bones.  For
+	// the AnakinPod ENGINE bones (established by in-game testing 2026-07-12): angles[0] yaws the engines
+	// (-turnFrac points them into the turn), angles[1] rolls them, angles[2]
+	// pitches them (negative = nose-up).
+	//
+	VectorSet( angles,
+		-steer,
+		lean + wobble * sin( phase ) + shudder * sin( shudPhase ),
+		-pVehNPC->m_fPodSwayNoseUp * scale + wobble * sin( phase * 1.7f ) + shudder * sin( shudPhase * 0.73f + 1.1f ) );
+	if ( !trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_l", angles,
+		BONE_ANGLES_POSTMULT, POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z,
+		cgs.gameModels, 0, cg.time ) )
+	{
+		pVehNPC->m_iPodSwayBones = -1;
+		return;
+	}
+	pVehNPC->m_iPodSwayBones = 1;
+	// right engine shares the nose-up but floats/shudders out of phase
+	VectorSet( angles,
+		-steer,
+		lean + wobble * sin( phase + M_PI ) + shudder * sin( shudPhase + 2.3f ),
+		-pVehNPC->m_fPodSwayNoseUp * scale + wobble * sin( phase * 1.7f + M_PI ) + shudder * sin( shudPhase * 0.73f + 4.2f ) );
+	trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_r", angles,
+		BONE_ANGLES_POSTMULT, POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z,
+		cgs.gameModels, 0, cg.time );
+	// Lever bones (rigged pk3s only): the v2 engine_arm_l/r bones pivot on the
+	// centreline beside the engines and run laterally ~49 units to their child engine
+	// bones.  Rotating the correct arm axis changes engine position and also carries
+	// the child's orientation; the cockpit bone pivots at the cabin base and swings the
+	// cabin the same way.  Each axis runs a damped spring toward its input so the
+	// pieces lag the chassis and ring back on their elastic struts (the cgame-only
+	// stand-in for SWE1R's transform-history cockpit lag, fn_470AE0).
+	if ( pVehNPC->m_iPodArmBones >= 0 )
+	{
+		if ( dt > 0 && dt < 500 )
+		{
+			float dts = ( dt > 50 ) ? 0.05f : dt * 0.001f;
+			float bank = cosf( DEG2RAD( cent->lerpAngles[ROLL] ) );
+			if ( bank < 0.0f ) bank = 0.0f;
+
+			// engines swing wide of the turn, and rise/dip with the thrust load
+			CG_PodSpring( &pVehNPC->m_fPodArmLat, &pVehNPC->m_fPodArmLatVel,
+				turnFrac * 2.0f, 13.0f, 0.35f, dts );
+			CG_PodSpring( &pVehNPC->m_fPodArmVert, &pVehNPC->m_fPodArmVertVel,
+				pVehNPC->m_fPodSwayNoseUp * -0.18f, 17.0f, 0.45f, dts );
+			// cockpit trails the turn; heavier damping so it sways rather than rattles.
+			// The lag is a model-space yaw, so once the pod banks into the turn the
+			// swing picks up a world-vertical component (the cabin visibly sinks) -
+			// fade it with the bank angle so it stays an essentially lateral sway.
+			CG_PodSpring( &pVehNPC->m_fPodCockpitLag, &pVehNPC->m_fPodCockpitLagVel,
+				turnFrac * 3.5f * bank, 10.0f, 0.75f, dts );
+			// engines surge fore/aft with thrust load: forward on accel, back on decel
+			CG_PodSpring( &pVehNPC->m_fPodArmSurge, &pVehNPC->m_fPodArmSurgeVel,
+				pVehNPC->m_fPodSwayAccelFrac * POD_SURGE_THROW_DEG,
+				POD_SURGE_OMEGA, POD_SURGE_ZETA, dts );
+		}
+
+		// Counter the roll-induced ORBIT of the engines: the ship rolls about its
+		// centre and the engines sit out to the sides, so a bank swings one engine up
+		// and the other down (into the ground).  Push each engine's height back toward
+		// level via its arm-vert lever - opposite signs per side, scaled by sin(roll),
+		// keeping POD_ENGINE_ROLL_FOLLOW of the orbit.  The arm also rotates the engine
+		// body, so a separate child-engine counter is required for independent world roll.
+		{
+			// Orbit slot/sign/gain are hardcoded (see POD_ORBIT_* defines near the top
+			// of this file for the tuning reference).
+			float orbitBase = sinf( DEG2RAD( cent->lerpAngles[ROLL] ) )
+						* ( 1.0f - POD_ENGINE_ROLL_FOLLOW ) * POD_ENGINE_ORBIT_LEVER;
+			float orbit = orbitBase * scale * POD_ORBIT_SIGN;
+			int orbitSlot = POD_ORBIT_SLOT;
+
+			VectorSet( angles, 0.0f, 0.0f, pVehNPC->m_fPodArmVert * scale );
+			// lateral swing: engines swing wide of turns.  Slot 0 (model-Y) is its home;
+			// same sign both arms (unlike orbit, which is mirrored on slot 2), so both
+			// engines lean the same way into a turn.  Small spring term, independent of
+			// the orbit lift on slot 2.
+			angles[0] += pVehNPC->m_fPodArmLat * scale;
+			angles[orbitSlot] += orbit;
+			if ( !trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_arm_l", angles, BONE_ANGLES_POSTMULT,
+				POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, cgs.gameModels, 0, cg.time ) )
+			{	// pk3 predates the lever bones; engines still sway, just no translation
+				pVehNPC->m_iPodArmBones = -1;
+			}
+			else
+			{
+				pVehNPC->m_iPodArmBones = 1;
+				VectorSet( angles, 0.0f, 0.0f, pVehNPC->m_fPodArmVert * scale );
+				angles[0] += pVehNPC->m_fPodArmLat * scale;   // lateral swing, same sign as left arm
+				angles[orbitSlot] += orbit * POD_ORBIT_RIGHT_SIGN;
+				trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_arm_r", angles, BONE_ANGLES_POSTMULT,
+					POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, cgs.gameModels, 0, cg.time );
+
+				// Surge has its own tall, vertical parent levers:
+				// pelvis > engine_surge_* > engine_arm_* > engine_*.
+				// Applying the spring here makes the child engines sweep through a long,
+				// almost-straight fore/aft arc instead of tilting around the short arm.
+				// Older rigs simply do not have these optional bones; their arm sway still
+				// works because a failed surge lookup is intentionally non-fatal.
+				{
+					float surge = pVehNPC->m_fPodArmSurge * scale
+						* POD_SURGE_STRENGTH * POD_SURGE_SIGN;
+
+					VectorClear( angles );
+					angles[POD_SURGE_SLOT] = surge;
+					trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_surge_l", angles,
+						BONE_ANGLES_POSTMULT, POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z,
+						cgs.gameModels, 0, cg.time );
+					trap->G2API_SetBoneAngles( cent->ghoul2, 0, "engine_surge_r", angles,
+						BONE_ANGLES_POSTMULT, POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z,
+						cgs.gameModels, 0, cg.time );
+				}
+
+			VectorSet( angles, pVehNPC->m_fPodCockpitLag * scale, 0.0f, 0.0f );
+			trap->G2API_SetBoneAngles( cent->ghoul2, 0, "cockpit", angles, BONE_ANGLES_POSTMULT,
+				POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, cgs.gameModels, 0, cg.time );
+
+		}
+		}
+	}
+
+}
+
+/*
+===============
+CG_PodFlaps
+
+Procedural control surfaces for rigged podracers, layered on top of CG_PodEngineSway:
+  - Engine fins (fin_l/fin_r, weighting rflap1/rsflap1) deflect differentially with the
+    turn rate, like ailerons.
+  - Cabin airbrakes (airbrake_l/airbrake_r, weighting podbkl/podbkr) flare open while the
+    player is braking and ease shut on release.
+Self-disables (m_iPodFlapBones = -1) if the model lacks the bones, so swoops cost nothing.
+Airbrakes are driven for the local/predicted pod only (no networked brake bit yet).
+===============
+*/
+static void CG_PodFlaps( centity_t *cent, Vehicle_t *pVehNPC )
+{
+	vehicleInfo_t *vInfo = pVehNPC->m_pVehicleInfo;
+	vec3_t angles;
+	float turnFrac, maxTurn;
+	float openTarget, easeMs, k, dtF;
+	qboolean localPod = ( cent->currentState.clientNum == cg.predictedPlayerState.m_iVehicleNum ) ? qtrue : qfalse;
+	qboolean braking;
+	int dt;
+
+	if ( pVehNPC->m_iPodFlapBones < 0 || !cent->ghoul2 )
+	{
+		return;
+	}
+	if ( !BG_PodRacerPhysics( pVehNPC ) )
+	{
+		return;
+	}
+
+	dt = cg.time - pVehNPC->m_iPodFlapLastTime;
+	pVehNPC->m_iPodFlapLastTime = cg.time;
+	if ( dt <= 0 || dt > 500 )
+	{	// first frame or a long stall: snap, don't ease with a garbage dt
+		dt = 0;
+	}
+	dtF = (float)dt;
+
+	// ---- engine fins: per-engine radial bloom (reverse umbrella) ----
+	// Bloom each engine's 3 fins outward. Sources: symmetric airbrake bloom (m_fPodAirbrakeOpen,
+	// already eased) OR, while steering, the INSIDE engine of the turn blooms, scaling with turn
+	// rate like roll.
+	maxTurn = BG_PodRacerMaxTurnRate( vInfo );
+	if ( maxTurn < 1.0f )
+	{
+		maxTurn = 1.0f;
+	}
+	turnFrac = pVehNPC->m_fPodSwayYawRate / maxTurn;
+	if ( turnFrac > 1.0f )  turnFrac = 1.0f;
+	if ( turnFrac < -1.0f ) turnFrac = -1.0f;
+
+	// ---- cabin airbrakes: symmetric, driven by brake state (local pod only) ----
+	braking = ( localPod && ( cg.time - pVehNPC->m_iPodBrakeActiveTime ) < POD_BRAKE_CONTINUE_MS ) ? qtrue : qfalse;
+	openTarget = braking ? 1.0f : 0.0f;
+	easeMs = braking ? POD_AIRBRAKE_OPEN_MS : POD_AIRBRAKE_CLOSE_MS;
+	if ( dt > 0 )
+	{
+		k = dtF / ( dtF + easeMs );
+		pVehNPC->m_fPodAirbrakeOpen += ( openTarget - pVehNPC->m_fPodAirbrakeOpen ) * k;
+	}
+	else
+	{
+		pVehNPC->m_fPodAirbrakeOpen = openTarget;
+	}
+
+	// ---- apply steering fin bones: fin_l0..N / fin_r0..N ----
+	// Each vehicle declares its fin counts and peak throw in .veh. Engine fins are
+	// steering-only; braking drives only the separate cockpit airbrakes below.
+	{
+		float leftSteer  = ( turnFrac < 0.0f ) ? -turnFrac : 0.0f;   // |turnFrac| for left
+		float rightSteer = ( turnFrac > 0.0f ) ?  turnFrac : 0.0f;   // |turnFrac| for right
+		float lAng = leftSteer  * vInfo->podFinBloomDeg;
+		float rAng = rightSteer * vInfo->podFinBloomDeg;
+		int leftCount = CG_PodFinCount( vInfo, qtrue );
+		int rightCount = CG_PodFinCount( vInfo, qfalse );
+		int f;
+		char boneName[32];
+
+		VectorClear( angles );
+		angles[PITCH] = lAng;
+		for ( f = 0; f < leftCount; f++ )
+		{
+			Com_sprintf( boneName, sizeof( boneName ), "fin_l%i", f );
+			if ( !trap->G2API_SetBoneAngles( cent->ghoul2, 0, boneName, angles, BONE_ANGLES_POSTMULT,
+					POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, NULL, 0, cg.time ) )
+			{	// .veh declared a fin which this model does not provide
+				pVehNPC->m_iPodFlapBones = -1;
+				return;
+			}
+		}
+		angles[PITCH] = rAng;
+		for ( f = 0; f < rightCount; f++ )
+		{
+			Com_sprintf( boneName, sizeof( boneName ), "fin_r%i", f );
+			if ( !trap->G2API_SetBoneAngles( cent->ghoul2, 0, boneName, angles, BONE_ANGLES_POSTMULT,
+					POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, NULL, 0, cg.time ) )
+			{
+				pVehNPC->m_iPodFlapBones = -1;
+				return;
+			}
+		}
+	}
+
+	// ---- apply airbrake bones (mirrored: opposite signs so both panels swing OUTboard) ----
+	// podbkl/podbkr are mirror meshes, so the same rotation opens one correctly and the other
+	// inward; the left panel takes the opposite sign to mirror it. Both airbrake_l/r bones are
+	// front-hinged in the rig, so these signs sweep their rear edges outward into a / \ shape.
+	VectorClear( angles );
+	// Positive right-side base plus the mirrored left sign = both rear edges OUTboard.
+	angles[PITCH] = pVehNPC->m_fPodAirbrakeOpen * POD_AIRBRAKE_MAX_DEG;
+	trap->G2API_SetBoneAngles( cent->ghoul2, 0, "airbrake_r", angles, BONE_ANGLES_POSTMULT,
+		POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, NULL, 0, cg.time );
+	angles[PITCH] = -angles[PITCH];
+	trap->G2API_SetBoneAngles( cent->ghoul2, 0, "airbrake_l", angles, BONE_ANGLES_POSTMULT,
+		POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, NULL, 0, cg.time );
+
+	pVehNPC->m_iPodFlapBones = 1;
+}
+
+/*
+===================
+CG_PodBinderBeam
+
+Draw the podracer energy binder as one renderer-generated electricity bolt between
+the two animated Ghoul2 anchors.  binderShader is the .veh opt-in and selects the
+material used to render the connector.
+===================
+*/
+static void CG_PodBinderBeam( centity_t *cent, Vehicle_t *pVehNPC )
+{
+	mdxaBone_t	leftMatrix, rightMatrix;
+	vec3_t		boltAngles, leftOrigin, rightOrigin, span;
+	refEntity_t	beam;
+
+	if ( !pVehNPC->m_pVehicleInfo->iBinderShader || !cent->ghoul2 ||
+		(cent->currentState.eFlags & EF_DEAD) ||
+		pVehNPC->m_iPodBinderTag[0] <= 0 || pVehNPC->m_iPodBinderTag[1] <= 0 )
+	{
+		return;
+	}
+
+	// Match CG_G2PlayerAngles' VH_SPEEDER transform exactly: the model renders with
+	// yaw and roll, but not entity pitch.  Dropping roll detaches the binder in turns;
+	// passing pitch double-applies the speeder pitch and can collapse the beam.
+	VectorCopy( cent->lerpAngles, boltAngles );
+	if ( pVehNPC->m_pVehicleInfo->type == VH_SPEEDER )
+	{
+		boltAngles[PITCH] = 0.0f;
+	}
+
+	trap->G2API_GetBoltMatrix( cent->ghoul2, 0, pVehNPC->m_iPodBinderTag[0], &leftMatrix,
+		boltAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale );
+	trap->G2API_GetBoltMatrix( cent->ghoul2, 0, pVehNPC->m_iPodBinderTag[1], &rightMatrix,
+		boltAngles, cent->lerpOrigin, cg.time, cgs.gameModels, cent->modelScale );
+	BG_GiveMeVectorFromMatrix( &leftMatrix, ORIGIN, leftOrigin );
+	BG_GiveMeVectorFromMatrix( &rightMatrix, ORIGIN, rightOrigin );
+
+	VectorSubtract( rightOrigin, leftOrigin, span );
+	if ( VectorLengthSquared( span ) < 1.0f )
+	{
+		return;
+	}
+
+	memset( &beam, 0, sizeof( beam ) );
+	beam.reType = RT_ELECTRICITY;
+	beam.renderfx = RF_TAPERED;
+	beam.customShader = pVehNPC->m_pVehicleInfo->iBinderShader;
+	beam.radius = 2.25f;
+	beam.axis[0][0] = 0.75f; // renderer electricity chaos amount
+	beam.frame = cg.time + cent->currentState.number * 977;
+	beam.shaderRGBA[0] = 74;
+	beam.shaderRGBA[1] = 120;
+	beam.shaderRGBA[2] = 255;
+	beam.shaderRGBA[3] = 255;
+	VectorCopy( leftOrigin, beam.origin );
+	VectorCopy( rightOrigin, beam.oldorigin );
+
+	trap->R_AddRefEntityToScene( &beam );
+}
+
 static QINLINE void CG_VehicleEffects(centity_t *cent)
 {
 	Vehicle_t *pVehNPC;
@@ -9711,6 +10184,12 @@ static QINLINE void CG_VehicleEffects(centity_t *cent)
 	}
 
 	pVehNPC = cent->m_pVehicle;
+
+	// pose the podracer engine bones before any bolt matrices are read this frame,
+	// so bolted effects (exhaust, binder) follow the sway
+	CG_PodEngineSway( cent, pVehNPC );
+	CG_PodFlaps( cent, pVehNPC );
+	CG_PodBinderBeam( cent, pVehNPC );
 
 	if ( cent->currentState.clientNum == cg.predictedPlayerState.m_iVehicleNum//my vehicle
 		&& (cent->currentState.eFlags2&EF2_HYPERSPACE) )//hyperspacing
@@ -10341,6 +10820,75 @@ static void CG_DrawCosmeticOnPlayer2(centity_t* cent, int time, qhandle_t* gameM
 
 extern qboolean BG_InSlopeAnim( int anim );
 extern void CG_CubeOutline(vec3_t mins, vec3_t maxs, int time, unsigned int color, float alpha);
+
+static qboolean CG_PodFindVisibleLegSurface( void *ghoul2, const char *rootName,
+	char *surfaceName, int surfaceNameSize )
+{
+	int i;
+	int status = trap->G2API_GetSurfaceRenderStatus( ghoul2, 0, rootName );
+
+	if ( status != -1 && !(status & TURN_OFF) )
+	{
+		Q_strncpyz( surfaceName, rootName, surfaceNameSize );
+		return qtrue;
+	}
+	for ( i = 0; i < 8; i++ )
+	{
+		Com_sprintf( surfaceName, surfaceNameSize, "%s%c", rootName, 'a' + i );
+		status = trap->G2API_GetSurfaceRenderStatus( ghoul2, 0, surfaceName );
+		if ( status != -1 && !(status & TURN_OFF) )
+		{
+			return qtrue;
+		}
+	}
+	surfaceName[0] = '\0';
+	return qfalse;
+}
+
+static void CG_UpdatePodRiderLegSurfaces( centity_t *cent )
+{
+	static const char *legRoot[2] = { "l_leg", "r_leg" };
+	qboolean hideLegs = qfalse;
+	int i;
+
+	if ( cent->ghoul2 && cent->currentState.m_iVehicleNum > 0
+		&& cent->currentState.m_iVehicleNum < ENTITYNUM_WORLD )
+	{
+		centity_t *veh = &cg_entities[cent->currentState.m_iVehicleNum];
+		if ( veh->m_pVehicle && veh->m_pVehicle->m_pVehicleInfo
+			&& veh->m_pVehicle->m_pVehicleInfo->podracerPhysics
+			&& !veh->m_pVehicle->m_pVehicleInfo->hideRider )
+		{
+			hideLegs = qtrue;
+		}
+	}
+
+	if ( hideLegs && !cent->podRiderLegsHidden )
+	{
+		for ( i = 0; i < 2; i++ )
+		{
+			if ( CG_PodFindVisibleLegSurface( cent->ghoul2, legRoot[i],
+				cent->podRiderLegSurf[i], sizeof(cent->podRiderLegSurf[i]) ) )
+			{
+				trap->G2API_SetSurfaceOnOff( cent->ghoul2, cent->podRiderLegSurf[i], TURN_OFF );
+			}
+		}
+		cent->podRiderLegsHidden = qtrue;
+	}
+	else if ( !hideLegs && cent->podRiderLegsHidden )
+	{
+		for ( i = 0; i < 2; i++ )
+		{
+			if ( cent->podRiderLegSurf[i][0] )
+			{
+				trap->G2API_SetSurfaceOnOff( cent->ghoul2, cent->podRiderLegSurf[i], TURN_ON );
+				cent->podRiderLegSurf[i][0] = '\0';
+			}
+		}
+		cent->podRiderLegsHidden = qfalse;
+	}
+}
+
 void CG_Player( centity_t *cent ) {
 	clientInfo_t	*ci;
 	refEntity_t		legs;
@@ -10403,6 +10951,15 @@ void CG_Player( centity_t *cent ) {
 	else
 	{
 		VectorClear(cent->modelScale);
+	}
+
+	// A vehicle .veh scale is the default, while iModelScale is its replicated
+	// per-instance override.  Keep the .veh fallback for older snapshots that
+	// carry the zero identity sentinel.
+	if ( cent->currentState.NPC_class == CLASS_VEHICLE && cent->m_pVehicle )
+	{
+		const float vehicleScale = BG_VehicleInstanceScale( cent->m_pVehicle, cent->currentState.iModelScale );
+		VectorSet( cent->modelScale, vehicleScale, vehicleScale, vehicleScale );
 	}
 
 	//smooth only what the server extrapolates, so the filter hides extrapolation's corrections without changing interpolated players
@@ -10500,7 +11057,81 @@ void CG_Player( centity_t *cent ) {
 				VectorCopy(oldPSOrg, veh->playerState->origin);
 			}
 		}
+
+		// Podracer cockpit lag swings the *driver tag with the cabin (the tag is
+		// weighted to the cockpit bone in the rig).  The attach paths above sample
+		// the bolt before CG_PodEngineSway poses this frame's bones, and skip the
+		// local client entirely, so re-anchor every rider to the freshly-posed
+		// driver bolt.  We pose the lever/cockpit bones first, then read the bolt.
+		if ( veh->m_pVehicle && veh->m_pVehicle->m_pVehicleInfo && veh->ghoul2 && cent->ghoul2 &&
+			BG_PodRacerPhysics( veh->m_pVehicle ) && veh->m_pVehicle->m_iPodArmBones > 0 )
+		{
+			int driverBolt = trap->G2API_AddBolt( veh->ghoul2, 0, "*driver" );
+			if ( driverBolt >= 0 )
+			{
+				mdxaBone_t boltMatrix, boltMatrixRest;
+				vec3_t vehAngles, boltOrg, boltRest, boltAng;
+
+				// Sample the *driver bolt twice with the same vehicle transform: once
+				// with the cockpit sway posed for this frame, once with the sway bones
+				// zeroed (rest).  The DIFFERENCE is the pure lag-induced seat motion.
+				// We never touch cent->lerpOrigin (that feeds back into the attach and
+				// ratchets); the offset is applied to the render entity only, below.
+				CG_PodEngineSway( veh, veh->m_pVehicle );
+				VectorCopy( veh->lerpAngles, vehAngles );
+				trap->G2API_GetBoltMatrix( veh->ghoul2, 0, driverBolt, &boltMatrix, vehAngles,
+					veh->lerpOrigin, cg.time, cgs.gameModels, veh->modelScale );
+				BG_GiveMeVectorFromMatrix( &boltMatrix, ORIGIN, boltOrg );
+
+				trap->G2API_SetBoneAngles( veh->ghoul2, 0, "cockpit", vec3_origin, BONE_ANGLES_POSTMULT,
+					POSITIVE_X, NEGATIVE_Y, NEGATIVE_Z, cgs.gameModels, 0, cg.time );
+				trap->G2API_GetBoltMatrix( veh->ghoul2, 0, driverBolt, &boltMatrixRest, vehAngles,
+					veh->lerpOrigin, cg.time, cgs.gameModels, veh->modelScale );
+				BG_GiveMeVectorFromMatrix( &boltMatrixRest, ORIGIN, boltRest );
+
+				// store just the delta; CG_Player adds it to legs.origin at draw time
+				VectorSubtract( boltOrg, boltRest, cent->podRiderOfs );
+
+				// Carry the cabin's sway twist onto the rider's yaw.  We must NOT read
+				// the yaw straight out of the posed bolt: that forward vector bakes in
+				// the pod's pitch, and (nose = model -X, up = model -Y) the pitch does
+				// not leave the forward's horizontal projection intact - so pitching
+				// up/down would spin the rider about Z.  Instead take the yaw of the
+				// posed forward MINUS the yaw of the rest forward (cockpit zeroed).
+				// Both bolts share the same vehAngles/origin, so the pod's heading and
+				// its pitch contamination cancel in the difference, leaving only the
+				// pure sway-induced twist, which we add to the pod's heading.
+				vec3_t restAng;
+				float  twistYaw;
+
+				boltAng[0] = -boltMatrix.matrix[0][0];
+				boltAng[1] = -boltMatrix.matrix[1][0];
+				boltAng[2] = -boltMatrix.matrix[2][0];
+				vectoangles( boltAng, boltAng );
+
+				restAng[0] = -boltMatrixRest.matrix[0][0];
+				restAng[1] = -boltMatrixRest.matrix[1][0];
+				restAng[2] = -boltMatrixRest.matrix[2][0];
+				vectoangles( restAng, restAng );
+
+				twistYaw = AngleNormalize180( boltAng[YAW] - restAng[YAW] );
+				cent->lerpAngles[YAW] = AngleNormalize360( veh->lerpAngles[YAW] + twistYaw );
+			}
+			else
+			{
+				VectorClear( cent->podRiderOfs );
+			}
+		}
+		else
+		{	// riding something, but not a rigged pod
+			VectorClear( cent->podRiderOfs );
+		}
 	}
+	else
+	{	// on foot
+		VectorClear( cent->podRiderOfs );
+	}
+	CG_UpdatePodRiderLegSurfaces( cent );
 
 	// the client number is stored in clientNum.  It can't be derived
 	// from the entity number, because a single client may have
@@ -11065,6 +11696,28 @@ void CG_Player( centity_t *cent ) {
 	CG_SetGhoul2Info(&legs, cent);
 
 	VectorCopy(cent->modelScale, legs.modelScale);
+	if ( cent->currentState.m_iVehicleNum )
+	{
+		centity_t *veh = &cg_entities[cent->currentState.m_iVehicleNum];
+
+		if ( veh->m_pVehicle
+			&& !veh->m_pVehicle->m_pVehicleInfo->hideRider )
+		{
+			const float vehicleScale = BG_VehicleInstanceScale( veh->m_pVehicle, veh->currentState.iModelScale );
+
+			// Ghoul2 uses an all-zero modelScale as its identity sentinel.  Turn
+			// that sentinel into the vehicle's explicit scale; otherwise preserve and
+			// multiply any custom scale already carried by the rider.
+			if ( !legs.modelScale[0] && !legs.modelScale[1] && !legs.modelScale[2] )
+			{
+				VectorSet( legs.modelScale, vehicleScale, vehicleScale, vehicleScale );
+			}
+			else
+			{
+				VectorScale( legs.modelScale, vehicleScale, legs.modelScale );
+			}
+		}
+	}
 	legs.radius = CG_RadiusForCent( cent );
 	VectorClear(legs.angles);
 
@@ -11277,6 +11930,9 @@ void CG_Player( centity_t *cent ) {
 	CG_PlayerHitFX(cent);
 
 	VectorCopy( cent->lerpOrigin, legs.origin );
+	// podracer cockpit lag: render-only seat offset (computed above from the *driver
+	// bolt sway-vs-rest delta), applied here so persistent state is never touched
+	VectorAdd( legs.origin, cent->podRiderOfs, legs.origin );
 
 	VectorCopy( cent->lerpOrigin, legs.lightingOrigin );
 	legs.shadowPlane = shadowPlane;
@@ -13927,4 +14583,3 @@ void CG_ResetPlayerEntity( centity_t *cent )
 		trap->Print("%i ResetPlayerEntity yaw=%i\n", cent->currentState.number, cent->pe.torso.yawAngle );
 	}
 }
-

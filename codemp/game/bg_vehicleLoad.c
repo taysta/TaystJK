@@ -467,8 +467,26 @@ vehField_t vehicleFields[] =
 	{"soundShift2",		VFOFS(soundShift2),		VF_SOUND},//sound to play when changing speeds
 	{"soundShift3",		VFOFS(soundShift3),		VF_SOUND},//sound to play when changing speeds
 	{"soundShift4",		VFOFS(soundShift4),		VF_SOUND},//sound to play when changing speeds
+	{"podSoundLoop",		VFOFS(podSoundLoop),		VF_SOUND},//podracer engine loop, mid band
+	{"podSoundLoopLow",	VFOFS(podSoundLoopLow),	VF_SOUND},//podracer engine loop, low band
+	{"podSoundLoopHigh",	VFOFS(podSoundLoopHigh),	VF_SOUND},//podracer engine loop, high band
+	{"podSoundLoopBoost",	VFOFS(podSoundLoopBoost),	VF_SOUND},//podracer engine loop while boosting
+	{"podSoundLoopReverse",	VFOFS(podSoundLoopReverse),	VF_SOUND},//podracer engine loop while backing up
+	{"podSoundBoost",	VFOFS(podSoundBoost),		VF_SOUND},//podracer boost activation
+	{"podSoundShift1",	VFOFS(podSoundShift1),	VF_SOUND},
+	{"podSoundShift2",	VFOFS(podSoundShift2),	VF_SOUND},
+	{"podSoundShift3",	VFOFS(podSoundShift3),	VF_SOUND},
+	{"podSoundShift4",	VFOFS(podSoundShift4),	VF_SOUND},
+	{"podSoundShift5",	VFOFS(podSoundShift5),	VF_SOUND},
+	{"podSoundBrakeOn",	VFOFS(podSoundBrakeOn),	VF_SOUND},
+	{"podSoundBrakeOff",	VFOFS(podSoundBrakeOff),	VF_SOUND},
+	{"podSoundSlideStart", VFOFS(podSoundSlideStart), VF_SOUND},
+	{"podSoundSlideStop",	VFOFS(podSoundSlideStop), VF_SOUND},
+	{"podSoundRollStart",	VFOFS(podSoundRollStart), VF_SOUND},//manual roll engage; ep1 binder activate
+	{"podSoundRollLoop",	VFOFS(podSoundRollLoop),	VF_SOUND},//loop on the pilot while manual roll held
 
 	{"exhaustFX", VFOFS(iExhaustFX), VF_EFFECT_CLIENT},		//exhaust effect, played from "*exhaust" bolt(s)
+	{"binderShader", VFOFS(iBinderShader), VF_SHADER},		//podracer energy-binder shader, stretched between "*binder_l"/"*binder_r"
 	{"turboFX", VFOFS(iTurboFX), VF_EFFECT_CLIENT},		//turbo exhaust effect, played from "*exhaust" bolt(s) when ship is in "turbo" mode
 	{"turboStartFX", VFOFS(iTurboStartFX), VF_EFFECT},		//turbo start effect, played from "*exhaust" bolt(s) when ship is in "turbo" mode
 	{"trailFX", VFOFS(iTrailFX), VF_EFFECT_CLIENT},		//trail effect, played from "*trail" bolt(s)
@@ -548,6 +566,13 @@ vehField_t vehicleFields[] =
 	{"cameraFOV", VFOFS(cameraFOV), VF_FLOAT},			//third person camera FOV, default is 80
 	{"cameraAlpha", VFOFS(cameraAlpha), VF_FLOAT},		//fade out the vehicle to this alpha (0.1-1.0f) if it's in the way of the crosshair
 	{"cameraPitchDependantVertOffset", VFOFS(cameraPitchDependantVertOffset), VF_BOOL},		//use the hacky AT-ST pitch dependant vertical offset
+	{"podracerPhysics", VFOFS(podracerPhysics), VF_BOOL},			//use SWE1R-style physics (VH_SPEEDER only)
+	{"scale", VFOFS(scale), VF_FLOAT},					//uniform vehicle and rider scale
+	{"podFinCount", VFOFS(podFinCount), VF_INT},				//number of fin_lN and fin_rN bones per engine
+	{"podFinCountLeft", VFOFS(podFinCountLeft), VF_INT},		//left-side override; -1 inherits podFinCount
+	{"podFinCountRight", VFOFS(podFinCountRight), VF_INT},		//right-side override; -1 inherits podFinCount
+	{"podFinBloomDeg", VFOFS(podFinBloomDeg), VF_FLOAT},		//peak steering fin throw in degrees
+	{"podBankScale", VFOFS(podBankScale), VF_FLOAT},			//scales pod lean roll; 0 = never banks
 
 	//Tribes 2 "Shrike" flying vehicle physics -TaystJK
 	{"shrikePhysics", VFOFS(shrikePhysics), VF_BOOL},					//use the T2 force-based flight model (VH_FIGHTER only)
@@ -662,6 +687,11 @@ void BG_SetSharedVehicleFunctions( vehicleInfo_t *pVehInfo )
 void BG_VehicleSetDefaults( vehicleInfo_t *vehicle )
 {
 	memset(vehicle, 0, sizeof(vehicleInfo_t));
+	vehicle->podFinCount = POD_FIN_DEFAULT_COUNT;
+	vehicle->podFinCountLeft = -1;
+	vehicle->podFinCountRight = -1;
+	vehicle->podFinBloomDeg = POD_FIN_DEFAULT_BLOOM_DEG;
+	vehicle->podBankScale = 1.0f;
 /*
 	if (!vehicle->name)
 	{
@@ -772,6 +802,57 @@ void BG_VehicleClampData( vehicleInfo_t *vehicle )
 		{
 			vehicle->centerOfGravity[i] = -1.0f;
 		}
+	}
+
+	if ( vehicle->podFinCount < 0 )
+	{
+		vehicle->podFinCount = 0;
+	}
+	else if ( vehicle->podFinCount > POD_FIN_MAX_PER_ENGINE )
+	{
+		vehicle->podFinCount = POD_FIN_MAX_PER_ENGINE;
+	}
+	if ( vehicle->podFinCountLeft < -1 )
+	{
+		vehicle->podFinCountLeft = -1;
+	}
+	else if ( vehicle->podFinCountLeft > POD_FIN_MAX_PER_ENGINE )
+	{
+		vehicle->podFinCountLeft = POD_FIN_MAX_PER_ENGINE;
+	}
+	if ( vehicle->podFinCountRight < -1 )
+	{
+		vehicle->podFinCountRight = -1;
+	}
+	else if ( vehicle->podFinCountRight > POD_FIN_MAX_PER_ENGINE )
+	{
+		vehicle->podFinCountRight = POD_FIN_MAX_PER_ENGINE;
+	}
+	if ( vehicle->podFinBloomDeg < 0.0f )
+	{
+		vehicle->podFinBloomDeg = 0.0f;
+	}
+	else if ( vehicle->podFinBloomDeg > 90.0f )
+	{
+		vehicle->podFinBloomDeg = 90.0f;
+	}
+	if ( vehicle->podBankScale < 0.0f )
+	{
+		vehicle->podBankScale = 0.0f;
+	}
+	else if ( vehicle->podBankScale > 2.0f )
+	{
+		vehicle->podBankScale = 2.0f;
+	}
+	// "scale" is a uniform vehicle scale.  It is carried at runtime through
+	// iModelScale, whose network representation is limited to 1023%.
+	if ( vehicle->scale <= 0.0f )
+	{
+		vehicle->scale = 1.0f;
+	}
+	else if ( vehicle->scale > 10.23f )
+	{
+		vehicle->scale = 10.23f; // entityState iModelScale is limited to 1023%
 	}
 
 	// Validate passenger max.

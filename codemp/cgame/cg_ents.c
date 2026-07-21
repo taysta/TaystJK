@@ -327,11 +327,7 @@ static void CG_PodEngineLoopVelocity( centity_t *cent, vec3_t velOut )
 
 	VectorClear( velOut );
 
-	maxPitch = cg_podEnginePitch.value;
-	if ( maxPitch <= 1.0f )
-		return;
-	if ( maxPitch > 5.0f )
-		maxPitch = 5.0f;	// engine clamps dopplerScale at MAX_DOPPLER_SCALE (5) anyway
+	maxPitch = 1.6f;	// former cg_podEnginePitch tuning cvar, baked at its default
 
 	if ( !cg.predictedPlayerState.m_iVehicleNum ||
 		cent->currentState.number != cg.predictedPlayerState.m_iVehicleNum )
@@ -342,7 +338,7 @@ static void CG_PodEngineLoopVelocity( centity_t *cent, vec3_t velOut )
 		return;
 
 	vps = &cg.predictedVehicleState;
-	topSpeed = pVeh->m_pVehicleInfo->speedMax * POD_MAP_SCALE;	// same top the audio bands use
+	topSpeed = BG_PodRacerTopSpeedForVehicle( pVeh, vps->iModelScale );	// same top the audio bands use
 	if ( topSpeed < 1.0f )
 		return;
 
@@ -4008,6 +4004,14 @@ void CG_AddPacketEntities( qboolean isPortal ) {
 
 		if (veh->currentState.owner == cg.predictedPlayerState.clientNum)
 		{
+			// The vehicle entity carries its replicated per-instance scale.  The
+			// auxiliary predicted vehicle playerState is not guaranteed to retain
+			// iModelScale in every snapshot path; do not let its zero identity
+			// sentinel overwrite the authoritative entity scale every render frame.
+			if ( !cg.predictedVehicleState.iModelScale && veh->currentState.iModelScale )
+			{
+				cg.predictedVehicleState.iModelScale = veh->currentState.iModelScale;
+			}
 			BG_PlayerStateToEntityState( &cg.predictedVehicleState, &veh->currentState, qfalse );
 			veh->currentState.eType = ET_NPC;
 
