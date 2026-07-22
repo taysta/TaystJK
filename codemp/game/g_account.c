@@ -1393,7 +1393,7 @@ static QINLINE int G_GetSeason(void) {
 	return 6;
 }
 
-static void G_UpdateOurLocalRun(sqlite3 * db, int seasonOldRank_self, int seasonNewRank_self, int globalOldRank_self, int globalNewRank_self, int style_self, char *username_self, char *coursename_self, 
+static void G_UpdateOurLocalRun(sqlite3 * db, int seasonOldRank_self, int seasonNewRank_self, int globalOldRank_self, int globalNewRank_self, int style_self, char *username_self, char *coursename_self,
 	int duration_ms_self, int topspeed_self, int average_self, int end_time_self, int seasonCount, int globalCount, char *checkpoints_self) {
 	char * sql;
 	sqlite3_stmt * stmt;

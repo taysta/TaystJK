@@ -1985,7 +1985,7 @@ void TimerCheckpoint(gentity_t *trigger, gentity_t *player, trace_t *trace) {//J
 		G_AppendRunCheckpoint(player->client, time, (int)(player->client->pers.stats.topSpeed + 0.5f), average);
 
 		/*
-		if (trigger && trigger->spawnflags & 1)//Minimalist print loda fixme get rid of target shit 
+		if (trigger && trigger->spawnflags & 1)//Minimalist print loda fixme get rid of target shit
 			trap->SendServerCommand( player-g_entities, va("cp \"^3%.3fs^5, avg ^3%i^5u\n\n\n\n\n\n\n\n\n\n\"", (float)time * 0.001f, average));
 		else
 			trap->SendServerCommand( player-g_entities, va("chat \"^5Checkpoint: ^3%.3f^5, max ^3%i^5, average ^3%i^5 ups\"", (float)time * 0.001f, player->client->pers.stats.topSpeed, average));
