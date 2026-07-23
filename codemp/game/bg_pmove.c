@@ -10470,6 +10470,15 @@ static void PM_Weapon( void )
 			}
 #endif
 		}
+		else if ( (veh = pm_entVeh) && veh->m_pVehicle
+			&& veh->m_pVehicle->m_pVehicleInfo->hideRider )
+		{//rider is hidden (e.g. tie/pod): there's no visible player, so a personal
+			//saber swing is always wrong.  Force the saber all-the-way-off so the
+			//entire saber-attack pipeline (swing sound, saber moves, attack anim) is
+			//bypassed at the source.  Do NOT clear the attack buttons - the rider
+			//still fires their personal gun weapons normally.
+			pm->ps->saberHolstered = 2;
+		}
 	}
 
 	if (pm->ps->weapon != WP_DISRUPTOR //not using disruptor
