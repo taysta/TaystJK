@@ -7122,11 +7122,24 @@ void Cmd_DFRefresh_f(gentity_t *ent) {
 
 int JP_ClientNumberFromString(gentity_t *to, const char *s);
 
+//Only maps that actually contain target_runtimewarp entities have rooms to report
+static qboolean G_RuntimeWhoisShowRooms( void )
+{
+	return level.runtimeWarpUsage.mapHasRooms;
+}
+
 static void G_RuntimeWhoisRoomName( int clientNum, char *buffer, int bufferSize )
 {
 	int roomIndex;
 
 	if ( !buffer || bufferSize < 1 )
+	{
+		return;
+	}
+
+	buffer[0] = '\0';
+
+	if ( !G_RuntimeWhoisShowRooms() )
 	{
 		return;
 	}
@@ -7157,6 +7170,7 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 	char		msg[1024-128] = {0};
 	gclient_t	*cl;
 	qboolean	whois = qfalse, seeip = qfalse;
+	qboolean	showRooms;
 	sqlite3 * db;
     char * sql;
     sqlite3_stmt * stmt;
@@ -7192,23 +7206,50 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 		CALL_SQLITE (prepare_v2 (db, sql, strlen (sql) + 1, & stmt, NULL));
 	}
 
+	//Maps without target_runtimewarp have no rooms, so drop the column entirely
+	showRooms = G_RuntimeWhoisShowRooms();
+
 	if (whois && seeip) {
-		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
-		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Room                            Nickname\n\"");
+		if (g_raceMode.integer) {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
+		}
+		else {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            IP                Plugin  Admin   Nickname\n\"");
+		}
 	}
 	else if (whois) {
-		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
-		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Room                            Nickname\n\"");
+		if (g_raceMode.integer) {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Race  Style    Jump  Hidden  Nickname\n\"");
+		}
+		else {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Admin   Nickname\n\"");
+		}
 	}
 	else {
-		if (g_raceMode.integer)
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Race  Style    Jump  Hidden  Room                            Nickname\n\"");
-		else
-			trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Room                            Nickname\n\"");
+		if (g_raceMode.integer) {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Race  Style    Jump  Hidden  Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Race  Style    Jump  Hidden  Nickname\n\"");
+		}
+		else {
+			if (showRooms)
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Room                            Nickname\n\"");
+			else
+				trap->SendServerCommand(ent-g_entities, "print \"^5   Username            Plugin  Nickname\n\"");
+		}
 	}
 
 	for (i=0; i<MAX_CLIENTS; i++) {//Build a list of clients
@@ -7308,24 +7349,48 @@ void Cmd_ACWhois_f( gentity_t *ent ) { //why does this crash sometimes..? condit
 
 				if (seeip) {
 					//Admin prints
-					if (g_raceMode.integer)
-						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
-					else
-						tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRoom, strName);
+					if (g_raceMode.integer) {
+						if (showRooms)
+							tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
+						else
+							tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strName);
+					}
+					else {
+						if (showRooms)
+							tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%-36s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strRoom, strName);
+						else
+							tmpMsg = va( "%-2s%-24s%-18s%-12s%-12s%s\n", strNum, strUser, strIP, strPlugin, strAdmin, strName);
+					}
 				}
 				else {
 					//Admin prints
-					if (g_raceMode.integer)
-						tmpMsg = va( "%-2s%-24s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
-					else
-						tmpMsg = va( "%-2s%-24s%-12s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRoom, strName);
+					if (g_raceMode.integer) {
+						if (showRooms)
+							tmpMsg = va( "%-2s%-24s%-12s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
+						else
+							tmpMsg = va( "%-2s%-24s%-12s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strPlugin, strAdmin, strRace, strStyle, jumpLevel, strHidden, strName);
+					}
+					else {
+						if (showRooms)
+							tmpMsg = va( "%-2s%-24s%-12s%-12s%-36s%s\n", strNum, strUser, strPlugin, strAdmin, strRoom, strName);
+						else
+							tmpMsg = va( "%-2s%-24s%-12s%-12s%s\n", strNum, strUser, strPlugin, strAdmin, strName);
+					}
 				}
 			}
 			else {//Not admin
-				if (g_raceMode.integer)
-					tmpMsg = va( "%-2s%-24s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
-				else
-					tmpMsg = va( "%-2s%-24s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRoom, strName);
+				if (g_raceMode.integer) {
+					if (showRooms)
+						tmpMsg = va( "%-2s%-24s%-12s%-10s%-13s%-6s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRace, strStyle, jumpLevel, strHidden, strRoom, strName);
+					else
+						tmpMsg = va( "%-2s%-24s%-12s%-10s%-13s%-6s%-12s%s\n", strNum, strUser, strPlugin, strRace, strStyle, jumpLevel, strHidden, strName);
+				}
+				else {
+					if (showRooms)
+						tmpMsg = va( "%-2s%-24s%-12s%-36s%s\n", strNum, strUser, strPlugin, strRoom, strName);
+					else
+						tmpMsg = va( "%-2s%-24s%-12s%s\n", strNum, strUser, strPlugin, strName);
+				}
 			}
 			
 			if (strlen(msg) + strlen(tmpMsg) >= sizeof( msg)) {

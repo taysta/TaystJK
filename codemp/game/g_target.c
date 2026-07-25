@@ -1339,6 +1339,9 @@ void SP_target_runtimewarp( gentity_t *self )
 	G_SpawnString( "mapname", "", &s );
 	self->message = G_NewString(s);
 
+	//This map uses rooms, so room-aware output (whois) can show them
+	level.runtimeWarpUsage.mapHasRooms = qtrue;
+
 	G_SpawnInt( "slot", "0", &slot );
 	self->genericValue3 = slot;
 	if ( slot > 0 && ( !self->targetShaderName || !self->targetShaderName[0] ) )

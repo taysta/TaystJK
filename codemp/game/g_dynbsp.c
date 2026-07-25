@@ -367,6 +367,8 @@ void G_RuntimeRoomsInit( void )
 	g_runtimeWarpPolicyLoaded = qfalse;
 	g_runtimeWarpPolicyRuleCount = 0;
 
+	level.runtimeWarpUsage.mapHasRooms = qfalse;
+
 	for ( i = 0; i < MAX_CLIENTS; i++ )
 	{
 		level.runtimeWarpUsage.clientMapNames[i][0] = 0;

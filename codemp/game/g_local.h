@@ -1508,6 +1508,7 @@ typedef struct level_locals_s {
 
 	char		mTeamFilter[MAX_QPATH];
 	struct {
+		qboolean mapHasRooms;
 		char	clientMapNames[MAX_CLIENTS][MAX_QPATH];
 		int		clientRoomIndex[MAX_CLIENTS];
 		runtimeRoom_t rooms[MAX_RUNTIME_BSP_INSTANCES];
