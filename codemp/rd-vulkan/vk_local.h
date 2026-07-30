@@ -67,7 +67,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 
 //#define USE_REVERSED_DEPTH
-#define USE_UPLOAD_QUEUE
+//#define USE_UPLOAD_QUEUE
 
 //#define USE_VANILLA_SHADOWFINISH
 #define USE_VK_STATS
@@ -725,6 +725,7 @@ typedef struct {
 	uint32_t		swapchain_image_count;
 	//uint32_t		swapchain_image_index;
 	VkImage			swapchain_images[MAX_SWAPCHAIN_IMAGES];
+	qboolean		swapchain_images_inited[MAX_SWAPCHAIN_IMAGES];
 	VkImageView		swapchain_image_views[MAX_SWAPCHAIN_IMAGES];
 	VkSemaphore		swapchain_rendering_finished[MAX_SWAPCHAIN_IMAGES];
 

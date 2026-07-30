@@ -472,7 +472,7 @@ void vk_info_f( void ) {
     const int vbo_models_mode = MIN( r_vbo_models->integer, 1 );
 
     ri.Printf( PRINT_ALL, "VBO world caching: %s\n", yesno[vbo_mode] );
-    ri.Printf( PRINT_ALL, "VBO model caching: %s", yesno[vbo_models_mode] );
+    ri.Printf( PRINT_ALL, "VBO model caching: %s\n", yesno[vbo_models_mode] );
 
     if ( vbo_models_mode )
         ri.Printf( PRINT_ALL, ", num buffers: %i \n", tr.numVBOs );
@@ -482,7 +482,7 @@ void vk_info_f( void ) {
 #else
     const int use_staging_queue = 0;
 #endif
-    ri.Printf( PRINT_ALL, "\n Use texture staging upload queue: %s\n", yesno[use_staging_queue] );
+    ri.Printf( PRINT_ALL, "Use texture staging upload queue: %s\n", yesno[use_staging_queue] );
 
 #else
     ri.Printf(PRINT_ALL, "vk_info statistics are not enabled in this build.\n");

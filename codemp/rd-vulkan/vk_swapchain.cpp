@@ -244,7 +244,7 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
 		VK_CHECK( qvkCreateSemaphore( vk.device, &s, NULL, &vk.swapchain_rendering_finished[i] ) );
 		VK_SET_OBJECT_NAME( vk.swapchain_rendering_finished[i], va( "swapchain_rendering_finished semaphore %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_SEMAPHORE_EXT );
 	}
-
+#if 0
     if ( vk.initSwapchainLayout != VK_IMAGE_LAYOUT_UNDEFINED ) {
         VkCommandBuffer command_buffer = vk_begin_command_buffer();
 
@@ -256,6 +256,17 @@ void vk_create_swapchain( VkPhysicalDevice physical_device, VkDevice device,
         
         vk_end_command_buffer( command_buffer, __func__ );
     }
+#endif
+	for ( i = 0; i < vk.swapchain_image_count; i++ ) {
+		if ( vk.initSwapchainLayout != VK_IMAGE_LAYOUT_UNDEFINED ) {
+			// The Vulkan spec states : Use of a presentable image must occur only after the image is returned by vkAcquireNextImageKHR,
+			// and before it is released by vkQueuePresentKHR.
+			// This includes transitioning the image layout and rendering commands(https ://docs.vulkan.org/refpages/latest/refpages/source/VkSwapchainKHR.html#_description)
+			vk.swapchain_images_inited[i] = qfalse;
+		} else {
+			vk.swapchain_images_inited[i] = qtrue; // assume undefined layout
+		}
+	}
 }
 
 void vk_destroy_swapchain ( void ) {

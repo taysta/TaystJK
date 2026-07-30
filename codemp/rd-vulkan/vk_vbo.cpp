@@ -1905,7 +1905,9 @@ qboolean vk_alloc_vbo( const char *name, const byte *vbo_data, int vbo_size )
 	// staging buffers
 
 	// utilize existing staging bufferAdd commentMore actions
+#ifdef USE_UPLOAD_QUEUE
 	vk_flush_staging_buffer( qfalse );
+#endif
 	uploadDone = 0;
 	while ( uploadDone < vbo_size ) {
 		VkDeviceSize uploadSize = vk.staging_buffer.size;

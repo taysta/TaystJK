@@ -1303,10 +1303,12 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
     Com_Memset(&attachment_blend_state, 0, sizeof(attachment_blend_state));
     attachment_blend_state.blendEnable = (def->state_bits & (GLS_SRCBLEND_BITS | GLS_DSTBLEND_BITS)) ? VK_TRUE : VK_FALSE;
 
-    if ( def->shadow_phase == SHADOW_EDGES )
+    if ( def->shadow_phase == SHADOW_EDGES || def->shader_type == TYPE_DOT ) {
         attachment_blend_state.colorWriteMask = 0;
-    else
+    }
+    else {
         attachment_blend_state.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+    }
 
     if ( attachment_blend_state.blendEnable )
     {
@@ -1318,7 +1320,7 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
         attachment_blend_state.colorBlendOp = VK_BLEND_OP_ADD;
         attachment_blend_state.alphaBlendOp = VK_BLEND_OP_ADD;
 
-        if ( def->allow_discard ) {
+        if ( def->allow_discard && vkSamples != VK_SAMPLE_COUNT_1_BIT && depth_stencil_state.depthWriteEnable == VK_FALSE ) {
             // try to reduce pixel fillrate for transparent surfaces, this yields 1..10% fps increase when multisampling in enabled
             if ( attachment_blend_state.srcColorBlendFactor == VK_BLEND_FACTOR_SRC_ALPHA && attachment_blend_state.dstColorBlendFactor == VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA ) {
                 frag_spec_data.discard_mode = 1;

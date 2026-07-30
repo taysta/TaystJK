@@ -29,6 +29,7 @@ set(MPVulkanRendererIncludeDirectories
 	${SharedDir}
 	${MPDir}
 	"${MPDir}/rd-vulkan"
+	"${MPDir}/rd-vulkan/vulkan"
 	"${GSLIncludeDirectory}"
 	)
 
@@ -125,6 +126,23 @@ set(MPVulkanRendererVulkanAssets
 	"${MPDir}/rd-vulkan/vulkan/vulkan_xlib_xrandr.h")
 source_group("renderer\\vulkan" FILES ${MPVulkanRendererVulkanAssets})
 set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererVulkanAssets})
+
+set(MPVulkanRendererVulkanVideoAssets
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codecs_common.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_av1std.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_av1std_decode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_av1std_encode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h264std.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h264std_decode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h264std_encode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h265std.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h265std_decode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_h265std_encode.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_vp9std.h"
+    "${MPDir}/rd-vulkan/vulkan/vk_video/vulkan_video_codec_vp9std_decode.h"
+)
+source_group("renderer\\vulkan\\vk_video" FILES ${MPVulkanRendererVulkanVideoAssets})
+set(MPVulkanRendererFiles ${MPVulkanRendererFiles} ${MPVulkanRendererVulkanVideoAssets})
 
 set(MPVulkanRendererUtils
 	"${MPDir}/rd-vulkan/utils/stb_dxt.h")

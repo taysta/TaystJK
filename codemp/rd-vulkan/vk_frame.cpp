@@ -1198,7 +1198,16 @@ _retry:
     begin_info.pNext = VK_NULL_HANDLE;
     begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
     begin_info.pInheritanceInfo = VK_NULL_HANDLE;
+
     VK_CHECK( qvkBeginCommandBuffer( vk.cmd->command_buffer, &begin_info ) );
+
+	if ( vk.swapchain_images_inited[ vk.cmd->swapchain_image_index ] == qfalse ) {
+		// perform initial swapchain image layout transition
+		vk.swapchain_images_inited[ vk.cmd->swapchain_image_index ] = qtrue;
+		vk_record_image_layout_transition( vk.cmd->command_buffer, vk.swapchain_images[ vk.cmd->swapchain_image_index ],
+			VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, vk.initSwapchainLayout,
+			VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT, 0 );
+	}
 
 	// Ensure visibility of geometry buffers writes.
 	//record_buffer_memory_barrier( vk.cmd->command_buffer, vk.cmd->vertex_buffer, vk.geometry_buffer_size, VK_PIPELINE_STAGE_HOST_BIT, VK_PIPELINE_STAGE_VERTEX_INPUT_BIT, VK_ACCESS_HOST_WRITE_BIT, VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT );
