@@ -1366,9 +1366,6 @@ static void R_MipMapsRGB( byte *in, int inWidth, int inHeight)
 	int			outWidth, outHeight;
 	byte		*temp;
 
-	if ( r_simpleMipMaps->integer )
-		return;
-
 	outWidth = inWidth >> 1;
 	outHeight = inHeight >> 1;
 	temp = (byte *)Hunk_AllocateTempMemory( outWidth * outHeight * 4 );
@@ -1413,8 +1410,7 @@ Operates in place, quartering the size of the texture
 */
 static void R_MipMap (byte *in, int width, int height) {
 
-	if ( !r_simpleMipMaps->integer )
-		R_MipMap2( in, width, height );
+	R_MipMap2( in, width, height );
 
 }
 
@@ -1422,9 +1418,6 @@ static void R_MipMap (byte *in, int width, int height) {
 static void R_MipMapLuminanceAlpha (const byte *in, byte *out, int width, int height)
 {
 	int  i, j, row;
-
-	if ( r_simpleMipMaps->integer )
-		return;
 
 	if ( width == 1 && height == 1 ) {
 		return;
@@ -1463,9 +1456,6 @@ static void R_MipMapNormalHeight (const byte *in, byte *out, int width, int heig
 	int		row;
 	int sx = swizzle ? 3 : 0;
 	int sa = swizzle ? 0 : 3;
-
-	if ( r_simpleMipMaps->integer )
-		return;
 
 	if ( width == 1 && height == 1 ) {
 		return;
@@ -1685,35 +1675,6 @@ static void RawImage_ScaleToPower2( byte **data, int *inout_width, int *inout_he
 		}
 		width = scaled_width;
 		height = scaled_height;
-	}
-
-	//
-	// perform optional picmip operation
-	//
-	if ( picmip ) {
-		scaled_width >>= r_picmip->integer;
-		scaled_height >>= r_picmip->integer;
-	}
-
-	//
-	// clamp to minimum size
-	//
-	if (scaled_width < 1) {
-		scaled_width = 1;
-	}
-	if (scaled_height < 1) {
-		scaled_height = 1;
-	}
-
-	//
-	// clamp to the current upper OpenGL limit
-	// scale both axis down equally so we don't have to
-	// deal with a half mip resampling
-	//
-	while ( scaled_width > glConfig.maxTextureSize
-		|| scaled_height > glConfig.maxTextureSize ) {
-		scaled_width >>= 1;
-		scaled_height >>= 1;
 	}
 
 	*inout_width         = width;
@@ -2112,6 +2073,35 @@ static void Upload32( byte *data, int width, int height, imgType_t type, int fla
 		RawImage_ScaleToPower2(&data, &width, &height, &scaled_width, &scaled_height, type, flags, &resampledBuffer);
 	}
 
+	//
+	// perform optional picmip operation
+	//
+	if ( flags & IMGFLAG_PICMIP ) {
+		scaled_width >>= r_picmip->integer;
+		scaled_height >>= r_picmip->integer;
+	}
+
+	//
+	// clamp to minimum size
+	//
+	if (scaled_width < 1) {
+		scaled_width = 1;
+	}
+	if (scaled_height < 1) {
+		scaled_height = 1;
+	}
+
+	//
+	// clamp to the current upper OpenGL limit
+	// scale both axis down equally so we don't have to
+	// deal with a half mip resampling
+	//
+	while ( scaled_width > glConfig.maxTextureSize
+		|| scaled_height > glConfig.maxTextureSize ) {
+		scaled_width >>= 1;
+		scaled_height >>= 1;
+	}
+
 	scaledBuffer = (byte *)Hunk_AllocateTempMemory( sizeof( unsigned ) * scaled_width * scaled_height );
 
 	//
@@ -2175,7 +2165,7 @@ static void Upload32( byte *data, int width, int height, imgType_t type, int fla
 		}
 		Com_Memcpy (scaledBuffer, data, width*height*4);
 	}
-	else if ( !r_simpleMipMaps->integer )
+	else
 	{
 		// use the normal mip-mapping function to go down from here
 		while ( width > scaled_width || height > scaled_height ) {
@@ -2702,7 +2692,7 @@ void R_UpdateSubImage( image_t *image, byte *pic, int x, int y, int width, int h
 		}
 		Com_Memcpy (scaledBuffer, data, width*height*4);
 	}
-	else if ( !r_simpleMipMaps->integer )
+	else
 	{
 		// use the normal mip-mapping function to go down from here
 		while ( width > scaled_width || height > scaled_height ) {
@@ -2728,10 +2718,6 @@ void R_UpdateSubImage( image_t *image, byte *pic, int x, int y, int width, int h
 			}
 		}
 		Com_Memcpy( scaledBuffer, data, width * height * 4 );
-	}
-	else if ( !r_simpleMipMaps->integer )
-	{
-		qglGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 	if (!(image->flags & IMGFLAG_NOLIGHTSCALE))
@@ -3498,7 +3484,7 @@ void R_CreateBuiltinImages( void ) {
 
 	int glowImageWidth = width;
 	int glowImageHeight = height;
-	for (int i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++)
+	for (size_t i = 0; i < ARRAY_LEN(tr.glowImageScaled); i++)
 	{
 		tr.glowImageScaled[i] = R_CreateImage(
 			va("*glowScaled%d", i), NULL, glowImageWidth, glowImageHeight,
@@ -3706,7 +3692,7 @@ void R_SetColorMappings( void ) {
 		} else {
 			inf = 255 * pow ( i/255.0f, 1.0f / g ) + 0.5f;
 		}
-		inf <<= tr.overbrightBits;
+		// inf <<= tr.overbrightBits;
 		if (inf < 0) {
 			inf = 0;
 		}

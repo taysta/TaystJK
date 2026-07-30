@@ -198,6 +198,7 @@ extern cvar_t  *r_shadowCascadeZNear;
 extern cvar_t  *r_shadowCascadeZFar;
 extern cvar_t  *r_shadowCascadeZBias;
 extern cvar_t  *r_ignoreDstAlpha;
+extern cvar_t  *r_refractionChromaticAberration;
 
 extern cvar_t	*r_ignoreGLErrors;
 extern cvar_t	*r_logFile;
@@ -594,7 +595,8 @@ typedef enum {
 	AGEN_LIGHTING_SPECULAR,
 	AGEN_WAVEFORM,
 	AGEN_PORTAL,
-	AGEN_CONST
+	AGEN_CONST,
+	AGEN_LIGHTING_SPECULAR_STATIC
 } alphaGen_t;
 
 typedef enum {
@@ -1211,7 +1213,7 @@ enum
 #ifdef REND2_SP_MD3
 	ATTR_TANGENT2		= 0x2000,
 	ATTR_NORMAL2		= 0x4000,
-#endif // REND2_SP
+#endif // REND2_SP_MD3
 
 	ATTR_DEFAULT		= ATTR_POSITION,
 	ATTR_BITS			= ATTR_POSITION |
@@ -1231,7 +1233,7 @@ enum
 							| 
 							ATTR_TANGENT2 |
 							ATTR_NORMAL2
-#endif // REND2_SP
+#endif // REND2_SP_MD3
 };
 
 enum
@@ -1250,12 +1252,13 @@ enum
 	GENERICDEF_USE_FOG             		= 0x0004,
 	GENERICDEF_USE_RGBAGEN         		= 0x0008,
 	GENERICDEF_USE_SKELETAL_ANIMATION	= 0x0010,
+	GENERICDEF_USE_FLARE_TEST			= 0x0020,
 	// GENERICDEF_USE_ALPHA_TEST			= 0x0040,
 #ifdef REND2_SP_MD3
 	GENERICDEF_USE_VERTEX_ANIMATION		= 0x0080,
 	GENERICDEF_ALL						= 0x00FF,
 #else
-	GENERICDEF_ALL						= 0x001F,
+	GENERICDEF_ALL						= 0x003F,
 #endif // REND2_SP
 
 	GENERICDEF_COUNT                	= GENERICDEF_ALL + 1,
@@ -1476,37 +1479,27 @@ typedef enum
 	UNIFORM_COLOR,
 	UNIFORM_BASECOLOR,
 	UNIFORM_VERTCOLOR,
+	UNIFORM_CHROMATICABERRATIONDELTA,
 
-	UNIFORM_DLIGHTINFO,
 	UNIFORM_LIGHTFORWARD,
 	UNIFORM_LIGHTUP,
 	UNIFORM_LIGHTRIGHT,
 	UNIFORM_LIGHTORIGIN,
-	UNIFORM_MODELLIGHTDIR,
 	UNIFORM_LIGHTRADIUS,
-	UNIFORM_AMBIENTLIGHT,
-	UNIFORM_DIRECTEDLIGHT,
 	UNIFORM_DISINTEGRATION,
 	UNIFORM_LIGHTMASK,
 	UNIFORM_FOGINDEX,
 
 	UNIFORM_FOGCOLORMASK,
 
-	UNIFORM_MODELMATRIX,
 	UNIFORM_MODELVIEWPROJECTIONMATRIX,
 
-	UNIFORM_TIME,
 	UNIFORM_VERTEXLERP,
 	UNIFORM_NORMALSCALE,
 	UNIFORM_SPECULARSCALE,
 	UNIFORM_PARALLAXBIAS,
 
 	UNIFORM_VIEWINFO, // znear, zfar, width/2, height/2
-	UNIFORM_VIEWORIGIN,
-	UNIFORM_LOCALVIEWORIGIN,
-	UNIFORM_VIEWFORWARD,
-	UNIFORM_VIEWLEFT,
-	UNIFORM_VIEWUP,
 
 	UNIFORM_INVTEXRES,
 	UNIFORM_AUTOEXPOSUREMINMAX,
@@ -1516,7 +1509,6 @@ typedef enum
 
 	UNIFORM_ALPHA_TEST_TYPE,
 
-	UNIFORM_FX_VOLUMETRIC_BASE,
 	UNIFORM_MAPZEXTENTS,
 	UNIFORM_ZONEOFFSET,
 	UNIFORM_ENVFORCE,
@@ -2636,9 +2628,9 @@ typedef struct trGlobals_s {
 
 	weatherSystem_t			*weatherSystem;
 
-	//
 	// GPU shader programs
-	//
+	// Make sure splashScreenShader is the first shaderProgram_t or edit
+	// R_ClearTr to make sure shaderPrograms are cached correctly
 	shaderProgram_t splashScreenShader;
 	shaderProgram_t genericShader[GENERICDEF_COUNT];
 	shaderProgram_t refractionShader[REFRACTIONDEF_COUNT];
@@ -2666,6 +2658,8 @@ typedef struct trGlobals_s {
 	shaderProgram_t smaaBlendShader;
 	shaderProgram_t smaaResolveShader;
 	shaderProgram_t smaaTemporalResolveShader;
+	// Make sure staticUbo is right behind all shaderProgram_t or edit 
+	// R_ClearTr to make sure shaderPrograms are cached correctly
 
 	GLuint staticUbo;
 	GLuint spriteUbos[MAX_SUB_BSP + 1];
@@ -2674,22 +2668,21 @@ typedef struct trGlobals_s {
 	size_t entity2DUboOffset;
 	size_t camera2DUboOffset;
 	size_t entityFlareUboOffset;
-	size_t cameraFlareUboOffset;
 	size_t defaultLightsUboOffset;
 	size_t defaultSceneUboOffset;
 	size_t defaultFogsUboOffset;
 	size_t defaultShaderInstanceUboOffset;
 
-	size_t cameraUboOffsets[3 + MAX_DLIGHTS * 6 + 3 + MAX_DRAWN_PSHADOWS];
-	size_t sceneUboOffset;
-	size_t temporalInfoUboOffset;
-	size_t lightsUboOffset;
-	size_t fogsUboOffset;
-	size_t skyEntityUboOffset;
-	size_t entityUboOffsets[REFENTITYNUM_WORLD + 1];
-	size_t previousEntityUboOffsets[REFENTITYNUM_WORLD + 1];
-	size_t animationBoneUboOffset;
-	size_t previousAnimationBoneUboOffset;
+	long cameraUboOffsets[3 + MAX_DLIGHTS * 6 + 3 + MAX_DRAWN_PSHADOWS];
+	long sceneUboOffset;
+	long temporalInfoUboOffset;
+	long lightsUboOffset;
+	long fogsUboOffset;
+	long skyEntityUboOffset;
+	long entityUboOffsets[REFENTITYNUM_WORLD + 1];
+	long previousEntityUboOffsets[REFENTITYNUM_WORLD + 1];
+	long animationBoneUboOffset;
+	long previousAnimationBoneUboOffset;
 
 	// -----------------------------------------
 
@@ -3491,7 +3484,7 @@ ANIMATED MODELS
 
 void R_MDRAddAnimSurfaces( trRefEntity_t *ent, int entityNum );
 void RB_MDRSurfaceAnim( mdrSurface_t *surface );
-qboolean R_LoadIQM (model_t *mod, void *buffer, int filesize, const char *name );
+qboolean R_LoadIQM (model_t *mod, void *buffer, size_t filesize, const char *name );
 void R_AddIQMSurfaces( trRefEntity_t *ent, int entityNum );
 void RB_IQMSurfaceAnim( surfaceType_t *surface );
 int R_IQMLerpTag( orientation_t *tag, iqmData_t *data,
@@ -3848,8 +3841,10 @@ struct gpuFrame_t
 
 #ifdef _G2_GORE
 	VBO_t					*goreVBO;
+	void					*goreVBOMemory;
 	int						goreVBOCurrentIndex;
 	IBO_t					*goreIBO;
+	void					*goreIBOMemory;
 	int						goreIBOCurrentIndex;
 #endif
 

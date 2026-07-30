@@ -441,7 +441,7 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	Allocator& frameAllocator = *backEndData->perFrameMemory;
 
 	shaderProgram_t *sp = &tr.lightallShader[0];
-	float colorScale = backEnd.refdef.colorScale;
+	float colorScale = backEnd.refdef.colorScale * tr.identityLight;
 	uniformDataWriter.Start(sp);
 	uniformDataWriter.SetUniformVec4(
 		UNIFORM_BASECOLOR, colorScale, colorScale, colorScale, 1.0f);
@@ -461,8 +461,8 @@ static void DrawSkySide( struct image_s *image, const int mins[2], const int max
 	const byte currentFrameScene = backEndData->currentFrame->currentScene;
 	const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 	const UniformBlockBinding uniformBlockBindings[] = {
-		{ currentFrameUbo, tr.skyEntityUboOffset, UNIFORM_BLOCK_ENTITY },
-		{ currentFrameUbo, tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
+		{ currentFrameUbo, (size_t)tr.skyEntityUboOffset, UNIFORM_BLOCK_ENTITY },
+		{ currentFrameUbo, (size_t)tr.cameraUboOffsets[tr.viewParms.currentViewParm], UNIFORM_BLOCK_CAMERA }
 	};
 
 	DrawItem item = {};

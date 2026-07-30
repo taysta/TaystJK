@@ -3090,7 +3090,7 @@ void G2_GetBoltMatrixLow(
 	assert(boneCache.mod);
 
 	boltInfo_v& boltList = ghoul2.mBltlist;
-	if ( boltList.empty() || boltNum >= boltList.size() )
+	if ( boltList.empty() || (unsigned)boltNum >= boltList.size() )
 	{
 		retMatrix = identityMatrix;
 		return;
@@ -3247,7 +3247,7 @@ void R_AddGhoulSurfaces( trRefEntity_t *ent, int entityNum )
 			(tr.viewParms.flags & VPF_DEPTHSHADOW)));
 
 	int modelList[256];
-	assert(ghoul2.size() < ARRAY_LEN(modelList));
+	assert((size_t)ghoul2.size() < ARRAY_LEN(modelList));
 	modelList[255] = 548;
 
 	// see if we are in a fog volume
@@ -3406,7 +3406,7 @@ void G2_ConstructGhoulSkeleton(
 	mdxaBone_t rootMatrix;
 	int modelList[256];
 
-	assert(ghoul2.size() <= ARRAY_LEN(modelList));
+	assert((size_t)ghoul2.size() <= ARRAY_LEN(modelList));
 	modelList[255] = 548;
 
 	if ( checkForNewOrigin )
@@ -3507,7 +3507,7 @@ void RB_TransformBones(const trRefEntity_t *ent, const trRefdef_t *refdef, int c
 	RootMatrix(ghoul2, currentTime, ent->e.modelScale, rootMatrix);
 
 	int modelList[256];
-	assert(ghoul2.size() < ARRAY_LEN(modelList));
+	assert((size_t)ghoul2.size() < ARRAY_LEN(modelList));
 	modelList[255] = 548;
 
 	// order sort the ghoul 2 models so bolt ons get bolted to the right model
@@ -3659,11 +3659,11 @@ void RB_SurfaceGhoul( CRenderableSurface *surf )
 		return;
 	}
 
-	int numIndexes = surface->numIndexes;
-	int numVertexes = surface->numVertexes;
-	int minIndex = surface->minIndex;
-	int maxIndex = surface->maxIndex;
-	int indexOffset = surface->indexOffset;
+	uint32_t numIndexes = surface->numIndexes;
+	uint32_t numVertexes = surface->numVertexes;
+	uint32_t minIndex = surface->minIndex;
+	uint32_t maxIndex = surface->maxIndex;
+	uint32_t indexOffset = surface->indexOffset;
 
 #ifdef _G2_GORE
 	if (surf->alternateTex)
@@ -4514,13 +4514,13 @@ qboolean R_LoadMDXM(model_t *mod, void *buffer, const char *mod_name, qboolean &
 			for (int k = 0; k < surf->numTriangles; k++, index += 3, surf_index += 3)
 			{
 				index[0] = t[k].indexes[0] + baseVertexes[n];
-				assert(index[0] >= 0 && index[0] < numVerts);
+				assert(index[0] >= 0 && index[0] < (unsigned)numVerts);
 
 				index[1] = t[k].indexes[1] + baseVertexes[n];
-				assert(index[1] >= 0 && index[1] < numVerts);
+				assert(index[1] >= 0 && index[1] < (unsigned)numVerts);
 
 				index[2] = t[k].indexes[2] + baseVertexes[n];
-				assert(index[2] >= 0 && index[2] < numVerts);
+				assert(index[2] >= 0 && index[2] < (unsigned)numVerts);
 
 				surf_index[0] = t[k].indexes[0];
 				surf_index[1] = t[k].indexes[1];

@@ -51,7 +51,7 @@ void R_DrawElementsVBO( int numIndexes, glIndex_t firstIndex, glIndex_t minIndex
 	GL_DrawIndexed(GL_TRIANGLES, numIndexes, GL_INDEX_TYPE, offset, 1, 0);
 }
 
-/*
+#if 0
 static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDrawMinIndex, glIndex_t *multiDrawMaxIndex,
 	GLsizei *multiDrawNumIndexes, glIndex_t **multiDrawFirstIndex)
 {
@@ -60,8 +60,8 @@ static void R_DrawMultiElementsVBO( int multiDrawPrimitives, glIndex_t *multiDra
 			multiDrawNumIndexes,
 			multiDrawFirstIndex,
 			multiDrawPrimitives);
-} */
-
+}
+#endif
 
 /*
 =============================================================
@@ -441,6 +441,7 @@ static void ComputeShaderColors( shaderStage_t *pStage, vec4_t baseColor, vec4_t
 			break;
 		case AGEN_IDENTITY:
 		case AGEN_LIGHTING_SPECULAR:
+		case AGEN_LIGHTING_SPECULAR_STATIC:
 		case AGEN_PORTAL:
 			// Done entirely in vertex program
 			baseColor[3] = 1.0f;
@@ -465,7 +466,8 @@ static void ComputeShaderColors( shaderStage_t *pStage, vec4_t baseColor, vec4_t
 	 && !((blend & GLS_SRCBLEND_BITS) == GLS_SRCBLEND_DST_COLOR)
 	 && !((blend & GLS_SRCBLEND_BITS) == GLS_SRCBLEND_ONE_MINUS_DST_COLOR)
 	 && !((blend & GLS_DSTBLEND_BITS) == GLS_DSTBLEND_SRC_COLOR)
-	 && !((blend & GLS_DSTBLEND_BITS) == GLS_DSTBLEND_ONE_MINUS_SRC_COLOR))
+	 && !((blend & GLS_DSTBLEND_BITS) == GLS_DSTBLEND_ONE_MINUS_SRC_COLOR)
+	 && (backEnd.framePostProcessed || !tr.world))
 	{
 		float scale = 1 << tr.overbrightBits;
 
@@ -716,11 +718,6 @@ static UniformBlockBinding GetCameraBlockUniformBinding(
 		binding.ubo = tr.staticUbo;
 		binding.offset = tr.camera2DUboOffset;
 	}
-	else if (refEntity == &backEnd.entityFlare)
-	{
-		binding.ubo = tr.staticUbo;
-		binding.offset = tr.cameraFlareUboOffset;
-	}
 	else
 	{
 		binding.ubo = currentFrameUbo;
@@ -831,17 +828,16 @@ static UniformBlockBinding GetEntityBlockUniformBinding(
 		binding.ubo = currentFrameUbo;
 		if (!refEntity || refEntity == &tr.worldEntity)
 		{
-			binding.offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			long offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			binding.offset = offset == -1 ? 0 : offset;
 		}
 		else
 		{
 			const int refEntityNum = refEntity - backEnd.refdef.entities;
-			binding.offset = tr.entityUboOffsets[refEntityNum];
+			long offset = tr.entityUboOffsets[refEntityNum];
+			binding.offset = offset == -1 ? 0 : offset;
 		}
 	}
-
-	if (binding.offset == -1)
-		binding.offset = 0;
 
 	return binding;
 }
@@ -870,17 +866,16 @@ static UniformBlockBinding GetPreviousEntityBlockUniformBinding(
 		if (!refEntity || refEntity == &tr.worldEntity)
 		{
 			binding.ubo = backEndData->currentFrame->ubo[currentFrameScene];
-			binding.offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			long offset = tr.entityUboOffsets[REFENTITYNUM_WORLD];
+			binding.offset = offset == -1 ? 0 :offset;
 		}
 		else
 		{
 			const int refEntityNum = refEntity - backEnd.refdef.entities;
-			binding.offset = tr.previousEntityUboOffsets[refEntityNum];
+			long offset = tr.previousEntityUboOffsets[refEntityNum];
+			binding.offset = offset == -1 ? 0 :offset;
 		}
 	}
-
-	if (binding.offset == -1)
-		binding.offset = 0;
 
 	return binding;
 }
@@ -896,9 +891,6 @@ static UniformBlockBinding GetBonesBlockUniformBinding()
 	if (glState.skeletalAnimation)
 		binding.offset = tr.animationBoneUboOffset;
 	else
-		binding.offset = 0;
-
-	if (binding.offset == -1)
 		binding.offset = 0;
 
 	return binding;
@@ -917,17 +909,14 @@ static UniformBlockBinding GetPreviousBonesBlockUniformBinding()
 	else
 		binding.offset = 0;
 
-	if (binding.offset == -1)
-		binding.offset = 0;
-
 	return binding;
 }
 
 static UniformBlockBinding GetShaderInstanceBlockUniformBinding(
 	const trRefEntity_t *refEntity, const shader_t *shader)
 {
-	const byte currentFrameScene = backEndData->currentFrame->currentScene;
-	const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
+	//const byte currentFrameScene = backEndData->currentFrame->currentScene;
+	//const GLuint currentFrameUbo = backEndData->currentFrame->ubo[currentFrameScene];
 	UniformBlockBinding binding = {};
 	binding.ubo = tr.shaderInstanceUbo;
 	binding.block = UNIFORM_BLOCK_SHADER_INSTANCE;
@@ -1671,6 +1660,22 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 				}
 #endif
 			}
+
+			if ( backEnd.currentEntity == &backEnd.entityFlare )
+			{
+				// Disable depth test for flares, looks better and makes more sense
+				// slightly diverges from vanilla like that
+				stateBits |= GLS_DEPTHTEST_DISABLE;
+				// also remove all depth writes on flares
+				stateBits &= ~GLS_DEPTHMASK_TRUE;
+			}
+
+			if (pStage->alphaGen == AGEN_LIGHTING_SPECULAR 
+				&& backEnd.currentEntity 
+				&& (backEnd.currentEntity->e.hModel||backEnd.currentEntity->e.ghoul2))	//this is a model so we can use world lights instead fake light
+			{
+				forceAlphaGen = AGEN_LIGHTING_SPECULAR_STATIC;
+			}
 #ifdef REND2_SP
 			if (backEnd.currentEntity->e.renderfx & RF_ALPHA_FADE)
 			{
@@ -1720,12 +1725,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 			}
 		}
 
-		//float volumetricBaseValue = -1.0f;
-		if ( backEnd.currentEntity->e.renderfx & RF_VOLUMETRIC )
-		{
-			//volumetricBaseValue = backEnd.currentEntity->e.shaderRGBA[0] / 255.0f;
-		}
-		else
+		if ( !(backEnd.currentEntity->e.renderfx & RF_VOLUMETRIC) )
 		{
 			vec4_t baseColor;
 			vec4_t vertColor;
@@ -1798,6 +1798,19 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 		if (backEnd.currentEntity->e.renderfx & (RF_DISINTEGRATE1 | RF_DISINTEGRATE2))
 			uniformDataWriter.SetUniformVec4(UNIFORM_DISINTEGRATION, disintegrationInfo);
 
+		if ( backEnd.currentEntity == &backEnd.entityFlare )
+		{
+			samplerBindingsWriter.AddStaticImage(tr.renderDepthImage, TB_SHADOWMAP);
+			vec4_t center;
+			VectorAdd(center, tess.xyz[0], center);
+			VectorAdd(center, tess.xyz[1], center);
+			VectorAdd(center, tess.xyz[2], center);
+			VectorAdd(center, tess.xyz[3], center);
+			VectorScale(center, 1.f / 4.f, center);
+			center[3] = 1.f;
+			uniformDataWriter.SetUniformVec4(UNIFORM_LIGHTORIGIN, center);
+		}
+
 		if (forceRefraction)
 		{
 			vec4_t color;
@@ -1866,6 +1879,7 @@ static void RB_IterateStagesGeneric( shaderCommands_t *input, const VertexArrays
 			samplerBindingsWriter.AddStaticImage(srcFbo->colorImage[0], TB_COLORMAP);
 			samplerBindingsWriter.AddStaticImage(tr.renderDepthImage, TB_SHADOWMAP);
 			qboolean autoExposure = (qboolean)(r_autoExposure->integer || r_forceAutoExposure->integer);
+			uniformDataWriter.SetUniformFloat(UNIFORM_CHROMATICABERRATIONDELTA, r_refractionChromaticAberration->value);
 
 			if (autoExposure)
 				samplerBindingsWriter.AddStaticImage(tr.calcLevelsImage, TB_LEVELSMAP);

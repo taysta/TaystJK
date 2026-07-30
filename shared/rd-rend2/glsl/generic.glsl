@@ -93,6 +93,11 @@ uniform int u_AlphaGen;
 uniform vec4 u_Disintegration; // origin, threshhold
 #endif
 
+#if defined(USE_FLARE_TEST)
+uniform sampler2D u_ScreenDepthMap;
+uniform vec4 u_LightOrigin;
+#endif
+
 out vec2 var_DiffuseTex;
 out vec4 var_Color;
 #if defined(USE_FOG)
@@ -386,9 +391,16 @@ vec4 CalcColor(vec3 position, vec3 normal)
 
 	if (u_AlphaGen == AGEN_LIGHTING_SPECULAR)
 	{
-		// TODO: Handle specular on player models and misc_model_statics correctly
 		vec3 lightDir = normalize(vec3(-960.0, 1980.0, 96.0) - position);
 		vec3 reflected = -reflect(lightDir, normal);
+
+		color.a = clamp(dot(reflected, normalize(viewer)), 0.0, 1.0);
+		color.a *= color.a;
+		color.a *= color.a;
+	}
+	else if (u_AlphaGen == AGEN_LIGHTING_SPECULAR_STATIC)
+	{
+		vec3 reflected = -reflect(u_ModelLightDir, normal);
 
 		color.a = clamp(dot(reflected, normalize(viewer)), 0.0, 1.0);
 		color.a *= color.a;
@@ -472,6 +484,13 @@ void main()
 		var_Color = u_VertColor * attr_Color + u_BaseColor;
 #endif
 	}
+	
+#if defined(USE_FLARE_TEST)
+	vec4 samplePosition = u_viewProjectionMatrix * u_LightOrigin;
+	vec3 depthPosition = samplePosition.xyz / samplePosition.w * 0.5 + 0.5;
+	float depthSample = texture(u_ScreenDepthMap, depthPosition.xy).r;
+	gl_Position *= float(depthPosition.z < depthSample);
+#endif
 
 #if defined(USE_FOG)
 	var_WSPosition = wsPosition.xyz;

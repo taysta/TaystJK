@@ -99,37 +99,27 @@ static uniformInfo_t uniformsInfo[] =
 	{ "u_Color",     GLSL_VEC4, 1 },
 	{ "u_BaseColor", GLSL_VEC4, 1 },
 	{ "u_VertColor", GLSL_VEC4, 1 },
+	{ "u_chromaticAberrationDelta", GLSL_FLOAT, 1 },
 
-	{ "u_DlightInfo",     GLSL_VEC4, 1 },
 	{ "u_LightForward",   GLSL_VEC3, 1 },
 	{ "u_LightUp",        GLSL_VEC3, 1 },
 	{ "u_LightRight",     GLSL_VEC3, 1 },
 	{ "u_LightOrigin",    GLSL_VEC4, 1 },
-	{ "u_ModelLightDir",  GLSL_VEC3, 1 },
 	{ "u_LightRadius",    GLSL_FLOAT, 1 },
-	{ "u_AmbientLight",   GLSL_VEC3, 1 },
-	{ "u_DirectedLight",  GLSL_VEC3, 1 },
 	{ "u_Disintegration", GLSL_VEC4, 1 },
 	{ "u_LightMask",    GLSL_INT, 1 },
 	{ "u_FogIndex",    GLSL_INT, 1 },
 
 	{ "u_FogColorMask", GLSL_VEC4, 1 },
 
-	{ "u_ModelMatrix",               GLSL_MAT4x4, 1 },
 	{ "u_ModelViewProjectionMatrix", GLSL_MAT4x4, 1 },
 
-	{ "u_Time",          GLSL_FLOAT, 1 },
 	{ "u_VertexLerp" ,   GLSL_FLOAT, 1 },
 	{ "u_NormalScale",   GLSL_VEC4, 1 },
 	{ "u_SpecularScale", GLSL_VEC4, 1 },
 	{ "u_ParallaxBias",  GLSL_FLOAT, 1 },
 
 	{ "u_ViewInfo",				GLSL_VEC4, 1 },
-	{ "u_ViewOrigin",			GLSL_VEC3, 1 },
-	{ "u_LocalViewOrigin",		GLSL_VEC3, 1 },
-	{ "u_ViewForward",			GLSL_VEC3, 1 },
-	{ "u_ViewLeft",				GLSL_VEC3, 1 },
-	{ "u_ViewUp",				GLSL_VEC3, 1 },
 
 	{ "u_InvTexRes",           GLSL_VEC2, 1 },
 	{ "u_AutoExposureMinMax",  GLSL_VEC2, 1 },
@@ -139,7 +129,6 @@ static uniformInfo_t uniformsInfo[] =
 
 	{ "u_AlphaTestType",		GLSL_INT, 1 },
 
-	{ "u_FXVolumetricBase",		GLSL_FLOAT, 1 },
 	{ "u_MapZExtents",			GLSL_VEC2, 1 },
 	{ "u_ZoneOffset",			GLSL_VEC2, 9 },
 	{ "u_EnvForce",				GLSL_VEC3, 1 },
@@ -347,9 +336,11 @@ static size_t GLSL_GetShaderHeader(
 					 va("#ifndef alphaGen_t\n"
 						"#define alphaGen_t\n"
 						"#define AGEN_LIGHTING_SPECULAR %i\n"
+						"#define AGEN_LIGHTING_SPECULAR_STATIC %i\n"
 						"#define AGEN_PORTAL %i\n"
 						"#endif\n",
 						AGEN_LIGHTING_SPECULAR,
+						AGEN_LIGHTING_SPECULAR_STATIC,
 						AGEN_PORTAL));
 
 	Q_strcat(dest, size,
@@ -619,7 +610,7 @@ static void GLSL_BindShaderInterface( shaderProgram_t *program )
 		}
 	}
 
-	for ( int outputIndex = 0; outputIndex < ARRAY_LEN(shaderOutputNames); ++outputIndex )
+	for ( size_t outputIndex = 0; outputIndex < ARRAY_LEN(shaderOutputNames); ++outputIndex )
 	{
 		qglBindFragDataLocation(program->program, outputIndex, shaderOutputNames[outputIndex]);
 	}
@@ -830,7 +821,7 @@ static bool GLSL_LoadGPUShader(
 	const GPUProgramDesc& programDesc)
 {
 	builder.Start(name, attribs, xfbVariables);
-	for ( int i = 0; i < programDesc.numShaders; ++i )
+	for ( size_t i = 0; i < programDesc.numShaders; ++i )
 	{
 		const GPUShaderDesc& shaderDesc = programDesc.shaders[i];
 		if ( !builder.AddShader(shaderDesc, extra) )
@@ -1514,6 +1505,13 @@ static int GLSL_LoadGPUProgramGeneric(
 			Q_strcat(extradefines, sizeof(extradefines), "#define USE_RGBAGEN\n");
 		}
 
+		if (i & GENERICDEF_USE_FLARE_TEST)
+		{
+			Q_strcat(name, sizeof(name), "_FLARE");
+			Q_strcat(extradefines, sizeof(extradefines), "#define USE_FLARE_TEST\n");
+
+		}
+
 		/*if (i & GENERICDEF_USE_ALPHA_TEST)
 			Q_strcat(extradefines, sizeof(extradefines), "#define USE_ALPHA_TEST\n");*/
 
@@ -1529,6 +1527,7 @@ static int GLSL_LoadGPUProgramGeneric(
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_DIFFUSEMAP, TB_DIFFUSEMAP);
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_LIGHTMAP,   TB_LIGHTMAP);
 		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_VOLUMETRICLIGHTMAP, 2);
+		GLSL_SetUniformInt(&tr.genericShader[i], UNIFORM_SCREENDEPTHMAP, TB_SHADOWMAP);
 		qglUseProgram(0);
 
 		GLSL_FinishGPUShader(&tr.genericShader[i]);
@@ -1886,18 +1885,18 @@ static int GLSL_LoadGPUProgramLightAll(
 				Q_strcat(extradefines, sizeof(extradefines), "#define USE_SPECULARMAP\n");
 				if (i & LIGHTDEF_USE_SPEC_GLOSS)
 				{
-					Q_strcat(name, sizeof(name), "_SPECGLOSS");
+					Q_strcat(name, sizeof(name), "_SG");
 					Q_strcat(extradefines, sizeof(extradefines), "#define USE_SPECGLOSS\n");
 				}
 				else
 				{
-					Q_strcat(name, sizeof(name), "_METALROUGH");
+					Q_strcat(name, sizeof(name), "_MR");
 				}
 			}
 
 			if (r_cubeMapping->integer)
 			{
-				Q_strcat(name, sizeof(name), "_CUBE");
+				Q_strcat(name, sizeof(name), "_ENV");
 				Q_strcat(extradefines, sizeof(extradefines), "#define USE_CUBEMAP\n");
 			}
 		}
@@ -3066,6 +3065,11 @@ shaderProgram_t *GLSL_GetGenericShaderProgram(int stage)
 	if (pStage->bundle[0].numTexMods)
 	{
 		shaderAttribs |= GENERICDEF_USE_TCGEN_AND_TCMOD;
+	}
+
+	if (backEnd.currentEntity == &backEnd.entityFlare)
+	{
+		shaderAttribs |= GENERICDEF_USE_FLARE_TEST;
 	}
 
 	/*if (pStage->glow)

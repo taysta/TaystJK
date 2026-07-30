@@ -204,7 +204,7 @@ static void R_SetupEntityLightingGrid( trRefEntity_t *ent, world_t *world ) {
 			}
 		}
 
-		if (gridPos >= world->numGridArrayElements)
+		if (gridPos >= (unsigned)world->numGridArrayElements)
 		{//we've gone off the array somehow
 			continue;
 		}

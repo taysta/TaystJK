@@ -173,6 +173,7 @@ cvar_t  *r_shadowCascadeZNear;
 cvar_t  *r_shadowCascadeZFar;
 cvar_t  *r_shadowCascadeZBias;
 cvar_t	*r_ignoreDstAlpha;
+cvar_t	*r_refractionChromaticAberration;
 
 cvar_t	*r_smartpicmip;
 cvar_t	*r_ignoreGLErrors;
@@ -489,7 +490,7 @@ static const char *GetGLExtensionsString()
 	}
 
 	*p = '\0';
-	assert((p - extensionString) == extensionStringLen);
+	assert((size_t)(p - extensionString) == extensionStringLen);
 
 	return extensionString;
 }
@@ -1592,6 +1593,8 @@ void R_Register( void )
 	r_shadowCascadeZFar = ri.Cvar_Get( "r_shadowCascadeZFar", "3072", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_shadowCascadeZBias = ri.Cvar_Get( "r_shadowCascadeZBias", "-320", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_ignoreDstAlpha = ri.Cvar_Get( "r_ignoreDstAlpha", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
+	r_refractionChromaticAberration = ri.Cvar_Get( "r_refractionChromaticAberration", "0.05", CVAR_ARCHIVE, "" );
+	ri.Cvar_CheckRange(r_refractionChromaticAberration, 0.f, 0.3f, qfalse);
 
 	//
 	// temporary latched variables that can only change over a restart
@@ -1776,6 +1779,24 @@ static void R_InitGoreVertexData(gpuFrame_t* currentFrame)
 		sizeof(glIndex_t) * (MAX_GORE_RECORDS + 1) * MAX_GORE_INDECIES,
 		VBO_USAGE_DYNAMIC, va("Gore_%i", numGoreArrays));
 
+	if ( glRefConfig.immutableBuffers )
+	{
+		const GLbitfield mapFlags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
+
+		R_BindVBO(currentFrame->goreVBO);
+		currentFrame->goreVBOMemory = qglMapBufferRange(GL_ARRAY_BUFFER, 0,
+			currentFrame->goreVBO->vertexesSize, mapFlags);
+
+		R_BindIBO(currentFrame->goreIBO);
+		currentFrame->goreIBOMemory = qglMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
+			currentFrame->goreIBO->indexesSize, mapFlags);
+	}
+	else
+	{
+		currentFrame->goreVBOMemory = nullptr;
+		currentFrame->goreIBOMemory = nullptr;
+	}
+
 	numGoreArrays++;
 	GL_CheckErrors();
 }
@@ -1934,22 +1955,6 @@ static void R_InitStaticConstants()
 		GL_UNIFORM_BUFFER, tr.entityFlareUboOffset, sizeof(entityFlareBlock), &entityFlareBlock);
 	alignedBlockSize += (sizeof(EntityBlock) + alignment) & ~alignment;
 
-	// Setup static flare camera data
-	CameraBlock flareCameraBlock = {};
-	Matrix16Ortho(
-		0.0f,
-		glConfig.vidWidth,
-		glConfig.vidHeight,
-		0.0f,
-		-99999.0f,
-		99999.0f,
-		flareCameraBlock.viewProjectionMatrix);
-
-	tr.cameraFlareUboOffset = alignedBlockSize;
-	qglBufferSubData(
-		GL_UNIFORM_BUFFER, tr.cameraFlareUboOffset, sizeof(flareCameraBlock), &flareCameraBlock);
-	alignedBlockSize += (sizeof(CameraBlock) + alignment) & ~alignment;
-
 	// Setup default light block
 	LightsBlock lightsBlock = {};
 	lightsBlock.numLights = 0;
@@ -2015,6 +2020,13 @@ static void R_ShutdownBackEndFrameData()
 			R_BindIBO(frame->dynamicIbo);
 			qglUnmapBuffer(GL_ARRAY_BUFFER);
 			qglUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+#ifdef _G2_GORE
+			R_BindVBO(frame->goreVBO);
+			R_BindIBO(frame->goreIBO);
+			qglUnmapBuffer(GL_ARRAY_BUFFER);
+			qglUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+#endif
 		}
 
 		for ( int j = 0; j < MAX_GPU_TIMERS; j++ )
@@ -2023,6 +2035,21 @@ static void R_ShutdownBackEndFrameData()
 			qglDeleteQueries(1, &timer->queryName);
 		}
 	}
+}
+
+static bool r_cacheGPUShaders = false;
+
+void R_ClearTr(void)
+{
+	if (r_cacheGPUShaders)
+	{
+		// clear all but GPU shaders in tr
+		Com_Memset(&tr, 0, (byte*)&tr.splashScreenShader - (byte*)&tr);
+		Com_Memset(&tr.staticUbo, 0, sizeof(tr) - ((byte*)&tr.staticUbo - (byte*)&tr));	
+	}
+	else
+		// clear all of tr
+		Com_Memset(&tr, 0, sizeof(tr));
 }
 
 static bool r_inited = false;
@@ -2041,7 +2068,7 @@ void R_Init( void ) {
 	ri.Printf( PRINT_ALL, "----- R_Init -----\n" );
 
 	// clear all our internal state
-	Com_Memset( &tr, 0, sizeof( tr ) );
+	R_ClearTr();
 	Com_Memset( &backEnd, 0, sizeof( backEnd ) );
 	Com_Memset( &tess, 0, sizeof( tess ) );
 
@@ -2121,7 +2148,9 @@ void R_Init( void ) {
 
 	FBO_Init();
 
-	GLSL_LoadGPUShaders();
+	if (!r_cacheGPUShaders)
+		GLSL_LoadGPUShaders();
+	r_cacheGPUShaders = false;
 
 	R_InitShaders (qfalse);
 
@@ -2180,7 +2209,15 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 		FBO_Shutdown();
 		R_DeleteTextures();
 		R_DestroyGPUBuffers();
-		GLSL_ShutdownGPUShaders();
+
+		if (!destroyWindow && !restarting)
+		{
+			r_cacheGPUShaders = true;
+			glState.currentProgram = 0;
+			qglUseProgram(0);
+		}
+		else
+			GLSL_ShutdownGPUShaders();
 	}
 
 	if (destroyWindow && restarting && tr.registered)
