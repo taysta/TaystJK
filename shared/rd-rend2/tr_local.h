@@ -3098,6 +3098,7 @@ void    	R_Init( void );
 void		R_UpdateSubImage( image_t *image, byte *pic, int x, int y, int width, int height );
 
 void		R_SetColorMappings( void );
+qboolean	R_UseTonemapGamma( void );
 void		R_GammaCorrect( byte *buffer, int bufSize );
 void		R_Set2DRatio(void);
 

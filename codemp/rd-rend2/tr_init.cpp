@@ -220,6 +220,7 @@ cvar_t	*r_lodCurveError;
 
 
 cvar_t	*r_overBrightBits;
+cvar_t	*r_ignorehwgamma;
 cvar_t	*r_mapOverBrightBits;
 
 cvar_t	*r_debugSurface;
@@ -1529,6 +1530,11 @@ void R_Register( void )
 	r_detailTextures = ri.Cvar_Get( "r_detailtextures", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_texturebits = ri.Cvar_Get( "r_texturebits", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_overBrightBits = ri.Cvar_Get ("r_overBrightBits", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
+	r_ignorehwgamma = ri.Cvar_Get(
+		"r_ignorehwgamma", "0", CVAR_ARCHIVE_ND | CVAR_LATCH,
+		"Gamma mode: 0 hardware ramp, 1 texture-upload fallback, "
+		"2 rend2 tonemap shader" );
+	ri.Cvar_CheckRange( r_ignorehwgamma, 0, 2, qtrue );
 	r_simpleMipMaps = ri.Cvar_Get( "r_simpleMipMaps", "1", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "0", CVAR_ARCHIVE | CVAR_LATCH, "" );
 	r_uiFullScreen = ri.Cvar_Get( "r_uifullscreen", "0", 0, "");
