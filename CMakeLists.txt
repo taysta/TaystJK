@@ -259,9 +259,12 @@ elseif (("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU") OR ("${CMAKE_C_COMPILER_ID}" M
 	set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 
 	if(UseAddressSanitizer)
-		# also raise stack size drastically (to 64MiB), since the sanitizer adds overhead to stack frames
-		add_compile_options(-fsanitize=address)
-		add_link_options(-fsanitize=address -z stack-size=4000000)
+		add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+		add_link_options(-fsanitize=address)
+		if(NOT APPLE)
+			# raise stack size to 64MiB, since the sanitizer adds overhead to stack frames
+			add_link_options(-z stack-size=0x4000000)
+		endif()
 	endif()
 	if(UseUndefinedSanitizer)
 		add_compile_options(-fsanitize=undefined)
