@@ -14687,10 +14687,10 @@ void PmoveSingle (pmove_t *pmove) {
 	#else
 	if (!pm->ps->stats[STAT_RACEMODE] && cgs.jcinfo2 & JAPRO_CINFO2_WTTRIBES) {
 #endif
-	if (pm->ps->fd.forcePowerSelected == 3) //FIXME
-		PM_ThrustMove();
-	else if (pm->ps->fd.forcePowerSelected == 4) //FIXME
-		PM_BlinkMove();
+		if (pm->ps->fd.forcePowerSelected == 3) //FIXME
+			PM_ThrustMove();
+		else if (pm->ps->fd.forcePowerSelected == 4) //FIXME
+			PM_BlinkMove();
 		PM_OverDriveMove(); //This should just be an actual forcepower (absorb?), have it do the loop and set a ps flag on anyone in range.  then have code here to check for that flag and predict the movement on affected players?
 	}
 

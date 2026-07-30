@@ -8822,6 +8822,8 @@ static void Item_TextScroll_BuildLines ( itemDef_t* item )
 	//
 	textScrollDef_t* scrollPtr = item->typeData.textscroll;
 	const char *psText = item->text;	// for copy/paste ease
+	if ( !scrollPtr || !psText )
+		return;
 	int iBoxWidth = item->window.rect.w - SCROLLBAR_SIZE - 10;
 
 	// this could probably be simplified now, but it was converted from something else I didn't originally write,
@@ -9615,7 +9617,7 @@ void Menu_PaintAll() {
 	if (debugMode) {
 		vec4_t v = {1, 1, 1, 1};
 		DC->drawText(5, 25, .75, v, va("fps: %f", DC->FPS), 0, 0, 0, 0);
-		DC->drawText(5, 45, .75, v, va("x: %d  y:%d", DC->cursorx,DC->cursory), 0, 0, 0, 0);
+		DC->drawText(5, 45, .75, v, va("x: %.2f  y:%.2f", DC->cursorx,DC->cursory), 0, 0, 0, 0);
 	}
 }
 

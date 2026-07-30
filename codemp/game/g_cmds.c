@@ -333,9 +333,6 @@ int JP_ClientNumberFromString(gentity_t *to, const char *s)
 		return idnum;
 	}
 
-
-
-
 	// check for a name match
 	SanitizeString2( s, s2 );
 	for ( idnum=0,cl=level.clients ; idnum < level.maxclients ; idnum++,cl++ ){
@@ -5322,9 +5319,11 @@ void Cmd_Amfreeze_f(gentity_t *ent)
 					if (!G_AdminUsableOn(ent->client, targetplayer->client, JAPRO_ACCOUNTFLAG_A_FREEZE))
 						continue;
 					if (!targetplayer->client->pers.amfreeze)
+					{
 						targetplayer->client->pers.amfreeze = qtrue;
-						G_ScreenShake(targetplayer->client->ps.origin, &g_entities[i],  3.0f, 2000, qtrue);
+						G_ScreenShake(targetplayer->client->ps.origin, targetplayer, 3.0f, 2000, qtrue);
 						G_Sound(targetplayer, CHAN_AUTO, G_SoundIndex("sound/ambience/thunder_close1"));
+					}
 				}
 			}
 			trap->SendServerCommand( -1, "cp \"You have all been frozen\n\"" );
@@ -5363,10 +5362,9 @@ void Cmd_Amfreeze_f(gentity_t *ent)
         }
 
 		if (!G_AdminUsableOn(ent->client, g_entities[clientid].client, JAPRO_ACCOUNTFLAG_A_FREEZE)) {
-			if (g_entities[clientid].client->ps.clientNum != ent->client->ps.clientNum)
-				return;
-			else
-				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command on this player (amFreeze).\n\"" );
+			if (g_entities[clientid].client->ps.clientNum == ent->client->ps.clientNum)
+				trap->SendServerCommand(ent - g_entities, "print \"You are not authorized to use this command on this player (amFreeze).\n\"");
+			return;
 		}
 
 		if (g_entities[clientid].client->noclip == qtrue)
@@ -5505,7 +5503,7 @@ void Cmd_Ammap_f(gentity_t *ent)
 			return;
 		}
 
-		if (gametype[0] < '0' && gametype[0] > '8')
+		if (gametype[0] < '0' || gametype[0] > '8')
 		{
 			trap->SendServerCommand( ent-g_entities, "print \"Invalid gametype.\n\"" );
 			return;

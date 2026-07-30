@@ -471,7 +471,7 @@ static int SV_ClientNumberFromString(const char *s)
 		return idnum;
 	}
 
-	else if (s[0] == '1' && s[0] == '2' && (s[1] >= '0' && s[1] <= '9' && strlen(s) == 2)) 
+	else if ((s[0] == '1' || s[0] == '2') && s[1] >= '0' && s[1] <= '9' && strlen(s) == 2)
 	{
 		idnum = atoi( s );
 		cl = &level.clients[idnum];
@@ -892,7 +892,7 @@ void Svcmd_ToggleTweakWeapons_f( void ) {
 	else {
 		char arg[8] = { 0 };
 		int index;
-		const uint32_t mask = (1 << MAX_WEAPON_TWEAKS) - 1; //overflow?
+		const uint32_t mask = (1u << MAX_WEAPON_TWEAKS) - 1; //overflow?
 
 		trap->Argv( 1, arg, sizeof(arg) );
 		index = atoi( arg );
