@@ -853,7 +853,7 @@ void vk_bind_pipeline( uint32_t pipeline ) {
 	vk_world.dirty_depth_attachment |= (vk.pipelines[pipeline].def.state_bits & GLS_DEPTHMASK_TRUE);
 }
 
-uint32_t vk_push_indirect( int count, const void *data );
+VkDrawIndexedIndirectCommand *vk_reserve_draw_indexed_indirect( uint32_t count, uint32_t *offset );
 static void vk_update_depth_range( Vk_Depth_Range depth_range )
 {
 	if ( vk.cmd->depth_range == depth_range )
@@ -900,25 +900,23 @@ void vk_draw_geometry( Vk_Depth_Range depth_range, qboolean indexed )
 	{
 		if ( tess.multiDrawPrimitives && tess.multiDrawPrimitives > 1 ) 
 		{
-			uint32_t j, firstOffset, offset;
+			uint32_t i, firstOffset;
 			size_t *index;
 
-			for ( j = 0; j < tess.multiDrawPrimitives; j++ ) 
+			VkDrawIndexedIndirectCommand *cmd = vk_reserve_draw_indexed_indirect( tess.multiDrawPrimitives, &firstOffset );
+
+			if ( !cmd )
+				return;
+
+			for ( i = 0; i < tess.multiDrawPrimitives; i++ ) 
 			{
-				VkDrawIndexedIndirectCommand indirectCmd = {};
+				index = (size_t*)tess.multiDrawFirstIndex + i;
 
-				index = (size_t*)tess.multiDrawFirstIndex + j;
-
-				indirectCmd.indexCount = tess.multiDrawNumIndexes[j];
-				indirectCmd.instanceCount = 1;
-				indirectCmd.firstIndex = (uint32_t)(*index);
-				indirectCmd.vertexOffset = 0;
-				indirectCmd.firstInstance = 0;
-
-				offset = vk_push_indirect( 1, &indirectCmd );
-
-				if ( j  == 0 )
-					firstOffset = offset;
+				cmd[i].indexCount		= tess.multiDrawNumIndexes[i];
+				cmd[i].instanceCount	= 1;
+				cmd[i].firstIndex		= (uint32_t)(*index);
+				cmd[i].vertexOffset		= 0;
+				cmd[i].firstInstance	= 0;
 			}
 
 			qvkCmdDrawIndexedIndirect( 
@@ -927,7 +925,7 @@ void vk_draw_geometry( Vk_Depth_Range depth_range, qboolean indexed )
 				firstOffset,
 				tess.multiDrawPrimitives,
 				sizeof(VkDrawIndexedIndirectCommand)
-				);
+			);
 		}
 
 		else if ( indexed )
@@ -1272,6 +1270,21 @@ static uint32_t vk_push_uniform_global( const vkUniformGlobal_t *uniform )
 }
 #endif
 
+VkDrawIndexedIndirectCommand *vk_reserve_draw_indexed_indirect( uint32_t count, uint32_t *offset )
+{
+	uint32_t size = count * sizeof(VkDrawIndexedIndirectCommand);
+
+	*offset = vk.cmd->indirect_buffer_offset;
+
+	if (*offset + size > vk.indirect_buffer_size)
+		return NULL;
+
+	vk.cmd->indirect_buffer_offset += size;
+
+	return (VkDrawIndexedIndirectCommand *)(vk.cmd->indirect_buffer_ptr + *offset);
+}
+
+#if 0
 uint32_t vk_push_indirect( int count, const void *data ) 
 {
 	const uint32_t offset = vk.cmd->indirect_buffer_offset;	// no alignment for indirect buffer?
@@ -1289,6 +1302,7 @@ uint32_t vk_push_indirect( int count, const void *data )
 
 	return offset;
 }
+#endif
 
 /*
 ========================
