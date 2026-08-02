@@ -368,7 +368,7 @@ public:
 
 	// GPU Data
 	mat3x4_t boneMatrices[72];
-	int      uboOffset;
+	uint32_t uboOffset;
 
 	CBoneCache(const model_t *amod,const mdxaHeader_t *aheader) :
 		header(aheader),
@@ -378,7 +378,7 @@ public:
 		assert(aheader);
 
 		Com_Memset(boneMatrices, 0, sizeof(boneMatrices));
-		uboOffset = -1;
+		uboOffset = ~0U;
 
 		mSmoothingActive=false;
 		mUnsquash=false;
@@ -3631,35 +3631,24 @@ void RB_TransformBones( const trRefEntity_t *ent, const trRefdef_t *refdef )
 		//if (bc->uboGPUFrame == currentFrameNum)
 		//	return;
 
-		for (int bone = 0; bone < (int)bc->mBones.size(); bone++)
-		{
-			const mdxaBone_t& b = bc->EvalRender(bone);
-			Com_Memcpy(
-				bc->boneMatrices + bone,
-				&b.matrix[0][0],
-				sizeof(mat3x4_t));
+		size_t boneSize = PAD(sizeof(mat3x4_t) * bc->mBones.size(), (VkDeviceSize)vk.uniform_alignment);
+		mat3x4_t *dst = (mat3x4_t *)vk_reserve_uniform( boneSize, &bc->uboOffset);
+
+		if (!dst)
+			return;
+
+		for ( size_t bone = 0, count = bc->mBones.size(); bone < count; ++bone ) {
+			const mdxaBone_t &b = bc->EvalRender(bone);
+			Com_Memcpy( dst + bone, b.matrix, sizeof(mat3x4_t) );
 		}
-		bc->uboOffset = -1;
 
-		vkUniformBones_t bonesBlock = {};
-		Com_Memcpy(
-			bonesBlock.boneMatrices,
-			bc->boneMatrices,
-			sizeof(mat3x4_t) * bc->mBones.size());
-
-		int uboOffset = vk_append_uniform( &bonesBlock, sizeof(bonesBlock), vk.uniform_bones_item_size );
-
-		bc->uboOffset = uboOffset;
 		//bc->uboGPUFrame = currentFrameNum;
 	}
 }
 
-int RB_GetBoneUboOffset( CRenderableSurface *surf )
+uint32_t RB_GetBoneUboOffset( CRenderableSurface *surf )
 {
-	if ( surf->boneCache )
-		return surf->boneCache->uboOffset;
-
-	return -1;
+	return surf->boneCache ? surf->boneCache->uboOffset : ~0U;
 }
 
 //This is a slightly mangled version of the same function from the sof2sp base.

@@ -1225,6 +1225,17 @@ avoidGen:
 	}
 }
 
+void *vk_reserve_uniform( size_t size, uint32_t *offset ) {
+	*offset = PAD(vk.cmd->vertex_buffer_offset, (VkDeviceSize)vk.uniform_alignment);
+
+	if (*offset + size > vk.geometry_buffer_size)
+		return NULL;
+
+	vk.cmd->vertex_buffer_offset = *offset + size;
+
+	return (void *)(vk.cmd->vertex_buffer_ptr + *offset);
+}
+
 uint32_t vk_append_uniform( const void *uniform, size_t size, uint32_t min_offset ) {
 	const uint32_t offset = PAD(vk.cmd->vertex_buffer_offset, (VkDeviceSize)vk.uniform_alignment);
 

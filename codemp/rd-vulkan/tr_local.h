@@ -2633,7 +2633,7 @@ void		vk_clean_staging_buffer( void );
 
 // ghoul2
 void		RB_TransformBones( const trRefEntity_t *ent, const trRefdef_t *refdef );
-int			RB_GetBoneUboOffset( CRenderableSurface *surf );
+uint32_t	RB_GetBoneUboOffset( CRenderableSurface *surf );
 
 // surface sprites
 #ifdef USE_VBO_SS

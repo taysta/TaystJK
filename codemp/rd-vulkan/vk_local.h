@@ -847,7 +847,6 @@ typedef struct {
 #ifdef USE_VBO_GHOUL2
 	uint32_t uniform_global_item_size;
 	uint32_t uniform_entity_item_size;
-	uint32_t uniform_bones_item_size;
 
 	uint32_t ghoul2_vbo_stride;
 	uint32_t mdv_vbo_stride;
@@ -1204,6 +1203,7 @@ VkPipeline	vk_gen_pipeline( uint32_t index );
 void		vk_end_render_pass( void );
 void		vk_begin_main_render_pass( void );
 void		vk_get_pipeline_def( uint32_t pipeline, Vk_Pipeline_Def *def );
+void		*vk_reserve_uniform( size_t size, uint32_t *offset );
 uint32_t	vk_append_uniform( const void *uniform, size_t size, uint32_t min_offset );
 
 // image process
