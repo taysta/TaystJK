@@ -1,4 +1,7 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 
 #if defined(USE_VBO_GHOUL2) || defined(USE_VBO_MDV)
 	#define USE_VBO_MODEL
@@ -9,7 +12,7 @@ layout(push_constant) uniform Transform {
 	mat4 mvp;
 };
 
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -28,7 +31,7 @@ layout(set = 0, binding = 0) uniform UBO {
 };
 
 #if defined(USE_VBO_MODEL)
-	layout(set = 0, binding = 2) uniform Entity {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
 		vec4 u_ambientLight;
 		vec4 u_directedLight;
 		vec4 u_LocalLightOrigin;
@@ -38,7 +41,7 @@ layout(set = 0, binding = 0) uniform UBO {
 #endif
 
 #ifdef USE_VBO_GHOUL2
-	layout(set = 0, binding = 3) uniform Bones {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
 		mat3x4 u_BoneMatrices[72];
 	};	
 	layout(location = 8) in uvec4 in_bones;

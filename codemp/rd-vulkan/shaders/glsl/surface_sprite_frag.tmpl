@@ -1,4 +1,7 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 // based on OpenJK rend2 surface_sprites.glsl
 
 #ifdef USE_ATEST
@@ -24,7 +27,7 @@ layout (constant_id = 17) const int kUseFog = 0;
 
 
 #if defined (USE_FOG)
-	layout(set = 0, binding = 0) uniform UBO {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 		// light/env/material parameters:
 		vec4 eyePos;
 		vec4 lightPos;
@@ -50,11 +53,11 @@ layout (constant_id = 17) const int kUseFog = 0;
 		vkUniformFogEntry_t	fogs[16];
 	};
 
-	layout(set = 0, binding = 1) uniform Camera {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
 		vec4 u_ViewOrigin;
 	};
 
-	layout(set = 0, binding = 4) uniform Fog {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
 		vkUniformFog_t u_fogs;
 	};
 #endif

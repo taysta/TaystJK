@@ -1,4 +1,7 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 // based on OpenJK rend2 surface_sprites.glsl
 
 #ifdef USE_FOG
@@ -17,7 +20,7 @@ layout(push_constant) uniform Transform {
 };
 
 #if defined(USE_FOG)
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -33,7 +36,7 @@ layout(set = 0, binding = 0) uniform UBO {
 };
 #endif
 
-layout(set = 0, binding = 1) uniform Camera {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
 	vec4 u_ViewOrigin;
 };
 

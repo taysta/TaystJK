@@ -1,11 +1,14 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 
 // 64 bytes
 layout(push_constant) uniform Transform {
 	mat4 mvp;
 };
 
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env parameters:
 	vec4 eyePos;				// vertex
 	vec4 lightPos;				// vertex: light origin

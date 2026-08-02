@@ -1,4 +1,7 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 
 #define M_PI 3.1415926535897932384626433832795
 
@@ -22,7 +25,7 @@ struct tcGen_t {
 	int		type;
 };
 
-layout(set = 0, binding = 0) uniform UBO {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -68,7 +71,7 @@ layout(set = 0, binding = 0) uniform UBO {
 		int		func;
 	};
 
-	layout(set = 0, binding = 2) uniform Entity {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
 		vec4 u_ambientLight;
 		vec4 u_directedLight;
 		vec4 u_LocalLightOrigin;
@@ -76,7 +79,7 @@ layout(set = 0, binding = 0) uniform UBO {
 		mat4 u_ModelMatrix;
 	};
 
-	layout(set = 0, binding = 5) uniform Global {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_GLOBAL_BINDING) uniform Global {
 		vkBundle_t			u_bundle[3];
 		vkDisintegration_t	u_disintegration;
 		vkDeform_t			u_deform;
@@ -85,7 +88,7 @@ layout(set = 0, binding = 0) uniform UBO {
 #endif
 
 #if defined(USE_VBO_GHOUL2)
-layout(set = 0, binding = 3) uniform Bones {
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
 	mat3x4 u_BoneMatrices[72];
 };
 

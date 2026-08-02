@@ -1,11 +1,14 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
+
+#include "global.h"
 
 // 128 bytes
 layout(push_constant) uniform Transform {
 	mat4 mvp;
 };
 
-layout(set = 0, binding = 0) buffer SSBO {
+layout(set = VK_DESC_STORAGE, binding = VK_DESC_STORAGE) buffer SSBO {
 	int sampled;
 };
 

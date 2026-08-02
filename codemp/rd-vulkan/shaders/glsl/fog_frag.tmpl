@@ -1,6 +1,9 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
 
-layout(set = 0, binding = 0) uniform UBO {
+#include "global.h"
+
+layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 	// light/env/material parameters:
 	vec4 eyePos;
 	vec4 lightPos;
@@ -16,7 +19,7 @@ layout(set = 0, binding = 0) uniform UBO {
 };
 
 #ifdef USE_FOG_EXP
-	layout(set = 0, binding = 1) uniform Camera {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
 		vec4 u_ViewOrigin;
 	};
 
@@ -32,12 +35,12 @@ layout(set = 0, binding = 0) uniform UBO {
 		vkUniformFogEntry_t	fogs[16];
 	};
 
-	layout(set = 0, binding = 4) uniform Fog {
+	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
 		vkUniformFog_t u_fogs;
 	};
 #endif
 
-layout(set = 2, binding = 0) uniform sampler2D fog_texture;
+layout(set = VK_DESC_FOG_ONLY, binding = 0) uniform sampler2D fog_texture;
 
 #ifdef USE_FOG_LINEAR
 	layout(location = 4) in vec2 fog_tex_coord;

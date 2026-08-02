@@ -1,6 +1,9 @@
 #version 450
+#extension GL_GOOGLE_include_directive : enable
 
-layout(set = 1, binding = 0) uniform sampler2D texture0;
+#include "global.h"
+
+layout(set = VK_DESC_TEXTURE0, binding = 0) uniform sampler2D texture0;
 
 layout(location = 0) in vec4 frag_color0;
 layout(location = 1) in vec4 var_RefractPosR;

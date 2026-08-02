@@ -100,7 +100,7 @@ qboolean vk_begin_dglow_blur( void )
 				if ( /*i == VK_DESC_STORAGE ||*/ i == VK_DESC_UNIFORM ) {
 					offset_count = 0;
 
-					offsets[offset_count++] = vk.cmd->descriptor_set.offset[i];
+					offsets[offset_count++] = vk.cmd->descriptor_set.offset[VK_DESC_UNIFORM_MAIN_BINDING];
 
 					// not required for dot storage flare test, chances are slim thats the previous pipeline.
 					offsets[offset_count++] = vk.cmd->descriptor_set.offset[VK_DESC_UNIFORM_CAMERA_BINDING];

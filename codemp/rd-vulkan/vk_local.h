@@ -90,25 +90,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // depth + msaa + msaa-resolve + screenmap.msaa + screenmap.resolve + screenmap.depth + (bloom_extract + blur pairs + dglow_extract + blur pairs) + dglow-msaa
 #define MAX_ATTACHMENTS_IN_POOL			( 6 + ( ( 1 + VK_NUM_BLUR_PASSES * 2 ) * 2 ) + 1  ) 
 
-#define VK_DESC_STORAGE					0
-#define VK_DESC_UNIFORM					0
-#define VK_DESC_TEXTURE0				1
-#define VK_DESC_TEXTURE1				2
-#define VK_DESC_TEXTURE2				3
-#define VK_DESC_FOG_COLLAPSE			4
-#define VK_DESC_COUNT					5
-
-#define VK_DESC_TEXTURE_BASE			VK_DESC_TEXTURE0
-#define VK_DESC_FOG_ONLY				VK_DESC_TEXTURE1
-#define VK_DESC_FOG_DLIGHT				VK_DESC_TEXTURE1
-
-#define VK_DESC_UNIFORM_MAIN_BINDING		0
-#define VK_DESC_UNIFORM_CAMERA_BINDING		1
-#define VK_DESC_UNIFORM_ENTITY_BINDING		2
-#define VK_DESC_UNIFORM_BONES_BINDING		3
-#define VK_DESC_UNIFORM_FOGS_BINDING		4
-#define VK_DESC_UNIFORM_GLOBAL_BINDING		5
-#define VK_DESC_UNIFORM_COUNT				6
+#include "shaders/glsl/global.h"
 
 //#define MIN_IMAGE_ALIGN				( 128 * 1024 )
 
