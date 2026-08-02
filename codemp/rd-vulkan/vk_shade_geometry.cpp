@@ -2308,21 +2308,20 @@ void RB_SurfaceSpritesVBO( srfSprites_t *surf )
 		if ( group->num_commands > 10 && r_surfaceSprites->integer == 2 ) 
 			vk_merge_surface_sprite_commands( group ); 
 
+		VkDrawIndexedIndirectCommand *cmd = vk_reserve_draw_indexed_indirect( group->num_commands, &firstOffset );
+
+		if ( !cmd )
+			break;
+
 		for ( j = 0; j < group->num_commands; j++ )
 		{
-			const vk_ss_group_cmd_t* cmd = &group->cmd[j];
-			VkDrawIndexedIndirectCommand indirectCmd = {};
+			const vk_ss_group_cmd_t* group_cmd = &group->cmd[j];
 
-			indirectCmd.indexCount = 6;
-			indirectCmd.instanceCount = cmd->numInstances;
-			indirectCmd.firstIndex = 0;
-			indirectCmd.vertexOffset = 0;
-			indirectCmd.firstInstance = cmd->firstInstance;
-
-			offset = vk_push_indirect(1, &indirectCmd);
-
-			if ( j == 0 )
-				firstOffset = offset;
+			cmd[j].indexCount		= 6;
+			cmd[j].instanceCount	= group_cmd->numInstances;
+			cmd[j].firstIndex		= 0;
+			cmd[j].vertexOffset		= 0;
+			cmd[j].firstInstance	= group_cmd->firstInstance;
 		}
 
 		qvkCmdDrawIndexedIndirect(
