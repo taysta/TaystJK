@@ -58,6 +58,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #endif
 #endif
 
+typedef float mat4_t[16];
+typedef float mat3x4_t[12];
+typedef unsigned int uvec4_t[4];
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 #ifndef MAX
 #define MAX(x,y) ((x)>(y)?(x):(y))
 #endif
@@ -401,12 +407,6 @@ extern PFN_vkDebugMarkerSetObjectNameEXT				qvkDebugMarkerSetObjectNameEXT;
 
 extern PFN_vkCmdDrawIndexedIndirect						qvkCmdDrawIndexedIndirect;
 
-typedef float mat4_t[16];
-typedef float mat3x4_t[12];
-typedef unsigned int uvec4_t[4];
-
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 void Matrix16Identity( mat4_t out );
 void Matrix16Copy( const mat4_t in, mat4_t out );
 
@@ -498,24 +498,6 @@ typedef struct vkUniform_s {
 
 	mat4_t	modelMatrix;
 } vkUniform_t;
-
-#ifdef USE_VBO_GHOUL2
-typedef struct vkUniformCamera_s {
-	vec4_t viewOrigin;
-} vkUniformCamera_t;
-
-typedef struct vkUniformGlobal_s {
-	vkBundle_t			bundle[3];
-	vkDisintegration_t	disintegration;
-	vkDeform_t			deform;
-	float				portalRange;
-	vec3_t				pad0;
-} vkUniformGlobal_t;
-
-typedef struct vkUniformBones_s {
-	mat3x4_t boneMatrices[72];
-} vkUniformBones_t;
-#endif
 
 typedef struct {
 	VkSamplerAddressMode address_mode; // clamp/repeat texture addressing mode

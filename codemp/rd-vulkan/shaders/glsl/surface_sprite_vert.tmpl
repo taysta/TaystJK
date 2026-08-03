@@ -37,7 +37,7 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 #endif
 
 layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
-	vec4 u_ViewOrigin;
+	vkUniformCamera_t u_camera;
 };
 
 layout(set = 1, binding = 0) buffer SurfaceSprite
@@ -72,7 +72,7 @@ out gl_PerVertex {
 };
 
 void main() {
-	vec3 V = u_ViewOrigin.xyz - in_position.rgb;
+	vec3 V = u_camera.viewOrigin.xyz - in_position.rgb;
 
 	float width = in_width_height.x;
 	float height = in_width_height.y;
@@ -84,7 +84,7 @@ void main() {
 
 	if ( kFxSprite > 0 ) {
 		//float sprite_time = u_frameTime * 1000.0;
-		float sprite_time = u_ViewOrigin.w * 1000.0;
+		float sprite_time = u_camera.viewOrigin.w * 1000.0;
 		var_Effectpos = fract((sprite_time+10000.0 * in_position.w) / u_FxDuration);
 		width += var_Effectpos * width * u_FxGrow.x;
 		height += var_Effectpos * height * u_FxGrow.y;
@@ -147,7 +147,7 @@ void main() {
 		float isLowerVertex = float(offset.z == 0.0);
 		offset.xy += mix(skew, vec2(0.0), isLowerVertex);
 		//float sprite_time = u_frameTime * 1000.0;
-		float sprite_time = u_ViewOrigin.w * 1000.0;
+		float sprite_time = u_camera.viewOrigin.w * 1000.0;
 		float angle = (in_position.x + in_position.y) * 0.02 + (sprite_time * 0.0015);
 		float windsway = mix(height* u_WindIdle * 0.075, 0.0, isLowerVertex);
 		offset.xy += vec2(cos(angle), sin(angle)) * windsway;

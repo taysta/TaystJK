@@ -3,10 +3,6 @@
 
 #include "global.h"
 
-#if defined(USE_VBO_GHOUL2) || defined(USE_VBO_MDV)
-	#define USE_VBO_MODEL
-#endif
-
 #ifdef USE_TX2
 #define USE_TX1
 #endif
@@ -32,7 +28,7 @@
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
-		vec4 u_ViewOrigin;
+		vkUniformCamera_t u_camera;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
@@ -46,14 +42,11 @@
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
-		mat3x4 u_BoneMatrices[72];
+		vkUniformBones_t u_bones;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_GLOBAL_BINDING) uniform Global {
-		vkBundle_t			u_bundle[3];
-		vkDisintegration_t	u_disintegration;
-		vkDeform_t			u_deform;
-		float				u_portalRange;
+		vkUniformGlobal_t u_global;
 	};	
 
 	layout(location = 7) in vec4 var_Normal;
@@ -575,7 +568,7 @@ void main() {
 	float sqrLightDist = dot(L, L);
 	L /= sqrt(sqrLightDist);
 
-	if ( needsShading( u_bundle[0].rgbGen ) ) {
+	if ( needsShading( u_global.bundle[0].rgbGen ) ) {
 		lightColor = ( u_entity.directedLight.xyz * 1.2 ) * base.rgb;
 		ambientColor = ( u_entity.ambientLight.rgb ) * base.rgb;
 
@@ -596,7 +589,7 @@ void main() {
 #ifdef USE_FOG
 	if ( hw_fog == 1 ) {
 		int u_fogIndex = int(fogDistanceVector[1]);
-		vec4 fog_color = CalcFog( u_ViewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
+		vec4 fog_color = CalcFog( u_camera.viewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
 		ApplyACFF( base, fog_color, fog_color.a );
 	} 
 	else {

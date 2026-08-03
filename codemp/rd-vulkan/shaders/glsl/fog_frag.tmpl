@@ -20,7 +20,7 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 
 #ifdef USE_FOG_EXP
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
-		vec4 u_ViewOrigin;
+		vkUniformCamera_t u_camera;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
@@ -95,6 +95,6 @@ void main() {
 
 	#ifdef USE_FOG_EXP
 		int u_fogIndex = int(fogDistanceVector[1]);
-		out_color = CalcFog( u_ViewOrigin.rgb, ws_position, u_fogs.fogs[u_fogIndex] );
+		out_color = CalcFog( u_camera.viewOrigin.rgb, ws_position, u_fogs.fogs[u_fogIndex] );
 	#endif
 }

@@ -42,7 +42,7 @@ layout (constant_id = 17) const int kUseFog = 0;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
-		vec4 u_ViewOrigin;
+		vkUniformCamera_t u_camera;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
@@ -195,7 +195,7 @@ void main() {
 #ifdef USE_FOG
 	if ( hw_fog == 1 ) {
 		int u_fogIndex = int(fogDistanceVector[1]);
-		vec4 fog_color = CalcFog( u_ViewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
+		vec4 fog_color = CalcFog( u_camera.viewOrigin.rgb, fog_tex_coord, u_fogs.fogs[u_fogIndex] );
 		ApplyACFF( base, fog_color, fog_color.a );
 	} 
 	else {

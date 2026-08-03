@@ -3,10 +3,6 @@
 
 #include "global.h"
 
-#if defined(USE_VBO_GHOUL2) || defined(USE_VBO_MDV)
-	#define USE_VBO_MODEL
-#endif
-
 // 64 bytes
 layout(push_constant) uniform Transform {
 	mat4 mvp;
@@ -38,14 +34,14 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 
 #ifdef USE_VBO_GHOUL2
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
-		mat3x4 u_BoneMatrices[72];
+		vkUniformBones_t u_bones;
 	};	
 	layout(location = 8) in uvec4 in_bones;
 	layout(location = 9) in vec4 in_weights;
 
 	mat4x3 GetBoneMatrix(uint index)
 	{
-		mat3x4 bone = u_BoneMatrices[index];
+		mat3x4 bone = u_bones.boneMatrices[index];
 		return mat4x3(
 			bone[0].x, bone[1].x, bone[2].x,
 			bone[0].y, bone[1].y, bone[2].y,
