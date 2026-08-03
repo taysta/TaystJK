@@ -504,14 +504,6 @@ typedef struct vkUniformCamera_s {
 	vec4_t viewOrigin;
 } vkUniformCamera_t;
 
-typedef struct vkUniformEntity_s {
-	vec4_t ambientLight;
-	vec4_t directedLight;
-	vec4_t lightOrigin;
-	vec4_t localViewOrigin;
-	mat4_t modelMatrix;
-} vkUniformEntity_t;
-
 typedef struct vkUniformGlobal_s {
 	vkBundle_t			bundle[3];
 	vkDisintegration_t	disintegration;

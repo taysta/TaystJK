@@ -26,17 +26,13 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 	vec4 fogColor;
 //#endif
 #if !defined(USE_VBO_MODEL)
-	mat4 u_ModelMatrix;
+    vkEntityMatrix_t u_entity; // modelMatrix
 #endif
 };
 
 #if defined(USE_VBO_MODEL)
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
-		vec4 u_ambientLight;
-		vec4 u_directedLight;
-		vec4 u_LocalLightOrigin;
-		vec4 u_localViewOrigin;
-		mat4 u_ModelMatrix;
+		vkUniformEntity_t u_entity;
 	};
 #endif
 
@@ -109,15 +105,15 @@ void main() {
 
 	#ifdef USE_FOG_EXP
 		#if defined(USE_VBO_MDV)
-			ws_position = (u_ModelMatrix * vec4(in_position, 1.0)).xyz;
+			ws_position = (u_entity.modelMatrix * vec4(in_position, 1.0)).xyz;
 		#elif defined(USE_VBO_GHOUL2)
-			ws_position = (u_ModelMatrix * vec4(position, 1.0)).xyz;
+			ws_position = (u_entity.modelMatrix * vec4(position, 1.0)).xyz;
 		#else
 			// when model vbos are disabled, but the shader still requires
 			// the modelmatrix to get world space positions.
 			// store the modelmatrix in main uniform
 			ws_position = (int(fogDistanceVector[3]) == 1)
-				? (u_ModelMatrix * vec4(in_position, 1.0)).xyz
+				? (u_entity.modelMatrix * vec4(in_position, 1.0)).xyz
 				: in_position;
 		#endif
 	#endif

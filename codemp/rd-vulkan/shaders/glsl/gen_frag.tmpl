@@ -42,11 +42,7 @@
 
 #if !defined(USE_CLX_IDENT) && defined(USE_VBO_MODEL)
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
-		vec4 u_ambientLight;
-		vec4 u_directedLight;
-		vec4 u_LocalLightOrigin;
-		vec4 u_localViewOrigin;
-		mat4 u_ModelMatrix;
+		vkUniformEntity_t u_entity;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
@@ -580,8 +576,8 @@ void main() {
 	L /= sqrt(sqrLightDist);
 
 	if ( needsShading( u_bundle[0].rgbGen ) ) {
-		lightColor = ( u_directedLight.xyz * 1.2 ) * base.rgb;
-		ambientColor = ( u_ambientLight.rgb ) * base.rgb;
+		lightColor = ( u_entity.directedLight.xyz * 1.2 ) * base.rgb;
+		ambientColor = ( u_entity.ambientLight.rgb ) * base.rgb;
 
 		vec3 nL = normalize( L );
 		float LdotL = dot( L, L );

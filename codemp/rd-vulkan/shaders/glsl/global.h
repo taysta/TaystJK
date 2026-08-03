@@ -54,8 +54,8 @@
     #define VEC2(n)		vec2_t n;
     #define VEC3(n)		vec3_t n;
     #define VEC4(n)		vec4_t n;
-    #define MAT4(n)		mat4_t n;
-    #define MAT3X4(n)	mat3x4_t n;
+    #define MAT4(n)		float n[16];
+    #define MAT3X4(n)	float n[12];
     #define UVEC2(n)	unsigned int n[2];
     #define UVEC3(n)	unsigned int n[3];
     #define UVEC4(n)	unsigned int n[4];
@@ -66,6 +66,19 @@
     #define PAD3(n)     vec3_t n;
 #endif
 
+// entity
+STRUCT (  
+    VEC4	( ambientLight )
+    VEC4	( directedLight )
+    VEC4	( localLightOrigin )
+    VEC4	( localViewOrigin )
+    MAT4	( modelMatrix )
+, vkUniformEntity_t )
+
+// non-vbo entity fallback
+STRUCT(
+    MAT4(modelMatrix)
+, vkEntityMatrix_t)
 
 // fog
 STRUCT (  

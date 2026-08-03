@@ -38,7 +38,7 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 	vec4 fogColor;
 
 #if defined(USE_FOG) && !defined(USE_VBO_MODEL)
-	mat4 u_ModelMatrix;
+    vkEntityMatrix_t u_entity; // modelMatrix
 #endif
 };
 #endif
@@ -51,11 +51,7 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 
 #if defined(USE_VBO_MODEL)
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
-		vec4 u_ambientLight;
-		vec4 u_directedLight;
-		vec4 u_LocalLightOrigin;
-		vec4 u_localViewOrigin;
-		mat4 u_ModelMatrix;
+		vkUniformEntity_t u_entity;
 	};
 
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_BONES_BINDING) uniform Bones {
@@ -175,8 +171,8 @@ vec4 CalcColor( int index, in vec3 position, in vec3 normal ) {
 	switch ( u_bundle[index].alphaGen ) {
 		case 6: // AGEN_LIGHTING_SPECULAR
 		{
-			vec3 viewer = normalize( u_localViewOrigin.xyz - position );
-			vec3 lightDirection = ( transpose(u_ModelMatrix) * vec4( u_LocalLightOrigin.xyz, 0.0 ) ).xyz;
+			vec3 viewer = normalize( u_entity.localViewOrigin.xyz - position );
+			vec3 lightDirection = ( transpose(u_entity.modelMatrix) * vec4( u_entity.localLightOrigin.xyz, 0.0 ) ).xyz;
 			vec3 reflected = -reflect( lightDirection, normal );
 			color.a = clamp( dot( reflected, normalize( viewer ) ), 0.0, 1.0 );
 			color.a *= color.a;
@@ -185,7 +181,7 @@ vec4 CalcColor( int index, in vec3 position, in vec3 normal ) {
 		}
 		case 8: // AGEN_PORTAL
 		{
-			vec3 viewer = normalize( u_localViewOrigin.xyz - position );
+			vec3 viewer = normalize( u_entity.localViewOrigin.xyz - position );
 			color.a = clamp( length( viewer ) / u_portalRange, 0.0, 1.0 );
 			break;
 		}
@@ -440,7 +436,7 @@ void main() {
 
 #ifdef USE_ENV
 	#if defined(USE_VBO_MODEL)
-		vec3 viewer = normalize(u_localViewOrigin.xyz - position);
+		vec3 viewer = normalize( u_entity.localViewOrigin.xyz - position );
 	#else
 		vec3 viewer = normalize(eyePos.xyz - position);
 	#endif
@@ -487,13 +483,13 @@ void main() {
 	if ( hw_fog == 1 ) 
 	{
 		#ifdef USE_VBO_MODEL
-			fog_tex_coord = (u_ModelMatrix * vec4(position, 1.0)).xyz;
+			fog_tex_coord = (u_entity.modelMatrix * vec4(position, 1.0)).xyz;
 		#else
 			// when model vbos are disabled, but the shader still requires
 			// the modelmatrix to get world space positions.
 			// store the modelmatrix in main uniform
 			fog_tex_coord = (int(fogDistanceVector[3]) == 1)
-				? (u_ModelMatrix * vec4(position, 1.0)).xyz
+				? (u_entity.modelMatrix * vec4(position, 1.0)).xyz
 				: position;
 		#endif
 	}
@@ -521,12 +517,12 @@ void main() {
 #endif
 
 #if !defined(USE_CLX_IDENT) && defined(USE_VBO_MODEL)
-	position		= (u_ModelMatrix * vec4(position, 1.0)).xyz;
-	normal			= normalize(mat3(u_ModelMatrix) * normal);
+	position		= (u_entity.modelMatrix * vec4(position, 1.0)).xyz;
+	normal			= normalize(mat3(u_entity.modelMatrix) * normal);
 
 	//vec3 viewDir = u_ViewOrigin.xyz - position;
 
-	vec3 L	= u_LocalLightOrigin.xyz - (position * u_LocalLightOrigin.w);
+	vec3 L	= u_entity.localLightOrigin.xyz - (position * u_entity.localLightOrigin.w);
 
 	var_LightDir	= vec4(L, 0.0);	
 	var_Normal		= vec4(normal, 0.0);
