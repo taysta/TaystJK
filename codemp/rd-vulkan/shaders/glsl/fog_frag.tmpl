@@ -23,18 +23,6 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 		vec4 u_ViewOrigin;
 	};
 
-	struct vkUniformFogEntry_t {
-		vec4	plane;
-		vec4	color;
-		float	depthToOpaque;
-		int		hasPlane;
-	};
-
-	struct vkUniformFog_t {
-		int					num_fogs;
-		vkUniformFogEntry_t	fogs[16];
-	};
-
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_FOGS_BINDING) uniform Fog {
 		vkUniformFog_t u_fogs;
 	};

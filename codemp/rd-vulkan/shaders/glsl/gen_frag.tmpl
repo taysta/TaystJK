@@ -31,18 +31,6 @@
 	//#endif
 	};
 
-	struct vkUniformFogEntry_t {
-		vec4	plane;
-		vec4	color;
-		float	depthToOpaque;
-		int		hasPlane;
-	};
-
-	struct vkUniformFog_t {
-		int					num_fogs;
-		vkUniformFogEntry_t	fogs[16];
-	};
-
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
 		vec4 u_ViewOrigin;
 	};
@@ -53,45 +41,6 @@
 #endif
 
 #if !defined(USE_CLX_IDENT) && defined(USE_VBO_MODEL)
-	struct tcMod_t {
-		vec4	matrix;
-		vec4	offTurb;
-	};
-
-	struct tcGen_t {
-		vec3	vector0;
-		vec3	vector1;
-		int		type;
-	};
-
-	struct vkBundle_t {
-		vec4	baseColor;
-		vec4	vertColor;
-		tcMod_t	tcMod;
-		tcGen_t	tcGen;
-		int		rgbGen;
-		int		alphaGen;
-		int		numTexMods;
-	};
-
-	struct vkDisintegration_t {
-		vec3	origin;
-		float	threshold;
-	};
-
-	struct vkDeform_t {
-		float	base;
-		float	amplitude;
-		float	phase;
-		float	frequency;
-
-		vec3	vector;
-		float	time;
-
-		int		type;
-		int		func;
-	};
-
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_ENTITY_BINDING) uniform Entity {
 		vec4 u_ambientLight;
 		vec4 u_directedLight;

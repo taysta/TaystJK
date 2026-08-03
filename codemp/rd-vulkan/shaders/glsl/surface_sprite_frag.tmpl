@@ -41,18 +41,6 @@ layout (constant_id = 17) const int kUseFog = 0;
 		vec4 fogColor;
 	};
 
-	struct vkUniformFogEntry_t {
-		vec4	plane;
-		vec4	color;
-		float	depthToOpaque;
-		int		hasPlane;
-	};
-
-	struct vkUniformFog_t {
-		int					num_fogs;
-		vkUniformFogEntry_t	fogs[16];
-	};
-
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform Camera {
 		vec4 u_ViewOrigin;
 	};
