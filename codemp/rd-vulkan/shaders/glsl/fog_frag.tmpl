@@ -41,51 +41,8 @@ layout(location = 0) out vec4 out_color;
 
 //layout(constant_id = 0) const int alpha_test_func = 0;
 
-#ifdef USE_FOG_EXP
-	vec4 CalcFog(in vec3 viewOrigin, in vec3 position, in vkUniformFogEntry_t fog)
-	{
-		bool inFog = dot(viewOrigin, fog.plane.xyz) - fog.plane.w >= 0.0 || (fog.hasPlane == 0);
-
-		// line: x = o + tv
-		// plane: (x . n) + d = 0
-		// intersects: dot(o + tv, n) + d = 0
-		//             dot(o + tv, n) = -d
-		//             dot(o, n) + t*dot(n, v) = -d
-		//             t = -(d + dot(o, n)) / dot(n, v)
-		vec3 V = position - viewOrigin;
-
-		// fogPlane is inverted in tr_bsp for some reason.
-		float t = -(fog.plane.w + dot(viewOrigin, -fog.plane.xyz)) / dot(V, -fog.plane.xyz);
-
-		// only use this for objects with potentially two contibuting fogs
-		#if defined(USE_FALLBACK_GLOBAL_FOG)
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-			{
-				int u_globalFogIndex = int(fogDistanceVector[0]);
-				Fog globalFog = u_fogs.fogs[u_globalFogIndex];
-
-				float distToVertex = length(V);
-				float distFromIntersection = distToVertex - (t * distToVertex);
-				float z = globalFog.depthToOpaque * mix(distToVertex, distFromIntersection, intersects);
-				return vec4(globalFog.color.rgb, 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-			}
-		#else
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-				return vec4(0.0);
-		#endif
-
-		float distToVertexFromViewOrigin = length(V);
-		float distToIntersectionFromViewOrigin = t * distToVertexFromViewOrigin;
-
-		float distOutsideFog = max(distToVertexFromViewOrigin - distToIntersectionFromViewOrigin, 0.0);
-		float distThroughFog = mix(distOutsideFog, distToVertexFromViewOrigin, inFog);
-
-		float z = fog.depthToOpaque * distThroughFog;
-		return vec4(fog.color.rgb * fogDistanceVector[2], 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-	}
-#endif
+#define SHADER_FRAG
+#include "common/fog.glsl"
 
 void main() {
 	#ifdef USE_FOG_LINEAR

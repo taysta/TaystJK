@@ -32,6 +32,14 @@
 #define VK_DESC_UNIFORM_COUNT			6
 
 #ifdef GLSL
+    #ifdef USE_TX2
+	    #define USE_TX1
+    #endif
+
+    #ifdef USE_CL2
+	    #define USE_CL1
+    #endif
+
     #define STRUCT(content, name) struct name { content };
     #define INT(n)		int n;
     #define UINT(n)		uint n;

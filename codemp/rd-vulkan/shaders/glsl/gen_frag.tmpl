@@ -3,14 +3,6 @@
 
 #include "global.h"
 
-#ifdef USE_TX2
-#define USE_TX1
-#endif
-
-#ifdef USE_CL2
-#define USE_CL1
-#endif
-
 #if defined (USE_FOG)
 	layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UBO {
 		// light/env/material parameters:
@@ -52,18 +44,6 @@
 	layout(location = 7) in vec4 var_Normal;
 	layout(location = 8) in vec4 var_LightDir;
 	//layout(location = 9) in vec4 var_ViewDir;
-
-	bool needsShading( in int rgbType ) {
-		return ( rgbType >= 9 && rgbType != 11 && rgbType != 12 && rgbType != 13 ) ? true : false;
-	}
-
-	float CalcLightAttenuation(float point, float normDist)
-	{
-		// zero light at 1.0, approximating q3 style
-		// also don't attenuate directional light
-		float attenuation = ( 0.5 * normDist - 1.5 ) * point + 1.0;
-		return clamp( attenuation, 0.0, 1.0 );
-	}
 #endif
 
 layout(set = VK_DESC_TEXTURE0, binding = 0) uniform sampler2D texture0;
@@ -136,80 +116,10 @@ layout (constant_id = 10) const float identity_alpha = 1.0;
 layout (constant_id = 11) const int acff = 0; // NONE, RGB, RGBA, ALPHA
 #endif
 
-#ifdef USE_ATEST
-float CorrectAlpha(float threshold, float alpha, vec2 tc)
-{
-	ivec2 ts = textureSize(texture0, 0);
-	float dx = max(abs(dFdx(tc.x * float(ts.x))), 0.001);
-	float dy = max(abs(dFdy(tc.y * float(ts.y))), 0.001);
-	float dxy = max(dx, dy); // apply the smallest boost
-	float scale = max(1.0 / dxy, 1.0);
-	float ac = threshold + (alpha - threshold) * scale;
-	return ac;
-}
-#endif
-
-
-#ifdef USE_FOG
-	void ApplyACFF(inout vec4 base, in vec4 fogColor, in float fogAlpha)
-	{
-		if ( acff == 1 )		// ACFF_RGB
-			base.rgb *= ( 1.0 - fogAlpha );        
-
-		else if ( acff == 2 )		// ACFF_RGBA
-			base *= ( 1.0 - fogAlpha );            
-
-		else if ( acff == 3 )		// ACFF_ALPHA
-			base.a *= ( 1.0 - fogAlpha );         
-
-		else			// default: ACFF_NONE
-			base = mix( base, fogColor, fogAlpha ); 
-	}
-
-	vec4 CalcFog(in vec3 viewOrigin, in vec3 position, in vkUniformFogEntry_t fog)
-	{
-		bool inFog = dot(viewOrigin, fog.plane.xyz) - fog.plane.w >= 0.0 || (fog.hasPlane == 0);
-
-		// line: x = o + tv
-		// plane: (x . n) + d = 0
-		// intersects: dot(o + tv, n) + d = 0
-		//             dot(o + tv, n) = -d
-		//             dot(o, n) + t*dot(n, v) = -d
-		//             t = -(d + dot(o, n)) / dot(n, v)
-		vec3 V = position - viewOrigin;
-
-		// fogPlane is inverted in tr_bsp for some reason.
-		float t = -(fog.plane.w + dot(viewOrigin, -fog.plane.xyz)) / dot(V, -fog.plane.xyz);
-
-		// only use this for objects with potentially two contibuting fogs
-		#if defined(USE_FALLBACK_GLOBAL_FOG)
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-			{
-				int u_globalFogIndex = int(fogDistanceVector[0]);
-				Fog globalFog = u_fogs.fogs[u_globalFogIndex];
-
-				float distToVertex = length(V);
-				float distFromIntersection = distToVertex - (t * distToVertex);
-				float z = globalFog.depthToOpaque * mix(distToVertex, distFromIntersection, intersects);
-				return vec4(globalFog.color.rgb, 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-			}
-		#else
-			bool intersects = (t > 0.0 && t < 0.995);
-			if (inFog == intersects)
-				return vec4(0.0);
-		#endif
-
-		float distToVertexFromViewOrigin = length(V);
-		float distToIntersectionFromViewOrigin = t * distToVertexFromViewOrigin;
-
-		float distOutsideFog = max(distToVertexFromViewOrigin - distToIntersectionFromViewOrigin, 0.0);
-		float distThroughFog = mix(distOutsideFog, distToVertexFromViewOrigin, inFog);
-
-		float z = fog.depthToOpaque * distThroughFog;
-		return vec4(fog.color.rgb * fogDistanceVector[2], 1.0 - clamp(exp(-(z * z)), 0.0, 1.0));
-	}
-#endif
+#define SHADER_FRAG
+#include "common/utils.glsl"
+#include "common/fog.glsl"
+#include "common/color.glsl"
 
 void main() {
 	vec4 diffuse;

@@ -38,16 +38,6 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_MAIN_BINDING) uniform UB
 	};	
 	layout(location = 8) in uvec4 in_bones;
 	layout(location = 9) in vec4 in_weights;
-
-	mat4x3 GetBoneMatrix(uint index)
-	{
-		mat3x4 bone = u_bones.boneMatrices[index];
-		return mat4x3(
-			bone[0].x, bone[1].x, bone[2].x,
-			bone[0].y, bone[1].y, bone[2].y,
-			bone[0].z, bone[1].z, bone[2].z,
-			bone[0].w, bone[1].w, bone[2].w);
-	}
 #endif
 
 layout(location = 0) in vec3 in_position;
@@ -62,6 +52,9 @@ layout(location = 0) in vec3 in_position;
 out gl_PerVertex {
 	vec4 gl_Position;
 };
+
+#define SHADER_VERT
+#include "common/skinning.glsl"
 
 void main() {
 	#ifdef USE_VBO_GHOUL2
