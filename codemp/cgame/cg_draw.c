@@ -6538,12 +6538,12 @@ CG_DrawTeamOverlay3
 =================
 */
 static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
-	int			i, j, count, plyrs;
+	int			i, j, count, plyrs, nameLen;
 	float		scale, textScale, textHeight, barHeight, pad, padX;
 	float		rowHeight, panelW, panelX, panelY, iconSize, iconW, pwIconW;
 	float		iconX, textX, barX, barW, barY, rowY, pwX;
 	float		fpBarX, fpBarW;
-	float		healthW, armorW, segW, valW;
+	float		healthW, armorW, segW, valW, nameW;
 	float		barMax;
 	const char	*p;
 	char		nameBuf[64], valBuf[16];
@@ -6612,7 +6612,7 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 	barHeight  = textHeight * 0.55f;
 	pad        = 3.0f * scale;
 
-	padX    = pad * cgs.widthRatioCoef;
+	padX = pad * cgs.widthRatioCoef;
 
 	rowHeight = pad + textHeight + pad + barHeight + pad;
 	if ( hasLocations )
@@ -6674,11 +6674,6 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 
 		colorText[3] = (health < 1) ? 0.4f : 1.0f;
 
-		Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
-		CG_LimitStr( nameBuf, 14 );
-		CG_Text_Paint( textX, rowY + pad, textScale, colorText,
-			 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
-
 		Com_sprintf( valBuf, sizeof(valBuf), "%i", total );
 		valW = (float)CG_Text_Width( valBuf, textScale, FONT_SMALL2 );
 
@@ -6710,6 +6705,19 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 			CG_DrawPic( pwX, rowY + pad, pwIconW, textHeight,
 				CG_TeamOverlayWeaponIcon( ci ) );
 		}
+
+		Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
+		nameW = pwX - textX - padX;
+		nameLen = MAX_NETNAME;
+
+		while ( nameLen > 1 && CG_Text_Width( nameBuf, textScale, FONT_SMALL2 ) > nameW ) {
+			nameLen--;
+			Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
+			CG_LimitStr( nameBuf, nameLen );
+		}
+
+		CG_Text_Paint( textX, rowY + pad, textScale, colorText,
+			 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
 
 		if ( hasLocations ) {
 			p = CG_TeamOverlayLocation( ci );
