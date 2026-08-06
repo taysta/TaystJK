@@ -52,15 +52,7 @@ layout (constant_id = 17) const int kUseFog = 0;
 
 layout(set = 1, binding = 0) buffer SurfaceSprite
 {
-	vec2  u_FxGrow;
-	float u_FxDuration;
-	float u_FadeStartDistance;
-	float u_FadeEndDistance;
-	float u_FadeScale;
-	float u_Wind;
-	float u_WindIdle;
-	float u_FxAlphaStart;
-	float u_FxAlphaEnd;
+	SurfaceSpriteBlock u_ss;
 };
 
 layout(set = 2, binding = 0) uniform sampler2D texture0;
@@ -88,17 +80,17 @@ void main() {
 	base = color0;
 
 	if ( kFxSprite > 0 ) {
-		float fxalpha = u_FxAlphaEnd - u_FxAlphaStart;
-		if (u_FxAlphaEnd < 0.05)
+		float fxalpha = u_ss.fxAlphaEnd - u_ss.fxAlphaStart;
+		if (u_ss.fxAlphaEnd < 0.05)
 		{
 			if (var_Effectpos > 0.5)
-				base.a *= u_FxAlphaStart + (fxalpha * (var_Effectpos - 0.5) * 2.0);
+				base.a *= u_ss.fxAlphaStart + (fxalpha * (var_Effectpos - 0.5) * 2.0);
 			else
-				base.a *= u_FxAlphaStart + (fxalpha * (0.5 - var_Effectpos) * 2.0);
+				base.a *= u_ss.fxAlphaStart + (fxalpha * (0.5 - var_Effectpos) * 2.0);
 		}
 		else
 		{
-			base.a *= u_FxAlphaStart + (fxalpha * var_Effectpos);
+			base.a *= u_ss.fxAlphaStart + (fxalpha * var_Effectpos);
 		}
 	}
 

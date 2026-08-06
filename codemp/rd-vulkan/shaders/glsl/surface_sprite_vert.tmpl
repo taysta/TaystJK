@@ -42,15 +42,7 @@ layout(set = VK_DESC_UNIFORM, binding = VK_DESC_UNIFORM_CAMERA_BINDING) uniform 
 
 layout(set = 1, binding = 0) buffer SurfaceSprite
 {
-	vec2  u_FxGrow;
-	float u_FxDuration;
-	float u_FadeStartDistance;
-	float u_FadeEndDistance;
-	float u_FadeScale;
-	float u_Wind;
-	float u_WindIdle;
-	float u_FxAlphaStart;
-	float u_FxAlphaEnd;
+	SurfaceSpriteBlock u_ss;
 };
 
 layout(location = 0) in uint in_vertex_id;	// unused
@@ -79,15 +71,15 @@ void main() {
 	vec2 skew = in_skew.xy;
 
 	float distanceToCamera = length( V );
-	float fadeScale = smoothstep( u_FadeStartDistance, u_FadeEndDistance, distanceToCamera );
-	width += u_FadeScale * fadeScale * width;
+	float fadeScale = smoothstep( u_ss.fadeStartDistance, u_ss.fadeEndDistance, distanceToCamera );
+	width += u_ss.fadeScale * fadeScale * width;
 
 	if ( kFxSprite > 0 ) {
 		//float sprite_time = u_frameTime * 1000.0;
 		float sprite_time = u_camera.viewOrigin.w * 1000.0;
-		var_Effectpos = fract((sprite_time+10000.0 * in_position.w) / u_FxDuration);
-		width += var_Effectpos * width * u_FxGrow.x;
-		height += var_Effectpos * height * u_FxGrow.y;
+		var_Effectpos = fract((sprite_time+10000.0 * in_position.w) / u_ss.fxDuration);
+		width += var_Effectpos * width * u_ss.fxGrow.x;
+		height += var_Effectpos * height * u_ss.fxGrow.y;
 	}
 
 	float halfWidth = width * 0.5;
@@ -149,7 +141,7 @@ void main() {
 		//float sprite_time = u_frameTime * 1000.0;
 		float sprite_time = u_camera.viewOrigin.w * 1000.0;
 		float angle = (in_position.x + in_position.y) * 0.02 + (sprite_time * 0.0015);
-		float windsway = mix(height* u_WindIdle * 0.075, 0.0, isLowerVertex);
+		float windsway = mix(height* u_ss.windIdle * 0.075, 0.0, isLowerVertex);
 		offset.xy += vec2(cos(angle), sin(angle)) * windsway;
 	}
 

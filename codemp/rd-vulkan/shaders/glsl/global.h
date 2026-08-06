@@ -121,6 +121,20 @@ STRUCT (
 
 #undef FOG_ENTRY_T
 
+// surface sprites
+STRUCT (  
+    VEC2	( fxGrow )
+    FLOAT	( fxDuration )
+    FLOAT	( fadeStartDistance )
+    FLOAT	( fadeEndDistance )
+    FLOAT	( fadeScale )
+    FLOAT	( wind )
+    FLOAT	( windIdle )
+    FLOAT	( fxAlphaStart )
+    FLOAT	( fxAlphaEnd )
+    PAD2	( pad0 )
+, SurfaceSpriteBlock )
+
 // global
 STRUCT (  
     VEC4	( matrix )

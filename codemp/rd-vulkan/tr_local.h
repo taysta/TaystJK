@@ -529,20 +529,6 @@ enum surfaceSpriteOrientation_t
 	SURFSPRITE_FACING_ANY,
 };
 
-struct SurfaceSpriteBlock
-{
-	vec2_t fxGrow;
-	float fxDuration;
-	float fadeStartDistance;
-	float fadeEndDistance;
-	float fadeScale;
-	float wind;
-	float windIdle;
-	float fxAlphaStart;
-	float fxAlphaEnd;
-	float pad0[2];
-};
-
 #define	MAX_IMAGE_ANIMATIONS	32
 
 typedef struct textureBundle_s {
