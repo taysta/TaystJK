@@ -6538,12 +6538,12 @@ CG_DrawTeamOverlay3
 =================
 */
 static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
-	int			i, j, count, plyrs;
-	float		scale, textScale, textHeight, barHeight, pad;
-	float		rowHeight, panelW, panelX, panelY, iconSize;
+	int			i, j, count, plyrs, nameLen;
+	float		scale, textScale, textHeight, barHeight, pad, padX;
+	float		rowHeight, panelW, panelX, panelY, iconSize, iconW, pwIconW;
 	float		iconX, textX, barX, barW, barY, rowY, pwX;
 	float		fpBarX, fpBarW;
-	float		healthW, armorW, segW, valW;
+	float		healthW, armorW, segW, valW, nameW;
 	float		barMax;
 	const char	*p;
 	char		nameBuf[64], valBuf[16];
@@ -6612,11 +6612,15 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 	barHeight  = textHeight * 0.55f;
 	pad        = 3.0f * scale;
 
+	padX = pad * cgs.widthRatioCoef;
+
 	rowHeight = pad + textHeight + pad + barHeight + pad;
 	if ( hasLocations )
 		rowHeight += textHeight + pad;
 
 	iconSize = rowHeight - pad * 2.0f;
+	iconW    = iconSize * cgs.widthRatioCoef;
+	pwIconW  = textHeight * cgs.widthRatioCoef;
 
 	panelW = 190.0f * scale * cgs.widthRatioCoef;
 	panelX = cg_drawTeamOverlayX.integer - panelW;
@@ -6625,17 +6629,17 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 	if ( cg_drawTeamOverlayY.integer )
 		panelY = cg_drawTeamOverlayY.integer;
 
-	iconX = panelX + pad;
-	textX = iconX + iconSize + pad;
+	iconX = panelX + padX;
+	textX = iconX + iconW + padX;
 	barX  = textX;
-	barW  = (panelX + panelW - pad) - barX;
+	barW  = (panelX + panelW - padX) - barX;
 
 	drawForce = CG_TeamOverlayDrawForce();
 
 	if ( drawForce ) {
 		fpBarW = barW * 0.22f;
-		barW  -= fpBarW + pad;
-		fpBarX = barX + barW + pad;
+		barW  -= fpBarW + padX;
+		fpBarX = barX + barW + padX;
 	} else {
 		fpBarW = 0.0f;
 		fpBarX = 0.0f;
@@ -6665,23 +6669,18 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 
 		if ( health < 1 )
 			trap->R_SetColor( colorDead );
-		CG_DrawPic( iconX, rowY + pad, iconSize, iconSize, CG_TeamOverlayModelIcon( ci ) );
+		CG_DrawPic( iconX, rowY + pad, iconW, iconSize, CG_TeamOverlayModelIcon( ci ) );
 		trap->R_SetColor( NULL );
 
 		colorText[3] = (health < 1) ? 0.4f : 1.0f;
 
-		Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
-		CG_LimitStr( nameBuf, 14 );
-		CG_Text_Paint( textX, rowY + pad, textScale, colorText,
-			 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
-
 		Com_sprintf( valBuf, sizeof(valBuf), "%i", total );
 		valW = (float)CG_Text_Width( valBuf, textScale, FONT_SMALL2 );
 
-		CG_Text_Paint( panelX + panelW - pad - valW, rowY + pad, textScale, colorText,
+		CG_Text_Paint( panelX + panelW - padX - valW, rowY + pad, textScale, colorText,
 			valBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
 
-		pwX = panelX + panelW - pad - valW - pad;
+		pwX = panelX + panelW - padX - valW - padX;
 
 		trap->R_SetColor( NULL );
 
@@ -6693,19 +6692,32 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 			if ( !item )
 				continue;
 
-			if ( pwX - textHeight < textX )
+			if ( pwX - pwIconW < textX )
 				break;	// out of room, don't run back over the name
 
-			pwX -= textHeight;
-			CG_DrawPic( pwX, rowY + pad, textHeight, textHeight,
+			pwX -= pwIconW;
+			CG_DrawPic( pwX, rowY + pad, pwIconW, textHeight,
 				trap->R_RegisterShader( item->icon ) );
 		}
 
-		if ( cg_drawTeamOverlayWeapons.integer && pwX - textHeight >= textX ) {
-			pwX -= textHeight;
-			CG_DrawPic( pwX, rowY + pad, textHeight, textHeight,
+		if ( cg_drawTeamOverlayWeapons.integer && pwX - pwIconW >= textX ) {
+			pwX -= pwIconW;
+			CG_DrawPic( pwX, rowY + pad, pwIconW, textHeight,
 				CG_TeamOverlayWeaponIcon( ci ) );
 		}
+
+		Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
+		nameW = pwX - textX - padX;
+		nameLen = MAX_NETNAME;
+
+		while ( nameLen > 1 && CG_Text_Width( nameBuf, textScale, FONT_SMALL2 ) > nameW ) {
+			nameLen--;
+			Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
+			CG_LimitStr( nameBuf, nameLen );
+		}
+
+		CG_Text_Paint( textX, rowY + pad, textScale, colorText,
+			 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
 
 		if ( hasLocations ) {
 			p = CG_TeamOverlayLocation( ci );
