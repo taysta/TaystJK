@@ -6065,6 +6065,17 @@ static void CG_TeamOverlayStats( const clientInfo_t *ci, int *health, int *armor
 		*armor = 0;
 }
 
+/*
+=================
+CG_TeamOverlayDrawForce
+
+Force is only networked on jaPRO, and cg_drawTeamOverlayForce lets it be turned off
+=================
+*/
+static qboolean CG_TeamOverlayDrawForce( void ) {
+	return ( cgs.serverMod == SVMOD_JAPRO && cg_drawTeamOverlayForce.integer ) ? qtrue : qfalse;
+}
+
 
 /*
 =================
@@ -6084,6 +6095,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	gitem_t	*item;
 	int count;
 	float xOffset = 0*cgs.widthRatioCoef;
+	qboolean drawForce = CG_TeamOverlayDrawForce();
 
 
 	if ( !cg_drawTeamOverlay.integer ) {
@@ -6147,7 +6159,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		w += TINYCHAR_WIDTH*cgs.widthRatioCoef; // room for the weapon icon column
 
 	if ( right ) {
-		if (cgs.serverMod == SVMOD_JAPRO)
+		if (drawForce)
 			x = cg_drawTeamOverlayX.integer - w - 32;//JAPRO - Clientside - Positionable drawteamoverlay
 		else
 			x = cg_drawTeamOverlayX.integer - w;//JAPRO - Clientside - Positionable drawteamoverlay
@@ -6178,7 +6190,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		hcolor[3] = 0.33f;
 	}
 	trap->R_SetColor( hcolor );
-	if (cgs.serverMod == SVMOD_JAPRO)
+	if (drawForce)
 		CG_DrawPic( x + xOffset, y, w + 32, h, cgs.media.teamStatusBar );
 	else
 		CG_DrawPic( x + xOffset, y, w, h, cgs.media.teamStatusBar );
@@ -6217,7 +6229,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 			CG_GetColorForHealth( health, armor, hcolor );
 			Com_sprintf (st, sizeof(st), "%3i %3i", health, armor);
 
-			if (cgs.serverMod == SVMOD_JAPRO) {
+			if (drawForce) {
 				CG_GetColorForForce( forcepoints, fpcolor );
 				Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
 			}
@@ -6225,23 +6237,19 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 			xx = x + TINYCHAR_WIDTH * 3*cgs.widthRatioCoef +
 				TINYCHAR_WIDTH * pwidth*cgs.widthRatioCoef + TINYCHAR_WIDTH * lwidth*cgs.widthRatioCoef;
 
-			if (cgs.serverMod == SVMOD_JAPRO) {
-				CG_DrawStringExt( xx + xOffset, y,
-					st, hcolor, qfalse, qfalse,
-					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
+			CG_DrawStringExt( xx + xOffset, y,
+				st, hcolor, qfalse, qfalse,
+				TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
+
+			if (drawForce) {
 				CG_DrawStringExt( xx + xOffset + 66*cgs.widthRatioCoef, y,
 					fp, fpcolor, qfalse, qfalse,
-					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
-			}
-			else {
-				CG_DrawStringExt( xx + xOffset, y,
-					st, hcolor, qfalse, qfalse,
 					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
 			}
 
             if(cg_drawTeamOverlayWeapons.integer) {
                 // draw weapon icon
-                if (cgs.serverMod == SVMOD_JAPRO)
+                if (drawForce)
                     xx += 66*cgs.widthRatioCoef + TINYCHAR_WIDTH * 4 * cgs.widthRatioCoef;
                 else
                     xx += TINYCHAR_WIDTH * 7 * cgs.widthRatioCoef;
@@ -6292,6 +6300,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     vec4_t color2 = {0.02f, 0.4f, 0.65f, 0.7f};
     vec4_t colorGrey = {0.4f, 0.4f, 0.4f, 0.4f};
     rectDef_t background = {0.0f, 0.0f, 0.0f, 0.0f};
+	qboolean drawForce = CG_TeamOverlayDrawForce();
 
     (void)right;
     (void)upper;
@@ -6447,7 +6456,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             Com_sprintf(hp, sizeof(hp), "%3i", health);
             Com_sprintf(ap, sizeof(ap), "%3i", armor);
 
-            if (cgs.serverMod == SVMOD_JAPRO) {
+            if (drawForce) {
                 CG_GetColorForForce( forcepoints, fpcolor );
                 Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
                 elements = 3;
@@ -6459,29 +6468,29 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             else
                 yy = background.y + (2.0f * background.h) / 3.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
 
-            if (cgs.serverMod == SVMOD_JAPRO) {
-                CG_Text_Paint( xx,
-                               yy,
-                               0.55f,
-                               hcolor,
-                               hp,
-                               0.0f,
-                               0,
-                               ITEM_TEXTSTYLE_NORMAL,
-                               FONT_SMALL2);
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           hp,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2);
 
-                xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
+            xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
 
-                CG_Text_Paint( xx,
-                               yy,
-                               0.55f,
-                               hcolor,
-                               ap,
-                               0.0f,
-                               0,
-                               ITEM_TEXTSTYLE_NORMAL,
-                               FONT_SMALL2);
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           ap,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2);
 
+            if (drawForce) {
                 xx = background.x + 3 * (background.w) / ((float)elements + 1) - CG_Text_Width(fp, 0.55f, FONT_SMALL2) / 2.0f;
 
                 CG_Text_Paint( xx,
@@ -6493,30 +6502,6 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                0,
                                ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
-            }
-            else {
-
-                CG_Text_Paint(xx,
-                              yy,
-                              0.55f,
-                              hcolor,
-                              hp,
-                              0.0f,
-                              0,
-                              ITEM_TEXTSTYLE_NORMAL,
-                              FONT_SMALL2);
-
-                xx = background.x + 2 * (background.w) / ((float) elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
-
-                CG_Text_Paint(xx,
-                              yy,
-                              0.55f,
-                              hcolor,
-                              ap,
-                              0.0f,
-                              0,
-                              ITEM_TEXTSTYLE_NORMAL,
-                              FONT_SMALL2);
             }
 
             trap->R_SetColor( NULL );
@@ -6642,7 +6627,7 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 	barX  = textX;
 	barW  = (panelX + panelW - pad) - barX;
 
-	drawForce = (cgs.serverMod == SVMOD_JAPRO);
+	drawForce = CG_TeamOverlayDrawForce();
 
 	if ( drawForce ) {
 		fpBarW = barW * 0.22f;
