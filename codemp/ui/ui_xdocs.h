@@ -159,7 +159,7 @@ XDOCS_CVAR_DEF("cg_drawTeamOverlayForce", "Draw force points on the team overlay
 XDOCS_CVAR_DEF("cg_drawTeamOverlayScale", "Size of the team overlay. Only applies to cg_drawTeamOverlay 5 and 6, clamped between 0.5 and 2.5",
 )
 
-XDOCS_CVAR_DEF("cg_drawTeamOverlayMaxHP", "Combined health and shields that fills the bar on the team overlay. Only applies to cg_drawTeamOverlay 5 and 6. Base team FFA usually spawns 100 health and 25 shields with no shield pickups, servers running shield pickups want 200",
+XDOCS_CVAR_DEF("cg_drawTeamOverlayMaxHP", "Combined health and shields that fills the bar on the team overlay. Only applies to cg_drawTeamOverlay 5 and 6. Base team FFA usually spawns 125 health and 25 shields with no shield pickups, servers running shield pickups want 225",
 )
 
 XDOCS_CVAR_DEF("cg_raceTimer", "Show the race timer onscreen",
