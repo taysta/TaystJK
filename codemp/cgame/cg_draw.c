@@ -6619,8 +6619,11 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 	iconSize = rowHeight - pad * 2.0f;
 
 	panelW = 190.0f * scale * cgs.widthRatioCoef;
-	panelX = SCREEN_WIDTH - panelW - (8.0f * cgs.widthRatioCoef);
-	panelY = (SCREEN_HEIGHT - (plyrs * rowHeight)) * 0.5f + cg_drawTeamOverlayY.integer;
+	panelX = cg_drawTeamOverlayX.integer - panelW;
+
+	panelY = y;
+	if ( cg_drawTeamOverlayY.integer )
+		panelY = cg_drawTeamOverlayY.integer;
 
 	iconX = panelX + pad;
 	textX = iconX + iconSize + pad;
@@ -6765,7 +6768,7 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 		rowY += rowHeight;
 	}
 
-	return y;
+	return y + (plyrs * rowHeight);
 }
 
 static int CG_DrawPowerupIcons(int y)

@@ -133,15 +133,33 @@ XDOCS_CVAR_DEF("cg_startGoal", "start speed goal, if your start speed is above y
 XDOCS_CVAR_DEF("cg_drawTeamOverlay", "Draw the team overlay for team-based gametypes",
 	SETTING("0", "The team overlay is not drawn") NL
 	SETTING("1", "The team overlay is drawn") NL
-    SETTING("2", "The team overlay is drawn, excluding the local client") NL
-    SETTING("3", "The new team overlay is drawn") NL
-    SETTING("4", "The new team overlay is drawn, excluding the local client")
+	SETTING("2", "The team overlay is drawn, excluding the local client") NL
+	SETTING("3", "The new team overlay is drawn") NL
+	SETTING("4", "The new team overlay is drawn, excluding the local client") NL
+	SETTING("5", "The vertical team overlay is drawn") NL
+	SETTING("6", "The vertical team overlay is drawn, excluding the local client")
 )
 
-XDOCS_CVAR_DEF("cg_drawTeamOverlayX", "Horizontal location of the team overlay",
+XDOCS_CVAR_DEF("cg_drawTeamOverlayX", "Horizontal location of the right edge of the team overlay",
 )
 
 XDOCS_CVAR_DEF("cg_drawTeamOverlayY", "Vertical location of the team overlay",
+)
+
+XDOCS_CVAR_DEF("cg_drawTeamOverlayWeapons", "Draw each player's current weapon on the team overlay",
+	SETTING("0", "Weapon icons are not drawn") NL
+	SETTING("1", "Weapon icons are drawn")
+)
+
+XDOCS_CVAR_DEF("cg_drawTeamOverlayForce", "Draw force points on the team overlay. Only has an effect on jaPRO servers, where force points is networked",
+	SETTING("0", "Force points are not drawn") NL
+	SETTING("1", "Force points are drawn")
+)
+
+XDOCS_CVAR_DEF("cg_drawTeamOverlayScale", "Size of the team overlay. Only applies to cg_drawTeamOverlay 5 and 6, clamped between 0.5 and 2.5",
+)
+
+XDOCS_CVAR_DEF("cg_drawTeamOverlayMaxHP", "Combined health and shields that fills the bar on the team overlay. Only applies to cg_drawTeamOverlay 5 and 6. Base team FFA usually spawns 100 health and 25 shields with no shield pickups, servers running shield pickups want 200",
 )
 
 XDOCS_CVAR_DEF("cg_raceTimer", "Show the race timer onscreen",
