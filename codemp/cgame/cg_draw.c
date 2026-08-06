@@ -4087,6 +4087,8 @@ void CG_DrawCTFHUD(rectDef_t blueBackground, rectDef_t redBackground, float xOff
 	trap->R_SetColor(NULL);
 }
 
+#define HUD_TEXT_HEIGHT_REF		"Ay"
+
 void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 	clientInfo_t *d1;
 	clientInfo_t *d2;
@@ -4161,8 +4163,8 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 		redBackground.x = ( SCREEN_WIDTH / 2.0f );
 	}
 
-	blueBackground.y = background.y - (( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
-	redBackground.y = background.y - (( float ) CG_Text_Height ( "nameBuf", 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
+	blueBackground.y = background.y - (( float ) CG_Text_Height ( HUD_TEXT_HEIGHT_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
+	redBackground.y = background.y - (( float ) CG_Text_Height ( HUD_TEXT_HEIGHT_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
 
 	blueBackground.h = background.h;
 	redBackground.h = background.h;
@@ -4214,18 +4216,18 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 				   FONT_LARGE );
 
 	//draw names
-	sprintf( nameBuf, "%s", d1->name );
+	Q_strncpyz( nameBuf, d1->name, sizeof(nameBuf) );
 	CG_LimitStr( nameBuf, 18 );
 	Q_StripColor(nameBuf);
 
-	sprintf( nameBuf2, "%s", d2->name );
+	Q_strncpyz( nameBuf2, d2->name, sizeof(nameBuf2) );
 	CG_LimitStr( nameBuf2, 18 );
 	Q_StripColor(nameBuf2);
 
 	//draw name boxes
 	trap->R_SetColor( color0 );
-	CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef, blueBackground.y + blueBackground.h, blueBackground.w + blueBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( "nameBuf", DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
-	CG_DrawPic( redBackground.x, redBackground.y + redBackground.h, redBackground.w +redBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( "nameBuf", DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+	CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef, blueBackground.y + blueBackground.h, blueBackground.w + blueBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( HUD_TEXT_HEIGHT_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+	CG_DrawPic( redBackground.x, redBackground.y + redBackground.h, redBackground.w +redBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( HUD_TEXT_HEIGHT_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
 
 	//draw names
 	CG_Text_Paint( blueBackground.x + blueBackground.w - CG_Text_Width( nameBuf, DUEL_NAME_FONT_SIZE, FONT_SMALL2) - 1.0f,
@@ -5990,24 +5992,110 @@ void CG_GetColorForForce( int forcepoints, vec4_t hcolor );
 
     return y;
 }*/
+
+/*
+=================
+CG_TeamOverlayWeaponIcon
+=================
+*/
+static qhandle_t CG_TeamOverlayWeaponIcon( const clientInfo_t *ci ) {
+	if ( ci->curWeapon > WP_NONE && ci->curWeapon < WP_NUM_WEAPONS
+		&& cg_weapons[ci->curWeapon].weaponIcon )
+	{
+		return cg_weapons[ci->curWeapon].weaponIcon;
+	}
+	return cgs.media.deferShader;
+}
+
+/*
+=================
+CG_TeamOverlayModelIcon
+=================
+*/
+static qhandle_t CG_TeamOverlayModelIcon( const clientInfo_t *ci ) {
+	if ( ci->modelIcon )
+		return ci->modelIcon;
+	return cgs.media.deferShader;
+}
+
+/*
+=================
+CG_TeamOverlayLocation
+=================
+*/
+static const char *CG_TeamOverlayLocation( const clientInfo_t *ci ) {
+	const char *p;
+	int loc = ci->location;
+
+	if ( loc < 0 || loc >= MAX_LOCATIONS )
+		loc = 0;
+
+	p = CG_GetLocationString( CG_ConfigString( CS_LOCATIONS + loc ) );
+	if ( !p || !*p )
+		p = "unknown";
+
+	return p;
+}
+
+/*
+=================
+CG_TeamOverlayStats
+
+jaPRO packs armor and force into one field as armor*100 + fp.
+Note: 0 armor / 100 fp and 100 armor / 0 fp encode identically
+=================
+*/
+static void CG_TeamOverlayStats( const clientInfo_t *ci, int *health, int *armor, int *forcepoints ) {
+	*health = ci->health;
+	*armor  = ci->armor;
+	*forcepoints = 0;
+
+	if ( cgs.serverMod == SVMOD_JAPRO ) {
+		*forcepoints = *armor % 100;
+		if ( !*forcepoints ) {
+			*forcepoints = 100;
+			*armor -= 100;
+		}
+		*armor /= 100;
+	}
+
+	if ( *health < 0 )
+		*health = 0;
+	if ( *armor < 0 )
+		*armor = 0;
+}
+
+/*
+=================
+CG_TeamOverlayDrawForce
+
+Force is only networked on jaPRO, and cg_drawTeamOverlayForce lets it be turned off
+=================
+*/
+static qboolean CG_TeamOverlayDrawForce( void ) {
+	return ( cgs.serverMod == SVMOD_JAPRO && cg_drawTeamOverlayForce.integer ) ? qtrue : qfalse;
+}
+
+
 /*
 =================
 CG_DrawTeamOverlay
 =================
 */
 static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
-	float x, w, h, xx;
+	float x, w, h, xx, ret_y;
 	int i, j, len;
 	const char *p;
-	vec4_t		hcolor, fpcolor;
+	vec4_t		hcolor, fpcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	int pwidth, lwidth;
 	int plyrs;
 	char st[16];
 	char fp[16]; //japro
 	clientInfo_t *ci;
 	gitem_t	*item;
-	int ret_y, count;
+	int count;
 	float xOffset = 0*cgs.widthRatioCoef;
+	qboolean drawForce = CG_TeamOverlayDrawForce();
 
 
 	if ( !cg_drawTeamOverlay.integer ) {
@@ -6031,7 +6119,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		ci = cgs.clientinfo + sortedTeamPlayers[i];
 		if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
 
-			if (cg_drawTeamOverlay.integer == 2 && cg.clientNum == sortedTeamPlayers[i]) {
+			if (cg_drawTeamOverlay.integer == 2 && cg.snap->ps.clientNum == sortedTeamPlayers[i]) {
 				continue;
 			}
 
@@ -6067,8 +6155,11 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 
 	w = (pwidth + lwidth + 4 + 7) * TINYCHAR_WIDTH*cgs.widthRatioCoef;
 
+	if (cg_drawTeamOverlayWeapons.integer)
+		w += TINYCHAR_WIDTH*cgs.widthRatioCoef; // room for the weapon icon column
+
 	if ( right ) {
-		if (cgs.serverMod == SVMOD_JAPRO)
+		if (drawForce)
 			x = cg_drawTeamOverlayX.integer - w - 32;//JAPRO - Clientside - Positionable drawteamoverlay
 		else
 			x = cg_drawTeamOverlayX.integer - w;//JAPRO - Clientside - Positionable drawteamoverlay
@@ -6099,7 +6190,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 		hcolor[3] = 0.33f;
 	}
 	trap->R_SetColor( hcolor );
-	if (cgs.serverMod == SVMOD_JAPRO)
+	if (drawForce)
 		CG_DrawPic( x + xOffset, y, w + 32, h, cgs.media.teamStatusBar );
 	else
 		CG_DrawPic( x + xOffset, y, w, h, cgs.media.teamStatusBar );
@@ -6108,8 +6199,9 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 	for (i = 0; i < count; i++) {
 		ci = cgs.clientinfo + sortedTeamPlayers[i];
 		if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
+			int health, armor, forcepoints;
 
-			if (cg_drawTeamOverlay.integer == 2 && cg.clientNum == sortedTeamPlayers[i]) {
+			if (cg_drawTeamOverlay.integer == 2 && cg.snap->ps.clientNum == sortedTeamPlayers[i]) {
 				continue;
 			}
 
@@ -6122,12 +6214,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 				TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, TEAM_OVERLAY_MAXNAME_WIDTH);
 
 			if (lwidth) {
-				p = CG_GetLocationString(CG_ConfigString(CS_LOCATIONS+ci->location));
-				if (!p || !*p)
-					p = "unknown";
-				len = CG_DrawStrlen(p);
-				if (len > lwidth)
-					len = lwidth;
+				p = CG_TeamOverlayLocation( ci );
 
 //				xx = x + TINYCHAR_WIDTH * 2 + TINYCHAR_WIDTH * pwidth +
 //					((lwidth/2 - len/2) * TINYCHAR_WIDTH);
@@ -6137,52 +6224,38 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 					TEAM_OVERLAY_MAXLOCATION_WIDTH);
 			}
 
-			CG_GetColorForHealth( ci->health, ci->armor, hcolor );
+			CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
 
-			if (cgs.serverMod == SVMOD_JAPRO) {
-				int forcepoints = ci->armor % 100, armor = ci->armor;
-				if (!forcepoints) { //sad hack, fix this sometime.. if we are at 0 fp it thinks we are at full or whatever.. cuz %100
-					forcepoints = 100;
-					armor -= 100;
-				}
+			CG_GetColorForHealth( health, armor, hcolor );
+			Com_sprintf (st, sizeof(st), "%3i %3i", health, armor);
 
-
+			if (drawForce) {
 				CG_GetColorForForce( forcepoints, fpcolor );
-
-				Com_sprintf (st, sizeof(st), "%3i %3i", ci->health,	armor / 100);
 				Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
 			}
-			else
-				Com_sprintf (st, sizeof(st), "%3i %3i", ci->health,	ci->armor);
 
 			xx = x + TINYCHAR_WIDTH * 3*cgs.widthRatioCoef +
 				TINYCHAR_WIDTH * pwidth*cgs.widthRatioCoef + TINYCHAR_WIDTH * lwidth*cgs.widthRatioCoef;
 
-			if (cgs.serverMod == SVMOD_JAPRO) {
-				CG_DrawStringExt( xx + xOffset, y,
-					st, hcolor, qfalse, qfalse,
-					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
+			CG_DrawStringExt( xx + xOffset, y,
+				st, hcolor, qfalse, qfalse,
+				TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
+
+			if (drawForce) {
 				CG_DrawStringExt( xx + xOffset + 66*cgs.widthRatioCoef, y,
 					fp, fpcolor, qfalse, qfalse,
-					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
-			}
-			else {
-				CG_DrawStringExt( xx + xOffset, y,
-					st, hcolor, qfalse, qfalse,
 					TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT, 0 );
 			}
 
             if(cg_drawTeamOverlayWeapons.integer) {
                 // draw weapon icon
-                xx += TINYCHAR_WIDTH * 3 * cgs.widthRatioCoef;
+                if (drawForce)
+                    xx += 66*cgs.widthRatioCoef + TINYCHAR_WIDTH * 4 * cgs.widthRatioCoef;
+                else
+                    xx += TINYCHAR_WIDTH * 7 * cgs.widthRatioCoef;
 
-                if (cg_weapons[ci->curWeapon].weaponIcon) {
-                    CG_DrawPic(xx + xOffset, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-                               cg_weapons[ci->curWeapon].weaponIcon);
-                } else {
-                    CG_DrawPic(xx + xOffset, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-                               cgs.media.deferShader);
-                }
+                CG_DrawPic(xx + xOffset, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                           CG_TeamOverlayWeaponIcon( ci ) );
             }
 			// Draw powerup icons
 			if (right) {
@@ -6216,17 +6289,21 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 }
 
 static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
-    float xx, yy;
-    int i, j, g, len, forcepoints, armor, pwidth, lwidth, plyrs, ret_y, count, elements = 2;
+    float xx, yy, ret_y;
+    int i, j, g, len, health, forcepoints, armor, pwidth, lwidth, plyrs, count, elements = 2;
     const char *p;
     char nameBuf[64], hp[16], ap[16], fp[16];
-    vec4_t hcolor, fpcolor;
+    vec4_t hcolor, fpcolor = { 1.0f, 1.0f, 1.0f, 1.0f };
     clientInfo_t *ci;
     gitem_t	*item;
     vec4_t color1 = {0.65f, 0.01f, 0.02f, 0.7f};
     vec4_t color2 = {0.02f, 0.4f, 0.65f, 0.7f};
     vec4_t colorGrey = {0.4f, 0.4f, 0.4f, 0.4f};
     rectDef_t background = {0.0f, 0.0f, 0.0f, 0.0f};
+	qboolean drawForce = CG_TeamOverlayDrawForce();
+
+    (void)right;
+    (void)upper;
 
     if ( !cg_drawTeamOverlay.integer ) {
         return y;
@@ -6251,7 +6328,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     for (i = 0; i < count; i++) {
         ci = cgs.clientinfo + sortedTeamPlayers[i];
         if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM]) {
-			if (cg_drawTeamOverlay.integer == 4 && cg.clientNum == sortedTeamPlayers[i]) {
+			if (cg_drawTeamOverlay.integer == 4 && cg.snap->ps.clientNum == sortedTeamPlayers[i]) {
 				continue;
 			}
             plyrs++;
@@ -6282,9 +6359,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
         lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
 
     if (lwidth)
-        ret_y = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
     else
-        ret_y = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
 
     if(plyrs > 4)
         ret_y = ret_y * 2 + 15.0f;
@@ -6295,10 +6372,15 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
         ci = cgs.clientinfo + sortedTeamPlayers[i];
         if ( ci->infoValid && ci->team == cg.snap->ps.persistant[PERS_TEAM])
         {
-            if (cg_drawTeamOverlay.integer == 4 && cg.clientNum == sortedTeamPlayers[i])
+            if (cg_drawTeamOverlay.integer == 4 && cg.snap->ps.clientNum == sortedTeamPlayers[i])
             {
 				continue;
             }
+
+            if (lwidth)
+                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+            else
+                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
 
             if (renderIndex < 4) {
 				g = renderIndex;
@@ -6308,13 +6390,13 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                 g = renderIndex - 4;
                 background.y = TINYCHAR_HEIGHT + background.h;
             }
+            else
+            {
+                break; // count is clamped to 8, but don't run on with g unset
+            }
             background.w = ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
             background.x = (SCREEN_WIDTH) - ((g + 1) * (background.w));
 
-            if (lwidth)
-                background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
-            else
-                background.h = CG_Text_Height("nameBuf", 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
             if(g > 0)
                 background.x -= g * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
 
@@ -6331,7 +6413,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             trap->R_SetColor( NULL );
 
             hcolor[0] = hcolor[1] = hcolor[2] = hcolor[3] = 1.0;
-            sprintf(nameBuf, "%s", ci->name);
+            Q_strncpyz(nameBuf, ci->name, sizeof(nameBuf));
             CG_LimitStr(nameBuf, 16);
             xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
@@ -6352,13 +6434,8 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
 
 
             if (lwidth) {
-                p = CG_GetLocationString(CG_ConfigString(CS_LOCATIONS+ci->location));
-                if (!p || !*p)
-                    p = "unknown";
-                len = CG_DrawStrlen(p);
-                if (len > lwidth)
-                    len = lwidth;
-                sprintf(nameBuf, "%s", p);
+                p = CG_TeamOverlayLocation( ci );
+                Q_strncpyz(nameBuf, p, sizeof(nameBuf));
                 CG_LimitStr(nameBuf, 16);
                 xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
@@ -6373,24 +6450,16 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                FONT_SMALL2);
             }
 
-            CG_GetColorForHealth( ci->health, ci->armor, hcolor );
+            CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
 
-            if (cgs.serverMod == SVMOD_JAPRO) {
-                forcepoints = ci->armor % 100;
-                armor = ci->armor;
-                if (!forcepoints) { //sad hack, fix this sometime.. if we are at 0 fp it thinks we are at full or whatever.. cuz %100
-                    forcepoints = 100;
-                    armor -= 100;
-                }
+            CG_GetColorForHealth( health, armor, hcolor );
+            Com_sprintf(hp, sizeof(hp), "%3i", health);
+            Com_sprintf(ap, sizeof(ap), "%3i", armor);
+
+            if (drawForce) {
                 CG_GetColorForForce( forcepoints, fpcolor );
-                Com_sprintf (hp, sizeof(hp), "%3i", ci->health);
-                Com_sprintf (ap, sizeof(ap), "%3i",	armor / 100);
                 Com_sprintf (fp, sizeof(fp), "%3i", forcepoints);
                 elements = 3;
-            }
-            else {
-                Com_sprintf(hp, sizeof(hp), "%3i", ci->health);
-                Com_sprintf(ap, sizeof(ap), "%3i", ci->armor);
             }
 
             xx = background.x + background.w / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
@@ -6399,30 +6468,30 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             else
                 yy = background.y + (2.0f * background.h) / 3.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
 
-            if (cgs.serverMod == SVMOD_JAPRO) {
-                CG_Text_Paint( xx,
-                               yy,
-                               0.55f,
-                               hcolor,
-                               hp,
-                               0.0f,
-                               0,
-                               ITEM_TEXTSTYLE_NORMAL,
-                               FONT_SMALL2);
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           hp,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2);
 
-                xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
+            xx = background.x + 2 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
 
-                CG_Text_Paint( xx,
-                               yy,
-                               0.55f,
-                               hcolor,
-                               ap,
-                               0.0f,
-                               0,
-                               ITEM_TEXTSTYLE_NORMAL,
-                               FONT_SMALL2);
+            CG_Text_Paint( xx,
+                           yy,
+                           0.55f,
+                           hcolor,
+                           ap,
+                           0.0f,
+                           0,
+                           ITEM_TEXTSTYLE_NORMAL,
+                           FONT_SMALL2);
 
-                xx = background.x + 3 * (background.w) / ((float)elements + 1) - CG_Text_Width(ap, 0.55f, FONT_SMALL2) / 2.0f;
+            if (drawForce) {
+                xx = background.x + 3 * (background.w) / ((float)elements + 1) - CG_Text_Width(fp, 0.55f, FONT_SMALL2) / 2.0f;
 
                 CG_Text_Paint( xx,
                                yy,
@@ -6434,30 +6503,6 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
             }
-            else {
-
-                CG_Text_Paint(xx,
-                              yy,
-                              0.55f,
-                              hcolor,
-                              hp,
-                              0.0f,
-                              0,
-                              ITEM_TEXTSTYLE_NORMAL,
-                              FONT_SMALL2);
-
-                xx = background.x + 2 * (background.w) / ((float) elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
-
-                CG_Text_Paint(xx,
-                              yy,
-                              0.55f,
-                              hcolor,
-                              ap,
-                              0.0f,
-                              0,
-                              ITEM_TEXTSTYLE_NORMAL,
-                              FONT_SMALL2);
-            }
 
             trap->R_SetColor( NULL );
             y = background.y + background.h;
@@ -6465,24 +6510,19 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             if(cg_drawTeamOverlayWeapons.integer) {
 
                 // Draw weapon icons
-                if (cg_weapons[ci->curWeapon].weaponIcon) {
-                    CG_DrawPic(xx, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-                               cg_weapons[ci->curWeapon].weaponIcon);
-                } else {
-                    CG_DrawPic(xx, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
-                               cgs.media.deferShader);
-                }
+                CG_DrawPic(xx, y, TINYCHAR_WIDTH * cgs.widthRatioCoef, TINYCHAR_HEIGHT,
+                           CG_TeamOverlayWeaponIcon( ci ) );
+                xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
             }
 
             // Draw powerup icons
-            for (j = 0; j <= PW_NUM_POWERUPS; j++) {
+            for (j = 0; j < PW_NUM_POWERUPS; j++) {
                 if (ci->powerups & (1 << j)) {
                     item = BG_FindItemForPowerup( j );
-                    if(cg_drawTeamOverlayWeapons.integer)
-                        xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
                     if (item) {
                         CG_DrawPic( xx, y, TINYCHAR_WIDTH*cgs.widthRatioCoef, TINYCHAR_HEIGHT,
                                     trap->R_RegisterShader( item->icon ) );
+                        xx += TINYCHAR_WIDTH*cgs.widthRatioCoef;
                     }
                 }
             }
@@ -6490,6 +6530,245 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
 		}
     }
     return ret_y;
+}
+
+/*
+=================
+CG_DrawTeamOverlay3
+=================
+*/
+static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
+	int			i, j, count, plyrs;
+	float		scale, textScale, textHeight, barHeight, pad;
+	float		rowHeight, panelW, panelX, panelY, iconSize;
+	float		iconX, textX, barX, barW, barY, rowY, pwX;
+	float		fpBarX, fpBarW;
+	float		healthW, armorW, segW, valW;
+	float		barMax;
+	const char	*p;
+	char		nameBuf[64], valBuf[16];
+	qboolean	hasLocations, drawForce;
+	clientInfo_t *ci;
+	gitem_t		*item;
+	vec4_t		hcolor       = { 1.0f,  1.0f,  1.0f,  1.0f  };
+	vec4_t		fpcolor      = { 1.0f,  1.0f,  1.0f,  1.0f  };
+	vec4_t		colorTrack   = { 0.0f,  0.0f,  0.0f,  0.55f };
+	vec4_t		colorShield  = { 0.20f, 0.85f, 0.30f, 0.90f };
+	vec4_t		colorOver    = { 1.0f,  1.0f,  1.0f,  0.90f };
+	vec4_t		colorRowRed  = { 0.45f, 0.05f, 0.05f, 0.35f };
+	vec4_t		colorRowBlue = { 0.05f, 0.15f, 0.45f, 0.35f };
+	vec4_t		colorDead    = { 0.35f, 0.35f, 0.35f, 0.50f };
+	vec4_t		colorText    = { 1.0f,  1.0f,  1.0f,  1.0f  };
+
+	(void)right;
+	(void)upper;
+
+	if ( !cg_drawTeamOverlay.integer )
+		return y;
+
+	if ( cg.snap->ps.persistant[PERS_TEAM] != TEAM_RED && cg.snap->ps.persistant[PERS_TEAM] != TEAM_BLUE )
+		return y;
+
+	count = (numSortedTeamPlayers > 8) ? 8 : numSortedTeamPlayers;
+
+	plyrs = 0;
+	for ( i = 0; i < count; i++ ) {
+		ci = cgs.clientinfo + sortedTeamPlayers[i];
+		if ( !ci->infoValid || ci->team != cg.snap->ps.persistant[PERS_TEAM] )
+			continue;
+		if ( cg_drawTeamOverlay.integer == 6 && cg.snap->ps.clientNum == sortedTeamPlayers[i] )
+			continue;
+		plyrs++;
+	}
+
+	if ( !plyrs )
+		return y;
+
+	hasLocations = qfalse;
+	for ( i = 1; i < MAX_LOCATIONS; i++ ) {
+		p = CG_GetLocationString( CG_ConfigString( CS_LOCATIONS + i ) );
+		if ( p && *p ) {
+			hasLocations = qtrue;
+			break;
+		}
+	}
+
+	scale = cg_drawTeamOverlayScale.value;
+	if ( scale < 0.5f )
+		scale = 0.5f;
+	if ( scale > 2.5f )
+		scale = 2.5f;
+
+	// combined health + shields that fills the bar. Base TFFA usually spawns
+	// 100 + 25 with no shield pickups on the map, so 125 is the practical
+	// ceiling there; servers running shield pickups want 200.
+	barMax = cg_drawTeamOverlayMaxHP.value;
+	if ( barMax < 1.0f )
+		barMax = 1.0f;
+
+	// everything below is derived from the text height, so one cvar moves the lot
+	textScale  = 0.8f * scale;
+	textHeight = (float)CG_Text_Height( HUD_TEXT_HEIGHT_REF, textScale, FONT_SMALL2 );
+	barHeight  = textHeight * 0.55f;
+	pad        = 3.0f * scale;
+
+	rowHeight = pad + textHeight + pad + barHeight + pad;
+	if ( hasLocations )
+		rowHeight += textHeight + pad;
+
+	iconSize = rowHeight - pad * 2.0f;
+
+	panelW = 190.0f * scale * cgs.widthRatioCoef;
+	panelX = cg_drawTeamOverlayX.integer - panelW;
+
+	panelY = y;
+	if ( cg_drawTeamOverlayY.integer )
+		panelY = cg_drawTeamOverlayY.integer;
+
+	iconX = panelX + pad;
+	textX = iconX + iconSize + pad;
+	barX  = textX;
+	barW  = (panelX + panelW - pad) - barX;
+
+	drawForce = CG_TeamOverlayDrawForce();
+
+	if ( drawForce ) {
+		fpBarW = barW * 0.22f;
+		barW  -= fpBarW + pad;
+		fpBarX = barX + barW + pad;
+	} else {
+		fpBarW = 0.0f;
+		fpBarX = 0.0f;
+	}
+
+	rowY = panelY;
+	for ( i = 0; i < count; i++ ) {
+		int health, armor, total, forcepoints;
+
+		ci = cgs.clientinfo + sortedTeamPlayers[i];
+		if ( !ci->infoValid || ci->team != cg.snap->ps.persistant[PERS_TEAM] )
+			continue;
+		if ( cg_drawTeamOverlay.integer == 6 && cg.snap->ps.clientNum == sortedTeamPlayers[i] )
+			continue;
+
+		CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
+		total = health + armor;
+
+		if ( health < 1 )
+			trap->R_SetColor( colorDead );
+		else if ( cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED )
+			trap->R_SetColor( colorRowRed );
+		else
+			trap->R_SetColor( colorRowBlue );
+		CG_DrawPic( panelX, rowY, panelW, rowHeight, cgs.media.whiteShader );
+		trap->R_SetColor( NULL );
+
+		if ( health < 1 )
+			trap->R_SetColor( colorDead );
+		CG_DrawPic( iconX, rowY + pad, iconSize, iconSize, CG_TeamOverlayModelIcon( ci ) );
+		trap->R_SetColor( NULL );
+
+		colorText[3] = (health < 1) ? 0.4f : 1.0f;
+
+		Q_strncpyz( nameBuf, ci->name, sizeof(nameBuf) );
+		CG_LimitStr( nameBuf, 14 );
+		CG_Text_Paint( textX, rowY + pad, textScale, colorText,
+			 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
+
+		Com_sprintf( valBuf, sizeof(valBuf), "%i", total );
+		valW = (float)CG_Text_Width( valBuf, textScale, FONT_SMALL2 );
+
+		CG_Text_Paint( panelX + panelW - pad - valW, rowY + pad, textScale, colorText,
+			valBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
+
+		pwX = panelX + panelW - pad - valW - pad;
+
+		trap->R_SetColor( NULL );
+
+		for ( j = 0; j < PW_NUM_POWERUPS; j++ ) {
+			if ( !(ci->powerups & (1 << j)) )
+				continue;
+
+			item = BG_FindItemForPowerup( j );
+			if ( !item )
+				continue;
+
+			if ( pwX - textHeight < textX )
+				break;	// out of room, don't run back over the name
+
+			pwX -= textHeight;
+			CG_DrawPic( pwX, rowY + pad, textHeight, textHeight,
+				trap->R_RegisterShader( item->icon ) );
+		}
+
+		if ( cg_drawTeamOverlayWeapons.integer && pwX - textHeight >= textX ) {
+			pwX -= textHeight;
+			CG_DrawPic( pwX, rowY + pad, textHeight, textHeight,
+				CG_TeamOverlayWeaponIcon( ci ) );
+		}
+
+		if ( hasLocations ) {
+			p = CG_TeamOverlayLocation( ci );
+			Q_strncpyz( nameBuf, p, sizeof(nameBuf) );
+			CG_LimitStr( nameBuf, 16 );
+			CG_Text_Paint( textX, rowY + pad + textHeight + pad,
+				 textScale * 0.8f, colorText,
+				 nameBuf, 0.0f, 0, ITEM_TEXTSTYLE_NORMAL, FONT_SMALL2 );
+		}
+
+		barY = rowY + rowHeight - pad - barHeight;
+
+		trap->R_SetColor( colorTrack );
+		CG_DrawPic( barX, barY, barW, barHeight, cgs.media.whiteShader );
+		trap->R_SetColor( NULL );
+
+		if ( health > 0 ) {
+			CG_GetColorForHealth( (total > 100) ? 100 : total, 0, hcolor );
+
+			healthW = barW * ((float)health / barMax);
+			if ( healthW > barW )
+				healthW = barW;
+
+			trap->R_SetColor( hcolor );
+			CG_DrawPic( barX, barY, healthW, barHeight, cgs.media.whiteShader );
+
+			if ( armor > 0 && healthW < barW ) {
+				armorW = barW * ((float)armor / barMax);
+				if ( healthW + armorW > barW )
+					armorW = barW - healthW;
+
+				trap->R_SetColor( colorShield );
+				CG_DrawPic( barX + healthW, barY, armorW, barHeight, cgs.media.whiteShader );
+			}
+
+			if ( (float)total > barMax ) {
+				segW = barW * 0.04f;
+				trap->R_SetColor( colorOver );
+				CG_DrawPic( barX + barW - segW, barY, segW, barHeight, cgs.media.whiteShader );
+			}
+
+			trap->R_SetColor( NULL );
+		}
+
+		if ( drawForce ) {
+			trap->R_SetColor( colorTrack );
+			CG_DrawPic( fpBarX, barY, fpBarW, barHeight, cgs.media.whiteShader );
+			trap->R_SetColor( NULL );
+
+			if ( health > 0 && forcepoints > 0 ) {
+				CG_GetColorForForce( forcepoints, fpcolor );
+
+				trap->R_SetColor( fpcolor );
+				CG_DrawPic( fpBarX, barY, fpBarW * ((float)forcepoints / 100.0f),
+					barHeight, cgs.media.whiteShader );
+				trap->R_SetColor( NULL );
+			}
+		}
+
+		rowY += rowHeight;
+	}
+
+	return y + (plyrs * rowHeight);
 }
 
 static int CG_DrawPowerupIcons(int y)
@@ -6615,10 +6894,13 @@ static void CG_DrawUpperRight( void ) {
 
 		if(!(cg.tribesHUD)) {
 			if (cgs.gametype >= GT_TEAM && cg_drawTeamOverlay.integer) {
-				if (cg_drawTeamOverlay.integer != 3 && cg_drawTeamOverlay.integer != 4)
+				if (cg_drawTeamOverlay.integer < 3)
 					y = CG_DrawTeamOverlay(y, qtrue, qtrue);
-				else
+				else if (cg_drawTeamOverlay.integer < 5)
 					y = CG_DrawTeamOverlay2(y, qtrue, qtrue);
+				else {
+					y = CG_DrawTeamOverlay3(y, qtrue, qtrue);
+				}
 			}
 
 		}
