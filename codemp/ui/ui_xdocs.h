@@ -543,6 +543,8 @@ XDOCS_CVAR_DEF("cg_killfeedTextSize", "Resize the killfeed",""
 )
 XDOCS_CVAR_DEF("cg_killfeedColors", "Color the killfeed icons",""
 )
+XDOCS_CVAR_DEF("cg_killfeedReverse", "Swap victim/killer sides",""
+)
 
 //SnapHUD
 XDOCS_CVAR_DEF("cg_snapHud", "Enable/Disable the snap HUD",""
