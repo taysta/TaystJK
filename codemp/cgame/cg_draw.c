@@ -4087,7 +4087,7 @@ void CG_DrawCTFHUD(rectDef_t blueBackground, rectDef_t redBackground, float xOff
 	trap->R_SetColor(NULL);
 }
 
-#define TEAMOVERLAY_ROW_REF		"Ay"
+#define HUD_TEXT_HEIGHT_REF		"Ay"
 
 void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 	clientInfo_t *d1;
@@ -4163,8 +4163,8 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 		redBackground.x = ( SCREEN_WIDTH / 2.0f );
 	}
 
-	blueBackground.y = background.y - (( float ) CG_Text_Height ( TEAMOVERLAY_ROW_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
-	redBackground.y = background.y - (( float ) CG_Text_Height ( TEAMOVERLAY_ROW_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
+	blueBackground.y = background.y - (( float ) CG_Text_Height ( HUD_TEXT_HEIGHT_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
+	redBackground.y = background.y - (( float ) CG_Text_Height ( HUD_TEXT_HEIGHT_REF, 0.65f, FONT_MEDIUM ) ) / 2.0f + 3.0f;
 
 	blueBackground.h = background.h;
 	redBackground.h = background.h;
@@ -4226,8 +4226,8 @@ void CG_DrawDuelHUD(rectDef_t background, float xOffset) {
 
 	//draw name boxes
 	trap->R_SetColor( color0 );
-	CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef, blueBackground.y + blueBackground.h, blueBackground.w + blueBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( TEAMOVERLAY_ROW_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
-	CG_DrawPic( redBackground.x, redBackground.y + redBackground.h, redBackground.w +redBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( TEAMOVERLAY_ROW_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+	CG_DrawPic( blueBackground.x - blueBackground.h * cgs.widthRatioCoef, blueBackground.y + blueBackground.h, blueBackground.w + blueBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( HUD_TEXT_HEIGHT_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
+	CG_DrawPic( redBackground.x, redBackground.y + redBackground.h, redBackground.w +redBackground.h * cgs.widthRatioCoef, ( float )CG_Text_Height( HUD_TEXT_HEIGHT_REF, DUEL_NAME_FONT_SIZE, FONT_SMALL2 ) + 2.0f, cgs.media.whiteShader );
 
 	//draw names
 	CG_Text_Paint( blueBackground.x + blueBackground.w - CG_Text_Width( nameBuf, DUEL_NAME_FONT_SIZE, FONT_SMALL2) - 1.0f,
@@ -6350,9 +6350,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
         lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
 
     if (lwidth)
-        ret_y = CG_Text_Height(TEAMOVERLAY_ROW_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
     else
-        ret_y = CG_Text_Height(TEAMOVERLAY_ROW_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
 
     if(plyrs > 4)
         ret_y = ret_y * 2 + 15.0f;
@@ -6369,9 +6369,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             }
 
             if (lwidth)
-                background.h = CG_Text_Height(TEAMOVERLAY_ROW_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
             else
-                background.h = CG_Text_Height(TEAMOVERLAY_ROW_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
 
             if (renderIndex < 4) {
 				g = renderIndex;
@@ -6623,7 +6623,7 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 
 	// everything below is derived from the text height, so one cvar moves the lot
 	textScale  = 0.8f * scale;
-	textHeight = (float)CG_Text_Height( TEAMOVERLAY_ROW_REF, textScale, FONT_SMALL2 );
+	textHeight = (float)CG_Text_Height( HUD_TEXT_HEIGHT_REF, textScale, FONT_SMALL2 );
 	barHeight  = textHeight * 0.55f;
 	pad        = 3.0f * scale;
 
