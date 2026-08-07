@@ -382,9 +382,9 @@ jobs:
             x86_64-extracted/taystjkded.x86_64 \
             arm64-extracted/taystjkded.arm64
 
-          lipo -create -output universal2-app/JediAcademy/taystjk.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
+          cp -v \
             x86_64-extracted/taystjk.x86_64.app/Contents/Frameworks/libSDL2-2.0.0.dylib \
-            arm64-extracted/taystjk.arm64.app/Contents/Frameworks/libSDL2-2.0.0.dylib
+            universal2-app/JediAcademy/taystjk.app/Contents/Frameworks/
 
           cp -v x86_64-extracted/taystjk.x86_64.app/Contents/MacOS/rd-*_x86_64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/
           cp -v arm64-extracted/taystjk.arm64.app/Contents/MacOS/rd-*_arm64.dylib universal2-app/JediAcademy/taystjk.app/Contents/MacOS/
