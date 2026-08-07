@@ -216,7 +216,7 @@ void HUD_DrawObituary(void) {
         CG_FillRect(x, y, rightTextWidth + xPadding, maxHeight + yPadding, rightColor);
         CG_Text_Paint(x + (0.5f * xPadding), rightTextStartY, textScale, color, cgs.clientinfo[rightClient].name, 0, 0, 0, FONT_MEDIUM);
 
-        y += boxCenterY + yPadding;
+        y += maxHeight + yPadding;
     }
 }
 
