@@ -414,10 +414,16 @@ if(BuildMPEngine)
 
 	# Discord Rich Presence
 	if(BuildDiscordRichPresence)
-		if (APPLE AND Architecture MATCHES "x86_64")
+		if(APPLE AND Architecture MATCHES "x86_64")
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
-			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a)
+			set(MPEngineLibraries
+					${MPEngineLibraries}
+					${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a
+					"-framework Foundation"
+					"-framework CoreFoundation"
+					"-framework CoreServices"
+			)
 		elseif(UNIX AND Architecture MATCHES "x86_64")
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
@@ -426,12 +432,12 @@ if(BuildMPEngine)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/x86/discord-rpc.lib)
-        elseif(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+		elseif(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/x64/discord-rpc.lib)
 		endif()
-	endif(BuildDiscordRichPresence)
+	endif()
 
 	# OpenAL (is optionally included for Windows)
 	if(MSVC)
@@ -461,7 +467,10 @@ if(BuildMPEngine)
 
 
 	if(UseInternalSDL2)
-		if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+		if(APPLE)
+			set(MPEngineLibraries ${MPEngineLibraries}
+				${OpenJKLibDir}/SDL2/lib/macos/libSDL2-2.0.0.dylib)
+		elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 			set(MPEngineLibraries
 				${MPEngineLibraries}
 				${OpenJKLibDir}/SDL2/lib/x86/SDL2main.lib
@@ -661,13 +670,41 @@ if(BuildMPEngine)
 		else(MakeApplicationBundles)
 			add_executable(${MPEngine} ${MPEngineFiles})
 		endif(MakeApplicationBundles)
+		if(APPLE AND UseInternalSDL2)
+			if(MakeApplicationBundles)
+				set_target_properties(${MPEngine} PROPERTIES
+					INSTALL_RPATH "@executable_path/../Frameworks"
+					BUILD_WITH_INSTALL_RPATH TRUE)
+				add_custom_command(TARGET ${MPEngine} POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E make_directory
+					"$<TARGET_FILE_DIR:${MPEngine}>/../Frameworks"
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+					"${OpenJKLibDir}/SDL2/lib/macos/libSDL2-2.0.0.dylib"
+					"$<TARGET_FILE_DIR:${MPEngine}>/../Frameworks/")
+				set(MPEngineBundleSearchDirs
+					"${OpenJKLibDir}/SDL2/lib/macos;${CMAKE_BINARY_DIR}/${MPEngine}.app/Contents/Frameworks")
+			else()
+				set_target_properties(${MPEngine} PROPERTIES
+					INSTALL_RPATH "@executable_path"
+					BUILD_WITH_INSTALL_RPATH TRUE)
+
+				add_custom_command(TARGET ${MPEngine} POST_BUILD
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different
+					"${OpenJKLibDir}/SDL2/lib/macos/libSDL2-2.0.0.dylib"
+					"$<TARGET_FILE_DIR:${MPEngine}>/")
+				set(MPEngineExtraInstallFiles
+					${MPEngineExtraInstallFiles}
+					${OpenJKLibDir}/SDL2/lib/macos/libSDL2-2.0.0.dylib
+				)
+			endif()
+		endif()
 	endif(WIN32)
 
 	if(MakeApplicationBundles)
 		install(CODE "
 			include(BundleUtilities)
 			set(BU_CHMOD_BUNDLE_ITEMS ON)
-			fixup_bundle(\"${CMAKE_BINARY_DIR}/${MPEngine}.app\" \"\" \"\")
+			fixup_bundle(\"${CMAKE_BINARY_DIR}/${MPEngine}.app\" \"\" \"${MPEngineBundleSearchDirs}\")
 			"
 			COMPONENT Runtime)
 		install(TARGETS ${MPEngine}
