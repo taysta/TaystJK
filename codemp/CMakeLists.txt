@@ -414,10 +414,16 @@ if(BuildMPEngine)
 
 	# Discord Rich Presence
 	if(BuildDiscordRichPresence)
-		if (APPLE AND Architecture MATCHES "x86_64")
+		if(APPLE AND Architecture MATCHES "x86_64")
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
-			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a)
+			set(MPEngineLibraries
+					${MPEngineLibraries}
+					${OpenJKLibDir}/discord-rpc/lib/osx/libdiscord-rpc.a
+					"-framework Foundation"
+					"-framework CoreFoundation"
+					"-framework CoreServices"
+			)
 		elseif(UNIX AND Architecture MATCHES "x86_64")
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
@@ -426,12 +432,12 @@ if(BuildMPEngine)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/x86/discord-rpc.lib)
-        elseif(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+		elseif(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 			set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} ${OpenJKLibDir}/discord-rpc/include)
 			set(MPEngineDefines ${MPEngineDefines} "DISCORD")
 			set(MPEngineLibraries ${MPEngineLibraries} ${OpenJKLibDir}/discord-rpc/lib/x64/discord-rpc.lib)
 		endif()
-	endif(BuildDiscordRichPresence)
+	endif()
 
 	# OpenAL (is optionally included for Windows)
 	if(MSVC)
