@@ -6045,7 +6045,8 @@ jaPRO packs armor and force into one field as armor*100 + fp.
 Note: 0 armor / 100 fp and 100 armor / 0 fp encode identically
 =================
 */
-static void CG_TeamOverlayStats( const clientInfo_t *ci, int *health, int *armor, int *forcepoints ) {
+static void CG_TeamOverlayStats( int clientNum, int *health, int *armor, int *forcepoints ) {
+	const clientInfo_t *ci = &cgs.clientinfo[clientNum];
 	*health = ci->health;
 	*armor  = ci->armor;
 	*forcepoints = 0;
@@ -6057,6 +6058,12 @@ static void CG_TeamOverlayStats( const clientInfo_t *ci, int *health, int *armor
 			*armor -= 100;
 		}
 		*armor /= 100;
+	}
+	if ( clientNum == cg.snap->ps.clientNum ) {
+		*health = cg.snap->ps.stats[STAT_HEALTH];
+		*armor  = cg.snap->ps.stats[STAT_ARMOR];
+		if ( cgs.serverMod == SVMOD_JAPRO )
+			*forcepoints = cg.snap->ps.fd.forcePower;
 	}
 
 	if ( *health < 0 )
@@ -6224,7 +6231,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 					TEAM_OVERLAY_MAXLOCATION_WIDTH);
 			}
 
-			CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
+			CG_TeamOverlayStats( sortedTeamPlayers[i], &health, &armor, &forcepoints );
 
 			CG_GetColorForHealth( health, armor, hcolor );
 			Com_sprintf (st, sizeof(st), "%3i %3i", health, armor);
@@ -6289,7 +6296,7 @@ static float CG_DrawTeamOverlay( float y, qboolean right, qboolean upper ) {
 }
 
 static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
-    float xx, yy, ret_y;
+    float xx, yy, ret_y, textHeight;
     int i, j, g, len, health, forcepoints, armor, pwidth, lwidth, plyrs, count, elements = 2;
     const char *p;
     char nameBuf[64], hp[16], ap[16], fp[16];
@@ -6318,9 +6325,6 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     }
 
     plyrs = 0;
-
-    //TODO: On basejka servers, we won't have valid teaminfo if we're spectating someone.
-    //		Find a way to detect invalid info and return early?
 
     // max player name width
     pwidth = 0;
@@ -6358,10 +6362,15 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
     if (lwidth > TEAM_OVERLAY_MAXLOCATION_WIDTH)
         lwidth = TEAM_OVERLAY_MAXLOCATION_WIDTH;
 
+    textHeight = (float)CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2);
+
     if (lwidth)
-        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
+        ret_y = textHeight * 3.0f + 10.0f;
     else
-        ret_y = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
+        ret_y = textHeight * 2.0f + 7.5f;
+
+    background.h = ret_y;
+    background.w = ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f;
 
     if(plyrs > 4)
         ret_y = ret_y * 2 + 15.0f;
@@ -6377,11 +6386,6 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
 				continue;
             }
 
-            if (lwidth)
-                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 3.0f + 10.0f;
-            else
-                background.h = CG_Text_Height(HUD_TEXT_HEIGHT_REF, 0.55f, FONT_SMALL2) * 2.0f + 7.5f;
-
             if (renderIndex < 4) {
 				g = renderIndex;
 				background.y = 0.0f;
@@ -6394,11 +6398,12 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             {
                 break; // count is clamped to 8, but don't run on with g unset
             }
-            background.w = ((SCREEN_WIDTH - overlayXPos) * cgs.widthRatioCoef - (4.0f * (3.0f * cgs.widthRatioCoef))) / 4.0f; // -20.0f for 10 padding each side
+
             background.x = (SCREEN_WIDTH) - ((g + 1) * (background.w));
 
             if(g > 0)
-                background.x -= g * (((SCREEN_WIDTH - overlayXPos) - (4 * background.w)) / 4.0f);
+                background.x -= g * (3.0f * cgs.widthRatioCoef);
+            CG_TeamOverlayStats( sortedTeamPlayers[i], &health, &armor, &forcepoints );
 
             if (cg.snap->ps.persistant[PERS_TEAM] == TEAM_RED) {
                 trap->R_SetColor(color1);
@@ -6406,7 +6411,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             {
                 trap->R_SetColor(color2);
             }
-            if (ci->health < 1){
+            if (health < 1){
                 trap->R_SetColor(colorGrey);
             }
             CG_DrawPic(background.x, background.y, background.w, background.h, cgs.media.whiteShader);
@@ -6418,9 +6423,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
             xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
             if(lwidth)
-                yy = background.y + background.h / 4.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 2.5f;
+                yy = background.y + background.h / 4.0f - textHeight / 2.0f - 2.5f;
             else
-                yy = background.y + background.h / 3.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 2.0f - 2.5f;
+                yy = background.y + background.h / 3.0f - textHeight / 2.0f - 2.5f;
 
             CG_Text_Paint( xx,
                           yy,
@@ -6440,7 +6445,7 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                 xx = background.x + background.w / 2.0f - CG_Text_Width(nameBuf, 0.55f, FONT_SMALL2) / 2.0f;
 
                 CG_Text_Paint( xx,
-                               background.y + background.h / 2.0f - (float)CG_Text_Height(nameBuf, 0.55f, FONT_SMALL2) / 1.4f,
+                               background.y + background.h / 2.0f - textHeight / 1.4f,
                                0.55f,
                                hcolor,
                                nameBuf,
@@ -6449,8 +6454,6 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
                                ITEM_TEXTSTYLE_NORMAL,
                                FONT_SMALL2);
             }
-
-            CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
 
             CG_GetColorForHealth( health, armor, hcolor );
             Com_sprintf(hp, sizeof(hp), "%3i", health);
@@ -6464,9 +6467,9 @@ static float CG_DrawTeamOverlay2( float y, qboolean right, qboolean upper ) {
 
             xx = background.x + background.w / ((float)elements + 1) - CG_Text_Width(hp, 0.55f, FONT_SMALL2) / 2.0f;
             if(lwidth)
-                yy = background.y + (3.0f * background.h) / 4.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
+                yy = background.y + (3.0f * background.h) / 4.0f - textHeight / 2.0f;
             else
-                yy = background.y + (2.0f * background.h) / 3.0f - (float)CG_Text_Height(hp, 0.55f, FONT_SMALL2) / 2.0f;
+                yy = background.y + (2.0f * background.h) / 3.0f - textHeight / 2.0f;
 
             CG_Text_Paint( xx,
                            yy,
@@ -6655,7 +6658,7 @@ static float CG_DrawTeamOverlay3( float y, qboolean right, qboolean upper ) {
 		if ( cg_drawTeamOverlay.integer == 6 && cg.snap->ps.clientNum == sortedTeamPlayers[i] )
 			continue;
 
-		CG_TeamOverlayStats( ci, &health, &armor, &forcepoints );
+		CG_TeamOverlayStats( sortedTeamPlayers[i], &health, &armor, &forcepoints );
 		total = health + armor;
 
 		if ( health < 1 )
