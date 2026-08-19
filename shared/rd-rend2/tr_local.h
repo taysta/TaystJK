@@ -71,7 +71,7 @@ typedef unsigned int glIndex_t;
 #define MAX_VISCOUNTS 5
 #define MAX_VBOS      4096
 #define MAX_IBOS      4096
-#define MAX_G2_BONES  72
+#define MAX_G2_BONES  256
 #define MAX_GPU_FOGS  24
 
 #define MAX_CALC_PSHADOWS    64
