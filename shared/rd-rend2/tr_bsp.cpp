@@ -467,7 +467,7 @@ static	void R_LoadLightmaps( world_t *worldData, lump_t *l, lump_t *surfs ) {
 						}
 						color[3] = 1.0f;
 
-						R_ColorShiftLightingFloats(color, color, 1.0f / 255.0f);
+						R_ColorShiftLightingFloats(color, color, 1.0f / 255.0f, true);
 
 						ColorToRGBA16F(color, (unsigned short *)(&image[j * 8]));
 					}
@@ -934,7 +934,7 @@ static void ParseFace( const world_t *worldData, dsurface_t *ds, drawVert_t *ver
 			}
 			color[3] = verts[i].color[j][3] / 255.0f;
 
-			R_ColorShiftLightingFloats( color, cv->verts[i].vertexColors[j], scale, hdrVertColors != NULL );
+			R_ColorShiftLightingFloats( color, cv->verts[i].vertexColors[j], scale, hdrVertColors == NULL );
 		}
 	}
 
@@ -1083,7 +1083,7 @@ static void ParseMesh ( const world_t *worldData, dsurface_t *ds, drawVert_t *ve
 			}
 			color[3] = verts[i].color[j][3] / 255.0f;
 
-			R_ColorShiftLightingFloats( color, points[i].vertexColors[j], scale, hdrVertColors != NULL );
+			R_ColorShiftLightingFloats( color, points[i].vertexColors[j], scale, hdrVertColors == NULL );
 		}
 	}
 
@@ -1213,7 +1213,7 @@ static void ParseTriSurf( const world_t *worldData, dsurface_t *ds, drawVert_t *
 			}
 			color[3] = verts[i].color[j][3] / 255.0f;
 
-			R_ColorShiftLightingFloats( color, cv->verts[i].vertexColors[j], scale, hdrVertColors != NULL );
+			R_ColorShiftLightingFloats( color, cv->verts[i].vertexColors[j], scale, hdrVertColors == NULL );
 		}
 	}
 
@@ -3386,7 +3386,6 @@ static void R_MergeLeafSurfaces(world_t *worldData)
 	int numMergedSurfaces;
 	int numUnmergedSurfaces;
 	VBO_t *vbo;
-	IBO_t *ibo;
 
 	msurface_t *mergedSurf;
 
