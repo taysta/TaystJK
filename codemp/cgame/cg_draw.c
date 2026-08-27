@@ -11730,8 +11730,8 @@ static void CG_Draw2D( void ) {
 	if (!cl_paused.integer) {
 		CG_DrawBracketedEntities();
 		CG_DrawUpperRight();
-		DF_DrawShowPos();
-	}
+}
+DF_DrawShowPos();
 
 	if ( !CG_DrawFollow() ) {
 		CG_DrawWarmup();
