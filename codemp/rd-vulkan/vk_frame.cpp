@@ -109,457 +109,6 @@ void vk_destroy_sync_primitives( void )
 #endif
 }
 
-void vk_create_render_passes()
-{
-    uint32_t i;
-    VkAttachmentReference depth_attachment_ref;
-    VkAttachmentReference color_attachment_ref;
-    VkAttachmentReference color_resolve_ref;
-    VkSubpassDependency deps[3];
-    VkAttachmentDescription attachments[3];
-    VkRenderPassCreateInfo desc;
-    VkSubpassDescription subpass;
-    VkFormat depth_format;
-    VkDevice device;
-
-    depth_format = vk.depth_format;
-    device = vk.device;
-
-    if (r_fbo->integer == 0)
-    {
-        // presentation
-        attachments[0].flags = 0;
-        attachments[0].format = vk.present_format.format;
-        attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-#ifdef USE_BUFFER_CLEAR
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-#else
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;	// Assuming this will be completely overwritten
-#endif
-        attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-        attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[0].initialLayout = vk.initSwapchainLayout;
-        attachments[0].finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    }
-    else {
-        // resolve/color buffer
-        attachments[0].flags = 0;
-        attachments[0].format = vk.color_format;
-        attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-#ifdef USE_BUFFER_CLEAR
-        if (vk.msaaActive)
-            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;	// Assuming this will be completely overwritten
-        else
-            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-#else
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;	// Assuming this will be completely overwritten
-#endif
-        attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;   // needed for next render pass
-        attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[0].initialLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        attachments[0].finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-    }
-
-    // Depth buffer
-    attachments[1].flags = 0;
-    attachments[1].format = depth_format;
-    attachments[1].samples = (VkSampleCountFlagBits)vkSamples;
-    attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    //attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachments[1].stencilLoadOp = glConfig.stencilBits ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    if ( vk.bloomActive || vk.dglowActive || vk.refractionActive ) {
-        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom/dynamic-glow pass
-        //attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
-        attachments[1].stencilStoreOp = glConfig.stencilBits ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    }
-    else {
-        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    }
-    attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    attachments[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    color_attachment_ref.attachment = 0;
-    color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-    depth_attachment_ref.attachment = 1;
-    depth_attachment_ref.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    Com_Memset(&subpass, 0, sizeof(subpass));
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &color_attachment_ref;
-    subpass.pDepthStencilAttachment = &depth_attachment_ref;
-
-
-    Com_Memset(&desc, 0, sizeof(desc));
-    desc.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    desc.pNext = NULL;
-    desc.flags = 0;
-    desc.pAttachments = attachments;
-    desc.pSubpasses = &subpass;
-
-    desc.subpassCount = 1;
-    desc.attachmentCount = 2;
-
-
-    if ( vk.msaaActive )
-    {
-        attachments[2].flags = 0;
-        attachments[2].format = vk.color_format;
-        attachments[2].samples = (VkSampleCountFlagBits)vkSamples;
-#ifdef USE_BUFFER_CLEAR
-        attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-#else
-        attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-#endif
-
-
-        if ( vk.bloomActive || vk.dglowActive || vk.refractionActive ) {
-            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // keep it for post-bloom/dynamic-glow pass
-        }
-        else {
-            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE; // Intermediate storage (not written)
-        }
-        attachments[2].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[2].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[2].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-        attachments[2].finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        desc.attachmentCount = 3;
-
-        color_attachment_ref.attachment = 2; // msaa image attachment
-        color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        color_resolve_ref.attachment = 0; // resolve image attachment
-        color_resolve_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        subpass.pResolveAttachments = &color_resolve_ref;
-    }
-
-    // subpass dependencies
-    Com_Memset(&deps, 0, sizeof(deps));
-
-    /*
-	deps[2].srcSubpass = VK_SUBPASS_EXTERNAL;
-	deps[2].dstSubpass = 0;
-	deps[2].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// What pipeline stage is waiting on the dependency
-	deps[2].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// What pipeline stage is waiting on the dependency
-	deps[2].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;			// What access scopes are influence the dependency
-	deps[2].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;			// What access scopes are waiting on the dependency
-	deps[2].dependencyFlags = 0;
-    */
-    deps[2].srcSubpass = VK_SUBPASS_EXTERNAL;
-    deps[2].dstSubpass = 0;
-    deps[2].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// What pipeline stage is waiting on the dependency
-    deps[2].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// What pipeline stage is waiting on the dependency
-    deps[2].srcAccessMask = 0;											    // What access scopes are influence the dependency
-    deps[2].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; // What access scopes are waiting on the dependency
-    deps[2].dependencyFlags = 0;
-
-     if (r_fbo->integer == 0)
-    {
-        desc.dependencyCount = 1;
-        desc.pDependencies = &deps[2];
-
-        VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.main));
-        VK_SET_OBJECT_NAME(vk.render_pass.main, "render pass - main", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
-
-        return;
-    }
-
-    desc.dependencyCount = 2;
-    desc.pDependencies = &deps[0];
-
-    deps[0].srcSubpass = VK_SUBPASS_EXTERNAL;
-    deps[0].dstSubpass = 0;
-    deps[0].srcStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;           //VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT; // What pipeline stage must have completed for the dependency
-    deps[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// What pipeline stage is waiting on the dependency
-    deps[0].srcAccessMask = VK_ACCESS_SHADER_READ_BIT;						// What access scopes are influence the dependency
-    deps[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT; // What access scopes are waiting on the dependency
-    deps[0].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;                  // Only need the current fragment (or tile) synchronized, not the whole framebuffer
-
-    deps[1].srcSubpass = 0;
-    deps[1].dstSubpass = VK_SUBPASS_EXTERNAL;
-    deps[1].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;	// Fragment data has been written
-    deps[1].dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;			// Don't start shading until data is available
-    deps[1].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;            // Waiting for color data to be written
-    deps[1].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;						// Don't read things from the shader before ready
-    deps[1].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;					// Only need the current fragment (or tile) synchronized, not the whole framebuffer
-
-    VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.main));
-    VK_SET_OBJECT_NAME(vk.render_pass.main, "render pass - main", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
-    
-    // refraction
-    {
-        // color buffer
-        //attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-
-        // depth buffer
-        attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-        attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-        attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
-
-        if ( vk.msaaActive ) {
-            attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-            attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-        }
-
-        VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.refraction.extract ) );
-        VK_SET_OBJECT_NAME( vk.render_pass.refraction.extract, "render pass - refraction extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );        
-    }
-
-    if ( vk.bloomActive || vk.dglowActive )
-    {
-        // color buffer
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
-
-        // depth buffer
-        attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-        attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-        attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-
-        if( vk.bloomActive )
-        {
-            if (vk.msaaActive) {
-                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-            }
-
-            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.blend ) );
-            VK_SET_OBJECT_NAME( vk.render_pass.bloom.blend, "render pass - bloom post blend", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
-        }
-
-        if( vk.dglowActive )
-        {
-            // color buffer
-            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-
-            if ( vk.msaaActive ) {
-                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-            }
-
-            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.extract ) );
-            VK_SET_OBJECT_NAME( vk.render_pass.dglow.extract, "render pass - dglow extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );        
-        
-            // color buffer
-            attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD; // load from previous pass
-
-            // depth buffer
-            attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-            attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-            attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-            attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
-
-            if ( vk.msaaActive ) {
-                attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-                attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-            }
-
-            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.blend ) );
-            VK_SET_OBJECT_NAME( vk.render_pass.dglow.blend, "render pass - dglow post blend", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
-        }
-
-        // bloom extraction, using resolved/main fbo as a source
-        desc.attachmentCount = 1;
-
-        color_attachment_ref.attachment = 0;
-        color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        Com_Memset( &subpass, 0, sizeof(subpass) );
-        subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-        subpass.colorAttachmentCount = 1;
-        subpass.pColorAttachments = &color_attachment_ref;
-
-        attachments[0].flags = 0;
-        attachments[0].format = vk.bloom_format;
-        attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;	// Assuming this will be completely overwritten
-        attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;		// needed for next render pass
-        attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[0].initialLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        attachments[0].finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-
-        if( vk.bloomActive )
-        {
-            VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.extract ) );
-            VK_SET_OBJECT_NAME( vk.render_pass.bloom.extract, "render pass - bloom_extract", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
-
-            for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++ )
-            {
-                VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.bloom.blur[i] ) );
-                VK_SET_OBJECT_NAME( vk.render_pass.bloom.blur[i], va( "render pass - bloom blur %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
-            }
-        }
-
-        if( vk.dglowActive )
-        {
-            attachments[0].format = vk.color_format;
-
-            for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ )
-            {
-                VK_CHECK( qvkCreateRenderPass( device, &desc, NULL, &vk.render_pass.dglow.blur[i] ) );
-                VK_SET_OBJECT_NAME( vk.render_pass.dglow.blur[i], va( "render pass - dglow blur %i", i ), VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT );
-            }
-        }
-    }
-
-    // capture render pass
-    if (vk.capture.image)
-    {
-        Com_Memset(&subpass, 0, sizeof(subpass));
-
-        attachments[0].flags = 0;
-        attachments[0].format = vk.capture_format;
-        attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE; // this will be completely overwritten
-        attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;   // needed for next render pass
-        attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[0].initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        attachments[0].finalLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-
-        color_attachment_ref.attachment = 0;
-        color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-        subpass.colorAttachmentCount = 1;
-        subpass.pColorAttachments = &color_attachment_ref;
-
-        desc.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-        desc.pNext = NULL;
-        desc.flags = 0;
-        desc.pAttachments = attachments;
-        desc.attachmentCount = 1;
-        desc.pSubpasses = &subpass;
-        desc.subpassCount = 1;
-
-        VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.capture));
-        VK_SET_OBJECT_NAME(vk.render_pass.capture, "render pass - capture", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
-    }
-
-    color_attachment_ref.attachment = 0;
-    color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-    desc.attachmentCount = 1;
-
-    Com_Memset(&subpass, 0, sizeof(subpass));
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &color_attachment_ref;
-
-    // gamma post-processing
-    attachments[0].flags = 0;
-    attachments[0].format = vk.present_format.format;
-    attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-    attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE; // needed for presentation
-    attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[0].initialLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-    attachments[0].finalLayout = vk.initSwapchainLayout;
-
-    desc.dependencyCount = 1;
-    desc.pDependencies = &deps[2];
-
-    VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.gamma));
-    VK_SET_OBJECT_NAME(vk.render_pass.gamma, "render pass - gamma", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
-    
-    // screenmap
-    desc.dependencyCount = 2;
-    desc.pDependencies = &deps[0];
-
-    // screenmap resolve/color buffer
-    attachments[0].flags = 0;
-    attachments[0].format = vk.color_format;
-    attachments[0].samples = VK_SAMPLE_COUNT_1_BIT;
-#ifdef USE_BUFFER_CLEAR
-    if (vk.screenMapSamples > VK_SAMPLE_COUNT_1_BIT)
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    else
-        attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-#else
-    attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE; // Assuming this will be completely overwritten
-#endif
-    attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;   // needed for next render pass
-    attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[0].initialLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-    attachments[0].finalLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-
-    // screenmap depth buffer
-    attachments[1].flags = 0;
-    attachments[1].format = vk.depth_format;
-    attachments[1].samples = (VkSampleCountFlagBits)vk.screenMapSamples;
-    attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; // Need empty depth buffer before use
-    attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    attachments[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    color_attachment_ref.attachment = 0;
-    color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-    depth_attachment_ref.attachment = 1;
-    depth_attachment_ref.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-
-    Com_Memset(&subpass, 0, sizeof(subpass));
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &color_attachment_ref;
-    subpass.pDepthStencilAttachment = &depth_attachment_ref;
-
-    Com_Memset(&desc, 0, sizeof(desc));
-    desc.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    desc.pNext = NULL;
-    desc.flags = 0;
-    desc.pAttachments = attachments;
-    desc.pSubpasses = &subpass;
-    desc.subpassCount = 1;
-    desc.attachmentCount = 2;
-    desc.dependencyCount = 2;
-    desc.pDependencies = deps;
-
-    if ((VkSampleCountFlagBits)vk.screenMapSamples > VK_SAMPLE_COUNT_1_BIT) 
-    {
-        attachments[2].flags = 0;
-        attachments[2].format = vk.color_format;
-        attachments[2].samples = (VkSampleCountFlagBits)vk.screenMapSamples;
-        attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-#ifdef USE_BUFFER_CLEAR
-        attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-#else
-        attachments[2].loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-#endif
-        attachments[2].storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[2].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        attachments[2].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        attachments[2].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-        attachments[2].finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        desc.attachmentCount = 3;
-
-        color_attachment_ref.attachment = 2; // screenmap msaa image attachment
-        color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        color_resolve_ref.attachment = 0; // screenmap resolve image attachment
-        color_resolve_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-        subpass.pResolveAttachments = &color_resolve_ref;
-    }
-
-    VK_CHECK(qvkCreateRenderPass(device, &desc, NULL, &vk.render_pass.screenmap));
-    VK_SET_OBJECT_NAME(vk.render_pass.screenmap, "render pass - screenmap", VK_DEBUG_REPORT_OBJECT_TYPE_RENDER_PASS_EXT);
-}
-
 void vk_create_framebuffers()
 {
     vk_debug("Create vk.framebuffers \n");
@@ -576,7 +125,7 @@ void vk_create_framebuffers()
     
     for (i = 0; i < vk.swapchain_image_count; i++)
     {
-        desc.renderPass = vk.render_pass.main;
+        desc.renderPass = vk.render_pass.main.handle;
         desc.attachmentCount = 2;
 
         if (r_fbo->integer == 0) {
@@ -613,7 +162,7 @@ void vk_create_framebuffers()
             }
 
             // gamma correction
-            desc.renderPass = vk.render_pass.gamma;
+            desc.renderPass = vk.render_pass.gamma.handle;
             desc.attachmentCount = 1;
             desc.width = gls.windowWidth;
             desc.height = gls.windowHeight;
@@ -629,7 +178,7 @@ void vk_create_framebuffers()
     {
         // refraction
         {
-            desc.renderPass = vk.render_pass.refraction.extract;
+            desc.renderPass = vk.render_pass.refraction.extract.handle;
             desc.attachmentCount = 2;
             desc.width = glConfig.vidWidth;
             desc.height = glConfig.vidHeight;
@@ -649,7 +198,7 @@ void vk_create_framebuffers()
         }
 
         // screenmap
-        desc.renderPass = vk.render_pass.screenmap;
+        desc.renderPass = vk.render_pass.screenmap.handle;
         desc.attachmentCount = 2;
         desc.width = vk.screenMapWidth;
         desc.height = vk.screenMapHeight;
@@ -671,7 +220,7 @@ void vk_create_framebuffers()
         {
             attachments[0] = vk.capture.image_view;
 
-            desc.renderPass = vk.render_pass.capture;
+            desc.renderPass = vk.render_pass.capture.handle;
             desc.pAttachments = attachments;
             desc.attachmentCount = 1;
             desc.width = gls.captureWidth;
@@ -686,7 +235,7 @@ void vk_create_framebuffers()
             uint32_t width = gls.captureWidth;
             uint32_t height = gls.captureHeight;
 
-            desc.renderPass = vk.render_pass.dglow.extract;
+            desc.renderPass = vk.render_pass.dglow.extract.handle;
             desc.width = width;
             desc.height = height;
 
@@ -707,7 +256,7 @@ void vk_create_framebuffers()
                 width /= 2;
                 height /= 2;
 
-                desc.renderPass = vk.render_pass.dglow.blur[i];
+                desc.renderPass = vk.render_pass.dglow.blur[i].handle;
                 desc.width = width;
                 desc.height = height;    
                 desc.attachmentCount = 1;
@@ -729,7 +278,7 @@ void vk_create_framebuffers()
             uint32_t height = gls.captureHeight;
 
             // bloom color extraction
-            desc.renderPass = vk.render_pass.bloom.extract;
+            desc.renderPass = vk.render_pass.bloom.extract.handle;
             desc.width = width;
             desc.height = height;
 
@@ -745,7 +294,7 @@ void vk_create_framebuffers()
                 width /= 2;
                 height /= 2;
 
-                desc.renderPass = vk.render_pass.bloom.blur[i];
+                desc.renderPass = vk.render_pass.bloom.blur[i].handle;
                 desc.width = width;
                 desc.height = height;    
                 desc.attachmentCount = 1;
@@ -765,72 +314,6 @@ void vk_create_framebuffers()
     }
 
     
-}
-
-void vk_destroy_render_passes( void )
-{
-    uint32_t i;
-
-    vk_debug("Destroy vk.render_pass\n");
-
-    if ( vk.render_pass.main != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.main, NULL );
-        vk.render_pass.main = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.bloom.extract != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.extract, NULL );
-        vk.render_pass.bloom.extract = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.render_pass.bloom.blur ); i++) {
-        if ( vk.render_pass.bloom.blur[i] != VK_NULL_HANDLE ) {
-            qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blur[i], NULL );
-            vk.render_pass.bloom.blur[i] = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.render_pass.bloom.blend != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.bloom.blend, NULL );
-        vk.render_pass.bloom.blend = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.screenmap != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.screenmap, NULL );
-        vk.render_pass.screenmap = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.gamma != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.gamma, NULL );
-        vk.render_pass.gamma = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.refraction.extract != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.refraction.extract, NULL );
-        vk.render_pass.refraction.extract = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.capture != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.capture, NULL );
-        vk.render_pass.capture = VK_NULL_HANDLE;
-    }
-
-    if ( vk.render_pass.dglow.extract != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.extract, NULL );
-        vk.render_pass.dglow.extract = VK_NULL_HANDLE;
-    }
-
-    for ( i = 0; i < ARRAY_LEN( vk.render_pass.dglow.blur ); i++ ) {
-        if ( vk.render_pass.dglow.blur[i] != VK_NULL_HANDLE ) {
-            qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blur[i], NULL );
-            vk.render_pass.dglow.blur[i] = VK_NULL_HANDLE;
-        }
-    }
-
-    if ( vk.render_pass.dglow.blend != VK_NULL_HANDLE ) {
-        qvkDestroyRenderPass( vk.device, vk.render_pass.dglow.blend, NULL );
-        vk.render_pass.dglow.blend = VK_NULL_HANDLE;
-    }
 }
 
 void vk_destroy_framebuffers( void )
@@ -908,242 +391,6 @@ static qboolean vk_find_screenmap_drawsurfs( void )
             return qfalse;
         }
     }
-}
-
-static void vk_begin_render_pass( VkRenderPass renderPass, VkFramebuffer frameBuffer, 
-    qboolean clearValues, uint32_t width, uint32_t height )
-{
-    VkRenderPassBeginInfo render_pass_begin_info;
-    VkClearValue clear_values[3];
-
-    // Begin render pass.
-    render_pass_begin_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-    render_pass_begin_info.pNext = NULL;
-    render_pass_begin_info.renderPass = renderPass;
-    render_pass_begin_info.framebuffer = frameBuffer;
-    render_pass_begin_info.renderArea.offset.x = 0;
-    render_pass_begin_info.renderArea.offset.y = 0;
-    render_pass_begin_info.renderArea.extent.width = width;
-    render_pass_begin_info.renderArea.extent.height = height;
-
-    if ( clearValues ) {
-        /// attachments layout:
-        // [0] - resolve/color/presentation
-        // [1] - depth/stencil
-        // [2] - multisampled color, optional
-
-        Com_Memset( clear_values, 0, sizeof(clear_values) );
-
-#ifdef USE_BUFFER_CLEAR
-        switch( vk.renderPassIndex ){
-            case RENDER_PASS_MAIN:
-                    Com_Memcpy( clear_values[(int)(vk.msaaActive ? 2 : 0)].color.float32, tr.clearColor, sizeof(vec4_t) );
-                break;
-            case RENDER_PASS_DGLOW:
-            case RENDER_PASS_REFRACTION:
-                    clear_values[ (int)( vk.msaaActive ? 2 : 0 )  ].color = { { 0.0f, 0.0f, 0.0f, 1.0f } };
-                break;
-            default:
-                break;
-        }
-#endif
-#ifndef USE_REVERSED_DEPTH
-        clear_values[1].depthStencil.depth = 1.0;
-#endif
-
-        //render_pass_begin_info.clearValueCount = ARRAY_LEN(clear_values);
-        render_pass_begin_info.clearValueCount = vk.msaaActive ? 3 : 2;
-        render_pass_begin_info.pClearValues = clear_values;
-
-        vk_world.dirty_depth_attachment = 0;  
-    }
-    else {
-        render_pass_begin_info.clearValueCount = 0;
-        render_pass_begin_info.pClearValues = NULL;
-    }
-
-    qvkCmdBeginRenderPass( vk.cmd->command_buffer, &render_pass_begin_info, VK_SUBPASS_CONTENTS_INLINE );
-
-    // break mirrors combined with saber dglow. descriptors are not restored?
-    // investigation required. (anyway, id like to implement depth-prepass, which would streamline dglow pass with main pass)
-	//vk.cmd->last_pipeline = VK_NULL_HANDLE;
-	vk.cmd->depth_range = DEPTH_RANGE_COUNT;
-}
-
-static void vk_begin_screenmap_render_pass( void )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.screenmap;
-
-    vk.renderPassIndex = RENDER_PASS_SCREENMAP;
-
-    vk.renderWidth = vk.screenMapWidth;
-    vk.renderHeight = vk.screenMapHeight;
-    vk.renderScaleX = (float)vk.renderWidth / (float)glConfig.vidWidth;
-    vk.renderScaleY = (float)vk.renderHeight / (float)glConfig.vidHeight;
-
-    vk_begin_render_pass(vk.render_pass.screenmap, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
-}
-
-void vk_begin_main_render_pass( void )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.cmd->swapchain_image_index];
-
-    vk.renderPassIndex = RENDER_PASS_MAIN;
-
-    vk.renderWidth = glConfig.vidWidth;
-    vk.renderHeight = glConfig.vidHeight;
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass(vk.render_pass.main, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight);
-}
-
-void vk_begin_post_blend_render_pass( VkRenderPass renderpass, qboolean clearValues )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.main[vk.cmd->swapchain_image_index];
-
-    vk.renderPassIndex = RENDER_PASS_POST_BLEND;
-
-    vk.renderWidth = glConfig.vidWidth;
-    vk.renderHeight = glConfig.vidHeight;
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass( renderpass, frameBuffer, clearValues, vk.renderWidth, vk.renderHeight);
-}
-
-void vk_begin_bloom_extract_render_pass( void )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.bloom.extract;
-
-    //vk.renderPassIndex = RENDER_PASS_BLOOM_EXTRACT; // doesn't matter, we will use dedicated pipelines
-
-    vk.renderWidth = gls.captureWidth;
-    vk.renderHeight = gls.captureHeight;
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass(vk.render_pass.bloom.extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight);
-}
-
-void vk_begin_bloom_blur_render_pass( uint32_t index )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.bloom.blur[index];
-
-    vk.renderWidth = gls.captureWidth / (2 << (index / 2));
-    vk.renderHeight = gls.captureHeight / (2 << (index / 2));
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass( vk.render_pass.bloom.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
-}
-
-void vk_begin_dglow_blur_render_pass( uint32_t index )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.dglow.blur[index];
-
-    vk.renderWidth = gls.captureWidth / (2 << (index / 2));
-    vk.renderHeight = gls.captureHeight / (2 << (index / 2));
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass( vk.render_pass.dglow.blur[index], frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
-}
-
-void vk_begin_dglow_extract_render_pass( void )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.dglow.extract;
-
-    vk.renderPassIndex = RENDER_PASS_DGLOW;
-
-    vk.renderWidth = gls.captureWidth;
-    vk.renderHeight = gls.captureHeight;
-    vk.renderScaleX = vk.renderScaleY = 1.0f;
-
-    vk_begin_render_pass( vk.render_pass.dglow.extract, frameBuffer, qtrue, vk.renderWidth, vk.renderHeight );
-}
-
-void vk_refraction_extract( void ) {
-    VkImage srcImage;
-	VkImage dstImage;
-	VkImageLayout srcImageLayout;
-
-	srcImageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-	srcImage = vk.color_image;
-	dstImage = vk.refraction_extract_image;
-
-    vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
-		srcImageLayout,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		0, 0 );
-	
-	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		0, 0 );
-
-	if ( REFRACTION_EXTRACT_SCALE > 1 ) {
-		VkImageBlit region;
-
-		region.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.srcSubresource.mipLevel = 0;
-		region.srcSubresource.baseArrayLayer = 0;
-		region.srcSubresource.layerCount = 1;
-		region.srcOffsets[0].x = 0;
-		region.srcOffsets[0].y = 0;
-		region.srcOffsets[0].z = 0;
-		region.srcOffsets[1].x = glConfig.vidWidth;
-		region.srcOffsets[1].y = glConfig.vidHeight;
-		region.srcOffsets[1].z = 1;
-		region.dstSubresource = region.srcSubresource;
-		region.dstOffsets[0] = { 0, 0, 0 };
-		region.dstOffsets[1] = { glConfig.vidWidth / REFRACTION_EXTRACT_SCALE, glConfig.vidHeight / REFRACTION_EXTRACT_SCALE, 1 };
-
-		qvkCmdBlitImage( vk.cmd->command_buffer, srcImage,
-			VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage,
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1,
-			&region, VK_FILTER_LINEAR );
-	}
-	else {
-		VkImageCopy region;
-
-		region.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		region.srcSubresource.mipLevel = 0;
-		region.srcSubresource.baseArrayLayer = 0;
-		region.srcSubresource.layerCount = 1;
-		region.srcOffset.x = 0;
-		region.srcOffset.y = 0;
-		region.srcOffset.z = 0;
-		region.dstSubresource = region.srcSubresource;
-		region.dstOffset = region.srcOffset;
-		region.extent.width = glConfig.vidWidth;
-		region.extent.height = glConfig.vidHeight;
-		region.extent.depth = 1;
-
-		qvkCmdCopyImage(vk.cmd->command_buffer, srcImage, 
-			VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, 
-			dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, 
-			&region);
-	}
-
-	// restore previous layouts
-	vk_record_image_layout_transition( vk.cmd->command_buffer, dstImage, VK_IMAGE_ASPECT_COLOR_BIT,
-		VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-		0, 0 );
-	
-	vk_record_image_layout_transition( vk.cmd->command_buffer, srcImage, VK_IMAGE_ASPECT_COLOR_BIT,
-		VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-		srcImageLayout,
-		0, 0 );
-}
-
-void vk_begin_post_refraction_extract_render_pass( void )
-{
-    VkFramebuffer frameBuffer = vk.framebuffers.refraction.extract;
-
-    vk.renderPassIndex = RENDER_PASS_REFRACTION;
-
-    vk.renderWidth = glConfig.vidWidth;
-    vk.renderHeight = glConfig.vidHeight;
-    vk.renderScaleX = vk.renderScaleY = 1.0;
-
-    vk_begin_render_pass( vk.render_pass.refraction.extract, frameBuffer, qfalse, vk.renderWidth, vk.renderHeight );
 }
 
 void vk_begin_frame( void )
@@ -1263,11 +510,6 @@ _retry:
     // other stats
     vk.stats.push_size = 0;
 #endif
-}
-
-void vk_end_render_pass( void )
-{
-    qvkCmdEndRenderPass(vk.cmd->command_buffer);
 }
 
 void vk_release_indirect_buffers( void )
@@ -1432,7 +674,7 @@ void vk_end_frame( void )
                 vk_end_render_pass();
 
                 // render to capture FBO
-                vk_begin_render_pass(vk.render_pass.capture, vk.framebuffers.capture, qfalse, gls.captureWidth, gls.captureHeight);
+                vk_begin_render_pass(vk.render_pass.capture.handle, vk.framebuffers.capture, qfalse, gls.captureWidth, gls.captureHeight);
                 qvkCmdBindPipeline(vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.capture_pipeline);
                 qvkCmdBindDescriptorSets(vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL);
 
@@ -1446,7 +688,7 @@ void vk_end_frame( void )
                 vk.renderHeight = gls.windowHeight;
                 vk.renderScaleX = vk.renderScaleY = 1.0;
 
-                vk_begin_render_pass( vk.render_pass.gamma, vk.framebuffers.gamma[vk.cmd->swapchain_image_index], qfalse, vk.renderWidth, vk.renderHeight );
+                vk_begin_render_pass( vk.render_pass.gamma.handle, vk.framebuffers.gamma[vk.cmd->swapchain_image_index], qfalse, vk.renderWidth, vk.renderHeight );
                 qvkCmdBindPipeline( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.gamma_pipeline );
                 //qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.dglow_image_descriptor[0], 0, NULL );
                 qvkCmdBindDescriptorSets( vk.cmd->command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vk.pipeline_layout_post_process, 0, 1, &vk.color_descriptor, 0, NULL );

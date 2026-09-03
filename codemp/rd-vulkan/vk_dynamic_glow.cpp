@@ -68,7 +68,7 @@ qboolean vk_begin_dglow_blur( void )
 			0, 0 );
 	}
 
-	vk_begin_post_blend_render_pass( vk.render_pass.dglow.blend, qtrue );
+	vk_begin_post_blend_render_pass( vk.render_pass.dglow.blend.handle, qtrue );
 	{
 		VkDescriptorSet dset[VK_NUM_BLUR_PASSES];
 

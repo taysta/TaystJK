@@ -1377,11 +1377,11 @@ VkPipeline vk_create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPa
 		create_info.layout = vk.pipeline_layout;
 
     if ( renderPassIndex == RENDER_PASS_SCREENMAP )
-        create_info.renderPass = vk.render_pass.screenmap;
+        create_info.renderPass = vk.render_pass.screenmap.handle;
     else if ( renderPassIndex == RENDER_PASS_REFRACTION )
-        create_info.renderPass = vk.render_pass.refraction.extract;
+        create_info.renderPass = vk.render_pass.refraction.extract.handle;
     else
-        create_info.renderPass = vk.render_pass.main;
+        create_info.renderPass = vk.render_pass.main.handle;
 
     create_info.subpass = 0;
     create_info.basePipelineHandle = VK_NULL_HANDLE;
@@ -1435,7 +1435,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 1: // bloom extraction
             pipeline = &vk.bloom_extract_pipeline;
             fs_module = vk.shaders.bloom_fs;
-            renderpass = vk.render_pass.bloom.extract;
+            renderpass = vk.render_pass.bloom.extract.handle;
             layout = vk.pipeline_layout_post_process;
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "bloom extraction pipeline";
@@ -1444,7 +1444,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 2: // final bloom blend
             pipeline = &vk.bloom_blend_pipeline;
             fs_module = vk.shaders.blend_fs;
-            renderpass = vk.render_pass.bloom.blend;
+            renderpass = vk.render_pass.bloom.blend.handle;
             layout = vk.pipeline_layout_blend;
             samples = (VkSampleCountFlagBits)vkSamples;
             pipeline_name = "bloom blend pipeline";
@@ -1453,7 +1453,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 3: // capture buffer extraction
             pipeline = &vk.capture_pipeline;
             fs_module = vk.shaders.gamma_fs;
-            renderpass = vk.render_pass.capture;
+            renderpass = vk.render_pass.capture.handle;
             layout = vk.pipeline_layout_post_process;
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "capture buffer pipeline";
@@ -1462,7 +1462,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         case 4: // final dglow blend
             pipeline = &vk.dglow_blend_pipeline;
             fs_module = vk.shaders.blend_fs;
-            renderpass = vk.render_pass.dglow.blend;
+            renderpass = vk.render_pass.dglow.blend.handle;
             layout = vk.pipeline_layout_blend;
             samples = (VkSampleCountFlagBits)vkSamples;
             pipeline_name = "dglow blend pipeline";
@@ -1471,7 +1471,7 @@ static void vk_create_post_process_pipeline( int program_index, uint32_t width, 
         default: // gamma correction
             pipeline = &vk.gamma_pipeline;
             fs_module = vk.shaders.gamma_fs;
-            renderpass = vk.render_pass.gamma;
+            renderpass = vk.render_pass.gamma.handle;
             layout = vk.pipeline_layout_post_process;
             samples = VK_SAMPLE_COUNT_1_BIT;
             pipeline_name = "gamma-correction pipeline";
@@ -1706,12 +1706,12 @@ static void vk_create_blur_pipeline( char *name, int program_index, uint32_t ind
     switch( program_index ){
         case 1:
             pipeline = &vk.bloom_blur_pipeline[index];
-            renderpass = vk.render_pass.bloom.blur[index];
+            renderpass = vk.render_pass.bloom.blur[index].handle;
             frag_spec_data.correction = 0.0; // intensity?
             break;
         case 2:
             pipeline = &vk.dglow_blur_pipeline[index];
-            renderpass = vk.render_pass.dglow.blur[index];
+            renderpass = vk.render_pass.dglow.blur[index].handle;
             frag_spec_data.correction = 0.15; // intensity?
             break;
         default:
