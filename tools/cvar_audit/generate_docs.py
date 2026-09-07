@@ -115,6 +115,9 @@ def esc(value: Any) -> str:
 def slug(name: str) -> str:
     value = name.casefold().replace("+", "plus-").replace("-", "minus-")
     value = re.sub(r"[^a-z0-9_]+", "-", value).strip("-") or "entry"
+    # Jekyll does not publish pages whose filename begins with an underscore.
+    if value.startswith("_"):
+        value = f"entry-{value}"
     return f"{value}-{hashlib.sha1(name.casefold().encode()).hexdigest()[:7]}"
 
 

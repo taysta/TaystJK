@@ -13,7 +13,7 @@ description: "A no-JavaScript index of every TaystJK cvar and console command."
 
 ## Cvars
 <div class="static-index-list">
-<a href="/TaystJK/reference/cvars/_dedicated-f30b22a/"><code>_dedicated</code></a>
+<a href="/TaystJK/reference/cvars/entry-_dedicated-f30b22a/"><code>_dedicated</code></a>
 <a href="/TaystJK/reference/cvars/activeaction-b789056/"><code>activeAction</code></a>
 <a href="/TaystJK/reference/cvars/arch-5a36f11/"><code>arch</code></a>
 <a href="/TaystJK/reference/cvars/bg_fighteraltcontrol-74138a2/"><code>bg_fighterAltControl</code></a>

@@ -222,7 +222,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
-| [`_dedicated`](/TaystJK/reference/cvars/_dedicated-f30b22a/) | cvar | engine-shared | Controls `com_dedicated` in the engine-shared module. |
+| [`_dedicated`](/TaystJK/reference/cvars/entry-_dedicated-f30b22a/) | cvar | engine-shared | Controls `com_dedicated` in the engine-shared module. |
 | [`activeAction`](/TaystJK/reference/cvars/activeaction-b789056/) | cvar | engine-client | Controls `cl_activeAction` in the engine-client module. |
 | [`arch`](/TaystJK/reference/cvars/arch-5a36f11/) | cvar | engine-shared | Controls `arch` in the engine-shared module. |
 | [`bg_fighterAltControl`](/TaystJK/reference/cvars/bg_fighteraltcontrol-74138a2/) | cvar | cgame | Controls `bg_fighterAltControl` in the cgame module. |

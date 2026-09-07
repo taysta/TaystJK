@@ -18,6 +18,8 @@ def resolve_url(url: str) -> Path | None:
     relative = url.removeprefix("/TaystJK/")
     if not relative:
         return ROOT / "index.md"
+    if any(part.startswith(("_", ".")) for part in Path(relative).parts):
+        return None
     direct = ROOT / relative
     if direct.is_file():
         return direct
