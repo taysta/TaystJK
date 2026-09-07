@@ -1,0 +1,54 @@
+---
+title: "s_mp3overhead"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `s_mp3overhead`
+
+<span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
+Controls `cv_MP3overhead` in the engine-client module. Consult the cited behavior reads before relying on values not listed here.
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `engine-client` |
+| Also registered in | `engine-client` |
+| Renderer | All / not renderer-specific |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `code-trace` |
+| Confidence | `high` |
+| Default | `va("%d", sizeof(MP3STREAM) + FUZZY_AMOUNT)` |
+| Value type | `int` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+No discrete value list is enforced or documented in the inspected source.
+
+## Flags
+
+- `CVAR_ARCHIVE` — saved to the user configuration
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
+
+- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Upstream registration evidence: [code/client/cl_mp3.cpp:229](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/client/cl_mp3.cpp#L229)
+- Attribution method: `present-in-openjk-initial-source-import`
+- Attribution confidence: `high`
+- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+
+## Evidence
+
+- registration: [codemp/client/snd_mp3.cpp:247](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L247) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:3920](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L3920)
+- behavior: [codemp/client/snd_mp3.cpp:268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L268)
+- behavior: [codemp/client/snd_mp3.cpp:265](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L265)

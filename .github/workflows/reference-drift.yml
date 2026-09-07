@@ -1,0 +1,28 @@
+name: Console reference drift
+
+on:
+  pull_request:
+    branches: [gh-pages]
+  push:
+    branches: [gh-pages]
+  workflow_dispatch:
+
+jobs:
+  verify-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch source branch
+        run: git fetch origin master:refs/remotes/origin/master
+      - name: Test extractor
+        run: python3 tools/cvar_audit/test_extract.py
+      - name: Test reference search and filters
+        run: node tools/cvar_audit/test_reference_app.js
+      - name: Validate reference records
+        run: python3 tools/cvar_audit/validate.py
+      - name: Validate generated pages and links
+        run: python3 tools/cvar_audit/check_generated.py
+      - name: Check source registration drift
+        run: python3 tools/cvar_audit/check_drift.py --ref origin/master

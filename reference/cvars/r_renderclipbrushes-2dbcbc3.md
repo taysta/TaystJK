@@ -1,0 +1,55 @@
+---
+title: "r_renderClipBrushes"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `r_renderClipBrushes`
+
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
+Render clip brushes
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `engine-client` |
+| Also registered in | `engine-client` |
+| Renderer | All / not renderer-specific |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `documented` |
+| Confidence | `medium` |
+| Default | `0` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/client/cl_tc_vis.cpp:141](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_tc_vis.cpp#L141) |
+| `1` | Enabled. | [codemp/client/cl_tc_vis.cpp:141](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_tc_vis.cpp#L141) |
+
+## Flags
+
+- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+
+- Commit evidence: [`364a1e79acff`](https://github.com/taysta/TaystJK/commit/364a1e79acffc13e4fd599fb0a0adeab74c21f27)
+- Attribution method: `first-addition-in-registration-file-history`
+- Attribution confidence: `medium`
+- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+
+## Evidence
+
+- registration: [codemp/client/cl_tc_vis.cpp:83](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_tc_vis.cpp#L83) (Cvar_Get)
+- behavior: [codemp/client/cl_tc_vis.cpp:141](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_tc_vis.cpp#L141)
+- documentation: [codemp/ui/ui_xdocs.h:478](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L478)

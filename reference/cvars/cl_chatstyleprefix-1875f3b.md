@@ -1,0 +1,50 @@
+---
+title: "cl_chatStylePrefix"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `cl_chatStylePrefix`
+
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+
+String inserted before sent chat messages
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `engine-client` |
+| Also registered in | `engine-client` |
+| Renderer | All / not renderer-specific |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `documented` |
+| Confidence | `high` |
+| Default | `` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+No discrete value list is enforced or documented in the inspected source.
+
+## Flags
+
+- `CVAR_ARCHIVE` — saved to the user configuration
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+
+- Commit evidence: [`986358853af6`](https://github.com/taysta/TaystJK/commit/986358853af67b06b0e3b1457f9a3f124cc70268)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3349](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_main.cpp#L3349)
+- Attribution method: `upstream-head-presence`
+- Attribution confidence: `high`
+
+## Evidence
+
+- registration: [codemp/client/cl_main.cpp:3448](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3448) (Cvar_Get)
+- behavior: [codemp/client/cl_keys.cpp:1027](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_keys.cpp#L1027)
+- behavior: [codemp/client/cl_keys.cpp:1028](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_keys.cpp#L1028)

@@ -6,7 +6,26 @@ baseurl: "/TaystJK" # the subpath of your site, e.g. /blog
 url: "https://taysta.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 permalink: pretty
-exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
+
+# The former hand-written topic pages remain reachable through old links, but
+# the generated exhaustive reference is now the canonical navigation/search
+# surface. Keeping the legacy pages out of both prevents conflicting advice.
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: reference
+  - scope:
+      path: "cvars"
+    values:
+      nav_exclude: true
+      search_exclude: true
+  - scope:
+      path: "commands"
+    values:
+      nav_exclude: true
+      search_exclude: true
 
 # Regression tests
 # By default, the pages in /docs/tests are excluded when the ste is built.

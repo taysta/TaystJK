@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: reference
 title: Miscellaneous Commands
 parent: Commands
 has_children: true

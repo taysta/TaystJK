@@ -1,0 +1,53 @@
+---
+title: "ui_version"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `ui_version`
+
+<span class="label ref-origin ref-origin-japro">jaPRO</span>
+
+Used by UI in the in-game "about" menu
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `cgame` |
+| Also registered in | `cgame` |
+| Renderer | All / not renderer-specific |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `documented` |
+| Confidence | `high` |
+| Default | `Info_ValueForKey(info, "version")` |
+| Value type | `string` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+No discrete value list is enforced or documented in the inspected source.
+
+## Flags
+
+No cvar flags are registered at the cited site.
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+
+- Commit evidence: [`e4ececfdb4d1`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401)
+- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution confidence: `high`
+- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+
+## Evidence
+
+- registration: [codemp/cgame/cg_servercmds.c:236](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_servercmds.c#L236) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:3364](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L3364)
+- behavior: [assets/japro/ui/jamp/menudef.h:346](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/assets/japro/ui/jamp/menudef.h#L346)
+- behavior: [codemp/ui/menudef.h:346](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/menudef.h#L346)
+- behavior: [codemp/ui/ui_main.c:3084](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L3084)
+- behavior: [codemp/ui/ui_main.c:3087](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L3087)

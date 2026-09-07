@@ -1,0 +1,73 @@
+---
+title: "r_smartpicmip"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `r_smartpicmip`
+
+<span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
+Applies r_picmip setting to map textures only.
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `renderer` |
+| Also registered in | `renderer` |
+| Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `documented` |
+| Confidence | `medium` |
+| Default | `1` |
+| Value type | `bool` |
+| Restart | Yes; the value is latched. |
+| Cheat protected | No |
+
+## Values
+
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1047) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1047) |
+
+## Flags
+
+- `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created
+- `CVAR_LATCH` — latched until the relevant subsystem or map is restarted
+
+## Registration-specific defaults
+
+| Default | Module | Renderer | Compile condition |
+|:--|:--|:--|:--|
+| `1` | `renderer` | `rd-rend2` | `always` |
+| `1` | `renderer` | `rd-vanilla` | `always` |
+| `1` | `renderer` | `rd-vulkan` | `always` |
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+
+- Commit evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
+- Pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1585](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/rd-rend2/tr_init.cpp#L1585)
+- Attribution method: `upstream-head-presence`
+- Attribution confidence: `medium`
+- Notes: The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+
+### Later changes
+
+- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+
+## Evidence
+
+- registration: [codemp/rd-rend2/tr_init.cpp:1522](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1522) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1653](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1653) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:805](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L805) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1047)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1425](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_image.cpp#L1425)
+- behavior: [shared/rd-rend2/tr_image.cpp:2455](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_image.cpp#L2455)

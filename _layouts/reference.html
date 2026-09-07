@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090d16">
+    <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | escape }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
+    <script>document.documentElement.classList.add('js');</script>
+    <script defer src="{{ '/assets/js/reference-app.js' | relative_url }}"></script>
+  </head>
+  <body{% if page.reference_app %} class="has-reference-app"{% endif %}>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="TaystJK documentation home">
+          <span class="brand-mark" aria-hidden="true"><i>T</i><i>J</i></span>
+          <span><strong>TaystJK</strong><small>Console reference</small></span>
+        </a>
+
+        {% assign nav_section = 'explore' %}
+        {% if page.url == '/' %}{% assign nav_section = 'home' %}
+        {% elsif page.url == '/cvars/' or page.url contains '/reference/cvars/' %}{% assign nav_section = 'cvars' %}
+        {% elsif page.url == '/commands/' or page.url contains '/reference/commands/' %}{% assign nav_section = 'commands' %}
+        {% elsif page.url contains '/reference/renderers/' %}{% assign nav_section = 'renderers' %}
+        {% elsif page.url contains '/reference/sources/' %}{% assign nav_section = 'method' %}
+        {% endif %}
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'explore' %} class="active"{% endif %}>Explore</a>
+          <a href="{{ '/cvars/' | relative_url }}"{% if nav_section == 'cvars' %} class="active"{% endif %}>Cvars</a>
+          <a href="{{ '/commands/' | relative_url }}"{% if nav_section == 'commands' %} class="active"{% endif %}>Commands</a>
+          <a href="{{ '/reference/renderers/' | relative_url }}"{% if nav_section == 'renderers' %} class="active"{% endif %}>Renderers</a>
+          <a href="{{ '/reference/sources/' | relative_url }}"{% if nav_section == 'method' %} class="active"{% endif %}>Method</a>
+        </nav>
+
+        <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.2.8-.5v-2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.6.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.5.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.8 5.4-5.5 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A11.4 11.4 0 0 0 12 .8Z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content" class="site-main{% if page.wide %} site-main-wide{% endif %}">
+      {% if page.nav_exclude and page.url contains '/reference/' %}
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="{{ '/reference/' | relative_url }}">Reference</a>
+        <span aria-hidden="true">/</span>
+        {% if page.url contains '/reference/cvars/' %}<a href="{{ '/cvars/' | relative_url }}">Cvars</a>{% endif %}
+        {% if page.url contains '/reference/commands/' %}<a href="{{ '/commands/' | relative_url }}">Commands</a>{% endif %}
+        <span aria-hidden="true">/</span>
+        <span>{{ page.title }}</span>
+      </nav>
+      {% endif %}
+      <article class="page-content">
+        {{ content }}
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="site-brand footer-brand" href="{{ '/' | relative_url }}">
+          <span class="brand-mark" aria-hidden="true"><i>T</i><i>J</i></span>
+          <span><strong>TaystJK</strong><small>Jedi Academy, carefully extended.</small></span>
+        </a>
+        <p>Reference generated from source registrations, Git history, pull requests, and upstream snapshots.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="{{ '/install/' | relative_url }}">Install</a>
+        <a href="{{ '/reference/audit/' | relative_url }}">Audit queue</a>
+        <a href="{{ '/assets/data/catalog.json' | relative_url }}">Catalog JSON</a>
+        <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
+      </nav>
+    </footer>
+  </body>
+</html>

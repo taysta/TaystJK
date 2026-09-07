@@ -1,0 +1,59 @@
+---
+title: "g_allowRegistration"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `g_allowRegistration`
+
+<span class="label ref-origin ref-origin-japro">jaPRO</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
+Controls `g_allowRegistration` in the game module. Consult the cited behavior reads before relying on values not listed here.
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `game` |
+| Also registered in | `game` |
+| Renderer | All / not renderer-specific |
+| Network scope | `server-authoritative` — Owned or enforced by the server. |
+| Derivation | `code-trace` |
+| Confidence | `high` |
+| Default | `1` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/game/g_account.c:3544](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_account.c#L3544) |
+| `1` | Enabled. | [codemp/game/g_account.c:3544](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_account.c#L3544) |
+
+## Flags
+
+- `CVAR_ARCHIVE` — saved to the user configuration
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+
+- Commit evidence: [`6228b11a445b`](https://github.com/taysta/TaystJK/commit/6228b11a445b03b5002b815a1fc60b53a6fcfea2)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:302](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_xcvar.h#L302)
+- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution confidence: `high`
+- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+
+## Evidence
+
+- registration: [codemp/game/g_xcvar.h:323](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L323) (XCVAR_DEF)
+- behavior: [codemp/game/g_account.c:3544](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_account.c#L3544)
+- behavior: [codemp/game/g_account.c:3773](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_account.c#L3773)
+- behavior: [codemp/game/g_cmds.c:5719](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L5719)
+- behavior: [codemp/game/g_cmds.c:5725](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L5725)
+- behavior: [codemp/game/g_account.c:3422](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_account.c#L3422)

@@ -1,0 +1,163 @@
+{
+  "commands": {
+    "delay": {
+      "arguments": ["milliseconds", "commands"],
+      "description": "Queues the commands after the semicolon to run after the requested number of milliseconds without pausing unrelated command-buffer work.",
+      "derivation": "documented",
+      "summary": "Run following commands after a millisecond delay.",
+      "syntax": "delay <milliseconds>;<commands>"
+    },
+    "delaycancel": {
+      "arguments": ["text"],
+      "description": "Cancels pending millisecond-based delay entries whose command text contains the supplied text. An empty string matches every pending delay.",
+      "derivation": "documented",
+      "summary": "Cancel matching pending delay entries.",
+      "syntax": "delaycancel <text>"
+    },
+    "ifcvar": {
+      "arguments": ["cvar", "setting", "argument-count", "command", "..."],
+      "description": "Tests a cvar against conditions in order and executes the command belonging to the first match. Conditions support literal string equality; numeric $=, $!=, $>, $<, $>= and $<= comparisons; $contains; $beginswith/$startswith; $endswith; $else; and values read from another cvar with a leading $. The argument count includes the command itself.",
+      "derivation": "documented",
+      "summary": "Execute a command selected by comparisons against a cvar.",
+      "syntax": "ifCvar <cvar> <setting> <argument-count> <command...> [<setting> <argument-count> <command...> ...]"
+    },
+    "mnext": {
+      "description": "Simulates the operating system next-track media key. Registered only in Windows builds.",
+      "derivation": "documented",
+      "summary": "Send the next-track media key on Windows.",
+      "syntax": "mnext"
+    },
+    "mpause": {
+      "description": "Simulates the operating system play/pause media key. Registered only in Windows builds.",
+      "derivation": "documented",
+      "summary": "Send the play/pause media key on Windows.",
+      "syntax": "mpause"
+    },
+    "mprev": {
+      "description": "Simulates the operating system previous-track media key. Registered only in Windows builds.",
+      "derivation": "documented",
+      "summary": "Send the previous-track media key on Windows.",
+      "syntax": "mprev"
+    },
+    "mstop": {
+      "description": "Simulates the operating system stop-media key. Registered only in Windows builds.",
+      "derivation": "documented",
+      "summary": "Send the stop-media key on Windows.",
+      "syntax": "mstop"
+    },
+    "strsub": {
+      "arguments": ["command"],
+      "description": "Executes a command after replacing text surrounded by dollar signs with the value of that cvar. A doubled dollar sign emits one literal dollar sign.",
+      "derivation": "documented",
+      "summary": "Execute a command with $cvar$ value substitution.",
+      "syntax": "strSub <command...>"
+    },
+    "waitf": {
+      "arguments": ["frames", "commands"],
+      "description": "Queues the commands after the semicolon to run after the requested number of rendered frames without pausing unrelated command-buffer work.",
+      "derivation": "documented",
+      "summary": "Run following commands after a frame-count delay.",
+      "syntax": "waitf <frames>;<commands>"
+    },
+    "waitfcancel": {
+      "arguments": ["text"],
+      "description": "Cancels pending frame-based waitf entries whose command text contains the supplied text. An empty string matches every pending waitf.",
+      "derivation": "documented",
+      "summary": "Cancel matching pending waitf entries.",
+      "syntax": "waitfcancel <text>"
+    }
+  },
+  "cvars": {
+    "cg_camerafps": {
+      "description": "Sets the emulated frame rate used to make third-person camera damping frame-rate independent. Values below 15 select the original JK2/JKA multiplayer damping path; values of 15 or more use the time-adjusted path, with the original response reproduced when the actual frame rate matches this value.",
+      "derivation": "code-trace",
+      "summary": "Set the reference frame rate for third-person camera damping.",
+      "value_type": "int",
+      "values": [
+        {"evidence": {"line": 541, "path": "codemp/cgame/cg_view.c"}, "meaning": "Use the original frame-rate-dependent JK2/JKA multiplayer camera damping.", "value": "<15"},
+        {"evidence": {"line": 514, "path": "codemp/cgame/cg_view.c"}, "meaning": "Use frame-rate-independent damping based on this emulated frame rate.", "value": ">=15"}
+      ]
+    },
+    "sv_httpdownloads": {
+      "description": "Enables fast HTTP downloads for referenced PK3 files. When enabled, the server advertises either its built-in HTTP endpoint or the external URL configured by sv_httpServerPort to supporting clients.",
+      "derivation": "mixed",
+      "summary": "Enable the server's JK2MV-derived HTTP auto-download path.",
+      "value_type": "bool",
+      "values": [
+        {"evidence": {"line": 763, "path": "codemp/server/sv_init.cpp"}, "meaning": "Disable HTTP auto-download advertising and stop the built-in HTTP server.", "value": "0"},
+        {"evidence": {"line": 763, "path": "codemp/server/sv_init.cpp"}, "meaning": "Advertise HTTP downloads and start or redirect the HTTP endpoint.", "value": "1"}
+      ]
+    },
+    "sv_httpserverport": {
+      "description": "Configures the HTTP auto-download endpoint. A numeric value selects the built-in web server's port; a value beginning with http:// advertises that external base URL instead.",
+      "derivation": "mixed",
+      "summary": "Set the built-in HTTP download port or an external HTTP URL.",
+      "value_type": "string"
+    },
+    "cl_downloadprotocol": {
+      "description": "Reports the protocol selected for the active file download. The client sets this internal cvar to HTTP when the server advertised an HTTP endpoint and otherwise sets it to UDP.",
+      "derivation": "code-trace",
+      "summary": "Report whether the active download uses HTTP or UDP.",
+      "value_type": "enum",
+      "values": [
+        {"evidence": {"line": 1547, "path": "codemp/client/cl_main.cpp"}, "meaning": "Download from the server's advertised HTTP endpoint.", "value": "HTTP"},
+        {"evidence": {"line": 1549, "path": "codemp/client/cl_main.cpp"}, "meaning": "Use the legacy in-protocol UDP download path.", "value": "UDP"}
+      ]
+    },
+    "r_dynamicglowbloom": {
+      "description": "Controls the rend2 dynamic-glow bloom strength. Zero skips the bloom pass; positive values up to the enforced maximum of 2 are passed to the high-pass shader as bloom strength.",
+      "derivation": "code-trace",
+      "summary": "Set rend2 dynamic-glow bloom strength from 0 through 2.",
+      "value_type": "float",
+      "values": [
+        {"evidence": {"line": 3131, "path": "shared/rd-rend2/tr_backend.cpp"}, "meaning": "Disable the dynamic-glow bloom pass.", "value": "0"},
+        {"evidence": {"line": 3140, "path": "shared/rd-rend2/tr_backend.cpp"}, "meaning": "Use this positive value, up to 2, as the shader's bloom strength.", "value": ">0"}
+      ]
+    },
+    "cg_drawcrosshairnames": {
+      "description": "Controls target-name display below the crosshair. Zero disables it, negative values display a name only while the crosshair remains on the target, and positive values are the fade duration in seconds.",
+      "derivation": "mixed",
+      "summary": "Set crosshair target-name display and fade duration.",
+      "value_type": "float",
+      "values": [
+        {"evidence": {"line": 9482, "path": "codemp/cgame/cg_draw.c"}, "meaning": "Do not draw target names.", "value": "0"},
+        {"evidence": {"line": 9513, "path": "codemp/cgame/cg_draw.c"}, "meaning": "Draw only while the crosshair is currently on the target; do not fade afterward.", "value": "<0"},
+        {"evidence": {"line": 9517, "path": "codemp/cgame/cg_draw.c"}, "meaning": "Fade for this many seconds.", "value": ">0"}
+      ]
+    },
+    "cg_drawcrosshairnamescolours": {
+      "description": "Selects crosshair-name coloring. Zero strips player color codes and uses green for allies and red for enemies; one preserves name color codes and starts from white.",
+      "derivation": "mixed",
+      "summary": "Choose team-aware or player-name crosshair colors.",
+      "value_type": "enum",
+      "values": [
+        {"evidence": {"line": 9530, "path": "codemp/cgame/cg_draw.c"}, "meaning": "Use green/red ally/enemy colors and sanitize name color codes.", "value": "0"},
+        {"evidence": {"line": 9596, "path": "codemp/cgame/cg_draw.c"}, "meaning": "Preserve color codes in player names.", "value": "1"}
+      ]
+    },
+    "cg_drawcrosshairnamesopacity": {
+      "description": "Multiplies the target-name fade alpha by this opacity. Runtime use clamps the effective value to the inclusive range 0 through 1.",
+      "derivation": "code-trace",
+      "summary": "Set crosshair target-name opacity from 0 to 1.",
+      "value_type": "float",
+      "values": []
+    },
+    "cg_movementkeys": {
+      "description": "Selects the movement-input overlay style, including classic, attack-aware, and movable crosshair layouts.",
+      "derivation": "documented",
+      "summary": "Select the on-screen movement-key overlay style.",
+      "value_type": "enum"
+    },
+    "r_drawfog": {
+      "description": "Controls fog rendering. The Vulkan registration documents 0 as disabled, 1 as software fog, and 2 as hardware fog; the same cvar is registered by vanilla, rend2, Vulkan, and the dedicated renderer stub.",
+      "derivation": "mixed",
+      "summary": "Select disabled, software, or hardware fog rendering.",
+      "value_type": "enum",
+      "values": [
+        {"evidence": {"line": 871, "path": "codemp/rd-vulkan/tr_init.cpp"}, "meaning": "Disable fog.", "value": "0"},
+        {"evidence": {"line": 871, "path": "codemp/rd-vulkan/tr_init.cpp"}, "meaning": "Use software fog.", "value": "1"},
+        {"evidence": {"line": 871, "path": "codemp/rd-vulkan/tr_init.cpp"}, "meaning": "Use hardware fog.", "value": "2"}
+      ]
+    }
+  }
+}

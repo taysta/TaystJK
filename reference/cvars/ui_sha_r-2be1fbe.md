@@ -1,0 +1,56 @@
+---
+title: "ui_sha_r"
+layout: reference
+nav_exclude: true
+search_exclude: false
+---
+
+# `ui_sha_r`
+
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
+Controls `ui_sha_r` in the ui module. Consult the cited behavior reads before relying on values not listed here.
+
+## At a glance
+
+| Field | Value |
+|:--|:--|
+| Module | `ui` |
+| Also registered in | `ui` |
+| Renderer | All / not renderer-specific |
+| Network scope | `client-only` — Local to the client/UI/renderer. |
+| Derivation | `code-trace` |
+| Confidence | `high` |
+| Default | `0` |
+| Value type | `bool` |
+| Restart | No latch flag is registered. |
+| Cheat protected | No |
+
+## Values
+
+| Value | Meaning | Evidence |
+|:--|:--|:--|
+| `0` | Disabled. | [codemp/ui/ui_cvar.c:91](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_cvar.c#L91) |
+| `1` | Enabled. | [codemp/ui/ui_cvar.c:91](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_cvar.c#L91) |
+
+## Flags
+
+- `CVAR_ARCHIVE` — saved to the user configuration
+- `CVAR_INTERNAL` — internal UI/engine state
+
+## Provenance
+
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+
+- Commit evidence: [`6d7bc5b9ec68`](https://github.com/taysta/TaystJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:150](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L150)
+- Attribution method: `upstream-head-presence`
+- Attribution confidence: `high`
+
+## Evidence
+
+- registration: [codemp/ui/ui_xcvar.h:152](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L152) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_cvar.c:91](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_cvar.c#L91)
+- behavior: [codemp/cgame/cg_cvar.c:121](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_cvar.c#L121)

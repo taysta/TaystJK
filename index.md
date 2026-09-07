@@ -1,197 +1,110 @@
 ---
-title: New
-has_children: false
+title: "TaystJK console reference"
+layout: reference
 nav_order: 1
+wide: true
+reference_app: true
+description: "Search every TaystJK cvar and console command, including options, renderer scope, and upstream provenance."
 ---
 
-# New in this fork:
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">TaystJK technical reference</p>
+    <h1>Every console control.<br><span>Traced to its source.</span></h1>
+    <p class="hero-lede">Search every cvar and command in TaystJK, see the accepted values, and tell Base JKA, OpenJK, EternalJK, jaPRO, rend2, Vulkan, and other upstream work apart.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="#catalog">Search 2,014 entries</a>
+      <a class="button button-secondary" href="{{ '/reference/sources/' | relative_url }}">How attribution works</a>
+    </div>
+  </div>
+  <div class="hero-terminal" aria-label="Example console lookup">
+    <div class="terminal-bar"><span></span><span></span><span></span><b>console reference</b></div>
+    <div class="terminal-body">
+      <p><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong></p>
+      <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
+      <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      <hr>
+      <p><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong></p>
+      <p class="terminal-muted">Frame-independent third-person camera damping</p>
+      <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+    </div>
+  </div>
+</section>
 
-## Vulkan Renderer
+<section class="reference-stats" aria-label="Reference coverage">
+  <div><strong>1,441</strong><span>cvars</span></div>
+  <div><strong>573</strong><span>commands</span></div>
+  <div><strong>9</strong><span>source lineages</span></div>
+  <div><strong>4</strong><span>renderer targets</span></div>
+</section>
 
--   Enable with `cl_renderer rd-vulkan; vid_restart`
--   `r_fbo 1; r_bloom 1` to enable bloom, adjust with `r_bloom_intensity` and `r_bloom_threshold`
--   See more info [here](https://github.com/ec-/Quake3e#vulkan-renderer)
--   From JKSunny
+<section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" aria-labelledby="catalog-title">
+  <div class="catalog-heading">
+    <div>
+      <p class="section-kicker">Console index</p>
+      <h2 id="catalog-title">Find a cvar or command</h2>
+    </div>
+    <p class="catalog-shortcut"><kbd>/</kbd> to search</p>
+  </div>
 
-* * *
+  <form class="catalog-controls" data-catalog-form role="search">
+    <label class="catalog-search">
+      <span>Search the reference</span>
+      <span class="search-field">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+        <input type="search" name="q" data-search autocomplete="off" spellcheck="false" placeholder="Try cg_fov, download, bloom…">
+      </span>
+    </label>
 
-## Miscellaneous Updates
+    <div class="catalog-kind" data-kind-tabs aria-label="Entry type">
+      <button type="button" data-kind="all">All</button>
+      <button type="button" data-kind="cvar">Cvars</button>
+      <button type="button" data-kind="command">Commands</button>
+    </div>
 
-- `cg_scoreboardTime 1` Display the local time on the scoreboard
-- `cg_ambientSounds 0` Enable/disable ambient map sounds
-- `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
-- `styleplayer 16` New FFA invulnerability shell
-- `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
-- `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
-- `cg_hudFiles 4` new Quake Champions style hud
-- `cg_drawTimer 7` new csgo style match timer
-- `cg_drawScores 3` new way to display team scores for tffa scores and duel scores for duel gametype
-- `cg_drawTimerCountdown` makes the timer count down instead if the server has a timelimit set
-- `cg_drawTimerCountdown 1` new csgo style match timer
-- `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
-- Fixed various Linux compiling problems and related crashes
-- Fixed null skin name crash
-- Water wake shader fix from Circa
-- Textureless MP Swoop fix from MagSul
-- Jawa sound fixes from eezstreet
-- Broken effects fixes
-- Weapon charge sounds now accurately reflect their charge times
-- Reduced NPCs choppy/laggy movement
-- Chat/console now support \[<kbd>shift</kbd>+\]<kbd>ctrl</kbd>+<kbd>backspace</kbd>/<kbd>del</kbd>/<kbd>left</kbd>/<kbd>right</kbd> shortcuts
+    <div class="catalog-filters">
+      <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
+      <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
+      <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
+      <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
+      <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
+      <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
+    </div>
 
-* * *
+    <div class="catalog-actions">
+      <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+    </div>
+  </form>
 
-## Movement Keys Updates
+  <div class="catalog-status" aria-live="polite">
+    <p data-result-count>Loading the reference…</p>
+    <p class="active-filters" data-active-filters></p>
+  </div>
+  <div class="catalog-results" data-results aria-busy="true"></div>
+  <div class="catalog-empty" data-empty hidden>
+    <h3>No matching entries</h3>
+    <p>Try a shorter search or clear one of the filters.</p>
+  </div>
+  <div class="catalog-more"><button type="button" class="button button-secondary" data-load-more hidden>Show more</button></div>
+  <noscript><p class="catalog-noscript">JavaScript is required for the interactive index. You can still browse the <a href="{{ '/reference/all/' | relative_url }}">static A–Z index</a> or use the generated JSON files.</p></noscript>
+</section>
 
-- `cg_movementKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
-- `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
-- Movement key overlay now includes attack/altattack inputs
+<section class="browse-section">
+  <div class="section-heading">
+    <div><p class="section-kicker">Browse with context</p><h2>Start from what you know</h2></div>
+    <p>Each entry keeps its current behavior separate from where the feature originated.</p>
+  </div>
+  <div class="browse-grid">
+    <a class="browse-card" href="{{ '/cvars/' | relative_url }}"><span class="browse-icon">c_</span><h3>Cvars</h3><p>Defaults, accepted values, flags, ranges, restart behavior, and network scope.</p><b>Browse 1,441 →</b></a>
+    <a class="browse-card" href="{{ '/commands/' | relative_url }}"><span class="browse-icon">&gt;_</span><h3>Commands</h3><p>Syntax, arguments, handlers, cheat protection, and server-side gating.</p><b>Browse 573 →</b></a>
+    <a class="browse-card" href="{{ '/reference/renderers/' | relative_url }}"><span class="browse-icon">◈</span><h3>Renderer scope</h3><p>Compare vanilla, rend2, Vulkan, and dedicated renderer registrations.</p><b>Compare renderers →</b></a>
+    <a class="browse-card" href="{{ '/reference/origins/' | relative_url }}"><span class="browse-icon">↗</span><h3>Provenance</h3><p>Separate Base JKA and upstream work from TaystJK-specific additions.</p><b>Browse origins →</b></a>
+  </div>
+</section>
 
-* * *
-
-## Keybind & Command Updates
-
-- You can now bind key combinations using an <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> modifier key. For example, `bind ctrl+x kill` will make <kbd>Ctrl</kbd> + <kbd>X</kbd> perform `kill`.
-
-- You can now bind the _right-side_ <kbd>Alt</kbd> / <kbd>Ctrl</kbd> / <kbd>Shift</kbd> keys separately from the _left-side_ keys. For example, `bind rctrl kill` will make the _right-side_ <kbd>Ctrl</kbd> key perform `kill`. Don't worry, your existing configuration is still 100% compatible — if no binding is specifically set for the right-side key, then the generic binding is used. The left-side key always uses the generic binding.
-
-- Nested quotation marks are now supported in commands and binds, allowing for easier and more robust configuration. This allows entering commands like bind a "bind b "set c "d ; e" ; say "hello there"""
-
-
-#### String Substitution (`strSub`)
-
-- Executes a command, substituting in the contents of cvar(s). Surround cvar names with `$` dollar signs.
-
-- Example: `strsub say "Hello, I am $name$"`
-
-
-#### If Cvar (`ifCvar`)
-
-- Executes a certain command based on the current setting of a cvar.
-
-- Usage: `ifCvar [cvar name] <setting> <number of arguments to execute> <arguments to execute> <some other setting> <some other number of arguments> <some other arguments> ...`
-
-- Settings can optionally begin with special modifiers prepended with `$` dollar sign:
-
-
-| **Modifier**       	| **Description**                                                                                    	|
-|--------------------	|----------------------------------------------------------------------------------------------------	|
-| `$=`               	| Convert the setting to a number and compare whether it is equal to another number.                 	|
-| `$!=`              	| Convert the setting to a number and compare whether it is unequal to another number.               	|
-| `$>`               	| Convert the setting to a number and compare whether it is greater than another number.             	|
-| `$<`               	| Convert the setting to a number and compare whether it is less than another number.                	|
-| `$>=`              	| Convert the setting to a number and compare whether it is greater than or equal to another number. 	|
-| `$<=`              	| Convert the setting to a number and compare whether it is less than or equal to another number.    	|
-| `$contains`        	| Compare whether the setting contains some text anywhere in it.                                     	|
-| `$beginswith`      	| Compare whether the setting begins with some text.                                                 	|
-| `$endswith`        	| Compare whether the setting ends with some text.                                                   	|
-| `else`             	| This keyword will cause the comparison to always be true.                                          	|
-| (No modifier used) 	| Compare whether the setting matches some text.
-
-- Settings can also reference the value of another cvar by prepending that cvar's name with $.
-
-- Simple example: `ifCvar cg_myCvar 0 2 say_team hi 1 2 say_team bye` → if cg\_myCvar is `0`, then `say_team hi` is executed. If it's `1`, then `say_team bye` is executed.
-
-- Complex example: `ifCvar cg_mycvar $>=$cg_someOtherCvar 1 quit $containsbeer 3 set model desann $else 4 bind x say_team "hello there"` → if `cg_myCvar` is greater than or equal to the value of `cg_someOtherCvar`, then quit is executed. If it contains the word `beer` anywhere, then `set model desann` is executed. For anything else, `bind x say_team "hello there"` is executed.
-
-#### Delay (`delay`)
-
-Waits a specified time (in milliseconds) before executing whatever follows. Unlike the base JKA `wait` command, other commands may freely execute in the meantime.  
-Example:`say darth;​delay 1000;​say vader`
-
-#### Delay Cancel (`delaycancel`)
-
-Cancels any pending `delay`(s) that contain the argument. Use `""` to match anything.  
-Example: `delaycancel vader`
-
-#### Wait Freely (`waitf`)
-
-Waits a specified time (in number of frames) before executing whatever follows. Unlike the base JKA `wait` command, other commands may freely execute in the meantime.  
-Example:`say darth;​waitf 333;​say vader`
-
-#### Wait Freely Cancel (`waitfcancel`)
-
-Cancels any pending `waitf`(s) that contain the argument. Use `""` to match anything.  
-Example: `waitfcancel vader`
-
-### Music Controls:
-
-#### Next Track (`mnext`)
-
-#### Previous Track (`mprev`)
-
-#### Pause/Play Music (`mpause`)
-
-#### Stop Music (`mstop`)
-
-These commands simulate hardware media buttons. Useful for controlling your music while in-game.
-
-Note that some music players do not support media buttons by default; for example, VLC Media Player requires media button support to be manually enabled in settings. These currently only work on the Win32 build.
-
-* * *
-
-## Shader Overrides
-
--   If there are two shaders sharing the same name, the one that was found in a file later on JKA file list (phone book order) takes precedence. For example if there is a shader called gfx/2d/charsgrid\_med in both shaders/original.shader and shaders/fonts.shader only the shader found in shaders/original.shader will be used then.
--   Before this change, combining multiple mods that target shaders from the same .shader file was impossible without merging the shaders of all the mods into one shader that is a complete copy of the base shader it originally existed in. This made it a hassle to use multiple mods that were designed to apply new shaders to base assets.
-
-* * *
-
-## Pitch Helper
-
--   Pitch helper is a new tool to help you maintain your pitch aim at a desired level based on colored text as a visual queue
--   `cg_pitchHelper 1` Pitch angle can now be drawn independently from `cg_showpos`
--   Center point has green text and goes as a gradient to orange until it leaves `cg_pitchHelperRange` where the orange becomes red.
--   The whole range can be offset up or down with `cg_pitchHelperOffset`
--   The drawn number can be moved with `cg_pitchHelperX` and `cg_pitchHelperX`
-
-* * *
-
-## Strafe Helper Updates
-
--   More strafe bars, draws 2 lines for all keys A, WA, W, WD, D, SD, S, SA, enable with new `strafehelper` options
--   Updated Style (`strafehelper 1`) can be made smaller with new option `strafehelper 18`
--   CGAZ Style (`strafehelper 2`) is now affected by `cg_strafeHelperCutoff`
-
-* * *
-
-## Speedometer Updates
-
--   Running count of previous groundspeeds with `speedometer 10` and cvar `cg_speedometerJumps N` where N is the number of jumps
--   Speedometer jumps configuration cvars `cg_speedometerJumpsX`, `cg_speedometerJumpsY`
--   Use `%J%` in a chat bind to say your last N jumps eg. `bind 6 "say Jumps: %J%"`
--   Speedometer colors can now be disabled with `speedometer 11`
--   `speedometer 13` displays speeds as red/green based on difference from previous jump
--   `cg_jumpGoal` You can now set a first jump speed goal speed, if first jump speed is above your goal speed, the groundspeed text will be green. Requires `speedometer 1` enabled
--   Updated speed graph, revert to old style with `speedometer 14`
-
-* * *
-
-## Trigger/Clip/Slick Rendering
-
--   `r_renderClipBrushes 1` enable rendering of clip brushes
--   `r_renderClipBrushesShader` shader to render over clip brushes
--   `r_renderTriggerBrushes 1` enable rendering of trigger brushes
--   `r_renderTriggerBrushesShader` shader to render over trigger brushes
--   `r_renderSlickSurfaces 1` enable rendering of slick surfaces
--   `r_renderSlickSurfacesShader` shader to render over slick surfaces
-
-* * *
-
-## Race Timer Updates
-
--   Race timer start speed can now be moved seperate from the rest of the race timer with cvars `cg_raceStart 1`, `cg_raceStartX` and `cg_raceStartY`
--   You can now set a start speed goal, if your start speed is above your goal speed, the text will be green `cg_startGoal`
-
-* * *
-
-## Disruptor Updates
-
--   New trail effects enabled with `cg_disruptorNew 1`
-    -   `cg_disruptorTeamColour 1` Changes disruptor effects colors according to team
-    -   `cg_disruptorCoreColor` Changes disruptor line color (accepts hexcode eg. xffffff)
-    -   `cg_disruptorSpiral 1` Enable Quake disruptor spiral effect
-    -   `cg_disruptorSpiralColor` Changes disruptor spiral color (accepts hexcode eg. xffffff)
-    -   `cg_disruptorMainTime` Amount of time to display disruptor primary fire
-    -   `cg_disruptorAltTime` Amount of time to display disruptor alt fire
--   `cg_crosshairScope 1` enables minimalist scope: crosshair, charge and ammo
+<section class="method-banner">
+  <div><p class="section-kicker">Evidence, not guesswork</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
+  <p>The inventory combines static extraction with a runtime reconciliation. Squashed pull requests are traced through their retained commit bullets and PR descriptions; uncertain semantics stay visibly marked for review.</p>
+  <a class="text-link" href="{{ '/reference/sources/' | relative_url }}">Read the methodology →</a>
+</section>

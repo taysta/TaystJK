@@ -1,0 +1,18 @@
+[
+  {"name":"cl_jk2FX","kind":"cvar","status":"renamed","replacement":"fx_jk2","summary":"Renamed when JK2 projectile-effect handling moved into the FX subsystem.","commit":"8b353c210","evidence":{"path":"codemp/client/FxUtil.cpp","line":119}},
+  {"name":"d_npc","kind":"cvar","status":"inactive","replacement":null,"summary":"The NPC-name debug registration is commented out.","commit":null,"evidence":{"path":"codemp/game/NPC.c","line":1984}},
+  {"name":"d_slowmodeath","kind":"cvar","status":"inactive","replacement":null,"summary":"The slow-motion death registration remains inside a disabled comment block.","commit":null,"evidence":{"path":"codemp/game/NPC.c","line":1943}},
+  {"name":"g_blueTeam","kind":"cvar","status":"inactive","replacement":null,"summary":"The old engine registration and UI setters are commented out.","commit":null,"evidence":{"path":"codemp/client/cl_main.cpp","line":3422}},
+  {"name":"g_redTeam","kind":"cvar","status":"inactive","replacement":null,"summary":"The old engine registration and UI setters are commented out.","commit":null,"evidence":{"path":"codemp/client/cl_main.cpp","line":3421}},
+  {"name":"r_flareCoeff","kind":"cvar","status":"inactive","replacement":null,"summary":"The Vulkan flare coefficient registration is commented out.","commit":null,"evidence":{"path":"codemp/rd-vulkan/tr_init.cpp","line":828}},
+  {"name":"r_flareFade","kind":"cvar","status":"inactive","replacement":null,"summary":"The Vulkan flare fade registration is commented out.","commit":null,"evidence":{"path":"codemp/rd-vulkan/tr_init.cpp","line":827}},
+  {"name":"r_flareSize","kind":"cvar","status":"inactive","replacement":null,"summary":"The Vulkan flare-size registration is commented out.","commit":null,"evidence":{"path":"codemp/rd-vulkan/tr_init.cpp","line":826}},
+  {"name":"sv_debugserver","kind":"cvar","status":"inactive","replacement":null,"summary":"The server debug registration is commented out.","commit":null,"evidence":{"path":"codemp/server/sv_init.cpp","line":1036}},
+  {"name":"amsheev","kind":"command","status":"inactive","replacement":null,"summary":"The player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8901}},
+  {"name":"amstatus","kind":"command","status":"inactive","replacement":null,"summary":"The player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8914}},
+  {"name":"debugsetbodyanim","kind":"command","status":"inactive","replacement":null,"summary":"The debug player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8953}},
+  {"name":"debugSetSaberMove","kind":"command","status":"inactive","replacement":null,"summary":"The debug player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8954}},
+  {"name":"devmapbsp","kind":"command","status":"inactive","replacement":"devmap","summary":"The MP server registration is commented out as not relevant to the multiplayer codebase.","commit":null,"evidence":{"path":"codemp/server/sv_ccmds.cpp","line":2332}},
+  {"name":"dfrefresh","kind":"command","status":"inactive","replacement":null,"summary":"The race-ranking player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8958}},
+  {"name":"kylesmash","kind":"command","status":"inactive","replacement":null,"summary":"The player-command table entry is commented out.","commit":null,"evidence":{"path":"codemp/game/g_cmds.c","line":8989}}
+]
