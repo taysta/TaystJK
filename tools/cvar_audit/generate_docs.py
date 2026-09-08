@@ -616,7 +616,7 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
 </section>
 
 <section class="method-banner">
-  <div><p class="section-kicker">Evidence, not guesswork</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
+  <div><p class="section-kicker">Evidence backed reference</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
   <p>The inventory combines static extraction with a runtime reconciliation. Squashed pull requests are traced through their retained commit bullets and PR descriptions; uncertain semantics stay visibly marked for review.</p>
   <a class="text-link" href="{{{{ '/reference/sources/' | relative_url }}}}">Read the methodology →</a>
 </section>
