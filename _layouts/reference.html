@@ -24,9 +24,11 @@
 
         {% assign nav_section = 'explore' %}
         {% if page.url == '/' %}{% assign nav_section = 'home' %}
+        {% elsif page.url contains '/reference/sources/' %}{% assign nav_section = 'method' %}
         {% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'explore' %} class="active"{% endif %}>Explore</a>
+          <a href="{{ '/reference/sources/' | relative_url }}"{% if nav_section == 'method' %} class="active"{% endif %}>Method</a>
         </nav>
 
         <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
