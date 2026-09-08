@@ -467,30 +467,52 @@ if(BuildMPRdVanilla OR BuildMPRdVulkan OR BuildMPRend2)
 	if(UseInternalJPEG)
 		if(UseTurboJPEG)
 			include(ExternalProject)
-			find_program(CMAKE_ASM_NASM_COMPILER NAMES nasm)
-			if(CMAKE_ASM_NASM_COMPILER)
-				message(STATUS "Found NASM assembler: ${CMAKE_ASM_NASM_COMPILER}")
-				set(WITH_SIMD 1)
+
+			set(TurboSimdArgs "")
+			set(TurboNeedsNasm OFF)
+			if(X86)
+				set(TurboNeedsNasm ON)
+			elseif(CMAKE_OSX_ARCHITECTURES MATCHES "x86_64|i386")
+				# universal build: the x86_64 slice needs NASM even on an arm64 host
+				set(TurboNeedsNasm ON)
+			endif()
+
+			if(TurboNeedsNasm)
+				find_program(TaystJKNasmExecutable NAMES nasm)
+				if(TaystJKNasmExecutable)
+					message(STATUS "Found NASM assembler: ${TaystJKNasmExecutable}")
+					list(APPEND TurboSimdArgs
+							-DWITH_SIMD=1
+							-DCMAKE_ASM_NASM_COMPILER=${TaystJKNasmExecutable})
+				else()
+					message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
+					list(APPEND TurboSimdArgs -DWITH_SIMD=0)
+				endif()
+			elseif(Architecture STREQUAL "arm64" OR Architecture STREQUAL "arm")
+				list(APPEND TurboSimdArgs -DWITH_SIMD=1)
 			else()
-				message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
-				set(WITH_SIMD 0)
+				list(APPEND TurboSimdArgs -DWITH_SIMD=0)
 			endif()
 
 			ExternalProject_Add(libjpeg-turbo
 					GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
 					GIT_TAG 3.1.4.1
-					BUILD_COMMAND ${CMAKE_COMMAND} --build . --target jpeg-static --config ${CMAKE_BUILD_TYPE}
+					BUILD_COMMAND ${CMAKE_COMMAND} --build . --target jpeg-static --config $<CONFIG>
 					INSTALL_COMMAND ""
+					BUILD_BYPRODUCTS <BINARY_DIR>/${CMAKE_STATIC_LIBRARY_PREFIX}jpeg${CMAKE_STATIC_LIBRARY_SUFFIX}
 					CMAKE_ARGS
-					-DCMAKE_ASM_NASM_COMPILER=${CMAKE_ASM_NASM_COMPILER}
-					-DWITH_SIMD=${WITH_SIMD}
+					${TurboSimdArgs}
 					-DENABLE_SHARED=0
 					-DWITH_ARITH_DEC=0
 					-DWITH_ARITH_ENC=0
 					-DWITH_TURBOJPEG=0
 					-DWITH_TOOLS=0
 					-DWITH_TESTS=0
-					-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+					-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+					-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+					-DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
+					-DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
+					"-DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}")
 		else()
 			add_subdirectory(lib/jpeg-9c)
 		endif()
