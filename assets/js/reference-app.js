@@ -2,6 +2,15 @@
   "use strict";
 
   var PAGE_SIZE = 48;
+  var FILTER_KEYS = ["origin", "module", "renderer", "status", "network", "flag"];
+  var FILTER_DEFAULTS = {
+    origin: "Any origin",
+    module: "Any module",
+    renderer: "Any renderer",
+    status: "Any status",
+    network: "Any scope",
+    flag: "Any flag"
+  };
   var ORIGIN_ORDER = ["taystjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "openjk", "basejka", "quake3", "unknown"];
   var ORIGIN_LABELS = {
     taystjk: "TaystJK",
@@ -64,16 +73,34 @@
     return entry;
   }
 
+  function selectedValues(state, key) {
+    var value = state[key];
+    if (Array.isArray(value)) return value.filter(Boolean);
+    return value ? [value] : [];
+  }
+
+  function hasSelectedValue(state, key, value) {
+    return selectedValues(state, key).indexOf(value) !== -1;
+  }
+
   function entryMatches(entry, state) {
     if (state.kind !== "all" && entry.kind !== state.kind) return false;
-    if (state.origin && entry.origin !== state.origin) return false;
-    if (state.module && (entry.modules || [entry.module]).indexOf(state.module) === -1) return false;
-    if (state.status && entry.status !== state.status) return false;
-    if (state.network && entry.network !== state.network) return false;
-    if (state.flag && (entry.flags || []).indexOf(state.flag) === -1) return false;
-    if (state.renderer === "renderer-specific" && !(entry.renderer || []).length) return false;
-    if (state.renderer === "none" && (entry.renderer || []).length) return false;
-    if (state.renderer && state.renderer !== "renderer-specific" && state.renderer !== "none" && (entry.renderer || []).indexOf(state.renderer) === -1) return false;
+    var origins = selectedValues(state, "origin");
+    var modules = selectedValues(state, "module");
+    var statuses = selectedValues(state, "status");
+    var networks = selectedValues(state, "network");
+    var flags = selectedValues(state, "flag");
+    var renderers = selectedValues(state, "renderer");
+    if (origins.length && origins.indexOf(entry.origin) === -1) return false;
+    if (modules.length && !modules.some(function (moduleName) { return (entry.modules || [entry.module]).indexOf(moduleName) !== -1; })) return false;
+    if (statuses.length && statuses.indexOf(entry.status) === -1) return false;
+    if (networks.length && networks.indexOf(entry.network) === -1) return false;
+    if (flags.length && !flags.some(function (flag) { return (entry.flags || []).indexOf(flag) !== -1; })) return false;
+    if (renderers.length && !renderers.some(function (renderer) {
+      if (renderer === "renderer-specific") return Boolean((entry.renderer || []).length);
+      if (renderer === "none") return !(entry.renderer || []).length;
+      return (entry.renderer || []).indexOf(renderer) !== -1;
+    })) return false;
     if (state.tokens.length && !state.tokens.every(function (token) { return entry._search.indexOf(token) !== -1; })) return false;
     return true;
   }
@@ -109,30 +136,50 @@
     return Object.keys(found);
   }
 
-  function option(select, value, label) {
-    var node = document.createElement("option");
-    node.value = value;
-    node.textContent = label;
-    select.appendChild(node);
+  function checkboxOption(container, name, value, label) {
+    var optionLabel = document.createElement("label");
+    var input = document.createElement("input");
+    var text = document.createElement("span");
+    optionLabel.className = "filter-checkbox";
+    input.type = "checkbox";
+    input.name = name;
+    input.value = value;
+    input.dataset.filter = name;
+    text.textContent = label;
+    optionLabel.appendChild(input);
+    optionLabel.appendChild(text);
+    container.appendChild(optionLabel);
+  }
+
+  function selectOption(select, value, label) {
+    var optionNode = document.createElement("option");
+    optionNode.value = value;
+    optionNode.textContent = label;
+    select.appendChild(optionNode);
+  }
+
+  function addFilterOption(root, name, value, label) {
+    var checkboxContainer = root.querySelector('[data-filter-options="' + name + '"]');
+    if (checkboxContainer) checkboxOption(checkboxContainer, name, value, label);
+    else selectOption(root.querySelector('select[data-filter="' + name + '"]'), value, label);
   }
 
   function populateFilters(root, entries) {
-    var origin = root.querySelector('[data-filter="origin"]');
     ORIGIN_ORDER.filter(function (value) {
       return entries.some(function (entry) { return entry.origin === value; });
-    }).forEach(function (value) { option(origin, value, ORIGIN_LABELS[value] || value); });
+    }).forEach(function (value) { addFilterOption(root, "origin", value, ORIGIN_LABELS[value] || value); });
 
     unique(entries, function (entry) { return entry.modules || [entry.module]; }).sort().forEach(function (value) {
-      option(root.querySelector('[data-filter="module"]'), value, value);
+      addFilterOption(root, "module", value, value);
     });
     unique(entries, function (entry) { return entry.renderer; }).sort().forEach(function (value) {
-      option(root.querySelector('[data-filter="renderer"]'), value, value);
+      addFilterOption(root, "renderer", value, value);
     });
     unique(entries, function (entry) { return entry.network; }).sort().forEach(function (value) {
-      option(root.querySelector('[data-filter="network"]'), value, NETWORK_LABELS[value] || value);
+      addFilterOption(root, "network", value, NETWORK_LABELS[value] || value);
     });
     unique(entries, function (entry) { return entry.flags || []; }).sort().forEach(function (value) {
-      option(root.querySelector('[data-filter="flag"]'), value, value);
+      addFilterOption(root, "flag", value, value);
     });
   }
 
@@ -181,40 +228,101 @@
       '</article>';
   }
 
+  function paramValues(params, key) {
+    var seen = Object.create(null);
+    return params.getAll(key).filter(function (value) {
+      if (!value || seen[value]) return false;
+      seen[value] = true;
+      return true;
+    });
+  }
+
+  function valueLabel(key, value) {
+    if (key === "origin") return ORIGIN_LABELS[value] || value;
+    if (key === "network") return NETWORK_LABELS[value] || value;
+    if (key === "status") return value === "documented" ? "Documented" : "Needs review";
+    if (key === "renderer" && value === "renderer-specific") return "Renderer-specific only";
+    if (key === "renderer" && value === "none") return "Not renderer-specific";
+    return value;
+  }
+
   function stateFrom(root) {
     var params = new URLSearchParams(global.location.search);
     var mode = root.dataset.mode || "all";
     var kind = mode === "all" && ["cvar", "command"].indexOf(params.get("kind")) !== -1 ? params.get("kind") : mode;
-    return {
+    var presets = {
+      origin: root.dataset.presetOrigin || "",
+      module: root.dataset.presetModule || "",
+      renderer: root.dataset.presetRenderer || ""
+    };
+    var state = {
       mode: mode,
       kind: kind,
       query: normalize(params.get("q")),
       tokens: normalize(params.get("q")).split(" ").filter(Boolean),
-      origin: root.dataset.presetOrigin || params.get("origin") || "",
-      module: root.dataset.presetModule || params.get("module") || "",
-      renderer: root.dataset.presetRenderer || params.get("renderer") || "",
-      status: params.get("status") || "",
-      network: params.get("network") || "",
-      flag: params.get("flag") || "",
+      origin: presets.origin ? [presets.origin] : paramValues(params, "origin"),
+      module: presets.module ? [presets.module] : paramValues(params, "module"),
+      renderer: presets.renderer ? [presets.renderer] : paramValues(params, "renderer"),
+      status: paramValues(params, "status"),
+      network: paramValues(params, "network"),
+      flag: paramValues(params, "flag"),
       sort: ["relevance", "name", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : "relevance",
       limit: PAGE_SIZE,
-      presets: {
-        origin: root.dataset.presetOrigin || "",
-        module: root.dataset.presetModule || "",
-        renderer: root.dataset.presetRenderer || ""
-      }
+      presets: presets
     };
+    if (kind === "command") state.flag = [];
+    return state;
+  }
+
+  function updateFilterSummary(root, state, key) {
+    var summary = root.querySelector('[data-filter-summary="' + key + '"]');
+    if (!summary) return;
+    var values = selectedValues(state, key);
+    summary.textContent = values.length === 0
+      ? FILTER_DEFAULTS[key]
+      : (values.length === 1 ? valueLabel(key, values[0]) : values.length + " selected");
+    var toggle = root.querySelector('[data-filter-toggle="' + key + '"]');
+    toggle.classList.toggle("has-selection", values.length > 0);
+    var clear = root.querySelector('[data-clear-filter="' + key + '"]');
+    clear.disabled = values.length === 0 || Boolean(state.presets[key]);
+  }
+
+  function closeDropdown(root, key) {
+    var popover = root.querySelector('[data-filter-popover="' + key + '"]');
+    var toggle = root.querySelector('[data-filter-toggle="' + key + '"]');
+    if (!popover || !toggle) return;
+    popover.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  function closeDropdowns(root, except) {
+    Array.prototype.forEach.call(root.querySelectorAll("[data-filter-popover]"), function (popover) {
+      var key = popover.dataset.filterPopover;
+      if (key !== except) closeDropdown(root, key);
+    });
   }
 
   function applyState(root, state) {
     root.querySelector("[data-search]").value = state.query;
-    ["origin", "module", "renderer", "status", "network", "flag"].forEach(function (key) {
-      var select = root.querySelector('[data-filter="' + key + '"]');
-      if (Array.prototype.some.call(select.options, function (item) { return item.value === state[key]; })) select.value = state[key];
-      if (state.presets[key]) {
-        select.value = state.presets[key];
-        select.disabled = true;
+    FILTER_KEYS.forEach(function (key) {
+      var controls = root.querySelectorAll('[data-filter="' + key + '"]');
+      var requested = state.presets[key] ? [state.presets[key]] : selectedValues(state, key);
+      var isSelect = controls.length === 1 && controls[0].tagName === "SELECT";
+      if (isSelect) {
+        var value = requested[0] || "";
+        if (!Array.prototype.some.call(controls[0].options, function (optionNode) { return optionNode.value === value; })) value = "";
+        state[key] = value ? [value] : [];
+        controls[0].value = value;
+        controls[0].disabled = Boolean(state.presets[key]);
+      } else {
+        var available = Array.prototype.map.call(controls, function (control) { return control.value; });
+        state[key] = requested.filter(function (value) { return available.indexOf(value) !== -1; });
+        Array.prototype.forEach.call(controls, function (control) {
+          control.checked = hasSelectedValue(state, key, control.value);
+          control.disabled = Boolean(state.presets[key]);
+        });
       }
+      updateFilterSummary(root, state, key);
     });
     root.querySelector("[data-sort]").value = state.sort;
     root.querySelector("[data-kind-tabs]").classList.toggle("is-fixed", state.mode !== "all");
@@ -224,6 +332,7 @@
       button.setAttribute("aria-pressed", active ? "true" : "false");
     });
     root.querySelector("[data-cvar-filter]").hidden = state.kind === "command";
+    if (state.kind === "command") closeDropdown(root, "flag");
   }
 
   function syncUrl(state) {
@@ -231,10 +340,10 @@
     ["q", "kind", "origin", "module", "renderer", "status", "network", "flag", "sort"].forEach(function (key) { params.delete(key); });
     if (state.query) params.set("q", state.query);
     if (state.mode === "all" && state.kind !== "all") params.set("kind", state.kind);
-    ["origin", "module", "renderer"].forEach(function (key) {
-      if (state[key] && !state.presets[key]) params.set(key, state[key]);
+    FILTER_KEYS.forEach(function (key) {
+      if (state.presets[key]) return;
+      selectedValues(state, key).forEach(function (value) { params.append(key, value); });
     });
-    ["status", "network", "flag"].forEach(function (key) { if (state[key]) params.set(key, state[key]); });
     if (state.sort !== "relevance") params.set("sort", state.sort);
     var query = params.toString();
     global.history.replaceState(null, "", global.location.pathname + (query ? "?" + query : "") + global.location.hash);
@@ -242,12 +351,11 @@
 
   function activeFilterText(state) {
     var values = [];
-    if (state.origin) values.push("Origin: " + (ORIGIN_LABELS[state.origin] || state.origin));
-    if (state.module) values.push("Module: " + state.module);
-    if (state.renderer) values.push("Renderer: " + state.renderer);
-    if (state.status) values.push(state.status === "documented" ? "Documented" : "Needs review");
-    if (state.network) values.push(NETWORK_LABELS[state.network] || state.network);
-    if (state.flag) values.push(state.flag);
+    var groupLabels = { origin: "Origin", module: "Module", renderer: "Renderer", status: "Documentation", network: "Network", flag: "Flag" };
+    FILTER_KEYS.forEach(function (key) {
+      var selected = selectedValues(state, key);
+      if (selected.length) values.push(groupLabels[key] + ": " + selected.map(function (value) { return valueLabel(key, value); }).join(", "));
+    });
     return values.join(" · ");
   }
 
@@ -292,10 +400,18 @@
       state.limit = PAGE_SIZE;
       update(true);
     });
-    Array.prototype.forEach.call(root.querySelectorAll("[data-filter]"), function (select) {
-      select.addEventListener("change", function () {
-        state[select.dataset.filter] = select.value;
+    Array.prototype.forEach.call(root.querySelectorAll("[data-filter]"), function (control) {
+      control.addEventListener("change", function () {
+        var key = control.dataset.filter;
+        if (control.type === "checkbox") {
+          state[key] = Array.prototype.filter.call(root.querySelectorAll('[data-filter="' + key + '"]'), function (checkbox) {
+            return checkbox.checked;
+          }).map(function (checkbox) { return checkbox.value; });
+        } else {
+          state[key] = control.value ? [control.value] : [];
+        }
         state.limit = PAGE_SIZE;
+        applyState(root, state);
         update(true);
       });
     });
@@ -307,7 +423,25 @@
     Array.prototype.forEach.call(root.querySelectorAll("[data-kind]"), function (button) {
       button.addEventListener("click", function () {
         state.kind = button.dataset.kind;
-        if (state.kind === "command") state.flag = "";
+        if (state.kind === "command") state.flag = [];
+        state.limit = PAGE_SIZE;
+        applyState(root, state);
+        update(true);
+      });
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-filter-toggle]"), function (toggle) {
+      toggle.addEventListener("click", function () {
+        var key = toggle.dataset.filterToggle;
+        var popover = root.querySelector('[data-filter-popover="' + key + '"]');
+        var opening = popover.hidden;
+        closeDropdowns(root, opening ? key : "");
+        popover.hidden = !opening;
+        toggle.setAttribute("aria-expanded", opening ? "true" : "false");
+      });
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-clear-filter]"), function (button) {
+      button.addEventListener("click", function () {
+        state[button.dataset.clearFilter] = [];
         state.limit = PAGE_SIZE;
         applyState(root, state);
         update(true);
@@ -319,14 +453,15 @@
       state.kind = state.mode;
       state.query = "";
       state.tokens = [];
-      state.origin = state.presets.origin;
-      state.module = state.presets.module;
-      state.renderer = state.presets.renderer;
-      state.status = "";
-      state.network = "";
-      state.flag = "";
+      state.origin = state.presets.origin ? [state.presets.origin] : [];
+      state.module = state.presets.module ? [state.presets.module] : [];
+      state.renderer = state.presets.renderer ? [state.presets.renderer] : [];
+      state.status = [];
+      state.network = [];
+      state.flag = [];
       state.sort = "relevance";
       state.limit = PAGE_SIZE;
+      closeDropdowns(root, "");
       applyState(root, state);
       update(true);
     });
@@ -337,10 +472,20 @@
     document.addEventListener("keydown", function (event) {
       var target = event.target;
       var isTyping = /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) || target.isContentEditable;
+      if (event.key === "Escape") {
+        var openToggle = root.querySelector('[data-filter-toggle][aria-expanded="true"]');
+        if (openToggle) {
+          closeDropdown(root, openToggle.dataset.filterToggle);
+          openToggle.focus();
+        }
+      }
       if (event.key === "/" && !isTyping) {
         event.preventDefault();
         root.querySelector("[data-search]").focus();
       }
+    });
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest || !event.target.closest("[data-filter-dropdown]")) closeDropdowns(root, "");
     });
     update(false);
   }

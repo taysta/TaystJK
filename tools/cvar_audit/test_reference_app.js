@@ -45,7 +45,10 @@ function state(overrides = {}) {
 assert.equal(catalog.entryMatches(cvar, state({ query: "bloom", tokens: ["bloom"] })), true);
 assert.equal(catalog.entryMatches(cvar, state({ query: "enable 1", tokens: ["enable", "1"] })), true);
 assert.equal(catalog.entryMatches(cvar, state({ origin: "vulkan" })), false);
+assert.equal(catalog.entryMatches(cvar, state({ origin: ["japro", "rend2"] })), true);
+assert.equal(catalog.entryMatches(command, state({ origin: ["japro", "rend2"] })), false);
 assert.equal(catalog.entryMatches(cvar, state({ renderer: "renderer-specific" })), true);
+assert.equal(catalog.entryMatches(command, state({ renderer: ["rd-vulkan", "none"] })), true);
 assert.equal(catalog.entryMatches(command, state({ renderer: "none" })), true);
 assert.equal(catalog.entryMatches(command, state({ kind: "cvar" })), false);
 assert.equal(catalog.entryMatches(cvar, state({ flag: "CVAR_ARCHIVE" })), true);
@@ -54,6 +57,8 @@ assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, stat
 assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "command" }))).length, metadata.counts.commands);
 const japroEntries = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ origin: "japro" })));
 assert.ok(japroEntries.length > 0 && japroEntries.every((entry) => entry.origin === "japro"));
+const multiOriginEntries = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ origin: ["japro", "taystjk"] })));
+assert.ok(multiOriginEntries.length > japroEntries.length && multiOriginEntries.every((entry) => ["japro", "taystjk"].includes(entry.origin)));
 const vulkanCvars = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar", renderer: "rd-vulkan" })));
 assert.ok(vulkanCvars.length > 0 && vulkanCvars.every((entry) => entry.kind === "cvar" && entry.renderer.includes("rd-vulkan")));
 const cameraSearch = state({ query: "cg_camerafps", tokens: ["cg_camerafps"] });

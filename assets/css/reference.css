@@ -402,8 +402,9 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 
 .catalog-search { display: grid; gap: .4rem; }
 .catalog-search > span:first-child,
-.catalog-filters label > span,
-.catalog-sort > span {
+.catalog-filters > label > span,
+.catalog-sort > span,
+.filter-toggle > span:first-child {
   color: var(--muted);
   font-size: .7rem;
   font-weight: 800;
@@ -466,7 +467,113 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   gap: .7rem;
 }
 
-.catalog-filters label,
+.filter-dropdown {
+  position: relative;
+  min-width: 0;
+}
+
+.filter-dropdown[hidden] { display: none; }
+
+.filter-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: 100%;
+  min-height: 52px;
+  padding: .42rem .72rem;
+  color: var(--text-soft);
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.filter-toggle > span:first-child,
+.filter-toggle strong { grid-column: 1; }
+.filter-toggle strong {
+  overflow: hidden;
+  color: var(--text-soft);
+  font-size: .82rem;
+  font-weight: 650;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.filter-toggle.has-selection strong { color: var(--accent); }
+.filter-toggle:focus,
+.filter-toggle[aria-expanded="true"] { border-color: var(--accent); outline: 2px solid rgba(104, 225, 212, .12); }
+
+.filter-chevron {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  width: .55rem;
+  height: .55rem;
+  margin: 0 .15rem 0 .7rem;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .15s ease;
+}
+.filter-toggle[aria-expanded="true"] .filter-chevron { transform: translateY(2px) rotate(225deg); }
+
+.filter-popover {
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + .38rem);
+  left: 0;
+  width: max-content;
+  min-width: 100%;
+  max-width: min(360px, calc(100vw - 2rem));
+  padding: .45rem;
+  border: 1px solid var(--line-bright);
+  border-radius: 10px;
+  background: #0d1420;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .42);
+}
+.filter-popover[hidden] { display: none; }
+.filter-dropdown:nth-child(3n) .filter-popover { right: 0; left: auto; }
+
+.filter-options {
+  display: grid;
+  gap: .12rem;
+  max-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 34px;
+  padding: .35rem .45rem;
+  color: var(--text-soft);
+  border-radius: 6px;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.filter-checkbox:hover { color: var(--text); background: var(--surface-2); }
+.filter-checkbox:focus-within { outline: 2px solid rgba(104, 225, 212, .22); outline-offset: -2px; }
+.filter-checkbox input { width: 1rem; height: 1rem; margin: 0; accent-color: var(--accent-strong); flex: 0 0 auto; }
+.filter-checkbox input:checked + span { color: var(--accent); font-weight: 750; }
+.filter-checkbox input:disabled + span { opacity: .65; }
+
+.filter-clear {
+  width: 100%;
+  margin-top: .35rem;
+  padding: .45rem;
+  color: var(--text-soft);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  font-size: .75rem;
+  font-weight: 700;
+  text-align: left;
+}
+.filter-clear:hover:not(:disabled) { color: var(--accent); }
+.filter-clear:disabled { cursor: default; opacity: .4; }
+
+.catalog-filters > label,
 .catalog-sort { display: grid; gap: .35rem; }
 
 .catalog-filters select,
@@ -748,6 +855,8 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .hero { grid-template-columns: 1fr; padding-top: 2rem; }
   .hero-terminal { width: min(100%, 550px); transform: none; }
   .catalog-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter-dropdown:nth-child(3n) .filter-popover { right: auto; left: 0; }
+  .filter-dropdown:nth-child(even) .filter-popover { right: 0; left: auto; }
   .method-banner { grid-template-columns: 1fr; }
   .directory-grid,
   .static-index-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -773,6 +882,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .catalog-heading { padding: .4rem .35rem 0; }
   .catalog-shortcut { display: none; }
   .catalog-filters { grid-template-columns: 1fr; }
+  .filter-dropdown .filter-popover { right: 0; left: 0; width: 100%; max-width: none; }
   .catalog-actions { align-items: stretch; }
   .catalog-sort { grid-template-columns: 1fr; }
   .catalog-sort select { min-width: 0; }

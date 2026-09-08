@@ -40,12 +40,54 @@ description: "Search and filter every cvar and console command available in Tays
     </div>
 
     <div class="catalog-filters">
-      <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
-      <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
-      <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
-      <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
-      <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
-      <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
+      <div class="filter-dropdown" data-filter-dropdown="origin">
+        <button class="filter-toggle" type="button" data-filter-toggle="origin" aria-expanded="false"><span>Origin</span><strong data-filter-summary="origin">Any origin</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="origin" hidden>
+          <div class="filter-options" data-filter-options="origin"></div>
+          <button class="filter-clear" type="button" data-clear-filter="origin">Clear origin</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="module">
+        <button class="filter-toggle" type="button" data-filter-toggle="module" aria-expanded="false"><span>Module</span><strong data-filter-summary="module">Any module</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="module" hidden>
+          <div class="filter-options" data-filter-options="module"></div>
+          <button class="filter-clear" type="button" data-clear-filter="module">Clear module</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="renderer">
+        <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="renderer" hidden>
+          <div class="filter-options" data-filter-options="renderer">
+            <label class="filter-checkbox"><input type="checkbox" name="renderer" value="renderer-specific" data-filter="renderer"><span>Renderer-specific only</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="renderer" value="none" data-filter="renderer"><span>Not renderer-specific</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="renderer">Clear renderer</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="status">
+        <button class="filter-toggle" type="button" data-filter-toggle="status" aria-expanded="false"><span>Documentation</span><strong data-filter-summary="status">Any status</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="status" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="status" value="documented" data-filter="status"><span>Documented</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="status" value="needs-review" data-filter="status"><span>Needs review</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="status">Clear documentation</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="network">
+        <button class="filter-toggle" type="button" data-filter-toggle="network" aria-expanded="false"><span>Network scope</span><strong data-filter-summary="network">Any scope</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="network" hidden>
+          <div class="filter-options" data-filter-options="network"></div>
+          <button class="filter-clear" type="button" data-clear-filter="network">Clear network scope</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
+        <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="flag" hidden>
+          <div class="filter-options" data-filter-options="flag"></div>
+          <button class="filter-clear" type="button" data-clear-filter="flag">Clear cvar flags</button>
+        </div>
+      </div>
     </div>
 
     <div class="catalog-actions">
