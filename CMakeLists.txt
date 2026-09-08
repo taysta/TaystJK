@@ -158,6 +158,11 @@ endif()
 
 message(STATUS "Architecture is ${Architecture}")
 
+if(APPLE AND Architecture STREQUAL "arm64" AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "11.0")
+	set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OS X deployment version" FORCE)
+	message(STATUS "arm64 macOS: raising deployment target to ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+endif()
+
 if(WIN32 AND CMAKE_VERSION VERSION_LESS "3.4")
 	message(WARNING "Building on Windows platform with CMake version less than 3.4 is deprecated. Manifest file will fail to be included.")
 endif()
