@@ -22,6 +22,10 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 void R_PushDebugGroup(annotationLayer_t layer, const char* name)
 {
 	static GLuint currentLayer = (GLuint)AL_NONE;
+
+	if (!glRefConfig.annotateResources)
+		return;
+
 	assert(layer <= currentLayer + 1);
 	while (layer <= currentLayer)
 	{

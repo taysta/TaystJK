@@ -2222,16 +2222,20 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 
 	if (destroyWindow && restarting && tr.registered)
 	{
-		ri.Z_Free((void *)glConfig.extensions_string);
-		ri.Z_Free((void *)glConfigExt.originalExtensionString);
-
 		qglDeleteVertexArrays(1, &tr.globalVao);
 		SaveGhoul2InfoArray();
 	}
 
 	// shut down platform specific OpenGL stuff
 	if ( destroyWindow ) {
+		if ( tr.registered ) {
+			ri.Z_Free( (void *)glConfig.extensions_string );
+			ri.Z_Free( (void *)glConfigExt.originalExtensionString );
+		}
+
 		ri.WIN_Shutdown();
+		memset( &glConfig, 0, sizeof( glConfig ) );
+		memset( &glConfigExt, 0, sizeof( glConfigExt ) );
 	}
 
 	tr.registered = qfalse;

@@ -93,6 +93,10 @@ if(UseInternalJPEG)
 	option(UseTurboJPEG "If set, use libjpeg-turbo." ${UseTurboJPEGDefault})
 endif()
 
+cmake_dependent_option(UseInternalPNGNeon
+		"Build the bundled libpng with arm64 NEON optimisations" OFF
+		"UseInternalPNG" OFF)
+
 # This option won't appear on non-Apple platforms.
 if(APPLE)
   option(MakeApplicationBundles "Whether to build .app application bundles for engines built" ON)
@@ -133,7 +137,6 @@ else()
 	set(X86 OFF)
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
 		set(Architecture "arm64")
-		add_definitions(-DPNG_ARM_NEON_OPT=0)
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
@@ -157,6 +160,11 @@ else()
 endif()
 
 message(STATUS "Architecture is ${Architecture}")
+
+if(APPLE AND Architecture STREQUAL "arm64" AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "11.0")
+	set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OS X deployment version" FORCE)
+	message(STATUS "arm64 macOS: raising deployment target to ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+endif()
 
 if(WIN32 AND CMAKE_VERSION VERSION_LESS "3.4")
 	message(WARNING "Building on Windows platform with CMake version less than 3.4 is deprecated. Manifest file will fail to be included.")
@@ -467,30 +475,52 @@ if(BuildMPRdVanilla OR BuildMPRdVulkan OR BuildMPRend2)
 	if(UseInternalJPEG)
 		if(UseTurboJPEG)
 			include(ExternalProject)
-			find_program(CMAKE_ASM_NASM_COMPILER NAMES nasm)
-			if(CMAKE_ASM_NASM_COMPILER)
-				message(STATUS "Found NASM assembler: ${CMAKE_ASM_NASM_COMPILER}")
-				set(WITH_SIMD 1)
+
+			set(TurboSimdArgs "")
+			set(TurboNeedsNasm OFF)
+			if(X86)
+				set(TurboNeedsNasm ON)
+			elseif(CMAKE_OSX_ARCHITECTURES MATCHES "x86_64|i386")
+				# universal build: the x86_64 slice needs NASM even on an arm64 host
+				set(TurboNeedsNasm ON)
+			endif()
+
+			if(TurboNeedsNasm)
+				find_program(TaystJKNasmExecutable NAMES nasm)
+				if(TaystJKNasmExecutable)
+					message(STATUS "Found NASM assembler: ${TaystJKNasmExecutable}")
+					list(APPEND TurboSimdArgs
+							-DWITH_SIMD=1
+							-DCMAKE_ASM_NASM_COMPILER=${TaystJKNasmExecutable})
+				else()
+					message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
+					list(APPEND TurboSimdArgs -DWITH_SIMD=0)
+				endif()
+			elseif(Architecture STREQUAL "arm64" OR Architecture STREQUAL "arm")
+				list(APPEND TurboSimdArgs -DWITH_SIMD=1)
 			else()
-				message(WARNING "NASM assembler not found - libjpeg-turbo will be built without SIMD optimizations")
-				set(WITH_SIMD 0)
+				list(APPEND TurboSimdArgs -DWITH_SIMD=0)
 			endif()
 
 			ExternalProject_Add(libjpeg-turbo
 					GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo.git
 					GIT_TAG 3.1.4.1
-					BUILD_COMMAND ${CMAKE_COMMAND} --build . --target jpeg-static --config ${CMAKE_BUILD_TYPE}
+					BUILD_COMMAND ${CMAKE_COMMAND} --build . --target jpeg-static --config $<CONFIG>
 					INSTALL_COMMAND ""
+					BUILD_BYPRODUCTS <BINARY_DIR>/${CMAKE_STATIC_LIBRARY_PREFIX}jpeg${CMAKE_STATIC_LIBRARY_SUFFIX}
 					CMAKE_ARGS
-					-DCMAKE_ASM_NASM_COMPILER=${CMAKE_ASM_NASM_COMPILER}
-					-DWITH_SIMD=${WITH_SIMD}
+					${TurboSimdArgs}
 					-DENABLE_SHARED=0
 					-DWITH_ARITH_DEC=0
 					-DWITH_ARITH_ENC=0
 					-DWITH_TURBOJPEG=0
 					-DWITH_TOOLS=0
 					-DWITH_TESTS=0
-					-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+					-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+					-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+					-DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
+					-DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
+					"-DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}")
 		else()
 			add_subdirectory(lib/jpeg-9c)
 		endif()
@@ -500,6 +530,9 @@ if(BuildMPRdVanilla OR BuildMPRdVulkan OR BuildMPRend2)
 
 	if(UseInternalPNG)
 	  add_subdirectory(lib/libpng)
+	  if(Architecture STREQUAL "arm64" AND NOT UseInternalPNGNeon)
+		  target_compile_definitions(bundled_libpng PRIVATE PNG_ARM_NEON_OPT=0)
+	  endif()
 	else()
 	  find_package(PNG REQUIRED)
 	endif()
