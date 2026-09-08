@@ -1957,6 +1957,8 @@ void RE_Shutdown( qboolean destroyWindow, qboolean restarting ) {
 	// shut down platform specific OpenGL stuff
 	if ( destroyWindow ) {
 		ri.WIN_Shutdown();
+		memset( &glConfig, 0, sizeof( glConfig ) );
+		memset( &glConfigExt, 0, sizeof( glConfigExt ) );
 	}
 
 	tr.registered = qfalse;
