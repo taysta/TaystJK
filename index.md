@@ -37,19 +37,6 @@ description: "Search every TaystJK cvar and console command, including options, 
   <div><strong>4</strong><span>renderer targets</span></div>
 </section>
 
-<section class="browse-section">
-  <div class="section-heading">
-    <div><p class="section-kicker">Browse with context</p><h2>Start from what you know</h2></div>
-    <p>Each entry keeps its current behavior separate from where the feature originated.</p>
-  </div>
-  <div class="browse-grid">
-    <a class="browse-card" href="{{ '/cvars/' | relative_url }}"><span class="browse-icon">c_</span><h3>Cvars</h3><p>Defaults, accepted values, flags, ranges, restart behavior, and network scope.</p><b>Browse 1,441 →</b></a>
-    <a class="browse-card" href="{{ '/commands/' | relative_url }}"><span class="browse-icon">&gt;_</span><h3>Commands</h3><p>Syntax, arguments, handlers, cheat protection, and server-side gating.</p><b>Browse 573 →</b></a>
-    <a class="browse-card" href="{{ '/reference/renderers/' | relative_url }}"><span class="browse-icon">◈</span><h3>Renderer scope</h3><p>Compare vanilla, rend2, Vulkan, and dedicated renderer registrations.</p><b>Compare renderers →</b></a>
-    <a class="browse-card" href="{{ '/reference/origins/' | relative_url }}"><span class="browse-icon">↗</span><h3>Provenance</h3><p>Separate Base JKA and upstream work from TaystJK-specific additions.</p><b>Browse origins →</b></a>
-  </div>
-</section>
-
 <section class="method-banner">
   <div><p class="section-kicker">Evidence, not guesswork</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
   <p>The inventory combines static extraction with a runtime reconciliation. Squashed pull requests are traced through their retained commit bullets and PR descriptions; uncertain semantics stay visibly marked for review.</p>

@@ -155,6 +155,7 @@ def catalog_app(
     *,
     preset_key: str | None = None,
     preset_value: str | None = None,
+    multi_select: bool = False,
 ) -> str:
     """Return the progressively enhanced catalog shell.
 
@@ -174,6 +175,66 @@ def catalog_app(
     ]
     if preset_key and preset_value:
         attrs.append(f'data-preset-{esc(preset_key)}="{esc(preset_value)}"')
+    if multi_select:
+        filters = """    <div class="catalog-filters">
+      <div class="filter-dropdown" data-filter-dropdown="origin">
+        <button class="filter-toggle" type="button" data-filter-toggle="origin" aria-expanded="false"><span>Origin</span><strong data-filter-summary="origin">Any origin</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="origin" hidden>
+          <div class="filter-options" data-filter-options="origin"></div>
+          <button class="filter-clear" type="button" data-clear-filter="origin">Clear origin</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="module">
+        <button class="filter-toggle" type="button" data-filter-toggle="module" aria-expanded="false"><span>Module</span><strong data-filter-summary="module">Any module</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="module" hidden>
+          <div class="filter-options" data-filter-options="module"></div>
+          <button class="filter-clear" type="button" data-clear-filter="module">Clear module</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="renderer">
+        <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="renderer" hidden>
+          <div class="filter-options" data-filter-options="renderer">
+            <label class="filter-checkbox"><input type="checkbox" name="renderer" value="renderer-specific" data-filter="renderer"><span>Renderer-specific only</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="renderer" value="none" data-filter="renderer"><span>Not renderer-specific</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="renderer">Clear renderer</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="status">
+        <button class="filter-toggle" type="button" data-filter-toggle="status" aria-expanded="false"><span>Documentation</span><strong data-filter-summary="status">Any status</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="status" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="status" value="documented" data-filter="status"><span>Documented</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="status" value="needs-review" data-filter="status"><span>Needs review</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="status">Clear documentation</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="network">
+        <button class="filter-toggle" type="button" data-filter-toggle="network" aria-expanded="false"><span>Network scope</span><strong data-filter-summary="network">Any scope</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="network" hidden>
+          <div class="filter-options" data-filter-options="network"></div>
+          <button class="filter-clear" type="button" data-clear-filter="network">Clear network scope</button>
+        </div>
+      </div>
+      <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
+        <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="flag" hidden>
+          <div class="filter-options" data-filter-options="flag"></div>
+          <button class="filter-clear" type="button" data-clear-filter="flag">Clear cvar flags</button>
+        </div>
+      </div>
+    </div>"""
+    else:
+        filters = """    <div class="catalog-filters">
+      <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
+      <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
+      <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
+      <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
+      <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
+      <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
+    </div>"""
     return f"""
 <section {' '.join(attrs)} aria-labelledby="catalog-title">
   <div class="catalog-heading">
@@ -199,14 +260,7 @@ def catalog_app(
       <button type="button" data-kind="command">Commands</button>
     </div>
 
-    <div class="catalog-filters">
-      <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
-      <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
-      <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
-      <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
-      <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
-      <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
-    </div>
+{filters}
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
@@ -524,7 +578,6 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
         "TaystJK console reference",
         1,
         wide=True,
-        reference_app=True,
         description="Search every TaystJK cvar and console command, including options, renderer scope, and upstream provenance.",
     ) + f"""
 <section class="hero">
@@ -533,20 +586,24 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     <h1>Every console control.<br><span>Traced to its source.</span></h1>
     <p class="hero-lede">Search every cvar and command in TaystJK, see the accepted values, and tell Base JKA, OpenJK, EternalJK, jaPRO, rend2, Vulkan, and other upstream work apart.</p>
     <div class="hero-actions">
-      <a class="button button-primary" href="#catalog">Search {total:,} entries</a>
+      <a class="button button-primary" href="{{{{ '/reference/' | relative_url }}}}">Explore {total:,} entries</a>
       <a class="button button-secondary" href="{{{{ '/reference/sources/' | relative_url }}}}">How attribution works</a>
     </div>
   </div>
   <div class="hero-terminal" aria-label="Example console lookup">
     <div class="terminal-bar"><span></span><span></span><span></span><b>console reference</b></div>
     <div class="terminal-body">
-      <p><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong></p>
-      <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
-      <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      <a class="terminal-entry" href="{{{{ '/reference/cvars/r_dynamicglowbloom-d4ab76d/' | relative_url }}}}">
+        <p><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong></p>
+        <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
+        <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      </a>
       <hr>
-      <p><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong></p>
-      <p class="terminal-muted">Frame-independent third-person camera damping</p>
-      <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      <a class="terminal-entry" href="{{{{ '/reference/cvars/cg_camerafps-62ac0e1/' | relative_url }}}}">
+        <p><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong></p>
+        <p class="terminal-muted">Frame-independent third-person camera damping</p>
+        <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      </a>
     </div>
   </div>
 </section>
@@ -556,21 +613,6 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
   <div><strong>{len(commands):,}</strong><span>commands</span></div>
   <div><strong>{len(origins)}</strong><span>source lineages</span></div>
   <div><strong>4</strong><span>renderer targets</span></div>
-</section>
-
-{catalog_app("all")}
-
-<section class="browse-section">
-  <div class="section-heading">
-    <div><p class="section-kicker">Browse with context</p><h2>Start from what you know</h2></div>
-    <p>Each entry keeps its current behavior separate from where the feature originated.</p>
-  </div>
-  <div class="browse-grid">
-    <a class="browse-card" href="{{{{ '/cvars/' | relative_url }}}}"><span class="browse-icon">c_</span><h3>Cvars</h3><p>Defaults, accepted values, flags, ranges, restart behavior, and network scope.</p><b>Browse {len(cvars):,} →</b></a>
-    <a class="browse-card" href="{{{{ '/commands/' | relative_url }}}}"><span class="browse-icon">&gt;_</span><h3>Commands</h3><p>Syntax, arguments, handlers, cheat protection, and server-side gating.</p><b>Browse {len(commands):,} →</b></a>
-    <a class="browse-card" href="{{{{ '/reference/renderers/' | relative_url }}}}"><span class="browse-icon">◈</span><h3>Renderer scope</h3><p>Compare vanilla, rend2, Vulkan, and dedicated renderer registrations.</p><b>Compare renderers →</b></a>
-    <a class="browse-card" href="{{{{ '/reference/origins/' | relative_url }}}}"><span class="browse-icon">↗</span><h3>Provenance</h3><p>Separate Base JKA and upstream work from TaystJK-specific additions.</p><b>Browse origins →</b></a>
-  </div>
 </section>
 
 <section class="method-banner">
@@ -710,7 +752,7 @@ def main() -> None:
 <p class="page-lede">Search {len(cvars) + len(commands):,} cvars and commands across the client, dedicated server, game, cgame, UI, platform code, and every renderer backend.</p>
 </div>
 
-{catalog_app("all")}
+{catalog_app("all", multi_select=True)}
 
 ## How to read an entry
 
@@ -722,54 +764,12 @@ An entry marked **needs review** is real and has registration evidence, but one 
 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
-- [Compare renderer registrations](/TaystJK/reference/renderers/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)
 - [Use the static A–Z index](/TaystJK/reference/all/) without JavaScript
 - Download the machine-readable [catalog JSON](/TaystJK/assets/data/catalog.json), [full cvars JSON](/TaystJK/assets/data/cvars.json), [full commands JSON](/TaystJK/assets/data/commands.json), [metadata](/TaystJK/assets/data/reference-meta.json), or [JSON Schema](/TaystJK/assets/data/schema.json)
 """)
-    write(Path("cvars.md"), frontmatter(
-        "Cvars",
-        1,
-        "Console reference",
-        wide=True,
-        reference_app=True,
-        description="Search TaystJK cvars by origin, module, renderer, flags, network scope, and documentation status.",
-    ) + f"""
-<div class="page-heading" markdown="1">
-<p class="eyebrow">Configuration variables</p>
-
-<h1>Cvars</h1>
-
-<p class="page-lede">{len(cvars):,} case-insensitive cvar names, with defaults, flags, accepted values, renderer scope, and provenance.</p>
-</div>
-
-{catalog_app("cvar")}
-
-<p class="reference-note"><strong>About values:</strong> an empty options or range section means the extractor found no enforced discrete list. It does not imply every possible value is safe.</p>
-""")
-    write(Path("commands.md"), frontmatter(
-        "Commands",
-        2,
-        "Console reference",
-        wide=True,
-        reference_app=True,
-        description="Search TaystJK console commands by origin, module, renderer, network scope, and documentation status.",
-    ) + f"""
-<div class="page-heading" markdown="1">
-<p class="eyebrow">Console actions</p>
-
-<h1>Commands</h1>
-
-<p class="page-lede">{len(commands):,} case-insensitive command names, with syntax, arguments, handlers, gating, and provenance.</p>
-</div>
-
-{catalog_app("command")}
-
-<p class="reference-note"><strong>Registration detail:</strong> server-forwarded completion names are kept distinct from commands with a local handler.</p>
-""")
-
     for entry in entries:
         write(Path("reference") / f"{entry['kind']}s" / f"{slug(entry['name'])}.md", detail_page(entry, refs))
     write(Path("reference/all.md"), static_index_page(cvars, commands))
@@ -828,36 +828,6 @@ An entry marked **needs review** is real and has registration evidence, but one 
         write(Path("reference/modules") / f"{module}.md", collection_page(
             module, "Entries whose primary registration or dispatch context is this module.", selected, order, "By module",
             preset_key="module", preset_value=module,
-        ))
-
-    renderers = ["rd-vanilla", "rd-rend2", "rd-vulkan", "rd-dedicated"]
-    renderer_cards = []
-    for renderer in renderers:
-        count = sum(renderer in entry.get("renderer", []) for entry in cvars)
-        exclusive = sum(entry.get("renderer") == [renderer] for entry in cvars)
-        renderer_cards.append(
-            f'<a class="directory-card renderer-card" href="/TaystJK/reference/renderers/{renderer}/">'
-            f'<span class="directory-code">{renderer}</span><strong>{count:,} cvars</strong>'
-            f'<span>{exclusive:,} exclusive to this target</span></a>'
-        )
-    write(Path("reference/renderers.md"), frontmatter("By renderer", 5, "Console reference", wide=True) + """
-<div class="page-heading" markdown="1">
-<p class="eyebrow">Backend scope</p>
-
-<h1>Compare renderer cvars</h1>
-
-<p class="page-lede">See exactly which cvars each current backend registers. Renderer scope and feature origin are independent: a Vulkan registration can still originate in Base JKA, OpenJK, or rend2.</p>
-</div>
-
-<div class="directory-grid renderer-grid">
-""" + "\n".join(renderer_cards) + "\n</div>")
-    for order, renderer in enumerate(renderers, 1):
-        selected = [entry for entry in cvars if renderer in entry.get("renderer", [])]
-        exclusive = sum(entry.get("renderer") == [renderer] for entry in selected)
-        intro = f"{len(selected)} cvars are registered by this backend; {exclusive} are exclusive to it in the current tree. Origin is determined separately from backend scope."
-        write(Path("reference/renderers") / f"{renderer}.md", collection_page(
-            renderer, intro, selected, order, "By renderer",
-            preset_key="renderer", preset_value=renderer, mode="cvar",
         ))
 
     runtime = load(args.runtime) if args.runtime.exists() else None

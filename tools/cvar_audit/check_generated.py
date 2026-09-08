@@ -57,13 +57,9 @@ def main() -> None:
         Path("reference/modules") / f"{module}.md"
         for module in {entry["module"] for entry in all_entries}
     }
-    expected_collections |= {
-        Path("reference/renderers") / f"{renderer}.md"
-        for renderer in {renderer for entry in datasets["cvar"] for renderer in entry.get("renderer", [])}
-    }
     actual_collections = {
         path
-        for directory in (Path("reference/origins"), Path("reference/modules"), Path("reference/renderers"))
+        for directory in (Path("reference/origins"), Path("reference/modules"))
         for path in directory.glob("*.md")
     }
     for path in sorted(expected_collections - actual_collections):
@@ -80,7 +76,12 @@ def main() -> None:
     if catalog != expected_catalog:
         errors.append("assets/data/catalog.json differs from the compact reference records")
 
-    pages = [Path("index.md"), Path("reference.md"), Path("cvars.md"), Path("commands.md"), *Path("reference").rglob("*.md")]
+    retired_pages = [Path("cvars.md"), Path("commands.md"), Path("reference/renderers.md"), *Path("reference/renderers").glob("*.md")]
+    for page in retired_pages:
+        if page.exists():
+            errors.append(f"retired standalone catalog page still exists: {page}")
+
+    pages = [Path("index.md"), Path("reference.md"), *Path("reference").rglob("*.md")]
     for page in pages:
         text = page.read_text()
         if not text.startswith("---\n") or "\n---\n" not in text[4:]:

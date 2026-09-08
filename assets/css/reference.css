@@ -349,6 +349,10 @@ th { color: var(--text); background: var(--surface); }
 .terminal-body { padding: 1.35rem 1.45rem 1.55rem; font-family: "SFMono-Regular", Consolas, monospace; font-size: .78rem; }
 .terminal-body p { margin: .42rem 0; }
 .terminal-body strong { color: #fff; }
+.terminal-entry { display: block; margin: 0 -.7rem; padding: .35rem .7rem; color: inherit; text-decoration: none; border-radius: 9px; transition: background .16s ease, box-shadow .16s ease; }
+.terminal-entry:hover { color: inherit; background: rgba(104, 225, 212, .08); }
+.terminal-entry:hover strong { color: var(--accent); }
+.terminal-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .terminal-prompt { color: var(--accent); }
 .terminal-muted { color: var(--muted) !important; }
 .terminal-scope { margin-left: .35rem; color: var(--muted); }

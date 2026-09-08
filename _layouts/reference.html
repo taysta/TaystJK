@@ -23,17 +23,9 @@
 
         {% assign nav_section = 'explore' %}
         {% if page.url == '/' %}{% assign nav_section = 'home' %}
-        {% elsif page.url == '/cvars/' or page.url contains '/reference/cvars/' %}{% assign nav_section = 'cvars' %}
-        {% elsif page.url == '/commands/' or page.url contains '/reference/commands/' %}{% assign nav_section = 'commands' %}
-        {% elsif page.url contains '/reference/renderers/' %}{% assign nav_section = 'renderers' %}
-        {% elsif page.url contains '/reference/sources/' %}{% assign nav_section = 'method' %}
         {% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'explore' %} class="active"{% endif %}>Explore</a>
-          <a href="{{ '/cvars/' | relative_url }}"{% if nav_section == 'cvars' %} class="active"{% endif %}>Cvars</a>
-          <a href="{{ '/commands/' | relative_url }}"{% if nav_section == 'commands' %} class="active"{% endif %}>Commands</a>
-          <a href="{{ '/reference/renderers/' | relative_url }}"{% if nav_section == 'renderers' %} class="active"{% endif %}>Renderers</a>
-          <a href="{{ '/reference/sources/' | relative_url }}"{% if nav_section == 'method' %} class="active"{% endif %}>Method</a>
         </nav>
 
         <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
@@ -46,10 +38,7 @@
     <main id="main-content" class="site-main{% if page.wide %} site-main-wide{% endif %}">
       {% if page.nav_exclude and page.url contains '/reference/' %}
       <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="{{ '/reference/' | relative_url }}">Reference</a>
-        <span aria-hidden="true">/</span>
-        {% if page.url contains '/reference/cvars/' %}<a href="{{ '/cvars/' | relative_url }}">Cvars</a>{% endif %}
-        {% if page.url contains '/reference/commands/' %}<a href="{{ '/commands/' | relative_url }}">Commands</a>{% endif %}
+        <a href="{{ '/reference/' | relative_url }}">Explore</a>
         <span aria-hidden="true">/</span>
         <span>{{ page.title }}</span>
       </nav>

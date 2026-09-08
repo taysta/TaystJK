@@ -119,7 +119,6 @@ An entry marked **needs review** is real and has registration evidence, but one 
 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
-- [Compare renderer registrations](/TaystJK/reference/renderers/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)
