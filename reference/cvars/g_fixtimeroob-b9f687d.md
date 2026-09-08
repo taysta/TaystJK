@@ -40,10 +40,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`2f22cd92e0a9`](https://github.com/taysta/TaystJK/commit/2f22cd92e0a90713ee14c0385e9e1fc741ab00cc)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:332](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_xcvar.h#L332)
-- Attribution method: `upstream-head-presence`
+- Ultimate-origin introduction: [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) on `2020-05-16` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Upstream registration evidence: [codemp/game/g_xcvar.h:354](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L354)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/eternalcodes/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/taysta/TaystJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/JKSunny/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
 
 ## Evidence
 

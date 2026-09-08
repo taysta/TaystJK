@@ -22,7 +22,7 @@ Controls `r_refractionChromaticAberration` in the renderer module. Consult the c
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0.05` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,11 +40,23 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 
-- Commit evidence: [`fd105b180e92`](https://github.com/taysta/TaystJK/commit/fd105b180e928221fd97a286bb4e5cb785a8d760)
+- Ultimate-origin introduction: [`c062d953fb4c`](https://github.com/SomaZ/OpenJK/commit/c062d953fb4cd205437abcae5d792445c979e7f9) on `2026-07-17` in <span class="label ref-origin ref-origin-rend2">rend2</span>
+- TaystJK integration evidence: [`aac7dcccc4e7`](https://github.com/taysta/TaystJK/commit/aac7dcccc4e72797666b42058e5d58a6805c1462)
+- Pull request: [#350](https://github.com/taysta/TaystJK/pull/350)
 - Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1561](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1561)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits rend2.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The identifier's single-prefix squash feature group explicitly credits rend2.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2026-07-17` | [`c062d953fb4c`](https://github.com/SomaZ/OpenJK/commit/c062d953fb4cd205437abcae5d792445c979e7f9) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-07-30` | [`aac7dcccc4e7`](https://github.com/taysta/TaystJK/commit/aac7dcccc4e72797666b42058e5d58a6805c1462) | Later project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
 
 ## Evidence
 

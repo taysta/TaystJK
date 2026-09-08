@@ -7,7 +7,7 @@ search_exclude: false
 
 # `com_legacyprotocol`
 
-<span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -38,12 +38,25 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`6107f5fbcf59`](https://github.com/taysta/TaystJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3201](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/client/cl_main.cpp#L3201)
-- Attribution method: `upstream-head-presence`
+- Ultimate-origin introduction: [`6107f5fbcf59`](https://github.com/eternalcodes/EternalJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) on `2018-04-26` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3250](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_main.cpp#L3250)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-04-26` | [`6107f5fbcf59`](https://github.com/eternalcodes/EternalJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-04-26` | [`6107f5fbcf59`](https://github.com/taysta/TaystJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-04-26` | [`6107f5fbcf59`](https://github.com/videoP/jaPRO/commit/6107f5fbcf594706f4d729052bda36e9cb208847) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-04-26` | [`6107f5fbcf59`](https://github.com/JKSunny/EternalJK/commit/6107f5fbcf594706f4d729052bda36e9cb208847) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2020-04-02` | [`007750b49b3b`](https://github.com/jkanewmod/NewJK/commit/007750b49b3bfff586199e126ebdc4d90ba515d1) | Later project appearance |
 
 ## Evidence
 

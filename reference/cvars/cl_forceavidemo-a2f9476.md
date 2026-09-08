@@ -43,11 +43,19 @@ No cvar flags are registered at the cited site.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [codemp/client/cl_main.cpp:2580](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/client/cl_main.cpp#L2580)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2014-04-21` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`d29a8d83cb6e`](https://github.com/JACoders/OpenJK/commit/d29a8d83cb6e37bd9ea77bf9faa46deab9c10c0a)<br>Merge pull request #533 from dpadgett/teh | Changed an exact bound cvar-variable reference. `codemp/client/client.h`, `codemp/client/snd_mix.cpp` | `medium` |
 
 ## Evidence
 

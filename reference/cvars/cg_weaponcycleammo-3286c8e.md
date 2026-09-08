@@ -43,10 +43,28 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`3692583bb66a`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3)
-- Attribution method: `first-addition-in-registration-file-history`
+- Ultimate-origin introduction: [`3692583bb66a`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) on `2022-04-20` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L60)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2022-04-20` | [`3692583bb66a`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2022-04-20` | [`3692583bb66a`](https://github.com/videoP/jaPRO/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2024-02-27` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`baa02905f40f`](https://github.com/taysta/TaystJK/commit/baa02905f40f33652a2ae326fe55ece2642169c1) · [PR #130](https://github.com/taysta/TaystJK/pull/130)<br>Merge pull request #130 from taysta/tribes-clientside | Changed an exact bound cvar-variable reference. `codemp/cgame/hud_tribes.c` | `medium` |
 
 ## Evidence
 

@@ -7,7 +7,7 @@ search_exclude: false
 
 # `fs_forcegame`
 
-<span class="label ref-origin ref-origin-openjk">OpenJK</span>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 Folder to use for overriding of fs_game (can not be set by the server).
 
@@ -43,17 +43,36 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`c24eecec72b4`](https://github.com/taysta/TaystJK/commit/c24eecec72b4cc94deeb65d2bba0a58f3344e1f2)
-- Upstream registration evidence: [codemp/qcommon/files.cpp:3585](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/files.cpp#L3585)
-- Attribution method: `post-import-openjk-head-presence`
+- TaystJK integration evidence: [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0)
+- Pull request: [#52](https://github.com/taysta/TaystJK/pull/52)
+- Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
-- Notes: The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Notes: An identifier-adjacent source/commit/PR line explicitly credits eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2019-10-18` | [`ca19cb761e35`](https://github.com/jkanewmod/NewJK/commit/ca19cb761e35a040fac8b4992c6221c4d5a1127b) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2020-01-01` | [`d99db29e816a`](https://github.com/mvdevs/jk2mv/commit/d99db29e816a526986efe41769ee56fb3557fad5) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-28` | [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-28` | [`596ae40cc9aa`](https://github.com/videoP/jaPRO/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-04-07` | [`065d32955f56`](https://github.com/JACoders/OpenJK/commit/065d32955f56f595c93498a102c16a1d5a051672) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-04-09` | [`b688bdf3ea00`](https://github.com/SomaZ/OpenJK/commit/b688bdf3ea00319185f6b027ef61c6d7f506d36f) | Additional dated evidence |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2024-01-17` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`0da288606eb0`](https://github.com/taysta/TaystJK/commit/0da288606eb0ef10bc481321a3265faa0fdf1f71) · [PR #98](https://github.com/taysta/TaystJK/pull/98)<br>Make fs_forcegame and fs_basegame default to empty for dedicated servers. (#98) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/files.cpp` | `medium` |
+| `2024-02-27` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`dbbea6b8a0bf`](https://github.com/taysta/TaystJK/commit/dbbea6b8a0bfb65a68e4e38c818bcfb0b49f929e) · [PR #31](https://github.com/taysta/TaystJK/pull/31)<br>Rename to TaystJK (#31) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/files.cpp` | `high` |
+| `2026-06-16` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`07c65a6f01a8`](https://github.com/taysta/TaystJK/commit/07c65a6f01a8023f2977bc1255f62a08d6154e3a) · [PR #341](https://github.com/taysta/TaystJK/pull/341)<br>Merge pull request #341 from taysta/basegame | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/qcommon/files.cpp` | `high` |
 
 ## Evidence
 

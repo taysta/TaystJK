@@ -40,11 +40,19 @@ No cvar flags are registered at the cited site.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [code/qcommon/cm_patch.cpp:2806](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/cm_patch.cpp#L2806)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
-- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2013-07-12` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`4a118ef1512c`](https://github.com/JACoders/OpenJK/commit/4a118ef1512c25b6fe5b24be4af48ef64a2232c6)<br>Merge pull request #318 from archSeer/master | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/qcommon/cm_patch.cpp` | `medium` |
 
 ## Evidence
 

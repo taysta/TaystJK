@@ -22,7 +22,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -41,10 +41,31 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`5afdd1bc5e1b`](https://github.com/taysta/TaystJK/commit/5afdd1bc5e1b5862d2a4aac7aef5add411398f76)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Ultimate-origin introduction: [`60132754c617`](https://github.com/videoP/jaPRO/commit/60132754c61719a97f300fa62cc77e55061f4c1e) on `2018-01-12` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Pull request: [#14](https://github.com/taysta/TaystJK/pull/14)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:83](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/ui/ui_xcvar.h#L83)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-01-12` | [`60132754c617`](https://github.com/eternalcodes/EternalJK/commit/60132754c61719a97f300fa62cc77e55061f4c1e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-01-12` | [`60132754c617`](https://github.com/taysta/TaystJK/commit/60132754c61719a97f300fa62cc77e55061f4c1e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-01-12` | [`60132754c617`](https://github.com/videoP/jaPRO/commit/60132754c61719a97f300fa62cc77e55061f4c1e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-01-12` | [`60132754c617`](https://github.com/JKSunny/EternalJK/commit/60132754c61719a97f300fa62cc77e55061f4c1e) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-05-16` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`5df1fad1b1f6`](https://github.com/eternalcodes/EternalJK/commit/5df1fad1b1f6ba70e74e42630b0e0494750010f0)<br>Merge remote-tracking branch 'bucky/master' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/ui/ui_xcvar.h` | `medium` |
 
 ## Evidence
 

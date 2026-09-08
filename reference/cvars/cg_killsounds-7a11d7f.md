@@ -42,12 +42,30 @@ Play a sound when you kill someone
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`477910d22e11`](https://github.com/taysta/TaystJK/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49)
+- Ultimate-origin introduction: [`477910d22e11`](https://github.com/videoP/jaPRO/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) on `2024-03-06` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Pull request: [#168](https://github.com/taysta/TaystJK/pull/168)
 - Matching squash bullet: `[jaPRO/Sounds] Guard new killsounds behind cvar cg_killSound 0 = off 1 = on 2 = on + midair sound, commented out developer print, made them louder`
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:123](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L123)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-03-06` | [`477910d22e11`](https://github.com/taysta/TaystJK/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-03-06` | [`477910d22e11`](https://github.com/videoP/jaPRO/commit/477910d22e11f8e6a4967b7ea074bfb2de181a49) | Ultimate origin |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2025-09-29` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`9ab5d982d35b`](https://github.com/taysta/TaystJK/commit/9ab5d982d35b63227680f36dfb5c402264a0ddfe) · [PR #256](https://github.com/taysta/TaystJK/pull/256)<br>Merge pull request #256 from VincentMarnier/fix_killfeed | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_event.c` | `medium` |
 
 ## Evidence
 

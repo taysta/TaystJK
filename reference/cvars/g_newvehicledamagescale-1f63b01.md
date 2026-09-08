@@ -40,13 +40,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`3567d72d98c5`](https://github.com/taysta/TaystJK/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba)
+- Ultimate-origin introduction: [`3567d72d98c5`](https://github.com/videoP/jaPRO/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) on `2023-12-28` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Pull request: [#64](https://github.com/taysta/TaystJK/pull/64)
 - Matching squash bullet: `g_newVehicleDamageScale`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:267](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_xcvar.h#L267)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Upstream registration evidence: [codemp/game/g_xcvar.h:289](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L289)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-12-28` | [`3567d72d98c5`](https://github.com/taysta/TaystJK/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-12-28` | [`3567d72d98c5`](https://github.com/videoP/jaPRO/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) | Ultimate origin |
 
 ## Evidence
 

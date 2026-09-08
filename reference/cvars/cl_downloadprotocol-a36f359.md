@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Reports the protocol selected for the active file download. The client sets this internal cvar to HTTP when the server advertised an HTTP endpoint and otherwise sets it to UDP.
 
 ## At a glance
@@ -20,7 +22,7 @@ Reports the protocol selected for the active file download. The client sets this
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -41,13 +43,24 @@ Reports the protocol selected for the active file download. The client sets this
 
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-- Commit evidence: [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d)
+- Ultimate-origin introduction: [`907e53cc40d4`](https://github.com/mvdevs/jk2mv/commit/907e53cc40d4a9a3b0ea7cc9abf815221eef8e1a) on `2015-03-19` in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
+- TaystJK integration evidence: [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d)
 - Pull request: [#169](https://github.com/taysta/TaystJK/pull/169)
 - Matching squash bullet: `[HTTP-AutoDL] Libmongoose 7 port from jk2mv`
 - Upstream registration evidence: [src/client/cl_main.cpp:2960](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_main.cpp#L2960)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2015-03-19` | [`907e53cc40d4`](https://github.com/mvdevs/jk2mv/commit/907e53cc40d4a9a3b0ea7cc9abf815221eef8e1a) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/videoP/jaPRO/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Later project appearance |
 
 ## Evidence
 

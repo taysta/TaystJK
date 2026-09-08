@@ -41,10 +41,20 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 
-- Commit evidence: [`62e37b3e35d9`](https://github.com/taysta/TaystJK/commit/62e37b3e35d9787d203a87d7995f5d659d0882e4)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- TaystJK integration evidence: [`aa48e28a7d4f`](https://github.com/taysta/TaystJK/commit/aa48e28a7d4ffa414d33f0815542c29f8aae8d75)
+- Pull request: [#26](https://github.com/taysta/TaystJK/pull/26)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits rend2.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits rend2.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-14` | [`aa48e28a7d4f`](https://github.com/taysta/TaystJK/commit/aa48e28a7d4ffa414d33f0815542c29f8aae8d75) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-14` | [`aa48e28a7d4f`](https://github.com/videoP/jaPRO/commit/aa48e28a7d4ffa414d33f0815542c29f8aae8d75) | Additional dated evidence |
 
 ## Evidence
 

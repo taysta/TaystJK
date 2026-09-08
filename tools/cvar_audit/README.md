@@ -14,7 +14,7 @@ The provenance resolver expects these local remote-tracking refs:
 | Current TaystJK source | `origin/master` |
 | OpenJK | `openjk/master` |
 | EternalJK | `eternaljk/master` |
-| jaPRO | `japro/master` |
+| jaPRO | `japro/main` |
 | JK2MV | `jk2mv/master` |
 | NewJK / explicitly credited NewMod work | `newjk/master` |
 | rend2 | `somaz/rend2-unified-wip` |
@@ -25,6 +25,20 @@ The Base Jedi Academy baseline is OpenJK commit
 PR metadata may be passed as one or more GitHub API JSON files so squash commit
 bodies and PR descriptions can be considered. NewMod attribution is accepted
 only with explicit credit because the relevant implementation is closed source.
+
+For every non-base identifier, the resolver records the first dated mainline
+registration in every project. The earliest event is treated as the ultimate
+origin and later events as downstream appearances, regardless of port direction.
+An exact shared commit is a medium-confidence lineage tie because Git does not
+record which remote received the object first; explicit commit/PR credit can
+resolve the tie or identify an intermediate port source.
+
+After resolving origin, the pipeline scans TaystJK's inherited first-parent
+history again for post-origin changes. It records exact registration edits,
+changed lines containing a bound cvar variable, and changed hunks inside a
+registered command handler. Each event retains its date, commit, paths, PR,
+attribution method, and confidence. This distinguishes “introduced by OpenJK”
+from a later jaPRO, EternalJK, TaystJK, rend2, Vulkan, JK2MV, or NewJK change.
 
 ## Regenerate
 
@@ -41,6 +55,7 @@ python3 tools/cvar_audit/runtime_check.py \
   --build BUILD_IDENTIFIER
 python3 tools/cvar_audit/generate_docs.py
 node tools/cvar_audit/test_reference_app.js
+python3 tools/cvar_audit/test_provenance.py
 python3 tools/cvar_audit/validate.py
 python3 tools/cvar_audit/check_generated.py
 python3 tools/cvar_audit/check_drift.py --ref origin/master
@@ -61,6 +76,7 @@ replaces static extraction.
 
 ```sh
 (cd tools/cvar_audit && python3 -m unittest test_extract.py)
+python3 tools/cvar_audit/test_provenance.py
 node tools/cvar_audit/test_reference_app.js
 python3 tools/cvar_audit/validate.py
 python3 tools/cvar_audit/check_generated.py

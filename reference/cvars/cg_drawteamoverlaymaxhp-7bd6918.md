@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Combined health and shields that fills the bar on the team overlay. Only applies to cg_drawTeamOverlay 5 and 6. Base team FFA usually spawns 125 health and 25 shields with no shield pickups, servers running shield pickups want 225
 
 ## At a glance
@@ -22,7 +20,7 @@ Combined health and shields that fills the bar on the team overlay. Only applies
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `150` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,10 +38,19 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`4eef8b6be59f`](https://github.com/taysta/TaystJK/commit/4eef8b6be59f1601960b81f88aa81af202efbcb5)
-- Attribution method: `first-addition-in-registration-file-history`
-- Attribution confidence: `medium`
-- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+- Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) on `2026-08-06` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:58](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L58)
+- Attribution method: `earliest-dated-project-introduction`
+- Attribution confidence: `high`
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-08-06` | [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) | Ultimate origin |
 
 ## Evidence
 

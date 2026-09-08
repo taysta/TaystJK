@@ -43,12 +43,24 @@ Controls `g_fixRunWalkAnims` in the game module. Consult the cited behavior read
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`cd784cbf26da`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d)
+- Ultimate-origin introduction: [`1e8a7998ca2f`](https://github.com/JACoders/OpenJK/commit/1e8a7998ca2fe434daebb41d586ac3cd5296433a) on `2024-02-20` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- TaystJK integration evidence: [`cd784cbf26da`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d)
 - Pull request: [#157](https://github.com/taysta/TaystJK/pull/157)
 - Matching squash bullet: `remove BASE_COMPAT and BuildMPWithCompatMode, add g_fixRunWalkAnims`
 - Upstream registration evidence: [codemp/game/g_xcvar.h:97](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L97)
-- Attribution method: `post-import-openjk-head-presence`
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-20` | [`1e8a7998ca2f`](https://github.com/JACoders/OpenJK/commit/1e8a7998ca2fe434daebb41d586ac3cd5296433a) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-02-26` | [`cd784cbf26da`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-02-26` | [`cd784cbf26da`](https://github.com/videoP/jaPRO/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d) | Later project appearance |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-04-09` | [`b688bdf3ea00`](https://github.com/SomaZ/OpenJK/commit/b688bdf3ea00319185f6b027ef61c6d7f506d36f) | Later project appearance |
 
 ## Evidence
 

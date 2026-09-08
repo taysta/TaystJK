@@ -35,13 +35,31 @@ Gating: `CMD_ALIVE`, `CMD_NOINTERMISSION`.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`7dce9a576823`](https://github.com/taysta/TaystJK/commit/7dce9a5768238bbc22a004660c36c252c217701f)
+- Ultimate-origin introduction: [`7dce9a576823`](https://github.com/videoP/jaPRO/commit/7dce9a5768238bbc22a004660c36c252c217701f) on `2024-02-05` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Pull request: [#134](https://github.com/taysta/TaystJK/pull/134)
 - Matching squash bullet: `thrownade command`
-- Upstream registration evidence: [codemp/game/g_cmds.c:9009](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_cmds.c#L9009)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Upstream registration evidence: [codemp/game/g_cmds.c:9066](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9066)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-02-05` | [`7dce9a576823`](https://github.com/taysta/TaystJK/commit/7dce9a5768238bbc22a004660c36c252c217701f) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-02-05` | [`7dce9a576823`](https://github.com/videoP/jaPRO/commit/7dce9a5768238bbc22a004660c36c252c217701f) | Ultimate origin |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2024-02-05` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`f2d91900f16d`](https://github.com/taysta/TaystJK/commit/f2d91900f16d4db283e580386b9597c3ab0808d5) · [PR #135](https://github.com/taysta/TaystJK/pull/135)<br>Merge vulkan updates + jaPRO typo fix (#135) | Changed the registered command handler. `codemp/game/g_cmds.c` | `medium` |
+| `2024-05-28` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`87145eba654c`](https://github.com/videoP/jaPRO/commit/87145eba654c70609b15f9e6f6e9588d72ae0a5e) · [PR #206](https://github.com/taysta/TaystJK/pull/206)<br>Japro update (#206) | Changed the registered command handler. `codemp/game/g_cmds.c` | `high` |
 
 ## Evidence
 

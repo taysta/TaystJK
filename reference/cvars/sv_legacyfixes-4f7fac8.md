@@ -22,7 +22,7 @@ Controls `sv_legacyFixes` in the engine-server module. Consult the cited behavio
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -51,15 +51,43 @@ Controls `sv_legacyFixes` in the engine-server module. Consult the cited behavio
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`8b07e58c1c28`](https://github.com/taysta/TaystJK/commit/8b07e58c1c2875e94823c8afe5443e003370349b)
+- Ultimate-origin introduction: [`8b07e58c1c28`](https://github.com/JACoders/OpenJK/commit/8b07e58c1c2875e94823c8afe5443e003370349b) on `2017-12-06` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- TaystJK integration evidence: [`43b393062090`](https://github.com/taysta/TaystJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a)
 - Upstream registration evidence: [codemp/server/sv_init.cpp:1009](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L1009)
-- Attribution method: `post-import-openjk-head-presence`
-- Attribution confidence: `high`
-- Notes: The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by openjk, rend2; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2017-12-06` | [`8b07e58c1c28`](https://github.com/JACoders/OpenJK/commit/8b07e58c1c2875e94823c8afe5443e003370349b) | Ultimate origin |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2017-12-06` | [`8b07e58c1c28`](https://github.com/SomaZ/OpenJK/commit/8b07e58c1c2875e94823c8afe5443e003370349b) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-12-29` | [`43b393062090`](https://github.com/eternalcodes/EternalJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a) | Later project appearance |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-12-29` | [`43b393062090`](https://github.com/taysta/TaystJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-12-29` | [`43b393062090`](https://github.com/videoP/jaPRO/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a) | Later project appearance |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-12-29` | [`43b393062090`](https://github.com/JKSunny/EternalJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a) | Later project appearance |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2017-12-29` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`43b393062090`](https://github.com/eternalcodes/EternalJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a)<br>  Merge remote-tracking branch 'upstream/master' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/server/server.h`, `codemp/server/sv_client.cpp`, `codemp/server/sv_init.cpp` and 1 more | `medium` |
+| `2019-05-03` | <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | [`96cf7ecc01a1`](https://github.com/taysta/TaystJK/commit/96cf7ecc01a1c4aa7a7ae6a7ab1f5867c6b79bc9)<br>Port invalid userinfo crash in serverside engine (from JK2MV). | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp` | `medium` |
+| `2019-05-04` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`e0d767299eb2`](https://github.com/eternalcodes/EternalJK/commit/e0d767299eb2bfd7d735cdb55acba3644fd37844)<br>Fix obscure staff backwards DFA exploit. | Changed an exact bound cvar-variable reference. `codemp/server/sv_snapshot.cpp` | `medium` |
+| `2019-05-04` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`b8853f9880ee`](https://github.com/eternalcodes/EternalJK/commit/b8853f9880eec24cbb076f377268563e4d748928)<br>Fix player ghosting on basejka jampgame. | Changed an exact bound cvar-variable reference. `codemp/server/sv_game.cpp` | `medium` |
+| `2019-05-04` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`0208a2a50e75`](https://github.com/videoP/jaPRO/commit/0208a2a50e75e95f975b767166b221d2b13dbb4b)<br>Add basic mod detection to dedicated server. | Changed an exact bound cvar-variable reference. `codemp/server/sv_gameapi.cpp`, `codemp/server/sv_snapshot.cpp` | `high` |
+| `2019-05-06` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`104b7d488c25`](https://github.com/eternalcodes/EternalJK/commit/104b7d488c25a4956974410a8045fd33943d9fdb)<br>Add bitvalues for sv_legacyFixes to control engine-side exploit patches. | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/server/server.h`, `codemp/server/sv_client.cpp`, `codemp/server/sv_game.cpp` and 2 more | `medium` |
+| `2019-05-10` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`15c685c83005`](https://github.com/eternalcodes/EternalJK/commit/15c685c830057239017ac08c4a9be5ab8a98c300)<br>Merge pull request #95 from Yberion/serversideEngineFix | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp` | `medium` |
+| `2019-05-10` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`9a37943df03d`](https://github.com/eternalcodes/EternalJK/commit/9a37943df03dd6d09740d3cf94f596c82043d49f)<br>Fix broken ClientCleanName function+Refactor server fixes to utilize new legacyFixes bitmask and server mod detection. | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp` | `medium` |
+| `2019-06-04` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`9bece107afd6`](https://github.com/eternalcodes/EternalJK/commit/9bece107afd6962c09a3873e7ea8133949cf8770)<br>Filter npc spawn saber_droid command | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp` | `medium` |
+| `2019-07-31` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`3597107bc435`](https://github.com/eternalcodes/EternalJK/commit/3597107bc435239fc837742f152a8cd7d9c578f7)<br>Add server engine-side spectator alt-fire=followPrev feature to sv_legacyFixes | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp` | `medium` |
+| `2020-04-13` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`73584012842e`](https://github.com/videoP/jaPRO/commit/73584012842e464a0ed23d407a808e4288da4e4b)<br>Serverside duel isolatin (JA+/jaPRO): don't disable collision on duelers | Changed an exact bound cvar-variable reference. `codemp/server/sv_gameapi.cpp` | `high` |
 
 ## Evidence
 

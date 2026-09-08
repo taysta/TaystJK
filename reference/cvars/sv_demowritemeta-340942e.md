@@ -7,9 +7,7 @@ search_exclude: false
 
 # `sv_demoWriteMeta`
 
-<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
-
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 Enables writing metadata to demos, which can be set by the server/game. This is invisible to normal clients and can be used for storing information about when the demo was recorded, start of the recording, and so on.
 
@@ -22,7 +20,7 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -41,13 +39,22 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`0a8dab604488`](https://github.com/taysta/TaystJK/commit/0a8dab604488c26430fa13f1c2ebd0e1ab4ac11b)
-- Matching squash bullet: `Added sv_demoWriteMeta to enable/disable metadata writing altogether.`
-- Attribution method: `first-addition-in-registration-file-history`
-- Attribution confidence: `medium`
-- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+- TaystJK integration evidence: [`64b8343c85ea`](https://github.com/taysta/TaystJK/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c)
+- Pull request: [#2](https://github.com/taysta/TaystJK/pull/2)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `high`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-06-23` | [`64b8343c85ea`](https://github.com/taysta/TaystJK/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-06-23` | [`64b8343c85ea`](https://github.com/videoP/jaPRO/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c) | Additional dated evidence |
 
 ## Evidence
 

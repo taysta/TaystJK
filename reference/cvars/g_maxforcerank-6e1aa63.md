@@ -48,15 +48,25 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [codemp/game/g_main.c:260](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/game/g_main.c#L260)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
-- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2013-04-07` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`b319c52fd4ed`](https://github.com/JACoders/OpenJK/commit/b319c52fd4ed1e4fb5dae4e468a1a791091b63a5)<br>Major codemp cleanup. Ported modbase. Restructured VS2010 projects. | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/game/g_main.c`, `codemp/game/g_xcvar.h` | `medium` |
+| `2013-04-14` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`b718cfa3e332`](https://github.com/JACoders/OpenJK/commit/b718cfa3e33285ecb0d140dfb12218c67c7c8e08)<br>Jedi Master Force Rank is new default because... what? All servers set this \|: | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/game/g_xcvar.h`, `codemp/server/sv_init.cpp` | `medium` |
+| `2013-08-11` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`794718e3fdfb`](https://github.com/JACoders/OpenJK/commit/794718e3fdfb94a07256904e829936d80d696ce1)<br>Merge pull request #344 from Razish/qvmtest | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c`, `codemp/ui/ui_force.c`, `codemp/ui/ui_main.c` | `medium` |
+| `2014-01-03` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`cf34344d1cdc`](https://github.com/JACoders/OpenJK/commit/cf34344d1cdc86b2451d81307fb529496bd8110e)<br>Merge branch 'master' of github.com:JACoders/OpenJK | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2014-01-04` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`761e55fd73af`](https://github.com/JACoders/OpenJK/commit/761e55fd73af4c8f2b8e0b9daf10f91762839066)<br>[MP] Clean up forcepowers validation | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `medium` |
+| `2014-01-04` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`6c0c841b1025`](https://github.com/JACoders/OpenJK/commit/6c0c841b1025831c732d81261e0cad2fc4a66440)<br>[MP] Fix stack corruption after 761e55fd73 | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `medium` |
+| `2018-01-01` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419)<br>Merge branch 'japro-ejk' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/game/g_xcvar.h` | `high` |
 
 ## Evidence
 

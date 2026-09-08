@@ -22,7 +22,7 @@ Runs `SV_MigrateCheckpoints_f` in the game module.
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Syntax | `migrateCheckpoints` |
 | Cheat protected | No |
 
@@ -34,10 +34,19 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`4c6ee208a495`](https://github.com/taysta/TaystJK/commit/4c6ee208a495c097217408d2f45e5562019d55a9)
-- Upstream registration evidence: [codemp/game/g_svcmds.c:1668](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_svcmds.c#L1668)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `medium`
+- TaystJK integration evidence: [`8294d8bc3318`](https://github.com/taysta/TaystJK/commit/8294d8bc33182b19e70ebd87d4dd482917e46ca5)
+- Pull request: [#351](https://github.com/taysta/TaystJK/pull/351)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `high`
+- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-07-30` | [`8294d8bc3318`](https://github.com/taysta/TaystJK/commit/8294d8bc33182b19e70ebd87d4dd482917e46ca5) | Additional dated evidence |
 
 ## Evidence
 

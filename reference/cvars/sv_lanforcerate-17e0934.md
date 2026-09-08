@@ -22,7 +22,7 @@ Controls `sv_lanForceRate` in the engine-server module. Consult the cited behavi
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -40,10 +40,34 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`efcc0e8344b9`](https://github.com/taysta/TaystJK/commit/efcc0e8344b91f29ca41a700a8aa8f0007559c55)
+- Ultimate-origin introduction: [`9950d594349c`](https://github.com/JACoders/OpenJK/commit/9950d594349cfc625be716fa33372a493604a948) on `2013-04-08` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Upstream registration evidence: [codemp/server/sv_init.cpp:999](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L999)
-- Attribution method: `post-import-openjk-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-08` | [`9950d594349c`](https://github.com/JACoders/OpenJK/commit/9950d594349cfc625be716fa33372a493604a948) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-08` | [`9950d594349c`](https://github.com/eternalcodes/EternalJK/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-08` | [`9950d594349c`](https://github.com/SomaZ/OpenJK/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-08` | [`9950d594349c`](https://github.com/taysta/TaystJK/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-08` | [`9950d594349c`](https://github.com/videoP/jaPRO/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-08` | [`9950d594349c`](https://github.com/jkanewmod/NewJK/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-08` | [`9950d594349c`](https://github.com/JKSunny/EternalJK/commit/9950d594349cfc625be716fa33372a493604a948) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2017-08-31` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)<br>Merge branch 'master' of https://github.com/JACoders/OpenJK.git | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/server/sv_init.cpp`, `codemp/server/sv_main.cpp` | `medium` |
+| `2024-09-22` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`ecf4edf9ad98`](https://github.com/taysta/TaystJK/commit/ecf4edf9ad985e0c95a2157d23adfd711206683b) · [PR #209](https://github.com/taysta/TaystJK/pull/209)<br>OpenJK Update (#209) | Changed an exact bound cvar-variable reference. `codemp/server/sv_client.cpp`, `codemp/server/sv_main.cpp`, `codemp/server/sv_snapshot.cpp` | `medium` |
 
 ## Evidence
 

@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -66,6 +67,26 @@ NETWORK_HELP = {
 def git(*args: str) -> str:
     result = subprocess.run(["git", *args], text=True, errors="replace", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return result.stdout.strip() if result.returncode == 0 else ""
+
+
+def introduction_date(item: dict[str, Any]) -> str:
+    return datetime.fromtimestamp(int(item["timestamp"]), timezone.utc).date().isoformat()
+
+
+def introduction_commit_link(item: dict[str, Any]) -> str:
+    repo = ORIGIN_REPOS.get(item["source"])
+    sha = item["sha"]
+    if not repo:
+        return code(sha[:12])
+    return f"[`{sha[:12]}`](https://github.com/{repo}/commit/{sha})"
+
+
+def change_commit_link(item: dict[str, Any]) -> str:
+    sha = item.get("commit")
+    if not sha:
+        return "—"
+    repo = ORIGIN_REPOS.get(item.get("repository", "taystjk"), ORIGIN_REPOS["taystjk"])
+    return f"[`{sha[:12]}`](https://github.com/{repo}/commit/{sha})"
 
 
 def load(path: Path) -> Any:
@@ -300,12 +321,20 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
         if entry.get("gating"):
             lines.append("Gating: " + ", ".join(code(value) for value in entry["gating"]) + ".")
     lines.extend(["", "## Provenance", "", f"Origin: {badge(origin['source'])}", ""])
+    origin_introduction = origin.get("origin_introduction")
+    if origin_introduction:
+        lines.append(
+            f"- Ultimate-origin introduction: {introduction_commit_link(origin_introduction)} "
+            f"on {code(introduction_date(origin_introduction))} in {badge(origin_introduction['source'])}"
+        )
     if origin.get("first_commit"):
         # Except for the Raven baseline (and optional deep-pickaxe mode), the
         # first-addition SHA is from TaystJK's own registration-file history.
         # The separately linked origin_evidence points into the upstream repo.
         repo = "JACoders/OpenJK" if origin["first_commit"] == "14cea1563762076974bee277afadbd5bf234c494" else "taysta/TaystJK"
-        lines.append(f"- Commit evidence: [`{origin['first_commit'][:12]}`](https://github.com/{repo}/commit/{origin['first_commit']})")
+        if not origin_introduction or origin["first_commit"] != origin_introduction.get("sha"):
+            label = "Baseline evidence" if origin["first_commit"] == "14cea1563762076974bee277afadbd5bf234c494" else "TaystJK integration evidence"
+            lines.append(f"- {label}: [`{origin['first_commit'][:12]}`](https://github.com/{repo}/commit/{origin['first_commit']})")
     if origin.get("pr_url"):
         lines.append(f"- Pull request: [#{origin['pr']}]({origin['pr_url']})")
     if origin.get("squash_bullet"):
@@ -319,10 +348,54 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
     ])
     if origin.get("notes"):
         lines.append(f"- Notes: {origin['notes']}")
+    introductions = origin.get("introduction_evidence", [])
+    if introductions:
+        lines.extend([
+            "", "### Dated project introductions", "",
+            "These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.", "",
+            "| Project | Date | Commit | Relationship |", "|:--|:--|:--|:--|",
+        ])
+        origin_timestamp = origin_introduction.get("timestamp") if origin_introduction else None
+        for item in introductions:
+            if origin_introduction and item["source"] == origin_introduction["source"] and item["sha"] == origin_introduction["sha"]:
+                relationship = "Ultimate origin"
+            elif origin_timestamp is not None and item["timestamp"] == origin_timestamp:
+                relationship = "Shared earliest lineage"
+            elif origin_timestamp is not None and item["timestamp"] > origin_timestamp:
+                relationship = "Later project appearance"
+            else:
+                relationship = "Additional dated evidence"
+            lines.append(
+                f"| {badge(item['source'])} | {code(introduction_date(item))} | "
+                f"{introduction_commit_link(item)} | {relationship} |"
+            )
+    if origin.get("ported_via"):
+        lines.extend([
+            "", "Immediate port-source credit: "
+            + ", ".join(badge(source) for source in origin["ported_via"])
+            + ". The earlier dated project remains the ultimate origin.",
+        ])
     if entry.get("modified_by"):
-        lines.extend(["", "### Later changes", ""])
+        lines.extend([
+            "", "### Later changes", "",
+            "These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.", "",
+            "| Date | Change source | Commit / subject | Evidence | Confidence |", "|:--|:--|:--|:--|:--|",
+        ])
         for change in entry["modified_by"]:
-            lines.append(f"- {badge(change['source'])} {change['change']} Confidence: {code(change.get('confidence', 'unknown'))}.")
+            date = code(introduction_date(change)) if change.get("timestamp") else "—"
+            subject = str(change.get("subject") or "unresolved").replace("|", "\\|")
+            commit = change_commit_link(change)
+            if change.get("pr_url"):
+                commit += f" · [PR #{change['pr']}]({change['pr_url']})"
+            paths = change.get("paths", [])
+            path_note = ", ".join(code(path) for path in paths[:3])
+            if len(paths) > 3:
+                path_note += f" and {len(paths) - 3} more"
+            evidence = change["change"] + (f" {path_note}" if path_note else "")
+            lines.append(
+                f"| {date} | {badge(change['source'])} | {commit}<br>{subject} | "
+                f"{evidence} | {code(change.get('confidence', 'unknown'))} |"
+            )
     lines.extend(["", "## Evidence", ""])
     for item in entry["evidence"]:
         extra = f" ({item.get('registration_kind')})" if item.get("registration_kind") else ""
@@ -512,6 +585,7 @@ def audit_page(entries: list[dict[str, Any]], runtime: dict[str, Any] | None) ->
     review = [entry for entry in entries if entry["status"] != "documented"]
     ambiguous = [entry for entry in entries if entry["origin"]["confidence"] != "high"]
     modified = [entry for entry in entries if entry.get("modified_by")]
+    modification_count = sum(len(entry.get("modified_by", [])) for entry in entries)
     lines = [frontmatter("Audit report", 7, "Console reference"), "# Audit report", "",
              "This is the deliberately untidy review queue behind the published reference. `unknown` and `needs-review` are used instead of guesses.", "",
              "## Totals by origin", "", count_table(entries, lambda entry: ORIGIN_LABELS.get(entry["origin"]["source"], entry["origin"]["source"])), "",
@@ -532,8 +606,8 @@ def audit_page(entries: list[dict[str, Any]], runtime: dict[str, Any] | None) ->
     lines.extend([
         f"## Provenance needing review ({len(ambiguous)})", "", compact_table(ambiguous), "",
         f"## Semantics or options needing review ({len(review)})", "", compact_table(review), "",
-        f"## Registration signatures changed since origin ({len(modified)})", "",
-        "These entries differ in default, flags, module, or renderer scope from the origin snapshot. The changing commit/fork remains `unknown` until a commit-level trace proves it.", "",
+        f"## Post-origin change history ({len(modified)} entries; {modification_count} events)", "",
+        "These entries have dated post-origin registration or behavior evidence on TaystJK's inherited first-parent history. Each detail page links the exact commit and records whether attribution comes from explicit credit, a unique project mainline, shared lineage, or an unresolved registration difference.", "",
         compact_table(modified), "",
     ])
     return "\n".join(lines)
@@ -554,7 +628,7 @@ def sources_page(refs: dict[str, str]) -> str:
     }
     ref_for = {
         "basejka": "14cea1563762076974bee277afadbd5bf234c494",
-        "openjk": "openjk/master", "eternaljk": "eternaljk/master", "japro": "japro/master",
+        "openjk": "openjk/master", "eternaljk": "eternaljk/master", "japro": "japro/main",
         "jk2mv": "jk2mv/master", "newjk": "newjk/master", "rend2": "somaz/rend2-unified-wip",
         "vulkan": "Sunny/master", "taystjk": "origin/master",
     }
@@ -574,16 +648,18 @@ The reference separates origin from current availability. An entry inherited fro
 
 1. The extractor masks comments, follows preprocessor conditions, and recognizes XCVAR macros, legacy VM tables, direct and syscall `Cvar_Get`/`Cvar_Register` calls, dynamic format expansions, command tables, input tables, renderer tables, and server-forwarded command names.
 2. The Raven baseline is OpenJK commit `14cea1563762076974bee277afadbd5bf234c494`, the initial JA source dump.
-3. Exact names are compared across all configured upstream snapshots. Every non-base registration is also traced through TaystJK's registration-file history; squash bullets and PR bodies provide explicit port evidence even when several upstream heads share the same name.
-4. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. Unproven fields stay in the review queue.
-5. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
+3. For every non-base name, the resolver dates its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. The earliest dated project is the ultimate origin; later appearances are recorded as downstream ports rather than treated as proof of origin. Current-head presence is only a fallback when file history cannot be followed.
+4. Equal-date appearances are resolved only after chronology, using a shared commit as fork-lineage evidence. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier dated origin.
+5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
+6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. Unproven fields stay in the review queue.
+7. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
 
 NewMod is closed source. Its [published feature documentation](https://jkanewmod.github.io/documentation.html) is useful semantic context, but the resolver attributes NewMod/NewJK only where a commit, PR, or nearby source comment explicitly says so, or where the open NewJK tree supplies direct evidence. A feature-page resemblance alone is not treated as origin proof.
 
 ## Confidence
 
-- **High:** initial-import match, renderer-lineage proof, shared upstream commit, or explicit identifier/feature-group credit.
-- **Medium:** exact upstream-head presence where multiple fork lineages overlap, or a current-only first-addition trace without independent upstream proof.
+- **High:** initial-import match, a unique earliest dated project introduction, or explicit identifier/feature-group credit consistent with chronology.
+- **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied earliest dates, or exact upstream-head presence when registration-file history cannot be followed.
 - **Low:** no reliable attribution; these remain `unknown`.
 
 The [audit report](/TaystJK/reference/audit/) lists every medium/low attribution, incomplete semantic entry, and ambiguous registration-signature change.
@@ -613,7 +689,7 @@ def main() -> None:
     commands = load(args.commands)
     entries = cvars + commands
     refs = {ref: git("rev-parse", ref) for ref in ["origin/master", *[
-        "openjk/master", "eternaljk/master", "japro/master", "jk2mv/master", "newjk/master",
+        "openjk/master", "eternaljk/master", "japro/main", "jk2mv/master", "newjk/master",
         "somaz/rend2-unified-wip", "Sunny/master",
     ]]}
     refs["14cea1563762076974bee277afadbd5bf234c494"] = "14cea1563762076974bee277afadbd5bf234c494"

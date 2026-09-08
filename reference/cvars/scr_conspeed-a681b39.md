@@ -42,11 +42,23 @@ No cvar flags are registered at the cited site.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [code/client/cl_console.cpp:232](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/client/cl_console.cpp#L232)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2014-05-23` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`20c2b225b678`](https://github.com/JACoders/OpenJK/commit/20c2b225b678926eaeba443c1d3ff57b8fad7f58)<br>[MP] Clamp scr_conspeed to be in the range 1-100 | Changed an exact bound cvar-variable reference. `codemp/client/cl_console.cpp` | `medium` |
+| `2015-11-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c8f6ea17a324`](https://github.com/eternalcodes/EternalJK/commit/c8f6ea17a3241677d1be74ef45109b96a357ef23)<br>Remove SP code | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/client/cl_console.cpp` | `medium` |
+| `2016-03-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c9c6ab99fdd2`](https://github.com/eternalcodes/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)<br>Merge branch 'master' of https://github.com/JACoders/OpenJK into japro | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/client/cl_console.cpp` | `medium` |
+| `2018-02-25` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`dc224787253a`](https://github.com/eternalcodes/EternalJK/commit/dc224787253a97d7dad70f9404d52e6c86891ba3)<br>clanp con_scale as it can crash, comments | Changed an exact bound cvar-variable reference. `codemp/client/cl_console.cpp` | `medium` |
+| `2018-02-25` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`f57cbc3056a9`](https://github.com/eternalcodes/EternalJK/commit/f57cbc3056a9b8aa7cfefc66a972afb433468348)<br>ops | Changed an exact bound cvar-variable reference. `codemp/client/cl_console.cpp` | `medium` |
 
 ## Evidence
 

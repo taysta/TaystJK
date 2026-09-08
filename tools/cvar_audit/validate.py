@@ -13,6 +13,7 @@ STATUS = {"documented", "needs-review", "unknown", "removed"}
 NETWORK = {"client-only", "needs-server-support", "server-authoritative", "feature-flagged"}
 DERIVATION = {"documented", "code-trace", "mixed"}
 RENDERERS = {"rd-vanilla", "rd-rend2", "rd-vulkan", "rd-dedicated"}
+CHANGE_CATEGORIES = {"registration", "behavior-reference", "handler"}
 COMMON = {
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
@@ -56,6 +57,49 @@ def validate(path: Path, expected_kind: str) -> list[str]:
             errors.append(f"{label}: invalid origin")
         if origin.get("confidence") not in CONFIDENCE or origin.get("status") not in STATUS:
             errors.append(f"{label}: incomplete origin assessment")
+        introductions = origin.get("introduction_evidence", [])
+        timestamps = [item.get("timestamp") for item in introductions]
+        if timestamps != sorted(timestamps):
+            errors.append(f"{label}: project introductions are not chronological")
+        introduction_sources = [item.get("source") for item in introductions]
+        if len(introduction_sources) != len(set(introduction_sources)):
+            errors.append(f"{label}: duplicate project introduction source")
+        origin_introduction = origin.get("origin_introduction")
+        if origin_introduction:
+            if origin_introduction.get("source") != origin.get("source"):
+                errors.append(f"{label}: origin introduction does not match attributed source")
+            if introductions and origin_introduction.get("timestamp") != min(timestamps):
+                errors.append(f"{label}: attributed origin is later than another dated project introduction")
+        for downstream in origin.get("downstream_introductions", []):
+            if not origin_introduction or downstream.get("timestamp", 0) <= origin_introduction.get("timestamp", 0):
+                errors.append(f"{label}: invalid downstream introduction chronology")
+        modifications = entry.get("modified_by", [])
+        dated_modifications = [item for item in modifications if item.get("timestamp") is not None]
+        modification_timestamps = [item["timestamp"] for item in dated_modifications]
+        if modification_timestamps != sorted(modification_timestamps):
+            errors.append(f"{label}: later changes are not chronological")
+        commits = [item.get("commit") for item in modifications if item.get("commit")]
+        if len(commits) != len(set(commits)):
+            errors.append(f"{label}: duplicate later-change commit")
+        for change in modifications:
+            if change.get("source") not in ORIGINS:
+                errors.append(f"{label}: invalid later-change source")
+            if change.get("confidence") not in CONFIDENCE:
+                errors.append(f"{label}: invalid later-change confidence")
+            if set(change.get("categories", [])) - CHANGE_CATEGORIES:
+                errors.append(f"{label}: invalid later-change category")
+            if not change.get("method") or not change.get("change"):
+                errors.append(f"{label}: incomplete later-change evidence")
+            commit = change.get("commit")
+            if commit is not None and (
+                not isinstance(commit, str) or len(commit) != 40
+                or any(character not in "0123456789abcdef" for character in commit)
+            ):
+                errors.append(f"{label}: invalid later-change commit")
+            if commit and change.get("timestamp") is None:
+                errors.append(f"{label}: dated later-change commit has no timestamp")
+            if change.get("repository") not in ORIGINS:
+                errors.append(f"{label}: invalid later-change repository")
         if expected_kind == "cvar":
             for field in ("default", "flags", "value_type", "range", "values", "requires_restart"):
                 if field not in entry:

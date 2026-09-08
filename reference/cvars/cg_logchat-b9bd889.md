@@ -22,7 +22,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -44,10 +44,35 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`f1b9b895897d`](https://github.com/taysta/TaystJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2)
+- Ultimate-origin introduction: [`f1b9b895897d`](https://github.com/eternalcodes/EternalJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) on `2015-11-18` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:157](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L157)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2015-11-18` | [`f1b9b895897d`](https://github.com/eternalcodes/EternalJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2015-11-18` | [`f1b9b895897d`](https://github.com/taysta/TaystJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2015-11-18` | [`f1b9b895897d`](https://github.com/videoP/jaPRO/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2015-11-18` | [`f1b9b895897d`](https://github.com/JKSunny/EternalJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2016-03-25` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`3deebad9ad1c`](https://github.com/eternalcodes/EternalJK/commit/3deebad9ad1c35afca75293469e744639ed0e636)<br>Revert "Added chat logs from japp" | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/cgame/cg_main.c`, `codemp/cgame/cg_xcvar.h` | `medium` |
+| `2018-09-03` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c)<br>Import japro cgame | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/cgame/cg_main.c`, `codemp/cgame/cg_xcvar.h` | `high` |
+| `2018-12-20` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`328d55f0062f`](https://github.com/eternalcodes/EternalJK/commit/328d55f0062f745722046389d7b9744ec050d77f)<br>Chatlog options configurable with /chatlog | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_consolecmds.c`, `codemp/cgame/cg_main.c`, `codemp/cgame/cg_servercmds.c` | `medium` |
+| `2019-02-19` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`180b40ba0cc1`](https://github.com/eternalcodes/EternalJK/commit/180b40ba0cc1327c8eb50f2e15e94d60541ecfb8)<br>Chatbox/cgame chatlog code cleanup. | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_draw.c`, `codemp/cgame/cg_main.c`, `codemp/cgame/cg_servercmds.c` | `medium` |
+| `2019-03-19` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c55cb9d28c23`](https://github.com/eternalcodes/EternalJK/commit/c55cb9d28c231c78a01be32ad62094f7f67f9c4f)<br>Engine chat logging - don't log "end log" message until something has been logged | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_main.c` | `medium` |
+| `2019-07-29` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`7810594c683a`](https://github.com/eternalcodes/EternalJK/commit/7810594c683a50d643a0075ef3f9cd6473dd9ae6)<br>cg_chatSounds 2 will only beep for private and team messages | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_draw.c` | `medium` |
 
 ## Evidence
 

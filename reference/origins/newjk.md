@@ -5,13 +5,13 @@ nav_order: 5
 parent: "By origin"
 wide: true
 reference_app: true
-description: "Browse 6 cvars, 14 commands in the TaystJK console reference."
+description: "Browse 1 cvars, 9 commands in the TaystJK console reference."
 ---
 
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Filtered collection</p>
 <h1>NewJK / NewMod</h1>
-<p class="page-lede">Entries whose evidence identifies this project as the original source. Later consumers do not change the origin badge. This collection contains 6 cvars, 14 commands.</p>
+<p class="page-lede">Entries whose evidence identifies this project as the original source. Later consumers do not change the origin badge. This collection contains 1 cvars, 9 commands.</p>
 </div>
 
 <section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" data-preset-origin="newjk" aria-labelledby="catalog-title">

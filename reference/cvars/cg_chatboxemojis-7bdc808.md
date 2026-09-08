@@ -7,7 +7,7 @@ search_exclude: false
 
 # `cg_chatBoxEmojis`
 
-<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+<span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -22,7 +22,7 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -41,17 +41,35 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-- Commit evidence: [`6add85e2bdad`](https://github.com/taysta/TaystJK/commit/6add85e2bdad2ac4030d38a8dbb454b7ab8e0754)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L67)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
-- Notes: The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Ultimate-origin introduction: [`caa8f274580f`](https://github.com/JKSunny/EternalJK/commit/caa8f274580f151f8472d987144146ca02430d3f) on `2020-05-15` in <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/cgame/cg_xcvar.h#L67)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2020-05-15` | [`caa8f274580f`](https://github.com/eternalcodes/EternalJK/commit/caa8f274580f151f8472d987144146ca02430d3f) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2020-05-15` | [`caa8f274580f`](https://github.com/taysta/TaystJK/commit/caa8f274580f151f8472d987144146ca02430d3f) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2020-05-15` | [`caa8f274580f`](https://github.com/videoP/jaPRO/commit/caa8f274580f151f8472d987144146ca02430d3f) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2020-05-15` | [`caa8f274580f`](https://github.com/JKSunny/EternalJK/commit/caa8f274580f151f8472d987144146ca02430d3f) | Ultimate origin |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2020-05-20` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`ef9756779211`](https://github.com/eternalcodes/EternalJK/commit/ef9756779211debb92cc375c0082be376ae3084a)<br>Update CG_LoadEmojis | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/cgame/cg_main.c`, `codemp/cgame/cg_xcvar.h` | `medium` |
+| `2020-06-13` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`ea53d3689287`](https://github.com/eternalcodes/EternalJK/commit/ea53d36892876a6a13184e6dfa84655185e48ab5)<br>Chatbox Emoji improvements+refactoring+cleanup | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_draw.c` | `medium` |
+| `2023-11-01` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`8b2ad42d2ad0`](https://github.com/taysta/TaystJK/commit/8b2ad42d2ad0d52f86bbe88e4f1361665c153f9c)<br>Fix various GCC warnings in CGAME. | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_main.c` | `medium` |
+| `2024-02-26` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`cd784cbf26da`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d) · [PR #157](https://github.com/taysta/TaystJK/pull/157)<br>Upstream update (#157) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/cgame/cg_xcvar.h` | `medium` |
 
 ## Evidence
 

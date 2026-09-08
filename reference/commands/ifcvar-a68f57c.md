@@ -7,7 +7,9 @@ search_exclude: false
 
 # `ifCvar`
 
-<span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
 Tests a cvar against conditions in order and executes the command belonging to the first match. Conditions support literal string equality; numeric $=, $!=, $>, $<, $>= and $<= comparisons; $contains; $beginswith/$startswith; $endswith; $else; and values read from another cvar with a leading $. The argument count includes the command itself.
 
@@ -20,7 +22,7 @@ Tests a cvar against conditions in order and executes the command belonging to t
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Syntax | `ifCvar <cvar> <setting> <argument-count> <command...> [<setting> <argument-count> <command...> ...]` |
 | Cheat protected | No |
 
@@ -30,12 +32,22 @@ Arguments: `cvar`, `setting`, `argument-count`, `command`, `...`.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`fe25979e3fb5`](https://github.com/taysta/TaystJK/commit/fe25979e3fb58eb466ef4ba82680bb684588bf0f)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits newjk.
+- Ultimate-origin introduction: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) on `2022-04-20` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1426](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1426)
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2022-04-20` | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2022-04-20` | [`1dd571383a0d`](https://github.com/videoP/jaPRO/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Shared earliest lineage |
 
 ## Evidence
 

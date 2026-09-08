@@ -41,10 +41,30 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-- Commit evidence: [`18a8e8c9a528`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47)
+- TaystJK integration evidence: [`18a8e8c9a528`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-01-14` | [`18a8e8c9a528`](https://github.com/eternalcodes/EternalJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-01-14` | [`18a8e8c9a528`](https://github.com/taysta/TaystJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-01-14` | [`18a8e8c9a528`](https://github.com/videoP/jaPRO/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-01-14` | [`18a8e8c9a528`](https://github.com/JKSunny/EternalJK/commit/18a8e8c9a528dd540dddee52ae2376a7c05a5e47) | Additional dated evidence |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2019-04-21` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`2c42f32bebfc`](https://github.com/eternalcodes/EternalJK/commit/2c42f32bebfc4c0c5cb5f20bf53af57c02e1a3e6)<br>Moved Set2DRatio code for CG and UI into ui_shared, removed CG_Set2DRatio, update renderer widthRatioCoef when changing cl_ratioFix cvar. | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/cgame/cg_xcvar.h` | `medium` |
+| `2019-04-21` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`7bd5df22796d`](https://github.com/eternalcodes/EternalJK/commit/7bd5df22796d79cd2d117f49cca0d65375f1624d)<br>Prevent camera from jerking when toggling cg_thirdPerson/strafeHelper settings | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/cgame/cg_xcvar.h` | `medium` |
 
 ## Evidence
 

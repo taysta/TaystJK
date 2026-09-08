@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Used by UI in the in-game "about" menu
 
 ## At a glance
@@ -20,7 +22,7 @@ Used by UI in the in-game "about" menu
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `Info_ValueForKey(info, "version")` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -38,10 +40,22 @@ No cvar flags are registered at the cited site.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`e4ececfdb4d1`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Ultimate-origin introduction: [`e4ececfdb4d1`](https://github.com/videoP/jaPRO/commit/e4ececfdb4d1033473d6f502615964281530d401) on `2018-10-04` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Upstream registration evidence: [codemp/cgame/cg_servercmds.c:236](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_servercmds.c#L236)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-10-04` | [`e4ececfdb4d1`](https://github.com/eternalcodes/EternalJK/commit/e4ececfdb4d1033473d6f502615964281530d401) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-10-04` | [`e4ececfdb4d1`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-10-04` | [`e4ececfdb4d1`](https://github.com/videoP/jaPRO/commit/e4ececfdb4d1033473d6f502615964281530d401) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-10-04` | [`e4ececfdb4d1`](https://github.com/JKSunny/EternalJK/commit/e4ececfdb4d1033473d6f502615964281530d401) | Shared earliest lineage |
 
 ## Evidence
 

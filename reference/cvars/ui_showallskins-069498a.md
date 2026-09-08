@@ -22,7 +22,7 @@ Controls `ui_showAllSkins` in the ui module. Consult the cited behavior reads be
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -40,10 +40,32 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`452010cb69e8`](https://github.com/taysta/TaystJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5)
+- Ultimate-origin introduction: [`452010cb69e8`](https://github.com/eternalcodes/EternalJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) on `2019-04-11` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 - Upstream registration evidence: [codemp/ui/ui_xcvar.h:164](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L164)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-04-11` | [`452010cb69e8`](https://github.com/eternalcodes/EternalJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-04-11` | [`452010cb69e8`](https://github.com/taysta/TaystJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-04-11` | [`452010cb69e8`](https://github.com/videoP/jaPRO/commit/452010cb69e89d0c546144d5373bdb954e90afd5) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-04-11` | [`452010cb69e8`](https://github.com/JKSunny/EternalJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2019-04-11` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`adaea450a575`](https://github.com/eternalcodes/EternalJK/commit/adaea450a575c60e5e4909df2a2b0bcfc865fa8e)<br>Add default icons for skins with missing icon images. -Artemis | Changed an exact bound cvar-variable reference. `codemp/ui/ui_main.c` | `medium` |
+| `2019-04-11` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`d53968753a73`](https://github.com/eternalcodes/EternalJK/commit/d53968753a739eb8efb2399e8eae81c288b262c3)<br>Only show missing icons if we want to see them | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/ui/ui_main.c`, `codemp/ui/ui_xcvar.h` | `medium` |
+| `2019-06-13` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`49e91d910266`](https://github.com/eternalcodes/EternalJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01)<br>Filter custom skins/species/hilts out of player menus on sv_pure servers | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/ui/ui_main.c`, `codemp/ui/ui_xcvar.h` | `medium` |
 
 ## Evidence
 

@@ -7,7 +7,7 @@ search_exclude: false
 
 # `com_unpackLibraries`
 
-<span class="label ref-origin ref-origin-openjk">OpenJK</span>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -42,12 +42,24 @@ Controls `com_unpackLibraries` in the engine-shared module. Consult the cited be
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`e3930aba6438`](https://github.com/taysta/TaystJK/commit/e3930aba64380bdb833354a880abbe92b4571a16)
-- Upstream registration evidence: [shared/sys/sys_main.cpp:169](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sys/sys_main.cpp#L169)
-- Attribution method: `post-import-openjk-head-presence`
+- TaystJK integration evidence: [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0)
+- Pull request: [#52](https://github.com/taysta/TaystJK/pull/52)
+- Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. An identifier-adjacent source/commit/PR line explicitly credits eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-28` | [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-28` | [`596ae40cc9aa`](https://github.com/videoP/jaPRO/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-04-07` | [`065d32955f56`](https://github.com/JACoders/OpenJK/commit/065d32955f56f595c93498a102c16a1d5a051672) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-04-09` | [`b688bdf3ea00`](https://github.com/SomaZ/OpenJK/commit/b688bdf3ea00319185f6b027ef61c6d7f506d36f) | Additional dated evidence |
 
 ## Evidence
 

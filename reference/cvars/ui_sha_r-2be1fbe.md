@@ -22,7 +22,7 @@ Controls `ui_sha_r` in the ui module. Consult the cited behavior reads before re
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -44,10 +44,35 @@ Controls `ui_sha_r` in the ui module. Consult the cited behavior reads before re
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`6d7bc5b9ec68`](https://github.com/taysta/TaystJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770)
+- Ultimate-origin introduction: [`6d7bc5b9ec68`](https://github.com/eternalcodes/EternalJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) on `2015-04-11` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 - Upstream registration evidence: [codemp/ui/ui_xcvar.h:150](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L150)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2015-04-11` | [`6d7bc5b9ec68`](https://github.com/eternalcodes/EternalJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2015-04-11` | [`6d7bc5b9ec68`](https://github.com/taysta/TaystJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2015-04-11` | [`6d7bc5b9ec68`](https://github.com/videoP/jaPRO/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2015-04-11` | [`6d7bc5b9ec68`](https://github.com/JKSunny/EternalJK/commit/6d7bc5b9ec6885510f41f500aa62bb0da1a0e770) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2015-04-11` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`2af03fc05496`](https://github.com/eternalcodes/EternalJK/commit/2af03fc054963a7aaac766707e09e810c77f3a0c)<br>UI code to change cg_strafeHelperActiveColor RGBA values in realtime. Thanks Raz0r! :) | Changed an exact bound cvar-variable reference. `codemp/ui/ui_cvar.c` | `medium` |
+| `2015-04-12` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`b987d21b2dd1`](https://github.com/eternalcodes/EternalJK/commit/b987d21b2dd1f5794d6f3112bced14743609323d)<br>Loda's fix for cg_strafeHelperActiveColor, less bloat. | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/ui/ui_cvar.c`, `codemp/ui/ui_xcvar.h` | `medium` |
+| `2016-09-30` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`5b7d8d89e02c`](https://github.com/videoP/jaPRO/commit/5b7d8d89e02c9852395b59575bcd07dde759a368)<br>Remove japro support | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/ui/ui_cvar.c`, `codemp/ui/ui_xcvar.h` | `high` |
+| `2017-12-03` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`b0b6ee187247`](https://github.com/videoP/jaPRO/commit/b0b6ee1872471eaed87e815be25d7926199c1181)<br>Revert "Remove japro support" | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/ui/ui_cvar.c`, `codemp/ui/ui_xcvar.h` | `high` |
+| `2018-09-03` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c)<br>Import japro cgame | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_cvar.c` | `high` |
+| `2019-06-13` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`49e91d910266`](https://github.com/eternalcodes/EternalJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01)<br>Filter custom skins/species/hilts out of player menus on sv_pure servers | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/ui/ui_xcvar.h` | `medium` |
 
 ## Evidence
 

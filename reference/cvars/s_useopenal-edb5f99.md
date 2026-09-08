@@ -41,11 +41,21 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [code/client/snd_dma.cpp:475](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/client/snd_dma.cpp#L475)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
-- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+- Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2014-05-10` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`16f7fe7ecc48`](https://github.com/JACoders/OpenJK/commit/16f7fe7ecc4842f32eea5dea5aeef4df9369b1ab)<br>[MP] Minor refactoring and cleanup in the sound code to move AL code all in a preprocessor. Removed an unnecessary loop in S_LoadSound_DirIsAllowedToKeepMP3s. | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/client/snd_dma.cpp` | `medium` |
+| `2014-05-12` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`575263a31897`](https://github.com/JACoders/OpenJK/commit/575263a318979ff328ffdf16321244c16ca7271d)<br>[SP] Minor refactoring and cleanup in the sound code to move AL code all in a preprocessor. Removed an unnecessary loop in S_LoadSound_DirIsAllowedToKeepMP3s. | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/client/snd_dma.cpp` | `medium` |
+| `2015-11-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c8f6ea17a324`](https://github.com/eternalcodes/EternalJK/commit/c8f6ea17a3241677d1be74ef45109b96a357ef23)<br>Remove SP code | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/client/snd_dma.cpp` | `medium` |
 
 ## Evidence
 

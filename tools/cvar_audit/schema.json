@@ -35,7 +35,36 @@
         "status": {"enum": ["documented", "needs-review", "unknown", "removed"]}
       }
     },
-    "modified_by": {"type": "array"},
+    "modified_by": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "change", "categories", "commit", "confidence", "method", "repository"],
+        "properties": {
+          "source": {
+            "enum": ["basejka", "openjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "taystjk", "quake3", "unknown"]
+          },
+          "change": {"type": "string", "minLength": 1},
+          "categories": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"enum": ["registration", "behavior-reference", "handler"]}
+          },
+          "commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "timestamp": {"type": "integer"},
+          "subject": {"type": "string"},
+          "paths": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "method": {"type": "string", "minLength": 1},
+          "repository": {
+            "enum": ["basejka", "openjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "taystjk", "quake3", "unknown"]
+          },
+          "pr": {"type": ["integer", "null"]},
+          "pr_url": {"type": ["string", "null"]}
+        }
+      }
+    },
     "evidence": {"type": "array", "minItems": 1},
     "confidence": {"enum": ["high", "medium", "low"]},
     "status": {"enum": ["documented", "needs-review", "unknown", "removed"]},

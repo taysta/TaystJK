@@ -32,11 +32,30 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
-- Commit evidence: [`10e206dae50c`](https://github.com/taysta/TaystJK/commit/10e206dae50cb6f933eb2a246559e37dfede227a)
+- Ultimate-origin introduction: [`c3f27b42e4f3`](https://github.com/jkanewmod/NewJK/commit/c3f27b42e4f34443b36c9a1c19614dfeba21beb4) on `2016-05-29` in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+- TaystJK integration evidence: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)
 - Upstream registration evidence: [codemp/qcommon/common.cpp:1220](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/qcommon/common.cpp#L1220)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits newjk.
+- Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2016-05-29` | [`c3f27b42e4f3`](https://github.com/jkanewmod/NewJK/commit/c3f27b42e4f34443b36c9a1c19614dfeba21beb4) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2022-04-20` | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2022-04-20` | [`1dd571383a0d`](https://github.com/videoP/jaPRO/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) | Later project appearance |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2022-04-20` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)<br>Merge remote-tracking branch 'origin/master' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/common.cpp`, `codemp/qcommon/qcommon.h` | `medium` |
 
 ## Evidence
 

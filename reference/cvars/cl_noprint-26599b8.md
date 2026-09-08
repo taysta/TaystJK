@@ -43,11 +43,20 @@ No cvar flags are registered at the cited site.
 
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
-- Commit evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
+- Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
 - Upstream registration evidence: [code/client/cl_main.cpp:1214](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/client/cl_main.cpp#L1214)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2015-11-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c8f6ea17a324`](https://github.com/eternalcodes/EternalJK/commit/c8f6ea17a3241677d1be74ef45109b96a357ef23)<br>Remove SP code | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/client/cl_main.cpp` | `medium` |
+| `2016-04-15` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`8fff5e2c8dc2`](https://github.com/eternalcodes/EternalJK/commit/8fff5e2c8dc2a92e8070998bb28ded23ac644b27)<br>console bugfixes, new con_notifyconnect cmd setting con_notifyconnect to 1 will notify you when a player connects/disconnects while minimized con_notifyconnect will automatically reset to 0 fixed cvar info not displaying properly removed "::::::::" stamps improved word length counting and word wrapping | Changed an exact bound cvar-variable reference. `codemp/client/cl_console.cpp` | `medium` |
 
 ## Evidence
 

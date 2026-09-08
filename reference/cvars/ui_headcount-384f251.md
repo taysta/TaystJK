@@ -22,7 +22,7 @@ Controls `ui_headCount` in the ui module. Consult the cited behavior reads befor
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `-1` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -42,10 +42,31 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`0b9f190a7a4b`](https://github.com/taysta/TaystJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180)
+- Ultimate-origin introduction: [`0b9f190a7a4b`](https://github.com/eternalcodes/EternalJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) on `2019-03-19` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 - Upstream registration evidence: [codemp/ui/ui_xcvar.h:163](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L163)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-03-19` | [`0b9f190a7a4b`](https://github.com/eternalcodes/EternalJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-03-19` | [`0b9f190a7a4b`](https://github.com/taysta/TaystJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-03-19` | [`0b9f190a7a4b`](https://github.com/videoP/jaPRO/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-03-19` | [`0b9f190a7a4b`](https://github.com/JKSunny/EternalJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2019-04-11` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`452010cb69e8`](https://github.com/eternalcodes/EternalJK/commit/452010cb69e89d0c546144d5373bdb954e90afd5)<br>Add option to list skins that don't belong to another team under default | Changed an exact bound cvar-variable reference. `codemp/ui/ui_main.c` | `medium` |
+| `2019-06-13` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`49e91d910266`](https://github.com/eternalcodes/EternalJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01)<br>Filter custom skins/species/hilts out of player menus on sv_pure servers | Changed an exact bound cvar-variable reference. `codemp/ui/ui_main.c` | `medium` |
 
 ## Evidence
 

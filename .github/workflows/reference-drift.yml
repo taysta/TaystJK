@@ -18,6 +18,8 @@ jobs:
         run: git fetch origin master:refs/remotes/origin/master
       - name: Test extractor
         run: python3 tools/cvar_audit/test_extract.py
+      - name: Test provenance chronology
+        run: python3 tools/cvar_audit/test_provenance.py
       - name: Test reference search and filters
         run: node tools/cvar_audit/test_reference_app.js
       - name: Validate reference records

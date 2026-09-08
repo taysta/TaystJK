@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Sets protocol based on server info response
 
 ## At a glance
@@ -20,7 +22,7 @@ Sets protocol based on server info response
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -44,10 +46,35 @@ Sets protocol based on server info response
 
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-- Commit evidence: [`a983fa494fee`](https://github.com/taysta/TaystJK/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv.
+- TaystJK integration evidence: [`a983fa494fee`](https://github.com/taysta/TaystJK/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits jk2mv.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-04-26` | [`a983fa494fee`](https://github.com/eternalcodes/EternalJK/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-04-26` | [`a983fa494fee`](https://github.com/taysta/TaystJK/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-04-26` | [`a983fa494fee`](https://github.com/videoP/jaPRO/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-04-26` | [`a983fa494fee`](https://github.com/JKSunny/EternalJK/commit/a983fa494fee7b9c475eed4eea61f7a05f9ede4b) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2020-04-02` | [`007750b49b3b`](https://github.com/jkanewmod/NewJK/commit/007750b49b3bfff586199e126ebdc4d90ba515d1) | Additional dated evidence |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-05-16` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`5df1fad1b1f6`](https://github.com/eternalcodes/EternalJK/commit/5df1fad1b1f6ba70e74e42630b0e0494750010f0)<br>Merge remote-tracking branch 'bucky/master' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/client/cl_main.cpp` | `medium` |
+| `2018-05-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`097a0d05fa4e`](https://github.com/eternalcodes/EternalJK/commit/097a0d05fa4edb25c14bf88d42ea2bff668fd232)<br>Merge remote-tracking branch 'bucky/master' | Changed an exact bound cvar-variable reference. `codemp/client/cl_main.cpp` | `medium` |
+| `2018-07-22` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`fae0fd307416`](https://github.com/eternalcodes/EternalJK/commit/fae0fd30741627a4c90fec92d4ba5c07c826410a)<br>Merge branch 'feature/update-game' into develop | Changed an exact bound cvar-variable reference. `codemp/client/cl_main.cpp` | `medium` |
+| `2018-10-21` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`952c06842ed0`](https://github.com/eternalcodes/EternalJK/commit/952c06842ed0717365fb37927585d6498e7a77a0)<br>Remove custom widescreen console background, now fixed with con_ratioFix | Changed an exact bound cvar-variable reference. `codemp/client/cl_main.cpp` | `medium` |
+| `2018-11-28` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`418f3e1fcc29`](https://github.com/eternalcodes/EternalJK/commit/418f3e1fcc29e35e3535604041949a71e97207ee)<br>Check engine support for new renderfx flags, use old behavior if necessary | Changed an exact bound cvar-variable reference. `codemp/cgame/cg_main.c` | `medium` |
+| `2026-08-13` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`5802c999168d`](https://github.com/taysta/TaystJK/commit/5802c999168db2f9759a48f1ef3a3d672fa99722) · [PR #366](https://github.com/taysta/TaystJK/pull/366)<br>Merge pull request #366 from taysta/pure-fix | Changed an exact bound cvar-variable reference. `codemp/qcommon/files.cpp` | `high` |
 
 ## Evidence
 

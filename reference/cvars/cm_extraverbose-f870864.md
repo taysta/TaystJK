@@ -22,7 +22,7 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -43,10 +43,25 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`cd9bd8d9c874`](https://github.com/taysta/TaystJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705)
+- Ultimate-origin introduction: [`cd9bd8d9c874`](https://github.com/JACoders/OpenJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) on `2014-02-06` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Upstream registration evidence: [codemp/qcommon/cm_load.cpp:637](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cm_load.cpp#L637)
-- Attribution method: `post-import-openjk-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/JACoders/OpenJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/eternalcodes/EternalJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/SomaZ/OpenJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/taysta/TaystJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/videoP/jaPRO/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/jkanewmod/NewJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2014-02-06` | [`cd9bd8d9c874`](https://github.com/JKSunny/EternalJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) | Shared earliest lineage |
 
 ## Evidence
 

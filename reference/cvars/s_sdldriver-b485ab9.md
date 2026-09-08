@@ -22,7 +22,7 @@ Controls `s_sdlDriver` in the engine-shared module. Consult the cited behavior r
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `` |
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
@@ -41,11 +41,21 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`44d85df90f4b`](https://github.com/taysta/TaystJK/commit/44d85df90f4bd424a141ae4e4e25fbe5c71c4885)
+- TaystJK integration evidence: [`44d85df90f4b`](https://github.com/taysta/TaystJK/commit/44d85df90f4bd424a141ae4e4e25fbe5c71c4885)
 - Pull request: [#228](https://github.com/taysta/TaystJK/pull/228)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits openjk.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits openjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-04-26` | [`44d85df90f4b`](https://github.com/taysta/TaystJK/commit/44d85df90f4bd424a141ae4e4e25fbe5c71c4885) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-04-26` | [`44d85df90f4b`](https://github.com/videoP/jaPRO/commit/44d85df90f4bd424a141ae4e4e25fbe5c71c4885) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2025-05-02` | [`b582d130d846`](https://github.com/JKSunny/EternalJK/commit/b582d130d846430bccf02ed3993d027c510bdefc) | Additional dated evidence |
 
 ## Evidence
 

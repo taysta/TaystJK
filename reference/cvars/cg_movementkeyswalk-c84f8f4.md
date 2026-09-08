@@ -38,10 +38,21 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`9e2d861b2ce4`](https://github.com/taysta/TaystJK/commit/9e2d861b2ce42287dc339be158c8796268955bc1)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Ultimate-origin introduction: [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) on `2026-06-07` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Pull request: [#318](https://github.com/taysta/TaystJK/pull/318)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:45](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L45)
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-06-07` | [`77a255000dd4`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2026-06-07` | [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Ultimate origin |
 
 ## Evidence
 

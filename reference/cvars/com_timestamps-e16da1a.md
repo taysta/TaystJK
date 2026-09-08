@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Print timestamps in qconsole.log and system console.
 
 ## At a glance
@@ -20,7 +22,7 @@ Print timestamps in qconsole.log and system console.
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -41,17 +43,34 @@ Print timestamps in qconsole.log and system console.
 
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-- Commit evidence: [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3)
+- Ultimate-origin introduction: [`4c06aa6576b7`](https://github.com/mvdevs/jk2mv/commit/4c06aa6576b76c57d809f29bc1252be51b603419) on `2017-12-14` in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
+- TaystJK integration evidence: [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3)
 - Pull request: [#155](https://github.com/taysta/TaystJK/pull/155)
 - Matching squash bullet: `[Shared] Add com_timestamps cvar to enable timestamps in system terminal and qconsole.log`
 - Upstream registration evidence: [src/qcommon/common.cpp:2618](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/qcommon/common.cpp#L2618)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv. The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2017-12-14` | [`4c06aa6576b7`](https://github.com/mvdevs/jk2mv/commit/4c06aa6576b76c57d809f29bc1252be51b603419) | Ultimate origin |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Later project appearance |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-02-19` | [`49adb7447c9f`](https://github.com/SomaZ/OpenJK/commit/49adb7447c9f4766a9024f55ad44bb5bf8a21b07) | Later project appearance |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-02-27` | [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-02-27` | [`61b1b328accf`](https://github.com/videoP/jaPRO/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3) | Later project appearance |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2024-02-27` | <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3) · [PR #155](https://github.com/taysta/TaystJK/pull/155)<br>qol_console (#155) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/qcommon/common.cpp` | `medium` |
 
 ## Evidence
 

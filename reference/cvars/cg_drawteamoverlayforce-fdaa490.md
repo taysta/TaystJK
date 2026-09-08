@@ -7,7 +7,7 @@ search_exclude: false
 
 # `cg_drawTeamOverlayForce`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 Draw force points on the team overlay. Only has an effect on jaPRO servers, where force points is networked
 
@@ -39,12 +39,21 @@ Draw force points on the team overlay. Only has an effect on jaPRO servers, wher
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`1165f2824506`](https://github.com/taysta/TaystJK/commit/1165f282450636cfa70dbb70d5d506804478ef58)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) on `2026-08-06` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:59](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L59)
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-08-06` | [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) | Ultimate origin |
 
 ## Evidence
 

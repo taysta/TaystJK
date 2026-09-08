@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Time after which server will enter hibernation mode
 
 ## At a glance
@@ -20,7 +22,7 @@ Time after which server will enter hibernation mode
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -38,10 +40,29 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`987d8cc36a14`](https://github.com/taysta/TaystJK/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits openjk.
+- TaystJK integration evidence: [`987d8cc36a14`](https://github.com/taysta/TaystJK/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits openjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-10-12` | [`987d8cc36a14`](https://github.com/eternalcodes/EternalJK/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-10-12` | [`987d8cc36a14`](https://github.com/taysta/TaystJK/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-10-12` | [`987d8cc36a14`](https://github.com/videoP/jaPRO/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-10-12` | [`987d8cc36a14`](https://github.com/JKSunny/EternalJK/commit/987d8cc36a1414256cdfaf323cf7675319ddf0f5) | Additional dated evidence |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-10-12` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`67ad37f1c112`](https://github.com/eternalcodes/EternalJK/commit/67ad37f1c11297fd91b800f65a74274c51c74c7b)<br>hibernation cleanup a lil? | Changed an exact bound cvar-variable reference. `codemp/server/sv_main.cpp` | `medium` |
 
 ## Evidence
 

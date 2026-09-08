@@ -45,12 +45,21 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`24fb55d23bfe`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705)
+- TaystJK integration evidence: [`24fb55d23bfe`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705)
 - Pull request: [#281](https://github.com/taysta/TaystJK/pull/281)
 - Matching squash bullet: `Add cg_drawCrosshairNamesOpacity (0-1 float) to control name transparency`
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits eternaljk.
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-12-11` | [`24fb55d23bfe`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-12-11` | [`24fb55d23bfe`](https://github.com/videoP/jaPRO/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) | Additional dated evidence |
 
 ## Evidence
 

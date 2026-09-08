@@ -7,9 +7,7 @@ search_exclude: false
 
 # `sv_demoPreRecord`
 
-<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
-
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 Activate server demo pre-recording so demos can be retroactively recorded for duration sv_demoPreRecordTime (seconds)
 
@@ -22,7 +20,7 @@ Activate server demo pre-recording so demos can be retroactively recorded for du
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -38,12 +36,30 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`ff998f1a0716`](https://github.com/taysta/TaystJK/commit/ff998f1a071619fa801f26568c92b61d5e92677d)
-- Attribution method: `first-addition-in-registration-file-history`
-- Attribution confidence: `medium`
-- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+- TaystJK integration evidence: [`64b8343c85ea`](https://github.com/taysta/TaystJK/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c)
+- Pull request: [#2](https://github.com/taysta/TaystJK/pull/2)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `high`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-06-23` | [`64b8343c85ea`](https://github.com/taysta/TaystJK/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c) | Additional dated evidence |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-06-23` | [`64b8343c85ea`](https://github.com/videoP/jaPRO/commit/64b8343c85eae26d2990f8ab10f90ac73491c25c) | Additional dated evidence |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2024-01-14` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`80bf35177f0a`](https://github.com/taysta/TaystJK/commit/80bf35177f0a769bb51f61c65e3148a69997ed8a) · [PR #88](https://github.com/taysta/TaystJK/pull/88)<br>Merge pull request #88 from TomArrow/taystjk_demomemorymanage | Changed an exact bound cvar-variable reference. `codemp/server/sv_snapshot.cpp` | `medium` |
 
 ## Evidence
 

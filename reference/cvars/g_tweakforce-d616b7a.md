@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Configured with /tweakForce command.
 
 ## At a glance
@@ -20,7 +22,7 @@ Configured with /tweakForce command.
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -43,11 +45,39 @@ Configured with /tweakForce command.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`5a9bd98fd669`](https://github.com/taysta/TaystJK/commit/5a9bd98fd669dbf16324a2047936a52f49f3ff46)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:188](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_xcvar.h#L188)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) on `2018-01-01` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Upstream registration evidence: [codemp/game/g_xcvar.h:210](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L210)
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/eternalcodes/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/JKSunny/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-09-03` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`6e78add659de`](https://github.com/eternalcodes/EternalJK/commit/6e78add659de33e4919f25aefad3e61546599f3c)<br>Merge remote-tracking branch 'videoP/master' | Changed an exact bound cvar-variable reference. `codemp/game/bg_pmove.c`, `codemp/game/g_cmds.c`, `codemp/game/w_force.c` | `medium` |
+| `2018-10-18` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`116fd88bcf51`](https://github.com/videoP/jaPRO/commit/116fd88bcf51c2c7e504191b5878cf04e50d6357)<br>Merge remote-tracking branch 'videoP-jaPRO/master' | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2020-06-14` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`fb24d6a98965`](https://github.com/videoP/jaPRO/commit/fb24d6a989657d508aa3c722e53dc203d6327e69)<br>Merge remote-tracking branch 'videoP-jaPRO/master' | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2023-12-11` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`9b57ee1b8566`](https://github.com/videoP/jaPRO/commit/9b57ee1b856693898de14daff824dcf111f94b57) · [PR #55](https://github.com/taysta/TaystJK/pull/55)<br>Japro update (#55) | Changed an exact bound cvar-variable reference. `codemp/game/ai_main.c`, `codemp/game/bg_pmove.c`, `codemp/game/g_cmds.c` and 3 more | `high` |
+| `2024-01-09` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`b5dff40126c7`](https://github.com/videoP/jaPRO/commit/b5dff40126c7922718f6b2ebb359463b8af78205) · [PR #82](https://github.com/taysta/TaystJK/pull/82)<br>Japro update (#82) | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2024-04-15` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`258031c97e93`](https://github.com/videoP/jaPRO/commit/258031c97e933f2293dc35c18af5ea16847f0241) · [PR #188](https://github.com/taysta/TaystJK/pull/188)<br>Japro update (#188) | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2024-05-02` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`13eac340e1ce`](https://github.com/videoP/jaPRO/commit/13eac340e1ce2e81ab6cbb47e21d984892a78c2a) · [PR #193](https://github.com/taysta/TaystJK/pull/193)<br>Japro update (#193) | Changed an exact bound cvar-variable reference. `codemp/game/g_cmds.c` | `high` |
+| `2024-05-24` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`8188f06a4e61`](https://github.com/videoP/jaPRO/commit/8188f06a4e617f146c075888a885ab2dedeecd73) · [PR #204](https://github.com/taysta/TaystJK/pull/204)<br>Japro update (#204) | Changed an exact bound cvar-variable reference. `codemp/game/w_force.c` | `high` |
+| `2024-05-31` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`55aceb66a04c`](https://github.com/videoP/jaPRO/commit/55aceb66a04ccbf948c3111148b9ab1116058867) · [PR #207](https://github.com/taysta/TaystJK/pull/207)<br>Japro update (#207) | Changed an exact bound cvar-variable reference. `codemp/game/g_cmds.c`, `codemp/game/w_force.c` | `high` |
+| `2024-09-22` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`100cdfc116b9`](https://github.com/videoP/jaPRO/commit/100cdfc116b94679dbdc41940a21b36acc492b7b) · [PR #212](https://github.com/taysta/TaystJK/pull/212)<br>Japro Update | Changed an exact bound cvar-variable reference. `codemp/game/g_cvar.c` | `high` |
 
 ## Evidence
 

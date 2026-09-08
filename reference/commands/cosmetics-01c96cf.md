@@ -22,7 +22,7 @@ Runs `CG_Cosmetics_f` in the cgame module.
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Syntax | `cosmetics` |
 | Cheat protected | No |
 
@@ -34,10 +34,38 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`1e4377ef412f`](https://github.com/taysta/TaystJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293)
+- Ultimate-origin introduction: [`1e4377ef412f`](https://github.com/eternalcodes/EternalJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) on `2018-10-15` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 - Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2199](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_consolecmds.c#L2199)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-10-15` | [`1e4377ef412f`](https://github.com/eternalcodes/EternalJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-10-15` | [`1e4377ef412f`](https://github.com/taysta/TaystJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-10-15` | [`1e4377ef412f`](https://github.com/videoP/jaPRO/commit/1e4377ef412feb0bdce70884035cb5b62f640293) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-10-15` | [`1e4377ef412f`](https://github.com/JKSunny/EternalJK/commit/1e4377ef412feb0bdce70884035cb5b62f640293) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-10-23` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`0b331bc16c5e`](https://github.com/eternalcodes/EternalJK/commit/0b331bc16c5ecbdb42571251f9ae6919918df506)<br>cringe cosmetic | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2018-11-28` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`81b34abb5846`](https://github.com/eternalcodes/EternalJK/commit/81b34abb584619349e45ee435e977f1457b5837b)<br>Register saberFlash shader and cosmetic models on startup | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2018-12-12` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`dc180aa113b3`](https://github.com/eternalcodes/EternalJK/commit/dc180aa113b3b4c7f07c2a6cbc39f3ad200b0772)<br>increase dropshadow distance to 512+misc fixes | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2018-12-20` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`328d55f0062f`](https://github.com/eternalcodes/EternalJK/commit/328d55f0062f745722046389d7b9744ec050d77f)<br>Chatlog options configurable with /chatlog | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2019-05-05` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`67ac04f76a68`](https://github.com/eternalcodes/EternalJK/commit/67ac04f76a682be7339ccf70f831761e2daea376)<br>Refactor/cleanup cgame side server mod detection. | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2020-05-16` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c4b88abcfd76`](https://github.com/eternalcodes/EternalJK/commit/c4b88abcfd7678f9186ebec0c20ac98dc986d6b5)<br>cosmetic unlock integration? (loda) | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c`, `codemp/cgame/cg_servercmds.c` | `medium` |
+| `2022-04-20` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)<br>Merge remote-tracking branch 'origin/master' | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2022-09-18` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`d0baa5bc31c9`](https://github.com/taysta/TaystJK/commit/d0baa5bc31c9dda8c055f33455c6224049779f0f)<br>Updated cosmetics and voice chat memes | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
+| `2023-09-29` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`2bb6b055c60c`](https://github.com/taysta/TaystJK/commit/2bb6b055c60cf4e239c75ff83d71bb9f5e957949) · [PR #11](https://github.com/taysta/TaystJK/pull/11)<br>Merge pull request #11 from taysta/global-cosmetics | Changed the registered command handler. `codemp/cgame/cg_consolecmds.c` | `medium` |
 
 ## Evidence
 

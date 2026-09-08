@@ -7,7 +7,7 @@ search_exclude: false
 
 # `g_KOTH`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -41,12 +41,33 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Commit evidence: [`360d8bc1b70d`](https://github.com/taysta/TaystJK/commit/360d8bc1b70d760f5c01ae63a3d3dfc75cc9798e)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:265](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/game/g_xcvar.h#L265)
-- Attribution method: `upstream-head-presence`
+- Ultimate-origin introduction: [`6e78add659de`](https://github.com/eternalcodes/EternalJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) on `2018-09-03` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Upstream registration evidence: [codemp/game/g_xcvar.h:281](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/game/g_xcvar.h#L281)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-09-03` | [`6e78add659de`](https://github.com/eternalcodes/EternalJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-09-03` | [`6e78add659de`](https://github.com/taysta/TaystJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-09-03` | [`6e78add659de`](https://github.com/videoP/jaPRO/commit/6e78add659de33e4919f25aefad3e61546599f3c) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-09-03` | [`6e78add659de`](https://github.com/JKSunny/EternalJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-09-04` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`ead4104a15bf`](https://github.com/eternalcodes/EternalJK/commit/ead4104a15bfbafa08eb7fa158aada57041a08a1)<br>Added func_timer spawnflag to only spawn in KOTH gametype | Changed an exact bound cvar-variable reference. `codemp/game/g_trigger.c` | `medium` |
+| `2023-12-11` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`9b57ee1b8566`](https://github.com/videoP/jaPRO/commit/9b57ee1b856693898de14daff824dcf111f94b57) · [PR #55](https://github.com/taysta/TaystJK/pull/55)<br>Japro update (#55) | Changed an exact bound cvar-variable reference. `codemp/game/g_trigger.c` | `high` |
 
 ## Evidence
 

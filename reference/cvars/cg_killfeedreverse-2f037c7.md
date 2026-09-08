@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Swap victim/killer sides
 
 ## At a glance
@@ -22,7 +20,7 @@ Swap victim/killer sides
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -43,10 +41,19 @@ Swap victim/killer sides
 
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`e62eca32fae5`](https://github.com/taysta/TaystJK/commit/e62eca32fae573631613076b38cda62011f0ac90)
-- Attribution method: `first-addition-in-registration-file-history`
-- Attribution confidence: `medium`
-- Notes: The first exact-name addition in the current registration file is a TaystJK commit; all configured upstream heads were also checked.
+- Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) on `2026-08-06` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:434](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L434)
+- Attribution method: `earliest-dated-project-introduction`
+- Attribution confidence: `high`
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-08-06` | [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) | Ultimate origin |
 
 ## Evidence
 

@@ -40,15 +40,32 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Commit evidence: [`11670612b744`](https://github.com/taysta/TaystJK/commit/11670612b744fc70ae3fdc9dd39cd25630594b13)
-- Upstream registration evidence: [codemp/client/cl_input.cpp:1787](https://github.com/videoP/jaPRO/blob/a48764f18226001c93680d7da6815b7d05c3784a/codemp/client/cl_input.cpp#L1787)
+- Ultimate-origin introduction: [`e0d7a341bc6c`](https://github.com/videoP/jaPRO/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) on `2017-12-05` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Upstream registration evidence: [codemp/client/cl_input.cpp:1832](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1832)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro. The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits japro.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-12-05` | [`e0d7a341bc6c`](https://github.com/eternalcodes/EternalJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-12-05` | [`e0d7a341bc6c`](https://github.com/taysta/TaystJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-12-05` | [`e0d7a341bc6c`](https://github.com/videoP/jaPRO/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-12-05` | [`e0d7a341bc6c`](https://github.com/JKSunny/EternalJK/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) | Shared earliest lineage |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2018-01-01` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419)<br>Merge branch 'japro-ejk' | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/client/cl_input.cpp`, `codemp/client/cl_main.cpp`, `codemp/client/client.h` | `high` |
+| `2018-01-07` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`29fab10414c2`](https://github.com/videoP/jaPRO/commit/29fab10414c2fb7cc29d04a1dbff04f912709fab)<br>Unused japro engine code part 3 | Changed an exact bound cvar-variable reference. `codemp/client/cl_input.cpp` | `high` |
+| `2018-05-16` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`5df1fad1b1f6`](https://github.com/eternalcodes/EternalJK/commit/5df1fad1b1f6ba70e74e42630b0e0494750010f0)<br>Merge remote-tracking branch 'bucky/master' | Changed registration, default, flags, module, renderer scope, handler, or gating; and an exact bound cvar-variable reference. `codemp/client/cl_input.cpp` | `medium` |
 
 ## Evidence
 

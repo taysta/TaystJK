@@ -7,7 +7,7 @@ search_exclude: false
 
 # `g_fixSaberDisarmBonus`
 
-<span class="label ref-origin ref-origin-openjk">OpenJK</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -22,7 +22,7 @@ Controls `g_fixSaberDisarmBonus` in the game module. Consult the cited behavior 
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -41,13 +41,27 @@ Controls `g_fixSaberDisarmBonus` in the game module. Consult the cited behavior 
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Commit evidence: [`037527867102`](https://github.com/taysta/TaystJK/commit/03752786710213015d82bcf093aec9e744434562)
-- Matching squash bullet: `revert a change to saber disarm bonus calculation if g_fixSaberDisarmBonus is not enabled`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:95](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L95)
-- Attribution method: `post-import-openjk-head-presence`
-- Attribution confidence: `high`
+- Ultimate-origin introduction: [`530446764ef0`](https://github.com/taysta/TaystJK/commit/530446764ef05a4c0cff2b29b9eb2b514c5c2b2a) on `2023-10-29` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
+- Pull request: [#29](https://github.com/taysta/TaystJK/pull/29)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:92](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L92)
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-29` | [`530446764ef0`](https://github.com/taysta/TaystJK/commit/530446764ef05a4c0cff2b29b9eb2b514c5c2b2a) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-29` | [`530446764ef0`](https://github.com/videoP/jaPRO/commit/530446764ef05a4c0cff2b29b9eb2b514c5c2b2a) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-20` | [`142e0b71cca8`](https://github.com/JACoders/OpenJK/commit/142e0b71cca84f53ddbe1eb74fb088db51ad8756) | Later project appearance |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-04-09` | [`b688bdf3ea00`](https://github.com/SomaZ/OpenJK/commit/b688bdf3ea00319185f6b027ef61c6d7f506d36f) | Later project appearance |
+
+Immediate port-source credit: <span class="label ref-origin ref-origin-openjk">OpenJK</span>. The earlier dated project remains the ultimate origin.
 
 ## Evidence
 

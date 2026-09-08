@@ -42,11 +42,22 @@ Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (
 
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-- Commit evidence: [`e0d1076c4507`](https://github.com/taysta/TaystJK/commit/e0d1076c45074dc00d0defa0c089a18a731021a8)
+- Ultimate-origin introduction: [`e0d1076c4507`](https://github.com/JKSunny/EternalJK/commit/e0d1076c45074dc00d0defa0c089a18a731021a8) on `2023-10-26` in <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+- TaystJK integration evidence: [`85114c9abfce`](https://github.com/taysta/TaystJK/commit/85114c9abfce0a2c70681224b30ef0bafac2a186)
 - Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:944](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L944)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits vulkan.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2023-10-26` | [`e0d1076c4507`](https://github.com/JKSunny/EternalJK/commit/e0d1076c45074dc00d0defa0c089a18a731021a8) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-27` | [`85114c9abfce`](https://github.com/taysta/TaystJK/commit/85114c9abfce0a2c70681224b30ef0bafac2a186) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-27` | [`85114c9abfce`](https://github.com/videoP/jaPRO/commit/85114c9abfce0a2c70681224b30ef0bafac2a186) | Later project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
 
 ## Evidence
 

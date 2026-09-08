@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Kick all users from the server
 
 ## At a glance
@@ -20,7 +22,7 @@ Kick all users from the server
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Syntax | `kickall` |
 | Cheat protected | No |
 
@@ -32,10 +34,33 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Commit evidence: [`9344b45fc2d8`](https://github.com/taysta/TaystJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e)
+- Ultimate-origin introduction: [`9344b45fc2d8`](https://github.com/JACoders/OpenJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) on `2013-04-07` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Upstream registration evidence: [codemp/server/sv_ccmds.cpp:1960](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_ccmds.cpp#L1960)
-- Attribution method: `post-import-openjk-head-presence`
-- Attribution confidence: `high`
+- Attribution method: `shared-earliest-commit-lineage-order`
+- Attribution confidence: `medium`
+- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/JACoders/OpenJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/eternalcodes/EternalJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/SomaZ/OpenJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/taysta/TaystJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/videoP/jaPRO/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/jkanewmod/NewJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-07` | [`9344b45fc2d8`](https://github.com/JKSunny/EternalJK/commit/9344b45fc2d8bb45e285499cd5706321eca2661e) | Shared earliest lineage |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2016-03-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c9c6ab99fdd2`](https://github.com/eternalcodes/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)<br>Merge branch 'master' of https://github.com/JACoders/OpenJK into japro | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/server/sv_ccmds.cpp` | `medium` |
 
 ## Evidence
 

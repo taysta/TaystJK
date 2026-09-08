@@ -9,6 +9,8 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
+<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
+
 Cache ghoul2 and md3 model surfaces
 
 ## At a glance
@@ -20,7 +22,7 @@ Cache ghoul2 and md3 model surfaces
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `high` |
+| Confidence | `medium` |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -42,12 +44,32 @@ Cache ghoul2 and md3 model surfaces
 
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-- Commit evidence: [`9d7cf09661c0`](https://github.com/taysta/TaystJK/commit/9d7cf09661c0c22f23f918430447ae00685bfd03)
-- Matching squash bullet: `Added &#96;r_vbo_models&#96; cvar to control GPU caching for Ghoul2 (player) and MD3 models`
+- Ultimate-origin introduction: [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) on `2025-07-18` in <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+- TaystJK integration evidence: [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903)
+- Pull request: [#251](https://github.com/taysta/TaystJK/pull/251)
 - Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:962](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L962)
-- Attribution method: `identifier-adjacent-explicit-credit`
-- Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits vulkan.
+- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution confidence: `medium`
+- Notes: The identifier's single-prefix squash feature group explicitly credits vulkan.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2025-07-18` | [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-08-08` | [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-08-08` | [`cc93ec8c4139`](https://github.com/videoP/jaPRO/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Later project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2026-01-09` | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`f18b5091e2f3`](https://github.com/taysta/TaystJK/commit/f18b5091e2f3a466208128976b4344f839a6c1e4) · [PR #286](https://github.com/taysta/TaystJK/pull/286)<br>Merge pull request #286 from taysta/vk-update | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-vulkan/tr_init.cpp` | `medium` |
 
 ## Evidence
 

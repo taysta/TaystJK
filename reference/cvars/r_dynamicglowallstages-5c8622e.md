@@ -42,11 +42,22 @@ In Vanilla certain glow stages are skipped, render those anyway
 
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-- Commit evidence: [`3e62987235a8`](https://github.com/taysta/TaystJK/commit/3e62987235a820df146da90520b73b6fb3844bfe)
+- Ultimate-origin introduction: [`3e62987235a8`](https://github.com/JKSunny/EternalJK/commit/3e62987235a820df146da90520b73b6fb3844bfe) on `2023-09-03` in <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+- TaystJK integration evidence: [`a435f91de078`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4)
 - Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:794](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L794)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits vulkan.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2023-09-03` | [`3e62987235a8`](https://github.com/JKSunny/EternalJK/commit/3e62987235a820df146da90520b73b6fb3844bfe) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-09-24` | [`a435f91de078`](https://github.com/taysta/TaystJK/commit/a435f91de078325de74408f44053240448efe1b4) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-09-24` | [`a435f91de078`](https://github.com/videoP/jaPRO/commit/a435f91de078325de74408f44053240448efe1b4) | Later project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
 
 ## Evidence
 

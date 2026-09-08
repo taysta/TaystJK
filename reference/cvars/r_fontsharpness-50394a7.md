@@ -41,15 +41,32 @@ Relative font sharpness (doesn't affect console font).
 
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
-- Commit evidence: [`9fbdb124bc72`](https://github.com/taysta/TaystJK/commit/9fbdb124bc7265eb93d0a291ff0e68f9fe9458c2)
+- Ultimate-origin introduction: [`c97dadc5db5c`](https://github.com/mvdevs/jk2mv/commit/c97dadc5db5c49c3eb5d893ff3ef4d3655aceb5d) on `2016-03-01` in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
+- TaystJK integration evidence: [`e8e1da168ed5`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63)
 - Upstream registration evidence: [src/renderer/tr_init.cpp:1231](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/renderer/tr_init.cpp#L1231)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- Attribution method: `earliest-dated-project-introduction`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv. The current registration signature differs from the origin snapshot; the changing fork still needs commit-level review.
+- Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2016-03-01` | [`c97dadc5db5c`](https://github.com/mvdevs/jk2mv/commit/c97dadc5db5c49c3eb5d893ff3ef4d3655aceb5d) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-28` | [`e8e1da168ed5`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-28` | [`e8e1da168ed5`](https://github.com/videoP/jaPRO/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63) | Later project appearance |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2024-02-08` | [`01697e61fe58`](https://github.com/JACoders/OpenJK/commit/01697e61fe586e31591dd236e1d4441c92f41a8a) | Later project appearance |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2024-02-19` | [`49adb7447c9f`](https://github.com/SomaZ/OpenJK/commit/49adb7447c9f4766a9024f55ad44bb5bf8a21b07) | Later project appearance |
 
 ### Later changes
 
-- <span class="label ref-origin ref-origin-unknown">Unknown</span> Registration defaults, flags, modules, or renderer scope differ from the originating snapshot. Confidence: `low`.
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2023-11-28` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`e8e1da168ed5`](https://github.com/taysta/TaystJK/commit/e8e1da168ed586bb1f7c64ec1f9d2baf764bba63)<br>Merge branch 'font-sharpness' | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-common/tr_font.cpp` | `medium` |
 
 ## Evidence
 

@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Restarts the current or last-played demo
 
 ## At a glance
@@ -22,7 +20,7 @@ Restarts the current or last-played demo
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Syntax | `demo_restart` |
 | Cheat protected | No |
 
@@ -34,10 +32,34 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
-- Commit evidence: [`94672e48ece0`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435)
+- Ultimate-origin introduction: [`4e0ab9f26795`](https://github.com/jkanewmod/NewJK/commit/4e0ab9f26795b5583a9d7974f9279d04eec90fb9) on `2018-09-14` in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
+- TaystJK integration evidence: [`94672e48ece0`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435)
 - Upstream registration evidence: [codemp/client/cl_main.cpp:3316](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/client/cl_main.cpp#L3316)
-- Attribution method: `upstream-head-presence`
-- Attribution confidence: `medium`
+- Attribution method: `earliest-dated-project-introduction`
+- Attribution confidence: `high`
+
+### Dated project introductions
+
+These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+
+| Project | Date | Commit | Relationship |
+|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2018-09-14` | [`4e0ab9f26795`](https://github.com/jkanewmod/NewJK/commit/4e0ab9f26795b5583a9d7974f9279d04eec90fb9) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-07-26` | [`94672e48ece0`](https://github.com/eternalcodes/EternalJK/commit/94672e48ece0771144723030e011e2443c68a435) | Later project appearance |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-07-26` | [`94672e48ece0`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435) | Later project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-07-26` | [`94672e48ece0`](https://github.com/videoP/jaPRO/commit/94672e48ece0771144723030e011e2443c68a435) | Later project appearance |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-07-26` | [`94672e48ece0`](https://github.com/JKSunny/EternalJK/commit/94672e48ece0771144723030e011e2443c68a435) | Later project appearance |
+
+### Later changes
+
+These commits occur after the ultimate-origin introduction on TaystJK's inherited first-parent lineage. Registration evidence is exact; behavior evidence requires a changed bound cvar reference or a changed registered command-handler hunk.
+
+| Date | Change source | Commit / subject | Evidence | Confidence |
+|:--|:--|:--|:--|:--|
+| `2019-07-26` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`ef1406f7b8e2`](https://github.com/eternalcodes/EternalJK/commit/ef1406f7b8e25ac2c79eaaf7d12bc49bef2b84b7)<br>whatever | Changed the registered command handler. `codemp/client/cl_main.cpp` | `medium` |
+| `2019-07-26` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`1ab293e3c1a8`](https://github.com/eternalcodes/EternalJK/commit/1ab293e3c1a88fdb2dca532d9525681905ec04c6)<br>don't care about this nerd shit just enjoy video games | Changed the registered command handler. `codemp/client/cl_main.cpp` | `medium` |
+| `2019-07-26` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`803dc5fc991f`](https://github.com/eternalcodes/EternalJK/commit/803dc5fc991fe94dbc3371ef8cef2117a53dab4b)<br>joe mamma | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/client/cl_main.cpp` | `medium` |
+| `2019-07-27` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`825d63b114ab`](https://github.com/eternalcodes/EternalJK/commit/825d63b114abfecc502c4136dc3ce4dad0e0841a)<br>Fix demo_restart+fix bugs in demo commands from 1.00 demo support | Changed the registered command handler. `codemp/client/cl_main.cpp` | `medium` |
 
 ## Evidence
 
