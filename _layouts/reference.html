@@ -7,6 +7,7 @@
     <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
     <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <link rel="icon" type="image/x-icon" href="{{ '/shared/icons/TaystJK.ico' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/reference.css' | relative_url }}">
     <script>document.documentElement.classList.add('js');</script>
     <script defer src="{{ '/assets/js/reference-app.js' | relative_url }}"></script>
@@ -17,7 +18,7 @@
     <header class="site-header">
       <div class="header-inner">
         <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="TaystJK documentation home">
-          <span class="brand-mark" aria-hidden="true"><i>T</i><i>J</i></span>
+          <img class="brand-mark" src="{{ '/shared/icons/TaystJK.ico' | relative_url }}" width="38" height="38" alt="">
           <span><strong>TaystJK</strong><small>Console reference</small></span>
         </a>
 
@@ -51,7 +52,7 @@
     <footer class="site-footer">
       <div>
         <a class="site-brand footer-brand" href="{{ '/' | relative_url }}">
-          <span class="brand-mark" aria-hidden="true"><i>T</i><i>J</i></span>
+          <img class="brand-mark" src="{{ '/shared/icons/TaystJK.ico' | relative_url }}" width="32" height="32" alt="">
           <span><strong>TaystJK</strong><small>Jedi Academy, carefully extended.</small></span>
         </a>
         <p>Reference generated from source registrations, Git history, pull requests, and upstream snapshots.</p>

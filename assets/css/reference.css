@@ -130,34 +130,12 @@ pre code { padding: 0; background: none; border: 0; }
 .site-brand small { margin-top: .22rem; color: var(--muted); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
 
 .brand-mark {
-  position: relative;
-  display: grid;
-  place-items: center;
+  display: block;
   width: 38px;
   height: 38px;
-  overflow: hidden;
-  background: linear-gradient(145deg, var(--accent), #65aee8 54%, var(--violet));
   border-radius: 10px;
   box-shadow: 0 0 24px rgba(104, 225, 212, .15);
 }
-
-.brand-mark::after {
-  position: absolute;
-  inset: 2px;
-  content: "";
-  background: #0b111c;
-  border-radius: 8px;
-}
-
-.brand-mark i {
-  z-index: 1;
-  margin: -.08rem;
-  color: var(--accent);
-  font: 800 .82rem/1 "SFMono-Regular", Consolas, monospace;
-  font-style: normal;
-}
-
-.brand-mark i + i { color: var(--violet); }
 
 .site-nav {
   display: flex;
