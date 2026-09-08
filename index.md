@@ -19,13 +19,17 @@ description: "Search every TaystJK cvar and console command, including options, 
   <div class="hero-terminal" aria-label="Example console lookup">
     <div class="terminal-bar"><span></span><span></span><span></span><b>console reference</b></div>
     <div class="terminal-body">
-      <p><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong></p>
-      <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
-      <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      <a class="terminal-entry" href="{{ '/reference/cvars/r_dynamicglowbloom-d4ab76d/' | relative_url }}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong><span class="terminal-entry-action">Open ↗</span></p>
+        <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
+        <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      </a>
       <hr>
-      <p><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong></p>
-      <p class="terminal-muted">Frame-independent third-person camera damping</p>
-      <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      <a class="terminal-entry" href="{{ '/reference/cvars/cg_camerafps-62ac0e1/' | relative_url }}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong><span class="terminal-entry-action">Open ↗</span></p>
+        <p class="terminal-muted">Frame-independent third-person camera damping</p>
+        <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      </a>
     </div>
   </div>
 </section>

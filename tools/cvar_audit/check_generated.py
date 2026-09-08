@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-from generate_docs import compact_catalog_entry, slug
+from generate_docs import compact_catalog_entry, home_page, slug
 
 
 ROOT = Path(".")
@@ -49,6 +49,10 @@ def main() -> None:
             errors.append(f"stale generated detail page: {path}")
 
     all_entries = datasets["cvar"] + datasets["command"]
+    expected_home = home_page(datasets["cvar"], datasets["command"]).rstrip() + "\n"
+    if Path("index.md").read_text() != expected_home:
+        errors.append("index.md differs from the generated homepage")
+
     expected_collections = {
         Path("reference/origins") / f"{source}.md"
         for source in {entry["origin"]["source"] for entry in all_entries}

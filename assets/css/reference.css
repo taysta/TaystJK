@@ -331,6 +331,8 @@ th { color: var(--text); background: var(--surface); }
 .terminal-entry:hover { color: inherit; background: rgba(104, 225, 212, .08); }
 .terminal-entry:hover strong { color: var(--accent); }
 .terminal-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.terminal-entry-heading { display: flex; align-items: baseline; gap: .55rem; }
+.terminal-entry-action { margin-left: auto; color: var(--accent); font-size: .68rem; font-weight: 700; white-space: nowrap; }
 .terminal-prompt { color: var(--accent); }
 .terminal-muted { color: var(--muted) !important; }
 .terminal-scope { margin-left: .35rem; color: var(--muted); }
