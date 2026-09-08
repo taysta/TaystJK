@@ -93,6 +93,10 @@ if(UseInternalJPEG)
 	option(UseTurboJPEG "If set, use libjpeg-turbo." ${UseTurboJPEGDefault})
 endif()
 
+cmake_dependent_option(UseInternalPNGNeon
+		"Build the bundled libpng with arm64 NEON optimisations" OFF
+		"UseInternalPNG" OFF)
+
 # This option won't appear on non-Apple platforms.
 if(APPLE)
   option(MakeApplicationBundles "Whether to build .app application bundles for engines built" ON)
@@ -133,7 +137,6 @@ else()
 	set(X86 OFF)
 	if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
 		set(Architecture "arm64")
-		add_definitions(-DPNG_ARM_NEON_OPT=0)
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^arm")
 		set(Architecture "arm")
 	elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^i.86$")
@@ -527,6 +530,9 @@ if(BuildMPRdVanilla OR BuildMPRdVulkan OR BuildMPRend2)
 
 	if(UseInternalPNG)
 	  add_subdirectory(lib/libpng)
+	  if(Architecture STREQUAL "arm64" AND NOT UseInternalPNGNeon)
+		  target_compile_definitions(bundled_libpng PRIVATE PNG_ARM_NEON_OPT=0)
+	  endif()
 	else()
 	  find_package(PNG REQUIRED)
 	endif()

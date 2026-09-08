@@ -54,6 +54,14 @@ add_library(bundled_libpng STATIC include/png.h
                                   pngwtran.c
                                   pngwutil.c)
 
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$"
+		OR CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
+	target_sources(bundled_libpng PRIVATE
+			arm/arm_init.c
+			arm/filter_neon_intrinsics.c
+			arm/palette_neon_intrinsics.c)
+endif()
+
 # Let consumers get at our bundled library in the standard CMake way.  These
 # variables are not set in the cache, but instead shadow the variables in the
 # cache.  (These are the same variables exported by the standard CMake FindPNG
