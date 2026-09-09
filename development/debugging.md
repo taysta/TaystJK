@@ -28,7 +28,7 @@ For Visual Studio or Xcode, generate once and choose the `Debug` configuration w
 Use these arguments for the multiplayer client:
 
 ```text
-+set sv_pure 0 +set r_fullscreen 0 +set fs_game taystjk
++set r_fullscreen 0 +set fs_game taystjk
 ```
 
 If the executable is outside the retail install, add:
@@ -54,14 +54,14 @@ Launching the client project still allows Visual Studio to load symbols and stop
 Launch from the test directory so relative game paths resolve correctly:
 
 ```bash
-gdb --args ./taystjk.x86_64 +set sv_pure 0 +set r_fullscreen 0 +set fs_game taystjk
+gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
 ```
 
 Or on macOS:
 
 ```bash
 lldb -- ./taystjk.arm64.app/Contents/MacOS/taystjk.arm64 \
-  +set sv_pure 0 +set r_fullscreen 0 +set fs_game taystjk
+  +set r_fullscreen 0 +set fs_game taystjk
 ```
 
 Useful first commands are `run`, `bt`/`thread backtrace`, `info sharedlibrary`/`image list`, and `break function_name`.
@@ -95,7 +95,6 @@ With GCC or Clang, undefined-behavior checks can be added with `-DUseUndefinedSa
 - Run `path` to verify which base, home, and mod directories are mounted.
 - Run `which filename.pk3` or the closest available file-list command when a wrong asset version appears to load.
 - Use `condump debug-console.txt` before quitting if the console contains the only copy of a useful trace.
-- Keep `sv_pure 0` confined to development. Re-enable pure mode when validating a production server.
 
 ## Common breakpoint problems
 

@@ -95,7 +95,6 @@ seta g_password ""
 seta rconPassword "replace-with-a-long-random-secret"
 
 // Network and consistency
-seta sv_pure 1
 seta sv_maxRate 90000
 seta sv_fps 40
 
