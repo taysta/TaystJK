@@ -518,7 +518,102 @@
     update(false);
   }
 
+  function isPlatform(value) {
+    return ["windows", "linux", "macos"].indexOf(value) !== -1;
+  }
+
+  function detectPlatform(platformText) {
+    var value = normalize(platformText);
+    if (value.indexOf("windows") !== -1 || value.indexOf("win32") !== -1 || value.indexOf("win64") !== -1) return "windows";
+    if (value.indexOf("mac") !== -1 || value.indexOf("darwin") !== -1) return "macos";
+    if (value.indexOf("linux") !== -1 || value.indexOf("x11") !== -1) return "linux";
+    return "windows";
+  }
+
+  function choosePlatform(queryPlatform, storedPlatform, platformText) {
+    queryPlatform = normalize(queryPlatform);
+    storedPlatform = normalize(storedPlatform);
+    if (isPlatform(queryPlatform)) return queryPlatform;
+    if (isPlatform(storedPlatform)) return storedPlatform;
+    return detectPlatform(platformText);
+  }
+
+  function bindPlatformGuide(root) {
+    var storageKey = "taystjk-install-platform";
+    var choices = Array.prototype.slice.call(root.querySelectorAll("[data-platform-choice]"));
+    var panels = Array.prototype.slice.call(root.querySelectorAll("[data-platform-panel]"));
+    var queryPlatform = "";
+    var storedPlatform = "";
+    var navigatorInfo = "";
+
+    if (!choices.length || !panels.length) return;
+
+    try {
+      queryPlatform = new global.URLSearchParams(global.location.search).get("platform") || "";
+    } catch (error) {
+      queryPlatform = "";
+    }
+    try {
+      storedPlatform = global.localStorage.getItem(storageKey) || "";
+    } catch (error) {
+      storedPlatform = "";
+    }
+    if (global.navigator) {
+      navigatorInfo = [
+        global.navigator.userAgentData && global.navigator.userAgentData.platform,
+        global.navigator.platform,
+        global.navigator.userAgent
+      ].filter(Boolean).join(" ");
+    }
+
+    function selectPlatform(platform, persist) {
+      choices.forEach(function (choice) {
+        var selected = choice.dataset.platformChoice === platform;
+        choice.setAttribute("aria-selected", selected ? "true" : "false");
+        choice.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach(function (panel) {
+        panel.hidden = panel.dataset.platformPanel !== platform;
+      });
+
+      if (!persist) return;
+      try {
+        global.localStorage.setItem(storageKey, platform);
+      } catch (error) {
+        // The selector still works when storage is unavailable.
+      }
+      try {
+        var url = new global.URL(global.location.href);
+        url.searchParams.set("platform", platform);
+        global.history.replaceState(null, "", url.pathname + url.search + url.hash);
+      } catch (error) {
+        // URL updates are optional; selecting a panel is not.
+      }
+    }
+
+    choices.forEach(function (choice, index) {
+      choice.addEventListener("click", function () {
+        selectPlatform(choice.dataset.platformChoice, true);
+      });
+      choice.addEventListener("keydown", function (event) {
+        var nextIndex = index;
+        if (event.key === "ArrowRight") nextIndex = (index + 1) % choices.length;
+        else if (event.key === "ArrowLeft") nextIndex = (index - 1 + choices.length) % choices.length;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = choices.length - 1;
+        else return;
+
+        event.preventDefault();
+        choices[nextIndex].focus();
+        selectPlatform(choices[nextIndex].dataset.platformChoice, true);
+      });
+    });
+
+    selectPlatform(choosePlatform(queryPlatform, storedPlatform, navigatorInfo), false);
+  }
+
   function boot() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-platform-guide]"), bindPlatformGuide);
     Array.prototype.forEach.call(document.querySelectorAll("[data-reference-app]"), function (root) {
       showSkeleton(root);
       fetch(root.dataset.catalogUrl, { credentials: "same-origin" })
@@ -539,7 +634,9 @@
     prepareEntry: prepareEntry,
     entryMatches: entryMatches,
     sortEntries: sortEntries,
-    relevance: relevance
+    relevance: relevance,
+    detectPlatform: detectPlatform,
+    choosePlatform: choosePlatform
   };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;

@@ -262,6 +262,72 @@ th { color: var(--text); background: var(--surface); }
   line-height: 1.6;
 }
 
+.platform-guide { margin-top: 1.4rem; }
+
+.platform-selector-shell {
+  padding: .8rem;
+  background: rgba(13, 18, 29, .9);
+  border: 1px solid var(--line-bright);
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+}
+
+.platform-selector-label {
+  margin: 0 0 .55rem .15rem;
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.platform-selector {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .35rem;
+}
+
+.platform-selector button {
+  min-height: 46px;
+  padding: .55rem .8rem;
+  color: var(--text-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font-weight: 750;
+  transition: color .15s ease, background .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.platform-selector button:hover {
+  color: var(--text);
+  border-color: var(--line-bright);
+  transform: translateY(-1px);
+}
+
+.platform-selector button[aria-selected="true"] {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(104, 225, 212, .14);
+}
+
+.platform-selector button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.platform-panel {
+  margin-top: 1rem;
+  padding: clamp(1.15rem, 3vw, 1.8rem);
+  background: rgba(17, 24, 39, .66);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.platform-panel[hidden] { display: none; }
+.platform-panel > :first-child { margin-top: 0; }
+.platform-panel > h2 { font-size: clamp(1.55rem, 3vw, 2rem); }
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -861,6 +927,9 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .site-footer { width: min(calc(100% - 1.25rem), var(--wide)); }
   .site-main { padding-top: 2.4rem; }
   h1 { font-size: clamp(2.2rem, 12vw, 3.25rem); }
+  .platform-selector-shell { padding: .55rem; }
+  .platform-selector button { min-height: 42px; padding-inline: .35rem; font-size: .82rem; }
+  .platform-panel { padding: 1rem; }
   .hero { padding-bottom: 3rem; }
   .reference-stats { grid-template-columns: repeat(2, 1fr); margin-bottom: 3rem; }
   .reference-stats div:nth-child(2) { border-right: 0; }

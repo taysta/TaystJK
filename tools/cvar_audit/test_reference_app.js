@@ -76,4 +76,13 @@ assert.ok(vulkanCvars.length > 0 && vulkanCvars.every((entry) => entry.kind === 
 const cameraSearch = state({ query: "cg_camerafps", tokens: ["cg_camerafps"] });
 assert.equal(catalog.sortEntries(generatedEntries.filter((entry) => catalog.entryMatches(entry, cameraSearch)), cameraSearch)[0].name, "cg_cameraFPS");
 
+assert.equal(catalog.detectPlatform("Win32"), "windows");
+assert.equal(catalog.detectPlatform("MacIntel"), "macos");
+assert.equal(catalog.detectPlatform("X11; Linux x86_64"), "linux");
+assert.equal(catalog.detectPlatform("unknown"), "windows");
+assert.equal(catalog.choosePlatform("linux", "windows", "MacIntel"), "linux");
+assert.equal(catalog.choosePlatform("", "macos", "Win32"), "macos");
+assert.equal(catalog.choosePlatform("invalid", "invalid", "Linux x86_64"), "linux");
+assert.equal(catalog.choosePlatform("Windows", "", "Linux x86_64"), "windows");
+
 console.log("reference app filtering is valid");

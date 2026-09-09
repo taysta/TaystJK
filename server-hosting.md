@@ -35,8 +35,6 @@ taystjk-server/
 │   ├── assets2.pk3
 │   └── assets3.pk3
 └── homepath/
-    └── taystjk/
-        └── server.cfg
 ```
 
 Use this `compose.yaml`:
@@ -49,12 +47,11 @@ services:
       - "29070:29070/udp"
       - "18200:18200/tcp"
     volumes:
-      - ./base:/opt/taystjk/cdpath/base:ro
+      - ./base:/opt/taystjk/cdpath/base
       - ./homepath:/opt/taystjk/homepath
     environment:
       TJK_MOD: taystjk
       TJK_ARCH: x86_64
-      TJK_OPTS: +exec server.cfg
     restart: unless-stopped
 ```
 
@@ -66,11 +63,22 @@ docker compose up -d
 docker compose logs -f taystjk
 ```
 
-Use `docker compose down` to stop it. Custom PK3s, reflists, logs, and `server.cfg` persist under `homepath/taystjk/`.
+The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
+
+To customize the exact configuration shipped by your image, copy it into the mounted homepath:
+
+```bash
+mkdir -p homepath/taystjk
+docker compose cp \
+  taystjk:/opt/taystjk/basepath/taystjk/server.cfg \
+  ./homepath/taystjk/server.cfg
+```
+
+Edit the copied file, then apply it with `docker compose restart taystjk`. The homepath copy takes priority over the image's basepath copy and persists across image updates. Custom PK3s, reflists, logs, and configuration also belong under `homepath/taystjk/`. Use `docker compose down` to stop the server.
 
 ## Native dedicated server
 
-Extract the server files and retain all libraries included with the release. Put the retail assets under `base/`, TaystJK assets and configuration under `taystjk/`, then launch:
+Extract the server files and retain all libraries included with the release. Put the retail assets under `base/`, TaystJK assets under `taystjk/`, and customize the `server.cfg` supplied with TaystJK instead of replacing it with a minimal configuration. Then launch:
 
 ```bash
 ./taystjkded.x86_64 \
@@ -82,34 +90,23 @@ Extract the server files and retain all libraries included with the release. Put
 
 On Windows, use the `.exe` dedicated-server binary from the release. A service manager such as systemd or Docker should restart a public server after a crash or host reboot.
 
-## A useful `server.cfg`
+## Customize the shipped `server.cfg`
 
-Save this as `taystjk/server.cfg` and replace the example values:
+The supplied file already defines a working stock-map rotation. Change its example identity and access settings, then add download settings only if the server needs to distribute custom PK3s:
 
 ```cfg
 // Identity and access
 seta sv_hostname "My TaystJK server"
 seta g_motd "Welcome — have fun"
-seta sv_maxclients 16
-seta g_password ""
 seta rconPassword "replace-with-a-long-random-secret"
-
-// Network and consistency
-seta sv_maxRate 90000
-seta sv_fps 40
 
 // Downloads: UDP fallback plus the built-in HTTP server
 seta sv_allowDownload 1
 seta sv_httpDownloads 1
 seta sv_httpServerPort 18200
-
-// Two-map FFA rotation
-set d1 "set g_gametype 0; map mp/ffa3; set nextmap vstr d2"
-set d2 "set g_gametype 0; map mp/ffa5; set nextmap vstr d1"
-vstr d1
 ```
 
-Changes to `sv_httpDownloads` and `sv_httpServerPort` are latched; restart the map or server after changing them. The [checked-in sample configuration](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/docker/server.cfg) contains a longer stock-map rotation.
+Edit the existing `d1`, `d2`, and subsequent rotation definitions rather than adding a second rotation beneath them. Changes to `sv_httpDownloads` and `sv_httpServerPort` are latched; restart the dedicated server after changing them.
 
 ## Automatic PK3 downloads
 
@@ -117,7 +114,7 @@ TaystJK can serve required PK3 files over fast HTTP and optionally fall back to 
 
 ### Built-in HTTP server
 
-The sample above enables HTTP on TCP `18200`. Forward that TCP port through NAT and allow it through the host firewall, independently of UDP `29070`. With `sv_httpServerPort 0`, the server selects the first free port from `18200` through `18215`; a fixed port is easier to expose from a container or router.
+The settings above enable HTTP on TCP `18200`. Forward that TCP port through NAT and allow it through the host firewall, independently of UDP `29070`. With `sv_httpServerPort 0`, the server selects the first free port from `18200` through `18215`; a fixed port is easier to expose from a container or router.
 
 Clients need `cl_allowDownload 1`. By default TaystJK asks before downloading and stores conflicting downloads with a `dl_` name plus a checksum so content from one server does not silently replace content used elsewhere.
 
