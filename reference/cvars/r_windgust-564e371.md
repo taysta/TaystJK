@@ -17,12 +17,15 @@ Controls `r_windGust` in the renderer module. Consult the cited behavior reads b
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -49,7 +52,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/renderer/tr_init.cpp:1182](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1182)
+- Upstream registration evidence: [code/renderer/tr_init.cpp:1182](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1182)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -70,8 +73,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L397) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1706](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1706) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:864](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L864) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:212](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surfacesprites.cpp#L212)
-- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:212](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surfacesprites.cpp#L212)
+- registration: [codemp/rd-dedicated/tr_init.cpp:397](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L397) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1706](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1706) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:864](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L864) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:212](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surfacesprites.cpp#L212)
+- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:212](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surfacesprites.cpp#L212)

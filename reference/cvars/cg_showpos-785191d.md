@@ -17,12 +17,15 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962) |
-| `1` | Enabled. | [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962) |
+| `0` | Disabled. | [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962) |
+| `1` | Enabled. | [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cg_showpos` in the cgame module. Consult the cited behavior reads befo
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`0b6764d0171e`](https://github.com/eternalcodes/EternalJK/commit/0b6764d0171edd446ef75464ad2edeaaead40e92) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-11-04`, integrated `2018-11-04`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:74](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L74)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:74](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L74)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -73,7 +76,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:89](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L89) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/hud_strafehelper.c:2468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2468)
-- behavior: [codemp/ui/ui_xdocs.h:325](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L325)
+- registration: [codemp/cgame/cg_xcvar.h:89](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L89) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/hud_strafehelper.c:2468](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2468)
+- behavior: [codemp/ui/ui_xdocs.h:325](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L325)

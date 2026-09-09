@@ -17,12 +17,15 @@ Controls `g_neutralFlag` in the game module. Consult the cited behavior reads be
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,7 +35,7 @@ Controls `g_neutralFlag` in the game module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`c644ae832bad`](https://github.com/videoP/jaPRO/commit/c644ae832bade9816a9a1a33240edd63614a28f4) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-01-03`, integrated `2024-01-03`)
 - Origin pull request: [#74](https://github.com/taysta/TaystJK/pull/74)
 - Matching squash bullet: `g_neutralflag 5 for other style of 1flagctf`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:190](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L190)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:190](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L190)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -73,9 +76,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783)
-- behavior: [codemp/game/g_active.c:3791](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3791)
-- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5750)
-- behavior: [codemp/game/g_cmds.c:8447](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8447)
-- behavior: [codemp/game/g_cmds.c:8592](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8592)
+- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783)
+- behavior: [codemp/game/g_active.c:3791](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3791)
+- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5750)
+- behavior: [codemp/game/g_cmds.c:8447](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8447)
+- behavior: [codemp/game/g_cmds.c:8592](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8592)

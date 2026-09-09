@@ -17,12 +17,15 @@ Controls `ui_screenshotType` in the ui module. Consult the cited behavior reads 
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `jpg` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`5a3f8d969d6c`](https://github.com/JACoders/OpenJK/commit/5a3f8d969d6c24706639fc9290f69ac5283ba006) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-03-11`, integrated `2017-03-11`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [code/ui/ui_main.cpp:470](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/ui/ui_main.cpp#L470)
+- Upstream registration evidence: [code/ui/ui_main.cpp:470](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/ui/ui_main.cpp#L470)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -72,9 +75,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:144](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L144) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_cvar.c:61](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L61)
-- behavior: [codemp/ui/ui_cvar.c:73](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L73)
-- behavior: [codemp/ui/ui_cvar.c:66](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L66)
-- behavior: [codemp/ui/ui_cvar.c:75](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L75)
-- behavior: [codemp/ui/ui_cvar.c:63](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L63)
+- registration: [codemp/ui/ui_xcvar.h:144](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L144) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_cvar.c:61](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L61)
+- behavior: [codemp/ui/ui_cvar.c:73](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L73)
+- behavior: [codemp/ui/ui_cvar.c:66](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L66)
+- behavior: [codemp/ui/ui_cvar.c:75](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L75)
+- behavior: [codemp/ui/ui_cvar.c:63](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_cvar.c#L63)

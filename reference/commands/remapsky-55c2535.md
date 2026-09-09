@@ -17,12 +17,15 @@ Runs `R_RemapSkyShader_f` in the renderer module.
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `remapSky <new>` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`9e7eaec5c4cf`](https://github.com/eternalcodes/EternalJK/commit/9e7eaec5c4cf17d9edf4c1d9e3fea57e49fb7658) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-03-21`, integrated `2019-03-21`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1579](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1579)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1579](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1579)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -65,7 +68,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1466) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1605](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1605) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:756](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L756) (renderer command table)
-- handler: [codemp/rd-rend2/tr_init.cpp:1421](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1421)
+- registration: [codemp/rd-rend2/tr_init.cpp:1466](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1466) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1605](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1605) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:756](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L756) (renderer command table)
+- handler: [codemp/rd-rend2/tr_init.cpp:1421](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1421)

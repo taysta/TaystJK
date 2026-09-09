@@ -17,12 +17,15 @@ Controls `cg_drawAmmoWarning` in the cgame module. Consult the cited behavior re
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_drawAmmoWarning` in the cgame module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992) |
-| `1` | Enabled. | [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992) |
+| `0` | Disabled. | [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992) |
+| `1` | Enabled. | [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cg_drawAmmoWarning` in the cgame module. Consult the cited behavior re
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/cgame/cg_main.cpp:347](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L347)
+- Upstream registration evidence: [code/cgame/cg_main.cpp:347](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L347)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -62,8 +65,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:271](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L271) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992)
-- behavior: [codemp/cgame/cg_draw.c:9979](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9979)
-- behavior: [codemp/cgame/cg_draw.c:9982](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9982)
-- behavior: [codemp/cgame/cg_draw.c:11615](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11615)
+- registration: [codemp/cgame/cg_xcvar.h:271](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L271) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9992](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9992)
+- behavior: [codemp/cgame/cg_draw.c:9979](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9979)
+- behavior: [codemp/cgame/cg_draw.c:9982](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9982)
+- behavior: [codemp/cgame/cg_draw.c:11615](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11615)

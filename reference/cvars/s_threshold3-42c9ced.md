@@ -17,12 +17,15 @@ Controls `s_lip_threshold_3` in the engine-client module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `7.0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/client/snd_dma.cpp:442](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/client/snd_dma.cpp#L442)
+- Upstream registration evidence: [code/client/snd_dma.cpp:442](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/client/snd_dma.cpp#L442)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -56,8 +59,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:473](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L473) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:2528](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2528)
-- behavior: [codemp/client/snd_dma.cpp:3649](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3649)
-- behavior: [codemp/client/snd_mem.cpp:1008](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1008)
-- behavior: [codemp/client/snd_mem.cpp:1041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1041)
+- registration: [codemp/client/snd_dma.cpp:473](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L473) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:2528](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2528)
+- behavior: [codemp/client/snd_dma.cpp:3649](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3649)
+- behavior: [codemp/client/snd_mem.cpp:1008](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1008)
+- behavior: [codemp/client/snd_mem.cpp:1041](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1041)

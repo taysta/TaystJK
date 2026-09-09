@@ -17,12 +17,15 @@ Controls `r_defaultImage` in the renderer module. Consult the cited behavior rea
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `` |
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
@@ -42,7 +45,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2021-05-25`, integrated `2021-05-25`)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:910](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L910)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:910](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L910)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits vulkan.
@@ -60,7 +63,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:911](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L911) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1630](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1630)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1633](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1633)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1637](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1637)
+- registration: [codemp/rd-vulkan/tr_init.cpp:911](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L911) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1630](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1630)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1633](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1633)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1637](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1637)

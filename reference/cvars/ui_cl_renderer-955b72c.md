@@ -17,12 +17,15 @@ Controls `ui_cl_renderer` in the ui module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:866](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L866), [setup.menu:1037](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L1037) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -58,9 +61,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6368](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6368) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:6242](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6242)
-- behavior: [codemp/ui/ui_main.c:6370](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6370)
-- behavior: [codemp/ui/ui_main.c:6413](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6413)
-- behavior: [codemp/ui/ui_main.c:6241](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6241)
-- behavior: [codemp/ui/ui_main.c:6369](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6369)
+- registration: [codemp/ui/ui_main.c:6368](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6368) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:6242](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6242)
+- behavior: [codemp/ui/ui_main.c:6370](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6370)
+- behavior: [codemp/ui/ui_main.c:6413](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6413)
+- behavior: [codemp/ui/ui_main.c:6241](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6241)
+- behavior: [codemp/ui/ui_main.c:6369](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6369)

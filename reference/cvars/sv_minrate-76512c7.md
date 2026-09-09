@@ -17,12 +17,15 @@ Min bandwidth rate allowed on server. Use 0 for unlimited.
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Min bandwidth rate allowed on server. Use 0 for unlimited.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773) |
-| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773) |
+| `0` | Disabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773) |
+| `1` | Enabled. | [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`6aba69055e45`](https://github.com/JACoders/OpenJK/commit/6aba69055e4591b7ac96eee8b40322cbf4a681b4) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-05-16`, integrated `2017-05-16`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:961](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L961)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:961](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L961)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -67,9 +70,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:992](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L992) (Cvar_Get)
-- behavior: [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773)
-- behavior: [codemp/server/sv_snapshot.cpp:774](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L774)
-- behavior: [codemp/server/sv_snapshot.cpp:777](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L777)
-- behavior: [codemp/server/sv_client.cpp:1218](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1218)
-- behavior: [codemp/server/sv_main.cpp:1099](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1099)
+- registration: [codemp/server/sv_init.cpp:992](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L992) (Cvar_Get)
+- behavior: [codemp/server/sv_snapshot.cpp:773](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L773)
+- behavior: [codemp/server/sv_snapshot.cpp:774](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L774)
+- behavior: [codemp/server/sv_snapshot.cpp:777](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L777)
+- behavior: [codemp/server/sv_client.cpp:1218](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1218)
+- behavior: [codemp/server/sv_main.cpp:1099](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1099)

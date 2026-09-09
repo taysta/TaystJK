@@ -17,12 +17,15 @@ Controls `g_maxGameClients` in the game module. Consult the cited behavior reads
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Controls `g_maxGameClients` in the game module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444) |
-| `1` | Enabled. | [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444) |
+| `0` | Disabled. | [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444) |
+| `1` | Enabled. | [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Controls `g_maxGameClients` in the game module. Consult the cited behavior reads
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/game/g_main.c:250](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/game/g_main.c#L250)
+- Upstream registration evidence: [codemp/game/g_main.c:250](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/game/g_main.c#L250)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -63,8 +66,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:119](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L119) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444)
-- behavior: [codemp/game/g_session.c:231](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L231)
-- behavior: [codemp/game/g_cmds.c:1445](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1445)
-- behavior: [codemp/game/g_session.c:232](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L232)
+- registration: [codemp/game/g_xcvar.h:119](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L119) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:1444](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1444)
+- behavior: [codemp/game/g_session.c:231](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L231)
+- behavior: [codemp/game/g_cmds.c:1445](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1445)
+- behavior: [codemp/game/g_session.c:232](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L232)

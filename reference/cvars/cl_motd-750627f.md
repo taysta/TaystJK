@@ -15,12 +15,15 @@ Display welcome message from master server on the bottom of connection screen
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Display welcome message from master server on the bottom of connection screen
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
-| `1` | Enabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
+| `0` | Disabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
+| `1` | Enabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
 
 ## Flags
 
@@ -42,7 +45,7 @@ Display welcome message from master server on the bottom of connection screen
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2566](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/client/cl_main.cpp#L2566)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2566](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/client/cl_main.cpp#L2566)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -59,7 +62,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3312](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3312) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019)
-- behavior: [codemp/client/cl_main.cpp:1023](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1023)
-- behavior: [codemp/client/cl_main.cpp:1028](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1028)
+- registration: [codemp/client/cl_main.cpp:3312](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3312) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019)
+- behavior: [codemp/client/cl_main.cpp:1023](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1023)
+- behavior: [codemp/client/cl_main.cpp:1028](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1028)

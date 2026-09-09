@@ -17,12 +17,15 @@ Enable disruptor spiral effect
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L350) |
+| In-game menu | Yes — [ingame_setup.menu:3851](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3851) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-04-02`, integrated `2022-04-20`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L421)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L421)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
@@ -57,10 +60,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L421) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2858)
-- behavior: [codemp/cgame/cg_event.c:2896](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2896)
-- behavior: [codemp/cgame/cg_weapons.c:2689](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2689)
-- behavior: [codemp/ui/ui_xdocs.h:344](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L344)
-- behavior: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L350)
-- documentation: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L350)
+- registration: [codemp/cgame/cg_xcvar.h:421](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L421) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:2858](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2858)
+- behavior: [codemp/cgame/cg_event.c:2896](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2896)
+- behavior: [codemp/cgame/cg_weapons.c:2689](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2689)
+- behavior: [codemp/ui/ui_xdocs.h:344](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L344)
+- behavior: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L350)
+- documentation: [codemp/ui/ui_xdocs.h:350](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L350)

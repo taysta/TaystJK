@@ -17,12 +17,15 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 
 | Field | Value |
 |:--|:--|
+| Category | Movement & race |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87) |
+| In-game menu | Yes — [ingame_setup.menu:4204](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4204) |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,11 +35,11 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Movement keys are hidden | [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87) |
-| `1` | Movement keys are shown | [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87) |
-| `2` | Movement keys are shown with attack/altattack inputs | [codemp/ui/ui_xdocs.h:88](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L88) |
-| `3` | Crosshair style | [codemp/ui/ui_xdocs.h:90](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L90) |
-| `4` | Moveable crosshair style | [codemp/ui/ui_xdocs.h:90](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L90) |
+| `0` | Movement keys are hidden | [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87) |
+| `1` | Movement keys are shown | [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87) |
+| `2` | Movement keys are shown with attack/altattack inputs | [codemp/ui/ui_xdocs.h:88](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L88) |
+| `3` | Crosshair style | [codemp/ui/ui_xdocs.h:90](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L90) |
+| `4` | Moveable crosshair style | [codemp/ui/ui_xdocs.h:90](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L90) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:41](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L41)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:41](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L41)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -76,10 +79,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:41](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L41) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/hud_strafehelper.c:2276](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2276)
-- behavior: [codemp/cgame/hud_strafehelper.c:2282](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2282)
-- behavior: [codemp/cgame/hud_strafehelper.c:2288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2288)
-- behavior: [codemp/cgame/hud_strafehelper.c:2294](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2294)
-- documentation: [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87)
+- registration: [codemp/cgame/cg_xcvar.h:41](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L41) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/hud_strafehelper.c:2276](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2276)
+- behavior: [codemp/cgame/hud_strafehelper.c:2282](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2282)
+- behavior: [codemp/cgame/hud_strafehelper.c:2288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2288)
+- behavior: [codemp/cgame/hud_strafehelper.c:2294](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2294)
+- documentation: [codemp/ui/ui_xdocs.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L87)

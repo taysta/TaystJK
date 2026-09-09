@@ -15,12 +15,15 @@ Disable/enable cubemapping
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:1995](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1995), [setup.menu:1785](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L1785) |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -30,8 +33,8 @@ Disable/enable cubemapping
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298) |
-| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298) |
+| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298) |
+| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 - Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2013-10-15`, integrated `2023-10-03`)
 - TaystJK integration evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
 - Origin pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1527](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1527)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1527](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1527)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 
@@ -63,9 +66,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1562](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1562) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4418](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4418)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4533](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4533)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:385](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L385)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:1897](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L1897)
+- registration: [codemp/rd-rend2/tr_init.cpp:1562](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1562) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3298](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3298)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4418](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4418)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4533](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4533)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:385](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L385)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:1897](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L1897)

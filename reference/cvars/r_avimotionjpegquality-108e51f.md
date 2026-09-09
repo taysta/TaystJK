@@ -17,12 +17,15 @@ Controls `r_aviMotionJpegQuality` in the renderer module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `100` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -50,7 +53,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-13`, integrated `2013-04-16`)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1615](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1615)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1615](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1615)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -85,11 +88,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
-- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1147)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1304)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L676)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1777)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1009)
+- registration: [codemp/rd-rend2/tr_init.cpp:1691](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1691) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1774](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1774) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:1006](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1006) (Cvar_Get)
+- behavior: [codemp/rd-rend2/tr_init.cpp:1147](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1147)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1304](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1304)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:676](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L676)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:1777](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1777)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:1009](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1009)

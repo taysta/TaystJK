@@ -17,12 +17,15 @@ Show intro movies
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Show intro movies
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Show intro movies
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`9e2ed38faed0`](https://github.com/JACoders/OpenJK/commit/9e2ed38faed06f59064add98791664ca02c82afa) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-07-27`, integrated `2013-07-27`)
-- Upstream registration evidence: [code/qcommon/common.cpp:1154](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/common.cpp#L1154)
+- Upstream registration evidence: [code/qcommon/common.cpp:1154](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/common.cpp#L1154)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -77,5 +80,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1500](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1500) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537)
+- registration: [codemp/qcommon/common.cpp:1500](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1500) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:1537](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1537)

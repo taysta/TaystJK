@@ -15,12 +15,15 @@ Folder to use for overriding of fs_game (can not be set by the server).
 
 | Field | Value |
 |:--|:--|
+| Category | Files & downloads |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -76,10 +79,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3913](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3913) (Cvar_Get); condition `defined(DEDICATED)`
-- registration: [codemp/qcommon/files.cpp:3915](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3915) (Cvar_Get); condition `else(defined(DEDICATED))`
-- behavior: [codemp/qcommon/files.cpp:3752](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3752)
-- behavior: [codemp/qcommon/files.cpp:3753](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3753)
-- behavior: [codemp/qcommon/files.cpp:3988](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3988)
-- behavior: [codemp/qcommon/files.cpp:3989](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3989)
-- behavior: [codemp/qcommon/files.cpp:4480](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4480)
+- registration: [codemp/qcommon/files.cpp:3913](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3913) (Cvar_Get); condition `defined(DEDICATED)`
+- registration: [codemp/qcommon/files.cpp:3915](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3915) (Cvar_Get); condition `else(defined(DEDICATED))`
+- behavior: [codemp/qcommon/files.cpp:3752](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3752)
+- behavior: [codemp/qcommon/files.cpp:3753](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3753)
+- behavior: [codemp/qcommon/files.cpp:3988](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3988)
+- behavior: [codemp/qcommon/files.cpp:3989](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3989)
+- behavior: [codemp/qcommon/files.cpp:4480](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4480)

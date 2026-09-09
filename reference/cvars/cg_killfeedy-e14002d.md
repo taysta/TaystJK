@@ -15,12 +15,15 @@ Offset the killfeed's vertical position from its current position
 
 | Field | Value |
 |:--|:--|
+| Category | Killfeed |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,7 +43,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2023-10-03`, PR opened `2023-10-03`, integrated `2023-10-05`)
 - Origin pull request: [#13](https://github.com/taysta/TaystJK/pull/13)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -63,7 +66,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429) (XCVAR_DEF)
-- behavior: [codemp/cgame/hud_obituary.c:43](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_obituary.c#L43)
-- behavior: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)
-- documentation: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)
+- registration: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429) (XCVAR_DEF)
+- behavior: [codemp/cgame/hud_obituary.c:43](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_obituary.c#L43)
+- behavior: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)
+- documentation: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)

@@ -17,12 +17,15 @@ Controls `cm_noCurves` in the engine-shared module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cm_noCurves` in the engine-shared module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242) |
-| `1` | Enabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242) |
+| `0` | Disabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242) |
+| `1` | Enabled. | [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cm_noCurves` in the engine-shared module. Consult the cited behavior r
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/qcommon/cm_load.cpp:626](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/cm_load.cpp#L626)
+- Upstream registration evidence: [code/qcommon/cm_load.cpp:626](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/cm_load.cpp#L626)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
@@ -59,7 +62,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:635](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_load.cpp#L635) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242)
-- behavior: [codemp/qcommon/cm_trace.cpp:682](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L682)
-- behavior: [codemp/qcommon/cm_trace.cpp:1041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L1041)
+- registration: [codemp/qcommon/cm_load.cpp:635](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_load.cpp#L635) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_trace.cpp:242](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L242)
+- behavior: [codemp/qcommon/cm_trace.cpp:682](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L682)
+- behavior: [codemp/qcommon/cm_trace.cpp:1041](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_trace.cpp#L1041)

@@ -17,12 +17,15 @@ Controls `r_markcount` in the renderer module. Consult the cited behavior reads 
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `100` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -51,7 +54,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/renderer/tr_init.cpp:1069](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/renderer/tr_init.cpp#L1069)
+- Upstream registration evidence: [codemp/renderer/tr_init.cpp:1069](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/renderer/tr_init.cpp#L1069)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -74,12 +77,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:376](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L376) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1625) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1685](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1685) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:843](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L843) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:103](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L103)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:117](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L117)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:140](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L140)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:174](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L174)
-- behavior: [codemp/rd-vanilla/tr_decals.cpp:264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L264)
+- registration: [codemp/rd-dedicated/tr_init.cpp:376](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L376) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1625](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1625) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1685](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1685) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:843](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L843) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:103](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L103)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L117)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:140](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L140)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:174](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L174)
+- behavior: [codemp/rd-vanilla/tr_decals.cpp:264](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L264)

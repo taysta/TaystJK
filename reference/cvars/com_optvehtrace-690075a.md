@@ -17,12 +17,15 @@ Controls `com_optvehtrace` in the cgame module. Consult the cited behavior reads
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `cgame` |
 | Also registered in | `cgame`, `game`, `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -49,7 +52,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/cgame/cg_main.c:970](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L970)
+- Upstream registration evidence: [codemp/cgame/cg_main.c:970](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L970)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -64,10 +67,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L374) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1476](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1476) (Cvar_Get)
-- behavior: [codemp/cgame/cg_players.c:7098](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7098)
-- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L2381)
-- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L759)
-- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L758)
+- registration: [codemp/cgame/cg_xcvar.h:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L374) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1476](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1476) (Cvar_Get)
+- behavior: [codemp/cgame/cg_players.c:7098](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7098)
+- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L2381)
+- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L759)
+- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L758)

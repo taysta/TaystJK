@@ -19,16 +19,21 @@
       <div class="header-inner">
         <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="TaystJK documentation home">
           <img class="brand-mark" src="{{ '/shared/icons/TaystJK.ico' | relative_url }}" width="38" height="38" alt="">
-          <span><strong>TaystJK</strong><small>Console reference</small></span>
+          <span><strong>TaystJK</strong><small>Documentation</small></span>
         </a>
 
-        {% assign nav_section = 'explore' %}
+        {% assign nav_section = '' %}
         {% if page.url == '/' %}{% assign nav_section = 'home' %}
-        {% elsif page.url contains '/reference/sources/' %}{% assign nav_section = 'method' %}
+        {% elsif page.url contains '/install/' %}{% assign nav_section = 'install' %}
+        {% elsif page.url contains '/server-hosting/' %}{% assign nav_section = 'server' %}
+        {% elsif page.url contains '/development' %}{% assign nav_section = 'development' %}
+        {% elsif page.url contains '/reference' %}{% assign nav_section = 'reference' %}
         {% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
-          <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'explore' %} class="active"{% endif %}>Explore</a>
-          <a href="{{ '/reference/sources/' | relative_url }}"{% if nav_section == 'method' %} class="active"{% endif %}>Method</a>
+          <a href="{{ '/install/' | relative_url }}"{% if nav_section == 'install' %} class="active"{% endif %}>Install</a>
+          <a href="{{ '/server-hosting/' | relative_url }}"{% if nav_section == 'server' %} class="active"{% endif %}>Host</a>
+          <a href="{{ '/development/' | relative_url }}"{% if nav_section == 'development' %} class="active"{% endif %}>Develop</a>
+          <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'reference' %} class="active"{% endif %}>Reference</a>
         </nav>
 
         <a class="header-github" href="https://github.com/taysta/TaystJK" rel="noopener">
@@ -41,7 +46,7 @@
     <main id="main-content" class="site-main{% if page.wide %} site-main-wide{% endif %}">
       {% if page.nav_exclude and page.url contains '/reference/' %}
       <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="{{ '/reference/' | relative_url }}">Explore</a>
+        <a href="{{ '/reference/' | relative_url }}">Console reference</a>
         <span aria-hidden="true">/</span>
         <span>{{ page.title }}</span>
       </nav>
@@ -57,12 +62,13 @@
           <img class="brand-mark" src="{{ '/shared/icons/TaystJK.ico' | relative_url }}" width="32" height="32" alt="">
           <span><strong>TaystJK</strong><small>Effort to maintain and improve EternalJK.</small></span>
         </a>
-        <p>Reference generated from source registrations, Git history, pull requests, and upstream snapshots.</p>
+        <p>Player, server administrator, and developer documentation for TaystJK.</p>
       </div>
       <nav aria-label="Footer navigation">
         <a href="{{ '/install/' | relative_url }}">Install</a>
-        <a href="{{ '/reference/audit/' | relative_url }}">Audit queue</a>
-        <a href="{{ '/assets/data/catalog.json' | relative_url }}">Catalog JSON</a>
+        <a href="{{ '/server-hosting/' | relative_url }}">Server hosting</a>
+        <a href="{{ '/development/' | relative_url }}">Development</a>
+        <a href="{{ '/reference/' | relative_url }}">Console reference</a>
         <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       </nav>
     </footer>

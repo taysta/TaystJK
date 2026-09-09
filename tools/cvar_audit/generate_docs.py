@@ -149,6 +149,10 @@ def slug(name: str) -> str:
     return f"{value}-{hashlib.sha1(name.casefold().encode()).hexdigest()[:7]}"
 
 
+def collection_slug(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", name.casefold()).strip("-")
+
+
 def detail_url(entry: dict[str, Any]) -> str:
     return f"/TaystJK/reference/{entry['kind']}s/{slug(entry['name'])}/"
 
@@ -198,6 +202,13 @@ def catalog_app(
           <button class="filter-clear" type="button" data-clear-filter="module">Clear module</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="category">
+        <button class="filter-toggle" type="button" data-filter-toggle="category" aria-expanded="false"><span>Topic</span><strong data-filter-summary="category">Any topic</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="category" hidden>
+          <div class="filter-options" data-filter-options="category"></div>
+          <button class="filter-clear" type="button" data-clear-filter="category">Clear topic</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="renderer">
         <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="renderer" hidden>
@@ -225,6 +236,18 @@ def catalog_app(
           <button class="filter-clear" type="button" data-clear-filter="network">Clear network scope</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="coverage">
+        <button class="filter-toggle" type="button" data-filter-toggle="coverage" aria-expanded="false"><span>In game</span><strong data-filter-summary="coverage">Any coverage</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="coverage" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="xdocs" data-filter="coverage"><span>Has xdocs entry</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="menu" data-filter="coverage"><span>Has menu entry</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="no-xdocs" data-filter="coverage"><span>Missing from xdocs</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="no-menu" data-filter="coverage"><span>Missing from menus</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="coverage">Clear in-game coverage</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
         <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="flag" hidden>
@@ -237,9 +260,11 @@ def catalog_app(
         filters = """    <div class="catalog-filters">
       <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
       <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
+      <label><span>Topic</span><select name="category" data-filter="category"><option value="">Any topic</option></select></label>
       <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
+      <label><span>In game</span><select name="coverage" data-filter="coverage"><option value="">Any coverage</option><option value="xdocs">Has xdocs entry</option><option value="menu">Has menu entry</option><option value="no-xdocs">Missing from xdocs</option><option value="no-menu">Missing from menus</option></select></label>
       <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
     </div>"""
     return f"""
@@ -271,7 +296,7 @@ def catalog_app(
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
-      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
     </div>
   </form>
 
@@ -304,7 +329,7 @@ def upstream_evidence_link(origin: dict[str, Any], refs: dict[str, str]) -> str 
         return None
     ref = item.get("ref") or "master"
     sha = refs.get(ref, ref)
-    url = f"https://github.com/{repo}/blob/{sha}/{item['path']}#L{item['line']}"
+    url = f"https://github.com/{repo}/blame/{sha}/{item['path']}#L{item['line']}"
     return f"[{item['path']}:{item['line']}]({url})"
 
 
@@ -323,7 +348,7 @@ def value_table(entry: dict[str, Any]) -> str:
 
 
 def source_url(path: str, line: int, sha: str) -> str:
-    return f"https://github.com/taysta/TaystJK/blob/{sha}/{path}#L{line}"
+    return f"https://github.com/taysta/TaystJK/blame/{sha}/{path}#L{line}"
 
 
 def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
@@ -335,12 +360,35 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
         ])
     lines.extend([entry["description"], "", "## At a glance", "", "| Field | Value |", "|:--|:--|"])
     lines.extend([
+        f"| Category | {entry['category']} |",
         f"| Module | {code(entry['module'])} |",
         f"| Also registered in | {', '.join(code(value) for value in entry.get('modules', []))} |",
         f"| Renderer | {', '.join(code(value) for value in entry.get('renderer', [])) or 'All / not renderer-specific'} |",
         f"| Network scope | {code(entry['network'])} — {NETWORK_HELP.get(entry['network'], '')} |",
         f"| Derivation | {code(entry['derivation'])} |",
         f"| Confidence | {code(entry['confidence'])} |",
+    ])
+    xdocs = entry.get("xdocs")
+    if xdocs:
+        xdocs_item = dict(xdocs, url=source_url(xdocs["path"], xdocs["line"], entry["source_commit"]))
+        xdocs_value = "Yes — " + evidence_link(xdocs_item)
+    else:
+        xdocs_value = "No"
+    menus = entry.get("menu_entries", [])
+    if menus:
+        menu_links = [
+            evidence_link(
+                dict(item, url=source_url(item["path"], item["line"], entry["source_commit"])),
+                f"{Path(item['path']).name}:{item['line']}",
+            )
+            for item in menus[:3]
+        ]
+        menu_value = "Yes — " + ", ".join(menu_links)
+    else:
+        menu_value = "No"
+    lines.extend([
+        f"| In-game xdocs | {xdocs_value} |",
+        f"| In-game menu | {menu_value} |",
     ])
     if entry["kind"] == "cvar":
         lines.extend([
@@ -554,6 +602,9 @@ def compact_catalog_entry(entry: dict[str, Any]) -> dict[str, Any]:
         "status": entry["status"],
         "confidence": entry["confidence"],
         "derivation": entry["derivation"],
+        "category": entry["category"],
+        "xdocs": bool(entry.get("xdocs")),
+        "menu": bool(entry.get("menu_entries")),
         "cheat_protected": entry["cheat_protected"],
         "origin": entry["origin"]["source"],
         "origin_confidence": entry["origin"]["confidence"],
@@ -601,52 +652,60 @@ def static_index_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]
 
 def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> str:
     total = len(cvars) + len(commands)
-    origins = {entry["origin"]["source"] for entry in cvars + commands}
     return frontmatter(
-        "TaystJK console reference",
+        "TaystJK documentation",
         1,
         wide=True,
-        description="Search every TaystJK cvar and console command, including options, renderer scope, and upstream provenance.",
+        description="Install, host, build, debug, and configure TaystJK.",
     ) + f"""
 <section class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">TaystJK technical reference</p>
-    <h1>Every console control.<br><span>Traced to its source.</span></h1>
-    <p class="hero-lede">Search every cvar and command in TaystJK, see the accepted values, and tell Base JKA, OpenJK, EternalJK, jaPRO, rend2, Vulkan, and other upstream work apart.</p>
+    <p class="eyebrow">TaystJK documentation</p>
+    <h1>Play it. Host it.<br><span>Build it.</span></h1>
+    <p class="hero-lede">Practical documentation for installing TaystJK, running a dedicated server, working on the engine, and understanding every console control.</p>
     <div class="hero-actions">
-      <a class="button button-primary" href="{{{{ '/reference/' | relative_url }}}}">Explore {total:,} entries</a>
-      <a class="button button-secondary" href="{{{{ '/reference/sources/' | relative_url }}}}">How attribution works</a>
+      <a class="button button-primary" href="{{{{ '/install/' | relative_url }}}}">Install TaystJK</a>
+      <a class="button button-secondary" href="https://github.com/taysta/TaystJK/releases/tag/latest">Download latest build</a>
     </div>
   </div>
-  <div class="hero-terminal" aria-label="Example console lookup">
-    <div class="terminal-bar"><span></span><span></span><span></span><b>console reference</b></div>
+  <div class="hero-terminal" aria-label="Documentation quick links">
+    <div class="terminal-bar"><span></span><span></span><span></span><b>quick paths</b></div>
     <div class="terminal-body">
-      <a class="terminal-entry" href="{{{{ '/reference/cvars/r_dynamicglowbloom-d4ab76d/' | relative_url }}}}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong><span class="terminal-entry-action">Open ↗</span></p>
-        <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
-        <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      <a class="terminal-entry" href="{{{{ '/server-hosting/' | relative_url }}}}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">01</span> <strong>Run a server</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">Docker Compose, server.cfg, downloads, and reflists</p>
       </a>
       <hr>
-      <a class="terminal-entry" href="{{{{ '/reference/cvars/cg_camerafps-62ac0e1/' | relative_url }}}}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong><span class="terminal-entry-action">Open ↗</span></p>
-        <p class="terminal-muted">Frame-independent third-person camera damping</p>
-        <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      <a class="terminal-entry" href="{{{{ '/development/' | relative_url }}}}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">02</span> <strong>Work on TaystJK</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">Compilation, debugging, and bundled libraries</p>
+      </a>
+      <hr>
+      <a class="terminal-entry" href="{{{{ '/reference/' | relative_url }}}}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">03</span> <strong>Find a console control</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">{total:,} source-derived cvars and commands</p>
       </a>
     </div>
   </div>
 </section>
 
-<section class="reference-stats" aria-label="Reference coverage">
-  <div><strong>{len(cvars):,}</strong><span>cvars</span></div>
-  <div><strong>{len(commands):,}</strong><span>commands</span></div>
-  <div><strong>{len(origins)}</strong><span>source lineages</span></div>
-  <div><strong>4</strong><span>renderer targets</span></div>
+<section class="browse-section home-browse" aria-labelledby="docs-heading">
+  <div class="section-heading">
+    <div><p class="section-kicker">Documentation</p><h2 id="docs-heading">Choose where to start</h2></div>
+    <p>From first launch to engine development, each guide is written for TaystJK's current layout and tooling.</p>
+  </div>
+  <div class="browse-grid">
+    <a class="browse-card" href="{{{{ '/install/' | relative_url }}}}"><span class="browse-icon">01</span><h3>Install</h3><p>Set up TaystJK on Windows, Linux, or macOS, including clean layouts for multiple modded clients.</p><b>Installation guide →</b></a>
+    <a class="browse-card" href="{{{{ '/server-hosting/' | relative_url }}}}"><span class="browse-icon">02</span><h3>Host a server</h3><p>Deploy the dedicated server, write a rotation, enable HTTP downloads, and control PK3 references.</p><b>Server guide →</b></a>
+    <a class="browse-card" href="{{{{ '/development/' | relative_url }}}}"><span class="browse-icon">03</span><h3>Build &amp; debug</h3><p>Configure CMake, compile every platform target, attach a debugger, and use sanitizers.</p><b>Developer guides →</b></a>
+    <a class="browse-card" href="{{{{ '/reference/' | relative_url }}}}"><span class="browse-icon">04</span><h3>Console reference</h3><p>Search {len(cvars):,} cvars and {len(commands):,} commands by topic, module, origin, and documentation coverage.</p><b>Search the reference →</b></a>
+  </div>
 </section>
 
 <section class="method-banner">
-  <div><p class="section-kicker">Evidence backed reference</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
-  <p>The inventory combines static extraction with a runtime reconciliation. Squashed pull requests are traced through their retained commit bullets and PR descriptions; uncertain semantics stay visibly marked for review.</p>
-  <a class="text-link" href="{{{{ '/reference/sources/' | relative_url }}}}">Read the methodology →</a>
+  <div><p class="section-kicker">Under the hood</p><h2>Know exactly what ships.</h2></div>
+  <p>See bundled library versions, build options, and source-linked evidence. Console source links open GitHub blame at the exact line.</p>
+  <a class="text-link" href="{{{{ '/development/libraries/' | relative_url }}}}">Library inventory →</a>
 </section>
 """
 
@@ -721,8 +780,9 @@ The reference separates origin from current availability. An entry inherited fro
 3. For every non-base name, the resolver finds its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. It separately records the exact registration's first author date, the target project's PR creation date, and the mainline integration date. Authorship and submission are considered before merge order, so merging an upstream PR into TaystJK first does not make TaystJK its origin.
 4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier authored or submitted origin.
 5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
-6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. Unproven fields stay in the review queue.
-7. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
+6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. The generator separately records exact xdocs declarations and appearances in shipped `.menu` files.
+7. Stable topic rules group related feature families such as `cg_killfeed…`, even when their registrations span multiple source files. Unproven semantic fields stay in the review queue.
+8. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
 
 NewMod is closed source. Its [published feature documentation](https://jkanewmod.github.io/documentation.html) is useful semantic context, but the resolver attributes NewMod/NewJK only where a commit, PR, or nearby source comment explicitly says so, or where the open NewJK tree supplies direct evidence. A feature-page resemblance alone is not treated as origin proof.
 
@@ -767,7 +827,7 @@ def main() -> None:
     write(Path("index.md"), home_page(cvars, commands))
     write(Path("reference.md"), frontmatter(
         "Console reference",
-        3,
+        5,
         wide=True,
         reference_app=True,
         description="Search and filter every cvar and console command available in TaystJK.",
@@ -784,7 +844,9 @@ def main() -> None:
 
 ## How to read an entry
 
-The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+The **topic** groups related controls such as the killfeed family. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+
+The **xdocs** and **menu** badges show whether the current name already has an entry in TaystJK's in-game documentation or shipped menu definitions. Each detail page links the matching source line.
 
 An entry marked **needs review** is real and has registration evidence, but one or more behavior, option, or attribution fields could not be proven precisely enough to present as settled fact.
 
@@ -792,6 +854,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
+- [Browse by topic](/TaystJK/reference/categories/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)
@@ -856,6 +919,35 @@ An entry marked **needs review** is real and has registration evidence, but one 
         write(Path("reference/modules") / f"{module}.md", collection_page(
             module, "Entries whose primary registration or dispatch context is this module.", selected, order, "By module",
             preset_key="module", preset_value=module,
+        ))
+
+    categories = sorted({entry["category"] for entry in entries})
+    category_cards = []
+    for category in categories:
+        selected = [entry for entry in entries if entry["category"] == category]
+        cvar_count = sum(entry["kind"] == "cvar" for entry in selected)
+        command_count = len(selected) - cvar_count
+        category_cards.append(
+            f'<a class="directory-card" href="/TaystJK/reference/categories/{collection_slug(category)}/">'
+            f'<span class="directory-code">{esc(category)}</span><strong>{len(selected):,}</strong>'
+            f'<span>{cvar_count:,} cvars · {command_count:,} commands</span></a>'
+        )
+    write(Path("reference/categories.md"), frontmatter("By topic", 5, "Console reference", wide=True) + """
+<div class="page-heading" markdown="1">
+<p class="eyebrow">Feature groups</p>
+
+<h1>Browse by topic</h1>
+
+<p class="page-lede">Related controls stay together even when they are registered in different modules. Prefix families such as <code>cg_killfeed…</code> are grouped as one topic.</p>
+</div>
+
+<div class="directory-grid">
+""" + "\n".join(category_cards) + "\n</div>")
+    for order, category in enumerate(categories, 1):
+        selected = [entry for entry in entries if entry["category"] == category]
+        write(Path("reference/categories") / f"{collection_slug(category)}.md", collection_page(
+            category, "Entries grouped by feature name, prefix, behavior, and registration context.", selected, order, "By topic",
+            preset_key="category", preset_value=category,
         ))
 
     runtime = load(args.runtime) if args.runtime.exists() else None

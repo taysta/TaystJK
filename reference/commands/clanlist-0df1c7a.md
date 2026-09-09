@@ -17,12 +17,15 @@ Forwards this command to the connected game server.
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `cgame` |
 | Also registered in | `cgame`, `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `clanList <page (optional)>` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Gating: `CMD_NOINTERMISSION`, `sent-to-server`.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`fa2b5ba6883b`](https://github.com/eternalcodes/EternalJK/commit/fa2b5ba6883ba72c77c53130fedf2d3d2bfb86ea) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-08-08`, integrated `2018-08-20`)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2286](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_consolecmds.c#L2286)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2286](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_consolecmds.c#L2286)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -63,6 +66,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2611](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2611) (forwarded client command table)
-- registration: [codemp/game/g_cmds.c:8937](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8937) (game command table)
-- handler: [codemp/game/g_account.c:4121](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4121)
+- registration: [codemp/cgame/cg_consolecmds.c:2611](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2611) (forwarded client command table)
+- registration: [codemp/game/g_cmds.c:8937](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8937) (game command table)
+- handler: [codemp/game/g_account.c:4121](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4121)

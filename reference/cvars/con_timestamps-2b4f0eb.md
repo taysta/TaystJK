@@ -17,12 +17,15 @@ Draw local timestamps in console and condump output.
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `2` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Draw local timestamps in console and condump output.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935) |
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935) |
+| `0` | Selects the code path tested for value 0. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 - TaystJK integration evidence: [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3)
 - Origin pull request: [#155](https://github.com/taysta/TaystJK/pull/155)
 - Matching squash bullet: `add con_timestamps 2 to disable timestamps in the notify lines only`
-- Upstream registration evidence: [src/client/cl_console.cpp:407](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_console.cpp#L407)
+- Upstream registration evidence: [src/client/cl_console.cpp:407](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_console.cpp#L407)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -74,9 +77,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:667](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L667) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:399](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L399)
-- behavior: [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935)
-- behavior: [codemp/client/cl_console.cpp:1157](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1157)
-- behavior: [codemp/client/cl_console.cpp:615](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L615)
-- upstream-documentation: [CVARS.rst:161](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L161)
+- registration: [codemp/client/cl_console.cpp:667](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L667) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:399](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L399)
+- behavior: [codemp/client/cl_console.cpp:935](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L935)
+- behavior: [codemp/client/cl_console.cpp:1157](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1157)
+- behavior: [codemp/client/cl_console.cpp:615](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L615)
+- upstream-documentation: [CVARS.rst:161](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L161)

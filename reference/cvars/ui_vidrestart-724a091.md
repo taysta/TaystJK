@@ -17,12 +17,15 @@ Controls `ui_vidrestart` in the ui module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:882](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L882), [ingame_setup.menu:916](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L916), [ingame_setup.menu:953](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L953) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`d93386f34b71`](https://github.com/eternalcodes/EternalJK/commit/d93386f34b71fbf1eff27f198956e519918f45a0) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2015-06-17`, integrated `2015-06-17`)
-- Upstream registration evidence: [codemp/ui/ui_main.c:6283](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L6283)
+- Upstream registration evidence: [codemp/ui/ui_main.c:6283](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L6283)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -68,7 +71,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6382) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:6256](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6256)
-- behavior: [codemp/ui/ui_main.c:6258](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6258)
-- behavior: [codemp/ui/ui_main.c:6426](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6426)
+- registration: [codemp/ui/ui_main.c:6382](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6382) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:6256](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6256)
+- behavior: [codemp/ui/ui_main.c:6258](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6258)
+- behavior: [codemp/ui/ui_main.c:6426](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6426)

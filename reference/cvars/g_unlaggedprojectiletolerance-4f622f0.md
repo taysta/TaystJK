@@ -17,12 +17,15 @@ Controls `g_unlaggedProjectileTolerance` in the game module. Consult the cited b
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `135` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`41c7e75be47a`](https://github.com/videoP/jaPRO/commit/41c7e75be47a14426fe6ec5dd479edc5aa77a310) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-12-21`, integrated `2023-12-21`)
 - Origin pull request: [#57](https://github.com/taysta/TaystJK/pull/57)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:278](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L278)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:278](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L278)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -67,9 +70,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:277](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L277) (XCVAR_DEF)
-- behavior: [codemp/game/g_missile.c:385](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L385)
-- behavior: [codemp/game/g_missile.c:1439](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L1439)
-- behavior: [codemp/game/g_missile.c:386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L386)
-- behavior: [codemp/game/g_missile.c:1440](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L1440)
-- behavior: [codemp/cgame/cg_weapons.c:2476](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2476)
+- registration: [codemp/game/g_xcvar.h:277](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L277) (XCVAR_DEF)
+- behavior: [codemp/game/g_missile.c:385](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L385)
+- behavior: [codemp/game/g_missile.c:1439](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L1439)
+- behavior: [codemp/game/g_missile.c:386](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L386)
+- behavior: [codemp/game/g_missile.c:1440](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L1440)
+- behavior: [codemp/cgame/cg_weapons.c:2476](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2476)

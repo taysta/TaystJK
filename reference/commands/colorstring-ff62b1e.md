@@ -17,12 +17,15 @@ Color say text
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `colorstring` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`71cc8ccbae52`](https://github.com/eternalcodes/EternalJK/commit/71cc8ccbae52c581c7e41a579d85b66e629b6878) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2016-03-10`, integrated `2016-03-11`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3402](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_main.cpp#L3402)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3402](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_main.cpp#L3402)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -68,5 +71,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3501](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3501) (Cmd_AddCommand)
-- handler: [codemp/client/cl_main.cpp:3033](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3033)
+- registration: [codemp/client/cl_main.cpp:3501](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3501) (Cmd_AddCommand)
+- handler: [codemp/client/cl_main.cpp:3033](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3033)

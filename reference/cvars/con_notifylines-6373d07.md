@@ -17,12 +17,15 @@ Max number of console lines to print in top left
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `3` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`012a635e93ad`](https://github.com/eternalcodes/EternalJK/commit/012a635e93ad5338bf9d24fb8401b400176d1431) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-09-11`, integrated `2018-09-11`)
-- Upstream registration evidence: [codemp/client/cl_console.cpp:533](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_console.cpp#L533)
+- Upstream registration evidence: [codemp/client/cl_console.cpp:533](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_console.cpp#L533)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -59,5 +62,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:651](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L651) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:924](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L924)
+- registration: [codemp/client/cl_console.cpp:651](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L651) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:924](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L924)

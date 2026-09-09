@@ -17,12 +17,15 @@ Unset all user generated cvars Use with caution!
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `unset_usercreated` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`28c72736b22b`](https://github.com/JACoders/OpenJK/commit/28c72736b22bc2858ad2063828a0a3b616c0ac42) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-07-30`, integrated `2017-07-30`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [code/qcommon/cvar.cpp:1385](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/cvar.cpp#L1385)
+- Upstream registration evidence: [code/qcommon/cvar.cpp:1385](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/cvar.cpp#L1385)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -56,5 +59,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cvar.cpp:1641](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1641) (Cmd_AddCommand)
-- handler: [codemp/qcommon/cvar.cpp:1384](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1384)
+- registration: [codemp/qcommon/cvar.cpp:1641](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1641) (Cmd_AddCommand)
+- handler: [codemp/qcommon/cvar.cpp:1384](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1384)

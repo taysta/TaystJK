@@ -17,12 +17,15 @@ Lists demos being recorded
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `sv_listrecording` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`724b58ba6bf5`](https://github.com/eternalcodes/EternalJK/commit/724b58ba6bf535c832bbcfdb7a092ed3581fdcdc) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-10-17`, integrated `2018-10-17`)
-- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:2052](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_ccmds.cpp#L2052)
+- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:2052](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_ccmds.cpp#L2052)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -61,5 +64,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_ccmds.cpp:2349](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2349) (Cmd_AddCommand); condition `defined(DEDICATED)`
-- handler: [codemp/server/sv_ccmds.cpp:1730](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1730)
+- registration: [codemp/server/sv_ccmds.cpp:2349](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2349) (Cmd_AddCommand); condition `defined(DEDICATED)`
+- handler: [codemp/server/sv_ccmds.cpp:1730](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1730)

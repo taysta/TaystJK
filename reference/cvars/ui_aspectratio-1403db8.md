@@ -17,12 +17,15 @@ Controls `ui_aspectratio` in the ui module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:897](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L897), [ingame_setup.menu:906](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L906), [ingame_setup.menu:934](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L934) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`e1abb59c8c45`](https://github.com/eternalcodes/EternalJK/commit/e1abb59c8c45e777bf89023b8215b23e7cc7adb3) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2015-06-21`, integrated `2015-06-21`)
-- Upstream registration evidence: [codemp/ui/ui_main.c:6257](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L6257)
+- Upstream registration evidence: [codemp/ui/ui_main.c:6257](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L6257)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -60,9 +63,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6342) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:5926](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5926)
-- behavior: [codemp/ui/ui_main.c:5932](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5932)
-- behavior: [codemp/ui/ui_main.c:5983](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5983)
-- behavior: [codemp/ui/ui_main.c:6036](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6036)
-- behavior: [codemp/ui/ui_main.c:6300](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6300)
+- registration: [codemp/ui/ui_main.c:6342](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6342) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:5926](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5926)
+- behavior: [codemp/ui/ui_main.c:5932](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5932)
+- behavior: [codemp/ui/ui_main.c:5983](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L5983)
+- behavior: [codemp/ui/ui_main.c:6036](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6036)
+- behavior: [codemp/ui/ui_main.c:6300](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6300)

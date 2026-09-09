@@ -17,12 +17,15 @@ Controls `cl_idrive` in the engine-client module. Consult the cited behavior rea
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`e0d7a341bc6c`](https://github.com/videoP/jaPRO/commit/e0d7a341bc6c9a68a359941a4065e9c6b408305a) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2017-12-05`, integrated `2017-12-05`)
-- Upstream registration evidence: [codemp/client/cl_input.cpp:1832](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1832)
+- Upstream registration evidence: [codemp/client/cl_input.cpp:1832](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1832)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -69,9 +72,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_input.cpp:1832](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1832) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:494](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L494)
-- behavior: [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L904)
-- behavior: [codemp/client/cl_input.cpp:918](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L918)
-- behavior: [codemp/client/cl_input.cpp:931](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L931)
-- behavior: [codemp/client/cl_input.cpp:944](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L944)
+- registration: [codemp/client/cl_input.cpp:1832](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1832) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:494](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L494)
+- behavior: [codemp/client/cl_input.cpp:904](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L904)
+- behavior: [codemp/client/cl_input.cpp:918](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L918)
+- behavior: [codemp/client/cl_input.cpp:931](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L931)
+- behavior: [codemp/client/cl_input.cpp:944](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L944)

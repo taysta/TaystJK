@@ -1,48 +1,57 @@
 ---
-title: "TaystJK console reference"
+title: "TaystJK documentation"
 layout: reference
 nav_order: 1
 wide: true
-description: "Search every TaystJK cvar and console command, including options, renderer scope, and upstream provenance."
+description: "Install, host, build, debug, and configure TaystJK."
 ---
 
 <section class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">TaystJK technical reference</p>
-    <h1>Every console control.<br><span>Traced to its source.</span></h1>
-    <p class="hero-lede">Search every cvar and command in TaystJK, see the accepted values, and tell Base JKA, OpenJK, EternalJK, jaPRO, rend2, Vulkan, and other upstream work apart.</p>
+    <p class="eyebrow">TaystJK documentation</p>
+    <h1>Play it. Host it.<br><span>Build it.</span></h1>
+    <p class="hero-lede">Practical documentation for installing TaystJK, running a dedicated server, working on the engine, and understanding every console control.</p>
     <div class="hero-actions">
-      <a class="button button-primary" href="{{ '/reference/' | relative_url }}">Explore 2,014 entries</a>
-      <a class="button button-secondary" href="{{ '/reference/sources/' | relative_url }}">How attribution works</a>
+      <a class="button button-primary" href="{{ '/install/' | relative_url }}">Install TaystJK</a>
+      <a class="button button-secondary" href="https://github.com/taysta/TaystJK/releases/tag/latest">Download latest build</a>
     </div>
   </div>
-  <div class="hero-terminal" aria-label="Example console lookup">
-    <div class="terminal-bar"><span></span><span></span><span></span><b>console reference</b></div>
+  <div class="hero-terminal" aria-label="Documentation quick links">
+    <div class="terminal-bar"><span></span><span></span><span></span><b>quick paths</b></div>
     <div class="terminal-body">
-      <a class="terminal-entry" href="{{ '/reference/cvars/r_dynamicglowbloom-d4ab76d/' | relative_url }}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>r_dynamicGlowBloom</strong><span class="terminal-entry-action">Open ↗</span></p>
-        <p class="terminal-muted">Dynamic-glow bloom strength · default <code>0.0</code></p>
-        <p><span class="mini-origin ref-origin-rend2">rend2</span> <span class="terminal-scope">rd-rend2</span></p>
+      <a class="terminal-entry" href="{{ '/server-hosting/' | relative_url }}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">01</span> <strong>Run a server</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">Docker Compose, server.cfg, downloads, and reflists</p>
       </a>
       <hr>
-      <a class="terminal-entry" href="{{ '/reference/cvars/cg_camerafps-62ac0e1/' | relative_url }}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">›</span> <strong>cg_cameraFPS</strong><span class="terminal-entry-action">Open ↗</span></p>
-        <p class="terminal-muted">Frame-independent third-person camera damping</p>
-        <p><span class="mini-origin ref-origin-jk2mv">JK2MV</span> <code>&lt;15</code> legacy · <code>≥15</code> adjusted</p>
+      <a class="terminal-entry" href="{{ '/development/' | relative_url }}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">02</span> <strong>Work on TaystJK</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">Compilation, debugging, and bundled libraries</p>
+      </a>
+      <hr>
+      <a class="terminal-entry" href="{{ '/reference/' | relative_url }}">
+        <p class="terminal-entry-heading"><span class="terminal-prompt">03</span> <strong>Find a console control</strong><span class="terminal-entry-action">Open →</span></p>
+        <p class="terminal-muted">2,014 source-derived cvars and commands</p>
       </a>
     </div>
   </div>
 </section>
 
-<section class="reference-stats" aria-label="Reference coverage">
-  <div><strong>1,441</strong><span>cvars</span></div>
-  <div><strong>573</strong><span>commands</span></div>
-  <div><strong>9</strong><span>source lineages</span></div>
-  <div><strong>4</strong><span>renderer targets</span></div>
+<section class="browse-section home-browse" aria-labelledby="docs-heading">
+  <div class="section-heading">
+    <div><p class="section-kicker">Documentation</p><h2 id="docs-heading">Choose where to start</h2></div>
+    <p>From first launch to engine development, each guide is written for TaystJK's current layout and tooling.</p>
+  </div>
+  <div class="browse-grid">
+    <a class="browse-card" href="{{ '/install/' | relative_url }}"><span class="browse-icon">01</span><h3>Install</h3><p>Set up TaystJK on Windows, Linux, or macOS, including clean layouts for multiple modded clients.</p><b>Installation guide →</b></a>
+    <a class="browse-card" href="{{ '/server-hosting/' | relative_url }}"><span class="browse-icon">02</span><h3>Host a server</h3><p>Deploy the dedicated server, write a rotation, enable HTTP downloads, and control PK3 references.</p><b>Server guide →</b></a>
+    <a class="browse-card" href="{{ '/development/' | relative_url }}"><span class="browse-icon">03</span><h3>Build &amp; debug</h3><p>Configure CMake, compile every platform target, attach a debugger, and use sanitizers.</p><b>Developer guides →</b></a>
+    <a class="browse-card" href="{{ '/reference/' | relative_url }}"><span class="browse-icon">04</span><h3>Console reference</h3><p>Search 1,441 cvars and 573 commands by topic, module, origin, and documentation coverage.</p><b>Search the reference →</b></a>
+  </div>
 </section>
 
 <section class="method-banner">
-  <div><p class="section-kicker">Evidence backed reference</p><h2>Source registrations, history, PRs, and upstream trees.</h2></div>
-  <p>The inventory combines static extraction with a runtime reconciliation. Squashed pull requests are traced through their retained commit bullets and PR descriptions; uncertain semantics stay visibly marked for review.</p>
-  <a class="text-link" href="{{ '/reference/sources/' | relative_url }}">Read the methodology →</a>
+  <div><p class="section-kicker">Under the hood</p><h2>Know exactly what ships.</h2></div>
+  <p>See bundled library versions, build options, and source-linked evidence. Console source links open GitHub blame at the exact line.</p>
+  <a class="text-link" href="{{ '/development/libraries/' | relative_url }}">Library inventory →</a>
 </section>

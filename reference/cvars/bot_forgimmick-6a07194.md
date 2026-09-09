@@ -17,12 +17,15 @@ Controls `bot_forgimmick` in the game module. Consult the cited behavior reads b
 
 | Field | Value |
 |:--|:--|
+| Category | Bots & AI |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Controls `bot_forgimmick` in the game module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149) |
-| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154) |
-| `4` | Selects the code path tested for value 4. | [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154) |
+| `4` | Selects the code path tested for value 4. | [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Controls `bot_forgimmick` in the game module. Consult the cited behavior reads b
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/game/ai_main.c:7578](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/game/ai_main.c#L7578)
+- Upstream registration evidence: [codemp/game/ai_main.c:7578](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/game/ai_main.c#L7578)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
@@ -60,8 +63,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_main.c:10689](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10689) (Cvar_Register)
-- behavior: [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149)
-- behavior: [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154)
-- behavior: [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164)
-- behavior: [codemp/game/ai_main.c:9142](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9142)
+- registration: [codemp/game/ai_main.c:10689](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10689) (Cvar_Register)
+- behavior: [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149)
+- behavior: [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154)
+- behavior: [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164)
+- behavior: [codemp/game/ai_main.c:9142](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9142)

@@ -17,12 +17,15 @@ Play ambient sounds
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362) |
+| In-game menu | Yes — [ingame_setup.menu:4622](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4622) |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Play ambient sounds
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play ambient sounds | [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362) |
-| `1` | Play ambient sounds | [codemp/ui/ui_xdocs.h:363](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L363) |
+| `0` | Don't play ambient sounds | [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362) |
+| `1` | Play ambient sounds | [codemp/ui/ui_xdocs.h:363](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L363) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Play ambient sounds
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-04-13`, integrated `2022-04-20`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:425](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L425)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:425](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L425)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
@@ -68,8 +71,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:425](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L425) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:3761](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L3761)
-- behavior: [codemp/cgame/cg_ents.c:3790](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L3790)
-- behavior: [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362)
-- documentation: [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362)
+- registration: [codemp/cgame/cg_xcvar.h:425](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L425) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:3761](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L3761)
+- behavior: [codemp/cgame/cg_ents.c:3790](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L3790)
+- behavior: [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362)
+- documentation: [codemp/ui/ui_xdocs.h:362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L362)

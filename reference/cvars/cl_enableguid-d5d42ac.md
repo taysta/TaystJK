@@ -17,12 +17,15 @@ Enable GUID userinfo identifier
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Enable GUID userinfo identifier
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868) |
-| `1` | Enabled. | [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868) |
+| `0` | Disabled. | [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868) |
+| `1` | Enabled. | [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`bad3bbcc9ae6`](https://github.com/JACoders/OpenJK/commit/bad3bbcc9ae69fa8bd75fd760f20371226b50f95) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-09-05`, integrated `2015-11-19`)
 - TaystJK integration evidence: [`d5970a9804aa`](https://github.com/taysta/TaystJK/commit/d5970a9804aad8ebe9bd8989c4e9e2354b627667)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2822](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2822)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2822](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2822)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, rend2, newjk; fork-lineage order selects openjk. The TaystJK integration evidence credits japro as an immediate port source, but openjk has an earlier dated introduction and remains the ultimate origin.
@@ -77,6 +80,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3398](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3398) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868)
-- behavior: [codemp/client/cl_main.cpp:3257](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3257)
+- registration: [codemp/client/cl_main.cpp:3398](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3398) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:868](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L868)
+- behavior: [codemp/client/cl_main.cpp:3257](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3257)

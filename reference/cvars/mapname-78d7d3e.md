@@ -17,12 +17,15 @@ Controls `mapname` in the game module. Consult the cited behavior reads before r
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game`, `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -49,7 +52,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/server/sv_init.cpp:484](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/server/sv_init.cpp#L484)
+- Upstream registration evidence: [code/server/sv_init.cpp:484](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/server/sv_init.cpp#L484)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -110,15 +113,15 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_wpnav.c:3288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3288) (Cvar_Register)
-- registration: [codemp/game/ai_wpnav.c:3730](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3730) (Cvar_Register)
-- registration: [codemp/game/g_bot.c:242](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L242) (Cvar_Register)
-- registration: [codemp/game/g_main.c:410](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L410) (Cvar_Register)
-- registration: [codemp/game/g_main.c:3372](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3372) (Cvar_Register)
-- registration: [codemp/game/g_saga.c:163](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L163) (Cvar_Register)
-- registration: [codemp/server/sv_init.cpp:980](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L980) (Cvar_Get)
-- behavior: [codemp/game/ai_wpnav.c:3309](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3309)
-- behavior: [codemp/game/g_account.c:1746](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1746)
-- behavior: [codemp/client/cl_discordrpc.cpp:137](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L137)
-- behavior: [codemp/cgame/cg_servercmds.c:154](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L154)
-- behavior: [codemp/game/g_account.c:1813](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1813)
+- registration: [codemp/game/ai_wpnav.c:3288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3288) (Cvar_Register)
+- registration: [codemp/game/ai_wpnav.c:3730](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3730) (Cvar_Register)
+- registration: [codemp/game/g_bot.c:242](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L242) (Cvar_Register)
+- registration: [codemp/game/g_main.c:410](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L410) (Cvar_Register)
+- registration: [codemp/game/g_main.c:3372](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3372) (Cvar_Register)
+- registration: [codemp/game/g_saga.c:163](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L163) (Cvar_Register)
+- registration: [codemp/server/sv_init.cpp:980](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L980) (Cvar_Get)
+- behavior: [codemp/game/ai_wpnav.c:3309](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3309)
+- behavior: [codemp/game/g_account.c:1746](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1746)
+- behavior: [codemp/client/cl_discordrpc.cpp:137](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L137)
+- behavior: [codemp/cgame/cg_servercmds.c:154](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L154)
+- behavior: [codemp/game/g_account.c:1813](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1813)

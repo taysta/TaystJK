@@ -17,12 +17,15 @@ Controls `ui_r_lightMap` in the ui module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:2919](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L2919) |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -59,6 +62,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:6363](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6363) (Cvar_Register)
-- behavior: [codemp/ui/ui_main.c:6236](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6236)
-- behavior: [codemp/ui/ui_main.c:6408](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6408)
+- registration: [codemp/ui/ui_main.c:6363](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6363) (Cvar_Register)
+- behavior: [codemp/ui/ui_main.c:6236](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6236)
+- behavior: [codemp/ui/ui_main.c:6408](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6408)

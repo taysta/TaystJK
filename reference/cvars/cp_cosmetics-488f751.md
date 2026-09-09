@@ -17,12 +17,15 @@ Controls `cp_cosmetics` in the cgame module. Consult the cited behavior reads be
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`7778371e9614`](https://github.com/eternalcodes/EternalJK/commit/7778371e96142ef5afaea5c030ea863c9462d2aa) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-09-09`, integrated `2018-09-09`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:178](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L178)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:178](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L178)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -72,9 +75,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:207](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L207) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:1639](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1639)
-- behavior: [codemp/cgame/cg_consolecmds.c:1720](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1720)
-- behavior: [codemp/cgame/cg_consolecmds.c:1731](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1731)
-- behavior: [codemp/cgame/cg_consolecmds.c:1741](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1741)
-- behavior: [codemp/cgame/cg_consolecmds.c:1746](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1746)
+- registration: [codemp/cgame/cg_xcvar.h:207](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L207) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:1639](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1639)
+- behavior: [codemp/cgame/cg_consolecmds.c:1720](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1720)
+- behavior: [codemp/cgame/cg_consolecmds.c:1731](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1731)
+- behavior: [codemp/cgame/cg_consolecmds.c:1741](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1741)
+- behavior: [codemp/cgame/cg_consolecmds.c:1746](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1746)

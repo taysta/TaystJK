@@ -17,12 +17,15 @@ Controls `cl_drawRecording` in the engine-client module. Consult the cited behav
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:5063](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L5063) |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Controls `cl_drawRecording` in the engine-client module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L404) |
-| `2` | Selects the code path tested for value 2. | [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L406) |
-| `3` | Selects the code path tested for value 3. | [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L408) |
+| `1` | Selects the code path tested for value 1. | [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L404) |
+| `2` | Selects the code path tested for value 2. | [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L406) |
+| `3` | Selects the code path tested for value 3. | [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L408) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`dac8819e51c0`](https://github.com/JACoders/OpenJK/commit/dac8819e51c00b048db00f88fef5d8b3555623fa) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-01-22`, integrated `2017-07-30`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2819](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2819)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2819](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2819)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: openjk retains origin because content authorship and PR submission predate the project that merged the work first. The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -78,9 +81,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3395) (Cvar_Get)
-- behavior: [codemp/client/cl_scrn.cpp:399](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L399)
-- behavior: [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L404)
-- behavior: [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L406)
-- behavior: [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L408)
-- behavior: [codemp/client/cl_scrn.cpp:410](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L410)
+- registration: [codemp/client/cl_main.cpp:3395](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3395) (Cvar_Get)
+- behavior: [codemp/client/cl_scrn.cpp:399](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L399)
+- behavior: [codemp/client/cl_scrn.cpp:404](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L404)
+- behavior: [codemp/client/cl_scrn.cpp:406](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L406)
+- behavior: [codemp/client/cl_scrn.cpp:408](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L408)
+- behavior: [codemp/client/cl_scrn.cpp:410](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L410)

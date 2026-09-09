@@ -17,12 +17,15 @@ Runs `Cmd_TribesPack_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_tribes.menu:109](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L109), [ingame_tribes.menu:136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L136), [ingame_tribes.menu:157](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L157) |
 | Syntax | `pack <shield, thrust, blink, or overdrive. Bind +force_lightning to activate.>` |
 | Cheat protected | No |
 
@@ -37,7 +40,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`cd07288a30a6`](https://github.com/videoP/jaPRO/commit/cd07288a30a6aa276afdb11f1ae81e5e338134c3) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-01-25`, integrated `2024-01-25`)
 - Origin pull request: [#116](https://github.com/taysta/TaystJK/pull/116)
-- Upstream registration evidence: [codemp/game/g_cmds.c:9018](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9018)
+- Upstream registration evidence: [codemp/game/g_cmds.c:9018](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9018)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -61,5 +64,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_cmds.c:9016](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9016) (game command table)
-- handler: [codemp/game/g_cmds.c:7048](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7048)
+- registration: [codemp/game/g_cmds.c:9016](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9016) (game command table)
+- handler: [codemp/game/g_cmds.c:7048](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7048)

@@ -17,12 +17,15 @@ Runs `RE_ClearDecals` in the renderer module.
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `r_cleardecals` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`58c7d66abda5`](https://github.com/eternalcodes/EternalJK/commit/58c7d66abda5e2c2915dc5322e3509029aa2bbb9) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-11-30`, integrated `2018-11-30`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1578](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1578)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1578](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1578)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -65,7 +68,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1465](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1465) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1604](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1604) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:755](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L755) (renderer command table)
-- handler: [codemp/rd-vanilla/tr_decals.cpp:62](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L62)
+- registration: [codemp/rd-rend2/tr_init.cpp:1465](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1465) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1604](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1604) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:755](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L755) (renderer command table)
+- handler: [codemp/rd-vanilla/tr_decals.cpp:62](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L62)

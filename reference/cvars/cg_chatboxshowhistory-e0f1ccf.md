@@ -17,12 +17,15 @@ Shows past messages when console is open
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Shows past messages when console is open
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled (baseJKA behavior) | [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217) |
-| `1` | Enabled | [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217) |
+| `0` | Disabled (baseJKA behavior) | [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217) |
+| `1` | Enabled | [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Shows past messages when console is open
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`afb2b659104b`](https://github.com/eternalcodes/EternalJK/commit/afb2b659104bbb636e81388544c43de1bb129028) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-07-29`, integrated `2019-07-29`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:61](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L61)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:61](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L61)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -70,7 +73,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:74](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L74) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:10980](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10980)
-- behavior: [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217)
-- documentation: [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217)
+- registration: [codemp/cgame/cg_xcvar.h:74](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L74) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:10980](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10980)
+- behavior: [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217)
+- documentation: [codemp/ui/ui_xdocs.h:217](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L217)

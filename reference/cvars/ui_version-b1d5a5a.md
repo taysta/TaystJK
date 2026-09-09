@@ -17,12 +17,15 @@ Used by UI in the in-game "about" menu
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_about.menu#L267) |
 | Default | `Info_ValueForKey(info, "version")` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`e4ececfdb4d1`](https://github.com/videoP/jaPRO/commit/e4ececfdb4d1033473d6f502615964281530d401) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-10-04`, integrated `2018-10-04`)
-- Upstream registration evidence: [codemp/cgame/cg_servercmds.c:236](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_servercmds.c#L236)
+- Upstream registration evidence: [codemp/cgame/cg_servercmds.c:236](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_servercmds.c#L236)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -59,9 +62,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_servercmds.c:236](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L236) (implicit Cvar_Set)
-- behavior: [codemp/ui/ui_main.c:3364](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3364)
-- behavior: [assets/japro/ui/jamp/menudef.h:346](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/menudef.h#L346)
-- behavior: [codemp/ui/menudef.h:346](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/menudef.h#L346)
-- behavior: [codemp/ui/ui_main.c:3084](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3084)
-- behavior: [codemp/ui/ui_main.c:3087](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3087)
+- registration: [codemp/cgame/cg_servercmds.c:236](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L236) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:3364](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3364)
+- behavior: [assets/japro/ui/jamp/menudef.h:346](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/menudef.h#L346)
+- behavior: [codemp/ui/menudef.h:346](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/menudef.h#L346)
+- behavior: [codemp/ui/ui_main.c:3084](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3084)
+- behavior: [codemp/ui/ui_main.c:3087](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L3087)

@@ -17,12 +17,15 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`9384648488c0`](https://github.com/JACoders/OpenJK/commit/9384648488c06d42a7498256cdeeca2e13ae19ed) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-05-08`, integrated `2014-05-08`)
-- Upstream registration evidence: [codemp/ui/ui_xcvar.h:57](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/ui/ui_xcvar.h#L57)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:57](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/ui/ui_xcvar.h#L57)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -66,5 +69,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:62](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L62) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156)
+- registration: [codemp/ui/ui_xcvar.h:62](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L62) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:9156](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9156)

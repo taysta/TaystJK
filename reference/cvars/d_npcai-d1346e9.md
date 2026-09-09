@@ -17,12 +17,15 @@ Controls `d_npcai` in the game module. Consult the cited behavior reads before r
 
 | Field | Value |
 |:--|:--|
+| Category | Bots & AI |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `d_npcai` in the game module. Consult the cited behavior reads before r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
-| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
+| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
+| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `d_npcai` in the game module. Consult the cited behavior reads before r
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/game/g_main.c:441](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/game/g_main.c#L441)
+- Upstream registration evidence: [codemp/game/g_main.c:441](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/game/g_main.c#L441)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -61,9 +64,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:44](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L44) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867)
-- behavior: [codemp/game/NPC_combat.c:1547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1547)
-- behavior: [codemp/game/NPC_combat.c:1557](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1557)
-- behavior: [codemp/game/NPC_combat.c:1690](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1690)
-- behavior: [codemp/game/NPC_combat.c:1700](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1700)
+- registration: [codemp/game/g_xcvar.h:44](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L44) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867)
+- behavior: [codemp/game/NPC_combat.c:1547](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1547)
+- behavior: [codemp/game/NPC_combat.c:1557](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1557)
+- behavior: [codemp/game/NPC_combat.c:1690](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1690)
+- behavior: [codemp/game/NPC_combat.c:1700](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1700)

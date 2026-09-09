@@ -17,12 +17,15 @@ Configured with /tweakWeapons command
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Configured with /tweakWeapons command
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `524288` | Enables the `WT_ANTI_VEHICLE` code path. | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L213) |
-| `67108864` | Enables the `WT_PROJ_SNIPER` code path. | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L220) |
-| `134217728` | Move this into g_tribesmode surely..? | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L221) |
+| `524288` | Enables the `WT_ANTI_VEHICLE` code path. | [codemp/game/g_local.h:213](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L213) |
+| `67108864` | Enables the `WT_PROJ_SNIPER` code path. | [codemp/game/g_local.h:220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L220) |
+| `134217728` | Move this into g_tribesmode surely..? | [codemp/game/g_local.h:221](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L221) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Configured with /tweakWeapons command
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2014-01-11`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:219](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L219)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:219](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L219)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -123,10 +126,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:218](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L218) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Jedi.c:6310](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Jedi.c#L6310)
-- behavior: [codemp/game/NPC_spawn.c:1539](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L1539)
-- behavior: [codemp/game/ai_main.c:4639](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4639)
-- behavior: [codemp/game/ai_main.c:4653](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4653)
-- behavior: [codemp/game/ai_main.c:4657](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4657)
-- documentation: [docs/japro_docs.md:38](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L38)
+- registration: [codemp/game/g_xcvar.h:218](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L218) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Jedi.c:6310](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Jedi.c#L6310)
+- behavior: [codemp/game/NPC_spawn.c:1539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L1539)
+- behavior: [codemp/game/ai_main.c:4639](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4639)
+- behavior: [codemp/game/ai_main.c:4653](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4653)
+- behavior: [codemp/game/ai_main.c:4657](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L4657)
+- documentation: [docs/japro_docs.md:38](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L38)

@@ -15,12 +15,15 @@ Display walk movement key input
 
 | Field | Value |
 |:--|:--|
+| Category | Movement & race |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,7 +43,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2026-04-18`, integrated `2026-06-07`)
 - Origin pull request: [#318](https://github.com/taysta/TaystJK/pull/318)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:45](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L45)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:45](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L45)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -56,10 +59,10 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:45](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L45) (XCVAR_DEF)
-- behavior: [codemp/cgame/hud_strafehelper.c:2322](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2322)
-- behavior: [codemp/cgame/hud_strafehelper.c:2362](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2362)
-- behavior: [codemp/cgame/hud_strafehelper.c:2279](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2279)
-- behavior: [codemp/cgame/hud_strafehelper.c:2285](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2285)
-- behavior: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104)
-- documentation: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104)
+- registration: [codemp/cgame/cg_xcvar.h:45](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L45) (XCVAR_DEF)
+- behavior: [codemp/cgame/hud_strafehelper.c:2322](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2322)
+- behavior: [codemp/cgame/hud_strafehelper.c:2362](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2362)
+- behavior: [codemp/cgame/hud_strafehelper.c:2279](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2279)
+- behavior: [codemp/cgame/hud_strafehelper.c:2285](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2285)
+- behavior: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104)
+- documentation: [codemp/ui/ui_xdocs.h:104](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L104)

@@ -17,12 +17,15 @@ Controls `r_uifullscreen` in the renderer module. Consult the cited behavior rea
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `r_uifullscreen` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872) |
-| `1` | Enabled. | [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872) |
+| `0` | Disabled. | [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872) |
+| `1` | Enabled. | [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Controls `r_uifullscreen` in the renderer module. Consult the cited behavior rea
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/renderer/tr_init.cpp:1034](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/renderer/tr_init.cpp#L1034)
+- Upstream registration evidence: [codemp/renderer/tr_init.cpp:1034](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/renderer/tr_init.cpp#L1034)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -75,12 +78,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:353](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L353) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1530](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1530) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1662](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1662) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:814](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L814) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872)
-- behavior: [codemp/rd-vanilla/tr_shade.cpp:1725](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shade.cpp#L1725)
-- behavior: [codemp/rd-vanilla/tr_shader.cpp:3151](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3151)
-- behavior: [codemp/rd-vulkan/tr_shader.cpp:4281](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_shader.cpp#L4281)
-- behavior: [shared/rd-rend2/tr_shader.cpp:4285](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shader.cpp#L4285)
+- registration: [codemp/rd-dedicated/tr_init.cpp:353](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L353) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1530](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1530) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1662](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1662) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:814](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L814) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/tr_shader.cpp:2872](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_shader.cpp#L2872)
+- behavior: [codemp/rd-vanilla/tr_shade.cpp:1725](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shade.cpp#L1725)
+- behavior: [codemp/rd-vanilla/tr_shader.cpp:3151](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3151)
+- behavior: [codemp/rd-vulkan/tr_shader.cpp:4281](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_shader.cpp#L4281)
+- behavior: [shared/rd-rend2/tr_shader.cpp:4285](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shader.cpp#L4285)

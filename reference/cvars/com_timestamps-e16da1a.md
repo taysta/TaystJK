@@ -17,12 +17,15 @@ Print timestamps in qconsole.log and system console.
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Print timestamps in qconsole.log and system console.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 - TaystJK integration evidence: [`61b1b328accf`](https://github.com/taysta/TaystJK/commit/61b1b328accf2f186b1f97d363b3888873f9dbe3)
 - Origin pull request: [#155](https://github.com/taysta/TaystJK/pull/155)
 - Matching squash bullet: `[Shared] Add com_timestamps cvar to enable timestamps in system terminal and qconsole.log`
-- Upstream registration evidence: [src/qcommon/common.cpp:2618](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/qcommon/common.cpp#L2618)
+- Upstream registration evidence: [src/qcommon/common.cpp:2618](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/qcommon/common.cpp#L2618)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -74,6 +77,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1502](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1502) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176)
-- upstream-documentation: [CVARS.rst:28](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L28)
+- registration: [codemp/qcommon/common.cpp:1502](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1502) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:176](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L176)
+- upstream-documentation: [CVARS.rst:28](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L28)

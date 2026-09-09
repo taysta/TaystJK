@@ -15,12 +15,15 @@ Draw the team overlay for team-based gametypes
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133) |
+| In-game menu | Yes — [ingame_setup.menu:4152](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4152), [setup.menu:2802](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L2802) |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,13 +33,13 @@ Draw the team overlay for team-based gametypes
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | The team overlay is not drawn | [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133) |
-| `1` | The team overlay is drawn | [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133) |
-| `2` | The team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:134](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L134) |
-| `3` | The new team overlay is drawn | [codemp/ui/ui_xdocs.h:135](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L135) |
-| `4` | The new team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:136](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L136) |
-| `5` | The vertical team overlay is drawn | [codemp/ui/ui_xdocs.h:138](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L138) |
-| `6` | The vertical team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:138](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L138) |
+| `0` | The team overlay is not drawn | [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133) |
+| `1` | The team overlay is drawn | [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133) |
+| `2` | The team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:134](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L134) |
+| `3` | The new team overlay is drawn | [codemp/ui/ui_xdocs.h:135](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L135) |
+| `4` | The new team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L136) |
+| `5` | The vertical team overlay is drawn | [codemp/ui/ui_xdocs.h:138](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L138) |
+| `6` | The vertical team overlay is drawn, excluding the local client | [codemp/ui/ui_xdocs.h:138](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L138) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Draw the team overlay for team-based gametypes
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/cgame/cg_main.c:1005](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L1005)
+- Upstream registration evidence: [codemp/cgame/cg_main.c:1005](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L1005)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -71,10 +74,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:53](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L53) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_cvar.c:50](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L50)
-- behavior: [codemp/cgame/cg_draw.c:6109](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6109)
-- behavior: [codemp/cgame/cg_draw.c:6129](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6129)
-- behavior: [codemp/cgame/cg_draw.c:6211](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6211)
-- behavior: [codemp/cgame/cg_draw.c:6335](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6335)
-- documentation: [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133)
+- registration: [codemp/cgame/cg_xcvar.h:53](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L53) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_cvar.c:50](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L50)
+- behavior: [codemp/cgame/cg_draw.c:6109](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6109)
+- behavior: [codemp/cgame/cg_draw.c:6129](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6129)
+- behavior: [codemp/cgame/cg_draw.c:6211](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6211)
+- behavior: [codemp/cgame/cg_draw.c:6335](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6335)
+- documentation: [codemp/ui/ui_xdocs.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L133)

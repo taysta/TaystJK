@@ -15,12 +15,15 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 
 | Field | Value |
 |:--|:--|
+| Category | Crosshair & aiming |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `mixed` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595) |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Use green/red ally/enemy colors and sanitize name color codes. | [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9530) |
-| `1` | Preserve color codes in player names. | [codemp/cgame/cg_draw.c:9596](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9596) |
+| `0` | Use green/red ally/enemy colors and sanitize name color codes. | [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9530) |
+| `1` | Preserve color codes in player names. | [codemp/cgame/cg_draw.c:9596](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9596) |
 
 ## Flags
 
@@ -66,11 +69,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:275](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L275) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:41](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L41) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9530)
-- behavior: [codemp/cgame/cg_draw.c:9587](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9587)
-- behavior: [codemp/cgame/cg_draw.c:9594](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9594)
-- behavior: [codemp/cgame/cg_draw.c:9604](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9604)
-- behavior: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595)
-- documentation: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595)
+- registration: [codemp/cgame/cg_xcvar.h:275](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L275) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:41](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L41) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9530](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9530)
+- behavior: [codemp/cgame/cg_draw.c:9587](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9587)
+- behavior: [codemp/cgame/cg_draw.c:9594](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9594)
+- behavior: [codemp/cgame/cg_draw.c:9604](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9604)
+- behavior: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595)
+- documentation: [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595)

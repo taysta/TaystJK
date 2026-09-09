@@ -15,12 +15,15 @@ Add IP to the whitelist
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `whitelistip <ip>` |
 | Cheat protected | No |
 
@@ -34,7 +37,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
 - Ultimate-origin introduction: [`050fbe5141b1`](https://github.com/mvdevs/jk2mv/commit/050fbe5141b1e571106ddfa646037a3177c273d4) in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> (content authored `2017-06-23`, integrated `2017-08-18`)
 - TaystJK integration evidence: [`fffc00dab968`](https://github.com/taysta/TaystJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a)
-- Upstream registration evidence: [src/server/sv_ccmds.cpp:916](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_ccmds.cpp#L916)
+- Upstream registration evidence: [src/server/sv_ccmds.cpp:916](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_ccmds.cpp#L916)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -62,5 +65,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_ccmds.cpp:2358](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2358) (Cmd_AddCommand)
-- handler: [codemp/server/sv_ccmds.cpp:2273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2273)
+- registration: [codemp/server/sv_ccmds.cpp:2358](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2358) (Cmd_AddCommand)
+- handler: [codemp/server/sv_ccmds.cpp:2273](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2273)

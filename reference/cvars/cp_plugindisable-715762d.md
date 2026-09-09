@@ -17,12 +17,15 @@ search_exclude: false
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `feature-flagged` — Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1536` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,10 +35,10 @@ search_exclude: false
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `524288` | Enables the `JAPRO_PLUGIN_BHOP` code path. | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L538) |
-| `134217728` | Enables the `JAPRO_PLUGIN_CENTERMUZZLE` code path. | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L546) |
-| `2` | Enables the `JAPRO_PLUGIN_DUELSEEOTHERS` code path. | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L516) |
-| `1048576` | Enables the `JAPRO_PLUGIN_NOROLL` code path. | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L539) |
+| `524288` | Enables the `JAPRO_PLUGIN_BHOP` code path. | [codemp/game/bg_public.h:538](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L538) |
+| `134217728` | Enables the `JAPRO_PLUGIN_CENTERMUZZLE` code path. | [codemp/game/bg_public.h:546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L546) |
+| `2` | Enables the `JAPRO_PLUGIN_DUELSEEOTHERS` code path. | [codemp/game/bg_public.h:516](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L516) |
+| `1048576` | Enables the `JAPRO_PLUGIN_NOROLL` code path. | [codemp/game/bg_public.h:539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L539) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ search_exclude: false
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-04`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:192](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L192)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:192](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L192)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -91,9 +94,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L933)
-- behavior: [codemp/cgame/cg_players.c:10782](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L10782)
-- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2390)
-- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L3546)
-- behavior: [codemp/game/bg_pmove.c:6220](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L6220)
+- registration: [codemp/cgame/cg_xcvar.h:195](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L195) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:933](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L933)
+- behavior: [codemp/cgame/cg_players.c:10782](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L10782)
+- behavior: [codemp/cgame/cg_weapons.c:2390](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2390)
+- behavior: [codemp/game/bg_pmove.c:3546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L3546)
+- behavior: [codemp/game/bg_pmove.c:6220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L6220)

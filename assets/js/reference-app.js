@@ -2,13 +2,15 @@
   "use strict";
 
   var PAGE_SIZE = 48;
-  var FILTER_KEYS = ["origin", "module", "renderer", "status", "network", "flag"];
+  var FILTER_KEYS = ["origin", "module", "category", "renderer", "status", "network", "coverage", "flag"];
   var FILTER_DEFAULTS = {
     origin: "Any origin",
     module: "Any module",
+    category: "Any topic",
     renderer: "Any renderer",
     status: "Any status",
     network: "Any scope",
+    coverage: "Any coverage",
     flag: "Any flag"
   };
   var ORIGIN_ORDER = ["taystjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "openjk", "basejka", "quake3", "unknown"];
@@ -61,6 +63,7 @@
       entry.kind,
       entry.module,
       (entry.modules || []).join(" "),
+      entry.category,
       entry.origin,
       entry.network,
       (entry.renderer || []).join(" "),
@@ -68,6 +71,8 @@
       entry.syntax,
       (entry.arguments || []).join(" "),
       (entry.gating || []).join(" "),
+      entry.xdocs ? "xdocs in-game documentation" : "missing xdocs",
+      entry.menu ? "in-game menu" : "missing menu",
       optionText
     ].join(" "));
     return entry;
@@ -87,14 +92,24 @@
     if (state.kind !== "all" && entry.kind !== state.kind) return false;
     var origins = selectedValues(state, "origin");
     var modules = selectedValues(state, "module");
+    var categories = selectedValues(state, "category");
     var statuses = selectedValues(state, "status");
     var networks = selectedValues(state, "network");
+    var coverage = selectedValues(state, "coverage");
     var flags = selectedValues(state, "flag");
     var renderers = selectedValues(state, "renderer");
     if (origins.length && origins.indexOf(entry.origin) === -1) return false;
     if (modules.length && !modules.some(function (moduleName) { return (entry.modules || [entry.module]).indexOf(moduleName) !== -1; })) return false;
+    if (categories.length && categories.indexOf(entry.category) === -1) return false;
     if (statuses.length && statuses.indexOf(entry.status) === -1) return false;
     if (networks.length && networks.indexOf(entry.network) === -1) return false;
+    if (coverage.length && !coverage.some(function (value) {
+      if (value === "xdocs") return Boolean(entry.xdocs);
+      if (value === "menu") return Boolean(entry.menu);
+      if (value === "no-xdocs") return !entry.xdocs;
+      if (value === "no-menu") return !entry.menu;
+      return false;
+    })) return false;
     if (flags.length && !flags.some(function (flag) { return (entry.flags || []).indexOf(flag) !== -1; })) return false;
     if (renderers.length && !renderers.some(function (renderer) {
       if (renderer === "renderer-specific") return Boolean((entry.renderer || []).length);
@@ -120,6 +135,7 @@
       if (state.sort === "relevance" && state.query) result = relevance(a, state.query) - relevance(b, state.query);
       if (!result && state.sort === "origin") result = ORIGIN_ORDER.indexOf(a.origin) - ORIGIN_ORDER.indexOf(b.origin);
       if (!result && state.sort === "module") result = a.module.localeCompare(b.module);
+      if (!result && state.sort === "category") result = a.category.localeCompare(b.category);
       if (!result) result = a._name.localeCompare(b._name);
       return result;
     });
@@ -172,6 +188,9 @@
     unique(entries, function (entry) { return entry.modules || [entry.module]; }).sort().forEach(function (value) {
       addFilterOption(root, "module", value, value);
     });
+    unique(entries, function (entry) { return entry.category; }).sort().forEach(function (value) {
+      addFilterOption(root, "category", value, value);
+    });
     unique(entries, function (entry) { return entry.renderer; }).sort().forEach(function (value) {
       addFilterOption(root, "renderer", value, value);
     });
@@ -212,8 +231,11 @@
     });
     if (entry.status !== "documented") scopes += '<span class="status-chip">Needs review</span>';
 
-    var meta = '<span class="meta-chip">' + escapeHtml(entry.module) + '</span>' +
+    var meta = '<span class="meta-chip">' + escapeHtml(entry.category) + '</span>' +
+      '<span class="meta-chip">' + escapeHtml(entry.module) + '</span>' +
       '<span class="meta-chip">' + escapeHtml(NETWORK_LABELS[entry.network] || entry.network) + '</span>';
+    if (entry.xdocs) meta += '<span class="coverage-chip">xdocs</span>';
+    if (entry.menu) meta += '<span class="coverage-chip">menu</span>';
     if (entry.cheat_protected) meta += '<span class="meta-chip">Cheat protected</span>';
     if (entry.requires_restart) meta += '<span class="meta-chip">Restart required</span>';
     (entry.flags || []).slice(0, 2).forEach(function (flag) { meta += '<span class="meta-chip">' + escapeHtml(flag) + '</span>'; });
@@ -241,6 +263,7 @@
     if (key === "origin") return ORIGIN_LABELS[value] || value;
     if (key === "network") return NETWORK_LABELS[value] || value;
     if (key === "status") return value === "documented" ? "Documented" : "Needs review";
+    if (key === "coverage") return { xdocs: "Has xdocs entry", menu: "Has menu entry", "no-xdocs": "Missing from xdocs", "no-menu": "Missing from menus" }[value] || value;
     if (key === "renderer" && value === "renderer-specific") return "Renderer-specific only";
     if (key === "renderer" && value === "none") return "Not renderer-specific";
     return value;
@@ -253,6 +276,7 @@
     var presets = {
       origin: root.dataset.presetOrigin || "",
       module: root.dataset.presetModule || "",
+      category: root.dataset.presetCategory || "",
       renderer: root.dataset.presetRenderer || ""
     };
     var state = {
@@ -262,11 +286,13 @@
       tokens: normalize(params.get("q")).split(" ").filter(Boolean),
       origin: presets.origin ? [presets.origin] : paramValues(params, "origin"),
       module: presets.module ? [presets.module] : paramValues(params, "module"),
+      category: presets.category ? [presets.category] : paramValues(params, "category"),
       renderer: presets.renderer ? [presets.renderer] : paramValues(params, "renderer"),
       status: paramValues(params, "status"),
       network: paramValues(params, "network"),
+      coverage: paramValues(params, "coverage"),
       flag: paramValues(params, "flag"),
-      sort: ["relevance", "name", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : "relevance",
+      sort: ["relevance", "name", "category", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : "relevance",
       limit: PAGE_SIZE,
       presets: presets
     };
@@ -337,7 +363,7 @@
 
   function syncUrl(state) {
     var params = new URLSearchParams(global.location.search);
-    ["q", "kind", "origin", "module", "renderer", "status", "network", "flag", "sort"].forEach(function (key) { params.delete(key); });
+    ["q", "kind", "origin", "module", "category", "renderer", "status", "network", "coverage", "flag", "sort"].forEach(function (key) { params.delete(key); });
     if (state.query) params.set("q", state.query);
     if (state.mode === "all" && state.kind !== "all") params.set("kind", state.kind);
     FILTER_KEYS.forEach(function (key) {
@@ -351,7 +377,7 @@
 
   function activeFilterText(state) {
     var values = [];
-    var groupLabels = { origin: "Origin", module: "Module", renderer: "Renderer", status: "Documentation", network: "Network", flag: "Flag" };
+    var groupLabels = { origin: "Origin", module: "Module", category: "Topic", renderer: "Renderer", status: "Documentation", network: "Network", coverage: "In game", flag: "Flag" };
     FILTER_KEYS.forEach(function (key) {
       var selected = selectedValues(state, key);
       if (selected.length) values.push(groupLabels[key] + ": " + selected.map(function (value) { return valueLabel(key, value); }).join(", "));
@@ -455,9 +481,11 @@
       state.tokens = [];
       state.origin = state.presets.origin ? [state.presets.origin] : [];
       state.module = state.presets.module ? [state.presets.module] : [];
+      state.category = state.presets.category ? [state.presets.category] : [];
       state.renderer = state.presets.renderer ? [state.presets.renderer] : [];
       state.status = [];
       state.network = [];
+      state.coverage = [];
       state.flag = [];
       state.sort = "relevance";
       state.limit = PAGE_SIZE;

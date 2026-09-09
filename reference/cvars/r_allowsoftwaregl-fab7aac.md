@@ -17,12 +17,15 @@ Controls `r_allowSoftwareGL` in the engine-shared module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Controls `r_allowSoftwareGL` in the engine-shared module. Consult the cited beha
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Controls `r_allowSoftwareGL` in the engine-shared module. Consult the cited beha
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/win32/win_glimp.cpp:1638](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/win32/win_glimp.cpp#L1638)
+- Upstream registration evidence: [code/win32/win_glimp.cpp:1638](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/win32/win_glimp.cpp#L1638)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -69,5 +72,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_window.cpp:795](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L795) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602)
+- registration: [shared/sdl/sdl_window.cpp:795](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L795) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602)

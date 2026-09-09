@@ -17,12 +17,15 @@ Controls `cg_saberStaffMultiColor` in the cgame module. Consult the cited behavi
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`31486bc3a398`](https://github.com/videoP/jaPRO/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-11-02`, integrated `2023-11-02`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:95](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L95)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:95](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L95)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -57,5 +60,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:98](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L98) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_players.c:7541](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7541)
+- registration: [codemp/cgame/cg_xcvar.h:98](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L98) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_players.c:7541](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7541)

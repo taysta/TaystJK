@@ -17,12 +17,15 @@ Controls `r_ext_supersample` in the renderer module. Consult the cited behavior 
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Controls `r_ext_supersample` in the renderer module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
-| `1` | Enabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
+| `0` | Disabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
+| `1` | Enabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Controls `r_ext_supersample` in the renderer module. Consult the cited behavior 
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`c4a9c87ef0e3`](https://github.com/JKSunny/EternalJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2021-05-25`, integrated `2021-05-25`)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L921)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L921)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits vulkan.
@@ -63,9 +66,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:922](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L922) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:70](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L70)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:349](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L349)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L518)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:923](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L923)
+- registration: [codemp/rd-vulkan/tr_init.cpp:922](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L922) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:70](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L70)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:349](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L349)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L518)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:923](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L923)

@@ -17,12 +17,15 @@ Private message from the server to a user
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `svtell <client number> <text>` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`03bba21225bb`](https://github.com/JACoders/OpenJK/commit/03bba21225bbdfe484236d00966b6783bd2077a7) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-08-19`, integrated `2014-08-19`)
-- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:1980](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_ccmds.cpp#L1980)
+- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:1980](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_ccmds.cpp#L1980)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -65,5 +68,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_ccmds.cpp:2339](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2339) (Cmd_AddCommand)
-- handler: [codemp/server/sv_ccmds.cpp:1259](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1259)
+- registration: [codemp/server/sv_ccmds.cpp:2339](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2339) (Cmd_AddCommand)
+- handler: [codemp/server/sv_ccmds.cpp:1259](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1259)

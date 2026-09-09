@@ -17,12 +17,15 @@ Runs `SV_MigrateCheckpoints_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Category | Movement & race |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `migrateCheckpoints` |
 | Cheat protected | No |
 
@@ -50,5 +53,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_svcmds.c:1683](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1683) (game-console command table)
-- handler: [codemp/game/g_account.c:1343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1343)
+- registration: [codemp/game/g_svcmds.c:1683](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1683) (game-console command table)
+- handler: [codemp/game/g_account.c:1343](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1343)

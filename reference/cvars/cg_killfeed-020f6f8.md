@@ -15,12 +15,15 @@ Draw a killfeed on the HUD
 
 | Field | Value |
 |:--|:--|
+| Category | Killfeed |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,9 +33,9 @@ Draw a killfeed on the HUD
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable the HUD killfeed | [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524) |
-| `1` | Draw killfeed HUD | [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524) |
-| `2` | Draw killfeed HUD + console death messages | [codemp/ui/ui_xdocs.h:525](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L525) |
+| `0` | Disable the HUD killfeed | [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524) |
+| `1` | Draw killfeed HUD | [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524) |
+| `2` | Draw killfeed HUD + console death messages | [codemp/ui/ui_xdocs.h:525](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L525) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2023-10-03`, PR opened `2023-10-03`, integrated `2023-10-05`)
 - Origin pull request: [#13](https://github.com/taysta/TaystJK/pull/13)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:427](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L427)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:427](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L427)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -69,10 +72,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:427](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L427) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:250](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L250)
-- behavior: [codemp/cgame/cg_event.c:343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L343)
-- behavior: [codemp/cgame/cg_draw.c:11554](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11554)
-- behavior: [codemp/cgame/cg_event.c:153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L153)
-- behavior: [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524)
-- documentation: [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524)
+- registration: [codemp/cgame/cg_xcvar.h:427](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L427) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:250](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L250)
+- behavior: [codemp/cgame/cg_event.c:343](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L343)
+- behavior: [codemp/cgame/cg_draw.c:11554](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11554)
+- behavior: [codemp/cgame/cg_event.c:153](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L153)
+- behavior: [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524)
+- documentation: [codemp/ui/ui_xdocs.h:524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L524)

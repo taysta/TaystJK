@@ -17,12 +17,15 @@ Registered by the current source, but no user-facing behavior description has be
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:1438](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1438), [setup.menu:2341](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L2341) |
 | Default | `glConfig.maxTextureFilterAnisotropy` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -50,16 +53,16 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/mac/mac_glimp.c:326](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/mac/mac_glimp.c#L326)
+- Upstream registration evidence: [code/mac/mac_glimp.c:326](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/mac/mac_glimp.c#L326)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
-- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)
+- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
+- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)

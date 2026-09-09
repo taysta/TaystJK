@@ -17,12 +17,15 @@ Runs `CG_InvUseAvailable` in the cgame module.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `invfree` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`baa02905f40f`](https://github.com/videoP/jaPRO/commit/baa02905f40f33652a2ae326fe55ece2642169c1) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-02-18`, integrated `2024-02-27`)
 - Origin pull request: [#130](https://github.com/taysta/TaystJK/pull/130)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2456)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2456)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -51,5 +54,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2456) (cgame command table)
-- handler: [codemp/cgame/cg_main.c:3490](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3490)
+- registration: [codemp/cgame/cg_consolecmds.c:2456](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2456) (cgame command table)
+- handler: [codemp/cgame/cg_main.c:3490](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3490)

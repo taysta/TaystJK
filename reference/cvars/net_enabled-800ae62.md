@@ -17,12 +17,15 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
@@ -32,7 +35,7 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0x01` | Enables the `NET_ENABLEV4` code path. | [codemp/qcommon/qcommon.h:116](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/qcommon.h#L116) |
+| `0x01` | Enables the `NET_ENABLEV4` code path. | [codemp/qcommon/qcommon.h:116](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/qcommon.h#L116) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `net_enabled` in the engine-shared module. Consult the cited behavior r
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`cd5d3753f0a7`](https://github.com/JACoders/OpenJK/commit/cd5d3753f0a75b3cde603080fb770a600540e13c) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-01-31`, integrated `2014-01-31`)
-- Upstream registration evidence: [codemp/qcommon/net_ip.cpp:858](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/net_ip.cpp#L858)
+- Upstream registration evidence: [codemp/qcommon/net_ip.cpp:858](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/net_ip.cpp#L858)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -74,9 +77,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/net_ip.cpp:874](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L874) (Cvar_Get)
-- behavior: [codemp/qcommon/net_ip.cpp:844](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L844)
-- behavior: [codemp/qcommon/net_ip.cpp:928](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L928)
-- behavior: [codemp/qcommon/net_ip.cpp:971](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L971)
-- behavior: [codemp/qcommon/net_ip.cpp:875](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L875)
-- behavior: [codemp/qcommon/net_ip.cpp:876](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L876)
+- registration: [codemp/qcommon/net_ip.cpp:874](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L874) (Cvar_Get)
+- behavior: [codemp/qcommon/net_ip.cpp:844](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L844)
+- behavior: [codemp/qcommon/net_ip.cpp:928](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L928)
+- behavior: [codemp/qcommon/net_ip.cpp:971](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L971)
+- behavior: [codemp/qcommon/net_ip.cpp:875](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L875)
+- behavior: [codemp/qcommon/net_ip.cpp:876](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L876)

@@ -15,12 +15,15 @@ Display human readable date/time in console
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Display human readable date/time in console
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090) |
-| `1` | Enabled. | [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090) |
+| `0` | Disabled. | [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090) |
+| `1` | Enabled. | [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090) |
 
 ## Flags
 
@@ -43,7 +46,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`837d02412668`](https://github.com/taysta/TaystJK/commit/837d024126688db090380ec8381db2e7b3fd2cb5) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-06-01`, PR opened `2026-06-01`, integrated `2026-06-01`)
 - Origin pull request: [#316](https://github.com/taysta/TaystJK/pull/316)
-- Upstream registration evidence: [codemp/client/cl_console.cpp:668](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L668)
+- Upstream registration evidence: [codemp/client/cl_console.cpp:668](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L668)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -58,5 +61,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:668](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L668) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090)
+- registration: [codemp/client/cl_console.cpp:668](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L668) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:1090](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1090)

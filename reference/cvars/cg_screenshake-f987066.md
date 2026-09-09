@@ -17,12 +17,15 @@ Shake screen when hit or while charging weapons
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `feature-flagged` — Client behavior is negotiated through a server feature flag. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
+| In-game menu | Yes — [ingame_setup.menu:3125](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3125) |
 | Default | `2` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Shake screen when hit or while charging weapons
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Screen doesn't shake | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
-| `1` | Screen shakes only when taking damage | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
-| `2` | Screen shakes when charging weaspons and taking damage | [codemp/ui/ui_xdocs.h:438](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L438) |
+| `0` | Screen doesn't shake | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
+| `1` | Screen shakes only when taking damage | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
+| `2` | Screen shakes when charging weaspons and taking damage | [codemp/ui/ui_xdocs.h:438](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L438) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Shake screen when hit or while charging weapons
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:128](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L128)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:128](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L128)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -74,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:131](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L131) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L676)
-- behavior: [codemp/cgame/cg_weapons.c:676](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L676)
-- behavior: [codemp/cgame/cg_weapons.c:684](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L684)
-- behavior: [codemp/cgame/cg_weapons.c:2537](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2537)
-- behavior: [codemp/cgame/cg_main.c:3625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3625)
-- documentation: [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437)
+- registration: [codemp/cgame/cg_xcvar.h:131](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L131) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L676)
+- behavior: [codemp/cgame/cg_weapons.c:676](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L676)
+- behavior: [codemp/cgame/cg_weapons.c:684](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L684)
+- behavior: [codemp/cgame/cg_weapons.c:2537](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2537)
+- behavior: [codemp/cgame/cg_main.c:3625](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3625)
+- documentation: [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437)

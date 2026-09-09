@@ -17,12 +17,15 @@ Registered by the current source, but no user-facing behavior description has be
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -48,7 +51,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`dbfd735d1da2`](https://github.com/eternalcodes/EternalJK/commit/dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-09-10`, integrated `2018-09-10`)
-- Upstream registration evidence: [codemp/ui/ui_main.c:627](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L627)
+- Upstream registration evidence: [codemp/ui/ui_main.c:627](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_main.c#L627)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -66,5 +69,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L631) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L662) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:631](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L631) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:662](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L662) (implicit Cvar_Set)

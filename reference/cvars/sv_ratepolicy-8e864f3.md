@@ -17,12 +17,15 @@ Determines which policy of enforcement is used for client's \"rate\" cvar
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,12 +35,12 @@ Determines which policy of enforcement is used for client's \"rate\" cvar
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1206](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1206) |
-| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1211](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1211) |
+| `1` | Selects the code path tested for value 1. | [codemp/server/sv_client.cpp:1206](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1206) |
+| `2` | Selects the code path tested for value 2. | [codemp/server/sv_client.cpp:1211](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1211) |
 
 ## Enforced ranges
 
-- `1` through `2` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:990](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L990)
+- `1` through `2` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:990](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L990)
 
 ## Flags
 
@@ -49,7 +52,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`6aba69055e45`](https://github.com/JACoders/OpenJK/commit/6aba69055e4591b7ac96eee8b40322cbf4a681b4) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2017-05-16`, integrated `2017-05-16`)
 - TaystJK integration evidence: [`913e3cc57ec7`](https://github.com/taysta/TaystJK/commit/913e3cc57ec761400db576456e91d71e70a2485f)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:958](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L958)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:958](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_init.cpp#L958)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -69,9 +72,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:989](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L989) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:1206](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1206)
-- behavior: [codemp/server/sv_client.cpp:1211](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1211)
-- behavior: [codemp/server/sv_main.cpp:1061](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1061)
-- behavior: [codemp/server/sv_main.cpp:1081](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1081)
-- behavior: [codemp/server/sv_main.cpp:1054](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1054)
+- registration: [codemp/server/sv_init.cpp:989](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L989) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:1206](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1206)
+- behavior: [codemp/server/sv_client.cpp:1211](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1211)
+- behavior: [codemp/server/sv_main.cpp:1061](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1061)
+- behavior: [codemp/server/sv_main.cpp:1081](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1081)
+- behavior: [codemp/server/sv_main.cpp:1054](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1054)

@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Iterable
 
-from extract import source_files, split_fields, string_literal
+from extract import mask_comments, source_files, split_fields, string_literal
 from provenance import BASEJKA_REF, CURRENT_REF, EXTRACTOR_VERSION, UPSTREAM_REFS
 
 
@@ -68,8 +68,45 @@ def choose_module(name: str, modules: list[str]) -> str:
     return next((module for module in MODULE_ORDER if module in modules), modules[0] if modules else "other")
 
 
+def category_for(name: str, kind: str, module: str, summary: str) -> str:
+    """Assign one stable, user-facing topic to each console entry."""
+    value = name.casefold().lstrip("+-")
+    rules = (
+        ("Killfeed", ("killfeed", "killmessage", "obituary")),
+        ("Movement & race", ("strafe", "snaphud", "pitchhud", "pitchhelper", "speedometer", "racetimer", "racestart", "checkpoint", "jumpgoal", "startgoal", "movementkeys")),
+        ("Crosshair & aiming", ("crosshair", "crosshairnames", "zoomfov", "weaponfov", "fovviewmodel")),
+        ("Audio & music", ("sound", "music", "openal", "volume", "s_mixahead", "s_doppler", "s_khz")),
+        ("Demos & media", ("demo", "screenshot", "avi", "video", "record", "levelshot")),
+        ("Files & downloads", ("download", "referencedpak", "fs_", "pak", "path", "fdir", "dir")),
+        ("Server & networking", ("server", "connect", "disconnect", "net_", "sv_", "ping", "packet", "master", "heartbeat", "rcon")),
+        ("Administration", ("admin", "ban", "kick", "silence", "freeze", "protect", "empower", "grant", "whois", "amlogin", "amlogout", "ammap", "amtele", "amrename", "amslap", "amsleep", "amwake")),
+        ("Bots & AI", ("bot", "npc", "nav", "waypoint")),
+        ("Input & controls", ("bind", "unbind", "key", "mouse", "joystick", "in_", "sensitivity", "m_pitch", "m_yaw", "button")),
+        ("Chat & social", ("chat", "message", "tell", "say", "ignore", "clan", "vgs", "motd")),
+        ("Gameplay & combat", ("saber", "weapon", "force", "duel", "attack", "damage", "health", "team", "gametype", "fraglimit", "timelimit", "kill", "score")),
+        ("Graphics & rendering", ("renderer", "render", "r_", "gl_", "vulkan", "rend2", "bloom", "shadow", "texture", "light", "gamma", "fullscreen", "resolution", "vid_", "gfx")),
+        ("HUD & interface", ("hud", "draw", "ui_", "menu", "scoreboard", "camera", "thirdperson")),
+        ("Engine & diagnostics", ("com_", "sys_", "developer", "debug", "error", "crash", "memory", "mem", "cvar", "cmdlist", "version")),
+    )
+    for category, needles in rules:
+        if any(needle in value for needle in needles):
+            return category
+    fallbacks = {
+        "renderer": "Graphics & rendering",
+        "ui": "HUD & interface",
+        "engine-server": "Server & networking",
+        "game-console": "Server & networking",
+        "botlib": "Bots & AI",
+        "cgame": "Gameplay & combat",
+        "game": "Gameplay & combat",
+        "engine-client": "Engine & diagnostics",
+        "engine-shared": "Engine & diagnostics",
+    }
+    return fallbacks.get(module, "Other")
+
+
 def source_url(path: str, line: int, sha: str) -> str:
-    return f"https://github.com/taysta/TaystJK/blob/{sha}/{path}#L{line}"
+    return f"https://github.com/taysta/TaystJK/blame/{sha}/{path}#L{line}"
 
 
 def clean_description(value: str | None) -> str | None:
@@ -143,7 +180,7 @@ def parse_jk2mv_docs() -> dict[str, dict[str, Any]]:
                     "meaning": option.group(2).strip().rstrip(".") + ".",
                     "evidence": {
                         "path": "CVARS.rst", "line": description_line + offset,
-                        "url": f"https://github.com/mvdevs/jk2mv/blob/{sha}/CVARS.rst#L{description_line + offset}",
+                        "url": f"https://github.com/mvdevs/jk2mv/blame/{sha}/CVARS.rst#L{description_line + offset}",
                     },
                 })
             else:
@@ -157,7 +194,7 @@ def parse_jk2mv_docs() -> dict[str, dict[str, Any]]:
                 "values": values,
                 "evidence": {
                     "path": "CVARS.rst", "line": description_line,
-                    "url": f"https://github.com/mvdevs/jk2mv/blob/{sha}/CVARS.rst#L{description_line}",
+                    "url": f"https://github.com/mvdevs/jk2mv/blame/{sha}/CVARS.rst#L{description_line}",
                 },
             }
     return result
@@ -190,44 +227,66 @@ def macro_calls(text: str, prefix: str) -> Iterable[tuple[str, int, str]]:
 
 
 def parse_xdocs() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
-    try:
-        text = git("show", f"{CURRENT_REF}:codemp/ui/ui_xdocs.h")
-    except RuntimeError:
-        return {}, {}
     cvars: dict[str, dict[str, Any]] = {}
     commands: dict[str, dict[str, Any]] = {}
-    for macro, line, body in macro_calls(text, "XDOCS_"):
-        if macro not in {
-            "XDOCS_CVAR_DEF", "XDOCS_CVAR_BITVALUE_DEF", "XDOCS_CVAR_BITFLAG_DEF",
-            "XDOCS_CVAR_KEYVALUE_DEF", "XDOCS_CMD_DEF",
-        }:
+    for path in ("codemp/ui/ui_xdocs.h", "codemp/ui/nm_xdocumentation.h"):
+        try:
+            text = git("show", f"{CURRENT_REF}:{path}")
+        except RuntimeError:
             continue
-        fields = split_fields(body)
-        if len(fields) < 2:
-            continue
-        name = string_literal(fields[0])
-        summary = clean_description(string_literal(fields[1]))
-        if not name or not summary:
-            continue
-        item: dict[str, Any] = {
-            "summary": summary,
-            "evidence": {"path": "codemp/ui/ui_xdocs.h", "line": line},
-            "values": [],
-        }
-        if len(fields) > 2:
-            long_text = fields[2]
-            for setting in re.finditer(
-                r"SETTING\s*\(\s*\"((?:\\.|[^\"\\])*)\"\s*,\s*\"((?:\\.|[^\"\\])*)\"\s*\)",
-                long_text,
-            ):
-                setting_line = line + body.count("\n", 0, setting.start())
-                item["values"].append({
-                    "value": setting.group(1), "meaning": setting.group(2),
-                    "evidence": {"path": "codemp/ui/ui_xdocs.h", "line": setting_line},
-                })
-        destination = commands if macro == "XDOCS_CMD_DEF" else cvars
-        destination.setdefault(name.casefold(), item)
+        for macro, line, body in macro_calls(mask_comments(text), "XDOCS_"):
+            if macro not in {
+                "XDOCS_CVAR_DEF", "XDOCS_CVAR_BITVALUE_DEF", "XDOCS_CVAR_BITFLAG_DEF",
+                "XDOCS_CVAR_KEYVALUE_DEF", "XDOCS_CMD_DEF",
+            }:
+                continue
+            fields = split_fields(body)
+            if len(fields) < 2:
+                continue
+            name = string_literal(fields[0])
+            summary = clean_description(string_literal(fields[1]))
+            if not name:
+                continue
+            item: dict[str, Any] = {
+                "summary": summary,
+                "evidence": {"path": path, "line": line},
+                "values": [],
+            }
+            if len(fields) > 2:
+                long_text = fields[2]
+                for setting in re.finditer(
+                    r"SETTING\s*\(\s*\"((?:\\.|[^\"\\])*)\"\s*,\s*\"((?:\\.|[^\"\\])*)\"\s*\)",
+                    long_text,
+                ):
+                    setting_line = line + body.count("\n", 0, setting.start())
+                    item["values"].append({
+                        "value": setting.group(1), "meaning": setting.group(2),
+                        "evidence": {"path": path, "line": setting_line},
+                    })
+            destination = commands if macro == "XDOCS_CMD_DEF" else cvars
+            destination.setdefault(name.casefold(), item)
     return cvars, commands
+
+
+def parse_menu_entries(wanted: set[str]) -> dict[str, list[dict[str, Any]]]:
+    """Find console names used by shipped in-game .menu definitions."""
+    result: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    paths = [
+        path for path in git("ls-tree", "-r", "--name-only", CURRENT_REF, "--", "assets").splitlines()
+        if path.endswith(".menu")
+    ]
+    token_re = re.compile(r"(?<![A-Za-z0-9_])[+-]?[A-Za-z_][A-Za-z0-9_.+-]*(?![A-Za-z0-9_])")
+    for path in paths:
+        try:
+            text = mask_comments(git("show", f"{CURRENT_REF}:{path}"))
+        except RuntimeError:
+            continue
+        for line_number, line in enumerate(text.splitlines(), 1):
+            keys = {token.casefold() for token in token_re.findall(line)} & wanted
+            for key in keys:
+                if len(result[key]) < 6:
+                    result[key].append({"path": path, "line": line_number})
+    return dict(result)
 
 
 def build_occurrence_index(
@@ -504,6 +563,7 @@ def main() -> None:
 
     cvar_groups = group(current_cvars)
     command_groups = group(current_commands)
+    menu_entries = parse_menu_entries(set(cvar_groups) | set(command_groups))
     wanted: set[str] = set(cvar_groups) | set(command_groups)
     all_variables: set[str] = set()
     for records in cvar_groups.values():
@@ -634,8 +694,9 @@ def main() -> None:
         status = origin.get("status", "needs-review")
         if (not documented and not override.get("summary")) or value_type == "unknown":
             status = "needs-review"
+        primary = choose_module(name, modules)
         cvars.append({
-            "name": name, "kind": "cvar", "module": choose_module(name, modules),
+            "name": name, "kind": "cvar", "module": primary,
             "modules": modules, "renderer": renderers, "default": default,
             "defaults": [
                 {"value": record.get("default"), "module": record["module"],
@@ -649,6 +710,8 @@ def main() -> None:
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
             "modified_by": origin.get("modified_by", []), "evidence": evidence + behavior_evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
+            "category": category_for(name, "cvar", primary, summary),
+            "xdocs": xdoc.get("evidence"), "menu_entries": menu_entries.get(key, []),
             "variables": variables, "source_commit": current_sha,
         })
 
@@ -720,6 +783,8 @@ def main() -> None:
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
             "modified_by": origin.get("modified_by", []), "evidence": evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
+            "category": category_for(name, "command", primary, summary),
+            "xdocs": xdoc.get("evidence"), "menu_entries": menu_entries.get(key, []),
             "source_commit": current_sha,
         })
 

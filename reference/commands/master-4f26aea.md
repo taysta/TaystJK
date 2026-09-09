@@ -17,12 +17,15 @@ Forwards this command to the connected game server.
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `cgame` |
 | Also registered in | `cgame`, `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `master <name (or none)>` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Gating: `CMD_NOINTERMISSION`, `sent-to-server`.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`50d84d540837`](https://github.com/videoP/jaPRO/commit/50d84d54083775a21c419d4f1d511e755eb63e65) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-25`, integrated `2018-09-26`)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2615](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2615)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2615](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2615)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -65,6 +68,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_consolecmds.c:2615](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2615) (forwarded client command table)
-- registration: [codemp/game/g_cmds.c:9000](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9000) (game command table)
-- handler: [codemp/game/g_account.c:3954](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3954)
+- registration: [codemp/cgame/cg_consolecmds.c:2615](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2615) (forwarded client command table)
+- registration: [codemp/game/g_cmds.c:9000](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9000) (game command table)
+- handler: [codemp/game/g_account.c:3954](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3954)

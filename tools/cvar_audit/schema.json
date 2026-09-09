@@ -6,7 +6,7 @@
   "required": [
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
-    "status", "source_commit"
+    "status", "source_commit", "category", "xdocs", "menu_entries"
   ],
   "properties": {
     "name": {"type": "string", "minLength": 1},
@@ -69,6 +69,25 @@
     "confidence": {"enum": ["high", "medium", "low"]},
     "status": {"enum": ["documented", "needs-review", "unknown", "removed"]},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "category": {"type": "string", "minLength": 1},
+    "xdocs": {
+      "type": ["object", "null"],
+      "properties": {
+        "path": {"type": "string"},
+        "line": {"type": "integer", "minimum": 1}
+      }
+    },
+    "menu_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "line"],
+        "properties": {
+          "path": {"type": "string"},
+          "line": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
     "default": {"type": ["string", "null"]},
     "flags": {"type": "array", "items": {"type": "string"}},
     "value_type": {"enum": ["bool", "int", "float", "string", "enum", "bitmask", "color", "filepath", "unknown"]},

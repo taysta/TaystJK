@@ -15,12 +15,15 @@ Automatically add IPs of players to a whitelist. Whitelisted IPs are can still a
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Automatically add IPs of players to a whitelist. Whitelisted IPs are can still a
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586) |
-| `1` | Enabled. | [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586) |
+| `0` | Disabled. | [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586) |
+| `1` | Enabled. | [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586) |
 
 ## Flags
 
@@ -43,7 +46,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
 - Ultimate-origin introduction: [`8045afb65e1e`](https://github.com/mvdevs/jk2mv/commit/8045afb65e1e231f42e28c786f86476fadfe127b) in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> (content authored `2018-06-10`, integrated `2018-06-10`)
 - TaystJK integration evidence: [`fffc00dab968`](https://github.com/taysta/TaystJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a)
-- Upstream registration evidence: [src/server/sv_init.cpp:888](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_init.cpp#L888)
+- Upstream registration evidence: [src/server/sv_init.cpp:888](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_init.cpp#L888)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -72,6 +75,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1053](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1053) (Cvar_Get)
-- behavior: [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586)
-- upstream-documentation: [CVARS.rst:537](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L537)
+- registration: [codemp/server/sv_init.cpp:1053](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1053) (Cvar_Get)
+- behavior: [codemp/server/sv_client.cpp:586](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L586)
+- upstream-documentation: [CVARS.rst:537](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L537)

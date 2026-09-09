@@ -17,12 +17,15 @@ Controls `s_doppler` in the engine-client module. Consult the cited behavior rea
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`69800e894dff`](https://github.com/JACoders/OpenJK/commit/69800e894dff5ea9fcad22c26cc41c9bbf250216) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-10-22`, integrated `2013-10-22`)
-- Upstream registration evidence: [codemp/client/snd_dma.cpp:452](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/snd_dma.cpp#L452)
+- Upstream registration evidence: [codemp/client/snd_dma.cpp:452](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/snd_dma.cpp#L452)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -71,5 +74,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:478](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L478) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:2012](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2012)
+- registration: [codemp/client/snd_dma.cpp:478](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L478) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:2012](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2012)

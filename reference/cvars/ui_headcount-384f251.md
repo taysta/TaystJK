@@ -17,12 +17,15 @@ Controls `ui_headCount` in the ui module. Consult the cited behavior reads befor
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `-1` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -43,7 +46,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`0b9f190a7a4b`](https://github.com/eternalcodes/EternalJK/commit/0b9f190a7a4b85682fcc0f1ff0d15e5a153e1180) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-03-19`, integrated `2019-03-19`)
-- Upstream registration evidence: [codemp/ui/ui_xcvar.h:163](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L163)
+- Upstream registration evidence: [codemp/ui/ui_xcvar.h:163](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_xcvar.h#L163)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -70,8 +73,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:165](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L165) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:8955](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8955)
-- behavior: [codemp/ui/ui_main.c:8959](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8959)
-- behavior: [codemp/ui/ui_main.c:8956](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8956)
-- behavior: [codemp/ui/ui_main.c:8962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8962)
+- registration: [codemp/ui/ui_xcvar.h:165](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L165) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:8955](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8955)
+- behavior: [codemp/ui/ui_main.c:8959](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8959)
+- behavior: [codemp/ui/ui_main.c:8956](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8956)
+- behavior: [codemp/ui/ui_main.c:8962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8962)

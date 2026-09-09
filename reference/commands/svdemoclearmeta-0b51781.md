@@ -15,12 +15,15 @@ Clears metadata for server-side demos for one player. Call with clientnum.
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `svdemoclearmeta [arguments]` |
 | Cheat protected | No |
 
@@ -57,6 +60,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_ccmds.cpp:2346](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2346) (Cmd_AddCommand); condition `defined(DEDICATED)`
-- handler: [codemp/server/sv_ccmds.cpp:2218](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2218)
-- documentation: [docs/japro_docs.md:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L397)
+- registration: [codemp/server/sv_ccmds.cpp:2346](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2346) (Cmd_AddCommand); condition `defined(DEDICATED)`
+- handler: [codemp/server/sv_ccmds.cpp:2218](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2218)
+- documentation: [docs/japro_docs.md:397](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L397)

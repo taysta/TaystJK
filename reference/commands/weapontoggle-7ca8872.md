@@ -17,12 +17,15 @@ Toggle g_weaponDisable bits
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `weapontoggle 3(toggles SABER)` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`cdce4e6119ec`](https://github.com/JACoders/OpenJK/commit/cdce4e6119ecdf99727da7da5969253705fe53cc) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-06-30`, integrated `2015-07-05`)
 - TaystJK integration evidence: [`5ef5d7214371`](https://github.com/taysta/TaystJK/commit/5ef5d7214371ff3d3d0d84544ad8bbbd975e6593)
-- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:1982](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_ccmds.cpp#L1982)
+- Upstream registration evidence: [codemp/server/sv_ccmds.cpp:1982](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/server/sv_ccmds.cpp#L1982)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -65,5 +68,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_ccmds.cpp:2341](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2341) (Cmd_AddCommand)
-- handler: [codemp/server/sv_ccmds.cpp:1382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1382)
+- registration: [codemp/server/sv_ccmds.cpp:2341](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2341) (Cmd_AddCommand)
+- handler: [codemp/server/sv_ccmds.cpp:1382](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1382)

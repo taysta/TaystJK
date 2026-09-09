@@ -17,12 +17,15 @@ Controls `se_language` in the engine-shared module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared`, `renderer`, `ui` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:4690](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4690), [setup.menu:2994](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L2994) |
 | Default | `english` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -52,7 +55,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/qcommon/stringed_ingame.cpp:1169](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/stringed_ingame.cpp#L1169)
+- Upstream registration evidence: [code/qcommon/stringed_ingame.cpp:1169](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/stringed_ingame.cpp#L1169)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -86,13 +89,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/stringed_ingame.cpp:1178](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1178) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1727](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1727) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1626) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:779](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L779) (Cvar_Get)
-- registration: [codemp/ui/ui_xcvar.h:50](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L50) (XCVAR_DEF)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:937](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L937)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1196](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1196)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1199](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1199)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1260](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1260)
-- behavior: [codemp/qcommon/stringed_ingame.h:93](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.h#L93)
+- registration: [codemp/qcommon/stringed_ingame.cpp:1178](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1178) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1727](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1727) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1626) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:779](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L779) (Cvar_Get)
+- registration: [codemp/ui/ui_xcvar.h:50](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L50) (XCVAR_DEF)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:937](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L937)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1196](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1196)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1199](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1199)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1260](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1260)
+- behavior: [codemp/qcommon/stringed_ingame.h:93](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.h#L93)

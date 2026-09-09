@@ -17,12 +17,15 @@ Controls `cg_spotIconPlums` in the cgame module. Consult the cited behavior read
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_spotIconPlums` in the cgame module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054) |
-| `1` | Enabled. | [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054) |
+| `0` | Disabled. | [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054) |
+| `1` | Enabled. | [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`258031c97e93`](https://github.com/videoP/jaPRO/commit/258031c97e933f2293dc35c18af5ea16847f0241) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-04-15`, integrated `2024-04-15`)
 - Origin pull request: [#188](https://github.com/taysta/TaystJK/pull/188)
 - Matching squash bullet: `[jaPRO/cgame] Restore cg_scorePlums default value and introduce cg_strafeTrailPlums and cg_spotIconPlums where new cg_scorePlums usages had occurred in jaPRO`
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:225](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L225)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:225](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L225)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
@@ -62,5 +65,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:228](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L228) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054)
+- registration: [codemp/cgame/cg_xcvar.h:228](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L228) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_effects.c:1054](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L1054)

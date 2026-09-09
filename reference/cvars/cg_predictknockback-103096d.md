@@ -17,12 +17,15 @@ Predict self-inflicted rocket-jump knockback clientside (racemode only). Use wit
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L600) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,12 +35,12 @@ Predict self-inflicted rocket-jump knockback clientside (racemode only). Use wit
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Knockback is not predicted (default) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
-| `1` | Predict and apply rocket-jump knockback | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
-| `2` | Verbose trajectory/timing logging (fire, detect, render, clear, actual) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
-| `3` | Maximum logging; adds forward-trace detection and per-command injection | [codemp/ui/ui_xdocs.h:603](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L603) |
-| `4` | Damage/distance logging only (trajectory spam suppressed) | [codemp/ui/ui_xdocs.h:604](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L604) |
-| `5` | Impulse/injection logging; adds per-command injection trace | [codemp/ui/ui_xdocs.h:605](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L605) |
+| `0` | Knockback is not predicted (default) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
+| `1` | Predict and apply rocket-jump knockback | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
+| `2` | Verbose trajectory/timing logging (fire, detect, render, clear, actual) | [codemp/ui/ui_xdocs.h:601](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L601) |
+| `3` | Maximum logging; adds forward-trace detection and per-command injection | [codemp/ui/ui_xdocs.h:603](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L603) |
+| `4` | Damage/distance logging only (trajectory spam suppressed) | [codemp/ui/ui_xdocs.h:604](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L604) |
+| `5` | Impulse/injection logging; adds per-command injection trace | [codemp/ui/ui_xdocs.h:605](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L605) |
 
 ## Flags
 
@@ -48,7 +51,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:190](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L190)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:190](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L190)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -75,10 +78,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:193](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L193) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:3415](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3415)
-- behavior: [codemp/cgame/cg_event.c:3422](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3422)
-- behavior: [codemp/cgame/cg_event.c:3442](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3442)
-- behavior: [codemp/cgame/cg_event.c:3493](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3493)
-- behavior: [codemp/cgame/cg_event.c:3500](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3500)
-- documentation: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L600)
+- registration: [codemp/cgame/cg_xcvar.h:193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L193) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:3415](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3415)
+- behavior: [codemp/cgame/cg_event.c:3422](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3422)
+- behavior: [codemp/cgame/cg_event.c:3442](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3442)
+- behavior: [codemp/cgame/cg_event.c:3493](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3493)
+- behavior: [codemp/cgame/cg_event.c:3500](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3500)
+- documentation: [codemp/ui/ui_xdocs.h:600](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L600)

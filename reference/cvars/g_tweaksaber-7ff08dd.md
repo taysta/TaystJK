@@ -17,12 +17,15 @@ Configured with /tweakSaber command.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,12 +35,12 @@ Configured with /tweakSaber command.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `16` | CLIENT - also remove backwards run slowdown like jk2 | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L277) |
-| `128` | Enables the `ST_EASYBACKSLASH` code path. | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L280) |
-| `64` | Enables the `ST_FIXED_SABERSWITCH` code path. | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L279) |
-| `256` | Enables the `ST_JK2RDFA` code path. | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L281) |
-| `32` | Enables the `ST_NO_REDCHAIN` code path. | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L278) |
-| `2048` | Enables the `ST_SPINBACKSLASH` code path. | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L284) |
+| `16` | CLIENT - also remove backwards run slowdown like jk2 | [codemp/game/g_local.h:277](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L277) |
+| `128` | Enables the `ST_EASYBACKSLASH` code path. | [codemp/game/g_local.h:280](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L280) |
+| `64` | Enables the `ST_FIXED_SABERSWITCH` code path. | [codemp/game/g_local.h:279](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L279) |
+| `256` | Enables the `ST_JK2RDFA` code path. | [codemp/game/g_local.h:281](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L281) |
+| `32` | Enables the `ST_NO_REDCHAIN` code path. | [codemp/game/g_local.h:278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L278) |
+| `2048` | Enables the `ST_SPINBACKSLASH` code path. | [codemp/game/g_local.h:284](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L284) |
 
 ## Flags
 
@@ -48,7 +51,7 @@ Configured with /tweakSaber command.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-17`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:194](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L194)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:194](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L194)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -87,10 +90,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:193](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L193) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:8387](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L8387)
-- behavior: [codemp/game/bg_panimate.c:2701](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_panimate.c#L2701)
-- behavior: [codemp/game/bg_pmove.c:4465](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L4465)
-- behavior: [codemp/game/bg_pmove.c:6227](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L6227)
-- behavior: [codemp/game/bg_pmove.c:9055](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L9055)
-- documentation: [docs/japro_docs.md:13](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L13)
+- registration: [codemp/game/g_xcvar.h:193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L193) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:8387](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L8387)
+- behavior: [codemp/game/bg_panimate.c:2701](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_panimate.c#L2701)
+- behavior: [codemp/game/bg_pmove.c:4465](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L4465)
+- behavior: [codemp/game/bg_pmove.c:6227](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L6227)
+- behavior: [codemp/game/bg_pmove.c:9055](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L9055)
+- documentation: [docs/japro_docs.md:13](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L13)

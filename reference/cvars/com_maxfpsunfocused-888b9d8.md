@@ -17,12 +17,15 @@ Controls `com_maxfpsUnfocused` in the engine-shared module. Consult the cited be
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `com_maxfpsUnfocused` in the engine-shared module. Consult the cited be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`e8453d791c74`](https://github.com/JACoders/OpenJK/commit/e8453d791c746cf10be9312cf52dd82421d74aa0) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-03-12`, integrated `2016-03-20`)
 - TaystJK integration evidence: [`f5defc782a90`](https://github.com/taysta/TaystJK/commit/f5defc782a901c885afbd5d8f1c3cb23072583dc)
-- Upstream registration evidence: [shared/sys/sys_main.cpp:166](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sys/sys_main.cpp#L166)
+- Upstream registration evidence: [shared/sys/sys_main.cpp:166](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sys/sys_main.cpp#L166)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 
@@ -74,6 +77,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:176](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_main.cpp#L176) (Cvar_Get)
-- behavior: [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757)
-- behavior: [codemp/qcommon/common.cpp:1758](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1758)
+- registration: [shared/sys/sys_main.cpp:176](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_main.cpp#L176) (Cvar_Get)
+- behavior: [codemp/qcommon/common.cpp:1757](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1757)
+- behavior: [codemp/qcommon/common.cpp:1758](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1758)

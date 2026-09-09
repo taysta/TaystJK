@@ -17,12 +17,15 @@ Applies r_picmip setting to map textures only.
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Applies r_picmip setting to map textures only.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Applies r_picmip setting to map textures only.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`668821b03696`](https://github.com/eternalcodes/EternalJK/commit/668821b03696231dfcf06b1805102a776c1d7efe) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2017-12-20`, integrated `2017-12-28`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1625](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1625)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1625](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1625)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -85,9 +88,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1522](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1522) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1653](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1653) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:805](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L805) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047)
-- behavior: [codemp/rd-vulkan/vk_image.cpp:1425](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1425)
-- behavior: [shared/rd-rend2/tr_image.cpp:2455](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_image.cpp#L2455)
+- registration: [codemp/rd-rend2/tr_init.cpp:1522](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1522) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1653](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1653) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:805](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L805) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1047](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1047)
+- behavior: [codemp/rd-vulkan/vk_image.cpp:1425](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L1425)
+- behavior: [shared/rd-rend2/tr_image.cpp:2455](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_image.cpp#L2455)

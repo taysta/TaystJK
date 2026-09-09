@@ -17,12 +17,15 @@ Controls `r_DynamicGlowIntensity` in the renderer module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1.13f` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -51,7 +54,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/renderer/tr_init.cpp:1105](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1105)
+- Upstream registration evidence: [code/renderer/tr_init.cpp:1105](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1105)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -78,12 +81,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:329](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L329) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1510](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1510) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1646](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1646) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:798](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L798) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:2101](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2101)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1525](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1525)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3330](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3330)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3335](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3335)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1524](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1524)
+- registration: [codemp/rd-dedicated/tr_init.cpp:329](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L329) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1510](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1510) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1646](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1646) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:798](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L798) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:2101](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2101)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1525](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1525)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3330](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3330)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3335](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3335)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1524](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1524)

@@ -15,12 +15,15 @@ How many seconds of past packets should be stored for server demo pre-recording?
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `15` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -63,8 +66,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1058](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1058) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_snapshot.cpp:898](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L898)
-- behavior: [codemp/server/sv_snapshot.cpp:893](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L893)
-- behavior: [codemp/server/sv_snapshot.cpp:894](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L894)
-- documentation: [docs/japro_docs.md:134](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L134)
+- registration: [codemp/server/sv_init.cpp:1058](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1058) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_snapshot.cpp:898](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L898)
+- behavior: [codemp/server/sv_snapshot.cpp:893](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L893)
+- behavior: [codemp/server/sv_snapshot.cpp:894](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L894)
+- documentation: [docs/japro_docs.md:134](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L134)

@@ -17,12 +17,15 @@ Controls `cl_chatBubbleUnfocused` in the engine-client module. Consult the cited
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cl_chatBubbleUnfocused` in the engine-client module. Consult the cited
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`86f04849f381`](https://github.com/videoP/jaPRO/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2026-04-19`, integrated `2026-04-19`)
 - Origin pull request: [#302](https://github.com/taysta/TaystJK/pull/302)
-- Upstream registration evidence: [codemp/client/cl_input.cpp:1834](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1834)
+- Upstream registration evidence: [codemp/client/cl_input.cpp:1834](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1834)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -61,5 +64,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_input.cpp:1834](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1834) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264)
+- registration: [codemp/client/cl_input.cpp:1834](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1834) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1264](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1264)

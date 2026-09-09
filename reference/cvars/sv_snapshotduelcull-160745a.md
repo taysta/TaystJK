@@ -17,12 +17,15 @@ Snapshot-based duel isolation
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Snapshot-based duel isolation
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102) |
-| `1` | Enabled. | [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102) |
+| `0` | Disabled. | [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102) |
+| `1` | Enabled. | [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Snapshot-based duel isolation
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`7504815f10f9`](https://github.com/eternalcodes/EternalJK/commit/7504815f10f917215457c6a228aa7b7c8e117192) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-09-11`, integrated `2018-09-11`)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:1024](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_init.cpp#L1024)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:1024](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_init.cpp#L1024)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -62,5 +65,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1063](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1063) (Cvar_Get)
-- behavior: [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102)
+- registration: [codemp/server/sv_init.cpp:1063](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1063) (Cvar_Get)
+- behavior: [codemp/server/duel_cull.cpp:102](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/duel_cull.cpp#L102)

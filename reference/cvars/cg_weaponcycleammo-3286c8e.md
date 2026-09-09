@@ -17,12 +17,15 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353) |
-| `1` | Enabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353) |
+| `0` | Disabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353) |
+| `1` | Enabled. | [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cg_weaponCycleAmmo` in the cgame module. Consult the cited behavior re
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`3692583bb66a`](https://github.com/taysta/TaystJK/commit/3692583bb66afbb96b1fc36bafc1e0f57ba002a3) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-04-20`, integrated `2022-04-20`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L60)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L60)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
@@ -68,8 +71,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L60) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353)
-- behavior: [codemp/cgame/cg_weapons.c:1394](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1394)
-- behavior: [codemp/cgame/cg_weapons.c:1478](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1478)
-- behavior: [codemp/cgame/hud_tribes.c:262](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L262)
+- registration: [codemp/cgame/cg_xcvar.h:60](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L60) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_weapons.c:1353](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1353)
+- behavior: [codemp/cgame/cg_weapons.c:1394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1394)
+- behavior: [codemp/cgame/cg_weapons.c:1478](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1478)
+- behavior: [codemp/cgame/hud_tribes.c:262](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_tribes.c#L262)

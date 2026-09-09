@@ -17,12 +17,15 @@ Configure with the /strafehelper command
 
 | Field | Value |
 |:--|:--|
+| Category | Movement & race |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L323) |
+| In-game menu | No |
 | Default | `3008` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Configure with the /strafehelper command
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `16384` | Enables the `SHELPER_CROSSHAIR` code path. | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L76) |
-| `2` | Enables the `SHELPER_UPDATED` code path. | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L63) |
+| `16384` | Enables the `SHELPER_CROSSHAIR` code path. | [codemp/cgame/hud_strafehelper.h:76](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L76) |
+| `2` | Enables the `SHELPER_UPDATED` code path. | [codemp/cgame/hud_strafehelper.h:63](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L63) |
 
 ## Flags
 
@@ -52,7 +55,7 @@ Configure with the /strafehelper command
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`1d5acfc05276`](https://github.com/eternalcodes/EternalJK/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-04-19`, integrated `2018-04-19`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:83](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L83)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:83](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L83)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -99,11 +102,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:109](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L109) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:162](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L162) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/cg_draw.c:7872](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7872)
-- behavior: [codemp/cgame/cg_draw.c:9197](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9197)
-- behavior: [codemp/cgame/cg_view.c:567](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L567)
-- behavior: [codemp/cgame/cg_view.c:621](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L621)
-- documentation: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L323)
+- registration: [codemp/cgame/cg_xcvar.h:109](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L109) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:162](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L162) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/cg_draw.c:7872](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7872)
+- behavior: [codemp/cgame/cg_draw.c:9197](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9197)
+- behavior: [codemp/cgame/cg_view.c:567](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L567)
+- behavior: [codemp/cgame/cg_view.c:621](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L621)
+- documentation: [codemp/ui/ui_xdocs.h:323](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L323)

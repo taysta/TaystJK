@@ -17,12 +17,15 @@ Controls `cg_currentSelectedPlayer` in the cgame module. Consult the cited behav
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_currentSelectedPlayer` in the cgame module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
-| `1` | Enabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
+| `0` | Disabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
+| `1` | Enabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cg_currentSelectedPlayer` in the cgame module. Consult the cited behav
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/cgame/cg_main.c:1019](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L1019)
+- Upstream registration evidence: [codemp/cgame/cg_main.c:1019](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/cgame/cg_main.c#L1019)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -59,9 +62,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L268) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31)
-- behavior: [codemp/cgame/cg_newDraw.c:730](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L730)
-- behavior: [codemp/cgame/cg_newDraw.c:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L149)
-- behavior: [codemp/cgame/cg_newDraw.c:153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L153)
-- behavior: [codemp/cgame/cg_newDraw.c:32](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L32)
+- registration: [codemp/cgame/cg_xcvar.h:268](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L268) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31)
+- behavior: [codemp/cgame/cg_newDraw.c:730](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L730)
+- behavior: [codemp/cgame/cg_newDraw.c:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L149)
+- behavior: [codemp/cgame/cg_newDraw.c:153](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L153)
+- behavior: [codemp/cgame/cg_newDraw.c:32](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L32)

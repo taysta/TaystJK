@@ -1,7 +1,7 @@
 ---
 title: "Console reference"
 layout: reference
-nav_order: 3
+nav_order: 5
 wide: true
 reference_app: true
 description: "Search and filter every cvar and console command available in TaystJK."
@@ -54,6 +54,13 @@ description: "Search and filter every cvar and console command available in Tays
           <button class="filter-clear" type="button" data-clear-filter="module">Clear module</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="category">
+        <button class="filter-toggle" type="button" data-filter-toggle="category" aria-expanded="false"><span>Topic</span><strong data-filter-summary="category">Any topic</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="category" hidden>
+          <div class="filter-options" data-filter-options="category"></div>
+          <button class="filter-clear" type="button" data-clear-filter="category">Clear topic</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="renderer">
         <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="renderer" hidden>
@@ -81,6 +88,18 @@ description: "Search and filter every cvar and console command available in Tays
           <button class="filter-clear" type="button" data-clear-filter="network">Clear network scope</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="coverage">
+        <button class="filter-toggle" type="button" data-filter-toggle="coverage" aria-expanded="false"><span>In game</span><strong data-filter-summary="coverage">Any coverage</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="coverage" hidden>
+          <div class="filter-options">
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="xdocs" data-filter="coverage"><span>Has xdocs entry</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="menu" data-filter="coverage"><span>Has menu entry</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="no-xdocs" data-filter="coverage"><span>Missing from xdocs</span></label>
+            <label class="filter-checkbox"><input type="checkbox" name="coverage" value="no-menu" data-filter="coverage"><span>Missing from menus</span></label>
+          </div>
+          <button class="filter-clear" type="button" data-clear-filter="coverage">Clear in-game coverage</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="flag" data-cvar-filter>
         <button class="filter-toggle" type="button" data-filter-toggle="flag" aria-expanded="false"><span>Cvar flag</span><strong data-filter-summary="flag">Any flag</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="flag" hidden>
@@ -92,7 +111,7 @@ description: "Search and filter every cvar and console command available in Tays
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
-      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
     </div>
   </form>
 
@@ -111,7 +130,9 @@ description: "Search and filter every cvar and console command available in Tays
 
 ## How to read an entry
 
-The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+The **topic** groups related controls such as the killfeed family. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+
+The **xdocs** and **menu** badges show whether the current name already has an entry in TaystJK's in-game documentation or shipped menu definitions. Each detail page links the matching source line.
 
 An entry marked **needs review** is real and has registration evidence, but one or more behavior, option, or attribution fields could not be proven precisely enough to present as settled fact.
 
@@ -119,6 +140,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
+- [Browse by topic](/TaystJK/reference/categories/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)

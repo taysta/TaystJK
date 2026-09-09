@@ -17,12 +17,15 @@ Controls `g_tribesMode` in the game module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -43,7 +46,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`7629ca86250a`](https://github.com/videoP/jaPRO/commit/7629ca86250aaeb5d50e6b2cd1c0bd47791a5e1b) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-01-15`, integrated `2024-01-15`)
 - Origin pull request: [#95](https://github.com/taysta/TaystJK/pull/95)
 - Matching squash bullet: `[jaPRO clientside] CG_Missile tweaks`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:374](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L374)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:374](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L374)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -70,9 +73,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:373](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L373) (XCVAR_DEF)
-- behavior: [codemp/game/g_client.c:2269](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2269)
-- behavior: [codemp/game/g_client.c:2542](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2542)
-- behavior: [codemp/game/g_client.c:4201](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L4201)
-- behavior: [codemp/game/g_combat.c:5089](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5089)
-- behavior: [codemp/game/g_cvar.c:570](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L570)
+- registration: [codemp/game/g_xcvar.h:373](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L373) (XCVAR_DEF)
+- behavior: [codemp/game/g_client.c:2269](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2269)
+- behavior: [codemp/game/g_client.c:2542](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2542)
+- behavior: [codemp/game/g_client.c:4201](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L4201)
+- behavior: [codemp/game/g_combat.c:5089](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5089)
+- behavior: [codemp/game/g_cvar.c:570](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L570)

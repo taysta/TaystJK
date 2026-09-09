@@ -17,12 +17,15 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
@@ -32,7 +35,7 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L331) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L331) |
 
 ## Flags
 
@@ -52,7 +55,7 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 
 - Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2013-10-08`, integrated `2023-10-03`)
 - TaystJK integration evidence: [`c4a9c87ef0e3`](https://github.com/taysta/TaystJK/commit/c4a9c87ef0e3171c80fd8c4e24df94e0fa1bcbe4)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1534](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1534)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1534](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1534)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 - Notes: rend2 retains origin because content authorship and PR submission predate the project that merged the work first. The TaystJK integration evidence credits vulkan as an immediate port source, but rend2 has an earlier dated introduction and remains the ultimate origin. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -83,10 +86,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1569](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1569) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:947](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L947) (Cvar_Get); condition `defined(USE_PMLIGHT)`
-- behavior: [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L331)
-- behavior: [codemp/rd-vulkan/tr_light.cpp:350](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L350)
-- behavior: [codemp/rd-vulkan/tr_light.cpp:396](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L396)
-- behavior: [codemp/rd-vulkan/tr_mesh.cpp:342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_mesh.cpp#L342)
-- behavior: [codemp/rd-vulkan/tr_shadows.cpp:143](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_shadows.cpp#L143)
+- registration: [codemp/rd-rend2/tr_init.cpp:1569](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1569) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:947](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L947) (Cvar_Get); condition `defined(USE_PMLIGHT)`
+- behavior: [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L331)
+- behavior: [codemp/rd-vulkan/tr_light.cpp:350](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L350)
+- behavior: [codemp/rd-vulkan/tr_light.cpp:396](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L396)
+- behavior: [codemp/rd-vulkan/tr_mesh.cpp:342](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_mesh.cpp#L342)
+- behavior: [codemp/rd-vulkan/tr_shadows.cpp:143](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_shadows.cpp#L143)

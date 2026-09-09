@@ -15,12 +15,15 @@ Scale console font relative to it's original size.
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1.0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -32,7 +35,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0.2` through `10.0f` (numeric; Cvar_CheckRange) — [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L656)
+- `0.2` through `10.0f` (numeric; Cvar_CheckRange) — [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L656)
 
 ## Flags
 
@@ -51,7 +54,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
 - Ultimate-origin introduction: [`20de49f4fe92`](https://github.com/mvdevs/jk2mv/commit/20de49f4fe92499c5efd12bcbb785c8ac7179f1d) in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> (content authored `2016-05-26`, integrated `2016-06-12`)
 - TaystJK integration evidence: [`135f109285cb`](https://github.com/taysta/TaystJK/commit/135f109285cbe2e07bbfd4ef2dbe0ef5b492af1a)
-- Upstream registration evidence: [src/client/cl_console.cpp:406](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_console.cpp#L406)
+- Upstream registration evidence: [src/client/cl_console.cpp:406](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_console.cpp#L406)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
 - Notes: An identifier-adjacent source/commit/PR line explicitly credits jk2mv. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -85,8 +88,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:655](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L655) (Cvar_Get)
-- registration: [codemp/client/cl_console.cpp:666](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L666) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:595](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L595)
-- behavior: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L656)
-- upstream-documentation: [CVARS.rst:153](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L153)
+- registration: [codemp/client/cl_console.cpp:655](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L655) (Cvar_Get)
+- registration: [codemp/client/cl_console.cpp:666](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L666) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:595](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L595)
+- behavior: [codemp/client/cl_console.cpp:656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L656)
+- upstream-documentation: [CVARS.rst:153](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L153)

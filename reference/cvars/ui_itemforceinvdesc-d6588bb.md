@@ -17,12 +17,15 @@ Controls `ui_itemforceinvdesc` in the ui module. Consult the cited behavior read
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `info` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -48,16 +51,16 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [codemp/ui/ui_main.c:7243](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/codemp/ui/ui_main.c#L7243)
+- Upstream registration evidence: [codemp/ui/ui_main.c:7243](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/codemp/ui/ui_main.c#L7243)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot.
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:8516](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8516) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8533](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8533) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8558](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8558) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:10830](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10830) (implicit Cvar_Set)
-- behavior: [codemp/ui/ui_main.c:10811](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10811)
-- behavior: [codemp/ui/ui_main.c:10816](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10816)
+- registration: [codemp/ui/ui_main.c:8516](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8516) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8533](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8533) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8558](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8558) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:10830](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10830) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:10811](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10811)
+- behavior: [codemp/ui/ui_main.c:10816](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10816)

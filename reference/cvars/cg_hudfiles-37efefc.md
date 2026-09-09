@@ -15,12 +15,15 @@ HUD style
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79) |
+| In-game menu | Yes — [ingame_setup.menu:4232](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4232), [ingame_setup.menu:4267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4267), [ingame_setup.menu:4295](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4295) |
 | Default | `0` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -30,11 +33,11 @@ HUD style
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | JKA HUD | [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79) |
-| `1` | Simple HUD | [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79) |
-| `2` | JK2 HUD | [codemp/ui/ui_xdocs.h:80](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L80) |
-| `3` | Elegant HUD | [codemp/ui/ui_xdocs.h:81](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L81) |
-| `4` | Quake HUD | [codemp/ui/ui_xdocs.h:82](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L82) |
+| `0` | JKA HUD | [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79) |
+| `1` | Simple HUD | [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79) |
+| `2` | JK2 HUD | [codemp/ui/ui_xdocs.h:80](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L80) |
+| `3` | Elegant HUD | [codemp/ui/ui_xdocs.h:81](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L81) |
+| `4` | Quake HUD | [codemp/ui/ui_xdocs.h:82](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L82) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ HUD style
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/cgame/cg_main.cpp:417](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L417)
+- Upstream registration evidence: [code/cgame/cg_main.cpp:417](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L417)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -81,10 +84,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:315](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L315) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:312](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L312)
-- behavior: [codemp/cgame/cg_consolecmds.c:314](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L314)
-- behavior: [codemp/cgame/cg_cvar.c:61](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L61)
-- behavior: [codemp/cgame/cg_draw.c:675](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L675)
-- behavior: [codemp/cgame/cg_draw.c:716](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L716)
-- documentation: [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79)
+- registration: [codemp/cgame/cg_xcvar.h:315](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L315) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:312](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L312)
+- behavior: [codemp/cgame/cg_consolecmds.c:314](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L314)
+- behavior: [codemp/cgame/cg_cvar.c:61](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_cvar.c#L61)
+- behavior: [codemp/cgame/cg_draw.c:675](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L675)
+- behavior: [codemp/cgame/cg_draw.c:716](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L716)
+- documentation: [codemp/ui/ui_xdocs.h:79](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L79)

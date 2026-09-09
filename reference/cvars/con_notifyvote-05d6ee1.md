@@ -17,12 +17,15 @@ Notifies you when someone calls a vote
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Notifies you when someone calls a vote
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Notifies you when someone calls a vote
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`9b77d352bc86`](https://github.com/eternalcodes/EternalJK/commit/9b77d352bc860abff54da6e6593fed3e957a1c5d) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-02-11`, integrated `2018-02-25`)
-- Upstream registration evidence: [codemp/client/cl_console.cpp:545](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_console.cpp#L545)
+- Upstream registration evidence: [codemp/client/cl_console.cpp:545](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_console.cpp#L545)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits eternaljk.
@@ -73,5 +76,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:663](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L663) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622)
+- registration: [codemp/client/cl_console.cpp:663](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L663) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:622](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L622)

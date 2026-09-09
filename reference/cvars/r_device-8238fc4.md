@@ -15,12 +15,15 @@ Select physical device to render: 0+ - use explicit device index -1 - first disc
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `-1` |
 | Value type | `enum` |
 | Restart | Yes; the value is latched. |
@@ -30,9 +33,9 @@ Select physical device to render: 0+ - use explicit device index -1 - first disc
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0+` | Use explicit device index. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
-| `-1` | First discrete GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
-| `-2` | First integrated GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `0+` | Use explicit device index. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `-1` | First discrete GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
+| `-2` | First integrated GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Select physical device to render: 0+ - use explicit device index -1 - first disc
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/mac/mac_glimp.c:701](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/mac/mac_glimp.c#L701)
+- Upstream registration evidence: [code/mac/mac_glimp.c:701](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/mac/mac_glimp.c#L701)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -60,7 +63,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_instance.cpp:946](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_instance.cpp#L946)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:917](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L917)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L916)
+- registration: [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_instance.cpp:946](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_instance.cpp#L946)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:917](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L917)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L916)

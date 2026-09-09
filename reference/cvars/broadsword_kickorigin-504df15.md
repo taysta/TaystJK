@@ -17,12 +17,15 @@ Controls `broadsword_kickorigin` in the renderer module. Consult the cited behav
 
 | Field | Value |
 |:--|:--|
+| Category | Administration |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `broadsword_kickorigin` in the renderer module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717) |
-| `1` | Enabled. | [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717) |
+| `0` | Disabled. | [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717) |
+| `1` | Enabled. | [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Controls `broadsword_kickorigin` in the renderer module. Consult the cited behav
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/renderer/tr_init.cpp:1256](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1256)
+- Upstream registration evidence: [code/renderer/tr_init.cpp:1256](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1256)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -77,12 +80,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:444](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L444) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1711](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1711) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1757](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1757) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:989](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L989) (Cvar_Get)
-- behavior: [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717)
-- behavior: [codemp/rd-vanilla/G2_bones.cpp:1715](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_bones.cpp#L1715)
-- behavior: [codemp/rd-vulkan/G2_bones.cpp:1718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_bones.cpp#L1718)
-- behavior: [codemp/rd-rend2/G2_bones.cpp:1716](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1716)
-- behavior: [codemp/rd-vanilla/G2_bones.cpp:1714](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_bones.cpp#L1714)
+- registration: [codemp/rd-dedicated/tr_init.cpp:444](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L444) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1711](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1711) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1757](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1757) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:989](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L989) (Cvar_Get)
+- behavior: [codemp/rd-rend2/G2_bones.cpp:1717](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1717)
+- behavior: [codemp/rd-vanilla/G2_bones.cpp:1715](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_bones.cpp#L1715)
+- behavior: [codemp/rd-vulkan/G2_bones.cpp:1718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_bones.cpp#L1718)
+- behavior: [codemp/rd-rend2/G2_bones.cpp:1716](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L1716)
+- behavior: [codemp/rd-vanilla/G2_bones.cpp:1714](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_bones.cpp#L1714)

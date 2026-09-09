@@ -17,12 +17,15 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:3637](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3637) |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894) |
-| `1` | Enabled. | [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894) |
+| `0` | Disabled. | [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894) |
+| `1` | Enabled. | [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cg_chatBoxEmojis` in the cgame module. Consult the cited behavior read
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`caa8f274580f`](https://github.com/JKSunny/EternalJK/commit/caa8f274580f151f8472d987144146ca02430d3f) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2020-04-29`, integrated `2020-05-15`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/cgame/cg_xcvar.h#L67)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:67](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/cgame/cg_xcvar.h#L67)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -73,9 +76,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:80](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L80) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894)
-- behavior: [codemp/cgame/cg_draw.c:10766](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10766)
-- behavior: [codemp/cgame/cg_draw.c:10819](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10819)
-- behavior: [codemp/cgame/cg_draw.c:11022](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11022)
-- behavior: [codemp/cgame/cg_main.c:2895](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2895)
+- registration: [codemp/cgame/cg_xcvar.h:80](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L80) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_main.c:2894](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2894)
+- behavior: [codemp/cgame/cg_draw.c:10766](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10766)
+- behavior: [codemp/cgame/cg_draw.c:10819](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10819)
+- behavior: [codemp/cgame/cg_draw.c:11022](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11022)
+- behavior: [codemp/cgame/cg_main.c:2895](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2895)

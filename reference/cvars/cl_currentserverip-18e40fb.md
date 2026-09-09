@@ -17,12 +17,15 @@ Registered by the current source, but no user-facing behavior description has be
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `loopback` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -48,7 +51,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`9e15fadfd9b4`](https://github.com/JACoders/OpenJK/commit/9e15fadfd9b4223b60de8e0e76affce52930fe0b) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-17`, integrated `2013-04-18`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:690](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L690)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:690](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L690)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -69,5 +72,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:816](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L816) (implicit Cvar_Set)
-- registration: [codemp/client/cl_main.cpp:1208](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1208) (implicit Cvar_Set)
+- registration: [codemp/client/cl_main.cpp:816](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L816) (implicit Cvar_Set)
+- registration: [codemp/client/cl_main.cpp:1208](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1208) (implicit Cvar_Set)

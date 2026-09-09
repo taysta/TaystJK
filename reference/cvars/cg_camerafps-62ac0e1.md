@@ -15,12 +15,15 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_camera.menu:111](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_camera.menu#L111) |
 | Default | `125` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Sets the emulated frame rate used to make third-person camera damping frame-rate
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `<15` | Use the original frame-rate-dependent JK2/JKA multiplayer camera damping. | [codemp/cgame/cg_view.c:541](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L541) |
-| `>=15` | Use frame-rate-independent damping based on this emulated frame rate. | [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L514) |
+| `<15` | Use the original frame-rate-dependent JK2/JKA multiplayer camera damping. | [codemp/cgame/cg_view.c:541](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L541) |
+| `>=15` | Use frame-rate-independent damping based on this emulated frame rate. | [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L514) |
 
 ## Flags
 
@@ -68,9 +71,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:133](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L133) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_snapshot.c:233](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L233)
-- behavior: [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L514)
-- behavior: [codemp/cgame/cg_view.c:879](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L879)
-- behavior: [codemp/cgame/cg_view.c:529](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L529)
-- behavior: [codemp/cgame/cg_view.c:521](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L521)
+- registration: [codemp/cgame/cg_xcvar.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L133) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_snapshot.c:233](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L233)
+- behavior: [codemp/cgame/cg_view.c:514](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L514)
+- behavior: [codemp/cgame/cg_view.c:879](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L879)
+- behavior: [codemp/cgame/cg_view.c:529](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L529)
+- behavior: [codemp/cgame/cg_view.c:521](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L521)

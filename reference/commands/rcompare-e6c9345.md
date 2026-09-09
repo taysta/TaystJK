@@ -17,12 +17,15 @@ Runs `Cmd_DFCompare_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `rCompare <username> <style (optional)> <current season (optional - example: s) <page (optional)>. This displays the courses that the specified user has defeated you on` |
 | Cheat protected | No |
 
@@ -38,7 +41,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`90d3c68f2da9`](https://github.com/videoP/jaPRO/commit/90d3c68f2da918f353b24bff60e49066dd018806) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-01-10`, integrated `2024-01-10`)
 - Origin pull request: [#84](https://github.com/taysta/TaystJK/pull/84)
 - Matching squash bullet: `rCompare command`
-- Upstream registration evidence: [codemp/game/g_cmds.c:9024](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9024)
+- Upstream registration evidence: [codemp/game/g_cmds.c:9024](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9024)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -64,5 +67,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_cmds.c:9022](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9022) (game command table)
-- handler: [codemp/game/g_account.c:5993](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5993)
+- registration: [codemp/game/g_cmds.c:9022](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9022) (game command table)
+- handler: [codemp/game/g_account.c:5993](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5993)

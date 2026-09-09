@@ -17,12 +17,15 @@ Controls `r_DynamicGlowScale` in the renderer module. Consult the cited behavior
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0.25` |
 | Value type | `float` |
 | Restart | Yes; the value is latched. |
@@ -49,7 +52,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`f768a9d0b3b1`](https://github.com/eternalcodes/EternalJK/commit/f768a9d0b3b10086974b9c9a01b620549d13915e) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-03-29`, integrated `2018-03-29`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1622](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1622)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1622](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1622)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -77,7 +80,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:1650](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1650) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:802](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L802) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1548](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1548)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1549](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1549)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1650](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1650) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:802](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L802) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1548](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1548)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1549](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1549)

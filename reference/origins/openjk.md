@@ -41,15 +41,17 @@ description: "Browse 95 cvars, 63 commands in the TaystJK console reference."
     <div class="catalog-filters">
       <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
       <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
+      <label><span>Topic</span><select name="category" data-filter="category"><option value="">Any topic</option></select></label>
       <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
+      <label><span>In game</span><select name="coverage" data-filter="coverage"><option value="">Any coverage</option><option value="xdocs">Has xdocs entry</option><option value="menu">Has menu entry</option><option value="no-xdocs">Missing from xdocs</option><option value="no-menu">Missing from menus</option></select></label>
       <label data-cvar-filter><span>Cvar flag</span><select name="flag" data-filter="flag"><option value="">Any flag</option></select></label>
     </div>
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
-      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
     </div>
   </form>
 

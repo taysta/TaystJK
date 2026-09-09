@@ -17,12 +17,15 @@ Controls `g_fixSaberDisarmBonus` in the game module. Consult the cited behavior 
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `g_fixSaberDisarmBonus` in the game module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029) |
-| `1` | Enabled. | [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029) |
+| `0` | Disabled. | [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029) |
+| `1` | Enabled. | [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`530446764ef0`](https://github.com/taysta/TaystJK/commit/530446764ef05a4c0cff2b29b9eb2b514c5c2b2a) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2023-10-08`, PR opened `2023-10-28`, integrated `2023-10-29`)
 - Origin pull request: [#29](https://github.com/taysta/TaystJK/pull/29)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:92](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L92)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:92](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L92)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: The TaystJK integration evidence credits openjk as an immediate port source, but taystjk has an earlier dated introduction and remains the ultimate origin.
@@ -65,6 +68,6 @@ Immediate port-source credit: <span class="label ref-origin ref-origin-openjk">O
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:92](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L92) (XCVAR_DEF)
-- behavior: [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029)
-- behavior: [codemp/game/w_saber.c:7120](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7120)
+- registration: [codemp/game/g_xcvar.h:92](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L92) (XCVAR_DEF)
+- behavior: [codemp/game/w_saber.c:7029](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7029)
+- behavior: [codemp/game/w_saber.c:7120](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L7120)

@@ -17,12 +17,15 @@ Runs `UI_Modversion_f` in the ui module.
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `ui_modversion` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`561b84ebefaf`](https://github.com/eternalcodes/EternalJK/commit/561b84ebefaf74a5ada68700a8c74b4c0ff2d419) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2016-02-05`, integrated `2016-02-05`)
-- Upstream registration evidence: [codemp/ui/ui_atoms.c:319](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_atoms.c#L319)
+- Upstream registration evidence: [codemp/ui/ui_atoms.c:319](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/ui/ui_atoms.c#L319)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -62,5 +65,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_atoms.c:110](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L110) (ui command table)
-- handler: [codemp/ui/ui_atoms.c:53](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L53)
+- registration: [codemp/ui/ui_atoms.c:110](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L110) (ui command table)
+- handler: [codemp/ui/ui_atoms.c:53](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L53)

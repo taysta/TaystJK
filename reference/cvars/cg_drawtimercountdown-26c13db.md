@@ -17,12 +17,15 @@ Controls `cg_drawTimerCountdown` in the cgame module. Consult the cited behavior
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,7 +35,7 @@ Controls `cg_drawTimerCountdown` in the cgame module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `7` | Selects the code path tested for value 7. | [codemp/cgame/cg_draw.c:5924](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L5924) |
+| `7` | Selects the code path tested for value 7. | [codemp/cgame/cg_draw.c:5924](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L5924) |
 
 ## Flags
 
@@ -43,7 +46,7 @@ Controls `cg_drawTimerCountdown` in the cgame module. Consult the cited behavior
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`9c5814cd2451`](https://github.com/taysta/TaystJK/commit/9c5814cd24518a2dbb4e8b7fd3bdc34039d17c9f) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-10-05`, integrated `2022-10-05`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L288)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L288)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
@@ -67,5 +70,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L288) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:5924](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L5924)
+- registration: [codemp/cgame/cg_xcvar.h:288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L288) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:5924](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L5924)

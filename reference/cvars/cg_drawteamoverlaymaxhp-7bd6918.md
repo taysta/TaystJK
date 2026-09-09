@@ -15,12 +15,15 @@ Combined health and shields that fills the bar on the team overlay. Only applies
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:162](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L162) |
+| In-game menu | No |
 | Default | `150` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,7 +43,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-08-06`, PR opened `2026-08-06`, integrated `2026-08-06`)
 - Origin pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:58](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L58)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:58](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L58)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -54,7 +57,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:58](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L58) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:6608](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6608)
-- behavior: [codemp/ui/ui_xdocs.h:162](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L162)
-- documentation: [codemp/ui/ui_xdocs.h:162](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L162)
+- registration: [codemp/cgame/cg_xcvar.h:58](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L58) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:6608](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6608)
+- behavior: [codemp/ui/ui_xdocs.h:162](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L162)
+- documentation: [codemp/ui/ui_xdocs.h:162](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L162)

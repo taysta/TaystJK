@@ -17,12 +17,15 @@ Controls `cl_lanForcePackets` in the engine-client module. Consult the cited beh
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`0bf217273755`](https://github.com/JACoders/OpenJK/commit/0bf217273755c4fb10217c8479bb9d3a294526f3) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-10-15`, integrated `2013-10-15`)
 - Matching squash bullet: `cl_lanForcePackets. When set to 0 (default is 1) the cl_maxpackets setting`
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2817](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2817)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2817](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2817)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.
@@ -72,5 +75,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3393](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3393) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1515](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1515)
+- registration: [codemp/client/cl_main.cpp:3393](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3393) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1515](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1515)

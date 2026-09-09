@@ -15,12 +15,15 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Enables writing metadata to demos, which can be set by the server/game. This is 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793) |
-| `1` | Enabled. | [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793) |
+| `0` | Disabled. | [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793) |
+| `1` | Enabled. | [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793) |
 
 ## Flags
 
@@ -58,8 +61,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1060](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1060) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793)
-- behavior: [codemp/server/sv_ccmds.cpp:1852](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1852)
-- behavior: [codemp/server/sv_ccmds.cpp:1882](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1882)
-- documentation: [docs/japro_docs.md:136](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L136)
+- registration: [codemp/server/sv_init.cpp:1060](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1060) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_ccmds.cpp:1793](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1793)
+- behavior: [codemp/server/sv_ccmds.cpp:1852](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1852)
+- behavior: [codemp/server/sv_ccmds.cpp:1882](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1882)
+- documentation: [docs/japro_docs.md:136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L136)

@@ -17,12 +17,15 @@ Show/hide the menu
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `togglemenu` |
 | Cheat protected | No |
 
@@ -36,7 +39,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`1f9cf0163591`](https://github.com/JACoders/OpenJK/commit/1f9cf01635910b78ad1af62040288550e5901368) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-02-01`, integrated `2014-02-01`)
 - TaystJK integration evidence: [`b276c56dd51c`](https://github.com/taysta/TaystJK/commit/b276c56dd51c9934657fe418620165990229e97f)
-- Upstream registration evidence: [code/client/cl_console.cpp:434](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_console.cpp#L434)
+- Upstream registration evidence: [code/client/cl_console.cpp:434](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/cl_console.cpp#L434)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, rend2, newjk; fork-lineage order selects openjk.
@@ -66,5 +69,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:678](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L678) (Cmd_AddCommand)
-- handler: [codemp/client/cl_console.cpp:88](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L88)
+- registration: [codemp/client/cl_console.cpp:678](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L678) (Cmd_AddCommand)
+- handler: [codemp/client/cl_console.cpp:88](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L88)

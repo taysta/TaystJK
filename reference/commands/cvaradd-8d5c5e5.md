@@ -15,12 +15,15 @@ Add a value to a cvar
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `cvarAdd <variable> <value>` |
 | Cheat protected | No |
 
@@ -34,7 +37,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`55d9184d89f7`](https://github.com/JACoders/OpenJK/commit/55d9184d89f7a5d260af5a486f02fe1afd3f6c16) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2016-03-22`, integrated `2016-03-22`)
 - TaystJK integration evidence: [`c9c6ab99fdd2`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)
-- Upstream registration evidence: [codemp/qcommon/cvar.cpp:1601](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cvar.cpp#L1601)
+- Upstream registration evidence: [codemp/qcommon/cvar.cpp:1601](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cvar.cpp#L1601)
 - Attribution method: `shared-integration-explicit-credit`
 - Attribution confidence: `high`
 
@@ -54,5 +57,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cvar.cpp:1627](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1627) (Cmd_AddCommand)
-- handler: [codemp/qcommon/cvar.cpp:1116](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116)
+- registration: [codemp/qcommon/cvar.cpp:1627](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1627) (Cmd_AddCommand)
+- handler: [codemp/qcommon/cvar.cpp:1116](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116)

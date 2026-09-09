@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-from generate_docs import compact_catalog_entry, home_page, slug
+from generate_docs import collection_slug, compact_catalog_entry, home_page, slug
 
 
 ROOT = Path(".")
@@ -61,9 +61,13 @@ def main() -> None:
         Path("reference/modules") / f"{module}.md"
         for module in {entry["module"] for entry in all_entries}
     }
+    expected_collections |= {
+        Path("reference/categories") / f"{collection_slug(category)}.md"
+        for category in {entry["category"] for entry in all_entries}
+    }
     actual_collections = {
         path
-        for directory in (Path("reference/origins"), Path("reference/modules"))
+        for directory in (Path("reference/origins"), Path("reference/modules"), Path("reference/categories"))
         for path in directory.glob("*.md")
     }
     for path in sorted(expected_collections - actual_collections):
@@ -85,7 +89,11 @@ def main() -> None:
         if page.exists():
             errors.append(f"retired standalone catalog page still exists: {page}")
 
-    pages = [Path("index.md"), Path("reference.md"), *Path("reference").rglob("*.md")]
+    pages = [
+        Path("index.md"), Path("install.md"), Path("server-hosting.md"),
+        Path("development.md"), *Path("development").rglob("*.md"),
+        Path("reference.md"), *Path("reference").rglob("*.md"),
+    ]
     for page in pages:
         text = page.read_text()
         if not text.startswith("---\n") or "\n---\n" not in text[4:]:

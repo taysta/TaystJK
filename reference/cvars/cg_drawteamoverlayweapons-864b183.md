@@ -17,12 +17,15 @@ Draw each player's current weapon on the team overlay
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Draw each player's current weapon on the team overlay
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Weapon icons are not drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
-| `1` | Weapon icons are drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
+| `0` | Weapon icons are not drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
+| `1` | Weapon icons are drawn | [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Draw each player's current weapon on the team overlay
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 - Ultimate-origin introduction: [`d6c87b2e66e9`](https://github.com/taysta/TaystJK/commit/d6c87b2e66e925c9dd76a528f7830560343b011b) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2022-05-12`, integrated `2022-05-12`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L56)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L56)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
@@ -69,10 +72,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L56) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:6706](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6706)
-- behavior: [codemp/cgame/cg_draw.c:6165](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6165)
-- behavior: [codemp/cgame/cg_draw.c:6257](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6257)
-- behavior: [codemp/cgame/cg_draw.c:6513](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6513)
-- behavior: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149)
-- documentation: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149)
+- registration: [codemp/cgame/cg_xcvar.h:56](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L56) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:6706](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6706)
+- behavior: [codemp/cgame/cg_draw.c:6165](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6165)
+- behavior: [codemp/cgame/cg_draw.c:6257](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6257)
+- behavior: [codemp/cgame/cg_draw.c:6513](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6513)
+- behavior: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149)
+- documentation: [codemp/ui/ui_xdocs.h:149](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L149)

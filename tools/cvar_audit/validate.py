@@ -18,7 +18,7 @@ CHANGE_CATEGORIES = {"registration", "behavior-reference", "handler"}
 COMMON = {
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
-    "status", "source_commit",
+    "status", "source_commit", "category", "xdocs", "menu_entries",
 }
 
 
@@ -41,6 +41,10 @@ def validate(path: Path, expected_kind: str) -> list[str]:
         seen.add(key)
         if not entry.get("summary") or not entry.get("description"):
             errors.append(f"{label}: empty prose")
+        if not entry.get("category"):
+            errors.append(f"{label}: empty category")
+        if not isinstance(entry.get("menu_entries"), list):
+            errors.append(f"{label}: invalid menu-entry evidence")
         if entry.get("derivation") not in DERIVATION:
             errors.append(f"{label}: invalid derivation")
         if entry.get("network") not in NETWORK:

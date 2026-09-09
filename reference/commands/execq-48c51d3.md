@@ -17,12 +17,15 @@ Execute a script file without displaying a message
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `execq [arguments]` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`649941d04db2`](https://github.com/eternalcodes/EternalJK/commit/649941d04db2a0d5581825824a3b88a3912f3185) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2013-04-05`, integrated `2014-01-20`)
-- Upstream registration evidence: [codemp/qcommon/cmd.cpp:1018](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/cmd.cpp#L1018)
+- Upstream registration evidence: [codemp/qcommon/cmd.cpp:1018](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/cmd.cpp#L1018)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: eternaljk retains origin because content authorship and PR submission predate the project that merged the work first. The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -67,5 +70,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cmd.cpp:1212](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L1212) (Cmd_AddCommand)
-- handler: [codemp/qcommon/cmd.cpp:412](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L412)
+- registration: [codemp/qcommon/cmd.cpp:1212](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L1212) (Cmd_AddCommand)
+- handler: [codemp/qcommon/cmd.cpp:412](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L412)

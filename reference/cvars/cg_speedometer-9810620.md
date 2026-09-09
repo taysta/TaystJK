@@ -17,12 +17,15 @@ Configure with the /speedometer command
 
 | Field | Value |
 |:--|:--|
+| Category | Movement & race |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107) |
+| In-game menu | Yes — [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,10 +35,10 @@ Configure with the /speedometer command
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `64` | Enables the `SPEEDOMETER_ACCELMETER` code path. | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L90) |
-| `1` | Enables the `SPEEDOMETER_ENABLE` code path. | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L84) |
-| `8` | Enables the `SPEEDOMETER_JUMPDISTANCE` code path. | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L87) |
-| `4` | Enables the `SPEEDOMETER_JUMPHEIGHT` code path. | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L86) |
+| `64` | Enables the `SPEEDOMETER_ACCELMETER` code path. | [codemp/cgame/hud_strafehelper.h:90](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L90) |
+| `1` | Enables the `SPEEDOMETER_ENABLE` code path. | [codemp/cgame/hud_strafehelper.h:84](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L84) |
+| `8` | Enables the `SPEEDOMETER_JUMPDISTANCE` code path. | [codemp/cgame/hud_strafehelper.h:87](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L87) |
+| `4` | Enables the `SPEEDOMETER_JUMPHEIGHT` code path. | [codemp/cgame/hud_strafehelper.h:86](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.h#L86) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Configure with the /speedometer command
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`ead7c2c37109`](https://github.com/videoP/jaPRO/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-11-04`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:46](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L46)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:46](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L46)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -87,11 +90,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:46](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L46) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:164](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L164) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
-- behavior: [codemp/cgame/hud_strafehelper.c:415](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L415)
-- behavior: [codemp/cgame/hud_strafehelper.c:419](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L419)
-- behavior: [codemp/cgame/hud_strafehelper.c:421](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L421)
-- behavior: [codemp/cgame/hud_strafehelper.c:423](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L423)
-- documentation: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107)
+- registration: [codemp/cgame/cg_xcvar.h:46](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L46) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:164](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L164) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:1962](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L1962)
+- behavior: [codemp/cgame/hud_strafehelper.c:415](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L415)
+- behavior: [codemp/cgame/hud_strafehelper.c:419](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L419)
+- behavior: [codemp/cgame/hud_strafehelper.c:421](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L421)
+- behavior: [codemp/cgame/hud_strafehelper.c:423](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L423)
+- documentation: [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107)

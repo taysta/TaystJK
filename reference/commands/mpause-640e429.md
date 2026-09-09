@@ -15,12 +15,15 @@ Simulates the operating system play/pause media key. Registered only in Windows 
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `mpause` |
 | Cheat protected | No |
 
@@ -34,7 +37,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`c3f27b42e4f3`](https://github.com/jkanewmod/NewJK/commit/c3f27b42e4f34443b36c9a1c19614dfeba21beb4) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2016-05-29`, integrated `2016-05-29`)
 - TaystJK integration evidence: [`1dd571383a0d`](https://github.com/taysta/TaystJK/commit/1dd571383a0d16520e69ce209f8a2d21b2943a62)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1222](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/qcommon/common.cpp#L1222)
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1222](https://github.com/jkanewmod/NewJK/blame/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/qcommon/common.cpp#L1222)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -59,5 +62,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1411](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1411) (Cmd_AddCommand); condition `defined(_WIN32)`
-- handler: [codemp/qcommon/common.cpp:531](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L531)
+- registration: [codemp/qcommon/common.cpp:1411](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1411) (Cmd_AddCommand); condition `defined(_WIN32)`
+- handler: [codemp/qcommon/common.cpp:531](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L531)

@@ -17,12 +17,15 @@ Controls `r_forceSunAmbientScale` in the renderer module. Consult the cited beha
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0.5` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -43,7 +46,7 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 - Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2013-10-08`, integrated `2023-10-03`)
 - TaystJK integration evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
 - Origin pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1544](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1544)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1544](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1544)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -61,6 +64,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1579](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1579) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_scene.cpp:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L374)
-- behavior: [shared/rd-rend2/tr_scene.cpp:382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L382)
+- registration: [codemp/rd-rend2/tr_init.cpp:1579](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1579) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_scene.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L374)
+- behavior: [shared/rd-rend2/tr_scene.cpp:382](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L382)

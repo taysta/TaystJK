@@ -17,12 +17,15 @@ Controls `g_fixWeaponAttackAnim` in the game module. Consult the cited behavior 
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `g_fixWeaponAttackAnim` in the game module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466) |
-| `1` | Enabled. | [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466) |
+| `0` | Disabled. | [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466) |
+| `1` | Enabled. | [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - TaystJK integration evidence: [`cd784cbf26da`](https://github.com/taysta/TaystJK/commit/cd784cbf26dac3fe0120ee2ec30654f17b5ab26d)
 - Origin pull request: [#157](https://github.com/taysta/TaystJK/pull/157)
 - Matching squash bullet: `move BASE_COMPAT flag behind cmake option BuildMPWithCompatMode, add g_fixWeaponAttackAnim making use of CS_LEGACY_FIXES`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:98](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L98)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:98](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/game/g_xcvar.h#L98)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -64,6 +67,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:96](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L96) (XCVAR_DEF)
-- behavior: [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466)
-- behavior: [codemp/game/g_cvar.c:636](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L636)
+- registration: [codemp/game/g_xcvar.h:96](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L96) (XCVAR_DEF)
+- behavior: [codemp/game/bg_misc.c:466](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_misc.c#L466)
+- behavior: [codemp/game/g_cvar.c:636](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L636)

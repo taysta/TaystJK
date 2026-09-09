@@ -17,12 +17,15 @@ Disable/enable framebuffer MSAA
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer`, `engine-shared` |
 | Renderer | `rd-rend2`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:1480](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1480), [setup.menu:1383](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L1383) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
@@ -34,7 +37,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `64` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921)
+- `0` through `64` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921)
 
 ## Flags
 
@@ -55,7 +58,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 
 - Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/SomaZ/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2015-01-10`, integrated `2015-02-07`)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1462](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1462)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1462](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1462)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits rend2. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -90,11 +93,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1496) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L920) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:816](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L816) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L518)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:519](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L519)
-- behavior: [codemp/rd-vulkan/vk_init.cpp:527](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L527)
-- behavior: [shared/sdl/sdl_window.cpp:474](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L474)
-- behavior: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921)
+- registration: [codemp/rd-rend2/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1496) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:920](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L920) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:816](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L816) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L518)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:519](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L519)
+- behavior: [codemp/rd-vulkan/vk_init.cpp:527](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L527)
+- behavior: [shared/sdl/sdl_window.cpp:474](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L474)
+- behavior: [codemp/rd-vulkan/tr_init.cpp:921](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L921)

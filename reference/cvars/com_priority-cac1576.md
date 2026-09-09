@@ -17,12 +17,15 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `-1` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -32,10 +35,10 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
-| `1` | Low priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
-| `2` | Normal priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
-| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `1` | Low priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `2` | Normal priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`20755a5d4be0`](https://github.com/eternalcodes/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-11-27`, integrated `2018-11-27`)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1278](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/common.cpp#L1278)
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1278](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/common.cpp#L1278)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -74,9 +77,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) (Cvar_Get); condition `defined(_WIN32)`
-- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L256)
-- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L261)
-- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L264)
-- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L267)
-- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L270)
+- registration: [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) (Cvar_Get); condition `defined(_WIN32)`
+- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L256)
+- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L261)
+- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L264)
+- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L267)
+- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L270)

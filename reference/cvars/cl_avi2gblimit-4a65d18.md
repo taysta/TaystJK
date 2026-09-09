@@ -17,12 +17,15 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451) |
-| `1` | Enabled. | [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451) |
+| `0` | Disabled. | [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451) |
+| `1` | Enabled. | [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cl_avi2GBLimit` in the engine-client module. Consult the cited behavio
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`e0291062ce4a`](https://github.com/JACoders/OpenJK/commit/e0291062ce4afb88e725b51aa99a07148c96ba65) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-04-21`, integrated `2014-04-21`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2761](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2761)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2761](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2761)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -65,5 +68,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3330](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3330) (Cvar_Get)
-- behavior: [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451)
+- registration: [codemp/client/cl_main.cpp:3330](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3330) (Cvar_Get)
+- behavior: [codemp/client/cl_avi.cpp:451](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L451)

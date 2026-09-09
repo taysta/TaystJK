@@ -17,12 +17,15 @@ Controls `g_fixPlayerCollision` in the game module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `g_fixPlayerCollision` in the game module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857) |
-| `1` | Enabled. | [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857) |
+| `0` | Disabled. | [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857) |
+| `1` | Enabled. | [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `g_fixPlayerCollision` in the game module. Consult the cited behavior r
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`fb24d6a98965`](https://github.com/videoP/jaPRO/commit/fb24d6a989657d508aa3c722e53dc203d6327e69) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2020-06-14`, integrated `2020-06-14`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:242](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L242)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:242](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L242)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -70,7 +73,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:241](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L241) (XCVAR_DEF)
-- behavior: [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857)
-- behavior: [codemp/game/g_cmds.c:8518](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8518)
-- behavior: [codemp/game/g_cvar.c:95](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L95)
+- registration: [codemp/game/g_xcvar.h:241](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L241) (XCVAR_DEF)
+- behavior: [codemp/game/bg_slidemove.c:857](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L857)
+- behavior: [codemp/game/g_cmds.c:8518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8518)
+- behavior: [codemp/game/g_cvar.c:95](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cvar.c#L95)

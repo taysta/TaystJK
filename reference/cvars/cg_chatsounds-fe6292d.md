@@ -17,12 +17,15 @@ Play sound when chat messages are received
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388) |
+| In-game menu | Yes — [ingame_setup.menu:4600](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4600) |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Play sound when chat messages are received
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play chat sounds | [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388) |
-| `1` | Play chat sounds for all messages | [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388) |
-| `2` | Play chat sounds for private and team messages only | [codemp/ui/ui_xdocs.h:389](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L389) |
+| `0` | Don't play chat sounds | [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388) |
+| `1` | Play chat sounds for all messages | [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388) |
+| `2` | Play chat sounds for private and team messages only | [codemp/ui/ui_xdocs.h:389](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L389) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Play sound when chat messages are received
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:118](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L118)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:118](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L118)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -74,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:121](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L121) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_servercmds.c:1715](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1715)
-- behavior: [codemp/cgame/cg_servercmds.c:1736](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1736)
-- behavior: [codemp/cgame/cg_draw.c:9722](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9722)
-- behavior: [codemp/cgame/cg_servercmds.c:1721](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1721)
-- behavior: [codemp/cgame/cg_servercmds.c:1738](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1738)
-- documentation: [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388)
+- registration: [codemp/cgame/cg_xcvar.h:121](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L121) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_servercmds.c:1715](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1715)
+- behavior: [codemp/cgame/cg_servercmds.c:1736](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1736)
+- behavior: [codemp/cgame/cg_draw.c:9722](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9722)
+- behavior: [codemp/cgame/cg_servercmds.c:1721](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1721)
+- behavior: [codemp/cgame/cg_servercmds.c:1738](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1738)
+- documentation: [codemp/ui/ui_xdocs.h:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L388)

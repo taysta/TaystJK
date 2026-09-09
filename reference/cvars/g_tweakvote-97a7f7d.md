@@ -17,12 +17,15 @@ Latch cuz of calculateRanks? not sure man
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | Yes; the value is latched. |
@@ -32,10 +35,10 @@ Latch cuz of calculateRanks? not sure man
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Enables the `TV_ALLOW_SIEGESPECVOTE` code path. | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L333) |
-| `4` | Enables the `TV_CLEAR_SPEC_VOTES` code path. | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L335) |
-| `2048` | Enables the `TV_IGNOREMAPARENAS` code path. | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L344) |
-| `8` | Enables the `TV_MAPLOADTIMEOUT` code path. | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L336) |
+| `1` | Enables the `TV_ALLOW_SIEGESPECVOTE` code path. | [codemp/game/g_local.h:333](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L333) |
+| `4` | Enables the `TV_CLEAR_SPEC_VOTES` code path. | [codemp/game/g_local.h:335](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L335) |
+| `2048` | Enables the `TV_IGNOREMAPARENAS` code path. | [codemp/game/g_local.h:344](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L344) |
+| `8` | Enables the `TV_MAPLOADTIMEOUT` code path. | [codemp/game/g_local.h:336](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L336) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Latch cuz of calculateRanks? not sure man
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-29`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:310](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L310)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:310](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L310)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -75,10 +78,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1488)
-- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2746)
-- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2917)
-- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3146)
-- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3165)
-- documentation: [docs/japro_docs.md:110](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L110)
+- registration: [codemp/game/g_xcvar.h:309](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L309) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:1488](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1488)
+- behavior: [codemp/game/g_cmds.c:2746](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2746)
+- behavior: [codemp/game/g_cmds.c:2917](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2917)
+- behavior: [codemp/game/g_cmds.c:3146](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3146)
+- behavior: [codemp/game/g_cmds.c:3165](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3165)
+- documentation: [docs/japro_docs.md:110](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L110)

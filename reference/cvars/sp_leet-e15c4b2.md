@@ -17,12 +17,15 @@ Controls `sp_leet` in the engine-shared module. Consult the cited behavior reads
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,7 +35,7 @@ Controls `sp_leet` in the engine-shared module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `42` | Selects the code path tested for value 42. | [codemp/qcommon/stringed_ingame.cpp:770](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L770) |
+| `42` | Selects the code path tested for value 42. | [codemp/qcommon/stringed_ingame.cpp:770](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L770) |
 
 ## Flags
 
@@ -43,7 +46,7 @@ Controls `sp_leet` in the engine-shared module. Consult the cited behavior reads
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/qcommon/stringed_ingame.cpp:1171](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/stringed_ingame.cpp#L1171)
+- Upstream registration evidence: [code/qcommon/stringed_ingame.cpp:1171](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/qcommon/stringed_ingame.cpp#L1171)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -60,5 +63,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/stringed_ingame.cpp:1180](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1180) (Cvar_Get)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:770](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L770)
+- registration: [codemp/qcommon/stringed_ingame.cpp:1180](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1180) (Cvar_Get)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:770](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L770)

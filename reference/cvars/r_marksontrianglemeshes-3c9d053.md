@@ -17,12 +17,15 @@ Controls `r_marksOnTriangleMeshes` in the renderer module. Consult the cited beh
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `r_marksOnTriangleMeshes` in the renderer module. Consult the cited beh
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Controls `r_marksOnTriangleMeshes` in the renderer module. Consult the cited beh
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`b858635e7298`](https://github.com/JKSunny/EternalJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2014-03-18`, integrated `2014-03-18`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1715](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vanilla/tr_init.cpp#L1715)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1715](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vanilla/tr_init.cpp#L1715)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -86,9 +89,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1689](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1689) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1741](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1741) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:903](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L903) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428)
-- behavior: [codemp/rd-vulkan/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_marks.cpp#L428)
-- behavior: [shared/rd-rend2/tr_marks.cpp:436](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_marks.cpp#L436)
+- registration: [codemp/rd-rend2/tr_init.cpp:1689](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1689) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1741](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1741) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:903](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L903) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_marks.cpp#L428)
+- behavior: [codemp/rd-vulkan/tr_marks.cpp:428](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_marks.cpp#L428)
+- behavior: [shared/rd-rend2/tr_marks.cpp:436](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_marks.cpp#L436)

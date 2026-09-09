@@ -17,12 +17,15 @@ Restarts the filesystem if no module is currently using files from a pk3
 
 | Field | Value |
 |:--|:--|
+| Category | Files & downloads |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `fs_restart` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`97745ce2823e`](https://github.com/eternalcodes/EternalJK/commit/97745ce2823e9cb6f7ab683fcfe765cea40540ca) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-05-06`, integrated `2019-05-06`)
-- Upstream registration evidence: [codemp/qcommon/files.cpp:4142](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/files.cpp#L4142)
+- Upstream registration evidence: [codemp/qcommon/files.cpp:4142](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/files.cpp#L4142)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -65,6 +68,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:4009](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4009) (Cmd_AddCommand)
-- registration: [codemp/qcommon/files.cpp:4419](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4419) (Cmd_AddCommand)
-- handler: [codemp/qcommon/files.cpp:4532](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4532)
+- registration: [codemp/qcommon/files.cpp:4009](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4009) (Cmd_AddCommand)
+- registration: [codemp/qcommon/files.cpp:4419](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4419) (Cmd_AddCommand)
+- handler: [codemp/qcommon/files.cpp:4532](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4532)

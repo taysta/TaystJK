@@ -15,12 +15,15 @@ Confirm pk3 downloads from the server
 
 | Field | Value |
 |:--|:--|
+| Category | Files & downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
@@ -42,7 +45,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - TaystJK integration evidence: [`596ae40cc9aa`](https://github.com/taysta/TaystJK/commit/596ae40cc9aa24600f282fdac79b79b2ebef0be0)
 - Origin pull request: [#1185](https://github.com/JACoders/OpenJK/pull/1185)
 - TaystJK integration pull request: [#52](https://github.com/taysta/TaystJK/pull/52)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2833](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2833)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2833](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2833)
 - Attribution method: `authored-pr-chronology+cross-project-pr-link`
 - Attribution confidence: `high`
 - Notes: openjk retains origin because content authorship and PR submission predate the project that merged the work first.
@@ -68,6 +71,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3407](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3407) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1592](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1592)
-- behavior: [codemp/client/cl_main.cpp:1555](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1555)
+- registration: [codemp/client/cl_main.cpp:3407](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3407) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1592](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1592)
+- behavior: [codemp/client/cl_main.cpp:1555](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1555)

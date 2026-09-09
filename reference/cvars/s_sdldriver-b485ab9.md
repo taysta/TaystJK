@@ -17,12 +17,15 @@ Controls `s_sdlDriver` in the engine-shared module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `` |
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
@@ -59,6 +62,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_sound.cpp:168](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L168) (Cvar_Get)
-- behavior: [shared/sdl/sdl_sound.cpp:171](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L171)
-- behavior: [shared/sdl/sdl_sound.cpp:173](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L173)
+- registration: [shared/sdl/sdl_sound.cpp:168](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L168) (Cvar_Get)
+- behavior: [shared/sdl/sdl_sound.cpp:171](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L171)
+- behavior: [shared/sdl/sdl_sound.cpp:173](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_sound.cpp#L173)

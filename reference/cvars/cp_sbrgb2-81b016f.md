@@ -17,12 +17,15 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780) |
 
 ## Flags
 
@@ -52,7 +55,7 @@ Controls `cp_sbRGB2` in the cgame module. Consult the cited behavior reads befor
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`272692a04413`](https://github.com/eternalcodes/EternalJK/commit/272692a0441369b6cde4858141428037f80f145c) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2015-11-11`, integrated `2015-11-11`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:177](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L177)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:177](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L177)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -81,10 +84,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:206](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L206) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:46](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L46) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780)
-- behavior: [codemp/ui/ui_main.c:6971](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6971)
-- behavior: [codemp/cgame/cg_consolecmds.c:920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L920)
-- behavior: [codemp/cgame/cg_players.c:2226](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2226)
-- behavior: [codemp/ui/ui_main.c:6782](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6782)
+- registration: [codemp/cgame/cg_xcvar.h:206](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L206) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:46](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L46) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:6780](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6780)
+- behavior: [codemp/ui/ui_main.c:6971](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6971)
+- behavior: [codemp/cgame/cg_consolecmds.c:920](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L920)
+- behavior: [codemp/cgame/cg_players.c:2226](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2226)
+- behavior: [codemp/ui/ui_main.c:6782](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6782)

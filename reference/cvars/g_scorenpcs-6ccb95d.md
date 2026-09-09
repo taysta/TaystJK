@@ -17,12 +17,15 @@ Controls `g_scoreNPCs` in the game module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Category | Bots & AI |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `2` |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`3340e21e273b`](https://github.com/videoP/jaPRO/commit/3340e21e273b5f68f4e617ac35b38bedc5d34d81) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-10-01`, integrated `2018-10-03`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:288](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L288)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:288](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L288)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -59,6 +62,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:287](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L287) (XCVAR_DEF)
-- behavior: [codemp/game/g_combat.c:2652](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L2652)
-- behavior: [codemp/game/g_combat.c:2656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L2656)
+- registration: [codemp/game/g_xcvar.h:287](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L287) (XCVAR_DEF)
+- behavior: [codemp/game/g_combat.c:2652](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L2652)
+- behavior: [codemp/game/g_combat.c:2656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L2656)

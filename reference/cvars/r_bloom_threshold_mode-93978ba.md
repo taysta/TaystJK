@@ -15,12 +15,15 @@ Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,9 +33,9 @@ Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | (r|g|b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
-| `1` | (r + g + b ) / 3 >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
-| `2` | Luma(r, g, b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `0` | (r|g|b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `1` | (r + g + b ) / 3 >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
+| `2` | Luma(r, g, b) >= threshold. | [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 - Ultimate-origin introduction: [`e0d1076c4507`](https://github.com/JKSunny/EternalJK/commit/e0d1076c45074dc00d0defa0c089a18a731021a8) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2023-10-26`, integrated `2023-10-26`)
 - TaystJK integration evidence: [`85114c9abfce`](https://github.com/taysta/TaystJK/commit/85114c9abfce0a2c70681224b30ef0bafac2a186)
-- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:941](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L941)
+- Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:941](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L941)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -61,5 +64,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) (Cvar_Get)
-- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1518](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1518)
+- registration: [codemp/rd-vulkan/tr_init.cpp:942](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L942) (Cvar_Get)
+- behavior: [codemp/rd-vulkan/vk_pipelines.cpp:1518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L1518)

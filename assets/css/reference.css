@@ -447,7 +447,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 
 .catalog-filters {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: .7rem;
 }
 
@@ -652,6 +652,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .card-scopes { margin-bottom: .55rem; }
 
 .meta-chip,
+.coverage-chip,
 .renderer-chip,
 .status-chip,
 .mini-origin,
@@ -670,6 +671,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 }
 
 .meta-chip { color: var(--muted); background: #0a0f18; border-color: var(--line); }
+.coverage-chip { color: var(--accent); background: rgba(104, 225, 212, .07); border-color: rgba(104, 225, 212, .2); }
 .renderer-chip { color: #a9d4f3; background: rgba(79, 156, 209, .10); border-color: rgba(79, 156, 209, .23); }
 .status-chip { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }
 
@@ -707,6 +709,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
 .browse-section { padding: 6rem 0 2rem; }
+.home-browse { padding-top: 1rem; }
 .section-heading > p { max-width: 450px; margin: 0; }
 .browse-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; margin-top: 1.7rem; }
 

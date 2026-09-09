@@ -17,12 +17,15 @@ Controls `r_speeds` in the renderer module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `r_speeds` in the renderer module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/rd-vanilla/tr_cmds.cpp:40](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L40) |
-| `2` | Selects the code path tested for value 2. | [codemp/rd-vanilla/tr_cmds.cpp:46](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L46) |
+| `1` | Selects the code path tested for value 1. | [codemp/rd-vanilla/tr_cmds.cpp:40](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L40) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-vanilla/tr_cmds.cpp:46](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L46) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Controls `r_speeds` in the renderer module. Consult the cited behavior reads bef
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/renderer/tr_init.cpp:1217](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1217)
+- Upstream registration evidence: [code/renderer/tr_init.cpp:1217](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1217)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -80,12 +83,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:416](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L416) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1669](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1669) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1726](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1726) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:888](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L888) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:1257](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L1257)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:1286](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L1286)
-- behavior: [codemp/rd-vanilla/tr_cmds.cpp:33](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L33)
-- behavior: [codemp/rd-vanilla/tr_cmds.cpp:40](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L40)
-- behavior: [codemp/rd-vanilla/tr_cmds.cpp:46](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L46)
+- registration: [codemp/rd-dedicated/tr_init.cpp:416](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L416) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1669](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1669) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1726](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1726) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:888](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L888) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:1257](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L1257)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:1286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L1286)
+- behavior: [codemp/rd-vanilla/tr_cmds.cpp:33](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L33)
+- behavior: [codemp/rd-vanilla/tr_cmds.cpp:40](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L40)
+- behavior: [codemp/rd-vanilla/tr_cmds.cpp:46](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_cmds.cpp#L46)

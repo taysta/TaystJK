@@ -17,12 +17,15 @@ Controls `r_flares` in the renderer module. Consult the cited behavior reads bef
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | Yes — [ingame_setup.menu:2711](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L2711), [setup.menu:2271](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L2271) |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `r_flares` in the renderer module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695) |
 
 ## Flags
 
@@ -54,7 +57,7 @@ Controls `r_flares` in the renderer module. Consult the cited behavior reads bef
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/renderer/tr_init.cpp:1152](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1152)
+- Upstream registration evidence: [code/renderer/tr_init.cpp:1152](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/renderer/tr_init.cpp#L1152)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -82,12 +85,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:363](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L363) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1612](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1612) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1672) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:825](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L825) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695)
-- behavior: [codemp/rd-vanilla/tr_surface.cpp:1718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1718)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2168](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2168)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2185](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2185)
-- behavior: [codemp/rd-vulkan/tr_surface.cpp:2201](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2201)
+- registration: [codemp/rd-dedicated/tr_init.cpp:363](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L363) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1612](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1612) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1672](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1672) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:825](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L825) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_surface.cpp:1695](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1695)
+- behavior: [codemp/rd-vanilla/tr_surface.cpp:1718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surface.cpp#L1718)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2168](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2168)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2185](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2185)
+- behavior: [codemp/rd-vulkan/tr_surface.cpp:2201](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surface.cpp#L2201)

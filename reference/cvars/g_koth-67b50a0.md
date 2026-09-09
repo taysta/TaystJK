@@ -17,12 +17,15 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342) |
-| `1` | Enabled. | [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342) |
+| `0` | Disabled. | [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342) |
+| `1` | Enabled. | [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`6e78add659de`](https://github.com/eternalcodes/EternalJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-09-01`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:281](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/game/g_xcvar.h#L281)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:281](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/game/g_xcvar.h#L281)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -71,6 +74,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:286](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L286) (XCVAR_DEF)
-- behavior: [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342)
-- behavior: [codemp/game/g_trigger.c:2642](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L2642)
+- registration: [codemp/game/g_xcvar.h:286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L286) (XCVAR_DEF)
+- behavior: [codemp/game/g_trigger.c:3342](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L3342)
+- behavior: [codemp/game/g_trigger.c:2642](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L2642)

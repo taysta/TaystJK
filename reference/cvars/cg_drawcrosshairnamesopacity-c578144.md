@@ -15,12 +15,15 @@ Multiplies the target-name fade alpha by this opacity. Runtime use clamps the ef
 
 | Field | Value |
 |:--|:--|
+| Category | Crosshair & aiming |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:592](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L592) |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -63,8 +66,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:274](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L274) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:40](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L40) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9581](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9581)
-- behavior: [codemp/ui/ui_xdocs.h:592](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L592)
-- documentation: [codemp/ui/ui_xdocs.h:592](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L592)
+- registration: [codemp/cgame/cg_xcvar.h:274](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L274) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:40](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L40) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9581](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9581)
+- behavior: [codemp/ui/ui_xdocs.h:592](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L592)
+- documentation: [codemp/ui/ui_xdocs.h:592](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L592)

@@ -9,21 +9,27 @@ const cvar = catalog.prepareEntry({
   kind: "cvar",
   name: "r_bloom",
   summary: "Enable bloom post-processing",
+  category: "Graphics & rendering",
   module: "renderer",
   renderer: ["rd-rend2", "rd-vulkan"],
   flags: ["CVAR_ARCHIVE"],
   network: "client-only",
   origin: "rend2",
+  xdocs: true,
+  menu: false,
   values: [{ value: "1", meaning: "Enable bloom" }]
 });
 const command = catalog.prepareEntry({
   kind: "command",
   name: "download",
   summary: "Download a file from the server",
+  category: "Files & downloads",
   module: "engine-client",
   renderer: [],
   network: "needs-server-support",
   origin: "taystjk",
+  xdocs: false,
+  menu: true,
   syntax: "download <path>"
 });
 
@@ -32,9 +38,11 @@ function state(overrides = {}) {
     kind: "all",
     origin: "",
     module: "",
+    category: "",
     renderer: "",
     status: "",
     network: "",
+    coverage: "",
     flag: "",
     query: "",
     tokens: [],
@@ -52,6 +60,10 @@ assert.equal(catalog.entryMatches(command, state({ renderer: ["rd-vulkan", "none
 assert.equal(catalog.entryMatches(command, state({ renderer: "none" })), true);
 assert.equal(catalog.entryMatches(command, state({ kind: "cvar" })), false);
 assert.equal(catalog.entryMatches(cvar, state({ flag: "CVAR_ARCHIVE" })), true);
+assert.equal(catalog.entryMatches(cvar, state({ category: "Graphics & rendering" })), true);
+assert.equal(catalog.entryMatches(cvar, state({ coverage: "xdocs" })), true);
+assert.equal(catalog.entryMatches(cvar, state({ coverage: "menu" })), false);
+assert.equal(catalog.entryMatches(command, state({ coverage: ["xdocs", "menu"] })), true);
 assert.deepEqual(catalog.sortEntries([command, cvar], state({ query: "r_bloom", tokens: ["r_bloom"] }))[0], cvar);
 assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar" }))).length, metadata.counts.cvars);
 assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "command" }))).length, metadata.counts.commands);

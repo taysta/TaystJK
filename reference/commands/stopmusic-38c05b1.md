@@ -17,12 +17,15 @@ Stops all music
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `stopmusic` |
 | Cheat protected | No |
 
@@ -35,7 +38,7 @@ No verified argument schema is available beyond the syntax shown above.
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`6af6b30a2658`](https://github.com/JACoders/OpenJK/commit/6af6b30a26589bf375b01c5d1e1a0490fb3c9074) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-08-17`, integrated `2014-08-17`)
-- Upstream registration evidence: [code/client/snd_dma.cpp:480](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/snd_dma.cpp#L480)
+- Upstream registration evidence: [code/client/snd_dma.cpp:480](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/code/client/snd_dma.cpp#L480)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -66,5 +69,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:494](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L494) (Cmd_AddCommand)
-- handler: [codemp/client/snd_dma.cpp:3780](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3780)
+- registration: [codemp/client/snd_dma.cpp:494](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L494) (Cmd_AddCommand)
+- handler: [codemp/client/snd_dma.cpp:3780](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3780)

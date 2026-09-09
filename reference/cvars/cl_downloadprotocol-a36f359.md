@@ -17,12 +17,15 @@ Reports the protocol selected for the active file download. The client sets this
 
 | Field | Value |
 |:--|:--|
+| Category | Files & downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Reports the protocol selected for the active file download. The client sets this
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `HTTP` | Download from the server's advertised HTTP endpoint. | [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1547) |
-| `UDP` | Use the legacy in-protocol UDP download path. | [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1549) |
+| `HTTP` | Download from the server's advertised HTTP endpoint. | [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1547) |
+| `UDP` | Use the legacy in-protocol UDP download path. | [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1549) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 - TaystJK integration evidence: [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d)
 - Origin pull request: [#169](https://github.com/taysta/TaystJK/pull/169)
 - Matching squash bullet: `[HTTP-AutoDL] Libmongoose 7 port from jk2mv`
-- Upstream registration evidence: [src/client/cl_main.cpp:2960](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_main.cpp#L2960)
+- Upstream registration evidence: [src/client/cl_main.cpp:2960](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/client/cl_main.cpp#L2960)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv.
@@ -64,7 +67,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3411](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3411) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1557](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1557)
-- behavior: [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1547)
-- behavior: [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1549)
+- registration: [codemp/client/cl_main.cpp:3411](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3411) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1557](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1557)
+- behavior: [codemp/client/cl_main.cpp:1547](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1547)
+- behavior: [codemp/client/cl_main.cpp:1549](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1549)

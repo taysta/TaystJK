@@ -17,12 +17,15 @@ Runs `Cmd_ThrowNade_f` in the game module.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `thrownade` |
 | Cheat protected | No |
 
@@ -38,7 +41,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`7dce9a576823`](https://github.com/videoP/jaPRO/commit/7dce9a5768238bbc22a004660c36c252c217701f) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-02-05`, integrated `2024-02-05`)
 - Origin pull request: [#134](https://github.com/taysta/TaystJK/pull/134)
 - Matching squash bullet: `thrownade command`
-- Upstream registration evidence: [codemp/game/g_cmds.c:9066](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9066)
+- Upstream registration evidence: [codemp/game/g_cmds.c:9066](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_cmds.c#L9066)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -63,5 +66,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_cmds.c:9064](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9064) (game command table)
-- handler: [codemp/game/g_cmds.c:8660](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660)
+- registration: [codemp/game/g_cmds.c:9064](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9064) (game command table)
+- handler: [codemp/game/g_cmds.c:8660](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660)

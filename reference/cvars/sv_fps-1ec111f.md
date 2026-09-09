@@ -15,12 +15,15 @@ Server frames per second
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `game`, `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `40` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,14 +33,14 @@ Server frames per second
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L647) |
-| `20` | Selects the code path tested for value 20. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
-| `30` | Selects the code path tested for value 30. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
-| `40` | Selects the code path tested for value 40. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
+| `0` | Selects the code path tested for value 0. | [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L647) |
+| `20` | Selects the code path tested for value 20. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
+| `30` | Selects the code path tested for value 30. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
+| `40` | Selects the code path tested for value 40. | [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351) |
 
 ## Enforced ranges
 
-- `0` through `1000` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:1015](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1015)
+- `0` through `1000` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:1015](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1015)
 
 ## Flags
 
@@ -56,7 +59,7 @@ Server frames per second
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/server/sv_init.cpp:491](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/server/sv_init.cpp#L491)
+- Upstream registration evidence: [code/server/sv_init.cpp:491](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/server/sv_init.cpp#L491)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -104,10 +107,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:177](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L177) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:1014](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1014) (Cvar_Get)
-- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L647)
-- behavior: [codemp/game/g_active.c:6047](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L6047)
-- behavior: [codemp/game/g_client.c:2703](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2703)
-- behavior: [codemp/game/g_cmds.c:8760](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8760)
-- behavior: [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351)
+- registration: [codemp/game/g_xcvar.h:177](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L177) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:1014](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1014) (Cvar_Get)
+- behavior: [codemp/cgame/cg_snapshot.c:647](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L647)
+- behavior: [codemp/game/g_active.c:6047](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L6047)
+- behavior: [codemp/game/g_client.c:2703](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2703)
+- behavior: [codemp/game/g_cmds.c:8760](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8760)
+- behavior: [codemp/game/g_trigger.c:1351](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1351)

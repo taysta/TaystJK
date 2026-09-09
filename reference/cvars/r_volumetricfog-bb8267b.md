@@ -17,12 +17,15 @@ Disable/enable lightgrid lighting on fog volumes
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Disable/enable lightgrid lighting on fog volumes
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504) |
-| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504) |
+| `0` | Disabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504) |
+| `1` | Enabled. | [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 - Ultimate-origin introduction: [`3c0bc65b40ea`](https://github.com/SomaZ/OpenJK/commit/3c0bc65b40ea5e08b9b056560f34c9e991dc522e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2025-02-21`, integrated `2025-02-25`)
 - TaystJK integration evidence: [`c98ecf977bd3`](https://github.com/taysta/TaystJK/commit/c98ecf977bd3b652b1a7974cd21ee1f80a1b7aad)
 - Origin pull request: [#217](https://github.com/taysta/TaystJK/pull/217)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1548](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1548)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1548](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1548)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits rend2.
@@ -65,9 +68,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1583](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1583) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504)
-- behavior: [shared/rd-rend2/tr_backend.cpp:2443](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L2443)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4200](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4200)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:4391](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4391)
-- behavior: [shared/rd-rend2/tr_glsl.cpp:382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L382)
+- registration: [codemp/rd-rend2/tr_init.cpp:1583](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1583) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_backend.cpp:1504](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L1504)
+- behavior: [shared/rd-rend2/tr_backend.cpp:2443](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L2443)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4200](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4200)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:4391](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L4391)
+- behavior: [shared/rd-rend2/tr_glsl.cpp:382](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L382)

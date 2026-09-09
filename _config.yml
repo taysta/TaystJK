@@ -1,7 +1,7 @@
 remote_theme: just-the-docs/just-the-docs
 
 title: TaystJK
-description: An improved Jedi Academy Multiplayer client
+description: Documentation for the TaystJK Jedi Academy multiplayer client and dedicated server
 baseurl: "/TaystJK" # the subpath of your site, e.g. /blog
 url: "https://taysta.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 

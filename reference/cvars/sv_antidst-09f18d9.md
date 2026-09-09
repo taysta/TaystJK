@@ -17,12 +17,15 @@ Attempts to detect and kick players injecting or using DST
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Attempts to detect and kick players injecting or using DST
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278) |
-| `1` | Enabled. | [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278) |
+| `0` | Disabled. | [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278) |
+| `1` | Enabled. | [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Attempts to detect and kick players injecting or using DST
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`953b37ce8fef`](https://github.com/eternalcodes/EternalJK/commit/953b37ce8fefe7b3345243263f0334975ef59845) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-05-04`, integrated `2019-05-04`)
-- Upstream registration evidence: [codemp/server/sv_init.cpp:1032](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_init.cpp#L1032)
+- Upstream registration evidence: [codemp/server/sv_init.cpp:1032](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_init.cpp#L1032)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -71,6 +74,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1071](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1071) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278)
-- behavior: [codemp/server/sv_client.cpp:1462](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1462)
+- registration: [codemp/server/sv_init.cpp:1071](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1071) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/server/sv_client.cpp:1278](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1278)
+- behavior: [codemp/server/sv_client.cpp:1462](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_client.cpp#L1462)

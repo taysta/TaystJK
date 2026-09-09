@@ -17,12 +17,15 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
+| Category | Chat & social |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `8` | Enables the `JAPRO_CHATLOG_CENTERPRINT` code path. | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L163) |
-| `1` | Enables the `JAPRO_CHATLOG_ENABLE` code path. | [codemp/cgame/cg_local.h:159](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L159) |
-| `4` | Enables the `JAPRO_CHATLOG_OLDTIMESTAMP` code path. | [codemp/cgame/cg_local.h:161](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L161) |
+| `8` | Enables the `JAPRO_CHATLOG_CENTERPRINT` code path. | [codemp/cgame/cg_local.h:163](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L163) |
+| `1` | Enables the `JAPRO_CHATLOG_ENABLE` code path. | [codemp/cgame/cg_local.h:159](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L159) |
+| `4` | Enables the `JAPRO_CHATLOG_OLDTIMESTAMP` code path. | [codemp/cgame/cg_local.h:161](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L161) |
 
 ## Flags
 
@@ -45,7 +48,7 @@ Controls `cg_logChat` in the cgame module. Consult the cited behavior reads befo
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`f1b9b895897d`](https://github.com/eternalcodes/EternalJK/commit/f1b9b895897d19abcc7cfba7f63015a627e80df2) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2015-11-18`, integrated `2015-11-18`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:157](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L157)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:157](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L157)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
@@ -76,9 +79,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:186](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L186) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_consolecmds.c:1929](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1929)
-- behavior: [codemp/cgame/cg_draw.c:10656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10656)
-- behavior: [codemp/cgame/cg_main.c:2718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2718)
-- behavior: [codemp/cgame/cg_main.c:3123](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3123)
-- behavior: [codemp/cgame/cg_servercmds.c:1640](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1640)
+- registration: [codemp/cgame/cg_xcvar.h:186](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L186) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_consolecmds.c:1929](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1929)
+- behavior: [codemp/cgame/cg_draw.c:10656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L10656)
+- behavior: [codemp/cgame/cg_main.c:2718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L2718)
+- behavior: [codemp/cgame/cg_main.c:3123](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3123)
+- behavior: [codemp/cgame/cg_servercmds.c:1640](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L1640)

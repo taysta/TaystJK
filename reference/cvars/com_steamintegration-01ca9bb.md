@@ -17,12 +17,15 @@ Enables automatic Steam API integration (requires a steam_api64.dll to be in Gam
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `int` |
 | Restart | Yes; the value is latched. |
@@ -49,7 +52,7 @@ No discrete value list is enforced or documented in the inspected source.
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 - Ultimate-origin introduction: [`df21cc35f5ef`](https://github.com/eternalcodes/EternalJK/commit/df21cc35f5ef9cb78a9003abf7c5ab1acbe31dfe) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-03-21`, integrated `2019-03-21`)
-- Upstream registration evidence: [codemp/qcommon/common.cpp:1237](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/common.cpp#L1237)
+- Upstream registration evidence: [codemp/qcommon/common.cpp:1237](https://github.com/eternalcodes/EternalJK/blame/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/common.cpp#L1237)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -75,7 +78,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1452](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1452) (Cvar_Get); condition `!defined(DEDICATED) && defined(_WIN64)`
-- registration: [codemp/qcommon/common.cpp:1454](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1454) (Cvar_Get); condition `!defined(DEDICATED) && else(defined(_WIN64))`
-- behavior: [shared/sys/sys_win32.cpp:740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L740)
-- behavior: [shared/sys/sys_win32.cpp:742](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L742)
+- registration: [codemp/qcommon/common.cpp:1452](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1452) (Cvar_Get); condition `!defined(DEDICATED) && defined(_WIN64)`
+- registration: [codemp/qcommon/common.cpp:1454](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1454) (Cvar_Get); condition `!defined(DEDICATED) && else(defined(_WIN64))`
+- behavior: [shared/sys/sys_win32.cpp:740](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L740)
+- behavior: [shared/sys/sys_win32.cpp:742](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L742)

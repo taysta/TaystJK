@@ -17,12 +17,15 @@ Mouse accelration style (0:legacy, 1:QuakeLive)
 
 | Field | Value |
 |:--|:--|
+| Category | Input & controls |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Mouse accelration style (0:legacy, 1:QuakeLive)
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Legacy. | [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) |
-| `1` | QuakeLive). | [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) |
+| `0` | Legacy. | [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) |
+| `1` | QuakeLive). | [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Mouse accelration style (0:legacy, 1:QuakeLive)
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`ae0f733b9635`](https://github.com/JACoders/OpenJK/commit/ae0f733b9635c7e17c8fc644ea1133ffb399ae37) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-05-15`, integrated `2014-05-15`)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:2780](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2780)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:2780](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2780)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -74,5 +77,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1100](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1100)
+- registration: [codemp/client/cl_main.cpp:3355](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3355) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1100](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1100)

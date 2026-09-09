@@ -17,12 +17,15 @@ Controls `g_newVehicleDamageScale` in the game module. Consult the cited behavio
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -43,7 +46,7 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 - Ultimate-origin introduction: [`3567d72d98c5`](https://github.com/videoP/jaPRO/commit/3567d72d98c5b41549e76ef6e4841bb14c318fba) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-12-28`, integrated `2023-12-28`)
 - Origin pull request: [#64](https://github.com/taysta/TaystJK/pull/64)
 - Matching squash bullet: `g_newVehicleDamageScale`
-- Upstream registration evidence: [codemp/game/g_xcvar.h:289](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L289)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:289](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L289)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -59,6 +62,6 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L288) (XCVAR_DEF)
-- behavior: [codemp/game/bg_slidemove.c:466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L466)
-- behavior: [codemp/game/bg_slidemove.c:473](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L473)
+- registration: [codemp/game/g_xcvar.h:288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L288) (XCVAR_DEF)
+- behavior: [codemp/game/bg_slidemove.c:466](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L466)
+- behavior: [codemp/game/bg_slidemove.c:473](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_slidemove.c#L473)

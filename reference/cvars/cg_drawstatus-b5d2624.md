@@ -15,12 +15,15 @@ Controls whether the main HUD status elements are drawn
 
 | Field | Value |
 |:--|:--|
+| Category | HUD & interface |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286) |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -30,10 +33,10 @@ Controls whether the main HUD status elements are drawn
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | HUD disabled; no status elements are drawn | [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286) |
-| `1` | Draws the main HUD (health, armor, ammo, force power), the weapon/force/inventory selection panel, and the default CTF flag status indicators | [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286) |
-| `2` | Same as 1, but replaces the CTF flag status with a new style | [codemp/ui/ui_xdocs.h:288](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L288) |
-| `3` | Same as 1, but draws both the default and new style CTF flag status indicators | [codemp/ui/ui_xdocs.h:289](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L289) |
+| `0` | HUD disabled; no status elements are drawn | [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286) |
+| `1` | Draws the main HUD (health, armor, ammo, force power), the weapon/force/inventory selection panel, and the default CTF flag status indicators | [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286) |
+| `2` | Same as 1, but replaces the CTF flag status with a new style | [codemp/ui/ui_xdocs.h:288](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L288) |
+| `3` | Same as 1, but draws both the default and new style CTF flag status indicators | [codemp/ui/ui_xdocs.h:289](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L289) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls whether the main HUD status elements are drawn
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/cgame/cg_main.cpp:342](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L342)
+- Upstream registration evidence: [code/cgame/cg_main.cpp:342](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/cgame/cg_main.cpp#L342)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -65,10 +68,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:285](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L285) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:3675](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3675)
-- behavior: [codemp/cgame/cg_draw.c:6935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6935)
-- behavior: [codemp/cgame/cg_draw.c:11656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11656)
-- behavior: [codemp/cgame/cg_newDraw.c:570](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L570)
-- behavior: [codemp/cgame/cg_draw.c:9987](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9987)
-- documentation: [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286)
+- registration: [codemp/cgame/cg_xcvar.h:285](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L285) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:3675](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3675)
+- behavior: [codemp/cgame/cg_draw.c:6935](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6935)
+- behavior: [codemp/cgame/cg_draw.c:11656](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11656)
+- behavior: [codemp/cgame/cg_newDraw.c:570](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L570)
+- behavior: [codemp/cgame/cg_draw.c:9987](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9987)
+- documentation: [codemp/ui/ui_xdocs.h:286](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L286)

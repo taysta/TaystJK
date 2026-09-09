@@ -17,12 +17,15 @@ Play a sound when you hit someone
 
 | Field | Value |
 |:--|:--|
+| Category | Audio & music |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394) |
+| In-game menu | Yes — [ingame_setup.menu:4534](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L4534) |
 | Default | `0` |
 | Value type | `enum` |
 | Restart | No latch flag is registered. |
@@ -32,11 +35,11 @@ Play a sound when you hit someone
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play the hit sound (Base behavior) | [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394) |
-| `1` | Play the hit sound from Quake 3: Arena | [codemp/ui/ui_xdocs.h:395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L395) |
-| `2` | Play the hit sound from Legions: Overdrive | [codemp/ui/ui_xdocs.h:396](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L396) |
-| `3` | Play the hit sound from Warsow | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L397) |
-| `4` | Play the hit sound from Tribes: Ascend | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L397) |
+| `0` | Don't play the hit sound (Base behavior) | [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394) |
+| `1` | Play the hit sound from Quake 3: Arena | [codemp/ui/ui_xdocs.h:395](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L395) |
+| `2` | Play the hit sound from Legions: Overdrive | [codemp/ui/ui_xdocs.h:396](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L396) |
+| `3` | Play the hit sound from Warsow | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L397) |
+| `4` | Play the hit sound from Tribes: Ascend | [codemp/ui/ui_xdocs.h:397](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L397) |
 
 ## Flags
 
@@ -47,7 +50,7 @@ Play a sound when you hit someone
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:119](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L119)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:119](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L119)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits japro.
@@ -74,10 +77,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:122](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L122) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:2511](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2511)
-- behavior: [codemp/cgame/cg_playerstate.c:346](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L346)
-- behavior: [codemp/cgame/cg_playerstate.c:333](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L333)
-- behavior: [codemp/cgame/cg_event.c:2509](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2509)
-- behavior: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394)
-- documentation: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394)
+- registration: [codemp/cgame/cg_xcvar.h:122](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L122) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:2511](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2511)
+- behavior: [codemp/cgame/cg_playerstate.c:346](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L346)
+- behavior: [codemp/cgame/cg_playerstate.c:333](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L333)
+- behavior: [codemp/cgame/cg_event.c:2509](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L2509)
+- behavior: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394)
+- documentation: [codemp/ui/ui_xdocs.h:394](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L394)

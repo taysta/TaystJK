@@ -15,12 +15,15 @@ Adjust the height of the console
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0.5` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -41,7 +44,7 @@ Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 - Ultimate-origin introduction: [`b6f5ff52cbac`](https://github.com/taysta/TaystJK/commit/b6f5ff52cbac9adf917e0db8078fba73a4a81207) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2013-04-30`, PR opened `2024-02-09`, integrated `2024-02-19`)
 - Origin pull request: [#140](https://github.com/taysta/TaystJK/pull/140)
 - Matching squash bullet: `[Shared] Add con_height cvar to set console height. Set to 0 to restore previous behaviour.`
-- Upstream registration evidence: [codemp/client/cl_console.cpp:664](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L664)
+- Upstream registration evidence: [codemp/client/cl_console.cpp:664](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L664)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: taystjk retains origin because content authorship and PR submission predate the project that merged the work first.
@@ -68,5 +71,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_console.cpp:664](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L664) (Cvar_Get)
-- behavior: [codemp/client/cl_console.cpp:1244](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1244)
+- registration: [codemp/client/cl_console.cpp:664](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L664) (Cvar_Get)
+- behavior: [codemp/client/cl_console.cpp:1244](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L1244)

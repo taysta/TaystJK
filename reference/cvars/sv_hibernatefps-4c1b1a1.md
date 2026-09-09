@@ -15,12 +15,15 @@ The fps to use while the server is in hibernation mode.
 
 | Field | Value |
 |:--|:--|
+| Category | Server & networking |
 | Module | `engine-server` |
 | Also registered in | `engine-server` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `2` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -32,7 +35,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `1000` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
+- `1` through `1000` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
 
 ## Flags
 
@@ -44,7 +47,7 @@ Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
 - Ultimate-origin introduction: [`78f1a2051c05`](https://github.com/mvdevs/jk2mv/commit/78f1a2051c0535bee856781ffa59229e61974432) in <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> (content authored `2017-05-21`, integrated `2017-05-21`)
 - TaystJK integration evidence: [`c648f59e6b35`](https://github.com/taysta/TaystJK/commit/c648f59e6b353f9755a4890a1e6f27abb2491cd1)
-- Upstream registration evidence: [src/server/sv_init.cpp:885](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_init.cpp#L885)
+- Upstream registration evidence: [src/server/sv_init.cpp:885](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/src/server/sv_init.cpp#L885)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -71,8 +74,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1067](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1067) (Cvar_Get)
-- behavior: [codemp/server/sv_main.cpp:1165](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1165)
-- behavior: [codemp/server/sv_main.cpp:1232](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1232)
-- behavior: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
-- upstream-documentation: [CVARS.rst:581](https://github.com/mvdevs/jk2mv/blob/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L581)
+- registration: [codemp/server/sv_init.cpp:1067](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1067) (Cvar_Get)
+- behavior: [codemp/server/sv_main.cpp:1165](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1165)
+- behavior: [codemp/server/sv_main.cpp:1232](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L1232)
+- behavior: [codemp/server/sv_init.cpp:1068](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1068)
+- upstream-documentation: [CVARS.rst:581](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L581)

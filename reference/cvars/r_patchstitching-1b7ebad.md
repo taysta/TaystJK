@@ -15,12 +15,15 @@ Enable stitching of neighbouring patch surfaces
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Enable stitching of neighbouring patch surfaces
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395) |
 
 ## Flags
 
@@ -54,7 +57,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - TaystJK integration evidence: [`ea0478621b05`](https://github.com/taysta/TaystJK/commit/ea0478621b0535dc6a6e5a22036237942e98c417)
 - Origin pull request: [#141](https://github.com/taysta/TaystJK/pull/141)
 - Matching squash bullet: `replace PATCH_STITCHING preprocessor define with r_patchStitching cvar (#1199)`
-- Upstream registration evidence: [codemp/rd-dedicated/tr_init.cpp:459](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-dedicated/tr_init.cpp#L459)
+- Upstream registration evidence: [codemp/rd-dedicated/tr_init.cpp:459](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-dedicated/tr_init.cpp#L459)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 - Notes: Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -83,13 +86,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:457](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L457) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1725](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1725) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1780](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1780) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:777](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L777) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:906](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L906) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1401](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1401)
-- behavior: [codemp/rd-vulkan/tr_bsp.cpp:1684](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_bsp.cpp#L1684)
-- behavior: [codemp/rd-vulkan/tr_bsp.cpp:1690](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_bsp.cpp#L1690)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:2421](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L2421)
+- registration: [codemp/rd-dedicated/tr_init.cpp:457](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L457) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1725](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1725) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1780](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1780) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:777](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L777) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:906](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L906) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1395](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1395)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:1401](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L1401)
+- behavior: [codemp/rd-vulkan/tr_bsp.cpp:1684](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_bsp.cpp#L1684)
+- behavior: [codemp/rd-vulkan/tr_bsp.cpp:1690](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_bsp.cpp#L1690)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:2421](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L2421)

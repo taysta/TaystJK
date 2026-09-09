@@ -17,12 +17,15 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 
 | Field | Value |
 |:--|:--|
+| Category | Engine & diagnostics |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585) |
-| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585) |
+| `0` | Disabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585) |
+| `1` | Enabled. | [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585) |
 
 ## Flags
 
@@ -44,7 +47,7 @@ Controls `cm_extraVerbose` in the engine-shared module. Consult the cited behavi
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`cd9bd8d9c874`](https://github.com/JACoders/OpenJK/commit/cd9bd8d9c8746b0043d9a561eeea03f83107d705) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-02-06`, integrated `2014-02-06`)
-- Upstream registration evidence: [codemp/qcommon/cm_load.cpp:637](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cm_load.cpp#L637)
+- Upstream registration evidence: [codemp/qcommon/cm_load.cpp:637](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/qcommon/cm_load.cpp#L637)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
@@ -65,5 +68,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
-- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585)
+- registration: [codemp/qcommon/cm_load.cpp:637](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_load.cpp#L637) (Cvar_Get); condition `!defined(BSPC)`
+- behavior: [codemp/qcommon/cm_patch.cpp:585](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L585)

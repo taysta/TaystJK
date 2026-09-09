@@ -17,12 +17,15 @@ Set gamma using pixel shaders inside the game window only.
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `1` |
 | Value type | `bool` |
 | Restart | Yes; the value is latched. |
@@ -32,8 +35,8 @@ Set gamma using pixel shaders inside the game window only.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718) |
 
 ## Flags
 
@@ -53,7 +56,7 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 - Ultimate-origin introduction: [`ead8e3618248`](https://github.com/JACoders/OpenJK/commit/ead8e36182483c48b624b7631ce0e37146054de7) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-07-25`, integrated `2015-07-25`)
 - TaystJK integration evidence: [`5ef5d7214371`](https://github.com/taysta/TaystJK/commit/5ef5d7214371ff3d3d0d84544ad8bbbd975e6593)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1575](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-vanilla/tr_init.cpp#L1575)
+- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1575](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-vanilla/tr_init.cpp#L1575)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -88,6 +91,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:1641](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1641) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:792](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L792) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1641](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1641) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:792](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L792) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_init.cpp:718](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L718)

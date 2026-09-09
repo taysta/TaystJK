@@ -17,12 +17,15 @@ Configure with the /stylePlayer command
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L464) |
+| In-game menu | Yes — [ingame_setup.menu:3060](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3060), [ingame_setup.menu:3082](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3082), [ingame_setup.menu:3208](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3208) |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,9 +35,9 @@ Configure with the /stylePlayer command
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `4` | Enables the `JAPRO_STYLE_HIDEDUELERS1` code path. | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L133) |
-| `1024` | Base | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L141) |
-| `2048` | Enables the `JAPRO_STYLE_HIDEYSALSHELL` code path. | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L142) |
+| `4` | Enables the `JAPRO_STYLE_HIDEDUELERS1` code path. | [codemp/cgame/cg_local.h:133](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L133) |
+| `1024` | Base | [codemp/cgame/cg_local.h:141](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L141) |
+| `2048` | Enables the `JAPRO_STYLE_HIDEYSALSHELL` code path. | [codemp/cgame/cg_local.h:142](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_local.h#L142) |
 
 ## Flags
 
@@ -52,7 +55,7 @@ Configure with the /stylePlayer command
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`1d5acfc05276`](https://github.com/videoP/jaPRO/commit/1d5acfc05276cbb6032b5fd9ccd01a8d41233763) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-04-19`, integrated `2018-04-19`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:133](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L133)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:133](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L133)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -110,11 +113,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:136](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L136) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:163](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L163) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9564](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9564)
-- behavior: [codemp/cgame/cg_draw.c:9572](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9572)
-- behavior: [codemp/cgame/cg_draw.c:11399](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11399)
-- behavior: [codemp/cgame/cg_draw.c:11433](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11433)
-- behavior: [codemp/cgame/cg_ents.c:930](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L930)
-- documentation: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L464)
+- registration: [codemp/cgame/cg_xcvar.h:136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L136) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:163](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L163) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9564](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9564)
+- behavior: [codemp/cgame/cg_draw.c:9572](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9572)
+- behavior: [codemp/cgame/cg_draw.c:11399](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11399)
+- behavior: [codemp/cgame/cg_draw.c:11433](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L11433)
+- behavior: [codemp/cgame/cg_ents.c:930](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L930)
+- documentation: [codemp/ui/ui_xdocs.h:464](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L464)

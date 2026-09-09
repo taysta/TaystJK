@@ -15,12 +15,15 @@ Render marks on all G2 models
 
 | Field | Value |
 |:--|:--|
+| Category | Graphics & rendering |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-rend2`, `rd-vanilla`, `rd-vulkan` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -30,8 +33,8 @@ Render marks on all G2 models
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558) |
-| `1` | Enabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558) |
+| `0` | Disabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558) |
+| `1` | Enabled. | [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558) |
 
 ## Flags
 
@@ -51,7 +54,7 @@ No cvar flags are registered at the cited site.
 Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span>
 
 - Baseline evidence: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494)
-- Upstream registration evidence: [code/ghoul2/G2_misc.cpp:565](https://github.com/JACoders/OpenJK/blob/14cea1563762076974bee277afadbd5bf234c494/code/ghoul2/G2_misc.cpp#L565)
+- Upstream registration evidence: [code/ghoul2/G2_misc.cpp:565](https://github.com/JACoders/OpenJK/blame/14cea1563762076974bee277afadbd5bf234c494/code/ghoul2/G2_misc.cpp#L565)
 - Attribution method: `present-in-openjk-initial-source-import`
 - Attribution confidence: `high`
 - Notes: Identifier is present in OpenJK's initial Raven source-import snapshot. Dated commit evidence identifies later registration changes relative to the origin snapshot.
@@ -74,16 +77,16 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-dedicated/G2_misc.cpp:1503](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L1503) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-rend2/G2_misc.cpp:545](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L545) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-rend2/G2_misc.cpp:1485](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L1485) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vanilla/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vanilla/G2_misc.cpp:1504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L1504) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vulkan/G2_misc.cpp:562](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_misc.cpp#L562) (Cvar_Get); condition `defined(_G2_GORE)`
-- registration: [codemp/rd-vulkan/G2_misc.cpp:1568](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_misc.cpp#L1568) (Cvar_Get); condition `defined(_G2_GORE)`
-- behavior: [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558)
-- behavior: [codemp/rd-dedicated/G2_misc.cpp:1507](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L1507)
-- behavior: [codemp/rd-rend2/G2_misc.cpp:549](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L549)
-- behavior: [codemp/rd-rend2/G2_misc.cpp:1489](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L1489)
-- behavior: [codemp/rd-vanilla/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L558)
+- registration: [codemp/rd-dedicated/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-dedicated/G2_misc.cpp:1503](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L1503) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-rend2/G2_misc.cpp:545](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L545) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-rend2/G2_misc.cpp:1485](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L1485) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vanilla/G2_misc.cpp:554](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L554) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vanilla/G2_misc.cpp:1504](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L1504) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vulkan/G2_misc.cpp:562](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_misc.cpp#L562) (Cvar_Get); condition `defined(_G2_GORE)`
+- registration: [codemp/rd-vulkan/G2_misc.cpp:1568](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_misc.cpp#L1568) (Cvar_Get); condition `defined(_G2_GORE)`
+- behavior: [codemp/rd-dedicated/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L558)
+- behavior: [codemp/rd-dedicated/G2_misc.cpp:1507](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_misc.cpp#L1507)
+- behavior: [codemp/rd-rend2/G2_misc.cpp:549](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L549)
+- behavior: [codemp/rd-rend2/G2_misc.cpp:1489](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_misc.cpp#L1489)
+- behavior: [codemp/rd-vanilla/G2_misc.cpp:558](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_misc.cpp#L558)

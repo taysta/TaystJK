@@ -17,12 +17,15 @@ Configured with /tweakForce command.
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bitmask` |
 | Restart | No latch flag is registered. |
@@ -32,10 +35,10 @@ Configured with /tweakForce command.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1048576` | Not really a forcetweak but no room in weapon tweaks! | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L267) |
-| `128` | Enables the `FT_FASTGRIP` code path. | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L254) |
-| `16` | Enables the `FT_FORCECOMBO` code path. | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L251) |
-| `262144` | Enables the `FT_NORAGEFIRERATE` code path. | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L265) |
+| `1048576` | Not really a forcetweak but no room in weapon tweaks! | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L267) |
+| `128` | Enables the `FT_FASTGRIP` code path. | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L254) |
+| `16` | Enables the `FT_FORCECOMBO` code path. | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L251) |
+| `262144` | Enables the `FT_NORAGEFIRERATE` code path. | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L265) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Configured with /tweakForce command.
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-17`, integrated `2018-01-01`)
-- Upstream registration evidence: [codemp/game/g_xcvar.h:210](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L210)
+- Upstream registration evidence: [codemp/game/g_xcvar.h:210](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L210)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
 - Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
@@ -81,10 +84,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L8079)
-- behavior: [codemp/game/bg_pmove.c:11228](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11228)
-- behavior: [codemp/game/bg_pmove.c:12017](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12017)
-- behavior: [codemp/game/bg_pmove.c:12029](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12029)
-- behavior: [codemp/game/bg_pmove.c:14117](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L14117)
-- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L29)
+- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L8079)
+- behavior: [codemp/game/bg_pmove.c:11228](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11228)
+- behavior: [codemp/game/bg_pmove.c:12017](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12017)
+- behavior: [codemp/game/bg_pmove.c:12029](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12029)
+- behavior: [codemp/game/bg_pmove.c:14117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L14117)
+- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L29)

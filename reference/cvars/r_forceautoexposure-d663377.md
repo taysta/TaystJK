@@ -17,12 +17,15 @@ Controls `r_forceAutoExposure` in the renderer module. Consult the cited behavio
 
 | Field | Value |
 |:--|:--|
+| Category | Gameplay & combat |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Default | `0` |
 | Value type | `bool` |
 | Restart | No latch flag is registered. |
@@ -32,8 +35,8 @@ Controls `r_forceAutoExposure` in the renderer module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412) |
-| `1` | Enabled. | [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412) |
+| `0` | Disabled. | [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412) |
+| `1` | Enabled. | [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412) |
 
 ## Flags
 
@@ -46,7 +49,7 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 - Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2013-10-08`, integrated `2023-10-03`)
 - TaystJK integration evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
 - Origin pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1514](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1514)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1514](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1514)
 - Attribution method: `introduction-commit-explicit-credit`
 - Attribution confidence: `high`
 
@@ -64,7 +67,7 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1549](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1549) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3220)
-- behavior: [shared/rd-rend2/tr_shade.cpp:1881](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shade.cpp#L1881)
+- registration: [codemp/rd-rend2/tr_init.cpp:1549](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1549) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_scene.cpp:412](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L412)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3220](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3220)
+- behavior: [shared/rd-rend2/tr_shade.cpp:1881](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shade.cpp#L1881)

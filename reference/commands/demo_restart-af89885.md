@@ -15,12 +15,15 @@ Restarts the current or last-played demo
 
 | Field | Value |
 |:--|:--|
+| Category | Demos & media |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `high` |
+| In-game xdocs | No |
+| In-game menu | No |
 | Syntax | `demo_restart` |
 | Cheat protected | No |
 
@@ -34,7 +37,7 @@ Origin: <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span>
 
 - Ultimate-origin introduction: [`4e0ab9f26795`](https://github.com/jkanewmod/NewJK/commit/4e0ab9f26795b5583a9d7974f9279d04eec90fb9) in <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> (content authored `2018-09-14`, integrated `2018-09-14`)
 - TaystJK integration evidence: [`94672e48ece0`](https://github.com/taysta/TaystJK/commit/94672e48ece0771144723030e011e2443c68a435)
-- Upstream registration evidence: [codemp/client/cl_main.cpp:3316](https://github.com/jkanewmod/NewJK/blob/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/client/cl_main.cpp#L3316)
+- Upstream registration evidence: [codemp/client/cl_main.cpp:3316](https://github.com/jkanewmod/NewJK/blame/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541/codemp/client/cl_main.cpp#L3316)
 - Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
@@ -63,5 +66,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3475](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3475) (Cmd_AddCommand)
-- handler: [codemp/client/cl_main.cpp:631](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L631)
+- registration: [codemp/client/cl_main.cpp:3475](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3475) (Cmd_AddCommand)
+- handler: [codemp/client/cl_main.cpp:631](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L631)
