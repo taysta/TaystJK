@@ -171,6 +171,27 @@ pre code { padding: 0; background: none; border: 0; }
 .header-github:hover { color: var(--text); border-color: var(--line-bright); }
 .header-github svg { width: 17px; fill: currentColor; }
 
+.wip-banner {
+  color: var(--text-soft);
+  background: rgba(239, 198, 109, .09);
+  border-bottom: 1px solid rgba(239, 198, 109, .24);
+}
+
+.wip-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem .7rem;
+  width: min(calc(100% - 2.5rem), var(--wide));
+  min-height: 42px;
+  margin: auto;
+  font-size: .82rem;
+  text-align: center;
+}
+
+.wip-banner strong { color: var(--gold); }
+.wip-banner a { font-weight: 750; white-space: nowrap; }
+
 .site-main {
   width: min(calc(100% - 2.5rem), var(--content));
   min-height: calc(100vh - 310px);
@@ -922,6 +943,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   .brand-mark { width: 34px; height: 34px; }
   .site-nav { flex: 1; justify-content: space-between; gap: 0; }
   .site-nav a { padding: .45rem .42rem; font-size: .72rem; }
+  .wip-banner-inner { flex-wrap: wrap; gap: .1rem .45rem; width: min(calc(100% - 1.25rem), var(--wide)); padding: .5rem 0; line-height: 1.4; }
   .site-main,
   .site-main-wide,
   .site-footer { width: min(calc(100% - 1.25rem), var(--wide)); }

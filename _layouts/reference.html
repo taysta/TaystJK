@@ -43,6 +43,16 @@
       </div>
     </header>
 
+    {% if site.show_wip_banner %}
+    <aside class="wip-banner" aria-label="Documentation status">
+      <div class="wip-banner-inner">
+        <strong>Wiki work in progress.</strong>
+        <span>Some pages may be incomplete or inaccurate.</span>
+        <a href="{{ '/ai-disclosure/' | relative_url }}">Read the AI disclosure</a>
+      </div>
+    </aside>
+    {% endif %}
+
     <main id="main-content" class="site-main{% if page.wide %} site-main-wide{% endif %}">
       {% if page.nav_exclude and page.url contains '/reference/' %}
       <nav class="breadcrumbs" aria-label="Breadcrumb">

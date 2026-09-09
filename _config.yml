@@ -4,6 +4,7 @@ title: TaystJK
 description: Documentation for the TaystJK Jedi Academy multiplayer client and dedicated server
 baseurl: "/TaystJK" # the subpath of your site, e.g. /blog
 url: "https://taysta.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+show_wip_banner: true
 
 permalink: pretty
 exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
