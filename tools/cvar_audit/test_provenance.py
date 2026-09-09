@@ -9,10 +9,12 @@ from unittest.mock import patch
 from provenance import (
     attribute_change,
     enrich_introduction_events,
+    developer_lineage_sources,
     integration_subject_sources,
     introduction_content_event,
     is_registration_line,
     pr_for_commit,
+    reconcile_explicit_origin_credit,
     select_dated_origin,
 )
 
@@ -121,6 +123,32 @@ class DatedOriginTests(unittest.TestCase):
         self.assertEqual(source, "japro")
         self.assertEqual(confidence, "high")
         self.assertEqual(method, "introduction-commit-explicit-credit")
+
+    def test_bucky_private_work_maps_to_eternaljk_not_japro(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "taystjk": event(
+                100, "shared",
+                content_subject=(
+                    "[jaPRO/Bucky] Multicolored staff sabers "
+                    "(cg_saberStaffMultiColor 0/1)"
+                ),
+            ),
+            "japro": event(
+                100, "shared",
+                content_subject=(
+                    "[jaPRO/Bucky] Multicolored staff sabers "
+                    "(cg_saberStaffMultiColor 0/1)"
+                ),
+            ),
+        })
+        self.assertEqual(developer_lineage_sources("[jaPRO/Bucky] feature"), ["eternaljk"])
+        self.assertEqual(source, "eternaljk")
+        self.assertEqual(confidence, "high")
+        self.assertEqual(method, "introduction-commit-developer-lineage-credit")
+        self.assertEqual(
+            reconcile_explicit_origin_credit(source, method, ["japro"]),
+            [],
+        )
 
     def test_single_available_pr_date_does_not_bias_missing_archives(self) -> None:
         source, _, _, _ = select_dated_origin({

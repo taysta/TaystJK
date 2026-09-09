@@ -26,7 +26,10 @@ PR metadata from every relevant target repository may be passed as one or more
 GitHub API JSON files. Duplicate PR numbers are scoped to the PR's base
 repository, and `created_at` remains distinct from its eventual merge date.
 NewMod attribution is accepted only with explicit credit because the relevant
-implementation is closed source.
+implementation is closed source. Developer-lineage credit is handled the same
+way when code was shared privately: Bucky/Bucky21659 credit maps to his
+unpublished EternalJK continuation even if a historical `jaPRO/Bucky` label is
+used and the identifier is absent from EternalJK's public repository.
 
 For every non-base identifier, the resolver records the first mainline
 registration in every project. It distinguishes the exact registration's first

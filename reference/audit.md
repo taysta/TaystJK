@@ -14,13 +14,13 @@ This is the deliberately untidy review queue behind the published reference. `un
 | Group | Count |
 |:--|--:|
 | Base Jedi Academy | 1024 |
-| EternalJK | 136 |
+| EternalJK | 140 |
 | JK2MV | 14 |
 | NewJK / NewMod | 10 |
 | OpenJK | 158 |
 | TaystJK | 75 |
 | Vulkan | 27 |
-| jaPRO | 475 |
+| jaPRO | 471 |
 | rend2 | 95 |
 
 ## Runtime reconciliation
@@ -40,7 +40,7 @@ Runtime-only commands: none.
 
 The dump was captured from stdout after loading `mp/ffa3`; stdout does not use the client console scrollback buffer. Cvars and commands were dumped in separate launches so neither list could displace the other.
 
-## Provenance needing review (785)
+## Provenance needing review (784)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -511,7 +511,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`ui_browserFilterInvalidInfo`](/TaystJK/reference/cvars/ui_browserfilterinvalidinfo-7ee2364/) | cvar | ui | Controls `ui_browserFilterInvalidInfo` in the ui module. |
 | [`ui_browserShowPasswordProtected`](/TaystJK/reference/cvars/ui_browsershowpasswordprotected-204880a/) | cvar | ui | Controls `ui_browserShowPasswordProtected` in the ui module. |
 | [`ui_cl_maxpackets`](/TaystJK/reference/cvars/ui_cl_maxpackets-a1a306c/) | cvar | ui | Controls `ui_cl_maxpackets` in the ui module. |
-| [`ui_disableWeaponSway`](/TaystJK/reference/cvars/ui_disableweaponsway-e995888/) | cvar | ui | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`ui_duel_fraglimit`](/TaystJK/reference/cvars/ui_duel_fraglimit-f40462c/) | cvar | ui | Controls `ui_duel_fraglimit` in the ui module. |
 | [`ui_duel_timelimit`](/TaystJK/reference/cvars/ui_duel_timelimit-5f8e8ad/) | cvar | ui | Controls `ui_duel_timelimit` in the ui module. |
 | [`ui_geometricdetail`](/TaystJK/reference/cvars/ui_geometricdetail-21121ee/) | cvar | ui | Controls `ui_geometricdetail` in the ui module. |

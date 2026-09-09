@@ -84,14 +84,15 @@ def validate(path: Path, expected_kind: str) -> list[str]:
             if origin_introduction.get("source") != origin.get("source"):
                 errors.append(f"{label}: origin introduction does not match attributed source")
         downstream = origin.get("downstream_introductions", [])
-        expected_downstream = (
-            {
-                (item.get("source"), item.get("sha"))
-                for item in introductions
-                if item.get("source") != origin.get("source")
-            }
-            if origin_introduction else set()
+        has_dated_or_private_origin = bool(
+            origin_introduction
+            or "developer-lineage-credit" in str(origin.get("method") or "")
         )
+        expected_downstream = {
+            (item.get("source"), item.get("sha"))
+            for item in introductions
+            if item.get("source") != origin.get("source")
+        } if has_dated_or_private_origin else set()
         actual_downstream = {
             (item.get("source"), item.get("sha")) for item in downstream
         }

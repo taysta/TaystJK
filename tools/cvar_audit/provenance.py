@@ -26,7 +26,7 @@ from extract import extract_commands, extract_cvars, source_files
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
 EXTRACTOR_VERSION = 6
-RESOLVER_VERSION = 23
+RESOLVER_VERSION = 29
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -64,6 +64,20 @@ SOURCE_PATTERNS = {
     "vulkan": re.compile(r"\bvulkan\b|\bjksunny\b|\bsunny\b", re.I),
     "eternaljk": re.compile(r"\beternaljk\b|\beternal\s+jk\b", re.I),
     "openjk": re.compile(r"\bopenjk\b", re.I),
+}
+# Developer credit can identify a lineage even when the source was shared
+# privately and therefore never appeared in that project's public repository.
+# Bucky/Bucky21659 continued EternalJK development locally after its jaPRO
+# lineage; features supplied from that tree belong to EternalJK even when an
+# integration subject uses the historical "jaPRO/Bucky" label.
+DEVELOPER_LINEAGE_PATTERNS = {
+    "eternaljk": re.compile(r"\bbucky(?:21659)?\b", re.I),
+}
+DEVELOPER_LINEAGE_NOTES = {
+    "eternaljk": (
+        "Explicit Bucky developer credit identifies his unpublished EternalJK "
+        "continuation as the origin; no public EternalJK registration is expected."
+    ),
 }
 REPOSITORY_SOURCES = {
     "jacoders/openjk": "openjk",
@@ -595,6 +609,35 @@ def integration_subject_sources(subject: str) -> set[str]:
     return found
 
 
+def developer_lineage_sources(text: str) -> list[str]:
+    """Map explicit developer credit to the project lineage they represent."""
+    return [
+        source for source, pattern in DEVELOPER_LINEAGE_PATTERNS.items()
+        if pattern.search(text)
+    ]
+
+
+def text_credits_source(text: str, source: str) -> bool:
+    project_pattern = SOURCE_PATTERNS.get(source)
+    developer_pattern = DEVELOPER_LINEAGE_PATTERNS.get(source)
+    return bool(
+        (project_pattern and project_pattern.search(text))
+        or (developer_pattern and developer_pattern.search(text))
+    )
+
+
+def reconcile_explicit_origin_credit(
+    selected_source: str, selected_method: str, explicit: list[str],
+) -> list[str]:
+    """Keep generic squash text from replacing exact developer lineage."""
+    if (
+        "developer-lineage-credit" in selected_method
+        and explicit and selected_source not in explicit
+    ):
+        return []
+    return explicit
+
+
 def enrich_introduction_events(
     events: dict[str, dict[str, Any]],
     prs: list[dict[str, Any]],
@@ -655,10 +698,17 @@ def select_dated_origin(
         if int(event.get("content_author_timestamp") or event.get("author_timestamp") or event["timestamp"])
         == earliest_authored
     ]
-    explicit_sources = credited_sources("\n".join(
+    authored_credit_text = "\n".join(
         str(event.get("content_subject") or "") for event in authored_events
-    ))
-    explicit_sources = [source for source in explicit_sources if source in events]
+    )
+    developer_sources = developer_lineage_sources(authored_credit_text)
+    if len(developer_sources) == 1:
+        source = developer_sources[0]
+        return source, "high", "introduction-commit-developer-lineage-credit", [source]
+    explicit_sources = [
+        source for source in credited_sources(authored_credit_text)
+        if source in events
+    ]
     if len(explicit_sources) == 1:
         source = explicit_sources[0]
         return source, "high", "introduction-commit-explicit-credit", [source]
@@ -1113,12 +1163,16 @@ def resolve_one(
             events = enrich_introduction_events(events, prs)
             source, confidence, method, earliest_sources = select_dated_origin(events)
             earliest_integration = min(event["timestamp"] for event in events.values())
-            selected_event = events[source]
-            if selected_event["timestamp"] > earliest_integration:
+            selected_event = events.get(source)
+            if selected_event and selected_event["timestamp"] > earliest_integration:
                 notes.append(
                     f"{source} retains origin because content authorship and PR submission predate "
                     "the project that merged the work first."
                 )
+            if "developer-lineage-credit" in method and not selected_event:
+                developer_note = DEVELOPER_LINEAGE_NOTES.get(source)
+                if developer_note:
+                    notes.append(developer_note)
             if len(earliest_sources) > 1:
                 notes.append(
                     "The earliest authored/submitted introduction is shared by "
@@ -1158,13 +1212,23 @@ def resolve_one(
         }
         if not related_bullets and body_bullets and len(bullet_prefixes) == 1:
             related_bullets = body_bullets
+        message_text = body + "\n" + pr_text
+        targeted_message_lines = [
+            line for line in message_text.splitlines()
+            if name.casefold() in line.casefold()
+        ]
         targeted_lines = [
             line for line in (body + "\n" + pr_text + "\n" + context).splitlines()
             if name.casefold() in line.casefold()
         ]
-        explicit = credited_sources("\n".join(targeted_lines))
+        # Developer lineage is decisive only when the identifier is adjacent
+        # to that credit. A large squash body may mention Bucky for one feature
+        # and jaPRO for another, so broad feature-group inference continues to
+        # use project names only.
+        developer_explicit = developer_lineage_sources("\n".join(targeted_message_lines))
+        explicit = developer_explicit or credited_sources("\n".join(targeted_lines))
         if not explicit and targeted_lines:
-            whole_change_credit = credited_sources(body + "\n" + pr_text)
+            whole_change_credit = credited_sources(message_text)
             if len(whole_change_credit) == 1:
                 # A conventional two-line message often names the identifier
                 # in the subject and puts "originally from ..." in the body.
@@ -1174,11 +1238,18 @@ def resolve_one(
         nearby_explicit = credited_sources(context)
         if not explicit and len(nearby_explicit) == 1:
             explicit = nearby_explicit
+        # An exact developer-lineage decision from the introduction commit is
+        # stronger than a generic project token elsewhere in the same squash.
+        # This is particularly important for Bucky's EternalJK continuation,
+        # whose integration messages can also use the historical jaPRO label.
+        explicit = reconcile_explicit_origin_credit(source, method, explicit)
         if len(explicit) == 1:
             credited_source = explicit[0]
-            direct_credit = any(
-                SOURCE_PATTERNS[credited_source].search(line)
-                for line in targeted_lines
+            direct_credit = any(text_credits_source(line, credited_source) for line in targeted_lines)
+            developer_credit = any(
+                DEVELOPER_LINEAGE_PATTERNS.get(credited_source)
+                and DEVELOPER_LINEAGE_PATTERNS[credited_source].search(line)
+                for line in targeted_lines + related_bullets
             )
             credited_event = events.get(credited_source)
             selected_event = events.get(source)
@@ -1210,13 +1281,26 @@ def resolve_one(
             else:
                 source = credited_source
                 confidence = "high" if direct_credit or len(present) <= 1 else "medium"
-                method = "identifier-adjacent-explicit-credit" if direct_credit else "squash-feature-group-explicit-credit"
-                notes.append(
-                    f"An identifier-adjacent source/commit/PR line explicitly credits {source}."
-                    if direct_credit else
-                    f"The identifier's single-prefix squash feature group explicitly credits {source}."
+                method = (
+                    "identifier-adjacent-developer-lineage-credit" if direct_credit and developer_credit else
+                    "squash-feature-group-developer-lineage-credit" if developer_credit else
+                    "identifier-adjacent-explicit-credit" if direct_credit else
+                    "squash-feature-group-explicit-credit"
                 )
-            credit_lines = [line for line in related_bullets if SOURCE_PATTERNS[credited_source].search(line)]
+                if developer_credit:
+                    developer_note = DEVELOPER_LINEAGE_NOTES.get(source)
+                    if developer_note and developer_note not in notes:
+                        notes.append(developer_note)
+                else:
+                    notes.append(
+                        f"An identifier-adjacent source/commit/PR line explicitly credits {source}."
+                        if direct_credit else
+                        f"The identifier's single-prefix squash feature group explicitly credits {source}."
+                    )
+            credit_lines = [
+                line for line in related_bullets
+                if text_credits_source(line, credited_source)
+            ]
             if len(credit_lines) == 1:
                 credited_bullet = credit_lines[0]
 
@@ -1258,7 +1342,9 @@ def resolve_one(
     pr = origin_pr or integration_pr
     downstream = [
         item for item in introduction_evidence
-        if origin_event and item["source"] != source
+        if (
+            origin_event or "developer-lineage-credit" in method
+        ) and item["source"] != source
     ]
 
     origin_records = upstream.get(source, {}).get(key, [])

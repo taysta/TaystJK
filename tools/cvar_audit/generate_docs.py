@@ -747,7 +747,7 @@ def sources_page(refs: dict[str, str]) -> str:
     details = {
         "basejka": "Raven/id JA source present in OpenJK's initial import",
         "openjk": "post-import OpenJK additions",
-        "eternaljk": "EternalJK additions",
+        "eternaljk": "public EternalJK additions and explicitly credited private continuation work",
         "japro": "jaPRO gameplay, HUD, movement, and admin work",
         "jk2mv": "selected JK2MV ports",
         "newjk": "NewJK and explicitly credited NewMod ports",
@@ -778,13 +778,15 @@ The reference separates origin from current availability. An entry inherited fro
 1. The extractor masks comments, follows preprocessor conditions, and recognizes XCVAR macros, legacy VM tables, direct and syscall `Cvar_Get`/`Cvar_Register` calls, dynamic format expansions, command tables, input tables, renderer tables, and server-forwarded command names.
 2. The Raven baseline is OpenJK commit `14cea1563762076974bee277afadbd5bf234c494`, the initial JA source dump.
 3. For every non-base name, the resolver finds its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. It separately records the exact registration's first author date, the target project's PR creation date, and the mainline integration date. Authorship and submission are considered before merge order, so merging an upstream PR into TaystJK first does not make TaystJK its origin.
-4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier authored or submitted origin.
+4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, while identifier-adjacent developer credit can identify an unpublished project continuation. A later intermediate source cannot displace an earlier authored, submitted, or explicitly credited origin.
 5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
 6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. The generator separately records exact xdocs declarations and appearances in shipped `.menu` files.
 7. Stable topic rules group related feature families such as `cg_killfeed…`, even when their registrations span multiple source files. Unproven semantic fields stay in the review queue.
 8. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
 
 NewMod is closed source. Its [published feature documentation](https://jkanewmod.github.io/documentation.html) is useful semantic context, but the resolver attributes NewMod/NewJK only where a commit, PR, or nearby source comment explicitly says so, or where the open NewJK tree supplies direct evidence. A feature-page resemblance alone is not treated as origin proof.
+
+Bucky's later EternalJK continuation was also shared privately. Explicit `Bucky` or `Bucky21659` credit next to an identifier is therefore treated as EternalJK lineage even when the historical label says `jaPRO/Bucky`. The public-introduction table still shows where that code first became available in a published repository; it does not invent an EternalJK commit for unpublished source.
 
 ## Confidence
 

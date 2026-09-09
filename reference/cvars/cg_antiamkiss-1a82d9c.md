@@ -7,7 +7,7 @@ search_exclude: false
 
 # `cg_antiAmKiss`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -41,13 +41,12 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`a5819fdb65ce`](https://github.com/videoP/jaPRO/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-10-20`, integrated `2023-11-02`)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:94](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L94)
-- Attribution method: `identifier-adjacent-explicit-credit`
+- TaystJK integration evidence: [`a5819fdb65ce`](https://github.com/taysta/TaystJK/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545)
+- Attribution method: `identifier-adjacent-developer-lineage-credit`
 - Attribution confidence: `high`
-- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: Explicit Bucky developer credit identifies his unpublished EternalJK continuation as the origin; no public EternalJK registration is expected.
 
 ### Dated project introductions
 
@@ -55,8 +54,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-20` | — | `2023-11-02` | [`a5819fdb65ce`](https://github.com/taysta/TaystJK/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-20` | — | `2023-11-02` | [`a5819fdb65ce`](https://github.com/videoP/jaPRO/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-20` | — | `2023-11-02` | [`a5819fdb65ce`](https://github.com/taysta/TaystJK/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-20` | — | `2023-11-02` | [`a5819fdb65ce`](https://github.com/videoP/jaPRO/commit/a5819fdb65ceb1e4a18177c0ccf6c3dbcdb94545) | Other project appearance |
 
 ## Evidence
 
