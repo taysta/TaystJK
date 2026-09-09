@@ -32,8 +32,8 @@ Controls `cg_noPredict` in the cgame module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7268) |
-| `1` | Enabled. | [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7268) |
+| `0` | Disabled. | [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7268) |
+| `1` | Enabled. | [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7268) |
 
 ## Flags
 
@@ -60,8 +60,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:321](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L321) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7268)
-- behavior: [codemp/cgame/cg_predict.c:1026](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L1026)
-- behavior: [codemp/cgame/cg_event.c:1712](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L1712)
-- behavior: [codemp/cgame/cg_snapshot.c:240](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_snapshot.c#L240)
+- registration: [codemp/cgame/cg_xcvar.h:321](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L321) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:7268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7268)
+- behavior: [codemp/cgame/cg_predict.c:1026](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L1026)
+- behavior: [codemp/cgame/cg_event.c:1712](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L1712)
+- behavior: [codemp/cgame/cg_snapshot.c:240](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_snapshot.c#L240)

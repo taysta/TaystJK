@@ -53,5 +53,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_keys.cpp:1569](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_keys.cpp#L1569) (Cmd_AddCommand)
-- handler: [codemp/client/cl_keys.cpp:1308](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_keys.cpp#L1308)
+- registration: [codemp/client/cl_keys.cpp:1569](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1569) (Cmd_AddCommand)
+- handler: [codemp/client/cl_keys.cpp:1308](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1308)

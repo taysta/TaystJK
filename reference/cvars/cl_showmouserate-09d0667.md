@@ -32,8 +32,8 @@ Controls `cl_showMouseRate` in the engine-client module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1127) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1127) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1127) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1127) |
 
 ## Flags
 
@@ -60,6 +60,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3360](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3360) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1127)
-- behavior: [codemp/client/cl_input.cpp:1166](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1166)
+- registration: [codemp/client/cl_main.cpp:3360](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3360) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1127](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1127)
+- behavior: [codemp/client/cl_input.cpp:1166](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1166)

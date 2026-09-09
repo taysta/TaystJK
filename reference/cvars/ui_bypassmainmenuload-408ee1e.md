@@ -32,8 +32,8 @@ Controls `ui_bypassMainMenuLoad` in the ui module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L11792) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L11792) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L11792) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L11792) |
 
 ## Flags
 
@@ -62,5 +62,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:66](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L66) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L11792)
+- registration: [codemp/ui/ui_xcvar.h:66](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L66) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:11792](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L11792)

@@ -32,7 +32,7 @@ Controls `com_speeds` in the engine-shared module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/qcommon/common.cpp:1074](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1074) |
+| `3` | Selects the code path tested for value 3. | [codemp/qcommon/common.cpp:1074](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1074) |
 
 ## Flags
 
@@ -61,9 +61,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1472](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1472) (Cvar_Get)
-- behavior: [codemp/client/cl_scrn.cpp:618](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_scrn.cpp#L618)
-- behavior: [codemp/qcommon/common.cpp:1065](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1065)
-- behavior: [codemp/qcommon/common.cpp:1071](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1071)
-- behavior: [codemp/qcommon/common.cpp:1074](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1074)
-- behavior: [codemp/qcommon/common.cpp:1744](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1744)
+- registration: [codemp/qcommon/common.cpp:1472](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1472) (Cvar_Get)
+- behavior: [codemp/client/cl_scrn.cpp:618](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L618)
+- behavior: [codemp/qcommon/common.cpp:1065](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1065)
+- behavior: [codemp/qcommon/common.cpp:1071](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1071)
+- behavior: [codemp/qcommon/common.cpp:1074](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1074)
+- behavior: [codemp/qcommon/common.cpp:1744](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1744)

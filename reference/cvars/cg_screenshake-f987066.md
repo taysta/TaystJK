@@ -32,9 +32,9 @@ Shake screen when hit or while charging weapons
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Screen doesn't shake | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L437) |
-| `1` | Screen shakes only when taking damage | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L437) |
-| `2` | Screen shakes when charging weaspons and taking damage | [codemp/ui/ui_xdocs.h:438](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L438) |
+| `0` | Screen doesn't shake | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
+| `1` | Screen shakes only when taking damage | [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437) |
+| `2` | Screen shakes when charging weaspons and taking damage | [codemp/ui/ui_xdocs.h:438](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L438) |
 
 ## Flags
 
@@ -44,22 +44,22 @@ Shake screen when hit or while charging weapons
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) on `2018-09-03` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Ultimate-origin introduction: [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-09-03`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:128](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L128)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-09-03` | [`bdcd618c6771`](https://github.com/eternalcodes/EternalJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-09-03` | [`bdcd618c6771`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-09-03` | [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Ultimate origin |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-09-03` | [`bdcd618c6771`](https://github.com/JKSunny/EternalJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-09-03` | — | `2018-09-03` | [`bdcd618c6771`](https://github.com/eternalcodes/EternalJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-09-03` | — | `2018-09-03` | [`bdcd618c6771`](https://github.com/taysta/TaystJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-09-03` | — | `2018-09-03` | [`bdcd618c6771`](https://github.com/videoP/jaPRO/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-09-03` | — | `2018-09-03` | [`bdcd618c6771`](https://github.com/JKSunny/EternalJK/commit/bdcd618c67713b86946b720d791c382d3908d97c) | Shared integration commit |
 
 ### Later changes
 
@@ -74,10 +74,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:131](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L131) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_effects.c#L676)
-- behavior: [codemp/cgame/cg_weapons.c:676](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_weapons.c#L676)
-- behavior: [codemp/cgame/cg_weapons.c:684](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_weapons.c#L684)
-- behavior: [codemp/cgame/cg_weapons.c:2537](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_weapons.c#L2537)
-- behavior: [codemp/cgame/cg_main.c:3625](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L3625)
-- documentation: [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L437)
+- registration: [codemp/cgame/cg_xcvar.h:131](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L131) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_effects.c:676](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_effects.c#L676)
+- behavior: [codemp/cgame/cg_weapons.c:676](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L676)
+- behavior: [codemp/cgame/cg_weapons.c:684](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L684)
+- behavior: [codemp/cgame/cg_weapons.c:2537](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2537)
+- behavior: [codemp/cgame/cg_main.c:3625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3625)
+- documentation: [codemp/ui/ui_xdocs.h:437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L437)

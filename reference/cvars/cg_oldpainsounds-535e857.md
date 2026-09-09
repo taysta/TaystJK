@@ -32,8 +32,8 @@ Controls `cg_oldPainSounds` in the cgame module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L3935) |
-| `1` | Enabled. | [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L3935) |
+| `0` | Disabled. | [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3935) |
+| `1` | Enabled. | [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3935) |
 
 ## Flags
 
@@ -59,6 +59,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:324](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L324) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L3935)
-- behavior: [codemp/cgame/cg_playerstate.c:351](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L351)
+- registration: [codemp/cgame/cg_xcvar.h:324](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L324) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:3935](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L3935)
+- behavior: [codemp/cgame/cg_playerstate.c:351](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L351)

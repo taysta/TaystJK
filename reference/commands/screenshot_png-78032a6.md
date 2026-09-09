@@ -34,25 +34,25 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) on `2013-04-16` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`333d0ace79e0`](https://github.com/JACoders/OpenJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-16`, integrated `2014-06-23`)
 - Upstream registration evidence: [code/rd-vanilla/tr_init.cpp:1482](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/rd-vanilla/tr_init.cpp#L1482)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/eternalcodes/EternalJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/SomaZ/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/taysta/TaystJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/videoP/jaPRO/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/jkanewmod/NewJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-16` | [`714c868b42c6`](https://github.com/JKSunny/EternalJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/JACoders/OpenJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/eternalcodes/EternalJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/SomaZ/OpenJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/taysta/TaystJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/videoP/jaPRO/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/jkanewmod/NewJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-16` | — | `2014-06-23` | [`333d0ace79e0`](https://github.com/JKSunny/EternalJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458) | Shared integration commit |
 
 ### Later changes
 
@@ -60,11 +60,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
+| `2013-04-16` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c)<br>Merge branch 'master' of https://github.com/Razish/OpenJK | Changed registration, default, flags, module, renderer scope, handler, or gating; and the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `high` |
 | `2013-08-02` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`dd9bd9b9ae92`](https://github.com/JACoders/OpenJK/commit/dd9bd9b9ae92d7937b8b6986d1df0bccf93e8c93)<br>Refactored renderer API, fixed some Ghoul2 crashes | Changed registration, default, flags, module, renderer scope, handler, or gating; and the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `medium` |
 | `2013-12-18` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`e753a88166bb`](https://github.com/JACoders/OpenJK/commit/e753a88166bb25b7f4f113096135215c956f5541)<br>[SP] Move the image and screenshot code closer to MP. | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/rd-vanilla/tr_init.cpp` | `medium` |
 | `2014-01-10` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`39731cf76033`](https://github.com/JACoders/OpenJK/commit/39731cf760335057266d63ae5306d1c015497863)<br>[MP] Replaced a good chunk of Com_Printf usage in the renderer with ri->Printf. | Changed the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `medium` |
 | `2014-01-30` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`d3a6d2b9b9d2`](https://github.com/JACoders/OpenJK/commit/d3a6d2b9b9d2e967676dc2c9f738254b54524ab2)<br>[MP] Style: remove superfluous whitespace | Changed the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `medium` |
-| `2014-06-23` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`333d0ace79e0`](https://github.com/JACoders/OpenJK/commit/333d0ace79e0f070c7308e26ad3262a10c0b6458)<br>[MP] Moved console commands in the renderer to an array to avoid forgetting to remove commands at shutdowns. Also refactored maxpolys/maxpolyverts initialization. | Changed registration, default, flags, module, renderer scope, handler, or gating; and the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `medium` |
 | `2015-02-08` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`aee78667221a`](https://github.com/JACoders/OpenJK/commit/aee78667221a7fbd237f53ee142582a2581ed0b3)<br>[SP] Move renderer command registration into a linear table. | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/rd-vanilla/tr_init.cpp` | `medium` |
 | `2015-11-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c8f6ea17a324`](https://github.com/eternalcodes/EternalJK/commit/c8f6ea17a3241677d1be74ef45109b96a357ef23)<br>Remove SP code | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/rd-vanilla/tr_init.cpp` | `medium` |
 | `2017-12-29` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`43b393062090`](https://github.com/eternalcodes/EternalJK/commit/43b393062090de615d5e5e694ef4fb5fd42ce59a)<br>  Merge remote-tracking branch 'upstream/master' | Changed the registered command handler. `codemp/rd-vanilla/tr_init.cpp` | `medium` |
@@ -78,8 +78,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1457](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1457) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1596](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1596) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:748](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L748) (renderer command table)
-- handler: [codemp/rd-rend2/tr_init.cpp:1037](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1037)
-- handler: [codemp/rd-vanilla/tr_init.cpp:1224](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1224)
+- registration: [codemp/rd-rend2/tr_init.cpp:1457](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1457) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1596](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1596) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:748](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L748) (renderer command table)
+- handler: [codemp/rd-rend2/tr_init.cpp:1037](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1037)
+- handler: [codemp/rd-vanilla/tr_init.cpp:1224](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1224)

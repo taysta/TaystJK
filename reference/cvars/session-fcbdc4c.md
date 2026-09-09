@@ -48,9 +48,9 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/game/g_session.c:310](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_session.c#L310) (implicit Cvar_Set)
-- behavior: [codemp/game/g_session.c:102](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_session.c#L102)
-- behavior: [codemp/game/g_session.c:121](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_session.c#L121)
-- behavior: [codemp/game/g_session.c:290](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_session.c#L290)
-- behavior: [codemp/game/g_session.c:297](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_session.c#L297)
-- behavior: [codemp/cgame/cg_main.c:3328](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L3328)
+- registration: [codemp/game/g_session.c:310](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L310) (implicit Cvar_Set)
+- behavior: [codemp/game/g_session.c:102](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L102)
+- behavior: [codemp/game/g_session.c:121](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L121)
+- behavior: [codemp/game/g_session.c:290](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L290)
+- behavior: [codemp/game/g_session.c:297](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_session.c#L297)
+- behavior: [codemp/cgame/cg_main.c:3328](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3328)

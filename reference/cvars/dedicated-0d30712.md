@@ -34,8 +34,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `1` through `2` (integer; Cvar_CheckRange) — [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1436)
-- `0` through `2` (integer; Cvar_CheckRange) — [codemp/qcommon/common.cpp:1445](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1445)
+- `1` through `2` (integer; Cvar_CheckRange) — [codemp/qcommon/common.cpp:1436](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1436)
+- `0` through `2` (integer; Cvar_CheckRange) — [codemp/qcommon/common.cpp:1445](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1445)
 
 ## Flags
 
@@ -111,10 +111,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:61](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L61) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1435](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1435) (Cvar_Get); condition `defined(DEDICATED)`
-- behavior: [codemp/client/cl_scrn.cpp:608](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_scrn.cpp#L608)
-- behavior: [codemp/game/g_svcmds.c:1738](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_svcmds.c#L1738)
-- behavior: [codemp/qcommon/common.cpp:310](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L310)
-- behavior: [codemp/qcommon/common.cpp:1521](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1521)
-- behavior: [codemp/qcommon/common.cpp:1535](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1535)
+- registration: [codemp/game/g_xcvar.h:61](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L61) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1435](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1435) (Cvar_Get); condition `defined(DEDICATED)`
+- behavior: [codemp/client/cl_scrn.cpp:608](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_scrn.cpp#L608)
+- behavior: [codemp/game/g_svcmds.c:1738](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1738)
+- behavior: [codemp/qcommon/common.cpp:310](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L310)
+- behavior: [codemp/qcommon/common.cpp:1521](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1521)
+- behavior: [codemp/qcommon/common.cpp:1535](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1535)

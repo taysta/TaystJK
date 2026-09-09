@@ -32,8 +32,8 @@ Controls `cl_showSend` in the engine-client module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1614) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1614) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1614) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1614) |
 
 ## Flags
 
@@ -51,7 +51,7 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3322](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3322) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1614)
-- behavior: [codemp/client/cl_input.cpp:1662](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1662)
-- behavior: [codemp/client/cl_input.cpp:1699](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1699)
+- registration: [codemp/client/cl_main.cpp:3322](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3322) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:1614](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1614)
+- behavior: [codemp/client/cl_input.cpp:1662](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1662)
+- behavior: [codemp/client/cl_input.cpp:1699](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1699)

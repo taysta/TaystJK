@@ -32,8 +32,8 @@ Controls `cg_currentSelectedPlayer` in the cgame module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L31) |
-| `1` | Enabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L31) |
+| `0` | Disabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
+| `1` | Enabled. | [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31) |
 
 ## Flags
 
@@ -59,9 +59,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L268) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L31)
-- behavior: [codemp/cgame/cg_newDraw.c:730](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L730)
-- behavior: [codemp/cgame/cg_newDraw.c:149](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L149)
-- behavior: [codemp/cgame/cg_newDraw.c:153](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L153)
-- behavior: [codemp/cgame/cg_newDraw.c:32](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_newDraw.c#L32)
+- registration: [codemp/cgame/cg_xcvar.h:268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L268) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_newDraw.c:31](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L31)
+- behavior: [codemp/cgame/cg_newDraw.c:730](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L730)
+- behavior: [codemp/cgame/cg_newDraw.c:149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L149)
+- behavior: [codemp/cgame/cg_newDraw.c:153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L153)
+- behavior: [codemp/cgame/cg_newDraw.c:32](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_newDraw.c#L32)

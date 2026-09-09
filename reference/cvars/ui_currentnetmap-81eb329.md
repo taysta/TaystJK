@@ -32,8 +32,8 @@ Controls `ui_currentNetMap` in the ui module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L2433) |
-| `1` | Enabled. | [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L2433) |
+| `0` | Disabled. | [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L2433) |
+| `1` | Enabled. | [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L2433) |
 
 ## Flags
 
@@ -66,9 +66,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:80](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L80) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L2433)
-- behavior: [codemp/ui/ui_main.c:7765](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L7765)
-- behavior: [codemp/ui/ui_main.c:7506](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L7506)
-- behavior: [codemp/ui/ui_main.c:7766](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L7766)
-- behavior: [codemp/ui/ui_main.c:10692](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L10692)
+- registration: [codemp/ui/ui_xcvar.h:80](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L80) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:2433](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L2433)
+- behavior: [codemp/ui/ui_main.c:7765](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7765)
+- behavior: [codemp/ui/ui_main.c:7506](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7506)
+- behavior: [codemp/ui/ui_main.c:7766](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7766)
+- behavior: [codemp/ui/ui_main.c:10692](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10692)

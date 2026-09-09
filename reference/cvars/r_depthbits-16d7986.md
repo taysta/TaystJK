@@ -32,8 +32,8 @@ Controls `r_depthbits` in the renderer module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L468) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L468) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L468) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L468) |
 
 ## Flags
 
@@ -76,9 +76,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:342](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L342) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:813](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L813) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L468)
-- behavior: [shared/sdl/sdl_window.cpp:471](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L471)
-- behavior: [codemp/ui/ui_main.c:6230](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L6230)
-- behavior: [codemp/ui/ui_main.c:6402](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L6402)
+- registration: [codemp/rd-dedicated/tr_init.cpp:342](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L342) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:813](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L813) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L468)
+- behavior: [shared/sdl/sdl_window.cpp:471](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L471)
+- behavior: [codemp/ui/ui_main.c:6230](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6230)
+- behavior: [codemp/ui/ui_main.c:6402](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6402)

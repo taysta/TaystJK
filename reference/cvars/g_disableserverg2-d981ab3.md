@@ -32,8 +32,8 @@ Controls `g_disableServerG2` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4896) |
-| `1` | Enabled. | [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4896) |
+| `0` | Disabled. | [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4896) |
+| `1` | Enabled. | [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4896) |
 
 ## Flags
 
@@ -61,6 +61,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:86](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L86) (XCVAR_DEF); condition `defined(_DEBUG)`
-- behavior: [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4896)
-- behavior: [codemp/game/w_saber.c:8482](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L8482)
+- registration: [codemp/game/g_xcvar.h:86](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L86) (XCVAR_DEF); condition `defined(_DEBUG)`
+- behavior: [codemp/game/g_active.c:4896](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4896)
+- behavior: [codemp/game/w_saber.c:8482](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L8482)

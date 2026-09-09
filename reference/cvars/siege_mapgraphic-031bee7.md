@@ -55,5 +55,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_saga.c:280](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_saga.c#L280) (implicit Cvar_Set)
-- registration: [codemp/cgame/cg_saga.c:284](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_saga.c#L284) (implicit Cvar_Set)
+- registration: [codemp/cgame/cg_saga.c:280](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_saga.c#L280) (implicit Cvar_Set)
+- registration: [codemp/cgame/cg_saga.c:284](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_saga.c#L284) (implicit Cvar_Set)

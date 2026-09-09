@@ -30,8 +30,8 @@ Display welcome message from master server on the bottom of connection screen
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1019) |
-| `1` | Enabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1019) |
+| `0` | Disabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
+| `1` | Enabled. | [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019) |
 
 ## Flags
 
@@ -59,7 +59,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3312](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3312) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1019)
-- behavior: [codemp/client/cl_main.cpp:1023](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1023)
-- behavior: [codemp/client/cl_main.cpp:1028](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1028)
+- registration: [codemp/client/cl_main.cpp:3312](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3312) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:1019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1019)
+- behavior: [codemp/client/cl_main.cpp:1023](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1023)
+- behavior: [codemp/client/cl_main.cpp:1028](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1028)

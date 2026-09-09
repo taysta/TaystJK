@@ -32,10 +32,10 @@ Configured with /tweakForce command.
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1048576` | Not really a forcetweak but no room in weapon tweaks! | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_local.h#L267) |
-| `128` | Enables the `FT_FASTGRIP` code path. | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_local.h#L254) |
-| `16` | Enables the `FT_FORCECOMBO` code path. | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_local.h#L251) |
-| `262144` | Enables the `FT_NORAGEFIRERATE` code path. | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_local.h#L265) |
+| `1048576` | Not really a forcetweak but no room in weapon tweaks! | [codemp/game/g_local.h:267](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L267) |
+| `128` | Enables the `FT_FASTGRIP` code path. | [codemp/game/g_local.h:254](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L254) |
+| `16` | Enables the `FT_FORCECOMBO` code path. | [codemp/game/g_local.h:251](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L251) |
+| `262144` | Enables the `FT_NORAGEFIRERATE` code path. | [codemp/game/g_local.h:265](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L265) |
 
 ## Flags
 
@@ -45,22 +45,22 @@ Configured with /tweakForce command.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) on `2018-01-01` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Ultimate-origin introduction: [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2015-04-17`, integrated `2018-01-01`)
 - Upstream registration evidence: [codemp/game/g_xcvar.h:210](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L210)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/eternalcodes/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Ultimate origin |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-01-01` | [`d9d510063ce6`](https://github.com/JKSunny/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2015-04-17` | — | `2018-01-01` | [`d9d510063ce6`](https://github.com/eternalcodes/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2015-04-17` | — | `2018-01-01` | [`d9d510063ce6`](https://github.com/taysta/TaystJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2015-04-17` | — | `2018-01-01` | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2015-04-17` | — | `2018-01-01` | [`d9d510063ce6`](https://github.com/JKSunny/EternalJK/commit/d9d510063ce680639e6ba060021b6d40ee0c1419) | Shared integration commit |
 
 ### Later changes
 
@@ -81,10 +81,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
-- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L8079)
-- behavior: [codemp/game/bg_pmove.c:11228](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L11228)
-- behavior: [codemp/game/bg_pmove.c:12017](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L12017)
-- behavior: [codemp/game/bg_pmove.c:12029](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L12029)
-- behavior: [codemp/game/bg_pmove.c:14117](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L14117)
-- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/docs/japro_docs.md#L29)
+- registration: [codemp/game/g_xcvar.h:209](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L209) (XCVAR_DEF)
+- behavior: [codemp/game/ai_main.c:8079](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L8079)
+- behavior: [codemp/game/bg_pmove.c:11228](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11228)
+- behavior: [codemp/game/bg_pmove.c:12017](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12017)
+- behavior: [codemp/game/bg_pmove.c:12029](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L12029)
+- behavior: [codemp/game/bg_pmove.c:14117](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L14117)
+- documentation: [docs/japro_docs.md:29](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L29)

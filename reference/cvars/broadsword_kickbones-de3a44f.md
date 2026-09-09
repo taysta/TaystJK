@@ -32,8 +32,8 @@ Controls `broadsword_kickbones` in the renderer module. Consult the cited behavi
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/G2_bones.cpp#L1955) |
-| `1` | Enabled. | [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/G2_bones.cpp#L1955) |
+| `0` | Disabled. | [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_bones.cpp#L1955) |
+| `1` | Enabled. | [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_bones.cpp#L1955) |
 
 ## Flags
 
@@ -76,11 +76,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:443](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L443) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1710](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1710) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1756](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1756) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:988](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L988) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/G2_bones.cpp#L1955)
-- behavior: [codemp/rd-rend2/G2_bones.cpp:2059](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/G2_bones.cpp#L2059)
-- behavior: [codemp/rd-vanilla/G2_bones.cpp:2073](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/G2_bones.cpp#L2073)
-- behavior: [codemp/rd-vulkan/G2_bones.cpp:2076](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/G2_bones.cpp#L2076)
+- registration: [codemp/rd-dedicated/tr_init.cpp:443](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L443) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1710](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1710) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1756](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1756) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:988](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L988) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/G2_bones.cpp:1955](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/G2_bones.cpp#L1955)
+- behavior: [codemp/rd-rend2/G2_bones.cpp:2059](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/G2_bones.cpp#L2059)
+- behavior: [codemp/rd-vanilla/G2_bones.cpp:2073](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/G2_bones.cpp#L2073)
+- behavior: [codemp/rd-vulkan/G2_bones.cpp:2076](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/G2_bones.cpp#L2076)

@@ -34,7 +34,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `2` (numeric; manual clamp) — [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L7501)
+- `0` through `2` (numeric; manual clamp) — [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7501)
 
 ## Flags
 
@@ -65,5 +65,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:82](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L82) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L7501)
+- registration: [codemp/ui/ui_xcvar.h:82](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L82) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7501)

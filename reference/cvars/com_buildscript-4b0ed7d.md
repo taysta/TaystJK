@@ -32,8 +32,8 @@ Controls `com_buildScript` in the cgame module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L815) |
-| `1` | Enabled. | [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L815) |
+| `0` | Disabled. | [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L815) |
+| `1` | Enabled. | [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L815) |
 
 ## Flags
 
@@ -76,10 +76,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:372](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L372) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1482](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1482) (Cvar_Get)
-- behavior: [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L815)
-- behavior: [codemp/cgame/cg_main.c:827](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L827)
-- behavior: [codemp/cgame/cg_main.c:833](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L833)
-- behavior: [codemp/cgame/cg_main.c:1020](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L1020)
-- behavior: [codemp/cgame/cg_main.c:1367](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_main.c#L1367)
+- registration: [codemp/cgame/cg_xcvar.h:372](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L372) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1482](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1482) (Cvar_Get)
+- behavior: [codemp/cgame/cg_main.c:815](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L815)
+- behavior: [codemp/cgame/cg_main.c:827](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L827)
+- behavior: [codemp/cgame/cg_main.c:833](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L833)
+- behavior: [codemp/cgame/cg_main.c:1020](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L1020)
+- behavior: [codemp/cgame/cg_main.c:1367](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L1367)

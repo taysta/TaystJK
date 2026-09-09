@@ -71,9 +71,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:430](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L430) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1740](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1740) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:902](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L902) (Cvar_Get)
-- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:2845](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_ghoul2.cpp#L2845)
-- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3207](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_ghoul2.cpp#L3207)
-- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3302](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_ghoul2.cpp#L3302)
+- registration: [codemp/rd-dedicated/tr_init.cpp:430](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L430) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1740) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:902](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L902) (Cvar_Get)
+- behavior: [codemp/rd-dedicated/tr_ghoul2.cpp:2845](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_ghoul2.cpp#L2845)
+- behavior: [codemp/rd-vanilla/tr_ghoul2.cpp:3207](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_ghoul2.cpp#L3207)
+- behavior: [codemp/rd-vulkan/tr_ghoul2.cpp:3302](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_ghoul2.cpp#L3302)

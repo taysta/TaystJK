@@ -32,8 +32,8 @@ Controls `g_debugAlloc` in the game module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_mem.c#L58) |
-| `1` | Enabled. | [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_mem.c#L58) |
+| `0` | Disabled. | [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_mem.c#L58) |
+| `1` | Enabled. | [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_mem.c#L58) |
 
 ## Flags
 
@@ -59,6 +59,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:79](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L79) (XCVAR_DEF)
-- behavior: [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_mem.c#L58)
-- behavior: [codemp/game/g_mem.c:37](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_mem.c#L37)
+- registration: [codemp/game/g_xcvar.h:79](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L79) (XCVAR_DEF)
+- behavior: [codemp/game/g_mem.c:58](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_mem.c#L58)
+- behavior: [codemp/game/g_mem.c:37](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_mem.c#L37)

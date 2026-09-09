@@ -57,9 +57,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:979](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L979) (Cvar_Get)
-- behavior: [codemp/ui/ui_main.c:12396](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L12396)
-- behavior: [codemp/server/sv_main.cpp:542](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L542)
-- behavior: [codemp/cgame/cg_servercmds.c:289](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_servercmds.c#L289)
-- behavior: [codemp/game/NPC_spawn.c:615](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_spawn.c#L615)
-- behavior: [codemp/game/NPC_spawn.c:4096](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_spawn.c#L4096)
+- registration: [codemp/server/sv_init.cpp:979](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L979) (Cvar_Get)
+- behavior: [codemp/ui/ui_main.c:12396](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L12396)
+- behavior: [codemp/server/sv_main.cpp:542](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L542)
+- behavior: [codemp/cgame/cg_servercmds.c:289](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L289)
+- behavior: [codemp/game/NPC_spawn.c:615](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L615)
+- behavior: [codemp/game/NPC_spawn.c:4096](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L4096)

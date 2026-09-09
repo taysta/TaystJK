@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1463](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1463) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1602](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1602) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:753](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L753) (renderer command table)
-- handler: [codemp/rd-dedicated/tr_model.cpp:1615](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_model.cpp#L1615)
+- registration: [codemp/rd-rend2/tr_init.cpp:1463](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1463) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1602) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:753](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L753) (renderer command table)
+- handler: [codemp/rd-dedicated/tr_model.cpp:1615](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_model.cpp#L1615)

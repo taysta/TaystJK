@@ -32,8 +32,8 @@ Controls `cg_predictItems` in the cgame module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L623) |
-| `1` | Enabled. | [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L623) |
+| `0` | Disabled. | [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L623) |
+| `1` | Enabled. | [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L623) |
 
 ## Flags
 
@@ -68,10 +68,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:325](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L325) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3428](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3428) (Cvar_Get)
-- behavior: [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L623)
-- behavior: [codemp/game/g_bot.c:948](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_bot.c#L948)
-- behavior: [codemp/game/g_client.c:2106](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_client.c#L2106)
-- behavior: [codemp/game/g_client.c:2337](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_client.c#L2337)
-- behavior: [codemp/game/g_local.h:809](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_local.h#L809)
+- registration: [codemp/cgame/cg_xcvar.h:325](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L325) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3428) (Cvar_Get)
+- behavior: [codemp/cgame/cg_predict.c:623](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L623)
+- behavior: [codemp/game/g_bot.c:948](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L948)
+- behavior: [codemp/game/g_client.c:2106](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2106)
+- behavior: [codemp/game/g_client.c:2337](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2337)
+- behavior: [codemp/game/g_local.h:809](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_local.h#L809)

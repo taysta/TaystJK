@@ -32,8 +32,8 @@ Controls `r_allowSoftwareGL` in the engine-shared module. Consult the cited beha
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L602) |
-| `1` | Enabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L602) |
+| `0` | Disabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
+| `1` | Enabled. | [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602) |
 
 ## Flags
 
@@ -69,5 +69,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_window.cpp:795](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L795) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L602)
+- registration: [shared/sdl/sdl_window.cpp:795](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L795) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:602](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L602)

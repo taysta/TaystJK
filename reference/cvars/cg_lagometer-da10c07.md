@@ -32,10 +32,10 @@ Controls `cg_lagometer` in the cgame module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Selects the code path tested for value 0. | [codemp/cgame/hud_strafehelper.c:1811](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L1811) |
-| `1` | Selects the code path tested for value 1. | [codemp/cgame/hud_strafehelper.c:1808](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L1808) |
-| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7273) |
-| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7273) |
+| `0` | Selects the code path tested for value 0. | [codemp/cgame/hud_strafehelper.c:1811](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L1811) |
+| `1` | Selects the code path tested for value 1. | [codemp/cgame/hud_strafehelper.c:1808](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L1808) |
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7273) |
+| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7273) |
 
 ## Flags
 
@@ -67,9 +67,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:316](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L316) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:7183](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7183)
-- behavior: [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7273)
-- behavior: [codemp/cgame/hud_strafehelper.c:1808](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L1808)
-- behavior: [codemp/cgame/hud_strafehelper.c:1811](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L1811)
-- behavior: [codemp/cgame/hud_strafehelper.c:1814](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L1814)
+- registration: [codemp/cgame/cg_xcvar.h:316](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L316) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:7183](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7183)
+- behavior: [codemp/cgame/cg_draw.c:7273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7273)
+- behavior: [codemp/cgame/hud_strafehelper.c:1808](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L1808)
+- behavior: [codemp/cgame/hud_strafehelper.c:1811](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L1811)
+- behavior: [codemp/cgame/hud_strafehelper.c:1814](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L1814)

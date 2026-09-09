@@ -32,8 +32,8 @@ Controls `cg_animBlend` in the cgame module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3547) |
-| `1` | Enabled. | [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3547) |
+| `0` | Disabled. | [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3547) |
+| `1` | Enabled. | [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3547) |
 
 ## Flags
 
@@ -59,9 +59,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:254](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L254) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3547)
-- behavior: [codemp/cgame/cg_players.c:3697](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3697)
-- behavior: [codemp/cgame/cg_players.c:3740](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3740)
-- behavior: [codemp/cgame/cg_players.c:3765](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L3765)
-- behavior: [codemp/cgame/cg_players.c:4404](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L4404)
+- registration: [codemp/cgame/cg_xcvar.h:254](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L254) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_players.c:3547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3547)
+- behavior: [codemp/cgame/cg_players.c:3697](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3697)
+- behavior: [codemp/cgame/cg_players.c:3740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3740)
+- behavior: [codemp/cgame/cg_players.c:3765](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L3765)
+- behavior: [codemp/cgame/cg_players.c:4404](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L4404)

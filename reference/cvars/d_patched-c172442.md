@@ -64,10 +64,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:48](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L48) (XCVAR_DEF)
-- registration: [codemp/server/NPCNav/navigator.cpp:47](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/NPCNav/navigator.cpp#L47) (Cvar_Get)
-- behavior: [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_navnew.c#L786)
-- behavior: [codemp/server/NPCNav/navigator.cpp:1942](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/NPCNav/navigator.cpp#L1942)
-- behavior: [codemp/game/NPC.c:763](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC.c#L763)
-- behavior: [codemp/game/g_navnew.c:163](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_navnew.c#L163)
-- behavior: [codemp/game/g_navnew.c:494](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_navnew.c#L494)
+- registration: [codemp/game/g_xcvar.h:48](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L48) (XCVAR_DEF)
+- registration: [codemp/server/NPCNav/navigator.cpp:47](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/NPCNav/navigator.cpp#L47) (Cvar_Get)
+- behavior: [codemp/game/g_navnew.c:786](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_navnew.c#L786)
+- behavior: [codemp/server/NPCNav/navigator.cpp:1942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/NPCNav/navigator.cpp#L1942)
+- behavior: [codemp/game/NPC.c:763](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC.c#L763)
+- behavior: [codemp/game/g_navnew.c:163](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_navnew.c#L163)
+- behavior: [codemp/game/g_navnew.c:494](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_navnew.c#L494)

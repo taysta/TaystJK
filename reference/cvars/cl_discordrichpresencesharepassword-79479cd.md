@@ -40,22 +40,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`53b43cd32500`](https://github.com/eternalcodes/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) on `2019-03-21` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`53b43cd32500`](https://github.com/eternalcodes/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-03-21`, integrated `2019-03-21`)
 - Upstream registration evidence: [codemp/client/cl_discordrpc.cpp:382](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/cl_discordrpc.cpp#L382)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-03-21` | [`53b43cd32500`](https://github.com/eternalcodes/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-03-21` | [`53b43cd32500`](https://github.com/taysta/TaystJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-03-21` | [`53b43cd32500`](https://github.com/videoP/jaPRO/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-03-21` | [`53b43cd32500`](https://github.com/JKSunny/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-03-21` | — | `2019-03-21` | [`53b43cd32500`](https://github.com/eternalcodes/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-03-21` | — | `2019-03-21` | [`53b43cd32500`](https://github.com/taysta/TaystJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-03-21` | — | `2019-03-21` | [`53b43cd32500`](https://github.com/videoP/jaPRO/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-03-21` | — | `2019-03-21` | [`53b43cd32500`](https://github.com/JKSunny/EternalJK/commit/53b43cd32500dfc4544b7213f14e69064037acfb) | Shared integration commit |
 
 ### Later changes
 
@@ -67,5 +67,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_discordrpc.cpp:448](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_discordrpc.cpp#L448) (Cvar_Get); condition `defined DISCORD && !(_DEBUG)`
-- behavior: [codemp/client/cl_discordrpc.cpp:193](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_discordrpc.cpp#L193)
+- registration: [codemp/client/cl_discordrpc.cpp:448](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L448) (Cvar_Get); condition `defined DISCORD && !(_DEBUG)`
+- behavior: [codemp/client/cl_discordrpc.cpp:193](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L193)

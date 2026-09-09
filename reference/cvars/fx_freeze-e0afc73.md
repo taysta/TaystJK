@@ -32,8 +32,8 @@ Controls `fx_freeze` in the engine-client module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxPrimitives.cpp#L1006) |
-| `1` | Enabled. | [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxPrimitives.cpp#L1006) |
+| `0` | Disabled. | [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L1006) |
+| `1` | Enabled. | [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L1006) |
 
 ## Flags
 
@@ -60,8 +60,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/FxUtil.cpp:110](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxUtil.cpp#L110) (Cvar_Get); condition `defined(_DEBUG)`
-- behavior: [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxPrimitives.cpp#L1006)
-- behavior: [codemp/client/FxScheduler.cpp:612](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxScheduler.cpp#L612)
-- behavior: [codemp/client/FxScheduler.cpp:831](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxScheduler.cpp#L831)
-- behavior: [codemp/client/FxSystem.cpp:76](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/FxSystem.cpp#L76)
+- registration: [codemp/client/FxUtil.cpp:110](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L110) (Cvar_Get); condition `defined(_DEBUG)`
+- behavior: [codemp/client/FxPrimitives.cpp:1006](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L1006)
+- behavior: [codemp/client/FxScheduler.cpp:612](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxScheduler.cpp#L612)
+- behavior: [codemp/client/FxScheduler.cpp:831](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxScheduler.cpp#L831)
+- behavior: [codemp/client/FxSystem.cpp:76](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxSystem.cpp#L76)

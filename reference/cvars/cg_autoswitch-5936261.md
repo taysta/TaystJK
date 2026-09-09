@@ -32,9 +32,9 @@ Controls `cg_autoSwitch` in the cgame module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_event.c:624](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L624) |
-| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_event.c:641](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L641) |
-| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_event.c:655](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L655) |
+| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_event.c:624](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L624) |
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_event.c:641](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L641) |
+| `3` | Selects the code path tested for value 3. | [codemp/cgame/cg_event.c:655](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L655) |
 
 ## Flags
 
@@ -72,10 +72,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:257](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L257) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3375](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3375) (Cvar_Get)
-- behavior: [codemp/cgame/cg_event.c:620](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L620)
-- behavior: [codemp/cgame/cg_event.c:624](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L624)
-- behavior: [codemp/cgame/cg_event.c:641](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L641)
-- behavior: [codemp/cgame/cg_event.c:655](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L655)
-- behavior: [codemp/cgame/cg_weapons.c:2144](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_weapons.c#L2144)
+- registration: [codemp/cgame/cg_xcvar.h:257](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L257) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3375](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3375) (Cvar_Get)
+- behavior: [codemp/cgame/cg_event.c:620](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L620)
+- behavior: [codemp/cgame/cg_event.c:624](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L624)
+- behavior: [codemp/cgame/cg_event.c:641](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L641)
+- behavior: [codemp/cgame/cg_event.c:655](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L655)
+- behavior: [codemp/cgame/cg_weapons.c:2144](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2144)

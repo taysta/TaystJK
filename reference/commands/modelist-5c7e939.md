@@ -55,5 +55,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sdl/sdl_window.cpp:790](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L790) (Cmd_AddCommand)
-- handler: [codemp/rd-dedicated/tr_init.cpp:269](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L269)
+- registration: [shared/sdl/sdl_window.cpp:790](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L790) (Cmd_AddCommand)
+- handler: [codemp/rd-dedicated/tr_init.cpp:269](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L269)

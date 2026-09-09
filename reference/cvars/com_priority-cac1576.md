@@ -32,10 +32,10 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1496) |
-| `1` | Low priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1496) |
-| `2` | Normal priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1496) |
-| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1496) |
+| `-1` | Do nothing. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `1` | Low priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `2` | Normal priority. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
+| `3` | High priority? i guess??. | [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) |
 
 ## Flags
 
@@ -46,22 +46,22 @@ Duno, -1 = do nothing, 1 = low priority, 2 = normal priority, 3 = high priority?
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`20755a5d4be0`](https://github.com/eternalcodes/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) on `2018-11-27` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`20755a5d4be0`](https://github.com/eternalcodes/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-11-27`, integrated `2018-11-27`)
 - Upstream registration evidence: [codemp/qcommon/common.cpp:1278](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/qcommon/common.cpp#L1278)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-11-27` | [`20755a5d4be0`](https://github.com/eternalcodes/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-11-27` | [`20755a5d4be0`](https://github.com/taysta/TaystJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-11-27` | [`20755a5d4be0`](https://github.com/videoP/jaPRO/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-11-27` | [`20755a5d4be0`](https://github.com/JKSunny/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-11-27` | — | `2018-11-27` | [`20755a5d4be0`](https://github.com/eternalcodes/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-11-27` | — | `2018-11-27` | [`20755a5d4be0`](https://github.com/taysta/TaystJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-11-27` | — | `2018-11-27` | [`20755a5d4be0`](https://github.com/videoP/jaPRO/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-11-27` | — | `2018-11-27` | [`20755a5d4be0`](https://github.com/JKSunny/EternalJK/commit/20755a5d4be00432747aa8b7c1b6cc746296995b) | Shared integration commit |
 
 ### Later changes
 
@@ -74,9 +74,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1496) (Cvar_Get); condition `defined(_WIN32)`
-- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L256)
-- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L261)
-- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L264)
-- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L267)
-- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L270)
+- registration: [codemp/qcommon/common.cpp:1496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1496) (Cvar_Get); condition `defined(_WIN32)`
+- behavior: [shared/sys/sys_win32.cpp:256](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L256)
+- behavior: [shared/sys/sys_win32.cpp:261](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L261)
+- behavior: [shared/sys/sys_win32.cpp:264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L264)
+- behavior: [shared/sys/sys_win32.cpp:267](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L267)
+- behavior: [shared/sys/sys_win32.cpp:270](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L270)

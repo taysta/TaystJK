@@ -32,8 +32,8 @@ Controls `r_mapOverBrightBits` in the renderer module. Consult the cited behavio
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_bsp.cpp#L105) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_bsp.cpp#L105) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L105) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L105) |
 
 ## Flags
 
@@ -52,25 +52,25 @@ Controls `r_mapOverBrightBits` in the renderer module. Consult the cited behavio
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`cefb950a82f7`](https://github.com/JACoders/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) on `2013-04-17` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`cefb950a82f7`](https://github.com/JACoders/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-17`, integrated `2013-04-17`)
 - Upstream registration evidence: [code/rd-vanilla/tr_init.cpp:1540](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/rd-vanilla/tr_init.cpp#L1540)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Notes: The identifier's single-prefix squash feature group explicitly credits openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/JACoders/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/eternalcodes/EternalJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/SomaZ/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/taysta/TaystJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/videoP/jaPRO/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/jkanewmod/NewJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-17` | [`cefb950a82f7`](https://github.com/JKSunny/EternalJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/JACoders/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/eternalcodes/EternalJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/SomaZ/OpenJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/taysta/TaystJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/videoP/jaPRO/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/jkanewmod/NewJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-17` | — | `2013-04-17` | [`cefb950a82f7`](https://github.com/JKSunny/EternalJK/commit/cefb950a82f7161ea280010aaebc9ab8bce17003) | Shared integration commit |
 
 ### Later changes
 
@@ -90,11 +90,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1603](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1603) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1659](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1659) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:811](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L811) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_bsp.cpp#L105)
-- behavior: [codemp/rd-vanilla/tr_bsp.cpp:139](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_bsp.cpp#L139)
-- behavior: [codemp/rd-vulkan/tr_bsp.cpp:129](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_bsp.cpp#L129)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:111](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_bsp.cpp#L111)
-- behavior: [shared/rd-rend2/tr_bsp.cpp:147](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_bsp.cpp#L147)
+- registration: [codemp/rd-rend2/tr_init.cpp:1603](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1603) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1659](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1659) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:811](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L811) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:105](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L105)
+- behavior: [codemp/rd-vanilla/tr_bsp.cpp:139](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_bsp.cpp#L139)
+- behavior: [codemp/rd-vulkan/tr_bsp.cpp:129](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_bsp.cpp#L129)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:111](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L111)
+- behavior: [shared/rd-rend2/tr_bsp.cpp:147](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L147)

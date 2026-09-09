@@ -56,7 +56,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_main.cpp:166](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_main.cpp#L166) (Cvar_Get)
-- behavior: [codemp/botlib/be_aas_route.cpp:1189](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_route.cpp#L1189)
-- behavior: [codemp/qcommon/files.cpp:1862](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L1862)
-- behavior: [lib/libpng/pngpriv.h:101](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/lib/libpng/pngpriv.h#L101)
+- registration: [shared/sys/sys_main.cpp:166](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_main.cpp#L166) (Cvar_Get)
+- behavior: [codemp/botlib/be_aas_route.cpp:1189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_route.cpp#L1189)
+- behavior: [codemp/qcommon/files.cpp:1862](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L1862)
+- behavior: [lib/libpng/arm/arm_init.c:41](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/libpng/arm/arm_init.c#L41)
+- behavior: [lib/libpng/pngpriv.h:101](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/libpng/pngpriv.h#L101)

@@ -32,8 +32,8 @@ Controls `cl_timeNudge` in the engine-client module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2627) |
-| `1` | Enabled. | [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2627) |
+| `0` | Disabled. | [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2627) |
+| `1` | Enabled. | [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2627) |
 
 ## Flags
 
@@ -71,10 +71,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:201](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L201) (XCVAR_DEF)
-- registration: [codemp/client/cl_main.cpp:3320](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3320) (Cvar_Get)
-- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2627)
-- behavior: [codemp/client/cl_cgame.cpp:988](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L988)
-- behavior: [codemp/cgame/cg_weapons.c:2440](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_weapons.c#L2440)
-- behavior: [codemp/cgame/cg_view.c:2607](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2607)
-- behavior: [codemp/cgame/cg_localents.c:1030](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_localents.c#L1030)
+- registration: [codemp/cgame/cg_xcvar.h:201](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L201) (XCVAR_DEF)
+- registration: [codemp/client/cl_main.cpp:3320](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3320) (Cvar_Get)
+- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2627)
+- behavior: [codemp/client/cl_cgame.cpp:988](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L988)
+- behavior: [codemp/cgame/cg_weapons.c:2440](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2440)
+- behavior: [codemp/cgame/cg_view.c:2607](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2607)
+- behavior: [codemp/cgame/cg_localents.c:1030](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_localents.c#L1030)

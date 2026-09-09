@@ -32,8 +32,8 @@ Controls `sys_lowmem` in the engine-shared module. Consult the cited behavior re
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L338) |
-| `1` | Enabled. | [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L338) |
+| `0` | Disabled. | [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L338) |
+| `1` | Enabled. | [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L338) |
 
 ## Flags
 
@@ -60,5 +60,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/sys/sys_win32.cpp:329](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L329) (Cvar_Get)
-- behavior: [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_win32.cpp#L338)
+- registration: [shared/sys/sys_win32.cpp:329](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L329) (Cvar_Get)
+- behavior: [shared/sys/sys_win32.cpp:338](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_win32.cpp#L338)

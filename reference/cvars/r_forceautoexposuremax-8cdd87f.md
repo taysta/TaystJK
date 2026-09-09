@@ -7,7 +7,7 @@ search_exclude: false
 
 # `r_forceAutoExposureMax`
 
-<span class="label ref-origin ref-origin-openjk">OpenJK</span>
+<span class="label ref-origin ref-origin-rend2">rend2</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -22,7 +22,7 @@ Controls `r_forceAutoExposureMax` in the renderer module. Consult the cited beha
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `1.0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -38,27 +38,26 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 
-- Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/JACoders/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) on `2023-10-03` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2013-10-08`, integrated `2023-10-03`)
 - TaystJK integration evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
-- Pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1486](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1486)
-- Attribution method: `shared-earliest-commit-lineage-order`
-- Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, rend2; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Origin pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1516](https://github.com/SomaZ/OpenJK/blob/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1516)
+- Attribution method: `introduction-commit-explicit-credit`
+- Attribution confidence: `high`
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2023-10-03` | [`be28b4edd6c7`](https://github.com/JACoders/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) | Ultimate origin |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2023-10-03` | [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-03` | [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) | Later project appearance |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-03` | [`86c0756385ef`](https://github.com/videoP/jaPRO/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) | Later project appearance |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-10-08` | — | `2023-10-03` | [`be28b4edd6c7`](https://github.com/JACoders/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-10-08` | — | `2023-10-03` | [`be28b4edd6c7`](https://github.com/SomaZ/OpenJK/commit/be28b4edd6c7a97ff6484518099dfa72f13b783e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-03` | [2023-09-30](https://github.com/taysta/TaystJK/pull/12) | `2023-10-03` | [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-03` | — | `2023-10-03` | [`86c0756385ef`](https://github.com/videoP/jaPRO/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) | Other project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | — | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Other project appearance |
 
 ### Later changes
 
@@ -66,10 +65,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2023-10-03` | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919) · [PR #12](https://github.com/taysta/TaystJK/pull/12)<br>Rend2 (#12) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-rend2/tr_init.cpp` | `medium` |
 | `2025-04-15` | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`c98ecf977bd3`](https://github.com/taysta/TaystJK/commit/c98ecf977bd3b652b1a7974cd21ee1f80a1b7aad) · [PR #217](https://github.com/taysta/TaystJK/pull/217)<br>Rend2 update (#217) | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/rd-rend2/tr_init.cpp` | `medium` |
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1551](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1551) (Cvar_Get)
-- behavior: [shared/rd-rend2/tr_scene.cpp:415](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_scene.cpp#L415)
+- registration: [codemp/rd-rend2/tr_init.cpp:1551](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1551) (Cvar_Get)
+- behavior: [shared/rd-rend2/tr_scene.cpp:415](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_scene.cpp#L415)

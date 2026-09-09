@@ -32,8 +32,8 @@ Controls `cl_showTimeDelta` in the engine-client module. Consult the cited behav
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L864) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L864) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L864) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L864) |
 
 ## Flags
 
@@ -59,7 +59,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3323](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3323) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L864)
-- behavior: [codemp/client/cl_cgame.cpp:869](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L869)
-- behavior: [codemp/client/cl_cgame.cpp:890](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L890)
+- registration: [codemp/client/cl_main.cpp:3323](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3323) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:864](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L864)
+- behavior: [codemp/client/cl_cgame.cpp:869](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L869)
+- behavior: [codemp/client/cl_cgame.cpp:890](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L890)

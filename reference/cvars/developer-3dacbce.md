@@ -30,7 +30,7 @@ Developer mode
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/g_ICARUScb.c:300](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_ICARUScb.c#L300) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/g_ICARUScb.c:300](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_ICARUScb.c#L300) |
 
 ## Flags
 
@@ -93,10 +93,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:62](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L62) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1386) (Cvar_Get)
-- behavior: [codemp/client/cl_main.cpp:2108](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L2108)
-- behavior: [codemp/client/cl_main.cpp:2264](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L2264)
-- behavior: [codemp/client/cl_main.cpp:3774](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3774)
-- behavior: [codemp/game/g_ICARUScb.c:300](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_ICARUScb.c#L300)
-- behavior: [codemp/game/g_active.c:1368](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L1368)
+- registration: [codemp/game/g_xcvar.h:62](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L62) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1386) (Cvar_Get)
+- behavior: [codemp/client/cl_main.cpp:2108](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2108)
+- behavior: [codemp/client/cl_main.cpp:2264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2264)
+- behavior: [codemp/client/cl_main.cpp:3774](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3774)
+- behavior: [codemp/game/g_ICARUScb.c:300](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_ICARUScb.c#L300)
+- behavior: [codemp/game/g_active.c:1368](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1368)

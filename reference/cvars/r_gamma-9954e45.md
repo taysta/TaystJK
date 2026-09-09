@@ -79,12 +79,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L377) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1626) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1686](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1686) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:844](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L844) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1444](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1444)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1446](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1446)
-- behavior: [codemp/rd-vulkan/vk_image_process.cpp:82](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_image_process.cpp#L82)
-- behavior: [codemp/rd-vulkan/vk_image_process.cpp:85](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_image_process.cpp#L85)
-- behavior: [shared/rd-rend2/tr_image.cpp:3681](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_image.cpp#L3681)
+- registration: [codemp/rd-dedicated/tr_init.cpp:377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L377) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1626) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1686](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1686) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:844](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L844) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1444](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1444)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1446](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1446)
+- behavior: [codemp/rd-vulkan/vk_image_process.cpp:82](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image_process.cpp#L82)
+- behavior: [codemp/rd-vulkan/vk_image_process.cpp:85](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image_process.cpp#L85)
+- behavior: [shared/rd-rend2/tr_image.cpp:3681](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_image.cpp#L3681)

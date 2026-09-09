@@ -56,8 +56,8 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/ui/ui_main.c:9416](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9416) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9459](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9459) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9489](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9489) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9511](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9511) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:9518](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9518) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9416](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9416) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9459](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9459) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9489](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9489) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9511](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9511) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:9518](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9518) (implicit Cvar_Set)

@@ -46,5 +46,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:671](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_bot.cpp#L671) (Cvar_Get)
-- behavior: [codemp/botlib/be_ai_chat.cpp:2776](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_ai_chat.cpp#L2776)
+- registration: [codemp/server/sv_bot.cpp:671](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_bot.cpp#L671) (Cvar_Get)
+- behavior: [codemp/botlib/be_ai_chat.cpp:2776](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_ai_chat.cpp#L2776)

@@ -32,8 +32,8 @@ Controls `m_filter` in the engine-client module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1083) |
-| `1` | Enabled. | [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1083) |
+| `0` | Disabled. | [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1083) |
+| `1` | Enabled. | [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1083) |
 
 ## Flags
 
@@ -68,6 +68,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3384](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3384) (Cvar_Get); condition `defined(MACOS_X)`
-- registration: [codemp/client/cl_main.cpp:3386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3386) (Cvar_Get); condition `else(defined(MACOS_X))`
-- behavior: [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1083)
+- registration: [codemp/client/cl_main.cpp:3384](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3384) (Cvar_Get); condition `defined(MACOS_X)`
+- registration: [codemp/client/cl_main.cpp:3386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3386) (Cvar_Get); condition `else(defined(MACOS_X))`
+- behavior: [codemp/client/cl_input.cpp:1083](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1083)

@@ -5,13 +5,13 @@ nav_order: 1
 parent: "By origin"
 wide: true
 reference_app: true
-description: "Browse 73 cvars, 9 commands in the TaystJK console reference."
+description: "Browse 70 cvars, 5 commands in the TaystJK console reference."
 ---
 
 <div class="page-heading" markdown="1">
 <p class="eyebrow">Filtered collection</p>
 <h1>TaystJK</h1>
-<p class="page-lede">Entries first found in TaystJK after all configured upstream snapshots and explicit port credits were checked. Medium-confidence entries remain in the audit queue. This collection contains 73 cvars, 9 commands.</p>
+<p class="page-lede">Entries first found in TaystJK after all configured upstream snapshots and explicit port credits were checked. Medium-confidence entries remain in the audit queue. This collection contains 70 cvars, 5 commands.</p>
 </div>
 
 <section class="reference-catalog" id="catalog" data-reference-app data-mode="all" data-catalog-url="{{ '/assets/data/catalog.json' | relative_url }}" data-preset-origin="taystjk" aria-labelledby="catalog-title">

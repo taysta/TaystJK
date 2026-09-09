@@ -73,6 +73,13 @@ def introduction_date(item: dict[str, Any]) -> str:
     return datetime.fromtimestamp(int(item["timestamp"]), timezone.utc).date().isoformat()
 
 
+def evidence_date(item: dict[str, Any], key: str) -> str:
+    timestamp = item.get(key)
+    if timestamp is None:
+        return "—"
+    return datetime.fromtimestamp(int(timestamp), timezone.utc).date().isoformat()
+
+
 def introduction_commit_link(item: dict[str, Any]) -> str:
     repo = ORIGIN_REPOS.get(item["source"])
     sha = item["sha"]
@@ -377,9 +384,20 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
     lines.extend(["", "## Provenance", "", f"Origin: {badge(origin['source'])}", ""])
     origin_introduction = origin.get("origin_introduction")
     if origin_introduction:
+        authored_key = (
+            "content_author_timestamp"
+            if origin_introduction.get("content_author_timestamp")
+            else "author_timestamp"
+        )
+        authored = evidence_date(origin_introduction, authored_key)
+        proposal = evidence_date(origin_introduction, "pr_created_timestamp")
+        chronology = f"content authored {code(authored)}"
+        if proposal != "—":
+            chronology += f", PR opened {code(proposal)}"
+        chronology += f", integrated {code(introduction_date(origin_introduction))}"
         lines.append(
             f"- Ultimate-origin introduction: {introduction_commit_link(origin_introduction)} "
-            f"on {code(introduction_date(origin_introduction))} in {badge(origin_introduction['source'])}"
+            f"in {badge(origin_introduction['source'])} ({chronology})"
         )
     if origin.get("first_commit"):
         # Except for the Raven baseline (and optional deep-pickaxe mode), the
@@ -390,7 +408,15 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
             label = "Baseline evidence" if origin["first_commit"] == "14cea1563762076974bee277afadbd5bf234c494" else "TaystJK integration evidence"
             lines.append(f"- {label}: [`{origin['first_commit'][:12]}`](https://github.com/{repo}/commit/{origin['first_commit']})")
     if origin.get("pr_url"):
-        lines.append(f"- Pull request: [#{origin['pr']}]({origin['pr_url']})")
+        lines.append(f"- Origin pull request: [#{origin['pr']}]({origin['pr_url']})")
+    if (
+        origin.get("integration_pr_url")
+        and origin.get("integration_pr_url") != origin.get("pr_url")
+    ):
+        lines.append(
+            f"- TaystJK integration pull request: "
+            f"[#{origin['integration_pr']}]({origin['integration_pr_url']})"
+        )
     if origin.get("squash_bullet"):
         lines.append(f"- Matching squash bullet: {code(origin['squash_bullet'])}")
     upstream = upstream_evidence_link(origin, refs)
@@ -406,21 +432,23 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
     if introductions:
         lines.extend([
             "", "### Dated project introductions", "",
-            "These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.", "",
-            "| Project | Date | Commit | Relationship |", "|:--|:--|:--|:--|",
+            "Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.", "",
+            "| Project | Authored | PR opened | Integrated | Commit | Relationship |", "|:--|:--|:--|:--|:--|:--|",
         ])
-        origin_timestamp = origin_introduction.get("timestamp") if origin_introduction else None
         for item in introductions:
             if origin_introduction and item["source"] == origin_introduction["source"] and item["sha"] == origin_introduction["sha"]:
                 relationship = "Ultimate origin"
-            elif origin_timestamp is not None and item["timestamp"] == origin_timestamp:
-                relationship = "Shared earliest lineage"
-            elif origin_timestamp is not None and item["timestamp"] > origin_timestamp:
-                relationship = "Later project appearance"
+            elif origin_introduction and item["sha"] == origin_introduction["sha"]:
+                relationship = "Shared integration commit"
             else:
-                relationship = "Additional dated evidence"
+                relationship = "Other project appearance"
+            authored_key = "content_author_timestamp" if item.get("content_author_timestamp") else "author_timestamp"
+            proposal = evidence_date(item, "pr_created_timestamp")
+            if item.get("pr_url") and proposal != "—":
+                proposal = f"[{proposal}]({item['pr_url']})"
             lines.append(
-                f"| {badge(item['source'])} | {code(introduction_date(item))} | "
+                f"| {badge(item['source'])} | {code(evidence_date(item, authored_key))} | "
+                f"{proposal} | {code(introduction_date(item))} | "
                 f"{introduction_commit_link(item)} | {relationship} |"
             )
     if origin.get("ported_via"):
@@ -690,8 +718,8 @@ The reference separates origin from current availability. An entry inherited fro
 
 1. The extractor masks comments, follows preprocessor conditions, and recognizes XCVAR macros, legacy VM tables, direct and syscall `Cvar_Get`/`Cvar_Register` calls, dynamic format expansions, command tables, input tables, renderer tables, and server-forwarded command names.
 2. The Raven baseline is OpenJK commit `14cea1563762076974bee277afadbd5bf234c494`, the initial JA source dump.
-3. For every non-base name, the resolver dates its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. The earliest dated project is the ultimate origin; later appearances are recorded as downstream ports rather than treated as proof of origin. Current-head presence is only a fallback when file history cannot be followed.
-4. Equal-date appearances are resolved only after chronology, using a shared commit as fork-lineage evidence. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier dated origin.
+3. For every non-base name, the resolver finds its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. It separately records the exact registration's first author date, the target project's PR creation date, and the mainline integration date. Authorship and submission are considered before merge order, so merging an upstream PR into TaystJK first does not make TaystJK its origin.
+4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier authored or submitted origin.
 5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
 6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. Unproven fields stay in the review queue.
 7. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
@@ -700,8 +728,8 @@ NewMod is closed source. Its [published feature documentation](https://jkanewmod
 
 ## Confidence
 
-- **High:** initial-import match, a unique earliest dated project introduction, or explicit identifier/feature-group credit consistent with chronology.
-- **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied earliest dates, or exact upstream-head presence when registration-file history cannot be followed.
+- **High:** initial-import match, a unique earliest authored/submitted project introduction, or explicit identifier/feature-group credit consistent with chronology.
+- **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied author/PR/integration dates, or exact upstream-head presence when registration-file history cannot be followed.
 - **Low:** no reliable attribution; these remain `unknown`.
 
 The [audit report](/TaystJK/reference/audit/) lists every medium/low attribution, incomplete semantic entry, and ambiguous registration-signature change.

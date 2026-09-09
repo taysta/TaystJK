@@ -32,8 +32,8 @@ Controls `cg_drawRewards` in the cgame module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L382) |
-| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L386) |
+| `1` | Selects the code path tested for value 1. | [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L382) |
+| `2` | Selects the code path tested for value 2. | [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L386) |
 
 ## Flags
 
@@ -61,9 +61,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:283](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L283) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L382)
-- behavior: [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L386)
-- behavior: [codemp/cgame/cg_playerstate.c:399](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L399)
-- behavior: [codemp/cgame/cg_playerstate.c:403](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L403)
-- behavior: [codemp/cgame/cg_playerstate.c:416](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_playerstate.c#L416)
+- registration: [codemp/cgame/cg_xcvar.h:283](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L283) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_playerstate.c:382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L382)
+- behavior: [codemp/cgame/cg_playerstate.c:386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L386)
+- behavior: [codemp/cgame/cg_playerstate.c:399](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L399)
+- behavior: [codemp/cgame/cg_playerstate.c:403](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L403)
+- behavior: [codemp/cgame/cg_playerstate.c:416](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_playerstate.c#L416)

@@ -30,10 +30,10 @@ Play sound when players jump
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Don't play jump sounds | [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L374) |
-| `1` | Play all jump sounds | [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L374) |
-| `2` | Play only when other clients jump | [codemp/ui/ui_xdocs.h:375](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L375) |
-| `3` | Play only when local client jumps | [codemp/ui/ui_xdocs.h:377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L377) |
+| `0` | Don't play jump sounds | [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L374) |
+| `1` | Play all jump sounds | [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L374) |
+| `2` | Play only when other clients jump | [codemp/ui/ui_xdocs.h:375](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L375) |
+| `3` | Play only when local client jumps | [codemp/ui/ui_xdocs.h:377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L377) |
 
 ## Flags
 
@@ -64,9 +64,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:120](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L120) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_event.c:1799](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L1799)
-- behavior: [codemp/cgame/cg_event.c:1812](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_event.c#L1812)
-- behavior: [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L374)
-- documentation: [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L374)
-- documentation: [docs/japro_docs.md:453](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/docs/japro_docs.md#L453)
+- registration: [codemp/cgame/cg_xcvar.h:120](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L120) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_event.c:1799](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L1799)
+- behavior: [codemp/cgame/cg_event.c:1812](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_event.c#L1812)
+- behavior: [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L374)
+- documentation: [codemp/ui/ui_xdocs.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L374)
+- documentation: [docs/japro_docs.md:453](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L453)

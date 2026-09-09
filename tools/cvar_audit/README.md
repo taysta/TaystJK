@@ -22,16 +22,20 @@ The provenance resolver expects these local remote-tracking refs:
 
 The Base Jedi Academy baseline is OpenJK commit
 `14cea1563762076974bee277afadbd5bf234c494`, its initial Raven source import.
-PR metadata may be passed as one or more GitHub API JSON files so squash commit
-bodies and PR descriptions can be considered. NewMod attribution is accepted
-only with explicit credit because the relevant implementation is closed source.
+PR metadata from every relevant target repository may be passed as one or more
+GitHub API JSON files. Duplicate PR numbers are scoped to the PR's base
+repository, and `created_at` remains distinct from its eventual merge date.
+NewMod attribution is accepted only with explicit credit because the relevant
+implementation is closed source.
 
-For every non-base identifier, the resolver records the first dated mainline
-registration in every project. The earliest event is treated as the ultimate
-origin and later events as downstream appearances, regardless of port direction.
-An exact shared commit is a medium-confidence lineage tie because Git does not
-record which remote received the object first; explicit commit/PR credit can
-resolve the tie or identify an intermediate port source.
+For every non-base identifier, the resolver records the first mainline
+registration in every project. It distinguishes the exact registration's first
+author date, the target project's PR creation date, and its first-parent
+integration date. Origin is ranked in that order, so an OpenJK PR merged into
+TaystJK while still open upstream remains OpenJK-originated. PR dates are used
+comparatively only when metadata exists for at least two candidates; an explicit
+cross-project import link remains direct evidence. Shared commits remain
+reviewable ties when authorship, submission, and integration cannot resolve them.
 
 After resolving origin, the pipeline scans TaystJK's inherited first-parent
 history again for post-origin changes. It records exact registration edits,

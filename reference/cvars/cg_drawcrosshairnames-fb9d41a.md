@@ -30,9 +30,9 @@ Controls target-name display below the crosshair. Zero disables it, negative val
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Do not draw target names. | [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9482) |
-| `<0` | Draw only while the crosshair is currently on the target; do not fade afterward. | [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9513) |
-| `>0` | Fade for this many seconds. | [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9517) |
+| `0` | Do not draw target names. | [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9482) |
+| `<0` | Draw only while the crosshair is currently on the target; do not fade afterward. | [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9513) |
+| `>0` | Fade for this many seconds. | [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9517) |
 
 ## Flags
 
@@ -72,11 +72,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L273) (XCVAR_DEF)
-- registration: [codemp/ui/ui_xcvar.h:39](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L39) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9513)
-- behavior: [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9482)
-- behavior: [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9517)
-- behavior: [codemp/cgame/cg_draw.c:9463](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9463)
-- behavior: [codemp/cgame/cg_draw.c:9466](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L9466)
-- documentation: [codemp/ui/ui_xdocs.h:586](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L586)
+- registration: [codemp/cgame/cg_xcvar.h:273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L273) (XCVAR_DEF)
+- registration: [codemp/ui/ui_xcvar.h:39](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L39) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:9513](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9513)
+- behavior: [codemp/cgame/cg_draw.c:9482](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9482)
+- behavior: [codemp/cgame/cg_draw.c:9517](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9517)
+- behavior: [codemp/cgame/cg_draw.c:9463](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9463)
+- behavior: [codemp/cgame/cg_draw.c:9466](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L9466)
+- documentation: [codemp/ui/ui_xdocs.h:586](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L586)

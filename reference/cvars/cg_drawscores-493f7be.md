@@ -30,10 +30,10 @@ Team score counter in top right
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Scores are hidden | [codemp/ui/ui_xdocs.h:278](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L278) |
-| `1` | Team scores are drawn in the top right | [codemp/ui/ui_xdocs.h:279](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L279) |
-| `2` | Team scores are drawn in the top right with color | [codemp/ui/ui_xdocs.h:281](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L281) |
-| `3` | Large team scores | [codemp/ui/ui_xdocs.h:282](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L282) |
+| `0` | Scores are hidden | [codemp/ui/ui_xdocs.h:278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L278) |
+| `1` | Team scores are drawn in the top right | [codemp/ui/ui_xdocs.h:279](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L279) |
+| `2` | Team scores are drawn in the top right with color | [codemp/ui/ui_xdocs.h:281](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L281) |
+| `3` | Large team scores | [codemp/ui/ui_xdocs.h:282](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L282) |
 
 ## Flags
 
@@ -67,10 +67,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:87](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L87) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:3855](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L3855)
-- behavior: [codemp/cgame/cg_draw.c:4275](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L4275)
-- behavior: [codemp/cgame/cg_draw.c:4277](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L4277)
-- behavior: [codemp/cgame/cg_draw.c:4283](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L4283)
-- behavior: [codemp/cgame/cg_draw.c:6323](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L6323)
-- documentation: [codemp/ui/ui_xdocs.h:278](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L278)
+- registration: [codemp/cgame/cg_xcvar.h:87](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L87) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:3855](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L3855)
+- behavior: [codemp/cgame/cg_draw.c:4275](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L4275)
+- behavior: [codemp/cgame/cg_draw.c:4277](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L4277)
+- behavior: [codemp/cgame/cg_draw.c:4283](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L4283)
+- behavior: [codemp/cgame/cg_draw.c:6323](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6323)
+- documentation: [codemp/ui/ui_xdocs.h:278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L278)

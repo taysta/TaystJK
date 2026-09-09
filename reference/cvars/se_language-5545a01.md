@@ -86,13 +86,13 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/stringed_ingame.cpp:1178](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.cpp#L1178) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1727](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1727) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1626) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:779](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L779) (Cvar_Get)
-- registration: [codemp/ui/ui_xcvar.h:50](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L50) (XCVAR_DEF)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:937](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.cpp#L937)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1196](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.cpp#L1196)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1199](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.cpp#L1199)
-- behavior: [codemp/qcommon/stringed_ingame.cpp:1260](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.cpp#L1260)
-- behavior: [codemp/qcommon/stringed_ingame.h:93](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/stringed_ingame.h#L93)
+- registration: [codemp/qcommon/stringed_ingame.cpp:1178](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1178) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1727](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1727) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1626](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1626) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:779](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L779) (Cvar_Get)
+- registration: [codemp/ui/ui_xcvar.h:50](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L50) (XCVAR_DEF)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:937](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L937)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1196](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1196)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1199](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1199)
+- behavior: [codemp/qcommon/stringed_ingame.cpp:1260](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.cpp#L1260)
+- behavior: [codemp/qcommon/stringed_ingame.h:93](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/stringed_ingame.h#L93)

@@ -32,7 +32,7 @@ Controls `g_locationBasedDamage` in the game module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/g_combat.c:4573](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4573) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/g_combat.c:4573](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4573) |
 
 ## Flags
 
@@ -60,9 +60,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:113](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L113) (XCVAR_DEF)
-- behavior: [codemp/game/g_combat.c:4573](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4573)
-- behavior: [codemp/game/g_combat.c:4580](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4580)
-- behavior: [codemp/game/g_combat.c:4596](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4596)
-- behavior: [codemp/game/g_combat.c:4603](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4603)
-- behavior: [codemp/game/g_combat.c:4523](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L4523)
+- registration: [codemp/game/g_xcvar.h:113](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L113) (XCVAR_DEF)
+- behavior: [codemp/game/g_combat.c:4573](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4573)
+- behavior: [codemp/game/g_combat.c:4580](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4580)
+- behavior: [codemp/game/g_combat.c:4596](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4596)
+- behavior: [codemp/game/g_combat.c:4603](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4603)
+- behavior: [codemp/game/g_combat.c:4523](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L4523)

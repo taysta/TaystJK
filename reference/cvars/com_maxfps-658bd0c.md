@@ -70,11 +70,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
-- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
-- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
-- behavior: [codemp/qcommon/common.cpp:1759](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1759)
-- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2627)
-- behavior: [codemp/qcommon/common.cpp:1760](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1760)
-- behavior: [codemp/cgame/hud_strafehelper.c:859](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L859)
-- behavior: [codemp/cgame/hud_strafehelper.c:2546](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_strafehelper.c#L2546)
+- registration: [codemp/cgame/cg_xcvar.h:196](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L196) (XCVAR_DEF)
+- registration: [shared/sys/sys_main.cpp:172](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_main.cpp#L172) (Cvar_Get); condition `defined(_JK2EXE)`
+- registration: [shared/sys/sys_main.cpp:174](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sys/sys_main.cpp#L174) (Cvar_Get); condition `else(defined(_JK2EXE))`
+- behavior: [codemp/qcommon/common.cpp:1759](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1759)
+- behavior: [codemp/cgame/cg_view.c:2627](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2627)
+- behavior: [codemp/qcommon/common.cpp:1760](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1760)
+- behavior: [codemp/cgame/hud_strafehelper.c:859](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L859)
+- behavior: [codemp/cgame/hud_strafehelper.c:2546](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2546)

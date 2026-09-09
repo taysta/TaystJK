@@ -60,9 +60,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:152](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L152) (XCVAR_DEF)
-- behavior: [codemp/game/g_saga.c:236](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_saga.c#L236)
-- behavior: [codemp/game/g_saga.c:273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_saga.c#L273)
-- behavior: [codemp/game/g_saga.c:744](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_saga.c#L744)
-- behavior: [codemp/game/g_saga.c:980](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_saga.c#L980)
-- behavior: [codemp/game/g_saga.c:143](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_saga.c#L143)
+- registration: [codemp/game/g_xcvar.h:152](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L152) (XCVAR_DEF)
+- behavior: [codemp/game/g_saga.c:236](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L236)
+- behavior: [codemp/game/g_saga.c:273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L273)
+- behavior: [codemp/game/g_saga.c:744](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L744)
+- behavior: [codemp/game/g_saga.c:980](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L980)
+- behavior: [codemp/game/g_saga.c:143](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_saga.c#L143)

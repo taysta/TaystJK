@@ -92,11 +92,11 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:389](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L389) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:181](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L181) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1468](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1468) (Cvar_Get)
-- behavior: [codemp/cgame/cg_view.c:3116](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L3116)
-- behavior: [codemp/cgame/cg_view.c:3117](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L3117)
-- behavior: [codemp/cgame/cg_view.c:3119](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L3119)
-- behavior: [codemp/cgame/cg_view.c:3124](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L3124)
-- behavior: [codemp/client/cl_cgame.cpp:879](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L879)
+- registration: [codemp/cgame/cg_xcvar.h:389](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L389) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:181](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L181) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1468) (Cvar_Get)
+- behavior: [codemp/cgame/cg_view.c:3116](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L3116)
+- behavior: [codemp/cgame/cg_view.c:3117](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L3117)
+- behavior: [codemp/cgame/cg_view.c:3119](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L3119)
+- behavior: [codemp/cgame/cg_view.c:3124](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L3124)
+- behavior: [codemp/client/cl_cgame.cpp:879](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L879)

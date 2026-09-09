@@ -57,7 +57,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_mp3.cpp:247](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L247) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:3920](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L3920)
-- behavior: [codemp/client/snd_mp3.cpp:268](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L268)
-- behavior: [codemp/client/snd_mp3.cpp:265](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mp3.cpp#L265)
+- registration: [codemp/client/snd_mp3.cpp:247](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mp3.cpp#L247) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:3920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3920)
+- behavior: [codemp/client/snd_mp3.cpp:268](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mp3.cpp#L268)
+- behavior: [codemp/client/snd_mp3.cpp:265](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mp3.cpp#L265)

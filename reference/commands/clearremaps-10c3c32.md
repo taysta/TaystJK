@@ -34,23 +34,23 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`be875666ac5d`](https://github.com/eternalcodes/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) on `2019-03-21` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`be875666ac5d`](https://github.com/eternalcodes/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-03-21`, integrated `2019-03-21`)
 - Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1580](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-vanilla/tr_init.cpp#L1580)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-03-21` | [`be875666ac5d`](https://github.com/eternalcodes/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-03-21` | [`be875666ac5d`](https://github.com/taysta/TaystJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-03-21` | [`be875666ac5d`](https://github.com/videoP/jaPRO/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-03-21` | [`be875666ac5d`](https://github.com/JKSunny/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-03-21` | — | `2019-03-21` | [`be875666ac5d`](https://github.com/eternalcodes/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-03-21` | — | `2019-03-21` | [`be875666ac5d`](https://github.com/taysta/TaystJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-03-21` | — | `2019-03-21` | [`be875666ac5d`](https://github.com/videoP/jaPRO/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-03-21` | — | `2019-03-21` | [`be875666ac5d`](https://github.com/JKSunny/EternalJK/commit/be875666ac5d4aa150d79ca1d7e0b060609fdc28) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | — | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Other project appearance |
 
 ### Later changes
 
@@ -65,7 +65,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-rend2/tr_init.cpp:1467](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1467) (renderer command table)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1606](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1606) (renderer command table)
-- registration: [codemp/rd-vulkan/tr_init.cpp:757](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L757) (renderer command table)
-- handler: [codemp/rd-rend2/tr_init.cpp:1437](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1437)
+- registration: [codemp/rd-rend2/tr_init.cpp:1467](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1467) (renderer command table)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1606](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1606) (renderer command table)
+- registration: [codemp/rd-vulkan/tr_init.cpp:757](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L757) (renderer command table)
+- handler: [codemp/rd-rend2/tr_init.cpp:1437](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1437)

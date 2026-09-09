@@ -68,10 +68,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_bot.c:1290](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_bot.c#L1290) (Cvar_Register)
-- registration: [codemp/ui/ui_gameinfo.c:296](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_gameinfo.c#L296) (Cvar_Register)
-- registration: [codemp/ui/ui_xcvar.h:47](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L47) (XCVAR_DEF)
-- behavior: [codemp/game/g_bot.c:1291](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_bot.c#L1291)
-- behavior: [codemp/ui/ui_gameinfo.c:297](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_gameinfo.c#L297)
-- behavior: [codemp/game/g_bot.c:1292](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_bot.c#L1292)
-- behavior: [codemp/ui/ui_gameinfo.c:298](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_gameinfo.c#L298)
+- registration: [codemp/game/g_bot.c:1290](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L1290) (Cvar_Register)
+- registration: [codemp/ui/ui_gameinfo.c:296](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_gameinfo.c#L296) (Cvar_Register)
+- registration: [codemp/ui/ui_xcvar.h:47](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L47) (XCVAR_DEF)
+- behavior: [codemp/game/g_bot.c:1291](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L1291)
+- behavior: [codemp/ui/ui_gameinfo.c:297](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_gameinfo.c#L297)
+- behavior: [codemp/game/g_bot.c:1292](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L1292)
+- behavior: [codemp/ui/ui_gameinfo.c:298](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_gameinfo.c#L298)

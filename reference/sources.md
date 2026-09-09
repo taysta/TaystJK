@@ -19,14 +19,14 @@ The reference separates origin from current availability. An entry inherited fro
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | [`jkanewmod/NewJK@ad8d071f714a`](https://github.com/jkanewmod/NewJK/tree/ad8d071f714ab1bbcd7b6bb4bb8ceaeee6e57541) | NewJK and explicitly credited NewMod ports |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | [`SomaZ/OpenJK@788c19e97f02`](https://github.com/SomaZ/OpenJK/tree/788c19e97f02c0b68db29d63060305b6ad1580e5) | SomaZ rend2-unified renderer lineage |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | [`JKSunny/EternalJK@b50059618803`](https://github.com/JKSunny/EternalJK/tree/b50059618803346a918f57220f856f1d0651dc39) | JKSunny Vulkan renderer lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@5802c999168d`](https://github.com/taysta/TaystJK/tree/5802c999168db2f9759a48f1ef3a3d672fa99722) | entries first evidenced in TaystJK after upstream checks |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | [`taysta/TaystJK@6ff04c0baf58`](https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655) | entries first evidenced in TaystJK after upstream checks |
 
 ## Evidence process
 
 1. The extractor masks comments, follows preprocessor conditions, and recognizes XCVAR macros, legacy VM tables, direct and syscall `Cvar_Get`/`Cvar_Register` calls, dynamic format expansions, command tables, input tables, renderer tables, and server-forwarded command names.
 2. The Raven baseline is OpenJK commit `14cea1563762076974bee277afadbd5bf234c494`, the initial JA source dump.
-3. For every non-base name, the resolver dates its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. The earliest dated project is the ultimate origin; later appearances are recorded as downstream ports rather than treated as proof of origin. Current-head presence is only a fallback when file history cannot be followed.
-4. Equal-date appearances are resolved only after chronology, using a shared commit as fork-lineage evidence. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier dated origin.
+3. For every non-base name, the resolver finds its first registration on the current first-parent line of TaystJK, OpenJK, EternalJK, jaPRO, JK2MV, NewJK, rend2, and Vulkan. It separately records the exact registration's first author date, the target project's PR creation date, and the mainline integration date. Authorship and submission are considered before merge order, so merging an upstream PR into TaystJK first does not make TaystJK its origin.
+4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, but a later intermediate source cannot displace an earlier authored or submitted origin.
 5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
 6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. Unproven fields stay in the review queue.
 7. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
@@ -35,8 +35,8 @@ NewMod is closed source. Its [published feature documentation](https://jkanewmod
 
 ## Confidence
 
-- **High:** initial-import match, a unique earliest dated project introduction, or explicit identifier/feature-group credit consistent with chronology.
-- **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied earliest dates, or exact upstream-head presence when registration-file history cannot be followed.
+- **High:** initial-import match, a unique earliest authored/submitted project introduction, or explicit identifier/feature-group credit consistent with chronology.
+- **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied author/PR/integration dates, or exact upstream-head presence when registration-file history cannot be followed.
 - **Low:** no reliable attribution; these remain `unknown`.
 
 The [audit report](/TaystJK/reference/audit/) lists every medium/low attribution, incomplete semantic entry, and ambiguous registration-signature change.

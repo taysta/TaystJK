@@ -57,9 +57,9 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
-- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
-- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
-- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)
+- registration: [codemp/rd-vanilla/tr_init.cpp:501](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L501) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:504](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L504) (implicit Cvar_SetValue)
+- registration: [codemp/rd-vanilla/tr_init.cpp:510](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L510) (implicit Cvar_Set)
+- registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
+- registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)

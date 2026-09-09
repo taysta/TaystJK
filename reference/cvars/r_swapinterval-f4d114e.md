@@ -32,8 +32,8 @@ Controls `r_swapInterval` in the renderer module. Consult the cited behavior rea
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L169) |
-| `0` | Selects the code path tested for value 0. | [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_swapchain.cpp#L144) |
+| `-1` | Selects the code path tested for value -1. | [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L169) |
+| `0` | Selects the code path tested for value 0. | [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_swapchain.cpp#L144) |
 
 ## Flags
 
@@ -79,10 +79,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:375](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L375) (Cvar_Get)
-- registration: [shared/sdl/sdl_window.cpp:805](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L805) (Cvar_Get)
-- behavior: [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L169)
-- behavior: [shared/sdl/sdl_window.cpp:646](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L646)
-- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_swapchain.cpp#L144)
-- behavior: [shared/sdl/sdl_window.cpp:166](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L166)
-- behavior: [shared/sdl/sdl_window.cpp:168](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/sdl/sdl_window.cpp#L168)
+- registration: [codemp/rd-dedicated/tr_init.cpp:375](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L375) (Cvar_Get)
+- registration: [shared/sdl/sdl_window.cpp:805](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L805) (Cvar_Get)
+- behavior: [shared/sdl/sdl_window.cpp:169](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L169)
+- behavior: [shared/sdl/sdl_window.cpp:646](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L646)
+- behavior: [codemp/rd-vulkan/vk_swapchain.cpp:144](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_swapchain.cpp#L144)
+- behavior: [shared/sdl/sdl_window.cpp:166](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L166)
+- behavior: [shared/sdl/sdl_window.cpp:168](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L168)

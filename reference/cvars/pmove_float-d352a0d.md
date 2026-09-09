@@ -32,8 +32,8 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L1137) |
-| `1` | Enabled. | [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L1137) |
+| `0` | Disabled. | [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L1137) |
+| `1` | Enabled. | [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L1137) |
 
 ## Flags
 
@@ -51,25 +51,25 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) on `2013-05-11` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-05-03`, integrated `2013-05-11`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:158](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/cgame/cg_xcvar.h#L158)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.
+- Notes: The identifier's single-prefix squash feature group explicitly credits openjk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/eternalcodes/EternalJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/SomaZ/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/videoP/jaPRO/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/jkanewmod/NewJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-05-11` | [`f203e799b14c`](https://github.com/JKSunny/EternalJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/JACoders/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/eternalcodes/EternalJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/SomaZ/OpenJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/videoP/jaPRO/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/jkanewmod/NewJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-05-03` | — | `2013-05-11` | [`f203e799b14c`](https://github.com/JKSunny/EternalJK/commit/f203e799b14c0716833793eed611c272111c3cb6) | Shared integration commit |
 
 ### Later changes
 
@@ -86,10 +86,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:380](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L380) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L1137)
-- behavior: [codemp/game/g_active.c:4888](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4888)
-- behavior: [codemp/game/bg_pmove.c:15505](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L15505)
-- behavior: [codemp/game/bg_pmove.c:15515](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L15515)
-- behavior: [codemp/game/bg_pmove.c:14949](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L14949)
+- registration: [codemp/cgame/cg_xcvar.h:380](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L380) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:173](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L173) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_predict.c:1137](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L1137)
+- behavior: [codemp/game/g_active.c:4888](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4888)
+- behavior: [codemp/game/bg_pmove.c:15505](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15505)
+- behavior: [codemp/game/bg_pmove.c:15515](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L15515)
+- behavior: [codemp/game/bg_pmove.c:14949](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L14949)

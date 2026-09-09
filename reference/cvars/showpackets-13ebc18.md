@@ -32,8 +32,8 @@ Controls `showpackets` in the engine-shared module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L130) |
-| `1` | Enabled. | [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L130) |
+| `0` | Disabled. | [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L130) |
+| `1` | Enabled. | [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L130) |
 
 ## Flags
 
@@ -59,9 +59,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/net_chan.cpp:73](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L73) (Cvar_Get)
-- behavior: [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L130)
-- behavior: [codemp/qcommon/net_chan.cpp:201](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L201)
-- behavior: [codemp/qcommon/net_chan.cpp:254](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L254)
-- behavior: [codemp/qcommon/net_chan.cpp:273](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L273)
-- behavior: [codemp/qcommon/net_chan.cpp:287](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/net_chan.cpp#L287)
+- registration: [codemp/qcommon/net_chan.cpp:73](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L73) (Cvar_Get)
+- behavior: [codemp/qcommon/net_chan.cpp:130](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L130)
+- behavior: [codemp/qcommon/net_chan.cpp:201](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L201)
+- behavior: [codemp/qcommon/net_chan.cpp:254](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L254)
+- behavior: [codemp/qcommon/net_chan.cpp:273](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L273)
+- behavior: [codemp/qcommon/net_chan.cpp:287](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_chan.cpp#L287)

@@ -32,9 +32,9 @@ Controls `bot_forgimmick` in the game module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9149) |
-| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9154) |
-| `4` | Selects the code path tested for value 4. | [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9164) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154) |
+| `4` | Selects the code path tested for value 4. | [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164) |
 
 ## Flags
 
@@ -60,8 +60,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_main.c:10689](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L10689) (Cvar_Register)
-- behavior: [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9149)
-- behavior: [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9154)
-- behavior: [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9164)
-- behavior: [codemp/game/ai_main.c:9142](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L9142)
+- registration: [codemp/game/ai_main.c:10689](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10689) (Cvar_Register)
+- behavior: [codemp/game/ai_main.c:9149](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9149)
+- behavior: [codemp/game/ai_main.c:9154](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9154)
+- behavior: [codemp/game/ai_main.c:9164](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9164)
+- behavior: [codemp/game/ai_main.c:9142](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L9142)

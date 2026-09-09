@@ -82,9 +82,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:331](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L331) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1512](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1512) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1648](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1648) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:800](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L800) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1546](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1546)
-- behavior: [codemp/rd-vanilla/tr_image.cpp:1552](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_image.cpp#L1552)
+- registration: [codemp/rd-dedicated/tr_init.cpp:331](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L331) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1512](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1512) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1648](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1648) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:800](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L800) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1546](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1546)
+- behavior: [codemp/rd-vanilla/tr_image.cpp:1552](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1552)

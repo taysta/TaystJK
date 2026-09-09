@@ -34,25 +34,25 @@ No verified argument schema is available beyond the syntax shown above.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`3b9054288cb6`](https://github.com/JACoders/OpenJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) on `2013-04-07` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`f7058dcb5644`](https://github.com/JACoders/OpenJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-08-15`, integrated `2013-08-15`)
 - Upstream registration evidence: [code/qcommon/cvar.cpp:1388](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/cvar.cpp#L1388)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/JACoders/OpenJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/eternalcodes/EternalJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/SomaZ/OpenJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/taysta/TaystJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/videoP/jaPRO/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/jkanewmod/NewJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-07` | [`3b9054288cb6`](https://github.com/JKSunny/EternalJK/commit/3b9054288cb68485297a53f60e618d7ffb6d16ae) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/JACoders/OpenJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/eternalcodes/EternalJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/SomaZ/OpenJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/taysta/TaystJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/videoP/jaPRO/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/jkanewmod/NewJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-08-15` | — | `2013-08-15` | [`f7058dcb5644`](https://github.com/JKSunny/EternalJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c) | Shared integration commit |
 
 ### Later changes
 
@@ -60,7 +60,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2013-08-15` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`f7058dcb5644`](https://github.com/JACoders/OpenJK/commit/f7058dcb56443a3ddc7425eeb2d538a866a06a8c)<br>Add cvar_modified command, improve cvarlist command | Changed registration, default, flags, module, renderer scope, handler, or gating; and the registered command handler. `codemp/qcommon/cvar.cpp` | `medium` |
 | `2013-08-16` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`82badfabf174`](https://github.com/JACoders/OpenJK/commit/82badfabf174a20512a5c895b58af25eade3e972)<br>Massive SP upgrade patch. Merges the console overhaul to SP. Fixes extension functions in SP. Rename qport to net_qport in SP. Remove alt-tab diasabler from SP. Fixed up command buffer code in SP. Fixed up configs loading on startup in SP. | Changed registration, default, flags, module, renderer scope, handler, or gating. `code/qcommon/cvar.cpp` | `medium` |
 | `2013-10-16` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`7d70edf1d46a`](https://github.com/JACoders/OpenJK/commit/7d70edf1d46a8f74fdb49811b745738d76c43725)<br>[MP] Style: remove vec_t, add matrix3_t | Changed the registered command handler. `codemp/qcommon/cvar.cpp` | `medium` |
 | `2013-12-02` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`c3048621c5bd`](https://github.com/JACoders/OpenJK/commit/c3048621c5bda22d6a9cc90b5b5e2d0870d4bbb7)<br>[MP] cvar.cpp: s/cvarfloat/cvarvec_t/ | Changed the registered command handler. `codemp/qcommon/cvar.cpp` | `medium` |
@@ -71,5 +70,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/cvar.cpp:1644](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L1644) (Cmd_AddCommand)
-- handler: [codemp/qcommon/cvar.cpp:1266](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L1266)
+- registration: [codemp/qcommon/cvar.cpp:1644](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1644) (Cmd_AddCommand)
+- handler: [codemp/qcommon/cvar.cpp:1266](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1266)

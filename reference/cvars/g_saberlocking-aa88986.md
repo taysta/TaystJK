@@ -32,8 +32,8 @@ Controls `g_saberLocking` in the game module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L1487) |
-| `1` | Enabled. | [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L1487) |
+| `0` | Disabled. | [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L1487) |
+| `1` | Enabled. | [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L1487) |
 
 ## Flags
 
@@ -67,6 +67,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:141](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L141) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:970](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L970) (Cvar_Get)
-- behavior: [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L1487)
+- registration: [codemp/game/g_xcvar.h:141](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L141) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:970](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L970) (Cvar_Get)
+- behavior: [codemp/game/w_saber.c:1487](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L1487)

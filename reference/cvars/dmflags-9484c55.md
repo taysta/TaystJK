@@ -32,9 +32,9 @@ Controls `dmflags` in the game module. Consult the cited behavior reads before r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `256` | Match JA+ I guess. | [codemp/game/bg_public.h:1373](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_public.h#L1373) |
-| `8` | Enables the `DF_NO_FALLING` code path. | [codemp/game/bg_public.h:1370](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_public.h#L1370) |
-| `32` | Enables the `DF_NO_FOOTSTEPS` code path. | [codemp/game/bg_public.h:1372](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_public.h#L1372) |
+| `256` | Match JA+ I guess. | [codemp/game/bg_public.h:1373](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L1373) |
+| `8` | Enables the `DF_NO_FALLING` code path. | [codemp/game/bg_public.h:1370](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L1370) |
+| `32` | Enables the `DF_NO_FOOTSTEPS` code path. | [codemp/game/bg_public.h:1372](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L1372) |
 
 ## Flags
 
@@ -72,10 +72,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:63](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L63) (XCVAR_DEF)
-- registration: [codemp/server/sv_init.cpp:962](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L962) (Cvar_Get)
-- behavior: [codemp/game/bg_pmove.c:7364](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L7364)
-- behavior: [codemp/game/bg_pmove.c:7439](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L7439)
-- behavior: [codemp/game/g_active.c:1931](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L1931)
-- behavior: [codemp/game/g_cmds.c:8278](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8278)
-- behavior: [codemp/game/g_active.c:4884](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4884)
+- registration: [codemp/game/g_xcvar.h:63](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L63) (XCVAR_DEF)
+- registration: [codemp/server/sv_init.cpp:962](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L962) (Cvar_Get)
+- behavior: [codemp/game/bg_pmove.c:7364](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L7364)
+- behavior: [codemp/game/bg_pmove.c:7439](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L7439)
+- behavior: [codemp/game/g_active.c:1931](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1931)
+- behavior: [codemp/game/g_cmds.c:8278](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8278)
+- behavior: [codemp/game/g_active.c:4884](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4884)

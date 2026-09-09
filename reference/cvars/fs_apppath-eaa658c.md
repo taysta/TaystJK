@@ -41,25 +41,25 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`2229f7cb1aba`](https://github.com/JACoders/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) on `2013-11-12` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`2229f7cb1aba`](https://github.com/JACoders/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-06-29`, integrated `2013-11-12`)
 - Upstream registration evidence: [code/qcommon/files.cpp:2906](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/code/qcommon/files.cpp#L2906)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/JACoders/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/eternalcodes/EternalJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/SomaZ/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/taysta/TaystJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/videoP/jaPRO/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/jkanewmod/NewJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-11-12` | [`2229f7cb1aba`](https://github.com/JKSunny/EternalJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/JACoders/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/eternalcodes/EternalJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/SomaZ/OpenJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/taysta/TaystJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/videoP/jaPRO/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/jkanewmod/NewJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-06-29` | — | `2013-11-12` | [`2229f7cb1aba`](https://github.com/JKSunny/EternalJK/commit/2229f7cb1aba359eed397f76f466fe4e2dcabae4) | Shared integration commit |
 
 ### Later changes
 
@@ -77,9 +77,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/files.cpp:3942](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3942) (Cvar_Get); condition `defined(MACOS_X)`
-- behavior: [codemp/qcommon/files.cpp:3944](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3944)
-- behavior: [codemp/qcommon/files.cpp:3965](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3965)
-- behavior: [codemp/qcommon/files.cpp:3945](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3945)
-- behavior: [codemp/qcommon/files.cpp:3966](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3966)
-- behavior: [codemp/qcommon/files.cpp:3816](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/files.cpp#L3816)
+- registration: [codemp/qcommon/files.cpp:3942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3942) (Cvar_Get); condition `defined(MACOS_X)`
+- behavior: [codemp/qcommon/files.cpp:3944](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3944)
+- behavior: [codemp/qcommon/files.cpp:3965](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3965)
+- behavior: [codemp/qcommon/files.cpp:3945](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3945)
+- behavior: [codemp/qcommon/files.cpp:3966](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3966)
+- behavior: [codemp/qcommon/files.cpp:3816](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3816)

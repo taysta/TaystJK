@@ -59,7 +59,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:347](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L347) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:2098](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L2098)
-- behavior: [codemp/cgame/cg_ents.c:2489](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L2489)
-- behavior: [codemp/cgame/cg_ents.c:2053](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L2053)
+- registration: [codemp/cgame/cg_xcvar.h:347](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L347) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:2098](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L2098)
+- behavior: [codemp/cgame/cg_ents.c:2489](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L2489)
+- behavior: [codemp/cgame/cg_ents.c:2053](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L2053)

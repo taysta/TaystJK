@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 
 ORIGINS = {"basejka", "openjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "taystjk", "quake3", "unknown"}
@@ -58,9 +59,19 @@ def validate(path: Path, expected_kind: str) -> list[str]:
         if origin.get("confidence") not in CONFIDENCE or origin.get("status") not in STATUS:
             errors.append(f"{label}: incomplete origin assessment")
         introductions = origin.get("introduction_evidence", [])
-        timestamps = [item.get("timestamp") for item in introductions]
-        if timestamps != sorted(timestamps):
-            errors.append(f"{label}: project introductions are not chronological")
+        def introduction_rank(item: dict[str, Any]) -> tuple[int, int, int]:
+            integrated = int(item.get("timestamp") or 0)
+            authored = int(
+                item.get("content_author_timestamp")
+                or item.get("author_timestamp")
+                or integrated
+            )
+            proposed = int(item.get("pr_created_timestamp") or integrated)
+            return authored, proposed, integrated
+
+        ranks = [introduction_rank(item) for item in introductions]
+        if ranks != sorted(ranks):
+            errors.append(f"{label}: project introductions are not evidence-chronological")
         introduction_sources = [item.get("source") for item in introductions]
         if len(introduction_sources) != len(set(introduction_sources)):
             errors.append(f"{label}: duplicate project introduction source")
@@ -68,11 +79,20 @@ def validate(path: Path, expected_kind: str) -> list[str]:
         if origin_introduction:
             if origin_introduction.get("source") != origin.get("source"):
                 errors.append(f"{label}: origin introduction does not match attributed source")
-            if introductions and origin_introduction.get("timestamp") != min(timestamps):
-                errors.append(f"{label}: attributed origin is later than another dated project introduction")
-        for downstream in origin.get("downstream_introductions", []):
-            if not origin_introduction or downstream.get("timestamp", 0) <= origin_introduction.get("timestamp", 0):
-                errors.append(f"{label}: invalid downstream introduction chronology")
+        downstream = origin.get("downstream_introductions", [])
+        expected_downstream = (
+            {
+                (item.get("source"), item.get("sha"))
+                for item in introductions
+                if item.get("source") != origin.get("source")
+            }
+            if origin_introduction else set()
+        )
+        actual_downstream = {
+            (item.get("source"), item.get("sha")) for item in downstream
+        }
+        if actual_downstream != expected_downstream:
+            errors.append(f"{label}: downstream introductions do not match non-origin projects")
         modifications = entry.get("modified_by", [])
         dated_modifications = [item for item in modifications if item.get("timestamp") is not None]
         modification_timestamps = [item["timestamp"] for item in dated_modifications]

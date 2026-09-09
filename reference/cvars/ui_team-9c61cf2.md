@@ -55,11 +55,11 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_players.c:2181](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L2181) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8015](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L8015) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8019](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L8019) (implicit Cvar_Set)
-- registration: [codemp/ui/ui_main.c:8023](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L8023) (implicit Cvar_Set)
-- behavior: [codemp/ui/ui_main.c:8414](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L8414)
-- behavior: [codemp/ui/ui_main.c:9706](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9706)
-- behavior: [codemp/ui/ui_main.c:10398](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L10398)
-- behavior: [codemp/ui/ui_main.c:10803](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L10803)
+- registration: [codemp/cgame/cg_players.c:2181](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2181) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8015](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8015) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8019](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8019) (implicit Cvar_Set)
+- registration: [codemp/ui/ui_main.c:8023](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8023) (implicit Cvar_Set)
+- behavior: [codemp/ui/ui_main.c:8414](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8414)
+- behavior: [codemp/ui/ui_main.c:9706](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9706)
+- behavior: [codemp/ui/ui_main.c:10398](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10398)
+- behavior: [codemp/ui/ui_main.c:10803](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L10803)

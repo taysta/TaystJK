@@ -15,6 +15,7 @@ import re
 import subprocess
 from collections import defaultdict
 from dataclasses import asdict
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
@@ -25,7 +26,7 @@ from extract import extract_commands, extract_cvars, source_files
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
 EXTRACTOR_VERSION = 6
-RESOLVER_VERSION = 17
+RESOLVER_VERSION = 23
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -63,6 +64,16 @@ SOURCE_PATTERNS = {
     "vulkan": re.compile(r"\bvulkan\b|\bjksunny\b|\bsunny\b", re.I),
     "eternaljk": re.compile(r"\beternaljk\b|\beternal\s+jk\b", re.I),
     "openjk": re.compile(r"\bopenjk\b", re.I),
+}
+REPOSITORY_SOURCES = {
+    "jacoders/openjk": "openjk",
+    "eternalcodes/eternaljk": "eternaljk",
+    "videop/japro": "japro",
+    "mvdevs/jk2mv": "jk2mv",
+    "jkanewmod/newjk": "newjk",
+    "somaz/openjk": "rend2",
+    "jksunny/eternaljk": "vulkan",
+    "taysta/taystjk": "taystjk",
 }
 
 
@@ -105,6 +116,31 @@ def grouped(records: Iterable[dict[str, Any]]) -> dict[str, list[dict[str, Any]]
     return dict(result)
 
 
+def is_registration_line(name: str, kinds: set[str], changed_line: str) -> bool:
+    """Reject declarations/read sites while retaining multiline registrations."""
+    escaped = re.escape(name)
+    if "XCVAR_DEF" in kinds and re.search(
+        rf"\bXCVAR_DEF\s*\(\s*{escaped}\s*,", changed_line, re.I,
+    ):
+        return True
+    quoted = re.search(rf'"{escaped}"', changed_line, re.I)
+    if not quoted:
+        return False
+    if any(kind == "forwarded client command table" for kind in kinds):
+        return True
+    if any("table" in kind for kind in kinds) and "{" in changed_line:
+        return True
+    if any(kind.startswith("implicit") for kind in kinds):
+        return bool(re.search(r"\b(?:trap_)?Cvar_Set\b", changed_line))
+    # The function name can be on the previous line in formatted multiline
+    # calls, so a quoted exact name is sufficient for direct registrations.
+    return any(
+        token in kind
+        for kind in kinds
+        for token in ("Cvar_Get", "Cvar_Register", "Cmd_AddCommand", "AddCommand")
+    )
+
+
 def branch_introductions(
     ref: str,
     records: dict[str, list[dict[str, Any]]],
@@ -127,15 +163,17 @@ def branch_introductions(
         f"{name}:{','.join(sorted({item['path'] for item in registrations}))}"
         for name, registrations in sorted(records.items())
     )
-    key = cache_key(f"branch-introductions-v2-{label}-{sha[:12]}", coordinates)
+    key = cache_key(f"branch-introductions-v5-{label}-{sha[:12]}", coordinates)
     path = cache / "git" / key
     if path.exists() and not refresh:
         return json.loads(path.read_text())
 
     names_by_path: dict[str, set[str]] = defaultdict(set)
     display_names: dict[str, str] = {}
+    registration_kinds: dict[str, set[str]] = {}
     for name, registrations in records.items():
         display_names[name] = registrations[0]["name"]
+        registration_kinds[name] = {str(item.get("kind", "")) for item in registrations}
         usable = [item for item in registrations if not str(item.get("kind", "")).startswith("implicit")]
         for registration in usable or registrations:
             names_by_path[registration["path"]].add(name)
@@ -149,7 +187,7 @@ def branch_introductions(
         )
         for source_path, names in names_by_path.items()
     }
-    marker = "@@@TAYSTJK-INTRO@@@%H%x09%ct%x09%s"
+    marker = "@@@TAYSTJK-INTRO@@@%H%x09%at%x09%ct%x09%an%x09%ae%x09%s"
     command = [
         "git", "log", ref, "--first-parent", "--reverse", "--root",
         "--diff-merges=first-parent",
@@ -163,28 +201,49 @@ def branch_introductions(
     assert process.stdout is not None
     current: dict[str, Any] | None = None
     current_path: str | None = None
+    current_line: int | None = None
     found: dict[str, dict[str, Any]] = {}
     for raw_line in process.stdout:
         line = raw_line.rstrip("\n")
         if line.startswith("@@@TAYSTJK-INTRO@@@"):
-            fields = line.removeprefix("@@@TAYSTJK-INTRO@@@").split("\t", 2)
+            fields = line.removeprefix("@@@TAYSTJK-INTRO@@@").split("\t", 5)
             current = None
             current_path = None
-            if len(fields) == 3:
+            current_line = None
+            if len(fields) == 6:
                 current = {
-                    "sha": fields[0], "timestamp": int(fields[1]),
-                    "subject": fields[2], "ref": ref,
+                    "sha": fields[0], "author_timestamp": int(fields[1]),
+                    "timestamp": int(fields[2]), "author": fields[3],
+                    "email": fields[4], "subject": fields[5], "ref": ref,
                 }
             continue
         if line.startswith("+++ b/"):
             current_path = line[6:]
             continue
+        if line.startswith("@@"):
+            hunk = re.search(r"\+(\d+)(?:,\d+)?", line)
+            current_line = int(hunk.group(1)) if hunk else None
+            continue
         if current is None or current_path not in patterns or not line.startswith("+") or line.startswith("+++"):
+            if current_line is not None and not line.startswith("-") and not line.startswith("\\"):
+                current_line += 1
             continue
         for match in patterns[current_path].finditer(line[1:]):
             key_name = match.group(0).casefold()
-            if key_name in records and key_name not in found:
-                found[key_name] = {**current, "path": current_path}
+            if (
+                key_name in records and key_name not in found
+                and is_registration_line(display_names[key_name], registration_kinds[key_name], line[1:])
+            ):
+                display_name = display_names[key_name]
+                history_search = f'"{display_name}"' if re.search(
+                    rf'"{re.escape(display_name)}"', line[1:], re.I,
+                ) else display_name
+                found[key_name] = {
+                    **current, "path": current_path, "line": current_line,
+                    "history_search": history_search,
+                }
+        if current_line is not None:
+            current_line += 1
 
     stderr = process.stderr.read() if process.stderr else ""
     return_code = process.wait()
@@ -422,37 +481,269 @@ def branch_change_events(
     return rendered
 
 
+def parse_github_timestamp(value: Any) -> int | None:
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        return int(datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp())
+    except ValueError:
+        return None
+
+
+def source_for_repository(repository: str | None) -> str | None:
+    if not repository:
+        return None
+    normalized = repository.casefold().removesuffix(".git")
+    exact = REPOSITORY_SOURCES.get(normalized)
+    if exact:
+        return exact
+    owner, separator, name = normalized.partition("/")
+    if not separator:
+        return None
+    if name == "openjk":
+        return "rend2" if owner == "somaz" else "openjk"
+    if name == "eternaljk":
+        return "vulkan" if owner == "jksunny" else "eternaljk"
+    if name == "japro":
+        return "japro"
+    if name == "jk2mv":
+        return "jk2mv"
+    if name == "newjk":
+        return "newjk"
+    if name == "taystjk":
+        return "taystjk"
+    return None
+
+
+def pr_source(pr: dict[str, Any]) -> str | None:
+    annotated = pr.get("_source")
+    if annotated in REMOTE_MARKERS:
+        return str(annotated)
+    base = pr.get("base") or {}
+    repo = base.get("repo") or {}
+    source = source_for_repository(repo.get("full_name"))
+    if source:
+        return source
+    url = str(pr.get("html_url") or "")
+    match = re.search(r"github\.com/([^/]+/[^/]+)/pull/\d+", url, re.I)
+    return source_for_repository(match.group(1)) if match else None
+
+
+@lru_cache(maxsize=None)
+def introduction_content_event(
+    sha: str, path: str, line: int, history_search: str,
+) -> dict[str, Any] | None:
+    """Recover the first authored commit for an exact registration string."""
+    output = git("blame", "--line-porcelain", f"-L{line},{line}", sha, "--", path)
+    lines = output.splitlines()
+    match = re.match(r"^\^?([0-9a-f]{40})\s", lines[0] if lines else "")
+    if not match or set(match.group(1)) == {"0"}:
+        return None
+    line_sha = match.group(1)
+    history = git(
+        "log", "--follow", "--format=%H%x09%at%x09%ct%x09%an%x09%ae%x09%s",
+        f"-S{history_search}", line_sha, "--", path,
+    )
+    history_lines = [item for item in history.splitlines() if item.count("\t") >= 5]
+    fields = (
+        history_lines[-1].split("\t", 5) if history_lines
+        else git(
+            "show", "-s", "--format=%H%x09%at%x09%ct%x09%an%x09%ae%x09%s", line_sha,
+        ).strip().split("\t", 5)
+    )
+    if len(fields) != 6:
+        return None
+    return {
+        "content_sha": fields[0],
+        "content_author_timestamp": int(fields[1]),
+        "content_timestamp": int(fields[2]),
+        "content_author": fields[3],
+        "content_email": fields[4],
+        "content_subject": fields[5],
+        "line_commit_sha": line_sha,
+    }
+
+
+def linked_upstream_pr_sources(pr: dict[str, Any] | None) -> set[str]:
+    """Find PR targets explicitly described as the source of an import."""
+    if not pr:
+        return set()
+    found: set[str] = set()
+    for line in str(pr.get("body") or "").splitlines():
+        if not re.search(r"\b(?:merge|merg(?:ed|ing)|port(?:ed|ing)?|sync(?:ed|ing)?|backport|cherry-pick)\b", line, re.I):
+            continue
+        for repository in re.findall(r"github\.com/([^/\s]+/[^/\s]+)/pull/\d+", line, re.I):
+            source = source_for_repository(repository)
+            if source:
+                found.add(source)
+    return found
+
+
+def integration_subject_sources(subject: str) -> set[str]:
+    """Extract only the source side of an integration subject.
+
+    Generic mentions are unsafe here: "merge master into jaPRO" names the
+    destination, while a URL or a `from ...`/`import ...` clause names a source.
+    """
+    found: set[str] = set()
+    for repository in re.findall(r"github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)", subject, re.I):
+        source = source_for_repository(repository)
+        if source:
+            found.add(source)
+    for match in re.finditer(r"\b(?:from|import(?:ed|ing)?|port(?:ed|ing)?|sync(?:ed|ing)?)\b(.+)$", subject, re.I):
+        found.update(credited_sources(match.group(1)))
+    return found
+
+
+def enrich_introduction_events(
+    events: dict[str, dict[str, Any]],
+    prs: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    enriched: dict[str, dict[str, Any]] = {}
+    for source, raw_event in events.items():
+        event = dict(raw_event)
+        line = event.get("line")
+        if isinstance(line, int) and line > 0:
+            content = introduction_content_event(
+                event["sha"], event["path"], line,
+                str(event.get("history_search") or ""),
+            )
+            if content:
+                event.update(content)
+        pr = pr_for_commit(event, prs, source)
+        if pr:
+            event["pr"] = pr.get("number")
+            event["pr_url"] = pr.get("html_url")
+            created = parse_github_timestamp(pr.get("created_at"))
+            if created is not None:
+                event["pr_created_timestamp"] = created
+            linked = linked_upstream_pr_sources(pr)
+            if linked:
+                event["linked_upstream_pr_sources"] = sorted(linked)
+        enriched[source] = event
+    return enriched
+
+
+def introduction_rank(
+    event: dict[str, Any], use_pr_dates: bool = True,
+) -> tuple[int, int, int]:
+    authored = int(event.get("content_author_timestamp") or event.get("author_timestamp") or event["timestamp"])
+    proposed = int(
+        event.get("pr_created_timestamp")
+        if use_pr_dates and event.get("pr_created_timestamp") is not None
+        else event["timestamp"]
+    )
+    return authored, proposed, int(event["timestamp"])
+
+
 def select_dated_origin(
     events: dict[str, dict[str, Any]],
 ) -> tuple[str, str, str, list[str]]:
-    """Select an ultimate origin from per-project first-mainline events.
-
-    Dates establish direction. Project order is used only when two projects'
-    earliest appearances have the exact same timestamp, most commonly because
-    they share a commit through fork ancestry.
-    """
+    """Select origin by explicit credit, authorship, PR submission, and merge."""
     if not events:
         return "unknown", "low", "unresolved", []
-    earliest_timestamp = min(event["timestamp"] for event in events.values())
+
+    # Commit-level source labels are stronger than repository merge order. This
+    # resolves shared commits named "jaPRO update" or "base rend2 files" and
+    # upstream merge subjects that retain their OpenJK URL.
+    earliest_authored = min(
+        int(event.get("content_author_timestamp") or event.get("author_timestamp") or event["timestamp"])
+        for event in events.values()
+    )
+    authored_events = [
+        event for event in events.values()
+        if int(event.get("content_author_timestamp") or event.get("author_timestamp") or event["timestamp"])
+        == earliest_authored
+    ]
+    explicit_sources = credited_sources("\n".join(
+        str(event.get("content_subject") or "") for event in authored_events
+    ))
+    explicit_sources = [source for source in explicit_sources if source in events]
+    if len(explicit_sources) == 1:
+        source = explicit_sources[0]
+        return source, "high", "introduction-commit-explicit-credit", [source]
+
+    # A source-naming merge subject is useful only when the same integration
+    # SHA is shared by multiple project heads. A one-off downstream merge such
+    # as "merge rend2 into ..." is not feature-origin evidence.
+    shared_integration_credits: set[str] = set()
+    preliminary_by_sha: dict[str, list[str]] = defaultdict(list)
+    for event_source, event in events.items():
+        preliminary_by_sha[event["sha"]].append(event_source)
+    for shared_sources in preliminary_by_sha.values():
+        if len(shared_sources) < 2:
+            continue
+        credits: set[str] = set()
+        for item in shared_sources:
+            credits.update(integration_subject_sources(events[item].get("subject", "")))
+        shared_integration_credits.update(item for item in credits if item in events)
+    if len(shared_integration_credits) == 1:
+        source = next(iter(shared_integration_credits))
+        return source, "high", "shared-integration-explicit-credit", [source]
+
+    # A shared integration commit in several fork heads belongs to the project
+    # whose PR has that exact merge SHA; the other heads only contain it.
+    candidates = dict(events)
+    sources_by_sha: dict[str, list[str]] = defaultdict(list)
+    for source, event in events.items():
+        sources_by_sha[event["sha"]].append(source)
+    for sources in sources_by_sha.values():
+        owners = [source for source in sources if events[source].get("pr_url")]
+        if len(sources) > 1 and len(owners) == 1:
+            for alias in sources:
+                if alias != owners[0]:
+                    candidates.pop(alias, None)
+
+    # A lone available PR archive must not bias comparisons against projects
+    # whose PR metadata was not supplied. PR creation dates participate when at
+    # least two competing project integrations have them; explicit upstream PR
+    # links below remain independently decisive.
+    use_pr_dates = sum(
+        event.get("pr_created_timestamp") is not None for event in candidates.values()
+    ) >= 2
+    earliest_rank = min(
+        introduction_rank(event, use_pr_dates) for event in candidates.values()
+    )
     earliest_sources = {
-        source for source, event in events.items()
-        if event["timestamp"] == earliest_timestamp
+        source for source, event in candidates.items()
+        if introduction_rank(event, use_pr_dates) == earliest_rank
     }
+
+    linked_sources = {
+        linked
+        for source, event in candidates.items()
+        for linked in event.get("linked_upstream_pr_sources", [])
+        if linked != source and linked in candidates
+    }
+    if len(linked_sources) == 1:
+        linked = next(iter(linked_sources))
+        return linked, "high", "authored-pr-chronology+cross-project-pr-link", [linked]
+
     source = next(
         (candidate for candidate in ORIGIN_PRIORITY if candidate in earliest_sources),
         sorted(earliest_sources)[0],
     )
-    ordered_ties = [
-        candidate for candidate in ORIGIN_PRIORITY if candidate in earliest_sources
-    ]
+    ordered_ties = [candidate for candidate in ORIGIN_PRIORITY if candidate in earliest_sources]
     ordered_ties.extend(sorted(earliest_sources - set(ordered_ties)))
     if len(earliest_sources) == 1:
-        return source, "high", "earliest-dated-project-introduction", ordered_ties
-    shared_shas = {events[candidate]["sha"] for candidate in earliest_sources}
+        selected = candidates[source]
+        uses_authorship = bool(
+            selected.get("content_author_timestamp")
+            or (
+                selected.get("author_timestamp") is not None
+                and selected.get("author_timestamp") != selected.get("timestamp")
+            )
+        )
+        uses_pr = use_pr_dates and selected.get("pr_created_timestamp") is not None
+        method = (
+            "earliest-authored-and-proposed-project-introduction" if uses_authorship and uses_pr else
+            "earliest-authored-project-introduction" if uses_authorship else
+            "earliest-proposed-project-introduction" if uses_pr else
+            "earliest-dated-project-introduction"
+        )
+        return source, "high", method, ordered_ties
+    shared_shas = {candidates[candidate]["sha"] for candidate in earliest_sources}
     if len(shared_shas) == 1:
-        # Git objects have no repository-of-origin field. A shared SHA proves
-        # common lineage but cannot by itself prove which remote received it
-        # first, so keep the result reviewable unless explicit credit resolves it.
         return source, "medium", "shared-earliest-commit-lineage-order", ordered_ties
     return source, "medium", "tied-earliest-project-introductions", ordered_ties
 
@@ -465,7 +756,13 @@ def load_prs(patterns: list[str]) -> list[dict[str, Any]]:
         candidates = sorted(path.parent.glob(path.name))
         for candidate in candidates:
             value = json.loads(candidate.read_text())
-            prs.extend(value if isinstance(value, list) else [value])
+            values = value if isinstance(value, list) else [value]
+            for raw_pr in values:
+                pr = dict(raw_pr)
+                source = pr_source(pr)
+                if source:
+                    pr["_source"] = source
+                prs.append(pr)
     return prs
 
 
@@ -629,18 +926,32 @@ def credited_sources(text: str) -> list[str]:
     return [source for source, pattern in SOURCE_PATTERNS.items() if pattern.search(text)]
 
 
-def pr_for_commit(commit: dict[str, Any] | None, prs: list[dict[str, Any]]) -> dict[str, Any] | None:
+def pr_for_commit(
+    commit: dict[str, Any] | None,
+    prs: list[dict[str, Any]],
+    source: str | None = None,
+) -> dict[str, Any] | None:
     if not commit:
         return None
-    number_match = re.search(r"\(#(\d+)\)\s*$", commit["subject"])
-    if number_match:
-        number = int(number_match.group(1))
-        return next((pr for pr in prs if pr.get("number") == number), None)
+    candidates = [pr for pr in prs if source is None or pr_source(pr) == source]
     sha = commit["sha"]
-    return next(
-        (pr for pr in prs if (pr.get("merge_commit_sha") or "") == sha),
+    exact = next(
+        (pr for pr in candidates if (pr.get("merge_commit_sha") or "") == sha),
         None,
     )
+    if exact:
+        return exact
+    if source is not None:
+        # Copied upstream merges retain subjects like "Merge pull request
+        # #324". A same-number PR in another repository is unrelated.
+        return None
+    number_match = re.search(
+        r"(?:\(#|pull request #)(\d+)", str(commit.get("subject") or ""), re.I,
+    )
+    if number_match:
+        number = int(number_match.group(1))
+        return next((pr for pr in candidates if pr.get("number") == number), None)
+    return None
 
 
 @lru_cache(maxsize=None)
@@ -683,7 +994,7 @@ def attribute_change(
 ) -> dict[str, Any]:
     """Attribute a TaystJK-lineage change using explicit credit and topology."""
     sha = event["sha"]
-    pr = pr_for_commit(event, prs)
+    pr = pr_for_commit(event, prs, "taystjk")
     pr_text = "\n".join(str(pr.get(field) or "") for field in ("title", "body")) if pr else ""
     evidence_text = "\n".join((event.get("subject", ""), commit_body(sha), pr_text))
     explicit = credited_sources(evidence_text)
@@ -799,10 +1110,18 @@ def resolve_one(
             if key in event_map
         }
         if events:
+            events = enrich_introduction_events(events, prs)
             source, confidence, method, earliest_sources = select_dated_origin(events)
+            earliest_integration = min(event["timestamp"] for event in events.values())
+            selected_event = events[source]
+            if selected_event["timestamp"] > earliest_integration:
+                notes.append(
+                    f"{source} retains origin because content authorship and PR submission predate "
+                    "the project that merged the work first."
+                )
             if len(earliest_sources) > 1:
                 notes.append(
-                    "The earliest dated introduction is shared by "
+                    "The earliest authored/submitted introduction is shared by "
                     + ", ".join(earliest_sources)
                     + f"; fork-lineage order selects {source}."
                 )
@@ -819,7 +1138,7 @@ def resolve_one(
             first_ref = first["refs"][0]
 
         body = commit_body(first_commit)
-        pr = pr_for_commit(first, prs)
+        pr = pr_for_commit(first, prs, "taystjk")
         pr_text = "\n".join(str(pr.get(field) or "") for field in ("title", "body")) if pr else ""
         context = source_context(registrations, name)
         body_bullets = [line.lstrip("* -\t") for line in body.splitlines() if re.match(r"\s*[*-]\s+", line)]
@@ -863,10 +1182,25 @@ def resolve_one(
             )
             credited_event = events.get(credited_source)
             selected_event = events.get(source)
-            credit_is_later_hop = bool(
-                credited_event and selected_event
-                and credited_event["timestamp"] > selected_event["timestamp"]
-            )
+            credit_is_later_hop = False
+            if credited_event and selected_event:
+                credited_authored = int(
+                    credited_event.get("content_author_timestamp")
+                    or credited_event.get("author_timestamp")
+                    or credited_event["timestamp"]
+                )
+                selected_authored = int(
+                    selected_event.get("content_author_timestamp")
+                    or selected_event.get("author_timestamp")
+                    or selected_event["timestamp"]
+                )
+                credit_is_later_hop = credited_authored > selected_authored or bool(
+                    credited_authored == selected_authored
+                    and credited_event.get("content_sha")
+                    and credited_event.get("content_sha") == selected_event.get("content_sha")
+                    and credited_event["sha"] != selected_event["sha"]
+                    and credited_event["timestamp"] > selected_event["timestamp"]
+                )
             if credit_is_later_hop:
                 ported_via.append(credited_source)
                 notes.append(
@@ -904,7 +1238,6 @@ def resolve_one(
         if source == "unknown":
             notes.append("No initial-import match, upstream head match, exact-name pickaxe attribution, or identifier-adjacent credit was found.")
 
-    pr = pr_for_commit(first, prs) if first else None
     body = commit_body(first_commit) if first_commit and first_commit != BASEJKA_REF else ""
     bullets = [line.lstrip("* -\t") for line in body.splitlines() if re.match(r"\s*[*-]\s+", line)]
     matching_bullets = [line for line in bullets if name.casefold() in line.casefold()]
@@ -914,15 +1247,18 @@ def resolve_one(
         for source_name, event in sorted(
             events.items(),
             key=lambda item: (
-                item[1]["timestamp"],
+                introduction_rank(item[1]),
                 ORIGIN_PRIORITY.index(item[0]) if item[0] in ORIGIN_PRIORITY else 999,
             ),
         )
     ]
     origin_event = events.get(source)
+    integration_pr = pr_for_commit(first, prs, "taystjk") if first else None
+    origin_pr = pr_for_commit(origin_event, prs, source) if origin_event else None
+    pr = origin_pr or integration_pr
     downstream = [
         item for item in introduction_evidence
-        if origin_event and item["source"] != source and item["timestamp"] > origin_event["timestamp"]
+        if origin_event and item["source"] != source
     ]
 
     origin_records = upstream.get(source, {}).get(key, [])
@@ -935,7 +1271,7 @@ def resolve_one(
         origin_records and signature(origin_records) != signature(registrations)
     )
     origin_timestamp = (
-        origin_event["timestamp"] if origin_event
+        int(origin_event.get("content_author_timestamp") or origin_event.get("author_timestamp") or origin_event["timestamp"]) if origin_event
         else commit_timestamp(first_commit) if first_commit
         else 0
     )
@@ -1049,6 +1385,8 @@ def resolve_one(
         "first_ref": first_ref or (UPSTREAM_REFS.get(source) if source in UPSTREAM_REFS else None),
         "pr": pr.get("number") if pr else None,
         "pr_url": pr.get("html_url") if pr else None,
+        "integration_pr": integration_pr.get("number") if integration_pr else None,
+        "integration_pr_url": integration_pr.get("html_url") if integration_pr else None,
         "squash_bullet": matching_bullets[0] if len(matching_bullets) == 1 else credited_bullet,
         "upstream_presence": present,
         "introduction_evidence": introduction_evidence,

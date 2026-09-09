@@ -32,8 +32,8 @@ Controls `bot_debugmessages` in the game module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L796) |
-| `1` | Enabled. | [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L796) |
+| `0` | Disabled. | [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L796) |
+| `1` | Enabled. | [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L796) |
 
 ## Flags
 
@@ -59,5 +59,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_main.c:10698](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L10698) (Cvar_Register); condition `defined(_DEBUG)`
-- behavior: [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_main.c#L796)
+- registration: [codemp/game/ai_main.c:10698](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10698) (Cvar_Register); condition `defined(_DEBUG)`
+- behavior: [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L796)

@@ -32,8 +32,8 @@ Toggle JK2 1.02-style colored text shadows
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-common/tr_font.cpp#L1625) |
-| `1` | Enabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-common/tr_font.cpp#L1625) |
+| `0` | Disabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1625) |
+| `1` | Enabled. | [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1625) |
 
 ## Flags
 
@@ -43,22 +43,22 @@ Toggle JK2 1.02-style colored text shadows
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`82c74a03d641`](https://github.com/eternalcodes/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) on `2017-12-04` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`82c74a03d641`](https://github.com/eternalcodes/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2017-11-19`, integrated `2017-12-04`)
 - Upstream registration evidence: [codemp/rd-common/tr_font.cpp:1740](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/rd-common/tr_font.cpp#L1740)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-12-04` | [`82c74a03d641`](https://github.com/eternalcodes/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-12-04` | [`82c74a03d641`](https://github.com/taysta/TaystJK/commit/82c74a03d641380e7724758570852e848c97231e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-12-04` | [`82c74a03d641`](https://github.com/videoP/jaPRO/commit/82c74a03d641380e7724758570852e848c97231e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-12-04` | [`82c74a03d641`](https://github.com/JKSunny/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-11-19` | — | `2017-12-04` | [`82c74a03d641`](https://github.com/eternalcodes/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-11-19` | — | `2017-12-04` | [`82c74a03d641`](https://github.com/taysta/TaystJK/commit/82c74a03d641380e7724758570852e848c97231e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-11-19` | — | `2017-12-04` | [`82c74a03d641`](https://github.com/videoP/jaPRO/commit/82c74a03d641380e7724758570852e848c97231e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-11-19` | — | `2017-12-04` | [`82c74a03d641`](https://github.com/JKSunny/EternalJK/commit/82c74a03d641380e7724758570852e848c97231e) | Shared integration commit |
 
 ### Later changes
 
@@ -70,5 +70,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-common/tr_font.cpp:1844](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-common/tr_font.cpp#L1844) (Cvar_Get)
-- behavior: [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-common/tr_font.cpp#L1625)
+- registration: [codemp/rd-common/tr_font.cpp:1844](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1844) (Cvar_Get)
+- behavior: [codemp/rd-common/tr_font.cpp:1625](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1625)

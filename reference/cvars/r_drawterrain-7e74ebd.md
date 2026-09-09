@@ -32,8 +32,8 @@ Controls `r_drawTerrain` in the renderer module. Consult the cited behavior read
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_terrain.cpp#L982) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_terrain.cpp#L982) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_terrain.cpp#L982) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_terrain.cpp#L982) |
 
 ## Flags
 
@@ -70,7 +70,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vanilla/tr_terrain.cpp:1017](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_terrain.cpp#L1017) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_terrain.cpp:1017](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_terrain.cpp#L1017) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_terrain.cpp#L982)
-- behavior: [codemp/rd-vulkan/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_terrain.cpp#L982)
+- registration: [codemp/rd-vanilla/tr_terrain.cpp:1017](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_terrain.cpp#L1017) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_terrain.cpp:1017](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_terrain.cpp#L1017) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_terrain.cpp#L982)
+- behavior: [codemp/rd-vulkan/tr_terrain.cpp:982](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_terrain.cpp#L982)

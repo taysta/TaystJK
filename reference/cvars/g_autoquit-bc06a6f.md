@@ -32,8 +32,8 @@ Controls `g_autoQuit` in the game module. Consult the cited behavior reads befor
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L3566) |
-| `1` | Enabled. | [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L3566) |
+| `0` | Disabled. | [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3566) |
+| `1` | Enabled. | [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3566) |
 
 ## Flags
 
@@ -43,22 +43,22 @@ Controls `g_autoQuit` in the game module. Consult the cited behavior reads befor
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`2af38213b793`](https://github.com/eternalcodes/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) on `2018-10-10` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`2af38213b793`](https://github.com/eternalcodes/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2018-10-09`, integrated `2018-10-10`)
 - Upstream registration evidence: [codemp/game/g_xcvar.h:312](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/game/g_xcvar.h#L312)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits eternaljk.
+- Notes: The identifier's single-prefix squash feature group explicitly credits eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-10-10` | [`2af38213b793`](https://github.com/eternalcodes/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-10-10` | [`2af38213b793`](https://github.com/taysta/TaystJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-10-10` | [`2af38213b793`](https://github.com/videoP/jaPRO/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-10-10` | [`2af38213b793`](https://github.com/JKSunny/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-10-09` | — | `2018-10-10` | [`2af38213b793`](https://github.com/eternalcodes/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-10-09` | — | `2018-10-10` | [`2af38213b793`](https://github.com/taysta/TaystJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-10-09` | — | `2018-10-10` | [`2af38213b793`](https://github.com/videoP/jaPRO/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-10-09` | — | `2018-10-10` | [`2af38213b793`](https://github.com/JKSunny/EternalJK/commit/2af38213b793183fd6313a195d0f36ea3aa02196) | Shared integration commit |
 
 ### Later changes
 
@@ -70,6 +70,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:318](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L318) (XCVAR_DEF)
-- behavior: [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L3566)
-- behavior: [codemp/game/g_main.c:3567](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L3567)
+- registration: [codemp/game/g_xcvar.h:318](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L318) (XCVAR_DEF)
+- behavior: [codemp/game/g_main.c:3566](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3566)
+- behavior: [codemp/game/g_main.c:3567](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L3567)

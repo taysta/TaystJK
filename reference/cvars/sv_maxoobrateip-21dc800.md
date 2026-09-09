@@ -32,8 +32,8 @@ Maximum rate of handling incoming server commands per IP address
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L740) |
-| `1` | Enabled. | [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L740) |
+| `0` | Disabled. | [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L740) |
+| `1` | Enabled. | [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L740) |
 
 ## Flags
 
@@ -43,24 +43,24 @@ Maximum rate of handling incoming server commands per IP address
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`fffc00dab968`](https://github.com/eternalcodes/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) on `2020-05-15` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`fffc00dab968`](https://github.com/eternalcodes/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2019-04-27`, integrated `2020-05-15`)
 - Upstream registration evidence: [codemp/server/sv_init.cpp:1021](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/server/sv_init.cpp#L1021)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2020-05-15` | [`fffc00dab968`](https://github.com/eternalcodes/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2020-05-15` | [`fffc00dab968`](https://github.com/taysta/TaystJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2020-05-15` | [`fffc00dab968`](https://github.com/videoP/jaPRO/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2020-05-15` | [`fffc00dab968`](https://github.com/JKSunny/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2020-08-21` | [`962f3198371a`](https://github.com/JACoders/OpenJK/commit/962f3198371a9c44093253cd04999155ac6a657f) | Later project appearance |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2020-08-21` | [`962f3198371a`](https://github.com/SomaZ/OpenJK/commit/962f3198371a9c44093253cd04999155ac6a657f) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2019-04-27` | — | `2020-05-15` | [`fffc00dab968`](https://github.com/eternalcodes/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2019-04-27` | — | `2020-05-15` | [`fffc00dab968`](https://github.com/taysta/TaystJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2019-04-27` | — | `2020-05-15` | [`fffc00dab968`](https://github.com/videoP/jaPRO/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2019-04-27` | — | `2020-05-15` | [`fffc00dab968`](https://github.com/JKSunny/EternalJK/commit/fffc00dab96867fef0aad58ca3610cd7c5c2a78a) | Shared integration commit |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2020-08-21` | — | `2020-08-21` | [`962f3198371a`](https://github.com/JACoders/OpenJK/commit/962f3198371a9c44093253cd04999155ac6a657f) | Other project appearance |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2020-08-21` | — | `2020-08-21` | [`962f3198371a`](https://github.com/SomaZ/OpenJK/commit/962f3198371a9c44093253cd04999155ac6a657f) | Other project appearance |
 
 ### Later changes
 
@@ -73,6 +73,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1052](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L1052) (Cvar_Get)
-- behavior: [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L740)
-- behavior: [codemp/server/sv_main.cpp:741](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L741)
+- registration: [codemp/server/sv_init.cpp:1052](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1052) (Cvar_Get)
+- behavior: [codemp/server/sv_main.cpp:740](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L740)
+- behavior: [codemp/server/sv_main.cpp:741](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L741)

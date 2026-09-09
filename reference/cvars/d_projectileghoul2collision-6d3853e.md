@@ -32,8 +32,8 @@ Controls `d_projectileGhoul2Collision` in the game module. Consult the cited beh
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8377) |
-| `1` | Enabled. | [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8377) |
+| `0` | Disabled. | [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8377) |
+| `1` | Enabled. | [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8377) |
 
 ## Flags
 
@@ -62,9 +62,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:51](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L51) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8377)
-- behavior: [codemp/game/g_cmds.c:8379](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8379)
-- behavior: [codemp/game/g_missile.c:1227](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_missile.c#L1227)
-- behavior: [codemp/game/g_weapon.c:2631](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_weapon.c#L2631)
-- behavior: [codemp/game/g_weapon.c:783](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_weapon.c#L783)
+- registration: [codemp/game/g_xcvar.h:51](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L51) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8377)
+- behavior: [codemp/game/g_cmds.c:8379](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8379)
+- behavior: [codemp/game/g_missile.c:1227](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_missile.c#L1227)
+- behavior: [codemp/game/g_weapon.c:2631](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_weapon.c#L2631)
+- behavior: [codemp/game/g_weapon.c:783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_weapon.c#L783)

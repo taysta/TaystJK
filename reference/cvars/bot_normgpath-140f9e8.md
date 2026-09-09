@@ -32,8 +32,8 @@ Controls `bot_normgpath` in the game module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_wpnav.c#L3296) |
-| `1` | Enabled. | [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_wpnav.c#L3296) |
+| `0` | Disabled. | [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3296) |
+| `1` | Enabled. | [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3296) |
 
 ## Flags
 
@@ -59,5 +59,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/ai_wpnav.c:3292](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_wpnav.c#L3292) (Cvar_Register)
-- behavior: [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/ai_wpnav.c#L3296)
+- registration: [codemp/game/ai_wpnav.c:3292](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3292) (Cvar_Register)
+- behavior: [codemp/game/ai_wpnav.c:3296](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_wpnav.c#L3296)

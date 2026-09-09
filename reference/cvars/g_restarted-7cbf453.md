@@ -32,8 +32,8 @@ Controls `g_restarted` in the game module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_spawn.c#L1560) |
-| `1` | Enabled. | [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_spawn.c#L1560) |
+| `0` | Disabled. | [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_spawn.c#L1560) |
+| `1` | Enabled. | [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_spawn.c#L1560) |
 
 ## Flags
 
@@ -62,8 +62,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:130](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L130) (XCVAR_DEF)
-- behavior: [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_spawn.c#L1560)
-- behavior: [codemp/game/g_main.c:2760](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L2760)
-- behavior: [codemp/game/g_main.c:2934](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_main.c#L2934)
-- behavior: [codemp/game/g_spawn.c:1561](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_spawn.c#L1561)
+- registration: [codemp/game/g_xcvar.h:130](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L130) (XCVAR_DEF)
+- behavior: [codemp/game/g_spawn.c:1560](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_spawn.c#L1560)
+- behavior: [codemp/game/g_main.c:2760](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L2760)
+- behavior: [codemp/game/g_main.c:2934](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_main.c#L2934)
+- behavior: [codemp/game/g_spawn.c:1561](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_spawn.c#L1561)

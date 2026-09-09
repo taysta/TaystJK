@@ -32,8 +32,8 @@ Controls `cg_dismember` in the cgame module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L1096) |
-| `1` | Enabled. | [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L1096) |
+| `0` | Disabled. | [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L1096) |
+| `1` | Enabled. | [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L1096) |
 
 ## Flags
 
@@ -59,5 +59,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:300](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L300) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_ents.c#L1096)
+- registration: [codemp/cgame/cg_xcvar.h:300](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L300) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_ents.c:1096](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_ents.c#L1096)

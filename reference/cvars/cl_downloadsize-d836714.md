@@ -66,7 +66,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:1587](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1587) (implicit Cvar_Set)
-- registration: [codemp/client/cl_parse.cpp:677](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_parse.cpp#L677) (implicit Cvar_SetValue)
-- registration: [codemp/client/cl_parse.cpp:778](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_parse.cpp#L778) (implicit Cvar_SetValue)
-- behavior: [codemp/ui/ui_main.c:12119](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L12119)
+- registration: [codemp/client/cl_main.cpp:1587](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1587) (implicit Cvar_Set)
+- registration: [codemp/client/cl_parse.cpp:677](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_parse.cpp#L677) (implicit Cvar_SetValue)
+- registration: [codemp/client/cl_parse.cpp:778](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_parse.cpp#L778) (implicit Cvar_SetValue)
+- behavior: [codemp/ui/ui_main.c:12119](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L12119)

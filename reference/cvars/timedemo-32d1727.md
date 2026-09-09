@@ -32,8 +32,8 @@ Controls `cl_timedemo` in the engine-client module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L1041) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L1041) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L1041) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L1041) |
 
 ## Flags
 
@@ -67,8 +67,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3327](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3327) (Cvar_Get)
-- registration: [codemp/qcommon/common.cpp:1473](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1473) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L1041)
-- behavior: [codemp/client/cl_main.cpp:448](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L448)
-- behavior: [codemp/qcommon/common.cpp:1749](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1749)
+- registration: [codemp/client/cl_main.cpp:3327](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3327) (Cvar_Get)
+- registration: [codemp/qcommon/common.cpp:1473](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1473) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:1041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L1041)
+- behavior: [codemp/client/cl_main.cpp:448](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L448)
+- behavior: [codemp/qcommon/common.cpp:1749](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1749)

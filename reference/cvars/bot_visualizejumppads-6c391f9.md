@@ -46,9 +46,9 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:662](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_bot.cpp#L662) (Cvar_Get)
-- behavior: [codemp/botlib/be_aas_reach.cpp:297](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_reach.cpp#L297)
-- behavior: [codemp/botlib/be_aas_reach.cpp:306](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_reach.cpp#L306)
-- behavior: [codemp/botlib/be_aas_reach.cpp:308](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_reach.cpp#L308)
-- behavior: [codemp/botlib/be_aas_reach.cpp:336](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_reach.cpp#L336)
-- behavior: [codemp/botlib/be_aas_reach.cpp:3492](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/botlib/be_aas_reach.cpp#L3492)
+- registration: [codemp/server/sv_bot.cpp:662](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_bot.cpp#L662) (Cvar_Get)
+- behavior: [codemp/botlib/be_aas_reach.cpp:297](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_reach.cpp#L297)
+- behavior: [codemp/botlib/be_aas_reach.cpp:306](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_reach.cpp#L306)
+- behavior: [codemp/botlib/be_aas_reach.cpp:308](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_reach.cpp#L308)
+- behavior: [codemp/botlib/be_aas_reach.cpp:336](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_reach.cpp#L336)
+- behavior: [codemp/botlib/be_aas_reach.cpp:3492](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/botlib/be_aas_reach.cpp#L3492)

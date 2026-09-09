@@ -40,22 +40,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`14cea1563762`](https://github.com/eternalcodes/EternalJK/commit/14cea1563762076974bee277afadbd5bf234c494) on `2013-04-07` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`c9c6ab99fdd2`](https://github.com/eternalcodes/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2016-03-22`, integrated `2016-03-24`)
 - Upstream registration evidence: [codemp/client/snd_dma.cpp:454](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/client/snd_dma.cpp#L454)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-07` | [`14cea1563762`](https://github.com/eternalcodes/EternalJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-07` | [`14cea1563762`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-07` | [`14cea1563762`](https://github.com/videoP/jaPRO/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-07` | [`14cea1563762`](https://github.com/JKSunny/EternalJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2016-03-22` | — | `2016-03-24` | [`c9c6ab99fdd2`](https://github.com/eternalcodes/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2016-03-22` | — | `2016-03-24` | [`c9c6ab99fdd2`](https://github.com/taysta/TaystJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2016-03-22` | — | `2016-03-24` | [`c9c6ab99fdd2`](https://github.com/videoP/jaPRO/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2016-03-22` | — | `2016-03-24` | [`c9c6ab99fdd2`](https://github.com/JKSunny/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62) | Shared integration commit |
 
 ### Later changes
 
@@ -63,17 +63,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 | Date | Change source | Commit / subject | Evidence | Confidence |
 |:--|:--|:--|:--|:--|
-| `2013-04-07` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`3218605424b4`](https://github.com/JACoders/OpenJK/commit/3218605424b4341ccccb88705da1f43454606040)<br>Copied missing file from xbox dump. | Changed an exact bound cvar-variable reference. `ui/menudef.h` | `medium` |
-| `2013-04-07` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`b319c52fd4ed`](https://github.com/JACoders/OpenJK/commit/b319c52fd4ed1e4fb5dae4e468a1a791091b63a5)<br>Major codemp cleanup. Ported modbase. Restructured VS2010 projects. | Changed an exact bound cvar-variable reference. `codemp/ui/menudef.h` | `medium` |
-| `2013-04-16` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`714c868b42c6`](https://github.com/JACoders/OpenJK/commit/714c868b42c6eaa5a1d2704d3425419f6e55579c)<br>Merge branch 'master' of https://github.com/Razish/OpenJK | Changed an exact bound cvar-variable reference. `codemp/rd-dedicated/tr_shader.cpp`, `codemp/rd-vanilla/tr_bsp.cpp`, `codemp/rd-vanilla/tr_ghoul2.cpp` and 6 more | `high` |
-| `2013-04-27` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`9f0123a1e1fd`](https://github.com/JACoders/OpenJK/commit/9f0123a1e1fdd1e7bd5c4532fdffd7f952b1d907)<br>Merge branch 'master' of https://github.com/Razish/OpenJK into modrender-port | Changed an exact bound cvar-variable reference. `codemp/game/g_misc.c` | `high` |
-| `2013-10-12` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`a053a56c558c`](https://github.com/JACoders/OpenJK/commit/a053a56c558cd195e6513410a24779ca411b6bab)<br>Merge branch 'master' of https://github.com/Razish/OpenJK | Changed an exact bound cvar-variable reference. `codemp/game/surfaceflags.h`, `codemp/rd-dedicated/tr_shader.cpp`, `codemp/rd-vanilla/tr_shader.cpp` | `high` |
-| `2013-10-16` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`7d70edf1d46a`](https://github.com/JACoders/OpenJK/commit/7d70edf1d46a8f74fdb49811b745738d76c43725)<br>[MP] Style: remove vec_t, add matrix3_t | Changed an exact bound cvar-variable reference. `codemp/botlib/be_aas_reach.cpp` | `medium` |
-| `2014-01-30` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`d3a6d2b9b9d2`](https://github.com/JACoders/OpenJK/commit/d3a6d2b9b9d2e967676dc2c9f738254b54524ab2)<br>[MP] Style: remove superfluous whitespace | Changed an exact bound cvar-variable reference. `codemp/client/snd_ambient.cpp`, `codemp/client/snd_dma.cpp` | `medium` |
-| `2014-07-07` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`8c7cdd8ee135`](https://github.com/JACoders/OpenJK/commit/8c7cdd8ee135e1f3d94832f5a5bb4d7f9a228d48)<br>[MP] Revert 80f12fa97d4050cce9f9c1f5fb4e6c0f5d14cced. Apply several commits from ioq3's shader parser / COM_Parse fixes that were still missing. Remove deferLoad variable from ded and vanilla renderer tr_shader.cpp | Changed an exact bound cvar-variable reference. `codemp/rd-dedicated/tr_shader.cpp` | `medium` |
-| `2015-01-26` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`8081c741036e`](https://github.com/JACoders/OpenJK/commit/8081c741036e5d75f22b3ac42a480a3cc3ba7426)<br>[MP] Fixed overlapping `s_channels` variable name in S_RawSamples. | Changed an exact bound cvar-variable reference. `codemp/client/snd_dma.cpp`, `codemp/client/snd_public.h` | `medium` |
-| `2015-02-07` | <span class="label ref-origin ref-origin-openjk">OpenJK</span> | [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230)<br>Merge pull request #613 from JACoders/sdl2-windows-port | Changed an exact bound cvar-variable reference. `lib/SDL2/include/SDL_audio.h` | `medium` |
-| `2016-03-24` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`c9c6ab99fdd2`](https://github.com/eternalcodes/EternalJK/commit/c9c6ab99fdd24759cc32d45f642d63ebd3361b62)<br>Merge branch 'master' of https://github.com/JACoders/OpenJK into japro | Changed registration, default, flags, module, renderer scope, handler, or gating. `codemp/client/snd_dma.cpp` | `medium` |
 | `2017-12-04` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`7f47620dbcbe`](https://github.com/eternalcodes/EternalJK/commit/7f47620dbcbe31a136df62264ebb2f387d502145)<br>Merge remote-tracking branch 'upstream/master' | Changed an exact bound cvar-variable reference. `lib/SDL2/include/SDL_hints.h` | `medium` |
 | `2018-01-01` | <span class="label ref-origin ref-origin-japro">jaPRO</span> | [`d9d510063ce6`](https://github.com/videoP/jaPRO/commit/d9d510063ce680639e6ba060021b6d40ee0c1419)<br>Merge branch 'japro-ejk' | Changed an exact bound cvar-variable reference. `codemp/game/sqlite3.c` | `high` |
 | `2018-02-05` | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | [`675e97128f48`](https://github.com/eternalcodes/EternalJK/commit/675e97128f486095bc24289cf0610badfd8130fd)<br>Merge remote-tracking branch 'eternalcodes/master' | Changed an exact bound cvar-variable reference. `assets/japro/ui/jamp/menudef.h` | `medium` |
@@ -96,9 +85,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:454](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L454) (Cvar_Get)
-- behavior: [codemp/client/cl_cin.cpp:1179](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cin.cpp#L1179)
-- behavior: [codemp/client/cl_cin.cpp:1189](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cin.cpp#L1189)
-- behavior: [codemp/client/snd_dma.cpp:4986](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L4986)
-- behavior: [codemp/client/snd_dma.cpp:4998](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L4998)
-- behavior: [codemp/client/snd_dma.cpp:5058](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L5058)
+- registration: [codemp/client/snd_dma.cpp:454](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L454) (Cvar_Get)
+- behavior: [codemp/client/cl_cin.cpp:1179](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cin.cpp#L1179)
+- behavior: [codemp/client/cl_cin.cpp:1189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cin.cpp#L1189)
+- behavior: [codemp/client/snd_dma.cpp:4986](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L4986)
+- behavior: [codemp/client/snd_dma.cpp:4998](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L4998)
+- behavior: [codemp/client/snd_dma.cpp:5058](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L5058)

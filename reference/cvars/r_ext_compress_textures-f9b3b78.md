@@ -79,9 +79,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:318](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L318) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1486](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1486) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1631](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1631) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:784](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L784) (Cvar_Get)
-- behavior: [codemp/ui/ui_main.c:6229](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L6229)
-- behavior: [codemp/ui/ui_main.c:6401](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L6401)
+- registration: [codemp/rd-dedicated/tr_init.cpp:318](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L318) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1486](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1486) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1631](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1631) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:784](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L784) (Cvar_Get)
+- behavior: [codemp/ui/ui_main.c:6229](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6229)
+- behavior: [codemp/ui/ui_main.c:6401](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6401)

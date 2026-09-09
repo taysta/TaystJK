@@ -32,7 +32,7 @@ Controls `r_autoMap` in the renderer module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/rd-vanilla/tr_world.cpp:1196](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1196) |
+| `2` | Selects the code path tested for value 2. | [codemp/rd-vanilla/tr_world.cpp:1196](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1196) |
 
 ## Flags
 
@@ -75,12 +75,12 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:382](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L382) (XCVAR_DEF)
-- registration: [codemp/rd-dedicated/tr_init.cpp:386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L386) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1695](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1695) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:853](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L853) (Cvar_Get)
-- behavior: [codemp/client/cl_input.cpp:370](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L370)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1122](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1122)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1196](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1196)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1237](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1237)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1295](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1295)
+- registration: [codemp/cgame/cg_xcvar.h:382](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L382) (XCVAR_DEF)
+- registration: [codemp/rd-dedicated/tr_init.cpp:386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L386) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1695](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1695) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:853](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L853) (Cvar_Get)
+- behavior: [codemp/client/cl_input.cpp:370](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L370)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1122](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1122)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1196](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1196)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1237](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1237)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1295](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1295)

@@ -32,8 +32,8 @@ Controls `sv_showghoultraces` in the engine-server module. Consult the cited beh
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_world.cpp#L752) |
-| `1` | Enabled. | [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_world.cpp#L752) |
+| `0` | Disabled. | [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L752) |
+| `1` | Enabled. | [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L752) |
 
 ## Flags
 
@@ -51,5 +51,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:1027](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L1027) (Cvar_Get)
-- behavior: [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_world.cpp#L752)
+- registration: [codemp/server/sv_init.cpp:1027](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1027) (Cvar_Get)
+- behavior: [codemp/server/sv_world.cpp:752](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L752)

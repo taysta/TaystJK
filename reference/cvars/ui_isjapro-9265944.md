@@ -41,22 +41,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`f4405327b936`](https://github.com/videoP/jaPRO/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) on `2018-02-06` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Ultimate-origin introduction: [`f4405327b936`](https://github.com/videoP/jaPRO/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-02-06`, integrated `2018-02-06`)
 - Upstream registration evidence: [codemp/ui/ui_xcvar.h:159](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/ui/ui_xcvar.h#L159)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-02-06` | [`f4405327b936`](https://github.com/eternalcodes/EternalJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-02-06` | [`f4405327b936`](https://github.com/taysta/TaystJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-02-06` | [`f4405327b936`](https://github.com/videoP/jaPRO/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Ultimate origin |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-02-06` | [`f4405327b936`](https://github.com/JKSunny/EternalJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2018-02-06` | — | `2018-02-06` | [`f4405327b936`](https://github.com/eternalcodes/EternalJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2018-02-06` | — | `2018-02-06` | [`f4405327b936`](https://github.com/taysta/TaystJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2018-02-06` | — | `2018-02-06` | [`f4405327b936`](https://github.com/videoP/jaPRO/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2018-02-06` | — | `2018-02-06` | [`f4405327b936`](https://github.com/JKSunny/EternalJK/commit/f4405327b9363ad0b91cd0ae1717fe9ed939982b) | Shared integration commit |
 
 ### Later changes
 
@@ -71,7 +71,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:159](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L159) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L1061)
-- behavior: [codemp/ui/ui_main.c:628](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L628)
-- behavior: [codemp/ui/ui_main.c:652](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L652)
+- registration: [codemp/ui/ui_xcvar.h:159](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L159) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:1061](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L1061)
+- behavior: [codemp/ui/ui_main.c:628](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L628)
+- behavior: [codemp/ui/ui_main.c:652](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L652)

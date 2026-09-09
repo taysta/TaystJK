@@ -32,7 +32,7 @@ Controls `g_saberDmgDelay_Idle` in the game module. Consult the cited behavior r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `350` | Selects the code path tested for value 350. | [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8323) |
+| `350` | Selects the code path tested for value 350. | [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8323) |
 
 ## Flags
 
@@ -60,9 +60,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:137](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L137) (XCVAR_DEF)
-- behavior: [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8323)
-- behavior: [codemp/game/w_saber.c:4760](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L4760)
-- behavior: [codemp/game/w_saber.c:4783](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L4783)
-- behavior: [codemp/game/w_saber.c:5037](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L5037)
-- behavior: [codemp/game/w_saber.c:5041](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L5041)
+- registration: [codemp/game/g_xcvar.h:137](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L137) (XCVAR_DEF)
+- behavior: [codemp/game/g_cmds.c:8323](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8323)
+- behavior: [codemp/game/w_saber.c:4760](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L4760)
+- behavior: [codemp/game/w_saber.c:4783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L4783)
+- behavior: [codemp/game/w_saber.c:5037](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L5037)
+- behavior: [codemp/game/w_saber.c:5041](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L5041)

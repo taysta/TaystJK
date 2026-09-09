@@ -32,7 +32,7 @@ Controls `ui_joinGametype` in the ui module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [codemp/ui/ui_main.c:9189](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9189) |
+| `-1` | Selects the code path tested for value -1. | [codemp/ui/ui_main.c:9189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9189) |
 
 ## Flags
 
@@ -63,9 +63,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:91](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L91) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_main.c:1704](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L1704)
-- behavior: [codemp/ui/ui_main.c:9189](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9189)
-- behavior: [codemp/ui/ui_main.c:9191](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L9191)
-- behavior: [codemp/ui/ui_main.c:1710](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L1710)
-- behavior: [codemp/ui/ui_main.c:4936](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L4936)
+- registration: [codemp/ui/ui_xcvar.h:91](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L91) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_main.c:1704](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L1704)
+- behavior: [codemp/ui/ui_main.c:9189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9189)
+- behavior: [codemp/ui/ui_main.c:9191](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L9191)
+- behavior: [codemp/ui/ui_main.c:1710](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L1710)
+- behavior: [codemp/ui/ui_main.c:4936](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L4936)

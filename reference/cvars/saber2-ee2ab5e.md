@@ -55,9 +55,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3432](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3432) (Cvar_Get)
-- behavior: [codemp/cgame/cg_players.c:2386](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L2386)
-- behavior: [codemp/cgame/cg_players.c:2412](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L2412)
-- behavior: [codemp/game/bg_saber.c:1699](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_saber.c#L1699)
-- behavior: [codemp/game/bg_saber.c:1804](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_saber.c#L1804)
-- behavior: [codemp/game/bg_saber.c:1890](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_saber.c#L1890)
+- registration: [codemp/client/cl_main.cpp:3432](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3432) (Cvar_Get)
+- behavior: [codemp/cgame/cg_players.c:2386](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2386)
+- behavior: [codemp/cgame/cg_players.c:2412](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2412)
+- behavior: [codemp/game/bg_saber.c:1699](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_saber.c#L1699)
+- behavior: [codemp/game/bg_saber.c:1804](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_saber.c#L1804)
+- behavior: [codemp/game/bg_saber.c:1890](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_saber.c#L1890)

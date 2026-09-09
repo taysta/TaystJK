@@ -32,8 +32,8 @@ Cache ghoul2 and md3 model surfaces
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_init.cpp#L512) |
-| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_init.cpp#L512) |
+| `0` | Disabled. | [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L512) |
+| `1` | Enabled. | [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L512) |
 
 ## Flags
 
@@ -44,9 +44,9 @@ Cache ghoul2 and md3 model surfaces
 
 Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
-- Ultimate-origin introduction: [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) on `2025-07-18` in <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+- Ultimate-origin introduction: [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2025-07-18`, integrated `2025-07-18`)
 - TaystJK integration evidence: [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903)
-- Pull request: [#251](https://github.com/taysta/TaystJK/pull/251)
+- Origin pull request: [#251](https://github.com/taysta/TaystJK/pull/251)
 - Upstream registration evidence: [codemp/rd-vulkan/tr_init.cpp:962](https://github.com/JKSunny/EternalJK/blob/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vulkan/tr_init.cpp#L962)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
@@ -54,14 +54,14 @@ Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2025-07-18` | [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-08-08` | [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Later project appearance |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-08-08` | [`cc93ec8c4139`](https://github.com/videoP/jaPRO/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Later project appearance |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2025-07-18` | — | `2025-07-18` | [`f88d0ccd696d`](https://github.com/JKSunny/EternalJK/commit/f88d0ccd696dd70a37e46638d7790a68196e773e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-07-18` | [2025-08-06](https://github.com/taysta/TaystJK/pull/251) | `2025-08-08` | [`cc93ec8c4139`](https://github.com/taysta/TaystJK/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-07-18` | — | `2025-08-08` | [`cc93ec8c4139`](https://github.com/videoP/jaPRO/commit/cc93ec8c413928bdfb94db470566c1ec44d88903) | Other project appearance |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2026-08-09` | — | `2026-08-09` | [`686cbf9b649b`](https://github.com/jkanewmod/NewJK/commit/686cbf9b649bccf8d1a88df3b0ff72b0fc9ad177) | Other project appearance |
 
 ### Later changes
 
@@ -73,6 +73,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-vulkan/tr_init.cpp:963](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L963) (Cvar_Get); condition `defined(USE_VBO)`
-- behavior: [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_init.cpp#L512)
-- behavior: [codemp/rd-vulkan/vk_info.cpp:472](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/vk_info.cpp#L472)
+- registration: [codemp/rd-vulkan/tr_init.cpp:963](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L963) (Cvar_Get); condition `defined(USE_VBO)`
+- behavior: [codemp/rd-vulkan/vk_init.cpp:512](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_init.cpp#L512)
+- behavior: [codemp/rd-vulkan/vk_info.cpp:472](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_info.cpp#L472)

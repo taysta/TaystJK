@@ -32,7 +32,7 @@ Controls `g_neutralFlag` in the game module. Consult the cited behavior reads be
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `3` | Selects the code path tested for value 3. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L1783) |
+| `3` | Selects the code path tested for value 3. | [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783) |
 
 ## Flags
 
@@ -42,22 +42,22 @@ Controls `g_neutralFlag` in the game module. Consult the cited behavior reads be
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`c644ae832bad`](https://github.com/videoP/jaPRO/commit/c644ae832bade9816a9a1a33240edd63614a28f4) on `2024-01-03` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
-- Pull request: [#74](https://github.com/taysta/TaystJK/pull/74)
+- Ultimate-origin introduction: [`c644ae832bad`](https://github.com/videoP/jaPRO/commit/c644ae832bade9816a9a1a33240edd63614a28f4) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2024-01-03`, integrated `2024-01-03`)
+- Origin pull request: [#74](https://github.com/taysta/TaystJK/pull/74)
 - Matching squash bullet: `g_neutralflag 5 for other style of 1flagctf`
 - Upstream registration evidence: [codemp/game/g_xcvar.h:190](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L190)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-01-03` | [`c644ae832bad`](https://github.com/taysta/TaystJK/commit/c644ae832bade9816a9a1a33240edd63614a28f4) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-01-03` | [`c644ae832bad`](https://github.com/videoP/jaPRO/commit/c644ae832bade9816a9a1a33240edd63614a28f4) | Ultimate origin |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-01-03` | [2024-01-03](https://github.com/taysta/TaystJK/pull/74) | `2024-01-03` | [`c644ae832bad`](https://github.com/taysta/TaystJK/commit/c644ae832bade9816a9a1a33240edd63614a28f4) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-01-03` | — | `2024-01-03` | [`c644ae832bad`](https://github.com/videoP/jaPRO/commit/c644ae832bade9816a9a1a33240edd63614a28f4) | Ultimate origin |
 
 ### Later changes
 
@@ -73,9 +73,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
-- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L1783)
-- behavior: [codemp/game/g_active.c:3791](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L3791)
-- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L5750)
-- behavior: [codemp/game/g_cmds.c:8447](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8447)
-- behavior: [codemp/game/g_cmds.c:8592](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_cmds.c#L8592)
+- registration: [codemp/game/g_xcvar.h:189](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L189) (XCVAR_DEF)
+- behavior: [codemp/game/g_active.c:1783](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L1783)
+- behavior: [codemp/game/g_active.c:3791](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L3791)
+- behavior: [codemp/game/g_cmds.c:5750](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5750)
+- behavior: [codemp/game/g_cmds.c:8447](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8447)
+- behavior: [codemp/game/g_cmds.c:8592](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8592)

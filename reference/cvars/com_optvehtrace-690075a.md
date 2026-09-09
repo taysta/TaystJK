@@ -64,10 +64,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:374](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L374) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1476](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1476) (Cvar_Get)
-- behavior: [codemp/cgame/cg_players.c:7098](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L7098)
-- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L2381)
-- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_world.cpp#L759)
-- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_world.cpp#L758)
+- registration: [codemp/cgame/cg_xcvar.h:374](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L374) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:37](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L37) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1476](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1476) (Cvar_Get)
+- behavior: [codemp/cgame/cg_players.c:7098](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7098)
+- behavior: [codemp/game/w_saber.c:2381](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L2381)
+- behavior: [codemp/server/sv_world.cpp:759](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L759)
+- behavior: [codemp/server/sv_world.cpp:758](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L758)

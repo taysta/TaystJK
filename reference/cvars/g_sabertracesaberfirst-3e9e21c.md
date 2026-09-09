@@ -32,8 +32,8 @@ Controls `g_saberTraceSaberFirst` in the game module. Consult the cited behavior
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L9293) |
-| `1` | Enabled. | [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L9293) |
+| `0` | Disabled. | [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L9293) |
+| `1` | Enabled. | [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L9293) |
 
 ## Flags
 
@@ -59,7 +59,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:145](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L145) (XCVAR_DEF)
-- behavior: [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L9293)
-- behavior: [codemp/game/w_saber.c:9289](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L9289)
-- behavior: [codemp/game/w_saber.c:9396](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_saber.c#L9396)
+- registration: [codemp/game/g_xcvar.h:145](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L145) (XCVAR_DEF)
+- behavior: [codemp/game/w_saber.c:9293](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L9293)
+- behavior: [codemp/game/w_saber.c:9289](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L9289)
+- behavior: [codemp/game/w_saber.c:9396](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_saber.c#L9396)

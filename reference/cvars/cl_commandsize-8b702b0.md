@@ -48,23 +48,23 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
 
-- Ultimate-origin introduction: [`748dc11dea5a`](https://github.com/eternalcodes/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) on `2017-12-05` in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span>
+- Ultimate-origin introduction: [`748dc11dea5a`](https://github.com/eternalcodes/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) in <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> (content authored `2017-12-05`, integrated `2017-12-05`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:190](https://github.com/eternalcodes/EternalJK/blob/a40e793a802c8db8df6132b711eea2fc846e5dd1/codemp/cgame/cg_xcvar.h#L190)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-12-05` | [`748dc11dea5a`](https://github.com/eternalcodes/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Ultimate origin |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-12-05` | [`748dc11dea5a`](https://github.com/taysta/TaystJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-12-05` | [`748dc11dea5a`](https://github.com/videoP/jaPRO/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-12-05` | [`748dc11dea5a`](https://github.com/JKSunny/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2020-05-15` | [`8ca268d5f911`](https://github.com/jkanewmod/NewJK/commit/8ca268d5f9111d39eeb7c6bc2bc446ebda1414b5) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2017-12-05` | — | `2017-12-05` | [`748dc11dea5a`](https://github.com/eternalcodes/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2017-12-05` | — | `2017-12-05` | [`748dc11dea5a`](https://github.com/taysta/TaystJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2017-12-05` | — | `2017-12-05` | [`748dc11dea5a`](https://github.com/videoP/jaPRO/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2017-12-05` | — | `2017-12-05` | [`748dc11dea5a`](https://github.com/JKSunny/EternalJK/commit/748dc11dea5adc3a3f02fe88f7dc00197e482abe) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2020-05-15` | — | `2020-05-15` | [`8ca268d5f911`](https://github.com/jkanewmod/NewJK/commit/8ca268d5f9111d39eeb7c6bc2bc446ebda1414b5) | Other project appearance |
 
 ### Later changes
 
@@ -78,10 +78,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:219](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L219) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1485](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1485) (Cvar_Get)
-- behavior: [codemp/cgame/cg_draw.c:7109](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L7109)
-- behavior: [codemp/cgame/cg_predict.c:999](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_predict.c#L999)
-- behavior: [codemp/client/cl_cgame.cpp:56](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L56)
-- behavior: [codemp/client/cl_input.cpp:1448](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1448)
-- behavior: [codemp/client/cl_input.cpp:1612](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_input.cpp#L1612)
+- registration: [codemp/cgame/cg_xcvar.h:219](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L219) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1485](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1485) (Cvar_Get)
+- behavior: [codemp/cgame/cg_draw.c:7109](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L7109)
+- behavior: [codemp/cgame/cg_predict.c:999](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_predict.c#L999)
+- behavior: [codemp/client/cl_cgame.cpp:56](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L56)
+- behavior: [codemp/client/cl_input.cpp:1448](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1448)
+- behavior: [codemp/client/cl_input.cpp:1612](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1612)

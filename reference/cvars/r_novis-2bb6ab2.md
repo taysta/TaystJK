@@ -32,7 +32,7 @@ Controls `r_novis` in the renderer module. Consult the cited behavior reads befo
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `-1` | Selects the code path tested for value -1. | [codemp/rd-vanilla/tr_world.cpp:1629](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1629) |
+| `-1` | Selects the code path tested for value -1. | [codemp/rd-vanilla/tr_world.cpp:1629](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1629) |
 
 ## Flags
 
@@ -77,9 +77,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:414](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L414) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1667](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1667) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1724](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1724) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:886](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L886) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1629](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1629)
-- behavior: [codemp/rd-vulkan/tr_world.cpp:1464](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_world.cpp#L1464)
+- registration: [codemp/rd-dedicated/tr_init.cpp:414](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L414) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1667](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1667) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1724](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1724) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:886](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L886) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1629](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1629)
+- behavior: [codemp/rd-vulkan/tr_world.cpp:1464](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_world.cpp#L1464)

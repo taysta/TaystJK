@@ -32,8 +32,8 @@ Controls `com_G2Report` in the engine-shared module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1920) |
-| `1` | Enabled. | [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1920) |
+| `0` | Disabled. | [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1920) |
+| `1` | Enabled. | [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1920) |
 
 ## Flags
 
@@ -59,5 +59,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/qcommon/common.cpp:1491](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1491) (Cvar_Get); condition `defined(G2_PERFORMANCE_ANALYSIS)`
-- behavior: [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1920)
+- registration: [codemp/qcommon/common.cpp:1491](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1491) (Cvar_Get); condition `defined(G2_PERFORMANCE_ANALYSIS)`
+- behavior: [codemp/qcommon/common.cpp:1920](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1920)

@@ -32,8 +32,8 @@ Controls `r_debuglight` in the renderer module. Consult the cited behavior reads
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_light.cpp#L397) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_light.cpp#L397) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_light.cpp#L397) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_light.cpp#L397) |
 
 ## Flags
 
@@ -76,10 +76,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:390](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L390) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1643](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1643) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1699](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1699) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:857](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L857) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_light.cpp#L397)
-- behavior: [codemp/rd-vulkan/tr_light.cpp:377](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_light.cpp#L377)
-- behavior: [shared/rd-rend2/tr_light.cpp:414](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_light.cpp#L414)
+- registration: [codemp/rd-dedicated/tr_init.cpp:390](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L390) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1643](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1643) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1699](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1699) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:857](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L857) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_light.cpp:397](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_light.cpp#L397)
+- behavior: [codemp/rd-vulkan/tr_light.cpp:377](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L377)
+- behavior: [shared/rd-rend2/tr_light.cpp:414](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_light.cpp#L414)

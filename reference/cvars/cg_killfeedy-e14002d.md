@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Offset the killfeed's vertical position from its current position
 
 ## At a glance
@@ -22,7 +20,7 @@ Offset the killfeed's vertical position from its current position
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | Default | `0` |
 | Value type | `float` |
 | Restart | No latch flag is registered. |
@@ -40,21 +38,20 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Ultimate-origin introduction: [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) on `2023-10-05` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
-- Pull request: [#13](https://github.com/taysta/TaystJK/pull/13)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L429)
-- Attribution method: `shared-earliest-commit-lineage-order`
-- Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk.
+- Ultimate-origin introduction: [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2023-10-03`, PR opened `2023-10-03`, integrated `2023-10-05`)
+- Origin pull request: [#13](https://github.com/taysta/TaystJK/pull/13)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429)
+- Attribution method: `earliest-authored-project-introduction`
+- Attribution confidence: `high`
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-05` | [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) | Ultimate origin |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-05` | [`0c734b5f2ee4`](https://github.com/videoP/jaPRO/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-10-03` | [2023-10-03](https://github.com/taysta/TaystJK/pull/13) | `2023-10-05` | [`0c734b5f2ee4`](https://github.com/taysta/TaystJK/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-10-03` | — | `2023-10-05` | [`0c734b5f2ee4`](https://github.com/videoP/jaPRO/commit/0c734b5f2ee4f69b8bcc07a3c4d6431b1ae341d6) | Shared integration commit |
 
 ### Later changes
 
@@ -66,7 +63,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L429) (XCVAR_DEF)
-- behavior: [codemp/cgame/hud_obituary.c:43](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/hud_obituary.c#L43)
-- behavior: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L538)
-- documentation: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L538)
+- registration: [codemp/cgame/cg_xcvar.h:429](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L429) (XCVAR_DEF)
+- behavior: [codemp/cgame/hud_obituary.c:43](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_obituary.c#L43)
+- behavior: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)
+- documentation: [codemp/ui/ui_xdocs.h:538](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L538)

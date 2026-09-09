@@ -32,8 +32,8 @@ Controls `s_show` in the engine-client module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `1` | Selects the code path tested for value 1. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1153) |
-| `4` | Selects the code path tested for value 4. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1153) |
+| `1` | Selects the code path tested for value 1. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153) |
+| `4` | Selects the code path tested for value 4. | [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153) |
 
 ## Flags
 
@@ -62,9 +62,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:468](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L468) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1153)
-- behavior: [codemp/client/snd_dma.cpp:1178](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1178)
-- behavior: [codemp/client/snd_dma.cpp:1215](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1215)
-- behavior: [codemp/client/snd_dma.cpp:1348](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1348)
-- behavior: [codemp/client/snd_dma.cpp:1495](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L1495)
+- registration: [codemp/client/snd_dma.cpp:468](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L468) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:1153](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1153)
+- behavior: [codemp/client/snd_dma.cpp:1178](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1178)
+- behavior: [codemp/client/snd_dma.cpp:1215](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1215)
+- behavior: [codemp/client/snd_dma.cpp:1348](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1348)
+- behavior: [codemp/client/snd_dma.cpp:1495](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1495)

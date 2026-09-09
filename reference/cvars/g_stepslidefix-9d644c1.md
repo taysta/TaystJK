@@ -32,8 +32,8 @@ Controls `g_stepSlideFix` in the game module. Consult the cited behavior reads b
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_trigger.c#L1343) |
-| `1` | Enabled. | [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_trigger.c#L1343) |
+| `0` | Disabled. | [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1343) |
+| `1` | Enabled. | [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1343) |
 
 ## Flags
 
@@ -61,7 +61,7 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:159](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L159) (XCVAR_DEF)
-- behavior: [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_trigger.c#L1343)
-- behavior: [codemp/game/g_active.c:4939](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_active.c#L4939)
-- behavior: [codemp/cgame/cg_servercmds.c:181](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_servercmds.c#L181)
+- registration: [codemp/game/g_xcvar.h:159](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L159) (XCVAR_DEF)
+- behavior: [codemp/game/g_trigger.c:1343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1343)
+- behavior: [codemp/game/g_active.c:4939](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_active.c#L4939)
+- behavior: [codemp/cgame/cg_servercmds.c:181](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L181)

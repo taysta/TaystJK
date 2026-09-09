@@ -32,8 +32,8 @@ Controls `d_npcai` in the game module. Consult the cited behavior reads before r
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_AI_Utils.c#L867) |
-| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_AI_Utils.c#L867) |
+| `0` | Disabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
+| `1` | Enabled. | [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867) |
 
 ## Flags
 
@@ -61,9 +61,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:44](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L44) (XCVAR_DEF)
-- behavior: [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_AI_Utils.c#L867)
-- behavior: [codemp/game/NPC_combat.c:1547](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_combat.c#L1547)
-- behavior: [codemp/game/NPC_combat.c:1557](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_combat.c#L1557)
-- behavior: [codemp/game/NPC_combat.c:1690](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_combat.c#L1690)
-- behavior: [codemp/game/NPC_combat.c:1700](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/NPC_combat.c#L1700)
+- registration: [codemp/game/g_xcvar.h:44](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L44) (XCVAR_DEF)
+- behavior: [codemp/game/NPC_AI_Utils.c:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_AI_Utils.c#L867)
+- behavior: [codemp/game/NPC_combat.c:1547](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1547)
+- behavior: [codemp/game/NPC_combat.c:1557](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1557)
+- behavior: [codemp/game/NPC_combat.c:1690](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1690)
+- behavior: [codemp/game/NPC_combat.c:1700](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_combat.c#L1700)

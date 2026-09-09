@@ -32,8 +32,8 @@ Controls `bg_fighterAltControl` in the cgame module. Consult the cited behavior 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L11402) |
-| `1` | Enabled. | [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L11402) |
+| `0` | Disabled. | [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11402) |
+| `1` | Enabled. | [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11402) |
 
 ## Flags
 
@@ -68,9 +68,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:252](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L252) (XCVAR_DEF)
-- registration: [codemp/game/g_xcvar.h:35](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L35) (XCVAR_DEF)
-- behavior: [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/bg_pmove.c#L11402)
-- behavior: [codemp/game/g_weapon.c:6002](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_weapon.c#L6002)
-- behavior: [codemp/cgame/cg_view.c:2942](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_view.c#L2942)
-- behavior: [codemp/qcommon/cvar.cpp:771](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L771)
+- registration: [codemp/cgame/cg_xcvar.h:252](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L252) (XCVAR_DEF)
+- registration: [codemp/game/g_xcvar.h:35](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L35) (XCVAR_DEF)
+- behavior: [codemp/game/bg_pmove.c:11402](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_pmove.c#L11402)
+- behavior: [codemp/game/g_weapon.c:6002](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_weapon.c#L6002)
+- behavior: [codemp/cgame/cg_view.c:2942](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L2942)
+- behavior: [codemp/qcommon/cvar.cpp:771](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L771)

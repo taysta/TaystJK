@@ -6,14 +6,52 @@ from __future__ import annotations
 import unittest
 from unittest.mock import patch
 
-from provenance import attribute_change, select_dated_origin
+from provenance import (
+    attribute_change,
+    enrich_introduction_events,
+    integration_subject_sources,
+    introduction_content_event,
+    is_registration_line,
+    pr_for_commit,
+    select_dated_origin,
+)
 
 
-def event(timestamp: int, sha: str) -> dict[str, object]:
-    return {"timestamp": timestamp, "sha": sha}
+def event(timestamp: int, sha: str, **extra: object) -> dict[str, object]:
+    return {"timestamp": timestamp, "sha": sha, **extra}
 
 
 class DatedOriginTests(unittest.TestCase):
+    def test_introduction_line_rejects_variable_declaration(self) -> None:
+        kinds = {"Cvar_Get"}
+        self.assertFalse(is_registration_line("cl_downloadOverlay", kinds, "cvar_t *cl_downloadOverlay;"))
+        self.assertTrue(is_registration_line(
+            "cl_downloadOverlay", kinds,
+            'cl_downloadOverlay = Cvar_Get("cl_downloadOverlay", "1", CVAR_ARCHIVE);',
+        ))
+
+    @patch("provenance.git")
+    def test_content_history_uses_first_exact_registration_addition(
+        self, git: object,
+    ) -> None:
+        line_sha = "a" * 40
+        first_sha = "b" * 40
+        later_sha = "c" * 40
+        git.side_effect = [
+            f"{line_sha} 1 1 1\nauthor Example\n\tregistration line\n",
+            (
+                f"{later_sha}\t200\t210\tLater\tlater@example.test\tEdit registration\n"
+                f"{first_sha}\t100\t110\tFirst\tfirst@example.test\tAdd registration\n"
+            ),
+        ]
+        introduction_content_event.cache_clear()
+        result = introduction_content_event(
+            "d" * 40, "code.cpp", 10, '"example_cvar"',
+        )
+        self.assertEqual(result["content_sha"], first_sha)
+        self.assertEqual(result["content_author_timestamp"], 100)
+        self.assertEqual(result["line_commit_sha"], line_sha)
+
     def test_later_newjk_import_does_not_claim_rend2_origin(self) -> None:
         source, confidence, method, _ = select_dated_origin({
             "rend2": event(100, "rend2"),
@@ -58,6 +96,107 @@ class DatedOriginTests(unittest.TestCase):
         self.assertEqual(confidence, "medium")
         self.assertEqual(method, "shared-earliest-commit-lineage-order")
         self.assertEqual(tied, ["eternaljk", "vulkan"])
+
+    def test_openjk_pr_precedes_taystjk_first_merge(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "taystjk": event(
+                300, "tayst-merge", content_author_timestamp=200,
+                pr_created_timestamp=150, pr_url="https://github.com/taysta/TaystJK/pull/52",
+            ),
+            "japro": event(300, "tayst-merge", content_author_timestamp=200),
+            "openjk": event(
+                500, "openjk-merge", content_author_timestamp=200,
+                pr_created_timestamp=100, pr_url="https://github.com/JACoders/OpenJK/pull/1185",
+            ),
+        })
+        self.assertEqual(source, "openjk")
+        self.assertEqual(confidence, "high")
+        self.assertEqual(method, "earliest-authored-and-proposed-project-introduction")
+
+    def test_commit_credit_beats_first_merge_date(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "taystjk": event(100, "shared", content_subject="jaPRO update"),
+            "japro": event(100, "shared", content_subject="jaPRO update"),
+        })
+        self.assertEqual(source, "japro")
+        self.assertEqual(confidence, "high")
+        self.assertEqual(method, "introduction-commit-explicit-credit")
+
+    def test_single_available_pr_date_does_not_bias_missing_archives(self) -> None:
+        source, _, _, _ = select_dated_origin({
+            "japro": event(100, "japro", content_author_timestamp=50),
+            "taystjk": event(
+                200, "tayst", content_author_timestamp=50,
+                pr_created_timestamp=25, pr_url="https://github.com/taysta/TaystJK/pull/1",
+            ),
+        })
+        self.assertEqual(source, "japro")
+
+    def test_shared_merge_subject_can_identify_upstream_project(self) -> None:
+        source, confidence, method, _ = select_dated_origin({
+            "openjk": event(100, "shared", subject="Merge branch from Razish/OpenJK"),
+            "eternaljk": event(100, "shared", subject="Merge branch from Razish/OpenJK"),
+        })
+        self.assertEqual(source, "openjk")
+        self.assertEqual(confidence, "high")
+        self.assertEqual(method, "shared-integration-explicit-credit")
+
+    def test_openjk_fork_url_is_still_openjk_evidence(self) -> None:
+        source, _, method, _ = select_dated_origin({
+            "openjk": event(
+                100, "shared",
+                subject="Merge branch of https://github.com/Razish/OpenJK into modrender-port",
+            ),
+            "eternaljk": event(
+                100, "shared",
+                subject="Merge branch of https://github.com/Razish/OpenJK into modrender-port",
+            ),
+        })
+        self.assertEqual(source, "openjk")
+        self.assertEqual(method, "shared-integration-explicit-credit")
+
+    def test_merge_destination_is_not_treated_as_source(self) -> None:
+        self.assertEqual(
+            integration_subject_sources("Merge branch 'master' into japro"),
+            set(),
+        )
+
+    @patch("provenance.introduction_content_event")
+    def test_enrichment_uses_content_author_and_project_specific_pr(
+        self, content_event: object,
+    ) -> None:
+        content_event.return_value = {
+            "content_sha": "f" * 40,
+            "content_author_timestamp": 200,
+            "content_timestamp": 210,
+        }
+        prs = [
+            {
+                "number": 52, "merge_commit_sha": "a" * 40,
+                "created_at": "1970-01-01T00:02:30Z", "html_url": "tayst",
+                "_source": "taystjk",
+            },
+            {
+                "number": 52, "merge_commit_sha": "b" * 40,
+                "created_at": "1970-01-01T00:01:40Z", "html_url": "openjk",
+                "_source": "openjk",
+            },
+        ]
+        enriched = enrich_introduction_events({
+            "taystjk": event(300, "a" * 40, path="code.cpp", line=10),
+            "openjk": event(500, "b" * 40, path="code.cpp", line=20),
+        }, prs)
+        self.assertEqual(enriched["taystjk"]["pr_created_timestamp"], 150)
+        self.assertEqual(enriched["openjk"]["pr_created_timestamp"], 100)
+        self.assertEqual(select_dated_origin(enriched)[0], "openjk")
+
+    def test_copied_upstream_pr_number_does_not_match_local_pr(self) -> None:
+        commit = {"sha": "0" * 40, "subject": "Merge pull request #52"}
+        prs = [{
+            "number": 52, "merge_commit_sha": "1" * 40,
+            "_source": "taystjk", "html_url": "unrelated",
+        }]
+        self.assertIsNone(pr_for_commit(commit, prs, "taystjk"))
 
 
 class ChangeAttributionTests(unittest.TestCase):

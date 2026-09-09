@@ -40,22 +40,22 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`31486bc3a398`](https://github.com/videoP/jaPRO/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) on `2023-11-02` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Ultimate-origin introduction: [`31486bc3a398`](https://github.com/videoP/jaPRO/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2023-11-02`, integrated `2023-11-02`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:95](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L95)
 - Attribution method: `identifier-adjacent-explicit-credit`
 - Attribution confidence: `high`
-- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. An identifier-adjacent source/commit/PR line explicitly credits japro.
+- Notes: An identifier-adjacent source/commit/PR line explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-02` | [`31486bc3a398`](https://github.com/taysta/TaystJK/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-02` | [`31486bc3a398`](https://github.com/videoP/jaPRO/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) | Ultimate origin |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2023-11-02` | — | `2023-11-02` | [`31486bc3a398`](https://github.com/taysta/TaystJK/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2023-11-02` | — | `2023-11-02` | [`31486bc3a398`](https://github.com/videoP/jaPRO/commit/31486bc3a398e25afc5b606c80d89f5f6dabf85f) | Ultimate origin |
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:98](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L98) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_players.c:7541](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_players.c#L7541)
+- registration: [codemp/cgame/cg_xcvar.h:98](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L98) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_players.c:7541](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L7541)

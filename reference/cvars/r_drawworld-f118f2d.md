@@ -32,8 +32,8 @@ Controls `r_drawworld` in the renderer module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1672) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1672) |
+| `0` | Disabled. | [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1672) |
+| `1` | Enabled. | [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1672) |
 
 ## Flags
 
@@ -78,10 +78,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:403](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L403) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1652) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1712](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1712) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:870](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L870) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_world.cpp#L1672)
-- behavior: [codemp/rd-vulkan/tr_world.cpp:1512](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_world.cpp#L1512)
-- behavior: [shared/rd-rend2/tr_world.cpp:867](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_world.cpp#L867)
+- registration: [codemp/rd-dedicated/tr_init.cpp:403](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L403) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1652) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1712](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1712) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:870](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L870) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_world.cpp:1672](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_world.cpp#L1672)
+- behavior: [codemp/rd-vulkan/tr_world.cpp:1512](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_world.cpp#L1512)
+- behavior: [shared/rd-rend2/tr_world.cpp:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_world.cpp#L867)

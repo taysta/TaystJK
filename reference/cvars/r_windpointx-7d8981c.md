@@ -70,8 +70,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:400](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L400) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1709](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1709) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:867](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L867) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:299](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_surfacesprites.cpp#L299)
-- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:299](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_surfacesprites.cpp#L299)
+- registration: [codemp/rd-dedicated/tr_init.cpp:400](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L400) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1709](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1709) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:867](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L867) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_surfacesprites.cpp:299](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_surfacesprites.cpp#L299)
+- behavior: [codemp/rd-vulkan/tr_surfacesprites.cpp:299](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_surfacesprites.cpp#L299)

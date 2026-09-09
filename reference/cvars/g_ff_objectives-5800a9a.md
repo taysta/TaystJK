@@ -32,8 +32,8 @@ Controls `g_ff_objectives` in the game module. Consult the cited behavior reads 
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L5395) |
-| `1` | Enabled. | [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L5395) |
+| `0` | Disabled. | [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5395) |
+| `1` | Enabled. | [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5395) |
 
 ## Flags
 
@@ -60,6 +60,6 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:91](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L91) (XCVAR_DEF)
-- behavior: [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_combat.c#L5395)
-- behavior: [codemp/game/g_utils.c:2027](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_utils.c#L2027)
+- registration: [codemp/game/g_xcvar.h:91](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L91) (XCVAR_DEF)
+- behavior: [codemp/game/g_combat.c:5395](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_combat.c#L5395)
+- behavior: [codemp/game/g_utils.c:2027](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_utils.c#L2027)

@@ -56,8 +56,8 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/snd_dma.cpp:474](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L474) (Cvar_Get)
-- behavior: [codemp/client/snd_dma.cpp:2533](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L2533)
-- behavior: [codemp/client/snd_dma.cpp:3651](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L3651)
-- behavior: [codemp/client/snd_mem.cpp:1010](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mem.cpp#L1010)
-- behavior: [codemp/client/snd_mem.cpp:1043](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_mem.cpp#L1043)
+- registration: [codemp/client/snd_dma.cpp:474](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L474) (Cvar_Get)
+- behavior: [codemp/client/snd_dma.cpp:2533](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2533)
+- behavior: [codemp/client/snd_dma.cpp:3651](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3651)
+- behavior: [codemp/client/snd_mem.cpp:1010](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1010)
+- behavior: [codemp/client/snd_mem.cpp:1043](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L1043)

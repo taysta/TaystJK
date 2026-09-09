@@ -40,25 +40,25 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-- Ultimate-origin introduction: [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) on `2020-05-16` in <span class="label ref-origin ref-origin-japro">jaPRO</span>
+- Ultimate-origin introduction: [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2020-05-10`, integrated `2020-05-16`)
 - Upstream registration evidence: [codemp/game/g_xcvar.h:354](https://github.com/videoP/jaPRO/blob/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/game/g_xcvar.h#L354)
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/eternalcodes/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/taysta/TaystJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Ultimate origin |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2020-05-16` | [`0bfdb71aee77`](https://github.com/JKSunny/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared earliest lineage |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2020-05-10` | — | `2020-05-16` | [`0bfdb71aee77`](https://github.com/eternalcodes/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2020-05-10` | — | `2020-05-16` | [`0bfdb71aee77`](https://github.com/taysta/TaystJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2020-05-10` | — | `2020-05-16` | [`0bfdb71aee77`](https://github.com/videoP/jaPRO/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2020-05-10` | — | `2020-05-16` | [`0bfdb71aee77`](https://github.com/JKSunny/EternalJK/commit/0bfdb71aee77ef4f66a7dbd4ec968946ac230e8d) | Shared integration commit |
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:353](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L353) (XCVAR_DEF)
-- behavior: [codemp/game/g_trigger.c:1467](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_trigger.c#L1467)
-- behavior: [codemp/game/g_trigger.c:1712](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_trigger.c#L1712)
+- registration: [codemp/game/g_xcvar.h:353](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L353) (XCVAR_DEF)
+- behavior: [codemp/game/g_trigger.c:1467](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1467)
+- behavior: [codemp/game/g_trigger.c:1712](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_trigger.c#L1712)

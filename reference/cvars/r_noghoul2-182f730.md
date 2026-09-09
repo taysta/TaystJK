@@ -58,4 +58,4 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [shared/rd-rend2/tr_model.cpp:776](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_model.cpp#L776) (Cvar_Get); condition `else(!defined(REND2_SP))`
+- registration: [shared/rd-rend2/tr_model.cpp:776](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_model.cpp#L776) (Cvar_Get); condition `else(!defined(REND2_SP))`

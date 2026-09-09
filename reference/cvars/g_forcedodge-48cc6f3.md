@@ -32,7 +32,7 @@ Controls `g_forceDodge` in the game module. Consult the cited behavior reads bef
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `2` | Selects the code path tested for value 2. | [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6238) |
+| `2` | Selects the code path tested for value 2. | [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6238) |
 
 ## Flags
 
@@ -58,9 +58,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/game/g_xcvar.h:99](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/g_xcvar.h#L99) (XCVAR_DEF)
-- behavior: [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6238)
-- behavior: [codemp/game/w_force.c:6256](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6256)
-- behavior: [codemp/game/w_force.c:6264](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6264)
-- behavior: [codemp/game/w_force.c:6272](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6272)
-- behavior: [codemp/game/w_force.c:6341](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/game/w_force.c#L6341)
+- registration: [codemp/game/g_xcvar.h:99](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L99) (XCVAR_DEF)
+- behavior: [codemp/game/w_force.c:6238](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6238)
+- behavior: [codemp/game/w_force.c:6256](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6256)
+- behavior: [codemp/game/w_force.c:6264](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6264)
+- behavior: [codemp/game/w_force.c:6272](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6272)
+- behavior: [codemp/game/w_force.c:6341](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L6341)

@@ -38,23 +38,23 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) on `2026-08-06` in <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
-- Pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:57](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L57)
-- Attribution method: `earliest-dated-project-introduction`
+- Ultimate-origin introduction: [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-08-06`, PR opened `2026-08-06`, integrated `2026-08-06`)
+- Origin pull request: [#356](https://github.com/taysta/TaystJK/pull/356)
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:57](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L57)
+- Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-08-06` | [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) | Ultimate origin |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-08-06` | [2026-08-06](https://github.com/taysta/TaystJK/pull/356) | `2026-08-06` | [`17085eaeadd0`](https://github.com/taysta/TaystJK/commit/17085eaeadd029b670346330588de005c6c41158) | Ultimate origin |
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:57](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L57) (XCVAR_DEF)
-- behavior: [codemp/cgame/cg_draw.c:6599](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_draw.c#L6599)
-- behavior: [codemp/ui/ui_xdocs.h:159](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L159)
-- documentation: [codemp/ui/ui_xdocs.h:159](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xdocs.h#L159)
+- registration: [codemp/cgame/cg_xcvar.h:57](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L57) (XCVAR_DEF)
+- behavior: [codemp/cgame/cg_draw.c:6599](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_draw.c#L6599)
+- behavior: [codemp/ui/ui_xdocs.h:159](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L159)
+- documentation: [codemp/ui/ui_xdocs.h:159](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L159)

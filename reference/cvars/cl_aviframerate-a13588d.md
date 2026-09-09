@@ -40,26 +40,26 @@ No discrete value list is enforced or documented in the inspected source.
 
 Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`66642f7cd25a`](https://github.com/JACoders/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) on `2013-04-13` in <span class="label ref-origin ref-origin-openjk">OpenJK</span>
+- Ultimate-origin introduction: [`66642f7cd25a`](https://github.com/JACoders/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-13`, integrated `2013-04-13`)
 - Upstream registration evidence: [codemp/client/cl_main.cpp:2759](https://github.com/JACoders/OpenJK/blob/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2759)
 - Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest dated introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/JACoders/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Ultimate origin |
-| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/eternalcodes/EternalJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/SomaZ/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/taysta/TaystJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/videoP/jaPRO/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/jkanewmod/NewJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-13` | [`66642f7cd25a`](https://github.com/JKSunny/EternalJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared earliest lineage |
-| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2016-10-27` | [`bf4971ea0c0b`](https://github.com/mvdevs/jk2mv/commit/bf4971ea0c0bd55531047f8e8c4de709a0d64b56) | Later project appearance |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/JACoders/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Ultimate origin |
+| <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/eternalcodes/EternalJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/SomaZ/OpenJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/taysta/TaystJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/videoP/jaPRO/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/jkanewmod/NewJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-13` | — | `2013-04-13` | [`66642f7cd25a`](https://github.com/JKSunny/EternalJK/commit/66642f7cd25a88085f4ec88cc1b234fe99f8499e) | Shared integration commit |
+| <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2016-09-06` | — | `2016-10-27` | [`bf4971ea0c0b`](https://github.com/mvdevs/jk2mv/commit/bf4971ea0c0bd55531047f8e8c4de709a0d64b56) | Other project appearance |
 
 ### Later changes
 
@@ -74,9 +74,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/client/cl_main.cpp:3328](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L3328) (Cvar_Get)
-- behavior: [codemp/client/cl_avi.cpp:343](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_avi.cpp#L343)
-- behavior: [codemp/client/cl_main.cpp:2496](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L2496)
-- behavior: [codemp/client/cl_avi.cpp:361](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_avi.cpp#L361)
-- behavior: [codemp/client/cl_main.cpp:2498](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L2498)
-- behavior: [codemp/client/snd_dma.cpp:2854](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/snd_dma.cpp#L2854)
+- registration: [codemp/client/cl_main.cpp:3328](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3328) (Cvar_Get)
+- behavior: [codemp/client/cl_avi.cpp:343](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L343)
+- behavior: [codemp/client/cl_main.cpp:2496](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2496)
+- behavior: [codemp/client/cl_avi.cpp:361](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_avi.cpp#L361)
+- behavior: [codemp/client/cl_main.cpp:2498](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2498)
+- behavior: [codemp/client/snd_dma.cpp:2854](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L2854)

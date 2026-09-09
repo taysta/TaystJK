@@ -54,10 +54,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_bot.cpp:656](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_bot.cpp#L656) (Cvar_Get)
-- registration: [codemp/server/sv_game.cpp:140](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_game.cpp#L140) (Cvar_Get)
-- behavior: [codemp/qcommon/cvar.cpp:294](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L294)
-- behavior: [codemp/qcommon/cvar.cpp:312](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L312)
-- behavior: [codemp/qcommon/cvar.cpp:428](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L428)
-- behavior: [codemp/qcommon/cvar.cpp:127](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L127)
-- behavior: [codemp/qcommon/cvar.cpp:142](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/cvar.cpp#L142)
+- registration: [codemp/server/sv_bot.cpp:656](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_bot.cpp#L656) (Cvar_Get)
+- registration: [codemp/server/sv_game.cpp:140](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_game.cpp#L140) (Cvar_Get)
+- behavior: [codemp/qcommon/cvar.cpp:294](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L294)
+- behavior: [codemp/qcommon/cvar.cpp:312](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L312)
+- behavior: [codemp/qcommon/cvar.cpp:428](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L428)
+- behavior: [codemp/qcommon/cvar.cpp:127](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L127)
+- behavior: [codemp/qcommon/cvar.cpp:142](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L142)

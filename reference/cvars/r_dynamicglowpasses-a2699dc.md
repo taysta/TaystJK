@@ -78,9 +78,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/rd-dedicated/tr_init.cpp:327](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-dedicated/tr_init.cpp#L327) (Cvar_Get)
-- registration: [codemp/rd-rend2/tr_init.cpp:1508](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-rend2/tr_init.cpp#L1508) (Cvar_Get)
-- registration: [codemp/rd-vanilla/tr_init.cpp:1644](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_init.cpp#L1644) (Cvar_Get)
-- registration: [codemp/rd-vulkan/tr_init.cpp:796](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vulkan/tr_init.cpp#L796) (Cvar_Get)
-- behavior: [codemp/rd-vanilla/tr_backend.cpp:2157](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/rd-vanilla/tr_backend.cpp#L2157)
-- behavior: [shared/rd-rend2/tr_backend.cpp:3146](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/shared/rd-rend2/tr_backend.cpp#L3146)
+- registration: [codemp/rd-dedicated/tr_init.cpp:327](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L327) (Cvar_Get)
+- registration: [codemp/rd-rend2/tr_init.cpp:1508](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1508) (Cvar_Get)
+- registration: [codemp/rd-vanilla/tr_init.cpp:1644](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1644) (Cvar_Get)
+- registration: [codemp/rd-vulkan/tr_init.cpp:796](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L796) (Cvar_Get)
+- behavior: [codemp/rd-vanilla/tr_backend.cpp:2157](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_backend.cpp#L2157)
+- behavior: [shared/rd-rend2/tr_backend.cpp:3146](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3146)

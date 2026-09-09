@@ -65,9 +65,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/ui/ui_xcvar.h:69](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_xcvar.h#L69) (XCVAR_DEF)
-- behavior: [codemp/ui/ui_shared.c:748](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_shared.c#L748)
-- behavior: [codemp/ui/ui_shared.c:5585](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_shared.c#L5585)
-- behavior: [codemp/ui/ui_shared.c:5775](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_shared.c#L5775)
-- behavior: [codemp/ui/ui_shared.c:5889](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_shared.c#L5889)
-- behavior: [codemp/ui/ui_main.c:6494](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/ui/ui_main.c#L6494)
+- registration: [codemp/ui/ui_xcvar.h:69](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xcvar.h#L69) (XCVAR_DEF)
+- behavior: [codemp/ui/ui_shared.c:748](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_shared.c#L748)
+- behavior: [codemp/ui/ui_shared.c:5585](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_shared.c#L5585)
+- behavior: [codemp/ui/ui_shared.c:5775](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_shared.c#L5775)
+- behavior: [codemp/ui/ui_shared.c:5889](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_shared.c#L5889)
+- behavior: [codemp/ui/ui_main.c:6494](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L6494)

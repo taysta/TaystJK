@@ -30,8 +30,8 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disable HTTP auto-download advertising and stop the built-in HTTP server. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L763) |
-| `1` | Advertise HTTP downloads and start or redirect the HTTP endpoint. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L763) |
+| `0` | Disable HTTP auto-download advertising and stop the built-in HTTP server. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L763) |
+| `1` | Advertise HTTP downloads and start or redirect the HTTP endpoint. | [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L763) |
 
 ## Flags
 
@@ -44,20 +44,20 @@ Enables fast HTTP downloads for referenced PK3 files. When enabled, the server a
 Origin: <span class="label ref-origin ref-origin-jk2mv">JK2MV</span>
 
 - TaystJK integration evidence: [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d)
-- Pull request: [#169](https://github.com/taysta/TaystJK/pull/169)
+- Origin pull request: [#169](https://github.com/taysta/TaystJK/pull/169)
 - Matching squash bullet: `[HTTP-AutoDL] Libmongoose 7 port from jk2mv`
 - Attribution method: `squash-feature-group-explicit-credit`
 - Attribution confidence: `high`
-- Notes: The earliest dated introduction is shared by taystjk, japro; fork-lineage order selects taystjk. The identifier's single-prefix squash feature group explicitly credits jk2mv.
+- Notes: The identifier's single-prefix squash feature group explicitly credits jk2mv.
 
 ### Dated project introductions
 
-These are first appearances on each project's current first-parent line. Later rows show ports or downstream availability; they do not replace the earliest origin.
+Authored dates come from the exact registration's first content commit, PR dates identify when work was proposed to each project, and integration dates come from each first-parent mainline. A project merging first does not override earlier upstream authorship or submission.
 
-| Project | Date | Commit | Relationship |
-|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Additional dated evidence |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/videoP/jaPRO/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Additional dated evidence |
+| Project | Authored | PR opened | Integrated | Commit | Relationship |
+|:--|:--|:--|:--|:--|:--|
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2024-03-21` | [2024-03-07](https://github.com/taysta/TaystJK/pull/169) | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/taysta/TaystJK/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Other project appearance |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2024-03-21` | — | `2024-03-21` | [`2a5ea5d885dc`](https://github.com/videoP/jaPRO/commit/2a5ea5d885dc6c081b75631334aac405da3fa36d) | Other project appearance |
 
 ### Later changes
 
@@ -69,9 +69,9 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/server/sv_init.cpp:760](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L760) (Cvar_Get)
-- behavior: [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L763)
-- behavior: [codemp/server/sv_main.cpp:579](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_main.cpp#L579)
-- behavior: [codemp/server/sv_init.cpp:755](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/server/sv_init.cpp#L755)
-- behavior: [codemp/client/cl_main.cpp:1707](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1707)
-- behavior: [codemp/client/cl_main.cpp:1714](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_main.cpp#L1714)
+- registration: [codemp/server/sv_init.cpp:760](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L760) (Cvar_Get)
+- behavior: [codemp/server/sv_init.cpp:763](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L763)
+- behavior: [codemp/server/sv_main.cpp:579](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_main.cpp#L579)
+- behavior: [codemp/server/sv_init.cpp:755](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L755)
+- behavior: [codemp/client/cl_main.cpp:1707](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1707)
+- behavior: [codemp/client/cl_main.cpp:1714](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1714)

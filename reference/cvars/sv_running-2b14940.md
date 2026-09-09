@@ -30,8 +30,8 @@ Is a server running?
 
 | Value | Meaning | Evidence |
 |:--|:--|:--|
-| `0` | Disabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L551) |
-| `1` | Enabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L551) |
+| `0` | Disabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L551) |
+| `1` | Enabled. | [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L551) |
 
 ## Flags
 
@@ -90,10 +90,10 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 ## Evidence
 
-- registration: [codemp/cgame/cg_xcvar.h:387](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/cgame/cg_xcvar.h#L387) (XCVAR_DEF)
-- registration: [codemp/qcommon/common.cpp:1480](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/qcommon/common.cpp#L1480) (Cvar_Get)
-- behavior: [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L551)
-- behavior: [codemp/client/cl_cgame.cpp:813](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L813)
-- behavior: [codemp/client/cl_cgame.cpp:963](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_cgame.cpp#L963)
-- behavior: [codemp/client/cl_discordrpc.cpp:254](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_discordrpc.cpp#L254)
-- behavior: [codemp/client/cl_discordrpc.cpp:482](https://github.com/taysta/TaystJK/blob/5802c999168db2f9759a48f1ef3a3d672fa99722/codemp/client/cl_discordrpc.cpp#L482)
+- registration: [codemp/cgame/cg_xcvar.h:387](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L387) (XCVAR_DEF)
+- registration: [codemp/qcommon/common.cpp:1480](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1480) (Cvar_Get)
+- behavior: [codemp/client/cl_cgame.cpp:551](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L551)
+- behavior: [codemp/client/cl_cgame.cpp:813](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L813)
+- behavior: [codemp/client/cl_cgame.cpp:963](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cgame.cpp#L963)
+- behavior: [codemp/client/cl_discordrpc.cpp:254](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L254)
+- behavior: [codemp/client/cl_discordrpc.cpp:482](https://github.com/taysta/TaystJK/blob/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L482)
