@@ -119,9 +119,23 @@ Current TaystJK releases bundle SDL 2 inside the app, along with the non-system 
 
 This is the simplest layout when TaystJK is your only modded client.
 
-1. Open the TaystJK disk image and copy `TaystJK.app` to a directory you control.
+1. Extract the TaystJK archive and copy its `.app` bundle to a directory you control.
 2. Put the retail `base` directory beside the app, or point the app at an existing Jedi Academy installation with `fs_cdPath` as described below.
-3. Launch `TaystJK.app`. User data is stored under `~/Library/Application Support/TaystJK/`.
+3. Launch the app. User data is stored under `~/Library/Application Support/TaystJK/`.
+
+The [release workflow](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/.github/workflows/build.yml#L435) ad-hoc signs the universal app before packaging, so a normal installation does not need another `codesign` command. If macOS quarantines the downloaded app and refuses to open it, clear that attribute from the extracted bundle:
+
+```bash
+xattr -dr com.apple.quarantine "/path/to/taystjk.app"
+```
+
+Run this without `sudo` when the app is in a directory you own. Use `sudo` only if `xattr` reports a permissions error and you have confirmed the path is the intended TaystJK bundle. Quarantine alone is not a reason to re-sign the app. You can verify the packaged signature with:
+
+```bash
+codesign --verify --deep --strict "/path/to/taystjk.app"
+```
+
+If verification fails, re-extract a fresh copy of the official archive rather than blindly signing the damaged copy. The separate `moveandsign.sh` workflow described in the [debugging guide](/TaystJK/development/debugging/#macos-move-and-sign-the-installed-build) is for locally built development binaries.
 
 On Apple silicon, use the universal or native arm64 release. Intel Macs need the x86_64 release.
   </section>

@@ -51,7 +51,7 @@ From a Developer PowerShell prompt:
 ```powershell
 cmake -S . -B build -G "Visual Studio 17 2022" -A x64
 cmake --build build --config RelWithDebInfo --parallel
-cmake --install build --config RelWithDebInfo --prefix "C:\Games\Jedi Academy\GameData"
+cmake --install build --config RelWithDebInfo --prefix "C:\TaystJK-test"
 ```
 
 You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x64`, and build the solution. Use `Debug` when you want the least optimized stepping experience.
@@ -66,12 +66,12 @@ sudo apt install build-essential cmake git libsdl2-dev libgl1-mesa-dev \
   libjpeg-dev libpng-dev zlib1g-dev
 ```
 
-Configure, compile, and optionally install into a test `GameData` directory:
+Configure, compile, and optionally install into a test staging directory:
 
 ```bash
 cmake -S . -B build \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-  -DCMAKE_INSTALL_PREFIX=/path/to/JediAcademy/GameData
+  -DCMAKE_INSTALL_PREFIX="$HOME/.local/taystjk-test"
 cmake --build build --parallel
 cmake --install build
 ```
@@ -92,19 +92,23 @@ Install Xcode Command Line Tools and CMake. The repository bundles the image lib
 ```bash
 xcode-select --install
 brew install cmake
-cmake -S . -B build -G Xcode
+cmake -S . -B build -G Xcode \
+  -DCMAKE_INSTALL_PREFIX="$HOME/Library/Application Support/Steam/steamapps/common/Jedi Academy"
 cmake --build build --config RelWithDebInfo --parallel
 ```
 
-On Apple silicon, CMake selects `arm64` from the host architecture and raises the deployment target to macOS 11 when necessary. If a locally built app is blocked because it is unsigned, ad-hoc sign it:
+On Apple silicon, CMake selects `arm64` from the host architecture and raises the deployment target to macOS 11 when necessary. For a development build, run the install target and then use the repository's helper to move and sign the installed files:
 
 ```bash
-codesign --force --deep --sign - build/RelWithDebInfo/taystjk.arm64.app
+cmake --build build --config RelWithDebInfo --target install
+./scripts/macosx/moveandsign.sh
 ```
+
+The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
 
 ## Install and test
 
-The build output alone does not contain the retail assets. Either set `CMAKE_INSTALL_PREFIX` to a test `GameData` directory, or launch with `+set fs_cdPath /path/to/JediAcademy` so the engine can find `base/assets0.pk3` through `assets3.pk3`.
+The build output alone does not contain the retail assets. `CMAKE_INSTALL_PREFIX` is the parent staging directory; TaystJK creates a `JediAcademy` directory beneath it. Copy the retail `base` directory into that installed layout, or launch with `+set fs_cdPath /path/to/JediAcademy` so the engine can find `base/assets0.pk3` through `assets3.pk3`.
 
 Keep test builds separate from the client you use every day. The [installation guide](/TaystJK/install/#installing-several-modded-clients) shows a shared-asset layout that works well for development.
 

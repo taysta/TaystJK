@@ -22,13 +22,13 @@ description: "Run a TaystJK dedicated server with Docker Compose or a native bin
 
 ## Docker Compose
 
-The repository ships a [Docker image and Compose definition](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docker-compose.yml). This is the shortest repeatable setup on a Linux host with Docker installed.
+The repository ships a [Docker image and `docker-compose.yml`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docker-compose.yml). Use that definition from a TaystJK source checkout when possible; it supports both pulling the published image and building the server locally.
 
-Create this directory structure:
+For the published image, the relevant files are:
 
 ```text
 taystjk-server/
-├── compose.yaml
+├── docker-compose.yml
 ├── base/
 │   ├── assets0.pk3
 │   ├── assets1.pk3
@@ -37,7 +37,7 @@ taystjk-server/
 └── homepath/
 ```
 
-Use this `compose.yaml`:
+The checked-in Compose file defines the normal registry-backed service and an optional `build` profile. Its service definitions are:
 
 ```yaml
 services:
@@ -50,20 +50,48 @@ services:
       - ./base:/opt/taystjk/cdpath/base
       - ./homepath:/opt/taystjk/homepath
     environment:
-      TJK_MOD: taystjk
-      TJK_ARCH: x86_64
+      - TJK_MOD=taystjk
+      - TJK_ARCH=x86_64
+    restart: unless-stopped
+
+  taystjk-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TAYSTJK_REF: master
+        TAYSTJK_COMMIT: unknown
+    profiles: ["build"]
+    ports:
+      - "29070:29070/udp"
+      - "18200:18200/tcp"
+    volumes:
+      - ./base:/opt/taystjk/cdpath/base
+      - ./homepath:/opt/taystjk/homepath
+    environment:
+      - TJK_MOD=taystjk
+      - TJK_ARCH=x86_64
     restart: unless-stopped
 ```
 
-From that directory, run:
+To run the published image:
 
 ```bash
-docker compose pull
-docker compose up -d
+docker compose pull taystjk
+docker compose up -d taystjk
 docker compose logs -f taystjk
 ```
 
-The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
+The `taystjk-build` service needs the repository's complete source checkout and `Dockerfile`. From that checkout, use the opt-in profile when you need an image built from the current source:
+
+```bash
+docker compose --profile build up -d --build taystjk-build
+docker compose logs -f taystjk-build
+```
+
+Both services use the same ports, asset mount, homepath mount, architecture, and mod selection as TaystJK's checked-in definition; do not start both at once. The image already contains TaystJK's [shipped `server.cfg`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/docker/server.cfg), installs it under `basepath/taystjk/`, and automatically launches with `+exec server.cfg`. Start the container once with that configuration before changing it.
+
+The remaining commands in this guide use the published-image service name, `taystjk`. Substitute `taystjk-build` when you are running the source-build profile.
 
 To customize the exact configuration shipped by your image, copy it into the mounted homepath:
 

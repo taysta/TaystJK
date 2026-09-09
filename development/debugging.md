@@ -9,7 +9,7 @@ description: "Debug the TaystJK engine and game modules with Visual Studio, GDB,
 
 # Debug TaystJK
 
-<p class="page-lede">Most startup failures are path problems. Give the debugger the Jedi Academy <code>GameData</code> directory as its working directory, disable fullscreen, and point <code>fs_game</code> at <code>taystjk</code>.</p>
+<p class="page-lede">Debug an installed build so the engine, game modules, renderers, and bundled libraries use the same layout as a real TaystJK installation. On macOS, run <code>moveandsign.sh</code> after installing, then point CLion at the executable inside the installed app bundle.</p>
 </div>
 
 ## Build with symbols
@@ -22,6 +22,30 @@ cmake --build build-debug --parallel
 ```
 
 For Visual Studio or Xcode, generate once and choose the `Debug` configuration when building and launching. `RelWithDebInfo` is useful when a bug disappears without optimization.
+
+## Install before debugging
+
+Building creates the targets; installing assembles the client, modules, renderers, and assets in the layout that the engine expects. Configure `CMAKE_INSTALL_PREFIX` for your platform's test or staging location, then install the same configuration you built:
+
+```bash
+# Makefiles or Ninja
+cmake --install build-debug
+
+# Xcode or Visual Studio
+cmake --install build-debug --config Debug
+```
+
+TaystJK installs beneath the `JediAcademy` directory inside that prefix. Keep the build configuration consistent: installing `Debug` and then debugging a previously installed `Release` executable will give you mismatched binaries and breakpoints.
+
+### macOS: move and sign the installed build
+
+After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh):
+
+```bash
+./scripts/macosx/moveandsign.sh
+```
+
+The script moves the installed files from the Steam-side `JediAcademy` staging directory to `~/Library/Application Support/TaystJK`, removes quarantine attributes, and ad-hoc signs the app bundle and dedicated-server binary. Its paths and binary names currently assume the default Steam location and an arm64 build; inspect the variables at the top of the script if your install location or architecture differs.
 
 ## Launch arguments
 
@@ -37,7 +61,7 @@ If the executable is outside the retail install, add:
 +set fs_cdPath "C:/Games/Jedi Academy/GameData"
 ```
 
-Set the working directory to the directory containing the executable or to your test `GameData` directory. Do not add a trailing slash to `fs_cdPath` on Windows.
+Set the working directory to the root of the installed test layout. Do not add a trailing slash to `fs_cdPath` on Windows.
 
 ## Visual Studio
 
@@ -51,16 +75,16 @@ Launching the client project still allows Visual Studio to load symbols and stop
 
 ## GDB or LLDB
 
-Launch from the test directory so relative game paths resolve correctly:
+Launch the installed executable from the test directory so relative game paths resolve correctly:
 
 ```bash
 gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
 ```
 
-Or on macOS:
+Or, after running `moveandsign.sh`, on macOS:
 
 ```bash
-lldb -- ./taystjk.arm64.app/Contents/MacOS/taystjk.arm64 \
+lldb -- "$HOME/Library/Application Support/TaystJK/taystjk.arm64.app/Contents/MacOS/taystjk.arm64" \
   +set r_fullscreen 0 +set fs_game taystjk
 ```
 
@@ -68,14 +92,17 @@ Useful first commands are `run`, `bt`/`thread backtrace`, `info sharedlibrary`/`
 
 ## CLion
 
-Open the repository as a CMake project and choose a Debug profile. In the client Run/Debug configuration:
+Open the repository as a CMake project and choose a Debug profile. Build the project, run its `install` target, and on macOS run `./scripts/macosx/moveandsign.sh`.
 
-- Set the executable to the `taystjk` client target.
-- Set the working directory to your test `GameData` directory.
+Then create or edit the client Run/Debug configuration:
+
+- Choose **Custom executable** and browse to the client executable in the installed layout. On arm64 macOS, the default helper-script destination is `~/Library/Application Support/TaystJK/taystjk.arm64.app/Contents/MacOS/taystjk.arm64`.
+- Set the working directory to the installed TaystJK directory. With the default macOS helper script, this is `~/Library/Application Support/TaystJK`.
 - Add the standard launch arguments above.
-- Select the same architecture and build profile for every module you expect to load.
+- Before each debugging session, rebuild and rerun the install step; on macOS, rerun `moveandsign.sh` after installing.
+- Keep the installed executable and all loaded modules on the same architecture and build profile.
 
-For a dedicated server, select `taystjkded` and use `+set dedicated 2 +set fs_game taystjk +exec server.cfg`.
+For a dedicated server, choose the installed `taystjkded` executable and use `+set dedicated 2 +set fs_game taystjk +exec server.cfg`.
 
 ## Sanitizers
 
