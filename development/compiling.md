@@ -42,6 +42,21 @@ TaystJK is GPLv2 software. If you distribute a changed binary, make the correspo
 
 The authoritative list is in the top-level [CMake configuration](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/CMakeLists.txt#L38).
 
+## Compile for your platform
+
+Choose your operating system to see its prerequisites and build steps. Your selection is saved on this device.
+
+<section class="platform-guide" data-platform-guide>
+  <div class="platform-selector-shell">
+    <p class="platform-selector-label">Operating system</p>
+    <div class="platform-selector" role="tablist" aria-label="Operating system">
+      <button type="button" id="platform-tab-windows" role="tab" aria-controls="platform-panel-windows" aria-selected="false" tabindex="-1" data-platform-choice="windows">Windows</button>
+      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
+      <button type="button" id="platform-tab-macos" role="tab" aria-controls="platform-panel-macos" aria-selected="false" tabindex="-1" data-platform-choice="macos">macOS</button>
+    </div>
+  </div>
+
+  <section class="platform-panel" id="platform-panel-windows" role="tabpanel" aria-labelledby="platform-tab-windows" tabindex="0" data-platform-panel="windows" markdown="1">
 ## Windows
 
 Visual Studio 2022 with **Desktop development with C++**, Git, and CMake is the straightforward toolchain. Bundled libraries are selected by default on Windows.
@@ -55,7 +70,9 @@ cmake --install build --config RelWithDebInfo --prefix "C:\TaystJK-test"
 ```
 
 You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x64`, and build the solution. Use `Debug` when you want the least optimized stepping experience.
+  </section>
 
+  <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
 ## Linux
 
 On Debian or Ubuntu, install the normal development dependencies:
@@ -84,7 +101,9 @@ cmake -S . -B build-server -DCMAKE_BUILD_TYPE=Release \
   -DBuildMPRdVanilla=OFF -DBuildMPRend2=OFF -DBuildMPRdVulkan=OFF
 cmake --build build-server --parallel
 ```
+  </section>
 
+  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
 ## macOS
 
 Install Xcode Command Line Tools and CMake. The repository bundles the image libraries and SDL for the default Apple build:
@@ -105,6 +124,8 @@ cmake --build build --config RelWithDebInfo --target install
 ```
 
 The helper currently expects the install staging directory under the default Steam location and moves the result to `~/Library/Application Support/TaystJK`. Review the path and architecture variables at the top of [the script](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh) before using it with a different setup. The [debugging guide](/TaystJK/development/debugging/#clion) covers pointing CLion at the executable in that installed layout.
+  </section>
+</section>
 
 ## Install and test
 

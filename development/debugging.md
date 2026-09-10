@@ -37,16 +37,6 @@ cmake --install build-debug --config Debug
 
 TaystJK installs beneath the `JediAcademy` directory inside that prefix. Keep the build configuration consistent: installing `Debug` and then debugging a previously installed `Release` executable will give you mismatched binaries and breakpoints.
 
-### macOS: move and sign the installed build
-
-After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh):
-
-```bash
-./scripts/macosx/moveandsign.sh
-```
-
-The script moves the installed files from the Steam-side `JediAcademy` staging directory to `~/Library/Application Support/TaystJK`, removes quarantine attributes, and ad-hoc signs the app bundle and dedicated-server binary. Its paths and binary names currently assume the default Steam location and an arm64 build; inspect the variables at the top of the script if your install location or architecture differs.
-
 ## Launch arguments
 
 Use these arguments for the multiplayer client:
@@ -63,7 +53,24 @@ If the executable is outside the retail install, add:
 
 Set the working directory to the root of the installed test layout. Do not add a trailing slash to `fs_cdPath` on Windows.
 
-## Visual Studio
+## Debug for your platform
+
+Choose your operating system to see its debugger setup. Your selection is saved on this device.
+
+<section class="platform-guide" data-platform-guide>
+  <div class="platform-selector-shell">
+    <p class="platform-selector-label">Operating system</p>
+    <div class="platform-selector" role="tablist" aria-label="Operating system">
+      <button type="button" id="platform-tab-windows" role="tab" aria-controls="platform-panel-windows" aria-selected="false" tabindex="-1" data-platform-choice="windows">Windows</button>
+      <button type="button" id="platform-tab-linux" role="tab" aria-controls="platform-panel-linux" aria-selected="false" tabindex="-1" data-platform-choice="linux">Linux</button>
+      <button type="button" id="platform-tab-macos" role="tab" aria-controls="platform-panel-macos" aria-selected="false" tabindex="-1" data-platform-choice="macos">macOS</button>
+    </div>
+  </div>
+
+  <section class="platform-panel" id="platform-panel-windows" role="tabpanel" aria-labelledby="platform-tab-windows" tabindex="0" data-platform-panel="windows" markdown="1">
+## Windows
+
+### Visual Studio
 
 1. Open the generated `TaystJK.sln`.
 2. Select the **Debug** configuration and the correct platform.
@@ -72,8 +79,12 @@ Set the working directory to the root of the installed test layout. Do not add a
 5. Place a breakpoint and press <kbd>F5</kbd>.
 
 Launching the client project still allows Visual Studio to load symbols and stop inside the game, cgame, UI, and renderer libraries once the engine loads them. If a breakpoint is hollow, open **Debug → Windows → Modules** and confirm that the expected module and PDB were loaded from your build.
+  </section>
 
-## GDB or LLDB
+  <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
+## Linux
+
+### GDB
 
 Launch the installed executable from the test directory so relative game paths resolve correctly:
 
@@ -81,14 +92,34 @@ Launch the installed executable from the test directory so relative game paths r
 gdb --args ./taystjk.x86_64 +set r_fullscreen 0 +set fs_game taystjk
 ```
 
-Or, after running `moveandsign.sh`, on macOS:
+Useful first commands are `run`, `bt`, `info sharedlibrary`, and `break function_name`.
+  </section>
+
+  <section class="platform-panel" id="platform-panel-macos" role="tabpanel" aria-labelledby="platform-tab-macos" tabindex="0" data-platform-panel="macos" markdown="1">
+## macOS
+
+### Move and sign the installed build
+
+After the install target finishes, run TaystJK's [macOS development helper](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/scripts/macosx/moveandsign.sh):
+
+```bash
+./scripts/macosx/moveandsign.sh
+```
+
+The script moves the installed files from the Steam-side `JediAcademy` staging directory to `~/Library/Application Support/TaystJK`, removes quarantine attributes, and ad-hoc signs the app bundle and dedicated-server binary. Its paths and binary names currently assume the default Steam location and an arm64 build; inspect the variables at the top of the script if your install location or architecture differs.
+
+### LLDB
+
+After running `moveandsign.sh`, launch the executable inside the installed app bundle:
 
 ```bash
 lldb -- "$HOME/Library/Application Support/TaystJK/taystjk.arm64.app/Contents/MacOS/taystjk.arm64" \
   +set r_fullscreen 0 +set fs_game taystjk
 ```
 
-Useful first commands are `run`, `bt`/`thread backtrace`, `info sharedlibrary`/`image list`, and `break function_name`.
+Useful first commands are `run`, `thread backtrace`, `image list`, and `break function_name`.
+  </section>
+</section>
 
 ## CLion
 
