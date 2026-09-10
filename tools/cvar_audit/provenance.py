@@ -26,7 +26,7 @@ from extract import extract_commands, extract_cvars, source_files
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
 EXTRACTOR_VERSION = 6
-RESOLVER_VERSION = 29
+RESOLVER_VERSION = 30
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -1235,9 +1235,6 @@ def resolve_one(
                 explicit = whole_change_credit
         if not explicit:
             explicit = credited_sources("\n".join(related_bullets))
-        nearby_explicit = credited_sources(context)
-        if not explicit and len(nearby_explicit) == 1:
-            explicit = nearby_explicit
         # An exact developer-lineage decision from the introduction commit is
         # stronger than a generic project token elsewhere in the same squash.
         # This is particularly important for Bucky's EternalJK continuation,

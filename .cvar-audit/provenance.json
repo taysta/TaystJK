@@ -44876,26 +44876,6 @@
           "line": 3308,
           "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "source": "openjk",
-          "subject": "Added files from jediAcademy source dump. Does not compile.",
-          "timestamp": 1365377338
-        },
-        {
-          "author": "Razish",
-          "author_timestamp": 1365072465,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "mrrazish@gmail.com",
-          "history_search": "\"duelteam\"",
-          "line": 3308,
-          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "eternaljk",
@@ -44939,6 +44919,26 @@
           "ref": "origin/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "taystjk",
+          "subject": "Added files from jediAcademy source dump. Does not compile.",
+          "timestamp": 1365377338
+        },
+        {
+          "author": "Razish",
+          "author_timestamp": 1365072465,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "mrrazish@gmail.com",
+          "history_search": "\"duelteam\"",
+          "line": 3308,
+          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "source": "japro",
           "subject": "Added files from jediAcademy source dump. Does not compile.",
           "timestamp": 1365377338
         },
@@ -45129,7 +45129,7 @@
           "timestamp": 1365377338
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -45223,12 +45223,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2575,
+        "line": 353,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Razish",
@@ -45244,16 +45244,16 @@
         "line": 3308,
         "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "14cea1563762076974bee277afadbd5bf234c494",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Added files from jediAcademy source dump. Does not compile.",
         "timestamp": 1365377338
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -49094,26 +49094,6 @@
           "line": 3296,
           "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "source": "openjk",
-          "subject": "Added files from jediAcademy source dump. Does not compile.",
-          "timestamp": 1365377338
-        },
-        {
-          "author": "Razish",
-          "author_timestamp": 1365072465,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "mrrazish@gmail.com",
-          "history_search": "\"follownext\"",
-          "line": 3296,
-          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "eternaljk",
@@ -49157,6 +49137,26 @@
           "ref": "origin/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "taystjk",
+          "subject": "Added files from jediAcademy source dump. Does not compile.",
+          "timestamp": 1365377338
+        },
+        {
+          "author": "Razish",
+          "author_timestamp": 1365072465,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "mrrazish@gmail.com",
+          "history_search": "\"follownext\"",
+          "line": 3296,
+          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "source": "japro",
           "subject": "Added files from jediAcademy source dump. Does not compile.",
           "timestamp": 1365377338
         },
@@ -49347,7 +49347,7 @@
           "timestamp": 1365377338
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -49405,12 +49405,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2577,
+        "line": 355,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Razish",
@@ -49426,16 +49426,16 @@
         "line": 3296,
         "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "14cea1563762076974bee277afadbd5bf234c494",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Added files from jediAcademy source dump. Does not compile.",
         "timestamp": 1365377338
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -49464,26 +49464,6 @@
           "line": 3300,
           "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "source": "openjk",
-          "subject": "Added files from jediAcademy source dump. Does not compile.",
-          "timestamp": 1365377338
-        },
-        {
-          "author": "Razish",
-          "author_timestamp": 1365072465,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "mrrazish@gmail.com",
-          "history_search": "\"followprev\"",
-          "line": 3300,
-          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "eternaljk",
@@ -49527,6 +49507,26 @@
           "ref": "origin/master",
           "sha": "14cea1563762076974bee277afadbd5bf234c494",
           "source": "taystjk",
+          "subject": "Added files from jediAcademy source dump. Does not compile.",
+          "timestamp": 1365377338
+        },
+        {
+          "author": "Razish",
+          "author_timestamp": 1365072465,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "mrrazish@gmail.com",
+          "history_search": "\"followprev\"",
+          "line": 3300,
+          "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "source": "japro",
           "subject": "Added files from jediAcademy source dump. Does not compile.",
           "timestamp": 1365377338
         },
@@ -49717,7 +49717,7 @@
           "timestamp": 1365377338
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -49775,12 +49775,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "forwarded client command table",
-        "line": 2578,
+        "line": 356,
         "path": "codemp/cgame/cg_consolecmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Razish",
@@ -49796,16 +49796,16 @@
         "line": 3300,
         "line_commit_sha": "14cea1563762076974bee277afadbd5bf234c494",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "14cea1563762076974bee277afadbd5bf234c494",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Added files from jediAcademy source dump. Does not compile.",
         "timestamp": 1365377338
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -54440,26 +54440,6 @@
           "line": 3341,
           "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "source": "openjk",
-          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
-          "timestamp": 1365377705
-        },
-        {
-          "author": "Willi Schinmeyer",
-          "author_timestamp": 1365377705,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "willi@schinmeyer.de",
-          "history_search": "\"gc\"",
-          "line": 3341,
-          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "eternaljk",
@@ -54503,6 +54483,26 @@
           "ref": "origin/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "taystjk",
+          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
+          "timestamp": 1365377705
+        },
+        {
+          "author": "Willi Schinmeyer",
+          "author_timestamp": 1365377705,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "willi@schinmeyer.de",
+          "history_search": "\"gc\"",
+          "line": 3341,
+          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "source": "japro",
           "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
           "timestamp": 1365377705
         },
@@ -54693,7 +54693,7 @@
           "timestamp": 1365377705
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -54787,12 +54787,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "game command table",
-        "line": 8977,
+        "line": 3406,
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Willi Schinmeyer",
@@ -54808,16 +54808,16 @@
         "line": 3341,
         "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
         "timestamp": 1365377705
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -55760,26 +55760,6 @@
           "line": 3343,
           "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "source": "openjk",
-          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
-          "timestamp": 1365377705
-        },
-        {
-          "author": "Willi Schinmeyer",
-          "author_timestamp": 1365377705,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "willi@schinmeyer.de",
-          "history_search": "\"giveother\"",
-          "line": 3343,
-          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "eternaljk",
@@ -55823,6 +55803,26 @@
           "ref": "origin/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "taystjk",
+          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
+          "timestamp": 1365377705
+        },
+        {
+          "author": "Willi Schinmeyer",
+          "author_timestamp": 1365377705,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "willi@schinmeyer.de",
+          "history_search": "\"giveother\"",
+          "line": 3343,
+          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "source": "japro",
           "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
           "timestamp": 1365377705
         },
@@ -56013,7 +56013,7 @@
           "timestamp": 1365377705
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -56072,12 +56072,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
       "origin_evidence": {
         "kind": "game command table",
-        "line": 8979,
+        "line": 3408,
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Willi Schinmeyer",
@@ -56093,16 +56093,16 @@
         "line": 3343,
         "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
         "timestamp": 1365377705
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -61268,26 +61268,6 @@
           "line": 3346,
           "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "path": "codemp/game/g_cmds.c",
-          "ref": "openjk/master",
-          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "source": "openjk",
-          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
-          "timestamp": 1365377705
-        },
-        {
-          "author": "Willi Schinmeyer",
-          "author_timestamp": 1365377705,
-          "content_author": "Razish",
-          "content_author_timestamp": 1365072465,
-          "content_email": "mrrazish@gmail.com",
-          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
-          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
-          "content_timestamp": 1365377338,
-          "email": "willi@schinmeyer.de",
-          "history_search": "\"killother\"",
-          "line": 3346,
-          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-          "path": "codemp/game/g_cmds.c",
           "ref": "eternaljk/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "eternaljk",
@@ -61331,6 +61311,26 @@
           "ref": "origin/master",
           "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
           "source": "taystjk",
+          "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
+          "timestamp": 1365377705
+        },
+        {
+          "author": "Willi Schinmeyer",
+          "author_timestamp": 1365377705,
+          "content_author": "Razish",
+          "content_author_timestamp": 1365072465,
+          "content_email": "mrrazish@gmail.com",
+          "content_sha": "14cea1563762076974bee277afadbd5bf234c494",
+          "content_subject": "Added files from jediAcademy source dump. Does not compile.",
+          "content_timestamp": 1365377338,
+          "email": "willi@schinmeyer.de",
+          "history_search": "\"killother\"",
+          "line": 3346,
+          "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "path": "codemp/game/g_cmds.c",
+          "ref": "japro/main",
+          "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
+          "source": "japro",
           "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
           "timestamp": 1365377705
         },
@@ -61521,7 +61521,7 @@
           "timestamp": 1365377705
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -61616,12 +61616,12 @@
           "timestamp": 1514794702
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
       "origin_evidence": {
         "kind": "game command table",
-        "line": 8990,
+        "line": 3411,
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Willi Schinmeyer",
@@ -61637,16 +61637,16 @@
         "line": 3346,
         "line_commit_sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
         "path": "codemp/game/g_cmds.c",
-        "ref": "japro/main",
+        "ref": "openjk/master",
         "sha": "b319c52fd4ed1e4fb5dae4e468a1a791091b63a5",
-        "source": "japro",
+        "source": "openjk",
         "subject": "Major codemp cleanup. Ported modbase. Restructured VS2010 projects.",
         "timestamp": 1365377705
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -67584,26 +67584,6 @@
           "line": 582,
           "line_commit_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
           "path": "shared/sdl/sdl_window.cpp",
-          "ref": "openjk/master",
-          "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
-          "source": "openjk",
-          "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
-          "timestamp": 1423345922
-        },
-        {
-          "author": "Alex Lo",
-          "author_timestamp": 1423345922,
-          "content_author": "Xycaleth",
-          "content_author_timestamp": 1419242154,
-          "content_email": "alex@acslo.com",
-          "content_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
-          "content_subject": "[MP] SDL2: Improvements to window management",
-          "content_timestamp": 1419242154,
-          "email": "alex@acslo.com",
-          "history_search": "\"minimize\"",
-          "line": 582,
-          "line_commit_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
-          "path": "shared/sdl/sdl_window.cpp",
           "ref": "eternaljk/master",
           "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
           "source": "eternaljk",
@@ -67687,6 +67667,26 @@
           "ref": "newjk/master",
           "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
           "source": "newjk",
+          "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
+          "timestamp": 1423345922
+        },
+        {
+          "author": "Alex Lo",
+          "author_timestamp": 1423345922,
+          "content_author": "Xycaleth",
+          "content_author_timestamp": 1419242154,
+          "content_email": "alex@acslo.com",
+          "content_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
+          "content_subject": "[MP] SDL2: Improvements to window management",
+          "content_timestamp": 1419242154,
+          "email": "alex@acslo.com",
+          "history_search": "\"minimize\"",
+          "line": 582,
+          "line_commit_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
+          "path": "shared/sdl/sdl_window.cpp",
+          "ref": "Sunny/master",
+          "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
+          "source": "vulkan",
           "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
           "timestamp": 1423345922
         },
@@ -67877,7 +67877,7 @@
           "timestamp": 1459160284
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -67916,12 +67916,12 @@
           "timestamp": 1621957086
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits vulkan.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "Cmd_AddCommand",
-        "line": 784,
+        "line": 733,
         "path": "shared/sdl/sdl_window.cpp",
-        "ref": "Sunny/master"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Alex Lo",
@@ -67937,16 +67937,16 @@
         "line": 582,
         "line_commit_sha": "522ac022367ab0b2fc5e40345c2b59398b86f71b",
         "path": "shared/sdl/sdl_window.cpp",
-        "ref": "Sunny/master",
+        "ref": "openjk/master",
         "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
-        "source": "vulkan",
+        "source": "openjk",
         "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
         "timestamp": 1423345922
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "vulkan",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -153632,12 +153632,9 @@
           "line": 45,
           "line_commit_sha": "9e2d861b2ce42287dc339be158c8796268955bc1",
           "path": "codemp/cgame/cg_xcvar.h",
-          "pr": 318,
-          "pr_created_timestamp": 1780813373,
-          "pr_url": "https://github.com/taysta/TaystJK/pull/318",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "77a255000dd43e3884ccd2651364f23284fc0161",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "Merge pull request #318 from taysta/fix-keys",
           "timestamp": 1780815362
         }
@@ -153691,14 +153688,14 @@
           "timestamp": 1780815362
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "earliest-authored-project-introduction",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
         "line": 45,
         "path": "codemp/cgame/cg_xcvar.h",
-        "ref": "japro/main"
+        "ref": "origin/master"
       },
       "origin_introduction": {
         "author": "tayst",
@@ -153714,16 +153711,19 @@
         "line": 45,
         "line_commit_sha": "9e2d861b2ce42287dc339be158c8796268955bc1",
         "path": "codemp/cgame/cg_xcvar.h",
-        "ref": "japro/main",
+        "pr": 318,
+        "pr_created_timestamp": 1780813373,
+        "pr_url": "https://github.com/taysta/TaystJK/pull/318",
+        "ref": "origin/master",
         "sha": "77a255000dd43e3884ccd2651364f23284fc0161",
-        "source": "japro",
+        "source": "taystjk",
         "subject": "Merge pull request #318 from taysta/fix-keys",
         "timestamp": 1780815362
       },
       "ported_via": [],
       "pr": 318,
       "pr_url": "https://github.com/taysta/TaystJK/pull/318",
-      "source": "japro",
+      "source": "taystjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -166310,7 +166310,7 @@
       ]
     },
     "cg_speedometer": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "david",
@@ -166459,7 +166459,7 @@
           "timestamp": 1541309636
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [
         {
           "categories": [
@@ -166627,7 +166627,7 @@
           "timestamp": 1770799918
         }
       ],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
         "line": 46,
@@ -166659,7 +166659,7 @@
       "pr_url": null,
       "source": "japro",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "eternaljk",
         "japro",
@@ -172203,9 +172203,9 @@
           "line": 161,
           "line_commit_sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
           "path": "codemp/ui/ui_xcvar.h",
-          "ref": "eternaljk/master",
+          "ref": "origin/master",
           "sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
-          "source": "eternaljk",
+          "source": "taystjk",
           "subject": "Add /strafeHelper, /stylePlayer, and /speedometer commands to UI",
           "timestamp": 1524165037
         },
@@ -172223,9 +172223,9 @@
           "line": 161,
           "line_commit_sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
           "path": "codemp/ui/ui_xcvar.h",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "Add /strafeHelper, /stylePlayer, and /speedometer commands to UI",
           "timestamp": 1524165037
         },
@@ -172336,7 +172336,7 @@
           "timestamp": 1524165037
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -172947,12 +172947,12 @@
           "timestamp": 1763177269
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 133,
+        "line": 109,
         "path": "codemp/cgame/cg_xcvar.h",
-        "ref": "japro/main"
+        "ref": "eternaljk/master"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -172968,16 +172968,16 @@
         "line": 161,
         "line_commit_sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
         "path": "codemp/ui/ui_xcvar.h",
-        "ref": "japro/main",
+        "ref": "eternaljk/master",
         "sha": "1d5acfc05276cbb6032b5fd9ccd01a8d41233763",
-        "source": "japro",
+        "source": "eternaljk",
         "subject": "Add /strafeHelper, /stylePlayer, and /speedometer commands to UI",
         "timestamp": 1524165037
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -179069,12 +179069,9 @@
           "line": 1835,
           "line_commit_sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
           "path": "codemp/client/cl_input.cpp",
-          "pr": 302,
-          "pr_created_timestamp": 1776492883,
-          "pr_url": "https://github.com/taysta/TaystJK/pull/302",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "[client] add option to toggle unfocused chat bubble behaviour via cl_chatBubbleUnfocused, as well as cl_chatBubbleSelf to disable ever bringing up chat bubble (#302)",
           "timestamp": 1776566930
         }
@@ -179128,14 +179125,14 @@
           "timestamp": 1776566930
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "earliest-authored-project-introduction",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1835,
         "path": "codemp/client/cl_input.cpp",
-        "ref": "japro/main"
+        "ref": "origin/master"
       },
       "origin_introduction": {
         "author": "tayst",
@@ -179151,16 +179148,19 @@
         "line": 1835,
         "line_commit_sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
         "path": "codemp/client/cl_input.cpp",
-        "ref": "japro/main",
+        "pr": 302,
+        "pr_created_timestamp": 1776492883,
+        "pr_url": "https://github.com/taysta/TaystJK/pull/302",
+        "ref": "origin/master",
         "sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
-        "source": "japro",
+        "source": "taystjk",
         "subject": "[client] add option to toggle unfocused chat bubble behaviour via cl_chatBubbleUnfocused, as well as cl_chatBubbleSelf to disable ever bringing up chat bubble (#302)",
         "timestamp": 1776566930
       },
       "ported_via": [],
       "pr": 302,
       "pr_url": "https://github.com/taysta/TaystJK/pull/302",
-      "source": "japro",
+      "source": "taystjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -179184,12 +179184,9 @@
           "line": 1834,
           "line_commit_sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
           "path": "codemp/client/cl_input.cpp",
-          "pr": 302,
-          "pr_created_timestamp": 1776492883,
-          "pr_url": "https://github.com/taysta/TaystJK/pull/302",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "[client] add option to toggle unfocused chat bubble behaviour via cl_chatBubbleUnfocused, as well as cl_chatBubbleSelf to disable ever bringing up chat bubble (#302)",
           "timestamp": 1776566930
         }
@@ -179243,14 +179240,14 @@
           "timestamp": 1776566930
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "earliest-authored-project-introduction",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1834,
         "path": "codemp/client/cl_input.cpp",
-        "ref": "japro/main"
+        "ref": "origin/master"
       },
       "origin_introduction": {
         "author": "tayst",
@@ -179266,16 +179263,19 @@
         "line": 1834,
         "line_commit_sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
         "path": "codemp/client/cl_input.cpp",
-        "ref": "japro/main",
+        "pr": 302,
+        "pr_created_timestamp": 1776492883,
+        "pr_url": "https://github.com/taysta/TaystJK/pull/302",
+        "ref": "origin/master",
         "sha": "86f04849f3811cf7ddbc79a13d19377e5e783665",
-        "source": "japro",
+        "source": "taystjk",
         "subject": "[client] add option to toggle unfocused chat bubble behaviour via cl_chatBubbleUnfocused, as well as cl_chatBubbleSelf to disable ever bringing up chat bubble (#302)",
         "timestamp": 1776566930
       },
       "ported_via": [],
       "pr": 302,
       "pr_url": "https://github.com/taysta/TaystJK/pull/302",
-      "source": "japro",
+      "source": "taystjk",
       "squash_bullet": null,
       "status": "documented",
       "upstream_presence": [
@@ -185484,7 +185484,7 @@
           "timestamp": 1374021767
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -185523,7 +185523,7 @@
           "timestamp": 1504160124
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 2823,
@@ -186085,7 +186085,7 @@
           "timestamp": 1381813534
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -186124,7 +186124,7 @@
           "timestamp": 1727026952
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 2817,
@@ -211047,12 +211047,9 @@
           "line": 119,
           "line_commit_sha": "8b353c2103fd0d0f294f799e32de0d7dd164bb03",
           "path": "codemp/client/FxUtil.cpp",
-          "pr": 219,
-          "pr_created_timestamp": 1744039672,
-          "pr_url": "https://github.com/taysta/TaystJK/pull/219",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "8b353c2103fd0d0f294f799e32de0d7dd164bb03",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "Small bugfix/refactor (#219)",
           "timestamp": 1744727330
         }
@@ -211106,7 +211103,7 @@
           "timestamp": 1744727330
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "earliest-authored-project-introduction",
       "modified_by": [
         {
           "categories": [
@@ -211127,12 +211124,12 @@
           "timestamp": 1744810322
         }
       ],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 119,
         "path": "codemp/client/FxUtil.cpp",
-        "ref": "japro/main"
+        "ref": "origin/master"
       },
       "origin_introduction": {
         "author": "tayst",
@@ -211148,16 +211145,19 @@
         "line": 119,
         "line_commit_sha": "8b353c2103fd0d0f294f799e32de0d7dd164bb03",
         "path": "codemp/client/FxUtil.cpp",
-        "ref": "japro/main",
+        "pr": 219,
+        "pr_created_timestamp": 1744039672,
+        "pr_url": "https://github.com/taysta/TaystJK/pull/219",
+        "ref": "origin/master",
         "sha": "8b353c2103fd0d0f294f799e32de0d7dd164bb03",
-        "source": "japro",
+        "source": "taystjk",
         "subject": "Small bugfix/refactor (#219)",
         "timestamp": 1744727330
       },
       "ported_via": [],
       "pr": 219,
       "pr_url": "https://github.com/taysta/TaystJK/pull/219",
-      "source": "japro",
+      "source": "taystjk",
       "squash_bullet": "Refactor cl_jk2fx cvar into fx_jk2 - enabled jk2 projectiles fx",
       "status": "documented",
       "upstream_presence": [
@@ -276891,9 +276891,9 @@
           "line": 291,
           "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "eternaljk/master",
+          "ref": "origin/master",
           "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-          "source": "eternaljk",
+          "source": "taystjk",
           "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
           "timestamp": 1536623995
         },
@@ -276911,9 +276911,9 @@
           "line": 291,
           "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
           "path": "codemp/game/g_xcvar.h",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
           "timestamp": 1536623995
         },
@@ -277024,7 +277024,7 @@
           "timestamp": 1536623995
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -277618,12 +277618,12 @@
           "timestamp": 1780330742
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
-        "line": 299,
+        "line": 292,
         "path": "codemp/game/g_xcvar.h",
-        "ref": "japro/main"
+        "ref": "eternaljk/master"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -277639,16 +277639,16 @@
         "line": 291,
         "line_commit_sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
         "path": "codemp/game/g_xcvar.h",
-        "ref": "japro/main",
+        "ref": "eternaljk/master",
         "sha": "dbfd735d1da2aa590f5aa453a330e6ab1ed94cdd",
-        "source": "japro",
+        "source": "eternaljk",
         "subject": "Added jcinfo2 to allow UI to only show Race button when relevant",
         "timestamp": 1536623995
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -284342,7 +284342,7 @@
       ]
     },
     "r_arb_buffer_storage": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -284537,9 +284537,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1467,
@@ -284571,7 +284571,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -284580,7 +284580,7 @@
       ]
     },
     "r_arb_half_float_pixel": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -284775,9 +284775,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1461,
@@ -284809,7 +284809,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -284818,7 +284818,7 @@
       ]
     },
     "r_arb_seamless_cube_map": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -285013,9 +285013,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-integration-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1465,
@@ -285047,7 +285047,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -285056,7 +285056,7 @@
       ]
     },
     "r_arb_vertex_type_2_10_10_10_rev": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -285251,9 +285251,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1466,
@@ -285285,7 +285285,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -303641,7 +303641,7 @@
       ]
     },
     "r_ext_draw_range_elements": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -303836,9 +303836,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1458,
@@ -303870,7 +303870,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -304291,7 +304291,7 @@
       ]
     },
     "r_ext_multi_draw_arrays": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -304486,9 +304486,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1459,
@@ -304520,7 +304520,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -304545,9 +304545,9 @@
           "line": 603,
           "line_commit_sha": "8370ced3622c21b2f19ccf163f5fc0aef0fff1ff",
           "path": "shared/sdl/sdl_window.cpp",
-          "ref": "openjk/master",
+          "ref": "eternaljk/master",
           "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
-          "source": "openjk",
+          "source": "eternaljk",
           "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
           "timestamp": 1423345922
         },
@@ -304565,9 +304565,9 @@
           "line": 603,
           "line_commit_sha": "8370ced3622c21b2f19ccf163f5fc0aef0fff1ff",
           "path": "shared/sdl/sdl_window.cpp",
-          "ref": "eternaljk/master",
+          "ref": "somaz/rend2-unified-wip",
           "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
-          "source": "eternaljk",
+          "source": "rend2",
           "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
           "timestamp": 1423345922
         },
@@ -304838,7 +304838,7 @@
           "timestamp": 1459160284
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -304952,12 +304952,12 @@
           "timestamp": 1744721264
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits rend2. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
       "origin_evidence": {
         "kind": "Cvar_Get",
-        "line": 1462,
+        "line": 1439,
         "path": "codemp/rd-rend2/tr_init.cpp",
-        "ref": "somaz/rend2-unified-wip"
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Alex Lo",
@@ -304973,16 +304973,16 @@
         "line": 603,
         "line_commit_sha": "8370ced3622c21b2f19ccf163f5fc0aef0fff1ff",
         "path": "shared/sdl/sdl_window.cpp",
-        "ref": "somaz/rend2-unified-wip",
+        "ref": "openjk/master",
         "sha": "a7c43677a2bbba956ac3c5f14f2bf869ea660230",
-        "source": "rend2",
+        "source": "openjk",
         "subject": "Merge pull request #613 from JACoders/sdl2-windows-port",
         "timestamp": 1423345922
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "rend2",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -306631,7 +306631,7 @@
       ]
     },
     "r_ext_texture_float": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
         {
           "author": "razor",
@@ -306826,9 +306826,9 @@
           "timestamp": 1786290741
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "introduction-commit-explicit-credit",
       "modified_by": [],
-      "notes": "The identifier's single-prefix squash feature group explicitly credits rend2.",
+      "notes": "",
       "origin_evidence": {
         "kind": "Cvar_Get",
         "line": 1460,
@@ -306860,7 +306860,7 @@
       "pr_url": "https://github.com/taysta/TaystJK/pull/12",
       "source": "rend2",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "openjk",
         "japro",
@@ -319887,26 +319887,6 @@
           "line": 1228,
           "line_commit_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
           "path": "codemp/rd-vanilla/tr_init.cpp",
-          "ref": "openjk/master",
-          "sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
-          "source": "openjk",
-          "subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
-          "timestamp": 1395158433
-        },
-        {
-          "author": "Ensiform",
-          "author_timestamp": 1395158433,
-          "content_author": "Ensiform",
-          "content_author_timestamp": 1395158433,
-          "content_email": "ensiform@gmail.com",
-          "content_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
-          "content_subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
-          "content_timestamp": 1395158433,
-          "email": "ensiform@gmail.com",
-          "history_search": "\"r_marksOnTriangleMeshes\"",
-          "line": 1228,
-          "line_commit_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
-          "path": "codemp/rd-vanilla/tr_init.cpp",
           "ref": "eternaljk/master",
           "sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
           "source": "eternaljk",
@@ -319990,6 +319970,26 @@
           "ref": "newjk/master",
           "sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
           "source": "newjk",
+          "subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
+          "timestamp": 1395158433
+        },
+        {
+          "author": "Ensiform",
+          "author_timestamp": 1395158433,
+          "content_author": "Ensiform",
+          "content_author_timestamp": 1395158433,
+          "content_email": "ensiform@gmail.com",
+          "content_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
+          "content_subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
+          "content_timestamp": 1395158433,
+          "email": "ensiform@gmail.com",
+          "history_search": "\"r_marksOnTriangleMeshes\"",
+          "line": 1228,
+          "line_commit_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
+          "path": "codemp/rd-vanilla/tr_init.cpp",
+          "ref": "Sunny/master",
+          "sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
+          "source": "vulkan",
           "subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
           "timestamp": 1395158433
         }
@@ -320140,7 +320140,7 @@
           "timestamp": 1395158433
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [
         {
           "categories": [
@@ -320233,12 +320233,12 @@
           "timestamp": 1696330014
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
+      "notes": "The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
       "origin_evidence": {
         "kind": "Cvar_Get",
-        "line": 1715,
-        "path": "codemp/rd-vanilla/tr_init.cpp",
-        "ref": "Sunny/master"
+        "line": 1613,
+        "path": "codemp/rd-rend2/tr_init.cpp",
+        "ref": "openjk/master"
       },
       "origin_introduction": {
         "author": "Ensiform",
@@ -320254,16 +320254,16 @@
         "line": 1228,
         "line_commit_sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
         "path": "codemp/rd-vanilla/tr_init.cpp",
-        "ref": "Sunny/master",
+        "ref": "openjk/master",
         "sha": "b858635e72986ef57c393eaf4e5c1cf4a07f9ca2",
-        "source": "vulkan",
+        "source": "openjk",
         "subject": "[MP] Merge ioquake/ioq3@b3f36fc8308de0be9cdf865b20825e91a07149b0",
         "timestamp": 1395158433
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "vulkan",
+      "source": "openjk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -378860,7 +378860,68 @@
     },
     "ui_r_fullbright": {
       "confidence": "medium",
-      "downstream_introductions": [],
+      "downstream_introductions": [
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_fullBright\"",
+          "line": 4891,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "origin/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "taystjk",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_fullBright\"",
+          "line": 4891,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "japro/main",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "japro",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_fullBright\"",
+          "line": 4891,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "Sunny/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "vulkan",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        }
+      ],
       "first_commit": "d93386f34b71fbf1eff27f198956e519918f45a0",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -378947,15 +379008,39 @@
           "timestamp": 1434524888
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits rend2.",
-      "origin_evidence": null,
-      "origin_introduction": null,
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "origin_evidence": {
+        "kind": "Cvar_Register",
+        "line": 6277,
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master"
+      },
+      "origin_introduction": {
+        "author": "dan2077",
+        "author_timestamp": 1434524888,
+        "content_author": "dan2077",
+        "content_author_timestamp": 1434524888,
+        "content_email": "dan2077x@gmail.com",
+        "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "content_subject": "Major ingame setup menu overhaul.",
+        "content_timestamp": 1434524888,
+        "email": "dan2077x@gmail.com",
+        "history_search": "\"ui_r_fullBright\"",
+        "line": 4891,
+        "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master",
+        "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "source": "eternaljk",
+        "subject": "Major ingame setup menu overhaul.",
+        "timestamp": 1434524888
+      },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "rend2",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -379403,7 +379488,68 @@
     },
     "ui_r_intensity": {
       "confidence": "medium",
-      "downstream_introductions": [],
+      "downstream_introductions": [
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_intensity\"",
+          "line": 4889,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "origin/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "taystjk",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_intensity\"",
+          "line": 4889,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "japro/main",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "japro",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_intensity\"",
+          "line": 4889,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "Sunny/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "vulkan",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        }
+      ],
       "first_commit": "d93386f34b71fbf1eff27f198956e519918f45a0",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -379490,15 +379636,39 @@
           "timestamp": 1434524888
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits rend2.",
-      "origin_evidence": null,
-      "origin_introduction": null,
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "origin_evidence": {
+        "kind": "Cvar_Register",
+        "line": 6275,
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master"
+      },
+      "origin_introduction": {
+        "author": "dan2077",
+        "author_timestamp": 1434524888,
+        "content_author": "dan2077",
+        "content_author_timestamp": 1434524888,
+        "content_email": "dan2077x@gmail.com",
+        "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "content_subject": "Major ingame setup menu overhaul.",
+        "content_timestamp": 1434524888,
+        "email": "dan2077x@gmail.com",
+        "history_search": "\"ui_r_intensity\"",
+        "line": 4889,
+        "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master",
+        "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "source": "eternaljk",
+        "subject": "Major ingame setup menu overhaul.",
+        "timestamp": 1434524888
+      },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "rend2",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -379509,7 +379679,68 @@
     },
     "ui_r_lightmap": {
       "confidence": "medium",
-      "downstream_introductions": [],
+      "downstream_introductions": [
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_lightMap\"",
+          "line": 4892,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "origin/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "taystjk",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_lightMap\"",
+          "line": 4892,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "japro/main",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "japro",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_lightMap\"",
+          "line": 4892,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "Sunny/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "vulkan",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        }
+      ],
       "first_commit": "d93386f34b71fbf1eff27f198956e519918f45a0",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -379596,15 +379827,39 @@
           "timestamp": 1434524888
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits rend2.",
-      "origin_evidence": null,
-      "origin_introduction": null,
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "origin_evidence": {
+        "kind": "Cvar_Register",
+        "line": 6278,
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master"
+      },
+      "origin_introduction": {
+        "author": "dan2077",
+        "author_timestamp": 1434524888,
+        "content_author": "dan2077",
+        "content_author_timestamp": 1434524888,
+        "content_email": "dan2077x@gmail.com",
+        "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "content_subject": "Major ingame setup menu overhaul.",
+        "content_timestamp": 1434524888,
+        "email": "dan2077x@gmail.com",
+        "history_search": "\"ui_r_lightMap\"",
+        "line": 4892,
+        "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master",
+        "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "source": "eternaljk",
+        "subject": "Major ingame setup menu overhaul.",
+        "timestamp": 1434524888
+      },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "rend2",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -380594,7 +380849,68 @@
     },
     "ui_r_vertexlight": {
       "confidence": "medium",
-      "downstream_introductions": [],
+      "downstream_introductions": [
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_vertexLight\"",
+          "line": 4890,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "origin/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "taystjk",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_vertexLight\"",
+          "line": 4890,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "japro/main",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "japro",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        },
+        {
+          "author": "dan2077",
+          "author_timestamp": 1434524888,
+          "content_author": "dan2077",
+          "content_author_timestamp": 1434524888,
+          "content_email": "dan2077x@gmail.com",
+          "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "content_subject": "Major ingame setup menu overhaul.",
+          "content_timestamp": 1434524888,
+          "email": "dan2077x@gmail.com",
+          "history_search": "\"ui_r_vertexLight\"",
+          "line": 4890,
+          "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "path": "codemp/ui/ui_main.c",
+          "ref": "Sunny/master",
+          "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+          "source": "vulkan",
+          "subject": "Major ingame setup menu overhaul.",
+          "timestamp": 1434524888
+        }
+      ],
       "first_commit": "d93386f34b71fbf1eff27f198956e519918f45a0",
       "first_ref": "origin/master",
       "integration_pr": null,
@@ -380681,15 +380997,39 @@
           "timestamp": 1434524888
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits rend2.",
-      "origin_evidence": null,
-      "origin_introduction": null,
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
+      "origin_evidence": {
+        "kind": "Cvar_Register",
+        "line": 6276,
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master"
+      },
+      "origin_introduction": {
+        "author": "dan2077",
+        "author_timestamp": 1434524888,
+        "content_author": "dan2077",
+        "content_author_timestamp": 1434524888,
+        "content_email": "dan2077x@gmail.com",
+        "content_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "content_subject": "Major ingame setup menu overhaul.",
+        "content_timestamp": 1434524888,
+        "email": "dan2077x@gmail.com",
+        "history_search": "\"ui_r_vertexLight\"",
+        "line": 4890,
+        "line_commit_sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "path": "codemp/ui/ui_main.c",
+        "ref": "eternaljk/master",
+        "sha": "d93386f34b71fbf1eff27f198956e519918f45a0",
+        "source": "eternaljk",
+        "subject": "Major ingame setup menu overhaul.",
+        "timestamp": 1434524888
+      },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "rend2",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -391745,9 +392085,9 @@
           "line": 204,
           "line_commit_sha": "e4ececfdb4d1033473d6f502615964281530d401",
           "path": "codemp/cgame/cg_servercmds.c",
-          "ref": "eternaljk/master",
+          "ref": "origin/master",
           "sha": "e4ececfdb4d1033473d6f502615964281530d401",
-          "source": "eternaljk",
+          "source": "taystjk",
           "subject": "Show server engine version with build date in esc->About",
           "timestamp": 1538674821
         },
@@ -391765,9 +392105,9 @@
           "line": 204,
           "line_commit_sha": "e4ececfdb4d1033473d6f502615964281530d401",
           "path": "codemp/cgame/cg_servercmds.c",
-          "ref": "origin/master",
+          "ref": "japro/main",
           "sha": "e4ececfdb4d1033473d6f502615964281530d401",
-          "source": "taystjk",
+          "source": "japro",
           "subject": "Show server engine version with build date in esc->About",
           "timestamp": 1538674821
         },
@@ -391878,14 +392218,14 @@
           "timestamp": 1538674821
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "shared-earliest-commit-lineage-order",
       "modified_by": [],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits japro.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk.",
       "origin_evidence": {
         "kind": "implicit Cvar_Set",
-        "line": 236,
+        "line": 235,
         "path": "codemp/cgame/cg_servercmds.c",
-        "ref": "japro/main"
+        "ref": "eternaljk/master"
       },
       "origin_introduction": {
         "author": "Bucky21659",
@@ -391901,16 +392241,16 @@
         "line": 204,
         "line_commit_sha": "e4ececfdb4d1033473d6f502615964281530d401",
         "path": "codemp/cgame/cg_servercmds.c",
-        "ref": "japro/main",
+        "ref": "eternaljk/master",
         "sha": "e4ececfdb4d1033473d6f502615964281530d401",
-        "source": "japro",
+        "source": "eternaljk",
         "subject": "Show server engine version with build date in esc->About",
         "timestamp": 1538674821
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "japro",
+      "source": "eternaljk",
       "squash_bullet": null,
       "status": "needs-review",
       "upstream_presence": [
@@ -393825,6 +394165,6 @@
     "basejka_ref": "14cea1563762076974bee277afadbd5bf234c494",
     "current_ref": "origin/master",
     "extractor_version": 6,
-    "resolver_version": 29
+    "resolver_version": 30
   }
 }

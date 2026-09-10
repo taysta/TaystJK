@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from provenance import (
@@ -15,6 +16,7 @@ from provenance import (
     is_registration_line,
     pr_for_commit,
     reconcile_explicit_origin_credit,
+    resolve_one,
     select_dated_origin,
 )
 
@@ -225,6 +227,43 @@ class DatedOriginTests(unittest.TestCase):
             "_source": "taystjk", "html_url": "unrelated",
         }]
         self.assertIsNone(pr_for_commit(commit, prs, "taystjk"))
+
+    @patch("provenance.source_context")
+    @patch("provenance.commit_body", return_value="SDL2 Windows Port")
+    def test_nearby_project_comment_does_not_override_shared_origin(
+        self, _body: object, context: object,
+    ) -> None:
+        context.return_value = (
+            'Com_Printf("GPU Driver: %s\\n", driver); // Vulkan, debug\n'
+            'Cmd_AddCommand("minimize", GLimp_Minimize);'
+        )
+        registration = {
+            "name": "minimize", "kind": "Cmd_AddCommand",
+            "path": "shared/sdl/sdl_window.cpp", "line": 791,
+            "module": "engine-shared", "renderer": None,
+            "handler": "GLimp_Minimize", "gating": [], "condition": None,
+        }
+        shared_event = {
+            "sha": "a" * 40, "timestamp": 200,
+            "author_timestamp": 200, "content_author_timestamp": 100,
+            "content_sha": "b" * 40, "content_subject": "SDL2 window management",
+        }
+        sources = ("openjk", "eternaljk", "rend2", "taystjk", "vulkan")
+        upstream = {
+            source: {"minimize": [registration]}
+            for source in sources if source != "taystjk"
+        }
+        introductions = {
+            source: {"minimize": dict(shared_event)} for source in sources
+        }
+
+        result = resolve_one(
+            "minimize", [registration], set(), upstream, [], Path("."), False,
+            introductions, {}, {}, {}, False,
+        )
+
+        self.assertEqual(result["source"], "openjk")
+        self.assertEqual(result["method"], "shared-earliest-commit-lineage-order")
 
 
 class ChangeAttributionTests(unittest.TestCase):
