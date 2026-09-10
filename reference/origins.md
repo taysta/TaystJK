@@ -15,13 +15,13 @@ wide: true
 </div>
 
 <div class="directory-grid">
-<a class="directory-card" href="/TaystJK/reference/origins/taystjk/"><span class="label ref-origin ref-origin-taystjk">TaystJK</span><strong>TaystJK</strong><span>75 entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/origins/eternaljk/"><span class="label ref-origin ref-origin-eternaljk">EternalJK</span><strong>EternalJK</strong><span>140 entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/origins/japro/"><span class="label ref-origin ref-origin-japro">jaPRO</span><strong>jaPRO</strong><span>471 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/taystjk/"><span class="label ref-origin ref-origin-taystjk">TaystJK</span><strong>TaystJK</strong><span>79 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/eternaljk/"><span class="label ref-origin ref-origin-eternaljk">EternalJK</span><strong>EternalJK</strong><span>147 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/japro/"><span class="label ref-origin ref-origin-japro">jaPRO</span><strong>jaPRO</strong><span>458 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/newjk/"><span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span><strong>NewJK / NewMod</strong><span>10 entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/origins/vulkan/"><span class="label ref-origin ref-origin-vulkan">Vulkan</span><strong>Vulkan</strong><span>27 entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/origins/rend2/"><span class="label ref-origin ref-origin-rend2">rend2</span><strong>rend2</strong><span>95 entries</span></a>
-<a class="directory-card" href="/TaystJK/reference/origins/openjk/"><span class="label ref-origin ref-origin-openjk">OpenJK</span><strong>OpenJK</strong><span>158 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/vulkan/"><span class="label ref-origin ref-origin-vulkan">Vulkan</span><strong>Vulkan</strong><span>25 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/rend2/"><span class="label ref-origin ref-origin-rend2">rend2</span><strong>rend2</strong><span>90 entries</span></a>
+<a class="directory-card" href="/TaystJK/reference/origins/openjk/"><span class="label ref-origin ref-origin-openjk">OpenJK</span><strong>OpenJK</strong><span>167 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/basejka/"><span class="label ref-origin ref-origin-basejka">Base Jedi Academy</span><strong>Base Jedi Academy</strong><span>1,024 entries</span></a>
 <a class="directory-card" href="/TaystJK/reference/origins/jk2mv/"><span class="label ref-origin ref-origin-jk2mv">JK2MV</span><strong>JK2MV</strong><span>14 entries</span></a>
 </div>

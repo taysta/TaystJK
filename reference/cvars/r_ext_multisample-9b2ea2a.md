@@ -7,7 +7,7 @@ search_exclude: false
 
 # `r_ext_multisample`
 
-<span class="label ref-origin ref-origin-rend2">rend2</span>
+<span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -56,13 +56,13 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
+Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/SomaZ/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-rend2">rend2</span> (content authored `2015-01-10`, integrated `2015-02-07`)
-- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1462](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1462)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2015-01-10`, integrated `2015-02-07`)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1439](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1439)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits rend2. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
@@ -70,9 +70,9 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Ultimate origin |
 | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/eternalcodes/EternalJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
-| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/SomaZ/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Ultimate origin |
+| <span class="label ref-origin ref-origin-rend2">rend2</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/SomaZ/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/taysta/TaystJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/videoP/jaPRO/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2015-01-10` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/jkanewmod/NewJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |

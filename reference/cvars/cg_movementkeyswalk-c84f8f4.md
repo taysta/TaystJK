@@ -7,7 +7,7 @@ search_exclude: false
 
 # `cg_movementKeysWalk`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 Display walk movement key input
 
@@ -40,14 +40,13 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Ultimate-origin introduction: [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2026-04-18`, integrated `2026-06-07`)
+- Ultimate-origin introduction: [`77a255000dd4`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-04-18`, PR opened `2026-06-07`, integrated `2026-06-07`)
 - Origin pull request: [#318](https://github.com/taysta/TaystJK/pull/318)
-- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:45](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L45)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Upstream registration evidence: [codemp/cgame/cg_xcvar.h:45](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L45)
+- Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
-- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
@@ -55,8 +54,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-04-18` | [2026-06-07](https://github.com/taysta/TaystJK/pull/318) | `2026-06-07` | [`77a255000dd4`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2026-04-18` | — | `2026-06-07` | [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-04-18` | [2026-06-07](https://github.com/taysta/TaystJK/pull/318) | `2026-06-07` | [`77a255000dd4`](https://github.com/taysta/TaystJK/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2026-04-18` | — | `2026-06-07` | [`77a255000dd4`](https://github.com/videoP/jaPRO/commit/77a255000dd43e3884ccd2651364f23284fc0161) | Shared integration commit |
 
 ## Evidence
 

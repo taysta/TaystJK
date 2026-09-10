@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-rend2">rend2</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Disable/enable buffer storage GL extension
 
 ## At a glance
@@ -23,7 +21,7 @@ Disable/enable buffer storage GL extension
 | Renderer | `rd-rend2` |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
@@ -51,9 +49,8 @@ Origin: <span class="label ref-origin ref-origin-rend2">rend2</span>
 - TaystJK integration evidence: [`86c0756385ef`](https://github.com/taysta/TaystJK/commit/86c0756385efd1e0c24b5c435739ccba3bee3919)
 - Origin pull request: [#12](https://github.com/taysta/TaystJK/pull/12)
 - Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1467](https://github.com/SomaZ/OpenJK/blame/788c19e97f02c0b68db29d63060305b6ad1580e5/codemp/rd-rend2/tr_init.cpp#L1467)
-- Attribution method: `squash-feature-group-explicit-credit`
-- Attribution confidence: `medium`
-- Notes: The identifier's single-prefix squash feature group explicitly credits rend2.
+- Attribution method: `introduction-commit-explicit-credit`
+- Attribution confidence: `high`
 
 ### Dated project introductions
 

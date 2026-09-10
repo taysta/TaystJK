@@ -7,7 +7,7 @@ search_exclude: false
 
 # `cl_chatBubbleSelf`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -44,14 +44,13 @@ Controls `cl_chatBubbleSelf` in the engine-client module. Consult the cited beha
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Ultimate-origin introduction: [`86f04849f381`](https://github.com/videoP/jaPRO/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2026-04-19`, integrated `2026-04-19`)
+- Ultimate-origin introduction: [`86f04849f381`](https://github.com/taysta/TaystJK/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2026-04-19`, PR opened `2026-04-18`, integrated `2026-04-19`)
 - Origin pull request: [#302](https://github.com/taysta/TaystJK/pull/302)
-- Upstream registration evidence: [codemp/client/cl_input.cpp:1835](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/cl_input.cpp#L1835)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Upstream registration evidence: [codemp/client/cl_input.cpp:1835](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L1835)
+- Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
-- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
@@ -59,8 +58,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-04-19` | [2026-04-18](https://github.com/taysta/TaystJK/pull/302) | `2026-04-19` | [`86f04849f381`](https://github.com/taysta/TaystJK/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2026-04-19` | — | `2026-04-19` | [`86f04849f381`](https://github.com/videoP/jaPRO/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2026-04-19` | [2026-04-18](https://github.com/taysta/TaystJK/pull/302) | `2026-04-19` | [`86f04849f381`](https://github.com/taysta/TaystJK/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2026-04-19` | — | `2026-04-19` | [`86f04849f381`](https://github.com/videoP/jaPRO/commit/86f04849f3811cf7ddbc79a13d19377e5e783665) | Shared integration commit |
 
 ## Evidence
 

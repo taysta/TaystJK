@@ -679,56 +679,69 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
         "TaystJK documentation",
         1,
         wide=True,
-        description="Install, host, build, debug, and configure TaystJK.",
+        description=(
+            "Guides and reference material for the TaystJK client, dedicated server, "
+            "source code, and console controls."
+        ),
     ) + f"""
-<section class="hero">
-  <div class="hero-copy">
-    <p class="eyebrow">TaystJK documentation</p>
-    <h1>Play it. Host it.<br><span>Build it.</span></h1>
-    <p class="hero-lede">Practical documentation for installing TaystJK, running a dedicated server, working on the engine, and understanding every console control.</p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="{{{{ '/install/' | relative_url }}}}">Install TaystJK</a>
-      <a class="button button-secondary" href="https://github.com/taysta/TaystJK/releases/tag/latest">Download latest build</a>
-    </div>
-  </div>
-  <div class="hero-terminal" aria-label="Documentation quick links">
-    <div class="terminal-bar"><span></span><span></span><span></span><b>quick paths</b></div>
-    <div class="terminal-body">
-      <a class="terminal-entry" href="{{{{ '/server-hosting/' | relative_url }}}}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">01</span> <strong>Run a server</strong><span class="terminal-entry-action">Open →</span></p>
-        <p class="terminal-muted">Docker Compose, server.cfg, downloads, and reflists</p>
-      </a>
-      <hr>
-      <a class="terminal-entry" href="{{{{ '/development/' | relative_url }}}}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">02</span> <strong>Work on TaystJK</strong><span class="terminal-entry-action">Open →</span></p>
-        <p class="terminal-muted">Compilation, debugging, and bundled libraries</p>
-      </a>
-      <hr>
-      <a class="terminal-entry" href="{{{{ '/reference/' | relative_url }}}}">
-        <p class="terminal-entry-heading"><span class="terminal-prompt">03</span> <strong>Find a console control</strong><span class="terminal-entry-action">Open →</span></p>
-        <p class="terminal-muted">{total:,} source-derived cvars and commands</p>
-      </a>
-    </div>
+<div class="docs-overview">
+  <section class="docs-intro" aria-labelledby="page-title">
+    <p class="eyebrow">Documentation</p>
+    <h1 id="page-title">TaystJK</h1>
+    <p class="page-lede">Installation, server administration, development, and console reference for the TaystJK client and dedicated server.</p>
+    <nav class="docs-intro-links" aria-label="Project links">
+      <a href="{{{{ '/install/' | relative_url }}}}">Installation guide</a>
+      <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
+      <a href="https://github.com/taysta/TaystJK">Source repository</a>
+    </nav>
+  </section>
+
+  <nav class="docs-quick-links" aria-labelledby="quick-links-heading">
+    <h2 id="quick-links-heading">Quick links</h2>
+    <a href="{{{{ '/server-hosting/' | relative_url }}}}">
+      <strong>Run a server</strong>
+      <span>Docker Compose, server.cfg, downloads, and reflists</span>
+    </a>
+    <a href="{{{{ '/development/' | relative_url }}}}">
+      <strong>Work on TaystJK</strong>
+      <span>Compilation, debugging, and bundled libraries</span>
+    </a>
+    <a href="{{{{ '/reference/' | relative_url }}}}">
+      <strong>Find a console control</strong>
+      <span>{total:,} source-derived cvars and commands</span>
+    </a>
+  </nav>
+</div>
+
+<section class="docs-index" aria-labelledby="docs-heading">
+  <h2 id="docs-heading">Documentation</h2>
+  <div class="docs-index-list">
+    <section class="docs-index-entry">
+      <h3><a href="{{{{ '/install/' | relative_url }}}}">Installation</a></h3>
+      <p>Set up the client on Windows, Linux, or macOS, including separate layouts for multiple modded clients.</p>
+    </section>
+    <section class="docs-index-entry">
+      <h3><a href="{{{{ '/server-hosting/' | relative_url }}}}">Server administration</a></h3>
+      <p>Deploy the dedicated server, configure map rotation and HTTP downloads, and manage PK3 references.</p>
+    </section>
+    <section class="docs-index-entry">
+      <h3><a href="{{{{ '/development/' | relative_url }}}}">Development</a></h3>
+      <p>Configure CMake, build the available targets, debug engine and module code, and inspect bundled libraries.</p>
+    </section>
+    <section class="docs-index-entry">
+      <h3><a href="{{{{ '/reference/' | relative_url }}}}">Console reference</a></h3>
+      <p>Search {len(cvars):,} cvars and {len(commands):,} commands by topic, module, origin, and documentation coverage.</p>
+    </section>
   </div>
 </section>
 
-<section class="browse-section home-browse" aria-labelledby="docs-heading">
-  <div class="section-heading">
-    <div><p class="section-kicker">Documentation</p><h2 id="docs-heading">Choose where to start</h2></div>
-    <p>From first launch to engine development, each guide is written for TaystJK's current layout and tooling.</p>
-  </div>
-  <div class="browse-grid">
-    <a class="browse-card" href="{{{{ '/install/' | relative_url }}}}"><span class="browse-icon">01</span><h3>Install</h3><p>Set up TaystJK on Windows, Linux, or macOS, including clean layouts for multiple modded clients.</p><b>Installation guide →</b></a>
-    <a class="browse-card" href="{{{{ '/server-hosting/' | relative_url }}}}"><span class="browse-icon">02</span><h3>Host a server</h3><p>Deploy the dedicated server, write a rotation, enable HTTP downloads, and control PK3 references.</p><b>Server guide →</b></a>
-    <a class="browse-card" href="{{{{ '/development/' | relative_url }}}}"><span class="browse-icon">03</span><h3>Build &amp; debug</h3><p>Configure CMake, compile every platform target, attach a debugger, and use sanitizers.</p><b>Developer guides →</b></a>
-    <a class="browse-card" href="{{{{ '/reference/' | relative_url }}}}"><span class="browse-icon">04</span><h3>Console reference</h3><p>Search {len(cvars):,} cvars and {len(commands):,} commands by topic, module, origin, and documentation coverage.</p><b>Search the reference →</b></a>
-  </div>
-</section>
-
-<section class="method-banner">
-  <div><p class="section-kicker">Under the hood</p><h2>Know exactly what ships.</h2></div>
-  <p>See bundled library versions, build options, and source-linked evidence. Console source links open GitHub blame at the exact line.</p>
-  <a class="text-link" href="{{{{ '/development/libraries/' | relative_url }}}}">Library inventory →</a>
+<section class="docs-related" aria-labelledby="project-heading">
+  <h2 id="project-heading">Project information</h2>
+  <ul>
+    <li><a href="{{{{ '/development/libraries/' | relative_url }}}}">Bundled libraries</a> lists dependency versions and system-library selection rules.</li>
+    <li><a href="{{{{ '/reference/sources/' | relative_url }}}}">Source provenance</a> explains how reference entries and their code lineage are determined.</li>
+    <li><a href="{{{{ '/ai-disclosure/' | relative_url }}}}">AI disclosure</a> describes how this documentation was produced and reviewed.</li>
+  </ul>
 </section>
 """
 

@@ -7,7 +7,7 @@ search_exclude: false
 
 # `followprev`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -36,13 +36,13 @@ Gating: `CMD_NOINTERMISSION`, `sent-to-server`.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`14cea1563762`](https://github.com/videoP/jaPRO/commit/14cea1563762076974bee277afadbd5bf234c494) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2013-04-04`, integrated `2013-04-07`)
-- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:2578](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_consolecmds.c#L2578)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Ultimate-origin introduction: [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-04-04`, integrated `2013-04-07`)
+- Upstream registration evidence: [codemp/cgame/cg_consolecmds.c:356](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/cgame/cg_consolecmds.c#L356)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits japro.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 
@@ -50,11 +50,11 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/JACoders/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Ultimate origin |
 | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/eternalcodes/EternalJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/SomaZ/OpenJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/taysta/TaystJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/videoP/jaPRO/commit/14cea1563762076974bee277afadbd5bf234c494) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/videoP/jaPRO/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/jkanewmod/NewJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
 | <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2013-04-04` | — | `2013-04-07` | [`14cea1563762`](https://github.com/JKSunny/EternalJK/commit/14cea1563762076974bee277afadbd5bf234c494) | Shared integration commit |
 

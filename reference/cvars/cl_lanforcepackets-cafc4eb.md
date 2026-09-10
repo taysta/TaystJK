@@ -46,9 +46,9 @@ Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 - Ultimate-origin introduction: [`0bf217273755`](https://github.com/JACoders/OpenJK/commit/0bf217273755c4fb10217c8479bb9d3a294526f3) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2013-10-15`, integrated `2013-10-15`)
 - Matching squash bullet: `cl_lanForcePackets. When set to 0 (default is 1) the cl_maxpackets setting`
 - Upstream registration evidence: [codemp/client/cl_main.cpp:2817](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/client/cl_main.cpp#L2817)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits openjk.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 

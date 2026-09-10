@@ -7,7 +7,7 @@ search_exclude: false
 
 # `r_marksOnTriangleMeshes`
 
-<span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+<span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -53,13 +53,13 @@ Controls `r_marksOnTriangleMeshes` in the renderer module. Consult the cited beh
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`b858635e7298`](https://github.com/JKSunny/EternalJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2014-03-18`, integrated `2014-03-18`)
-- Upstream registration evidence: [codemp/rd-vanilla/tr_init.cpp:1715](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/codemp/rd-vanilla/tr_init.cpp#L1715)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Ultimate-origin introduction: [`b858635e7298`](https://github.com/JACoders/OpenJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-03-18`, integrated `2014-03-18`)
+- Upstream registration evidence: [codemp/rd-rend2/tr_init.cpp:1613](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/codemp/rd-rend2/tr_init.cpp#L1613)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. Dated commit evidence identifies later registration changes relative to the origin snapshot.
 
 ### Dated project introductions
 
@@ -67,13 +67,13 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/JACoders/OpenJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/JACoders/OpenJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Ultimate origin |
 | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/eternalcodes/EternalJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/SomaZ/OpenJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/taysta/TaystJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/videoP/jaPRO/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/jkanewmod/NewJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/JKSunny/EternalJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2014-03-18` | — | `2014-03-18` | [`b858635e7298`](https://github.com/JKSunny/EternalJK/commit/b858635e72986ef57c393eaf4e5c1cf4a07f9ca2) | Shared integration commit |
 
 ### Later changes
 

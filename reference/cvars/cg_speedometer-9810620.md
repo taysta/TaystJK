@@ -9,8 +9,6 @@ search_exclude: false
 
 <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
-<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
-
 Configure with the /speedometer command
 
 ## At a glance
@@ -24,7 +22,7 @@ Configure with the /speedometer command
 | Renderer | All / not renderer-specific |
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
-| Confidence | `medium` |
+| Confidence | `high` |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:107](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L107) |
 | In-game menu | Yes — [ingame_setup.menu:3998](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L3998) |
 | Default | `0` |
@@ -58,9 +56,8 @@ Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
 
 - Ultimate-origin introduction: [`ead7c2c37109`](https://github.com/videoP/jaPRO/commit/ead7c2c37109a313e0f3994b832e627636e0fa06) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2018-09-03`, integrated `2018-11-04`)
 - Upstream registration evidence: [codemp/cgame/cg_xcvar.h:46](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/cgame/cg_xcvar.h#L46)
-- Attribution method: `squash-feature-group-explicit-credit`
-- Attribution confidence: `medium`
-- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
+- Attribution method: `introduction-commit-explicit-credit`
+- Attribution confidence: `high`
 
 ### Dated project introductions
 

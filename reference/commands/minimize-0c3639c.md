@@ -7,7 +7,7 @@ search_exclude: false
 
 # `minimize`
 
-<span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+<span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
 <p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>
 
@@ -35,13 +35,13 @@ No verified argument schema is available beyond the syntax shown above.
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-vulkan">Vulkan</span>
+Origin: <span class="label ref-origin ref-origin-openjk">OpenJK</span>
 
-- Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JKSunny/EternalJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-vulkan">Vulkan</span> (content authored `2014-12-22`, integrated `2015-02-07`)
-- Upstream registration evidence: [shared/sdl/sdl_window.cpp:784](https://github.com/JKSunny/EternalJK/blame/b50059618803346a918f57220f856f1d0651dc39/shared/sdl/sdl_window.cpp#L784)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Ultimate-origin introduction: [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) in <span class="label ref-origin ref-origin-openjk">OpenJK</span> (content authored `2014-12-22`, integrated `2015-02-07`)
+- Upstream registration evidence: [shared/sdl/sdl_window.cpp:733](https://github.com/JACoders/OpenJK/blame/1a6a643427aa347553e9073dac5570b33337c4d9/shared/sdl/sdl_window.cpp#L733)
+- Attribution method: `shared-earliest-commit-lineage-order`
 - Attribution confidence: `medium`
-- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk. The identifier's single-prefix squash feature group explicitly credits vulkan.
+- Notes: The earliest authored/submitted introduction is shared by openjk, eternaljk, rend2, taystjk, japro, newjk, vulkan; fork-lineage order selects openjk.
 
 ### Dated project introductions
 
@@ -49,13 +49,13 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
+| <span class="label ref-origin ref-origin-openjk">OpenJK</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JACoders/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Ultimate origin |
 | <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/eternalcodes/EternalJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-rend2">rend2</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/SomaZ/OpenJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/taysta/TaystJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/videoP/jaPRO/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/jkanewmod/NewJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
-| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JKSunny/EternalJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Ultimate origin |
+| <span class="label ref-origin ref-origin-vulkan">Vulkan</span> | `2014-12-22` | — | `2015-02-07` | [`a7c43677a2bb`](https://github.com/JKSunny/EternalJK/commit/a7c43677a2bbba956ac3c5f14f2bf869ea660230) | Shared integration commit |
 | <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> | `2016-03-25` | — | `2016-03-28` | [`59313f7414a1`](https://github.com/mvdevs/jk2mv/commit/59313f7414a1b36711f04c54e4fdebcca51e1400) | Other project appearance |
 
 ### Later changes

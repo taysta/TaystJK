@@ -7,7 +7,7 @@ search_exclude: false
 
 # `fx_jk2`
 
-<span class="label ref-origin ref-origin-japro">jaPRO</span>
+<span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
 Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 
@@ -42,15 +42,14 @@ Displays jk2 style projectile fx - 0: Disabled - 1: Enabled
 
 ## Provenance
 
-Origin: <span class="label ref-origin ref-origin-japro">jaPRO</span>
+Origin: <span class="label ref-origin ref-origin-taystjk">TaystJK</span>
 
-- Ultimate-origin introduction: [`8b353c2103fd`](https://github.com/videoP/jaPRO/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) in <span class="label ref-origin ref-origin-japro">jaPRO</span> (content authored `2025-04-15`, integrated `2025-04-15`)
+- Ultimate-origin introduction: [`8b353c2103fd`](https://github.com/taysta/TaystJK/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) in <span class="label ref-origin ref-origin-taystjk">TaystJK</span> (content authored `2025-04-15`, PR opened `2025-04-07`, integrated `2025-04-15`)
 - Origin pull request: [#219](https://github.com/taysta/TaystJK/pull/219)
 - Matching squash bullet: `Refactor cl_jk2fx cvar into fx_jk2 - enabled jk2 projectiles fx`
-- Upstream registration evidence: [codemp/client/FxUtil.cpp:119](https://github.com/videoP/jaPRO/blame/33d1f1e22ac6db0c17beedbcc419ffef98bbe3c3/codemp/client/FxUtil.cpp#L119)
-- Attribution method: `squash-feature-group-explicit-credit`
+- Upstream registration evidence: [codemp/client/FxUtil.cpp:119](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L119)
+- Attribution method: `earliest-authored-project-introduction`
 - Attribution confidence: `high`
-- Notes: The identifier's single-prefix squash feature group explicitly credits japro.
 
 ### Dated project introductions
 
@@ -58,8 +57,8 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 | Project | Authored | PR opened | Integrated | Commit | Relationship |
 |:--|:--|:--|:--|:--|:--|
-| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-04-15` | [2025-04-07](https://github.com/taysta/TaystJK/pull/219) | `2025-04-15` | [`8b353c2103fd`](https://github.com/taysta/TaystJK/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) | Shared integration commit |
-| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-04-15` | — | `2025-04-15` | [`8b353c2103fd`](https://github.com/videoP/jaPRO/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) | Ultimate origin |
+| <span class="label ref-origin ref-origin-taystjk">TaystJK</span> | `2025-04-15` | [2025-04-07](https://github.com/taysta/TaystJK/pull/219) | `2025-04-15` | [`8b353c2103fd`](https://github.com/taysta/TaystJK/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) | Ultimate origin |
+| <span class="label ref-origin ref-origin-japro">jaPRO</span> | `2025-04-15` | — | `2025-04-15` | [`8b353c2103fd`](https://github.com/videoP/jaPRO/commit/8b353c2103fd0d0f294f799e32de0d7dd164bb03) | Shared integration commit |
 
 ### Later changes
 

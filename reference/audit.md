@@ -14,14 +14,14 @@ This is the deliberately untidy review queue behind the published reference. `un
 | Group | Count |
 |:--|--:|
 | Base Jedi Academy | 1024 |
-| EternalJK | 140 |
+| EternalJK | 147 |
 | JK2MV | 14 |
 | NewJK / NewMod | 10 |
-| OpenJK | 158 |
-| TaystJK | 75 |
-| Vulkan | 27 |
-| jaPRO | 471 |
-| rend2 | 95 |
+| OpenJK | 167 |
+| TaystJK | 79 |
+| Vulkan | 25 |
+| jaPRO | 458 |
+| rend2 | 90 |
 
 ## Runtime reconciliation
 
@@ -40,7 +40,7 @@ Runtime-only commands: none.
 
 The dump was captured from stdout after loading `mp/ffa3`; stdout does not use the client console scrollback buffer. Cvars and commands were dumped in separate launches so neither list could displace the other.
 
-## Provenance needing review (784)
+## Provenance needing review (776)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -178,7 +178,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_specCameraMode`](/TaystJK/reference/cvars/cg_speccameramode-95baeef/) | cvar | cgame | Controls `cg_specCameraMode` in the cgame module. |
 | [`cg_specHud`](/TaystJK/reference/cvars/cg_spechud-70b1e1d/) | cvar | cgame | Controls `cg_specHud` in the cgame module. |
 | [`cg_spectatorCameraDamp`](/TaystJK/reference/cvars/cg_spectatorcameradamp-1136737/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`cg_speedometer`](/TaystJK/reference/cvars/cg_speedometer-9810620/) | cvar | cgame | Configure with the /speedometer command |
 | [`cg_speedometerJumps`](/TaystJK/reference/cvars/cg_speedometerjumps-2a998a1/) | cvar | cgame | The amount of jumps to store in the jumps array, enable with the /speedometer command |
 | [`cg_speedometerJumpsX`](/TaystJK/reference/cvars/cg_speedometerjumpsx-29e18d5/) | cvar | cgame | Horizontal location of the jumps array |
 | [`cg_speedometerJumpsY`](/TaystJK/reference/cvars/cg_speedometerjumpsy-8a40b94/) | cvar | cgame | Vertical location of the jumps array |
@@ -416,10 +415,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`pmove_float`](/TaystJK/reference/cvars/pmove_float-d352a0d/) | cvar | cgame | Controls `pmove_float` in the cgame module. |
 | [`protocolswitch`](/TaystJK/reference/cvars/protocolswitch-9a313ea/) | cvar | engine-client | Sets protocol based on server info response |
 | [`r_allowScreenSaver`](/TaystJK/reference/cvars/r_allowscreensaver-9058284/) | cvar | engine-shared | Controls `r_allowScreenSaver` in the engine-shared module. |
-| [`r_arb_buffer_storage`](/TaystJK/reference/cvars/r_arb_buffer_storage-ac1e1c0/) | cvar | renderer | Disable/enable buffer storage GL extension |
-| [`r_arb_half_float_pixel`](/TaystJK/reference/cvars/r_arb_half_float_pixel-6ad3bad/) | cvar | renderer | Disable/enable ARB_half_float GL extension |
-| [`r_arb_seamless_cube_map`](/TaystJK/reference/cvars/r_arb_seamless_cube_map-c3396c7/) | cvar | renderer | Disable/enable seamless cube map filtering GL extension |
-| [`r_arb_vertex_type_2_10_10_10_rev`](/TaystJK/reference/cvars/r_arb_vertex_type_2_10_10_10_rev-6fa9dbe/) | cvar | renderer | Disable/enable 1010102 UI data type |
 | [`r_aspectCorrectFonts`](/TaystJK/reference/cvars/r_aspectcorrectfonts-be7251d/) | cvar | renderer | Controls `r_aspectCorrectFonts` in the renderer module. |
 | [`r_availableModes`](/TaystJK/reference/cvars/r_availablemodes-bd904ae/) | cvar | engine-shared | Controls `r_availableModes` in the engine-shared module. |
 | [`r_aviMotionJpegQuality`](/TaystJK/reference/cvars/r_avimotionjpegquality-108e51f/) | cvar | renderer | Controls `r_aviMotionJpegQuality` in the renderer module. |
@@ -437,14 +432,11 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_DynamicGlowScale`](/TaystJK/reference/cvars/r_dynamicglowscale-62e93d2/) | cvar | renderer | Controls `r_DynamicGlowScale` in the renderer module. |
 | [`r_environmentMapping`](/TaystJK/reference/cvars/r_environmentmapping-4bbfdcf/) | cvar | renderer | Controls `r_environmentMapping` in the renderer module. |
 | [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) | cvar | renderer | Controls `r_ext_alpha_to_coverage` in the renderer module. |
-| [`r_ext_draw_range_elements`](/TaystJK/reference/cvars/r_ext_draw_range_elements-17a8b5e/) | cvar | renderer | Unused |
 | [`r_ext_framebuffer_multisample`](/TaystJK/reference/cvars/r_ext_framebuffer_multisample-0dd78ce/) | cvar | renderer | Controls `r_ext_framebuffer_multisample` in the renderer module. |
 | [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) | cvar | renderer | Controls `r_ext_max_anisotropy` in the renderer module. |
-| [`r_ext_multi_draw_arrays`](/TaystJK/reference/cvars/r_ext_multi_draw_arrays-47cef48/) | cvar | renderer | Unused |
 | [`r_ext_multisample`](/TaystJK/reference/cvars/r_ext_multisample-9b2ea2a/) | cvar | renderer | Disable/enable framebuffer MSAA |
 | [`r_ext_multisample_default_fb`](/TaystJK/reference/cvars/r_ext_multisample_default_fb-d2e37d5/) | cvar | engine-shared | Controls `r_ext_multisample_default_fb` in the engine-shared module. |
 | [`r_ext_supersample`](/TaystJK/reference/cvars/r_ext_supersample-75d1107/) | cvar | renderer | Controls `r_ext_supersample` in the renderer module. |
-| [`r_ext_texture_float`](/TaystJK/reference/cvars/r_ext_texture_float-f4a8764/) | cvar | renderer | Disable/enable floating-point textures |
 | [`r_fbo`](/TaystJK/reference/cvars/r_fbo-022d66e/) | cvar | renderer | Controls `r_fbo` in the renderer module. |
 | [`r_gammaShaders`](/TaystJK/reference/cvars/r_gammashaders-f8fed87/) | cvar | renderer | Set gamma using pixel shaders inside the game window only. |
 | [`r_mapGreyScale`](/TaystJK/reference/cvars/r_mapgreyscale-691d968/) | cvar | renderer | Controls `r_mapGreyScale` in the renderer module. |
@@ -829,7 +821,7 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`write`](/TaystJK/reference/commands/write-e1d0c6c/) | command | engine-shared | Write the configuration to file |
 | [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) | command | cgame | Forwards this command to the connected game server. |
 
-## Semantics or options needing review (1661)
+## Semantics or options needing review (1653)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -1085,7 +1077,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_specCameraMode`](/TaystJK/reference/cvars/cg_speccameramode-95baeef/) | cvar | cgame | Controls `cg_specCameraMode` in the cgame module. |
 | [`cg_specHud`](/TaystJK/reference/cvars/cg_spechud-70b1e1d/) | cvar | cgame | Controls `cg_specHud` in the cgame module. |
 | [`cg_spectatorCameraDamp`](/TaystJK/reference/cvars/cg_spectatorcameradamp-1136737/) | cvar | cgame | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`cg_speedometer`](/TaystJK/reference/cvars/cg_speedometer-9810620/) | cvar | cgame | Configure with the /speedometer command |
 | [`cg_speedometerJumps`](/TaystJK/reference/cvars/cg_speedometerjumps-2a998a1/) | cvar | cgame | The amount of jumps to store in the jumps array, enable with the /speedometer command |
 | [`cg_speedometerJumpsX`](/TaystJK/reference/cvars/cg_speedometerjumpsx-29e18d5/) | cvar | cgame | Horizontal location of the jumps array |
 | [`cg_speedometerJumpsY`](/TaystJK/reference/cvars/cg_speedometerjumpsy-8a40b94/) | cvar | cgame | Vertical location of the jumps array |
@@ -1560,10 +1551,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_allowSoftwareGL`](/TaystJK/reference/cvars/r_allowsoftwaregl-fab7aac/) | cvar | engine-shared | Controls `r_allowSoftwareGL` in the engine-shared module. |
 | [`r_ambientScale`](/TaystJK/reference/cvars/r_ambientscale-2aa83ee/) | cvar | renderer | Controls `r_ambientScale` in the renderer module. |
 | [`r_anaglyphMode`](/TaystJK/reference/cvars/r_anaglyphmode-756890b/) | cvar | renderer | Controls `r_anaglyphMode` in the renderer module. |
-| [`r_arb_buffer_storage`](/TaystJK/reference/cvars/r_arb_buffer_storage-ac1e1c0/) | cvar | renderer | Disable/enable buffer storage GL extension |
-| [`r_arb_half_float_pixel`](/TaystJK/reference/cvars/r_arb_half_float_pixel-6ad3bad/) | cvar | renderer | Disable/enable ARB_half_float GL extension |
-| [`r_arb_seamless_cube_map`](/TaystJK/reference/cvars/r_arb_seamless_cube_map-c3396c7/) | cvar | renderer | Disable/enable seamless cube map filtering GL extension |
-| [`r_arb_vertex_type_2_10_10_10_rev`](/TaystJK/reference/cvars/r_arb_vertex_type_2_10_10_10_rev-6fa9dbe/) | cvar | renderer | Disable/enable 1010102 UI data type |
 | [`r_aspectCorrectFonts`](/TaystJK/reference/cvars/r_aspectcorrectfonts-be7251d/) | cvar | renderer | Controls `r_aspectCorrectFonts` in the renderer module. |
 | [`r_autolodscalevalue`](/TaystJK/reference/cvars/r_autolodscalevalue-ea276af/) | cvar | renderer | Controls `r_autolodscalevalue` in the renderer module. |
 | [`r_autoMap`](/TaystJK/reference/cvars/r_automap-3176cbc/) | cvar | renderer | Controls `r_autoMap` in the renderer module. |
@@ -1627,16 +1614,13 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`r_environmentMapping`](/TaystJK/reference/cvars/r_environmentmapping-4bbfdcf/) | cvar | renderer | Controls `r_environmentMapping` in the renderer module. |
 | [`r_ext_alpha_to_coverage`](/TaystJK/reference/cvars/r_ext_alpha_to_coverage-5cfb4fd/) | cvar | renderer | Controls `r_ext_alpha_to_coverage` in the renderer module. |
 | [`r_ext_compress_lightmaps`](/TaystJK/reference/cvars/r_ext_compress_lightmaps-1ddfa36/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`r_ext_draw_range_elements`](/TaystJK/reference/cvars/r_ext_draw_range_elements-17a8b5e/) | cvar | renderer | Unused |
 | [`r_ext_framebuffer_multisample`](/TaystJK/reference/cvars/r_ext_framebuffer_multisample-0dd78ce/) | cvar | renderer | Controls `r_ext_framebuffer_multisample` in the renderer module. |
 | [`r_ext_gamma_control`](/TaystJK/reference/cvars/r_ext_gamma_control-8e482d7/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
 | [`r_ext_max_anisotropy`](/TaystJK/reference/cvars/r_ext_max_anisotropy-ae414a3/) | cvar | renderer | Controls `r_ext_max_anisotropy` in the renderer module. |
-| [`r_ext_multi_draw_arrays`](/TaystJK/reference/cvars/r_ext_multi_draw_arrays-47cef48/) | cvar | renderer | Unused |
 | [`r_ext_multisample`](/TaystJK/reference/cvars/r_ext_multisample-9b2ea2a/) | cvar | renderer | Disable/enable framebuffer MSAA |
 | [`r_ext_multisample_default_fb`](/TaystJK/reference/cvars/r_ext_multisample_default_fb-d2e37d5/) | cvar | engine-shared | Controls `r_ext_multisample_default_fb` in the engine-shared module. |
 | [`r_ext_supersample`](/TaystJK/reference/cvars/r_ext_supersample-75d1107/) | cvar | renderer | Controls `r_ext_supersample` in the renderer module. |
 | [`r_ext_texture_filter_anisotropic_avail`](/TaystJK/reference/cvars/r_ext_texture_filter_anisotropic_avail-88815f1/) | cvar | renderer | Registered by the current source, but no user-facing behavior description has been verified. |
-| [`r_ext_texture_float`](/TaystJK/reference/cvars/r_ext_texture_float-f4a8764/) | cvar | renderer | Disable/enable floating-point textures |
 | [`r_externalGLSL`](/TaystJK/reference/cvars/r_externalglsl-5987fc7/) | cvar | renderer | Controls `r_externalGLSL` in the renderer module. |
 | [`r_facePlaneCull`](/TaystJK/reference/cvars/r_faceplanecull-527e83b/) | cvar | renderer | Controls `r_facePlaneCull` in the renderer module. |
 | [`r_fastsky`](/TaystJK/reference/cvars/r_fastsky-24089fb/) | cvar | renderer | Controls `r_fastsky` in the renderer module. |
