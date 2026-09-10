@@ -18,6 +18,7 @@ Vertical location of the movement keys
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Movement keys |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -17,7 +17,8 @@ Controls `r_forceAutoExposure` in the renderer module. Consult the cited behavio
 
 | Field | Value |
 |:--|:--|
-| Category | Gameplay & combat |
+| Category | Graphics & rendering |
+| Feature family | Auto exposure |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |

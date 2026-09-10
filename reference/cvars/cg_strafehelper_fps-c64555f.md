@@ -18,6 +18,7 @@ Fats _ syntax to follow smod ;s
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Strafe helper |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -18,6 +18,7 @@ Controls `cl_downloadTime` in the engine-client module. Consult the cited behavi
 | Field | Value |
 |:--|:--|
 | Category | Files & downloads |
+| Feature family | Downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

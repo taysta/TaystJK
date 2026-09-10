@@ -18,6 +18,7 @@ Set a first jump speed goal speed, if first jump speed is above your goal speed,
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Checkpoints |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

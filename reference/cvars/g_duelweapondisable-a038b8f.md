@@ -18,6 +18,7 @@ Controls `g_duelWeaponDisable` in the game module. Consult the cited behavior re
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Duel settings |
 | Module | `game` |
 | Also registered in | `game`, `engine-server` |
 | Renderer | All / not renderer-specific |

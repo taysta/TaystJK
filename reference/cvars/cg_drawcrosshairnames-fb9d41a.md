@@ -16,6 +16,7 @@ Controls target-name display below the crosshair. Zero disables it, negative val
 | Field | Value |
 |:--|:--|
 | Category | Crosshair & aiming |
+| Feature family | Crosshair |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |

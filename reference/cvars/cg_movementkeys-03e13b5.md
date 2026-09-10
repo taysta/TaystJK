@@ -18,6 +18,7 @@ Selects the movement-input overlay style, including classic, attack-aware, and m
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Movement keys |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

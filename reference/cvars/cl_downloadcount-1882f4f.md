@@ -18,6 +18,7 @@ Controls `cl_downloadCount` in the engine-client module. Consult the cited behav
 | Field | Value |
 |:--|:--|
 | Category | Files & downloads |
+| Feature family | Downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

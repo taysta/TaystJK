@@ -18,6 +18,7 @@ Minimalist crosshair disruptor scope replacement
 | Field | Value |
 |:--|:--|
 | Category | Crosshair & aiming |
+| Feature family | Crosshair |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

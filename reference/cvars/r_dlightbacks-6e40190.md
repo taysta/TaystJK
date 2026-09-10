@@ -16,6 +16,7 @@ Dlight non-facing surfaces for continuity
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Dynamic lights |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vanilla`, `rd-vulkan` |

@@ -18,7 +18,7 @@ CHANGE_CATEGORIES = {"registration", "behavior-reference", "handler"}
 COMMON = {
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
-    "status", "source_commit", "category", "xdocs", "menu_entries",
+    "status", "source_commit", "category", "feature", "xdocs", "menu_entries",
 }
 
 
@@ -43,6 +43,8 @@ def validate(path: Path, expected_kind: str) -> list[str]:
             errors.append(f"{label}: empty prose")
         if not entry.get("category"):
             errors.append(f"{label}: empty category")
+        if entry.get("feature") is not None and not isinstance(entry.get("feature"), str):
+            errors.append(f"{label}: invalid feature family")
         if not isinstance(entry.get("menu_entries"), list):
             errors.append(f"{label}: invalid menu-entry evidence")
         if entry.get("derivation") not in DERIVATION:

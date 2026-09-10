@@ -16,6 +16,7 @@ Disable/enable auto exposure
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Auto exposure |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |

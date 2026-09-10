@@ -18,6 +18,7 @@ Speed that grapple hook travels at
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Grapple |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

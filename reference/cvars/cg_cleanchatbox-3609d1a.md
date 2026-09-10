@@ -18,6 +18,7 @@ search_exclude: false
 | Field | Value |
 |:--|:--|
 | Category | Chat & social |
+| Feature family | Chat box |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

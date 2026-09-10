@@ -18,6 +18,7 @@ Controls `g_duelStartArmor` in the game module. Consult the cited behavior reads
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Duel settings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

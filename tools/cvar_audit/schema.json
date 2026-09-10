@@ -6,7 +6,7 @@
   "required": [
     "name", "kind", "module", "modules", "renderer", "summary", "description",
     "derivation", "network", "origin", "modified_by", "evidence", "confidence",
-    "status", "source_commit", "category", "xdocs", "menu_entries"
+    "status", "source_commit", "category", "feature", "xdocs", "menu_entries"
   ],
   "properties": {
     "name": {"type": "string", "minLength": 1},
@@ -70,6 +70,7 @@
     "status": {"enum": ["documented", "needs-review", "unknown", "removed"]},
     "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "category": {"type": "string", "minLength": 1},
+    "feature": {"type": ["string", "null"], "minLength": 1},
     "xdocs": {
       "type": ["object", "null"],
       "properties": {

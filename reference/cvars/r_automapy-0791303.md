@@ -17,7 +17,8 @@ Controls `r_autoMapY` in the cgame module. Consult the cited behavior reads befo
 
 | Field | Value |
 |:--|:--|
-| Category | Graphics & rendering |
+| Category | HUD & interface |
+| Feature family | Automap |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -16,6 +16,7 @@ Display walk movement key input
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Movement keys |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

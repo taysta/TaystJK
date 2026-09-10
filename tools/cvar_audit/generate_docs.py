@@ -28,7 +28,19 @@ ORIGIN_LABELS = {
     "quake3": "Quake III lineage",
     "unknown": "Unknown",
 }
-ORIGIN_ORDER = tuple(ORIGIN_LABELS)
+ORIGIN_ORDER = (
+    "taystjk",
+    "eternaljk",
+    "japro",
+    "newjk",
+    "vulkan",
+    "rend2",
+    "openjk",
+    "basejka",
+    "jk2mv",
+    "quake3",
+    "unknown",
+)
 ORIGIN_REPOS = {
     "taystjk": "taysta/TaystJK",
     "eternaljk": "eternalcodes/EternalJK",
@@ -209,6 +221,13 @@ def catalog_app(
           <button class="filter-clear" type="button" data-clear-filter="category">Clear topic</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="feature">
+        <button class="filter-toggle" type="button" data-filter-toggle="feature" aria-expanded="false"><span>Feature</span><strong data-filter-summary="feature">Any feature</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="feature" hidden>
+          <div class="filter-options" data-filter-options="feature"></div>
+          <button class="filter-clear" type="button" data-clear-filter="feature">Clear feature</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="renderer">
         <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="renderer" hidden>
@@ -261,6 +280,7 @@ def catalog_app(
       <label><span>Origin</span><select name="origin" data-filter="origin"><option value="">Any origin</option></select></label>
       <label><span>Module</span><select name="module" data-filter="module"><option value="">Any module</option></select></label>
       <label><span>Topic</span><select name="category" data-filter="category"><option value="">Any topic</option></select></label>
+      <label><span>Feature</span><select name="feature" data-filter="feature"><option value="">Any feature</option></select></label>
       <label><span>Renderer</span><select name="renderer" data-filter="renderer"><option value="">Any renderer</option><option value="renderer-specific">Renderer-specific only</option><option value="none">Not renderer-specific</option></select></label>
       <label><span>Documentation</span><select name="status" data-filter="status"><option value="">Any status</option><option value="documented">Documented</option><option value="needs-review">Needs review</option></select></label>
       <label><span>Network scope</span><select name="network" data-filter="network"><option value="">Any scope</option></select></label>
@@ -296,7 +316,7 @@ def catalog_app(
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
-      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="origin">Origin</option><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="feature">Feature</option><option value="module">Module</option></select></label>
     </div>
   </form>
 
@@ -359,8 +379,10 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
             '<p class="ref-warning"><strong>Needs review.</strong> The inventory/provenance evidence is recorded, but some behavior, options, or attribution still lacks a direct user-facing source.</p>', "",
         ])
     lines.extend([entry["description"], "", "## At a glance", "", "| Field | Value |", "|:--|:--|"])
+    lines.append(f"| Category | {entry['category']} |")
+    if entry.get("feature"):
+        lines.append(f"| Feature family | {entry['feature']} |")
     lines.extend([
-        f"| Category | {entry['category']} |",
         f"| Module | {code(entry['module'])} |",
         f"| Also registered in | {', '.join(code(value) for value in entry.get('modules', []))} |",
         f"| Renderer | {', '.join(code(value) for value in entry.get('renderer', [])) or 'All / not renderer-specific'} |",
@@ -603,6 +625,7 @@ def compact_catalog_entry(entry: dict[str, Any]) -> dict[str, Any]:
         "confidence": entry["confidence"],
         "derivation": entry["derivation"],
         "category": entry["category"],
+        "feature": entry.get("feature"),
         "xdocs": bool(entry.get("xdocs")),
         "menu": bool(entry.get("menu_entries")),
         "cheat_protected": entry["cheat_protected"],
@@ -781,7 +804,7 @@ The reference separates origin from current availability. An entry inherited fro
 4. Equal chronology is resolved only afterward, using explicit cross-project PR links and shared commits as fork-lineage evidence. PR numbers are scoped to their target repository, and a lone available PR date is not compared against candidates whose PR archive was not supplied. Squash bullets, commit bodies, and PR descriptions can identify an immediate port source, while identifier-adjacent developer credit can identify an unpublished project continuation. A later intermediate source cannot displace an earlier authored, submitted, or explicitly credited origin.
 5. After origin is established, a separate TaystJK first-parent patch scan records exact registration changes, changed bound cvar-variable references, and edits within registered command-handler hunks. Each change is dated and attributed from explicit commit/PR credit or project-mainline membership; shared change commits remain medium-confidence.
 6. Semantics come from source descriptions, `ui_xdocs.h`, jaPRO's checked-in documentation, handler/read sites, masks, comparisons, and range checks. The generator separately records exact xdocs declarations and appearances in shipped `.menu` files.
-7. Stable topic rules group related feature families such as `cg_killfeed…`, even when their registrations span multiple source files. Unproven semantic fields stay in the review queue.
+7. Stable topic rules classify broad areas, while curated feature-family rules keep related controls such as `cg_killfeed…` together. Unproven semantic fields stay in the review queue.
 8. The dedicated runtime registry is reconciled separately. One runtime cannot contain client, UI, every platform, and all renderers, so the published inventory is the static union.
 
 NewMod is closed source. Its [published feature documentation](https://jkanewmod.github.io/documentation.html) is useful semantic context, but the resolver attributes NewMod/NewJK only where a commit, PR, or nearby source comment explicitly says so, or where the open NewJK tree supplies direct evidence. A feature-page resemblance alone is not treated as origin proof.
@@ -846,7 +869,7 @@ def main() -> None:
 
 ## How to read an entry
 
-The **topic** groups related controls such as the killfeed family. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+The **topic** is a broad area such as HUD & interface or Movement & race. A **feature** is a narrower family of related controls, such as Killfeed, Movement keys, or Speedometer. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
 
 The **xdocs** and **menu** badges show whether the current name already has an entry in TaystJK's in-game documentation or shipped menu definitions. Each detail page links the matching source line.
 
@@ -857,6 +880,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
 - [Browse by topic](/TaystJK/reference/categories/)
+- [Browse by feature](/TaystJK/reference/features/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)
@@ -936,11 +960,11 @@ An entry marked **needs review** is real and has registration evidence, but one 
         )
     write(Path("reference/categories.md"), frontmatter("By topic", 5, "Console reference", wide=True) + """
 <div class="page-heading" markdown="1">
-<p class="eyebrow">Feature groups</p>
+<p class="eyebrow">Broad areas</p>
 
 <h1>Browse by topic</h1>
 
-<p class="page-lede">Related controls stay together even when they are registered in different modules. Prefix families such as <code>cg_killfeed…</code> are grouped as one topic.</p>
+<p class="page-lede">Browse the complete reference by broad functional area. Narrow control families such as Killfeed and Speedometer are listed separately as features.</p>
 </div>
 
 <div class="directory-grid">
@@ -948,8 +972,40 @@ An entry marked **needs review** is real and has registration evidence, but one 
     for order, category in enumerate(categories, 1):
         selected = [entry for entry in entries if entry["category"] == category]
         write(Path("reference/categories") / f"{collection_slug(category)}.md", collection_page(
-            category, "Entries grouped by feature name, prefix, behavior, and registration context.", selected, order, "By topic",
+            category, "Entries in this broad functional area.", selected, order, "By topic",
             preset_key="category", preset_value=category,
+        ))
+
+    features = sorted({entry["feature"] for entry in entries if entry.get("feature")})
+    feature_cards = []
+    for feature in features:
+        selected = [entry for entry in entries if entry.get("feature") == feature]
+        cvar_count = sum(entry["kind"] == "cvar" for entry in selected)
+        command_count = len(selected) - cvar_count
+        topics = sorted({entry["category"] for entry in selected})
+        cvar_label = "cvar" if cvar_count == 1 else "cvars"
+        command_label = "command" if command_count == 1 else "commands"
+        feature_cards.append(
+            f'<a class="directory-card" href="/TaystJK/reference/features/{collection_slug(feature)}/">'
+            f'<span class="directory-code">{esc(feature)}</span><strong>{len(selected):,}</strong>'
+            f'<span>{cvar_count:,} {cvar_label} · {command_count:,} {command_label} · {esc(" / ".join(topics))}</span></a>'
+        )
+    write(Path("reference/features.md"), frontmatter("By feature", 6, "Console reference", wide=True) + """
+<div class="page-heading" markdown="1">
+<p class="eyebrow">Control families</p>
+
+<h1>Browse by feature</h1>
+
+<p class="page-lede">Find cvars and commands that configure the same feature. Families are curated from shared prefixes and behavior rather than inferred from every coincidental name match.</p>
+</div>
+
+<div class="directory-grid">
+""" + "\n".join(feature_cards) + "\n</div>")
+    for order, feature in enumerate(features, 1):
+        selected = [entry for entry in entries if entry.get("feature") == feature]
+        write(Path("reference/features") / f"{collection_slug(feature)}.md", collection_page(
+            feature, "Related controls for this configurable feature.", selected, order, "By feature",
+            preset_key="feature", preset_value=feature,
         ))
 
     runtime = load(args.runtime) if args.runtime.exists() else None

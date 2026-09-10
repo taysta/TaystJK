@@ -18,6 +18,7 @@ Controls `g_eloProvisionalChangeBig` in the game module. Consult the cited behav
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Elo rankings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

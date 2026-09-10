@@ -18,6 +18,7 @@ Controls `r_ext_multisample_default_fb` in the engine-shared module. Consult the
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Renderer extensions |
 | Module | `engine-shared` |
 | Also registered in | `engine-shared` |
 | Renderer | All / not renderer-specific |

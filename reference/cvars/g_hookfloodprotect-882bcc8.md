@@ -17,7 +17,8 @@ Milliseconds between hook shots
 
 | Field | Value |
 |:--|:--|
-| Category | Administration |
+| Category | Gameplay & combat |
+| Feature family | Grapple |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

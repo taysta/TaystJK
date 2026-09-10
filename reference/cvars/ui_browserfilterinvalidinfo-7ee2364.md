@@ -17,7 +17,8 @@ Controls `ui_browserFilterInvalidInfo` in the ui module. Consult the cited behav
 
 | Field | Value |
 |:--|:--|
-| Category | HUD & interface |
+| Category | Server & networking |
+| Feature family | Server browser |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |

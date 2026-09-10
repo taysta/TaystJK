@@ -18,6 +18,7 @@ Controls `g_duelStartHealth` in the game module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Duel settings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

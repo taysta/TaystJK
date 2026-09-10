@@ -18,6 +18,7 @@ Controls `cg_drawTimerCountdown` in the cgame module. Consult the cited behavior
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | HUD timer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

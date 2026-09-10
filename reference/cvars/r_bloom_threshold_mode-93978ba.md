@@ -16,6 +16,7 @@ Color extraction mode: 0: (r|g|b) >= threshold 1: (r + g + b ) / 3 >= threshold 
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Bloom |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

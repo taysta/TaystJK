@@ -18,6 +18,7 @@ Controls `cg_crosshairColor` in the cgame module. Consult the cited behavior rea
 | Field | Value |
 |:--|:--|
 | Category | Crosshair & aiming |
+| Feature family | Crosshair |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

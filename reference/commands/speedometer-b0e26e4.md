@@ -18,6 +18,7 @@ Runs `CG_SpeedometerSettings_f` in the cgame module.
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Speedometer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

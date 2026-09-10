@@ -18,6 +18,7 @@ Runs `SV_MigrateCheckpoints_f` in the game module.
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Checkpoints |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

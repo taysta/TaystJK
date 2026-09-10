@@ -18,6 +18,7 @@ Controls `r_shadowRange` in the renderer module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Shadows |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |

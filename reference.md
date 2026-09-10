@@ -61,6 +61,13 @@ description: "Search and filter every cvar and console command available in Tays
           <button class="filter-clear" type="button" data-clear-filter="category">Clear topic</button>
         </div>
       </div>
+      <div class="filter-dropdown" data-filter-dropdown="feature">
+        <button class="filter-toggle" type="button" data-filter-toggle="feature" aria-expanded="false"><span>Feature</span><strong data-filter-summary="feature">Any feature</strong><span class="filter-chevron" aria-hidden="true"></span></button>
+        <div class="filter-popover" data-filter-popover="feature" hidden>
+          <div class="filter-options" data-filter-options="feature"></div>
+          <button class="filter-clear" type="button" data-clear-filter="feature">Clear feature</button>
+        </div>
+      </div>
       <div class="filter-dropdown" data-filter-dropdown="renderer">
         <button class="filter-toggle" type="button" data-filter-toggle="renderer" aria-expanded="false"><span>Renderer</span><strong data-filter-summary="renderer">Any renderer</strong><span class="filter-chevron" aria-hidden="true"></span></button>
         <div class="filter-popover" data-filter-popover="renderer" hidden>
@@ -111,7 +118,7 @@ description: "Search and filter every cvar and console command available in Tays
 
     <div class="catalog-actions">
       <button type="reset" class="button button-quiet" data-reset>Clear filters</button>
-      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="origin">Origin</option><option value="module">Module</option></select></label>
+      <label class="catalog-sort"><span>Sort</span><select name="sort" data-sort><option value="origin">Origin</option><option value="relevance">Relevance</option><option value="name">Name</option><option value="category">Topic</option><option value="feature">Feature</option><option value="module">Module</option></select></label>
     </div>
   </form>
 
@@ -130,7 +137,7 @@ description: "Search and filter every cvar and console command available in Tays
 
 ## How to read an entry
 
-The **topic** groups related controls such as the killfeed family. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
+The **topic** is a broad area such as HUD & interface or Movement & race. A **feature** is a narrower family of related controls, such as Killfeed, Movement keys, or Speedometer. The **origin** badge identifies where an entry first appeared, not merely every fork that ships it. Later changes to defaults or flags are listed separately. **Renderer scope** says which current backend registers a cvar, while **network scope** distinguishes local controls from server-owned or negotiated behavior.
 
 The **xdocs** and **menu** badges show whether the current name already has an entry in TaystJK's in-game documentation or shipped menu definitions. Each detail page links the matching source line.
 
@@ -141,6 +148,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
 - [Browse by origin](/TaystJK/reference/origins/)
 - [Browse by module](/TaystJK/reference/modules/)
 - [Browse by topic](/TaystJK/reference/categories/)
+- [Browse by feature](/TaystJK/reference/features/)
 - [Read the sources and methodology](/TaystJK/reference/sources/)
 - [See removed and inactive names](/TaystJK/reference/removed/)
 - [Open the audit and review queue](/TaystJK/reference/audit/)

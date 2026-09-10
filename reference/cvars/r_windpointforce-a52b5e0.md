@@ -17,7 +17,8 @@ Controls `r_windPointForce` in the renderer module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
-| Category | Gameplay & combat |
+| Category | Graphics & rendering |
+| Feature family | Wind |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |

@@ -17,7 +17,8 @@ Controls `r_autoMapDisable` in the renderer module. Consult the cited behavior r
 
 | Field | Value |
 |:--|:--|
-| Category | Graphics & rendering |
+| Category | HUD & interface |
+| Feature family | Automap |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |

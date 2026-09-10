@@ -18,6 +18,7 @@ Controls `r_ext_supersample` in the renderer module. Consult the cited behavior 
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Renderer extensions |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

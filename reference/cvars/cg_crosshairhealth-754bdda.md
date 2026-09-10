@@ -18,6 +18,7 @@ Controls `cg_crosshairHealth` in the cgame module. Consult the cited behavior re
 | Field | Value |
 |:--|:--|
 | Category | Crosshair & aiming |
+| Feature family | Crosshair |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -18,6 +18,7 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Dynamic lights |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2`, `rd-vulkan` |

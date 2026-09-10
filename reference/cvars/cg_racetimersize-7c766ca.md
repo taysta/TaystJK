@@ -18,6 +18,7 @@ Scale of the race timer
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Race timer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

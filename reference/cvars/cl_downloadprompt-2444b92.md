@@ -16,6 +16,7 @@ Confirm pk3 downloads from the server
 | Field | Value |
 |:--|:--|
 | Category | Files & downloads |
+| Feature family | Downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

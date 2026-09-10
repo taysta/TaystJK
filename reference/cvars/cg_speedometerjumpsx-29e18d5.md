@@ -18,6 +18,7 @@ Horizontal location of the jumps array
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Speedometer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -18,6 +18,7 @@ Automatically respawn players to where they died after losing a duel.
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Duel settings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

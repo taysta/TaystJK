@@ -17,7 +17,8 @@ Print a kill message on the screen when you kill someone
 
 | Field | Value |
 |:--|:--|
-| Category | Killfeed |
+| Category | HUD & interface |
+| Feature family | Killfeed |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

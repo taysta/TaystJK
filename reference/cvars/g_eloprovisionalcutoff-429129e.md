@@ -18,6 +18,7 @@ Controls `g_eloProvisionalCutoff` in the game module. Consult the cited behavior
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Elo rankings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

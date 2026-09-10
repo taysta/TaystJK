@@ -71,8 +71,41 @@ def choose_module(name: str, modules: list[str]) -> str:
 def category_for(name: str, kind: str, module: str, summary: str) -> str:
     """Assign one stable, user-facing topic to each console entry."""
     value = name.casefold().lstrip("+-")
+    feature_topics = {
+        "Killfeed": "HUD & interface",
+        "Movement keys": "Movement & race",
+        "Speedometer": "Movement & race",
+        "Strafe helper": "Movement & race",
+        "Strafe trail": "Movement & race",
+        "SnapHUD": "Movement & race",
+        "Pitch HUD": "Movement & race",
+        "Pitch helper": "Movement & race",
+        "Race timer": "Movement & race",
+        "Race start": "Movement & race",
+        "Checkpoints": "Movement & race",
+        "Chat box": "Chat & social",
+        "Crosshair": "Crosshair & aiming",
+        "Third-person camera": "HUD & interface",
+        "HUD timer": "HUD & interface",
+        "Console": "Engine & diagnostics",
+        "Server browser": "Server & networking",
+        "Downloads": "Files & downloads",
+        "Automap": "HUD & interface",
+        "Bloom": "Graphics & rendering",
+        "Auto exposure": "Graphics & rendering",
+        "Shadows": "Graphics & rendering",
+        "Dynamic lights": "Graphics & rendering",
+        "Volumetric fog": "Graphics & rendering",
+        "Wind": "Graphics & rendering",
+        "Renderer extensions": "Graphics & rendering",
+        "Elo rankings": "Gameplay & combat",
+        "Duel settings": "Gameplay & combat",
+        "Grapple": "Gameplay & combat",
+    }
+    feature = feature_for(name)
+    if feature:
+        return feature_topics[feature]
     rules = (
-        ("Killfeed", ("killfeed", "killmessage", "obituary")),
         ("Movement & race", ("strafe", "snaphud", "pitchhud", "pitchhelper", "speedometer", "racetimer", "racestart", "checkpoint", "jumpgoal", "startgoal", "movementkeys")),
         ("Crosshair & aiming", ("crosshair", "crosshairnames", "zoomfov", "weaponfov", "fovviewmodel")),
         ("Audio & music", ("sound", "music", "openal", "volume", "s_mixahead", "s_doppler", "s_khz")),
@@ -103,6 +136,43 @@ def category_for(name: str, kind: str, module: str, summary: str) -> str:
         "engine-shared": "Engine & diagnostics",
     }
     return fallbacks.get(module, "Other")
+
+
+def feature_for(name: str) -> str | None:
+    """Assign a narrow feature family when a name is one of several related controls."""
+    value = name.casefold().lstrip("+-")
+    rules = (
+        ("Killfeed", ("cg_killfeed", "cg_killmessage")),
+        ("Movement keys", ("cg_movementkeys",)),
+        ("Speedometer", ("cg_speedometer", "speedometer")),
+        ("Strafe helper", ("cg_strafehelper", "strafehelper")),
+        ("Strafe trail", ("cg_logstrafetrail", "cg_strafetrail", "strafetrail")),
+        ("SnapHUD", ("cg_snaphud",)),
+        ("Pitch HUD", ("cg_pitchhud",)),
+        ("Pitch helper", ("cg_pitchhelper",)),
+        ("Race timer", ("cg_racetimer",)),
+        ("Race start", ("cg_racestart",)),
+        ("Checkpoints", ("addcheckpoint", "deletecheckpoint", "listcheckpoint", "migratecheckpoint", "teletocheckpoint", "cg_jumpgoal", "cg_startgoal")),
+        ("Chat box", ("cg_chatbox", "cg_cleanchatbox")),
+        ("Crosshair", ("cg_crosshair", "cg_drawcrosshair", "cg_dynamiccrosshair", "cg_thirdpersoncrosshair")),
+        ("Third-person camera", ("cg_thirdperson",)),
+        ("HUD timer", ("cg_drawtimer",)),
+        ("Console", ("con_",)),
+        ("Server browser", ("ui_browser",)),
+        ("Downloads", ("cl_download",)),
+        ("Automap", ("r_automap", "automap_")),
+        ("Bloom", ("r_bloom",)),
+        ("Auto exposure", ("r_autoexposure", "r_forceautoexposure", "ui_r_autoexposure")),
+        ("Shadows", ("r_shadow", "ui_r_shadow")),
+        ("Dynamic lights", ("r_dlight",)),
+        ("Volumetric fog", ("r_volumetricfog",)),
+        ("Wind", ("r_wind",)),
+        ("Renderer extensions", ("r_ext_", "ui_r_ext_")),
+        ("Elo rankings", ("g_elo",)),
+        ("Duel settings", ("g_duel",)),
+        ("Grapple", ("g_hook", "grapple")),
+    )
+    return next((feature for feature, prefixes in rules if value.startswith(prefixes)), None)
 
 
 def source_url(path: str, line: int, sha: str) -> str:
@@ -711,6 +781,7 @@ def main() -> None:
             "modified_by": origin.get("modified_by", []), "evidence": evidence + behavior_evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "cvar", primary, summary),
+            "feature": feature_for(name),
             "xdocs": xdoc.get("evidence"), "menu_entries": menu_entries.get(key, []),
             "variables": variables, "source_commit": current_sha,
         })
@@ -784,6 +855,7 @@ def main() -> None:
             "modified_by": origin.get("modified_by", []), "evidence": evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "command", primary, summary),
+            "feature": feature_for(name),
             "xdocs": xdoc.get("evidence"), "menu_entries": menu_entries.get(key, []),
             "source_commit": current_sha,
         })

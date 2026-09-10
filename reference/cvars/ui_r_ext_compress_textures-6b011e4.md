@@ -18,6 +18,7 @@ Controls `ui_r_ext_compress_textures` in the ui module. Consult the cited behavi
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Renderer extensions |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |

@@ -16,6 +16,7 @@ Enable/Disable the pitch HUD
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Pitch HUD |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

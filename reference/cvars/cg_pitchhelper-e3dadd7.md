@@ -18,6 +18,7 @@ Draw pitch angle independently from /cg_showpos
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Pitch helper |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

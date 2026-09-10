@@ -18,6 +18,7 @@ Controls `r_dlightScale` in the renderer module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Dynamic lights |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

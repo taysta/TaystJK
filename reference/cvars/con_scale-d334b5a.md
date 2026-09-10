@@ -16,6 +16,7 @@ Scale console font relative to it's original size.
 | Field | Value |
 |:--|:--|
 | Category | Engine & diagnostics |
+| Feature family | Console |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

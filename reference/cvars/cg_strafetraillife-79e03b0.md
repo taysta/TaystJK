@@ -18,6 +18,7 @@ Controls `cg_strafeTrailLife` in the cgame module. Consult the cited behavior re
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Strafe trail |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -18,6 +18,7 @@ Controls `ui_r_autoexposure` in the ui module. Consult the cited behavior reads 
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Auto exposure |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |

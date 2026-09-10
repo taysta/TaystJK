@@ -16,6 +16,7 @@ Modulate extracted color: 0: off (color = color, i.e. no changes) 1: by itself (
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Bloom |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

@@ -18,6 +18,7 @@ Controls `cg_thirdPersonCameraDamp` in the cgame module. Consult the cited behav
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | Third-person camera |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

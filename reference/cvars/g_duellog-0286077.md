@@ -18,6 +18,7 @@ Log to duels.log.
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Duel settings |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

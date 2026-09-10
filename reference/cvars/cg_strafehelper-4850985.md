@@ -18,6 +18,7 @@ Configure with the /strafehelper command
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Strafe helper |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |

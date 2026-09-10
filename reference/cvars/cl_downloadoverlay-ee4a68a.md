@@ -16,6 +16,7 @@ Draw download info overlay
 | Field | Value |
 |:--|:--|
 | Category | Files & downloads |
+| Feature family | Downloads |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

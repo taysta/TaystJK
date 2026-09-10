@@ -18,6 +18,7 @@ Color level to extract to bloom texture, default is 0.05
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Bloom |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

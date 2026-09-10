@@ -18,6 +18,7 @@ Controls `cg_chatBoxHeight` in the cgame module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Chat & social |
+| Feature family | Chat box |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

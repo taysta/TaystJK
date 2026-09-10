@@ -16,6 +16,7 @@ Draw the match timer
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | HUD timer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

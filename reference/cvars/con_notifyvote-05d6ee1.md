@@ -18,6 +18,7 @@ Notifies you when someone calls a vote
 | Field | Value |
 |:--|:--|
 | Category | Engine & diagnostics |
+| Feature family | Console |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

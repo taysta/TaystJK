@@ -18,6 +18,7 @@ This would be called chatBoxHeight if baseJKA didn't use that
 | Field | Value |
 |:--|:--|
 | Category | Chat & social |
+| Feature family | Chat box |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

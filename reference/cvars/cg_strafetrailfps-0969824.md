@@ -18,6 +18,7 @@ SV_FPS the strafetrail was recorded at.
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Strafe trail |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

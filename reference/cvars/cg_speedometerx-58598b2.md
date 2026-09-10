@@ -18,6 +18,7 @@ Horizontal location of the speedometer
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Speedometer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

@@ -15,7 +15,8 @@ Show/hide radar
 
 | Field | Value |
 |:--|:--|
-| Category | Engine & diagnostics |
+| Category | HUD & interface |
+| Feature family | Automap |
 | Module | `engine-client` |
 | Also registered in | `engine-client` |
 | Renderer | All / not renderer-specific |

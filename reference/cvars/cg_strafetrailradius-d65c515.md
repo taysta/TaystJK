@@ -18,6 +18,7 @@ Controls `cg_strafeTrailRadius` in the cgame module. Consult the cited behavior 
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Strafe trail |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

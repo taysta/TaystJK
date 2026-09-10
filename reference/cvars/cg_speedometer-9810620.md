@@ -18,6 +18,7 @@ Configure with the /speedometer command
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Speedometer |
 | Module | `cgame` |
 | Also registered in | `cgame`, `ui` |
 | Renderer | All / not renderer-specific |

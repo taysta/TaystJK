@@ -17,7 +17,8 @@ How many ray samples to take
 
 | Field | Value |
 |:--|:--|
-| Category | Audio & music |
+| Category | Graphics & rendering |
+| Feature family | Volumetric fog |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |

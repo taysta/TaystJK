@@ -18,6 +18,7 @@ Controls `cg_pitchHudAngle` in the cgame module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Pitch HUD |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

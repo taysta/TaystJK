@@ -739,6 +739,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .card-scopes { margin-bottom: .55rem; }
 
 .meta-chip,
+.feature-chip,
 .coverage-chip,
 .renderer-chip,
 .status-chip,
@@ -758,6 +759,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 }
 
 .meta-chip { color: var(--muted); background: #0a0f18; border-color: var(--line); }
+.feature-chip { color: var(--violet); background: rgba(169, 155, 247, .07); border-color: rgba(169, 155, 247, .2); }
 .coverage-chip { color: var(--accent); background: rgba(104, 225, 212, .07); border-color: rgba(104, 225, 212, .2); }
 .renderer-chip { color: #a9d4f3; background: rgba(79, 156, 209, .10); border-color: rgba(79, 156, 209, .23); }
 .status-chip { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }

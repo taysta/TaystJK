@@ -18,6 +18,7 @@ Controls `g_hookInheritance` in the game module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | Gameplay & combat |
+| Feature family | Grapple |
 | Module | `game` |
 | Also registered in | `game` |
 | Renderer | All / not renderer-specific |

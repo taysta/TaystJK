@@ -18,6 +18,7 @@ Controls `cg_thirdPerson` in the cgame module. Consult the cited behavior reads 
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | Third-person camera |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

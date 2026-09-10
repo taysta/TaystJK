@@ -65,9 +65,13 @@ def main() -> None:
         Path("reference/categories") / f"{collection_slug(category)}.md"
         for category in {entry["category"] for entry in all_entries}
     }
+    expected_collections |= {
+        Path("reference/features") / f"{collection_slug(feature)}.md"
+        for feature in {entry.get("feature") for entry in all_entries if entry.get("feature")}
+    }
     actual_collections = {
         path
-        for directory in (Path("reference/origins"), Path("reference/modules"), Path("reference/categories"))
+        for directory in (Path("reference/origins"), Path("reference/modules"), Path("reference/categories"), Path("reference/features"))
         for path in directory.glob("*.md")
     }
     for path in sorted(expected_collections - actual_collections):

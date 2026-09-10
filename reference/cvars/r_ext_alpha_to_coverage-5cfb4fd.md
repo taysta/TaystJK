@@ -18,6 +18,7 @@ Controls `r_ext_alpha_to_coverage` in the renderer module. Consult the cited beh
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Renderer extensions |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

@@ -16,6 +16,7 @@ Vertical height
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | SnapHUD |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

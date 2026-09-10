@@ -18,6 +18,7 @@ Controls `r_shadowCascadeZBias` in the renderer module. Consult the cited behavi
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Shadows |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-rend2` |

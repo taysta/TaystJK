@@ -18,6 +18,7 @@ Controls `r_windDampFactor` in the renderer module. Consult the cited behavior r
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Wind |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |

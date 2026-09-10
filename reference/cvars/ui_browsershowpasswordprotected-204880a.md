@@ -17,7 +17,8 @@ Controls `ui_browserShowPasswordProtected` in the ui module. Consult the cited b
 
 | Field | Value |
 |:--|:--|
-| Category | Administration |
+| Category | Server & networking |
+| Feature family | Server browser |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |

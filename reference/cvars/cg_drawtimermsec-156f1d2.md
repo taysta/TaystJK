@@ -18,6 +18,7 @@ Controls `cg_drawTimerMsec` in the cgame module. Consult the cited behavior read
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | HUD timer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

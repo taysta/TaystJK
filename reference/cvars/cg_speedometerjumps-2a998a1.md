@@ -18,6 +18,7 @@ The amount of jumps to store in the jumps array, enable with the /speedometer co
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Speedometer |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

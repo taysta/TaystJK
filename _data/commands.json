@@ -22,6 +22,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L779"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button7Down"
@@ -164,6 +165,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L755"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button0Down"
@@ -306,6 +308,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L679"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_BackDown"
@@ -429,6 +432,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L755"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button0Down"
@@ -580,6 +584,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L757"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button1Down"
@@ -713,6 +718,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L785"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button10Down"
@@ -846,6 +852,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L787"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button11Down"
@@ -979,6 +986,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L789"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button12Down"
@@ -1116,6 +1124,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L791"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button13Down"
@@ -1257,6 +1266,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L793"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button14Down"
@@ -1394,6 +1404,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L795"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button15Down"
@@ -1805,6 +1816,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L759"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button2Down"
@@ -1946,6 +1958,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L761"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button3Down"
@@ -2079,6 +2092,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L763"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button4Down"
@@ -2211,6 +2225,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L765"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button5Down"
@@ -2344,6 +2359,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L777"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button6Down"
@@ -2477,6 +2493,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L779"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button7Down"
@@ -2628,6 +2645,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L781"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button8Down"
@@ -2760,6 +2778,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L783"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button9Down"
@@ -2893,6 +2912,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1030"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NorollDown_f"
@@ -3217,6 +3237,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L787"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button11Down"
@@ -3377,6 +3398,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L777"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button6Down"
@@ -3501,6 +3523,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L785"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button10Down"
@@ -3625,6 +3648,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L657"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_ForwardDown"
@@ -3748,6 +3772,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1053"
       }
     ],
+    "feature": "Grapple",
     "gating": [],
     "handlers": [
       "CG_GrappleDown_f"
@@ -3981,6 +4006,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L653"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LeftDown"
@@ -4104,6 +4130,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L703"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LookdownDown"
@@ -4227,6 +4254,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L701"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LookupDown"
@@ -4350,6 +4378,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L154"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MLookDown"
@@ -4474,6 +4503,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L631"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_DownDown"
@@ -4597,6 +4627,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L705"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MoveleftDown"
@@ -4720,6 +4751,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L727"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MoverightDown"
@@ -4843,6 +4875,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L609"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_UpDown"
@@ -4984,6 +5017,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L655"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_RightDown"
@@ -5107,6 +5141,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L123"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ScoresDown_f"
@@ -5265,6 +5300,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L984"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SingleFireDown_f"
@@ -5422,6 +5458,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L750"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_SpeedDown"
@@ -5545,6 +5582,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L752"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_StrafeDown"
@@ -5668,6 +5706,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L765"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button5Down"
@@ -5792,6 +5831,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L783"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button9Down"
@@ -5916,6 +5956,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L943"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ZoomDown_f"
@@ -6197,6 +6238,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L780"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button7Up"
@@ -6348,6 +6390,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L756"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button0Up"
@@ -6499,6 +6542,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L690"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_BackUp"
@@ -6613,6 +6657,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L756"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button0Up"
@@ -6782,6 +6827,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L758"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button1Up"
@@ -6915,6 +6961,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L786"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button10Up"
@@ -7048,6 +7095,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L788"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button11Up"
@@ -7181,6 +7229,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L790"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button12Up"
@@ -7313,6 +7362,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L792"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button13Up"
@@ -7445,6 +7495,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L794"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button14Up"
@@ -7577,6 +7628,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L796"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button15Up"
@@ -7988,6 +8040,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L760"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button2Up"
@@ -8120,6 +8173,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L762"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button3Up"
@@ -8253,6 +8307,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L764"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button4Up"
@@ -8385,6 +8440,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L776"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button5Up"
@@ -8518,6 +8574,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L778"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button6Up"
@@ -8651,6 +8708,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L780"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button7Up"
@@ -8820,6 +8878,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L782"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button8Up"
@@ -8952,6 +9011,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L784"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button9Up"
@@ -9085,6 +9145,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1042"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NorollUp_f"
@@ -9373,6 +9434,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L788"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button11Up"
@@ -9524,6 +9586,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L778"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button6Up"
@@ -9639,6 +9702,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L786"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button10Up"
@@ -9754,6 +9818,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L668"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_ForwardUp"
@@ -9868,6 +9933,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1057"
       }
     ],
+    "feature": "Grapple",
     "gating": [],
     "handlers": [
       "CG_GrappleUp_f"
@@ -10120,6 +10186,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L654"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LeftUp"
@@ -10234,6 +10301,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L704"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LookdownUp"
@@ -10348,6 +10416,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L702"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_LookupUp"
@@ -10462,6 +10531,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L159"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MLookUp"
@@ -10576,6 +10646,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L642"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_DownUp"
@@ -10690,6 +10761,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L716"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MoveleftUp"
@@ -10804,6 +10876,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L738"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_MoverightUp"
@@ -10936,6 +11009,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L620"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_UpUp"
@@ -11068,6 +11142,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L656"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_RightUp"
@@ -11182,6 +11257,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L151"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ScoresUp_f"
@@ -11313,6 +11389,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L994"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SingleFireUp_f"
@@ -11470,6 +11547,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L751"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_SpeedUp"
@@ -11584,6 +11662,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L753"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_StrafeUp"
@@ -11698,6 +11777,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L776"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button5Up"
@@ -11813,6 +11893,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L784"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Button9Up"
@@ -11928,6 +12009,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L956"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ZoomUp_f"
@@ -12200,6 +12282,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2761"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_AccountInfo_f"
@@ -12600,6 +12683,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L1092"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -12782,6 +12866,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2073"
       }
     ],
+    "feature": "Checkpoints",
     "gating": [],
     "handlers": [
       "CG_AddCheckpoint_f"
@@ -13015,6 +13100,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2974"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_AddFavorite_f"
@@ -13461,6 +13547,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L238"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_AddIP_f"
@@ -13873,6 +13960,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1979"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_AddSpeedpoint_f"
@@ -14100,6 +14188,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2655"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -14327,6 +14416,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2653"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -14554,6 +14644,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2654"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -14787,6 +14878,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3000"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Afk_f"
@@ -15234,6 +15326,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2661"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -15489,6 +15582,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L733"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -15808,6 +15902,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6458"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -16073,6 +16168,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6467"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -16330,6 +16426,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6476"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -16574,6 +16671,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6485"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -16839,6 +16937,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6494"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -17104,6 +17203,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6503"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -17369,6 +17469,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6512"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -17634,6 +17735,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6385"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -17899,6 +18001,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L924"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -18179,6 +18282,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6430"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -18444,6 +18548,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6548"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -18695,6 +18800,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2645"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -18922,6 +19028,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2659"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -19149,6 +19256,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2629"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -19382,6 +19490,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6613"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -19612,6 +19721,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2651"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -19853,6 +19963,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5107"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -20172,6 +20283,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5294"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -20513,6 +20625,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2644"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -20768,6 +20881,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L750"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -21108,6 +21222,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6449"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -21373,6 +21488,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5698"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -21902,6 +22018,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L716"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -22221,6 +22338,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5596"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -22502,6 +22620,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2840"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -22820,6 +22939,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5013"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -23121,6 +23241,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4908"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -23474,6 +23595,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4983"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -23809,6 +23931,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5890"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -24108,6 +24231,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5482"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -24412,6 +24536,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2628"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -24639,6 +24764,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2646"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -24880,6 +25006,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5682"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -25148,6 +25275,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2660"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -25389,6 +25517,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6440"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -25654,6 +25783,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6557"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -25923,6 +26053,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2641"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -26150,6 +26281,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2630"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -26391,6 +26523,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5252"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -26691,6 +26824,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6412"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -26956,6 +27090,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7648"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -27281,6 +27416,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6651"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -27564,6 +27700,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2356"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -27813,6 +27950,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2647"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -28040,6 +28178,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2642"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -28273,6 +28412,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6581"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -28509,6 +28649,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6589"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -28745,6 +28886,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6597"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -28981,6 +29123,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6605"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -29211,6 +29354,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2638"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -29452,6 +29596,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6340"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -29717,6 +29862,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6349"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -29982,6 +30128,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6358"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -30247,6 +30394,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6367"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -30512,6 +30660,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6530"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -30777,6 +30926,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6642"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -31042,6 +31192,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6539"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -31307,6 +31458,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6421"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -31558,6 +31710,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2620"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -31799,6 +31952,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6376"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -32064,6 +32218,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6394"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -32329,6 +32484,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6521"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -32594,6 +32750,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7447"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -32994,6 +33151,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7258"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -33344,6 +33502,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2652"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -33585,6 +33744,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6403"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -33850,6 +34010,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5557"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -34136,6 +34297,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2689"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -34382,6 +34544,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2636"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -34609,6 +34772,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2650"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -34836,6 +35000,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2619"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -35069,6 +35234,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L849"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Autologin_f"
@@ -35318,7 +35484,7 @@
   },
   {
     "arguments": [],
-    "category": "Input & controls",
+    "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
     "derivation": "documented",
@@ -35339,6 +35505,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L359"
       }
     ],
+    "feature": "Automap",
     "gating": [],
     "handlers": [
       "IN_AutoMapButton"
@@ -35413,7 +35580,7 @@
   },
   {
     "arguments": [],
-    "category": "Engine & diagnostics",
+    "category": "HUD & interface",
     "cheat_protected": false,
     "confidence": "high",
     "derivation": "documented",
@@ -35434,6 +35601,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L366"
       }
     ],
+    "feature": "Automap",
     "gating": [],
     "handlers": [
       "IN_AutoMapToggle"
@@ -35550,6 +35718,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2710"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -35788,6 +35957,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1373"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Key_Bind_f"
@@ -36065,6 +36235,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1497"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Key_Bindlist_f"
@@ -36324,6 +36495,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L870"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -36642,6 +36814,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_bot.c#L1158"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_BotList_f"
@@ -37090,6 +37263,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L332"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD28"
@@ -37248,6 +37422,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L254"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SiegeBriefing_f"
@@ -37351,6 +37526,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3498"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -37641,6 +37817,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3134"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -38167,6 +38344,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L482"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ShowSpecCamera_f"
@@ -38400,6 +38578,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1397"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_CaptureFrameData_f"
@@ -38682,6 +38861,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L798"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_CenterView"
@@ -38846,6 +39026,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2472"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -39193,6 +39374,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/msg.cpp#L3148"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "MSG_ReportChangeVectors_f"
@@ -39344,6 +39526,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1923"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ChatLogSettings_f"
@@ -39577,6 +39760,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_cin.cpp#L1639"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_PlayCinematic_f"
@@ -39737,6 +39921,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4332"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -40052,6 +40237,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3167"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -40327,6 +40513,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3108"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ClanDelete_f"
@@ -40587,6 +40774,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3881"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -40869,6 +41057,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4192"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -41165,6 +41354,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3319"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -41476,6 +41666,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3226"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ClanKick_f"
@@ -41736,6 +41927,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3681"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -42019,6 +42211,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4121"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -42301,6 +42494,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4867"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -42583,6 +42777,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2338"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -42846,6 +43041,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6249"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -43119,6 +43315,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L177"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_Clear_f"
@@ -43310,6 +43507,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2513"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ClearIP_f"
@@ -43614,6 +43812,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1437"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ClearRemaps_f"
@@ -43967,6 +44166,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2243"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_DeleteStrafeTrail_f"
@@ -44200,6 +44400,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1459"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Clientinfo_f"
@@ -44332,6 +44533,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L580"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_KickNum_f"
@@ -44489,6 +44691,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L619"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ClientList_f"
@@ -44921,6 +45124,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1090"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ForwardToServer_f"
@@ -45114,6 +45318,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L1107"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_List_f"
@@ -45301,6 +45506,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3157"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ColorName_f"
@@ -45589,6 +45795,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L3033"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ColorString_f"
@@ -45967,6 +46174,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L345"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_Dump_f"
@@ -46189,6 +46397,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1436"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Configstrings_f"
@@ -46303,6 +46512,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1137"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Connect_f"
@@ -46645,6 +46855,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8944"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -46917,6 +47128,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1902"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Cosmetics_f"
@@ -47314,6 +47526,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1238"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_Crash_f"
@@ -47571,6 +47784,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7079"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -47730,6 +47944,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1266"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_ListModified_f"
@@ -48214,6 +48429,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1449"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Restart_f"
@@ -48400,6 +48616,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1285"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_ListUserCreated_f"
@@ -48715,6 +48932,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Math_f"
@@ -49071,6 +49289,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Math_f"
@@ -49427,6 +49646,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1225"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_List_f"
@@ -49723,6 +49943,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Math_f"
@@ -50079,6 +50300,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Math_f"
@@ -50435,6 +50657,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1116"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Math_f"
@@ -50791,6 +51014,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3055"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_DBInfo_f"
@@ -51098,6 +51322,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4691"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -51494,6 +51719,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4678"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -51890,6 +52116,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4717"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -52286,6 +52513,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4704"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -52682,6 +52910,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4730"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -53081,6 +53310,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L82"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Delay_f"
@@ -53275,6 +53505,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L114"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_DelayCancel_f"
@@ -53467,6 +53698,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2610"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_DeleteAccount_f"
@@ -53767,6 +53999,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2529"
       }
     ],
+    "feature": "Checkpoints",
     "gating": [],
     "handlers": [
       "CG_DeleteCheckpoint_f"
@@ -54000,6 +54233,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L642"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_DelDemo_f"
@@ -54287,6 +54521,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2525"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_DeleteSpeedpoint_f"
@@ -54520,6 +54755,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L554"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_PlayDemo_f"
@@ -54803,6 +55039,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L631"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_DemoRestart_f"
@@ -55150,6 +55387,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L177"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Map_f"
@@ -55337,6 +55575,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L177"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Map_f"
@@ -55524,6 +55763,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L177"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Map_f"
@@ -55711,6 +55951,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3061"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_Dir_f"
@@ -55844,6 +56085,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1108"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Disconnect_f"
@@ -55970,6 +56212,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2541"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Do_f"
@@ -56253,6 +56496,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1653"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -56716,6 +56960,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2625"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -56949,6 +57194,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1492"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_DumpUser_f"
@@ -57099,6 +57345,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L468"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Echo_f"
@@ -57232,6 +57479,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L172"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD2"
@@ -57363,6 +57611,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4144"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -57636,6 +57885,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4149"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -57901,6 +58151,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L308"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_EntityInfo_f"
@@ -58134,6 +58385,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L340"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_EntityList_f"
@@ -58639,6 +58891,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1194"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_Error_f"
@@ -58771,6 +59024,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L412"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Exec_f"
@@ -58947,6 +59201,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L412"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Exec_f"
@@ -59377,6 +59632,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L495"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_Quit_f"
@@ -59653,6 +59909,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3178"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_NewDir_f"
@@ -59786,6 +60043,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2862"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_FlagAccount_f"
@@ -60110,6 +60368,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5389"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -60269,6 +60528,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1000"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Flipkick_f"
@@ -60519,6 +60779,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L344"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD30"
@@ -60699,6 +60960,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1980"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -60996,6 +61258,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L569"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_FollowBlueFlag_f"
@@ -61234,6 +61497,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L609"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_FollowFastest_f"
@@ -61535,6 +61799,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2124"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -61959,6 +62224,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2128"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -62375,6 +62641,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L589"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_FollowRedFlag_f"
@@ -62629,6 +62896,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1852"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_FontList_f"
@@ -63194,6 +63462,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L214"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD9"
@@ -63371,6 +63640,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L196"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD6"
@@ -63567,6 +63837,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L226"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD11"
@@ -63690,6 +63961,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L178"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD3"
@@ -63886,6 +64158,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L220"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD10"
@@ -64009,6 +64282,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L208"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD8"
@@ -64186,6 +64460,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L190"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD5"
@@ -64382,6 +64657,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L202"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD7"
@@ -64559,6 +64835,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L232"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD12"
@@ -64682,6 +64959,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L184"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD4"
@@ -64878,6 +65156,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L284"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD20"
@@ -65082,6 +65361,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1891"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -65256,6 +65536,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3343"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NextForcePower_f"
@@ -65577,6 +65858,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2909"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_SetForcePowers_f"
@@ -65709,6 +65991,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3389"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PrevForcePower_f"
@@ -66066,6 +66349,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L531"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ForceTeam_f"
@@ -66514,6 +66798,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1311"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ForceToggle_f"
@@ -66682,6 +66967,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1211"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_Freeze_f"
@@ -66796,6 +67082,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1418"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_OpenedPK3List_f"
@@ -66892,6 +67179,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1427"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ReferencedPK3List_f"
@@ -66996,6 +67284,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L4532"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_Restart_f"
@@ -67419,6 +67708,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_mem.c#L80"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_GameMem_f"
@@ -67892,6 +68182,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L169"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ChangeGametype_f"
@@ -68198,6 +68489,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2574"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -68664,6 +68956,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1274"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "GfxInfo_f"
@@ -69204,6 +69497,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1350"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "GfxMemInfo_f"
@@ -69513,6 +69807,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L603"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -69729,6 +70024,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L611"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -70146,6 +70442,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L350"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD31"
@@ -70304,6 +70601,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L4096"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_GlobalServers_f"
@@ -70588,6 +70886,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L655"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -70799,6 +71098,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6928"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -70959,6 +71259,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1445"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Heartbeat_f"
@@ -71123,6 +71424,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L1151"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Help_f",
@@ -71492,6 +71794,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6970"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -71853,6 +72156,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L346"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_IfCvar_f"
@@ -72012,6 +72316,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4835"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -72285,6 +72590,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L438"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_IgnoreVGS_f"
@@ -72537,6 +72843,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L849"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "RE_RegisterImages_Info_f"
@@ -72857,6 +73164,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L227"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ImageList_f"
@@ -73289,6 +73597,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/null/null_input.cpp#L33"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_Restart"
@@ -73564,6 +73873,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3490"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_InvUseAvailable"
@@ -73721,6 +74031,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3429"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NextInventory_f"
@@ -73916,6 +74227,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_main.c#L3459"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PrevInventory_f"
@@ -74148,6 +74460,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5958"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -74436,6 +74749,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6838"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -74844,6 +75158,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L440"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Kick_f"
@@ -75037,6 +75352,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L549"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_KickAll_f"
@@ -75412,6 +75728,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L519"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_KickBots_f"
@@ -75787,6 +76104,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L580"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_KickNum_f"
@@ -76225,6 +76543,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L987"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -76529,6 +76848,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1013"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -76981,6 +77301,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1521"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_KillServer_f"
@@ -77139,6 +77460,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7109"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -77476,6 +77798,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L921"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -77650,6 +77973,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3011"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ListAdmins_f"
@@ -77956,6 +78280,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2184"
       }
     ],
+    "feature": "Checkpoints",
     "gating": [],
     "handlers": [
       "CG_ListCheckpoints_f"
@@ -78189,6 +78514,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L693"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ListEmojis_f"
@@ -78422,6 +78748,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L287"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ListIP_f"
@@ -78834,6 +79161,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L673"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ListRemaps_f"
@@ -79086,6 +79414,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2057"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ListSpeedpoints_f"
@@ -79313,6 +79642,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2584"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -79408,6 +79738,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L2682"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_LoadDeferredPlayers"
@@ -79505,6 +79836,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L306"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_LoadHud_f"
@@ -79765,6 +80097,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1302"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Mod_Restart_f"
@@ -79997,6 +80330,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2539"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SpawnStrafeTrailFromCFG_f"
@@ -80230,6 +80564,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L4047"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_LocalServers_f"
@@ -80402,6 +80737,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2199"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -81009,6 +81345,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3521"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -81426,6 +81763,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1018"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Lowjump_f"
@@ -81741,6 +82079,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L177"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Map_f"
@@ -81953,6 +82292,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L252"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_MapRestart_f"
@@ -82256,6 +82596,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8230"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_CHEAT",
       "CMD_NOINTERMISSION"
@@ -82519,6 +82860,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L3954"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -82837,6 +83179,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4043"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -83129,6 +83472,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L338"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD29"
@@ -83287,6 +83631,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L98"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_MessageMode_f"
@@ -83518,6 +83863,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L111"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_MessageMode2_f"
@@ -83731,6 +84077,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L124"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_MessageMode3_f"
@@ -83989,6 +84336,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L153"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_MessageMode4_f"
@@ -84211,6 +84559,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1343"
       }
     ],
+    "feature": "Checkpoints",
     "gating": [],
     "handlers": [
       "SV_MigrateCheckpoints_f"
@@ -84298,6 +84647,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/sdl/sdl_window.cpp#L146"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "GLimp_Minimize"
@@ -84732,6 +85082,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L519"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_MNext_f"
@@ -84944,6 +85295,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2878"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_SetModel_f"
@@ -85101,6 +85453,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_model.cpp#L443"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "RE_RegisterModels_Info_f"
@@ -85432,6 +85785,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L269"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ModeList_f"
@@ -85635,6 +85989,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_model.cpp#L1615"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_Modellist_f"
@@ -86035,6 +86390,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6290"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ModVersion_f",
@@ -86353,6 +86709,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6687"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -86851,6 +87208,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_mem.cpp#L519"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_MP3_CalcVols_f"
@@ -86964,6 +87322,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L531"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_MPause_f"
@@ -87176,6 +87535,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L523"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_MPrev_f"
@@ -87388,6 +87748,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L527"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_MStop_f"
@@ -87600,6 +87961,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3765"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_Music_f"
@@ -87774,6 +88136,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7833"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -87933,6 +88296,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L1100"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "NET_Restart_f"
@@ -88122,6 +88486,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L124"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestModelNextFrame_f"
@@ -88290,6 +88655,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L137"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestModelNextSkin_f"
@@ -88466,6 +88832,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L809"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -88810,6 +89177,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L677"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -89016,6 +89384,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2714"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -89265,6 +89634,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/NPC_spawn.c#L4291"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -89913,6 +90283,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9014"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_CHEAT",
       "CMD_NOINTERMISSION"
@@ -90185,6 +90556,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2643"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -90418,6 +90790,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7048"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -90617,6 +90990,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3212"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_Path_f"
@@ -90792,6 +91166,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L170"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Pause_f"
@@ -91025,6 +91400,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L4328"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Ping_f"
@@ -91200,6 +91576,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3745"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_Play_f"
@@ -91376,6 +91753,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L554"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_PlayDemo_f"
@@ -91658,6 +92036,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2657"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -91885,6 +92264,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2656"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -92118,6 +92498,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1292"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PluginDisable_f"
@@ -92388,6 +92769,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1292"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PluginDisable_f"
@@ -92666,6 +93048,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7211"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -93003,6 +93386,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L129"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestModelPrevFrame_f"
@@ -93189,6 +93573,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L142"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestModelPrevSkin_f"
@@ -93375,6 +93760,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L997"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Print_f"
@@ -93889,6 +94275,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L5978"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -94181,6 +94568,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L110"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PTele_f"
@@ -94414,6 +94802,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L86"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PTelemark_f"
@@ -94647,6 +95036,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L495"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_Quit_f"
@@ -94852,6 +95242,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1556"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_AtiHackToggle_f"
@@ -95129,6 +95520,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_decals.cpp#L62"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "RE_ClearDecals"
@@ -95501,6 +95893,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_WorldEffects.cpp#L1425"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_WorldEffect_f"
@@ -95817,6 +96210,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7681"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -96225,6 +96619,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5993"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -96439,6 +96834,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1238"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Rcon_f"
@@ -96649,6 +97045,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L171"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_RebuildElo_f"
@@ -96937,6 +97334,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1261"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_RebuildRaceRanks_f"
@@ -97353,6 +97751,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L1823"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_RebuildUnlocks_f"
@@ -97677,6 +98076,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1123"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Reconnect_f"
@@ -97809,6 +98209,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L303"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Record_f"
@@ -98064,6 +98465,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2551"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -98518,6 +98920,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L655"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_RemapShader_f"
@@ -98786,6 +99189,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1421"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_RemapSkyShader_f"
@@ -99139,6 +99543,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L257"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_RemoveIP_f"
@@ -99551,6 +99956,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L2667"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_RenameAccount_f"
@@ -99929,6 +100335,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1161"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Reset_f"
@@ -100146,6 +100553,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L174"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ResetScores_f"
@@ -100408,6 +100816,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5528"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -100726,6 +101135,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5857"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -101080,6 +101490,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L6157"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -101524,6 +101935,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6886"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -101816,6 +102228,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L6887"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -102116,6 +102529,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L5713"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -102471,6 +102885,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L6292"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -102987,6 +103402,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L6690"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -103351,6 +103767,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3786"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_SetDynamicMusic_f"
@@ -103508,6 +103925,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4749"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -104096,6 +104514,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L274"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD19"
@@ -104356,6 +104775,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L897"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -104714,6 +105134,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1262"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleSaberDisable_f"
@@ -104983,6 +105404,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L817"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -105329,6 +105751,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2379"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -105651,6 +106074,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9040"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -105924,6 +106348,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L158"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Score_f"
@@ -106349,6 +106774,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1224"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ScreenShotJPEG_f",
@@ -106755,6 +107181,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1224"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ScreenShotPNG_f",
@@ -107414,6 +107841,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1224"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ScreenShotTGA_f",
@@ -107791,6 +108219,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_world.cpp#L87"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_SectorList_f"
@@ -107887,6 +108316,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L970"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ToggleSingleFire_f"
@@ -108052,6 +108482,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L506"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ServerConfig_f",
@@ -108523,6 +108954,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1456"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Serverinfo_f"
@@ -108678,6 +109110,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L4476"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ServerStatus_f"
@@ -108863,6 +109296,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1068"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Set_f"
@@ -109068,6 +109502,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1068"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Set_f"
@@ -109275,6 +109710,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1068"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Set_f"
@@ -109482,6 +109918,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1068"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Set_f"
@@ -109697,6 +110134,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3645"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_CHEAT",
       "CMD_NOINTERMISSION",
@@ -109942,6 +110380,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_shader.cpp#L3802"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_ShaderList_f"
@@ -110304,6 +110743,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L4515"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_ShowIP_f"
@@ -110462,6 +110902,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8698"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -110843,6 +111284,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L158"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_ClientList_f"
@@ -111084,6 +111526,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1786"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -111537,6 +111980,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L294"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SiegeCompleteCvarUpdate_f"
@@ -111740,6 +112184,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L274"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SiegeCvarUpdate_f"
@@ -111853,6 +112298,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L69"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SizeDown_f"
@@ -112020,6 +112466,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L58"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_SizeUp_f"
@@ -112203,6 +112650,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_skin.cpp#L417"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_SkinList_f"
@@ -112562,6 +113010,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1968"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_WeaponSlot_f"
@@ -112738,6 +113187,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2081"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PrevWeaponSlot_f"
@@ -112895,6 +113345,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L2037"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NextWeaponSlot_f"
@@ -113052,6 +113503,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1396"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Snd_Restart_f"
@@ -113175,6 +113627,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L391"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_SoundInfo_f"
@@ -113452,6 +113905,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3861"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_SoundList_f"
@@ -113675,6 +114129,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L1884"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_StopAllSounds"
@@ -113826,6 +114281,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1529"
       }
     ],
+    "feature": "Speedometer",
     "gating": [],
     "handlers": [
       "CG_SpeedometerSettings_f"
@@ -114178,6 +114634,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6003"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -114506,6 +114963,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1208"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleStartingItems_f"
@@ -114739,6 +115197,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1142"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleStartingWeapons_f"
@@ -115009,6 +115468,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L235"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_StartOrbit_f"
@@ -115130,6 +115590,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L4523"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -115321,6 +115782,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1145"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Status_f"
@@ -115705,6 +116167,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/snd_dma.cpp#L3780"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "S_StopMusic_f"
@@ -116116,6 +116579,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L259"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_StopRecord_f"
@@ -116248,6 +116712,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2969"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_StopVideo_f"
@@ -116700,6 +117165,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1134"
       }
     ],
+    "feature": "Strafe helper",
     "gating": [],
     "handlers": [
       "CG_StrafeHelper_f"
@@ -117013,6 +117479,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2265"
       }
     ],
+    "feature": "Strafe trail",
     "gating": [],
     "handlers": [
       "CG_AddStrafeTrail_f"
@@ -117267,6 +117734,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L433"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_StrSub_f"
@@ -117418,6 +117886,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1435"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_StylePlayer_f"
@@ -117762,6 +118231,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1091"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_BanAddr_f"
@@ -118137,6 +118607,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1101"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_BanDel_f"
@@ -118512,6 +118983,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1096"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ExceptAddr_f"
@@ -118887,6 +119359,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1106"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ExceptDel_f"
@@ -119280,6 +119753,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1075"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_FlushBans_f"
@@ -119655,6 +120129,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1030"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ListBans_f"
@@ -120048,6 +120523,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1730"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ListRecording_f"
@@ -120300,6 +120776,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L614"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_RehashBans_f"
@@ -120675,6 +121152,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L166"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD1"
@@ -120795,6 +121273,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L397"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_DemoClearMeta_f"
@@ -120929,6 +121408,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L398"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_DemoClearPreRecord_f"
@@ -121063,6 +121543,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L396"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_DemoMeta_f"
@@ -121197,6 +121678,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L394"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Record_f"
@@ -121740,6 +122222,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L399"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_RenameDemo_f"
@@ -122046,6 +122529,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1228"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ConSay_f"
@@ -122292,6 +122776,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/docs/japro_docs.md#L395"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_StopRecord_f"
@@ -122739,6 +123224,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1259"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_ConTell_f"
@@ -123132,6 +123618,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1474"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_Systeminfo_f"
@@ -123282,6 +123769,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4652"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT",
@@ -123697,6 +124185,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L326"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD27"
@@ -123886,6 +124375,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L38"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TargetCommand_f"
@@ -124116,6 +124606,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L1589"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -124344,6 +124835,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2595"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -124447,6 +124939,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3594"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -124657,6 +125150,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2202"
       }
     ],
+    "feature": "Checkpoints",
     "gating": [],
     "handlers": [
       "CG_TeleToCheckpoint_f"
@@ -124912,6 +125406,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2401"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -125230,6 +125725,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L214"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TellAttacker_f"
@@ -125379,6 +125875,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L199"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TellTarget_f"
@@ -125510,6 +126007,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8130"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_CHEAT",
       "CMD_NOINTERMISSION"
@@ -125765,6 +126263,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L114"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestGun_f"
@@ -125914,6 +126413,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L76"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_TestModel_f"
@@ -126100,6 +126600,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L4671"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_CHEAT"
@@ -126478,6 +126979,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8589"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -126778,6 +127280,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L8660"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION"
@@ -126975,6 +127478,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1026"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Toggle_f"
@@ -127186,6 +127690,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1332"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleAdmin_f"
@@ -127438,6 +127943,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3106"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleAllowVote_f"
@@ -127831,6 +128337,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L69"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_ToggleConsole_f"
@@ -128127,6 +128634,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1557"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleEmotes_f"
@@ -128360,6 +128868,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_console.cpp#L88"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Con_ToggleMenu_f"
@@ -128753,6 +129262,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_client.c#L2125"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleUserinfoValidation_f"
@@ -129237,6 +129747,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1430"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleVote_f"
@@ -129478,6 +129989,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L656"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -129807,6 +130319,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3248"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_TouchFile_f"
@@ -129976,6 +130489,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7888"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION"
     ],
@@ -130135,6 +130649,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1016"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleTweakForce_f"
@@ -130368,6 +130883,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L941"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleTweakSaber_f"
@@ -130601,6 +131117,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L1489"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleTweakVote_f"
@@ -130834,6 +131351,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_svcmds.c#L879"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Svcmd_ToggleTweakWeapons_f"
@@ -131140,6 +131658,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L74"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_Cache_f"
@@ -131570,6 +132089,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L1540"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_Load"
@@ -132082,6 +132602,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L53"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_Modversion_f"
@@ -132352,6 +132873,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L84"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_OpenMenu_f"
@@ -132708,6 +133230,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_atoms.c#L90"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_OpenSiegeMenu_f"
@@ -133119,6 +133642,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L1414"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "UI_Report"
@@ -133532,6 +134056,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1308"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Key_Unbind_f"
@@ -133719,6 +134244,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L1355"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Key_Unbindall_f"
@@ -133888,6 +134414,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1363"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_Unset_f"
@@ -134353,6 +134880,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1384"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cvar_UnsetUserCreated_f"
@@ -134668,6 +135196,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L308"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD24"
@@ -134763,6 +135292,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L250"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD15"
@@ -134950,6 +135480,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L296"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD22"
@@ -135045,6 +135576,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L320"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD26"
@@ -135140,6 +135672,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L256"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD16"
@@ -135327,6 +135860,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L314"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD25"
@@ -135422,6 +135956,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L244"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD14"
@@ -135536,6 +136071,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L302"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD23"
@@ -135669,6 +136205,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L290"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD21"
@@ -135764,6 +136301,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L238"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD13"
@@ -135951,6 +136489,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L268"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_GenCMD18"
@@ -136138,6 +136677,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L85"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_UseGivenForce"
@@ -136251,6 +136791,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1459"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Clientinfo_f"
@@ -136521,6 +137062,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_vbo.cpp#L358"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "R_VBOList_f"
@@ -136849,6 +137391,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2500"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -137186,6 +137729,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1323"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Vid_Restart_f"
@@ -137444,6 +137988,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L2936"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CL_Video_f"
@@ -137921,6 +138466,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L80"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Viewpos_f"
@@ -138143,6 +138689,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_info.cpp#L456"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "vk_info_f"
@@ -138459,6 +139006,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2440"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -138972,6 +139520,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L386"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "IN_VoiceChatButton"
@@ -139102,6 +139651,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L3384"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -139426,6 +139976,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L448"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Vstr_f"
@@ -139550,6 +140101,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L58"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Wait_f"
@@ -139703,6 +140255,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L87"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_Waitf_f"
@@ -139897,6 +140450,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cmd.cpp#L118"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Cmd_WaitfCancel_f"
@@ -140097,6 +140651,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7411"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_ALIVE",
       "CMD_NOINTERMISSION",
@@ -140434,6 +140989,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7359"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -140702,6 +141258,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2540"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_LastWeapon_f"
@@ -140972,6 +141529,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1541"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_NextWeapon_f"
@@ -141167,6 +141725,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1677"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_Weapon_f"
@@ -141451,6 +142010,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1831"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_WeaponClean_f"
@@ -141619,6 +142179,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1382"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_WeaponToggle_f"
@@ -141994,6 +142555,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L1609"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "CG_PrevWeapon_f"
@@ -142215,6 +142777,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L2615"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -142676,6 +143239,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/files.cpp#L3267"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "FS_Which_f"
@@ -143205,6 +143769,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L2273"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "SV_WhitelistIP_f"
@@ -143588,6 +144153,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_account.c#L7107"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],
@@ -144059,6 +144625,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1610"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_WriteConfig_f"
@@ -144292,6 +144859,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/common.cpp#L1610"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Com_WriteConfig_f"
@@ -144486,6 +145054,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L7006"
       }
     ],
+    "feature": null,
     "gating": [
       "CMD_NOINTERMISSION",
       "sent-to-server"
@@ -144824,6 +145393,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/z_memman_pc.cpp#L555"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Z_Details_f"
@@ -144974,6 +145544,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/z_memman_pc.cpp#L515"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Z_MemRecoverTest_f"
@@ -145088,6 +145659,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/z_memman_pc.cpp#L539"
       }
     ],
+    "feature": null,
     "gating": [],
     "handlers": [
       "Z_Stats_f"
@@ -145246,6 +145818,7 @@
         "url": "https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_input.cpp#L262"
       }
     ],
+    "feature": null,
     "gating": [
       "sent-to-server"
     ],

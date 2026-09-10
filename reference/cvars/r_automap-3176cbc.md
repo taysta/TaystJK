@@ -17,7 +17,8 @@ Controls `r_autoMap` in the renderer module. Consult the cited behavior reads be
 
 | Field | Value |
 |:--|:--|
-| Category | Graphics & rendering |
+| Category | HUD & interface |
+| Feature family | Automap |
 | Module | `renderer` |
 | Also registered in | `cgame`, `renderer` |
 | Renderer | `rd-dedicated`, `rd-vanilla`, `rd-vulkan` |

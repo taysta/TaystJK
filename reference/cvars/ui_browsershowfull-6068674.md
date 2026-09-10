@@ -17,7 +17,8 @@ Controls `ui_browserShowFull` in the ui module. Consult the cited behavior reads
 
 | Field | Value |
 |:--|:--|
-| Category | HUD & interface |
+| Category | Server & networking |
+| Feature family | Server browser |
 | Module | `ui` |
 | Also registered in | `ui` |
 | Renderer | All / not renderer-specific |

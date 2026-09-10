@@ -18,6 +18,7 @@ Enable bloom effect Requires \\r_fbo 1
 | Field | Value |
 |:--|:--|
 | Category | Graphics & rendering |
+| Feature family | Bloom |
 | Module | `renderer` |
 | Also registered in | `renderer` |
 | Renderer | `rd-vulkan` |

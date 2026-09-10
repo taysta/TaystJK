@@ -18,6 +18,7 @@ Controls `cg_chatBox` in the cgame module. Consult the cited behavior reads befo
 | Field | Value |
 |:--|:--|
 | Category | Chat & social |
+| Feature family | Chat box |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

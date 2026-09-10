@@ -18,6 +18,7 @@ Controls `cg_thirdPersonPitchOffset` in the cgame module. Consult the cited beha
 | Field | Value |
 |:--|:--|
 | Category | HUD & interface |
+| Feature family | Third-person camera |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

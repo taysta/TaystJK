@@ -18,6 +18,7 @@ Move the pitch helper's horizontal location
 | Field | Value |
 |:--|:--|
 | Category | Movement & race |
+| Feature family | Pitch helper |
 | Module | `cgame` |
 | Also registered in | `cgame` |
 | Renderer | All / not renderer-specific |

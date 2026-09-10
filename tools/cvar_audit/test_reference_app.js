@@ -10,6 +10,7 @@ const cvar = catalog.prepareEntry({
   name: "r_bloom",
   summary: "Enable bloom post-processing",
   category: "Graphics & rendering",
+  feature: "Bloom",
   module: "renderer",
   renderer: ["rd-rend2", "rd-vulkan"],
   flags: ["CVAR_ARCHIVE"],
@@ -24,6 +25,7 @@ const command = catalog.prepareEntry({
   name: "download",
   summary: "Download a file from the server",
   category: "Files & downloads",
+  feature: null,
   module: "engine-client",
   renderer: [],
   network: "needs-server-support",
@@ -39,6 +41,7 @@ function state(overrides = {}) {
     origin: "",
     module: "",
     category: "",
+    feature: "",
     renderer: "",
     status: "",
     network: "",
@@ -46,7 +49,7 @@ function state(overrides = {}) {
     flag: "",
     query: "",
     tokens: [],
-    sort: "relevance"
+    sort: "origin"
   }, overrides);
 }
 
@@ -61,10 +64,19 @@ assert.equal(catalog.entryMatches(command, state({ renderer: "none" })), true);
 assert.equal(catalog.entryMatches(command, state({ kind: "cvar" })), false);
 assert.equal(catalog.entryMatches(cvar, state({ flag: "CVAR_ARCHIVE" })), true);
 assert.equal(catalog.entryMatches(cvar, state({ category: "Graphics & rendering" })), true);
+assert.equal(catalog.entryMatches(cvar, state({ feature: "Bloom" })), true);
+assert.equal(catalog.entryMatches(command, state({ feature: "Bloom" })), false);
 assert.equal(catalog.entryMatches(cvar, state({ coverage: "xdocs" })), true);
 assert.equal(catalog.entryMatches(cvar, state({ coverage: "menu" })), false);
 assert.equal(catalog.entryMatches(command, state({ coverage: ["xdocs", "menu"] })), true);
-assert.deepEqual(catalog.sortEntries([command, cvar], state({ query: "r_bloom", tokens: ["r_bloom"] }))[0], cvar);
+assert.equal(catalog.defaultSort, "origin");
+assert.deepEqual(catalog.sortEntries([command, cvar], state({ query: "r_bloom", tokens: ["r_bloom"], sort: "relevance" }))[0], cvar);
+assert.deepEqual(catalog.sortEntries([command, cvar], state({ sort: "feature" }))[0], cvar);
+const originOrder = ["taystjk", "eternaljk", "japro", "newjk", "vulkan", "rend2", "openjk", "basejka"];
+const preferredOrigins = originOrder.map((origin, index) => catalog.prepareEntry({ name: `entry-${index}`, origin }));
+assert.deepEqual(catalog.sortEntries(preferredOrigins.slice().reverse(), state({ sort: "origin" })).map((entry) => entry.origin), originOrder);
+const legacyOrigin = catalog.prepareEntry({ name: "legacy-entry", origin: "jk2mv" });
+assert.equal(catalog.sortEntries([legacyOrigin, ...preferredOrigins], state({ sort: "origin" })).at(-1).origin, "jk2mv");
 assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar" }))).length, metadata.counts.cvars);
 assert.equal(generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "command" }))).length, metadata.counts.commands);
 const japroEntries = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ origin: "japro" })));
@@ -73,8 +85,11 @@ const multiOriginEntries = generatedEntries.filter((entry) => catalog.entryMatch
 assert.ok(multiOriginEntries.length > japroEntries.length && multiOriginEntries.every((entry) => ["japro", "taystjk"].includes(entry.origin)));
 const vulkanCvars = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ kind: "cvar", renderer: "rd-vulkan" })));
 assert.ok(vulkanCvars.length > 0 && vulkanCvars.every((entry) => entry.kind === "cvar" && entry.renderer.includes("rd-vulkan")));
-const cameraSearch = state({ query: "cg_camerafps", tokens: ["cg_camerafps"] });
+const cameraSearch = state({ query: "cg_camerafps", tokens: ["cg_camerafps"], sort: "relevance" });
 assert.equal(catalog.sortEntries(generatedEntries.filter((entry) => catalog.entryMatches(entry, cameraSearch)), cameraSearch)[0].name, "cg_cameraFPS");
+const killfeedEntries = generatedEntries.filter((entry) => catalog.entryMatches(entry, state({ feature: "Killfeed" })));
+assert.equal(killfeedEntries.length, 9);
+assert.ok(killfeedEntries.every((entry) => entry.category === "HUD & interface"));
 
 assert.equal(catalog.detectPlatform("Win32"), "windows");
 assert.equal(catalog.detectPlatform("MacIntel"), "macos");

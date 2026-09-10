@@ -2,18 +2,20 @@
   "use strict";
 
   var PAGE_SIZE = 48;
-  var FILTER_KEYS = ["origin", "module", "category", "renderer", "status", "network", "coverage", "flag"];
+  var FILTER_KEYS = ["origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "flag"];
   var FILTER_DEFAULTS = {
     origin: "Any origin",
     module: "Any module",
     category: "Any topic",
+    feature: "Any feature",
     renderer: "Any renderer",
     status: "Any status",
     network: "Any scope",
     coverage: "Any coverage",
     flag: "Any flag"
   };
-  var ORIGIN_ORDER = ["taystjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "openjk", "basejka", "quake3", "unknown"];
+  var DEFAULT_SORT = "origin";
+  var ORIGIN_ORDER = ["taystjk", "eternaljk", "japro", "newjk", "vulkan", "rend2", "openjk", "basejka", "jk2mv", "quake3", "unknown"];
   var ORIGIN_LABELS = {
     taystjk: "TaystJK",
     eternaljk: "EternalJK",
@@ -64,6 +66,7 @@
       entry.module,
       (entry.modules || []).join(" "),
       entry.category,
+      entry.feature,
       entry.origin,
       entry.network,
       (entry.renderer || []).join(" "),
@@ -93,6 +96,7 @@
     var origins = selectedValues(state, "origin");
     var modules = selectedValues(state, "module");
     var categories = selectedValues(state, "category");
+    var features = selectedValues(state, "feature");
     var statuses = selectedValues(state, "status");
     var networks = selectedValues(state, "network");
     var coverage = selectedValues(state, "coverage");
@@ -101,6 +105,7 @@
     if (origins.length && origins.indexOf(entry.origin) === -1) return false;
     if (modules.length && !modules.some(function (moduleName) { return (entry.modules || [entry.module]).indexOf(moduleName) !== -1; })) return false;
     if (categories.length && categories.indexOf(entry.category) === -1) return false;
+    if (features.length && features.indexOf(entry.feature) === -1) return false;
     if (statuses.length && statuses.indexOf(entry.status) === -1) return false;
     if (networks.length && networks.indexOf(entry.network) === -1) return false;
     if (coverage.length && !coverage.some(function (value) {
@@ -133,9 +138,17 @@
     return entries.slice().sort(function (a, b) {
       var result = 0;
       if (state.sort === "relevance" && state.query) result = relevance(a, state.query) - relevance(b, state.query);
-      if (!result && state.sort === "origin") result = ORIGIN_ORDER.indexOf(a.origin) - ORIGIN_ORDER.indexOf(b.origin);
+      if (!result && state.sort === "origin") {
+        var aOrigin = ORIGIN_ORDER.indexOf(a.origin);
+        var bOrigin = ORIGIN_ORDER.indexOf(b.origin);
+        result = (aOrigin === -1 ? ORIGIN_ORDER.length : aOrigin) - (bOrigin === -1 ? ORIGIN_ORDER.length : bOrigin);
+      }
       if (!result && state.sort === "module") result = a.module.localeCompare(b.module);
       if (!result && state.sort === "category") result = a.category.localeCompare(b.category);
+      if (!result && state.sort === "feature") {
+        if (Boolean(a.feature) !== Boolean(b.feature)) result = a.feature ? -1 : 1;
+        else result = (a.feature || "").localeCompare(b.feature || "");
+      }
       if (!result) result = a._name.localeCompare(b._name);
       return result;
     });
@@ -191,6 +204,9 @@
     unique(entries, function (entry) { return entry.category; }).sort().forEach(function (value) {
       addFilterOption(root, "category", value, value);
     });
+    unique(entries, function (entry) { return entry.feature; }).sort().forEach(function (value) {
+      addFilterOption(root, "feature", value, value);
+    });
     unique(entries, function (entry) { return entry.renderer; }).sort().forEach(function (value) {
       addFilterOption(root, "renderer", value, value);
     });
@@ -232,6 +248,7 @@
     if (entry.status !== "documented") scopes += '<span class="status-chip">Needs review</span>';
 
     var meta = '<span class="meta-chip">' + escapeHtml(entry.category) + '</span>' +
+      (entry.feature ? '<span class="feature-chip">' + escapeHtml(entry.feature) + '</span>' : '') +
       '<span class="meta-chip">' + escapeHtml(entry.module) + '</span>' +
       '<span class="meta-chip">' + escapeHtml(NETWORK_LABELS[entry.network] || entry.network) + '</span>';
     if (entry.xdocs) meta += '<span class="coverage-chip">xdocs</span>';
@@ -277,6 +294,7 @@
       origin: root.dataset.presetOrigin || "",
       module: root.dataset.presetModule || "",
       category: root.dataset.presetCategory || "",
+      feature: root.dataset.presetFeature || "",
       renderer: root.dataset.presetRenderer || ""
     };
     var state = {
@@ -287,12 +305,13 @@
       origin: presets.origin ? [presets.origin] : paramValues(params, "origin"),
       module: presets.module ? [presets.module] : paramValues(params, "module"),
       category: presets.category ? [presets.category] : paramValues(params, "category"),
+      feature: presets.feature ? [presets.feature] : paramValues(params, "feature"),
       renderer: presets.renderer ? [presets.renderer] : paramValues(params, "renderer"),
       status: paramValues(params, "status"),
       network: paramValues(params, "network"),
       coverage: paramValues(params, "coverage"),
       flag: paramValues(params, "flag"),
-      sort: ["relevance", "name", "category", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : "relevance",
+      sort: ["relevance", "name", "category", "feature", "origin", "module"].indexOf(params.get("sort")) !== -1 ? params.get("sort") : DEFAULT_SORT,
       limit: PAGE_SIZE,
       presets: presets
     };
@@ -363,21 +382,21 @@
 
   function syncUrl(state) {
     var params = new URLSearchParams(global.location.search);
-    ["q", "kind", "origin", "module", "category", "renderer", "status", "network", "coverage", "flag", "sort"].forEach(function (key) { params.delete(key); });
+    ["q", "kind", "origin", "module", "category", "feature", "renderer", "status", "network", "coverage", "flag", "sort"].forEach(function (key) { params.delete(key); });
     if (state.query) params.set("q", state.query);
     if (state.mode === "all" && state.kind !== "all") params.set("kind", state.kind);
     FILTER_KEYS.forEach(function (key) {
       if (state.presets[key]) return;
       selectedValues(state, key).forEach(function (value) { params.append(key, value); });
     });
-    if (state.sort !== "relevance") params.set("sort", state.sort);
+    if (state.sort !== DEFAULT_SORT) params.set("sort", state.sort);
     var query = params.toString();
     global.history.replaceState(null, "", global.location.pathname + (query ? "?" + query : "") + global.location.hash);
   }
 
   function activeFilterText(state) {
     var values = [];
-    var groupLabels = { origin: "Origin", module: "Module", category: "Topic", renderer: "Renderer", status: "Documentation", network: "Network", coverage: "In game", flag: "Flag" };
+    var groupLabels = { origin: "Origin", module: "Module", category: "Topic", feature: "Feature", renderer: "Renderer", status: "Documentation", network: "Network", coverage: "In game", flag: "Flag" };
     FILTER_KEYS.forEach(function (key) {
       var selected = selectedValues(state, key);
       if (selected.length) values.push(groupLabels[key] + ": " + selected.map(function (value) { return valueLabel(key, value); }).join(", "));
@@ -482,12 +501,13 @@
       state.origin = state.presets.origin ? [state.presets.origin] : [];
       state.module = state.presets.module ? [state.presets.module] : [];
       state.category = state.presets.category ? [state.presets.category] : [];
+      state.feature = state.presets.feature ? [state.presets.feature] : [];
       state.renderer = state.presets.renderer ? [state.presets.renderer] : [];
       state.status = [];
       state.network = [];
       state.coverage = [];
       state.flag = [];
-      state.sort = "relevance";
+      state.sort = DEFAULT_SORT;
       state.limit = PAGE_SIZE;
       closeDropdowns(root, "");
       applyState(root, state);
@@ -630,6 +650,7 @@
   }
 
   var api = {
+    defaultSort: DEFAULT_SORT,
     normalize: normalize,
     prepareEntry: prepareEntry,
     entryMatches: entryMatches,
