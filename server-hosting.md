@@ -118,6 +118,37 @@ Extract the server files and retain all libraries included with the release. Put
 
 On Windows, use the `.exe` dedicated-server binary from the release. A service manager such as systemd or Docker should restart a public server after a crash or host reboot.
 
+## Run the TaystJK server engine with another mod
+
+The dedicated executable and the server-side game rules are separate. You can use the TaystJK dedicated engine while loading another mod's native `jampgame` library, such as JA+ or JA++. In this arrangement TaystJK supplies engine features, networking, and server administration, while the selected mod supplies gameplay. TaystJK game-module commands and cvars are unavailable unless the other mod implements them too.
+
+Install the mod exactly as its own documentation requires, in a directory beside `base/`. The library must match the dedicated executable's operating system and architecture. For example, a 64-bit Linux server needs a compatible `japlus/jampgamex86_64.so`; it cannot load a 32-bit `jampgamei386.so`. If a mod is available only as a 32-bit library, use the matching 32-bit TaystJK dedicated build and its runtime dependencies.
+
+Dedicated builds default `fs_forcegame` to an empty string so that `fs_game` can select the server mod. Leave it empty and launch a modern JA++ server module with:
+
+```bash
+./taystjkded.x86_64 \
+  +set dedicated 2 \
+  +set net_port 29070 \
+  +set fs_game japlus \
+  +exec server.cfg
+```
+
+JA+ and some older or custom mod builds use the legacy native `dllEntry`/`vmMain` interface. Force that interface for the game-module slot by adding `+set vm_legacy 1`:
+
+```bash
+./taystjkded.x86_64 \
+  +set dedicated 2 \
+  +set net_port 29070 \
+  +set fs_game japlus \
+  +set vm_legacy 1 \
+  +exec server.cfg
+```
+
+`vm_legacy 1` still loads a native `.dll`, `.so`, or `.dylib`; it does not load a QVM. Omit it for a mod that implements the newer `GetModuleAPI` interface. On a successful legacy start, the console reports `VM_CreateLegacy: jampgame... succeeded`. Also check `path` to confirm that `japlus/` is active and inspect the mod's version cvar before opening the server publicly.
+
+For Docker, put the mod and its configuration under the mounted `homepath/japlus/`, set `TJK_MOD=japlus`, and add `TJK_OPTS=+set vm_legacy 1` only for a legacy game module. The image does not include third-party mod files; supply and maintain them yourself. Test upgrades privately because a mod may depend on engine-specific behavior outside the standard module interface.
+
 ## Customize the shipped `server.cfg`
 
 The supplied file already defines a working stock-map rotation. Change its example identity and access settings, then add download settings only if the server needs to distribute custom PK3s:
@@ -164,8 +195,10 @@ Do not put spaces or `@` in downloadable PK3 filenames. After changing downloada
 Only referenced PK3s are offered to clients. TaystJK automatically references a PK3 when:
 
 1. A BSP map is loaded from it.
-2. `cgame.qvm` or `ui.qvm` is loaded from it.
+2. A recognized native client module marker—currently `cgamex86.dll` or `uix86.dll`—is loaded from it.
 3. It is in the active `fs_game` directory rather than `base`.
+
+TaystJK does not currently execute `cgame.qvm` or `ui.qvm`. Its modules are native libraries: `.dll` on Windows, `.so` on Linux, and `.dylib` on macOS. Because the automatic PK3 check uses the two x86 Windows marker names for cross-platform pure-server bookkeeping, add a package explicitly to `ref_forcelist.txt` when it contains only another architecture's module names or client assets that do not otherwise trigger a reference.
 
 Run `sv_referencedPakNames` in the server console to inspect the current result. Reflist files let you correct the automatic decision:
 

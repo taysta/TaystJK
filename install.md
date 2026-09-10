@@ -188,6 +188,62 @@ Copy the complete retail `base` directory into each client's directory. This use
 
 Put PK3s that should affect every client in that client's `base` directory. Put TaystJK-only content in `taystjk/`, beside `japro-assets.pk3`.
 
+## Run TaystJK with another client-side mod
+
+The TaystJK executable is the engine. The game, client-game, and UI modules are separate native libraries:
+
+| Module | Windows example | Linux example | Purpose |
+|:--|:--|:--|:--|
+| Game | `jampgamex86_64.dll` | `jampgamex86_64.so` | Server-side game rules; also used by a locally hosted game. |
+| Client game | `cgamex86_64.dll` | `cgamex86_64.so` | Client-side prediction, HUD, and world presentation. |
+| UI | `uix86_64.dll` | `uix86_64.so` | Menus and other UI behavior. |
+
+macOS uses the equivalent `.dylib` files. TaystJK does not currently execute QVM bytecode; both its current module API and the older `dllEntry`/`vmMain` API load native libraries. A module must match the operating system and CPU architecture of the TaystJK executable.
+
+### What `fs_forcegame` does
+
+On a normal client, `fs_forcegame` defaults to `taystjk`. This keeps TaystJK's directory at the highest filesystem priority when a server supplies a different `fs_game`, and keeps configs, demos, screenshots, and other generated files under `taystjk/`. A server cannot change `fs_forcegame`.
+
+The default is therefore appropriate when you want TaystJK's client-side files and settings while joining servers that run JA+, JA++, jaPRO, or another server-side mod. You can state it explicitly in a shortcut or launch script:
+
+```text
+taystjk.x86_64.exe +set fs_forcegame taystjk
+```
+
+Use the executable name for your platform. Do not add `fs_game` merely to join a server; the server sends its own game directory during connection.
+
+Native libraries are a separate concern: when a matching loose library exists in the server-selected `fs_game` directory, the engine tries that library before the copy in `taystjk/`. Keep other mods' native client libraries out of a clean TaystJK installation unless you intend to load them.
+
+To deliberately use another mod's client-side libraries and assets, install them in that mod's directory and select it at startup. For example, JA++ uses `japlus/` for compatibility with JA+:
+
+```text
+taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus
+```
+
+Setting both values loads the mod from the beginning—including a custom UI—and prevents a later server-provided `fs_game` from changing the directory used for files and generated output. To return to the normal TaystJK client setup, remove the `fs_game japlus` argument and either remove the `fs_forcegame` argument or set it back to `taystjk`.
+
+### When to use `vm_legacy`
+
+TaystJK first expects the newer OpenJK-style `GetModuleAPI` interface and normally falls back to the older `dllEntry`/`vmMain` interface. `vm_legacy` skips the newer interface for selected module slots. Use it when the particular native mod library requires the older interface or crashes while the engine probes it as a newer module; it does not enable QVM support.
+
+`vm_legacy` is a bitmask:
+
+| Bit | Value | Module |
+|:--|:--|:--|
+| 0 | `1` | Game (`jampgame`), relevant to a local or dedicated server. |
+| 1 | `2` | Client game (`cgame`). |
+| 2 | `4` | UI (`ui`). |
+
+Add values to force more than one module. For example, an older JA++ build with a legacy custom UI can be launched with:
+
+```text
+taystjk.x86_64.exe +set fs_game japlus +set fs_forcegame japlus +set vm_legacy 4
+```
+
+Use `vm_legacy 6` only when both the JA++ `cgame` and UI libraries require the legacy interface. Use `vm_legacy 0` for modern libraries, including JA++ builds that implement `GetModuleAPI`. Put this setting on the command line so it is applied before the UI and client-game modules load; changing it after a module has loaded does not convert that running module.
+
+If the console reports `VM_CreateLegacy: ... succeeded`, the requested legacy interface loaded. If it reports an architecture mismatch, a missing entry point, or repeated load failures, recheck the mod build and directory rather than trying unrelated bit values.
+
 ## First-launch checks
 
 - Open the console with <kbd>Shift</kbd> + <kbd>~</kbd> and run `version` to confirm that TaystJK is running.
