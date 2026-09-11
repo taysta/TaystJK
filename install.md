@@ -52,6 +52,10 @@ Install the latest supported [Microsoft Visual C++ Redistributable](https://lear
 
 The release archive includes the matching SDL 2 and OpenAL DLLs. Keep those files beside the TaystJK executable; do not download replacement DLLs from third-party DLL sites.
 
+Prefer the **64-bit build** for normal play, especially when using rend2. Rend2 can use enough memory to exhaust a 32-bit process's limited address space on demanding maps or asset sets; the 64-bit build has substantially more headroom.
+
+The **32-bit Windows build** has one compatibility advantage: its bundled OpenAL Soft library and `EaxMan.dll` can provide EAX environmental audio in software, so EAX-capable sound hardware is not required. TaystJK does not currently ship the `EaxMan64.dll` needed by its 64-bit EAX path, so this feature is available only in the 32-bit build. Choose x86 if you specifically want EAX or require another 32-bit compatibility feature, and keep `OpenAL32.dll` and `EaxMan.dll` beside the executable.
+
 ### Install TaystJK
 
 This is the simplest layout when TaystJK is your only modded client.

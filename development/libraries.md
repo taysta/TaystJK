@@ -17,6 +17,7 @@ description: "Bundled and optional third-party libraries used by the current Tay
 | Library | Version in tree | How TaystJK uses it | Evidence |
 |:--|:--|:--|:--|
 | SDL 2 | 2.32.4 | Windowing, input, audio, and platform integration; bundled by default on Windows and macOS, system-provided by default on Linux. | [`SDL_version.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/SDL2/include/SDL_version.h#L59) |
+| OpenAL Soft | 1.23.1 | Bundled software implementation of OpenAL on Windows, including software EAX support in the 32-bit package. | [OpenAL Soft import](https://github.com/taysta/TaystJK/commit/e7467a834a155ceb60913739a90313beea52adc5) |
 | libpng | 1.6.53 | PNG image loading for renderer builds. | [`png.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/libpng/include/png.h#L3) |
 | zlib | 1.3.1 | Deflate compression and PK3 support. | [`zlib.h`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/zlib/include/zlib.h#L40) |
 | minizip | from zlib 1.3.1 | ZIP/PK3 reading; always uses TaystJK's modified bundled copy. | [`lib/minizip/CMakeLists.txt`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/lib/minizip/CMakeLists.txt#L37) |
@@ -30,16 +31,17 @@ description: "Bundled and optional third-party libraries used by the current Tay
 
 ## Bundled binaries without recorded upstream versions
 
-TaystJK also carries prebuilt OpenAL Soft and Discord RPC libraries for selected platforms. Their current files do not expose an upstream release number in the repository, so this documentation does not invent one. The source commit and binary hash are the reliable identifiers until those dependencies gain checked-in version metadata.
+TaystJK also carries prebuilt Discord RPC libraries for selected platforms. Their current files do not expose an upstream release number in the repository, so this documentation does not invent one. The source commit and binary hash are the reliable identifiers until that dependency gains checked-in version metadata.
 
 | Library | Selection | Source evidence |
 |:--|:--|:--|
-| OpenAL Soft | Bundled on Windows when `UseInternalOpenAL=ON`; otherwise discovered from the system where supported. | [OpenAL selection](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L442) |
 | Discord RPC | Prebuilt per-platform archives, controlled by `BuildDiscordRichPresence`. | [Discord RPC selection](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/CMakeLists.txt#L415) |
 
 ## Bundled versus system libraries
 
 Windows defaults to bundled OpenAL, zlib, libpng, libjpeg, and SDL 2. macOS defaults to bundled zlib, libpng, libjpeg, and SDL 2. Other Unix-like systems normally use libraries found by CMake, except for the always-bundled modified minizip, cJSON, Mongoose, gsl-lite, and embedded SQLite source.
+
+On 32-bit Windows, the bundled OpenAL Soft library works with the shipped `EaxMan.dll` to provide EAX environmental audio in software; Creative or other EAX-capable hardware is not required. The 64-bit engine has support for loading `EaxMan64.dll`, but that library is not available in the release, so TaystJK's complete EAX path is currently limited to the 32-bit Windows build.
 
 The relevant switches are `UseInternalOpenAL`, `UseInternalZlib`, `UseInternalPNG`, `UseInternalJPEG`, `UseTurboJPEG`, and `UseInternalSDL2`. CMake records its actual choices in the configure output and `CMakeCache.txt`.
 

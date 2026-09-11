@@ -70,6 +70,8 @@ cmake --install build --config RelWithDebInfo --prefix "C:\TaystJK-test"
 ```
 
 You can instead open the generated `TaystJK.sln`, select `RelWithDebInfo` and `x64`, and build the solution. Use `Debug` when you want the least optimized stepping experience.
+
+Prefer an x64 build when developing or testing rend2. Its memory use can exhaust a 32-bit process's limited address space on demanding maps or asset sets. Build for Win32 only when you need to test a 32-bit compatibility path, such as the shipped `EaxMan.dll` integration.
   </section>
 
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
