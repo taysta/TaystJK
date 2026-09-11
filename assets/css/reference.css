@@ -23,7 +23,6 @@
   --control-radius: 7px;
   --panel-bg: rgba(17, 24, 39, .52);
   --panel-bg-hover: rgba(17, 24, 39, .9);
-  --shadow: 0 24px 70px rgba(0, 0, 0, .3);
   font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
 }
@@ -849,7 +848,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
-  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+  transition: border-color .15s ease, background .15s ease;
 }
 
 .reference-card:hover { border-color: var(--line-bright); background: var(--surface-2); }

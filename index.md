@@ -1,5 +1,5 @@
 ---
-title: "TaystJK — one client for Jedi Academy multiplayer"
+title: "TaystJK \u2014 one client for Jedi Academy multiplayer"
 layout: reference
 nav_order: 1
 wide: true
