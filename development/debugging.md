@@ -72,13 +72,36 @@ Choose your operating system to see its debugger setup. Your selection is saved 
 
 ### Visual Studio
 
-1. Open the generated `TaystJK.sln`.
-2. Select the **Debug** configuration and the correct platform.
-3. Right-click the **MP Client** project and choose **Set as Startup Project**.
-4. In **Properties → Debugging**, set **Working Directory** to your test `GameData` directory and add the launch arguments above under **Command Arguments**.
-5. Place a breakpoint and press <kbd>F5</kbd>.
+Give CMake a stable, user-writable install prefix when generating the Visual Studio solution. The **INSTALL** project uses this cached path:
 
-Launching the client project still allows Visual Studio to load symbols and stop inside the game, cgame, UI, and renderer libraries once the engine loads them. If a breakpoint is hollow, open **Debug → Windows → Modules** and confirm that the expected module and PDB were loaded from your build.
+```powershell
+cmake -S . -B build-vs -G "Visual Studio 17 2022" -A x64 `
+  -DCMAKE_INSTALL_PREFIX="C:/TaystJK-test"
+```
+
+Then configure the debugger:
+
+1. Open `build-vs\TaystJK.sln` and select **Debug** and **x64** in the solution toolbar.
+2. Build the solution, then right-click the **INSTALL** project and choose **Build**. This creates the runnable layout under `C:\TaystJK-test\JediAcademy`.
+3. Right-click **MP Client**, choose **Properties**, and select **Debug** and **x64** at the top of the Property Pages dialog.
+4. Under **Configuration Properties → Debugging**, set the following values:
+
+| Setting | Value |
+|:--|:--|
+| Debugger to launch | **Local Windows Debugger** |
+| Command | `C:\TaystJK-test\JediAcademy\taystjk.x86_64.exe` |
+| Command Arguments | `+set r_fullscreen 0 +set fs_game taystjk` |
+| Working Directory | `C:\TaystJK-test\JediAcademy` |
+| Debugger Type | **Native Only** |
+
+If the retail `base` directory is elsewhere, append `+set fs_cdPath "C:/Games/Jedi Academy/GameData"` to **Command Arguments**, replacing the example path and omitting any trailing slash.
+
+5. Right-click **MP Client** and choose **Set as Startup Project**.
+6. Place a breakpoint and press <kbd>F5</kbd>.
+
+After changing engine or module code, build **Debug** again and rerun **INSTALL** before launching. The install step refreshes the executable, renderers, game, cgame, UI modules, and bundled runtime DLLs as one matching set. Visual Studio can then debug every loaded project in the solution even though **Command** points to the installed executable.
+
+If a breakpoint remains hollow, open **Debug → Windows → Modules** and confirm that the expected installed DLL and its matching PDB were loaded. The debugger properties are stored in Visual Studio's per-user project settings, so deleting and regenerating `build-vs` requires configuring them again.
   </section>
 
   <section class="platform-panel" id="platform-panel-linux" role="tabpanel" aria-labelledby="platform-tab-linux" tabindex="0" data-platform-panel="linux" markdown="1">
@@ -164,4 +187,4 @@ With GCC or Clang, undefined-behavior checks can be added with `-DUseUndefinedSa
 | Crash only occurs in Release | Reproduce with `RelWithDebInfo`, then use AddressSanitizer or UndefinedBehaviorSanitizer. |
 | Client exits when loading a map | Inspect the engine log and confirm the cgame, game, UI, and renderer architectures match the executable. |
 
-The setup follows the OpenJK [debugging overview](https://github.com/JACoders/OpenJK/wiki/Debugging) and [Visual Studio guide](https://github.com/JACoders/OpenJK/wiki/Debugging-in-Visual-Studio), with TaystJK target names and diagnostics.
+The setup follows the OpenJK [debugging overview](https://github.com/JACoders/OpenJK/wiki/Debugging) and [Visual Studio guide](https://github.com/JACoders/OpenJK/wiki/Debugging-in-Visual-Studio), with TaystJK target names and diagnostics. Microsoft's [C++ debug-configuration reference](https://learn.microsoft.com/en-us/visualstudio/debugger/project-settings-for-a-cpp-debug-configuration?view=visualstudio) describes the Visual Studio property fields used above.
