@@ -265,6 +265,42 @@ class DatedOriginTests(unittest.TestCase):
         self.assertEqual(result["source"], "openjk")
         self.assertEqual(result["method"], "shared-earliest-commit-lineage-order")
 
+    @patch("provenance.source_context", return_value='XCVAR_DEF( cg_chatBoxEmojis, "1", NULL, CVAR_ARCHIVE_ND )')
+    @patch("provenance.commit_body", return_value="Merge remote-tracking branch 'JKSunny/features/Emojis'")
+    def test_sunny_emoji_contribution_is_eternaljk_not_vulkan(
+        self, _body: object, _context: object,
+    ) -> None:
+        registration = {
+            "name": "cg_chatBoxEmojis", "kind": "XCVAR_DEF",
+            "path": "codemp/cgame/cg_xcvar.h", "line": 67,
+            "module": "cgame", "renderer": None,
+            "handler": None, "gating": [], "condition": None,
+        }
+        shared_event = {
+            "sha": "a" * 40, "timestamp": 200,
+            "author_timestamp": 200, "content_author_timestamp": 100,
+            "content_sha": "b" * 40, "content_subject": "Added Emoji support to chat",
+        }
+        sources = ("eternaljk", "taystjk", "japro", "vulkan")
+        upstream = {
+            source: {"cg_chatboxemojis": [registration]}
+            for source in sources if source != "taystjk"
+        }
+        introductions = {
+            source: {"cg_chatboxemojis": dict(shared_event)} for source in sources
+        }
+
+        result = resolve_one(
+            "cg_chatboxemojis", [registration], set(), upstream, [], Path("."), False,
+            introductions, {}, {}, {}, False,
+        )
+
+        self.assertEqual(result["source"], "eternaljk")
+        self.assertEqual(result["confidence"], "high")
+        self.assertEqual(result["status"], "documented")
+        self.assertEqual(result["method"], "curated-historical-attribution")
+        self.assertNotIn("explicitly credits vulkan", result["notes"])
+
 
 class ChangeAttributionTests(unittest.TestCase):
     def change(self) -> dict[str, object]:

@@ -30,6 +30,9 @@ implementation is closed source. Developer-lineage credit is handled the same
 way when code was shared privately: Bucky/Bucky21659 credit maps to his
 unpublished EternalJK continuation even if a historical `jaPRO/Bucky` label is
 used and the identifier is absent from EternalJK's public repository.
+Contributor identity is not treated as permanent project identity:
+`cg_chatBoxEmojis` is a curated exception because Sunny contributed that
+feature to EternalJK before starting work on Vulkan.
 
 For every non-base identifier, the resolver records the first mainline
 registration in every project. It distinguishes the exact registration's first

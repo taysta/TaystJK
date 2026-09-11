@@ -129891,28 +129891,8 @@
       ]
     },
     "cg_chatboxemojis": {
-      "confidence": "medium",
+      "confidence": "high",
       "downstream_introductions": [
-        {
-          "author": "Bucky",
-          "author_timestamp": 1589582581,
-          "content_author": "JKSunny",
-          "content_author_timestamp": 1588161197,
-          "content_email": "jksunny71@hotmail.com",
-          "content_sha": "6add85e2bdad2ac4030d38a8dbb454b7ab8e0754",
-          "content_subject": "Added Emoji support to chat",
-          "content_timestamp": 1588161197,
-          "email": "mjmiller98@gmail.com",
-          "history_search": "cg_chatBoxEmojis",
-          "line": 67,
-          "line_commit_sha": "6add85e2bdad2ac4030d38a8dbb454b7ab8e0754",
-          "path": "codemp/cgame/cg_xcvar.h",
-          "ref": "eternaljk/master",
-          "sha": "caa8f274580f151f8472d987144146ca02430d3f",
-          "source": "eternaljk",
-          "subject": "Merge remote-tracking branch 'JKSunny/features/Emojis'",
-          "timestamp": 1589582581
-        },
         {
           "author": "Bucky",
           "author_timestamp": 1589582581,
@@ -129950,6 +129930,26 @@
           "ref": "japro/main",
           "sha": "caa8f274580f151f8472d987144146ca02430d3f",
           "source": "japro",
+          "subject": "Merge remote-tracking branch 'JKSunny/features/Emojis'",
+          "timestamp": 1589582581
+        },
+        {
+          "author": "Bucky",
+          "author_timestamp": 1589582581,
+          "content_author": "JKSunny",
+          "content_author_timestamp": 1588161197,
+          "content_email": "jksunny71@hotmail.com",
+          "content_sha": "6add85e2bdad2ac4030d38a8dbb454b7ab8e0754",
+          "content_subject": "Added Emoji support to chat",
+          "content_timestamp": 1588161197,
+          "email": "mjmiller98@gmail.com",
+          "history_search": "cg_chatBoxEmojis",
+          "line": 67,
+          "line_commit_sha": "6add85e2bdad2ac4030d38a8dbb454b7ab8e0754",
+          "path": "codemp/cgame/cg_xcvar.h",
+          "ref": "Sunny/master",
+          "sha": "caa8f274580f151f8472d987144146ca02430d3f",
+          "source": "vulkan",
           "subject": "Merge remote-tracking branch 'JKSunny/features/Emojis'",
           "timestamp": 1589582581
         }
@@ -130040,7 +130040,7 @@
           "timestamp": 1589582581
         }
       ],
-      "method": "squash-feature-group-explicit-credit",
+      "method": "curated-historical-attribution",
       "modified_by": [
         {
           "categories": [
@@ -130117,12 +130117,12 @@
           "timestamp": 1708913001
         }
       ],
-      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. The identifier's single-prefix squash feature group explicitly credits vulkan. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
+      "notes": "The earliest authored/submitted introduction is shared by eternaljk, taystjk, japro, vulkan; fork-lineage order selects eternaljk. Sunny contributed the chat-box emoji feature to EternalJK before beginning Vulkan work; the JKSunny branch name identifies the contributor here, not Vulkan lineage. Dated commit evidence identifies later registration changes relative to the origin snapshot.",
       "origin_evidence": {
         "kind": "XCVAR_DEF",
         "line": 67,
         "path": "codemp/cgame/cg_xcvar.h",
-        "ref": "Sunny/master"
+        "ref": "eternaljk/master"
       },
       "origin_introduction": {
         "author": "Bucky",
@@ -130138,18 +130138,18 @@
         "line": 67,
         "line_commit_sha": "6add85e2bdad2ac4030d38a8dbb454b7ab8e0754",
         "path": "codemp/cgame/cg_xcvar.h",
-        "ref": "Sunny/master",
+        "ref": "eternaljk/master",
         "sha": "caa8f274580f151f8472d987144146ca02430d3f",
-        "source": "vulkan",
+        "source": "eternaljk",
         "subject": "Merge remote-tracking branch 'JKSunny/features/Emojis'",
         "timestamp": 1589582581
       },
       "ported_via": [],
       "pr": null,
       "pr_url": null,
-      "source": "vulkan",
+      "source": "eternaljk",
       "squash_bullet": null,
-      "status": "needs-review",
+      "status": "documented",
       "upstream_presence": [
         "eternaljk",
         "japro",
@@ -394165,6 +394165,6 @@
     "basejka_ref": "14cea1563762076974bee277afadbd5bf234c494",
     "current_ref": "origin/master",
     "extractor_version": 6,
-    "resolver_version": 30
+    "resolver_version": 31
   }
 }

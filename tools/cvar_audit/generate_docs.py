@@ -824,9 +824,11 @@ NewMod is closed source. Its [published feature documentation](https://jkanewmod
 
 Bucky's later EternalJK continuation was also shared privately. Explicit `Bucky` or `Bucky21659` credit next to an identifier is therefore treated as EternalJK lineage even when the historical label says `jaPRO/Bucky`. The public-introduction table still shows where that code first became available in a published repository; it does not invent an EternalJK commit for unpublished source.
 
+Contributor identity is not treated as permanent project identity. `cg_chatBoxEmojis` is a curated historical exception: Sunny contributed the feature to EternalJK before starting work on Vulkan, so the JKSunny branch name identifies the contributor there rather than Vulkan lineage.
+
 ## Confidence
 
-- **High:** initial-import match, a unique earliest authored/submitted project introduction, or explicit identifier/feature-group credit consistent with chronology.
+- **High:** initial-import match, a unique earliest authored/submitted project introduction, explicit identifier/feature-group credit consistent with chronology, or curated maintainer-supplied historical attribution.
 - **Medium:** shared-commit lineage (a Git object has no repository-of-origin field), tied author/PR/integration dates, or exact upstream-head presence when registration-file history cannot be followed.
 - **Low:** no reliable attribution; these remain `unknown`.
 

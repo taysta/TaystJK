@@ -14,12 +14,12 @@ This is the deliberately untidy review queue behind the published reference. `un
 | Group | Count |
 |:--|--:|
 | Base Jedi Academy | 1024 |
-| EternalJK | 147 |
+| EternalJK | 148 |
 | JK2MV | 14 |
 | NewJK / NewMod | 10 |
 | OpenJK | 167 |
 | TaystJK | 79 |
-| Vulkan | 25 |
+| Vulkan | 24 |
 | jaPRO | 458 |
 | rend2 | 90 |
 
@@ -40,7 +40,7 @@ Runtime-only commands: none.
 
 The dump was captured from stdout after loading `mp/ffa3`; stdout does not use the client console scrollback buffer. Cvars and commands were dumped in separate launches so neither list could displace the other.
 
-## Provenance needing review (776)
+## Provenance needing review (775)
 
 | Name | Kind | Module | Summary |
 |:--|:--|:--|:--|
@@ -68,7 +68,6 @@ The dump was captured from stdout after loading `mp/ffa3`; stdout does not use t
 | [`cg_centerHeight`](/TaystJK/reference/cvars/cg_centerheight-bbab188/) | cvar | cgame | Controls `cg_centerHeight` in the cgame module. |
 | [`cg_centerSize`](/TaystJK/reference/cvars/cg_centersize-615dcaa/) | cvar | cgame | Controls `cg_centerSize` in the cgame module. |
 | [`cg_chatBoxCutOffLength`](/TaystJK/reference/cvars/cg_chatboxcutofflength-abf6a17/) | cvar | cgame | Width of a line in the chatbox before breaking to a new one |
-| [`cg_chatBoxEmojis`](/TaystJK/reference/cvars/cg_chatboxemojis-7bdc808/) | cvar | cgame | Controls `cg_chatBoxEmojis` in the cgame module. |
 | [`cg_chatBoxFontSize`](/TaystJK/reference/cvars/cg_chatboxfontsize-85a3a51/) | cvar | cgame | Scale of the chat box font |
 | [`cg_chatBoxLines`](/TaystJK/reference/cvars/cg_chatboxlines-ef18116/) | cvar | cgame | This would be called chatBoxHeight if baseJKA didn't use that |
 | [`cg_chatBoxShowCutoff`](/TaystJK/reference/cvars/cg_chatboxshowcutoff-3c9eab8/) | cvar | cgame | Controls `cg_chatBoxShowCutoff` in the cgame module. |

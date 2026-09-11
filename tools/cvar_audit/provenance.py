@@ -26,7 +26,7 @@ from extract import extract_commands, extract_cvars, source_files
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
 EXTRACTOR_VERSION = 6
-RESOLVER_VERSION = 30
+RESOLVER_VERSION = 31
 UPSTREAM_REFS = {
     "openjk": "openjk/master",
     "eternaljk": "eternaljk/master",
@@ -78,6 +78,22 @@ DEVELOPER_LINEAGE_NOTES = {
         "Explicit Bucky developer credit identifies his unpublished EternalJK "
         "continuation as the origin; no public EternalJK registration is expected."
     ),
+}
+# Curated exceptions cover historical context that cannot be inferred from a
+# project name or developer handle alone. Sunny authored the chat-box emoji
+# support for EternalJK before beginning the Vulkan fork, so the JKSunny branch
+# name in the integration commit is contributor credit, not Vulkan lineage.
+ORIGIN_EXCEPTIONS = {
+    "cg_chatboxemojis": {
+        "source": "eternaljk",
+        "confidence": "high",
+        "method": "curated-historical-attribution",
+        "note": (
+            "Sunny contributed the chat-box emoji feature to EternalJK before "
+            "beginning Vulkan work; the JKSunny branch name identifies the "
+            "contributor here, not Vulkan lineage."
+        ),
+    },
 }
 REPOSITORY_SOURCES = {
     "jacoders/openjk": "openjk",
@@ -1140,6 +1156,7 @@ def resolve_one(
     credited_bullet: str | None = None
     ported_via: list[str] = []
     events: dict[str, dict[str, Any]] = {}
+    origin_exception = ORIGIN_EXCEPTIONS.get(key)
 
     if key in base_names:
         source = "basejka"
@@ -1240,7 +1257,12 @@ def resolve_one(
         # This is particularly important for Bucky's EternalJK continuation,
         # whose integration messages can also use the historical jaPRO label.
         explicit = reconcile_explicit_origin_credit(source, method, explicit)
-        if len(explicit) == 1:
+        if origin_exception:
+            source = origin_exception["source"]
+            confidence = origin_exception["confidence"]
+            method = origin_exception["method"]
+            notes.append(origin_exception["note"])
+        elif len(explicit) == 1:
             credited_source = explicit[0]
             direct_credit = any(text_credits_source(line, credited_source) for line in targeted_lines)
             developer_credit = any(
