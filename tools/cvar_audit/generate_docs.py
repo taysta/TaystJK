@@ -674,7 +674,6 @@ def static_index_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]
 
 
 def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> str:
-    total = len(cvars) + len(commands)
     return frontmatter(
         "TaystJK documentation",
         1,
@@ -686,11 +685,11 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     ) + f"""
 <div class="docs-overview">
   <section class="docs-intro" aria-labelledby="page-title">
-    <p class="eyebrow">Documentation</p>
-    <h1 id="page-title">TaystJK</h1>
-    <p class="page-lede">Installation, server administration, development, and console reference for the TaystJK client and dedicated server.</p>
+    <p class="eyebrow">TaystJK</p>
+    <h1 id="page-title">Documentation</h1>
+    <p class="page-lede">Setup and reference material for players, server administrators, and contributors.</p>
     <nav class="docs-intro-links" aria-label="Project links">
-      <a href="{{{{ '/install/' | relative_url }}}}">Installation guide</a>
+      <a href="{{{{ '/install/' | relative_url }}}}">Installation</a>
       <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>
       <a href="https://github.com/taysta/TaystJK">Source repository</a>
     </nav>
@@ -708,40 +707,65 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
     </a>
     <a href="{{{{ '/reference/' | relative_url }}}}">
       <strong>Find a console control</strong>
-      <span>{total:,} source-derived cvars and commands</span>
+      <span>{len(cvars):,} cvars and {len(commands):,} commands derived from source</span>
     </a>
   </nav>
 </div>
 
-<section class="docs-index" aria-labelledby="docs-heading">
-  <h2 id="docs-heading">Documentation</h2>
-  <div class="docs-index-list">
-    <section class="docs-index-entry">
-      <h3><a href="{{{{ '/install/' | relative_url }}}}">Installation</a></h3>
-      <p>Set up the client on Windows, Linux, or macOS, including separate layouts for multiple modded clients.</p>
-    </section>
-    <section class="docs-index-entry">
-      <h3><a href="{{{{ '/server-hosting/' | relative_url }}}}">Server administration</a></h3>
-      <p>Deploy the dedicated server, configure map rotation and HTTP downloads, and manage PK3 references.</p>
-    </section>
-    <section class="docs-index-entry">
-      <h3><a href="{{{{ '/development/' | relative_url }}}}">Development</a></h3>
-      <p>Configure CMake, build the available targets, debug engine and module code, and inspect bundled libraries.</p>
-    </section>
-    <section class="docs-index-entry">
-      <h3><a href="{{{{ '/reference/' | relative_url }}}}">Console reference</a></h3>
-      <p>Search {len(cvars):,} cvars and {len(commands):,} commands by topic, module, origin, and documentation coverage.</p>
-    </section>
+<section class="home-guides" aria-labelledby="guides-heading">
+  <div class="home-section-heading">
+    <div>
+      <p class="section-kicker">Guides and reference</p>
+      <h2 id="guides-heading">Browse the documentation</h2>
+    </div>
+    <p>Use the task guides for setup and maintenance, or search the source-derived console reference.</p>
+  </div>
+
+  <div class="home-guide-grid">
+    <a class="home-guide" href="{{{{ '/install/' | relative_url }}}}">
+      <h3>Installation</h3>
+      <p>Client setup, game files, clean directory layouts, and first launch.</p>
+      <span>Windows · Linux · macOS</span>
+    </a>
+    <a class="home-guide" href="{{{{ '/server-hosting/' | relative_url }}}}">
+      <h3>Server administration</h3>
+      <p>Dedicated server deployment, map rotation, downloads, and PK3 references.</p>
+      <span>Docker · server.cfg · reflists</span>
+    </a>
+    <a class="home-guide" href="{{{{ '/development/' | relative_url }}}}">
+      <h3>Development</h3>
+      <p>Build configuration, platform targets, debugging, and dependency details.</p>
+      <span>CMake · debugging · libraries</span>
+    </a>
+    <a class="home-guide" href="{{{{ '/reference/' | relative_url }}}}">
+      <h3>Console reference</h3>
+      <p>Search controls by topic, module, origin, and documentation coverage.</p>
+      <span>{len(cvars):,} cvars · {len(commands):,} commands</span>
+    </a>
   </div>
 </section>
 
-<section class="docs-related" aria-labelledby="project-heading">
-  <h2 id="project-heading">Project information</h2>
-  <ul>
-    <li><a href="{{{{ '/development/libraries/' | relative_url }}}}">Bundled libraries</a> lists dependency versions and system-library selection rules.</li>
-    <li><a href="{{{{ '/reference/sources/' | relative_url }}}}">Source provenance</a> explains how reference entries and their code lineage are determined.</li>
-    <li><a href="{{{{ '/ai-disclosure/' | relative_url }}}}">AI disclosure</a> describes how this documentation was produced and reviewed.</li>
-  </ul>
+<section class="home-resources" aria-labelledby="resources-heading">
+  <div class="home-section-heading">
+    <div>
+      <p class="section-kicker">Project details</p>
+      <h2 id="resources-heading">Technical information</h2>
+    </div>
+  </div>
+  <div class="home-resource-list">
+    <a href="{{{{ '/development/libraries/' | relative_url }}}}">
+      <strong>Bundled libraries</strong>
+      <span>Dependency versions and system-library selection rules.</span>
+    </a>
+    <a href="{{{{ '/reference/sources/' | relative_url }}}}">
+      <strong>Source provenance</strong>
+      <span>How reference entries and code lineage are determined.</span>
+    </a>
+    <a href="{{{{ '/ai-disclosure/' | relative_url }}}}">
+      <strong>AI disclosure</strong>
+      <span>How this documentation was produced and reviewed.</span>
+    </a>
+  </div>
 </section>
 """
 
