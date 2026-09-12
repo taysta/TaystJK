@@ -7,7 +7,7 @@ url: "https://taysta.github.io" # the base hostname & protocol for your site, e.
 show_wip_banner: true
 
 permalink: pretty
-exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "CONVENTIONS.md", "Rakefile", "docs/tests/"]
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "script/", "tools/", ".cvar-audit/", "LICENSE.txt", "lib/", "bin/", "README.md", "CONVENTIONS.md", "CLAUDE.md", "Rakefile", "docs/tests/"]
 
 # The former hand-written topic pages remain reachable through old links, but
 # the generated exhaustive reference is now the canonical navigation/search

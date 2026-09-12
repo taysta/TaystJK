@@ -1,3 +1,9 @@
 .cvar-audit/cache/
 __pycache__/
 .DS_Store
+
+# Local build and IDE artifacts from building the engine in this checkout
+build/
+lib/
+compile_commands.json
+.idea/
