@@ -35,6 +35,12 @@ Controls `r_subdivisions` in the renderer module. Consult the cited behavior rea
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `4` through `80` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1532](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1532)
+- `0` through `80` (numeric; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1664](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1664)
+- `0` through `80` (numeric; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:816](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L816)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

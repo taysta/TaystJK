@@ -35,6 +35,13 @@ Controls `r_znear` in the renderer module. Consult the cited behavior reads befo
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `0.001f` through `10` (numeric; Cvar_CheckRange) — [codemp/rd-dedicated/tr_init.cpp:365](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L365)
+- `0.001f` through `200` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1614](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1614)
+- `0.001f` through `10` (numeric; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1675](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1675)
+- `0.001f` through `10` (numeric; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:832](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L832)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

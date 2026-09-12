@@ -36,6 +36,10 @@ Controls `r_dlightScale` in the renderer module. Consult the cited behavior read
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `0.1f` through `1` (numeric; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:950](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L950)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

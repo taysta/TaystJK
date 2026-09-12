@@ -527,34 +527,71 @@ def infer_values(
     return values
 
 
-def range_index(files: list[tuple[str, str]], variables: set[str]) -> dict[str, list[dict[str, Any]]]:
+CONSTANT_BOUND = re.compile(r"[+-]?(?:0[xX][0-9a-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)[uUlLfF]*")
+MACRO_BOUND = re.compile(r"[A-Z][A-Z0-9_]{2,}")
+# ``r_bloom = ri.Cvar_Get("r_bloom", ...)``.  Registrations reached through an
+# interface pointer are the norm in the renderers and the game modules.
+REGISTRATION_ASSIGNMENT = re.compile(
+    r"([A-Za-z_]\w*)\s*=\s*(?:[A-Za-z_]\w*\s*(?:\.|->)\s*)*(?:trap_)?Cvar_Get\s*\(\s*\"([^\"]+)\""
+)
+
+
+def resolve_bound(value: str, definitions: dict[str, tuple[str, str, int]]) -> str:
+    """Expand a macro bound such as ``MAX_CLIENTS`` to its literal value."""
+    value = value.strip()
+    if not MACRO_BOUND.fullmatch(value):
+        return value
+    definition = definitions.get(value)
+    if not definition:
+        return value
+    body = definition[0].split("//")[0].strip()
+    return body if CONSTANT_BOUND.fullmatch(body) else value
+
+
+def range_index(
+    files: list[tuple[str, str]], definitions: dict[str, tuple[str, str, int]],
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, set[str]]]:
+    """Index enforced value ranges, and the variables each cvar is bound to.
+
+    Returns ranges keyed by C variable plus a cvar-name to variable map, because
+    a cvar registered through an interface pointer records no variable of its
+    own and would otherwise never match its own ``Cvar_CheckRange`` call.
+    """
     result: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    aliases: dict[str, set[str]] = defaultdict(set)
     check = re.compile(
-        r"Cvar_CheckRange\s*\(\s*([A-Za-z_]\w*)\s*,\s*([^,]+),\s*([^,]+),\s*([^\)]+)\)"
+        r"Cvar_CheckRange\s*\(\s*&?([A-Za-z_]\w*)\s*,\s*([^,]+),\s*([^,]+),\s*([^\)]+)\)"
     )
     clamp = re.compile(
         r"Com_Clamp(?:i)?\s*\(\s*([^,]+),\s*([^,]+),\s*([A-Za-z_]\w*)(?:\.(?:integer|value))?\s*\)"
     )
     for path, text in files:
-        for match in check.finditer(text):
-            variable = match.group(1).casefold()
-            if variable in variables:
-                result[variable].append({
-                    "min": match.group(2).strip(), "max": match.group(3).strip(),
-                    "integral": match.group(4).strip() in {"qtrue", "true", "1"},
-                    "evidence": {"path": path, "line": text.count("\n", 0, match.start()) + 1},
-                    "kind": "Cvar_CheckRange",
-                })
-        for match in clamp.finditer(text):
-            variable = match.group(3).casefold()
-            if variable in variables:
-                result[variable].append({
-                    "min": match.group(1).strip(), "max": match.group(2).strip(),
-                    "integral": "Com_Clampi" in match.group(0),
-                    "evidence": {"path": path, "line": text.count("\n", 0, match.start()) + 1},
-                    "kind": "manual clamp",
-                })
-    return result
+        # Commented-out code is not an enforced range.
+        masked = mask_comments(text)
+        for match in REGISTRATION_ASSIGNMENT.finditer(masked):
+            aliases[match.group(2).casefold()].add(match.group(1).casefold())
+        for match in check.finditer(masked):
+            result[match.group(1).casefold()].append({
+                "min": resolve_bound(match.group(2), definitions),
+                "max": resolve_bound(match.group(3), definitions),
+                "integral": match.group(4).strip() in {"qtrue", "true", "1"},
+                "evidence": {"path": path, "line": masked.count("\n", 0, match.start()) + 1},
+                "kind": "Cvar_CheckRange",
+                # The call states the bounds; nothing is inferred.
+                "confidence": "high",
+            })
+        for match in clamp.finditer(masked):
+            result[match.group(3).casefold()].append({
+                "min": resolve_bound(match.group(1), definitions),
+                "max": resolve_bound(match.group(2), definitions),
+                "integral": "Com_Clampi" in match.group(0),
+                "evidence": {"path": path, "line": masked.count("\n", 0, match.start()) + 1},
+                "kind": "manual clamp",
+                # A clamp sits on one code path and is not a registration-level
+                # guarantee the way Cvar_CheckRange is.
+                "confidence": "medium",
+            })
+    return result, aliases
 
 
 def function_body(
@@ -649,8 +686,8 @@ def main() -> None:
     wanted |= wanted_handlers
     occurrences = build_occurrence_index(files, wanted)
     file_map = dict(files)
-    ranges = range_index(files, all_variables)
     definitions = define_index(files)
+    ranges, range_aliases = range_index(files, definitions)
 
     cvars: list[dict[str, Any]] = []
     for key, records in sorted(cvar_groups.items()):
@@ -709,8 +746,9 @@ def main() -> None:
         if not override.get("description") and not documented:
             description += " Consult the cited behavior reads before relying on values not listed here."
         value_type = override.get("value_type") or infer_type(default, variables, behavior)
+        range_lookup = {variable.casefold() for variable in variables} | range_aliases.get(key, set())
         cvar_ranges = unique(
-            json.dumps(item, sort_keys=True) for variable in variables for item in ranges.get(variable.casefold(), [])
+            json.dumps(item, sort_keys=True) for variable in sorted(range_lookup) for item in ranges.get(variable, [])
         )
         cvar_ranges = [json.loads(item) for item in cvar_ranges]
         if value_type == "bool":

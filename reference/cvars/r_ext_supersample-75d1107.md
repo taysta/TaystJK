@@ -39,6 +39,10 @@ Controls `r_ext_supersample` in the renderer module. Consult the cited behavior 
 | `0` | Disabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
 | `1` | Enabled. | [codemp/rd-vulkan/vk_attachments.cpp:374](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_attachments.cpp#L374) |
 
+## Enforced ranges
+
+- `0` through `1` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:923](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L923)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

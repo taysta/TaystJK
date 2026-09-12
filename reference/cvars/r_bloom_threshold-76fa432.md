@@ -36,6 +36,10 @@ Color level to extract to bloom texture, default is 0.05
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `0.01f` through `1` (numeric; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:941](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L941)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

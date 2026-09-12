@@ -25,20 +25,17 @@ Number of reserved client slots available with password
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `0` | Disabled. | [codemp/server/sv_ccmds.cpp:1193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1193) |
-| `1` | Enabled. | [codemp/server/sv_ccmds.cpp:1193](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_ccmds.cpp#L1193) |
+No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `MAX_CLIENTS` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:982](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L982)
+- `0` through `32` (integer; Cvar_CheckRange) — [codemp/server/sv_init.cpp:982](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L982)
 
 ## Flags
 

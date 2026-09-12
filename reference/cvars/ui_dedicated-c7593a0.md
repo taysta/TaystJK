@@ -37,7 +37,7 @@ No discrete value list is enforced or documented in the inspected source.
 
 ## Enforced ranges
 
-- `0` through `2` (numeric; manual clamp) — [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7501)
+- `0` through `2` (numeric; manual clamp, not enforced on every path) — [codemp/ui/ui_main.c:7501](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L7501)
 
 ## Flags
 

@@ -36,6 +36,10 @@ Controls `r_ext_max_anisotropy` in the renderer module. Consult the cited behavi
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `1` through `16` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:931](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L931)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

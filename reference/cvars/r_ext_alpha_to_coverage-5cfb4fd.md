@@ -39,6 +39,10 @@ Controls `r_ext_alpha_to_coverage` in the renderer module. Consult the cited beh
 | `0` | Disabled. | [codemp/rd-vulkan/vk_pipelines.cpp:970](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L970) |
 | `1` | Enabled. | [codemp/rd-vulkan/vk_pipelines.cpp:970](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_pipelines.cpp#L970) |
 
+## Enforced ranges
+
+- `0` through `1` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:925](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L925)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

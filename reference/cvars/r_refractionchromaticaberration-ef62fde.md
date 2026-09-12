@@ -35,6 +35,10 @@ Controls `r_refractionChromaticAberration` in the renderer module. Consult the c
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `0.f` through `0.3f` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1597](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1597)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

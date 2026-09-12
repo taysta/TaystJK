@@ -38,6 +38,10 @@ Apply picmip only on worldspawn textures
 | `0` | Disabled. | [codemp/rd-vulkan/vk_image.cpp:619](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L619) |
 | `1` | Enabled. | [codemp/rd-vulkan/vk_image.cpp:619](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/vk_image.cpp#L619) |
 
+## Enforced ranges
+
+- `0` through `1` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:960](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L960)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration
