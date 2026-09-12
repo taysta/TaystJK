@@ -57,3 +57,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 - registration: [codemp/server/sv_init.cpp:1029](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_init.cpp#L1029) (Cvar_Get)
 - behavior: [codemp/server/sv_snapshot.cpp:310](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L310)
 - behavior: [codemp/server/sv_snapshot.cpp:311](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_snapshot.cpp#L311)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

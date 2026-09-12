@@ -91,3 +91,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/rd-vulkan/tr_init.cpp:800](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L800) (Cvar_Get)
 - behavior: [codemp/rd-vanilla/tr_image.cpp:1546](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1546)
 - behavior: [codemp/rd-vanilla/tr_image.cpp:1552](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_image.cpp#L1552)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

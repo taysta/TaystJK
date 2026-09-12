@@ -70,3 +70,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 - registration: [codemp/rd-rend2/tr_init.cpp:1518](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1518) (Cvar_Get)
 - behavior: [shared/rd-rend2/tr_backend.cpp:3274](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3274)
 - behavior: [shared/rd-rend2/tr_weather.cpp:1137](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_weather.cpp#L1137)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

@@ -64,3 +64,5 @@ Authored dates come from the exact registration's first content commit, PR dates
 
 - registration: [codemp/game/g_xcvar.h:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L388) (XCVAR_DEF); condition `_draintest`
 - behavior: [codemp/game/w_force.c:2207](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/w_force.c#L2207)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

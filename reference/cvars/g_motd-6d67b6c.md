@@ -63,3 +63,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/game/g_xcvar.h:121](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_xcvar.h#L121) (XCVAR_DEF)
 - behavior: [codemp/game/g_spawn.c:1539](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_spawn.c#L1539)
 - behavior: [codemp/game/bg_public.h:94](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/bg_public.h#L94)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

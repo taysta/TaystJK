@@ -79,3 +79,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/client/FxUtil.cpp:117](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxUtil.cpp#L117) (Cvar_Get)
 - behavior: [codemp/client/FxPrimitives.cpp:228](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L228)
 - behavior: [codemp/client/FxPrimitives.cpp:230](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/FxPrimitives.cpp#L230)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

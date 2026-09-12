@@ -67,3 +67,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 - registration: [shared/rd-rend2/tr_extensions.cpp:560](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L560) (implicit Cvar_SetValue)
 - registration: [shared/rd-rend2/tr_extensions.cpp:563](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L563) (implicit Cvar_SetValue)
 - registration: [shared/rd-rend2/tr_extensions.cpp:569](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_extensions.cpp#L569) (implicit Cvar_Set)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

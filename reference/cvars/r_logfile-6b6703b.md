@@ -93,3 +93,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - behavior: [shared/rd-rend2/tr_glsl.cpp:2885](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L2885)
 - behavior: [shared/rd-rend2/tr_glsl.cpp:2902](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L2902)
 - behavior: [shared/rd-rend2/tr_glsl.cpp:2995](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_glsl.cpp#L2995)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

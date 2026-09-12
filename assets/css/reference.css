@@ -912,6 +912,13 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .renderer-chip { color: #a9d4f3; background: rgba(79, 156, 209, .10); border-color: rgba(79, 156, 209, .23); }
 .status-chip { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }
 
+.page-provenance {
+  margin: 1.1rem 0 0;
+  color: var(--muted);
+  font-size: .8rem;
+}
+.page-provenance code { font-size: .95em; }
+
 .page-status-row { margin: 0 0 1rem; }
 .page-status { letter-spacing: .08em; text-transform: uppercase; }
 .page-status-experimental { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }

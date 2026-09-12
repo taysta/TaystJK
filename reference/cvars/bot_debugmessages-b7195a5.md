@@ -64,3 +64,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 - registration: [codemp/game/ai_main.c:10698](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L10698) (Cvar_Register); condition `defined(_DEBUG)`
 - behavior: [codemp/game/ai_main.c:796](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_main.c#L796)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
