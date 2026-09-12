@@ -77,3 +77,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - behavior: [codemp/cgame/hud_strafehelper.c:911](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L911)
 - behavior: [codemp/cgame/hud_strafehelper.c:913](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L913)
 - behavior: [codemp/cgame/hud_strafehelper.c:892](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L892)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

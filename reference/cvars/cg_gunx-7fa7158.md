@@ -66,3 +66,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/cgame/cg_xcvar.h:312](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L312) (XCVAR_DEF)
 - behavior: [codemp/cgame/cg_view.c:169](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_view.c#L169)
 - behavior: [codemp/cgame/cg_weapons.c:879](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_weapons.c#L879)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

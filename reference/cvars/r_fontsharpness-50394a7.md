@@ -76,3 +76,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/rd-common/tr_font.cpp:1842](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1842) (Cvar_Get)
 - behavior: [codemp/rd-common/tr_font.cpp:1171](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-common/tr_font.cpp#L1171)
 - upstream-documentation: [CVARS.rst:289](https://github.com/mvdevs/jk2mv/blame/7d601454c3db68492289d4d4e3dc30bff39e4246/CVARS.rst#L289)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

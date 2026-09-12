@@ -71,3 +71,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/server/sv_bot.cpp:675](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/server/sv_bot.cpp#L675) (Cvar_Get)
 - behavior: [codemp/game/ai_util.c:361](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_util.c#L361)
 - behavior: [codemp/game/ai_util.c:360](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/ai_util.c#L360)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

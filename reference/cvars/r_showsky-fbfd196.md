@@ -92,3 +92,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - behavior: [shared/rd-rend2/tr_shade.cpp:635](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_shade.cpp#L635)
 - behavior: [codemp/rd-vulkan/tr_sky.cpp:457](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_sky.cpp#L457)
 - behavior: [codemp/rd-vanilla/tr_sky.cpp:811](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_sky.cpp#L811)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

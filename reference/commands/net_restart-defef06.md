@@ -58,3 +58,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 - registration: [codemp/qcommon/net_ip.cpp:995](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L995) (Cmd_AddCommand)
 - handler: [codemp/qcommon/net_ip.cpp:1100](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/net_ip.cpp#L1100)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

@@ -913,6 +913,9 @@ def main() -> None:
     write(output / "commands.json", commands)
     write(output / "reference-meta.json", {
         "source_commit": current_sha,
+        # Committer date of the snapshot, so a reader can tell how stale the
+        # reference is without resolving the hash themselves.
+        "source_commit_date": git("show", "-s", "--format=%cI", current_sha).strip(),
         "basejka_commit": BASEJKA_REF,
         "counts": {"cvars": len(cvars), "commands": len(commands)},
         "extractor_version": EXTRACTOR_VERSION,

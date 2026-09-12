@@ -54,3 +54,5 @@ Origin: <span class="label ref-origin ref-origin-basejka">Base Jedi Academy</spa
 - registration: [codemp/cgame/cg_servercmds.c:327](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L327) (implicit Cvar_Set)
 - behavior: [codemp/cgame/cg_saga.c:209](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_saga.c#L209)
 - behavior: [codemp/ui/ui_main.c:8763](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L8763)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

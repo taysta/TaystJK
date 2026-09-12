@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 from collections import Counter
+from functools import lru_cache
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -167,6 +168,27 @@ def collection_slug(name: str) -> str:
 
 def detail_url(entry: dict[str, Any]) -> str:
     return f"/TaystJK/reference/{entry['kind']}s/{slug(entry['name'])}/"
+
+
+@lru_cache(maxsize=1)
+def source_snapshot() -> tuple[str | None, str | None]:
+    """The commit the checked-in reference was generated from, and its date."""
+    meta_path = Path("_data/reference-meta.json")
+    if not meta_path.exists():
+        return None, None
+    meta = load(meta_path)
+    return meta.get("source_commit"), meta.get("source_commit_date")
+
+
+def generated_from(sha: str) -> str:
+    """Footer stating which source snapshot a page was generated from."""
+    _, date = source_snapshot()
+    when = f" on {esc(date[:10])}" if date else ""
+    return (
+        f'<p class="page-provenance">Generated from source commit '
+        f'<a href="https://github.com/taysta/TaystJK/tree/{esc(sha)}"><code>{esc(sha[:12])}</code></a>'
+        f"{when}. Anything merged after that is not reflected here.</p>"
+    )
 
 
 MACRO_KIND_LABELS = {
@@ -576,6 +598,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
         extra = f" ({item.get('registration_kind')})" if item.get("registration_kind") else ""
         condition = f"; condition {code(item['condition'])}" if item.get("condition") else ""
         lines.append(f"- {item['kind']}: {evidence_link(item)}{extra}{condition}")
+    lines.extend(["", generated_from(entry["source_commit"])])
     return "\n".join(lines)
 
 
@@ -986,6 +1009,8 @@ def main() -> None:
 <h1>Console reference</h1>
 
 <p class="page-lede">Search {len(cvars) + len(commands):,} cvars and commands across the client, dedicated server, game, cgame, UI, platform code, and every renderer backend.</p>
+
+{generated_from(cvars[0]["source_commit"])}
 </div>
 
 {catalog_app("all", multi_select=True)}

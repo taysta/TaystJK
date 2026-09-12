@@ -71,3 +71,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/cgame/cg_consolecmds.c:2715](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L2715) (forwarded client command table)
 - registration: [codemp/game/g_cmds.c:9049](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L9049) (game command table)
 - handler: [codemp/game/g_cmds.c:6003](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/game/g_cmds.c#L6003)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

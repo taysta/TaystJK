@@ -66,3 +66,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 - registration: [codemp/qcommon/cm_load.cpp:636](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_load.cpp#L636) (Cvar_Get); condition `!defined(BSPC)`
 - behavior: [codemp/qcommon/cm_patch.cpp:1259](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cm_patch.cpp#L1259)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

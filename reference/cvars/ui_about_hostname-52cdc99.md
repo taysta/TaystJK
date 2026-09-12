@@ -67,3 +67,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/cgame/cg_xcvar.h:398](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_xcvar.h#L398) (XCVAR_DEF)
 - behavior: [codemp/cgame/cg_servercmds.c:322](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_servercmds.c#L322)
 - behavior: [codemp/client/cl_discordrpc.cpp:251](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_discordrpc.cpp#L251)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

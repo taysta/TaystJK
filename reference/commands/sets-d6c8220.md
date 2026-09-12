@@ -59,3 +59,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 
 - registration: [codemp/qcommon/cvar.cpp:1621](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1621) (Cmd_AddCommand)
 - handler: [codemp/qcommon/cvar.cpp:1068](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/qcommon/cvar.cpp#L1068)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

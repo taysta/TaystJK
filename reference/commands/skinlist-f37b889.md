@@ -71,3 +71,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/rd-vanilla/tr_init.cpp:1593](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1593) (renderer command table)
 - registration: [codemp/rd-vulkan/tr_init.cpp:745](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L745) (renderer command table)
 - handler: [codemp/rd-vanilla/tr_skin.cpp:417](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_skin.cpp#L417)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>

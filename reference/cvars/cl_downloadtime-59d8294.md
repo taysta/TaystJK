@@ -66,3 +66,5 @@ These commits occur after the ultimate-origin introduction on TaystJK's inherite
 - registration: [codemp/client/cl_main.cpp:1575](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1575) (implicit Cvar_SetValue)
 - registration: [codemp/client/cl_main.cpp:1589](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_main.cpp#L1589) (implicit Cvar_SetValue)
 - behavior: [codemp/ui/ui_main.c:12121](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_main.c#L12121)
+
+<p class="page-provenance">Generated from source commit <a href="https://github.com/taysta/TaystJK/tree/6ff04c0baf588a89e5ec9361ad7a0992941d7655"><code>6ff04c0baf58</code></a> on 2026-09-09. Anything merged after that is not reflected here.</p>
