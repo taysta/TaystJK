@@ -26,7 +26,7 @@ Controls `gamedate` in the game module. Consult the cited behavior reads before 
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `SOURCE_DATE` |
+| Default | `SOURCE_DATE` — set at build time |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

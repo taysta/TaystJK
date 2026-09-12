@@ -26,7 +26,7 @@ Controls `sv_master1` in the engine-server module. Consult the cited behavior re
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `MASTER_SERVER_NAME` |
+| Default | `masterjk3.ravensoft.com` <span class="meta-chip">from MASTER_SERVER_NAME</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

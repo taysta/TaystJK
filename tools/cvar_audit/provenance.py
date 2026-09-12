@@ -25,6 +25,14 @@ from extract import extract_commands, extract_cvars, source_files
 
 BASEJKA_REF = "14cea1563762076974bee277afadbd5bf234c494"
 CURRENT_REF = "origin/master"
+# Deliberately still 6 after the macro-resolution change in extract.py.  Bumping
+# it discards the resolved provenance in .cvar-audit/provenance.json and forces a
+# full re-resolve, and PR metadata only ever reaches the resolver through
+# --pr-json at invocation -- it is neither cached nor persisted.  Those exports
+# are no longer available, so a re-resolve would silently lose the PR-dated
+# evidence behind `authored-pr-chronology+cross-project-pr-link`.  Origin
+# resolution does not read default values, so the existing provenance stays
+# valid.  Bump this once the PR JSON exports can be supplied again.
 EXTRACTOR_VERSION = 6
 RESOLVER_VERSION = 31
 UPSTREAM_REFS = {

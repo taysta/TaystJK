@@ -680,6 +680,14 @@ def main() -> None:
         default = defaults.most_common(1)[0][0] if defaults else next(
             (record["default"] for record in records if record.get("default") is not None), None
         )
+        # Carry the macro the chosen default came from, so a page can show both
+        # the resolved value and the identifier the source actually spells.
+        default_macro, default_macro_kind = next(
+            ((record.get("default_macro"), record.get("default_macro_kind"))
+             for record in records
+             if record.get("default") == default and record.get("default_macro")),
+            (None, None),
+        )
         behavior = useful_occurrences(name, variables, records, occurrences)
         descriptions = [clean_description(record.get("description")) for record in records]
         xdoc = xdoc_cvars.get(key, {})
@@ -770,9 +778,11 @@ def main() -> None:
             "modules": modules, "renderer": renderers, "default": default,
             "defaults": [
                 {"value": record.get("default"), "module": record["module"],
-                 "renderer": record.get("renderer"), "condition": record.get("condition")}
+                 "renderer": record.get("renderer"), "condition": record.get("condition"),
+                 "macro": record.get("default_macro"), "macro_kind": record.get("default_macro_kind")}
                 for record in records if record.get("default") is not None
             ],
+            "default_macro": default_macro, "default_macro_kind": default_macro_kind,
             "flags": flags, "value_type": value_type, "range": cvar_ranges,
             "values": values, "summary": summary, "description": description,
             "derivation": override.get("derivation", derivation), "network": network,

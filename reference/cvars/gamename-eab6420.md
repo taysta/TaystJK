@@ -26,7 +26,7 @@ Controls `gamename` in the game module. Consult the cited behavior reads before 
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `GAMEVERSION` |
+| Default | `japro` <span class="meta-chip">from GAMEVERSION</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
@@ -45,7 +45,7 @@ No discrete value list is enforced or documented in the inspected source.
 | Default | Module | Renderer | Compile condition |
 |:--|:--|:--|:--|
 | `` | `engine-server` | `—` | `always` |
-| `GAMEVERSION` | `game` | `—` | `always` |
+| `japro` | `game` | `—` | `always` |
 
 ## Provenance
 

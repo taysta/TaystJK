@@ -169,6 +169,28 @@ def detail_url(entry: dict[str, Any]) -> str:
     return f"/TaystJK/reference/{entry['kind']}s/{slug(entry['name'])}/"
 
 
+MACRO_KIND_LABELS = {
+    "compiler-builtin": "set at build time",
+    "enum-constant": "enum constant",
+    "unresolved-identifier": "unresolved identifier",
+}
+
+
+def default_cell(entry: dict[str, Any]) -> str:
+    """Render a default, showing the macro it came from where there is one."""
+    value = entry.get("default")
+    if value is None:
+        return code("dynamic")
+    macro = entry.get("default_macro")
+    kind = entry.get("default_macro_kind")
+    if kind:
+        # Not a literal: the identifier is all the source commits to.
+        return f"{code(value)} — {esc(MACRO_KIND_LABELS.get(kind, kind))}"
+    if macro and macro != value:
+        return f"{code(value)} <span class=\"meta-chip\">from {esc(macro)}</span>"
+    return code(value)
+
+
 def badge(origin: str) -> str:
     return f'<span class="label ref-origin ref-origin-{esc(origin)}">{esc(ORIGIN_LABELS.get(origin, origin))}</span>'
 
@@ -414,7 +436,7 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
     ])
     if entry["kind"] == "cvar":
         lines.extend([
-            f"| Default | {code(entry['default'] if entry['default'] is not None else 'dynamic')} |",
+            f"| Default | {default_cell(entry)} |",
             f"| Value type | {code(entry['value_type'])} |",
             f"| Restart | {'Yes; the value is latched.' if entry['requires_restart'] else 'No latch flag is registered.'} |",
             f"| Cheat protected | {'Yes' if entry['cheat_protected'] else 'No'} |",

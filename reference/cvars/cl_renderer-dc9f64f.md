@@ -26,7 +26,7 @@ Which renderer library to use
 | Confidence | `medium` |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_setup.menu:1642](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1642), [ingame_setup.menu:1678](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_setup.menu#L1678), [setup.menu:1430](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/setup.menu#L1430) |
-| Default | `DEFAULT_RENDER_LIBRARY` |
+| Default | `rd-taystjk` <span class="meta-chip">from DEFAULT_RENDER_LIBRARY</span> |
 | Value type | `string` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
