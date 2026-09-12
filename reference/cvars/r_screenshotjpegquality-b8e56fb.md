@@ -35,6 +35,11 @@ Controls `r_screenshotJpegQuality` in the renderer module. Consult the cited beh
 
 No discrete value list is enforced or documented in the inspected source.
 
+## Enforced ranges
+
+- `10` through `100` (integer; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1778](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1778)
+- `10` through `100` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:1010](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L1010)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

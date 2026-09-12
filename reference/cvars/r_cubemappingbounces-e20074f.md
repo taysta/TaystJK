@@ -25,16 +25,17 @@ Renders cubemaps multiple times to get reflections in reflections
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
 ## Values
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `0` | Disabled. | [shared/rd-rend2/tr_bsp.cpp:3304](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L3304) |
-| `1` | Enabled. | [shared/rd-rend2/tr_bsp.cpp:3304](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_bsp.cpp#L3304) |
+No discrete value list is enforced or documented in the inspected source.
+
+## Enforced ranges
+
+- `0` through `2` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1564](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1564)
 
 ## Flags
 

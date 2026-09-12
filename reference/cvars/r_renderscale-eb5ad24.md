@@ -41,6 +41,10 @@ Scaling mode to be used with custom render resolution: 0 - disabled 1 - nearest 
 | `3` | Linear filtering, stretch to full size. | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L967) |
 | `4` | Linear filtering, preserve aspect ratio (black bars on sides). | [codemp/rd-vulkan/tr_init.cpp:967](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L967) |
 
+## Enforced ranges
+
+- `0` through `4` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:973](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L973)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

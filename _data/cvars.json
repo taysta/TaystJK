@@ -734,6 +734,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 1436,
           "path": "codemp/qcommon/common.cpp"
@@ -742,16 +743,6 @@
         "kind": "Cvar_CheckRange",
         "max": "2",
         "min": "1"
-      },
-      {
-        "evidence": {
-          "line": 1445,
-          "path": "codemp/qcommon/common.cpp"
-        },
-        "integral": true,
-        "kind": "Cvar_CheckRange",
-        "max": "2",
-        "min": "0"
       }
     ],
     "renderer": [],
@@ -126660,6 +126651,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 656,
           "path": "codemp/client/cl_console.cpp"
@@ -134348,6 +134340,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 1436,
           "path": "codemp/qcommon/common.cpp"
@@ -134356,16 +134349,6 @@
         "kind": "Cvar_CheckRange",
         "max": "2",
         "min": "1"
-      },
-      {
-        "evidence": {
-          "line": 1445,
-          "path": "codemp/qcommon/common.cpp"
-        },
-        "integral": true,
-        "kind": "Cvar_CheckRange",
-        "max": "2",
-        "min": "0"
       }
     ],
     "renderer": [],
@@ -244762,7 +244745,30 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1777,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "100",
+        "min": "10"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1009,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "100",
+        "min": "10"
+      }
+    ],
     "renderer": [
       "rd-rend2",
       "rd-vanilla",
@@ -246274,7 +246280,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 939,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -246572,7 +246590,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 944,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "2",
+        "min": "0.01f"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -247125,7 +247155,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 941,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0.01f"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -250112,7 +250154,19 @@
         "rend2"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1564,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "2",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-rend2"
     ],
@@ -250120,29 +250174,8 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Renders cubemaps multiple times to get reflections in reflections",
-    "value_type": "bool",
-    "values": [
-      {
-        "evidence": {
-          "line": 3304,
-          "path": "shared/rd-rend2/tr_bsp.cpp",
-          "score": 5,
-          "text": "for (int k = 0; k <= r_cubeMappingBounces->integer; k++)"
-        },
-        "meaning": "Disabled.",
-        "value": "0"
-      },
-      {
-        "evidence": {
-          "line": 3304,
-          "path": "shared/rd-rend2/tr_bsp.cpp",
-          "score": 5,
-          "text": "for (int k = 0; k <= r_cubeMappingBounces->integer; k++)"
-        },
-        "meaning": "Enabled.",
-        "value": "1"
-      }
-    ],
+    "value_type": "int",
+    "values": [],
     "variables": [],
     "xdocs": null
   },
@@ -255149,7 +255182,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 916,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "8",
+        "min": "-2"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -255968,6 +256013,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 356,
           "path": "codemp/rd-dedicated/tr_init.cpp"
@@ -255978,6 +256024,7 @@
         "min": "0"
       },
       {
+        "confidence": "high",
         "evidence": {
           "line": 809,
           "path": "shared/sdl/sdl_window.cpp"
@@ -256645,7 +256692,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 935,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -257247,7 +257306,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 952,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0.1f"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -257660,7 +257731,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 948,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "2",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-rend2",
       "rd-vulkan"
@@ -257947,7 +258030,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 956,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -258210,7 +258305,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 950,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0.1f"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -262320,7 +262427,19 @@
         "rend2"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1515,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "2.f",
+        "min": "0.f"
+      }
+    ],
     "renderer": [
       "rd-rend2"
     ],
@@ -266479,7 +266598,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 925,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -268605,7 +268736,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 931,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "16",
+        "min": "1"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -269495,6 +269638,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 921,
           "path": "codemp/rd-vulkan/tr_init.cpp"
@@ -270899,7 +271043,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 923,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -276765,7 +276921,19 @@
         "rend2"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1649,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1.0f",
+        "min": "0.0f"
+      }
+    ],
     "renderer": [
       "rd-rend2"
     ],
@@ -282786,7 +282954,30 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1535,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 933,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "-1"
+      }
+    ],
     "renderer": [
       "rd-rend2",
       "rd-vulkan"
@@ -284700,6 +284891,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 975,
           "path": "codemp/rd-vulkan/tr_init.cpp"
@@ -289604,7 +289796,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 929,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "-1"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -296017,7 +296221,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 960,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "1",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -301131,7 +301347,52 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 334,
+          "path": "codemp/rd-dedicated/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "16",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1521,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "16",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1652,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "16",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 804,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "16",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-dedicated",
       "rd-rend2",
@@ -301142,29 +301403,8 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `r_picmip` in the renderer module.",
-    "value_type": "bool",
-    "values": [
-      {
-        "evidence": {
-          "line": 1326,
-          "path": "codemp/rd-rend2/tr_init.cpp",
-          "score": 5,
-          "text": "ri.Printf( PRINT_ALL, \"picmip: %d\\n\", r_picmip->integer );"
-        },
-        "meaning": "Disabled.",
-        "value": "0"
-      },
-      {
-        "evidence": {
-          "line": 1326,
-          "path": "codemp/rd-rend2/tr_init.cpp",
-          "score": 5,
-          "text": "ri.Printf( PRINT_ALL, \"picmip: %d\\n\", r_picmip->integer );"
-        },
-        "meaning": "Enabled.",
-        "value": "1"
-      }
-    ],
+    "value_type": "int",
+    "values": [],
     "variables": [],
     "xdocs": null
   },
@@ -301822,7 +302062,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 937,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "30",
+        "min": "16"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -302205,7 +302457,41 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 383,
+          "path": "codemp/rd-dedicated/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "3",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1692,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "3",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 850,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "3",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-dedicated",
       "rd-vanilla",
@@ -302215,29 +302501,8 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "needs-review",
     "summary": "Controls `r_primitives` in the renderer module.",
-    "value_type": "bool",
-    "values": [
-      {
-        "evidence": {
-          "line": 1496,
-          "path": "codemp/rd-vanilla/tr_init.cpp",
-          "score": 5,
-          "text": "primitives = r_primitives->integer;"
-        },
-        "meaning": "Disabled.",
-        "value": "0"
-      },
-      {
-        "evidence": {
-          "line": 1496,
-          "path": "codemp/rd-vanilla/tr_init.cpp",
-          "score": 5,
-          "text": "primitives = r_primitives->integer;"
-        },
-        "meaning": "Enabled.",
-        "value": "1"
-      }
-    ],
+    "value_type": "int",
+    "values": [],
     "variables": [],
     "xdocs": null
   },
@@ -303112,7 +303377,19 @@
         "rend2"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1597,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "0.3f",
+        "min": "0.f"
+      }
+    ],
     "renderer": [
       "rd-rend2"
     ],
@@ -304018,7 +304295,19 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 973,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "4",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-vulkan"
     ],
@@ -307000,7 +307289,30 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1778,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "100",
+        "min": "10"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1010,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": true,
+        "kind": "Cvar_CheckRange",
+        "max": "100",
+        "min": "10"
+      }
+    ],
     "renderer": [
       "rd-rend2",
       "rd-vanilla",
@@ -317074,7 +317386,41 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1532,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "80",
+        "min": "4"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1664,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "80",
+        "min": "0"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 816,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "80",
+        "min": "0"
+      }
+    ],
     "renderer": [
       "rd-dedicated",
       "rd-rend2",
@@ -323916,7 +324262,19 @@
         "rend2"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1586,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "128",
+        "min": "16"
+      }
+    ],
     "renderer": [
       "rd-rend2"
     ],
@@ -326646,7 +327004,52 @@
         "vulkan"
       ]
     },
-    "range": [],
+    "range": [
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 365,
+          "path": "codemp/rd-dedicated/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "10",
+        "min": "0.001f"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1614,
+          "path": "codemp/rd-rend2/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "200",
+        "min": "0.001f"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 1675,
+          "path": "codemp/rd-vanilla/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "10",
+        "min": "0.001f"
+      },
+      {
+        "confidence": "high",
+        "evidence": {
+          "line": 832,
+          "path": "codemp/rd-vulkan/tr_init.cpp"
+        },
+        "integral": false,
+        "kind": "Cvar_CheckRange",
+        "max": "10",
+        "min": "0.001f"
+      }
+    ],
     "renderer": [
       "rd-dedicated",
       "rd-rend2",
@@ -330322,6 +330725,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 460,
           "path": "codemp/client/snd_dma.cpp"
@@ -333830,6 +334234,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 456,
           "path": "codemp/client/snd_dma.cpp"
@@ -334043,6 +334448,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 458,
           "path": "codemp/client/snd_dma.cpp"
@@ -334544,6 +334950,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 653,
           "path": "codemp/client/cl_console.cpp"
@@ -343209,6 +343616,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 1015,
           "path": "codemp/server/sv_init.cpp"
@@ -343592,6 +344000,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 1068,
           "path": "codemp/server/sv_init.cpp"
@@ -351199,13 +351608,14 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 982,
           "path": "codemp/server/sv_init.cpp"
         },
         "integral": true,
         "kind": "Cvar_CheckRange",
-        "max": "MAX_CLIENTS",
+        "max": "32",
         "min": "0"
       }
     ],
@@ -351214,29 +351624,8 @@
     "source_commit": "6ff04c0baf588a89e5ec9361ad7a0992941d7655",
     "status": "documented",
     "summary": "Number of reserved client slots available with password",
-    "value_type": "bool",
-    "values": [
-      {
-        "evidence": {
-          "line": 1193,
-          "path": "codemp/server/sv_ccmds.cpp",
-          "score": 5,
-          "text": "Com_Printf( \"players : %i %s, %i %s(%i max)\\n\", humans, (humans == 1 ? \"human\" : \"humans\"), bots, (bots == 1 ? \"bot\" : \"bots\"), sv_maxclients->integer - sv_privateClients->integer );"
-        },
-        "meaning": "Disabled.",
-        "value": "0"
-      },
-      {
-        "evidence": {
-          "line": 1193,
-          "path": "codemp/server/sv_ccmds.cpp",
-          "score": 5,
-          "text": "Com_Printf( \"players : %i %s, %i %s(%i max)\\n\", humans, (humans == 1 ? \"human\" : \"humans\"), bots, (bots == 1 ? \"bot\" : \"bots\"), sv_maxclients->integer - sv_privateClients->integer );"
-        },
-        "meaning": "Enabled.",
-        "value": "1"
-      }
-    ],
+    "value_type": "int",
+    "values": [],
     "variables": [
       "sv_privateClients"
     ],
@@ -352179,6 +352568,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 990,
           "path": "codemp/server/sv_init.cpp"
@@ -355424,6 +355814,7 @@
     },
     "range": [
       {
+        "confidence": "high",
         "evidence": {
           "line": 1013,
           "path": "codemp/server/sv_init.cpp"
@@ -368490,6 +368881,7 @@
     },
     "range": [
       {
+        "confidence": "medium",
         "evidence": {
           "line": 7501,
           "path": "codemp/ui/ui_main.c"

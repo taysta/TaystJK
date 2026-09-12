@@ -27,16 +27,19 @@ Controls `r_primitives` in the renderer module. Consult the cited behavior reads
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
 
 ## Values
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-vanilla/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1496) |
-| `1` | Enabled. | [codemp/rd-vanilla/tr_init.cpp:1496](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1496) |
+No discrete value list is enforced or documented in the inspected source.
+
+## Enforced ranges
+
+- `0` through `3` (integer; Cvar_CheckRange) — [codemp/rd-dedicated/tr_init.cpp:383](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L383)
+- `0` through `3` (integer; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1692](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1692)
+- `0` through `3` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:850](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L850)
 
 ## Flags
 

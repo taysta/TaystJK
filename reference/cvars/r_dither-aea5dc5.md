@@ -38,6 +38,10 @@ Set dithering mode: 0 - disabled 1 - ordered Requires \\r_fbo 1
 | `0` | Disabled. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L934) |
 | `1` | Ordered Requires \\r_fbo 1. | [codemp/rd-vulkan/tr_init.cpp:934](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L934) |
 
+## Enforced ranges
+
+- `0` through `1` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:935](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L935)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

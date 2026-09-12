@@ -38,6 +38,10 @@ Controls the rend2 dynamic-glow bloom strength. Zero skips the bloom pass; posit
 | `0` | Disable the dynamic-glow bloom pass. | [shared/rd-rend2/tr_backend.cpp:3131](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3131) |
 | `>0` | Use this positive value, up to 2, as the shader's bloom strength. | [shared/rd-rend2/tr_backend.cpp:3140](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/shared/rd-rend2/tr_backend.cpp#L3140) |
 
+## Enforced ranges
+
+- `0.f` through `2.f` (numeric; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1515](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1515)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

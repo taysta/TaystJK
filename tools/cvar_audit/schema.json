@@ -322,7 +322,45 @@
       ]
     },
     "range": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "min",
+          "max",
+          "integral",
+          "kind",
+          "confidence",
+          "evidence"
+        ],
+        "properties": {
+          "min": {
+            "type": "string"
+          },
+          "max": {
+            "type": "string"
+          },
+          "integral": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "Cvar_CheckRange",
+              "manual clamp"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "evidence": {
+            "type": "object"
+          }
+        }
+      }
     },
     "values": {
       "type": "array"

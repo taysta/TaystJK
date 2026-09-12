@@ -447,7 +447,8 @@ def detail_page(entry: dict[str, Any], refs: dict[str, str]) -> str:
             for item in entry["range"]:
                 lines.append(
                     f"- {code(item['min'])} through {code(item['max'])}"
-                    f" ({'integer' if item.get('integral') else 'numeric'}; {item.get('kind', 'range check')}) — "
+                    f" ({'integer' if item.get('integral') else 'numeric'}; {item.get('kind', 'range check')}"
+                    f"{'' if item.get('confidence', 'high') == 'high' else ', not enforced on every path'}) — "
                     f"{evidence_link(dict(item['evidence'], url=source_url(item['evidence']['path'], item['evidence']['line'], entry['source_commit'])))}"
                 )
             lines.append("")

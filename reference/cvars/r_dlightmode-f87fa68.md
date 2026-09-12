@@ -38,6 +38,10 @@ Controls `r_dlightMode` in the renderer module. Consult the cited behavior reads
 |:--|:--|:--|
 | `2` | Selects the code path tested for value 2. | [codemp/rd-vulkan/tr_light.cpp:331](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_light.cpp#L331) |
 
+## Enforced ranges
+
+- `0` through `2` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:948](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L948)
+
 ## Flags
 
 - `CVAR_ARCHIVE` — saved to the user configuration

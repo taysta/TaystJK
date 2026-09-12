@@ -37,6 +37,10 @@ Select physical device to render: 0+ - use explicit device index -1 - first disc
 | `-1` | First discrete GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
 | `-2` | First integrated GPU. | [codemp/rd-vulkan/tr_init.cpp:912](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L912) |
 
+## Enforced ranges
+
+- `-2` through `8` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:916](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L916)
+
 ## Flags
 
 - `CVAR_ARCHIVE_ND` — saved to configuration without marking the cvar as user-created

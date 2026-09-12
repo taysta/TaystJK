@@ -27,16 +27,20 @@ Controls `r_picmip` in the renderer module. Consult the cited behavior reads bef
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |
-| Value type | `bool` |
+| Value type | `int` |
 | Restart | Yes; the value is latched. |
 | Cheat protected | No |
 
 ## Values
 
-| Value | Meaning | Evidence |
-|:--|:--|:--|
-| `0` | Disabled. | [codemp/rd-rend2/tr_init.cpp:1326](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1326) |
-| `1` | Enabled. | [codemp/rd-rend2/tr_init.cpp:1326](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1326) |
+No discrete value list is enforced or documented in the inspected source.
+
+## Enforced ranges
+
+- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-dedicated/tr_init.cpp:334](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-dedicated/tr_init.cpp#L334)
+- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-rend2/tr_init.cpp:1521](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-rend2/tr_init.cpp#L1521)
+- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-vanilla/tr_init.cpp:1652](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vanilla/tr_init.cpp#L1652)
+- `0` through `16` (integer; Cvar_CheckRange) — [codemp/rd-vulkan/tr_init.cpp:804](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/rd-vulkan/tr_init.cpp#L804)
 
 ## Flags
 
