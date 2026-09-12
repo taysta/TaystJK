@@ -85,7 +85,8 @@ Work items:
    `sv_master1` → `masterjk3.ravensoft.com`, `sv_master2` → `master.jkhub.org`,
    `cl_renderer` → `DEFAULT_RENDER_LIBRARY`, plus `model`, `saber1`, `forcepowers`,
    `gamename`, `gamedate`, `r_drawBuffer`, `r_textureMode`, `ui_blueteam`,
-   `ui_opponentName`, `ui_char_anim`, `cl_motdServer1`, `cl_motdServer2`. Resolve in the
+   `ui_opponentName`, `ui_char_anim`, `ui_redteam`, `ui_saber`, `cl_motdServer1`,
+   `cl_motdServer2`. Resolve in the
    extractor by following `#define` chains in `codemp/qcommon/qcommon.h` and siblings;
    fall back to `overrides.json` only where the macro is genuinely platform-conditional,
    and record both the macro name and the resolved value so the page can show either.
@@ -96,7 +97,7 @@ Work items:
    and in the page footer of every generated entry.
 4. Placeholder triage tooling: a script that emits the review queue ordered by
    (origin = taystjk first), then by whether an xdocs entry exists, then alphabetically,
-   so the 1,029 placeholder summaries can be worked down in a sensible order. Output as a
+   so the 1,135 placeholder summaries can be worked down in a sensible order. Output as a
    checklist file, not a new site page.
 
 **Acceptance:** zero entries display an unresolved macro as a default; `range` is either
@@ -374,7 +375,8 @@ value instead of the value the user would see. Confirmed cases:
   r_textureMode  = GL_LINEAR_MIPMAP_LINEAR   saber1         = DEFAULT_SABER
   sv_master1     = MASTER_SERVER_NAME        sv_master2     = JKHUB_MASTER_SERVER_NAME
   ui_blueteam    = DEFAULT_BLUETEAM_NAME     ui_char_anim   = BOTH_WALK1
-  ui_opponentName = DEFAULT_BLUETEAM_NAME
+  ui_opponentName = DEFAULT_BLUETEAM_NAME    ui_redteam     = DEFAULT_REDTEAM_NAME
+  ui_saber       = DEFAULT_SABER
 
 For reference, `codemp/qcommon/qcommon.h` defines `MASTER_SERVER_NAME` as
 "masterjk3.ravensoft.com" and `JKHUB_MASTER_SERVER_NAME` as "master.jkhub.org".
@@ -1144,6 +1146,8 @@ nice-to-have. Fix only the blocking ones in this task; list the rest for me to t
 - Prompts 4.x and 5.x will produce factual errors if the agent is allowed to write from
   its own knowledge of Jedi Academy. The "verify against source, mark unverifiable as TODO"
   instruction is doing real work in each of them — do not trim it.
-- The counts quoted throughout (2,014 entries, 1,029 placeholders, 217/823/990 baselines,
+- The counts quoted throughout (2,014 entries, 1,135 placeholders, 217/823/990 baselines,
   57 of 79 changelog gap) were measured against source commit `6ff04c0`. Re-measure before
-  relying on them if the reference has been regenerated since.
+  relying on them if the reference has been regenerated since. Every figure was re-verified
+  on 2026-09-13 against that same commit; all held except the placeholder count, which was
+  stated as 1,029. See the note at the top of `taystjk-docs-plan.md`.

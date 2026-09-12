@@ -4,6 +4,26 @@ Sources: rendered site, `gh-pages` source, `master` history (full fork delta
 `eternal/master..HEAD` = 2,271 commits, 1,957 non-merge), the issue tracker (72 issues),
 and `_data/cvars.json` / `_data/commands.json`.
 
+> **Re-measured 2026-09-13 against `source_commit` `6ff04c0`** — the same commit the
+> original figures were taken from, so nothing had been regenerated in between.
+>
+> Verified unchanged: 2,014 entries (1,441 cvars / 573 commands); 361 `documented` and
+> 1,653 `needs-review`; 16 entries with a populated `range`; 775 provenance `medium`;
+> the `origin.source` distribution (basejka 1024, japro 458, openjk 167, eternaljk 148,
+> rend2 90, taystjk 79, vulkan 24, jk2mv 14, newjk 10); the 217 / 823 / 990 baseline
+> buckets; and the changelog gap of 22 covered out of 79 TaystJK-origin entries.
+>
+> Two corrections applied to this document and the implementation plan:
+>
+> 1. **Placeholder summaries were stated as 1,029. The actual count is 1,135** — 927 cvars
+>    plus 208 commands. 1,029 matches no definition tried (cvars only, all entries, either
+>    restricted by status, xdocs coverage, or confidence), so it appears to be a miscount
+>    rather than a different measure. Affects Phase 1's triage work item.
+> 2. **The 17 macro-valued defaults were enumerated as only 15.** `ui_redteam`
+>    (`DEFAULT_REDTEAM_NAME`) and `ui_saber` (`DEFAULT_SABER`) were missing from the lists
+>    in Phase 1 and Prompt 1.1, which would have silently dropped two entries from that
+>    prompt's before/after table. The count of 17 was right.
+
 ---
 
 ## 1. Proposed information architecture
@@ -279,11 +299,16 @@ Recommend the collection, with an Atom feed so it can be syndicated to Discord.
 2. `cvars/` and `commands/` legacy pages are `nav_exclude`d but still built. Content is
    stale — e.g. the `cg_drawTeamOverlay 3` / `4` description predates the overlay overhaul.
    Typo filename: `cvars/miscellanous.md`.
-3. Reference status: 1,653 of 2,014 entries `needs-review`, 361 `documented`. 1,029 have
-   placeholder summaries. 775 are provenance `medium`.
+3. Reference status: 1,653 of 2,014 entries `needs-review`, 361 `documented`. 1,135 have
+   placeholder summaries — 927 cvars in the "Controls … in the … module" form and 208
+   commands in the equivalent command form. 775 are provenance `medium`.
+   [Corrected 2026-09-13: was stated as 1,029, which matches no definition of "placeholder"
+   against the data at `6ff04c0`. See the re-measurement note at the top of this file.]
 4. 17 defaults are unresolved C macros, several user-facing: `sv_master1` shows
    `MASTER_SERVER_NAME` rather than `masterjk3.ravensoft.com`, `cl_renderer` shows
-   `DEFAULT_RENDER_LIBRARY`, plus `model`, `saber1`, `r_textureMode`, `r_drawBuffer`.
+   `DEFAULT_RENDER_LIBRARY`, plus `model`, `saber1`, `r_textureMode`, `r_drawBuffer`,
+   `ui_redteam`, and `ui_saber`. The full list of 17 is in the implementation plan's
+   Prompt 1.1.
 5. Only 16 entries carry a `range`; 564 carry a values enum.
 6. Every blame link pins `6ff04c0`; no stated regeneration cadence.
 7. No changelog, contributing, troubleshooting, or "where to report what" page.
