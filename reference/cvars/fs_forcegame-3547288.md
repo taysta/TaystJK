@@ -42,7 +42,7 @@ No discrete value list is enforced or documented in the inspected source.
 | Default | Module | Renderer | Compile condition |
 |:--|:--|:--|:--|
 | `` | `engine-shared` | `—` | `defined(DEDICATED)` |
-| `TAYSTJKGAME` | `engine-shared` | `—` | `else(defined(DEDICATED))` |
+| `taystjk` | `engine-shared` | `—` | `else(defined(DEDICATED))` |
 
 ## Provenance
 

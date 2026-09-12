@@ -24,7 +24,7 @@ Player model
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_player.menu:194](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_player.menu#L194), [ingame_player.menu:388](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_player.menu#L388), [ingame_player.menu:490](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_player.menu#L490) |
-| Default | `DEFAULT_MODEL` |
+| Default | `kyle` <span class="meta-chip">from DEFAULT_MODEL</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
@@ -42,8 +42,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 | Default | Module | Renderer | Compile condition |
 |:--|:--|:--|:--|
-| `DEFAULT_MODEL` | `cgame` | `—` | `always` |
-| `DEFAULT_MODEL"/default"` | `engine-client` | `—` | `always` |
+| `kyle` | `cgame` | `—` | `always` |
+| `kyle/default` | `engine-client` | `—` | `always` |
 
 ## Provenance
 

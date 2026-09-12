@@ -26,7 +26,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Confidence | `medium` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `UPDATE_SERVER_NAME` |
+| Default | `updatejk3.ravensoft.com` <span class="meta-chip">from UPDATE_SERVER_NAME</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

@@ -24,7 +24,7 @@ Player forcepowers
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `DEFAULT_FORCEPOWERS` |
+| Default | `5-1-000000000000000000` <span class="meta-chip">from DEFAULT_FORCEPOWERS</span> |
 | Value type | `int` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
@@ -42,8 +42,8 @@ No discrete value list is enforced or documented in the inspected source.
 
 | Default | Module | Renderer | Compile condition |
 |:--|:--|:--|:--|
+| `5-1-000000000000000000` | `cgame` | `—` | `always` |
 | `7-1-032330000000001333` | `engine-client` | `—` | `always` |
-| `DEFAULT_FORCEPOWERS` | `cgame` | `—` | `always` |
 
 ## Provenance
 

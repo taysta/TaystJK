@@ -26,7 +26,7 @@ Controls `ui_blueteam` in the ui module. Consult the cited behavior reads before
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `DEFAULT_BLUETEAM_NAME` |
+| Default | `Rebellion` <span class="meta-chip">from DEFAULT_BLUETEAM_NAME</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

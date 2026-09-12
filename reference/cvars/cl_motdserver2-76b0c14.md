@@ -26,7 +26,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Confidence | `medium` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `JKHUB_UPDATE_SERVER_NAME` |
+| Default | `update.jkhub.org` <span class="meta-chip">from JKHUB_UPDATE_SERVER_NAME</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

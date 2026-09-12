@@ -26,7 +26,7 @@ Controls `ui_saber` in the ui module. Consult the cited behavior reads before re
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_saber.menu:178](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_saber.menu#L178), [ingame_saber.menu:222](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_saber.menu#L222), [ingame_saber.menu:266](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_saber.menu#L266) |
-| Default | `DEFAULT_SABER` |
+| Default | `Kyle` <span class="meta-chip">from DEFAULT_SABER</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |

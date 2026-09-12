@@ -31,6 +31,8 @@ class Registration:
     module: str
     renderer: str | None = None
     default: str | None = None
+    default_macro: str | None = None
+    default_macro_kind: str | None = None
     flags: tuple[str, ...] = ()
     description: str | None = None
     handler: str | None = None
@@ -235,11 +237,6 @@ def string_literal(value: str) -> str | None:
     return match.group(1) if match else None
 
 
-def literal_or_expression(value: str) -> str:
-    literal = string_literal(value)
-    return literal if literal is not None else (compact(value) or "")
-
-
 def assignment_variable(text: str, offset: int) -> str | None:
     line_start = text.rfind("\n", 0, offset) + 1
     prefix = text[line_start:offset]
@@ -251,6 +248,113 @@ def concatenated_string_literals(value: str) -> str | None:
     parts = re.findall(r'"((?:\\.|[^"\\])*)"', value, re.S)
     rendered = "".join(parts).strip()
     return rendered or None
+
+
+# Object-like ``#define NAME value``.  Requiring whitespace after the name
+# excludes function-like macros, whose parenthesis follows the name directly.
+OBJECT_DEFINE = re.compile(
+    r"^[ \t]*#[ \t]*define[ \t]+([A-Za-z_][A-Za-z0-9_]*)[ \t]+(.+?)[ \t]*$", re.M)
+ENUM_BODY = re.compile(r"\benum\b[^{;]*\{([^}]*)\}", re.S)
+ENUMERATOR = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\b")
+MACRO_IDENT = re.compile(r"[A-Z][A-Z0-9_]{3,}")
+NUMERIC_LITERAL = re.compile(r"[+-]?(?:0[xX][0-9a-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)[uUlLfF]*")
+COMPILER_BUILTIN = re.compile(r"__[A-Za-z0-9_]+__")
+
+
+def index_macros(masked: str, bodies: dict[str, set[str]], enumerators: set[str]) -> None:
+    """Accumulate object-like defines and enum constants from one masked source.
+
+    Takes pre-masked text so the caller can reuse a single ``mask_comments``
+    pass; that masking dominates extraction cost across a whole snapshot.
+    """
+    for match in OBJECT_DEFINE.finditer(masked):
+        body = match.group(2).strip()
+        if body.endswith("\\"):
+            continue  # multi-line macro, not a simple value
+        bodies.setdefault(match.group(1), set()).add(body)
+    for match in ENUM_BODY.finditer(masked):
+        enumerators.update(ENUMERATOR.findall(match.group(1)))
+
+
+def finalize_macro_index(bodies: dict[str, set[str]]) -> dict[str, str | None]:
+    """A name defined more than once with differing bodies maps to ``None``:
+    the value is platform- or build-conditional and picking one would be a guess.
+    """
+    return {name: (next(iter(values)) if len(values) == 1 else None)
+            for name, values in bodies.items()}
+
+
+def build_macro_index(files: Iterable[tuple[str, str]]) -> tuple[dict[str, str | None], set[str]]:
+    """Index object-like ``#define``s and enum constants across a snapshot."""
+    bodies: dict[str, set[str]] = {}
+    enumerators: set[str] = set()
+    for _path, text in files:
+        index_macros(mask_comments(text), bodies, enumerators)
+    return finalize_macro_index(bodies), enumerators
+
+
+def resolve_macro(name: str, defines: dict[str, str | None],
+                  seen: frozenset[str] = frozenset()) -> str | None:
+    """Follow an object-like ``#define`` chain to its final body."""
+    if name in seen:
+        return None  # cyclic definition
+    body = defines.get(name)
+    if body is None:
+        return None  # undefined here, or conditionally defined
+    if MACRO_IDENT.fullmatch(body):
+        deeper = resolve_macro(body, defines, seen | {name})
+        return deeper if deeper is not None else body
+    return body
+
+
+def classify_identifier(identifier: str, body: str | None, enumerators: set[str]) -> str:
+    if body is not None and COMPILER_BUILTIN.fullmatch(body):
+        return "compiler-builtin"
+    if identifier in enumerators:
+        return "enum-constant"
+    return "unresolved-identifier"
+
+
+def resolve_default(value: str, defines: dict[str, str | None],
+                    enumerators: set[str]) -> tuple[str, str | None, str | None]:
+    """Return ``(default, macro, macro_kind)`` for a raw C default argument.
+
+    A quoted string is already the value a player sees and is never expanded —
+    ``Cvar_Get("r_drawBuffer", "GL_BACK", ...)`` really does default to the
+    text ``GL_BACK``.  Only a bare identifier is treated as a macro.
+    """
+    literal = string_literal(value)
+    if literal is not None:
+        return literal, None, None
+    expression = compact(value) or ""
+    if not expression or not MACRO_IDENT.search(expression):
+        return expression, None, None
+
+    if MACRO_IDENT.fullmatch(expression):
+        body = resolve_macro(expression, defines)
+        if body is not None:
+            resolved = string_literal(body)
+            if resolved is not None:
+                return resolved, expression, None
+            if NUMERIC_LITERAL.fullmatch(body):
+                return body, expression, None
+        # Not a literal: a build-time value, an enum, or undefined here.
+        return expression, expression, classify_identifier(expression, body, enumerators)
+
+    # Adjacent-literal concatenation such as ``DEFAULT_MODEL"/default"``.
+    identifiers = set(MACRO_IDENT.findall(expression))
+    substituted = expression
+    for identifier in identifiers:
+        body = resolve_macro(identifier, defines)
+        if body is None or string_literal(body) is None:
+            return expression, None, None
+        substituted = re.sub(rf"\b{re.escape(identifier)}\b", lambda _, b=body: b, substituted)
+    if '"' not in substituted:
+        return expression, None, None
+    joined = concatenated_string_literals(substituted)
+    if joined is None:
+        return expression, None, None
+    return joined, (identifiers.pop() if len(identifiers) == 1 else None), None
 
 
 def iter_calls(text: str, function_pattern: str) -> Iterator[tuple[int, int, list[str]]]:
@@ -342,9 +446,14 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
 
     materialized = list(files)
     numeric_defines: dict[str, int] = {}
+    macro_bodies: dict[str, set[str]] = {}
+    enumerators: set[str] = set()
     for _path, source in materialized:
-        for define in re.finditer(r"^\s*#\s*define\s+([A-Za-z_]\w*)\s+(-?\d+)\b", mask_comments(source), re.M):
+        masked_source = mask_comments(source)
+        for define in re.finditer(r"^\s*#\s*define\s+([A-Za-z_]\w*)\s+(-?\d+)\b", masked_source, re.M):
             numeric_defines[define.group(1)] = int(define.group(2))
+        index_macros(masked_source, macro_bodies, enumerators)
+    defines = finalize_macro_index(macro_bodies)
     for path, original in materialized:
         masked = mask_comments(original)
         conditions = preprocessor_conditions(original)
@@ -361,10 +470,14 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
                 continue
             name = match.group(1)
             explicit_names.add(name.casefold())
+            if match.group(2) is not None:
+                default, macro, macro_kind = match.group(2), None, None
+            else:
+                default, macro, macro_kind = resolve_default(match.group(3), defines, enumerators)
             registrations.append(Registration(
                 name=name, kind="XCVAR_DEF", path=path, line=line,
                 module=module, renderer=renderer,
-                default=match.group(2) if match.group(2) is not None else compact(match.group(3)),
+                default=default, default_macro=macro, default_macro_kind=macro_kind,
                 flags=split_flags(match.group(5)), description=source_comment(lines, line),
                 variable=name, condition=condition,
             ))
@@ -382,7 +495,7 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
             condition = conditions[line] if line < len(conditions) else None
             if disabled(condition):
                 continue
-            default = literal_or_expression(fields[2])
+            default, macro, macro_kind = resolve_default(fields[2], defines, enumerators)
             flag_expr = next((field for field in fields[3:] if "CVAR_" in field), None)
             if flag_expr is None and len(fields) == 4:
                 flag_expr = fields[3]
@@ -391,6 +504,7 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
             registrations.append(Registration(
                 name=name, kind="cvar table", path=path, line=line,
                 module=module, renderer=renderer, default=default,
+                default_macro=macro, default_macro_kind=macro_kind,
                 flags=split_flags(flag_expr), description=source_comment(lines, line),
                 variable=variable if re.fullmatch(r"[A-Za-z_]\w*", variable) else None,
                 condition=condition,
@@ -426,13 +540,14 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
             condition = conditions[line] if line < len(conditions) else None
             if disabled(condition):
                 continue
+            default, macro, macro_kind = resolve_default(args[1], defines, enumerators)
             for expanded_name in expanded_names:
                 explicit_names.add(expanded_name.casefold())
                 registrations.append(Registration(
                     name=expanded_name,
                     kind="Cvar_Get" if name else "dynamic Cvar_Get expansion",
                     path=path, line=line, module=module, renderer=renderer,
-                    default=literal_or_expression(args[1]),
+                    default=default, default_macro=macro, default_macro_kind=macro_kind,
                     flags=split_flags(args[2]),
                     description=concatenated_string_literals(args[3]) if len(args) > 3 else source_comment(lines, line),
                     variable=assignment_variable(masked, offset), condition=condition,
@@ -449,10 +564,12 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
                 continue
             variable = re.sub(r"^\s*&\s*", "", args[0]).strip()
             explicit_names.add(name.casefold())
+            default, macro, macro_kind = resolve_default(args[2], defines, enumerators)
             registrations.append(Registration(
                 name=name, kind="Cvar_Register", path=path, line=line,
                 module=module, renderer=renderer,
-                default=literal_or_expression(args[2]), flags=split_flags(args[3]),
+                default=default, default_macro=macro, default_macro_kind=macro_kind,
+                flags=split_flags(args[3]),
                 description=source_comment(lines, line),
                 variable=variable if re.fullmatch(r"[A-Za-z_]\w*", variable) and variable != "NULL" else None,
                 condition=condition,
@@ -472,10 +589,14 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
                 condition = conditions[line] if line < len(conditions) else None
                 if disabled(condition):
                     continue
+                if match.group(3) is not None:
+                    default, macro, macro_kind = match.group(3), None, None
+                else:
+                    default, macro, macro_kind = resolve_default(match.group(4), defines, enumerators)
                 registrations.append(Registration(
                     name=name, kind=f"implicit Cvar_{match.group(1)}", path=path, line=line,
                     module=module, renderer=renderer,
-                    default=match.group(3) if match.group(3) is not None else compact(match.group(4)),
+                    default=default, default_macro=macro, default_macro_kind=macro_kind,
                     description=source_comment(lines, line), condition=condition,
                 ))
             existing_sites = {(record.path, record.line, record.kind) for record in registrations}
@@ -490,10 +611,11 @@ def extract_cvars(files: Iterable[tuple[str, str]], include_implicit: bool = Tru
                     condition = conditions[line] if line < len(conditions) else None
                     if disabled(condition):
                         continue
+                    default, macro, macro_kind = resolve_default(args[1], defines, enumerators)
                     registrations.append(Registration(
                         name=name, kind=kind, path=path, line=line,
                         module=module, renderer=renderer,
-                        default=literal_or_expression(args[1]),
+                        default=default, default_macro=macro, default_macro_kind=macro_kind,
                         description=source_comment(lines, line), condition=condition,
                     ))
     return sorted(set(registrations), key=lambda r: (r.name.casefold(), r.path, r.line, r.kind))

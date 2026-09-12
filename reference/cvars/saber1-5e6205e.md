@@ -24,7 +24,7 @@ Player default right hand saber
 | Confidence | `high` |
 | In-game xdocs | No |
 | In-game menu | No |
-| Default | `DEFAULT_SABER` |
+| Default | `Kyle` <span class="meta-chip">from DEFAULT_SABER</span> |
 | Value type | `string` |
 | Restart | No latch flag is registered. |
 | Cheat protected | No |
