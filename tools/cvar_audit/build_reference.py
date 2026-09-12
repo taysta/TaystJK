@@ -527,6 +527,34 @@ def infer_values(
     return values
 
 
+# Which fork a reader is upgrading *from*, which is not the same question as
+# where an entry first appeared.  rend2, Vulkan, JK2MV and NewJK work reached
+# players through TaystJK rather than through EternalJK, so it is all new to
+# someone arriving from EternalJK and belongs in the narrowest bucket.  The
+# buckets are cumulative: each one also contains everything above it.
+#
+#   vs EternalJK : taystjk, rend2, vulkan, jk2mv, newjk
+#   vs OpenJK    : the above + japro, eternaljk
+#   vs base JKA  : the above + openjk
+#
+# An entry that originates in base JKA itself is not new against any baseline
+# and carries no bucket.  Resolved here rather than at render time so the
+# mapping is one reviewable decision instead of a rule repeated per page.
+BASELINE_BUCKETS: tuple[tuple[str, frozenset[str]], ...] = (
+    ("eternaljk", frozenset({"taystjk", "rend2", "vulkan", "jk2mv", "newjk"})),
+    ("openjk", frozenset({"japro", "eternaljk"})),
+    ("basejka", frozenset({"openjk"})),
+)
+
+
+def baseline_for(source: str | None) -> str | None:
+    """The narrowest baseline an entry is new against, or None."""
+    for name, sources in BASELINE_BUCKETS:
+        if source in sources:
+            return name
+    return None
+
+
 CONSTANT_BOUND = re.compile(r"[+-]?(?:0[xX][0-9a-fA-F]+|\d+\.?\d*(?:[eE][+-]?\d+)?)[uUlLfF]*")
 MACRO_BOUND = re.compile(r"[A-Z][A-Z0-9_]{2,}")
 # ``r_bloom = ri.Cvar_Get("r_bloom", ...)``.  Registrations reached through an
@@ -826,6 +854,7 @@ def main() -> None:
             "derivation": override.get("derivation", derivation), "network": network,
             "requires_restart": "CVAR_LATCH" in flags, "cheat_protected": "CVAR_CHEAT" in flags,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
+            "baseline": baseline_for(origin.get("source")),
             "modified_by": origin.get("modified_by", []), "evidence": evidence + behavior_evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "cvar", primary, summary),
@@ -900,6 +929,7 @@ def main() -> None:
             "network": network, "cheat_protected": "CMD_CHEAT" in gating,
             "gating": gating, "handlers": handlers,
             "origin": {key2: value for key2, value in origin.items() if key2 != "modified_by"},
+            "baseline": baseline_for(origin.get("source")),
             "modified_by": origin.get("modified_by", []), "evidence": evidence,
             "confidence": origin.get("confidence", "low"), "status": status,
             "category": category_for(name, "command", primary, summary),

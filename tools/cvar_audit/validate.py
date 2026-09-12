@@ -141,9 +141,40 @@ def validate(path: Path, expected_kind: str) -> list[str]:
     return errors
 
 
+BASELINES = ("eternaljk", "openjk", "basejka")
+# The what's-new page is generated from these buckets, so a data change that
+# silently reshuffles origins must fail rather than quietly restate the totals.
+# Update deliberately, alongside the numbers quoted in the documentation.
+EXPECTED_BASELINE_TOTALS = {"eternaljk": 217, "openjk": 823, "basejka": 990}
+
+
+def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
+    """Check the cumulative baseline bucket totals."""
+    errors: list[str] = []
+    for entry in entries:
+        value = entry.get("baseline")
+        if value is not None and value not in BASELINES:
+            errors.append(f"{entry['name']}: unknown baseline {value!r}")
+    running = 0
+    for name in BASELINES:
+        running += sum(1 for entry in entries if entry.get("baseline") == name)
+        expected = EXPECTED_BASELINE_TOTALS[name]
+        if running != expected:
+            errors.append(
+                f"baseline total for {name}: expected {expected}, found {running}. "
+                "Origins changed; confirm the shift is intended, then update "
+                "EXPECTED_BASELINE_TOTALS and the documented counts."
+            )
+    return errors
+
+
 def main() -> None:
     errors = validate(Path("_data/cvars.json"), "cvar")
     errors += validate(Path("_data/commands.json"), "command")
+    errors += validate_baselines(
+        json.loads(Path("_data/cvars.json").read_text())
+        + json.loads(Path("_data/commands.json").read_text())
+    )
     if errors:
         raise SystemExit("\n".join(errors))
     print("reference data is valid")

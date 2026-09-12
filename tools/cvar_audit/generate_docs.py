@@ -191,6 +191,103 @@ def generated_from(sha: str) -> str:
     )
 
 
+# Presentation only.  The origin-to-baseline decision lives in
+# build_reference.BASELINE_BUCKETS and is materialised onto each entry as
+# `baseline`; this just says which buckets each panel shows, cumulatively.
+BASELINE_PANELS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("eternaljk", "EternalJK", ("eternaljk",)),
+    ("openjk", "OpenJK", ("eternaljk", "openjk")),
+    ("basejka", "base Jedi Academy", ("eternaljk", "openjk", "basejka")),
+)
+DEFAULT_BASELINE = "eternaljk"
+
+
+def added_on_cell(entry: dict[str, Any]) -> str:
+    """Availability marker for an entry.
+
+    INSERTION POINT (Prompt 2.3): `added_on` is not emitted into the reference
+    data yet.  Once build_reference derives it from origin.first_commit this
+    renders automatically here and anywhere else the helper is used; nothing
+    below needs changing.
+    """
+    value = entry.get("added_on")
+    return f' <span class="meta-chip">{esc(value)}</span>' if value else ""
+
+
+def whats_new_rows(entries: list[dict[str, Any]]) -> list[str]:
+    """Entries grouped by topic, alphabetical within each topic."""
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for entry in entries:
+        grouped.setdefault(entry["category"], []).append(entry)
+    lines: list[str] = []
+    for category in sorted(grouped):
+        members = sorted(grouped[category], key=lambda item: item["name"].casefold())
+        lines.extend([f"### {category} ({len(members)})", ""])
+        for entry in members:
+            lines.append(
+                f"- [{code(entry['name'])}]({detail_url(entry)}) "
+                f"{badge(entry['origin']['source'])}{added_on_cell(entry)} — {esc(entry['summary'])}"
+            )
+        lines.append("")
+    return lines
+
+
+def whats_new_page(entries: list[dict[str, Any]]) -> str:
+    """The what's-new page: one panel per baseline, all rendered server-side.
+
+    Every panel is in the HTML and the selector only hides the ones not chosen,
+    so the page still answers the question with JavaScript unavailable.
+    """
+    totals = {
+        name: sum(1 for entry in entries if entry.get("baseline") in buckets)
+        for name, _label, buckets in BASELINE_PANELS
+    }
+    head = frontmatter(
+        "What's new",
+        wide=True,
+        description=(
+            "Every cvar and console command TaystJK adds, grouped by topic and "
+            "filtered by the client you are coming from."
+        ),
+    ) + f"""
+<div class="page-heading" markdown="1">
+<p class="eyebrow">Generated from the console reference</p>
+
+# What's new
+
+<p class="page-lede">What TaystJK adds over the client you already know. Pick that client below; the list is everything the reference records as first appearing after it.</p>
+
+{generated_from(entries[0]["source_commit"])}
+</div>
+
+<section class="baseline-guide" data-baseline-guide>
+  <div class="baseline-selector-shell platform-selector-shell">
+    <p class="platform-selector-label">Coming from</p>
+    <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
+"""
+    tabs = [
+        f'      <button type="button" id="baseline-tab-{name}" role="tab"'
+        f' aria-controls="baseline-panel-{name}" aria-selected="false" tabindex="-1"'
+        f' data-baseline-choice="{name}">{esc(label)} ({totals[name]:,})</button>'
+        for name, label, _buckets in BASELINE_PANELS
+    ]
+    body = ["    </div>", "  </div>", ""]
+    for name, label, buckets in BASELINE_PANELS:
+        members = [entry for entry in entries if entry.get("baseline") in buckets]
+        body.extend([
+            f'  <section class="baseline-panel platform-panel" id="baseline-panel-{name}"'
+            f' role="tabpanel" aria-labelledby="baseline-tab-{name}" tabindex="0"'
+            f' data-baseline-panel="{name}" markdown="1">',
+            "",
+            f"## New since {label} ({len(members):,})",
+            "",
+        ])
+        body.extend(whats_new_rows(members))
+        body.extend(["  </section>", ""])
+    body.append("</section>")
+    return head + "\n".join(tabs + body)
+
+
 MACRO_KIND_LABELS = {
     "compiler-builtin": "set at build time",
     "enum-constant": "enum constant",
@@ -996,6 +1093,7 @@ def main() -> None:
     refs["14cea1563762076974bee277afadbd5bf234c494"] = "14cea1563762076974bee277afadbd5bf234c494"
 
     write(Path("index.md"), home_page(cvars, commands))
+    write(Path("whats-new.md"), whats_new_page(cvars + commands))
     write(Path("reference.md"), frontmatter(
         "Console reference",
         5,
