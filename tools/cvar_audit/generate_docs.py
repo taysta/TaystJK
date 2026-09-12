@@ -15,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from build_reference import baseline_for
+
 
 ORIGIN_LABELS = {
     "taystjk": "TaystJK",
@@ -202,6 +204,122 @@ BASELINE_PANELS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 DEFAULT_BASELINE = "eternaljk"
 
 
+def resolve_url(url: str) -> Path | None:
+    """The file a /TaystJK/ link resolves to, or None when it does not exist."""
+    relative = url.removeprefix("/TaystJK/")
+    if not relative:
+        return Path("index.md")
+    if any(part.startswith(("_", ".")) for part in Path(relative).parts):
+        return None
+    direct = Path(relative)
+    if direct.is_file():
+        return direct
+    if url.endswith("/"):
+        page = Path(f"{relative.rstrip('/')}.md")
+        if page.is_file():
+            return page
+        index = Path(relative) / "index.md"
+        if index.is_file():
+            return index
+    return None
+
+
+WHATS_NEW_OVERRIDES = Path("tools/cvar_audit/whats-new-overrides.json")
+ENTRY_OVERRIDE_KEYS = {"hide", "promote", "summary", "group"}
+FEATURE_KEYS = {"title", "origin", "group", "summary", "page", "added_on"}
+FRONT_MATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+
+
+def load_whats_new_overrides() -> dict[str, Any]:
+    data = load(WHATS_NEW_OVERRIDES) if WHATS_NEW_OVERRIDES.exists() else {}
+    return {"entries": data.get("entries", {}), "features": data.get("features", [])}
+
+
+def validate_whats_new_overrides(
+    entries: list[dict[str, Any]], overrides: dict[str, Any],
+) -> list[str]:
+    """Reject a hand-tuning file that no longer matches the reference data."""
+    errors: list[str] = []
+    known = {entry["name"].casefold() for entry in entries}
+    for name, tuning in sorted(overrides["entries"].items()):
+        label = f"whats-new-overrides entries.{name}"
+        if name.casefold() not in known:
+            errors.append(
+                f"{label}: no such cvar or command. It was renamed or removed; "
+                "update or delete this override."
+            )
+        if not isinstance(tuning, dict):
+            errors.append(f"{label}: expected an object")
+            continue
+        for key in sorted(set(tuning) - ENTRY_OVERRIDE_KEYS):
+            errors.append(f"{label}: unknown key {key!r}")
+        if "hide" in tuning and not isinstance(tuning["hide"], bool):
+            errors.append(f"{label}: hide must be true or false")
+        if "promote" in tuning and not isinstance(tuning["promote"], int):
+            errors.append(f"{label}: promote must be an integer rank")
+        for key in ("summary", "group"):
+            if key in tuning and not (isinstance(tuning[key], str) and tuning[key].strip()):
+                errors.append(f"{label}: {key} must be a non-empty string")
+    for index, feature in enumerate(overrides["features"]):
+        label = f"whats-new-overrides features[{index}]"
+        if not isinstance(feature, dict):
+            errors.append(f"{label}: expected an object")
+            continue
+        for key in sorted(set(feature) - FEATURE_KEYS):
+            errors.append(f"{label}: unknown key {key!r}")
+        for key in ("title", "origin", "page"):
+            if not feature.get(key):
+                errors.append(f"{label}: missing {key}")
+        origin = feature.get("origin")
+        if origin and origin not in ORIGIN_LABELS:
+            errors.append(f"{label}: unknown origin {origin!r}")
+        elif origin and baseline_for(origin) is None:
+            errors.append(
+                f"{label}: origin {origin!r} is part of base Jedi Academy, "
+                "so the feature is not new against any baseline"
+            )
+    return errors
+
+
+def page_front_matter(path: Path) -> dict[str, str]:
+    """Parse the flat scalar keys of a page's front matter."""
+    match = FRONT_MATTER.match(path.read_text())
+    if not match:
+        return {}
+    fields: dict[str, str] = {}
+    for line in match.group(1).splitlines():
+        key, separator, value = line.partition(":")
+        if separator and not key.startswith((" ", "\t", "#")):
+            fields[key.strip()] = value.strip().strip('"').strip("'")
+    return fields
+
+
+def declared_features(root: Path = Path(".")) -> list[dict[str, Any]]:
+    """Collect hand-written pages that opt into the what's-new page.
+
+    A page joins by carrying `whats_new: true` with `origin` and `added_on`, as
+    described in CONVENTIONS.md, so a feature moves out of the seed list simply
+    by being written.
+    """
+    features: list[dict[str, Any]] = []
+    for path in sorted(root.glob("*.md")) + sorted(root.glob("*/*.md")):
+        if path.parts[0] in {"reference", "_site", ".migration", ".plan"}:
+            continue
+        fields = page_front_matter(path)
+        if fields.get("whats_new", "").lower() != "true":
+            continue
+        features.append({
+            "title": fields.get("title") or path.stem,
+            "origin": fields.get("origin"),
+            "group": fields.get("group"),
+            "summary": fields.get("description"),
+            "added_on": fields.get("added_on"),
+            "page": "/TaystJK/" + str(path.with_suffix("")).replace("index", "") + "/",
+            "source": str(path),
+        })
+    return features
+
+
 def added_on_cell(entry: dict[str, Any]) -> str:
     """Availability marker for an entry.
 
@@ -214,32 +332,98 @@ def added_on_cell(entry: dict[str, Any]) -> str:
     return f' <span class="meta-chip">{esc(value)}</span>' if value else ""
 
 
-def whats_new_rows(entries: list[dict[str, Any]]) -> list[str]:
-    """Entries grouped by topic, alphabetical within each topic."""
-    grouped: dict[str, list[dict[str, Any]]] = {}
+def feature_row(feature: dict[str, Any]) -> str:
+    """A manually declared, non-cvar addition.
+
+    A destination that does not exist yet is shown as plain text with a marker
+    rather than as a link, so the page never ships a reader a 404 while the
+    documentation it promises is still unwritten.
+    """
+    title = esc(feature["title"])
+    if feature.get("unresolved"):
+        name = f'{title} <span class="meta-chip">page not written yet</span>'
+    else:
+        name = f"[{title}]({feature['page']})"
+    summary = f" — {esc(feature['summary'])}" if feature.get("summary") else ""
+    return (
+        f"- {name} {badge(feature['origin'])}"
+        f"{added_on_cell(feature)} <span class=\"meta-chip\">feature</span>{summary}"
+    )
+
+
+def whats_new_rows(
+    entries: list[dict[str, Any]], features: list[dict[str, Any]],
+    tuning: dict[str, Any],
+) -> list[str]:
+    """Rows grouped by topic; promoted entries lead, then alphabetical."""
+    grouped: dict[str, list[tuple[int, str, str]]] = {}
     for entry in entries:
-        grouped.setdefault(entry["category"], []).append(entry)
+        override = tuning.get(entry["name"], {})
+        category = override.get("group") or entry["category"]
+        summary = override.get("summary") or entry["summary"]
+        rank = override.get("promote")
+        grouped.setdefault(category, []).append((
+            rank if isinstance(rank, int) else 0,
+            entry["name"].casefold(),
+            f"- [{code(entry['name'])}]({detail_url(entry)}) "
+            f"{badge(entry['origin']['source'])}{added_on_cell(entry)} — {esc(summary)}",
+        ))
+    for feature in features:
+        grouped.setdefault(feature.get("group") or "Other", []).append(
+            # Hand-written features lead their topic: they are the additions a
+            # reader cannot discover from a cvar list.
+            (-1, str(feature["title"]).casefold(), feature_row(feature))
+        )
     lines: list[str] = []
     for category in sorted(grouped):
-        members = sorted(grouped[category], key=lambda item: item["name"].casefold())
+        members = sorted(grouped[category], key=lambda item: (item[0], item[1]))
         lines.extend([f"### {category} ({len(members)})", ""])
-        for entry in members:
-            lines.append(
-                f"- [{code(entry['name'])}]({detail_url(entry)}) "
-                f"{badge(entry['origin']['source'])}{added_on_cell(entry)} — {esc(entry['summary'])}"
-            )
+        lines.extend(row for _rank, _key, row in members)
         lines.append("")
     return lines
 
 
-def whats_new_page(entries: list[dict[str, Any]]) -> str:
+def whats_new_page(entries: list[dict[str, Any]]) -> tuple[str, list[str], list[str]]:
     """The what's-new page: one panel per baseline, all rendered server-side.
 
     Every panel is in the HTML and the selector only hides the ones not chosen,
     so the page still answers the question with JavaScript unavailable.
+
+    Returns the page plus the names hidden by hand and any warnings, so hiding
+    an entry cannot quietly remove it from the record.
     """
+    overrides = load_whats_new_overrides()
+    tuning = overrides["entries"]
+    warnings: list[str] = []
+
+    # A page that declares itself supersedes its seed entry, so a feature needs
+    # no cleanup here once it is written.
+    declared = declared_features()
+    declared_titles = {str(item["title"]).casefold() for item in declared}
+    features = declared + [
+        feature for feature in overrides["features"]
+        if str(feature["title"]).casefold() not in declared_titles
+    ]
+    for feature in features:
+        destination = str(feature.get("page") or "")
+        if resolve_url(destination) is None:
+            feature["unresolved"] = True
+            warnings.append(
+                f"what's-new feature {feature['title']!r} points at {destination or '(nothing)'}, "
+                "which does not exist yet; listed without a link"
+            )
+
+    hidden = sorted(
+        entry["name"] for entry in entries
+        if tuning.get(entry["name"], {}).get("hide")
+    )
+    entries = [entry for entry in entries if not tuning.get(entry["name"], {}).get("hide")]
+
     totals = {
-        name: sum(1 for entry in entries if entry.get("baseline") in buckets)
+        name: (
+            sum(1 for entry in entries if entry.get("baseline") in buckets)
+            + sum(1 for feature in features if baseline_for(feature["origin"]) in buckets)
+        )
         for name, _label, buckets in BASELINE_PANELS
     }
     head = frontmatter(
@@ -274,18 +458,21 @@ def whats_new_page(entries: list[dict[str, Any]]) -> str:
     body = ["    </div>", "  </div>", ""]
     for name, label, buckets in BASELINE_PANELS:
         members = [entry for entry in entries if entry.get("baseline") in buckets]
+        panel_features = [
+            feature for feature in features if baseline_for(feature["origin"]) in buckets
+        ]
         body.extend([
             f'  <section class="baseline-panel platform-panel" id="baseline-panel-{name}"'
             f' role="tabpanel" aria-labelledby="baseline-tab-{name}" tabindex="0"'
             f' data-baseline-panel="{name}" markdown="1">',
             "",
-            f"## New since {label} ({len(members):,})",
+            f"## New since {label} ({len(members) + len(panel_features):,})",
             "",
         ])
-        body.extend(whats_new_rows(members))
+        body.extend(whats_new_rows(members, panel_features, tuning))
         body.extend(["  </section>", ""])
     body.append("</section>")
-    return head + "\n".join(tabs + body)
+    return head + "\n".join(tabs + body), hidden, warnings
 
 
 MACRO_KIND_LABELS = {
@@ -974,7 +1161,10 @@ def home_page(cvars: list[dict[str, Any]], commands: list[dict[str, Any]]) -> st
 """
 
 
-def audit_page(entries: list[dict[str, Any]], runtime: dict[str, Any] | None) -> str:
+def audit_page(
+    entries: list[dict[str, Any]], runtime: dict[str, Any] | None,
+    hidden_from_whats_new: list[str] | None = None,
+) -> str:
     review = [entry for entry in entries if entry["status"] != "documented"]
     ambiguous = [entry for entry in entries if entry["origin"]["confidence"] != "high"]
     modified = [entry for entry in entries if entry.get("modified_by")]
@@ -983,6 +1173,16 @@ def audit_page(entries: list[dict[str, Any]], runtime: dict[str, Any] | None) ->
              "This is the deliberately untidy review queue behind the published reference. `unknown` and `needs-review` are used instead of guesses.", "",
              "## Totals by origin", "", count_table(entries, lambda entry: ORIGIN_LABELS.get(entry["origin"]["source"], entry["origin"]["source"])), "",
              "## Runtime reconciliation", ""]
+    if hidden_from_whats_new:
+        # Hiding is editorial, never a deletion: the entry keeps its detail page
+        # and is listed here so it stays discoverable.
+        lines[-1:] = [
+            f"## Hidden from the what's-new page ({len(hidden_from_whats_new)})", "",
+            "Suppressed by `tools/cvar_audit/whats-new-overrides.json`. Each still has a"
+            " detail page and still appears in the reference.", "",
+            *(f"- {code(name)}" for name in hidden_from_whats_new), "",
+            "## Runtime reconciliation", "",
+        ]
     if runtime:
         lines.extend([
             f"Runtime target: {code(runtime['target'])}; build: {code(runtime['build'])}.", "",
@@ -1093,7 +1293,10 @@ def main() -> None:
     refs["14cea1563762076974bee277afadbd5bf234c494"] = "14cea1563762076974bee277afadbd5bf234c494"
 
     write(Path("index.md"), home_page(cvars, commands))
-    write(Path("whats-new.md"), whats_new_page(cvars + commands))
+    whats_new, hidden_from_whats_new, whats_new_warnings = whats_new_page(cvars + commands)
+    write(Path("whats-new.md"), whats_new)
+    for warning in whats_new_warnings:
+        print(f"warning: {warning}")
     write(Path("reference.md"), frontmatter(
         "Console reference",
         5,
@@ -1255,7 +1458,7 @@ An entry marked **needs review** is real and has registration evidence, but one 
         ))
 
     runtime = load(args.runtime) if args.runtime.exists() else None
-    write(Path("reference/audit.md"), audit_page(entries, runtime))
+    write(Path("reference/audit.md"), audit_page(entries, runtime, hidden_from_whats_new))
     write(Path("reference/sources.md"), sources_page(refs))
     removed_path = Path("tools/cvar_audit/removed.json")
     write(Path("reference/removed.md"), removed_page(load(removed_path), cvars[0]["source_commit"]))
