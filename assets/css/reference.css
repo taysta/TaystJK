@@ -890,6 +890,7 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .coverage-chip,
 .renderer-chip,
 .status-chip,
+.page-status,
 .mini-origin,
 .label.ref-origin {
   display: inline-flex;
@@ -910,6 +911,11 @@ kbd { padding: .15rem .42rem; color: var(--text-soft); background: var(--surface
 .coverage-chip { color: var(--accent); background: rgba(104, 225, 212, .07); border-color: rgba(104, 225, 212, .2); }
 .renderer-chip { color: #a9d4f3; background: rgba(79, 156, 209, .10); border-color: rgba(79, 156, 209, .23); }
 .status-chip { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }
+
+.page-status-row { margin: 0 0 1rem; }
+.page-status { letter-spacing: .08em; text-transform: uppercase; }
+.page-status-experimental { color: var(--warning); background: rgba(239, 176, 94, .08); border-color: rgba(239, 176, 94, .23); }
+.page-status-deprecated { color: var(--danger); background: rgba(240, 131, 131, .08); border-color: rgba(240, 131, 131, .26); }
 
 .label.ref-origin,
 .mini-origin { color: #e8eef5; background: #344054; border-color: rgba(255, 255, 255, .08); }
