@@ -97,6 +97,7 @@ def main() -> None:
         Path("index.md"), Path("install.md"), Path("server-hosting.md"),
         Path("development.md"), *Path("development").rglob("*.md"),
         Path("reference.md"), *Path("reference").rglob("*.md"),
+        Path("whats-new.md"),
     ]
     for page in pages:
         text = page.read_text()

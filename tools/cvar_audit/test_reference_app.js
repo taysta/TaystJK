@@ -100,4 +100,14 @@ assert.equal(catalog.choosePlatform("", "macos", "Win32"), "macos");
 assert.equal(catalog.choosePlatform("invalid", "invalid", "Linux x86_64"), "linux");
 assert.equal(catalog.choosePlatform("Windows", "", "Linux x86_64"), "windows");
 
+// What's-new baseline toggle: query wins, then stored, then the default.
+assert.equal(catalog.chooseBaseline("openjk", "basejka"), "openjk");
+assert.equal(catalog.chooseBaseline("", "basejka"), "basejka");
+assert.equal(catalog.chooseBaseline("", ""), "eternaljk");
+assert.equal(catalog.chooseBaseline("nonsense", "nonsense"), "eternaljk");
+assert.equal(catalog.chooseBaseline("BaseJKA", ""), "basejka");
+assert.equal(catalog.chooseBaseline("", "eternaljk"), "eternaljk");
+// The two selectors must not share a vocabulary: a platform is not a baseline.
+assert.equal(catalog.chooseBaseline("windows", ""), "eternaljk");
+
 console.log("reference app filtering is valid");

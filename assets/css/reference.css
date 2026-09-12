@@ -281,6 +281,7 @@ th { color: var(--text); background: var(--surface); }
 
 .platform-guide { margin-top: 1.4rem; }
 
+.baseline-selector-shell,
 .platform-selector-shell {
   padding: .8rem;
   background: rgba(13, 18, 29, .9);
@@ -298,12 +299,14 @@ th { color: var(--text); background: var(--surface); }
   text-transform: uppercase;
 }
 
+.baseline-selector,
 .platform-selector {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: .35rem;
 }
 
+.baseline-selector button,
 .platform-selector button {
   min-height: 46px;
   padding: .55rem .8rem;
@@ -315,12 +318,14 @@ th { color: var(--text); background: var(--surface); }
   transition: color .15s ease, background .15s ease, border-color .15s ease, transform .15s ease;
 }
 
+.baseline-selector button:hover,
 .platform-selector button:hover {
   color: var(--text);
   border-color: var(--line-bright);
   transform: translateY(-1px);
 }
 
+.baseline-selector button[aria-selected="true"],
 .platform-selector button[aria-selected="true"] {
   color: var(--accent-ink);
   background: var(--accent);
@@ -328,11 +333,13 @@ th { color: var(--text); background: var(--surface); }
   box-shadow: 0 8px 22px rgba(104, 225, 212, .14);
 }
 
+.baseline-selector button:focus-visible,
 .platform-selector button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
+.baseline-panel,
 .platform-panel {
   margin-top: 1rem;
   padding: clamp(1.15rem, 3vw, 1.8rem);
@@ -341,6 +348,7 @@ th { color: var(--text); background: var(--surface); }
   border-radius: var(--radius);
 }
 
+.baseline-panel[hidden],
 .platform-panel[hidden] { display: none; }
 .platform-panel > :first-child { margin-top: 0; }
 .platform-panel > h2 { font-size: clamp(1.55rem, 3vw, 2rem); }
