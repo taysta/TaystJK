@@ -1,14 +1,20 @@
 ---
-title: Crosshair Cvars
-parent: Cvars
-has_children: true
-nav_order: 1
+title: "Page moved"
+layout: none
+permalink: /cvars/crosshair/
+nav_exclude: true
+search_exclude: true
 ---
-
-# Crosshair Cvars
-
-## Crosshair Scope
-
-`cg_crosshairScope 0/1` 
-
-Enables minimalist scope: crosshair, charge and ammo
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url={{ '/features/' | relative_url }}">
+<link rel="canonical" href="{{ '/features/' | relative_url }}">
+<meta name="robots" content="noindex">
+<title>Page moved</title>
+</head>
+<body>
+<p>This page has moved to <a href="{{ '/features/' | relative_url }}">{{ '/features/' | relative_url }}</a>.</p>
+</body>
+</html>

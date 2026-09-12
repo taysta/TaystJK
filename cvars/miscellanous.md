@@ -1,12 +1,20 @@
 ---
-title: Miscellaneous Cvars
-parent: Cvars
-has_children: true
-nav_order: 4
+title: "Page moved"
+layout: none
+permalink: /cvars/miscellanous/
+nav_exclude: true
+search_exclude: true
 ---
-
-# Miscellaneous Cvars
-
-- `styleplayer 16` New FFA invulnerability shell
-- `cosmetics 8` Added covid mask cosmetic & updated pumpkin mask cosmetic (from MB2)
-- `cg_forceCosmetics` cosmetics can now be forced onto all player models on non-japro servers
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url={{ '/features/' | relative_url }}">
+<link rel="canonical" href="{{ '/features/' | relative_url }}">
+<meta name="robots" content="noindex">
+<title>Page moved</title>
+</head>
+<body>
+<p>This page has moved to <a href="{{ '/features/' | relative_url }}">{{ '/features/' | relative_url }}</a>.</p>
+</body>
+</html>
