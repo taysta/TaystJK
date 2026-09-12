@@ -162,7 +162,75 @@ Do not introduce new colours. The palette is the custom properties on `:root`
 The `needs review`, `xdocs`, and `menu` badges belong to the generated reference and are
 emitted by `generate_docs.py`. Do not hand-write them onto guide pages.
 
-## 9. Verification
+## 9. Redirects
+
+Three page trees left over from an older Just-the-Docs structure were retired: they were
+unreachable from the navigation, their content had gone stale (the
+`cg_drawTeamOverlay 3` / `4` description predated the overlay overhaul), and the
+`hardcoded-changes/` children were front-matter-only stubs whose `permalink` pointed at
+anchors on their own parent.
+
+The prose of `hardcoded-changes.md` is preserved verbatim at
+`.migration/hardcoded-changes-original.md`; the retired trees are preserved at
+`.migration/orphaned-trees/`. `.migration/` is a scratch directory, not part of the site —
+Jekyll ignores dot-directories.
+
+**Approach: hand-written meta-refresh stubs, no plugin.** A redirect on GitHub Pages needs
+a file at the old path — Pages serves static files and has no server-side redirect
+configuration. `jekyll-redirect-from` is on the GitHub Pages allowed-plugin list, but it
+does not help here: its `redirect_from` form puts the mapping on the *destination* page,
+and the destination does not exist yet, while its `redirect_to` form generates exactly the
+same stub file we would write by hand. That left a new build-time dependency, on a site
+with no local Jekyll build to catch a misconfiguration, in exchange for nothing. If the
+Features section later makes `redirect_from` natural, revisit this.
+
+> **TODO — destinations are placeholders.** Every retired URL currently points at
+> `/TaystJK/features/`, which **does not exist yet**. Revisit this table once the Features
+> section is built, and point each URL at the most specific page: shader-override and
+> keybind content to `features/client-behaviour.md`, the Vulkan stub to
+> `features/renderers.md`, and the `cvars/` and `commands/` URLs to the feature page that
+> covers each topic. Until then these stubs redirect to a 404.
+
+| Retired URL | Destination |
+|:--|:--|
+| `/TaystJK/hardcoded-changes/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/crosshair/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/demos/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/hud/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/miscellanous/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/sound/` | `/TaystJK/features/` |
+| `/TaystJK/cvars/strafe/` | `/TaystJK/features/` |
+| `/TaystJK/commands/miscellaneous/` | `/TaystJK/features/` |
+| `/TaystJK/commands/strafe/` | `/TaystJK/features/` |
+
+`/TaystJK/cvars/miscellanous/` keeps the original misspelling, because that is the URL
+that was published.
+
+The retired child pages carried `permalink` values containing a `#`, such as
+`/cvars/strafe#speedometer` and `/hardcoded-changes#vulkan`. Those are not separately
+retrievable URLs — a browser reads everything after `#` as a fragment and requests the
+parent path — so the parent stub above covers them. They needed no stub of their own. The
+full list of retired anchor permalinks, for reference:
+
+```text
+/commands/miscellaneous#delay          /cvars/crosshair#crosshair-scope
+/commands/miscellaneous#delay-cancel   /cvars/hud#hud-updates
+/commands/miscellaneous#if-cvar        /cvars/hud#movement-keys
+/commands/miscellaneous#music-controls /cvars/hud#pitch-helper
+/commands/miscellaneous#string-substitution
+/commands/miscellaneous#wait-freely    /cvars/sound#ambient-sounds
+/commands/miscellaneous#wait-freely-cancel
+                                       /cvars/strafe#race-timer
+/hardcoded-changes#keybinds--commands  /cvars/strafe#speedometer
+/hardcoded-changes#miscellaneous       /cvars/strafe#strafe-helper
+/hardcoded-changes#shader-overrides    /cvars/strafe#trigger-slick-clip-rendering
+/hardcoded-changes#vulkan
+```
+
+A stub is a `layout: none` page whose only job is to hold a URL. Build the target with the
+`relative_url` filter rather than hardcoding `/TaystJK`, so the baseurl stays in one place.
+
+## 10. Verification
 
 Before finishing any documentation change:
 

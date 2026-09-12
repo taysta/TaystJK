@@ -1,32 +1,20 @@
 ---
-title: HUD Cvars
-parent: Cvars
-has_children: true
-nav_order: 3
+title: "Page moved"
+layout: none
+permalink: /cvars/hud/
+nav_exclude: true
+search_exclude: true
 ---
-
-# Hud Cvars
-
-## Hud Updates
-
-- `cg_hudFiles 4` new Quake Champions style hud
-- `cg_drawTimer 7` new csgo style match timer
-- `cg_drawTimerCountdown` makes the timer count down instead if the server has a timelimit set
-- `cg_drawTeamOverlay 3` new style team overlay, set to 4 to ignore local client
-- `cg_scoreboardTime 1` Display the local time on the scoreboard
-- `cg_weaponCycleAmmo` Show ammo for weapons on the selection cycle
-- `cg_drawScores 3` new way to display team scores for tffa scores and duel scores for duel gametype
-
-## Movement Keys
-
-- `cg_movemenyKeys 2` Added second movement keys style that sits over the crosshair, can be scaled with `cg_movementKeysSize`
-- `cg_movementKeys 3` is the same, but can be moved with `cg_movementKeysX` and `cg_movementKeysY`:
-- Movement key overlay now includes attack/altattack inputs
-
-# Pitch Helper
-
-- Pitch helper is a new tool to help you maintain your pitch aim at a desired level based on colored text as a visual queue
-- `cg_pitchHelper 1` Pitch angle can now be drawn independently from `cg_showpos`
-- Center point has green text and goes as a gradient to orange until it leaves `cg_pitchHelperRange` where the orange becomes red.
-- The whole range can be offset up or down with `cg_pitchHelperOffset`
-- The drawn number can be moved with `cg_pitchHelperX` and `cg_pitchHelperX`
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url={{ '/features/' | relative_url }}">
+<link rel="canonical" href="{{ '/features/' | relative_url }}">
+<meta name="robots" content="noindex">
+<title>Page moved</title>
+</head>
+<body>
+<p>This page has moved to <a href="{{ '/features/' | relative_url }}">{{ '/features/' | relative_url }}</a>.</p>
+</body>
+</html>
