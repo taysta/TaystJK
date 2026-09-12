@@ -7,30 +7,11 @@ import json
 import re
 from pathlib import Path
 
-from generate_docs import collection_slug, compact_catalog_entry, home_page, slug
+from generate_docs import collection_slug, compact_catalog_entry, home_page, resolve_url, slug
 
 
 ROOT = Path(".")
 LINK = re.compile(r"(?:\]\(|href=[\"'])(/TaystJK/[^)\"'#?]*)")
-
-
-def resolve_url(url: str) -> Path | None:
-    relative = url.removeprefix("/TaystJK/")
-    if not relative:
-        return ROOT / "index.md"
-    if any(part.startswith(("_", ".")) for part in Path(relative).parts):
-        return None
-    direct = ROOT / relative
-    if direct.is_file():
-        return direct
-    if url.endswith("/"):
-        page = ROOT / f"{relative.rstrip('/')}.md"
-        if page.is_file():
-            return page
-        index = ROOT / relative / "index.md"
-        if index.is_file():
-            return index
-    return None
 
 
 def main() -> None:

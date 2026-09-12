@@ -162,7 +162,88 @@ Do not introduce new colours. The palette is the custom properties on `:root`
 The `needs review`, `xdocs`, and `menu` badges belong to the generated reference and are
 emitted by `generate_docs.py`. Do not hand-write them onto guide pages.
 
-## 9. Redirects
+## 9. The what's-new page
+
+`whats-new.md` is generated. Do not edit it. It lists what TaystJK adds relative to the
+client a reader is coming from, with a three-way baseline toggle, and it is built from two
+sources: the reference data, and the editorial layer in
+`tools/cvar_audit/whats-new-overrides.json`.
+
+### Tuning a generated row
+
+Rows for cvars and commands come from the reference data. To change how one is presented,
+add it to the `entries` object by its exact name:
+
+```json
+"entries": {
+  "cg_killfeed": { "promote": 1, "summary": "Shorter wording for this page." },
+  "r_dither":    { "hide": true },
+  "cl_filterGames": { "group": "Server & networking" }
+}
+```
+
+| Key | Effect |
+|:--|:--|
+| `promote` | Integer rank. Lower sorts earlier within the topic; unranked rows follow alphabetically. |
+| `summary` | Replaces the generated summary on this page only. The detail page is unaffected. |
+| `group` | Puts the row under a different topic heading. |
+| `hide` | Drops the row from this page. |
+
+`hide` is editorial, never deletion. A hidden entry keeps its detail page, stays in the
+reference and the search index, and is listed on the [audit page](reference/audit.md) under
+"Hidden from the what's-new page", so nothing disappears without a record.
+
+A name that no longer exists is a **hard error** in both `validate.py` and generation, so
+the file cannot rot silently when a cvar is renamed. Fix or delete the override.
+
+### Adding a feature that is not cvar-shaped
+
+Some of the most significant additions have no cvar: `.oshader` overrides, the cosmetics
+offsets format, modifier binds. They reach the page one of two ways.
+
+**Once the page documenting it exists**, the page declares itself in front matter, and
+nothing else needs editing:
+
+```yaml
+whats_new: true
+origin: taystjk
+added_on: "2025-03-14 (a1b2c3d)"
+title: "Cosmetics custom offsets"
+description: "One sentence; this becomes the row's summary."
+```
+
+`origin` decides which baseline panel it lands in, via the same mapping the reference uses.
+An origin of `basejka` is rejected — it is not new against any baseline.
+
+**Before that page exists**, seed it in the `features` array instead:
+
+```json
+{
+  "title": "Cosmetics custom offsets",
+  "origin": "taystjk",
+  "group": "Gameplay & combat",
+  "summary": "One sentence.",
+  "page": "/TaystJK/features/cosmetics/"
+}
+```
+
+The build **warns** about a destination that does not resolve yet; it does not fail. When
+the page is written and declares `whats_new: true`, it supersedes the seed by title —
+delete the seed entry then.
+
+Seed summaries are provisional. Verify them against source when writing the page, the same
+as any other factual claim (§6).
+
+### Adding a seventh feature
+
+1. Decide the origin, and confirm the mapping puts it in the baseline you expect.
+2. If the page exists, add the four front-matter fields to it and regenerate — done.
+3. If it does not, add an object to `features` with a `page` pointing where it will live.
+4. Run `python3 tools/cvar_audit/generate_docs.py` and read the warnings.
+5. Run `python3 tools/cvar_audit/validate.py` and
+   `python3 tools/cvar_audit/check_generated.py`.
+
+## 10. Redirects
 
 Three page trees left over from an older Just-the-Docs structure were retired: they were
 unreachable from the navigation, their content had gone stale (the
@@ -230,7 +311,7 @@ full list of retired anchor permalinks, for reference:
 A stub is a `layout: none` page whose only job is to hold a URL. Build the target with the
 `relative_url` filter rather than hardcoding `/TaystJK`, so the baseurl stays in one place.
 
-## 10. Verification
+## 11. Verification
 
 Before finishing any documentation change:
 

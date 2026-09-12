@@ -19,15 +19,15 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
   <div class="baseline-selector-shell platform-selector-shell">
     <p class="platform-selector-label">Coming from</p>
     <div class="baseline-selector platform-selector" role="tablist" aria-label="Baseline client">
-      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (217)</button>
-      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (823)</button>
-      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (990)</button>
+      <button type="button" id="baseline-tab-eternaljk" role="tab" aria-controls="baseline-panel-eternaljk" aria-selected="false" tabindex="-1" data-baseline-choice="eternaljk">EternalJK (222)</button>
+      <button type="button" id="baseline-tab-openjk" role="tab" aria-controls="baseline-panel-openjk" aria-selected="false" tabindex="-1" data-baseline-choice="openjk">OpenJK (829)</button>
+      <button type="button" id="baseline-tab-basejka" role="tab" aria-controls="baseline-panel-basejka" aria-selected="false" tabindex="-1" data-baseline-choice="basejka">base Jedi Academy (996)</button>
     </div>
   </div>
 
   <section class="baseline-panel platform-panel" id="baseline-panel-eternaljk" role="tabpanel" aria-labelledby="baseline-tab-eternaljk" tabindex="0" data-baseline-panel="eternaljk" markdown="1">
 
-## New since EternalJK (217)
+## New since EternalJK (222)
 
 ### Audio & music (1)
 
@@ -77,8 +77,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`fs_portable`](/TaystJK/reference/cvars/fs_portable-b325657/) <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> — Disable fs_homepath and use only one folder for all game files
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (31)
+### Gameplay & combat (32)
 
+- Cosmetics custom offsets <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`cg_disruptorAltTime`](/TaystJK/reference/cvars/cg_disruptoralttime-265b925/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Amount of time to display disruptor alt fire
 - [`cg_disruptorCoreColor`](/TaystJK/reference/cvars/cg_disruptorcorecolor-9319cd0/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Changes disruptor line color (accepts hexcode eg. xffffff)
 - [`cg_disruptorMainTime`](/TaystJK/reference/cvars/cg_disruptormaintime-3ae961c/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Amount of time to display disruptor primary fire
@@ -111,8 +112,10 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`slotnext`](/TaystJK/reference/commands/slotnext-3dbba08/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Runs `CG_PrevWeaponSlot_f` in the cgame module.
 - [`slotprev`](/TaystJK/reference/commands/slotprev-4fb55f3/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Runs `CG_NextWeaponSlot_f` in the cgame module.
 
-### Graphics & rendering (101)
+### Graphics & rendering (103)
 
+- .oshader override shaders <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.
+- Widescreen levelshots <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.
 - [`capframes`](/TaystJK/reference/commands/capframes-e2a1440/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Runs `R_CaptureFrameData_f` in the renderer module.
 - [`gfxmeminfo`](/TaystJK/reference/commands/gfxmeminfo-491be17/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Runs `GfxMemInfo_f` in the renderer module.
 - [`r_anaglyphMode`](/TaystJK/reference/cvars/r_anaglyphmode-756890b/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Controls `r_anaglyphMode` in the renderer module.
@@ -228,8 +231,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`cg_killfeedX`](/TaystJK/reference/cvars/cg_killfeedx-32eb04e/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Offset the killfeed&#x27;s horizontal position from its current position
 - [`cg_killfeedY`](/TaystJK/reference/cvars/cg_killfeedy-e14002d/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Offset the killfeed&#x27;s vertical position from its current position
 
-### Input & controls (1)
+### Input & controls (2)
 
+- Modifier and side-specific binds <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span> — Bind ctrl/alt/shift key combinations, and bind the right-side modifier keys separately from the left.
 - [`com_waitingForKey`](/TaystJK/reference/cvars/com_waitingforkey-4980251/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Controls `com_waitingForKey` in the engine-shared module.
 
 ### Movement & race (29)
@@ -264,8 +268,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`cg_speedometerJumpsY`](/TaystJK/reference/cvars/cg_speedometerjumpsy-8a40b94/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Vertical location of the jumps array
 - [`cg_startGoal`](/TaystJK/reference/cvars/cg_startgoal-086db11/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Start speed goal, if your start speed is above your goal speed, the text will be green, requires /cg_raceStart 1
 
-### Server & networking (15)
+### Server & networking (16)
 
+- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`r_cubeMapping`](/TaystJK/reference/cvars/r_cubemapping-86bf3af/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Disable/enable cubemapping
 - [`r_cubeMappingBounces`](/TaystJK/reference/cvars/r_cubemappingbounces-e20074f/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Renders cubemaps multiple times to get reflections in reflections
 - [`r_deluxeMapping`](/TaystJK/reference/cvars/r_deluxemapping-a9c1e61/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Disable/enable reading deluxemaps when compiled with q3map2
@@ -286,7 +291,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
   <section class="baseline-panel platform-panel" id="baseline-panel-openjk" role="tabpanel" aria-labelledby="baseline-tab-openjk" tabindex="0" data-baseline-panel="openjk" markdown="1">
 
-## New since OpenJK (823)
+## New since OpenJK (829)
 
 ### Administration (34)
 
@@ -491,8 +496,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (369)
+### Gameplay & combat (370)
 
+- Cosmetics custom offsets <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_NorollDown_f` in the cgame module.
 - [`+grapple`](/TaystJK/reference/commands/plusminus-grapple-74f23a8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Runs `CG_GrappleDown_f` in the cgame module.
 - [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_SingleFireDown_f` in the cgame module.
@@ -863,8 +869,10 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`weaplast`](/TaystJK/reference/commands/weaplast-837fa67/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_LastWeapon_f` in the cgame module.
 - [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Forwards this command to the connected game server.
 
-### Graphics & rendering (119)
+### Graphics & rendering (121)
 
+- .oshader override shaders <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.
+- Widescreen levelshots <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.
 - [`amSurrender`](/TaystJK/reference/commands/amsurrender-6e03fd5/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — EMOTE
 - [`capframes`](/TaystJK/reference/commands/capframes-e2a1440/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Runs `R_CaptureFrameData_f` in the renderer module.
 - [`cl_coloredTextShadows`](/TaystJK/reference/cvars/cl_coloredtextshadows-e3b625f/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Toggle JK2 1.02-style colored text shadows
@@ -1043,15 +1051,17 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`ui_version`](/TaystJK/reference/cvars/ui_version-b1d5a5a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Used by UI in the in-game &quot;about&quot; menu
 - [`ui_vidrestart`](/TaystJK/reference/cvars/ui_vidrestart-724a091/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Controls `ui_vidrestart` in the ui module.
 
-### Input & controls (4)
+### Input & controls (5)
 
+- Modifier and side-specific binds <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span> — Bind ctrl/alt/shift key combinations, and bind the right-side modifier keys separately from the left.
 - [`cg_scopeSensitivity`](/TaystJK/reference/cvars/cg_scopesensitivity-e27d084/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_scopeSensitivity` in the cgame module.
 - [`cg_zoomSensitivity`](/TaystJK/reference/cvars/cg_zoomsensitivity-f19085b/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_zoomSensitivity` in the cgame module.
 - [`com_waitingForKey`](/TaystJK/reference/cvars/com_waitingforkey-4980251/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Controls `com_waitingForKey` in the engine-shared module.
 - [`in_mouserepeat`](/TaystJK/reference/cvars/in_mouserepeat-b6e4e4a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Controls `in_mouserepeat` in the engine-shared module.
 
-### Movement & race (66)
+### Movement & race (67)
 
+- Tribes movement mode <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">feature</span> — An experimental movement mode with skiing, a jetpack, class and pack selection, and its own HUD.
 - [`addCheckpoint`](/TaystJK/reference/commands/addcheckpoint-7c51bf3/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_AddCheckpoint_f` in the cgame module.
 - [`bot_strafeOffset`](/TaystJK/reference/cvars/bot_strafeoffset-0fc4233/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `bot_strafeOffset` in the game module.
 - [`cg_jumpGoal`](/TaystJK/reference/cvars/cg_jumpgoal-829a115/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled
@@ -1119,8 +1129,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_AddStrafeTrail_f` in the cgame module.
 - [`teleToCheckpoint`](/TaystJK/reference/commands/teletocheckpoint-7aa58eb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_TeleToCheckpoint_f` in the cgame module.
 
-### Server & networking (31)
+### Server & networking (32)
 
+- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
 - [`cg_autoLoginServer2`](/TaystJK/reference/cvars/cg_autologinserver2-9a34450/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_autoLoginServer2` in the cgame module.
 - [`cg_autoLoginServer3`](/TaystJK/reference/cvars/cg_autologinserver3-66a3457/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_autoLoginServer3` in the cgame module.
@@ -1157,7 +1168,7 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 
   <section class="baseline-panel platform-panel" id="baseline-panel-basejka" role="tabpanel" aria-labelledby="baseline-tab-basejka" tabindex="0" data-baseline-panel="basejka" markdown="1">
 
-## New since base Jedi Academy (990)
+## New since base Jedi Academy (996)
 
 ### Administration (37)
 
@@ -1429,8 +1440,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`fs_restart`](/TaystJK/reference/commands/fs_restart-205ee49/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Restarts the filesystem if no module is currently using files from a pk3
 - [`sv_httpDownloads`](/TaystJK/reference/cvars/sv_httpdownloads-f79d64e/) <span class="label ref-origin ref-origin-jk2mv">JK2MV</span> — Enable the server&#x27;s JK2MV-derived HTTP auto-download path.
 
-### Gameplay & combat (404)
+### Gameplay & combat (405)
 
+- Cosmetics custom offsets <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.
 - [`+duck`](/TaystJK/reference/commands/plusminus-duck-1aea248/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_NorollDown_f` in the cgame module.
 - [`+grapple`](/TaystJK/reference/commands/plusminus-grapple-74f23a8/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Runs `CG_GrappleDown_f` in the cgame module.
 - [`+singlefire`](/TaystJK/reference/commands/plusminus-singlefire-e166917/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_SingleFireDown_f` in the cgame module.
@@ -1836,8 +1848,10 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`where`](/TaystJK/reference/commands/where-46148cc/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> — Forwards this command to the connected game server.
 - [`ysal`](/TaystJK/reference/commands/ysal-49fb494/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Forwards this command to the connected game server.
 
-### Graphics & rendering (135)
+### Graphics & rendering (137)
 
+- .oshader override shaders <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.
+- Widescreen levelshots <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.
 - [`amSurrender`](/TaystJK/reference/commands/amsurrender-6e03fd5/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — EMOTE
 - [`capframes`](/TaystJK/reference/commands/capframes-e2a1440/) <span class="label ref-origin ref-origin-rend2">rend2</span> — Runs `R_CaptureFrameData_f` in the renderer module.
 - [`cl_coloredTextShadows`](/TaystJK/reference/cvars/cl_coloredtextshadows-e3b625f/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Toggle JK2 1.02-style colored text shadows
@@ -2038,8 +2052,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`ui_version`](/TaystJK/reference/cvars/ui_version-b1d5a5a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Used by UI in the in-game &quot;about&quot; menu
 - [`ui_vidrestart`](/TaystJK/reference/cvars/ui_vidrestart-724a091/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Controls `ui_vidrestart` in the ui module.
 
-### Input & controls (14)
+### Input & controls (15)
 
+- Modifier and side-specific binds <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-newjk">NewJK / NewMod</span> <span class="meta-chip">feature</span> — Bind ctrl/alt/shift key combinations, and bind the right-side modifier keys separately from the left.
 - [`+button15`](/TaystJK/reference/commands/plusminus-button15-6428f06/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> — Button 15
 - [`-button15`](/TaystJK/reference/commands/minus-button15-95d61e3/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> — Runs `IN_Button15Up` in the engine-client module.
 - [`cg_scopeSensitivity`](/TaystJK/reference/cvars/cg_scopesensitivity-e27d084/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_scopeSensitivity` in the cgame module.
@@ -2055,8 +2070,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`in_mouserepeat`](/TaystJK/reference/cvars/in_mouserepeat-b6e4e4a/) <span class="label ref-origin ref-origin-eternaljk">EternalJK</span> — Controls `in_mouserepeat` in the engine-shared module.
 - [`in_nograb`](/TaystJK/reference/cvars/in_nograb-35cb150/) <span class="label ref-origin ref-origin-openjk">OpenJK</span> — Controls `in_nograb` in the engine-shared module.
 
-### Movement & race (66)
+### Movement & race (67)
 
+- Tribes movement mode <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-japro">jaPRO</span> <span class="meta-chip">feature</span> — An experimental movement mode with skiing, a jetpack, class and pack selection, and its own HUD.
 - [`addCheckpoint`](/TaystJK/reference/commands/addcheckpoint-7c51bf3/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_AddCheckpoint_f` in the cgame module.
 - [`bot_strafeOffset`](/TaystJK/reference/cvars/bot_strafeoffset-0fc4233/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `bot_strafeOffset` in the game module.
 - [`cg_jumpGoal`](/TaystJK/reference/cvars/cg_jumpgoal-829a115/) <span class="label ref-origin ref-origin-taystjk">TaystJK</span> — Set a first jump speed goal speed, if first jump speed is above your goal speed, the pre-speed text will be green. Requires /speedometer 1 enabled
@@ -2124,8 +2140,9 @@ description: "Every cvar and console command TaystJK adds, grouped by topic and 
 - [`strafeTrail`](/TaystJK/reference/commands/strafetrail-dddd025/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_AddStrafeTrail_f` in the cgame module.
 - [`teleToCheckpoint`](/TaystJK/reference/commands/teletocheckpoint-7aa58eb/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Runs `CG_TeleToCheckpoint_f` in the cgame module.
 
-### Server & networking (64)
+### Server & networking (65)
 
+- taystJKinfo feature flags <span class="meta-chip">page not written yet</span> <span class="label ref-origin ref-origin-taystjk">TaystJK</span> <span class="meta-chip">feature</span> — A serverinfo key letting any server mod advertise which TaystJK client features it supports.
 - [`cg_autoLoginServer1`](/TaystJK/reference/cvars/cg_autologinserver1-0ca4073/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — IP of server to try to autologin on, used with /autologin command. If you are not on the right server, the password will not be sent to the server.
 - [`cg_autoLoginServer2`](/TaystJK/reference/cvars/cg_autologinserver2-9a34450/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_autoLoginServer2` in the cgame module.
 - [`cg_autoLoginServer3`](/TaystJK/reference/cvars/cg_autologinserver3-66a3457/) <span class="label ref-origin ref-origin-japro">jaPRO</span> — Controls `cg_autoLoginServer3` in the cgame module.

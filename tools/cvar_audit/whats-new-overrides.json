@@ -1,0 +1,57 @@
+{
+  "_comment": [
+    "Editorial layer over the generated what's-new page. See CONVENTIONS.md.",
+    "'entries' tunes generated cvar/command rows by name: hide, promote, summary, group.",
+    "An unknown name here is a hard error, so the file cannot rot when a cvar is renamed.",
+    "'features' carries additions that are not cvar-shaped and so cannot be generated.",
+    "A feature moves out of this file once its page exists and declares whats_new in",
+    "front matter; until then the build warns about the unresolved destination.",
+    "Seed summaries are provisional and must be verified against source when the page",
+    "that documents them is written."
+  ],
+  "entries": {},
+  "features": [
+    {
+      "title": ".oshader override shaders",
+      "origin": "taystjk",
+      "group": "Graphics & rendering",
+      "summary": "Shader overrides loaded from shaders/*.oshader, parsed after every .shader file so they win without editing the originals.",
+      "page": "/TaystJK/features/client-behaviour/"
+    },
+    {
+      "title": "Cosmetics custom offsets",
+      "origin": "taystjk",
+      "group": "Gameplay & combat",
+      "summary": "Per-model and per-skin position offsets for hats and capes, described by a JSON file shipped alongside the cosmetic.",
+      "page": "/TaystJK/features/cosmetics/"
+    },
+    {
+      "title": "Modifier and side-specific binds",
+      "origin": "newjk",
+      "group": "Input & controls",
+      "summary": "Bind ctrl/alt/shift key combinations, and bind the right-side modifier keys separately from the left.",
+      "page": "/TaystJK/features/client-behaviour/"
+    },
+    {
+      "title": "Widescreen levelshots",
+      "origin": "taystjk",
+      "group": "Graphics & rendering",
+      "summary": "Levelshots authored for widescreen displays, loaded from levelshots_16_9 in preference to the 4:3 originals.",
+      "page": "/TaystJK/features/client-behaviour/"
+    },
+    {
+      "title": "Tribes movement mode",
+      "origin": "japro",
+      "group": "Movement & race",
+      "summary": "An experimental movement mode with skiing, a jetpack, class and pack selection, and its own HUD.",
+      "page": "/TaystJK/features/tribes/"
+    },
+    {
+      "title": "taystJKinfo feature flags",
+      "origin": "taystjk",
+      "group": "Server & networking",
+      "summary": "A serverinfo key letting any server mod advertise which TaystJK client features it supports.",
+      "page": "/TaystJK/development/feature-flags/"
+    }
+  ]
+}

@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from generate_docs import load_whats_new_overrides, validate_whats_new_overrides
+
 
 ORIGINS = {"basejka", "openjk", "eternaljk", "japro", "jk2mv", "newjk", "rend2", "vulkan", "taystjk", "quake3", "unknown"}
 CONFIDENCE = {"high", "medium", "low"}
@@ -171,10 +173,14 @@ def validate_baselines(entries: list[dict[str, Any]]) -> list[str]:
 def main() -> None:
     errors = validate(Path("_data/cvars.json"), "cvar")
     errors += validate(Path("_data/commands.json"), "command")
-    errors += validate_baselines(
+    entries = (
         json.loads(Path("_data/cvars.json").read_text())
         + json.loads(Path("_data/commands.json").read_text())
     )
+    errors += validate_baselines(entries)
+    # Checked here as well as at generation time so CI catches a hand-tuning
+    # file that has rotted against renamed entries, without regenerating.
+    errors += validate_whats_new_overrides(entries, load_whats_new_overrides())
     if errors:
         raise SystemExit("\n".join(errors))
     print("reference data is valid")
