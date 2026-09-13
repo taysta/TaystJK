@@ -25,7 +25,7 @@ Notifies you when someone calls a vote
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-02-24 in [`9b77d352b`](https://github.com/taysta/TaystJK/commit/9b77d352bc860abff54da6e6593fed3e957a1c5d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-02-24 in [`9b77d352b`](https://github.com/taysta/TaystJK/commit/9b77d352bc860abff54da6e6593fed3e957a1c5d) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

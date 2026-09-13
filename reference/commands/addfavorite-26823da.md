@@ -24,7 +24,7 @@ Add server to favorites
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-06-28 in [`fcc89fdf6`](https://github.com/taysta/TaystJK/commit/fcc89fdf6fcbf169f22e9ed77cd632d8637a3dbf) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-06-28 in [`fcc89fdf6`](https://github.com/taysta/TaystJK/commit/fcc89fdf6fcbf169f22e9ed77cd632d8637a3dbf) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_server.menu:915](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_server.menu#L915), [ingame_server.menu:932](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_server.menu#L932), [joinserver.menu:1026](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/joinserver.menu#L1026) |
 | Syntax | `addFavorite [arguments]` |

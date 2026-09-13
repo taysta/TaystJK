@@ -24,7 +24,7 @@ Snapshot-based duel isolation
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-09-10 in [`7504815f1`](https://github.com/taysta/TaystJK/commit/7504815f10f917215457c6a228aa7b7c8e117192) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-09-10 in [`7504815f1`](https://github.com/taysta/TaystJK/commit/7504815f10f917215457c6a228aa7b7c8e117192) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

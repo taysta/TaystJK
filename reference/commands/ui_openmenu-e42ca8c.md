@@ -24,7 +24,7 @@ Runs `UI_OpenMenu_f` in the ui module.
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-12-07 in [`f5c1b2ceb`](https://github.com/taysta/TaystJK/commit/f5c1b2ceb3ba6fea65c0c5d64488adb12d4bafd1) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-12-07 in [`f5c1b2ceb`](https://github.com/taysta/TaystJK/commit/f5c1b2ceb3ba6fea65c0c5d64488adb12d4bafd1) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `ui_openmenu` |

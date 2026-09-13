@@ -24,7 +24,7 @@ Controls `com_affinity` in the engine-shared module. Consult the cited behavior 
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2014-04-04 in [`d3ecd6191`](https://github.com/taysta/TaystJK/commit/d3ecd6191c5b92509a6491f10eac74cabf8a8daa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-04-04 in [`d3ecd6191`](https://github.com/taysta/TaystJK/commit/d3ecd6191c5b92509a6491f10eac74cabf8a8daa) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

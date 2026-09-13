@@ -24,7 +24,7 @@ Widescreen aspect ratio correction
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2017-12-03 in [`b713e21a0`](https://github.com/taysta/TaystJK/commit/b713e21a0ea84fe4d2d1d87c1a6f5dfd84e9cbb5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2017-12-03 in [`b713e21a0`](https://github.com/taysta/TaystJK/commit/b713e21a0ea84fe4d2d1d87c1a6f5dfd84e9cbb5) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

@@ -26,12 +26,14 @@
         {% if page.url == '/' %}{% assign nav_section = 'home' %}
         {% elsif page.url contains '/install/' %}{% assign nav_section = 'install' %}
         {% elsif page.url contains '/server-hosting/' %}{% assign nav_section = 'server' %}
+        {% elsif page.url contains '/features' %}{% assign nav_section = 'features' %}
         {% elsif page.url contains '/development' %}{% assign nav_section = 'development' %}
         {% elsif page.url contains '/reference' %}{% assign nav_section = 'reference' %}
         {% endif %}
         <nav class="site-nav" aria-label="Primary navigation">
           <a href="{{ '/install/' | relative_url }}"{% if nav_section == 'install' %} class="active"{% endif %}>Install</a>
           <a href="{{ '/server-hosting/' | relative_url }}"{% if nav_section == 'server' %} class="active"{% endif %}>Host</a>
+          <a href="{{ '/features/' | relative_url }}"{% if nav_section == 'features' %} class="active"{% endif %}>Features</a>
           <a href="{{ '/development/' | relative_url }}"{% if nav_section == 'development' %} class="active"{% endif %}>Develop</a>
           <a href="{{ '/reference/' | relative_url }}"{% if nav_section == 'reference' %} class="active"{% endif %}>Reference</a>
         </nav>
@@ -82,6 +84,7 @@
       <nav aria-label="Footer navigation">
         <a href="{{ '/install/' | relative_url }}">Install</a>
         <a href="{{ '/server-hosting/' | relative_url }}">Server hosting</a>
+        <a href="{{ '/features/' | relative_url }}">Features</a>
         <a href="{{ '/development/' | relative_url }}">Development</a>
         <a href="{{ '/reference/' | relative_url }}">Console reference</a>
         <a href="https://github.com/taysta/TaystJK/releases/tag/latest">Latest release</a>

@@ -24,7 +24,7 @@ Registered by the current source, but no user-facing behavior description has be
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-04-17 in [`9e15fadfd`](https://github.com/taysta/TaystJK/commit/9e15fadfd9b4223b60de8e0e76affce52930fe0b) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-04-17 in [`9e15fadfd`](https://github.com/taysta/TaystJK/commit/9e15fadfd9b4223b60de8e0e76affce52930fe0b) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `loopback` |

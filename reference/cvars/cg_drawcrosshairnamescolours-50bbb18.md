@@ -23,7 +23,7 @@ Selects crosshair-name coloring. Zero strips player color codes and uses green f
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `mixed` |
 | Confidence | `high` |
-| Added | 2025-12-11 in [`24fb55d23`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2025-12-11 in [`24fb55d23`](https://github.com/taysta/TaystJK/commit/24fb55d23bfe18d3bcc3315232b310469cd23705) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:595](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L595) |
 | In-game menu | No |
 | Default | `1` |

@@ -24,7 +24,7 @@ Used by UI in the in-game "about" menu
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2018-10-04 in [`e4ececfdb`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-10-04 in [`e4ececfdb`](https://github.com/taysta/TaystJK/commit/e4ececfdb4d1033473d6f502615964281530d401) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_about.menu:267](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_about.menu#L267) |
 | Default | `Info_ValueForKey(info, "version")` |

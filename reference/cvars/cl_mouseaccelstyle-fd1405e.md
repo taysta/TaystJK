@@ -24,7 +24,7 @@ Mouse accelration style (0:legacy, 1:QuakeLive)
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-05-15 in [`ae0f733b9`](https://github.com/taysta/TaystJK/commit/ae0f733b9635c7e17c8fc644ea1133ffb399ae37) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-05-15 in [`ae0f733b9`](https://github.com/taysta/TaystJK/commit/ae0f733b9635c7e17c8fc644ea1133ffb399ae37) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

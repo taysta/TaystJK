@@ -24,7 +24,7 @@ Controls `pmove_float` in the cgame module. Consult the cited behavior reads bef
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-05-11 in [`f203e799b`](https://github.com/taysta/TaystJK/commit/f203e799b14c0716833793eed611c272111c3cb6) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

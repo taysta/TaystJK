@@ -24,7 +24,7 @@ Controls `ui_sv_pure` in the ui module. Consult the cited behavior reads before 
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2019-06-12 in [`49e91d910`](https://github.com/taysta/TaystJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-06-12 in [`49e91d910`](https://github.com/taysta/TaystJK/commit/49e91d910266ea4df300720e1b1cd24473de1e01) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

@@ -24,7 +24,7 @@ Controls `g_KOTH` in the game module. Consult the cited behavior reads before re
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2018-09-03 in [`6e78add65`](https://github.com/taysta/TaystJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2018-09-03 in [`6e78add65`](https://github.com/taysta/TaystJK/commit/6e78add659de33e4919f25aefad3e61546599f3c) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `0` |

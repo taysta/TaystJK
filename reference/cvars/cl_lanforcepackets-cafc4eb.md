@@ -24,7 +24,7 @@ Controls `cl_lanForcePackets` in the engine-client module. Consult the cited beh
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2013-10-15 in [`0bf217273`](https://github.com/taysta/TaystJK/commit/0bf217273755c4fb10217c8479bb9d3a294526f3) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-10-15 in [`0bf217273`](https://github.com/taysta/TaystJK/commit/0bf217273755c4fb10217c8479bb9d3a294526f3) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |

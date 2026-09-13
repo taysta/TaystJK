@@ -25,7 +25,7 @@ Runs `CG_GrappleDown_f` in the cgame module.
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `code-trace` |
 | Confidence | `medium` |
-| Added | 2019-03-21 in [`664cf4094`](https://github.com/taysta/TaystJK/commit/664cf409470fc0f7cead592003fc1dcd244f7f39) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-03-21 in [`664cf4094`](https://github.com/taysta/TaystJK/commit/664cf409470fc0f7cead592003fc1dcd244f7f39) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `+grapple` |

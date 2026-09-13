@@ -24,7 +24,7 @@ Stop recording a server-side demo
 | Network scope | `server-authoritative` — Owned or enforced by the server. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2014-01-26 in [`44d566687`](https://github.com/taysta/TaystJK/commit/44d5666875f34d77c7f2451c6f7a493e60e6a348) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2014-01-26 in [`44d566687`](https://github.com/taysta/TaystJK/commit/44d5666875f34d77c7f2451c6f7a493e60e6a348) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Syntax | `svstoprecord [arguments]` |

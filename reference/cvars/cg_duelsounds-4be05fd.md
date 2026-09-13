@@ -24,7 +24,7 @@ Enables/disables announcer/center print at the start of private duels
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2019-07-28 in [`8e774f08b`](https://github.com/taysta/TaystJK/commit/8e774f08bc0d3e98a127b1c2b8e90438e3e1580e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2019-07-28 in [`8e774f08b`](https://github.com/taysta/TaystJK/commit/8e774f08bc0d3e98a127b1c2b8e90438e3e1580e) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | Yes — [codemp/ui/ui_xdocs.h:413](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/ui/ui_xdocs.h#L413) |
 | In-game menu | No |
 | Default | `1` |

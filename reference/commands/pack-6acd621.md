@@ -24,7 +24,7 @@ Runs `Cmd_TribesPack_f` in the game module.
 | Network scope | `needs-server-support` — Sent to, or only useful with, a supporting game server. |
 | Derivation | `documented` |
 | Confidence | `high` |
-| Added | 2024-01-26 in [`cd07288a3`](https://github.com/taysta/TaystJK/commit/cd07288a30a6aa276afdb11f1ae81e5e338134c3) — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2024-01-26 in [`cd07288a3`](https://github.com/taysta/TaystJK/commit/cd07288a30a6aa276afdb11f1ae81e5e338134c3) — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | Yes — [ingame_tribes.menu:109](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L109), [ingame_tribes.menu:136](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L136), [ingame_tribes.menu:157](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/assets/japro/ui/jamp/ingame_tribes.menu#L157) |
 | Syntax | `pack <shield, thrust, blink, or overdrive. Bind +force_lightning to activate.>` |

@@ -25,7 +25,7 @@ Automatically clear console input on close
 | Network scope | `client-only` — Local to the client/UI/renderer. |
 | Derivation | `documented` |
 | Confidence | `medium` |
-| Added | 2013-09-01 in [`f8564ad61`](https://github.com/taysta/TaystJK/commit/f8564ad6103745b83f63e4a2f52e8dbdd1a899d0) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/whats-new/#how-to-tell-what-your-build-has) |
+| Added | 2013-09-01 in [`f8564ad61`](https://github.com/taysta/TaystJK/commit/f8564ad6103745b83f63e4a2f52e8dbdd1a899d0) <span class="status-chip">needs review</span> — [how to compare this against your build](/TaystJK/features/whats-new/#how-to-tell-what-your-build-has) |
 | In-game xdocs | No |
 | In-game menu | No |
 | Default | `1` |
