@@ -86,10 +86,12 @@ their own bindings
 ([`cl_keys.cpp`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/client/cl_keys.cpp#L188)),
 so `bind rctrl kill` affects only the right-hand key.
 
-<!-- TODO: the retired hardcoded-changes page claimed that a right-side key with no binding
-     of its own falls back to the generic binding, and that the left-side key always uses
-     the generic one. Separate bindability is verified; the fallback is not. Find the
-     press-time resolution before stating it. -->
+<!-- TODO: the retired hardcoded-changes page claimed a right-side key with no binding of
+     its own falls back to the generic binding, and that the left-side key always uses the
+     generic one. Separate bindability is verified (the keynames table and the per-modifier
+     binding slots). The fallback is not: every binding[] read in cl_keys.cpp belongs to
+     setting or listing a bind, not to dispatching a press, so the press-time resolution is
+     in another translation unit. Find it before stating the behaviour. -->
 
 ## Console and chat editing
 

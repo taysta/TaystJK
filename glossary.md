@@ -20,11 +20,12 @@ for your current velocity and movement style. It is one bit of the `cg_strafeHel
 setting rather than a separate feature; configure it with the `strafehelper` command. See
 [HUD and movement tools](/TaystJK/features/hud-and-movement/).
 
-**Snaps, snap zones** — the SnapHUD (`cg_snapHud`) draws the zones a strafe player aims
-between.
-<!-- TODO: the underlying mechanic is not described anywhere in the source tree; the cvar's
-     own documentation is only "Enable/Disable the snap HUD". Someone who understands the
-     physics should write the one-sentence explanation of what a snap zone is. -->
+**Snaps, snap zones** — movement is applied in whole units each frame, so at some view
+angles the rounding gains you a little speed and at others it costs you. The boundaries
+between those angles are snap zones, and they move with your speed and framerate: the
+SnapHUD computes them from both and draws them
+([`hud_strafehelper.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/hud_strafehelper.c#L2507)).
+Enable it with `cg_snapHud`. See [HUD and movement tools](/TaystJK/features/hud-and-movement/).
 
 **Movement style** — the rule set a server applies to player movement, changing
 acceleration, air control and what tricks are possible. The client knows nineteen, from
@@ -35,9 +36,10 @@ See [movement styles](/TaystJK/features/movement-styles/).
 **Ski** — sliding along the ground instead of running, in the Tribes movement style, with
 its own landing sound. See [Tribes](/TaystJK/features/tribes/).
 
-**IFF** — *TODO: not defined here yet.* The term appears in the project's planning notes as
-a Tribes feature, but it occurs nowhere in the source tree, so there is nothing to verify a
-definition against. Confirm what it refers to before writing one.
+**IFF** — *not documented here.* The term appears in this project's planning notes as a
+Tribes feature, but a search of the whole source tree finds no occurrence of it, so there is
+nothing to define it against. If it exists it is not in the client; confirm what it refers
+to before adding an entry.
 
 ## Files and directories
 
