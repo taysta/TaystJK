@@ -57,10 +57,17 @@ bitmask, listed as "Seasonal Cosmetics"
 ([`cg_consolecmds.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_consolecmds.c#L1429)).
 Turn the bit on with `stylePlayer` to opt in.
 
-<!-- TODO: the dates that decide which season is active are said to be hardcoded in the
-     client, but the seasonal selection itself was not located in the tree — the only date
-     handling found nearby is chat-token time formatting. Find where the bit is consumed
-     before documenting which dates trigger what. -->
+With it on, the client checks the date and may put a hat on players who have none
+([`cg_players.c`](https://github.com/taysta/TaystJK/blame/6ff04c0baf588a89e5ec9361ad7a0992941d7655/codemp/cgame/cg_players.c#L13198)):
+
+| Season | Dates | Hat |
+|:--|:--|:--|
+| Christmas | 22 November to 7 January | `santahat` |
+| Halloween | **31 October** only | `pumpkin` |
+
+The dates are fixed in the client and read from **your own clock**, not the server's, so a
+player in another timezone can briefly see something different. A seasonal hat only appears
+on players wearing nothing already — your own choice is never replaced.
 
 ## Adding a cosmetic
 

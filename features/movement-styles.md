@@ -88,9 +88,11 @@ Each player also carries their own current style in `STAT_MOVEMENTSTYLE`, which 
 race server lets different players run different physics at once and keeps a separate
 leaderboard per style.
 
-<!-- TODO: the player-facing command for choosing your own style on a jaPRO race server was
-     not found in this tree — the game module that owns it is jaPRO's, not the client's.
-     Name the command only after checking it against a jaPRO server or its source. -->
+<!-- TODO: no player-facing command for choosing your own style exists in this tree.
+     codemp/game is the game module and its command table has "race" but nothing for style,
+     and STAT_MOVEMENTSTYLE is only ever read during movement, never set by a command here.
+     A jaPRO race server presumably provides one; name it only after confirming against a
+     live server or jaPRO's own source. -->
 
 Style is a game-module concern, so what you can select depends on the server. The client
 draws what it is told; see [the overview](/TaystJK/overview/) for where that boundary runs.
